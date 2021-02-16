@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.3](https://github.com/InjectiveLabs/injective-monorepo/compare/@injectivelabs/web3-strategy@0.0.2...@injectivelabs/web3-strategy@0.0.3) (2021-02-16)
+
+
+### Bug Fixes
+
+* added missing dependencies ([5943591](https://github.com/InjectiveLabs/injective-monorepo/commit/59435911e50d0402e030edbff01842045d430c6d))
+* removed ds-store file ([7e28fe2](https://github.com/InjectiveLabs/injective-monorepo/commit/7e28fe2f0a2f26e8d932851fb98f26c08e14a25b))
+
+
+
+
+
 ## 0.0.2 (2021-02-16)
 
 
