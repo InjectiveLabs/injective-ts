@@ -12,6 +12,13 @@ export interface ConcreteWeb3Strategy {
     rpcUrl: string
     pollingInterval: number
   }): provider
+  getWeb3WsProviderEngineForRpc({
+    wsRpcUrl,
+    pollingInterval,
+  }: {
+    wsRpcUrl: string
+    pollingInterval: number
+  }): provider
   isMetamask(): boolean
   getAddresses(): Promise<string[]>
   confirm(address: AccountAddress): Promise<string>

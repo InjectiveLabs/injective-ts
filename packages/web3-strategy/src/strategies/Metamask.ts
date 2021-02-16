@@ -5,6 +5,7 @@ import ProviderEngine from 'web3-provider-engine'
 import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tracker'
 import SanitizingSubprovider from 'web3-provider-engine/subproviders/sanitizer'
 import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
+import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
 import { provider } from 'web3-core'
 import {
   ConcreteWeb3Strategy,
@@ -112,6 +113,23 @@ export default class Metamask implements ConcreteWeb3Strategy {
     engine.addProvider(new NonceTrackerSubprovider())
     engine.addProvider(new SanitizingSubprovider())
     engine.addProvider(new RpcSubprovider({ rpcUrl }))
+    engine.start()
+
+    return engine as provider
+  }
+
+  getWeb3WsProviderEngineForRpc = ({
+    wsRpcUrl,
+    pollingInterval,
+  }: {
+    wsRpcUrl: string
+    pollingInterval: number
+  }) => {
+    const engine = new ProviderEngine({
+      pollingInterval,
+    })
+
+    engine.addProvider(new WebSocketSubprovider({ rpcUrl: wsRpcUrl }))
     engine.start()
 
     return engine as provider
