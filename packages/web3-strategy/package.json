@@ -25,6 +25,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@injectivelabs/exceptions": "^0.0.1",
+    "@injectivelabs/ts-types": "^0.0.1",
+    "@injectivelabs/utils": "^0.0.1",
     "@types/ethereum-protocol": "^1.0.1",
     "@types/web3-provider-engine": "^14.0.0",
     "eip1193-provider": "^1.0.1",
