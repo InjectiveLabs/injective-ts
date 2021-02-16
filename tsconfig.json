@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@injectivelabs/utils": [
+        "packages/utils/src"
+      ],
+      "@injectivelabs/ts-types": [
+        "packages/ts-types/src"
+      ],
+      "@injectivelabs/exceptions": [
+        "packages/exceptions/src"
+      ],
+      "@injectivelabs/*": [
+        "packages/*/src"
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "npmClient": "yarn",
+  "name": "Injective Monorepo",
+  "packages": ["packages/*"],
+  "version": "independent",
+  "useWorkspaces": true,
+  "command": {
+    "version": {
+      "message": "chore(release): publish %s"
+    },
+    "publish": {
+      "conventionalCommits": true
+    }
+  }
+}
