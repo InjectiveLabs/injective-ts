@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/utils",
-  "version": "0.0.3",
+  "version": "0.0.10",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,5 +31,6 @@
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",
     "store2": "^2.12.0"
-  }
+  },
+  "gitHead": "3fbdc10bd71573988195b5fb5f4d2d5a9e387df2"
 }
