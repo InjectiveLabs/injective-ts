@@ -8,4 +8,9 @@
   "include": [
     "src/**/*"
   ],
+  "references": [
+    {
+      "path": "../exceptions/tsconfig.build.json"
+    }
+  ]
 }
