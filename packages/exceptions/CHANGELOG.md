@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/InjectiveLabs/injective-monorepo/compare/@injectivelabs/exceptions@0.0.11...@injectivelabs/exceptions@0.0.12) (2021-02-18)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
 ## [0.0.11](https://github.com/InjectiveLabs/injective-monorepo/compare/@injectivelabs/exceptions@0.0.3...@injectivelabs/exceptions@0.0.11) (2021-02-17)
 
 

@@ -1,4 +1,4 @@
-# 🌟 Injective Protocol - Monorepo
+# 🌟 Injective Protocol - TS
 
 _Decentralized Derivatives Trading. Any Market. Anytime. Anywhere._
 

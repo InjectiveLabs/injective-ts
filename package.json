@@ -1,11 +1,11 @@
 {
-  "name": "@injectivelabs/monorepo",
+  "name": "@injectivelabs/ts",
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
   "private": "true",
   "author": "Bojan Angjelkoski <bojan@injectiveprotocol.com>",
-  "repository": "https://github.com/InjectiveLabs/injective-monorepo",
+  "repository": "https://github.com/InjectiveLabs/injective-ts",
   "workspaces": {
     "packages": [
       "packages/*"
@@ -13,8 +13,10 @@
   },
   "scripts": {
     "build": "lerna run --parallel build",
+    "lerna:publish": "lerna publish from-package",
     "build:watch": "lerna run --parallel build:watch",
     "build:fresh": "yarn clean && yarn build",
+    "build:patch:publish": "yarn build:fresh && yarn patch && yarn lerna:publish",
     "patch": "lerna version patch --amend",
     "clean": "lerna run --parallel clean && shx rm -rf .build-cache *.log coverage junit.xml",
     "test": "jest",
