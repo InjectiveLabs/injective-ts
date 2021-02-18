@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.11...@injectivelabs/exceptions@0.0.13) (2021-02-18)
+
+
+### Features
+
+* added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+* contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+
+
+
+
+
 ## [0.0.12](https://github.com/InjectiveLabs/injective-monorepo/compare/@injectivelabs/exceptions@0.0.11...@injectivelabs/exceptions@0.0.12) (2021-02-18)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
