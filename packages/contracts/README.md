@@ -1,4 +1,4 @@
-# 🌟 Injective Protocol - Exceptions
+# 🌟 Injective Protocol - Contracts
 
 ---
 

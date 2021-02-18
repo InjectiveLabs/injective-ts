@@ -1,6 +1,6 @@
 import store, { StoreAPI } from 'store2'
 
-export default class Storage {
+export default class LocalStorage {
   private storage: StoreAPI
 
   constructor(namespace: string) {

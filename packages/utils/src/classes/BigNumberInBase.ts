@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import BigNumberInWei from './BigNumberInWei'
 import BigNumber from './BigNumber'
 

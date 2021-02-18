@@ -1,4 +1,4 @@
-export { default as Storage } from './Storage'
+export { default as LocalStorage } from './LocalStorage'
 export { default as BigNumberInBase } from './BigNumberInBase'
 export { default as BigNumberInWei } from './BigNumberInWei'
 export { default as BigNumber } from './BigNumber'

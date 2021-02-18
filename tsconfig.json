@@ -3,14 +3,20 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@injectivelabs/utils": [
-        "packages/utils/src"
-      ],
       "@injectivelabs/ts-types": [
         "packages/ts-types/src"
       ],
       "@injectivelabs/exceptions": [
         "packages/exceptions/src"
+      ],
+      "@injectivelabs/utils": [
+        "packages/utils/src"
+      ],
+      "@injectivelabs/web3-strategy": [
+        "packages/web3-strategy/src"
+      ],
+      "@injectivelabs/contracts": [
+        "packages/contracts/src"
       ],
       "@injectivelabs/*": [
         "packages/*/src"
