@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "lerna run --parallel build",
+    "build:watch": "lerna run --parallel build:watch",
     "build:fresh": "yarn clean && yarn build",
     "patch": "lerna version patch --amend",
     "clean": "lerna run --parallel clean && shx rm -rf .build-cache *.log coverage junit.xml",
