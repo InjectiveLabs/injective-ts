@@ -1,5 +1,4 @@
 import { Peggy } from '@injectivelabs/web3-contract-typings/types/Peggy'
-import { AbiItem } from 'web3-utils'
 import { ContractException } from '@injectivelabs/exceptions'
 import {
   AccountAddress,
@@ -11,24 +10,12 @@ import {
   getTransactionOptionsAsNonPayableTx,
 } from '@injectivelabs/utils'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
-import Web3 from 'web3'
 import abi from './abi/peggy'
 import { ContractTxFunctionObj } from '../types'
+import BaseContract from '../base'
 
-export class PeggyContract {
+export class PeggyContract extends BaseContract<Peggy, keyof Peggy['events']> {
   static contractName = 'Peggy'
-
-  public readonly abi: AbiItem[]
-
-  public readonly address: string
-
-  private readonly contract: Peggy
-
-  private readonly chainId: ChainId
-
-  private readonly web3: Web3
-
-  private readonly web3Ws: Web3
 
   constructor({
     chainId,
@@ -39,22 +26,12 @@ export class PeggyContract {
     address: string
     web3Strategy: Web3Strategy
   }) {
-    this.abi = abi
-    this.chainId = chainId
-    this.address = address
-    this.web3 = web3Strategy.getWeb3ForChainId(this.chainId)
-    this.web3Ws = web3Strategy.getWeb3WsForChainId(this.chainId)
-
-    if (!this.web3 || !this.web3Ws) {
-      throw new ContractException(
-        `Web3Strategy was not initialized for ${this.chainId} chainId`,
-      )
-    }
-
-    this.contract = (new this.web3.eth.Contract(
+    super({
       abi,
+      chainId,
       address,
-    ) as unknown) as Peggy
+      web3Strategy,
+    })
   }
 
   sendToCosmos({

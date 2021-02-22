@@ -74,6 +74,10 @@ module.exports = {
       settings: {
         'import/resolver': {
           typescript: {},
+          node: {
+            extensions: ['.js', '.ts'],
+            paths: ['node_modules/', 'node_modules/@types'],
+          },
         },
       },
     },
