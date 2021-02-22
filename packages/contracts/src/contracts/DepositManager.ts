@@ -10,7 +10,7 @@ import {
   TransactionOptions,
 } from '@injectivelabs/ts-types'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
-import abi from './abi/depositManager'
+import abi from './abi/deposit_manager'
 import { ContractTxFunctionObj } from '../types'
 import BaseContract from '../base'
 

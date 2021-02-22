@@ -1,14 +1,20 @@
 import { ChainId } from '@injectivelabs/ts-types'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
 import { ChainIdContractAddresses } from './types'
-import { InjectiveContract } from './contracts/Injective'
+import { BaseCurrencyContract } from './contracts/BaseCurrency'
+import { InjectiveFuturesContract } from './contracts/InjectiveFutures'
 import { DepositManagerContract } from './contracts/DepositManager'
 import { PeggyContract } from './contracts/Peggy'
+import { PriceFeederContract } from './contracts/PriceFeeder'
 
 export class Contracts {
   public readonly peggy: PeggyContract
 
-  public readonly injective: InjectiveContract
+  public readonly injective: BaseCurrencyContract
+
+  public readonly injectiveFutures: InjectiveFuturesContract
+
+  public readonly priceFeeder: PriceFeederContract
 
   public readonly depositManager: DepositManagerContract
 
@@ -26,12 +32,22 @@ export class Contracts {
       web3Strategy,
       address: contractAddresses.peggy,
     })
-    this.injective = new InjectiveContract({
+    this.injective = new BaseCurrencyContract({
       chainId,
       web3Strategy,
       address: contractAddresses.injective,
     })
     this.depositManager = new DepositManagerContract({
+      chainId,
+      web3Strategy,
+      address: contractAddresses.depositManager,
+    })
+    this.injectiveFutures = new InjectiveFuturesContract({
+      chainId,
+      web3Strategy,
+      address: contractAddresses.depositManager,
+    })
+    this.priceFeeder = new PriceFeederContract({
       chainId,
       web3Strategy,
       address: contractAddresses.depositManager,

@@ -1,4 +1,4 @@
-import { BaseCurrency as Injective } from '@injectivelabs/web3-contract-typings/types/BaseCurrency'
+import { BaseCurrency } from '@injectivelabs/web3-contract-typings/types/BaseCurrency'
 import {
   BigNumber,
   BigNumberInWei,
@@ -15,11 +15,11 @@ import abi from './abi/injective'
 import { ContractFunctionObj, ContractTxFunctionObj } from '../types'
 import BaseContract from '../base'
 
-export class InjectiveContract extends BaseContract<
-  Injective,
-  keyof Injective['events']
+export class BaseCurrencyContract extends BaseContract<
+  BaseCurrency,
+  keyof BaseCurrency['events']
 > {
-  static contractName = 'Injective'
+  static contractName = 'BaseCurrency'
 
   constructor({
     chainId,
