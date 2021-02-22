@@ -72,7 +72,7 @@ export default class Metamask implements ConcreteWeb3Strategy {
     return this.ethereum.request({ method: 'eth_chainId' })
   }
 
-  async getTransactionReceipt(txHash: string) {
+  async getTransactionReceipt(txHash: string): Promise<string> {
     const interval = 1000
     const transactionReceiptRetry = async () => {
       const receipt = await this.ethereum.request({
@@ -91,11 +91,11 @@ export default class Metamask implements ConcreteWeb3Strategy {
     return transactionReceiptRetry()
   }
 
-  onChainChanged(callback: () => void) {
+  onChainChanged(callback: () => void): void {
     this.ethereum.on('chainChanged', callback)
   }
 
-  onAccountChanged(callback: (account: AccountAddress) => void) {
+  onAccountChanged(callback: (account: AccountAddress) => void): void {
     this.ethereum.on('accountsChanged', callback)
   }
 
@@ -105,7 +105,7 @@ export default class Metamask implements ConcreteWeb3Strategy {
   }: {
     rpcUrl: string
     pollingInterval: number
-  }) => {
+  }): provider => {
     const engine = new ProviderEngine({
       pollingInterval,
     })
@@ -124,7 +124,7 @@ export default class Metamask implements ConcreteWeb3Strategy {
   }: {
     wsRpcUrl: string
     pollingInterval: number
-  }) => {
+  }): provider => {
     const engine = new ProviderEngine({
       pollingInterval,
     })
@@ -135,11 +135,7 @@ export default class Metamask implements ConcreteWeb3Strategy {
     return engine as provider
   }
 
-  isWeb3Connected = (): boolean => {
-    return isMetamaskInstalled
-  }
+  isWeb3Connected = (): boolean => isMetamaskInstalled
 
-  isMetamask = (): boolean => {
-    return true
-  }
+  isMetamask = (): boolean => true
 }

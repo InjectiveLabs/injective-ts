@@ -68,7 +68,7 @@ export default class Web3Strategy {
     return web3ForChainId[this.chainId]
   }
 
-  public getWeb3ForChainId(chainId: ChainId) {
+  public getWeb3ForChainId(chainId: ChainId): Web3 {
     const { web3ForChainId } = this
 
     if (!web3ForChainId[chainId]) {
@@ -93,7 +93,7 @@ export default class Web3Strategy {
     return web3ForChainId[this.chainId]
   }
 
-  public getWeb3WsForChainId(chainId: ChainId) {
+  public getWeb3WsForChainId(chainId: ChainId): Web3 {
     const { web3ForChainId } = this
 
     if (!web3ForChainId[chainId]) {
