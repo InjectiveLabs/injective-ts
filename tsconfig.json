@@ -18,6 +18,15 @@
       "@injectivelabs/contracts": [
         "packages/contracts/src"
       ],
+      "@injectivelabs/graph-api": [
+        "packages/graph-api/src"
+      ],
+      "@injectivelabs/chain-api": [
+        "packages/chain-api/src"
+      ],
+      "@injectivelabs/exchange-api": [
+        "packages/exchange-api/src"
+      ],
       "@injectivelabs/*": [
         "packages/*/src"
       ]

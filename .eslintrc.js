@@ -62,10 +62,10 @@ module.exports = {
       extends: [
         ...common.extends,
         'prettier/@typescript-eslint',
-        'plugin:@typescript-eslint/recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
         'plugin:import/typescript',
+        'plugin:@typescript-eslint/recommended',
       ],
       rules: {
         ...common.rules,
@@ -74,10 +74,6 @@ module.exports = {
       settings: {
         'import/resolver': {
           typescript: {},
-          node: {
-            extensions: ['.js', '.ts'],
-            paths: ['node_modules/', 'node_modules/@types'],
-          },
         },
       },
     },
