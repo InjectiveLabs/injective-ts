@@ -33,7 +33,8 @@
     "format": "yarn lint --fix",
     "format:md": "yarn lint:md --fix",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
-    "commit": "git cz"
+    "commit": "git cz",
+    "postinstall": "husky install"
   },
   "husky": {
     "hooks": {

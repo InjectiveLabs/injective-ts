@@ -23,6 +23,7 @@
     "skipLibCheck": true,
     "types": [
       "node",
+      "jest"
     ]
   }
 }
