@@ -11,9 +11,9 @@ import {
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb'
 import { Query } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb_service'
 import { AccountAddress } from '@injectivelabs/ts-types'
-import BaseChainConsumer from '../BaseChainConsumer'
+import BaseConsumer from '../BaseConsumer'
 
-export class ChainStakingConsumer extends BaseChainConsumer {
+export class StakingConsumer extends BaseConsumer {
   async getValidators() {
     const queryValidators = new QueryValidatorsRequest()
 

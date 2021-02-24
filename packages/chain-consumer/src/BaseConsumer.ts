@@ -1,7 +1,7 @@
 import { grpc } from '@improbable-eng/grpc-web'
 import { GrpcException } from '@injectivelabs/exceptions'
 
-export default class BaseChainConsumer {
+export default class BaseConsumer {
   protected endpoint: string
 
   constructor(endpoint: string) {

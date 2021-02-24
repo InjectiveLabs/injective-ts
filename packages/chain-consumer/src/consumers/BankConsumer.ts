@@ -5,9 +5,9 @@ import {
   QueryBalanceRequest,
   QueryBalanceResponse,
 } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/query_pb'
-import BaseChainConsumer from '../BaseChainConsumer'
+import BaseConsumer from '../BaseConsumer'
 
-export class ChainBankConsumer extends BaseChainConsumer {
+export class BankConsumer extends BaseConsumer {
   async getBalance(accountAddress: AccountAddress) {
     const queryBalance = new QueryBalanceRequest()
     queryBalance.setAddress(accountAddress)

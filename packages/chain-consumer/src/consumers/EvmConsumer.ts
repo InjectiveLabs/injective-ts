@@ -5,9 +5,9 @@ import {
   QueryCosmosAccountRequest,
   QueryCosmosAccountResponse,
 } from '@injectivelabs/chain-api/injective/evm/v1beta1/query_pb'
-import BaseChainConsumer from '../BaseChainConsumer'
+import BaseConsumer from '../BaseConsumer'
 
-export class ChainEvmConsumer extends BaseChainConsumer {
+export class EvmConsumer extends BaseConsumer {
   async getCosmosDetails(accountAddress: AccountAddress) {
     const queryCosmosDetails = new QueryCosmosAccountRequest()
     queryCosmosDetails.setAddress(accountAddress)

@@ -1,3 +1,3 @@
-export * from './ChainBankConsumer'
-export * from './ChainEvmConsumer'
-export * from './ChainStakingConsumer'
+export * from './BankConsumer'
+export * from './EvmConsumer'
+export * from './StakingConsumer'

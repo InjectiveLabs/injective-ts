@@ -9,7 +9,7 @@ import {
   MsgUndelegate,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 
-export class ExchangeTransactions {
+export class CosmosComposer {
   static sendToEthereum({
     address,
     cosmosAddress,

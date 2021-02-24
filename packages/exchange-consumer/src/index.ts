@@ -1,2 +1,2 @@
-export * from './ExchangeConsumer'
-export * from './ExchangeTransactions'
+export * from './consumers'
+export * from './composers'

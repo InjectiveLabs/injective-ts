@@ -1,4 +1,3 @@
-import { grpc } from '@improbable-eng/grpc-web'
 import { GrpcException } from '@injectivelabs/exceptions'
 import {
   CreateDerivativeOrderRequest,
@@ -10,102 +9,11 @@ import {
   SignedTransaction,
   CreateTECTransactionResponse,
   ExchangeDomain,
-  PrepareTxRequest,
-  PrepareTxResponse,
-  BroadcastTxRequest,
-  BroadcastTxResponse,
-  CosmosTxFee,
-  CosmosPubKey,
 } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb'
 import { InjectiveExchangeRPC } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb_service'
-import { ChainId, AccountAddress } from '@injectivelabs/ts-types'
+import BaseConsumer from '../BaseConsumer'
 
-import { recoverTypedSignaturePubKey } from '@injectivelabs/utils'
-
-export class ExchangeConsumer {
-  private endpoint: string
-
-  constructor(endpoint: string) {
-    this.endpoint = endpoint
-  }
-
-  async prepareTxRequest({
-    address,
-    chainId,
-    message,
-  }: {
-    address: AccountAddress
-    chainId: ChainId
-    message: any
-  }) {
-    const gasLimit = 200000 // TODO
-    const cosmosTxFee = new CosmosTxFee()
-    cosmosTxFee.setGas(gasLimit)
-
-    const prepareTxRequest = new PrepareTxRequest()
-    prepareTxRequest.setChainId(chainId)
-    prepareTxRequest.setSignerAddress(address)
-    prepareTxRequest.setFee(cosmosTxFee)
-    prepareTxRequest.addMsgs(Buffer.from(JSON.stringify(message), 'utf8'))
-
-    try {
-      const response = await this.request<
-        PrepareTxRequest,
-        PrepareTxResponse,
-        typeof InjectiveExchangeRPC.PrepareTx
-      >(prepareTxRequest, InjectiveExchangeRPC.PrepareTx)
-
-      return response
-    } catch (e) {
-      throw new GrpcException(e.message)
-    }
-  }
-
-  async broadcastTxRequest({
-    pubKeyType,
-    signature,
-    typedData,
-    chainId,
-    message,
-  }: {
-    pubKeyType: string
-    signature: string
-    typedData: string
-    chainId: ChainId
-    message: Record<string, any>
-  }) {
-    const parsedTypedData = JSON.parse(typedData)
-    const publicKeyHex = recoverTypedSignaturePubKey(parsedTypedData, signature)
-    parsedTypedData.message.msgs = null
-    const txBytes = Buffer.from(JSON.stringify(parsedTypedData.message), 'utf8')
-    const broadcastTxRequest = new BroadcastTxRequest()
-    broadcastTxRequest.setMode('block')
-
-    const cosmosPubKey = new CosmosPubKey()
-    cosmosPubKey.setType(pubKeyType)
-    cosmosPubKey.setKey(publicKeyHex)
-
-    broadcastTxRequest.setChainId(chainId)
-    broadcastTxRequest.setPubKey(cosmosPubKey)
-    broadcastTxRequest.setSignature(signature)
-    broadcastTxRequest.setTx(txBytes)
-    broadcastTxRequest.setMsgsList([
-      Buffer.from(JSON.stringify(message), 'utf8'),
-    ])
-
-    try {
-      const response = await this.request<
-        BroadcastTxRequest,
-        BroadcastTxResponse,
-        typeof InjectiveExchangeRPC.BroadcastTx
-      >(broadcastTxRequest, InjectiveExchangeRPC.BroadcastTx)
-
-      return response.toObject()
-    } catch (e) {
-      throw new GrpcException(e.message)
-    }
-  }
-
+export class ExchangeConsumer extends BaseConsumer {
   async getOrderbookFromExchangeApi(marketId: string) {
     const queryOrderbookRequest = new DerivativeOrderbookRequest()
     queryOrderbookRequest.setMarketId(marketId)
@@ -199,27 +107,5 @@ export class ExchangeConsumer {
     } catch (e) {
       throw new GrpcException(e.message)
     }
-  }
-
-  private request<
-    TRequest extends grpc.ProtobufMessage,
-    TResponse extends grpc.ProtobufMessage,
-    S extends grpc.UnaryMethodDefinition<TRequest, TResponse>
-  >(request: TRequest, service: S): Promise<TResponse> {
-    return new Promise((resolve, reject) => {
-      grpc.unary(service, {
-        request,
-        host: this.endpoint,
-        onEnd: (res) => {
-          const { statusMessage, status, message } = res
-
-          if (status === grpc.Code.OK && message) {
-            resolve(message as TResponse)
-          }
-
-          reject(new GrpcException(statusMessage))
-        },
-      })
-    })
   }
 }
