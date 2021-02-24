@@ -25,21 +25,7 @@ const common = {
     'no-await-in-loop': 'off',
     'consistent-return': 'off',
     'no-shadow': 'off',
-    'no-useless-constructor': 'off',
-    '@typescript-eslint/no-useless-constructor': 'error',
-    '@typescript-eslint/member-delimiter-style': [
-      'off',
-      {
-        multiline: {
-          delimiter: 'comma',
-          requireLast: false,
-        },
-        singleline: {
-          delimiter: 'comma',
-          requireLast: false,
-        },
-      },
-    ],
+    'no-unused-vars': 'off',
   },
 }
 
@@ -61,11 +47,9 @@ module.exports = {
       plugins: [...common.plugins, '@typescript-eslint'],
       extends: [
         ...common.extends,
-        'prettier/@typescript-eslint',
         'plugin:import/errors',
         'plugin:import/warnings',
         'plugin:import/typescript',
-        'plugin:@typescript-eslint/recommended',
       ],
       rules: {
         ...common.rules,

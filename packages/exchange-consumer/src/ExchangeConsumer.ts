@@ -10,10 +10,6 @@ import {
   SignedTransaction,
   CreateTECTransactionResponse,
   ExchangeDomain,
-} from '@injectivelabs/exchange-api/injective_exchange_rpc_pb'
-import { InjectiveExchangeRPC } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb_service'
-import { ChainId, AccountAddress } from '@injectivelabs/ts-types'
-import {
   PrepareTxRequest,
   PrepareTxResponse,
   BroadcastTxRequest,
@@ -21,6 +17,9 @@ import {
   CosmosTxFee,
   CosmosPubKey,
 } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb'
+import { InjectiveExchangeRPC } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb_service'
+import { ChainId, AccountAddress } from '@injectivelabs/ts-types'
+
 import { recoverTypedSignaturePubKey } from '@injectivelabs/utils'
 
 export class ExchangeConsumer {
@@ -127,7 +126,7 @@ export class ExchangeConsumer {
     }
   }
 
-  async createOrder(order: any /* TODO: SignedDerivativeOrder*/) {
+  async createOrder(order: any /* TODO: SignedDerivativeOrder */) {
     const createDerivativeOrderRequest = new CreateDerivativeOrderRequest()
 
     const derivativeOrder = new DerivativeOrderForRequest()
@@ -168,7 +167,7 @@ export class ExchangeConsumer {
   }
 
   async createTECTransaction(
-    transaction: any /* TODO: SignedZeroExTransaction*/,
+    transaction: any /* TODO: SignedZeroExTransaction */,
   ) {
     const createTECTransactionRequest = new CreateTECTransactionRequest()
     const tecTransaction = new SignedTransaction()
