@@ -34,22 +34,16 @@
     "format:md": "yarn lint:md --fix",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
     "commit": "git cz",
-    "postinstall": "husky install"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ],
     "*.md": [
-      "yarn format:md",
-      "git add"
+      "yarn format:md"
     ]
   },
   "devDependencies": {

@@ -194,4 +194,4 @@ typings/
 .history
 
 # End of https://www.gitignore.io/api/node,intellij+all,visualstudiocode
-.husky
+.yarn
