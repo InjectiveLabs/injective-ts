@@ -1,15 +1,14 @@
 import Web3 from 'web3'
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import Metamask from './strategies/Metamask'
-// import Testnet from './strategies/Testnet'
+import WalletStrategy from './strategies/Wallet'
 import {
   Wallet,
   ConcreteWeb3Strategy,
   onAccountChangeCallback,
   onChainIdChangeCallback,
+  ConcreteStrategyOptions,
 } from './types'
-
-const DEFAULT_POLLING_INTERVAL_MS = 500
 
 export default class Web3Strategy {
   private strategy: ConcreteWeb3Strategy
@@ -18,94 +17,45 @@ export default class Web3Strategy {
 
   private wallet: Wallet
 
-  private rpcUrls: Record<ChainId, string>
-
-  private wsRpcUrls: Record<ChainId, string>
-
-  private pollingInterval: number
-
-  private web3ForChainId: Record<ChainId, Web3> = {} as Record<ChainId, Web3>
-
   constructor({
     wallet,
     chainId,
-    rpcUrls,
-    wsRpcUrls,
-    pollingInterval = DEFAULT_POLLING_INTERVAL_MS,
+    options,
   }: {
     wallet: Wallet
     chainId: ChainId
-    rpcUrls: Record<ChainId, string>
-    wsRpcUrls: Record<ChainId, string>
-    pollingInterval: number
+    options: ConcreteStrategyOptions
   }) {
     this.chainId = chainId
     this.wallet = wallet
-    this.rpcUrls = rpcUrls
-    this.wsRpcUrls = wsRpcUrls
-    this.pollingInterval = pollingInterval
 
     switch (this.wallet) {
       case Wallet.Testnet:
-        this.strategy = new Metamask()
+        this.strategy = new WalletStrategy({ chainId, options })
         break
       case Wallet.Metamask:
-        this.strategy = new Metamask()
+        this.strategy = new Metamask({ chainId, options })
         break
       default:
-        this.strategy = new Metamask()
+        this.strategy = new Metamask({ chainId, options })
         break
     }
   }
 
   public getWeb3(): Web3 {
-    const { web3ForChainId } = this
-
-    if (!web3ForChainId[this.chainId]) {
-      return this.getWeb3ForChainId(this.chainId)
-    }
-
-    return web3ForChainId[this.chainId]
+    return this.strategy.getWeb3ForChainId(this.chainId)
   }
 
   public getWeb3ForChainId(chainId: ChainId): Web3 {
-    const { web3ForChainId } = this
-
-    if (!web3ForChainId[chainId]) {
-      web3ForChainId[chainId] = new Web3(
-        this.strategy.getWeb3ProviderEngineForRpc({
-          rpcUrl: this.rpcUrls[chainId],
-          pollingInterval: this.pollingInterval,
-        }),
-      )
-    }
-
-    return web3ForChainId[chainId]
+    return this.strategy.getWeb3ForChainId(chainId)
   }
 
   public getWeb3Ws(): Web3 {
-    const { web3ForChainId } = this
-
-    if (!web3ForChainId[this.chainId]) {
-      return this.getWeb3WsForChainId(this.chainId)
-    }
-
-    return web3ForChainId[this.chainId]
+    return this.strategy.getWeb3WsForChainId(this.chainId)
   }
 
   public getWeb3WsForChainId(chainId: ChainId): Web3 {
-    const { web3ForChainId } = this
-
-    if (!web3ForChainId[chainId]) {
-      web3ForChainId[chainId] = new Web3(
-        this.strategy.getWeb3WsProviderEngineForRpc({
-          wsRpcUrl: this.wsRpcUrls[chainId],
-          pollingInterval: this.pollingInterval,
-        }),
-      )
-    }
-
-    return web3ForChainId[chainId]
+    return this.strategy.getWeb3WsForChainId(chainId)
   }
 
   public getStrategy(): ConcreteWeb3Strategy {

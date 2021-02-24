@@ -1,5 +1,5 @@
 import { sleep } from '@injectivelabs/utils'
-import { AccountAddress } from '@injectivelabs/ts-types'
+import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import ProviderEngine from 'web3-provider-engine'
 import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tracker'
@@ -8,10 +8,12 @@ import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
 import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
 import { provider } from 'web3-core'
 import {
+  ConcreteStrategyOptions,
   ConcreteWeb3Strategy,
   Eip1993ProviderWithMetamask,
   WindowWithEip1193Provider,
-} from '../types/index'
+} from '../types'
+import BaseConcreteStrategy from '../BaseConcreteStrategy'
 
 const Window = (window as unknown) as WindowWithEip1193Provider
 
@@ -19,10 +21,20 @@ const isMetamaskInstalled = Boolean(
   Window && Window.ethereum && Window.ethereum.isMetaMask,
 )
 
-export default class Metamask implements ConcreteWeb3Strategy {
+export default class Metamask
+  extends BaseConcreteStrategy
+  implements ConcreteWeb3Strategy {
   private ethereum: Eip1993ProviderWithMetamask
 
-  constructor() {
+  constructor({
+    chainId,
+    options,
+  }: {
+    chainId: ChainId
+    options: ConcreteStrategyOptions
+  }) {
+    super({ chainId, options })
+
     if (!isMetamaskInstalled) {
       throw new Web3Exception('Metamask is not installed.')
     }

@@ -26,6 +26,8 @@ const common = {
     'consistent-return': 'off',
     'no-shadow': 'off',
     'no-unused-vars': 'off',
+    'no-useless-constructor': 'off',
+    '@typescript-eslint/no-useless-constructor': 'error',
   },
 }
 
