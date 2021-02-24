@@ -2,5 +2,8 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
-  "editor.renderFinalNewline": true
+  "editor.renderFinalNewline": true,
+  "cSpell.words": [
+    "chronos"
+  ]
 }

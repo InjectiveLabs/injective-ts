@@ -3,7 +3,7 @@ import { NonPayableTx } from '@injectivelabs/web3-contract-typings/types/types'
 import { fromRpcSig, ecrecover, toBuffer, Address } from 'ethereumjs-util'
 import { publicKeyConvert } from 'secp256k1'
 import { TypedDataUtils } from 'eth-sig-util'
-import bech32 from 'bech32'
+import { bech32 } from 'bech32'
 
 export const getTransactionOptionsAsNonPayableTx = (
   transactionOptions: TransactionOptions,

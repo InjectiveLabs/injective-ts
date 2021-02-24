@@ -1,5 +1,5 @@
 {
-  "name": "@injectivelabs/ts",
+  "name": "@injectivelabs/injective-ts",
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
@@ -33,10 +33,7 @@
     "format": "yarn lint --fix",
     "format:md": "yarn lint:md --fix",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
-    "commit": "git cz",
-    "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "commit": "git cz"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
