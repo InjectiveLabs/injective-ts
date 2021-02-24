@@ -12,7 +12,7 @@ import {
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
 import abi from './abi/peggy'
 import { ContractTxFunctionObj } from '../types'
-import BaseContract from '../base'
+import BaseContract from '../BaseContract'
 
 export class PeggyContract extends BaseContract<Peggy, keyof Peggy['events']> {
   static contractName = 'Peggy'

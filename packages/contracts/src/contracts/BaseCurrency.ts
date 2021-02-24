@@ -13,7 +13,7 @@ import {
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
 import abi from './abi/injective'
 import { ContractFunctionObj, ContractTxFunctionObj } from '../types'
-import BaseContract from '../base'
+import BaseContract from '../BaseContract'
 
 export class BaseCurrencyContract extends BaseContract<
   BaseCurrency,

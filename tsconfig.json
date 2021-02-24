@@ -19,13 +19,13 @@
         "packages/contracts/src"
       ],
       "@injectivelabs/graph-api": [
-        "packages/graph-api/src"
+        "packages/graph-consumer/src"
       ],
       "@injectivelabs/chain-api": [
-        "packages/chain-api/src"
+        "packages/chainapi/src"
       ],
       "@injectivelabs/exchange-api": [
-        "packages/exchange-api/src"
+        "packages/exchange-consumer/src"
       ],
       "@injectivelabs/*": [
         "packages/*/src"

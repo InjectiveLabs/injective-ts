@@ -1,0 +1,41 @@
+{
+  "name": "@injectivelabs/exchange-consumer",
+  "description": "Interacting with our Exchange API made easy. Can be reused throughout Injective's projects.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~exchange-consumer": "dist"
+  },
+  "scripts": {
+    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "test": "jest",
+    "test:unit": "jest test/unit",
+    "test:integration": "jest test/unit",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@improbable-eng/grpc-web": "^0.14.0",
+    "@injectivelabs/chain-api": "^1.2.2",
+    "@injectivelabs/exceptions": "^0.0.13",
+    "@injectivelabs/exchange-api": "^1.0.13",
+    "@injectivelabs/ts-types": "^0.0.13",
+    "@injectivelabs/utils": "^0.0.1",
+    "eth-sig-util": "^3.0.1",
+    "link-module-alias": "^1.2.0",
+    "shx": "^0.3.2",
+    "snakecase-keys": "^3.2.1"
+  }
+}

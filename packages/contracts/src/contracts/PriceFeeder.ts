@@ -2,7 +2,7 @@ import { PriceFeeder } from '@injectivelabs/web3-contract-typings/types/PriceFee
 import { ChainId } from '@injectivelabs/ts-types'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
 import abi from './abi/injective_futures'
-import BaseContract from '../base'
+import BaseContract from '../BaseContract'
 
 export class PriceFeederContract extends BaseContract<
   PriceFeeder,

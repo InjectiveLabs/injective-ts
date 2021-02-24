@@ -12,7 +12,7 @@ import {
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
 import abi from './abi/deposit_manager'
 import { ContractTxFunctionObj } from '../types'
-import BaseContract from '../base'
+import BaseContract from '../BaseContract'
 
 export class DepositManagerContract extends BaseContract<
   DepositManager,
