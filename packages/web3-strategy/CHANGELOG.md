@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.18...@injectivelabs/web3-strategy@0.0.19) (2021-02-25)
+
+### Bug Fixes
+
+* window type checking for node env ([94631af](https://github.com/InjectiveLabs/injective-ts/commit/94631af79df46fad96560b4ff7dbde59666d7650))
+
 ## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.17...@injectivelabs/web3-strategy@0.0.18) (2021-02-25)
 
 ### Bug Fixes

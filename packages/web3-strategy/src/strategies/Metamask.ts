@@ -15,9 +15,10 @@ import {
 } from '../types'
 import BaseConcreteStrategy from '../BaseConcreteStrategy'
 
-const Window = window
-  ? ((window as unknown) as WindowWithEip1193Provider)
-  : null
+const Window =
+  typeof window !== 'undefined'
+    ? ((window as unknown) as WindowWithEip1193Provider)
+    : null
 
 const isMetamaskInstalled = Boolean(
   Window && Window.ethereum && Window.ethereum.isMetaMask,

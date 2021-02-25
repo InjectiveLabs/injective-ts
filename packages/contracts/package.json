@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/contracts",
   "description": "Contracts wrapper that can be reused throughout Injective's projects.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
     "@injectivelabs/ts-types": "^0.0.13",
     "@injectivelabs/utils": "^0.0.16",
     "@injectivelabs/web3-contract-typings": "^0.1.12",
-    "@injectivelabs/web3-strategy": "^0.0.18",
+    "@injectivelabs/web3-strategy": "^0.0.19",
     "@types/jest": "^24.0.23",
     "@types/node": "^12.7.5",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
