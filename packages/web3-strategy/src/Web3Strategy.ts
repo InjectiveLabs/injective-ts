@@ -78,7 +78,7 @@ export default class Web3Strategy {
     return this.strategy.getNetworkId()
   }
 
-  public getTransactionReceipt(txHash: string): void {
+  public async getTransactionReceipt(txHash: string): Promise<void> {
     return this.strategy.getTransactionReceipt(txHash)
   }
 

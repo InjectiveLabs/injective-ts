@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.17...@injectivelabs/web3-strategy@0.0.18) (2021-02-25)
+
+### Bug Fixes
+
+* method signature for awaiting successfull transaction receipt ([3d443a0](https://github.com/InjectiveLabs/injective-ts/commit/3d443a0e774afd07dcd08613d94d5761878164bb))
+
 ## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.16...@injectivelabs/web3-strategy@0.0.17) (2021-02-25)
 
 ### Bug Fixes
