@@ -8,10 +8,12 @@ import { SubscriptionManager } from './SubscriptionManager'
 import { EventFilters, InjectiveContracts } from './types'
 
 export default class BaseContract<T, ContractEvents extends string> {
-  private readonly subscriptionManager: SubscriptionManager<
+  private subscriptionManager?: SubscriptionManager<
     InjectiveContracts,
     ContractEvents
   >
+
+  private web3Ws?: Web3
 
   public readonly abi: AbiItem[]
 
@@ -23,7 +25,7 @@ export default class BaseContract<T, ContractEvents extends string> {
 
   private readonly web3: Web3
 
-  private readonly web3Ws: Web3
+  private readonly web3Strategy: Web3Strategy
 
   constructor({
     abi,
@@ -39,15 +41,10 @@ export default class BaseContract<T, ContractEvents extends string> {
     this.abi = abi
     this.chainId = chainId
     this.address = address
+    this.web3Strategy = web3Strategy
     this.web3 = web3Strategy.getWeb3ForChainId(this.chainId)
-    this.web3Ws = web3Strategy.getWeb3WsForChainId(this.chainId)
-    this.subscriptionManager = new SubscriptionManager({
-      address: this.address,
-      abi: this.abi,
-      web3: this.web3Ws,
-    })
 
-    if (!this.web3 || !this.web3Ws) {
+    if (!this.web3) {
       throw new ContractException(
         `Web3Strategy was not initialized for ${this.chainId} chainId`,
       )
@@ -61,7 +58,7 @@ export default class BaseContract<T, ContractEvents extends string> {
     filter: EventFilters,
     onEvent: (result: ContractEventLog<V>) => void,
   ): void {
-    this.subscriptionManager.subscribe(event, filter, onEvent)
+    this.getSubscriptionManager().subscribe(event, filter, onEvent)
   }
 
   unsubscribe(subscriptionId: string): void {
@@ -70,5 +67,30 @@ export default class BaseContract<T, ContractEvents extends string> {
 
   unsubscribeAll(): void {
     this.unsubscribeAll()
+  }
+
+  private getSubscriptionManager(): SubscriptionManager<
+    InjectiveContracts,
+    ContractEvents
+  > {
+    if (this.subscriptionManager) {
+      return this.subscriptionManager
+    }
+
+    this.web3Ws = this.web3Strategy.getWeb3WsForChainId(this.chainId)
+
+    if (!this.web3Ws) {
+      throw new ContractException(
+        `Subscription Manager cannot be initialized, Web3Ws doesn't exist for ${this.chainId} chainId`,
+      )
+    }
+
+    this.subscriptionManager = new SubscriptionManager({
+      address: this.address,
+      abi: this.abi,
+      web3: this.web3Ws,
+    })
+
+    return this.subscriptionManager
   }
 }

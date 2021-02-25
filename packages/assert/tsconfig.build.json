@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "tsBuildInfoFile": "../../.build-cache/assert.tsbuildinfo"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../ts-types/tsconfig.json"
+    },
+    {
+      "path": "../exceptions/tsconfig.json"
+    },
+    {
+      "path": "../utils/tsconfig.json"
+    }
+  ],
+}

@@ -10,7 +10,7 @@ import {
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 
 export class CosmosComposer {
-  static sendToEthereum({
+  static withdraw({
     address,
     cosmosAddress,
     amount,

@@ -12,6 +12,9 @@
       "@injectivelabs/utils": [
         "packages/utils/src"
       ],
+      "@injectivelabs/assert": [
+        "packages/assert/src"
+      ],
       "@injectivelabs/web3-strategy": [
         "packages/web3-strategy/src"
       ],

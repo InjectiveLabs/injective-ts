@@ -1,4 +1,4 @@
-import { sleep } from '@injectivelabs/utils'
+import { isServerSide, sleep } from '@injectivelabs/utils'
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import ProviderEngine from 'web3-provider-engine'
@@ -15,13 +15,12 @@ import {
 } from '../types'
 import BaseConcreteStrategy from '../BaseConcreteStrategy'
 
-const Window =
-  typeof window !== 'undefined'
-    ? ((window as unknown) as WindowWithEip1193Provider)
-    : null
+const $window = ((isServerSide()
+  ? {}
+  : window) as unknown) as WindowWithEip1193Provider
 
 const isMetamaskInstalled = Boolean(
-  Window && Window.ethereum && Window.ethereum.isMetaMask,
+  $window && $window.ethereum && $window.ethereum.isMetaMask,
 )
 
 export default class Metamask
@@ -38,11 +37,11 @@ export default class Metamask
   }) {
     super({ chainId, options })
 
-    if (!Window || !isMetamaskInstalled) {
+    if (!$window || !isMetamaskInstalled) {
       throw new Web3Exception('Metamask is not installed.')
     }
 
-    this.ethereum = Window.ethereum
+    this.ethereum = $window.ethereum
   }
 
   async getAddresses(): Promise<string[]> {

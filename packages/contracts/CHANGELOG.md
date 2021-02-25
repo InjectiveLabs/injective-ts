@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.11...@injectivelabs/contracts@0.0.12) (2021-02-25)
+
+### Features
+
+* subscription manager in the contracts initialized only on demand ([e26d858](https://github.com/InjectiveLabs/injective-ts/commit/e26d8580e162bda8185dc3379c8277a0f365d97a))
+
 ## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.10...@injectivelabs/contracts@0.0.11) (2021-02-25)
 
 **Note:** Version bump only for package @injectivelabs/contracts
