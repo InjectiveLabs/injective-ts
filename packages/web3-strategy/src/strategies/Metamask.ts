@@ -15,7 +15,9 @@ import {
 } from '../types'
 import BaseConcreteStrategy from '../BaseConcreteStrategy'
 
-const Window = (window as unknown) as WindowWithEip1193Provider
+const Window = window
+  ? ((window as unknown) as WindowWithEip1193Provider)
+  : null
 
 const isMetamaskInstalled = Boolean(
   Window && Window.ethereum && Window.ethereum.isMetaMask,
@@ -35,7 +37,7 @@ export default class Metamask
   }) {
     super({ chainId, options })
 
-    if (!isMetamaskInstalled) {
+    if (!Window || !isMetamaskInstalled) {
       throw new Web3Exception('Metamask is not installed.')
     }
 

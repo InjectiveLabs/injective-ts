@@ -93,7 +93,7 @@ export default class Web3Strategy {
     return this.strategy.sendTransaction(tx, address)
   }
 
-  public async signTypedData(
+  public async signTypedDataV4(
     data: string,
     address: AccountAddress,
   ): Promise<string> {
