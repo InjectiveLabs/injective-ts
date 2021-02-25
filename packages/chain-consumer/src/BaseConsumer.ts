@@ -1,5 +1,11 @@
 import { grpc } from '@improbable-eng/grpc-web'
 import { GrpcException } from '@injectivelabs/exceptions'
+import { isServerSide } from '@injectivelabs/utils'
+import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+
+if (isServerSide()) {
+  grpc.setDefaultTransport(NodeHttpTransport())
+}
 
 export default class BaseConsumer {
   protected endpoint: string

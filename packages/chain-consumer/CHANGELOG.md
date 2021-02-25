@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.16...@injectivelabs/chain-consumer@0.0.17) (2021-02-25)
+
+### Features
+
+* added a node transport for grpc consumers ([a6c2a7d](https://github.com/InjectiveLabs/injective-ts/commit/a6c2a7d32b7046dd2f951f89dcb0b56ec091f152))
+
 ## 0.0.16 (2021-02-24)
 
 ### Bug Fixes
