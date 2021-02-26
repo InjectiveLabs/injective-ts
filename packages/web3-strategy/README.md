@@ -30,10 +30,10 @@ const wallet = Wallet.Metamask
 const privateKey = process.env.PRIVATE_KEY // Used only for Wallet based Subprovider (not needed for Metamask)
 
 const getRpcUrlsForChainIds = () => {
-    return {
-      888: "http://localhost:1317",
-    };
+  return {
+    888: "http://localhost:1317",
   };
+};
 
 const getWsRpcUrlsForChainIds = () => {
   return {
@@ -53,11 +53,13 @@ export const web3Strategy = new Web3Strategy({
   options
   wallet,
 })
+```
 
+```ts
 // file: sign.service.ts
 import { web3Strategy } from 'app/web3';
 
-const transaction = /* ... */
+const transaction = /* ... */;
 const txHash = await web3Strategy.sendTransaction(transaction, address)
 ```
 
