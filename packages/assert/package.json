@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/assert",
   "description": "Asserting and validating schemas. Can be reused throughout Injective's projects.",
-  "version": "0.0.13",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
