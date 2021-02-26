@@ -69,6 +69,8 @@ const txHash = await web3Strategy.sendTransaction(transaction, address);
 
 ## 📜 Contribution
 
+**Contribution guides and practiced will be available once there is a stable foundation of the whole package set within the `injective-ts` repo.**
+
 ---
 
 ## ⛑ Support
