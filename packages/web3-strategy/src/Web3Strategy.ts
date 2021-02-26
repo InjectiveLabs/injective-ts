@@ -1,5 +1,6 @@
 import Web3 from 'web3'
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import { assert } from '@injectivelabs/assert'
 import Metamask from './strategies/Metamask'
 import WalletStrategy from './strategies/Wallet'
 import {
@@ -26,6 +27,9 @@ export default class Web3Strategy {
     chainId: ChainId
     options: ConcreteStrategyOptions
   }) {
+    assert.inArray(chainId, Object.values(ChainId))
+    assert.inArray(wallet, Object.values(Wallet))
+
     this.chainId = chainId
     this.wallet = wallet
 

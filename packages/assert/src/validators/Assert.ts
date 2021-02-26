@@ -13,6 +13,13 @@ export default class Assert {
     )
   }
 
+  public inArray(needle: any, haystack: any[]): void {
+    this.assert(
+      haystack.includes(needle),
+      `${needle} cannot be found in ${haystack}`,
+    )
+  }
+
   conformToSchema(
     variableName: string,
     value: any,
