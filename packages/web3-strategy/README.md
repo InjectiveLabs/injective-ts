@@ -4,6 +4,8 @@
 [![npm-version](https://img.shields.io/npm/v/@injectivelabs/web3-strategy.svg)](https://www.npmjs.com/package/@injectivelabs/web3-strategy)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
+_A convenient way to use Web3 with a transaction signing provider._
+
 ---
 
 ## 📚 Installation
@@ -60,7 +62,7 @@ export const web3Strategy = new Web3Strategy({
 import { web3Strategy } from 'app/web3';
 
 const transaction = /* ... */;
-const txHash = await web3Strategy.sendTransaction(transaction, address)
+const txHash = await web3Strategy.sendTransaction(transaction, address);
 ```
 
 ---
