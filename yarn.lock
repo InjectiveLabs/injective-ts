@@ -914,15 +914,6 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
-"@injectivelabs/utils@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/utils/-/utils-0.0.1.tgz#77ae0f86596b4a3fc2f4385d6bb1177f4bd5a11f"
-  integrity sha512-Or6fzQnDmjtHZly6sX9mN/e/S/A0h62AwsJfXG8hfEOb6qGT5KTpPLLFsN3WtQfRqGEiYxEvEiBSC9V5XxX8fQ==
-  dependencies:
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-    store2 "^2.12.0"
-
 "@injectivelabs/web3-contract-typings@^0.1.12":
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/@injectivelabs/web3-contract-typings/-/web3-contract-typings-0.1.12.tgz#57b06724bffca9380913e3a590d17bdd38a986d1"

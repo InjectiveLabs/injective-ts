@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.2 (2021-03-01)
+
+
+### Bug Fixes
+
+* fixed compiling issue with the assert package ([c27ec59](https://github.com/InjectiveLabs/injective-ts/commit/c27ec59f862a7b6de61593309f446a148b2f8c52))
+
+
+### Features
+
+* added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
+
+
+
+
+
 ## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.17...@injectivelabs/utils@0.0.18) (2021-02-25)
 
 ### Bug Fixes

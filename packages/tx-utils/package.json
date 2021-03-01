@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/tx-utils",
   "description": "List of transaction utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,8 +27,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^0.0.16",
-    "@injectivelabs/ts-types": "^0.0.13",
+    "@injectivelabs/exceptions": "^0.0.17",
+    "@injectivelabs/ts-types": "^0.0.14",
     "@injectivelabs/web3-contract-typings": "^0.1.12",
     "@types/ethereumjs-util": "^6.1.0",
     "axios": "^0.21.1",

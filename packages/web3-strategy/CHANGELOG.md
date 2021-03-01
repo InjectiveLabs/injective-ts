@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.11...@injectivelabs/web3-strategy@0.0.20) (2021-03-01)
+
+
+### Bug Fixes
+
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* assert initial version reset ([40e48e7](https://github.com/InjectiveLabs/injective-ts/commit/40e48e7719fa1f4ebd036b4910b5769efc3a3b48))
+* fixed compiling issue with the assert package ([c27ec59](https://github.com/InjectiveLabs/injective-ts/commit/c27ec59f862a7b6de61593309f446a148b2f8c52))
+* fixed window undefined in node env, renmaed a method name to fit its purpose better ([32498e9](https://github.com/InjectiveLabs/injective-ts/commit/32498e925b35ab8b505c31403ddedb4f0d921bde))
+* method signature for awaiting successfull transaction receipt ([26aa8f4](https://github.com/InjectiveLabs/injective-ts/commit/26aa8f467095830cf971e10ed70fb65ef62e8030))
+* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+* second web3-strategy docs fix ([b7f06e0](https://github.com/InjectiveLabs/injective-ts/commit/b7f06e083077ba73be014f0896f1d2dbe4262d0b))
+* third web3-strategy docs fix ([aae76ee](https://github.com/InjectiveLabs/injective-ts/commit/aae76ee2fd64c13fababbb2b38f45dea5efbb7ca))
+* types fixed, improvements for web3-strategy ([d0074fd](https://github.com/InjectiveLabs/injective-ts/commit/d0074fdee137aa3ba203d9aab56c54f9b1955940))
+* web3-strategy docs fix ([442248d](https://github.com/InjectiveLabs/injective-ts/commit/442248dfaf61f4a645b06ab99163b86e35ba97ba))
+* window type checking for node env ([b52faa5](https://github.com/InjectiveLabs/injective-ts/commit/b52faa56ed555475c4695c219a81a185ad79cf67))
+
+
+### Features
+
+* added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
+* added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+* added docs for web3-strategy, removed redundant contract instances ([48cc385](https://github.com/InjectiveLabs/injective-ts/commit/48cc38543a20d4177af8369d8faf767f81b89e77))
+* added private key subprovider and refactored web3 strategy ([40b1488](https://github.com/InjectiveLabs/injective-ts/commit/40b14888a58ab3fa166a304fd7fda9de770118ae))
+* contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+* contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+* initial setup for the assert package ([415e9b8](https://github.com/InjectiveLabs/injective-ts/commit/415e9b886e9054bb9bbf2a68f566e243d52a919a))
+
+
+
+
+
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.18...@injectivelabs/web3-strategy@0.0.19) (2021-02-25)
 
 ### Bug Fixes

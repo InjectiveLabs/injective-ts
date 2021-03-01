@@ -1,12 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist",
+    "rootDir": "src",
+    "outDir": "dist",
     "tsBuildInfoFile": "../../.build-cache/web3-strategy.tsbuildinfo"
   },
   "include": [
-    "src/**/*"
+    "./src/**/*"
   ],
   "references": [
     {

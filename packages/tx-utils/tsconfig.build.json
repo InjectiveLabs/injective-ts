@@ -1,12 +1,12 @@
 {
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "tsBuildInfoFile": "../../.build-cache/utils.tsbuildinfo"
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "../../.build-cache/tx-utils.tsbuildinfo"
   },
   "include": [
-    "src/**/*"
+    "src/**/*.ts"
   ],
   "references": [
     {

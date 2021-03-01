@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.0.11...@injectivelabs/ts-types@0.0.14) (2021-03-01)
+
+
+### Bug Fixes
+
+* fixed compiling issue with the assert package ([c27ec59](https://github.com/InjectiveLabs/injective-ts/commit/c27ec59f862a7b6de61593309f446a148b2f8c52))
+
+
+### Features
+
+* added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+* contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+* contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+
+
+
+
+
 ## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.0.11...@injectivelabs/ts-types@0.0.13) (2021-02-18)
 
 
