@@ -9,7 +9,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb'
 import { InjectiveExchangeRPC } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb_service'
 import { ChainId, AccountAddress } from '@injectivelabs/ts-types'
-import { recoverTypedSignaturePubKey } from '@injectivelabs/utils'
+import { recoverTypedSignaturePubKey } from '@injectivelabs/tx-utils'
 import BaseConsumer from '../BaseConsumer'
 
 export class TransactionConsumer extends BaseConsumer {

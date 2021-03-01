@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "tsBuildInfoFile": "../../.build-cache/contracts.tsbuildinfo"
+    "tsBuildInfoFile": "../../.build-cache/utils.tsbuildinfo"
   },
   "include": [
     "src/**/*"
@@ -14,15 +14,6 @@
     },
     {
       "path": "../exceptions/tsconfig.build.json"
-    },
-    {
-      "path": "../utils/tsconfig.build.json"
-    },
-    {
-      "path": "../tx-utils/tsconfig.build.json"
-    },
-    {
-      "path": "../web3-strategy/tsconfig.build.json"
-    },
+    }
   ]
 }

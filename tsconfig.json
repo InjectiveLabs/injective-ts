@@ -12,6 +12,9 @@
       "@injectivelabs/utils": [
         "packages/utils/src"
       ],
+      "@injectivelabs/tx-utils": [
+        "packages/tx-utils/src"
+      ],
       "@injectivelabs/assert": [
         "packages/assert/src"
       ],

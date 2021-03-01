@@ -5,11 +5,9 @@ import {
   ChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
-import {
-  BigNumberInWei,
-  getTransactionOptionsAsNonPayableTx,
-} from '@injectivelabs/utils'
+import { BigNumberInWei } from '@injectivelabs/utils'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
+import { getTransactionOptionsAsNonPayableTx } from '@injectivelabs/tx-utils'
 import abi from './abi/peggy'
 import { ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'

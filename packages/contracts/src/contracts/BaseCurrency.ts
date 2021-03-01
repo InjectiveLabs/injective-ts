@@ -1,9 +1,5 @@
 import { BaseCurrency } from '@injectivelabs/web3-contract-typings/types/BaseCurrency'
-import {
-  BigNumber,
-  BigNumberInWei,
-  getTransactionOptionsAsNonPayableTx,
-} from '@injectivelabs/utils'
+import { BigNumber, BigNumberInWei } from '@injectivelabs/utils'
 import { ContractException } from '@injectivelabs/exceptions'
 import {
   AccountAddress,
@@ -11,6 +7,7 @@ import {
   TransactionOptions,
 } from '@injectivelabs/ts-types'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
+import { getTransactionOptionsAsNonPayableTx } from '@injectivelabs/tx-utils'
 import abi from './abi/injective'
 import { ContractFunctionObj, ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'

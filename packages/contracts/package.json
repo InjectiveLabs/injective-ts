@@ -31,6 +31,7 @@
     "@commitlint/config-conventional": "^8.1.0",
     "@injectivelabs/exceptions": "^0.0.16",
     "@injectivelabs/ts-types": "^0.0.13",
+    "@injectivelabs/tx-utils": "^0.0.1",
     "@injectivelabs/utils": "^0.0.18",
     "@injectivelabs/web3-contract-typings": "^0.1.12",
     "@injectivelabs/web3-strategy": "^0.0.19",

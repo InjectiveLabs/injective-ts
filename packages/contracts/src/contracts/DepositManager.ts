@@ -1,15 +1,13 @@
 import { DepositManager } from '@injectivelabs/web3-contract-typings/types/DepositManager'
 import { ContractException } from '@injectivelabs/exceptions'
-import {
-  BigNumberInWei,
-  getTransactionOptionsAsNonPayableTx,
-} from '@injectivelabs/utils'
+import { BigNumberInWei } from '@injectivelabs/utils'
 import {
   AccountAddress,
   ChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
+import { getTransactionOptionsAsNonPayableTx } from '@injectivelabs/tx-utils'
 import abi from './abi/deposit_manager'
 import { ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'

@@ -1,7 +1,7 @@
 {
-  "name": "@injectivelabs/exchange-consumer",
-  "description": "Interacting with our Exchange API made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.6",
+  "name": "@injectivelabs/tx-utils",
+  "description": "List of transaction utils and helper functions that can be reused throughout Injective's projects.",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,12 +9,12 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~exchange-consumer": "dist"
+    "~tx-utils": "dist"
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
     "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
     "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
@@ -27,18 +27,16 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@improbable-eng/grpc-web": "^0.14.0",
-    "@improbable-eng/grpc-web-node-http-transport": "^0.14.0",
-    "@injectivelabs/chain-api": "^1.2.2",
     "@injectivelabs/exceptions": "^0.0.16",
-    "@injectivelabs/exchange-api": "^1.0.13",
     "@injectivelabs/ts-types": "^0.0.13",
-    "@injectivelabs/tx-utils": "^0.0.1",
-    "@injectivelabs/utils": "^0.0.18",
+    "@injectivelabs/web3-contract-typings": "^0.1.12",
+    "@types/ethereumjs-util": "^6.1.0",
+    "axios": "^0.21.1",
+    "bech32": "^2.0.0",
     "eth-sig-util": "^3.0.1",
+    "ethereumjs-util": "^7.0.8",
     "link-module-alias": "^1.2.0",
-    "shx": "^0.3.2",
-    "snakecase-keys": "^3.2.1"
-  },
-  "gitHead": "05eb3472375cb5f1d46ba545222f1edafedbda75"
+    "secp256k1": "^4.0.2",
+    "shx": "^0.3.2"
+  }
 }
