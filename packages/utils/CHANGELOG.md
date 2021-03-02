@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.20...@injectivelabs/utils@0.0.21) (2021-03-02)
+
+
+### Bug Fixes
+
+* added formatters to the entry file ([08baf93](https://github.com/InjectiveLabs/injective-ts/commit/08baf9374d98b879cf6d3edb04bd102b54c1b6a2))
+
+
+
+
+
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.19...@injectivelabs/utils@0.0.20) (2021-03-02)
 
 
