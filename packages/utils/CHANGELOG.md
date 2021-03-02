@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.19...@injectivelabs/utils@0.0.20) (2021-03-02)
+
+
+### Features
+
+* added address formatter to utils package ([f30eb01](https://github.com/InjectiveLabs/injective-ts/commit/f30eb01c587117933db4b2717c53ae175fbe7702))
+
+
+
+
+
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.11...@injectivelabs/utils@0.0.19) (2021-03-01)
 
 

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/exchange-consumer",
   "description": "Interacting with our Exchange API made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -34,7 +34,7 @@
     "@injectivelabs/exchange-api": "^1.0.13",
     "@injectivelabs/ts-types": "^0.0.14",
     "@injectivelabs/tx-utils": "^0.0.2",
-    "@injectivelabs/utils": "^0.0.19",
+    "@injectivelabs/utils": "^0.0.20",
     "eth-sig-util": "^3.0.1",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",
