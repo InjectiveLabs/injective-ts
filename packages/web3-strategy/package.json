@@ -13,7 +13,7 @@
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build": "tsc --build tsconfig.build.json --verbose && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
     "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
