@@ -8,7 +8,7 @@ import {
   ConcreteWeb3Strategy,
   onAccountChangeCallback,
   onChainIdChangeCallback,
-  ConcreteStrategyOptions,
+  Web3StrategyArguments,
 } from './types'
 
 export default class Web3Strategy {
@@ -18,15 +18,7 @@ export default class Web3Strategy {
 
   private wallet: Wallet
 
-  constructor({
-    wallet,
-    chainId,
-    options,
-  }: {
-    wallet: Wallet
-    chainId: ChainId
-    options: ConcreteStrategyOptions
-  }) {
+  constructor({ wallet, chainId, options }: Web3StrategyArguments) {
     assert.inArray(chainId, Object.values(ChainId))
     assert.inArray(wallet, Object.values(Wallet))
 
