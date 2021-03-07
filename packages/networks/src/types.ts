@@ -1,6 +1,5 @@
 export enum Network {
   Local = 'local',
-  Devnet = 'devnet',
   Staking = 'staking',
   Mainnet = 'mainnet',
 }
@@ -33,6 +32,7 @@ export type UrlEndpoint = {
   baseUrl: string
   chainUrl: string
   exchangeUrl: string
+  explorerUrl: string
 }
 
 export interface UrlEndpointUrls {
@@ -48,5 +48,3 @@ export interface RpcUrls {
   europe: Rpc
   asia: Rpc
 }
-
-export type GraphUrl = string

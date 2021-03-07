@@ -1,4 +1,4 @@
-import { RpcUrls, GraphUrl, UrlEndpointUrls } from '../types'
+import { RpcUrls, UrlEndpointUrls } from '../types'
 
 export const rpcUrlsMainnet: RpcUrls = {
   america: 'https://testnet-evm-us.injective.dev',
@@ -16,12 +16,6 @@ export const rpcUrlsLocal: RpcUrls = {
   america: 'http://localhost:1317',
   europe: 'http://localhost:1317',
   asia: 'http://localhost:1317',
-}
-
-export const rpcUrlsDevnet: RpcUrls = {
-  america: 'https://devnet-evm.injective.dev',
-  europe: 'https://devnet-evm.injective.dev',
-  asia: 'https://devnet-evm.injective.dev',
 }
 
 export const wsRpcUrlsMainnet: RpcUrls = {
@@ -42,40 +36,26 @@ export const wsRpcUrlsLocal: RpcUrls = {
   asia: 'ws://localhost:1318',
 }
 
-export const wsRpcUrlsDevnet: RpcUrls = {
-  america: 'wss://devnet-evm.injective.dev',
-  europe: 'wss://devnet-evm.injective.dev',
-  asia: 'wss://devnet-evm.injective.dev',
-}
-
-export const graphUrlsLocal: GraphUrl =
-  'http://localhost:8000/subgraphs/name/InjectiveLabs/futures-subgraph'
-
-export const graphUrlsDevnet: GraphUrl =
-  'https://devnet-thegraph.injective.dev/subgraphs/name/InjectiveLabs/futures-subgraph'
-
-export const graphUrlsMainnet: GraphUrl =
-  'https://thegraph.injective.dev/subgraphs/name/InjectiveLabs/futures-subgraph'
-
-export const graphUrlsStaking: GraphUrl = ''
-
 export const urlEndpointsMainnet: UrlEndpointUrls = {
   america: {
     baseUrl: 'https://testnet-api-eu.injective.dev/api',
     chainUrl: 'https://testnet-api-eu.injective.dev:44300',
     exchangeUrl: 'https://testnet-api-eu.injective.dev:44310',
+    explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 
   europe: {
     baseUrl: 'https://testnet-api-eu.injective.dev/api',
     chainUrl: 'https://internal-evm.injective.dev',
     exchangeUrl: 'https://testnet-api-eu.injective.dev:44310',
+    explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 
   asia: {
     baseUrl: 'https://testnet-api-eu.injective.dev/api',
     chainUrl: 'https://testnet-api-eu.injective.dev:44300',
     exchangeUrl: 'https://testnet-api-eu.injective.dev:44310',
+    explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 }
 
@@ -84,18 +64,21 @@ export const urlEndpointsStaking: UrlEndpointUrls = {
     baseUrl: 'https://staking-api.injective.network/api',
     chainUrl: 'https://staking-evm.injective.network',
     exchangeUrl: 'https://staking-api.injective.network',
+    explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 
   europe: {
     baseUrl: 'https://staking-api.injective.network/api',
     chainUrl: 'https://staking-evm.injective.network',
     exchangeUrl: 'https://staking-api.injective.network',
+    explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 
   asia: {
     baseUrl: 'https://staking-api.injective.network/api',
     chainUrl: 'https://staking-evm.injective.network',
     exchangeUrl: 'https://staking-api.injective.network',
+    explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 }
 
@@ -104,37 +87,20 @@ export const urlEndpointsLocal: UrlEndpointUrls = {
     baseUrl: 'http://localhost:4444/api',
     chainUrl: 'http://localhost:1317',
     exchangeUrl: 'http://localhost:4444',
+    explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 
   europe: {
     baseUrl: 'http://localhost:4444/api',
     chainUrl: 'http://localhost:1317',
     exchangeUrl: 'http://localhost:4444',
+    explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 
   asia: {
     baseUrl: 'http://localhost:4444/api',
     chainUrl: 'http://localhost:1317',
     exchangeUrl: 'http://localhost:4444',
-  },
-}
-
-export const urlEndpointsDevnet: UrlEndpointUrls = {
-  america: {
-    baseUrl: 'https://devnet-api.injective.dev/api',
-    chainUrl: 'https://devnet-evm.injective.dev',
-    exchangeUrl: 'https://devnet-api.injective.dev',
-  },
-
-  europe: {
-    baseUrl: 'https://devnet-api.injective.dev/api',
-    chainUrl: 'https://devnet-evm.injective.dev',
-    exchangeUrl: 'https://devnet-api.injective.dev',
-  },
-
-  asia: {
-    baseUrl: 'https://devnet-api.injective.dev/api',
-    chainUrl: 'https://devnet-evm.injective.dev',
-    exchangeUrl: 'https://devnet-api.injective.dev',
+    explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 }

@@ -7,16 +7,9 @@ import {
   wsRpcUrlsLocal,
   urlEndpointsMainnet,
   urlEndpointsLocal,
-  graphUrlsMainnet,
-  graphUrlsLocal,
-  urlEndpointsDevnet,
-  rpcUrlsDevnet,
-  wsRpcUrlsDevnet,
-  graphUrlsDevnet,
   urlEndpointsStaking,
   rpcUrlsStaking,
   wsRpcUrlsStaking,
-  graphUrlsStaking,
 } from './data/rpc'
 import {
   Network,
@@ -26,12 +19,10 @@ import {
   RpcUrls,
   Rpc,
   RegionResponse,
-  GraphUrl,
 } from './types'
 
 export const urlEndpointUrls: { [key: string]: UrlEndpointUrls } = {
   mainnet: urlEndpointsMainnet,
-  devnet: urlEndpointsDevnet,
   staking: urlEndpointsStaking,
   local: urlEndpointsLocal,
 }
@@ -59,22 +50,13 @@ export const getUrlEndpointFromRegion = (
 export const rpcUrls: { [key: string]: RpcUrls } = {
   mainnet: rpcUrlsMainnet,
   staking: rpcUrlsStaking,
-  devnet: rpcUrlsDevnet,
   local: rpcUrlsLocal,
 }
 
 export const wsRpcUrls: { [key: string]: RpcUrls } = {
   mainnet: wsRpcUrlsMainnet,
   staking: wsRpcUrlsStaking,
-  devnet: wsRpcUrlsDevnet,
   local: wsRpcUrlsLocal,
-}
-
-export const graphUrls: { [key: string]: GraphUrl } = {
-  mainnet: graphUrlsMainnet,
-  staking: graphUrlsStaking,
-  devnet: graphUrlsDevnet,
-  local: graphUrlsLocal,
 }
 
 export const getRpcUrlsForNetwork = (network: Network): RpcUrls =>
@@ -82,9 +64,6 @@ export const getRpcUrlsForNetwork = (network: Network): RpcUrls =>
 
 export const getWsRpcUrlsForNetwork = (network: Network): RpcUrls =>
   wsRpcUrls[network]
-
-export const getGraphUrlForNetwork = (network: Network): GraphUrl =>
-  graphUrls[network]
 
 export const getRpcFromRegion = (region: Region, network: Network): Rpc => {
   const rpcUrls = getRpcUrlsForNetwork(network)
