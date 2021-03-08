@@ -8,7 +8,7 @@ import {
 import BaseConsumer from '../BaseConsumer'
 
 export class BankConsumer extends BaseConsumer {
-  async getBalance(accountAddress: AccountAddress) {
+  async fetchBalance(accountAddress: AccountAddress) {
     const queryBalance = new QueryBalanceRequest()
     queryBalance.setAddress(accountAddress)
     queryBalance.setDenom('inj')

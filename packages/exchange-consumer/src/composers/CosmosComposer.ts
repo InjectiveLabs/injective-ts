@@ -79,7 +79,7 @@ export class CosmosComposer {
     }
   }
 
-  static unBond({
+  static unbond({
     cosmosAddress,
     validatorAddress,
     amount,
