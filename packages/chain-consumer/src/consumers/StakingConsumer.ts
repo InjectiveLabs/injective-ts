@@ -14,7 +14,7 @@ import { AccountAddress } from '@injectivelabs/ts-types'
 import BaseConsumer from '../BaseConsumer'
 
 export class StakingConsumer extends BaseConsumer {
-  async getValidators() {
+  async fetchValidators() {
     const queryValidators = new QueryValidatorsRequest()
 
     try {
@@ -30,7 +30,7 @@ export class StakingConsumer extends BaseConsumer {
     }
   }
 
-  async getDelegations(cosmosAddress: AccountAddress) {
+  async fetchDelegations(cosmosAddress: AccountAddress) {
     const queryDelegatorDelegations = new QueryDelegatorDelegationsRequest()
     queryDelegatorDelegations.setDelegatorAddr(cosmosAddress)
 
@@ -47,7 +47,7 @@ export class StakingConsumer extends BaseConsumer {
     }
   }
 
-  async getDelegators(validatorOperatorAddress: string) {
+  async fetchDelegators(validatorOperatorAddress: string) {
     const queryDelegators = new QueryValidatorDelegationsRequest()
     queryDelegators.setValidatorAddr(validatorOperatorAddress)
 
@@ -63,7 +63,7 @@ export class StakingConsumer extends BaseConsumer {
     }
   }
 
-  async getUnBondingDelegations(cosmosAddress: AccountAddress) {
+  async fetchUnbondingDelegations(cosmosAddress: AccountAddress) {
     const queryDelegatorUnBondingDelegations = new QueryDelegatorUnbondingDelegationsRequest()
     queryDelegatorUnBondingDelegations.setDelegatorAddr(cosmosAddress)
 

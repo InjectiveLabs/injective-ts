@@ -14,7 +14,7 @@ import { InjectiveExchangeRPC } from '@injectivelabs/exchange-api/injective_exch
 import BaseConsumer from '../BaseConsumer'
 
 export class ExchangeConsumer extends BaseConsumer {
-  async getOrderbookFromExchangeApi(marketId: string) {
+  async fetchOrderbook(marketId: string) {
     const queryOrderbookRequest = new DerivativeOrderbookRequest()
     queryOrderbookRequest.setMarketId(marketId)
 

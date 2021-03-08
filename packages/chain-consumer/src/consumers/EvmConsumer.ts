@@ -8,7 +8,7 @@ import {
 import BaseConsumer from '../BaseConsumer'
 
 export class EvmConsumer extends BaseConsumer {
-  async getCosmosDetails(accountAddress: AccountAddress) {
+  async fetchCosmosDetails(accountAddress: AccountAddress) {
     const queryCosmosDetails = new QueryCosmosAccountRequest()
     queryCosmosDetails.setAddress(accountAddress)
 
