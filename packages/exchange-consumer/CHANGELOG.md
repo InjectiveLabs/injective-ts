@@ -3,32 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.9...@injectivelabs/exchange-consumer@0.0.10) (2021-03-08)
+## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.10...@injectivelabs/exchange-consumer@0.0.11) (2021-03-14)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
 
+## [0.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.9...@injectivelabs/exchange-consumer@0.0.10) (2021-03-08)
 
-
-
+**Note:** Version bump only for package @injectivelabs/exchange-consumer
 
 ## [0.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.8...@injectivelabs/exchange-consumer@0.0.9) (2021-03-02)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
 
-
-
-
-
 ## [0.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.7...@injectivelabs/exchange-consumer@0.0.8) (2021-03-02)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
 
-
-
-
-
 ## 0.0.7 (2021-03-01)
-
 
 ### Bug Fixes
 
@@ -37,7 +28,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
 * server side check fixed ([df86421](https://github.com/InjectiveLabs/injective-ts/commit/df86421aec08b6a1e3ff3c928c709e0057f2e1a4))
 
-
 ### Features
 
 * added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
@@ -45,10 +35,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * decouple chain consumer classes ([02fdb86](https://github.com/InjectiveLabs/injective-ts/commit/02fdb869ec01e1a3ec85e23ff807930f0792ccf1))
 * initial setup for the assert package ([415e9b8](https://github.com/InjectiveLabs/injective-ts/commit/415e9b886e9054bb9bbf2a68f566e243d52a919a))
 * ported chain consumer from the client ([cff10b9](https://github.com/InjectiveLabs/injective-ts/commit/cff10b916959b82d5f1ddbe9267131424ac0b566))
-
-
-
-
 
 ## [0.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.5...@injectivelabs/exchange-consumer@0.0.6) (2021-02-25)
 

@@ -3,46 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.23...@injectivelabs/web3-strategy@0.0.24) (2021-03-04)
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.24...@injectivelabs/web3-strategy@0.0.25) (2021-03-14)
 
+**Note:** Version bump only for package @injectivelabs/web3-strategy
+
+## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.23...@injectivelabs/web3-strategy@0.0.24) (2021-03-04)
 
 ### Features
 
 * exported some types ([72304e6](https://github.com/InjectiveLabs/injective-ts/commit/72304e6e711eea3d47390f7eda6dc7ff3a9aa7f7))
 
-
-
-
-
 ## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.22...@injectivelabs/web3-strategy@0.0.23) (2021-03-03)
-
 
 ### Bug Fixes
 
 * removed verbose flag from web3-strategy ([d939670](https://github.com/InjectiveLabs/injective-ts/commit/d939670b4a5d3289ac717c221eb510d43af78f91))
 
-
-
-
-
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.21...@injectivelabs/web3-strategy@0.0.22) (2021-03-02)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy
-
-
-
-
 
 ## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.20...@injectivelabs/web3-strategy@0.0.21) (2021-03-02)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy
 
-
-
-
-
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.11...@injectivelabs/web3-strategy@0.0.20) (2021-03-01)
-
 
 ### Bug Fixes
 
@@ -58,7 +43,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * web3-strategy docs fix ([442248d](https://github.com/InjectiveLabs/injective-ts/commit/442248dfaf61f4a645b06ab99163b86e35ba97ba))
 * window type checking for node env ([b52faa5](https://github.com/InjectiveLabs/injective-ts/commit/b52faa56ed555475c4695c219a81a185ad79cf67))
 
-
 ### Features
 
 * added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
@@ -68,10 +52,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
 * contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
 * initial setup for the assert package ([415e9b8](https://github.com/InjectiveLabs/injective-ts/commit/415e9b886e9054bb9bbf2a68f566e243d52a919a))
-
-
-
-
 
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.18...@injectivelabs/web3-strategy@0.0.19) (2021-02-25)
 

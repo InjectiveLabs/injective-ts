@@ -3,54 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.24...@injectivelabs/chain-consumer@0.0.25) (2021-03-14)
+
+**Note:** Version bump only for package @injectivelabs/chain-consumer
+
 ## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.23...@injectivelabs/chain-consumer@0.0.24) (2021-03-08)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer
 
-
-
-
-
 ## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.22...@injectivelabs/chain-consumer@0.0.23) (2021-03-04)
-
 
 ### Bug Fixes
 
 * exported missing types ([e8aac33](https://github.com/InjectiveLabs/injective-ts/commit/e8aac3304811116f4850322422eb8e9612bed27c))
 
-
-
-
-
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.21...@injectivelabs/chain-consumer@0.0.22) (2021-03-04)
-
 
 ### Features
 
 * exported some types ([72304e6](https://github.com/InjectiveLabs/injective-ts/commit/72304e6e711eea3d47390f7eda6dc7ff3a9aa7f7))
 
-
-
-
-
 ## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.20...@injectivelabs/chain-consumer@0.0.21) (2021-03-02)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer
-
-
-
-
 
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.19...@injectivelabs/chain-consumer@0.0.20) (2021-03-02)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer
 
-
-
-
-
 ## 0.0.19 (2021-03-01)
-
 
 ### Bug Fixes
 
@@ -59,16 +40,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
 * server side check fixed ([df86421](https://github.com/InjectiveLabs/injective-ts/commit/df86421aec08b6a1e3ff3c928c709e0057f2e1a4))
 
-
 ### Features
 
 * added a node transport for grpc consumers ([91d4bfc](https://github.com/InjectiveLabs/injective-ts/commit/91d4bfc17dc5c4e9f603219fb0d2b7944ad0254f))
 * decouple chain consumer classes ([02fdb86](https://github.com/InjectiveLabs/injective-ts/commit/02fdb869ec01e1a3ec85e23ff807930f0792ccf1))
 * ported chain consumer from the client ([cff10b9](https://github.com/InjectiveLabs/injective-ts/commit/cff10b916959b82d5f1ddbe9267131424ac0b566))
-
-
-
-
 
 ## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.17...@injectivelabs/chain-consumer@0.0.18) (2021-02-25)
 

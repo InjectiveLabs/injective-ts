@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/assert",
   "description": "Asserting and validating schemas. Can be reused throughout Injective's projects.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "^0.0.1",
-    "@injectivelabs/ts-types": "^0.0.14",
-    "@injectivelabs/utils": "^0.0.21",
+    "@injectivelabs/ts-types": "^0.0.15",
+    "@injectivelabs/utils": "^0.0.22",
     "@types/lodash.values": "^4.3.6",
     "jsonschema": "^1.4.0",
     "link-module-alias": "^1.2.0",

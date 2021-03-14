@@ -3,30 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.20...@injectivelabs/utils@0.0.21) (2021-03-02)
+## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.21...@injectivelabs/utils@0.0.22) (2021-03-14)
 
+**Note:** Version bump only for package @injectivelabs/utils
+
+## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.20...@injectivelabs/utils@0.0.21) (2021-03-02)
 
 ### Bug Fixes
 
 * added formatters to the entry file ([08baf93](https://github.com/InjectiveLabs/injective-ts/commit/08baf9374d98b879cf6d3edb04bd102b54c1b6a2))
 
-
-
-
-
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.19...@injectivelabs/utils@0.0.20) (2021-03-02)
-
 
 ### Features
 
 * added address formatter to utils package ([f30eb01](https://github.com/InjectiveLabs/injective-ts/commit/f30eb01c587117933db4b2717c53ae175fbe7702))
 
-
-
-
-
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.11...@injectivelabs/utils@0.0.19) (2021-03-01)
-
 
 ### Bug Fixes
 
@@ -36,7 +29,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * server side check fixed ([df86421](https://github.com/InjectiveLabs/injective-ts/commit/df86421aec08b6a1e3ff3c928c709e0057f2e1a4))
 * types fixed, improvements for web3-strategy ([d0074fd](https://github.com/InjectiveLabs/injective-ts/commit/d0074fdee137aa3ba203d9aab56c54f9b1955940))
 
-
 ### Features
 
 * added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
@@ -45,10 +37,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
 * contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
 * contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
-
-
-
-
 
 ## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.17...@injectivelabs/utils@0.0.18) (2021-02-25)
 
