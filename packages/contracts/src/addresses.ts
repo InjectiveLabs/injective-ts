@@ -4,7 +4,7 @@ import { ChainIdContractAddresses } from './types'
 
 export const contractAddresses = {
   '1': {
-    depositManager: '0xd987AD44dF31156f6589cd70A30000Cf0955668D',
+    depositManager: '0x53f2b8cc450679d04c479a048dc3ff39a4d20d13',
     futures: ZERO_ADDRESS,
     baseCurrency: ZERO_ADDRESS,
     priceFeeder: ZERO_ADDRESS,
