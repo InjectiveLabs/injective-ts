@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.18...@injectivelabs/contracts@0.0.19) (2021-03-14)
+
+### Bug Fixes
+
+* contract address ([fba4895](https://github.com/InjectiveLabs/injective-ts/commit/fba4895b571eaca7f2169d89fad9e1ad06a2e2eb))
+
 ## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.17...@injectivelabs/contracts@0.0.18) (2021-03-14)
 
 ### Features
