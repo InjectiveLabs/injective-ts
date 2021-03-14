@@ -4,11 +4,6 @@ const abi = [
   {
     inputs: [
       {
-        internalType: 'contract Peggy',
-        name: 'peggy_',
-        type: 'address',
-      },
-      {
         internalType: 'contract IERC20',
         name: 'realINJ_',
         type: 'address',
@@ -24,12 +19,6 @@ const abi = [
         indexed: true,
         internalType: 'address',
         name: 'staker',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'destination',
         type: 'address',
       },
       {
@@ -110,19 +99,7 @@ const abi = [
     ],
     stateMutability: 'view',
     type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    name: 'deposit',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    constant: true,
   },
   {
     inputs: [
@@ -142,24 +119,7 @@ const abi = [
     ],
     stateMutability: 'view',
     type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'destination',
-        type: 'address',
-      },
-    ],
-    name: 'depositFor',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    constant: true,
   },
   {
     inputs: [
@@ -179,26 +139,21 @@ const abi = [
     ],
     stateMutability: 'view',
     type: 'function',
+    constant: true,
   },
   {
     inputs: [],
-    name: 'endCompetition',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'fakeINJ',
+    name: 'lockingPeriod',
     outputs: [
       {
-        internalType: 'contract IERC20',
+        internalType: 'uint256',
         name: '',
-        type: 'address',
+        type: 'uint256',
       },
     ],
     stateMutability: 'view',
     type: 'function',
+    constant: true,
   },
   {
     inputs: [],
@@ -212,19 +167,7 @@ const abi = [
     ],
     stateMutability: 'view',
     type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'peggy',
-    outputs: [
-      {
-        internalType: 'contract Peggy',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
+    constant: true,
   },
   {
     inputs: [],
@@ -238,6 +181,7 @@ const abi = [
     ],
     stateMutability: 'view',
     type: 'function',
+    constant: true,
   },
   {
     inputs: [],
@@ -262,12 +206,12 @@ const abi = [
   {
     inputs: [
       {
-        internalType: 'contract Peggy',
-        name: 'peggy_',
-        type: 'address',
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
       },
     ],
-    name: 'updatePeggy',
+    name: 'deposit',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -288,6 +232,13 @@ const abi = [
   {
     inputs: [],
     name: 'withdrawAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'endCompetition',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

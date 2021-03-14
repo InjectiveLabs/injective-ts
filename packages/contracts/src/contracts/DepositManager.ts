@@ -35,8 +35,7 @@ export class DepositManagerContract extends BaseContract<
     })
   }
 
-  public depositFor({
-    address,
+  public deposit({
     amount,
     transactionOptions,
   }: {
@@ -54,14 +53,12 @@ export class DepositManagerContract extends BaseContract<
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods
-          .depositFor(amount.toFixed(), address)
-          .encodeABI()
+        return contract.methods.deposit(amount.toFixed()).encodeABI()
       },
 
       async sendTransactionAsync(): Promise<string> {
         const { transactionHash } = await contract.methods
-          .depositFor(amount.toFixed(), address)
+          .deposit(amount.toFixed())
           .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
 
         return transactionHash
@@ -69,7 +66,7 @@ export class DepositManagerContract extends BaseContract<
 
       async estimateGasAsync(): Promise<number> {
         return contract.methods
-          .depositFor(amount.toFixed(), address)
+          .deposit(amount.toFixed())
           .estimateGas(transactionOptions)
       },
     }

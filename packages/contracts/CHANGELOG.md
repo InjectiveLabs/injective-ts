@@ -3,40 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.17...@injectivelabs/contracts@0.0.18) (2021-03-14)
+
+### Features
+
+* upated contracts packages with new deposit manager abi ([68dd78d](https://github.com/InjectiveLabs/injective-ts/commit/68dd78d8d3274c4ca787f47621825a492ab6ce31))
+
 ## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.16...@injectivelabs/contracts@0.0.17) (2021-03-04)
 
 **Note:** Version bump only for package @injectivelabs/contracts
-
-
-
-
 
 ## [0.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.15...@injectivelabs/contracts@0.0.16) (2021-03-03)
 
 **Note:** Version bump only for package @injectivelabs/contracts
 
-
-
-
-
 ## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.14...@injectivelabs/contracts@0.0.15) (2021-03-02)
 
 **Note:** Version bump only for package @injectivelabs/contracts
-
-
-
-
 
 ## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.13...@injectivelabs/contracts@0.0.14) (2021-03-02)
 
 **Note:** Version bump only for package @injectivelabs/contracts
 
-
-
-
-
 ## 0.0.13 (2021-03-01)
-
 
 ### Bug Fixes
 
@@ -50,7 +39,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * window type checking for node env ([b52faa5](https://github.com/InjectiveLabs/injective-ts/commit/b52faa56ed555475c4695c219a81a185ad79cf67))
 * zeroed out addresses for unused chains ([17792b8](https://github.com/InjectiveLabs/injective-ts/commit/17792b8b28cbc7ebb278f15ed29ea8fd2db6d6e8))
 
-
 ### Features
 
 * added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
@@ -63,10 +51,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * contracts package extended by adding a base contract and subscription manager ([928d3d7](https://github.com/InjectiveLabs/injective-ts/commit/928d3d7ebf211ee9227c214c8762b9dfcfbf7542))
 * initial setup for the assert package ([415e9b8](https://github.com/InjectiveLabs/injective-ts/commit/415e9b886e9054bb9bbf2a68f566e243d52a919a))
 * ported chain consumer from the client ([cff10b9](https://github.com/InjectiveLabs/injective-ts/commit/cff10b916959b82d5f1ddbe9267131424ac0b566))
-
-
-
-
 
 ## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.11...@injectivelabs/contracts@0.0.12) (2021-02-25)
 
