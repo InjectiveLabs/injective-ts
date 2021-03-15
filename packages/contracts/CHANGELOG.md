@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.20...@injectivelabs/contracts@0.0.21) (2021-03-15)
+
+### Bug Fixes
+
+* removed force publish for packages ([0ddcb4e](https://github.com/InjectiveLabs/injective-ts/commit/0ddcb4e6faf5e9609bd0c0c0a80b90435d3059bd))
+
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.19...@injectivelabs/contracts@0.0.20) (2021-03-14)
 
 **Note:** Version bump only for package @injectivelabs/contracts
