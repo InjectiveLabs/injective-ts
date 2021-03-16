@@ -15,14 +15,14 @@ import BaseConsumer from '../BaseConsumer'
 
 export class StakingConsumer extends BaseConsumer {
   async fetchValidators() {
-    const queryValidators = new QueryValidatorsRequest()
+    const request = new QueryValidatorsRequest()
 
     try {
       const response = await this.request<
         QueryValidatorsRequest,
         QueryValidatorsResponse,
         typeof Query.Validators
-      >(queryValidators, Query.Validators)
+      >(request, Query.Validators)
 
       return response.getValidatorsList()
     } catch (e) {
@@ -31,15 +31,15 @@ export class StakingConsumer extends BaseConsumer {
   }
 
   async fetchDelegations(cosmosAddress: AccountAddress) {
-    const queryDelegatorDelegations = new QueryDelegatorDelegationsRequest()
-    queryDelegatorDelegations.setDelegatorAddr(cosmosAddress)
+    const request = new QueryDelegatorDelegationsRequest()
+    request.setDelegatorAddr(cosmosAddress)
 
     try {
       const response = await this.request<
         QueryDelegatorDelegationsRequest,
         QueryDelegatorDelegationsResponse,
         typeof Query.DelegatorDelegations
-      >(queryDelegatorDelegations, Query.DelegatorDelegations)
+      >(request, Query.DelegatorDelegations)
 
       return response.getDelegationResponsesList()
     } catch (e) {
@@ -48,15 +48,15 @@ export class StakingConsumer extends BaseConsumer {
   }
 
   async fetchDelegators(validatorOperatorAddress: string) {
-    const queryDelegators = new QueryValidatorDelegationsRequest()
-    queryDelegators.setValidatorAddr(validatorOperatorAddress)
+    const request = new QueryValidatorDelegationsRequest()
+    request.setValidatorAddr(validatorOperatorAddress)
 
     try {
       const response = await this.request<
         QueryValidatorDelegationsRequest,
         QueryValidatorDelegationsResponse,
         typeof Query.ValidatorDelegations
-      >(queryDelegators, Query.ValidatorDelegations)
+      >(request, Query.ValidatorDelegations)
       return response.getDelegationResponsesList()
     } catch (e) {
       throw new GrpcException(e.message)
@@ -64,15 +64,15 @@ export class StakingConsumer extends BaseConsumer {
   }
 
   async fetchUnbondingDelegations(cosmosAddress: AccountAddress) {
-    const queryDelegatorUnBondingDelegations = new QueryDelegatorUnbondingDelegationsRequest()
-    queryDelegatorUnBondingDelegations.setDelegatorAddr(cosmosAddress)
+    const request = new QueryDelegatorUnbondingDelegationsRequest()
+    request.setDelegatorAddr(cosmosAddress)
 
     try {
       const response = await this.request<
         QueryDelegatorUnbondingDelegationsRequest,
         QueryDelegatorUnbondingDelegationsResponse,
         typeof Query.DelegatorUnbondingDelegations
-      >(queryDelegatorUnBondingDelegations, Query.DelegatorUnbondingDelegations)
+      >(request, Query.DelegatorUnbondingDelegations)
 
       return response.getUnbondingResponsesList()
     } catch (e) {

@@ -1,3 +1,3 @@
 export * from './BankConsumer'
-export * from './EvmConsumer'
+export * from './AuthConsumer'
 export * from './StakingConsumer'

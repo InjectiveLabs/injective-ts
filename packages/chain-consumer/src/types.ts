@@ -7,6 +7,15 @@ import {
   UnbondingDelegation as GrpcUnbondingDelegation,
   DelegationResponse as GrpcDelegationResponse,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/staking_pb'
+import {
+  Proposal as GrpcProposal,
+  Deposit as GrpcProposalDeposit,
+  TallyParams as GrpcTallyParams,
+  TallyResult as GrpcTallyResult,
+  Vote as GrpcVote,
+  ProposalStatusMap as GrpcProposalStatus,
+} from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
+import { Supply as GrpcSupply } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/bank_pb'
 
 export {
   GrpcValidator,
@@ -16,4 +25,11 @@ export {
   GrpcValidatorCommissionRates,
   GrpcUnbondingDelegation,
   GrpcDelegationResponse,
+  GrpcProposal,
+  GrpcProposalDeposit,
+  GrpcTallyParams,
+  GrpcTallyResult,
+  GrpcVote,
+  GrpcProposalStatus,
+  GrpcSupply,
 }
