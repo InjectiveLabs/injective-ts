@@ -18,8 +18,9 @@ import { GrpcException } from '@injectivelabs/exceptions'
 import BaseConsumer from '../BaseConsumer'
 
 export class GovernanceConsumer extends BaseConsumer {
-  async fetchParams() {
+  async fetchParams(type: string) {
     const request = new QueryParamsRequest()
+    request.setParamsType(type)
 
     try {
       const response = await this.request<
