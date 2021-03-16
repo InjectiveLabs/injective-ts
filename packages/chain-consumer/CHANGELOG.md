@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.26...@injectivelabs/chain-consumer@0.0.27) (2021-03-16)
+
+### Bug Fixes
+
+* exported GovernanceConsumer ([2be9094](https://github.com/InjectiveLabs/injective-ts/commit/2be9094f9acacd703435c5e5f339f73bee559c4c))
+
 ## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.25...@injectivelabs/chain-consumer@0.0.26) (2021-03-16)
 
 ### Features
