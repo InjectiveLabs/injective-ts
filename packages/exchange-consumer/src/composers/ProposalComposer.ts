@@ -1,7 +1,7 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgSubmitProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import { BigNumber } from '@injectivelabs/utils'
-import { AccountAddress } from 'packages/ts-types/src/aliases'
+import { AccountAddress } from '@injectivelabs/ts-types'
 import {
   SpotMarketLaunchProposal,
   SpotMarketParamUpdateProposal,

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.11...@injectivelabs/exchange-consumer@0.0.12) (2021-03-16)
+
+### Bug Fixes
+
+* wrong path for types ([e843f4b](https://github.com/InjectiveLabs/injective-ts/commit/e843f4b7a42348e4d77d4f4af185c7077ccb60ad))
+
+### Features
+
+* proposals initial setup ([2e72d3e](https://github.com/InjectiveLabs/injective-ts/commit/2e72d3e044c5198425243c2b7f8ba585d0480686))
+
 ## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.10...@injectivelabs/exchange-consumer@0.0.11) (2021-03-14)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
