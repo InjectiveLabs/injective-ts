@@ -33,7 +33,7 @@ export const contractAddresses = {
     baseCurrency: ZERO_ADDRESS,
     priceFeeder: ZERO_ADDRESS,
     peggy: '0x3A509fB16797164B6c958d6265720BC9E6cB0633',
-    injective: '0x741bbe79b6c5ceaa3d3dcc0bf611d654d0485ddf',
+    injective: '0xa3a9029b8120e2f09b194df4a249a24db461e573',
   },
   '888': {
     depositManager: ZERO_ADDRESS,
