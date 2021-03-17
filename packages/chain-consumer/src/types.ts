@@ -16,8 +16,10 @@ import {
   ProposalStatusMap as GrpcProposalStatus,
 } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
 import { Supply as GrpcSupply } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/bank_pb'
+import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 
 export {
+  GrpcCoin,
   GrpcValidator,
   GrpcDelegation,
   GrpcValidatorDescription,

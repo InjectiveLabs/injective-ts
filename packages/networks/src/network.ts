@@ -10,6 +10,9 @@ import {
   urlEndpointsStaking,
   rpcUrlsStaking,
   wsRpcUrlsStaking,
+  urlEndpointsInternal,
+  rpcUrlsInternal,
+  wsRpcUrlsInternal,
 } from './data/rpc'
 import {
   Network,
@@ -23,6 +26,7 @@ import {
 
 export const urlEndpointUrls: { [key: string]: UrlEndpointUrls } = {
   mainnet: urlEndpointsMainnet,
+  internal: urlEndpointsInternal,
   staking: urlEndpointsStaking,
   local: urlEndpointsLocal,
 }
@@ -50,12 +54,14 @@ export const getUrlEndpointFromRegion = (
 export const rpcUrls: { [key: string]: RpcUrls } = {
   mainnet: rpcUrlsMainnet,
   staking: rpcUrlsStaking,
+  internal: rpcUrlsInternal,
   local: rpcUrlsLocal,
 }
 
 export const wsRpcUrls: { [key: string]: RpcUrls } = {
   mainnet: wsRpcUrlsMainnet,
   staking: wsRpcUrlsStaking,
+  internal: wsRpcUrlsInternal,
   local: wsRpcUrlsLocal,
 }
 

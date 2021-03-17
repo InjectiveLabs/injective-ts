@@ -32,17 +32,29 @@ export class ProposalComposer {
     const content = new SpotMarketLaunchProposal()
     content.setTitle(market.title)
     content.setDescription(market.description)
-    content.setBaseDenom(market.baseDenom)
+    content.setQuoteDenom(market.quoteDenom)
     content.setTicker(market.ticker)
     content.setBaseDenom(market.baseDenom)
 
     const cosmosMessage = new MsgSubmitProposal()
-    cosmosMessage.setContent(content)
     cosmosMessage.setInitialDepositList([depositParams])
     cosmosMessage.setProposer(proposer)
 
+    console.log({
+      ...snakeCaseKeys(cosmosMessage.toObject()),
+      content: {
+        '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
+        value: content.toObject(),
+      },
+      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+    })
+
     return {
       ...snakeCaseKeys(cosmosMessage.toObject()),
+      content: {
+        type: 'injective.exchange.v1beta1.SpotMarketLaunchProposal',
+        value: content.toObject(),
+      },
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     }
   }

@@ -12,6 +12,12 @@ export const rpcUrlsStaking: RpcUrls = {
   asia: 'https://staking-evm.injective.network',
 }
 
+export const rpcUrlsInternal: RpcUrls = {
+  america: 'https://internal-evm.injective.dev',
+  europe: 'https://internal-evm.injective.dev',
+  asia: 'https://internal-evm.injective.dev',
+}
+
 export const rpcUrlsLocal: RpcUrls = {
   america: 'http://localhost:1317',
   europe: 'http://localhost:1317',
@@ -28,6 +34,12 @@ export const wsRpcUrlsStaking: RpcUrls = {
   america: 'wss://staking-evm.injective.network',
   europe: 'wss://staking-evm.injective.network',
   asia: 'wss://staking-evm.injective.network',
+}
+
+export const wsRpcUrlsInternal: RpcUrls = {
+  america: 'wss://internal-evm.injective.dev',
+  europe: 'wss://internal-evm.injective.dev',
+  asia: 'wss://internal-evm.injective.dev',
 }
 
 export const wsRpcUrlsLocal: RpcUrls = {
@@ -79,6 +91,29 @@ export const urlEndpointsStaking: UrlEndpointUrls = {
     chainUrl: 'https://staking-evm.injective.network',
     exchangeUrl: 'https://staking-api.injective.network',
     explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
+  },
+}
+
+export const urlEndpointsInternal: UrlEndpointUrls = {
+  america: {
+    baseUrl: 'https://internal-api.injective.network/api',
+    chainUrl: 'https://internal-evm.injective.network',
+    exchangeUrl: 'https://internal-api.injective.network',
+    explorerUrl: 'https://internal-explorer-api.injective.dev',
+  },
+
+  europe: {
+    baseUrl: 'https://internal-api.injective.network/api',
+    chainUrl: 'https://internal-evm.injective.network',
+    exchangeUrl: 'https://internal-api.injective.network',
+    explorerUrl: 'https://internal-explorer-api.injective.dev',
+  },
+
+  asia: {
+    baseUrl: 'https://internal-api.injective.network/api',
+    chainUrl: 'https://internal-evm.injective.network',
+    exchangeUrl: 'https://internal-api.injective.network',
+    explorerUrl: 'https://internal-explorer-api.injective.dev',
   },
 }
 

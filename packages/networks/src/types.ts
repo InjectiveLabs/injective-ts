@@ -1,5 +1,6 @@
 export enum Network {
   Local = 'local',
+  Internal = 'internal',
   Staking = 'staking',
   Mainnet = 'mainnet',
 }
