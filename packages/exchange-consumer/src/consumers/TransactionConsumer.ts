@@ -7,6 +7,7 @@ import {
   CosmosTxFee,
   CosmosPubKey,
 } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb'
+import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { InjectiveExchangeRPC } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb_service'
 import { ChainId, AccountAddress } from '@injectivelabs/ts-types'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/tx-utils'
@@ -22,9 +23,14 @@ export class TransactionConsumer extends BaseConsumer {
     chainId: ChainId
     message: any
   }) {
+    const txFeeAmount = new Coin()
+    txFeeAmount.setDenom('inj')
+    txFeeAmount.setAmount('0')
+
     const gasLimit = 200000 // TODO
     const cosmosTxFee = new CosmosTxFee()
     cosmosTxFee.setGas(gasLimit)
+    cosmosTxFee.setAmountsList([txFeeAmount])
 
     const prepareTxRequest = new PrepareTxRequest()
     prepareTxRequest.setChainId(chainId)
