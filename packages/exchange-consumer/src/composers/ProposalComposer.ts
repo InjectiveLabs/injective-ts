@@ -44,7 +44,7 @@ export class ProposalComposer {
       ...snakeCaseKeys(cosmosMessage.toObject()),
       content: {
         '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
-        value: content.toObject(),
+        ...snakeCaseKeys(content.toObject()),
       },
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     })
@@ -52,8 +52,8 @@ export class ProposalComposer {
     return {
       ...snakeCaseKeys(cosmosMessage.toObject()),
       content: {
-        type: 'injective.exchange.v1beta1.SpotMarketLaunchProposal',
-        value: content.toObject(),
+        '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
+        ...snakeCaseKeys(content.toObject()),
       },
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     }
