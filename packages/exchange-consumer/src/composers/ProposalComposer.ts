@@ -36,25 +36,13 @@ export class ProposalComposer {
     content.setTicker(market.ticker)
     content.setBaseDenom(market.baseDenom)
 
-    const cosmosMessage = new MsgSubmitProposal()
-    cosmosMessage.setInitialDepositList([depositParams])
-    cosmosMessage.setProposer(proposer)
-
-    console.log({
-      ...snakeCaseKeys(cosmosMessage.toObject()),
-      content: {
-        '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
-        ...snakeCaseKeys(content.toObject()),
-      },
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-    })
-
     return {
-      ...snakeCaseKeys(cosmosMessage.toObject()),
+      proposer,
       content: {
         '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
         ...snakeCaseKeys(content.toObject()),
       },
+      initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     }
   }
@@ -80,13 +68,13 @@ export class ProposalComposer {
     content.setRelayerFeeShareRate(market.relayerFeeShareRate)
     content.setMarketId(market.marketId)
 
-    const cosmosMessage = new MsgSubmitProposal()
-    cosmosMessage.setContent(content)
-    cosmosMessage.setInitialDepositList([depositParams])
-    cosmosMessage.setProposer(proposer)
-
     return {
-      ...snakeCaseKeys(cosmosMessage.toObject()),
+      proposer,
+      content: {
+        '@type': '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
+        ...snakeCaseKeys(content.toObject()),
+      },
+      initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     }
   }
@@ -113,7 +101,12 @@ export class ProposalComposer {
     cosmosMessage.setProposer(proposer)
 
     return {
-      ...snakeCaseKeys(cosmosMessage.toObject()),
+      proposer,
+      content: {
+        '@type': '/injective.exchange.v1beta1.SpotMarketStatusSetProposal',
+        ...snakeCaseKeys(content.toObject()),
+      },
+      initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     }
   }
