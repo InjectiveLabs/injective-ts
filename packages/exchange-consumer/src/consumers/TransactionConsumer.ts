@@ -30,9 +30,9 @@ export class TransactionConsumer extends BaseConsumer {
     address: AccountAddress
     chainId: ChainId
     message: any
-    gasLimit: number
-    feeDenom: string
-    feeAmount: string
+    gasLimit?: number
+    feeDenom?: string
+    feeAmount?: string
   }) {
     const txFeeAmount = new Coin()
     txFeeAmount.setDenom(feeDenom)
