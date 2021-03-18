@@ -12,22 +12,32 @@ import { InjectiveExchangeRPC } from '@injectivelabs/exchange-api/injective_exch
 import { ChainId, AccountAddress } from '@injectivelabs/ts-types'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/tx-utils'
 import BaseConsumer from '../BaseConsumer'
+import {
+  DEFAULT_GAS_LIMIT,
+  DEFAULT_BRIDGE_FEE_DENOM,
+  DEFAULT_BRIDGE_FEE_AMOUNT,
+} from '../constants'
 
 export class TransactionConsumer extends BaseConsumer {
   async prepareTxRequest({
     address,
     chainId,
     message,
+    gasLimit = DEFAULT_GAS_LIMIT,
+    feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
+    feeAmount = DEFAULT_BRIDGE_FEE_AMOUNT,
   }: {
     address: AccountAddress
     chainId: ChainId
     message: any
+    gasLimit: number
+    feeDenom: string
+    feeAmount: string
   }) {
     const txFeeAmount = new Coin()
-    txFeeAmount.setDenom('inj')
-    txFeeAmount.setAmount('0')
+    txFeeAmount.setDenom(feeDenom)
+    txFeeAmount.setAmount(feeAmount)
 
-    const gasLimit = 200000 // TODO
     const cosmosTxFee = new CosmosTxFee()
     cosmosTxFee.setGas(gasLimit)
     cosmosTxFee.setAmountsList([txFeeAmount])
