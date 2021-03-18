@@ -32,7 +32,7 @@ export const contractAddresses = {
     futures: ZERO_ADDRESS,
     baseCurrency: ZERO_ADDRESS,
     priceFeeder: ZERO_ADDRESS,
-    peggy: '0xD4AD50c64010Eb11d1C65a60b4AC9530d430ee64',
+    peggy: '0x9752fCE6cfB4e6802E5093dbABB09A91c644B5bE',
     injective: '0xa3a9029b8120e2f09b194df4a249a24db461e573',
   },
   '888': {
