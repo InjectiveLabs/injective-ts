@@ -28,11 +28,11 @@ export const contractAddresses = {
     injective: ZERO_ADDRESS,
   },
   '42': {
-    depositManager: '0x3768d0eDe5E5Cb9d9b163F46d86791Ca83954579',
+    depositManager: ZERO_ADDRESS,
     futures: ZERO_ADDRESS,
     baseCurrency: ZERO_ADDRESS,
     priceFeeder: ZERO_ADDRESS,
-    peggy: '0x3A509fB16797164B6c958d6265720BC9E6cB0633',
+    peggy: '0xD4AD50c64010Eb11d1C65a60b4AC9530d430ee64',
     injective: '0xa3a9029b8120e2f09b194df4a249a24db461e573',
   },
   '888': {
