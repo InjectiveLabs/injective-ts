@@ -44,7 +44,7 @@ export class CosmosComposer {
 
     return {
       ...snakeCaseKeys(cosmosMessage.toObject()),
-      '@type': '/injective.peggy.v1beta1.MsgSendToEth',
+      '@type': '/injective.peggy.v1.MsgSendToEth',
     }
   }
 
