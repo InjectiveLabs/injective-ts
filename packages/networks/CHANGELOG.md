@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.7...@injectivelabs/networks@0.0.8) (2021-03-19)
+
+### Bug Fixes
+
+* explorer url updated ([0e971bf](https://github.com/InjectiveLabs/injective-ts/commit/0e971bf0974e7bbe9a61e032ff210a6791a13d8b))
+
 ## [0.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.6...@injectivelabs/networks@0.0.7) (2021-03-19)
 
 ### Bug Fixes

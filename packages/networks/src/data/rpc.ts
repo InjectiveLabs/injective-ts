@@ -76,21 +76,21 @@ export const urlEndpointsStaking: UrlEndpointUrls = {
     baseUrl: 'https://staking-api.injective.network/api',
     chainUrl: 'https://staking-evm.injective.network',
     exchangeUrl: 'https://staking-api.injective.network',
-    explorerUrl: 'https://staking-explorer-api.injective.dev/v1',
+    explorerUrl: 'https://staking-explorer-api.injective.network/v1',
   },
 
   europe: {
     baseUrl: 'https://staking-api.injective.network/api',
     chainUrl: 'https://staking-evm.injective.network',
     exchangeUrl: 'https://staking-api.injective.network',
-    explorerUrl: 'https://staking-explorer-api.injective.dev/v1',
+    explorerUrl: 'https://staking-explorer-api.injective.network/v1',
   },
 
   asia: {
     baseUrl: 'https://staking-api.injective.network/api',
     chainUrl: 'https://staking-evm.injective.network',
     exchangeUrl: 'https://staking-api.injective.network',
-    explorerUrl: 'https://staking-explorer-api.injective.dev/v1',
+    explorerUrl: 'https://staking-explorer-api.injective.network/v1',
   },
 }
 
