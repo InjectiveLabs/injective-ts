@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.19...@injectivelabs/exchange-consumer@0.0.20) (2021-03-20)
+
+### Bug Fixes
+
+* fixed fee amount ([3875ef3](https://github.com/InjectiveLabs/injective-ts/commit/3875ef31dcd6f8d132e483ae578e5f6e52b0099d))
+
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.18...@injectivelabs/exchange-consumer@0.0.19) (2021-03-19)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
