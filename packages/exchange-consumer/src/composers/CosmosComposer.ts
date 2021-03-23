@@ -30,7 +30,7 @@ export class CosmosComposer {
   }): Record<string, any> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
-    coinAmount.setAmount(amount.toString())
+    coinAmount.setAmount(amount.toFixed())
 
     const bridgeFee = new Coin()
     bridgeFee.setDenom(bridgeFeeDenom)
@@ -61,7 +61,7 @@ export class CosmosComposer {
   }): Record<string, any> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
-    coinAmount.setAmount(amount.toString())
+    coinAmount.setAmount(amount.toFixed())
 
     const cosmosMessage = new MsgDelegate()
     cosmosMessage.setAmount(coinAmount)
@@ -87,7 +87,7 @@ export class CosmosComposer {
   }): Record<string, any> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
-    coinAmount.setAmount(amount.toString())
+    coinAmount.setAmount(amount.toFixed())
 
     const cosmosMessage = new MsgUndelegate()
     cosmosMessage.setAmount(coinAmount)

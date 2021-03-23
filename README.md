@@ -1,6 +1,6 @@
 # 🌟 Injective Protocol - TS
 
-_Decentralized Derivatives Trading. Any Market. Anytime. Anywhere._
+_Access Limitless DeFi Markets with Zero Barriers._
 
 ## ✨ Features
 

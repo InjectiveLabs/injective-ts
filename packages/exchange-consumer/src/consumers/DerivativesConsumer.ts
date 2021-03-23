@@ -44,12 +44,12 @@ export class ExchangeConsumer extends BaseConsumer {
     derivativeOrder.setTakerAddress(order.takerAddress)
     derivativeOrder.setFeeRecipientAddress(order.feeRecipientAddress)
     derivativeOrder.setSenderAddress(order.senderAddress)
-    derivativeOrder.setMakerAssetAmount(order.makerAssetAmount.toString())
-    derivativeOrder.setTakerAssetAmount(order.takerAssetAmount.toString())
-    derivativeOrder.setMakerFee(order.makerFee.toString())
-    derivativeOrder.setTakerFee(order.takerFee.toString())
+    derivativeOrder.setMakerAssetAmount(order.makerAssetAmount.toFixed())
+    derivativeOrder.setTakerAssetAmount(order.takerAssetAmount.toFixed())
+    derivativeOrder.setMakerFee(order.makerFee.toFixed())
+    derivativeOrder.setTakerFee(order.takerFee.toFixed())
     derivativeOrder.setExpirationTimeSeconds(
-      order.expirationTimeSeconds.toString(),
+      order.expirationTimeSeconds.toFixed(),
     )
     derivativeOrder.setSalt(order.salt.toString())
     derivativeOrder.setMakerAssetData(order.makerAssetData)
@@ -89,9 +89,9 @@ export class ExchangeConsumer extends BaseConsumer {
     tecTransaction.setDomain(tecTransactionDomain)
     tecTransaction.setData(transaction.data)
     tecTransaction.setExpirationTimeSeconds(
-      transaction.expirationTimeSeconds.toString(),
+      transaction.expirationTimeSeconds.toFixed(),
     )
-    tecTransaction.setGasPrice(transaction.gasPrice.toString())
+    tecTransaction.setGasPrice(transaction.gasPrice.toFixed())
     tecTransaction.setSalt(transaction.salt.toString())
     tecTransaction.setSignature(transaction.signature)
     tecTransaction.setSignerAddress(transaction.signerAddress)

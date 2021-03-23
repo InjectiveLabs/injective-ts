@@ -27,7 +27,7 @@ export class ProposalComposer {
   }) {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
-    depositParams.setAmount(deposit.amount.toString())
+    depositParams.setAmount(deposit.amount.toFixed())
 
     const content = new SpotMarketLaunchProposal()
     content.setTitle(market.title)
@@ -58,7 +58,7 @@ export class ProposalComposer {
   }) {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
-    depositParams.setAmount(deposit.amount.toString())
+    depositParams.setAmount(deposit.amount.toFixed())
 
     const content = new SpotMarketParamUpdateProposal()
     content.setTitle(market.title)
@@ -90,7 +90,7 @@ export class ProposalComposer {
   }) {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
-    depositParams.setAmount(deposit.amount.toString())
+    depositParams.setAmount(deposit.amount.toFixed())
 
     const content = new SpotMarketStatusSetProposal()
     content.setStatus(status)
