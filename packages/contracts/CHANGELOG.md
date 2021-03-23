@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.25...@injectivelabs/contracts@0.0.26) (2021-03-23)
+
+### Features
+
+* updated deposit manager contract with addiotional methods ([e3b326d](https://github.com/InjectiveLabs/injective-ts/commit/e3b326d236144316b38d97c045169ae179c896c0))
+
 ## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.24...@injectivelabs/contracts@0.0.25) (2021-03-18)
 
 **Note:** Version bump only for package @injectivelabs/contracts

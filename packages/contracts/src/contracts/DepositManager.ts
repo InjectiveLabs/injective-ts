@@ -9,7 +9,7 @@ import {
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
 import { getTransactionOptionsAsNonPayableTx } from '@injectivelabs/tx-utils'
 import abi from './abi/deposit_manager'
-import { ContractTxFunctionObj } from '../types'
+import { ContractFunctionObj, ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'
 
 export class DepositManagerContract extends BaseContract<
@@ -39,7 +39,6 @@ export class DepositManagerContract extends BaseContract<
     amount,
     transactionOptions,
   }: {
-    address: AccountAddress
     amount: BigNumberInWei
     transactionOptions: TransactionOptions
   }): ContractTxFunctionObj<string> {
@@ -67,6 +66,75 @@ export class DepositManagerContract extends BaseContract<
       async estimateGasAsync(): Promise<number> {
         return contract.methods
           .deposit(amount.toFixed())
+          .estimateGas(transactionOptions)
+      },
+    }
+  }
+
+  public depositUnlockTimestamp({
+    address,
+  }: {
+    address: AccountAddress
+  }): ContractFunctionObj<string> {
+    const { contract } = this
+
+    return {
+      async callAsync() {
+        return contract.methods.depositUnlockTimestamp(address).call()
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods.depositUnlockTimestamp(address).encodeABI()
+      },
+    }
+  }
+
+  public competitionEnded(): ContractFunctionObj<boolean> {
+    const { contract } = this
+
+    return {
+      async callAsync() {
+        return contract.methods.competitionEnded().call()
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods.competitionEnded().encodeABI()
+      },
+    }
+  }
+
+  public withdraw({
+    amount,
+    transactionOptions,
+  }: {
+    address: AccountAddress
+    amount: BigNumberInWei
+    transactionOptions: TransactionOptions
+  }): ContractTxFunctionObj<string> {
+    const { contract } = this
+
+    return {
+      callAsync() {
+        throw new ContractException(
+          'You cannot call this contract method as a call',
+        )
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods.withdraw(amount.toFixed()).encodeABI()
+      },
+
+      async sendTransactionAsync(): Promise<string> {
+        const { transactionHash } = await contract.methods
+          .withdraw(amount.toFixed())
+          .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
+
+        return transactionHash
+      },
+
+      async estimateGasAsync(): Promise<number> {
+        return contract.methods
+          .withdraw(amount.toFixed())
           .estimateGas(transactionOptions)
       },
     }
