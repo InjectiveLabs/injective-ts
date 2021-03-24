@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.26...@injectivelabs/contracts@0.0.27) (2021-03-24)
+
+### Features
+
+* added depositBalance method to the DepositManager contract ([178e6ec](https://github.com/InjectiveLabs/injective-ts/commit/178e6ec61d39a6fbb4504138e5b07f7eccd8d346))
+
 ## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.25...@injectivelabs/contracts@0.0.26) (2021-03-23)
 
 ### Features

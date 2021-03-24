@@ -89,6 +89,24 @@ export class DepositManagerContract extends BaseContract<
     }
   }
 
+  public depositBalance({
+    address,
+  }: {
+    address: AccountAddress
+  }): ContractFunctionObj<string> {
+    const { contract } = this
+
+    return {
+      async callAsync() {
+        return contract.methods.depositBalance(address).call()
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods.depositBalance(address).encodeABI()
+      },
+    }
+  }
+
   public competitionEnded(): ContractFunctionObj<boolean> {
     const { contract } = this
 
