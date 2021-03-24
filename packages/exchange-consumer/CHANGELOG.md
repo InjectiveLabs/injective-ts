@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.21...@injectivelabs/exchange-consumer@0.0.22) (2021-03-24)
+
+### Features
+
+* added redelegating, withdrawing rewards, getting user rewards ([7175ae3](https://github.com/InjectiveLabs/injective-ts/commit/7175ae38a899d748a3781266c1359d3b606f8699))
+
 ## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.20...@injectivelabs/exchange-consumer@0.0.21) (2021-03-23)
 
 ### Bug Fixes

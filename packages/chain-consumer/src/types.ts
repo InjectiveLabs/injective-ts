@@ -7,6 +7,7 @@ import {
   UnbondingDelegation as GrpcUnbondingDelegation,
   DelegationResponse as GrpcDelegationResponse,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/staking_pb'
+import { DelegationDelegatorReward as GrpcDelegationDelegatorReward } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/distribution_pb'
 import {
   Proposal as GrpcProposal,
   Deposit as GrpcProposalDeposit,
@@ -34,4 +35,5 @@ export {
   GrpcVote,
   GrpcProposalStatus,
   GrpcSupply,
+  GrpcDelegationDelegatorReward,
 }

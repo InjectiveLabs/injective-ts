@@ -35,6 +35,8 @@ export class ProposalComposer {
     content.setQuoteDenom(market.quoteDenom)
     content.setTicker(market.ticker)
     content.setBaseDenom(market.baseDenom)
+    content.setMaxPriceScaleDecimals(market.maxPriceScaleDecimals)
+    content.setMaxQuantityScaleDecimals(market.maxQuantityScaleDecimals)
 
     return {
       proposer,
@@ -67,6 +69,8 @@ export class ProposalComposer {
     content.setTakerFeeRate(market.takerFeeRate)
     content.setRelayerFeeShareRate(market.relayerFeeShareRate)
     content.setMarketId(market.marketId)
+    content.setMaxPriceScaleDecimals(market.maxPriceScaleDecimals)
+    content.setMaxQuantityScaleDecimals(market.maxQuantityScaleDecimals)
 
     return {
       proposer,
