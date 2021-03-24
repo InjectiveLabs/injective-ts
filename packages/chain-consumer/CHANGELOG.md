@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.30...@injectivelabs/chain-consumer@0.0.31) (2021-03-24)
+
+### Bug Fixes
+
+* included DistributionConsumer to the export ([82f6109](https://github.com/InjectiveLabs/injective-ts/commit/82f6109b3e1b28083efc4a293d7fb7f21888d374))
+
 ## [0.0.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.29...@injectivelabs/chain-consumer@0.0.30) (2021-03-24)
 
 ### Features
