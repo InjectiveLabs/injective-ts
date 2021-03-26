@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.23...@injectivelabs/exchange-consumer@0.0.24) (2021-03-26)
+
+### Bug Fixes
+
+* gasPrice increased ([dccf176](https://github.com/InjectiveLabs/injective-ts/commit/dccf176dd21c33576a2adb270036cca223c18827))
+
 ## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.22...@injectivelabs/exchange-consumer@0.0.23) (2021-03-26)
 
 ### Bug Fixes
