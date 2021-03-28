@@ -4,10 +4,18 @@ import { AbiItem } from 'web3-utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import Web3 from 'web3'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
-import { SubscriptionManager } from './SubscriptionManager'
+import { BaseCurrency } from '@injectivelabs/web3-contract-typings/types/BaseCurrency'
+import { DepositManager } from '@injectivelabs/web3-contract-typings/types/DepositManager'
+import { Peggy } from '@injectivelabs/web3-contract-typings/types/Peggy'
 import { EventFilters, InjectiveContracts } from './types'
+import { SubscriptionManager } from './SubscriptionManager'
 
-export default class BaseContract<T, ContractEvents extends string> {
+type ContractTypes = BaseCurrency | DepositManager | Peggy
+
+export default class BaseContract<
+  T extends ContractTypes,
+  ContractEvents extends string
+> {
   private subscriptionManager?: SubscriptionManager<
     InjectiveContracts,
     ContractEvents

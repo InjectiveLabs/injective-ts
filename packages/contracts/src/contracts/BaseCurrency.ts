@@ -109,4 +109,46 @@ export class BaseCurrencyContract extends BaseContract<
       },
     }
   }
+
+  getName(): ContractFunctionObj<string> {
+    const { contract } = this
+
+    return {
+      async callAsync() {
+        return contract.methods.name().call()
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods.name().encodeABI()
+      },
+    }
+  }
+
+  getDecimals(): ContractFunctionObj<string> {
+    const { contract } = this
+
+    return {
+      async callAsync() {
+        return contract.methods.decimals().call()
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods.decimals().encodeABI()
+      },
+    }
+  }
+
+  getSymbol(): ContractFunctionObj<string> {
+    const { contract } = this
+
+    return {
+      async callAsync() {
+        return contract.methods.symbol().call()
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods.symbol().encodeABI()
+      },
+    }
+  }
 }

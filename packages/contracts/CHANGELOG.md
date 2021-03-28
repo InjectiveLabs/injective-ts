@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.27...@injectivelabs/contracts@0.0.28) (2021-03-28)
+
+### Features
+
+* added name, symbol, decimal methods to the base currency contract ([f843142](https://github.com/InjectiveLabs/injective-ts/commit/f843142b147847e458c7f1bbb647645131b3543a))
+
 ## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.26...@injectivelabs/contracts@0.0.27) (2021-03-24)
 
 ### Features
