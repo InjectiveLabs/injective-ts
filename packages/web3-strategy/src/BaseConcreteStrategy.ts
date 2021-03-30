@@ -3,7 +3,7 @@ import { ChainId } from '@injectivelabs/ts-types'
 import { provider } from 'web3-core'
 import ProviderEngine from 'web3-provider-engine'
 import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tracker'
-import SanitizingSubprovider from 'web3-provider-engine/subproviders/sanitizer'
+// import SanitizingSubprovider from 'web3-provider-engine/subproviders/sanitizer'
 import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
 import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
 import { ConcreteStrategyOptions } from './types'
@@ -99,7 +99,7 @@ export default abstract class BaseConcreteStrategy {
     })
 
     engine.addProvider(new NonceTrackerSubprovider())
-    engine.addProvider(new SanitizingSubprovider())
+    // engine.addProvider(new SanitizingSubprovider())
     engine.addProvider(new RpcSubprovider({ rpcUrl }))
     engine.start()
 

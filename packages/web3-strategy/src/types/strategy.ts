@@ -42,7 +42,7 @@ export interface ConcreteWeb3Strategy {
 
   sendTransaction(
     transaction: unknown,
-    address: AccountAddress,
+    options: { address: string; chainId: ChainId },
   ): Promise<string>
 
   signTypedDataV4(eip712json: string, address: AccountAddress): Promise<string>

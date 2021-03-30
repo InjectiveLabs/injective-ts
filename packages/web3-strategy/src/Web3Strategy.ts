@@ -88,9 +88,9 @@ export default class Web3Strategy {
 
   public async sendTransaction(
     tx: unknown,
-    address: AccountAddress,
+    options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    return this.strategy.sendTransaction(tx, address)
+    return this.strategy.sendTransaction(tx, options)
   }
 
   public async signTypedDataV4(

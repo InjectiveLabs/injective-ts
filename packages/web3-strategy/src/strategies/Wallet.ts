@@ -79,8 +79,7 @@ export default class Wallet
 
   async sendTransaction(
     transaction: unknown,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _address: AccountAddress,
+    _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     const { transactionHash } = await this.getWeb3ForChainId(
       this.chainId,

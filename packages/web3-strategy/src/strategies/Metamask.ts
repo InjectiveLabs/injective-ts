@@ -53,8 +53,7 @@ export default class Metamask
 
   async sendTransaction(
     transaction: unknown,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _address: AccountAddress,
+    _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     return this.ethereum.request({
       method: 'eth_sendTransaction',
