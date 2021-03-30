@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.28...@injectivelabs/web3-strategy@0.0.29) (2021-03-30)
+
+### Bug Fixes
+
+* increased address taken from ledger ([2bbde17](https://github.com/InjectiveLabs/injective-ts/commit/2bbde178cca9abc27611648976ad3bf91193118a))
+
 ## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.27...@injectivelabs/web3-strategy@0.0.28) (2021-03-30)
 
 ### Bug Fixes
