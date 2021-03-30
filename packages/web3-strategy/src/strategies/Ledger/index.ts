@@ -2,7 +2,7 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import EthLedger from '@ledgerhq/hw-app-eth'
 import { TypedDataUtils } from 'eth-sig-util'
-import { bufferToHex } from 'ethereumjs-util'
+import { bufferToHex, publicToAddress, addHexPrefix } from 'ethereumjs-util'
 import { Transaction } from 'ethereumjs-tx'
 import HDNode from 'hdkey'
 import {
@@ -12,20 +12,15 @@ import {
 } from '../../types'
 import BaseConcreteStrategy from '../../BaseConcreteStrategy'
 import {
-  DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '../../constants'
 import LedgerTransport, { isLedgerSupportedInWindow } from './transport'
-import { WalletUtils } from '../../utils'
 
-export const stringHash = (message: string) =>
-  Buffer.from(message).toString('hex')
-
-export const domainHash = (message: any) =>
+const domainHash = (message: any) =>
   TypedDataUtils.hashStruct('EIP712Domain', message.domain, message.types, true)
 
-export const messageHash = (message: any) =>
+const messageHash = (message: any) =>
   TypedDataUtils.hashStruct(
     message.primaryType,
     message.message,
@@ -33,12 +28,26 @@ export const messageHash = (message: any) =>
     true,
   )
 
+const addressOfHDKey = (hdKey: HDNode): string => {
+  const shouldSanitizePublicKey = true
+  const derivedPublicKey = hdKey.publicKey
+  const ethereumAddressUnprefixed = publicToAddress(
+    derivedPublicKey,
+    shouldSanitizePublicKey,
+  ).toString('hex')
+  const address = addHexPrefix(ethereumAddressUnprefixed).toLowerCase()
+
+  return address
+}
+
 export default class Ledger
   extends BaseConcreteStrategy
   implements ConcreteWeb3Strategy {
   private baseDerivationPath: string
 
   private ledger: LedgerTransport
+
+  private derivedKeyInfos: DerivedHDKeyInfo[] = []
 
   constructor({
     chainId,
@@ -62,17 +71,10 @@ export default class Ledger
     this.baseDerivationPath = basDerivationPath
   }
 
-  public async getAddresses(
-    numberOfAccounts: number = DEFAULT_NUM_ADDRESSES_TO_FETCH,
-  ): Promise<string[]> {
-    const initialDerivedKeyInfo = await this.initialDerivedKeyInfo()
-    const derivedKeyInfos = WalletUtils.calculateDerivedHDKeyInfos(
-      initialDerivedKeyInfo,
-      numberOfAccounts,
-    )
-    const accounts = derivedKeyInfos.map((k) => k.address)
+  public async getAddresses(): Promise<string[]> {
+    const derivedKeyInfos = await this.getDerivedKeyInfos()
 
-    return accounts
+    return derivedKeyInfos.map((k) => k.address)
   }
 
   async confirm(address: AccountAddress): Promise<string> {
@@ -177,50 +179,38 @@ export default class Ledger
     return Promise.resolve(txHash)
   }
 
-  private async initialDerivedKeyInfo(): Promise<DerivedHDKeyInfo> {
+  private async getDerivedKeyInfos(): Promise<DerivedHDKeyInfo[]> {
+    if (this.derivedKeyInfos.length > 0) {
+      return this.derivedKeyInfos
+    }
+
     const ledger = await this.ledger.getInstance()
-    const parentKeyDerivationPath = `m/${this.baseDerivationPath}`
-    const result = await ledger.getAddress(parentKeyDerivationPath)
+    const fullBaseDerivationPath = `m/${this.baseDerivationPath}`
 
-    const hdKey = new HDNode()
-    hdKey.publicKey = Buffer.from(result.publicKey, 'hex')
-    hdKey.chainCode = Buffer.from(result.chainCode || '', 'hex')
-    const address = WalletUtils.addressOfHDKey(hdKey)
-    const initialDerivedKeyInfo = {
-      hdKey,
-      address,
-      derivationPath: parentKeyDerivationPath,
-      baseDerivationPath: this.baseDerivationPath,
+    for (let i = 0; i < DEFAULT_NUM_ADDRESSES_TO_FETCH; i += 1) {
+      const path = `${fullBaseDerivationPath}/${i}'/0/0`
+      const result = await ledger.getAddress(path)
+
+      const hdKey = new HDNode()
+      hdKey.publicKey = Buffer.from(result.publicKey, 'hex')
+      hdKey.chainCode = Buffer.from(result.chainCode || '', 'hex')
+      const address = addressOfHDKey(hdKey)
+      this.derivedKeyInfos.push({
+        hdKey,
+        address,
+        derivationPath: path,
+        baseDerivationPath: this.baseDerivationPath,
+      })
     }
 
-    return initialDerivedKeyInfo
-  }
-
-  private findDerivedKeyInfoForAddress(
-    initialHdKey: DerivedHDKeyInfo,
-    address: string,
-  ): DerivedHDKeyInfo {
-    const matchedDerivedKeyInfo = WalletUtils.findDerivedKeyInfoForAddressIfExists(
-      address,
-      initialHdKey,
-      DEFAULT_ADDRESS_SEARCH_LIMIT,
-    )
-
-    if (matchedDerivedKeyInfo === undefined) {
-      throw new Error(`Address ${address} not found`)
-    }
-
-    return matchedDerivedKeyInfo
+    return this.derivedKeyInfos
   }
 
   private async getDerivationPathForAddress(
     address: AccountAddress,
   ): Promise<string> {
-    const initialDerivedKeyInfo = await this.initialDerivedKeyInfo()
-    const derivedKeyInfo = this.findDerivedKeyInfoForAddress(
-      initialDerivedKeyInfo,
-      address,
-    )
+    const derivedKeyInfos = await this.getDerivedKeyInfos()
+    const derivedKeyInfo = derivedKeyInfos.find((d) => d.address === address)!
 
     return derivedKeyInfo.derivationPath
   }
