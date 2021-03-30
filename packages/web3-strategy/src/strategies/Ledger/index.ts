@@ -4,10 +4,20 @@ import EthLedger from '@ledgerhq/hw-app-eth'
 import { TypedDataUtils } from 'eth-sig-util'
 import { bufferToHex } from 'ethereumjs-util'
 import { Transaction } from 'ethereumjs-tx'
-import { ConcreteStrategyOptions, ConcreteWeb3Strategy } from '../../types'
+import HDNode from 'hdkey'
+import {
+  ConcreteStrategyOptions,
+  ConcreteWeb3Strategy,
+  DerivedHDKeyInfo,
+} from '../../types'
 import BaseConcreteStrategy from '../../BaseConcreteStrategy'
-import { DEFAULT_BASE_DERIVATION_PATH } from '../../constants'
+import {
+  DEFAULT_ADDRESS_SEARCH_LIMIT,
+  DEFAULT_BASE_DERIVATION_PATH,
+  DEFAULT_NUM_ADDRESSES_TO_FETCH,
+} from '../../constants'
 import LedgerTransport, { isLedgerSupportedInWindow } from './transport'
+import { WalletUtils } from '../../utils'
 
 export const stringHash = (message: string) =>
   Buffer.from(message).toString('hex')
@@ -44,17 +54,34 @@ export default class Ledger
     this.ledger = new LedgerTransport(EthLedger)
   }
 
-  async getAddresses(): Promise<string[]> {
-    const ledger = await this.ledger.getInstance()
-    const result = await ledger.getAddress(this.baseDerivationPath)
+  public getPath(): string {
+    return this.baseDerivationPath
+  }
 
-    return [result.address]
+  public setPath(basDerivationPath: string): void {
+    this.baseDerivationPath = basDerivationPath
+  }
+
+  public async getAddresses(
+    numberOfAccounts: number = DEFAULT_NUM_ADDRESSES_TO_FETCH,
+  ): Promise<string[]> {
+    const initialDerivedKeyInfo = await this.initialDerivedKeyInfo()
+    const derivedKeyInfos = WalletUtils.calculateDerivedHDKeyInfos(
+      initialDerivedKeyInfo,
+      numberOfAccounts,
+    )
+    const accounts = derivedKeyInfos.map((k) => k.address)
+
+    return accounts
   }
 
   async confirm(address: AccountAddress): Promise<string> {
+    const baseDerivationPath = await this.getBaseDerivationPathForAddress(
+      address,
+    )
     const ledger = await this.ledger.getInstance()
     const signed = await ledger.signPersonalMessage(
-      this.baseDerivationPath,
+      baseDerivationPath,
       `Confirmation for ${address} at time: ${Date.now()}`,
     )
     const combined = `${signed.r}${signed.s}${signed.v.toString(16)}`
@@ -79,10 +106,9 @@ export default class Ledger
     const chainId = parseInt(options.chainId.toString(), 10)
     const web3 = this.getWeb3ForChainId(chainId)
     const nonce = await web3.eth.getTransactionCount(options.address)
-    console.log(nonce)
     const txObject = transaction as object
     const gas = `0x${(transaction as any).gas}`
-    const gasPrice = `0xA65a0bc00`
+    const gasPrice = `0x${(transaction as any).gasPrice}`
     const txData = {
       ...txObject,
       gas,
@@ -101,8 +127,11 @@ export default class Ledger
 
     const serializedTx = tx.serialize().toString('hex')
     const ledger = await this.ledger.getInstance()
+    const baseDerivationPath = await this.getBaseDerivationPathForAddress(
+      options.address,
+    )
     const signed = await ledger.signTransaction(
-      this.baseDerivationPath,
+      baseDerivationPath,
       serializedTx,
     )
 
@@ -121,12 +150,15 @@ export default class Ledger
 
   async signTypedDataV4(
     eip712json: string,
-    _address: AccountAddress,
+    address: AccountAddress,
   ): Promise<string> {
+    const baseDerivationPath = await this.getBaseDerivationPathForAddress(
+      address,
+    )
     const object = JSON.parse(eip712json)
     const ledger = await this.ledger.getInstance()
     const result = await ledger.signEIP712HashedMessage(
-      this.baseDerivationPath,
+      baseDerivationPath,
       bufferToHex(domainHash(object)),
       bufferToHex(messageHash(object)),
     )
@@ -150,6 +182,54 @@ export default class Ledger
 
   async getTransactionReceipt(txHash: string): Promise<string> {
     return Promise.resolve(txHash)
+  }
+
+  private async initialDerivedKeyInfo(): Promise<DerivedHDKeyInfo> {
+    const ledger = await this.ledger.getInstance()
+    const parentKeyDerivationPath = `m/${this.baseDerivationPath}`
+    const result = await ledger.getAddress(parentKeyDerivationPath)
+
+    const hdKey = new HDNode()
+    hdKey.publicKey = Buffer.from(result.publicKey, 'hex')
+    hdKey.chainCode = Buffer.from(result.chainCode || '', 'hex')
+    const address = WalletUtils.addressOfHDKey(hdKey)
+    const initialDerivedKeyInfo = {
+      hdKey,
+      address,
+      derivationPath: parentKeyDerivationPath,
+      baseDerivationPath: this.baseDerivationPath,
+    }
+
+    return initialDerivedKeyInfo
+  }
+
+  private findDerivedKeyInfoForAddress(
+    initialHdKey: DerivedHDKeyInfo,
+    address: string,
+  ): DerivedHDKeyInfo {
+    const matchedDerivedKeyInfo = WalletUtils.findDerivedKeyInfoForAddressIfExists(
+      address,
+      initialHdKey,
+      DEFAULT_ADDRESS_SEARCH_LIMIT,
+    )
+
+    if (matchedDerivedKeyInfo === undefined) {
+      throw new Error(`Address ${address} not found`)
+    }
+
+    return matchedDerivedKeyInfo
+  }
+
+  private async getBaseDerivationPathForAddress(
+    address: AccountAddress,
+  ): Promise<string> {
+    const initialDerivedKeyInfo = await this.initialDerivedKeyInfo()
+    const derivedKeyInfo = this.findDerivedKeyInfoForAddress(
+      initialDerivedKeyInfo,
+      address,
+    )
+
+    return derivedKeyInfo.baseDerivationPath
   }
 
   onChainChanged = (_callback: () => void): void => {

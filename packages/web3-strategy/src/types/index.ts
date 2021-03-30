@@ -1,5 +1,6 @@
 import Eip1993Provider from 'eip1193-provider'
 import { ChainId } from '@injectivelabs/ts-types'
+import HDNode from 'hdkey'
 import { Wallet } from './enums'
 
 export * from './enums'
@@ -29,4 +30,11 @@ export interface Web3StrategyArguments {
   chainId: ChainId
   wallet: Wallet
   options: ConcreteStrategyOptions
+}
+
+export interface DerivedHDKeyInfo {
+  address: string
+  baseDerivationPath: string
+  derivationPath: string
+  hdKey: HDNode
 }
