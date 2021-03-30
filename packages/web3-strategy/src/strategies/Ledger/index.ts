@@ -76,12 +76,10 @@ export default class Ledger
   }
 
   async confirm(address: AccountAddress): Promise<string> {
-    const baseDerivationPath = await this.getBaseDerivationPathForAddress(
-      address,
-    )
+    const derivationPath = await this.getDerivationPathForAddress(address)
     const ledger = await this.ledger.getInstance()
     const signed = await ledger.signPersonalMessage(
-      baseDerivationPath,
+      derivationPath,
       `Confirmation for ${address} at time: ${Date.now()}`,
     )
     const combined = `${signed.r}${signed.s}${signed.v.toString(16)}`
@@ -127,13 +125,10 @@ export default class Ledger
 
     const serializedTx = tx.serialize().toString('hex')
     const ledger = await this.ledger.getInstance()
-    const baseDerivationPath = await this.getBaseDerivationPathForAddress(
+    const derivationPath = await this.getDerivationPathForAddress(
       options.address,
     )
-    const signed = await ledger.signTransaction(
-      baseDerivationPath,
-      serializedTx,
-    )
+    const signed = await ledger.signTransaction(derivationPath, serializedTx)
 
     /** Send the Transaction */
     tx.r = Buffer.from(signed.r, 'hex')
@@ -152,13 +147,11 @@ export default class Ledger
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const baseDerivationPath = await this.getBaseDerivationPathForAddress(
-      address,
-    )
+    const derivationPath = await this.getDerivationPathForAddress(address)
     const object = JSON.parse(eip712json)
     const ledger = await this.ledger.getInstance()
     const result = await ledger.signEIP712HashedMessage(
-      baseDerivationPath,
+      derivationPath,
       bufferToHex(domainHash(object)),
       bufferToHex(messageHash(object)),
     )
@@ -220,7 +213,7 @@ export default class Ledger
     return matchedDerivedKeyInfo
   }
 
-  private async getBaseDerivationPathForAddress(
+  private async getDerivationPathForAddress(
     address: AccountAddress,
   ): Promise<string> {
     const initialDerivedKeyInfo = await this.initialDerivedKeyInfo()
@@ -229,7 +222,7 @@ export default class Ledger
       address,
     )
 
-    return derivedKeyInfo.baseDerivationPath
+    return derivedKeyInfo.derivationPath
   }
 
   onChainChanged = (_callback: () => void): void => {
