@@ -1,12 +1,6 @@
 import { isServerSide, sleep } from '@injectivelabs/utils'
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import ProviderEngine from 'web3-provider-engine'
-import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tracker'
-import SanitizingSubprovider from 'web3-provider-engine/subproviders/sanitizer'
-import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
-import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
-import { provider } from 'web3-core'
 import {
   ConcreteStrategyOptions,
   ConcreteWeb3Strategy,
@@ -111,42 +105,6 @@ export default class Metamask
 
   onAccountChanged(callback: (account: AccountAddress) => void): void {
     this.ethereum.on('accountsChanged', callback)
-  }
-
-  getWeb3ProviderEngineForRpc = ({
-    rpcUrl,
-    pollingInterval,
-  }: {
-    rpcUrl: string
-    pollingInterval: number
-  }): provider => {
-    const engine = new ProviderEngine({
-      pollingInterval,
-    })
-
-    engine.addProvider(new NonceTrackerSubprovider())
-    engine.addProvider(new SanitizingSubprovider())
-    engine.addProvider(new RpcSubprovider({ rpcUrl }))
-    engine.start()
-
-    return engine as provider
-  }
-
-  getWeb3WsProviderEngineForRpc = ({
-    wsRpcUrl,
-    pollingInterval,
-  }: {
-    wsRpcUrl: string
-    pollingInterval: number
-  }): provider => {
-    const engine = new ProviderEngine({
-      pollingInterval,
-    })
-
-    engine.addProvider(new WebSocketSubprovider({ rpcUrl: wsRpcUrl }))
-    engine.start()
-
-    return engine as provider
   }
 
   isWeb3Connected = (): boolean => isMetamaskInstalled

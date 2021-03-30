@@ -6,7 +6,6 @@ import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tra
 import SanitizingSubprovider from 'web3-provider-engine/subproviders/sanitizer'
 import WalletSubprovider from 'web3-provider-engine/subproviders/wallet'
 import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
-import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
 import { provider, TransactionConfig } from 'web3-core'
 import EthereumWallet from 'ethereumjs-wallet'
 import { TypedDataUtils } from 'eth-sig-util'
@@ -159,23 +158,6 @@ export default class Wallet
       getPrivateKeyWalletProviderForSinglePrivateKey(this.privateKey),
     )
     engine.addProvider(new RpcSubprovider({ rpcUrl }))
-    engine.start()
-
-    return engine as provider
-  }
-
-  getWeb3WsProviderEngineForRpc = ({
-    wsRpcUrl,
-    pollingInterval,
-  }: {
-    wsRpcUrl: string
-    pollingInterval: number
-  }): provider => {
-    const engine = new ProviderEngine({
-      pollingInterval,
-    })
-
-    engine.addProvider(new WebSocketSubprovider({ rpcUrl: wsRpcUrl }))
     engine.start()
 
     return engine as provider

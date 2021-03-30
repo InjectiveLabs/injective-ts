@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.25...@injectivelabs/web3-strategy@0.0.26) (2021-03-30)
+
+### Features
+
+* added initial ledger support ([5e8e234](https://github.com/InjectiveLabs/injective-ts/commit/5e8e23495ce1c369adbaeed3ef52b578e2496f9f))
+
 ## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.24...@injectivelabs/web3-strategy@0.0.25) (2021-03-14)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy

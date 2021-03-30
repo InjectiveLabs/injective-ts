@@ -1,6 +1,11 @@
 import Web3 from 'web3'
 import { ChainId } from '@injectivelabs/ts-types'
 import { provider } from 'web3-core'
+import ProviderEngine from 'web3-provider-engine'
+import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tracker'
+import SanitizingSubprovider from 'web3-provider-engine/subproviders/sanitizer'
+import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
+import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
 import { ConcreteStrategyOptions } from './types'
 
 const DEFAULT_POLLING_INTERVAL_MS = 500
@@ -82,19 +87,39 @@ export default abstract class BaseConcreteStrategy {
     return web3WsForChainId[chainId]
   }
 
-  protected abstract getWeb3ProviderEngineForRpc({
+  public getWeb3ProviderEngineForRpc = ({
     rpcUrl,
     pollingInterval,
   }: {
     rpcUrl: string
     pollingInterval: number
-  }): provider
+  }): provider => {
+    const engine = new ProviderEngine({
+      pollingInterval,
+    })
 
-  protected abstract getWeb3WsProviderEngineForRpc({
+    engine.addProvider(new NonceTrackerSubprovider())
+    engine.addProvider(new SanitizingSubprovider())
+    engine.addProvider(new RpcSubprovider({ rpcUrl }))
+    engine.start()
+
+    return engine as provider
+  }
+
+  public getWeb3WsProviderEngineForRpc = ({
     wsRpcUrl,
     pollingInterval,
   }: {
     wsRpcUrl: string
     pollingInterval: number
-  }): provider
+  }): provider => {
+    const engine = new ProviderEngine({
+      pollingInterval,
+    })
+
+    engine.addProvider(new WebSocketSubprovider({ rpcUrl: wsRpcUrl }))
+    engine.start()
+
+    return engine as provider
+  }
 }

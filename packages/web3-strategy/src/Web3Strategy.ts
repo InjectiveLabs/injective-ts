@@ -3,6 +3,7 @@ import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import { assert } from '@injectivelabs/assert'
 import Metamask from './strategies/Metamask'
 import WalletStrategy from './strategies/Wallet'
+import Ledger from './strategies/Ledger/index'
 import {
   Wallet,
   ConcreteWeb3Strategy,
@@ -31,6 +32,9 @@ export default class Web3Strategy {
         break
       case Wallet.Metamask:
         this.strategy = new Metamask({ chainId, options })
+        break
+      case Wallet.Ledger:
+        this.strategy = new Ledger({ chainId, options })
         break
       default:
         this.strategy = new Metamask({ chainId, options })

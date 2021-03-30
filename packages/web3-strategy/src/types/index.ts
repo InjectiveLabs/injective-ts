@@ -13,8 +13,13 @@ export interface WindowWithEip1193Provider extends Window {
   ethereum: Eip1993ProviderWithMetamask
 }
 
+export interface WindowWithLedgerSupport extends Window {
+  Websocket?: any
+}
+
 export interface ConcreteStrategyOptions {
   privateKey?: string
+  baseDerivationPath?: string
   rpcUrls: Record<ChainId, string>
   wsRpcUrls: Record<ChainId, string>
   pollingInterval: number
