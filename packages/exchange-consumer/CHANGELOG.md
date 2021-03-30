@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.24...@injectivelabs/exchange-consumer@0.0.25) (2021-03-30)
+
+### Bug Fixes
+
+* increased gas limit ([e332b53](https://github.com/InjectiveLabs/injective-ts/commit/e332b538a11b846e58094d61627229061b8e6d6e))
+
 ## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.23...@injectivelabs/exchange-consumer@0.0.24) (2021-03-26)
 
 ### Bug Fixes
