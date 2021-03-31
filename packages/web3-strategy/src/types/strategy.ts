@@ -5,6 +5,20 @@ import { provider } from 'web3-core'
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void
 
+export enum LedgerDerivationPathType {
+  LedgerLive = 'ledger-live',
+  LedgerMew = 'ledger-mew',
+}
+
+export interface ConcreteStrategyOptions {
+  privateKey?: string
+  baseDerivationPath?: string
+  derivationPathType?: LedgerDerivationPathType
+  rpcUrls: Record<ChainId, string>
+  wsRpcUrls: Record<ChainId, string>
+  pollingInterval: number
+}
+
 export interface ConcreteWeb3Strategy {
   web3ForChainId: Record<ChainId, Web3>
 
@@ -58,4 +72,6 @@ export interface ConcreteWeb3Strategy {
   onAccountChanged(callback: onAccountChangeCallback): void
 
   isWeb3Connected(): boolean
+
+  setOptions(options: Partial<ConcreteStrategyOptions>): void
 }

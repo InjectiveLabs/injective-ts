@@ -140,6 +140,10 @@ export default class Wallet
     callback((undefined as unknown) as AccountAddress)
   }
 
+  setOptions(options: ConcreteStrategyOptions): void {
+    this.privateKey = options.privateKey || this.privateKey
+  }
+
   getWeb3ProviderEngineForRpc = ({
     rpcUrl,
     pollingInterval,

@@ -106,6 +106,10 @@ export default class Metamask
     this.ethereum.on('accountsChanged', callback)
   }
 
+  setOptions = (_options: ConcreteStrategyOptions): void => {
+    //
+  }
+
   isWeb3Connected = (): boolean => isMetamaskInstalled
 
   isMetamask = (): boolean => true

@@ -10,6 +10,7 @@ import {
   onAccountChangeCallback,
   onChainIdChangeCallback,
   Web3StrategyArguments,
+  ConcreteStrategyOptions,
 } from './types'
 
 export default class Web3Strategy {
@@ -106,5 +107,9 @@ export default class Web3Strategy {
 
   public onChainChange(callback: onChainIdChangeCallback): void {
     return this.strategy.onChainChanged(callback)
+  }
+
+  public setStrategyOptions(options: Partial<ConcreteStrategyOptions>): void {
+    return this.strategy.setOptions(options)
   }
 }

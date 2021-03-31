@@ -2,20 +2,17 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import EthLedger from '@ledgerhq/hw-app-eth'
 import { TypedDataUtils } from 'eth-sig-util'
-import { bufferToHex, publicToAddress, addHexPrefix } from 'ethereumjs-util'
+import { bufferToHex } from 'ethereumjs-util'
 import { Transaction } from 'ethereumjs-tx'
-import HDNode from 'hdkey'
 import {
   ConcreteStrategyOptions,
   ConcreteWeb3Strategy,
-  DerivedHDKeyInfo,
+  LedgerDerivationPathType,
 } from '../../types'
 import BaseConcreteStrategy from '../../BaseConcreteStrategy'
-import {
-  DEFAULT_BASE_DERIVATION_PATH,
-  DEFAULT_NUM_ADDRESSES_TO_FETCH,
-} from '../../constants'
+import { DEFAULT_BASE_DERIVATION_PATH } from '../../constants'
 import LedgerTransport, { isLedgerSupportedInWindow } from './transport'
+import AccountManager from './AccountManager'
 
 const domainHash = (message: any) =>
   TypedDataUtils.hashStruct('EIP712Domain', message.domain, message.types, true)
@@ -28,26 +25,16 @@ const messageHash = (message: any) =>
     true,
   )
 
-const addressOfHDKey = (hdKey: HDNode): string => {
-  const shouldSanitizePublicKey = true
-  const derivedPublicKey = hdKey.publicKey
-  const ethereumAddressUnprefixed = publicToAddress(
-    derivedPublicKey,
-    shouldSanitizePublicKey,
-  ).toString('hex')
-  const address = addHexPrefix(ethereumAddressUnprefixed).toLowerCase()
-
-  return address
-}
-
 export default class Ledger
   extends BaseConcreteStrategy
   implements ConcreteWeb3Strategy {
   private baseDerivationPath: string
 
+  private derivationPathType: LedgerDerivationPathType
+
   private ledger: LedgerTransport
 
-  private derivedKeyInfos: DerivedHDKeyInfo[] = []
+  private accountManager: AccountManager
 
   constructor({
     chainId,
@@ -60,25 +47,45 @@ export default class Ledger
 
     this.baseDerivationPath =
       options.baseDerivationPath || DEFAULT_BASE_DERIVATION_PATH
+    this.derivationPathType = LedgerDerivationPathType.LedgerLive
     this.ledger = new LedgerTransport(EthLedger)
+    this.accountManager = new AccountManager(this.ledger)
   }
 
-  public getPath(): string {
-    return this.baseDerivationPath
-  }
+  setOptions(options: ConcreteStrategyOptions): void {
+    this.baseDerivationPath =
+      options.baseDerivationPath || this.baseDerivationPath
 
-  public setPath(basDerivationPath: string): void {
-    this.baseDerivationPath = basDerivationPath
+    /**
+     * If derivation path type changed
+     * we need to remove any "wallets"
+     * we already have in the account manager
+     */
+    const derivationPathTypeChanged =
+      options.derivationPathType &&
+      this.derivationPathType !== options.derivationPathType
+
+    if (derivationPathTypeChanged) {
+      this.accountManager.reset()
+      this.derivationPathType =
+        options.derivationPathType || this.derivationPathType
+    }
   }
 
   public async getAddresses(): Promise<string[]> {
-    const derivedKeyInfos = await this.getDerivedKeyInfos()
+    const { accountManager, baseDerivationPath, derivationPathType } = this
+    const wallets = await accountManager.getWallets(
+      baseDerivationPath,
+      derivationPathType,
+    )
 
-    return derivedKeyInfos.map((k) => k.address)
+    return wallets.map((k) => k.address)
   }
 
   async confirm(address: AccountAddress): Promise<string> {
-    const derivationPath = await this.getDerivationPathForAddress(address)
+    const { derivationPath } = await this.accountManager.getWalletForAddress(
+      address,
+    )
     const ledger = await this.ledger.getInstance()
     const signed = await ledger.signPersonalMessage(
       derivationPath,
@@ -94,7 +101,7 @@ export default class Ledger
     _options: { address: string; chainId: ChainId },
   ): Promise<string> {
     throw new Error(
-      "Please use metamask's ledger implementation to sign non EIP-1559 messages.",
+      "Please use metamask's ledger implementation to sign non EIP-712 messages.",
     )
   }
 
@@ -127,7 +134,7 @@ export default class Ledger
 
     const serializedTx = tx.serialize().toString('hex')
     const ledger = await this.ledger.getInstance()
-    const derivationPath = await this.getDerivationPathForAddress(
+    const { derivationPath } = await this.accountManager.getWalletForAddress(
       options.address,
     )
     const signed = await ledger.signTransaction(derivationPath, serializedTx)
@@ -149,7 +156,9 @@ export default class Ledger
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const derivationPath = await this.getDerivationPathForAddress(address)
+    const { derivationPath } = await this.accountManager.getWalletForAddress(
+      address,
+    )
     const object = JSON.parse(eip712json)
     const ledger = await this.ledger.getInstance()
     const result = await ledger.signEIP712HashedMessage(
@@ -177,42 +186,6 @@ export default class Ledger
 
   async getTransactionReceipt(txHash: string): Promise<string> {
     return Promise.resolve(txHash)
-  }
-
-  private async getDerivedKeyInfos(): Promise<DerivedHDKeyInfo[]> {
-    if (this.derivedKeyInfos.length > 0) {
-      return this.derivedKeyInfos
-    }
-
-    const ledger = await this.ledger.getInstance()
-    const fullBaseDerivationPath = `m/${this.baseDerivationPath}`
-
-    for (let i = 0; i < DEFAULT_NUM_ADDRESSES_TO_FETCH; i += 1) {
-      const path = `${fullBaseDerivationPath}/${i}'/0/0`
-      const result = await ledger.getAddress(path)
-
-      const hdKey = new HDNode()
-      hdKey.publicKey = Buffer.from(result.publicKey, 'hex')
-      hdKey.chainCode = Buffer.from(result.chainCode || '', 'hex')
-      const address = addressOfHDKey(hdKey)
-      this.derivedKeyInfos.push({
-        hdKey,
-        address,
-        derivationPath: path,
-        baseDerivationPath: this.baseDerivationPath,
-      })
-    }
-
-    return this.derivedKeyInfos
-  }
-
-  private async getDerivationPathForAddress(
-    address: AccountAddress,
-  ): Promise<string> {
-    const derivedKeyInfos = await this.getDerivedKeyInfos()
-    const derivedKeyInfo = derivedKeyInfos.find((d) => d.address === address)!
-
-    return derivedKeyInfo.derivationPath
   }
 
   onChainChanged = (_callback: () => void): void => {
