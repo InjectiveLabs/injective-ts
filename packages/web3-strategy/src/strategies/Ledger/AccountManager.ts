@@ -1,6 +1,7 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
 import { publicToAddress, addHexPrefix } from 'ethereumjs-util'
 import HDNode from 'hdkey'
+import { LocalStorage } from '@injectivelabs/utils'
 import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '../../constants'
 import LedgerTransport from './transport'
@@ -12,7 +13,7 @@ const addressOfHDKey = (hdKey: HDNode): string => {
     derivedPublicKey,
     shouldSanitizePublicKey,
   ).toString('hex')
-  const address = addHexPrefix(ethereumAddressWithoutPrefix).toLowerCase()
+  const address = addHexPrefix(ethereumAddressWithoutPrefix)
 
   return address
 }
@@ -22,8 +23,14 @@ export default class AccountManager {
 
   private ledger: LedgerTransport
 
+  private storage: LocalStorage
+
   constructor(ledger: LedgerTransport) {
     this.ledger = ledger
+    this.storage = new LocalStorage('injective-ledger')
+    this.wallets = this.storage.has('wallets')
+      ? (this.storage.get('wallets') as LedgerWalletInfo[])
+      : []
   }
 
   async getWallets(
@@ -89,7 +96,7 @@ export default class AccountManager {
       const hdKey = new HDNode()
       hdKey.publicKey = Buffer.from(result.publicKey, 'hex')
       hdKey.chainCode = Buffer.from(result.chainCode || '', 'hex')
-      const address = addressOfHDKey(hdKey)
+      const address = result.address || addressOfHDKey(hdKey)
 
       this.wallets.push({
         hdKey,
@@ -98,6 +105,8 @@ export default class AccountManager {
         derivationPath: path,
       })
     }
+
+    this.storage.set('wallets', this.wallets)
   }
 
   public reset(): void {

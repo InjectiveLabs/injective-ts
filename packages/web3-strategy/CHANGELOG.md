@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.30...@injectivelabs/web3-strategy@0.0.31) (2021-04-04)
+
+### Features
+
+* eip-155 transactions signing for ledger devices completed ([3e90769](https://github.com/InjectiveLabs/injective-ts/commit/3e907699c7eb14b9f909cc55d3678ea406df3d68))
+
 ## [0.0.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.29...@injectivelabs/web3-strategy@0.0.30) (2021-03-31)
 
 ### Features

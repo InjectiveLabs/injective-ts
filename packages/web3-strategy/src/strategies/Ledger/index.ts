@@ -2,8 +2,10 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import EthLedger from '@ledgerhq/hw-app-eth'
 import { TypedDataUtils } from 'eth-sig-util'
-import { bufferToHex } from 'ethereumjs-util'
+import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Transaction } from 'ethereumjs-tx'
+import Web3 from 'web3'
+import { Web3Exception } from '@injectivelabs/exceptions'
 import {
   ConcreteStrategyOptions,
   ConcreteWeb3Strategy,
@@ -24,6 +26,32 @@ const messageHash = (message: any) =>
     message.types,
     true,
   )
+
+const getSignableTx = async ({
+  web3,
+  txData,
+  address,
+  chainId,
+}: {
+  web3: Web3
+  txData: any
+  address: AccountAddress
+  chainId: ChainId
+}) => {
+  const nonce = await web3.eth.getTransactionCount(address)
+  const gasInHex = addHexPrefix(txData.gas)
+  const gasPriceInHex = addHexPrefix(txData.gasPrice)
+  const tx = {
+    ...txData,
+    from: address,
+    gas: gasInHex,
+    gasLimit: gasInHex,
+    gasPrice: gasPriceInHex,
+    nonce: addHexPrefix(nonce.toString(16)),
+  }
+
+  return new Transaction(tx, { chain: chainId })
+}
 
 export default class Ledger
   extends BaseConcreteStrategy
@@ -74,82 +102,83 @@ export default class Ledger
 
   public async getAddresses(): Promise<string[]> {
     const { accountManager, baseDerivationPath, derivationPathType } = this
-    const wallets = await accountManager.getWallets(
-      baseDerivationPath,
-      derivationPathType,
-    )
 
-    return wallets.map((k) => k.address)
+    try {
+      const wallets = await accountManager.getWallets(
+        baseDerivationPath,
+        derivationPathType,
+      )
+
+      return wallets.map((k) => k.address)
+    } catch (e) {
+      throw new Error(e.message)
+    }
   }
 
   async confirm(address: AccountAddress): Promise<string> {
     const { derivationPath } = await this.accountManager.getWalletForAddress(
       address,
     )
-    const ledger = await this.ledger.getInstance()
-    const signed = await ledger.signPersonalMessage(
-      derivationPath,
-      `Confirmation for ${address} at time: ${Date.now()}`,
-    )
-    const combined = `${signed.r}${signed.s}${signed.v.toString(16)}`
 
-    return combined.startsWith('0x') ? combined : `0x${combined}`
+    try {
+      const ledger = await this.ledger.getInstance()
+      const signed = await ledger.signPersonalMessage(
+        derivationPath,
+        `Confirmation for ${address} at time: ${Date.now()}`,
+      )
+      const combined = `${signed.r}${signed.s}${signed.v.toString(16)}`
+      return combined.startsWith('0x') ? combined : `0x${combined}`
+    } catch (e) {
+      throw new Error(e.message)
+    }
   }
 
   async sendTransaction(
-    _transaction: unknown,
-    _options: { address: string; chainId: ChainId },
-  ): Promise<string> {
-    throw new Error(
-      "Please use metamask's ledger implementation to sign non EIP-712 messages.",
-    )
-  }
-
-  async sendTransaction1(
-    transaction: unknown,
+    txData: any,
     options: { address: string; chainId: ChainId },
   ): Promise<string> {
-    /** Sign the Transaction */
     const chainId = parseInt(options.chainId.toString(), 10)
     const web3 = this.getWeb3ForChainId(chainId)
-    const nonce = await web3.eth.getTransactionCount(options.address)
-    const txObject = transaction as object
-    const gas = `0x${(transaction as any).gas}`
-    const gasPrice = `0x${(transaction as any).gasPrice}`
-    const txData = {
-      ...txObject,
-      gas,
-      gasPrice,
-      nonce: `0x${(nonce + 2).toString(16)}`,
-    }
-    const tx = new Transaction(txData, { chain: chainId })
 
-    // Set the EIP155 bits
+    const tx = await getSignableTx({
+      web3,
+      txData,
+      address: options.address,
+      chainId,
+    })
     const vIndex = 6
     tx.raw[vIndex] = Buffer.from([chainId]) // v
     const rIndex = 7
     tx.raw[rIndex] = Buffer.from([]) // r
     const sIndex = 8
     tx.raw[sIndex] = Buffer.from([]) // s
-
     const serializedTx = tx.serialize().toString('hex')
+
     const ledger = await this.ledger.getInstance()
     const { derivationPath } = await this.accountManager.getWalletForAddress(
       options.address,
     )
-    const signed = await ledger.signTransaction(derivationPath, serializedTx)
 
-    /** Send the Transaction */
-    tx.r = Buffer.from(signed.r, 'hex')
-    tx.s = Buffer.from(signed.s, 'hex')
-    tx.v = Buffer.from(signed.v, 'hex')
+    let signedSerializedTx
+    try {
+      const signed = await ledger.signTransaction(derivationPath, serializedTx)
+      tx.r = Buffer.from(signed.r, 'hex')
+      tx.s = Buffer.from(signed.s, 'hex')
+      tx.v = Buffer.from(signed.v, 'hex')
 
-    const signedSerializedTx = tx.serialize().toString('hex')
-    const txReceipt = await web3.eth.sendSignedTransaction(
-      `0x${signedSerializedTx}`,
-    )
+      signedSerializedTx = tx.serialize().toString('hex')
+    } catch (e) {
+      throw new Error(e)
+    }
 
-    return txReceipt.transactionHash
+    try {
+      const txReceipt = await web3.eth.sendSignedTransaction(
+        addHexPrefix(signedSerializedTx),
+      )
+      return txReceipt.transactionHash
+    } catch (e) {
+      throw new Web3Exception(e)
+    }
   }
 
   async signTypedDataV4(
