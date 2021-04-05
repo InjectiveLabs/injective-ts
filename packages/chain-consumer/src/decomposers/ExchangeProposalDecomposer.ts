@@ -4,7 +4,7 @@ import {
   SpotMarketStatusSetProposal,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 
-export class ProposalDecomposer {
+export class ExchangeProposalDecomposer {
   static spotMarketLaunch(content: Uint8Array) {
     return SpotMarketLaunchProposal.deserializeBinary(content)
   }

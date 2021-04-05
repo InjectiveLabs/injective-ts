@@ -15,7 +15,7 @@ export interface DepositProposalParams {
   denom: string
 }
 
-export class ProposalComposer {
+export class ExchangeProposalComposer {
   static spotMarketLaunch({
     market,
     deposit,

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.31...@injectivelabs/chain-consumer@0.0.32) (2021-04-05)
+
+### Features
+
+* refactoring, added support for proposals deposit and voting ([0795c78](https://github.com/InjectiveLabs/injective-ts/commit/0795c7837e37e9d73a392b9d12908adbc0d8f6c4))
+
 ## [0.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.30...@injectivelabs/chain-consumer@0.0.31) (2021-03-24)
 
 ### Bug Fixes

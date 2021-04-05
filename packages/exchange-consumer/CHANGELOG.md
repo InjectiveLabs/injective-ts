@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.25...@injectivelabs/exchange-consumer@0.0.26) (2021-04-05)
+
+### Features
+
+* refactoring, added support for proposals deposit and voting ([0795c78](https://github.com/InjectiveLabs/injective-ts/commit/0795c7837e37e9d73a392b9d12908adbc0d8f6c4))
+
 ## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.24...@injectivelabs/exchange-consumer@0.0.25) (2021-03-30)
 
 ### Bug Fixes
