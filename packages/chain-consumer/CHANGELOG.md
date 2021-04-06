@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.32...@injectivelabs/chain-consumer@0.0.33) (2021-04-06)
+
+### Features
+
+* added exchange spot market consumer for chain consumer ([5ca78a4](https://github.com/InjectiveLabs/injective-ts/commit/5ca78a41927fc9162be29275a86cb935c677f1d0))
+
 ## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.31...@injectivelabs/chain-consumer@0.0.32) (2021-04-05)
 
 ### Features

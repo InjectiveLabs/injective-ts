@@ -16,6 +16,14 @@ import {
   Vote as GrpcVote,
   ProposalStatusMap as GrpcProposalStatus,
 } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
+import {
+  SpotMarket as GrpcSpotMarket,
+  MarketStatus as GrpcMarketStatus,
+  MarketStatusMap as GrpcMarketStatusMap,
+  SpotLimitOrder as GrpcSpotLimitOrder,
+  SpotMarketOrder as GrpcSpotMarketOrder,
+  SpotOrder as GrpcSpotOrder,
+} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { Supply as GrpcSupply } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/bank_pb'
 import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 
@@ -36,4 +44,10 @@ export {
   GrpcProposalStatus,
   GrpcSupply,
   GrpcDelegationDelegatorReward,
+  GrpcSpotMarket,
+  GrpcMarketStatus,
+  GrpcMarketStatusMap,
+  GrpcSpotLimitOrder,
+  GrpcSpotMarketOrder,
+  GrpcSpotOrder,
 }
