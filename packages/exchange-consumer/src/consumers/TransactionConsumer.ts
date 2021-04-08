@@ -11,12 +11,12 @@ import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { InjectiveExchangeRPC } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb_service'
 import { ChainId, AccountAddress } from '@injectivelabs/ts-types'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/tx-utils'
-import BaseConsumer from '../BaseConsumer'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_AMOUNT,
-} from '../constants'
+} from '@injectivelabs/utils'
+import BaseConsumer from '../BaseConsumer'
 
 export class TransactionConsumer extends BaseConsumer {
   async prepareTxRequest({

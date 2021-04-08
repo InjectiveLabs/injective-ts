@@ -1,12 +1,12 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
-import { BigNumberInWei } from '@injectivelabs/utils'
+import {
+  BigNumberInWei,
+  DEFAULT_BRIDGE_FEE_AMOUNT,
+  DEFAULT_BRIDGE_FEE_DENOM,
+} from '@injectivelabs/utils'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgSendToEth } from '@injectivelabs/chain-api/injective/peggy/v1/msgs_pb'
 import snakeCaseKeys from 'snakecase-keys'
-import {
-  DEFAULT_BRIDGE_FEE_AMOUNT,
-  DEFAULT_BRIDGE_FEE_DENOM,
-} from '../constants'
 
 export class PeggyComposer {
   static withdraw({

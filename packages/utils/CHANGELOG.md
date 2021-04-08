@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.22...@injectivelabs/utils@0.0.23) (2021-04-08)
+
+### Bug Fixes
+
+* constants decoupled from packages ([71a6381](https://github.com/InjectiveLabs/injective-ts/commit/71a6381136036b1372dea10b1489b6aa1f5f859a))
+
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.21...@injectivelabs/utils@0.0.22) (2021-03-14)
 
 **Note:** Version bump only for package @injectivelabs/utils
