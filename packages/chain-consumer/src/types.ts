@@ -29,6 +29,13 @@ import {
 import { Supply as GrpcSupply } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/bank_pb'
 import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 
+export interface PaginationOption {
+  key: string
+  offset?: number
+  limit?: number
+  countTotal?: boolean
+}
+
 export {
   GrpcCoin,
   GrpcValidator,

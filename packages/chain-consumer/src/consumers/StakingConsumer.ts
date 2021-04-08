@@ -12,8 +12,9 @@ import {
   QueryValidatorsResponse,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb'
 import { Query } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb_service'
-import { AccountAddress } from '@injectivelabs/ts-types'
+import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
 import BaseConsumer from '../BaseConsumer'
+import { PaginationOption } from '../types'
 
 export class StakingConsumer extends BaseConsumer {
   async fetchValidators() {
@@ -26,15 +27,31 @@ export class StakingConsumer extends BaseConsumer {
         typeof Query.Validators
       >(request, Query.Validators)
 
-      return response.getValidatorsList()
+      return {
+        validators: response.getValidatorsList(),
+        pagination: response.getPagination(),
+      }
     } catch (e) {
       throw new GrpcException(e.message)
     }
   }
 
-  async fetchDelegations(cosmosAddress: AccountAddress) {
+  async fetchDelegations({
+    cosmosAddress,
+    pagination,
+  }: {
+    cosmosAddress: string
+    pagination?: PaginationOption
+  }) {
     const request = new QueryDelegatorDelegationsRequest()
     request.setDelegatorAddr(cosmosAddress)
+
+    if (pagination) {
+      const paginationForRequest = new PageRequest()
+      paginationForRequest.setKey(pagination.key)
+
+      request.setPagination(paginationForRequest)
+    }
 
     try {
       const response = await this.request<
@@ -43,15 +60,31 @@ export class StakingConsumer extends BaseConsumer {
         typeof Query.DelegatorDelegations
       >(request, Query.DelegatorDelegations)
 
-      return response.getDelegationResponsesList()
+      return {
+        delegations: response.getDelegationResponsesList(),
+        pagination: response.getPagination(),
+      }
     } catch (e) {
       throw new GrpcException(e.message)
     }
   }
 
-  async fetchDelegators(validatorOperatorAddress: string) {
+  async fetchDelegators({
+    validatorAddress,
+    pagination,
+  }: {
+    validatorAddress: string
+    pagination?: PaginationOption
+  }) {
     const request = new QueryValidatorDelegationsRequest()
-    request.setValidatorAddr(validatorOperatorAddress)
+    request.setValidatorAddr(validatorAddress)
+
+    if (pagination) {
+      const paginationForRequest = new PageRequest()
+      paginationForRequest.setKey(pagination.key)
+
+      request.setPagination(paginationForRequest)
+    }
 
     try {
       const response = await this.request<
@@ -59,15 +92,32 @@ export class StakingConsumer extends BaseConsumer {
         QueryValidatorDelegationsResponse,
         typeof Query.ValidatorDelegations
       >(request, Query.ValidatorDelegations)
-      return response.getDelegationResponsesList()
+
+      return {
+        delegators: response.getDelegationResponsesList(),
+        pagination: response.getPagination(),
+      }
     } catch (e) {
       throw new GrpcException(e.message)
     }
   }
 
-  async fetchUnbondingDelegations(cosmosAddress: AccountAddress) {
+  async fetchUnbondingDelegations({
+    cosmosAddress,
+    pagination,
+  }: {
+    cosmosAddress: string
+    pagination?: PaginationOption
+  }) {
     const request = new QueryDelegatorUnbondingDelegationsRequest()
     request.setDelegatorAddr(cosmosAddress)
+
+    if (pagination) {
+      const paginationForRequest = new PageRequest()
+      paginationForRequest.setKey(pagination.key)
+
+      request.setPagination(paginationForRequest)
+    }
 
     try {
       const response = await this.request<
@@ -76,15 +126,31 @@ export class StakingConsumer extends BaseConsumer {
         typeof Query.DelegatorUnbondingDelegations
       >(request, Query.DelegatorUnbondingDelegations)
 
-      return response.getUnbondingResponsesList()
+      return {
+        unbondingDelegations: response.getUnbondingResponsesList(),
+        pagination: response.getPagination(),
+      }
     } catch (e) {
       throw new GrpcException(e.message)
     }
   }
 
-  async fetchReDelegations(cosmosAddress: AccountAddress) {
+  async fetchReDelegations({
+    cosmosAddress,
+    pagination,
+  }: {
+    cosmosAddress: string
+    pagination?: PaginationOption
+  }) {
     const request = new QueryRedelegationsRequest()
     request.setDelegatorAddr(cosmosAddress)
+
+    if (pagination) {
+      const paginationForRequest = new PageRequest()
+      paginationForRequest.setKey(pagination.key)
+
+      request.setPagination(paginationForRequest)
+    }
 
     try {
       const response = await this.request<
@@ -93,7 +159,10 @@ export class StakingConsumer extends BaseConsumer {
         typeof Query.Redelegations
       >(request, Query.Redelegations)
 
-      return response.getRedelegationResponsesList()
+      return {
+        redelegations: response.getRedelegationResponsesList(),
+        pagination: response.getPagination(),
+      }
     } catch (e) {
       throw new GrpcException(e.message)
     }

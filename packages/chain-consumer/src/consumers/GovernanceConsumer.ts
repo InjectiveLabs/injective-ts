@@ -1,3 +1,4 @@
+import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
 import { ProposalStatusMap } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
 import {
   QueryParamsResponse,
@@ -16,6 +17,7 @@ import {
 import { Query } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/query_pb_service'
 import { GrpcException } from '@injectivelabs/exceptions'
 import BaseConsumer from '../BaseConsumer'
+import { PaginationOption } from '../types'
 
 export class GovernanceConsumer extends BaseConsumer {
   async fetchParams(type: string) {
@@ -35,9 +37,22 @@ export class GovernanceConsumer extends BaseConsumer {
     }
   }
 
-  async fetchProposals(status: ProposalStatusMap[keyof ProposalStatusMap]) {
+  async fetchProposals({
+    status,
+    pagination,
+  }: {
+    status: ProposalStatusMap[keyof ProposalStatusMap]
+    pagination?: PaginationOption
+  }) {
     const request = new QueryProposalsRequest()
     request.setProposalStatus(status)
+
+    if (pagination) {
+      const paginationForRequest = new PageRequest()
+      paginationForRequest.setKey(pagination.key)
+
+      request.setPagination(paginationForRequest)
+    }
 
     try {
       const response = await this.request<
@@ -46,7 +61,10 @@ export class GovernanceConsumer extends BaseConsumer {
         typeof Query.Proposals
       >(request, Query.Proposals)
 
-      return response.getProposalsList()
+      return {
+        proposals: response.getProposalsList(),
+        pagination: response.getPagination(),
+      }
     } catch (e) {
       throw new GrpcException(e.message)
     }
@@ -69,9 +87,22 @@ export class GovernanceConsumer extends BaseConsumer {
     }
   }
 
-  async fetchProposalDeposits(proposalId: number) {
+  async fetchProposalDeposits({
+    proposalId,
+    pagination,
+  }: {
+    proposalId: number
+    pagination?: PaginationOption
+  }) {
     const request = new QueryDepositsRequest()
     request.setProposalId(proposalId)
+
+    if (pagination) {
+      const paginationForRequest = new PageRequest()
+      paginationForRequest.setKey(pagination.key)
+
+      request.setPagination(paginationForRequest)
+    }
 
     try {
       const response = await this.request<
@@ -80,15 +111,31 @@ export class GovernanceConsumer extends BaseConsumer {
         typeof Query.Deposits
       >(request, Query.Deposits)
 
-      return response.getDepositsList()
+      return {
+        deposits: response.getDepositsList(),
+        pagination: response.getPagination(),
+      }
     } catch (e) {
       throw new GrpcException(e.message)
     }
   }
 
-  async fetchProposalVotes(proposalId: number) {
+  async fetchProposalVotes({
+    proposalId,
+    pagination,
+  }: {
+    proposalId: number
+    pagination?: PaginationOption
+  }) {
     const request = new QueryVotesRequest()
     request.setProposalId(proposalId)
+
+    if (pagination) {
+      const paginationForRequest = new PageRequest()
+      paginationForRequest.setKey(pagination.key)
+
+      request.setPagination(paginationForRequest)
+    }
 
     try {
       const response = await this.request<
@@ -97,7 +144,10 @@ export class GovernanceConsumer extends BaseConsumer {
         typeof Query.Votes
       >(request, Query.Votes)
 
-      return response.getVotesList()
+      return {
+        votes: response.getVotesList(),
+        pagination: response.getPagination(),
+      }
     } catch (e) {
       throw new GrpcException(e.message)
     }
