@@ -5,7 +5,9 @@ import {
   Commission as GrpcValidatorCommission,
   CommissionRates as GrpcValidatorCommissionRates,
   UnbondingDelegation as GrpcUnbondingDelegation,
+  Redelegation as GrpcReDelegation,
   DelegationResponse as GrpcDelegationResponse,
+  RedelegationResponse as GrpcReDelegationResponse,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/staking_pb'
 import { DelegationDelegatorReward as GrpcDelegationDelegatorReward } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/distribution_pb'
 import {
@@ -50,4 +52,6 @@ export {
   GrpcSpotLimitOrder,
   GrpcSpotMarketOrder,
   GrpcSpotOrder,
+  GrpcReDelegation,
+  GrpcReDelegationResponse,
 }
