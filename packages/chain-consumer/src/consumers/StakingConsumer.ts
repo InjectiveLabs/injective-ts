@@ -5,6 +5,8 @@ import {
   QueryDelegatorUnbondingDelegationsRequest,
   QueryDelegatorUnbondingDelegationsResponse,
   QueryValidatorDelegationsRequest,
+  QueryRedelegationsRequest,
+  QueryRedelegationsResponse,
   QueryValidatorDelegationsResponse,
   QueryValidatorsRequest,
   QueryValidatorsResponse,
@@ -75,6 +77,23 @@ export class StakingConsumer extends BaseConsumer {
       >(request, Query.DelegatorUnbondingDelegations)
 
       return response.getUnbondingResponsesList()
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchReDelegations(cosmosAddress: AccountAddress) {
+    const request = new QueryRedelegationsRequest()
+    request.setDelegatorAddr(cosmosAddress)
+
+    try {
+      const response = await this.request<
+        QueryRedelegationsRequest,
+        QueryRedelegationsResponse,
+        typeof Query.Redelegations
+      >(request, Query.Redelegations)
+
+      return response.getRedelegationResponsesList()
     } catch (e) {
       throw new GrpcException(e.message)
     }

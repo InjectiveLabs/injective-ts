@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.33...@injectivelabs/chain-consumer@0.0.34) (2021-04-08)
+
+### Bug Fixes
+
+* fixes for chain consumer ([2a46e65](https://github.com/InjectiveLabs/injective-ts/commit/2a46e6573be19031cb9f07a7961d2f57bfe8c5fb))
+* wrong path for ExchangeProposalDecomposer ([41619b7](https://github.com/InjectiveLabs/injective-ts/commit/41619b76efd6774519e559c40f34e39905f2bbdc))
+
+### Features
+
+* added re-delegations to chain consumer ([338595b](https://github.com/InjectiveLabs/injective-ts/commit/338595b3d8c659aa92861ea569b89cd6c51e3a5e))
+
 ## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.32...@injectivelabs/chain-consumer@0.0.33) (2021-04-06)
 
 ### Features
