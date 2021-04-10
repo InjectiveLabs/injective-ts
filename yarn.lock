@@ -906,13 +906,13 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exchange-api@^1.0.13":
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-1.0.13.tgz#ae1a51d9206427fda063d21be4bb3ed8786bb821"
-  integrity sha512-i1uzBqFn2hsndXZD851JHyuuDvUTAb05pl2gYcsUglPtsaEQpJ60NV4aPzMR9s5eZ8jLtMp+MrvEYrOBuSHPVw==
+"@injectivelabs/exchange-api@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.0.0.tgz#9dc7e8384febbefa1a9f2e94649a2af4039ea607"
+  integrity sha512-Ml4Z0CF5/Lun3nij6p4Rk1dBfqA//TfuGaoF9CKzUrJtgN2CqyO/JAReW5XUz86FoGgjSZ+loTCzsgi0zkijiw==
   dependencies:
-    "@improbable-eng/grpc-web" "^0.13.0"
-    google-protobuf "^3.13.0"
+    "@improbable-eng/grpc-web" "^0.14.0"
+    google-protobuf "^3.14.0"
 
 "@injectivelabs/web3-contract-typings@^0.1.12":
   version "0.1.12"
@@ -6475,6 +6475,11 @@ google-protobuf@^3.13.0:
   version "3.15.2"
   resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.15.2.tgz#b00155245dc5c8805168cb79a42ff81725de89d2"
   integrity sha512-HU67XsVFarxjHceJgrX0K75zzUFS+95LTArAncQ1BI156oEZR+fWXgk6Fxn4fNIpmrB0fwklwjXhMB0DQe0YNg==
+
+google-protobuf@^3.14.0:
+  version "3.15.8"
+  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.15.8.tgz#5f3948905e4951c867d6bc143f385a80e2a39efe"
+  integrity sha512-2jtfdqTaSxk0cuBJBtTTWsot4WtR9RVr2rXg7x7OoqiuOKopPrwXpM1G4dXIkLcUNRh3RKzz76C8IOkksZSeOw==
 
 got@9.6.0:
   version "9.6.0"

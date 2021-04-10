@@ -24,9 +24,6 @@
       "@injectivelabs/contracts": [
         "packages/contracts/src"
       ],
-      "@injectivelabs/graph-consumer": [
-        "packages/graph-consumer/src"
-      ],
       "@injectivelabs/chain-consumer": [
         "packages/chain-consumer/src"
       ],
@@ -38,9 +35,6 @@
       ],
       "@injectivelabs/spot-consumer": [
         "packages/spot-consumer/src"
-      ],
-      "@injectivelabs/chronos-consumer": [
-        "packages/chronos-consumer/src"
       ],
       "@injectivelabs/*": [
         "packages/*/src"

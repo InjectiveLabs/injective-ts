@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.28...@injectivelabs/exchange-consumer@0.0.29) (2021-04-10)
+
+### Features
+
+* initial setup for the spot consumer ([8628cd9](https://github.com/InjectiveLabs/injective-ts/commit/8628cd991927250448bf466b938beb9bff58e28f))
+
 ## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.27...@injectivelabs/exchange-consumer@0.0.28) (2021-04-08)
 
 ### Bug Fixes
