@@ -9,9 +9,11 @@ import {
   MarketOrdersResponse,
   MarketTradesRequest,
   MarketTradesResponse,
+  SpotMarketInfo,
 } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
 import { InjectiveSpotMarketsRPC } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb_service'
 import { GrpcException } from '@injectivelabs/exceptions'
+import { AccountAddress } from '@injectivelabs/ts-types'
 import BaseConsumer from '../BaseConsumer'
 
 export class SpotMarketConsumer extends BaseConsumer {
@@ -31,7 +33,7 @@ export class SpotMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchMarket(marketId: string) {
+  async fetchMarket(marketId: string): Promise<SpotMarketInfo> {
     const request = new MarketDetailsRequest()
     request.setMarketId(marketId)
 
@@ -42,7 +44,13 @@ export class SpotMarketConsumer extends BaseConsumer {
         typeof InjectiveSpotMarketsRPC.MarketDetails
       >(request, InjectiveSpotMarketsRPC.MarketDetails)
 
-      return response.getMarket()
+      const market = response.getMarket()
+
+      if (!market) {
+        throw new GrpcException(`Market with marketId ${marketId} not found`)
+      }
+
+      return market
     } catch (e) {
       throw new GrpcException(e.message)
     }
@@ -65,9 +73,16 @@ export class SpotMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchMarketOrders(marketId: string) {
+  async fetchMarketOrders({
+    marketId,
+    subaccountId,
+  }: {
+    marketId: string
+    subaccountId: AccountAddress
+  }) {
     const request = new MarketOrdersRequest()
     request.setMarketId(marketId)
+    request.setSubaccountId(subaccountId)
 
     try {
       const response = await this.request<
@@ -82,9 +97,16 @@ export class SpotMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchMarketTrades(marketId: string) {
+  async fetchMarketTrades({
+    marketId,
+    subaccountId,
+  }: {
+    marketId: string
+    subaccountId: AccountAddress
+  }) {
     const request = new MarketTradesRequest()
     request.setMarketId(marketId)
+    request.setSubaccountId(subaccountId)
 
     try {
       const response = await this.request<
