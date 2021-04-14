@@ -71,10 +71,9 @@ export class SubaccountConsumer extends BaseConsumer {
     }
   }
 
-  async fetchSubaccountHistory(address: AccountAddress, denom: string) {
+  async fetchSubaccountHistory(address: AccountAddress) {
     const request = new SubaccountHistoryRequest()
     request.setSubaccountId(address)
-    request.setDenom(denom)
 
     try {
       const response = await this.request<
