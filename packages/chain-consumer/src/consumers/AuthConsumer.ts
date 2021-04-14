@@ -1,5 +1,6 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
 import { bech32 } from 'bech32'
+import { Address } from 'ethereumjs-util'
 import BaseConsumer from '../BaseConsumer'
 
 export class AuthConsumer extends BaseConsumer {
@@ -21,5 +22,11 @@ export class AuthConsumer extends BaseConsumer {
     }
 
     return bech32.encode(prefix, words)
+  }
+
+  getInjectiveAddress = (address: string) => {
+    const addressBuffer = Address.fromString(address.toString()).toBuffer()
+
+    return bech32.encode('inj', bech32.toWords(addressBuffer))
   }
 }
