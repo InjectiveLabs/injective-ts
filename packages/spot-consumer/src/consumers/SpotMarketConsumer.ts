@@ -78,11 +78,14 @@ export class SpotMarketConsumer extends BaseConsumer {
     subaccountId,
   }: {
     marketId: string
-    subaccountId: AccountAddress
+    subaccountId?: AccountAddress
   }) {
     const request = new MarketOrdersRequest()
     request.setMarketId(marketId)
-    request.setSubaccountId(subaccountId)
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
 
     try {
       const response = await this.request<
@@ -102,11 +105,14 @@ export class SpotMarketConsumer extends BaseConsumer {
     subaccountId,
   }: {
     marketId: string
-    subaccountId: AccountAddress
+    subaccountId?: AccountAddress
   }) {
     const request = new MarketTradesRequest()
     request.setMarketId(marketId)
-    request.setSubaccountId(subaccountId)
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
 
     try {
       const response = await this.request<

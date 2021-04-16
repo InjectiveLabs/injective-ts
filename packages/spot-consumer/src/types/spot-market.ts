@@ -3,6 +3,13 @@ import {
   SpotMarketOrder as GrpcSpotMarketOrder,
   SpotMarketTrade as GrpcSpotMarketTrade,
 } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
+import {
+  SpotOrder as GrpcSpotOrder,
+  OrderInfo as GrpcOrderInfo,
+  SpotMarket as GrpcSpotMarket,
+  SpotLimitOrder as GrpcSpotLimitOrder,
+  OrderTypeMap as GrpcOrderTypeMap,
+} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 
 export enum TradeExecutionType {
   Market = 'market',
@@ -36,6 +43,8 @@ export interface UiSpotMarket {
   makerFeeRate: string
   takerFeeRate: string
   serviceProviderFee: string
+  maxPriceScaleDecimals: number
+  maxQuantityScaleDecimals: number
 }
 
 export interface UiSpotMarketOrder {
@@ -50,19 +59,32 @@ export interface UiSpotMarketOrder {
   feeRecipient: string
 }
 
-export interface UiPriceLevel {
-  p: string // Price
-  q: string // Quantity
-  t: string // Timestamp
+// TODO
+export interface UiSpotLimitOrder {
+  orderHash: string
+  orderType: SpotOrderType
+  marketId: string
+  subaccountId: string
+  price: string
+  quantity: string
+  unfilledQuantity: string
+  triggerPrice: string
+  feeRecipient: string
 }
 
-export interface UiSpotMarketTrade {
+export interface UiPriceLevel {
+  price: string
+  quantity: string
+  timestamp: string
+}
+
+export interface UiSpotMarketTrade extends UiPriceLevel {
   orderHash: string
   subaccountId: string
   marketId: string
+  executedAt: string
   tradeExecutionType: TradeExecutionType
   tradeDirection: TradeDirection
-  price?: UiPriceLevel
   fee: string
 }
 
@@ -71,4 +93,26 @@ export interface UiOrderbook {
   sells: UiPriceLevel[]
 }
 
-export { GrpcSpotMarketInfo, GrpcSpotMarketOrder, GrpcSpotMarketTrade }
+export interface SpotLimitOrderParams {
+  orderType: GrpcOrderTypeMap[keyof GrpcOrderTypeMap]
+  triggerPrice?: string
+  feeRecipient: string
+  price: string
+  quantity: string
+}
+
+export interface SpotOrderCancelParams {
+  orderHash: string
+  isBuy: boolean
+}
+
+export {
+  GrpcOrderTypeMap,
+  GrpcOrderInfo,
+  GrpcSpotMarketInfo,
+  GrpcSpotMarketOrder,
+  GrpcSpotMarket,
+  GrpcSpotLimitOrder,
+  GrpcSpotMarketTrade,
+  GrpcSpotOrder,
+}

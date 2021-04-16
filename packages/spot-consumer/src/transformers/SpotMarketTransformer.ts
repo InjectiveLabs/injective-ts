@@ -13,6 +13,12 @@ import {
   UiSpotMarketTrade,
 } from '../types'
 
+const zeroUiPriceLevel = () => ({
+  price: '0',
+  quantity: '0',
+  timestamp: '0',
+})
+
 export class SpotMarketTransformer {
   static marketToUiMarket(market: GrpcSpotMarketInfo): UiSpotMarket {
     return {
@@ -24,6 +30,8 @@ export class SpotMarketTransformer {
       makerFeeRate: market.getMakerFeeRate(),
       takerFeeRate: market.getTakerFeeRate(),
       serviceProviderFee: market.getServiceProviderFee(),
+      maxPriceScaleDecimals: market.getMaxPriceScaleDecimals(),
+      maxQuantityScaleDecimals: market.getMaxQuantityScaleDecimals(),
     }
   }
 
@@ -35,9 +43,9 @@ export class SpotMarketTransformer {
 
   static priceLevelToUiPriceLevel(priceLevel: GrpcPriceLevel): UiPriceLevel {
     return {
-      p: priceLevel.getPrice(),
-      q: priceLevel.getQuantity(),
-      t: priceLevel.getTimestamp(),
+      price: priceLevel.getPrice(),
+      quantity: priceLevel.getQuantity(),
+      timestamp: priceLevel.getTimestamp(),
     }
   }
 
@@ -82,17 +90,19 @@ export class SpotMarketTransformer {
 
   static tradeToUiTrade(trade: GrpcSpotMarketTrade): UiSpotMarketTrade {
     const price = trade.getPrice()
+    const mappedPrice = price
+      ? SpotMarketTransformer.priceLevelToUiPriceLevel(price)
+      : zeroUiPriceLevel()
 
     return {
       orderHash: trade.getOrderHash(),
       subaccountId: trade.getSubaccountId(),
       marketId: trade.getMarketId(),
+      executedAt: trade.getExecutedAt(),
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
       tradeDirection: trade.getTradeDirection() as TradeDirection,
-      price: price
-        ? SpotMarketTransformer.priceLevelToUiPriceLevel(price)
-        : undefined,
       fee: trade.getFee(),
+      ...mappedPrice,
     }
   }
 
