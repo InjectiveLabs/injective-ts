@@ -4,32 +4,32 @@ import {
   GrpcSubaccountBalanceTransfer,
   GrpcSubaccountDeposit,
   TransferType,
-  UiCoin,
-  UiSubaccountBalance,
-  UiSubaccountDeposit,
-  UiSubaccountTransfer,
+  Coin,
+  SubaccountBalance,
+  SubaccountDeposit,
+  SubaccountTransfer,
 } from '../types'
 
 export class SubaccountTransformer {
-  static amountToUiAmount(amount: GrpcCosmosCoin): UiCoin {
+  static grpcAmountToAmount(amount: GrpcCosmosCoin): Coin {
     return {
       amount: amount.getAmount(),
       denom: amount.getDenom(),
     }
   }
 
-  static depositToUiDeposit(
+  static grpcDepositToDeposit(
     deposit: GrpcSubaccountDeposit,
-  ): UiSubaccountDeposit {
+  ): SubaccountDeposit {
     return {
       totalBalance: deposit.getTotalBalance(),
       availableBalance: deposit.getAvailableBalance(),
     }
   }
 
-  static balanceToUiBalance(
+  static grpcBalanceToBalance(
     balance: GrpcSubaccountBalance,
-  ): UiSubaccountBalance {
+  ): SubaccountBalance {
     const deposit = balance.getDeposit()
 
     return {
@@ -37,22 +37,22 @@ export class SubaccountTransformer {
       accountAddress: balance.getAccountAddress(),
       denom: balance.getDenom(),
       deposit: deposit
-        ? SubaccountTransformer.depositToUiDeposit(deposit)
+        ? SubaccountTransformer.grpcDepositToDeposit(deposit)
         : undefined,
     }
   }
 
-  static balancesToUiBalances(
+  static grpcBalancesToBalances(
     balances: GrpcSubaccountBalance[],
-  ): UiSubaccountBalance[] {
+  ): SubaccountBalance[] {
     return balances.map((balance) =>
-      SubaccountTransformer.balanceToUiBalance(balance),
+      SubaccountTransformer.grpcBalanceToBalance(balance),
     )
   }
 
-  static transferHistoryEntryToUiTransferHistoryEntry(
+  static grpcTransferHistoryEntryToTransferHistoryEntry(
     transfer: GrpcSubaccountBalanceTransfer,
-  ): UiSubaccountTransfer {
+  ): SubaccountTransfer {
     const amount = transfer.getAmount()
 
     return {
@@ -63,16 +63,16 @@ export class SubaccountTransformer {
       dstAccountAddress: transfer.getDstAccountAddress(),
       executedAt: transfer.getExecutedAt(),
       amount: amount
-        ? SubaccountTransformer.amountToUiAmount(amount)
+        ? SubaccountTransformer.grpcAmountToAmount(amount)
         : undefined,
     }
   }
 
-  static transferHistoryToUiTransferHistory(
+  static grpcTransferHistoryToTransferHistory(
     transfers: GrpcSubaccountBalanceTransfer[],
-  ): UiSubaccountTransfer[] {
+  ): SubaccountTransfer[] {
     return transfers.map((transfer) =>
-      SubaccountTransformer.transferHistoryEntryToUiTransferHistoryEntry(
+      SubaccountTransformer.grpcTransferHistoryEntryToTransferHistoryEntry(
         transfer,
       ),
     )

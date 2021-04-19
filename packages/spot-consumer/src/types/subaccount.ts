@@ -4,7 +4,7 @@ import {
   SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
 } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
 
-export interface UiCoin {
+export interface Coin {
   denom: string
   amount: string
 }
@@ -16,26 +16,26 @@ export enum TransferType {
   Deposit = 'deposit',
 }
 
-export interface UiSubaccountTransfer {
+export interface SubaccountTransfer {
   transferType: TransferType
   srcSubaccountId: string
   srcAccountAddress: string
   dstSubaccountId: string
   dstAccountAddress: string
-  amount?: UiCoin
+  amount?: Coin
   executedAt: string
 }
 
-export interface UiSubaccountDeposit {
+export interface SubaccountDeposit {
   totalBalance: string
   availableBalance: string
 }
 
-export interface UiSubaccountBalance {
+export interface SubaccountBalance {
   subaccountId: string
   accountAddress: string
   denom: string
-  deposit?: UiSubaccountDeposit
+  deposit?: SubaccountDeposit
 }
 
 export {

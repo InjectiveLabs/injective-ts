@@ -6,21 +6,21 @@ import {
   SpotOrderType,
   TradeDirection,
   TradeExecutionType,
-  UiOrderbook,
-  UiPriceLevel,
-  UiSpotMarket,
-  UiSpotMarketOrder,
-  UiSpotMarketTrade,
+  Orderbook,
+  PriceLevel,
+  SpotMarket,
+  SpotMarketOrder,
+  SpotMarketTrade,
 } from '../types'
 
-const zeroUiPriceLevel = () => ({
+const zeroPriceLevel = () => ({
   price: '0',
   quantity: '0',
   timestamp: '0',
 })
 
 export class SpotMarketTransformer {
-  static marketToUiMarket(market: GrpcSpotMarketInfo): UiSpotMarket {
+  static grpcMarketToMarket(market: GrpcSpotMarketInfo): SpotMarket {
     return {
       marketId: market.getMarketId(),
       marketStatus: market.getMarketStatus(),
@@ -35,13 +35,13 @@ export class SpotMarketTransformer {
     }
   }
 
-  static marketsToUiMarkets(markets: GrpcSpotMarketInfo[]): UiSpotMarket[] {
+  static grpcMarketsToMarkets(markets: GrpcSpotMarketInfo[]): SpotMarket[] {
     return markets.map((market) =>
-      SpotMarketTransformer.marketToUiMarket(market),
+      SpotMarketTransformer.grpcMarketToMarket(market),
     )
   }
 
-  static priceLevelToUiPriceLevel(priceLevel: GrpcPriceLevel): UiPriceLevel {
+  static grpcPriceLevelToPriceLevel(priceLevel: GrpcPriceLevel): PriceLevel {
     return {
       price: priceLevel.getPrice(),
       quantity: priceLevel.getQuantity(),
@@ -49,28 +49,28 @@ export class SpotMarketTransformer {
     }
   }
 
-  static priceLevelsToUiPriceLevels(
+  static grpcPriceLevelsToPriceLevels(
     priceLevels: GrpcPriceLevel[],
-  ): UiPriceLevel[] {
+  ): PriceLevel[] {
     return priceLevels.map((priceLevel) =>
-      SpotMarketTransformer.priceLevelToUiPriceLevel(priceLevel),
+      SpotMarketTransformer.grpcPriceLevelToPriceLevel(priceLevel),
     )
   }
 
-  static orderbookToUiOrderbook({
+  static grpcOrderbookToOrderbook({
     buys,
     sells,
   }: {
     buys: GrpcPriceLevel[]
     sells: GrpcPriceLevel[]
-  }): UiOrderbook {
+  }): Orderbook {
     return {
-      buys: SpotMarketTransformer.priceLevelsToUiPriceLevels(buys),
-      sells: SpotMarketTransformer.priceLevelsToUiPriceLevels(sells),
+      buys: SpotMarketTransformer.grpcPriceLevelsToPriceLevels(buys),
+      sells: SpotMarketTransformer.grpcPriceLevelsToPriceLevels(sells),
     }
   }
 
-  static orderToUiOrder(order: GrpcSpotMarketOrder): UiSpotMarketOrder {
+  static grpcOrderToOrder(order: GrpcSpotMarketOrder): SpotMarketOrder {
     return {
       orderHash: order.getOrderHash(),
       orderType: order.getOrderType() as SpotOrderType,
@@ -84,15 +84,15 @@ export class SpotMarketTransformer {
     }
   }
 
-  static ordersToUiOrders(orders: GrpcSpotMarketOrder[]): UiSpotMarketOrder[] {
-    return orders.map((order) => SpotMarketTransformer.orderToUiOrder(order))
+  static grpcOrdersToOrders(orders: GrpcSpotMarketOrder[]): SpotMarketOrder[] {
+    return orders.map((order) => SpotMarketTransformer.grpcOrderToOrder(order))
   }
 
-  static tradeToUiTrade(trade: GrpcSpotMarketTrade): UiSpotMarketTrade {
+  static grpcTradeToTrade(trade: GrpcSpotMarketTrade): SpotMarketTrade {
     const price = trade.getPrice()
     const mappedPrice = price
-      ? SpotMarketTransformer.priceLevelToUiPriceLevel(price)
-      : zeroUiPriceLevel()
+      ? SpotMarketTransformer.grpcPriceLevelToPriceLevel(price)
+      : zeroPriceLevel()
 
     return {
       orderHash: trade.getOrderHash(),
@@ -106,7 +106,7 @@ export class SpotMarketTransformer {
     }
   }
 
-  static tradesToUiTrades(trades: GrpcSpotMarketTrade[]): UiSpotMarketTrade[] {
-    return trades.map((trade) => SpotMarketTransformer.tradeToUiTrade(trade))
+  static tradesToTrades(trades: GrpcSpotMarketTrade[]): SpotMarketTrade[] {
+    return trades.map((trade) => SpotMarketTransformer.grpcTradeToTrade(trade))
   }
 }

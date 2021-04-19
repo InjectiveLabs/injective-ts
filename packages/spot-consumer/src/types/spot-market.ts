@@ -34,7 +34,7 @@ export enum SpotOrderType {
   TakeSell = 'take_sell',
 }
 
-export interface UiSpotMarket {
+export interface SpotMarket {
   marketId: string
   marketStatus: string
   ticker: string
@@ -47,7 +47,7 @@ export interface UiSpotMarket {
   maxQuantityScaleDecimals: number
 }
 
-export interface UiSpotMarketOrder {
+export interface SpotMarketOrder {
   orderHash: string
   orderType: SpotOrderType
   marketId: string
@@ -60,7 +60,7 @@ export interface UiSpotMarketOrder {
 }
 
 // TODO
-export interface UiSpotLimitOrder {
+export interface SpotLimitOrder {
   orderHash: string
   orderType: SpotOrderType
   marketId: string
@@ -72,13 +72,13 @@ export interface UiSpotLimitOrder {
   feeRecipient: string
 }
 
-export interface UiPriceLevel {
+export interface PriceLevel {
   price: string
   quantity: string
   timestamp: string
 }
 
-export interface UiSpotMarketTrade extends UiPriceLevel {
+export interface SpotMarketTrade extends PriceLevel {
   orderHash: string
   subaccountId: string
   marketId: string
@@ -88,9 +88,9 @@ export interface UiSpotMarketTrade extends UiPriceLevel {
   fee: string
 }
 
-export interface UiOrderbook {
-  buys: UiPriceLevel[]
-  sells: UiPriceLevel[]
+export interface Orderbook {
+  buys: PriceLevel[]
+  sells: PriceLevel[]
 }
 
 export interface SpotLimitOrderParams {
