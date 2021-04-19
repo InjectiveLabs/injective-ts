@@ -11,7 +11,7 @@ import snakeCaseKeys from 'snakecase-keys'
 import { SpotLimitOrderParams, SpotOrderCancelParams } from '../types'
 
 export class SpotMarketComposer {
-  static async createLimitOrder({
+  static createLimitOrder({
     subaccountId,
     marketId,
     injectiveAddress,
@@ -47,7 +47,7 @@ export class SpotMarketComposer {
     }
   }
 
-  static async createMarketOrder({
+  static createMarketOrder({
     subaccountId,
     marketId,
     injectiveAddress,
@@ -83,7 +83,7 @@ export class SpotMarketComposer {
     }
   }
 
-  static async cancelSpotOrder({
+  static cancelSpotOrder({
     subaccountId,
     marketId,
     injectiveAddress,

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.13...@injectivelabs/spot-consumer@0.0.14) (2021-04-19)
+
+### Bug Fixes
+
+* fixed async static functions for composers ([1a3749f](https://github.com/InjectiveLabs/injective-ts/commit/1a3749f98987a3791c9c19d2892be638eb4f52a8))
+
 ## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.12...@injectivelabs/spot-consumer@0.0.13) (2021-04-19)
 
 ### Features

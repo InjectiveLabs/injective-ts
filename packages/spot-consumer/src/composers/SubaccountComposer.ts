@@ -6,7 +6,7 @@ import snakeCaseKeys from 'snakecase-keys'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 
 export class SubaccountComposer {
-  static async deposit({
+  static deposit({
     subaccountId,
     injectiveAddress,
     amount,
@@ -32,7 +32,7 @@ export class SubaccountComposer {
     }
   }
 
-  static async withdraw({
+  static withdraw({
     subaccountId,
     amount,
     injectiveAddress,
