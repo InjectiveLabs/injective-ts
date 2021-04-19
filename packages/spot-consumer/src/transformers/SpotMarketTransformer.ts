@@ -106,7 +106,7 @@ export class SpotMarketTransformer {
     }
   }
 
-  static tradesToTrades(trades: GrpcSpotMarketTrade[]): SpotMarketTrade[] {
+  static grpcTradesToTrades(trades: GrpcSpotMarketTrade[]): SpotMarketTrade[] {
     return trades.map((trade) => SpotMarketTransformer.grpcTradeToTrade(trade))
   }
 }
