@@ -14,10 +14,12 @@ export class SpotMarketComposer {
   static async createLimitOrder({
     subaccountId,
     marketId,
+    injectiveAddress,
     order,
   }: {
     subaccountId: string
     marketId: string
+    injectiveAddress: string
     order: SpotLimitOrderParams
   }) {
     const orderInfo = new OrderInfo()
@@ -36,7 +38,7 @@ export class SpotMarketComposer {
     }
 
     const content = new MsgCreateSpotLimitOrder()
-    content.setSender(subaccountId)
+    content.setSender(injectiveAddress)
     content.setOrder(spotOrder)
 
     return {
@@ -48,9 +50,11 @@ export class SpotMarketComposer {
   static async createMarketOrder({
     subaccountId,
     marketId,
+    injectiveAddress,
     order,
   }: {
     subaccountId: string
+    injectiveAddress: string
     marketId: string
     order: SpotLimitOrderParams
   }) {
@@ -70,7 +74,7 @@ export class SpotMarketComposer {
     }
 
     const content = new MsgCreateSpotMarketOrder()
-    content.setSender(subaccountId)
+    content.setSender(injectiveAddress)
     content.setOrder(spotOrder)
 
     return {
@@ -82,14 +86,16 @@ export class SpotMarketComposer {
   static async cancelSpotOrder({
     subaccountId,
     marketId,
+    injectiveAddress,
     order,
   }: {
     subaccountId: string
+    injectiveAddress: string
     marketId: string
     order: SpotOrderCancelParams
   }) {
     const content = new MsgCancelSpotOrder()
-    content.setSender(subaccountId)
+    content.setSender(injectiveAddress)
     content.setIsBuy(order.isBuy)
     content.setMarketId(marketId)
     content.setOrderHash(order.orderHash)

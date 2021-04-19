@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.12...@injectivelabs/spot-consumer@0.0.13) (2021-04-19)
+
+### Features
+
+* added subaccount deposit and withdraw ([1df2cf6](https://github.com/InjectiveLabs/injective-ts/commit/1df2cf64f068356d27cf2162c722504a9366e7d2))
+
 ## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.11...@injectivelabs/spot-consumer@0.0.12) (2021-04-19)
 
 **Note:** Version bump only for package @injectivelabs/spot-consumer
