@@ -2,6 +2,8 @@ import { GrpcException } from '@injectivelabs/exceptions'
 import { AccountAddress } from '@injectivelabs/ts-types'
 import { Query } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/query_pb_service'
 import {
+  QueryAllBalancesRequest,
+  QueryAllBalancesResponse,
   QueryBalanceRequest,
   QueryBalanceResponse,
   QueryTotalSupplyRequest,
@@ -29,6 +31,23 @@ export class BankConsumer extends BaseConsumer {
       >(request, Query.Balance)
 
       return response.getBalance()
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchBalances({ accountAddress }: { accountAddress: AccountAddress }) {
+    const request = new QueryAllBalancesRequest()
+    request.setAddress(accountAddress)
+
+    try {
+      const response = await this.request<
+        QueryAllBalancesRequest,
+        QueryAllBalancesResponse,
+        typeof Query.AllBalances
+      >(request, Query.AllBalances)
+
+      return response.getBalancesList()
     } catch (e) {
       throw new GrpcException(e.message)
     }

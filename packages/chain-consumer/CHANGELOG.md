@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.38...@injectivelabs/chain-consumer@0.0.39) (2021-04-19)
+
+### Features
+
+* added fetching all balances for a user ([3dafa4a](https://github.com/InjectiveLabs/injective-ts/commit/3dafa4ae0c35ab8664df0e664c1e3fca82cafc73))
+
 ## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.37...@injectivelabs/chain-consumer@0.0.38) (2021-04-14)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer
