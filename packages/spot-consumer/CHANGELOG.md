@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.14...@injectivelabs/spot-consumer@0.0.15) (2021-04-20)
+
+### Bug Fixes
+
+* changed message type for cancel order ([b6bdda6](https://github.com/InjectiveLabs/injective-ts/commit/b6bdda6d7b208ccc2c16b06f1f2a45cb92a39ef5))
+
 ## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.13...@injectivelabs/spot-consumer@0.0.14) (2021-04-19)
 
 ### Bug Fixes

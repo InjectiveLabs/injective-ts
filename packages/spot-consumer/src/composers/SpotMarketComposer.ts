@@ -103,7 +103,7 @@ export class SpotMarketComposer {
 
     return {
       ...snakeCaseKeys(content.toObject()),
-      '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder',
+      '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder',
     }
   }
 }
