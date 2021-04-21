@@ -2,7 +2,7 @@ import {
   SubaccountDeposit as GrpcSubaccountDeposit,
   SubaccountBalance as GrpcSubaccountBalance,
   SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
-} from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
+} from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
 
 export interface Coin {
   denom: string

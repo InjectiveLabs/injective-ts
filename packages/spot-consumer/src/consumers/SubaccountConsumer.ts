@@ -1,18 +1,21 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
 import {
+  SubaccountOrdersListRequest,
+  SubaccountTradesListRequest,
+  SubaccountOrdersListResponse,
+  SubaccountTradesListResponse,
+} from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
+import {
   SubaccountsListRequest,
   SubaccountsListResponse,
   SubaccountBalanceRequest,
   SubaccountBalanceResponse,
   SubaccountBalancesListRequest,
-  SubaccountOrdersListRequest,
-  SubaccountTradesListRequest,
-  SubaccountOrdersListResponse,
-  SubaccountTradesListResponse,
   SubaccountHistoryRequest,
   SubaccountHistoryResponse,
   SubaccountBalancesListResponse,
-} from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
+} from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
+import { InjectiveAccountsRPC } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb_service'
 import { InjectiveSpotMarketsRPC } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb_service'
 import { GrpcException } from '@injectivelabs/exceptions'
 import BaseConsumer from '../BaseConsumer'
@@ -27,8 +30,8 @@ export class SubaccountConsumer extends BaseConsumer {
       const response = await this.request<
         SubaccountsListRequest,
         SubaccountsListResponse,
-        typeof InjectiveSpotMarketsRPC.SubaccountsList
-      >(request, InjectiveSpotMarketsRPC.SubaccountsList)
+        typeof InjectiveAccountsRPC.SubaccountsList
+      >(request, InjectiveAccountsRPC.SubaccountsList)
 
       return response.getSubaccountsList()
     } catch (e) {
@@ -45,8 +48,8 @@ export class SubaccountConsumer extends BaseConsumer {
       const response = await this.request<
         SubaccountBalanceRequest,
         SubaccountBalanceResponse,
-        typeof InjectiveSpotMarketsRPC.SubaccountBalanceEndpoint
-      >(request, InjectiveSpotMarketsRPC.SubaccountBalanceEndpoint)
+        typeof InjectiveAccountsRPC.SubaccountBalanceEndpoint
+      >(request, InjectiveAccountsRPC.SubaccountBalanceEndpoint)
 
       return response.getBalance()
     } catch (e) {
@@ -62,8 +65,8 @@ export class SubaccountConsumer extends BaseConsumer {
       const response = await this.request<
         SubaccountBalancesListRequest,
         SubaccountBalancesListResponse,
-        typeof InjectiveSpotMarketsRPC.SubaccountBalancesList
-      >(request, InjectiveSpotMarketsRPC.SubaccountBalancesList)
+        typeof InjectiveAccountsRPC.SubaccountBalancesList
+      >(request, InjectiveAccountsRPC.SubaccountBalancesList)
 
       return response.getBalancesList()
     } catch (e) {
@@ -79,8 +82,8 @@ export class SubaccountConsumer extends BaseConsumer {
       const response = await this.request<
         SubaccountHistoryRequest,
         SubaccountHistoryResponse,
-        typeof InjectiveSpotMarketsRPC.SubaccountHistory
-      >(request, InjectiveSpotMarketsRPC.SubaccountHistory)
+        typeof InjectiveAccountsRPC.SubaccountHistory
+      >(request, InjectiveAccountsRPC.SubaccountHistory)
 
       return response.getTransfersList()
     } catch (e) {

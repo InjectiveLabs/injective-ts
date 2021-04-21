@@ -67,7 +67,12 @@ export class SpotMarketConsumer extends BaseConsumer {
         typeof InjectiveSpotMarketsRPC.MarketOrderbook
       >(request, InjectiveSpotMarketsRPC.MarketOrderbook)
 
-      return { buys: response.getBuysList(), sells: response.getSellsList() }
+      const orderbook = response.getOrderbook()
+
+      return {
+        buys: orderbook ? orderbook.getBuysList() : [],
+        sells: orderbook ? orderbook.getSellsList() : [],
+      }
     } catch (e) {
       throw new GrpcException(e.message)
     }
