@@ -890,10 +890,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.4.3.tgz#28d195a71497931b781abc122c6616b4be910626"
-  integrity sha512-LO+eooRdEAN3dXYl5q6+bpnRZQkxvIcQkWfg+cax+0q9wtktPBCyWYZ3uDYhyp/noKacVNeLmUtGKjoTX9X5Xg==
+"@injectivelabs/chain-api@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.4.4.tgz#86cf22102464c7e8ea35518b2da54a5982f534c4"
+  integrity sha512-xltO/zef3JO9B9rREZWcwQm+vMXNIX4B8QxAvdiWCiRNCX6Pc1J1U42JTfA7m7G+0cb35eyQUeNMwjHTxxf9yw==
   dependencies:
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
