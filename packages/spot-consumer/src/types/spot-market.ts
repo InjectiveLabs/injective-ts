@@ -2,6 +2,7 @@ import {
   SpotMarketInfo as GrpcSpotMarketInfo,
   SpotMarketOrder as GrpcSpotMarketOrder,
   SpotMarketTrade as GrpcSpotMarketTrade,
+  TokenMeta as GrpcTokenMeta,
 } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
 import {
   SpotOrder as GrpcSpotOrder,
@@ -26,12 +27,22 @@ export enum TradeDirection {
 }
 
 export enum SpotOrderType {
+  Unspecified = 'unspecified',
   Buy = 'buy',
   Sell = 'sell',
   StopBuy = 'stop_buy',
   StopSell = 'stop_sell',
   TakeBuy = 'take_buy',
   TakeSell = 'take_sell',
+}
+
+export interface TokenMeta {
+  name: string
+  address: string
+  symbol: string
+  logo: string
+  decimals: number
+  updatedAt: number
 }
 
 export interface SpotMarket {
@@ -41,6 +52,8 @@ export interface SpotMarket {
   baseDenom: string
   quoteDenom: string
   makerFeeRate: string
+  quoteToken: TokenMeta | undefined
+  baseToken: TokenMeta | undefined
   takerFeeRate: string
   serviceProviderFee: string
   maxPriceScaleDecimals: number
@@ -75,14 +88,14 @@ export interface SpotLimitOrder {
 export interface PriceLevel {
   price: string
   quantity: string
-  timestamp: string
+  timestamp: number
 }
 
 export interface SpotMarketTrade extends PriceLevel {
   orderHash: string
   subaccountId: string
   marketId: string
-  executedAt: string
+  executedAt: number
   tradeExecutionType: TradeExecutionType
   tradeDirection: TradeDirection
   fee: string
@@ -107,6 +120,7 @@ export interface SpotOrderCancelParams {
 }
 
 export {
+  GrpcTokenMeta,
   GrpcOrderTypeMap,
   GrpcOrderInfo,
   GrpcSpotMarketInfo,

@@ -23,7 +23,7 @@ export interface SubaccountTransfer {
   dstSubaccountId: string
   dstAccountAddress: string
   amount?: Coin
-  executedAt: string
+  executedAt: number
 }
 
 export interface SubaccountDeposit {

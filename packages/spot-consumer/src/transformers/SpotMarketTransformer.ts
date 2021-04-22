@@ -11,15 +11,34 @@ import {
   SpotMarket,
   SpotMarketOrder,
   SpotMarketTrade,
+  GrpcTokenMeta,
+  TokenMeta,
 } from '../types'
 
 const zeroPriceLevel = () => ({
   price: '0',
   quantity: '0',
-  timestamp: '0',
+  timestamp: 0,
 })
 
 export class SpotMarketTransformer {
+  static grpcTokenMetaToTokenMeta(
+    tokenMeta: GrpcTokenMeta | undefined,
+  ): TokenMeta | undefined {
+    if (!tokenMeta) {
+      return
+    }
+
+    return {
+      name: tokenMeta.getName(),
+      address: tokenMeta.getAddress(),
+      symbol: tokenMeta.getSymbol(),
+      logo: tokenMeta.getLogo(),
+      decimals: tokenMeta.getDecimals(),
+      updatedAt: tokenMeta.getUpdatedAt(),
+    }
+  }
+
   static grpcMarketToMarket(market: GrpcSpotMarketInfo): SpotMarket {
     return {
       marketId: market.getMarketId(),
@@ -27,6 +46,12 @@ export class SpotMarketTransformer {
       ticker: market.getTicker(),
       baseDenom: market.getBaseDenom(),
       quoteDenom: market.getQuoteDenom(),
+      quoteToken: SpotMarketTransformer.grpcTokenMetaToTokenMeta(
+        market.getQuoteTokenMeta(),
+      ),
+      baseToken: SpotMarketTransformer.grpcTokenMetaToTokenMeta(
+        market.getBaseTokenMeta(),
+      ),
       makerFeeRate: market.getMakerFeeRate(),
       takerFeeRate: market.getTakerFeeRate(),
       serviceProviderFee: market.getServiceProviderFee(),

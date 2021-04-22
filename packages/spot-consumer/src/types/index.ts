@@ -5,4 +5,12 @@ export * from './spot-market'
 export * from './spot-market-chronos'
 export * from './subaccount'
 
+export enum StreamOperation {
+  Insert = 'insert',
+  Delete = 'delete',
+  Replace = 'replace',
+  Update = 'update',
+  Invalidate = 'invalidate',
+}
+
 export { GrpcPriceLevel, GrpcCosmosCoin }

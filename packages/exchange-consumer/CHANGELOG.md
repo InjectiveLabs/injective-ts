@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.34...@injectivelabs/exchange-consumer@0.0.35) (2021-04-22)
+
+### Features
+
+* added streams support ([e11d335](https://github.com/InjectiveLabs/injective-ts/commit/e11d335fdcbec0829570dc66ed03173bea259c2c))
+
 ## [0.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.33...@injectivelabs/exchange-consumer@0.0.34) (2021-04-21)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
