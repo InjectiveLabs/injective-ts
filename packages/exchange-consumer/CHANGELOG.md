@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.35...@injectivelabs/exchange-consumer@0.0.36) (2021-04-26)
+
+### Features
+
+* subaccount balance stream added ([4d1d0e7](https://github.com/InjectiveLabs/injective-ts/commit/4d1d0e7023efbf9eee4ee085b81a7d040113048d))
+
 ## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.34...@injectivelabs/exchange-consumer@0.0.35) (2021-04-22)
 
 ### Features

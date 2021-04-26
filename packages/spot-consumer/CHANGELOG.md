@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.20...@injectivelabs/spot-consumer@0.0.21) (2021-04-26)
+
+### Features
+
+* subaccount balance stream added ([4d1d0e7](https://github.com/InjectiveLabs/injective-ts/commit/4d1d0e7023efbf9eee4ee085b81a7d040113048d))
+
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.19...@injectivelabs/spot-consumer@0.0.20) (2021-04-22)
 
 ### Features
