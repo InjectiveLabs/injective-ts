@@ -18,7 +18,6 @@ export type SubaccountBalanceStreamCallback = ({
 
 const transformer = (response: StreamSubaccountBalanceResponse) => {
   const balance = response.getBalance()
-  console.log(balance)
 
   return {
     balance: balance
