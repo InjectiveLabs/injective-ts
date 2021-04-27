@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.36...@injectivelabs/web3-strategy@0.0.37) (2021-04-27)
+
+### Bug Fixes
+
+* block tracker issue in web3-strategyu ([c2d5ded](https://github.com/InjectiveLabs/injective-ts/commit/c2d5ded2edc9d5a927325989f92d2dee8513cdc5))
+
 ## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.35...@injectivelabs/web3-strategy@0.0.36) (2021-04-27)
 
 ### Features

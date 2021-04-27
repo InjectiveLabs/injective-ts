@@ -9,7 +9,6 @@ import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
 import { ConcreteStrategyOptions } from './types'
 
 const DEFAULT_POLLING_INTERVAL_MS = 500
-const INFINITY_POLLING_INTERVAL_MS = 9999999999
 const DEFAULT_BLOCK_TRACKER = true
 
 export default abstract class BaseConcreteStrategy {
@@ -39,7 +38,10 @@ export default abstract class BaseConcreteStrategy {
     this.wsRpcUrls = options.wsRpcUrls
     this.pollingInterval =
       options.pollingInterval || DEFAULT_POLLING_INTERVAL_MS
-    this.blockTracker = options.blockTracker || DEFAULT_BLOCK_TRACKER
+    this.blockTracker =
+      options.blockTracker === undefined
+        ? DEFAULT_BLOCK_TRACKER
+        : options.blockTracker
   }
 
   public abstract setOptions(options: ConcreteStrategyOptions): void
@@ -105,9 +107,7 @@ export default abstract class BaseConcreteStrategy {
     blockTracker: boolean
   }): provider => {
     const engine = new ProviderEngine({
-      pollingInterval: !blockTracker
-        ? INFINITY_POLLING_INTERVAL_MS
-        : pollingInterval,
+      pollingInterval,
     })
 
     engine.addProvider(new NonceTrackerSubprovider())
@@ -115,7 +115,13 @@ export default abstract class BaseConcreteStrategy {
     engine.addProvider(new RpcSubprovider({ rpcUrl }))
     engine.start()
 
-    // We explicitly stop the web3-engine if we dont need block tracker
+    /**
+     * --> Hacky Code Ahead <--
+     * If we dont want to have a blockTracker,
+     * i.e we only need the web3-provider to
+     * provide signing and contract calls,
+     * we stop the engine to stop the blockTracker
+     */
     if (!blockTracker) {
       engine.stop()
     }
