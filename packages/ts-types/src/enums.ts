@@ -3,7 +3,7 @@ export enum ChainId {
   Ropsten = 3,
   Rinkeby = 4,
   Kovan = 42,
-  Testnet = 888,
+  Injective = 888,
   Ganache = 1337,
   HardHat = 31337,
 }
