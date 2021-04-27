@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.44...@injectivelabs/chain-consumer@0.0.45) (2021-04-27)
+
+### Features
+
+* removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([fe76172](https://github.com/InjectiveLabs/injective-ts/commit/fe76172fa4ada658b6a3044dd4bb4b43a7f797e4))
+
 ## [0.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.43...@injectivelabs/chain-consumer@0.0.44) (2021-04-27)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer

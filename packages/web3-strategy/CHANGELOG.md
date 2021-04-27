@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.35...@injectivelabs/web3-strategy@0.0.36) (2021-04-27)
+
+### Features
+
+* removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([fe76172](https://github.com/InjectiveLabs/injective-ts/commit/fe76172fa4ada658b6a3044dd4bb4b43a7f797e4))
+
 ## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.34...@injectivelabs/web3-strategy@0.0.35) (2021-04-27)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy

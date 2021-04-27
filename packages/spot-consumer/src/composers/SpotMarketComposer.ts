@@ -96,7 +96,6 @@ export class SpotMarketComposer {
   }) {
     const content = new MsgCancelSpotOrder()
     content.setSender(injectiveAddress)
-    content.setIsBuy(order.isBuy)
     content.setMarketId(marketId)
     content.setOrderHash(order.orderHash)
     content.setSubaccountId(subaccountId)

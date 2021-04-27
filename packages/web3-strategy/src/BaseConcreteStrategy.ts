@@ -2,13 +2,15 @@ import Web3 from 'web3'
 import { ChainId } from '@injectivelabs/ts-types'
 import { provider } from 'web3-core'
 import ProviderEngine from 'web3-provider-engine'
-// import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tracker'
+import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tracker'
 import SanitizingSubprovider from 'web3-provider-engine/subproviders/sanitizer'
 import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
 import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
 import { ConcreteStrategyOptions } from './types'
 
 const DEFAULT_POLLING_INTERVAL_MS = 500
+const INFINITY_POLLING_INTERVAL_MS = 9999999999
+const DEFAULT_BLOCK_TRACKER = true
 
 export default abstract class BaseConcreteStrategy {
   protected chainId: ChainId
@@ -18,6 +20,8 @@ export default abstract class BaseConcreteStrategy {
   protected wsRpcUrls: Record<ChainId, string>
 
   protected pollingInterval: number
+
+  protected blockTracker: boolean
 
   web3ForChainId: Record<ChainId, Web3> = {} as Record<ChainId, Web3>
 
@@ -35,6 +39,7 @@ export default abstract class BaseConcreteStrategy {
     this.wsRpcUrls = options.wsRpcUrls
     this.pollingInterval =
       options.pollingInterval || DEFAULT_POLLING_INTERVAL_MS
+    this.blockTracker = options.blockTracker || DEFAULT_BLOCK_TRACKER
   }
 
   public abstract setOptions(options: ConcreteStrategyOptions): void
@@ -57,6 +62,7 @@ export default abstract class BaseConcreteStrategy {
         this.getWeb3ProviderEngineForRpc({
           rpcUrl: this.rpcUrls[chainId],
           pollingInterval: this.pollingInterval,
+          blockTracker: this.blockTracker,
         }),
       )
     }
@@ -92,18 +98,27 @@ export default abstract class BaseConcreteStrategy {
   public getWeb3ProviderEngineForRpc = ({
     rpcUrl,
     pollingInterval,
+    blockTracker,
   }: {
     rpcUrl: string
     pollingInterval: number
+    blockTracker: boolean
   }): provider => {
     const engine = new ProviderEngine({
-      pollingInterval,
+      pollingInterval: !blockTracker
+        ? INFINITY_POLLING_INTERVAL_MS
+        : pollingInterval,
     })
 
-    // engine.addProvider(new NonceTrackerSubprovider())
+    engine.addProvider(new NonceTrackerSubprovider())
     engine.addProvider(new SanitizingSubprovider())
     engine.addProvider(new RpcSubprovider({ rpcUrl }))
     engine.start()
+
+    // We explicitly stop the web3-engine if we dont need block tracker
+    if (!blockTracker) {
+      engine.stop()
+    }
 
     return engine as provider
   }

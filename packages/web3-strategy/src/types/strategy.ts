@@ -17,6 +17,7 @@ export interface ConcreteStrategyOptions {
   rpcUrls: Record<ChainId, string>
   wsRpcUrls: Record<ChainId, string>
   pollingInterval: number
+  blockTracker?: boolean
 }
 
 export interface ConcreteWeb3Strategy {
@@ -27,17 +28,21 @@ export interface ConcreteWeb3Strategy {
   getWeb3ProviderEngineForRpc({
     rpcUrl,
     pollingInterval,
+    blockTracker,
   }: {
     rpcUrl: string
     pollingInterval: number
+    blockTracker?: any
   }): provider
 
   getWeb3WsProviderEngineForRpc({
     wsRpcUrl,
     pollingInterval,
+    blockTracker,
   }: {
     wsRpcUrl: string
     pollingInterval: number
+    blockTracker?: any
   }): provider
 
   getWeb3(): Web3

@@ -110,7 +110,6 @@ export interface SpotLimitOrderParams {
 
 export interface SpotOrderCancelParams {
   orderHash: string
-  isBuy: boolean
 }
 
 export {

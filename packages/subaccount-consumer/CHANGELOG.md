@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.4...@injectivelabs/subaccount-consumer@0.0.5) (2021-04-27)
+
+### Features
+
+* removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([fe76172](https://github.com/InjectiveLabs/injective-ts/commit/fe76172fa4ada658b6a3044dd4bb4b43a7f797e4))
+
 ## [0.0.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.3...@injectivelabs/subaccount-consumer@0.0.4) (2021-04-27)
 
 **Note:** Version bump only for package @injectivelabs/subaccount-consumer
