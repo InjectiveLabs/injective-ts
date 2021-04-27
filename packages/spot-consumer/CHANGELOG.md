@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.26...@injectivelabs/spot-consumer@0.0.27) (2021-04-27)
+
+### Bug Fixes
+
+* spelling for SpotOrderState enum ([ee26d40](https://github.com/InjectiveLabs/injective-ts/commit/ee26d401125d929e9253a97e41e348f631bd90fc))
+
 ## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.25...@injectivelabs/spot-consumer@0.0.26) (2021-04-27)
 
 ### Features

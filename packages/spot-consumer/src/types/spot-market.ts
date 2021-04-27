@@ -26,7 +26,7 @@ export enum SpotOrderType {
 export enum SpotOrderState {
   Filled = 'filled',
   Unfilled = 'unfilled',
-  Cancelled = 'cancelled',
+  Canceled = 'canceled',
 }
 
 export interface TokenMeta {
