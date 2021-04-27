@@ -3,9 +3,9 @@ import {
   StreamMarketOrderbookResponse,
 } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
 import { InjectiveSpotMarketsRPCClient } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb_service'
-import { Orderbook } from '../../types/spot-market'
+import { StreamOperation } from '@injectivelabs/ts-types'
+import { Orderbook } from '../../types'
 import { SpotMarketTransformer } from '../../transformers/SpotMarketTransformer'
-import { StreamOperation } from '../../types'
 
 export type SpotMarketOrderbookStreamCallback = ({
   orderbook,

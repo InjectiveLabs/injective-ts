@@ -1,4 +1,8 @@
-import { AccountAddress } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  TradeDirection,
+  TradeExecutionType,
+} from '@injectivelabs/ts-types'
 import {
   SubaccountOrdersListRequest,
   SubaccountTradesListRequest,
@@ -19,7 +23,6 @@ import { InjectiveAccountsRPC } from '@injectivelabs/exchange-api/injective_acco
 import { InjectiveSpotMarketsRPC } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb_service'
 import { GrpcException } from '@injectivelabs/exceptions'
 import BaseConsumer from '../BaseConsumer'
-import { TradeDirection, TradeExecutionType } from '../types'
 
 export class SubaccountConsumer extends BaseConsumer {
   async fetchSubaccounts(address: AccountAddress) {

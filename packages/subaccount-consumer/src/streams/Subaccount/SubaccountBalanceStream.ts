@@ -3,8 +3,9 @@ import {
   StreamSubaccountBalanceRequest,
   StreamSubaccountBalanceResponse,
 } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
+import { StreamOperation } from '@injectivelabs/ts-types'
 import { SubaccountTransformer } from '../../transformers/SubaccountTransformer'
-import { StreamOperation, SubaccountBalance } from '../../types'
+import { SubaccountBalance } from '../../types'
 
 export type SubaccountBalanceStreamCallback = ({
   balance,

@@ -1,10 +1,10 @@
+import { Coin } from '@injectivelabs/ts-types'
 import {
   GrpcCosmosCoin,
   GrpcSubaccountBalance,
   GrpcSubaccountBalanceTransfer,
   GrpcSubaccountDeposit,
   TransferType,
-  Coin,
   SubaccountBalance,
   SubaccountDeposit,
   SubaccountTransfer,
@@ -58,9 +58,9 @@ export class SubaccountTransformer {
     return {
       transferType: transfer.getTransferType() as TransferType,
       srcSubaccountId: transfer.getSrcSubaccountId(),
-      srcAccountAddress: transfer.getSrcAccountAddress(),
+      srcSubaccountAddress: transfer.getSrcAccountAddress(),
       dstSubaccountId: transfer.getDstSubaccountId(),
-      dstAccountAddress: transfer.getDstAccountAddress(),
+      dstSubaccountAddress: transfer.getDstAccountAddress(),
       executedAt: transfer.getExecutedAt(),
       amount: amount
         ? SubaccountTransformer.grpcAmountToAmount(amount)

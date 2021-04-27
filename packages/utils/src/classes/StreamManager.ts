@@ -1,4 +1,4 @@
-export class StreamManager<T> {
+export default class StreamManager<T> {
   private streams: Map<T, any> = new Map()
 
   set(stream: any, streamKey: T) {

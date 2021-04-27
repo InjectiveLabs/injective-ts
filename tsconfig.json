@@ -33,6 +33,9 @@
       "@injectivelabs/derivatives-consumer": [
         "packages/derivatives-consumer/src"
       ],
+      "@injectivelabs/subaccount-consumer": [
+        "packages/subaccount-consumer/src"
+      ],
       "@injectivelabs/spot-consumer": [
         "packages/spot-consumer/src"
       ],

@@ -11,20 +11,7 @@ import {
   SpotLimitOrder as GrpcSpotLimitOrder,
   OrderTypeMap as GrpcOrderTypeMap,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
-
-export enum TradeExecutionType {
-  Market = 'market',
-  LimitFill = 'limitFill',
-  LimitMatchRestingOrder = 'limitMatchRestingOrder',
-  LimitMatchNewOrder = 'limitMatchNewOrder',
-}
-
-export enum TradeDirection {
-  Buy = 'buy',
-  Sell = 'sell',
-  Long = 'long',
-  Short = 'short',
-}
+import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 
 export enum SpotOrderType {
   Unspecified = 'unspecified',

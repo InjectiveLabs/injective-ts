@@ -3,8 +3,9 @@ import {
   StreamMarketTradesResponse,
 } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
 import { InjectiveSpotMarketsRPCClient } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb_service'
+import { StreamOperation } from '@injectivelabs/ts-types'
 import { SpotMarketTransformer } from '../../transformers/SpotMarketTransformer'
-import { StreamOperation, SpotMarketTrade } from '../../types'
+import { SpotMarketTrade } from '../../types'
 
 export type SpotMarketTradeStreamCallback = ({
   trade,

@@ -3,11 +3,7 @@ import {
   SubaccountBalance as GrpcSubaccountBalance,
   SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
 } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
-
-export interface Coin {
-  denom: string
-  amount: string
-}
+import { Coin } from '@injectivelabs/ts-types'
 
 export enum TransferType {
   Internal = 'internal',
@@ -19,9 +15,9 @@ export enum TransferType {
 export interface SubaccountTransfer {
   transferType: TransferType
   srcSubaccountId: string
-  srcAccountAddress: string
+  srcSubaccountAddress: string
   dstSubaccountId: string
-  dstAccountAddress: string
+  dstSubaccountAddress: string
   amount?: Coin
   executedAt: number
 }

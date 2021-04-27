@@ -1,7 +1,7 @@
 {
-  "name": "@injectivelabs/exchange-consumer",
-  "description": "Interacting with our Exchange API made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.37",
+  "name": "@injectivelabs/subaccount-composer",
+  "description": "Subaccounts on Injective Protocol made easy. Can be reused throughout Injective's projects.",
+  "version": "0.0.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~exchange-consumer": "dist"
+    "~subaccount-composer": "dist"
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
@@ -33,9 +33,7 @@
     "@injectivelabs/exceptions": "^0.0.19",
     "@injectivelabs/exchange-api": "^2.0.6",
     "@injectivelabs/ts-types": "^0.0.16",
-    "@injectivelabs/tx-utils": "^0.0.4",
     "@injectivelabs/utils": "^0.0.24",
-    "eth-sig-util": "^3.0.1",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",
     "snakecase-keys": "^3.2.1"

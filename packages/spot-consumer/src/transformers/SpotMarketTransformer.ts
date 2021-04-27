@@ -1,11 +1,10 @@
+import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
 import {
   GrpcPriceLevel,
   GrpcSpotMarketInfo,
   GrpcSpotMarketOrder,
   GrpcSpotMarketTrade,
   SpotOrderType,
-  TradeDirection,
-  TradeExecutionType,
   Orderbook,
   PriceLevel,
   SpotMarket,
