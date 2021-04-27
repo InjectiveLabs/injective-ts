@@ -12,6 +12,7 @@ import {
   SpotMarketTrade,
   GrpcTokenMeta,
   TokenMeta,
+  SpotOrderState,
 } from '../types'
 
 const zeroPriceLevel = () => ({
@@ -101,6 +102,7 @@ export class SpotMarketTransformer {
       marketId: order.getMarketId(),
       subaccountId: order.getSubaccountId(),
       price: order.getPrice(),
+      state: order.getState() as SpotOrderState,
       quantity: order.getQuantity(),
       unfilledQuantity: order.getUnfilledQuantity(),
       triggerPrice: order.getTriggerPrice(),

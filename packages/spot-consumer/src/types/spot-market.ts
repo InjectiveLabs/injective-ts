@@ -23,6 +23,12 @@ export enum SpotOrderType {
   TakeSell = 'take_sell',
 }
 
+export enum SpotOrderState {
+  Filled = 'filled',
+  Unfilled = 'unfilled',
+  Cancelled = 'cancelled',
+}
+
 export interface TokenMeta {
   name: string
   address: string
@@ -53,6 +59,7 @@ export interface SpotMarketOrder {
   marketId: string
   subaccountId: string
   price: string
+  state: SpotOrderState
   quantity: string
   unfilledQuantity: string
   triggerPrice: string
