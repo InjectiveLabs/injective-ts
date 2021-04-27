@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.27...@injectivelabs/spot-consumer@0.0.28) (2021-04-27)
+
+### Features
+
+* added execution side filter for spot market trades ([917620c](https://github.com/InjectiveLabs/injective-ts/commit/917620c809ccf02270e6d60777b42ce166443697))
+
 ## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.26...@injectivelabs/spot-consumer@0.0.27) (2021-04-27)
 
 ### Bug Fixes

@@ -3,7 +3,7 @@ import {
   StreamMarketTradesResponse,
 } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
 import { InjectiveSpotMarketsRPCClient } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb_service'
-import { StreamOperation } from '@injectivelabs/ts-types'
+import { StreamOperation, TradeExecutionSide } from '@injectivelabs/ts-types'
 import { SpotMarketTransformer } from '../../transformers/SpotMarketTransformer'
 import { SpotMarketTrade } from '../../types'
 
@@ -40,12 +40,18 @@ export class SpotMarketTradeStream {
   start({
     marketId,
     callback,
+    executionSide,
   }: {
     marketId: string
+    executionSide?: TradeExecutionSide
     callback: SpotMarketTradeStreamCallback
   }) {
     const request = new StreamMarketTradesRequest()
     request.setMarketId(marketId)
+
+    if (executionSide) {
+      request.setExecutionSide(executionSide)
+    }
 
     const stream = this.client.streamMarketTrades(request)
 
@@ -60,14 +66,20 @@ export class SpotMarketTradeStream {
     marketId,
     subaccountId,
     callback,
+    executionSide,
   }: {
     marketId: string
     subaccountId: string
+    executionSide?: TradeExecutionSide
     callback: SpotMarketTradeStreamCallback
   }) {
     const request = new StreamMarketTradesRequest()
     request.setMarketId(marketId)
     request.setSubaccountId(subaccountId)
+
+    if (executionSide) {
+      request.setExecutionSide(executionSide)
+    }
 
     const stream = this.client.streamMarketTrades(request)
 

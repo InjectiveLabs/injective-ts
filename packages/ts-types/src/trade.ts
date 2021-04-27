@@ -5,6 +5,11 @@ export enum TradeExecutionType {
   LimitMatchNewOrder = 'limitMatchNewOrder',
 }
 
+export enum TradeExecutionSide {
+  Maker = 'market',
+  Taker = 'taker',
+}
+
 export enum TradeDirection {
   Buy = 'buy',
   Sell = 'sell',

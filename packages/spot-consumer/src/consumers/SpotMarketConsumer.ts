@@ -13,7 +13,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb'
 import { InjectiveSpotMarketsRPC } from '@injectivelabs/exchange-api/injective_spot_markets_rpc_pb_service'
 import { GrpcException } from '@injectivelabs/exceptions'
-import { AccountAddress } from '@injectivelabs/ts-types'
+import { AccountAddress, TradeExecutionSide } from '@injectivelabs/ts-types'
 import BaseConsumer from '../BaseConsumer'
 
 export class SpotMarketConsumer extends BaseConsumer {
@@ -108,15 +108,21 @@ export class SpotMarketConsumer extends BaseConsumer {
   async fetchMarketTrades({
     marketId,
     subaccountId,
+    executionSide,
   }: {
     marketId: string
     subaccountId?: AccountAddress
+    executionSide?: TradeExecutionSide
   }) {
     const request = new MarketTradesRequest()
     request.setMarketId(marketId)
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (executionSide) {
+      request.setExecutionSide(executionSide)
     }
 
     try {
