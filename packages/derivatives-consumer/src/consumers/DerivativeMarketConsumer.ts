@@ -58,7 +58,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchMarketOrderbook(marketId: string) {
+  async fetchOrderbook(marketId: string) {
     const request = new OrderbookRequest()
     request.setMarketId(marketId)
 
@@ -80,7 +80,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchMarketOrders({
+  async fetchOrders({
     marketId,
     subaccountId,
   }: {
@@ -107,7 +107,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchMarketPositions({
+  async fetchPositions({
     marketId,
     subaccountId,
   }: {
@@ -134,7 +134,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchMarketTrades({
+  async fetchTrades({
     marketId,
     subaccountId,
     executionSide,

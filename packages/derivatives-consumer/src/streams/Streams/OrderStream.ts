@@ -5,14 +5,14 @@ import {
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { StreamOperation } from '@injectivelabs/ts-types'
 import { DerivativeTransformer } from '../../transformers/DerivativeTransformer'
-import { DerivativeMarketOrder } from '../../types'
+import { DerivativeLimitOrder } from '../../types'
 
 export type OrderStreamCallback = ({
   order,
   operation,
   timestamp,
 }: {
-  order: DerivativeMarketOrder | undefined
+  order: DerivativeLimitOrder | undefined
   operation: StreamOperation
   timestamp: number
 }) => void

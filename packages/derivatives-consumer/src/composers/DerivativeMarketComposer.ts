@@ -35,6 +35,7 @@ export class DerivativeMarketComposer {
     derivativeOrder.setMarketId(marketId)
     derivativeOrder.setOrderType(order.orderType)
     derivativeOrder.setOrderInfo(orderInfo)
+    derivativeOrder.setMargin(order.margin)
 
     if (order.triggerPrice) {
       derivativeOrder.setTriggerPrice(order.triggerPrice)
@@ -71,6 +72,7 @@ export class DerivativeMarketComposer {
     derivativeOrder.setMarketId(marketId)
     derivativeOrder.setOrderType(order.orderType)
     derivativeOrder.setOrderInfo(orderInfo)
+    derivativeOrder.setMargin(order.margin)
 
     if (order.triggerPrice) {
       derivativeOrder.setTriggerPrice(order.triggerPrice)

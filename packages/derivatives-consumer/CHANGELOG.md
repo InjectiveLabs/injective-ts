@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.6...@injectivelabs/derivatives-consumer@0.0.7) (2021-04-28)
+
+### Features
+
+* added derivatives consumer, refactored and unified methods for subaccount consumer and spot consumer ([f42147f](https://github.com/InjectiveLabs/injective-ts/commit/f42147f8fd748daa2598629c6a1f16c155523348))
+* added derivatives consumer, refactored and unified methods for subaccount consumer and spot consumer ([33ff1e4](https://github.com/InjectiveLabs/injective-ts/commit/33ff1e459b12d9f6315c35f0e468d917375d1930))
+
 ## [0.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.5...@injectivelabs/derivatives-consumer@0.0.6) (2021-03-14)
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer

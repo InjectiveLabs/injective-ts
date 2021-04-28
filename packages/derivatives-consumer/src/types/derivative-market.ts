@@ -1,15 +1,14 @@
 import {
   DerivativeMarketInfo as GrpcDerivativeMarketInfo,
-  DerivativeLimitOrder as GrpcDerivativeMarketOrder,
+  DerivativeLimitOrder as GrpcDerivativeLimitOrder,
   DerivativeTrade as GrpcDerivativeTrade,
   DerivativePosition as GrpcDerivativePosition,
+  PositionDelta as GrpcPositionDelta,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { TokenMeta as GrpcTokenMeta } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import {
-  DerivativeOrder as GrpcDerivativeOrder,
   OrderInfo as GrpcOrderInfo,
   DerivativeMarket as GrpcDerivativeMarket,
-  DerivativeLimitOrder as GrpcDerivativeLimitOrder,
   OrderTypeMap as GrpcOrderTypeMap,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
@@ -39,32 +38,59 @@ export interface TokenMeta {
   updatedAt: number
 }
 
+export interface PositionDelta {
+  tradeDirection: TradeDirection
+  executionPrice: string
+  executionQuantity: string
+  executionMargin: string
+}
+
+export interface Position {
+  marketId: string
+  subaccountId: string
+  direction: TradeDirection
+  quantity: string
+  entryPrice: string
+  margin: string
+  holdQuantity: string
+  liquidationPrice: string
+  markPrice: string
+  impliedPnl: string
+  leverage: string
+}
+
 export interface DerivativeMarket {
+  oracleBase: string
+  oracleQuote: string
+  oracleType: string
+  initialMarginRatio: string
+  maintenanceMarginRatio: string
+  isPerpetual: boolean
   marketId: string
   marketStatus: string
   ticker: string
-  baseDenom: string
   quoteDenom: string
   makerFeeRate: string
   quoteToken: TokenMeta | undefined
-  baseToken: TokenMeta | undefined
   takerFeeRate: string
   serviceProviderFee: string
   maxPriceScaleDecimals: number
   maxQuantityScaleDecimals: number
 }
 
-export interface DerivativeMarketOrder {
+export interface DerivativeLimitOrder {
   orderHash: string
-  orderType: DerivativeOrderType
+  orderType: string
   marketId: string
   subaccountId: string
+  isReduceOnly: boolean
+  margin: string
   price: string
-  state: DerivativeOrderState
   quantity: string
   unfilledQuantity: string
   triggerPrice: string
   feeRecipient: string
+  state: DerivativeOrderState
 }
 
 export interface PriceLevel {
@@ -73,7 +99,7 @@ export interface PriceLevel {
   timestamp: number
 }
 
-export interface DerivativeMarketTrade extends PriceLevel {
+export interface DerivativeMarketTrade extends PositionDelta {
   orderHash: string
   subaccountId: string
   marketId: string
@@ -81,6 +107,8 @@ export interface DerivativeMarketTrade extends PriceLevel {
   tradeExecutionType: TradeExecutionType
   tradeDirection: TradeDirection
   fee: string
+  isLiquidation: boolean
+  payout: string
 }
 
 export interface Orderbook {
@@ -93,6 +121,7 @@ export interface DerivativeLimitOrderParams {
   triggerPrice?: string
   feeRecipient: string
   price: string
+  margin: string
   quantity: string
 }
 
@@ -106,9 +135,8 @@ export {
   GrpcOrderTypeMap,
   GrpcOrderInfo,
   GrpcDerivativeMarketInfo,
-  GrpcDerivativeMarketOrder,
   GrpcDerivativeMarket,
   GrpcDerivativeLimitOrder,
   GrpcDerivativeTrade,
-  GrpcDerivativeOrder,
+  GrpcPositionDelta,
 }
