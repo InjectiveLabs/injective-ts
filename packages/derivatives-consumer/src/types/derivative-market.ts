@@ -1,17 +1,20 @@
 import {
-  SpotMarketInfo as GrpcSpotMarketInfo,
-  SpotLimitOrder as GrpcSpotLimitOrder,
-  SpotTrade as GrpcSpotTrade,
-  TokenMeta as GrpcTokenMeta,
-} from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
+  DerivativeMarketInfo as GrpcDerivativeMarketInfo,
+  DerivativeLimitOrder as GrpcDerivativeMarketOrder,
+  DerivativeTrade as GrpcDerivativeTrade,
+  DerivativePosition as GrpcDerivativePosition,
+} from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
+import { TokenMeta as GrpcTokenMeta } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import {
+  DerivativeOrder as GrpcDerivativeOrder,
   OrderInfo as GrpcOrderInfo,
-  SpotMarket as GrpcSpotMarket,
+  DerivativeMarket as GrpcDerivativeMarket,
+  DerivativeLimitOrder as GrpcDerivativeLimitOrder,
   OrderTypeMap as GrpcOrderTypeMap,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 
-export enum SpotOrderType {
+export enum DerivativeOrderType {
   Unspecified = 'unspecified',
   Buy = 'buy',
   Sell = 'sell',
@@ -21,7 +24,7 @@ export enum SpotOrderType {
   TakeSell = 'take_sell',
 }
 
-export enum SpotOrderState {
+export enum DerivativeOrderState {
   Filled = 'filled',
   Unfilled = 'unfilled',
   Canceled = 'canceled',
@@ -36,7 +39,7 @@ export interface TokenMeta {
   updatedAt: number
 }
 
-export interface SpotMarket {
+export interface DerivativeMarket {
   marketId: string
   marketStatus: string
   ticker: string
@@ -51,13 +54,13 @@ export interface SpotMarket {
   maxQuantityScaleDecimals: number
 }
 
-export interface SpotLimitOrder {
+export interface DerivativeMarketOrder {
   orderHash: string
-  orderType: SpotOrderType
+  orderType: DerivativeOrderType
   marketId: string
   subaccountId: string
   price: string
-  state: SpotOrderState
+  state: DerivativeOrderState
   quantity: string
   unfilledQuantity: string
   triggerPrice: string
@@ -70,7 +73,7 @@ export interface PriceLevel {
   timestamp: number
 }
 
-export interface SpotTrade extends PriceLevel {
+export interface DerivativeMarketTrade extends PriceLevel {
   orderHash: string
   subaccountId: string
   marketId: string
@@ -85,7 +88,7 @@ export interface Orderbook {
   sells: PriceLevel[]
 }
 
-export interface SpotLimitOrderParams {
+export interface DerivativeLimitOrderParams {
   orderType: GrpcOrderTypeMap[keyof GrpcOrderTypeMap]
   triggerPrice?: string
   feeRecipient: string
@@ -93,16 +96,19 @@ export interface SpotLimitOrderParams {
   quantity: string
 }
 
-export interface SpotOrderCancelParams {
+export interface DerivativeOrderCancelParams {
   orderHash: string
 }
 
 export {
   GrpcTokenMeta,
+  GrpcDerivativePosition,
   GrpcOrderTypeMap,
   GrpcOrderInfo,
-  GrpcSpotMarketInfo,
-  GrpcSpotMarket,
-  GrpcSpotLimitOrder,
-  GrpcSpotTrade,
+  GrpcDerivativeMarketInfo,
+  GrpcDerivativeMarketOrder,
+  GrpcDerivativeMarket,
+  GrpcDerivativeLimitOrder,
+  GrpcDerivativeTrade,
+  GrpcDerivativeOrder,
 }

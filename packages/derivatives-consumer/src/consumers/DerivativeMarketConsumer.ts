@@ -9,14 +9,16 @@ import {
   OrdersResponse,
   TradesRequest,
   TradesResponse,
-  SpotMarketInfo,
-} from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
-import { InjectiveSpotExchangeRPC } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb_service'
+  DerivativeMarketInfo,
+  PositionsRequest,
+  PositionsResponse,
+} from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
+import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { GrpcException } from '@injectivelabs/exceptions'
 import { AccountAddress, TradeExecutionSide } from '@injectivelabs/ts-types'
 import BaseConsumer from '../BaseConsumer'
 
-export class SpotMarketConsumer extends BaseConsumer {
+export class DerivativeMarketConsumer extends BaseConsumer {
   async fetchMarkets() {
     const request = new MarketsRequest()
 
@@ -24,8 +26,8 @@ export class SpotMarketConsumer extends BaseConsumer {
       const response = await this.request<
         MarketsRequest,
         MarketsResponse,
-        typeof InjectiveSpotExchangeRPC.Markets
-      >(request, InjectiveSpotExchangeRPC.Markets)
+        typeof InjectiveDerivativeExchangeRPC.Markets
+      >(request, InjectiveDerivativeExchangeRPC.Markets)
 
       return response.getMarketsList()
     } catch (e) {
@@ -33,7 +35,7 @@ export class SpotMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchMarket(marketId: string): Promise<SpotMarketInfo> {
+  async fetchMarket(marketId: string): Promise<DerivativeMarketInfo> {
     const request = new MarketRequest()
     request.setMarketId(marketId)
 
@@ -41,8 +43,8 @@ export class SpotMarketConsumer extends BaseConsumer {
       const response = await this.request<
         MarketRequest,
         MarketResponse,
-        typeof InjectiveSpotExchangeRPC.Market
-      >(request, InjectiveSpotExchangeRPC.Market)
+        typeof InjectiveDerivativeExchangeRPC.Market
+      >(request, InjectiveDerivativeExchangeRPC.Market)
 
       const market = response.getMarket()
 
@@ -56,7 +58,7 @@ export class SpotMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchOrderbook(marketId: string) {
+  async fetchMarketOrderbook(marketId: string) {
     const request = new OrderbookRequest()
     request.setMarketId(marketId)
 
@@ -64,8 +66,8 @@ export class SpotMarketConsumer extends BaseConsumer {
       const response = await this.request<
         OrderbookRequest,
         OrderbookResponse,
-        typeof InjectiveSpotExchangeRPC.Orderbook
-      >(request, InjectiveSpotExchangeRPC.Orderbook)
+        typeof InjectiveDerivativeExchangeRPC.Orderbook
+      >(request, InjectiveDerivativeExchangeRPC.Orderbook)
 
       const orderbook = response.getOrderbook()
 
@@ -78,7 +80,7 @@ export class SpotMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchOrders({
+  async fetchMarketOrders({
     marketId,
     subaccountId,
   }: {
@@ -96,8 +98,8 @@ export class SpotMarketConsumer extends BaseConsumer {
       const response = await this.request<
         OrdersRequest,
         OrdersResponse,
-        typeof InjectiveSpotExchangeRPC.Orders
-      >(request, InjectiveSpotExchangeRPC.Orders)
+        typeof InjectiveDerivativeExchangeRPC.Orders
+      >(request, InjectiveDerivativeExchangeRPC.Orders)
 
       return response.getOrdersList()
     } catch (e) {
@@ -105,7 +107,34 @@ export class SpotMarketConsumer extends BaseConsumer {
     }
   }
 
-  async fetchTrades({
+  async fetchMarketPositions({
+    marketId,
+    subaccountId,
+  }: {
+    marketId: string
+    subaccountId?: AccountAddress
+  }) {
+    const request = new PositionsRequest()
+    request.setMarketId(marketId)
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    try {
+      const response = await this.request<
+        PositionsRequest,
+        PositionsResponse,
+        typeof InjectiveDerivativeExchangeRPC.Positions
+      >(request, InjectiveDerivativeExchangeRPC.Positions)
+
+      return response.getPositionsList()
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchMarketTrades({
     marketId,
     subaccountId,
     executionSide,
@@ -129,8 +158,8 @@ export class SpotMarketConsumer extends BaseConsumer {
       const response = await this.request<
         TradesRequest,
         TradesResponse,
-        typeof InjectiveSpotExchangeRPC.Trades
-      >(request, InjectiveSpotExchangeRPC.Trades)
+        typeof InjectiveDerivativeExchangeRPC.Trades
+      >(request, InjectiveDerivativeExchangeRPC.Trades)
 
       return response.getTradesList()
     } catch (e) {

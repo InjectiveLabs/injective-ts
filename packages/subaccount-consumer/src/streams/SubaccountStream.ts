@@ -1,7 +1,4 @@
-import {
-  SubaccountBalanceStream,
-  SubaccountBalanceStreamCallback,
-} from './Subaccount/SubaccountBalanceStream'
+import { BalanceStream, BalanceStreamCallback } from './Streams/BalanceStream'
 import BaseConsumer from '../BaseConsumer'
 
 export enum SubaccountStreamType {
@@ -9,13 +6,13 @@ export enum SubaccountStreamType {
 }
 
 export class SubaccountStream extends BaseConsumer {
-  balances: SubaccountBalanceStream
+  balances: BalanceStream
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.balances = new SubaccountBalanceStream(this.endpoint)
+    this.balances = new BalanceStream(this.endpoint)
   }
 }
 
-export { SubaccountBalanceStreamCallback }
+export { BalanceStreamCallback }

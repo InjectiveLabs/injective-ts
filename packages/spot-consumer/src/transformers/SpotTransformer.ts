@@ -2,14 +2,14 @@ import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
 import {
   GrpcPriceLevel,
   GrpcSpotMarketInfo,
-  GrpcSpotMarketOrder,
-  GrpcSpotMarketTrade,
+  GrpcSpotLimitOrder,
+  GrpcSpotTrade,
   SpotOrderType,
   Orderbook,
   PriceLevel,
   SpotMarket,
-  SpotMarketOrder,
-  SpotMarketTrade,
+  SpotLimitOrder,
+  SpotTrade,
   GrpcTokenMeta,
   TokenMeta,
   SpotOrderState,
@@ -21,7 +21,7 @@ const zeroPriceLevel = () => ({
   timestamp: 0,
 })
 
-export class SpotMarketTransformer {
+export class SpotTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,
   ): TokenMeta | undefined {
@@ -46,10 +46,10 @@ export class SpotMarketTransformer {
       ticker: market.getTicker(),
       baseDenom: market.getBaseDenom(),
       quoteDenom: market.getQuoteDenom(),
-      quoteToken: SpotMarketTransformer.grpcTokenMetaToTokenMeta(
+      quoteToken: SpotTransformer.grpcTokenMetaToTokenMeta(
         market.getQuoteTokenMeta(),
       ),
-      baseToken: SpotMarketTransformer.grpcTokenMetaToTokenMeta(
+      baseToken: SpotTransformer.grpcTokenMetaToTokenMeta(
         market.getBaseTokenMeta(),
       ),
       makerFeeRate: market.getMakerFeeRate(),
@@ -61,9 +61,7 @@ export class SpotMarketTransformer {
   }
 
   static grpcMarketsToMarkets(markets: GrpcSpotMarketInfo[]): SpotMarket[] {
-    return markets.map((market) =>
-      SpotMarketTransformer.grpcMarketToMarket(market),
-    )
+    return markets.map((market) => SpotTransformer.grpcMarketToMarket(market))
   }
 
   static grpcPriceLevelToPriceLevel(priceLevel: GrpcPriceLevel): PriceLevel {
@@ -78,7 +76,7 @@ export class SpotMarketTransformer {
     priceLevels: GrpcPriceLevel[],
   ): PriceLevel[] {
     return priceLevels.map((priceLevel) =>
-      SpotMarketTransformer.grpcPriceLevelToPriceLevel(priceLevel),
+      SpotTransformer.grpcPriceLevelToPriceLevel(priceLevel),
     )
   }
 
@@ -90,12 +88,12 @@ export class SpotMarketTransformer {
     sells: GrpcPriceLevel[]
   }): Orderbook {
     return {
-      buys: SpotMarketTransformer.grpcPriceLevelsToPriceLevels(buys),
-      sells: SpotMarketTransformer.grpcPriceLevelsToPriceLevels(sells),
+      buys: SpotTransformer.grpcPriceLevelsToPriceLevels(buys),
+      sells: SpotTransformer.grpcPriceLevelsToPriceLevels(sells),
     }
   }
 
-  static grpcOrderToOrder(order: GrpcSpotMarketOrder): SpotMarketOrder {
+  static grpcOrderToOrder(order: GrpcSpotLimitOrder): SpotLimitOrder {
     return {
       orderHash: order.getOrderHash(),
       orderType: order.getOrderType() as SpotOrderType,
@@ -110,14 +108,14 @@ export class SpotMarketTransformer {
     }
   }
 
-  static grpcOrdersToOrders(orders: GrpcSpotMarketOrder[]): SpotMarketOrder[] {
-    return orders.map((order) => SpotMarketTransformer.grpcOrderToOrder(order))
+  static grpcOrdersToOrders(orders: GrpcSpotLimitOrder[]): SpotLimitOrder[] {
+    return orders.map((order) => SpotTransformer.grpcOrderToOrder(order))
   }
 
-  static grpcTradeToTrade(trade: GrpcSpotMarketTrade): SpotMarketTrade {
+  static grpcTradeToTrade(trade: GrpcSpotTrade): SpotTrade {
     const price = trade.getPrice()
     const mappedPrice = price
-      ? SpotMarketTransformer.grpcPriceLevelToPriceLevel(price)
+      ? SpotTransformer.grpcPriceLevelToPriceLevel(price)
       : zeroPriceLevel()
 
     return {
@@ -132,7 +130,7 @@ export class SpotMarketTransformer {
     }
   }
 
-  static grpcTradesToTrades(trades: GrpcSpotMarketTrade[]): SpotMarketTrade[] {
-    return trades.map((trade) => SpotMarketTransformer.grpcTradeToTrade(trade))
+  static grpcTradesToTrades(trades: GrpcSpotTrade[]): SpotTrade[] {
+    return trades.map((trade) => SpotTransformer.grpcTradeToTrade(trade))
   }
 }

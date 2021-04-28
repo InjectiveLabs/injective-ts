@@ -7,7 +7,7 @@ import { StreamOperation } from '@injectivelabs/ts-types'
 import { SubaccountTransformer } from '../../transformers/SubaccountTransformer'
 import { SubaccountBalance } from '../../types'
 
-export type SubaccountBalanceStreamCallback = ({
+export type BalanceStreamCallback = ({
   balance,
   operation,
   timestamp,
@@ -29,7 +29,7 @@ const transformer = (response: StreamSubaccountBalanceResponse) => {
   }
 }
 
-export class SubaccountBalanceStream {
+export class BalanceStream {
   protected client: InjectiveAccountsRPCClient
 
   protected endpoint: string
@@ -44,7 +44,7 @@ export class SubaccountBalanceStream {
     callback,
   }: {
     subaccountId: string
-    callback: SubaccountBalanceStreamCallback
+    callback: BalanceStreamCallback
   }) {
     const request = new StreamSubaccountBalanceRequest()
     request.setSubaccountId(subaccountId)

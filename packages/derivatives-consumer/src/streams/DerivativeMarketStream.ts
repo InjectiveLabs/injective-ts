@@ -6,15 +6,15 @@ import { TradeStream, TradeStreamCallback } from './Streams/TradeStream'
 import { OrderStream, OrderStreamCallback } from './Streams/OrderStream'
 import BaseConsumer from '../BaseConsumer'
 
-export enum SpotMarketStreamType {
-  Orderbook = 'spot-market-orderbook',
-  Orders = 'spot-market-orders',
-  Trades = 'spot-market-trades',
-  SubaccountOrders = 'spot-market-subaccount-orders',
-  SubaccountTrades = 'spot-market-subaccount-trades',
+export enum DerivativeMarketStreamType {
+  Orderbook = 'derivative-market-orderbook',
+  Orders = 'derivative-market-orders',
+  Trades = 'derivative-market-trades',
+  SubaccountOrders = 'derivative-market-subaccount-orders',
+  SubaccountTrades = 'derivative-market-subaccount-trades',
 }
 
-export class SpotMarketStream extends BaseConsumer {
+export class DerivativeMarketStream extends BaseConsumer {
   orderbook: OrderbookStream
 
   orders: OrderStream

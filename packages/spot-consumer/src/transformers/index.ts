@@ -1,1 +1,1 @@
-export * from './SpotMarketTransformer'
+export * from './SpotTransformer'

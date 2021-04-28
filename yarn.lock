@@ -906,10 +906,10 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exchange-api@^2.0.9":
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.0.9.tgz#e97c3144dc0f83e6e6117456ec0e75b2cc5bcf30"
-  integrity sha512-yZ5M6Mh/VFPWumSZL9bS/d8tVcpaHabHGlL07EBfJNwh+Sf/5Br8l2qSjiJUhzTPmyDfh7iRIPJ0utIaooFFFg==
+"@injectivelabs/exchange-api@^2.0.10":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.1.0.tgz#88ff103b1fd0b4bcfa2718c195dbbc8157da1b70"
+  integrity sha512-ypfQELU3504XrAoSXQemha22rFt5qIO8Do80w/uIy6L/+IIFDtytnFILYjOT6RRam2gXKJ/e1tktP76gJWE+jQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
@@ -11202,6 +11202,14 @@ snakecase-keys@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/snakecase-keys/-/snakecase-keys-3.2.1.tgz#ce5d1a2de8a93c939d7992f76f2743aa59f3d5ad"
   integrity sha512-CjU5pyRfwOtaOITYv5C8DzpZ8XA/ieRsDpr93HI2r6e3YInC6moZpSQbmUtg8cTk58tq2x3jcG2gv+p1IZGmMA==
+  dependencies:
+    map-obj "^4.1.0"
+    to-snake-case "^1.0.0"
+
+snakecase-keys@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/snakecase-keys/-/snakecase-keys-4.0.1.tgz#1ba511be38226a2a1d54bb433666bc127458eeed"
+  integrity sha512-oZsXfKe9oe/Cb7EEReYtYfWM+2kR67Vt0yYNjckh1PsEoP/zDoezPN6GLtDba7EBGujGw5vl/h5se/RiBdWUKA==
   dependencies:
     map-obj "^4.1.0"
     to-snake-case "^1.0.0"
