@@ -5,14 +5,14 @@ import {
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { StreamOperation, TradeExecutionSide } from '@injectivelabs/ts-types'
 import { DerivativeTransformer } from '../../transformers/DerivativeTransformer'
-import { DerivativeMarketTrade } from '../../types'
+import { DerivativeTrade } from '../../types'
 
 export type TradeStreamCallback = ({
   trade,
   operation,
   timestamp,
 }: {
-  trade: DerivativeMarketTrade | undefined
+  trade: DerivativeTrade | undefined
   operation: StreamOperation
   timestamp: number
 }) => void

@@ -9,7 +9,7 @@ import {
   PriceLevel,
   DerivativeMarket,
   DerivativeLimitOrder,
-  DerivativeMarketTrade,
+  DerivativeTrade,
   DerivativeOrderState,
   GrpcTokenMeta,
   TokenMeta,
@@ -166,7 +166,7 @@ export class DerivativeTransformer {
     )
   }
 
-  static grpcTradeToTrade(trade: GrpcDerivativeTrade): DerivativeMarketTrade {
+  static grpcTradeToTrade(trade: GrpcDerivativeTrade): DerivativeTrade {
     const positionDelta = trade.getPositionDelta()
     const mappedPositionDelta = positionDelta
       ? DerivativeTransformer.grpcPositionDeltaToPositionDelta(positionDelta)
@@ -185,9 +185,7 @@ export class DerivativeTransformer {
     }
   }
 
-  static grpcTradesToTrades(
-    trades: GrpcDerivativeTrade[],
-  ): DerivativeMarketTrade[] {
+  static grpcTradesToTrades(trades: GrpcDerivativeTrade[]): DerivativeTrade[] {
     return trades.map((trade) => DerivativeTransformer.grpcTradeToTrade(trade))
   }
 }
