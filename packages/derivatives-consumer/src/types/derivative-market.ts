@@ -99,7 +99,7 @@ export interface PriceLevel {
   timestamp: number
 }
 
-export interface DerivativeMarketTrade extends PositionDelta {
+export interface DerivativeTrade extends PositionDelta {
   orderHash: string
   subaccountId: string
   marketId: string
