@@ -15,12 +15,12 @@ import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 
 export enum DerivativeOrderType {
   Unspecified = 'unspecified',
-  Buy = 'buy',
-  Sell = 'sell',
-  StopBuy = 'stop_buy',
-  StopSell = 'stop_sell',
-  TakeBuy = 'take_buy',
-  TakeSell = 'take_sell',
+  Long = 'long',
+  Short = 'short',
+  StopLong = 'stop_long',
+  StopShort = 'stop_short',
+  TakeLong = 'take_long',
+  TakeShort = 'take_short',
 }
 
 export enum DerivativeOrderState {
@@ -112,8 +112,8 @@ export interface DerivativeTrade extends PositionDelta {
 }
 
 export interface Orderbook {
-  buys: PriceLevel[]
-  sells: PriceLevel[]
+  longs: PriceLevel[]
+  shorts: PriceLevel[]
 }
 
 export interface DerivativeLimitOrderParams {

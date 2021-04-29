@@ -105,15 +105,15 @@ export class DerivativeTransformer {
   }
 
   static grpcOrderbookToOrderbook({
-    buys,
-    sells,
+    longs,
+    shorts,
   }: {
-    buys: GrpcPriceLevel[]
-    sells: GrpcPriceLevel[]
+    longs: GrpcPriceLevel[]
+    shorts: GrpcPriceLevel[]
   }): Orderbook {
     return {
-      buys: DerivativeTransformer.grpcPriceLevelsToPriceLevels(buys),
-      sells: DerivativeTransformer.grpcPriceLevelsToPriceLevels(sells),
+      longs: DerivativeTransformer.grpcPriceLevelsToPriceLevels(longs),
+      shorts: DerivativeTransformer.grpcPriceLevelsToPriceLevels(shorts),
     }
   }
 

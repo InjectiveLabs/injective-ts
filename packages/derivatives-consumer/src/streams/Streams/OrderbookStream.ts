@@ -23,8 +23,8 @@ const transformer = (response: StreamOrderbookResponse) => {
   return {
     orderbook: orderbook
       ? DerivativeTransformer.grpcOrderbookToOrderbook({
-          buys: orderbook.getBuysList(),
-          sells: orderbook.getSellsList(),
+          longs: orderbook.getBuysList(),
+          shorts: orderbook.getSellsList(),
         })
       : undefined,
     operation: response.getOperationType() as StreamOperation,

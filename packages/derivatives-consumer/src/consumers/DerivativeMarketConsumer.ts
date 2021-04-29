@@ -72,8 +72,8 @@ export class DerivativeMarketConsumer extends BaseConsumer {
       const orderbook = response.getOrderbook()
 
       return {
-        buys: orderbook ? orderbook.getBuysList() : [],
-        sells: orderbook ? orderbook.getSellsList() : [],
+        longs: orderbook ? orderbook.getBuysList() : [],
+        shorts: orderbook ? orderbook.getSellsList() : [],
       }
     } catch (e) {
       throw new GrpcException(e.message)
