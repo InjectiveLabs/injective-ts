@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.12...@injectivelabs/derivatives-consumer@0.0.13) (2021-05-03)
+
+### Bug Fixes
+
+* changed naming for derivative order type ([5203ff3](https://github.com/InjectiveLabs/injective-ts/commit/5203ff373f1656142fd6cab5b9e6413807b8f69f))
+
 ## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.11...@injectivelabs/derivatives-consumer@0.0.12) (2021-05-03)
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer
