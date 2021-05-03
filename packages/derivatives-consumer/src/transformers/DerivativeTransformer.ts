@@ -64,8 +64,8 @@ export class DerivativeTransformer {
       makerFeeRate: market.getMakerFeeRate(),
       takerFeeRate: market.getTakerFeeRate(),
       serviceProviderFee: market.getServiceProviderFee(),
-      maxPriceScaleDecimals: market.getMaxPriceScaleDecimals(),
-      maxQuantityScaleDecimals: market.getMaxQuantityScaleDecimals(),
+      minPriceTickSize: market.getMinPriceTickSize(),
+      minQuantityTickSize: market.getMinQuantityTickSize(),
     }
   }
 

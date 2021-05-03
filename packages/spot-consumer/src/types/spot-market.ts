@@ -47,8 +47,8 @@ export interface SpotMarket {
   baseToken: TokenMeta | undefined
   takerFeeRate: string
   serviceProviderFee: string
-  maxPriceScaleDecimals: number
-  maxQuantityScaleDecimals: number
+  minPriceTickSize: string
+  minQuantityTickSize: string
 }
 
 export interface SpotLimitOrder {
