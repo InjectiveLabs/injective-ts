@@ -55,8 +55,8 @@ export class SpotTransformer {
       makerFeeRate: market.getMakerFeeRate(),
       takerFeeRate: market.getTakerFeeRate(),
       serviceProviderFee: market.getServiceProviderFee(),
-      minPriceTickSize: market.getMinPriceTickSize(),
-      minQuantityTickSize: market.getMinQuantityTickSize(),
+      minPriceTickSize: parseFloat(market.getMinPriceTickSize()),
+      minQuantityTickSize: parseFloat(market.getMinQuantityTickSize()),
     }
   }
 
