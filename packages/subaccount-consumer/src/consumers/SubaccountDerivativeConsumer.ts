@@ -1,7 +1,7 @@
 import {
   AccountAddress,
   TradeDirection,
-  TradeExecutionType,
+  TradeExecutionSide,
 } from '@injectivelabs/ts-types'
 import {
   SubaccountOrdersListRequest,
@@ -17,12 +17,12 @@ export class SubaccountDerivativeConsumer extends BaseConsumer {
   async fetchTrades({
     subaccountId,
     marketId,
-    executionType,
+    executionSide,
     direction,
   }: {
     subaccountId: AccountAddress
     marketId?: string
-    executionType?: TradeExecutionType
+    executionSide?: TradeExecutionSide
     direction?: TradeDirection
   }) {
     const request = new SubaccountTradesListRequest()
@@ -32,8 +32,8 @@ export class SubaccountDerivativeConsumer extends BaseConsumer {
       request.setMarketId(marketId)
     }
 
-    if (executionType) {
-      request.setExecutionType(executionType)
+    if (executionSide) {
+      request.setExecutionType(executionSide)
     }
 
     if (direction) {
