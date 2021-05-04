@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/exchange-consumer",
   "description": "Interacting with our Exchange API made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,7 @@
     "@improbable-eng/grpc-web-node-http-transport": "^0.14.0",
     "@injectivelabs/chain-api": "^1.4.7",
     "@injectivelabs/exceptions": "^0.0.21",
-    "@injectivelabs/exchange-api": "^2.1.3",
+    "@injectivelabs/exchange-api": "^2.1.4",
     "@injectivelabs/ts-types": "^0.0.18",
     "@injectivelabs/tx-utils": "^0.0.6",
     "@injectivelabs/utils": "^0.0.26",
