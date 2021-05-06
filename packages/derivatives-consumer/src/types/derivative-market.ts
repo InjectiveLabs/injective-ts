@@ -55,8 +55,8 @@ export interface Position {
   holdQuantity: string
   liquidationPrice: string
   markPrice: string
-  impliedPnl: string
-  leverage: string
+  unrealizedPnl: string
+  ticker: string
 }
 
 export interface DerivativeMarket {

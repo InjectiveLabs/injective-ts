@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.14...@injectivelabs/derivatives-consumer@0.0.15) (2021-05-06)
+
+### Features
+
+* added positions support for derivatives consumer ([c79b446](https://github.com/InjectiveLabs/injective-ts/commit/c79b446c3688988e5147bbf56ab4328c3a1af641))
+
 ## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.13...@injectivelabs/derivatives-consumer@0.0.14) (2021-05-04)
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer

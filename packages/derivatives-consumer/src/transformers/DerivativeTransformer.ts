@@ -153,8 +153,8 @@ export class DerivativeTransformer {
       holdQuantity: order.getHoldQuantity(),
       liquidationPrice: order.getLiquidationPrice(),
       markPrice: order.getMarkPrice(),
-      impliedPnl: order.getImpliedPnl(),
-      leverage: order.getLeverage(),
+      unrealizedPnl: order.getUnrealizedPnl(),
+      ticker: order.getTicker(),
     }
   }
 

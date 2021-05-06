@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.32...@injectivelabs/spot-consumer@0.0.33) (2021-05-06)
+
+### Features
+
+* added positions support for derivatives consumer ([c79b446](https://github.com/InjectiveLabs/injective-ts/commit/c79b446c3688988e5147bbf56ab4328c3a1af641))
+
 ## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.31...@injectivelabs/spot-consumer@0.0.32) (2021-05-04)
 
 **Note:** Version bump only for package @injectivelabs/spot-consumer
