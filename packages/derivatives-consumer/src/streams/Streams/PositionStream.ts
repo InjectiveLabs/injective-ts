@@ -3,11 +3,10 @@ import {
   StreamPositionsResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
-import { TradeExecutionSide } from '@injectivelabs/ts-types'
 import { DerivativeTransformer } from '../../transformers/DerivativeTransformer'
 import { Position } from '../../types'
 
-export type TradeStreamCallback = ({
+export type PositionStreamCallback = ({
   position,
   timestamp,
 }: {
@@ -41,7 +40,7 @@ export class PositionStream {
     callback,
   }: {
     marketId: string
-    callback: TradeStreamCallback
+    callback: PositionStreamCallback
   }) {
     const request = new StreamPositionsRequest()
     request.setMarketId(marketId)
@@ -62,8 +61,7 @@ export class PositionStream {
   }: {
     marketId: string
     subaccountId: string
-    executionSide?: TradeExecutionSide
-    callback: TradeStreamCallback
+    callback: PositionStreamCallback
   }) {
     const request = new StreamPositionsRequest()
     request.setMarketId(marketId)

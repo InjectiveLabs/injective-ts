@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.15...@injectivelabs/derivatives-consumer@0.0.16) (2021-05-07)
+
+### Bug Fixes
+
+* typo fix for the positions streaming callback ([f06f909](https://github.com/InjectiveLabs/injective-ts/commit/f06f909ead0480b20a89695acc77d25cb2afbddf))
+
 ## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.14...@injectivelabs/derivatives-consumer@0.0.15) (2021-05-06)
 
 ### Features
