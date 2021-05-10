@@ -890,18 +890,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@^1.4.6":
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.4.6.tgz#60392239613b163547e29520009a8e4e4181b642"
-  integrity sha512-XHU2nl5sUTDmQjJBTkg8VuiB5uFNAIHFyz22FYKVWPPsxzv19zLBHOAwFogSdX8aQVJffhQicu6iygPna9hnSg==
-  dependencies:
-    "@improbable-eng/grpc-web" "^0.13.0"
-    google-protobuf "^3.13.0"
-
-"@injectivelabs/chain-api@^1.4.7":
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.4.7.tgz#f3fcced909d46185e969c4dbf67d12bec4308181"
-  integrity sha512-b596my/QOW7SuJD94+i3a/6f4aQUf2hCZUaBuVtgNCdDm5o3DU51D7eY8JfPis9cZOtoH6/+dgRkEGB0PobagA==
+"@injectivelabs/chain-api@^1.4.9":
+  version "1.4.9"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.4.9.tgz#0f9ccf85b1afaa1eab0e2750be2a8326db9b86f2"
+  integrity sha512-PFqh7MqTtFOsosre3U1Gc336aK2Fi028oamJiGKElTN+V6P79LTKb9RGNGDNvastH6utiqBAtaunwBoMdIVoHg==
   dependencies:
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
@@ -914,18 +906,10 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exchange-api@^2.1.7":
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.1.7.tgz#b219d792fc4ad60e77312905b11b1bbffd3cc157"
-  integrity sha512-0U/0anHv5PF06P+Ir2CuVwISMj2RcyO87wBeW3hMHF01WskTAlTGdy7QpOpZVhWErFggb2wBxH1wEUp99w+/Ig==
-  dependencies:
-    "@improbable-eng/grpc-web" "^0.14.0"
-    google-protobuf "^3.14.0"
-
-"@injectivelabs/exchange-api@^2.1.7":
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.1.7.tgz#b219d792fc4ad60e77312905b11b1bbffd3cc157"
-  integrity sha512-0U/0anHv5PF06P+Ir2CuVwISMj2RcyO87wBeW3hMHF01WskTAlTGdy7QpOpZVhWErFggb2wBxH1wEUp99w+/Ig==
+"@injectivelabs/exchange-api@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.0.tgz#d77ed5dfc239fba1f8c16e22a125e189ad408c74"
+  integrity sha512-3F1v3pJRjrFb1JTmIGwP6w9xEsqGc8Wm7SPs/+gSTKC743Wyxt+QGEfivqMOaBrS80DFIv7TpYDJilvfEvQmiw==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"

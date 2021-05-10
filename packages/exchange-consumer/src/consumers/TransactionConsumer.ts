@@ -14,7 +14,7 @@ import { recoverTypedSignaturePubKey } from '@injectivelabs/tx-utils'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
-  DEFAULT_BRIDGE_FEE_AMOUNT,
+  DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
 import BaseConsumer from '../BaseConsumer'
 
@@ -25,22 +25,22 @@ export class TransactionConsumer extends BaseConsumer {
     message,
     gasLimit = DEFAULT_GAS_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
-    feeAmount = DEFAULT_BRIDGE_FEE_AMOUNT,
+    feePrice = DEFAULT_BRIDGE_FEE_PRICE,
   }: {
     address: AccountAddress
     chainId: ChainId
     message: any
     gasLimit?: number
     feeDenom?: string
-    feeAmount?: string
+    feePrice?: string
   }) {
     const txFeeAmount = new Coin()
     txFeeAmount.setDenom(feeDenom)
-    txFeeAmount.setAmount(feeAmount)
+    txFeeAmount.setAmount(feePrice)
 
     const cosmosTxFee = new CosmosTxFee()
     cosmosTxFee.setGas(gasLimit)
-    cosmosTxFee.setAmountsList([txFeeAmount])
+    cosmosTxFee.setPriceList([txFeeAmount])
 
     const prepareTxRequest = new PrepareTxRequest()
     prepareTxRequest.setChainId(chainId)
