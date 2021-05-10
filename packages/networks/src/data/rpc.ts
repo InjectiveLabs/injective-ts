@@ -119,23 +119,23 @@ export const urlEndpointsInternal: UrlEndpointUrls = {
 
 export const urlEndpointsLocal: UrlEndpointUrls = {
   america: {
-    baseUrl: 'http://localhost:4444/api',
+    baseUrl: 'https://localhost:4444/api',
     chainUrl: 'http://localhost:1317',
-    exchangeUrl: 'http://localhost:4444',
+    exchangeUrl: 'https://localhost:4444',
     explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 
   europe: {
-    baseUrl: 'http://localhost:4444/api',
+    baseUrl: 'https://localhost:4444/api',
     chainUrl: 'http://localhost:1317',
-    exchangeUrl: 'http://localhost:4444',
+    exchangeUrl: 'https://localhost:4444',
     explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 
   asia: {
-    baseUrl: 'http://localhost:4444/api',
+    baseUrl: 'https://localhost:4444/api',
     chainUrl: 'http://localhost:1317',
-    exchangeUrl: 'http://localhost:4444',
+    exchangeUrl: 'https://localhost:4444',
     explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
   },
 }
