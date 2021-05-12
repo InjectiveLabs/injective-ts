@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.27...@injectivelabs/utils@0.0.28) (2021-05-12)
+
+### Bug Fixes
+
+* gas limit decopled for chain and exchange tx ([350121f](https://github.com/InjectiveLabs/injective-ts/commit/350121f1f48d44597d6f9869a6f91f718a6d90d5))
+
 ## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.26...@injectivelabs/utils@0.0.27) (2021-05-10)
 
 **Note:** Version bump only for package @injectivelabs/utils
