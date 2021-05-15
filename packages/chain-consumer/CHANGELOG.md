@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.49...@injectivelabs/chain-consumer@0.0.50) (2021-05-15)
+
+### Bug Fixes
+
+* exported insurance fund consumer ([81cf541](https://github.com/InjectiveLabs/injective-ts/commit/81cf541cdf9ef87b7ed8c97a834b814d0258ae78))
+
 ## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.48...@injectivelabs/chain-consumer@0.0.49) (2021-05-13)
 
 ### Features
