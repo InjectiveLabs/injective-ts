@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.50...@injectivelabs/chain-consumer@0.0.51) (2021-05-16)
+
+### Bug Fixes
+
+* proper path for insurance messages ([857e1d5](https://github.com/InjectiveLabs/injective-ts/commit/857e1d5be1cbcc71108fbbdcdfde75ad47885ff5))
+
 ## [0.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.49...@injectivelabs/chain-consumer@0.0.50) (2021-05-15)
 
 ### Bug Fixes

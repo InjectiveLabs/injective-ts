@@ -29,7 +29,7 @@ export class InsuranceComposer {
 
     return {
       ...snakeCaseKeys(message.toObject()),
-      '@type': '/cosmos.gov.v1beta1.MsgUnderwrite',
+      '@type': '/injective.insurance.v1beta1.MsgUnderwrite',
     }
   }
 
@@ -53,14 +53,9 @@ export class InsuranceComposer {
     message.setMarketId(marketId)
     message.setSender(address)
 
-    const messageObj = {
+    return {
       ...snakeCaseKeys(message.toObject()),
-      '@type': '/cosmos.gov.v1beta1.MsgRequestRedemption',
+      '@type': '/injective.insurance.v1beta1.MsgRequestRedemption',
     }
-
-    // @ts-ignore
-    delete messageObj.amount_list
-
-    return messageObj
   }
 }
