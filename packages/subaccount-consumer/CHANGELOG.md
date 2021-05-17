@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.13...@injectivelabs/subaccount-consumer@0.0.14) (2021-05-17)
+
+### Features
+
+* added insurance fund in the exchange consumer ([9f7513f](https://github.com/InjectiveLabs/injective-ts/commit/9f7513f7afa1b6207ff6a7bb245ff6f97f570107))
+
 ## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.12...@injectivelabs/subaccount-consumer@0.0.13) (2021-05-12)
 
 **Note:** Version bump only for package @injectivelabs/subaccount-consumer

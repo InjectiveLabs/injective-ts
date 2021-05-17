@@ -906,18 +906,10 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exchange-api@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.0.tgz#d77ed5dfc239fba1f8c16e22a125e189ad408c74"
-  integrity sha512-3F1v3pJRjrFb1JTmIGwP6w9xEsqGc8Wm7SPs/+gSTKC743Wyxt+QGEfivqMOaBrS80DFIv7TpYDJilvfEvQmiw==
-  dependencies:
-    "@improbable-eng/grpc-web" "^0.14.0"
-    google-protobuf "^3.14.0"
-
-"@injectivelabs/exchange-api@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.2.tgz#d51a3ba50c2d8ccf7cbe3f0be6558924507f5eb5"
-  integrity sha512-QitUpXLWOYNceSTKCjhiZj77t8RTRkXNEpBCuZ6DQaM7codGVm5nF6C5ykU/2s3wrHnTjdTZeUqe5KStVY41Fw==
+"@injectivelabs/exchange-api@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.4.tgz#547106cdb3a3e1063e6532362dfd7f77c7f57885"
+  integrity sha512-r9PWr1V7E8OiQ1YlI2+SxmMIzsD40VKi82S+vlQpi0EO9CClYv5TGbEX7fJdhAuE7EC58478jWBvgCfEXcYzzQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
