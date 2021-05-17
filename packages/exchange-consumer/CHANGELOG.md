@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.48...@injectivelabs/exchange-consumer@0.0.49) (2021-05-17)
+
+### Bug Fixes
+
+* denom for redemptions optional ([f88a7e1](https://github.com/InjectiveLabs/injective-ts/commit/f88a7e180b316035556976ee0fbef9530f9e2268))
+
 ## [0.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.47...@injectivelabs/exchange-consumer@0.0.48) (2021-05-17)
 
 ### Features

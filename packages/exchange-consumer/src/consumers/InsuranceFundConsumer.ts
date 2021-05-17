@@ -15,13 +15,16 @@ export class InsuranceFundConsumer extends BaseConsumer {
     address,
     status,
   }: {
-    denom: string
     address: AccountAddress
+    denom?: string
     status?: string
   }) {
     const request = new RedemptionsRequest()
     request.setRedeemer(address)
-    request.setRedemptionDenom(denom)
+
+    if (denom) {
+      request.setRedemptionDenom(denom)
+    }
 
     if (status) {
       request.setStatus(status)
