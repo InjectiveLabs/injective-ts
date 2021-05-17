@@ -914,6 +914,14 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
+"@injectivelabs/exchange-api@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.2.tgz#d51a3ba50c2d8ccf7cbe3f0be6558924507f5eb5"
+  integrity sha512-QitUpXLWOYNceSTKCjhiZj77t8RTRkXNEpBCuZ6DQaM7codGVm5nF6C5ykU/2s3wrHnTjdTZeUqe5KStVY41Fw==
+  dependencies:
+    "@improbable-eng/grpc-web" "^0.14.0"
+    google-protobuf "^3.14.0"
+
 "@injectivelabs/web3-contract-typings@^0.1.12":
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/@injectivelabs/web3-contract-typings/-/web3-contract-typings-0.1.12.tgz#57b06724bffca9380913e3a590d17bdd38a986d1"
