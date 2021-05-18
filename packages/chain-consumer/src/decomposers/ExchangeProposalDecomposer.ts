@@ -1,4 +1,6 @@
 import {
+  ExpiryFuturesMarketLaunchProposal,
+  PerpetualMarketLaunchProposal,
   SpotMarketLaunchProposal,
   SpotMarketParamUpdateProposal,
   SpotMarketStatusSetProposal,
@@ -17,12 +19,12 @@ export class ExchangeProposalDecomposer {
     return SpotMarketStatusSetProposal.deserializeBinary(content)
   }
 
-  static perpetualMarketLaunch() {
-    //
+  static perpetualMarketLaunch(content: Uint8Array) {
+    return PerpetualMarketLaunchProposal.deserializeBinary(content)
   }
 
-  static expiryFuturesMarketLaunch() {
-    //
+  static expiryFuturesMarketLaunch(content: Uint8Array) {
+    return ExpiryFuturesMarketLaunchProposal.deserializeBinary(content)
   }
 
   static derivativeMarketUpdate() {
