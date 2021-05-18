@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.51...@injectivelabs/chain-consumer@0.0.52) (2021-05-18)
+
+### Features
+
+* added expiry futures and perpetual swap market proposal ([cca0f9c](https://github.com/InjectiveLabs/injective-ts/commit/cca0f9ca6ff0d4e2457ccb63bbd784ae940f6a05))
+
 ## [0.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.50...@injectivelabs/chain-consumer@0.0.51) (2021-05-16)
 
 ### Bug Fixes
