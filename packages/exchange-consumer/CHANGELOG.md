@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.50...@injectivelabs/exchange-consumer@0.0.51) (2021-05-19)
+
+### Bug Fixes
+
+* naming typo for oracle consumer ([c7bea8a](https://github.com/InjectiveLabs/injective-ts/commit/c7bea8a75aaa2af174b5d3e93e62690e7732c8a1))
+
 ## [0.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.49...@injectivelabs/exchange-consumer@0.0.50) (2021-05-19)
 
 ### Features

@@ -6,7 +6,7 @@ import { InjectiveOracleRPC } from '@injectivelabs/exchange-api/injective_oracle
 import { GrpcException } from '@injectivelabs/exceptions'
 import BaseConsumer from '../BaseConsumer'
 
-export class OracleFundConsumer extends BaseConsumer {
+export class OracleConsumer extends BaseConsumer {
   async oracles() {
     const request = new OracleListRequest()
 
