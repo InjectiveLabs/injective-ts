@@ -33,7 +33,7 @@ export class InsuranceComposer {
     }
   }
 
-  static redeem({
+  static requestRedemption({
     marketId,
     amount,
     denom,
