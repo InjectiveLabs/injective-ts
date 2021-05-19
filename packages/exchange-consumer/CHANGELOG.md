@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.49...@injectivelabs/exchange-consumer@0.0.50) (2021-05-19)
+
+### Features
+
+* added oracle consumer ([0e94841](https://github.com/InjectiveLabs/injective-ts/commit/0e9484190e7f1badf2eab7bd7b815953b7fd4a36))
+
 ## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.48...@injectivelabs/exchange-consumer@0.0.49) (2021-05-17)
 
 ### Bug Fixes
