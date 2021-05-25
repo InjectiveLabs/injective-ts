@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.22...@injectivelabs/derivatives-consumer@0.0.23) (2021-05-25)
+
+### Bug Fixes
+
+* derivatives chronos endpoint ([ca8a0dc](https://github.com/InjectiveLabs/injective-ts/commit/ca8a0dcc9db7f7e1c65b64126e35943aeb4d5f66))
+
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.19...@injectivelabs/derivatives-consumer@0.0.22) (2021-05-17)
 
 ### Features
