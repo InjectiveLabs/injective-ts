@@ -12,7 +12,7 @@ export class DerivativeMarketChronosConsumer {
   }
 
   async fetchDerivativeMarketSummary(marketId: string) {
-    const endpoint = `chronos/v1/futures/market_summary`
+    const endpoint = `chronos/v1/derivative/market_summary`
 
     try {
       const { data } = (await this.client.get(endpoint, {
@@ -29,7 +29,7 @@ export class DerivativeMarketChronosConsumer {
   }
 
   async fetchDerivativeMarketsSummary() {
-    const endpoint = `chronos/v1/futures/market_summary_all`
+    const endpoint = `chronos/v1/derivative/market_summary_all`
 
     try {
       const { data } = (await this.client.get(endpoint, {
