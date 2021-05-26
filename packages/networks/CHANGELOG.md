@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.17...@injectivelabs/networks@0.0.18) (2021-05-26)
+
+### Bug Fixes
+
+* devnet exchange api endpoint changed ([d0ddc00](https://github.com/InjectiveLabs/injective-ts/commit/d0ddc00df99747d000e2e6d62dbe96dd9e2cf336))
+
 ## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.16...@injectivelabs/networks@0.0.17) (2021-05-24)
 
 **Note:** Version bump only for package @injectivelabs/networks
