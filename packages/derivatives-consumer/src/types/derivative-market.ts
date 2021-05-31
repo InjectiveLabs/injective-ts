@@ -52,11 +52,11 @@ export interface Position {
   quantity: string
   entryPrice: string
   margin: string
-  holdQuantity: string
   liquidationPrice: string
   markPrice: string
   unrealizedPnl: string
   ticker: string
+  holdQuantity?: string
 }
 
 export interface DerivativeMarket {

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.23...@injectivelabs/derivatives-consumer@0.0.24) (2021-05-31)
+
+
+### Bug Fixes
+
+* removed holdQuantity ([4d8d7bf](https://github.com/InjectiveLabs/injective-ts/commit/4d8d7bfe1a3995e7d2c07bc8c4ff35e46b087897))
+
+
+
+
+
 ## 0.0.23 (2021-05-31)
 
 

@@ -150,7 +150,6 @@ export class DerivativeTransformer {
       quantity: order.getQuantity(),
       entryPrice: order.getEntryPrice(),
       margin: order.getMargin(),
-      holdQuantity: order.getHoldQuantity(),
       liquidationPrice: order.getLiquidationPrice(),
       markPrice: order.getMarkPrice(),
       unrealizedPnl: order.getUnrealizedPnl(),
