@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.55 (2021-05-31)
+
+
+### Bug Fixes
+
+* added formatters to the entry file ([0a26c1c](https://github.com/InjectiveLabs/injective-ts/commit/0a26c1c8f60fb750629ff66e7c03b8c554c1ac12))
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* constants decoupled from packages ([0c2f050](https://github.com/InjectiveLabs/injective-ts/commit/0c2f050f7512dc365f8eca9104936e98747644e3))
+* exported GovernanceConsumer ([ed6b08e](https://github.com/InjectiveLabs/injective-ts/commit/ed6b08e4071529ecffc93a6135be2f7776d19fd5))
+* exported insurance fund consumer ([22f60b6](https://github.com/InjectiveLabs/injective-ts/commit/22f60b6490b652f0ba3e76d549a5cb0c9d9da427))
+* exported missing types ([c701985](https://github.com/InjectiveLabs/injective-ts/commit/c701985370181c6c6b59735e233a54660294322b))
+* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+* fixes for chain consumer ([2a46e65](https://github.com/InjectiveLabs/injective-ts/commit/2a46e6573be19031cb9f07a7961d2f57bfe8c5fb))
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* included DistributionConsumer to the export ([b64c85a](https://github.com/InjectiveLabs/injective-ts/commit/b64c85a4b9e11d724b8f27b5e8c643c98aa25897))
+* naming convention ([48ca7ee](https://github.com/InjectiveLabs/injective-ts/commit/48ca7ee8418a71a2c57653b6755472b47d995fc5))
+* proper path for insurance messages ([e67cb40](https://github.com/InjectiveLabs/injective-ts/commit/e67cb408cdb6b4683c1bfec3ef70278a8e8398ae))
+* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+* server side check fixed ([df86421](https://github.com/InjectiveLabs/injective-ts/commit/df86421aec08b6a1e3ff3c928c709e0057f2e1a4))
+* type addition for fetching governance parms ([757e51f](https://github.com/InjectiveLabs/injective-ts/commit/757e51f6d15cf490a154e498359368fb03083384))
+* wrong path for ExchangeProposalDecomposer ([41619b7](https://github.com/InjectiveLabs/injective-ts/commit/41619b76efd6774519e559c40f34e39905f2bbdc))
+* wrong path for types ([8dc5673](https://github.com/InjectiveLabs/injective-ts/commit/8dc5673813737599ae0ea838dfdbb1ff2b7b07c2))
+
+
+### Features
+
+* added a node transport for grpc consumers ([91d4bfc](https://github.com/InjectiveLabs/injective-ts/commit/91d4bfc17dc5c4e9f603219fb0d2b7944ad0254f))
+* added address formatter to utils package ([2b5d919](https://github.com/InjectiveLabs/injective-ts/commit/2b5d919e70c6cc232073d62611009d9de5ce06ac))
+* added exchange spot market consumer for chain consumer ([13012ab](https://github.com/InjectiveLabs/injective-ts/commit/13012ab39366f138e6352e2903c10c19bf0b2fdd))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* added expiry futures and perpetual swap market proposal ([dcd8e84](https://github.com/InjectiveLabs/injective-ts/commit/dcd8e84763e26d1b1248e295a0357a7ef62c65ac))
+* added fetching all balances for a user ([2f3d5f5](https://github.com/InjectiveLabs/injective-ts/commit/2f3d5f5718339bf5985fca63e72a5b79de73ef03))
+* added insurance fund composer and consumer ([9f96e74](https://github.com/InjectiveLabs/injective-ts/commit/9f96e7418262ddd7ca300c41a7ab6ad23a0e39ed))
+* added pagination ([22c6807](https://github.com/InjectiveLabs/injective-ts/commit/22c6807f6b2c855380923e8994aa73d85f9f92ea))
+* added proposals decomposers ([c1cab84](https://github.com/InjectiveLabs/injective-ts/commit/c1cab844a4b795dcd8fe4e0e945d73fd5b81be4e))
+* added re-delegations to chain consumer ([1fcb280](https://github.com/InjectiveLabs/injective-ts/commit/1fcb2806152b73d71e77a9479b229706b56ba619))
+* added re-delegations types ([c1675c7](https://github.com/InjectiveLabs/injective-ts/commit/c1675c7b889dde0b2aff486666bd00797d818b39))
+* added redelegating, withdrawing rewards, getting user rewards ([0126863](https://github.com/InjectiveLabs/injective-ts/commit/01268631232c6c4369bdc35b4c7d5690014d4beb))
+* decouple chain consumer classes ([02fdb86](https://github.com/InjectiveLabs/injective-ts/commit/02fdb869ec01e1a3ec85e23ff807930f0792ccf1))
+* exported some types ([cc1efe3](https://github.com/InjectiveLabs/injective-ts/commit/cc1efe3f46575fecdda515b8134d4db40069d2de))
+* ported chain consumer from the client ([cff10b9](https://github.com/InjectiveLabs/injective-ts/commit/cff10b916959b82d5f1ddbe9267131424ac0b566))
+* proposals initial setup ([2e72d3e](https://github.com/InjectiveLabs/injective-ts/commit/2e72d3e044c5198425243c2b7f8ba585d0480686))
+* refactoring, added support for proposals deposit and voting ([b04d65e](https://github.com/InjectiveLabs/injective-ts/commit/b04d65e8cb4f9f2572bdbbe6dc5144ba36dfc8c0))
+* removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([1df568d](https://github.com/InjectiveLabs/injective-ts/commit/1df568dfa53b0c6cb5b5b83788811f65270a5616))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+
+
+
+
+
 ## [0.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.53...@injectivelabs/chain-consumer@0.0.54) (2021-05-19)
 
 ### Bug Fixes

@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.37 (2021-05-31)
+
+
+### Bug Fixes
+
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* changed message type for cancel order ([bb6e117](https://github.com/InjectiveLabs/injective-ts/commit/bb6e1171c3aae001b815de3761a838d728617a42))
+* fixed async static functions for composers ([02cc13b](https://github.com/InjectiveLabs/injective-ts/commit/02cc13b604c1c63e411f673820f6061f087c5321))
+* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* removed console log ([3def4dc](https://github.com/InjectiveLabs/injective-ts/commit/3def4dc8fea3206a8743cd5bcf2a507283292dff))
+* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+* spelling for SpotOrderState enum ([774f9e7](https://github.com/InjectiveLabs/injective-ts/commit/774f9e7fa8a12206c20d3b95d853fe7b3180d416))
+
+
+### Features
+
+* added derivatives consumer, refactored and unified methods for subaccount consumer and spot consumer ([1d175f1](https://github.com/InjectiveLabs/injective-ts/commit/1d175f1af89ded49d9b66cfa9c083fb7b24bd484))
+* added derivatives consumer, refactored and unified methods for subaccount consumer and spot consumer ([33ff1e4](https://github.com/InjectiveLabs/injective-ts/commit/33ff1e459b12d9f6315c35f0e468d917375d1930))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* added insurance fund in the exchange consumer ([ccc704f](https://github.com/InjectiveLabs/injective-ts/commit/ccc704f7cafa219d2268738f0d3330e12618e82e))
+* added new composer to spot-consumer ([4bd1a73](https://github.com/InjectiveLabs/injective-ts/commit/4bd1a734efde4fca2e5279c9ba7fb5f7022dd149))
+* added positions support for derivatives consumer ([05aec9e](https://github.com/InjectiveLabs/injective-ts/commit/05aec9e40b3e6d1a2ee976829cd40f8cf394d8a7))
+* added state to the spot order type ([04a9b2d](https://github.com/InjectiveLabs/injective-ts/commit/04a9b2db6e64397829b20f2a7076183b72338973))
+* added streams support ([ad0a9d2](https://github.com/InjectiveLabs/injective-ts/commit/ad0a9d2be3e2b8b9d5a9b7a11b57b87284636a8d))
+* added subaccount deposit and withdraw ([b2adf42](https://github.com/InjectiveLabs/injective-ts/commit/b2adf42d406af346aa9c8b5894a026ed30a89e2d))
+* initial setup for the spot consumer ([78dc6a7](https://github.com/InjectiveLabs/injective-ts/commit/78dc6a7ab7ba5c21238b186f06197d1b286cf165))
+* removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([1df568d](https://github.com/InjectiveLabs/injective-ts/commit/1df568dfa53b0c6cb5b5b83788811f65270a5616))
+* subaccount balance stream added ([2717a2e](https://github.com/InjectiveLabs/injective-ts/commit/2717a2e10c57939482c0394ff3ebb9364a0a37c9))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+
+
+
+
+
 ## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.35...@injectivelabs/spot-consumer@0.0.36) (2021-05-17)
 
 ### Features
