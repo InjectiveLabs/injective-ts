@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/spot-consumer",
   "description": "Spot Trading on Injective Protocol made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,7 @@
     "@improbable-eng/grpc-web-node-http-transport": "^0.14.0",
     "@injectivelabs/chain-api": "^1.4.9",
     "@injectivelabs/exceptions": "^0.0.22",
-    "@injectivelabs/exchange-api": "^2.2.5",
+    "@injectivelabs/exchange-api": "^2.2.6",
     "@injectivelabs/ts-types": "^0.0.19",
     "@injectivelabs/utils": "^0.0.29",
     "link-module-alias": "^1.2.0",

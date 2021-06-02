@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.24...@injectivelabs/derivatives-consumer@0.0.25) (2021-06-02)
+
+**Note:** Version bump only for package @injectivelabs/derivatives-consumer
+
+
+
+
+
 ## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.23...@injectivelabs/derivatives-consumer@0.0.24) (2021-05-31)
 
 

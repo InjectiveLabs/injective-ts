@@ -56,7 +56,7 @@ export interface Position {
   markPrice: string
   unrealizedPnl: string
   ticker: string
-  holdQuantity?: string
+  aggregateReduceOnlyQuantity: string
 }
 
 export interface DerivativeMarket {

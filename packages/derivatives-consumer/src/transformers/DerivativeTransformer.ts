@@ -142,18 +142,19 @@ export class DerivativeTransformer {
     return orders.map((order) => DerivativeTransformer.grpcOrderToOrder(order))
   }
 
-  static grpcPositionToPosition(order: GrpcDerivativePosition): Position {
+  static grpcPositionToPosition(position: GrpcDerivativePosition): Position {
     return {
-      marketId: order.getMarketId(),
-      subaccountId: order.getSubaccountId(),
-      direction: order.getDirection() as TradeDirection,
-      quantity: order.getQuantity(),
-      entryPrice: order.getEntryPrice(),
-      margin: order.getMargin(),
-      liquidationPrice: order.getLiquidationPrice(),
-      markPrice: order.getMarkPrice(),
-      unrealizedPnl: order.getUnrealizedPnl(),
-      ticker: order.getTicker(),
+      marketId: position.getMarketId(),
+      subaccountId: position.getSubaccountId(),
+      direction: position.getDirection() as TradeDirection,
+      quantity: position.getQuantity(),
+      entryPrice: position.getEntryPrice(),
+      margin: position.getMargin(),
+      aggregateReduceOnlyQuantity: position.getAggregateReduceOnlyQuantity(),
+      liquidationPrice: position.getLiquidationPrice(),
+      markPrice: position.getMarkPrice(),
+      unrealizedPnl: position.getUnrealizedPnl(),
+      ticker: position.getTicker(),
     }
   }
 
