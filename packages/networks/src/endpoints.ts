@@ -1,4 +1,4 @@
-import { UrlEndpoint } from '../types'
+import { UrlEndpoint } from './types'
 
 export const urlEndpointsMainnet: UrlEndpoint = {
   baseUrl: '',
