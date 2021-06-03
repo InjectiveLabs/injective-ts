@@ -132,6 +132,7 @@ export class TransactionConsumer extends BaseConsumer {
     broadcastTxRequest.setPubKey(cosmosPubKey)
     broadcastTxRequest.setSignature(signature)
     broadcastTxRequest.setTx(txBytes)
+    broadcastTxRequest.setMode('block')
     broadcastTxRequest.setMsgsList([
       Buffer.from(JSON.stringify(message), 'utf8'),
     ])
