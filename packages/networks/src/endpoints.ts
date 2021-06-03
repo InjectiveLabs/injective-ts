@@ -30,7 +30,7 @@ export const urlEndpointsInternal: UrlEndpoint = {
 
 export const urlEndpointsLocal: UrlEndpoint = {
   baseUrl: 'https://localhost:4444/api',
-  chainUrl: 'http://localhost:1317',
+  chainUrl: 'http://localhost:9091',
   exchangeUrl: 'https://localhost:4444',
   explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
 }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.19...@injectivelabs/networks@0.0.20) (2021-06-03)
+
+
+### Bug Fixes
+
+* endpoint port for the chain-api ([a710ee8](https://github.com/InjectiveLabs/injective-ts/commit/a710ee8b0240cee493412974cd1b355ec6748b15))
+
+
+
+
+
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.18...@injectivelabs/networks@0.0.19) (2021-06-02)
 
 
