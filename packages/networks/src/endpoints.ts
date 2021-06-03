@@ -15,9 +15,9 @@ export const urlEndpointsStaking: UrlEndpoint = {
 }
 
 export const urlEndpointsDevnet: UrlEndpoint = {
-  baseUrl: 'https://devnet-api.injective.dev/api',
+  baseUrl: 'https://devnet-api.injective.dev:4444/api',
   chainUrl: 'https://devnet-evm.injective.dev',
-  exchangeUrl: 'https://devnet-api.injective.dev',
+  exchangeUrl: 'https://devnet-api.injective.dev:4444',
   explorerUrl: 'https://devnet-explorer-api.injective.dev',
 }
 
