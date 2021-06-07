@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.39...@injectivelabs/spot-consumer@0.0.40) (2021-06-07)
+
+
+### Features
+
+* derivative market info ([5be64fb](https://github.com/InjectiveLabs/injective-ts/commit/5be64fb91bfdcf974d0dc33327136d4a40140ddb))
+
+
+
+
+
 ## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.38...@injectivelabs/spot-consumer@0.0.39) (2021-06-02)
 
 

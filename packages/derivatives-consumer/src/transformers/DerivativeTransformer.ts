@@ -18,6 +18,12 @@ import {
   GrpcDerivativePosition,
   Position,
   GrpcPositionDelta,
+  PerpetualMarketInfo,
+  GrpcPerpetualMarketInfo,
+  GrpcPerpetualMarketFunding,
+  PerpetualMarketFunding,
+  GrpcExpiryFuturesMarketInfo,
+  ExpiryFuturesMarketInfo,
 } from '../types'
 
 const zeroPositionDelta = () => ({
@@ -45,6 +51,48 @@ export class DerivativeTransformer {
     }
   }
 
+  static grpcPerpetualMarketInfoToPerpetualMarketInfo(
+    perpetualMarketInfo: GrpcPerpetualMarketInfo | undefined,
+  ): PerpetualMarketInfo | undefined {
+    if (!perpetualMarketInfo) {
+      return
+    }
+
+    return {
+      hourlyFundingRateCap: perpetualMarketInfo.getHourlyFundingRateCap(),
+      hourlyInterestRate: perpetualMarketInfo.getHourlyInterestRate(),
+      nextFundingTimestamp: perpetualMarketInfo.getNextFundingTimestamp(),
+      fundingInterval: perpetualMarketInfo.getFundingInterval(),
+    }
+  }
+
+  static grpcPerpetualMarketFundingToPerpetualMarketFunding(
+    perpetualMarketFunding: GrpcPerpetualMarketFunding | undefined,
+  ): PerpetualMarketFunding | undefined {
+    if (!perpetualMarketFunding) {
+      return
+    }
+
+    return {
+      cumulativeFunding: perpetualMarketFunding.getCumulativeFunding(),
+      cumulativePrice: perpetualMarketFunding.getCumulativePrice(),
+      lastTimestamp: perpetualMarketFunding.getLastTimestamp(),
+    }
+  }
+
+  static grpcExpiryFuturesMarketInfoToExpiryFuturesMarketInfo(
+    expiryFuturesMarketInfo: GrpcExpiryFuturesMarketInfo | undefined,
+  ): ExpiryFuturesMarketInfo | undefined {
+    if (!expiryFuturesMarketInfo) {
+      return
+    }
+
+    return {
+      expirationTimestamp: expiryFuturesMarketInfo.getExpirationTimestamp(),
+      settlementPrice: expiryFuturesMarketInfo.getSettlementPrice(),
+    }
+  }
+
   static grpcMarketToMarket(
     market: GrpcDerivativeMarketInfo,
   ): DerivativeMarket {
@@ -69,6 +117,15 @@ export class DerivativeTransformer {
       minQuantityTickSize: new BigNumber(
         market.getMinQuantityTickSize(),
       ).toNumber(),
+      perpetualMarketInfo: DerivativeTransformer.grpcPerpetualMarketInfoToPerpetualMarketInfo(
+        market.getPerpetualMarketInfo(),
+      ),
+      perpetualMarketFunding: DerivativeTransformer.grpcPerpetualMarketFundingToPerpetualMarketFunding(
+        market.getPerpetualMarketFunding(),
+      ),
+      expiryFuturesMarketInfo: DerivativeTransformer.grpcExpiryFuturesMarketInfoToExpiryFuturesMarketInfo(
+        market.getExpiryFuturesMarketInfo(),
+      ),
     }
   }
 

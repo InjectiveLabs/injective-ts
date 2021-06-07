@@ -906,10 +906,10 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exchange-api@^2.2.6":
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.6.tgz#29464033ad7e8554a0cae371cab38297ee4a6c6f"
-  integrity sha512-30ChKnV8V3zcq+5ONXJJohCNqYL4HBU1wLH4C43jUd/VaObMD3KXDUsTzKkVUgnGOueVjXSYGFUSNBK7PJ8N4Q==
+"@injectivelabs/exchange-api@^2.2.7":
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.7.tgz#c2bcbd96590eacdfaa7c9dab70ed7cdb846505d8"
+  integrity sha512-VI2gW3cc2dXdjU4VWHrOC0DgfgNLviP0RLgk3apvHJxcpEAWEXLGMk137Jyg0KIZ3tLCX6bD5jqnl1aig4R3PQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
