@@ -42,7 +42,7 @@ export class SubscriptionManager<
     filter: EventFilters,
     onEvent: (result: ContractEventLog<V>) => void,
   ): void {
-    // @ts-expect-error cannot be used to index type // TODO
+    // @ts-expect-error cannot be used to index type
     const subscription = this.contract.events[event](
       { filter },
       (error: Error, result: ContractEventLog<V>) => {
