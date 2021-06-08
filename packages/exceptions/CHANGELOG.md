@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.22...@injectivelabs/exceptions@0.0.23) (2021-06-08)
+
+
+### Features
+
+* added exchange exception ([c878294](https://github.com/InjectiveLabs/injective-ts/commit/c878294097acab1e6da915c753ba5f0b3dc02356))
+
+
+
+
+
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.11...@injectivelabs/exceptions@0.0.22) (2021-05-31)
 
 
