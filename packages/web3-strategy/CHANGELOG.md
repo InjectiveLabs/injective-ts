@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.11...@injectivelabs/web3-strategy@0.0.42) (2021-05-31)
+
+### Bug Fixes
+
+* added formatters to the entry file ([0a26c1c](https://github.com/InjectiveLabs/injective-ts/commit/0a26c1c8f60fb750629ff66e7c03b8c554c1ac12))
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* assert initial version reset ([40e48e7](https://github.com/InjectiveLabs/injective-ts/commit/40e48e7719fa1f4ebd036b4910b5769efc3a3b48))
+* block tracker issue in web3-strategyu ([a210e86](https://github.com/InjectiveLabs/injective-ts/commit/a210e865970bef539ed85f5822bb09d69e62d3b6))
+* constants decoupled from packages ([0c2f050](https://github.com/InjectiveLabs/injective-ts/commit/0c2f050f7512dc365f8eca9104936e98747644e3))
+* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+* fixed window undefined in node env, renmaed a method name to fit its purpose better ([32498e9](https://github.com/InjectiveLabs/injective-ts/commit/32498e925b35ab8b505c31403ddedb4f0d921bde))
+* fixes and improvements for the Ledger integration ([208a30a](https://github.com/InjectiveLabs/injective-ts/commit/208a30a0ddf83e8a563eb7405578e9dfe265a68d))
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* increased address taken from ledger ([71901c3](https://github.com/InjectiveLabs/injective-ts/commit/71901c3fbb2e0b3a04b40754bb081419adccc878))
+* ledger fixed ([dea584c](https://github.com/InjectiveLabs/injective-ts/commit/dea584cac1e9ef0c8f918bd1807cecffc492ddd6))
+* mc fix ([1ccbb88](https://github.com/InjectiveLabs/injective-ts/commit/1ccbb88f3dc252d1a80da3f1a2338ea6cf761557))
+* method signature for awaiting successfull transaction receipt ([26aa8f4](https://github.com/InjectiveLabs/injective-ts/commit/26aa8f467095830cf971e10ed70fb65ef62e8030))
+* removed verbose flag from web3-strategy ([d939670](https://github.com/InjectiveLabs/injective-ts/commit/d939670b4a5d3289ac717c221eb510d43af78f91))
+* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+* second web3-strategy docs fix ([b7f06e0](https://github.com/InjectiveLabs/injective-ts/commit/b7f06e083077ba73be014f0896f1d2dbe4262d0b))
+* spelling for SpotOrderState enum ([774f9e7](https://github.com/InjectiveLabs/injective-ts/commit/774f9e7fa8a12206c20d3b95d853fe7b3180d416))
+* third web3-strategy docs fix ([aae76ee](https://github.com/InjectiveLabs/injective-ts/commit/aae76ee2fd64c13fababbb2b38f45dea5efbb7ca))
+* types fixed, improvements for web3-strategy ([d0074fd](https://github.com/InjectiveLabs/injective-ts/commit/d0074fdee137aa3ba203d9aab56c54f9b1955940))
+* web3-strategy docs fix ([442248d](https://github.com/InjectiveLabs/injective-ts/commit/442248dfaf61f4a645b06ab99163b86e35ba97ba))
+* window type checking for node env ([b52faa5](https://github.com/InjectiveLabs/injective-ts/commit/b52faa56ed555475c4695c219a81a185ad79cf67))
+
+### Features
+
+* added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
+* added address formatter to utils package ([2b5d919](https://github.com/InjectiveLabs/injective-ts/commit/2b5d919e70c6cc232073d62611009d9de5ce06ac))
+* added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+* added docs for web3-strategy, removed redundant contract instances ([48cc385](https://github.com/InjectiveLabs/injective-ts/commit/48cc38543a20d4177af8369d8faf767f81b89e77))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* added initial ledger support ([5c07023](https://github.com/InjectiveLabs/injective-ts/commit/5c07023a30cd3f916111a4e3c767070cca79bcec))
+* added private key subprovider and refactored web3 strategy ([40b1488](https://github.com/InjectiveLabs/injective-ts/commit/40b14888a58ab3fa166a304fd7fda9de770118ae))
+* contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+* contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+* eip-155 transactions signing for ledger devices completed ([cdc9b96](https://github.com/InjectiveLabs/injective-ts/commit/cdc9b9679dc524a15877ac182f0ad4cc517f933e))
+* exported some types ([cc1efe3](https://github.com/InjectiveLabs/injective-ts/commit/cc1efe3f46575fecdda515b8134d4db40069d2de))
+* implemented Ledger Legacy support ([f22301b](https://github.com/InjectiveLabs/injective-ts/commit/f22301bd841dc51d92109defa5913d2870593064))
+* initial setup for the assert package ([415e9b8](https://github.com/InjectiveLabs/injective-ts/commit/415e9b886e9054bb9bbf2a68f566e243d52a919a))
+* removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([1df568d](https://github.com/InjectiveLabs/injective-ts/commit/1df568dfa53b0c6cb5b5b83788811f65270a5616))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+
 ## [0.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.40...@injectivelabs/web3-strategy@0.0.41) (2021-05-12)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy

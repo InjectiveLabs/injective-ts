@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.11...@injectivelabs/utils@0.0.29) (2021-05-31)
+
+### Bug Fixes
+
+* added formatters to the entry file ([0a26c1c](https://github.com/InjectiveLabs/injective-ts/commit/0a26c1c8f60fb750629ff66e7c03b8c554c1ac12))
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* constants decoupled from packages ([0c2f050](https://github.com/InjectiveLabs/injective-ts/commit/0c2f050f7512dc365f8eca9104936e98747644e3))
+* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+* server side check fixed ([df86421](https://github.com/InjectiveLabs/injective-ts/commit/df86421aec08b6a1e3ff3c928c709e0057f2e1a4))
+* types fixed, improvements for web3-strategy ([d0074fd](https://github.com/InjectiveLabs/injective-ts/commit/d0074fdee137aa3ba203d9aab56c54f9b1955940))
+
+### Features
+
+* added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
+* added a node transport for grpc consumers ([91d4bfc](https://github.com/InjectiveLabs/injective-ts/commit/91d4bfc17dc5c4e9f603219fb0d2b7944ad0254f))
+* added address formatter to utils package ([2b5d919](https://github.com/InjectiveLabs/injective-ts/commit/2b5d919e70c6cc232073d62611009d9de5ce06ac))
+* added chronos-api package ([35154b8](https://github.com/InjectiveLabs/injective-ts/commit/35154b8bbde77d2636476e5c7fbd1732101bf7d9))
+* added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+* contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+
 ## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.27...@injectivelabs/utils@0.0.28) (2021-05-12)
 
 ### Bug Fixes

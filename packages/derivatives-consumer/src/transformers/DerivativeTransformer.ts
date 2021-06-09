@@ -1,4 +1,5 @@
 import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
+import { BigNumber } from '@injectivelabs/utils'
 import {
   GrpcPriceLevel,
   GrpcDerivativeMarketInfo,
@@ -17,6 +18,12 @@ import {
   GrpcDerivativePosition,
   Position,
   GrpcPositionDelta,
+  PerpetualMarketInfo,
+  GrpcPerpetualMarketInfo,
+  GrpcPerpetualMarketFunding,
+  PerpetualMarketFunding,
+  GrpcExpiryFuturesMarketInfo,
+  ExpiryFuturesMarketInfo,
 } from '../types'
 
 const zeroPositionDelta = () => ({
@@ -44,6 +51,48 @@ export class DerivativeTransformer {
     }
   }
 
+  static grpcPerpetualMarketInfoToPerpetualMarketInfo(
+    perpetualMarketInfo: GrpcPerpetualMarketInfo | undefined,
+  ): PerpetualMarketInfo | undefined {
+    if (!perpetualMarketInfo) {
+      return
+    }
+
+    return {
+      hourlyFundingRateCap: perpetualMarketInfo.getHourlyFundingRateCap(),
+      hourlyInterestRate: perpetualMarketInfo.getHourlyInterestRate(),
+      nextFundingTimestamp: perpetualMarketInfo.getNextFundingTimestamp(),
+      fundingInterval: perpetualMarketInfo.getFundingInterval(),
+    }
+  }
+
+  static grpcPerpetualMarketFundingToPerpetualMarketFunding(
+    perpetualMarketFunding: GrpcPerpetualMarketFunding | undefined,
+  ): PerpetualMarketFunding | undefined {
+    if (!perpetualMarketFunding) {
+      return
+    }
+
+    return {
+      cumulativeFunding: perpetualMarketFunding.getCumulativeFunding(),
+      cumulativePrice: perpetualMarketFunding.getCumulativePrice(),
+      lastTimestamp: perpetualMarketFunding.getLastTimestamp(),
+    }
+  }
+
+  static grpcExpiryFuturesMarketInfoToExpiryFuturesMarketInfo(
+    expiryFuturesMarketInfo: GrpcExpiryFuturesMarketInfo | undefined,
+  ): ExpiryFuturesMarketInfo | undefined {
+    if (!expiryFuturesMarketInfo) {
+      return
+    }
+
+    return {
+      expirationTimestamp: expiryFuturesMarketInfo.getExpirationTimestamp(),
+      settlementPrice: expiryFuturesMarketInfo.getSettlementPrice(),
+    }
+  }
+
   static grpcMarketToMarket(
     market: GrpcDerivativeMarketInfo,
   ): DerivativeMarket {
@@ -64,8 +113,19 @@ export class DerivativeTransformer {
       makerFeeRate: market.getMakerFeeRate(),
       takerFeeRate: market.getTakerFeeRate(),
       serviceProviderFee: market.getServiceProviderFee(),
-      minPriceTickSize: parseFloat(market.getMinPriceTickSize()),
-      minQuantityTickSize: parseFloat(market.getMinQuantityTickSize()),
+      minPriceTickSize: new BigNumber(market.getMinPriceTickSize()).toNumber(),
+      minQuantityTickSize: new BigNumber(
+        market.getMinQuantityTickSize(),
+      ).toNumber(),
+      perpetualMarketInfo: DerivativeTransformer.grpcPerpetualMarketInfoToPerpetualMarketInfo(
+        market.getPerpetualMarketInfo(),
+      ),
+      perpetualMarketFunding: DerivativeTransformer.grpcPerpetualMarketFundingToPerpetualMarketFunding(
+        market.getPerpetualMarketFunding(),
+      ),
+      expiryFuturesMarketInfo: DerivativeTransformer.grpcExpiryFuturesMarketInfoToExpiryFuturesMarketInfo(
+        market.getExpiryFuturesMarketInfo(),
+      ),
     }
   }
 
@@ -142,19 +202,19 @@ export class DerivativeTransformer {
     return orders.map((order) => DerivativeTransformer.grpcOrderToOrder(order))
   }
 
-  static grpcPositionToPosition(order: GrpcDerivativePosition): Position {
+  static grpcPositionToPosition(position: GrpcDerivativePosition): Position {
     return {
-      marketId: order.getMarketId(),
-      subaccountId: order.getSubaccountId(),
-      direction: order.getDirection() as TradeDirection,
-      quantity: order.getQuantity(),
-      entryPrice: order.getEntryPrice(),
-      margin: order.getMargin(),
-      holdQuantity: order.getHoldQuantity(),
-      liquidationPrice: order.getLiquidationPrice(),
-      markPrice: order.getMarkPrice(),
-      unrealizedPnl: order.getUnrealizedPnl(),
-      ticker: order.getTicker(),
+      marketId: position.getMarketId(),
+      subaccountId: position.getSubaccountId(),
+      direction: position.getDirection() as TradeDirection,
+      quantity: position.getQuantity(),
+      entryPrice: position.getEntryPrice(),
+      margin: position.getMargin(),
+      aggregateReduceOnlyQuantity: position.getAggregateReduceOnlyQuantity(),
+      liquidationPrice: position.getLiquidationPrice(),
+      markPrice: position.getMarkPrice(),
+      unrealizedPnl: position.getUnrealizedPnl(),
+      ticker: position.getTicker(),
     }
   }
 

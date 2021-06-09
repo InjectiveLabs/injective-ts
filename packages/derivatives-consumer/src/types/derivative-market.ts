@@ -4,6 +4,9 @@ import {
   DerivativeTrade as GrpcDerivativeTrade,
   DerivativePosition as GrpcDerivativePosition,
   PositionDelta as GrpcPositionDelta,
+  PerpetualMarketInfo as GrpcPerpetualMarketInfo,
+  PerpetualMarketFunding as GrpcPerpetualMarketFunding,
+  ExpiryFuturesMarketInfo as GrpcExpiryFuturesMarketInfo,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { TokenMeta as GrpcTokenMeta } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import {
@@ -52,11 +55,29 @@ export interface Position {
   quantity: string
   entryPrice: string
   margin: string
-  holdQuantity: string
   liquidationPrice: string
   markPrice: string
   unrealizedPnl: string
   ticker: string
+  aggregateReduceOnlyQuantity: string
+}
+
+export interface PerpetualMarketInfo {
+  hourlyFundingRateCap: string
+  hourlyInterestRate: string
+  nextFundingTimestamp: number
+  fundingInterval: number
+}
+
+export interface PerpetualMarketFunding {
+  cumulativeFunding: string
+  cumulativePrice: string
+  lastTimestamp: number
+}
+
+export interface ExpiryFuturesMarketInfo {
+  expirationTimestamp: number
+  settlementPrice: string
 }
 
 export interface DerivativeMarket {
@@ -76,6 +97,9 @@ export interface DerivativeMarket {
   serviceProviderFee: string
   minPriceTickSize: number
   minQuantityTickSize: number
+  perpetualMarketInfo?: PerpetualMarketInfo
+  perpetualMarketFunding?: PerpetualMarketFunding
+  expiryFuturesMarketInfo?: ExpiryFuturesMarketInfo
 }
 
 export interface DerivativeLimitOrder {
@@ -137,6 +161,9 @@ export {
   GrpcDerivativeMarketInfo,
   GrpcDerivativeMarket,
   GrpcDerivativeLimitOrder,
+  GrpcPerpetualMarketInfo,
+  GrpcPerpetualMarketFunding,
+  GrpcExpiryFuturesMarketInfo,
   GrpcDerivativeTrade,
   GrpcPositionDelta,
 }

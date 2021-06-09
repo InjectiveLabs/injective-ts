@@ -4,7 +4,7 @@ import {
   urlEndpointsStaking,
   urlEndpointsInternal,
   urlEndpointsDevnet,
-} from './data/rpc'
+} from './endpoints'
 import { Network, UrlEndpoint } from './types'
 
 export const urlEndpointUrls: { [key: string]: UrlEndpoint } = {

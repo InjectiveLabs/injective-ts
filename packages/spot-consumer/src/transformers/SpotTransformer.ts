@@ -1,4 +1,5 @@
 import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
+import { BigNumber } from '@injectivelabs/utils'
 import {
   GrpcPriceLevel,
   GrpcSpotMarketInfo,
@@ -55,8 +56,10 @@ export class SpotTransformer {
       makerFeeRate: market.getMakerFeeRate(),
       takerFeeRate: market.getTakerFeeRate(),
       serviceProviderFee: market.getServiceProviderFee(),
-      minPriceTickSize: parseFloat(market.getMinPriceTickSize()),
-      minQuantityTickSize: parseFloat(market.getMinQuantityTickSize()),
+      minPriceTickSize: new BigNumber(market.getMinPriceTickSize()).toNumber(),
+      minQuantityTickSize: new BigNumber(
+        market.getMinQuantityTickSize(),
+      ).toNumber(),
     }
   }
 

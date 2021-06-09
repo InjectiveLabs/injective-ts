@@ -3,17 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.18...@injectivelabs/networks@0.0.19) (2021-05-27)
+## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.21...@injectivelabs/networks@0.0.22) (2021-06-08)
 
 ### Bug Fixes
 
-* exchange endpoint for staking network ([5dbddd9](https://github.com/InjectiveLabs/injective-ts/commit/5dbddd904f919b9a0482167d317e96ce7b900431))
+* networks endpoints ([68e2df9](https://github.com/InjectiveLabs/injective-ts/commit/68e2df98fbbbc7d4c757bbbb6152498106f25cb9))
 
-## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.17...@injectivelabs/networks@0.0.18) (2021-05-26)
+## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.20...@injectivelabs/networks@0.0.21) (2021-06-03)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.19...@injectivelabs/networks@0.0.20) (2021-06-03)
 
 ### Bug Fixes
 
-* devnet exchange api endpoint changed ([d0ddc00](https://github.com/InjectiveLabs/injective-ts/commit/d0ddc00df99747d000e2e6d62dbe96dd9e2cf336))
+* endpoint port for the chain-api ([a710ee8](https://github.com/InjectiveLabs/injective-ts/commit/a710ee8b0240cee493412974cd1b355ec6748b15))
+
+## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.18...@injectivelabs/networks@0.0.19) (2021-06-02)
+
+### Bug Fixes
+
+* number for tick sizes ([e386611](https://github.com/InjectiveLabs/injective-ts/commit/e3866118eba6e3edaa5d806a4721020ddb001fa8))
+
+## 0.0.18 (2021-05-31)
+
+### Bug Fixes
+
+* constants decoupled from packages ([0c2f050](https://github.com/InjectiveLabs/injective-ts/commit/0c2f050f7512dc365f8eca9104936e98747644e3))
+* explorer url updated ([4146da2](https://github.com/InjectiveLabs/injective-ts/commit/4146da2c81791e796b135161f61cc7225aea3f0d))
+* explorer url updated ([da60911](https://github.com/InjectiveLabs/injective-ts/commit/da609118452a8601b13c47776f065b99cfd9a2ac))
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* mc fix ([1ccbb88](https://github.com/InjectiveLabs/injective-ts/commit/1ccbb88f3dc252d1a80da3f1a2338ea6cf761557))
+* merge conflicts fixes ([fd8fab5](https://github.com/InjectiveLabs/injective-ts/commit/fd8fab59aceba12e7e6c0753bb5c7cea2f89b43a))
+* removed redundant changelog ([b80c4da](https://github.com/InjectiveLabs/injective-ts/commit/b80c4da3a486f0738bde9726e0e7c7bf6bc18184))
+
+### Features
+
+* added devnet network ([2975a41](https://github.com/InjectiveLabs/injective-ts/commit/2975a41d612b1b17aba28b86e1770b9861b32d22))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* added networks package for fetching endpoints ([b6fc2a8](https://github.com/InjectiveLabs/injective-ts/commit/b6fc2a8b6e515c5d9b5d638132f6a77504c24cbc))
+* added networks package for fetching endpoints ([de3db66](https://github.com/InjectiveLabs/injective-ts/commit/de3db668e6d56092806fa4d1a5abd643fb1449e4))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
 
 ## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.16...@injectivelabs/networks@0.0.17) (2021-05-24)
 

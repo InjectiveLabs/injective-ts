@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.16...@injectivelabs/subaccount-consumer@0.0.17) (2021-06-07)
+
+### Features
+
+* derivative market info ([5be64fb](https://github.com/InjectiveLabs/injective-ts/commit/5be64fb91bfdcf974d0dc33327136d4a40140ddb))
+
+## [0.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.15...@injectivelabs/subaccount-consumer@0.0.16) (2021-06-02)
+
+**Note:** Version bump only for package @injectivelabs/subaccount-consumer
+
+## 0.0.15 (2021-05-31)
+
+### Bug Fixes
+
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* package name for subaccount-consumer ([7ab19b2](https://github.com/InjectiveLabs/injective-ts/commit/7ab19b2b895238977803b6795108c474fdcd558e))
+
+### Features
+
+* added derivatives consumer, refactored and unified methods for subaccount consumer and spot consumer ([1d175f1](https://github.com/InjectiveLabs/injective-ts/commit/1d175f1af89ded49d9b66cfa9c083fb7b24bd484))
+* added derivatives consumer, refactored and unified methods for subaccount consumer and spot consumer ([33ff1e4](https://github.com/InjectiveLabs/injective-ts/commit/33ff1e459b12d9f6315c35f0e468d917375d1930))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* added insurance fund in the exchange consumer ([ccc704f](https://github.com/InjectiveLabs/injective-ts/commit/ccc704f7cafa219d2268738f0d3330e12618e82e))
+* added positions support for derivatives consumer ([05aec9e](https://github.com/InjectiveLabs/injective-ts/commit/05aec9e40b3e6d1a2ee976829cd40f8cf394d8a7))
+* added state to the spot order type ([04a9b2d](https://github.com/InjectiveLabs/injective-ts/commit/04a9b2db6e64397829b20f2a7076183b72338973))
+* removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([1df568d](https://github.com/InjectiveLabs/injective-ts/commit/1df568dfa53b0c6cb5b5b83788811f65270a5616))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+
 ## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.13...@injectivelabs/subaccount-consumer@0.0.14) (2021-05-17)
 
 ### Features

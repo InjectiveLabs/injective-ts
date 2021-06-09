@@ -3,11 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.22...@injectivelabs/derivatives-consumer@0.0.23) (2021-05-25)
+## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.26...@injectivelabs/derivatives-consumer@0.0.27) (2021-06-07)
+
+### Features
+
+* derivative market info ([5be64fb](https://github.com/InjectiveLabs/injective-ts/commit/5be64fb91bfdcf974d0dc33327136d4a40140ddb))
+
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.25...@injectivelabs/derivatives-consumer@0.0.26) (2021-06-02)
 
 ### Bug Fixes
 
+* number for tick sizes ([e386611](https://github.com/InjectiveLabs/injective-ts/commit/e3866118eba6e3edaa5d806a4721020ddb001fa8))
+
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.24...@injectivelabs/derivatives-consumer@0.0.25) (2021-06-02)
+
+**Note:** Version bump only for package @injectivelabs/derivatives-consumer
+
+## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.23...@injectivelabs/derivatives-consumer@0.0.24) (2021-05-31)
+
+### Bug Fixes
+
+* removed holdQuantity ([4d8d7bf](https://github.com/InjectiveLabs/injective-ts/commit/4d8d7bfe1a3995e7d2c07bc8c4ff35e46b087897))
+
+## 0.0.23 (2021-05-31)
+
+### Bug Fixes
+
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* changed naming for derivative order type ([c7e1043](https://github.com/InjectiveLabs/injective-ts/commit/c7e1043e500f209fbea28bcb3a38216ae592dbe1))
 * derivatives chronos endpoint ([ca8a0dc](https://github.com/InjectiveLabs/injective-ts/commit/ca8a0dcc9db7f7e1c65b64126e35943aeb4d5f66))
+* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* imports for derivatives consumer ([ac45a4e](https://github.com/InjectiveLabs/injective-ts/commit/ac45a4e0fdc29b41de2adb843a53dd27b76a6dd5))
+* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+* typo fix for the positions streaming callback ([f871fda](https://github.com/InjectiveLabs/injective-ts/commit/f871fdadc5ad4bada25df9b2d5880ac61f419667))
+* typo fix for the positions streaming callback ([9d12324](https://github.com/InjectiveLabs/injective-ts/commit/9d1232431acecf7742736b37353f57c90a7c0574))
+
+### Features
+
+* added derivatives consumer, refactored and unified methods for subaccount consumer and spot consumer ([1d175f1](https://github.com/InjectiveLabs/injective-ts/commit/1d175f1af89ded49d9b66cfa9c083fb7b24bd484))
+* added derivatives consumer, refactored and unified methods for subaccount consumer and spot consumer ([33ff1e4](https://github.com/InjectiveLabs/injective-ts/commit/33ff1e459b12d9f6315c35f0e468d917375d1930))
+* added insurance fund in the exchange consumer ([ccc704f](https://github.com/InjectiveLabs/injective-ts/commit/ccc704f7cafa219d2268738f0d3330e12618e82e))
+* added positions support for derivatives consumer ([05aec9e](https://github.com/InjectiveLabs/injective-ts/commit/05aec9e40b3e6d1a2ee976829cd40f8cf394d8a7))
 
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.19...@injectivelabs/derivatives-consumer@0.0.22) (2021-05-17)
 

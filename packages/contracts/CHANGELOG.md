@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.45 (2021-05-31)
+
+### Bug Fixes
+
+* added formatters to the entry file ([0a26c1c](https://github.com/InjectiveLabs/injective-ts/commit/0a26c1c8f60fb750629ff66e7c03b8c554c1ac12))
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* block tracker issue in web3-strategyu ([a210e86](https://github.com/InjectiveLabs/injective-ts/commit/a210e865970bef539ed85f5822bb09d69e62d3b6))
+* constants decoupled from packages ([0c2f050](https://github.com/InjectiveLabs/injective-ts/commit/0c2f050f7512dc365f8eca9104936e98747644e3))
+* contract address ([dde882c](https://github.com/InjectiveLabs/injective-ts/commit/dde882cc0de5e4bc2c65c2ba3b5317b34db0d3ae))
+* exported Contract class from contracts package ([a40ce72](https://github.com/InjectiveLabs/injective-ts/commit/a40ce7277bb91529fb11f885b3f58deb1929d588))
+* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+* fixed window undefined in node env, renmaed a method name to fit its purpose better ([32498e9](https://github.com/InjectiveLabs/injective-ts/commit/32498e925b35ab8b505c31403ddedb4f0d921bde))
+* fixes and improvements for the Ledger integration ([208a30a](https://github.com/InjectiveLabs/injective-ts/commit/208a30a0ddf83e8a563eb7405578e9dfe265a68d))
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* increased address taken from ledger ([71901c3](https://github.com/InjectiveLabs/injective-ts/commit/71901c3fbb2e0b3a04b40754bb081419adccc878))
+* ledger fixed ([dea584c](https://github.com/InjectiveLabs/injective-ts/commit/dea584cac1e9ef0c8f918bd1807cecffc492ddd6))
+* mc fix ([1ccbb88](https://github.com/InjectiveLabs/injective-ts/commit/1ccbb88f3dc252d1a80da3f1a2338ea6cf761557))
+* method signature for awaiting successfull transaction receipt ([26aa8f4](https://github.com/InjectiveLabs/injective-ts/commit/26aa8f467095830cf971e10ed70fb65ef62e8030))
+* removed force publish for packages ([335a1b6](https://github.com/InjectiveLabs/injective-ts/commit/335a1b64f7c8bff95f1c29e4318502fb30d77615))
+* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+* server side check fixed ([df86421](https://github.com/InjectiveLabs/injective-ts/commit/df86421aec08b6a1e3ff3c928c709e0057f2e1a4))
+* spelling for SpotOrderState enum ([774f9e7](https://github.com/InjectiveLabs/injective-ts/commit/774f9e7fa8a12206c20d3b95d853fe7b3180d416))
+* window type checking for node env ([b52faa5](https://github.com/InjectiveLabs/injective-ts/commit/b52faa56ed555475c4695c219a81a185ad79cf67))
+* zeroed out addresses for unused chains ([17792b8](https://github.com/InjectiveLabs/injective-ts/commit/17792b8b28cbc7ebb278f15ed29ea8fd2db6d6e8))
+
+### Features
+
+* added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
+* added a node transport for grpc consumers ([91d4bfc](https://github.com/InjectiveLabs/injective-ts/commit/91d4bfc17dc5c4e9f603219fb0d2b7944ad0254f))
+* added address formatter to utils package ([2b5d919](https://github.com/InjectiveLabs/injective-ts/commit/2b5d919e70c6cc232073d62611009d9de5ce06ac))
+* added chronos-api package ([35154b8](https://github.com/InjectiveLabs/injective-ts/commit/35154b8bbde77d2636476e5c7fbd1732101bf7d9))
+* added depositBalance method to the DepositManager contract ([bda0dd6](https://github.com/InjectiveLabs/injective-ts/commit/bda0dd6dfc6cc0cbd8e0a695b369630dd66a56b6))
+* added docs for web3-strategy, removed redundant contract instances ([48cc385](https://github.com/InjectiveLabs/injective-ts/commit/48cc38543a20d4177af8369d8faf767f81b89e77))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* added initial ledger support ([5c07023](https://github.com/InjectiveLabs/injective-ts/commit/5c07023a30cd3f916111a4e3c767070cca79bcec))
+* added more contract instances to the contract package ([92fe669](https://github.com/InjectiveLabs/injective-ts/commit/92fe669487a190e44e8a4563221134fab050b16b))
+* added name, symbol, decimal methods to the base currency contract ([bc27edb](https://github.com/InjectiveLabs/injective-ts/commit/bc27edb5a38b7e9bacd75ade225cc8100566a13d))
+* contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+* contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+* contracts package extended by adding a base contract and subscription manager ([928d3d7](https://github.com/InjectiveLabs/injective-ts/commit/928d3d7ebf211ee9227c214c8762b9dfcfbf7542))
+* eip-155 transactions signing for ledger devices completed ([cdc9b96](https://github.com/InjectiveLabs/injective-ts/commit/cdc9b9679dc524a15877ac182f0ad4cc517f933e))
+* exported some types ([cc1efe3](https://github.com/InjectiveLabs/injective-ts/commit/cc1efe3f46575fecdda515b8134d4db40069d2de))
+* implemented Ledger Legacy support ([f22301b](https://github.com/InjectiveLabs/injective-ts/commit/f22301bd841dc51d92109defa5913d2870593064))
+* initial setup for the assert package ([415e9b8](https://github.com/InjectiveLabs/injective-ts/commit/415e9b886e9054bb9bbf2a68f566e243d52a919a))
+* ported chain consumer from the client ([cff10b9](https://github.com/InjectiveLabs/injective-ts/commit/cff10b916959b82d5f1ddbe9267131424ac0b566))
+* removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([1df568d](https://github.com/InjectiveLabs/injective-ts/commit/1df568dfa53b0c6cb5b5b83788811f65270a5616))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+* upated contracts packages with new deposit manager abi ([fdbee9d](https://github.com/InjectiveLabs/injective-ts/commit/fdbee9db3881e22d743e7def7f97ae79a4f32967))
+* updated deposit manager contract with addiotional methods ([866a5c1](https://github.com/InjectiveLabs/injective-ts/commit/866a5c1ebc335ba1f33cc6fdbd7dc0f631fa310f))
+
 ## [0.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.43...@injectivelabs/contracts@0.0.44) (2021-05-12)
 
 **Note:** Version bump only for package @injectivelabs/contracts

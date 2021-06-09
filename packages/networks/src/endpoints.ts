@@ -1,4 +1,4 @@
-import { UrlEndpoint } from '../types'
+import { UrlEndpoint } from './types'
 
 export const urlEndpointsMainnet: UrlEndpoint = {
   baseUrl: '',
@@ -8,10 +8,10 @@ export const urlEndpointsMainnet: UrlEndpoint = {
 }
 
 export const urlEndpointsStaking: UrlEndpoint = {
-  baseUrl: 'https://staking-api.injective.network:4444/api',
-  chainUrl: 'https://staking-evm.injective.network',
-  exchangeUrl: 'https://staking-api.injective.network:4444',
-  explorerUrl: 'https://staking-explorer-api.injective.network/v1',
+  baseUrl: 'https://staking-api.injective.dev:4444/api',
+  chainUrl: 'https://staking-evm.injective.dev',
+  exchangeUrl: 'https://staking-api.injective.dev:4444',
+  explorerUrl: 'https://staking-explorer-api.injective.dev',
 }
 
 export const urlEndpointsDevnet: UrlEndpoint = {
@@ -30,7 +30,7 @@ export const urlEndpointsInternal: UrlEndpoint = {
 
 export const urlEndpointsLocal: UrlEndpoint = {
   baseUrl: 'https://localhost:4444/api',
-  chainUrl: 'http://localhost:1317',
+  chainUrl: 'http://localhost:9091',
   exchangeUrl: 'https://localhost:4444',
   explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
 }

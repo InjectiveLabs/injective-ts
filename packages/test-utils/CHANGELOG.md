@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.7 (2021-05-31)
+
+### Bug Fixes
+
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+
+### Features
+
+* added more packages initial versions ([c3bde24](https://github.com/InjectiveLabs/injective-ts/commit/c3bde245e1eb55174a1687ff9fe08074b9482506))
+
 ## [0.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@0.0.5...@injectivelabs/test-utils@0.0.6) (2021-03-14)
 
 **Note:** Version bump only for package @injectivelabs/test-utils
