@@ -32,7 +32,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 0.0.45 (2021-05-31)
 
-
 ### Bug Fixes
 
 * added formatters to the entry file ([0a26c1c](https://github.com/InjectiveLabs/injective-ts/commit/0a26c1c8f60fb750629ff66e7c03b8c554c1ac12))
@@ -55,7 +54,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * spelling for SpotOrderState enum ([774f9e7](https://github.com/InjectiveLabs/injective-ts/commit/774f9e7fa8a12206c20d3b95d853fe7b3180d416))
 * window type checking for node env ([b52faa5](https://github.com/InjectiveLabs/injective-ts/commit/b52faa56ed555475c4695c219a81a185ad79cf67))
 * zeroed out addresses for unused chains ([17792b8](https://github.com/InjectiveLabs/injective-ts/commit/17792b8b28cbc7ebb278f15ed29ea8fd2db6d6e8))
-
 
 ### Features
 
@@ -81,10 +79,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
 * upated contracts packages with new deposit manager abi ([fdbee9d](https://github.com/InjectiveLabs/injective-ts/commit/fdbee9db3881e22d743e7def7f97ae79a4f32967))
 * updated deposit manager contract with addiotional methods ([866a5c1](https://github.com/InjectiveLabs/injective-ts/commit/866a5c1ebc335ba1f33cc6fdbd7dc0f631fa310f))
-
-
-
-
 
 ## [0.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.43...@injectivelabs/contracts@0.0.44) (2021-05-12)
 

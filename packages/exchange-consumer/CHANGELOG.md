@@ -46,33 +46,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.54...@injectivelabs/exchange-consumer@0.0.55) (2021-06-07)
 
-
 ### Features
 
 * derivative market info ([5be64fb](https://github.com/InjectiveLabs/injective-ts/commit/5be64fb91bfdcf974d0dc33327136d4a40140ddb))
-
-
-
-
 
 ## [0.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.53...@injectivelabs/exchange-consumer@0.0.54) (2021-06-03)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
 
-
-
-
-
 ## [0.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.52...@injectivelabs/exchange-consumer@0.0.53) (2021-06-02)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
 
-
-
-
-
 ## 0.0.52 (2021-05-31)
-
 
 ### Bug Fixes
 
@@ -96,7 +82,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * server side check fixed ([df86421](https://github.com/InjectiveLabs/injective-ts/commit/df86421aec08b6a1e3ff3c928c709e0057f2e1a4))
 * toFixed used intead of toString for precision ([747dcda](https://github.com/InjectiveLabs/injective-ts/commit/747dcda9661520930a0a4734e358602eb51ed729))
 * wrong path for types ([8dc5673](https://github.com/InjectiveLabs/injective-ts/commit/8dc5673813737599ae0ea838dfdbb1ff2b7b07c2))
-
 
 ### Features
 
@@ -123,10 +108,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([1df568d](https://github.com/InjectiveLabs/injective-ts/commit/1df568dfa53b0c6cb5b5b83788811f65270a5616))
 * subaccount balance stream added ([2717a2e](https://github.com/InjectiveLabs/injective-ts/commit/2717a2e10c57939482c0394ff3ebb9364a0a37c9))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.50...@injectivelabs/exchange-consumer@0.0.51) (2021-05-19)
 

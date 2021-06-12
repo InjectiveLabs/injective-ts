@@ -24,7 +24,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 0.0.55 (2021-05-31)
 
-
 ### Bug Fixes
 
 * added formatters to the entry file ([0a26c1c](https://github.com/InjectiveLabs/injective-ts/commit/0a26c1c8f60fb750629ff66e7c03b8c554c1ac12))
@@ -44,7 +43,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * type addition for fetching governance parms ([757e51f](https://github.com/InjectiveLabs/injective-ts/commit/757e51f6d15cf490a154e498359368fb03083384))
 * wrong path for ExchangeProposalDecomposer ([41619b7](https://github.com/InjectiveLabs/injective-ts/commit/41619b76efd6774519e559c40f34e39905f2bbdc))
 * wrong path for types ([8dc5673](https://github.com/InjectiveLabs/injective-ts/commit/8dc5673813737599ae0ea838dfdbb1ff2b7b07c2))
-
 
 ### Features
 
@@ -67,10 +65,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * refactoring, added support for proposals deposit and voting ([b04d65e](https://github.com/InjectiveLabs/injective-ts/commit/b04d65e8cb4f9f2572bdbbe6dc5144ba36dfc8c0))
 * removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([1df568d](https://github.com/InjectiveLabs/injective-ts/commit/1df568dfa53b0c6cb5b5b83788811f65270a5616))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.53...@injectivelabs/chain-consumer@0.0.54) (2021-05-19)
 

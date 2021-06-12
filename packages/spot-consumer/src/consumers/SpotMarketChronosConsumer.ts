@@ -1,4 +1,5 @@
 import { HttpClient } from '@injectivelabs/utils'
+import { HttpException } from '@injectivelabs/exceptions'
 import {
   ChronosSpotMarketSummaryResponse,
   AllSpotMarketSummaryResponse,
@@ -22,7 +23,7 @@ export class SpotMarketChronosConsumer {
 
       return data
     } catch (error) {
-      throw new Error(
+      throw new HttpException(
         error.response ? error.response.data.message : error.message,
       )
     }
@@ -38,7 +39,7 @@ export class SpotMarketChronosConsumer {
 
       return data
     } catch (error) {
-      throw new Error(
+      throw new HttpException(
         error.response ? error.response.data.message : error.message,
       )
     }

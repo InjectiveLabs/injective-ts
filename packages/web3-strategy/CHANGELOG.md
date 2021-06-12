@@ -21,7 +21,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.11...@injectivelabs/web3-strategy@0.0.42) (2021-05-31)
 
-
 ### Bug Fixes
 
 * added formatters to the entry file ([0a26c1c](https://github.com/InjectiveLabs/injective-ts/commit/0a26c1c8f60fb750629ff66e7c03b8c554c1ac12))
@@ -46,7 +45,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * web3-strategy docs fix ([442248d](https://github.com/InjectiveLabs/injective-ts/commit/442248dfaf61f4a645b06ab99163b86e35ba97ba))
 * window type checking for node env ([b52faa5](https://github.com/InjectiveLabs/injective-ts/commit/b52faa56ed555475c4695c219a81a185ad79cf67))
 
-
 ### Features
 
 * added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
@@ -64,10 +62,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * initial setup for the assert package ([415e9b8](https://github.com/InjectiveLabs/injective-ts/commit/415e9b886e9054bb9bbf2a68f566e243d52a919a))
 * removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([1df568d](https://github.com/InjectiveLabs/injective-ts/commit/1df568dfa53b0c6cb5b5b83788811f65270a5616))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.40...@injectivelabs/web3-strategy@0.0.41) (2021-05-12)
 

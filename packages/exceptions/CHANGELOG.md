@@ -16,13 +16,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.11...@injectivelabs/exceptions@0.0.22) (2021-05-31)
 
-
 ### Bug Fixes
 
 * added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
 * fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
 * renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
-
 
 ### Features
 
@@ -31,10 +29,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
 * contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.20...@injectivelabs/exceptions@0.0.21) (2021-04-27)
 

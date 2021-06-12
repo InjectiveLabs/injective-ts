@@ -24,7 +24,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 0.0.12 (2021-05-31)
 
-
 ### Bug Fixes
 
 * added formatters to the entry file ([0a26c1c](https://github.com/InjectiveLabs/injective-ts/commit/0a26c1c8f60fb750629ff66e7c03b8c554c1ac12))
@@ -33,7 +32,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
 * gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
 
-
 ### Features
 
 * added address formatter to utils package ([2b5d919](https://github.com/InjectiveLabs/injective-ts/commit/2b5d919e70c6cc232073d62611009d9de5ce06ac))
@@ -41,10 +39,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
 * initial setup for the assert package ([415e9b8](https://github.com/InjectiveLabs/injective-ts/commit/415e9b886e9054bb9bbf2a68f566e243d52a919a))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/assert@0.0.10...@injectivelabs/assert@0.0.11) (2021-05-12)
 

@@ -24,47 +24,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.21...@injectivelabs/networks@0.0.22) (2021-06-08)
 
-
 ### Bug Fixes
 
 * networks endpoints ([68e2df9](https://github.com/InjectiveLabs/injective-ts/commit/68e2df98fbbbc7d4c757bbbb6152498106f25cb9))
-
-
-
-
 
 ## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.20...@injectivelabs/networks@0.0.21) (2021-06-03)
 
 **Note:** Version bump only for package @injectivelabs/networks
 
-
-
-
-
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.19...@injectivelabs/networks@0.0.20) (2021-06-03)
-
 
 ### Bug Fixes
 
 * endpoint port for the chain-api ([a710ee8](https://github.com/InjectiveLabs/injective-ts/commit/a710ee8b0240cee493412974cd1b355ec6748b15))
 
-
-
-
-
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.18...@injectivelabs/networks@0.0.19) (2021-06-02)
-
 
 ### Bug Fixes
 
 * number for tick sizes ([e386611](https://github.com/InjectiveLabs/injective-ts/commit/e3866118eba6e3edaa5d806a4721020ddb001fa8))
 
-
-
-
-
 ## 0.0.18 (2021-05-31)
-
 
 ### Bug Fixes
 
@@ -76,7 +56,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * merge conflicts fixes ([fd8fab5](https://github.com/InjectiveLabs/injective-ts/commit/fd8fab59aceba12e7e6c0753bb5c7cea2f89b43a))
 * removed redundant changelog ([b80c4da](https://github.com/InjectiveLabs/injective-ts/commit/b80c4da3a486f0738bde9726e0e7c7bf6bc18184))
 
-
 ### Features
 
 * added devnet network ([2975a41](https://github.com/InjectiveLabs/injective-ts/commit/2975a41d612b1b17aba28b86e1770b9861b32d22))
@@ -84,10 +63,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * added networks package for fetching endpoints ([b6fc2a8](https://github.com/InjectiveLabs/injective-ts/commit/b6fc2a8b6e515c5d9b5d638132f6a77504c24cbc))
 * added networks package for fetching endpoints ([de3db66](https://github.com/InjectiveLabs/injective-ts/commit/de3db668e6d56092806fa4d1a5abd643fb1449e4))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.16...@injectivelabs/networks@0.0.17) (2021-05-24)
 

@@ -13,36 +13,21 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.39...@injectivelabs/spot-consumer@0.0.40) (2021-06-07)
 
-
 ### Features
 
 * derivative market info ([5be64fb](https://github.com/InjectiveLabs/injective-ts/commit/5be64fb91bfdcf974d0dc33327136d4a40140ddb))
 
-
-
-
-
 ## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.38...@injectivelabs/spot-consumer@0.0.39) (2021-06-02)
-
 
 ### Bug Fixes
 
 * number for tick sizes ([e386611](https://github.com/InjectiveLabs/injective-ts/commit/e3866118eba6e3edaa5d806a4721020ddb001fa8))
 
-
-
-
-
 ## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.37...@injectivelabs/spot-consumer@0.0.38) (2021-06-02)
 
 **Note:** Version bump only for package @injectivelabs/spot-consumer
 
-
-
-
-
 ## 0.0.37 (2021-05-31)
-
 
 ### Bug Fixes
 
@@ -54,7 +39,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * removed console log ([3def4dc](https://github.com/InjectiveLabs/injective-ts/commit/3def4dc8fea3206a8743cd5bcf2a507283292dff))
 * renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
 * spelling for SpotOrderState enum ([774f9e7](https://github.com/InjectiveLabs/injective-ts/commit/774f9e7fa8a12206c20d3b95d853fe7b3180d416))
-
 
 ### Features
 
@@ -71,10 +55,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * removed blockTracker from web3-strategy, spot consumer fix for canelling limit orders ([1df568d](https://github.com/InjectiveLabs/injective-ts/commit/1df568dfa53b0c6cb5b5b83788811f65270a5616))
 * subaccount balance stream added ([2717a2e](https://github.com/InjectiveLabs/injective-ts/commit/2717a2e10c57939482c0394ff3ebb9364a0a37c9))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.35...@injectivelabs/spot-consumer@0.0.36) (2021-05-17)
 

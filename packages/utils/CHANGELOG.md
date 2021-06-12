@@ -13,7 +13,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.11...@injectivelabs/utils@0.0.29) (2021-05-31)
 
-
 ### Bug Fixes
 
 * added formatters to the entry file ([0a26c1c](https://github.com/InjectiveLabs/injective-ts/commit/0a26c1c8f60fb750629ff66e7c03b8c554c1ac12))
@@ -24,7 +23,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
 * server side check fixed ([df86421](https://github.com/InjectiveLabs/injective-ts/commit/df86421aec08b6a1e3ff3c928c709e0057f2e1a4))
 * types fixed, improvements for web3-strategy ([d0074fd](https://github.com/InjectiveLabs/injective-ts/commit/d0074fdee137aa3ba203d9aab56c54f9b1955940))
-
 
 ### Features
 
@@ -37,10 +35,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
 * contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.27...@injectivelabs/utils@0.0.28) (2021-05-12)
 

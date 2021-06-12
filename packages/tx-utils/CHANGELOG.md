@@ -13,21 +13,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 0.0.7 (2021-05-31)
 
-
 ### Bug Fixes
 
 * fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
-
 
 ### Features
 
 * added a new tx-utils package for reducing the size of the utils package ([d8e4786](https://github.com/InjectiveLabs/injective-ts/commit/d8e4786dd2082cbac2cf1f2ba36b66a038dfa9b0))
 * added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-utils@0.0.5...@injectivelabs/tx-utils@0.0.6) (2021-04-27)
 

@@ -5,11 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.0.11...@injectivelabs/ts-types@0.0.19) (2021-05-31)
 
-
 ### Bug Fixes
 
 * fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
-
 
 ### Features
 
@@ -18,10 +16,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
 * contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
 * subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-
-
-
-
 
 ## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.0.17...@injectivelabs/ts-types@0.0.18) (2021-04-27)
 
