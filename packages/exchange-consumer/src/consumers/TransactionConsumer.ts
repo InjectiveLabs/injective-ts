@@ -69,6 +69,7 @@ export class TransactionConsumer extends BaseConsumer {
     gasLimit = DEFAULT_EXCHANGE_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
+    delegatedFee = true,
   }: {
     address: AccountAddress
     chainId: ChainId
@@ -76,6 +77,7 @@ export class TransactionConsumer extends BaseConsumer {
     gasLimit?: number
     feeDenom?: string
     feePrice?: string
+    delegatedFee?: boolean
   }) {
     const txFeeAmount = new Coin()
     txFeeAmount.setDenom(feeDenom)
@@ -84,6 +86,7 @@ export class TransactionConsumer extends BaseConsumer {
     const cosmosTxFee = new CosmosTxFee()
     cosmosTxFee.setGas(gasLimit)
     cosmosTxFee.setPriceList([txFeeAmount])
+    cosmosTxFee.setDelegateFee(delegatedFee)
 
     const prepareTxRequest = new PrepareTxRequest()
     prepareTxRequest.setChainId(chainId)

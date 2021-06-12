@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.56...@injectivelabs/chain-consumer@0.0.57) (2021-06-12)
+
+
+### Features
+
+* enabled fee delegation for exchange transactions ([8f20e0d](https://github.com/InjectiveLabs/injective-ts/commit/8f20e0d4eba3b92aaa1abf47e7cc3f3b3a865cf3))
+
+
+
+
+
 ## [0.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.55...@injectivelabs/chain-consumer@0.0.56) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer
