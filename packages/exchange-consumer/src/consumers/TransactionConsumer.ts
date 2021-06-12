@@ -119,20 +119,22 @@ export class TransactionConsumer extends BaseConsumer {
     message: Record<string, any>
   }) {
     const parsedTypedData = JSON.parse(txResponse.getData())
-    parsedTypedData.message.msgs = null
-    const txBytes = Buffer.from(JSON.stringify(parsedTypedData.message), 'utf8')
+    const publicKeyHex = recoverTypedSignaturePubKey(parsedTypedData, signature)
 
     const cosmosPubKey = new CosmosPubKey()
     cosmosPubKey.setType(txResponse.getPubKeyType())
-    cosmosPubKey.setKey(recoverTypedSignaturePubKey(parsedTypedData, signature))
+    cosmosPubKey.setKey(publicKeyHex)
+
+    parsedTypedData.message.msgs = null
 
     const broadcastTxRequest = new BroadcastTxRequest()
-
     broadcastTxRequest.setMode('block')
     broadcastTxRequest.setChainId(chainId)
     broadcastTxRequest.setPubKey(cosmosPubKey)
     broadcastTxRequest.setSignature(signature)
-    broadcastTxRequest.setTx(txBytes)
+    broadcastTxRequest.setTx(
+      Buffer.from(JSON.stringify(parsedTypedData.message), 'utf8'),
+    )
     broadcastTxRequest.setFeePayer(txResponse.getFeePayer())
     broadcastTxRequest.setFeePayerSig(txResponse.getFeePayerSig())
     broadcastTxRequest.setMsgsList([

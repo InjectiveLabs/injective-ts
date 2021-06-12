@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.58...@injectivelabs/exchange-consumer@0.0.59) (2021-06-12)
+
+
+### Bug Fixes
+
+* exchange broadcast message ([f4ec287](https://github.com/InjectiveLabs/injective-ts/commit/f4ec287040df8eda6c8a25dcb28a5cacf55448d2))
+
+
+
+
+
 ## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.57...@injectivelabs/exchange-consumer@0.0.58) (2021-06-12)
 
 
