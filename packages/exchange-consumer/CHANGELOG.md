@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.57...@injectivelabs/exchange-consumer@0.0.58) (2021-06-12)
+
+
+### Bug Fixes
+
+* added feePayer and feePayerSig to the broadcast tx ([2494914](https://github.com/InjectiveLabs/injective-ts/commit/2494914bde0f3c457b0c349c79254d0113a7d3c0))
+
+
+
+
+
 ## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.56...@injectivelabs/exchange-consumer@0.0.57) (2021-06-12)
 
 

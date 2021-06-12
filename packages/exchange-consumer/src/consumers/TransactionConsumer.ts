@@ -108,34 +108,33 @@ export class TransactionConsumer extends BaseConsumer {
   }
 
   async broadcastTxRequest({
-    pubKeyType,
     signature,
-    typedData,
     chainId,
     message,
+    txResponse,
   }: {
-    pubKeyType: string
     signature: string
-    typedData: string
     chainId: ChainId
+    txResponse: PrepareTxResponse
     message: Record<string, any>
   }) {
-    const parsedTypedData = JSON.parse(typedData)
-    const publicKeyHex = recoverTypedSignaturePubKey(parsedTypedData, signature)
+    const parsedTypedData = JSON.parse(txResponse.getData())
     parsedTypedData.message.msgs = null
     const txBytes = Buffer.from(JSON.stringify(parsedTypedData.message), 'utf8')
-    const broadcastTxRequest = new BroadcastTxRequest()
-    broadcastTxRequest.setMode('block')
 
     const cosmosPubKey = new CosmosPubKey()
-    cosmosPubKey.setType(pubKeyType)
-    cosmosPubKey.setKey(publicKeyHex)
+    cosmosPubKey.setType(txResponse.getPubKeyType())
+    cosmosPubKey.setKey(recoverTypedSignaturePubKey(parsedTypedData, signature))
 
+    const broadcastTxRequest = new BroadcastTxRequest()
+
+    broadcastTxRequest.setMode('block')
     broadcastTxRequest.setChainId(chainId)
     broadcastTxRequest.setPubKey(cosmosPubKey)
     broadcastTxRequest.setSignature(signature)
     broadcastTxRequest.setTx(txBytes)
-    broadcastTxRequest.setMode('block')
+    broadcastTxRequest.setFeePayer(txResponse.getFeePayer())
+    broadcastTxRequest.setFeePayerSig(txResponse.getFeePayerSig())
     broadcastTxRequest.setMsgsList([
       Buffer.from(JSON.stringify(message), 'utf8'),
     ])
