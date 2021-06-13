@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.61...@injectivelabs/exchange-consumer@0.0.62) (2021-06-13)
+
+
+### Features
+
+* added price fetching service to oracle consumer ([7eba9bd](https://github.com/InjectiveLabs/injective-ts/commit/7eba9bdb5ba0b9aee624cbd40e717d6bb1654cb0))
+
+
+
+
+
 ## [0.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.60...@injectivelabs/exchange-consumer@0.0.61) (2021-06-13)
 
 
