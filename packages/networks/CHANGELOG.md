@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.24...@injectivelabs/networks@0.0.25) (2021-06-13)
+
+
+### Bug Fixes
+
+* devnet exchange api endpoint changed ([c0f01af](https://github.com/InjectiveLabs/injective-ts/commit/c0f01af25e35fe6698fba0f4907a25358e27ccc6))
+* exchange endpoint for staking network ([bc96ed5](https://github.com/InjectiveLabs/injective-ts/commit/bc96ed54ad32f44fff6e492bbec5cda66bf82e56))
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+
+
+
+
+
 ## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.23...@injectivelabs/networks@0.0.24) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/networks

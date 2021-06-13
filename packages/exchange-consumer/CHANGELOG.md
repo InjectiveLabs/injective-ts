@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.59...@injectivelabs/exchange-consumer@0.0.60) (2021-06-13)
+
+
+### Bug Fixes
+
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+
+
+### Features
+
+* added oracle streaming ([4f5e01f](https://github.com/InjectiveLabs/injective-ts/commit/4f5e01fecec78f6c1de68f62639412fdbcc3c72e))
+
+
+
+
+
 ## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.58...@injectivelabs/exchange-consumer@0.0.59) (2021-06-12)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-utils@0.0.8...@injectivelabs/tx-utils@0.0.9) (2021-06-13)
+
+
+### Bug Fixes
+
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+
+
+
+
+
 ## [0.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-utils@0.0.7...@injectivelabs/tx-utils@0.0.8) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/tx-utils
