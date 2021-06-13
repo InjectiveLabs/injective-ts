@@ -1,11 +1,11 @@
 import { PricesStream, PricesStreamCallback } from './Streams/PricesStream'
 import BaseConsumer from '../BaseConsumer'
 
-export enum OracleStreamStreamType {
+export enum OracleStreamType {
   Prices = 'oracle-prices',
 }
 
-export class OracleStreamStream extends BaseConsumer {
+export class OracleStream extends BaseConsumer {
   prices: PricesStream
 
   constructor(endpoint: string) {
