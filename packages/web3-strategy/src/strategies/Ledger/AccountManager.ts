@@ -28,16 +28,14 @@ export default class AccountManager {
   constructor(ledger: LedgerTransport) {
     this.ledger = ledger
     this.storage = new LocalStorage('injective-ledger')
-    this.wallets = this.storage.has('wallets')
-      ? (this.storage.get('wallets') as LedgerWalletInfo[])
-      : []
+    this.wallets = []
   }
 
   async getWallets(
     baseDerivationPath: string,
     derivationPathType: LedgerDerivationPathType,
   ): Promise<LedgerWalletInfo[]> {
-    const { start, end } = this.geOffset()
+    const { start, end } = this.getOffset()
 
     /**
      * 1. Wallets are not yet fetched at all,
@@ -121,7 +119,7 @@ export default class AccountManager {
     return this.wallets.length > offset
   }
 
-  private geOffset(): { start: number; end: number } {
+  private getOffset(): { start: number; end: number } {
     const totalWallets = this.wallets.length
     const nextBatchStart = totalWallets
     const nextBatchEnd = totalWallets + DEFAULT_NUM_ADDRESSES_TO_FETCH

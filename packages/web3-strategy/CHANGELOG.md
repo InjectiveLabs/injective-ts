@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.45...@injectivelabs/web3-strategy@0.0.46) (2021-06-13)
+
+
+### Bug Fixes
+
+* removed local storage for ledger wallets ([f27d659](https://github.com/InjectiveLabs/injective-ts/commit/f27d659cb6e4cf5417736fc492cc6f294bb11dff))
+
+
+
+
+
 ## [0.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.44...@injectivelabs/web3-strategy@0.0.45) (2021-06-13)
 
 
