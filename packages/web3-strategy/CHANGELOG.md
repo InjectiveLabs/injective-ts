@@ -3,43 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.45...@injectivelabs/web3-strategy@0.0.46) (2021-06-13)
+## [0.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.41...@injectivelabs/web3-strategy@0.0.47) (2021-06-14)
 
+### Bug Fixes
+
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+* removed local storage for ledger wallets ([4891c40](https://github.com/InjectiveLabs/injective-ts/commit/4891c4060ab2808229d76d7b5195364ff5985074))
+* staking endpoint ([6cb75c4](https://github.com/InjectiveLabs/injective-ts/commit/6cb75c498b33709b037faa609f48fb6d64e22527))
+
+### Features
+
+* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+
+## [0.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.45...@injectivelabs/web3-strategy@0.0.46) (2021-06-13)
 
 ### Bug Fixes
 
 * removed local storage for ledger wallets ([f27d659](https://github.com/InjectiveLabs/injective-ts/commit/f27d659cb6e4cf5417736fc492cc6f294bb11dff))
 
-
-
-
-
 ## [0.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.44...@injectivelabs/web3-strategy@0.0.45) (2021-06-13)
-
 
 ### Bug Fixes
 
 * merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
 
-
-
-
-
 ## [0.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.43...@injectivelabs/web3-strategy@0.0.44) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy
 
-
-
-
-
 ## [0.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.42...@injectivelabs/web3-strategy@0.0.43) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy
-
-
-
-
 
 ## [0.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.11...@injectivelabs/web3-strategy@0.0.42) (2021-05-31)
 

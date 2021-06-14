@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/web3-strategy",
   "description": "A convenient way to use Web3 with a transaction signing provider.",
-  "version": "0.0.46",
+  "version": "0.0.47",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,10 +27,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/assert": "^0.0.15",
-    "@injectivelabs/exceptions": "^0.0.24",
-    "@injectivelabs/ts-types": "^0.0.20",
-    "@injectivelabs/utils": "^0.0.31",
+    "@injectivelabs/assert": "^0.0.16",
+    "@injectivelabs/exceptions": "^0.0.25",
+    "@injectivelabs/ts-types": "^0.0.21",
+    "@injectivelabs/utils": "^0.0.32",
     "@ledgerhq/hw-app-eth": "^5.47.3",
     "@ledgerhq/hw-transport": "^5.46.0",
     "@ledgerhq/hw-transport-webusb": "^5.46.0",

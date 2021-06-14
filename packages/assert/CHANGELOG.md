@@ -3,35 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/assert@0.0.14...@injectivelabs/assert@0.0.15) (2021-06-13)
+## [0.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/assert@0.0.11...@injectivelabs/assert@0.0.16) (2021-06-14)
 
+### Bug Fixes
+
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+* staking endpoint ([6cb75c4](https://github.com/InjectiveLabs/injective-ts/commit/6cb75c498b33709b037faa609f48fb6d64e22527))
+
+### Features
+
+* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+
+## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/assert@0.0.14...@injectivelabs/assert@0.0.15) (2021-06-13)
 
 ### Bug Fixes
 
 * merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
 
-
-
-
-
 ## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/assert@0.0.13...@injectivelabs/assert@0.0.14) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/assert
 
-
-
-
-
 ## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/assert@0.0.12...@injectivelabs/assert@0.0.13) (2021-06-08)
-
 
 ### Bug Fixes
 
 * staking endpoint ([ba3824a](https://github.com/InjectiveLabs/injective-ts/commit/ba3824aa6a86854aae31a555a511bc2fd21550e9))
-
-
-
-
 
 ## 0.0.12 (2021-05-31)
 

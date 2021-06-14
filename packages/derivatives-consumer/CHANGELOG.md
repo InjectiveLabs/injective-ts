@@ -3,24 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.28...@injectivelabs/derivatives-consumer@0.0.29) (2021-06-13)
+## [0.0.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.23...@injectivelabs/derivatives-consumer@0.0.30) (2021-06-14)
 
+### Bug Fixes
+
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+* number for tick sizes ([5171971](https://github.com/InjectiveLabs/injective-ts/commit/5171971a83e5f1468ca3e088babc0a001b1d2b9a))
+* removed holdQuantity ([0107b1a](https://github.com/InjectiveLabs/injective-ts/commit/0107b1aed85e4afeda76cf02abc8aff364b45b5d))
+
+### Features
+
+* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+* derivative market info ([653d417](https://github.com/InjectiveLabs/injective-ts/commit/653d4170413f6213a4e6a6abe56d6dd805ce8415))
+
+## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.28...@injectivelabs/derivatives-consumer@0.0.29) (2021-06-13)
 
 ### Bug Fixes
 
 * merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
 
-
-
-
-
 ## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.27...@injectivelabs/derivatives-consumer@0.0.28) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer
-
-
-
-
 
 ## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.26...@injectivelabs/derivatives-consumer@0.0.27) (2021-06-07)
 

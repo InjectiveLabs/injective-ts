@@ -3,35 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.57...@injectivelabs/chain-consumer@0.0.58) (2021-06-13)
-
+## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.54...@injectivelabs/chain-consumer@0.0.59) (2021-06-14)
 
 ### Bug Fixes
 
 * merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
 
+### Features
 
+* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+* enabled fee delegation for exchange transactions ([75d6d63](https://github.com/InjectiveLabs/injective-ts/commit/75d6d6357aea86c759a757d690b62f172cebf928))
 
+## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.57...@injectivelabs/chain-consumer@0.0.58) (2021-06-13)
 
+### Bug Fixes
+
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
 
 ## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.56...@injectivelabs/chain-consumer@0.0.57) (2021-06-12)
-
 
 ### Features
 
 * enabled fee delegation for exchange transactions ([8f20e0d](https://github.com/InjectiveLabs/injective-ts/commit/8f20e0d4eba3b92aaa1abf47e7cc3f3b3a865cf3))
 
-
-
-
-
 ## [0.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.55...@injectivelabs/chain-consumer@0.0.56) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer
-
-
-
-
 
 ## 0.0.55 (2021-05-31)
 

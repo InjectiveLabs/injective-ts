@@ -3,84 +3,66 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.61...@injectivelabs/exchange-consumer@0.0.62) (2021-06-13)
+## [0.0.63](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.51...@injectivelabs/exchange-consumer@0.0.63) (2021-06-14)
 
+### Bug Fixes
+
+* added feePayer and feePayerSig to the broadcast tx ([4533379](https://github.com/InjectiveLabs/injective-ts/commit/4533379780466fbbd649b0b228f2619120ea6823))
+* exchange broadcast message ([49e71df](https://github.com/InjectiveLabs/injective-ts/commit/49e71dff24e67dd832f709069ea5fc469a397461))
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+* typo fix ([798036c](https://github.com/InjectiveLabs/injective-ts/commit/798036c70ac0b112f367ffe6ab5f6b6623479ce7))
+
+### Features
+
+* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+* added price fetching service to oracle consumer ([2f383c2](https://github.com/InjectiveLabs/injective-ts/commit/2f383c23c95907fb9e2a3d3ba5ad4db08fd74e19))
+* derivative market info ([653d417](https://github.com/InjectiveLabs/injective-ts/commit/653d4170413f6213a4e6a6abe56d6dd805ce8415))
+* enabled fee delegation for exchange transactions ([75d6d63](https://github.com/InjectiveLabs/injective-ts/commit/75d6d6357aea86c759a757d690b62f172cebf928))
+
+## [0.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.61...@injectivelabs/exchange-consumer@0.0.62) (2021-06-13)
 
 ### Features
 
 * added price fetching service to oracle consumer ([7eba9bd](https://github.com/InjectiveLabs/injective-ts/commit/7eba9bdb5ba0b9aee624cbd40e717d6bb1654cb0))
 
-
-
-
-
 ## [0.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.60...@injectivelabs/exchange-consumer@0.0.61) (2021-06-13)
-
 
 ### Bug Fixes
 
 * typo fix ([b503abb](https://github.com/InjectiveLabs/injective-ts/commit/b503abbedde46a9fd7c8d057a27de5903c1d2601))
 
-
-
-
-
 ## [0.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.59...@injectivelabs/exchange-consumer@0.0.60) (2021-06-13)
-
 
 ### Bug Fixes
 
 * merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
 
-
 ### Features
 
 * added oracle streaming ([4f5e01f](https://github.com/InjectiveLabs/injective-ts/commit/4f5e01fecec78f6c1de68f62639412fdbcc3c72e))
 
-
-
-
-
 ## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.58...@injectivelabs/exchange-consumer@0.0.59) (2021-06-12)
-
 
 ### Bug Fixes
 
 * exchange broadcast message ([f4ec287](https://github.com/InjectiveLabs/injective-ts/commit/f4ec287040df8eda6c8a25dcb28a5cacf55448d2))
 
-
-
-
-
 ## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.57...@injectivelabs/exchange-consumer@0.0.58) (2021-06-12)
-
 
 ### Bug Fixes
 
 * added feePayer and feePayerSig to the broadcast tx ([2494914](https://github.com/InjectiveLabs/injective-ts/commit/2494914bde0f3c457b0c349c79254d0113a7d3c0))
 
-
-
-
-
 ## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.56...@injectivelabs/exchange-consumer@0.0.57) (2021-06-12)
-
 
 ### Features
 
 * enabled fee delegation for exchange transactions ([8f20e0d](https://github.com/InjectiveLabs/injective-ts/commit/8f20e0d4eba3b92aaa1abf47e7cc3f3b3a865cf3))
 
-
-
-
-
 ## [0.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.55...@injectivelabs/exchange-consumer@0.0.56) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
-
-
-
-
 
 ## [0.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.54...@injectivelabs/exchange-consumer@0.0.55) (2021-06-07)
 

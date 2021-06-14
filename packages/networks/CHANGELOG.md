@@ -3,8 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.24...@injectivelabs/networks@0.0.25) (2021-06-13)
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.19...@injectivelabs/networks@0.0.26) (2021-06-14)
 
+### Bug Fixes
+
+* endpoint port for the chain-api ([328a20e](https://github.com/InjectiveLabs/injective-ts/commit/328a20e5f7edd146de72e2f34257f91c44762bc0))
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+* networks endpoints ([2b4a3be](https://github.com/InjectiveLabs/injective-ts/commit/2b4a3be78931e691e283a3bbdaa6451c55d600d9))
+* number for tick sizes ([5171971](https://github.com/InjectiveLabs/injective-ts/commit/5171971a83e5f1468ca3e088babc0a001b1d2b9a))
+* staking endpoint ([6cb75c4](https://github.com/InjectiveLabs/injective-ts/commit/6cb75c498b33709b037faa609f48fb6d64e22527))
+
+### Features
+
+* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.24...@injectivelabs/networks@0.0.25) (2021-06-13)
 
 ### Bug Fixes
 
@@ -12,28 +26,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * exchange endpoint for staking network ([bc96ed5](https://github.com/InjectiveLabs/injective-ts/commit/bc96ed54ad32f44fff6e492bbec5cda66bf82e56))
 * merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
 
-
-
-
-
 ## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.23...@injectivelabs/networks@0.0.24) (2021-06-08)
 
 **Note:** Version bump only for package @injectivelabs/networks
 
-
-
-
-
 ## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.22...@injectivelabs/networks@0.0.23) (2021-06-08)
-
 
 ### Bug Fixes
 
 * staking endpoint ([ba3824a](https://github.com/InjectiveLabs/injective-ts/commit/ba3824aa6a86854aae31a555a511bc2fd21550e9))
-
-
-
-
 
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.21...@injectivelabs/networks@0.0.22) (2021-06-08)
 

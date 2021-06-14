@@ -898,18 +898,10 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
-"@injectivelabs/exceptions@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exceptions/-/exceptions-0.0.1.tgz#91612b048d9dbca91c077881d2d2471e989c08e2"
-  integrity sha512-pzc82lKv7o9SAIyz1x2wZizz3x+5HLTI28hzKkoPhv5lzniStABODEcwKT9lU6LSmacey5xdsO4IUJZ5C7ZEmw==
-  dependencies:
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-
-"@injectivelabs/exchange-api@^2.2.7":
-  version "2.2.7"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.7.tgz#c2bcbd96590eacdfaa7c9dab70ed7cdb846505d8"
-  integrity sha512-VI2gW3cc2dXdjU4VWHrOC0DgfgNLviP0RLgk3apvHJxcpEAWEXLGMk137Jyg0KIZ3tLCX6bD5jqnl1aig4R3PQ==
+"@injectivelabs/exchange-api@^2.2.8":
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.8.tgz#122c85b1fe1876acecb2691a81ad20d8219fb036"
+  integrity sha512-iiqhIwCOwTt+lO9wlmjSw4iyT7GD+GZ6AAF6SizubdGF/203jyaLjB9o3zgkIIU+a0WZaPwkwnhW/eMW26zlog==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"

@@ -3,16 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@0.0.7...@injectivelabs/test-utils@0.0.8) (2021-06-13)
-
+## [0.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@0.0.6...@injectivelabs/test-utils@0.0.9) (2021-06-14)
 
 ### Bug Fixes
 
 * merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
 
+### Features
 
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
 
+## [0.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@0.0.7...@injectivelabs/test-utils@0.0.8) (2021-06-13)
 
+### Bug Fixes
+
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
 
 ## 0.0.7 (2021-05-31)
 
