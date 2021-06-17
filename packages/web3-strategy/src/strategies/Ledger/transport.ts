@@ -1,4 +1,6 @@
 import TransportWebUsb from '@ledgerhq/hw-transport-webusb'
+// @ts-ignore
+import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Transport from '@ledgerhq/hw-transport'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { isServerSide } from '@injectivelabs/utils'
@@ -40,22 +42,38 @@ export default class LedgerTransport {
     }
   }
 
-  async getInstance(): Promise<EthLedger<TransportWebUsb>> {
-    try {
-      if (!(await this.isSupported())) {
-        throw new Web3Exception('Please update your Chrome Browser')
-      }
+  async createTransportExperimental() {
+    if (!this.transport) {
+      this.transport = await TransportWebHID.create()
 
-      await this.createTransport()
-
-      if (!this.ledger && this.transport) {
-        /* eslint-disable new-cap */
-        this.ledger = new this.app(this.transport)
-      }
-
-      return this.ledger as EthLedger<TransportWebUsb>
-    } catch (e) {
-      throw new Web3Exception(e.message)
+      // @ts-ignore
+      this.transport.on('disconnect', () => {
+        this.ledger = null
+        this.transport = null
+      })
     }
+  }
+
+  async getInstance(): Promise<EthLedger<TransportWebUsb | TransportWebHID>> {
+    if (!(await this.isSupported())) {
+      throw new Web3Exception('Please update your Chrome Browser')
+    }
+
+    try {
+      await this.createTransport()
+    } catch (e) {
+      try {
+        await this.createTransportExperimental()
+      } catch (e) {
+        throw new Web3Exception(e.message)
+      }
+    }
+
+    if (!this.ledger && this.transport) {
+      /* eslint-disable new-cap */
+      this.ledger = new this.app(this.transport)
+    }
+
+    return this.ledger as EthLedger<TransportWebUsb>
   }
 }

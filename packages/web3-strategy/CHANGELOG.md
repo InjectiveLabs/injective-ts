@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.47...@injectivelabs/web3-strategy@0.0.48) (2021-06-17)
+
+### Bug Fixes
+
+* metamask chainId, ledger transport ([f8a1d7e](https://github.com/InjectiveLabs/injective-ts/commit/f8a1d7e3696e12bf5ea592a914e429c209449b90))
+
 ## [0.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.41...@injectivelabs/web3-strategy@0.0.47) (2021-06-14)
 
 ### Bug Fixes

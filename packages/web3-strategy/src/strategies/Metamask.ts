@@ -65,9 +65,12 @@ export default class Metamask
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
+    const parsed = JSON.parse(eip712json)
+    parsed.domain.chainId = parseInt(parsed.domain.chainId, 16)
+
     return this.ethereum.request({
       method: 'eth_signTypedData_v4',
-      params: [address, eip712json],
+      params: [address, JSON.stringify(parsed)],
     })
   }
 
