@@ -87,7 +87,7 @@ export class TransactionConsumer extends BaseConsumer {
     cosmosTxFee.setGas(gasLimit)
     cosmosTxFee.setPriceList([txFeeAmount])
 
-    if (delegatedFee) {
+    if (delegatedFee !== undefined) {
       cosmosTxFee.setDelegateFee(delegatedFee)
     }
 

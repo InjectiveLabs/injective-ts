@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.62...@injectivelabs/exchange-consumer@0.0.65) (2021-06-17)
+
+
+### Bug Fixes
+
+* delegated fee false condition skip ([c440ce6](https://github.com/InjectiveLabs/injective-ts/commit/c440ce6e9e11019e4b37513c8898a91d29ff3272))
+
+
+### Features
+
+* delegatedFee is an optional param ([0324b0b](https://github.com/InjectiveLabs/injective-ts/commit/0324b0b0ad560d48b01d65bb2085f028656678f6))
+
+
+
+
+
 ## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.63...@injectivelabs/exchange-consumer@0.0.64) (2021-06-15)
 
 ### Features

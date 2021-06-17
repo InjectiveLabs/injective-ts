@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.19...@injectivelabs/subaccount-consumer@0.0.21) (2021-06-17)
+
+**Note:** Version bump only for package @injectivelabs/subaccount-consumer
+
+
+
+
+
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.14...@injectivelabs/subaccount-consumer@0.0.20) (2021-06-14)
 
 ### Bug Fixes
