@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.66...@injectivelabs/exchange-consumer@0.0.67) (2021-06-21)
+
+### Bug Fixes
+
+* timeoutHeight is optional ([ac3b820](https://github.com/InjectiveLabs/injective-ts/commit/ac3b82070ec874c453cd38407334bf0b87ff319d))
+
 ## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.64...@injectivelabs/exchange-consumer@0.0.66) (2021-06-21)
 
 ### Bug Fixes

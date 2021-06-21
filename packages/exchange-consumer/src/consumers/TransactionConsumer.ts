@@ -16,7 +16,6 @@ import {
   DEFAULT_EXCHANGE_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
-  DEFAULT_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import BaseConsumer from '../BaseConsumer'
 
@@ -28,7 +27,7 @@ export class TransactionConsumer extends BaseConsumer {
     gasLimit = DEFAULT_GAS_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
-    timeoutHeight = DEFAULT_TIMEOUT_HEIGHT,
+    timeoutHeight,
   }: {
     address: AccountAddress
     chainId: ChainId
@@ -50,8 +49,11 @@ export class TransactionConsumer extends BaseConsumer {
     prepareTxRequest.setChainId(chainId)
     prepareTxRequest.setSignerAddress(address)
     prepareTxRequest.setFee(cosmosTxFee)
-    prepareTxRequest.setTimeoutHeight(timeoutHeight)
     prepareTxRequest.addMsgs(Buffer.from(JSON.stringify(message), 'utf8'))
+
+    if (timeoutHeight !== undefined) {
+      prepareTxRequest.setTimeoutHeight(timeoutHeight)
+    }
 
     try {
       const response = await this.request<
@@ -73,7 +75,7 @@ export class TransactionConsumer extends BaseConsumer {
     gasLimit = DEFAULT_EXCHANGE_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
-    timeoutHeight = DEFAULT_TIMEOUT_HEIGHT,
+    timeoutHeight,
     delegatedFee,
   }: {
     address: AccountAddress
@@ -101,8 +103,11 @@ export class TransactionConsumer extends BaseConsumer {
     prepareTxRequest.setChainId(chainId)
     prepareTxRequest.setSignerAddress(address)
     prepareTxRequest.setFee(cosmosTxFee)
-    prepareTxRequest.setTimeoutHeight(timeoutHeight)
     prepareTxRequest.addMsgs(Buffer.from(JSON.stringify(message), 'utf8'))
+
+    if (timeoutHeight !== undefined) {
+      prepareTxRequest.setTimeoutHeight(timeoutHeight)
+    }
 
     try {
       const response = await this.request<
