@@ -3,16 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.50...@injectivelabs/contracts@0.0.53) (2021-06-17)
+## [0.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.52...@injectivelabs/contracts@0.0.54) (2021-06-21)
 
+### Bug Fixes
+
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+
+## [0.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.50...@injectivelabs/contracts@0.0.53) (2021-06-17)
 
 ### Bug Fixes
 
 * metamask chainId, ledger transport ([f549681](https://github.com/InjectiveLabs/injective-ts/commit/f549681f440c5cb13cd2ed3ca871b9c16eb242cb))
-
-
-
-
 
 ## [0.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.51...@injectivelabs/contracts@0.0.52) (2021-06-17)
 

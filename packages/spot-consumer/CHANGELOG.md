@@ -3,13 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.43...@injectivelabs/spot-consumer@0.0.45) (2021-06-21)
+
+### Bug Fixes
+
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+
 ## [0.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.42...@injectivelabs/spot-consumer@0.0.44) (2021-06-17)
 
 **Note:** Version bump only for package @injectivelabs/spot-consumer
-
-
-
-
 
 ## [0.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.37...@injectivelabs/spot-consumer@0.0.43) (2021-06-14)
 
