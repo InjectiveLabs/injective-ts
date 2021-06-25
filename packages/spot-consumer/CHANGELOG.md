@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.47...@injectivelabs/spot-consumer@0.0.48) (2021-06-25)
+
+
+### Bug Fixes
+
+* typo ([6209304](https://github.com/InjectiveLabs/injective-ts/commit/6209304a2d7c3972e34323150fcf181f4ae0def2))
+
+
+
+
+
 ## [0.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.46...@injectivelabs/spot-consumer@0.0.47) (2021-06-25)
 
 

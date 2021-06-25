@@ -134,7 +134,7 @@ export class SpotMarketComposer {
     return {
       sender: injectiveAddress,
       data: [...orderDataList],
-      '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
+      '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders',
     }
   }
 }
