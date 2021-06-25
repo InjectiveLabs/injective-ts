@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.33...@injectivelabs/derivatives-consumer@0.0.34) (2021-06-25)
+
+
+### Bug Fixes
+
+* batch cancel for spot and derivatives ([3dbf777](https://github.com/InjectiveLabs/injective-ts/commit/3dbf777bb757acef2c2ff7f1413b349b6086dd23))
+
+
+
+
+
 ## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.32...@injectivelabs/derivatives-consumer@0.0.33) (2021-06-25)
 
 

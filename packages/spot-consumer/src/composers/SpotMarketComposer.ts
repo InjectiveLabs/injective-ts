@@ -112,7 +112,7 @@ export class SpotMarketComposer {
     }
   }
 
-  static batchCancelDerivativeOrder({
+  static batchCancelSpotOrder({
     injectiveAddress,
     orders,
   }: {
@@ -125,16 +125,16 @@ export class SpotMarketComposer {
       orderData.setOrderHash(order.orderHash)
       orderData.setSubaccountId(order.subaccountId)
 
-      return orderData
+      return { ...snakeCaseKeys(orderData.toObject()) }
     })
 
     const content = new MsgBatchCancelSpotOrders()
     content.setSender(injectiveAddress)
-    content.setDataList(orderDataList)
 
     return {
-      ...snakeCaseKeys(content.toObject()),
-      '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders',
+      sender: injectiveAddress,
+      data: [...orderDataList],
+      '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
     }
   }
 }
