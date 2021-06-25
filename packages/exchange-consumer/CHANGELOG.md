@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.66...@injectivelabs/exchange-consumer@0.0.67) (2021-06-25)
+
+
+### Bug Fixes
+
+* timeoutHeight is optional ([287aabd](https://github.com/InjectiveLabs/injective-ts/commit/287aabdc2633d46dde8d46403738dc79b6c263d1))
+
+
+### Features
+
+* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+
+
+
+
+
 ## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.65...@injectivelabs/exchange-consumer@0.0.66) (2021-06-25)
 
 
@@ -19,16 +35,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* delegated fee false condition skip ([c440ce6](https://github.com/InjectiveLabs/injective-ts/commit/c440ce6e9e11019e4b37513c8898a91d29ff3272))
+* timeoutHeight is optional ([ac3b820](https://github.com/InjectiveLabs/injective-ts/commit/ac3b82070ec874c453cd38407334bf0b87ff319d))
 
+## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.64...@injectivelabs/exchange-consumer@0.0.66) (2021-06-21)
+
+### Bug Fixes
+
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+
+### Features
+
+* added timeout height ([2f1d740](https://github.com/InjectiveLabs/injective-ts/commit/2f1d740ebadf26a35f7d04d9df8102d6250b4a9c))
+
+## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.62...@injectivelabs/exchange-consumer@0.0.65) (2021-06-17)
+
+### Bug Fixes
+
+* delegated fee false condition skip ([c440ce6](https://github.com/InjectiveLabs/injective-ts/commit/c440ce6e9e11019e4b37513c8898a91d29ff3272))
 
 ### Features
 
 * delegatedFee is an optional param ([0324b0b](https://github.com/InjectiveLabs/injective-ts/commit/0324b0b0ad560d48b01d65bb2085f028656678f6))
-
-
-
-
 
 ## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.63...@injectivelabs/exchange-consumer@0.0.64) (2021-06-15)
 

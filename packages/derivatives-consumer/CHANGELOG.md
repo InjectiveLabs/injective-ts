@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.32...@injectivelabs/derivatives-consumer@0.0.33) (2021-06-25)
+
+
+### Features
+
+* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+
+
+
+
+
 ## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.31...@injectivelabs/derivatives-consumer@0.0.32) (2021-06-25)
 
 
@@ -18,9 +29,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer
 
+### Bug Fixes
 
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
 
+## [0.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.29...@injectivelabs/derivatives-consumer@0.0.31) (2021-06-17)
 
+**Note:** Version bump only for package @injectivelabs/derivatives-consumer
 
 ## [0.0.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.23...@injectivelabs/derivatives-consumer@0.0.30) (2021-06-14)
 

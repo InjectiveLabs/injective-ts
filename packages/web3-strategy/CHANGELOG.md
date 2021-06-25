@@ -3,16 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.46...@injectivelabs/web3-strategy@0.0.49) (2021-06-17)
+## [0.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.49...@injectivelabs/web3-strategy@0.0.51) (2021-06-25)
 
+
+### Features
+
+* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+
+
+
+
+
+## [0.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.48...@injectivelabs/web3-strategy@0.0.50) (2021-06-21)
+
+### Bug Fixes
+
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+
+## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.46...@injectivelabs/web3-strategy@0.0.49) (2021-06-17)
 
 ### Bug Fixes
 
 * metamask chainId, ledger transport ([f549681](https://github.com/InjectiveLabs/injective-ts/commit/f549681f440c5cb13cd2ed3ca871b9c16eb242cb))
-
-
-
-
 
 ## [0.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.47...@injectivelabs/web3-strategy@0.0.48) (2021-06-17)
 

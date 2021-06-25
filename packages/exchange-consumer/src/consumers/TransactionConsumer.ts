@@ -27,11 +27,13 @@ export class TransactionConsumer extends BaseConsumer {
     gasLimit = DEFAULT_GAS_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
+    timeoutHeight,
   }: {
     address: AccountAddress
     chainId: ChainId
     message: any
     gasLimit?: number
+    timeoutHeight?: number
     feeDenom?: string
     feePrice?: string
   }) {
@@ -48,6 +50,10 @@ export class TransactionConsumer extends BaseConsumer {
     prepareTxRequest.setSignerAddress(address)
     prepareTxRequest.setFee(cosmosTxFee)
     prepareTxRequest.addMsgs(Buffer.from(JSON.stringify(message), 'utf8'))
+
+    if (timeoutHeight !== undefined) {
+      prepareTxRequest.setTimeoutHeight(timeoutHeight)
+    }
 
     try {
       const response = await this.request<
@@ -69,6 +75,7 @@ export class TransactionConsumer extends BaseConsumer {
     gasLimit = DEFAULT_EXCHANGE_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
+    timeoutHeight,
     delegatedFee,
   }: {
     address: AccountAddress
@@ -77,6 +84,7 @@ export class TransactionConsumer extends BaseConsumer {
     gasLimit?: number
     feeDenom?: string
     feePrice?: string
+    timeoutHeight?: number
     delegatedFee?: boolean
   }) {
     const txFeeAmount = new Coin()
@@ -96,6 +104,10 @@ export class TransactionConsumer extends BaseConsumer {
     prepareTxRequest.setSignerAddress(address)
     prepareTxRequest.setFee(cosmosTxFee)
     prepareTxRequest.addMsgs(Buffer.from(JSON.stringify(message), 'utf8'))
+
+    if (timeoutHeight !== undefined) {
+      prepareTxRequest.setTimeoutHeight(timeoutHeight)
+    }
 
     try {
       const response = await this.request<

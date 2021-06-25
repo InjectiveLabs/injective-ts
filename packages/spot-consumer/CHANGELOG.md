@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.45...@injectivelabs/spot-consumer@0.0.46) (2021-06-25)
+
+
+### Features
+
+* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+
+
+
+
+
 ## [0.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.44...@injectivelabs/spot-consumer@0.0.45) (2021-06-25)
 
 
@@ -18,9 +29,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @injectivelabs/spot-consumer
 
+### Bug Fixes
 
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
 
+## [0.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.42...@injectivelabs/spot-consumer@0.0.44) (2021-06-17)
 
+**Note:** Version bump only for package @injectivelabs/spot-consumer
 
 ## [0.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.37...@injectivelabs/spot-consumer@0.0.43) (2021-06-14)
 
