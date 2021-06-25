@@ -2,13 +2,19 @@ import {
   MsgCreateSpotLimitOrder,
   MsgCancelSpotOrder,
   MsgCreateSpotMarketOrder,
+  MsgBatchCancelSpotOrders,
+  OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import {
   SpotOrder,
   OrderInfo,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import snakeCaseKeys from 'snakecase-keys'
-import { SpotLimitOrderParams, SpotOrderCancelParams } from '../types'
+import {
+  BatchSpotOrderCancelParams,
+  SpotLimitOrderParams,
+  SpotOrderCancelParams,
+} from '../types'
 
 export class SpotMarketComposer {
   static createLimitOrder({
@@ -103,6 +109,32 @@ export class SpotMarketComposer {
     return {
       ...snakeCaseKeys(content.toObject()),
       '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder',
+    }
+  }
+
+  static batchCancelDerivativeOrder({
+    injectiveAddress,
+    orders,
+  }: {
+    injectiveAddress: string
+    orders: BatchSpotOrderCancelParams[]
+  }) {
+    const orderDataList = orders.map((order) => {
+      const orderData = new OrderData()
+      orderData.setMarketId(order.marketId)
+      orderData.setOrderHash(order.orderHash)
+      orderData.setSubaccountId(order.subaccountId)
+
+      return orderData
+    })
+
+    const content = new MsgBatchCancelSpotOrders()
+    content.setSender(injectiveAddress)
+    content.setDataList(orderDataList)
+
+    return {
+      ...snakeCaseKeys(content.toObject()),
+      '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders',
     }
   }
 }

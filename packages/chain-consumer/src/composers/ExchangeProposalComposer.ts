@@ -1,5 +1,4 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { MsgSubmitProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import { BigNumber } from '@injectivelabs/utils'
 import { AccountAddress } from '@injectivelabs/ts-types'
 import {
@@ -7,10 +6,8 @@ import {
   PerpetualMarketLaunchProposal,
   SpotMarketLaunchProposal,
   SpotMarketParamUpdateProposal,
-  SpotMarketStatusSetProposal,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import snakeCaseKeys from 'snakecase-keys'
-import { MarketStatusMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 
 export interface DepositProposalParams {
   amount: BigNumber
@@ -77,38 +74,6 @@ export class ExchangeProposalComposer {
       proposer,
       content: {
         '@type': '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
-        ...snakeCaseKeys(content.toObject()),
-      },
-      initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-    }
-  }
-
-  static spotMarketStatusUpdate({
-    status,
-    deposit,
-    proposer,
-  }: {
-    status: MarketStatusMap[keyof MarketStatusMap]
-    proposer: AccountAddress
-    deposit: DepositProposalParams
-  }) {
-    const depositParams = new Coin()
-    depositParams.setDenom(deposit.denom)
-    depositParams.setAmount(deposit.amount.toFixed())
-
-    const content = new SpotMarketStatusSetProposal()
-    content.setStatus(status)
-
-    const cosmosMessage = new MsgSubmitProposal()
-    cosmosMessage.setContent(content)
-    cosmosMessage.setInitialDepositList([depositParams])
-    cosmosMessage.setProposer(proposer)
-
-    return {
-      proposer,
-      content: {
-        '@type': '/injective.exchange.v1beta1.SpotMarketStatusSetProposal',
         ...snakeCaseKeys(content.toObject()),
       },
       initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],

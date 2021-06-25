@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.65...@injectivelabs/exchange-consumer@0.0.66) (2021-06-25)
+
+
+### Features
+
+* added batch cancelling for the orders ([239a672](https://github.com/InjectiveLabs/injective-ts/commit/239a6723217301aa86f657d59e9e76721340b1f2))
+
+
+
+
+
 ## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.62...@injectivelabs/exchange-consumer@0.0.65) (2021-06-17)
 
 

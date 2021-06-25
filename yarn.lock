@@ -1229,10 +1229,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@^1.4.9":
-  version "1.4.9"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.4.9.tgz#0f9ccf85b1afaa1eab0e2750be2a8326db9b86f2"
-  integrity sha512-PFqh7MqTtFOsosre3U1Gc336aK2Fi028oamJiGKElTN+V6P79LTKb9RGNGDNvastH6utiqBAtaunwBoMdIVoHg==
+"@injectivelabs/chain-api@^1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.4.11.tgz#32cf92b78d223e7e1172871b878a6582a7d5a38e"
+  integrity sha512-zkcIim/5Hqn3MBGc2POz2Mb7YCOm/tNTkhyUGGsSh7LjysnJ+kho8pFPIf2Plc52qMxDjYOe2v2cVnUyBINU6g==
   dependencies:
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"

@@ -97,6 +97,12 @@ export interface SpotOrderCancelParams {
   orderHash: string
 }
 
+export interface BatchSpotOrderCancelParams {
+  orderHash: string
+  subaccountId: string
+  marketId: string
+}
+
 export {
   GrpcTokenMeta,
   GrpcOrderTypeMap,

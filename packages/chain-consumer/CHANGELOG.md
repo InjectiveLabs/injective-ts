@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.60...@injectivelabs/chain-consumer@0.0.61) (2021-06-25)
+
+
+### Features
+
+* added batch cancelling for the orders ([239a672](https://github.com/InjectiveLabs/injective-ts/commit/239a6723217301aa86f657d59e9e76721340b1f2))
+
+
+
+
+
 ## [0.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.58...@injectivelabs/chain-consumer@0.0.60) (2021-06-17)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer

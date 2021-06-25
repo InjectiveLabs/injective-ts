@@ -153,6 +153,12 @@ export interface DerivativeOrderCancelParams {
   orderHash: string
 }
 
+export interface BatchDerivativeOrderCancelParams {
+  marketId: string
+  subaccountId: string
+  orderHash: string
+}
+
 export {
   GrpcTokenMeta,
   GrpcDerivativePosition,

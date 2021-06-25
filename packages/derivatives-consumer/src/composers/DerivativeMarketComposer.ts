@@ -2,6 +2,8 @@ import {
   MsgCreateDerivativeLimitOrder,
   MsgCancelDerivativeOrder,
   MsgCreateDerivativeMarketOrder,
+  MsgBatchCancelDerivativeOrders,
+  OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import {
   DerivativeOrder,
@@ -10,6 +12,7 @@ import {
 import snakeCaseKeys from 'snakecase-keys'
 import {
   DerivativeLimitOrderParams,
+  BatchDerivativeOrderCancelParams,
   DerivativeOrderCancelParams,
 } from '../types'
 
@@ -108,6 +111,32 @@ export class DerivativeMarketComposer {
     return {
       ...snakeCaseKeys(content.toObject()),
       '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder',
+    }
+  }
+
+  static batchCancelDerivativeOrder({
+    injectiveAddress,
+    orders,
+  }: {
+    injectiveAddress: string
+    orders: BatchDerivativeOrderCancelParams[]
+  }) {
+    const orderDataList = orders.map((order) => {
+      const orderData = new OrderData()
+      orderData.setMarketId(order.marketId)
+      orderData.setOrderHash(order.orderHash)
+      orderData.setSubaccountId(order.subaccountId)
+
+      return orderData
+    })
+
+    const content = new MsgBatchCancelDerivativeOrders()
+    content.setSender(injectiveAddress)
+    content.setDataList(orderDataList)
+
+    return {
+      ...snakeCaseKeys(content.toObject()),
+      '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
     }
   }
 }
