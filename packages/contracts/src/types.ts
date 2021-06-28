@@ -7,9 +7,6 @@ import { InjectiveFutures } from '@injectivelabs/web3-contract-typings/types/Inj
 
 export interface ChainIdContractAddresses {
   depositManager: string
-  futures: string
-  baseCurrency: string
-  priceFeeder: string
   peggy: string
   injective: string
 }
