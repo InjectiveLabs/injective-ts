@@ -10,9 +10,14 @@ import {
   ConcreteStrategyOptions,
   ConcreteWeb3Strategy,
   LedgerDerivationPathType,
+  LedgerWalletInfo,
 } from '../../types'
 import BaseConcreteStrategy from '../../BaseConcreteStrategy'
-import { DEFAULT_BASE_DERIVATION_PATH } from '../../constants'
+import {
+  DEFAULT_BASE_DERIVATION_PATH,
+  DEFAULT_ADDRESS_SEARCH_LIMIT,
+  DEFAULT_NUM_ADDRESSES_TO_FETCH,
+} from '../../constants'
 import LedgerTransport, { isLedgerSupportedInWindow } from './transport'
 import AccountManager from './AccountManager'
 
@@ -116,9 +121,7 @@ export default class Ledger
   }
 
   async confirm(address: AccountAddress): Promise<string> {
-    const { derivationPath } = await this.accountManager.getWalletForAddress(
-      address,
-    )
+    const { derivationPath } = await this.getWalletForAddress(address)
 
     try {
       const ledger = await this.ledger.getInstance()
@@ -155,9 +158,7 @@ export default class Ledger
     const serializedTx = tx.serialize().toString('hex')
 
     const ledger = await this.ledger.getInstance()
-    const { derivationPath } = await this.accountManager.getWalletForAddress(
-      options.address,
-    )
+    const { derivationPath } = await this.getWalletForAddress(options.address)
 
     let signedSerializedTx
     try {
@@ -185,9 +186,7 @@ export default class Ledger
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const { derivationPath } = await this.accountManager.getWalletForAddress(
-      address,
-    )
+    const { derivationPath } = await this.getWalletForAddress(address)
     const object = JSON.parse(eip712json)
     const ledger = await this.ledger.getInstance()
     const result = await ledger.signEIP712HashedMessage(
@@ -215,6 +214,32 @@ export default class Ledger
 
   async getTransactionReceipt(txHash: string): Promise<string> {
     return Promise.resolve(txHash)
+  }
+
+  private async getWalletForAddress(
+    address: string,
+  ): Promise<LedgerWalletInfo> {
+    const { accountManager, baseDerivationPath, derivationPathType } = this
+
+    if (!accountManager.hasWalletForAddress(address)) {
+      for (
+        let i = 0;
+        i < DEFAULT_ADDRESS_SEARCH_LIMIT / DEFAULT_NUM_ADDRESSES_TO_FETCH;
+        i += 1
+      ) {
+        await accountManager.getWallets(baseDerivationPath, derivationPathType)
+
+        if (this.accountManager.hasWalletForAddress(address)) {
+          return (await this.accountManager.getWalletForAddress(
+            address,
+          )) as LedgerWalletInfo
+        }
+      }
+    }
+
+    return (await this.accountManager.getWalletForAddress(
+      address,
+    )) as LedgerWalletInfo
   }
 
   onChainChanged = (_callback: () => void): void => {

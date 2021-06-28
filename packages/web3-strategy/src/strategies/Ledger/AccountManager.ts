@@ -130,17 +130,15 @@ export default class AccountManager {
     }
   }
 
+  hasWalletForAddress(address: AccountAddress): boolean {
+    return (
+      this.wallets.find((wallet) => wallet.address === address) !== undefined
+    )
+  }
+
   async getWalletForAddress(
     address: AccountAddress,
-  ): Promise<LedgerWalletInfo> {
-    const wallet = this.wallets.find((wallet) => wallet.address === address)
-
-    if (!wallet) {
-      throw new Error(
-        `The address ${address} is not found in the accounts list`,
-      )
-    }
-
-    return wallet
+  ): Promise<LedgerWalletInfo | undefined> {
+    return this.wallets.find((wallet) => wallet.address === address)
   }
 }
