@@ -1,10 +1,10 @@
 import { UrlEndpoint } from './types'
 
 export const urlEndpointsMainnet: UrlEndpoint = {
-  baseUrl: '',
-  chainUrl: '',
-  exchangeUrl: '',
-  explorerUrl: '',
+  baseUrl: 'https://staking-api.injective.network:4444/api',
+  chainUrl: 'https://staking-evm.injective.network',
+  exchangeUrl: 'https://staking-api.injective.network:4444',
+  explorerUrl: 'https://staking-explorer-api.injective.network/v1',
 }
 
 export const urlEndpointsStaking: UrlEndpoint = {
