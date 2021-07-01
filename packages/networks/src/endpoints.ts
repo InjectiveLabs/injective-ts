@@ -8,10 +8,10 @@ export const urlEndpointsMainnet: UrlEndpoint = {
 }
 
 export const urlEndpointsStaking: UrlEndpoint = {
-  baseUrl: 'https://staking-api.injective.network:4444/api',
-  chainUrl: 'https://staking-evm.injective.network',
-  exchangeUrl: 'https://staking-api.injective.network:4444',
-  explorerUrl: 'https://staking-explorer-api.injective.network/v1',
+  baseUrl: 'https://staking-api-testnet.injective.network:4444/api',
+  chainUrl: 'https://staking-evm-testnet.injective.network',
+  exchangeUrl: 'https://staking-api-testnet.injective.network:4444',
+  explorerUrl: 'https://explorer-api-testnet.injective.network/v1',
 }
 
 export const urlEndpointsDevnet: UrlEndpoint = {

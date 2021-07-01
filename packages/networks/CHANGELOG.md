@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.32...@injectivelabs/networks@0.0.33) (2021-07-01)
+
+
+### Bug Fixes
+
+* staking endpoints ([fd079af](https://github.com/InjectiveLabs/injective-ts/commit/fd079af717539e6ab8f79a0532c96522bf9d038c))
+
+
+
+
+
 ## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.31...@injectivelabs/networks@0.0.32) (2021-06-30)
 
 
