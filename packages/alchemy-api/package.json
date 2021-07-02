@@ -1,0 +1,40 @@
+{
+  "name": "@injectivelabs/alchemy-api",
+  "description": "Alchemy API Consumer.",
+  "version": "0.0.2",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~alchemy-api": "dist"
+  },
+  "scripts": {
+    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "test": "jest",
+    "test:unit": "jest test/unit",
+    "test:integration": "jest test/unit",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@alch/alchemy-web3": "^1.1.1",
+    "@injectivelabs/exceptions": "^0.0.28",
+    "@injectivelabs/ts-types": "^0.0.24",
+    "@types/lodash.values": "^4.3.6",
+    "jsonschema": "^1.4.0",
+    "link-module-alias": "^1.2.0",
+    "lodash": "^4.17.21",
+    "lodash.values": "^4.3.0",
+    "shx": "^0.3.2"
+  }
+}
