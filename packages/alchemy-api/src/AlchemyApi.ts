@@ -9,7 +9,7 @@ export default class AlchemyApi {
     this.web3 = createAlchemyWeb3(endpoint)
   }
 
-  getTokenAllowance({
+  fetchTokenAllowance({
     owner,
     spender,
     contract,
@@ -21,13 +21,13 @@ export default class AlchemyApi {
     const { web3 } = this
 
     try {
-      web3.alchemy.getTokenAllowance({ owner, spender, contract })
+      return web3.alchemy.getTokenAllowance({ owner, spender, contract })
     } catch (e) {
       throw new Web3Exception(e.message)
     }
   }
 
-  getTokenBalances({
+  fetchTokenBalances({
     address,
     contractAddresses,
   }: {
@@ -37,17 +37,17 @@ export default class AlchemyApi {
     const { web3 } = this
 
     try {
-      web3.alchemy.getTokenBalances(address, contractAddresses)
+      return web3.alchemy.getTokenBalances(address, contractAddresses)
     } catch (e) {
       throw new Web3Exception(e.message)
     }
   }
 
-  getTokenMetadata(contractAddress: string) {
+  fetchTokenMetadata(contractAddress: string) {
     const { web3 } = this
 
     try {
-      web3.alchemy.getTokenMetadata(contractAddress)
+      return web3.alchemy.getTokenMetadata(contractAddress)
     } catch (e) {
       throw new Web3Exception(e.message)
     }
