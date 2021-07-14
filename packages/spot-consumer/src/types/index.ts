@@ -3,4 +3,10 @@ import { PriceLevel as GrpcPriceLevel } from '@injectivelabs/exchange-api/inject
 export * from './spot-market'
 export * from './spot-market-chronos'
 
+export interface StreamStatusResponse {
+  details: string
+  code: number
+  metadata: any
+}
+
 export { GrpcPriceLevel }

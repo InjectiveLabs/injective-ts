@@ -5,7 +5,7 @@ import {
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { StreamOperation } from '@injectivelabs/ts-types'
 import { DerivativeTransformer } from '../../transformers/DerivativeTransformer'
-import { DerivativeLimitOrder } from '../../types'
+import { DerivativeLimitOrder, StreamStatusResponse } from '../../types'
 
 export type OrderStreamCallback = ({
   order,
@@ -40,13 +40,13 @@ export class OrderStream {
   start({
     marketId,
     callback,
-    onEndCallback = () => {},
-    onStatusCallback = (_status) => {},
+    onEndCallback,
+    onStatusCallback,
   }: {
     marketId: string
     callback: OrderStreamCallback
-    onEndCallback: () => void
-    onStatusCallback: (status: any) => void
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamOrdersRequest()
     request.setMarketId(marketId)
@@ -56,8 +56,14 @@ export class OrderStream {
     stream.on('data', (response: StreamOrdersResponse) => {
       callback(transformer(response))
     })
-    stream.on('end', onEndCallback)
-    stream.on('status', onStatusCallback)
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
 
     return stream
   }
@@ -66,14 +72,14 @@ export class OrderStream {
     marketId,
     subaccountId,
     callback,
-    onEndCallback = () => {},
-    onStatusCallback = (_status) => {},
+    onEndCallback,
+    onStatusCallback,
   }: {
     marketId: string
     subaccountId: string
     callback: OrderStreamCallback
-    onEndCallback: () => void
-    onStatusCallback: (status: any) => void
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamOrdersRequest()
     request.setMarketId(marketId)
@@ -84,8 +90,14 @@ export class OrderStream {
     stream.on('data', (response: StreamOrdersResponse) => {
       callback(transformer(response))
     })
-    stream.on('end', onEndCallback)
-    stream.on('status', onStatusCallback)
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
 
     return stream
   }

@@ -4,6 +4,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_oracle_rpc_pb'
 import { InjectiveOracleRPCClient } from '@injectivelabs/exchange-api/injective_oracle_rpc_pb_service'
 import { StreamOperation } from '@injectivelabs/ts-types'
+import { StreamStatusResponse } from '../../types'
 
 export type PricesStreamCallback = ({
   operation,
@@ -36,15 +37,15 @@ export class PricesStream {
     baseSymbol,
     quoteSymbol,
     callback,
-    onEndCallback = () => {},
-    onStatusCallback = (_status) => {},
+    onEndCallback,
+    onStatusCallback,
   }: {
     oracleType: string
     baseSymbol: string
     quoteSymbol: string
     callback: PricesStreamCallback
-    onEndCallback: () => void
-    onStatusCallback: (status: any) => void
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamPricesRequest()
     request.setBaseSymbol(baseSymbol)
@@ -56,8 +57,14 @@ export class PricesStream {
     stream.on('data', (response: StreamPricesResponse) => {
       callback(transformer(response))
     })
-    stream.on('end', onEndCallback)
-    stream.on('status', onStatusCallback)
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
 
     return stream
   }

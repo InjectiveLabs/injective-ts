@@ -4,7 +4,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { DerivativeTransformer } from '../../transformers/DerivativeTransformer'
-import { Position } from '../../types'
+import { Position, StreamStatusResponse } from '../../types'
 
 export type PositionStreamCallback = ({
   position,
@@ -38,13 +38,13 @@ export class PositionStream {
   start({
     marketId,
     callback,
-    onEndCallback = () => {},
-    onStatusCallback = (_status) => {},
+    onEndCallback,
+    onStatusCallback,
   }: {
     marketId: string
     callback: PositionStreamCallback
-    onEndCallback: () => void
-    onStatusCallback: (status: any) => void
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamPositionsRequest()
     request.setMarketId(marketId)
@@ -54,8 +54,14 @@ export class PositionStream {
     stream.on('data', (response: StreamPositionsResponse) => {
       callback(transformer(response))
     })
-    stream.on('end', onEndCallback)
-    stream.on('status', onStatusCallback)
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
 
     return stream
   }
@@ -64,14 +70,14 @@ export class PositionStream {
     marketId,
     subaccountId,
     callback,
-    onEndCallback = () => {},
-    onStatusCallback = (_status) => {},
+    onEndCallback,
+    onStatusCallback,
   }: {
     marketId: string
     subaccountId: string
     callback: PositionStreamCallback
-    onEndCallback: () => void
-    onStatusCallback: (status: any) => void
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamPositionsRequest()
     request.setMarketId(marketId)
@@ -82,8 +88,14 @@ export class PositionStream {
     stream.on('data', (response: StreamPositionsResponse) => {
       callback(transformer(response))
     })
-    stream.on('end', onEndCallback)
-    stream.on('status', onStatusCallback)
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
 
     return stream
   }

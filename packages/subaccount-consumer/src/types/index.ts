@@ -2,4 +2,10 @@ import { CosmosCoin as GrpcCosmosCoin } from '@injectivelabs/exchange-api/inject
 
 export * from './subaccount'
 
+export interface StreamStatusResponse {
+  details: string
+  code: number
+  metadata: any
+}
+
 export { GrpcCosmosCoin }

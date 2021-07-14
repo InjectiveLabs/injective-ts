@@ -5,7 +5,7 @@ import {
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { StreamOperation, TradeExecutionSide } from '@injectivelabs/ts-types'
 import { DerivativeTransformer } from '../../transformers/DerivativeTransformer'
-import { DerivativeTrade } from '../../types'
+import { DerivativeTrade, StreamStatusResponse } from '../../types'
 
 export type TradeStreamCallback = ({
   trade,
@@ -41,14 +41,14 @@ export class TradeStream {
     marketId,
     callback,
     executionSide,
-    onEndCallback = () => {},
-    onStatusCallback = (_status) => {},
+    onEndCallback,
+    onStatusCallback,
   }: {
     marketId: string
     executionSide?: TradeExecutionSide
     callback: TradeStreamCallback
-    onEndCallback: () => void
-    onStatusCallback: (status: any) => void
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamTradesRequest()
     request.setMarketId(marketId)
@@ -62,8 +62,14 @@ export class TradeStream {
     stream.on('data', (response: StreamTradesResponse) => {
       callback(transformer(response))
     })
-    stream.on('end', onEndCallback)
-    stream.on('status', onStatusCallback)
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
 
     return stream
   }
@@ -73,15 +79,15 @@ export class TradeStream {
     subaccountId,
     callback,
     executionSide,
-    onEndCallback = () => {},
-    onStatusCallback = (_status) => {},
+    onEndCallback,
+    onStatusCallback,
   }: {
     marketId: string
     subaccountId: string
     executionSide?: TradeExecutionSide
     callback: TradeStreamCallback
-    onEndCallback: () => void
-    onStatusCallback: (status: any) => void
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamTradesRequest()
     request.setMarketId(marketId)
@@ -96,8 +102,14 @@ export class TradeStream {
     stream.on('data', (response: StreamTradesResponse) => {
       callback(transformer(response))
     })
-    stream.on('end', onEndCallback)
-    stream.on('status', onStatusCallback)
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
 
     return stream
   }

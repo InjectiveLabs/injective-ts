@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.0.24...@injectivelabs/ts-types@0.0.25) (2021-07-14)
+
+
+### Bug Fixes
+
+* streams callbacks ([073c1fe](https://github.com/InjectiveLabs/injective-ts/commit/073c1feacb59870fdc7182cabb68bd45795123d4))
+
+
+
+
+
 ## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.0.22...@injectivelabs/ts-types@0.0.24) (2021-06-25)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-utils@0.0.13...@injectivelabs/tx-utils@0.0.14) (2021-07-14)
+
+**Note:** Version bump only for package @injectivelabs/tx-utils
+
+
+
+
+
 ## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-utils@0.0.11...@injectivelabs/tx-utils@0.0.13) (2021-06-25)
 
 

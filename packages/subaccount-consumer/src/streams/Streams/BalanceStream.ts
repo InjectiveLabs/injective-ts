@@ -5,7 +5,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
 import { StreamOperation } from '@injectivelabs/ts-types'
 import { SubaccountTransformer } from '../../transformers/SubaccountTransformer'
-import { SubaccountBalance } from '../../types'
+import { SubaccountBalance, StreamStatusResponse } from '../../types'
 
 export type BalanceStreamCallback = ({
   balance,
@@ -42,13 +42,13 @@ export class BalanceStream {
   start({
     subaccountId,
     callback,
-    onEndCallback = () => {},
-    onStatusCallback = (_status) => {},
+    onEndCallback,
+    onStatusCallback,
   }: {
     subaccountId: string
     callback: BalanceStreamCallback
-    onEndCallback: () => void
-    onStatusCallback: (status: any) => void
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamSubaccountBalanceRequest()
     request.setSubaccountId(subaccountId)
@@ -58,8 +58,14 @@ export class BalanceStream {
     stream.on('data', (response: StreamSubaccountBalanceResponse) => {
       callback(transformer(response))
     })
-    stream.on('end', onEndCallback)
-    stream.on('status', onStatusCallback)
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
 
     return stream
   }
