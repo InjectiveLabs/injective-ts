@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.63](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.62...@injectivelabs/chain-consumer@0.0.63) (2021-07-14)
+
+
+### Features
+
+* added proposal decomposer for exchange-enable-proposal ([58dc347](https://github.com/InjectiveLabs/injective-ts/commit/58dc347245321402f49743972e8c885c02e70e50))
+
+
+
+
+
 ## [0.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.61...@injectivelabs/chain-consumer@0.0.62) (2021-06-25)
 
 
