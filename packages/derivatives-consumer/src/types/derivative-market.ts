@@ -16,7 +16,7 @@ import {
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 
-export enum DerivativeOrderType {
+export enum DerivativeOrderSide {
   Unspecified = 'unspecified',
   Buy = 'buy',
   Sell = 'sell',
@@ -26,17 +26,11 @@ export enum DerivativeOrderType {
   TakeSell = 'take_sell',
 }
 
-export enum DerivativeOrderSide {
+export enum DerivativeOrderState {
   Booked = 'booked',
   PartialFilled = 'partial_filled',
   Filled = 'filled',
   Cancelled = 'cancelled',
-}
-
-export enum DerivativeOrderState {
-  Filled = 'filled',
-  Unfilled = 'unfilled',
-  Canceled = 'canceled',
 }
 
 export interface TokenMeta {

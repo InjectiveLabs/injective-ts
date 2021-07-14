@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.49...@injectivelabs/spot-consumer@0.0.50) (2021-07-14)
+
+
+### Bug Fixes
+
+* order types for order side and state ([07480e9](https://github.com/InjectiveLabs/injective-ts/commit/07480e97f01a6dd90652da357dc46eca1240f1a6))
+
+
+
+
+
 ## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.48...@injectivelabs/spot-consumer@0.0.49) (2021-07-14)
 
 **Note:** Version bump only for package @injectivelabs/spot-consumer

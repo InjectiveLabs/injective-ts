@@ -11,7 +11,7 @@ import {
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 
-export enum SpotOrderType {
+export enum SpotOrderSide {
   Unspecified = 'unspecified',
   Buy = 'buy',
   Sell = 'sell',
@@ -21,17 +21,11 @@ export enum SpotOrderType {
   TakeSell = 'take_sell',
 }
 
-export enum SpotOrderSide {
+export enum SpotOrderState {
   Booked = 'booked',
   PartialFilled = 'partial_filled',
   Filled = 'filled',
   Cancelled = 'cancelled',
-}
-
-export enum SpotOrderState {
-  Filled = 'filled',
-  Unfilled = 'unfilled',
-  Canceled = 'canceled',
 }
 
 export interface TokenMeta {
