@@ -36,11 +36,15 @@ export class PricesStream {
     baseSymbol,
     quoteSymbol,
     callback,
+    onEndCallback = () => {},
+    onStatusCallback = (_status) => {},
   }: {
     oracleType: string
     baseSymbol: string
     quoteSymbol: string
     callback: PricesStreamCallback
+    onEndCallback: () => void
+    onStatusCallback: (status: any) => void
   }) {
     const request = new StreamPricesRequest()
     request.setBaseSymbol(baseSymbol)
@@ -52,6 +56,8 @@ export class PricesStream {
     stream.on('data', (response: StreamPricesResponse) => {
       callback(transformer(response))
     })
+    stream.on('end', onEndCallback)
+    stream.on('status', onStatusCallback)
 
     return stream
   }

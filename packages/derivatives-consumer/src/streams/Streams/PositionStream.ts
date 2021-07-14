@@ -38,9 +38,13 @@ export class PositionStream {
   start({
     marketId,
     callback,
+    onEndCallback = () => {},
+    onStatusCallback = (_status) => {},
   }: {
     marketId: string
     callback: PositionStreamCallback
+    onEndCallback: () => void
+    onStatusCallback: (status: any) => void
   }) {
     const request = new StreamPositionsRequest()
     request.setMarketId(marketId)
@@ -50,6 +54,8 @@ export class PositionStream {
     stream.on('data', (response: StreamPositionsResponse) => {
       callback(transformer(response))
     })
+    stream.on('end', onEndCallback)
+    stream.on('status', onStatusCallback)
 
     return stream
   }
@@ -58,10 +64,14 @@ export class PositionStream {
     marketId,
     subaccountId,
     callback,
+    onEndCallback = () => {},
+    onStatusCallback = (_status) => {},
   }: {
     marketId: string
     subaccountId: string
     callback: PositionStreamCallback
+    onEndCallback: () => void
+    onStatusCallback: (status: any) => void
   }) {
     const request = new StreamPositionsRequest()
     request.setMarketId(marketId)
@@ -72,6 +82,8 @@ export class PositionStream {
     stream.on('data', (response: StreamPositionsResponse) => {
       callback(transformer(response))
     })
+    stream.on('end', onEndCallback)
+    stream.on('status', onStatusCallback)
 
     return stream
   }

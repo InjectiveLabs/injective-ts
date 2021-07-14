@@ -40,9 +40,13 @@ export class OrderStream {
   start({
     marketId,
     callback,
+    onEndCallback = () => {},
+    onStatusCallback = (_status) => {},
   }: {
     marketId: string
     callback: OrderStreamCallback
+    onEndCallback: () => void
+    onStatusCallback: (status: any) => void
   }) {
     const request = new StreamOrdersRequest()
     request.setMarketId(marketId)
@@ -52,6 +56,8 @@ export class OrderStream {
     stream.on('data', (response: StreamOrdersResponse) => {
       callback(transformer(response))
     })
+    stream.on('end', onEndCallback)
+    stream.on('status', onStatusCallback)
 
     return stream
   }
@@ -60,10 +66,14 @@ export class OrderStream {
     marketId,
     subaccountId,
     callback,
+    onEndCallback = () => {},
+    onStatusCallback = (_status) => {},
   }: {
     marketId: string
     subaccountId: string
     callback: OrderStreamCallback
+    onEndCallback: () => void
+    onStatusCallback: (status: any) => void
   }) {
     const request = new StreamOrdersRequest()
     request.setMarketId(marketId)
@@ -74,6 +84,8 @@ export class OrderStream {
     stream.on('data', (response: StreamOrdersResponse) => {
       callback(transformer(response))
     })
+    stream.on('end', onEndCallback)
+    stream.on('status', onStatusCallback)
 
     return stream
   }

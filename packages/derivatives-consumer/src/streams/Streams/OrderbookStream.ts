@@ -45,9 +45,13 @@ export class OrderbookStream {
   start({
     marketId,
     callback,
+    onEndCallback = () => {},
+    onStatusCallback = (_status) => {},
   }: {
     marketId: string
     callback: OrderbookStreamCallback
+    onEndCallback: () => void
+    onStatusCallback: (status: any) => void
   }) {
     const request = new StreamOrderbookRequest()
     request.setMarketId(marketId)
@@ -57,6 +61,8 @@ export class OrderbookStream {
     stream.on('data', (response: StreamOrderbookResponse) => {
       callback(transformer(response))
     })
+    stream.on('end', onEndCallback)
+    stream.on('status', onStatusCallback)
 
     return stream
   }

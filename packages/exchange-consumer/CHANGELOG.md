@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.68...@injectivelabs/exchange-consumer@0.0.69) (2021-07-14)
+
+
+### Features
+
+* added hooks 'end' and 'status' on the streams ([c7e8f26](https://github.com/InjectiveLabs/injective-ts/commit/c7e8f261bd0ee3b058a25dc1ef091c94158f99a7))
+
+
+
+
+
 ## [0.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.67...@injectivelabs/exchange-consumer@0.0.68) (2021-07-14)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer

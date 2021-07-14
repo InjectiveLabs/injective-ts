@@ -42,9 +42,13 @@ export class BalanceStream {
   start({
     subaccountId,
     callback,
+    onEndCallback = () => {},
+    onStatusCallback = (_status) => {},
   }: {
     subaccountId: string
     callback: BalanceStreamCallback
+    onEndCallback: () => void
+    onStatusCallback: (status: any) => void
   }) {
     const request = new StreamSubaccountBalanceRequest()
     request.setSubaccountId(subaccountId)
@@ -54,6 +58,8 @@ export class BalanceStream {
     stream.on('data', (response: StreamSubaccountBalanceResponse) => {
       callback(transformer(response))
     })
+    stream.on('end', onEndCallback)
+    stream.on('status', onStatusCallback)
 
     return stream
   }
