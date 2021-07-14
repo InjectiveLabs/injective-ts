@@ -5,7 +5,6 @@ import {
   GrpcDerivativeMarketInfo,
   GrpcDerivativeLimitOrder,
   GrpcDerivativeTrade,
-  DerivativeOrderType,
   Orderbook,
   PriceLevel,
   DerivativeMarket,
@@ -24,6 +23,7 @@ import {
   PerpetualMarketFunding,
   GrpcExpiryFuturesMarketInfo,
   ExpiryFuturesMarketInfo,
+  DerivativeOrderSide,
 } from '../types'
 
 const zeroPositionDelta = () => ({
@@ -182,7 +182,7 @@ export class DerivativeTransformer {
   ): DerivativeLimitOrder {
     return {
       orderHash: order.getOrderHash(),
-      orderType: order.getOrderType() as DerivativeOrderType,
+      orderSide: order.getOrderSide() as DerivativeOrderSide,
       marketId: order.getMarketId(),
       subaccountId: order.getSubaccountId(),
       isReduceOnly: order.getIsReduceOnly(),

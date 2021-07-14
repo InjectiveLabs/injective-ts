@@ -21,6 +21,13 @@ export enum SpotOrderType {
   TakeSell = 'take_sell',
 }
 
+export enum SpotOrderSide {
+  Booked = 'booked',
+  PartialFilled = 'partial_filled',
+  Filled = 'filled',
+  Cancelled = 'cancelled',
+}
+
 export enum SpotOrderState {
   Filled = 'filled',
   Unfilled = 'unfilled',
@@ -53,7 +60,7 @@ export interface SpotMarket {
 
 export interface SpotLimitOrder {
   orderHash: string
-  orderType: SpotOrderType
+  orderSide: SpotOrderSide
   marketId: string
   subaccountId: string
   price: string

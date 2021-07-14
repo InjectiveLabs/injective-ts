@@ -17,6 +17,7 @@ import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/exchange-api/inje
 import { GrpcException } from '@injectivelabs/exceptions'
 import { AccountAddress, TradeExecutionSide } from '@injectivelabs/ts-types'
 import BaseConsumer from '../BaseConsumer'
+import { DerivativeOrderSide } from '../types'
 
 export class DerivativeMarketConsumer extends BaseConsumer {
   async fetchMarkets() {
@@ -83,8 +84,10 @@ export class DerivativeMarketConsumer extends BaseConsumer {
   async fetchOrders({
     marketId,
     subaccountId,
+    orderSide,
   }: {
     marketId: string
+    orderSide?: DerivativeOrderSide
     subaccountId?: AccountAddress
   }) {
     const request = new OrdersRequest()
@@ -92,6 +95,10 @@ export class DerivativeMarketConsumer extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (orderSide) {
+      request.setOrderSide(orderSide)
     }
 
     try {

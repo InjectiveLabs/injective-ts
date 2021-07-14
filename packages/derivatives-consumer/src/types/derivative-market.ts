@@ -26,6 +26,13 @@ export enum DerivativeOrderType {
   TakeSell = 'take_sell',
 }
 
+export enum DerivativeOrderSide {
+  Booked = 'booked',
+  PartialFilled = 'partial_filled',
+  Filled = 'filled',
+  Cancelled = 'cancelled',
+}
+
 export enum DerivativeOrderState {
   Filled = 'filled',
   Unfilled = 'unfilled',
@@ -104,7 +111,7 @@ export interface DerivativeMarket {
 
 export interface DerivativeLimitOrder {
   orderHash: string
-  orderType: string
+  orderSide: DerivativeOrderSide
   marketId: string
   subaccountId: string
   isReduceOnly: boolean

@@ -5,7 +5,6 @@ import {
   GrpcSpotMarketInfo,
   GrpcSpotLimitOrder,
   GrpcSpotTrade,
-  SpotOrderType,
   Orderbook,
   PriceLevel,
   SpotMarket,
@@ -14,6 +13,7 @@ import {
   GrpcTokenMeta,
   TokenMeta,
   SpotOrderState,
+  SpotOrderSide,
 } from '../types'
 
 const zeroPriceLevel = () => ({
@@ -99,7 +99,7 @@ export class SpotTransformer {
   static grpcOrderToOrder(order: GrpcSpotLimitOrder): SpotLimitOrder {
     return {
       orderHash: order.getOrderHash(),
-      orderType: order.getOrderType() as SpotOrderType,
+      orderSide: order.getOrderSide() as SpotOrderSide,
       marketId: order.getMarketId(),
       subaccountId: order.getSubaccountId(),
       price: order.getPrice(),
