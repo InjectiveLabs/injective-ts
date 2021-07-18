@@ -22,10 +22,11 @@ export enum SpotOrderSide {
 }
 
 export enum SpotOrderState {
+  Unfilled = 'unfilled',
   Booked = 'booked',
   PartialFilled = 'partial_filled',
   Filled = 'filled',
-  Cancelled = 'cancelled',
+  Canceled = 'canceled',
 }
 
 export interface TokenMeta {
