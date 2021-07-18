@@ -16,4 +16,19 @@ export class Erc20TokenMeta {
       logo: `${__dirname}/images/${token.logo}`,
     }
   }
+
+  static getMetaNoThrow(symbol: string): TokenMeta | undefined {
+    const erc20Symbol = symbol.toUpperCase() as keyof typeof tokens
+
+    if (!tokens[erc20Symbol]) {
+      return
+    }
+
+    const token = tokens[erc20Symbol]
+
+    return {
+      ...token,
+      logo: `${__dirname}/images/${token.logo}`,
+    }
+  }
 }

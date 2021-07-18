@@ -1,8 +1,5 @@
 import { ChainId } from '@injectivelabs/ts-types'
 
-/**
- * BTC,ETH,INJ
- */
 export default {
   BTC: {
     name: 'Bitcoin',
@@ -20,9 +17,20 @@ export default {
     logo: 'ethereum.svg',
     symbol: 'ETH',
     decimals: 18,
-    address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
     addresses: {
-      [ChainId.Mainnet]: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+      [ChainId.Mainnet]: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    },
+  },
+
+  WETH: {
+    name: 'Wrapped Ethereum',
+    logo: 'ethereum.svg',
+    symbol: 'wETH',
+    decimals: 18,
+    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    addresses: {
+      [ChainId.Mainnet]: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
     },
   },
 
@@ -46,6 +54,18 @@ export default {
     address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
     addresses: {
       [ChainId.Mainnet]: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+      [ChainId.Kovan]: '0x69efcb62d98f4a6ff5a0b0cfaa4aabb122e85e08',
+    },
+  },
+
+  USDC: {
+    name: 'USDC',
+    logo: 'usdc.svg',
+    symbol: 'USDC',
+    decimals: 6,
+    address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    addresses: {
+      [ChainId.Mainnet]: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
       [ChainId.Kovan]: '0x69efcb62d98f4a6ff5a0b0cfaa4aabb122e85e08',
     },
   },
@@ -164,6 +184,17 @@ export default {
     addresses: {
       [ChainId.Mainnet]: '0x514910771af9ca656af840dff83e8264ecf986ca',
       [ChainId.Kovan]: '0xc843f43093f8d32c01a065ed2a0a34fb54baaf3f',
+    },
+  },
+
+  SUSHI: {
+    name: 'SushiSwap',
+    logo: 'sushi.svg',
+    symbol: 'SUSHI',
+    decimals: 18,
+    address: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
+    addresses: {
+      [ChainId.Mainnet]: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
     },
   },
 }
