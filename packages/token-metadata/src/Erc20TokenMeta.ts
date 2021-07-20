@@ -9,12 +9,7 @@ export class Erc20TokenMeta {
       return
     }
 
-    const token = tokensBySymbol[erc20Symbol]
-
-    return {
-      ...token,
-      logo: `${__dirname}/images/${token.logo}`,
-    }
+    return tokensBySymbol[erc20Symbol]
   }
 
   static getMetaByAddress(address: string): TokenMeta | undefined {
@@ -24,12 +19,7 @@ export class Erc20TokenMeta {
       return
     }
 
-    const token = tokensByAddress[erc20Address]
-
-    return {
-      ...token,
-      logo: `${__dirname}/images/${token.logo}`,
-    }
+    return tokensByAddress[erc20Address]
   }
 
   static getMetaByKovanAddress(address: string): TokenMeta | undefined {
@@ -39,11 +29,6 @@ export class Erc20TokenMeta {
       return
     }
 
-    const token = tokensByKovanAddress[erc20Address]
-
-    return {
-      ...token,
-      logo: `${__dirname}/images/${token.logo}`,
-    }
+    return tokensByKovanAddress[erc20Address]
   }
 }

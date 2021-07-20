@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.7...@injectivelabs/token-metadata@0.0.8) (2021-07-20)
+
+
+### Bug Fixes
+
+* images path fix ([948bac4](https://github.com/InjectiveLabs/injective-ts/commit/948bac47d4893431ffbeb15fc1706dea085ece01))
+
+
+
+
+
 ## [0.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.6...@injectivelabs/token-metadata@0.0.7) (2021-07-20)
 
 
