@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/token-metadata",
   "description": "ERC20 token metadata. Name, symbol, decimals, etc.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,8 @@
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias && yarn copy-files",
+    "copy-files": "copyfiles -u 1 ./src/images/* ./dist/",
     "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
@@ -29,6 +30,7 @@
   "dependencies": {
     "@injectivelabs/ts-types": "^0.0.25",
     "@types/lodash.values": "^4.3.6",
+    "copyfiles": "^2.4.1",
     "jsonschema": "^1.4.0",
     "link-module-alias": "^1.2.0",
     "lodash": "^4.17.21",
