@@ -1,15 +1,15 @@
-import { tokens } from './tokens'
+import { tokensByAddress, tokensByKovanAddress, tokensBySymbol } from './tokens'
 import { TokenMeta } from './types'
 
 export class Erc20TokenMeta {
-  static getMeta(symbol: string): TokenMeta {
-    const erc20Symbol = symbol.toUpperCase() as keyof typeof tokens
+  static getMetaBySymbol(symbol: string): TokenMeta | undefined {
+    const erc20Symbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
 
-    if (!tokens[erc20Symbol]) {
-      throw new Error(`Meta data for ${symbol} not found`)
+    if (!tokensBySymbol[erc20Symbol]) {
+      return
     }
 
-    const token = tokens[erc20Symbol]
+    const token = tokensBySymbol[erc20Symbol]
 
     return {
       ...token,
@@ -17,14 +17,29 @@ export class Erc20TokenMeta {
     }
   }
 
-  static getMetaNoThrow(symbol: string): TokenMeta | undefined {
-    const erc20Symbol = symbol.toUpperCase() as keyof typeof tokens
+  static getMetaByAddress(address: string): TokenMeta | undefined {
+    const erc20Address = address.toLowerCase() as keyof typeof tokensByAddress
 
-    if (!tokens[erc20Symbol]) {
+    if (!tokensByAddress[erc20Address]) {
       return
     }
 
-    const token = tokens[erc20Symbol]
+    const token = tokensByAddress[erc20Address]
+
+    return {
+      ...token,
+      logo: `${__dirname}/images/${token.logo}`,
+    }
+  }
+
+  static getMetaByKovanAddress(address: string): TokenMeta | undefined {
+    const erc20Address = address.toLowerCase() as keyof typeof tokensByKovanAddress
+
+    if (!tokensByKovanAddress[erc20Address]) {
+      return
+    }
+
+    const token = tokensByKovanAddress[erc20Address]
 
     return {
       ...token,

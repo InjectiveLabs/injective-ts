@@ -86,9 +86,9 @@ export default {
     logo: 'synthetix.svg',
     decimals: 18,
     symbol: 'SNX',
-    address: '0xc944e90c64b2c07662a292be6244bdf05cda44a7',
+    address: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
     addresses: {
-      [ChainId.Mainnet]: '0xc944e90c64b2c07662a292be6244bdf05cda44a7',
+      [ChainId.Mainnet]: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
     },
   },
 
@@ -171,6 +171,18 @@ export default {
     address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
     addresses: {
       [ChainId.Mainnet]: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
+      [ChainId.Kovan]: '0x138b989687da853a561D4edE88D8281434211780',
+    },
+  },
+
+  DAI: {
+    name: 'Dai',
+    logo: 'dai.svg',
+    symbol: 'DAI',
+    decimals: 18,
+    address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    addresses: {
+      [ChainId.Mainnet]: '0x6b175474e89094c44da98b954eedeac495271d0f',
       [ChainId.Kovan]: '0x138b989687da853a561D4edE88D8281434211780',
     },
   },
