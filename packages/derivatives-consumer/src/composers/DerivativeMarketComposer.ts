@@ -145,15 +145,18 @@ export class DerivativeMarketComposer {
     srcSubaccountId,
     dstSubaccountId,
     marketId,
+    amount,
     injectiveAddress,
   }: {
     srcSubaccountId: string
     dstSubaccountId: string
     injectiveAddress: string
     marketId: string
+    amount: string
   }) {
     const content = new MsgIncreasePositionMargin()
     content.setSender(injectiveAddress)
+    content.setAmount(amount)
     content.setMarketId(marketId)
     content.setSourceSubaccountId(srcSubaccountId)
     content.setDestinationSubaccountId(dstSubaccountId)
