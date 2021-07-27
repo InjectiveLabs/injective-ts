@@ -4,6 +4,7 @@ import {
   MsgCreateDerivativeMarketOrder,
   MsgBatchCancelDerivativeOrders,
   OrderData,
+  MsgIncreasePositionMargin,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import {
   DerivativeOrder,
@@ -137,6 +138,29 @@ export class DerivativeMarketComposer {
       sender: injectiveAddress,
       data: [...orderDataList],
       '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
+    }
+  }
+
+  static addMarginToPosition({
+    srcSubaccountId,
+    dstSubaccountId,
+    marketId,
+    injectiveAddress,
+  }: {
+    srcSubaccountId: string
+    dstSubaccountId: string
+    injectiveAddress: string
+    marketId: string
+  }) {
+    const content = new MsgIncreasePositionMargin()
+    content.setSender(injectiveAddress)
+    content.setMarketId(marketId)
+    content.setSourceSubaccountId(srcSubaccountId)
+    content.setDestinationSubaccountId(dstSubaccountId)
+
+    return {
+      ...snakeCaseKeys(content.toObject()),
+      '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin',
     }
   }
 }
