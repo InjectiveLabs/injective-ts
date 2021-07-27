@@ -2,14 +2,14 @@ import {
   urlEndpointsMainnet,
   urlEndpointsLocal,
   urlEndpointsStaking,
-  urlEndpointsInternal,
+  urlEndpointsPublic,
   urlEndpointsDevnet,
 } from './endpoints'
 import { Network, UrlEndpoint } from './types'
 
 export const urlEndpointUrls: { [key: string]: UrlEndpoint } = {
   mainnet: urlEndpointsMainnet,
-  internal: urlEndpointsInternal,
+  public: urlEndpointsPublic,
   devnet: urlEndpointsDevnet,
   staking: urlEndpointsStaking,
   local: urlEndpointsLocal,
