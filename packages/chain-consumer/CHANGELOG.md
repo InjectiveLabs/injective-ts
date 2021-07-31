@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.64...@injectivelabs/chain-consumer@0.0.65) (2021-07-31)
+
+
+### Bug Fixes
+
+* bank comoposer export ([0e5c32f](https://github.com/InjectiveLabs/injective-ts/commit/0e5c32ffd54baa263a7876670b55f0f491875662))
+
+
+
+
+
 ## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.63...@injectivelabs/chain-consumer@0.0.64) (2021-07-31)
 
 
