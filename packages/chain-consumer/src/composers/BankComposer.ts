@@ -10,7 +10,6 @@ export class BankComposer {
     srcInjectiveAddress,
     dstInjectiveAddress,
   }: {
-    proposalId: number
     denom: string
     amount: string
     srcInjectiveAddress: AccountAddress
