@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.63...@injectivelabs/chain-consumer@0.0.64) (2021-07-31)
+
+
+### Features
+
+* sending to another inj address ([5e24c14](https://github.com/InjectiveLabs/injective-ts/commit/5e24c14cfd9b86b7b19ed81407c30b9a14534948))
+
+
+
+
+
 ## [0.0.63](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.62...@injectivelabs/chain-consumer@0.0.63) (2021-07-14)
 
 
