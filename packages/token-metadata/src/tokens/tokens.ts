@@ -25,7 +25,7 @@ export default {
 
   INJ: {
     name: 'Injective',
-    logo: 'injective.svg',
+    logo: 'injective-2.svg',
     symbol: 'INJ',
     decimals: 18,
     address: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
