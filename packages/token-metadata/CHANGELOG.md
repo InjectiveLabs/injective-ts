@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.10...@injectivelabs/token-metadata@0.0.12) (2021-08-04)
+
+
+### Bug Fixes
+
+* new injective logo ([7f938c6](https://github.com/InjectiveLabs/injective-ts/commit/7f938c6dc9c82921f6ab94e0126d0213857ad2ca))
+
+
+
+
+
+## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.10...@injectivelabs/token-metadata@0.0.11) (2021-08-04)
+
+
+### Bug Fixes
+
+* new injective logo ([7f938c6](https://github.com/InjectiveLabs/injective-ts/commit/7f938c6dc9c82921f6ab94e0126d0213857ad2ca))
+
+
+
+
+
 ## [0.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.9...@injectivelabs/token-metadata@0.0.10) (2021-07-22)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

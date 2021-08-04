@@ -213,7 +213,6 @@ export class DerivativeTransformer {
       aggregateReduceOnlyQuantity: position.getAggregateReduceOnlyQuantity(),
       liquidationPrice: position.getLiquidationPrice(),
       markPrice: position.getMarkPrice(),
-      unrealizedPnl: position.getUnrealizedPnl(),
       ticker: position.getTicker(),
     }
   }

@@ -59,7 +59,6 @@ export interface Position {
   margin: string
   liquidationPrice: string
   markPrice: string
-  unrealizedPnl: string
   ticker: string
   aggregateReduceOnlyQuantity: string
 }
