@@ -94,7 +94,7 @@ export default class Wallet
   ): Promise<string> {
     const { privateKey } = this
     const message = TypedDataUtils.sign(JSON.parse(eip712json))
-    const sig = ethUtil.ecsign(message, Buffer.from(privateKey))
+    const sig = ethUtil.ecsign(message, Buffer.from(privateKey, 'hex'))
     const bufferedSignature = concatSig(
       Buffer.from(sig.v.toString()),
       Buffer.from(sig.r.toString()),
