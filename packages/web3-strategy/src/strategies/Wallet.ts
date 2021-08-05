@@ -8,40 +8,17 @@ import WalletSubprovider from 'web3-provider-engine/subproviders/wallet'
 import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
 import { provider, TransactionConfig } from 'web3-core'
 import EthereumWallet from 'ethereumjs-wallet'
-import { TypedDataUtils } from 'eth-sig-util'
-import * as ethUtil from 'ethereumjs-util'
 import { ConcreteStrategyOptions, ConcreteWeb3Strategy } from '../types'
 import BaseConcreteStrategy from '../BaseConcreteStrategy'
 
 const remove0xFromPrivateKey = (privateKey: string): string =>
   privateKey.startsWith('0x') ? privateKey.substring(2) : privateKey
 
-const padWithZeroes = (number: string, length: number): string => {
-  let myString = `${number}`
-
-  while (myString.length < length) {
-    myString = `0${myString}`
-  }
-
-  return myString
-}
-
 const getPrivateKeyWalletProviderForSinglePrivateKey = (privateKey: string) =>
   new WalletSubprovider(
     new EthereumWallet(Buffer.from(remove0xFromPrivateKey(privateKey), 'hex')),
     {},
   )
-
-const concatSig = (v: Buffer, r: Buffer, s: Buffer): Buffer => {
-  const rSig = ethUtil.fromSigned(r)
-  const sSig = ethUtil.fromSigned(s)
-  const vSig = ethUtil.bufferToInt(v)
-  const rStr = padWithZeroes(ethUtil.toUnsigned(rSig).toString('hex'), 64)
-  const sStr = padWithZeroes(ethUtil.toUnsigned(sSig).toString('hex'), 64)
-  const vStr = ethUtil.stripHexPrefix(ethUtil.intToHex(vSig))
-
-  return Buffer.from(ethUtil.addHexPrefix(rStr.concat(sStr, vStr)).toString())
-}
 
 export default class Wallet
   extends BaseConcreteStrategy
@@ -88,20 +65,16 @@ export default class Wallet
     return transactionHash
   }
 
-  signTypedDataV4(
+  async signTypedDataV4(
     eip712json: string,
     _address: AccountAddress,
   ): Promise<string> {
-    const { privateKey } = this
-    const message = TypedDataUtils.sign(JSON.parse(eip712json))
-    const sig = ethUtil.ecsign(message, Buffer.from(privateKey, 'hex'))
-    const bufferedSignature = concatSig(
-      Buffer.from(sig.v.toString()),
-      Buffer.from(sig.r.toString()),
-      Buffer.from(sig.s.toString()),
-    )
+    const { chainId, privateKey } = this
+    const { signature } = await this.getWeb3ForChainId(
+      chainId,
+    ).eth.accounts.sign(eip712json, privateKey)
 
-    return Promise.resolve(ethUtil.bufferToHex(bufferedSignature))
+    return signature
   }
 
   async getNetworkId(): Promise<string> {

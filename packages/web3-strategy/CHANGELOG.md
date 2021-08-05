@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.57...@injectivelabs/web3-strategy@0.0.58) (2021-08-05)
+
+
+### Bug Fixes
+
+* signing using a private key ([df39422](https://github.com/InjectiveLabs/injective-ts/commit/df394220f381d79de11792afdd3cfeea3c23f798))
+
+
+
+
+
 ## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.56...@injectivelabs/web3-strategy@0.0.57) (2021-08-05)
 
 
