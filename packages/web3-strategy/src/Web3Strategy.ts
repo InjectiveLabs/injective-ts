@@ -28,7 +28,7 @@ export default class Web3Strategy {
     this.wallet = wallet
 
     switch (this.wallet) {
-      case Wallet.Testnet:
+      case Wallet.PrivateKey:
         this.strategy = new WalletStrategy({ chainId, options })
         break
       case Wallet.Metamask:

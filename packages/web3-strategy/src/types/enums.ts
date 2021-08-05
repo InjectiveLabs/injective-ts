@@ -1,5 +1,5 @@
 export enum Wallet {
-  Testnet = 'testnet',
+  PrivateKey = 'private-key',
   Metamask = 'metamask',
   Ledger = 'ledger',
 }
