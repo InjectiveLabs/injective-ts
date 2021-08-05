@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.67...@injectivelabs/chain-consumer@0.0.68) (2021-08-05)
+
+
+### Bug Fixes
+
+* abstraction removal ([a8e19fe](https://github.com/InjectiveLabs/injective-ts/commit/a8e19fe11d90c9d957ca543db07957a36816e484))
+
+
+
+
+
 ## [0.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.66...@injectivelabs/chain-consumer@0.0.67) (2021-08-05)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer

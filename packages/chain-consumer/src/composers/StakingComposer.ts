@@ -1,5 +1,4 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
-import { BigNumberInWei } from '@injectivelabs/utils'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import snakeCaseKeys from 'snakecase-keys'
 import {
@@ -18,11 +17,11 @@ export class StakingComposer {
     denom: string
     validatorAddress: string
     injectiveAddress: AccountAddress
-    amount: BigNumberInWei
+    amount: string
   }): Record<string, any> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
-    coinAmount.setAmount(amount.toFixed())
+    coinAmount.setAmount(amount)
 
     const cosmosMessage = new MsgDelegate()
     cosmosMessage.setAmount(coinAmount)
@@ -46,11 +45,11 @@ export class StakingComposer {
     sourceValidatorAddress: string
     destinationValidatorAddress: string
     injectiveAddress: AccountAddress
-    amount: BigNumberInWei
+    amount: string
   }): Record<string, any> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
-    coinAmount.setAmount(amount.toFixed())
+    coinAmount.setAmount(amount)
 
     const cosmosMessage = new MsgBeginRedelegate()
     cosmosMessage.setAmount(coinAmount)
@@ -73,11 +72,11 @@ export class StakingComposer {
     denom: string
     validatorAddress: string
     injectiveAddress: AccountAddress
-    amount: BigNumberInWei
+    amount: string
   }): Record<string, any> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
-    coinAmount.setAmount(amount.toFixed())
+    coinAmount.setAmount(amount)
 
     const cosmosMessage = new MsgUndelegate()
     cosmosMessage.setAmount(coinAmount)
