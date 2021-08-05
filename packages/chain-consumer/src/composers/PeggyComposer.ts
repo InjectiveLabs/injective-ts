@@ -1,6 +1,5 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
 import {
-  BigNumberInWei,
   DEFAULT_BRIDGE_FEE_AMOUNT,
   DEFAULT_BRIDGE_FEE_DENOM,
 } from '@injectivelabs/utils'
@@ -11,7 +10,7 @@ import snakeCaseKeys from 'snakecase-keys'
 export class PeggyComposer {
   static withdraw({
     address,
-    cosmosAddress,
+    injectiveAddress,
     amount,
     denom,
     bridgeFeeDenom = DEFAULT_BRIDGE_FEE_DENOM,
@@ -19,14 +18,14 @@ export class PeggyComposer {
   }: {
     denom: string
     address: AccountAddress
-    cosmosAddress: AccountAddress
-    amount: BigNumberInWei
+    injectiveAddress: AccountAddress
+    amount: string
     bridgeFeeDenom?: string
     bridgeFeeAmount?: string
   }): Record<string, any> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
-    coinAmount.setAmount(amount.toFixed())
+    coinAmount.setAmount(amount)
 
     const bridgeFee = new Coin()
     bridgeFee.setDenom(bridgeFeeDenom)
@@ -34,7 +33,7 @@ export class PeggyComposer {
 
     const cosmosMessage = new MsgSendToEth()
     cosmosMessage.setAmount(coinAmount)
-    cosmosMessage.setSender(cosmosAddress)
+    cosmosMessage.setSender(injectiveAddress)
     cosmosMessage.setEthDest(address)
     cosmosMessage.setBridgeFee(bridgeFee)
 

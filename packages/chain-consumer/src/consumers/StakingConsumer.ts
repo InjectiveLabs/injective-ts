@@ -37,14 +37,14 @@ export class StakingConsumer extends BaseConsumer {
   }
 
   async fetchDelegations({
-    cosmosAddress,
+    injectiveAddress,
     pagination,
   }: {
-    cosmosAddress: string
+    injectiveAddress: string
     pagination?: PaginationOption
   }) {
     const request = new QueryDelegatorDelegationsRequest()
-    request.setDelegatorAddr(cosmosAddress)
+    request.setDelegatorAddr(injectiveAddress)
 
     if (pagination) {
       const paginationForRequest = new PageRequest()
@@ -103,14 +103,14 @@ export class StakingConsumer extends BaseConsumer {
   }
 
   async fetchUnbondingDelegations({
-    cosmosAddress,
+    injectiveAddress,
     pagination,
   }: {
-    cosmosAddress: string
+    injectiveAddress: string
     pagination?: PaginationOption
   }) {
     const request = new QueryDelegatorUnbondingDelegationsRequest()
-    request.setDelegatorAddr(cosmosAddress)
+    request.setDelegatorAddr(injectiveAddress)
 
     if (pagination) {
       const paginationForRequest = new PageRequest()
@@ -136,14 +136,14 @@ export class StakingConsumer extends BaseConsumer {
   }
 
   async fetchReDelegations({
-    cosmosAddress,
+    injectiveAddress,
     pagination,
   }: {
-    cosmosAddress: string
+    injectiveAddress: string
     pagination?: PaginationOption
   }) {
     const request = new QueryRedelegationsRequest()
-    request.setDelegatorAddr(cosmosAddress)
+    request.setDelegatorAddr(injectiveAddress)
 
     if (pagination) {
       const paginationForRequest = new PageRequest()

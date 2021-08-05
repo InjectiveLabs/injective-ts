@@ -10,14 +10,14 @@ import {
 
 export class StakingComposer {
   static delegate({
-    cosmosAddress,
+    injectiveAddress,
     validatorAddress,
     amount,
     denom,
   }: {
     denom: string
     validatorAddress: string
-    cosmosAddress: AccountAddress
+    injectiveAddress: AccountAddress
     amount: BigNumberInWei
   }): Record<string, any> {
     const coinAmount = new Coin()
@@ -26,7 +26,7 @@ export class StakingComposer {
 
     const cosmosMessage = new MsgDelegate()
     cosmosMessage.setAmount(coinAmount)
-    cosmosMessage.setDelegatorAddress(cosmosAddress)
+    cosmosMessage.setDelegatorAddress(injectiveAddress)
     cosmosMessage.setValidatorAddress(validatorAddress)
 
     return {
@@ -36,7 +36,7 @@ export class StakingComposer {
   }
 
   static reDelegate({
-    cosmosAddress,
+    injectiveAddress,
     sourceValidatorAddress,
     destinationValidatorAddress,
     amount,
@@ -45,7 +45,7 @@ export class StakingComposer {
     denom: string
     sourceValidatorAddress: string
     destinationValidatorAddress: string
-    cosmosAddress: AccountAddress
+    injectiveAddress: AccountAddress
     amount: BigNumberInWei
   }): Record<string, any> {
     const coinAmount = new Coin()
@@ -54,7 +54,7 @@ export class StakingComposer {
 
     const cosmosMessage = new MsgBeginRedelegate()
     cosmosMessage.setAmount(coinAmount)
-    cosmosMessage.setDelegatorAddress(cosmosAddress)
+    cosmosMessage.setDelegatorAddress(injectiveAddress)
     cosmosMessage.setValidatorDstAddress(destinationValidatorAddress)
     cosmosMessage.setValidatorSrcAddress(sourceValidatorAddress)
 
@@ -65,14 +65,14 @@ export class StakingComposer {
   }
 
   static unbond({
-    cosmosAddress,
+    injectiveAddress,
     validatorAddress,
     amount,
     denom,
   }: {
     denom: string
     validatorAddress: string
-    cosmosAddress: AccountAddress
+    injectiveAddress: AccountAddress
     amount: BigNumberInWei
   }): Record<string, any> {
     const coinAmount = new Coin()
@@ -81,7 +81,7 @@ export class StakingComposer {
 
     const cosmosMessage = new MsgUndelegate()
     cosmosMessage.setAmount(coinAmount)
-    cosmosMessage.setDelegatorAddress(cosmosAddress)
+    cosmosMessage.setDelegatorAddress(injectiveAddress)
     cosmosMessage.setValidatorAddress(validatorAddress)
 
     return {

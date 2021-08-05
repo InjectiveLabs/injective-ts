@@ -11,12 +11,12 @@ export class InsuranceComposer {
     marketId,
     amount,
     denom,
-    address,
+    injectiveAddress,
   }: {
     marketId: string
     denom: string
     amount: string
-    address: AccountAddress
+    injectiveAddress: AccountAddress
   }) {
     const deposit = new Coin()
     deposit.setAmount(amount)
@@ -25,7 +25,7 @@ export class InsuranceComposer {
     const message = new MsgUnderwrite()
     message.setDeposit(deposit)
     message.setMarketId(marketId)
-    message.setSender(address)
+    message.setSender(injectiveAddress)
 
     return {
       ...snakeCaseKeys(message.toObject()),
@@ -37,12 +37,12 @@ export class InsuranceComposer {
     marketId,
     amount,
     denom,
-    address,
+    injectiveAddress,
   }: {
     marketId: string
     denom: string
     amount: string
-    address: AccountAddress
+    injectiveAddress: AccountAddress
   }) {
     const amountToRedeem = new Coin()
     amountToRedeem.setAmount(amount)
@@ -51,7 +51,7 @@ export class InsuranceComposer {
     const message = new MsgRequestRedemption()
     message.setAmount(amountToRedeem)
     message.setMarketId(marketId)
-    message.setSender(address)
+    message.setSender(injectiveAddress)
 
     return {
       ...snakeCaseKeys(message.toObject()),

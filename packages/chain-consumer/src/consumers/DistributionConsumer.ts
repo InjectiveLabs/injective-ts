@@ -34,9 +34,9 @@ export class DistributionConsumer extends BaseConsumer {
     }
   }
 
-  async fetchDelegatorRewards(cosmosAddress: AccountAddress) {
+  async fetchDelegatorRewards(injectiveAddress: AccountAddress) {
     const request = new QueryDelegationTotalRewardsRequest()
-    request.setDelegatorAddress(cosmosAddress)
+    request.setDelegatorAddress(injectiveAddress)
 
     try {
       const response = await this.request<
