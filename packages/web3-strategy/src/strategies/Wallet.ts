@@ -88,12 +88,13 @@ export default class Wallet
     return transactionHash
   }
 
-  signTypedDataV4 = (
+  signTypedDataV4(
     eip712json: string,
     _address: AccountAddress,
-  ): Promise<string> => {
-    const message = TypedDataUtils.sign(eip712json)
-    const sig = ethUtil.ecsign(message, Buffer.from(this.privateKey))
+  ): Promise<string> {
+    const { privateKey } = this
+    const message = TypedDataUtils.sign(JSON.parse(eip712json))
+    const sig = ethUtil.ecsign(message, Buffer.from(privateKey))
     const bufferedSignature = concatSig(
       Buffer.from(sig.v.toString()),
       Buffer.from(sig.r.toString()),

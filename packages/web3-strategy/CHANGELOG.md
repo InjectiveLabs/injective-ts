@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.55...@injectivelabs/web3-strategy@0.0.56) (2021-08-05)
+
+
+### Bug Fixes
+
+* parsing eip712 ([4c8c259](https://github.com/InjectiveLabs/injective-ts/commit/4c8c259e83adc4691071b9f1e4457d6162511262))
+
+
+
+
+
 ## [0.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.54...@injectivelabs/web3-strategy@0.0.55) (2021-08-05)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy
