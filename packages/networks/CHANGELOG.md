@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.35...@injectivelabs/networks@0.0.36) (2021-08-06)
+
+
+### Bug Fixes
+
+* temp endpoints for devnet ([92b1b06](https://github.com/InjectiveLabs/injective-ts/commit/92b1b069df059ccf1f5c123ac68435ebd81a2521))
+
+
+
+
+
 ## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.34...@injectivelabs/networks@0.0.35) (2021-07-27)
 
 

@@ -18,7 +18,7 @@ export const urlEndpointsDevnet: UrlEndpoint = {
   baseUrl: 'https://devnet-api.injective.dev:4444/api',
   chainUrl: 'https://devnet-grpc.injective.dev',
   exchangeUrl: 'https://devnet-api.injective.dev:4444',
-  explorerUrl: 'https://devnet-explorer-api.injective.dev',
+  explorerUrl: 'https://explorer-api-testnet.injective.network/v1', // TODO
 }
 
 export const urlEndpointsPublic: UrlEndpoint = {
@@ -32,5 +32,5 @@ export const urlEndpointsLocal: UrlEndpoint = {
   baseUrl: 'https://localhost:4444/api',
   chainUrl: 'http://localhost:9091',
   exchangeUrl: 'https://localhost:4444',
-  explorerUrl: 'https://testnet-explorer-api.injective.dev/v1',
+  explorerUrl: 'https://explorer-api-testnet.injective.network/v1', // TODO
 }
