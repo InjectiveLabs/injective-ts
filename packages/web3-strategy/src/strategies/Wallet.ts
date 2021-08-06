@@ -8,6 +8,8 @@ import WalletSubprovider from 'web3-provider-engine/subproviders/wallet'
 import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
 import { provider, TransactionConfig } from 'web3-core'
 import EthereumWallet from 'ethereumjs-wallet'
+import { signTypedData_v4 as signTypedDataV4 } from 'eth-sig-util'
+import * as ethUtil from 'ethereumjs-util'
 import { ConcreteStrategyOptions, ConcreteWeb3Strategy } from '../types'
 import BaseConcreteStrategy from '../BaseConcreteStrategy'
 
@@ -65,16 +67,16 @@ export default class Wallet
     return transactionHash
   }
 
-  async signTypedDataV4(
+  signTypedDataV4(
     eip712json: string,
     _address: AccountAddress,
   ): Promise<string> {
-    const { chainId, privateKey } = this
-    const { signature } = await this.getWeb3ForChainId(
-      chainId,
-    ).eth.accounts.sign(eip712json, privateKey)
+    const { privateKey } = this
+    const sig = signTypedDataV4(Buffer.from(privateKey, 'hex'), {
+      data: JSON.parse(eip712json),
+    })
 
-    return signature
+    return Promise.resolve(`0x${ethUtil.toBuffer(sig).toString('hex')}`)
   }
 
   async getNetworkId(): Promise<string> {

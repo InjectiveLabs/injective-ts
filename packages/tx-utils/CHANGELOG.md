@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-utils@0.0.14...@injectivelabs/tx-utils@0.0.15) (2021-08-06)
+
+
+### Bug Fixes
+
+* signature for private key subprovider ([555aab5](https://github.com/InjectiveLabs/injective-ts/commit/555aab5ec209c484e04e8cc114cbfe4dc4be21da))
+
+
+
+
+
 ## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-utils@0.0.13...@injectivelabs/tx-utils@0.0.14) (2021-07-14)
 
 **Note:** Version bump only for package @injectivelabs/tx-utils
