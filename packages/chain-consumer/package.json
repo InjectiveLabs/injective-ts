@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/chain-consumer",
   "description": "Interacting with our Chain API made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

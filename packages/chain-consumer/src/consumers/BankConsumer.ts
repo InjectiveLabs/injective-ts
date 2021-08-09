@@ -8,10 +8,29 @@ import {
   QueryBalanceResponse,
   QueryTotalSupplyRequest,
   QueryTotalSupplyResponse,
+  QueryParamsRequest,
+  QueryParamsResponse,
 } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/query_pb'
 import BaseConsumer from '../BaseConsumer'
+import { GrpcBankParams } from '../types'
 
 export class BankConsumer extends BaseConsumer {
+  async fetchParams() {
+    const request = new QueryParamsRequest()
+
+    try {
+      const response = await this.request<
+        QueryParamsRequest,
+        QueryParamsResponse,
+        typeof Query.Params
+      >(request, Query.Params)
+
+      return response.getParams() as GrpcBankParams
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
   async fetchBalance({
     accountAddress,
     denom,

@@ -10,13 +10,31 @@ import {
   QueryValidatorDelegationsResponse,
   QueryValidatorsRequest,
   QueryValidatorsResponse,
+  QueryParamsRequest,
+  QueryParamsResponse,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb'
 import { Query } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb_service'
 import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
 import BaseConsumer from '../BaseConsumer'
-import { PaginationOption } from '../types'
+import { PaginationOption, GrpcStakingParams } from '../types'
 
 export class StakingConsumer extends BaseConsumer {
+  async fetchParams() {
+    const request = new QueryParamsRequest()
+
+    try {
+      const response = await this.request<
+        QueryParamsRequest,
+        QueryParamsResponse,
+        typeof Query.Params
+      >(request, Query.Params)
+
+      return response.getParams() as GrpcStakingParams
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
   async fetchValidators() {
     const request = new QueryValidatorsRequest()
 

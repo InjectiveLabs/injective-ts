@@ -14,6 +14,7 @@ import {
 import { GrpcException } from '@injectivelabs/exceptions'
 import { AccountAddress } from '@injectivelabs/ts-types'
 import BaseConsumer from '../BaseConsumer'
+import { GrpcInsuranceParams } from '../types'
 
 export class InsuranceConsumer extends BaseConsumer {
   async fetchParams() {
@@ -26,7 +27,7 @@ export class InsuranceConsumer extends BaseConsumer {
         typeof Query.InsuranceParams
       >(request, Query.InsuranceParams)
 
-      return response.getParams()
+      return response.getParams() as GrpcInsuranceParams
     } catch (e) {
       throw new GrpcException(e.message)
     }

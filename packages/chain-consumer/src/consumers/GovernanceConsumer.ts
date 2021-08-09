@@ -17,10 +17,58 @@ import {
 import { Query } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/query_pb_service'
 import { GrpcException } from '@injectivelabs/exceptions'
 import BaseConsumer from '../BaseConsumer'
-import { PaginationOption } from '../types'
+import {
+  GrpcGovernanceDepositParams,
+  GrpcGovernanceTallyParams,
+  GrpcGovernanceVotingParams,
+  PaginationOption,
+} from '../types'
 
 export class GovernanceConsumer extends BaseConsumer {
-  async fetchParams(type: string) {
+  async fetchParams() {
+    const paramTypes = ['voting', 'deposit', 'tallying']
+    const requests = paramTypes.map((type) => {
+      const request = new QueryParamsRequest()
+      request.setParamsType(type)
+
+      return request
+    })
+
+    try {
+      const responses = await Promise.all(
+        requests.map((request) =>
+          this.request<
+            QueryParamsRequest,
+            QueryParamsResponse,
+            typeof Query.Params
+          >(request, Query.Params),
+        ),
+      )
+      const votingParams = responses.find((response) =>
+        response.hasVotingParams(),
+      )!
+      const tallyParams = responses.find((response) =>
+        response.hasTallyParams(),
+      )!
+      const depositParams = responses.find((response) =>
+        response.hasDepositParams(),
+      )!
+
+      return {
+        votingParams: votingParams.getVotingParams(),
+        tallyParams: tallyParams.getTallyParams(),
+        depositParams: depositParams.getDepositParams(),
+      } as {
+        depositParams: GrpcGovernanceDepositParams
+        tallyParams: GrpcGovernanceTallyParams
+        votingParams: GrpcGovernanceVotingParams
+      }
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchParamsByType(type: string) {
     const request = new QueryParamsRequest()
     request.setParamsType(type)
 

@@ -4,12 +4,31 @@ import {
   QueryDelegationRewardsResponse,
   QueryDelegationTotalRewardsRequest,
   QueryDelegationTotalRewardsResponse,
+  QueryParamsRequest,
+  QueryParamsResponse,
 } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb'
 import { Query } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb_service'
 import { AccountAddress } from '@injectivelabs/ts-types'
 import BaseConsumer from '../BaseConsumer'
+import { GrpcDistributionParams } from '../types'
 
 export class DistributionConsumer extends BaseConsumer {
+  async fetchParams() {
+    const request = new QueryParamsRequest()
+
+    try {
+      const response = await this.request<
+        QueryParamsRequest,
+        QueryParamsResponse,
+        typeof Query.Params
+      >(request, Query.Params)
+
+      return response.getParams() as GrpcDistributionParams
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
   async fetchDelegatorRewardsForValidator({
     delegatorAddress,
     validatorAddress,
