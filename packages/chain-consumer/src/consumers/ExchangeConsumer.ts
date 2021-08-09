@@ -4,6 +4,7 @@ import {
   QueryExchangeParamsResponse,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
 import { GrpcException } from '@injectivelabs/exceptions'
+import { GrpcExchangeParams } from '../types'
 import BaseConsumer from '../BaseConsumer'
 
 export class ExchangeConsumer extends BaseConsumer {
@@ -17,7 +18,7 @@ export class ExchangeConsumer extends BaseConsumer {
         typeof Query.QueryExchangeParams
       >(request, Query.QueryExchangeParams)
 
-      return response.getParams()
+      return response.getParams() as GrpcExchangeParams
     } catch (e) {
       throw new GrpcException(e.message)
     }
