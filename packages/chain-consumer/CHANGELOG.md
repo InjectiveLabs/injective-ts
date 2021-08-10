@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.70...@injectivelabs/chain-consumer@0.0.71) (2021-08-10)
+
+
+### Features
+
+* staking consumer improvements ([0ec4200](https://github.com/InjectiveLabs/injective-ts/commit/0ec4200caefc1b9035fae1ad8965a23b8bade435))
+
+
+
+
+
 ## [0.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.69...@injectivelabs/chain-consumer@0.0.70) (2021-08-09)
 
 
