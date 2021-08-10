@@ -10,8 +10,16 @@ import {
   QueryValidatorDelegationsResponse,
   QueryValidatorsRequest,
   QueryValidatorsResponse,
+  QueryDelegationResponse,
+  QueryDelegationRequest,
+  QueryUnbondingDelegationResponse,
+  QueryUnbondingDelegationRequest,
+  QueryValidatorRequest,
+  QueryValidatorResponse,
   QueryParamsRequest,
   QueryParamsResponse,
+  QueryValidatorUnbondingDelegationsRequest,
+  QueryValidatorUnbondingDelegationsResponse,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb'
 import { Query } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb_service'
 import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
@@ -49,6 +57,113 @@ export class StakingConsumer extends BaseConsumer {
         validators: response.getValidatorsList(),
         pagination: response.getPagination(),
       }
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchValidator(address: string) {
+    const request = new QueryValidatorRequest()
+    request.setValidatorAddr(address)
+
+    try {
+      const response = await this.request<
+        QueryValidatorRequest,
+        QueryValidatorResponse,
+        typeof Query.Validator
+      >(request, Query.Validator)
+
+      return response.getValidator()
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchValidatorDelegations({
+    validatorAddress,
+    pagination,
+  }: {
+    validatorAddress: string
+    pagination?: PaginationOption
+  }) {
+    const request = new QueryValidatorDelegationsRequest()
+    request.setValidatorAddr(validatorAddress)
+
+    if (pagination) {
+      const paginationForRequest = new PageRequest()
+      paginationForRequest.setKey(pagination.key)
+
+      request.setPagination(paginationForRequest)
+    }
+
+    try {
+      const response = await this.request<
+        QueryValidatorDelegationsRequest,
+        QueryValidatorDelegationsResponse,
+        typeof Query.ValidatorDelegations
+      >(request, Query.ValidatorDelegations)
+
+      return {
+        delegations: response.getDelegationResponsesList(),
+        pagination: response.getPagination(),
+      }
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchValidatorUnbondingDelegations({
+    validatorAddress,
+    pagination,
+  }: {
+    validatorAddress: string
+    pagination?: PaginationOption
+  }) {
+    const request = new QueryValidatorUnbondingDelegationsRequest()
+    request.setValidatorAddr(validatorAddress)
+
+    if (pagination) {
+      const paginationForRequest = new PageRequest()
+      paginationForRequest.setKey(pagination.key)
+
+      request.setPagination(paginationForRequest)
+    }
+
+    try {
+      const response = await this.request<
+        QueryValidatorUnbondingDelegationsRequest,
+        QueryValidatorUnbondingDelegationsResponse,
+        typeof Query.ValidatorUnbondingDelegations
+      >(request, Query.ValidatorUnbondingDelegations)
+
+      return {
+        delegations: response.getUnbondingResponsesList(),
+        pagination: response.getPagination(),
+      }
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchDelegation({
+    injectiveAddress,
+    validatorAddress,
+  }: {
+    injectiveAddress: string
+    validatorAddress: string
+  }) {
+    const request = new QueryDelegationRequest()
+    request.setDelegatorAddr(injectiveAddress)
+    request.setValidatorAddr(validatorAddress)
+
+    try {
+      const response = await this.request<
+        QueryDelegationRequest,
+        QueryDelegationResponse,
+        typeof Query.Delegation
+      >(request, Query.Delegation)
+
+      return response.getDelegationResponse()
     } catch (e) {
       throw new GrpcException(e.message)
     }
@@ -115,6 +230,30 @@ export class StakingConsumer extends BaseConsumer {
         delegators: response.getDelegationResponsesList(),
         pagination: response.getPagination(),
       }
+    } catch (e) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchUnbondingDelegation({
+    injectiveAddress,
+    validatorAddress,
+  }: {
+    injectiveAddress: string
+    validatorAddress: string
+  }) {
+    const request = new QueryUnbondingDelegationRequest()
+    request.setDelegatorAddr(injectiveAddress)
+    request.setValidatorAddr(validatorAddress)
+
+    try {
+      const response = await this.request<
+        QueryUnbondingDelegationRequest,
+        QueryUnbondingDelegationResponse,
+        typeof Query.UnbondingDelegation
+      >(request, Query.UnbondingDelegation)
+
+      return response.getUnbond()
     } catch (e) {
       throw new GrpcException(e.message)
     }
