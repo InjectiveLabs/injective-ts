@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.78...@injectivelabs/exchange-consumer@0.0.79) (2021-08-11)
+
+### Bug Fixes
+
+* oracle decomposer ([e6d05c6](https://github.com/InjectiveLabs/injective-ts/commit/e6d05c69d5cd5c5ffcfb46c72b3aa05f4ac8058a))
+
 ## [0.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.67...@injectivelabs/exchange-consumer@0.0.78) (2021-08-11)
 
 ### Bug Fixes
