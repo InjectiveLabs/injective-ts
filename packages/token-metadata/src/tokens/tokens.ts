@@ -4,6 +4,14 @@ export default {
     logo: 'bitcoin.svg',
     symbol: 'BTC',
     decimals: 18,
+    address: '',
+  },
+
+  wBTC: {
+    name: 'Wrapped Bitcoin',
+    logo: 'wbtc.svg',
+    symbol: 'wBTC',
+    decimals: 8,
     address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
   },
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.13...@injectivelabs/token-metadata@0.0.14) (2021-08-14)
+
+
+### Features
+
+* added wbtc ([4d58c89](https://github.com/InjectiveLabs/injective-ts/commit/4d58c8980ac991a62959832ddaaadb6a3e284d3f))
+
+
+
+
+
 ## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.12...@injectivelabs/token-metadata@0.0.13) (2021-08-05)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

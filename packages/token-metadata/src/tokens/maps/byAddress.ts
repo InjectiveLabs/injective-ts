@@ -2,7 +2,7 @@ import { TokenMeta } from '../../types'
 import tokens from '../tokens'
 
 export default {
-  [tokens.BTC.address.toLowerCase()]: tokens.BTC,
+  [tokens.wBTC.address.toLowerCase()]: tokens.wBTC,
   [tokens.WETH.address.toLowerCase()]: tokens.WETH,
   [tokens.INJ.address.toLowerCase()]: tokens.INJ,
   [tokens.USDT.address.toLowerCase()]: tokens.USDT,
