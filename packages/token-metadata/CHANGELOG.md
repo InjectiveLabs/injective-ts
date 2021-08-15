@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.14...@injectivelabs/token-metadata@0.0.15) (2021-08-15)
+
+
+### Bug Fixes
+
+* kovan token meta ([fb60f2c](https://github.com/InjectiveLabs/injective-ts/commit/fb60f2cbb117f18f2f58e83052a1a3d20a90e53a))
+
+
+
+
+
 ## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.13...@injectivelabs/token-metadata@0.0.14) (2021-08-14)
 
 
