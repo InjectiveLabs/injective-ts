@@ -1,5 +1,4 @@
 import { BaseCurrency } from '@injectivelabs/web3-contract-typings/types/BaseCurrency'
-import { BigNumber, BigNumberInWei } from '@injectivelabs/utils'
 import { ContractException } from '@injectivelabs/exceptions'
 import {
   AccountAddress,
@@ -35,14 +34,12 @@ export class BaseCurrencyContract extends BaseContract<
     })
   }
 
-  getBalanceOf(address: AccountAddress): ContractFunctionObj<BigNumberInWei> {
+  getBalanceOf(address: AccountAddress): ContractFunctionObj<string> {
     const { contract } = this
 
     return {
       async callAsync() {
-        return new BigNumberInWei(
-          await contract.methods.balanceOf(address).call(),
-        )
+        return contract.methods.balanceOf(address).call()
       },
 
       getABIEncodedTransactionData(): string {
@@ -54,14 +51,12 @@ export class BaseCurrencyContract extends BaseContract<
   getAllowanceOf(
     address: AccountAddress,
     contractAddress: string,
-  ): ContractFunctionObj<BigNumberInWei> {
+  ): ContractFunctionObj<string> {
     const { contract } = this
 
     return {
       async callAsync() {
-        return new BigNumberInWei(
-          await contract.methods.allowance(address, contractAddress).call(),
-        )
+        return contract.methods.allowance(address, contractAddress).call()
       },
 
       getABIEncodedTransactionData(): string {
@@ -76,9 +71,9 @@ export class BaseCurrencyContract extends BaseContract<
     transactionOptions,
   }: {
     contractAddress: string
-    amount: BigNumber
+    amount: string
     transactionOptions: TransactionOptions
-  }): ContractTxFunctionObj<BigNumberInWei> {
+  }): ContractTxFunctionObj<string> {
     const { contract } = this
 
     return {
@@ -89,14 +84,12 @@ export class BaseCurrencyContract extends BaseContract<
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods
-          .approve(contractAddress, amount.toFixed())
-          .encodeABI()
+        return contract.methods.approve(contractAddress, amount).encodeABI()
       },
 
       async sendTransactionAsync(): Promise<string> {
         const { transactionHash } = await contract.methods
-          .approve(contractAddress, amount.toFixed())
+          .approve(contractAddress, amount)
           .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
 
         return transactionHash
@@ -104,7 +97,7 @@ export class BaseCurrencyContract extends BaseContract<
 
       async estimateGasAsync(): Promise<number> {
         return contract.methods
-          .approve(contractAddress, amount.toFixed())
+          .approve(contractAddress, amount)
           .estimateGas(transactionOptions)
       },
     }

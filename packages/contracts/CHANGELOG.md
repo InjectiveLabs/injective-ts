@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.65...@injectivelabs/contracts@0.0.66) (2021-08-15)
+
+
+### Bug Fixes
+
+* contracts param return type ([0c7af9e](https://github.com/InjectiveLabs/injective-ts/commit/0c7af9e5baf6c0ffdba68e78e059493b4079c814))
+
+
+
+
+
 ## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.0.64...@injectivelabs/contracts@0.0.65) (2021-08-15)
 
 
