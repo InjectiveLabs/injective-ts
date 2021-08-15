@@ -5,7 +5,6 @@ import {
   ChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
-import { BigNumberInWei } from '@injectivelabs/utils'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
 import { getTransactionOptionsAsNonPayableTx } from '@injectivelabs/tx-utils'
 import abi from './abi/peggy'
@@ -40,7 +39,7 @@ export class PeggyContract extends BaseContract<Peggy, keyof Peggy['events']> {
   }: {
     contractAddress: string
     address: AccountAddress
-    amount: BigNumberInWei
+    amount: string
     transactionOptions: TransactionOptions
   }): ContractTxFunctionObj<string> {
     const { contract } = this
@@ -54,13 +53,13 @@ export class PeggyContract extends BaseContract<Peggy, keyof Peggy['events']> {
 
       getABIEncodedTransactionData(): string {
         return contract.methods
-          .sendToCosmos(contractAddress, address, amount.toFixed())
+          .sendToCosmos(contractAddress, address, amount)
           .encodeABI()
       },
 
       async sendTransactionAsync(): Promise<string> {
         const { transactionHash } = await contract.methods
-          .sendToCosmos(contractAddress, address, amount.toFixed())
+          .sendToCosmos(contractAddress, address, amount)
           .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
 
         return transactionHash
@@ -68,7 +67,7 @@ export class PeggyContract extends BaseContract<Peggy, keyof Peggy['events']> {
 
       async estimateGasAsync(): Promise<number> {
         return contract.methods
-          .sendToCosmos(contractAddress, address, amount.toFixed())
+          .sendToCosmos(contractAddress, address, amount)
           .estimateGas(transactionOptions)
       },
     }
