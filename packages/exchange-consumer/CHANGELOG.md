@@ -3,105 +3,87 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.78...@injectivelabs/exchange-consumer@0.0.79) (2021-08-11)
+
+### Bug Fixes
+
+* oracle decomposer ([e6d05c6](https://github.com/InjectiveLabs/injective-ts/commit/e6d05c69d5cd5c5ffcfb46c72b3aa05f4ac8058a))
+
+## [0.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.67...@injectivelabs/exchange-consumer@0.0.78) (2021-08-11)
+
+### Bug Fixes
+
+* oracle decomposer ([3d0012c](https://github.com/InjectiveLabs/injective-ts/commit/3d0012cbac363f4a665227a039e5d786e3a1b1f2))
+
+## 0.0.77 (2021-08-11)
+
+## 0.0.76 (2021-08-11)
+
+### Bug Fixes
+
+* signature for private key subprovider ([4a800c0](https://github.com/InjectiveLabs/injective-ts/commit/4a800c031271e6c6119480458ac360dbc38d03f7))
+* streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+
+### Features
+
+* added batch cancelling for the orders ([3990a3b](https://github.com/InjectiveLabs/injective-ts/commit/3990a3b0c6607d6b825a9e28fb28b47a28244d96))
+* added hooks 'end' and 'status' on the streams ([5ddcfd7](https://github.com/InjectiveLabs/injective-ts/commit/5ddcfd79bea62e84c9c096bcc8bcddde8cb0d054))
+* added oracle decomposer ([34410fb](https://github.com/InjectiveLabs/injective-ts/commit/34410fb188a326904f10eaa8b72dbc046de06882))
+* added public endpoints ([f0ec8f7](https://github.com/InjectiveLabs/injective-ts/commit/f0ec8f75a540c69c0a40401f8ddc65fc06cad165))
+
 ## [0.0.75](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.74...@injectivelabs/exchange-consumer@0.0.75) (2021-08-06)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
-
-
-
-
 
 ## [0.0.74](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.72...@injectivelabs/exchange-consumer@0.0.74) (2021-08-04)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
 
-
-
-
-
 ## [0.0.73](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.72...@injectivelabs/exchange-consumer@0.0.73) (2021-08-04)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
-
-
-
-
 
 ## [0.0.72](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.71...@injectivelabs/exchange-consumer@0.0.72) (2021-07-27)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
 
-
-
-
-
 ## [0.0.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.70...@injectivelabs/exchange-consumer@0.0.71) (2021-07-25)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
 
-
-
-
-
 ## [0.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.69...@injectivelabs/exchange-consumer@0.0.70) (2021-07-14)
-
 
 ### Bug Fixes
 
 * streams callbacks ([073c1fe](https://github.com/InjectiveLabs/injective-ts/commit/073c1feacb59870fdc7182cabb68bd45795123d4))
 
-
-
-
-
 ## [0.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.68...@injectivelabs/exchange-consumer@0.0.69) (2021-07-14)
-
 
 ### Features
 
 * added hooks 'end' and 'status' on the streams ([c7e8f26](https://github.com/InjectiveLabs/injective-ts/commit/c7e8f261bd0ee3b058a25dc1ef091c94158f99a7))
 
-
-
-
-
 ## [0.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.67...@injectivelabs/exchange-consumer@0.0.68) (2021-07-14)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
 
-
-
-
-
 ## [0.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.66...@injectivelabs/exchange-consumer@0.0.67) (2021-06-25)
-
 
 ### Bug Fixes
 
 * timeoutHeight is optional ([287aabd](https://github.com/InjectiveLabs/injective-ts/commit/287aabdc2633d46dde8d46403738dc79b6c263d1))
 
-
 ### Features
 
 * added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
 
-
-
-
-
 ## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.65...@injectivelabs/exchange-consumer@0.0.66) (2021-06-25)
-
 
 ### Features
 
 * added batch cancelling for the orders ([239a672](https://github.com/InjectiveLabs/injective-ts/commit/239a6723217301aa86f657d59e9e76721340b1f2))
 
-
-
-
-
 ## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.62...@injectivelabs/exchange-consumer@0.0.65) (2021-06-17)
-
 
 ### Bug Fixes
 
