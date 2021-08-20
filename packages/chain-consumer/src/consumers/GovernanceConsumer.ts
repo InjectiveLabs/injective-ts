@@ -1,4 +1,3 @@
-import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
 import { ProposalStatusMap } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
 import {
   QueryParamsResponse,
@@ -23,6 +22,7 @@ import {
   GrpcGovernanceVotingParams,
   PaginationOption,
 } from '../types'
+import { paginationRequestFromPagination } from '../utils'
 
 export class GovernanceConsumer extends BaseConsumer {
   async fetchParams() {
@@ -95,10 +95,9 @@ export class GovernanceConsumer extends BaseConsumer {
     const request = new QueryProposalsRequest()
     request.setProposalStatus(status)
 
-    if (pagination) {
-      const paginationForRequest = new PageRequest()
-      paginationForRequest.setKey(pagination.key)
+    const paginationForRequest = paginationRequestFromPagination(pagination)
 
+    if (paginationForRequest) {
       request.setPagination(paginationForRequest)
     }
 
@@ -145,10 +144,9 @@ export class GovernanceConsumer extends BaseConsumer {
     const request = new QueryDepositsRequest()
     request.setProposalId(proposalId)
 
-    if (pagination) {
-      const paginationForRequest = new PageRequest()
-      paginationForRequest.setKey(pagination.key)
+    const paginationForRequest = paginationRequestFromPagination(pagination)
 
+    if (paginationForRequest) {
       request.setPagination(paginationForRequest)
     }
 
@@ -178,13 +176,11 @@ export class GovernanceConsumer extends BaseConsumer {
     const request = new QueryVotesRequest()
     request.setProposalId(proposalId)
 
-    if (pagination) {
-      const paginationForRequest = new PageRequest()
-      paginationForRequest.setKey(pagination.key)
+    const paginationForRequest = paginationRequestFromPagination(pagination)
 
+    if (paginationForRequest) {
       request.setPagination(paginationForRequest)
     }
-
     try {
       const response = await this.request<
         QueryVotesRequest,

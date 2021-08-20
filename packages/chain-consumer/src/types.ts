@@ -47,6 +47,7 @@ export interface PaginationOption {
   key: string
   offset?: number
   limit?: number
+  reverse?: boolean
   countTotal?: boolean
 }
 

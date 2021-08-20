@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.75](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.72...@injectivelabs/chain-consumer@0.0.75) (2021-08-20)
+
+
+### Bug Fixes
+
+* packages ([6ca820f](https://github.com/InjectiveLabs/injective-ts/commit/6ca820f407161e2a706037fc2f442c5241aeba30))
+
+
+### Features
+
+* added pagination proper handler ([a2a108e](https://github.com/InjectiveLabs/injective-ts/commit/a2a108e664b7a558fb996ff3de5ac21db5825ec5))
+
+
+
+
+
 ## [0.0.72](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.71...@injectivelabs/chain-consumer@0.0.72) (2021-08-20)
 
 

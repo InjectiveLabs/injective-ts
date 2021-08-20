@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { HttpException } from '@injectivelabs/exceptions'
 
 export default class HttpClient {
   private readonly client: AxiosInstance
@@ -24,26 +23,14 @@ export default class HttpClient {
   }
 
   get<T, P>(endpoint: string, params: T = {} as T): Promise<P> {
-    try {
-      return this.client.get(endpoint, { params, ...this.config })
-    } catch (e) {
-      throw new HttpException(e.message)
-    }
+    return this.client.get(endpoint, { params, ...this.config })
   }
 
   post<T, P>(endpoint: string, data: T = {} as T): Promise<P> {
-    try {
-      return this.client.post(endpoint, data, this.config)
-    } catch (e) {
-      throw new HttpException(e.message)
-    }
+    return this.client.post(endpoint, data, this.config)
   }
 
   delete<T, P>(endpoint: string, params: T = {} as T): Promise<P> {
-    try {
-      return this.client.delete(endpoint, { params, ...this.config })
-    } catch (e) {
-      throw new HttpException(e.message)
-    }
+    return this.client.delete(endpoint, { params, ...this.config })
   }
 }

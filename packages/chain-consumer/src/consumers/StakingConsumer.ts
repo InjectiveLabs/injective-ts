@@ -22,9 +22,9 @@ import {
   QueryValidatorUnbondingDelegationsResponse,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb'
 import { Query } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb_service'
-import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
 import BaseConsumer from '../BaseConsumer'
 import { PaginationOption, GrpcStakingParams } from '../types'
+import { paginationRequestFromPagination } from '../utils'
 
 export class StakingConsumer extends BaseConsumer {
   async fetchParams() {
@@ -89,10 +89,9 @@ export class StakingConsumer extends BaseConsumer {
     const request = new QueryValidatorDelegationsRequest()
     request.setValidatorAddr(validatorAddress)
 
-    if (pagination) {
-      const paginationForRequest = new PageRequest()
-      paginationForRequest.setKey(pagination.key)
+    const paginationForRequest = paginationRequestFromPagination(pagination)
 
+    if (paginationForRequest) {
       request.setPagination(paginationForRequest)
     }
 
@@ -122,10 +121,9 @@ export class StakingConsumer extends BaseConsumer {
     const request = new QueryValidatorUnbondingDelegationsRequest()
     request.setValidatorAddr(validatorAddress)
 
-    if (pagination) {
-      const paginationForRequest = new PageRequest()
-      paginationForRequest.setKey(pagination.key)
+    const paginationForRequest = paginationRequestFromPagination(pagination)
 
+    if (paginationForRequest) {
       request.setPagination(paginationForRequest)
     }
 
@@ -179,10 +177,9 @@ export class StakingConsumer extends BaseConsumer {
     const request = new QueryDelegatorDelegationsRequest()
     request.setDelegatorAddr(injectiveAddress)
 
-    if (pagination) {
-      const paginationForRequest = new PageRequest()
-      paginationForRequest.setKey(pagination.key)
+    const paginationForRequest = paginationRequestFromPagination(pagination)
 
+    if (paginationForRequest) {
       request.setPagination(paginationForRequest)
     }
 
@@ -212,10 +209,9 @@ export class StakingConsumer extends BaseConsumer {
     const request = new QueryValidatorDelegationsRequest()
     request.setValidatorAddr(validatorAddress)
 
-    if (pagination) {
-      const paginationForRequest = new PageRequest()
-      paginationForRequest.setKey(pagination.key)
+    const paginationForRequest = paginationRequestFromPagination(pagination)
 
+    if (paginationForRequest) {
       request.setPagination(paginationForRequest)
     }
 
@@ -269,10 +265,9 @@ export class StakingConsumer extends BaseConsumer {
     const request = new QueryDelegatorUnbondingDelegationsRequest()
     request.setDelegatorAddr(injectiveAddress)
 
-    if (pagination) {
-      const paginationForRequest = new PageRequest()
-      paginationForRequest.setKey(pagination.key)
+    const paginationForRequest = paginationRequestFromPagination(pagination)
 
+    if (paginationForRequest) {
       request.setPagination(paginationForRequest)
     }
 
@@ -302,10 +297,9 @@ export class StakingConsumer extends BaseConsumer {
     const request = new QueryRedelegationsRequest()
     request.setDelegatorAddr(injectiveAddress)
 
-    if (pagination) {
-      const paginationForRequest = new PageRequest()
-      paginationForRequest.setKey(pagination.key)
+    const paginationForRequest = paginationRequestFromPagination(pagination)
 
+    if (paginationForRequest) {
       request.setPagination(paginationForRequest)
     }
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.36...@injectivelabs/utils@0.0.37) (2021-08-20)
+
+
+### Features
+
+* added pagination proper handler ([a2a108e](https://github.com/InjectiveLabs/injective-ts/commit/a2a108e664b7a558fb996ff3de5ac21db5825ec5))
+
+
+
+
+
 ## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.35...@injectivelabs/utils@0.0.36) (2021-07-14)
 
 **Note:** Version bump only for package @injectivelabs/utils
