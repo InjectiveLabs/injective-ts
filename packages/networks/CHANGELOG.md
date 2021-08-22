@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.38...@injectivelabs/networks@0.0.39) (2021-08-22)
+
+
+### Features
+
+* added old mainnet endpoints ([32286a5](https://github.com/InjectiveLabs/injective-ts/commit/32286a5deb5f227bb0f157006e4c40d47b24e559))
+
+
+
+
+
 ## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.37...@injectivelabs/networks@0.0.38) (2021-08-20)
 
 **Note:** Version bump only for package @injectivelabs/networks

@@ -7,6 +7,13 @@ export const urlEndpointsMainnet: UrlEndpoint = {
   explorerUrl: 'https://explorer-api.injective.network/v1',
 }
 
+export const urlEndpointsMainnetOld: UrlEndpoint = {
+  baseUrl: 'https://staking-api.injective.network:4444/api',
+  chainUrl: 'https://staking-grpc.injective.network',
+  exchangeUrl: 'https://staking-api.injective.network:4444',
+  explorerUrl: 'https://explorer-api.injective.network/v1',
+}
+
 export const urlEndpointsStaking: UrlEndpoint = {
   baseUrl: 'https://staking-api-testnet.injective.network:4444/api',
   chainUrl: 'https://staking-grpc-testnet.injective.network',

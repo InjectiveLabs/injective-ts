@@ -4,11 +4,13 @@ import {
   urlEndpointsStaking,
   urlEndpointsPublic,
   urlEndpointsDevnet,
+  urlEndpointsMainnetOld,
 } from './endpoints'
 import { Network, UrlEndpoint } from './types'
 
 export const urlEndpointUrls: { [key: string]: UrlEndpoint } = {
   mainnet: urlEndpointsMainnet,
+  mainnetOld: urlEndpointsMainnetOld,
   public: urlEndpointsPublic,
   devnet: urlEndpointsDevnet,
   staking: urlEndpointsStaking,
