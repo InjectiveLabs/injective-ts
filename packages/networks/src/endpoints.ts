@@ -7,6 +7,13 @@ export const urlEndpointsMainnet: UrlEndpoint = {
   explorerUrl: 'https://explorer-api.injective.network/v1',
 }
 
+export const urlEndpointsPublic: UrlEndpoint = {
+  baseUrl: 'https://public-api.injective.network:4444/api',
+  chainUrl: 'https://public-grpc.injective.network',
+  exchangeUrl: 'https://public-api.injective.network:4444',
+  explorerUrl: 'https://explorer-api.injective.network/v1',
+}
+
 export const urlEndpointsMainnetOld: UrlEndpoint = {
   baseUrl: 'https://staking-api.injective.network:4444/api',
   chainUrl: 'https://staking-grpc.injective.network',
@@ -26,13 +33,6 @@ export const urlEndpointsDevnet: UrlEndpoint = {
   chainUrl: 'https://devnet-grpc.injective.dev',
   exchangeUrl: 'https://devnet-api.injective.dev:4444',
   explorerUrl: 'https://explorer-api-testnet.injective.network/v1', // TODO - Change
-}
-
-export const urlEndpointsPublic: UrlEndpoint = {
-  baseUrl: 'https://public-api.injective.network:4444/api',
-  chainUrl: 'https://public-grpc.injective.network',
-  exchangeUrl: 'https://public-api.injective.network:4444',
-  explorerUrl: 'https://public-explorer-api.injective.network',
 }
 
 export const urlEndpointsLocal: UrlEndpoint = {
