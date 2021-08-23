@@ -4,7 +4,7 @@ export enum Network {
   Devnet = 'devnet',
   Staking = 'staking',
   Mainnet = 'mainnet',
-  MainnetOld = 'mainnet-old',
+  MainnetOld = 'mainnetOld',
 }
 
 export type UrlEndpoint = {

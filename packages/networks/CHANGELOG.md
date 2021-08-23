@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.40...@injectivelabs/networks@0.0.41) (2021-08-23)
+
+
+### Bug Fixes
+
+* types for old mainnet ([e8feda7](https://github.com/InjectiveLabs/injective-ts/commit/e8feda75665f7c15905400fc62260145babe6ff3))
+
+
+
+
+
 ## [0.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.39...@injectivelabs/networks@0.0.40) (2021-08-23)
 
 
