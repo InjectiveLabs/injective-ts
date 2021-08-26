@@ -49,7 +49,11 @@ export class TransactionConsumer extends BaseConsumer {
     prepareTxRequest.setChainId(chainId)
     prepareTxRequest.setSignerAddress(address)
     prepareTxRequest.setFee(cosmosTxFee)
-    prepareTxRequest.addMsgs(Buffer.from(JSON.stringify(message), 'utf8'))
+
+    const arrayOfMessages = Array.isArray(message) ? message : [message]
+    for (const message of arrayOfMessages) {
+      prepareTxRequest.addMsgs(Buffer.from(JSON.stringify(message), 'utf8'))
+    }
 
     if (timeoutHeight !== undefined) {
       prepareTxRequest.setTimeoutHeight(timeoutHeight)
@@ -103,7 +107,11 @@ export class TransactionConsumer extends BaseConsumer {
     prepareTxRequest.setChainId(chainId)
     prepareTxRequest.setSignerAddress(address)
     prepareTxRequest.setFee(cosmosTxFee)
-    prepareTxRequest.addMsgs(Buffer.from(JSON.stringify(message), 'utf8'))
+
+    const arrayOfMessages = Array.isArray(message) ? message : [message]
+    for (const message of arrayOfMessages) {
+      prepareTxRequest.addMsgs(Buffer.from(JSON.stringify(message), 'utf8'))
+    }
 
     if (timeoutHeight !== undefined) {
       prepareTxRequest.setTimeoutHeight(timeoutHeight)
@@ -152,9 +160,12 @@ export class TransactionConsumer extends BaseConsumer {
     )
     broadcastTxRequest.setFeePayer(txResponse.getFeePayer())
     broadcastTxRequest.setFeePayerSig(txResponse.getFeePayerSig())
-    broadcastTxRequest.setMsgsList([
+
+    const arrayOfMessages = Array.isArray(message) ? message : [message]
+    const messagesList = arrayOfMessages.map((message) =>
       Buffer.from(JSON.stringify(message), 'utf8'),
-    ])
+    )
+    broadcastTxRequest.setMsgsList(messagesList)
 
     try {
       const response = await this.request<

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.82](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.81...@injectivelabs/exchange-consumer@0.0.82) (2021-08-26)
+
+
+### Features
+
+* multiple messages in a tx support ([ddb6275](https://github.com/InjectiveLabs/injective-ts/commit/ddb6275660af9c10697fa27fdc3e83ffd57b34cd))
+
+
+
+
+
 ## [0.0.81](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.80...@injectivelabs/exchange-consumer@0.0.81) (2021-08-20)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
