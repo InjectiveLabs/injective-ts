@@ -10,6 +10,7 @@ export enum Network {
 export type UrlEndpoint = {
   baseUrl: string
   chainUrl: string
+  chainHttpUrl: string
   exchangeUrl: string
   exchangeGatewayUrl: string
   explorerUrl: string
