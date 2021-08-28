@@ -1,4 +1,4 @@
-# 🌟 Injective Protocol - Networks
+# 🌟 Injective Protocol - Networks and Endpoints
 
 ---
 
