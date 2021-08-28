@@ -11,5 +11,6 @@ export type UrlEndpoint = {
   baseUrl: string
   chainUrl: string
   exchangeUrl: string
+  exchangeGatewayUrl: string
   explorerUrl: string
 }

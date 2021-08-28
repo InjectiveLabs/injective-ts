@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.41...@injectivelabs/networks@0.0.42) (2021-08-28)
+
+
+### Features
+
+* gateway endpoints added ([4e3ee32](https://github.com/InjectiveLabs/injective-ts/commit/4e3ee3263c10912bdbefe4f2b80643f1d8b510c1))
+
+
+
+
+
 ## [0.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.40...@injectivelabs/networks@0.0.41) (2021-08-23)
 
 
