@@ -71,6 +71,10 @@ export default class Web3Strategy {
     return this.strategy.isWeb3Connected()
   }
 
+  public isMetamask(): boolean {
+    return this.strategy.isMetamask()
+  }
+
   public getChainId(): Promise<string> {
     return this.strategy.getChainId()
   }
