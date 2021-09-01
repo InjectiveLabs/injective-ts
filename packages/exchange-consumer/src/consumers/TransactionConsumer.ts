@@ -33,7 +33,7 @@ export class TransactionConsumer extends BaseConsumer {
     address: AccountAddress
     chainId: ChainId
     message: any
-    gasEstimation: boolean
+    gasEstimation?: boolean
     gasLimit?: number
     timeoutHeight?: number
     feeDenom?: string
@@ -91,7 +91,7 @@ export class TransactionConsumer extends BaseConsumer {
     address: AccountAddress
     chainId: ChainId
     message: any
-    gasEstimation: boolean
+    gasEstimation?: boolean
     gasLimit?: number
     feeDenom?: string
     feePrice?: string
