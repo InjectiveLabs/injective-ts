@@ -24,6 +24,7 @@ export class TransactionConsumer extends BaseConsumer {
     address,
     chainId,
     message,
+    gasEstimation = true,
     gasLimit = DEFAULT_GAS_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
@@ -32,6 +33,7 @@ export class TransactionConsumer extends BaseConsumer {
     address: AccountAddress
     chainId: ChainId
     message: any
+    gasEstimation: boolean
     gasLimit?: number
     timeoutHeight?: number
     feeDenom?: string
@@ -45,7 +47,7 @@ export class TransactionConsumer extends BaseConsumer {
     prepareTxRequest.setChainId(chainId)
     prepareTxRequest.setSignerAddress(address)
 
-    if (gasLimit) {
+    if (!gasEstimation) {
       const cosmosTxFee = new CosmosTxFee()
       cosmosTxFee.setGas(gasLimit)
       cosmosTxFee.setPriceList([txFeeAmount])
@@ -79,6 +81,7 @@ export class TransactionConsumer extends BaseConsumer {
     address,
     chainId,
     message,
+    gasEstimation = true,
     gasLimit = DEFAULT_EXCHANGE_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
@@ -88,6 +91,7 @@ export class TransactionConsumer extends BaseConsumer {
     address: AccountAddress
     chainId: ChainId
     message: any
+    gasEstimation: boolean
     gasLimit?: number
     feeDenom?: string
     feePrice?: string
@@ -102,7 +106,7 @@ export class TransactionConsumer extends BaseConsumer {
     prepareTxRequest.setChainId(chainId)
     prepareTxRequest.setSignerAddress(address)
 
-    if (gasLimit) {
+    if (gasEstimation) {
       const cosmosTxFee = new CosmosTxFee()
       cosmosTxFee.setGas(gasLimit)
       cosmosTxFee.setPriceList([txFeeAmount])

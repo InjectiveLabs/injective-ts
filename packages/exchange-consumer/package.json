@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/exchange-consumer",
   "description": "Interacting with our Exchange API made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.83",
+  "version": "0.0.84",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
