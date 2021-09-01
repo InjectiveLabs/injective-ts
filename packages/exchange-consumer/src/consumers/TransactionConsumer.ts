@@ -24,7 +24,7 @@ export class TransactionConsumer extends BaseConsumer {
     address,
     chainId,
     message,
-    gasEstimation = true,
+    estimateGas = true,
     gasLimit = DEFAULT_GAS_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
@@ -33,7 +33,7 @@ export class TransactionConsumer extends BaseConsumer {
     address: AccountAddress
     chainId: ChainId
     message: any
-    gasEstimation?: boolean
+    estimateGas?: boolean
     gasLimit?: number
     timeoutHeight?: number
     feeDenom?: string
@@ -43,17 +43,17 @@ export class TransactionConsumer extends BaseConsumer {
     txFeeAmount.setDenom(feeDenom)
     txFeeAmount.setAmount(feePrice)
 
+    const cosmosTxFee = new CosmosTxFee()
+    cosmosTxFee.setPriceList([txFeeAmount])
+
+    if (!estimateGas) {
+      cosmosTxFee.setGas(gasLimit)
+    }
+
     const prepareTxRequest = new PrepareTxRequest()
     prepareTxRequest.setChainId(chainId)
     prepareTxRequest.setSignerAddress(address)
-
-    if (!gasEstimation) {
-      const cosmosTxFee = new CosmosTxFee()
-      cosmosTxFee.setGas(gasLimit)
-      cosmosTxFee.setPriceList([txFeeAmount])
-
-      prepareTxRequest.setFee(cosmosTxFee)
-    }
+    prepareTxRequest.setFee(cosmosTxFee)
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     for (const message of arrayOfMessages) {
@@ -81,7 +81,7 @@ export class TransactionConsumer extends BaseConsumer {
     address,
     chainId,
     message,
-    gasEstimation = true,
+    estimateGas = true,
     gasLimit = DEFAULT_EXCHANGE_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
@@ -91,7 +91,7 @@ export class TransactionConsumer extends BaseConsumer {
     address: AccountAddress
     chainId: ChainId
     message: any
-    gasEstimation?: boolean
+    estimateGas?: boolean
     gasLimit?: number
     feeDenom?: string
     feePrice?: string
@@ -102,21 +102,21 @@ export class TransactionConsumer extends BaseConsumer {
     txFeeAmount.setDenom(feeDenom)
     txFeeAmount.setAmount(feePrice)
 
+    const cosmosTxFee = new CosmosTxFee()
+    cosmosTxFee.setPriceList([txFeeAmount])
+
+    if (delegatedFee !== undefined) {
+      cosmosTxFee.setDelegateFee(delegatedFee)
+    }
+
+    if (!estimateGas) {
+      cosmosTxFee.setGas(gasLimit)
+    }
+
     const prepareTxRequest = new PrepareTxRequest()
     prepareTxRequest.setChainId(chainId)
     prepareTxRequest.setSignerAddress(address)
-
-    if (gasEstimation) {
-      const cosmosTxFee = new CosmosTxFee()
-      cosmosTxFee.setGas(gasLimit)
-      cosmosTxFee.setPriceList([txFeeAmount])
-
-      if (delegatedFee !== undefined) {
-        cosmosTxFee.setDelegateFee(delegatedFee)
-      }
-
-      prepareTxRequest.setFee(cosmosTxFee)
-    }
+    prepareTxRequest.setFee(cosmosTxFee)
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     for (const message of arrayOfMessages) {
