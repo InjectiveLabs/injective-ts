@@ -17,6 +17,9 @@ const isMetamaskInstalled = Boolean(
   $window && $window.ethereum && $window.ethereum.isMetaMask,
 )
 
+const removeMetamaskFromErrorString = (message: string): string =>
+  message.replace('Metamask', '').replace('MetaMask', '')
+
 export default class Metamask
   extends BaseConcreteStrategy
   implements ConcreteWeb3Strategy {
@@ -40,7 +43,7 @@ export default class Metamask
 
   async getAddresses(): Promise<string[]> {
     try {
-      return this.ethereum.request({
+      return await this.ethereum.request({
         method: 'eth_requestAccounts',
       })
     } catch (e) {
@@ -50,12 +53,14 @@ export default class Metamask
 
   async confirm(address: AccountAddress): Promise<string> {
     try {
-      return this.ethereum.request({
+      return await this.ethereum.request({
         method: 'personal_sign',
         params: [address, `Confirmation for ${address} at time: ${Date.now()}`],
       })
     } catch (e) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+      throw new Web3Exception(
+        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
+      )
     }
   }
 
@@ -64,12 +69,14 @@ export default class Metamask
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     try {
-      return this.ethereum.request({
+      return await this.ethereum.request({
         method: 'eth_sendTransaction',
         params: [transaction],
       })
     } catch (e) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+      throw new Web3Exception(
+        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
+      )
     }
   }
 
@@ -78,12 +85,14 @@ export default class Metamask
     address: AccountAddress,
   ): Promise<string> {
     try {
-      return this.ethereum.request({
+      return await this.ethereum.request({
         method: 'eth_signTypedData_v4',
         params: [address, eip712json],
       })
     } catch (e) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+      throw new Web3Exception(
+        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
+      )
     }
   }
 
@@ -91,7 +100,9 @@ export default class Metamask
     try {
       return this.ethereum.request({ method: 'net_version' })
     } catch (e) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+      throw new Web3Exception(
+        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
+      )
     }
   }
 
@@ -99,7 +110,9 @@ export default class Metamask
     try {
       return this.ethereum.request({ method: 'eth_chainId' })
     } catch (e) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+      throw new Web3Exception(
+        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
+      )
     }
   }
 
@@ -120,9 +133,11 @@ export default class Metamask
     }
 
     try {
-      return transactionReceiptRetry()
+      return await transactionReceiptRetry()
     } catch (e) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+      throw new Web3Exception(
+        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
+      )
     }
   }
 
