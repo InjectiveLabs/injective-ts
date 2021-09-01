@@ -116,7 +116,7 @@ export default class Ledger
 
       return wallets.map((k) => k.address)
     } catch (e) {
-      throw new Error(e.message)
+      throw new Error(`Ledger: ${e.message}`)
     }
   }
 
@@ -132,7 +132,7 @@ export default class Ledger
       const combined = `${signed.r}${signed.s}${signed.v.toString(16)}`
       return combined.startsWith('0x') ? combined : `0x${combined}`
     } catch (e) {
-      throw new Error(e.message)
+      throw new Error(`Ledger: ${e.message}`)
     }
   }
 
@@ -169,7 +169,7 @@ export default class Ledger
 
       signedSerializedTx = tx.serialize().toString('hex')
     } catch (e) {
-      throw new Error(e)
+      throw new Error(`Ledger: ${e.message}`)
     }
 
     try {
@@ -178,7 +178,7 @@ export default class Ledger
       )
       return txReceipt.transactionHash
     } catch (e) {
-      throw new Web3Exception(e)
+      throw new Web3Exception(`Ledger: ${e.message}`)
     }
   }
 

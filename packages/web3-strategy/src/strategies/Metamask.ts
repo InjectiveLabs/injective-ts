@@ -32,51 +32,75 @@ export default class Metamask
     super({ chainId, options })
 
     if (!$window || !isMetamaskInstalled) {
-      throw new Web3Exception('Metamask is not installed.')
+      throw new Web3Exception('Metamask: You need Metamask extension installed')
     }
 
     this.ethereum = $window.ethereum
   }
 
   async getAddresses(): Promise<string[]> {
-    return this.ethereum.request({
-      method: 'eth_requestAccounts',
-    })
+    try {
+      return this.ethereum.request({
+        method: 'eth_requestAccounts',
+      })
+    } catch (e) {
+      throw new Web3Exception(`Metamask: ${e.message}`)
+    }
   }
 
   async confirm(address: AccountAddress): Promise<string> {
-    return this.ethereum.request({
-      method: 'personal_sign',
-      params: [address, `Confirmation for ${address} at time: ${Date.now()}`],
-    })
+    try {
+      return this.ethereum.request({
+        method: 'personal_sign',
+        params: [address, `Confirmation for ${address} at time: ${Date.now()}`],
+      })
+    } catch (e) {
+      throw new Web3Exception(`Metamask: ${e.message}`)
+    }
   }
 
   async sendTransaction(
     transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    return this.ethereum.request({
-      method: 'eth_sendTransaction',
-      params: [transaction],
-    })
+    try {
+      return this.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [transaction],
+      })
+    } catch (e) {
+      throw new Web3Exception(`Metamask: ${e.message}`)
+    }
   }
 
   async signTypedDataV4(
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    return this.ethereum.request({
-      method: 'eth_signTypedData_v4',
-      params: [address, eip712json],
-    })
+    try {
+      return this.ethereum.request({
+        method: 'eth_signTypedData_v4',
+        params: [address, eip712json],
+      })
+    } catch (e) {
+      throw new Web3Exception(`Metamask: ${e.message}`)
+    }
   }
 
   async getNetworkId(): Promise<string> {
-    return this.ethereum.request({ method: 'net_version' })
+    try {
+      return this.ethereum.request({ method: 'net_version' })
+    } catch (e) {
+      throw new Web3Exception(`Metamask: ${e.message}`)
+    }
   }
 
   async getChainId(): Promise<string> {
-    return this.ethereum.request({ method: 'eth_chainId' })
+    try {
+      return this.ethereum.request({ method: 'eth_chainId' })
+    } catch (e) {
+      throw new Web3Exception(`Metamask: ${e.message}`)
+    }
   }
 
   async getTransactionReceipt(txHash: string): Promise<string> {
@@ -95,7 +119,11 @@ export default class Metamask
       return receipt
     }
 
-    return transactionReceiptRetry()
+    try {
+      return transactionReceiptRetry()
+    } catch (e) {
+      throw new Web3Exception(`Metamask: ${e.message}`)
+    }
   }
 
   onChainChanged(callback: () => void): void {
