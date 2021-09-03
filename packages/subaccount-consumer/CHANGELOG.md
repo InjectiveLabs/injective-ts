@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.31...@injectivelabs/subaccount-consumer@0.0.32) (2021-09-03)
+
+
+### Bug Fixes
+
+* redundant fetch function - resolves [#1](https://github.com/InjectiveLabs/injective-ts/issues/1) ([bc318bf](https://github.com/InjectiveLabs/injective-ts/commit/bc318bf789c0579f34a34ef759d1f71f311df841))
+
+
+
+
+
 ## [0.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.30...@injectivelabs/subaccount-consumer@0.0.31) (2021-08-20)
 
 **Note:** Version bump only for package @injectivelabs/subaccount-consumer

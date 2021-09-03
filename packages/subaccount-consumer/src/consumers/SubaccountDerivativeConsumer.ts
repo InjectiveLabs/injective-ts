@@ -79,31 +79,4 @@ export class SubaccountDerivativeConsumer extends BaseConsumer {
       throw new GrpcException(e.message)
     }
   }
-
-  async fetchPositions({
-    subaccountId,
-    marketId,
-  }: {
-    subaccountId: AccountAddress
-    marketId?: string
-  }) {
-    const request = new SubaccountOrdersListRequest()
-    request.setSubaccountId(subaccountId)
-
-    if (marketId) {
-      request.setMarketId(marketId)
-    }
-
-    try {
-      const response = await this.request<
-        SubaccountOrdersListRequest,
-        SubaccountOrdersListResponse,
-        typeof InjectiveDerivativeExchangeRPC.SubaccountOrdersList
-      >(request, InjectiveDerivativeExchangeRPC.SubaccountOrdersList)
-
-      return response.getOrdersList()
-    } catch (e) {
-      throw new GrpcException(e.message)
-    }
-  }
 }
