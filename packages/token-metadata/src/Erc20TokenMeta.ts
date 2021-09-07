@@ -1,4 +1,9 @@
-import { tokensByAddress, tokensByKovanAddress, tokensBySymbol } from './tokens'
+import {
+  tokensByAddress,
+  tokensByKovanAddress,
+  tokensBySymbol,
+  tokensBySymbolForKovan,
+} from './tokens'
 import { TokenMeta } from './types'
 
 export class Erc20TokenMeta {
@@ -10,6 +15,16 @@ export class Erc20TokenMeta {
     }
 
     return tokensBySymbol[erc20Symbol]
+  }
+
+  static getMetaBySymbolForKovan(symbol: string): TokenMeta | undefined {
+    const erc20Symbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
+
+    if (!tokensBySymbolForKovan[erc20Symbol]) {
+      return
+    }
+
+    return tokensBySymbolForKovan[erc20Symbol]
   }
 
   static getMetaByAddress(address: string): TokenMeta | undefined {
