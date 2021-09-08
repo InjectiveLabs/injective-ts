@@ -46,4 +46,8 @@ export default {
     ...tokens.LINK,
     address: '0xc843f43093f8d32c01a065ed2a0a34fb54baaf3f',
   },
+  AXS: {
+    ...tokens.AXS,
+    address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
+  },
 } as Record<string, TokenMeta>

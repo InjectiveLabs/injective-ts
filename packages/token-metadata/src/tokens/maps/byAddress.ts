@@ -19,4 +19,5 @@ export default {
   [tokens.UNI.address.toLowerCase()]: tokens.UNI,
   [tokens.LINK.address.toLowerCase()]: tokens.LINK,
   [tokens.SUSHI.address.toLowerCase()]: tokens.SUSHI,
+  [tokens.AXS.address.toLowerCase()]: tokens.AXS,
 } as Record<string, TokenMeta>

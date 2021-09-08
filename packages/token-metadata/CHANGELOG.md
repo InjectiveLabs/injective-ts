@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.16...@injectivelabs/token-metadata@0.0.17) (2021-09-08)
+
+
+### Features
+
+* added axs to tokens meta ([6e78bd8](https://github.com/InjectiveLabs/injective-ts/commit/6e78bd8ef483a3db68c847a788a900fdbdfab9ff))
+
+
+
+
+
 ## [0.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.15...@injectivelabs/token-metadata@0.0.16) (2021-09-07)
 
 

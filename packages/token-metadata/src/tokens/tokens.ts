@@ -150,4 +150,12 @@ export default {
     decimals: 18,
     address: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
   },
+
+  AXS: {
+    name: 'Axie Infinity',
+    logo: 'axs.svg',
+    symbol: 'AXS',
+    decimals: 18,
+    address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
+  },
 }
