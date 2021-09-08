@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.75...@injectivelabs/chain-consumer@0.0.76) (2021-09-08)
+
+
+### Features
+
+* creating insurance fund composer ([dfb603c](https://github.com/InjectiveLabs/injective-ts/commit/dfb603cfa05ec90ec7811a07b43b6852950c8b20))
+
+
+
+
+
 ## [0.0.75](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.72...@injectivelabs/chain-consumer@0.0.75) (2021-08-20)
 
 
