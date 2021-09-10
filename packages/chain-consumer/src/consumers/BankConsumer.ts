@@ -12,7 +12,8 @@ import {
   QueryParamsResponse,
 } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/query_pb'
 import BaseConsumer from '../BaseConsumer'
-import { GrpcBankParams } from '../types'
+import { GrpcBankParams, PaginationOption } from '../types'
+import { paginationRequestFromPagination } from '../utils'
 
 export class BankConsumer extends BaseConsumer {
   async fetchParams() {
@@ -72,8 +73,14 @@ export class BankConsumer extends BaseConsumer {
     }
   }
 
-  async fetchSupply() {
+  async fetchSupply(pagination?: PaginationOption) {
     const request = new QueryTotalSupplyRequest()
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.setPagination(paginationForRequest)
+    }
 
     try {
       const response = await this.request<
