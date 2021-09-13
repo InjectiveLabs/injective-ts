@@ -5,6 +5,7 @@ export default {
     symbol: 'BTC',
     decimals: 18,
     address: '',
+    coinGeckoId: 'bitcoin',
   },
 
   wBTC: {
@@ -13,6 +14,7 @@ export default {
     symbol: 'wBTC',
     decimals: 8,
     address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+    coinGeckoId: 'wrapped-bitcoin',
   },
 
   ETH: {
@@ -21,6 +23,7 @@ export default {
     symbol: 'ETH',
     decimals: 18,
     address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    coinGeckoId: 'ethereum',
   },
 
   WETH: {
@@ -29,6 +32,7 @@ export default {
     symbol: 'wETH',
     decimals: 18,
     address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    coinGeckoId: 'ethereum',
   },
 
   INJ: {
@@ -37,6 +41,7 @@ export default {
     symbol: 'INJ',
     decimals: 18,
     address: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
+    coinGeckoId: 'injective-protocol',
   },
 
   USDT: {
@@ -45,6 +50,7 @@ export default {
     symbol: 'USDT',
     decimals: 6,
     address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    coinGeckoId: 'tether',
   },
 
   USDC: {
@@ -53,6 +59,7 @@ export default {
     symbol: 'USDC',
     decimals: 6,
     address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    coinGeckoId: 'usd-coin',
   },
 
   GRT: {
@@ -61,6 +68,7 @@ export default {
     symbol: 'GRT',
     decimals: 18,
     address: '0xc944e90c64b2c07662a292be6244bdf05cda44a7',
+    coinGeckoId: 'the-graph',
   },
 
   SNX: {
@@ -69,6 +77,7 @@ export default {
     decimals: 18,
     symbol: 'SNX',
     address: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+    coinGeckoId: 'havven',
   },
 
   BNB: {
@@ -77,6 +86,7 @@ export default {
     decimals: 18,
     symbol: 'BNB',
     address: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
+    coinGeckoId: 'binancecoin',
   },
 
   AAVE: {
@@ -85,6 +95,7 @@ export default {
     symbol: 'AAVE',
     decimals: 18,
     address: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+    coinGeckoId: 'aave',
   },
 
   YFI: {
@@ -93,6 +104,7 @@ export default {
     symbol: 'YFI',
     decimals: 18,
     address: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e',
+    coinGeckoId: 'yearn-finance',
   },
 
   COMP: {
@@ -101,6 +113,7 @@ export default {
     symbol: 'COMP',
     decimals: 18,
     address: '0xc00e94cb662c3520282e6f5717214004a7f26888',
+    coinGeckoId: 'compound-coin',
   },
 
   ZRX: {
@@ -109,6 +122,7 @@ export default {
     symbol: 'ZRX',
     decimals: 18,
     address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
+    coinGeckoId: '0x',
   },
 
   MATIC: {
@@ -117,6 +131,7 @@ export default {
     symbol: 'MATIC',
     decimals: 18,
     address: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
+    coinGeckoId: 'matic-network',
   },
 
   UNI: {
@@ -125,6 +140,7 @@ export default {
     symbol: 'UNI',
     decimals: 18,
     address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
+    coinGeckoId: 'uniswap',
   },
 
   DAI: {
@@ -133,6 +149,7 @@ export default {
     symbol: 'DAI',
     decimals: 18,
     address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    coinGeckoId: 'dai',
   },
 
   LINK: {
@@ -141,6 +158,7 @@ export default {
     symbol: 'LINK',
     decimals: 18,
     address: '0x514910771af9ca656af840dff83e8264ecf986ca',
+    coinGeckoId: 'chainlink',
   },
 
   SUSHI: {
@@ -149,6 +167,7 @@ export default {
     symbol: 'SUSHI',
     decimals: 18,
     address: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
+    coinGeckoId: 'sushi',
   },
 
   AXS: {
@@ -157,5 +176,6 @@ export default {
     symbol: 'AXS',
     decimals: 18,
     address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
+    coinGeckoId: 'axie-infinity',
   },
 }

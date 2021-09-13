@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.58...@injectivelabs/spot-consumer@0.0.59) (2021-09-13)
+
+
+### Features
+
+* added coinGeckoId to token meta ([752d091](https://github.com/InjectiveLabs/injective-ts/commit/752d091b39d1e6e61a889debe9335d31a857f942))
+
+
+
+
+
 ## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.57...@injectivelabs/spot-consumer@0.0.58) (2021-08-20)
 
 **Note:** Version bump only for package @injectivelabs/spot-consumer

@@ -4,4 +4,5 @@ export interface TokenMeta {
   symbol: string
   decimals: number
   address: string
+  coinGeckoId: string
 }

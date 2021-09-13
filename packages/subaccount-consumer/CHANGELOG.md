@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.32...@injectivelabs/subaccount-consumer@0.0.33) (2021-09-13)
+
+
+### Features
+
+* added coinGeckoId to token meta ([752d091](https://github.com/InjectiveLabs/injective-ts/commit/752d091b39d1e6e61a889debe9335d31a857f942))
+
+
+
+
+
 ## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.31...@injectivelabs/subaccount-consumer@0.0.32) (2021-09-03)
 
 
