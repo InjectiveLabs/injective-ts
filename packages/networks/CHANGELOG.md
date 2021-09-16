@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.44...@injectivelabs/networks@0.0.45) (2021-09-16)
+
+
+### Features
+
+* explorer consumer package ([1499017](https://github.com/InjectiveLabs/injective-ts/commit/1499017bca3d09f74e5a0eecedeba8d445d37215))
+
+
+
+
+
 ## [0.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.43...@injectivelabs/networks@0.0.44) (2021-08-31)
 
 **Note:** Version bump only for package @injectivelabs/networks

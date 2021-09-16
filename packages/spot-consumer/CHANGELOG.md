@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.59...@injectivelabs/spot-consumer@0.0.60) (2021-09-16)
+
+
+### Features
+
+* explorer consumer package ([1499017](https://github.com/InjectiveLabs/injective-ts/commit/1499017bca3d09f74e5a0eecedeba8d445d37215))
+
+
+
+
+
 ## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.58...@injectivelabs/spot-consumer@0.0.59) (2021-09-13)
 
 
