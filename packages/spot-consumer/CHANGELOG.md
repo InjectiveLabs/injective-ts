@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.60...@injectivelabs/spot-consumer@0.0.61) (2021-09-18)
+
+
+### Features
+
+* ledger refactor ([9fe5f8e](https://github.com/InjectiveLabs/injective-ts/commit/9fe5f8e31f37c7ed56b6141e563bf9f3722fe02b))
+
+
+
+
+
 ## [0.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.59...@injectivelabs/spot-consumer@0.0.60) (2021-09-16)
 
 

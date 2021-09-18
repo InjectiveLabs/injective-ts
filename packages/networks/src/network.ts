@@ -13,7 +13,7 @@ export const urlEndpointUrls: { [key: string]: UrlEndpoint } = {
   mainnetOld: urlEndpointsMainnetOld,
   public: urlEndpointsPublic,
   devnet: urlEndpointsDevnet,
-  staking: urlEndpointsStaking,
+  testnet: urlEndpointsStaking,
   local: urlEndpointsLocal,
 }
 

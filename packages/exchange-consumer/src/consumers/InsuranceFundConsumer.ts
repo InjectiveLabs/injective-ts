@@ -38,7 +38,7 @@ export class InsuranceFundConsumer extends BaseConsumer {
       >(request, InjectiveInsuranceRPC.Redemptions)
 
       return response.getRedemptionSchedulesList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -54,7 +54,7 @@ export class InsuranceFundConsumer extends BaseConsumer {
       >(request, InjectiveInsuranceRPC.Funds)
 
       return response.getFundsList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

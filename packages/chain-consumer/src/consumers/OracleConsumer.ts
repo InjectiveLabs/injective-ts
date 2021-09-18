@@ -19,7 +19,7 @@ export class OracleConsumer extends BaseConsumer {
       >(request, Query.Params)
 
       return response.getParams() as GrpcOracleParams
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

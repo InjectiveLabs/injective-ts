@@ -28,7 +28,7 @@ export class InsuranceConsumer extends BaseConsumer {
       >(request, Query.InsuranceParams)
 
       return response.getParams() as GrpcInsuranceParams
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -44,7 +44,7 @@ export class InsuranceConsumer extends BaseConsumer {
       >(request, Query.InsuranceFunds)
 
       return response.getFundsList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -61,7 +61,7 @@ export class InsuranceConsumer extends BaseConsumer {
       >(request, Query.InsuranceFund)
 
       return response.getFund()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -85,7 +85,7 @@ export class InsuranceConsumer extends BaseConsumer {
       >(request, Query.EstimatedRedemptions)
 
       return response.getAmountList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -109,7 +109,7 @@ export class InsuranceConsumer extends BaseConsumer {
       >(request, Query.PendingRedemptions)
 
       return response.getAmountList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

@@ -22,10 +22,8 @@ export class SpotMarketChronosConsumer {
       })) as ChronosSpotMarketSummaryResponse
 
       return data
-    } catch (error) {
-      throw new HttpException(
-        error.response ? error.response.data.message : error.message,
-      )
+    } catch (e: any) {
+      throw new HttpException(e.response ? e.response.data.message : e.message)
     }
   }
 
@@ -38,10 +36,8 @@ export class SpotMarketChronosConsumer {
       })) as AllSpotMarketSummaryResponse
 
       return data
-    } catch (error) {
-      throw new HttpException(
-        error.response ? error.response.data.message : error.message,
-      )
+    } catch (e: any) {
+      throw new HttpException(e.response ? e.response.data.message : e.message)
     }
   }
 }

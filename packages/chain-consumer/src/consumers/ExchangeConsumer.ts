@@ -19,7 +19,7 @@ export class ExchangeConsumer extends BaseConsumer {
       >(request, Query.QueryExchangeParams)
 
       return response.getParams() as GrpcExchangeParams
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

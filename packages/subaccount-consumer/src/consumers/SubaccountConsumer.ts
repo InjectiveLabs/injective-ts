@@ -26,7 +26,7 @@ export class SubaccountConsumer extends BaseConsumer {
       >(request, InjectiveAccountsRPC.SubaccountsList)
 
       return response.getSubaccountsList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -44,7 +44,7 @@ export class SubaccountConsumer extends BaseConsumer {
       >(request, InjectiveAccountsRPC.SubaccountBalanceEndpoint)
 
       return response.getBalance()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -61,7 +61,7 @@ export class SubaccountConsumer extends BaseConsumer {
       >(request, InjectiveAccountsRPC.SubaccountBalancesList)
 
       return response.getBalancesList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -78,7 +78,7 @@ export class SubaccountConsumer extends BaseConsumer {
       >(request, InjectiveAccountsRPC.SubaccountHistory)
 
       return response.getTransfersList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

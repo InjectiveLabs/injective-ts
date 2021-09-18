@@ -19,7 +19,7 @@ export class PeggyConsumer extends BaseConsumer {
       >(request, Query.Params)
 
       return response.getParams() as GrpcPeggyParams
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

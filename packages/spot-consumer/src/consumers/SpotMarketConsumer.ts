@@ -29,7 +29,7 @@ export class SpotMarketConsumer extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Markets)
 
       return response.getMarketsList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -52,7 +52,7 @@ export class SpotMarketConsumer extends BaseConsumer {
       }
 
       return market
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -74,7 +74,7 @@ export class SpotMarketConsumer extends BaseConsumer {
         buys: orderbook ? orderbook.getBuysList() : [],
         sells: orderbook ? orderbook.getSellsList() : [],
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -107,7 +107,7 @@ export class SpotMarketConsumer extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Orders)
 
       return response.getOrdersList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -140,7 +140,7 @@ export class SpotMarketConsumer extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Trades)
 
       return response.getTradesList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

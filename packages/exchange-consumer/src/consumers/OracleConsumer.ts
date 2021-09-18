@@ -20,7 +20,7 @@ export class OracleConsumer extends BaseConsumer {
       >(request, InjectiveOracleRPC.OracleList)
 
       return response.getOraclesList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -53,7 +53,7 @@ export class OracleConsumer extends BaseConsumer {
       >(request, InjectiveOracleRPC.Price)
 
       return response.getPrice()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

@@ -2,7 +2,7 @@ declare module '@ledgerhq/hw-app-eth' {
   import LedgerTransport from '@ledgerhq/hw-transport'
   import { TokenInfo } from '@ledgerhq/hw-app-eth/erc20'
 
-  export default class Eth<T extends LedgerTransport<any>> {
+  export default class Eth<T extends LedgerTransport> {
     constructor(transport: T)
 
     /**

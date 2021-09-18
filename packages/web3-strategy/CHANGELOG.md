@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.63...@injectivelabs/web3-strategy@0.0.64) (2021-09-18)
+
+
+### Features
+
+* ledger refactor ([9fe5f8e](https://github.com/InjectiveLabs/injective-ts/commit/9fe5f8e31f37c7ed56b6141e563bf9f3722fe02b))
+
+
+
+
+
 ## [0.0.63](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.62...@injectivelabs/web3-strategy@0.0.63) (2021-09-01)
 
 

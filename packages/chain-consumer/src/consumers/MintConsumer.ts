@@ -21,7 +21,7 @@ export class MintConsumer extends BaseConsumer {
       >(request, Query.Params)
 
       return response.getParams() as GrpcMintParams
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -37,7 +37,7 @@ export class MintConsumer extends BaseConsumer {
       >(request, Query.Inflation)
 
       return response.getInflation()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

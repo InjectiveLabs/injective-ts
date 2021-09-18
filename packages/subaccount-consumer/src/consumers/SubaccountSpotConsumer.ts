@@ -48,7 +48,7 @@ export class SubaccountSpotConsumer extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
 
       return response.getTradesList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -75,7 +75,7 @@ export class SubaccountSpotConsumer extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.SubaccountOrdersList)
 
       return response.getOrdersList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

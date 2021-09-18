@@ -48,7 +48,7 @@ export class SubaccountDerivativeConsumer extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
 
       return response.getTradesList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -75,7 +75,7 @@ export class SubaccountDerivativeConsumer extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.SubaccountOrdersList)
 
       return response.getOrdersList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

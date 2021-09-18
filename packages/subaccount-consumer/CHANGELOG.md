@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.34...@injectivelabs/subaccount-consumer@0.0.35) (2021-09-18)
+
+
+### Features
+
+* ledger refactor ([9fe5f8e](https://github.com/InjectiveLabs/injective-ts/commit/9fe5f8e31f37c7ed56b6141e563bf9f3722fe02b))
+
+
+
+
+
 ## [0.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.33...@injectivelabs/subaccount-consumer@0.0.34) (2021-09-16)
 
 

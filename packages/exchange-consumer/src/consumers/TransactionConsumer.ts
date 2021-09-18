@@ -72,7 +72,7 @@ export class TransactionConsumer extends BaseConsumer {
       >(prepareTxRequest, InjectiveExchangeRPC.PrepareTx)
 
       return response
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -135,7 +135,7 @@ export class TransactionConsumer extends BaseConsumer {
       >(prepareTxRequest, InjectiveExchangeRPC.PrepareTx)
 
       return response
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -185,7 +185,7 @@ export class TransactionConsumer extends BaseConsumer {
       >(broadcastTxRequest, InjectiveExchangeRPC.BroadcastTx)
 
       return response.toObject()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

@@ -1,10 +1,10 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
 import { publicToAddress, addHexPrefix } from 'ethereumjs-util'
 import HDNode from 'hdkey'
-import { LocalStorage } from '@injectivelabs/utils'
-import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types'
-import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '../../constants'
-import LedgerTransport from './transport'
+import EthereumApp from '@ledgerhq/hw-app-eth'
+import type Transport from '@ledgerhq/hw-transport'
+import { LedgerDerivationPathType, LedgerWalletInfo } from '../../../types'
+import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '../../../constants'
 
 const addressOfHDKey = (hdKey: HDNode): string => {
   const shouldSanitizePublicKey = true
@@ -21,13 +21,10 @@ const addressOfHDKey = (hdKey: HDNode): string => {
 export default class AccountManager {
   private wallets: LedgerWalletInfo[] = []
 
-  private ledger: LedgerTransport
+  private ledger: EthereumApp<Transport>
 
-  private storage: LocalStorage
-
-  constructor(ledger: LedgerTransport) {
+  constructor(ledger: EthereumApp<Transport>) {
     this.ledger = ledger
-    this.storage = new LocalStorage('injective-ledger')
     this.wallets = []
   }
 
@@ -80,7 +77,6 @@ export default class AccountManager {
     baseDerivationPath: string
     derivationPathType: LedgerDerivationPathType
   }) {
-    const ledger = await this.ledger.getInstance()
     const fullBaseDerivationPath = `m/${baseDerivationPath}`
 
     for (let index = start; index < end; index += 1) {
@@ -89,7 +85,7 @@ export default class AccountManager {
         derivationPathType,
         index,
       })
-      const result = await ledger.getAddress(path)
+      const result = await this.ledger.getAddress(path)
 
       const hdKey = new HDNode()
       hdKey.publicKey = Buffer.from(result.publicKey, 'hex')
@@ -103,12 +99,6 @@ export default class AccountManager {
         derivationPath: path,
       })
     }
-
-    this.storage.set('wallets', this.wallets)
-  }
-
-  public reset(): void {
-    this.wallets = []
   }
 
   private hasWallets(): boolean {

@@ -22,10 +22,8 @@ export class DerivativeMarketChronosConsumer {
       })) as ChronosDerivativeMarketSummaryResponse
 
       return data
-    } catch (error) {
-      throw new HttpException(
-        error.response ? error.response.data.message : error.message,
-      )
+    } catch (e: any) {
+      throw new HttpException(e.response ? e.response.data.message : e.message)
     }
   }
 
@@ -38,10 +36,8 @@ export class DerivativeMarketChronosConsumer {
       })) as AllDerivativeMarketSummaryResponse
 
       return data
-    } catch (error) {
-      throw new HttpException(
-        error.response ? error.response.data.message : error.message,
-      )
+    } catch (e: any) {
+      throw new HttpException(e.response ? e.response.data.message : e.message)
     }
   }
 }

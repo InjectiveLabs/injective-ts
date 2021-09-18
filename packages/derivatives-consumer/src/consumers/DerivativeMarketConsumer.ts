@@ -31,7 +31,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Markets)
 
       return response.getMarketsList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -54,7 +54,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
       }
 
       return market
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -76,7 +76,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
         buys: orderbook ? orderbook.getBuysList() : [],
         sells: orderbook ? orderbook.getSellsList() : [],
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -109,7 +109,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Orders)
 
       return response.getOrdersList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -136,7 +136,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Positions)
 
       return response.getPositionsList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -169,7 +169,7 @@ export class DerivativeMarketConsumer extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Trades)
 
       return response.getTradesList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

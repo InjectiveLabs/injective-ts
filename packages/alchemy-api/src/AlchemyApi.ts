@@ -22,7 +22,7 @@ export default class AlchemyApi {
 
     try {
       return web3.alchemy.getTokenAllowance({ owner, spender, contract })
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(e.message)
     }
   }
@@ -38,7 +38,7 @@ export default class AlchemyApi {
 
     try {
       return web3.alchemy.getTokenBalances(address, contractAddresses)
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(e.message)
     }
   }
@@ -48,7 +48,7 @@ export default class AlchemyApi {
 
     try {
       return web3.alchemy.getTokenMetadata(contractAddress)
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(e.message)
     }
   }

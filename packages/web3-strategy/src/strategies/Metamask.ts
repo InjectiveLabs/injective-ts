@@ -46,7 +46,7 @@ export default class Metamask
       return await this.ethereum.request({
         method: 'eth_requestAccounts',
       })
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(`Metamask: ${e.message}`)
     }
   }
@@ -57,7 +57,7 @@ export default class Metamask
         method: 'personal_sign',
         params: [address, `Confirmation for ${address} at time: ${Date.now()}`],
       })
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(
         `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
       )
@@ -73,7 +73,7 @@ export default class Metamask
         method: 'eth_sendTransaction',
         params: [transaction],
       })
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(
         `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
       )
@@ -89,7 +89,7 @@ export default class Metamask
         method: 'eth_signTypedData_v4',
         params: [address, eip712json],
       })
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(
         `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
       )
@@ -99,7 +99,7 @@ export default class Metamask
   async getNetworkId(): Promise<string> {
     try {
       return this.ethereum.request({ method: 'net_version' })
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(
         `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
       )
@@ -109,7 +109,7 @@ export default class Metamask
   async getChainId(): Promise<string> {
     try {
       return this.ethereum.request({ method: 'eth_chainId' })
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(
         `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
       )
@@ -134,7 +134,7 @@ export default class Metamask
 
     try {
       return await transactionReceiptRetry()
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(
         `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
       )

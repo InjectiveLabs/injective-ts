@@ -63,7 +63,7 @@ export class GovernanceConsumer extends BaseConsumer {
         tallyParams: GrpcGovernanceTallyParams
         votingParams: GrpcGovernanceVotingParams
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -80,7 +80,7 @@ export class GovernanceConsumer extends BaseConsumer {
       >(request, Query.Params)
 
       return response
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -112,7 +112,7 @@ export class GovernanceConsumer extends BaseConsumer {
         proposals: response.getProposalsList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -129,7 +129,7 @@ export class GovernanceConsumer extends BaseConsumer {
       >(request, Query.Proposal)
 
       return response.getProposal()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -161,7 +161,7 @@ export class GovernanceConsumer extends BaseConsumer {
         deposits: response.getDepositsList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -192,7 +192,7 @@ export class GovernanceConsumer extends BaseConsumer {
         votes: response.getVotesList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -209,7 +209,7 @@ export class GovernanceConsumer extends BaseConsumer {
       >(request, Query.TallyResult)
 
       return response.getTally()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

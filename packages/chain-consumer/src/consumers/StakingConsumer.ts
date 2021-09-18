@@ -38,7 +38,7 @@ export class StakingConsumer extends BaseConsumer {
       >(request, Query.Params)
 
       return response.getParams() as GrpcStakingParams
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -57,7 +57,7 @@ export class StakingConsumer extends BaseConsumer {
         validators: response.getValidatorsList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -74,7 +74,7 @@ export class StakingConsumer extends BaseConsumer {
       >(request, Query.Validator)
 
       return response.getValidator()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -106,7 +106,7 @@ export class StakingConsumer extends BaseConsumer {
         delegations: response.getDelegationResponsesList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -138,7 +138,7 @@ export class StakingConsumer extends BaseConsumer {
         delegations: response.getUnbondingResponsesList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -162,7 +162,7 @@ export class StakingConsumer extends BaseConsumer {
       >(request, Query.Delegation)
 
       return response.getDelegationResponse()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -194,7 +194,7 @@ export class StakingConsumer extends BaseConsumer {
         delegations: response.getDelegationResponsesList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -226,7 +226,7 @@ export class StakingConsumer extends BaseConsumer {
         delegators: response.getDelegationResponsesList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -250,7 +250,7 @@ export class StakingConsumer extends BaseConsumer {
       >(request, Query.UnbondingDelegation)
 
       return response.getUnbond()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -282,7 +282,7 @@ export class StakingConsumer extends BaseConsumer {
         unbondingDelegations: response.getUnbondingResponsesList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -314,7 +314,7 @@ export class StakingConsumer extends BaseConsumer {
         redelegations: response.getRedelegationResponsesList(),
         pagination: response.getPagination(),
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

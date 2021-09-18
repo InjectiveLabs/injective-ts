@@ -27,7 +27,7 @@ export class BankConsumer extends BaseConsumer {
       >(request, Query.Params)
 
       return response.getParams() as GrpcBankParams
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -51,7 +51,7 @@ export class BankConsumer extends BaseConsumer {
       >(request, Query.Balance)
 
       return response.getBalance()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -68,7 +68,7 @@ export class BankConsumer extends BaseConsumer {
       >(request, Query.AllBalances)
 
       return response.getBalancesList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }
@@ -90,7 +90,7 @@ export class BankConsumer extends BaseConsumer {
       >(request, Query.TotalSupply)
 
       return response.getSupplyList()
-    } catch (e) {
+    } catch (e: any) {
       throw new GrpcException(e.message)
     }
   }

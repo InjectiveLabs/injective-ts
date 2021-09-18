@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
-import EthLedger from '@ledgerhq/hw-app-eth'
 import { TypedDataUtils } from 'eth-sig-util'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Transaction } from 'ethereumjs-tx'
@@ -18,8 +17,7 @@ import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '../../constants'
-import LedgerTransport, { isLedgerSupportedInWindow } from './transport'
-import AccountManager from './AccountManager'
+import LedgerHW from './hw'
 
 const domainHash = (message: any) =>
   TypedDataUtils.hashStruct('EIP712Domain', message.domain, message.types, true)
@@ -65,9 +63,7 @@ export default class Ledger
 
   private derivationPathType: LedgerDerivationPathType
 
-  private ledger: LedgerTransport
-
-  private accountManager: AccountManager
+  private ledger: LedgerHW
 
   constructor({
     chainId,
@@ -81,59 +77,44 @@ export default class Ledger
     this.baseDerivationPath =
       options.baseDerivationPath || DEFAULT_BASE_DERIVATION_PATH
     this.derivationPathType = LedgerDerivationPathType.LedgerLive
-    this.ledger = new LedgerTransport(EthLedger)
-    this.accountManager = new AccountManager(this.ledger)
+    this.ledger = new LedgerHW()
   }
 
-  setOptions(options: ConcreteStrategyOptions): void {
-    this.baseDerivationPath =
-      options.baseDerivationPath || this.baseDerivationPath
-
-    /**
-     * If derivation path type changed
-     * we need to remove any "wallets"
-     * we already have in the account manager
-     */
-    const derivationPathTypeChanged =
-      options.derivationPathType &&
-      this.derivationPathType !== options.derivationPathType
-
-    if (derivationPathTypeChanged) {
-      this.accountManager.reset()
-      this.derivationPathType =
-        options.derivationPathType || this.derivationPathType
-    }
-  }
+  setOptions(_options: ConcreteStrategyOptions): void {}
 
   public async getAddresses(): Promise<string[]> {
-    const { accountManager, baseDerivationPath, derivationPathType } = this
+    const { baseDerivationPath, derivationPathType } = this
 
+    const accountManager = await this.ledger.getAccountManager()
     try {
       const wallets = await accountManager.getWallets(
         baseDerivationPath,
         derivationPathType,
       )
-
       return wallets.map((k) => k.address)
-    } catch (e) {
-      throw new Error(`Ledger: ${e.message}`)
+    } catch (e: any) {
+      const message = e.message || e
+
+      if (
+        message.includes('Ledger device: Incorrect length') ||
+        message.includes('Ledger device: INS_NOT_SUPPORTED') ||
+        message.includes('UNKNOWN_ERROR')
+      ) {
+        throw new Error(
+          'Please ensure your Ledger is connected, unlocked and your Ethereum app is open',
+        )
+      }
+
+      throw new Error(message)
     }
   }
 
   async confirm(address: AccountAddress): Promise<string> {
-    const { derivationPath } = await this.getWalletForAddress(address)
-
-    try {
-      const ledger = await this.ledger.getInstance()
-      const signed = await ledger.signPersonalMessage(
-        derivationPath,
+    return Promise.resolve(
+      `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
-      )
-      const combined = `${signed.r}${signed.s}${signed.v.toString(16)}`
-      return combined.startsWith('0x') ? combined : `0x${combined}`
-    } catch (e) {
-      throw new Error(`Ledger: ${e.message}`)
-    }
+      ).toString('hex')}`,
+    )
   }
 
   async sendTransaction(
@@ -168,7 +149,7 @@ export default class Ledger
       tx.v = Buffer.from(signed.v, 'hex')
 
       signedSerializedTx = tx.serialize().toString('hex')
-    } catch (e) {
+    } catch (e: any) {
       throw new Error(`Ledger: ${e.message}`)
     }
 
@@ -177,7 +158,7 @@ export default class Ledger
         addHexPrefix(signedSerializedTx),
       )
       return txReceipt.transactionHash
-    } catch (e) {
+    } catch (e: any) {
       throw new Web3Exception(`Ledger: ${e.message}`)
     }
   }
@@ -219,7 +200,8 @@ export default class Ledger
   private async getWalletForAddress(
     address: string,
   ): Promise<LedgerWalletInfo> {
-    const { accountManager, baseDerivationPath, derivationPathType } = this
+    const { baseDerivationPath, derivationPathType } = this
+    const accountManager = await this.ledger.getAccountManager()
 
     if (!accountManager.hasWalletForAddress(address)) {
       for (
@@ -229,15 +211,15 @@ export default class Ledger
       ) {
         await accountManager.getWallets(baseDerivationPath, derivationPathType)
 
-        if (this.accountManager.hasWalletForAddress(address)) {
-          return (await this.accountManager.getWalletForAddress(
+        if (accountManager.hasWalletForAddress(address)) {
+          return (await accountManager.getWalletForAddress(
             address,
           )) as LedgerWalletInfo
         }
       }
     }
 
-    return (await this.accountManager.getWalletForAddress(
+    return (await accountManager.getWalletForAddress(
       address,
     )) as LedgerWalletInfo
   }
@@ -250,7 +232,7 @@ export default class Ledger
     //
   }
 
-  isWeb3Connected = (): boolean => isLedgerSupportedInWindow
+  isWeb3Connected = (): boolean => true // TODO
 
   isMetamask = (): boolean => false
 }
