@@ -14,6 +14,12 @@ export default class LedgerTransport {
   protected static async getTransport(): Promise<Transport> {
     try {
       if (await TransportWebHID.isSupported()) {
+        const list = await TransportWebHID.list()
+
+        if (list.length > 0 && list[0].opened) {
+          return new TransportWebHID(list[0])
+        }
+
         const existing = await TransportWebHID.openConnected().catch(() => null)
 
         if (existing) {
@@ -47,6 +53,10 @@ export default class LedgerTransport {
         )
       }
 
+      if (message.includes('Cannot read properties of undefined')) {
+        throw new Error('Please make sure your Ledger device is connected')
+      }
+
       throw new Error(message)
     }
 
@@ -61,6 +71,11 @@ export default class LedgerTransport {
       transport.on('disconnect', () => {
         this.ledger = null
         this.accountManager = null
+      })
+
+      // Ensure ledger is not locked
+      this.ledger.getAppConfiguration().then(() => {
+        //
       })
     }
 

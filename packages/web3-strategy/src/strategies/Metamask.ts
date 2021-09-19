@@ -9,9 +9,9 @@ import {
 } from '../types'
 import BaseConcreteStrategy from '../BaseConcreteStrategy'
 
-const $window = ((isServerSide()
+const $window = (isServerSide()
   ? {}
-  : window) as unknown) as WindowWithEip1193Provider
+  : window) as unknown as WindowWithEip1193Provider
 
 const isMetamaskInstalled = Boolean(
   $window && $window.ethereum && $window.ethereum.isMetaMask,
@@ -22,7 +22,8 @@ const removeMetamaskFromErrorString = (message: string): string =>
 
 export default class Metamask
   extends BaseConcreteStrategy
-  implements ConcreteWeb3Strategy {
+  implements ConcreteWeb3Strategy
+{
   private ethereum: Eip1993ProviderWithMetamask
 
   constructor({
@@ -51,17 +52,13 @@ export default class Metamask
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async confirm(address: AccountAddress): Promise<string> {
-    try {
-      return await this.ethereum.request({
-        method: 'personal_sign',
-        params: [address, `Confirmation for ${address} at time: ${Date.now()}`],
-      })
-    } catch (e: any) {
-      throw new Web3Exception(
-        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
-      )
-    }
+    return Promise.resolve(
+      `0x${Buffer.from(
+        `Confirmation for ${address} at time: ${Date.now()}`,
+      ).toString('hex')}`,
+    )
   }
 
   async sendTransaction(

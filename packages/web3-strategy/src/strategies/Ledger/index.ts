@@ -58,7 +58,8 @@ const getSignableTx = async ({
 
 export default class Ledger
   extends BaseConcreteStrategy
-  implements ConcreteWeb3Strategy {
+  implements ConcreteWeb3Strategy
+{
   private baseDerivationPath: string
 
   private derivationPathType: LedgerDerivationPathType
@@ -84,8 +85,8 @@ export default class Ledger
 
   public async getAddresses(): Promise<string[]> {
     const { baseDerivationPath, derivationPathType } = this
-
     const accountManager = await this.ledger.getAccountManager()
+
     try {
       const wallets = await accountManager.getWallets(
         baseDerivationPath,
@@ -98,6 +99,9 @@ export default class Ledger
       if (
         message.includes('Ledger device: Incorrect length') ||
         message.includes('Ledger device: INS_NOT_SUPPORTED') ||
+        message.includes('Failed to open the device') ||
+        message.includes('Failed to open the device') ||
+        message.includes('Ledger Device is busy') ||
         message.includes('UNKNOWN_ERROR')
       ) {
         throw new Error(
