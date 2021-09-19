@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.65...@injectivelabs/web3-strategy@0.0.66) (2021-09-19)
+
+
+### Bug Fixes
+
+* removed redundandt check ([0645f6e](https://github.com/InjectiveLabs/injective-ts/commit/0645f6e1786f60f405590f5268efc42ca7c17e48))
+
+
+
+
+
 ## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.64...@injectivelabs/web3-strategy@0.0.65) (2021-09-19)
 
 

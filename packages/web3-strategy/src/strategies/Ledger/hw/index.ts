@@ -72,11 +72,6 @@ export default class LedgerTransport {
         this.ledger = null
         this.accountManager = null
       })
-
-      // Ensure ledger is not locked
-      this.ledger.getAppConfiguration().then(() => {
-        //
-      })
     }
 
     return this.ledger
