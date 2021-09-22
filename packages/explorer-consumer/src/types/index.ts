@@ -1,15 +1,3 @@
-export interface Block {
-  height: number
-  proposer: string
-  moniker: string
-  blockHash: string
-  parentHash: string
-  numPreCommits: number
-  numTxs: number
-  totalTxs: number
-  timestamp: string
-}
-
 export interface TxMessage {
   key: string
   value: string
@@ -25,10 +13,35 @@ export interface Transaction {
   info: string
   gasWanted: number
   gasUsed: number
-  eventsList?: Array<{
+  events?: Array<{
     type: string
-    attributesList: Array<TxMessage>
+    attributes: Array<TxMessage>
   }>
   codespace: string
-  messagesList?: Array<TxMessage>
+  messages?: Array<TxMessage>
+}
+
+export interface Block {
+  height: number
+  proposer: string
+  moniker: string
+  blockHash: string
+  parentHash: string
+  numPreCommits: number
+  numTxs: number
+  totalTxs: number
+  timestamp: string
+}
+
+export interface BlockWithTxs {
+  height: number
+  proposer: string
+  moniker: string
+  blockHash: string
+  parentHash: string
+  numPreCommits: number
+  numTxs: number
+  totalTxs: number
+  txs: Transaction[]
+  timestamp: string
 }
