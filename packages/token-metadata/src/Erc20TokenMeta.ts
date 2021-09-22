@@ -3,6 +3,7 @@ import {
   tokensByKovanAddress,
   tokensBySymbol,
   tokensBySymbolForKovan,
+  tokensBySymbolToCoinGeckoId,
 } from './tokens'
 import { TokenMeta } from './types'
 
@@ -38,12 +39,24 @@ export class Erc20TokenMeta {
   }
 
   static getMetaByKovanAddress(address: string): TokenMeta | undefined {
-    const erc20Address = address.toLowerCase() as keyof typeof tokensByKovanAddress
+    const erc20Address =
+      address.toLowerCase() as keyof typeof tokensByKovanAddress
 
     if (!tokensByKovanAddress[erc20Address]) {
       return
     }
 
     return tokensByKovanAddress[erc20Address]
+  }
+
+  static getCoinGeckoIdFromSymbol(symbol: string): string {
+    const symbolToLowerCase =
+      symbol.toLowerCase() as keyof typeof tokensByKovanAddress
+
+    if (!tokensBySymbolToCoinGeckoId[symbolToLowerCase]) {
+      return ''
+    }
+
+    return tokensBySymbolToCoinGeckoId[symbolToLowerCase]
   }
 }
