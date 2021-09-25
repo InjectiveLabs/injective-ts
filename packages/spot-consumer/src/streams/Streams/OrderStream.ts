@@ -75,14 +75,18 @@ export class OrderStream {
     onEndCallback,
     onStatusCallback,
   }: {
-    marketId: string
+    marketId?: string
     subaccountId: string
     callback: OrderStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamOrdersRequest()
-    request.setMarketId(marketId)
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
     request.setSubaccountId(subaccountId)
 
     const stream = this.client.streamOrders(request)

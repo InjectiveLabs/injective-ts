@@ -84,12 +84,15 @@ export class SpotMarketConsumer extends BaseConsumer {
     subaccountId,
     orderSide,
   }: {
-    marketId: string
+    marketId?: string
     subaccountId?: AccountAddress
     orderSide?: SpotOrderSide
   }) {
     const request = new OrdersRequest()
-    request.setMarketId(marketId)
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
