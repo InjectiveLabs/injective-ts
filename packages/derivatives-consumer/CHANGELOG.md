@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.50...@injectivelabs/derivatives-consumer@0.0.51) (2021-09-25)
+
+
+### Bug Fixes
+
+* subaccount positions ([d85865b](https://github.com/InjectiveLabs/injective-ts/commit/d85865bc6749ac16ab5781ac49e69ddd17db5ac0))
+
+
+
+
+
 ## [0.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.49...@injectivelabs/derivatives-consumer@0.0.50) (2021-09-25)
 
 

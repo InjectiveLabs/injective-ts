@@ -73,14 +73,18 @@ export class PositionStream {
     onEndCallback,
     onStatusCallback,
   }: {
-    marketId: string
+    marketId?: string
     subaccountId: string
     callback: PositionStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamPositionsRequest()
-    request.setMarketId(marketId)
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
     request.setSubaccountId(subaccountId)
 
     const stream = this.client.streamPositions(request)
