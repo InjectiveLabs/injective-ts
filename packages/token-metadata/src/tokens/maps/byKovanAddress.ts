@@ -50,4 +50,56 @@ export default {
     ...tokens.AXS,
     address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
   },
+  [tokens.INJ.address]: {
+    ...tokens.INJ,
+    address: '0xa3a9029b8120e2f09b194df4a249a24db461e573',
+  },
+  [tokens.USDT.address]: {
+    ...tokens.USDT,
+    address: '0x69efcb62d98f4a6ff5a0b0cfaa4aabb122e85e08',
+  },
+  [tokens.USDC.address]: {
+    ...tokens.USDC,
+    address: '0xc83dcea3ec44b7d3ec70690bab1e6292a80e6dc3',
+  },
+  [tokens.DAI.address]: {
+    ...tokens.DAI,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.BNB.address]: {
+    ...tokens.BNB,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.BTC.address]: {
+    ...tokens.BTC,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.wBTC.address]: {
+    ...tokens.wBTC,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.AAVE.address]: {
+    ...tokens.AAVE,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.UNI.address]: {
+    ...tokens.UNI,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.MATIC.address]: {
+    ...tokens.MATIC,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.LINK.address]: {
+    ...tokens.LINK,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.AXS.address]: {
+    ...tokens.AXS,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.ZRX.address]: {
+    ...tokens.ZRX,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
 } as Record<string, TokenMeta>
