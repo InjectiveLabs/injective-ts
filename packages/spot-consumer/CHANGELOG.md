@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.64...@injectivelabs/spot-consumer@0.0.65) (2021-10-05)
+
+
+### Features
+
+* multiple marketIds orderbook stream ([111b6e4](https://github.com/InjectiveLabs/injective-ts/commit/111b6e4886046fba558d142746a1e146a944e351))
+
+
+
+
+
 ## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.63...@injectivelabs/spot-consumer@0.0.64) (2021-09-27)
 
 **Note:** Version bump only for package @injectivelabs/spot-consumer

@@ -28,6 +28,7 @@ const transformer = (response: StreamOrderbookResponse) => {
         })
       : undefined,
     operation: response.getOperationType() as StreamOperation,
+    marketId: response.getMarketId(),
     timestamp: response.getTimestamp(),
   }
 }
@@ -43,18 +44,18 @@ export class OrderbookStream {
   }
 
   start({
-    marketId,
+    marketIds,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
-    marketId: string
+    marketIds: string[]
     callback: OrderbookStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamOrderbookRequest()
-    request.setMarketId(marketId)
+    request.setMarketIdsList(marketIds)
 
     const stream = this.client.streamOrderbook(request)
 

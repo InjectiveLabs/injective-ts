@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.92](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.91...@injectivelabs/exchange-consumer@0.0.92) (2021-10-05)
+
+
+### Features
+
+* multiple marketIds orderbook stream ([111b6e4](https://github.com/InjectiveLabs/injective-ts/commit/111b6e4886046fba558d142746a1e146a944e351))
+
+
+
+
+
 ## [0.0.91](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.90...@injectivelabs/exchange-consumer@0.0.91) (2021-09-27)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
