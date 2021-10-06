@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.37...@injectivelabs/utils@0.0.38) (2021-10-06)
+
+
+### Features
+
+* added default gas price ([914330a](https://github.com/InjectiveLabs/injective-ts/commit/914330abcb6e704776a758e18d5674bd187c6ffd))
+
+
+
+
+
 ## [0.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.36...@injectivelabs/utils@0.0.37) (2021-08-20)
 
 
