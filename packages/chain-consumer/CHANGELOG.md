@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.78...@injectivelabs/chain-consumer@0.0.79) (2021-10-06)
+
+
+### Features
+
+* added fetchin details ([ee45367](https://github.com/InjectiveLabs/injective-ts/commit/ee4536727f4cbd6e08c683efe686ddd64e02bd0c))
+
+
+
+
+
 ## [0.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.77...@injectivelabs/chain-consumer@0.0.78) (2021-09-18)
 
 

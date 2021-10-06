@@ -1,9 +1,32 @@
+import { Query } from '@injectivelabs/chain-api/cosmos/auth/v1beta1/query_pb_service'
+import {
+  QueryAccountRequest,
+  QueryAccountResponse,
+} from '@injectivelabs/chain-api/cosmos/auth/v1beta1/query_pb'
 import { AccountAddress } from '@injectivelabs/ts-types'
 import { bech32 } from 'bech32'
 import { Address } from 'ethereumjs-util'
+import { GrpcException } from '@injectivelabs/exceptions'
 import BaseConsumer from '../BaseConsumer'
 
 export class AuthConsumer extends BaseConsumer {
+  async fetchAddressDetails(address: string) {
+    const request = new QueryAccountRequest()
+    request.setAddress(address)
+
+    try {
+      const response = await this.request<
+        QueryAccountRequest,
+        QueryAccountResponse,
+        typeof Query.Account
+      >(request, Query.Account)
+
+      return response.getAccount()
+    } catch (e: any) {
+      throw new GrpcException(e.message)
+    }
+  }
+
   getCosmosAddress = ({
     address,
     type = 'hex',
