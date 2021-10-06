@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.81](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.80...@injectivelabs/chain-consumer@0.0.81) (2021-10-06)
+
+
+### Bug Fixes
+
+* wrong return type ([a10e9ef](https://github.com/InjectiveLabs/injective-ts/commit/a10e9efac1c0b4ecd47a631394bc28d0e4dc273f))
+
+
+
+
+
 ## [0.0.80](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.79...@injectivelabs/chain-consumer@0.0.80) (2021-10-06)
 
 

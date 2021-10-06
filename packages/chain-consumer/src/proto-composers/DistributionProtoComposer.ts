@@ -8,7 +8,7 @@ export class DistributionProtoComposer {
   }: {
     validatorAddress: string
     delegatorAddress: AccountAddress
-  }): Record<string, any> {
+  }) {
     const message = new MsgWithdrawDelegatorReward()
     message.setDelegatorAddress(delegatorAddress)
     message.setValidatorAddress(validatorAddress)

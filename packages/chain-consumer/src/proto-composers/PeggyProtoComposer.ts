@@ -21,7 +21,7 @@ export class PeggyProtoComposer {
     amount: string
     bridgeFeeDenom?: string
     bridgeFeeAmount?: string
-  }): Record<string, any> {
+  }) {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
     coinAmount.setAmount(amount)

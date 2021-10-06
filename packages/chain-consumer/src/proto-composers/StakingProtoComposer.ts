@@ -17,7 +17,7 @@ export class StakingProtoComposer {
     validatorAddress: string
     injectiveAddress: AccountAddress
     amount: string
-  }): Record<string, any> {
+  }) {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
     coinAmount.setAmount(amount)
@@ -45,7 +45,7 @@ export class StakingProtoComposer {
     destinationValidatorAddress: string
     injectiveAddress: AccountAddress
     amount: string
-  }): Record<string, any> {
+  }) {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
     coinAmount.setAmount(amount)
@@ -72,7 +72,7 @@ export class StakingProtoComposer {
     validatorAddress: string
     injectiveAddress: AccountAddress
     amount: string
-  }): Record<string, any> {
+  }) {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
     coinAmount.setAmount(amount)
