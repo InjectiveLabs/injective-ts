@@ -24,7 +24,8 @@ const getPrivateKeyWalletProviderForSinglePrivateKey = (privateKey: string) =>
 
 export default class Wallet
   extends BaseConcreteStrategy
-  implements ConcreteWeb3Strategy {
+  implements ConcreteWeb3Strategy
+{
   private privateKey: string
 
   constructor({
@@ -113,7 +114,7 @@ export default class Wallet
   }
 
   onAccountChanged = (callback: (account: AccountAddress) => void): void => {
-    callback((undefined as unknown) as AccountAddress)
+    callback(undefined as unknown as AccountAddress)
   }
 
   setOptions(options: ConcreteStrategyOptions): void {

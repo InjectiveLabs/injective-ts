@@ -14,8 +14,8 @@ export interface ConcreteStrategyOptions {
   privateKey?: string
   baseDerivationPath?: string
   derivationPathType?: LedgerDerivationPathType
-  rpcUrls: Record<ChainId, string>
-  wsRpcUrls: Record<ChainId, string>
+  rpcUrls?: Record<ChainId, string>
+  wsRpcUrls?: Record<ChainId, string>
   pollingInterval: number
   blockTracker?: boolean
 }

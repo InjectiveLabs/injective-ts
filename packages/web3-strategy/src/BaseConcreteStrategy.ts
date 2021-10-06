@@ -2,10 +2,11 @@ import Web3 from 'web3'
 import { ChainId } from '@injectivelabs/ts-types'
 import { provider } from 'web3-core'
 import ProviderEngine from 'web3-provider-engine'
-// import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tracker'
+import NonceTrackerSubprovider from 'web3-provider-engine/subproviders/nonce-tracker'
 import SanitizingSubprovider from 'web3-provider-engine/subproviders/sanitizer'
 import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
 import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
+import { Web3Exception } from '@injectivelabs/exceptions'
 import { ConcreteStrategyOptions } from './types'
 
 const DEFAULT_POLLING_INTERVAL_MS = 500
@@ -14,9 +15,9 @@ const DEFAULT_BLOCK_TRACKER = true
 export default abstract class BaseConcreteStrategy {
   protected chainId: ChainId
 
-  protected rpcUrls: Record<ChainId, string>
+  protected rpcUrls?: Record<ChainId, string>
 
-  protected wsRpcUrls: Record<ChainId, string>
+  protected wsRpcUrls?: Record<ChainId, string>
 
   protected pollingInterval: number
 
@@ -44,8 +45,6 @@ export default abstract class BaseConcreteStrategy {
         : options.blockTracker
   }
 
-  public abstract setOptions(options: ConcreteStrategyOptions): void
-
   public getWeb3(): Web3 {
     const { web3ForChainId } = this
 
@@ -58,6 +57,10 @@ export default abstract class BaseConcreteStrategy {
 
   public getWeb3ForChainId(chainId: ChainId): Web3 {
     const { web3ForChainId } = this
+
+    if (!this.rpcUrls) {
+      throw new Web3Exception(`Please provide rpcUrl for chainId: ${chainId}`)
+    }
 
     if (!web3ForChainId[chainId]) {
       web3ForChainId[chainId] = new Web3(
@@ -85,6 +88,10 @@ export default abstract class BaseConcreteStrategy {
   public getWeb3WsForChainId(chainId: ChainId): Web3 {
     const { web3WsForChainId } = this
 
+    if (!this.wsRpcUrls) {
+      throw new Web3Exception(`Please provide wsRpcUrl for chainId: ${chainId}`)
+    }
+
     if (!web3WsForChainId[chainId]) {
       web3WsForChainId[chainId] = new Web3(
         this.getWeb3WsProviderEngineForRpc({
@@ -110,7 +117,7 @@ export default abstract class BaseConcreteStrategy {
       pollingInterval,
     })
 
-    // engine.addProvider(new NonceTrackerSubprovider())
+    engine.addProvider(new NonceTrackerSubprovider())
     engine.addProvider(new SanitizingSubprovider())
     engine.addProvider(new RpcSubprovider({ rpcUrl }))
     engine.start()

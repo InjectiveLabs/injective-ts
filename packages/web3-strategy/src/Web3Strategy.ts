@@ -43,22 +43,6 @@ export default class Web3Strategy {
     }
   }
 
-  public getWeb3(): Web3 {
-    return this.strategy.getWeb3ForChainId(this.chainId)
-  }
-
-  public getWeb3ForChainId(chainId: ChainId): Web3 {
-    return this.strategy.getWeb3ForChainId(chainId)
-  }
-
-  public getWeb3Ws(): Web3 {
-    return this.strategy.getWeb3WsForChainId(this.chainId)
-  }
-
-  public getWeb3WsForChainId(chainId: ChainId): Web3 {
-    return this.strategy.getWeb3WsForChainId(chainId)
-  }
-
   public getStrategy(): ConcreteWeb3Strategy {
     return this.strategy
   }
@@ -103,6 +87,22 @@ export default class Web3Strategy {
     address: AccountAddress,
   ): Promise<string> {
     return this.strategy.signTypedDataV4(data, address)
+  }
+
+  public getWeb3(): Web3 {
+    return this.strategy.getWeb3ForChainId(this.chainId)
+  }
+
+  public getWeb3ForChainId(chainId: ChainId): Web3 {
+    return this.strategy.getWeb3ForChainId(chainId)
+  }
+
+  public getWeb3Ws(): Web3 {
+    return this.strategy.getWeb3WsForChainId(this.chainId)
+  }
+
+  public getWeb3WsForChainId(chainId: ChainId): Web3 {
+    return this.strategy.getWeb3WsForChainId(chainId)
   }
 
   public onAccountChange(callback: onAccountChangeCallback): void {
