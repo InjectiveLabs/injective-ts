@@ -1,5 +1,4 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { BigNumber } from '@injectivelabs/utils'
 import { AccountAddress } from '@injectivelabs/ts-types'
 import {
   ExpiryFuturesMarketLaunchProposal,
@@ -8,11 +7,7 @@ import {
   SpotMarketParamUpdateProposal,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import snakeCaseKeys from 'snakecase-keys'
-
-export interface DepositProposalParams {
-  amount: BigNumber
-  denom: string
-}
+import { DepositProposalParams } from '../types'
 
 export class ExchangeProposalComposer {
   static spotMarketLaunch({
@@ -26,7 +21,7 @@ export class ExchangeProposalComposer {
   }) {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
-    depositParams.setAmount(deposit.amount.toFixed())
+    depositParams.setAmount(deposit.amount)
 
     const content = new SpotMarketLaunchProposal()
     content.setTitle(market.title)
@@ -59,7 +54,7 @@ export class ExchangeProposalComposer {
   }) {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
-    depositParams.setAmount(deposit.amount.toFixed())
+    depositParams.setAmount(deposit.amount)
 
     const content = new SpotMarketParamUpdateProposal()
     content.setTitle(market.title)
@@ -92,7 +87,7 @@ export class ExchangeProposalComposer {
   }) {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
-    depositParams.setAmount(deposit.amount.toFixed())
+    depositParams.setAmount(deposit.amount)
 
     const content = new PerpetualMarketLaunchProposal()
     content.setTitle(market.title)
@@ -132,7 +127,7 @@ export class ExchangeProposalComposer {
   }) {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
-    depositParams.setAmount(deposit.amount.toFixed())
+    depositParams.setAmount(deposit.amount)
 
     const content = new ExpiryFuturesMarketLaunchProposal()
     content.setTitle(market.title)

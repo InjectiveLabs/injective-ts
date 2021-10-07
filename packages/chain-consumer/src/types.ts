@@ -51,6 +51,11 @@ export interface PaginationOption {
   countTotal?: boolean
 }
 
+export interface DepositProposalParams {
+  amount: string
+  denom: string
+}
+
 export {
   GrpcCoin,
   GrpcValidator,

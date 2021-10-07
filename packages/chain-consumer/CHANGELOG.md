@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.83](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.82...@injectivelabs/chain-consumer@0.0.83) (2021-10-07)
+
+
+### Features
+
+* added text proposal ([cadc4a7](https://github.com/InjectiveLabs/injective-ts/commit/cadc4a7b567a61626b16af3ef40e6700c25163a8))
+
+
+
+
+
 ## [0.0.82](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.81...@injectivelabs/chain-consumer@0.0.82) (2021-10-07)
 
 
