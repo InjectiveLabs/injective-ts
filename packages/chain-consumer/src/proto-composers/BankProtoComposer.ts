@@ -19,6 +19,7 @@ export class BankProtoComposer {
     amountToSend.setDenom(denom)
 
     const message = new MsgSend()
+    message.setAmountList([amountToSend])
     message.setFromAddress(srcInjectiveAddress)
     message.setToAddress(dstInjectiveAddress)
 

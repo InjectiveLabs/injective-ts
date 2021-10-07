@@ -92,6 +92,7 @@ export class InsuranceProtoComposer {
     message.setSender(injectiveAddress)
     message.setInitialDeposit(initialDeposit)
     message.setExpiry(fund.expiry ? fund.expiry : -1)
+    message.setInitialDeposit(initialDeposit)
 
     return {
       message,

@@ -45,6 +45,7 @@ export class GovernanceProtoComposer {
     const message = new MsgDeposit()
     message.setDepositor(depositor)
     message.setProposalId(proposalId)
+    message.setAmountList([deposit])
 
     return {
       message,

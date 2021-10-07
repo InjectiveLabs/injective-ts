@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.82](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.81...@injectivelabs/chain-consumer@0.0.82) (2021-10-07)
+
+
+### Bug Fixes
+
+* bank composer proto ([38a5b55](https://github.com/InjectiveLabs/injective-ts/commit/38a5b556ca6528852b84cde7de394aead8f7eecc))
+
+
+
+
+
 ## [0.0.81](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.80...@injectivelabs/chain-consumer@0.0.81) (2021-10-06)
 
 
