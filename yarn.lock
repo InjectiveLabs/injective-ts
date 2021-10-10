@@ -1336,10 +1336,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@^1.4.12":
-  version "1.4.12"
-  resolved "https://registry.npmjs.org/@injectivelabs/chain-api/-/chain-api-1.4.12.tgz#43b1a195d3b5ba34c23416b0536a97b662868256"
-  integrity sha512-YlX8AbZVowqzu38cLxccQjoRG3gNw9rEbx4ARTHxKmIlL5mu7R3ub/BYTWpmfhxxzTp96pB/qapOgNbhPkxhOA==
+"@injectivelabs/chain-api@^1.4.13":
+  version "1.4.17"
+  resolved "https://registry.npmjs.org/@injectivelabs/chain-api/-/chain-api-1.4.17.tgz#fed2b8eeefad5cf5d5253ebdd125fad1ab9cc9ab"
+  integrity sha512-YMLQWOFoNQ+9Fa5WU8DdAaegyQqctFXYLVePs3tLbjmw61ArX789viFtjwPIkqesVcP8I5S/9TU+7inqHEHVWA==
   dependencies:
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
@@ -1353,18 +1353,10 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exchange-api@^2.2.1":
-  version "2.2.12"
-  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.12.tgz#48a627993ab23894b6e55803551d87b756e3012b"
-  integrity sha512-3zUche5JtvqNcHb59eXbqO6m9YM7Xh81FVamH/IL+fa/BR2m+2ffRZOGBsLmTBgiTP1PHbCvrL3rRL+OwZSy7A==
-  dependencies:
-    "@improbable-eng/grpc-web" "^0.14.0"
-    google-protobuf "^3.14.0"
-
-"@injectivelabs/exchange-api@^2.2.16":
-  version "2.2.16"
-  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.16.tgz#e673cb3f1dcdb35a55ea542508c05e3ce8a87219"
-  integrity sha512-+RJnAvK4pX8p+mkIsf5XodxxsLBDKRkWKLwqghyQP+5Z3XFET7eY97jnJ/mXZZW0fCqJsQngUEgk/Rdscgv9nQ==
+"@injectivelabs/exchange-api@^2.2.17":
+  version "2.2.17"
+  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.17.tgz#e6c5f65721677be7a21718588709dd9fd728382a"
+  integrity sha512-kLdHceQYthQAAUSfQ7o1YW1Ekwu+LPbFNtZedEsfMvkgv6hb5KZ6u9r8MwG0F9rPxhR+j6ik+LTh+bgpXG2iIQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
