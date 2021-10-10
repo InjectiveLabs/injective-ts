@@ -15,7 +15,14 @@ export interface Transaction {
   gasUsed: number
   events?: Array<{
     type: string
-    attributes: Array<TxMessage>
+    attributes: Record<string, string>
+  }>
+  txType: string
+  signatures: Array<{
+    pubkey: string
+    address: string
+    sequence: number
+    signature: string
   }>
   codespace: string
   messages?: Array<TxMessage>

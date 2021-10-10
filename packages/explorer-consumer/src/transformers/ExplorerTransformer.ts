@@ -1,5 +1,5 @@
 import {
-  BlockData,
+  BlockInfo,
   TxData,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 import { Transaction, Block, BlockWithTxs } from '../types/index'
@@ -17,17 +17,27 @@ export class ExplorerTransformer {
       gasUsed: tx.getGasUsed(),
       codespace: tx.getCodespace(),
       data: tx.getData(),
+      txType: tx.getTxType(),
+      signatures: tx.getSignaturesList().map((signature) => ({
+        pubkey: signature.getPubkey(),
+        address: signature.getAddress(),
+        sequence: signature.getSequence(),
+        signature: signature.getSignature(),
+      })),
       events: tx.getEventsList().map((event) => ({
         type: event.getType(),
-        attributes: event.getAttributesList().map((attribute) => ({
-          key: attribute.getKey(),
-          value: attribute.getValue(),
-        })),
+        attributes: event
+          .getAttributesMap()
+          .toObject()
+          .reduce(
+            (
+              attributes: Record<string, string>,
+              attribute: [string, string],
+            ) => ({ ...attributes, [attribute[0]]: attribute[1] }),
+            {},
+          ),
       })),
-      messages: tx.getMessagesList().map((message) => ({
-        key: message.getKey(),
-        value: message.getValue(),
-      })),
+      messages: JSON.parse(tx.getMessages()),
     }
   }
 
@@ -37,7 +47,7 @@ export class ExplorerTransformer {
     return txs.map((tx) => ExplorerTransformer.grpcTransactionToTransaction(tx))
   }
 
-  static grpcBlockToBlock(block: BlockData): Block {
+  static grpcBlockToBlock(block: BlockInfo): Block {
     return {
       height: block.getHeight(),
       proposer: block.getProposer(),
@@ -51,7 +61,7 @@ export class ExplorerTransformer {
     }
   }
 
-  static grpcBlockToBlockWithTxs(block: BlockData): BlockWithTxs {
+  static grpcBlockToBlockWithTxs(block: BlockInfo): BlockWithTxs {
     return {
       height: block.getHeight(),
       proposer: block.getProposer(),
@@ -68,12 +78,12 @@ export class ExplorerTransformer {
     }
   }
 
-  static grpcBlocksToBlocks(blocks: Array<BlockData>): Array<Block> {
+  static grpcBlocksToBlocks(blocks: Array<BlockInfo>): Array<Block> {
     return blocks.map((block) => ExplorerTransformer.grpcBlockToBlock(block))
   }
 
   static grpcBlocksToBlocksWithTxs(
-    blocks: Array<BlockData>,
+    blocks: Array<BlockInfo>,
   ): Array<BlockWithTxs> {
     return blocks.map((block) =>
       ExplorerTransformer.grpcBlockToBlockWithTxs(block),
