@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.58...@injectivelabs/derivatives-consumer@0.0.59) (2021-10-12)
+
+
+### Bug Fixes
+
+* types for streaming ([c3cc64d](https://github.com/InjectiveLabs/injective-ts/commit/c3cc64d618fedb24a0b71078d4c7851b44a0fe34))
+
+
+
+
+
 ## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.57...@injectivelabs/derivatives-consumer@0.0.58) (2021-10-12)
 
 

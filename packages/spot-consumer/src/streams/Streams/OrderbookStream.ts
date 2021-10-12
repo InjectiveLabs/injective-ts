@@ -11,9 +11,11 @@ export type OrderbookStreamCallback = ({
   orderbook,
   operation,
   timestamp,
+  marketId,
 }: {
   orderbook: Orderbook | undefined
   operation: StreamOperation
+  marketId: string
   timestamp: number
 }) => void
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.69...@injectivelabs/spot-consumer@0.0.70) (2021-10-12)
+
+
+### Bug Fixes
+
+* types for streaming ([c3cc64d](https://github.com/InjectiveLabs/injective-ts/commit/c3cc64d618fedb24a0b71078d4c7851b44a0fe34))
+
+
+
+
+
 ## [0.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.68...@injectivelabs/spot-consumer@0.0.69) (2021-10-12)
 
 
