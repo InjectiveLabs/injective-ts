@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.57...@injectivelabs/derivatives-consumer@0.0.58) (2021-10-12)
+
+
+### Bug Fixes
+
+* marketId removed as required param ([f016f77](https://github.com/InjectiveLabs/injective-ts/commit/f016f77c5fe5870589fa988c53c9c04be1f7081e))
+
+
+
+
+
 ## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.56...@injectivelabs/derivatives-consumer@0.0.57) (2021-10-10)
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer

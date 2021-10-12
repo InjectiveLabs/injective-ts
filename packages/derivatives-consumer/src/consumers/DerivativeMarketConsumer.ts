@@ -152,12 +152,15 @@ export class DerivativeMarketConsumer extends BaseConsumer {
     subaccountId,
     executionSide,
   }: {
-    marketId: string
+    marketId?: string
     subaccountId?: AccountAddress
     executionSide?: TradeExecutionSide
   }) {
     const request = new TradesRequest()
-    request.setMarketId(marketId)
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
