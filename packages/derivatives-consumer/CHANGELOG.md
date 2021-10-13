@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.59...@injectivelabs/derivatives-consumer@0.0.60) (2021-10-13)
+
+
+### Features
+
+* portfolio value ([59053da](https://github.com/InjectiveLabs/injective-ts/commit/59053dabeaf7404e95ca5b33bf20ce2ba207dfc7))
+
+
+
+
+
 ## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.58...@injectivelabs/derivatives-consumer@0.0.59) (2021-10-12)
 
 

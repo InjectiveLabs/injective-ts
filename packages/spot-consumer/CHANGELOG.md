@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.70...@injectivelabs/spot-consumer@0.0.71) (2021-10-13)
+
+
+### Features
+
+* portfolio value ([59053da](https://github.com/InjectiveLabs/injective-ts/commit/59053dabeaf7404e95ca5b33bf20ce2ba207dfc7))
+
+
+
+
+
 ## [0.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.69...@injectivelabs/spot-consumer@0.0.70) (2021-10-12)
 
 
