@@ -27,7 +27,7 @@ export class SubaccountConsumer extends BaseConsumer {
         typeof InjectiveAccountsRPC.Portfolio
       >(request, InjectiveAccountsRPC.Portfolio)
 
-      return response.getPortfolioValue()
+      return response.getPortfolio()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }

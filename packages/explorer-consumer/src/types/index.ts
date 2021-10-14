@@ -49,6 +49,6 @@ export interface BlockWithTxs {
   numPreCommits: number
   numTxs: number
   totalTxs: number
-  txs: Transaction[]
+  txs?: Transaction[]
   timestamp: string
 }

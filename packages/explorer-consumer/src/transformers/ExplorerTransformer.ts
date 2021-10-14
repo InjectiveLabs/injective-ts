@@ -72,9 +72,6 @@ export class ExplorerTransformer {
       numTxs: block.getNumTxs(),
       totalTxs: block.getTotalTxs(),
       timestamp: block.getTimestamp(),
-      txs: ExplorerTransformer.grpcTransactionsToTransactions(
-        block.getTxsList(),
-      ),
     }
   }
 
