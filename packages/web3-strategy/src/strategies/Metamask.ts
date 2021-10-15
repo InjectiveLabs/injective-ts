@@ -35,14 +35,14 @@ export default class Metamask
   }) {
     super({ chainId, options })
 
-    if (!$window || !isMetamaskInstalled) {
-      throw new Web3Exception('Metamask: You need Metamask extension installed')
-    }
-
     this.ethereum = $window.ethereum
   }
 
   async getAddresses(): Promise<string[]> {
+    if (!this.ethereum) {
+      throw new Web3Exception('Metamask: You need Metamask extension installed')
+    }
+
     try {
       return await this.ethereum.request({
         method: 'eth_requestAccounts',
@@ -54,6 +54,10 @@ export default class Metamask
 
   // eslint-disable-next-line class-methods-use-this
   async confirm(address: AccountAddress): Promise<string> {
+    if (!this.ethereum) {
+      throw new Web3Exception('Metamask: You need Metamask extension installed')
+    }
+
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -65,6 +69,10 @@ export default class Metamask
     transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
+    if (!this.ethereum) {
+      throw new Web3Exception('Metamask: You need Metamask extension installed')
+    }
+
     try {
       return await this.ethereum.request({
         method: 'eth_sendTransaction',
@@ -81,6 +89,10 @@ export default class Metamask
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
+    if (!this.ethereum) {
+      throw new Web3Exception('Metamask: You need Metamask extension installed')
+    }
+
     try {
       return await this.ethereum.request({
         method: 'eth_signTypedData_v4',
@@ -94,6 +106,10 @@ export default class Metamask
   }
 
   async getNetworkId(): Promise<string> {
+    if (!this.ethereum) {
+      throw new Web3Exception('Metamask: You need Metamask extension installed')
+    }
+
     try {
       return this.ethereum.request({ method: 'net_version' })
     } catch (e: any) {
@@ -104,6 +120,10 @@ export default class Metamask
   }
 
   async getChainId(): Promise<string> {
+    if (!this.ethereum) {
+      throw new Web3Exception('Metamask: You need Metamask extension installed')
+    }
+
     try {
       return this.ethereum.request({ method: 'eth_chainId' })
     } catch (e: any) {
@@ -114,6 +134,10 @@ export default class Metamask
   }
 
   async getTransactionReceipt(txHash: string): Promise<string> {
+    if (!this.ethereum) {
+      throw new Web3Exception('Metamask: You need Metamask extension installed')
+    }
+
     const interval = 1000
     const transactionReceiptRetry = async () => {
       const receipt = await this.ethereum.request({
@@ -139,10 +163,18 @@ export default class Metamask
   }
 
   onChainChanged(callback: () => void): void {
+    if (!this.ethereum) {
+      return
+    }
+
     this.ethereum.on('chainChanged', callback)
   }
 
   onAccountChanged(callback: (account: AccountAddress) => void): void {
+    if (!this.ethereum) {
+      return
+    }
+
     this.ethereum.on('accountsChanged', callback)
   }
 
