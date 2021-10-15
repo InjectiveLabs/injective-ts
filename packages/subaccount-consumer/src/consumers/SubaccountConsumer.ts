@@ -16,7 +16,7 @@ import { GrpcException } from '@injectivelabs/exceptions'
 import BaseConsumer from '../BaseConsumer'
 
 export class SubaccountConsumer extends BaseConsumer {
-  async fetchPortfolio(address: AccountAddress) {
+  async fetchPortfolioValue(address: AccountAddress) {
     const request = new PortfolioRequest()
     request.setAccountAddress(address)
 

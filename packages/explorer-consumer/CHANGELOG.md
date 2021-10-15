@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.7...@injectivelabs/explorer-consumer@0.0.8) (2021-10-15)
+
+
+### Features
+
+* portfolio value ([0f85db1](https://github.com/InjectiveLabs/injective-ts/commit/0f85db13146cad0d1c4cb991e2190062e6156b71))
+
+
+
+
+
 ## [0.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.6...@injectivelabs/explorer-consumer@0.0.7) (2021-10-14)
 
 **Note:** Version bump only for package @injectivelabs/explorer-consumer

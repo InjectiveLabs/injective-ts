@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.98](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.97...@injectivelabs/exchange-consumer@0.0.98) (2021-10-15)
+
+
+### Features
+
+* portfolio value ([0f85db1](https://github.com/InjectiveLabs/injective-ts/commit/0f85db13146cad0d1c4cb991e2190062e6156b71))
+
+
+
+
+
 ## [0.0.97](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.96...@injectivelabs/exchange-consumer@0.0.97) (2021-10-14)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer

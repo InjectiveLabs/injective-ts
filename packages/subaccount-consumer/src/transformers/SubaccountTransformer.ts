@@ -4,13 +4,44 @@ import {
   GrpcSubaccountBalance,
   GrpcSubaccountBalanceTransfer,
   GrpcSubaccountDeposit,
+  GrpcAccountPortfolio,
+  GrpcSubaccountPortfolio,
   TransferType,
   SubaccountBalance,
   SubaccountDeposit,
   SubaccountTransfer,
+  AccountPortfolio,
+  SubaccountPortfolio,
 } from '../types'
 
 export class SubaccountTransformer {
+  static grpcSubaccountPortfolioToSubaccountPortfolio(
+    subaccountPortfolio: GrpcSubaccountPortfolio,
+  ): SubaccountPortfolio {
+    return {
+      subaccountId: subaccountPortfolio.getSubaccountId(),
+      availableBalance: subaccountPortfolio.getAvailableBalance(),
+      lockedBalance: subaccountPortfolio.getLockedBalance(),
+      unrealizedPnl: subaccountPortfolio.getUnrealizedPnl(),
+    }
+  }
+
+  static grpcAccountPortfolioToAccountPortfolio(
+    portfolio: GrpcAccountPortfolio,
+  ): AccountPortfolio {
+    return {
+      portfolioValue: portfolio.getPortfolioValue(),
+      availableBalance: portfolio.getAvailableBalance(),
+      lockedBalance: portfolio.getLockedBalance(),
+      unrealizedPnl: portfolio.getUnrealizedPnl(),
+      subaccountsList: portfolio
+        .getSubaccountsList()
+        .map(
+          SubaccountTransformer.grpcSubaccountPortfolioToSubaccountPortfolio,
+        ),
+    }
+  }
+
   static grpcAmountToAmount(amount: GrpcCosmosCoin): Coin {
     return {
       amount: amount.getAmount(),

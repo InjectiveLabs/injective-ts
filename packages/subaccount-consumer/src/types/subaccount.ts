@@ -2,6 +2,8 @@ import {
   SubaccountDeposit as GrpcSubaccountDeposit,
   SubaccountBalance as GrpcSubaccountBalance,
   SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
+  AccountPortfolio as GrpcAccountPortfolio,
+  SubaccountPortfolio as GrpcSubaccountPortfolio,
 } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
 import { Coin } from '@injectivelabs/ts-types'
 
@@ -34,8 +36,25 @@ export interface SubaccountBalance {
   deposit?: SubaccountDeposit
 }
 
+export interface SubaccountPortfolio {
+  subaccountId: string
+  availableBalance: string
+  lockedBalance: string
+  unrealizedPnl: string
+}
+
+export interface AccountPortfolio {
+  portfolioValue: string
+  availableBalance: string
+  lockedBalance: string
+  unrealizedPnl: string
+  subaccountsList: Array<SubaccountPortfolio>
+}
+
 export {
   GrpcSubaccountDeposit,
   GrpcSubaccountBalance,
+  GrpcAccountPortfolio,
+  GrpcSubaccountPortfolio,
   GrpcSubaccountBalanceTransfer,
 }
