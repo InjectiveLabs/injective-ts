@@ -102,4 +102,92 @@ export default {
     ...tokens.ZRX,
     address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
   },
+  [tokens.BAT.address]: {
+    ...tokens.BAT,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens['1INCH'].address]: {
+    ...tokens['1INCH'],
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.BUSD.address]: {
+    ...tokens.BUSD,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.CEL.address]: {
+    ...tokens.CEL,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.CELL.address]: {
+    ...tokens.CELL,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.CHZ.address]: {
+    ...tokens.CHZ,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.DEFI5.address]: {
+    ...tokens.DEFI5,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.ENJ.address]: {
+    ...tokens.ENJ,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.EVAI.address]: {
+    ...tokens.EVAI,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.FTM.address]: {
+    ...tokens.FTM,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.HT.address]: {
+    ...tokens.HT,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.NEXO.address]: {
+    ...tokens.NEXO,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.NOIA.address]: {
+    ...tokens.NOIA,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.OCEAN.address]: {
+    ...tokens.OCEAN,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.PAXG.address]: {
+    ...tokens.PAXG,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.POOL.address]: {
+    ...tokens.POOL,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.RUNE.address]: {
+    ...tokens.RUNE,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.SHIB.address]: {
+    ...tokens.SHIB,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.STARS.address]: {
+    ...tokens.STARS,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.STT.address]: {
+    ...tokens.STT,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.SWAP.address]: {
+    ...tokens.SWAP,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.UMA.address]: {
+    ...tokens.UMA,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
 } as Record<string, TokenMeta>

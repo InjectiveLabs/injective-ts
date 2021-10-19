@@ -178,4 +178,211 @@ export default {
     address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
     coinGeckoId: 'axie-infinity',
   },
+  /* 20 Oct */
+  '1INCH': {
+    address: '0x111111111117dc0aa78b770fa6a738034120c302',
+    coinGeckoId: '1inch',
+    name: '1inch',
+    symbol: '1INCH',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/8104.png',
+  },
+
+  BAT: {
+    address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+    coinGeckoId: 'basic-attention-token',
+    name: 'Basic Attention Token',
+    symbol: 'BAT',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/1697.png',
+  },
+
+  BUSD: {
+    address: '0x4fabb145d64652a948d72533023f6e7a623c7c53',
+    coinGeckoId: 'binance-usd',
+    name: 'Binance USD',
+    symbol: 'BUSD',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/4687.png',
+  },
+
+  CEL: {
+    address: '0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d',
+    coinGeckoId: 'celsius-degree-token',
+    name: 'Celsius',
+    symbol: 'CEL',
+    decimals: 4,
+    logo: 'https://static.alchemyapi.io/images/assets/2700.png',
+  },
+
+  CELL: {
+    address: '0x26c8afbbfe1ebaca03c2bb082e69d0476bffe099',
+    coinGeckoId: 'cellframe',
+    name: 'Cellframe',
+    symbol: 'CELL',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/8992.png',
+  },
+
+  CHZ: {
+    address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
+    coinGeckoId: 'chiliz',
+    name: 'Chiliz',
+    symbol: 'CHZ',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/4066.png',
+  },
+
+  DEFI5: {
+    address: '0xfa6de2697d59e88ed7fc4dfe5a33dac43565ea41',
+    coinGeckoId: 'defi-top-5-tokens-index',
+    name: 'DEFI Top 5 Tokens Index',
+    symbol: 'DEFI5',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/8430.png',
+  },
+
+  ENJ: {
+    address: '0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c',
+    coinGeckoId: 'enjincoin',
+    name: 'Enjin Coin',
+    symbol: 'ENJ',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/2130.png',
+  },
+
+  EVAI: {
+    address: '0x50f09629d0afdf40398a3f317cc676ca9132055c',
+    coinGeckoId: 'evai',
+    name: 'Evai.io',
+    symbol: 'EVAI',
+    decimals: 8,
+    logo: 'https://static.alchemyapi.io/images/assets/9805.png',
+  },
+
+  FTM: {
+    address: '0x4e15361fd6b4bb609fa63c81a2be19d873717870',
+    coinGeckoId: 'fantom',
+    name: 'Fantom',
+    symbol: 'FTM',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/3513.png',
+  },
+
+  HT: {
+    address: '0x6f259637dcd74c767781e37bc6133cd6a68aa161',
+    coinGeckoId: 'huobi-token',
+    name: 'Huobi Token',
+    symbol: 'HT',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/2502.png',
+  },
+
+  NEXO: {
+    address: '0xb62132e35a6c13ee1ee0f84dc5d40bad8d815206',
+    coinGeckoId: 'nexo',
+    name: 'Nexo',
+    symbol: 'NEXO',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/2694.png',
+  },
+
+  NOIA: {
+    address: '0xa8c8cfb141a3bb59fea1e2ea6b79b5ecbcd7b6ca',
+    coinGeckoId: 'noia-network',
+    name: 'Syntropy',
+    symbol: 'NOIA',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/4191.png',
+  },
+
+  OCEAN: {
+    address: '0x967da4048cd07ab37855c090aaf366e4ce1b9f48',
+    coinGeckoId: 'ocean-protocol',
+    name: 'Ocean Protocol',
+    symbol: 'OCEAN',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/3911.png',
+  },
+
+  PAXG: {
+    address: '0x45804880de22913dafe09f4980848ece6ecbaf78',
+    coinGeckoId: 'pax-gold',
+    name: 'PAX Gold',
+    symbol: 'PAXG',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/4705.png',
+  },
+
+  POOL: {
+    address: '0x0cec1a9154ff802e7934fc916ed7ca50bde6844e',
+    coinGeckoId: 'pooltogether',
+    name: 'PoolTogether',
+    symbol: 'POOL',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/8508.png',
+  },
+
+  RUNE: {
+    address: '0x3155BA85D5F96b2d030a4966AF206230e46849cb',
+    coinGeckoId: 'thorchain-erc20',
+    name: 'THORChain (ERC20)',
+    symbol: 'RUNE',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/8272.png',
+  },
+
+  SHIB: {
+    address: '0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce',
+    coinGeckoId: 'shiba-inu',
+    name: 'SHIBA INU',
+    symbol: 'SHIB',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/5994.png',
+  },
+
+  STARS: {
+    address: '0xc55c2175e90a46602fd42e931f62b3acc1a013ca',
+    coinGeckoId: 'mogul-productions',
+    name: 'Mogul Productions',
+    symbol: 'STARS',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/8996.png',
+  },
+
+  STT: {
+    address: '0xaC9Bb427953aC7FDDC562ADcA86CF42D988047Fd',
+    coinGeckoId: 'scatter-cx',
+    name: 'Scatter.cx',
+    symbol: 'STT',
+    decimals: 18,
+    logo: '',
+  },
+
+  SWAP: {
+    address: '0xcc4304a31d09258b0029ea7fe63d032f52e44efe',
+    coinGeckoId: 'trustswap',
+    name: 'TrustSwap',
+    symbol: 'SWAP',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/5829.png',
+  },
+
+  UMA: {
+    address: '0x04fa0d235c4abf4bcf4787af4cf447de572ef828',
+    coinGeckoId: 'uma',
+    name: 'UMA',
+    symbol: 'UMA',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/5617.png',
+  },
+
+  UTK: {
+    address: '0xdc9ac3c20d1ed0b540df9b1fedc10039df13f99c',
+    coinGeckoId: 'utrust',
+    name: 'Utrust',
+    symbol: 'UTK',
+    decimals: 18,
+    logo: 'https://static.alchemyapi.io/images/assets/2320.png',
+  },
 }

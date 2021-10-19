@@ -50,4 +50,96 @@ export default {
     ...tokens.AXS,
     address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
   },
+  BAT: {
+    ...tokens.BAT,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  '1INCH': {
+    ...tokens['1INCH'],
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  BUSD: {
+    ...tokens.BUSD,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  CEL: {
+    ...tokens.CEL,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  CELL: {
+    ...tokens.CELL,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  CHZ: {
+    ...tokens.CHZ,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  DEFI5: {
+    ...tokens.DEFI5,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  ENJ: {
+    ...tokens.ENJ,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  EVAI: {
+    ...tokens.EVAI,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  FTM: {
+    ...tokens.FTM,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  HT: {
+    ...tokens.HT,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  NEXO: {
+    ...tokens.NEXO,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  NOIA: {
+    ...tokens.NOIA,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  OCEAN: {
+    ...tokens.OCEAN,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  PAXG: {
+    ...tokens.PAXG,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  POOL: {
+    ...tokens.POOL,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  RUNE: {
+    ...tokens.RUNE,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  SHIB: {
+    ...tokens.SHIB,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  STARS: {
+    ...tokens.STARS,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  STT: {
+    ...tokens.STT,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  SWAP: {
+    ...tokens.SWAP,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  UMA: {
+    ...tokens.UMA,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  UTK: {
+    ...tokens.UTK,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
 } as Record<string, TokenMeta>
