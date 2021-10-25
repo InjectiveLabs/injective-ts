@@ -36,12 +36,19 @@ import {
   SpotMarketOrder as GrpcSpotMarketOrder,
   SpotOrder as GrpcSpotOrder,
   Params as GrpcExchangeParams,
+  FeeDiscountTierInfo as GrpcFeeDiscountTierInfo,
+  FeeDiscountSchedule as GrpcFeeDiscountSchedule,
+  PointsMultiplier as GrpcPointsMultiplier,
+  TradingRewardCampaignBoostInfo as GrpcTradingRewardCampaignBoostInfo,
+  TradingRewardCampaignInfo as GrpcTradingRewardCampaignInfo,
+  CampaignRewardPool as GrpcCampaignRewardPool,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import {
   Supply as GrpcSupply,
   Params as GrpcBankParams,
 } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/bank_pb'
 import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { Coin } from '@injectivelabs/ts-types'
 
 export interface PaginationOption {
   key: string
@@ -56,7 +63,52 @@ export interface DepositProposalParams {
   denom: string
 }
 
+export interface FeeDiscountTierInfo {
+  makerDiscountRate: string
+  takerDiscountRate: string
+  stakedAmount: string
+  feePaidAmount: string
+}
+
+export interface FeeDiscountSchedule {
+  bucketCount: number
+  bucketDuration: number
+  quoteDenomsList: Array<string>
+  tierInfosList: Array<FeeDiscountTierInfo>
+  disqualifiedMarketIdsList: Array<string>
+}
+
+export interface PointsMultiplier {
+  makerPointsMultiplier: string
+  takerPointsMultiplier: string
+}
+
+export interface TradingRewardCampaignBoostInfo {
+  boostedSpotMarketIdsList: Array<string>
+  spotMarketMultipliersList: Array<PointsMultiplier>
+  boostedDerivativeMarketIdsList: Array<string>
+  derivativeMarketMultipliersList: Array<PointsMultiplier>
+}
+
+export interface TradingRewardCampaignInfo {
+  campaignDurationSeconds: number
+  quoteDenomsList: Array<string>
+  tradingRewardBoostInfo?: TradingRewardCampaignBoostInfo
+  disqualifiedMarketIdsList: Array<string>
+}
+
+export interface CampaignRewardPool {
+  startTimestamp: number
+  maxCampaignRewardsList: Coin[]
+}
+
 export {
+  GrpcFeeDiscountSchedule,
+  GrpcFeeDiscountTierInfo,
+  GrpcTradingRewardCampaignInfo,
+  GrpcTradingRewardCampaignBoostInfo,
+  GrpcPointsMultiplier,
+  GrpcCampaignRewardPool,
   GrpcCoin,
   GrpcValidator,
   GrpcDelegation,

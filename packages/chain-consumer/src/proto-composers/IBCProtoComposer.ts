@@ -1,4 +1,4 @@
-import { MsgTransfer } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/transfer_pb'
+import { MsgTransfer } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/tx_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { Height } from '@injectivelabs/chain-api/ibc/core/client/v1/client_pb'
 
@@ -21,10 +21,11 @@ export class IBCProtoComposer {
     channelId: string
     timeout?: number
     height?: {
-      versionHeight: number
-      versionNumber: number
+      revisionHeight: number
+      revisionNumber: number
     }
   }) {
+    const timeoutHeight = new Height()
     const token = new Coin()
     token.setDenom(denom)
     token.setAmount(amount)
@@ -37,11 +38,11 @@ export class IBCProtoComposer {
     message.setToken(token)
 
     if (height) {
-      const timeoutHeight = new Height()
-      timeoutHeight.setVersionHeight(height.versionHeight)
-      timeoutHeight.setVersionNumber(height.versionNumber)
-
-      message.setTimeoutHeight(timeoutHeight)
+      timeoutHeight.setRevisionHeight(height.revisionHeight)
+      timeoutHeight.setRevisionNumber(height.revisionNumber)
+    } else {
+      timeoutHeight.setRevisionHeight(0)
+      timeoutHeight.setRevisionNumber(1)
     }
 
     if (timeout) {

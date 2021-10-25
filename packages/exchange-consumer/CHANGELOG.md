@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.99](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.98...@injectivelabs/exchange-consumer@0.0.99) (2021-10-25)
+
+
+### Features
+
+* fee discount and trading rewards ([bff63c4](https://github.com/InjectiveLabs/injective-ts/commit/bff63c47e6dc2398787f876b8a4125385ec30648))
+
+
+
+
+
 ## [0.0.98](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.97...@injectivelabs/exchange-consumer@0.0.98) (2021-10-15)
 
 

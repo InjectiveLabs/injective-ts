@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.44...@injectivelabs/subaccount-consumer@0.0.45) (2021-10-25)
+
+
+### Features
+
+* fee discount and trading rewards ([bff63c4](https://github.com/InjectiveLabs/injective-ts/commit/bff63c47e6dc2398787f876b8a4125385ec30648))
+
+
+
+
+
 ## [0.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.43...@injectivelabs/subaccount-consumer@0.0.44) (2021-10-15)
 
 

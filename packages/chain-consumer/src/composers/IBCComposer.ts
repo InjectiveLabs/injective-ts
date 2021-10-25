@@ -1,6 +1,7 @@
 import snakeCaseKeys from 'snakecase-keys'
-import { MsgTransfer } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/transfer_pb'
+import { MsgTransfer } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/tx_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { Height } from '@injectivelabs/chain-api/ibc/core/client/v1/client_pb'
 
 export class IBCComposer {
   static transfer({
@@ -21,10 +22,11 @@ export class IBCComposer {
     channelId: string
     timeout?: number
     height?: {
-      versionHeight: number
-      versionNumber: number
+      revisionHeight: number
+      revisionNumber: number
     }
   }) {
+    const timeoutHeight = new Height()
     const token = new Coin()
     token.setDenom(denom)
     token.setAmount(amount)
@@ -36,20 +38,20 @@ export class IBCComposer {
     message.setSourcePort(port)
     message.setToken(token)
 
+    if (height) {
+      timeoutHeight.setRevisionHeight(height.revisionHeight)
+      timeoutHeight.setRevisionNumber(height.revisionNumber)
+    } else {
+      timeoutHeight.setRevisionHeight(0)
+      timeoutHeight.setRevisionNumber(1)
+    }
+
     if (timeout) {
       message.setTimeoutTimestamp(timeout)
     }
 
-    const messageObject = {
-      ...snakeCaseKeys(message.toObject()),
-      timeout_height: {
-        revision_number: height ? height.versionHeight : 1,
-        revision_height: height ? height.versionNumber : 0,
-      },
-    }
-
     return {
-      ...messageObject,
+      ...snakeCaseKeys(message.toObject()),
       '@type': '/ibc.applications.transfer.v1.MsgTransfer',
     }
   }
