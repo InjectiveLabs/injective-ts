@@ -4,6 +4,7 @@ import {
   LcdClient,
   setupBankExtension,
   BankExtension,
+  NodeInfoResponse,
 } from '@cosmjs/launchpad'
 import { SigningStargateClient } from '@cosmjs/stargate'
 import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin'
@@ -54,7 +55,7 @@ export class CosmJsWallet {
     )
   }
 
-  async getBalance({ address, denom }: { address: string; denom?: string }) {
+  async fetchBalance({ address, denom }: { address: string; denom?: string }) {
     const { lcdClient } = this
     const { result } = await lcdClient.bank.balances(address)
 
@@ -72,6 +73,24 @@ export class CosmJsWallet {
     }
 
     return balance
+  }
+
+  async fetchLatestBlock() {
+    const { lcdClient } = this
+    const { block } = await lcdClient.blocksLatest()
+
+    return { ...block }
+  }
+
+  async fetchNodeInfo(): Promise<{
+    nodeInfo: NodeInfoResponse['node_info']
+    applicationVersion: NodeInfoResponse['application_version']
+  }> {
+    const { lcdClient } = this
+    const { node_info: nodeInfo, application_version: applicationVersion } =
+      (await lcdClient.nodeInfo()) as NodeInfoResponse
+
+    return { nodeInfo, applicationVersion }
   }
 
   async sendIbcTokens({
