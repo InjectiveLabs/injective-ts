@@ -59,10 +59,7 @@ export class ExchangeConsumer extends BaseConsumer {
         typeof Query.FeeDiscountAccountInfo
       >(request, Query.FeeDiscountAccountInfo)
 
-      return {
-        accountInfo: response.getAccountInfo(),
-        tierLevel: response.getTierLevel(),
-      }
+      return response
     } catch (e: any) {
       throw new GrpcException(e.message)
     }
@@ -78,12 +75,7 @@ export class ExchangeConsumer extends BaseConsumer {
         typeof Query.TradeRewardCampaign
       >(request, Query.TradeRewardCampaign)
 
-      return {
-        totalTradeRewardPoints: response.getTotalTradeRewardPoints(),
-        tradingRewardCampaignInfo: response.getTradingRewardCampaignInfo(),
-        tradingRewardPoolCampaignScheduleList:
-          response.getTradingRewardPoolCampaignScheduleList(),
-      }
+      return response
     } catch (e: any) {
       throw new GrpcException(e.message)
     }
