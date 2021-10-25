@@ -1,7 +1,7 @@
 {
-  "name": "@injectivelabs/chain-consumer",
-  "description": "Interacting with our Chain API made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.84",
+  "name": "@injectivelabs/cosmos-ts",
+  "description": "Cosmos related wrappers.",
+  "version": "0.0.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,12 +9,12 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~chain-consumer": "dist"
+    "~cosmos-ts": "dist"
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
     "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
     "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
@@ -27,17 +27,20 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@improbable-eng/grpc-web": "^0.14.0",
-    "@improbable-eng/grpc-web-node-http-transport": "^0.14.0",
-    "@injectivelabs/chain-api": "^1.4.13",
-    "@injectivelabs/exceptions": "^0.0.26",
-    "@injectivelabs/ts-types": "^0.0.22",
-    "@injectivelabs/utils": "^0.0.33",
-    "bech32": "^2.0.0",
-    "ethereumjs-util": "^7.0.10",
+    "@cosmjs/amino": "^0.26.2",
+    "@cosmjs/launchpad": "^0.26.2",
+    "@cosmjs/proto-signing": "^0.26.2",
+    "@injectivelabs/exceptions": "^0.0.29",
+    "@injectivelabs/token-metadata": "^0.0.22",
+    "@injectivelabs/ts-types": "^0.0.25",
+    "@injectivelabs/utils": "^0.0.38",
+    "@keplr-wallet/common": "^0.9.4",
+    "@keplr-wallet/cosmos": "^0.9.4",
+    "@keplr-wallet/types": "^0.9.4",
+    "@keplr-wallet/unit": "^0.9.4",
+    "commitizen": "^4.2.4",
     "link-module-alias": "^1.2.0",
-    "shx": "^0.3.2",
-    "snakecase-keys": "^3.2.1"
-  },
-  "gitHead": "05eb3472375cb5f1d46ba545222f1edafedbda75"
+    "long": "^4.0.0",
+    "shx": "^0.3.2"
+  }
 }

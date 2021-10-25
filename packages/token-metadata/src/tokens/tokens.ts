@@ -178,6 +178,7 @@ export default {
     address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
     coinGeckoId: 'axie-infinity',
   },
+
   /* 20 Oct */
   '1INCH': {
     address: '0x111111111117dc0aa78b770fa6a738034120c302',
@@ -384,5 +385,24 @@ export default {
     symbol: 'UTK',
     decimals: 18,
     logo: 'https://static.alchemyapi.io/images/assets/2320.png',
+  },
+
+  /* 25 Oct */
+  ATOM: {
+    address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
+    coinGeckoId: 'cosmos',
+    name: 'Cosmos',
+    symbol: 'ATOM',
+    decimals: 6,
+    logo: 'atom.svg',
+  },
+
+  UPHOTON: {
+    address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
+    coinGeckoId: 'cosmos',
+    name: 'Cosmos Testnet',
+    symbol: 'UPHOTON',
+    decimals: 6,
+    logo: 'atom.svg',
   },
 }

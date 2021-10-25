@@ -19,6 +19,7 @@ export default {
   [tokens.UNI.address.toLowerCase()]: tokens.UNI,
   [tokens.LINK.address.toLowerCase()]: tokens.LINK,
   [tokens.SUSHI.address.toLowerCase()]: tokens.SUSHI,
+  [tokens['1INCH'].address.toLowerCase()]: tokens['1INCH'],
   [tokens.AXS.address.toLowerCase()]: tokens.AXS,
   [tokens.BAT.address.toLowerCase()]: tokens.BAT,
   [tokens.BUSD.address.toLowerCase()]: tokens.BUSD,
@@ -42,5 +43,6 @@ export default {
   [tokens.SWAP.address.toLowerCase()]: tokens.SWAP,
   [tokens.UMA.address.toLowerCase()]: tokens.UMA,
   [tokens.UTK.address.toLowerCase()]: tokens.UTK,
-  [tokens['1INCH'].address.toLowerCase()]: tokens['1INCH'],
+  [tokens.ATOM.address.toLowerCase()]: tokens.ATOM,
+  [tokens.UPHOTON.address.toLowerCase()]: tokens.UPHOTON,
 } as Record<string, TokenMeta>

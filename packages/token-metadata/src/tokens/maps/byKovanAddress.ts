@@ -190,4 +190,12 @@ export default {
     ...tokens.UMA,
     address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
   },
+  [tokens.ATOM.address]: {
+    ...tokens.ATOM,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  [tokens.UPHOTON.address]: {
+    ...tokens.UPHOTON,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
 } as Record<string, TokenMeta>

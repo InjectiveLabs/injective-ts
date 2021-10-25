@@ -1,6 +1,6 @@
 {
   "npmClient": "yarn",
-  "name": "Injective Monorepo",
+  "name": "injective-ts",
   "packages": ["packages/*"],
   "version": "independent",
   "useWorkspaces": true,

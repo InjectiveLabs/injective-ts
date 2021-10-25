@@ -39,6 +39,12 @@
       "@injectivelabs/spot-consumer": [
         "packages/spot-consumer/src"
       ],
+      "@injectivelabs/tokens-metadata": [
+        "packages/tokens-metadata/src"
+      ],
+      "@injectivelabs/cosmos-ts": [
+        "packages/cosmos-ts/src"
+      ],
       "@injectivelabs/*": [
         "packages/*/src"
       ]

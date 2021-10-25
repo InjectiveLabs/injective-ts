@@ -142,4 +142,12 @@ export default {
     ...tokens.UTK,
     address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
   },
+  ATOM: {
+    ...tokens.ATOM,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
+  UPHOTON: {
+    ...tokens.UPHOTON,
+    address: '0x9566902a13ce8ad8c730743e54ca0ff3657470a0',
+  },
 } as Record<string, TokenMeta>
