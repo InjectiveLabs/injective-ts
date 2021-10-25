@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.85](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.84...@injectivelabs/chain-consumer@0.0.85) (2021-10-25)
+
+
+### Features
+
+* added stargate signer ([8da2961](https://github.com/InjectiveLabs/injective-ts/commit/8da29610f532fb1a64f90183a058d638733d344f))
+
+
+
+
+
 ## [0.0.84](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.83...@injectivelabs/chain-consumer@0.0.84) (2021-10-25)
 
 

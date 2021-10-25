@@ -3,6 +3,7 @@ import {
   SigningCosmosClient,
   LcdClient,
   setupBankExtension,
+  BankExtension,
 } from '@cosmjs/launchpad'
 import { SigningStargateClient } from '@cosmjs/stargate'
 import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin'
@@ -18,7 +19,7 @@ export class CosmJsWallet {
 
   private keplr: KeplrWallet
 
-  private lcdClient
+  private lcdClient: LcdClient & BankExtension
 
   constructor(chainId: string) {
     this.chainId = chainId
