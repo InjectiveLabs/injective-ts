@@ -30,6 +30,8 @@
     "@cosmjs/amino": "^0.26.2",
     "@cosmjs/launchpad": "^0.26.2",
     "@cosmjs/proto-signing": "^0.26.2",
+    "@cosmjs/stargate": "^0.26.2",
+    "@cosmjs/tendermint-rpc": "^0.26.2",
     "@injectivelabs/exceptions": "^0.0.29",
     "@injectivelabs/token-metadata": "^0.0.22",
     "@injectivelabs/ts-types": "^0.0.25",
@@ -39,6 +41,7 @@
     "@keplr-wallet/types": "^0.9.4",
     "@keplr-wallet/unit": "^0.9.4",
     "commitizen": "^4.2.4",
+    "cosmjs-types": "^0.2.0",
     "link-module-alias": "^1.2.0",
     "long": "^4.0.0",
     "shx": "^0.3.2"
