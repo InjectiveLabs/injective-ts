@@ -1557,7 +1557,7 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@^1.5.1":
+"@injectivelabs/chain-api@^1.6.0":
   version "1.6.0"
   resolved "https://registry.npmjs.org/@injectivelabs/chain-api/-/chain-api-1.6.0.tgz#6e6769cedb4f66c81e87a28ef171ccfa47d369a9"
   integrity sha512-sK1SgEiKXXu4Dq3WukdH1p1aldhnKS+XFI4XFLeMhGP7skMOLXmXQyYI06hI6KZ+ksGiPHYbV9lCWtsrQ3oIkA==

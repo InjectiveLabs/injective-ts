@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.100](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.99...@injectivelabs/exchange-consumer@0.0.100) (2021-10-25)
+
+
+### Bug Fixes
+
+* minor ([97bc71b](https://github.com/InjectiveLabs/injective-ts/commit/97bc71bf68388fe3a73eca9ddc2608bb8d530132))
+
+
+
+
+
 ## [0.0.99](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.98...@injectivelabs/exchange-consumer@0.0.99) (2021-10-25)
 
 

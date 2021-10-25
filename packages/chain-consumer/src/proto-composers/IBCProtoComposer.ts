@@ -45,6 +45,8 @@ export class IBCProtoComposer {
       timeoutHeight.setRevisionNumber(1)
     }
 
+    message.setTimeoutHeight(timeoutHeight)
+
     if (timeout) {
       message.setTimeoutTimestamp(timeout)
     }
