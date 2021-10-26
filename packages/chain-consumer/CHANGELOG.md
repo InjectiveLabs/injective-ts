@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.90](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.89...@injectivelabs/chain-consumer@0.0.90) (2021-10-26)
+
+
+### Features
+
+* denom trace ([7faf575](https://github.com/InjectiveLabs/injective-ts/commit/7faf5751818db89ffe86877367973dda85063be1))
+
+
+
+
+
 ## [0.0.89](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.88...@injectivelabs/chain-consumer@0.0.89) (2021-10-25)
 
 
