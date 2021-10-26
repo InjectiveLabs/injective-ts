@@ -39,7 +39,7 @@ export class CosmJsWallet {
     const Keplr = await keplr.getKeplrWallet()
 
     return new SigningCosmosClient(
-      endpoints.rest,
+      endpoints.rpc,
       address,
       Keplr.getOfflineSignerOnlyAmino(chainId),
     )
@@ -50,7 +50,7 @@ export class CosmJsWallet {
     const Keplr = await keplr.getKeplrWallet()
 
     return SigningStargateClient.connectWithSigner(
-      endpoints.rest,
+      endpoints.rpc,
       Keplr.getOfflineSignerOnlyAmino(chainId),
     )
   }
