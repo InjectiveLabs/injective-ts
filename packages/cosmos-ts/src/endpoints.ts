@@ -11,8 +11,8 @@ export const getLcdEndpointFromChainId = (
       }
     case CosmosChainId.Injective:
       return {
-        rpc: 'https://lcd.injective.network/',
-        rest: 'https://tm.injective.network/',
+        rpc: 'https://tm.injective.network/',
+        rest: 'https://lcd.injective.network/',
       }
     case TestnetCosmosChainId.Cosmoshub:
       return {
@@ -21,8 +21,8 @@ export const getLcdEndpointFromChainId = (
       }
     case TestnetCosmosChainId.Injective:
       return {
-        rpc: 'https://testnet.lcd.injective.dev/',
-        rest: 'https://testnet.tm.injective.dev/',
+        rpc: 'https://testnet.tm.injective.dev/',
+        rest: 'https://testnet.lcd.injective.dev/',
       }
     default:
       throw new Error(`Endpoints for ${chainId} not found`)
