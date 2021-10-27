@@ -397,6 +397,15 @@ export default {
     logo: 'atom.svg',
   },
 
+  UATOM: {
+    address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
+    coinGeckoId: 'cosmos',
+    name: 'Cosmos',
+    symbol: 'ATOM',
+    decimals: 6,
+    logo: 'atom.svg',
+  },
+
   UPHOTON: {
     address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
     coinGeckoId: 'cosmos',

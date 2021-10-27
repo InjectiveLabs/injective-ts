@@ -44,5 +44,6 @@ export default {
   [tokens.UMA.address.toLowerCase()]: tokens.UMA,
   [tokens.UTK.address.toLowerCase()]: tokens.UTK,
   [tokens.ATOM.address.toLowerCase()]: tokens.ATOM,
+  [tokens.UATOM.address.toLowerCase()]: tokens.UATOM,
   [tokens.UPHOTON.address.toLowerCase()]: tokens.UPHOTON,
 } as Record<string, TokenMeta>

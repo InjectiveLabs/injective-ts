@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.22...@injectivelabs/token-metadata@0.0.23) (2021-10-27)
+
+
+### Features
+
+* uatom added ([3abbd9e](https://github.com/InjectiveLabs/injective-ts/commit/3abbd9e7bd674d74e007c6d14b860781da1e3bff))
+
+
+
+
+
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.21...@injectivelabs/token-metadata@0.0.22) (2021-10-25)
 
 

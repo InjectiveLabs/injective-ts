@@ -43,5 +43,6 @@ export default {
   [tokens.UMA.symbol.toLowerCase()]: tokens.UMA.coinGeckoId,
   [tokens.UTK.symbol.toLowerCase()]: tokens.UTK.coinGeckoId,
   [tokens.ATOM.symbol.toLowerCase()]: tokens.ATOM.coinGeckoId,
+  [tokens.UATOM.symbol.toLowerCase()]: tokens.UATOM.coinGeckoId,
   [tokens.UPHOTON.symbol.toLowerCase()]: tokens.UPHOTON.coinGeckoId,
 } as Record<string, string>
