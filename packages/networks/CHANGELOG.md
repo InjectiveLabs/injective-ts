@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.48...@injectivelabs/networks@0.0.49) (2021-10-27)
+
+
+### Bug Fixes
+
+* tm endpoints ([d3c1f35](https://github.com/InjectiveLabs/injective-ts/commit/d3c1f35dc13b82e6b184185003cc3a99b3d1994e))
+
+
+
+
+
 ## [0.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.47...@injectivelabs/networks@0.0.48) (2021-10-27)
 
 

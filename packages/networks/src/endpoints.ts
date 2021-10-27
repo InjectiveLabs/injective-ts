@@ -13,7 +13,7 @@ export const urlEndpointsMainnet: UrlEndpoint = {
 export const urlEndpointsPublic: UrlEndpoint = {
   baseUrl: 'https://public.api.injective.network/api',
   chainUrl: 'https://public.grpc.injective.network',
-  tmUrl: 'https://public.tm.injective.network',
+  tmUrl: 'https://tm.injective.network',
   chainHttpUrl: 'https://public.lcd.injective.network',
   exchangeUrl: 'https://public.api.injective.network',
   exchangeGatewayUrl: 'https://public.web3-gateway.injective.network',
@@ -23,7 +23,7 @@ export const urlEndpointsPublic: UrlEndpoint = {
 export const urlEndpointsMainnetOld: UrlEndpoint = {
   baseUrl: 'https://api.injective.network/api',
   chainUrl: 'https://grpc.injective.network',
-  tmUrl: 'https://public.tm.injective.network',
+  tmUrl: 'https://tm.injective.network',
   chainHttpUrl: 'https://lcd.injective.network',
   exchangeUrl: 'https://api.injective.network',
   exchangeGatewayUrl: 'https://web3-gateway.injective.network',
