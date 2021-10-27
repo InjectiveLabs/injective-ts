@@ -1,7 +1,7 @@
 import {
   urlEndpointsMainnet,
   urlEndpointsLocal,
-  urlEndpointsStaking,
+  urlEndpointsTestnet,
   urlEndpointsPublic,
   urlEndpointsDevnet,
   urlEndpointsMainnetOld,
@@ -13,7 +13,7 @@ export const urlEndpointUrls: { [key: string]: UrlEndpoint } = {
   mainnetOld: urlEndpointsMainnetOld,
   public: urlEndpointsPublic,
   devnet: urlEndpointsDevnet,
-  testnet: urlEndpointsStaking,
+  testnet: urlEndpointsTestnet,
   local: urlEndpointsLocal,
 }
 
