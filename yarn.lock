@@ -1557,10 +1557,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.npmjs.org/@injectivelabs/chain-api/-/chain-api-1.6.0.tgz#6e6769cedb4f66c81e87a28ef171ccfa47d369a9"
-  integrity sha512-sK1SgEiKXXu4Dq3WukdH1p1aldhnKS+XFI4XFLeMhGP7skMOLXmXQyYI06hI6KZ+ksGiPHYbV9lCWtsrQ3oIkA==
+"@injectivelabs/chain-api@^1.6.2":
+  version "1.6.2"
+  resolved "https://registry.npmjs.org/@injectivelabs/chain-api/-/chain-api-1.6.2.tgz#6295cd9b8a7c401d7c3672135db6729b34171aee"
+  integrity sha512-Rzkx+KxvLVZk01XOA611v4fms0L/aoLl94JUfreG4TmiaUufUXxO0EMWo/UatpXa4uorFPr/ISnfMLR/2zUtrA==
   dependencies:
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
