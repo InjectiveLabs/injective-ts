@@ -31,7 +31,7 @@
     "@improbable-eng/grpc-web-node-http-transport": "^0.14.0",
     "@injectivelabs/chain-api": "^1.6.0",
     "@injectivelabs/exceptions": "^0.0.26",
-    "@injectivelabs/exchange-api": "^2.2.21",
+    "@injectivelabs/exchange-api": "^2.2.23",
     "@injectivelabs/ts-types": "^0.0.25",
     "@injectivelabs/utils": "^0.0.38",
     "link-module-alias": "^1.2.0",
