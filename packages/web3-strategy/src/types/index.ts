@@ -8,6 +8,7 @@ export * from './enums'
 export * from './strategy'
 
 export interface Eip1993ProviderWithMetamask extends Eip1993Provider {
+  removeAllListeners(): void
   isMetaMask: boolean
 }
 

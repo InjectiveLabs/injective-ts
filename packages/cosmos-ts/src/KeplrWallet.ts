@@ -69,7 +69,6 @@ export class KeplrWallet {
     try {
       return window.getOfflineSigner(chainId).getAccounts()
     } catch (e: any) {
-      console.log(e, typeof e)
       throw new Error(e.message)
     }
   }

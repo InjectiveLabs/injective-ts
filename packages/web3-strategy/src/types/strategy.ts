@@ -72,11 +72,15 @@ export interface ConcreteWeb3Strategy {
 
   getTransactionReceipt(txHash: string): void
 
-  onChainChanged(callback: onChainIdChangeCallback): void
+  onAccountChange?(callback: onAccountChangeCallback): void
 
-  onAccountChanged(callback: onAccountChangeCallback): void
+  onChainIdChange?(callback: onChainIdChangeCallback): void
+
+  cancelOnChainIdChange?(): void
+
+  cancelOnAccountChange?(): void
+
+  cancelAllEvents?(): void
 
   isWeb3Connected(): boolean
-
-  setOptions(options: Partial<ConcreteStrategyOptions>): void
 }

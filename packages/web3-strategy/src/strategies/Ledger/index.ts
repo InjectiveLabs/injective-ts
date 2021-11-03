@@ -11,7 +11,7 @@ import {
   LedgerDerivationPathType,
   LedgerWalletInfo,
 } from '../../types'
-import BaseConcreteStrategy from '../../BaseConcreteStrategy'
+import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
@@ -75,13 +75,11 @@ export default class Ledger
   }) {
     super({ chainId, options })
 
-    this.baseDerivationPath =
-      options.baseDerivationPath || DEFAULT_BASE_DERIVATION_PATH
-    this.derivationPathType = LedgerDerivationPathType.LedgerLive
+    this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
+    this.derivationPathType =
+      options.derivationPathType || LedgerDerivationPathType.LedgerLive
     this.ledger = new LedgerHW()
   }
-
-  setOptions(_options: ConcreteStrategyOptions): void {}
 
   public async getAddresses(): Promise<string[]> {
     const { baseDerivationPath, derivationPathType } = this
@@ -94,6 +92,7 @@ export default class Ledger
       )
       return wallets.map((k) => k.address)
     } catch (e: any) {
+      console.log(e)
       const message = e.message || e
 
       if (
@@ -226,14 +225,6 @@ export default class Ledger
     return (await accountManager.getWalletForAddress(
       address,
     )) as LedgerWalletInfo
-  }
-
-  onChainChanged = (_callback: () => void): void => {
-    //
-  }
-
-  onAccountChanged = (_callback: (account: AccountAddress) => void): void => {
-    //
   }
 
   isWeb3Connected = (): boolean => true // TODO

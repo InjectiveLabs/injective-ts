@@ -7,7 +7,7 @@ import {
   Eip1993ProviderWithMetamask,
   WindowWithEip1193Provider,
 } from '../types'
-import BaseConcreteStrategy from '../BaseConcreteStrategy'
+import BaseConcreteStrategy from './Base'
 
 const $window = (isServerSide()
   ? {}
@@ -39,12 +39,14 @@ export default class Metamask
   }
 
   async getAddresses(): Promise<string[]> {
-    if (!this.ethereum) {
+    const { ethereum } = this
+
+    if (!ethereum) {
       throw new Web3Exception('Metamask: You need Metamask extension installed')
     }
 
     try {
-      return await this.ethereum.request({
+      return await ethereum.request({
         method: 'eth_requestAccounts',
       })
     } catch (e: any) {
@@ -54,7 +56,9 @@ export default class Metamask
 
   // eslint-disable-next-line class-methods-use-this
   async confirm(address: AccountAddress): Promise<string> {
-    if (!this.ethereum) {
+    const { ethereum } = this
+
+    if (!ethereum) {
       throw new Web3Exception('Metamask: You need Metamask extension installed')
     }
 
@@ -69,12 +73,14 @@ export default class Metamask
     transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    if (!this.ethereum) {
+    const { ethereum } = this
+
+    if (!ethereum) {
       throw new Web3Exception('Metamask: You need Metamask extension installed')
     }
 
     try {
-      return await this.ethereum.request({
+      return await ethereum.request({
         method: 'eth_sendTransaction',
         params: [transaction],
       })
@@ -89,12 +95,14 @@ export default class Metamask
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    if (!this.ethereum) {
+    const { ethereum } = this
+
+    if (!ethereum) {
       throw new Web3Exception('Metamask: You need Metamask extension installed')
     }
 
     try {
-      return await this.ethereum.request({
+      return await ethereum.request({
         method: 'eth_signTypedData_v4',
         params: [address, eip712json],
       })
@@ -106,12 +114,14 @@ export default class Metamask
   }
 
   async getNetworkId(): Promise<string> {
-    if (!this.ethereum) {
+    const { ethereum } = this
+
+    if (!ethereum) {
       throw new Web3Exception('Metamask: You need Metamask extension installed')
     }
 
     try {
-      return this.ethereum.request({ method: 'net_version' })
+      return ethereum.request({ method: 'net_version' })
     } catch (e: any) {
       throw new Web3Exception(
         `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
@@ -120,12 +130,14 @@ export default class Metamask
   }
 
   async getChainId(): Promise<string> {
-    if (!this.ethereum) {
+    const { ethereum } = this
+
+    if (!ethereum) {
       throw new Web3Exception('Metamask: You need Metamask extension installed')
     }
 
     try {
-      return this.ethereum.request({ method: 'eth_chainId' })
+      return ethereum.request({ method: 'eth_chainId' })
     } catch (e: any) {
       throw new Web3Exception(
         `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
@@ -134,13 +146,15 @@ export default class Metamask
   }
 
   async getTransactionReceipt(txHash: string): Promise<string> {
-    if (!this.ethereum) {
+    const { ethereum } = this
+
+    if (!ethereum) {
       throw new Web3Exception('Metamask: You need Metamask extension installed')
     }
 
     const interval = 1000
     const transactionReceiptRetry = async () => {
-      const receipt = await this.ethereum.request({
+      const receipt = await ethereum.request({
         method: 'eth_getTransactionReceipt',
         params: [txHash],
       })
@@ -162,24 +176,48 @@ export default class Metamask
     }
   }
 
-  onChainChanged(callback: () => void): void {
-    if (!this.ethereum) {
+  onChainIdChanged(callback: () => void): void {
+    const { ethereum } = this
+
+    if (!ethereum) {
       return
     }
 
-    this.ethereum.on('chainChanged', callback)
+    ethereum.on('chainChanged', callback)
   }
 
-  onAccountChanged(callback: (account: AccountAddress) => void): void {
-    if (!this.ethereum) {
+  onAccountChange(callback: (account: AccountAddress) => void): void {
+    const { ethereum } = this
+
+    if (!ethereum) {
       return
     }
 
-    this.ethereum.on('accountsChanged', callback)
+    ethereum.on('accountsChanged', callback)
   }
 
-  setOptions = (_options: ConcreteStrategyOptions): void => {
-    //
+  cancelOnChainIdChange(): void {
+    const { ethereum } = this
+
+    if (ethereum) {
+      // ethereum.removeListener('chainChanged', handler)
+    }
+  }
+
+  cancelOnAccountChange(): void {
+    const { ethereum } = this
+
+    if (ethereum) {
+      // ethereum.removeListener('chainChanged', handler)
+    }
+  }
+
+  cancelAllEvents(): void {
+    const { ethereum } = this
+
+    if (ethereum) {
+      ethereum.removeAllListeners()
+    }
   }
 
   isWeb3Connected = (): boolean => isMetamaskInstalled

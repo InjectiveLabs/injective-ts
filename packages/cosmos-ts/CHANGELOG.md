@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.9...@injectivelabs/cosmos-ts@0.0.10) (2021-11-03)
+
+
+### Bug Fixes
+
+* ledger legacy ([46b5f79](https://github.com/InjectiveLabs/injective-ts/commit/46b5f7943870b841e9ade245c0508e252c842225))
+
+
+
+
+
 ## [0.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.8...@injectivelabs/cosmos-ts@0.0.9) (2021-10-28)
 
 

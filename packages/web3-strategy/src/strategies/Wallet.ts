@@ -11,7 +11,7 @@ import EthereumWallet from 'ethereumjs-wallet'
 import { signTypedData_v4 as signTypedDataV4 } from 'eth-sig-util'
 import * as ethUtil from 'ethereumjs-util'
 import { ConcreteStrategyOptions, ConcreteWeb3Strategy } from '../types'
-import BaseConcreteStrategy from '../BaseConcreteStrategy'
+import BaseConcreteStrategy from './Base'
 
 const remove0xFromPrivateKey = (privateKey: string): string =>
   privateKey.startsWith('0x') ? privateKey.substring(2) : privateKey
@@ -107,18 +107,6 @@ export default class Wallet
     }
 
     return transactionReceiptRetry()
-  }
-
-  onChainChanged = (callback: () => void): void => {
-    callback()
-  }
-
-  onAccountChanged = (callback: (account: AccountAddress) => void): void => {
-    callback(undefined as unknown as AccountAddress)
-  }
-
-  setOptions(options: ConcreteStrategyOptions): void {
-    this.privateKey = options.privateKey || this.privateKey
   }
 
   getWeb3ProviderEngineForRpc = ({

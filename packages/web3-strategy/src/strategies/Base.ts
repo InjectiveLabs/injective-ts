@@ -7,7 +7,7 @@ import SanitizingSubprovider from 'web3-provider-engine/subproviders/sanitizer'
 import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
 import WebSocketSubprovider from 'web3-provider-engine/subproviders/websocket'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { ConcreteStrategyOptions } from './types'
+import { ConcreteStrategyOptions } from '../types'
 
 const DEFAULT_POLLING_INTERVAL_MS = 500
 const DEFAULT_BLOCK_TRACKER = true

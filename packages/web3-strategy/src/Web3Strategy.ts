@@ -10,7 +10,6 @@ import {
   onAccountChangeCallback,
   onChainIdChangeCallback,
   Web3StrategyArguments,
-  ConcreteStrategyOptions,
 } from './types'
 
 export default class Web3Strategy {
@@ -106,14 +105,32 @@ export default class Web3Strategy {
   }
 
   public onAccountChange(callback: onAccountChangeCallback): void {
-    return this.strategy.onAccountChanged(callback)
+    if (this.strategy.onAccountChange) {
+      return this.strategy.onAccountChange(callback)
+    }
   }
 
-  public onChainChange(callback: onChainIdChangeCallback): void {
-    return this.strategy.onChainChanged(callback)
+  public onChainIdChange(callback: onChainIdChangeCallback): void {
+    if (this.strategy.onChainIdChange) {
+      return this.strategy.onChainIdChange(callback)
+    }
   }
 
-  public setStrategyOptions(options: Partial<ConcreteStrategyOptions>): void {
-    return this.strategy.setOptions(options)
+  public cancelOnChainIdChange(): void {
+    if (this.strategy.cancelOnChainIdChange) {
+      return this.strategy.cancelOnChainIdChange()
+    }
+  }
+
+  public cancelAllEvents(): void {
+    if (this.strategy.cancelAllEvents) {
+      return this.strategy.cancelAllEvents()
+    }
+  }
+
+  public cancelOnAccountChange(): void {
+    if (this.strategy.cancelOnAccountChange) {
+      return this.strategy.cancelOnAccountChange()
+    }
   }
 }
