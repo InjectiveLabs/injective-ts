@@ -117,15 +117,18 @@ export class DerivativeTransformer {
       minQuantityTickSize: new BigNumber(
         market.getMinQuantityTickSize(),
       ).toNumber(),
-      perpetualMarketInfo: DerivativeTransformer.grpcPerpetualMarketInfoToPerpetualMarketInfo(
-        market.getPerpetualMarketInfo(),
-      ),
-      perpetualMarketFunding: DerivativeTransformer.grpcPerpetualMarketFundingToPerpetualMarketFunding(
-        market.getPerpetualMarketFunding(),
-      ),
-      expiryFuturesMarketInfo: DerivativeTransformer.grpcExpiryFuturesMarketInfoToExpiryFuturesMarketInfo(
-        market.getExpiryFuturesMarketInfo(),
-      ),
+      perpetualMarketInfo:
+        DerivativeTransformer.grpcPerpetualMarketInfoToPerpetualMarketInfo(
+          market.getPerpetualMarketInfo(),
+        ),
+      perpetualMarketFunding:
+        DerivativeTransformer.grpcPerpetualMarketFundingToPerpetualMarketFunding(
+          market.getPerpetualMarketFunding(),
+        ),
+      expiryFuturesMarketInfo:
+        DerivativeTransformer.grpcExpiryFuturesMarketInfoToExpiryFuturesMarketInfo(
+          market.getExpiryFuturesMarketInfo(),
+        ),
     }
   }
 

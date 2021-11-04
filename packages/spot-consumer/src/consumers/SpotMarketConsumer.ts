@@ -118,9 +118,11 @@ export class SpotMarketConsumer extends BaseConsumer {
   async fetchTrades({
     marketId,
     subaccountId,
+    skip = 0,
     executionSide,
   }: {
     marketId?: string
+    skip?: number
     subaccountId?: AccountAddress
     executionSide?: TradeExecutionSide
   }) {
@@ -137,6 +139,8 @@ export class SpotMarketConsumer extends BaseConsumer {
     if (executionSide) {
       request.setExecutionSide(executionSide)
     }
+
+    request.setSkip(skip)
 
     try {
       const response = await this.request<

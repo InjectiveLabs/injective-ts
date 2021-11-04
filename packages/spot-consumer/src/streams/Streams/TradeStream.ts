@@ -42,9 +42,11 @@ export class TradeStream {
     callback,
     executionSide,
     onEndCallback,
+    skip = 0,
     onStatusCallback,
   }: {
     marketId: string
+    skip?: number
     executionSide?: TradeExecutionSide
     callback: TradeStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
@@ -56,6 +58,8 @@ export class TradeStream {
     if (executionSide) {
       request.setExecutionSide(executionSide)
     }
+
+    request.setSkip(skip)
 
     const stream = this.client.streamTrades(request)
 

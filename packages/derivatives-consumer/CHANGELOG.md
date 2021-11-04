@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.67...@injectivelabs/derivatives-consumer@0.0.68) (2021-11-04)
+
+
+### Bug Fixes
+
+* trade proto ([a9c763e](https://github.com/InjectiveLabs/injective-ts/commit/a9c763ed1023bbc7e29b34ee9598ad7a2d2694ab))
+
+
+
+
+
 ## [0.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.66...@injectivelabs/derivatives-consumer@0.0.67) (2021-11-04)
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer

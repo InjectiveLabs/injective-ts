@@ -150,9 +150,11 @@ export class DerivativeMarketConsumer extends BaseConsumer {
   async fetchTrades({
     marketId,
     subaccountId,
+    skip = 0,
     executionSide,
   }: {
     marketId?: string
+    skip?: number
     subaccountId?: AccountAddress
     executionSide?: TradeExecutionSide
   }) {
@@ -169,6 +171,8 @@ export class DerivativeMarketConsumer extends BaseConsumer {
     if (executionSide) {
       request.setExecutionSide(executionSide)
     }
+
+    request.setSkip(skip)
 
     try {
       const response = await this.request<
