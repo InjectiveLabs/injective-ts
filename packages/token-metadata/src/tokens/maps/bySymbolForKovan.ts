@@ -9,7 +9,7 @@ const mappedTokens = (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
 
     return {
       ...result,
-      [token.toLowerCase()]: { ...tokens[token], address: kovanAddress },
+      [token.toUpperCase()]: { ...tokens[token], address: kovanAddress },
     }
   },
   {},
