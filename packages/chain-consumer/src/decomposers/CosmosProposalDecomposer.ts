@@ -6,7 +6,7 @@ export class CosmosProposalDecomposer {
     return TextProposal.deserializeBinary(content)
   }
 
-  static SoftwareUpgradeProposal(content: Uint8Array) {
+  static SoftwareUpgrade(content: Uint8Array) {
     return SoftwareUpgradeProposal.deserializeBinary(content)
   }
 }
