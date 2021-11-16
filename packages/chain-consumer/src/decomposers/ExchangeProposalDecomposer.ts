@@ -35,15 +35,15 @@ export class ExchangeProposalDecomposer {
     return DerivativeMarketParamUpdateProposal.deserializeBinary(content)
   }
 
-  static FeeDiscountProposal(content: Uint8Array) {
+  static FeeDiscount(content: Uint8Array) {
     return FeeDiscountProposal.deserializeBinary(content)
   }
 
-  static TradingRewardCampaignLaunchProposal(content: Uint8Array) {
+  static TradingRewardCampaignLaunch(content: Uint8Array) {
     return TradingRewardCampaignLaunchProposal.deserializeBinary(content)
   }
 
-  static TradingRewardCampaignUpdateProposal(content: Uint8Array) {
+  static TradingRewardCampaignUpdate(content: Uint8Array) {
     return TradingRewardCampaignUpdateProposal.deserializeBinary(content)
   }
 }
