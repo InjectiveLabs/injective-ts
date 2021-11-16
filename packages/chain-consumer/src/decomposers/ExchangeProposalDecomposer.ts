@@ -2,9 +2,12 @@ import {
   DerivativeMarketParamUpdateProposal,
   ExchangeEnableProposal,
   ExpiryFuturesMarketLaunchProposal,
+  FeeDiscountProposal,
   PerpetualMarketLaunchProposal,
   SpotMarketLaunchProposal,
   SpotMarketParamUpdateProposal,
+  TradingRewardCampaignLaunchProposal,
+  TradingRewardCampaignUpdateProposal,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 
 export class ExchangeProposalDecomposer {
@@ -30,5 +33,17 @@ export class ExchangeProposalDecomposer {
 
   static derivativeMarketUpdate(content: Uint8Array) {
     return DerivativeMarketParamUpdateProposal.deserializeBinary(content)
+  }
+
+  static FeeDiscountProposal(content: Uint8Array) {
+    return FeeDiscountProposal.deserializeBinary(content)
+  }
+
+  static TradingRewardCampaignLaunchProposal(content: Uint8Array) {
+    return TradingRewardCampaignLaunchProposal.deserializeBinary(content)
+  }
+
+  static TradingRewardCampaignUpdateProposal(content: Uint8Array) {
+    return TradingRewardCampaignUpdateProposal.deserializeBinary(content)
   }
 }
