@@ -31,6 +31,8 @@ export class ExchangeProposalComposer {
     content.setBaseDenom(market.baseDenom)
     content.setMinPriceTickSize(market.minPriceTickSize)
     content.setMinQuantityTickSize(market.minQuantityTickSize)
+    content.setMakerFeeRate(market.makerFeeRate)
+    content.setTakerFeeRate(market.makerFeeRate)
 
     return {
       proposer,
@@ -65,6 +67,7 @@ export class ExchangeProposalComposer {
     content.setMarketId(market.marketId)
     content.setMinPriceTickSize(market.minPriceTickSize)
     content.setMinQuantityTickSize(market.minQuantityTickSize)
+
     return {
       proposer,
       content: {

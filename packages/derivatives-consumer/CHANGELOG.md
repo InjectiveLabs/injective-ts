@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.68...@injectivelabs/derivatives-consumer@0.0.69) (2021-11-17)
+
+
+### Bug Fixes
+
+* spot market proposal ([d7449e4](https://github.com/InjectiveLabs/injective-ts/commit/d7449e44341d4dbe4e8f0743fd7f1ab3c2c49c92))
+
+
+
+
+
 ## [0.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.67...@injectivelabs/derivatives-consumer@0.0.68) (2021-11-04)
 
 

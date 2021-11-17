@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.80](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.79...@injectivelabs/spot-consumer@0.0.80) (2021-11-17)
+
+
+### Bug Fixes
+
+* spot market proposal ([d7449e4](https://github.com/InjectiveLabs/injective-ts/commit/d7449e44341d4dbe4e8f0743fd7f1ab3c2c49c92))
+
+
+
+
+
 ## [0.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.78...@injectivelabs/spot-consumer@0.0.79) (2021-11-04)
 
 
