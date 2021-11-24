@@ -92,7 +92,6 @@ export default class Ledger
       )
       return wallets.map((k) => k.address)
     } catch (e: any) {
-      console.log(e)
       const message = e.message || e
 
       if (

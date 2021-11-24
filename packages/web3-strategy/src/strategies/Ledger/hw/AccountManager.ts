@@ -78,7 +78,6 @@ export default class AccountManager {
     derivationPathType: LedgerDerivationPathType
   }) {
     const fullBaseDerivationPath = `m/${baseDerivationPath}`
-    console.log(derivationPathType)
 
     for (let index = start; index < end; index += 1) {
       const path = this.getLedgerDerivationPathBasedOnType({
