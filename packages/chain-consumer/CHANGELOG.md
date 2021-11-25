@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.94](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.93...@injectivelabs/chain-consumer@0.0.94) (2021-11-25)
+
+
+### Features
+
+* auction ts ([a08c65d](https://github.com/InjectiveLabs/injective-ts/commit/a08c65db79274a7b9e77c40c19a6cd34cf9570b1))
+
+
+
+
+
 ## [0.0.93](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.92...@injectivelabs/chain-consumer@0.0.93) (2021-11-17)
 
 

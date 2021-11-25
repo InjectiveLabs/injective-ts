@@ -1,4 +1,10 @@
 import {
+  QueryCurrentAuctionBasketResponse,
+  QueryModuleStateResponse,
+} from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
+import {
+  AuctionModuleState,
+  CurrentBasket,
   GrpcFeeDiscountSchedule,
   FeeDiscountSchedule,
   FeeDiscountTierInfo,
@@ -86,6 +92,31 @@ export class ExchangeTransformer {
       maxCampaignRewardsList: pool
         .getMaxCampaignRewardsList()
         .map((coin) => ({ amount: coin.getAmount(), denom: coin.getDenom() })),
+    }
+  }
+
+  static grpcCurrentBasketToCurrentBasket(
+    basket: QueryCurrentAuctionBasketResponse,
+  ): CurrentBasket {
+    return {
+      amountList: basket
+        .getAmountList()
+        .map((coin) => ({ amount: coin.getAmount(), denom: coin.getDenom() })),
+      auctionRound: basket.getAuctionround(),
+      auctionClosingTime: basket.getAuctionclosingtime(),
+      highestBidder: basket.getHighestbidder(),
+      highestBidAmount: basket.getHighestbidamount(),
+    }
+  }
+
+  static grpcAuctionModuleStateToAuctionModuleState(
+    auctionModuleState: QueryModuleStateResponse.AsObject,
+  ): AuctionModuleState {
+    return {
+      params: auctionModuleState.state!.params,
+      auctionRound: auctionModuleState.state!.auctionRound,
+      highestBid: auctionModuleState.state!.highestBid,
+      auctionEndingTimestamp: auctionModuleState.state!.auctionEndingTimestamp,
     }
   }
 }

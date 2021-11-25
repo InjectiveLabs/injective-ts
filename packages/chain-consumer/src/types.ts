@@ -15,6 +15,12 @@ import { Params as GrpcMintParams } from '@injectivelabs/chain-api/cosmos/mint/v
 import { Params as GrpcPeggyParams } from '@injectivelabs/chain-api/injective/peggy/v1/genesis_pb'
 import { Params as GrpcOracleParams } from '@injectivelabs/chain-api/injective/oracle/v1beta1/oracle_pb'
 import {
+  Params as GrpcAuctionParams,
+  Bid as GrpcBid,
+  EventBid as GrpcEventBid,
+  EventAuctionResult as GrpcEventAuctionResult,
+} from '@injectivelabs/chain-api/injective/auction/v1beta1/auction_pb'
+import {
   DelegationDelegatorReward as GrpcDelegationDelegatorReward,
   Params as GrpcDistributionParams,
 } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/distribution_pb'
@@ -102,7 +108,36 @@ export interface CampaignRewardPool {
   maxCampaignRewardsList: Coin[]
 }
 
+export interface CurrentBasket {
+  amountList: Coin[]
+  auctionRound: number
+  auctionClosingTime: number
+  highestBidder: string
+  highestBidAmount: string
+}
+
+export interface AuctionModuleState {
+  params:
+    | {
+        auctionPeriod: number
+        minNextBidIncrementRate: string
+      }
+    | undefined
+  auctionRound: number
+  highestBid:
+    | {
+        bidder: string
+        amount: string
+      }
+    | undefined
+  auctionEndingTimestamp: number
+}
+
 export {
+  GrpcBid,
+  GrpcEventAuctionResult,
+  GrpcEventBid,
+  GrpcAuctionParams,
   GrpcFeeDiscountSchedule,
   GrpcFeeDiscountTierInfo,
   GrpcTradingRewardCampaignInfo,
