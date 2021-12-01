@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.105](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.104...@injectivelabs/exchange-consumer@0.0.105) (2021-12-01)
+
+
+### Features
+
+* DMM consumer ([f31ab22](https://github.com/InjectiveLabs/injective-ts/commit/f31ab22719a358b56fc7e513918a12c531ee16e2))
+
+
+
+
+
 ## [0.0.104](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.103...@injectivelabs/exchange-consumer@0.0.104) (2021-11-17)
 
 
