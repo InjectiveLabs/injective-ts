@@ -418,7 +418,6 @@ export default {
   LUNA: {
     address: '0xd2877702675e6ceb975b4a1dff9fb7baf4c91ea9',
     coinGeckoId: 'terra-luna',
-    denom: 'ibc/B8AF5D92165F35AB31F3FC7C7B444B9D240760FA5D406C49D24862BD0284E395',
     name: 'Terra',
     symbol: 'LUNA',
     decimals: 6,
@@ -428,7 +427,6 @@ export default {
   UST: {
     address: '0xa47c8bf37f92aBed4A126BDA807A7b7498661acD',
     coinGeckoId: 'terrausd',
-    denom: 'ibc/B448C0CA358B958301D328CCDC5D5AD642FC30A6D3AE106FF721DB315F3DDE5C',
     name: 'TerraUSD',
     symbol: 'UST',
     decimals: 6,
