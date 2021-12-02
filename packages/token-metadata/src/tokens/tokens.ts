@@ -414,4 +414,22 @@ export default {
     decimals: 6,
     logo: 'atom.svg',
   },
+
+  LUNA: {
+    address: '0xd2877702675e6ceb975b4a1dff9fb7baf4c91ea9',
+    coinGeckoId: 'terra-luna',
+    name: 'Terra',
+    symbol: 'LUNA',
+    decimals: 6,
+    logo: 'luna.png'
+  },
+
+  UST: {
+    address: '0xa47c8bf37f92aBed4A126BDA807A7b7498661acD',
+    coinGeckoId: 'terrausd',
+    name: 'TerraUSD',
+    symbol: 'UST',
+    decimals: 6,
+    logo: 'ust.png'
+  },
 }
