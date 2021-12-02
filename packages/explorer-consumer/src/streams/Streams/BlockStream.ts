@@ -8,15 +8,15 @@ import { Block } from '../../types/index'
 import { ExplorerTransformer } from '../../transformers/ExplorerTransformer'
 
 export type BlockStreamCallback = ({
-  blocks,
+  block,
   operation,
 }: {
-  blocks: Block[]
+  block: Block
   operation: StreamOperation
 }) => void
 
 const transformer = (response: StreamBlocksResponse) => ({
-  blocks: ExplorerTransformer.grpcBlocksToBlocks(response.getFieldList()),
+  block: ExplorerTransformer.grpcBlockToBlock(response),
   operation: StreamOperation.Insert,
 })
 
@@ -31,30 +31,15 @@ export class BlockStream {
   }
 
   start({
-    limit,
-    before,
-    after,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
-    limit: number
-    before?: number
-    after?: number
     callback: BlockStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamBlocksRequest()
-    request.setLimit(limit)
-
-    if (before) {
-      request.setBefore(before)
-    }
-
-    if (after) {
-      request.setAfter(after)
-    }
 
     const stream = this.client.streamBlocks(request)
 

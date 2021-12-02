@@ -4,21 +4,19 @@ import {
   StreamBlocksResponse,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 import { StreamOperation, StreamStatusResponse } from '@injectivelabs/ts-types'
-import { Block } from '../../types/index'
+import { BlockWithTxs } from '../../types/index'
 import { ExplorerTransformer } from '../../transformers/ExplorerTransformer'
 
 export type BlockWithTxsStreamCallback = ({
-  blocks,
+  block,
   operation,
 }: {
-  blocks: Block[]
+  block: BlockWithTxs
   operation: StreamOperation
 }) => void
 
 const transformer = (response: StreamBlocksResponse) => ({
-  blocks: ExplorerTransformer.grpcBlocksToBlocksWithTxs(
-    response.getFieldList(),
-  ),
+  block: ExplorerTransformer.grpcBlockToBlockWithTxs(response),
   operation: StreamOperation.Insert,
 })
 
@@ -33,31 +31,15 @@ export class BlockWithTxsStream {
   }
 
   start({
-    limit,
-    before,
-    after,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
-    limit: number
-    before?: number
-    after?: number
     callback: BlockWithTxsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamBlocksRequest()
-    request.setLimit(limit)
-
-    if (before) {
-      request.setBefore(before)
-    }
-
-    if (after) {
-      request.setAfter(after)
-    }
-
     const stream = this.client.streamBlocks(request)
 
     stream.on('data', (response: StreamBlocksResponse) => {

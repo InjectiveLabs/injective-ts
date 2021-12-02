@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.13 (2021-12-02)
+
+
+### Bug Fixes
+
+* spot market proposal ([40c041f](https://github.com/InjectiveLabs/injective-ts/commit/40c041f0ad13868830927354f2a739557ad43541))
+* types update ([2227d5d](https://github.com/InjectiveLabs/injective-ts/commit/2227d5d097b50502a5fa9a614427dd0c4bfa53d9))
+
+
+### Features
+
+* added blocks with txs stream ([7144aef](https://github.com/InjectiveLabs/injective-ts/commit/7144aef7cf6100939da4b0f7bdf89d12ca8ad275))
+* added default gas price ([8b7062f](https://github.com/InjectiveLabs/injective-ts/commit/8b7062f0bd2e4c2d373b37fee0bc658c94be8972))
+* explorer consumer package ([acdcd4a](https://github.com/InjectiveLabs/injective-ts/commit/acdcd4a6e41dc010e460705f7f2d4fb9f90bdb21))
+* portfolio value ([02f12f8](https://github.com/InjectiveLabs/injective-ts/commit/02f12f89979d8cb45089025c308c546b2181498a))
+* portfolio value ([32978ec](https://github.com/InjectiveLabs/injective-ts/commit/32978ecaf1367ab35949b103f977b292dc8bfe3d))
+
+
+
+
+
+## 0.0.12 (2021-12-02)
+
+
+### Bug Fixes
+
+* spot market proposal ([40c041f](https://github.com/InjectiveLabs/injective-ts/commit/40c041f0ad13868830927354f2a739557ad43541))
+* types update ([2227d5d](https://github.com/InjectiveLabs/injective-ts/commit/2227d5d097b50502a5fa9a614427dd0c4bfa53d9))
+
+
+### Features
+
+* added blocks with txs stream ([7144aef](https://github.com/InjectiveLabs/injective-ts/commit/7144aef7cf6100939da4b0f7bdf89d12ca8ad275))
+* added default gas price ([8b7062f](https://github.com/InjectiveLabs/injective-ts/commit/8b7062f0bd2e4c2d373b37fee0bc658c94be8972))
+* explorer consumer package ([acdcd4a](https://github.com/InjectiveLabs/injective-ts/commit/acdcd4a6e41dc010e460705f7f2d4fb9f90bdb21))
+* portfolio value ([02f12f8](https://github.com/InjectiveLabs/injective-ts/commit/02f12f89979d8cb45089025c308c546b2181498a))
+* portfolio value ([32978ec](https://github.com/InjectiveLabs/injective-ts/commit/32978ecaf1367ab35949b103f977b292dc8bfe3d))
+
+
+
+
+
 ## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.10...@injectivelabs/explorer-consumer@0.0.11) (2021-11-17)
 
 

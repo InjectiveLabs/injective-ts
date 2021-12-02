@@ -8,17 +8,15 @@ import { Transaction } from '../../types/index'
 import { ExplorerTransformer } from '../../transformers/ExplorerTransformer'
 
 export type TransactionStreamCallback = ({
-  transactions,
+  transaction,
   operation,
 }: {
-  transactions: Transaction[]
+  transaction: Transaction
   operation: StreamOperation
 }) => void
 
 const transformer = (response: StreamTxsResponse) => ({
-  transactions: ExplorerTransformer.grpcTransactionsToTransactions(
-    response.getFieldList(),
-  ),
+  transaction: ExplorerTransformer.grpcTransactionToTransaction(response),
   operation: StreamOperation.Insert,
 })
 
@@ -33,31 +31,15 @@ export class TransactionStream {
   }
 
   start({
-    limit,
-    before,
-    after,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
-    limit: number
-    before?: number
-    after?: number
     callback: TransactionStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamTxsRequest()
-    request.setLimit(limit)
-
-    if (before) {
-      request.setBefore(before)
-    }
-
-    if (after) {
-      request.setAfter(after)
-    }
-
     const stream = this.client.streamTxs(request)
 
     stream.on('data', (response: StreamTxsResponse) => {

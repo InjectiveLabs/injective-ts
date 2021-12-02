@@ -56,7 +56,6 @@ export class ExplorerTransformer {
       parentHash: block.getParentHash(),
       numPreCommits: block.getNumPreCommits(),
       numTxs: block.getNumTxs(),
-      totalTxs: block.getTotalTxs(),
       timestamp: block.getTimestamp(),
     }
   }
@@ -70,7 +69,6 @@ export class ExplorerTransformer {
       parentHash: block.getParentHash(),
       numPreCommits: block.getNumPreCommits(),
       numTxs: block.getNumTxs(),
-      totalTxs: block.getTotalTxs(),
       timestamp: block.getTimestamp(),
     }
   }

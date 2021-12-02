@@ -36,7 +36,6 @@ export interface Block {
   parentHash: string
   numPreCommits: number
   numTxs: number
-  totalTxs: number
   timestamp: string
 }
 
@@ -48,7 +47,6 @@ export interface BlockWithTxs {
   parentHash: string
   numPreCommits: number
   numTxs: number
-  totalTxs: number
   txs?: Transaction[]
   timestamp: string
 }

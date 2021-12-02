@@ -3,6 +3,64 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.18 (2021-12-02)
+
+
+### Bug Fixes
+
+* decimals, console log ([3f76959](https://github.com/InjectiveLabs/injective-ts/commit/3f769595ba5913394b2d5a108186ebd974732a0d))
+* endpoint ([0133e4a](https://github.com/InjectiveLabs/injective-ts/commit/0133e4ae5f5e360c3c54fcbf0c4a37e40a81dc6a))
+* endpoint for signing ([c290496](https://github.com/InjectiveLabs/injective-ts/commit/c290496428d0e0da0a5488518a399de81ae4f0c0))
+* endpoints ([beb65d3](https://github.com/InjectiveLabs/injective-ts/commit/beb65d35d07be6aa4ab61bbb82936bc490b61daa))
+* kovan map ([6698b35](https://github.com/InjectiveLabs/injective-ts/commit/6698b351f3e6d307d52cc12ef753908c88ca8a3c))
+* kovan map ([9386ab8](https://github.com/InjectiveLabs/injective-ts/commit/9386ab87e194f9a9344a5ea1a87267db96028949))
+* ledger legacy ([d152574](https://github.com/InjectiveLabs/injective-ts/commit/d152574812d3e4db2f2e4d5bd9b3a00946d536c7))
+* metadata fetching ([e83b7d3](https://github.com/InjectiveLabs/injective-ts/commit/e83b7d3030bfc3ca42430e9a24a54c736c4599e7))
+* minor ([52fb10f](https://github.com/InjectiveLabs/injective-ts/commit/52fb10f25511b74f0571cbf7f2c60dba18af1bdc))
+* minor ([0c426d9](https://github.com/InjectiveLabs/injective-ts/commit/0c426d9c36230230f951efe9ff6416a48eef883d))
+* token metadata mapping ([13cb174](https://github.com/InjectiveLabs/injective-ts/commit/13cb174c28bfa4c502938743ba7a0542d88a1f4e))
+
+
+### Features
+
+* added cosmos-ts package ([4c56fbf](https://github.com/InjectiveLabs/injective-ts/commit/4c56fbf5ea217c8d841fbc063ca1a8d9773d5817))
+* added stargate signer ([8da2961](https://github.com/InjectiveLabs/injective-ts/commit/8da29610f532fb1a64f90183a058d638733d344f))
+* added stargate signer, added timeout to ibc transfer proto ([1c2d9dc](https://github.com/InjectiveLabs/injective-ts/commit/1c2d9dcebb82ce32cbd198732a4e33ac3c683a81))
+* uatom added ([2354c55](https://github.com/InjectiveLabs/injective-ts/commit/2354c551f67d380dc178036900d9c7a4e1782084))
+
+
+
+
+
+## 0.0.17 (2021-12-02)
+
+
+### Bug Fixes
+
+* decimals, console log ([3f76959](https://github.com/InjectiveLabs/injective-ts/commit/3f769595ba5913394b2d5a108186ebd974732a0d))
+* endpoint ([0133e4a](https://github.com/InjectiveLabs/injective-ts/commit/0133e4ae5f5e360c3c54fcbf0c4a37e40a81dc6a))
+* endpoint for signing ([c290496](https://github.com/InjectiveLabs/injective-ts/commit/c290496428d0e0da0a5488518a399de81ae4f0c0))
+* endpoints ([beb65d3](https://github.com/InjectiveLabs/injective-ts/commit/beb65d35d07be6aa4ab61bbb82936bc490b61daa))
+* kovan map ([6698b35](https://github.com/InjectiveLabs/injective-ts/commit/6698b351f3e6d307d52cc12ef753908c88ca8a3c))
+* kovan map ([9386ab8](https://github.com/InjectiveLabs/injective-ts/commit/9386ab87e194f9a9344a5ea1a87267db96028949))
+* ledger legacy ([d152574](https://github.com/InjectiveLabs/injective-ts/commit/d152574812d3e4db2f2e4d5bd9b3a00946d536c7))
+* metadata fetching ([e83b7d3](https://github.com/InjectiveLabs/injective-ts/commit/e83b7d3030bfc3ca42430e9a24a54c736c4599e7))
+* minor ([52fb10f](https://github.com/InjectiveLabs/injective-ts/commit/52fb10f25511b74f0571cbf7f2c60dba18af1bdc))
+* minor ([0c426d9](https://github.com/InjectiveLabs/injective-ts/commit/0c426d9c36230230f951efe9ff6416a48eef883d))
+* token metadata mapping ([13cb174](https://github.com/InjectiveLabs/injective-ts/commit/13cb174c28bfa4c502938743ba7a0542d88a1f4e))
+
+
+### Features
+
+* added cosmos-ts package ([4c56fbf](https://github.com/InjectiveLabs/injective-ts/commit/4c56fbf5ea217c8d841fbc063ca1a8d9773d5817))
+* added stargate signer ([8da2961](https://github.com/InjectiveLabs/injective-ts/commit/8da29610f532fb1a64f90183a058d638733d344f))
+* added stargate signer, added timeout to ibc transfer proto ([1c2d9dc](https://github.com/InjectiveLabs/injective-ts/commit/1c2d9dcebb82ce32cbd198732a4e33ac3c683a81))
+* uatom added ([2354c55](https://github.com/InjectiveLabs/injective-ts/commit/2354c551f67d380dc178036900d9c7a4e1782084))
+
+
+
+
+
 ## [0.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.15...@injectivelabs/cosmos-ts@0.0.16) (2021-12-01)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts
