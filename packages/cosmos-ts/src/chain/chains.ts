@@ -114,4 +114,50 @@ export default {
     coinType: 118,
     features: ['stargate', 'ibc-transfer'],
   },
+  [CosmosChainId.Terra]: {
+    ...getLcdEndpointFromChainId(CosmosChainId.Terra),
+    rpcConfig: undefined,
+    restConfig: undefined,
+    chainId: 'columbus-5',
+    chainName: 'Injective',
+    stakeCurrency: {
+      coinDenom: 'LUNA',
+      coinMinimalDenom: 'uluna',
+      coinDecimals: 6,
+      coinGeckoId: 'terra-luna',
+    },
+    walletUrl: 'https://station.terra.money/wallet',
+    walletUrlForStaking: 'https://station.terra.money/wallet',
+    bip44: {
+      coinType: 118,
+    },
+    bech32Config: Bech32Address.defaultBech32Config('terra'),
+    currencies: [
+      {
+        coinDenom: 'LUNA',
+        coinMinimalDenom: 'uluna',
+        coinDecimals: 6,
+        coinGeckoId: 'terra-luna',
+      },
+      {
+        coinDenom: 'UST',
+        coinMinimalDenom: 'uusd',
+        coinDecimals: 6,
+      },
+    ],
+    feeCurrencies: [
+      {
+        coinDenom: 'UST',
+        coinMinimalDenom: 'uusd',
+        coinDecimals: 6,
+      },
+    ],
+    coinType: 118,
+    gasPriceStep: {
+      low: 0.01,
+      average: 0.3,
+      high: 0.04,
+    },
+    features: ['ibc-transfer'],
+  },
 } as Record<string, any>
