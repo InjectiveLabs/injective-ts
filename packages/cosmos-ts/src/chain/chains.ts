@@ -119,7 +119,7 @@ export default {
     rpcConfig: undefined,
     restConfig: undefined,
     chainId: 'columbus-5',
-    chainName: 'Injective',
+    chainName: 'Terra',
     stakeCurrency: {
       coinDenom: 'LUNA',
       coinMinimalDenom: 'uluna',
