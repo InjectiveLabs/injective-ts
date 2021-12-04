@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.23...@injectivelabs/cosmos-ts@0.0.24) (2021-12-04)
+
+
+### Bug Fixes
+
+* supported chain ids ([e215b49](https://github.com/InjectiveLabs/injective-ts/commit/e215b49e340428319b6479d5816e22970e15298d))
+
+
+
+
+
 ## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.22...@injectivelabs/cosmos-ts@0.0.23) (2021-12-04)
 
 
