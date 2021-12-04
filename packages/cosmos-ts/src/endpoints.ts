@@ -16,8 +16,8 @@ export const getLcdEndpointFromChainId = (
       }
     case CosmosChainId.Terra:
       return {
-        rpc: 'https://terra-rpc.easy2stake.com/',
-        rest: 'https://blockdaemon-terra-lcd.api.bdnodes.net:1317',
+        rpc: 'https://tm.terra.injective.network',
+        rest: 'https://lcd.terra.injective.network ',
       }
     case TestnetCosmosChainId.Cosmoshub:
       return {
