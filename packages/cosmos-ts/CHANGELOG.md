@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.26...@injectivelabs/cosmos-ts@0.0.27) (2021-12-05)
+
+
+### Features
+
+* added luna as gas currency ([10b22b3](https://github.com/InjectiveLabs/injective-ts/commit/10b22b3c7d33a17a22b4d7812e59f0e3c6653ec0))
+
+
+
+
+
 ## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.25...@injectivelabs/cosmos-ts@0.0.26) (2021-12-05)
 
 

@@ -148,8 +148,15 @@ export default {
     ],
     feeCurrencies: [
       {
+        coinDenom: 'LUNA',
+        coinMinimalDenom: 'uluna',
+        coinGeckoId: 'terra-luna',
+        coinDecimals: 6,
+      },
+      {
         coinDenom: 'UST',
         coinMinimalDenom: 'uusd',
+        coinGeckoId: 'terrausd',
         coinDecimals: 6,
       },
     ],
