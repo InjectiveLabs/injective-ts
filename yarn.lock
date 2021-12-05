@@ -1575,10 +1575,10 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exchange-api@^2.2.33":
-  version "2.2.34"
-  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.34.tgz#61167c55eb759a9a590122db1d3a8a28be0eb5c7"
-  integrity sha512-AlztMfpaKB2VJzDBNDourcEDWAxmTFEGPCYS73Sk6mv51h+ZRRWXF0BeCok/PuIwcr9JowkbyyX21q+n6lhdFA==
+"@injectivelabs/exchange-api@^2.2.37":
+  version "2.2.37"
+  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.37.tgz#075da6fe4f2c0253600b3de028695d91a9ea8253"
+  integrity sha512-OzeEorSir2nuQJBXityUQ2K8qexvGOZ14Rh99N1MXxNemuCFpFpxfiVi3LkapsTo/nOM4nckH/Gsj70wsSi8+Q==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"

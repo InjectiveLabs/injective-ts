@@ -142,6 +142,7 @@ export default {
       {
         coinDenom: 'UST',
         coinMinimalDenom: 'uusd',
+        coinGeckoId: 'terrausd',
         coinDecimals: 6,
       },
     ],

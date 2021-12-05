@@ -450,4 +450,13 @@ export default {
     decimals: 6,
     logo: 'ust.png',
   },
+
+  GF: {
+    address: '0xaaef88cea01475125522e117bfe45cf32044e238',
+    coinGeckoId: 'guildfi',
+    name: 'GuildFi Token',
+    symbol: 'GF',
+    decimals: 18,
+    logo: 'gf.png',
+  },
 }

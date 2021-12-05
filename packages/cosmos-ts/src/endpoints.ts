@@ -19,6 +19,11 @@ export const getLcdEndpointFromChainId = (
         rpc: 'https://tm.terra.injective.network',
         rest: 'https://lcd.terra.injective.network',
       }
+    case CosmosChainId.TerraUST:
+      return {
+        rpc: 'https://tm.terra.injective.network',
+        rest: 'https://lcd.terra.injective.network',
+      }
     case TestnetCosmosChainId.Cosmoshub:
       return {
         rpc: 'https://testnet.tm.cosmos.injective.dev',
