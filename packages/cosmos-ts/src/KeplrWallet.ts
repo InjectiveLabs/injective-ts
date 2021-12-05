@@ -1,5 +1,5 @@
 import { Keplr, Window as KeplrWindow } from '@keplr-wallet/types'
-import { getChainDataBasedOnChainId, supportedChainIds } from './chain'
+import { getChainDataBasedOnChainId, keplrSupportedChainIds } from './chain'
 
 export class KeplrWallet {
   private chainId: string
@@ -90,5 +90,5 @@ export class KeplrWallet {
   }
 
   static checkChainIdSupport = (chainId: string) =>
-    supportedChainIds.includes(chainId)
+    keplrSupportedChainIds.includes(chainId)
 }

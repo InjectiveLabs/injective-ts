@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.25...@injectivelabs/cosmos-ts@0.0.26) (2021-12-05)
+
+
+### Bug Fixes
+
+* keplr supported chains ([d852eb7](https://github.com/InjectiveLabs/injective-ts/commit/d852eb71b7fe6eedc17d65c5ed375775c7e06e82))
+
+
+
+
+
 ## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.24...@injectivelabs/cosmos-ts@0.0.25) (2021-12-05)
 
 
