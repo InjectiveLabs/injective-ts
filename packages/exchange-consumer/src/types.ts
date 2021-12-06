@@ -48,8 +48,8 @@ export interface MapOfStringDMMLCS {
 }
 
 export interface LCSResultRecord {
-  summaryMap: Record<string, DMMLCS>[]
-  byMarketsMap: Record<string, MapOfStringDMMLCS>[]
+  summaryMap: Record<string, DMMLCS>
+  byMarketsMap: Record<string, Record<string, DMMLCS>>
 }
 
 export interface DMMVCS {
@@ -62,9 +62,9 @@ export interface MapOfStringDMMVCS {
 }
 
 export interface VCSResultRecord {
-  summaryMap: Record<string, DMMVCS>[]
-  byMarketsMap: Record<string, MapOfStringDMMVCS>[]
-  byDateMap: Record<number, MapOfStringDMMVCS>[]
+  summaryMap: Record<string, DMMVCS>
+  byMarketsMap: Record<string, MapOfStringDMMVCS>
+  byDateMap: Record<number, MapOfStringDMMVCS>
 }
 
 export interface EpochMeta {
@@ -74,8 +74,8 @@ export interface EpochMeta {
   rewardInjNum: string
   lcsRewardFraction: string
   vcsRewardFraction: string
-  marketsMap: Record<string, MarketConfig>[]
-  dmmAddressesList: Record<string, ArrayOfString>[]
+  marketsMap: Record<string, MarketConfig>
+  dmmAddressesList: Record<string, string[]>
 }
 
 export interface EpochResultRecord {

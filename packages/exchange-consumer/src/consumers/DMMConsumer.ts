@@ -27,8 +27,12 @@ export class DMMConsumer extends BaseConsumer {
     }
   }
 
-  async fetchEpochSummary() {
+  async fetchEpochSummary({ epochId }: { epochId?: string }) {
     const request = new GetEpochSummaryRequest()
+
+    if (epochId) {
+      request.setEpochId(epochId)
+    }
 
     try {
       const response = await this.request<
@@ -43,8 +47,28 @@ export class DMMConsumer extends BaseConsumer {
     }
   }
 
-  async fetchDMMRecords() {
+  async fetchDMMRecords({
+    accountAddress,
+    dmmName,
+    epochId,
+  }: {
+    accountAddress?: string
+    dmmName?: string
+    epochId?: string
+  }) {
     const request = new GetDMMRecordsRequest()
+
+    if (accountAddress) {
+      request.setAccountAddress(accountAddress)
+    }
+
+    if (dmmName) {
+      request.setDmmName(dmmName)
+    }
+
+    if (epochId) {
+      request.setEpochId(epochId)
+    }
 
     try {
       const response = await this.request<

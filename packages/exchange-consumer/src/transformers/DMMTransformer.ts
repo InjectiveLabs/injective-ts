@@ -1,13 +1,10 @@
 import {
-  ArrayOfString,
   DMMLCS,
   DMMVCS,
   Epoch,
   EpochMeta,
   EpochResultRecord,
   LCSResultRecord,
-  MapOfStringDMMLCS,
-  MapOfStringDMMVCS,
   MarketConfig,
   OrderValueMultiplier,
   VCSResultRecord,
@@ -48,15 +45,25 @@ export class DMMTransformer {
     }
   }
 
-  static grpcArrayOfStringToArrayOfString(
-    arrayOfString: GrpcArrayOfString,
-  ): ArrayOfString {
-    return {
-      fieldList: arrayOfString.getFieldList(),
-    }
-  }
-
   static grpcEpochMetaToEpochMeta(epochMeta: GrpcEpochMeta): EpochMeta {
+    // eslint-disable-next-line no-underscore-dangle
+    const marketsMap = epochMeta
+      .getMarketsMap()
+      .entries()
+      .arr_.map(([marketId, marketConfig]: [string, GrpcMarketConfig]) => [
+        marketId,
+        DMMTransformer.grpcMarketConfigToMarketConfig(marketConfig),
+      ])
+
+    // eslint-disable-next-line no-underscore-dangle
+    const dmmAddressesList = epochMeta
+      .getDmmAddressesMap()
+      .entries()
+      .arr_.map(([name, values]: [string, GrpcArrayOfString]) => [
+        name,
+        values.getFieldList(),
+      ])
+
     return {
       id: epochMeta.getId(),
       startTime: epochMeta.getStartTime(),
@@ -64,12 +71,9 @@ export class DMMTransformer {
       rewardInjNum: epochMeta.getRewardInjNum(),
       lcsRewardFraction: epochMeta.getLcsRewardFraction(),
       vcsRewardFraction: epochMeta.getVcsRewardFraction(),
-      marketsMap: epochMeta
-        .getMarketsMap()
-        .map(DMMTransformer.grpcMarketConfigToMarketConfig),
-      dmmAddressesList: epochMeta
-        .getDmmAddressesMap()
-        .map(DMMTransformer.grpcArrayOfStringToArrayOfString),
+      marketsMap: Object.fromEntries(marketsMap),
+      // eslint-disable-next-line no-underscore-dangle
+      dmmAddressesList: Object.fromEntries(dmmAddressesList),
     }
   }
 
@@ -83,22 +87,46 @@ export class DMMTransformer {
 
   static grpcMapOfStringDMMLCSToDMMLCS(
     mapOfStringDMMLCS: GrpcMapOfStringDMMLCS,
-  ): MapOfStringDMMLCS {
-    return {
-      fieldMap: mapOfStringDMMLCS.getFieldMap(),
-    }
+  ): [string, DMMLCS][] {
+    // eslint-disable-next-line no-underscore-dangle
+    return mapOfStringDMMLCS
+      .getFieldMap()
+      .arr_.map(
+        ([name, [lcs, normBuy, normSell]]: [
+          string,
+          [string, string, string],
+        ]) => [name, { lcs, normBuy, normSell }],
+      )
   }
 
   static grpcLCSResultRecordToLCSResultRecord(
     lCSResultRecord: GrpcLCSResultRecord,
   ): LCSResultRecord {
+    // eslint-disable-next-line no-underscore-dangle
+    const summaryMap = lCSResultRecord
+      .getSummaryMap()
+      .entries()
+      .arr_.map(([name, dmmLcs]: [string, GrpcDMMLCS]) => [
+        name,
+        DMMTransformer.grpcDMMLCStoDMMLCS(dmmLcs),
+      ])
+
+    // eslint-disable-next-line no-underscore-dangle
+    const byMarketsMap = lCSResultRecord
+      .getByMarketsMap()
+      .entries()
+      .arr_.map(([marketId, grpcDmmLcs]: [string, GrpcMapOfStringDMMLCS]) => [
+        marketId,
+        Object.fromEntries(
+          DMMTransformer.grpcMapOfStringDMMLCSToDMMLCS(grpcDmmLcs),
+        ),
+      ])
+
     return {
-      summaryMap: lCSResultRecord
-        .getSummaryMap()
-        .map(DMMTransformer.grpcDMMLCStoDMMLCS),
-      byMarketsMap: lCSResultRecord
-        .getByMarketsMap()
-        .map(DMMTransformer.grpcMapOfStringDMMLCSToDMMLCS),
+      // eslint-disable-next-line no-underscore-dangle
+      summaryMap: Object.fromEntries(summaryMap),
+      // eslint-disable-next-line no-underscore-dangle
+      byMarketsMap: Object.fromEntries(byMarketsMap),
     }
   }
 
@@ -111,25 +139,54 @@ export class DMMTransformer {
 
   static grpcMapOfStringDMMVCStoMapOfStringDMMVCS(
     mapOfStringDMMVCS: GrpcMapOfStringDMMVCS,
-  ): MapOfStringDMMVCS {
-    return {
-      fieldMap: mapOfStringDMMVCS.getFieldMap(),
-    }
+  ): [string, DMMVCS][] {
+    // eslint-disable-next-line no-underscore-dangle
+    return mapOfStringDMMVCS
+      .getFieldMap()
+      .arr_.map(([name, [vcs, volume]]: [string, [string, string]]) => [
+        name,
+        { vcs, volume },
+      ])
   }
 
   static grpcVCSResultRecordToVCSResultRecords(
     vCSResultRecord: GrpcVCSResultRecord,
   ): VCSResultRecord {
+    // eslint-disable-next-line no-underscore-dangle
+    const summaryMap = vCSResultRecord
+      .getSummaryMap()
+      .entries()
+      .arr_.map(([name, dmmVcs]: [string, GrpcDMMVCS]) => [
+        name,
+        DMMTransformer.grpcDMMVCStoDMMVCS(dmmVcs),
+      ])
+
+    // eslint-disable-next-line no-underscore-dangle
+    const byMarketsMap = vCSResultRecord
+      .getByMarketsMap()
+      .entries()
+      .arr_.map(([marketId, dmmVcs]: [string, GrpcMapOfStringDMMVCS]) => [
+        marketId,
+        Object.fromEntries(
+          DMMTransformer.grpcMapOfStringDMMVCStoMapOfStringDMMVCS(dmmVcs),
+        ),
+      ])
+
+    // eslint-disable-next-line no-underscore-dangle
+    const byDateMap = vCSResultRecord
+      .getByDateMap()
+      .entries()
+      .arr_.map(([date, dmmVcs]: [string, GrpcMapOfStringDMMVCS]) => [
+        date,
+        Object.fromEntries(
+          DMMTransformer.grpcMapOfStringDMMVCStoMapOfStringDMMVCS(dmmVcs),
+        ),
+      ])
+
     return {
-      summaryMap: vCSResultRecord
-        .getSummaryMap()
-        .map(DMMTransformer.grpcDMMVCStoDMMVCS),
-      byMarketsMap: vCSResultRecord
-        .getByMarketsMap()
-        .map(DMMTransformer.grpcMapOfStringDMMVCStoMapOfStringDMMVCS),
-      byDateMap: vCSResultRecord
-        .getByDateMap()
-        .map(DMMTransformer.grpcMapOfStringDMMVCStoMapOfStringDMMVCS),
+      summaryMap: Object.fromEntries(summaryMap),
+      byMarketsMap: Object.fromEntries(byMarketsMap),
+      byDateMap: Object.fromEntries(byDateMap),
     }
   }
 
