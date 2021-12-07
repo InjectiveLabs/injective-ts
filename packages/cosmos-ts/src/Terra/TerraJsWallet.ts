@@ -1,50 +1,64 @@
+import { MsgTransfer, Coin, LCDClient, Fee, Int } from '@terra-money/terra.js'
 import {
-  Extension,
-  Wallet,
-  Dec,
-  MsgTransfer,
-  Coin,
-  LCDClient,
-} from '@terra-money/terra.js'
+  ConnectType,
+  getChainOptions,
+  NetworkInfo,
+  WalletController,
+  WalletInfo,
+  WalletStatus,
+} from '@terra-money/wallet-controller'
 import { Height } from '@terra-money/terra.js/dist/core/ibc/msgs/client/Height'
+import { BigNumberInBase, DEFAULT_GAS_LIMIT, sleep } from '@injectivelabs/utils'
+import { firstValueFrom } from 'rxjs'
+
+const PROMISE_RETRIES = Array.from(Array(2).keys())
+const INTERVAL_TO_RETRY = 1000
 
 export class TerraJsWallet {
-  private extension: Extension
-
-  private lcdClient: LCDClient
-
-  constructor({
-    restEndpoint,
-    chainId,
-  }: {
-    restEndpoint: string
-    chainId: string
-  }) {
-    this.extension = new Extension()
-    this.lcdClient = new LCDClient({
-      URL: restEndpoint,
-      chainID: chainId,
-    })
-  }
+  private walletController?: WalletController
 
   static isTerraExtensionAvailable(): boolean {
     return window.isTerraExtensionAvailable
   }
 
-  async connect(): Promise<Wallet> {
-    await this.extension.request('connect')
+  async getWalletController(): Promise<WalletController> {
+    if (!this.walletController) {
+      const options = await getChainOptions()
 
-    return new Promise((resolve) => {
-      this.extension.on('connect', (w: Wallet) => {
-        resolve(w)
+      this.walletController = new WalletController({
+        ...options,
+        waitingChromeExtensionInstallCheck: 500,
       })
-    })
+    }
+
+    return this.walletController
   }
 
-  async connectWithRequest(): Promise<string> {
-    const response = await this.extension.request('connect')
+  async connect(): Promise<void> {
+    const controller = await this.getWalletController()
 
-    return (response.payload as { address: string }).address
+    const extensionIsEnabled =
+      await this.extensionConnectTypeIsInAvailableConnectTypes()
+
+    if (!extensionIsEnabled) {
+      throw new Error('Extension connect type is not available')
+    }
+
+    try {
+      controller.connect(ConnectType.EXTENSION)
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async getAddresses(): Promise<string[]> {
+    const wallets = await this.getWallets()
+
+    if (!wallets) {
+      throw new Error('There are no wallets connected on Terra Extension')
+    }
+
+    return wallets.map((wallet) => wallet.terraAddress)
   }
 
   async fetchBalances({
@@ -54,7 +68,18 @@ export class TerraJsWallet {
     address: string
     denom?: string
   }): Promise<{ denom: string; amount: string }[]> {
-    const [coins] = await this.lcdClient.bank.balance(address)
+    const networkInfo = await this.getNetwork()
+
+    if (!networkInfo) {
+      throw new Error('We could not fetch network info from Terra Extension')
+    }
+
+    const lcdClient = new LCDClient({
+      URL: networkInfo.lcd,
+      chainID: networkInfo.chainID,
+    })
+
+    const [coins] = await lcdClient.bank.balance(address)
     const balances = coins.toArray()
 
     if (balances.length === 0) {
@@ -96,8 +121,13 @@ export class TerraJsWallet {
     timeoutHeight: any
     timeoutTimestamp: number
   }) {
-    const amount = new Dec(transferAmount.amount)
-    const coin = new Coin(transferAmount.denom, amount)
+    const gasPrice = new BigNumberInBase(
+      transferAmount.denom === 'uluna' ? 0.00506 : 0.015,
+    ).toWei(6 /* Decimal places */)
+    const controller = await this.getWalletController()
+    const fee = new Fee(DEFAULT_GAS_LIMIT, `${gasPrice}${transferAmount.denom}`)
+
+    const coin = new Coin(transferAmount.denom, new Int(transferAmount.amount))
     const height = new Height(
       timeoutHeight?.revision_height,
       timeoutHeight?.revision_height,
@@ -109,18 +139,74 @@ export class TerraJsWallet {
       senderAddress,
       recipientAddress,
       height,
-      timeoutTimestamp,
+      timeoutTimestamp * 1_000_000_000 /* Has to be in nano seconds */,
     )
 
     try {
-      const response = await this.extension.request('post', {
-        msgs: [msgTransfer.toJSON()],
-        purgeQueue: true,
-      })
+      const response = await controller.post(
+        {
+          fee,
+          msgs: [msgTransfer],
+          memo: '',
+        },
+        senderAddress,
+      )
 
-      return response.payload
+      console.log(response)
+
+      return response
     } catch (e: any) {
       throw new Error(e.message)
     }
+  }
+
+  private async getWallets(): Promise<WalletInfo[] | undefined> {
+    const controller = await this.getWalletController()
+
+    for (const _ of PROMISE_RETRIES) {
+      const states = await firstValueFrom(controller.states())
+
+      if (states.status === WalletStatus.WALLET_CONNECTED) {
+        return states.wallets
+      }
+
+      await sleep(INTERVAL_TO_RETRY)
+    }
+
+    return undefined
+  }
+
+  private async getNetwork(): Promise<NetworkInfo | undefined> {
+    const controller = await this.getWalletController()
+
+    for (const _ of PROMISE_RETRIES) {
+      const states = await firstValueFrom(controller.states())
+
+      if (states.status === WalletStatus.WALLET_CONNECTED) {
+        return states.network
+      }
+
+      await sleep(INTERVAL_TO_RETRY)
+    }
+
+    return undefined
+  }
+
+  private async extensionConnectTypeIsInAvailableConnectTypes(): Promise<boolean> {
+    const controller = await this.getWalletController()
+
+    for (const _ of PROMISE_RETRIES) {
+      const connectTypes = await firstValueFrom(
+        controller.availableConnectTypes(),
+      )
+
+      if (connectTypes.includes(ConnectType.EXTENSION)) {
+        return true
+      }
+
+      await sleep(INTERVAL_TO_RETRY)
+    }
+
+    return false
   }
 }

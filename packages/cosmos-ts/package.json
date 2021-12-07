@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/cosmos-ts",
   "description": "Cosmos related wrappers.",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -41,10 +41,12 @@
     "@keplr-wallet/types": "^0.9.6",
     "@keplr-wallet/unit": "^0.9.6",
     "@terra-money/terra.js": "^3.0.1",
+    "@terra-money/wallet-controller": "^3.3.0",
     "commitizen": "^4.2.4",
     "cosmjs-types": "^0.3.0",
     "link-module-alias": "^1.2.0",
     "long": "^4.0.0",
+    "rxjs": "^7.4.0",
     "shx": "^0.3.2"
   }
 }
