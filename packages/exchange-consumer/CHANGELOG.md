@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 ## [0.0.108](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.105...@injectivelabs/exchange-consumer@0.0.108) (2021-12-03)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
@@ -207,6 +208,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+=======
+>>>>>>> c61f316 (feat: DMM consumer)
 ## [0.0.105](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.104...@injectivelabs/exchange-consumer@0.0.105) (2021-12-01)
 
 
