@@ -77,7 +77,7 @@ export class DMMConsumer extends BaseConsumer {
         typeof InjectiveDmmRPC.GetDMMRecords
       >(request, InjectiveDmmRPC.GetDMMRecords)
 
-      return response
+      return response.getRecordsList()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }
