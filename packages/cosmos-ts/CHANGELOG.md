@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.32...@injectivelabs/cosmos-ts@0.0.33) (2021-12-07)
+
+
+### Bug Fixes
+
+* terra ust fees ([a77d8dc](https://github.com/InjectiveLabs/injective-ts/commit/a77d8dcbabf4ffaf2c9f0631e8ce8c8203e86941))
+
+
+
+
+
 ## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.31...@injectivelabs/cosmos-ts@0.0.32) (2021-12-07)
 
 

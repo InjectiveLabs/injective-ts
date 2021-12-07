@@ -119,7 +119,7 @@ export class TerraJsWallet {
     timeoutTimestamp: number
   }) {
     const gasPrice = new BigNumberInBase(
-      transferAmount.denom === 'uluna' ? 0.00506 : 0.015,
+      transferAmount.denom === 'uluna' ? 0.00506 : 0.15,
     ).toWei(6 /* Decimal places */)
     const controller = await this.getWalletController()
     const fee = new Fee(DEFAULT_GAS_LIMIT, `${gasPrice}${transferAmount.denom}`)
