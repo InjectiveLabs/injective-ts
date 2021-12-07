@@ -11,9 +11,6 @@ import { Height } from '@terra-money/terra.js/dist/core/ibc/msgs/client/Height'
 import { BigNumberInBase, DEFAULT_GAS_LIMIT, sleep } from '@injectivelabs/utils'
 import { firstValueFrom } from 'rxjs'
 
-const PROMISE_RETRIES = Array.from(Array(3).keys())
-const INTERVAL_TO_RETRY = 1000
-
 export class TerraJsWallet {
   private walletController?: WalletController
 
@@ -162,6 +159,8 @@ export class TerraJsWallet {
 
   private async getWallets(): Promise<WalletInfo[] | undefined> {
     const controller = await this.getWalletController()
+    const PROMISE_RETRIES = Array.from(Array(15).keys())
+    const INTERVAL_TO_RETRY = 1000
 
     for (const _ of PROMISE_RETRIES) {
       const states = await firstValueFrom(controller.states())
@@ -178,6 +177,8 @@ export class TerraJsWallet {
 
   private async getNetwork(): Promise<NetworkInfo | undefined> {
     const controller = await this.getWalletController()
+    const PROMISE_RETRIES = Array.from(Array(3).keys())
+    const INTERVAL_TO_RETRY = 1000
 
     for (const _ of PROMISE_RETRIES) {
       const states = await firstValueFrom(controller.states())
@@ -194,6 +195,8 @@ export class TerraJsWallet {
 
   private async extensionConnectTypeIsInAvailableConnectTypes(): Promise<boolean> {
     const controller = await this.getWalletController()
+    const PROMISE_RETRIES = Array.from(Array(3).keys())
+    const INTERVAL_TO_RETRY = 1000
 
     for (const _ of PROMISE_RETRIES) {
       const connectTypes = await firstValueFrom(

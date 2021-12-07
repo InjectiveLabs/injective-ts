@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.32...@injectivelabs/token-metadata@0.0.33) (2021-12-07)
+
+
+### Bug Fixes
+
+* terra retries ([76a7dae](https://github.com/InjectiveLabs/injective-ts/commit/76a7dae07c1099b8014a1b2b263880c01ea6c69d))
+
+
+
+
+
 ## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.31...@injectivelabs/token-metadata@0.0.32) (2021-12-05)
 
 
