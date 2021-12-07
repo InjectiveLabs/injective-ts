@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.27...@injectivelabs/cosmos-ts@0.0.28) (2021-12-07)
+
+
+### Features
+
+* terra wallet ([092f87e](https://github.com/InjectiveLabs/injective-ts/commit/092f87e26187bebe07b63ac9dcdadb29e874b294))
+
+
+
+
+
 ## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.26...@injectivelabs/cosmos-ts@0.0.27) (2021-12-05)
 
 
