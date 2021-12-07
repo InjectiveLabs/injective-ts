@@ -1540,9 +1540,9 @@
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
 "@improbable-eng/grpc-web-node-http-transport@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/@improbable-eng/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.14.0.tgz#3edf05360541b2d7ba799ec0144780a7a9a99383"
-  integrity sha512-NGZJgY8zTTWM//9oGdJZ+acmCgcgUcqxu3NV3GMFxw35D+3xkdEz599r9O7urg1Vv0+LzXDvfWEg7qg1Ec8x1w==
+  version "0.14.1"
+  resolved "https://registry.npmjs.org/@improbable-eng/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.14.1.tgz#16c078db2e10aca9a8f7fb235a80b2fa447273a3"
+  integrity sha512-ZsCTzI1iKUbmQjB5DNZSI5/hvdliuaPpS2h8mVj1QzynL3IFb5NrNnHVHbfcH1wbm26Ka6Z1CrKFGvKLrmbFIg==
 
 "@improbable-eng/grpc-web@^0.13.0":
   version "0.13.0"
@@ -1575,10 +1575,10 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exchange-api@^2.2.37":
-  version "2.2.37"
-  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.37.tgz#075da6fe4f2c0253600b3de028695d91a9ea8253"
-  integrity sha512-OzeEorSir2nuQJBXityUQ2K8qexvGOZ14Rh99N1MXxNemuCFpFpxfiVi3LkapsTo/nOM4nckH/Gsj70wsSi8+Q==
+"@injectivelabs/exchange-api@^2.2.38":
+  version "2.2.38"
+  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.38.tgz#91dd4b6525ef70764d5b8ce2a13a91923c19b686"
+  integrity sha512-M/UXxmyG5ky2X+EcD4ApAlxCP6LKBfKWXUZheESR+xf7Z+lYCx41nuP8+yuLJ5lGnX3WsIbwfd2S31k7GrAq5Q==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"

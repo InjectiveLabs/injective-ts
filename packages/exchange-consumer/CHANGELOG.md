@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.111](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.109...@injectivelabs/exchange-consumer@0.0.111) (2021-12-07)
+
+
+### Features
+
+* DMM consumer ([50ce000](https://github.com/InjectiveLabs/injective-ts/commit/50ce000df13a712335b675317b21f994171823d8))
+* DMM Consumer ([8df3c3a](https://github.com/InjectiveLabs/injective-ts/commit/8df3c3a847c07ae8253411a72e82cf525b82ba5d))
+* update DMM consumer with latest exchange api ([ed3a689](https://github.com/InjectiveLabs/injective-ts/commit/ed3a68987df5f9ed87561d55cf604fff53b57a95))
+
+
+
+
+
+## [0.0.110](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.109...@injectivelabs/exchange-consumer@0.0.110) (2021-12-07)
+
+
+### Features
+
+* DMM consumer ([50ce000](https://github.com/InjectiveLabs/injective-ts/commit/50ce000df13a712335b675317b21f994171823d8))
+* DMM Consumer ([8df3c3a](https://github.com/InjectiveLabs/injective-ts/commit/8df3c3a847c07ae8253411a72e82cf525b82ba5d))
+* update DMM consumer with latest exchange api ([ed3a689](https://github.com/InjectiveLabs/injective-ts/commit/ed3a68987df5f9ed87561d55cf604fff53b57a95))
+
+
+
+
+
 ## [0.0.109](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.108...@injectivelabs/exchange-consumer@0.0.109) (2021-12-05)
 
 
@@ -11,15 +37,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * cosmos ts + packages bump ([8de8ab2](https://github.com/InjectiveLabs/injective-ts/commit/8de8ab230385579995566634c5c1fc1a97982c49))
 
 
-
-
-
 ## [0.0.108](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.105...@injectivelabs/exchange-consumer@0.0.108) (2021-12-03)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
-
-
-
 
 
 ## 0.0.107 (2021-12-02)
@@ -218,6 +238,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+=======
+>>>>>>> c61f316 (feat: DMM consumer)
 ## [0.0.105](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.104...@injectivelabs/exchange-consumer@0.0.105) (2021-12-01)
 
 

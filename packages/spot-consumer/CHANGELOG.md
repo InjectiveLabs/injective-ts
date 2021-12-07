@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.86](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.84...@injectivelabs/spot-consumer@0.0.86) (2021-12-07)
+
+
+### Features
+
+* DMM consumer ([50ce000](https://github.com/InjectiveLabs/injective-ts/commit/50ce000df13a712335b675317b21f994171823d8))
+* DMM Consumer ([8df3c3a](https://github.com/InjectiveLabs/injective-ts/commit/8df3c3a847c07ae8253411a72e82cf525b82ba5d))
+* update DMM consumer with latest exchange api ([ed3a689](https://github.com/InjectiveLabs/injective-ts/commit/ed3a68987df5f9ed87561d55cf604fff53b57a95))
+
+
+
+
+
+## [0.0.85](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.84...@injectivelabs/spot-consumer@0.0.85) (2021-12-07)
+
+
+### Features
+
+* DMM consumer ([50ce000](https://github.com/InjectiveLabs/injective-ts/commit/50ce000df13a712335b675317b21f994171823d8))
+* DMM Consumer ([8df3c3a](https://github.com/InjectiveLabs/injective-ts/commit/8df3c3a847c07ae8253411a72e82cf525b82ba5d))
+* update DMM consumer with latest exchange api ([ed3a689](https://github.com/InjectiveLabs/injective-ts/commit/ed3a68987df5f9ed87561d55cf604fff53b57a95))
+
+
+
+
+
 ## [0.0.84](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.83...@injectivelabs/spot-consumer@0.0.84) (2021-12-05)
 
 

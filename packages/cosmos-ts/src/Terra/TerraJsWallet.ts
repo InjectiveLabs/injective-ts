@@ -11,7 +11,7 @@ import { Height } from '@terra-money/terra.js/dist/core/ibc/msgs/client/Height'
 import { BigNumberInBase, DEFAULT_GAS_LIMIT, sleep } from '@injectivelabs/utils'
 import { firstValueFrom } from 'rxjs'
 
-const PROMISE_RETRIES = Array.from(Array(2).keys())
+const PROMISE_RETRIES = Array.from(Array(3).keys())
 const INTERVAL_TO_RETRY = 1000
 
 export class TerraJsWallet {
@@ -27,7 +27,7 @@ export class TerraJsWallet {
 
       this.walletController = new WalletController({
         ...options,
-        waitingChromeExtensionInstallCheck: 500,
+        waitingChromeExtensionInstallCheck: 3 * 1000,
       })
     }
 
