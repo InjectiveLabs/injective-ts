@@ -2,6 +2,7 @@ import {
   QueryCurrentAuctionBasketResponse,
   QueryModuleStateResponse,
 } from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
+import { GenesisState } from '@injectivelabs/chain-api/injective/auction/v1beta1/genesis_pb'
 import {
   AuctionModuleState,
   CurrentBasket,
@@ -110,13 +111,28 @@ export class ExchangeTransformer {
   }
 
   static grpcAuctionModuleStateToAuctionModuleState(
-    auctionModuleState: QueryModuleStateResponse.AsObject,
+    auctionModuleState: QueryModuleStateResponse,
   ): AuctionModuleState {
+    const state = auctionModuleState.getState() as GenesisState
+    const bid = state.getHighestBid()
+    const params = state.getParams()!
+
     return {
-      params: auctionModuleState.state!.params,
-      auctionRound: auctionModuleState.state!.auctionRound,
-      highestBid: auctionModuleState.state!.highestBid,
-      auctionEndingTimestamp: auctionModuleState.state!.auctionEndingTimestamp,
+      params: {
+        auctionPeriod: params.getAuctionPeriod(),
+        minNextBidIncrementRate: params.getMinNextBidIncrementRate(),
+      },
+      auctionRound: state.getAuctionRound(),
+      highestBid: bid
+        ? {
+            bidder: bid.getBidder(),
+            amount: bid.getAmount(),
+          }
+        : {
+            amount: '',
+            bidder: '',
+          },
+      auctionEndingTimestamp: state.getAuctionEndingTimestamp(),
     }
   }
 }

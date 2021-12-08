@@ -55,6 +55,7 @@ import {
 } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/bank_pb'
 import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { Coin } from '@injectivelabs/ts-types'
+import { QueryCurrentAuctionBasketResponse as GrpcQueryCurrentAuctionBasketResponse } from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
 
 export interface PaginationOption {
   key: string
@@ -106,6 +107,11 @@ export interface TradingRewardCampaignInfo {
 export interface CampaignRewardPool {
   startTimestamp: number
   maxCampaignRewardsList: Coin[]
+}
+
+export interface GrpcCurrentBasket
+  extends GrpcQueryCurrentAuctionBasketResponse.AsObject {
+  //
 }
 
 export interface CurrentBasket {

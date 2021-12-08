@@ -32,13 +32,11 @@ export class AuctionConsumer extends BaseConsumer {
     const request = new QueryModuleStateRequest()
 
     try {
-      const response = await this.request<
+      return await this.request<
         QueryModuleStateRequest,
         QueryModuleStateResponse,
         typeof Query.AuctionModuleState
       >(request, Query.AuctionModuleState)
-
-      return response.getState()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }
