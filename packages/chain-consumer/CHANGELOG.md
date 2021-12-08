@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.98](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.97...@injectivelabs/chain-consumer@0.0.98) (2021-12-08)
+
+
+### Features
+
+* auction proto composer ([5e7d01b](https://github.com/InjectiveLabs/injective-ts/commit/5e7d01bae9ed0b816e7d8d49b4a96ae70fd1b85e))
+
+
+
+
+
 ## [0.0.97](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.94...@injectivelabs/chain-consumer@0.0.97) (2021-12-03)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer
