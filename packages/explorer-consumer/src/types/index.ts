@@ -1,3 +1,15 @@
+import { GasFee as GrpcGasFee } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
+
+export interface GasFee {
+  amounts: {
+    amount: string
+    denom: string
+  }[]
+  gasLimit: number
+  payer: string
+  granter: string
+}
+
 export interface TxMessage {
   key: string
   value: string
@@ -12,6 +24,7 @@ export interface Transaction {
   data?: Uint8Array | string
   info: string
   gasWanted: number
+  gasFee: GasFee
   gasUsed: number
   events?: Array<{
     type: string
@@ -50,3 +63,5 @@ export interface BlockWithTxs {
   txs?: Transaction[]
   timestamp: string
 }
+
+export { GrpcGasFee }

@@ -81,7 +81,6 @@ export interface EpochMeta {
 export interface EpochResultRecord {
   lcs?: LCSResultRecord | undefined
   vcs?: VCSResultRecord | undefined
-  createdAt: string
 }
 
 export interface Epoch {

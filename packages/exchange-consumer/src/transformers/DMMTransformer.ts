@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   DMMLCS,
   DMMVCS,
@@ -46,7 +47,6 @@ export class DMMTransformer {
   }
 
   static grpcEpochMetaToEpochMeta(epochMeta: GrpcEpochMeta): EpochMeta {
-    // eslint-disable-next-line no-underscore-dangle
     const marketsMap = epochMeta
       .getMarketsMap()
       .entries()
@@ -55,7 +55,6 @@ export class DMMTransformer {
         DMMTransformer.grpcMarketConfigToMarketConfig(marketConfig),
       ])
 
-    // eslint-disable-next-line no-underscore-dangle
     const dmmAddressesList = epochMeta
       .getDmmAddressesMap()
       .entries()
@@ -72,7 +71,6 @@ export class DMMTransformer {
       lcsRewardFraction: epochMeta.getLcsRewardFraction(),
       vcsRewardFraction: epochMeta.getVcsRewardFraction(),
       marketsMap: Object.fromEntries(marketsMap),
-      // eslint-disable-next-line no-underscore-dangle
       dmmAddressesList: Object.fromEntries(dmmAddressesList),
     }
   }
@@ -88,7 +86,6 @@ export class DMMTransformer {
   static grpcMapOfStringDMMLCSToDMMLCS(
     mapOfStringDMMLCS: GrpcMapOfStringDMMLCS,
   ): [string, DMMLCS][] {
-    // eslint-disable-next-line no-underscore-dangle
     return mapOfStringDMMLCS
       .getFieldMap()
       .arr_.map(
@@ -102,7 +99,6 @@ export class DMMTransformer {
   static grpcLCSResultRecordToLCSResultRecord(
     lCSResultRecord: GrpcLCSResultRecord,
   ): LCSResultRecord {
-    // eslint-disable-next-line no-underscore-dangle
     const summaryMap = lCSResultRecord
       .getSummaryMap()
       .entries()
@@ -111,7 +107,6 @@ export class DMMTransformer {
         DMMTransformer.grpcDMMLCStoDMMLCS(dmmLcs),
       ])
 
-    // eslint-disable-next-line no-underscore-dangle
     const byMarketsMap = lCSResultRecord
       .getByMarketsMap()
       .entries()
@@ -123,9 +118,7 @@ export class DMMTransformer {
       ])
 
     return {
-      // eslint-disable-next-line no-underscore-dangle
       summaryMap: Object.fromEntries(summaryMap),
-      // eslint-disable-next-line no-underscore-dangle
       byMarketsMap: Object.fromEntries(byMarketsMap),
     }
   }
@@ -140,7 +133,6 @@ export class DMMTransformer {
   static grpcMapOfStringDMMVCStoMapOfStringDMMVCS(
     mapOfStringDMMVCS: GrpcMapOfStringDMMVCS,
   ): [string, DMMVCS][] {
-    // eslint-disable-next-line no-underscore-dangle
     return mapOfStringDMMVCS
       .getFieldMap()
       .arr_.map(([name, [vcs, volume]]: [string, [string, string]]) => [
@@ -152,7 +144,6 @@ export class DMMTransformer {
   static grpcVCSResultRecordToVCSResultRecords(
     vCSResultRecord: GrpcVCSResultRecord,
   ): VCSResultRecord {
-    // eslint-disable-next-line no-underscore-dangle
     const summaryMap = vCSResultRecord
       .getSummaryMap()
       .entries()
@@ -161,7 +152,6 @@ export class DMMTransformer {
         DMMTransformer.grpcDMMVCStoDMMVCS(dmmVcs),
       ])
 
-    // eslint-disable-next-line no-underscore-dangle
     const byMarketsMap = vCSResultRecord
       .getByMarketsMap()
       .entries()
@@ -172,7 +162,6 @@ export class DMMTransformer {
         ),
       ])
 
-    // eslint-disable-next-line no-underscore-dangle
     const byDateMap = vCSResultRecord
       .getByDateMap()
       .entries()
@@ -203,7 +192,6 @@ export class DMMTransformer {
       vcs: vcs
         ? DMMTransformer.grpcVCSResultRecordToVCSResultRecords(vcs)
         : undefined,
-      createdAt: epochResultRecord.getCreatedAt(),
     }
   }
 

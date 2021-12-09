@@ -2,9 +2,29 @@ import {
   BlockInfo,
   TxData,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
-import { Transaction, Block, BlockWithTxs } from '../types/index'
+import {
+  Transaction,
+  Block,
+  GrpcGasFee,
+  GasFee,
+  BlockWithTxs,
+} from '../types/index'
 
 export class ExplorerTransformer {
+  static grpcGasFeeToGasFee(gasFee: GrpcGasFee): GasFee {
+    const amounts = gasFee.getAmountList().map((amount) => ({
+      amount: amount.getAmount(),
+      denom: amount.getDenom(),
+    }))
+
+    return {
+      amounts,
+      gasLimit: gasFee.getGasLimit(),
+      payer: gasFee.getPayer(),
+      granter: gasFee.getGranter(),
+    }
+  }
+
   static grpcTransactionToTransaction(tx: TxData): Transaction {
     return {
       id: tx.getId(),
@@ -17,6 +37,7 @@ export class ExplorerTransformer {
       gasUsed: tx.getGasUsed(),
       codespace: tx.getCodespace(),
       data: tx.getData(),
+      gasFee: ExplorerTransformer.grpcGasFeeToGasFee(tx.getGasFee()!),
       txType: tx.getTxType(),
       signatures: tx.getSignaturesList().map((signature) => ({
         pubkey: signature.getPubkey(),

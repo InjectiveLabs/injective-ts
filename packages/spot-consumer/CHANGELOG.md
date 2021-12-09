@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.87](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.86...@injectivelabs/spot-consumer@0.0.87) (2021-12-09)
+
+**Note:** Version bump only for package @injectivelabs/spot-consumer
+
+
+
+
+
 ## [0.0.86](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.84...@injectivelabs/spot-consumer@0.0.86) (2021-12-07)
 
 
