@@ -13,6 +13,7 @@ export type UrlEndpoint = {
   tmUrl: string
   chainHttpUrl: string
   exchangeUrl: string
+  dmmExchangeUrl: string
   exchangeGatewayUrl: string
   explorerUrl: string
 }

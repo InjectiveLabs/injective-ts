@@ -6,6 +6,7 @@ export const urlEndpointsMainnet: UrlEndpoint = {
   tmUrl: 'https://tm.injective.network',
   chainHttpUrl: 'https://k8s-lcd.injective.network',
   exchangeUrl: 'https://k8s-api.injective.network',
+  dmmExchangeUrl: 'https://k8s-api.injective.network',
   exchangeGatewayUrl: 'https://k8s-gateway.injective.network',
   explorerUrl: 'https://k8s-api.injective.network/api/explorer/v1',
 }
@@ -16,6 +17,7 @@ export const urlEndpointsPublic: UrlEndpoint = {
   tmUrl: 'https://tm.injective.network',
   chainHttpUrl: 'https://public.lcd.injective.network',
   exchangeUrl: 'https://public.api.injective.network',
+  dmmExchangeUrl: 'https://dmm.exchange.injective.dev',
   exchangeGatewayUrl: 'https://public.web3-gateway.injective.network',
   explorerUrl: 'https://public.api.injective.network/api/explorer/v1',
 }
@@ -26,6 +28,7 @@ export const urlEndpointsMainnetOld: UrlEndpoint = {
   tmUrl: 'https://tm.injective.network',
   chainHttpUrl: 'https://lcd.injective.network',
   exchangeUrl: 'https://api.injective.network',
+  dmmExchangeUrl: 'https://dmm.exchange.injective.dev',
   exchangeGatewayUrl: 'https://web3-gateway.injective.network',
   explorerUrl: 'https://api.injective.network/api/explorer/v1',
 }
@@ -36,6 +39,7 @@ export const urlEndpointsTestnet: UrlEndpoint = {
   tmUrl: 'https://testnet.tm.injective.dev',
   chainHttpUrl: 'https://testnet.lcd.injective.dev',
   exchangeUrl: 'https://testnet.api.injective.dev',
+  dmmExchangeUrl: 'https://testnet.api.injective.dev',
   exchangeGatewayUrl: 'https://testnet.web3-gateway.injective.dev',
   explorerUrl: 'https://testnet.api.injective.dev/api/explorer/v1',
 }
@@ -46,6 +50,7 @@ export const urlEndpointsDevnet: UrlEndpoint = {
   tmUrl: 'https://devnet.tm.injective.dev',
   chainHttpUrl: 'https://devnet.lcd.injective.dev',
   exchangeUrl: 'https://devnet.api.injective.dev',
+  dmmExchangeUrl: 'https://devnet.api.injective.dev',
   exchangeGatewayUrl: 'https://devnet.gateway.injective.dev',
   explorerUrl: 'https://devnet.api.injective.dev/api/explorer/v1',
 }
@@ -56,6 +61,7 @@ export const urlEndpointsLocal: UrlEndpoint = {
   tmUrl: 'http://localhost:9091',
   chainHttpUrl: 'http://localhost:9091',
   exchangeUrl: 'https://localhost:4444',
+  dmmExchangeUrl: 'https://localhost:4444',
   exchangeGatewayUrl: 'https://localhost:4445',
   explorerUrl: 'https://localhost:4444/api/explorer/v1',
 }
