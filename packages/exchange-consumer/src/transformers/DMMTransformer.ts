@@ -192,7 +192,7 @@ export class DMMTransformer {
       vcs: vcs
         ? DMMTransformer.grpcVCSResultRecordToVCSResultRecords(vcs)
         : undefined,
-      createdAt: '', // epochResultRecord.getCreatedAt(),
+      createdAt: epochResultRecord.getCreatedAt(),
     }
   }
 
