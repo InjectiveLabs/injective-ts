@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.58...@injectivelabs/subaccount-consumer@0.0.59) (2021-12-15)
+
+
+### Features
+
+* implement Auction consumer ([3761411](https://github.com/InjectiveLabs/injective-ts/commit/3761411a723985f5a5cdc7e6ba82e15fdce8b68f))
+
+
+
+
+
 ## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.57...@injectivelabs/subaccount-consumer@0.0.58) (2021-12-10)
 
 

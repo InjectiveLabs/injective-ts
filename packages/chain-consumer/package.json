@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/chain-consumer",
   "description": "Interacting with our Chain API made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.99",
+  "version": "0.0.100",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,8 +27,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@improbable-eng/grpc-web": "^0.14.0",
-    "@improbable-eng/grpc-web-node-http-transport": "^0.14.0",
+    "@improbable-eng/grpc-web": "^0.15.0",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/chain-api": "^1.6.2",
     "@injectivelabs/exceptions": "^0.0.26",
     "@injectivelabs/ts-types": "^0.0.22",

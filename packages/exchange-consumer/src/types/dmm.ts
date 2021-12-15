@@ -1,6 +1,3 @@
-import { MarketStatusMap as GrpcMarketStatus } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
-import { InsuranceFund as GrpcInsuranceFund } from '@injectivelabs/exchange-api/injective_insurance_rpc_pb'
-import { Oracle as GrpcOracle } from '@injectivelabs/exchange-api/injective_oracle_rpc_pb'
 import {
   ArrayOfString as GrpcArrayOfString,
   DMMLCS as GrpcDMMLCS,
@@ -15,12 +12,6 @@ import {
   OrderValueMultiplier as GrpcOrderValueMultiplier,
   VCSResultRecord as GrpcVCSResultRecord,
 } from '@injectivelabs/exchange-api/injective_dmm_rpc_pb'
-
-export interface StreamStatusResponse {
-  details: string
-  code: number
-  metadata: any
-}
 
 export interface OrderValueMultiplier {
   orderPriceBiasThreshold: string
@@ -96,13 +87,10 @@ export {
   GrpcEpoch,
   GrpcEpochMeta,
   GrpcEpochResultRecord,
-  GrpcInsuranceFund,
   GrpcLCSResultRecord,
   GrpcMapOfStringDMMLCS,
   GrpcMapOfStringDMMVCS,
   GrpcMarketConfig,
-  GrpcMarketStatus,
-  GrpcOracle,
   GrpcOrderValueMultiplier,
   GrpcVCSResultRecord,
 }

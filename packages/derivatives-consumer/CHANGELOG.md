@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.77...@injectivelabs/derivatives-consumer@0.0.78) (2021-12-15)
+
+
+### Features
+
+* implement Auction consumer ([3761411](https://github.com/InjectiveLabs/injective-ts/commit/3761411a723985f5a5cdc7e6ba82e15fdce8b68f))
+
+
+
+
+
 ## [0.0.77](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.76...@injectivelabs/derivatives-consumer@0.0.77) (2021-12-10)
 
 
