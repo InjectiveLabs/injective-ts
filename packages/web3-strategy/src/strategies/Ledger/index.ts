@@ -97,6 +97,7 @@ export default class Ledger
       if (
         message.includes('Ledger device: Incorrect length') ||
         message.includes('Ledger device: INS_NOT_SUPPORTED') ||
+        message.includes('Ledger device: CLA_NOT_SUPPORTED') ||
         message.includes('Failed to open the device') ||
         message.includes('Failed to open the device') ||
         message.includes('Ledger Device is busy') ||
