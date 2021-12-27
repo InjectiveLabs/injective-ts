@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.90](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.89...@injectivelabs/spot-consumer@0.0.90) (2021-12-27)
+
+
+### Features
+
+* batch update order composer ([6fb2ae6](https://github.com/InjectiveLabs/injective-ts/commit/6fb2ae6532339851c72abea047b58b0d00f2d9a1))
+
+
+
+
+
 ## [0.0.89](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.88...@injectivelabs/spot-consumer@0.0.89) (2021-12-15)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.78...@injectivelabs/derivatives-consumer@0.0.79) (2021-12-27)
+
+
+### Features
+
+* batch update order composer ([6fb2ae6](https://github.com/InjectiveLabs/injective-ts/commit/6fb2ae6532339851c72abea047b58b0d00f2d9a1))
+
+
+
+
+
 ## [0.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.77...@injectivelabs/derivatives-consumer@0.0.78) (2021-12-15)
 
 
