@@ -17,7 +17,7 @@ export const urlEndpointsPublic: UrlEndpoint = {
   tmUrl: 'https://tm.injective.network',
   chainHttpUrl: 'https://public.lcd.injective.network',
   exchangeUrl: 'https://public.api.injective.network',
-  dmmExchangeUrl: 'https://dmm.exchange.injective.dev',
+  dmmExchangeUrl: 'https://dmm.exchange.injective.network',
   exchangeGatewayUrl: 'https://public.web3-gateway.injective.network',
   explorerUrl: 'https://public.api.injective.network/api/explorer/v1',
 }
@@ -28,7 +28,7 @@ export const urlEndpointsMainnetOld: UrlEndpoint = {
   tmUrl: 'https://tm.injective.network',
   chainHttpUrl: 'https://lcd.injective.network',
   exchangeUrl: 'https://api.injective.network',
-  dmmExchangeUrl: 'https://dmm.exchange.injective.dev',
+  dmmExchangeUrl: 'https://dmm.exchange.injective.network',
   exchangeGatewayUrl: 'https://web3-gateway.injective.network',
   explorerUrl: 'https://api.injective.network/api/explorer/v1',
 }
