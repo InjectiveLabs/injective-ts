@@ -80,6 +80,7 @@ export interface SpotTrade extends PriceLevel {
   tradeExecutionType: TradeExecutionType
   tradeDirection: TradeDirection
   fee: string
+  feeRecipient: string
 }
 
 export interface Orderbook {

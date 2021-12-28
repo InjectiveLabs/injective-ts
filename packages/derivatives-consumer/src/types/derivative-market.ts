@@ -132,6 +132,7 @@ export interface DerivativeTrade extends PositionDelta {
   tradeExecutionType: TradeExecutionType
   tradeDirection: TradeDirection
   fee: string
+  feeRecipient: string
   isLiquidation: boolean
   payout: string
 }

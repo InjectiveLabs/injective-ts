@@ -241,6 +241,8 @@ export class DerivativeTransformer {
       executedAt: trade.getExecutedAt(),
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
       fee: trade.getFee(),
+      feeRecipient:
+        trade.getFeeRecipient !== undefined ? trade.getFeeRecipient() : '', // TODO: remove the check
       isLiquidation: trade.getIsLiquidation(),
       payout: trade.getPayout(),
       ...mappedPositionDelta,

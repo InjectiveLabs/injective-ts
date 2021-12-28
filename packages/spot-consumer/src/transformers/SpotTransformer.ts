@@ -126,6 +126,8 @@ export class SpotTransformer {
       subaccountId: trade.getSubaccountId(),
       marketId: trade.getMarketId(),
       executedAt: trade.getExecutedAt(),
+      feeRecipient:
+        trade.getFeeRecipient !== undefined ? trade.getFeeRecipient() : '', // TODO: remove the check
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
       tradeDirection: trade.getTradeDirection() as TradeDirection,
       fee: trade.getFee(),
