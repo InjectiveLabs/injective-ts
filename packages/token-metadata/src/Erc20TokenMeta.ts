@@ -1,14 +1,18 @@
-import {
-  tokensByAddress,
-  tokensByKovanAddress,
-  tokensBySymbol,
-  tokensBySymbolForKovan,
-  tokensBySymbolToCoinGeckoId,
-} from './tokens'
+import { getMappedTokensByAddress } from './tokens/helpers/mapByAddress'
 import { TokenMeta } from './types'
 
 export class Erc20TokenMeta {
-  static getMetaBySymbol(symbol: string): TokenMeta | undefined {
+  protected tokens: Record<string, TokenMeta>
+
+  protected tokensByAddress: Record<string, TokenMeta>
+
+  constructor(tokens: Record<string, TokenMeta>) {
+    this.tokens = tokens
+    this.tokensByAddress = getMappedTokensByAddress(tokens)
+  }
+
+  getMetaBySymbol(symbol: string): TokenMeta | undefined {
+    const { tokens: tokensBySymbol } = this
     const erc20Symbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
 
     if (!tokensBySymbol[erc20Symbol]) {
@@ -18,17 +22,8 @@ export class Erc20TokenMeta {
     return tokensBySymbol[erc20Symbol]
   }
 
-  static getMetaBySymbolForKovan(symbol: string): TokenMeta | undefined {
-    const erc20Symbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
-
-    if (!tokensBySymbolForKovan[erc20Symbol]) {
-      return
-    }
-
-    return tokensBySymbolForKovan[erc20Symbol]
-  }
-
-  static getMetaByAddress(address: string): TokenMeta | undefined {
+  getMetaByAddress(address: string): TokenMeta | undefined {
+    const { tokensByAddress } = this
     const erc20Address = address.toLowerCase() as keyof typeof tokensByAddress
 
     if (!tokensByAddress[erc20Address]) {
@@ -38,25 +33,15 @@ export class Erc20TokenMeta {
     return tokensByAddress[erc20Address]
   }
 
-  static getMetaByKovanAddress(address: string): TokenMeta | undefined {
-    const erc20Address =
-      address.toLowerCase() as keyof typeof tokensByKovanAddress
-
-    if (!tokensByKovanAddress[erc20Address]) {
-      return
-    }
-
-    return tokensByKovanAddress[erc20Address]
-  }
-
-  static getCoinGeckoIdFromSymbol(symbol: string): string {
+  getCoinGeckoIdFromSymbol(symbol: string): string {
+    const { tokens: tokensBySymbol } = this
     const symbolToLowerCase =
-      symbol.toLowerCase() as keyof typeof tokensByKovanAddress
+      symbol.toLowerCase() as keyof typeof tokensBySymbol
 
-    if (!tokensBySymbolToCoinGeckoId[symbolToLowerCase]) {
+    if (!tokensBySymbol[symbolToLowerCase]) {
       return ''
     }
 
-    return tokensBySymbolToCoinGeckoId[symbolToLowerCase]
+    return tokensBySymbol[symbolToLowerCase].coinGeckoId || ''
   }
 }

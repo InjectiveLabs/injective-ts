@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/token-metadata",
   "description": "ERC20 token metadata. Name, symbol, decimals, etc.",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,6 +28,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@injectivelabs/networks": "^0.0.54",
     "@injectivelabs/ts-types": "^0.0.28",
     "@types/lodash.values": "^4.3.6",
     "copyfiles": "^2.4.1",

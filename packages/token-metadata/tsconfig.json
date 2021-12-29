@@ -3,6 +3,9 @@
   "references": [
     {
       "path": "../ts-types/tsconfig.json"
+    },
+    {
+      "path": "../networks/tsconfig.json"
     }
   ],
 }

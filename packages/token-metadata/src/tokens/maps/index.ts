@@ -1,5 +1,2 @@
-export { default as tokensByAddress } from './byAddress'
-export { default as tokensByKovanAddress } from './byKovanAddress'
-export { default as tokensBySymbolForKovan } from './bySymbolForKovan'
 export { default as tokensBySymbol } from './bySymbol'
-export { default as tokensBySymbolToCoinGeckoId } from './bySymbolToCoinGeckoId'
+export { default as tokensBySymbolForTestnet } from './bySymbolForTestnet'

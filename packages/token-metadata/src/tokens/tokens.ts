@@ -17,6 +17,15 @@ export default {
     coinGeckoId: 'wrapped-bitcoin',
   },
 
+  WBTC: {
+    name: 'Wrapped Bitcoin',
+    logo: 'wbtc.svg',
+    symbol: 'wBTC',
+    decimals: 8,
+    address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+    coinGeckoId: 'wrapped-bitcoin',
+  },
+
   ETH: {
     name: 'Ethereum',
     logo: 'ethereum.svg',
@@ -27,6 +36,15 @@ export default {
   },
 
   WETH: {
+    name: 'Wrapped Ethereum',
+    logo: 'ethereum.svg',
+    symbol: 'wETH',
+    decimals: 18,
+    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    coinGeckoId: 'ethereum',
+  },
+
+  wETH: {
     name: 'Wrapped Ethereum',
     logo: 'ethereum.svg',
     symbol: 'wETH',
