@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.34...@injectivelabs/cosmos-ts@0.0.35) (2021-12-31)
+
+
+### Bug Fixes
+
+* cosmoshub rpc endpoints ([338d624](https://github.com/InjectiveLabs/injective-ts/commit/338d6240d4211d9f4420fe3a3e39a56e9c24c4b7))
+
+
+
+
+
 ## [0.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.33...@injectivelabs/cosmos-ts@0.0.34) (2021-12-29)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts

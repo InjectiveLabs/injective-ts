@@ -477,4 +477,13 @@ export default {
     decimals: 18,
     logo: 'gf.png',
   },
+
+  XBX: {
+    address: '0x080b12e80c9b45e97c23b6ad10a16b3e2a123949',
+    coinGeckoId: '',
+    name: 'BurnX',
+    symbol: 'XBX',
+    decimals: 18,
+    logo: 'xbx.png',
+  },
 }

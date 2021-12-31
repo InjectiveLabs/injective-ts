@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.34...@injectivelabs/token-metadata@0.0.35) (2021-12-31)
+
+
+### Features
+
+* xbx ([bd6e917](https://github.com/InjectiveLabs/injective-ts/commit/bd6e9172a8704b49d88cfbbd236f3e53c0157ad0))
+
+
+
+
+
 ## [0.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.33...@injectivelabs/token-metadata@0.0.34) (2021-12-29)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
