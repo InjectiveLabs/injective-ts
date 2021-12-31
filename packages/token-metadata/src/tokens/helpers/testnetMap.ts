@@ -20,4 +20,5 @@ export const testnetSymbolToAddressMap = {
   WETH: '0xd0a1e359811322d97991e03f863a0c30c2cf029c',
   wETH: '0xd0a1e359811322d97991e03f863a0c30c2cf029c',
   ETH: '0xd0a1e359811322d97991e03f863a0c30c2cf029c',
+  XBX: '0x080b12e80c9b45e97c23b6ad10a16b3e2a123949',
 }
