@@ -6,8 +6,8 @@ export const getLcdEndpointFromChainId = (
   switch (chainId) {
     case CosmosChainId.Cosmoshub:
       return {
-        rpc: 'https://lcd.cosmos.injective.network',
-        rest: 'https://tm.cosmos.injective.network',
+        rpc: 'https://tm.cosmos.injective.network',
+        rest: 'https://lcd.cosmos.injective.network',
       }
     case CosmosChainId.Injective:
       return {
