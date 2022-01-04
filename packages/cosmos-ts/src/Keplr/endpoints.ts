@@ -6,13 +6,18 @@ export const getLcdEndpointFromChainId = (
   switch (chainId) {
     case CosmosChainId.Cosmoshub:
       return {
-        rpc: 'https://tm.cosmos.injective.network',
-        rest: 'https://lcd.cosmos.injective.network',
+        rpc: 'https://rpc-cosmoshub.keplr.app',
+        rest: 'https://lcd-cosmoshub.keplr.app',
+      }
+    case CosmosChainId.Osmosis:
+      return {
+        rpc: 'https://rpc-osmosis.keplr.app',
+        rest: 'https://lcd-osmosis.keplr.app',
       }
     case CosmosChainId.Injective:
       return {
-        rpc: 'https://tm.injective.network/',
-        rest: 'https://lcd.injective.network/',
+        rpc: 'https://tm.injective.network',
+        rest: 'https://lcd.injective.network',
       }
     case CosmosChainId.Terra:
       return {
@@ -27,12 +32,12 @@ export const getLcdEndpointFromChainId = (
     case TestnetCosmosChainId.Cosmoshub:
       return {
         rpc: 'https://testnet.tm.cosmos.injective.dev',
-        rest: 'https://testnet.lcd.cosmos.injective.dev/',
+        rest: 'https://testnet.lcd.cosmos.injective.dev',
       }
     case TestnetCosmosChainId.Injective:
       return {
-        rpc: 'https://testnet.tm.injective.dev/',
-        rest: 'https://testnet.lcd.injective.dev/',
+        rpc: 'https://testnet.tm.injective.dev',
+        rest: 'https://testnet.lcd.injective.dev',
       }
     default:
       throw new Error(`Endpoints for ${chainId} not found`)

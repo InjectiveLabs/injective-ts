@@ -7,6 +7,7 @@ export interface TokenMetaWithNativeDenom extends TokenMeta {
 export enum CosmosChainId {
   Injective = 'injective-1',
   Cosmoshub = 'cosmoshub-4',
+  Osmosis = 'osmosis-1',
   Terra = 'columbus-5',
   TerraUST = 'columbus-5',
 }
@@ -20,6 +21,10 @@ export const cosmosNativeDenomsFromChainId = {
   [CosmosChainId.Cosmoshub]: {
     ...erc20TokenMeta.getMetaBySymbol('ATOM'),
     denom: 'uatom',
+  },
+  [CosmosChainId.Osmosis]: {
+    ...erc20TokenMeta.getMetaBySymbol('OSMO'),
+    denom: 'uosmo',
   },
   [CosmosChainId.Terra]: [
     {

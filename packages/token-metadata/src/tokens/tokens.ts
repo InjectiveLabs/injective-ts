@@ -486,4 +486,22 @@ export default {
     decimals: 18,
     logo: 'xbx.png',
   },
+
+  OSMO: {
+    address: '',
+    coinGeckoId: 'osmosis',
+    name: 'Osmosis',
+    symbol: 'OSMO',
+    decimals: 6,
+    logo: 'osmo.svg',
+  },
+
+  UOSMO: {
+    address: '',
+    coinGeckoId: 'osmosis',
+    name: 'Osmosis',
+    symbol: 'OSMO',
+    decimals: 6,
+    logo: 'osmo.svg',
+  },
 }

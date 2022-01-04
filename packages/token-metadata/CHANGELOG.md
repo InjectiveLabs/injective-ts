@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.35...@injectivelabs/token-metadata@0.0.36) (2022-01-04)
+
+
+### Features
+
+* osmo support ([44f9e5a](https://github.com/InjectiveLabs/injective-ts/commit/44f9e5aa1c7baff43e60a22eda402046a06a1ab9))
+
+
+
+
+
 ## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.34...@injectivelabs/token-metadata@0.0.35) (2021-12-31)
 
 
