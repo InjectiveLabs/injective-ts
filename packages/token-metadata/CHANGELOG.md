@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.37...@injectivelabs/token-metadata@0.0.38) (2022-01-05)
+
+
+### Bug Fixes
+
+* coingeckoId ([4efa8bb](https://github.com/InjectiveLabs/injective-ts/commit/4efa8bb3013c1c73ba3f942c90630f17f7e11e2e))
+
+
+
+
+
 ## [0.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.36...@injectivelabs/token-metadata@0.0.37) (2022-01-04)
 
 
