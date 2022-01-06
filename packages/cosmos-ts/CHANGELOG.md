@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.39...@injectivelabs/cosmos-ts@0.0.40) (2022-01-06)
+
+
+### Bug Fixes
+
+* types ([95d6fc8](https://github.com/InjectiveLabs/injective-ts/commit/95d6fc8c0a0196b5bd1398d8e520d0232d90db93))
+
+
+
+
+
+## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.38...@injectivelabs/cosmos-ts@0.0.39) (2022-01-05)
+
+**Note:** Version bump only for package @injectivelabs/cosmos-ts
+
+
+
+
+
+## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.37...@injectivelabs/cosmos-ts@0.0.38) (2022-01-04)
+
+**Note:** Version bump only for package @injectivelabs/cosmos-ts
+
+
+
+
+
+## [0.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.36...@injectivelabs/cosmos-ts@0.0.37) (2022-01-04)
+
+
+### Features
+
+* osmo support ([44f9e5a](https://github.com/InjectiveLabs/injective-ts/commit/44f9e5aa1c7baff43e60a22eda402046a06a1ab9))
+
+
+
+
+
+## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.35...@injectivelabs/cosmos-ts@0.0.36) (2021-12-31)
+
+
+### Bug Fixes
+
+* swapped endpoints ([3c5ee81](https://github.com/InjectiveLabs/injective-ts/commit/3c5ee81206b6fd64b7007dcd244304f6c0a10046))
+
+
+
+
+
 ## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.34...@injectivelabs/cosmos-ts@0.0.35) (2021-12-31)
 
 

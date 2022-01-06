@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.38...@injectivelabs/token-metadata@0.0.39) (2022-01-06)
+
+
+### Bug Fixes
+
+* types ([95d6fc8](https://github.com/InjectiveLabs/injective-ts/commit/95d6fc8c0a0196b5bd1398d8e520d0232d90db93))
+
+
+
+
+
+## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.37...@injectivelabs/token-metadata@0.0.38) (2022-01-05)
+
+
+### Bug Fixes
+
+* coingeckoId ([4efa8bb](https://github.com/InjectiveLabs/injective-ts/commit/4efa8bb3013c1c73ba3f942c90630f17f7e11e2e))
+
+
+
+
+
+## [0.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.36...@injectivelabs/token-metadata@0.0.37) (2022-01-04)
+
+
+### Bug Fixes
+
+* token meta for osmo ([16e66a9](https://github.com/InjectiveLabs/injective-ts/commit/16e66a91d969fddb50c3c33f3d98c6f42a86dba4))
+
+
+
+
+
+## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.35...@injectivelabs/token-metadata@0.0.36) (2022-01-04)
+
+
+### Features
+
+* osmo support ([44f9e5a](https://github.com/InjectiveLabs/injective-ts/commit/44f9e5aa1c7baff43e60a22eda402046a06a1ab9))
+
+
+
+
+
 ## [0.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.34...@injectivelabs/token-metadata@0.0.35) (2021-12-31)
 
 
