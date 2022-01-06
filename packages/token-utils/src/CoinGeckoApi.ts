@@ -10,11 +10,18 @@ import {
 export default class CoinGeckoApi {
   private httpClient: HttpClient
 
-  private apiKey: string
-
   constructor({ apiKey, baseUrl }: { apiKey: string; baseUrl: string }) {
-    this.httpClient = new HttpClient(baseUrl)
-    this.apiKey = apiKey
+    const headers = {
+      'Content-Type': 'application/json',
+    } as any
+
+    if (apiKey) {
+      headers['X-Cg-Pro-Api-Key'] = apiKey
+    }
+
+    this.httpClient = new HttpClient(baseUrl).setConfig({
+      headers,
+    })
   }
 
   async fetchCoin(
@@ -28,7 +35,6 @@ export default class CoinGeckoApi {
         tickers: false,
         sparkline: false,
         developer_data: false,
-        x_cg_pro_api_key: this.apiKey,
         ...options,
       }
 
@@ -54,7 +60,6 @@ export default class CoinGeckoApi {
         tickers: false,
         sparkline: false,
         developer_data: false,
-        x_cg_pro_api_key: this.apiKey,
         ...options,
       }
 
@@ -80,7 +85,6 @@ export default class CoinGeckoApi {
         tickers: false,
         sparkline: false,
         developer_data: false,
-        x_cg_pro_api_key: this.apiKey,
         ...options,
       }
 
@@ -99,7 +103,6 @@ export default class CoinGeckoApi {
     try {
       const actualParams = {
         include_platform: false,
-        x_cg_pro_api_key: this.apiKey,
         ...params,
       }
 
@@ -115,7 +118,6 @@ export default class CoinGeckoApi {
   async fetchChart(id: string, params: Record<string, any> | undefined = {}) {
     try {
       const actualParams = {
-        x_cg_pro_api_key: this.apiKey,
         ...params,
       }
 
@@ -133,7 +135,6 @@ export default class CoinGeckoApi {
   async fetchHistory(id: string, params: Record<string, any> | undefined = {}) {
     try {
       const actualParams = {
-        x_cg_pro_api_key: this.apiKey,
         ...params,
       }
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@0.0.3...@injectivelabs/token-utils@0.0.4) (2022-01-06)
+
+
+### Bug Fixes
+
+* coingecko api key ([c11b0c0](https://github.com/InjectiveLabs/injective-ts/commit/c11b0c00c26a22ffc14389233886591860d966a6))
+
+
+
+
+
 ## [0.0.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@0.0.2...@injectivelabs/token-utils@0.0.3) (2022-01-06)
 
 
