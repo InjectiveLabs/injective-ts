@@ -35,13 +35,13 @@ export class Erc20TokenMeta {
 
   getCoinGeckoIdFromSymbol(symbol: string): string {
     const { tokens: tokensBySymbol } = this
-    const symbolToLowerCase =
-      symbol.toLowerCase() as keyof typeof tokensBySymbol
+    const symbolToUppercase =
+      symbol.toUpperCase() as keyof typeof tokensBySymbol
 
-    if (!tokensBySymbol[symbolToLowerCase]) {
+    if (!tokensBySymbol[symbolToUppercase]) {
       return ''
     }
 
-    return tokensBySymbol[symbolToLowerCase].coinGeckoId || ''
+    return tokensBySymbol[symbolToUppercase].coinGeckoId || ''
   }
 }

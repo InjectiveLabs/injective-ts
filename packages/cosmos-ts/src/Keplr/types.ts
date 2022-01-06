@@ -22,10 +22,17 @@ export const cosmosNativeDenomsFromChainId = {
     ...erc20TokenMeta.getMetaBySymbol('ATOM'),
     denom: 'uatom',
   },
-  [CosmosChainId.Osmosis]: {
-    ...erc20TokenMeta.getMetaBySymbol('OSMO'),
-    denom: 'uosmo',
-  },
+  [CosmosChainId.Osmosis]: [
+    {
+      ...erc20TokenMeta.getMetaBySymbol('OSMO'),
+      denom: 'uosmo',
+    },
+    {
+      ...erc20TokenMeta.getMetaBySymbol('INJ'),
+      denom:
+        'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
+    },
+  ],
   [CosmosChainId.Terra]: [
     {
       ...erc20TokenMeta.getMetaBySymbol('LUNA'),

@@ -493,7 +493,7 @@ export default {
     name: 'Osmosis',
     symbol: 'OSMO',
     decimals: 6,
-    logo: 'osmo.svg',
+    logo: 'osmo.png',
   },
 
   UOSMO: {
@@ -502,6 +502,6 @@ export default {
     name: 'Osmosis',
     symbol: 'OSMO',
     decimals: 6,
-    logo: 'osmo.svg',
+    logo: 'osmo.png',
   },
 }

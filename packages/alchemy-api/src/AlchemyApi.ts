@@ -52,4 +52,14 @@ export default class AlchemyApi {
       throw new Web3Exception(e.message)
     }
   }
+
+  fetchLatestBlock() {
+    const { web3 } = this
+
+    try {
+      return web3.eth.getBlock('latest').then((block) => block)
+    } catch (e: any) {
+      throw new Web3Exception(e.message)
+    }
+  }
 }

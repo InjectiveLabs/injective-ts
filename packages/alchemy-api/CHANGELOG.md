@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/alchemy-api@0.0.10...@injectivelabs/alchemy-api@0.0.11) (2022-01-06)
+
+
+### Features
+
+* added coinGcekoApi consumer ([3aaa96d](https://github.com/InjectiveLabs/injective-ts/commit/3aaa96dec4d08c36e8bba520717ba5383a60da2a))
+
+
+
+
+
 ## [0.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/alchemy-api@0.0.9...@injectivelabs/alchemy-api@0.0.10) (2021-12-21)
 
 **Note:** Version bump only for package @injectivelabs/alchemy-api

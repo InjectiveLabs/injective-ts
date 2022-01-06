@@ -1,20 +1,20 @@
 {
-  "name": "@injectivelabs/cosmos-ts",
-  "description": "Cosmos related wrappers.",
-  "version": "0.0.41",
-  "license": "MIT",
+  "name": "@injectivelabs/token-utils",
+  "version": "0.0.2",
+  "description": "Token Utils is a package for querying different data about tokens",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "license": "MIT",
   "files": [
     "dist"
   ],
   "_moduleAliases": {
-    "~cosmos-ts": "dist"
+    "~token-utils": "dist"
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias",
     "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
@@ -27,26 +27,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@cosmjs/amino": "^0.26.5",
-    "@cosmjs/launchpad": "^0.26.5",
-    "@cosmjs/proto-signing": "^0.26.5",
-    "@cosmjs/stargate": "^0.26.5",
-    "@cosmjs/tendermint-rpc": "^0.26.5",
     "@injectivelabs/exceptions": "^0.0.32",
-    "@injectivelabs/token-metadata": "^0.0.40",
-    "@injectivelabs/ts-types": "^0.0.28",
     "@injectivelabs/utils": "^0.0.41",
-    "@keplr-wallet/common": "^0.9.7",
-    "@keplr-wallet/cosmos": "^0.9.7",
-    "@keplr-wallet/types": "^0.9.6",
-    "@keplr-wallet/unit": "^0.9.6",
-    "@terra-money/terra.js": "^3.0.1",
-    "@terra-money/wallet-controller": "^3.3.0",
-    "commitizen": "^4.2.4",
-    "cosmjs-types": "^0.3.0",
     "link-module-alias": "^1.2.0",
-    "long": "^4.0.0",
-    "rxjs": "^7.4.0",
     "shx": "^0.3.2"
   }
 }
