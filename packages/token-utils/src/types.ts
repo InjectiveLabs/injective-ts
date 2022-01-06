@@ -1,11 +1,4 @@
 /* eslint-disable camelcase */
-export interface CoinGeckoReturnObject<T> {
-  success: boolean
-  message: string
-  code: string
-  data: T
-}
-
 export interface CoinGeckoCoinResponse {
   id: string
   symbol: string
@@ -38,6 +31,13 @@ export interface CoinGeckoCoinResponse {
     price_change_24h: number
     market_cap_change_percentage_24h: number
   }
+}
+
+export interface CoinGeckoReturnObject<T> {
+  success: boolean
+  message: string
+  code: string
+  data: T
 }
 
 export interface CoinGeckoMarketChartResponse {

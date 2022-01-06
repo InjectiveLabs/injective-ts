@@ -1,5 +1,6 @@
-# 🌟 Injective Protocol - Coin Gecko Consumer
+# 🌟 Injective Protocol - Token Utils
 
+_Token Utils is a package for querying different data about tokens_
 ---
 
 ## 📚 Getting Started

@@ -3,8 +3,8 @@ import { HttpException } from '@injectivelabs/exceptions'
 import {
   CoinGeckoCoin,
   CoinGeckoReturnObject,
-  CoinGeckoCoinResponse,
   CoinGeckoMarketChartResponse,
+  CoinGeckoCoinResponse,
 } from './types'
 
 export default class CoinGeckoApi {
@@ -29,27 +29,6 @@ export default class CoinGeckoApi {
         '/coins/list',
         actualParams,
       )) as CoinGeckoReturnObject<CoinGeckoCoin[]>
-    } catch (e: any) {
-      throw new HttpException(e.message)
-    }
-  }
-
-  async fetchCoin(id: string, params: Record<string, any> | undefined = {}) {
-    try {
-      const actualParams = {
-        localization: false,
-        community_data: false,
-        tickers: false,
-        sparkline: false,
-        developer_data: false,
-        x_cg_pro_api_key: this.apiKey,
-        ...params,
-      }
-
-      return (await this.httpClient.get(
-        `/coins/${id}`,
-        actualParams,
-      )) as CoinGeckoReturnObject<CoinGeckoCoinResponse>
     } catch (e: any) {
       throw new HttpException(e.message)
     }

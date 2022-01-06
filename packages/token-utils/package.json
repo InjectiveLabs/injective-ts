@@ -1,7 +1,7 @@
 {
-  "name": "@injectivelabs/coin-gecko-api",
-  "version": "0.0.10",
-  "description": "Coin Gecko API Consumer",
+  "name": "@injectivelabs/token-utils",
+  "version": "0.0.2",
+  "description": "Token Utils is a package for querying different data about tokens",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~coin-gecko-api": "dist"
+    "~token-utils": "dist"
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
