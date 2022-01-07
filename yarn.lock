@@ -1880,33 +1880,34 @@
   dependencies:
     "@json-rpc-tools/types" "^1.6.3"
 
-"@keplr-wallet/common@^0.9.7":
-  version "0.9.7"
-  resolved "https://registry.npmjs.org/@keplr-wallet/common/-/common-0.9.7.tgz#38f41a7d11707855572399531bf7b0a8f4337994"
-  integrity sha512-/L9xuQBHIvuZpwCBQLhIA28Um3C1PmfsQSGVk+03hF4MNZq3UGRp8z1vu9WMePe+KsMXRy54lUNhJ5UAhyooaw==
+"@keplr-wallet/common@^0.9.10":
+  version "0.9.10"
+  resolved "https://registry.npmjs.org/@keplr-wallet/common/-/common-0.9.10.tgz#4dd48c766823f80eee700a9f345c84e17121c85c"
+  integrity sha512-tZ3UfvGGVakr2/tpxJtYJixuDC43RE2iIRejtxF0hSenAPGr/NNnmXvo2gkxbb9WHN2Z+03d3nH6qympLssqeg==
   dependencies:
-    "@keplr-wallet/crypto" "^0.9.7"
+    "@keplr-wallet/crypto" "^0.9.10"
     buffer "^6.0.3"
     delay "^4.4.0"
 
-"@keplr-wallet/cosmos@^0.9.7":
-  version "0.9.7"
-  resolved "https://registry.npmjs.org/@keplr-wallet/cosmos/-/cosmos-0.9.7.tgz#c4b55642fbc47c7b2e120499be2cb9df1483055e"
-  integrity sha512-5MKMRbEZWo91eM2HiBg9uasPrj11Z/JvkQ/ZnqLWJrTLIYHl0PNE1d5IOT14qTn0K2ui06dnlCLb7NdP3YUaFg==
+"@keplr-wallet/cosmos@^0.9.10":
+  version "0.9.10"
+  resolved "https://registry.npmjs.org/@keplr-wallet/cosmos/-/cosmos-0.9.10.tgz#476f5bd24ca155ca9fa31fccb6381f46a26cd52e"
+  integrity sha512-x5SX0sdR+QjC7EjxyYKC/50qKwA2EFWaNWSu7hhymcKy6YgDwR3OcwNIsX3zpD58awrAkvIPUqh5Oe+4NMrS3w==
   dependencies:
     "@cosmjs/launchpad" "^0.24.0-alpha.25"
-    "@keplr-wallet/types" "^0.9.6"
-    "@keplr-wallet/unit" "^0.9.6"
+    "@keplr-wallet/crypto" "^0.9.10"
+    "@keplr-wallet/types" "^0.9.10"
+    "@keplr-wallet/unit" "^0.9.10"
     axios "^0.21.0"
     bech32 "^1.1.4"
     buffer "^6.0.3"
     long "^4.0.0"
     protobufjs "^6.10.2"
 
-"@keplr-wallet/crypto@^0.9.7":
-  version "0.9.7"
-  resolved "https://registry.npmjs.org/@keplr-wallet/crypto/-/crypto-0.9.7.tgz#0fabf4f76c10a4f4fb9096f7fc833c5fbe9695b5"
-  integrity sha512-WfDlk5psVoG5k/0uu4Asw8wTguCg1pY6U7YFDYb4RRvN2ngC/jLvJnahgnyKAUBXxsOt52fULEyW9NqK2PC4Gw==
+"@keplr-wallet/crypto@^0.9.10":
+  version "0.9.10"
+  resolved "https://registry.npmjs.org/@keplr-wallet/crypto/-/crypto-0.9.10.tgz#2ea6f20c68fc284c4f6e7545af7a57bb6545190b"
+  integrity sha512-zjoUUL5Ky72eJBm7bd9kPNBTgQL/cFO6pbvPgVa32S8UZ6GlwsPSyiHuvq0k8z0t9X9GwdpuH0nrnlL4viU4fw==
   dependencies:
     bip32 "^2.0.6"
     bip39 "^3.0.3"
@@ -1915,10 +1916,10 @@
     elliptic "^6.5.3"
     sha.js "^2.4.11"
 
-"@keplr-wallet/types@^0.9.6":
-  version "0.9.6"
-  resolved "https://registry.npmjs.org/@keplr-wallet/types/-/types-0.9.6.tgz#a317c3532dd8c0973b5b03c9078ac0741d079d27"
-  integrity sha512-3X8hqU0VMCv9BBmyTztiOUwbmglJhUqjUWfErCfudsjBCMJmhv+M3rVYuXO4c+I4xdswQvqtnOhAE64WMULXkA==
+"@keplr-wallet/types@^0.9.10":
+  version "0.9.10"
+  resolved "https://registry.npmjs.org/@keplr-wallet/types/-/types-0.9.10.tgz#3b7f8bdb96edffd73bcd5b65f6fe0aef1c9d1f98"
+  integrity sha512-Qzz7YGhFpwGNGSLGYXiKEy0mvd5t9Wa8NmQyN8xSFUIy1HjNxKunhMbfSIyIpBRK7n6ujvlS519rkd+TUjUdqQ==
   dependencies:
     "@cosmjs/launchpad" "^0.24.0-alpha.25"
     "@cosmjs/proto-signing" "^0.24.0-alpha.25"
@@ -1926,12 +1927,12 @@
     long "^4.0.0"
     secretjs "^0.17.0"
 
-"@keplr-wallet/unit@^0.9.6":
-  version "0.9.6"
-  resolved "https://registry.npmjs.org/@keplr-wallet/unit/-/unit-0.9.6.tgz#66063677e4afa183045faa9f86b079b0451eceaf"
-  integrity sha512-/GdPFJPIgVbbet9vKhXkna4tNQRgOw/mZlsqTI1VXMLCxi7FWCoRkq2wTYaKnj5kqJdTmQMPwdFA3pj/DGgluw==
+"@keplr-wallet/unit@^0.9.10":
+  version "0.9.10"
+  resolved "https://registry.npmjs.org/@keplr-wallet/unit/-/unit-0.9.10.tgz#7f20264d3142a7272e17944bba1eeeb6d2895fb9"
+  integrity sha512-WQJFXg86wAnaVF4RkY49zYWaWcbfz6PqpZVS9KKT/7DQDthdzA2uOj6CytAxRDNDgvpOPT/saZt97T0vVfjUcA==
   dependencies:
-    "@keplr-wallet/types" "^0.9.6"
+    "@keplr-wallet/types" "^0.9.10"
     big-integer "^1.6.48"
     utility-types "^3.10.0"
 
@@ -3002,10 +3003,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@terra-dev/wallet-types@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.npmjs.org/@terra-dev/wallet-types/-/wallet-types-3.2.0.tgz#2cff6d18aa2d11b20e4ee28758221bfcc903edd1"
-  integrity sha512-XJ9tRDGf0H7oB/0K+++UivQmhN5o5I9TNkviKcpI35qWY69bTC8g3OSqwRmoZP5LxXuf9h0oUbgHvIRHmNSzLw==
+"@terra-dev/wallet-types@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.npmjs.org/@terra-dev/wallet-types/-/wallet-types-3.6.0.tgz#6d963e44e1e025a1b6b4b252bb412048fad53b0b"
+  integrity sha512-aUNLQtgYBiGovl9660hQWYhfeXuHRMSoFvGM0FTtCV10YkenD3b2RM6QV+aphS00bexKnSXTKo/slLJa/nU1AQ==
 
 "@terra-dev/web-extension-interface@^0.14.0":
   version "0.14.0"
@@ -3014,10 +3015,10 @@
   dependencies:
     rxjs "^7.4.0"
 
-"@terra-money/terra.js@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/@terra-money/terra.js/-/terra.js-3.0.1.tgz#5f1db735273717828232d9a6476637f44d428bf4"
-  integrity sha512-bzWHGc70mCw3P9phattEnP/+Dhtf+49iw2bBZdagwovoGS/nzFlY+ESwLu3vQglHM9CDPQYaWtn3giytaAileQ==
+"@terra-money/terra.js@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.npmjs.org/@terra-money/terra.js/-/terra.js-3.0.3.tgz#afbc1d454ae06d4713137ee27cd238bc837a6444"
+  integrity sha512-yQRJUWUWHQem0sNRti8c+QI8fHHR5+YFK+6cD1OpiIg+T5/b1Zj7vCYSqGTQu13fZlfaOnzVBYWKVqIh+2vpkg==
   dependencies:
     "@terra-money/terra.proto" "^0.1.7"
     axios "^0.24.0"
@@ -3042,12 +3043,12 @@
     long "^4.0.0"
     protobufjs "~6.11.2"
 
-"@terra-money/wallet-controller@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.npmjs.org/@terra-money/wallet-controller/-/wallet-controller-3.3.0.tgz#eeb495708f301fcd448fd561fa3ff89002730371"
-  integrity sha512-n/e6i9yTG0OvaaXm44NHCZPLz40CE1KbAzolJcMtIoOqyUbah/nw/UP6Cgg3VyYHROo6Ohk4gglxBLW3TZHTMw==
+"@terra-money/wallet-controller@^3.6.5":
+  version "3.6.5"
+  resolved "https://registry.npmjs.org/@terra-money/wallet-controller/-/wallet-controller-3.6.5.tgz#1c2a6a5314c9be0e3f8eb89501ea4bae4af52d28"
+  integrity sha512-yhpTD3sSYJdoZ34I7V5jNWyblp5KdQWOJ0ME9uIDJcYEHZZ2OU3qxb+jvg8U8+SDoEEGqdvDUB2wFfWBk8zNOw==
   dependencies:
-    "@terra-dev/wallet-types" "^3.2.0"
+    "@terra-dev/wallet-types" "^3.6.0"
     "@terra-dev/web-extension-interface" "^0.14.0"
     "@walletconnect/core" "^1.6.6"
     "@walletconnect/iso-crypto" "^1.6.6"

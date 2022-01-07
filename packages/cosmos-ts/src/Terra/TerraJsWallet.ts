@@ -107,7 +107,6 @@ export class TerraJsWallet {
     transferAmount,
     sourcePort,
     sourceChannel,
-    timeoutHeight,
     timeoutTimestamp,
   }: {
     senderAddress: string
@@ -115,20 +114,41 @@ export class TerraJsWallet {
     transferAmount: any
     sourcePort: string
     sourceChannel: string
-    timeoutHeight: any
     timeoutTimestamp: number
   }) {
+    let responseHeight
+    try {
+      const networkInfo = await this.getNetwork()
+
+      if (!networkInfo) {
+        throw new Error('We could not fetch network info from Terra Extension')
+      }
+
+      const lcdClient = new LCDClient({
+        URL: networkInfo.lcd,
+        chainID: networkInfo.chainID,
+      })
+      const { height } = (await lcdClient.apiRequester.get(
+        `ibc/core/channel/v1/channels/${sourceChannel}/ports/transfer/packet_commitments`,
+      )) as any
+      responseHeight = height
+    } catch (e) {
+      throw new Error('We could not fetch network info from Terra Extension')
+    }
+
+    const decimalPlaces = 6
     const gasPrice = new BigNumberInBase(
       transferAmount.denom === 'uluna' ? 0.00506 : 0.15,
-    ).toWei(6 /* Decimal places */)
-    const controller = await this.getWalletController()
+    ).toWei(decimalPlaces)
     const fee = new Fee(DEFAULT_GAS_LIMIT, `${gasPrice}${transferAmount.denom}`)
-
     const coin = new Coin(transferAmount.denom, new Int(transferAmount.amount))
+
+    const timeoutBlocks = 40
     const height = new Height(
-      timeoutHeight?.revision_height,
-      timeoutHeight?.revision_height,
+      parseInt(responseHeight.revision_number as string, 10),
+      parseInt(responseHeight.revision_height as string, 10) + timeoutBlocks,
     )
+
     const msgTransfer = new MsgTransfer(
       sourcePort,
       sourceChannel,
@@ -140,6 +160,7 @@ export class TerraJsWallet {
     )
 
     try {
+      const controller = await this.getWalletController()
       const response = await controller.post(
         {
           fee,
@@ -148,8 +169,6 @@ export class TerraJsWallet {
         },
         senderAddress,
       )
-
-      console.log(response)
 
       return response
     } catch (e: any) {

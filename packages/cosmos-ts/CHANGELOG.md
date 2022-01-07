@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.42...@injectivelabs/cosmos-ts@0.0.43) (2022-01-07)
+
+
+### Bug Fixes
+
+* terra ledger ([de7590a](https://github.com/InjectiveLabs/injective-ts/commit/de7590aa841694b6174b9c084566803c7cee575f))
+
+
+
+
+
 ## [0.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.41...@injectivelabs/cosmos-ts@0.0.42) (2022-01-06)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts
