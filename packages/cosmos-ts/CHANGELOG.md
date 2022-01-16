@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.43...@injectivelabs/cosmos-ts@0.0.44) (2022-01-16)
+
+
+### Bug Fixes
+
+* rpc endpoints keplr ([1432856](https://github.com/InjectiveLabs/injective-ts/commit/1432856c49973ac9c75319cd7e5b34aaa9cc6b35))
+
+
+
+
+
 ## [0.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.42...@injectivelabs/cosmos-ts@0.0.43) (2022-01-07)
 
 
