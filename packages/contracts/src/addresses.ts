@@ -20,7 +20,7 @@ export const contractAddresses = {
   },
   '42': {
     depositManager: ZERO_ADDRESS,
-    peggy: '0x9752fCE6cfB4e6802E5093dbABB09A91c644B5bE',
+    peggy: '0xd6Da9dA014806Fdb64bF39b48fcA386AE3420d21',
     injective: '0xa3a9029b8120e2f09b194df4a249a24db461e573',
   },
   '888': {
