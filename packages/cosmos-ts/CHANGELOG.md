@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.45...@injectivelabs/cosmos-ts@0.0.46) (2022-01-19)
+
+
+### Features
+
+* experimental keplr wallet add with data ([363134b](https://github.com/InjectiveLabs/injective-ts/commit/363134bc9bf1581df1d651d1ef8df11a97cec0a5))
+
+
+
+
+
 ## [0.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.44...@injectivelabs/cosmos-ts@0.0.45) (2022-01-18)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts

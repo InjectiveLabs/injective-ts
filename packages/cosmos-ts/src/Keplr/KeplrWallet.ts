@@ -11,6 +11,22 @@ export class KeplrWallet {
     this.window = window as KeplrWindow
   }
 
+  static async experimentalSuggestChainWithChainData(chainData: any) {
+    if (!window) {
+      throw new Error('Please install Keplr extension')
+    }
+
+    if (!window.keplr) {
+      throw new Error('Please install Keplr extension')
+    }
+
+    try {
+      await window.keplr.experimentalSuggestChain(chainData)
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
   async getKeplrWallet() {
     const { window, chainId } = this
 
