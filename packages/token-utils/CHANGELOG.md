@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@0.0.4...@injectivelabs/token-utils@0.0.7) (2022-01-21)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## 0.0.6 (2022-01-21)
+
+
+### Bug Fixes
+
+* coingecko api key ([1c770ce](https://github.com/InjectiveLabs/injective-ts/commit/1c770ce7399d8e59fb0c812a2440a6a040ca075a))
+
+
+### Features
+
+* extended cg api ([1b4399f](https://github.com/InjectiveLabs/injective-ts/commit/1b4399f012fdf33e11825db7a62ba2d4240295c5))
+* token price utils ([1d79620](https://github.com/InjectiveLabs/injective-ts/commit/1d796200d4f1fe0c09a71cd0318305983fdf44ad))
+
+
+
+
+
+## 0.0.5 (2022-01-21)
+
+
+### Bug Fixes
+
+* coingecko api key ([1c770ce](https://github.com/InjectiveLabs/injective-ts/commit/1c770ce7399d8e59fb0c812a2440a6a040ca075a))
+
+
+### Features
+
+* extended cg api ([1b4399f](https://github.com/InjectiveLabs/injective-ts/commit/1b4399f012fdf33e11825db7a62ba2d4240295c5))
+* token price utils ([1d79620](https://github.com/InjectiveLabs/injective-ts/commit/1d796200d4f1fe0c09a71cd0318305983fdf44ad))
+
+
+
+
+
 ## [0.0.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@0.0.3...@injectivelabs/token-utils@0.0.4) (2022-01-06)
 
 

@@ -3,6 +3,130 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.54...@injectivelabs/networks@0.0.57) (2022-01-21)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
+## 0.0.56 (2022-01-21)
+
+
+### Bug Fixes
+
+* constants decoupled from packages ([0c2f050](https://github.com/InjectiveLabs/injective-ts/commit/0c2f050f7512dc365f8eca9104936e98747644e3))
+* copy ([a6c2ae9](https://github.com/InjectiveLabs/injective-ts/commit/a6c2ae9f137eefd97966c7831fc129b97007f08c))
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+* devnet exchange api endpoint changed ([c0f01af](https://github.com/InjectiveLabs/injective-ts/commit/c0f01af25e35fe6698fba0f4907a25358e27ccc6))
+* endpoint ([bd0f05b](https://github.com/InjectiveLabs/injective-ts/commit/bd0f05b25f40b1c9c837337df4d3bf0af08c5931))
+* endpoint port for the chain-api ([328a20e](https://github.com/InjectiveLabs/injective-ts/commit/328a20e5f7edd146de72e2f34257f91c44762bc0))
+* endpoints ([e77b587](https://github.com/InjectiveLabs/injective-ts/commit/e77b587265e7081f559b8f34d39cbfeb9be90af7))
+* exchange endpoint for staking network ([bc96ed5](https://github.com/InjectiveLabs/injective-ts/commit/bc96ed54ad32f44fff6e492bbec5cda66bf82e56))
+* explorer endpoint fix ([641285f](https://github.com/InjectiveLabs/injective-ts/commit/641285f1f7b51877ed8315214e1d9d4e072a9fa8))
+* explorer url ([35671fa](https://github.com/InjectiveLabs/injective-ts/commit/35671fad449eb61c6fd9a0fa426319bb0ad2d287))
+* explorer url updated ([4146da2](https://github.com/InjectiveLabs/injective-ts/commit/4146da2c81791e796b135161f61cc7225aea3f0d))
+* explorer url updated ([da60911](https://github.com/InjectiveLabs/injective-ts/commit/da609118452a8601b13c47776f065b99cfd9a2ac))
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* mc fix ([1ccbb88](https://github.com/InjectiveLabs/injective-ts/commit/1ccbb88f3dc252d1a80da3f1a2338ea6cf761557))
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+* merge conflicts fixes ([fd8fab5](https://github.com/InjectiveLabs/injective-ts/commit/fd8fab59aceba12e7e6c0753bb5c7cea2f89b43a))
+* networks endpoints ([2b4a3be](https://github.com/InjectiveLabs/injective-ts/commit/2b4a3be78931e691e283a3bbdaa6451c55d600d9))
+* number for tick sizes ([5171971](https://github.com/InjectiveLabs/injective-ts/commit/5171971a83e5f1468ca3e088babc0a001b1d2b9a))
+* removed redundant changelog ([b80c4da](https://github.com/InjectiveLabs/injective-ts/commit/b80c4da3a486f0738bde9726e0e7c7bf6bc18184))
+* staking endpoint ([6cb75c4](https://github.com/InjectiveLabs/injective-ts/commit/6cb75c498b33709b037faa609f48fb6d64e22527))
+* staking endpoints ([fcc1b3d](https://github.com/InjectiveLabs/injective-ts/commit/fcc1b3d6d827ded322844e92c64894d84009fdd5))
+* streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+* temp endpoints for devnet ([8147994](https://github.com/InjectiveLabs/injective-ts/commit/81479943d0aadc498a756abcfaf7400e30a2f526))
+* tm endpoints ([e81ccbc](https://github.com/InjectiveLabs/injective-ts/commit/e81ccbc17b88e113f61b2ca41920d4eaba8ec559))
+* types for old mainnet ([e9d3fdd](https://github.com/InjectiveLabs/injective-ts/commit/e9d3fdd6b083fa5a8d2101e1ebea9499cd6312e5))
+
+
+### Features
+
+* added default gas price ([8b7062f](https://github.com/InjectiveLabs/injective-ts/commit/8b7062f0bd2e4c2d373b37fee0bc658c94be8972))
+* added devnet network ([2975a41](https://github.com/InjectiveLabs/injective-ts/commit/2975a41d612b1b17aba28b86e1770b9861b32d22))
+* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* added networks package for fetching endpoints ([b6fc2a8](https://github.com/InjectiveLabs/injective-ts/commit/b6fc2a8b6e515c5d9b5d638132f6a77504c24cbc))
+* added networks package for fetching endpoints ([de3db66](https://github.com/InjectiveLabs/injective-ts/commit/de3db668e6d56092806fa4d1a5abd643fb1449e4))
+* added old mainnet endpoints ([64100bd](https://github.com/InjectiveLabs/injective-ts/commit/64100bd333604014e46e40e585c2b3d18f8610e1))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+* added pagination proper handler ([0c2f3d8](https://github.com/InjectiveLabs/injective-ts/commit/0c2f3d87cd80c7e75b5c568df7c67a7b55e83307))
+* added public endpoints ([f0ec8f7](https://github.com/InjectiveLabs/injective-ts/commit/f0ec8f75a540c69c0a40401f8ddc65fc06cad165))
+* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+* chainUrl for http calls ([47657d9](https://github.com/InjectiveLabs/injective-ts/commit/47657d96b0566c8ef9f6caa78764c3ef7ca97785))
+* explorer consumer package ([acdcd4a](https://github.com/InjectiveLabs/injective-ts/commit/acdcd4a6e41dc010e460705f7f2d4fb9f90bdb21))
+* gateway endpoints added ([1cd8104](https://github.com/InjectiveLabs/injective-ts/commit/1cd8104787ee9603c5694ea8747513d6f58d040b))
+* ledger refactor ([03a9a96](https://github.com/InjectiveLabs/injective-ts/commit/03a9a96c9dadff67766d53133de5599ce45dc8fd))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* mainnet endpoints added ([5d4df33](https://github.com/InjectiveLabs/injective-ts/commit/5d4df3310785767b4f70f491573ac27ea332153f))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+* tm endpoint ([2671cd3](https://github.com/InjectiveLabs/injective-ts/commit/2671cd3402da8a9b826a4520f6ab911a76474cdc))
+
+
+
+
+
+## 0.0.55 (2022-01-21)
+
+
+### Bug Fixes
+
+* constants decoupled from packages ([0c2f050](https://github.com/InjectiveLabs/injective-ts/commit/0c2f050f7512dc365f8eca9104936e98747644e3))
+* copy ([a6c2ae9](https://github.com/InjectiveLabs/injective-ts/commit/a6c2ae9f137eefd97966c7831fc129b97007f08c))
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+* devnet exchange api endpoint changed ([c0f01af](https://github.com/InjectiveLabs/injective-ts/commit/c0f01af25e35fe6698fba0f4907a25358e27ccc6))
+* endpoint ([bd0f05b](https://github.com/InjectiveLabs/injective-ts/commit/bd0f05b25f40b1c9c837337df4d3bf0af08c5931))
+* endpoint port for the chain-api ([328a20e](https://github.com/InjectiveLabs/injective-ts/commit/328a20e5f7edd146de72e2f34257f91c44762bc0))
+* endpoints ([e77b587](https://github.com/InjectiveLabs/injective-ts/commit/e77b587265e7081f559b8f34d39cbfeb9be90af7))
+* exchange endpoint for staking network ([bc96ed5](https://github.com/InjectiveLabs/injective-ts/commit/bc96ed54ad32f44fff6e492bbec5cda66bf82e56))
+* explorer endpoint fix ([641285f](https://github.com/InjectiveLabs/injective-ts/commit/641285f1f7b51877ed8315214e1d9d4e072a9fa8))
+* explorer url ([35671fa](https://github.com/InjectiveLabs/injective-ts/commit/35671fad449eb61c6fd9a0fa426319bb0ad2d287))
+* explorer url updated ([4146da2](https://github.com/InjectiveLabs/injective-ts/commit/4146da2c81791e796b135161f61cc7225aea3f0d))
+* explorer url updated ([da60911](https://github.com/InjectiveLabs/injective-ts/commit/da609118452a8601b13c47776f065b99cfd9a2ac))
+* gas limit decopled for chain and exchange tx ([45373be](https://github.com/InjectiveLabs/injective-ts/commit/45373be038085183dd7b0b699bcb9a1e75a1ef1a))
+* mc fix ([1ccbb88](https://github.com/InjectiveLabs/injective-ts/commit/1ccbb88f3dc252d1a80da3f1a2338ea6cf761557))
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+* merge conflicts fixes ([fd8fab5](https://github.com/InjectiveLabs/injective-ts/commit/fd8fab59aceba12e7e6c0753bb5c7cea2f89b43a))
+* networks endpoints ([2b4a3be](https://github.com/InjectiveLabs/injective-ts/commit/2b4a3be78931e691e283a3bbdaa6451c55d600d9))
+* number for tick sizes ([5171971](https://github.com/InjectiveLabs/injective-ts/commit/5171971a83e5f1468ca3e088babc0a001b1d2b9a))
+* removed redundant changelog ([b80c4da](https://github.com/InjectiveLabs/injective-ts/commit/b80c4da3a486f0738bde9726e0e7c7bf6bc18184))
+* staking endpoint ([6cb75c4](https://github.com/InjectiveLabs/injective-ts/commit/6cb75c498b33709b037faa609f48fb6d64e22527))
+* staking endpoints ([fcc1b3d](https://github.com/InjectiveLabs/injective-ts/commit/fcc1b3d6d827ded322844e92c64894d84009fdd5))
+* streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+* temp endpoints for devnet ([8147994](https://github.com/InjectiveLabs/injective-ts/commit/81479943d0aadc498a756abcfaf7400e30a2f526))
+* tm endpoints ([e81ccbc](https://github.com/InjectiveLabs/injective-ts/commit/e81ccbc17b88e113f61b2ca41920d4eaba8ec559))
+* types for old mainnet ([e9d3fdd](https://github.com/InjectiveLabs/injective-ts/commit/e9d3fdd6b083fa5a8d2101e1ebea9499cd6312e5))
+
+
+### Features
+
+* added default gas price ([8b7062f](https://github.com/InjectiveLabs/injective-ts/commit/8b7062f0bd2e4c2d373b37fee0bc658c94be8972))
+* added devnet network ([2975a41](https://github.com/InjectiveLabs/injective-ts/commit/2975a41d612b1b17aba28b86e1770b9861b32d22))
+* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* added networks package for fetching endpoints ([b6fc2a8](https://github.com/InjectiveLabs/injective-ts/commit/b6fc2a8b6e515c5d9b5d638132f6a77504c24cbc))
+* added networks package for fetching endpoints ([de3db66](https://github.com/InjectiveLabs/injective-ts/commit/de3db668e6d56092806fa4d1a5abd643fb1449e4))
+* added old mainnet endpoints ([64100bd](https://github.com/InjectiveLabs/injective-ts/commit/64100bd333604014e46e40e585c2b3d18f8610e1))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+* added pagination proper handler ([0c2f3d8](https://github.com/InjectiveLabs/injective-ts/commit/0c2f3d87cd80c7e75b5c568df7c67a7b55e83307))
+* added public endpoints ([f0ec8f7](https://github.com/InjectiveLabs/injective-ts/commit/f0ec8f75a540c69c0a40401f8ddc65fc06cad165))
+* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+* chainUrl for http calls ([47657d9](https://github.com/InjectiveLabs/injective-ts/commit/47657d96b0566c8ef9f6caa78764c3ef7ca97785))
+* explorer consumer package ([acdcd4a](https://github.com/InjectiveLabs/injective-ts/commit/acdcd4a6e41dc010e460705f7f2d4fb9f90bdb21))
+* gateway endpoints added ([1cd8104](https://github.com/InjectiveLabs/injective-ts/commit/1cd8104787ee9603c5694ea8747513d6f58d040b))
+* ledger refactor ([03a9a96](https://github.com/InjectiveLabs/injective-ts/commit/03a9a96c9dadff67766d53133de5599ce45dc8fd))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* mainnet endpoints added ([5d4df33](https://github.com/InjectiveLabs/injective-ts/commit/5d4df3310785767b4f70f491573ac27ea332153f))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+* tm endpoint ([2671cd3](https://github.com/InjectiveLabs/injective-ts/commit/2671cd3402da8a9b826a4520f6ab911a76474cdc))
+
+
+
+
+
 ## [0.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.53...@injectivelabs/networks@0.0.54) (2021-12-28)
 
 **Note:** Version bump only for package @injectivelabs/networks

@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/alchemy-api@0.0.12...@injectivelabs/alchemy-api@0.0.15) (2022-01-21)
+
+**Note:** Version bump only for package @injectivelabs/alchemy-api
+
+
+
+
+
+## 0.0.14 (2022-01-21)
+
+
+### Bug Fixes
+
+* alchemy api returns ([48accce](https://github.com/InjectiveLabs/injective-ts/commit/48accce6ea6fd9d91096d0309b7cc9cf83c282e4))
+* streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+
+
+### Features
+
+* added alchemy api wrapper ([6e2d7b3](https://github.com/InjectiveLabs/injective-ts/commit/6e2d7b3e82b4696824cab2610b2f130b3b23693a))
+* added coinGcekoApi consumer ([3aaa96d](https://github.com/InjectiveLabs/injective-ts/commit/3aaa96dec4d08c36e8bba520717ba5383a60da2a))
+* extended cg api ([1b4399f](https://github.com/InjectiveLabs/injective-ts/commit/1b4399f012fdf33e11825db7a62ba2d4240295c5))
+* ledger refactor ([03a9a96](https://github.com/InjectiveLabs/injective-ts/commit/03a9a96c9dadff67766d53133de5599ce45dc8fd))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* token price utils ([1d79620](https://github.com/InjectiveLabs/injective-ts/commit/1d796200d4f1fe0c09a71cd0318305983fdf44ad))
+
+
+
+
+
+## 0.0.13 (2022-01-21)
+
+
+### Bug Fixes
+
+* alchemy api returns ([48accce](https://github.com/InjectiveLabs/injective-ts/commit/48accce6ea6fd9d91096d0309b7cc9cf83c282e4))
+* streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+
+
+### Features
+
+* added alchemy api wrapper ([6e2d7b3](https://github.com/InjectiveLabs/injective-ts/commit/6e2d7b3e82b4696824cab2610b2f130b3b23693a))
+* added coinGcekoApi consumer ([3aaa96d](https://github.com/InjectiveLabs/injective-ts/commit/3aaa96dec4d08c36e8bba520717ba5383a60da2a))
+* extended cg api ([1b4399f](https://github.com/InjectiveLabs/injective-ts/commit/1b4399f012fdf33e11825db7a62ba2d4240295c5))
+* ledger refactor ([03a9a96](https://github.com/InjectiveLabs/injective-ts/commit/03a9a96c9dadff67766d53133de5599ce45dc8fd))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* token price utils ([1d79620](https://github.com/InjectiveLabs/injective-ts/commit/1d796200d4f1fe0c09a71cd0318305983fdf44ad))
+
+
+
+
+
 ## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/alchemy-api@0.0.11...@injectivelabs/alchemy-api@0.0.12) (2022-01-06)
 
 **Note:** Version bump only for package @injectivelabs/alchemy-api

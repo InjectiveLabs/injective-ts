@@ -3,12 +3,119 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.45...@injectivelabs/cosmos-ts@0.0.46) (2022-01-19)
+## [0.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.46...@injectivelabs/cosmos-ts@0.0.48) (2022-01-21)
+
+**Note:** Version bump only for package @injectivelabs/cosmos-ts
+
+
+
+
+
+## 0.0.47 (2022-01-21)
+
+
+### Bug Fixes
+
+* chain name ([0de54c1](https://github.com/InjectiveLabs/injective-ts/commit/0de54c1fd887183033c9ae0a1c9cb7f599d691e8))
+* coingeckoId ([b60177b](https://github.com/InjectiveLabs/injective-ts/commit/b60177b3b866ff4a0a65a2193fc60a9ca182a1b9))
+* cosmos ts + packages bump ([4c1213a](https://github.com/InjectiveLabs/injective-ts/commit/4c1213aaeec04a442edd0b8c546aa233eb47d3fd))
+* cosmoshub rpc endpoints ([338d624](https://github.com/InjectiveLabs/injective-ts/commit/338d6240d4211d9f4420fe3a3e39a56e9c24c4b7))
+* decimals, console log ([3f76959](https://github.com/InjectiveLabs/injective-ts/commit/3f769595ba5913394b2d5a108186ebd974732a0d))
+* endpoint ([0133e4a](https://github.com/InjectiveLabs/injective-ts/commit/0133e4ae5f5e360c3c54fcbf0c4a37e40a81dc6a))
+* endpoint for signing ([c290496](https://github.com/InjectiveLabs/injective-ts/commit/c290496428d0e0da0a5488518a399de81ae4f0c0))
+* endpoints ([beb65d3](https://github.com/InjectiveLabs/injective-ts/commit/beb65d35d07be6aa4ab61bbb82936bc490b61daa))
+* keplr supported chains ([a334b48](https://github.com/InjectiveLabs/injective-ts/commit/a334b48e2b7a0f4bb5c5082333022a5dc6f4a54f))
+* kovan map ([6698b35](https://github.com/InjectiveLabs/injective-ts/commit/6698b351f3e6d307d52cc12ef753908c88ca8a3c))
+* kovan map ([9386ab8](https://github.com/InjectiveLabs/injective-ts/commit/9386ab87e194f9a9344a5ea1a87267db96028949))
+* ledger legacy ([d152574](https://github.com/InjectiveLabs/injective-ts/commit/d152574812d3e4db2f2e4d5bd9b3a00946d536c7))
+* metadata fetching ([e83b7d3](https://github.com/InjectiveLabs/injective-ts/commit/e83b7d3030bfc3ca42430e9a24a54c736c4599e7))
+* minor ([52fb10f](https://github.com/InjectiveLabs/injective-ts/commit/52fb10f25511b74f0571cbf7f2c60dba18af1bdc))
+* minor ([0c426d9](https://github.com/InjectiveLabs/injective-ts/commit/0c426d9c36230230f951efe9ff6416a48eef883d))
+* rpc endpoints keplr ([abc8b15](https://github.com/InjectiveLabs/injective-ts/commit/abc8b156645bd565b52e2b916967730ccf6f7d0d))
+* supported chain ids ([5527722](https://github.com/InjectiveLabs/injective-ts/commit/5527722447cf848bf846231983a0d4904b09cb95))
+* swapped endpoints ([620ec5a](https://github.com/InjectiveLabs/injective-ts/commit/620ec5a1feaa35c9b75c3a88f1217d3a75b5ed5a))
+* terra endpoints ([3e689a2](https://github.com/InjectiveLabs/injective-ts/commit/3e689a2d52f8c93512e2f8c0ca8f417a0b9bfecb))
+* terra endpoints ([c3de74b](https://github.com/InjectiveLabs/injective-ts/commit/c3de74b77b7218adf509cc893d87110da60cec91))
+* terra ledger ([f7f0830](https://github.com/InjectiveLabs/injective-ts/commit/f7f08301422c514e658eb8462c20134bff2c3bb8))
+* terra retries ([051614c](https://github.com/InjectiveLabs/injective-ts/commit/051614ce619cf228d5ec8e2cba84203fdd5051de))
+* terra ust fees ([f8cd8ef](https://github.com/InjectiveLabs/injective-ts/commit/f8cd8eff73caa28c08727e52972b33e14c61e18d))
+* testnet denoms ([39b4146](https://github.com/InjectiveLabs/injective-ts/commit/39b4146530a93f9751f517031dbbd3dd1c7ced14))
+* token meta for osmo ([7b54e14](https://github.com/InjectiveLabs/injective-ts/commit/7b54e14519b1db95176782dd49955f5247cb11df))
+* token metadata mapping ([13cb174](https://github.com/InjectiveLabs/injective-ts/commit/13cb174c28bfa4c502938743ba7a0542d88a1f4e))
+* types ([ca5bcf3](https://github.com/InjectiveLabs/injective-ts/commit/ca5bcf3858a07188bbea9a03d3882bb80fd1925c))
 
 
 ### Features
 
+* added cosmos-ts package ([4c56fbf](https://github.com/InjectiveLabs/injective-ts/commit/4c56fbf5ea217c8d841fbc063ca1a8d9773d5817))
+* added luna as gas currency ([2881761](https://github.com/InjectiveLabs/injective-ts/commit/2881761953d4d89969c1949e1e077913d678e4a8))
+* added stargate signer ([8da2961](https://github.com/InjectiveLabs/injective-ts/commit/8da29610f532fb1a64f90183a058d638733d344f))
+* added stargate signer, added timeout to ibc transfer proto ([1c2d9dc](https://github.com/InjectiveLabs/injective-ts/commit/1c2d9dcebb82ce32cbd198732a4e33ac3c683a81))
+* added terra ([c852f06](https://github.com/InjectiveLabs/injective-ts/commit/c852f06ceaefc5d370047d4530770eeaaa6d8f54))
+* extended cg api ([1b4399f](https://github.com/InjectiveLabs/injective-ts/commit/1b4399f012fdf33e11825db7a62ba2d4240295c5))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* osmo support ([26b33d7](https://github.com/InjectiveLabs/injective-ts/commit/26b33d7c0a1be5f79df9ba1960f188eb37031051))
+* terra wallet ([9b51eae](https://github.com/InjectiveLabs/injective-ts/commit/9b51eaef48663ded814fd864ae2348e4d194dcfb))
+* terra wallet ([7403790](https://github.com/InjectiveLabs/injective-ts/commit/74037909b7eca809d9d73eb78376baf7b11ff3b5))
+* token price utils ([1d79620](https://github.com/InjectiveLabs/injective-ts/commit/1d796200d4f1fe0c09a71cd0318305983fdf44ad))
+* uatom added ([2354c55](https://github.com/InjectiveLabs/injective-ts/commit/2354c551f67d380dc178036900d9c7a4e1782084))
+
+
+
+
+
+## 0.0.46 (2022-01-21)
+
+
+### Bug Fixes
+
+* chain name ([0de54c1](https://github.com/InjectiveLabs/injective-ts/commit/0de54c1fd887183033c9ae0a1c9cb7f599d691e8))
+* coingeckoId ([b60177b](https://github.com/InjectiveLabs/injective-ts/commit/b60177b3b866ff4a0a65a2193fc60a9ca182a1b9))
+* cosmos ts + packages bump ([4c1213a](https://github.com/InjectiveLabs/injective-ts/commit/4c1213aaeec04a442edd0b8c546aa233eb47d3fd))
+* cosmoshub rpc endpoints ([338d624](https://github.com/InjectiveLabs/injective-ts/commit/338d6240d4211d9f4420fe3a3e39a56e9c24c4b7))
+* decimals, console log ([3f76959](https://github.com/InjectiveLabs/injective-ts/commit/3f769595ba5913394b2d5a108186ebd974732a0d))
+* endpoint ([0133e4a](https://github.com/InjectiveLabs/injective-ts/commit/0133e4ae5f5e360c3c54fcbf0c4a37e40a81dc6a))
+* endpoint for signing ([c290496](https://github.com/InjectiveLabs/injective-ts/commit/c290496428d0e0da0a5488518a399de81ae4f0c0))
+* endpoints ([beb65d3](https://github.com/InjectiveLabs/injective-ts/commit/beb65d35d07be6aa4ab61bbb82936bc490b61daa))
+* keplr supported chains ([a334b48](https://github.com/InjectiveLabs/injective-ts/commit/a334b48e2b7a0f4bb5c5082333022a5dc6f4a54f))
+* kovan map ([6698b35](https://github.com/InjectiveLabs/injective-ts/commit/6698b351f3e6d307d52cc12ef753908c88ca8a3c))
+* kovan map ([9386ab8](https://github.com/InjectiveLabs/injective-ts/commit/9386ab87e194f9a9344a5ea1a87267db96028949))
+* ledger legacy ([d152574](https://github.com/InjectiveLabs/injective-ts/commit/d152574812d3e4db2f2e4d5bd9b3a00946d536c7))
+* metadata fetching ([e83b7d3](https://github.com/InjectiveLabs/injective-ts/commit/e83b7d3030bfc3ca42430e9a24a54c736c4599e7))
+* minor ([52fb10f](https://github.com/InjectiveLabs/injective-ts/commit/52fb10f25511b74f0571cbf7f2c60dba18af1bdc))
+* minor ([0c426d9](https://github.com/InjectiveLabs/injective-ts/commit/0c426d9c36230230f951efe9ff6416a48eef883d))
+* rpc endpoints keplr ([abc8b15](https://github.com/InjectiveLabs/injective-ts/commit/abc8b156645bd565b52e2b916967730ccf6f7d0d))
+* supported chain ids ([5527722](https://github.com/InjectiveLabs/injective-ts/commit/5527722447cf848bf846231983a0d4904b09cb95))
+* swapped endpoints ([620ec5a](https://github.com/InjectiveLabs/injective-ts/commit/620ec5a1feaa35c9b75c3a88f1217d3a75b5ed5a))
+* terra endpoints ([3e689a2](https://github.com/InjectiveLabs/injective-ts/commit/3e689a2d52f8c93512e2f8c0ca8f417a0b9bfecb))
+* terra endpoints ([c3de74b](https://github.com/InjectiveLabs/injective-ts/commit/c3de74b77b7218adf509cc893d87110da60cec91))
+* terra ledger ([f7f0830](https://github.com/InjectiveLabs/injective-ts/commit/f7f08301422c514e658eb8462c20134bff2c3bb8))
+* terra retries ([051614c](https://github.com/InjectiveLabs/injective-ts/commit/051614ce619cf228d5ec8e2cba84203fdd5051de))
+* terra ust fees ([f8cd8ef](https://github.com/InjectiveLabs/injective-ts/commit/f8cd8eff73caa28c08727e52972b33e14c61e18d))
+* testnet denoms ([39b4146](https://github.com/InjectiveLabs/injective-ts/commit/39b4146530a93f9751f517031dbbd3dd1c7ced14))
+* token meta for osmo ([7b54e14](https://github.com/InjectiveLabs/injective-ts/commit/7b54e14519b1db95176782dd49955f5247cb11df))
+* token metadata mapping ([13cb174](https://github.com/InjectiveLabs/injective-ts/commit/13cb174c28bfa4c502938743ba7a0542d88a1f4e))
+* types ([ca5bcf3](https://github.com/InjectiveLabs/injective-ts/commit/ca5bcf3858a07188bbea9a03d3882bb80fd1925c))
+
+
+### Features
+
+<<<<<<< HEAD
 * experimental keplr wallet add with data ([363134b](https://github.com/InjectiveLabs/injective-ts/commit/363134bc9bf1581df1d651d1ef8df11a97cec0a5))
+=======
+* added cosmos-ts package ([4c56fbf](https://github.com/InjectiveLabs/injective-ts/commit/4c56fbf5ea217c8d841fbc063ca1a8d9773d5817))
+* added luna as gas currency ([2881761](https://github.com/InjectiveLabs/injective-ts/commit/2881761953d4d89969c1949e1e077913d678e4a8))
+* added stargate signer ([8da2961](https://github.com/InjectiveLabs/injective-ts/commit/8da29610f532fb1a64f90183a058d638733d344f))
+* added stargate signer, added timeout to ibc transfer proto ([1c2d9dc](https://github.com/InjectiveLabs/injective-ts/commit/1c2d9dcebb82ce32cbd198732a4e33ac3c683a81))
+* added terra ([c852f06](https://github.com/InjectiveLabs/injective-ts/commit/c852f06ceaefc5d370047d4530770eeaaa6d8f54))
+* extended cg api ([1b4399f](https://github.com/InjectiveLabs/injective-ts/commit/1b4399f012fdf33e11825db7a62ba2d4240295c5))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* osmo support ([26b33d7](https://github.com/InjectiveLabs/injective-ts/commit/26b33d7c0a1be5f79df9ba1960f188eb37031051))
+* terra wallet ([9b51eae](https://github.com/InjectiveLabs/injective-ts/commit/9b51eaef48663ded814fd864ae2348e4d194dcfb))
+* terra wallet ([7403790](https://github.com/InjectiveLabs/injective-ts/commit/74037909b7eca809d9d73eb78376baf7b11ff3b5))
+* token price utils ([1d79620](https://github.com/InjectiveLabs/injective-ts/commit/1d796200d4f1fe0c09a71cd0318305983fdf44ad))
+* uatom added ([2354c55](https://github.com/InjectiveLabs/injective-ts/commit/2354c551f67d380dc178036900d9c7a4e1782084))
+>>>>>>> ebbf18b5522d5b204f2473b36b61e539352e545d
 
 
 
