@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/test-utils",
   "description": "Testing utils that can be reused throughout Injective's projects.",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -3,6 +3,7 @@ import { InsuranceFund as GrpcInsuranceFund } from '@injectivelabs/exchange-api/
 import { Oracle as GrpcOracle } from '@injectivelabs/exchange-api/injective_oracle_rpc_pb'
 
 export * from './auction'
+export * from './bridgeTransaction'
 export * from './dmm'
 export interface StreamStatusResponse {
   details: string
