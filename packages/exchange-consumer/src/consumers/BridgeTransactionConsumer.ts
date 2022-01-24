@@ -17,8 +17,8 @@ export class BridgeTransactionConsumer extends BaseConsumer {
     limit,
     skip,
   }: {
-    sender: string
     receiver: string
+    sender?: string
     limit?: number
     skip?: number
   }) {
@@ -47,7 +47,7 @@ export class BridgeTransactionConsumer extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetPeggyDepositTxs
       >(request, InjectiveExplorerRPC.GetPeggyDepositTxs)
 
-      return response
+      return response.getFieldList()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }
@@ -60,7 +60,7 @@ export class BridgeTransactionConsumer extends BaseConsumer {
     skip,
   }: {
     sender: string
-    receiver: string
+    receiver?: string
     limit?: number
     skip?: number
   }) {
@@ -89,7 +89,7 @@ export class BridgeTransactionConsumer extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetPeggyWithdrawalTxs
       >(request, InjectiveExplorerRPC.GetPeggyWithdrawalTxs)
 
-      return response
+      return response.getFieldList()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }
@@ -152,7 +152,7 @@ export class BridgeTransactionConsumer extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetIBCTransferTxs
       >(request, InjectiveExplorerRPC.GetIBCTransferTxs)
 
-      return response
+      return response.getFieldList()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }
