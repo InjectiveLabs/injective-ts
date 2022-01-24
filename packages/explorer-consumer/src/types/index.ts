@@ -1,4 +1,9 @@
-import { GasFee as GrpcGasFee } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
+import {
+  GasFee as GrpcGasFee,
+  ValidatorUptime as GrpcValidatorUptime,
+  ValidatorDescription as GrpcValidatorDescription,
+  SlashingEvent as GrpcValidatorSlashingEvent,
+} from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 
 export interface GasFee {
   amounts: {
@@ -64,4 +69,56 @@ export interface BlockWithTxs {
   timestamp: string
 }
 
-export { GrpcGasFee }
+export interface ValidatorDescription {
+  moniker: string
+  identity: string
+  website: string
+  securityContact: string
+  details: string
+}
+
+export interface ValidatorUptime {
+  blockNumber: number
+  status: string
+}
+
+export interface ValidatorSlashingEvent {
+  blockNumber: number
+  blockTimestamp: string
+  address: string
+  power: number
+  reason: string
+  jailed: string
+  missedBlocks: number
+}
+
+export interface Validator {
+  id: string
+  moniker: string
+  operatorAddress: string
+  consensusAddress: string
+  jailed: boolean
+  status: number
+  tokens: string
+  delegatorShares: string
+  description?: ValidatorDescription
+  unbondingHeight: number
+  unbondingTime: string
+  commissionRate: string
+  commissionMaxRate: string
+  commissionMaxChangeRate: string
+  commissionUpdateTime: string
+  proposed: number
+  signed: number
+  missed: number
+  timestamp: string
+  uptimesList: ValidatorUptime[]
+  slashingEventsList: ValidatorSlashingEvent[]
+}
+
+export {
+  GrpcGasFee,
+  GrpcValidatorSlashingEvent,
+  GrpcValidatorDescription,
+  GrpcValidatorUptime,
+}

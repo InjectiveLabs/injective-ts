@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/assert@0.0.28...@injectivelabs/assert@0.0.29) (2022-01-24)
+
+**Note:** Version bump only for package @injectivelabs/assert
+
+
+
+
+
 ## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/assert@0.0.25...@injectivelabs/assert@0.0.28) (2022-01-21)
 
 **Note:** Version bump only for package @injectivelabs/assert

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.25...@injectivelabs/explorer-consumer@0.0.26) (2022-01-24)
+
+
+### Features
+
+* funding payments, validator uptime, bridge txs ([b549fdf](https://github.com/InjectiveLabs/injective-ts/commit/b549fdfc8092643d1486dfbb0524e98f794b202f))
+
+
+
+
+
 ## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.22...@injectivelabs/explorer-consumer@0.0.25) (2022-01-21)
 
 **Note:** Version bump only for package @injectivelabs/explorer-consumer

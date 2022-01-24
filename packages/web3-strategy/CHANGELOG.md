@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.82](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.81...@injectivelabs/web3-strategy@0.0.82) (2022-01-24)
+
+**Note:** Version bump only for package @injectivelabs/web3-strategy
+
+
+
+
+
 ## [0.0.81](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.78...@injectivelabs/web3-strategy@0.0.81) (2022-01-21)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy

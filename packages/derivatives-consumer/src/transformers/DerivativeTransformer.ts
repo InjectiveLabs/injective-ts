@@ -22,6 +22,10 @@ import {
   GrpcPerpetualMarketFunding,
   PerpetualMarketFunding,
   GrpcExpiryFuturesMarketInfo,
+  GrpcFundingPayment,
+  GrpcFundingRate,
+  FundingPayment,
+  FundingRate,
   ExpiryFuturesMarketInfo,
   DerivativeOrderSide,
 } from '../types'
@@ -251,5 +255,40 @@ export class DerivativeTransformer {
 
   static grpcTradesToTrades(trades: GrpcDerivativeTrade[]): DerivativeTrade[] {
     return trades.map((trade) => DerivativeTransformer.grpcTradeToTrade(trade))
+  }
+
+  static grpcFundingPaymentToFundingPayment(
+    fundingPayment: GrpcFundingPayment,
+  ): FundingPayment {
+    return {
+      marketId: fundingPayment.getMarketId(),
+      subaccountId: fundingPayment.getSubaccountId(),
+      amount: fundingPayment.getAmount(),
+      timestamp: fundingPayment.getTimestamp(),
+    }
+  }
+
+  static grpcFundingPaymentsToFundingPayments(
+    fundingPayments: GrpcFundingPayment[],
+  ): FundingPayment[] {
+    return fundingPayments.map(
+      DerivativeTransformer.grpcFundingPaymentToFundingPayment,
+    )
+  }
+
+  static grpcFundingRateToFundingRate(
+    fundingRate: GrpcFundingRate,
+  ): FundingRate {
+    return {
+      marketId: fundingRate.getMarketId(),
+      rate: fundingRate.getRate(),
+      timestamp: fundingRate.getTimestamp(),
+    }
+  }
+
+  static grpcFundingRatesToFundingRates(
+    fundingRates: GrpcFundingRate[],
+  ): FundingRate[] {
+    return fundingRates.map(DerivativeTransformer.grpcFundingRateToFundingRate)
   }
 }

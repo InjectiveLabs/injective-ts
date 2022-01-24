@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.96](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.95...@injectivelabs/spot-consumer@0.0.96) (2022-01-24)
+
+
+### Features
+
+* funding payments, validator uptime, bridge txs ([b549fdf](https://github.com/InjectiveLabs/injective-ts/commit/b549fdfc8092643d1486dfbb0524e98f794b202f))
+
+
+
+
+
 ## [0.0.95](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/spot-consumer@0.0.92...@injectivelabs/spot-consumer@0.0.95) (2022-01-21)
 
 **Note:** Version bump only for package @injectivelabs/spot-consumer

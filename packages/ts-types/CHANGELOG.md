@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.0.31...@injectivelabs/ts-types@0.0.32) (2022-01-24)
+
+
+### Features
+
+* funding payments, validator uptime, bridge txs ([b549fdf](https://github.com/InjectiveLabs/injective-ts/commit/b549fdfc8092643d1486dfbb0524e98f794b202f))
+
+
+
+
+
 ## [0.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.0.28...@injectivelabs/ts-types@0.0.31) (2022-01-21)
 
 **Note:** Version bump only for package @injectivelabs/ts-types

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.121](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.120...@injectivelabs/exchange-consumer@0.0.121) (2022-01-24)
+
+
+### Features
+
+* funding payments, validator uptime, bridge txs ([b549fdf](https://github.com/InjectiveLabs/injective-ts/commit/b549fdfc8092643d1486dfbb0524e98f794b202f))
+
+
+
+
+
 ## [0.0.120](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.117...@injectivelabs/exchange-consumer@0.0.120) (2022-01-21)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer

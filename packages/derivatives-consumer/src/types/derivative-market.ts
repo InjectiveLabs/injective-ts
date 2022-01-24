@@ -7,6 +7,8 @@ import {
   PerpetualMarketInfo as GrpcPerpetualMarketInfo,
   PerpetualMarketFunding as GrpcPerpetualMarketFunding,
   ExpiryFuturesMarketInfo as GrpcExpiryFuturesMarketInfo,
+  FundingPayment as GrpcFundingPayment,
+  FundingRate as GrpcFundingRate,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { TokenMeta as GrpcTokenMeta } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import {
@@ -161,11 +163,26 @@ export interface BatchDerivativeOrderCancelParams {
   orderHash: string
 }
 
+export interface FundingPayment {
+  marketId: string
+  subaccountId: string
+  amount: string
+  timestamp: number
+}
+
+export interface FundingRate {
+  marketId: string
+  rate: string
+  timestamp: number
+}
+
 export {
   GrpcTokenMeta,
   GrpcDerivativePosition,
   GrpcOrderTypeMap,
   GrpcOrderInfo,
+  GrpcFundingPayment,
+  GrpcFundingRate,
   GrpcDerivativeMarketInfo,
   GrpcDerivativeMarket,
   GrpcDerivativeLimitOrder,

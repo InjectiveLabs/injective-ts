@@ -1,5 +1,6 @@
 import {
   BlockInfo,
+  GetValidatorResponse,
   TxData,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 import {
@@ -8,6 +9,13 @@ import {
   GrpcGasFee,
   GasFee,
   BlockWithTxs,
+  GrpcValidatorDescription,
+  GrpcValidatorUptime,
+  ValidatorDescription,
+  ValidatorUptime,
+  GrpcValidatorSlashingEvent,
+  ValidatorSlashingEvent,
+  Validator,
 } from '../types/index'
 
 export class ExplorerTransformer {
@@ -104,5 +112,75 @@ export class ExplorerTransformer {
     return blocks.map((block) =>
       ExplorerTransformer.grpcBlockToBlockWithTxs(block),
     )
+  }
+
+  static grpcValidatorDescriptionToValidatorDescription(
+    validatorDescription: GrpcValidatorDescription,
+  ): ValidatorDescription {
+    return {
+      moniker: validatorDescription.getMoniker(),
+      identity: validatorDescription.getIdentity(),
+      website: validatorDescription.getWebsite(),
+      securityContact: validatorDescription.getSecurityContact(),
+      details: validatorDescription.getDetails(),
+    }
+  }
+
+  static grpcValidatorUptimeToValidatorUptime(
+    validatorUptime: GrpcValidatorUptime,
+  ): ValidatorUptime {
+    return {
+      blockNumber: validatorUptime.getBlockNumber(),
+      status: validatorUptime.getStatus(),
+    }
+  }
+
+  static grpcValidatorSlashingEventToValidatorSlashingEvent(
+    validatorUptime: GrpcValidatorSlashingEvent,
+  ): ValidatorSlashingEvent {
+    return {
+      blockNumber: validatorUptime.getBlockNumber(),
+      blockTimestamp: validatorUptime.getBlockTimestamp(),
+      address: validatorUptime.getAddress(),
+      power: validatorUptime.getPower(),
+      reason: validatorUptime.getReason(),
+      jailed: validatorUptime.getJailed(),
+      missedBlocks: validatorUptime.getMissedBlocks(),
+    }
+  }
+
+  static grpcValidatorToValidator(validator: GetValidatorResponse): Validator {
+    return {
+      id: validator.getId(),
+      moniker: validator.getMoniker(),
+      operatorAddress: validator.getOperatorAddress(),
+      consensusAddress: validator.getConsensusAddress(),
+      jailed: validator.getJailed(),
+      status: validator.getStatus(),
+      tokens: validator.getTokens(),
+      delegatorShares: validator.getDelegatorShares(),
+      description:
+        ExplorerTransformer.grpcValidatorDescriptionToValidatorDescription(
+          validator.getDescription()!,
+        ),
+      unbondingHeight: validator.getUnbondingHeight(),
+      unbondingTime: validator.getUnbondingTime(),
+      commissionRate: validator.getCommissionRate(),
+      commissionMaxRate: validator.getCommissionMaxRate(),
+      commissionMaxChangeRate: validator.getCommissionMaxChangeRate(),
+      commissionUpdateTime: validator.getCommissionUpdateTime(),
+      proposed: validator.getProposed(),
+      signed: validator.getSigned(),
+      missed: validator.getMissed(),
+      timestamp: validator.getTimestamp(),
+      uptimesList: validator
+        .getUptimesList()
+        .map(ExplorerTransformer.grpcValidatorUptimeToValidatorUptime),
+      slashingEventsList: validator
+        .getSlashingEventsList()
+        .map(
+          ExplorerTransformer.grpcValidatorSlashingEventToValidatorSlashingEvent,
+        ),
+    }
   }
 }
