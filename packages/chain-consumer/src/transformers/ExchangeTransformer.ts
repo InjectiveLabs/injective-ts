@@ -220,8 +220,8 @@ export class ExchangeTransformer {
         .getPendingTradingRewardPoolCampaignScheduleList()
         .map(ExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool),
       totalTradeRewardPoints: campaign.getTotalTradeRewardPoints(),
-      pendingTotalTradeRewardPoints:
-        campaign.getPendingTotalTradeRewardPoints(),
+      pendingTotalTradeRewardPointsList:
+        campaign.getPendingTotalTradeRewardPointsList(),
     }
   }
 

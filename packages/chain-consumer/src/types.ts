@@ -161,7 +161,7 @@ export interface TradeRewardCampaign {
   tradingRewardPoolCampaignScheduleList: CampaignRewardPool[]
   totalTradeRewardPoints: string
   pendingTradingRewardPoolCampaignScheduleList: CampaignRewardPool[]
-  pendingTotalTradeRewardPoints: string
+  pendingTotalTradeRewardPointsList: string[]
 }
 
 export interface ExchangeParams {

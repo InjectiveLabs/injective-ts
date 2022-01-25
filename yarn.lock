@@ -1575,10 +1575,10 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
-"@injectivelabs/chain-api@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.npmjs.org/@injectivelabs/chain-api/-/chain-api-1.7.0.tgz#d71695399b957f94ff9c747d0721cbfaca7e6105"
-  integrity sha512-oWlJcr9WB9m3/kEkdCEpUWtAJTSmdsjPOki9GMAUKNay+/BZ3ycxSDgL8/tWij4hZuxbc7wQc6Qjr3M2URPj8A==
+"@injectivelabs/chain-api@^1.7.1":
+  version "1.7.1"
+  resolved "https://registry.npmjs.org/@injectivelabs/chain-api/-/chain-api-1.7.1.tgz#fbba48c3bbaba24ed9501b846595dff374695105"
+  integrity sha512-3JssjENhgU7UI6PkCMA//AoGDzecIiuSeIL4L0jXjkw7VwD4Gb5Of9QXcBK5j/oUqaKuw8xHEJaGfSA4J7OvWw==
   dependencies:
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
