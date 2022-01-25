@@ -164,6 +164,25 @@ export interface TradeRewardCampaign {
   pendingTotalTradeRewardPoints: string
 }
 
+export interface ExchangeParams {
+  spotMarketInstantListingFee?: Coin
+  derivativeMarketInstantListingFee?: Coin
+  defaultSpotMakerFeeRate: string
+  defaultSpotTakerFeeRate: string
+  defaultDerivativeMakerFeeRate: string
+  defaultDerivativeTakerFeeRate: string
+  defaultInitialMarginRatio: string
+  defaultMaintenanceMarginRatio: string
+  defaultFundingInterval: number
+  fundingMultiple: number
+  relayerFeeShareRate: string
+  defaultHourlyFundingRateCap: string
+  defaultHourlyInterestRate: string
+  maxDerivativeOrderSideCount: number
+  injRewardStakedRequirementThreshold: string
+  tradingRewardsVestingDuration: number
+}
+
 export {
   GrpcBid,
   GrpcEventAuctionResult,

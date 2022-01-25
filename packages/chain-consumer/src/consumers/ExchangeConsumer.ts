@@ -98,9 +98,16 @@ export class ExchangeConsumer extends BaseConsumer {
     }
   }
 
-  async fetchPendingTradeRewardPoints(injectiveAddresses: string[]) {
+  async fetchPendingTradeRewardPoints(
+    injectiveAddresses: string[],
+    timestamp?: number,
+  ) {
     const request = new QueryTradeRewardPointsRequest()
     request.setAccountsList(injectiveAddresses)
+
+    if (timestamp) {
+      request.setPendingPoolTimestamp(timestamp)
+    }
 
     try {
       const response = await this.request<

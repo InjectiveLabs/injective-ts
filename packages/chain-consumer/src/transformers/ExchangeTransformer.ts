@@ -24,9 +24,47 @@ import {
   GrpcFeeDiscountAccountInfo,
   FeeDiscountTierTTL,
   GrpcFeeDiscountTierTTL,
+  GrpcExchangeParams,
+  ExchangeParams,
 } from '../types'
 
 export class ExchangeTransformer {
+  static grpcParamsToParams(params: GrpcExchangeParams): ExchangeParams {
+    const spotMarketInstantListingFee = params.getSpotMarketInstantListingFee()
+    const derivativeMarketInstantListingFee =
+      params.getDerivativeMarketInstantListingFee()
+
+    return {
+      spotMarketInstantListingFee: spotMarketInstantListingFee
+        ? {
+            amount: spotMarketInstantListingFee.getAmount(),
+            denom: spotMarketInstantListingFee.getDenom(),
+          }
+        : undefined,
+      derivativeMarketInstantListingFee: derivativeMarketInstantListingFee
+        ? {
+            amount: derivativeMarketInstantListingFee.getAmount(),
+            denom: derivativeMarketInstantListingFee.getDenom(),
+          }
+        : undefined,
+      defaultSpotMakerFeeRate: params.getDefaultSpotMakerFeeRate(),
+      defaultSpotTakerFeeRate: params.getDefaultSpotTakerFeeRate(),
+      defaultDerivativeMakerFeeRate: params.getDefaultDerivativeMakerFeeRate(),
+      defaultDerivativeTakerFeeRate: params.getDefaultDerivativeTakerFeeRate(),
+      defaultInitialMarginRatio: params.getDefaultInitialMarginRatio(),
+      defaultMaintenanceMarginRatio: params.getDefaultMaintenanceMarginRatio(),
+      defaultFundingInterval: params.getDefaultFundingInterval(),
+      fundingMultiple: params.getFundingMultiple(),
+      relayerFeeShareRate: params.getRelayerFeeShareRate(),
+      defaultHourlyFundingRateCap: params.getDefaultHourlyFundingRateCap(),
+      defaultHourlyInterestRate: params.getDefaultHourlyInterestRate(),
+      maxDerivativeOrderSideCount: params.getMaxDerivativeOrderSideCount(),
+      injRewardStakedRequirementThreshold:
+        params.getInjRewardStakedRequirementThreshold(),
+      tradingRewardsVestingDuration: params.getTradingRewardsVestingDuration(),
+    }
+  }
+
   static grpcFeeDiscountTierInfoToFeeDiscountTierInfo(
     info?: GrpcFeeDiscountTierInfo,
   ): FeeDiscountTierInfo | undefined {
