@@ -18,17 +18,40 @@ import {
   GrpcTradingRewardCampaignBoostInfo,
   TradingRewardCampaignBoostInfo,
   GrpcFeeDiscountTierInfo,
+  TradeRewardCampaign,
+  GrpcTradeRewardCampaign,
+  FeeDiscountAccountInfo,
+  GrpcFeeDiscountAccountInfo,
+  FeeDiscountTierTTL,
+  GrpcFeeDiscountTierTTL,
 } from '../types'
 
 export class ExchangeTransformer {
   static grpcFeeDiscountTierInfoToFeeDiscountTierInfo(
-    info: GrpcFeeDiscountTierInfo,
-  ): FeeDiscountTierInfo {
+    info?: GrpcFeeDiscountTierInfo,
+  ): FeeDiscountTierInfo | undefined {
+    if (!info) {
+      return
+    }
+
     return {
       makerDiscountRate: info.getMakerDiscountRate(),
       takerDiscountRate: info.getTakerDiscountRate(),
       stakedAmount: info.getStakedAmount(),
       feePaidAmount: info.getFeePaidAmount(),
+    }
+  }
+
+  static grpcFeeDiscountTierTTLToFeeDiscountTierTTL(
+    info?: GrpcFeeDiscountTierTTL,
+  ): FeeDiscountTierTTL | undefined {
+    if (!info) {
+      return
+    }
+
+    return {
+      tier: info.getTier(),
+      ttlTimestamp: info.getTtlTimestamp(),
     }
   }
 
@@ -41,7 +64,8 @@ export class ExchangeTransformer {
       quoteDenomsList: schedule.getQuoteDenomsList(),
       tierInfosList: schedule
         .getTierInfosList()
-        .map(ExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo),
+        .map(ExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo)
+        .filter((info) => info) as FeeDiscountTierInfo[],
       disqualifiedMarketIdsList: schedule.getDisqualifiedMarketIdsList(),
     }
   }
@@ -56,8 +80,12 @@ export class ExchangeTransformer {
   }
 
   static grpcTradingRewardCampaignBoostInfoToTradingRewardCampaignBoostInfo(
-    info: GrpcTradingRewardCampaignBoostInfo,
-  ): TradingRewardCampaignBoostInfo {
+    info?: GrpcTradingRewardCampaignBoostInfo,
+  ): TradingRewardCampaignBoostInfo | undefined {
+    if (!info) {
+      return
+    }
+
     return {
       boostedSpotMarketIdsList: info.getBoostedSpotMarketIdsList(),
       boostedDerivativeMarketIdsList: info.getBoostedDerivativeMarketIdsList(),
@@ -71,16 +99,19 @@ export class ExchangeTransformer {
   }
 
   static grpcTradingRewardCampaignInfoToTradingRewardCampaignInfo(
-    info: GrpcTradingRewardCampaignInfo,
-  ): TradingRewardCampaignInfo {
+    info?: GrpcTradingRewardCampaignInfo,
+  ): TradingRewardCampaignInfo | undefined {
+    if (!info) {
+      return
+    }
+
     return {
       campaignDurationSeconds: info.getCampaignDurationSeconds(),
       quoteDenomsList: info.getQuoteDenomsList(),
-      tradingRewardBoostInfo: info.hasTradingRewardBoostInfo()
-        ? ExchangeTransformer.grpcTradingRewardCampaignBoostInfoToTradingRewardCampaignBoostInfo(
-            info.getTradingRewardBoostInfo()!,
-          )
-        : undefined,
+      tradingRewardBoostInfo:
+        ExchangeTransformer.grpcTradingRewardCampaignBoostInfoToTradingRewardCampaignBoostInfo(
+          info.getTradingRewardBoostInfo()!,
+        ),
       disqualifiedMarketIdsList: info.getDisqualifiedMarketIdsList(),
     }
   }
@@ -133,6 +164,42 @@ export class ExchangeTransformer {
             bidder: '',
           },
       auctionEndingTimestamp: state.getAuctionEndingTimestamp(),
+    }
+  }
+
+  static grpcTradingRewardsCampaignToTradingRewardsCampaign(
+    campaign: GrpcTradeRewardCampaign,
+  ): TradeRewardCampaign {
+    return {
+      tradingRewardCampaignInfo:
+        ExchangeTransformer.grpcTradingRewardCampaignInfoToTradingRewardCampaignInfo(
+          campaign.getTradingRewardCampaignInfo(),
+        ),
+      tradingRewardPoolCampaignScheduleList: campaign
+        .getTradingRewardPoolCampaignScheduleList()
+        .map(ExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool),
+      pendingTradingRewardPoolCampaignScheduleList: campaign
+        .getPendingTradingRewardPoolCampaignScheduleList()
+        .map(ExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool),
+      totalTradeRewardPoints: campaign.getTotalTradeRewardPoints(),
+      pendingTotalTradeRewardPoints:
+        campaign.getPendingTotalTradeRewardPoints(),
+    }
+  }
+
+  static grpcFeeDiscountAccountInfoToFeeDiscountAccountInfo(
+    info: GrpcFeeDiscountAccountInfo,
+  ): FeeDiscountAccountInfo {
+    return {
+      tierLevel: info.getTierLevel(),
+      accountInfo:
+        ExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo(
+          info.getAccountInfo(),
+        ),
+      accountTtl:
+        ExchangeTransformer.grpcFeeDiscountTierTTLToFeeDiscountTierTTL(
+          info.getAccountTtl()!,
+        ),
     }
   }
 }

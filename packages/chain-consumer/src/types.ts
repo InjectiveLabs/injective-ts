@@ -43,6 +43,7 @@ import {
   SpotOrder as GrpcSpotOrder,
   Params as GrpcExchangeParams,
   FeeDiscountTierInfo as GrpcFeeDiscountTierInfo,
+  FeeDiscountTierTTL as GrpcFeeDiscountTierTTL,
   FeeDiscountSchedule as GrpcFeeDiscountSchedule,
   PointsMultiplier as GrpcPointsMultiplier,
   TradingRewardCampaignBoostInfo as GrpcTradingRewardCampaignBoostInfo,
@@ -56,6 +57,10 @@ import {
 import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { Coin } from '@injectivelabs/ts-types'
 import { QueryCurrentAuctionBasketResponse as GrpcQueryCurrentAuctionBasketResponse } from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
+import {
+  QueryFeeDiscountAccountInfoResponse as GrpcFeeDiscountAccountInfo,
+  QueryTradeRewardCampaignResponse as GrpcTradeRewardCampaign,
+} from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
 
 export interface PaginationOption {
   key: string
@@ -123,21 +128,40 @@ export interface CurrentBasket {
   highestBidAmount: string
 }
 
+export interface AuctionModuleStateParams {
+  auctionPeriod: number
+  minNextBidIncrementRate: string
+}
+
+export interface AuctionModuleHighestBid {
+  bidder: string
+  amount: string
+}
+
 export interface AuctionModuleState {
-  params:
-    | {
-        auctionPeriod: number
-        minNextBidIncrementRate: string
-      }
-    | undefined
+  params: AuctionModuleStateParams | undefined
   auctionRound: number
-  highestBid:
-    | {
-        bidder: string
-        amount: string
-      }
-    | undefined
+  highestBid: AuctionModuleHighestBid | undefined
   auctionEndingTimestamp: number
+}
+
+export interface FeeDiscountTierTTL {
+  tier: number
+  ttlTimestamp: number
+}
+
+export interface FeeDiscountAccountInfo {
+  tierLevel: number
+  accountInfo?: FeeDiscountTierInfo
+  accountTtl?: FeeDiscountTierTTL
+}
+
+export interface TradeRewardCampaign {
+  tradingRewardCampaignInfo?: TradingRewardCampaignInfo
+  tradingRewardPoolCampaignScheduleList: CampaignRewardPool[]
+  totalTradeRewardPoints: string
+  pendingTradingRewardPoolCampaignScheduleList: CampaignRewardPool[]
+  pendingTotalTradeRewardPoints: string
 }
 
 export {
@@ -147,6 +171,9 @@ export {
   GrpcAuctionParams,
   GrpcFeeDiscountSchedule,
   GrpcFeeDiscountTierInfo,
+  GrpcFeeDiscountTierTTL,
+  GrpcTradeRewardCampaign,
+  GrpcFeeDiscountAccountInfo,
   GrpcTradingRewardCampaignInfo,
   GrpcTradingRewardCampaignBoostInfo,
   GrpcPointsMultiplier,

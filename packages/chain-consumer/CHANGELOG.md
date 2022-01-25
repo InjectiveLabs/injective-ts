@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.106](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.105...@injectivelabs/chain-consumer@0.0.106) (2022-01-25)
+
+
+### Features
+
+* pending trade and earn rewards ([37ecfb2](https://github.com/InjectiveLabs/injective-ts/commit/37ecfb2c309f0922400cb3a9738714f7fb9b5605))
+
+
+
+
+
 ## [0.0.105](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.104...@injectivelabs/chain-consumer@0.0.105) (2022-01-24)
 
 

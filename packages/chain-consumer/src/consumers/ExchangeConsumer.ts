@@ -97,4 +97,21 @@ export class ExchangeConsumer extends BaseConsumer {
       throw new GrpcException(e.message)
     }
   }
+
+  async fetchPendingTradeRewardPoints(injectiveAddresses: string[]) {
+    const request = new QueryTradeRewardPointsRequest()
+    request.setAccountsList(injectiveAddresses)
+
+    try {
+      const response = await this.request<
+        QueryTradeRewardPointsRequest,
+        QueryTradeRewardPointsResponse,
+        typeof Query.PendingTradeRewardPoints
+      >(request, Query.PendingTradeRewardPoints)
+
+      return response.getAccountTradeRewardPointsList()
+    } catch (e: any) {
+      throw new GrpcException(e.message)
+    }
+  }
 }
