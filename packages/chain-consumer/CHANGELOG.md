@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.110](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.109...@injectivelabs/chain-consumer@0.0.110) (2022-01-26)
+
+
+### Features
+
+* added pool fetch in staking consumer ([f0e231d](https://github.com/InjectiveLabs/injective-ts/commit/f0e231d3f6e5c939074375be19a5b128c19e0a2e))
+
+
+
+
+
 ## [0.0.109](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.108...@injectivelabs/chain-consumer@0.0.109) (2022-01-26)
 
 

@@ -6,6 +6,8 @@ import {
   QueryDelegatorUnbondingDelegationsResponse,
   QueryValidatorDelegationsRequest,
   QueryRedelegationsRequest,
+  QueryPoolRequest,
+  QueryPoolResponse,
   QueryRedelegationsResponse,
   QueryValidatorDelegationsResponse,
   QueryValidatorsRequest,
@@ -38,6 +40,22 @@ export class StakingConsumer extends BaseConsumer {
       >(request, Query.Params)
 
       return response.getParams() as GrpcStakingParams
+    } catch (e: any) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchPool() {
+    const request = new QueryPoolRequest()
+
+    try {
+      const response = await this.request<
+        QueryPoolRequest,
+        QueryPoolResponse,
+        typeof Query.Pool
+      >(request, Query.Pool)
+
+      return response.getPool()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }
