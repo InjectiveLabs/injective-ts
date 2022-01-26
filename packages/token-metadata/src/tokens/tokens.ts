@@ -504,4 +504,13 @@ export default {
     decimals: 6,
     logo: 'osmo.png',
   },
+
+  TAB: {
+    name: 'Injective',
+    logo: 'injective-v3.svg',
+    symbol: 'TAB',
+    decimals: 18,
+    address: '0x36B3D7ACe7201E28040eFf30e815290D7b37ffaD',
+    coinGeckoId: 'injective-protocol',
+  },
 }

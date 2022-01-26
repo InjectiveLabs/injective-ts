@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.27 (2022-01-26)
+
+
+### Bug Fixes
+
+* cosmos ts + packages bump ([4c1213a](https://github.com/InjectiveLabs/injective-ts/commit/4c1213aaeec04a442edd0b8c546aa233eb47d3fd))
+* endpoints ([e77b587](https://github.com/InjectiveLabs/injective-ts/commit/e77b587265e7081f559b8f34d39cbfeb9be90af7))
+* fee recipient in trades ([7d50924](https://github.com/InjectiveLabs/injective-ts/commit/7d50924199bc9fba68fef85d1b30fb53dcf617b6))
+* spot market proposal ([40c041f](https://github.com/InjectiveLabs/injective-ts/commit/40c041f0ad13868830927354f2a739557ad43541))
+* types update ([2227d5d](https://github.com/InjectiveLabs/injective-ts/commit/2227d5d097b50502a5fa9a614427dd0c4bfa53d9))
+
+
+### Features
+
+* added blocks with txs stream ([7144aef](https://github.com/InjectiveLabs/injective-ts/commit/7144aef7cf6100939da4b0f7bdf89d12ca8ad275))
+* added default gas price ([8b7062f](https://github.com/InjectiveLabs/injective-ts/commit/8b7062f0bd2e4c2d373b37fee0bc658c94be8972))
+* DMM consumer ([50ce000](https://github.com/InjectiveLabs/injective-ts/commit/50ce000df13a712335b675317b21f994171823d8))
+* DMM Consumer ([8df3c3a](https://github.com/InjectiveLabs/injective-ts/commit/8df3c3a847c07ae8253411a72e82cf525b82ba5d))
+* explorer consumer package ([acdcd4a](https://github.com/InjectiveLabs/injective-ts/commit/acdcd4a6e41dc010e460705f7f2d4fb9f90bdb21))
+* funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
+* implement Auction consumer ([3761411](https://github.com/InjectiveLabs/injective-ts/commit/3761411a723985f5a5cdc7e6ba82e15fdce8b68f))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* portfolio value ([02f12f8](https://github.com/InjectiveLabs/injective-ts/commit/02f12f89979d8cb45089025c308c546b2181498a))
+* portfolio value ([32978ec](https://github.com/InjectiveLabs/injective-ts/commit/32978ecaf1367ab35949b103f977b292dc8bfe3d))
+* update DMM consumer with latest exchange api ([ed3a689](https://github.com/InjectiveLabs/injective-ts/commit/ed3a68987df5f9ed87561d55cf604fff53b57a95))
+
+
+
+
+
 ## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.25...@injectivelabs/explorer-consumer@0.0.26) (2022-01-24)
 
 

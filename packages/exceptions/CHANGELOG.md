@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.11...@injectivelabs/exceptions@0.0.37) (2022-01-26)
+
+
+### Bug Fixes
+
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+* merge conflicts ([a5c7ce1](https://github.com/InjectiveLabs/injective-ts/commit/a5c7ce13823fded62a32f79fcfda19867c929cc7))
+* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+* streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+
+
+### Features
+
+* added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+* contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+* contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+* funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+
+
+
+
+
 ## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.35...@injectivelabs/exceptions@0.0.36) (2022-01-24)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
