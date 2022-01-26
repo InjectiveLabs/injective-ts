@@ -4,6 +4,8 @@ import {
   QueryParamsRequest,
   QueryParamsResponse,
   QueryInflationResponse,
+  QueryAnnualProvisionsRequest,
+  QueryAnnualProvisionsResponse,
 } from '@injectivelabs/chain-api/cosmos/mint/v1beta1/query_pb'
 import { GrpcException } from '@injectivelabs/exceptions'
 import BaseConsumer from '../BaseConsumer'
@@ -37,6 +39,22 @@ export class MintConsumer extends BaseConsumer {
       >(request, Query.Inflation)
 
       return response.getInflation()
+    } catch (e: any) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchAnnualProvisions() {
+    const request = new QueryAnnualProvisionsRequest()
+
+    try {
+      const response = await this.request<
+        QueryAnnualProvisionsRequest,
+        QueryAnnualProvisionsResponse,
+        typeof Query.AnnualProvisions
+      >(request, Query.AnnualProvisions)
+
+      return response.getAnnualProvisions()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }
