@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.46...@injectivelabs/token-metadata@0.0.48) (2022-01-26)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## 0.0.47 (2022-01-26)
+
+
+### Bug Fixes
+
+* coingeckoId ([b60177b](https://github.com/InjectiveLabs/injective-ts/commit/b60177b3b866ff4a0a65a2193fc60a9ca182a1b9))
+* cosmos ts + packages bump ([4c1213a](https://github.com/InjectiveLabs/injective-ts/commit/4c1213aaeec04a442edd0b8c546aa233eb47d3fd))
+* decimals, console log ([3f76959](https://github.com/InjectiveLabs/injective-ts/commit/3f769595ba5913394b2d5a108186ebd974732a0d))
+* exported types from token-metadata ([0f458c2](https://github.com/InjectiveLabs/injective-ts/commit/0f458c2303e6e0fb411fdff3765040754d8611d8))
+* exporting images for tokens ([1bedef9](https://github.com/InjectiveLabs/injective-ts/commit/1bedef978fcd399018d5299b27e9b66adcd0cf38))
+* images path fix ([c53b63b](https://github.com/InjectiveLabs/injective-ts/commit/c53b63b5f6ab7cbb73298c479eeaec611ebfe4a0))
+* kovan addresses for tokens metadata ([8a19fa3](https://github.com/InjectiveLabs/injective-ts/commit/8a19fa3b76d907d7271c29c523380a9772f24c0f))
+* kovan map ([6698b35](https://github.com/InjectiveLabs/injective-ts/commit/6698b351f3e6d307d52cc12ef753908c88ca8a3c))
+* kovan map ([9386ab8](https://github.com/InjectiveLabs/injective-ts/commit/9386ab87e194f9a9344a5ea1a87267db96028949))
+* kovan token meta ([2bb88b9](https://github.com/InjectiveLabs/injective-ts/commit/2bb88b92e09de289c80b5f3ca66fc539f1ca84ef))
+* metadata fetching ([e83b7d3](https://github.com/InjectiveLabs/injective-ts/commit/e83b7d3030bfc3ca42430e9a24a54c736c4599e7))
+* new injective logo ([7f938c6](https://github.com/InjectiveLabs/injective-ts/commit/7f938c6dc9c82921f6ab94e0126d0213857ad2ca))
+* streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+* terra retries ([051614c](https://github.com/InjectiveLabs/injective-ts/commit/051614ce619cf228d5ec8e2cba84203fdd5051de))
+* testnet denoms ([39b4146](https://github.com/InjectiveLabs/injective-ts/commit/39b4146530a93f9751f517031dbbd3dd1c7ced14))
+* token meta for osmo ([7b54e14](https://github.com/InjectiveLabs/injective-ts/commit/7b54e14519b1db95176782dd49955f5247cb11df))
+* token metadata kovan addresses ([102ef64](https://github.com/InjectiveLabs/injective-ts/commit/102ef645093b1d51d78d810570ff9c55d622f2ff))
+* token metadata mapping ([13cb174](https://github.com/InjectiveLabs/injective-ts/commit/13cb174c28bfa4c502938743ba7a0542d88a1f4e))
+* types ([ca5bcf3](https://github.com/InjectiveLabs/injective-ts/commit/ca5bcf3858a07188bbea9a03d3882bb80fd1925c))
+
+
+### Features
+
+* added axs to tokens meta ([18e0627](https://github.com/InjectiveLabs/injective-ts/commit/18e062754deefb049224c859e4a0b1d2c70c1fc8))
+* added coinGeckoId to token meta ([8f1768d](https://github.com/InjectiveLabs/injective-ts/commit/8f1768da9fe983409a2932acf5309e0ffc2e3e65))
+* added cosmos-ts package ([4c56fbf](https://github.com/InjectiveLabs/injective-ts/commit/4c56fbf5ea217c8d841fbc063ca1a8d9773d5817))
+* added fetching coingecko id by symbol ([4c80783](https://github.com/InjectiveLabs/injective-ts/commit/4c80783b24de9f4b09bc01381311d87217d2b184))
+* added new package - token metadata ([d9c8474](https://github.com/InjectiveLabs/injective-ts/commit/d9c8474100572ebc0dd07680971832db0e6a98ef))
+* added wbtc ([4105e01](https://github.com/InjectiveLabs/injective-ts/commit/4105e01094c19d304a13642c708e4b3be889545a))
+* extended cg api ([1b4399f](https://github.com/InjectiveLabs/injective-ts/commit/1b4399f012fdf33e11825db7a62ba2d4240295c5))
+* funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* new token meta ([17b1aa5](https://github.com/InjectiveLabs/injective-ts/commit/17b1aa5df39d5724baf6262b276980cf722a1cba))
+* osmo support ([26b33d7](https://github.com/InjectiveLabs/injective-ts/commit/26b33d7c0a1be5f79df9ba1960f188eb37031051))
+* token price utils ([1d79620](https://github.com/InjectiveLabs/injective-ts/commit/1d796200d4f1fe0c09a71cd0318305983fdf44ad))
+* tokens meta for kovan ([440d081](https://github.com/InjectiveLabs/injective-ts/commit/440d081479fb756afbb190eeeb7160656e47520e))
+* tokens metadata update ([ebc89ba](https://github.com/InjectiveLabs/injective-ts/commit/ebc89ba2613ee62978d5d8d97fdcef60d27ace83))
+* uatom added ([2354c55](https://github.com/InjectiveLabs/injective-ts/commit/2354c551f67d380dc178036900d9c7a4e1782084))
+* xbx ([bd6e917](https://github.com/InjectiveLabs/injective-ts/commit/bd6e9172a8704b49d88cfbbd236f3e53c0157ad0))
+
+
+
+
+
 ## [0.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.45...@injectivelabs/token-metadata@0.0.46) (2022-01-24)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

@@ -11,7 +11,7 @@ export interface IBCTransferTx {
   sourceChannel: string
   destinationPort: string
   destinationChannel: string
-  amount: number
+  amount: string
   denom: string
   timeoutHeight: string
   timeoutTimestamp: number
@@ -28,7 +28,7 @@ export interface PeggyDepositTx {
   receiver: string
   eventNonce: number
   eventHeight: number
-  amount: number
+  amount: string
   denom: string
   orchestratorAddress: string
   state: string
@@ -41,9 +41,9 @@ export interface PeggyDepositTx {
 export interface PeggyWithdrawalTx {
   sender: string
   receiver: string
-  amount: number
+  amount: string
   denom: string
-  bridgeFee: number
+  bridgeFee: string
   outgoingTxId: number
   batchTimeout: number
   batchNonce: number
