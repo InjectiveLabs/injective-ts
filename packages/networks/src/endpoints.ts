@@ -1,6 +1,6 @@
 import { UrlEndpoint } from './types'
 
-export const urlEndpointsMainnet: UrlEndpoint = {
+export const urlEndpointsMainnetK8s: UrlEndpoint = {
   baseUrl: 'https://k8s-api.injective.network/api',
   chainUrl: 'https://k8s-grpc.injective.network',
   tmUrl: 'https://tm.injective.network',
@@ -11,15 +11,26 @@ export const urlEndpointsMainnet: UrlEndpoint = {
   explorerUrl: 'https://k8s-api.injective.network/api/explorer/v1',
 }
 
-export const urlEndpointsPublic: UrlEndpoint = {
-  baseUrl: 'https://public.api.injective.network/api',
-  chainUrl: 'https://public.grpc.injective.network',
+export const urlEndpointsMainnet: UrlEndpoint = {
+  baseUrl: 'https://api.injective.network/api',
+  chainUrl: 'https://grpc.injective.network',
   tmUrl: 'https://tm.injective.network',
-  chainHttpUrl: 'https://public.lcd.injective.network',
-  exchangeUrl: 'https://public.api.injective.network',
+  chainHttpUrl: 'https://lcd.injective.network',
+  exchangeUrl: 'https://api.injective.network',
   dmmExchangeUrl: 'https://dmm.exchange.injective.network',
-  exchangeGatewayUrl: 'https://public.web3-gateway.injective.network',
-  explorerUrl: 'https://public.api.injective.network/api/explorer/v1',
+  exchangeGatewayUrl: 'https://web3-gateway.injective.network',
+  explorerUrl: 'https://api.injective.network/api/explorer/v1',
+}
+
+export const urlEndpointsMainnetStaging: UrlEndpoint = {
+  baseUrl: 'https://staging.api.injective.network/api',
+  chainUrl: 'https://staging.grpc.injective.network',
+  tmUrl: 'https://staging.tm.injective.network',
+  chainHttpUrl: 'https://staging.lcd.injective.network',
+  exchangeUrl: 'https://staging.api.injective.network',
+  dmmExchangeUrl: 'https://dmm.exchange.injective.network',
+  exchangeGatewayUrl: 'https://web3-gateway.injective.network',
+  explorerUrl: 'https://staging.api.injective.network/api/explorer/v1',
 }
 
 export const urlEndpointsMainnetOld: UrlEndpoint = {
@@ -31,6 +42,17 @@ export const urlEndpointsMainnetOld: UrlEndpoint = {
   dmmExchangeUrl: 'https://dmm.exchange.injective.network',
   exchangeGatewayUrl: 'https://web3-gateway.injective.network',
   explorerUrl: 'https://api.injective.network/api/explorer/v1',
+}
+
+export const urlEndpointsPublic: UrlEndpoint = {
+  baseUrl: 'https://public.api.injective.network/api',
+  chainUrl: 'https://public.grpc.injective.network',
+  tmUrl: 'https://tm.injective.network',
+  chainHttpUrl: 'https://public.lcd.injective.network',
+  exchangeUrl: 'https://public.api.injective.network',
+  dmmExchangeUrl: 'https://dmm.exchange.injective.network',
+  exchangeGatewayUrl: 'https://public.web3-gateway.injective.network',
+  explorerUrl: 'https://public.api.injective.network/api/explorer/v1',
 }
 
 export const urlEndpointsTestnet: UrlEndpoint = {

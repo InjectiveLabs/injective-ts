@@ -4,6 +4,8 @@ export enum Network {
   Devnet = 'devnet',
   Testnet = 'testnet',
   Mainnet = 'mainnet',
+  MainnetStaging = 'mainnetStaging',
+  MainnetK8s = 'mainnetK8s',
   MainnetOld = 'mainnetOld',
 }
 
