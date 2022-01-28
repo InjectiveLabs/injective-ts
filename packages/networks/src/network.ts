@@ -13,6 +13,7 @@ export const urlEndpointUrls: Record<Network, UrlEndpoint> = {
   [Network.MainnetK8s]: urlEndpointsMainnetK8s,
   [Network.MainnetOld]: urlEndpointsMainnet,
   [Network.MainnetStaging]: urlEndpointsMainnetStaging,
+  [Network.Staging]: urlEndpointsMainnetStaging,
   [Network.Mainnet]: urlEndpointsMainnet,
   [Network.Public]: urlEndpointsPublic,
   [Network.Devnet]: urlEndpointsDevnet,
