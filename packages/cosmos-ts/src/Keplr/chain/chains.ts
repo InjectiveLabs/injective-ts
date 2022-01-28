@@ -168,4 +168,39 @@ export default {
     },
     features: ['ibc-transfer'],
   },
+  [CosmosChainId.Chihuahua]: {
+    rpc: 'https://rpc.chihuahua.wtf',
+    rest: 'https://api.chihuahua.wtf',
+    chainId: 'chihuahua-1',
+    chainName: 'Chihuahua',
+    stakeCurrency: {
+      coinDenom: 'HUAHUA',
+      coinMinimalDenom: 'uhuahua',
+      coinDecimals: 6,
+    },
+    bip44: {
+      coinType: 118,
+    },
+    bech32Config: Bech32Address.defaultBech32Config('chihuahua'),
+    currencies: [
+      {
+        coinDenom: 'HUAHUA',
+        coinMinimalDenom: 'uhuahua',
+        coinDecimals: 6,
+      },
+    ],
+    feeCurrencies: [
+      {
+        coinDenom: 'HUAHUA',
+        coinMinimalDenom: 'uhuahua',
+        coinDecimals: 6,
+      },
+    ],
+    gasPriceStep: {
+      low: 0.025,
+      average: 0.03,
+      high: 0.035,
+    },
+    features: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
+  },
 } as Record<string, any>

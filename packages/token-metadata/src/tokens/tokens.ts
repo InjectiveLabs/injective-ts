@@ -513,4 +513,22 @@ export default {
     address: '0x36B3D7ACe7201E28040eFf30e815290D7b37ffaD',
     coinGeckoId: 'injective-protocol',
   },
+
+  HUAHUA: {
+    name: 'Chihuahua',
+    logo: 'chihuahua.jpeg',
+    symbol: 'HUAHUA',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'chihuahua-token',
+  },
+
+  UHUAHUA: {
+    name: 'Chihuahua',
+    logo: 'chihuahua.jpeg',
+    symbol: 'HUAHUA',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'chihuahua-token',
+  },
 }
