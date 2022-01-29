@@ -10,7 +10,7 @@ import { SigningStargateClient } from '@cosmjs/stargate'
 import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin'
 import { Height } from 'cosmjs-types/ibc/core/client/v1/client'
 import { CosmosChainId, TestnetCosmosChainId } from './types'
-import { getLcdEndpointFromChainId } from './endpoints'
+import { getEndpointFromChainId } from './endpoints'
 import { KeplrWallet } from './KeplrWallet'
 
 export class CosmJsWallet {
@@ -25,7 +25,7 @@ export class CosmJsWallet {
   constructor(chainId: string) {
     this.chainId = chainId
     this.keplr = new KeplrWallet(this.chainId)
-    this.endpoints = getLcdEndpointFromChainId(
+    this.endpoints = getEndpointFromChainId(
       chainId as TestnetCosmosChainId | CosmosChainId,
     )
     this.lcdClient = LcdClient.withExtensions(

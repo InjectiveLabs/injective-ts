@@ -1,6 +1,6 @@
 import { CosmosChainId, TestnetCosmosChainId } from './types'
 
-export const getLcdEndpointFromChainId = (
+export const getEndpointFromChainId = (
   chainId: TestnetCosmosChainId | CosmosChainId,
 ): { rpc: string; rest: string } => {
   switch (chainId) {
@@ -38,6 +38,11 @@ export const getLcdEndpointFromChainId = (
       return {
         rpc: 'https://testnet.tm.injective.dev',
         rest: 'https://testnet.lcd.injective.dev',
+      }
+    case CosmosChainId.Chihuahua:
+      return {
+        rpc: 'https://rpc.chihuahua.wtf',
+        rest: 'https://api.chihuahua.wtf',
       }
     default:
       throw new Error(`Endpoints for ${chainId} not found`)

@@ -1,10 +1,10 @@
 import { Bech32Address } from '@keplr-wallet/cosmos'
-import { getLcdEndpointFromChainId } from '../endpoints'
+import { getEndpointFromChainId } from '../endpoints'
 import { TestnetCosmosChainId, CosmosChainId } from '../types'
 
 export default {
   [TestnetCosmosChainId.Cosmoshub]: {
-    ...getLcdEndpointFromChainId(TestnetCosmosChainId.Cosmoshub),
+    ...getEndpointFromChainId(TestnetCosmosChainId.Cosmoshub),
     rpcConfig: undefined,
     restConfig: undefined,
     chainId: 'cosmoshub-testnet',
@@ -41,7 +41,7 @@ export default {
     features: ['stargate', 'ibc-transfer'],
   },
   [TestnetCosmosChainId.Injective]: {
-    ...getLcdEndpointFromChainId(TestnetCosmosChainId.Injective),
+    ...getEndpointFromChainId(TestnetCosmosChainId.Injective),
     rpcConfig: undefined,
     restConfig: undefined,
     chainId: 'injective-888',
@@ -78,7 +78,7 @@ export default {
     features: ['stargate', 'ibc-transfer'],
   },
   [CosmosChainId.Injective]: {
-    ...getLcdEndpointFromChainId(CosmosChainId.Injective),
+    ...getEndpointFromChainId(CosmosChainId.Injective),
     rpcConfig: undefined,
     restConfig: undefined,
     chainId: 'injective-1',
@@ -115,7 +115,7 @@ export default {
     features: ['stargate', 'ibc-transfer'],
   },
   [CosmosChainId.Terra]: {
-    ...getLcdEndpointFromChainId(CosmosChainId.Terra),
+    ...getEndpointFromChainId(CosmosChainId.Terra),
     rpcConfig: undefined,
     restConfig: undefined,
     chainId: 'columbus-5',
@@ -169,8 +169,7 @@ export default {
     features: ['ibc-transfer'],
   },
   [CosmosChainId.Chihuahua]: {
-    rpc: 'https://rpc.chihuahua.wtf',
-    rest: 'https://api.chihuahua.wtf',
+    ...getEndpointFromChainId(CosmosChainId.Chihuahua),
     chainId: 'chihuahua-1',
     chainName: 'Chihuahua',
     stakeCurrency: {

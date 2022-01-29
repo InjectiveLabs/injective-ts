@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.54...@injectivelabs/cosmos-ts@0.0.55) (2022-01-29)
+
+
+### Bug Fixes
+
+* rpc and lcd endpoints ([624d723](https://github.com/InjectiveLabs/injective-ts/commit/624d7234ee6072af85ecb573d835393d8fe1a9af))
+
+
+
+
+
 ## [0.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.53...@injectivelabs/cosmos-ts@0.0.54) (2022-01-28)
 
 
