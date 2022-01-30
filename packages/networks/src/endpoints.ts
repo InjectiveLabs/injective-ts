@@ -1,89 +1,73 @@
 import { UrlEndpoint } from './types'
 
 export const urlEndpointsMainnetK8s: UrlEndpoint = {
-  baseUrl: 'https://k8s-api.injective.network/api',
-  chainUrl: 'https://k8s-grpc.injective.network',
-  tmUrl: 'https://tm.injective.network',
-  chainHttpUrl: 'https://k8s-lcd.injective.network',
-  exchangeUrl: 'https://k8s-api.injective.network',
-  dmmExchangeUrl: 'https://k8s-api.injective.network',
-  exchangeGatewayUrl: 'https://k8s-gateway.injective.network',
-  explorerUrl: 'https://k8s-api.injective.network/api/explorer/v1',
+  exchangeApi: 'https://k8s-api.injective.network',
+  sentryGrpcApi: 'https://k8s-grpc.injective.network',
+  tendermintApi: 'https://tm.injective.network',
+  sentryHttpApi: 'https://k8s-lcd.injective.network',
+  exchangeWeb3GatewayApi: 'https://k8s-gateway.injective.network',
 }
 
 export const urlEndpointsMainnet: UrlEndpoint = {
-  baseUrl: 'https://api.injective.network/api',
-  chainUrl: 'https://grpc.injective.network',
-  tmUrl: 'https://tm.injective.network',
-  chainHttpUrl: 'https://lcd.injective.network',
-  exchangeUrl: 'https://api.injective.network',
-  dmmExchangeUrl: 'https://dmm.exchange.injective.network',
-  exchangeGatewayUrl: 'https://web3-gateway.injective.network',
-  explorerUrl: 'https://api.injective.network/api/explorer/v1',
+  exchangeApi: 'https://api.injective.network',
+  sentryGrpcApi: 'https://grpc.injective.network',
+  tendermintApi: 'https://tm.injective.network',
+  sentryHttpApi: 'https://lcd.injective.network',
+  exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
 }
 
 export const urlEndpointsMainnetStaging: UrlEndpoint = {
-  baseUrl: 'https://staging.api.injective.network/api',
-  chainUrl: 'https://staging.grpc.injective.network',
-  tmUrl: 'https://staging.tm.injective.network',
-  chainHttpUrl: 'https://staging.lcd.injective.network',
-  exchangeUrl: 'https://staging.api.injective.network',
-  dmmExchangeUrl: 'https://dmm.exchange.injective.network',
-  exchangeGatewayUrl: 'https://web3-gateway.injective.network',
-  explorerUrl: 'https://staging.api.injective.network/api/explorer/v1',
+  exchangeApi: 'https://staging.api.injective.network',
+  sentryGrpcApi: 'https://staging.grpc.injective.network',
+  tendermintApi: 'https://staging.tm.injective.network',
+  sentryHttpApi: 'https://staging.lcd.injective.network',
+  exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
 }
 
 export const urlEndpointsMainnetOld: UrlEndpoint = {
-  baseUrl: 'https://api.injective.network/api',
-  chainUrl: 'https://grpc.injective.network',
-  tmUrl: 'https://tm.injective.network',
-  chainHttpUrl: 'https://lcd.injective.network',
-  exchangeUrl: 'https://api.injective.network',
-  dmmExchangeUrl: 'https://dmm.exchange.injective.network',
-  exchangeGatewayUrl: 'https://web3-gateway.injective.network',
-  explorerUrl: 'https://api.injective.network/api/explorer/v1',
+  exchangeApi: 'https://api.injective.network',
+  sentryGrpcApi: 'https://grpc.injective.network',
+  tendermintApi: 'https://tm.injective.network',
+  sentryHttpApi: 'https://lcd.injective.network',
+  exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
 }
 
 export const urlEndpointsPublic: UrlEndpoint = {
-  baseUrl: 'https://public.api.injective.network/api',
-  chainUrl: 'https://public.grpc.injective.network',
-  tmUrl: 'https://tm.injective.network',
-  chainHttpUrl: 'https://public.lcd.injective.network',
-  exchangeUrl: 'https://public.api.injective.network',
-  dmmExchangeUrl: 'https://dmm.exchange.injective.network',
-  exchangeGatewayUrl: 'https://public.web3-gateway.injective.network',
-  explorerUrl: 'https://public.api.injective.network/api/explorer/v1',
+  exchangeApi: 'https://public.api.injective.network',
+  sentryGrpcApi: 'https://public.grpc.injective.network',
+  tendermintApi: 'https://tm.injective.network',
+  sentryHttpApi: 'https://public.lcd.injective.network',
+  exchangeWeb3GatewayApi: 'https://public.web3-gateway.injective.network',
 }
 
 export const urlEndpointsTestnet: UrlEndpoint = {
-  baseUrl: 'https://testnet.api.injective.dev/api',
-  chainUrl: 'https://testnet.grpc.injective.dev',
-  tmUrl: 'https://testnet.tm.injective.dev',
-  chainHttpUrl: 'https://testnet.lcd.injective.dev',
-  exchangeUrl: 'https://testnet.api.injective.dev',
-  dmmExchangeUrl: 'https://testnet.api.injective.dev',
-  exchangeGatewayUrl: 'https://testnet.web3-gateway.injective.dev',
-  explorerUrl: 'https://testnet.api.injective.dev/api/explorer/v1',
+  exchangeApi: 'https://testnet.api.injective.dev',
+  sentryGrpcApi: 'https://testnet.grpc.injective.dev',
+  tendermintApi: 'https://testnet.tm.injective.dev',
+  sentryHttpApi: 'https://testnet.lcd.injective.dev',
+  exchangeWeb3GatewayApi: 'https://testnet.web3-gateway.injective.dev',
+}
+
+export const urlEndpointsTestnetK8s: UrlEndpoint = {
+  exchangeApi: 'https://k8s.testnet.exchange.grpc-web.injective.network',
+  sentryGrpcApi: 'https://k8s.testnet.chain.grpc-web.injective.network',
+  tendermintApi: 'https://k8s.testnet.tm.injective.network',
+  sentryHttpApi: 'https://k8s.testnet.lcd.injective.network',
+  exchangeWeb3GatewayApi: 'https://staging.web3-gateway.injective.network',
 }
 
 export const urlEndpointsDevnet: UrlEndpoint = {
-  baseUrl: 'https://devnet.api.injective.dev/api',
-  chainUrl: 'https://devnet.grpc.injective.dev',
-  tmUrl: 'https://devnet.tm.injective.dev',
-  chainHttpUrl: 'https://devnet.lcd.injective.dev',
-  exchangeUrl: 'https://devnet.api.injective.dev',
-  dmmExchangeUrl: 'https://devnet.api.injective.dev',
-  exchangeGatewayUrl: 'https://devnet.gateway.injective.dev',
-  explorerUrl: 'https://devnet.api.injective.dev/api/explorer/v1',
+  exchangeApi: 'https://devnet.api.injective.dev',
+  sentryGrpcApi: 'https://devnet.grpc.injective.dev',
+  tendermintApi: 'https://devnet.tm.injective.dev',
+  sentryHttpApi: 'https://devnet.lcd.injective.dev',
+  exchangeWeb3GatewayApi: 'https://devnet.gateway.injective.dev',
 }
 
 export const urlEndpointsLocal: UrlEndpoint = {
-  baseUrl: 'https://localhost:4444/api',
-  chainUrl: 'http://localhost:9091',
-  tmUrl: 'http://localhost:9091',
-  chainHttpUrl: 'http://localhost:9091',
-  exchangeUrl: 'https://localhost:4444',
-  dmmExchangeUrl: 'https://localhost:4444',
-  exchangeGatewayUrl: 'https://localhost:4445',
-  explorerUrl: 'https://localhost:4444/api/explorer/v1',
+  exchangeApi: 'https://localhost:4444',
+  sentryGrpcApi: 'http://localhost:9091',
+  tendermintApi: 'http://localhost:9091',
+  sentryHttpApi: 'http://localhost:9091',
+  exchangeWeb3GatewayApi: 'https://localhost:4445',
 }

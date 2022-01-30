@@ -3,6 +3,7 @@ export enum Network {
   Public = 'public',
   Devnet = 'devnet',
   Testnet = 'testnet',
+  TestnetK8s = 'testnetK8s',
   Mainnet = 'mainnet',
   Staging = 'staging',
   MainnetStaging = 'mainnetStaging',
@@ -11,12 +12,9 @@ export enum Network {
 }
 
 export type UrlEndpoint = {
-  baseUrl: string
-  chainUrl: string
-  tmUrl: string
-  chainHttpUrl: string
-  exchangeUrl: string
-  dmmExchangeUrl: string
-  exchangeGatewayUrl: string
-  explorerUrl: string
+  exchangeApi: string
+  sentryGrpcApi: string
+  sentryHttpApi: string
+  tendermintApi?: string
+  exchangeWeb3GatewayApi?: string
 }
