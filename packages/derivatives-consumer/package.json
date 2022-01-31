@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/derivatives-consumer",
   "description": "Derivative Trading on Injective Protocol made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.87",
+  "version": "0.0.89",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

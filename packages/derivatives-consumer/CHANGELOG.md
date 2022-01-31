@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.89](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.87...@injectivelabs/derivatives-consumer@0.0.89) (2022-01-31)
+
+
+### Features
+
+* proto composers ([ccf89ea](https://github.com/InjectiveLabs/injective-ts/commit/ccf89ea3ea2c84c489560f65097a611f111c3acc))
+
+
+
+
+
+## [0.0.88](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.87...@injectivelabs/derivatives-consumer@0.0.88) (2022-01-31)
+
+
+### Features
+
+* proto composers ([326b1f7](https://github.com/InjectiveLabs/injective-ts/commit/326b1f7bf7677d33d721cd40a31e3cde1bee8a91))
+
+
+
+
+
 ## [0.0.87](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.85...@injectivelabs/derivatives-consumer@0.0.87) (2022-01-26)
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer
