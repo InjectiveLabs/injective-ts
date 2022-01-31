@@ -45,6 +45,9 @@
       "@injectivelabs/cosmos-ts": [
         "packages/cosmos-ts/src"
       ],
+      "@injectivelabs/protocol-stats": [
+        "packages/protocol-stats/src"
+      ],
       "@injectivelabs/*": [
         "packages/*/src"
       ]
