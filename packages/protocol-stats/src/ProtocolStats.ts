@@ -203,7 +203,7 @@ export class ProtocolStats {
     return accountsResponse.pagination.total
   }
 
-  async fetchWeeklyProtocolVolume() {
+  async fetchWeeklyProtocolRevenue() {
     const { sentryHttpUrl } = this
 
     const auctionSubaccountId =
