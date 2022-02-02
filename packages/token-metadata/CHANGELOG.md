@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.52...@injectivelabs/token-metadata@0.0.53) (2022-02-02)
+
+
+### Features
+
+* axelar ([2fc77d3](https://github.com/InjectiveLabs/injective-ts/commit/2fc77d384d94976e06f399b074fecb4663814f62))
+
+
+
+
+
 ## [0.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.51...@injectivelabs/token-metadata@0.0.52) (2022-01-30)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

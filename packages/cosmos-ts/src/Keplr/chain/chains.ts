@@ -202,4 +202,44 @@ export default {
     },
     features: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
   },
+  [CosmosChainId.Axelar]: {
+    rpc: 'https://rpc-axelar.keplr.app',
+    rest: 'https://lcd-axelar.keplr.app',
+    chainId: 'axelar-dojo-1',
+    chainName: 'Axelar',
+    stakeCurrency: {
+      coinDenom: 'AXL',
+      coinMinimalDenom: 'uaxl',
+      coinDecimals: 6,
+      coinImageUrl: 'https://dhj8dql1kzq2v.cloudfront.net/white/axelar.png',
+    },
+    bip44: {
+      coinType: 118,
+    },
+    bech32Config: Bech32Address.defaultBech32Config('axelar'),
+    currencies: [
+      {
+        coinDenom: 'AXL',
+        coinMinimalDenom: 'uaxl',
+        coinDecimals: 6,
+        coinImageUrl: 'https://dhj8dql1kzq2v.cloudfront.net/white/axelar.png',
+      },
+    ],
+    feeCurrencies: [
+      {
+        coinDenom: 'AXL',
+        coinMinimalDenom: 'uaxl',
+        coinDecimals: 6,
+        coinImageUrl: 'https://dhj8dql1kzq2v.cloudfront.net/white/axelar.png',
+      },
+    ],
+    gasPriceStep: {
+      low: 0.05,
+      average: 0.075,
+      high: 0.1,
+    },
+    features: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
+    chainSymbolImageUrl:
+      'https://dhj8dql1kzq2v.cloudfront.net/white/axelar.png',
+  },
 } as Record<string, any>

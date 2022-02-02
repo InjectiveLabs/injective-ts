@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.56...@injectivelabs/cosmos-ts@0.0.57) (2022-02-02)
+
+
+### Features
+
+* axelar ([2fc77d3](https://github.com/InjectiveLabs/injective-ts/commit/2fc77d384d94976e06f399b074fecb4663814f62))
+
+
+
+
+
 ## [0.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.55...@injectivelabs/cosmos-ts@0.0.56) (2022-01-30)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts

@@ -11,6 +11,7 @@ export enum CosmosChainId {
   Terra = 'columbus-5',
   TerraUST = 'columbus-5',
   Chihuahua = 'chihuahua-1',
+  Axelar = 'axelar-dojo-1',
 }
 
 export enum TestnetCosmosChainId {
@@ -51,6 +52,10 @@ export const cosmosNativeDenomsFromChainId = {
   [CosmosChainId.Chihuahua]: {
     ...erc20TokenMeta.getMetaBySymbol('HUAHUA'),
     denom: 'uhuahua',
+  },
+  [CosmosChainId.Axelar]: {
+    ...erc20TokenMeta.getMetaBySymbol('AXL'),
+    denom: 'uaxl',
   },
   [TestnetCosmosChainId.Cosmoshub]: {
     ...erc20TokenMeta.getMetaBySymbol('UPHOTON'),

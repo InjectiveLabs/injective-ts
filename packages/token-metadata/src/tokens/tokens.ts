@@ -531,4 +531,22 @@ export default {
     address: '',
     coinGeckoId: 'chihuahua-token',
   },
+
+  AXL: {
+    name: 'Axelar',
+    logo: 'axelar.jpeg',
+    symbol: 'AXL',
+    decimals: 6,
+    address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
+    coinGeckoId: 'axelar',
+  },
+
+  UAXL: {
+    name: 'Axelar',
+    logo: 'axelar.jpeg',
+    symbol: 'AXL',
+    decimals: 6,
+    address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
+    coinGeckoId: 'axelar',
+  },
 }
