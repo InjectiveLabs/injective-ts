@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.126](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.125...@injectivelabs/exchange-consumer@0.0.126) (2022-02-02)
+
+
+### Features
+
+* batch update msg composer ([11aed36](https://github.com/InjectiveLabs/injective-ts/commit/11aed3664c33ec7033056233652b47bb8ce7ea34))
+
+
+
+
+
 ## [0.0.125](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.123...@injectivelabs/exchange-consumer@0.0.125) (2022-01-31)
 
 
