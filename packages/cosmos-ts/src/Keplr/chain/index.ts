@@ -18,6 +18,7 @@ export const keplrSupportedChainIds = [
   'emoney-3',
   'euler-6',
   'straightedge-2',
+  'axelar-dojo-1',
 ]
 
 export const getChainDataBasedOnChainId = (chainId: string): any | undefined =>
