@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.53...@injectivelabs/token-metadata@0.0.54) (2022-02-02)
+
+
+### Bug Fixes
+
+* coingecko for axelr ([651caab](https://github.com/InjectiveLabs/injective-ts/commit/651caab87f97fa53053a521384c09b441ef761ad))
+
+
+
+
+
 ## [0.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.52...@injectivelabs/token-metadata@0.0.53) (2022-02-02)
 
 

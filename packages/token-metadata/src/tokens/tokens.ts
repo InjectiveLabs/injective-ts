@@ -538,7 +538,7 @@ export default {
     symbol: 'AXL',
     decimals: 6,
     address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
-    coinGeckoId: 'axelar',
+    coinGeckoId: '',
   },
 
   UAXL: {
@@ -547,6 +547,6 @@ export default {
     symbol: 'AXL',
     decimals: 6,
     address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
-    coinGeckoId: 'axelar',
+    coinGeckoId: '',
   },
 }
