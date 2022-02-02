@@ -46,8 +46,8 @@ export const getEndpointFromChainId = (
       }
     case CosmosChainId.Axelar:
       return {
-        rpc: 'https://rpc.chihuahua.wtf',
-        rest: 'https://api.chihuahua.wtf',
+        rpc: 'https://rpc-axelar.keplr.app',
+        rest: 'https://lcd-axelar.keplr.app',
       }
     default:
       throw new Error(`Endpoints for ${chainId} not found`)

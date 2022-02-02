@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.58...@injectivelabs/cosmos-ts@0.0.59) (2022-02-02)
+
+
+### Bug Fixes
+
+* rpc for axelar ([4d643c9](https://github.com/InjectiveLabs/injective-ts/commit/4d643c9be75f376072b33e332d0e8d732b8ef1eb))
+
+
+
+
+
 ## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.57...@injectivelabs/cosmos-ts@0.0.58) (2022-02-02)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts
