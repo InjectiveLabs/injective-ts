@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.128](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.122...@injectivelabs/exchange-consumer@0.0.128) (2022-02-03)
+
+
+### Features
+
+* batch update msg composer ([96ce647](https://github.com/InjectiveLabs/injective-ts/commit/96ce6471952b27b7d98b7f007401d7b98ce9c118))
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4dbe2eb](https://github.com/InjectiveLabs/injective-ts/commit/4dbe2eba654096e987cf04d88689423d2fb1d8d5))
+* proto composers ([be6ce2f](https://github.com/InjectiveLabs/injective-ts/commit/be6ce2f90f12ee27b1ca596974329dd164adc708))
+
+
+
+
+
+## [0.0.127](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.122...@injectivelabs/exchange-consumer@0.0.127) (2022-02-03)
+
+
+### Features
+
+* batch update msg composer ([96ce647](https://github.com/InjectiveLabs/injective-ts/commit/96ce6471952b27b7d98b7f007401d7b98ce9c118))
+* proto composers ([be6ce2f](https://github.com/InjectiveLabs/injective-ts/commit/be6ce2f90f12ee27b1ca596974329dd164adc708))
+
+
+
+
+
 ## [0.0.126](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.125...@injectivelabs/exchange-consumer@0.0.126) (2022-02-02)
 
 

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/explorer-consumer",
   "description": "Explorer API on Injective Protocol made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.28",
+  "version": "0.0.30",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,8 +31,8 @@
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/exceptions": "^0.0.26",
     "@injectivelabs/exchange-api": "^2.2.56",
-    "@injectivelabs/ts-types": "^0.0.34",
-    "@injectivelabs/utils": "^0.0.47",
+    "@injectivelabs/ts-types": "^0.0.36",
+    "@injectivelabs/utils": "^0.0.49",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",
     "snakecase-keys": "^3.2.1"

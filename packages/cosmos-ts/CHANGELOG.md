@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.50...@injectivelabs/cosmos-ts@0.0.58) (2022-02-03)
+
+
+### Bug Fixes
+
+* rpc and lcd endpoints ([a360e7a](https://github.com/InjectiveLabs/injective-ts/commit/a360e7a28bca80711564ac32e9a5f73b913be49f))
+* staging endpoints ([a4c41bf](https://github.com/InjectiveLabs/injective-ts/commit/a4c41bf980bf093f953e007ca737edd8ae41fea9))
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4dbe2eb](https://github.com/InjectiveLabs/injective-ts/commit/4dbe2eba654096e987cf04d88689423d2fb1d8d5))
+* chihuahua added ([0176a3a](https://github.com/InjectiveLabs/injective-ts/commit/0176a3aa44bfcf13779b29a1f6cb7dec915e130f))
+
+
+
+
+
+## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.50...@injectivelabs/cosmos-ts@0.0.57) (2022-02-03)
+
+
+### Bug Fixes
+
+* rpc and lcd endpoints ([a360e7a](https://github.com/InjectiveLabs/injective-ts/commit/a360e7a28bca80711564ac32e9a5f73b913be49f))
+* staging endpoints ([a4c41bf](https://github.com/InjectiveLabs/injective-ts/commit/a4c41bf980bf093f953e007ca737edd8ae41fea9))
+
+
+### Features
+
+* chihuahua added ([0176a3a](https://github.com/InjectiveLabs/injective-ts/commit/0176a3aa44bfcf13779b29a1f6cb7dec915e130f))
+
+
+
+
+
 ## [0.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.55...@injectivelabs/cosmos-ts@0.0.56) (2022-01-30)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts

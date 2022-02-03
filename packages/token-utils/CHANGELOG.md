@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@0.0.9...@injectivelabs/token-utils@0.0.12) (2022-02-03)
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4dbe2eb](https://github.com/InjectiveLabs/injective-ts/commit/4dbe2eba654096e987cf04d88689423d2fb1d8d5))
+
+
+
+
+
+## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@0.0.9...@injectivelabs/token-utils@0.0.11) (2022-02-03)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
 ## [0.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@0.0.8...@injectivelabs/token-utils@0.0.10) (2022-01-26)
 
 **Note:** Version bump only for package @injectivelabs/token-utils

@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.112](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.106...@injectivelabs/chain-consumer@0.0.112) (2022-02-03)
+
+
+### Bug Fixes
+
+* exchange module params ([5c3864d](https://github.com/InjectiveLabs/injective-ts/commit/5c3864dba65db655a93bef78be764c78099d5ebb))
+
+
+### Features
+
+* added pool fetch in staking consumer ([0265be4](https://github.com/InjectiveLabs/injective-ts/commit/0265be44832a21034546d96298870f706fb7de2b))
+* annual provisions ([7f7574f](https://github.com/InjectiveLabs/injective-ts/commit/7f7574f3d16863605d3fabdda96fd913671d116d))
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4dbe2eb](https://github.com/InjectiveLabs/injective-ts/commit/4dbe2eba654096e987cf04d88689423d2fb1d8d5))
+* pending trade and earn rewards ([6759dff](https://github.com/InjectiveLabs/injective-ts/commit/6759dff7fe77a7227c3d75e3cef3a8a0b3903770))
+
+
+
+
+
+## [0.0.111](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.106...@injectivelabs/chain-consumer@0.0.111) (2022-02-03)
+
+
+### Bug Fixes
+
+* exchange module params ([5c3864d](https://github.com/InjectiveLabs/injective-ts/commit/5c3864dba65db655a93bef78be764c78099d5ebb))
+
+
+### Features
+
+* added pool fetch in staking consumer ([0265be4](https://github.com/InjectiveLabs/injective-ts/commit/0265be44832a21034546d96298870f706fb7de2b))
+* annual provisions ([7f7574f](https://github.com/InjectiveLabs/injective-ts/commit/7f7574f3d16863605d3fabdda96fd913671d116d))
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([afcd18a](https://github.com/InjectiveLabs/injective-ts/commit/afcd18a10586e6278a8f7c7f61cecef2bef1ffb0))
+* pending trade and earn rewards ([6759dff](https://github.com/InjectiveLabs/injective-ts/commit/6759dff7fe77a7227c3d75e3cef3a8a0b3903770))
+
+
+
+
+
 ## [0.0.110](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.0.109...@injectivelabs/chain-consumer@0.0.110) (2022-01-26)
 
 

@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.47...@injectivelabs/token-metadata@0.0.54) (2022-02-03)
+
+
+### Bug Fixes
+
+* staging endpoints ([a4c41bf](https://github.com/InjectiveLabs/injective-ts/commit/a4c41bf980bf093f953e007ca737edd8ae41fea9))
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4dbe2eb](https://github.com/InjectiveLabs/injective-ts/commit/4dbe2eba654096e987cf04d88689423d2fb1d8d5))
+* chihuahua added ([0176a3a](https://github.com/InjectiveLabs/injective-ts/commit/0176a3aa44bfcf13779b29a1f6cb7dec915e130f))
+
+
+
+
+
+## [0.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.47...@injectivelabs/token-metadata@0.0.53) (2022-02-03)
+
+
+### Bug Fixes
+
+* staging endpoints ([a4c41bf](https://github.com/InjectiveLabs/injective-ts/commit/a4c41bf980bf093f953e007ca737edd8ae41fea9))
+
+
+### Features
+
+* chihuahua added ([0176a3a](https://github.com/InjectiveLabs/injective-ts/commit/0176a3aa44bfcf13779b29a1f6cb7dec915e130f))
+
+
+
+
+
 ## [0.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.51...@injectivelabs/token-metadata@0.0.52) (2022-01-30)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.91](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.86...@injectivelabs/derivatives-consumer@0.0.91) (2022-02-03)
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4dbe2eb](https://github.com/InjectiveLabs/injective-ts/commit/4dbe2eba654096e987cf04d88689423d2fb1d8d5))
+* proto composers ([be6ce2f](https://github.com/InjectiveLabs/injective-ts/commit/be6ce2f90f12ee27b1ca596974329dd164adc708))
+
+
+
+
+
+## [0.0.90](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.86...@injectivelabs/derivatives-consumer@0.0.90) (2022-02-03)
+
+
+### Features
+
+* proto composers ([be6ce2f](https://github.com/InjectiveLabs/injective-ts/commit/be6ce2f90f12ee27b1ca596974329dd164adc708))
+
+
+
+
+
 ## [0.0.89](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.87...@injectivelabs/derivatives-consumer@0.0.89) (2022-01-31)
 
 
