@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.63...@injectivelabs/networks@0.0.66) (2022-02-04)
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+
+
+
+
+
+## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.59...@injectivelabs/networks@0.0.65) (2022-02-03)
+
+
+### Bug Fixes
+
+* staging endpoints ([a4c41bf](https://github.com/InjectiveLabs/injective-ts/commit/a4c41bf980bf093f953e007ca737edd8ae41fea9))
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4dbe2eb](https://github.com/InjectiveLabs/injective-ts/commit/4dbe2eba654096e987cf04d88689423d2fb1d8d5))
+
+
+
+
+
+## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.59...@injectivelabs/networks@0.0.64) (2022-02-03)
+
+
+### Bug Fixes
+
+* staging endpoints ([a4c41bf](https://github.com/InjectiveLabs/injective-ts/commit/a4c41bf980bf093f953e007ca737edd8ae41fea9))
+
+
+
+
+
 ## [0.0.63](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.62...@injectivelabs/networks@0.0.63) (2022-01-30)
 
 **Note:** Version bump only for package @injectivelabs/networks

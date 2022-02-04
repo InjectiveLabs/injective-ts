@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.60...@injectivelabs/cosmos-ts@0.0.61) (2022-02-04)
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+
+
+
+
+
 ## [0.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.59...@injectivelabs/cosmos-ts@0.0.60) (2022-02-02)
 
 
@@ -38,7 +49,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
+<<<<<<< HEAD
 * axelar ([2fc77d3](https://github.com/InjectiveLabs/injective-ts/commit/2fc77d384d94976e06f399b074fecb4663814f62))
+=======
+* chihuahua added ([0176a3a](https://github.com/InjectiveLabs/injective-ts/commit/0176a3aa44bfcf13779b29a1f6cb7dec915e130f))
+>>>>>>> 4bc6a49a125e58f2dd5dce2d1e6da8557b64a976
 
 
 

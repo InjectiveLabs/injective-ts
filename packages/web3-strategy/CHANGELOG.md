@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.87](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.84...@injectivelabs/web3-strategy@0.0.87) (2022-02-04)
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+
+
+
+
+
+## [0.0.86](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.83...@injectivelabs/web3-strategy@0.0.86) (2022-02-03)
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4dbe2eb](https://github.com/InjectiveLabs/injective-ts/commit/4dbe2eba654096e987cf04d88689423d2fb1d8d5))
+
+
+
+
+
+## [0.0.85](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.83...@injectivelabs/web3-strategy@0.0.85) (2022-02-03)
+
+**Note:** Version bump only for package @injectivelabs/web3-strategy
+
+
+
+
+
 ## [0.0.84](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.82...@injectivelabs/web3-strategy@0.0.84) (2022-01-26)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy

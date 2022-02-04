@@ -57,17 +57,18 @@ export class MarketComposer {
     message.setSubaccountId(subaccountId)
     message.setSender(injectiveAddress)
 
+    const messageContent = message.toObject() as Record<string, any>
+
     if (spotMarketIdsToCancelAll && spotMarketIdsToCancelAll.length > 0) {
-      message.setSpotMarketIdsToCancelAllList(spotMarketIdsToCancelAll)
+      messageContent.spot_market_ids_to_cancel_all = spotMarketIdsToCancelAll
     }
 
     if (
       derivativeMarketIdsToCancelAll &&
       derivativeMarketIdsToCancelAll.length > 0
     ) {
-      message.setDerivativeMarketIdsToCancelAllList(
-        derivativeMarketIdsToCancelAll,
-      )
+      messageContent.derivative_market_ids_to_cancel_all =
+        derivativeMarketIdsToCancelAll
     }
 
     if (spotOrdersToCancel && spotOrdersToCancel.length > 0) {
@@ -82,7 +83,9 @@ export class MarketComposer {
         },
       )
 
-      message.setSpotOrdersToCancelList(orderDataList)
+      messageContent.spot_orders_to_cancel = orderDataList.map((order) =>
+        order.toObject(),
+      )
     }
 
     if (derivativeOrdersToCancel && derivativeOrdersToCancel.length > 0) {
@@ -97,7 +100,9 @@ export class MarketComposer {
         },
       )
 
-      message.setDerivativeOrdersToCancelList(orderDataList)
+      messageContent.derivative_orders_to_cancel = orderDataList.map((order) =>
+        order.toObject(),
+      )
     }
 
     if (spotOrdersToCreate && spotOrdersToCreate.length > 0) {
@@ -129,7 +134,9 @@ export class MarketComposer {
         },
       )
 
-      message.setSpotOrdersToCreateList(orderDataList)
+      messageContent.spot_orders_to_create = orderDataList.map((order) =>
+        order.toObject(),
+      )
     }
 
     if (derivativeOrdersToCreate && derivativeOrdersToCreate.length > 0) {
@@ -163,11 +170,13 @@ export class MarketComposer {
         },
       )
 
-      message.setDerivativeOrdersToCreateList(orderDataList)
+      messageContent.derivative_orders_to_create = orderDataList.map((order) =>
+        order.toObject(),
+      )
     }
 
     return {
-      ...snakeCaseKeys(message.toObject()),
+      ...snakeCaseKeys(messageContent),
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
     }
   }
@@ -183,11 +192,13 @@ export class MarketComposer {
   }) {
     const message = new MsgBatchUpdateOrders()
     message.setSubaccountId(subaccountId)
-    message.setSpotMarketIdsToCancelAllList(marketIds)
     message.setSender(injectiveAddress)
 
     return {
-      ...snakeCaseKeys(message.toObject()),
+      ...snakeCaseKeys({
+        ...message.toObject(),
+        spot_market_ids_to_cancel_all: marketIds,
+      }),
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
     }
   }
@@ -203,11 +214,13 @@ export class MarketComposer {
   }) {
     const message = new MsgBatchUpdateOrders()
     message.setSubaccountId(subaccountId)
-    message.setDerivativeMarketIdsToCancelAllList(marketIds)
     message.setSender(injectiveAddress)
 
     return {
-      ...snakeCaseKeys(message.toObject()),
+      ...snakeCaseKeys({
+        ...message.toObject(),
+        derivative_market_ids_to_cancel_all: marketIds,
+      }),
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
     }
   }
@@ -235,11 +248,13 @@ export class MarketComposer {
     )
 
     const message = new MsgBatchUpdateOrders()
-    message.setSpotOrdersToCancelList(orderDataList)
     message.setSender(injectiveAddress)
 
     return {
-      ...snakeCaseKeys(message.toObject()),
+      ...snakeCaseKeys({
+        ...message.toObject(),
+        spot_orders_to_cancel: orderDataList.map((order) => order.toObject()),
+      }),
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
     }
   }
@@ -267,11 +282,15 @@ export class MarketComposer {
     )
 
     const message = new MsgBatchUpdateOrders()
-    message.setDerivativeOrdersToCancelList(orderDataList)
     message.setSender(injectiveAddress)
 
     return {
-      ...snakeCaseKeys(message.toObject()),
+      ...snakeCaseKeys({
+        ...message.toObject(),
+        derivative_orders_to_cancel: orderDataList.map((order) =>
+          order.toObject(),
+        ),
+      }),
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
     }
   }

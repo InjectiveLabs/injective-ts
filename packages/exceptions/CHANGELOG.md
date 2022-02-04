@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.38...@injectivelabs/exceptions@0.0.41) (2022-02-04)
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+
+
+
+
+
+## [0.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.37...@injectivelabs/exceptions@0.0.40) (2022-02-03)
+
+
+### Features
+
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4dbe2eb](https://github.com/InjectiveLabs/injective-ts/commit/4dbe2eba654096e987cf04d88689423d2fb1d8d5))
+
+
+
+
+
+## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.37...@injectivelabs/exceptions@0.0.39) (2022-02-03)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
 ## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@0.0.36...@injectivelabs/exceptions@0.0.38) (2022-01-26)
 
 **Note:** Version bump only for package @injectivelabs/exceptions

@@ -3,6 +3,7 @@ import { AccountAddress } from '@injectivelabs/ts-types'
 import {
   ExpiryFuturesMarketLaunchProposal,
   PerpetualMarketLaunchProposal,
+  MsgInstantSpotMarketLaunch,
   SpotMarketLaunchProposal,
   SpotMarketParamUpdateProposal,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
@@ -10,6 +11,28 @@ import snakeCaseKeys from 'snakecase-keys'
 import { DepositProposalParams } from '../types'
 
 export class ExchangeProposalComposer {
+  static instantSpotMarketLaunch({
+    market,
+    proposer,
+  }: {
+    market: MsgInstantSpotMarketLaunch.AsObject
+    proposer: AccountAddress
+  }) {
+    const content = new MsgInstantSpotMarketLaunch()
+
+    content.setSender(proposer)
+    content.setQuoteDenom(market.quoteDenom)
+    content.setTicker(market.ticker)
+    content.setBaseDenom(market.baseDenom)
+    content.setMinPriceTickSize(market.minPriceTickSize)
+    content.setMinQuantityTickSize(market.minQuantityTickSize)
+
+    return {
+      ...snakeCaseKeys(content.toObject()),
+      '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch',
+    }
+  }
+
   static spotMarketLaunch({
     market,
     deposit,
