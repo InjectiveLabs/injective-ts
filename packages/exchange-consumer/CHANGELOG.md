@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.130](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.129...@injectivelabs/exchange-consumer@0.0.130) (2022-02-04)
+
+
+### Bug Fixes
+
+* MsgbatchUpdateOrders ([d601720](https://github.com/InjectiveLabs/injective-ts/commit/d601720cae95c7d8cb672c35ee5bc6d3584c3ede))
+
+
+
+
+
 ## [0.0.129](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.126...@injectivelabs/exchange-consumer@0.0.129) (2022-02-04)
 
 

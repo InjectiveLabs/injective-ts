@@ -1,7 +1,4 @@
-import {
-  MsgBatchUpdateOrders,
-  OrderData,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { OrderData } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import snakeCaseKeys from 'snakecase-keys'
 import {
   DerivativeOrder,
@@ -53,11 +50,10 @@ export class MarketComposer {
     }[]
     injectiveAddress: string
   }) {
-    const message = new MsgBatchUpdateOrders()
-    message.setSubaccountId(subaccountId)
-    message.setSender(injectiveAddress)
-
-    const messageContent = message.toObject() as Record<string, any>
+    const messageContent = {
+      sender: injectiveAddress,
+      subaccount_id: subaccountId,
+    } as Record<string, any>
 
     if (spotMarketIdsToCancelAll && spotMarketIdsToCancelAll.length > 0) {
       messageContent.spot_market_ids_to_cancel_all = spotMarketIdsToCancelAll
@@ -190,13 +186,10 @@ export class MarketComposer {
     marketIds: string[]
     injectiveAddress: string
   }) {
-    const message = new MsgBatchUpdateOrders()
-    message.setSubaccountId(subaccountId)
-    message.setSender(injectiveAddress)
-
     return {
       ...snakeCaseKeys({
-        ...message.toObject(),
+        sender: injectiveAddress,
+        subaccount_id: subaccountId,
         spot_market_ids_to_cancel_all: marketIds,
       }),
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
@@ -212,13 +205,10 @@ export class MarketComposer {
     marketIds: string[]
     injectiveAddress: string
   }) {
-    const message = new MsgBatchUpdateOrders()
-    message.setSubaccountId(subaccountId)
-    message.setSender(injectiveAddress)
-
     return {
       ...snakeCaseKeys({
-        ...message.toObject(),
+        sender: injectiveAddress,
+        subaccount_id: subaccountId,
         derivative_market_ids_to_cancel_all: marketIds,
       }),
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
@@ -247,12 +237,9 @@ export class MarketComposer {
       },
     )
 
-    const message = new MsgBatchUpdateOrders()
-    message.setSender(injectiveAddress)
-
     return {
       ...snakeCaseKeys({
-        ...message.toObject(),
+        sender: injectiveAddress,
         spot_orders_to_cancel: orderDataList.map((order) => order.toObject()),
       }),
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
@@ -281,12 +268,9 @@ export class MarketComposer {
       },
     )
 
-    const message = new MsgBatchUpdateOrders()
-    message.setSender(injectiveAddress)
-
     return {
       ...snakeCaseKeys({
-        ...message.toObject(),
+        sender: injectiveAddress,
         derivative_orders_to_cancel: orderDataList.map((order) =>
           order.toObject(),
         ),
