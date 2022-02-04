@@ -52,11 +52,11 @@ export class MarketComposer {
   }) {
     const messageContent = {
       sender: injectiveAddress,
-      subaccount_id: subaccountId,
     } as Record<string, any>
 
     if (spotMarketIdsToCancelAll && spotMarketIdsToCancelAll.length > 0) {
       messageContent.spot_market_ids_to_cancel_all = spotMarketIdsToCancelAll
+      messageContent.subaccount_id = subaccountId
     }
 
     if (
@@ -65,6 +65,7 @@ export class MarketComposer {
     ) {
       messageContent.derivative_market_ids_to_cancel_all =
         derivativeMarketIdsToCancelAll
+      messageContent.subaccount_id = subaccountId
     }
 
     if (spotOrdersToCancel && spotOrdersToCancel.length > 0) {
