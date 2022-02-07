@@ -52,11 +52,14 @@ export class MarketComposer {
   }) {
     const messageContent = {
       sender: injectiveAddress,
+      subaccount_id: '',
     } as Record<string, any>
 
     if (spotMarketIdsToCancelAll && spotMarketIdsToCancelAll.length > 0) {
       messageContent.spot_market_ids_to_cancel_all = spotMarketIdsToCancelAll
       messageContent.subaccount_id = subaccountId
+    } else {
+      messageContent.spot_market_ids_to_cancel_all = []
     }
 
     if (
@@ -66,6 +69,8 @@ export class MarketComposer {
       messageContent.derivative_market_ids_to_cancel_all =
         derivativeMarketIdsToCancelAll
       messageContent.subaccount_id = subaccountId
+    } else {
+      messageContent.derivative_market_ids_to_cancel_all = []
     }
 
     if (spotOrdersToCancel && spotOrdersToCancel.length > 0) {
@@ -83,6 +88,8 @@ export class MarketComposer {
       messageContent.spot_orders_to_cancel = orderDataList.map((order) =>
         order.toObject(),
       )
+    } else {
+      messageContent.spot_orders_to_cancel = []
     }
 
     if (derivativeOrdersToCancel && derivativeOrdersToCancel.length > 0) {
@@ -100,6 +107,8 @@ export class MarketComposer {
       messageContent.derivative_orders_to_cancel = orderDataList.map((order) =>
         order.toObject(),
       )
+    } else {
+      messageContent.derivative_orders_to_cancel = []
     }
 
     if (spotOrdersToCreate && spotOrdersToCreate.length > 0) {
@@ -134,6 +143,8 @@ export class MarketComposer {
       messageContent.spot_orders_to_create = orderDataList.map((order) =>
         order.toObject(),
       )
+    } else {
+      messageContent.spot_orders_to_create = []
     }
 
     if (derivativeOrdersToCreate && derivativeOrdersToCreate.length > 0) {
@@ -170,6 +181,8 @@ export class MarketComposer {
       messageContent.derivative_orders_to_create = orderDataList.map((order) =>
         order.toObject(),
       )
+    } else {
+      messageContent.derivative_orders_to_create = []
     }
 
     return {

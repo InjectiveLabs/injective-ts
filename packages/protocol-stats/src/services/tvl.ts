@@ -7,7 +7,7 @@ import {
   Token,
   TokenWithUsdPrice,
 } from '../types'
-import { getHttpClientFromEndpoint } from '../helpers'
+import { getHttpClientFromEndpoint, sleep } from '../helpers'
 import { fetchSupply } from './bank'
 
 export const fetchDenomTraces = async (endpoint: string) => {
@@ -110,9 +110,12 @@ export const fetchTokenPriceFromCoinGecko = async (coinId: string) => {
     baseUrl: 'https://api.coingecko.com/api/v3',
   })
 
-  const response = await coinGeckoApi.fetchUsdPrice(coinId)
-
-  return response || 0
+  try {
+    const response = await coinGeckoApi.fetchUsdPrice(coinId)
+    return response || 0
+  } catch (e) {
+    return 0
+  }
 }
 
 export const tokenMetaToToken = (
@@ -152,7 +155,11 @@ export const fetchSupplyWithTokenMeta = async (
 
   return Promise.all(
     supplyWithTokenMeta.map(async (token) => {
-      const priceInUsd = await fetchTokenPriceFromCoinGecko(token.coinGeckoId)
+      const priceInUsd = token.coinGeckoId
+        ? await fetchTokenPriceFromCoinGecko(token.coinGeckoId)
+        : 0
+
+      await sleep(250)
 
       return {
         ...token,

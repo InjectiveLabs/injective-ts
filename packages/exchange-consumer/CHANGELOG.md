@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.132](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.131...@injectivelabs/exchange-consumer@0.0.132) (2022-02-07)
+
+
+### Bug Fixes
+
+* coingecko api ([c0ca1c6](https://github.com/InjectiveLabs/injective-ts/commit/c0ca1c67a0301905657131e60663adebfdea93d6))
+
+
+
+
+
 ## [0.0.131](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.130...@injectivelabs/exchange-consumer@0.0.131) (2022-02-04)
 
 

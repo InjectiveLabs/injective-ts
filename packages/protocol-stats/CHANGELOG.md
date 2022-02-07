@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/protocol-stats@0.0.6...@injectivelabs/protocol-stats@0.0.7) (2022-02-07)
+
+
+### Bug Fixes
+
+* coingecko api ([c0ca1c6](https://github.com/InjectiveLabs/injective-ts/commit/c0ca1c67a0301905657131e60663adebfdea93d6))
+
+
+
+
+
 ## [0.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/protocol-stats@0.0.5...@injectivelabs/protocol-stats@0.0.6) (2022-02-04)
 
 
