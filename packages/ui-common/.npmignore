@@ -1,0 +1,8 @@
+# Blacklist all files
+.*
+*
+src
+src-vue
+
+# Whitelist dist
+!dist/**/*

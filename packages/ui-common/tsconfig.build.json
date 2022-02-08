@@ -1,0 +1,46 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "tsBuildInfoFile": "../../.build-cache/ui-common.tsbuildinfo"
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../ts-types/tsconfig.build.json"
+    },
+    {
+      "path": "../exceptions/tsconfig.build.json"
+    },
+    {
+      "path": "../utils/tsconfig.build.json"
+    },
+    {
+      "path": "../networks/tsconfig.build.json"
+    },
+    {
+      "path": "../chain-consumer/tsconfig.build.json"
+    },
+    {
+      "path": "../contracts/tsconfig.build.json"
+    },
+    {
+      "path": "../token-metadata/tsconfig.build.json"
+    },
+    {
+      "path": "../alchemy-api/tsconfig.build.json"
+    },
+    {
+      "path": "../exchange-consumer/tsconfig.build.json"
+    },
+    {
+      "path": "../token-metadata/tsconfig.build.json"
+    },
+    {
+      "path": "../web3-strategy/tsconfig.build.json"
+    }
+  ],
+}

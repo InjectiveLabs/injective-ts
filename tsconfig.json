@@ -4,55 +4,55 @@
     "baseUrl": ".",
     "paths": {
       "@injectivelabs/ts-types": [
-        "packages/ts-types/src"
+        "./packages/ts-types"
       ],
       "@injectivelabs/exceptions": [
-        "packages/exceptions/src"
+        "./packages/exceptions"
       ],
       "@injectivelabs/utils": [
-        "packages/utils/src"
+        "./packages/utils"
       ],
       "@injectivelabs/tx-utils": [
-        "packages/tx-utils/src"
+        "./packages/tx-utils"
       ],
       "@injectivelabs/assert": [
-        "packages/assert/src"
+        "./packages/assert"
       ],
       "@injectivelabs/web3-strategy": [
-        "packages/web3-strategy/src"
+        "./packages/web3-strategy"
       ],
       "@injectivelabs/contracts": [
-        "packages/contracts/src"
+        "./packages/contracts"
       ],
       "@injectivelabs/chain-consumer": [
-        "packages/chain-consumer/src"
+        "./packages/chain-consumer"
       ],
       "@injectivelabs/exchange-consumer": [
-        "packages/exchange-consumer/src"
+        "./packages/exchange-consumer"
       ],
       "@injectivelabs/derivatives-consumer": [
-        "packages/derivatives-consumer/src"
+        "./packages/derivatives-consumer"
       ],
       "@injectivelabs/subaccount-consumer": [
-        "packages/subaccount-consumer/src"
+        "./packages/subaccount-consumer"
       ],
       "@injectivelabs/spot-consumer": [
-        "packages/spot-consumer/src"
+        "./packages/spot-consumer"
       ],
       "@injectivelabs/tokens-metadata": [
-        "packages/tokens-metadata/src"
+        "./packages/tokens-metadata"
       ],
       "@injectivelabs/cosmos-ts": [
-        "packages/cosmos-ts/src"
+        "./packages/cosmos-ts"
       ],
       "@injectivelabs/protocol-stats": [
-        "packages/protocol-stats/src"
+        "./packages/protocol-stats"
       ],
       "@injectivelabs/referral-consumer": [
-        "packages/referral-consumer/src"
+        "./packages/referral-consumer"
       ],
-      "@injectivelabs/*": [
-        "packages/*/src"
+      "@injectivelabs/ui-common": [
+        "packages/ui-common"
       ]
     }
   }

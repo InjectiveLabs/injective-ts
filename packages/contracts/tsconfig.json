@@ -11,9 +11,6 @@
       "path": "../utils/tsconfig.json"
     },
     {
-      "path": "../tx-utils/tsconfig.json"
-    },
-    {
       "path": "../web3-strategy/tsconfig.json"
     }
   ]

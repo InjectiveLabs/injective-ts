@@ -6,12 +6,12 @@ import {
   TransactionOptions,
 } from '@injectivelabs/ts-types'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
-import { getTransactionOptionsAsNonPayableTx } from '@injectivelabs/tx-utils'
+import { getTransactionOptionsAsNonPayableTx } from '../utils'
 import abi from './abi/peggy'
 import { ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'
 
-export class PeggyContract extends BaseContract<Peggy, keyof Peggy['events']> {
+export class PeggyContract extends BaseContract<Peggy> {
   static contractName = 'Peggy'
 
   constructor({

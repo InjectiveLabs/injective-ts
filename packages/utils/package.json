@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/utils",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,12 +27,13 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^0.0.41",
-    "@injectivelabs/ts-types": "^0.0.37",
+    "@injectivelabs/exceptions": "^0.0.42",
+    "@injectivelabs/ts-types": "^0.0.38",
     "@injectivelabs/web3-contract-typings": "^0.1.12",
     "@types/ethereumjs-util": "^6.1.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
+    "date-fns": "^2.28.0",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",
     "store2": "^2.12.0"

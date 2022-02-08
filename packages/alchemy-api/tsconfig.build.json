@@ -1,12 +1,12 @@
 {
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "tsBuildInfoFile": "../../.build-cache/alchemy-api.tsbuildinfo"
   },
   "include": [
-    "src/**/*.ts"
+    "./src/**/*.ts"
   ],
   "references": [
     {

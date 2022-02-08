@@ -1,12 +1,12 @@
 {
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "tsBuildInfoFile": "../../.build-cache/contracts.tsbuildinfo"
   },
   "include": [
-    "src/**/*"
+    "./src/**/*.ts"
   ],
   "references": [
     {
@@ -19,9 +19,6 @@
     },
     {
       "path": "../utils/tsconfig.build.json"
-    },
-    {
-      "path": "../tx-utils/tsconfig.build.json"
     },
     {
       "path": "../web3-strategy/tsconfig.build.json"

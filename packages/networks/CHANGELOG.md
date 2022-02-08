@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.66...@injectivelabs/networks@0.0.67) (2022-02-08)
+
+
+### Features
+
+* ui common services ([6c95a68](https://github.com/InjectiveLabs/injective-ts/commit/6c95a68054efb165ea451b15b2466fa4478f9971))
+
+
+
+
+
 ## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.0.63...@injectivelabs/networks@0.0.66) (2022-02-04)
 
 

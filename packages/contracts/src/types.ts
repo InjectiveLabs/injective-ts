@@ -6,7 +6,6 @@ import { BaseCurrency } from '@injectivelabs/web3-contract-typings/types/BaseCur
 import { InjectiveFutures } from '@injectivelabs/web3-contract-typings/types/InjectiveFutures'
 
 export interface ChainIdContractAddresses {
-  depositManager: string
   peggy: string
   injective: string
 }

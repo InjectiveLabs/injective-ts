@@ -1,0 +1,51 @@
+{
+  "name": "@injectivelabs/ui-common",
+  "description": "Reusable Vue Components, Vuex Store Modules, Composables, and more",
+  "version": "0.0.2",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~ui-common": "dist"
+  },
+  "scripts": {
+    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "test": "jest",
+    "test:unit": "jest test/unit",
+    "test:integration": "jest test/unit",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.8",
+    "@improbable-eng/grpc-web": "^0.15.0",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
+    "@injectivelabs/alchemy-api": "^0.0.22",
+    "@injectivelabs/chain-consumer": "^0.0.114",
+    "@injectivelabs/contracts": "^0.0.96",
+    "@injectivelabs/exceptions": "^0.0.42",
+    "@injectivelabs/exchange-consumer": "^0.0.135",
+    "@injectivelabs/networks": "^0.0.67",
+    "@injectivelabs/token-metadata": "^0.0.56",
+    "@injectivelabs/token-utils": "^0.0.14",
+    "@injectivelabs/ts-types": "^0.0.38",
+    "@injectivelabs/utils": "^0.0.51",
+    "@injectivelabs/web3-strategy": "^0.0.88",
+    "bech32": "^2.0.0",
+    "date-fns": "^2.28.0",
+    "decimal.js": "^10.3.1",
+    "ethereumjs-util": "^7.1.4",
+    "link-module-alias": "^1.2.0",
+    "shx": "^0.3.2"
+  }
+}
