@@ -17,7 +17,7 @@ import {
 import { BridgeTransformer } from './transformer'
 import { MetricsProvider } from '../providers/MetricsProvider'
 import { ExchangeMetrics } from '../types/metrics'
-import { ApolloConsumer } from '../gql/client'
+import { ApolloConsumer } from './gql/client'
 import { ServiceOptions } from '../types'
 
 export const computeLatestTransactions = ({

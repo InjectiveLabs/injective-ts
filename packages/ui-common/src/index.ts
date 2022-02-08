@@ -1,2 +1,6 @@
 export * from './address'
+export * from './bank'
 export * from './bridge'
+export * from './peggy'
+export * from './token'
+export * from './types'

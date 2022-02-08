@@ -19,7 +19,7 @@ import {
   BridgeTransactionState,
   BridgingNetwork,
 } from './types'
-import { UserDeposit } from '../gql/types'
+import { UserDeposit } from './gql/types'
 import {
   getExplorerUrl,
   getCosmosExplorerUrl,
