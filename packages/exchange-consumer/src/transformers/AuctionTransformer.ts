@@ -25,7 +25,7 @@ export class AuctionTransformer {
     }
   }
 
-  static grpcCoinToCOin(grpcCoin: GrpcCoin): Coin {
+  static grpcCoinToCoin(grpcCoin: GrpcCoin): Coin {
     return {
       denom: grpcCoin.getDenom(),
       amount: grpcCoin.getAmount(),
@@ -37,7 +37,7 @@ export class AuctionTransformer {
       winner: grpcAuction.getWinner(),
       basketList: grpcAuction
         .getBasketList()
-        .map(AuctionTransformer.grpcCoinToCOin),
+        .map(AuctionTransformer.grpcCoinToCoin),
       winningBidAmount: grpcAuction.getWinningBidAmount(),
       round: grpcAuction.getRound(),
       endTimestamp: grpcAuction.getEndTimestamp(),

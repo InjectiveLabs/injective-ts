@@ -1600,6 +1600,11 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
+"@injectivelabs/referral-api@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.npmjs.org/@injectivelabs/referral-api/-/referral-api-1.0.14.tgz#e067fe2a3b355d03742c4e9fe45d45f4a9b3d5ea"
+  integrity sha512-AFcanmylU5z4RPK3u1K8rIjCKtUgbVRVuGX53SqZPCYRdF3UvdTdNYseO3t5bwQUDB0/Z2UNU2teyT2MYPZKSQ==
+
 "@injectivelabs/ts-types@^0.0.22":
   version "0.0.22"
   resolved "https://registry.yarnpkg.com/@injectivelabs/ts-types/-/ts-types-0.0.22.tgz#4303f4dc4486c4c0994bc5d3b94b3792b4307e2d"
