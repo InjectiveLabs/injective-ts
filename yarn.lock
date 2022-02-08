@@ -1592,15 +1592,6 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exceptions@^0.0.40":
-  version "0.0.40"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exceptions/-/exceptions-0.0.40.tgz#12ab3532b2724dbb2d6fd477b2edbf44a21510e4"
-  integrity sha512-6E2gukRi1WHUf7c5aMzP4nOw6RfJrqDosKTHG30cX0O0mrz7vHJl+ruZMfhTcG18L2nELWeFSsMp/6X+z1T1oA==
-  dependencies:
-    "@injectivelabs/ts-types" "^0.0.36"
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-
 "@injectivelabs/exchange-api@^2.2.56":
   version "2.2.56"
   resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.56.tgz#add0aa7ed14fdec64a4ec8a3191950d479e0c175"
@@ -1609,23 +1600,15 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
-"@injectivelabs/referral-api@^1.0.14":
-  version "1.0.14"
-  resolved "https://registry.npmjs.org/@injectivelabs/referral-api/-/referral-api-1.0.14.tgz#e067fe2a3b355d03742c4e9fe45d45f4a9b3d5ea"
-  integrity sha512-AFcanmylU5z4RPK3u1K8rIjCKtUgbVRVuGX53SqZPCYRdF3UvdTdNYseO3t5bwQUDB0/Z2UNU2teyT2MYPZKSQ==
+"@injectivelabs/referral-api@^1.0.15":
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/referral-api/-/referral-api-1.0.15.tgz#7b38a6931da8f85031a03bbe3f1d2e22775bcafc"
+  integrity sha512-uZRGNBPH5CNx5pYKknA/zQYn4CBT37i8Vx0SuMIyEmb+V5E7bkoEKYasfhcDmvKXMcMqGk0e0ChG98prCwlmIA==
 
 "@injectivelabs/ts-types@^0.0.22":
   version "0.0.22"
   resolved "https://registry.yarnpkg.com/@injectivelabs/ts-types/-/ts-types-0.0.22.tgz#4303f4dc4486c4c0994bc5d3b94b3792b4307e2d"
   integrity sha512-56gmuo2nNDKAohx2g+pW+k0Qy/YTLTjLs35r/sYxlauGxJJcmQ10Vp1S0pvd4t3lhHJzerIVndU5kVTWnU/FHQ==
-  dependencies:
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-
-"@injectivelabs/ts-types@^0.0.36":
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/ts-types/-/ts-types-0.0.36.tgz#ac1a156bc33d055abada47c2347a514824d1c96d"
-  integrity sha512-HPm2KQ47xG25CgP0M9jtzwP6Hu50GdI+uEPOiz33Flhf80oTivejB2elM5qPtoq8gGClOKOGV3NQcHwmHYUzhw==
   dependencies:
     link-module-alias "^1.2.0"
     shx "^0.3.2"
@@ -1637,21 +1620,6 @@
   dependencies:
     "@injectivelabs/exceptions" "^0.0.26"
     "@injectivelabs/ts-types" "^0.0.22"
-    "@injectivelabs/web3-contract-typings" "^0.1.12"
-    "@types/ethereumjs-util" "^6.1.0"
-    axios "^0.21.1"
-    bignumber.js "^9.0.1"
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-    store2 "^2.12.0"
-
-"@injectivelabs/utils@^0.0.49":
-  version "0.0.49"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/utils/-/utils-0.0.49.tgz#90ad159934564953bea775f66fe8487f1d9f85b7"
-  integrity sha512-KhgdP/Y1Biu9FnWM94w28bBIW8Z0Uagvl4OVlgA2w4chW9VupnjS2RXyxbAcdVqjtzL1ANkNi12rnYU7Wa8d0g==
-  dependencies:
-    "@injectivelabs/exceptions" "^0.0.40"
-    "@injectivelabs/ts-types" "^0.0.36"
     "@injectivelabs/web3-contract-typings" "^0.1.12"
     "@types/ethereumjs-util" "^6.1.0"
     axios "^0.21.1"

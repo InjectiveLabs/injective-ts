@@ -48,6 +48,9 @@
       "@injectivelabs/protocol-stats": [
         "packages/protocol-stats/src"
       ],
+      "@injectivelabs/referral-consumer": [
+        "packages/referral-consumer/src"
+      ],
       "@injectivelabs/*": [
         "packages/*/src"
       ]

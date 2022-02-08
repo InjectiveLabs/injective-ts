@@ -6,6 +6,7 @@
     "rootDir": ".",
     "lib": [
       "DOM",
+      "es2019",
     ],
     "strict": true,
     "noUnusedLocals": true,
