@@ -59,7 +59,7 @@ export interface TokenMetaWithUsdPrice extends TokenMeta {
   usdPrice?: number
 }
 
-export interface UIBridgeTransaction {
+export interface UiBridgeTransactionWithoutTokenMeta {
   amount: string
   denom: string
   receiver: string
@@ -75,7 +75,8 @@ export interface UIBridgeTransaction {
   txHashes?: string[]
 }
 
-export interface UIBridgeTransactionWithTokenMeta extends UIBridgeTransaction {
+export interface UiBridgeTransaction
+  extends UiBridgeTransactionWithoutTokenMeta {
   token: TokenMeta
 }
 

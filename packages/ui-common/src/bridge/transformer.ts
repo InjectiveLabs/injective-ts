@@ -15,7 +15,7 @@ import {
   IBCTransferTx,
   PeggyDepositTx,
   PeggyWithdrawalTx,
-  UIBridgeTransaction,
+  UiBridgeTransactionWithoutTokenMeta,
   BridgeTransactionState,
   BridgingNetwork,
 } from './types'
@@ -45,13 +45,13 @@ export const getNetworkFromSender = (sender: string): BridgingNetwork => {
   return BridgingNetwork.CosmosHub
 }
 
-export const covertKeplrToUIBridgeTransaction = async ({
+export const covertKeplrToUiBridgeTransaction = async ({
   transaction,
   network,
 }: {
   transaction: KeplrWalletResponse
   network: Network
-}): Promise<UIBridgeTransaction | undefined> => {
+}): Promise<UiBridgeTransactionWithoutTokenMeta | undefined> => {
   const [events] = JSON.parse(transaction.rawLog) as [KeplrWalletEvents]
   const sendPacketEvent = events.events.find(
     ({ type }: any) => type === 'send_packet',
@@ -101,7 +101,7 @@ export const covertKeplrToUIBridgeTransaction = async ({
   }
 }
 
-export const convertPeggyToUIBridgeTransaction = async ({
+export const convertPeggyToUiBridgeTransaction = async ({
   transaction,
   network,
   blockHeight,
@@ -109,7 +109,7 @@ export const convertPeggyToUIBridgeTransaction = async ({
   transaction: PeggyTxResponse
   network: Network
   blockHeight?: number
-}): Promise<UIBridgeTransaction> => {
+}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
   const isDeposit = transaction.sender.startsWith('0x')
 
   /*
@@ -134,13 +134,13 @@ export const convertPeggyToUIBridgeTransaction = async ({
   }
 }
 
-export const convertInjectiveIBCToUIBridgeTransaction = async ({
+export const convertInjectiveIBCToUiBridgeTransaction = async ({
   transaction,
   network,
 }: {
   transaction: CosmosTxResponse
   network: Network
-}): Promise<UIBridgeTransaction> =>
+}): Promise<UiBridgeTransactionWithoutTokenMeta> =>
   /*
   let tokenMeta = getTokenMetaDataBySymbol(transaction.denom) as TokenMeta
 
@@ -162,13 +162,13 @@ export const convertInjectiveIBCToUIBridgeTransaction = async ({
     state: BridgeTransactionState.Submitted,
   })
 
-export const convertPeggoToUIBridgeTransaction = async ({
+export const convertPeggoToUiBridgeTransaction = async ({
   transaction,
   network,
 }: {
   transaction: UserDeposit
   network: Network
-}): Promise<UIBridgeTransaction> => {
+}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
   const txHash = transaction.id.slice(0, 66)
   const receiver = transaction.destination.replace(
     '0x000000000000000000000000',
@@ -194,7 +194,7 @@ export const convertPeggoToUIBridgeTransaction = async ({
   }
 }
 
-export const convertTerraToUIBridgeTransaction = async ({
+export const convertTerraToUiBridgeTransaction = async ({
   transaction,
   network,
 }: {
@@ -230,13 +230,13 @@ export const convertTerraToUIBridgeTransaction = async ({
   }
 }
 
-export const convertIBCTransferTxToUIBridgeTransaction = async ({
+export const convertIBCTransferTxToUiBridgeTransaction = async ({
   transaction,
   network,
 }: {
   transaction: IBCTransferTx
   network: Network
-}): Promise<UIBridgeTransaction> => {
+}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
   const txHash = transaction.txHashesList[0]
   const denom = transaction.denom.includes('transfer/channel')
     ? (transaction.denom.split('/').pop() as string)
@@ -265,13 +265,13 @@ export const convertIBCTransferTxToUIBridgeTransaction = async ({
   }
 }
 
-export const convertPeggyDepositTxToUIBridgeTransaction = async ({
+export const convertPeggyDepositTxToUiBridgeTransaction = async ({
   transaction,
   network,
 }: {
   transaction: PeggyDepositTx
   network: Network
-}): Promise<UIBridgeTransaction> => {
+}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
   const isFailedOrCancelled = FailedStates.includes(
     transaction.state as BridgeTransactionState,
   )
@@ -304,13 +304,13 @@ export const convertPeggyDepositTxToUIBridgeTransaction = async ({
   }
 }
 
-export const convertPeggyWithdrawalTxToUIBridgeTransaction = async ({
+export const convertPeggyWithdrawalTxToUiBridgeTransaction = async ({
   transaction,
   network,
 }: {
   transaction: PeggyWithdrawalTx
   network: Network
-}): Promise<UIBridgeTransaction> => {
+}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
   const isFailedOrCancelled = FailedStates.includes(
     transaction.state as BridgeTransactionState,
   )
@@ -351,23 +351,23 @@ export const convertPeggyWithdrawalTxToUIBridgeTransaction = async ({
 export class BridgeTransformer {
   static getNetworkFromSender = getNetworkFromSender
 
-  static covertKeplrToUIBridgeTransaction = covertKeplrToUIBridgeTransaction
+  static covertKeplrToUiBridgeTransaction = covertKeplrToUiBridgeTransaction
 
-  static convertPeggyToUIBridgeTransaction = convertPeggyToUIBridgeTransaction
+  static convertPeggyToUiBridgeTransaction = convertPeggyToUiBridgeTransaction
 
-  static convertInjectiveIBCToUIBridgeTransaction =
-    convertInjectiveIBCToUIBridgeTransaction
+  static convertInjectiveIBCToUiBridgeTransaction =
+    convertInjectiveIBCToUiBridgeTransaction
 
-  static convertPeggoToUIBridgeTransaction = convertPeggoToUIBridgeTransaction
+  static convertPeggoToUiBridgeTransaction = convertPeggoToUiBridgeTransaction
 
-  static convertTerraToUIBridgeTransaction = convertTerraToUIBridgeTransaction
+  static convertTerraToUiBridgeTransaction = convertTerraToUiBridgeTransaction
 
-  static convertIBCTransferTxToUIBridgeTransaction =
-    convertIBCTransferTxToUIBridgeTransaction
+  static convertIBCTransferTxToUiBridgeTransaction =
+    convertIBCTransferTxToUiBridgeTransaction
 
-  static convertPeggyDepositTxToUIBridgeTransaction =
-    convertPeggyDepositTxToUIBridgeTransaction
+  static convertPeggyDepositTxToUiBridgeTransaction =
+    convertPeggyDepositTxToUiBridgeTransaction
 
-  static convertPeggyWithdrawalTxToUIBridgeTransaction =
-    convertPeggyWithdrawalTxToUIBridgeTransaction
+  static convertPeggyWithdrawalTxToUiBridgeTransaction =
+    convertPeggyWithdrawalTxToUiBridgeTransaction
 }
