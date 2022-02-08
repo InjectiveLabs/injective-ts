@@ -15,7 +15,6 @@ import {
   txNotPartOfPeggoDeposit,
 } from './utils'
 import { BridgeTransformer } from './transformer'
-import { MetricsProvider } from '../providers/MetricsProvider'
 import { ExchangeMetrics } from '../types/metrics'
 import { ApolloConsumer } from './gql/client'
 import { ServiceOptions } from '../types'
@@ -103,8 +102,6 @@ export class BridgeService {
 
   private consumer: BridgeTransactionConsumer
 
-  private metricsProvider: MetricsProvider
-
   private apolloConsumer: ApolloConsumer
 
   constructor({
@@ -117,7 +114,6 @@ export class BridgeService {
     this.options = options
     this.consumer = new BridgeTransactionConsumer(options.endpoints.exchangeApi)
     this.apolloConsumer = new ApolloConsumer(peggyGraphQlEndpoint)
-    this.metricsProvider = new MetricsProvider(options.metrics)
   }
 
   static computeLatestTransactions = computeLatestTransactions
@@ -131,10 +127,11 @@ export class BridgeService {
         receiver: address,
       })
 
-      const ibcTransferTransactions = await this.metricsProvider.sendAndRecord(
-        promise,
-        ExchangeMetrics.FetchIBCTransferTxs,
-      )
+      const ibcTransferTransactions =
+        await this.options.metricsProvider.sendAndRecord(
+          promise,
+          ExchangeMetrics.FetchIBCTransferTxs,
+        )
 
       return ibcTransferTransactions.map(
         BridgeTransactionTransformer.grpcIBCTransferTxToIBCTransferTx,
@@ -157,10 +154,11 @@ export class BridgeService {
         receiver,
       })
 
-      const ibcTransferTransactions = await this.metricsProvider.sendAndRecord(
-        promise,
-        ExchangeMetrics.FetchPeggyDepositTxs,
-      )
+      const ibcTransferTransactions =
+        await this.options.metricsProvider.sendAndRecord(
+          promise,
+          ExchangeMetrics.FetchPeggyDepositTxs,
+        )
 
       return ibcTransferTransactions.map(
         BridgeTransactionTransformer.grpcPeggyDepositTx,
@@ -183,10 +181,11 @@ export class BridgeService {
         receiver,
       })
 
-      const ibcTransferTransactions = await this.metricsProvider.sendAndRecord(
-        promise,
-        ExchangeMetrics.FetchPeggyWithdrawalTxs,
-      )
+      const ibcTransferTransactions =
+        await this.options.metricsProvider.sendAndRecord(
+          promise,
+          ExchangeMetrics.FetchPeggyWithdrawalTxs,
+        )
 
       return ibcTransferTransactions.map(
         BridgeTransactionTransformer.grpcPeggyWithdrawalTx,

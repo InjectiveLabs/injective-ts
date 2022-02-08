@@ -1,13 +1,6 @@
-import {
-  BankComposer,
-  BankConsumer,
-  GrpcCoin,
-} from '@injectivelabs/chain-consumer'
+import { BankConsumer, GrpcCoin } from '@injectivelabs/chain-consumer'
 import { BigNumberInWei } from '@injectivelabs/utils'
-import { Web3Exception } from '@injectivelabs/exceptions'
 import { BankTransformer } from './transformer'
-import { TxProvider } from '../providers/TxProvider'
-import { MetricsProvider } from '../providers/MetricsProvider'
 import { grpcCoinToUiCoin } from '../utils'
 import {
   BankBalances,
@@ -17,36 +10,21 @@ import {
   UiCoin,
 } from './types'
 import { IbcToken, Token } from '../token/types'
-import {
-  AccountMetrics,
-  BankServiceOptions,
-  ChainMetrics,
-  ServiceOptions,
-} from '../types'
+import { ChainMetrics, ServiceOptions } from '../types'
 import { INJ_DENOM } from '../constants'
 import { TokenService, TokenTransformer } from '../token'
 
 export class BankService {
-  // @ts-expect-error
   private options: ServiceOptions
 
   private consumer: BankConsumer
 
   private tokenService: TokenService
 
-  private metricsProvider: MetricsProvider
-
-  private txProvider: TxProvider
-
-  constructor({ options }: { options: BankServiceOptions }) {
+  constructor({ options }: { options: ServiceOptions }) {
     this.options = options
     this.tokenService = new TokenService({ options })
     this.consumer = new BankConsumer(options.endpoints.sentryGrpcApi)
-    this.metricsProvider = new MetricsProvider(options.metrics)
-    this.txProvider = new TxProvider({
-      ...options,
-      metricsProvider: this.metricsProvider,
-    })
   }
 
   async fetchSupplyWithTokenMeta(supply: UiSupplyCoin[]): Promise<Token[]> {
@@ -65,7 +43,7 @@ export class BankService {
       accountAddress: injectiveAddress,
     })
 
-    const balances = await this.metricsProvider.sendAndRecord(
+    const balances = await this.options.metricsProvider.sendAndRecord(
       promise,
       ChainMetrics.FetchBalances,
     )
@@ -107,7 +85,7 @@ export class BankService {
       denom,
     })
 
-    const balance = await this.metricsProvider.sendAndRecord(
+    const balance = await this.options.metricsProvider.sendAndRecord(
       promise,
       ChainMetrics.FetchBalances,
     )
@@ -223,37 +201,5 @@ export class BankService {
     }
 
     return grpcCoinToUiCoin(injSupply)
-  }
-
-  async transfer({
-    address,
-    denom,
-    amount,
-    injectiveAddress,
-    destination,
-  }: {
-    amount: string // BigNumberInWei
-    address: string
-    denom: string
-    destination: string
-    injectiveAddress: string
-  }) {
-    const { txProvider } = this
-    const message = BankComposer.send({
-      denom,
-      amount: new BigNumberInWei(amount).toFixed(),
-      srcInjectiveAddress: injectiveAddress,
-      dstInjectiveAddress: destination,
-    })
-
-    try {
-      return await txProvider.broadcast({
-        bucket: AccountMetrics.Send,
-        message,
-        address,
-      })
-    } catch (error: any) {
-      throw new Web3Exception(error.message)
-    }
   }
 }

@@ -8,27 +8,20 @@ import {
   GAS_LIMIT_MULTIPLIER,
   ZERO_IN_BASE,
 } from '../constants'
-import { AccountMetrics, PeggyServiceOptions } from '../types'
+import { AccountMetrics, ServiceActionOptions } from '../types'
 import { getTransactionOptions } from '../utils'
 import { AddressTransformer } from '../address/transformer'
 import { PeggyTransformer } from './transformer'
 import { TxProvider } from '../providers/TxProvider'
-import { MetricsProvider } from '../providers/MetricsProvider'
 
-export class PeggyService {
-  private options: PeggyServiceOptions
-
-  private metricsProvider: MetricsProvider
+export class PeggyActionService {
+  private options: ServiceActionOptions
 
   private txProvider: TxProvider
 
-  constructor({ options }: { options: PeggyServiceOptions }) {
+  constructor({ options }: { options: ServiceActionOptions }) {
     this.options = options
-    this.metricsProvider = new MetricsProvider(options.metrics)
-    this.txProvider = new TxProvider({
-      ...options,
-      metricsProvider: this.metricsProvider,
-    })
+    this.txProvider = new TxProvider(options)
   }
 
   async transfer({
@@ -44,16 +37,15 @@ export class PeggyService {
     destinationAddress: string
     gasPrice: string // BigNumberInWei
   }) {
-    const { options } = this
     const contractAddress = PeggyTransformer.peggyDenomToContractAddress(
       denom,
-      options.chainId,
+      this.options.chainId,
     )
-    const peggyContractAddress = contractAddresses[options.chainId].peggy
+    const peggyContractAddress = contractAddresses[this.options.chainId].peggy
     const contract = new PeggyContract({
       address: peggyContractAddress,
-      chainId: options.chainId,
-      web3Strategy: options.web3Strategy,
+      chainId: this.options.chainId,
+      web3Strategy: this.options.web3Strategy,
     })
     const formattedDestinationAddress =
       AddressTransformer.getAddressFromInjectiveAddress(destinationAddress)
@@ -74,7 +66,7 @@ export class PeggyService {
     )
 
     try {
-      const txHash = await options.web3Strategy.sendTransaction(
+      const txHash = await this.options.web3Strategy.sendTransaction(
         {
           from: address,
           to: peggyContractAddress,
@@ -85,10 +77,10 @@ export class PeggyService {
           maxPriorityFeePerGas: null,
           data,
         },
-        { address, chainId: options.chainId },
+        { address, chainId: this.options.chainId },
       )
 
-      await options.web3Strategy.getTransactionReceipt(txHash)
+      await this.options.web3Strategy.getTransactionReceipt(txHash)
 
       return {
         amount,

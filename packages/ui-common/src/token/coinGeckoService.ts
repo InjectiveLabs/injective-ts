@@ -1,10 +1,10 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { TokenServiceOptions } from '../types'
+import { ServiceOptions } from '../types'
 
 export class TokenCoinGeckoService {
   // @ts-expect-error
-  private options: TokenServiceOptions
+  private options: ServiceOptions
 
   private coinGeckoApi: CoinGeckoApi
 
@@ -12,14 +12,14 @@ export class TokenCoinGeckoService {
     options,
     coinGeckoOptions,
   }: {
-    options: TokenServiceOptions
+    options: ServiceOptions
     coinGeckoOptions: { baseUrl: string; apiKey: string }
   }) {
     this.options = options
     this.coinGeckoApi = new CoinGeckoApi(coinGeckoOptions)
   }
 
-  async getUsdTokenPriceFromCoinGecko(coinId: string) {
+  async fetchUsdTokenPriceFromCoinGecko(coinId: string) {
     if (!coinId) {
       return 0
     }

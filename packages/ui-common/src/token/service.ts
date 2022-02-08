@@ -5,26 +5,25 @@ import {
 } from '@injectivelabs/token-metadata'
 import { IBCConsumer } from '@injectivelabs/chain-consumer'
 import { INJ_DENOM } from '../constants'
-import { TokenServiceOptions } from '../types'
+import { ServiceOptions } from '../types'
 
 export class TokenService {
   // @ts-expect-error
-  private options: TokenServiceOptions
+  private options: ServiceOptions
 
   private ibcConsumer: IBCConsumer
 
   private erc20TokenMetaFactory: Erc20TokenMeta
 
-  constructor({ options }: { options: TokenServiceOptions }) {
+  constructor({ options }: { options: ServiceOptions }) {
     this.options = options
     this.ibcConsumer = new IBCConsumer(options.endpoints.sentryGrpcApi)
     this.erc20TokenMetaFactory = Erc20TokenMetaFactory.make(options.network)
   }
 
   async fetchDenomTrace(denom: string) {
-    const { ibcConsumer } = this
     const hash = denom.replace('ibc/', '')
-    const denomTrace = await ibcConsumer.fetchDenomTrace(hash)
+    const denomTrace = await this.ibcConsumer.fetchDenomTrace(hash)
 
     if (!denomTrace) {
       throw new Error(`Denom trace not found for ${denom}`)
