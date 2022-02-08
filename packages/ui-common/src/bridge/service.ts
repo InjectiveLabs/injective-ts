@@ -3,7 +3,7 @@ import {
   BridgeTransactionTransformer,
 } from '@injectivelabs/exchange-consumer'
 import { subHours, format } from 'date-fns'
-import { UIBridgeTransaction } from './types'
+import { UiBridgeTransaction } from './types'
 import {
   findEthereumTransactionByNonce,
   findEthereumTransactionByTxHash,
@@ -26,14 +26,14 @@ export const computeLatestTransactions = ({
   peggyDepositBridgeTransactions,
   peggyWithdrawalBridgeTransactions,
 }: {
-  latestTransactions: UIBridgeTransaction[]
-  peggoUserDeposits: UIBridgeTransaction[]
-  ibcTransferBridgeTransactions: UIBridgeTransaction[]
-  peggyDepositBridgeTransactions: UIBridgeTransaction[]
-  peggyWithdrawalBridgeTransactions: UIBridgeTransaction[]
-}): UIBridgeTransaction[] => {
+  latestTransactions: UiBridgeTransaction[]
+  peggoUserDeposits: UiBridgeTransaction[]
+  ibcTransferBridgeTransactions: UiBridgeTransaction[]
+  peggyDepositBridgeTransactions: UiBridgeTransaction[]
+  peggyWithdrawalBridgeTransactions: UiBridgeTransaction[]
+}): UiBridgeTransaction[] => {
   const filteredCachedTransactions = latestTransactions
-    .map((transaction: UIBridgeTransaction) => {
+    .map((transaction: UiBridgeTransaction) => {
       const isEthereumTx =
         transaction.sender.startsWith('0x') ||
         transaction.receiver.startsWith('0x')
@@ -74,10 +74,10 @@ export const getLatestSelectedTransaction = ({
   peggoUserDeposits,
   latestTransactions,
 }: {
-  selectedTransaction: UIBridgeTransaction
-  peggoUserDeposits: UIBridgeTransaction[]
-  latestTransactions: UIBridgeTransaction[]
-}): UIBridgeTransaction => {
+  selectedTransaction: UiBridgeTransaction
+  peggoUserDeposits: UiBridgeTransaction[]
+  latestTransactions: UiBridgeTransaction[]
+}): UiBridgeTransaction => {
   if (!selectedTransaction.receiver || !selectedTransaction.sender) {
     return selectedTransaction
   }
@@ -88,7 +88,7 @@ export const getLatestSelectedTransaction = ({
     ) || selectedTransaction
 
   const selectedTransactionExistInTransactions = latestTransactions.find(
-    (transaction: UIBridgeTransaction) =>
+    (transaction: UiBridgeTransaction) =>
       findEthereumTransactionByNonce(transaction, newSelectedTransaction) ||
       findEthereumTransactionByTxHashes(transaction, newSelectedTransaction) ||
       findIBCTransactionByTimeoutTimestamp(transaction, newSelectedTransaction),
@@ -208,7 +208,7 @@ export class BridgeService {
 
     return Promise.all(
       response.map(async (transaction) =>
-        BridgeTransformer.convertPeggoToUIBridgeTransaction({
+        BridgeTransformer.convertPeggoToUiBridgeTransaction({
           transaction,
           network: this.options.network,
         }),

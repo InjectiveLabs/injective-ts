@@ -1,16 +1,15 @@
 import { GrpcCoin } from '@injectivelabs/chain-consumer'
-import { UiSupplyCoinWithoutLabel } from './types'
+import { UiSupplyCoin } from './types'
 import { cosmosSdkDecToBigNumber } from '../utils'
 
 export const grpcCoinsSupplyToUiCoins = (
   grpcCoins: GrpcCoin[],
-): UiSupplyCoinWithoutLabel[] => {
+): UiSupplyCoin[] => {
   const supply = grpcCoins.map((coin) => {
     const denom = coin.getDenom()
 
     return {
       denom,
-      code: denom,
       amount: cosmosSdkDecToBigNumber(coin.getAmount()).toFixed(),
     }
   })

@@ -1,7 +1,7 @@
 import { convertTimestampToMilliseconds } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import {
-  UIBridgeTransaction,
+  UiBridgeTransaction,
   BridgeTransactionState,
   BridgingNetwork,
   MintScanExplorerUrl,
@@ -12,7 +12,7 @@ const sameTxHash = (txHashOne: string, txHashTwo: string) =>
   txHashTwo.replace('0x', '').toLowerCase()
 
 export const getCachedIBCTransactionState = (
-  transaction: UIBridgeTransaction,
+  transaction: UiBridgeTransaction,
 ): BridgeTransactionState => {
   if (
     transaction.timeoutTimestamp &&
@@ -36,24 +36,24 @@ export const getCachedIBCTransactionState = (
 }
 
 export const findEthereumTransactionByNonce = (
-  transaction: UIBridgeTransaction,
-  comparingTransaction: UIBridgeTransaction,
+  transaction: UiBridgeTransaction,
+  comparingTransaction: UiBridgeTransaction,
 ) =>
   transaction.nonce &&
   comparingTransaction.nonce &&
   transaction.nonce === comparingTransaction.nonce
 
 export const findEthereumTransactionByTxHash = (
-  transaction: UIBridgeTransaction,
-  comparingTransaction: UIBridgeTransaction,
+  transaction: UiBridgeTransaction,
+  comparingTransaction: UiBridgeTransaction,
 ) =>
   transaction.txHash &&
   comparingTransaction.txHash &&
   sameTxHash(transaction.txHash, comparingTransaction.txHash)
 
 export const findEthereumTransactionByTxHashes = (
-  transaction: UIBridgeTransaction,
-  comparingTransaction: UIBridgeTransaction,
+  transaction: UiBridgeTransaction,
+  comparingTransaction: UiBridgeTransaction,
 ) =>
   transaction.txHashes &&
   transaction.txHashes.find((hash: string) =>
@@ -61,8 +61,8 @@ export const findEthereumTransactionByTxHashes = (
   ) !== undefined
 
 export const findIBCTransactionByTimeoutTimestamp = (
-  transaction: UIBridgeTransaction,
-  comparingTransaction: UIBridgeTransaction,
+  transaction: UiBridgeTransaction,
+  comparingTransaction: UiBridgeTransaction,
 ) =>
   transaction.sender === comparingTransaction.sender &&
   transaction.receiver === comparingTransaction.receiver &&
@@ -72,8 +72,8 @@ export const findIBCTransactionByTimeoutTimestamp = (
     comparingTransaction.timeoutTimestamp.toString()
 
 export const ibcTxNotPartOfInjectiveIbcTxs =
-  (injectiveIbcTransactions: UIBridgeTransaction[]) =>
-  (transaction: UIBridgeTransaction) =>
+  (injectiveIbcTransactions: UiBridgeTransaction[]) =>
+  (transaction: UiBridgeTransaction) =>
     injectiveIbcTransactions.find((injectiveIbcTransaction) =>
       findIBCTransactionByTimeoutTimestamp(
         injectiveIbcTransaction,
@@ -82,15 +82,15 @@ export const ibcTxNotPartOfInjectiveIbcTxs =
     ) === undefined
 
 export const txNotPartOfPeggoDeposit =
-  (peggoDepositTxs: UIBridgeTransaction[]) =>
-  (transaction: UIBridgeTransaction) =>
+  (peggoDepositTxs: UiBridgeTransaction[]) =>
+  (transaction: UiBridgeTransaction) =>
     peggoDepositTxs.find((peggoDepositTx) =>
       findEthereumTransactionByTxHash(peggoDepositTx, transaction),
     ) === undefined
 
 export const txNotPartOfInjectivePeggyTxs =
-  (injectivePeggyTransactions: UIBridgeTransaction[]) =>
-  (transaction: UIBridgeTransaction) =>
+  (injectivePeggyTransactions: UiBridgeTransaction[]) =>
+  (transaction: UiBridgeTransaction) =>
     injectivePeggyTransactions.find(
       (injectiveTransaction) =>
         findEthereumTransactionByNonce(injectiveTransaction, transaction) ||

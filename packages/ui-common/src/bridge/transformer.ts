@@ -26,7 +26,7 @@ import {
   getEthereumExplorerUrl,
   getTerraExplorerUrl,
 } from './utils'
-import { getInjectiveAddress } from '../address'
+import { getInjectiveAddress } from '../utils'
 import { FailedStates } from './data'
 
 export const getNetworkFromSender = (sender: string): BridgingNetwork => {

@@ -9,8 +9,7 @@ import {
   ZERO_IN_BASE,
 } from '../constants'
 import { AccountMetrics, ServiceActionOptions } from '../types'
-import { getTransactionOptions } from '../utils'
-import { AddressTransformer } from '../address/transformer'
+import { getTransactionOptions, getAddressFromInjectiveAddress } from '../utils'
 import { PeggyTransformer } from './transformer'
 import { TxProvider } from '../providers/TxProvider'
 
@@ -48,7 +47,7 @@ export class PeggyActionService {
       web3Strategy: this.options.web3Strategy,
     })
     const formattedDestinationAddress =
-      AddressTransformer.getAddressFromInjectiveAddress(destinationAddress)
+      getAddressFromInjectiveAddress(destinationAddress)
 
     const depositForContractFunction = contract.sendToCosmos({
       amount,
