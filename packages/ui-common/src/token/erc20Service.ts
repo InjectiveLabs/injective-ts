@@ -9,13 +9,7 @@ import { BaseService } from '../BaseService'
 export class TokenErc20Service extends BaseService {
   private alchemyApi: AlchemyApi
 
-  constructor({
-    options,
-    alchemyRpcEndpoint,
-  }: {
-    options: ServiceOptions
-    alchemyRpcEndpoint: string
-  }) {
+  constructor(options: ServiceOptions, alchemyRpcEndpoint: string) {
     super(options)
     this.alchemyApi = new AlchemyApi(alchemyRpcEndpoint)
   }

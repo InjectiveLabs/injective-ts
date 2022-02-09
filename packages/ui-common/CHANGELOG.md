@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.16...@injectivelabs/ui-common@0.0.17) (2022-02-09)
+
+
+### Features
+
+* subaccount service ([44af788](https://github.com/InjectiveLabs/injective-ts/commit/44af788ebf689f7bed110fc6926a0e9be3236546))
+
+
+
+
+
 ## [0.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.15...@injectivelabs/ui-common@0.0.16) (2022-02-09)
 
 

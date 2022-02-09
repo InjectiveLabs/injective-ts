@@ -85,6 +85,18 @@ export interface IbcBankBalanceWithTokenMetaDataAndBalance
   token: TokenWithBalance
 }
 
+export type SubaccountBalanceWithTokenMetaData = {
+  availableBalance: string
+  totalBalance: string
+  denom: string
+  token: TokenWithBalance
+}
+
+export interface SubaccountBalanceWithTokenMetaDataWithUsdBalance
+  extends SubaccountBalanceWithTokenMetaData {
+  balanceInUsd: BigNumberInBase
+}
+
 export interface UiSupplyCoinForSelect extends UiCoin {
   code: string
   label: string

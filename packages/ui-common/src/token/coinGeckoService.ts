@@ -6,13 +6,10 @@ import { ServiceOptions } from '../types'
 export class TokenCoinGeckoService extends BaseService {
   private coinGeckoApi: CoinGeckoApi
 
-  constructor({
-    options,
-    coinGeckoOptions,
-  }: {
-    options: ServiceOptions
-    coinGeckoOptions: { baseUrl: string; apiKey: string }
-  }) {
+  constructor(
+    options: ServiceOptions,
+    coinGeckoOptions: { baseUrl: string; apiKey: string },
+  ) {
     super(options)
     this.coinGeckoApi = new CoinGeckoApi(coinGeckoOptions)
   }

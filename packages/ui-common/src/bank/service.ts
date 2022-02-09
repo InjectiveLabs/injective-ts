@@ -11,7 +11,7 @@ import { BaseService } from '../BaseService'
 export class BankService extends BaseService {
   protected consumer: BankConsumer
 
-  constructor({ options }: { options: ServiceOptions }) {
+  constructor(options: ServiceOptions) {
     super(options)
     this.consumer = new BankConsumer(options.endpoints.sentryGrpcApi)
   }

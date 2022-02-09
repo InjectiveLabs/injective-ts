@@ -17,13 +17,7 @@ export class BridgeService extends BaseService {
 
   public apolloConsumer: ApolloConsumer
 
-  constructor({
-    options,
-    peggyGraphQlEndpoint,
-  }: {
-    options: ServiceOptions
-    peggyGraphQlEndpoint: string
-  }) {
+  constructor(options: ServiceOptions, peggyGraphQlEndpoint: string) {
     super(options)
     this.consumer = new BridgeTransactionConsumer(options.endpoints.exchangeApi)
     this.apolloConsumer = new ApolloConsumer(peggyGraphQlEndpoint)

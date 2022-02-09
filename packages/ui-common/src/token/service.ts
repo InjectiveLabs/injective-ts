@@ -14,7 +14,9 @@ import {
   IbcToken,
   Token,
   UiSupplyCoinForSelect,
+  SubaccountBalanceWithTokenMetaData,
 } from './types'
+import { UiSubaccountBalance } from '../subaccount/types'
 import { BaseService } from '../BaseService'
 
 export class TokenService extends BaseService {
@@ -22,7 +24,7 @@ export class TokenService extends BaseService {
 
   protected erc20TokenMeta: Erc20TokenMeta
 
-  constructor({ options }: { options: ServiceOptions }) {
+  constructor(options: ServiceOptions) {
     super(options)
     this.ibcConsumer = new IBCConsumer(options.endpoints.sentryGrpcApi)
     this.erc20TokenMeta = Erc20TokenMetaFactory.make(options.network)
@@ -184,5 +186,23 @@ export class TokenService extends BaseService {
       bankSupply: bankSupplyWithLabel,
       ibcBankSupply: ibcBankSupplyWithLabel,
     }
+  }
+
+  async getSubaccountBalancesWithTokenMeta(
+    balances: UiSubaccountBalance[],
+  ): Promise<SubaccountBalanceWithTokenMetaData[]> {
+    return (await Promise.all(
+      balances.map(async (balance) => ({
+        denom: balance.denom,
+        availableBalance: balance.availableBalance,
+        totalBalance: balance.totalBalance,
+        token: TokenTransformer.tokenMetaToToken(
+          await this.getTokenMetaDataWithIbc(balance.denom),
+          balance.denom,
+        ),
+      })),
+    ).then((balances) =>
+      balances.filter((balance) => balance.token !== undefined),
+    )) as SubaccountBalanceWithTokenMetaData[]
   }
 }

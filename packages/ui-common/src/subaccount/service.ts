@@ -8,7 +8,7 @@ import { UiSubaccount } from './types'
 export class SubaccountService extends BaseService {
   protected consumer: SubaccountConsumer
 
-  constructor({ options }: { options: ServiceOptions }) {
+  constructor(options: ServiceOptions) {
     super(options)
     this.consumer = new SubaccountConsumer(options.endpoints.sentryGrpcApi)
   }
