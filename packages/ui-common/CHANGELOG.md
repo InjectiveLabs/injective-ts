@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.12...@injectivelabs/ui-common@0.0.13) (2022-02-09)
+
+
+### Features
+
+* gas service ([a47cde8](https://github.com/InjectiveLabs/injective-ts/commit/a47cde8e3bc70bd0201a12fffb7878c0fde883c1))
+
+
+
+
+
 ## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.11...@injectivelabs/ui-common@0.0.12) (2022-02-09)
 
 
