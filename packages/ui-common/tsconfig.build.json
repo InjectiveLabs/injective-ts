@@ -37,6 +37,12 @@
       "path": "../exchange-consumer/tsconfig.build.json"
     },
     {
+      "path": "../spot-consumer/tsconfig.build.json"
+    },
+    {
+      "path": "../derivatives-consumer/tsconfig.build.json"
+    },
+    {
       "path": "../subaccount-consumer/tsconfig.build.json"
     },
     {

@@ -57,7 +57,35 @@ export enum ChainMetrics {
 }
 
 export enum DerivativesMetrics {
+  FetchMarkets = 'DerivativeMarketsRequest',
   FetchMarket = 'DerivativeMarketRequest',
+  FetchOrderbook = 'DerivativeOrderbookRequest',
+  FetchTrades = 'DerivativeTradesRequest',
+  FetchOrders = 'DerivativeOrdersRequest',
+  FetchPositions = 'DerivativePositionsRequest',
+  FetchMarketSummary = 'DerivativeChronosMarketSummary',
+  FetchMarketsSummary = 'DerivativeChronosMarketsSummary',
+  CreateLimitOrder = 'MsgCreateDerivativeLimitOrder',
+  CreateMarketOrder = 'MsgCreateDerivativeMarketOrder',
+  CancelLimitOrder = 'MsgCancelDerivativeOrder',
+  BatchCancelLimitOrders = 'MsgBatchCancelDerivativeOrders',
+  BatchUpdateOrders = 'MsgBatchUpdateOrders',
+}
+
+export enum SpotMetrics {
+  FetchMarkets = 'SpotMarketsRequest',
+  FetchMarket = 'SpotMarketRequest',
+  FetchOrderbook = 'SpotOrderbookRequest',
+  FetchTrades = 'SpotTradesRequest',
+  FetchOrders = 'SpotOrdersRequest',
+  FetchPositions = 'SpotPositionsRequest',
+  FetchMarketSummary = 'SpotChronosMarketSummary',
+  FetchMarketsSummary = 'SpotChronosMarketsSummary',
+  CreateLimitOrder = 'MsgCreateSpotLimitOrder',
+  CreateMarketOrder = 'MsgCreateSpotMarketOrder',
+  CancelLimitOrder = 'MsgCancelSpotOrder',
+  BatchUpdateOrders = 'MsgBatchUpdateOrders',
+  BatchCancelLimitOrders = 'MsgBatchCancelSpotOrders',
 }
 
 export enum ExchangeMetrics {
@@ -77,10 +105,6 @@ export enum ExchangeMetrics {
 export enum ExplorerMetrics {
   FetchBlocks = 'FetchBlocks',
   FetchTransactions = 'FetchTransactions',
-}
-
-export enum SpotMetrics {
-  FetchMarket = 'SpotMarketRequest',
 }
 
 export enum CoinGeckoMetrics {

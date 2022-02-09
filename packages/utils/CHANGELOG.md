@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.52...@injectivelabs/utils@0.0.53) (2022-02-09)
+
+
+### Features
+
+* spot and derivative services and cleanup ([0705650](https://github.com/InjectiveLabs/injective-ts/commit/07056501c73d9d5218e32ec2483fdad2466d1c91))
+
+
+
+
+
 ## [0.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.51...@injectivelabs/utils@0.0.52) (2022-02-09)
 
 

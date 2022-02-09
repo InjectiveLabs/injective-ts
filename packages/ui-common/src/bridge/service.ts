@@ -11,18 +11,14 @@ import { ExchangeMetrics, AccountMetrics } from '../types/metrics'
 import { ApolloConsumer } from './gql/client'
 import { ServiceOptions } from '../types'
 import { BaseService } from '../BaseService'
-import { BridgeConverter } from './converter'
 
 export class BridgeService extends BaseService {
   protected consumer: BridgeTransactionConsumer
 
   protected apolloConsumer: ApolloConsumer
 
-  public converter: BridgeConverter
-
   constructor(options: ServiceOptions, peggyGraphQlEndpoint: string) {
     super(options)
-    this.converter = new BridgeConverter(options.network)
     this.consumer = new BridgeTransactionConsumer(options.endpoints.exchangeApi)
     this.apolloConsumer = new ApolloConsumer(peggyGraphQlEndpoint)
   }

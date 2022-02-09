@@ -26,6 +26,12 @@
       "path": "../exchange-consumer/tsconfig.json"
     },
     {
+      "path": "../spot-consumer/tsconfig.json"
+    },
+    {
+      "path": "../derivatives-consumer/tsconfig.json"
+    },
+    {
       "path": "../subaccount-consumer/tsconfig.json"
     },
     {

@@ -99,7 +99,6 @@ export class PeggyActionService extends BaseActionService {
     bridgeFee: string // BigNumberInWei
     injectiveAddress: string
   }) {
-    const { txProvider } = this
     const bridgeFeeToFixed = new BigNumberInWei(bridgeFee).toFixed(
       0,
       BIG_NUMBER_ROUND_DOWN_MODE,
@@ -116,7 +115,7 @@ export class PeggyActionService extends BaseActionService {
     })
 
     try {
-      const txHash = await txProvider.broadcast({
+      const txHash = await this.txProvider.broadcast({
         bucket: AccountMetrics.Send,
         message,
         address,

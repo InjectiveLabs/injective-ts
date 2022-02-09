@@ -1,4 +1,3 @@
-import Decimal from 'decimal.js'
 import { Token } from '../token/types'
 
 export interface TokenMetaWithDenomAndPrice extends Token {
@@ -68,7 +67,7 @@ export interface TerraWalletMsg {
   // eslint-disable-next-line camelcase
   timeout_timestamp: string
   token: {
-    amount: Decimal
+    amount: any
     denom: string
   }
 }

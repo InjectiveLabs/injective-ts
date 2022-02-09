@@ -1,4 +1,7 @@
-import { SubaccountConsumer } from '@injectivelabs/subaccount-consumer'
+import {
+  SubaccountConsumer,
+  SubaccountTransformer as BaseSubaccountTransformer,
+} from '@injectivelabs/subaccount-consumer'
 import { AccountMetrics } from '../types/metrics'
 import { ServiceOptions } from '../types/index'
 import { BaseService } from '../BaseService'
@@ -34,5 +37,17 @@ export class SubaccountService extends BaseService {
       subaccountId,
       balances: uiBalances,
     }
+  }
+
+  async fetchSubaccountTransfers(subaccountId: string) {
+    const promise = this.consumer.fetchSubaccountHistory(subaccountId)
+    const subaccountHistory = await this.fetchOrFetchAndMeasure(
+      promise,
+      AccountMetrics.FetchSubaccountHistory,
+    )
+
+    return BaseSubaccountTransformer.grpcTransferHistoryToTransferHistory(
+      subaccountHistory,
+    )
   }
 }
