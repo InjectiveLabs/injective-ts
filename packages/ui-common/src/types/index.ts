@@ -5,6 +5,7 @@ import { MetricsProvider } from '../providers/MetricsProvider'
 
 export * from './metrics'
 export * from './cosmos'
+export * from './common'
 export * from './peggy'
 
 export interface ServiceOptions {

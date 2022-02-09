@@ -6,6 +6,7 @@ import {
 
 export const INJ_DENOM = 'inj'
 export const INJECTIVE_DENOM = 'inj'
+export const INJ_COIN_GECKO_ID = 'injective-protocol'
 
 export const GAS_LIMIT_MULTIPLIER = 1.2
 export const ZERO: BigNumber = new BigNumber(0)

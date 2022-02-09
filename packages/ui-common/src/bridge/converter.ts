@@ -346,9 +346,13 @@ export class BridgeConverter {
     })
   }
 
-  async convertPeggyToUiBridgeTransaction(transaction: PeggyTxResponse) {
+  async convertPeggyToUiBridgeTransaction(
+    transaction: PeggyTxResponse,
+    blockHeight?: number,
+  ) {
     return convertPeggyToUiBridgeTransaction({
       transaction,
+      blockHeight,
       network: this.network,
     })
   }
