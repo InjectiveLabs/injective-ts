@@ -3,105 +3,19 @@ import {
   BridgeTransactionTransformer,
 } from '@injectivelabs/exchange-consumer'
 import { subHours, format } from 'date-fns'
-import { UiBridgeTransaction } from './types'
 import {
-  findEthereumTransactionByNonce,
-  findEthereumTransactionByTxHash,
-  findEthereumTransactionByTxHashes,
-  findIBCTransactionByTimeoutTimestamp,
-  getCachedIBCTransactionState,
-  ibcTxNotPartOfInjectiveIbcTxs,
-  txNotPartOfInjectivePeggyTxs,
-  txNotPartOfPeggoDeposit,
+  computeLatestTransactions,
+  getLatestSelectedTransaction,
 } from './utils'
-import { ExchangeMetrics } from '../types/metrics'
+import { ExchangeMetrics, AccountMetrics } from '../types/metrics'
 import { ApolloConsumer } from './gql/client'
 import { ServiceOptions } from '../types'
+import { BaseService } from '../BaseService'
 
-export const computeLatestTransactions = ({
-  latestTransactions,
-  peggoUserDeposits,
-  ibcTransferBridgeTransactions,
-  peggyDepositBridgeTransactions,
-  peggyWithdrawalBridgeTransactions,
-}: {
-  latestTransactions: UiBridgeTransaction[]
-  peggoUserDeposits: UiBridgeTransaction[]
-  ibcTransferBridgeTransactions: UiBridgeTransaction[]
-  peggyDepositBridgeTransactions: UiBridgeTransaction[]
-  peggyWithdrawalBridgeTransactions: UiBridgeTransaction[]
-}): UiBridgeTransaction[] => {
-  const filteredCachedTransactions = latestTransactions
-    .map((transaction: UiBridgeTransaction) => {
-      const isEthereumTx =
-        transaction.sender.startsWith('0x') ||
-        transaction.receiver.startsWith('0x')
+export class BridgeService extends BaseService {
+  public consumer: BridgeTransactionConsumer
 
-      if (isEthereumTx) {
-        return transaction
-      }
-
-      return {
-        ...transaction,
-        state: getCachedIBCTransactionState(transaction),
-      }
-    })
-    .filter(ibcTxNotPartOfInjectiveIbcTxs(ibcTransferBridgeTransactions))
-    .filter(txNotPartOfPeggoDeposit(peggoUserDeposits))
-    .filter(
-      txNotPartOfInjectivePeggyTxs([
-        ...peggyDepositBridgeTransactions,
-        ...peggyWithdrawalBridgeTransactions,
-      ]),
-    )
-
-  const filteredPeggoUserDeposits = peggoUserDeposits.filter(
-    txNotPartOfInjectivePeggyTxs(peggyDepositBridgeTransactions),
-  )
-
-  return [
-    ...filteredCachedTransactions,
-    ...filteredPeggoUserDeposits,
-    ...ibcTransferBridgeTransactions,
-    ...peggyDepositBridgeTransactions,
-    ...peggyWithdrawalBridgeTransactions,
-  ]
-}
-
-export const getLatestSelectedTransaction = ({
-  selectedTransaction,
-  peggoUserDeposits,
-  latestTransactions,
-}: {
-  selectedTransaction: UiBridgeTransaction
-  peggoUserDeposits: UiBridgeTransaction[]
-  latestTransactions: UiBridgeTransaction[]
-}): UiBridgeTransaction => {
-  if (!selectedTransaction.receiver || !selectedTransaction.sender) {
-    return selectedTransaction
-  }
-
-  const newSelectedTransaction =
-    peggoUserDeposits.find((peggoTransaction) =>
-      findEthereumTransactionByTxHash(peggoTransaction, selectedTransaction),
-    ) || selectedTransaction
-
-  const selectedTransactionExistInTransactions = latestTransactions.find(
-    (transaction: UiBridgeTransaction) =>
-      findEthereumTransactionByNonce(transaction, newSelectedTransaction) ||
-      findEthereumTransactionByTxHashes(transaction, newSelectedTransaction) ||
-      findIBCTransactionByTimeoutTimestamp(transaction, newSelectedTransaction),
-  )
-
-  return selectedTransactionExistInTransactions || newSelectedTransaction
-}
-
-export class BridgeService {
-  private options: ServiceOptions
-
-  private consumer: BridgeTransactionConsumer
-
-  private apolloConsumer: ApolloConsumer
+  public apolloConsumer: ApolloConsumer
 
   constructor({
     options,
@@ -110,7 +24,7 @@ export class BridgeService {
     options: ServiceOptions
     peggyGraphQlEndpoint: string
   }) {
-    this.options = options
+    super(options)
     this.consumer = new BridgeTransactionConsumer(options.endpoints.exchangeApi)
     this.apolloConsumer = new ApolloConsumer(peggyGraphQlEndpoint)
   }
@@ -126,11 +40,10 @@ export class BridgeService {
         receiver: address,
       })
 
-      const ibcTransferTransactions =
-        await this.options.metricsProvider.sendAndRecord(
-          promise,
-          ExchangeMetrics.FetchIBCTransferTxs,
-        )
+      const ibcTransferTransactions = await this.fetchOrFetchAndMeasure(
+        promise,
+        ExchangeMetrics.FetchIBCTransferTxs,
+      )
 
       return ibcTransferTransactions.map(
         BridgeTransactionTransformer.grpcIBCTransferTxToIBCTransferTx,
@@ -153,11 +66,10 @@ export class BridgeService {
         receiver,
       })
 
-      const ibcTransferTransactions =
-        await this.options.metricsProvider.sendAndRecord(
-          promise,
-          ExchangeMetrics.FetchPeggyDepositTxs,
-        )
+      const ibcTransferTransactions = await this.fetchOrFetchAndMeasure(
+        promise,
+        ExchangeMetrics.FetchPeggyDepositTxs,
+      )
 
       return ibcTransferTransactions.map(
         BridgeTransactionTransformer.grpcPeggyDepositTx,
@@ -179,12 +91,10 @@ export class BridgeService {
         sender,
         receiver,
       })
-
-      const ibcTransferTransactions =
-        await this.options.metricsProvider.sendAndRecord(
-          promise,
-          ExchangeMetrics.FetchPeggyWithdrawalTxs,
-        )
+      const ibcTransferTransactions = await this.fetchOrFetchAndMeasure(
+        promise,
+        ExchangeMetrics.FetchPeggyWithdrawalTxs,
+      )
 
       return ibcTransferTransactions.map(
         BridgeTransactionTransformer.grpcPeggyWithdrawalTx,
@@ -201,6 +111,15 @@ export class BridgeService {
       10,
     )
 
-    return this.apolloConsumer.fetchUserBridgeDeposits(address, timestamp)
+    const promise = this.apolloConsumer.fetchUserBridgeDeposits(
+      address,
+      timestamp,
+    )
+    const userDeposits = await this.fetchOrFetchAndMeasure(
+      promise,
+      AccountMetrics.FetchUserBridgeDepositsGraph,
+    )
+
+    return userDeposits
   }
 }

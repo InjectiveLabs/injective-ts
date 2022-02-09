@@ -26,6 +26,9 @@
       "path": "../exchange-consumer/tsconfig.json"
     },
     {
+      "path": "../subaccount-consumer/tsconfig.json"
+    },
+    {
       "path": "../alchemy-api/tsconfig.json"
     },
     {

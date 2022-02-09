@@ -6,14 +6,13 @@ import { BankBalances, UiSupplyCoin } from './types'
 import { ChainMetrics, ServiceOptions } from '../types'
 import { INJ_DENOM } from '../constants'
 import { UiCoin } from '../types/common'
+import { BaseService } from '../BaseService'
 
-export class BankService {
-  private options: ServiceOptions
-
-  private consumer: BankConsumer
+export class BankService extends BaseService {
+  protected consumer: BankConsumer
 
   constructor({ options }: { options: ServiceOptions }) {
-    this.options = options
+    super(options)
     this.consumer = new BankConsumer(options.endpoints.sentryGrpcApi)
   }
 
@@ -22,7 +21,7 @@ export class BankService {
       accountAddress: injectiveAddress,
     })
 
-    const balances = await this.options.metricsProvider.sendAndRecord(
+    const balances = await this.fetchOrFetchAndMeasure(
       promise,
       ChainMetrics.FetchBalances,
     )
@@ -64,9 +63,9 @@ export class BankService {
       denom,
     })
 
-    const balance = await this.options.metricsProvider.sendAndRecord(
+    const balance = await this.fetchOrFetchAndMeasure(
       promise,
-      ChainMetrics.FetchBalances,
+      ChainMetrics.FetchBalance,
     )
 
     return new BigNumberInWei(balance ? balance.getAmount() : 0)
@@ -76,9 +75,12 @@ export class BankService {
     bankSupply: UiSupplyCoin[]
     ibcBankSupply: UiSupplyCoin[]
   }> {
-    const supply = BankTransformer.grpcCoinsSupplyToUiCoins(
-      await this.consumer.fetchSupply(),
+    const promise = this.consumer.fetchSupply()
+    const grpcSupply = await this.fetchOrFetchAndMeasure(
+      promise,
+      ChainMetrics.FetchSupply,
     )
+    const supply = BankTransformer.grpcCoinsSupplyToUiCoins(grpcSupply)
 
     return {
       bankSupply: supply.filter((coin) => !coin.denom.startsWith('ibc')),
@@ -87,16 +89,14 @@ export class BankService {
   }
 
   async fetchTotalInjSupply(): Promise<UiCoin> {
-    const supply = await this.consumer.fetchSupply()
-    const injSupply = supply.find((coin) => coin.getDenom() === INJ_DENOM)
+    const promise = this.consumer.fetchSupply()
+    const supply = await this.fetchOrFetchAndMeasure(
+      promise,
+      ChainMetrics.FetchSupply,
+    )
 
-    if (!injSupply) {
-      return {
-        denom: INJ_DENOM,
-        amount: '0',
-      }
-    }
-
-    return grpcCoinToUiCoin(injSupply)
+    return grpcCoinToUiCoin(
+      supply.find((coin) => coin.getDenom() === INJ_DENOM)!,
+    )
   }
 }

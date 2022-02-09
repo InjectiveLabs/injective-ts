@@ -8,21 +8,12 @@ import {
   GAS_LIMIT_MULTIPLIER,
   ZERO_IN_BASE,
 } from '../constants'
-import { AccountMetrics, ServiceActionOptions } from '../types'
+import { AccountMetrics } from '../types'
 import { getTransactionOptions, getAddressFromInjectiveAddress } from '../utils'
 import { PeggyTransformer } from './transformer'
-import { TxProvider } from '../providers/TxProvider'
+import { BaseActionService } from '../BaseActionService'
 
-export class PeggyActionService {
-  private options: ServiceActionOptions
-
-  private txProvider: TxProvider
-
-  constructor({ options }: { options: ServiceActionOptions }) {
-    this.options = options
-    this.txProvider = new TxProvider(options)
-  }
-
+export class PeggyActionService extends BaseActionService {
   async transfer({
     address,
     amount,
@@ -44,7 +35,7 @@ export class PeggyActionService {
     const contract = new PeggyContract({
       address: peggyContractAddress,
       chainId: this.options.chainId,
-      web3Strategy: this.options.web3Strategy,
+      web3Strategy: this.web3Strategy,
     })
     const formattedDestinationAddress =
       getAddressFromInjectiveAddress(destinationAddress)
@@ -65,7 +56,7 @@ export class PeggyActionService {
     )
 
     try {
-      const txHash = await this.options.web3Strategy.sendTransaction(
+      const txHash = await this.web3Strategy.sendTransaction(
         {
           from: address,
           to: peggyContractAddress,
@@ -79,7 +70,7 @@ export class PeggyActionService {
         { address, chainId: this.options.chainId },
       )
 
-      await this.options.web3Strategy.getTransactionReceipt(txHash)
+      await this.web3Strategy.getTransactionReceipt(txHash)
 
       return {
         amount,

@@ -4,15 +4,9 @@ import { contractAddresses } from '@injectivelabs/contracts'
 import { BaseCurrencyContract } from '@injectivelabs/contracts/dist/contracts/BaseCurrency'
 import { GAS_LIMIT_MULTIPLIER, ZERO_IN_BASE } from '../constants'
 import { getTransactionOptions } from '../utils'
-import { ServiceActionOptions } from '../types'
+import { BaseActionService } from '../BaseActionService'
 
-export class TokenErc20ServiceAction {
-  private options: ServiceActionOptions
-
-  constructor({ options }: { options: ServiceActionOptions }) {
-    this.options = options
-  }
-
+export class TokenErc20ServiceAction extends BaseActionService {
   async setTokenAllowance({
     address,
     amount,
@@ -25,7 +19,7 @@ export class TokenErc20ServiceAction {
     tokenAddress: string
   }) {
     const erc20Contract = new BaseCurrencyContract({
-      web3Strategy: this.options.web3Strategy,
+      web3Strategy: this.web3Strategy,
       address: tokenAddress,
       chainId: this.options.chainId,
     })
@@ -44,7 +38,7 @@ export class TokenErc20ServiceAction {
     )
 
     try {
-      const txHash = await this.options.web3Strategy.sendTransaction(
+      const txHash = await this.web3Strategy.sendTransaction(
         {
           from: address,
           to: tokenAddress,
@@ -58,7 +52,7 @@ export class TokenErc20ServiceAction {
         { address, chainId: this.options.chainId },
       )
 
-      await this.options.web3Strategy.getTransactionReceipt(txHash)
+      await this.web3Strategy.getTransactionReceipt(txHash)
     } catch (error: any) {
       throw new Web3Exception(error.message)
     }

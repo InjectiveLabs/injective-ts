@@ -2,16 +2,10 @@ import { ChainId } from '@injectivelabs/ts-types'
 import { HttpClient, BigNumber, BigNumberInWei } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { GWEI_IN_WEI, DEFAULT_GAS_PRICE } from '../constants'
-import { ServiceOptions } from '../types'
 import { EtherchainResult, EthGasStationResult } from './types'
+import { BaseService } from '../BaseService'
 
-export class GasService {
-  private options: ServiceOptions
-
-  constructor({ options }: { options: ServiceOptions }) {
-    this.options = options
-  }
-
+export class GasService extends BaseService {
   async fetchGasPrice(): Promise<string> {
     if (this.isTestnet()) {
       return new BigNumberInWei(DEFAULT_GAS_PRICE).toString()

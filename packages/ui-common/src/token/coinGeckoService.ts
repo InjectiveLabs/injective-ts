@@ -1,11 +1,9 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
 import { BigNumberInBase } from '@injectivelabs/utils'
+import { BaseService } from '../BaseService'
 import { ServiceOptions } from '../types'
 
-export class TokenCoinGeckoService {
-  // @ts-expect-error
-  private options: ServiceOptions
-
+export class TokenCoinGeckoService extends BaseService {
   private coinGeckoApi: CoinGeckoApi
 
   constructor({
@@ -15,7 +13,7 @@ export class TokenCoinGeckoService {
     options: ServiceOptions
     coinGeckoOptions: { baseUrl: string; apiKey: string }
   }) {
-    this.options = options
+    super(options)
     this.coinGeckoApi = new CoinGeckoApi(coinGeckoOptions)
   }
 

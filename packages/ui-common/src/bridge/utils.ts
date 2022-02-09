@@ -169,3 +169,81 @@ export const getTerraExplorerUrl = (network: Network): string => {
       return 'https://finder.terra.money/mainnet'
   }
 }
+
+export const computeLatestTransactions = ({
+  latestTransactions,
+  peggoUserDeposits,
+  ibcTransferBridgeTransactions,
+  peggyDepositBridgeTransactions,
+  peggyWithdrawalBridgeTransactions,
+}: {
+  latestTransactions: UiBridgeTransaction[]
+  peggoUserDeposits: UiBridgeTransaction[]
+  ibcTransferBridgeTransactions: UiBridgeTransaction[]
+  peggyDepositBridgeTransactions: UiBridgeTransaction[]
+  peggyWithdrawalBridgeTransactions: UiBridgeTransaction[]
+}): UiBridgeTransaction[] => {
+  const filteredCachedTransactions = latestTransactions
+    .map((transaction: UiBridgeTransaction) => {
+      const isEthereumTx =
+        transaction.sender.startsWith('0x') ||
+        transaction.receiver.startsWith('0x')
+
+      if (isEthereumTx) {
+        return transaction
+      }
+
+      return {
+        ...transaction,
+        state: getCachedIBCTransactionState(transaction),
+      }
+    })
+    .filter(ibcTxNotPartOfInjectiveIbcTxs(ibcTransferBridgeTransactions))
+    .filter(txNotPartOfPeggoDeposit(peggoUserDeposits))
+    .filter(
+      txNotPartOfInjectivePeggyTxs([
+        ...peggyDepositBridgeTransactions,
+        ...peggyWithdrawalBridgeTransactions,
+      ]),
+    )
+
+  const filteredPeggoUserDeposits = peggoUserDeposits.filter(
+    txNotPartOfInjectivePeggyTxs(peggyDepositBridgeTransactions),
+  )
+
+  return [
+    ...filteredCachedTransactions,
+    ...filteredPeggoUserDeposits,
+    ...ibcTransferBridgeTransactions,
+    ...peggyDepositBridgeTransactions,
+    ...peggyWithdrawalBridgeTransactions,
+  ]
+}
+
+export const getLatestSelectedTransaction = ({
+  selectedTransaction,
+  peggoUserDeposits,
+  latestTransactions,
+}: {
+  selectedTransaction: UiBridgeTransaction
+  peggoUserDeposits: UiBridgeTransaction[]
+  latestTransactions: UiBridgeTransaction[]
+}): UiBridgeTransaction => {
+  if (!selectedTransaction.receiver || !selectedTransaction.sender) {
+    return selectedTransaction
+  }
+
+  const newSelectedTransaction =
+    peggoUserDeposits.find((peggoTransaction) =>
+      findEthereumTransactionByTxHash(peggoTransaction, selectedTransaction),
+    ) || selectedTransaction
+
+  const selectedTransactionExistInTransactions = latestTransactions.find(
+    (transaction: UiBridgeTransaction) =>
+      findEthereumTransactionByNonce(transaction, newSelectedTransaction) ||
+      findEthereumTransactionByTxHashes(transaction, newSelectedTransaction) ||
+      findIBCTransactionByTimeoutTimestamp(transaction, newSelectedTransaction),
+  )
+
+  return selectedTransactionExistInTransactions || newSelectedTransaction
+}

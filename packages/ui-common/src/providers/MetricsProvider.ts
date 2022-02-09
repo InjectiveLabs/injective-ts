@@ -1,8 +1,15 @@
 import { HttpClient } from '@injectivelabs/utils'
 
 export interface MetricProviderOptions {
-  enabled: boolean
   region: string
+  appEnv?: string
+  nodeEnv?: string
+}
+
+const defaultOptions: MetricProviderOptions = {
+  region: 'en',
+  appEnv: process.env.APP_ENV,
+  nodeEnv: process.env.NODE_ENV,
 }
 
 export class MetricsProvider {
@@ -10,18 +17,16 @@ export class MetricsProvider {
 
   public env: string
 
-  public metricsEnabled: boolean = false
-
   public isProduction: boolean = false
 
   public region: string = 'en'
 
-  constructor(options: MetricProviderOptions | undefined) {
+  constructor(options: MetricProviderOptions = defaultOptions) {
     this.httpClient = new HttpClient('https://telegraf.injective.dev/statsd')
-    this.env = process.env.APP_ENV || 'mainnet'
-    this.region = options ? options.region : 'en'
-    this.isProduction = process.env.NODE_ENV === 'production'
-    this.metricsEnabled = options ? options.enabled : true
+    this.region = options.region
+    this.env = (options.appEnv || defaultOptions.appEnv) as string
+    this.isProduction =
+      (options.nodeEnv || defaultOptions.nodeEnv) === 'production'
   }
 
   static wrap = async <T>(
@@ -108,10 +113,10 @@ export class MetricsProvider {
   }
 
   private recordMetrics(): boolean {
-    return this.isProduction && this.metricsEnabled && Math.random() < 0.1
+    return this.isProduction && Math.random() < 0.1
   }
 
   private recordMetricsWithoutProbability(): boolean {
-    return this.isProduction && this.metricsEnabled
+    return this.isProduction
   }
 }

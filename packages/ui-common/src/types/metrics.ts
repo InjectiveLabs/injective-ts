@@ -1,4 +1,9 @@
 export enum AccountMetrics {
+  FetchPortfolioValue = 'PortfolioValueRequest',
+  FetchSubaccount = 'SubaccountsListRequest',
+  FetchSubaccountBalances = 'SubaccountBalancesListRequest',
+  FetchSubaccountHistory = 'SubaccountHistoryRequest',
+  FetchUserBridgeDepositsGraph = 'UserBridgeDepositsGraph',
   Deposit = 'MsgDeposit',
   Withdraw = 'MsgWithdraw',
   IbcTransfer = 'MsgIbcTransfer',
@@ -7,6 +12,8 @@ export enum AccountMetrics {
 }
 
 export enum ChainMetrics {
+  FetchSupply = 'QueryBankSupply',
+  FetchDenomTrace = 'QueryDenomTrace',
   FetchValidators = 'QueryValidatorsRequest',
   FetchValidator = 'QueryValidatorRequest',
   FetchValidatorDelegations = 'QueryValidatorDelegationsRequest',

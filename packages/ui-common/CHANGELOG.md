@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.15...@injectivelabs/ui-common@0.0.16) (2022-02-09)
+
+
+### Features
+
+* refactor with bases ([1b81e89](https://github.com/InjectiveLabs/injective-ts/commit/1b81e8925ff89ae34eed85c3d255264e008d5480))
+
+
+
+
+
 ## [0.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.14...@injectivelabs/ui-common@0.0.15) (2022-02-09)
 
 **Note:** Version bump only for package @injectivelabs/ui-common

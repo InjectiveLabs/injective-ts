@@ -5,7 +5,7 @@ import {
 } from '@injectivelabs/token-metadata'
 import { IBCConsumer } from '@injectivelabs/chain-consumer'
 import { INJ_DENOM } from '../constants'
-import { ServiceOptions } from '../types'
+import { ServiceOptions, ChainMetrics } from '../types'
 import { TokenTransformer } from './transformer'
 import { BankBalances, UiSupplyCoin } from '../bank/types'
 import {
@@ -15,24 +15,26 @@ import {
   Token,
   UiSupplyCoinForSelect,
 } from './types'
+import { BaseService } from '../BaseService'
 
-export class TokenService {
-  // @ts-expect-error
-  private options: ServiceOptions
+export class TokenService extends BaseService {
+  protected ibcConsumer: IBCConsumer
 
-  private ibcConsumer: IBCConsumer
-
-  private erc20TokenMetaFactory: Erc20TokenMeta
+  protected erc20TokenMeta: Erc20TokenMeta
 
   constructor({ options }: { options: ServiceOptions }) {
-    this.options = options
+    super(options)
     this.ibcConsumer = new IBCConsumer(options.endpoints.sentryGrpcApi)
-    this.erc20TokenMetaFactory = Erc20TokenMetaFactory.make(options.network)
+    this.erc20TokenMeta = Erc20TokenMetaFactory.make(options.network)
   }
 
   async fetchDenomTrace(denom: string) {
     const hash = denom.replace('ibc/', '')
-    const denomTrace = await this.ibcConsumer.fetchDenomTrace(hash)
+    const promise = this.ibcConsumer.fetchDenomTrace(hash)
+    const denomTrace = await this.fetchOrFetchAndMeasure(
+      promise,
+      ChainMetrics.FetchDenomTrace,
+    )
 
     if (!denomTrace) {
       throw new Error(`Denom trace not found for ${denom}`)
@@ -45,30 +47,36 @@ export class TokenService {
   }
 
   getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
-    const { erc20TokenMetaFactory } = this
+    const { erc20TokenMeta } = this
 
-    return erc20TokenMetaFactory.getMetaBySymbol(symbol)
+    return erc20TokenMeta.getMetaBySymbol(symbol)
+  }
+
+  getCoinGeckoId(symbol: string): string {
+    const { erc20TokenMeta } = this
+
+    return erc20TokenMeta.getCoinGeckoIdFromSymbol(symbol)
   }
 
   getTokenMetaData(denom: string): TokenMeta | undefined {
-    const { erc20TokenMetaFactory } = this
+    const { erc20TokenMeta } = this
 
     if (denom.toLowerCase() === INJ_DENOM) {
-      return erc20TokenMetaFactory.getMetaBySymbol('INJ')
+      return erc20TokenMeta.getMetaBySymbol('INJ')
     }
 
     const address = denom.startsWith('peggy')
       ? denom.replace('peggy', '')
       : denom
 
-    return erc20TokenMetaFactory.getMetaByAddress(address)
+    return erc20TokenMeta.getMetaByAddress(address)
   }
 
   async getIbcTokenMetaData(denom: string): Promise<TokenMeta | undefined> {
-    const { erc20TokenMetaFactory } = this
+    const { erc20TokenMeta } = this
     const { baseDenom: symbol } = await this.fetchDenomTrace(denom)
 
-    return erc20TokenMetaFactory.getMetaBySymbol(symbol)
+    return erc20TokenMeta.getMetaBySymbol(symbol)
   }
 
   async getTokenMetaDataWithIbc(denom: string): Promise<TokenMeta | undefined> {
@@ -79,9 +87,11 @@ export class TokenService {
 
   async getSupplyWithTokenMeta(supply: UiSupplyCoin[]): Promise<Token[]> {
     return supply
-      .map(({ denom }: UiSupplyCoin) =>
-        TokenTransformer.tokenMetaToToken(this.getTokenMetaData(denom), denom),
-      )
+      .map(({ denom }: UiSupplyCoin) => {
+        const tokenMeta = this.getTokenMetaData(denom)
+
+        return TokenTransformer.tokenMetaToToken(tokenMeta, denom)
+      })
       .filter((token) => token) as Token[]
   }
 

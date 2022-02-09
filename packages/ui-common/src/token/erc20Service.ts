@@ -4,10 +4,9 @@ import { contractAddresses } from '@injectivelabs/contracts'
 import { TokenMeta } from '@injectivelabs/token-metadata'
 import { Token, TokenWithBalance } from './types'
 import { ServiceOptions } from '../types'
+import { BaseService } from '../BaseService'
 
-export class TokenErc20Service {
-  private options: ServiceOptions
-
+export class TokenErc20Service extends BaseService {
   private alchemyApi: AlchemyApi
 
   constructor({
@@ -17,7 +16,7 @@ export class TokenErc20Service {
     options: ServiceOptions
     alchemyRpcEndpoint: string
   }) {
-    this.options = options
+    super(options)
     this.alchemyApi = new AlchemyApi(alchemyRpcEndpoint)
   }
 

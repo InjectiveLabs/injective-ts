@@ -37,6 +37,9 @@
       "path": "../exchange-consumer/tsconfig.build.json"
     },
     {
+      "path": "../subaccount-consumer/tsconfig.build.json"
+    },
+    {
       "path": "../token-metadata/tsconfig.build.json"
     },
     {

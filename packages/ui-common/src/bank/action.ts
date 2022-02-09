@@ -1,16 +1,10 @@
 import { BankComposer } from '@injectivelabs/chain-consumer'
 import { BigNumberInWei } from '@injectivelabs/utils'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { TxProvider } from '../providers/TxProvider'
-import { AccountMetrics, ServiceActionOptions } from '../types'
+import { AccountMetrics } from '../types'
+import { BaseActionService } from '../BaseActionService'
 
-export class BankActionService {
-  private txProvider: TxProvider
-
-  constructor({ options }: { options: ServiceActionOptions }) {
-    this.txProvider = new TxProvider(options)
-  }
-
+export class BankActionService extends BaseActionService {
   async transfer({
     address,
     denom,
@@ -24,7 +18,6 @@ export class BankActionService {
     destination: string
     injectiveAddress: string
   }) {
-    const { txProvider } = this
     const message = BankComposer.send({
       denom,
       amount: new BigNumberInWei(amount).toFixed(),
@@ -33,7 +26,7 @@ export class BankActionService {
     })
 
     try {
-      return await txProvider.broadcast({
+      return await this.txProvider.broadcast({
         bucket: AccountMetrics.Send,
         message,
         address,

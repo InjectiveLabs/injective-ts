@@ -10,7 +10,7 @@ export interface TxProviderBaseOptions {
   }
   chainId: ChainId
   web3Strategy: Web3Strategy
-  metricsProvider: MetricsProvider
+  metricsProvider?: MetricsProvider
 }
 
 export interface TxProviderTransactionOptions {
@@ -27,7 +27,7 @@ export class TxProvider {
 
   private web3Strategy: Web3Strategy
 
-  private metricsProvider: MetricsProvider
+  private metricsProvider?: MetricsProvider
 
   private chainId: ChainId
 
@@ -56,6 +56,10 @@ export class TxProvider {
           estimateGas: false,
         })
 
+        if (!metricsProvider) {
+          return await promise
+        }
+
         return await metricsProvider.sendAndRecordWithoutProbability(
           promise,
           `${transaction.bucket}PrepareTx`,
@@ -71,6 +75,10 @@ export class TxProvider {
           txData,
           transaction.address,
         )
+
+        if (!metricsProvider) {
+          return await promise
+        }
 
         return await metricsProvider.sendAndRecordWithoutProbability(
           promise,
@@ -91,6 +99,12 @@ export class TxProvider {
         chainId,
         txResponse,
       })
+
+      if (!metricsProvider) {
+        const { txHash } = await promise
+
+        return txHash
+      }
 
       const { txHash } = await metricsProvider.sendAndRecordWithoutProbability(
         promise,
