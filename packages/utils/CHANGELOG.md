@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.51...@injectivelabs/utils@0.0.52) (2022-02-09)
+
+
+### Bug Fixes
+
+* redundant packages ([4754a8f](https://github.com/InjectiveLabs/injective-ts/commit/4754a8f8eb216b54a3e1b67b23eaf0b25eeaddb5))
+
+
+
+
+
 ## [0.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.50...@injectivelabs/utils@0.0.51) (2022-02-08)
 
 
