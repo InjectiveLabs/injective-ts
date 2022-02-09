@@ -77,7 +77,7 @@ export class TokenService {
       : this.getTokenMetaData(denom)
   }
 
-  async fetchSupplyWithTokenMeta(supply: UiSupplyCoin[]): Promise<Token[]> {
+  async getSupplyWithTokenMeta(supply: UiSupplyCoin[]): Promise<Token[]> {
     return supply
       .map(({ denom }: UiSupplyCoin) =>
         TokenTransformer.tokenMetaToToken(this.getTokenMetaData(denom), denom),
@@ -85,7 +85,7 @@ export class TokenService {
       .filter((token) => token) as Token[]
   }
 
-  async fetchBalancesWithTokenMetaData(
+  async getBalancesWithTokenMetaData(
     balances: BankBalances,
     ibcBalances: BankBalances,
   ): Promise<{
@@ -130,9 +130,7 @@ export class TokenService {
     }
   }
 
-  async fetchIbcSupplyWithTokenMeta(
-    supply: UiSupplyCoin[],
-  ): Promise<IbcToken[]> {
+  async getIbcSupplyWithTokenMeta(supply: UiSupplyCoin[]): Promise<IbcToken[]> {
     return (
       await Promise.all(
         supply.map(async ({ denom }: UiSupplyCoin) => {
@@ -149,7 +147,7 @@ export class TokenService {
     ).filter((token) => token) as IbcToken[]
   }
 
-  async fetchSupplyWithLabel({
+  async getSupplyWithLabel({
     bankSupply,
     ibcBankSupply,
   }: {

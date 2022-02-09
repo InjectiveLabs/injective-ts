@@ -36,4 +36,22 @@ export class TokenCoinGeckoService {
       throw new Error(e.message)
     }
   }
+
+  async fetchUsdTokenPriceFromCoinGeckoNoThrow(coinId: string) {
+    if (!coinId) {
+      return 0
+    }
+
+    try {
+      const priceInUsd = await this.coinGeckoApi.fetchUsdPrice(coinId)
+
+      if (!priceInUsd) {
+        return 0
+      }
+
+      return new BigNumberInBase(priceInUsd).toNumber()
+    } catch (e: any) {
+      return 0
+    }
+  }
 }

@@ -20,7 +20,7 @@ export class TokenErc20Service {
     this.alchemyApi = new AlchemyApi(alchemyRpcEndpoint)
   }
 
-  async getTokenBalanceAndAllowance({
+  async fetchTokenBalanceAndAllowance({
     address,
     token,
   }: {

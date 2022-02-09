@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/ui-common",
   "description": "Reusable Vue Components, Vuex Store Modules, Composables, and more",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -45,6 +45,7 @@
     "date-fns": "^2.28.0",
     "decimal.js": "^10.3.1",
     "ethereumjs-util": "^7.1.4",
+    "graphql": "^16.3.0",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   }

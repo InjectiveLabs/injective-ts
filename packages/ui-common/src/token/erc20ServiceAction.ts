@@ -13,7 +13,7 @@ export class TokenErc20ServiceAction {
     this.options = options
   }
 
-  setTokenAllowance = async ({
+  async setTokenAllowance({
     address,
     amount,
     gasPrice,
@@ -23,7 +23,7 @@ export class TokenErc20ServiceAction {
     amount: string // BigNumberInWei
     gasPrice: string // BigNumberInWei
     tokenAddress: string
-  }) => {
+  }) {
     const erc20Contract = new BaseCurrencyContract({
       web3Strategy: this.options.web3Strategy,
       address: tokenAddress,
