@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.19...@injectivelabs/ui-common@0.0.21) (2022-02-09)
+
+
+### Bug Fixes
+
+* dependency cycle ([4b8d11d](https://github.com/InjectiveLabs/injective-ts/commit/4b8d11d01efd5e98521ba40dda98df47fd289c38))
+
+
+### Features
+
+* spot and derivative services and cleanup ([e638c67](https://github.com/InjectiveLabs/injective-ts/commit/e638c67db9ec2d8200aa0a9d47d458abb9e1ef46))
+
+
+
+
+
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.19...@injectivelabs/ui-common@0.0.20) (2022-02-09)
 
 

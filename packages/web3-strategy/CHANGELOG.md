@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.92](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.90...@injectivelabs/web3-strategy@0.0.92) (2022-02-09)
+
+
+### Features
+
+* spot and derivative services and cleanup ([e638c67](https://github.com/InjectiveLabs/injective-ts/commit/e638c67db9ec2d8200aa0a9d47d458abb9e1ef46))
+
+
+
+
+
 ## [0.0.91](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.90...@injectivelabs/web3-strategy@0.0.91) (2022-02-09)
 
 

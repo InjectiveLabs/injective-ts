@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.57...@injectivelabs/token-metadata@0.0.59) (2022-02-09)
+
+
+### Features
+
+* spot and derivative services and cleanup ([e638c67](https://github.com/InjectiveLabs/injective-ts/commit/e638c67db9ec2d8200aa0a9d47d458abb9e1ef46))
+
+
+
+
+
 ## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.57...@injectivelabs/token-metadata@0.0.58) (2022-02-09)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

@@ -1,6 +1,9 @@
-import { UiDerivativeMarketSummary } from '.'
+import {
+  UiDerivativeMarketSummary,
+  DerivativeMarketMap,
+  DerivativeOrderSide,
+} from './types'
 import { Change } from '../types'
-import { DerivativeMarketMap, DerivativeOrderSide } from './types'
 
 export const derivativeOrderTypeToGrpcOrderType = (
   orderType: DerivativeOrderSide,
