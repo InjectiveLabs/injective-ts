@@ -1,6 +1,7 @@
 import { AlchemyApi } from '@injectivelabs/alchemy-api'
 import { BigNumberInWei } from '@injectivelabs/utils'
 import { contractAddresses } from '@injectivelabs/contracts'
+import { TokenMeta } from '@injectivelabs/token-metadata'
 import { Token, TokenWithBalance } from './types'
 import { ServiceOptions } from '../types'
 
@@ -68,6 +69,31 @@ export class TokenErc20Service {
         balance: new BigNumberInWei(0).toFixed(),
         allowance: new BigNumberInWei(0).toFixed(),
       }
+    }
+  }
+
+  async fetchTokenMeta(denom: string): Promise<TokenMeta> {
+    const address = denom.startsWith('peggy')
+      ? denom.replace('peggy', '')
+      : denom
+
+    try {
+      const tokenMeta = await this.alchemyApi.fetchTokenMetadata(address)
+
+      if (!tokenMeta) {
+        throw new Error(`Token ${denom} not found`)
+      }
+
+      return {
+        address,
+        name: tokenMeta.name as string,
+        logo: tokenMeta.logo as string,
+        symbol: tokenMeta.symbol as string,
+        decimals: tokenMeta.decimals as number,
+        coinGeckoId: '',
+      }
+    } catch (e) {
+      throw new Error(`Token ${denom} not found`)
     }
   }
 }
