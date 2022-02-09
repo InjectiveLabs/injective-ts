@@ -1,4 +1,5 @@
 export * from './service'
 export * from './transformer'
+export * from './converter'
 export * from './types'
 export * from './utils'

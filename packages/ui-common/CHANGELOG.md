@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.8...@injectivelabs/ui-common@0.0.9) (2022-02-09)
+
+
+### Bug Fixes
+
+* network for bridge converter ([c54b2d6](https://github.com/InjectiveLabs/injective-ts/commit/c54b2d6476b9b1d8763a42b3832c7c9e664c6dc9))
+
+
+
+
+
 ## [0.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.7...@injectivelabs/ui-common@0.0.8) (2022-02-09)
 
 **Note:** Version bump only for package @injectivelabs/ui-common

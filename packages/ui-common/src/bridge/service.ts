@@ -14,7 +14,6 @@ import {
   txNotPartOfInjectivePeggyTxs,
   txNotPartOfPeggoDeposit,
 } from './utils'
-import { BridgeTransformer } from './transformer'
 import { ExchangeMetrics } from '../types/metrics'
 import { ApolloConsumer } from './gql/client'
 import { ServiceOptions } from '../types'
@@ -201,18 +200,7 @@ export class BridgeService {
       format(subHours(new Date(), timestampHoursSince), 't'),
       10,
     )
-    const response = await this.apolloConsumer.fetchUserBridgeDeposits(
-      address,
-      timestamp,
-    )
 
-    return Promise.all(
-      response.map(async (transaction) =>
-        BridgeTransformer.convertPeggoToUiBridgeTransaction({
-          transaction,
-          network: this.options.network,
-        }),
-      ),
-    )
+    return this.apolloConsumer.fetchUserBridgeDeposits(address, timestamp)
   }
 }
