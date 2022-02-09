@@ -125,7 +125,7 @@ export default class Ledger
     options: { address: string; chainId: ChainId },
   ): Promise<string> {
     const chainId = parseInt(options.chainId.toString(), 10)
-    const web3 = this.getWeb3ForChainId(chainId)
+    const web3 = this.getWeb3()
 
     const tx = await getSignableTx({
       web3,
@@ -185,15 +185,11 @@ export default class Ledger
   }
 
   async getNetworkId(): Promise<string> {
-    return (
-      await this.getWeb3ForChainId(this.chainId).eth.net.getId()
-    ).toString()
+    return (await this.getWeb3().eth.net.getId()).toString()
   }
 
   async getChainId(): Promise<string> {
-    return (
-      await this.getWeb3ForChainId(this.chainId).eth.getChainId()
-    ).toString()
+    return (await this.getWeb3().eth.getChainId()).toString()
   }
 
   async getTransactionReceipt(txHash: string): Promise<string> {

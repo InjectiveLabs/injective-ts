@@ -2,7 +2,6 @@ import Web3 from 'web3'
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import { assert } from '@injectivelabs/assert'
 import Metamask from './strategies/Metamask'
-import WalletStrategy from './strategies/Wallet'
 import Ledger from './strategies/Ledger/index'
 import {
   Wallet,
@@ -15,21 +14,11 @@ import {
 export default class Web3Strategy {
   private strategy: ConcreteWeb3Strategy
 
-  private chainId: ChainId
-
-  private wallet: Wallet
-
   constructor({ wallet, chainId, options }: Web3StrategyArguments) {
     assert.inArray(chainId, Object.values(ChainId))
     assert.inArray(wallet, Object.values(Wallet))
 
-    this.chainId = chainId
-    this.wallet = wallet
-
-    switch (this.wallet) {
-      case Wallet.PrivateKey:
-        this.strategy = new WalletStrategy({ chainId, options })
-        break
+    switch (wallet) {
       case Wallet.Metamask:
         this.strategy = new Metamask({ chainId, options })
         break
@@ -89,19 +78,7 @@ export default class Web3Strategy {
   }
 
   public getWeb3(): Web3 {
-    return this.strategy.getWeb3ForChainId(this.chainId)
-  }
-
-  public getWeb3ForChainId(chainId: ChainId): Web3 {
-    return this.strategy.getWeb3ForChainId(chainId)
-  }
-
-  public getWeb3Ws(): Web3 {
-    return this.strategy.getWeb3WsForChainId(this.chainId)
-  }
-
-  public getWeb3WsForChainId(chainId: ChainId): Web3 {
-    return this.strategy.getWeb3WsForChainId(chainId)
+    return this.strategy.getWeb3()
   }
 
   public onAccountChange(callback: onAccountChangeCallback): void {
