@@ -51,3 +51,8 @@ export const tokenDenomsPerNetwork = [
     symbols: ['luna', 'ust'],
   },
 ] as NetworkConfig[]
+
+export const ibcHashToNativeInjPerNetwork = {
+  [BridgingNetwork.Osmosis]:
+    'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
+} as Partial<Record<BridgingNetwork, string>>
