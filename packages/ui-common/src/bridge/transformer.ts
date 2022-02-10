@@ -15,9 +15,9 @@ import {
   IBCTransferTx,
   PeggyDepositTx,
   PeggyWithdrawalTx,
-  UiBridgeTransactionWithoutTokenMeta,
   BridgeTransactionState,
   BridgingNetwork,
+  UiBridgeTransaction,
 } from './types'
 import { UserDeposit } from './gql/types'
 import {
@@ -51,7 +51,7 @@ export const convertKeplrToUiBridgeTransaction = async ({
 }: {
   transaction: KeplrWalletResponse
   network: Network
-}): Promise<UiBridgeTransactionWithoutTokenMeta | undefined> => {
+}): Promise<UiBridgeTransaction | undefined> => {
   const [events] = JSON.parse(transaction.rawLog) as [KeplrWalletEvents]
   const sendPacketEvent = events.events.find(
     ({ type }: any) => type === 'send_packet',
@@ -102,7 +102,7 @@ export const convertPeggyToUiBridgeTransaction = async ({
   transaction: PeggyTxResponse
   network: Network
   blockHeight?: number
-}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
+}): Promise<UiBridgeTransaction> => {
   const isDeposit = transaction.sender.startsWith('0x')
 
   return {
@@ -127,7 +127,7 @@ export const convertInjectiveIBCToUiBridgeTransaction = async ({
 }: {
   transaction: CosmosTxResponse
   network: Network
-}): Promise<UiBridgeTransactionWithoutTokenMeta> => ({
+}): Promise<UiBridgeTransaction> => ({
   denom: transaction.denom,
   amount: transaction.amount,
   receiver: transaction.receiver,
@@ -145,12 +145,14 @@ export const convertPeggoToUiBridgeTransaction = async ({
 }: {
   transaction: UserDeposit
   network: Network
-}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
+}): Promise<UiBridgeTransaction> => {
   const txHash = transaction.id.slice(0, 66)
   const receiver = transaction.destination.replace(
     '0x000000000000000000000000',
     '0x',
   )
+
+  console.log(transaction)
 
   return {
     txHash,
@@ -201,7 +203,7 @@ export const convertIBCTransferTxToUiBridgeTransaction = async ({
 }: {
   transaction: IBCTransferTx
   network: Network
-}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
+}): Promise<UiBridgeTransaction> => {
   const txHash = transaction.txHashesList[0]
   const denom = transaction.denom.includes('transfer/channel')
     ? (transaction.denom.split('/').pop() as string)
@@ -229,7 +231,7 @@ export const convertPeggyDepositTxToUiBridgeTransaction = async ({
 }: {
   transaction: PeggyDepositTx
   network: Network
-}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
+}): Promise<UiBridgeTransaction> => {
   const isFailedOrCancelled = FailedStates.includes(
     transaction.state as BridgeTransactionState,
   )
@@ -261,7 +263,7 @@ export const convertPeggyWithdrawalTxToUiBridgeTransaction = async ({
 }: {
   transaction: PeggyWithdrawalTx
   network: Network
-}): Promise<UiBridgeTransactionWithoutTokenMeta> => {
+}): Promise<UiBridgeTransaction> => {
   const isFailedOrCancelled = FailedStates.includes(
     transaction.state as BridgeTransactionState,
   )

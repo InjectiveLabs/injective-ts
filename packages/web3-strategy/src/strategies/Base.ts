@@ -10,7 +10,7 @@ export default abstract class BaseConcreteStrategy {
 
   protected wsRpcUrl: string
 
-  web3: Web3
+  public web3: Web3
 
   constructor({
     chainId,
@@ -25,9 +25,5 @@ export default abstract class BaseConcreteStrategy {
     this.web3 = createAlchemyWeb3(
       this.wsRpcUrl || this.rpcUrl,
     ) as unknown as Web3
-  }
-
-  public getWeb3(): Web3 {
-    return this.web3
   }
 }

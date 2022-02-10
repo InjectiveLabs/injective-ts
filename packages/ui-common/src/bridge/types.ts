@@ -59,7 +59,7 @@ export interface TokenMetaWithUsdPrice extends TokenMeta {
   usdPrice?: number
 }
 
-export interface UiBridgeTransactionWithoutTokenMeta {
+export interface UiBridgeTransaction {
   amount: string
   denom: string
   receiver: string
@@ -73,11 +73,6 @@ export interface UiBridgeTransactionWithoutTokenMeta {
   bridgeFee?: string
   timeoutTimestamp?: string
   txHashes?: string[]
-}
-
-export interface UiBridgeTransaction
-  extends UiBridgeTransactionWithoutTokenMeta {
-  token: TokenMeta
 }
 
 export { IBCTransferTx, PeggyDepositTx, PeggyWithdrawalTx }

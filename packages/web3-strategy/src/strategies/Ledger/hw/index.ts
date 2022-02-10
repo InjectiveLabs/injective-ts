@@ -7,7 +7,7 @@ import type Transport from '@ledgerhq/hw-transport'
 import AccountManager from './AccountManager'
 
 export default class LedgerTransport {
-  private ledger: EthereumApp<Transport> | null = null
+  private ledger: EthereumApp | null = null
 
   private accountManager: AccountManager | null = null
 
@@ -63,7 +63,7 @@ export default class LedgerTransport {
     return TransportU2F.create()
   }
 
-  async getInstance(): Promise<EthereumApp<Transport>> {
+  async getInstance(): Promise<EthereumApp> {
     if (!this.ledger) {
       const transport = await LedgerTransport.getTransport()
       this.ledger = new EthereumApp(transport)

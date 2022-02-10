@@ -2,7 +2,6 @@ import { AccountAddress } from '@injectivelabs/ts-types'
 import { publicToAddress, addHexPrefix } from 'ethereumjs-util'
 import HDNode from 'hdkey'
 import EthereumApp from '@ledgerhq/hw-app-eth'
-import type Transport from '@ledgerhq/hw-transport'
 import { LedgerDerivationPathType, LedgerWalletInfo } from '../../../types'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '../../../constants'
 
@@ -21,9 +20,9 @@ const addressOfHDKey = (hdKey: HDNode): string => {
 export default class AccountManager {
   private wallets: LedgerWalletInfo[] = []
 
-  private ledger: EthereumApp<Transport>
+  private ledger: EthereumApp
 
-  constructor(ledger: EthereumApp<Transport>) {
+  constructor(ledger: EthereumApp) {
     this.ledger = ledger
     this.wallets = []
   }

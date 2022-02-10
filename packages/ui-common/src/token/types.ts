@@ -1,4 +1,5 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
+import { UiBridgeTransaction } from '../bridge/types'
 import { UiCoin } from '../types/common'
 
 export type TokenAddress = string
@@ -9,6 +10,7 @@ interface Base {
   symbol: string
   name: string
   icon?: string
+  logo?: string
   decimals: number
 }
 
@@ -100,4 +102,8 @@ export interface SubaccountBalanceWithTokenMetaDataWithUsdBalance
 export interface UiSupplyCoinForSelect extends UiCoin {
   code: string
   label: string
+}
+
+export interface UiBridgeTransactionWithTokenMeta extends UiBridgeTransaction {
+  token: Token
 }

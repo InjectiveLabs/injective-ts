@@ -20,9 +20,11 @@ import {
   Token,
   UiSupplyCoinForSelect,
   SubaccountBalanceWithTokenMetaData,
+  UiBridgeTransactionWithTokenMeta,
 } from './types'
 import { UiSubaccountBalance } from '../subaccount/types'
 import { BaseService } from '../BaseService'
+import { UiBridgeTransaction } from '../bridge/types'
 
 export class TokenService extends BaseService {
   protected ibcConsumer: IBCConsumer
@@ -288,5 +290,48 @@ export class TokenService extends BaseService {
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
     ) as UiBaseDerivativeMarketWithTokenMeta[]
+  }
+
+  async getBridgeTransactionWithTokenMeta(
+    transaction: UiBridgeTransaction,
+  ): Promise<UiBridgeTransactionWithTokenMeta> {
+    const transactionExists =
+      transaction && transaction.denom && Object.keys(transaction).length > 0
+
+    if (!transactionExists) {
+      return {} as UiBridgeTransactionWithTokenMeta
+    }
+
+    const tokenFromSymbol = this.getTokenMetaDataBySymbol(
+      transaction.denom,
+    ) as Token
+
+    if (tokenFromSymbol) {
+      return {
+        ...transaction,
+        token: tokenFromSymbol,
+      }
+    }
+
+    const tokenFromDenom = (await this.getTokenMetaDataWithIbc(
+      transaction.denom,
+    )) as Token
+
+    return {
+      ...transaction,
+      token: tokenFromDenom,
+    }
+  }
+
+  async getBridgeTransactionsWithTokenMeta(
+    transactions: UiBridgeTransaction[],
+  ): Promise<UiBridgeTransactionWithTokenMeta[]> {
+    return (
+      await Promise.all(
+        transactions.map(this.getBridgeTransactionWithTokenMeta.bind(this)),
+      )
+    ).filter(
+      (transaction) => transaction && transaction.token !== undefined,
+    ) as UiBridgeTransactionWithTokenMeta[]
   }
 }

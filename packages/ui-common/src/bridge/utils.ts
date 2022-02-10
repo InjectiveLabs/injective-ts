@@ -8,8 +8,10 @@ import {
 } from './types'
 
 const sameTxHash = (txHashOne: string, txHashTwo: string) =>
+  txHashOne &&
+  txHashTwo &&
   txHashOne.replace('0x', '').toLowerCase() ===
-  txHashTwo.replace('0x', '').toLowerCase()
+    txHashTwo.replace('0x', '').toLowerCase()
 
 export const getCachedIBCTransactionState = (
   transaction: UiBridgeTransaction,
@@ -94,7 +96,8 @@ export const txNotPartOfInjectivePeggyTxs =
     injectivePeggyTransactions.find(
       (injectiveTransaction) =>
         findEthereumTransactionByNonce(injectiveTransaction, transaction) ||
-        findEthereumTransactionByTxHashes(injectiveTransaction, transaction),
+        findEthereumTransactionByTxHashes(injectiveTransaction, transaction) ||
+        findEthereumTransactionByTxHash(injectiveTransaction, transaction),
     ) === undefined
 
 export const getExplorerUrl = (network: Network): string => {

@@ -78,7 +78,7 @@ export default class Web3Strategy {
   }
 
   public getWeb3(): Web3 {
-    return this.strategy.getWeb3()
+    return this.strategy.web3
   }
 
   public onAccountChange(callback: onAccountChangeCallback): void {

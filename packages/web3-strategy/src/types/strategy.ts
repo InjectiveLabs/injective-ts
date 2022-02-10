@@ -20,8 +20,6 @@ export interface ConcreteStrategyOptions {
 export interface ConcreteWeb3Strategy {
   web3: Web3
 
-  getWeb3(): Web3
-
   isMetamask(): boolean
 
   getAddresses(): Promise<string[]>

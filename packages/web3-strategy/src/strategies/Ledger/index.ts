@@ -2,9 +2,9 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import { TypedDataUtils } from 'eth-sig-util'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
-import { Transaction } from 'ethereumjs-tx'
-import Web3 from 'web3'
-import { Web3Exception } from '@injectivelabs/exceptions'
+import ledgerService from '@ledgerhq/hw-app-eth/lib/services/ledger'
+import Common, { Chain, Hardfork } from '@ethereumjs/common'
+import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import {
   ConcreteStrategyOptions,
   ConcreteWeb3Strategy,
@@ -30,30 +30,22 @@ const messageHash = (message: any) =>
     true,
   )
 
-const getSignableTx = async ({
-  web3,
-  txData,
-  address,
-  chainId,
-}: {
-  web3: Web3
-  txData: any
-  address: AccountAddress
-  chainId: ChainId
-}) => {
-  const nonce = await web3.eth.getTransactionCount(address)
-  const gasInHex = addHexPrefix(txData.gas)
-  const gasPriceInHex = addHexPrefix(txData.gasPrice)
-  const tx = {
-    ...txData,
-    from: address,
-    gas: gasInHex,
-    gasLimit: gasInHex,
-    gasPrice: gasPriceInHex,
-    nonce: addHexPrefix(nonce.toString(16)),
+const commonLockedErrors = (error: any) => {
+  const message = error.message || error
+
+  if (
+    message.includes('Ledger device: Incorrect length') ||
+    message.includes('Ledger device: INS_NOT_SUPPORTED') ||
+    message.includes('Ledger device: CLA_NOT_SUPPORTED') ||
+    message.includes('Failed to open the device') ||
+    message.includes('Failed to open the device') ||
+    message.includes('Ledger Device is busy') ||
+    message.includes('UNKNOWN_ERROR')
+  ) {
+    return true
   }
 
-  return new Transaction(tx, { chain: chainId })
+  return false
 }
 
 export default class Ledger
@@ -83,32 +75,20 @@ export default class Ledger
 
   public async getAddresses(): Promise<string[]> {
     const { baseDerivationPath, derivationPathType } = this
-    const accountManager = await this.ledger.getAccountManager()
 
     try {
+      const accountManager = await this.ledger.getAccountManager()
       const wallets = await accountManager.getWallets(
         baseDerivationPath,
         derivationPathType,
       )
       return wallets.map((k) => k.address)
     } catch (e: any) {
-      const message = e.message || e
-
-      if (
-        message.includes('Ledger device: Incorrect length') ||
-        message.includes('Ledger device: INS_NOT_SUPPORTED') ||
-        message.includes('Ledger device: CLA_NOT_SUPPORTED') ||
-        message.includes('Failed to open the device') ||
-        message.includes('Failed to open the device') ||
-        message.includes('Ledger Device is busy') ||
-        message.includes('UNKNOWN_ERROR')
-      ) {
-        throw new Error(
-          'Please ensure your Ledger is connected, unlocked and your Ethereum app is open',
-        )
-      }
-
-      throw new Error(message)
+      throw new Error(
+        commonLockedErrors(e)
+          ? 'Please ensure your Ledger is connected, unlocked and your Ethereum app is open'
+          : `Ledger: ${e.message || e}`,
+      )
     }
   }
 
@@ -124,45 +104,20 @@ export default class Ledger
     txData: any,
     options: { address: string; chainId: ChainId },
   ): Promise<string> {
-    const chainId = parseInt(options.chainId.toString(), 10)
-    const web3 = this.getWeb3()
-
-    const tx = await getSignableTx({
-      web3,
-      txData,
-      address: options.address,
-      chainId,
-    })
-    const vIndex = 6
-    tx.raw[vIndex] = Buffer.from([chainId]) // v
-    const rIndex = 7
-    tx.raw[rIndex] = Buffer.from([]) // r
-    const sIndex = 8
-    tx.raw[sIndex] = Buffer.from([]) // s
-    const serializedTx = tx.serialize().toString('hex')
-
-    const ledger = await this.ledger.getInstance()
-    const { derivationPath } = await this.getWalletForAddress(options.address)
-
-    let signedSerializedTx
-    try {
-      const signed = await ledger.signTransaction(derivationPath, serializedTx)
-      tx.r = Buffer.from(signed.r, 'hex')
-      tx.s = Buffer.from(signed.s, 'hex')
-      tx.v = Buffer.from(signed.v, 'hex')
-
-      signedSerializedTx = tx.serialize().toString('hex')
-    } catch (e: any) {
-      throw new Error(`Ledger: ${e.message}`)
-    }
+    const signedTransaction = await this.signTransaction(txData, options)
 
     try {
-      const txReceipt = await web3.eth.sendSignedTransaction(
-        addHexPrefix(signedSerializedTx),
+      const txReceipt = await this.web3.eth.sendSignedTransaction(
+        addHexPrefix(signedTransaction.serialize().toString('hex')),
       )
+
       return txReceipt.transactionHash
     } catch (e: any) {
-      throw new Web3Exception(`Ledger: ${e.message}`)
+      throw new Error(
+        commonLockedErrors(e)
+          ? 'Please ensure your Ledger is connected, unlocked and your Ethereum app is open'
+          : `Ledger: ${e.message || e}`,
+      )
     }
   }
 
@@ -172,24 +127,96 @@ export default class Ledger
   ): Promise<string> {
     const { derivationPath } = await this.getWalletForAddress(address)
     const object = JSON.parse(eip712json)
-    const ledger = await this.ledger.getInstance()
-    const result = await ledger.signEIP712HashedMessage(
-      derivationPath,
-      bufferToHex(domainHash(object)),
-      bufferToHex(messageHash(object)),
-    )
 
-    const combined = `${result.r}${result.s}${result.v.toString(16)}`
+    try {
+      const ledger = await this.ledger.getInstance()
+      const result = await ledger.signEIP712HashedMessage(
+        derivationPath,
+        bufferToHex(domainHash(object)),
+        bufferToHex(messageHash(object)),
+      )
 
-    return combined.startsWith('0x') ? combined : `0x${combined}`
+      const combined = `${result.r}${result.s}${result.v.toString(16)}`
+
+      return combined.startsWith('0x') ? combined : `0x${combined}`
+    } catch (e: any) {
+      throw new Error(
+        commonLockedErrors(e)
+          ? 'Please ensure your Ledger is connected, unlocked and your Ethereum app is open'
+          : `Ledger: ${e.message || e}`,
+      )
+    }
+  }
+
+  private async signTransaction(
+    txData: any,
+    options: { address: string; chainId: ChainId },
+  ) {
+    const chainId = parseInt(options.chainId.toString(), 10)
+    const isMainnet = chainId === ChainId.Mainnet
+    const nonce = await this.web3.eth.getTransactionCount(options.address)
+
+    const common = new Common({
+      chain: isMainnet ? Chain.Mainnet : Chain.Kovan,
+      hardfork: Hardfork.London,
+    })
+
+    const eip1559TxData = {
+      from: txData.from,
+      data: txData.data,
+      to: txData.to,
+      nonce: addHexPrefix(nonce.toString(16)),
+      gas: addHexPrefix(txData.gas),
+      gasLimit: addHexPrefix(txData.gas),
+      maxFeePerGas: addHexPrefix(txData.gasPrice || txData.maxFeePerGas),
+      maxPriorityFeePerGas: addHexPrefix(
+        txData.maxPriorityFeePerGas || '0xB2D05E00' /* 3 Gwei in HEX */,
+      ),
+    }
+
+    const tx = FeeMarketEIP1559Transaction.fromTxData(eip1559TxData, { common })
+    const msg = tx.getMessageToSign(false)
+    const encodedMessage = msg
+    const encodedMessageHex = encodedMessage.toString('hex')
+
+    try {
+      const ledger = await this.ledger.getInstance()
+      const { derivationPath } = await this.getWalletForAddress(options.address)
+      const resolution = await ledgerService.resolveTransaction(
+        encodedMessageHex,
+        {},
+        {},
+      )
+      const txSig = await ledger.signTransaction(
+        derivationPath,
+        encodedMessageHex,
+        resolution,
+      )
+      const signedTxData = {
+        ...eip1559TxData,
+        v: `0x${txSig.v}`,
+        r: `0x${txSig.r}`,
+        s: `0x${txSig.s}`,
+      }
+
+      return FeeMarketEIP1559Transaction.fromTxData(signedTxData, {
+        common,
+      })
+    } catch (e: any) {
+      throw new Error(
+        commonLockedErrors(e)
+          ? 'Please ensure your Ledger is connected, unlocked and your Ethereum app is open'
+          : `Ledger: ${e.message || e}`,
+      )
+    }
   }
 
   async getNetworkId(): Promise<string> {
-    return (await this.getWeb3().eth.net.getId()).toString()
+    return (await this.web3.eth.net.getId()).toString()
   }
 
   async getChainId(): Promise<string> {
-    return (await this.getWeb3().eth.getChainId()).toString()
+    return (await this.web3.eth.getChainId()).toString()
   }
 
   async getTransactionReceipt(txHash: string): Promise<string> {
