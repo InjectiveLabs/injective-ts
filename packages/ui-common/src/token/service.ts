@@ -7,8 +7,8 @@ import { IBCConsumer } from '@injectivelabs/chain-consumer'
 import {
   UiBaseDerivativeMarket,
   UiBaseDerivativeMarketWithTokenMeta,
-} from '../derivative'
-import { UiBaseSpotMarket, UiBaseSpotMarketWithTokenMeta } from '../spot'
+} from '../derivative/types'
+import { UiBaseSpotMarket, UiBaseSpotMarketWithTokenMeta } from '../spot/types'
 import { INJ_DENOM } from '../constants'
 import { ServiceOptions, ChainMetrics } from '../types'
 import { TokenTransformer } from './transformer'

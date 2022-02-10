@@ -1,9 +1,14 @@
-import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
-import { MarketType } from '../types'
+import {
+  BigNumber,
+  BigNumberInBase,
+  BigNumberInWei,
+} from '@injectivelabs/utils'
+import { Change, MarketType } from '../types'
 import { getDecimalsFromNumber } from '../utils'
 import {
   UiBaseSpotMarketWithTokenMeta,
   UiSpotMarketWithTokenMeta,
+  UiSpotMarketSummary,
 } from './types'
 import { spotOrderTypeToGrpcOrderType } from './utils'
 
@@ -25,6 +30,69 @@ export const spotMarketToUiSpotMarket = (
   ),
 })
 
+export const spotMarketSummaryToUiMarketSummary = (
+  oldSummary: UiSpotMarketSummary,
+  newSummary: UiSpotMarketSummary,
+): UiSpotMarketSummary => {
+  if (new BigNumber(oldSummary.price).eq(newSummary.price)) {
+    return {
+      ...newSummary,
+      lastPrice: oldSummary.price,
+      lastPriceChange: oldSummary.lastPriceChange || Change.NoChange,
+    }
+  }
+
+  return {
+    ...newSummary,
+    lastPrice: oldSummary.price,
+    lastPriceChange: new BigNumber(newSummary.price).gte(oldSummary.price)
+      ? Change.Increase
+      : Change.Decrease,
+  }
+}
+
+export const spotMarketsSummaryToUiMarketsSummary = (
+  oldSummaries: UiSpotMarketSummary[] = [],
+  newSummaries: UiSpotMarketSummary[] = [],
+): UiSpotMarketSummary[] =>
+  oldSummaries.map((oldSummary) => {
+    const newSummary = newSummaries.find(
+      (m) => m.marketId === oldSummary.marketId,
+    )
+
+    // Sometimes, chronos returns zeros
+    const actualNewSummary =
+      newSummary && newSummary.price ? newSummary : oldSummary
+
+    return spotMarketSummaryToUiMarketSummary(oldSummary, actualNewSummary)
+  })
+
+export const spotMarketsSummaryComparisons = (
+  newMarketSummary?: UiSpotMarketSummary[],
+  oldMarketsSummary?: UiSpotMarketSummary[],
+) => {
+  if (!oldMarketsSummary && !newMarketSummary) {
+    return undefined
+  }
+
+  if (!newMarketSummary) {
+    return oldMarketsSummary as UiSpotMarketSummary[]
+  }
+
+  if (!oldMarketsSummary) {
+    return newMarketSummary
+  }
+
+  const marketsWithOldSummaries = oldMarketsSummary.filter((market) =>
+    newMarketSummary.find((m) => m.marketId === market.marketId),
+  )
+
+  return spotMarketsSummaryToUiMarketsSummary(
+    marketsWithOldSummaries,
+    newMarketSummary,
+  )
+}
+
 export const spotMarketsToUiSpotMarkets = (
   markets: UiBaseSpotMarketWithTokenMeta[],
 ) => markets.map(spotMarketToUiSpotMarket)
@@ -35,4 +103,10 @@ export class SpotTransformer {
   static spotMarketToUiSpotMarket = spotMarketToUiSpotMarket
 
   static spotMarketsToUiSpotMarkets = spotMarketsToUiSpotMarkets
+
+  static marketsSummaryToUiMarketsSummary = spotMarketsSummaryToUiMarketsSummary
+
+  static marketSummaryToUiMarketSummary = spotMarketSummaryToUiMarketSummary
+
+  static marketsSummaryComparisons = spotMarketsSummaryComparisons
 }

@@ -9,7 +9,7 @@ import {
   AllChronosDerivativeMarketSummary,
 } from '@injectivelabs/derivatives-consumer'
 import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
-import { Token } from '../token'
+import { Token } from '../token/types'
 import { Change, MarketBase, MarketType } from '../types'
 
 export interface UiBaseDerivativeMarket

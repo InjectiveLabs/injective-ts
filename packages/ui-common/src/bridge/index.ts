@@ -1,5 +1,4 @@
 export * from './service'
 export * from './transformer'
-export * from './types'
 export * from './utils'
 export * from './data'
