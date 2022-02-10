@@ -1076,6 +1076,11 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
+"@injectivelabs/common-rpc@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/@injectivelabs/common-rpc/-/common-rpc-1.0.2.tgz#12c641f9c07b3f34aee1bafaf5a54381a78bd83a"
+  integrity sha512-W96jZ63E9NRlPDfwgifZWVh6pvR+TNtQWb6i9/m/M/c1p41nWzcwO/GKRnVelvTXD5kNQ7SoTl37bwkddEEVfw==
+
 "@injectivelabs/exceptions@^0.0.26":
   version "0.0.26"
   resolved "https://registry.yarnpkg.com/@injectivelabs/exceptions/-/exceptions-0.0.26.tgz#128ac7f3ab8c2de8030c6bb9ad07246de768c230"
@@ -1093,10 +1098,10 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
-"@injectivelabs/referral-api@^1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/referral-api/-/referral-api-1.0.15.tgz#7b38a6931da8f85031a03bbe3f1d2e22775bcafc"
-  integrity sha512-uZRGNBPH5CNx5pYKknA/zQYn4CBT37i8Vx0SuMIyEmb+V5E7bkoEKYasfhcDmvKXMcMqGk0e0ChG98prCwlmIA==
+"@injectivelabs/referral-api@^1.0.19":
+  version "1.0.19"
+  resolved "https://registry.npmjs.org/@injectivelabs/referral-api/-/referral-api-1.0.19.tgz#a24b47863313cf50a693172c9051d0f0fec91946"
+  integrity sha512-8o+hVsm2+lmULtlq2CGA8u9FKp8qqB6+yYSRroRfeyk/D/lKogg49jPYeYp1I9n6bECGeVJv9G5YCRMO+AIsvA==
 
 "@injectivelabs/ts-types@^0.0.22":
   version "0.0.22"

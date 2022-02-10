@@ -1,5 +1,5 @@
 import { GrpcException } from '@injectivelabs/exceptions'
-import { InjectiveReferralRPC } from '@injectivelabs/referral-api/injective-referral-rpc_pb_service'
+import { InjectiveReferralRPC } from '@injectivelabs/referral-api/injective_referral_rpc_pb_service'
 import {
   ClaimCommissionsReq,
   ReferReq,
@@ -7,7 +7,9 @@ import {
   GetFeeRecipientResp,
   GetReferralInfoReq,
   GetReferralInfoResp,
-} from '@injectivelabs/referral-api/injective-referral-rpc_pb'
+  GetRefereeListReq,
+  GetRefereeListResp,
+} from '@injectivelabs/referral-api/injective_referral_rpc_pb'
 import BaseConsumer from '../BaseConsumer'
 
 export class ReferralConsumer extends BaseConsumer {
@@ -42,6 +44,24 @@ export class ReferralConsumer extends BaseConsumer {
       >(request, InjectiveReferralRPC.GetReferralInfo)
 
       return response
+    } catch (e: any) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async getRefereeList(address: string) {
+    const request = new GetRefereeListReq()
+
+    request.setReferrerAddress(address)
+
+    try {
+      const response = await this.request<
+        GetRefereeListReq,
+        GetRefereeListResp,
+        typeof InjectiveReferralRPC.GetRefereeList
+      >(request, InjectiveReferralRPC.GetRefereeList)
+
+      return response.getRefereesList()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }

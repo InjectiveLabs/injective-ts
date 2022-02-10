@@ -3,7 +3,8 @@ import {
   GetReferralInfoResp as GrpcReferralInfo,
   RefereeInfo as GrpcRefereeInfo,
   ReferrerInfo as GrpcReferrerInfo,
-} from '@injectivelabs/referral-api/injective-referral-rpc_pb'
+  GetRefereeListResp as GrpcRefereeList,
+} from '@injectivelabs/referral-api/injective_referral_rpc_pb'
 
 export enum ReferrerStatus {
   REFERRER_STATUS_UNSPECIFIED = 0,
@@ -12,6 +13,7 @@ export enum ReferrerStatus {
 }
 
 export interface RefereeInfo {
+  accountAddress: string
   referralCode: string
   referredTimeMs: number
   status: ReferrerStatus
@@ -20,6 +22,7 @@ export interface RefereeInfo {
 }
 
 export interface ReferrerInfo {
+  accountAddress: string
   referralCode: string
   issuedTimeMs: number
   status: ReferrerStatus
@@ -38,4 +41,10 @@ export interface ReferralInfo {
   refereeInfo?: RefereeInfo
 }
 
-export { GrpcFeeRecipient, GrpcReferralInfo, GrpcRefereeInfo, GrpcReferrerInfo }
+export {
+  GrpcFeeRecipient,
+  GrpcRefereeInfo,
+  GrpcRefereeList,
+  GrpcReferralInfo,
+  GrpcReferrerInfo,
+}
