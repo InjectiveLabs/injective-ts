@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/ui-common",
   "description": "Reusable Vue Components, Vuex Store Modules, Composables, and more",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

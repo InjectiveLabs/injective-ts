@@ -4,6 +4,11 @@ import {
   TokenMeta,
 } from '@injectivelabs/token-metadata'
 import { IBCConsumer } from '@injectivelabs/chain-consumer'
+import {
+  UiBaseDerivativeMarket,
+  UiBaseDerivativeMarketWithTokenMeta,
+} from '../derivative'
+import { UiBaseSpotMarket, UiBaseSpotMarketWithTokenMeta } from '../spot'
 import { INJ_DENOM } from '../constants'
 import { ServiceOptions, ChainMetrics } from '../types'
 import { TokenTransformer } from './transformer'
@@ -204,5 +209,84 @@ export class TokenService extends BaseService {
     ).then((balances) =>
       balances.filter((balance) => balance.token !== undefined),
     )) as SubaccountBalanceWithTokenMetaData[]
+  }
+
+  async getSpotMarketsWithTokenMeta(
+    markets: UiBaseSpotMarket[],
+  ): Promise<UiBaseSpotMarketWithTokenMeta[]> {
+    return (
+      await Promise.all(
+        markets.map(async (market) => {
+          const slug = market.ticker
+            .replace('/', '-')
+            .replace(' ', '-')
+            .toLowerCase()
+          const baseToken = TokenTransformer.tokenMetaToToken(
+            await this.getTokenMetaDataWithIbc(market.baseDenom),
+            market.baseDenom,
+          )
+          const quoteToken = TokenTransformer.tokenMetaToToken(
+            await this.getTokenMetaDataWithIbc(market.quoteDenom),
+            market.quoteDenom,
+          )
+
+          if (baseToken && !baseToken.coinGeckoId) {
+            baseToken.coinGeckoId = this.getCoinGeckoId(baseToken.symbol)
+          }
+
+          if (quoteToken && !quoteToken.coinGeckoId) {
+            quoteToken.coinGeckoId = this.getCoinGeckoId(quoteToken.symbol)
+          }
+
+          return {
+            ...market,
+            slug,
+            baseToken,
+            quoteToken,
+          }
+        }),
+      )
+    ).filter(
+      (market) =>
+        market.baseToken !== undefined && market.quoteToken !== undefined,
+    ) as UiBaseSpotMarketWithTokenMeta[]
+  }
+
+  async getDerivativeMarketsWithTokenMeta(
+    markets: UiBaseDerivativeMarket[],
+  ): Promise<UiBaseDerivativeMarketWithTokenMeta[]> {
+    return (
+      await Promise.all(
+        markets.map(async (market) => {
+          const slug = market.ticker
+            .replace('/', '-')
+            .replaceAll(' ', '-')
+            .toLowerCase()
+          const [baseTokenSymbol] = slug.split('-')
+          const baseToken = TokenTransformer.tokenMetaToToken(
+            this.getTokenMetaDataBySymbol(baseTokenSymbol),
+            baseTokenSymbol,
+          )
+          const quoteToken = TokenTransformer.tokenMetaToToken(
+            await this.getTokenMetaDataWithIbc(market.quoteDenom),
+            market.quoteDenom,
+          )
+
+          if (quoteToken && !quoteToken.coinGeckoId) {
+            quoteToken.coinGeckoId = this.getCoinGeckoId(quoteToken.symbol)
+          }
+
+          return {
+            ...market,
+            slug,
+            baseToken,
+            quoteToken,
+          }
+        }),
+      )
+    ).filter(
+      (market) =>
+        market.baseToken !== undefined && market.quoteToken !== undefined,
+    ) as UiBaseDerivativeMarketWithTokenMeta[]
   }
 }
