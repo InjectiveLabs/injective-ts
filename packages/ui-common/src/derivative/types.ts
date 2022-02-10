@@ -17,6 +17,7 @@ export interface UiBaseDerivativeMarket
 
 export interface UiBaseDerivativeMarketWithTokenMeta
   extends UiBaseDerivativeMarket {
+  slug: string
   quoteToken: Token
   baseToken: Token
 }

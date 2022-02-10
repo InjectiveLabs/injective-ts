@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.23...@injectivelabs/ui-common@0.0.24) (2022-02-10)
+
+
+### Bug Fixes
+
+* slug missing from type ([402b18a](https://github.com/InjectiveLabs/injective-ts/commit/402b18a02dd245b97c1e880f9f0b221f25d4cd27))
+
+
+
+
+
 ## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.22...@injectivelabs/ui-common@0.0.23) (2022-02-10)
 
 

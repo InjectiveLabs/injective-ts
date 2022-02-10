@@ -17,6 +17,7 @@ export interface UiBaseSpotMarket
 export interface UiBaseSpotMarketWithTokenMeta extends UiBaseSpotMarket {
   quoteToken: Token
   baseToken: Token
+  slug: string
 }
 
 export interface UiSpotMarketWithTokenMeta
