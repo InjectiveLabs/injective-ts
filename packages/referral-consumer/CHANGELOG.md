@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/referral-consumer@0.0.9...@injectivelabs/referral-consumer@0.0.10) (2022-02-10)
+
+
+### Features
+
+* update referral consumer with latest changes ([ee1b836](https://github.com/InjectiveLabs/injective-ts/commit/ee1b8363489f6d661c2321aad55384bce802b80a))
+
+
+
+
+
 ## [0.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/referral-consumer@0.0.7...@injectivelabs/referral-consumer@0.0.9) (2022-02-09)
 
 

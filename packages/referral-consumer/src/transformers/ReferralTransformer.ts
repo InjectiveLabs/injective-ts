@@ -4,8 +4,8 @@ import {
   RefereeInfo,
   ReferrerInfo,
   GrpcFeeRecipient,
-  GrpcReferralInfo,
   GrpcRefereeInfo,
+  GrpcReferralInfo,
   GrpcReferrerInfo,
 } from '../types/index'
 
@@ -14,6 +14,7 @@ export class ReferralTransformer {
     refereeInfo: GrpcRefereeInfo,
   ): RefereeInfo {
     return {
+      accountAddress: refereeInfo.getAccountAddress(),
       referralCode: refereeInfo.getReferralCode(),
       referredTimeMs: refereeInfo.getReferredTimeMs(),
       status: refereeInfo.getStatus(),
@@ -26,6 +27,7 @@ export class ReferralTransformer {
     referrerInfo: GrpcReferrerInfo,
   ): ReferrerInfo {
     return {
+      accountAddress: referrerInfo.getAccountAddress(),
       referralCode: referrerInfo.getReferralCode(),
       issuedTimeMs: referrerInfo.getIssuedTimeMs(),
       status: referrerInfo.getStatus(),
@@ -58,5 +60,11 @@ export class ReferralTransformer {
         ? ReferralTransformer.grpcRefereeInfoToRefereeInfo(refereeInfo)
         : refereeInfo,
     }
+  }
+
+  static grpcRefereeListToRefereeList(
+    grpcReferees: GrpcRefereeInfo[],
+  ): RefereeInfo[] {
+    return grpcReferees.map(ReferralTransformer.grpcRefereeInfoToRefereeInfo)
   }
 }

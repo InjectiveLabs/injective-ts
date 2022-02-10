@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.93](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.92...@injectivelabs/web3-strategy@0.0.93) (2022-02-10)
+
+
+### Bug Fixes
+
+* ledger gas fees ([ea652e8](https://github.com/InjectiveLabs/injective-ts/commit/ea652e85af3fc94ab99a91828324371a6e70debd))
+
+
+
+
+
 ## [0.0.92](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.0.90...@injectivelabs/web3-strategy@0.0.92) (2022-02-09)
 
 

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/referral-consumer",
   "description": "Referral API on Injective Protocol made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,8 +29,9 @@
   "dependencies": {
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
+    "@injectivelabs/common-rpc": "^1.0.2",
     "@injectivelabs/exceptions": "^0.0.42",
-    "@injectivelabs/referral-api": "^1.0.15",
+    "@injectivelabs/referral-api": "^1.0.19",
     "@injectivelabs/ts-types": "^0.0.38",
     "@injectivelabs/utils": "^0.0.54",
     "link-module-alias": "^1.2.0",
