@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.21...@injectivelabs/ui-common@0.0.22) (2022-02-10)
+
+
+### Bug Fixes
+
+* subaccount transformer ([b57702c](https://github.com/InjectiveLabs/injective-ts/commit/b57702c57232720ec8759155bd53554843cac2c0))
+
+
+
+
+
 ## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.19...@injectivelabs/ui-common@0.0.21) (2022-02-09)
 
 
