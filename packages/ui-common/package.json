@@ -1,12 +1,13 @@
 {
   "name": "@injectivelabs/ui-common",
   "description": "Reusable Vue Components, Vuex Store Modules, Composables, and more",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "dist/types"
   ],
   "_moduleAliases": {
     "~ui-common": "dist"

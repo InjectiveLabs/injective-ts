@@ -8,9 +8,8 @@ import {
   DerivativeOrderSide,
   AllChronosDerivativeMarketSummary,
 } from '@injectivelabs/derivatives-consumer'
-import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
 import { Token } from '../token/types'
-import { Change, MarketBase, MarketType } from '../types'
+import { Change, MarketBase, MarketType } from '../types/common'
 
 export interface UiBaseDerivativeMarket
   extends Omit<BaseUiDerivativeMarket, 'quoteToken'> {}
@@ -60,9 +59,7 @@ export enum DerivativeMarketMap {
 export {
   UiPosition,
   UiDerivativeLimitOrder,
-  TradeDirection,
   DerivativeOrderSide,
-  TradeExecutionType,
   BaseUiDerivativeMarket,
   ChronosDerivativeMarketSummary,
   AllChronosDerivativeMarketSummary,

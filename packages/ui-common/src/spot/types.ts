@@ -7,9 +7,8 @@ import {
   SpotOrderSide,
   AllChronosSpotMarketSummary,
 } from '@injectivelabs/spot-consumer'
-import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
 import { Token } from '../token/types'
-import { Change, MarketBase, MarketType } from '../types'
+import { Change, MarketBase, MarketType } from '../types/common'
 
 export interface UiBaseSpotMarket
   extends Omit<BaseUiSpotMarket, 'quoteToken' | 'baseToken'> {}
@@ -56,9 +55,7 @@ export enum SpotMarketMap {
 
 export {
   UiSpotLimitOrder,
-  TradeDirection,
   SpotOrderSide,
-  TradeExecutionType,
   BaseUiSpotMarket,
   ChronosSpotMarketSummary,
   AllChronosSpotMarketSummary,

@@ -5,7 +5,14 @@ import { Web3Strategy } from '@injectivelabs/web3-strategy'
 export * from './metrics'
 export * from './cosmos'
 export * from './common'
-export * from './peggy'
+export * from '../peggy/types'
+export * from '../bank/types'
+export * from '../bridge/types'
+export * from '../derivative/types'
+export * from '../gas/types'
+export * from '../spot/types'
+export * from '../subaccount/types'
+export * from '../token/types'
 
 export interface ServiceOptionsEndpoints {
   exchangeApi: string
