@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.28...@injectivelabs/ui-common@0.0.29) (2022-02-11)
+
+
+### Bug Fixes
+
+* typings export ([43fc538](https://github.com/InjectiveLabs/injective-ts/commit/43fc5387d82bd51905036697e1daaa7bfeac4658))
+
+
+
+
+
 ## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.27...@injectivelabs/ui-common@0.0.28) (2022-02-11)
 
 
