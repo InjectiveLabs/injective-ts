@@ -15,9 +15,13 @@ export const tokenMetaToToken = (
   if (tokenMeta.logo.startsWith('http')) {
     icon = tokenMeta.logo
   } else if (tokenMeta.logo) {
-    icon = tokenMeta.logo
-  } else if (!tokenMeta.logo) {
-    path.join('/', 'vendor', '@injectivelabs', 'token-metadata', tokenMeta.logo)
+    icon = path.join(
+      '/',
+      'vendor',
+      '@injectivelabs',
+      'token-metadata',
+      tokenMeta.logo,
+    )
   } else {
     icon = ''
   }

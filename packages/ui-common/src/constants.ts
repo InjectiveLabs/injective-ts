@@ -7,6 +7,7 @@ import {
 export const INJ_DENOM = 'inj'
 export const INJECTIVE_DENOM = 'inj'
 export const INJ_COIN_GECKO_ID = 'injective-protocol'
+export const BITCOIN_GECKO_ID = 'bitcoin'
 
 export const GAS_LIMIT_MULTIPLIER = 1.2
 export const ZERO: BigNumber = new BigNumber(0)
@@ -29,3 +30,14 @@ export const DEFAULT_GAS_PRICE = new BigNumber(6).times(GWEI_IN_WEI)
 
 export const BIG_NUMBER_ROUND_DOWN_MODE = BigNumberInBase.ROUND_DOWN
 export const BIG_NUMBER_ROUND_UP_MODE = BigNumberInBase.ROUND_UP
+
+export const INJ_FEE_BUFFER = 0.01
+export const BRIDGE_FEE_IN_USD = 10
+
+// eslint-disable-next-line prefer-regex-literals
+export const NUMBER_REGEX = new RegExp(/^-?(0|[1-9]\d*)?(\.\d+)?$/)
+
+export const PEGGY_GRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet'
+export const PEGGY_TESTNET_GRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-kovan'

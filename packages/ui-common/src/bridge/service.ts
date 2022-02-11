@@ -6,6 +6,7 @@ import { subHours, format } from 'date-fns'
 import {
   computeLatestTransactions,
   getLatestSelectedTransaction,
+  getPeggoGraphQlEndpoint,
 } from './utils'
 import { ExchangeMetrics, AccountMetrics } from '../types/metrics'
 import { ApolloConsumer } from './gql/client'
@@ -17,10 +18,12 @@ export class BridgeService extends BaseService {
 
   protected apolloConsumer: ApolloConsumer
 
-  constructor(options: ServiceOptions, peggyGraphQlEndpoint: string) {
+  constructor(options: ServiceOptions) {
     super(options)
-    this.consumer = new BridgeTransactionConsumer(options.endpoints.exchangeApi)
-    this.apolloConsumer = new ApolloConsumer(peggyGraphQlEndpoint)
+    this.consumer = new BridgeTransactionConsumer(this.endpoints.exchangeApi)
+    this.apolloConsumer = new ApolloConsumer(
+      getPeggoGraphQlEndpoint(options.network),
+    )
   }
 
   static computeLatestTransactions = computeLatestTransactions

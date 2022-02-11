@@ -1,13 +1,18 @@
+import { getUrlEndpointForNetwork } from '@injectivelabs/networks'
 import { MetricsProvider } from './providers/MetricsProvider'
-import { ServiceOptions } from './types'
+import { ServiceOptions, ServiceOptionsEndpoints } from './types'
 
 export abstract class BaseService {
   protected options: ServiceOptions
+
+  protected endpoints: ServiceOptionsEndpoints
 
   protected metricsProvider: MetricsProvider | undefined
 
   constructor(options: ServiceOptions) {
     this.options = options
+    this.endpoints =
+      options.endpoints || getUrlEndpointForNetwork(options.network)
 
     if (options.metrics) {
       this.metricsProvider = new MetricsProvider(options.metrics)

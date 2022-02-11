@@ -74,6 +74,11 @@ export interface BankBalanceWithTokenMetaDataAndBalanceInBase {
   token: TokenWithBalance
 }
 
+export interface BankBalanceWithTokenMetaDataAndBalanceWithUsdBalance
+  extends BankBalanceWithTokenMetaDataAndBalance {
+  balanceInUsd: BigNumberInBase
+}
+
 export interface IbcBankBalanceWithTokenMetaData
   extends BankBalanceWithTokenMetaData {
   baseDenom: string

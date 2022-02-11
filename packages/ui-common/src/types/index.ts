@@ -7,6 +7,12 @@ export * from './cosmos'
 export * from './common'
 export * from './peggy'
 
+export interface ServiceOptionsEndpoints {
+  exchangeApi: string
+  sentryGrpcApi: string
+  sentryHttpApi: string
+}
+
 export interface ServiceOptions {
   chainId: ChainId
   network: Network
@@ -15,11 +21,7 @@ export interface ServiceOptions {
         region: string
       }
     | undefined
-  endpoints: {
-    exchangeApi: string
-    sentryGrpcApi: string
-    sentryHttpApi: string
-  }
+  endpoints?: ServiceOptionsEndpoints
 }
 
 export interface ServiceActionOptions {

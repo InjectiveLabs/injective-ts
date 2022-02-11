@@ -6,6 +6,7 @@ import {
   BridgingNetwork,
   MintScanExplorerUrl,
 } from './types'
+import { PEGGY_GRAPH_URL, PEGGY_TESTNET_GRAPH_URL } from '../constants'
 
 const sameTxHash = (txHashOne: string, txHashTwo: string) =>
   txHashOne &&
@@ -171,6 +172,32 @@ export const getTerraExplorerUrl = (network: Network): string => {
     default:
       return 'https://finder.terra.money/mainnet'
   }
+}
+
+export const getPeggoGraphQlEndpoint = (network: Network): string => {
+  if (
+    [
+      Network.Mainnet,
+      Network.MainnetK8s,
+      Network.Public,
+      Network.MainnetOld,
+      Network.MainnetStaging,
+      Network.Staging,
+    ].includes(network)
+  ) {
+    return PEGGY_GRAPH_URL
+  }
+
+  if ([Network.Testnet, Network.TestnetK8s].includes(network)) {
+    return PEGGY_TESTNET_GRAPH_URL
+  }
+
+  // TODO
+  if ([Network.Devnet].includes(network)) {
+    return PEGGY_TESTNET_GRAPH_URL
+  }
+
+  return ''
 }
 
 export const computeLatestTransactions = ({

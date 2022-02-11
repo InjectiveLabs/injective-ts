@@ -13,7 +13,7 @@ export class BankService extends BaseService {
 
   constructor(options: ServiceOptions) {
     super(options)
-    this.consumer = new BankConsumer(options.endpoints.sentryGrpcApi)
+    this.consumer = new BankConsumer(this.endpoints.sentryGrpcApi)
   }
 
   async fetchBalances(injectiveAddress: string) {

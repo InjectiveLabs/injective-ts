@@ -20,11 +20,11 @@ export class SpotService extends BaseService {
 
   constructor(options: ServiceOptions) {
     super(options)
-    this.consumer = new SpotMarketConsumer(options.endpoints.sentryGrpcApi)
+    this.consumer = new SpotMarketConsumer(this.endpoints.exchangeApi)
     this.chronosConsumer = new SpotMarketChronosConsumer(
-      `${options.endpoints.exchangeApi}/api`,
+      `${this.endpoints.exchangeApi}/api`,
     )
-    this.oracleConsumer = new OracleConsumer(options.endpoints.exchangeApi)
+    this.oracleConsumer = new OracleConsumer(this.endpoints.exchangeApi)
   }
 
   async fetchMarkets(): Promise<UiBaseSpotMarket[]> {

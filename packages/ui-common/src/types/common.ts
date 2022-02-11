@@ -40,3 +40,8 @@ export interface UiOrderbookPriceLevel {
   aggregatePrices?: string[]
   aggregatedPrice?: string
 }
+
+export interface UiOrderbookSummary {
+  quantity: BigNumberInBase
+  total: BigNumberInBase
+}

@@ -21,13 +21,11 @@ export class DerivativeService extends BaseService {
 
   constructor(options: ServiceOptions) {
     super(options)
-    this.consumer = new DerivativeMarketConsumer(
-      options.endpoints.sentryGrpcApi,
-    )
+    this.consumer = new DerivativeMarketConsumer(this.endpoints.exchangeApi)
     this.chronosConsumer = new DerivativeMarketChronosConsumer(
-      `${options.endpoints.exchangeApi}/api`,
+      `${this.endpoints.exchangeApi}/api`,
     )
-    this.oracleConsumer = new OracleConsumer(options.endpoints.exchangeApi)
+    this.oracleConsumer = new OracleConsumer(this.endpoints.exchangeApi)
   }
 
   async fetchMarkets(): Promise<UiBaseDerivativeMarket[]> {

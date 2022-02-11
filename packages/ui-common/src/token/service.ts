@@ -33,8 +33,8 @@ export class TokenService extends BaseService {
 
   constructor(options: ServiceOptions) {
     super(options)
-    this.ibcConsumer = new IBCConsumer(options.endpoints.sentryGrpcApi)
-    this.erc20TokenMeta = Erc20TokenMetaFactory.make(options.network)
+    this.ibcConsumer = new IBCConsumer(this.endpoints.sentryGrpcApi)
+    this.erc20TokenMeta = Erc20TokenMetaFactory.make(this.options.network)
   }
 
   async fetchDenomTrace(denom: string) {

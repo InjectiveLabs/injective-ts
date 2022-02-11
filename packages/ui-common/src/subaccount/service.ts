@@ -13,7 +13,7 @@ export class SubaccountService extends BaseService {
 
   constructor(options: ServiceOptions) {
     super(options)
-    this.consumer = new SubaccountConsumer(options.endpoints.sentryGrpcApi)
+    this.consumer = new SubaccountConsumer(this.endpoints.exchangeApi)
   }
 
   async fetchSubaccounts(address: string): Promise<string[]> {
