@@ -5,6 +5,11 @@ export interface UiCoin {
   amount: string
 }
 
+export interface UiSupplyCoinForSelect extends UiCoin {
+  code: string
+  label: string
+}
+
 export enum Change {
   New = 'new',
   NoChange = 'no-change',

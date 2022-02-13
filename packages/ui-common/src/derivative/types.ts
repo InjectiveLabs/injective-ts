@@ -14,15 +14,15 @@ import { Change, MarketBase, MarketType } from '../types/common'
 export interface UiBaseDerivativeMarket
   extends Omit<BaseUiDerivativeMarket, 'quoteToken'> {}
 
-export interface UiBaseDerivativeMarketWithTokenMeta
+export interface UiBaseDerivativeMarketWithToken
   extends UiBaseDerivativeMarket {
   slug: string
   quoteToken: Token
   baseToken: Token
 }
 
-export interface UiDerivativeMarketWithTokenMeta
-  extends UiBaseDerivativeMarketWithTokenMeta {
+export interface UiDerivativeMarketWithToken
+  extends UiBaseDerivativeMarketWithToken {
   priceDecimals: number
   quantityDecimals: number
   type: MarketType

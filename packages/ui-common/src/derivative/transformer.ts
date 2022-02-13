@@ -2,15 +2,15 @@ import { BigNumber, BigNumberInBase } from '@injectivelabs/utils'
 import { MarketType, Change } from '../types'
 import { getDecimalsFromNumber } from '../utils'
 import {
-  UiBaseDerivativeMarketWithTokenMeta,
+  UiBaseDerivativeMarketWithToken,
   UiDerivativeMarketSummary,
-  UiDerivativeMarketWithTokenMeta,
+  UiDerivativeMarketWithToken,
 } from './types'
 import { derivativeOrderTypeToGrpcOrderType } from './utils'
 
 export const derivativeMarketToUiDerivativeMarket = (
-  market: UiBaseDerivativeMarketWithTokenMeta,
-): UiDerivativeMarketWithTokenMeta => ({
+  market: UiBaseDerivativeMarketWithToken,
+): UiDerivativeMarketWithToken => ({
   ...market,
   type: MarketType.Derivative,
   subType: MarketType.Perpetual,
@@ -89,7 +89,7 @@ export const derivativeMarketsSummaryComparisons = (
 }
 
 export const derivativeMarketsToUiSpotMarkets = (
-  markets: UiBaseDerivativeMarketWithTokenMeta[],
+  markets: UiBaseDerivativeMarketWithToken[],
 ) => markets.map(derivativeMarketToUiDerivativeMarket)
 
 export class DerivativeTransformer {

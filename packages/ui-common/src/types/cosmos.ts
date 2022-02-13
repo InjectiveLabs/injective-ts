@@ -1,7 +1,6 @@
 import { Token } from '../token/types'
 
-export interface TokenMetaWithDenomAndPrice extends Token {
-  denom: string
+export interface TokenAndPrice extends Token {
   usdPrice: number
 }
 

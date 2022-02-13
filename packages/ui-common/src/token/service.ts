@@ -6,21 +6,20 @@ import {
 import { IBCConsumer } from '@injectivelabs/chain-consumer'
 import {
   UiBaseDerivativeMarket,
-  UiBaseDerivativeMarketWithTokenMeta,
+  UiBaseDerivativeMarketWithToken,
 } from '../derivative/types'
-import { UiBaseSpotMarket, UiBaseSpotMarketWithTokenMeta } from '../spot/types'
+import { UiBaseSpotMarket, UiBaseSpotMarketWithToken } from '../spot/types'
 import { INJ_DENOM } from '../constants'
-import { ServiceOptions, ChainMetrics } from '../types'
+import { ServiceOptions, ChainMetrics, UiSupplyCoinForSelect } from '../types'
 import { TokenTransformer } from './transformer'
 import { BankBalances, UiSupplyCoin } from '../bank/types'
 import {
-  BankBalanceWithTokenMetaData,
-  IbcBankBalanceWithTokenMetaData,
+  BankBalanceWithToken,
+  IbcBankBalanceWithToken,
   IbcToken,
   Token,
-  UiSupplyCoinForSelect,
-  SubaccountBalanceWithTokenMetaData,
-  UiBridgeTransactionWithTokenMeta,
+  SubaccountBalanceWithToken,
+  UiBridgeTransactionWithToken,
 } from './types'
 import { UiSubaccountBalance } from '../subaccount/types'
 import { BaseService } from '../BaseService'
@@ -166,14 +165,14 @@ export class TokenService extends BaseService {
     ).filter((token) => token)
   }
 
-  async getBalancesWithTokenMetaData(
+  async getBalancesWithTokenData(
     balances: BankBalances,
     ibcBalances: BankBalances,
   ): Promise<{
-    bankBalancesWithTokenMeta: BankBalanceWithTokenMetaData[]
-    ibcBankBalancesWithTokenMeta: IbcBankBalanceWithTokenMetaData[]
+    bankBalancesWithToken: BankBalanceWithToken[]
+    ibcBankBalancesWithToken: IbcBankBalanceWithToken[]
   }> {
-    const bankBalancesWithTokenMeta = Object.keys(balances)
+    const bankBalancesWithToken = Object.keys(balances)
       .map((denom) => ({
         denom,
         balance: balances[denom],
@@ -184,9 +183,9 @@ export class TokenService extends BaseService {
       }))
       .filter(
         (balance) => balance.token !== undefined,
-      ) as BankBalanceWithTokenMetaData[]
+      ) as BankBalanceWithToken[]
 
-    const ibcBankBalancesWithTokenMeta = (
+    const ibcBankBalancesWithToken = (
       await Promise.all(
         Object.keys(ibcBalances).map(async (denom) => {
           const { baseDenom, path } = await this.fetchDenomTrace(denom)
@@ -203,11 +202,11 @@ export class TokenService extends BaseService {
       )
     ).filter(
       (balance) => balance.token !== undefined,
-    ) as IbcBankBalanceWithTokenMetaData[]
+    ) as IbcBankBalanceWithToken[]
 
     return {
-      bankBalancesWithTokenMeta,
-      ibcBankBalancesWithTokenMeta,
+      bankBalancesWithToken,
+      ibcBankBalancesWithToken,
     }
   }
 
@@ -244,9 +243,9 @@ export class TokenService extends BaseService {
     }
   }
 
-  async getSubaccountBalanceWithTokenMeta(
+  async getSubaccountBalanceWithToken(
     balance: UiSubaccountBalance,
-  ): Promise<SubaccountBalanceWithTokenMetaData> {
+  ): Promise<SubaccountBalanceWithToken> {
     const token = TokenTransformer.tokenMetaToToken(
       await this.getAnyDenomTokenMeta(balance.denom),
       balance.denom,
@@ -260,21 +259,21 @@ export class TokenService extends BaseService {
     }
   }
 
-  async getSubaccountBalancesWithTokenMeta(
+  async getSubaccountBalancesWithToken(
     balances: UiSubaccountBalance[],
-  ): Promise<SubaccountBalanceWithTokenMetaData[]> {
+  ): Promise<SubaccountBalanceWithToken[]> {
     return (
       await Promise.all(
-        balances.map(this.getSubaccountBalanceWithTokenMeta.bind(this)),
+        balances.map(this.getSubaccountBalanceWithToken.bind(this)),
       )
     ).filter(
       (balance) => balance.token !== undefined,
-    ) as SubaccountBalanceWithTokenMetaData[]
+    ) as SubaccountBalanceWithToken[]
   }
 
-  async getSpotMarketWithTokenMeta(
+  async getSpotMarketWithToken(
     market: UiBaseSpotMarket,
-  ): Promise<UiBaseSpotMarketWithTokenMeta> {
+  ): Promise<UiBaseSpotMarketWithToken> {
     const slug = market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
 
     const baseToken = TokenTransformer.tokenMetaToToken(
@@ -299,23 +298,23 @@ export class TokenService extends BaseService {
       slug,
       baseToken,
       quoteToken,
-    } as UiBaseSpotMarketWithTokenMeta
+    } as UiBaseSpotMarketWithToken
   }
 
-  async getSpotMarketsWithTokenMeta(
+  async getSpotMarketsWithToken(
     markets: UiBaseSpotMarket[],
-  ): Promise<UiBaseSpotMarketWithTokenMeta[]> {
+  ): Promise<UiBaseSpotMarketWithToken[]> {
     return (
-      await Promise.all(markets.map(this.getSpotMarketWithTokenMeta.bind(this)))
+      await Promise.all(markets.map(this.getSpotMarketWithToken.bind(this)))
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
-    ) as UiBaseSpotMarketWithTokenMeta[]
+    ) as UiBaseSpotMarketWithToken[]
   }
 
-  async getDerivativeMarketWithTokenMeta(
+  async getDerivativeMarketWithToken(
     market: UiBaseDerivativeMarket,
-  ): Promise<UiBaseDerivativeMarketWithTokenMeta> {
+  ): Promise<UiBaseDerivativeMarketWithToken> {
     const slug = market.ticker
       .replace('/', '-')
       .replaceAll(' ', '-')
@@ -339,30 +338,30 @@ export class TokenService extends BaseService {
       slug,
       baseToken,
       quoteToken,
-    } as UiBaseDerivativeMarketWithTokenMeta
+    } as UiBaseDerivativeMarketWithToken
   }
 
-  async getDerivativeMarketsWithTokenMeta(
+  async getDerivativeMarketsWithToken(
     markets: UiBaseDerivativeMarket[],
-  ): Promise<UiBaseDerivativeMarketWithTokenMeta[]> {
+  ): Promise<UiBaseDerivativeMarketWithToken[]> {
     return (
       await Promise.all(
-        markets.map(this.getDerivativeMarketWithTokenMeta.bind(this)),
+        markets.map(this.getDerivativeMarketWithToken.bind(this)),
       )
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
-    ) as UiBaseDerivativeMarketWithTokenMeta[]
+    ) as UiBaseDerivativeMarketWithToken[]
   }
 
-  async getBridgeTransactionWithTokenMeta(
+  async getBridgeTransactionWithToken(
     transaction: UiBridgeTransaction,
-  ): Promise<UiBridgeTransactionWithTokenMeta> {
+  ): Promise<UiBridgeTransactionWithToken> {
     const transactionExists =
       transaction && transaction.denom && Object.keys(transaction).length > 0
 
     if (!transactionExists) {
-      return {} as UiBridgeTransactionWithTokenMeta
+      return {} as UiBridgeTransactionWithToken
     }
 
     const tokenFromSymbol = this.getTokenMetaDataBySymbol(
@@ -386,15 +385,15 @@ export class TokenService extends BaseService {
     }
   }
 
-  async getBridgeTransactionsWithTokenMeta(
+  async getBridgeTransactionsWithToken(
     transactions: UiBridgeTransaction[],
-  ): Promise<UiBridgeTransactionWithTokenMeta[]> {
+  ): Promise<UiBridgeTransactionWithToken[]> {
     return (
       await Promise.all(
-        transactions.map(this.getBridgeTransactionWithTokenMeta.bind(this)),
+        transactions.map(this.getBridgeTransactionWithToken.bind(this)),
       )
     ).filter(
       (transaction) => transaction && transaction.token !== undefined,
-    ) as UiBridgeTransactionWithTokenMeta[]
+    ) as UiBridgeTransactionWithToken[]
   }
 }

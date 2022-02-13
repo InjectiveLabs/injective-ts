@@ -6,15 +6,15 @@ import {
 import { Change, MarketType } from '../types'
 import { getDecimalsFromNumber } from '../utils'
 import {
-  UiBaseSpotMarketWithTokenMeta,
-  UiSpotMarketWithTokenMeta,
+  UiBaseSpotMarketWithToken,
+  UiSpotMarketWithToken,
   UiSpotMarketSummary,
 } from './types'
 import { spotOrderTypeToGrpcOrderType } from './utils'
 
 export const spotMarketToUiSpotMarket = (
-  market: UiBaseSpotMarketWithTokenMeta,
-): UiSpotMarketWithTokenMeta => ({
+  market: UiBaseSpotMarketWithToken,
+): UiSpotMarketWithToken => ({
   ...market,
   type: MarketType.Spot,
   subType: MarketType.Spot,
@@ -94,7 +94,7 @@ export const spotMarketsSummaryComparisons = (
 }
 
 export const spotMarketsToUiSpotMarkets = (
-  markets: UiBaseSpotMarketWithTokenMeta[],
+  markets: UiBaseSpotMarketWithToken[],
 ) => markets.map(spotMarketToUiSpotMarket)
 
 export class SpotTransformer {

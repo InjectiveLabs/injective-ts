@@ -32,8 +32,7 @@ export interface UiSubaccountTransfer
   denom: string
 }
 
-export interface UiSubaccountTransferWithTokenMeta
-  extends UiSubaccountTransfer {
+export interface UiSubaccountTransferWithToken extends UiSubaccountTransfer {
   token: Token
 }
 

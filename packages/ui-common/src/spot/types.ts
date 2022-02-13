@@ -13,14 +13,13 @@ import { Change, MarketBase, MarketType } from '../types/common'
 export interface UiBaseSpotMarket
   extends Omit<BaseUiSpotMarket, 'quoteToken' | 'baseToken'> {}
 
-export interface UiBaseSpotMarketWithTokenMeta extends UiBaseSpotMarket {
+export interface UiBaseSpotMarketWithToken extends UiBaseSpotMarket {
   quoteToken: Token
   baseToken: Token
   slug: string
 }
 
-export interface UiSpotMarketWithTokenMeta
-  extends UiBaseSpotMarketWithTokenMeta {
+export interface UiSpotMarketWithToken extends UiBaseSpotMarketWithToken {
   priceDecimals: number
   quantityDecimals: number
   type: MarketType
