@@ -20,9 +20,7 @@ export const denomAmountToChainDenomAmount = ({
 }: {
   value: number | string | BigNumber
   decimals?: number | string
-}) => {
-  new BigNumber(value).multipliedBy(new BigNumber(10).pow(decimals))
-}
+}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(decimals))
 
 /**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -34,9 +32,7 @@ export const denomAmountFromChainDenomAmount = ({
 }: {
   value: number | string | BigNumber
   decimals?: number | string
-}) => {
-  new BigNumber(value).dividedBy(new BigNumber(10).pow(decimals))
-}
+}) => new BigNumber(value).dividedBy(new BigNumber(10).pow(decimals))
 
 /**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
@@ -48,9 +44,7 @@ export const derivativeMarginToChainMargin = ({
 }: {
   value: number | string | BigNumber
   quoteDecimals?: number | string
-}) => {
-  new BigNumber(value).multipliedBy(new BigNumber(10).pow(quoteDecimals))
-}
+}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(quoteDecimals))
 
 /**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -62,9 +56,7 @@ export const derivativeMarginFromChainMargin = ({
 }: {
   value: number | string | BigNumber
   quoteDecimals?: number | string
-}) => {
-  new BigNumber(value).dividedBy(new BigNumber(10).pow(quoteDecimals))
-}
+}) => new BigNumber(value).dividedBy(new BigNumber(10).pow(quoteDecimals))
 
 /**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
@@ -76,9 +68,7 @@ export const derivativePriceToChainPrice = ({
 }: {
   value: number | string | BigNumber
   quoteDecimals?: number | string
-}) => {
-  new BigNumber(value).multipliedBy(new BigNumber(10).pow(quoteDecimals))
-}
+}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(quoteDecimals))
 
 /**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -90,9 +80,7 @@ export const derivativePriceFromChainPrice = ({
 }: {
   value: number | string | BigNumber
   quoteDecimals?: number | string
-}) => {
-  new BigNumber(value).dividedBy(new BigNumber(10).pow(quoteDecimals))
-}
+}) => new BigNumber(value).dividedBy(new BigNumber(10).pow(quoteDecimals))
 
 /**
  * Amount that the chain requires is in the x format
@@ -114,11 +102,10 @@ export const spotPriceToChainPrice = ({
   value: number | string | BigNumber
   quoteDecimals?: number | string
   baseDecimals?: number | string
-}) => {
+}) =>
   new BigNumber(value).multipliedBy(
     new BigNumber(10).pow(new BigNumber(quoteDecimals).minus(baseDecimals)),
   )
-}
 
 /**
  * Amount that the chain returns is in the x / 10^(quoteDecimals - baseDecimals) format
@@ -132,11 +119,10 @@ export const spotPriceFromChainPrice = ({
   value: number | string | BigNumber
   quoteDecimals?: number | string
   baseDecimals?: number | string
-}) => {
+}) =>
   new BigNumber(value).dividedBy(
     new BigNumber(10).pow(new BigNumber(quoteDecimals).minus(baseDecimals)),
   )
-}
 
 /**
  * Amount that the chain requires is in the x * 10^(baseDecimals) format
@@ -148,9 +134,7 @@ export const spotQuantityToChainQuantity = ({
 }: {
   value: number | string | BigNumber
   baseDecimals?: number | string
-}) => {
-  new BigNumber(value).multipliedBy(new BigNumber(10).pow(baseDecimals))
-}
+}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(baseDecimals))
 
 /**
  * Amount that the chain returns is in the x * 10^(baseDecimals) format
@@ -162,6 +146,4 @@ export const spotQuantityFromChainQuantity = ({
 }: {
   value: number | string | BigNumber
   baseDecimals?: number | string
-}) => {
-  new BigNumber(value).multipliedBy(new BigNumber(10).pow(baseDecimals))
-}
+}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(baseDecimals))

@@ -14,7 +14,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "removeComments": true,
+    "removeComments": false,
     "composite": true,
     "declaration": true,
     "declarationMap": true,
