@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.38...@injectivelabs/ui-common@0.0.39) (2022-02-13)
+
+
+### Bug Fixes
+
+* casting ([1abb1fe](https://github.com/InjectiveLabs/injective-ts/commit/1abb1fe02609d813b8c9b7901cbb9f7dcbb4bb96))
+
+
+
+
+
 ## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.37...@injectivelabs/ui-common@0.0.38) (2022-02-13)
 
 **Note:** Version bump only for package @injectivelabs/ui-common

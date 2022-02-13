@@ -1,5 +1,5 @@
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
+import { BigNumberInWei } from '@injectivelabs/utils'
 import { SpotMarketComposer, SpotOrderSide } from '@injectivelabs/spot-consumer'
 import { BaseActionService } from '../BaseActionService'
 import { SpotMetrics } from '../types'
@@ -89,8 +89,8 @@ export class SpotActionService extends BaseActionService {
     subaccountId,
     triggerPrice = ZERO_TO_STRING,
   }: {
-    quantity: BigNumberInBase
-    price: BigNumberInBase
+    quantity: string
+    price: string
     orderType: SpotOrderSide
     subaccountId: string
     feeRecipient: string
