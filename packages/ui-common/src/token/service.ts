@@ -87,16 +87,10 @@ export class TokenService extends BaseService {
     return erc20TokenMeta.getMetaBySymbol(symbol)
   }
 
-  async getAnyDenomTokenMeta(denom: string): Promise<TokenMeta | undefined> {
+  async getDenomTokenMeta(denom: string): Promise<TokenMeta | undefined> {
     return denom.startsWith('ibc/')
       ? this.getIbcDenomTokenMeta(denom)
       : this.getPeggyDenomTokenMeta(denom)
-  }
-
-  async getDenomToken(denom: string): Promise<Token> {
-    const tokenMeta = await this.getAnyDenomTokenMeta(denom)
-
-    return TokenTransformer.tokenMetaToToken(tokenMeta, denom) as Token
   }
 
   async getPeggyDenomToken(denom: string): Promise<Token> {
@@ -118,10 +112,26 @@ export class TokenService extends BaseService {
     } as IbcToken
   }
 
-  async getCoinToken(coin: UiSupplyCoin): Promise<Token> {
-    const tokenMeta = await this.getAnyDenomTokenMeta(coin.denom)
+  async getDenomToken(denom: string): Promise<Token> {
+    const tokenMeta = await (denom.startsWith('ibc/')
+      ? this.getIbcDenomToken(denom)
+      : this.getPeggyDenomToken(denom))
 
-    return TokenTransformer.tokenMetaToToken(tokenMeta, coin.denom) as Token
+    return TokenTransformer.tokenMetaToToken(tokenMeta, denom) as Token
+  }
+
+  async getDenomTokenThrow(denom: string): Promise<Token> {
+    const tokenMeta = await this.getDenomToken(denom)
+
+    if (!tokenMeta) {
+      throw new Error(`Token meta for ${denom} denom does not exist`)
+    }
+
+    return TokenTransformer.tokenMetaToToken(tokenMeta, denom) as Token
+  }
+
+  async getCoinToken(coin: UiSupplyCoin): Promise<Token> {
+    return this.getDenomToken(coin.denom)
   }
 
   async getPeggyCoinToken(coin: UiSupplyCoin): Promise<Token> {
@@ -172,31 +182,27 @@ export class TokenService extends BaseService {
     bankBalancesWithToken: BankBalanceWithToken[]
     ibcBankBalancesWithToken: IbcBankBalanceWithToken[]
   }> {
-    const bankBalancesWithToken = Object.keys(balances)
-      .map((denom) => ({
-        denom,
-        balance: balances[denom],
-        token: TokenTransformer.tokenMetaToToken(
-          this.getPeggyDenomTokenMeta(denom),
+    const bankBalancesWithToken = (
+      await Promise.all(
+        Object.keys(balances).map(async (denom) => ({
           denom,
-        ),
-      }))
-      .filter(
-        (balance) => balance.token !== undefined,
-      ) as BankBalanceWithToken[]
+          balance: balances[denom],
+          token: await this.getPeggyDenomToken(denom),
+        })),
+      )
+    ).filter((balance) => balance.token !== undefined) as BankBalanceWithToken[]
 
     const ibcBankBalancesWithToken = (
       await Promise.all(
         Object.keys(ibcBalances).map(async (denom) => {
           const { baseDenom, path } = await this.fetchDenomTrace(denom)
-          const tokenMeta = this.getTokenMetaDataBySymbol(baseDenom)
 
           return {
             denom,
             baseDenom,
             balance: ibcBalances[denom],
             channelId: path.replace('transfer/', ''),
-            token: TokenTransformer.tokenMetaToToken(tokenMeta, denom),
+            token: await this.getIbcDenomToken(denom),
           }
         }),
       )
@@ -223,7 +229,7 @@ export class TokenService extends BaseService {
     const appendLabel = async (
       coin: UiSupplyCoin,
     ): Promise<UiSupplyCoinForSelect> => {
-      const tokenMeta = await this.getAnyDenomTokenMeta(coin.denom)
+      const tokenMeta = await this.getDenomTokenMeta(coin.denom)
 
       return {
         ...coin,
@@ -246,13 +252,8 @@ export class TokenService extends BaseService {
   async getSubaccountBalanceWithToken(
     balance: UiSubaccountBalance,
   ): Promise<SubaccountBalanceWithToken> {
-    const token = TokenTransformer.tokenMetaToToken(
-      await this.getAnyDenomTokenMeta(balance.denom),
-      balance.denom,
-    ) as Token
-
     return {
-      token,
+      token: await this.getDenomToken(balance.denom),
       denom: balance.denom,
       availableBalance: balance.availableBalance,
       totalBalance: balance.totalBalance,
@@ -276,14 +277,8 @@ export class TokenService extends BaseService {
   ): Promise<UiBaseSpotMarketWithToken> {
     const slug = market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
 
-    const baseToken = TokenTransformer.tokenMetaToToken(
-      await this.getAnyDenomTokenMeta(market.baseDenom),
-      market.baseDenom,
-    )
-    const quoteToken = TokenTransformer.tokenMetaToToken(
-      await this.getAnyDenomTokenMeta(market.quoteDenom),
-      market.quoteDenom,
-    )
+    const baseToken = await this.getDenomToken(market.baseDenom)
+    const quoteToken = await this.getDenomToken(market.quoteDenom)
 
     if (baseToken && !baseToken.coinGeckoId) {
       baseToken.coinGeckoId = this.getCoinGeckoId(baseToken.symbol)
@@ -324,10 +319,7 @@ export class TokenService extends BaseService {
       this.getTokenMetaDataBySymbol(baseTokenSymbol),
       baseTokenSymbol,
     )
-    const quoteToken = TokenTransformer.tokenMetaToToken(
-      await this.getAnyDenomTokenMeta(market.quoteDenom),
-      market.quoteDenom,
-    )
+    const quoteToken = await this.getDenomToken(market.quoteDenom)
 
     if (quoteToken && !quoteToken.coinGeckoId) {
       quoteToken.coinGeckoId = this.getCoinGeckoId(quoteToken.symbol)
@@ -375,7 +367,7 @@ export class TokenService extends BaseService {
       }
     }
 
-    const tokenFromDenom = (await this.getAnyDenomTokenMeta(
+    const tokenFromDenom = (await this.getDenomToken(
       transaction.denom,
     )) as Token
 
