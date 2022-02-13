@@ -165,7 +165,7 @@ export class TokenService extends BaseService {
     ).filter((token) => token)
   }
 
-  async getBalancesWithTokenData(
+  async getBalancesWithToken(
     balances: BankBalances,
     ibcBalances: BankBalances,
   ): Promise<{
