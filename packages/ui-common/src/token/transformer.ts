@@ -28,7 +28,7 @@ export const tokenMetaToToken = (
 
   return {
     denom,
-    icon,
+    logo: icon,
     symbol: tokenMeta.symbol,
     name: tokenMeta.name,
     decimals: tokenMeta.decimals,
@@ -50,7 +50,7 @@ export const grpcTokenMetaToToken = (
     coinGeckoId: '', // TODO
     symbol: tokenMeta.symbol,
     name: tokenMeta.name,
-    icon: tokenMeta.logo,
+    logo: tokenMeta.logo,
     decimals: tokenMeta.decimals,
     address: tokenMeta.address,
   }

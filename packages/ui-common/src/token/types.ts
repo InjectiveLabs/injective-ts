@@ -1,4 +1,4 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { TokenMeta } from '@injectivelabs/token-metadata'
 import { UiBridgeTransaction } from '../bridge/types'
 import { UiCoin } from '../types/common'
 
@@ -6,18 +6,13 @@ export type TokenAddress = string
 export type TokenAssetData = string
 export type TokenSymbol = string
 
-interface Base {
-  symbol: string
-  name: string
-  icon?: string
-  logo?: string
-  decimals: number
-}
-
-export interface Token extends Base {
-  address: string
+/**
+ * Token is an interface that includes the denom
+ * alongside the TokenMeta (name, decimals, symbol, etc)
+ */
+export interface Token extends TokenMeta {
   denom: string
-  coinGeckoId: string
+  isIbc?: boolean
 }
 
 export interface IbcToken extends Token {
@@ -25,26 +20,17 @@ export interface IbcToken extends Token {
   channelId: string
 }
 
-export interface TokenWithBalance extends Base {
-  address: string
-  denom: string
-  balance: string // BigNumberInWei
-  allowance: string // BigNumberInWei
-  coinGeckoId: string
+export interface TokenWithBalance extends Token {
+  balance: string
+  allowance: string
 }
 
 export interface TokenWithUsdPrice extends Token {
   usdPrice: number
 }
 
-export interface TokenWithBalanceAndPrice extends Base {
-  address: string
-  denom: string
-  isIbc?: boolean
-  balance: string // BigNumberInWei
-  allowance: string // BigNumberInWei
+export interface TokenWithBalanceAndPrice extends TokenWithBalance {
   usdPrice: number
-  coinGeckoId: string
 }
 
 export interface GrpcTokenMeta {
@@ -69,14 +55,14 @@ export interface BankBalanceWithTokenMetaDataAndBalance {
 }
 
 export interface BankBalanceWithTokenMetaDataAndBalanceInBase {
-  balance: BigNumberInBase
+  balance: string
   denom: string
   token: TokenWithBalance
 }
 
 export interface BankBalanceWithTokenMetaDataAndBalanceWithUsdBalance
   extends BankBalanceWithTokenMetaDataAndBalance {
-  balanceInUsd: BigNumberInBase
+  balanceInUsd: string
 }
 
 export interface IbcBankBalanceWithTokenMetaData
@@ -96,12 +82,19 @@ export interface SubaccountBalanceWithTokenMetaData {
   availableBalance: string
   totalBalance: string
   denom: string
+  token: Token
+}
+
+export interface SubaccountBalanceWithTokenMetaDataAndBalance {
+  availableBalance: string
+  totalBalance: string
+  denom: string
   token: TokenWithBalance
 }
 
 export interface SubaccountBalanceWithTokenMetaDataWithUsdBalance
   extends SubaccountBalanceWithTokenMetaData {
-  balanceInUsd: BigNumberInBase
+  balanceInUsd: string
 }
 
 export interface UiSupplyCoinForSelect extends UiCoin {

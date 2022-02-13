@@ -55,19 +55,19 @@ export class TokenService extends BaseService {
     }
   }
 
-  getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
-    const { erc20TokenMeta } = this
-
-    return erc20TokenMeta.getMetaBySymbol(symbol)
-  }
-
   getCoinGeckoId(symbol: string): string {
     const { erc20TokenMeta } = this
 
     return erc20TokenMeta.getCoinGeckoIdFromSymbol(symbol)
   }
 
-  getTokenMetaData(denom: string): TokenMeta | undefined {
+  getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
+    const { erc20TokenMeta } = this
+
+    return erc20TokenMeta.getMetaBySymbol(symbol)
+  }
+
+  getPeggyDenomTokenMeta(denom: string): TokenMeta | undefined {
     const { erc20TokenMeta } = this
 
     if (denom.toLowerCase() === INJ_DENOM) {
@@ -81,27 +81,89 @@ export class TokenService extends BaseService {
     return erc20TokenMeta.getMetaByAddress(address)
   }
 
-  async getIbcTokenMetaData(denom: string): Promise<TokenMeta | undefined> {
+  async getIbcDenomTokenMeta(denom: string): Promise<TokenMeta | undefined> {
     const { erc20TokenMeta } = this
     const { baseDenom: symbol } = await this.fetchDenomTrace(denom)
 
     return erc20TokenMeta.getMetaBySymbol(symbol)
   }
 
-  async getTokenMetaDataWithIbc(denom: string): Promise<TokenMeta | undefined> {
+  async getAnyDenomTokenMeta(denom: string): Promise<TokenMeta | undefined> {
     return denom.startsWith('ibc/')
-      ? this.getIbcTokenMetaData(denom)
-      : this.getTokenMetaData(denom)
+      ? this.getIbcDenomTokenMeta(denom)
+      : this.getPeggyDenomTokenMeta(denom)
   }
 
-  async getSupplyWithTokenMeta(supply: UiSupplyCoin[]): Promise<Token[]> {
-    return supply
-      .map(({ denom }: UiSupplyCoin) => {
-        const tokenMeta = this.getTokenMetaData(denom)
+  async getDenomToken(denom: string): Promise<Token> {
+    const tokenMeta = await this.getAnyDenomTokenMeta(denom)
 
-        return TokenTransformer.tokenMetaToToken(tokenMeta, denom)
-      })
-      .filter((token) => token) as Token[]
+    return TokenTransformer.tokenMetaToToken(tokenMeta, denom) as Token
+  }
+
+  async getPeggyDenomToken(denom: string): Promise<Token> {
+    const tokenMeta = await this.getPeggyDenomTokenMeta(denom)
+
+    return Promise.resolve(
+      TokenTransformer.tokenMetaToToken(tokenMeta, denom) as Token,
+    )
+  }
+
+  async getIbcDenomToken(denom: string): Promise<IbcToken> {
+    const { baseDenom, path } = await this.fetchDenomTrace(denom)
+    const tokenMeta = this.getTokenMetaDataBySymbol(baseDenom)
+
+    return {
+      baseDenom,
+      channelId: path.replace('transfer/', ''),
+      ...TokenTransformer.tokenMetaToToken(tokenMeta, denom),
+    } as IbcToken
+  }
+
+  async getCoinToken(coin: UiSupplyCoin): Promise<Token> {
+    const tokenMeta = await this.getAnyDenomTokenMeta(coin.denom)
+
+    return TokenTransformer.tokenMetaToToken(tokenMeta, coin.denom) as Token
+  }
+
+  async getPeggyCoinToken(coin: UiSupplyCoin): Promise<Token> {
+    const tokenMeta = await this.getPeggyDenomTokenMeta(coin.denom)
+
+    return Promise.resolve(
+      TokenTransformer.tokenMetaToToken(tokenMeta, coin.denom) as Token,
+    )
+  }
+
+  async getIbcCoinToken(coin: UiSupplyCoin): Promise<IbcToken> {
+    const { baseDenom, path } = await this.fetchDenomTrace(coin.denom)
+    const tokenMeta = this.getTokenMetaDataBySymbol(baseDenom)
+
+    return {
+      baseDenom,
+      channelId: path.replace('transfer/', ''),
+      ...TokenTransformer.tokenMetaToToken(tokenMeta, coin.denom),
+    } as IbcToken
+  }
+
+  async getSupplyWithToken(supply: UiSupplyCoin[]): Promise<Token[]> {
+    return (
+      (await Promise.all(supply.map(this.getCoinToken.bind(this)))) as Token[]
+    ).filter((token) => token)
+  }
+
+  async getPeggySupplyWithToken(supply: UiSupplyCoin[]): Promise<Token[]> {
+    return (
+      (await Promise.all(
+        supply.map(this.getPeggyCoinToken.bind(this)),
+      )) as Token[]
+    ).filter((token) => token)
+  }
+
+  async getIbcSupplyWithToken(supply: UiSupplyCoin[]): Promise<IbcToken[]> {
+    return (
+      (await Promise.all(
+        supply.map(this.getIbcCoinToken.bind(this)),
+      )) as IbcToken[]
+    ).filter((token) => token)
   }
 
   async getBalancesWithTokenMetaData(
@@ -116,7 +178,7 @@ export class TokenService extends BaseService {
         denom,
         balance: balances[denom],
         token: TokenTransformer.tokenMetaToToken(
-          this.getTokenMetaData(denom),
+          this.getPeggyDenomTokenMeta(denom),
           denom,
         ),
       }))
@@ -149,23 +211,6 @@ export class TokenService extends BaseService {
     }
   }
 
-  async getIbcSupplyWithTokenMeta(supply: UiSupplyCoin[]): Promise<IbcToken[]> {
-    return (
-      await Promise.all(
-        supply.map(async ({ denom }: UiSupplyCoin) => {
-          const { baseDenom, path } = await this.fetchDenomTrace(denom)
-          const tokenMeta = this.getTokenMetaDataBySymbol(baseDenom)
-
-          return {
-            baseDenom,
-            channelId: path.replace('transfer/', ''),
-            ...TokenTransformer.tokenMetaToToken(tokenMeta, denom),
-          }
-        }),
-      )
-    ).filter((token) => token) as IbcToken[]
-  }
-
   async getSupplyWithLabel({
     bankSupply,
     ibcBankSupply,
@@ -176,8 +221,10 @@ export class TokenService extends BaseService {
     bankSupply: UiSupplyCoinForSelect[]
     ibcBankSupply: UiSupplyCoinForSelect[]
   }> {
-    const appendLabel = (coin: UiSupplyCoin): UiSupplyCoinForSelect => {
-      const tokenMeta = this.getTokenMetaData(coin.denom)
+    const appendLabel = async (
+      coin: UiSupplyCoin,
+    ): Promise<UiSupplyCoinForSelect> => {
+      const tokenMeta = await this.getAnyDenomTokenMeta(coin.denom)
 
       return {
         ...coin,
@@ -186,8 +233,10 @@ export class TokenService extends BaseService {
       }
     }
 
-    const bankSupplyWithLabel = bankSupply.map(appendLabel)
-    const ibcBankSupplyWithLabel = ibcBankSupply.map(appendLabel)
+    const bankSupplyWithLabel = await Promise.all(bankSupply.map(appendLabel))
+    const ibcBankSupplyWithLabel = await Promise.all(
+      ibcBankSupply.map(appendLabel),
+    )
 
     return {
       bankSupply: bankSupplyWithLabel,
@@ -195,63 +244,102 @@ export class TokenService extends BaseService {
     }
   }
 
+  async getSubaccountBalanceWithTokenMeta(
+    balance: UiSubaccountBalance,
+  ): Promise<SubaccountBalanceWithTokenMetaData> {
+    const token = TokenTransformer.tokenMetaToToken(
+      await this.getAnyDenomTokenMeta(balance.denom),
+      balance.denom,
+    ) as Token
+
+    return {
+      token,
+      denom: balance.denom,
+      availableBalance: balance.availableBalance,
+      totalBalance: balance.totalBalance,
+    }
+  }
+
   async getSubaccountBalancesWithTokenMeta(
     balances: UiSubaccountBalance[],
   ): Promise<SubaccountBalanceWithTokenMetaData[]> {
-    return (await Promise.all(
-      balances.map(async (balance) => ({
-        denom: balance.denom,
-        availableBalance: balance.availableBalance,
-        totalBalance: balance.totalBalance,
-        token: TokenTransformer.tokenMetaToToken(
-          await this.getTokenMetaDataWithIbc(balance.denom),
-          balance.denom,
-        ),
-      })),
-    ).then((balances) =>
-      balances.filter((balance) => balance.token !== undefined),
-    )) as SubaccountBalanceWithTokenMetaData[]
+    return (
+      await Promise.all(
+        balances.map(this.getSubaccountBalanceWithTokenMeta.bind(this)),
+      )
+    ).filter(
+      (balance) => balance.token !== undefined,
+    ) as SubaccountBalanceWithTokenMetaData[]
+  }
+
+  async getSpotMarketWithTokenMeta(
+    market: UiBaseSpotMarket,
+  ): Promise<UiBaseSpotMarketWithTokenMeta> {
+    const slug = market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
+
+    const baseToken = TokenTransformer.tokenMetaToToken(
+      await this.getAnyDenomTokenMeta(market.baseDenom),
+      market.baseDenom,
+    )
+    const quoteToken = TokenTransformer.tokenMetaToToken(
+      await this.getAnyDenomTokenMeta(market.quoteDenom),
+      market.quoteDenom,
+    )
+
+    if (baseToken && !baseToken.coinGeckoId) {
+      baseToken.coinGeckoId = this.getCoinGeckoId(baseToken.symbol)
+    }
+
+    if (quoteToken && !quoteToken.coinGeckoId) {
+      quoteToken.coinGeckoId = this.getCoinGeckoId(quoteToken.symbol)
+    }
+
+    return {
+      ...market,
+      slug,
+      baseToken,
+      quoteToken,
+    } as UiBaseSpotMarketWithTokenMeta
   }
 
   async getSpotMarketsWithTokenMeta(
     markets: UiBaseSpotMarket[],
   ): Promise<UiBaseSpotMarketWithTokenMeta[]> {
     return (
-      await Promise.all(
-        markets.map(async (market) => {
-          const slug = market.ticker
-            .replace('/', '-')
-            .replace(' ', '-')
-            .toLowerCase()
-          const baseToken = TokenTransformer.tokenMetaToToken(
-            await this.getTokenMetaDataWithIbc(market.baseDenom),
-            market.baseDenom,
-          )
-          const quoteToken = TokenTransformer.tokenMetaToToken(
-            await this.getTokenMetaDataWithIbc(market.quoteDenom),
-            market.quoteDenom,
-          )
-
-          if (baseToken && !baseToken.coinGeckoId) {
-            baseToken.coinGeckoId = this.getCoinGeckoId(baseToken.symbol)
-          }
-
-          if (quoteToken && !quoteToken.coinGeckoId) {
-            quoteToken.coinGeckoId = this.getCoinGeckoId(quoteToken.symbol)
-          }
-
-          return {
-            ...market,
-            slug,
-            baseToken,
-            quoteToken,
-          }
-        }),
-      )
+      await Promise.all(markets.map(this.getSpotMarketWithTokenMeta.bind(this)))
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
     ) as UiBaseSpotMarketWithTokenMeta[]
+  }
+
+  async getDerivativeMarketWithTokenMeta(
+    market: UiBaseDerivativeMarket,
+  ): Promise<UiBaseDerivativeMarketWithTokenMeta> {
+    const slug = market.ticker
+      .replace('/', '-')
+      .replaceAll(' ', '-')
+      .toLowerCase()
+    const [baseTokenSymbol] = slug.split('-')
+    const baseToken = TokenTransformer.tokenMetaToToken(
+      this.getTokenMetaDataBySymbol(baseTokenSymbol),
+      baseTokenSymbol,
+    )
+    const quoteToken = TokenTransformer.tokenMetaToToken(
+      await this.getAnyDenomTokenMeta(market.quoteDenom),
+      market.quoteDenom,
+    )
+
+    if (quoteToken && !quoteToken.coinGeckoId) {
+      quoteToken.coinGeckoId = this.getCoinGeckoId(quoteToken.symbol)
+    }
+
+    return {
+      ...market,
+      slug,
+      baseToken,
+      quoteToken,
+    } as UiBaseDerivativeMarketWithTokenMeta
   }
 
   async getDerivativeMarketsWithTokenMeta(
@@ -259,32 +347,7 @@ export class TokenService extends BaseService {
   ): Promise<UiBaseDerivativeMarketWithTokenMeta[]> {
     return (
       await Promise.all(
-        markets.map(async (market) => {
-          const slug = market.ticker
-            .replace('/', '-')
-            .replaceAll(' ', '-')
-            .toLowerCase()
-          const [baseTokenSymbol] = slug.split('-')
-          const baseToken = TokenTransformer.tokenMetaToToken(
-            this.getTokenMetaDataBySymbol(baseTokenSymbol),
-            baseTokenSymbol,
-          )
-          const quoteToken = TokenTransformer.tokenMetaToToken(
-            await this.getTokenMetaDataWithIbc(market.quoteDenom),
-            market.quoteDenom,
-          )
-
-          if (quoteToken && !quoteToken.coinGeckoId) {
-            quoteToken.coinGeckoId = this.getCoinGeckoId(quoteToken.symbol)
-          }
-
-          return {
-            ...market,
-            slug,
-            baseToken,
-            quoteToken,
-          }
-        }),
+        markets.map(this.getDerivativeMarketWithTokenMeta.bind(this)),
       )
     ).filter(
       (market) =>
@@ -313,7 +376,7 @@ export class TokenService extends BaseService {
       }
     }
 
-    const tokenFromDenom = (await this.getTokenMetaDataWithIbc(
+    const tokenFromDenom = (await this.getAnyDenomTokenMeta(
       transaction.denom,
     )) as Token
 
