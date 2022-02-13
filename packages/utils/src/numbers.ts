@@ -35,7 +35,7 @@ export const denomAmountToChainDenomAmountToFixed = ({
   value: number | string | BigNumber
   decimals?: number | string
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) =>
   new BigNumber(value)
     .multipliedBy(new BigNumber(10).pow(decimals))
@@ -66,7 +66,7 @@ export const denomAmountFromChainDenomAmountToFixed = ({
   value: number | string | BigNumber
   decimals?: number | string
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) =>
   new BigNumber(value)
     .dividedBy(new BigNumber(10).pow(decimals))
@@ -95,7 +95,7 @@ export const derivativeMarginToChainMarginToFixed = ({
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
   value: number | string | BigNumber
   quoteDecimals?: number | string
 }) =>
@@ -128,7 +128,7 @@ export const derivativeMarginFromChainMarginToFixed = ({
   value: number | string | BigNumber
   quoteDecimals?: number | string
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) =>
   new BigNumber(value)
     .dividedBy(new BigNumber(10).pow(quoteDecimals))
@@ -159,7 +159,7 @@ export const derivativePriceToChainPriceToFixed = ({
   value: number | string | BigNumber
   quoteDecimals?: number | string
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) =>
   new BigNumber(value)
     .multipliedBy(new BigNumber(10).pow(quoteDecimals))
@@ -190,7 +190,7 @@ export const derivativePriceFromChainPriceToFixed = ({
   value: number | string | BigNumber
   quoteDecimals?: number | string
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) =>
   new BigNumber(value)
     .dividedBy(new BigNumber(10).pow(quoteDecimals))
@@ -217,7 +217,7 @@ export const derivativeQuantityToChainQuantityToFixed = ({
 }: {
   value: number | string | BigNumber
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) => new BigNumber(value).toFixed(decimalPlaces, roundingMode)
 
 /**
@@ -252,7 +252,7 @@ export const spotPriceToChainPriceToFixed = ({
   quoteDecimals?: number | string
   baseDecimals?: number | string
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) =>
   new BigNumber(value)
     .multipliedBy(
@@ -292,7 +292,7 @@ export const spotPriceFromChainPriceToFixed = ({
   quoteDecimals?: number | string
   baseDecimals?: number | string
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) =>
   new BigNumber(value)
     .dividedBy(
@@ -325,7 +325,7 @@ export const spotQuantityToChainQuantityToFixed = ({
   value: number | string | BigNumber
   baseDecimals?: number | string
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) =>
   new BigNumber(value)
     .multipliedBy(new BigNumber(10).pow(baseDecimals))
@@ -356,7 +356,7 @@ export const spotQuantityFromChainQuantityToFixed = ({
   value: number | string | BigNumber
   baseDecimals?: number | string
   decimalPlaces?: number
-  roundingMode: BigNumber.RoundingMode
+  roundingMode?: BigNumber.RoundingMode
 }) =>
   new BigNumber(value)
     .multipliedBy(new BigNumber(10).pow(baseDecimals))

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.57...@injectivelabs/utils@0.0.58) (2022-02-13)
+
+
+### Bug Fixes
+
+* optional param for rounding ([722120c](https://github.com/InjectiveLabs/injective-ts/commit/722120c5a3edd5113e14708c72a143f0550368f5))
+
+
+
+
+
 ## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.0.56...@injectivelabs/utils@0.0.57) (2022-02-13)
 
 
