@@ -14,6 +14,13 @@ import { PeggyTransformer } from './transformer'
 import { BaseActionService } from '../BaseActionService'
 
 export class PeggyActionService extends BaseActionService {
+  /**
+   * Amount should always be in x * 10^(denomDecimals) format
+   * where x is a human readable number.
+   * Use `denomAmountToChainDenomAmount` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted amount
+   * */
   async transfer({
     address,
     amount,
@@ -22,7 +29,7 @@ export class PeggyActionService extends BaseActionService {
     gasPrice,
   }: {
     address: string
-    amount: string // BigNumberInWei
+    amount: string // BigNumberInWi
     denom: string
     destinationAddress: string
     gasPrice: string // BigNumberInWei
@@ -41,8 +48,8 @@ export class PeggyActionService extends BaseActionService {
       getAddressFromInjectiveAddress(destinationAddress)
 
     const depositForContractFunction = contract.sendToCosmos({
-      amount,
       contractAddress,
+      amount: new BigNumberInWei(amount).toFixed(),
       address: `0x${'0'.repeat(24)}${formattedDestinationAddress.slice(2)}`,
       transactionOptions: getTransactionOptions({
         gasPrice: ZERO_IN_BASE.toFixed(),
@@ -84,6 +91,19 @@ export class PeggyActionService extends BaseActionService {
     }
   }
 
+  /**
+   * Amount should always be in x * 10^(denomDecimals) format
+   * where x is a human readable number.
+   * Use `denomAmountToChainDenomAmount` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted amount
+   *
+   * Bridge Fee should always be in x * 10^(denomDecimals) format
+   * where x is a human readable number.
+   * Use `denomAmountToChainDenomAmount` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted bridge fee
+   * */
   async withdraw({
     address,
     amount,

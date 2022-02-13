@@ -7,6 +7,13 @@ import { getTransactionOptions } from '../utils'
 import { BaseActionService } from '../BaseActionService'
 
 export class TokenErc20ServiceAction extends BaseActionService {
+  /*
+   * Amount should always be in x * 10^(denomDecimals) format
+   * where x is a human readable number.
+   * Use `denomAmountToChainDenomAmount` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted amount
+   * */
   async setTokenAllowance({
     address,
     amount,
@@ -14,8 +21,8 @@ export class TokenErc20ServiceAction extends BaseActionService {
     tokenAddress,
   }: {
     address: string
-    amount: string // BigNumberInWei
-    gasPrice: string // BigNumberInWei
+    amount: string
+    gasPrice: string
     tokenAddress: string
   }) {
     const erc20Contract = new BaseCurrencyContract({

@@ -4,18 +4,11 @@ import { cosmosSdkDecToBigNumber } from '../utils'
 
 export const grpcCoinsSupplyToUiCoins = (
   grpcCoins: GrpcCoin[],
-): UiSupplyCoin[] => {
-  const supply = grpcCoins.map((coin) => {
-    const denom = coin.getDenom()
-
-    return {
-      denom,
-      amount: cosmosSdkDecToBigNumber(coin.getAmount()).toFixed(),
-    }
-  })
-
-  return supply
-}
+): UiSupplyCoin[] =>
+  grpcCoins.map((coin) => ({
+    denom: coin.getDenom(),
+    amount: cosmosSdkDecToBigNumber(coin.getAmount()).toFixed(),
+  }))
 
 export class BankTransformer {
   static grpcCoinsSupplyToUiCoins = grpcCoinsSupplyToUiCoins

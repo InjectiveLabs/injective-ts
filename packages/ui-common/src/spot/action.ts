@@ -1,47 +1,56 @@
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
 import { SpotMarketComposer, SpotOrderSide } from '@injectivelabs/spot-consumer'
 import { BaseActionService } from '../BaseActionService'
-import { UiSpotMarketWithTokenMeta } from './types'
 import { SpotMetrics } from '../types'
 import { ZERO_TO_STRING } from '../constants'
 import { spotOrderTypeToGrpcOrderType } from './utils'
 
 export class SpotActionService extends BaseActionService {
+  /**
+   * Price should always be in x / 10^(quoteDecimals - baseDecimals) format
+   * where x is a human readable number.
+   * Use `spotPriceToChainPrice` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted price
+   *
+   * Quantity should always be in x * 10^(baseDecimals) format
+   * where x is a human readable number.
+   * Use `spotQuantityToChainQuantity` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted quantity
+   * */
   async submitLimitOrder({
     price,
     quantity,
     orderType,
     address,
-    market,
+    marketId,
     feeRecipient,
     injectiveAddress,
     subaccountId,
+    triggerPrice = ZERO_TO_STRING,
   }: {
     feeRecipient: string
-    price: BigNumberInBase
-    quantity: BigNumberInBase
+    price: string
+    quantity: string
     orderType: SpotOrderSide
     subaccountId: string
-    market: UiSpotMarketWithTokenMeta
+    marketId: string
     address: string
     injectiveAddress: string
+    triggerPrice?: string
   }) {
-    const relativePrice = price.toWei(
-      market.quoteToken.decimals - market.baseToken.decimals,
-    )
-    const relativeQuantity = quantity.toWei(market.baseToken.decimals)
-
     const message = SpotMarketComposer.createLimitOrder({
       subaccountId,
       injectiveAddress,
-      marketId: market.marketId,
+      marketId,
       order: {
         feeRecipient,
+        triggerPrice,
+        price: new BigNumberInWei(price).toFixed(),
+        quantity: new BigNumberInWei(quantity).toFixed(),
         orderType: spotOrderTypeToGrpcOrderType(orderType),
-        price: relativePrice.toFixed(),
-        quantity: relativeQuantity.toFixed(),
-        triggerPrice: ZERO_TO_STRING, // TODO
       },
     })
 
@@ -56,39 +65,50 @@ export class SpotActionService extends BaseActionService {
     }
   }
 
+  /**
+   * Price should always be in x / 10^(quoteDecimals - baseDecimals) format
+   * where x is a human readable number.
+   * Use `spotPriceToChainPrice` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted price
+   *
+   * Quantity should always be in x * 10^(baseDecimals) format
+   * where x is a human readable number.
+   * Use `spotQuantityToChainQuantity` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted quantity
+   * */
   async submitMarketOrder({
     quantity,
     price,
     orderType,
     address,
-    market,
+    marketId,
     feeRecipient,
     injectiveAddress,
     subaccountId,
+    triggerPrice = ZERO_TO_STRING,
   }: {
     quantity: BigNumberInBase
     price: BigNumberInBase
     orderType: SpotOrderSide
     subaccountId: string
     feeRecipient: string
-    market: UiSpotMarketWithTokenMeta
+    marketId: string
     address: string
     injectiveAddress: string
+    triggerPrice?: string
   }) {
-    const relativePrice = price.toWei(
-      market.quoteToken.decimals - market.baseToken.decimals,
-    )
-    const relativeQuantity = quantity.toWei(market.baseToken.decimals)
     const message = SpotMarketComposer.createMarketOrder({
       subaccountId,
       injectiveAddress,
-      marketId: market.marketId,
+      marketId,
       order: {
         feeRecipient,
-        price: relativePrice.toFixed(),
+        triggerPrice,
+        price: new BigNumberInWei(price).toFixed(),
+        quantity: new BigNumberInWei(quantity).toFixed(),
         orderType: spotOrderTypeToGrpcOrderType(orderType),
-        quantity: relativeQuantity.toFixed(),
-        triggerPrice: ZERO_TO_STRING, // TODO
       },
     })
 

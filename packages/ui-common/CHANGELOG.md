@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.29...@injectivelabs/ui-common@0.0.30) (2022-02-13)
+
+
+### Features
+
+* added number conversion utils ([95d8a09](https://github.com/InjectiveLabs/injective-ts/commit/95d8a090d094421c5700abe34dec5e255da3cc7d))
+
+
+
+
+
 ## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.28...@injectivelabs/ui-common@0.0.29) (2022-02-11)
 
 

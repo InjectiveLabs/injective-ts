@@ -10,48 +10,59 @@ import {
 } from '@injectivelabs/derivatives-consumer'
 import { MarketComposer } from '@injectivelabs/exchange-consumer'
 import { BaseActionService } from '../BaseActionService'
-import { UiDerivativeMarketWithTokenMeta } from './types'
 import { DerivativesMetrics } from '../types'
 import { ZERO_TO_STRING } from '../constants'
 import { derivativeOrderTypeToGrpcOrderType } from './utils'
 
 export class DerivativeActionService extends BaseActionService {
+  /**
+   * Price/Margin should always be in x * 10^(quoteDecimals) format
+   * where x is a human readable number.
+   * Use `derivativePriceToChainPrice/derivativeMarginToChainMargin` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted price/margin
+   *
+   * Quantity should always be in x format
+   * where x is a human readable number.
+   * */
   async submitLimitOrder({
     price,
     quantity,
     orderType,
     address,
-    market,
+    marketId,
     reduceOnly,
     margin,
     injectiveAddress,
     subaccountId,
     feeRecipient,
+    triggerPrice = ZERO_TO_STRING,
   }: {
     feeRecipient: string
-    margin: BigNumberInBase
-    price: BigNumberInBase
+    margin: string
+    price: string
+    quantity: string
     reduceOnly: boolean
-    quantity: BigNumberInBase
     orderType: DerivativeOrderSide
     subaccountId: string
-    market: UiDerivativeMarketWithTokenMeta
+    marketId: string
     address: string
     injectiveAddress: string
+    triggerPrice?: string
   }) {
     const message = DerivativeMarketComposer.createLimitOrder({
       subaccountId,
       injectiveAddress,
-      marketId: market.marketId,
+      marketId,
       order: {
         feeRecipient,
         orderType: derivativeOrderTypeToGrpcOrderType(orderType),
-        price: price.toWei(market.quoteToken.decimals).toFixed(),
+        price: new BigNumberInWei(price).toFixed(),
         margin: reduceOnly
           ? ZERO_TO_STRING
-          : margin.toWei(market.quoteToken.decimals).toFixed(),
-        quantity: quantity.toFixed(),
-        triggerPrice: ZERO_TO_STRING, // TODO
+          : new BigNumberInWei(margin).toFixed(),
+        quantity: new BigNumberInBase(quantity).toFixed(),
+        triggerPrice,
       },
     })
 
@@ -66,42 +77,54 @@ export class DerivativeActionService extends BaseActionService {
     }
   }
 
+  /**
+   * Price/Margin should always be in x * 10^(quoteDecimals) format
+   * where x is a human readable number.
+   * Use `derivativePriceToChainPrice/derivativeMarginToChainMargin` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted price/margin
+   *
+   * Quantity should always be in x format
+   * where x is a human readable number.
+   * */
   async submitMarketOrder({
     quantity,
     price,
     reduceOnly,
     orderType,
     address,
-    market,
+    marketId,
     margin,
     injectiveAddress,
     feeRecipient,
     subaccountId,
+    triggerPrice = ZERO_TO_STRING,
   }: {
-    margin: BigNumberInBase
-    quantity: BigNumberInBase
-    price: BigNumberInBase
+    margin: string
+    quantity: string
+    price: string
     orderType: DerivativeOrderSide
     subaccountId: string
     reduceOnly: boolean
-    market: UiDerivativeMarketWithTokenMeta
+    marketId: string
     address: string
     feeRecipient: string
     injectiveAddress: string
+    triggerPrice?: string
   }) {
     const message = DerivativeMarketComposer.createMarketOrder({
       subaccountId,
       injectiveAddress,
-      marketId: market.marketId,
+      marketId,
       order: {
         feeRecipient,
-        price: price.toWei(market.quoteToken.decimals).toFixed(),
+        price: new BigNumberInWei(price).toFixed(),
         margin: reduceOnly
           ? ZERO_TO_STRING
-          : margin.toWei(market.quoteToken.decimals).toFixed(),
-        quantity: quantity.toFixed(),
+          : new BigNumberInWei(margin).toFixed(),
+        quantity: new BigNumberInBase(quantity).toFixed(),
         orderType: derivativeOrderTypeToGrpcOrderType(orderType),
-        triggerPrice: ZERO_TO_STRING, // TODO
+        triggerPrice,
       },
     })
 
@@ -116,53 +139,51 @@ export class DerivativeActionService extends BaseActionService {
     }
   }
 
+  /**
+   * Price should always be in x * 10^(quoteDecimals) format
+   * where x is a human readable number.
+   * Use `derivativePriceToChainPrice` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted price
+   *
+   * Quantity should always be in x format
+   * where x is a human readable number.
+   * */
   async closeAllPosition({
     positions,
     address,
     feeRecipient,
     injectiveAddress,
     subaccountId,
+    triggerPrice,
   }: {
     positions: {
-      market: UiDerivativeMarketWithTokenMeta
       orderType: DerivativeOrderSide
-      price: BigNumberInBase
-      quantity: BigNumberInBase
+      marketId: string
+      price: string
+      quantity: string
     }[]
     subaccountId: string
     address: string
     feeRecipient: string
     injectiveAddress: string
+    triggerPrice?: string
   }) {
-    const message = positions.map((position) => {
-      const minTickPrice = new BigNumberInBase(
-        new BigNumberInBase(1).shiftedBy(-position.market.priceDecimals),
-      )
-      const actualPrice = position.price.lte(0) ? minTickPrice : position.price
-
-      return DerivativeMarketComposer.createMarketOrder({
+    const message = positions.map((position) =>
+      DerivativeMarketComposer.createMarketOrder({
         subaccountId,
         injectiveAddress,
-        marketId: position.market.marketId,
+        marketId: position.marketId,
         order: {
           feeRecipient,
-          price: new BigNumberInBase(
-            actualPrice.toFixed(
-              position.market.priceDecimals,
-              position.orderType === DerivativeOrderSide.Buy
-                ? BigNumberInBase.ROUND_DOWN
-                : BigNumberInBase.ROUND_UP,
-            ),
-          )
-            .toWei(position.market.quoteToken.decimals)
-            .toFixed(),
-          margin: ZERO_TO_STRING,
-          quantity: position.quantity.toFixed(),
+          triggerPrice,
+          price: new BigNumberInWei(position.price).toFixed(),
+          quantity: new BigNumberInBase(position.quantity).toFixed(),
           orderType: derivativeOrderTypeToGrpcOrderType(position.orderType),
-          triggerPrice: ZERO_TO_STRING, // TODO
+          margin: ZERO_TO_STRING,
         },
-      })
-    })
+      }),
+    )
 
     try {
       return await this.txProvider.broadcast({
@@ -181,53 +202,48 @@ export class DerivativeActionService extends BaseActionService {
     }
   }
 
+  /**
+   * Price should always be in x * 10^(quoteDecimals) format
+   * where x is a human readable number.
+   * Use `derivativePriceToChainPrice` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted price
+   *
+   * Quantity should always be in x format
+   * where x is a human readable number.
+   * */
   async closePosition({
     quantity,
     price,
     orderType,
     address,
-    market,
+    marketId,
     injectiveAddress,
     subaccountId,
     feeRecipient,
+    triggerPrice = ZERO_TO_STRING,
   }: {
-    quantity: BigNumberInBase
-    price: BigNumberInBase
+    quantity: string
+    price: string
     orderType: DerivativeOrderSide
     subaccountId: string
-    market: UiDerivativeMarketWithTokenMeta
+    marketId: string
     address: string
     feeRecipient: string
     injectiveAddress: string
+    triggerPrice?: string
   }) {
-    const executionPrice = new BigNumberInBase(
-      price.toFixed(
-        market.priceDecimals,
-        orderType === DerivativeOrderSide.Buy
-          ? BigNumberInBase.ROUND_DOWN
-          : BigNumberInBase.ROUND_UP,
-      ),
-    )
-    const minTickPrice = new BigNumberInBase(
-      new BigNumberInBase(1).shiftedBy(-market.priceDecimals),
-    )
-    const actualExecutionPrice = executionPrice.lte(0)
-      ? minTickPrice
-      : executionPrice
-
     const message = DerivativeMarketComposer.createMarketOrder({
       subaccountId,
       injectiveAddress,
-      marketId: market.marketId,
+      marketId,
       order: {
+        triggerPrice,
         feeRecipient,
-        price: new BigNumberInBase(actualExecutionPrice)
-          .toWei(market.quoteToken.decimals)
-          .toFixed(),
-        margin: ZERO_TO_STRING,
-        quantity: quantity.toFixed(),
+        price: new BigNumberInWei(price).toFixed(),
+        quantity: new BigNumberInBase(quantity).toFixed(),
         orderType: derivativeOrderTypeToGrpcOrderType(orderType),
-        triggerPrice: ZERO_TO_STRING, // TODO
+        margin: ZERO_TO_STRING,
       },
     })
 
@@ -242,22 +258,32 @@ export class DerivativeActionService extends BaseActionService {
     }
   }
 
+  /**
+   * Price should always be in x * 10^(quoteDecimals) format
+   * where x is a human readable number.
+   * Use `derivativePriceToChainPrice` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted price
+   *
+   * Quantity should always be in x format
+   * where x is a human readable number.
+   * */
   async closePositionAndReduceOnlyOrders({
     quantity,
     price,
     orderType,
     address,
-    market,
+    marketId,
     injectiveAddress,
     subaccountId,
     feeRecipient,
     reduceOnlyOrders,
   }: {
-    quantity: BigNumberInBase
-    price: BigNumberInBase
+    quantity: string
+    price: string
     orderType: DerivativeOrderSide
     subaccountId: string
-    market: UiDerivativeMarketWithTokenMeta
+    marketId: string
     address: string
     feeRecipient: string
     injectiveAddress: string
@@ -267,21 +293,6 @@ export class DerivativeActionService extends BaseActionService {
       orderHash: string
     }[]
   }) {
-    const executionPrice = new BigNumberInBase(
-      price.toFixed(
-        market.priceDecimals,
-        orderType === DerivativeOrderSide.Buy
-          ? BigNumberInBase.ROUND_DOWN
-          : BigNumberInBase.ROUND_UP,
-      ),
-    )
-    const minTickPrice = new BigNumberInBase(
-      new BigNumberInBase(1).shiftedBy(-market.priceDecimals),
-    )
-    const actualExecutionPrice = executionPrice.lte(0)
-      ? minTickPrice
-      : executionPrice
-
     const message = MarketComposer.batchUpdateOrders({
       subaccountId,
       injectiveAddress,
@@ -289,14 +300,12 @@ export class DerivativeActionService extends BaseActionService {
       derivativeOrdersToCreate: [
         {
           feeRecipient,
-          marketId: market.marketId,
-          orderType: derivativeOrderTypeToGrpcOrderType(orderType),
-          triggerPrice: ZERO_TO_STRING,
-          price: new BigNumberInBase(actualExecutionPrice)
-            .toWei(market.quoteToken.decimals)
-            .toFixed(),
+          marketId,
           margin: ZERO_TO_STRING,
-          quantity: quantity.toFixed(),
+          triggerPrice: ZERO_TO_STRING,
+          orderType: derivativeOrderTypeToGrpcOrderType(orderType),
+          price: new BigNumberInWei(price).toFixed(),
+          quantity: new BigNumberInBase(quantity).toFixed(),
         },
       ],
     })
@@ -312,18 +321,25 @@ export class DerivativeActionService extends BaseActionService {
     }
   }
 
+  /**
+   * Amount should always be in x * 10^(quoteDecimals) format
+   * where x is a human readable number.
+   * Use `derivativeMarginToChainMargin` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted amount
+   * */
   async addMarginToPosition({
     amount,
     address,
-    market,
+    marketId,
     injectiveAddress,
     srcSubaccountId,
     dstSubaccountId,
   }: {
-    amount: BigNumberInWei
+    amount: string
     srcSubaccountId: string
     dstSubaccountId: string
-    market: UiDerivativeMarketWithTokenMeta
+    marketId: string
     address: string
     feeRecipient: string
     injectiveAddress: string
@@ -332,8 +348,8 @@ export class DerivativeActionService extends BaseActionService {
       srcSubaccountId,
       dstSubaccountId,
       injectiveAddress,
-      amount: amount.toFixed(),
-      marketId: market.marketId,
+      marketId,
+      amount: new BigNumberInWei(amount).toFixed(),
     })
 
     try {

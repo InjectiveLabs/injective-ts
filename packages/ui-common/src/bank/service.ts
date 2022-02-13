@@ -16,6 +16,26 @@ export class BankService extends BaseService {
     this.consumer = new BankConsumer(this.endpoints.sentryGrpcApi)
   }
 
+  async fetchBalance({
+    injectiveAddress,
+    denom,
+  }: {
+    injectiveAddress: string
+    denom: string
+  }) {
+    const promise = this.consumer.fetchBalance({
+      accountAddress: injectiveAddress,
+      denom,
+    })
+
+    const balance = await this.fetchOrFetchAndMeasure(
+      promise,
+      ChainMetrics.FetchBalance,
+    )
+
+    return new BigNumberInWei(balance ? balance.getAmount() : 0)
+  }
+
   async fetchBalances(injectiveAddress: string) {
     const promise = this.consumer.fetchBalances({
       accountAddress: injectiveAddress,
@@ -49,26 +69,6 @@ export class BankService extends BaseService {
       bankBalances,
       ibcBankBalances,
     }
-  }
-
-  async fetchBalance({
-    injectiveAddress,
-    denom,
-  }: {
-    injectiveAddress: string
-    denom: string
-  }) {
-    const promise = this.consumer.fetchBalance({
-      accountAddress: injectiveAddress,
-      denom,
-    })
-
-    const balance = await this.fetchOrFetchAndMeasure(
-      promise,
-      ChainMetrics.FetchBalance,
-    )
-
-    return new BigNumberInWei(balance ? balance.getAmount() : 0)
   }
 
   async fetchSupply(): Promise<{

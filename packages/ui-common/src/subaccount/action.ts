@@ -1,9 +1,17 @@
 import { SubaccountComposer } from '@injectivelabs/subaccount-consumer'
 import { Web3Exception } from '@injectivelabs/exceptions'
+import { BigNumberInWei } from '@injectivelabs/utils'
 import { AccountMetrics } from '../types'
 import { BaseActionService } from '../BaseActionService'
 
 export class SubaccountActionService extends BaseActionService {
+  /*
+   * Amount should always be in x * 10^(denomDecimals) format
+   * where x is a human readable number.
+   * Use `denomAmountToChainDenomAmount` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted amount
+   * */
   async deposit({
     amount,
     address,
@@ -11,7 +19,7 @@ export class SubaccountActionService extends BaseActionService {
     denom,
     subaccountId,
   }: {
-    amount: string // BigNumberInWei
+    amount: string
     denom: string
     subaccountId: string
     address: string
@@ -21,7 +29,7 @@ export class SubaccountActionService extends BaseActionService {
       subaccountId,
       denom,
       injectiveAddress,
-      amount,
+      amount: new BigNumberInWei(amount).toFixed(),
     })
 
     try {
@@ -35,6 +43,13 @@ export class SubaccountActionService extends BaseActionService {
     }
   }
 
+  /*
+   * Amount should always be in x * 10^(denomDecimals) format
+   * where x is a human readable number.
+   * Use `denomAmountToChainDenomAmount` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted amount
+   * */
   async withdraw({
     amount,
     address,
@@ -42,7 +57,7 @@ export class SubaccountActionService extends BaseActionService {
     denom,
     subaccountId,
   }: {
-    amount: string // BigNumberInWei
+    amount: string
     denom: string
     subaccountId: string
     address: string
@@ -52,7 +67,7 @@ export class SubaccountActionService extends BaseActionService {
       subaccountId,
       denom,
       injectiveAddress,
-      amount,
+      amount: new BigNumberInWei(amount).toFixed(),
     })
 
     try {

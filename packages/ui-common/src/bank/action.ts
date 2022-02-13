@@ -5,6 +5,13 @@ import { AccountMetrics } from '../types'
 import { BaseActionService } from '../BaseActionService'
 
 export class BankActionService extends BaseActionService {
+  /**
+   * Amount should always be in x * 10^(denomDecimals) format
+   * where x is a human readable number.
+   * Use `denomAmountToChainDenomAmount` function from the
+   * @injectivelabs/utils package to convert
+   * a human readable number to a chain accepted amount
+   * */
   async transfer({
     address,
     denom,
@@ -12,7 +19,7 @@ export class BankActionService extends BaseActionService {
     injectiveAddress,
     destination,
   }: {
-    amount: string // BigNumberInWei
+    amount: string
     address: string
     denom: string
     destination: string
