@@ -549,4 +549,13 @@ export default {
     address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
     coinGeckoId: '',
   },
+
+  BAYC: {
+    name: 'Bored Ape Yacht Club',
+    logo: 'bayc.png',
+    symbol: 'BAYC',
+    decimals: 18,
+    address: '',
+    coinGeckoId: '',
+  },
 }
