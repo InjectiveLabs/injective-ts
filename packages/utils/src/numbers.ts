@@ -26,6 +26,25 @@ export const denomAmountToChainDenomAmount = ({
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
+export const denomAmountToChainDenomAmountToFixed = ({
+  value,
+  decimals = 18,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  decimals?: number | string
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) =>
+  new BigNumber(value)
+    .multipliedBy(new BigNumber(10).pow(decimals))
+    .toFixed(decimalPlaces, roundingMode)
+
+/**
+ * Amount that the chain returns is in the x * 10^(quoteDecimals) format
+ * where x is a human readable number
+ */
 export const denomAmountFromChainDenomAmount = ({
   value,
   decimals = 18,
@@ -33,6 +52,25 @@ export const denomAmountFromChainDenomAmount = ({
   value: number | string | BigNumber
   decimals?: number | string
 }) => new BigNumber(value).dividedBy(new BigNumber(10).pow(decimals))
+/**
+ *
+ * Amount that the chain returns is in the x * 10^(quoteDecimals) format
+ * where x is a human readable number stringified
+ */
+export const denomAmountFromChainDenomAmountToFixed = ({
+  value,
+  decimals = 18,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  decimals?: number | string
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) =>
+  new BigNumber(value)
+    .dividedBy(new BigNumber(10).pow(decimals))
+    .toFixed(decimalPlaces, roundingMode)
 
 /**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
@@ -47,6 +85,25 @@ export const derivativeMarginToChainMargin = ({
 }) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(quoteDecimals))
 
 /**
+ * Amount that the chain requires is in the x * 10^(quoteDecimals) format
+ * where x is a human readable number stringified
+ */
+export const derivativeMarginToChainMarginToFixed = ({
+  value,
+  quoteDecimals = 18,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+  value: number | string | BigNumber
+  quoteDecimals?: number | string
+}) =>
+  new BigNumber(value)
+    .multipliedBy(new BigNumber(10).pow(quoteDecimals))
+    .toFixed(decimalPlaces, roundingMode)
+
+/**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
@@ -57,6 +114,25 @@ export const derivativeMarginFromChainMargin = ({
   value: number | string | BigNumber
   quoteDecimals?: number | string
 }) => new BigNumber(value).dividedBy(new BigNumber(10).pow(quoteDecimals))
+
+/**
+ * Amount that the chain returns is in the x * 10^(quoteDecimals) format
+ * where x is a human readable number
+ */
+export const derivativeMarginFromChainMarginToFixed = ({
+  value,
+  quoteDecimals = 18,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  quoteDecimals?: number | string
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) =>
+  new BigNumber(value)
+    .dividedBy(new BigNumber(10).pow(quoteDecimals))
+    .toFixed(decimalPlaces, roundingMode)
 
 /**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
@@ -71,6 +147,25 @@ export const derivativePriceToChainPrice = ({
 }) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(quoteDecimals))
 
 /**
+ * Amount that the chain requires is in the x * 10^(quoteDecimals) format
+ * where x is a human readable number stringified
+ */
+export const derivativePriceToChainPriceToFixed = ({
+  value,
+  quoteDecimals = 18,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  quoteDecimals?: number | string
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) =>
+  new BigNumber(value)
+    .multipliedBy(new BigNumber(10).pow(quoteDecimals))
+    .toFixed(decimalPlaces, roundingMode)
+
+/**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
@@ -83,12 +178,47 @@ export const derivativePriceFromChainPrice = ({
 }) => new BigNumber(value).dividedBy(new BigNumber(10).pow(quoteDecimals))
 
 /**
+ * Amount that the chain returns is in the x * 10^(quoteDecimals) format
+ * where x is a human readable number stringified
+ */
+export const derivativePriceFromChainPriceToFixed = ({
+  value,
+  quoteDecimals = 18,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  quoteDecimals?: number | string
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) =>
+  new BigNumber(value)
+    .dividedBy(new BigNumber(10).pow(quoteDecimals))
+    .toFixed(decimalPlaces, roundingMode)
+
+/**
  * Amount that the chain requires is in the x format
  * where x is a human readable number
  */
-export const derivativeQuantityToChainQuantity = (
-  value: number | string | BigNumber,
-) => new BigNumber(value)
+export const derivativeQuantityToChainQuantity = ({
+  value,
+}: {
+  value: number | string | BigNumber
+}) => new BigNumber(value)
+
+/**
+ * Amount that the chain requires is in the x format
+ * where x is a human readable number stringified
+ */
+export const derivativeQuantityToChainQuantityToFixed = ({
+  value,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) => new BigNumber(value).toFixed(decimalPlaces, roundingMode)
 
 /**
  * Amount that the chain requires is in the x / 10^(quoteDecimals - baseDecimals) format
@@ -108,6 +238,29 @@ export const spotPriceToChainPrice = ({
   )
 
 /**
+ * Amount that the chain requires is in the x / 10^(quoteDecimals - baseDecimals) format
+ * where x is a human readable number stringified
+ */
+export const spotPriceToChainPriceToFixed = ({
+  value,
+  baseDecimals = 18,
+  quoteDecimals = 6,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  quoteDecimals?: number | string
+  baseDecimals?: number | string
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) =>
+  new BigNumber(value)
+    .multipliedBy(
+      new BigNumber(10).pow(new BigNumber(quoteDecimals).minus(baseDecimals)),
+    )
+    .toFixed(decimalPlaces, roundingMode)
+
+/**
  * Amount that the chain returns is in the x / 10^(quoteDecimals - baseDecimals) format
  * where x is a human readable number
  */
@@ -125,6 +278,29 @@ export const spotPriceFromChainPrice = ({
   )
 
 /**
+ * Amount that the chain returns is in the x / 10^(quoteDecimals - baseDecimals) format
+ * where x is a human readable number stringified
+ */
+export const spotPriceFromChainPriceToFixed = ({
+  value,
+  baseDecimals = 18,
+  quoteDecimals = 6,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  quoteDecimals?: number | string
+  baseDecimals?: number | string
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) =>
+  new BigNumber(value)
+    .dividedBy(
+      new BigNumber(10).pow(new BigNumber(quoteDecimals).minus(baseDecimals)),
+    )
+    .toFixed(decimalPlaces, roundingMode)
+
+/**
  * Amount that the chain requires is in the x * 10^(baseDecimals) format
  * where x is a human readable number
  */
@@ -137,6 +313,25 @@ export const spotQuantityToChainQuantity = ({
 }) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(baseDecimals))
 
 /**
+ * Amount that the chain requires is in the x * 10^(baseDecimals) format
+ * where x is a human readable number
+ */
+export const spotQuantityToChainQuantityToFixed = ({
+  value,
+  baseDecimals = 18,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  baseDecimals?: number | string
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) =>
+  new BigNumber(value)
+    .multipliedBy(new BigNumber(10).pow(baseDecimals))
+    .toFixed(decimalPlaces, roundingMode)
+
+/**
  * Amount that the chain returns is in the x * 10^(baseDecimals) format
  * where x is a human readable number
  */
@@ -147,3 +342,22 @@ export const spotQuantityFromChainQuantity = ({
   value: number | string | BigNumber
   baseDecimals?: number | string
 }) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(baseDecimals))
+
+/**
+ * Amount that the chain returns is in the x * 10^(baseDecimals) format
+ * where x is a human readable number
+ */
+export const spotQuantityFromChainQuantityToFixed = ({
+  value,
+  baseDecimals = 18,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  baseDecimals?: number | string
+  decimalPlaces?: number
+  roundingMode: BigNumber.RoundingMode
+}) =>
+  new BigNumber(value)
+    .multipliedBy(new BigNumber(10).pow(baseDecimals))
+    .toFixed(decimalPlaces, roundingMode)

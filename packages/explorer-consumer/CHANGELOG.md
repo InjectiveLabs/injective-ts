@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.38...@injectivelabs/explorer-consumer@0.0.39) (2022-02-13)
+
+**Note:** Version bump only for package @injectivelabs/explorer-consumer
+
+
+
+
+
 ## [0.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.37...@injectivelabs/explorer-consumer@0.0.38) (2022-02-13)
 
 **Note:** Version bump only for package @injectivelabs/explorer-consumer
