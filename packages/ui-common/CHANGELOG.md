@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.40...@injectivelabs/ui-common@0.0.41) (2022-02-14)
+
+
+### Bug Fixes
+
+* grpc to ui transform ([a76e0c0](https://github.com/InjectiveLabs/injective-ts/commit/a76e0c0287b0a4b60e3c0fa7df831fdc2ab05e15))
+
+
+
+
+
 ## [0.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.39...@injectivelabs/ui-common@0.0.40) (2022-02-14)
 
 

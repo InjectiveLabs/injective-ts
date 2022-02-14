@@ -1,9 +1,18 @@
 import {
   GrpcSubaccountBalance,
   SubaccountBalance,
+  SubaccountTransfer,
 } from '@injectivelabs/subaccount-consumer'
-import { UiSubaccountBalance } from './types'
+import { UiSubaccountBalance, UiSubaccountTransfer } from './types'
 import { ZERO_TO_STRING } from '../constants'
+
+export const grpcSubaccountTransferToUiSubaccountTransfer = (
+  balance: SubaccountTransfer,
+): UiSubaccountTransfer => ({
+  ...balance,
+  amount: balance.amount!.amount,
+  denom: balance.amount!.denom,
+})
 
 export const grpcSubaccountBalanceToUiSubaccountBalance = (
   balance: GrpcSubaccountBalance,
@@ -33,4 +42,7 @@ export class SubaccountTransformer {
 
   static subaccountBalanceToUiSubaccountBalance =
     subaccountBalanceToUiSubaccountBalance
+
+  static grpcSubaccountTransferToUiSubaccountTransfer =
+    grpcSubaccountTransferToUiSubaccountTransfer
 }

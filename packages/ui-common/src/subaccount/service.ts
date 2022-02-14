@@ -46,8 +46,13 @@ export class SubaccountService extends BaseService {
       AccountMetrics.FetchSubaccountHistory,
     )
 
-    return BaseSubaccountTransformer.grpcTransferHistoryToTransferHistory(
-      subaccountHistory,
+    const grpcSubaccountTransfers =
+      BaseSubaccountTransformer.grpcTransferHistoryToTransferHistory(
+        subaccountHistory,
+      )
+
+    return grpcSubaccountTransfers.map(
+      SubaccountTransformer.grpcSubaccountTransferToUiSubaccountTransfer,
     )
   }
 }
