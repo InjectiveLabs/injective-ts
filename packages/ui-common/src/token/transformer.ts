@@ -12,7 +12,10 @@ export const tokenMetaToToken = (
 
   let icon: string = ''
 
-  if (tokenMeta.logo.startsWith('http')) {
+  if (
+    tokenMeta.logo.startsWith('http') ||
+    tokenMeta.logo.includes('@injectivelabs')
+  ) {
     icon = tokenMeta.logo
   } else if (tokenMeta.logo) {
     icon = path.join(

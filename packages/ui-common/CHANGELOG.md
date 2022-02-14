@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.39...@injectivelabs/ui-common@0.0.40) (2022-02-14)
+
+
+### Bug Fixes
+
+* transformer logo path ([7be44ae](https://github.com/InjectiveLabs/injective-ts/commit/7be44aecb38492b826d9e659df9a1304ed12db61))
+
+
+
+
+
 ## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.38...@injectivelabs/ui-common@0.0.39) (2022-02-13)
 
 
