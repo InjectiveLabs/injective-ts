@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/referral-consumer",
   "description": "Referral API on Injective Protocol made easy. Can be reused throughout Injective's projects.",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
     "@injectivelabs/exceptions": "^0.0.42",
     "@injectivelabs/referral-api": "^1.0.19",
     "@injectivelabs/ts-types": "^0.0.38",
-    "@injectivelabs/utils": "^0.0.58",
+    "@injectivelabs/utils": "^0.0.59",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",
     "snakecase-keys": "^3.2.1"

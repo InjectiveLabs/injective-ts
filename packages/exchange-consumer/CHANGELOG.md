@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.143](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.142...@injectivelabs/exchange-consumer@0.0.143) (2022-02-15)
+
+**Note:** Version bump only for package @injectivelabs/exchange-consumer
+
+
+
+
+
 ## [0.0.142](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.141...@injectivelabs/exchange-consumer@0.0.142) (2022-02-13)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer

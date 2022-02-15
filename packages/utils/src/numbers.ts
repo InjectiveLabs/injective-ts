@@ -11,6 +11,16 @@ export const denomAmountFromGrpcChainDenomAmount = (
 ) => new BigNumber(value).dividedBy(new BigNumber(10).pow(18))
 
 /**
+ * On chain amounts broadcasted to a sentry directly using the
+ * gRPC API should be passed with an extra decimal point
+ * 18 places from the beginning, so we need to add it
+ * to get a workable amount
+ */
+export const denomAmountToGrpcChainDenomAmount = (
+  value: string | number | BigNumber,
+) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(18))
+
+/**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
@@ -37,9 +47,10 @@ export const denomAmountToChainDenomAmountToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) =>
-  new BigNumber(value)
-    .multipliedBy(new BigNumber(10).pow(decimals))
-    .toFixed(decimalPlaces, roundingMode)
+  denomAmountToChainDenomAmount({ value, decimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -68,9 +79,10 @@ export const denomAmountFromChainDenomAmountToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) =>
-  new BigNumber(value)
-    .dividedBy(new BigNumber(10).pow(decimals))
-    .toFixed(decimalPlaces, roundingMode)
+  denomAmountFromChainDenomAmount({ value, decimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
@@ -99,9 +111,10 @@ export const derivativeMarginToChainMarginToFixed = ({
   value: number | string | BigNumber
   quoteDecimals?: number | string
 }) =>
-  new BigNumber(value)
-    .multipliedBy(new BigNumber(10).pow(quoteDecimals))
-    .toFixed(decimalPlaces, roundingMode)
+  derivativeMarginToChainMargin({ value, quoteDecimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -130,9 +143,10 @@ export const derivativeMarginFromChainMarginToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) =>
-  new BigNumber(value)
-    .dividedBy(new BigNumber(10).pow(quoteDecimals))
-    .toFixed(decimalPlaces, roundingMode)
+  derivativeMarginFromChainMargin({ value, quoteDecimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
@@ -161,9 +175,10 @@ export const derivativePriceToChainPriceToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) =>
-  new BigNumber(value)
-    .multipliedBy(new BigNumber(10).pow(quoteDecimals))
-    .toFixed(decimalPlaces, roundingMode)
+  derivativePriceToChainPrice({ value, quoteDecimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -192,9 +207,10 @@ export const derivativePriceFromChainPriceToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) =>
-  new BigNumber(value)
-    .dividedBy(new BigNumber(10).pow(quoteDecimals))
-    .toFixed(decimalPlaces, roundingMode)
+  derivativePriceFromChainPrice({ value, quoteDecimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain requires is in the x format
@@ -218,7 +234,39 @@ export const derivativeQuantityToChainQuantityToFixed = ({
   value: number | string | BigNumber
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
-}) => new BigNumber(value).toFixed(decimalPlaces, roundingMode)
+}) =>
+  derivativeQuantityToChainQuantity({ value }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
+
+/**
+ * Amount that the chain requires is in the x format
+ * where x is a human readable number
+ */
+export const derivativeQuantityFromChainQuantity = ({
+  value,
+}: {
+  value: number | string | BigNumber
+}) => new BigNumber(value)
+
+/**
+ * Amount that the chain requires is in the x format
+ * where x is a human readable number stringified
+ */
+export const derivativeQuantityFromChainQuantityToFixed = ({
+  value,
+  decimalPlaces = 0,
+  roundingMode = BigNumber.ROUND_DOWN,
+}: {
+  value: number | string | BigNumber
+  decimalPlaces?: number
+  roundingMode?: BigNumber.RoundingMode
+}) =>
+  derivativeQuantityFromChainQuantity({ value }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain requires is in the x / 10^(quoteDecimals - baseDecimals) format
@@ -254,11 +302,10 @@ export const spotPriceToChainPriceToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) =>
-  new BigNumber(value)
-    .multipliedBy(
-      new BigNumber(10).pow(new BigNumber(quoteDecimals).minus(baseDecimals)),
-    )
-    .toFixed(decimalPlaces, roundingMode)
+  spotPriceToChainPrice({ value, baseDecimals, quoteDecimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain returns is in the x / 10^(quoteDecimals - baseDecimals) format
@@ -294,11 +341,10 @@ export const spotPriceFromChainPriceToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) =>
-  new BigNumber(value)
-    .dividedBy(
-      new BigNumber(10).pow(new BigNumber(quoteDecimals).minus(baseDecimals)),
-    )
-    .toFixed(decimalPlaces, roundingMode)
+  spotPriceFromChainPrice({ value, baseDecimals, quoteDecimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain requires is in the x * 10^(baseDecimals) format
@@ -327,9 +373,10 @@ export const spotQuantityToChainQuantityToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) =>
-  new BigNumber(value)
-    .multipliedBy(new BigNumber(10).pow(baseDecimals))
-    .toFixed(decimalPlaces, roundingMode)
+  spotQuantityToChainQuantity({ value, baseDecimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
 
 /**
  * Amount that the chain returns is in the x * 10^(baseDecimals) format
@@ -358,6 +405,7 @@ export const spotQuantityFromChainQuantityToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) =>
-  new BigNumber(value)
-    .multipliedBy(new BigNumber(10).pow(baseDecimals))
-    .toFixed(decimalPlaces, roundingMode)
+  spotQuantityFromChainQuantity({ value, baseDecimals }).toFixed(
+    decimalPlaces,
+    roundingMode,
+  )
