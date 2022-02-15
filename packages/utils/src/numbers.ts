@@ -1,19 +1,23 @@
 import { BigNumber } from './classes'
 
+const $BigNumber = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN })
+
 export const getSignificantDecimalsFromNumber = (
   number: BigNumber | number | string,
 ): number => {
-  if (Math.floor(new BigNumber(number).toNumber()) === number) {
+  if (Math.floor(new $BigNumber(number).toNumber()) === number) {
     return 0
   }
 
-  const decimals = new BigNumber(number).toFixed().split('.')[1]
+  const parts = new $BigNumber(number).toFixed().split('.')
+  const [, decimals] = parts
 
-  if (!decimals.length) {
+  /** Number doesn't have decimals */
+  if (!decimals) {
     return 0
   }
 
-  return decimals.replace('0', '').length || 0
+  return decimals.length
 }
 
 /**
@@ -24,7 +28,7 @@ export const getSignificantDecimalsFromNumber = (
  */
 export const denomAmountFromGrpcChainDenomAmount = (
   value: string | number | BigNumber,
-) => new BigNumber(value).dividedBy(new BigNumber(10).pow(18))
+) => new $BigNumber(value).dividedBy(new $BigNumber(10).pow(18))
 
 /**
  * On chain amounts broadcasted to a sentry directly using the
@@ -34,7 +38,7 @@ export const denomAmountFromGrpcChainDenomAmount = (
  */
 export const denomAmountToGrpcChainDenomAmount = (
   value: string | number | BigNumber,
-) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(18))
+) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(18))
 
 /**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
@@ -46,7 +50,7 @@ export const denomAmountToChainDenomAmount = ({
 }: {
   value: number | string | BigNumber
   decimals?: number | string
-}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(decimals))
+}) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(decimals))
 
 /**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -66,10 +70,7 @@ export const denomAmountToChainDenomAmountToFixed = ({
   const number = denomAmountToChainDenomAmount({ value, decimals })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -85,7 +86,7 @@ export const denomAmountFromChainDenomAmount = ({
 }: {
   value: number | string | BigNumber
   decimals?: number | string
-}) => new BigNumber(value).dividedBy(new BigNumber(10).pow(decimals))
+}) => new $BigNumber(value).dividedBy(new $BigNumber(10).pow(decimals))
 /**
  *
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -105,10 +106,7 @@ export const denomAmountFromChainDenomAmountToFixed = ({
   const number = denomAmountFromChainDenomAmount({ value, decimals })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -124,7 +122,7 @@ export const derivativeMarginToChainMargin = ({
 }: {
   value: number | string | BigNumber
   quoteDecimals?: number | string
-}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(quoteDecimals))
+}) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(quoteDecimals))
 
 /**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
@@ -144,10 +142,7 @@ export const derivativeMarginToChainMarginToFixed = ({
   const number = derivativeMarginToChainMargin({ value, quoteDecimals })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -163,7 +158,7 @@ export const derivativeMarginFromChainMargin = ({
 }: {
   value: number | string | BigNumber
   quoteDecimals?: number | string
-}) => new BigNumber(value).dividedBy(new BigNumber(10).pow(quoteDecimals))
+}) => new $BigNumber(value).dividedBy(new $BigNumber(10).pow(quoteDecimals))
 
 /**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -183,10 +178,7 @@ export const derivativeMarginFromChainMarginToFixed = ({
   const number = derivativeMarginFromChainMargin({ value, quoteDecimals })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -202,7 +194,7 @@ export const derivativePriceToChainPrice = ({
 }: {
   value: number | string | BigNumber
   quoteDecimals?: number | string
-}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(quoteDecimals))
+}) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(quoteDecimals))
 
 /**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
@@ -222,10 +214,7 @@ export const derivativePriceToChainPriceToFixed = ({
   const number = derivativePriceToChainPrice({ value, quoteDecimals })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -241,7 +230,7 @@ export const derivativePriceFromChainPrice = ({
 }: {
   value: number | string | BigNumber
   quoteDecimals?: number | string
-}) => new BigNumber(value).dividedBy(new BigNumber(10).pow(quoteDecimals))
+}) => new $BigNumber(value).dividedBy(new $BigNumber(10).pow(quoteDecimals))
 
 /**
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
@@ -261,10 +250,7 @@ export const derivativePriceFromChainPriceToFixed = ({
   const number = derivativePriceFromChainPrice({ value, quoteDecimals })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -278,7 +264,7 @@ export const derivativeQuantityToChainQuantity = ({
   value,
 }: {
   value: number | string | BigNumber
-}) => new BigNumber(value)
+}) => new $BigNumber(value)
 
 /**
  * Amount that the chain requires is in the x format
@@ -296,10 +282,7 @@ export const derivativeQuantityToChainQuantityToFixed = ({
   const number = derivativeQuantityToChainQuantity({ value })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -313,7 +296,7 @@ export const derivativeQuantityFromChainQuantity = ({
   value,
 }: {
   value: number | string | BigNumber
-}) => new BigNumber(value)
+}) => new $BigNumber(value)
 
 /**
  * Amount that the chain requires is in the x format
@@ -331,10 +314,7 @@ export const derivativeQuantityFromChainQuantityToFixed = ({
   const number = derivativeQuantityFromChainQuantity({ value })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -353,8 +333,8 @@ export const spotPriceToChainPrice = ({
   quoteDecimals?: number | string
   baseDecimals?: number | string
 }) =>
-  new BigNumber(value).multipliedBy(
-    new BigNumber(10).pow(new BigNumber(quoteDecimals).minus(baseDecimals)),
+  new $BigNumber(value).multipliedBy(
+    new $BigNumber(10).pow(new $BigNumber(quoteDecimals).minus(baseDecimals)),
   )
 
 /**
@@ -377,10 +357,7 @@ export const spotPriceToChainPriceToFixed = ({
   const number = spotPriceToChainPrice({ value, baseDecimals, quoteDecimals })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -399,8 +376,8 @@ export const spotPriceFromChainPrice = ({
   quoteDecimals?: number | string
   baseDecimals?: number | string
 }) =>
-  new BigNumber(value).dividedBy(
-    new BigNumber(10).pow(new BigNumber(quoteDecimals).minus(baseDecimals)),
+  new $BigNumber(value).dividedBy(
+    new $BigNumber(10).pow(new $BigNumber(quoteDecimals).minus(baseDecimals)),
   )
 
 /**
@@ -423,10 +400,7 @@ export const spotPriceFromChainPriceToFixed = ({
   const number = spotPriceFromChainPrice({ value, baseDecimals, quoteDecimals })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -442,7 +416,7 @@ export const spotQuantityToChainQuantity = ({
 }: {
   value: number | string | BigNumber
   baseDecimals?: number | string
-}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(baseDecimals))
+}) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(baseDecimals))
 
 /**
  * Amount that the chain requires is in the x * 10^(baseDecimals) format
@@ -465,10 +439,7 @@ export const spotQuantityToChainQuantityToFixed = ({
   })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
@@ -484,7 +455,7 @@ export const spotQuantityFromChainQuantity = ({
 }: {
   value: number | string | BigNumber
   baseDecimals?: number | string
-}) => new BigNumber(value).multipliedBy(new BigNumber(10).pow(baseDecimals))
+}) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(baseDecimals))
 
 /**
  * Amount that the chain returns is in the x * 10^(baseDecimals) format
@@ -507,10 +478,7 @@ export const spotQuantityFromChainQuantityToFixed = ({
   })
 
   if (decimalPlaces === undefined) {
-    return number.toFixed(
-      getSignificantDecimalsFromNumber(number),
-      roundingMode,
-    )
+    return number.toFixed()
   }
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
