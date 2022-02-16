@@ -195,6 +195,18 @@ export class ProtocolStats {
       .trading_reward_campaign_account_points.length
   }
 
+  async fetchTotalActiveSubaccounts() {
+    const { sentryHttpUrl } = this
+
+    const exchangeModuleStateResponse = await fetchExchangeModuleState(
+      sentryHttpUrl,
+    )
+
+    return exchangeModuleStateResponse.state.subaccount_trade_nonces.filter(
+      (nonce: any) => nonce.subaccount_trade_nonce.nonce > 0,
+    ).length
+  }
+
   async fetchTotalInjectiveChainAccounts() {
     const { sentryHttpUrl } = this
 
