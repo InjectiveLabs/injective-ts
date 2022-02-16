@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.74](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.73...@injectivelabs/cosmos-ts@0.0.74) (2022-02-16)
+
+
+### Bug Fixes
+
+* juno denom ([a8bb4ad](https://github.com/InjectiveLabs/injective-ts/commit/a8bb4ad3e54aa5bdf72e4ae7f547fe7403318b6a))
+
+
+
+
+
 ## [0.0.73](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.72...@injectivelabs/cosmos-ts@0.0.73) (2022-02-16)
 
 

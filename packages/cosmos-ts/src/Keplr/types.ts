@@ -54,7 +54,7 @@ export const cosmosNativeDenomsFromChainId = {
     ...erc20TokenMeta.getMetaBySymbol('HUAHUA'),
     denom: 'uhuahua',
   },
-  [CosmosChainId.Chihuahua]: {
+  [CosmosChainId.Juno]: {
     ...erc20TokenMeta.getMetaBySymbol('JUNO'),
     denom: 'ujuno',
   },
