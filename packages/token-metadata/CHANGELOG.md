@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.66...@injectivelabs/token-metadata@0.0.67) (2022-02-16)
+
+
+### Features
+
+* added juno ([a15ce41](https://github.com/InjectiveLabs/injective-ts/commit/a15ce41107498f89e723ba98e794d0906235f05f))
+
+
+
+
+
 ## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.65...@injectivelabs/token-metadata@0.0.66) (2022-02-15)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

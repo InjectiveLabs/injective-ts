@@ -17,6 +17,7 @@ export const keplrSupportedChainIds = [
   'impacthub-3',
   'emoney-3',
   'euler-6',
+  'juno-1',
   'straightedge-2',
   'axelar-dojo-1',
 ]

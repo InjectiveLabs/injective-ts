@@ -532,6 +532,24 @@ export default {
     coinGeckoId: 'chihuahua-token',
   },
 
+  JUNO: {
+    name: 'Juno',
+    logo: 'juno.jpeg',
+    symbol: 'JUNO',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'juno-network',
+  },
+
+  UJUNO: {
+    name: 'Juno',
+    logo: 'juno.jpeg',
+    symbol: 'JUNO',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'juno-network',
+  },
+
   AXL: {
     name: 'Axelar',
     logo: 'axelar.jpeg',

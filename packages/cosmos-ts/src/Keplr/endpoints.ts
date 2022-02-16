@@ -19,6 +19,11 @@ export const getEndpointFromChainId = (
         rpc: 'https://tm.injective.network',
         rest: 'https://lcd.injective.network',
       }
+    case CosmosChainId.Juno:
+      return {
+        rpc: 'https://rpc-juno.keplr.app',
+        rest: 'https://lcd-juno.keplr.app',
+      }
     case CosmosChainId.Terra:
       return {
         rpc: 'https://tm.terra.injective.network',

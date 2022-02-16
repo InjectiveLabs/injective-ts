@@ -11,6 +11,7 @@ export enum BridgingNetwork {
   Osmosis = 'osmosis',
   Terra = 'terra',
   Ethereum = 'ethereum',
+  Juno = 'juno',
   Axelar = 'axelar',
   Injective = 'injective',
 }

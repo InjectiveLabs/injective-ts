@@ -17,11 +17,13 @@ export const KeplrNetworks = [
   BridgingNetwork.Chihuahua,
   BridgingNetwork.Osmosis,
   BridgingNetwork.Axelar,
+  BridgingNetwork.Juno,
 ]
 
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Chihuahua,
   BridgingNetwork.CosmosHub,
+  BridgingNetwork.Juno,
 ]
 
 export const tokenDenomsPerNetwork = [
@@ -39,6 +41,11 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Axelar,
     denoms: ['uaxl'],
     symbols: ['axl'],
+  },
+  {
+    network: BridgingNetwork.Juno,
+    denoms: ['ujuno'],
+    symbols: ['juno'],
   },
   {
     network: BridgingNetwork.CosmosHub,
