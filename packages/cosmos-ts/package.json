@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/cosmos-ts",
   "description": "Cosmos related wrappers.",
-  "version": "0.0.74",
+  "version": "0.0.75",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
     "@cosmjs/stargate": "^0.27.0",
     "@cosmjs/tendermint-rpc": "^0.27.0",
     "@injectivelabs/exceptions": "^0.0.42",
-    "@injectivelabs/token-metadata": "^0.0.67",
+    "@injectivelabs/token-metadata": "^0.0.68",
     "@injectivelabs/ts-types": "^0.0.38",
     "@injectivelabs/utils": "^0.0.60",
     "@keplr-wallet/common": "^0.9.10",

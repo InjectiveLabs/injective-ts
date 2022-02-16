@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.67...@injectivelabs/token-metadata@0.0.68) (2022-02-16)
+
+
+### Bug Fixes
+
+* juno image ([542bf32](https://github.com/InjectiveLabs/injective-ts/commit/542bf321bb0950bdc1693e8702fbcd95a38f5e68))
+
+
+
+
+
 ## [0.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.0.66...@injectivelabs/token-metadata@0.0.67) (2022-02-16)
 
 
