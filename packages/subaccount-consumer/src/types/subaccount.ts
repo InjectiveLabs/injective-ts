@@ -4,6 +4,7 @@ import {
   SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
   AccountPortfolio as GrpcAccountPortfolio,
   SubaccountPortfolio as GrpcSubaccountPortfolio,
+  Reward as GrpcTradingReward,
 } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
 import { Coin } from '@injectivelabs/ts-types'
 
@@ -51,7 +52,17 @@ export interface AccountPortfolio {
   subaccountsList: Array<SubaccountPortfolio>
 }
 
+export interface TradingReward {
+  accountAddress: string
+  rewards: {
+    amount: string
+    denom: string
+  }[]
+  distributedAt: number
+}
+
 export {
+  GrpcTradingReward,
   GrpcSubaccountDeposit,
   GrpcSubaccountBalance,
   GrpcAccountPortfolio,

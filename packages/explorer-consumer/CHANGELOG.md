@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.42...@injectivelabs/explorer-consumer@0.0.43) (2022-02-18)
+
+
+### Features
+
+* trade and earn history ([5077fef](https://github.com/InjectiveLabs/injective-ts/commit/5077fef716c0a7387ee7a218bd729b3e944f8957))
+
+
+
+
+
 ## [0.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.41...@injectivelabs/explorer-consumer@0.0.42) (2022-02-15)
 
 **Note:** Version bump only for package @injectivelabs/explorer-consumer

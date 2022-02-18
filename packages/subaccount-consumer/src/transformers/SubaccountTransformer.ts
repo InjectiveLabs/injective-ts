@@ -12,6 +12,8 @@ import {
   SubaccountTransfer,
   AccountPortfolio,
   SubaccountPortfolio,
+  TradingReward,
+  GrpcTradingReward,
 } from '../types'
 
 export class SubaccountTransformer {
@@ -96,6 +98,24 @@ export class SubaccountTransformer {
       amount: amount
         ? SubaccountTransformer.grpcAmountToAmount(amount)
         : undefined,
+    }
+  }
+
+  static grpcTradingRewardsToTradingRewards(
+    rewards: GrpcTradingReward[],
+  ): TradingReward[] {
+    return rewards.map(SubaccountTransformer.grpcTradingRewardToTradingReward)
+  }
+
+  static grpcTradingRewardToTradingReward(
+    reward: GrpcTradingReward,
+  ): TradingReward {
+    return {
+      accountAddress: reward.getAccountAddress(),
+      rewards: reward
+        .getRewardsList()
+        .map((r) => ({ amount: r.getAmount(), denom: r.getDenom() })),
+      distributedAt: reward.getDistributedAt(),
     }
   }
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.84](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.83...@injectivelabs/subaccount-consumer@0.0.84) (2022-02-18)
+
+
+### Features
+
+* trade and earn history ([5077fef](https://github.com/InjectiveLabs/injective-ts/commit/5077fef716c0a7387ee7a218bd729b3e944f8957))
+
+
+
+
+
 ## [0.0.83](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/subaccount-consumer@0.0.82...@injectivelabs/subaccount-consumer@0.0.83) (2022-02-15)
 
 **Note:** Version bump only for package @injectivelabs/subaccount-consumer

@@ -10,6 +10,8 @@ import {
   SubaccountBalancesListResponse,
   PortfolioRequest,
   PortfolioResponse,
+  RewardsRequest,
+  RewardsResponse,
 } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
 import { InjectiveAccountsRPC } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb_service'
 import { GrpcException } from '@injectivelabs/exceptions'
@@ -28,6 +30,23 @@ export class SubaccountConsumer extends BaseConsumer {
       >(request, InjectiveAccountsRPC.Portfolio)
 
       return response.getPortfolio()
+    } catch (e: any) {
+      throw new GrpcException(e.message)
+    }
+  }
+
+  async fetchRewards(address: string) {
+    const request = new RewardsRequest()
+    request.setAccountAddress(address)
+
+    try {
+      const response = await this.request<
+        RewardsRequest,
+        RewardsResponse,
+        typeof InjectiveAccountsRPC.Rewards
+      >(request, InjectiveAccountsRPC.Rewards)
+
+      return response.getRewardsList()
     } catch (e: any) {
       throw new GrpcException(e.message)
     }

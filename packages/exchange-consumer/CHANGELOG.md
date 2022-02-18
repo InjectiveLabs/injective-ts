@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.145](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.144...@injectivelabs/exchange-consumer@0.0.145) (2022-02-18)
+
+
+### Features
+
+* trade and earn history ([5077fef](https://github.com/InjectiveLabs/injective-ts/commit/5077fef716c0a7387ee7a218bd729b3e944f8957))
+
+
+
+
+
 ## [0.0.144](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.143...@injectivelabs/exchange-consumer@0.0.144) (2022-02-15)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
