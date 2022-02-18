@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.48...@injectivelabs/ui-common@0.0.49) (2022-02-18)
+
+
+### Features
+
+* caching denom traces ([1a58c5f](https://github.com/InjectiveLabs/injective-ts/commit/1a58c5fcf4bd2b0ec9825b01581add25bf8197d4))
+
+
+
+
+
 ## [0.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.47...@injectivelabs/ui-common@0.0.48) (2022-02-18)
 
 **Note:** Version bump only for package @injectivelabs/ui-common

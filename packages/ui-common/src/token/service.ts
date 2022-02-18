@@ -20,6 +20,7 @@ import {
   Token,
   SubaccountBalanceWithToken,
   UiBridgeTransactionWithToken,
+  DenomTrace,
 } from './types'
 import { UiSubaccountBalance } from '../subaccount/types'
 import { BaseService } from '../BaseService'
@@ -30,10 +31,26 @@ export class TokenService extends BaseService {
 
   protected erc20TokenMeta: Erc20TokenMeta
 
+  // Cached denom traces
+  protected denomTraces: Record<string, DenomTrace> = {}
+
   constructor(options: ServiceOptions) {
     super(options)
     this.ibcConsumer = new IBCConsumer(this.endpoints.sentryGrpcApi)
     this.erc20TokenMeta = Erc20TokenMetaFactory.make(this.options.network)
+  }
+
+  async fetchDenomTraces() {
+    const promise = this.ibcConsumer.fetchDenomsTrace()
+    const denomTraces = await this.fetchOrFetchAndMeasure(
+      promise,
+      ChainMetrics.FetchDenomsTrace,
+    )
+
+    return denomTraces.map((denomTrace) => ({
+      path: denomTrace.getPath(),
+      baseDenom: denomTrace.getBaseDenom(),
+    }))
   }
 
   async fetchDenomTrace(denom: string) {
@@ -52,6 +69,33 @@ export class TokenService extends BaseService {
       path: denomTrace.getPath(),
       baseDenom: denomTrace.getBaseDenom(),
     }
+  }
+
+  async fetchDenomTraceFromCache(denom: string) {
+    const hash = denom.replace('ibc/', '')
+
+    if (this.denomTraces[hash]) {
+      return this.denomTraces[hash]
+    }
+
+    const promise = this.ibcConsumer.fetchDenomTrace(hash)
+    const denomTrace = await this.fetchOrFetchAndMeasure(
+      promise,
+      ChainMetrics.FetchDenomTrace,
+    )
+
+    if (!denomTrace) {
+      throw new Error(`Denom trace not found for ${denom}`)
+    }
+
+    const uiDenomTrace = {
+      path: denomTrace.getPath(),
+      baseDenom: denomTrace.getBaseDenom(),
+    }
+
+    this.denomTraces[hash] = uiDenomTrace
+
+    return uiDenomTrace
   }
 
   getCoinGeckoId(symbol: string): string {
@@ -82,7 +126,7 @@ export class TokenService extends BaseService {
 
   async getIbcDenomTokenMeta(denom: string): Promise<TokenMeta | undefined> {
     const { erc20TokenMeta } = this
-    const { baseDenom: symbol } = await this.fetchDenomTrace(denom)
+    const { baseDenom: symbol } = await this.fetchDenomTraceFromCache(denom)
 
     return erc20TokenMeta.getMetaBySymbol(symbol)
   }
@@ -102,7 +146,7 @@ export class TokenService extends BaseService {
   }
 
   async getIbcDenomToken(denom: string): Promise<IbcToken> {
-    const { baseDenom, path } = await this.fetchDenomTrace(denom)
+    const { baseDenom, path } = await this.fetchDenomTraceFromCache(denom)
     const tokenMeta = this.getTokenMetaDataBySymbol(baseDenom)
 
     return {
@@ -143,7 +187,7 @@ export class TokenService extends BaseService {
   }
 
   async getIbcCoinToken(coin: UiSupplyCoin): Promise<IbcToken> {
-    const { baseDenom, path } = await this.fetchDenomTrace(coin.denom)
+    const { baseDenom, path } = await this.fetchDenomTraceFromCache(coin.denom)
     const tokenMeta = this.getTokenMetaDataBySymbol(baseDenom)
 
     return {
@@ -195,7 +239,7 @@ export class TokenService extends BaseService {
     const ibcBankBalancesWithToken = (
       await Promise.all(
         Object.keys(ibcBalances).map(async (denom) => {
-          const { baseDenom, path } = await this.fetchDenomTrace(denom)
+          const { baseDenom, path } = await this.fetchDenomTraceFromCache(denom)
 
           return {
             denom,

@@ -98,3 +98,8 @@ export interface SubaccountBalanceWithTokenWithUsdBalance
 export interface UiBridgeTransactionWithToken extends UiBridgeTransaction {
   token: Token
 }
+
+export interface DenomTrace {
+  baseDenom: string
+  path: string
+}

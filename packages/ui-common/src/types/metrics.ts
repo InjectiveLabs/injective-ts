@@ -14,6 +14,7 @@ export enum AccountMetrics {
 export enum ChainMetrics {
   FetchSupply = 'QueryBankSupply',
   FetchDenomTrace = 'QueryDenomTrace',
+  FetchDenomsTrace = 'QueryDenomsTrace',
   FetchValidators = 'QueryValidatorsRequest',
   FetchValidator = 'QueryValidatorRequest',
   FetchValidatorDelegations = 'QueryValidatorDelegationsRequest',
