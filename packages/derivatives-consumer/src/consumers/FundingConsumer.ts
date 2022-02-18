@@ -15,23 +15,28 @@ export class FundingConsumer extends BaseConsumer {
     subaccountId,
     pagination,
   }: {
-    marketId: string
-    subaccountId: string
-    pagination: PaginationOption
+    marketId?: string
+    subaccountId?: string
+    pagination?: PaginationOption
   }) {
     const request = new FundingPaymentsRequest()
-    request.setMarketId(marketId)
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
     }
 
-    if (pagination.skip !== undefined) {
-      request.setSkip(pagination.skip)
-    }
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
 
-    if (pagination.limit !== undefined) {
-      request.setLimit(pagination.limit)
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
@@ -51,18 +56,23 @@ export class FundingConsumer extends BaseConsumer {
     marketId,
     pagination,
   }: {
-    marketId: string
-    pagination: PaginationOption
+    marketId?: string
+    pagination?: PaginationOption
   }) {
     const request = new FundingRatesRequest()
-    request.setMarketId(marketId)
 
-    if (pagination.skip !== undefined) {
-      request.setSkip(pagination.skip)
+    if (marketId) {
+      request.setMarketId(marketId)
     }
 
-    if (pagination.limit !== undefined) {
-      request.setLimit(pagination.limit)
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {

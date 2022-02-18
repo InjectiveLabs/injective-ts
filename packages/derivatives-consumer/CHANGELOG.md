@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.103](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.102...@injectivelabs/derivatives-consumer@0.0.103) (2022-02-18)
+
+
+### Bug Fixes
+
+* funding consumer ([5a5f89b](https://github.com/InjectiveLabs/injective-ts/commit/5a5f89bf8c937749d555295ba4a7fb226242f4e5))
+
+
+
+
+
 ## [0.0.102](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.101...@injectivelabs/derivatives-consumer@0.0.102) (2022-02-15)
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer
