@@ -23,8 +23,6 @@ export interface TxProviderTransactionOptions {
 }
 
 export class TxProvider {
-  private message: any
-
   private web3Strategy: Web3Strategy
 
   private metricsProvider?: MetricsProvider
@@ -46,7 +44,7 @@ export class TxProvider {
   }
 
   async broadcast(transaction: TxProviderTransactionOptions) {
-    const { message, web3Strategy, consumer, chainId, metricsProvider } = this
+    const { web3Strategy, consumer, chainId, metricsProvider } = this
 
     const prepareTx = async () => {
       try {
@@ -95,9 +93,9 @@ export class TxProvider {
 
       const promise = consumer.broadcastTxRequest({
         signature,
-        message,
         chainId,
         txResponse,
+        message: transaction.message,
       })
 
       if (!metricsProvider) {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@injectivelabs/utils'
 
 export interface MetricProviderOptions {
-  region: string
+  region?: string
   appEnv?: string
   nodeEnv?: string
 }
@@ -23,7 +23,7 @@ export class MetricsProvider {
 
   constructor(options: MetricProviderOptions = defaultOptions) {
     this.httpClient = new HttpClient('https://telegraf.injective.dev/statsd')
-    this.region = options.region
+    this.region = (options.region || defaultOptions.region) as string
     this.env = (options.appEnv || defaultOptions.appEnv) as string
     this.isProduction =
       (options.nodeEnv || defaultOptions.nodeEnv) === 'production'

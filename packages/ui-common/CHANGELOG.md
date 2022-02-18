@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.45...@injectivelabs/ui-common@0.0.46) (2022-02-18)
+
+
+### Bug Fixes
+
+* tx provider ([8e4fe12](https://github.com/InjectiveLabs/injective-ts/commit/8e4fe1234fa9e61fb2f8f09490d8b1b1ea8ceb94))
+
+
+
+
+
 ## [0.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.44...@injectivelabs/ui-common@0.0.45) (2022-02-16)
 
 **Note:** Version bump only for package @injectivelabs/ui-common

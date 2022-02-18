@@ -23,11 +23,8 @@ export interface ServiceOptionsEndpoints {
 export interface ServiceOptions {
   chainId: ChainId
   network: Network
-  metrics:
-    | {
-        region: string
-      }
-    | undefined
+  metricsEnabled?: boolean
+  metricsRegion?: string
   endpoints?: ServiceOptionsEndpoints
 }
 
