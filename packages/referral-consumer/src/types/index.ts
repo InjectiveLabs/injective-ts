@@ -3,7 +3,7 @@ import {
   GetReferralInfoResp as GrpcReferralInfo,
   RefereeInfo as GrpcRefereeInfo,
   ReferrerInfo as GrpcReferrerInfo,
-  GetRefereeListResp as GrpcRefereeList,
+  ListReferrersResp as GrpcRefereeList,
 } from '@injectivelabs/referral-api/injective_referral_rpc_pb'
 
 export enum ReferrerStatus {

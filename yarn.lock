@@ -1098,10 +1098,10 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
-"@injectivelabs/referral-api@^1.0.19":
-  version "1.0.19"
-  resolved "https://registry.npmjs.org/@injectivelabs/referral-api/-/referral-api-1.0.19.tgz#a24b47863313cf50a693172c9051d0f0fec91946"
-  integrity sha512-8o+hVsm2+lmULtlq2CGA8u9FKp8qqB6+yYSRroRfeyk/D/lKogg49jPYeYp1I9n6bECGeVJv9G5YCRMO+AIsvA==
+"@injectivelabs/referral-api@^1.0.20":
+  version "1.0.20"
+  resolved "https://registry.npmjs.org/@injectivelabs/referral-api/-/referral-api-1.0.20.tgz#cd405deb7c62346b112f9dfd0ab0ccda78fbd107"
+  integrity sha512-+c+wuA6gUQFgtB8zKQ0lppoHwEiG/JOeulQdwM7LBgkr4F42nVh11MjHh9C3Q7O2G1NpkMrBKJmlfLDyRLm83w==
 
 "@injectivelabs/ts-types@^0.0.22":
   version "0.0.22"
