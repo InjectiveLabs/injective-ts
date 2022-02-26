@@ -57,6 +57,20 @@ export class SpotService extends BaseService {
     return SpotTransformer.grpcOrderbookToOrderbook(orderbook)
   }
 
+  async fetchMarketsOrderbook(marketIds: string[]) {
+    const promise = Promise.all(
+      marketIds.map(async (marketId) => this.consumer.fetchOrderbook(marketId)),
+    )
+    const marketsOrderbook = await this.fetchOrFetchAndMeasure(
+      promise,
+      SpotMetrics.FetchOrderbook,
+    )
+
+    return marketsOrderbook.map((orderbook) =>
+      SpotTransformer.grpcOrderbookToOrderbook(orderbook),
+    )
+  }
+
   async fetchTrades({
     marketId,
     subaccountId,

@@ -58,6 +58,20 @@ export class DerivativeService extends BaseService {
     return DerivativeTransformer.grpcOrderbookToOrderbook(orderbook)
   }
 
+  async fetchMarketsOrderbook(marketIds: string[]) {
+    const promise = Promise.all(
+      marketIds.map(async (marketId) => this.consumer.fetchOrderbook(marketId)),
+    )
+    const marketsOrderbook = await this.fetchOrFetchAndMeasure(
+      promise,
+      DerivativesMetrics.FetchOrderbook,
+    )
+
+    return marketsOrderbook.map((orderbook) =>
+      DerivativeTransformer.grpcOrderbookToOrderbook(orderbook),
+    )
+  }
+
   async fetchTrades({
     marketId,
     subaccountId,

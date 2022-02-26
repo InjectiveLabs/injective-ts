@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.49...@injectivelabs/ui-common@0.0.50) (2022-02-26)
+
+
+### Features
+
+* fetching multiple orderbooks ([7064104](https://github.com/InjectiveLabs/injective-ts/commit/70641042dbf8e5d3f3b72a8c8dffe8b427d2b0f1))
+
+
+
+
+
 ## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.48...@injectivelabs/ui-common@0.0.49) (2022-02-18)
 
 
