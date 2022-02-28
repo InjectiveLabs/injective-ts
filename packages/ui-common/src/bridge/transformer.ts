@@ -152,8 +152,6 @@ export const convertPeggoToUiBridgeTransaction = async ({
     '0x',
   )
 
-  console.log(transaction)
-
   return {
     txHash,
     amount: transaction.amount,

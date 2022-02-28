@@ -83,15 +83,20 @@ export interface SubaccountBalanceWithToken {
   token: Token
 }
 
-export interface SubaccountBalanceWithTokenAndBalance {
+export interface SubaccountBalanceWithTokenAndUsdPrice {
   availableBalance: string
   totalBalance: string
   denom: string
-  token: TokenWithBalance
+  token: TokenWithUsdPrice
 }
 
 export interface SubaccountBalanceWithTokenWithUsdBalance
   extends SubaccountBalanceWithToken {
+  balanceInUsd: string
+}
+
+export interface SubaccountBalanceWithTokenAndUsdPriceAndUsdBalance
+  extends SubaccountBalanceWithTokenAndUsdPrice {
   balanceInUsd: string
 }
 
