@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.51...@injectivelabs/ui-common@0.0.52) (2022-02-28)
+
+
+### Bug Fixes
+
+* export static function ([b3e2e06](https://github.com/InjectiveLabs/injective-ts/commit/b3e2e06aae7ce3d12d27404e72c85ecc958f3318))
+
+
+
+
+
 ## [0.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.50...@injectivelabs/ui-common@0.0.51) (2022-02-28)
 
 

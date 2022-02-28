@@ -5,6 +5,7 @@ import {
 import { subHours, format } from 'date-fns'
 import {
   computeLatestTransactions,
+  mergeAllTransactions,
   getLatestSelectedTransaction,
   getPeggoGraphQlEndpoint,
 } from './utils'
@@ -29,6 +30,8 @@ export class BridgeService extends BaseService {
   static computeLatestTransactions = computeLatestTransactions
 
   static getLatestSelectedTransaction = getLatestSelectedTransaction
+
+  static mergeAllTransaction = mergeAllTransactions
 
   async fetchIBCTransferTransactions(address: string) {
     try {
