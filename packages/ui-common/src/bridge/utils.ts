@@ -201,19 +201,19 @@ export const getPeggoGraphQlEndpoint = (network: Network): string => {
 }
 
 export const computeLatestTransactions = ({
-  latestTransactions,
-  peggoUserDeposits,
-  ibcTransferBridgeTransactions,
-  peggyDepositBridgeTransactions,
-  peggyWithdrawalBridgeTransactions,
+  latestTransactions = [],
+  peggoUserDeposits = [],
+  ibcTransferBridgeTransactions = [],
+  peggyDepositBridgeTransactions = [],
+  peggyWithdrawalBridgeTransactions = [],
 }: {
-  latestTransactions: UiBridgeTransaction[]
-  peggoUserDeposits: UiBridgeTransaction[]
-  ibcTransferBridgeTransactions: UiBridgeTransaction[]
-  peggyDepositBridgeTransactions: UiBridgeTransaction[]
-  peggyWithdrawalBridgeTransactions: UiBridgeTransaction[]
-}): UiBridgeTransaction[] => {
-  const filteredCachedTransactions = latestTransactions
+  latestTransactions?: UiBridgeTransaction[]
+  peggoUserDeposits?: UiBridgeTransaction[]
+  ibcTransferBridgeTransactions?: UiBridgeTransaction[]
+  peggyDepositBridgeTransactions?: UiBridgeTransaction[]
+  peggyWithdrawalBridgeTransactions?: UiBridgeTransaction[]
+}): UiBridgeTransaction[] =>
+  latestTransactions
     .map((transaction: UiBridgeTransaction) => {
       const isEthereumTx =
         transaction.sender.startsWith('0x') ||
@@ -237,12 +237,25 @@ export const computeLatestTransactions = ({
       ]),
     )
 
+export const mergeAllTransactions = ({
+  latestTransactions = [],
+  peggoUserDeposits = [],
+  ibcTransferBridgeTransactions = [],
+  peggyDepositBridgeTransactions = [],
+  peggyWithdrawalBridgeTransactions = [],
+}: {
+  latestTransactions?: UiBridgeTransaction[]
+  peggoUserDeposits?: UiBridgeTransaction[]
+  ibcTransferBridgeTransactions?: UiBridgeTransaction[]
+  peggyDepositBridgeTransactions?: UiBridgeTransaction[]
+  peggyWithdrawalBridgeTransactions?: UiBridgeTransaction[]
+}): UiBridgeTransaction[] => {
   const filteredPeggoUserDeposits = peggoUserDeposits.filter(
     txNotPartOfInjectivePeggyTxs(peggyDepositBridgeTransactions),
   )
 
   return [
-    ...filteredCachedTransactions,
+    ...latestTransactions,
     ...filteredPeggoUserDeposits,
     ...ibcTransferBridgeTransactions,
     ...peggyDepositBridgeTransactions,
@@ -253,11 +266,11 @@ export const computeLatestTransactions = ({
 export const getLatestSelectedTransaction = ({
   selectedTransaction,
   peggoUserDeposits,
-  latestTransactions,
+  transactions,
 }: {
   selectedTransaction: UiBridgeTransaction
   peggoUserDeposits: UiBridgeTransaction[]
-  latestTransactions: UiBridgeTransaction[]
+  transactions: UiBridgeTransaction[]
 }): UiBridgeTransaction => {
   if (!selectedTransaction.receiver || !selectedTransaction.sender) {
     return selectedTransaction
@@ -268,7 +281,7 @@ export const getLatestSelectedTransaction = ({
       findEthereumTransactionByTxHash(peggoTransaction, selectedTransaction),
     ) || selectedTransaction
 
-  const selectedTransactionExistInTransactions = latestTransactions.find(
+  const selectedTransactionExistInTransactions = transactions.find(
     (transaction: UiBridgeTransaction) =>
       findEthereumTransactionByNonce(transaction, newSelectedTransaction) ||
       findEthereumTransactionByTxHashes(transaction, newSelectedTransaction) ||
