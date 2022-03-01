@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/utils",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "0.0.61",
+  "version": "0.0.62",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,8 +27,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^0.0.43",
-    "@injectivelabs/ts-types": "^0.0.39",
+    "@injectivelabs/exceptions": "^0.0.44",
+    "@injectivelabs/ts-types": "^0.0.40",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
     "link-module-alias": "^1.2.0",
