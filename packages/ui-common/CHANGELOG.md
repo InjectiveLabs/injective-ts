@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.54...@injectivelabs/ui-common@0.0.55) (2022-03-01)
+
+
+### Bug Fixes
+
+* lerna ([fa60c2a](https://github.com/InjectiveLabs/injective-ts/commit/fa60c2aa5130965406d7c3136e2ab7ccc040324e))
+
+
+
+
+
 ## 0.0.54 (2022-03-01)
 
 
