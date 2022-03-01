@@ -155,7 +155,7 @@ export class DerivativeActionService extends BaseActionService {
     feeRecipient,
     injectiveAddress,
     subaccountId,
-    triggerPrice,
+    triggerPrice = ZERO_TO_STRING,
   }: {
     positions: {
       orderType: DerivativeOrderSide

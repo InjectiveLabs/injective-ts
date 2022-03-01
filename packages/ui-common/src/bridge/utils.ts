@@ -6,7 +6,11 @@ import {
   BridgingNetwork,
   MintScanExplorerUrl,
 } from './types'
-import { PEGGY_GRAPH_URL, PEGGY_TESTNET_GRAPH_URL } from '../constants'
+import {
+  PEGGY_GRAPH_URL,
+  PEGGY_DEVNET_GRAPH_URL,
+  PEGGY_TESTNET_GRAPH_URL,
+} from '../constants'
 
 const sameTxHash = (txHashOne: string, txHashTwo: string) =>
   txHashOne &&
@@ -192,9 +196,8 @@ export const getPeggoGraphQlEndpoint = (network: Network): string => {
     return PEGGY_TESTNET_GRAPH_URL
   }
 
-  // TODO
   if ([Network.Devnet].includes(network)) {
-    return PEGGY_TESTNET_GRAPH_URL
+    return PEGGY_DEVNET_GRAPH_URL
   }
 
   return ''

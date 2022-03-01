@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.44 (2022-03-01)
+
+
+### Bug Fixes
+
+* cosmos ts + packages bump ([4c1213a](https://github.com/InjectiveLabs/injective-ts/commit/4c1213aaeec04a442edd0b8c546aa233eb47d3fd))
+* dependency cycle ([8567551](https://github.com/InjectiveLabs/injective-ts/commit/856755179ac526f415f108b90a7b6f58f3e3258d))
+* endpoints ([e77b587](https://github.com/InjectiveLabs/injective-ts/commit/e77b587265e7081f559b8f34d39cbfeb9be90af7))
+* fee recipient in trades ([7d50924](https://github.com/InjectiveLabs/injective-ts/commit/7d50924199bc9fba68fef85d1b30fb53dcf617b6))
+* number formatting ([fb71ba9](https://github.com/InjectiveLabs/injective-ts/commit/fb71ba9559719bf67a73881e268a5b3cbdeb9fa3))
+* numbers converstion ([dcf9dfb](https://github.com/InjectiveLabs/injective-ts/commit/dcf9dfb14ce45486649915c061412ce32beb350c))
+* optional param for rounding ([bc0ec90](https://github.com/InjectiveLabs/injective-ts/commit/bc0ec90c28bdf3e990165c64af39a91b2895a3b0))
+* redundant packages ([7e3f38e](https://github.com/InjectiveLabs/injective-ts/commit/7e3f38e9281c7d9eec7aeb9ba94e2fc48c70d52f))
+* rounding ([b269c9a](https://github.com/InjectiveLabs/injective-ts/commit/b269c9aec7048ce1ae4b7862ab2e88cb7c59e033))
+* spot market proposal ([40c041f](https://github.com/InjectiveLabs/injective-ts/commit/40c041f0ad13868830927354f2a739557ad43541))
+* types update ([2227d5d](https://github.com/InjectiveLabs/injective-ts/commit/2227d5d097b50502a5fa9a614427dd0c4bfa53d9))
+
+
+### Features
+
+* added blocks with txs stream ([7144aef](https://github.com/InjectiveLabs/injective-ts/commit/7144aef7cf6100939da4b0f7bdf89d12ca8ad275))
+* added default gas price ([8b7062f](https://github.com/InjectiveLabs/injective-ts/commit/8b7062f0bd2e4c2d373b37fee0bc658c94be8972))
+* added number conversion utils ([6912fb0](https://github.com/InjectiveLabs/injective-ts/commit/6912fb0ac1f5ffcfd11eff8980745593eabcd46f))
+* added toFixed variants ([f0194b4](https://github.com/InjectiveLabs/injective-ts/commit/f0194b496b04a65a6a1a479c74031ff1bbd83a7d))
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+* DMM consumer ([50ce000](https://github.com/InjectiveLabs/injective-ts/commit/50ce000df13a712335b675317b21f994171823d8))
+* DMM Consumer ([8df3c3a](https://github.com/InjectiveLabs/injective-ts/commit/8df3c3a847c07ae8253411a72e82cf525b82ba5d))
+* explorer consumer package ([acdcd4a](https://github.com/InjectiveLabs/injective-ts/commit/acdcd4a6e41dc010e460705f7f2d4fb9f90bdb21))
+* funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
+* implement Auction consumer ([3761411](https://github.com/InjectiveLabs/injective-ts/commit/3761411a723985f5a5cdc7e6ba82e15fdce8b68f))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* portfolio value ([02f12f8](https://github.com/InjectiveLabs/injective-ts/commit/02f12f89979d8cb45089025c308c546b2181498a))
+* portfolio value ([32978ec](https://github.com/InjectiveLabs/injective-ts/commit/32978ecaf1367ab35949b103f977b292dc8bfe3d))
+* spot and derivative services and cleanup ([e638c67](https://github.com/InjectiveLabs/injective-ts/commit/e638c67db9ec2d8200aa0a9d47d458abb9e1ef46))
+* trade and earn history ([be975a7](https://github.com/InjectiveLabs/injective-ts/commit/be975a72fb88bdd4144d40b2341b923c426b2805))
+* ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
+* update DMM consumer with latest exchange api ([ed3a689](https://github.com/InjectiveLabs/injective-ts/commit/ed3a68987df5f9ed87561d55cf604fff53b57a95))
+
+
+
+
+
 ## [0.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/explorer-consumer@0.0.42...@injectivelabs/explorer-consumer@0.0.43) (2022-02-18)
 
 

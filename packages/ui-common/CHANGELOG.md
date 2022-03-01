@@ -3,6 +3,68 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.54 (2022-03-01)
+
+
+### Bug Fixes
+
+* account service ([8be69a1](https://github.com/InjectiveLabs/injective-ts/commit/8be69a1ca53281e3a619ab215bc687327a744bee))
+* bridge data included ([ead1504](https://github.com/InjectiveLabs/injective-ts/commit/ead1504ea84b33d9d785f4e53f48b20da39f8866))
+* bridge utils ([318dc9e](https://github.com/InjectiveLabs/injective-ts/commit/318dc9ef705b3ab579e0fbb262122d0b97c91077))
+* casting ([8b6cf64](https://github.com/InjectiveLabs/injective-ts/commit/8b6cf6457074dad508d4d39c8a903b97b9d7f94e))
+* dependency cycle ([8567551](https://github.com/InjectiveLabs/injective-ts/commit/856755179ac526f415f108b90a7b6f58f3e3258d))
+* erc20 custom address meta ([5cb4d95](https://github.com/InjectiveLabs/injective-ts/commit/5cb4d95c617601bd0a4b8f7a3d660415a575eb9a))
+* export providers ([b10d20f](https://github.com/InjectiveLabs/injective-ts/commit/b10d20f2cbc24e2386eef397f91bffea98b7afd7))
+* export static function ([bb4e409](https://github.com/InjectiveLabs/injective-ts/commit/bb4e40991893bc841943bf1d641c36124c16e865))
+* funding consumer ([3a143d9](https://github.com/InjectiveLabs/injective-ts/commit/3a143d9399a82432e8baa6de7f69ba75acf01ee5))
+* grpc to ui transform ([f10922c](https://github.com/InjectiveLabs/injective-ts/commit/f10922c9fcd33700465c6c0df5e945bc139e0dc1))
+* import ([59f6f2a](https://github.com/InjectiveLabs/injective-ts/commit/59f6f2af878c1157bc05959ee6ca5dd65aa45979))
+* include all services ([9fa30bd](https://github.com/InjectiveLabs/injective-ts/commit/9fa30bd3551866dabe71b218a40862837280d68c))
+* juno image ([4ab15ef](https://github.com/InjectiveLabs/injective-ts/commit/4ab15ef008d5803d93ea4e4042ff5253186644fb))
+* ledger gas fees ([ea652e8](https://github.com/InjectiveLabs/injective-ts/commit/ea652e85af3fc94ab99a91828324371a6e70debd))
+* minor stuff ([03f172b](https://github.com/InjectiveLabs/injective-ts/commit/03f172b3fbc62e5764905ce6da3ada129c6a0ac0))
+* naming convention ([76d53e5](https://github.com/InjectiveLabs/injective-ts/commit/76d53e502f29807926905c8ab44e29bba57a6c49))
+* naming conventions ([3fb9c1f](https://github.com/InjectiveLabs/injective-ts/commit/3fb9c1f64e83ad328483a1b745100afc5b7cfb37))
+* naming conventions for token meta ([7e44818](https://github.com/InjectiveLabs/injective-ts/commit/7e44818de8a218c931b1030baa6b22142e4a817a))
+* naming for token ([698c945](https://github.com/InjectiveLabs/injective-ts/commit/698c945039986469705385b02d70baafda949818))
+* network for bridge converter ([43c5224](https://github.com/InjectiveLabs/injective-ts/commit/43c52249cb6dbdc756b37d525e3cfbe55bce9b91))
+* number formatting ([fb71ba9](https://github.com/InjectiveLabs/injective-ts/commit/fb71ba9559719bf67a73881e268a5b3cbdeb9fa3))
+* numbers converstion ([dcf9dfb](https://github.com/InjectiveLabs/injective-ts/commit/dcf9dfb14ce45486649915c061412ce32beb350c))
+* optional param for rounding ([bc0ec90](https://github.com/InjectiveLabs/injective-ts/commit/bc0ec90c28bdf3e990165c64af39a91b2895a3b0))
+* redundant packages ([7e3f38e](https://github.com/InjectiveLabs/injective-ts/commit/7e3f38e9281c7d9eec7aeb9ba94e2fc48c70d52f))
+* rounding ([b269c9a](https://github.com/InjectiveLabs/injective-ts/commit/b269c9aec7048ce1ae4b7862ab2e88cb7c59e033))
+* slug missing from type ([91be2ca](https://github.com/InjectiveLabs/injective-ts/commit/91be2caa353ca958bc2fd6f7cc7a10b6b6761d59))
+* subaccount transformer ([c387ee5](https://github.com/InjectiveLabs/injective-ts/commit/c387ee54c5ff3988b1b21e224116c7722f4dd31f))
+* transformer logo path ([5e9e350](https://github.com/InjectiveLabs/injective-ts/commit/5e9e35000333665c180ef193c56270796ae34407))
+* tx provider ([4e9399d](https://github.com/InjectiveLabs/injective-ts/commit/4e9399d04ea57ac9c06197325426442c48a6b62d))
+* types for services ([3a961ba](https://github.com/InjectiveLabs/injective-ts/commit/3a961baef0714b37db5b18e2e28ec5e3d798fb34))
+* typings export ([999df38](https://github.com/InjectiveLabs/injective-ts/commit/999df38c861ee0996768166fe1890f4e4a633ac3))
+* uicommon export ([33463d4](https://github.com/InjectiveLabs/injective-ts/commit/33463d4fdaa2aa18463dfee736628d755eaffb1e))
+
+
+### Features
+
+* added bayc ([d39f626](https://github.com/InjectiveLabs/injective-ts/commit/d39f6269241e05897bc68bffe09d2f9e2f0729a9))
+* added juno ([e39af4c](https://github.com/InjectiveLabs/injective-ts/commit/e39af4cc4eec3d7149a32dd08bd97099fbe8935a))
+* added number conversion utils ([6912fb0](https://github.com/InjectiveLabs/injective-ts/commit/6912fb0ac1f5ffcfd11eff8980745593eabcd46f))
+* added toFixed variants ([f0194b4](https://github.com/InjectiveLabs/injective-ts/commit/f0194b496b04a65a6a1a479c74031ff1bbd83a7d))
+* bridge converter included in bridge service ([2acf2d8](https://github.com/InjectiveLabs/injective-ts/commit/2acf2d86d90bdde8ce46e74360da3169a58e7e31))
+* caching denom traces ([84ffb15](https://github.com/InjectiveLabs/injective-ts/commit/84ffb15332055b81e80d89e5d0e18a16291b900e))
+* common actions ([1f706ee](https://github.com/InjectiveLabs/injective-ts/commit/1f706ee8a683eb5e523182212d520dca37fce6b5))
+* fetching multiple orderbooks ([6dda8db](https://github.com/InjectiveLabs/injective-ts/commit/6dda8db1b8a8244b1184ea727e5c9d1897b5eda5))
+* gas service ([e6dba62](https://github.com/InjectiveLabs/injective-ts/commit/e6dba62255c2424bf295825069ca7cdc770b7ab1))
+* refactor with bases ([4269edc](https://github.com/InjectiveLabs/injective-ts/commit/4269edc93595cb8d936a434526d30e1c1f2dac97))
+* spot and derivative services and cleanup ([e638c67](https://github.com/InjectiveLabs/injective-ts/commit/e638c67db9ec2d8200aa0a9d47d458abb9e1ef46))
+* subaccount service ([af197ef](https://github.com/InjectiveLabs/injective-ts/commit/af197efad32894114f8d5fc4d280410b7f6dc103))
+* trade and earn history ([be975a7](https://github.com/InjectiveLabs/injective-ts/commit/be975a72fb88bdd4144d40b2341b923c426b2805))
+* transformers for spot and derivative ([6dd12a7](https://github.com/InjectiveLabs/injective-ts/commit/6dd12a7fc523eaf086dbb92bd29d3ed542370ab0))
+* ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
+* update bridge service utils ([b6ce74a](https://github.com/InjectiveLabs/injective-ts/commit/b6ce74a4e653cb18fc82f01de7e1d1cf7f5ad03a))
+
+
+
+
+
 ## [0.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.52...@injectivelabs/ui-common@0.0.53) (2022-02-28)
 
 **Note:** Version bump only for package @injectivelabs/ui-common

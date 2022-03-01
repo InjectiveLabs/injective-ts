@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.25 (2022-03-01)
+
+
+### Bug Fixes
+
+* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+
+
+### Features
+
+* added more packages initial versions ([c3bde24](https://github.com/InjectiveLabs/injective-ts/commit/c3bde245e1eb55174a1687ff9fe08074b9482506))
+* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+* ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
+
+
+
+
+
 ## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@0.0.23...@injectivelabs/test-utils@0.0.24) (2022-02-08)
 
 

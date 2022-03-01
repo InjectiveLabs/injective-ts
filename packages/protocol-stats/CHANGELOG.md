@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.22 (2022-03-01)
+
+
+### Bug Fixes
+
+* coingecko api ([3c177ee](https://github.com/InjectiveLabs/injective-ts/commit/3c177ee2ddf8cd85ef4c176b6311aeaa5f886c0a))
+* coingecko for axelr ([8599b3b](https://github.com/InjectiveLabs/injective-ts/commit/8599b3b5b50a04775eb860a1345f11fa7deb268f))
+* dependency cycle ([8567551](https://github.com/InjectiveLabs/injective-ts/commit/856755179ac526f415f108b90a7b6f58f3e3258d))
+* juno image ([4ab15ef](https://github.com/InjectiveLabs/injective-ts/commit/4ab15ef008d5803d93ea4e4042ff5253186644fb))
+* naming for protocol stats ([50bc498](https://github.com/InjectiveLabs/injective-ts/commit/50bc4988dd9c1c86cb748995c8dccf09af2a4374))
+* number formatting ([fb71ba9](https://github.com/InjectiveLabs/injective-ts/commit/fb71ba9559719bf67a73881e268a5b3cbdeb9fa3))
+* numbers converstion ([dcf9dfb](https://github.com/InjectiveLabs/injective-ts/commit/dcf9dfb14ce45486649915c061412ce32beb350c))
+* optional param for rounding ([bc0ec90](https://github.com/InjectiveLabs/injective-ts/commit/bc0ec90c28bdf3e990165c64af39a91b2895a3b0))
+* protocol stats ([6593325](https://github.com/InjectiveLabs/injective-ts/commit/659332502bacf2f3f6f5180e6f1a7bdd95139fa5))
+* redundant packages ([7e3f38e](https://github.com/InjectiveLabs/injective-ts/commit/7e3f38e9281c7d9eec7aeb9ba94e2fc48c70d52f))
+* rounding ([b269c9a](https://github.com/InjectiveLabs/injective-ts/commit/b269c9aec7048ce1ae4b7862ab2e88cb7c59e033))
+
+
+### Features
+
+* added bayc ([d39f626](https://github.com/InjectiveLabs/injective-ts/commit/d39f6269241e05897bc68bffe09d2f9e2f0729a9))
+* added juno ([e39af4c](https://github.com/InjectiveLabs/injective-ts/commit/e39af4cc4eec3d7149a32dd08bd97099fbe8935a))
+* added number conversion utils ([6912fb0](https://github.com/InjectiveLabs/injective-ts/commit/6912fb0ac1f5ffcfd11eff8980745593eabcd46f))
+* added toFixed variants ([f0194b4](https://github.com/InjectiveLabs/injective-ts/commit/f0194b496b04a65a6a1a479c74031ff1bbd83a7d))
+* axelar ([87c4866](https://github.com/InjectiveLabs/injective-ts/commit/87c486644c26a7a8f45836b6084d80a1b4b8c551))
+* chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+* protocol stats package ([eddf7e6](https://github.com/InjectiveLabs/injective-ts/commit/eddf7e6730597bf4176656b7f881de2b2046cf03))
+* spot and derivative services and cleanup ([e638c67](https://github.com/InjectiveLabs/injective-ts/commit/e638c67db9ec2d8200aa0a9d47d458abb9e1ef46))
+* ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
+
+
+
+
+
 ## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/protocol-stats@0.0.20...@injectivelabs/protocol-stats@0.0.21) (2022-02-16)
 
 

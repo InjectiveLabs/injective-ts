@@ -407,7 +407,10 @@ export class TokenService extends BaseService {
     if (tokenFromSymbol) {
       return {
         ...transaction,
-        token: tokenFromSymbol,
+        token: TokenTransformer.tokenMetaToToken(
+          tokenFromSymbol,
+          tokenFromSymbol.denom,
+        ) as Token,
       }
     }
 

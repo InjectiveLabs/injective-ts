@@ -41,3 +41,5 @@ export const PEGGY_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet'
 export const PEGGY_TESTNET_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-kovan'
+export const PEGGY_DEVNET_GRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/davidtian719/injective-peggo-devnet'
