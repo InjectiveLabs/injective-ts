@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/referral-consumer@0.0.19...@injectivelabs/referral-consumer@0.0.20) (2022-03-01)
+
+**Note:** Version bump only for package @injectivelabs/referral-consumer
+
+
+
+
+
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/referral-consumer@0.0.18...@injectivelabs/referral-consumer@0.0.19) (2022-03-01)
 
 **Note:** Version bump only for package @injectivelabs/referral-consumer

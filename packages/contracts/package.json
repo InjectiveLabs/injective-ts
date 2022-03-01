@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/contracts",
   "description": "Contracts wrapper that can be reused throughout Injective's projects.",
-  "version": "0.0.109",
+  "version": "0.0.110",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,11 +29,11 @@
   "dependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
-    "@injectivelabs/exceptions": "^0.0.44",
+    "@injectivelabs/exceptions": "^0.0.45",
     "@injectivelabs/ts-types": "^0.0.40",
-    "@injectivelabs/utils": "^0.0.62",
+    "@injectivelabs/utils": "^0.0.63",
     "@injectivelabs/web3-contract-typings": "^0.1.13",
-    "@injectivelabs/web3-strategy": "^0.0.101",
+    "@injectivelabs/web3-strategy": "^0.0.102",
     "@types/ethereumjs-util": "^6.1.0",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.9.2",
