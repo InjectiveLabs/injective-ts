@@ -1,7 +1,9 @@
 {
   "npmClient": "yarn",
   "name": "injective-ts",
-  "packages": ["packages/*"],
+  "packages": [
+    "packages/*"
+  ],
   "version": "independent",
   "useWorkspaces": true,
   "command": {

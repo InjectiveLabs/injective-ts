@@ -74,7 +74,7 @@ export class TokenErc20Service extends BaseService {
       const tokenMeta = await this.alchemyApi.fetchTokenMetadata(address)
 
       if (!tokenMeta) {
-        throw new Error(`Token ${denom} not found`)
+        throw new Error(`Token for ${denom} not found`)
       }
 
       return {
