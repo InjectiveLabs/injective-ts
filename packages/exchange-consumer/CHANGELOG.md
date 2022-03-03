@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.149](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.148...@injectivelabs/exchange-consumer@0.0.149) (2022-03-03)
+
+
+### Features
+
+* explorer consumer package bump ([28ecbd3](https://github.com/InjectiveLabs/injective-ts/commit/28ecbd386c10d48cf6c523841ec98a001a79af21))
+
+
+
+
+
 ## [0.0.148](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.0.147...@injectivelabs/exchange-consumer@0.0.148) (2022-03-01)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer

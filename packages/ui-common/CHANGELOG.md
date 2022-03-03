@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.57...@injectivelabs/ui-common@0.0.58) (2022-03-03)
+
+
+### Features
+
+* explorer consumer package bump ([28ecbd3](https://github.com/InjectiveLabs/injective-ts/commit/28ecbd386c10d48cf6c523841ec98a001a79af21))
+
+
+
+
+
 ## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.0.56...@injectivelabs/ui-common@0.0.57) (2022-03-01)
 
 **Note:** Version bump only for package @injectivelabs/ui-common
