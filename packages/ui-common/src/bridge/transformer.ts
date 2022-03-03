@@ -30,6 +30,14 @@ import { getInjectiveAddress } from '../utils'
 import { FailedStates } from './data'
 
 export const getNetworkFromSender = (sender: string): BridgingNetwork => {
+  if (sender.startsWith('juno')) {
+    return BridgingNetwork.Juno
+  }
+
+  if (sender.startsWith('terra')) {
+    return BridgingNetwork.Terra
+  }
+
   if (sender.startsWith('osmo')) {
     return BridgingNetwork.Osmosis
   }

@@ -1098,6 +1098,14 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
+"@injectivelabs/exchange-api@^2.2.58":
+  version "2.2.59"
+  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.59.tgz#2e73529f7844fa7b7337447d52c0e5ea9372b3c8"
+  integrity sha512-0DHK2Qw/tz0gcnPrKmr7pZkunMcusQ72ij/WzxT+sETlQohSGYKE7gvvzhHZEfu52QX2tdbCd7lbDjI4O2xn1Q==
+  dependencies:
+    "@improbable-eng/grpc-web" "^0.14.0"
+    google-protobuf "^3.14.0"
+
 "@injectivelabs/referral-api@^1.0.20":
   version "1.0.20"
   resolved "https://registry.yarnpkg.com/@injectivelabs/referral-api/-/referral-api-1.0.20.tgz#cd405deb7c62346b112f9dfd0ab0ccda78fbd107"

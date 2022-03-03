@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {
   GasFee as GrpcGasFee,
   ValidatorUptime as GrpcValidatorUptime,
@@ -18,6 +19,30 @@ export interface GasFee {
 export interface TxMessage {
   key: string
   value: string
+}
+
+export interface GrpcBankMsgSendMessage {
+  type: string
+  value: {
+    amount: [
+      {
+        amount: string
+        denom: string
+      },
+    ]
+    from_address: string
+    to_address: string
+  }
+}
+
+export interface BankMsgSendTransaction {
+  blockNumber: number
+  blockTimestamp: string
+  hash: string
+  amount: string
+  denom: string
+  sender: string
+  receiver: string
 }
 
 export interface Transaction {

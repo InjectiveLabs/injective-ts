@@ -1,5 +1,7 @@
 import { GrpcException } from '@injectivelabs/exceptions'
 import {
+  GetAccountTxsRequest,
+  GetAccountTxsResponse,
   GetValidatorRequest,
   GetValidatorResponse,
   GetValidatorUptimeRequest,
@@ -9,6 +11,39 @@ import { InjectiveExplorerRPC } from '@injectivelabs/exchange-api/injective_expl
 import BaseConsumer from '../BaseConsumer'
 
 export class ExplorerConsumer extends BaseConsumer {
+  async fetchAccountTx({
+    address,
+    limit,
+    type,
+  }: {
+    address: string
+    limit: number
+    type?: string
+  }) {
+    const request = new GetAccountTxsRequest()
+    request.setAddress(address)
+
+    if (limit) {
+      request.setLimit(limit)
+    }
+
+    if (type) {
+      request.setType(type)
+    }
+
+    try {
+      const response = await this.request<
+        GetAccountTxsRequest,
+        GetAccountTxsResponse,
+        typeof InjectiveExplorerRPC.GetAccountTxs
+      >(request, InjectiveExplorerRPC.GetAccountTxs)
+
+      return response.getDataList()
+    } catch (e: any) {
+      throw new GrpcException(e.message)
+    }
+  }
+
   async fetchValidator(validatorAddress: string) {
     const request = new GetValidatorRequest()
     request.setAddress(validatorAddress)

@@ -4,18 +4,20 @@ import {
   TxData,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 import {
-  Transaction,
+  BankMsgSendTransaction,
   Block,
-  GrpcGasFee,
-  GasFee,
   BlockWithTxs,
+  GasFee,
+  GrpcBankMsgSendMessage,
+  GrpcGasFee,
   GrpcValidatorDescription,
-  GrpcValidatorUptime,
-  ValidatorDescription,
-  ValidatorUptime,
   GrpcValidatorSlashingEvent,
-  ValidatorSlashingEvent,
+  GrpcValidatorUptime,
+  Transaction,
   Validator,
+  ValidatorDescription,
+  ValidatorSlashingEvent,
+  ValidatorUptime,
 } from '../types/index'
 
 export class ExplorerTransformer {
@@ -30,6 +32,22 @@ export class ExplorerTransformer {
       gasLimit: gasFee.getGasLimit(),
       payer: gasFee.getPayer(),
       granter: gasFee.getGranter(),
+    }
+  }
+
+  static grpcTransactionToBankMsgSendTransaction(
+    tx: TxData,
+  ): BankMsgSendTransaction {
+    const [message] = JSON.parse(tx.getMessages()) as GrpcBankMsgSendMessage[]
+
+    return {
+      blockNumber: tx.getBlockNumber(),
+      blockTimestamp: tx.getBlockTimestamp(),
+      hash: tx.getHash(),
+      amount: message.value.amount[0].amount,
+      denom: message.value.amount[0].denom,
+      sender: message.value.from_address,
+      receiver: message.value.to_address,
     }
   }
 
