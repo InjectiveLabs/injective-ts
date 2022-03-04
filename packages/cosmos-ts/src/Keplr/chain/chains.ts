@@ -82,7 +82,7 @@ export default {
     rpcConfig: undefined,
     restConfig: undefined,
     chainId: 'injective-1',
-    chainName: 'Injective',
+    chainName: 'Injective (Beta)',
     stakeCurrency: {
       coinDenom: 'INJ',
       coinMinimalDenom: 'inj',
@@ -92,7 +92,7 @@ export default {
     walletUrl: 'https://hub.injective.network/',
     walletUrlForStaking: 'https://hub.injective.network/',
     bip44: {
-      coinType: 118,
+      coinType: 60,
     },
     bech32Config: Bech32Address.defaultBech32Config('inj'),
     currencies: [
@@ -111,8 +111,13 @@ export default {
         coinGeckoId: 'injective-protocol',
       },
     ],
-    coinType: 118,
-    features: ['stargate', 'ibc-transfer'],
+    gasPriceStep: {
+      low: 5000000000,
+      average: 25000000000,
+      high: 40000000000,
+    },
+    features: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
+    beta: true,
   },
   [CosmosChainId.Terra]: {
     ...getEndpointFromChainId(CosmosChainId.Terra),

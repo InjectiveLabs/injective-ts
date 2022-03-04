@@ -3,15 +3,27 @@ import {
   SigningCosmosClient,
   LcdClient,
   setupBankExtension,
+  setupAuthExtension,
   BankExtension,
+  AuthExtension,
   NodeInfoResponse,
+  BroadcastMode,
 } from '@cosmjs/launchpad'
-import { SigningStargateClient } from '@cosmjs/stargate'
 import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin'
 import { Height } from 'cosmjs-types/ibc/core/client/v1/client'
+import {
+  DEFAULT_GAS_LIMIT,
+  DEFAULT_GAS_PRICE,
+  HttpClient,
+} from '@injectivelabs/utils'
+import { SigningStargateClient } from '@cosmjs/stargate'
 import { CosmosChainId, TestnetCosmosChainId } from './types'
 import { getEndpointFromChainId } from './endpoints'
 import { KeplrWallet } from './KeplrWallet'
+import { createSignedTx, createTransaction } from './transaction'
+
+const ethereumCurveBasedChains = ['injective-1']
+const ethereumCurveBasedAddressesPrefixes = ['inj']
 
 export class CosmJsWallet {
   private chainId: string
@@ -20,7 +32,7 @@ export class CosmJsWallet {
 
   private keplr: KeplrWallet
 
-  private lcdClient: LcdClient & BankExtension
+  private lcdClient: LcdClient & BankExtension & AuthExtension
 
   constructor(chainId: string) {
     this.chainId = chainId
@@ -31,6 +43,7 @@ export class CosmJsWallet {
     this.lcdClient = LcdClient.withExtensions(
       { apiUrl: this.endpoints.rest },
       setupBankExtension,
+      setupAuthExtension,
     )
   }
 
@@ -39,9 +52,9 @@ export class CosmJsWallet {
     const Keplr = await keplr.getKeplrWallet()
 
     return new SigningCosmosClient(
-      endpoints.rpc,
+      endpoints.rest,
       address,
-      Keplr.getOfflineSignerOnlyAmino(chainId),
+      Keplr.getOfflineSigner(chainId),
     )
   }
 
@@ -51,7 +64,7 @@ export class CosmJsWallet {
 
     return SigningStargateClient.connectWithSigner(
       endpoints.rpc,
-      Keplr.getOfflineSignerOnlyAmino(chainId),
+      await Keplr.getOfflineSignerAuto(chainId),
     )
   }
 
@@ -75,6 +88,27 @@ export class CosmJsWallet {
     return balance
   }
 
+  async fetchAccountDetails(address: string) {
+    const { lcdClient } = this
+    const isEthereumCurveBasedAddressPrefix =
+      ethereumCurveBasedAddressesPrefixes.some((word) =>
+        address.startsWith(word),
+      )
+
+    if (!isEthereumCurveBasedAddressPrefix) {
+      const { result } = await lcdClient.auth.account(address)
+
+      return result.value
+    }
+
+    const client = new HttpClient(this.endpoints.rest)
+    const response = (await client.get(`/auth/accounts/${address}`)) as {
+      data: any
+    }
+
+    return response.data.result
+  }
+
   async fetchLatestBlock() {
     const { lcdClient } = this
     const { block } = await lcdClient.blocksLatest()
@@ -93,6 +127,72 @@ export class CosmJsWallet {
     return { nodeInfo, applicationVersion }
   }
 
+  async sendRawTransaction({
+    message,
+    address,
+    fee,
+    memo = '',
+  }: {
+    message: {
+      type: string
+      value: any
+    }
+    address: string
+    memo?: string
+    fee: StdFee
+  }) {
+    const { chainId, keplr } = this
+    const Keplr = await keplr.getKeplrWallet()
+    const key = await Keplr.getKey(chainId)
+    const algo = ethereumCurveBasedChains.includes(chainId)
+      ? 'ethsecp256k1'
+      : 'secp256k1'
+
+    const accountDetails = await this.fetchAccountDetails(key.bech32Address)
+    const { signDirect: signDirectRawTransaction } = createTransaction({
+      message,
+      memo,
+      fee,
+      algo,
+      chainId,
+      pubKey: key.pubKey,
+      sequence: parseInt(accountDetails.sequence.toString(), 10),
+      accountNumber: parseInt(accountDetails.account_number.toString(), 10),
+    })
+
+    let signatures
+    try {
+      signatures = await Keplr.signDirect(
+        chainId,
+        address,
+        signDirectRawTransaction,
+      )
+    } catch (e) {
+      throw new Error(`Signature error: ${(e as any).message}`)
+    }
+
+    const rawTx = createSignedTx({
+      ...signDirectRawTransaction,
+      signature: signatures.signature.signature,
+    })
+
+    console.log({
+      signatures,
+      body: signDirectRawTransaction.body.toObject(),
+      authInfo: signDirectRawTransaction.authInfo.toObject(),
+    })
+
+    try {
+      return await Keplr.sendTx(
+        chainId,
+        rawTx.serializeBinary(),
+        BroadcastMode.Sync,
+      )
+    } catch (e) {
+      throw new Error(`Broadcast error: ${(e as any).message}`)
+    }
+  }
+
   async sendIbcTokens({
     senderAddress,
     recipientAddress,
@@ -101,7 +201,6 @@ export class CosmJsWallet {
     sourceChannel,
     timeoutHeight,
     timeoutTimestamp,
-    fee,
     memo = '',
   }: {
     senderAddress: string
@@ -111,7 +210,7 @@ export class CosmJsWallet {
     sourceChannel: string
     timeoutHeight?: Height
     timeoutTimestamp?: number
-    fee: StdFee
+    fee?: StdFee
     memo?: string
   }) {
     return (await this.getSigningStargateClient()).sendIbcTokens(
@@ -122,7 +221,15 @@ export class CosmJsWallet {
       sourceChannel,
       timeoutHeight,
       timeoutTimestamp,
-      fee,
+      {
+        amount: [
+          {
+            denom: transferAmount.denom,
+            amount: DEFAULT_GAS_PRICE.toString(),
+          },
+        ],
+        gas: DEFAULT_GAS_LIMIT.toString(),
+      },
       memo,
     )
   }
