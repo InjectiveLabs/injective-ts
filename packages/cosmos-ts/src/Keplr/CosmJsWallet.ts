@@ -160,6 +160,23 @@ export class CosmJsWallet {
       accountNumber: parseInt(accountDetails.account_number.toString(), 10),
     })
 
+    console.log('Creating transaction to sign params: ')
+    console.log({
+      chainId,
+      address,
+      algo,
+      message,
+      fee,
+      pubKey: key.pubKey,
+      sequence: parseInt(accountDetails.sequence.toString(), 10),
+      accountNumber: parseInt(accountDetails.account_number.toString(), 10),
+    })
+    console.log('Created transaction to sign: ')
+    console.log({
+      body: signDirectRawTransaction.body.toObject(),
+      authInfo: signDirectRawTransaction.authInfo.toObject(),
+    })
+
     let signatures
     try {
       signatures = await Keplr.signDirect(
@@ -176,6 +193,7 @@ export class CosmJsWallet {
       signature: signatures.signature.signature,
     })
 
+    console.log('Signatures with body and auth info:')
     console.log({
       signatures,
       body: signDirectRawTransaction.body.toObject(),
