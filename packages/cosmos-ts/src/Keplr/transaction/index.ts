@@ -12,10 +12,33 @@ import {
 import { SignMode } from '@injectivelabs/chain-api/cosmos/tx/signing/v1beta1/signing_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import Long from 'long'
+import { PubKey as CosmosPubKey } from '@injectivelabs/chain-api/cosmos/crypto/secp256k1/keys_pb'
+import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
 import { createAny, createAnyMessage } from './utils'
 
 export const SIGN_DIRECT = SignMode.SIGN_MODE_DIRECT
 export const LEGACY_AMINO = SignMode.SIGN_MODE_LEGACY_AMINO_JSON
+
+export const getPublicKey = ({ algo, key }: { algo: string; key: string }) => {
+  const publicKey =
+    algo === 'secp256k1'
+      ? {
+          proto: new CosmosPubKey(),
+          path: '/cosmos.crypto.vbeta1.secp256k1.PubKey',
+        }
+      : {
+          proto: new PubKey(),
+          path: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
+        }
+
+  const pubkeyProto = publicKey.proto
+  pubkeyProto.setKey(key)
+
+  return createAny(
+    Buffer.from(pubkeyProto.serializeBinary()).toString('base64'),
+    publicKey.path,
+  )
+}
 
 export const createBody = ({
   message,
@@ -59,15 +82,11 @@ export const createSignerInfo = ({
   mode,
 }: {
   algo: string
-  publicKey: Uint8Array
+  publicKey: string
   sequence: number
   mode: number
 }) => {
-  const pubKeyType =
-    algo === 'secp256k1'
-      ? '/cosmos.crypto.vbeta1.secp256k1.PubKey'
-      : '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
-  const pubKey = createAny(publicKey, pubKeyType)
+  const pubKey = getPublicKey({ algo, key: publicKey })
 
   const single = new ModeInfo.Single()
   single.setMode(mode as any)
@@ -134,7 +153,7 @@ export const createTransaction = ({
   memo: string
   fee: StdFee
   algo: string
-  pubKey: Uint8Array
+  pubKey: string
   sequence: number
   accountNumber: number
   chainId: string
@@ -222,7 +241,7 @@ export const createSignedTx = ({
 }: {
   authInfoBytes: Uint8Array
   bodyBytes: Uint8Array
-  signature: string
+  signature: Uint8Array
 }) => {
   const txRaw = new TxRaw()
   txRaw.setAuthInfoBytes(authInfoBytes)

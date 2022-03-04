@@ -144,18 +144,18 @@ export class CosmJsWallet {
     const { chainId, keplr } = this
     const Keplr = await keplr.getKeplrWallet()
     const key = await Keplr.getKey(chainId)
+    const accountDetails = await this.fetchAccountDetails(key.bech32Address)
     const algo = ethereumCurveBasedChains.includes(chainId)
       ? 'ethsecp256k1'
       : 'secp256k1'
 
-    const accountDetails = await this.fetchAccountDetails(key.bech32Address)
     const { signDirect: signDirectRawTransaction } = createTransaction({
       message,
       memo,
       fee,
       algo,
       chainId,
-      pubKey: key.pubKey,
+      pubKey: Buffer.from(key.pubKey).toString('base64'),
       sequence: parseInt(accountDetails.sequence.toString(), 10),
       accountNumber: parseInt(accountDetails.account_number.toString(), 10),
     })
@@ -167,7 +167,7 @@ export class CosmJsWallet {
       algo,
       message,
       fee,
-      pubKey: key.pubKey,
+      pubKey: Buffer.from(key.pubKey).toString('base64'),
       sequence: parseInt(accountDetails.sequence.toString(), 10),
       accountNumber: parseInt(accountDetails.account_number.toString(), 10),
     })
@@ -190,7 +190,7 @@ export class CosmJsWallet {
 
     const rawTx = createSignedTx({
       ...signDirectRawTransaction,
-      signature: signatures.signature.signature,
+      signature: signatures.signature as any,
     })
 
     console.log('Signatures with body and auth info:')
@@ -199,6 +199,8 @@ export class CosmJsWallet {
       body: signDirectRawTransaction.body.toObject(),
       authInfo: signDirectRawTransaction.authInfo.toObject(),
     })
+
+    console.log(rawTx.toObject())
 
     try {
       return await Keplr.sendTx(
