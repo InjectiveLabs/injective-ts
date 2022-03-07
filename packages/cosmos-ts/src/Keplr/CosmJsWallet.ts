@@ -17,6 +17,7 @@ import {
   HttpClient,
 } from '@injectivelabs/utils'
 import { SigningStargateClient } from '@cosmjs/stargate'
+import Long from 'long'
 import { CosmosChainId, TestnetCosmosChainId } from './types'
 import { getEndpointFromChainId } from './endpoints'
 import { KeplrWallet } from './KeplrWallet'
@@ -149,7 +150,7 @@ export class CosmJsWallet {
       ? 'ethsecp256k1'
       : 'secp256k1'
 
-    const { signDirect: signDirectRawTransaction } = createTransaction({
+    const { signDirect: signDirectTx } = createTransaction({
       message,
       memo,
       fee,
@@ -160,47 +161,15 @@ export class CosmJsWallet {
       accountNumber: parseInt(accountDetails.account_number.toString(), 10),
     })
 
-    console.log('Creating transaction to sign params: ')
-    console.log({
-      chainId,
+    const signatures = await this.signTransactionDirect({
       address,
-      algo,
-      message,
-      fee,
-      pubKey: Buffer.from(key.pubKey).toString('base64'),
-      sequence: parseInt(accountDetails.sequence.toString(), 10),
-      accountNumber: parseInt(accountDetails.account_number.toString(), 10),
+      signTx: signDirectTx,
     })
-    console.log('Created transaction to sign: ')
-    console.log({
-      body: signDirectRawTransaction.body.toObject(),
-      authInfo: signDirectRawTransaction.authInfo.toObject(),
-    })
-
-    let signatures
-    try {
-      signatures = await Keplr.signDirect(
-        chainId,
-        address,
-        signDirectRawTransaction,
-      )
-    } catch (e) {
-      throw new Error(`Signature error: ${(e as any).message}`)
-    }
 
     const rawTx = createSignedTx({
-      ...signDirectRawTransaction,
+      ...signDirectTx,
       signature: signatures.signature as any,
     })
-
-    console.log('Signatures with body and auth info:')
-    console.log({
-      signatures,
-      body: signDirectRawTransaction.body.toObject(),
-      authInfo: signDirectRawTransaction.authInfo.toObject(),
-    })
-
-    console.log(rawTx.toObject())
 
     try {
       return await Keplr.sendTx(
@@ -276,5 +245,27 @@ export class CosmJsWallet {
       fee,
       memo,
     )
+  }
+
+  private async signTransactionDirect({
+    address,
+    signTx,
+  }: {
+    address: string
+    signTx: {
+      bodyBytes?: Uint8Array | null
+      authInfoBytes?: Uint8Array | null
+      chainId?: string | null
+      accountNumber?: Long | null
+    }
+  }) {
+    const { chainId, keplr } = this
+    const Keplr = await keplr.getKeplrWallet()
+
+    try {
+      return await Keplr.signDirect(chainId, address, signTx)
+    } catch (e) {
+      throw new Error(`Signature error: ${(e as any).message}`)
+    }
   }
 }
