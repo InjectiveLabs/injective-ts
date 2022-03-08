@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.79...@injectivelabs/cosmos-ts@0.1.0) (2022-03-08)
+
+
+### Bug Fixes
+
+* pub key ([8ae3599](https://github.com/InjectiveLabs/injective-ts/commit/8ae3599e038148cd6a445ace88312ddd501cc5e2))
+
+
+### Features
+
+* keplr signing ([8ac5011](https://github.com/InjectiveLabs/injective-ts/commit/8ac501169141cfe454f5a598b1c4ccddfb4f4299))
+
+
+
+
+
 ## [0.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.0.78...@injectivelabs/cosmos-ts@0.0.79) (2022-03-01)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts
