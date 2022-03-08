@@ -1,11 +1,11 @@
-import { AccountAddress } from '@injectivelabs/ts-types'
+import { AccountAddress, ComposerResponse } from '@injectivelabs/ts-types'
 import {
   DEFAULT_BRIDGE_FEE_AMOUNT,
   DEFAULT_BRIDGE_FEE_DENOM,
+  getWeb3GatewayMessage,
 } from '@injectivelabs/utils'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgSendToEth } from '@injectivelabs/chain-api/injective/peggy/v1/msgs_pb'
-import snakeCaseKeys from 'snakecase-keys'
 
 export class PeggyComposer {
   static withdraw({
@@ -22,7 +22,7 @@ export class PeggyComposer {
     amount: string
     bridgeFeeDenom?: string
     bridgeFeeAmount?: string
-  }): Record<string, any> {
+  }): ComposerResponse<MsgSendToEth, MsgSendToEth.AsObject> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
     coinAmount.setAmount(amount)
@@ -31,15 +31,17 @@ export class PeggyComposer {
     bridgeFee.setDenom(bridgeFeeDenom)
     bridgeFee.setAmount(bridgeFeeAmount)
 
-    const cosmosMessage = new MsgSendToEth()
-    cosmosMessage.setAmount(coinAmount)
-    cosmosMessage.setSender(injectiveAddress)
-    cosmosMessage.setEthDest(address)
-    cosmosMessage.setBridgeFee(bridgeFee)
+    const message = new MsgSendToEth()
+    message.setAmount(coinAmount)
+    message.setSender(injectiveAddress)
+    message.setEthDest(address)
+    message.setBridgeFee(bridgeFee)
+
+    const type = '/injective.peggy.v1.MsgSendToEth'
 
     return {
-      ...snakeCaseKeys(cosmosMessage.toObject()),
-      '@type': '/injective.peggy.v1.MsgSendToEth',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: { message, type },
     }
   }
 }

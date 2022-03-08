@@ -1119,21 +1119,6 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/utils@^0.0.33":
-  version "0.0.33"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/utils/-/utils-0.0.33.tgz#c60a5c2fa0c009b7a07a455d40944872742ab733"
-  integrity sha512-uX+rnPLyyezpiRbbPTyVc6z6zHR0BjQZ/niXNMThxuaVCPLrNvrHDKirtQ52RlgAXB9CYLUm2ELlGhGpUUV3Hg==
-  dependencies:
-    "@injectivelabs/exceptions" "^0.0.26"
-    "@injectivelabs/ts-types" "^0.0.22"
-    "@injectivelabs/web3-contract-typings" "^0.1.12"
-    "@types/ethereumjs-util" "^6.1.0"
-    axios "^0.21.1"
-    bignumber.js "^9.0.1"
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-    store2 "^2.12.0"
-
 "@injectivelabs/web3-contract-typings@^0.1.12", "@injectivelabs/web3-contract-typings@^0.1.13":
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/@injectivelabs/web3-contract-typings/-/web3-contract-typings-0.1.13.tgz#94ab11ed0232dc5d0e99b5f19a1d10ecd1133174"
@@ -6592,6 +6577,11 @@ google-protobuf@^3.13.0, google-protobuf@^3.14.0, google-protobuf@^3.17.3, googl
   resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.19.4.tgz#8d32c3e34be9250956f28c0fb90955d13f311888"
   integrity sha512-OIPNCxsG2lkIvf+P5FNfJ/Km95CsXOBecS9ZcAU6m2Rq3svc0Apl9nB3GMDNKfQ9asNv4KjyAqGwPQFrVle3Yg==
 
+google-protobuf@^3.20.0-rc.1:
+  version "3.20.0-rc.1"
+  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.20.0-rc.1.tgz#541412ad7e66eb5f44d58969e49d7aa481b7556a"
+  integrity sha512-HW1VUOZOGRHE/idV3zkRHebPRmgib+8P5V8PbDaUzGNcumoPH0QLJLXfaf4n3x1Iypy345uBTyzpz9BtX2Hfdw==
+
 got@9.6.0:
   version "9.6.0"
   resolved "https://registry.yarnpkg.com/got/-/got-9.6.0.tgz#edf45e7d67f99545705de1f7bbeeeb121765ed85"
@@ -11162,6 +11152,15 @@ snakecase-keys@^4.0.1:
     map-obj "^4.1.0"
     snake-case "^3.0.4"
 
+snakecase-keys@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/snakecase-keys/-/snakecase-keys-5.1.2.tgz#36b9d8796eed3e7fe589b359252ee8d98540c7bc"
+  integrity sha512-fvtDQZqPBqYb0dEY97TGuOMbN2NJ05Tj4MaoKwjTKkmjcG6mrd58JYGr23UWZRi6Aqv49Fk4HtjTIStOQenaug==
+  dependencies:
+    map-obj "^4.1.0"
+    snake-case "^3.0.4"
+    type-fest "^2.5.2"
+
 snapdragon-node@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"
@@ -12065,6 +12064,11 @@ type-fest@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
+
+type-fest@^2.5.2:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.12.0.tgz#ce342f58cab9114912f54b493d60ab39c3fc82b6"
+  integrity sha512-Qe5GRT+n/4GoqCNGGVp5Snapg1Omq3V7irBJB3EaKsp7HWDo5Gv2d/67gfNyV+d5EXD+x/RF5l1h4yJ7qNkcGA==
 
 type-is@~1.6.18:
   version "1.6.18"

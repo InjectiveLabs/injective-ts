@@ -250,7 +250,7 @@ export default class Ledger
     )) as LedgerWalletInfo
   }
 
-  isWeb3Connected = (): boolean => true // TODO
+  isWeb3Connected = (): boolean => true
 
   isMetamask = (): boolean => false
 }

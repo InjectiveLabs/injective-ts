@@ -1,6 +1,5 @@
 export * from './consumers'
 export * from './transformers'
 export * from './composers'
-export * from './proto-composers'
 export * from './streams'
 export * from './types'

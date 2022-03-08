@@ -19,6 +19,9 @@
       "path": "../utils/tsconfig.build.json"
     },
     {
+      "path": "../cosmos-ts/tsconfig.build.json"
+    },
+    {
       "path": "../assert/tsconfig.build.json"
     }
   ]

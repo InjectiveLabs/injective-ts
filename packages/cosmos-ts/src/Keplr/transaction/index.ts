@@ -14,6 +14,7 @@ import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import Long from 'long'
 import { PubKey as CosmosPubKey } from '@injectivelabs/chain-api/cosmos/crypto/secp256k1/keys_pb'
 import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { createAny, createAnyMessage } from './utils'
 
 export const SIGN_DIRECT = SignMode.SIGN_MODE_DIRECT
@@ -234,19 +235,11 @@ export const createTransaction = ({
   }
 }
 
-export const createSignedTx = ({
-  authInfoBytes,
-  bodyBytes,
-  signature,
-}: {
-  authInfoBytes: Uint8Array
-  bodyBytes: Uint8Array
-  signature: Uint8Array
-}) => {
+export const createSignedTx = (signatureResponse: DirectSignResponse) => {
   const txRaw = new TxRaw()
-  txRaw.setAuthInfoBytes(authInfoBytes)
-  txRaw.setBodyBytes(bodyBytes)
-  txRaw.setSignaturesList([signature])
+  txRaw.setAuthInfoBytes(signatureResponse.signed.authInfoBytes)
+  txRaw.setBodyBytes(signatureResponse.signed.bodyBytes)
+  txRaw.setSignaturesList([signatureResponse.signature.signature])
 
   return txRaw
 }

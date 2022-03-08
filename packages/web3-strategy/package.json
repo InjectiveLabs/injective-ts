@@ -31,6 +31,7 @@
     "@ethereumjs/common": "^2.6.2",
     "@ethereumjs/tx": "^3.5.0",
     "@injectivelabs/assert": "^0.0.47",
+    "@injectivelabs/cosmos-ts": "^0.0.79",
     "@injectivelabs/exceptions": "^0.0.45",
     "@injectivelabs/ts-types": "^0.0.40",
     "@injectivelabs/utils": "^0.0.63",

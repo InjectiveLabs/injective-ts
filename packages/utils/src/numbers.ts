@@ -41,6 +41,17 @@ export const denomAmountToGrpcChainDenomAmount = (
 ) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(18))
 
 /**
+ * On chain amounts (based on the cosmosSdk.Dec type)
+ * broadcasted to a sentry directly using the
+ * gRPC API should be passed with an extra decimal point
+ * 18 places from the beginning (i.e multiplied by 1e18), so we need to add it
+ * to get a workable amount
+ */
+export const amountToCosmosSdkDecAmount = (
+  value: string | number | BigNumber,
+) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(18))
+
+/**
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */

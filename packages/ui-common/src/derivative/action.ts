@@ -194,7 +194,19 @@ export class DerivativeActionService extends BaseActionService {
             .toFixed(0),
         ).toNumber(),
         bucket: DerivativesMetrics.CreateMarketOrder,
-        message,
+        message: message.reduce(
+          (messages, message) => ({
+            web3GatewayMessage: {
+              ...messages.web3GatewayMessage,
+              ...message.web3GatewayMessage,
+            },
+            directBroadcastMessage: {
+              ...messages.directBroadcastMessage,
+              ...message.directBroadcastMessage,
+            },
+          }),
+          { web3GatewayMessage: [], directBroadcastMessage: [] },
+        ),
         address,
       })
     } catch (error: any) {

@@ -1,11 +1,12 @@
 import { OrderData } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import snakeCaseKeys from 'snakecase-keys'
 import {
   DerivativeOrder,
   OrderInfo,
   OrderTypeMap as GrpcOrderTypeMap,
   SpotOrder,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+import { ComposerResponse } from '@injectivelabs/ts-types'
+import { getWeb3GatewayMessage } from '@injectivelabs/utils'
 
 export class MarketComposer {
   static batchUpdateOrders({
@@ -49,7 +50,7 @@ export class MarketComposer {
       quantity: string
     }[]
     injectiveAddress: string
-  }) {
+  }): ComposerResponse<any, any> {
     const messageContent = {
       sender: injectiveAddress,
       subaccount_id: '',
@@ -185,9 +186,14 @@ export class MarketComposer {
       messageContent.derivative_orders_to_create = []
     }
 
+    const type = '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
+
     return {
-      ...snakeCaseKeys(messageContent),
-      '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
+      web3GatewayMessage: getWeb3GatewayMessage(messageContent, type),
+      directBroadcastMessage: {
+        type,
+        message: messageContent,
+      },
     }
   }
 
@@ -199,14 +205,20 @@ export class MarketComposer {
     subaccountId: string
     marketIds: string[]
     injectiveAddress: string
-  }) {
+  }): ComposerResponse<any, any> {
+    const messageContent = {
+      sender: injectiveAddress,
+      subaccount_id: subaccountId,
+      spot_market_ids_to_cancel_all: marketIds,
+    }
+    const type = '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
+
     return {
-      ...snakeCaseKeys({
-        sender: injectiveAddress,
-        subaccount_id: subaccountId,
-        spot_market_ids_to_cancel_all: marketIds,
-      }),
-      '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
+      web3GatewayMessage: getWeb3GatewayMessage(messageContent, type),
+      directBroadcastMessage: {
+        type,
+        message: messageContent,
+      },
     }
   }
 
@@ -218,14 +230,21 @@ export class MarketComposer {
     subaccountId: string
     marketIds: string[]
     injectiveAddress: string
-  }) {
+  }): ComposerResponse<any, any> {
+    const messageContent = {
+      sender: injectiveAddress,
+      subaccount_id: subaccountId,
+      derivative_market_ids_to_cancel_all: marketIds,
+    }
+
+    const type = '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
+
     return {
-      ...snakeCaseKeys({
-        sender: injectiveAddress,
-        subaccount_id: subaccountId,
-        derivative_market_ids_to_cancel_all: marketIds,
-      }),
-      '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
+      web3GatewayMessage: getWeb3GatewayMessage(messageContent, type),
+      directBroadcastMessage: {
+        type,
+        message: messageContent,
+      },
     }
   }
 
@@ -239,7 +258,7 @@ export class MarketComposer {
       orderHash: string
     }[]
     injectiveAddress: string
-  }) {
+  }): ComposerResponse<any, any> {
     const orderDataList = orders.map(
       ({ marketId, subaccountId, orderHash }) => {
         const orderData = new OrderData()
@@ -251,12 +270,19 @@ export class MarketComposer {
       },
     )
 
+    const type = '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
+
+    const messageContent = {
+      sender: injectiveAddress,
+      spot_orders_to_cancel: orderDataList.map((order) => order.toObject()),
+    }
+
     return {
-      ...snakeCaseKeys({
-        sender: injectiveAddress,
-        spot_orders_to_cancel: orderDataList.map((order) => order.toObject()),
-      }),
-      '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
+      web3GatewayMessage: getWeb3GatewayMessage(messageContent, type),
+      directBroadcastMessage: {
+        type,
+        message: messageContent,
+      },
     }
   }
 
@@ -270,7 +296,7 @@ export class MarketComposer {
       orderHash: string
     }[]
     injectiveAddress: string
-  }) {
+  }): ComposerResponse<any, any> {
     const orderDataList = orders.map(
       ({ marketId, subaccountId, orderHash }) => {
         const orderData = new OrderData()
@@ -282,14 +308,21 @@ export class MarketComposer {
       },
     )
 
+    const type = '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
+
+    const messageContent = {
+      sender: injectiveAddress,
+      derivative_orders_to_cancel: orderDataList.map((order) =>
+        order.toObject(),
+      ),
+    }
+
     return {
-      ...snakeCaseKeys({
-        sender: injectiveAddress,
-        derivative_orders_to_cancel: orderDataList.map((order) =>
-          order.toObject(),
-        ),
-      }),
-      '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
+      web3GatewayMessage: getWeb3GatewayMessage(messageContent, type),
+      directBroadcastMessage: {
+        type,
+        message: messageContent,
+      },
     }
   }
 }

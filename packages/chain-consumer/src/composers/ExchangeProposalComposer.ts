@@ -1,5 +1,5 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { AccountAddress } from '@injectivelabs/ts-types'
+import { AccountAddress, ComposerResponse } from '@injectivelabs/ts-types'
 import {
   ExpiryFuturesMarketLaunchProposal,
   PerpetualMarketLaunchProposal,
@@ -8,6 +8,9 @@ import {
   SpotMarketParamUpdateProposal,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import snakeCaseKeys from 'snakecase-keys'
+import { MsgSubmitProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
+import { Any } from 'google-protobuf/google/protobuf/any_pb'
+import { getWeb3GatewayMessage } from '@injectivelabs/utils'
 import { DepositProposalParams } from '../types'
 
 export class ExchangeProposalComposer {
@@ -17,19 +20,27 @@ export class ExchangeProposalComposer {
   }: {
     market: MsgInstantSpotMarketLaunch.AsObject
     proposer: AccountAddress
-  }) {
-    const content = new MsgInstantSpotMarketLaunch()
+  }): ComposerResponse<
+    MsgInstantSpotMarketLaunch,
+    MsgInstantSpotMarketLaunch.AsObject
+  > {
+    const message = new MsgInstantSpotMarketLaunch()
 
-    content.setSender(proposer)
-    content.setQuoteDenom(market.quoteDenom)
-    content.setTicker(market.ticker)
-    content.setBaseDenom(market.baseDenom)
-    content.setMinPriceTickSize(market.minPriceTickSize)
-    content.setMinQuantityTickSize(market.minQuantityTickSize)
+    message.setSender(proposer)
+    message.setQuoteDenom(market.quoteDenom)
+    message.setTicker(market.ticker)
+    message.setBaseDenom(market.baseDenom)
+    message.setMinPriceTickSize(market.minPriceTickSize)
+    message.setMinQuantityTickSize(market.minQuantityTickSize)
+
+    const type = '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
 
     return {
-      ...snakeCaseKeys(content.toObject()),
-      '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: {
+        message,
+        type,
+      },
     }
   }
 
@@ -41,7 +52,7 @@ export class ExchangeProposalComposer {
     market: SpotMarketLaunchProposal.AsObject
     proposer: AccountAddress
     deposit: DepositProposalParams
-  }) {
+  }): ComposerResponse<MsgSubmitProposal, MsgSubmitProposal.AsObject> {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
     depositParams.setAmount(deposit.amount)
@@ -57,14 +68,34 @@ export class ExchangeProposalComposer {
     content.setMakerFeeRate(market.makerFeeRate)
     content.setTakerFeeRate(market.makerFeeRate)
 
+    const proposalType = '/injective.exchange.v1beta1.SpotMarketLaunchProposal'
+    const type = '/cosmos.gov.v1beta1.MsgSubmitProposal'
+
+    const contentAny = new Any()
+    contentAny.setValue(content.serializeBinary())
+    contentAny.setTypeUrl(proposalType)
+
+    const message = new MsgSubmitProposal()
+    message.setContent(contentAny)
+    message.setProposer(proposer)
+    message.setInitialDepositList([depositParams])
+
     return {
-      proposer,
-      content: {
-        '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
-        ...snakeCaseKeys(content.toObject()),
+      web3GatewayMessage: getWeb3GatewayMessage(
+        {
+          proposer,
+          content: {
+            '@type': proposalType,
+            ...snakeCaseKeys(message.toObject()),
+          },
+          initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
+        } as unknown as MsgSubmitProposal.AsObject,
+        type,
+      ),
+      directBroadcastMessage: {
+        message,
+        type,
       },
-      initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     }
   }
 
@@ -76,7 +107,7 @@ export class ExchangeProposalComposer {
     market: SpotMarketParamUpdateProposal.AsObject
     proposer: AccountAddress
     deposit: DepositProposalParams
-  }) {
+  }): ComposerResponse<MsgSubmitProposal, MsgSubmitProposal.AsObject> {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
     depositParams.setAmount(deposit.amount)
@@ -91,14 +122,35 @@ export class ExchangeProposalComposer {
     content.setMinPriceTickSize(market.minPriceTickSize)
     content.setMinQuantityTickSize(market.minQuantityTickSize)
 
+    const proposalType =
+      '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
+    const type = '/cosmos.gov.v1beta1.MsgSubmitProposal'
+
+    const contentAny = new Any()
+    contentAny.setValue(content.serializeBinary())
+    contentAny.setTypeUrl(proposalType)
+
+    const message = new MsgSubmitProposal()
+    message.setContent(contentAny)
+    message.setProposer(proposer)
+    message.setInitialDepositList([depositParams])
+
     return {
-      proposer,
-      content: {
-        '@type': '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
-        ...snakeCaseKeys(content.toObject()),
+      web3GatewayMessage: getWeb3GatewayMessage(
+        {
+          proposer,
+          content: {
+            '@type': proposalType,
+            ...snakeCaseKeys(content.toObject()),
+          },
+          initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
+        } as unknown as MsgSubmitProposal.AsObject,
+        type,
+      ),
+      directBroadcastMessage: {
+        message,
+        type,
       },
-      initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     }
   }
 
@@ -110,7 +162,7 @@ export class ExchangeProposalComposer {
     market: PerpetualMarketLaunchProposal.AsObject
     proposer: AccountAddress
     deposit: DepositProposalParams
-  }) {
+  }): ComposerResponse<MsgSubmitProposal, MsgSubmitProposal.AsObject> {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
     depositParams.setAmount(deposit.amount)
@@ -131,14 +183,32 @@ export class ExchangeProposalComposer {
     content.setMinPriceTickSize(market.minPriceTickSize)
     content.setMinQuantityTickSize(market.minQuantityTickSize)
 
+    const proposalType =
+      '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal'
+    const type = '/cosmos.gov.v1beta1.MsgSubmitProposal'
+
+    const contentAny = new Any()
+    contentAny.setValue(content.serializeBinary())
+    contentAny.setTypeUrl(proposalType)
+
+    const message = new MsgSubmitProposal()
+    message.setContent(contentAny)
+    message.setProposer(proposer)
+    message.setInitialDepositList([depositParams])
+
     return {
-      proposer,
-      content: {
-        '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
-        ...snakeCaseKeys(content.toObject()),
-      },
-      initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+      web3GatewayMessage: getWeb3GatewayMessage(
+        {
+          proposer,
+          content: {
+            '@type': proposalType,
+            ...snakeCaseKeys(message.toObject()),
+          },
+          initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
+        } as unknown as MsgSubmitProposal.AsObject,
+        type,
+      ),
+      directBroadcastMessage: { message, type },
     }
   }
 
@@ -150,7 +220,7 @@ export class ExchangeProposalComposer {
     market: ExpiryFuturesMarketLaunchProposal.AsObject
     proposer: AccountAddress
     deposit: DepositProposalParams
-  }) {
+  }): ComposerResponse<MsgSubmitProposal, MsgSubmitProposal.AsObject> {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
     depositParams.setAmount(deposit.amount)
@@ -172,15 +242,35 @@ export class ExchangeProposalComposer {
     content.setMinPriceTickSize(market.minPriceTickSize)
     content.setMinQuantityTickSize(market.minQuantityTickSize)
 
+    const proposalType =
+      '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal'
+    const type = '/cosmos.gov.v1beta1.MsgSubmitProposal'
+
+    const contentAny = new Any()
+    contentAny.setValue(content.serializeBinary())
+    contentAny.setTypeUrl(proposalType)
+
+    const message = new MsgSubmitProposal()
+    message.setContent(contentAny)
+    message.setProposer(proposer)
+    message.setInitialDepositList([depositParams])
+
     return {
-      proposer,
-      content: {
-        '@type':
-          '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal',
-        ...snakeCaseKeys(content.toObject()),
+      web3GatewayMessage: getWeb3GatewayMessage(
+        {
+          proposer,
+          content: {
+            '@type': proposalType,
+            ...snakeCaseKeys(message.toObject()),
+          },
+          initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
+        } as unknown as MsgSubmitProposal.AsObject,
+        type,
+      ),
+      directBroadcastMessage: {
+        message,
+        type,
       },
-      initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     }
   }
 

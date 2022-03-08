@@ -2,8 +2,9 @@ import {
   MsgDeposit,
   MsgWithdraw,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import snakeCaseKeys from 'snakecase-keys'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { getWeb3GatewayMessage } from '@injectivelabs/utils'
+import { ComposerResponse } from '@injectivelabs/ts-types'
 
 export class SubaccountComposer {
   static deposit({
@@ -16,19 +17,24 @@ export class SubaccountComposer {
     amount: string
     injectiveAddress: string
     denom: string
-  }) {
+  }): ComposerResponse<MsgDeposit, MsgDeposit.AsObject> {
     const amountCoin = new Coin()
     amountCoin.setAmount(amount)
     amountCoin.setDenom(denom)
 
-    const content = new MsgDeposit()
-    content.setSender(injectiveAddress)
-    content.setSubaccountId(subaccountId)
-    content.setAmount(amountCoin)
+    const message = new MsgDeposit()
+    message.setSender(injectiveAddress)
+    message.setSubaccountId(subaccountId)
+    message.setAmount(amountCoin)
+
+    const type = '/injective.exchange.v1beta1.MsgDeposit'
 
     return {
-      ...snakeCaseKeys(content.toObject()),
-      '@type': '/injective.exchange.v1beta1.MsgDeposit',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: {
+        message,
+        type,
+      },
     }
   }
 
@@ -42,19 +48,24 @@ export class SubaccountComposer {
     amount: string
     injectiveAddress: string
     denom: string
-  }) {
+  }): ComposerResponse<MsgDeposit, MsgDeposit.AsObject> {
     const amountCoin = new Coin()
     amountCoin.setAmount(amount)
     amountCoin.setDenom(denom)
 
-    const content = new MsgWithdraw()
-    content.setSender(injectiveAddress)
-    content.setSubaccountId(subaccountId)
-    content.setAmount(amountCoin)
+    const message = new MsgWithdraw()
+    message.setSender(injectiveAddress)
+    message.setSubaccountId(subaccountId)
+    message.setAmount(amountCoin)
+
+    const type = '/injective.exchange.v1beta1.MsgWithdraw'
 
     return {
-      ...snakeCaseKeys(content.toObject()),
-      '@type': '/injective.exchange.v1beta1.MsgWithdraw',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: {
+        message,
+        type,
+      },
     }
   }
 }

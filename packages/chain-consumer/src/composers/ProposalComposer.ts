@@ -1,7 +1,10 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { AccountAddress } from '@injectivelabs/ts-types'
+import { AccountAddress, ComposerResponse } from '@injectivelabs/ts-types'
 import { TextProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
 import snakeCaseKeys from 'snakecase-keys'
+import { Any } from 'google-protobuf/google/protobuf/any_pb'
+import { MsgSubmitProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
+import { getWeb3GatewayMessage } from '@injectivelabs/utils'
 import { DepositProposalParams } from '../types'
 
 export class ProposalComposer {
@@ -15,7 +18,7 @@ export class ProposalComposer {
     description: string
     proposer: AccountAddress
     deposit: DepositProposalParams
-  }) {
+  }): ComposerResponse<MsgSubmitProposal, MsgSubmitProposal.AsObject> {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
     depositParams.setAmount(deposit.amount)
@@ -24,14 +27,34 @@ export class ProposalComposer {
     content.setTitle(title)
     content.setDescription(description)
 
+    const proposalType = '/injective.exchange.v1beta1.TextProposal'
+    const type = '/cosmos.gov.v1beta1.MsgSubmitProposal'
+
+    const contentAny = new Any()
+    contentAny.setValue(content.serializeBinary())
+    contentAny.setTypeUrl(proposalType)
+
+    const message = new MsgSubmitProposal()
+    message.setContent(contentAny)
+    message.setProposer(proposer)
+    message.setInitialDepositList([depositParams])
+
     return {
-      proposer,
-      content: {
-        '@type': '/cosmos.gov.v1beta1.TextProposal',
-        ...snakeCaseKeys(content.toObject()),
+      web3GatewayMessage: getWeb3GatewayMessage(
+        {
+          proposer,
+          content: {
+            '@type': proposalType,
+            ...snakeCaseKeys(message.toObject()),
+          },
+          initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
+        } as unknown as MsgSubmitProposal.AsObject,
+        type,
+      ),
+      directBroadcastMessage: {
+        message,
+        type,
       },
-      initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
     }
   }
 }

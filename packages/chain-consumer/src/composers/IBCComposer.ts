@@ -1,7 +1,8 @@
-import snakeCaseKeys from 'snakecase-keys'
 import { MsgTransfer } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/tx_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { Height } from '@injectivelabs/chain-api/ibc/core/client/v1/client_pb'
+import { getWeb3GatewayMessage } from '@injectivelabs/utils'
+import { ComposerResponse } from '@injectivelabs/ts-types'
 
 export class IBCComposer {
   static transfer({
@@ -25,7 +26,7 @@ export class IBCComposer {
       revisionHeight: number
       revisionNumber: number
     }
-  }) {
+  }): ComposerResponse<MsgTransfer, MsgTransfer.AsObject> {
     const timeoutHeight = new Height()
     const token = new Coin()
     token.setDenom(denom)
@@ -52,9 +53,11 @@ export class IBCComposer {
       message.setTimeoutTimestamp(timeout)
     }
 
+    const type = '/ibc.applications.transfer.v1.MsgTransfer'
+
     return {
-      ...snakeCaseKeys(message.toObject()),
-      '@type': '/ibc.applications.transfer.v1.MsgTransfer',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: { message, type },
     }
   }
 }

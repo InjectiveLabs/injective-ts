@@ -1,5 +1,4 @@
-import { AccountAddress } from '@injectivelabs/ts-types'
-import snakeCaseKeys from 'snakecase-keys'
+import { AccountAddress, ComposerResponse } from '@injectivelabs/ts-types'
 import {
   MsgCreateInsuranceFund,
   MsgRequestRedemption,
@@ -7,6 +6,7 @@ import {
 } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { OracleTypeMap } from '@injectivelabs/chain-api/injective/oracle/v1beta1/oracle_pb'
+import { getWeb3GatewayMessage } from '@injectivelabs/utils'
 
 export class InsuranceComposer {
   static underwrite({
@@ -19,7 +19,7 @@ export class InsuranceComposer {
     denom: string
     amount: string
     injectiveAddress: AccountAddress
-  }) {
+  }): ComposerResponse<MsgUnderwrite, MsgUnderwrite.AsObject> {
     const deposit = new Coin()
     deposit.setAmount(amount)
     deposit.setDenom(denom)
@@ -29,9 +29,14 @@ export class InsuranceComposer {
     message.setMarketId(marketId)
     message.setSender(injectiveAddress)
 
+    const type = '/injective.insurance.v1beta1.MsgUnderwrite'
+
     return {
-      ...snakeCaseKeys(message.toObject()),
-      '@type': '/injective.insurance.v1beta1.MsgUnderwrite',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: {
+        message,
+        type,
+      },
     }
   }
 
@@ -45,7 +50,7 @@ export class InsuranceComposer {
     denom: string
     amount: string
     injectiveAddress: AccountAddress
-  }) {
+  }): ComposerResponse<MsgRequestRedemption, MsgRequestRedemption.AsObject> {
     const amountToRedeem = new Coin()
     amountToRedeem.setAmount(amount)
     amountToRedeem.setDenom(denom)
@@ -55,9 +60,14 @@ export class InsuranceComposer {
     message.setMarketId(marketId)
     message.setSender(injectiveAddress)
 
+    const type = '/injective.insurance.v1beta1.MsgRequestRedemption'
+
     return {
-      ...snakeCaseKeys(message.toObject()),
-      '@type': '/injective.insurance.v1beta1.MsgRequestRedemption',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: {
+        message,
+        type,
+      },
     }
   }
 
@@ -79,7 +89,10 @@ export class InsuranceComposer {
       denom: string
     }
     injectiveAddress: AccountAddress
-  }) {
+  }): ComposerResponse<
+    MsgCreateInsuranceFund,
+    MsgCreateInsuranceFund.AsObject
+  > {
     const initialDeposit = new Coin()
     initialDeposit.setAmount(deposit.amount)
     initialDeposit.setDenom(deposit.denom)
@@ -94,9 +107,14 @@ export class InsuranceComposer {
     message.setInitialDeposit(initialDeposit)
     message.setExpiry(fund.expiry ? fund.expiry : -1)
 
+    const type = '/injective.insurance.v1beta1.MsgCreateInsuranceFund'
+
     return {
-      ...snakeCaseKeys(message.toObject()),
-      '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: {
+        message,
+        type,
+      },
     }
   }
 }

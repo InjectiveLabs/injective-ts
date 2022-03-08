@@ -6,6 +6,6 @@
     "tsBuildInfoFile": "../../.build-cache/ts-types.tsbuildinfo"
   },
   "include": [
-    "src/**/*.ts"
-  ]
+    "./src/**/*.ts"
+  ],
 }

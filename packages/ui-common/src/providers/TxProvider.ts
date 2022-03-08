@@ -1,8 +1,9 @@
-import { ChainId } from '@injectivelabs/ts-types'
+import { ChainId, ComposerResponse } from '@injectivelabs/ts-types'
 import { Web3Exception, ExchangeException } from '@injectivelabs/exceptions'
-import { Web3Strategy } from '@injectivelabs/web3-strategy'
+import { Web3Strategy, Wallet } from '@injectivelabs/web3-strategy'
 import { TransactionConsumer } from '@injectivelabs/exchange-consumer'
 import { MetricsProvider } from './MetricsProvider'
+import { getInjectiveAddress } from '../utils'
 
 export interface TxProviderBaseOptions {
   endpoints: {
@@ -15,7 +16,7 @@ export interface TxProviderBaseOptions {
 
 export interface TxProviderTransactionOptions {
   bucket: string
-  message: any
+  message: ComposerResponse<any, any>
   address: string
   feePrice?: string
   feeDenom?: string
@@ -44,13 +45,22 @@ export class TxProvider {
   }
 
   async broadcast(transaction: TxProviderTransactionOptions) {
+    const { web3Strategy } = this
+
+    return web3Strategy.wallet === Wallet.Keplr
+      ? this.broadcastKeplr(transaction)
+      : this.broadcastWeb3(transaction)
+  }
+
+  private async broadcastWeb3(transaction: TxProviderTransactionOptions) {
     const { web3Strategy, consumer, chainId, metricsProvider } = this
 
     const prepareTx = async () => {
       try {
         const promise = consumer.prepareTxRequest({
-          ...transaction,
           chainId,
+          address: transaction.address,
+          message: transaction.message.web3GatewayMessage,
           estimateGas: false,
         })
 
@@ -95,7 +105,7 @@ export class TxProvider {
         signature,
         chainId,
         txResponse,
-        message: transaction.message,
+        message: transaction.message.web3GatewayMessage,
       })
 
       if (!metricsProvider) {
@@ -110,6 +120,36 @@ export class TxProvider {
       )
 
       return txHash
+    } catch (e: any) {
+      throw new ExchangeException(e.message)
+    }
+  }
+
+  private async broadcastKeplr(transaction: TxProviderTransactionOptions) {
+    const { web3Strategy, chainId } = this
+    const injectiveAddress = getInjectiveAddress(transaction.address)
+
+    try {
+      const { directBroadcastMessage } = transaction.message
+
+      const message = {
+        type: Array.isArray(directBroadcastMessage)
+          ? directBroadcastMessage[0].type
+          : directBroadcastMessage.type,
+        value: Array.isArray(directBroadcastMessage)
+          ? directBroadcastMessage[0].message
+          : directBroadcastMessage.message,
+      }
+
+      const signResponse = (await web3Strategy.signTypedDataV4(
+        message,
+        injectiveAddress,
+      )) as any
+
+      return await web3Strategy.sendTransaction(signResponse, {
+        chainId,
+        address: injectiveAddress,
+      })
     } catch (e: any) {
       throw new ExchangeException(e.message)
     }

@@ -10,17 +10,25 @@ import {
   onChainIdChangeCallback,
   Web3StrategyArguments,
 } from './types'
+import Keplr from './strategies/Keplr'
 
 export default class Web3Strategy {
   private strategy: ConcreteWeb3Strategy
+
+  public wallet: Wallet
 
   constructor({ wallet, chainId, options }: Web3StrategyArguments) {
     assert.inArray(chainId, Object.values(ChainId))
     assert.inArray(wallet, Object.values(Wallet))
 
-    switch (wallet) {
+    this.wallet = wallet
+
+    switch (this.wallet) {
       case Wallet.Metamask:
         this.strategy = new Metamask({ chainId, options })
+        break
+      case Wallet.Keplr:
+        this.strategy = new Keplr({ chainId, options })
         break
       case Wallet.Ledger:
         this.strategy = new Ledger({ chainId, options })
@@ -64,16 +72,16 @@ export default class Web3Strategy {
   }
 
   public async sendTransaction(
-    tx: unknown,
+    tx: any,
     options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     return this.strategy.sendTransaction(tx, options)
   }
 
   public async signTypedDataV4(
-    data: string,
+    data: any,
     address: AccountAddress,
-  ): Promise<string> {
+  ): Promise<string | any> {
     return this.strategy.signTypedDataV4(data, address)
   }
 

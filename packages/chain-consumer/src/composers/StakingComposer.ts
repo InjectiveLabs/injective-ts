@@ -1,11 +1,11 @@
-import { AccountAddress } from '@injectivelabs/ts-types'
+import { AccountAddress, ComposerResponse } from '@injectivelabs/ts-types'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import snakeCaseKeys from 'snakecase-keys'
 import {
   MsgBeginRedelegate,
   MsgDelegate,
   MsgUndelegate,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
+import { getWeb3GatewayMessage } from '@injectivelabs/utils'
 
 export class StakingComposer {
   static delegate({
@@ -18,19 +18,24 @@ export class StakingComposer {
     validatorAddress: string
     injectiveAddress: AccountAddress
     amount: string
-  }): Record<string, any> {
+  }): ComposerResponse<MsgDelegate, MsgDelegate.AsObject> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
     coinAmount.setAmount(amount)
 
-    const cosmosMessage = new MsgDelegate()
-    cosmosMessage.setAmount(coinAmount)
-    cosmosMessage.setDelegatorAddress(injectiveAddress)
-    cosmosMessage.setValidatorAddress(validatorAddress)
+    const message = new MsgDelegate()
+    message.setAmount(coinAmount)
+    message.setDelegatorAddress(injectiveAddress)
+    message.setValidatorAddress(validatorAddress)
+
+    const type = '/cosmos.staking.v1beta1.MsgDelegate'
 
     return {
-      ...snakeCaseKeys(cosmosMessage.toObject()),
-      '@type': '/cosmos.staking.v1beta1.MsgDelegate',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: {
+        message,
+        type,
+      },
     }
   }
 
@@ -46,20 +51,25 @@ export class StakingComposer {
     destinationValidatorAddress: string
     injectiveAddress: AccountAddress
     amount: string
-  }): Record<string, any> {
+  }): ComposerResponse<MsgBeginRedelegate, MsgBeginRedelegate.AsObject> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
     coinAmount.setAmount(amount)
 
-    const cosmosMessage = new MsgBeginRedelegate()
-    cosmosMessage.setAmount(coinAmount)
-    cosmosMessage.setDelegatorAddress(injectiveAddress)
-    cosmosMessage.setValidatorDstAddress(destinationValidatorAddress)
-    cosmosMessage.setValidatorSrcAddress(sourceValidatorAddress)
+    const message = new MsgBeginRedelegate()
+    message.setAmount(coinAmount)
+    message.setDelegatorAddress(injectiveAddress)
+    message.setValidatorDstAddress(destinationValidatorAddress)
+    message.setValidatorSrcAddress(sourceValidatorAddress)
+
+    const type = '/cosmos.staking.v1beta1.MsgBeginRedelegate'
 
     return {
-      ...snakeCaseKeys(cosmosMessage.toObject()),
-      '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: {
+        message,
+        type,
+      },
     }
   }
 
@@ -73,19 +83,24 @@ export class StakingComposer {
     validatorAddress: string
     injectiveAddress: AccountAddress
     amount: string
-  }): Record<string, any> {
+  }): ComposerResponse<MsgUndelegate, MsgUndelegate.AsObject> {
     const coinAmount = new Coin()
     coinAmount.setDenom(denom)
     coinAmount.setAmount(amount)
 
-    const cosmosMessage = new MsgUndelegate()
-    cosmosMessage.setAmount(coinAmount)
-    cosmosMessage.setDelegatorAddress(injectiveAddress)
-    cosmosMessage.setValidatorAddress(validatorAddress)
+    const message = new MsgUndelegate()
+    message.setAmount(coinAmount)
+    message.setDelegatorAddress(injectiveAddress)
+    message.setValidatorAddress(validatorAddress)
+
+    const type = '/cosmos.staking.v1beta1.MsgUndelegate'
 
     return {
-      ...snakeCaseKeys(cosmosMessage.toObject()),
-      '@type': '/cosmos.staking.v1beta1.MsgUndelegate',
+      web3GatewayMessage: getWeb3GatewayMessage(message.toObject(), type),
+      directBroadcastMessage: {
+        message,
+        type,
+      },
     }
   }
 }

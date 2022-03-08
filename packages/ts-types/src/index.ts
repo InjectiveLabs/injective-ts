@@ -18,6 +18,16 @@ export interface PaginationOption {
   reverse?: boolean
   countTotal?: boolean
 }
+
 export interface Constructable<T> {
   new (...args: never): T
+}
+
+export type Web3GatewayMessage<T> = T & { '@type': string }
+
+export interface ComposerResponse<T, R> {
+  web3GatewayMessage: Web3GatewayMessage<R> | Web3GatewayMessage<R>[]
+  directBroadcastMessage:
+    | { type: string; message: T }
+    | { type: string; message: T }[]
 }

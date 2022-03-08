@@ -50,6 +50,7 @@ export class DMMTransformer {
     const marketsMap = epochMeta
       .getMarketsMap()
       .entries()
+      // @ts-ignore
       .arr_.map(([marketId, marketConfig]: [string, GrpcMarketConfig]) => [
         marketId,
         DMMTransformer.grpcMarketConfigToMarketConfig(marketConfig),
@@ -58,6 +59,7 @@ export class DMMTransformer {
     const dmmAddressesList = epochMeta
       .getDmmAddressesMap()
       .entries()
+      // @ts-ignore
       .arr_.map(([name, values]: [string, GrpcArrayOfString]) => [
         name,
         values.getFieldList(),
@@ -86,14 +88,17 @@ export class DMMTransformer {
   static grpcMapOfStringDMMLCSToDMMLCS(
     mapOfStringDMMLCS: GrpcMapOfStringDMMLCS,
   ): [string, DMMLCS][] {
-    return mapOfStringDMMLCS
-      .getFieldMap()
-      .arr_.map(
-        ([name, [lcs, normBuy, normSell]]: [
-          string,
-          [string, string, string],
-        ]) => [name, { lcs, normBuy, normSell }],
-      )
+    return (
+      mapOfStringDMMLCS
+        .getFieldMap()
+        // @ts-ignore
+        .arr_.map(
+          ([name, [lcs, normBuy, normSell]]: [
+            string,
+            [string, string, string],
+          ]) => [name, { lcs, normBuy, normSell }],
+        )
+    )
   }
 
   static grpcLCSResultRecordToLCSResultRecord(
@@ -102,6 +107,7 @@ export class DMMTransformer {
     const summaryMap = lCSResultRecord
       .getSummaryMap()
       .entries()
+      // @ts-ignore
       .arr_.map(([name, dmmLcs]: [string, GrpcDMMLCS]) => [
         name,
         DMMTransformer.grpcDMMLCStoDMMLCS(dmmLcs),
@@ -110,6 +116,7 @@ export class DMMTransformer {
     const byMarketsMap = lCSResultRecord
       .getByMarketsMap()
       .entries()
+      // @ts-ignore
       .arr_.map(([marketId, grpcDmmLcs]: [string, GrpcMapOfStringDMMLCS]) => [
         marketId,
         Object.fromEntries(
@@ -133,12 +140,15 @@ export class DMMTransformer {
   static grpcMapOfStringDMMVCStoMapOfStringDMMVCS(
     mapOfStringDMMVCS: GrpcMapOfStringDMMVCS,
   ): [string, DMMVCS][] {
-    return mapOfStringDMMVCS
-      .getFieldMap()
-      .arr_.map(([name, [vcs, volume]]: [string, [string, string]]) => [
-        name,
-        { vcs, volume },
-      ])
+    return (
+      mapOfStringDMMVCS
+        .getFieldMap()
+        // @ts-ignore
+        .arr_.map(([name, [vcs, volume]]: [string, [string, string]]) => [
+          name,
+          { vcs, volume },
+        ])
+    )
   }
 
   static grpcVCSResultRecordToVCSResultRecords(
@@ -147,6 +157,7 @@ export class DMMTransformer {
     const summaryMap = vCSResultRecord
       .getSummaryMap()
       .entries()
+      // @ts-ignore
       .arr_.map(([name, dmmVcs]: [string, GrpcDMMVCS]) => [
         name,
         DMMTransformer.grpcDMMVCStoDMMVCS(dmmVcs),
@@ -155,6 +166,7 @@ export class DMMTransformer {
     const byMarketsMap = vCSResultRecord
       .getByMarketsMap()
       .entries()
+      // @ts-ignore
       .arr_.map(([marketId, dmmVcs]: [string, GrpcMapOfStringDMMVCS]) => [
         marketId,
         Object.fromEntries(
@@ -165,6 +177,7 @@ export class DMMTransformer {
     const byDateMap = vCSResultRecord
       .getByDateMap()
       .entries()
+      // @ts-ignore
       .arr_.map(([date, dmmVcs]: [string, GrpcMapOfStringDMMVCS]) => [
         date,
         Object.fromEntries(
