@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/alchemy-api",
   "description": "Alchemy API Consumer.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
