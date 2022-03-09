@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/exceptions",
   "description": "List of exceptions that can be reused throughout Injective's projects.",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,9 +27,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/ts-types": "^0.1.0",
+    "@injectivelabs/ts-types": "^0.1.5",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },
-  "gitHead": "05eb3472375cb5f1d46ba545222f1edafedbda75"
+  "gitHead": "a12e5c2c5d1038ab42e9669b6eeb1e91873626c2"
 }
