@@ -40,6 +40,7 @@
     "@ledgerhq/hw-transport-u2f": "^5.36.0-deprecated",
     "@ledgerhq/hw-transport-webhid": "^6.24.1",
     "@ledgerhq/hw-transport-webusb": "^6.24.1",
+    "@metamask/eth-sig-util": "^4.0.0",
     "@types/eth-sig-util": "^2.1.1",
     "@types/ethereumjs-util": "^6.1.0",
     "@types/hdkey": "^2.0.0",
@@ -50,6 +51,7 @@
     "hdkey": "^2.0.1",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.3",
+    "trezor-connect": "^8.2.7",
     "web3": "^1.5.2"
   },
   "gitHead": "05eb3472375cb5f1d46ba545222f1edafedbda75"

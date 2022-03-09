@@ -115,7 +115,10 @@ export class DerivativeMarketComposer {
     injectiveAddress: string
     marketId: string
     order: DerivativeLimitOrderParams
-  }) {
+  }): ComposerResponse<
+    MsgCreateDerivativeMarketOrder,
+    MsgCreateDerivativeMarketOrder.AsObject
+  > {
     const createMarketOrder = ({
       price,
       quantity,

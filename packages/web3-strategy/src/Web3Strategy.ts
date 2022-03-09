@@ -11,6 +11,7 @@ import {
   Web3StrategyArguments,
 } from './types'
 import Keplr from './strategies/Keplr'
+import Trezor from './strategies/Trezor'
 
 export default class Web3Strategy {
   private strategy: ConcreteWeb3Strategy
@@ -29,6 +30,9 @@ export default class Web3Strategy {
         break
       case Wallet.Keplr:
         this.strategy = new Keplr({ chainId, options })
+        break
+      case Wallet.Trezor:
+        this.strategy = new Trezor({ chainId, options })
         break
       case Wallet.Ledger:
         this.strategy = new Ledger({ chainId, options })

@@ -169,20 +169,37 @@ export class DerivativeActionService extends BaseActionService {
     injectiveAddress: string
     triggerPrice?: string
   }) {
-    const message = positions.map((position) =>
-      DerivativeMarketComposer.createMarketOrder({
-        subaccountId,
-        injectiveAddress,
-        marketId: position.marketId,
-        order: {
-          feeRecipient,
-          triggerPrice,
-          price: new BigNumberInWei(position.price).toFixed(),
-          quantity: new BigNumberInBase(position.quantity).toFixed(),
-          orderType: derivativeOrderTypeToGrpcOrderType(position.orderType),
-          margin: ZERO_TO_STRING,
-        },
-      }),
+    const message = positions.reduce(
+      (
+        messages: { web3GatewayMessage: any[]; directBroadcastMessage: any[] },
+        position,
+      ) => {
+        const message = DerivativeMarketComposer.createMarketOrder({
+          subaccountId,
+          injectiveAddress,
+          marketId: position.marketId,
+          order: {
+            feeRecipient,
+            triggerPrice,
+            price: new BigNumberInWei(position.price).toFixed(),
+            quantity: new BigNumberInBase(position.quantity).toFixed(),
+            orderType: derivativeOrderTypeToGrpcOrderType(position.orderType),
+            margin: ZERO_TO_STRING,
+          },
+        })
+
+        return {
+          web3GatewayMessage: [
+            ...messages.web3GatewayMessage,
+            message.web3GatewayMessage,
+          ],
+          directBroadcastMessage: [
+            ...messages.directBroadcastMessage,
+            message.directBroadcastMessage,
+          ],
+        }
+      },
+      { web3GatewayMessage: [], directBroadcastMessage: [] },
     )
 
     try {
@@ -194,19 +211,7 @@ export class DerivativeActionService extends BaseActionService {
             .toFixed(0),
         ).toNumber(),
         bucket: DerivativesMetrics.CreateMarketOrder,
-        message: message.reduce(
-          (messages, message) => ({
-            web3GatewayMessage: {
-              ...messages.web3GatewayMessage,
-              ...message.web3GatewayMessage,
-            },
-            directBroadcastMessage: {
-              ...messages.directBroadcastMessage,
-              ...message.directBroadcastMessage,
-            },
-          }),
-          { web3GatewayMessage: [], directBroadcastMessage: [] },
-        ),
+        message,
         address,
       })
     } catch (error: any) {

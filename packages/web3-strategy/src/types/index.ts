@@ -32,3 +32,9 @@ export interface LedgerWalletInfo {
   derivationPath: string
   hdKey: HDNode
 }
+
+export interface TrezorWalletInfo {
+  address: string
+  hdKey: HDNode
+  derivationPath: string
+}
