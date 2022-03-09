@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.108...@injectivelabs/derivatives-consumer@0.1.0) (2022-03-09)
+
+
+### Features
+
+* trezor and fix for multiple messages ([097a9c0](https://github.com/InjectiveLabs/injective-ts/commit/097a9c0e623f90577558b15266bdea3ee3bb8f8b))
+
+
+
+
+
 ## [0.0.108](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/derivatives-consumer@0.0.107...@injectivelabs/derivatives-consumer@0.0.108) (2022-03-08)
 
 **Note:** Version bump only for package @injectivelabs/derivatives-consumer
