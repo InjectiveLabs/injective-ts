@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/chain-consumer",
   "description": "Interacting with our Chain API made easy. Can be reused throughout Injective's projects.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,7 +32,7 @@
     "@injectivelabs/chain-api": "^1.7.1",
     "@injectivelabs/exceptions": "^0.0.26",
     "@injectivelabs/ts-types": "^0.1.0",
-    "@injectivelabs/utils": "^0.1.0",
+    "@injectivelabs/utils": "^0.1.2",
     "bech32": "^2.0.0",
     "ethereumjs-util": "^7.0.10",
     "google-protobuf": "^3.20.0-rc.1",
