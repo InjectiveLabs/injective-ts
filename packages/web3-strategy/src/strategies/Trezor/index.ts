@@ -5,11 +5,8 @@ import { addHexPrefix } from 'ethereumjs-util'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import Common, { Chain, Hardfork } from '@ethereumjs/common'
 import TrezorConnect from 'trezor-connect'
-import {
-  ConcreteStrategyOptions,
-  ConcreteWeb3Strategy,
-  TrezorWalletInfo,
-} from '../../types'
+import Web3 from 'web3'
+import { ConcreteWeb3Strategy, TrezorWalletInfo } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
@@ -18,20 +15,26 @@ import {
 import TrezorHW from './hw'
 import { transformTypedData } from './utils'
 
+type EthereumTransactionEIP1559 = {
+  to: string
+  value: string
+  gasLimit: string
+  gasPrice?: typeof undefined
+  nonce: string
+  data?: string
+  chainId: number
+  maxFeePerGas: string
+  maxPriorityFeePerGas: string
+}
+
 export default class Trezor
   extends BaseConcreteStrategy
   implements ConcreteWeb3Strategy
 {
   private trezor: TrezorHW
 
-  constructor({
-    chainId,
-    options,
-  }: {
-    chainId: ChainId
-    options: ConcreteStrategyOptions
-  }) {
-    super({ chainId, options })
+  constructor({ chainId, web3 }: { chainId: ChainId; web3: Web3 }) {
+    super({ chainId, web3 })
 
     this.trezor = new TrezorHW()
   }
@@ -77,31 +80,26 @@ export default class Trezor
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const { derivationPath } = await this.getWalletForAddress(address)
     const object = JSON.parse(eip712json)
-    const dataWithHashes = transformTypedData(object)
-    const {
-      types: { EIP712Domain = [], ...otherTypes } = {},
-      message = {},
-      domain = {},
-      primaryType,
-      domain_separator_hash,
-      message_hash,
-    } = dataWithHashes
+    const compatibleObject = {
+      ...object,
+      domain: {
+        ...object.domain,
+        chainId: parseInt(object.domain.chainId, 16),
+        salt: Date.now().toString(),
+      },
+    }
+    const dataWithHashes = transformTypedData(compatibleObject)
 
     try {
       await this.trezor.connect()
+      const { derivationPath } = await this.getWalletForAddress(address)
       const response = await TrezorConnect.ethereumSignTypedData({
         path: derivationPath,
-        data: {
-          types: { EIP712Domain, ...otherTypes },
-          message,
-          domain,
-          primaryType,
-        },
-        metamask_v4_compat: true,
-        domain_separator_hash,
-        message_hash,
+        data: dataWithHashes,
+        message_hash: dataWithHashes.message_hash,
+        domain_separator_hash: dataWithHashes.domain_separator_hash,
+        metamask_v4_compat: false,
       })
 
       if (!response.success) {
@@ -112,6 +110,7 @@ export default class Trezor
 
       return response.payload.signature
     } catch (e: any) {
+      console.log(e)
       throw new Error(`Trezor: ${e.message || e}`)
     }
   }
@@ -133,8 +132,6 @@ export default class Trezor
       from: txData.from,
       data: txData.data,
       to: txData.to,
-      value: '',
-      chainId,
       nonce: addHexPrefix(nonce.toString(16)),
       gas: addHexPrefix(txData.gas),
       gasLimit: addHexPrefix(txData.gas),
@@ -143,13 +140,21 @@ export default class Trezor
         txData.maxPriorityFeePerGas || '0xB2D05E00' /* 3 Gwei in HEX */,
       ),
     }
+    const tx = FeeMarketEIP1559Transaction.fromTxData(eip1559TxData, {
+      common,
+    })
+
+    const transaction = {
+      ...tx.toJSON(),
+      chainId,
+    } as EthereumTransactionEIP1559
 
     try {
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(options.address)
       const response = await TrezorConnect.ethereumSignTransaction({
         path: derivationPath,
-        transaction: eip1559TxData,
+        transaction,
       })
 
       if (!response.success) {
@@ -161,9 +166,9 @@ export default class Trezor
 
       const signedTxData = {
         ...eip1559TxData,
-        v: `0x${response.payload.v}`,
-        r: `0x${response.payload.r}`,
-        s: `0x${response.payload.s}`,
+        v: `${response.payload.v}`,
+        r: `${response.payload.r}`,
+        s: `${response.payload.s}`,
       }
 
       return FeeMarketEIP1559Transaction.fromTxData(signedTxData, {

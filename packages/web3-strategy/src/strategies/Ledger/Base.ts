@@ -5,8 +5,8 @@ import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import ledgerService from '@ledgerhq/hw-app-eth/lib/services/ledger'
 import Common, { Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
+import Web3 from 'web3'
 import {
-  ConcreteStrategyOptions,
   ConcreteWeb3Strategy,
   LedgerDerivationPathType,
   LedgerWalletInfo,
@@ -48,7 +48,7 @@ const commonLockedErrors = (error: any) => {
   return false
 }
 
-export default class Ledger
+export default class LedgerBase
   extends BaseConcreteStrategy
   implements ConcreteWeb3Strategy
 {
@@ -60,16 +60,17 @@ export default class Ledger
 
   constructor({
     chainId,
-    options,
+    web3,
+    derivationPathType,
   }: {
     chainId: ChainId
-    options: ConcreteStrategyOptions
+    web3: Web3
+    derivationPathType: LedgerDerivationPathType
   }) {
-    super({ chainId, options })
+    super({ chainId, web3 })
 
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
-    this.derivationPathType =
-      options.derivationPathType || LedgerDerivationPathType.LedgerLive
+    this.derivationPathType = derivationPathType
     this.ledger = new LedgerHW()
   }
 

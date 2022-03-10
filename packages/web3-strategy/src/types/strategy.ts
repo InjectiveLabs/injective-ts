@@ -1,5 +1,4 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
-import Web3 from 'web3'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void
@@ -9,17 +8,12 @@ export enum LedgerDerivationPathType {
   LedgerMew = 'ledger-mew',
 }
 
-export interface ConcreteStrategyOptions {
-  privateKey?: string
-  baseDerivationPath?: string
-  derivationPathType?: LedgerDerivationPathType
+export interface Web3Options {
   rpcUrl: string
   wsRpcUrl: string
 }
 
 export interface ConcreteWeb3Strategy {
-  web3: Web3
-
   isMetamask(): boolean
 
   getAddresses(): Promise<string[]>

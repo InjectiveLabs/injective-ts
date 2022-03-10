@@ -11,59 +11,67 @@ const TREZOR_CONNECT_MANIFEST = {
 export default class TrezorTransport {
   private accountManager: AccountManager | null = null
 
-  private connected: boolean = false
+  private hdKey: HDNode = new HDNode()
+
+  constructor() {
+    TrezorConnect.on('DEVICE_EVENT', (event) => {
+      if (event && event.payload && event.payload.features) {
+        //
+      }
+    })
+
+    TrezorConnect.init({ manifest: TREZOR_CONNECT_MANIFEST })
+  }
 
   async connect() {
-    if (!this.connected) {
-      await this.init()
-    }
-
-    this.connected = true
+    await this.init()
   }
 
   async getAccountManager(): Promise<AccountManager> {
     if (!this.accountManager) {
-      await this.connect()
+      this.accountManager = new AccountManager(this.hdKey)
     }
 
-    return this.accountManager as AccountManager
+    return this.accountManager
+  }
+
+  private isUnlocked() {
+    return Boolean(this.hdKey && this.hdKey.publicKey)
   }
 
   private async init() {
-    TrezorConnect.on('DEVICE_EVENT', (event) => {
-      if (event && event.payload && event.payload.features) {
-        // console.log(event.payload.features.model)
-      }
-    })
+    if (this.isUnlocked()) {
+      return Promise.resolve()
+    }
 
-    await TrezorConnect.init({
-      lazyLoad: true,
-      popup: true,
-      manifest: TREZOR_CONNECT_MANIFEST,
-    })
-
-    try {
-      const fullBaseDerivationPath = `m/${DEFAULT_BASE_DERIVATION_PATH}`
-      const path = `${fullBaseDerivationPath}/0'/0`
-      const result = await TrezorConnect.getPublicKey({
-        path,
+    return new Promise((resolve, reject) => {
+      TrezorConnect.getPublicKey({
+        path: `${DEFAULT_BASE_DERIVATION_PATH}/0'/0`,
         coin: 'ETH',
       })
+        .then((response) => {
+          if (!response.success) {
+            return reject(
+              new Error(
+                (response.payload && response.payload.error) ||
+                  'Please make sure your Trezor is connected and unlocked',
+              ),
+            )
+          }
 
-      if (!result.success) {
-        throw new Error(
-          (result.payload && result.payload.error) || 'Unknown error',
-        )
-      }
+          this.hdKey.publicKey = Buffer.from(response.payload.publicKey, 'hex')
+          this.hdKey.chainCode = Buffer.from(response.payload.chainCode, 'hex')
 
-      const hdKey = HDNode.fromExtendedKey(result.payload.xpub)
-
-      this.accountManager = new AccountManager(hdKey)
-    } catch (e) {
-      throw new Error(
-        (e as any).message ||
-          'Please make sure your Trezor is connected and unlocked',
-      )
-    }
+          return resolve(TrezorConnect)
+        })
+        .catch((e) => {
+          reject(
+            new Error(
+              (e && e.toString()) ||
+                'Please make sure your Trezor is connected and unlocked',
+            ),
+          )
+        })
+    })
   }
 }

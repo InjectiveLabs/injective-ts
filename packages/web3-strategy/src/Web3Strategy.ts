@@ -1,8 +1,7 @@
 import Web3 from 'web3'
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
-import { assert } from '@injectivelabs/assert'
+import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import Metamask from './strategies/Metamask'
-import Ledger from './strategies/Ledger/index'
 import {
   Wallet,
   ConcreteWeb3Strategy,
@@ -12,114 +11,114 @@ import {
 } from './types'
 import Keplr from './strategies/Keplr'
 import Trezor from './strategies/Trezor'
+import LedgerLive from './strategies/Ledger/LedgerLive'
+import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 
 export default class Web3Strategy {
-  private strategy: ConcreteWeb3Strategy
+  private strategies: Record<Wallet, ConcreteWeb3Strategy>
+
+  public web3: Web3
 
   public wallet: Wallet
 
   constructor({ wallet, chainId, options }: Web3StrategyArguments) {
-    assert.inArray(chainId, Object.values(ChainId))
-    assert.inArray(wallet, Object.values(Wallet))
+    const web3 = createAlchemyWeb3(
+      options.wsRpcUrl || options.rpcUrl,
+    ) as unknown as Web3
 
-    this.wallet = wallet
-
-    switch (this.wallet) {
-      case Wallet.Metamask:
-        this.strategy = new Metamask({ chainId, options })
-        break
-      case Wallet.Keplr:
-        this.strategy = new Keplr({ chainId, options })
-        break
-      case Wallet.Trezor:
-        this.strategy = new Trezor({ chainId, options })
-        break
-      case Wallet.Ledger:
-        this.strategy = new Ledger({ chainId, options })
-        break
-      default:
-        this.strategy = new Metamask({ chainId, options })
-        break
+    this.strategies = {
+      [Wallet.Metamask]: new Metamask({ chainId, web3 }),
+      [Wallet.Ledger]: new LedgerLive({ chainId, web3 }),
+      [Wallet.LedgerLegacy]: new LedgerLegacy({ chainId, web3 }),
+      [Wallet.Keplr]: new Keplr({ chainId, web3 }),
+      [Wallet.Trezor]: new Trezor({ chainId, web3 }),
     }
+
+    this.web3 = web3
+    this.wallet = wallet || Wallet.Metamask
+  }
+
+  public setWallet(wallet: Wallet) {
+    this.wallet = wallet
   }
 
   public getStrategy(): ConcreteWeb3Strategy {
-    return this.strategy
+    return this.strategies[this.wallet]
   }
 
   public getAddresses(): Promise<AccountAddress[]> {
-    return this.strategy.getAddresses()
+    return this.strategies[this.wallet].getAddresses()
   }
 
   public isWeb3Connected(): boolean {
-    return this.strategy.isWeb3Connected()
+    return this.strategies[this.wallet].isWeb3Connected()
   }
 
   public isMetamask(): boolean {
-    return this.strategy.isMetamask()
+    return this.strategies[this.wallet].isMetamask()
   }
 
   public getChainId(): Promise<string> {
-    return this.strategy.getChainId()
+    return this.strategies[this.wallet].getChainId()
   }
 
   public getNetworkId(): Promise<string> {
-    return this.strategy.getNetworkId()
+    return this.strategies[this.wallet].getNetworkId()
   }
 
   public async getTransactionReceipt(txHash: string): Promise<void> {
-    return this.strategy.getTransactionReceipt(txHash)
+    return this.strategies[this.wallet].getTransactionReceipt(txHash)
   }
 
   public async confirm(address: AccountAddress): Promise<string> {
-    return this.strategy.confirm(address)
+    return this.strategies[this.wallet].confirm(address)
   }
 
   public async sendTransaction(
     tx: any,
     options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    return this.strategy.sendTransaction(tx, options)
+    return this.strategies[this.wallet].sendTransaction(tx, options)
   }
 
   public async signTypedDataV4(
     data: any,
     address: AccountAddress,
   ): Promise<string | any> {
-    return this.strategy.signTypedDataV4(data, address)
+    return this.strategies[this.wallet].signTypedDataV4(data, address)
   }
 
   public getWeb3(): Web3 {
-    return this.strategy.web3
+    return this.web3
   }
 
   public onAccountChange(callback: onAccountChangeCallback): void {
-    if (this.strategy.onAccountChange) {
-      return this.strategy.onAccountChange(callback)
+    if (this.strategies[this.wallet].onAccountChange) {
+      return this.strategies[this.wallet].onAccountChange!(callback)
     }
   }
 
   public onChainIdChange(callback: onChainIdChangeCallback): void {
-    if (this.strategy.onChainIdChange) {
-      return this.strategy.onChainIdChange(callback)
+    if (this.strategies[this.wallet].onChainIdChange) {
+      return this.strategies[this.wallet].onChainIdChange!(callback)
     }
   }
 
   public cancelOnChainIdChange(): void {
-    if (this.strategy.cancelOnChainIdChange) {
-      return this.strategy.cancelOnChainIdChange()
+    if (this.strategies[this.wallet].cancelOnChainIdChange) {
+      return this.strategies[this.wallet].cancelOnChainIdChange!()
     }
   }
 
   public cancelAllEvents(): void {
-    if (this.strategy.cancelAllEvents) {
-      return this.strategy.cancelAllEvents()
+    if (this.strategies[this.wallet].cancelAllEvents) {
+      return this.strategies[this.wallet].cancelAllEvents!()
     }
   }
 
   public cancelOnAccountChange(): void {
-    if (this.strategy.cancelOnAccountChange) {
-      return this.strategy.cancelOnAccountChange()
+    if (this.strategies[this.wallet].cancelOnAccountChange) {
+      return this.strategies[this.wallet].cancelOnAccountChange!()
     }
   }
 }

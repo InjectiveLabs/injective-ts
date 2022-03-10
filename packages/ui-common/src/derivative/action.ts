@@ -3,6 +3,7 @@ import {
   BigNumberInBase,
   BigNumberInWei,
   DEFAULT_EXCHANGE_LIMIT,
+  mapMultipleComposerResponseMessages,
 } from '@injectivelabs/utils'
 import {
   DerivativeMarketComposer,
@@ -169,38 +170,22 @@ export class DerivativeActionService extends BaseActionService {
     injectiveAddress: string
     triggerPrice?: string
   }) {
-    const message = positions.reduce(
-      (
-        messages: { web3GatewayMessage: any[]; directBroadcastMessage: any[] },
-        position,
-      ) => {
-        const message = DerivativeMarketComposer.createMarketOrder({
-          subaccountId,
-          injectiveAddress,
-          marketId: position.marketId,
-          order: {
-            feeRecipient,
-            triggerPrice,
-            price: new BigNumberInWei(position.price).toFixed(),
-            quantity: new BigNumberInBase(position.quantity).toFixed(),
-            orderType: derivativeOrderTypeToGrpcOrderType(position.orderType),
-            margin: ZERO_TO_STRING,
-          },
-        })
-
-        return {
-          web3GatewayMessage: [
-            ...messages.web3GatewayMessage,
-            message.web3GatewayMessage,
-          ],
-          directBroadcastMessage: [
-            ...messages.directBroadcastMessage,
-            message.directBroadcastMessage,
-          ],
-        }
-      },
-      { web3GatewayMessage: [], directBroadcastMessage: [] },
+    const messages = positions.map((position) =>
+      DerivativeMarketComposer.createMarketOrder({
+        subaccountId,
+        injectiveAddress,
+        marketId: position.marketId,
+        order: {
+          feeRecipient,
+          triggerPrice,
+          price: new BigNumberInWei(position.price).toFixed(),
+          quantity: new BigNumberInBase(position.quantity).toFixed(),
+          orderType: derivativeOrderTypeToGrpcOrderType(position.orderType),
+          margin: ZERO_TO_STRING,
+        },
+      }),
     )
+    const mappedMessages = mapMultipleComposerResponseMessages(messages)
 
     try {
       return await this.txProvider.broadcast({
@@ -211,7 +196,7 @@ export class DerivativeActionService extends BaseActionService {
             .toFixed(0),
         ).toNumber(),
         bucket: DerivativesMetrics.CreateMarketOrder,
-        message,
+        message: mappedMessages,
         address,
       })
     } catch (error: any) {

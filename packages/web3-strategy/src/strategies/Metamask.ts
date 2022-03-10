@@ -1,8 +1,8 @@
 import { isServerSide, sleep } from '@injectivelabs/utils'
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
+import Web3 from 'web3'
 import {
-  ConcreteStrategyOptions,
   ConcreteWeb3Strategy,
   Eip1993ProviderWithMetamask,
   WindowWithEip1193Provider,
@@ -26,14 +26,8 @@ export default class Metamask
 {
   private ethereum: Eip1993ProviderWithMetamask
 
-  constructor({
-    chainId,
-    options,
-  }: {
-    chainId: ChainId
-    options: ConcreteStrategyOptions
-  }) {
-    super({ chainId, options })
+  constructor({ chainId, web3 }: { chainId: ChainId; web3: Web3 }) {
+    super({ chainId, web3 })
 
     this.ethereum = $window.ethereum
   }

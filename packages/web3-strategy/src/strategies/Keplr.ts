@@ -7,7 +7,8 @@ import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
 } from '@injectivelabs/utils'
-import { ConcreteStrategyOptions, ConcreteWeb3Strategy } from '../types'
+import Web3 from 'web3'
+import { ConcreteWeb3Strategy } from '../types'
 import BaseConcreteStrategy from './Base'
 
 export default class Keplr
@@ -20,18 +21,8 @@ export default class Keplr
 
   private injectiveChainId = 'injective-1'
 
-  constructor({
-    chainId,
-    options,
-  }: {
-    chainId: ChainId
-    options: ConcreteStrategyOptions
-  }) {
-    super({ chainId, options })
-
-    if (chainId !== ChainId.Mainnet) {
-      throw new Error('Keplr is only supported on Mainnet')
-    }
+  constructor({ chainId, web3 }: { chainId: ChainId; web3: Web3 }) {
+    super({ chainId, web3 })
 
     this.keplrWallet = new KeplrWallet(this.injectiveChainId)
     this.cosmJsWallet = new CosmJsWallet(this.injectiveChainId)
@@ -40,6 +31,10 @@ export default class Keplr
   async getAddresses(): Promise<string[]> {
     if (!this.keplrWallet) {
       throw new Web3Exception('Please install Keplr extension')
+    }
+
+    if (this.chainId !== ChainId.Mainnet) {
+      throw new Error('Keplr is only supported on Mainnet')
     }
 
     try {

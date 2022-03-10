@@ -1,5 +1,5 @@
-import { BankComposer } from '@injectivelabs/chain-consumer'
-import { BigNumberInWei } from '@injectivelabs/utils'
+import { BankComposer, IBCComposer } from '@injectivelabs/chain-consumer'
+import { BigNumber, BigNumberInWei } from '@injectivelabs/utils'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { AccountMetrics } from '../types'
 import { BaseActionService } from '../BaseActionService'
@@ -30,6 +30,52 @@ export class BankActionService extends BaseActionService {
       amount: new BigNumberInWei(amount).toFixed(),
       srcInjectiveAddress: injectiveAddress,
       dstInjectiveAddress: destination,
+    })
+
+    try {
+      return await this.txProvider.broadcast({
+        bucket: AccountMetrics.Send,
+        message,
+        address,
+      })
+    } catch (error: any) {
+      throw new Web3Exception(error.message)
+    }
+  }
+
+  async ibcTransfer({
+    address,
+    amount,
+    denom,
+    port,
+    channelId,
+    timestamp,
+    block,
+    destinationAddress,
+    injectiveAddress,
+  }: {
+    address: string
+    port: string
+    timestamp: number
+    block: any
+    channelId: string
+    amount: string
+    denom: string
+    destinationAddress: string
+    injectiveAddress: string
+  }) {
+    const message = IBCComposer.transfer({
+      denom,
+      port,
+      channelId,
+      timeout: timestamp,
+      height: {
+        revisionHeight: new BigNumber(block.header.height).plus(100).toNumber(),
+        revisionNumber: new BigNumber(block.header.version.block).toNumber(),
+      },
+      sender: injectiveAddress,
+      receiver: destinationAddress,
+      amount,
     })
 
     try {

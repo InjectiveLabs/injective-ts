@@ -4,8 +4,8 @@ import HDNode from 'hdkey'
 import { addHexPrefix, publicToAddress } from 'ethereumjs-util'
 import { TrezorWalletInfo } from '../../../types'
 import {
-  DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
+  DEFAULT_BASE_DERIVATION_PATH,
 } from '../../../constants'
 
 const addressOfHDKey = (hdKey: HDNode): string => {
@@ -54,17 +54,15 @@ export default class AccountManager {
     start: number
     end: number
   }) {
-    const fullBaseDerivationPath = `m/${DEFAULT_BASE_DERIVATION_PATH}`
-
     for (let index = start; index < end; index += 1) {
-      const path = `${fullBaseDerivationPath}/0'/0/${index}`
+      const path = `m/${index}`
       const hdKey = this.hdKey.derive(path)
       const address = addressOfHDKey(hdKey)
 
       this.wallets.push({
         address,
         hdKey,
-        derivationPath: path,
+        derivationPath: `${DEFAULT_BASE_DERIVATION_PATH}/0'/0/${index}`,
       })
     }
   }
