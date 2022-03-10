@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.1.11...@injectivelabs/web3-strategy@0.1.12) (2022-03-10)
+
+
+### Bug Fixes
+
+* trezor init ([bbfb44a](https://github.com/InjectiveLabs/injective-ts/commit/bbfb44a965b79f2cc806452fbc4f9c9346290f84))
+
+
+
+
+
 ## [0.1.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.1.10...@injectivelabs/web3-strategy@0.1.11) (2022-03-10)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy
