@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/protocol-stats",
   "description": "A simple library for collecting and reporting protocol statistics",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,10 +28,10 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "^0.1.10",
-    "@injectivelabs/token-metadata": "^0.1.10",
-    "@injectivelabs/token-utils": "^0.1.10",
+    "@injectivelabs/token-metadata": "^0.1.11",
+    "@injectivelabs/token-utils": "^0.1.11",
     "@injectivelabs/ts-types": "^0.1.10",
-    "@injectivelabs/utils": "^0.1.10",
+    "@injectivelabs/utils": "^0.1.11",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },
