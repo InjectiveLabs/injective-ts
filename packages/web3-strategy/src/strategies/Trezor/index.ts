@@ -110,7 +110,6 @@ export default class Trezor
 
       return response.payload.signature
     } catch (e: any) {
-      console.log(e)
       throw new Error(`Trezor: ${e.message || e}`)
     }
   }
