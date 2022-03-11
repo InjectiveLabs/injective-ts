@@ -55,6 +55,8 @@ export class TxProvider {
   private async broadcastWeb3(transaction: TxProviderTransactionOptions) {
     const { web3Strategy, consumer, chainId, metricsProvider } = this
 
+    console.log(transaction)
+
     const prepareTx = async () => {
       try {
         const promise = consumer.prepareTxRequest({

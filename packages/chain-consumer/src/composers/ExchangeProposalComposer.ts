@@ -1,5 +1,9 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { AccountAddress, ComposerResponse } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  ComposerResponse,
+  Web3GatewayMessage,
+} from '@injectivelabs/ts-types'
 import {
   ExpiryFuturesMarketLaunchProposal,
   PerpetualMarketLaunchProposal,
@@ -80,18 +84,26 @@ export class ExchangeProposalComposer {
     message.setProposer(proposer)
     message.setInitialDepositList([depositParams])
 
+    const web3GatewayMessage = getWeb3GatewayMessage(
+      {
+        proposer,
+        content: {
+          ...content.toObject(),
+        },
+        initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
+      },
+      type,
+    )
+    const web3GatewayMessageWithProposalType = {
+      ...web3GatewayMessage,
+      content: {
+        ...web3GatewayMessage.content,
+        '@type': proposalType,
+      },
+    } as unknown as Web3GatewayMessage<MsgSubmitProposal.AsObject>
+
     return {
-      web3GatewayMessage: getWeb3GatewayMessage(
-        {
-          proposer,
-          content: {
-            '@type': proposalType,
-            ...snakeCaseKeys(message.toObject()),
-          },
-          initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
-        } as unknown as MsgSubmitProposal.AsObject,
-        type,
-      ),
+      web3GatewayMessage: web3GatewayMessageWithProposalType,
       directBroadcastMessage: {
         message,
         type,
@@ -135,18 +147,26 @@ export class ExchangeProposalComposer {
     message.setProposer(proposer)
     message.setInitialDepositList([depositParams])
 
+    const web3GatewayMessage = getWeb3GatewayMessage(
+      {
+        proposer,
+        content: {
+          ...content.toObject(),
+        },
+        initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
+      },
+      type,
+    )
+    const web3GatewayMessageWithProposalType = {
+      ...web3GatewayMessage,
+      content: {
+        ...web3GatewayMessage.content,
+        '@type': proposalType,
+      },
+    } as unknown as Web3GatewayMessage<MsgSubmitProposal.AsObject>
+
     return {
-      web3GatewayMessage: getWeb3GatewayMessage(
-        {
-          proposer,
-          content: {
-            '@type': proposalType,
-            ...snakeCaseKeys(content.toObject()),
-          },
-          initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
-        } as unknown as MsgSubmitProposal.AsObject,
-        type,
-      ),
+      web3GatewayMessage: web3GatewayMessageWithProposalType,
       directBroadcastMessage: {
         message,
         type,
@@ -196,18 +216,26 @@ export class ExchangeProposalComposer {
     message.setProposer(proposer)
     message.setInitialDepositList([depositParams])
 
+    const web3GatewayMessage = getWeb3GatewayMessage(
+      {
+        proposer,
+        content: {
+          ...content.toObject(),
+        },
+        initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
+      },
+      type,
+    )
+    const web3GatewayMessageWithProposalType = {
+      ...web3GatewayMessage,
+      content: {
+        ...web3GatewayMessage.content,
+        '@type': proposalType,
+      },
+    } as unknown as Web3GatewayMessage<MsgSubmitProposal.AsObject>
+
     return {
-      web3GatewayMessage: getWeb3GatewayMessage(
-        {
-          proposer,
-          content: {
-            '@type': proposalType,
-            ...snakeCaseKeys(message.toObject()),
-          },
-          initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
-        } as unknown as MsgSubmitProposal.AsObject,
-        type,
-      ),
+      web3GatewayMessage: web3GatewayMessageWithProposalType,
       directBroadcastMessage: { message, type },
     }
   }
@@ -261,7 +289,7 @@ export class ExchangeProposalComposer {
           proposer,
           content: {
             '@type': proposalType,
-            ...snakeCaseKeys(message.toObject()),
+            ...snakeCaseKeys(content.toObject()),
           },
           initial_deposit: [{ ...snakeCaseKeys(depositParams.toObject()) }],
         } as unknown as MsgSubmitProposal.AsObject,
