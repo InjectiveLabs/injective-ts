@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/ui-common",
   "description": "Reusable Vue Components, Vuex Store Modules, Composables, and more",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,7 +32,7 @@
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/alchemy-api": "^0.1.10",
-    "@injectivelabs/chain-consumer": "^0.1.11",
+    "@injectivelabs/chain-consumer": "^0.1.12",
     "@injectivelabs/contracts": "^0.1.12",
     "@injectivelabs/derivatives-consumer": "^0.1.11",
     "@injectivelabs/exceptions": "^0.1.10",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.1.12...@injectivelabs/ui-common@0.1.13) (2022-03-11)
+
+
+### Bug Fixes
+
+* proposal composers ([7993013](https://github.com/InjectiveLabs/injective-ts/commit/7993013c66503a4419c44e37df1290938d479702))
+
+
+
+
+
 ## [0.1.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.1.11...@injectivelabs/ui-common@0.1.12) (2022-03-10)
 
 **Note:** Version bump only for package @injectivelabs/ui-common
