@@ -17,7 +17,7 @@ export const contractAddresses = {
   },
   '42': {
     peggy: '0xd6Da9dA014806Fdb64bF39b48fcA386AE3420d21',
-    injective: '0xa3a9029b8120e2f09b194df4a249a24db461e573',
+    injective: '0xedFD23bA192966975887fA024E2b32e94AD0359a',
   },
   '888': {
     peggy: ZERO_ADDRESS,
