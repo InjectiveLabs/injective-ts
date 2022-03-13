@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.1.13...@injectivelabs/web3-strategy@0.2.0) (2022-03-13)
+
+
+### Features
+
+* torus integration ([7f69c70](https://github.com/InjectiveLabs/injective-ts/commit/7f69c70bc6ebdd489e5a5ad230f4db04ec21e54e))
+
+
+
+
+
 ## [0.1.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.1.12...@injectivelabs/web3-strategy@0.1.13) (2022-03-11)
 
 
