@@ -5,4 +5,5 @@ export enum Wallet {
   LedgerLegacy = 'ledger-legacy',
   Trezor = 'trezor',
   Keplr = 'keplr',
+  Torus = 'torus',
 }
