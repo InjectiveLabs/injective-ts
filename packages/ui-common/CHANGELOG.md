@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.1.17...@injectivelabs/ui-common@0.1.18) (2022-03-14)
+
+
+### Features
+
+* caching on coingecko prices ([cb22366](https://github.com/InjectiveLabs/injective-ts/commit/cb223664ec16eba8b07c875742bc12e16bc04953))
+
+
+
+
+
 ## [0.1.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.1.16...@injectivelabs/ui-common@0.1.17) (2022-03-14)
 
 
