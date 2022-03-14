@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.1.16...@injectivelabs/ui-common@0.1.17) (2022-03-14)
+
+
+### Bug Fixes
+
+* price service ([32cf478](https://github.com/InjectiveLabs/injective-ts/commit/32cf4789cb1f79709897356349e4e9a9428a2579))
+
+
+
+
+
 ## [0.1.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.1.15...@injectivelabs/ui-common@0.1.16) (2022-03-13)
 
 
