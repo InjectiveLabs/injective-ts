@@ -3,10 +3,20 @@ import { BigNumberInBase, HttpClient } from '@injectivelabs/utils'
 import { BaseService } from '../BaseService'
 import { ServiceOptions, CoinPriceFromInjectiveService } from '../types'
 
+const commonlyUsedCoinGeckoIds = [
+  'bitcoin',
+  'ethereum',
+  'injective-protocol',
+  'tether',
+  'terrausd',
+]
+
 export class TokenCoinGeckoService extends BaseService {
   private coinGeckoApi: CoinGeckoApi
 
   private httpClient: HttpClient
+
+  private cache: Record<string, number> = {} // coinGeckoId -> priceInUsd
 
   constructor(
     options: ServiceOptions,
@@ -25,6 +35,16 @@ export class TokenCoinGeckoService extends BaseService {
     }
 
     try {
+      try {
+        const priceFromCache = await this.getUsdTokenPriceFromCache(coinId)
+
+        if (priceFromCache) {
+          return priceFromCache
+        }
+      } catch (e) {
+        //
+      }
+
       try {
         const priceInUsdFromInjectiveService =
           await this.fetchUsdTokenPriceFromInjectiveService(coinId)
@@ -74,13 +94,17 @@ export class TokenCoinGeckoService extends BaseService {
         return 0
       }
 
-      const { current_price: priceInUsd } = priceResponse
+      const { current_price: currentPrice } = priceResponse
 
-      if (!priceInUsd) {
+      if (!currentPrice) {
         return 0
       }
 
-      return new BigNumberInBase(priceInUsd).toNumber()
+      const priceInUsd = new BigNumberInBase(currentPrice).toNumber()
+
+      this.cache[coinId] = priceInUsd
+
+      return priceInUsd
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -92,13 +116,17 @@ export class TokenCoinGeckoService extends BaseService {
     }
 
     try {
-      const priceInUsd = await this.coinGeckoApi.fetchUsdPrice(coinId)
+      const currentPrice = await this.coinGeckoApi.fetchUsdPrice(coinId)
 
-      if (!priceInUsd) {
+      if (!currentPrice) {
         return 0
       }
 
-      return new BigNumberInBase(priceInUsd).toNumber()
+      const priceInUsd = new BigNumberInBase(currentPrice).toNumber()
+
+      this.cache[coinId] = priceInUsd
+
+      return priceInUsd
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -119,6 +147,51 @@ export class TokenCoinGeckoService extends BaseService {
       return new BigNumberInBase(priceInUsd).toNumber()
     } catch (e: any) {
       return 0
+    }
+  }
+
+  private async getUsdTokenPriceFromCache(coinId: string) {
+    try {
+      const cacheIsEmpty = Object.keys(this.cache).length === 0
+
+      if (cacheIsEmpty) {
+        await this.initCache()
+      }
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+
+    if (this.cache[coinId]) {
+      return this.cache[coinId]
+    }
+
+    return undefined
+  }
+
+  private async initCache(): Promise<void> {
+    try {
+      const pricesResponse = (await this.httpClient.get('price', {
+        coinIds: commonlyUsedCoinGeckoIds.join(','),
+        currency: 'usd',
+      })) as {
+        data: {
+          data: CoinPriceFromInjectiveService[]
+        }
+      }
+
+      if (pricesResponse.data.data.length === 0) {
+        return
+      }
+
+      this.cache = pricesResponse.data.data.reduce(
+        (cache, coin) => ({
+          ...cache,
+          [coin.id]: new BigNumberInBase(coin.current_price).toNumber(),
+        }),
+        {},
+      )
+    } catch (e: any) {
+      throw new Error(e.message)
     }
   }
 }
