@@ -59,14 +59,16 @@ export class TokenCoinGeckoService extends BaseService {
         coinIds: coinId,
         currency: 'usd',
       })) as {
-        data: CoinPriceFromInjectiveService[]
+        data: {
+          data: CoinPriceFromInjectiveService[]
+        }
       }
 
-      if (pricesResponse.data.length === 0) {
+      if (pricesResponse.data.data.length === 0) {
         return 0
       }
 
-      const [priceResponse] = pricesResponse.data
+      const [priceResponse] = pricesResponse.data.data
 
       if (!priceResponse) {
         return 0
