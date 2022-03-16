@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/alchemy-api",
   "description": "Alchemy API Consumer.",
-  "version": "0.1.10",
+  "version": "0.3.0",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@alch/alchemy-web3": "1.1.3",
-    "@injectivelabs/exceptions": "^0.1.10",
-    "@injectivelabs/ts-types": "^0.1.10",
+    "@injectivelabs/exceptions": "^0.3.0",
+    "@injectivelabs/ts-types": "^0.3.0",
     "@types/lodash.values": "^4.3.6",
     "jsonschema": "^1.4.0",
     "link-module-alias": "^1.2.0",

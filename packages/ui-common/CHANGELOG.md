@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.1.18...@injectivelabs/ui-common@0.3.0) (2022-03-16)
+
+
+### Features
+
+* token ibc cache ([a4d7aed](https://github.com/InjectiveLabs/injective-ts/commit/a4d7aedfb01970f30f4ce79f2c5ed526d86d5ca4))
+
+
+
+
+
 ## [0.1.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.1.17...@injectivelabs/ui-common@0.1.18) (2022-03-14)
 
 

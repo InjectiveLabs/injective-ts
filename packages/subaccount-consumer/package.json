@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/subaccount-consumer",
   "description": "Subaccounts on Injective Protocol made easy. Can be reused throughout Injective's projects.",
-  "version": "0.1.11",
+  "version": "0.3.0",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,8 +32,8 @@
     "@injectivelabs/chain-api": "^1.6.4",
     "@injectivelabs/exceptions": "^0.0.26",
     "@injectivelabs/exchange-api": "^2.2.57",
-    "@injectivelabs/ts-types": "^0.1.10",
-    "@injectivelabs/utils": "^0.1.11",
+    "@injectivelabs/ts-types": "^0.3.0",
+    "@injectivelabs/utils": "^0.3.0",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",
     "snakecase-keys": "^3.2.1"
