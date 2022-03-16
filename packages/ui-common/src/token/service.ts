@@ -39,10 +39,11 @@ export class TokenService extends BaseService {
     this.ibcConsumer = new IBCConsumer(this.endpoints.sentryGrpcApi)
     this.erc20TokenMeta = Erc20TokenMetaFactory.make(this.options.network)
     this.cachedDenomTraces = Object.keys(ibcTokens).reduce(
-      (ibcTokens, ibcTokenKey) => ({
-        ...ibcTokens,
-        // @ts-ignore
-        [ibcTokenKey.toString()]: ibcTokens[ibcTokenKey] as DenomTrace,
+      (cachedDenomTraces, ibcTokenKey) => ({
+        ...cachedDenomTraces,
+        [ibcTokenKey.toString()]: ibcTokens[
+          ibcTokenKey as unknown as string as keyof typeof ibcTokens
+        ] as DenomTrace,
       }),
       {},
     )
