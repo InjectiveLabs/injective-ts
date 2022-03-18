@@ -49,4 +49,4 @@ export const PEGGY_DEVNET_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
 
 export const ASSET_PRICE_SERVICE_URL =
-  'https://k8s.mainnet.asset.injective.network'
+  'https://k8s.mainnet.asset.injective.network/asset-price/v1/coin/'
