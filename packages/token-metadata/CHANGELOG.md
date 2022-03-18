@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.0...@injectivelabs/token-metadata@0.5.1) (2022-03-18)
+
+
+### Features
+
+* explorer services ([3c69238](https://github.com/InjectiveLabs/injective-ts/commit/3c692386eaf5fee482c9b46c5d0d5583324e45f9))
+
+
+
+
+
 # [0.5.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.3.0...@injectivelabs/token-metadata@0.5.0) (2022-03-16)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
