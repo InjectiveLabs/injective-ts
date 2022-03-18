@@ -1,6 +1,7 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
 import { BigNumberInBase, HttpClient } from '@injectivelabs/utils'
 import { BaseService } from '../BaseService'
+import { ASSET_PRICE_SERVICE_URL } from '../constants'
 import { ServiceOptions, CoinPriceFromInjectiveService } from '../types'
 
 const commonlyUsedCoinGeckoIds = [
@@ -24,9 +25,7 @@ export class TokenCoinGeckoService extends BaseService {
   ) {
     super(options)
     this.coinGeckoApi = new CoinGeckoApi(coinGeckoOptions)
-    this.httpClient = new HttpClient(
-      'https://testnet.asset.injective.dev/asset-price/v1/coin',
-    )
+    this.httpClient = new HttpClient(ASSET_PRICE_SERVICE_URL)
   }
 
   async fetchUsdTokenPrice(coinId: string) {

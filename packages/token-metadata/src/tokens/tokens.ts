@@ -576,4 +576,14 @@ export default {
     address: '',
     coinGeckoId: '',
   },
+
+  /** 18.03.2022 */
+  APE: {
+    name: 'Ape Coin',
+    logo: 'ape.png',
+    symbol: 'APE',
+    decimals: 18,
+    address: '0x4d224452801aced8b2f0aebe155379bb5d594381',
+    coinGeckoId: 'apecoin',
+  },
 }

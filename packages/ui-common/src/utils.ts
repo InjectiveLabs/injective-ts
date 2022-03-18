@@ -7,6 +7,8 @@ import {
 import { BigNumber } from '@injectivelabs/utils'
 import { bech32 } from 'bech32'
 import { Address } from 'ethereumjs-util'
+import { PageResponse } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
+import { Pagination } from './types/index'
 import { DEFAULT_GAS_PRICE, TX_DEFAULTS_GAS } from './constants'
 
 export const getInjectiveAddress = (address: AccountAddress): string => {
@@ -71,4 +73,60 @@ export const getDecimalsFromNumber = (number: number | string): number => {
   return actualDecimals > UI_DEFAULT_MAX_DISPLAY_DECIMALS
     ? UI_DEFAULT_MAX_DISPLAY_DECIMALS
     : actualDecimals
+}
+
+export const generatePagination = (pagination: Pagination | undefined) => {
+  if (!pagination) {
+    return
+  }
+
+  if (!pagination.next) {
+    return
+  }
+
+  return {
+    pagination: {
+      key: pagination.next,
+    },
+  }
+}
+
+export const paginationUint8ArrayToString = (key: any) => {
+  if (key.constructor !== Uint8Array) {
+    return key as string
+  }
+
+  return new TextDecoder().decode(key)
+}
+
+export const pageResponseToPagination = ({
+  newPagination,
+  oldPagination,
+}: {
+  newPagination?: PageResponse | undefined
+  oldPagination: Pagination | undefined
+}): Pagination => {
+  if (!newPagination) {
+    return {
+      prev: null,
+      current: null,
+      next: null,
+    }
+  }
+
+  const next = paginationUint8ArrayToString(newPagination.getNextKey_asB64())
+
+  if (!oldPagination) {
+    return {
+      prev: null,
+      current: null,
+      next,
+    }
+  }
+
+  return {
+    prev: oldPagination.current,
+    current: oldPagination.next,
+    next,
+  }
 }

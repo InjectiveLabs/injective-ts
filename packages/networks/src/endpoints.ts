@@ -64,6 +64,14 @@ export const urlEndpointsDevnet: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://devnet.gateway.injective.dev',
 }
 
+export const urlEndpointsDevnet1: UrlEndpoint = {
+  exchangeApi: 'https://devnet-1.api.injective.dev',
+  sentryGrpcApi: 'https://devnet-1.grpc.injective.dev',
+  tendermintApi: 'https://devnet-1.tm.injective.dev',
+  sentryHttpApi: 'https://devnet-1.lcd.injective.dev',
+  exchangeWeb3GatewayApi: 'https://devnet-1.gateway.injective.dev',
+}
+
 export const urlEndpointsLocal: UrlEndpoint = {
   exchangeApi: 'https://localhost:4444',
   sentryGrpcApi: 'http://localhost:9091',

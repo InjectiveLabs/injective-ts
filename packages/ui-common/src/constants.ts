@@ -34,6 +34,10 @@ export const BIG_NUMBER_ROUND_UP_MODE = BigNumberInBase.ROUND_UP
 export const INJ_FEE_BUFFER = 0.01
 export const BRIDGE_FEE_IN_USD = 10
 
+export const PAGINATION_TOTAL_PAGE_LIMIT: number = 10000
+export const DEFAULT_PAGINATION_TOTAL_COUNT: number = 1000000
+export const UI_MINIMAL_AMOUNT = 0.0001
+
 // eslint-disable-next-line prefer-regex-literals
 export const NUMBER_REGEX = new RegExp(/^-?(0|[1-9]\d*)?(\.\d+)?$/)
 
@@ -43,3 +47,6 @@ export const PEGGY_TESTNET_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-kovan'
 export const PEGGY_DEVNET_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
+
+export const ASSET_PRICE_SERVICE_URL =
+  'https://k8s.mainnet.asset.injective.network'

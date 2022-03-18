@@ -7,6 +7,7 @@ import {
   urlEndpointsDevnet,
   urlEndpointsMainnetK8s,
   urlEndpointsMainnetStaging,
+  urlEndpointsDevnet1,
 } from './endpoints'
 import { Network, UrlEndpoint } from './types'
 
@@ -18,6 +19,7 @@ export const urlEndpointUrls: Record<Network, UrlEndpoint> = {
   [Network.Mainnet]: urlEndpointsMainnet,
   [Network.Public]: urlEndpointsPublic,
   [Network.Devnet]: urlEndpointsDevnet,
+  [Network.Devnet1]: urlEndpointsDevnet1,
   [Network.Testnet]: urlEndpointsTestnet,
   [Network.TestnetK8s]: urlEndpointsTestnetK8s,
   [Network.Local]: urlEndpointsLocal,

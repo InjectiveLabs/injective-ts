@@ -32,3 +32,9 @@ export interface ServiceActionOptions {
   options: ServiceOptions
   web3Strategy: Web3Strategy
 }
+
+export interface Pagination {
+  next: string | null
+  prev: string | null
+  current: string | null
+}
