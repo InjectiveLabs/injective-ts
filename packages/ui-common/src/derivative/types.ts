@@ -28,6 +28,7 @@ export interface UiDerivativeMarketWithToken
   type: MarketType
   subType: MarketType
   marketBase?: MarketBase
+  upcoming?: boolean
 }
 
 export interface UiDerivativeTrade extends DerivativeTrade {

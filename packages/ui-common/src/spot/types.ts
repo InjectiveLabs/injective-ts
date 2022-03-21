@@ -25,6 +25,7 @@ export interface UiSpotMarketWithToken extends UiBaseSpotMarketWithToken {
   type: MarketType
   subType: MarketType
   marketBase?: MarketBase
+  upcoming?: boolean
 }
 
 export interface UiSpotTrade extends SpotTrade {
