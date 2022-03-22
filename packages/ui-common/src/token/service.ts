@@ -393,7 +393,7 @@ export class TokenService extends BaseService {
         ...transaction,
         token: TokenTransformer.tokenMetaToToken(
           tokenFromSymbol,
-          tokenFromSymbol.denom,
+          tokenFromSymbol.address,
         ) as Token,
       }
     }
