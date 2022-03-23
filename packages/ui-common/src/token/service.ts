@@ -384,6 +384,17 @@ export class TokenService extends BaseService {
       return {} as UiBridgeTransactionWithToken
     }
 
+    // Edge case for transferring INJ from IBC chains to Injective chain [osmosis]
+    if (
+      transaction.denom.startsWith('transfer') &&
+      transaction.denom.endsWith('inj')
+    ) {
+      return {
+        ...transaction,
+        token: this.getTokenMetaDataBySymbol('INJ') as Token,
+      }
+    }
+
     const tokenFromSymbol = this.getTokenMetaDataBySymbol(
       transaction.denom,
     ) as Token
