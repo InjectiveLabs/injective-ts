@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.8...@injectivelabs/ui-common@0.5.9) (2022-03-27)
+
+
+### Features
+
+* authz composer ([cbe4b52](https://github.com/InjectiveLabs/injective-ts/commit/cbe4b5271a28099873da04b8b8b2594a6fa79678))
+
+
+
+
+
 ## [0.5.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.7...@injectivelabs/ui-common@0.5.8) (2022-03-23)
 
 **Note:** Version bump only for package @injectivelabs/ui-common
