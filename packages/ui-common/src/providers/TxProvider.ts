@@ -2,6 +2,11 @@ import { ChainId, ComposerResponse } from '@injectivelabs/ts-types'
 import { Web3Exception, ExchangeException } from '@injectivelabs/exceptions'
 import { Web3Strategy, Wallet } from '@injectivelabs/web3-strategy'
 import { TransactionConsumer } from '@injectivelabs/exchange-consumer'
+import {
+  DEFAULT_EXCHANGE_LIMIT,
+  DEFAULT_GAS_LIMIT,
+  BigNumber,
+} from '@injectivelabs/utils'
 import { MetricsProvider } from './MetricsProvider'
 import { getInjectiveAddress } from '../utils'
 
@@ -21,6 +26,22 @@ export interface TxProviderTransactionOptions {
   feePrice?: string
   feeDenom?: string
   gasLimit?: number
+}
+
+const getGasPriceBasedOnMessage = (web3GatewayMessage: any): number => {
+  const hasMultipleMessages = Array.isArray(web3GatewayMessage)
+  const isExchangeMessage = (message: any) =>
+    message['@type'].startsWith('/injective')
+
+  const hasExchangeMessages = Array.isArray(web3GatewayMessage)
+    ? web3GatewayMessage.some(isExchangeMessage)
+    : isExchangeMessage(web3GatewayMessage)
+
+  return new BigNumber(
+    hasExchangeMessages ? DEFAULT_EXCHANGE_LIMIT : DEFAULT_GAS_LIMIT,
+  )
+    .times(hasMultipleMessages ? web3GatewayMessage.length : 1)
+    .toNumber()
 }
 
 export class TxProvider {
@@ -61,6 +82,9 @@ export class TxProvider {
           chainId,
           address: transaction.address,
           message: transaction.message.web3GatewayMessage,
+          gasLimit: getGasPriceBasedOnMessage(
+            transaction.message.web3GatewayMessage,
+          ),
           estimateGas: false,
         })
 
