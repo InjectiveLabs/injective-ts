@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.5.2...@injectivelabs/chain-consumer@0.5.3) (2022-03-28)
+
+
+### Bug Fixes
+
+* authz composer ([a1baa5e](https://github.com/InjectiveLabs/injective-ts/commit/a1baa5e625dfb0ca07cd254bef0bcb81ca556546))
+
+
+
+
+
 ## [0.5.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.5.1...@injectivelabs/chain-consumer@0.5.2) (2022-03-28)
 
 
