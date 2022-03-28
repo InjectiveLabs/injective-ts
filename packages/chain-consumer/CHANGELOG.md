@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.5.1...@injectivelabs/chain-consumer@0.5.2) (2022-03-28)
+
+
+### Bug Fixes
+
+* export composer ([0b6350f](https://github.com/InjectiveLabs/injective-ts/commit/0b6350f7823baeb000ee60bb835f54d8786d6528))
+
+
+
+
+
 ## [0.5.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.5.0...@injectivelabs/chain-consumer@0.5.1) (2022-03-27)
 
 
