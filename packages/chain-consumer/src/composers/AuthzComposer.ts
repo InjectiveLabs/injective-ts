@@ -2,32 +2,44 @@ import {
   MsgGrant,
   MsgRevoke,
 } from '@injectivelabs/chain-api/cosmos/authz/v1beta1/tx_pb'
-import { getWeb3GatewayMessage, SECONDS_IN_A_DAY } from '@injectivelabs/utils'
+import { getWeb3GatewayMessage } from '@injectivelabs/utils'
 import { ComposerResponse, Web3GatewayMessage } from '@injectivelabs/ts-types'
-import { Grant } from '@injectivelabs/chain-api/cosmos/authz/v1beta1/authz_pb'
+import {
+  GenericAuthorization,
+  Grant,
+} from '@injectivelabs/chain-api/cosmos/authz/v1beta1/authz_pb'
 import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb'
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
-
-const SECONDS_IN_A_YEAR = SECONDS_IN_A_DAY.times(365).toNumber()
 
 export class AuthzComposer {
   static grant({
     grantee,
     granter,
     messageType,
-    expiryInSeconds = SECONDS_IN_A_YEAR,
+    expiryInYears = 5,
   }: {
     messageType: string
     grantee: string
     granter: string
-    expiryInSeconds?: number
+    expiryInYears?: number
   }): ComposerResponse<MsgGrant, MsgGrant.AsObject> {
-    const now = Math.round(new Date().getTime() / 1000)
+    const dateNow = new Date()
+    const expiration = new Date(
+      dateNow.getFullYear() + expiryInYears,
+      dateNow.getMonth(),
+      dateNow.getDate(),
+    )
     const timestamp = new Timestamp()
-    timestamp.setSeconds(now + expiryInSeconds)
+    timestamp.setSeconds(expiration.getTime() / 1000)
 
+    const genericAuthorization = new GenericAuthorization()
+    genericAuthorization.setMsg(messageType)
+
+    const genericAuthorizationType =
+      '/cosmos.authz.v1beta1.GenericAuthorization'
     const authorization = new Any()
-    authorization.setTypeUrl(messageType)
+    authorization.setTypeUrl(genericAuthorizationType)
+    authorization.setValue(genericAuthorization.getMsg())
 
     const grant = new Grant()
     grant.setExpiration(timestamp)
@@ -46,9 +58,10 @@ export class AuthzComposer {
       grant: {
         ...web3GatewayMessage.grant,
         authorization: {
-          ...web3GatewayMessage.grant?.authorization,
-          '@type': messageType,
+          msg: web3GatewayMessage.grant?.authorization?.value,
+          '@type': genericAuthorizationType,
         },
+        expiration: timestamp.toDate(),
       },
     } as unknown as Web3GatewayMessage<MsgGrant.AsObject>
 
