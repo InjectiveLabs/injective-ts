@@ -1,6 +1,7 @@
 import { ZERO_ADDRESS } from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
-import { ChainIdContractAddresses } from './types'
+import { Network } from '@injectivelabs/networks'
+import { ChainIdContractAddresses, ContractAddresses } from './types'
 
 export const contractAddresses = {
   '1': {
@@ -15,9 +16,13 @@ export const contractAddresses = {
     peggy: ZERO_ADDRESS,
     injective: ZERO_ADDRESS,
   },
-  '42': {
+  [Network.Testnet]: {
     peggy: '0xd6Da9dA014806Fdb64bF39b48fcA386AE3420d21',
-    injective: '0xa3a9029b8120e2f09b194df4a249a24db461e573',
+    injective: '0x96853aBD7e589D06b7dade1b9264f1a5c2d3176E',
+  },
+  [Network.Devnet]: {
+    peggy: '0xE768662CcDd434312b9097c2cF558B683B6b5dDa',
+    injective: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
   },
   '888': {
     peggy: ZERO_ADDRESS,
@@ -31,7 +36,7 @@ export const contractAddresses = {
     peggy: '0x25B8Fe1DE9dAf8BA351890744FF28cf7dFa8f5e3',
     injective: '0x0B1ba0af832d7C05fD64161E0Db78E85978E8082',
   },
-}
+} as ContractAddresses
 
 export const getContractAddressesForChainOrThrow = (
   chainId: ChainId,

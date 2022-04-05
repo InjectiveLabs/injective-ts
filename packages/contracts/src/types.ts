@@ -4,13 +4,17 @@ import { DepositManager } from '@injectivelabs/web3-contract-typings/types/Depos
 import { Peggy } from '@injectivelabs/web3-contract-typings/types/Peggy'
 import { BaseCurrency } from '@injectivelabs/web3-contract-typings/types/BaseCurrency'
 import { InjectiveFutures } from '@injectivelabs/web3-contract-typings/types/InjectiveFutures'
+import { Network } from '@injectivelabs/networks'
 
 export interface ChainIdContractAddresses {
   peggy: string
   injective: string
 }
 
-export type ContractAddresses = Record<ChainId, ChainIdContractAddresses>
+export type ContractAddresses = Record<
+  ChainId | Network,
+  ChainIdContractAddresses
+>
 
 export interface ContractFunctionObj<T> {
   callAsync(): Promise<T>

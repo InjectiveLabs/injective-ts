@@ -1,10 +1,10 @@
 import { AlchemyApi } from '@injectivelabs/alchemy-api'
 import { BigNumberInWei } from '@injectivelabs/utils'
-import { contractAddresses } from '@injectivelabs/contracts'
 import { TokenMeta } from '@injectivelabs/token-metadata'
 import { Token, TokenWithBalance } from './types'
 import { ServiceOptions } from '../types'
 import { BaseService } from '../BaseService'
+import { getPeggyContractAddress } from '../peggy'
 
 export class TokenErc20Service extends BaseService {
   private alchemyApi: AlchemyApi
@@ -47,7 +47,7 @@ export class TokenErc20Service extends BaseService {
 
       const allowance = await this.alchemyApi.fetchTokenAllowance({
         owner: address,
-        spender: contractAddresses[options.chainId].peggy,
+        spender: getPeggyContractAddress(options.chainId, options.network),
         contract: token.address,
       })
 
