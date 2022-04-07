@@ -22,7 +22,7 @@ import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { CosmosChainId, TestnetCosmosChainId } from './types'
 import { getEndpointFromChainId } from './endpoints'
 import { KeplrWallet } from './KeplrWallet'
-import { createSignedTx, createTransaction } from './transaction'
+import { createSignedTx, createTransaction } from '../transaction'
 
 const ethereumCurveBasedChains = ['injective-1']
 const ethereumCurveBasedAddressesPrefixes = ['inj']
@@ -128,58 +128,6 @@ export class CosmJsWallet {
 
     return { nodeInfo, applicationVersion }
   }
-
-  /*
-  async sendRawTransaction({
-    message,
-    address,
-    fee,
-    memo = '',
-  }: {
-    message: {
-      type: string
-      value: any
-    }
-    address: string
-    memo?: string
-    fee: StdFee
-  }) {
-    const { chainId, keplr } = this
-    const Keplr = await keplr.getKeplrWallet()
-    const key = await Keplr.getKey(chainId)
-    const accountDetails = await this.fetchAccountDetails(key.bech32Address)
-    const algo = ethereumCurveBasedChains.includes(chainId)
-      ? 'ethsecp256k1'
-      : 'secp256k1'
-
-    const { signDirect: signDirectTx } = createTransaction({
-      message,
-      memo,
-      fee,
-      algo,
-      chainId,
-      pubKey: Buffer.from(key.pubKey).toString('base64'),
-      sequence: parseInt(accountDetails.sequence.toString(), 10),
-      accountNumber: parseInt(accountDetails.account_number.toString(), 10),
-    })
-
-    const signatureResponse = await this.signTransactionDirect({
-      address,
-      signTx: signDirectTx,
-    })
-
-    const rawTx = createSignedTx(signatureResponse)
-
-    try {
-      return await Keplr.sendTx(
-        chainId,
-        rawTx.serializeBinary(),
-        BroadcastMode.Sync,
-      )
-    } catch (e) {
-      throw new Error((e as any).message)
-    }
-  } */
 
   async signRawTransaction({
     message,

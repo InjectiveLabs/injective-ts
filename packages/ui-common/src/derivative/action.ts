@@ -189,12 +189,6 @@ export class DerivativeActionService extends BaseActionService {
 
     try {
       return await this.txProvider.broadcast({
-        gasLimit: new BigNumberInBase(
-          new BigNumberInBase(DEFAULT_EXCHANGE_LIMIT)
-            .times(positions.length)
-            .dividedBy(4)
-            .toFixed(0),
-        ).toNumber(),
         bucket: DerivativesMetrics.CreateMarketOrder,
         message: mappedMessages,
         address,
