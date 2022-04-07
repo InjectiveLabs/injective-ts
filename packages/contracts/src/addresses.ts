@@ -24,6 +24,10 @@ export const contractAddresses = {
     peggy: '0xE768662CcDd434312b9097c2cF558B683B6b5dDa',
     injective: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
   },
+  [Network.Devnet1]: {
+    peggy: '0x3A8634160d7577593CEEcDb2cc038A3437607318',
+    injective: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
+  },
   '888': {
     peggy: ZERO_ADDRESS,
     injective: ZERO_ADDRESS,
