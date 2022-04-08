@@ -1,6 +1,7 @@
 import { ChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
+import { MetricsProvider } from '../providers/MetricsProvider'
 
 export * from './metrics'
 export * from './cosmos'
@@ -23,8 +24,7 @@ export interface ServiceOptionsEndpoints {
 export interface ServiceOptions {
   chainId: ChainId
   network: Network
-  metricsEnabled?: boolean
-  metricsRegion?: string
+  metricsProvider?: MetricsProvider
   endpoints?: ServiceOptionsEndpoints
 }
 

@@ -1,7 +1,7 @@
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { BigNumberInWei } from '@injectivelabs/utils'
-import { contractAddresses } from '@injectivelabs/contracts'
 import { BaseCurrencyContract } from '@injectivelabs/contracts/dist/contracts/BaseCurrency'
+import { getContractAddressesForNetworkOrThrow } from '@injectivelabs/contracts'
 import { GAS_LIMIT_MULTIPLIER, ZERO_IN_BASE } from '../constants'
 import { getTransactionOptions } from '../utils'
 import { BaseActionService } from '../BaseActionService'
@@ -30,9 +30,12 @@ export class TokenErc20ServiceAction extends BaseActionService {
       address: tokenAddress,
       chainId: this.options.chainId,
     })
+    const contractAddresses = getContractAddressesForNetworkOrThrow(
+      this.options.network,
+    )
     const setAllowanceOfContractFunction = erc20Contract.setAllowanceOf({
       amount,
-      contractAddress: contractAddresses[this.options.chainId].peggy,
+      contractAddress: contractAddresses.peggy,
       transactionOptions: getTransactionOptions({
         gasPrice: ZERO_IN_BASE.toFixed(),
         from: address,

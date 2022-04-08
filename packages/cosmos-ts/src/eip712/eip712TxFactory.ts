@@ -1,7 +1,7 @@
 import { StdFee } from '@cosmjs/amino'
 import { Msg } from '@cosmjs/launchpad'
 import { ChainId } from '@injectivelabs/ts-types'
-import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from 'packages/utils/dist'
+import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '@injectivelabs/utils'
 import { Eip712MessageTypeFactory } from './msg-values'
 
 export class Eip712TxFactory {

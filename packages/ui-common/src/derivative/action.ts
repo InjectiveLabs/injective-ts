@@ -2,7 +2,6 @@ import { Web3Exception } from '@injectivelabs/exceptions'
 import {
   BigNumberInBase,
   BigNumberInWei,
-  DEFAULT_EXCHANGE_LIMIT,
   mapMultipleComposerResponseMessages,
 } from '@injectivelabs/utils'
 import {
