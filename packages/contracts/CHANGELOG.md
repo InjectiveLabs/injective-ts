@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.5.3...@injectivelabs/contracts@0.5.4) (2022-04-08)
+
+
+### Bug Fixes
+
+* getContractAddressesForNetworkOrThrow method referencing wrong list of contract addresses ([ce4cdbb](https://github.com/InjectiveLabs/injective-ts/commit/ce4cdbb58f1bd01c9c00dfc968b02928540fa751))
+
+
+
+
+
 ## [0.5.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@0.5.2...@injectivelabs/contracts@0.5.3) (2022-04-08)
 
 
