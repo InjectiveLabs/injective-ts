@@ -20,10 +20,8 @@ export abstract class BaseActionService {
     this.endpoints =
       options.endpoints || getUrlEndpointForNetwork(options.network)
 
-    if (options.metricsEnabled) {
-      this.metricsProvider = new MetricsProvider({
-        region: options.metricsRegion,
-      })
+    if (options.metricsProvider) {
+      this.metricsProvider = options.metricsProvider
     }
 
     this.web3Strategy = web3Strategy

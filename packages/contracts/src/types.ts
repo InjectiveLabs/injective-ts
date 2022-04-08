@@ -6,15 +6,13 @@ import { BaseCurrency } from '@injectivelabs/web3-contract-typings/types/BaseCur
 import { InjectiveFutures } from '@injectivelabs/web3-contract-typings/types/InjectiveFutures'
 import { Network } from '@injectivelabs/networks'
 
-export interface ChainIdContractAddresses {
+export interface ContractAddresses {
   peggy: string
   injective: string
 }
 
-export type ContractAddresses = Record<
-  ChainId | Network,
-  ChainIdContractAddresses
->
+export type ContractAddressesForChainId = Record<ChainId, ContractAddresses>
+export type ContractAddressesForNetwork = Record<Network, ContractAddresses>
 
 export interface ContractFunctionObj<T> {
   callAsync(): Promise<T>

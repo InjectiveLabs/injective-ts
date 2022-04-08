@@ -1,5 +1,6 @@
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { BigNumberInWei } from '@injectivelabs/utils'
+import { getContractAddressesForNetworkOrThrow } from '@injectivelabs/contracts'
 import { PeggyContract } from '@injectivelabs/contracts/dist/contracts/Peggy'
 import { PeggyComposer } from '@injectivelabs/chain-consumer'
 import {
@@ -11,7 +12,6 @@ import { AccountMetrics } from '../types'
 import { getTransactionOptions, getAddressFromInjectiveAddress } from '../utils'
 import { PeggyTransformer } from './transformer'
 import { BaseActionService } from '../BaseActionService'
-import { getPeggyContractAddress } from './utils'
 
 export class PeggyActionService extends BaseActionService {
   /**
@@ -34,15 +34,14 @@ export class PeggyActionService extends BaseActionService {
     destinationAddress: string
     gasPrice: string // BigNumberInWei
   }) {
+    const contractAddresses = getContractAddressesForNetworkOrThrow(
+      this.options.network,
+    )
     const contractAddress = PeggyTransformer.peggyDenomToContractAddress(
       denom,
-      this.options.chainId,
-      this.options.network,
+      contractAddresses.injective,
     )
-    const peggyContractAddress = getPeggyContractAddress(
-      this.options.chainId,
-      this.options.network,
-    )
+    const peggyContractAddress = contractAddresses.peggy
     const contract = new PeggyContract({
       address: peggyContractAddress,
       chainId: this.options.chainId,
