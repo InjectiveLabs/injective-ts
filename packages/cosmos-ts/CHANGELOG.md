@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.5.1...@injectivelabs/cosmos-ts@0.5.2) (2022-04-08)
+
+
+### Features
+
+* initial setup fpr eip712 ([d4d5096](https://github.com/InjectiveLabs/injective-ts/commit/d4d5096fee3763f4eadf8ce1b6f6059ed95868d0))
+
+
+
+
+
 ## [0.5.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.5.0...@injectivelabs/cosmos-ts@0.5.1) (2022-03-18)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.11...@injectivelabs/ui-common@0.5.12) (2022-04-08)
+
+
+### Features
+
+* add support for devnet peggy and injective contract address ([3bd2c31](https://github.com/InjectiveLabs/injective-ts/commit/3bd2c31d7ae23489359f28490f52b0e94f4bce03))
+* initial setup fpr eip712 ([d4d5096](https://github.com/InjectiveLabs/injective-ts/commit/d4d5096fee3763f4eadf8ce1b6f6059ed95868d0))
+
+
+
+
+
 ## [0.5.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.10...@injectivelabs/ui-common@0.5.11) (2022-03-28)
 
 **Note:** Version bump only for package @injectivelabs/ui-common
