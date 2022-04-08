@@ -88,7 +88,7 @@ export const getContractAddressesForNetworkOrThrow = (
 ): ContractAddresses => {
   const chainToAddresses: {
     [network: string]: ContractAddresses
-  } = contractAddresses
+  } = contractAddressesByNetwork
 
   if (chainToAddresses[network] === undefined) {
     throw new Error(`Unknown network (${network}).`)
