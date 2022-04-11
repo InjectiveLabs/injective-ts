@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.2...@injectivelabs/token-metadata@0.5.3) (2022-04-11)
+
+
+### Bug Fixes
+
+* redundant import of contracts ([df4ecee](https://github.com/InjectiveLabs/injective-ts/commit/df4ecee505964b8a427c06127141e20710c0bd04))
+
+
+
+
+
 ## [0.5.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.1...@injectivelabs/token-metadata@0.5.2) (2022-04-11)
 
 

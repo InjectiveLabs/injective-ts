@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.5.0...@injectivelabs/exchange-consumer@0.5.1) (2022-04-11)
+
+
+### Features
+
+* memo support ([c446a30](https://github.com/InjectiveLabs/injective-ts/commit/c446a30fd9589f0c3fee0cb2ecec9cd34d17e550))
+
+
+
+
+
 # [0.5.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exchange-consumer@0.3.0...@injectivelabs/exchange-consumer@0.5.0) (2022-03-16)
 
 **Note:** Version bump only for package @injectivelabs/exchange-consumer
