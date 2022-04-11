@@ -5,9 +5,6 @@
       "path": "../ts-types/tsconfig.json"
     },
     {
-      "path": "../exceptions/tsconfig.json"
-    },
-    {
       "path": "../token-metadata/tsconfig.json"
     },
     {

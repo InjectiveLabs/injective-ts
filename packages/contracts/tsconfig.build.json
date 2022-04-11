@@ -20,5 +20,8 @@
     {
       "path": "../utils/tsconfig.build.json"
     },
+    {
+      "path": "../networks/tsconfig.build.json"
+    },
   ]
 }

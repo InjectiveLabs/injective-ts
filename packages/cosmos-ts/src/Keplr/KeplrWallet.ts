@@ -1,4 +1,4 @@
-import { Keplr, Window as KeplrWindow } from '@keplr-wallet/types'
+import type { Keplr, Window as KeplrWindow } from '@keplr-wallet/types'
 import { getChainDataBasedOnChainId, keplrSupportedChainIds } from './chain'
 
 export class KeplrWallet {

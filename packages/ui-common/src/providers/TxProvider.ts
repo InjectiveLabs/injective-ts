@@ -7,7 +7,7 @@ import {
   DEFAULT_GAS_LIMIT,
   BigNumber,
 } from '@injectivelabs/utils'
-import { MetricsProvider } from './MetricsProvider'
+import type { MetricsProvider } from './MetricsProvider'
 import { getInjectiveAddress } from '../utils/helpers'
 
 export interface TxProviderBaseOptions {

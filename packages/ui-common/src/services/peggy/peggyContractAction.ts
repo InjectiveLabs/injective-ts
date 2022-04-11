@@ -1,57 +1,72 @@
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { BigNumberInWei } from '@injectivelabs/utils'
-import { BaseCurrencyContract } from '@injectivelabs/contracts/dist/contracts/BaseCurrency'
 import { getContractAddressesForNetworkOrThrow } from '@injectivelabs/contracts'
+import { PeggyContract } from '@injectivelabs/contracts/dist/contracts/Peggy'
 import { GAS_LIMIT_MULTIPLIER, ZERO_IN_BASE } from '../../constants'
-import { getTransactionOptions } from '../../utils'
+import {
+  getTransactionOptions,
+  getAddressFromInjectiveAddress,
+} from '../../utils'
+import { PeggyTransformer } from './transformer'
 import { BaseWeb3ActionService } from '../BaseWeb3ActionService'
 
-export class TokenErc20ServiceAction extends BaseWeb3ActionService {
-  /*
+export class PeggyContractActionService extends BaseWeb3ActionService {
+  /**
    * Amount should always be in x * 10^(denomDecimals) format
    * where x is a human readable number.
    * Use `denomAmountToChainDenomAmount` function from the
    * @injectivelabs/utils package to convert
    * a human readable number to a chain accepted amount
    * */
-  async setTokenAllowance({
+  async transfer({
     address,
     amount,
+    denom,
+    destinationAddress,
     gasPrice,
-    tokenAddress,
   }: {
     address: string
-    amount: string
-    gasPrice: string
-    tokenAddress: string
+    amount: string // BigNumberInWi
+    denom: string
+    destinationAddress: string
+    gasPrice: string // BigNumberInWei
   }) {
-    const erc20Contract = new BaseCurrencyContract({
-      web3: this.web3Strategy.getWeb3(),
-      address: tokenAddress,
-      chainId: this.options.chainId,
-    })
     const contractAddresses = getContractAddressesForNetworkOrThrow(
       this.options.network,
     )
-    const setAllowanceOfContractFunction = erc20Contract.setAllowanceOf({
-      amount,
-      contractAddress: contractAddresses.peggy,
+    const contractAddress = PeggyTransformer.peggyDenomToContractAddress(
+      denom,
+      contractAddresses.injective,
+    )
+    const peggyContractAddress = contractAddresses.peggy
+    const contract = new PeggyContract({
+      address: peggyContractAddress,
+      chainId: this.options.chainId,
+      web3: this.web3Strategy.getWeb3(),
+    })
+    const formattedDestinationAddress =
+      getAddressFromInjectiveAddress(destinationAddress)
+
+    const depositForContractFunction = contract.sendToCosmos({
+      contractAddress,
+      amount: new BigNumberInWei(amount).toFixed(),
+      address: `0x${'0'.repeat(24)}${formattedDestinationAddress.slice(2)}`,
       transactionOptions: getTransactionOptions({
         gasPrice: ZERO_IN_BASE.toFixed(),
         from: address,
       }),
     })
 
-    const data = setAllowanceOfContractFunction.getABIEncodedTransactionData()
+    const data = depositForContractFunction.getABIEncodedTransactionData()
     const gas = new BigNumberInWei(
-      await setAllowanceOfContractFunction.estimateGasAsync(),
+      await depositForContractFunction.estimateGasAsync(),
     )
 
     try {
       const txHash = await this.web3Strategy.sendTransaction(
         {
           from: address,
-          to: tokenAddress,
+          to: peggyContractAddress,
           gas: new BigNumberInWei(gas.times(GAS_LIMIT_MULTIPLIER).toFixed(0))
             .toNumber()
             .toString(16),
@@ -63,6 +78,14 @@ export class TokenErc20ServiceAction extends BaseWeb3ActionService {
       )
 
       await this.web3Strategy.getTransactionReceipt(txHash)
+
+      return {
+        amount,
+        denom,
+        txHash,
+        receiver: destinationAddress,
+        sender: address,
+      }
     } catch (error: any) {
       throw new Web3Exception(error.message)
     }

@@ -8,7 +8,7 @@ import { BigNumber } from '@injectivelabs/utils'
 import { bech32 } from 'bech32'
 import { Address } from 'ethereumjs-util'
 import { PageResponse } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
-import { Pagination } from '../types/index'
+import { Pagination } from '../types/pagination'
 import { DEFAULT_GAS_PRICE, TX_DEFAULTS_GAS } from '../constants'
 
 export const getInjectiveAddress = (address: AccountAddress): string => {

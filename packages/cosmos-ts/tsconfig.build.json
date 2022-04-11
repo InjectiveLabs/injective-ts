@@ -13,9 +13,6 @@
       "path": "../ts-types/tsconfig.build.json"
     },
     {
-      "path": "../exceptions/tsconfig.build.json"
-    },
-    {
       "path": "../token-metadata/tsconfig.build.json"
     },
     {
