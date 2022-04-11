@@ -1,6 +1,11 @@
 import { Network } from '@injectivelabs/networks'
 import { Erc20TokenMeta } from './Erc20TokenMeta'
-import { tokensBySymbol, tokensBySymbolForTestnet } from './tokens'
+import {
+  tokensBySymbol,
+  tokensBySymbolForDevnet,
+  tokensBySymbolForDevnet1,
+  tokensBySymbolForTestnet,
+} from './tokens'
 
 export class Erc20TokenMetaFactory {
   static make(network: Network = Network.MainnetOld): Erc20TokenMeta {
@@ -10,7 +15,9 @@ export class Erc20TokenMetaFactory {
       case Network.MainnetOld:
         return new Erc20TokenMeta(tokensBySymbol)
       case Network.Devnet:
-        return new Erc20TokenMeta(tokensBySymbol)
+        return new Erc20TokenMeta(tokensBySymbolForDevnet)
+      case Network.Devnet1:
+        return new Erc20TokenMeta(tokensBySymbolForDevnet1)
       case Network.Local:
         return new Erc20TokenMeta(tokensBySymbol)
       case Network.Testnet:

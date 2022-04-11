@@ -9,6 +9,7 @@ import {
 import {
   PEGGY_GRAPH_URL,
   PEGGY_DEVNET_GRAPH_URL,
+  PEGGY_DEVNET1_GRAPH_URL,
   PEGGY_TESTNET_GRAPH_URL,
 } from '../../constants'
 
@@ -196,8 +197,12 @@ export const getPeggoGraphQlEndpoint = (network: Network): string => {
     return PEGGY_TESTNET_GRAPH_URL
   }
 
-  if ([Network.Devnet].includes(network)) {
+  if (network === Network.Devnet) {
     return PEGGY_DEVNET_GRAPH_URL
+  }
+
+  if (network === Network.Devnet1) {
+    return PEGGY_DEVNET1_GRAPH_URL
   }
 
   return ''
