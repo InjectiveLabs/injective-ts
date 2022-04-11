@@ -14,6 +14,10 @@ export class Erc20TokenMetaFactory {
         return new Erc20TokenMeta(tokensBySymbol)
       case Network.MainnetOld:
         return new Erc20TokenMeta(tokensBySymbol)
+      case Network.MainnetK8s:
+        return new Erc20TokenMeta(tokensBySymbol)
+      case Network.MainnetStaging:
+        return new Erc20TokenMeta(tokensBySymbol)
       case Network.Devnet:
         return new Erc20TokenMeta(tokensBySymbolForDevnet)
       case Network.Devnet1:
@@ -21,6 +25,8 @@ export class Erc20TokenMetaFactory {
       case Network.Local:
         return new Erc20TokenMeta(tokensBySymbol)
       case Network.Testnet:
+        return new Erc20TokenMeta(tokensBySymbolForTestnet)
+      case Network.TestnetK8s:
         return new Erc20TokenMeta(tokensBySymbolForTestnet)
       default:
         return new Erc20TokenMeta(tokensBySymbol)

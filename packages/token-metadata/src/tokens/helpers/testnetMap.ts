@@ -1,14 +1,11 @@
-import { Network } from '@injectivelabs/networks'
-import { getContractAddressesForNetworkOrThrow } from '@injectivelabs/contracts'
-
 export const testnetSymbolToAddressMap = {
-  INJ: getContractAddressesForNetworkOrThrow(Network.Testnet).injective,
+  INJ: '0x96853aBD7e589D06b7dade1b9264f1a5c2d3176E',
 }
 
 export const devnetSymbolToAddressMap = {
-  INJ: getContractAddressesForNetworkOrThrow(Network.Devnet).injective,
+  INJ: '0x3d940951C2cdFc7091cb6064A41053FBFbD016EF',
 }
 
 export const devnet1SymbolToAddressMap = {
-  INJ: getContractAddressesForNetworkOrThrow(Network.Devnet1).injective,
+  INJ: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
 }
