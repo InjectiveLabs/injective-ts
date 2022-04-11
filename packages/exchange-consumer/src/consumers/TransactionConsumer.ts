@@ -24,6 +24,7 @@ export class TransactionConsumer extends BaseConsumer {
     address,
     chainId,
     message,
+    memo,
     estimateGas = true,
     gasLimit = DEFAULT_GAS_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
@@ -35,6 +36,7 @@ export class TransactionConsumer extends BaseConsumer {
     message: any
     estimateGas?: boolean
     gasLimit?: number
+    memo?: string
     timeoutHeight?: number
     feeDenom?: string
     feePrice?: string
@@ -64,6 +66,10 @@ export class TransactionConsumer extends BaseConsumer {
       prepareTxRequest.setTimeoutHeight(timeoutHeight)
     }
 
+    if (memo) {
+      prepareTxRequest.setMemo(memo)
+    }
+
     try {
       const response = await this.request<
         PrepareTxRequest,
@@ -81,6 +87,7 @@ export class TransactionConsumer extends BaseConsumer {
     address,
     chainId,
     message,
+    memo,
     estimateGas = true,
     gasLimit = DEFAULT_EXCHANGE_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
@@ -93,6 +100,7 @@ export class TransactionConsumer extends BaseConsumer {
     message: any
     estimateGas?: boolean
     gasLimit?: number
+    memo?: string
     feeDenom?: string
     feePrice?: string
     timeoutHeight?: number
@@ -125,6 +133,10 @@ export class TransactionConsumer extends BaseConsumer {
 
     if (timeoutHeight !== undefined) {
       prepareTxRequest.setTimeoutHeight(timeoutHeight)
+    }
+
+    if (memo) {
+      prepareTxRequest.setMemo(memo)
     }
 
     try {

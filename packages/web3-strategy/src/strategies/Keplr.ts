@@ -90,7 +90,8 @@ export default class Keplr
     }
 
     return this.cosmJsWallet.signRawTransaction({
-      message: transaction,
+      message: transaction.message,
+      memo: transaction.memo,
       address,
       fee,
     })

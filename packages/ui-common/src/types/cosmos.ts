@@ -1,4 +1,4 @@
-import { Token } from '../token/types'
+import { Token } from '../services/token/types'
 
 export interface TokenAndPrice extends Token {
   usdPrice: number

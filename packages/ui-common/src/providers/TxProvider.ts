@@ -8,7 +8,7 @@ import {
   BigNumber,
 } from '@injectivelabs/utils'
 import { MetricsProvider } from './MetricsProvider'
-import { getInjectiveAddress } from '../utils'
+import { getInjectiveAddress } from '../utils/helpers'
 
 export interface TxProviderBaseOptions {
   endpoints: {
@@ -22,6 +22,7 @@ export interface TxProviderBaseOptions {
 export interface TxProviderTransactionOptions {
   bucket: string
   message: ComposerResponse<any, any>
+  memo?: string
   address: string
   feePrice?: string
   feeDenom?: string
@@ -80,6 +81,7 @@ export class TxProvider {
       try {
         const promise = consumer.prepareTxRequest({
           chainId,
+          memo: transaction.memo,
           address: transaction.address,
           message: transaction.message.web3GatewayMessage,
           gasLimit: getGasPriceBasedOnMessage(
@@ -156,17 +158,20 @@ export class TxProvider {
     try {
       const { directBroadcastMessage } = transaction.message
 
-      const message = {
-        type: Array.isArray(directBroadcastMessage)
-          ? directBroadcastMessage[0].type
-          : directBroadcastMessage.type,
-        value: Array.isArray(directBroadcastMessage)
-          ? directBroadcastMessage[0].message
-          : directBroadcastMessage.message,
+      const tx = {
+        message: {
+          type: Array.isArray(directBroadcastMessage)
+            ? directBroadcastMessage[0].type
+            : directBroadcastMessage.type,
+          value: Array.isArray(directBroadcastMessage)
+            ? directBroadcastMessage[0].message
+            : directBroadcastMessage.message,
+        },
+        memo: transaction.memo,
       }
 
       const signResponse = (await web3Strategy.signTypedDataV4(
-        message,
+        tx,
         injectiveAddress,
       )) as any
 
