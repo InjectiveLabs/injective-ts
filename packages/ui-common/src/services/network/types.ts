@@ -43,6 +43,7 @@ export interface TransactionFromExplorerApiResponse {
   tx_type: string
   hash: string
   code: number
+  memo?: string
   data?: Uint8Array | string
   info: string
   gas_wanted: number
@@ -176,6 +177,7 @@ export interface Message {
 }
 
 export interface Transaction extends Omit<BaseTransaction, 'messages'> {
+  memo: string
   messages: Message[]
   parsedMessages?: Message[]
 }

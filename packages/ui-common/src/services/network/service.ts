@@ -8,10 +8,8 @@ import {
   ExplorerApiResponse,
   BlockFromExplorerApiResponse,
   BlockWithTxs,
-  ExplorerBlockApiResponse,
   TransactionFromExplorerApiResponse,
   Transaction,
-  ExplorerTransactionApiResponse,
 } from './types'
 import {
   BlockNotFoundException,
@@ -83,14 +81,14 @@ export class NetworkService extends BaseService {
       const response = (await this.fetchOrFetchAndMeasure(
         promise,
         ExplorerMetrics.FetchBlocks,
-      )) as ExplorerApiResponse<ExplorerBlockApiResponse>
+      )) as ExplorerApiResponse<BlockFromExplorerApiResponse[]>
 
       const { paging, data } = response.data
 
       return {
         total: paging.total > 0 ? paging.total : DEFAULT_PAGINATION_TOTAL_COUNT,
-        blocks: data.data
-          ? NetworkTransformer.blocksWithTxsToBlocksWithTxs(data.data)
+        blocks: data
+          ? NetworkTransformer.blocksWithTxsToBlocksWithTxs(data)
           : [],
       }
     } catch (error: any) {
@@ -117,14 +115,14 @@ export class NetworkService extends BaseService {
       const response = (await this.fetchOrFetchAndMeasure(
         promise,
         ExplorerMetrics.FetchTransactions,
-      )) as ExplorerApiResponse<ExplorerTransactionApiResponse>
+      )) as ExplorerApiResponse<TransactionFromExplorerApiResponse[]>
 
       const { paging, data } = response.data
 
       return {
         total: paging.total > 0 ? paging.total : DEFAULT_PAGINATION_TOTAL_COUNT,
         transactions: data
-          ? NetworkTransformer.transactionsToTransactions(data.data)
+          ? NetworkTransformer.transactionsToTransactions(data)
           : [],
       }
     } catch (error: any) {
@@ -153,14 +151,14 @@ export class NetworkService extends BaseService {
       const response = (await this.fetchOrFetchAndMeasure(
         promise,
         ExplorerMetrics.FetchTransactions,
-      )) as ExplorerApiResponse<ExplorerTransactionApiResponse>
+      )) as ExplorerApiResponse<TransactionFromExplorerApiResponse[]>
 
       const { paging, data } = response.data
 
       return {
         total: paging.total > 0 ? paging.total : DEFAULT_PAGINATION_TOTAL_COUNT,
         transactions: data
-          ? NetworkTransformer.transactionsToTransactions(data.data)
+          ? NetworkTransformer.transactionsToTransactions(data)
           : [],
       }
     } catch (error: any) {

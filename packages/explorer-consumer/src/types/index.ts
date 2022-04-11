@@ -50,6 +50,7 @@ export interface Transaction {
   blockNumber: number
   blockTimestamp: string
   hash: string
+  memo?: string
   code: number
   data?: Uint8Array | string
   info: string

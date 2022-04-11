@@ -31,6 +31,7 @@ export const transactionToTransaction = (
   hash: transaction.hash,
   code: transaction.code,
   info: transaction.info,
+  memo: transaction.memo || '',
   gasWanted: transaction.gas_wanted,
   gasFee: {
     amounts: transaction.gas_fee?.amount,
@@ -80,6 +81,7 @@ export const baseTransactionToTransaction = (
     type: (message as any).type,
     message: message.value,
   })),
+  memo: transaction.memo || '',
 })
 
 export class NetworkTransformer {
