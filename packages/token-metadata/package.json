@@ -28,6 +28,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@injectivelabs/contracts": "^0.5.7",
     "@injectivelabs/networks": "^0.5.1",
     "@injectivelabs/ts-types": "^0.5.0",
     "@types/lodash.values": "^4.3.6",
