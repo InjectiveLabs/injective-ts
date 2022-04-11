@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/ui-common",
   "description": "Reusable Vue Components, Vuex Store Modules, Composables, and more",
-  "version": "0.5.21",
+  "version": "0.5.22",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,21 +31,21 @@
     "@apollo/client": "^3.5.8",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
-    "@injectivelabs/alchemy-api": "^0.5.0",
+    "@injectivelabs/alchemy-api": "^0.5.1",
     "@injectivelabs/chain-api": "^1.7.1",
-    "@injectivelabs/chain-consumer": "^0.5.3",
-    "@injectivelabs/contracts": "^0.5.9",
-    "@injectivelabs/derivatives-consumer": "^0.5.0",
-    "@injectivelabs/exceptions": "^0.5.0",
-    "@injectivelabs/exchange-consumer": "^0.5.1",
-    "@injectivelabs/explorer-consumer": "^0.5.1",
-    "@injectivelabs/networks": "^0.5.1",
-    "@injectivelabs/spot-consumer": "^0.5.0",
-    "@injectivelabs/subaccount-consumer": "^0.5.0",
-    "@injectivelabs/token-metadata": "^0.5.3",
-    "@injectivelabs/token-utils": "^0.5.0",
-    "@injectivelabs/ts-types": "^0.5.0",
-    "@injectivelabs/utils": "^0.5.0",
+    "@injectivelabs/chain-consumer": "^0.5.4",
+    "@injectivelabs/contracts": "^0.5.10",
+    "@injectivelabs/derivatives-consumer": "^0.5.1",
+    "@injectivelabs/exceptions": "^0.5.1",
+    "@injectivelabs/exchange-consumer": "^0.5.2",
+    "@injectivelabs/explorer-consumer": "^0.5.2",
+    "@injectivelabs/networks": "^0.5.2",
+    "@injectivelabs/spot-consumer": "^0.5.1",
+    "@injectivelabs/subaccount-consumer": "^0.5.1",
+    "@injectivelabs/token-metadata": "^0.5.4",
+    "@injectivelabs/token-utils": "^0.5.1",
+    "@injectivelabs/ts-types": "^0.5.1",
+    "@injectivelabs/utils": "^0.5.1",
     "bech32": "^2.0.0",
     "date-fns": "^2.28.0",
     "ethereumjs-util": "^7.1.4",
@@ -54,7 +54,7 @@
     "shx": "^0.3.2"
   },
   "devDependencies": {
-    "@injectivelabs/web3-strategy": "^0.5.5"
+    "@injectivelabs/web3-strategy": "^0.5.6"
   },
   "gitHead": "a12e5c2c5d1038ab42e9669b6eeb1e91873626c2"
 }
