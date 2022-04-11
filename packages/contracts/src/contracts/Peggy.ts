@@ -1,4 +1,3 @@
-import { Peggy } from '@injectivelabs/web3-contract-typings/types/Peggy'
 import { ContractException } from '@injectivelabs/exceptions'
 import {
   AccountAddress,
@@ -11,7 +10,7 @@ import abi from './abi/peggy'
 import { ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'
 
-export class PeggyContract extends BaseContract<Peggy> {
+export class PeggyContract extends BaseContract<any> {
   static contractName = 'Peggy'
 
   constructor({

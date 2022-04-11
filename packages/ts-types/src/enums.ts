@@ -7,3 +7,12 @@ export enum ChainId {
   Ganache = 1337,
   HardHat = 31337,
 }
+
+export enum Wallet {
+  Metamask = 'metamask',
+  Ledger = 'ledger',
+  LedgerLegacy = 'ledger-legacy',
+  Trezor = 'trezor',
+  Keplr = 'keplr',
+  Torus = 'torus',
+}

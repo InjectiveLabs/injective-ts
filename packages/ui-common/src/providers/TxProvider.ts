@@ -1,6 +1,6 @@
-import { ChainId, ComposerResponse } from '@injectivelabs/ts-types'
+import { ChainId, ComposerResponse, Wallet } from '@injectivelabs/ts-types'
 import { Web3Exception, ExchangeException } from '@injectivelabs/exceptions'
-import { Web3Strategy, Wallet } from '@injectivelabs/web3-strategy'
+import type { Web3Strategy } from '@injectivelabs/web3-strategy'
 import { TransactionConsumer } from '@injectivelabs/exchange-consumer'
 import {
   DEFAULT_EXCHANGE_LIMIT,

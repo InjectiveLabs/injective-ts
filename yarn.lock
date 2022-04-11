@@ -1142,7 +1142,7 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/web3-contract-typings@^0.1.12", "@injectivelabs/web3-contract-typings@^0.1.13":
+"@injectivelabs/web3-contract-typings@^0.1.12":
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/@injectivelabs/web3-contract-typings/-/web3-contract-typings-0.1.13.tgz#94ab11ed0232dc5d0e99b5f19a1d10ecd1133174"
   integrity sha512-xa68dfO26RoPDZMYaywcHcppmZ1CLirv0pkxvK8UIGiQY2YHJeD1G7ewwIlqWQXPbupQdjdGj4Y2YeSQPSXBoA==

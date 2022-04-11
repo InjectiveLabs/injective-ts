@@ -2,13 +2,8 @@ import { AbiItem } from 'web3-utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import Web3 from 'web3'
 import { Web3Strategy } from '@injectivelabs/web3-strategy'
-import { BaseCurrency } from '@injectivelabs/web3-contract-typings/types/BaseCurrency'
-import { DepositManager } from '@injectivelabs/web3-contract-typings/types/DepositManager'
-import { Peggy } from '@injectivelabs/web3-contract-typings/types/Peggy'
 
-type ContractTypes = BaseCurrency | DepositManager | Peggy
-
-export default class BaseContract<T extends ContractTypes> {
+export default class BaseContract<T extends any> {
   public readonly abi: AbiItem[]
 
   public readonly address: string
