@@ -4,10 +4,10 @@ import {
   ChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
-import { Web3Strategy } from '@injectivelabs/web3-strategy'
-import { getTransactionOptionsAsNonPayableTx } from '../utils'
+import Web3 from 'web3'
 import abi from './abi/injective'
 import { ContractFunctionObj, ContractTxFunctionObj } from '../types'
+import { getTransactionOptionsAsNonPayableTx } from '../utils'
 import BaseContract from '../BaseContract'
 
 export class BaseCurrencyContract extends BaseContract<any> {
@@ -15,18 +15,18 @@ export class BaseCurrencyContract extends BaseContract<any> {
 
   constructor({
     chainId,
+    web3,
     address,
-    web3Strategy,
   }: {
     chainId: ChainId
+    web3: Web3
     address: string
-    web3Strategy: Web3Strategy
   }) {
     super({
       abi,
       chainId,
       address,
-      web3Strategy,
+      web3,
     })
   }
 

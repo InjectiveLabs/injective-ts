@@ -4,7 +4,7 @@ import {
   ChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
-import { Web3Strategy } from '@injectivelabs/web3-strategy'
+import Web3 from 'web3'
 import { getTransactionOptionsAsNonPayableTx } from '../utils'
 import abi from './abi/peggy'
 import { ContractTxFunctionObj } from '../types'
@@ -16,17 +16,17 @@ export class PeggyContract extends BaseContract<any> {
   constructor({
     chainId,
     address,
-    web3Strategy,
+    web3,
   }: {
     chainId: ChainId
+    web3: Web3
     address: string
-    web3Strategy: Web3Strategy
   }) {
     super({
       abi,
       chainId,
+      web3,
       address,
-      web3Strategy,
     })
   }
 

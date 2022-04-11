@@ -31,12 +31,12 @@
     "@injectivelabs/networks": "^0.5.2",
     "@injectivelabs/ts-types": "^0.5.1",
     "@injectivelabs/utils": "^0.5.1",
-    "@injectivelabs/web3-strategy": "^0.5.6",
     "web3": "^1.7.2",
     "web3-core-subscriptions": "^1.7.2",
     "web3-utils": "^1.7.2"
   },
   "devDependencies": {
+    "@injectivelabs/web3-strategy": "^0.5.6",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@types/ethereumjs-util": "^6.1.0",

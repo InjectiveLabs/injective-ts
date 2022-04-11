@@ -20,8 +20,5 @@
     {
       "path": "../utils/tsconfig.build.json"
     },
-    {
-      "path": "../web3-strategy/tsconfig.build.json"
-    },
   ]
 }

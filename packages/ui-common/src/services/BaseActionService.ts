@@ -1,4 +1,4 @@
-import { Web3Strategy } from '@injectivelabs/web3-strategy'
+import type { Web3Strategy } from '@injectivelabs/web3-strategy'
 import { getUrlEndpointForNetwork } from '@injectivelabs/networks'
 import { MetricsProvider } from '../providers/MetricsProvider'
 import { TxProvider } from '../providers/TxProvider'

@@ -48,7 +48,7 @@ export class PeggyActionService extends BaseActionService {
     const contract = new PeggyContract({
       address: peggyContractAddress,
       chainId: this.options.chainId,
-      web3Strategy: this.web3Strategy,
+      web3: this.web3Strategy.getWeb3(),
     })
     const formattedDestinationAddress =
       getAddressFromInjectiveAddress(destinationAddress)

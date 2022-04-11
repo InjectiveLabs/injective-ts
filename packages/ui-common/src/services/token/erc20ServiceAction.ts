@@ -26,7 +26,7 @@ export class TokenErc20ServiceAction extends BaseActionService {
     tokenAddress: string
   }) {
     const erc20Contract = new BaseCurrencyContract({
-      web3Strategy: this.web3Strategy,
+      web3: this.web3Strategy.getWeb3(),
       address: tokenAddress,
       chainId: this.options.chainId,
     })
