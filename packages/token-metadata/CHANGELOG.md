@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.1...@injectivelabs/token-metadata@0.5.2) (2022-04-11)
+
+
+### Features
+
+* token meta - support custom inj address for devnet and devnet1 ([66fe31c](https://github.com/InjectiveLabs/injective-ts/commit/66fe31cbd86913c1d7eb2bcee26328ddf6da4b45))
+
+
+
+
+
 ## [0.5.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.0...@injectivelabs/token-metadata@0.5.1) (2022-03-18)
 
 
