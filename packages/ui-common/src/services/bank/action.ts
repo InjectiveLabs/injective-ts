@@ -16,12 +16,14 @@ export class BankActionService extends BaseActionService {
     address,
     denom,
     amount,
+    memo,
     injectiveAddress,
     destination,
   }: {
     amount: string
     address: string
     denom: string
+    memo?: string
     destination: string
     injectiveAddress: string
   }) {
@@ -36,6 +38,7 @@ export class BankActionService extends BaseActionService {
       return await this.txProvider.broadcast({
         bucket: AccountMetrics.Send,
         message,
+        memo,
         address,
       })
     } catch (error: any) {
