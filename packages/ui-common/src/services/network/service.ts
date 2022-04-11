@@ -46,7 +46,11 @@ export class NetworkService extends BaseService {
     }
   }
 
-  async fetchBlocks({ limit = 50 }: { limit: number }): Promise<Block[]> {
+  async fetchBlocks({
+    limit = 50,
+  }: {
+    limit?: number | undefined
+  }): Promise<Block[]> {
     try {
       const promise = this.consumer.get('blocks', {
         limit,
@@ -67,8 +71,8 @@ export class NetworkService extends BaseService {
     before,
     limit = 50,
   }: {
-    before: number | undefined
-    limit: number
+    before?: number | undefined
+    limit?: number | undefined
   }): Promise<{ total: number; blocks: BlockWithTxs[] }> {
     try {
       const promise = this.consumer.get('blocks', {
@@ -99,9 +103,9 @@ export class NetworkService extends BaseService {
     limit = 50,
     skip,
   }: {
-    before: number | undefined
-    limit: number
-    skip: number | undefined
+    before?: number | undefined
+    limit?: number | undefined
+    skip?: number | undefined
   }): Promise<{ total: number; transactions: Transaction[] }> {
     try {
       const promise = this.consumer.get('txs', {
@@ -135,9 +139,9 @@ export class NetworkService extends BaseService {
     skip,
   }: {
     account: string
-    before: number | undefined
-    limit: number
-    skip: number | undefined
+    before?: number | undefined
+    limit?: number | undefined
+    skip?: number | undefined
   }): Promise<{ total: number; transactions: Transaction[] }> {
     try {
       const promise = this.consumer.get(`accountTxs/${account}`, {
@@ -164,7 +168,7 @@ export class NetworkService extends BaseService {
     }
   }
 
-  async fetchTransaction({ hash }: { hash: string }): Promise<Transaction> {
+  async fetchTransaction(hash: string): Promise<Transaction> {
     try {
       const promise = this.consumer.get(`txs/${hash}`)
 
