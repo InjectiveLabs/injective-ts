@@ -13,7 +13,7 @@ import Keplr from './strategies/Keplr'
 import Trezor from './strategies/Trezor'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
-// import Torus from './strategies/Torus'
+import Torus from './strategies/Torus'
 
 export default class Web3Strategy {
   private strategies: Record<Wallet, ConcreteWeb3Strategy>
@@ -33,8 +33,8 @@ export default class Web3Strategy {
       [Wallet.LedgerLegacy]: new LedgerLegacy({ chainId, web3 }),
       [Wallet.Keplr]: new Keplr({ chainId, web3 }),
       [Wallet.Trezor]: new Trezor({ chainId, web3 }),
-      // [Wallet.Torus]: new Torus({ chainId, web3 }),
-    } as unknown as Record<Wallet, ConcreteWeb3Strategy> // TODO
+      [Wallet.Torus]: new Torus({ chainId, web3 }),
+    } as Record<Wallet, ConcreteWeb3Strategy> // TODO
 
     this.web3 = web3
     this.wallet = wallet || Wallet.Metamask
