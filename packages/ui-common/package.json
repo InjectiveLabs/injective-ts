@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/ui-common",
   "description": "Reusable Vue Components, Vuex Store Modules, Composables, and more",
-  "version": "0.5.26",
+  "version": "0.5.27",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,7 +42,7 @@
     "@injectivelabs/networks": "^0.5.2",
     "@injectivelabs/spot-consumer": "^0.5.1",
     "@injectivelabs/subaccount-consumer": "^0.5.1",
-    "@injectivelabs/token-metadata": "^0.5.5",
+    "@injectivelabs/token-metadata": "^0.5.6",
     "@injectivelabs/token-utils": "^0.5.1",
     "@injectivelabs/ts-types": "^0.5.1",
     "@injectivelabs/utils": "^0.5.1",
@@ -54,7 +54,7 @@
     "shx": "^0.3.2"
   },
   "devDependencies": {
-    "@injectivelabs/web3-strategy": "^0.5.9"
+    "@injectivelabs/web3-strategy": "^0.5.10"
   },
   "gitHead": "a12e5c2c5d1038ab42e9669b6eeb1e91873626c2"
 }
