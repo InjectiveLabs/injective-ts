@@ -18,6 +18,7 @@ export enum Change {
 }
 
 export enum MarketType {
+  Favourite = 'Favourite',
   Spot = 'Spot',
   Derivative = 'Derivative',
   Perpetual = 'Perpetual',
