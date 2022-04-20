@@ -1104,6 +1104,11 @@
   resolved "https://registry.npmjs.org/@injectivelabs/common-rpc/-/common-rpc-1.0.2.tgz#12c641f9c07b3f34aee1bafaf5a54381a78bd83a"
   integrity sha512-W96jZ63E9NRlPDfwgifZWVh6pvR+TNtQWb6i9/m/M/c1p41nWzcwO/GKRnVelvTXD5kNQ7SoTl37bwkddEEVfw==
 
+"@injectivelabs/dmm-api@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@injectivelabs/dmm-api/-/dmm-api-1.0.1.tgz#7217382f2d582c0fe407b64cb89c402d0b678216"
+  integrity sha512-R7dh1DYuyAY8JHOGxeA/edczCAtWzQrW07aNOh9aFlU2jRElt1VRtT7fb857u20J5vBHLn+nKVm5pyOJ/Mk2Xw==
+
 "@injectivelabs/exceptions@^0.0.26":
   version "0.0.26"
   resolved "https://registry.yarnpkg.com/@injectivelabs/exceptions/-/exceptions-0.0.26.tgz#128ac7f3ab8c2de8030c6bb9ad07246de768c230"

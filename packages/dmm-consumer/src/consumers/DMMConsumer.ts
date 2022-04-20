@@ -1,22 +1,22 @@
+import { GrpcException } from '@injectivelabs/exceptions'
+import { InjectiveDmmRPC } from '@injectivelabs/dmm-api/injective_dmm_rpc_pb_service'
 import {
-  GetEpochsRequest,
   GetEpochsResponse,
   GetDMMRecordsRequest,
   GetDMMRecordsResponse,
   GetEpochSummaryRequest,
   GetEpochSummaryResponse,
-} from '@injectivelabs/exchange-api/injective_dmm_rpc_pb'
-import { InjectiveDmmRPC } from '@injectivelabs/exchange-api/injective_dmm_rpc_pb_service'
-import { GrpcException } from '@injectivelabs/exceptions'
+} from '@injectivelabs/dmm-api/injective_dmm_rpc_pb'
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb'
 import BaseConsumer from '../BaseConsumer'
 
 export class DMMConsumer extends BaseConsumer {
   async fetchEpochs() {
-    const request = new GetEpochsRequest()
+    const request = new Empty()
 
     try {
       const response = await this.request<
-        GetEpochsRequest,
+        Empty,
         GetEpochsResponse,
         typeof InjectiveDmmRPC.GetEpochs
       >(request, InjectiveDmmRPC.GetEpochs)

@@ -4,7 +4,6 @@ import { Oracle as GrpcOracle } from '@injectivelabs/exchange-api/injective_orac
 
 export * from './auction'
 export * from './bridgeTransaction'
-export * from './dmm'
 export interface StreamStatusResponse {
   details: string
   code: number
