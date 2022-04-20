@@ -570,7 +570,7 @@ export default {
 
   BAYC: {
     name: 'Bored Ape Yacht Club',
-    logo: 'bayc.png',
+    logo: 'bayc.svg',
     symbol: 'BAYC',
     decimals: 18,
     address: '',
