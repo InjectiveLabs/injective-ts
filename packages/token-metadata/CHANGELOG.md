@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.4...@injectivelabs/token-metadata@0.5.5) (2022-04-20)
+
+
+### Bug Fixes
+
+* update BAYC token logo ([228bfca](https://github.com/InjectiveLabs/injective-ts/commit/228bfca3e54043096d322049105bc6c6a1bc7550))
+
+
+
+
+
 ## [0.5.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.3...@injectivelabs/token-metadata@0.5.4) (2022-04-11)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
