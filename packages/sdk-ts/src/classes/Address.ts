@@ -9,14 +9,17 @@ import {
 export class Address {
   public address: string
 
-  public accountNumber: number
+  public baseAccount?: {
+    accountNumber: number
+    sequence: number
+    pubKey: {
+      '@type': string
+      key: string
+    }
+  }
 
-  public sequence: number
-
-  private constructor(address: string) {
+  constructor(address: string) {
     this.address = address
-    this.accountNumber = 0
-    this.sequence = 0
   }
 
   compare(address: Address): boolean {
@@ -30,13 +33,16 @@ export class Address {
    * @return {Address}
    * @throws {Error} if bech is not a valid bech32-encoded address
    */
-  static fromBech32(bech: string): Address {
+  static fromBech32(
+    bech: string,
+    prefix: string = BECH32_ADDR_ACC_PREFIX,
+  ): Address {
     const address = Buffer.from(
       bech32.fromWords(bech32.decode(bech).words),
     ).toString('hex')
     const addressInHex = address.startsWith('0x') ? address : `0x${address}`
 
-    return Address.fromHex(addressInHex)
+    return Address.fromHex(addressInHex, prefix)
   }
 
   /**
