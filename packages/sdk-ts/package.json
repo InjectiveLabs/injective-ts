@@ -1,0 +1,57 @@
+{
+  "name": "@injectivelabs/sdk-ts",
+  "description": "SDK in TypeScript for building Injective applications in a Node environment.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": {
+    "name": "Bojan Angjelkoski",
+    "email": "bojan@injectivelabs.org"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~sdk-ts": "dist"
+  },
+  "scripts": {
+    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "test": "jest",
+    "test:unit": "jest test/unit",
+    "test:integration": "jest test/unit",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@improbable-eng/grpc-web": "^0.15.0",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
+    "@injectivelabs/chain-api": "^1.7.1",
+    "@injectivelabs/exceptions": "^0.5.1",
+    "@injectivelabs/exchange-api": "^2.2.59",
+    "@injectivelabs/networks": "^0.5.2",
+    "@injectivelabs/ts-types": "^0.5.1",
+    "@injectivelabs/utils": "^0.5.1",
+    "@types/google-protobuf": "^3.15.5",
+    "bech32": "^2.0.0",
+    "bip32": "^3.0.1",
+    "bip39": "^3.0.4",
+    "ethereumjs-util": "^7.1.4",
+    "ethereumjs-wallet": "^1.0.2",
+    "ethers": "^5.6.4",
+    "js-sha3": "^0.8.0",
+    "keccak256": "^1.0.6",
+    "link-module-alias": "^1.2.0",
+    "secp256k1": "^4.0.3",
+    "shx": "^0.3.2",
+    "snakecase-keys": "^5.4.1",
+    "tiny-secp256k1": "^2.2.1"
+  }
+}

@@ -20,6 +20,8 @@ const common = {
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
     'no-console': 'off',
+    'import/no-named-as-default': 'off',
+    'no-redeclare': 'off',
     'no-iterator': 'off',
     'no-restricted-syntax': 'off',
     'no-await-in-loop': 'off',
@@ -28,6 +30,7 @@ const common = {
     'no-unused-vars': 'off',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
+    '@typescript-eslint/no-redeclare': ['error'],
   },
 }
 
@@ -56,6 +59,7 @@ module.exports = {
       rules: {
         ...common.rules,
         '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-use-before-define': 'off',
       },
       settings: {
         'import/resolver': {

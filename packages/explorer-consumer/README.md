@@ -1,3 +1,5 @@
+## DEPRECATED - Please use @injectivelabs/sdk-ts
+
 # 🌟 Injective Protocol - Explorer Consumer
 
 [![downloads](https://img.shields.io/npm/dm/@injectivelabs/explorer-consumer.svg)](https://www.npmjs.com/package/@injectivelabs/explorer-consumer)

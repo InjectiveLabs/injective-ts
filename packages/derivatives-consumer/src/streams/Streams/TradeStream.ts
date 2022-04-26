@@ -89,8 +89,8 @@ export class TradeStream {
   }: {
     marketId: string
     skip?: number
-    subaccountId: string
     executionSide?: TradeExecutionSide
+    subaccountId: string
     callback: TradeStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void

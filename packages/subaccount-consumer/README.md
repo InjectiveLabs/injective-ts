@@ -1,3 +1,5 @@
+## DEPRECATED - Please use @injectivelabs/sdk-ts
+
 # 🌟 Injective Protocol - Subaccount Consumer
 
 [![downloads](https://img.shields.io/npm/dm/@injectivelabs/subaccount-consumer.svg)](https://www.npmjs.com/package/@injectivelabs/subaccount-consumer)

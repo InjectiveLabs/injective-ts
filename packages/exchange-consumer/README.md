@@ -1,3 +1,5 @@
+## DEPRECATED - Please use @injectivelabs/sdk-ts
+
 # 🌟 Injective Protocol - Exchange Consumer
 
 ---

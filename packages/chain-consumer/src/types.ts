@@ -185,6 +185,7 @@ export interface ExchangeParams {
 
 export {
   GrpcBid,
+  Coin,
   GrpcEventAuctionResult,
   GrpcEventBid,
   GrpcAuctionParams,

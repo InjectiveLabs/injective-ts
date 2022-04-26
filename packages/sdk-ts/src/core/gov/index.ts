@@ -1,0 +1,7 @@
+export * from './msgs/MsgVote'
+export * from './msgs/MsgDeposit'
+export * from './msgs/MsgSubmitProposalExpiryFuturesMarketLaunch'
+export * from './msgs/MsgSubmitProposalPerpetualMarketLaunch'
+export * from './msgs/MsgSubmitProposalSpotMarketLaunch'
+export * from './msgs/MsgSubmitProposalSpotMarketParamUpdate'
+export * from './msgs/MsgSubmitTextProposal'

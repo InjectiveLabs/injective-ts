@@ -1,3 +1,5 @@
+## DEPRECATED - Please use @injectivelabs/sdk-ts
+
 # 🌟 Injective Protocol - Spot Market Consumer
 
 [![downloads](https://img.shields.io/npm/dm/@injectivelabs/spot-consumer.svg)](https://www.npmjs.com/package/@injectivelabs/spot-consumer)

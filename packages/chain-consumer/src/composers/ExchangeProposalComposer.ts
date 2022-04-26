@@ -15,7 +15,6 @@ import snakeCaseKeys from 'snakecase-keys'
 import { MsgSubmitProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
 import { getWeb3GatewayMessage } from '@injectivelabs/utils'
-import { DepositProposalParams } from '../types'
 
 export class ExchangeProposalComposer {
   static instantSpotMarketLaunch({
@@ -55,7 +54,7 @@ export class ExchangeProposalComposer {
   }: {
     market: SpotMarketLaunchProposal.AsObject
     proposer: AccountAddress
-    deposit: DepositProposalParams
+    deposit: Coin.AsObject
   }): ComposerResponse<MsgSubmitProposal, MsgSubmitProposal.AsObject> {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
@@ -118,7 +117,7 @@ export class ExchangeProposalComposer {
   }: {
     market: SpotMarketParamUpdateProposal.AsObject
     proposer: AccountAddress
-    deposit: DepositProposalParams
+    deposit: Coin.AsObject
   }): ComposerResponse<MsgSubmitProposal, MsgSubmitProposal.AsObject> {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
@@ -181,7 +180,7 @@ export class ExchangeProposalComposer {
   }: {
     market: PerpetualMarketLaunchProposal.AsObject
     proposer: AccountAddress
-    deposit: DepositProposalParams
+    deposit: Coin.AsObject
   }): ComposerResponse<MsgSubmitProposal, MsgSubmitProposal.AsObject> {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
@@ -247,7 +246,7 @@ export class ExchangeProposalComposer {
   }: {
     market: ExpiryFuturesMarketLaunchProposal.AsObject
     proposer: AccountAddress
-    deposit: DepositProposalParams
+    deposit: Coin.AsObject
   }): ComposerResponse<MsgSubmitProposal, MsgSubmitProposal.AsObject> {
     const depositParams = new Coin()
     depositParams.setDenom(deposit.denom)
