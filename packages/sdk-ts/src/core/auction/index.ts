@@ -1,1 +1,1 @@
-export * from './msgs/MsgBid'
+export { default as MsgBid } from './msgs/MsgBid'

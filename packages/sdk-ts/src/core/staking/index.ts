@@ -1,3 +1,3 @@
-export * from './msgs/MsgBeginRedelegate'
-export * from './msgs/MsgDelegate'
-export * from './msgs/MsgUndelegate'
+export { default as MsgBeginRedelegate } from './msgs/MsgBeginRedelegate'
+export { default as MsgDelegate } from './msgs/MsgDelegate'
+export { default as MsgUndelegate } from './msgs/MsgUndelegate'

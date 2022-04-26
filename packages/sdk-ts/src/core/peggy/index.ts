@@ -1,1 +1,1 @@
-export * from './msgs/MsgSendToEth'
+export { default as MsgSendToEth } from './msgs/MsgSendToEth'

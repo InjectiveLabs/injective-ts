@@ -8,6 +8,9 @@
   "include": [
     "./src/**/*.ts"
   ],
+  "exclude": [
+    "./examples/**/*.ts",
+  ],
   "references": [
     {
       "path": "../ts-types/tsconfig.build.json"

@@ -2,6 +2,7 @@
 .*
 *
 src
+examples
 
 # Whitelist dist
 !dist/**/*

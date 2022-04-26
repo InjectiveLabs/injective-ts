@@ -14,24 +14,7 @@ import {
   OrderTypeMap as GrpcOrderTypeMap,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
-
-export enum SpotOrderSide {
-  Unspecified = 'unspecified',
-  Buy = 'buy',
-  Sell = 'sell',
-  StopBuy = 'stop_buy',
-  StopSell = 'stop_sell',
-  TakeBuy = 'take_buy',
-  TakeSell = 'take_sell',
-}
-
-export enum SpotOrderState {
-  Unfilled = 'unfilled',
-  Booked = 'booked',
-  PartialFilled = 'partial_filled',
-  Filled = 'filled',
-  Canceled = 'canceled',
-}
+import { SpotOrderSide, SpotOrderState } from '../../../types/spot'
 
 export interface TokenMeta {
   name: string
@@ -90,24 +73,6 @@ export interface SpotTrade extends PriceLevel {
 export interface Orderbook {
   buys: PriceLevel[]
   sells: PriceLevel[]
-}
-
-export interface SpotLimitOrderParams {
-  orderType: GrpcOrderTypeMap[keyof GrpcOrderTypeMap]
-  triggerPrice?: string
-  feeRecipient: string
-  price: string
-  quantity: string
-}
-
-export interface SpotOrderCancelParams {
-  orderHash: string
-}
-
-export interface BatchSpotOrderCancelParams {
-  orderHash: string
-  subaccountId: string
-  marketId: string
 }
 
 export {

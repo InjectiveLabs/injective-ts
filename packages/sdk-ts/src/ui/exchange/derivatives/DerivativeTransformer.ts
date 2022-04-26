@@ -1,5 +1,6 @@
 import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
+import { DerivativeOrderSide, DerivativeOrderState } from '../../../types'
 import {
   GrpcPriceLevel,
   GrpcDerivativeMarketInfo,
@@ -10,7 +11,6 @@ import {
   DerivativeMarket,
   DerivativeLimitOrder,
   DerivativeTrade,
-  DerivativeOrderState,
   GrpcTokenMeta,
   TokenMeta,
   PositionDelta,
@@ -27,7 +27,6 @@ import {
   FundingPayment,
   FundingRate,
   ExpiryFuturesMarketInfo,
-  DerivativeOrderSide,
 } from './types'
 
 const zeroPositionDelta = () => ({

@@ -10,6 +10,14 @@ export enum SpotOrderSide {
   TakeSell = 'take_sell',
 }
 
+export enum SpotOrderState {
+  Unfilled = 'unfilled',
+  Booked = 'booked',
+  PartialFilled = 'partial_filled',
+  Filled = 'filled',
+  Canceled = 'canceled',
+}
+
 export interface SpotLimitOrderParams {
   orderType: GrpcOrderTypeMap[keyof GrpcOrderTypeMap]
   triggerPrice?: string

@@ -1,5 +1,6 @@
 import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
+import { SpotOrderSide, SpotOrderState } from '../../../types/spot'
 import {
   GrpcPriceLevel,
   GrpcSpotMarketInfo,
@@ -12,8 +13,6 @@ import {
   SpotTrade,
   GrpcTokenMeta,
   TokenMeta,
-  SpotOrderState,
-  SpotOrderSide,
 } from './types'
 
 const zeroPriceLevel = () => ({
