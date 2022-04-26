@@ -94,9 +94,9 @@ export class Network {
     if (node === TestnetNodes.k8s) {
       return new Network({
         ...params,
-        sentryHttpApi: `https://${node}.mainnet.lcd.injective.network`,
-        sentryGrpcApi: `https://${node}.mainnet.chain.grpc.injective.network:443`,
-        exchangeApi: `https://${node}.mainnet.exchange.grpc.injective.network:443`,
+        sentryHttpApi: `https://${node}.testnet.lcd.injective.network`,
+        sentryGrpcApi: `https://${node}.testnet.chain.grpc-web.injective.network`,
+        exchangeApi: `https://${node}.testnet.exchange.grpc-web.injective.network`,
       })
     }
 

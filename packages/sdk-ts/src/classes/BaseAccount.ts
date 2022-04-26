@@ -52,7 +52,7 @@ export class BaseAccount extends Address {
 
   public toAccountDetails(): AccountDetails {
     return {
-      address: this.address,
+      address: this.bech32Address,
       pubKey: this.pubKey,
       accountNumber: this.accountNumber,
       sequence: this.sequence,

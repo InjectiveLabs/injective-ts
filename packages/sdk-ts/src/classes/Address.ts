@@ -7,23 +7,20 @@ import {
 } from '../utils/constants'
 
 export class Address {
-  public address: string
+  public bech32Address: string
 
-  public baseAccount?: {
-    accountNumber: number
-    sequence: number
-    pubKey: {
-      '@type': string
-      key: string
-    }
-  }
-
-  constructor(address: string) {
-    this.address = address
+  constructor(bech32Address: string) {
+    this.bech32Address = bech32Address
   }
 
   compare(address: Address): boolean {
-    return this.address.toLowerCase() === address.address.toLowerCase()
+    return (
+      this.bech32Address.toLowerCase() === address.bech32Address.toLowerCase()
+    )
+  }
+
+  get address(): string {
+    return this.bech32Address
   }
 
   /**
@@ -41,8 +38,12 @@ export class Address {
       bech32.fromWords(bech32.decode(bech).words),
     ).toString('hex')
     const addressInHex = address.startsWith('0x') ? address : `0x${address}`
+    const bech32Address = bech32.encode(
+      prefix,
+      bech32.toWords(Buffer.from(addressInHex.toString())),
+    )
 
-    return Address.fromHex(addressInHex, prefix)
+    return new Address(bech32Address)
   }
 
   /**
@@ -56,10 +57,12 @@ export class Address {
     hex: string,
     prefix: string = BECH32_ADDR_ACC_PREFIX,
   ): Address {
-    const addressBuffer = EthereumUtilsAddress.fromString(hex).toBuffer()
-    const address = bech32.encode(prefix, bech32.toWords(addressBuffer))
+    const addressBuffer = EthereumUtilsAddress.fromString(
+      hex.toString(),
+    ).toBuffer()
+    const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
 
-    return new Address(address)
+    return new Address(bech32Address)
   }
 
   /**
@@ -108,7 +111,12 @@ export class Address {
    * @throws {Error} if this address is not a valid account address
    * */
   toHex(): string {
-    return this.address.startsWith('0x') ? this.address : `0x${this.address}`
+    const { bech32Address } = this
+    const address = Buffer.from(
+      bech32.fromWords(bech32.decode(bech32Address).words),
+    ).toString('hex')
+
+    return address.startsWith('0x') ? address : `0x${address}`
   }
 
   /**

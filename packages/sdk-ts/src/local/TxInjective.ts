@@ -19,6 +19,7 @@ import {
   DEFAULT_GAS_PRICE,
 } from '../utils'
 import { BaseAccount } from '../classes/BaseAccount'
+import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
 
 export interface TxInjectiveParams {
   msgs: Msgs | Msgs[]
@@ -28,21 +29,15 @@ export interface TxInjectiveParams {
   feeDenom?: string
   gasLimit?: number
   chainId: string
+  baseAccount: BaseAccount
 }
 
 export class TxInjective {
-  public baseAccount: BaseAccount
-
   public tx: TxInjectiveParams
 
-  constructor({
-    tx,
-    baseAccount,
-  }: {
-    tx: TxInjectiveParams
-    baseAccount: BaseAccount
-  }) {
-    this.baseAccount = baseAccount
+  public signature?: string | Uint8Array
+
+  constructor(tx: TxInjectiveParams) {
     this.tx = tx
   }
 
@@ -74,7 +69,8 @@ export class TxInjective {
   }
 
   get authInfo() {
-    const { tx, baseAccount } = this
+    const { tx } = this
+    const { baseAccount } = tx
 
     // TODO: gas limit based on the message type (lower limit for exchange messages)
     const gasLimit = tx.gasLimit || DEFAULT_GAS_LIMIT
@@ -89,9 +85,14 @@ export class TxInjective {
     fee.setGasLimit(gasLimit)
     fee.setAmountList([feeAmount])
 
+    const publicKey = new PubKey()
+    publicKey.setKey(baseAccount.pubKey.key)
+
     const packedPublicKey = new Any()
     packedPublicKey.setTypeUrl(baseAccount.pubKey.type)
-    packedPublicKey.setValue(baseAccount.pubKey.key)
+    packedPublicKey.setValue(
+      Buffer.from(publicKey.serializeBinary()).toString('base64'),
+    )
 
     const modeSingleDirect = new ModeInfo.Single()
     modeSingleDirect.setMode(SignMode.SIGN_MODE_DIRECT)
@@ -112,7 +113,8 @@ export class TxInjective {
   }
 
   get signDoc() {
-    const { tx, txBody, authInfo, baseAccount } = this
+    const { tx, txBody, authInfo } = this
+    const { baseAccount } = tx
 
     const signDoc = new SignDoc()
     signDoc.setBodyBytes(txBody.serializeBinary())
@@ -127,21 +129,30 @@ export class TxInjective {
     return this.signDoc.serializeBinary()
   }
 
-  toTxRaw(signature: string | Uint8Array) {
-    const { txBody, authInfo } = this
+  withSignature(signature: string | Uint8Array) {
+    this.signature = signature
+
+    return this
+  }
+
+  toTxRaw() {
+    const { signature, txBody, authInfo } = this
 
     const txRaw = new TxRaw()
     txRaw.setBodyBytes(txBody.serializeBinary())
     txRaw.setAuthInfoBytes(authInfo.serializeBinary())
-    txRaw.setSignaturesList([signature])
+
+    if (signature) {
+      txRaw.setSignaturesList([signature])
+    }
 
     return txRaw
   }
 
-  static getTxHash(txRaw: TxRaw) {
+  getTxHash() {
     return crypto
       .createHash('sha256')
-      .update(txRaw.serializeBinary())
+      .update(this.toTxRaw().serializeBinary())
       .digest('hex')
   }
 }

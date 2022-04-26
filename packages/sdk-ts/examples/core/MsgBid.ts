@@ -13,7 +13,7 @@ import { BigNumberInBase } from '@injectivelabs/utils'
 ;(async () => {
   const network = Network.testnet()
   const privateKey = PrivateKey.fromPrivateKey(
-    'f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3',
+    '241824dffdda13c05f5a0de30d3ac7511849005585d89f7a045368cded0e6271',
   )
   const injectiveAddress = privateKey.toBech32()
 
@@ -29,7 +29,7 @@ import { BigNumberInBase } from '@injectivelabs/utils'
   ).moduleState()
   const latestRound = auctionModuleState.getState()?.getAuctionRound()
   const round = latestRound || 1
-  const bid = 100 /** 100 INJ */
+  const bid = 200 /** 100 INJ */
   const amount = {
     amount: new BigNumberInBase(bid).toWei().toFixed(),
     denom: 'inj',
@@ -41,23 +41,24 @@ import { BigNumberInBase } from '@injectivelabs/utils'
   })
 
   /** Prepare the Transaction **/
-  const injectiveTx = new TxInjective({
+  const txInjective = new TxInjective({
     baseAccount,
-    tx: {
-      msgs: [msg],
-      chainId: network.chainId,
-      address: injectiveAddress,
-    },
+    msgs: [msg],
+    chainId: network.chainId,
+    address: injectiveAddress,
   })
 
   /** Sign transaction */
-  const signature = await privateKey.sign(injectiveTx.signDoc.serializeBinary())
+  const signature = await privateKey.sign(txInjective.signBytes)
+  const signedTxInjective = txInjective.withSignature(signature)
 
   /** Calculate hash of the transaction */
-  const txRaw = injectiveTx.toTxRaw(signature)
-  console.log(`Transaction Hash: ${TxInjective.getTxHash(txRaw)}`)
+  console.log(`Transaction Hash: ${signedTxInjective.getTxHash()}`)
 
-  const txService = new TxService({ txRaw, endpoint: network.sentryGrpcApi })
+  const txService = new TxService({
+    txInjective: signedTxInjective,
+    endpoint: network.sentryGrpcApi,
+  })
 
   /** Simulate transaction */
   const simulationResponse = await txService.simulate()

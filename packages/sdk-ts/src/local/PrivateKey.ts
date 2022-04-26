@@ -97,8 +97,11 @@ export class PrivateKey {
     const { wallet } = this
 
     const msgHash = keccak256(Buffer.from(message))
-    const privateKeyToHex = Buffer.from(wallet.privateKey, 'hex')
-    const { signature } = secp256k1.ecdsaSign(msgHash, privateKeyToHex)
+    const privateKeyHex = wallet.privateKey.startsWith('0x')
+      ? wallet.privateKey.slice(2)
+      : wallet.privateKey
+    const privateKey = Uint8Array.from(Buffer.from(privateKeyHex, 'hex'))
+    const { signature } = secp256k1.ecdsaSign(msgHash, privateKey)
 
     return signature
   }

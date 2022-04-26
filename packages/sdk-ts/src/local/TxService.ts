@@ -1,6 +1,5 @@
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { ServiceClient } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/service_pb_service'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   BroadcastTxRequest,
   BroadcastMode,
@@ -11,14 +10,21 @@ import {
   Result,
   TxResponse,
 } from '@injectivelabs/chain-api/cosmos/base/abci/v1beta1/abci_pb'
+import { TxInjective } from './TxInjective'
 
 export class TxService {
   public txService: ServiceClient
 
-  public txRaw: TxRaw
+  public txInjective: TxInjective
 
-  constructor({ txRaw, endpoint }: { txRaw: TxRaw; endpoint: string }) {
-    this.txRaw = txRaw
+  constructor({
+    txInjective,
+    endpoint,
+  }: {
+    txInjective: TxInjective
+    endpoint: string
+  }) {
+    this.txInjective = txInjective
     this.txService = new ServiceClient(endpoint, {
       transport: NodeHttpTransport(),
     })
@@ -28,12 +34,15 @@ export class TxService {
     result: Result.AsObject
     gasInfo: GasInfo.AsObject
   }> {
+    const { txService, txInjective } = this
+    const txRaw = txInjective.toTxRaw()
+
     const simulateRequest = new SimulateRequest()
-    simulateRequest.setTxBytes(this.txRaw.serializeBinary())
+    simulateRequest.setTxBytes(txRaw.serializeBinary())
 
     try {
       return new Promise((resolve, reject) =>
-        this.txService.simulate(simulateRequest, (error, response) => {
+        txService.simulate(simulateRequest, (error, response) => {
           if (error || !response) {
             return reject(error)
           }
@@ -53,13 +62,16 @@ export class TxService {
   }
 
   public async broadcast(): Promise<TxResponse.AsObject> {
+    const { txService, txInjective } = this
+    const txRaw = txInjective.toTxRaw()
+
     const broadcastTxRequest = new BroadcastTxRequest()
-    broadcastTxRequest.setTxBytes(this.txRaw.serializeBinary())
+    broadcastTxRequest.setTxBytes(txRaw.serializeBinary())
     broadcastTxRequest.setMode(BroadcastMode.BROADCAST_MODE_BLOCK)
 
     try {
       return new Promise((resolve, reject) =>
-        this.txService.broadcastTx(broadcastTxRequest, (error, response) => {
+        txService.broadcastTx(broadcastTxRequest, (error, response) => {
           if (error || !response) {
             return reject(error)
           }
