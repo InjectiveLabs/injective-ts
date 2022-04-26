@@ -1,6 +1,6 @@
-import { UrlEndpoint } from './types'
+import { NetworkEndpoints } from './types'
 
-export const urlEndpointsMainnetK8s: UrlEndpoint = {
+export const urlEndpointsMainnetK8s: NetworkEndpoints = {
   exchangeApi: 'https://k8s-api.injective.network',
   sentryGrpcApi: 'https://k8s-grpc.injective.network',
   tendermintApi: 'https://tm.injective.network',
@@ -8,7 +8,7 @@ export const urlEndpointsMainnetK8s: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://k8s-gateway.injective.network',
 }
 
-export const urlEndpointsMainnet: UrlEndpoint = {
+export const urlEndpointsMainnet: NetworkEndpoints = {
   exchangeApi: 'https://api.injective.network',
   sentryGrpcApi: 'https://grpc.injective.network',
   tendermintApi: 'https://tm.injective.network',
@@ -16,7 +16,7 @@ export const urlEndpointsMainnet: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
 }
 
-export const urlEndpointsMainnetStaging: UrlEndpoint = {
+export const urlEndpointsMainnetStaging: NetworkEndpoints = {
   exchangeApi: 'https://staging.api.injective.network',
   sentryGrpcApi: 'https://staging.grpc.injective.network',
   tendermintApi: 'https://staging.tm.injective.network',
@@ -24,7 +24,7 @@ export const urlEndpointsMainnetStaging: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
 }
 
-export const urlEndpointsMainnetOld: UrlEndpoint = {
+export const urlEndpointsMainnetOld: NetworkEndpoints = {
   exchangeApi: 'https://api.injective.network',
   sentryGrpcApi: 'https://grpc.injective.network',
   tendermintApi: 'https://tm.injective.network',
@@ -32,7 +32,7 @@ export const urlEndpointsMainnetOld: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
 }
 
-export const urlEndpointsPublic: UrlEndpoint = {
+export const urlEndpointsPublic: NetworkEndpoints = {
   exchangeApi: 'https://public.api.injective.network',
   sentryGrpcApi: 'https://public.grpc.injective.network',
   tendermintApi: 'https://tm.injective.network',
@@ -40,7 +40,7 @@ export const urlEndpointsPublic: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://public.web3-gateway.injective.network',
 }
 
-export const urlEndpointsTestnet: UrlEndpoint = {
+export const urlEndpointsTestnet: NetworkEndpoints = {
   exchangeApi: 'https://testnet.api.injective.dev',
   sentryGrpcApi: 'https://testnet.grpc.injective.dev',
   tendermintApi: 'https://testnet.tm.injective.dev',
@@ -48,7 +48,7 @@ export const urlEndpointsTestnet: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://testnet.web3-gateway.injective.dev',
 }
 
-export const urlEndpointsTestnetK8s: UrlEndpoint = {
+export const urlEndpointsTestnetK8s: NetworkEndpoints = {
   exchangeApi: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   sentryGrpcApi: 'https://k8s.testnet.chain.grpc-web.injective.network',
   tendermintApi: 'https://k8s.testnet.tm.injective.network',
@@ -56,7 +56,7 @@ export const urlEndpointsTestnetK8s: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://staging.web3-gateway.injective.network',
 }
 
-export const urlEndpointsDevnet: UrlEndpoint = {
+export const urlEndpointsDevnet: NetworkEndpoints = {
   exchangeApi: 'https://devnet.api.injective.dev',
   sentryGrpcApi: 'https://devnet.grpc.injective.dev',
   tendermintApi: 'https://devnet.tm.injective.dev',
@@ -64,7 +64,7 @@ export const urlEndpointsDevnet: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://devnet.gateway.injective.dev',
 }
 
-export const urlEndpointsDevnet1: UrlEndpoint = {
+export const urlEndpointsDevnet1: NetworkEndpoints = {
   exchangeApi: 'https://devnet-1.api.injective.dev',
   sentryGrpcApi: 'https://devnet-1.grpc.injective.dev',
   tendermintApi: 'https://devnet-1.tm.injective.dev',
@@ -72,7 +72,7 @@ export const urlEndpointsDevnet1: UrlEndpoint = {
   exchangeWeb3GatewayApi: 'https://devnet-1.gateway.injective.dev',
 }
 
-export const urlEndpointsLocal: UrlEndpoint = {
+export const urlEndpointsLocal: NetworkEndpoints = {
   exchangeApi: 'https://localhost:4444',
   sentryGrpcApi: 'http://localhost:9091',
   tendermintApi: 'http://localhost:9091',

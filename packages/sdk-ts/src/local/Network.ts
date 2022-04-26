@@ -1,3 +1,7 @@
+/*
+
+Note: use Network from @injectivelabs/utils for now
+
 export enum TestnetNodes {
   sentry0 = 'sentry-0',
   sentry1 = 'sentry-1',
@@ -136,3 +140,4 @@ export class Network {
     })
   }
 }
+*/

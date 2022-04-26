@@ -1,4 +1,10 @@
 import {
+  devnetChainInfo,
+  localChainInfo,
+  mainnetChainInfo,
+  testnetChainInfo,
+} from './chainInfos'
+import {
   urlEndpointsMainnet,
   urlEndpointsLocal,
   urlEndpointsTestnet,
@@ -9,9 +15,9 @@ import {
   urlEndpointsMainnetStaging,
   urlEndpointsDevnet1,
 } from './endpoints'
-import { Network, UrlEndpoint } from './types'
+import { ChainInfo, Network, NetworkEndpoints } from './types'
 
-export const urlEndpointUrls: Record<Network, UrlEndpoint> = {
+export const networkEndpoints: Record<Network, NetworkEndpoints> = {
   [Network.MainnetK8s]: urlEndpointsMainnetK8s,
   [Network.MainnetOld]: urlEndpointsMainnet,
   [Network.MainnetStaging]: urlEndpointsMainnetStaging,
@@ -25,5 +31,32 @@ export const urlEndpointUrls: Record<Network, UrlEndpoint> = {
   [Network.Local]: urlEndpointsLocal,
 }
 
-export const getUrlEndpointForNetwork = (network: Network): UrlEndpoint =>
-  urlEndpointUrls[network]
+export const chainInfos: Record<Network, ChainInfo> = {
+  [Network.MainnetK8s]: mainnetChainInfo,
+  [Network.MainnetOld]: mainnetChainInfo,
+  [Network.MainnetStaging]: mainnetChainInfo,
+  [Network.Staging]: mainnetChainInfo,
+  [Network.Mainnet]: mainnetChainInfo,
+  [Network.Public]: mainnetChainInfo,
+  [Network.Devnet]: devnetChainInfo,
+  [Network.Devnet1]: devnetChainInfo,
+  [Network.Testnet]: testnetChainInfo,
+  [Network.TestnetK8s]: testnetChainInfo,
+  [Network.Local]: localChainInfo,
+}
+
+export const getUrlEndpointForNetwork = (network: Network): NetworkEndpoints =>
+  networkEndpoints[network]
+
+export const getEndpointsForNetwork = (network: Network): NetworkEndpoints =>
+  networkEndpoints[network]
+
+export const getChainInfoForNetwork = (network: Network): ChainInfo =>
+  chainInfos[network]
+
+export const getNetworkInfo = (
+  network: Network,
+): ChainInfo & NetworkEndpoints => ({
+  ...chainInfos[network],
+  ...networkEndpoints[network],
+})

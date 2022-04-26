@@ -12,10 +12,14 @@ export enum Network {
   MainnetOld = 'mainnetOld',
 }
 
-export type UrlEndpoint = {
+export type NetworkEndpoints = {
   exchangeApi: string
   sentryGrpcApi: string
   sentryHttpApi: string
   tendermintApi?: string
   exchangeWeb3GatewayApi?: string
 }
+
+export type UrlEndpoints = NetworkEndpoints /** Deprecated */
+
+export type ChainInfo = { feeDenom: string; chainId: string; env: string }

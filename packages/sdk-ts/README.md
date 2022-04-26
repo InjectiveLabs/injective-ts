@@ -190,6 +190,16 @@ console.log(
 
 ## 🖱️ Examples
 
+To run an example, `cd` into the `examples` folder and execute the desired example by running:
+
+```bash
+yarn ts-node pathToExample
+
+## Example: yarn ts-node ./core/MsgBid.ts
+```
+
+Don't forget to do `yarn` and install dependencies before executing any example.
+
 ---
 
 ## ⛑ Support
