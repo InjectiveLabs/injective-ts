@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.5.4...@injectivelabs/chain-consumer@0.5.5) (2022-04-26)
+
+
+### Features
+
+* sdk-ts initial ([1d2ef9b](https://github.com/InjectiveLabs/injective-ts/commit/1d2ef9bdd02e3684162374479324ee9dc1f896b5))
+
+
+
+
+
 ## [0.5.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/chain-consumer@0.5.3...@injectivelabs/chain-consumer@0.5.4) (2022-04-11)
 
 **Note:** Version bump only for package @injectivelabs/chain-consumer
