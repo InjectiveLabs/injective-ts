@@ -3,6 +3,7 @@ import { Wallet } from 'ethers'
 import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
 import { DEFAULT_DERIVATION_PATH } from '../utils/constants'
+import { PublicKey } from './PublicKey'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -65,14 +66,12 @@ export class PrivateKey {
   }
 
   /**
-   * TODO
    * Return the PublicKey associated with this private key.
    * @returns {PublicKey} a Private that can be used to verify the signatures made with this PrivateKey
-
+   **/
   toPublicKey(): PublicKey {
-    return PublicKey.fromPublicKey(this.wallet.publicKey)
+    return PublicKey.fromHex(this.wallet.publicKey)
   }
-   */
 
   /**
    * Sign the given message using the edcsa sign_deterministic function.

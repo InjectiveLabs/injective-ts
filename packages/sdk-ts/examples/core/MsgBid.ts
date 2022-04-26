@@ -5,6 +5,7 @@ import {
   PrivateKey,
   InjectiveTx,
   TxService,
+  Address,
 } from '@injectivelabs/sdk-ts'
 
 /** MsgBid Example */
@@ -13,6 +14,7 @@ import {
   const privateKey = PrivateKey.fromPrivateKey(
     'f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3',
   )
+  const address = Address.fromHex()
 
   /** Account Details **/
   const injectiveAddress = privateKey.toHex()

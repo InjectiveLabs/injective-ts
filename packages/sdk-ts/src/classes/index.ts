@@ -1,5 +1,6 @@
 export * from './Address'
 export * from './Network'
 export * from './PrivateKey'
+export * from './PublicKey'
 export * from './InjectiveTx'
 export * from './TxService'

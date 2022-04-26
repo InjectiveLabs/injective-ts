@@ -9,13 +9,13 @@ import {
 export class Address {
   public address: string
 
-  public number: number
+  public accountNumber: number
 
   public sequence: number
 
   private constructor(address: string) {
     this.address = address
-    this.number = 0
+    this.accountNumber = 0
     this.sequence = 0
   }
 
@@ -36,25 +36,24 @@ export class Address {
     ).toString('hex')
     const addressInHex = address.startsWith('0x') ? address : `0x${address}`
 
-    return new Address(addressInHex)
+    return Address.fromHex(addressInHex)
   }
 
   /**
-   * Create an address instance from a bech32-encoded account address
-   * @param {string} bech32 bech32-encoded account address
+   * Create an address instance from an ethereum address
+   * @param {string} hex Ethereum address
+   * @param {string} prefix
    * @return {Address}
-   * @throws {Error} if bech is not a valid bech32-encoded account address
+   * @throws {Error} if bech is not a valid bech32-encoded address
    */
-  static fromAccountAddress(bech: string): Address {
-    return Address.fromBech32(bech)
-  }
+  static fromHex(
+    hex: string,
+    prefix: string = BECH32_ADDR_ACC_PREFIX,
+  ): Address {
+    const addressBuffer = EthereumUtilsAddress.fromString(hex).toBuffer()
+    const address = bech32.encode(prefix, bech32.toWords(addressBuffer))
 
-  static fromValidatorAddress(bech: string): Address {
-    return Address.fromBech32(bech)
-  }
-
-  static fromConsensusAddress(bech: string): Address {
-    return Address.fromBech32(bech)
+    return new Address(address)
   }
 
   /**
@@ -64,7 +63,7 @@ export class Address {
    */
   toBech32(prefix: string = BECH32_ADDR_ACC_PREFIX): string {
     const addressBuffer = EthereumUtilsAddress.fromString(
-      this.address.toString(),
+      this.toHex(),
     ).toBuffer()
 
     return bech32.encode(prefix, bech32.toWords(addressBuffer))
