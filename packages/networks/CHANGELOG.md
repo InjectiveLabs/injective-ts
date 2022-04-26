@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.5.2...@injectivelabs/networks@0.5.3) (2022-04-26)
+
+
+### Bug Fixes
+
+* network information ([853f467](https://github.com/InjectiveLabs/injective-ts/commit/853f4677b278b0ff1f111a3c9f2cb77d993a1508))
+
+
+
+
+
 ## [0.5.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.5.1...@injectivelabs/networks@0.5.2) (2022-04-11)
 
 **Note:** Version bump only for package @injectivelabs/networks
