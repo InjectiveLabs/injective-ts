@@ -1,2 +1,5 @@
+export * from './Network'
 export * from './TxInjective'
 export * from './TxService'
+export * from './PrivateKey'
+export * from './PublicKey'

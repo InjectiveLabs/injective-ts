@@ -10,7 +10,7 @@
   ],
   "scripts": {},
   "dependencies": {
-    "@injectivelabs/sdk-ts": "^0.0.7"
+    "@injectivelabs/sdk-ts": "^0.0.8"
   },
   "devDependencies": {
     "@types/jest": "^27.0.2",

@@ -734,10 +734,10 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/sdk-ts@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/sdk-ts/-/sdk-ts-0.0.7.tgz#817b86fdd429d7d30d04baa71a96addea21b9385"
-  integrity sha512-KevzZl5k+mDS55b1u2HtrfS3DVebJOexD3HURGmkImMXLgxW8mKeNdfseBn3xiSKMF+mkG65Z0tdaMmJtL4H3A==
+"@injectivelabs/sdk-ts@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/sdk-ts/-/sdk-ts-0.0.8.tgz#4234fe7167fd2d8cf0c6298b68e0a2070af31fb3"
+  integrity sha512-Nc5rYRWLc5hI38DX4xRgEERR2QMwszD4bBG6ZM25BnWDFnwHG4G4CXDwywfAM5bI1s5Re0qF/Ycsj2u0To4VAA==
   dependencies:
     "@improbable-eng/grpc-web" "^0.15.0"
     "@improbable-eng/grpc-web-node-http-transport" "^0.15.0"

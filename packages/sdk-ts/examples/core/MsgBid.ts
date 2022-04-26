@@ -4,9 +4,8 @@ import {
   ChainClient,
   PrivateKey,
   BaseAccount,
-  InjectiveTx,
+  TxInjective,
   TxService,
-  Address,
 } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
 
@@ -14,10 +13,9 @@ import { BigNumberInBase } from '@injectivelabs/utils'
 ;(async () => {
   const network = Network.testnet()
   const privateKey = PrivateKey.fromPrivateKey(
-    'f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3',
+    '0xf9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3',
   )
-  const address = Address.fromHex(privateKey.toHex())
-  const injectiveAddress = address.toBech32()
+  const injectiveAddress = privateKey.toBech32()
 
   /** Account Details **/
   const accountDetails = await new ChainClient.AuthRestApi(
@@ -31,17 +29,19 @@ import { BigNumberInBase } from '@injectivelabs/utils'
   ).moduleState()
   const latestRound = auctionModuleState.getState()?.getAuctionRound()
   const round = latestRound || 1
+  const bid = 100 /** 100 INJ */
+  const amount = {
+    amount: new BigNumberInBase(bid).toWei().toFixed(),
+    denom: 'inj',
+  }
   const msg = new AuctionCore.MsgBid({
-    round: round,
-    injectiveAddress: injectiveAddress,
-    amount: {
-      amount: new BigNumberInBase(100).toWei().toFixed(),
-      denom: 'inj',
-    },
+    round,
+    amount,
+    injectiveAddress,
   })
 
   /** Prepare the Transaction **/
-  const injectiveTx = new InjectiveTx({
+  const injectiveTx = new TxInjective({
     baseAccount,
     tx: {
       msgs: [msg],
@@ -55,7 +55,7 @@ import { BigNumberInBase } from '@injectivelabs/utils'
 
   /** Calculate hash of the transaction */
   const txRaw = injectiveTx.toTxRaw(signature)
-  console.log(`Transaction Hash: ${InjectiveTx.getTxHash(txRaw)}`)
+  console.log(`Transaction Hash: ${TxInjective.getTxHash(txRaw)}`)
 
   const txService = new TxService({ txRaw, endpoint: network.sentryGrpcApi })
 
