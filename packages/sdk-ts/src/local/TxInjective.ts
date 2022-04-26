@@ -18,9 +18,9 @@ import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
 } from '../utils'
-import { AccountDetails } from '../types/auth'
+import { BaseAccount } from '../classes/BaseAccount'
 
-export interface InjectiveTxParams {
+export interface TxInjectiveParams {
   msgs: Msgs | Msgs[]
   memo?: string
   address: string
@@ -30,19 +30,19 @@ export interface InjectiveTxParams {
   chainId: string
 }
 
-export class InjectiveTx {
-  private accountDetails: AccountDetails
+export class TxInjective {
+  public baseAccount: BaseAccount
 
-  private tx: InjectiveTxParams
+  public tx: TxInjectiveParams
 
   constructor({
     tx,
-    accountDetails,
+    baseAccount,
   }: {
-    tx: InjectiveTxParams
-    accountDetails: AccountDetails
+    tx: TxInjectiveParams
+    baseAccount: BaseAccount
   }) {
-    this.accountDetails = accountDetails
+    this.baseAccount = baseAccount
     this.tx = tx
   }
 
@@ -74,7 +74,7 @@ export class InjectiveTx {
   }
 
   get authInfo() {
-    const { tx, accountDetails } = this
+    const { tx, baseAccount } = this
 
     // TODO: gas limit based on the message type (lower limit for exchange messages)
     const gasLimit = tx.gasLimit || DEFAULT_GAS_LIMIT
@@ -90,8 +90,8 @@ export class InjectiveTx {
     fee.setAmountList([feeAmount])
 
     const packedPublicKey = new Any()
-    packedPublicKey.setTypeUrl(accountDetails.pubKey.type)
-    packedPublicKey.setValue(accountDetails.pubKey.key)
+    packedPublicKey.setTypeUrl(baseAccount.pubKey.type)
+    packedPublicKey.setValue(baseAccount.pubKey.key)
 
     const modeSingleDirect = new ModeInfo.Single()
     modeSingleDirect.setMode(SignMode.SIGN_MODE_DIRECT)
@@ -102,7 +102,7 @@ export class InjectiveTx {
     const signerInfo = new SignerInfo()
     signerInfo.setPublicKey(packedPublicKey)
     signerInfo.setModeInfo(modeInfo)
-    signerInfo.setSequence(accountDetails.sequence)
+    signerInfo.setSequence(baseAccount.sequence)
 
     const authInfo = new AuthInfo()
     authInfo.setSignerInfosList([signerInfo])
@@ -112,13 +112,13 @@ export class InjectiveTx {
   }
 
   get signDoc() {
-    const { tx, txBody, authInfo, accountDetails } = this
+    const { tx, txBody, authInfo, baseAccount } = this
 
     const signDoc = new SignDoc()
     signDoc.setBodyBytes(txBody.serializeBinary())
     signDoc.setAuthInfoBytes(authInfo.serializeBinary())
     signDoc.setChainId(tx.chainId)
-    signDoc.setAccountNumber(accountDetails.accountNumber)
+    signDoc.setAccountNumber(baseAccount.accountNumber)
 
     return signDoc
   }

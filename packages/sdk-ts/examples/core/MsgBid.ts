@@ -8,9 +8,9 @@ import {
   TxService,
   Address,
 } from '@injectivelabs/sdk-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
 
 /** MsgBid Example */
-import { BigNumberInBase } from '@injectivelabs/utils'
 ;(async () => {
   const network = Network.testnet()
   const privateKey = PrivateKey.fromPrivateKey(
@@ -23,7 +23,7 @@ import { BigNumberInBase } from '@injectivelabs/utils'
   const accountDetails = await new ChainClient.AuthRestApi(
     network.sentryHttpApi,
   ).account(injectiveAddress)
-  const baseAccount = new BaseAccount()
+  const baseAccount = BaseAccount.fromRestApi(accountDetails)
 
   /** Prepare the Message */
   const auctionModuleState = await new ChainClient.AuctionApi(
@@ -42,7 +42,7 @@ import { BigNumberInBase } from '@injectivelabs/utils'
 
   /** Prepare the Transaction **/
   const injectiveTx = new InjectiveTx({
-    accountDetails,
+    baseAccount,
     tx: {
       msgs: [msg],
       chainId: network.chainId,

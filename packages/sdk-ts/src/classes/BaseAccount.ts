@@ -1,12 +1,13 @@
 import { Address } from './Address'
 import { AccountResponse } from '../client/chain'
+import { AccountDetails } from '../types/auth'
 
 export class BaseAccount extends Address {
-  accountNumber: number
+  public accountNumber: number
 
-  sequence: number
+  public sequence: number
 
-  pubKey: {
+  public pubKey: {
     type: string
     key: string
   }
@@ -45,7 +46,16 @@ export class BaseAccount extends Address {
     })
   }
 
-  incrementSequence() {
+  public incrementSequence() {
     this.sequence += 1
+  }
+
+  public toAccountDetails(): AccountDetails {
+    return {
+      address: this.address,
+      pubKey: this.pubKey,
+      accountNumber: this.accountNumber,
+      sequence: this.sequence,
+    }
   }
 }

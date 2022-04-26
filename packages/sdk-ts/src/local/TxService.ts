@@ -13,9 +13,9 @@ import {
 } from '@injectivelabs/chain-api/cosmos/base/abci/v1beta1/abci_pb'
 
 export class TxService {
-  private txService: ServiceClient
+  public txService: ServiceClient
 
-  private txRaw: TxRaw
+  public txRaw: TxRaw
 
   constructor({ txRaw, endpoint }: { txRaw: TxRaw; endpoint: string }) {
     this.txRaw = txRaw

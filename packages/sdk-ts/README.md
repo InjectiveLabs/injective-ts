@@ -26,11 +26,9 @@ We are going to go through all of the components of the package and explain them
 
 This package contains some utility classes that can enhance the developer experience.
 
-- Address class -> Can be used to get details about an injective address,
-- Network class -> Can be used to get a pre-defined set of endpoints (sentry, api, etc) for easier usage,
-- PrivateKey class -> Can be used to sign transactions, etc
-- InjectiveTx class -> Can be used to prepare a transaction for signing/broadcasting on the client side,
-- TxService class -> Can be used for simulating or broadcasting a transaction on the client side
+- `Address` class -> Can be used to get details about an injective address,
+- `Network` class -> Can be used to get a pre-defined set of endpoints (sentry, api, etc) for easier usage,
+- `PrivateKey` class -> Can be used to sign transactions, etc
 
 ### Client
 
@@ -47,10 +45,10 @@ At the moment, only the gRPC method of consuming the data is supported, we might
 This package contains utility message classes that can help generate messages which can be packed into a transaction and broadcasted to the chain. Messages are separated into folders that correspond to a module on the Injective chain.
 
 Every message is represented as a `MsgBase` class, which has couple of mapping functionalities:
-- toData -> Converts the Message to a simple Object representation,
-- toProto -> Returns a proto representation of the message,
-- toAmino -> Converts the Message to a proto representation + type (ready for client side usage),
-- toWeb3 -> Converts the Message to a web3 representation + type (ready for web3-gateway usage i.e browser),
+- `toData` -> Converts the Message to a simple Object representation,
+- `toProto` -> Returns a proto representation of the message,
+- `toAmino` -> Converts the Message to a proto representation + type (ready for client side usage),
+- `toWeb3` -> Converts the Message to a web3 representation + type (ready for web3-gateway usage i.e browser),
 
 ### UI
 
@@ -64,6 +62,13 @@ It has two parts:
 ### Utils
 
 This package contains some utility functions and constants.
+
+### Local
+
+This package contains some utility functions and constants for client-side usage (local, node environment)
+
+- `InjectiveTx` class -> Can be used to prepare a transaction for signing/broadcasting on the client side,
+- `TxService` class -> Can be used for simulating or broadcasting a transaction on the client side
 
 ---
 

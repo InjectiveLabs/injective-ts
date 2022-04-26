@@ -4,6 +4,7 @@ import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
 import { DEFAULT_DERIVATION_PATH } from '../utils/constants'
 import { PublicKey } from './PublicKey'
+import { Address } from './Address'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -38,7 +39,7 @@ export class PrivateKey {
    */
   static fromMnemonic(
     words: string,
-    path = DEFAULT_DERIVATION_PATH,
+    path: string | undefined = DEFAULT_DERIVATION_PATH,
   ): PrivateKey {
     return new PrivateKey(Wallet.fromMnemonic(words, path))
   }
@@ -52,7 +53,7 @@ export class PrivateKey {
    */
   static fromPrivateKey(
     privateKey: string,
-    path = DEFAULT_DERIVATION_PATH,
+    path: string | undefined = DEFAULT_DERIVATION_PATH,
   ): PrivateKey {
     return new PrivateKey(Wallet.fromMnemonic(privateKey, path))
   }
@@ -67,10 +68,26 @@ export class PrivateKey {
 
   /**
    * Return the PublicKey associated with this private key.
-   * @returns {PublicKey} a Private that can be used to verify the signatures made with this PrivateKey
+   * @returns {PublicKey} a Public key that can be used to verify the signatures made with this PrivateKey
    **/
   toPublicKey(): PublicKey {
     return PublicKey.fromHex(this.wallet.publicKey)
+  }
+
+  /**
+   * Return the Address associated with this private key.
+   * @returns {Address}
+   **/
+  toAddress(): Address {
+    return Address.fromHex(this.wallet.publicKey)
+  }
+
+  /**
+   * Return the Injective address associated with this private key.
+   * @returns {string}
+   **/
+  toBech32(): string {
+    return Address.fromHex(this.wallet.publicKey).toBech32()
   }
 
   /**
