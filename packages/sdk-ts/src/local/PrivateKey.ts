@@ -59,7 +59,9 @@ export class PrivateKey {
    * @returns {string}
    */
   toHex(): string {
-    return `0x${this.wallet.address}`
+    return this.wallet.address.startsWith('0x')
+      ? this.wallet.address
+      : `0x${this.wallet.address}`
   }
 
   /**
@@ -75,7 +77,7 @@ export class PrivateKey {
    * @returns {Address}
    **/
   toAddress(): Address {
-    return Address.fromHex(this.wallet.publicKey)
+    return Address.fromHex(this.toHex())
   }
 
   /**
@@ -83,7 +85,7 @@ export class PrivateKey {
    * @returns {string}
    **/
   toBech32(): string {
-    return Address.fromHex(this.wallet.publicKey).toBech32()
+    return Address.fromHex(this.toHex()).toBech32()
   }
 
   /**

@@ -13,7 +13,7 @@ import { BigNumberInBase } from '@injectivelabs/utils'
 ;(async () => {
   const network = Network.testnet()
   const privateKey = PrivateKey.fromPrivateKey(
-    '0xf9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3',
+    'f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3',
   )
   const injectiveAddress = privateKey.toBech32()
 
