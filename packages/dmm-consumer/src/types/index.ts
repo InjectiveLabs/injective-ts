@@ -1,17 +1,14 @@
 import {
-  ArrayOfString as GrpcArrayOfString,
-  DMMLCS as GrpcDMMLCS,
-  DMMVCS as GrpcDMMVCS,
+  LCS as GrpcLCS,
+  VCS as GrpcVCS,
   Epoch as GrpcEpoch,
   EpochMeta as GrpcEpochMeta,
   EpochResultRecord as GrpcEpochResultRecord,
   LCSResultRecord as GrpcLCSResultRecord,
-  MapOfStringDMMLCS as GrpcMapOfStringDMMLCS,
-  MapOfStringDMMVCS as GrpcMapOfStringDMMVCS,
   MarketConfig as GrpcMarketConfig,
   OrderValueMultiplier as GrpcOrderValueMultiplier,
   VCSResultRecord as GrpcVCSResultRecord,
-} from '@injectivelabs/exchange-api/injective_dmm_rpc_pb'
+} from '@injectivelabs/dmm-api/injective_dmm_rpc_pb'
 
 export interface OrderValueMultiplier {
   orderPriceBiasThreshold: string
@@ -28,34 +25,34 @@ export interface ArrayOfString {
   fieldList: Array<string>
 }
 
-export interface DMMLCS {
+export interface LCS {
   lcs: string
   normBuy: string
   normSell: string
 }
 
-export interface MapOfStringDMMLCS {
-  fieldMap: Record<string, DMMLCS>[]
+export interface MapOfStrLCS {
+  lcsDictMap: Array<[string, LCS]>
 }
 
 export interface LCSResultRecord {
-  summaryMap: Record<string, DMMLCS>
-  byMarketsMap: Record<string, Record<string, DMMLCS>>
+  summaryMap: Array<[string, LCS]>
+  byMarketsMap: Array<[string, MapOfStrLCS]>
 }
 
-export interface DMMVCS {
+export interface VCS {
   vcs: string
   volume: string
 }
 
-export interface MapOfStringDMMVCS {
-  fieldMap: Record<string, DMMVCS>[]
+export interface MapOfStrVCS {
+  fieldMap: Record<string, VCS>[]
 }
 
 export interface VCSResultRecord {
-  summaryMap: Record<string, DMMVCS>
-  byMarketsMap: Record<string, MapOfStringDMMVCS>
-  byDateMap: Record<number, MapOfStringDMMVCS>
+  summaryMap: Array<[string, VCS]>
+  byMarketsMap: Array<[string, MapOfStrVCS]>
+  byDateMap: Array<[number, MapOfStrVCS]>
 }
 
 export interface EpochMeta {
@@ -65,8 +62,7 @@ export interface EpochMeta {
   rewardInjNum: string
   lcsRewardFraction: string
   vcsRewardFraction: string
-  marketsMap: Record<string, MarketConfig>
-  dmmAddressesList: Record<string, string[]>
+  marketsMap: Array<[string, MarketConfig]>
 }
 
 export interface EpochResultRecord {
@@ -81,15 +77,12 @@ export interface Epoch {
 }
 
 export {
-  GrpcArrayOfString,
-  GrpcDMMLCS,
-  GrpcDMMVCS,
+  GrpcLCS,
+  GrpcVCS,
   GrpcEpoch,
   GrpcEpochMeta,
   GrpcEpochResultRecord,
   GrpcLCSResultRecord,
-  GrpcMapOfStringDMMLCS,
-  GrpcMapOfStringDMMVCS,
   GrpcMarketConfig,
   GrpcOrderValueMultiplier,
   GrpcVCSResultRecord,
