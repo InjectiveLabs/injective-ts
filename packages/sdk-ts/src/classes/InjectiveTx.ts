@@ -21,7 +21,7 @@ import {
 import { AccountDetails } from '../types/auth'
 
 export interface InjectiveTxParams {
-  msg: Msgs | Msgs[]
+  msgs: Msgs | Msgs[]
   memo?: string
   address: string
   feePrice?: string
@@ -48,7 +48,7 @@ export class InjectiveTx {
 
   get packedMsgs() {
     const { tx } = this
-    const msgs = Array.isArray(tx.msg) ? tx.msg : [tx.msg]
+    const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const packedMsgs = msgs.map((msg) => {
       const amino = msg.toAmino()
 
@@ -123,7 +123,11 @@ export class InjectiveTx {
     return signDoc
   }
 
-  toTxRaw(signature: string) {
+  get signBytes() {
+    return this.signDoc.serializeBinary()
+  }
+
+  toTxRaw(signature: string | Uint8Array) {
     const { txBody, authInfo } = this
 
     const txRaw = new TxRaw()

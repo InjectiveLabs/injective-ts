@@ -24,7 +24,10 @@ export class TxService {
     })
   }
 
-  public async simulate() {
+  public async simulate(): Promise<{
+    result: Result.AsObject
+    gasInfo: GasInfo.AsObject
+  }> {
     const simulateRequest = new SimulateRequest()
     simulateRequest.setTxBytes(this.txRaw.serializeBinary())
 
@@ -49,7 +52,7 @@ export class TxService {
     }
   }
 
-  public async broadcast() {
+  public async broadcast(): Promise<TxResponse.AsObject> {
     const broadcastTxRequest = new BroadcastTxRequest()
     broadcastTxRequest.setTxBytes(this.txRaw.serializeBinary())
     broadcastTxRequest.setMode(BroadcastMode.BROADCAST_MODE_BLOCK)
