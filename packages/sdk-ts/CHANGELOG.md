@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.5...@injectivelabs/sdk-ts@0.0.6) (2022-04-26)
+
+
+### Features
+
+* added rest consumer example ([aa20951](https://github.com/InjectiveLabs/injective-ts/commit/aa2095126bbfae2bd851f0417cd98144b7bcbda0))
+
+
+
+
+
 ## [0.0.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.4...@injectivelabs/sdk-ts@0.0.5) (2022-04-26)
 
 
