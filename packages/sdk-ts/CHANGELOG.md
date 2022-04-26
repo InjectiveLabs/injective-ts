@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.10...@injectivelabs/sdk-ts@0.0.11) (2022-04-26)
+
+
+### Bug Fixes
+
+* broadcasting and proto decoding ([0cf6367](https://github.com/InjectiveLabs/injective-ts/commit/0cf6367932492aa33b9835ae565bf7a91e16f385))
+
+
+
+
+
 ## [0.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.9...@injectivelabs/sdk-ts@0.0.10) (2022-04-26)
 
 
