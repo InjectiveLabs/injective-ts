@@ -3,6 +3,7 @@ import {
   AuctionCore,
   ChainClient,
   PrivateKey,
+  BaseAccount,
   InjectiveTx,
   TxService,
   Address,
@@ -19,9 +20,10 @@ import { BigNumberInBase } from '@injectivelabs/utils'
   const injectiveAddress = address.toBech32()
 
   /** Account Details **/
-  const accountDetails = await new ChainClient.AuthApi(
-    network.sentryGrpcApi,
+  const accountDetails = await new ChainClient.AuthRestApi(
+    network.sentryHttpApi,
   ).account(injectiveAddress)
+  const baseAccount = new BaseAccount()
 
   /** Prepare the Message */
   const auctionModuleState = await new ChainClient.AuctionApi(

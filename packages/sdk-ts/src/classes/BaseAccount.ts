@@ -44,4 +44,8 @@ export class BaseAccount extends Address {
       },
     })
   }
+
+  incrementSequence() {
+    this.sequence += 1
+  }
 }
