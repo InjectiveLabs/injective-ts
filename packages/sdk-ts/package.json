@@ -53,5 +53,6 @@
     "shx": "^0.3.2",
     "snakecase-keys": "^5.4.1",
     "tiny-secp256k1": "^2.2.1"
-  }
+  },
+  "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4"
 }
