@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.37...@injectivelabs/ui-common@0.5.38) (2022-04-29)
+
+
+### Bug Fixes
+
+* missing evmos token denom causes FE to crash ([b65e660](https://github.com/InjectiveLabs/injective-ts/commit/b65e660a2ca93d7896cc76f40dc481f97e5a8476))
+
+
+
+
+
 ## [0.5.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.36...@injectivelabs/ui-common@0.5.37) (2022-04-28)
 
 **Note:** Version bump only for package @injectivelabs/ui-common

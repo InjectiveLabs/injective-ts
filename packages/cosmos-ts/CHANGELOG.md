@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.5.10...@injectivelabs/cosmos-ts@0.5.11) (2022-04-29)
+
+**Note:** Version bump only for package @injectivelabs/cosmos-ts
+
+
+
+
+
 ## [0.5.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.5.9...@injectivelabs/cosmos-ts@0.5.10) (2022-04-26)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts
