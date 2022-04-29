@@ -14,7 +14,7 @@ export enum BridgingNetwork {
   Injective = 'injective',
   Juno = 'juno',
   Osmosis = 'osmosis',
-  Persistent = 'Persistent',
+  Persistence = 'Persistence',
   Terra = 'terra',
 }
 
@@ -22,6 +22,8 @@ export const MintScanExplorerUrl = {
   [BridgingNetwork.CosmosHub]: 'cosmos',
   [BridgingNetwork.Chihuahua]: 'chihuahua',
   [BridgingNetwork.Axelar]: 'axelar',
+  [BridgingNetwork.Evmos]: 'evmos',
+  [BridgingNetwork.Persistence]: 'persistence',
   [BridgingNetwork.Osmosis]: 'osmosis',
 } as Record<BridgingNetwork, string>
 

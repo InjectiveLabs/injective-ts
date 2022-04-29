@@ -605,6 +605,15 @@ export default {
     coinGeckoId: 'persistence',
   },
 
+  EVMOS: {
+    name: 'Evmos',
+    logo: 'evmos.svg',
+    symbol: 'EVMOS',
+    decimals: 18,
+    address: '',
+    coinGeckoId: 'evmos',
+  },
+
   AEVMOS: {
     name: 'Evmos',
     logo: 'evmos.svg',
