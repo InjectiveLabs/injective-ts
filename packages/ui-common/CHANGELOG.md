@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.40...@injectivelabs/ui-common@0.5.41) (2022-04-29)
+
+
+### Bug Fixes
+
+* evmos and persistence bridge ([498b76f](https://github.com/InjectiveLabs/injective-ts/commit/498b76fa0e7774fbdde399c60eb0e4afe1720cdc))
+
+
+
+
+
 ## [0.5.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.39...@injectivelabs/ui-common@0.5.40) (2022-04-29)
 
 **Note:** Version bump only for package @injectivelabs/ui-common
