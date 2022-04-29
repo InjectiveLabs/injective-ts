@@ -617,7 +617,7 @@ export default {
   UAEVMOS: {
     name: 'Evmos',
     logo: 'evmos.svg',
-    symbol: 'XRPT',
+    symbol: 'EVMOS',
     decimals: 18,
     address: '',
     coinGeckoId: 'evmos',
