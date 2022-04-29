@@ -6,14 +6,16 @@ import {
 } from '@injectivelabs/exchange-consumer'
 
 export enum BridgingNetwork {
-  CosmosHub = 'cosmosHub',
-  Chihuahua = 'chihuahua',
-  Osmosis = 'osmosis',
-  Terra = 'terra',
-  Ethereum = 'ethereum',
-  Juno = 'juno',
   Axelar = 'axelar',
+  Chihuahua = 'chihuahua',
+  CosmosHub = 'cosmosHub',
+  Ethereum = 'ethereum',
+  Evmos = 'evmos',
   Injective = 'injective',
+  Juno = 'juno',
+  Osmosis = 'osmosis',
+  Persistent = 'Persistent',
+  Terra = 'terra',
 }
 
 export const MintScanExplorerUrl = {

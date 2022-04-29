@@ -586,4 +586,40 @@ export default {
     address: '0x4d224452801aced8b2f0aebe155379bb5d594381',
     coinGeckoId: 'apecoin',
   },
+
+  XRPT: {
+    name: 'Persistence',
+    logo: 'xrpt.jpeg',
+    symbol: 'XRPT',
+    decimals: 18,
+    address: '',
+    coinGeckoId: 'persistence',
+  },
+
+  UXRPT: {
+    name: 'Persistence',
+    logo: 'xrpt.jpeg',
+    symbol: 'XRPT',
+    decimals: 18,
+    address: '',
+    coinGeckoId: 'persistence',
+  },
+
+  AEVMOS: {
+    name: 'Evmos',
+    logo: 'evmos.svg',
+    symbol: 'evmos',
+    decimals: 18,
+    address: '',
+    coinGeckoId: 'evmos',
+  },
+
+  UAEVMOS: {
+    name: 'Evmos',
+    logo: 'evmos.svg',
+    symbol: 'XRPT',
+    decimals: 18,
+    address: '',
+    coinGeckoId: 'evmos',
+  },
 }

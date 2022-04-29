@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <linearGradient id="oe60wqmuta" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#434343"/>
+            <stop offset="1"/>
+        </linearGradient>
+    </defs>
+    <g>
+        <g>
+            <g>
+                <g fill="url(#oe60wqmuta)" stroke="#fff" stroke-width="0.5px" transform="translate(-290 -545.977) translate(290 546) translate(0 -.023)">
+                    <circle cx="16" cy="16" r="16" stroke="none"/>
+                    <circle cx="16" cy="16" r="15.75" fill="none"/>
+                </g>
+                <g>
+                    <g>
+                        <path fill="#fff" d="M32.216 31.472a5.067 5.067 0 0 1-.621 2.48 4.58 4.58 0 0 1-1.9 1.794 6.7 6.7 0 0 1-3.188.686h-2.349v5.578h-3.779V26.469h6.132a6.977 6.977 0 0 1 3.144.642 4.411 4.411 0 0 1 1.924 1.77 5.147 5.147 0 0 1 .637 2.591zm-5.993 1.949a2.259 2.259 0 0 0 1.616-.509 2.215 2.215 0 0 0 0-2.879 2.259 2.259 0 0 0-1.616-.509h-2.065v3.9z" transform="translate(-290 -545.977) translate(290 546) translate(10.329 6.437) translate(-20.373 -22.533)"/>
+                        <path fill="#e50913" d="M32.218 11.69H20.375v2.5h11.843z" transform="translate(-290 -545.977) translate(290 546) translate(10.329 6.437) translate(-20.375 -11.69)"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
