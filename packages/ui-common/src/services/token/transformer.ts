@@ -6,7 +6,7 @@ export const tokenMetaToToken = (
   tokenMeta: TokenMeta | undefined,
   denom: string,
 ): Token | undefined => {
-  if (!tokenMeta) {
+  if (!tokenMeta || !tokenMeta.logo) {
     return
   }
 
