@@ -1,25 +1,8 @@
 import { erc20TokenMeta, TokenMeta } from '@injectivelabs/token-metadata'
+import { CosmosChainId, TestnetCosmosChainId } from '../chains/types'
 
 export interface TokenMetaWithNativeDenom extends TokenMeta {
   denom: string
-}
-
-export enum CosmosChainId {
-  Injective = 'injective-1',
-  Cosmoshub = 'cosmoshub-4',
-  Juno = 'juno-1',
-  Osmosis = 'osmosis-1',
-  Terra = 'columbus-5',
-  TerraUST = 'columbus-5',
-  Chihuahua = 'chihuahua-1',
-  Axelar = 'axelar-dojo-1',
-  Evmos = 'evmos_9001-2',
-  Persistence = 'core-1',
-}
-
-export enum TestnetCosmosChainId {
-  Injective = 'injective-888',
-  Cosmoshub = 'cosmoshub-testnet',
 }
 
 export const cosmosNativeDenomsFromChainId = {

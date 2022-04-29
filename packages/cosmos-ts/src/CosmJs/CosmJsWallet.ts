@@ -19,10 +19,10 @@ import {
 import { SigningStargateClient } from '@cosmjs/stargate'
 import Long from 'long'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { CosmosChainId, TestnetCosmosChainId } from './types'
-import { getEndpointFromChainId } from './endpoints'
-import { KeplrWallet } from './KeplrWallet'
-import { createSignedTx, createTransaction } from '../transaction'
+import { CosmosChainId, TestnetCosmosChainId } from '../chains/types'
+import { getEndpointFromChainId } from '../chains/endpoints'
+import { KeplrWallet } from '../Keplr/KeplrWallet'
+import { createSignedTx, createTransaction } from './transaction'
 
 const ethereumCurveBasedChains = ['injective-1']
 const ethereumCurveBasedAddressesPrefixes = ['inj']

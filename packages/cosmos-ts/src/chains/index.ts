@@ -24,3 +24,6 @@ export const keplrSupportedChainIds = [
 
 export const getChainDataBasedOnChainId = (chainId: string): any | undefined =>
   chains[chainId]
+
+export * from './endpoints'
+export * from './types'

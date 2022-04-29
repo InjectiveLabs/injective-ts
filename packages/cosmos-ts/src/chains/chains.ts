@@ -1,6 +1,6 @@
 import { Bech32Address } from '@keplr-wallet/cosmos'
-import { getEndpointFromChainId } from '../endpoints'
-import { TestnetCosmosChainId, CosmosChainId } from '../types'
+import { getEndpointFromChainId } from './endpoints'
+import { TestnetCosmosChainId, CosmosChainId } from './types'
 
 export default {
   [TestnetCosmosChainId.Cosmoshub]: {
@@ -208,8 +208,7 @@ export default {
     features: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
   },
   [CosmosChainId.Axelar]: {
-    rpc: 'https://rpc-axelar.keplr.app',
-    rest: 'https://lcd-axelar.keplr.app',
+    ...getEndpointFromChainId(CosmosChainId.Axelar),
     chainId: 'axelar-dojo-1',
     chainName: 'Axelar',
     stakeCurrency: {
@@ -246,5 +245,48 @@ export default {
     features: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
     chainSymbolImageUrl:
       'https://dhj8dql1kzq2v.cloudfront.net/white/axelar.png',
+  },
+  [CosmosChainId.Evmos]: {
+    ...getEndpointFromChainId(CosmosChainId.Evmos),
+    chainId: 'evmos_9001-2',
+    chainName: 'Evmos (Beta)',
+    stakeCurrency: {
+      coinDenom: 'EVMOS',
+      coinMinimalDenom: 'aevmos',
+      coinDecimals: 18,
+    },
+    walletUrl:
+      process.env.NODE_ENV === 'production'
+        ? 'https://wallet.keplr.app/#/evmos/stake'
+        : 'http://localhost:8080/#/evmos/stake',
+    walletUrlForStaking:
+      process.env.NODE_ENV === 'production'
+        ? 'https://wallet.keplr.app/#/evmos/stake'
+        : 'http://localhost:8080/#/evmos/stake',
+    bip44: {
+      coinType: 60,
+    },
+    bech32Config: Bech32Address.defaultBech32Config('evmos'),
+    currencies: [
+      {
+        coinDenom: 'EVMOS',
+        coinMinimalDenom: 'aevmos',
+        coinDecimals: 18,
+      },
+    ],
+    feeCurrencies: [
+      {
+        coinDenom: 'EVMOS',
+        coinMinimalDenom: 'aevmos',
+        coinDecimals: 18,
+      },
+    ],
+    gasPriceStep: {
+      low: 10000000000,
+      average: 25000000000,
+      high: 40000000000,
+    },
+    features: ['ibc-transfer', 'ibc-go'],
+    beta: true,
   },
 } as Record<string, any>

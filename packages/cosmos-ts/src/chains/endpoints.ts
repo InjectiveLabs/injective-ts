@@ -54,6 +54,11 @@ export const getEndpointFromChainId = (
         rpc: 'https://rpc-axelar.keplr.app',
         rest: 'https://lcd-axelar.keplr.app',
       }
+    case CosmosChainId.Evmos:
+      return {
+        rpc: 'https://rpc-evmos.keplr.app',
+        rest: 'https://lcd-evmos.keplr.app',
+      }
     default:
       throw new Error(`Endpoints for ${chainId} not found`)
   }
