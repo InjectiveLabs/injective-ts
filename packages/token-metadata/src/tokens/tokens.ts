@@ -608,7 +608,7 @@ export default {
   AEVMOS: {
     name: 'Evmos',
     logo: 'evmos.svg',
-    symbol: 'evmos',
+    symbol: 'EVMOS',
     decimals: 18,
     address: '',
     coinGeckoId: 'evmos',
