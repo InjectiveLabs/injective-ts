@@ -10,7 +10,7 @@ import { InjectiveDmmRPC } from '@injectivelabs/exchange-api/injective_dmm_rpc_p
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class DmmApi extends BaseConsumer {
-  async epochs() {
+  async fetchEpochs() {
     const request = new GetEpochsRequest()
 
     try {
@@ -26,7 +26,7 @@ export class DmmApi extends BaseConsumer {
     }
   }
 
-  async epochSummary({ epochId }: { epochId?: string }) {
+  async fetchEpochSummary({ epochId }: { epochId?: string }) {
     const request = new GetEpochSummaryRequest()
 
     if (epochId) {
@@ -46,7 +46,7 @@ export class DmmApi extends BaseConsumer {
     }
   }
 
-  async dMMRecords({
+  async fetchDmmRecords({
     accountAddress,
     dmmName,
     epochId,

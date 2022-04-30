@@ -10,7 +10,7 @@ import { InjectiveMetaRPC } from '@injectivelabs/exchange-api/injective_meta_rpc
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class MetaApi extends BaseConsumer {
-  async ping() {
+  async fetchPing() {
     const request = new PingRequest()
 
     try {
@@ -26,7 +26,7 @@ export class MetaApi extends BaseConsumer {
     }
   }
 
-  async version() {
+  async fetchVersion() {
     const request = new VersionRequest()
 
     try {
@@ -42,7 +42,7 @@ export class MetaApi extends BaseConsumer {
     }
   }
 
-  async info() {
+  async fetchInfo() {
     const request = new InfoRequest()
 
     try {

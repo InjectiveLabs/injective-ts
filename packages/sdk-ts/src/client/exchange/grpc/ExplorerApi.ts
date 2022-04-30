@@ -18,7 +18,7 @@ import { InjectiveExplorerRPC } from '@injectivelabs/exchange-api/injective_expl
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class ExplorerApi extends BaseConsumer {
-  async txByHash(hash: string) {
+  async fetchTxByHash(hash: string) {
     const request = new GetTxByTxHashRequest()
     request.setHash(hash)
 
@@ -35,7 +35,7 @@ export class ExplorerApi extends BaseConsumer {
     }
   }
 
-  async accountTx({
+  async fetchAccountTx({
     address,
     limit,
     type,
@@ -68,7 +68,7 @@ export class ExplorerApi extends BaseConsumer {
     }
   }
 
-  async validator(validatorAddress: string) {
+  async fetchValidator(validatorAddress: string) {
     const request = new GetValidatorRequest()
     request.setAddress(validatorAddress)
 
@@ -85,7 +85,7 @@ export class ExplorerApi extends BaseConsumer {
     }
   }
 
-  async validatorUptime(validatorAddress: string) {
+  async fetchValidatorUptime(validatorAddress: string) {
     const request = new GetValidatorUptimeRequest()
     request.setAddress(validatorAddress)
 
@@ -102,7 +102,7 @@ export class ExplorerApi extends BaseConsumer {
     }
   }
 
-  async peggyDepositTxs({
+  async fetchPeggyDepositTxs({
     sender,
     receiver,
     limit,
@@ -144,7 +144,7 @@ export class ExplorerApi extends BaseConsumer {
     }
   }
 
-  async peggyWithdrawalTxs({
+  async fetchPeggyWithdrawalTxs({
     sender,
     receiver,
     limit,
@@ -186,7 +186,7 @@ export class ExplorerApi extends BaseConsumer {
     }
   }
 
-  async iBCTransferTxs({
+  async fetchIBCTransferTxs({
     sender,
     receiver,
     srcChannel,

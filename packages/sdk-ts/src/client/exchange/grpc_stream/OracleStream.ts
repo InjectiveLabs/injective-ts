@@ -14,7 +14,7 @@ export class OracleStream {
     this.client = new InjectiveOracleRPCClient(endpoint)
   }
 
-  prices({
+  streamOraclePrices({
     oracleType,
     baseSymbol,
     quoteSymbol,

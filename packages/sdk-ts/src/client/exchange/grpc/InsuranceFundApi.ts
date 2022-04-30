@@ -8,7 +8,7 @@ import { InjectiveInsuranceRPC } from '@injectivelabs/exchange-api/injective_ins
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class InsuranceFundApi extends BaseConsumer {
-  async redemptions({
+  async fetchRedemptions({
     denom,
     address,
     status,
@@ -41,7 +41,7 @@ export class InsuranceFundApi extends BaseConsumer {
     }
   }
 
-  async insuranceFunds() {
+  async fetchInsuranceFunds() {
     const request = new FundsRequest()
 
     try {

@@ -16,7 +16,7 @@ export class AccountStream {
     this.client = new InjectiveAccountsRPCClient(endpoint)
   }
 
-  balances({
+  streamSubaccountBalance({
     subaccountId,
     callback,
     onEndCallback,
