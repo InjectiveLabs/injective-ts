@@ -23,7 +23,7 @@ import { PaginationOption } from '../../../types/pagination'
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class DerivativesApi extends BaseConsumer {
-  async markets() {
+  async fetchDerivativeMarkets() {
     const request = new DerivativeMarketsRequest()
 
     try {
@@ -39,7 +39,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async market(marketId: string) {
+  async fetchDerivativeMarket(marketId: string) {
     const request = new DerivativeMarketRequest()
     request.setMarketId(marketId)
 
@@ -56,7 +56,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async orderbook(marketId: string) {
+  async fetchDerivativeOrderbook(marketId: string) {
     const request = new DerivativeOrderbookRequest()
     request.setMarketId(marketId)
 
@@ -73,7 +73,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async orders({
+  async fetchDerivativeOrders({
     marketId,
     subaccountId,
     orderSide,
@@ -109,7 +109,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async positions({
+  async fetchDerivativePositions({
     marketId,
     subaccountId,
   }: {
@@ -139,7 +139,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async trades({
+  async fetchDerivativeTrades({
     marketId,
     subaccountId,
     skip = 0,
@@ -179,7 +179,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fundingPayments({
+  async fetchDerivativeFundingPayments({
     marketId,
     subaccountId,
     pagination,
@@ -221,7 +221,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fundingRates({
+  async fetchDerivativeFundingRates({
     marketId,
     pagination,
   }: {

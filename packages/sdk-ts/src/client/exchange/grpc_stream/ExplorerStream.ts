@@ -45,7 +45,7 @@ export class ExplorerStream {
     return stream
   }
 
-  transactions({
+  streamTransactions({
     callback,
     onEndCallback,
     onStatusCallback,

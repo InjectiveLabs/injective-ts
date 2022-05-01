@@ -16,7 +16,7 @@ import { SpotOrderSide } from '../../../types/spot'
 import { TradeExecutionSide } from '../../../types/exchange'
 
 export class SpotApi extends BaseConsumer {
-  async markets() {
+  async fetchSpotMarkets() {
     const request = new SpotMarketsRequest()
 
     try {
@@ -32,7 +32,7 @@ export class SpotApi extends BaseConsumer {
     }
   }
 
-  async market(marketId: string) {
+  async fetchSpotMarket(marketId: string) {
     const request = new SpotMarketRequest()
     request.setMarketId(marketId)
 
@@ -49,7 +49,7 @@ export class SpotApi extends BaseConsumer {
     }
   }
 
-  async orderbook(marketId: string) {
+  async fetchSpotOrderbook(marketId: string) {
     const request = new SpotOrderbookRequest()
     request.setMarketId(marketId)
 
@@ -66,7 +66,7 @@ export class SpotApi extends BaseConsumer {
     }
   }
 
-  async orders({
+  async fetchSpotOrders({
     marketId,
     subaccountId,
     orderSide,
@@ -102,7 +102,7 @@ export class SpotApi extends BaseConsumer {
     }
   }
 
-  async trades({
+  async fetchSpotTrades({
     marketId,
     subaccountId,
     skip = 0,

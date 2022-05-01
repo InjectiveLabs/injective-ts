@@ -35,7 +35,7 @@ export class DerivativesStream {
     this.client = new InjectiveDerivativeExchangeRPCClient(endpoint)
   }
 
-  orderbook({
+  streamDerivativeOrderbook({
     marketIds,
     callback,
     onEndCallback,
@@ -66,7 +66,7 @@ export class DerivativesStream {
     return stream
   }
 
-  orders({
+  streamDerivativeOrders({
     marketId,
     subaccountId,
     callback,
@@ -106,7 +106,7 @@ export class DerivativesStream {
     return stream
   }
 
-  trades({
+  streamDerivativeTrades({
     marketId,
     subaccountId,
     callback,
@@ -158,7 +158,7 @@ export class DerivativesStream {
     return stream
   }
 
-  positions({
+  streamDerivativePositions({
     marketId,
     subaccountId,
     callback,

@@ -8,7 +8,7 @@ import { InjectiveOracleRPC } from '@injectivelabs/exchange-api/injective_oracle
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class OracleApi extends BaseConsumer {
-  async oracles() {
+  async fetchOracleList() {
     const request = new OracleListRequest()
 
     try {
@@ -24,7 +24,7 @@ export class OracleApi extends BaseConsumer {
     }
   }
 
-  async oraclePrice({
+  async fetchOraclePrice({
     baseSymbol,
     quoteSymbol,
     oracleScaleFactor,

@@ -25,7 +25,7 @@ export class SpotStream {
     this.client = new InjectiveSpotExchangeRPCClient(endpoint)
   }
 
-  orderbook({
+  streamSpotOrderbook({
     marketIds,
     callback,
     onEndCallback,
@@ -56,7 +56,7 @@ export class SpotStream {
     return stream
   }
 
-  orders({
+  streamSpotOrders({
     marketId,
     subaccountId,
     callback,
@@ -96,7 +96,7 @@ export class SpotStream {
     return stream
   }
 
-  trades({
+  streamSpotTrades({
     marketId,
     subaccountId,
     callback,

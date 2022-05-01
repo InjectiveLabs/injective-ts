@@ -20,7 +20,7 @@ import { InjectiveAccountsRPC } from '@injectivelabs/exchange-api/injective_acco
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class AccountApi extends BaseConsumer {
-  async portfolioValue(address: string) {
+  async fetchPortfolio(address: string) {
     const request = new PortfolioRequest()
     request.setAccountAddress(address)
 
@@ -37,7 +37,7 @@ export class AccountApi extends BaseConsumer {
     }
   }
 
-  async rewards(address: string) {
+  async fetchRewards(address: string) {
     const request = new RewardsRequest()
     request.setAccountAddress(address)
 
@@ -54,7 +54,7 @@ export class AccountApi extends BaseConsumer {
     }
   }
 
-  async subaccounts(address: string) {
+  async fetchSubaccountsList(address: string) {
     const request = new SubaccountsListRequest()
     request.setAccountAddress(address)
 
@@ -71,7 +71,7 @@ export class AccountApi extends BaseConsumer {
     }
   }
 
-  async subaccountBalance(subaccountId: string, denom: string) {
+  async fetchSubaccountBalance(subaccountId: string, denom: string) {
     const request = new SubaccountBalanceRequest()
     request.setSubaccountId(subaccountId)
     request.setDenom(denom)
@@ -89,7 +89,7 @@ export class AccountApi extends BaseConsumer {
     }
   }
 
-  async subaccountBalances(subaccountId: string) {
+  async fetchSubaccountBalancesList(subaccountId: string) {
     const request = new SubaccountBalancesListRequest()
     request.setSubaccountId(subaccountId)
 
@@ -106,7 +106,7 @@ export class AccountApi extends BaseConsumer {
     }
   }
 
-  async subaccountHistory({
+  async fetchSubaccountHistory({
     subaccountId,
     denom,
     transferTypes = [],
@@ -139,7 +139,7 @@ export class AccountApi extends BaseConsumer {
     }
   }
 
-  async subaccountOrderSummary({
+  async fetchSubaccountOrderSummary({
     subaccountId,
     marketId,
     orderDirection,
@@ -172,7 +172,7 @@ export class AccountApi extends BaseConsumer {
     }
   }
 
-  async orderStates({
+  async fetchOrderStates({
     spotOrderHashes = [],
     derivativeOrderHashes = [],
   }: {

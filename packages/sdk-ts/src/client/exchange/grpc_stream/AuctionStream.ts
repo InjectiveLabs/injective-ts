@@ -14,7 +14,7 @@ export class AuctionStream {
     this.client = new InjectiveAuctionRPCClient(endpoint)
   }
 
-  bids({
+  streamBids({
     callback,
     onEndCallback,
     onStatusCallback,

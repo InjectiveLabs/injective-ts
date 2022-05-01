@@ -8,7 +8,7 @@ import { InjectiveAuctionRPC } from '@injectivelabs/exchange-api/injective_aucti
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class AuctionApi extends BaseConsumer {
-  async auction(round?: number) {
+  async fetchAuction(round?: number) {
     const request = new AuctionRequest()
 
     // If round is provided, set it on the request, otherwise fetch latest round
@@ -29,7 +29,7 @@ export class AuctionApi extends BaseConsumer {
     }
   }
 
-  async auctions() {
+  async fetchAuctions() {
     const request = new AuctionsRequest()
 
     try {
