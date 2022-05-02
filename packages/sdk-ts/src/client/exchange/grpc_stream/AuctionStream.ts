@@ -4,6 +4,8 @@ import {
   StreamBidsResponse,
 } from '@injectivelabs/exchange-api/injective_auction_rpc_pb'
 import { StreamStatusResponse } from '../types'
+import { isServerSide } from '../../../utils/helpers'
+import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
 export type BidsStreamCallback = (response: StreamBidsResponse) => void
 
@@ -11,7 +13,9 @@ export class AuctionStream {
   protected client: InjectiveAuctionRPCClient
 
   constructor(endpoint: string) {
-    this.client = new InjectiveAuctionRPCClient(endpoint)
+    this.client = new InjectiveAuctionRPCClient(endpoint, {
+      transport: isServerSide() ? NodeHttpTransport() : undefined,
+    })
   }
 
   streamBids({

@@ -9,6 +9,8 @@ import {
 import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb_service'
 import { TradeExecutionSide } from '../../../types'
 import { StreamStatusResponse } from '../types'
+import { isServerSide } from '../../../utils/helpers'
+import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
 export type SpotOrderbookStreamCallback = (
   response: StreamOrderbookResponse,
@@ -22,7 +24,9 @@ export class SpotStream {
   protected client: InjectiveSpotExchangeRPCClient
 
   constructor(endpoint: string) {
-    this.client = new InjectiveSpotExchangeRPCClient(endpoint)
+    this.client = new InjectiveSpotExchangeRPCClient(endpoint, {
+      transport: isServerSide() ? NodeHttpTransport() : undefined,
+    })
   }
 
   streamSpotOrderbook({

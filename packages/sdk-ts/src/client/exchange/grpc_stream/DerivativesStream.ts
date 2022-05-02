@@ -11,6 +11,8 @@ import {
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { TradeExecutionSide } from '../../../types'
 import { StreamStatusResponse } from '../types'
+import { isServerSide } from '../../../utils/helpers'
+import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
 export type DerivativeOrderbookStreamCallback = (
   response: StreamOrderbookResponse,
@@ -32,7 +34,9 @@ export class DerivativesStream {
   protected client: InjectiveDerivativeExchangeRPCClient
 
   constructor(endpoint: string) {
-    this.client = new InjectiveDerivativeExchangeRPCClient(endpoint)
+    this.client = new InjectiveDerivativeExchangeRPCClient(endpoint, {
+      transport: isServerSide() ? NodeHttpTransport() : undefined,
+    })
   }
 
   streamDerivativeOrderbook({

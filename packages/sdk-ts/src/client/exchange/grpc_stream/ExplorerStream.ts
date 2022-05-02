@@ -6,6 +6,8 @@ import {
   StreamTxsResponse,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 import { StreamStatusResponse } from '../types'
+import { isServerSide } from '../../../utils/helpers'
+import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
 export type BlocksStreamCallback = (response: StreamBlocksResponse) => void
 export type TransactionsStreamCallback = (response: StreamTxsResponse) => void
@@ -14,7 +16,9 @@ export class ExplorerStream {
   protected client: InjectiveExplorerRPCClient
 
   constructor(endpoint: string) {
-    this.client = new InjectiveExplorerRPCClient(endpoint)
+    this.client = new InjectiveExplorerRPCClient(endpoint, {
+      transport: isServerSide() ? NodeHttpTransport() : undefined,
+    })
   }
 
   blocks({

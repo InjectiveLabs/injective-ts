@@ -4,6 +4,8 @@ import {
   StreamSubaccountBalanceResponse,
 } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
 import { StreamStatusResponse } from '../types'
+import { isServerSide } from '../../../utils/helpers'
+import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
 export type BalanceStreamCallback = (
   response: StreamSubaccountBalanceResponse,
@@ -13,7 +15,9 @@ export class AccountStream {
   protected client: InjectiveAccountsRPCClient
 
   constructor(endpoint: string) {
-    this.client = new InjectiveAccountsRPCClient(endpoint)
+    this.client = new InjectiveAccountsRPCClient(endpoint, {
+      transport: isServerSide() ? NodeHttpTransport() : undefined,
+    })
   }
 
   streamSubaccountBalance({

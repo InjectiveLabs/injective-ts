@@ -4,6 +4,8 @@ import {
 } from '@injectivelabs/exchange-api/injective_oracle_rpc_pb'
 import { InjectiveOracleRPCClient } from '@injectivelabs/exchange-api/injective_oracle_rpc_pb_service'
 import { StreamStatusResponse } from '../types'
+import { isServerSide } from '../../../utils/helpers'
+import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
 export type OraclePriceStreamCallback = (response: StreamPricesResponse) => void
 
@@ -11,7 +13,9 @@ export class OracleStream {
   protected client: InjectiveOracleRPCClient
 
   constructor(endpoint: string) {
-    this.client = new InjectiveOracleRPCClient(endpoint)
+    this.client = new InjectiveOracleRPCClient(endpoint, {
+      transport: isServerSide() ? NodeHttpTransport() : undefined,
+    })
   }
 
   streamOraclePrices({
