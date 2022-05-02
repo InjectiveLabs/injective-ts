@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.19...@injectivelabs/sdk-ts@0.0.20) (2022-05-02)
+
+
+### Bug Fixes
+
+* transport for stream ([2e3e929](https://github.com/InjectiveLabs/injective-ts/commit/2e3e929c18db669cc4461310befad34172f21d88))
+
+
+
+
+
 ## [0.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.18...@injectivelabs/sdk-ts@0.0.19) (2022-05-02)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
