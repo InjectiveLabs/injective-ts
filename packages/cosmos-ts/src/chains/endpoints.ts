@@ -59,6 +59,11 @@ export const getEndpointFromChainId = (
         rpc: 'https://rpc-evmos.keplr.app',
         rest: 'https://lcd-evmos.keplr.app',
       }
+    case CosmosChainId.Persistence:
+      return {
+        rpc: 'https://rpc-persistence.keplr.app',
+        rest: 'https://lcd-persistence.keplr.app',
+      }
     default:
       throw new Error(`Endpoints for ${chainId} not found`)
   }

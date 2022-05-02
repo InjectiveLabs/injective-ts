@@ -289,4 +289,49 @@ export default {
     features: ['ibc-transfer', 'ibc-go'],
     beta: true,
   },
+  [CosmosChainId.Persistence]: {
+    ...getEndpointFromChainId(CosmosChainId.Persistence),
+    chainId: 'core-1',
+    chainName: 'Persistence',
+    stakeCurrency: {
+      coinDenom: 'XPRT',
+      coinMinimalDenom: 'uxprt',
+      coinDecimals: 6,
+      coinGeckoId: 'persistence',
+    },
+    walletUrl:
+      process.env.NODE_ENV === 'production'
+        ? 'https://wallet.keplr.app/#/core/stake'
+        : 'http://localhost:8080/#/core/stake',
+    walletUrlForStaking:
+      process.env.NODE_ENV === 'production'
+        ? 'https://wallet.keplr.app/#/core/stake'
+        : 'http://localhost:8080/#/core/stake',
+    bip44: {
+      coinType: 750,
+    },
+    bech32Config: Bech32Address.defaultBech32Config('persistence'),
+    currencies: [
+      {
+        coinDenom: 'XPRT',
+        coinMinimalDenom: 'uxprt',
+        coinDecimals: 6,
+        coinGeckoId: 'persistence',
+      },
+    ],
+    feeCurrencies: [
+      {
+        coinDenom: 'XPRT',
+        coinMinimalDenom: 'uxprt',
+        coinDecimals: 6,
+        coinGeckoId: 'persistence',
+      },
+    ],
+    gasPriceStep: {
+      low: 0,
+      average: 0.025,
+      high: 0.04,
+    },
+    features: ['ibc-transfer', 'ibc-go'],
+  },
 } as Record<string, any>
