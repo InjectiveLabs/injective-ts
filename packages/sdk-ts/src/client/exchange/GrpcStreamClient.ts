@@ -5,7 +5,7 @@ import { OracleStream } from './grpc_stream/OracleStream'
 import { SpotStream } from './grpc_stream/SpotStream'
 import { ExplorerStream } from './grpc_stream/ExplorerStream'
 
-export class GrpcStreamClient {
+export class ExchangeGrpcStreamClient {
   derivativesStream: DerivativesStream
 
   spotStream: SpotStream
