@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.21...@injectivelabs/sdk-ts@0.0.22) (2022-05-03)
+
+
+### Bug Fixes
+
+* protoObject function ([999dbd3](https://github.com/InjectiveLabs/injective-ts/commit/999dbd3745c04f675594df5d324c5368fe6e32b3))
+
+
+
+
+
 ## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.20...@injectivelabs/sdk-ts@0.0.21) (2022-05-03)
 
 
