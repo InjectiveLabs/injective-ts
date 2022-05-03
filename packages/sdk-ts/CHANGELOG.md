@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.20...@injectivelabs/sdk-ts@0.0.21) (2022-05-03)
+
+
+### Features
+
+* added object formatter ([6a4621a](https://github.com/InjectiveLabs/injective-ts/commit/6a4621a62ea4267c3df9de82b31798bfe1245c02))
+
+
+
+
+
 ## [0.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.19...@injectivelabs/sdk-ts@0.0.20) (2022-05-02)
 
 
