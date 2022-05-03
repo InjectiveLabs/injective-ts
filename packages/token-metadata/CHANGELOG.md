@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.12...@injectivelabs/token-metadata@0.5.13) (2022-05-02)
+
+
+### Bug Fixes
+
+* xrpt token url ([316e873](https://github.com/InjectiveLabs/injective-ts/commit/316e873dec50eacd1d829d06ff61f076385df240))
+
+
+
+
+
 ## [0.5.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.11...@injectivelabs/token-metadata@0.5.12) (2022-04-29)
 
 

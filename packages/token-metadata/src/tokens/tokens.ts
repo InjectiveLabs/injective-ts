@@ -589,7 +589,7 @@ export default {
 
   XRPT: {
     name: 'Persistence',
-    logo: 'xrpt.jpeg',
+    logo: 'xrpt.svg',
     symbol: 'XRPT',
     decimals: 18,
     address: '',
@@ -598,7 +598,7 @@ export default {
 
   UXRPT: {
     name: 'Persistence',
-    logo: 'xrpt.jpeg',
+    logo: 'xrpt.svg',
     symbol: 'XRPT',
     decimals: 18,
     address: '',

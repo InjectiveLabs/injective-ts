@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/protocol-stats@0.5.12...@injectivelabs/protocol-stats@0.5.13) (2022-05-02)
+
+**Note:** Version bump only for package @injectivelabs/protocol-stats
+
+
+
+
+
 ## [0.5.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/protocol-stats@0.5.11...@injectivelabs/protocol-stats@0.5.12) (2022-04-29)
 
 **Note:** Version bump only for package @injectivelabs/protocol-stats
