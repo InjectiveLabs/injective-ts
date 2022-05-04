@@ -7,7 +7,7 @@ import {
   ContractAddresses,
 } from './types'
 
-export const contractAddresses = {
+export const contractAddresses: ContractAddressesForChainId = {
   '1': {
     peggy: '0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3',
     injective: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
@@ -19,6 +19,10 @@ export const contractAddresses = {
   '4': {
     peggy: ZERO_ADDRESS,
     injective: ZERO_ADDRESS,
+  },
+  '42': {
+    peggy: '0xd6Da9dA014806Fdb64bF39b48fcA386AE3420d21',
+    injective: '0x96853aBD7e589D06b7dade1b9264f1a5c2d3176E',
   },
   '888': {
     peggy: ZERO_ADDRESS,
@@ -32,9 +36,9 @@ export const contractAddresses = {
     peggy: '0x25B8Fe1DE9dAf8BA351890744FF28cf7dFa8f5e3',
     injective: '0x0B1ba0af832d7C05fD64161E0Db78E85978E8082',
   },
-} as ContractAddressesForChainId
+}
 
-export const contractAddressesByNetwork = {
+export const contractAddressesByNetwork: ContractAddressesForNetwork = {
   [Network.Mainnet]: {
     peggy: '0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3',
     injective: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
@@ -44,6 +48,14 @@ export const contractAddressesByNetwork = {
     injective: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
   },
   [Network.MainnetOld]: {
+    peggy: '0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3',
+    injective: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
+  },
+  [Network.Public]: {
+    peggy: '0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3',
+    injective: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
+  },
+  [Network.Staging]: {
     peggy: '0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3',
     injective: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
   },
@@ -67,7 +79,11 @@ export const contractAddressesByNetwork = {
     peggy: '0x297BbB78723Dab82282FFfd7C5856c13b5104729',
     injective: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
   },
-} as ContractAddressesForNetwork
+  [Network.Local]: {
+    peggy: '0x3c92F7779A7845d5eEf307aEF39066Ddba04A54b',
+    injective: '0x3d940951C2cdFc7091cb6064A41053FBFbD016EF',
+  },
+}
 
 export const getContractAddressesForChainOrThrow = (
   chainId: ChainId,
