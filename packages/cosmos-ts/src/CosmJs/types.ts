@@ -52,7 +52,7 @@ export const cosmosNativeDenomsFromChainId = {
     denom: 'aevmos',
   },
   [CosmosChainId.Persistence]: {
-    ...erc20TokenMeta.getMetaBySymbol('XRPT'),
+    ...erc20TokenMeta.getMetaBySymbol('XPRT'),
     denom: 'uxprt',
   },
   [TestnetCosmosChainId.Cosmoshub]: {

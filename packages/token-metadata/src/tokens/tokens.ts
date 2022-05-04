@@ -587,20 +587,20 @@ export default {
     coinGeckoId: 'apecoin',
   },
 
-  XRPT: {
+  XPRT: {
     name: 'Persistence',
-    logo: 'xrpt.svg',
-    symbol: 'XRPT',
-    decimals: 18,
+    logo: 'xprt.svg',
+    symbol: 'XPRT',
+    decimals: 6,
     address: '',
     coinGeckoId: 'persistence',
   },
 
-  UXRPT: {
+  UXPRT: {
     name: 'Persistence',
-    logo: 'xrpt.svg',
-    symbol: 'XRPT',
-    decimals: 18,
+    logo: 'xprt.svg',
+    symbol: 'XPRT',
+    decimals: 6,
     address: '',
     coinGeckoId: 'persistence',
   },
