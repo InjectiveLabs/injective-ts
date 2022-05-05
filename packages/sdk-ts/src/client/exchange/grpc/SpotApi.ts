@@ -13,11 +13,31 @@ import {
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { SpotOrderSide } from '../../../types/spot'
-import { TradeExecutionSide } from '../../../types/exchange'
+import { TradeExecutionSide, TradeDirection } from '../../../types/exchange'
 
 export class SpotApi extends BaseConsumer {
-  async fetchSpotMarkets() {
+  async fetchSpotMarkets({
+                           baseDenom,
+                           marketStatus,
+                           quoteDenom,
+                         }: {
+    baseDenom?: string
+    marketStatus?: string
+    quoteDenom?: string
+                         }) {
     const request = new SpotMarketsRequest()
+
+    if (baseDenom) {
+      request.setBaseDenom(baseDenom)
+    }
+
+    if (marketStatus) {
+      request.setMarketStatus(marketStatus)
+    }
+
+    if (quoteDenom) {
+      request.setQuoteDenom(quoteDenom)
+    }
 
     try {
       const response = await this.request<
@@ -106,12 +126,16 @@ export class SpotApi extends BaseConsumer {
     marketId,
     subaccountId,
     skip = 0,
+    limit = 0,
     executionSide,
+    direction,
   }: {
     marketId?: string
     skip?: number
+    limit?: number
     subaccountId?: string
     executionSide?: TradeExecutionSide
+    direction?: TradeDirection
   }) {
     const request = new SpotTradesRequest()
 
@@ -127,7 +151,13 @@ export class SpotApi extends BaseConsumer {
       request.setExecutionSide(executionSide)
     }
 
+    if (direction) {
+      request.setDirection(direction)
+    }
+
     request.setSkip(skip)
+    request.setLimit(limit)
+
 
     try {
       const response = await this.request<

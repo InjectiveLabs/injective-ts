@@ -37,9 +37,19 @@ export class AccountApi extends BaseConsumer {
     }
   }
 
-  async fetchRewards(address: string) {
+  async fetchRewards({
+                       address,
+                       epoch,
+                     }: {
+    address: string
+    epoch: number
+                     }) {
     const request = new RewardsRequest()
     request.setAccountAddress(address)
+
+    if (epoch) {
+      request.setEpoch(epoch)
+    }
 
     try {
       const response = await this.request<

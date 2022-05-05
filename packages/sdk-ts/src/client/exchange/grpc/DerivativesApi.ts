@@ -18,13 +18,26 @@ import {
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { DerivativeOrderSide } from '../../../types/derivatives'
-import { TradeExecutionSide } from '../../../types/exchange'
+import { TradeDirection, TradeExecutionSide } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class DerivativesApi extends BaseConsumer {
-  async fetchDerivativeMarkets() {
+  async fetchDerivativeMarkets({
+                                 marketStatus,
+                                 quoteDenom,
+                               }: {
+    marketStatus?: string,
+    quoteDenom?: string,
+                               }) {
     const request = new DerivativeMarketsRequest()
+
+    if (marketStatus) {
+      request.setMarketStatus(marketStatus)
+    }
+    if (quoteDenom) {
+      request.setQuoteDenom(quoteDenom)
+    }
 
     try {
       const response = await this.request<
@@ -142,11 +155,15 @@ export class DerivativesApi extends BaseConsumer {
   async fetchDerivativeTrades({
     marketId,
     subaccountId,
+    direction,
     skip = 0,
+    limit = 0,
     executionSide,
   }: {
     marketId?: string
     skip?: number
+    limit?: number
+    direction?: TradeDirection
     subaccountId?: string
     executionSide?: TradeExecutionSide
   }) {
@@ -164,7 +181,12 @@ export class DerivativesApi extends BaseConsumer {
       request.setExecutionSide(executionSide)
     }
 
+    if (direction) {
+      request.setDirection(direction)
+    }
+
     request.setSkip(skip)
+    request.setLimit(limit)
 
     try {
       const response = await this.request<

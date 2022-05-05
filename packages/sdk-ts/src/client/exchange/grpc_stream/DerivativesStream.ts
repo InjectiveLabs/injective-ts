@@ -9,7 +9,7 @@ import {
   StreamPositionsResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
-import { TradeExecutionSide } from '../../../types'
+import { TradeDirection, TradeExecutionSide } from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
@@ -73,12 +73,14 @@ export class DerivativesStream {
   streamDerivativeOrders({
     marketId,
     subaccountId,
+    orderSide,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
     marketId?: string
     subaccountId?: string
+    orderSide?: TradeDirection
     callback: DerivativeOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
@@ -91,6 +93,10 @@ export class DerivativesStream {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (orderSide) {
+      request.setOrderSide(orderSide)
     }
 
     const stream = this.client.streamOrders(request)
@@ -111,26 +117,42 @@ export class DerivativesStream {
   }
 
   streamDerivativeTrades({
+    marketIds,
     marketId,
+    subaccountIds,
     subaccountId,
     callback,
     skip = 0,
+    limit = 0,
     executionSide,
+    direction,
     onEndCallback,
     onStatusCallback,
   }: {
+    marketIds?: string[]
     marketId?: string
+    subaccountIds?: string[]
     subaccountId?: string
     skip?: number
+    limit?: number
     executionSide?: TradeExecutionSide
+    direction?: TradeDirection
     callback: DerivativeTradesStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamTradesRequest()
 
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (subaccountIds) {
+      request.setSubaccountIdsList(subaccountIds)
     }
 
     if (subaccountId) {
@@ -141,9 +163,19 @@ export class DerivativesStream {
       request.setExecutionSide(executionSide)
     }
 
+    if (direction) {
+      request.setDirection(direction)
+    }
+
     if (skip !== undefined) {
       request.setSkip(skip)
     }
+
+    if (limit !== undefined) {
+      request.setLimit(limit)
+    }
+
+
 
     const stream = this.client.streamTrades(request)
 
