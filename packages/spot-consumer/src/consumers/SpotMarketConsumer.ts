@@ -28,8 +28,6 @@ export class SpotMarketConsumer extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.Markets
       >(request, InjectiveSpotExchangeRPC.Markets)
 
-      console.log('response.getMarketsList', response.getMarketsList())
-
       return response.getMarketsList()
     } catch (e: any) {
       throw new GrpcException(e.message)
