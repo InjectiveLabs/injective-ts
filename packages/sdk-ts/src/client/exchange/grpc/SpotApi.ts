@@ -214,12 +214,12 @@ export class SpotApi extends BaseConsumer {
     subaccountId,
     marketId,
     direction,
-    executionSide
+    executionType
   }: {
     subaccountId?: string
     marketId?: string
     direction?: TradeDirection
-    executionSide?: TradeExecutionSide
+    executionType?: TradeExecutionSide
   }) {
     const request = new SpotSubaccountTradesListRequest()
 
@@ -236,8 +236,8 @@ export class SpotApi extends BaseConsumer {
       request.setDirection(direction)
     }
 
-    if (executionSide) {
-      request.setExecutionType(executionSide)
+    if (executionType) {
+      request.setExecutionType(executionType)
     }
 
     try {
