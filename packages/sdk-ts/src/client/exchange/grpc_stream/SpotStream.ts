@@ -9,11 +9,10 @@ import {
   StreamMarketsResponse,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb_service'
-import { TradeExecutionSide, TradeDirection } from '../../../types'
+import { TradeExecutionSide, TradeDirection, SpotOrderSide } from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
-import { MarketStreamCallback } from "./DerivativesStream";
 
 export type SpotOrderbookStreamCallback = (
   response: StreamOrderbookResponse,
@@ -77,7 +76,7 @@ export class SpotStream {
   }: {
     marketId?: string
     subaccountId?: string
-    orderSide?: TradeDirection
+    orderSide?: SpotOrderSide
     callback: SpotOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void

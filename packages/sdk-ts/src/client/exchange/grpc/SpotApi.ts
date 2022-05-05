@@ -19,7 +19,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { SpotOrderSide } from '../../../types/spot'
-import { TradeExecutionSide, TradeDirection } from '../../../types/exchange'
+import { TradeExecutionSide, TradeDirection, TradeExecutionType } from '../../../types/exchange'
 
 export class SpotApi extends BaseConsumer {
   async fetchSpotMarkets({
@@ -219,7 +219,7 @@ export class SpotApi extends BaseConsumer {
     subaccountId?: string
     marketId?: string
     direction?: TradeDirection
-    executionType?: TradeExecutionSide
+    executionType?: TradeExecutionType
   }) {
     const request = new SpotSubaccountTradesListRequest()
 
