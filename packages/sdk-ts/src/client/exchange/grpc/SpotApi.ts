@@ -10,6 +10,12 @@ import {
   OrdersResponse as SpotOrdersResponse,
   TradesRequest as SpotTradesRequest,
   TradesResponse as SpotTradesResponse,
+  SubaccountOrdersListRequest as SpotSubaccountOrdersListRequest,
+  SubaccountOrdersListResponse as SpotSubaccountOrdersListResponse,
+  SubaccountTradesListRequest as SpotSubaccountTradesListRequest,
+  SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
+  OrderbooksRequest as SpotOrderbooksRequest,
+  OrderbooksResponse as SpotOrderbooksResponse,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { SpotOrderSide } from '../../../types/spot'
@@ -170,5 +176,106 @@ export class SpotApi extends BaseConsumer {
     } catch (e: any) {
       throw new Error(e.message)
     }
+  }
+
+    async fetchSpotSubaccountOrdersList({
+    subaccountId,
+    marketId,
+    }: {
+      subaccountId?: string
+      marketId?: string
+  })
+  {
+    const request = new SpotSubaccountOrdersListRequest()
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+
+    }
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    try {
+      const response = await this.request<
+        SpotSubaccountOrdersListRequest,
+        SpotSubaccountOrdersListResponse,
+        typeof InjectiveSpotExchangeRPC.SubaccountOrdersList
+      >(request, InjectiveSpotExchangeRPC.SubaccountOrdersList)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchSpotSubaccountTradesList({
+    subaccountId,
+    marketId,
+    direction,
+    executionSide
+  }: {
+    subaccountId?: string
+    marketId?: string
+    direction?: TradeDirection
+    executionSide?: TradeExecutionSide
+  }) {
+    const request = new SpotSubaccountTradesListRequest()
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+
+    }
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (executionSide) {
+      request.setExecutionType(executionSide)
+    }
+
+    try {
+      const response = await this.request<
+        SpotSubaccountTradesListRequest,
+        SpotSubaccountTradesListResponse,
+        typeof InjectiveSpotExchangeRPC.SubaccountTradesList
+      >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+
+    }
+  }
+
+  async fetchSpotOrderbooks({
+    marketIds
+  }: {
+    marketIds?: string[]
+  }) {
+    const request = new SpotOrderbooksRequest()
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    try {
+      const response = await this.request<
+        SpotOrderbooksRequest,
+        SpotOrderbooksResponse,
+        typeof InjectiveSpotExchangeRPC.Orderbooks
+      >(request, InjectiveSpotExchangeRPC.Orderbooks)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+
   }
 }

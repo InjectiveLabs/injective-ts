@@ -15,6 +15,12 @@ import {
   TradesResponse as DerivativeTradesResponse,
   PositionsRequest as DerivativePositionsRequest,
   PositionsResponse as DerivativePositionsResponse,
+  SubaccountOrdersListRequest as DerivativeSubaccountOrdersListRequest,
+  SubaccountOrdersListResponse as DerivativeSubaccountOrdersListResponse,
+  SubaccountTradesListRequest as DerivativeSubaccountTradesListRequest,
+  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
+  OrderbooksRequest as DerivativeOrderbooksRequest,
+  OrderbooksResponse as DerivativeOrderbooksResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { DerivativeOrderSide } from '../../../types/derivatives'
@@ -274,6 +280,100 @@ export class DerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.FundingRates)
 
       return response
+
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchDerivativeSubaccountOrdersList({
+    marketId,
+    subaccountId
+  }: {
+    marketId?: string
+    subaccountId?: string
+  }) {
+    const request = new DerivativeSubaccountOrdersListRequest()
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    try {
+      const response = await this.request<DerivativeSubaccountOrdersListRequest,
+        DerivativeSubaccountOrdersListResponse,
+        typeof InjectiveDerivativeExchangeRPC.SubaccountOrdersList>(request, InjectiveDerivativeExchangeRPC.SubaccountOrdersList)
+
+      return response
+
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchDerivativeSubaccountTradesList({
+    marketId,
+    subaccountId,
+    direction,
+    executionSide
+  }: {
+    marketId?: string
+    subaccountId?: string
+    direction?: TradeDirection
+    executionSide?: TradeExecutionSide
+  }) {
+    const request = new DerivativeSubaccountTradesListRequest()
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (executionSide) {
+      request.setExecutionType(executionSide)
+    }
+
+    try {
+      const response = await this.request<DerivativeSubaccountTradesListRequest,
+        DerivativeSubaccountTradesListResponse,
+        typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList>(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
+
+      return response
+
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchDerivativeOrderbooks({
+    marketIds
+  }: {
+    marketIds?: string[]
+  }) {
+    const request = new DerivativeOrderbooksRequest()
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    try {
+      const response = await this.request<DerivativeOrderbooksRequest,
+        DerivativeOrderbooksResponse,
+        typeof InjectiveDerivativeExchangeRPC.Orderbooks>(request, InjectiveDerivativeExchangeRPC.Orderbooks)
+
+      return response
+
     } catch (e: any) {
       throw new Error(e.message)
     }

@@ -7,7 +7,9 @@ import {
   StreamTradesResponse,
   StreamPositionsRequest,
   StreamPositionsResponse,
-} from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
+  StreamMarketRequest,
+  StreamMarketResponse,
+} from "@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb";
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { TradeDirection, TradeExecutionSide } from '../../../types'
 import { StreamStatusResponse } from '../types'
@@ -28,6 +30,10 @@ export type DerivativeTradesStreamCallback = (
 
 export type PositionsStreamCallback = (
   response: StreamPositionsResponse,
+) => void
+
+export type MarketStreamCallback = (
+  response: StreamMarketResponse,
 ) => void
 
 export class DerivativesStream {
@@ -233,4 +239,38 @@ export class DerivativesStream {
 
     return stream
   }
+
+  streamDerivativeMarket({
+    marketIds,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketIds?: string[]
+    callback: MarketStreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamMarketRequest()
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    const stream = this.client.streamMarket(request)
+
+    stream.on('data', (response: StreamMarketResponse) => {
+      callback(response)
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+                         }
 }

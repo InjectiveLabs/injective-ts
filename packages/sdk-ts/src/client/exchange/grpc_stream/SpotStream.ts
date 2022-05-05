@@ -107,7 +107,7 @@ export class SpotStream {
   }
 
   streamSpotTrades({
-    marketIds
+    marketIds,
     marketId,
     subaccountIds,
     subaccountId,
