@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.49...@injectivelabs/ui-common@0.5.50) (2022-05-05)
+
+**Note:** Version bump only for package @injectivelabs/ui-common
+
+
+
+
+
 ## [0.5.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ui-common@0.5.48...@injectivelabs/ui-common@0.5.49) (2022-05-04)
 
 **Note:** Version bump only for package @injectivelabs/ui-common
