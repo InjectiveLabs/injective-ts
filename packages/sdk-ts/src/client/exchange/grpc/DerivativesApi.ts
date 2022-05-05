@@ -24,7 +24,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { DerivativeOrderSide } from '../../../types/derivatives'
-import { TradeDirection, TradeExecutionSide } from '../../../types/exchange'
+import { TradeDirection, TradeExecutionSide, TradeExecutionType } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import BaseConsumer from '../../BaseGrpcConsumer'
 
@@ -319,12 +319,12 @@ export class DerivativesApi extends BaseConsumer {
     marketId,
     subaccountId,
     direction,
-    executionSide
+    executionType
   }: {
     marketId?: string
     subaccountId?: string
     direction?: TradeDirection
-    executionSide?: TradeExecutionSide
+    executionType?: TradeExecutionType
   }) {
     const request = new DerivativeSubaccountTradesListRequest()
 
@@ -340,8 +340,8 @@ export class DerivativesApi extends BaseConsumer {
       request.setDirection(direction)
     }
 
-    if (executionSide) {
-      request.setExecutionType(executionSide)
+    if (executionType) {
+      request.setExecutionType(executionType)
     }
 
     try {

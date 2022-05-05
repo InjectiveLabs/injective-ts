@@ -5,15 +5,22 @@ import {
   StreamOrdersResponse,
   StreamTradesRequest,
   StreamTradesResponse,
+  StreamMarketsRequest,
+  StreamMarketsResponse,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb_service'
 import { TradeExecutionSide, TradeDirection } from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { MarketStreamCallback } from "./DerivativesStream";
 
 export type SpotOrderbookStreamCallback = (
   response: StreamOrderbookResponse,
+) => void
+
+export type MarketsStreamCallback = (
+  response: StreamMarketsResponse,
 ) => void
 
 export type SpotOrdersStreamCallback = (response: StreamOrdersResponse) => void
@@ -168,6 +175,40 @@ export class SpotStream {
     const stream = this.client.streamTrades(request)
 
     stream.on('data', (response: StreamTradesResponse) => {
+      callback(response)
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+  }
+
+  streamSpotMarket({
+    marketIds,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketIds?: string[],
+    callback: MarketsStreamCallback,
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamMarketsRequest()
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    const stream = this.client.streamMarkets(request)
+
+    stream.on('data', (response: StreamMarketsResponse) => {
       callback(response)
     })
 
