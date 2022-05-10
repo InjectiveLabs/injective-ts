@@ -1458,18 +1458,18 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/exchange-api@^2.2.57":
-  version "2.2.57"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.57.tgz#f7a7fe0fdc06fc1e452bbb8dfd41d13a0a321341"
-  integrity sha512-D0EK5TqmsMxdEFVVK8u6o7Bfbrx1XmJ/Czl7hTAY6xwP61WS3bQoRUjUEb3jaAocOR4lRCTirabKQ2yFAZ+ixA==
+"@injectivelabs/exchange-api@^2.2.58":
+  version "2.2.59"
+  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.59.tgz#2e73529f7844fa7b7337447d52c0e5ea9372b3c8"
+  integrity sha512-0DHK2Qw/tz0gcnPrKmr7pZkunMcusQ72ij/WzxT+sETlQohSGYKE7gvvzhHZEfu52QX2tdbCd7lbDjI4O2xn1Q==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
-"@injectivelabs/exchange-api@^2.2.58", "@injectivelabs/exchange-api@^2.2.59":
-  version "2.2.59"
-  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.59.tgz#2e73529f7844fa7b7337447d52c0e5ea9372b3c8"
-  integrity sha512-0DHK2Qw/tz0gcnPrKmr7pZkunMcusQ72ij/WzxT+sETlQohSGYKE7gvvzhHZEfu52QX2tdbCd7lbDjI4O2xn1Q==
+"@injectivelabs/exchange-api@^2.2.70":
+  version "2.2.70"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.70.tgz#acebf715010d87ace2eda1e9bb86ee1919b10b4a"
+  integrity sha512-i+WwnBdOjtzowTXFdQv7u+J1vF+YCWblq5LKpTBvASq3WDW8UowOYoMPT9wBmtHXT5FsB195pdwlLf1shHwDnw==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
