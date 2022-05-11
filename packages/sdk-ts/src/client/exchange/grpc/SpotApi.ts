@@ -101,10 +101,12 @@ export class SpotApi extends BaseConsumer {
     marketId,
     subaccountId,
     orderSide,
+    pagination,
   }: {
     marketId?: string
     subaccountId?: string
     orderSide?: SpotOrderSide
+    pagination?: PaginationOption
   }) {
     const request = new SpotOrdersRequest()
 
@@ -118,6 +120,16 @@ export class SpotApi extends BaseConsumer {
 
     if (orderSide) {
       request.setOrderSide(orderSide)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
@@ -190,9 +202,11 @@ export class SpotApi extends BaseConsumer {
   async fetchSpotSubaccountOrdersList({
     subaccountId,
     marketId,
+    pagination,
   }: {
     subaccountId?: string
     marketId?: string
+    pagination?: PaginationOption
   }) {
     const request = new SpotSubaccountOrdersListRequest()
 
@@ -202,6 +216,16 @@ export class SpotApi extends BaseConsumer {
 
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
@@ -222,11 +246,13 @@ export class SpotApi extends BaseConsumer {
     marketId,
     direction,
     executionType,
+    pagination,
   }: {
     subaccountId?: string
     marketId?: string
     direction?: TradeDirection
     executionType?: TradeExecutionType
+    pagination?: PaginationOption
   }) {
     const request = new SpotSubaccountTradesListRequest()
 
@@ -244,6 +270,16 @@ export class SpotApi extends BaseConsumer {
 
     if (executionType) {
       request.setExecutionType(executionType)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {

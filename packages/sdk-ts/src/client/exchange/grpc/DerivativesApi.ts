@@ -100,10 +100,12 @@ export class DerivativesApi extends BaseConsumer {
     marketId,
     subaccountId,
     orderSide,
+    pagination,
   }: {
     marketId?: string
     orderSide?: DerivativeOrderSide
     subaccountId?: string
+    pagination?: PaginationOption
   }) {
     const request = new DerivativeOrdersRequest()
 
@@ -117,6 +119,16 @@ export class DerivativesApi extends BaseConsumer {
 
     if (orderSide) {
       request.setOrderSide(orderSide)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
@@ -135,9 +147,11 @@ export class DerivativesApi extends BaseConsumer {
   async fetchDerivativePositions({
     marketId,
     subaccountId,
+    pagination,
   }: {
     marketId?: string
     subaccountId?: string
+    pagination?: PaginationOption
   }) {
     const request = new DerivativePositionsRequest()
 
@@ -147,6 +161,16 @@ export class DerivativesApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
@@ -297,9 +321,11 @@ export class DerivativesApi extends BaseConsumer {
   async fetchDerivativeSubaccountOrdersList({
     marketId,
     subaccountId,
+    pagination,
   }: {
     marketId?: string
     subaccountId?: string
+    pagination?: PaginationOption
   }) {
     const request = new DerivativeSubaccountOrdersListRequest()
 
@@ -309,6 +335,16 @@ export class DerivativesApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
@@ -329,11 +365,13 @@ export class DerivativesApi extends BaseConsumer {
     subaccountId,
     direction,
     executionType,
+    pagination,
   }: {
     marketId?: string
     subaccountId?: string
     direction?: TradeDirection
     executionType?: TradeExecutionType
+    pagination?: PaginationOption
   }) {
     const request = new DerivativeSubaccountTradesListRequest()
 
@@ -351,6 +389,16 @@ export class DerivativesApi extends BaseConsumer {
 
     if (executionType) {
       request.setExecutionType(executionType)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {

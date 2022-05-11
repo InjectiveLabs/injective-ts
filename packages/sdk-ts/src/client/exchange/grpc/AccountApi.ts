@@ -18,6 +18,8 @@ import {
 } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
 import { InjectiveAccountsRPC } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { PaginationOption } from '../../../types/pagination'
+
 
 export class AccountApi extends BaseConsumer {
   async fetchPortfolio(address: string) {
@@ -114,10 +116,12 @@ export class AccountApi extends BaseConsumer {
     subaccountId,
     denom,
     transferTypes = [],
+    pagination,
   }: {
     subaccountId: string
     denom?: string
-    transferTypes?: string[] /* TODO */
+    transferTypes?: string[]
+    pagination?: PaginationOption
   }) {
     const request = new SubaccountHistoryRequest()
     request.setSubaccountId(subaccountId)
@@ -128,6 +132,16 @@ export class AccountApi extends BaseConsumer {
 
     if (transferTypes.length > 0) {
       request.setTransferTypesList(transferTypes)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
