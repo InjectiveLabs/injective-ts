@@ -19,18 +19,23 @@ import {
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { SpotOrderSide } from '../../../types/spot'
-import { TradeExecutionSide, TradeDirection, TradeExecutionType } from '../../../types/exchange'
+import {
+  TradeExecutionSide,
+  TradeDirection,
+  TradeExecutionType,
+} from '../../../types/exchange'
+import { PaginationOption } from '../../../types/pagination'
 
 export class SpotApi extends BaseConsumer {
   async fetchSpotMarkets({
-                           baseDenom,
-                           marketStatus,
-                           quoteDenom,
-                         }: {
+    baseDenom,
+    marketStatus,
+    quoteDenom,
+  }: {
     baseDenom?: string
     marketStatus?: string
     quoteDenom?: string
-                         }) {
+  }) {
     const request = new SpotMarketsRequest()
 
     if (baseDenom) {
@@ -131,14 +136,12 @@ export class SpotApi extends BaseConsumer {
   async fetchSpotTrades({
     marketId,
     subaccountId,
-    skip = 0,
-    limit = 0,
+    pagination,
     executionSide,
     direction,
   }: {
     marketId?: string
-    skip?: number
-    limit?: number
+    pagination?: PaginationOption
     subaccountId?: string
     executionSide?: TradeExecutionSide
     direction?: TradeDirection
@@ -161,9 +164,15 @@ export class SpotApi extends BaseConsumer {
       request.setDirection(direction)
     }
 
-    request.setSkip(skip)
-    request.setLimit(limit)
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
 
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+    }
 
     try {
       const response = await this.request<
@@ -178,19 +187,17 @@ export class SpotApi extends BaseConsumer {
     }
   }
 
-    async fetchSpotSubaccountOrdersList({
+  async fetchSpotSubaccountOrdersList({
     subaccountId,
     marketId,
-    }: {
-      subaccountId?: string
-      marketId?: string
-  })
-  {
+  }: {
+    subaccountId?: string
+    marketId?: string
+  }) {
     const request = new SpotSubaccountOrdersListRequest()
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
-
     }
 
     if (marketId) {
@@ -214,7 +221,7 @@ export class SpotApi extends BaseConsumer {
     subaccountId,
     marketId,
     direction,
-    executionType
+    executionType,
   }: {
     subaccountId?: string
     marketId?: string
@@ -225,7 +232,6 @@ export class SpotApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
-
     }
 
     if (marketId) {
@@ -250,18 +256,13 @@ export class SpotApi extends BaseConsumer {
       return response
     } catch (e: any) {
       throw new Error(e.message)
-
     }
   }
 
-  async fetchSpotOrderbooks({
-    marketIds
-  }: {
-    marketIds?: string[]
-  }) {
+  async fetchSpotOrderbooks(marketIds: string[]) {
     const request = new SpotOrderbooksRequest()
 
-    if (marketIds) {
+    if (marketIds.length > 0) {
       request.setMarketIdsList(marketIds)
     }
 
@@ -276,6 +277,5 @@ export class SpotApi extends BaseConsumer {
     } catch (e: any) {
       throw new Error(e.message)
     }
-
   }
 }

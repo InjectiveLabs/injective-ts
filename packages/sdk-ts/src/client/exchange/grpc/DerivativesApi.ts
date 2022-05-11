@@ -24,18 +24,22 @@ import {
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { DerivativeOrderSide } from '../../../types/derivatives'
-import { TradeDirection, TradeExecutionSide, TradeExecutionType } from '../../../types/exchange'
+import {
+  TradeDirection,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class DerivativesApi extends BaseConsumer {
   async fetchDerivativeMarkets({
-                                 marketStatus,
-                                 quoteDenom,
-                               }: {
-    marketStatus?: string,
-    quoteDenom?: string,
-                               }) {
+    marketStatus,
+    quoteDenom,
+  }: {
+    marketStatus?: string
+    quoteDenom?: string
+  }) {
     const request = new DerivativeMarketsRequest()
 
     if (marketStatus) {
@@ -162,16 +166,14 @@ export class DerivativesApi extends BaseConsumer {
     marketId,
     subaccountId,
     direction,
-    skip = 0,
-    limit = 0,
+    pagination,
     executionSide,
   }: {
     marketId?: string
-    skip?: number
-    limit?: number
     direction?: TradeDirection
     subaccountId?: string
     executionSide?: TradeExecutionSide
+    pagination?: PaginationOption
   }) {
     const request = new DerivativeTradesRequest()
 
@@ -191,8 +193,15 @@ export class DerivativesApi extends BaseConsumer {
       request.setDirection(direction)
     }
 
-    request.setSkip(skip)
-    request.setLimit(limit)
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+    }
 
     try {
       const response = await this.request<
@@ -280,7 +289,6 @@ export class DerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.FundingRates)
 
       return response
-
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -288,7 +296,7 @@ export class DerivativesApi extends BaseConsumer {
 
   async fetchDerivativeSubaccountOrdersList({
     marketId,
-    subaccountId
+    subaccountId,
   }: {
     marketId?: string
     subaccountId?: string
@@ -304,12 +312,13 @@ export class DerivativesApi extends BaseConsumer {
     }
 
     try {
-      const response = await this.request<DerivativeSubaccountOrdersListRequest,
+      const response = await this.request<
+        DerivativeSubaccountOrdersListRequest,
         DerivativeSubaccountOrdersListResponse,
-        typeof InjectiveDerivativeExchangeRPC.SubaccountOrdersList>(request, InjectiveDerivativeExchangeRPC.SubaccountOrdersList)
+        typeof InjectiveDerivativeExchangeRPC.SubaccountOrdersList
+      >(request, InjectiveDerivativeExchangeRPC.SubaccountOrdersList)
 
       return response
-
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -319,7 +328,7 @@ export class DerivativesApi extends BaseConsumer {
     marketId,
     subaccountId,
     direction,
-    executionType
+    executionType,
   }: {
     marketId?: string
     subaccountId?: string
@@ -345,35 +354,33 @@ export class DerivativesApi extends BaseConsumer {
     }
 
     try {
-      const response = await this.request<DerivativeSubaccountTradesListRequest,
+      const response = await this.request<
+        DerivativeSubaccountTradesListRequest,
         DerivativeSubaccountTradesListResponse,
-        typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList>(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
+        typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList
+      >(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
 
       return response
-
     } catch (e: any) {
       throw new Error(e.message)
     }
   }
 
-  async fetchDerivativeOrderbooks({
-    marketIds
-  }: {
-    marketIds?: string[]
-  }) {
+  async fetchDerivativeOrderbooks(marketIds: string[]) {
     const request = new DerivativeOrderbooksRequest()
 
-    if (marketIds) {
+    if (marketIds.length > 0) {
       request.setMarketIdsList(marketIds)
     }
 
     try {
-      const response = await this.request<DerivativeOrderbooksRequest,
+      const response = await this.request<
+        DerivativeOrderbooksRequest,
         DerivativeOrderbooksResponse,
-        typeof InjectiveDerivativeExchangeRPC.Orderbooks>(request, InjectiveDerivativeExchangeRPC.Orderbooks)
+        typeof InjectiveDerivativeExchangeRPC.Orderbooks
+      >(request, InjectiveDerivativeExchangeRPC.Orderbooks)
 
       return response
-
     } catch (e: any) {
       throw new Error(e.message)
     }

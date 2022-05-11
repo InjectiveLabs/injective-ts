@@ -9,18 +9,21 @@ import {
   StreamMarketsResponse,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb_service'
-import { TradeExecutionSide, TradeDirection, SpotOrderSide } from '../../../types'
+import {
+  TradeExecutionSide,
+  TradeDirection,
+  SpotOrderSide,
+} from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { PaginationOption } from '../../../types/pagination'
 
 export type SpotOrderbookStreamCallback = (
   response: StreamOrderbookResponse,
 ) => void
 
-export type MarketsStreamCallback = (
-  response: StreamMarketsResponse,
-) => void
+export type MarketsStreamCallback = (response: StreamMarketsResponse) => void
 
 export type SpotOrdersStreamCallback = (response: StreamOrdersResponse) => void
 
@@ -117,8 +120,7 @@ export class SpotStream {
     marketId,
     subaccountIds,
     subaccountId,
-    skip = 0,
-    limit = 0,
+    pagination,
     direction,
     executionSide,
     callback,
@@ -129,8 +131,7 @@ export class SpotStream {
     marketId?: string
     subaccountIds?: string[]
     subaccountId?: string
-    skip?: number
-    limit?: number
+    pagination?: PaginationOption
     direction?: TradeDirection
     executionSide?: TradeExecutionSide
     callback: SpotTradesStreamCallback
@@ -163,12 +164,14 @@ export class SpotStream {
       request.setDirection(direction)
     }
 
-    if (skip !== undefined) {
-      request.setSkip(skip)
-    }
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
 
-    if (limit !== undefined) {
-      request.setLimit(limit)
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     const stream = this.client.streamTrades(request)
@@ -194,8 +197,8 @@ export class SpotStream {
     onEndCallback,
     onStatusCallback,
   }: {
-    marketIds?: string[],
-    callback: MarketsStreamCallback,
+    marketIds?: string[]
+    callback: MarketsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {

@@ -9,12 +9,17 @@ import {
   StreamPositionsResponse,
   StreamMarketRequest,
   StreamMarketResponse,
-} from "@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb";
+} from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
-import { TradeDirection, TradeExecutionSide, DerivativeOrderSide } from '../../../types'
+import {
+  TradeDirection,
+  TradeExecutionSide,
+  DerivativeOrderSide,
+} from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { PaginationOption } from '../../../types/pagination'
 
 export type DerivativeOrderbookStreamCallback = (
   response: StreamOrderbookResponse,
@@ -32,9 +37,7 @@ export type PositionsStreamCallback = (
   response: StreamPositionsResponse,
 ) => void
 
-export type MarketStreamCallback = (
-  response: StreamMarketResponse,
-) => void
+export type MarketStreamCallback = (response: StreamMarketResponse) => void
 
 export class DerivativesStream {
   protected client: InjectiveDerivativeExchangeRPCClient
@@ -128,8 +131,7 @@ export class DerivativesStream {
     subaccountIds,
     subaccountId,
     callback,
-    skip = 0,
-    limit = 0,
+    pagination,
     executionSide,
     direction,
     onEndCallback,
@@ -139,8 +141,7 @@ export class DerivativesStream {
     marketId?: string
     subaccountIds?: string[]
     subaccountId?: string
-    skip?: number
-    limit?: number
+    pagination?: PaginationOption
     executionSide?: TradeExecutionSide
     direction?: TradeDirection
     callback: DerivativeTradesStreamCallback
@@ -173,15 +174,15 @@ export class DerivativesStream {
       request.setDirection(direction)
     }
 
-    if (skip !== undefined) {
-      request.setSkip(skip)
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
-
-    if (limit !== undefined) {
-      request.setLimit(limit)
-    }
-
-
 
     const stream = this.client.streamTrades(request)
 
@@ -272,5 +273,5 @@ export class DerivativesStream {
     }
 
     return stream
-                         }
+  }
 }
