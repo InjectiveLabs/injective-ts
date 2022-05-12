@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.23...@injectivelabs/sdk-ts@0.0.24) (2022-05-12)
+
+
+### Bug Fixes
+
+* add DerivativeOrderSide ([5ce6a71](https://github.com/InjectiveLabs/injective-ts/commit/5ce6a71ab37a6d1c6e3de0dfa7afaa505f966891))
+* add missing params in functions ([3cd74e9](https://github.com/InjectiveLabs/injective-ts/commit/3cd74e91a3b77779b1bf4b77af89e098442ddc6a))
+* enums ([a6cbd5a](https://github.com/InjectiveLabs/injective-ts/commit/a6cbd5abe32d56533144852284f9f2511147d70e))
+* fetchSpotSubaccountTradesList ([e7c6b24](https://github.com/InjectiveLabs/injective-ts/commit/e7c6b248f46f44b057b10503adfd96be7e78dfb6))
+* TradeExecutionSide enum values ([00b5325](https://github.com/InjectiveLabs/injective-ts/commit/00b53255de72fa6157a28a5b9bb4fc0df662b6ef))
+
+
+### Features
+
+* add functions ([4761770](https://github.com/InjectiveLabs/injective-ts/commit/4761770454e481ae85175232423f814a1c3434b5))
+* add skip & limit params ([35012a4](https://github.com/InjectiveLabs/injective-ts/commit/35012a4a88ce3e24f2e2f7cfa5fcd5da97d20964))
+* add streamSpotMarket ([66e392c](https://github.com/InjectiveLabs/injective-ts/commit/66e392c5e8e8cb2a6febffb9bdac00355827f8be))
+
+
+
+
+
 ## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.22...@injectivelabs/sdk-ts@0.0.23) (2022-05-11)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
