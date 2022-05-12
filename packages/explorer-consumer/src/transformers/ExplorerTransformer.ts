@@ -190,6 +190,7 @@ export class ExplorerTransformer {
       proposed: validator.getProposed(),
       signed: validator.getSigned(),
       missed: validator.getMissed(),
+      uptimePercentage: validator.getUptimePercentage(),
       timestamp: validator.getTimestamp(),
       uptimesList: validator
         .getUptimesList()

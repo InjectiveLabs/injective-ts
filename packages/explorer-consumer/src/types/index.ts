@@ -136,6 +136,7 @@ export interface Validator {
   commissionUpdateTime: string
   proposed: number
   signed: number
+  uptimePercentage: number
   missed: number
   timestamp: string
   uptimesList: ValidatorUptime[]
