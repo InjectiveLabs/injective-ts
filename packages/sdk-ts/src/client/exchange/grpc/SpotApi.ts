@@ -10,14 +10,45 @@ import {
   OrdersResponse as SpotOrdersResponse,
   TradesRequest as SpotTradesRequest,
   TradesResponse as SpotTradesResponse,
+  SubaccountOrdersListRequest as SpotSubaccountOrdersListRequest,
+  SubaccountOrdersListResponse as SpotSubaccountOrdersListResponse,
+  SubaccountTradesListRequest as SpotSubaccountTradesListRequest,
+  SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
+  OrderbooksRequest as SpotOrderbooksRequest,
+  OrderbooksResponse as SpotOrderbooksResponse,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { SpotOrderSide } from '../../../types/spot'
-import { TradeExecutionSide } from '../../../types/exchange'
+import {
+  TradeExecutionSide,
+  TradeDirection,
+  TradeExecutionType,
+} from '../../../types/exchange'
+import { PaginationOption } from '../../../types/pagination'
 
 export class SpotApi extends BaseConsumer {
-  async fetchSpotMarkets() {
+  async fetchSpotMarkets({
+    baseDenom,
+    marketStatus,
+    quoteDenom,
+  }: {
+    baseDenom?: string
+    marketStatus?: string
+    quoteDenom?: string
+  }) {
     const request = new SpotMarketsRequest()
+
+    if (baseDenom) {
+      request.setBaseDenom(baseDenom)
+    }
+
+    if (marketStatus) {
+      request.setMarketStatus(marketStatus)
+    }
+
+    if (quoteDenom) {
+      request.setQuoteDenom(quoteDenom)
+    }
 
     try {
       const response = await this.request<
@@ -70,10 +101,12 @@ export class SpotApi extends BaseConsumer {
     marketId,
     subaccountId,
     orderSide,
+    pagination,
   }: {
     marketId?: string
     subaccountId?: string
     orderSide?: SpotOrderSide
+    pagination?: PaginationOption
   }) {
     const request = new SpotOrdersRequest()
 
@@ -87,6 +120,16 @@ export class SpotApi extends BaseConsumer {
 
     if (orderSide) {
       request.setOrderSide(orderSide)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
@@ -105,13 +148,15 @@ export class SpotApi extends BaseConsumer {
   async fetchSpotTrades({
     marketId,
     subaccountId,
-    skip = 0,
+    pagination,
     executionSide,
+    direction,
   }: {
     marketId?: string
-    skip?: number
+    pagination?: PaginationOption
     subaccountId?: string
     executionSide?: TradeExecutionSide
+    direction?: TradeDirection
   }) {
     const request = new SpotTradesRequest()
 
@@ -127,7 +172,19 @@ export class SpotApi extends BaseConsumer {
       request.setExecutionSide(executionSide)
     }
 
-    request.setSkip(skip)
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+    }
 
     try {
       const response = await this.request<
@@ -135,6 +192,122 @@ export class SpotApi extends BaseConsumer {
         SpotTradesResponse,
         typeof InjectiveSpotExchangeRPC.Trades
       >(request, InjectiveSpotExchangeRPC.Trades)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchSpotSubaccountOrdersList({
+    subaccountId,
+    marketId,
+    pagination,
+  }: {
+    subaccountId?: string
+    marketId?: string
+    pagination?: PaginationOption
+  }) {
+    const request = new SpotSubaccountOrdersListRequest()
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+    }
+
+    try {
+      const response = await this.request<
+        SpotSubaccountOrdersListRequest,
+        SpotSubaccountOrdersListResponse,
+        typeof InjectiveSpotExchangeRPC.SubaccountOrdersList
+      >(request, InjectiveSpotExchangeRPC.SubaccountOrdersList)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchSpotSubaccountTradesList({
+    subaccountId,
+    marketId,
+    direction,
+    executionType,
+    pagination,
+  }: {
+    subaccountId?: string
+    marketId?: string
+    direction?: TradeDirection
+    executionType?: TradeExecutionType
+    pagination?: PaginationOption
+  }) {
+    const request = new SpotSubaccountTradesListRequest()
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (executionType) {
+      request.setExecutionType(executionType)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+    }
+
+    try {
+      const response = await this.request<
+        SpotSubaccountTradesListRequest,
+        SpotSubaccountTradesListResponse,
+        typeof InjectiveSpotExchangeRPC.SubaccountTradesList
+      >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchSpotOrderbooks(marketIds: string[]) {
+    const request = new SpotOrderbooksRequest()
+
+    if (marketIds.length > 0) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    try {
+      const response = await this.request<
+        SpotOrderbooksRequest,
+        SpotOrderbooksResponse,
+        typeof InjectiveSpotExchangeRPC.Orderbooks
+      >(request, InjectiveSpotExchangeRPC.Orderbooks)
 
       return response
     } catch (e: any) {

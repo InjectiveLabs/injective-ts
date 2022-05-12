@@ -5,16 +5,25 @@ import {
   StreamOrdersResponse,
   StreamTradesRequest,
   StreamTradesResponse,
+  StreamMarketsRequest,
+  StreamMarketsResponse,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb_service'
-import { TradeExecutionSide } from '../../../types'
+import {
+  TradeExecutionSide,
+  TradeDirection,
+  SpotOrderSide,
+} from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { PaginationOption } from '../../../types/pagination'
 
 export type SpotOrderbookStreamCallback = (
   response: StreamOrderbookResponse,
 ) => void
+
+export type MarketsStreamCallback = (response: StreamMarketsResponse) => void
 
 export type SpotOrdersStreamCallback = (response: StreamOrdersResponse) => void
 
@@ -63,12 +72,14 @@ export class SpotStream {
   streamSpotOrders({
     marketId,
     subaccountId,
+    orderSide,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
     marketId?: string
     subaccountId?: string
+    orderSide?: SpotOrderSide
     callback: SpotOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
@@ -81,6 +92,10 @@ export class SpotStream {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (orderSide) {
+      request.setOrderSide(orderSide)
     }
 
     const stream = this.client.streamOrders(request)
@@ -101,17 +116,23 @@ export class SpotStream {
   }
 
   streamSpotTrades({
+    marketIds,
     marketId,
+    subaccountIds,
     subaccountId,
-    callback,
-    skip = 0,
+    pagination,
+    direction,
     executionSide,
+    callback,
     onEndCallback,
     onStatusCallback,
   }: {
+    marketIds?: string[]
     marketId?: string
+    subaccountIds?: string[]
     subaccountId?: string
-    skip?: number
+    pagination?: PaginationOption
+    direction?: TradeDirection
     executionSide?: TradeExecutionSide
     callback: SpotTradesStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
@@ -119,8 +140,16 @@ export class SpotStream {
   }) {
     const request = new StreamTradesRequest()
 
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (subaccountIds) {
+      request.setSubaccountIdsList(subaccountIds)
     }
 
     if (subaccountId) {
@@ -131,13 +160,57 @@ export class SpotStream {
       request.setExecutionSide(executionSide)
     }
 
-    if (skip !== undefined) {
-      request.setSkip(skip)
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     const stream = this.client.streamTrades(request)
 
     stream.on('data', (response: StreamTradesResponse) => {
+      callback(response)
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+  }
+
+  streamSpotMarket({
+    marketIds,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketIds?: string[]
+    callback: MarketsStreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamMarketsRequest()
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    const stream = this.client.streamMarkets(request)
+
+    stream.on('data', (response: StreamMarketsResponse) => {
       callback(response)
     })
 

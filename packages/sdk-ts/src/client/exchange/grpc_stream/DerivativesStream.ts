@@ -7,12 +7,19 @@ import {
   StreamTradesResponse,
   StreamPositionsRequest,
   StreamPositionsResponse,
+  StreamMarketRequest,
+  StreamMarketResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
-import { TradeExecutionSide } from '../../../types'
+import {
+  TradeDirection,
+  TradeExecutionSide,
+  DerivativeOrderSide,
+} from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { PaginationOption } from '../../../types/pagination'
 
 export type DerivativeOrderbookStreamCallback = (
   response: StreamOrderbookResponse,
@@ -29,6 +36,8 @@ export type DerivativeTradesStreamCallback = (
 export type PositionsStreamCallback = (
   response: StreamPositionsResponse,
 ) => void
+
+export type MarketStreamCallback = (response: StreamMarketResponse) => void
 
 export class DerivativesStream {
   protected client: InjectiveDerivativeExchangeRPCClient
@@ -73,12 +82,14 @@ export class DerivativesStream {
   streamDerivativeOrders({
     marketId,
     subaccountId,
+    orderSide,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
     marketId?: string
     subaccountId?: string
+    orderSide?: DerivativeOrderSide
     callback: DerivativeOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
@@ -91,6 +102,10 @@ export class DerivativesStream {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (orderSide) {
+      request.setOrderSide(orderSide)
     }
 
     const stream = this.client.streamOrders(request)
@@ -111,26 +126,40 @@ export class DerivativesStream {
   }
 
   streamDerivativeTrades({
+    marketIds,
     marketId,
+    subaccountIds,
     subaccountId,
     callback,
-    skip = 0,
+    pagination,
     executionSide,
+    direction,
     onEndCallback,
     onStatusCallback,
   }: {
+    marketIds?: string[]
     marketId?: string
+    subaccountIds?: string[]
     subaccountId?: string
-    skip?: number
+    pagination?: PaginationOption
     executionSide?: TradeExecutionSide
+    direction?: TradeDirection
     callback: DerivativeTradesStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamTradesRequest()
 
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (subaccountIds) {
+      request.setSubaccountIdsList(subaccountIds)
     }
 
     if (subaccountId) {
@@ -141,8 +170,18 @@ export class DerivativesStream {
       request.setExecutionSide(executionSide)
     }
 
-    if (skip !== undefined) {
-      request.setSkip(skip)
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     const stream = this.client.streamTrades(request)
@@ -188,6 +227,40 @@ export class DerivativesStream {
     const stream = this.client.streamPositions(request)
 
     stream.on('data', (response: StreamPositionsResponse) => {
+      callback(response)
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+  }
+
+  streamDerivativeMarket({
+    marketIds,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketIds?: string[]
+    callback: MarketStreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamMarketRequest()
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    const stream = this.client.streamMarket(request)
+
+    stream.on('data', (response: StreamMarketResponse) => {
       callback(response)
     })
 

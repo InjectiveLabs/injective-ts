@@ -15,16 +15,39 @@ import {
   TradesResponse as DerivativeTradesResponse,
   PositionsRequest as DerivativePositionsRequest,
   PositionsResponse as DerivativePositionsResponse,
+  SubaccountOrdersListRequest as DerivativeSubaccountOrdersListRequest,
+  SubaccountOrdersListResponse as DerivativeSubaccountOrdersListResponse,
+  SubaccountTradesListRequest as DerivativeSubaccountTradesListRequest,
+  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
+  OrderbooksRequest as DerivativeOrderbooksRequest,
+  OrderbooksResponse as DerivativeOrderbooksResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import { DerivativeOrderSide } from '../../../types/derivatives'
-import { TradeExecutionSide } from '../../../types/exchange'
+import {
+  TradeDirection,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class DerivativesApi extends BaseConsumer {
-  async fetchDerivativeMarkets() {
+  async fetchDerivativeMarkets({
+    marketStatus,
+    quoteDenom,
+  }: {
+    marketStatus?: string
+    quoteDenom?: string
+  }) {
     const request = new DerivativeMarketsRequest()
+
+    if (marketStatus) {
+      request.setMarketStatus(marketStatus)
+    }
+    if (quoteDenom) {
+      request.setQuoteDenom(quoteDenom)
+    }
 
     try {
       const response = await this.request<
@@ -77,10 +100,12 @@ export class DerivativesApi extends BaseConsumer {
     marketId,
     subaccountId,
     orderSide,
+    pagination,
   }: {
     marketId?: string
     orderSide?: DerivativeOrderSide
     subaccountId?: string
+    pagination?: PaginationOption
   }) {
     const request = new DerivativeOrdersRequest()
 
@@ -94,6 +119,16 @@ export class DerivativesApi extends BaseConsumer {
 
     if (orderSide) {
       request.setOrderSide(orderSide)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
@@ -112,9 +147,11 @@ export class DerivativesApi extends BaseConsumer {
   async fetchDerivativePositions({
     marketId,
     subaccountId,
+    pagination,
   }: {
     marketId?: string
     subaccountId?: string
+    pagination?: PaginationOption
   }) {
     const request = new DerivativePositionsRequest()
 
@@ -124,6 +161,16 @@ export class DerivativesApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
     }
 
     try {
@@ -142,13 +189,15 @@ export class DerivativesApi extends BaseConsumer {
   async fetchDerivativeTrades({
     marketId,
     subaccountId,
-    skip = 0,
+    direction,
+    pagination,
     executionSide,
   }: {
     marketId?: string
-    skip?: number
+    direction?: TradeDirection
     subaccountId?: string
     executionSide?: TradeExecutionSide
+    pagination?: PaginationOption
   }) {
     const request = new DerivativeTradesRequest()
 
@@ -164,7 +213,19 @@ export class DerivativesApi extends BaseConsumer {
       request.setExecutionSide(executionSide)
     }
 
-    request.setSkip(skip)
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+    }
 
     try {
       const response = await this.request<
@@ -250,6 +311,122 @@ export class DerivativesApi extends BaseConsumer {
         FundingRatesResponse,
         typeof InjectiveDerivativeExchangeRPC.FundingRates
       >(request, InjectiveDerivativeExchangeRPC.FundingRates)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchDerivativeSubaccountOrdersList({
+    marketId,
+    subaccountId,
+    pagination,
+  }: {
+    marketId?: string
+    subaccountId?: string
+    pagination?: PaginationOption
+  }) {
+    const request = new DerivativeSubaccountOrdersListRequest()
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+    }
+
+    try {
+      const response = await this.request<
+        DerivativeSubaccountOrdersListRequest,
+        DerivativeSubaccountOrdersListResponse,
+        typeof InjectiveDerivativeExchangeRPC.SubaccountOrdersList
+      >(request, InjectiveDerivativeExchangeRPC.SubaccountOrdersList)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchDerivativeSubaccountTradesList({
+    marketId,
+    subaccountId,
+    direction,
+    executionType,
+    pagination,
+  }: {
+    marketId?: string
+    subaccountId?: string
+    direction?: TradeDirection
+    executionType?: TradeExecutionType
+    pagination?: PaginationOption
+  }) {
+    const request = new DerivativeSubaccountTradesListRequest()
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (executionType) {
+      request.setExecutionType(executionType)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+    }
+
+    try {
+      const response = await this.request<
+        DerivativeSubaccountTradesListRequest,
+        DerivativeSubaccountTradesListResponse,
+        typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList
+      >(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchDerivativeOrderbooks(marketIds: string[]) {
+    const request = new DerivativeOrderbooksRequest()
+
+    if (marketIds.length > 0) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    try {
+      const response = await this.request<
+        DerivativeOrderbooksRequest,
+        DerivativeOrderbooksResponse,
+        typeof InjectiveDerivativeExchangeRPC.Orderbooks
+      >(request, InjectiveDerivativeExchangeRPC.Orderbooks)
 
       return response
     } catch (e: any) {
