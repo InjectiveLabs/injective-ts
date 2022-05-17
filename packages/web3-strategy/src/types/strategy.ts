@@ -1,4 +1,5 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import Web3 from 'web3'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void
@@ -44,4 +45,8 @@ export interface ConcreteWeb3Strategy {
   cancelAllEvents?(): void
 
   isWeb3Connected(): boolean
+
+  disconnect?(): Promise<void>
+
+  getWeb3(): Web3
 }

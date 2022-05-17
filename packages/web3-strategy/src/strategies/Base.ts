@@ -6,8 +6,18 @@ export default abstract class BaseConcreteStrategy {
 
   protected web3: Web3
 
-  constructor({ chainId, web3 }: { chainId: ChainId; web3: Web3 }) {
+  protected constructor({
+    chainId,
+    web3Creator,
+  }: {
+    chainId: ChainId
+    web3Creator: () => Web3
+  }) {
     this.chainId = chainId
-    this.web3 = web3
+    this.web3 = web3Creator()
+  }
+
+  getWeb3(): Web3 {
+    return this.web3
   }
 }

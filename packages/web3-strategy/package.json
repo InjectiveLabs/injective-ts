@@ -46,6 +46,7 @@
     "@types/ethereumjs-util": "^6.1.0",
     "@types/hdkey": "^2.0.1",
     "@types/ledgerhq__hw-transport-webusb": "^4.70.1",
+    "@walletconnect/web3-provider": "^1.7.8",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",
@@ -53,7 +54,9 @@
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.3",
     "trezor-connect": "^8.2.8",
-    "web3": "^1.7.2"
+    "web3": "^1.7.3",
+    "web3-core": "^1.7.3",
+    "web3-provider-engine": "^16.0.4"
   },
   "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4"
 }
