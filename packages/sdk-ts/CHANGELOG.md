@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.27...@injectivelabs/sdk-ts@0.0.28) (2022-05-17)
+
+
+### Features
+
+* rest endpoints decoupling ([cba0e1a](https://github.com/InjectiveLabs/injective-ts/commit/cba0e1a62ee4e24ceb4f749411618112ec0f961b))
+
+
+
+
+
 ## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.26...@injectivelabs/sdk-ts@0.0.27) (2022-05-17)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
