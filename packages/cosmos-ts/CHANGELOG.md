@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.5.25...@injectivelabs/cosmos-ts@0.5.26) (2022-05-17)
+
+
+### Bug Fixes
+
+* terrajs version ([04288df](https://github.com/InjectiveLabs/injective-ts/commit/04288df12673e80fe131fa77f13aa30c7be501d4))
+
+
+
+
+
 ## [0.5.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.5.24...@injectivelabs/cosmos-ts@0.5.25) (2022-05-17)
 
 
