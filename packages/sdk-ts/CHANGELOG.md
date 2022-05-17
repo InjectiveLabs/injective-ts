@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.31...@injectivelabs/sdk-ts@0.0.32) (2022-05-17)
+
+
+### Features
+
+* exchange module state ([ab8fcd2](https://github.com/InjectiveLabs/injective-ts/commit/ab8fcd28cbf6bbac4b4d524d8d3d202937c935cb))
+
+
+
+
+
 ## [0.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.30...@injectivelabs/sdk-ts@0.0.31) (2022-05-17)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
