@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ui-ts",
   "description": "SDK in TypeScript for building Injective UI applications in a browser environment.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -33,12 +33,12 @@
   "dependencies": {
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
-    "@injectivelabs/exceptions": "^0.5.1",
-    "@injectivelabs/networks": "^0.5.4",
-    "@injectivelabs/sdk-ts": "^0.0.28",
+    "@injectivelabs/exceptions": "^0.5.2",
+    "@injectivelabs/networks": "^0.5.5",
+    "@injectivelabs/sdk-ts": "^0.0.29",
     "@injectivelabs/ts-types": "^0.5.1",
-    "@injectivelabs/utils": "^0.5.1",
-    "@injectivelabs/web3-strategy": "^0.5.31",
+    "@injectivelabs/utils": "^0.5.2",
+    "@injectivelabs/web3-strategy": "^0.5.32",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   }

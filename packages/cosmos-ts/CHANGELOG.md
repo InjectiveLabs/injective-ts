@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.5.24...@injectivelabs/cosmos-ts@0.5.25) (2022-05-17)
+
+
+### Features
+
+* sdk-ui-ts ([4c8f902](https://github.com/InjectiveLabs/injective-ts/commit/4c8f90262b0d7cf2df3038c23fda4a9e83bb8c6a))
+
+
+
+
+
 ## [0.5.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/cosmos-ts@0.5.23...@injectivelabs/cosmos-ts@0.5.24) (2022-05-17)
 
 **Note:** Version bump only for package @injectivelabs/cosmos-ts

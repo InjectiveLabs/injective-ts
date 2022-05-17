@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/ui-common",
   "description": "Reusable Vue Components, Vuex Store Modules, Composables, and more",
-  "version": "0.5.54",
+  "version": "0.5.55",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,21 +31,21 @@
     "@apollo/client": "^3.5.8",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
-    "@injectivelabs/alchemy-api": "^0.5.1",
+    "@injectivelabs/alchemy-api": "^0.5.2",
     "@injectivelabs/chain-api": "^1.7.1",
-    "@injectivelabs/chain-consumer": "^0.5.5",
-    "@injectivelabs/contracts": "^0.5.20",
-    "@injectivelabs/derivatives-consumer": "^0.5.4",
-    "@injectivelabs/exceptions": "^0.5.1",
-    "@injectivelabs/exchange-consumer": "^0.5.4",
-    "@injectivelabs/explorer-consumer": "^0.5.5",
-    "@injectivelabs/networks": "^0.5.4",
-    "@injectivelabs/spot-consumer": "^0.5.6",
-    "@injectivelabs/subaccount-consumer": "^0.5.3",
-    "@injectivelabs/token-metadata": "^0.5.18",
-    "@injectivelabs/token-utils": "^0.5.1",
+    "@injectivelabs/chain-consumer": "^0.5.6",
+    "@injectivelabs/contracts": "^0.5.21",
+    "@injectivelabs/derivatives-consumer": "^0.5.5",
+    "@injectivelabs/exceptions": "^0.5.2",
+    "@injectivelabs/exchange-consumer": "^0.5.5",
+    "@injectivelabs/explorer-consumer": "^0.5.6",
+    "@injectivelabs/networks": "^0.5.5",
+    "@injectivelabs/spot-consumer": "^0.5.7",
+    "@injectivelabs/subaccount-consumer": "^0.5.4",
+    "@injectivelabs/token-metadata": "^0.5.19",
+    "@injectivelabs/token-utils": "^0.5.2",
     "@injectivelabs/ts-types": "^0.5.1",
-    "@injectivelabs/utils": "^0.5.1",
+    "@injectivelabs/utils": "^0.5.2",
     "bech32": "^2.0.0",
     "date-fns": "^2.28.0",
     "ethereumjs-util": "^7.1.4",
@@ -54,7 +54,7 @@
     "shx": "^0.3.2"
   },
   "devDependencies": {
-    "@injectivelabs/web3-strategy": "^0.5.31"
+    "@injectivelabs/web3-strategy": "^0.5.32"
   },
   "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4"
 }
