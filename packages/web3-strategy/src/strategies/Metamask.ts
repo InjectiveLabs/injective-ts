@@ -26,9 +26,8 @@ export default class Metamask
 {
   private ethereum: Eip1993ProviderWithMetamask
 
-  constructor({ chainId, web3 }: { chainId: ChainId; web3: Web3 }) {
-    super({ chainId, web3 })
-
+  constructor(args: { chainId: ChainId; web3Creator: () => Web3 }) {
+    super(args)
     this.ethereum = $window.ethereum
   }
 
@@ -68,6 +67,7 @@ export default class Metamask
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     const { ethereum } = this
+    console.log(transaction)
 
     if (!ethereum) {
       throw new Web3Exception('Metamask: You need Metamask extension installed')
@@ -91,6 +91,7 @@ export default class Metamask
   ): Promise<string> {
     const { ethereum } = this
 
+    console.log(eip712json)
     if (!ethereum) {
       throw new Web3Exception('Metamask: You need Metamask extension installed')
     }

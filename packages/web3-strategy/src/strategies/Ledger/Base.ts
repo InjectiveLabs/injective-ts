@@ -33,7 +33,7 @@ const messageHash = (message: any) =>
 const commonLockedErrors = (error: any) => {
   const message = error.message || error
 
-  if (
+  return !!(
     message.includes('Ledger device: Incorrect length') ||
     message.includes('Ledger device: INS_NOT_SUPPORTED') ||
     message.includes('Ledger device: CLA_NOT_SUPPORTED') ||
@@ -41,11 +41,7 @@ const commonLockedErrors = (error: any) => {
     message.includes('Failed to open the device') ||
     message.includes('Ledger Device is busy') ||
     message.includes('UNKNOWN_ERROR')
-  ) {
-    return true
-  }
-
-  return false
+  )
 }
 
 export default class LedgerBase
@@ -60,14 +56,14 @@ export default class LedgerBase
 
   constructor({
     chainId,
-    web3,
+    web3Creator,
     derivationPathType,
   }: {
     chainId: ChainId
-    web3: Web3
+    web3Creator: () => Web3
     derivationPathType: LedgerDerivationPathType
   }) {
-    super({ chainId, web3 })
+    super({ chainId, web3Creator })
 
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
     this.derivationPathType = derivationPathType
@@ -177,8 +173,8 @@ export default class LedgerBase
 
     const tx = FeeMarketEIP1559Transaction.fromTxData(eip1559TxData, { common })
     const msg = tx.getMessageToSign(false)
-    const encodedMessage = msg
-    const encodedMessageHex = encodedMessage.toString('hex')
+    // const encodedMessage = msg
+    const encodedMessageHex = msg.toString('hex')
 
     try {
       const ledger = await this.ledger.getInstance()
