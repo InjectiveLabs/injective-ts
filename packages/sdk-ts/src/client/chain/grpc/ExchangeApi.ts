@@ -5,6 +5,8 @@ import {
   QueryTradeRewardCampaignRequest,
   QueryFeeDiscountAccountInfoRequest,
   QueryTradeRewardPointsRequest,
+  QueryModuleStateRequest,
+  QueryModuleStateResponse,
   QueryTradeRewardPointsResponse,
   QueryFeeDiscountAccountInfoResponse,
   QueryTradeRewardCampaignResponse,
@@ -27,6 +29,22 @@ export class ExchangeApi extends BaseConsumer {
         QueryExchangeParamsResponse,
         typeof ExchangeQuery.QueryExchangeParams
       >(request, ExchangeQuery.QueryExchangeParams)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchModuleState() {
+    const request = new QueryModuleStateRequest()
+
+    try {
+      const response = await this.request<
+        QueryModuleStateRequest,
+        QueryModuleStateResponse,
+        typeof ExchangeQuery.ExchangeModuleState
+      >(request, ExchangeQuery.ExchangeModuleState)
 
       return response
     } catch (e: any) {
