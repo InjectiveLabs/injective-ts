@@ -31,6 +31,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.8",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/chain-api": "^1.7.1",
@@ -49,6 +50,7 @@
     "ethers": "^5.6.4",
     "js-sha3": "^0.8.0",
     "keccak256": "^1.0.6",
+    "graphql": "^16.3.0",
     "link-module-alias": "^1.2.0",
     "secp256k1": "^4.0.3",
     "shx": "^0.3.2",
