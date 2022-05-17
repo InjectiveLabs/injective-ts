@@ -45,7 +45,7 @@ export class TxInjective {
     const { tx } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const packedMsgs = msgs.map((msg) => {
-      const amino = msg.toAmino()
+      const amino = msg.toDirectSign()
 
       const packedMessage = new Any()
       packedMessage.setTypeUrl(amino.type)

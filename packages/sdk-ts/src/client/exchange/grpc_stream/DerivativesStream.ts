@@ -11,15 +11,12 @@ import {
   StreamMarketResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
-import {
-  TradeDirection,
-  TradeExecutionSide,
-  DerivativeOrderSide,
-} from '../../../types'
+import { TradeDirection, TradeExecutionSide } from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { PaginationOption } from '../../../types/pagination'
+import { DerivativeOrderSide } from '../types/derivatives'
 
 export type DerivativeOrderbookStreamCallback = (
   response: StreamOrderbookResponse,

@@ -1,9 +1,9 @@
 import { AuthRestApi } from './rest/AuthRestApi'
 
 export class RestClient {
-  authRestApi: AuthRestApi
+  auth: AuthRestApi
 
   constructor(endpoint: string) {
-    this.authRestApi = new AuthRestApi(endpoint)
+    this.auth = new AuthRestApi(endpoint)
   }
 }

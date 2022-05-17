@@ -34,9 +34,12 @@ export class PublicKey {
   }
 
   public toPubKey(): string {
-    const pubkeyAminoPrefixSecp256k1 = Buffer.from('eb5ae987' + '21', 'hex')
+    const pubkeyDirectSignPrefixSecp256k1 = Buffer.from(
+      'eb5ae987' + '21',
+      'hex',
+    )
     const pubKeyBytes = Buffer.concat([
-      pubkeyAminoPrefixSecp256k1,
+      pubkeyDirectSignPrefixSecp256k1,
       Buffer.from(this.key, 'base64'),
     ])
 

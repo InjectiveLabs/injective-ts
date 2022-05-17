@@ -7,7 +7,7 @@ export class AuthRestApi extends BaseRestConsumer {
    *
    * @param address address of account to look up
    */
-  public async account(address: string): Promise<AccountResponse> {
+  public async fetchAccount(address: string): Promise<AccountResponse> {
     const response = (await this.client.get(
       `cosmos/auth/v1beta1/accounts/${address}`,
     )) as RestApiResponse<AccountResponse>

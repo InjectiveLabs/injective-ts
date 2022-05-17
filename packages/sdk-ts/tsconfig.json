@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "exclude": [
-    "./examples/**/*.ts",
-  ],
   "references": [
     {
       "path": "../ts-types/tsconfig.json"
@@ -15,6 +12,9 @@
     },
     {
       "path": "../networks/tsconfig.json"
+    },
+    {
+      "path": "../tx-utils/tsconfig.json"
     },
   ],
 }

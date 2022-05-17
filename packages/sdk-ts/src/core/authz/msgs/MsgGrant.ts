@@ -15,7 +15,7 @@ export declare namespace MsgGrant {
     expiryInYears?: number
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.authz.v1beta1.MsgGrant'
     message: BaseMsgGrant
   }
@@ -36,7 +36,7 @@ export default class MsgGrant extends MsgBase<
   MsgGrant.Data,
   MsgGrant.Proto,
   MsgGrant.Web3,
-  MsgGrant.Amino
+  MsgGrant.DirectSign
 > {
   static fromJSON(params: MsgGrant.Params): MsgGrant {
     return new MsgGrant(params)
@@ -100,7 +100,7 @@ export default class MsgGrant extends MsgBase<
     } as unknown as MsgGrant.Web3
   }
 
-  toAmino(): MsgGrant.Amino {
+  toDirectSign(): MsgGrant.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -8,7 +8,7 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class IbcApi extends BaseConsumer {
-  async denomTrace(hash: string) {
+  async fetchDenomTrace(hash: string) {
     const request = new QueryDenomTraceRequest()
     request.setHash(hash)
 
@@ -25,7 +25,7 @@ export class IbcApi extends BaseConsumer {
     }
   }
 
-  async denomsTrace() {
+  async fetchDenomsTrace() {
     const request = new QueryDenomTracesRequest()
 
     try {

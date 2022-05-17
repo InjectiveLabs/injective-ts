@@ -6,3 +6,9 @@ export interface PaginationOption {
   reverse?: boolean
   countTotal?: boolean
 }
+
+export interface Pagination {
+  next: string | null
+  prev: string | null
+  current: string | null
+}

@@ -1,5 +1,6 @@
 export * from './GrpcClient'
 export * from './GrpcStreamClient'
 export * from './grpc'
+export * from './transformers'
 export * from './types'
-// export * from './rest'
+export * from './rest'

@@ -38,6 +38,7 @@
     "@injectivelabs/exchange-api": "^2.2.70",
     "@injectivelabs/networks": "^0.5.3",
     "@injectivelabs/ts-types": "^0.5.1",
+    "@injectivelabs/tx-utils": "^0.5.1",
     "@injectivelabs/utils": "^0.5.1",
     "@types/google-protobuf": "^3.15.5",
     "bech32": "^2.0.0",

@@ -25,7 +25,7 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
     }
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.gov.v1beta1.MsgSubmitProposal'
     message: BaseMsgSubmitProposal
   }
@@ -46,7 +46,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
   MsgSubmitProposalSpotMarketLaunch.Data,
   MsgSubmitProposalSpotMarketLaunch.Proto,
   MsgSubmitProposalSpotMarketLaunch.Web3,
-  MsgSubmitProposalSpotMarketLaunch.Amino
+  MsgSubmitProposalSpotMarketLaunch.DirectSign
 > {
   static fromJSON(
     params: MsgSubmitProposalSpotMarketLaunch.Params,
@@ -112,7 +112,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     } as unknown as MsgSubmitProposalSpotMarketLaunch.Web3
   }
 
-  toAmino(): MsgSubmitProposalSpotMarketLaunch.Amino {
+  toDirectSign(): MsgSubmitProposalSpotMarketLaunch.DirectSign {
     const proto = this.toProto()
 
     return {

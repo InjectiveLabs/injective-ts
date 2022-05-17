@@ -20,7 +20,7 @@ export declare namespace MsgTransfer {
     }
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/ibc.applications.transfer.v1.MsgTransfer'
     message: BaseMsgTransfer
   }
@@ -41,7 +41,7 @@ export default class MsgTransfer extends MsgBase<
   MsgTransfer.Data,
   MsgTransfer.Proto,
   MsgTransfer.Web3,
-  MsgTransfer.Amino
+  MsgTransfer.DirectSign
 > {
   static fromJSON(params: MsgTransfer.Params): MsgTransfer {
     return new MsgTransfer(params)
@@ -97,7 +97,7 @@ export default class MsgTransfer extends MsgBase<
     }
   }
 
-  toAmino(): MsgTransfer.Amino {
+  toDirectSign(): MsgTransfer.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -10,7 +10,7 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class MintApi extends BaseConsumer {
-  async moduleParams() {
+  async fetchModuleParams() {
     const request = new QueryMintParamsRequest()
 
     try {
@@ -26,7 +26,7 @@ export class MintApi extends BaseConsumer {
     }
   }
 
-  async inflation() {
+  async fetchInflation() {
     const request = new QueryInflationRequest()
 
     try {
@@ -42,7 +42,7 @@ export class MintApi extends BaseConsumer {
     }
   }
 
-  async annualProvisions() {
+  async fetchAnnualProvisions() {
     const request = new QueryAnnualProvisionsRequest()
 
     try {

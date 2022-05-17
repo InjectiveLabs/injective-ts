@@ -5,25 +5,25 @@ import { OracleStream } from './grpc_stream/OracleStream'
 import { SpotStream } from './grpc_stream/SpotStream'
 import { ExplorerStream } from './grpc_stream/ExplorerStream'
 
-export class ExchangeGrpcStreamClient {
-  derivativesStream: DerivativesStream
+export class GrpcStreamClient {
+  derivatives: DerivativesStream
 
-  spotStream: SpotStream
+  spot: SpotStream
 
-  accountStream: AccountStream
+  account: AccountStream
 
-  auctionStream: AuctionStream
+  auction: AuctionStream
 
-  oracleStream: OracleStream
+  oracle: OracleStream
 
-  explorerStream: ExplorerStream
+  explorer: ExplorerStream
 
   constructor(endpoint: string) {
-    this.derivativesStream = new DerivativesStream(endpoint)
-    this.spotStream = new SpotStream(endpoint)
-    this.accountStream = new AccountStream(endpoint)
-    this.auctionStream = new AuctionStream(endpoint)
-    this.oracleStream = new OracleStream(endpoint)
-    this.explorerStream = new ExplorerStream(endpoint)
+    this.derivatives = new DerivativesStream(endpoint)
+    this.spot = new SpotStream(endpoint)
+    this.account = new AccountStream(endpoint)
+    this.auction = new AuctionStream(endpoint)
+    this.oracle = new OracleStream(endpoint)
+    this.explorer = new ExplorerStream(endpoint)
   }
 }

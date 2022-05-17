@@ -12,7 +12,7 @@ export declare namespace MsgDeposit {
     }
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/injective.exchange.v1beta1.MsgDeposit'
     message: BaseMsgDeposit
   }
@@ -33,7 +33,7 @@ export default class MsgDeposit extends MsgBase<
   MsgDeposit.Data,
   MsgDeposit.Proto,
   MsgDeposit.Web3,
-  MsgDeposit.Amino
+  MsgDeposit.DirectSign
 > {
   static fromJSON(params: MsgDeposit.Params): MsgDeposit {
     return new MsgDeposit(params)
@@ -72,7 +72,7 @@ export default class MsgDeposit extends MsgBase<
     }
   }
 
-  toAmino(): MsgDeposit.Amino {
+  toDirectSign(): MsgDeposit.DirectSign {
     const proto = this.toProto()
 
     return {

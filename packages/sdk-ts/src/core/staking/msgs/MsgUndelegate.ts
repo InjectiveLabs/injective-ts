@@ -11,7 +11,7 @@ export declare namespace MsgUndelegate {
     validatorAddress: string
     injectiveAddress: string
   }
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.staking.v1beta1.MsgUndelegate'
     message: BaseMsgUndelegate
   }
@@ -32,7 +32,7 @@ export default class MsgUndelegate extends MsgBase<
   MsgUndelegate.Data,
   MsgUndelegate.Proto,
   MsgUndelegate.Web3,
-  MsgUndelegate.Amino
+  MsgUndelegate.DirectSign
 > {
   static fromJSON(params: MsgUndelegate.Params): MsgUndelegate {
     return new MsgUndelegate(params)
@@ -71,7 +71,7 @@ export default class MsgUndelegate extends MsgBase<
     }
   }
 
-  toAmino(): MsgUndelegate.Amino {
+  toDirectSign(): MsgUndelegate.DirectSign {
     const proto = this.toProto()
 
     return {

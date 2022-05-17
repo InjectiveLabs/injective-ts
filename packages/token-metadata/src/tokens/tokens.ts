@@ -631,4 +631,13 @@ export default {
     address: '',
     coinGeckoId: 'evmos',
   },
+
+  STX: {
+    name: 'Stacks',
+    logo: 'stacks.png',
+    symbol: 'STX',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'blockstack',
+  },
 }

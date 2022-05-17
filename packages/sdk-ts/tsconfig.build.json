@@ -8,9 +8,6 @@
   "include": [
     "./src/**/*.ts"
   ],
-  "exclude": [
-    "./examples/**/*.ts",
-  ],
   "references": [
     {
       "path": "../ts-types/tsconfig.build.json"
@@ -23,6 +20,9 @@
     },
     {
       "path": "../networks/tsconfig.build.json"
+    },
+    {
+      "path": "../tx-utils/tsconfig.build.json"
     },
   ],
 }

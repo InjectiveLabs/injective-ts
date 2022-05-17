@@ -55,6 +55,7 @@ export class BankService extends BaseService {
         }),
         {},
       )
+
     const ibcBankBalances = balances
       .filter((balance) => balance.getDenom().startsWith('ibc'))
       .reduce(

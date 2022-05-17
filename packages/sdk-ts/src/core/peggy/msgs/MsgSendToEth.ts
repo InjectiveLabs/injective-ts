@@ -20,7 +20,7 @@ export declare namespace MsgSendToEth {
     injectiveAddress: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/injective.peggy.v1.MsgSendToEth'
     message: BaseMsgSendToEth
   }
@@ -41,7 +41,7 @@ export default class MsgSendToEth extends MsgBase<
   MsgSendToEth.Data,
   MsgSendToEth.Proto,
   MsgSendToEth.Web3,
-  MsgSendToEth.Amino
+  MsgSendToEth.DirectSign
 > {
   static fromJSON(params: MsgSendToEth.Params): MsgSendToEth {
     return new MsgSendToEth(params)
@@ -89,7 +89,7 @@ export default class MsgSendToEth extends MsgBase<
     }
   }
 
-  toAmino(): MsgSendToEth.Amino {
+  toDirectSign(): MsgSendToEth.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -23,7 +23,6 @@ import {
   OrderbooksResponse as DerivativeOrderbooksResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
-import { DerivativeOrderSide } from '../../../types/derivatives'
 import {
   TradeDirection,
   TradeExecutionSide,
@@ -31,15 +30,11 @@ import {
 } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { DerivativeOrderSide } from '../types/derivatives'
 
 export class DerivativesApi extends BaseConsumer {
-  async fetchDerivativeMarkets({
-    marketStatus,
-    quoteDenom,
-  }: {
-    marketStatus?: string
-    quoteDenom?: string
-  }) {
+  async fetchMarkets(params?: { marketStatus?: string; quoteDenom?: string }) {
+    const { marketStatus, quoteDenom } = params || {}
     const request = new DerivativeMarketsRequest()
 
     if (marketStatus) {
@@ -62,7 +57,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativeMarket(marketId: string) {
+  async fetchMarket(marketId: string) {
     const request = new DerivativeMarketRequest()
     request.setMarketId(marketId)
 
@@ -79,7 +74,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativeOrderbook(marketId: string) {
+  async fetchOrderbook(marketId: string) {
     const request = new DerivativeOrderbookRequest()
     request.setMarketId(marketId)
 
@@ -96,17 +91,13 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativeOrders({
-    marketId,
-    subaccountId,
-    orderSide,
-    pagination,
-  }: {
+  async fetchOrders(params?: {
     marketId?: string
     orderSide?: DerivativeOrderSide
     subaccountId?: string
     pagination?: PaginationOption
   }) {
+    const { marketId, subaccountId, orderSide, pagination } = params || {}
     const request = new DerivativeOrdersRequest()
 
     if (marketId) {
@@ -144,15 +135,12 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativePositions({
-    marketId,
-    subaccountId,
-    pagination,
-  }: {
+  async fetchPositions(params?: {
     marketId?: string
     subaccountId?: string
     pagination?: PaginationOption
   }) {
+    const { marketId, subaccountId, pagination } = params || {}
     const request = new DerivativePositionsRequest()
 
     if (marketId) {
@@ -186,19 +174,15 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativeTrades({
-    marketId,
-    subaccountId,
-    direction,
-    pagination,
-    executionSide,
-  }: {
+  async fetchTrades(params?: {
     marketId?: string
     direction?: TradeDirection
     subaccountId?: string
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
+    const { marketId, subaccountId, direction, pagination, executionSide } =
+      params || {}
     const request = new DerivativeTradesRequest()
 
     if (marketId) {
@@ -240,15 +224,12 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativeFundingPayments({
-    marketId,
-    subaccountId,
-    pagination,
-  }: {
+  async fetchFundingPayments(params?: {
     marketId?: string
     subaccountId?: string
     pagination?: PaginationOption
   }) {
+    const { marketId, subaccountId, pagination } = params || {}
     const request = new FundingPaymentsRequest()
 
     if (marketId) {
@@ -282,13 +263,11 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativeFundingRates({
-    marketId,
-    pagination,
-  }: {
+  async fetchFundingRates(params?: {
     marketId?: string
     pagination?: PaginationOption
   }) {
+    const { marketId, pagination } = params || {}
     const request = new FundingRatesRequest()
 
     if (marketId) {
@@ -318,15 +297,12 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativeSubaccountOrdersList({
-    marketId,
-    subaccountId,
-    pagination,
-  }: {
+  async fetchSubaccountOrdersList(params?: {
     marketId?: string
     subaccountId?: string
     pagination?: PaginationOption
   }) {
+    const { marketId, subaccountId, pagination } = params || {}
     const request = new DerivativeSubaccountOrdersListRequest()
 
     if (marketId) {
@@ -360,19 +336,15 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativeSubaccountTradesList({
-    marketId,
-    subaccountId,
-    direction,
-    executionType,
-    pagination,
-  }: {
+  async fetchSubaccountTradesList(params: {
     marketId?: string
     subaccountId?: string
     direction?: TradeDirection
     executionType?: TradeExecutionType
     pagination?: PaginationOption
   }) {
+    const { marketId, subaccountId, direction, executionType, pagination } =
+      params || {}
     const request = new DerivativeSubaccountTradesListRequest()
 
     if (marketId) {
@@ -414,7 +386,7 @@ export class DerivativesApi extends BaseConsumer {
     }
   }
 
-  async fetchDerivativeOrderbooks(marketIds: string[]) {
+  async fetchOrderbooks(marketIds: string[]) {
     const request = new DerivativeOrderbooksRequest()
 
     if (marketIds.length > 0) {

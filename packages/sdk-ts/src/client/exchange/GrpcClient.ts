@@ -7,31 +7,31 @@ import { InsuranceFundApi } from './grpc/InsuranceFundApi'
 import { DerivativesApi } from './grpc/DerivativesApi'
 import { SpotApi } from './grpc/SpotApi'
 
-export class ExchangeGrpcClient {
-  accountApi: AccountApi
+export class GrpcClient {
+  account: AccountApi
 
-  auctionApi: AuctionApi
+  auction: AuctionApi
 
-  explorerApi: ExplorerApi
+  explorer: ExplorerApi
 
-  metaApi: MetaApi
+  meta: MetaApi
 
-  oracleApi: OracleApi
+  oracle: OracleApi
 
-  insuranceFundApi: InsuranceFundApi
+  insuranceFund: InsuranceFundApi
 
-  derivativesApi: DerivativesApi
+  derivatives: DerivativesApi
 
-  spotApi: SpotApi
+  spot: SpotApi
 
   constructor(endpoint: string) {
-    this.accountApi = new AccountApi(endpoint)
-    this.auctionApi = new AuctionApi(endpoint)
-    this.explorerApi = new ExplorerApi(endpoint)
-    this.metaApi = new MetaApi(endpoint)
-    this.oracleApi = new OracleApi(endpoint)
-    this.insuranceFundApi = new InsuranceFundApi(endpoint)
-    this.derivativesApi = new DerivativesApi(endpoint)
-    this.spotApi = new SpotApi(endpoint)
+    this.account = new AccountApi(endpoint)
+    this.auction = new AuctionApi(endpoint)
+    this.explorer = new ExplorerApi(endpoint)
+    this.meta = new MetaApi(endpoint)
+    this.oracle = new OracleApi(endpoint)
+    this.insuranceFund = new InsuranceFundApi(endpoint)
+    this.derivatives = new DerivativesApi(endpoint)
+    this.spot = new SpotApi(endpoint)
   }
 }

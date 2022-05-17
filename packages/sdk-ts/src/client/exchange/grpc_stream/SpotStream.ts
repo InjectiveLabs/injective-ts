@@ -9,15 +9,12 @@ import {
   StreamMarketsResponse,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb_service'
-import {
-  TradeExecutionSide,
-  TradeDirection,
-  SpotOrderSide,
-} from '../../../types'
+import { TradeExecutionSide, TradeDirection } from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { PaginationOption } from '../../../types/pagination'
+import { SpotOrderSide } from '../types/spot'
 
 export type SpotOrderbookStreamCallback = (
   response: StreamOrderbookResponse,

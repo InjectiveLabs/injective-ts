@@ -1,0 +1,37 @@
+import { HttpException } from '@injectivelabs/exceptions'
+import {
+  ChronosDerivativeMarketSummaryResponse,
+  AllDerivativeMarketSummaryResponse,
+} from '../types/derivatives-rest'
+import BaseRestConsumer from '../../BaseRestConsumer'
+
+export class DerivativesChronosApi extends BaseRestConsumer {
+  async fetchMarketSummary(marketId: string) {
+    const endpoint = `chronos/v1/derivative/market_summary`
+
+    try {
+      const { data } = (await this.client.get(endpoint, {
+        marketId,
+        resolution: '24h',
+      })) as ChronosDerivativeMarketSummaryResponse
+
+      return data
+    } catch (e: any) {
+      throw new HttpException(e.response ? e.response.data.message : e.message)
+    }
+  }
+
+  async fetchMarketsSummary() {
+    const endpoint = `chronos/v1/derivative/market_summary_all`
+
+    try {
+      const { data } = (await this.client.get(endpoint, {
+        resolution: '24h',
+      })) as AllDerivativeMarketSummaryResponse
+
+      return data
+    } catch (e: any) {
+      throw new HttpException(e.response ? e.response.data.message : e.message)
+    }
+  }
+}

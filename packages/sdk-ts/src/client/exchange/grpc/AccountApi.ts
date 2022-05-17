@@ -20,7 +20,6 @@ import { InjectiveAccountsRPC } from '@injectivelabs/exchange-api/injective_acco
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 
-
 export class AccountApi extends BaseConsumer {
   async fetchPortfolio(address: string) {
     const request = new PortfolioRequest()
@@ -190,13 +189,11 @@ export class AccountApi extends BaseConsumer {
     }
   }
 
-  async fetchOrderStates({
-    spotOrderHashes = [],
-    derivativeOrderHashes = [],
-  }: {
+  async fetchOrderStates(params?: {
     spotOrderHashes?: string[]
     derivativeOrderHashes?: string[]
   }) {
+    const { spotOrderHashes = [], derivativeOrderHashes = [] } = params || {}
     const request = new OrderStatesRequest()
     request.setSpotOrderHashesList(spotOrderHashes)
     request.setDerivativeOrderHashesList(derivativeOrderHashes)

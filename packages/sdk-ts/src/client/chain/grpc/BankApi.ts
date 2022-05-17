@@ -14,7 +14,7 @@ import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 
 export class BankApi extends BaseConsumer {
-  async moduleParams() {
+  async fetchModuleParams() {
     const request = new QueryBankParamsRequest()
 
     try {
@@ -30,7 +30,7 @@ export class BankApi extends BaseConsumer {
     }
   }
 
-  async balance({
+  async fetchBalance({
     accountAddress,
     denom,
   }: {
@@ -54,7 +54,7 @@ export class BankApi extends BaseConsumer {
     }
   }
 
-  async balances(address: string) {
+  async fetchBalances(address: string) {
     const request = new QueryAllBalancesRequest()
     request.setAddress(address)
 
@@ -71,7 +71,7 @@ export class BankApi extends BaseConsumer {
     }
   }
 
-  async totalSupply(pagination?: PaginationOption) {
+  async fetchTotalSupply(pagination?: PaginationOption) {
     const request = new QueryTotalSupplyRequest()
     const paginationForRequest = paginationRequestFromPagination(pagination)
 

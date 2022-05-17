@@ -13,7 +13,7 @@ export declare namespace MsgSend {
     dstInjectiveAddress: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.bank.v1beta1.MsgSend'
     message: BaseMsgSend
   }
@@ -34,7 +34,7 @@ export default class MsgSend extends MsgBase<
   MsgSend.Data,
   MsgSend.Proto,
   MsgSend.Web3,
-  MsgSend.Amino
+  MsgSend.DirectSign
 > {
   static fromJSON(params: MsgSend.Params): MsgSend {
     return new MsgSend(params)
@@ -81,7 +81,7 @@ export default class MsgSend extends MsgBase<
     } as unknown as MsgSend.Web3
   }
 
-  toAmino(): MsgSend.Amino {
+  toDirectSign(): MsgSend.DirectSign {
     const proto = this.toProto()
 
     return {

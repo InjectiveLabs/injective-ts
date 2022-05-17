@@ -20,7 +20,7 @@ export declare namespace MsgCreateInsuranceFund {
     injectiveAddress: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/injective.insurance.v1beta1.MsgCreateInsuranceFund'
     message: BaseMsgCreateInsuranceFund
   }
@@ -41,7 +41,7 @@ export default class MsgCreateInsuranceFund extends MsgBase<
   MsgCreateInsuranceFund.Data,
   MsgCreateInsuranceFund.Proto,
   MsgCreateInsuranceFund.Web3,
-  MsgCreateInsuranceFund.Amino
+  MsgCreateInsuranceFund.DirectSign
 > {
   static fromJSON(
     params: MsgCreateInsuranceFund.Params,
@@ -87,7 +87,7 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     }
   }
 
-  toAmino(): MsgCreateInsuranceFund.Amino {
+  toDirectSign(): MsgCreateInsuranceFund.DirectSign {
     const proto = this.toProto()
 
     return {

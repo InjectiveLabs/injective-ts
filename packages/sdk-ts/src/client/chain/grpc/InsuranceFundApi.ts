@@ -14,7 +14,7 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class InsuranceFundApi extends BaseConsumer {
-  async moduleParams() {
+  async fetchModuleParams() {
     const request = new QueryInsuranceParamsRequest()
 
     try {
@@ -30,7 +30,7 @@ export class InsuranceFundApi extends BaseConsumer {
     }
   }
 
-  async insuranceFunds() {
+  async fetchInsuranceFunds() {
     const request = new QueryInsuranceFundsRequest()
 
     try {
@@ -46,7 +46,7 @@ export class InsuranceFundApi extends BaseConsumer {
     }
   }
 
-  async insuranceFund(marketId: string) {
+  async fetchInsuranceFund(marketId: string) {
     const request = new QueryInsuranceFundRequest()
     request.setMarketId(marketId)
 

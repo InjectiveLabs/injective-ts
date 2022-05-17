@@ -27,8 +27,6 @@ We are going to go through all of the components of the package and explain them
 This package contains some utility classes that can enhance the developer experience.
 
 - `Address` class -> Can be used to get details about an injective address,
-- `Network` class -> Can be used to get a pre-defined set of endpoints (sentry, api, etc) for easier usage,
-- `PrivateKey` class -> Can be used to sign transactions, etc
 
 ### Client
 
@@ -47,17 +45,8 @@ This package contains utility message classes that can help generate messages wh
 Every message is represented as a `MsgBase` class, which has couple of mapping functionalities:
 - `toData` -> Converts the Message to a simple Object representation,
 - `toProto` -> Returns a proto representation of the message,
-- `toAmino` -> Converts the Message to a proto representation + type (ready for client side usage),
+- `toDirectSign` -> Converts the Message to a proto representation + type (ready for client side usage),
 - `toWeb3` -> Converts the Message to a web3 representation + type (ready for web3-gateway usage i.e browser),
-
-### UI
-
-This package contains utility classes that can help transform (map) data from a gRPC (or REST) API to a human readable format that's easy to consume on the UI.
-
-It has two parts:
-
-- Chain -> Utility classes (and types) related to the chain modules,
-- Exchange -> Utility classes (and types) related to the exchange (indexer) api,
 
 ### Utils
 
@@ -65,8 +54,10 @@ This package contains some utility functions and constants.
 
 ### Local
 
-This package contains some utility functions and constants for client-side usage (local, node environment)
+This package contains some utility functions and constants for client-side usage (a local - node environment)
 
+- `Network` class -> Can be used to get a pre-defined set of endpoints (sentry, api, etc) for easier usage,
+- `PrivateKey` class -> Can be used to sign transactions, etc
 - `InjectiveTx` class -> Can be used to prepare a transaction for signing/broadcasting on the client side,
 - `TxService` class -> Can be used for simulating or broadcasting a transaction on the client side
 

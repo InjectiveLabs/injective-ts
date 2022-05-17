@@ -20,7 +20,7 @@ export declare namespace MsgCreateDerivativeMarketOrder {
     quantity: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
     message: BaseMsgCreateDerivativeMarketOrder
   }
@@ -65,7 +65,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
   MsgCreateDerivativeMarketOrder.Data,
   MsgCreateDerivativeMarketOrder.Proto,
   MsgCreateDerivativeMarketOrder.Web3,
-  MsgCreateDerivativeMarketOrder.Amino
+  MsgCreateDerivativeMarketOrder.DirectSign
 > {
   static fromJSON(
     params: MsgCreateDerivativeMarketOrder.Params,
@@ -107,7 +107,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCreateDerivativeMarketOrder.Amino {
+  toDirectSign(): MsgCreateDerivativeMarketOrder.DirectSign {
     const proto = this.toProto()
 
     return {

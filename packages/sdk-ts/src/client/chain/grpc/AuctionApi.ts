@@ -10,7 +10,7 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class AuctionApi extends BaseConsumer {
-  async moduleParams() {
+  async fetchModuleParams() {
     const request = new QueryAuctionParamsResponse()
 
     try {
@@ -26,7 +26,7 @@ export class AuctionApi extends BaseConsumer {
     }
   }
 
-  async moduleState() {
+  async fetchModuleState() {
     const request = new QueryModuleStateRequest()
 
     try {
@@ -42,7 +42,7 @@ export class AuctionApi extends BaseConsumer {
     }
   }
 
-  async currentBasket() {
+  async fetchCurrentBasket() {
     const request = new QueryCurrentAuctionBasketRequest()
 
     try {

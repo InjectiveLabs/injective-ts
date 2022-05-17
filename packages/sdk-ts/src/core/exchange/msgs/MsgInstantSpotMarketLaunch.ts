@@ -14,7 +14,7 @@ export declare namespace MsgInstantSpotMarketLaunch {
     }
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
     message: BaseMsgInstantSpotMarketLaunch
   }
@@ -35,7 +35,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
   MsgInstantSpotMarketLaunch.Data,
   MsgInstantSpotMarketLaunch.Proto,
   MsgInstantSpotMarketLaunch.Web3,
-  MsgInstantSpotMarketLaunch.Amino
+  MsgInstantSpotMarketLaunch.DirectSign
 > {
   static fromJSON(
     params: MsgInstantSpotMarketLaunch.Params,
@@ -74,7 +74,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
     }
   }
 
-  toAmino(): MsgInstantSpotMarketLaunch.Amino {
+  toDirectSign(): MsgInstantSpotMarketLaunch.DirectSign {
     const proto = this.toProto()
 
     return {

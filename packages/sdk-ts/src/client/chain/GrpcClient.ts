@@ -12,42 +12,42 @@ import { PeggyApi } from './grpc/PeggyApi'
 import { StakingApi } from './grpc/StakingApi'
 
 export class GrpcClient {
-  auctionApi: AuctionApi
+  auction: AuctionApi
 
-  authApi: AuthApi
+  auth: AuthApi
 
-  bankApi: BankApi
+  bank: BankApi
 
-  distributionApi: DistributionApi
+  distribution: DistributionApi
 
-  exchangeApi: ExchangeApi
+  exchange: ExchangeApi
 
-  govApi: GovApi
+  gov: GovApi
 
-  ibcApi: IbcApi
+  ibc: IbcApi
 
-  insuranceFundApi: InsuranceFundApi
+  insuranceFund: InsuranceFundApi
 
-  mintApi: MintApi
+  mint: MintApi
 
-  oracleApi: OracleApi
+  oracle: OracleApi
 
-  peggyApi: PeggyApi
+  peggy: PeggyApi
 
-  stakingApi: StakingApi
+  staking: StakingApi
 
   constructor(endpoint: string) {
-    this.auctionApi = new AuctionApi(endpoint)
-    this.authApi = new AuthApi(endpoint)
-    this.bankApi = new BankApi(endpoint)
-    this.distributionApi = new DistributionApi(endpoint)
-    this.exchangeApi = new ExchangeApi(endpoint)
-    this.govApi = new GovApi(endpoint)
-    this.ibcApi = new IbcApi(endpoint)
-    this.insuranceFundApi = new InsuranceFundApi(endpoint)
-    this.mintApi = new MintApi(endpoint)
-    this.oracleApi = new OracleApi(endpoint)
-    this.peggyApi = new PeggyApi(endpoint)
-    this.stakingApi = new StakingApi(endpoint)
+    this.auction = new AuctionApi(endpoint)
+    this.auth = new AuthApi(endpoint)
+    this.bank = new BankApi(endpoint)
+    this.distribution = new DistributionApi(endpoint)
+    this.exchange = new ExchangeApi(endpoint)
+    this.gov = new GovApi(endpoint)
+    this.ibc = new IbcApi(endpoint)
+    this.insuranceFund = new InsuranceFundApi(endpoint)
+    this.mint = new MintApi(endpoint)
+    this.oracle = new OracleApi(endpoint)
+    this.peggy = new PeggyApi(endpoint)
+    this.staking = new StakingApi(endpoint)
   }
 }

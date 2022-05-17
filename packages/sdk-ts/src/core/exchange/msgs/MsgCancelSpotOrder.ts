@@ -9,7 +9,7 @@ export declare namespace MsgCancelSpotOrder {
     orderHash: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/injective.exchange.v1beta1.MsgCancelSpotOrder'
     message: BaseMsgCancelSpotOrder
   }
@@ -30,7 +30,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
   MsgCancelSpotOrder.Data,
   MsgCancelSpotOrder.Proto,
   MsgCancelSpotOrder.Web3,
-  MsgCancelSpotOrder.Amino
+  MsgCancelSpotOrder.DirectSign
 > {
   static fromJSON(params: MsgCancelSpotOrder.Params): MsgCancelSpotOrder {
     return new MsgCancelSpotOrder(params)
@@ -66,7 +66,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCancelSpotOrder.Amino {
+  toDirectSign(): MsgCancelSpotOrder.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -12,7 +12,7 @@ export declare namespace MsgBeginRedelegate {
     dstValidatorAddress: string
     injectiveAddress: string
   }
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.staking.v1beta1.MsgBeginRedelegate'
     message: BaseMsgBeginRedelegate
   }
@@ -33,7 +33,7 @@ export default class MsgBeginRedelegate extends MsgBase<
   MsgBeginRedelegate.Data,
   MsgBeginRedelegate.Proto,
   MsgBeginRedelegate.Web3,
-  MsgBeginRedelegate.Amino
+  MsgBeginRedelegate.DirectSign
 > {
   static fromJSON(params: MsgBeginRedelegate.Params): MsgBeginRedelegate {
     return new MsgBeginRedelegate(params)
@@ -73,7 +73,7 @@ export default class MsgBeginRedelegate extends MsgBase<
     }
   }
 
-  toAmino(): MsgBeginRedelegate.Amino {
+  toDirectSign(): MsgBeginRedelegate.DirectSign {
     const proto = this.toProto()
 
     return {

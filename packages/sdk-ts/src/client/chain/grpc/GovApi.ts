@@ -19,7 +19,7 @@ import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 
 export class GovApi extends BaseConsumer {
-  async paramsByType(type: string) {
+  async fetchParamsByType(type: string) {
     const request = new QueryGovernanceParamsRequest()
     request.setParamsType(type)
 
@@ -36,7 +36,7 @@ export class GovApi extends BaseConsumer {
     }
   }
 
-  async proposals({
+  async fetchProposals({
     status,
     pagination,
   }: {
@@ -65,7 +65,7 @@ export class GovApi extends BaseConsumer {
     }
   }
 
-  async proposal(proposalId: number) {
+  async fetchProposal(proposalId: number) {
     const request = new QueryProposalRequest()
     request.setProposalId(proposalId)
 
@@ -82,7 +82,7 @@ export class GovApi extends BaseConsumer {
     }
   }
 
-  async proposalDeposits({
+  async fetchProposalDeposits({
     proposalId,
     pagination,
   }: {
@@ -111,7 +111,7 @@ export class GovApi extends BaseConsumer {
     }
   }
 
-  async proposalVotes({
+  async fetchProposalVotes({
     proposalId,
     pagination,
   }: {
@@ -139,7 +139,7 @@ export class GovApi extends BaseConsumer {
     }
   }
 
-  async proposalTally(proposalId: number) {
+  async fetchProposalTally(proposalId: number) {
     const request = new QueryTallyResultRequest()
     request.setProposalId(proposalId)
 

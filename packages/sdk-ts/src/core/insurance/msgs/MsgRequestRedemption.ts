@@ -12,7 +12,7 @@ export declare namespace MsgRequestRedemption {
     injectiveAddress: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/injective.insurance.v1beta1.MsgRequestRedemption'
     message: BaseMsgRequestRedemption
   }
@@ -33,7 +33,7 @@ export default class MsgRequestRedemption extends MsgBase<
   MsgRequestRedemption.Data,
   MsgRequestRedemption.Proto,
   MsgRequestRedemption.Web3,
-  MsgRequestRedemption.Amino
+  MsgRequestRedemption.DirectSign
 > {
   static fromJSON(params: MsgRequestRedemption.Params): MsgRequestRedemption {
     return new MsgRequestRedemption(params)
@@ -72,7 +72,7 @@ export default class MsgRequestRedemption extends MsgBase<
     }
   }
 
-  toAmino(): MsgRequestRedemption.Amino {
+  toDirectSign(): MsgRequestRedemption.DirectSign {
     const proto = this.toProto()
 
     return {

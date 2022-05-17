@@ -7,7 +7,7 @@ export declare namespace MsgWithdrawDelegatorReward {
     validatorAddress: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward'
     message: BaseMsgWithdrawDelegatorReward
   }
@@ -28,7 +28,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
   MsgWithdrawDelegatorReward.Data,
   MsgWithdrawDelegatorReward.Proto,
   MsgWithdrawDelegatorReward.Web3,
-  MsgWithdrawDelegatorReward.Amino
+  MsgWithdrawDelegatorReward.DirectSign
 > {
   static fromJSON(
     params: MsgWithdrawDelegatorReward.Params,
@@ -64,7 +64,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
     }
   }
 
-  toAmino(): MsgWithdrawDelegatorReward.Amino {
+  toDirectSign(): MsgWithdrawDelegatorReward.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -11,7 +11,7 @@ export declare namespace MsgDelegate {
     validatorAddress: string
     injectiveAddress: string
   }
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.staking.v1beta1.MsgDelegate'
     message: BaseMsgDelegate
   }
@@ -32,7 +32,7 @@ export default class MsgDelegate extends MsgBase<
   MsgDelegate.Data,
   MsgDelegate.Proto,
   MsgDelegate.Web3,
-  MsgDelegate.Amino
+  MsgDelegate.DirectSign
 > {
   static fromJSON(params: MsgDelegate.Params): MsgDelegate {
     return new MsgDelegate(params)
@@ -71,7 +71,7 @@ export default class MsgDelegate extends MsgBase<
     }
   }
 
-  toAmino(): MsgDelegate.Amino {
+  toDirectSign(): MsgDelegate.DirectSign {
     const proto = this.toProto()
 
     return {

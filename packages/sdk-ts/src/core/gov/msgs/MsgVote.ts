@@ -9,7 +9,7 @@ export declare namespace MsgVote {
     voter: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.gov.v1beta1.MsgVote'
     message: BaseMsgVote
   }
@@ -30,7 +30,7 @@ export default class MsgVote extends MsgBase<
   MsgVote.Data,
   MsgVote.Proto,
   MsgVote.Web3,
-  MsgVote.Amino
+  MsgVote.DirectSign
 > {
   static fromJSON(params: MsgVote.Params): MsgVote {
     return new MsgVote(params)
@@ -65,7 +65,7 @@ export default class MsgVote extends MsgBase<
     }
   }
 
-  toAmino(): MsgVote.Amino {
+  toDirectSign(): MsgVote.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -18,7 +18,7 @@ import BaseConsumer from '../../BaseGrpcConsumer'
  * consume data from the Chain Directly
  */
 export class ExchangeApi extends BaseConsumer {
-  async moduleParams() {
+  async fetchModuleParams() {
     const request = new QueryExchangeParamsRequest()
 
     try {
@@ -34,7 +34,7 @@ export class ExchangeApi extends BaseConsumer {
     }
   }
 
-  async feeDiscountSchedule() {
+  async fetchFeeDiscountSchedule() {
     const request = new QueryFeeDiscountScheduleRequest()
 
     try {
@@ -50,7 +50,7 @@ export class ExchangeApi extends BaseConsumer {
     }
   }
 
-  async feeDiscountAccountInfo(injectiveAddress: string) {
+  async fetchFeeDiscountAccountInfo(injectiveAddress: string) {
     const request = new QueryFeeDiscountAccountInfoRequest()
     request.setAccount(injectiveAddress)
 
@@ -67,7 +67,7 @@ export class ExchangeApi extends BaseConsumer {
     }
   }
 
-  async tradingRewardsCampaign() {
+  async fetchTradingRewardsCampaign() {
     const request = new QueryTradeRewardCampaignRequest()
 
     try {
@@ -83,7 +83,7 @@ export class ExchangeApi extends BaseConsumer {
     }
   }
 
-  async tradeRewardPoints(injectiveAddresses: string[]) {
+  async fetchTradeRewardPoints(injectiveAddresses: string[]) {
     const request = new QueryTradeRewardPointsRequest()
     request.setAccountsList(injectiveAddresses)
 
@@ -100,7 +100,7 @@ export class ExchangeApi extends BaseConsumer {
     }
   }
 
-  async pendingTradeRewardPoints(
+  async fetchPendingTradeRewardPoints(
     injectiveAddresses: string[],
     timestamp?: number,
   ) {

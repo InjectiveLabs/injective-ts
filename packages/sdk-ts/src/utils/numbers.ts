@@ -494,3 +494,20 @@ export const spotQuantityFromChainQuantityToFixed = ({
 
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
 }
+
+export const cosmosSdkDecToBigNumber = (
+  number: string | number | BigNumber,
+): BigNumber => new BigNumber(number).dividedBy(new BigNumber(10).pow(18))
+
+export const getDecimalsFromNumber = (number: number | string): number => {
+  const UI_DEFAULT_MAX_DISPLAY_DECIMALS = 4
+  const numberToBn = new BigNumber(number).toNumber()
+  const numberParts = numberToBn.toString().split('.')
+  const [, decimals] = numberParts
+
+  const actualDecimals = decimals ? decimals.length : 0
+
+  return actualDecimals > UI_DEFAULT_MAX_DISPLAY_DECIMALS
+    ? UI_DEFAULT_MAX_DISPLAY_DECIMALS
+    : actualDecimals
+}

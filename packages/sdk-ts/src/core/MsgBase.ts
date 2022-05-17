@@ -5,7 +5,7 @@ export abstract class MsgBase<
   DataRepresentation,
   ProtoRepresentation,
   Web3Representation,
-  AminoRepresentation,
+  DirectSignRepresentation,
 > {
   params: Params
 
@@ -13,7 +13,7 @@ export abstract class MsgBase<
     this.params = params
   }
 
-  public abstract toAmino(): AminoRepresentation
+  public abstract toDirectSign(): DirectSignRepresentation
 
   public abstract toData(): DataRepresentation
 
@@ -25,7 +25,7 @@ export abstract class MsgBase<
     return JSON.stringify(prepareSignBytes(this.toData()))
   }
 
-  public toAminoJSON(): string {
-    return JSON.stringify(prepareSignBytes(this.toAmino()))
+  public toDirectSignJSON(): string {
+    return JSON.stringify(prepareSignBytes(this.toDirectSign()))
   }
 }

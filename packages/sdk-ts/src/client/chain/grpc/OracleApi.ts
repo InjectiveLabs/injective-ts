@@ -6,7 +6,7 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class OracleApi extends BaseConsumer {
-  async moduleParams() {
+  async fetchModuleParams() {
     const request = new QueryOracleParamsRequest()
 
     try {

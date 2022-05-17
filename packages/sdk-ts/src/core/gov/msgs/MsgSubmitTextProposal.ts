@@ -16,7 +16,7 @@ export declare namespace MsgSubmitTextProposal {
     }
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.gov.v1beta1.MsgSubmitProposal'
     message: BaseMsgSubmitProposal
   }
@@ -37,7 +37,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
   MsgSubmitTextProposal.Data,
   MsgSubmitTextProposal.Proto,
   MsgSubmitTextProposal.Web3,
-  MsgSubmitTextProposal.Amino
+  MsgSubmitTextProposal.DirectSign
 > {
   static fromJSON(params: MsgSubmitTextProposal.Params): MsgSubmitTextProposal {
     return new MsgSubmitTextProposal(params)
@@ -101,7 +101,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     } as unknown as MsgSubmitTextProposal.Web3
   }
 
-  toAmino(): MsgSubmitTextProposal.Amino {
+  toDirectSign(): MsgSubmitTextProposal.DirectSign {
     const proto = this.toProto()
 
     return {

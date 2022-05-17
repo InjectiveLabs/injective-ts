@@ -8,7 +8,7 @@ export declare namespace MsgRevoke {
     granter: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.authz.v1beta1.MsgRevoke'
     message: BaseMsgRevoke
   }
@@ -29,7 +29,7 @@ export default class MsgRevoke extends MsgBase<
   MsgRevoke.Data,
   MsgRevoke.Proto,
   MsgRevoke.Web3,
-  MsgRevoke.Amino
+  MsgRevoke.DirectSign
 > {
   static fromJSON(params: MsgRevoke.Params): MsgRevoke {
     return new MsgRevoke(params)
@@ -64,7 +64,7 @@ export default class MsgRevoke extends MsgBase<
     }
   }
 
-  toAmino(): MsgRevoke.Amino {
+  toDirectSign(): MsgRevoke.DirectSign {
     const proto = this.toProto()
 
     return {

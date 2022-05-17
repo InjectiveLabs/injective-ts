@@ -6,7 +6,7 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class AuthApi extends BaseConsumer {
-  async account(address: string) {
+  async fetchAccount(address: string) {
     const request = new QueryAccountRequest()
     request.setAddress(address)
 

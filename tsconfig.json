@@ -53,6 +53,12 @@
       ],
       "@injectivelabs/ui-common": [
         "packages/ui-common"
+      ],
+      "@injectivelabs/sdk-ts": [
+        "packages/sdk-ts"
+      ],
+      "@injectivelabs/sdk-ui-ts": [
+        "packages/sdk-ui-ts"
       ]
     }
   }

@@ -28,7 +28,7 @@ import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 
 export class StakingApi extends BaseConsumer {
-  async moduleParams() {
+  async fetchModuleParams() {
     const request = new QueryStakingParamsRequest()
 
     try {
@@ -44,7 +44,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async pool() {
+  async fetchPool() {
     const request = new QueryPoolRequest()
 
     try {
@@ -60,7 +60,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async validators() {
+  async fetchValidators() {
     const request = new QueryValidatorsRequest()
 
     try {
@@ -76,7 +76,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async validator(address: string) {
+  async fetchValidator(address: string) {
     const request = new QueryValidatorRequest()
     request.setValidatorAddr(address)
 
@@ -93,7 +93,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async validatorDelegations({
+  async fetchValidatorDelegations({
     validatorAddress,
     pagination,
   }: {
@@ -122,7 +122,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async validatorUnbondingDelegations({
+  async fetchValidatorUnbondingDelegations({
     validatorAddress,
     pagination,
   }: {
@@ -151,7 +151,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async delegation({
+  async fetchDelegation({
     injectiveAddress,
     validatorAddress,
   }: {
@@ -175,7 +175,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async delegations({
+  async fetchDelegations({
     injectiveAddress,
     pagination,
   }: {
@@ -204,7 +204,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async delegators({
+  async fetchDelegators({
     validatorAddress,
     pagination,
   }: {
@@ -233,7 +233,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async unbondingDelegation({
+  async fetchUnbondingDelegation({
     injectiveAddress,
     validatorAddress,
   }: {
@@ -257,7 +257,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async unbondingDelegations({
+  async fetchUnbondingDelegations({
     injectiveAddress,
     pagination,
   }: {
@@ -286,7 +286,7 @@ export class StakingApi extends BaseConsumer {
     }
   }
 
-  async reDelegations({
+  async fetchReDelegations({
     injectiveAddress,
     pagination,
   }: {

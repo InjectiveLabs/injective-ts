@@ -6,7 +6,7 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class PeggyApi extends BaseConsumer {
-  async moduleParams() {
+  async fetchModuleParams() {
     const request = new QueryPeggyParamsRequest()
 
     try {

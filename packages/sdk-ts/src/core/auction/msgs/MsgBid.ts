@@ -12,7 +12,7 @@ export declare namespace MsgBid {
     }
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/injective.auction.v1beta1.MsgBid'
     message: BaseMsgBid
   }
@@ -33,7 +33,7 @@ export default class MsgBid extends MsgBase<
   MsgBid.Data,
   MsgBid.Proto,
   MsgBid.Web3,
-  MsgBid.Amino
+  MsgBid.DirectSign
 > {
   static fromJSON(params: MsgBid.Params): MsgBid {
     return new MsgBid(params)
@@ -72,7 +72,7 @@ export default class MsgBid extends MsgBase<
     }
   }
 
-  toAmino(): MsgBid.Amino {
+  toDirectSign(): MsgBid.DirectSign {
     const proto = this.toProto()
 
     return {

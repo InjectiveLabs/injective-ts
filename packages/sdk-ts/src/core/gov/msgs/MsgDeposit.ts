@@ -13,7 +13,7 @@ export declare namespace MsgDeposit {
     depositor: string
   }
 
-  export interface Amino {
+  export interface DirectSign {
     type: '/cosmos.gov.v1beta1.MsgDeposit'
     message: BaseMsgDeposit
   }
@@ -34,7 +34,7 @@ export default class MsgDeposit extends MsgBase<
   MsgDeposit.Data,
   MsgDeposit.Proto,
   MsgDeposit.Web3,
-  MsgDeposit.Amino
+  MsgDeposit.DirectSign
 > {
   static fromJSON(params: MsgDeposit.Params): MsgDeposit {
     return new MsgDeposit(params)
@@ -81,7 +81,7 @@ export default class MsgDeposit extends MsgBase<
     } as unknown as MsgDeposit.Web3
   }
 
-  toAmino(): MsgDeposit.Amino {
+  toDirectSign(): MsgDeposit.DirectSign {
     const proto = this.toProto()
 
     return {

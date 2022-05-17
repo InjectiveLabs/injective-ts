@@ -10,7 +10,7 @@ import { Query as DistributionQuery } from '@injectivelabs/chain-api/cosmos/dist
 import BaseConsumer from '../../BaseGrpcConsumer'
 
 export class DistributionApi extends BaseConsumer {
-  async moduleParams() {
+  async fetchModuleParams() {
     const request = new QueryDistributionParamsRequest()
 
     try {
@@ -26,7 +26,7 @@ export class DistributionApi extends BaseConsumer {
     }
   }
 
-  async delegatorRewardsForValidator({
+  async fetchDelegatorRewardsForValidator({
     delegatorAddress,
     validatorAddress,
   }: {
@@ -50,7 +50,7 @@ export class DistributionApi extends BaseConsumer {
     }
   }
 
-  async delegatorRewards(injectiveAddress: string) {
+  async fetchDelegatorRewards(injectiveAddress: string) {
     const request = new QueryDelegationTotalRewardsRequest()
     request.setDelegatorAddress(injectiveAddress)
 
