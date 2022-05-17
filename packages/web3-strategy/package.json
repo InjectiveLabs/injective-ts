@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/web3-strategy",
   "description": "A convenient way to use Web3 with a transaction signing provider.",
-  "version": "0.5.30",
+  "version": "0.5.31",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,7 @@
     "@ethereumjs/common": "^2.6.3",
     "@ethereumjs/tx": "^3.5.1",
     "@injectivelabs/assert": "^0.5.1",
-    "@injectivelabs/cosmos-ts": "^0.5.23",
+    "@injectivelabs/cosmos-ts": "^0.5.24",
     "@injectivelabs/exceptions": "^0.5.1",
     "@injectivelabs/ts-types": "^0.5.1",
     "@injectivelabs/utils": "^0.5.1",

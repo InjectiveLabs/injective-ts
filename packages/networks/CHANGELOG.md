@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.5.3...@injectivelabs/networks@0.5.4) (2022-05-17)
+
+
+### Features
+
+* chronos endpoints decoupled ([082f422](https://github.com/InjectiveLabs/injective-ts/commit/082f422d68f4137baf1c8b8b0993e732d4985e82))
+
+
+
+
+
 ## [0.5.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@0.5.2...@injectivelabs/networks@0.5.3) (2022-04-26)
 
 
