@@ -17,6 +17,7 @@ export type NetworkEndpoints = {
   sentryGrpcApi: string
   sentryHttpApi: string
   tendermintApi?: string
+  chronosApi?: string
   exchangeWeb3GatewayApi?: string
 }
 

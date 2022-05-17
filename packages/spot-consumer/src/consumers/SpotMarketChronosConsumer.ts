@@ -13,10 +13,10 @@ export class SpotMarketChronosConsumer {
   }
 
   async fetchSpotMarketSummary(marketId: string) {
-    const endpoint = `chronos/v1/spot/market_summary`
+    const path = `market_summary`
 
     try {
-      const { data } = (await this.client.get(endpoint, {
+      const { data } = (await this.client.get(path, {
         marketId,
         resolution: '24h',
       })) as ChronosSpotMarketSummaryResponse
@@ -28,10 +28,10 @@ export class SpotMarketChronosConsumer {
   }
 
   async fetchSpotMarketsSummary() {
-    const endpoint = `chronos/v1/spot/market_summary_all`
+    const path = `market_summary_all`
 
     try {
-      const { data } = (await this.client.get(endpoint, {
+      const { data } = (await this.client.get(path, {
         resolution: '24h',
       })) as AllSpotMarketSummaryResponse
 

@@ -22,7 +22,11 @@ export class SpotService extends BaseService {
     super(options)
     this.consumer = new SpotMarketConsumer(this.endpoints.exchangeApi)
     this.chronosConsumer = new SpotMarketChronosConsumer(
-      `${this.endpoints.exchangeApi}/api`,
+      `${
+        this.endpoints.chronosApi
+          ? `${this.endpoints.chronosApi}/api/v1/spot`
+          : `${this.endpoints.exchangeApi}/api/chronos/v1/spot`
+      }`,
     )
     this.oracleConsumer = new OracleConsumer(this.endpoints.exchangeApi)
   }

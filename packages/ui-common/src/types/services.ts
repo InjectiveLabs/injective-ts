@@ -17,6 +17,7 @@ export interface ServiceOptionsEndpoints {
   exchangeApi: string
   sentryGrpcApi: string
   sentryHttpApi: string
+  chronosApi?: string
 }
 
 export interface ServiceOptions {

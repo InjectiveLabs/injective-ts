@@ -23,7 +23,11 @@ export class DerivativeService extends BaseService {
     super(options)
     this.consumer = new DerivativeMarketConsumer(this.endpoints.exchangeApi)
     this.chronosConsumer = new DerivativeMarketChronosConsumer(
-      `${this.endpoints.exchangeApi}/api`,
+      `${
+        this.endpoints.chronosApi
+          ? `${this.endpoints.chronosApi}/api/v1/derivative`
+          : `${this.endpoints.exchangeApi}/api/chronos/v1/derivative`
+      }`,
     )
     this.oracleConsumer = new OracleConsumer(this.endpoints.exchangeApi)
   }
