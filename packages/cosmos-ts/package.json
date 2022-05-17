@@ -36,7 +36,7 @@
     "@injectivelabs/ts-types": "^0.5.1",
     "@injectivelabs/utils": "^0.5.1",
     "@keplr-wallet/cosmos": "^0.9.12",
-    "@terra-money/terra.js": "^3.0.8",
+    "@terra-money/terra.js": "3.0.10",
     "@terra-money/wallet-controller": "^3.8.0",
     "cosmjs-types": "^0.3.0",
     "google-protobuf": "^3.19.4",
