@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.25...@injectivelabs/sdk-ts@0.0.26) (2022-05-17)
+
+
+### Features
+
+* initial sdk-ui-ts and sdk-ts refactor ([fe00582](https://github.com/InjectiveLabs/injective-ts/commit/fe005820114dcfca2fe28a70f465a048550f4932))
+
+
+
+
+
 ## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.24...@injectivelabs/sdk-ts@0.0.25) (2022-05-12)
 
 
