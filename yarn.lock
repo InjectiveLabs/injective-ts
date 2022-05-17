@@ -2891,22 +2891,21 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@terra-money/terra.js@3.0.10":
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/@terra-money/terra.js/-/terra.js-3.0.10.tgz#cb9cd0f95abd958429a2a508af0d4fa1fd0dcf43"
-  integrity sha512-d4pa+GZjGeDaj1xy2KS0nw8nMTMqHHib9dVdIMyuyhjG+TezueY+04ROGzkmzpTFOrv5ruROF/0T+hzUTp5jPQ==
+"@terra-money/terra.js@3.0.8":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@terra-money/terra.js/-/terra.js-3.0.8.tgz#056b88b0a14d17a28a91f61196687bbbd5feb9db"
+  integrity sha512-TSosUWw1OeZmgliHwgydDBgEEl+dGnAoFeaYmYYv+dzcYFnyUwY4NXpvg2cU0rjPBLGQHQdV/zRRfSyNQlGDBQ==
   dependencies:
     "@terra-money/terra.proto" "^0.1.7"
-    axios "^0.26.1"
+    axios "^0.24.0"
     bech32 "^2.0.0"
-    bip32 "^3.0.1"
+    bip32 "^2.0.6"
     bip39 "^3.0.3"
     bufferutil "^4.0.3"
     decimal.js "^10.2.1"
     jscrypto "^1.0.1"
     readable-stream "^3.6.0"
     secp256k1 "^4.0.2"
-    tiny-secp256k1 "^2.2.1"
     tmp "^0.2.1"
     utf-8-validate "^5.0.5"
     ws "^7.5.5"
@@ -3962,6 +3961,13 @@ axios@^0.21.0, axios@^0.21.1, axios@^0.21.2, axios@^0.21.4:
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   dependencies:
     follow-redirects "^1.14.0"
+
+axios@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
+  dependencies:
+    follow-redirects "^1.14.4"
 
 axios@^0.26.1:
   version "0.26.1"
@@ -6727,6 +6733,11 @@ follow-redirects@^1.10.0, follow-redirects@^1.14.0:
   version "1.14.8"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.8.tgz#016996fb9a11a100566398b1c6839337d7bfa8fc"
   integrity sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==
+
+follow-redirects@^1.14.4:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.0.tgz#06441868281c86d0dda4ad8bdaead2d02dca89d4"
+  integrity sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==
 
 follow-redirects@^1.14.8:
   version "1.14.9"
