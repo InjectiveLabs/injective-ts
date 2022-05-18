@@ -21,7 +21,7 @@ export default class Keplr
 
   private injectiveChainId = 'injective-1'
 
-  constructor(args: { chainId: ChainId; web3Creator: () => Web3 }) {
+  constructor(args: { chainId: ChainId; web3: Web3 }) {
     super(args)
     this.keplrWallet = new KeplrWallet(this.injectiveChainId)
     this.cosmJsWallet = new CosmJsWallet(this.injectiveChainId)

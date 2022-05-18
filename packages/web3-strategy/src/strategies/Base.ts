@@ -6,15 +6,26 @@ export default abstract class BaseConcreteStrategy {
 
   protected web3: Web3
 
+  protected rpcEndpoints?: {
+    wsRpcUrl: string
+    rpcUrl: string
+  }
+
   protected constructor({
     chainId,
-    web3Creator,
+    web3,
+    rpcEndpoints,
   }: {
     chainId: ChainId
-    web3Creator: () => Web3
+    web3: Web3
+    rpcEndpoints?: {
+      wsRpcUrl: string
+      rpcUrl: string
+    }
   }) {
     this.chainId = chainId
-    this.web3 = web3Creator()
+    this.web3 = web3
+    this.rpcEndpoints = rpcEndpoints
   }
 
   getWeb3(): Web3 {

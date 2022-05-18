@@ -15,7 +15,7 @@ export default class Torus
 
   private connected = false
 
-  constructor(args: { chainId: ChainId; web3Creator: () => Web3 }) {
+  constructor(args: { chainId: ChainId; web3: Web3 }) {
     super(args)
     this.torus = new TorusWallet()
   }

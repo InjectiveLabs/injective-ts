@@ -22,19 +22,21 @@ export default class Web3Strategy {
   public wallet: Wallet
 
   constructor({ wallet, chainId, options }: Web3StrategyArguments) {
-    const web3Creator = (): Web3 =>
-      createAlchemyWeb3(options.wsRpcUrl || options.rpcUrl) as unknown as Web3
+    const web3 = createAlchemyWeb3(
+      options.wsRpcUrl || options.rpcUrl,
+    ) as unknown as Web3
 
     this.strategies = {
-      [Wallet.Metamask]: new Metamask({ chainId, web3Creator }),
-      [Wallet.Ledger]: new LedgerLive({ chainId, web3Creator }),
-      [Wallet.LedgerLegacy]: new LedgerLegacy({ chainId, web3Creator }),
-      [Wallet.Keplr]: new Keplr({ chainId, web3Creator }),
-      [Wallet.Trezor]: new Trezor({ chainId, web3Creator }),
-      [Wallet.Torus]: new Torus({ chainId, web3Creator }),
+      [Wallet.Metamask]: new Metamask({ chainId, web3 }),
+      [Wallet.Ledger]: new LedgerLive({ chainId, web3 }),
+      [Wallet.LedgerLegacy]: new LedgerLegacy({ chainId, web3 }),
+      [Wallet.Keplr]: new Keplr({ chainId, web3 }),
+      [Wallet.Trezor]: new Trezor({ chainId, web3 }),
+      [Wallet.Torus]: new Torus({ chainId, web3 }),
       [Wallet.WalletConnect]: new WalletConnect({
         chainId,
-        rpcUrl: options.wsRpcUrl || options.rpcUrl,
+        web3,
+        rpcEndpoints: options,
       }),
     } as Record<Wallet, ConcreteWeb3Strategy>
 
@@ -49,55 +51,60 @@ export default class Web3Strategy {
     this.wallet = wallet
   }
 
-  public async disconnectWallet() {
-    await this.getStrategy().disconnect?.()
-    this.wallet = Wallet.Metamask
-  }
-
   public getStrategy(): ConcreteWeb3Strategy {
     return this.strategies[this.wallet]
   }
 
   public getAddresses(): Promise<AccountAddress[]> {
-    return this.strategies[this.wallet].getAddresses()
+    return this.getStrategy().getAddresses()
   }
 
   public isWeb3Connected(): boolean {
-    return this.strategies[this.wallet].isWeb3Connected()
+    return this.getStrategy().isWeb3Connected()
   }
 
   public isMetamask(): boolean {
-    return this.strategies[this.wallet].isMetamask()
+    return this.getStrategy().isMetamask()
   }
 
   public getChainId(): Promise<string> {
-    return this.strategies[this.wallet].getChainId()
+    return this.getStrategy().getChainId()
   }
 
   public getNetworkId(): Promise<string> {
-    return this.strategies[this.wallet].getNetworkId()
+    return this.getStrategy().getNetworkId()
   }
 
   public async getTransactionReceipt(txHash: string): Promise<void> {
-    return this.strategies[this.wallet].getTransactionReceipt(txHash)
+    return this.getStrategy().getTransactionReceipt(txHash)
   }
 
   public async confirm(address: AccountAddress): Promise<string> {
-    return this.strategies[this.wallet].confirm(address)
+    return this.getStrategy().confirm(address)
+  }
+
+  public async disconnectWallet() {
+    const strategy = this.getStrategy()
+
+    if (strategy.disconnect !== undefined) {
+      await strategy.disconnect()
+    }
+
+    this.wallet = Wallet.Metamask
   }
 
   public async sendTransaction(
     tx: any,
     options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    return this.strategies[this.wallet].sendTransaction(tx, options)
+    return this.getStrategy().sendTransaction(tx, options)
   }
 
   public async signTypedDataV4(
     data: any,
     address: AccountAddress,
   ): Promise<string | any> {
-    return this.strategies[this.wallet].signTypedDataV4(data, address)
+    return this.getStrategy().signTypedDataV4(data, address)
   }
 
   public getWeb3(): Web3 {
@@ -105,32 +112,32 @@ export default class Web3Strategy {
   }
 
   public onAccountChange(callback: onAccountChangeCallback): void {
-    if (this.strategies[this.wallet].onAccountChange) {
-      return this.strategies[this.wallet].onAccountChange!(callback)
+    if (this.getStrategy().onAccountChange) {
+      return this.getStrategy().onAccountChange!(callback)
     }
   }
 
   public onChainIdChange(callback: onChainIdChangeCallback): void {
-    if (this.strategies[this.wallet].onChainIdChange) {
-      return this.strategies[this.wallet].onChainIdChange!(callback)
+    if (this.getStrategy().onChainIdChange) {
+      return this.getStrategy().onChainIdChange!(callback)
     }
   }
 
   public cancelOnChainIdChange(): void {
-    if (this.strategies[this.wallet].cancelOnChainIdChange) {
-      return this.strategies[this.wallet].cancelOnChainIdChange!()
+    if (this.getStrategy().cancelOnChainIdChange) {
+      return this.getStrategy().cancelOnChainIdChange!()
     }
   }
 
   public cancelAllEvents(): void {
-    if (this.strategies[this.wallet].cancelAllEvents) {
-      return this.strategies[this.wallet].cancelAllEvents!()
+    if (this.getStrategy().cancelAllEvents) {
+      return this.getStrategy().cancelAllEvents!()
     }
   }
 
   public cancelOnAccountChange(): void {
-    if (this.strategies[this.wallet].cancelOnAccountChange) {
-      return this.strategies[this.wallet].cancelOnAccountChange!()
+    if (this.getStrategy().cancelOnAccountChange) {
+      return this.getStrategy().cancelOnAccountChange!()
     }
   }
 }
