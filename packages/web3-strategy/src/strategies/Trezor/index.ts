@@ -33,7 +33,7 @@ export default class Trezor
 {
   private trezor: TrezorHW
 
-  constructor(args: { chainId: ChainId; web3Creator: () => Web3 }) {
+  constructor(args: { chainId: ChainId; web3: Web3 }) {
     super(args)
     this.trezor = new TrezorHW()
   }

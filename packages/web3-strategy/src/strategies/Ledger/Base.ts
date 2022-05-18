@@ -56,14 +56,14 @@ export default class LedgerBase
 
   constructor({
     chainId,
-    web3Creator,
+    web3,
     derivationPathType,
   }: {
     chainId: ChainId
-    web3Creator: () => Web3
+    web3: Web3
     derivationPathType: LedgerDerivationPathType
   }) {
-    super({ chainId, web3Creator })
+    super({ chainId, web3 })
 
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
     this.derivationPathType = derivationPathType

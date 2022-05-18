@@ -3,40 +3,50 @@ import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3 from 'web3'
-// @ts-ignore
-import ProviderEngine from 'web3-provider-engine'
 import { TransactionConfig } from 'web3-core'
 import { ConcreteWeb3Strategy } from '../types'
+import BaseConcreteStrategy from './Base'
 
-export default class WalletConnect implements ConcreteWeb3Strategy {
+export default class WalletConnect
+  extends BaseConcreteStrategy
+  implements ConcreteWeb3Strategy
+{
   private connected = false
 
-  private readonly walletConnectProvider: WalletConnectProvider
+  private readonly provider: WalletConnectProvider
 
-  private readonly web3: Web3
+  constructor(args: {
+    chainId: ChainId
+    web3: Web3
+    rpcEndpoints: {
+      wsRpcUrl: string
+      rpcUrl: string
+    }
+  }) {
+    super(args)
+    const { chainId, rpcEndpoints } = args
 
-  // private readonly chainId: ChainId
-
-  constructor({ chainId, rpcUrl }: { chainId: ChainId; rpcUrl: string }) {
-    // this.chainId = chainId
-    this.walletConnectProvider = new WalletConnectProvider({
+    this.provider = new WalletConnectProvider({
       rpc: {
-        [chainId]: rpcUrl,
+        [chainId]: rpcEndpoints.rpcUrl,
       },
     })
-    this.web3 = new Web3(this.walletConnectProvider as ProviderEngine)
+    this.web3 = new Web3(this.provider as any)
   }
 
   private async connect(): Promise<void> {
     if (this.connected) {
       return
     }
-    await this.walletConnectProvider.enable()
+
+    await this.provider.enable()
+
     this.connected = true
   }
 
   async disconnect(): Promise<void> {
-    await this.walletConnectProvider.disconnect()
+    await this.provider.disconnect()
+
     this.connected = false
   }
 
@@ -47,23 +57,18 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
   async getAddresses(): Promise<string[]> {
     await this.connect()
 
-    // try {
-    //   return await this.web3.eth.getAccounts()
-    // } catch (e: any) {
-    //   throw new Web3Exception(`WalletConnect: ${e.message}`)
-    // }
     try {
-      return await this.walletConnectProvider.request({
-        method: 'eth_requestAccounts',
+      return await this.provider.request({
+        method: 'eth_accounts',
       })
     } catch (e: any) {
       throw new Web3Exception(`Metamask: ${e.message}`)
     }
   }
 
-  // @ts-ignore
   async confirm(address: AccountAddress): Promise<string> {
     await this.connect()
+
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -76,33 +81,15 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     await this.connect()
-    console.log(transaction)
+
     try {
       const txHash = await this.web3.eth.sendTransaction(
         transaction as TransactionConfig,
       )
-      // const txHash = await this.walletConnectProvider.request(transaction)
-      // const txHash = await this.web3.eth.sendTransaction(transaction)
       return txHash.toString()
     } catch (e: any) {
       throw new Web3Exception(`WalletConnect: ${e.message}`)
     }
-    // const { ethereum } = this
-    //
-    // if (!ethereum) {
-    //   throw new Web3Exception('Metamask: You need Metamask extension installed')
-    // }
-    //
-    // try {
-    //   return await ethereum.request({
-    //     method: 'eth_sendTransaction',
-    //     params: [transaction],
-    //   })
-    // } catch (e: any) {
-    //   throw new Web3Exception(
-    //     `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
-    //   )
-    // }
   }
 
   async signTypedDataV4(
@@ -110,13 +97,21 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
     address: AccountAddress,
   ): Promise<string> {
     await this.connect()
-    console.log(eip712json)
-    console.log(address)
+
+    const object = JSON.parse(eip712json)
+    const compatibleObject = {
+      ...object,
+      domain: {
+        ...object.domain,
+        salt: Date.now().toString(),
+      },
+    }
+    const stringifiedObject = JSON.stringify(compatibleObject)
 
     try {
-      return await this.walletConnectProvider.request({
-        method: 'eth_signTypedData_v4',
-        params: [address, eip712json],
+      return await this.provider.request({
+        method: 'eth_signTypedData',
+        params: [address, stringifiedObject],
       })
     } catch (e: any) {
       throw new Web3Exception(`WalletConnect: ${e.message}`)
@@ -128,7 +123,7 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
 
     const interval = 1000
     const transactionReceiptRetry = async () => {
-      const receipt = await this.walletConnectProvider.request({
+      const receipt = await this.provider.request({
         method: 'eth_getTransactionReceipt',
         params: [txHash],
       })
@@ -168,49 +163,23 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
     }
   }
 
-  // onChainIdChanged(_callback: () => void): void {
-  //   // const { ethereum } = this
-  //   //
-  //   // if (!ethereum) {
-  //   //   return
-  //   // }
-  //   //
-  //   // ethereum.on('chainChanged', callback)
-  // }
-
-  // eslint-disable-next-line class-methods-use-this
   onAccountChange(callback: (account: AccountAddress) => void): void {
-    this.walletConnectProvider.on('accountsChanged', callback)
+    this.provider.on('accountsChanged', callback)
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  cancelOnChainIdChange(): void {
-    // const { ethereum } = this
+  cancelOnChainIdChange = (): void => {
     //
-    // if (ethereum) {
-    //   // ethereum.removeListener('chainChanged', handler)
-    // }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  cancelOnAccountChange(): void {
-    // const { ethereum } = this
+  cancelOnAccountChange = (): void => {
     //
-    // if (ethereum) {
-    //   // ethereum.removeListener('chainChanged', handler)
-    // }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  cancelAllEvents(): void {
-    // const { ethereum } = this
+  cancelAllEvents = (): void => {
     //
-    // if (ethereum) {
-    //   ethereum.removeAllListeners()
-    // }
   }
 
   isWeb3Connected = (): boolean => this.connected
 
-  isMetamask = (): boolean => true
+  isMetamask = (): boolean => false
 }
