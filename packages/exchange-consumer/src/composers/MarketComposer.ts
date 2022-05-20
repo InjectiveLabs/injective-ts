@@ -1,10 +1,14 @@
-import { OrderData } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import {
+  MsgBatchUpdateOrders,
+  OrderData,
+} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import {
   DerivativeOrder,
   OrderInfo,
   OrderTypeMap as GrpcOrderTypeMap,
   SpotOrder,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+import snakeCaseKeys from 'snakecase-keys'
 import { ComposerResponse } from '@injectivelabs/ts-types'
 import { getWeb3GatewayMessage } from '@injectivelabs/utils'
 
@@ -50,28 +54,23 @@ export class MarketComposer {
       quantity: string
     }[]
     injectiveAddress: string
-  }): ComposerResponse<any, any> {
-    const messageContent = {
-      sender: injectiveAddress,
-      subaccount_id: '',
-    } as Record<string, any>
+  }): ComposerResponse<MsgBatchUpdateOrders, MsgBatchUpdateOrders.AsObject> {
+    const message = new MsgBatchUpdateOrders()
+    message.setSender(injectiveAddress)
 
     if (spotMarketIdsToCancelAll && spotMarketIdsToCancelAll.length > 0) {
-      messageContent.spot_market_ids_to_cancel_all = spotMarketIdsToCancelAll
-      messageContent.subaccount_id = subaccountId
-    } else {
-      messageContent.spot_market_ids_to_cancel_all = []
+      message.setSubaccountId(subaccountId)
+      spotMarketIdsToCancelAll.forEach(message.addSpotMarketIdsToCancelAll)
     }
 
     if (
       derivativeMarketIdsToCancelAll &&
       derivativeMarketIdsToCancelAll.length > 0
     ) {
-      messageContent.derivative_market_ids_to_cancel_all =
-        derivativeMarketIdsToCancelAll
-      messageContent.subaccount_id = subaccountId
-    } else {
-      messageContent.derivative_market_ids_to_cancel_all = []
+      message.setSubaccountId(subaccountId)
+      derivativeMarketIdsToCancelAll.forEach(
+        message.addDerivativeMarketIdsToCancelAll,
+      )
     }
 
     if (spotOrdersToCancel && spotOrdersToCancel.length > 0) {
@@ -86,11 +85,7 @@ export class MarketComposer {
         },
       )
 
-      messageContent.spot_orders_to_cancel = orderDataList.map((order) =>
-        order.toObject(),
-      )
-    } else {
-      messageContent.spot_orders_to_cancel = []
+      message.setSpotOrdersToCancelList(orderDataList)
     }
 
     if (derivativeOrdersToCancel && derivativeOrdersToCancel.length > 0) {
@@ -105,11 +100,7 @@ export class MarketComposer {
         },
       )
 
-      messageContent.derivative_orders_to_cancel = orderDataList.map((order) =>
-        order.toObject(),
-      )
-    } else {
-      messageContent.derivative_orders_to_cancel = []
+      message.setDerivativeOrdersToCancelList(orderDataList)
     }
 
     if (spotOrdersToCreate && spotOrdersToCreate.length > 0) {
@@ -141,11 +132,7 @@ export class MarketComposer {
         },
       )
 
-      messageContent.spot_orders_to_create = orderDataList.map((order) =>
-        order.toObject(),
-      )
-    } else {
-      messageContent.spot_orders_to_create = []
+      message.setSpotOrdersToCreateList(orderDataList)
     }
 
     if (derivativeOrdersToCreate && derivativeOrdersToCreate.length > 0) {
@@ -179,20 +166,27 @@ export class MarketComposer {
         },
       )
 
-      messageContent.derivative_orders_to_create = orderDataList.map((order) =>
-        order.toObject(),
-      )
-    } else {
-      messageContent.derivative_orders_to_create = []
+      message.setDerivativeOrdersToCreateList(orderDataList)
     }
 
     const type = '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
 
+    const messageKeysInSnakeCase = snakeCaseKeys(message.toObject())
+    const messageKeysWithoutListSuffix = Object.entries(
+      snakeCaseKeys(messageKeysInSnakeCase),
+    ).reduce(
+      (list, [key, value]) => ({ [key.replace('_list', '')]: value, ...list }),
+      {},
+    )
+
     return {
-      web3GatewayMessage: getWeb3GatewayMessage(messageContent, type),
-      directBroadcastMessage: {
+      web3GatewayMessage: getWeb3GatewayMessage(
+        messageKeysWithoutListSuffix as unknown as MsgBatchUpdateOrders.AsObject,
         type,
-        message: messageContent,
+      ),
+      directBroadcastMessage: {
+        message,
+        type,
       },
     }
   }
