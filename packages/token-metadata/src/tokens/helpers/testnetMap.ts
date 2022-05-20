@@ -3,7 +3,7 @@ export const testnetSymbolToAddressMap = {
 }
 
 export const devnetSymbolToAddressMap = {
-  INJ: '0x3d940951C2cdFc7091cb6064A41053FBFbD016EF',
+  INJ: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
 }
 
 export const devnet1SymbolToAddressMap = {
