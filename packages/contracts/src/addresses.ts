@@ -72,11 +72,11 @@ export const contractAddressesByNetwork: ContractAddressesForNetwork = {
     injective: '0x96853aBD7e589D06b7dade1b9264f1a5c2d3176E',
   },
   [Network.Devnet]: {
-    peggy: '0x3c92F7779A7845d5eEf307aEF39066Ddba04A54b',
-    injective: '0x3d940951C2cdFc7091cb6064A41053FBFbD016EF',
+    peggy: '0x2Ba911FBAd02F2Fd56eeBb4a9A5e049873a4B546',
+    injective: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
   },
   [Network.Devnet1]: {
-    peggy: '0x297BbB78723Dab82282FFfd7C5856c13b5104729',
+    peggy: '0x0AAd19327a1b90DDE4e2D12FB99Ab8ee7E4E528D',
     injective: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
   },
   [Network.Local]: {
