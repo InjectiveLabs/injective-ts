@@ -50,6 +50,14 @@ export const getNetworkFromSender = (sender: string): BridgingNetwork => {
     return BridgingNetwork.Axelar
   }
 
+  if (sender.startsWith('evmos')) {
+    return BridgingNetwork.Evmos
+  }
+
+  if (sender.startsWith('persistence')) {
+    return BridgingNetwork.Persistence
+  }
+
   return BridgingNetwork.CosmosHub
 }
 
