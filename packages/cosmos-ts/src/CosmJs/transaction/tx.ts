@@ -20,17 +20,31 @@ import { createAny, createAnyMessage } from './utils'
 export const SIGN_DIRECT = SignMode.SIGN_MODE_DIRECT
 export const LEGACY_AMINO = SignMode.SIGN_MODE_LEGACY_AMINO_JSON
 
-export const getPublicKey = ({ algo, key }: { algo: string; key: string }) => {
-  const publicKey =
-    algo === 'secp256k1'
-      ? {
-          proto: new CosmosPubKey(),
-          path: '/cosmos.crypto.vbeta1.secp256k1.PubKey',
-        }
-      : {
-          proto: new PubKey(),
-          path: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
-        }
+export const getPublicKey = ({
+  chainId,
+  key,
+}: {
+  chainId: string
+  key: string
+}) => {
+  let publicKey
+
+  if (chainId.startsWith('injective')) {
+    publicKey = {
+      proto: new PubKey(),
+      path: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
+    }
+  } else if (chainId.startsWith('evmos')) {
+    publicKey = {
+      proto: new PubKey(),
+      path: '/ethermint.crypto.v1.ethsecp256k1.PubKey',
+    }
+  } else {
+    publicKey = {
+      proto: new CosmosPubKey(),
+      path: '/cosmos.crypto.vbeta1.secp256k1.PubKey',
+    }
+  }
 
   const pubkeyProto = publicKey.proto
   pubkeyProto.setKey(key)
@@ -77,17 +91,17 @@ export const createFee = ({
 }
 
 export const createSignerInfo = ({
-  algo,
+  chainId,
   publicKey,
   sequence,
   mode,
 }: {
-  algo: string
+  chainId: string
   publicKey: string
   sequence: number
   mode: number
 }) => {
-  const pubKey = getPublicKey({ algo, key: publicKey })
+  const pubKey = getPublicKey({ chainId, key: publicKey })
 
   const single = new ModeInfo.Single()
   single.setMode(mode as any)
@@ -141,7 +155,6 @@ export const createTransaction = ({
   message,
   memo,
   fee,
-  algo,
   pubKey,
   sequence,
   accountNumber,
@@ -153,7 +166,6 @@ export const createTransaction = ({
   }
   memo: string
   fee: StdFee
-  algo: string
   pubKey: string
   sequence: number
   accountNumber: number
@@ -167,7 +179,7 @@ export const createTransaction = ({
 
   // AMINO
   const signInfoAmino = createSignerInfo({
-    algo,
+    chainId,
     sequence,
     publicKey: pubKey,
     mode: LEGACY_AMINO,
@@ -191,7 +203,7 @@ export const createTransaction = ({
 
   // SignDirect
   const signInfoDirect = createSignerInfo({
-    algo,
+    chainId,
     sequence,
     mode: SIGN_DIRECT,
     publicKey: pubKey,

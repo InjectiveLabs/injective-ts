@@ -15,17 +15,21 @@ import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
   HttpClient,
+  DEFAULT_STD_FEE,
+  BigNumber,
 } from '@injectivelabs/utils'
 import { SigningStargateClient } from '@cosmjs/stargate'
 import Long from 'long'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { IBCComposer } from '@injectivelabs/chain-consumer'
+import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
+import { fromBase64 } from '@cosmjs/encoding'
 import { CosmosChainId, TestnetCosmosChainId } from '../chains/types'
 import { getEndpointFromChainId } from '../chains/endpoints'
 import { KeplrWallet } from '../Keplr/KeplrWallet'
 import { createSignedTx, createTransaction } from './transaction'
 
-const ethereumCurveBasedChains = ['injective-1']
-const ethereumCurveBasedAddressesPrefixes = ['inj']
+const ethereumCurveBasedAddressesPrefixes = ['inj', 'evmos']
 
 export class CosmJsWallet {
   private chainId: string
@@ -147,19 +151,22 @@ export class CosmJsWallet {
     const Keplr = await keplr.getKeplrWallet()
     const key = await Keplr.getKey(chainId)
     const accountDetails = await this.fetchAccountDetails(key.bech32Address)
-    const algo = ethereumCurveBasedChains.includes(chainId)
-      ? 'ethsecp256k1'
-      : 'secp256k1'
 
+    const baseAccount = accountDetails.base_account || accountDetails
     const { signDirect: signDirectTx } = createTransaction({
       message,
       memo,
       fee,
-      algo,
       chainId,
       pubKey: Buffer.from(key.pubKey).toString('base64'),
-      sequence: parseInt(accountDetails.sequence.toString(), 10),
-      accountNumber: parseInt(accountDetails.account_number.toString(), 10),
+      sequence: parseInt(
+        baseAccount.sequence ? baseAccount.sequence.toString() : 0,
+        10,
+      ),
+      accountNumber: parseInt(
+        baseAccount.account_number ? baseAccount.account_number.toString() : 0,
+        10,
+      ),
     })
 
     return this.signTransactionDirect({
@@ -194,6 +201,7 @@ export class CosmJsWallet {
     transferAmount,
     sourcePort,
     sourceChannel,
+    fee,
     timeoutHeight,
     timeoutTimestamp,
     memo = '',
@@ -208,6 +216,62 @@ export class CosmJsWallet {
     fee?: StdFee
     memo?: string
   }) {
+    if (
+      ethereumCurveBasedAddressesPrefixes.some((prefix) =>
+        senderAddress.startsWith(prefix),
+      )
+    ) {
+      const actualTimestamp =
+        timeoutTimestamp || Math.floor(Date.now() / 1000) + 1000
+      const latestBlock = await this.fetchLatestBlock()
+      const ibcMessage = IBCComposer.transfer({
+        channelId: sourceChannel,
+        port: sourcePort,
+        timeout: actualTimestamp * 1_000_000_000,
+        height: {
+          revisionHeight: new BigNumber(latestBlock.header.height)
+            .plus(100)
+            .toNumber(),
+          revisionNumber: new BigNumber(
+            latestBlock.header.version.block,
+          ).toNumber(),
+        },
+        sender: senderAddress,
+        receiver: recipientAddress,
+        denom: transferAmount.denom,
+        amount: transferAmount.amount,
+      })
+
+      const message = Array.isArray(ibcMessage.directBroadcastMessage)
+        ? ibcMessage.directBroadcastMessage[0]
+        : ibcMessage.directBroadcastMessage
+
+      try {
+        const signResponse = await this.signRawTransaction({
+          message: {
+            type: message.type,
+            value: message.message,
+          },
+          memo,
+          address: senderAddress,
+          fee: fee || DEFAULT_STD_FEE,
+        })
+        const { signature, signed } = signResponse
+
+        const txRaw = TxRaw.fromPartial({
+          bodyBytes: signed.bodyBytes,
+          authInfoBytes: signed.authInfoBytes,
+          signatures: [fromBase64(signature.signature)],
+        })
+
+        return await (
+          await this.getSigningStargateClient()
+        ).broadcastTx(TxRaw.encode(txRaw).finish())
+      } catch (e) {
+        throw new Error(e as any)
+      }
+    }
+
     return (await this.getSigningStargateClient()).sendIbcTokens(
       senderAddress,
       recipientAddress,
