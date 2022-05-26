@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.32...@injectivelabs/sdk-ts@0.0.33) (2022-05-26)
+
+
+### Features
+
+* evmos fix ([6d6d46e](https://github.com/InjectiveLabs/injective-ts/commit/6d6d46e4c3ba8d8411d66f84d66e86f6c1c4c83a))
+
+
+
+
+
 ## [0.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.31...@injectivelabs/sdk-ts@0.0.32) (2022-05-17)
 
 
