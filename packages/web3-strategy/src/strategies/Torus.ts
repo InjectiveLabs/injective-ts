@@ -179,5 +179,5 @@ export default class Torus
 
   isWeb3Connected = (): boolean => true
 
-  isMetamask = (): boolean => false
+  isMetamaskInstalled = (): boolean => false
 }

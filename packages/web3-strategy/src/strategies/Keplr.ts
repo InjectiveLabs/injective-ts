@@ -110,5 +110,5 @@ export default class Keplr
 
   isWeb3Connected = (): boolean => true
 
-  isMetamask = (): boolean => false
+  isMetamaskInstalled = (): boolean => false
 }

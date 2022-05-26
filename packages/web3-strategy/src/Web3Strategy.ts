@@ -22,9 +22,8 @@ export default class Web3Strategy {
   public wallet: Wallet
 
   constructor({ wallet, chainId, options }: Web3StrategyArguments) {
-    const web3 = createAlchemyWeb3(
-      options.wsRpcUrl || options.rpcUrl,
-    ) as unknown as Web3
+    const alchemyUrl = options.wsRpcUrls[chainId] || options.rpcUrls[chainId]
+    const web3 = createAlchemyWeb3(alchemyUrl) as unknown as Web3
 
     this.strategies = {
       [Wallet.Metamask]: new Metamask({ chainId, web3 }),
@@ -35,8 +34,7 @@ export default class Web3Strategy {
       [Wallet.Torus]: new Torus({ chainId, web3 }),
       [Wallet.WalletConnect]: new WalletConnect({
         chainId,
-        web3,
-        rpcEndpoints: options,
+        web3Options: options,
       }),
     } as Record<Wallet, ConcreteWeb3Strategy>
 
@@ -64,7 +62,7 @@ export default class Web3Strategy {
   }
 
   public isMetamask(): boolean {
-    return this.getStrategy().isMetamask()
+    return this.getStrategy().isMetamaskInstalled()
   }
 
   public getChainId(): Promise<string> {

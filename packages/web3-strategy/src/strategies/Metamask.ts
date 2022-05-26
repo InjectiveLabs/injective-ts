@@ -217,5 +217,5 @@ export default class Metamask
 
   isWeb3Connected = (): boolean => isMetamaskInstalled
 
-  isMetamask = (): boolean => true
+  isMetamaskInstalled = (): boolean => true
 }

@@ -4,71 +4,59 @@ import { Web3Exception } from '@injectivelabs/exceptions'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3 from 'web3'
 import { TransactionConfig } from 'web3-core'
-import { ConcreteWeb3Strategy } from '../types'
-import BaseConcreteStrategy from './Base'
+import { ConcreteWeb3Strategy, Web3Options } from '../types'
 
-export default class WalletConnect
-  extends BaseConcreteStrategy
-  implements ConcreteWeb3Strategy
-{
-  private connected = false
+export default class WalletConnect implements ConcreteWeb3Strategy {
+  private walletConnectProvider: WalletConnectProvider | undefined
 
-  private readonly provider: WalletConnectProvider
+  private web3: Web3 | undefined
 
-  constructor(args: {
-    chainId: ChainId
-    web3: Web3
-    rpcEndpoints: {
-      wsRpcUrl: string
-      rpcUrl: string
-    }
-  }) {
-    super(args)
-    const { chainId, rpcEndpoints } = args
+  private readonly web3Options: Web3Options
 
-    this.provider = new WalletConnectProvider({
-      rpc: {
-        [chainId]: rpcEndpoints.rpcUrl,
-      },
-    })
-    this.web3 = new Web3(this.provider as any)
+  constructor(args: { chainId: ChainId; web3Options: Web3Options }) {
+    this.web3Options = args.web3Options
   }
 
   private async connect(): Promise<void> {
-    if (this.connected) {
-      return
+    if (!this.walletConnectProvider?.connected) {
+      // WalletConnect seems to have a problem with connecting multiple times with the same instance, hence it's necessary
+      // to create a new one each time user wants to connect
+      this.walletConnectProvider = new WalletConnectProvider({
+        rpc: this.web3Options.rpcUrls,
+      })
+      this.web3 = new Web3(this.walletConnectProvider as any)
+      await this.walletConnectProvider?.enable()
     }
-
-    await this.provider.enable()
-
-    this.connected = true
   }
 
   async disconnect(): Promise<void> {
-    await this.provider.disconnect()
-
-    this.connected = false
+    await this.walletConnectProvider?.disconnect()
+    // walletConnect will not display QRModal again with the same instance for some reason, so it's necessary to destroy the instance
+    this.walletConnectProvider = undefined
+    this.web3 = undefined
   }
 
   getWeb3(): Web3 {
-    return this.web3
+    if (this.web3) {
+      return this.web3
+    }
+    throw new Web3Exception(
+      `WalletConnect must be connected before web3 instance can be used`,
+    )
   }
 
   async getAddresses(): Promise<string[]> {
     await this.connect()
 
     try {
-      return await this.provider.request({
-        method: 'eth_accounts',
-      })
+      return await this.web3!.eth.getAccounts()
     } catch (e: any) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+      throw new Web3Exception(`WalletConnect: ${e.message}`)
     }
   }
 
   async confirm(address: AccountAddress): Promise<string> {
     await this.connect()
-
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -83,7 +71,7 @@ export default class WalletConnect
     await this.connect()
 
     try {
-      const txHash = await this.web3.eth.sendTransaction(
+      const txHash = await this.web3!.eth.sendTransaction(
         transaction as TransactionConfig,
       )
       return txHash.toString()
@@ -98,20 +86,10 @@ export default class WalletConnect
   ): Promise<string> {
     await this.connect()
 
-    const object = JSON.parse(eip712json)
-    const compatibleObject = {
-      ...object,
-      domain: {
-        ...object.domain,
-        salt: Date.now().toString(),
-      },
-    }
-    const stringifiedObject = JSON.stringify(compatibleObject)
-
     try {
-      return await this.provider.request({
+      return await this.walletConnectProvider!.request({
         method: 'eth_signTypedData',
-        params: [address, stringifiedObject],
+        params: [address, eip712json],
       })
     } catch (e: any) {
       throw new Web3Exception(`WalletConnect: ${e.message}`)
@@ -123,7 +101,7 @@ export default class WalletConnect
 
     const interval = 1000
     const transactionReceiptRetry = async () => {
-      const receipt = await this.provider.request({
+      const receipt = await this.walletConnectProvider!.request({
         method: 'eth_getTransactionReceipt',
         params: [txHash],
       })
@@ -146,7 +124,7 @@ export default class WalletConnect
   async getNetworkId(): Promise<string> {
     await this.connect()
     try {
-      const result = await this.web3.eth.net.getId()
+      const result = await this.web3!.eth.net.getId()
       return result.toString()
     } catch (e: any) {
       throw new Web3Exception(e.message)
@@ -156,7 +134,7 @@ export default class WalletConnect
   async getChainId(): Promise<string> {
     await this.connect()
     try {
-      const result = await this.web3.eth.getChainId()
+      const result = await this.web3!.eth.getChainId()
       return result.toString()
     } catch (e: any) {
       throw new Web3Exception(e.message)
@@ -164,22 +142,11 @@ export default class WalletConnect
   }
 
   onAccountChange(callback: (account: AccountAddress) => void): void {
-    this.provider.on('accountsChanged', callback)
+    this.walletConnectProvider?.on('accountsChanged', callback)
   }
 
-  cancelOnChainIdChange = (): void => {
-    //
-  }
+  isWeb3Connected = (): boolean =>
+    this.walletConnectProvider?.connected ?? false
 
-  cancelOnAccountChange = (): void => {
-    //
-  }
-
-  cancelAllEvents = (): void => {
-    //
-  }
-
-  isWeb3Connected = (): boolean => this.connected
-
-  isMetamask = (): boolean => false
+  isMetamaskInstalled = (): boolean => true
 }

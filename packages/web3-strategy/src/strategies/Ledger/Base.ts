@@ -249,5 +249,5 @@ export default class LedgerBase
 
   isWeb3Connected = (): boolean => true
 
-  isMetamask = (): boolean => false
+  isMetamaskInstalled = (): boolean => false
 }

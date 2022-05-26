@@ -219,5 +219,5 @@ export default class Trezor
 
   isWeb3Connected = (): boolean => true
 
-  isMetamask = (): boolean => false
+  isMetamaskInstalled = (): boolean => false
 }

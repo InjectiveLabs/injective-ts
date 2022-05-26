@@ -10,12 +10,12 @@ export enum LedgerDerivationPathType {
 }
 
 export interface Web3Options {
-  rpcUrl: string
-  wsRpcUrl: string
+  rpcUrls: Record<ChainId, string>
+  wsRpcUrls: Record<ChainId, string>
 }
 
 export interface ConcreteWeb3Strategy {
-  isMetamask(): boolean
+  isMetamaskInstalled(): boolean
 
   getAddresses(): Promise<string[]>
 
