@@ -13,18 +13,23 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
 
   private readonly web3Options: Web3Options
 
+  private createWalletConnectProvider() {
+    this.walletConnectProvider = new WalletConnectProvider({
+      rpc: this.web3Options.rpcUrls,
+    })
+    this.web3 = new Web3(this.walletConnectProvider as any)
+  }
+
   constructor(args: { chainId: ChainId; web3Options: Web3Options }) {
     this.web3Options = args.web3Options
+    this.createWalletConnectProvider()
   }
 
   private async connect(): Promise<void> {
     if (!this.walletConnectProvider?.connected) {
       // WalletConnect seems to have a problem with connecting multiple times with the same instance, hence it's necessary
       // to create a new one each time user wants to connect
-      this.walletConnectProvider = new WalletConnectProvider({
-        rpc: this.web3Options.rpcUrls,
-      })
-      this.web3 = new Web3(this.walletConnectProvider as any)
+      this.createWalletConnectProvider()
       await this.walletConnectProvider?.enable()
     }
   }
@@ -32,8 +37,7 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
   async disconnect(): Promise<void> {
     await this.walletConnectProvider?.disconnect()
     // walletConnect will not display QRModal again with the same instance for some reason, so it's necessary to destroy the instance
-    this.walletConnectProvider = undefined
-    this.web3 = undefined
+    this.createWalletConnectProvider()
   }
 
   getWeb3(): Web3 {
@@ -64,22 +68,6 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
     )
   }
 
-  async sendTransaction(
-    transaction: unknown,
-    _options: { address: AccountAddress; chainId: ChainId },
-  ): Promise<string> {
-    await this.connect()
-
-    try {
-      const txHash = await this.web3!.eth.sendTransaction(
-        transaction as TransactionConfig,
-      )
-      return txHash.toString()
-    } catch (e: any) {
-      throw new Web3Exception(`WalletConnect: ${e.message}`)
-    }
-  }
-
   async signTypedDataV4(
     eip712json: string,
     address: AccountAddress,
@@ -96,6 +84,30 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
     }
   }
 
+  async sendTransaction(
+    transaction: unknown,
+    _options: { address: AccountAddress; chainId: ChainId },
+  ): Promise<string> {
+    await this.connect()
+
+    const transactionConfig = transaction as TransactionConfig
+    transactionConfig.gas = parseInt(
+      transactionConfig.gas as string,
+      16,
+    ).toString(10)
+    transactionConfig.maxFeePerGas = parseInt(
+      transactionConfig.maxFeePerGas as string,
+      16,
+    ).toString(10)
+    // walletConnect doesn't seem to support hex format, so it's necessay to convert to decimal
+    try {
+      const txHash = await this.web3!.eth.sendTransaction(transactionConfig)
+      return txHash.transactionHash
+    } catch (e: any) {
+      throw new Web3Exception(`WalletConnect: ${e.message}`)
+    }
+  }
+
   async getTransactionReceipt(txHash: string): Promise<string> {
     await this.connect()
 
@@ -105,12 +117,10 @@ export default class WalletConnect implements ConcreteWeb3Strategy {
         method: 'eth_getTransactionReceipt',
         params: [txHash],
       })
-
       if (!receipt) {
         await sleep(interval)
         await transactionReceiptRetry()
       }
-
       return receipt
     }
 

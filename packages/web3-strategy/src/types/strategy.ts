@@ -21,6 +21,11 @@ export interface ConcreteWeb3Strategy {
 
   confirm(address: AccountAddress): Promise<string>
 
+  /**
+   * Sends Ethereum transaction. Returns a transaction hash
+   * @param transaction should implement TransactionConfig
+   * @param options
+   */
   sendTransaction(
     transaction: unknown,
     options: { address: string; chainId: ChainId },

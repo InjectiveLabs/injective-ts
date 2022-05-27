@@ -61,7 +61,7 @@ export default class Web3Strategy {
     return this.getStrategy().isWeb3Connected()
   }
 
-  public isMetamask(): boolean {
+  public isMetamaskInstalled(): boolean {
     return this.getStrategy().isMetamaskInstalled()
   }
 
