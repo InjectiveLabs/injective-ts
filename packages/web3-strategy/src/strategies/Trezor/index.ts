@@ -85,21 +85,34 @@ export default class Trezor
       ...object,
       domain: {
         ...object.domain,
-        chainId: parseInt(object.domain.chainId, 16),
-        salt: Date.now().toString(),
+        chainId: object.domain.chainId,
+        salt: '0',
       },
     }
     const dataWithHashes = transformTypedData(compatibleObject)
+    const {
+      types: { EIP712Domain = [], ...otherTypes } = {},
+      message = {},
+      domain = {},
+      primaryType,
+      domain_separator_hash,
+      message_hash,
+    } = dataWithHashes
 
     try {
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(address)
       const response = await TrezorConnect.ethereumSignTypedData({
         path: derivationPath,
-        data: dataWithHashes,
-        message_hash: dataWithHashes.message_hash,
-        domain_separator_hash: dataWithHashes.domain_separator_hash,
-        metamask_v4_compat: false,
+        data: {
+          types: { EIP712Domain, ...otherTypes },
+          message,
+          domain,
+          primaryType,
+        },
+        message_hash,
+        domain_separator_hash,
+        metamask_v4_compat: true,
       })
 
       if (!response.success) {

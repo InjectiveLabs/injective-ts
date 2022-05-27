@@ -13,6 +13,16 @@ export default class TrezorTransport {
 
   private hdKey: HDNode = new HDNode()
 
+  constructor() {
+    TrezorConnect.on('DEVICE_EVENT', (event) => {
+      if (event && event.payload && event.payload.features) {
+        //
+      }
+    })
+
+    TrezorConnect.init({ manifest: TREZOR_CONNECT_MANIFEST })
+  }
+
   async connect() {
     await this.init()
   }
@@ -33,14 +43,6 @@ export default class TrezorTransport {
     if (this.isUnlocked()) {
       return Promise.resolve()
     }
-
-    TrezorConnect.on('DEVICE_EVENT', (event) => {
-      if (event && event.payload && event.payload.features) {
-        //
-      }
-    })
-
-    TrezorConnect.init({ manifest: TREZOR_CONNECT_MANIFEST })
 
     return new Promise((resolve, reject) => {
       TrezorConnect.getPublicKey({
