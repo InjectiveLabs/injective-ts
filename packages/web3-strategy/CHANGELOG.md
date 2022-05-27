@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.5.35...@injectivelabs/web3-strategy@0.5.36) (2022-05-27)
+
+
+### Bug Fixes
+
+* trezor support ([2383079](https://github.com/InjectiveLabs/injective-ts/commit/23830790a68cb0b8be9d0e80a61e2cd6ab1390ee))
+
+
+
+
+
 ## [0.5.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/web3-strategy@0.5.34...@injectivelabs/web3-strategy@0.5.35) (2022-05-26)
 
 **Note:** Version bump only for package @injectivelabs/web3-strategy
