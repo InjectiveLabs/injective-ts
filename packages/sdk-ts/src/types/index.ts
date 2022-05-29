@@ -1,4 +1,5 @@
 export * from './exchange'
+export * from './denom'
 export * from './pagination'
 
 export interface Coin {

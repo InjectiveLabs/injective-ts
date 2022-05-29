@@ -1,3 +1,5 @@
+## DEPRECATED - Please use @injectivelabs/sdk-ui-ts
+
 # 🌟 Injective Protocol - UI Common
 
 [![downloads](https://img.shields.io/npm/dm/@injectivelabs/ui-common.svg)](https://www.npmjs.com/package/@injectivelabs/ui-common)

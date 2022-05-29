@@ -1,3 +1,5 @@
+## DEPRECATED
+
 # 🌟 Injective Protocol - Alchemy API Consumer
 
 ---

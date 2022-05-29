@@ -1,5 +1,7 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
 
+export const INJ_DENOM = 'inj'
+
 export const BECH32_PUBKEY_ACC_PREFIX = 'injpub'
 export const BECH32_PUBKEY_VAL_PREFIX = 'injvaloperpub'
 export const BECH32_PUBKEY_CONS_PREFIX = 'injvalconspub'
@@ -24,7 +26,7 @@ export const DUST_AMOUNT = 0.0001
 export const PAGINATION_TOTAL_PAGE_LIMIT: number = 10000
 export const DEFAULT_PAGINATION_TOTAL_COUNT: number = 1000000
 
-export const defaultStdFee = {
+export const DEFAULT_STD_FEE = {
   amount: [
     {
       amount: new BigNumberInBase(DEFAULT_GAS_LIMIT)

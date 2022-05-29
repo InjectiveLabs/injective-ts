@@ -31,6 +31,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@alch/alchemy-web3": "^1.4.2",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/exceptions": "^0.5.2",

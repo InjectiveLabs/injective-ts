@@ -2,7 +2,7 @@ import { HttpClient, BigNumber, BigNumberInWei } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { GWEI_IN_WEI, DEFAULT_GAS_PRICE } from '../constants'
 
-const isTestnet = (network: Network = Network.Mainnet) => {
+const isTestnet = (network: Network) => {
   return [
     Network.Local,
     Network.Devnet,

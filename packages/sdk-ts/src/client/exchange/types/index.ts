@@ -6,3 +6,9 @@ export * from './spot-rest'
 export * from './account'
 export * from './explorer'
 export * from './auction'
+
+export interface StreamStatusResponse {
+  details: string
+  code: number
+  metadata: any
+}
