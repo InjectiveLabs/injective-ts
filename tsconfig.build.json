@@ -31,7 +31,7 @@
   "exclude": [
     "node_modules",
     "dist",
-    "./old_packages",
+    "./deprecated",
     "**/*.test.ts",
     "**/*.spec.ts"
   ]

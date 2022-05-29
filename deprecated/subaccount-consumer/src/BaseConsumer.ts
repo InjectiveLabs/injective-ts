@@ -17,7 +17,7 @@ export default class BaseConsumer {
   protected request<
     TRequest extends grpc.ProtobufMessage,
     TResponse extends grpc.ProtobufMessage,
-    S extends grpc.UnaryMethodDefinition<TRequest, TResponse>
+    S extends grpc.UnaryMethodDefinition<TRequest, TResponse>,
   >(request: TRequest, service: S): Promise<TResponse> {
     return new Promise((resolve, reject) => {
       grpc.unary(service, {

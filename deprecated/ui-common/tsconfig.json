@@ -1,26 +1,26 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../packages/../../packages/tsconfig.json",
   "references": [
     {
-      "path": "../ts-types/tsconfig.json"
+      "path": "../../packages/ts-types/tsconfig.json"
     },
     {
-      "path": "../exceptions/tsconfig.json"
+      "path": "../../packages/exceptions/tsconfig.json"
     },
     {
-      "path": "../utils/tsconfig.json"
+      "path": "../../packages/utils/tsconfig.json"
     },
     {
-      "path": "../networks/tsconfig.json"
+      "path": "../../packages/networks/tsconfig.json"
+    },
+    {
+      "path": "../../packages/contracts/tsconfig.json"
+    },
+    {
+      "path": "../../packages/token-metadata/tsconfig.json"
     },
     {
       "path": "../chain-consumer/tsconfig.json"
-    },
-    {
-      "path": "../contracts/tsconfig.json"
-    },
-    {
-      "path": "../token-metadata/tsconfig.json"
     },
     {
       "path": "../exchange-consumer/tsconfig.json"
@@ -38,10 +38,10 @@
       "path": "../alchemy-api/tsconfig.json"
     },
     {
-      "path": "../token-metadata/tsconfig.json"
+      "path": "../../packages/token-metadata/tsconfig.json"
     },
     {
-      "path": "../web3-strategy/tsconfig.json"
+      "path": "../../packages/web3-strategy/tsconfig.json"
     }
   ],
 }

@@ -2,13 +2,13 @@
   "extends": "../../tsconfig.json",
   "references": [
     {
-      "path": "../ts-types/tsconfig.json"
+      "path": "../../packages/ts-types/tsconfig.json"
     },
     {
-      "path": "../exceptions/tsconfig.json"
+      "path": "../../packages/exceptions/tsconfig.json"
     },
     {
-      "path": "../utils/tsconfig.json"
+      "path": "../../packages/utils/tsconfig.json"
     }
   ],
 }
