@@ -24,21 +24,6 @@
       "@injectivelabs/contracts": [
         "./packages/contracts"
       ],
-      "@injectivelabs/chain-consumer": [
-        "./packages/chain-consumer"
-      ],
-      "@injectivelabs/exchange-consumer": [
-        "./packages/exchange-consumer"
-      ],
-      "@injectivelabs/derivatives-consumer": [
-        "./packages/derivatives-consumer"
-      ],
-      "@injectivelabs/subaccount-consumer": [
-        "./packages/subaccount-consumer"
-      ],
-      "@injectivelabs/spot-consumer": [
-        "./packages/spot-consumer"
-      ],
       "@injectivelabs/tokens-metadata": [
         "./packages/tokens-metadata"
       ],
@@ -50,9 +35,6 @@
       ],
       "@injectivelabs/referral-consumer": [
         "./packages/referral-consumer"
-      ],
-      "@injectivelabs/ui-common": [
-        "packages/ui-common"
       ],
       "@injectivelabs/sdk-ts": [
         "packages/sdk-ts"

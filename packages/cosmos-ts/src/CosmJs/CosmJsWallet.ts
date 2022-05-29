@@ -21,7 +21,7 @@ import {
 import { SigningStargateClient } from '@cosmjs/stargate'
 import Long from 'long'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { IBCComposer } from '@injectivelabs/chain-consumer'
+import MsgTransfer from '@injectivelabs/sdk-ts/dist/core/ibc/msgs/MsgTransfer'
 import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { fromBase64 } from '@cosmjs/encoding'
 import { CosmosChainId, TestnetCosmosChainId } from '../chains/types'
@@ -224,7 +224,7 @@ export class CosmJsWallet {
       const actualTimestamp =
         timeoutTimestamp || Math.floor(Date.now() / 1000) + 1000
       const latestBlock = await this.fetchLatestBlock()
-      const ibcMessage = IBCComposer.transfer({
+      const ibcMessage = MsgTransfer.fromJSON({
         channelId: sourceChannel,
         port: sourcePort,
         timeout: actualTimestamp * 1_000_000_000,
@@ -238,13 +238,13 @@ export class CosmJsWallet {
         },
         sender: senderAddress,
         receiver: recipientAddress,
-        denom: transferAmount.denom,
-        amount: transferAmount.amount,
+        amount: {
+          denom: transferAmount.denom,
+          amount: transferAmount.amount,
+        },
       })
 
-      const message = Array.isArray(ibcMessage.directBroadcastMessage)
-        ? ibcMessage.directBroadcastMessage[0]
-        : ibcMessage.directBroadcastMessage
+      const message = ibcMessage.toDirectSign()
 
       try {
         const signResponse = await this.signRawTransaction({

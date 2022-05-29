@@ -19,7 +19,7 @@
       "path": "../utils/tsconfig.build.json"
     },
     {
-      "path": "../chain-consumer/tsconfig.build.json"
+      "path": "../sdk-ts/tsconfig.build.json"
     }
   ]
 }

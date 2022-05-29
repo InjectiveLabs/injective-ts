@@ -31,6 +31,7 @@
   "exclude": [
     "node_modules",
     "dist",
+    "./old_packages",
     "**/*.test.ts",
     "**/*.spec.ts"
   ]

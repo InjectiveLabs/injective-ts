@@ -1,5 +1,5 @@
 import { Network } from '@injectivelabs/networks'
-import { Denom } from 'packages/sdk-ts/dist'
+import { Denom } from '@injectivelabs/sdk-ts'
 import { ibcTokens } from '@injectivelabs/token-metadata'
 import { DenomTrace } from '../types/token'
 
