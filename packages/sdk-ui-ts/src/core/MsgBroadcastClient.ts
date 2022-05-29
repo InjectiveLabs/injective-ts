@@ -14,6 +14,7 @@ export interface MsgBroadcastTxOptions {
   bucket?: string
   memo?: string
   address: string
+  msgs: Msgs | Msgs[]
   feePrice?: string
   feeDenom?: string
   gasLimit?: number
@@ -25,7 +26,6 @@ export interface MsgBroadcastOptions {
   }
   chainId: ChainId
   web3Strategy: Web3Strategy
-  tx: MsgBroadcastTxOptions
   metricsProvider?: MetricsProvider
 }
 
@@ -57,19 +57,19 @@ export class MsgBroadcastClient {
     )
   }
 
-  async broadcast(msgs: Msgs | Msgs[]) {
+  async broadcast(tx: MsgBroadcastTxOptions) {
     const { options } = this
     const { web3Strategy } = options
-    const actualMsgs = Array.isArray(msgs) ? msgs : [msgs]
 
     return web3Strategy.wallet === Wallet.Keplr
-      ? this.broadcastKeplr(actualMsgs)
-      : this.broadcastWeb3(actualMsgs)
+      ? this.broadcastKeplr(tx)
+      : this.broadcastWeb3(tx)
   }
 
-  private async broadcastWeb3(msgs: Msgs[]) {
+  private async broadcastWeb3(tx: MsgBroadcastTxOptions) {
     const { options, transactionApi } = this
-    const { web3Strategy, chainId, metricsProvider, tx } = options
+    const { web3Strategy, chainId, metricsProvider } = options
+    const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
     const prepareTx = async () => {
@@ -141,9 +141,10 @@ export class MsgBroadcastClient {
     }
   }
 
-  private async broadcastKeplr(msgs: Msgs[]) {
+  private async broadcastKeplr(tx: MsgBroadcastTxOptions) {
     const { options } = this
-    const { web3Strategy, chainId, tx } = options
+    const { web3Strategy, chainId } = options
+    const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const injectiveAddress = getInjectiveAddress(tx.address)
 
     try {
