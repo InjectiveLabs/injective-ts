@@ -6,6 +6,7 @@ export * from './spot-rest'
 export * from './account'
 export * from './explorer'
 export * from './auction'
+export * from './oracle'
 
 export interface StreamStatusResponse {
   details: string

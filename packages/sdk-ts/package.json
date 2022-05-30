@@ -16,7 +16,7 @@
     "~sdk-ts": "dist"
   },
   "exports": {
-    ".": "./main.js",
+    ".": "./dist/index.js",
     "./local": "./dist/local/index.js",
     "./utils": "./dist/utils/index.js",
     "./types": "./dist/types/index.js",
