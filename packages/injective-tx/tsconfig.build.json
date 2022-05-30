@@ -13,13 +13,7 @@
       "path": "../ts-types/tsconfig.build.json"
     },
     {
-      "path": "../token-metadata/tsconfig.build.json"
-    },
-    {
       "path": "../utils/tsconfig.build.json"
-    },
-    {
-      "path": "../sdk-ts/tsconfig.build.json"
     }
   ]
 }

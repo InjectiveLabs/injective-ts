@@ -5,13 +5,7 @@
       "path": "../ts-types/tsconfig.json"
     },
     {
-      "path": "../token-metadata/tsconfig.json"
-    },
-    {
       "path": "../utils/tsconfig.json"
-    },
-    {
-      "path": "../sdk-ts/tsconfig.json"
     },
   ]
 }

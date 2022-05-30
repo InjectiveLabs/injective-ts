@@ -1,3 +1,3 @@
 export * from './tx'
-export * from './sign'
+export * from './clients'
 export * from './utils'
