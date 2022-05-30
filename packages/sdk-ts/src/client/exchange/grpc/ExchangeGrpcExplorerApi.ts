@@ -48,7 +48,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     type,
   }: {
     address: string
-    limit: number
+    limit?: number
     type?: string
   }) {
     const request = new GetAccountTxsRequest()
