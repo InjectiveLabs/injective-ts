@@ -9,8 +9,8 @@ import {
   UiBaseSpotMarketWithToken,
   UiSpotMarketWithToken,
   UiSpotMarketSummary,
-} from './../types/spot'
-import { spotOrderTypeToGrpcOrderType } from './../utils/spot'
+} from '../types/spot'
+import { spotOrderTypeToGrpcOrderType } from '../../utils/spot'
 
 export const spotMarketToUiSpotMarket = (
   market: UiBaseSpotMarketWithToken,

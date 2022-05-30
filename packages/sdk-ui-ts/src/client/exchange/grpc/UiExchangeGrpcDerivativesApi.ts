@@ -1,16 +1,16 @@
 import { TradeExecutionSide } from '@injectivelabs/ts-types'
-import { DerivativesMetrics } from '../../../types/metrics'
+import { DerivativesMetrics } from '../../types/metrics'
 import {
   DerivativeOrderSide,
   UiBaseDerivativeMarket,
-} from '../../../types/derivatives'
+} from '../../types/derivatives'
 import {
   ExchangeGrpcDerivativesApi,
   ExchangeGrpcDerivativeTransformer,
 } from '@injectivelabs/sdk-ts/client/exchange'
 import { Orderbook } from '@injectivelabs/sdk-ts'
 import { BaseApi } from '../../../BaseApi'
-import { ApiOptions } from '../../../types'
+import { ApiOptions } from '../../types'
 
 export class UiExchangeGrpcDerivativesApi extends BaseApi {
   protected client: ExchangeGrpcDerivativesApi

@@ -4,12 +4,12 @@ import {
   ChainGrpcBankTransformer,
 } from '@injectivelabs/sdk-ts/client'
 import { BigNumberInWei } from '@injectivelabs/utils'
-import { BankBalances, UiSupplyCoin } from '../types/bank'
-import { ChainMetrics } from '../../../types/metrics'
+import { BankBalances, UiSupplyCoin } from '../../types/bank'
+import { ChainMetrics } from '../../types/metrics'
 import { INJ_DENOM } from '../../../constants'
-import { UiCoin } from '../../../types/common'
+import { UiCoin } from '../../types/common'
 import { BaseApi } from '../../../BaseApi'
-import { ApiOptions } from '../../../types'
+import { ApiOptions } from '../../types'
 
 export class UiChainGrpcBankApi extends BaseApi {
   protected client: ChainGrpcBankApi

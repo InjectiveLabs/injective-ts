@@ -1,6 +1,6 @@
 import { getUrlEndpointForNetwork } from '@injectivelabs/networks'
 import { MetricsProvider } from './classes/MetricsProvider'
-import { ApiOptions, ApiOptionsEndpoints } from './types'
+import { ApiOptions, ApiOptionsEndpoints } from './client/types'
 
 export abstract class BaseApi {
   protected options: ApiOptions

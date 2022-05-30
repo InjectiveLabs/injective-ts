@@ -1,13 +1,13 @@
 import { TradeExecutionSide } from '@injectivelabs/ts-types'
-import { SpotMetrics } from '../../../types/metrics'
-import { UiBaseSpotMarket, SpotOrderSide } from '../../../types/spot'
+import { SpotMetrics } from '../../types/metrics'
+import { UiBaseSpotMarket, SpotOrderSide } from '../../types/spot'
 import {
   ExchangeGrpcSpotApi,
   ExchangeGrpcSpotTransformer,
 } from '@injectivelabs/sdk-ts/client/exchange'
 import { Orderbook } from '@injectivelabs/sdk-ts'
 import { BaseApi } from '../../../BaseApi'
-import { ApiOptions } from '../../../types'
+import { ApiOptions } from '../../types'
 
 export class UiExchangeGrpcSpotApi extends BaseApi {
   protected client: ExchangeGrpcSpotApi

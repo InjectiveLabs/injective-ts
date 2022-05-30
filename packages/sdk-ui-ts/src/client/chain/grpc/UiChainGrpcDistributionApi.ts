@@ -2,9 +2,9 @@ import {
   ChainGrpcDistributionApi,
   ChainGrpcStakingTransformer,
 } from '@injectivelabs/sdk-ts/client'
-import { ChainMetrics } from '../../../types/metrics'
+import { ChainMetrics } from '../../types/metrics'
 import { BaseApi } from '../../../BaseApi'
-import { ApiOptions } from '../../../types'
+import { ApiOptions } from '../../types'
 
 export class UiChainGrpcDistributionApi extends BaseApi {
   protected client: ChainGrpcDistributionApi

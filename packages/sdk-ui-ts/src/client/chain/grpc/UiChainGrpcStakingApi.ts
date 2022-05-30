@@ -1,17 +1,17 @@
-import { UiValidator } from '../../../types/staking'
+import { UiValidator } from '../../types/staking'
 import { ChainGrpcStakingApi, Pagination } from '@injectivelabs/sdk-ts'
 import {
   pageResponseToPagination,
   generatePagination,
 } from '@injectivelabs/sdk-ts/dist/utils/pagination'
-import { ChainMetrics } from '../../../types/metrics'
+import { ChainMetrics } from '../../types/metrics'
 import {
   Delegation,
   ChainGrpcStakingTransformer,
 } from '@injectivelabs/sdk-ts/client/chain'
-import { UiStakingTransformer } from '../../../transformers/UiStakingTransformer'
+import { UiStakingTransformer } from '../../transformers/UiStakingTransformer'
 import { BaseApi } from '../../../BaseApi'
-import { ApiOptions } from '../../../types'
+import { ApiOptions } from '../../types'
 
 export class UiChainGrpcStakingApi extends BaseApi {
   protected client: ChainGrpcStakingApi

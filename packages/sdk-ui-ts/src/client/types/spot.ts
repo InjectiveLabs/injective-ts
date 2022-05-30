@@ -9,7 +9,7 @@ import {
   ChronosSpotMarketSummary,
   AllChronosSpotMarketSummary,
 } from '@injectivelabs/sdk-ts/dist/client/exchange/types/spot-rest'
-import { Token } from './token'
+import { Token } from './../../types/token'
 import { Change, MarketBase, MarketType } from './common'
 
 export interface UiBaseSpotMarket

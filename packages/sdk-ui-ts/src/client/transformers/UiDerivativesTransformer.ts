@@ -6,7 +6,7 @@ import {
   UiDerivativeMarketSummary,
   UiDerivativeMarketWithToken,
 } from '../types/derivatives'
-import { derivativeOrderTypeToGrpcOrderType } from './../utils/derivatives'
+import { derivativeOrderTypeToGrpcOrderType } from '../../utils/derivatives'
 
 export const derivativeMarketToUiDerivativeMarket = (
   market: UiBaseDerivativeMarketWithToken,

@@ -1,11 +1,11 @@
-import { AccountMetrics } from '../../../types/metrics'
+import { AccountMetrics } from '../../types/metrics'
 import {
   ExchangeGrpcAccountTransformer,
   ExchangeGrpcAccountApi,
 } from '@injectivelabs/sdk-ts/client/exchange'
-import { UiSubaccount } from '../../../types/account'
-import { UiAccountTransformer } from '../../../transformers/UiAccountTransformer'
-import { ApiOptions } from '../../../types/index'
+import { UiSubaccount } from '../../types/account'
+import { UiAccountTransformer } from '../../transformers/UiAccountTransformer'
+import { ApiOptions } from '../../types/index'
 import { BaseApi } from '../../../BaseApi'
 
 export class UiExchangeGrpcAccountApi extends BaseApi {

@@ -13,7 +13,33 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~sdk-ts": "dist"
+    "~sdk-ui-ts": "dist"
+  },
+  "exports": {
+    ".": "./main.js",
+    "./types": "./dist/types/index.js",
+    "./core": "./dist/core/index.js",
+    "./client": "./dist/client/index.js",
+    "./token": "./dist/client/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "types": [
+        "./dist/types/index.d.ts"
+      ],
+      "core": [
+        "./dist/core/index.d.ts"
+      ],
+      "client": [
+        "./dist/client/index.d.ts"
+      ],
+      "token": [
+        "./dist/token/index.d.ts"
+      ]
+    }
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",

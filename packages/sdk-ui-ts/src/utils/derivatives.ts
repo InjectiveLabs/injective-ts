@@ -2,8 +2,8 @@ import {
   UiDerivativeMarketSummary,
   DerivativeMarketMap,
   DerivativeOrderSide,
-} from './../types/derivatives'
-import { Change } from '../types/common'
+} from '../client/types/derivatives'
+import { Change } from '../client/types/common'
 
 export const derivativeOrderTypeToGrpcOrderType = (
   orderType: DerivativeOrderSide,

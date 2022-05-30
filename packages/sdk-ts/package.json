@@ -27,7 +27,7 @@
     "./chain-rest-client": "./dist/client/chain/ChainRestClient.js",
     "./exchange-grpc-client": "./dist/client/exchange/ExchangeGrpcClient.js",
     "./exchange-rest-client": "./dist/client/exchange/ExchangeRestClient.js",
-    "./exchange-stream-client": "./dist/client/exchange/ExchangeStreamClient.js"
+    "./exchange-grpc-stream-client": "./dist/client/exchange/ExchangeGrpcStreamClient.js"
   },
   "typesVersions": {
     "*": {
@@ -64,8 +64,8 @@
       "exchange-rest-client": [
         "./dist/client/exchange/ExchangeRestClient.d.ts"
       ],
-      "exchange-stream-client": [
-        "./dist/client/exchange/ExchangeStreamClient.d.ts"
+      "exchange-grpc-stream-client": [
+        "./dist/client/exchange/ExchangeGrpcStreamClient.d.ts"
       ]
     }
   },

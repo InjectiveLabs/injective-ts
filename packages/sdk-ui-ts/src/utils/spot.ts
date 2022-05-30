@@ -1,9 +1,9 @@
-import { Change } from '../types/common'
+import { Change } from '../client/types/common'
 import {
   SpotMarketMap,
   SpotOrderSide,
   UiSpotMarketSummary,
-} from './../types/spot'
+} from '../client/types/spot'
 
 export const zeroSpotMarketSummary = (
   marketId: string,
