@@ -1,7 +1,7 @@
 {
-  "name": "@injectivelabs/cosmos-ts",
-  "description": "Cosmos related wrappers.",
-  "version": "0.5.31",
+  "name": "@injectivelabs/injective-tx",
+  "description": "Injective Tx related wrappers.",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~cosmos-ts": "dist"
+    "~injective-tx": "dist"
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
@@ -28,24 +28,12 @@
   },
   "dependencies": {
     "@cosmjs/amino": "^0.27.1",
-    "@cosmjs/encoding": "^0.28.4",
-    "@cosmjs/launchpad": "^0.27.1",
     "@cosmjs/proto-signing": "^0.27.1",
-    "@cosmjs/stargate": "^0.27.1",
     "@injectivelabs/chain-api": "^1.7.1",
-    "@injectivelabs/sdk-ts": "^0.0.36",
-    "@injectivelabs/token-metadata": "^0.5.21",
-    "@injectivelabs/ts-types": "^0.5.1",
-    "@injectivelabs/utils": "^0.5.3",
-    "@injectivelabs/injective-tx": "^0.0.1",
-    "@keplr-wallet/cosmos": "^0.9.12",
-    "@terra-money/terra.js": "3.0.8",
-    "@terra-money/wallet-controller": "^3.8.0",
     "cosmjs-types": "^0.3.0",
     "google-protobuf": "^3.19.4",
     "link-module-alias": "^1.2.0",
     "long": "^4.0.0",
-    "rxjs": "^7.4.0",
     "sha3": "^2.1.4",
     "shx": "^0.3.2"
   },

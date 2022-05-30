@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "tsBuildInfoFile": "../../.build-cache/cosmos-ts.tsbuildinfo"
+    "tsBuildInfoFile": "../../.build-cache/injective-tx.tsbuildinfo"
   },
   "include": [
     "./src/**/*.ts"
@@ -20,9 +20,6 @@
     },
     {
       "path": "../sdk-ts/tsconfig.build.json"
-    },
-    {
-      "path": "../injective-tx/tsconfig.build.json"
     }
   ]
 }
