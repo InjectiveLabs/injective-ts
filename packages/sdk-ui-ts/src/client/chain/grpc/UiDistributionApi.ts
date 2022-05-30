@@ -1,12 +1,22 @@
-import { ChainGrpcStakingTransformer } from '@injectivelabs/sdk-ts/client'
+import {
+  ChainGrpcDistributionApi,
+  ChainGrpcStakingTransformer,
+} from '@injectivelabs/sdk-ts/client'
 import { ChainMetrics } from '../../../types/metrics'
-import { Base } from './Base'
+import { BaseApi } from '../../../BaseApi'
+import { ApiOptions } from '../../../types'
 
-export class UiDistributionApi extends Base {
+export class UiDistributionApi extends BaseApi {
+  protected client: ChainGrpcDistributionApi
+
+  constructor(options: ApiOptions) {
+    super(options)
+    this.client = new ChainGrpcDistributionApi(options.endpoints.sentryGrpcApi)
+  }
+
   async fetchRewards({ injectiveAddress }: { injectiveAddress: string }) {
     try {
-      const promise =
-        this.chainClient.distribution.fetchDelegatorRewards(injectiveAddress)
+      const promise = this.client.fetchDelegatorRewards(injectiveAddress)
       const response = await this.fetchOrFetchAndMeasure(
         promise,
         ChainMetrics.FetchRewards,
@@ -27,11 +37,10 @@ export class UiDistributionApi extends Base {
     validatorAddress: string
   }) {
     try {
-      const promise =
-        this.chainClient.distribution.fetchDelegatorRewardsForValidator({
-          validatorAddress,
-          delegatorAddress: injectiveAddress,
-        })
+      const promise = this.client.fetchDelegatorRewardsForValidator({
+        validatorAddress,
+        delegatorAddress: injectiveAddress,
+      })
       const response = await this.fetchOrFetchAndMeasure(
         promise,
         ChainMetrics.FetchValidatorRewards,

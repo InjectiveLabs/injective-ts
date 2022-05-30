@@ -18,9 +18,16 @@
   "exports": {
     ".": "./main.js",
     "./local": "./dist/local/index.js",
+    "./utils": "./dist/utils/index.js",
+    "./types": "./dist/types/index.js",
+    "./classes": "./dist/classes/index.js",
     "./core": "./dist/core/index.js",
-    "./classes": "./dist/core/classes.js",
-    "./client": "./dist/client/index.js"
+    "./client": "./dist/client/index.js",
+    "./chain-grpc-client": "./dist/client/chain/ChainGrpcClient.js",
+    "./chain-rest-client": "./dist/client/chain/ChainRestClient.js",
+    "./exchange-grpc-client": "./dist/client/exchange/ExchangeGrpcClient.js",
+    "./exchange-rest-client": "./dist/client/exchange/ExchangeRestClient.js",
+    "./exchange-stream-client": "./dist/client/exchange/ExchangeStreamClient.js"
   },
   "typesVersions": {
     "*": {
@@ -30,14 +37,35 @@
       "local": [
         "./dist/local/index.d.ts"
       ],
-      "core": [
-        "./dist/core/index.d.ts"
+      "utils": [
+        "./dist/utils/index.d.ts"
       ],
       "classes": [
         "./dist/classes/index.d.ts"
       ],
+      "types": [
+        "./dist/types/index.d.ts"
+      ],
+      "core": [
+        "./dist/core/index.d.ts"
+      ],
       "client": [
         "./dist/client/index.d.ts"
+      ],
+      "chain-grpc-client": [
+        "./dist/client/chain/ChainGrpcClient.d.ts"
+      ],
+      "chain-rest-client": [
+        "./dist/client/chain/ChainRestClient.d.ts"
+      ],
+      "exchange-grpc-client": [
+        "./dist/client/exchange/ExchangeGrpcClient.d.ts"
+      ],
+      "exchange-rest-client": [
+        "./dist/client/exchange/ExchangeRestClient.d.ts"
+      ],
+      "exchange-stream-client": [
+        "./dist/client/exchange/ExchangeStreamClient.d.ts"
       ]
     }
   },
@@ -64,6 +92,7 @@
     "@injectivelabs/exceptions": "^0.5.2",
     "@injectivelabs/exchange-api": "^2.2.70",
     "@injectivelabs/networks": "^0.5.6",
+    "@injectivelabs/token-metadata": "^0.5.21",
     "@injectivelabs/ts-types": "^0.5.1",
     "@injectivelabs/tx-utils": "^0.5.2",
     "@injectivelabs/utils": "^0.5.3",

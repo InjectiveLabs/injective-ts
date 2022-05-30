@@ -1,13 +1,24 @@
 import { TradeExecutionSide } from '@injectivelabs/ts-types'
 import { SpotMetrics } from '../../../types/metrics'
 import { UiBaseSpotMarket, SpotOrderSide } from '../../../types/spot'
-import { Base } from './Base'
-import { ExchangeGrpcSpotTransformer } from '@injectivelabs/sdk-ts/client/exchange'
+import {
+  ExchangeGrpcSpotApi,
+  ExchangeGrpcSpotTransformer,
+} from '@injectivelabs/sdk-ts/client/exchange'
 import { Orderbook } from '@injectivelabs/sdk-ts'
+import { BaseApi } from '../../../BaseApi'
+import { ApiOptions } from '../../../types'
 
-export class UiSpotApi extends Base {
+export class UiSpotApi extends BaseApi {
+  protected client: ExchangeGrpcSpotApi
+
+  constructor(options: ApiOptions) {
+    super(options)
+    this.client = new ExchangeGrpcSpotApi(options.endpoints.exchangeApi)
+  }
+
   async fetchMarkets(): Promise<UiBaseSpotMarket[]> {
-    const promise = this.exchangeClient.spot.fetchMarkets()
+    const promise = this.client.fetchMarkets()
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       SpotMetrics.FetchMarkets,
@@ -18,7 +29,7 @@ export class UiSpotApi extends Base {
   }
 
   async fetchMarket(marketId: string): Promise<UiBaseSpotMarket> {
-    const promise = this.exchangeClient.spot.fetchMarket(marketId)
+    const promise = this.client.fetchMarket(marketId)
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       SpotMetrics.FetchMarket,
@@ -34,7 +45,7 @@ export class UiSpotApi extends Base {
   }
 
   async fetchOrderbook(marketId: string) {
-    const promise = this.exchangeClient.spot.fetchOrderbook(marketId)
+    const promise = this.client.fetchOrderbook(marketId)
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       SpotMetrics.FetchOrderbook,
@@ -55,7 +66,7 @@ export class UiSpotApi extends Base {
   }
 
   async fetchMarketsOrderbook(marketIds: string[]) {
-    const promise = this.exchangeClient.spot.fetchOrderbooks(marketIds)
+    const promise = this.client.fetchOrderbooks(marketIds)
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       SpotMetrics.FetchOrderbook,
@@ -91,7 +102,7 @@ export class UiSpotApi extends Base {
   }) {
     // For market wide trades we get only `executionSide=Taker` trades
     const executionSide = subaccountId ? undefined : TradeExecutionSide.Taker
-    const promise = this.exchangeClient.spot.fetchTrades({
+    const promise = this.client.fetchTrades({
       marketId,
       subaccountId,
       executionSide,
@@ -114,7 +125,7 @@ export class UiSpotApi extends Base {
     orderSide?: SpotOrderSide
     subaccountId: string
   }) {
-    const promise = this.exchangeClient.spot.fetchOrders({
+    const promise = this.client.fetchOrders({
       marketId,
       orderSide,
       subaccountId,

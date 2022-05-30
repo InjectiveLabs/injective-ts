@@ -1,20 +1,28 @@
 import { UiValidator } from './../../../types/staking'
-import { Pagination } from '@injectivelabs/sdk-ts'
+import { ChainGrpcStakingApi, Pagination } from '@injectivelabs/sdk-ts'
 import {
   pageResponseToPagination,
   generatePagination,
 } from '@injectivelabs/sdk-ts/dist/utils/pagination'
 import { ChainMetrics } from '../../../types/metrics'
-import { Base } from './Base'
 import {
   Delegation,
   ChainGrpcStakingTransformer,
 } from '@injectivelabs/sdk-ts/client/chain'
 import { UiStakingTransformer } from '../../../transformers/UiStakingTransformer'
+import { BaseApi } from '../../../BaseApi'
+import { ApiOptions } from '../../../types'
 
-export class UiStakingApi extends Base {
+export class UiStakingApi extends BaseApi {
+  protected client: ChainGrpcStakingApi
+
+  constructor(options: ApiOptions) {
+    super(options)
+    this.client = new ChainGrpcStakingApi(options.endpoints.sentryGrpcApi)
+  }
+
   async fetchValidators(): Promise<UiValidator[]> {
-    const promise = this.chainClient.staking.fetchValidators()
+    const promise = this.client.fetchValidators()
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       ChainMetrics.FetchValidators,
@@ -25,7 +33,7 @@ export class UiStakingApi extends Base {
   }
 
   async fetchValidator(validatorAddress: string): Promise<UiValidator> {
-    const promise = this.chainClient.staking.fetchValidator(validatorAddress)
+    const promise = this.client.fetchValidator(validatorAddress)
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       ChainMetrics.FetchValidator,
@@ -54,7 +62,7 @@ export class UiStakingApi extends Base {
     validatorDelegations: Delegation[]
   }> {
     try {
-      const promise = this.chainClient.staking.fetchDelegators({
+      const promise = this.client.fetchDelegators({
         validatorAddress,
         ...generatePagination(pagination),
       })
@@ -90,7 +98,7 @@ export class UiStakingApi extends Base {
 
   async fetchDelegations({ injectiveAddress }: { injectiveAddress: string }) {
     try {
-      const promise = this.chainClient.staking.fetchDelegations({
+      const promise = this.client.fetchDelegations({
         injectiveAddress,
       })
       const response = await this.fetchOrFetchAndMeasure(
@@ -113,7 +121,7 @@ export class UiStakingApi extends Base {
     injectiveAddress: string
   }) {
     try {
-      const promise = this.chainClient.staking.fetchUnbondingDelegations({
+      const promise = this.client.fetchUnbondingDelegations({
         injectiveAddress,
       })
       const response = await this.fetchOrFetchAndMeasure(
@@ -132,7 +140,7 @@ export class UiStakingApi extends Base {
 
   async fetchReDelegations({ injectiveAddress }: { injectiveAddress: string }) {
     try {
-      const promise = this.chainClient.staking.fetchReDelegations({
+      const promise = this.client.fetchReDelegations({
         injectiveAddress,
       })
       const response = await this.fetchOrFetchAndMeasure(

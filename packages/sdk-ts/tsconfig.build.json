@@ -24,5 +24,8 @@
     {
       "path": "../tx-utils/tsconfig.build.json"
     },
+    {
+      "path": "../token-metadata/tsconfig.build.json"
+    },
   ],
 }

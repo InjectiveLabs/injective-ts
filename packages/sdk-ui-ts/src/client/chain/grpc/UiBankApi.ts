@@ -1,13 +1,24 @@
 import { GrpcCoin } from '@injectivelabs/sdk-ts'
-import { ChainGrpcBankTransformer } from '@injectivelabs/sdk-ts/client'
+import {
+  ChainGrpcBankApi,
+  ChainGrpcBankTransformer,
+} from '@injectivelabs/sdk-ts/client'
 import { BigNumberInWei } from '@injectivelabs/utils'
 import { BankBalances, UiSupplyCoin } from '../types/bank'
 import { ChainMetrics } from '../../../types/metrics'
 import { INJ_DENOM } from '../../../constants'
 import { UiCoin } from '../../../types/common'
-import { Base } from './Base'
+import { BaseApi } from '../../../BaseApi'
+import { ApiOptions } from '../../../types'
 
-export class UiBankApi extends Base {
+export class UiBankApi extends BaseApi {
+  protected client: ChainGrpcBankApi
+
+  constructor(options: ApiOptions) {
+    super(options)
+    this.client = new ChainGrpcBankApi(options.endpoints.sentryGrpcApi)
+  }
+
   async fetchBalance({
     injectiveAddress,
     denom,
@@ -15,7 +26,7 @@ export class UiBankApi extends Base {
     injectiveAddress: string
     denom: string
   }) {
-    const promise = this.chainClient.bank.fetchBalance({
+    const promise = this.client.fetchBalance({
       accountAddress: injectiveAddress,
       denom,
     })
@@ -30,7 +41,7 @@ export class UiBankApi extends Base {
   }
 
   async fetchBalances(injectiveAddress: string) {
-    const promise = this.chainClient.bank.fetchBalances(injectiveAddress)
+    const promise = this.client.fetchBalances(injectiveAddress)
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       ChainMetrics.FetchBalances,
@@ -67,7 +78,7 @@ export class UiBankApi extends Base {
     bankSupply: UiSupplyCoin[]
     ibcBankSupply: UiSupplyCoin[]
   }> {
-    const promise = this.chainClient.bank.fetchTotalSupply()
+    const promise = this.client.fetchTotalSupply()
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       ChainMetrics.FetchSupply,
@@ -82,7 +93,7 @@ export class UiBankApi extends Base {
   }
 
   async fetchTotalInjSupply(): Promise<UiCoin> {
-    const promise = this.chainClient.bank.fetchTotalSupply()
+    const promise = this.client.fetchTotalSupply()
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       ChainMetrics.FetchSupply,

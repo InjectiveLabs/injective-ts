@@ -1,16 +1,27 @@
 import { TradeExecutionSide } from '@injectivelabs/ts-types'
 import { DerivativesMetrics } from '../../../types/metrics'
-import { Base } from './Base'
 import {
   DerivativeOrderSide,
   UiBaseDerivativeMarket,
 } from '../../../types/derivatives'
-import { ExchangeGrpcDerivativeTransformer } from '@injectivelabs/sdk-ts/client/exchange'
+import {
+  ExchangeGrpcDerivativesApi,
+  ExchangeGrpcDerivativeTransformer,
+} from '@injectivelabs/sdk-ts/client/exchange'
 import { Orderbook } from '@injectivelabs/sdk-ts'
+import { BaseApi } from '../../../BaseApi'
+import { ApiOptions } from '../../../types'
 
-export class UiDerivativesApi extends Base {
+export class UiDerivativesApi extends BaseApi {
+  protected client: ExchangeGrpcDerivativesApi
+
+  constructor(options: ApiOptions) {
+    super(options)
+    this.client = new ExchangeGrpcDerivativesApi(options.endpoints.exchangeApi)
+  }
+
   async fetchMarkets(): Promise<UiBaseDerivativeMarket[]> {
-    const promise = this.exchangeClient.derivatives.fetchMarkets()
+    const promise = this.client.fetchMarkets()
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       DerivativesMetrics.FetchMarkets,
@@ -21,7 +32,7 @@ export class UiDerivativesApi extends Base {
   }
 
   async fetchMarket(marketId: string): Promise<UiBaseDerivativeMarket> {
-    const promise = this.exchangeClient.derivatives.fetchMarket(marketId)
+    const promise = this.client.fetchMarket(marketId)
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       DerivativesMetrics.FetchMarket,
@@ -38,7 +49,7 @@ export class UiDerivativesApi extends Base {
   }
 
   async fetchOrderbook(marketId: string) {
-    const promise = this.exchangeClient.derivatives.fetchOrderbook(marketId)
+    const promise = this.client.fetchOrderbook(marketId)
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       DerivativesMetrics.FetchOrderbook,
@@ -61,7 +72,7 @@ export class UiDerivativesApi extends Base {
   }
 
   async fetchMarketsOrderbook(marketIds: string[]): Promise<Orderbook[]> {
-    const promise = this.exchangeClient.derivatives.fetchOrderbooks(marketIds)
+    const promise = this.client.fetchOrderbooks(marketIds)
     const response = await this.fetchOrFetchAndMeasure(
       promise,
       DerivativesMetrics.FetchOrderbook,
@@ -96,7 +107,7 @@ export class UiDerivativesApi extends Base {
   }) {
     // For market wide trades we get only `executionSide=Taker` trades
     const executionSide = subaccountId ? undefined : TradeExecutionSide.Taker
-    const promise = this.exchangeClient.derivatives.fetchTrades({
+    const promise = this.client.fetchTrades({
       marketId,
       subaccountId,
       executionSide,
@@ -117,7 +128,7 @@ export class UiDerivativesApi extends Base {
     marketId?: string
     subaccountId?: string
   }) {
-    const promise = this.exchangeClient.derivatives.fetchPositions({
+    const promise = this.client.fetchPositions({
       marketId,
       subaccountId,
     })
@@ -139,7 +150,7 @@ export class UiDerivativesApi extends Base {
     orderSide?: DerivativeOrderSide
     subaccountId: string
   }) {
-    const promise = this.exchangeClient.derivatives.fetchOrders({
+    const promise = this.client.fetchOrders({
       marketId,
       orderSide,
       subaccountId,
