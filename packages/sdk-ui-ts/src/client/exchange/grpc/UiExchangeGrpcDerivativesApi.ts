@@ -12,7 +12,7 @@ import { Orderbook } from '@injectivelabs/sdk-ts'
 import { BaseApi } from '../../../BaseApi'
 import { ApiOptions } from '../../../types'
 
-export class UiDerivativesApi extends BaseApi {
+export class UiExchangeGrpcDerivativesApi extends BaseApi {
   protected client: ExchangeGrpcDerivativesApi
 
   constructor(options: ApiOptions) {

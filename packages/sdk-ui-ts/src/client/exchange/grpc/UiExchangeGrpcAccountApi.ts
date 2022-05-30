@@ -8,7 +8,7 @@ import { UiAccountTransformer } from '../../../transformers/UiAccountTransformer
 import { ApiOptions } from '../../../types/index'
 import { BaseApi } from '../../../BaseApi'
 
-export class UiAccountApi extends BaseApi {
+export class UiExchangeGrpcAccountApi extends BaseApi {
   protected client: ExchangeGrpcAccountApi
 
   constructor(options: ApiOptions) {

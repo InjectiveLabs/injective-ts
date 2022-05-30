@@ -11,7 +11,7 @@ import { UiCoin } from '../../../types/common'
 import { BaseApi } from '../../../BaseApi'
 import { ApiOptions } from '../../../types'
 
-export class UiBankApi extends BaseApi {
+export class UiChainGrpcBankApi extends BaseApi {
   protected client: ChainGrpcBankApi
 
   constructor(options: ApiOptions) {

@@ -6,7 +6,7 @@ import { ChainMetrics } from '../../../types/metrics'
 import { BaseApi } from '../../../BaseApi'
 import { ApiOptions } from '../../../types'
 
-export class UiDistributionApi extends BaseApi {
+export class UiChainGrpcDistributionApi extends BaseApi {
   protected client: ChainGrpcDistributionApi
 
   constructor(options: ApiOptions) {

@@ -1,4 +1,4 @@
-import { UiValidator } from './../../../types/staking'
+import { UiValidator } from '../../../types/staking'
 import { ChainGrpcStakingApi, Pagination } from '@injectivelabs/sdk-ts'
 import {
   pageResponseToPagination,
@@ -13,7 +13,7 @@ import { UiStakingTransformer } from '../../../transformers/UiStakingTransformer
 import { BaseApi } from '../../../BaseApi'
 import { ApiOptions } from '../../../types'
 
-export class UiStakingApi extends BaseApi {
+export class UiChainGrpcStakingApi extends BaseApi {
   protected client: ChainGrpcStakingApi
 
   constructor(options: ApiOptions) {
