@@ -2,8 +2,8 @@ import { TradeExecutionSide } from '@injectivelabs/ts-types'
 import { SpotMetrics } from '../../../types/metrics'
 import { UiBaseSpotMarket, SpotOrderSide } from '../../../types/spot'
 import { Base } from './Base'
-import { SpotGrpcTransformer } from '@injectivelabs/sdk-ts/dist/client/exchange'
-import { Orderbook } from '@injectivelabs/sdk-ts/dist/client/exchange/types/exchange'
+import { ExchangeGrpcSpotTransformer } from '@injectivelabs/sdk-ts/client/exchange'
+import { Orderbook } from '@injectivelabs/sdk-ts'
 
 export class UiSpotApi extends Base {
   async fetchMarkets(): Promise<UiBaseSpotMarket[]> {
@@ -14,7 +14,7 @@ export class UiSpotApi extends Base {
     )
     const markets = response.getMarketsList()
 
-    return SpotGrpcTransformer.grpcMarketsToMarkets(markets)
+    return ExchangeGrpcSpotTransformer.grpcMarketsToMarkets(markets)
   }
 
   async fetchMarket(marketId: string): Promise<UiBaseSpotMarket> {
@@ -30,7 +30,7 @@ export class UiSpotApi extends Base {
       throw new Error(`The spot market with ${marketId} marketId not found!`)
     }
 
-    return SpotGrpcTransformer.grpcMarketToMarket(market)
+    return ExchangeGrpcSpotTransformer.grpcMarketToMarket(market)
   }
 
   async fetchOrderbook(marketId: string) {
@@ -51,7 +51,7 @@ export class UiSpotApi extends Base {
     const buys = orderbook.getBuysList()
     const sells = orderbook.getSellsList()
 
-    return SpotGrpcTransformer.grpcOrderbookToOrderbook({ buys, sells })
+    return ExchangeGrpcSpotTransformer.grpcOrderbookToOrderbook({ buys, sells })
   }
 
   async fetchMarketsOrderbook(marketIds: string[]) {
@@ -74,7 +74,7 @@ export class UiSpotApi extends Base {
         const buys = orderbook.getBuysList()
         const sells = orderbook.getSellsList()
 
-        return SpotGrpcTransformer.grpcOrderbookToOrderbook({
+        return ExchangeGrpcSpotTransformer.grpcOrderbookToOrderbook({
           buys,
           sells,
         })
@@ -102,7 +102,7 @@ export class UiSpotApi extends Base {
     )
     const trades = response.getTradesList()
 
-    return SpotGrpcTransformer.grpcTradesToTrades(trades)
+    return ExchangeGrpcSpotTransformer.grpcTradesToTrades(trades)
   }
 
   async fetchOrders({
@@ -125,6 +125,6 @@ export class UiSpotApi extends Base {
     )
     const orders = response.getOrdersList()
 
-    return SpotGrpcTransformer.grpcOrdersToOrders(orders)
+    return ExchangeGrpcSpotTransformer.grpcOrdersToOrders(orders)
   }
 }

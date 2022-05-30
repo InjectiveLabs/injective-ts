@@ -1,3 +1,3 @@
-export { DerivativesChronosApi } from './DerivativesChronosApi'
-export { SpotChronosApi } from './SpotChronosApi'
-export { ExplorerRestApi } from './ExplorerRestApi'
+export { ExchangeRestDerivativesChronosApi } from './ExchangeRestDerivativesChronosApi'
+export { ExchangeRestSpotChronosApi } from './ExchangeRestSpotChronosApi'
+export { ExchangeRestExplorerApi } from './ExchangeRestExplorerApi'

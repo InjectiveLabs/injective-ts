@@ -1,5 +1,5 @@
 import { UiValidator } from './../../../types/staking'
-import { Pagination } from '@injectivelabs/sdk-ts/dist/types/pagination'
+import { Pagination } from '@injectivelabs/sdk-ts'
 import {
   pageResponseToPagination,
   generatePagination,
@@ -8,8 +8,8 @@ import { ChainMetrics } from '../../../types/metrics'
 import { Base } from './Base'
 import {
   Delegation,
-  StakingGrpcTransformer,
-} from '@injectivelabs/sdk-ts/dist/client/chain'
+  ChainGrpcStakingTransformer,
+} from '@injectivelabs/sdk-ts/client/chain'
 import { UiStakingTransformer } from '../../../transformers/UiStakingTransformer'
 
 export class UiStakingApi extends Base {
@@ -72,7 +72,9 @@ export class UiStakingApi extends Base {
           newPagination: grpcPagination,
         }),
         validatorDelegations:
-          StakingGrpcTransformer.grpcDelegationToDelegation(grpcDelegators),
+          ChainGrpcStakingTransformer.grpcDelegationToDelegation(
+            grpcDelegators,
+          ),
       }
     } catch (e) {
       return {
@@ -97,7 +99,9 @@ export class UiStakingApi extends Base {
       )
       const grpcDelegations = response.getDelegationResponsesList()
 
-      return StakingGrpcTransformer.grpcDelegationToDelegation(grpcDelegations)
+      return ChainGrpcStakingTransformer.grpcDelegationToDelegation(
+        grpcDelegations,
+      )
     } catch (e) {
       return []
     }
@@ -118,7 +122,7 @@ export class UiStakingApi extends Base {
       )
       const grpcUnbondingDelegations = response.getUnbondingResponsesList()
 
-      return StakingGrpcTransformer.grpcUnBondingDelegationsToUnBondingDelegations(
+      return ChainGrpcStakingTransformer.grpcUnBondingDelegationsToUnBondingDelegations(
         grpcUnbondingDelegations,
       )
     } catch (e) {
@@ -137,7 +141,7 @@ export class UiStakingApi extends Base {
       )
       const grpcReDelegations = response.getRedelegationResponsesList()
 
-      return StakingGrpcTransformer.grpcReDelegationsToReDelegations(
+      return ChainGrpcStakingTransformer.grpcReDelegationsToReDelegations(
         grpcReDelegations,
       )
     } catch (e) {

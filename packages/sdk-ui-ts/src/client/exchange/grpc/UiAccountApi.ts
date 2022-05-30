@@ -1,5 +1,5 @@
 import { AccountMetrics } from '../../../types/metrics'
-import { AccountGrpcTransformer } from '@injectivelabs/sdk-ts/dist/client/exchange'
+import { ExchangeGrpcAccountTransformer } from '@injectivelabs/sdk-ts/client/exchange'
 import { Base } from './Base'
 import { UiSubaccount } from '../../../types/account'
 import { UiAccountTransformer } from '../../../transformers/UiAccountTransformer'
@@ -23,7 +23,8 @@ export class UiAccountApi extends Base {
       AccountMetrics.FetchSubaccountBalances,
     )
     const grpcBalances = response.getBalancesList()
-    const balances = AccountGrpcTransformer.grpcBalancesToBalances(grpcBalances)
+    const balances =
+      ExchangeGrpcAccountTransformer.grpcBalancesToBalances(grpcBalances)
     const uiBalances = balances.map((balance) =>
       UiAccountTransformer.accountBalanceToUiSubaccountBalance(balance),
     )
@@ -45,7 +46,7 @@ export class UiAccountApi extends Base {
     const subaccountHistory = response.getTransfersList()
 
     const grpcSubaccountTransfers =
-      AccountGrpcTransformer.grpcTransferHistoryToTransferHistory(
+      ExchangeGrpcAccountTransformer.grpcTransferHistoryToTransferHistory(
         subaccountHistory,
       )
 

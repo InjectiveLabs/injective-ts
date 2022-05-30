@@ -1,6 +1,5 @@
 export * from './core'
 export * from './client'
-export * from './local'
-export * from './classes'
 export * from './utils'
+export * from './classes'
 export * from './types'

@@ -1,3 +1,3 @@
 export * from './grpc'
 export * from './types'
-export * from './GrpcClient'
+export * from './UiChainGrpcClient'

@@ -1,5 +1,6 @@
 import { Msgs } from '@injectivelabs/sdk-ts/dist/core/msgs'
-import { ChainClient, getInjectiveAddress } from '@injectivelabs/sdk-ts'
+import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
+import { ChainGrpcTransactionApi } from '@injectivelabs/sdk-ts/client'
 import { Wallet } from '@injectivelabs/ts-types'
 import { MetricsProvider } from '../classes/MetricsProvider'
 import {
@@ -48,11 +49,11 @@ const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
 export class MsgBroadcastClient {
   public options: MsgBroadcastOptions
 
-  public transactionApi: ChainClient.TransactionApi
+  public transactionApi: ChainGrpcTransactionApi
 
   constructor(options: MsgBroadcastOptions) {
     this.options = options
-    this.transactionApi = new ChainClient.TransactionApi(
+    this.transactionApi = new ChainGrpcTransactionApi(
       options.endpoints.exchangeApi,
     )
   }

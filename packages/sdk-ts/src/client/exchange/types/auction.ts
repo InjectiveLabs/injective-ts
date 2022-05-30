@@ -1,7 +1,6 @@
 import {
   Auction as GrpcAuction,
-  Bid as GrpcBid,
-  Coin as GrpcCoin,
+  Bid as GrpcExchangeBid,
   StreamBidsResponse,
 } from '@injectivelabs/exchange-api/injective_auction_rpc_pb'
 import { Coin } from '@injectivelabs/ts-types'
@@ -21,4 +20,4 @@ export interface Auction {
   updatedAt: number
 }
 
-export { GrpcAuction, GrpcBid, GrpcCoin, StreamBidsResponse }
+export { GrpcAuction, GrpcExchangeBid, StreamBidsResponse }

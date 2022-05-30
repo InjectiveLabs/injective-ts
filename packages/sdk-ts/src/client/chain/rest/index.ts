@@ -1,2 +1,1 @@
-export { AuthRestApi } from './AuthRestApi'
-export * from './types'
+export { ChainRestAuthApi } from './ChainRestAuthApi'

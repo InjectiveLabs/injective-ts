@@ -4,7 +4,7 @@ import {
   PeggyWithdrawalTx as GrpcPeggyWithdrawalTx,
   GasFee as GrpcGasFee,
   ValidatorUptime as GrpcValidatorUptime,
-  ValidatorDescription as GrpcValidatorDescription,
+  ValidatorDescription as GrpcExchangeValidatorDescription,
   SlashingEvent as GrpcValidatorSlashingEvent,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 
@@ -150,7 +150,7 @@ export interface BlockWithTxs {
   timestamp: string
 }
 
-export interface ValidatorDescription {
+export interface ExplorerValidatorDescription {
   moniker: string
   identity: string
   website: string
@@ -173,7 +173,7 @@ export interface ValidatorSlashingEvent {
   missedBlocks: number
 }
 
-export interface Validator {
+export interface ExplorerValidator {
   id: string
   moniker: string
   operatorAddress: string
@@ -182,7 +182,7 @@ export interface Validator {
   status: number
   tokens: string
   delegatorShares: string
-  description?: ValidatorDescription
+  description?: ExplorerValidatorDescription
   unbondingHeight: number
   unbondingTime: string
   commissionRate: string
@@ -202,6 +202,6 @@ export { GrpcIBCTransferTx, GrpcPeggyDepositTx, GrpcPeggyWithdrawalTx }
 export {
   GrpcGasFee,
   GrpcValidatorSlashingEvent,
-  GrpcValidatorDescription,
+  GrpcExchangeValidatorDescription,
   GrpcValidatorUptime,
 }

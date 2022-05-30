@@ -1,5 +1,4 @@
-import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-
+export * from './auth-rest'
 export * from './exchange'
 export * from './derivatives'
 export * from './spot'
@@ -12,5 +11,3 @@ export * from './oracle'
 export * from './peggy'
 export * from './mint'
 export * from './insurance'
-
-export { GrpcCoin }

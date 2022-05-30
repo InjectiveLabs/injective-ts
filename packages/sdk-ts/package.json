@@ -15,6 +15,32 @@
   "_moduleAliases": {
     "~sdk-ts": "dist"
   },
+  "exports": {
+    ".": "./main.js",
+    "./local": "./dist/local/index.js",
+    "./core": "./dist/core/index.js",
+    "./classes": "./dist/core/classes.js",
+    "./client": "./dist/client/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "local": [
+        "./dist/local/index.d.ts"
+      ],
+      "core": [
+        "./dist/core/index.d.ts"
+      ],
+      "classes": [
+        "./dist/classes/index.d.ts"
+      ],
+      "client": [
+        "./dist/client/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",

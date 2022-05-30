@@ -1,5 +1,5 @@
 import { GrpcValidator } from '@injectivelabs/sdk-ts/dist/client/chain/types/staking'
-import { StakingGrpcTransformer } from '@injectivelabs/sdk-ts/dist/client/chain'
+import { ChainGrpcStakingTransformer } from '@injectivelabs/sdk-ts/dist/client/chain'
 import { UiValidator } from '../types/staking'
 
 export const validatorsToUiValidators = (
@@ -7,7 +7,7 @@ export const validatorsToUiValidators = (
 ): UiValidator[] =>
   grpcValidators.map((grpcValidator: GrpcValidator) => {
     const validator =
-      StakingGrpcTransformer.grpcValidatorToValidator(grpcValidator)
+      ChainGrpcStakingTransformer.grpcValidatorToValidator(grpcValidator)
 
     return {
       jailed: validator.jailed,

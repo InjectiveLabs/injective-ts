@@ -1,4 +1,4 @@
-import { IbcApi } from '../client/chain/grpc/IbcApi'
+import { ChainGrpcIbcApi } from '../client/chain/grpc/ChainGrpcIbcApi'
 import {
   Erc20TokenMetaFactory,
   Erc20TokenMeta,
@@ -30,7 +30,7 @@ export const tokenMetaToToken = (
 export class Denom {
   protected denom: string
 
-  protected ibcApi: IbcApi
+  protected ibcApi: ChainGrpcIbcApi
 
   protected erc20TokenMeta: Erc20TokenMeta
 
@@ -38,7 +38,7 @@ export class Denom {
     this.denom = denom
 
     const endpoints = getEndpointsForNetwork(network)
-    this.ibcApi = new IbcApi(endpoints.sentryGrpcApi)
+    this.ibcApi = new ChainGrpcIbcApi(endpoints.sentryGrpcApi)
     this.erc20TokenMeta = Erc20TokenMetaFactory.make(network)
   }
 

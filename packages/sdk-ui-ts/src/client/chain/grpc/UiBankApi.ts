@@ -1,11 +1,11 @@
-import { GrpcCoin } from '@injectivelabs/sdk-ts/dist/client/chain/types/index'
+import { GrpcCoin } from '@injectivelabs/sdk-ts'
+import { ChainGrpcBankTransformer } from '@injectivelabs/sdk-ts/client'
 import { BigNumberInWei } from '@injectivelabs/utils'
 import { BankBalances, UiSupplyCoin } from '../types/bank'
 import { ChainMetrics } from '../../../types/metrics'
 import { INJ_DENOM } from '../../../constants'
 import { UiCoin } from '../../../types/common'
 import { Base } from './Base'
-import { BankGrpcTransformer } from '@injectivelabs/sdk-ts/dist/client/chain'
 
 export class UiBankApi extends Base {
   async fetchBalance({
@@ -73,7 +73,7 @@ export class UiBankApi extends Base {
       ChainMetrics.FetchSupply,
     )
     const totalSupply = response.getSupplyList()
-    const supply = BankGrpcTransformer.grpcCoinsToCoins(totalSupply)
+    const supply = ChainGrpcBankTransformer.grpcCoinsToCoins(totalSupply)
 
     return {
       bankSupply: supply.filter((coin) => !coin.denom.startsWith('ibc')),
@@ -89,7 +89,7 @@ export class UiBankApi extends Base {
     )
     const supply = response.getSupplyList()
 
-    return BankGrpcTransformer.grpcCoinToCoin(
+    return ChainGrpcBankTransformer.grpcCoinToCoin(
       supply.find((coin) => coin.getDenom() === INJ_DENOM)!,
     )
   }

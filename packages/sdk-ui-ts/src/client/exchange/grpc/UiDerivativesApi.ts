@@ -5,8 +5,8 @@ import {
   DerivativeOrderSide,
   UiBaseDerivativeMarket,
 } from '../../../types/derivatives'
-import { DerivativeGrpcTransformer } from '@injectivelabs/sdk-ts/dist/client/exchange'
-import { Orderbook } from '@injectivelabs/sdk-ts/dist/client/exchange/types/exchange'
+import { ExchangeGrpcDerivativeTransformer } from '@injectivelabs/sdk-ts/client/exchange'
+import { Orderbook } from '@injectivelabs/sdk-ts'
 
 export class UiDerivativesApi extends Base {
   async fetchMarkets(): Promise<UiBaseDerivativeMarket[]> {
@@ -17,7 +17,7 @@ export class UiDerivativesApi extends Base {
     )
     const markets = response.getMarketsList()
 
-    return DerivativeGrpcTransformer.grpcMarketsToMarkets(markets)
+    return ExchangeGrpcDerivativeTransformer.grpcMarketsToMarkets(markets)
   }
 
   async fetchMarket(marketId: string): Promise<UiBaseDerivativeMarket> {
@@ -34,7 +34,7 @@ export class UiDerivativesApi extends Base {
       )
     }
 
-    return DerivativeGrpcTransformer.grpcMarketToMarket(market)
+    return ExchangeGrpcDerivativeTransformer.grpcMarketToMarket(market)
   }
 
   async fetchOrderbook(marketId: string) {
@@ -54,7 +54,7 @@ export class UiDerivativesApi extends Base {
     const buys = orderbook.getBuysList()
     const sells = orderbook.getSellsList()
 
-    return DerivativeGrpcTransformer.grpcOrderbookToOrderbook({
+    return ExchangeGrpcDerivativeTransformer.grpcOrderbookToOrderbook({
       buys,
       sells,
     })
@@ -79,7 +79,7 @@ export class UiDerivativesApi extends Base {
         const buys = orderbook.getBuysList()
         const sells = orderbook.getSellsList()
 
-        return DerivativeGrpcTransformer.grpcOrderbookToOrderbook({
+        return ExchangeGrpcDerivativeTransformer.grpcOrderbookToOrderbook({
           buys,
           sells,
         })
@@ -107,7 +107,7 @@ export class UiDerivativesApi extends Base {
     )
     const trades = response.getTradesList()
 
-    return DerivativeGrpcTransformer.grpcTradesToTrades(trades)
+    return ExchangeGrpcDerivativeTransformer.grpcTradesToTrades(trades)
   }
 
   async fetchPositions({
@@ -127,7 +127,7 @@ export class UiDerivativesApi extends Base {
     )
     const positions = response.getPositionsList()
 
-    return DerivativeGrpcTransformer.grpcPositionsToPositions(positions)
+    return ExchangeGrpcDerivativeTransformer.grpcPositionsToPositions(positions)
   }
 
   async fetchOrders({
@@ -150,6 +150,6 @@ export class UiDerivativesApi extends Base {
     )
     const orders = response.getOrdersList()
 
-    return DerivativeGrpcTransformer.grpcOrdersToOrders(orders)
+    return ExchangeGrpcDerivativeTransformer.grpcOrdersToOrders(orders)
   }
 }

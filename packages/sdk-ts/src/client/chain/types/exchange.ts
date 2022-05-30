@@ -2,7 +2,6 @@ import {
   SpotMarket as GrpcSpotMarket,
   MarketStatus as GrpcMarketStatus,
   MarketStatusMap as GrpcMarketStatusMap,
-  SpotLimitOrder as GrpcSpotLimitOrder,
   SpotMarketOrder as GrpcSpotMarketOrder,
   SpotOrder as GrpcSpotOrder,
   Params as GrpcExchangeParams,
@@ -20,15 +19,6 @@ import {
   QueryTradeRewardCampaignResponse as GrpcTradeRewardCampaign,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
 import { Coin } from '@injectivelabs/ts-types'
-
-export interface PaginationOption {
-  key: string
-  offset?: number
-  skip?: number
-  limit?: number
-  reverse?: boolean
-  countTotal?: boolean
-}
 
 export interface DepositProposalParams {
   amount: string
@@ -127,7 +117,6 @@ export {
   GrpcSpotMarket,
   GrpcMarketStatus,
   GrpcMarketStatusMap,
-  GrpcSpotLimitOrder,
   GrpcSpotMarketOrder,
   GrpcSpotOrder,
   GrpcExchangeParams,

@@ -1,4 +1,4 @@
-import { StakingGrpcTransformer } from '@injectivelabs/sdk-ts/dist/client/chain'
+import { ChainGrpcStakingTransformer } from '@injectivelabs/sdk-ts/client'
 import { ChainMetrics } from '../../../types/metrics'
 import { Base } from './Base'
 
@@ -13,7 +13,7 @@ export class UiDistributionApi extends Base {
       )
       const rewards = response.getRewardsList()
 
-      return StakingGrpcTransformer.grpcDelegationRewardToReward(rewards)
+      return ChainGrpcStakingTransformer.grpcDelegationRewardToReward(rewards)
     } catch (e) {
       return []
     }
@@ -38,7 +38,7 @@ export class UiDistributionApi extends Base {
       )
       const rewards = response.getRewardsList()
 
-      return StakingGrpcTransformer.grpcDelegationRewardFromValidatorToReward(
+      return ChainGrpcStakingTransformer.grpcDelegationRewardFromValidatorToReward(
         rewards,
         validatorAddress,
       )
