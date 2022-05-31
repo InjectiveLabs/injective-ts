@@ -42,7 +42,7 @@ export const getPublicKey = ({
   } else {
     publicKey = {
       proto: new CosmosPubKey(),
-      path: '/cosmos.crypto.vbeta1.secp256k1.PubKey',
+      path: '/cosmos.crypto.secp256k1.PubKey',
     }
   }
 
