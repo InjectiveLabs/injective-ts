@@ -30,6 +30,9 @@
       "@injectivelabs/cosmos-ts": [
         "./packages/cosmos-ts"
       ],
+      "@injectivelabs/injective-tx": [
+        "./packages/injective-tx"
+      ],
       "@injectivelabs/protocol-stats": [
         "./packages/protocol-stats"
       ],

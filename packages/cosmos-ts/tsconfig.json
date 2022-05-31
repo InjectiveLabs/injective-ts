@@ -13,5 +13,8 @@
     {
       "path": "../sdk-ts/tsconfig.json"
     },
+    {
+      "path": "../injective-tx/tsconfig.json"
+    }
   ]
 }

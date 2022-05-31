@@ -1473,38 +1473,6 @@
   resolved "https://registry.yarnpkg.com/@injectivelabs/referral-api/-/referral-api-1.0.20.tgz#cd405deb7c62346b112f9dfd0ab0ccda78fbd107"
   integrity sha512-+c+wuA6gUQFgtB8zKQ0lppoHwEiG/JOeulQdwM7LBgkr4F42nVh11MjHh9C3Q7O2G1NpkMrBKJmlfLDyRLm83w==
 
-"@injectivelabs/sdk-ts@^0.0.37":
-  version "0.0.37"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/sdk-ts/-/sdk-ts-0.0.37.tgz#41f8464c7c38b9d9ad7ebf4d2fbcd60a2b704822"
-  integrity sha512-xa9ZdI0AdbLWA5UQxk81o2aryvXb+xW4uoCTh6FblQna73B2pPT9SRF9BMLhDZFJiFh23WP7cbkW8gomL1SBEw==
-  dependencies:
-    "@apollo/client" "^3.5.8"
-    "@improbable-eng/grpc-web" "^0.15.0"
-    "@improbable-eng/grpc-web-node-http-transport" "^0.15.0"
-    "@injectivelabs/chain-api" "^1.7.1"
-    "@injectivelabs/exceptions" "^0.5.2"
-    "@injectivelabs/exchange-api" "^2.2.70"
-    "@injectivelabs/networks" "^0.5.6"
-    "@injectivelabs/token-metadata" "^0.5.21"
-    "@injectivelabs/ts-types" "^0.5.1"
-    "@injectivelabs/tx-utils" "^0.5.2"
-    "@injectivelabs/utils" "^0.5.3"
-    "@types/google-protobuf" "^3.15.5"
-    bech32 "^2.0.0"
-    bip32 "^3.0.1"
-    bip39 "^3.0.4"
-    ethereumjs-util "^7.1.4"
-    ethereumjs-wallet "^1.0.2"
-    ethers "^5.6.4"
-    graphql "^16.3.0"
-    js-sha3 "^0.8.0"
-    keccak256 "^1.0.6"
-    link-module-alias "^1.2.0"
-    secp256k1 "^4.0.3"
-    shx "^0.3.2"
-    snakecase-keys "^5.4.1"
-    tiny-secp256k1 "^2.2.1"
-
 "@injectivelabs/web3-contract-typings@^0.1.12":
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/@injectivelabs/web3-contract-typings/-/web3-contract-typings-0.1.13.tgz#94ab11ed0232dc5d0e99b5f19a1d10ecd1133174"

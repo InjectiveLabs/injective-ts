@@ -24,10 +24,10 @@ import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { MsgTransfer } from '@injectivelabs/sdk-ts/dist/core'
 import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { fromBase64 } from '@cosmjs/encoding'
+import { createSignedTx, createTransaction } from '@injectivelabs/injective-tx'
 import { CosmosChainId, TestnetCosmosChainId } from '../chains/types'
 import { getEndpointFromChainId } from '../chains/endpoints'
 import { KeplrWallet } from '../Keplr/KeplrWallet'
-import { createSignedTx, createTransaction } from './transaction'
 
 const ethereumCurveBasedAddressesPrefixes = ['inj', 'evmos']
 
