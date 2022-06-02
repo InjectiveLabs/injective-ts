@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { TokenMeta } from '@injectivelabs/token-metadata'
+import { UiBridgeTransaction } from './bridge'
 
 export type TokenAddress = string
 export type TokenAssetData = string
@@ -130,4 +131,12 @@ export interface SubaccountBalanceWithTokenAndUsdPriceAndUsdBalance
 export interface DenomTrace {
   baseDenom: string
   path: string
+}
+
+export interface UiBridgeTransactionWithToken extends UiBridgeTransaction {
+  token: Token
+}
+
+export interface TokenMetaWithUsdPrice extends TokenMeta {
+  usdPrice?: number
 }
