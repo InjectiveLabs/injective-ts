@@ -2,7 +2,7 @@ import Eip1993Provider from 'eip1193-provider'
 import { ChainId } from '@injectivelabs/ts-types'
 import HDNode from 'hdkey'
 import { Wallet } from './enums'
-import { Web3Options } from './strategy'
+import { WalletOptions } from './strategy'
 
 export * from './enums'
 export * from './strategy'
@@ -23,7 +23,7 @@ export interface WindowWithLedgerSupport extends Window {
 export interface WalletStrategyArguments {
   chainId: ChainId
   wallet?: Wallet
-  options: Web3Options
+  options: WalletOptions
 }
 
 export interface LedgerWalletInfo {

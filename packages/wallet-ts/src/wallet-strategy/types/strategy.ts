@@ -1,5 +1,6 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import type Web3 from 'web3'
+import { CosmosChainId } from '../../Keplr/utils'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void
@@ -9,9 +10,10 @@ export enum LedgerDerivationPathType {
   LedgerMew = 'ledger-mew',
 }
 
-export interface Web3Options {
+export interface WalletOptions {
   rpcUrls: Record<ChainId, string>
   wsRpcUrls: Record<ChainId, string>
+  cosmosChainId?: CosmosChainId
 }
 
 export interface ConcreteWalletStrategy {

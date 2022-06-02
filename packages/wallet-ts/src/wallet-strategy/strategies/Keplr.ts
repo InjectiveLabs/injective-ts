@@ -20,15 +20,20 @@ export default class Keplr
 {
   private keplrWallet: KeplrWallet
 
-  private injectiveChainId = 'injective-1' as CosmosChainId
+  private cosmosChainId: CosmosChainId
 
-  constructor(args: { chainId: ChainId; web3: Web3 }) {
+  constructor(args: {
+    chainId: ChainId
+    web3: Web3
+    cosmosChainId?: CosmosChainId
+  }) {
     super(args)
-    this.keplrWallet = new KeplrWallet(this.injectiveChainId)
+    this.cosmosChainId = args.cosmosChainId || CosmosChainId.Injective
+    this.keplrWallet = new KeplrWallet(this.cosmosChainId)
   }
 
   async getAddresses(): Promise<string[]> {
-    const { keplrWallet, injectiveChainId, chainId } = this
+    const { keplrWallet, cosmosChainId, chainId } = this
 
     if (!keplrWallet) {
       throw new Web3Exception('Please install Keplr extension')
@@ -39,7 +44,7 @@ export default class Keplr
     }
 
     try {
-      if (!KeplrWallet.checkChainIdSupport(injectiveChainId)) {
+      if (!KeplrWallet.checkChainIdSupport(cosmosChainId)) {
         await keplrWallet.experimentalSuggestChain()
       }
 
@@ -93,7 +98,7 @@ export default class Keplr
     transaction: any,
     address: AccountAddress,
   ): Promise<any> {
-    const { keplrWallet, injectiveChainId } = this
+    const { keplrWallet, cosmosChainId } = this
 
     if (!keplrWallet) {
       throw new Web3Exception('Please install Keplr extension')
@@ -104,7 +109,7 @@ export default class Keplr
     const signer = await keplrWallet.getOfflineSigner()
     const cosmWallet = new CosmJsWallet({
       ...endpoints,
-      chainId: injectiveChainId,
+      chainId: cosmosChainId,
       signer,
     })
 
@@ -121,7 +126,7 @@ export default class Keplr
     }
 
     return cosmWallet.signTransaction({
-      chainId: injectiveChainId,
+      chainId: cosmosChainId,
       message: transaction.message,
       memo: transaction.memo,
       pubKey: Buffer.from(key.pubKey).toString('base64'),

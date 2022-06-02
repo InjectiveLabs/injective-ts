@@ -29,12 +29,16 @@ export default class WalletStrategy {
       [Wallet.Metamask]: new Metamask({ chainId, web3 }),
       [Wallet.Ledger]: new LedgerLive({ chainId, web3 }),
       [Wallet.LedgerLegacy]: new LedgerLegacy({ chainId, web3 }),
-      [Wallet.Keplr]: new Keplr({ chainId, web3 }),
+      [Wallet.Keplr]: new Keplr({
+        chainId,
+        web3,
+        cosmosChainId: options.cosmosChainId,
+      }),
       [Wallet.Trezor]: new Trezor({ chainId, web3 }),
       [Wallet.Torus]: new Torus({ chainId, web3 }),
       [Wallet.WalletConnect]: new WalletConnect({
         chainId,
-        web3Options: options,
+        walletOptions: options,
       }),
     } as Record<Wallet, ConcreteWalletStrategy>
 

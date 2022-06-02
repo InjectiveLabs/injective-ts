@@ -4,24 +4,24 @@ import { Web3Exception } from '@injectivelabs/exceptions'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3 from 'web3'
 import { TransactionConfig } from 'web3-core'
-import { ConcreteWalletStrategy, Web3Options } from '../types'
+import { ConcreteWalletStrategy, WalletOptions } from '../types'
 
 export default class WalletConnect implements ConcreteWalletStrategy {
   private walletConnectProvider: WalletConnectProvider | undefined
 
   private web3: Web3 | undefined
 
-  private readonly web3Options: Web3Options
+  private readonly walletOptions: WalletOptions
 
   private createWalletConnectProvider() {
     this.walletConnectProvider = new WalletConnectProvider({
-      rpc: this.web3Options.rpcUrls,
+      rpc: this.walletOptions.rpcUrls,
     })
     this.web3 = new Web3(this.walletConnectProvider as any)
   }
 
-  constructor(args: { chainId: ChainId; web3Options: Web3Options }) {
-    this.web3Options = args.web3Options
+  constructor(args: { chainId: ChainId; walletOptions: WalletOptions }) {
+    this.walletOptions = args.walletOptions
     this.createWalletConnectProvider()
   }
 
