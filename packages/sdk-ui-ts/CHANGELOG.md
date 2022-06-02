@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.25...@injectivelabs/sdk-ui-ts@0.0.26) (2022-06-02)
+
+
+### Features
+
+* dot tokenmetadata ([6698c87](https://github.com/InjectiveLabs/injective-ts/commit/6698c8781bab4aeccc52256958f755c2e31890be))
+
+
+
+
+
 ## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.24...@injectivelabs/sdk-ui-ts@0.0.25) (2022-06-02)
 
 
