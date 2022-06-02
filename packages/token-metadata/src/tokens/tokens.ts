@@ -640,4 +640,20 @@ export default {
     address: '',
     coinGeckoId: 'blockstack',
   },
+  DOT: {
+    name: 'Polkadot',
+    logo: 'dot.jpeg',
+    symbol: 'DOT',
+    decimals: 8,
+    address: '',
+    coinGeckoId: 'polkadot',
+  },
+  'DOT-PLANCK': {
+    name: 'Polkadot',
+    logo: 'dot.jpeg',
+    symbol: 'DOT',
+    decimals: 8,
+    address: '',
+    coinGeckoId: 'polkadot',
+  },
 }

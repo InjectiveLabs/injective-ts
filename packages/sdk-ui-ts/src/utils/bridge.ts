@@ -57,7 +57,7 @@ export const tokenDenomsPerNetwork = [
   {
     network: BridgingNetwork.Axelar,
     denoms: ['uaxl'],
-    symbols: ['axl'],
+    symbols: ['axl', 'dot-planck'],
   },
   {
     network: BridgingNetwork.Juno,
