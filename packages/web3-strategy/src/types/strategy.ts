@@ -1,4 +1,5 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import type Web3 from 'web3'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void
@@ -9,17 +10,20 @@ export enum LedgerDerivationPathType {
 }
 
 export interface Web3Options {
-  rpcUrl: string
-  wsRpcUrl: string
+  rpcUrls: Record<ChainId, string>
+  wsRpcUrls: Record<ChainId, string>
 }
 
 export interface ConcreteWeb3Strategy {
-  isMetamask(): boolean
-
   getAddresses(): Promise<string[]>
 
   confirm(address: AccountAddress): Promise<string>
 
+  /**
+   * Sends Ethereum transaction. Returns a transaction hash
+   * @param transaction should implement TransactionConfig
+   * @param options
+   */
   sendTransaction(
     transaction: unknown,
     options: { address: string; chainId: ChainId },
@@ -44,4 +48,8 @@ export interface ConcreteWeb3Strategy {
   cancelAllEvents?(): void
 
   isWeb3Connected(): boolean
+
+  disconnect?(): Promise<void>
+
+  getWeb3(): Web3
 }

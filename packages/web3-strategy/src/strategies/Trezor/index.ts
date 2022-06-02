@@ -33,9 +33,8 @@ export default class Trezor
 {
   private trezor: TrezorHW
 
-  constructor({ chainId, web3 }: { chainId: ChainId; web3: Web3 }) {
-    super({ chainId, web3 })
-
+  constructor(args: { chainId: ChainId; web3: Web3 }) {
+    super(args)
     this.trezor = new TrezorHW()
   }
 
@@ -116,6 +115,7 @@ export default class Trezor
       })
 
       if (!response.success) {
+        // noinspection ExceptionCaughtLocallyJS
         throw new Error(
           (response.payload && response.payload.error) || 'Unknown error',
         )
@@ -170,6 +170,7 @@ export default class Trezor
       })
 
       if (!response.success) {
+        // noinspection ExceptionCaughtLocallyJS
         throw new Error(
           (response.payload && response.payload.error) ||
             'Something happened while signing with Trezor',
@@ -231,5 +232,5 @@ export default class Trezor
 
   isWeb3Connected = (): boolean => true
 
-  isMetamask = (): boolean => false
+  isMetamaskInstalled = (): boolean => false
 }

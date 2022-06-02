@@ -21,9 +21,8 @@ export default class Keplr
 
   private injectiveChainId = 'injective-1'
 
-  constructor({ chainId, web3 }: { chainId: ChainId; web3: Web3 }) {
-    super({ chainId, web3 })
-
+  constructor(args: { chainId: ChainId; web3: Web3 }) {
+    super(args)
     this.keplrWallet = new KeplrWallet(this.injectiveChainId)
     this.cosmJsWallet = new CosmJsWallet(this.injectiveChainId)
   }
@@ -111,5 +110,5 @@ export default class Keplr
 
   isWeb3Connected = (): boolean => true
 
-  isMetamask = (): boolean => false
+  isMetamaskInstalled = (): boolean => false
 }

@@ -5,10 +5,9 @@ import { LedgerDerivationPathType } from '../../types'
 import LedgerBase from './Base'
 
 export default class LedgerLegacy extends LedgerBase {
-  constructor({ chainId, web3 }: { chainId: ChainId; web3: Web3 }) {
+  constructor(args: { chainId: ChainId; web3: Web3 }) {
     super({
-      chainId,
-      web3,
+      ...args,
       derivationPathType: LedgerDerivationPathType.LedgerMew,
     })
   }

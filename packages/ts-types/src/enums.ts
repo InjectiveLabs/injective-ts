@@ -15,4 +15,5 @@ export enum Wallet {
   Trezor = 'trezor',
   Keplr = 'keplr',
   Torus = 'torus',
+  WalletConnect = 'wallet-connect',
 }
