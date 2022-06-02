@@ -1,0 +1,95 @@
+{
+  "name": "@injectivelabs/wallet-ts",
+  "description": "A convenient way to use different types of wallets on Injective.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~wallet-ts": "dist"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./transaction": "./dist/transaction/index.js",
+    "./Keplr": "./dist/Keplr/index.js",
+    "./Cosmos": "./dist/Cosmos/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "transaction": [
+        "./dist/transaction/index.d.ts"
+      ],
+      "Keplr": [
+        "./dist/Keplr/index.d.ts"
+      ],
+      "Cosmos": [
+        "./dist/Cosmos/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
+    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "test": "jest",
+    "test:unit": "jest test/unit",
+    "test:integration": "jest test/unit",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@alch/alchemy-web3": "^1.3.0",
+    "@cosmjs/amino": "^0.28.4",
+    "@cosmjs/launchpad": "^0.27.1",
+    "@cosmjs/proto-signing": "^0.28.4",
+    "@cosmjs/stargate": "^0.28.4",
+    "@ethereumjs/common": "^2.6.3",
+    "@ethereumjs/tx": "^3.5.1",
+    "@injectivelabs/assert": "^0.5.3",
+    "@injectivelabs/chain-api": "^1.8.0-rc1",
+    "@injectivelabs/cosmos-ts": "^0.5.37",
+    "@injectivelabs/exceptions": "^0.5.2",
+    "@injectivelabs/ts-types": "^0.5.1",
+    "@injectivelabs/utils": "^0.5.3",
+    "@keplr-wallet/cosmos": "^0.10.5",
+    "@keplr-wallet/types": "^0.10.5",
+    "@ledgerhq/hw-app-eth": "^6.27.1",
+    "@ledgerhq/hw-transport": "^6.27.1",
+    "@ledgerhq/hw-transport-u2f": "^5.36.0-deprecated",
+    "@ledgerhq/hw-transport-webhid": "^6.27.1",
+    "@ledgerhq/hw-transport-webusb": "^6.27.1",
+    "@metamask/eth-sig-util": "^4.0.0",
+    "@toruslabs/torus-embed": "^1.22.0",
+    "@types/eth-sig-util": "^2.1.1",
+    "@types/ethereumjs-util": "^6.1.0",
+    "@types/hdkey": "^2.0.1",
+    "@types/ledgerhq__hw-transport-webusb": "^4.70.1",
+    "@walletconnect/web3-provider": "^1.7.8",
+    "cosmjs-types": "^0.5.0",
+    "eip1193-provider": "^1.0.1",
+    "eth-sig-util": "^3.0.1",
+    "ethereumjs-util": "^7.1.0",
+    "google-protobuf": "^3.20.1",
+    "hdkey": "^2.0.1",
+    "link-module-alias": "^1.2.0",
+    "long": "^5.2.0",
+    "sha3": "^2.1.4",
+    "shx": "^0.3.3",
+    "trezor-connect": "^8.2.8",
+    "web3": "^1.7.3",
+    "web3-core": "^1.7.3",
+    "web3-provider-engine": "^16.0.4"
+  },
+  "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4"
+}

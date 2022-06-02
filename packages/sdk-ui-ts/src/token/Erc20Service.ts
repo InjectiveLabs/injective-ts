@@ -13,7 +13,7 @@ import {
   ZERO_IN_BASE,
 } from '../constants'
 import { ChainId, TransactionOptions } from '@injectivelabs/ts-types'
-import type { Web3Strategy } from '@injectivelabs/web3-strategy'
+import type { WalletStrategy } from '@injectivelabs/wallet-ts'
 
 export const getTransactionOptions = (
   transactionOptions: Partial<TransactionOptions>,
@@ -126,19 +126,19 @@ export class Erc20Service {
   async setTokenAllowance({
     address,
     amount,
-    web3Strategy,
+    walletStrategy,
     gasPrice,
     tokenAddress,
   }: {
     address: string
-    web3Strategy: Web3Strategy
+    walletStrategy: WalletStrategy
     amount: string
     gasPrice: string
     tokenAddress: string
   }) {
     const { chainId, network } = this
     const erc20Contract = new BaseCurrencyContract({
-      web3: web3Strategy.getWeb3(),
+      web3: walletStrategy.getWeb3(),
       address: tokenAddress,
       chainId: chainId,
     })
@@ -158,7 +158,7 @@ export class Erc20Service {
     )
 
     try {
-      const txHash = await web3Strategy.sendTransaction(
+      const txHash = await walletStrategy.sendTransaction(
         {
           from: address,
           to: tokenAddress,
@@ -172,7 +172,7 @@ export class Erc20Service {
         { address, chainId: chainId },
       )
 
-      await web3Strategy.getTransactionReceipt(txHash)
+      await walletStrategy.getEthereumTransactionReceipt(txHash)
     } catch (error: any) {
       throw new Web3Exception(error.message)
     }

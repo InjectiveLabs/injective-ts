@@ -65,7 +65,6 @@
     "@injectivelabs/sdk-ts": "^0.0.38",
     "@injectivelabs/ts-types": "^0.5.1",
     "@injectivelabs/utils": "^0.5.3",
-    "@injectivelabs/web3-strategy": "^0.5.45",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   }

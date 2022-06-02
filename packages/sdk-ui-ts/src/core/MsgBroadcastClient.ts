@@ -8,7 +8,7 @@ import {
   DEFAULT_EXCHANGE_LIMIT,
   DEFAULT_GAS_LIMIT,
 } from '@injectivelabs/utils'
-import { Web3Strategy } from '@injectivelabs/web3-strategy'
+import { WalletStrategy } from '@injectivelabs/wallet-ts'
 import { ChainId } from '@injectivelabs/ts-types'
 
 export interface MsgBroadcastTxOptions {
@@ -26,7 +26,7 @@ export interface MsgBroadcastOptions {
     exchangeApi: string
   }
   chainId: ChainId
-  web3Strategy: Web3Strategy
+  walletStrategy: WalletStrategy
   metricsProvider?: MetricsProvider
 }
 
@@ -60,16 +60,16 @@ export class MsgBroadcastClient {
 
   async broadcast(tx: MsgBroadcastTxOptions) {
     const { options } = this
-    const { web3Strategy } = options
+    const { walletStrategy } = options
 
-    return web3Strategy.wallet === Wallet.Keplr
+    return walletStrategy.wallet === Wallet.Keplr
       ? this.broadcastKeplr(tx)
       : this.broadcastWeb3(tx)
   }
 
   private async broadcastWeb3(tx: MsgBroadcastTxOptions) {
     const { options, transactionApi } = this
-    const { web3Strategy, chainId, metricsProvider } = options
+    const { walletStrategy, chainId, metricsProvider } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
@@ -99,7 +99,7 @@ export class MsgBroadcastClient {
 
     const signTx = async (txData: any) => {
       try {
-        const promise = web3Strategy.signTypedDataV4(txData, tx.address)
+        const promise = walletStrategy.signTransaction(txData, tx.address)
 
         if (!metricsProvider) {
           return await promise
@@ -144,7 +144,7 @@ export class MsgBroadcastClient {
 
   private async broadcastKeplr(tx: MsgBroadcastTxOptions) {
     const { options } = this
-    const { web3Strategy, chainId } = options
+    const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const injectiveAddress = getInjectiveAddress(tx.address)
 
@@ -159,12 +159,12 @@ export class MsgBroadcastClient {
         memo: tx.memo,
       }
 
-      const signResponse = (await web3Strategy.signTypedDataV4(
+      const signResponse = (await walletStrategy.signTransaction(
         transaction,
         injectiveAddress,
       )) as any
 
-      return await web3Strategy.sendTransaction(signResponse, {
+      return await walletStrategy.sendTransaction(signResponse, {
         chainId,
         address: injectiveAddress,
       })

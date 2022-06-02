@@ -1,9 +1,9 @@
 {
-  "extends": "../../tsconfig.build.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "tsBuildInfoFile": "../../.build-cache/sdk-ts.tsbuildinfo"
+    "tsBuildInfoFile": "../../.build-cache/wallet-ts.tsbuildinfo"
   },
   "include": [
     "./src/**/*.ts"
@@ -17,12 +17,6 @@
     },
     {
       "path": "../utils/tsconfig.build.json"
-    },
-    {
-      "path": "../networks/tsconfig.build.json"
-    },
-    {
-      "path": "../token-metadata/tsconfig.build.json"
-    },
-  ],
+    }
+  ]
 }

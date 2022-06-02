@@ -22,7 +22,7 @@
       "path": "../networks/tsconfig.build.json"
     },
     {
-      "path": "../web3-strategy/tsconfig.build.json"
+      "path": "../wallet-ts/tsconfig.build.json"
     },
     {
       "path": "../sdk-ts/tsconfig.build.json"
