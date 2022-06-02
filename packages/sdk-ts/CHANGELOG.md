@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.39...@injectivelabs/sdk-ts@0.0.40) (2022-06-02)
+
+
+### Bug Fixes
+
+* feePaidAmount to volume ([88c202f](https://github.com/InjectiveLabs/injective-ts/commit/88c202f99dd930c1555b9b91b84c7f7e408c660c))
+
+
+### Features
+
+* wasm messages ([3773c39](https://github.com/InjectiveLabs/injective-ts/commit/3773c39d8e61c70eec3f14683240a7f787fdd70e))
+
+
+
+
+
 ## [0.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.38...@injectivelabs/sdk-ts@0.0.39) (2022-06-02)
 
 
