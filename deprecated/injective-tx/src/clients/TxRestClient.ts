@@ -20,10 +20,12 @@ export class TxRestClient {
 
   public async broadcast(txRaw: TxRaw): Promise<any /** TODO */> {
     try {
-      return await this.httpClient.post('cosmos/tx/v1beta1/txs', {
+      const response = await this.httpClient.post('cosmos/tx/v1beta1/txs', {
         tx_bytes: Buffer.from(txRaw.serializeBinary()).toString('base64'),
-        mode: 'BROADCAST_MODE_BLOCK',
+        mode: 'BROADCAST_MODE_SYNC',
       })
+
+      return (response as any).data
     } catch (e: any) {
       throw new Error(e.message)
     }
