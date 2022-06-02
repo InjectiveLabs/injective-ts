@@ -30,6 +30,8 @@ import MsgSendToEth from './peggy/msgs/MsgSendToEth'
 import MsgDelegate from './staking/msgs/MsgDelegate'
 import MsgUndelegate from './staking/msgs/MsgUndelegate'
 import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
+import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
+import MsgExec from './wasm/msgs/MsgExec'
 
 export type Msgs =
   | MsgBid
@@ -64,6 +66,8 @@ export type Msgs =
   | MsgDelegate
   | MsgUndelegate
   | MsgBeginRedelegate
+  | MsgExecuteContract
+  | MsgExec
 
 export type ExchangeMsgs =
   | MsgBatchCancelDerivativeOrders
@@ -78,3 +82,4 @@ export type ExchangeMsgs =
   | MsgIncreasePositionMargin
   | MsgInstantSpotMarketLaunch
   | MsgWithdraw
+  | MsgExec

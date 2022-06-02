@@ -88,7 +88,7 @@
     "@apollo/client": "^3.5.8",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
-    "@injectivelabs/chain-api": "^1.7.1",
+    "@injectivelabs/chain-api": "^1.7.3",
     "@injectivelabs/exceptions": "^0.5.3",
     "@injectivelabs/exchange-api": "^2.2.70",
     "@injectivelabs/networks": "^0.5.7",
