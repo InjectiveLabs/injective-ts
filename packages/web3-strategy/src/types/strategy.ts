@@ -1,5 +1,5 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
-import Web3 from 'web3'
+import type Web3 from 'web3'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void
@@ -15,8 +15,6 @@ export interface Web3Options {
 }
 
 export interface ConcreteWeb3Strategy {
-  isMetamaskInstalled(): boolean
-
   getAddresses(): Promise<string[]>
 
   confirm(address: AccountAddress): Promise<string>
