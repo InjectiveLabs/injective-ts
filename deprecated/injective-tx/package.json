@@ -1,0 +1,46 @@
+{
+  "name": "@injectivelabs/injective-tx",
+  "description": "Injective Tx related wrappers.",
+  "version": "0.0.3",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~injective-tx": "dist"
+  },
+  "scripts": {
+    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
+    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "test": "jest",
+    "test:unit": "jest test/unit",
+    "test:integration": "jest test/unit",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@cosmjs/amino": "^0.27.1",
+    "@cosmjs/proto-signing": "^0.27.1",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
+    "@injectivelabs/chain-api": "^1.7.1",
+    "@injectivelabs/utils": "^0.5.3",
+    "cosmjs-types": "^0.3.0",
+    "google-protobuf": "^3.19.4",
+    "link-module-alias": "^1.2.0",
+    "long": "^4.0.0",
+    "sha3": "^2.1.4",
+    "shx": "^0.3.2"
+  },
+  "devDependencies": {
+    "@types/google-protobuf": "^3.15.5"
+  },
+  "gitHead": "a12e5c2c5d1038ab42e9669b6eeb1e91873626c2"
+}

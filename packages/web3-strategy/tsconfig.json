@@ -12,9 +12,6 @@
     },
     {
       "path": "../cosmos-ts/tsconfig.json"
-    },
-    {
-      "path": "../assert/tsconfig.json"
     }
   ]
 }
