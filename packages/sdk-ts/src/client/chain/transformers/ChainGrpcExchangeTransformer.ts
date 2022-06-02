@@ -69,7 +69,7 @@ export class ChainGrpcExchangeTransformer {
       makerDiscountRate: info.getMakerDiscountRate(),
       takerDiscountRate: info.getTakerDiscountRate(),
       stakedAmount: info.getStakedAmount(),
-      feePaidAmount: info.getFeePaidAmount(),
+      feePaidAmount: info.getVolume(),
     }
   }
 
