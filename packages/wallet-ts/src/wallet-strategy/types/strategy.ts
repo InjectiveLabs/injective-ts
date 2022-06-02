@@ -1,6 +1,6 @@
 import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
 import type Web3 from 'web3'
-import { CosmosChainId } from '../../Keplr/utils'
+import { CosmosChainId } from '../../keplr/types'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void

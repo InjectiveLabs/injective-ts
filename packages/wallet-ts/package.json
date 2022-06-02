@@ -14,8 +14,8 @@
   "exports": {
     ".": "./dist/index.js",
     "./transaction": "./dist/transaction/index.js",
-    "./Keplr": "./dist/Keplr/index.js",
-    "./Cosmos": "./dist/Cosmos/index.js"
+    "./keplr": "./dist/keplr/index.js",
+    "./cosmos": "./dist/cosmos/index.js"
   },
   "typesVersions": {
     "*": {
@@ -25,11 +25,11 @@
       "transaction": [
         "./dist/transaction/index.d.ts"
       ],
-      "Keplr": [
-        "./dist/Keplr/index.d.ts"
+      "keplr": [
+        "./dist/keplr/index.d.ts"
       ],
-      "Cosmos": [
-        "./dist/Cosmos/index.d.ts"
+      "cosmos": [
+        "./dist/cosmos/index.d.ts"
       ]
     }
   },

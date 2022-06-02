@@ -6,9 +6,8 @@ import {
   getExperimentalChainConfigBasedOnChainId,
   keplrSupportedChainIds,
   getEndpointsFromChainId,
-  CosmosChainId,
-  TestnetCosmosChainId,
 } from './utils'
+import { CosmosChainId, TestnetCosmosChainId } from './types'
 
 export class KeplrWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId

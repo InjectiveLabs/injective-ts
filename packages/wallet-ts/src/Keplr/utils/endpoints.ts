@@ -1,4 +1,4 @@
-import { CosmosChainId, TestnetCosmosChainId } from './types'
+import { CosmosChainId, TestnetCosmosChainId } from '../types'
 
 export const getEndpointsFromChainId = (
   chainId: TestnetCosmosChainId | CosmosChainId,

@@ -7,11 +7,11 @@ import {
   DEFAULT_GAS_PRICE,
 } from '@injectivelabs/utils'
 import Web3 from 'web3'
-import { KeplrWallet } from '../../Keplr'
+import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
-import { CosmJsWallet } from '../../Cosmos/CosmosWallet'
-import { CosmosChainId } from '../../Keplr/utils'
+import { CosmJsWallet } from '../../cosmos/CosmosWallet'
+import { CosmosChainId } from '../../keplr/types'
 import { createSignedTx } from '../../transaction'
 
 export default class Keplr
