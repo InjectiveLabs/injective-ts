@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.26...@injectivelabs/sdk-ui-ts@0.0.27) (2022-06-02)
+
+
+### Bug Fixes
+
+* token export for axlr ([bc99346](https://github.com/InjectiveLabs/injective-ts/commit/bc99346520995fb9e484d3d89b51356300d39fae))
+
+
+
+
+
 ## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.25...@injectivelabs/sdk-ui-ts@0.0.26) (2022-06-02)
 
 

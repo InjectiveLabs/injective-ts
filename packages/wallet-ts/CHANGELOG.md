@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.5...@injectivelabs/wallet-ts@0.0.6) (2022-06-02)
+
+
+### Bug Fixes
+
+* token export for axlr ([bc99346](https://github.com/InjectiveLabs/injective-ts/commit/bc99346520995fb9e484d3d89b51356300d39fae))
+
+
+
+
+
 ## [0.0.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.4...@injectivelabs/wallet-ts@0.0.5) (2022-06-02)
 
 
