@@ -963,10 +963,25 @@
     shx "^0.3.2"
     snakecase-keys "^3.2.1"
 
-"@injectivelabs/token-metadata@^0.5.21", "@injectivelabs/token-metadata@^0.5.24":
+"@injectivelabs/token-metadata@^0.5.21":
   version "0.5.24"
   resolved "https://registry.yarnpkg.com/@injectivelabs/token-metadata/-/token-metadata-0.5.24.tgz#7da1c90f36ff53766af6444fb76bd7173b61ff52"
   integrity sha512-a3YjIo8zWNNQl+aKWKwZxu78dtolUb3OYspBctNmwME8DDMa/FZWmjf6ujzuXDp+itFeGsCFca4Fl8wZgYE+8g==
+  dependencies:
+    "@injectivelabs/networks" "^0.5.7"
+    "@injectivelabs/ts-types" "^0.5.2"
+    "@types/lodash.values" "^4.3.6"
+    copyfiles "^2.4.1"
+    jsonschema "^1.4.0"
+    link-module-alias "^1.2.0"
+    lodash "^4.17.21"
+    lodash.values "^4.3.0"
+    shx "^0.3.2"
+
+"@injectivelabs/token-metadata@^0.5.25":
+  version "0.5.25"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/token-metadata/-/token-metadata-0.5.25.tgz#ecd0fe50420affe25c3986ce0a3a9a78885d80e5"
+  integrity sha512-a3kJCXRcj4+7jRroJ47kNMnlER+HQOtTCzwjCwAHcjszn+mHdnen4D5mUF3+846JlbwvKTTdwOqTNiQLMcCd7w==
   dependencies:
     "@injectivelabs/networks" "^0.5.7"
     "@injectivelabs/ts-types" "^0.5.2"
