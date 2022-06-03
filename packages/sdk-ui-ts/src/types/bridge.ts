@@ -2,7 +2,7 @@ import {
   IBCTransferTx,
   PeggyDepositTx,
   PeggyWithdrawalTx,
-} from '@injectivelabs/sdk-ts/client'
+} from '@injectivelabs/sdk-ts/dist/client'
 
 export enum BridgingNetwork {
   Axelar = 'axelar',

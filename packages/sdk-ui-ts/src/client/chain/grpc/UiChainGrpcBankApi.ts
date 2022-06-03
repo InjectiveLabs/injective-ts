@@ -2,7 +2,7 @@ import { GrpcCoin } from '@injectivelabs/sdk-ts'
 import {
   ChainGrpcBankApi,
   ChainGrpcBankTransformer,
-} from '@injectivelabs/sdk-ts/client'
+} from '@injectivelabs/sdk-ts/dist/client'
 import { BigNumberInWei } from '@injectivelabs/utils'
 import { BankBalances, UiSupplyCoin } from '../../types/bank'
 import { ChainMetrics } from '../../types/metrics'

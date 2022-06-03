@@ -1,7 +1,7 @@
 import {
   ChainGrpcDistributionApi,
   ChainGrpcStakingTransformer,
-} from '@injectivelabs/sdk-ts/client'
+} from '@injectivelabs/sdk-ts/dist/client'
 import { ChainMetrics } from '../../types/metrics'
 import { BaseApi } from '../../../BaseApi'
 import { ApiOptions } from '../../types'

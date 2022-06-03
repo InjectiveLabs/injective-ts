@@ -12,63 +12,6 @@
   "files": [
     "dist"
   ],
-  "_moduleAliases": {
-    "~sdk-ts": "dist"
-  },
-  "exports": {
-    ".": "./dist/index.js",
-    "./local": "./dist/local/index.js",
-    "./utils": "./dist/utils/index.js",
-    "./types": "./dist/types/index.js",
-    "./classes": "./dist/classes/index.js",
-    "./core": "./dist/core/index.js",
-    "./client": "./dist/client/index.js",
-    "./chain-grpc-client": "./dist/client/chain/ChainGrpcClient.js",
-    "./chain-rest-client": "./dist/client/chain/ChainRestClient.js",
-    "./exchange-grpc-client": "./dist/client/exchange/ExchangeGrpcClient.js",
-    "./exchange-rest-client": "./dist/client/exchange/ExchangeRestClient.js",
-    "./exchange-grpc-stream-client": "./dist/client/exchange/ExchangeGrpcStreamClient.js"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/index.d.ts"
-      ],
-      "local": [
-        "./dist/local/index.d.ts"
-      ],
-      "utils": [
-        "./dist/utils/index.d.ts"
-      ],
-      "classes": [
-        "./dist/classes/index.d.ts"
-      ],
-      "types": [
-        "./dist/types/index.d.ts"
-      ],
-      "core": [
-        "./dist/core/index.d.ts"
-      ],
-      "client": [
-        "./dist/client/index.d.ts"
-      ],
-      "chain-grpc-client": [
-        "./dist/client/chain/ChainGrpcClient.d.ts"
-      ],
-      "chain-rest-client": [
-        "./dist/client/chain/ChainRestClient.d.ts"
-      ],
-      "exchange-grpc-client": [
-        "./dist/client/exchange/ExchangeGrpcClient.d.ts"
-      ],
-      "exchange-rest-client": [
-        "./dist/client/exchange/ExchangeRestClient.d.ts"
-      ],
-      "exchange-grpc-stream-client": [
-        "./dist/client/exchange/ExchangeGrpcStreamClient.d.ts"
-      ]
-    }
-  },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",

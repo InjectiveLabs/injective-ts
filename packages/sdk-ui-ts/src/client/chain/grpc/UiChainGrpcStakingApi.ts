@@ -8,7 +8,7 @@ import { ChainMetrics } from '../../types/metrics'
 import {
   Delegation,
   ChainGrpcStakingTransformer,
-} from '@injectivelabs/sdk-ts/client/chain'
+} from '@injectivelabs/sdk-ts/dist/client/chain'
 import { UiStakingTransformer } from '../../transformers/UiStakingTransformer'
 import { BaseApi } from '../../../BaseApi'
 import { ApiOptions } from '../../types'

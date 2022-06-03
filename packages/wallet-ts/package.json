@@ -11,32 +11,6 @@
   "_moduleAliases": {
     "~wallet-ts": "dist"
   },
-  "exports": {
-    ".": "./dist/index.js",
-    "./transaction": "./dist/transaction/index.js",
-    "./keplr": "./dist/keplr/index.js",
-    "./axelar": "./dist/axelar/index.js",
-    "./cosmos": "./dist/cosmos/index.js"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/index.d.ts"
-      ],
-      "transaction": [
-        "./dist/transaction/index.d.ts"
-      ],
-      "keplr": [
-        "./dist/keplr/index.d.ts"
-      ],
-      "axelar": [
-        "./dist/axelar/index.d.ts"
-      ],
-      "cosmos": [
-        "./dist/cosmos/index.d.ts"
-      ]
-    }
-  },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
     "build": "tsc --build tsconfig.build.json && link-module-alias",

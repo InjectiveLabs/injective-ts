@@ -15,7 +15,7 @@ import {
 import {
   CosmosChainId,
   TestnetCosmosChainId,
-} from '@injectivelabs/wallet-ts/keplr'
+} from '@injectivelabs/wallet-ts/dist/keplr'
 import { erc20TokenMeta } from '@injectivelabs/token-metadata'
 import { Token } from '../types'
 

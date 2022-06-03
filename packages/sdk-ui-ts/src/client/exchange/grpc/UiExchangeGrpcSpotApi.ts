@@ -4,7 +4,7 @@ import { UiBaseSpotMarket, SpotOrderSide } from '../../types/spot'
 import {
   ExchangeGrpcSpotApi,
   ExchangeGrpcSpotTransformer,
-} from '@injectivelabs/sdk-ts/client/exchange'
+} from '@injectivelabs/sdk-ts/dist/client/exchange'
 import { Orderbook } from '@injectivelabs/sdk-ts'
 import { BaseApi } from '../../../BaseApi'
 import { ApiOptions } from '../../types'
