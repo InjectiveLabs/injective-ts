@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.24...@injectivelabs/token-metadata@0.5.25) (2022-06-03)
+
+
+### Features
+
+* axelar and moonbeam ([49a41ae](https://github.com/InjectiveLabs/injective-ts/commit/49a41ae7e7408390c0ff2bd7b5c65d3b613d488b))
+
+
+
+
+
 ## [0.5.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.23...@injectivelabs/token-metadata@0.5.24) (2022-06-02)
 
 
