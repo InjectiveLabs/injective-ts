@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/ui-common",
   "description": "Reusable Vue Components, Vuex Store Modules, Composables, and more",
-  "version": "0.5.60",
+  "version": "0.5.62",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,9 +14,9 @@
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && link-module-alias",
-    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "build:watch": "tsc --build -w tsconfig.json && link-module-alias",
+    "build": "tsc --build tsconfig.json && link-module-alias",
+    "clean": "tsc --build tsconfig.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
     "test:integration": "jest test/unit",
@@ -34,18 +34,18 @@
     "@injectivelabs/alchemy-api": "^0.5.2",
     "@injectivelabs/chain-api": "^1.7.1",
     "@injectivelabs/chain-consumer": "^0.5.7",
-    "@injectivelabs/contracts": "^0.5.23",
+    "@injectivelabs/contracts": "^0.5.24",
     "@injectivelabs/derivatives-consumer": "^0.5.6",
-    "@injectivelabs/exceptions": "^0.5.2",
+    "@injectivelabs/exceptions": "^0.5.3",
     "@injectivelabs/exchange-consumer": "^0.5.6",
     "@injectivelabs/explorer-consumer": "^0.5.7",
-    "@injectivelabs/networks": "^0.5.6",
+    "@injectivelabs/networks": "^0.5.7",
     "@injectivelabs/spot-consumer": "^0.5.8",
     "@injectivelabs/subaccount-consumer": "^0.5.5",
-    "@injectivelabs/token-metadata": "^0.5.21",
-    "@injectivelabs/token-utils": "^0.5.3",
-    "@injectivelabs/ts-types": "^0.5.1",
-    "@injectivelabs/utils": "^0.5.3",
+    "@injectivelabs/token-metadata": "^0.5.24",
+    "@injectivelabs/token-utils": "^0.5.4",
+    "@injectivelabs/ts-types": "^0.5.2",
+    "@injectivelabs/utils": "^0.5.4",
     "bech32": "^2.0.0",
     "date-fns": "^2.28.0",
     "ethereumjs-util": "^7.1.4",
@@ -54,7 +54,7 @@
     "shx": "^0.3.2"
   },
   "devDependencies": {
-    "@injectivelabs/web3-strategy": "^0.5.36"
+    "@injectivelabs/web3-strategy": "^0.5.45"
   },
   "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4"
 }

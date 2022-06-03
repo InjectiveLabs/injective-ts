@@ -1,47 +1,43 @@
 {
-  "extends": "../../packages/../../packages/tsconfig.json",
-  "references": [
-    {
-      "path": "../../packages/ts-types/tsconfig.json"
-    },
-    {
-      "path": "../../packages/exceptions/tsconfig.json"
-    },
-    {
-      "path": "../../packages/utils/tsconfig.json"
-    },
-    {
-      "path": "../../packages/networks/tsconfig.json"
-    },
-    {
-      "path": "../../packages/contracts/tsconfig.json"
-    },
-    {
-      "path": "../../packages/token-metadata/tsconfig.json"
-    },
-    {
-      "path": "../chain-consumer/tsconfig.json"
-    },
-    {
-      "path": "../exchange-consumer/tsconfig.json"
-    },
-    {
-      "path": "../spot-consumer/tsconfig.json"
-    },
-    {
-      "path": "../derivatives-consumer/tsconfig.json"
-    },
-    {
-      "path": "../subaccount-consumer/tsconfig.json"
-    },
-    {
-      "path": "../alchemy-api/tsconfig.json"
-    },
-    {
-      "path": "../../packages/token-metadata/tsconfig.json"
-    },
-    {
-      "path": "../../packages/web3-strategy/tsconfig.json"
-    }
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "rootDir": ".",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "lib": [
+      "DOM",
+      "es2019",
+      "es2021",
+    ],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "removeComments": false,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "types": [
+      "node",
+      "jest"
+    ]
+  },
+  "include": [
+    "./src/**/*.ts"
   ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "./deprecated",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
 }

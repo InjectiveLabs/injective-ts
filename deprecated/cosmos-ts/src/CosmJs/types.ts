@@ -43,10 +43,16 @@ export const cosmosNativeDenomsFromChainId = {
     ...erc20TokenMeta.getMetaBySymbol('JUNO'),
     denom: 'ujuno',
   },
-  [CosmosChainId.Axelar]: {
-    ...erc20TokenMeta.getMetaBySymbol('AXL'),
-    denom: 'uaxl',
-  },
+  [CosmosChainId.Axelar]: [
+    {
+      ...erc20TokenMeta.getMetaBySymbol('AXL'),
+      denom: 'uaxl',
+    },
+    {
+      ...erc20TokenMeta.getMetaBySymbol('DOT'),
+      denom: 'dot-planck',
+    },
+  ],
   [CosmosChainId.Evmos]: {
     ...erc20TokenMeta.getMetaBySymbol('EVMOS'),
     denom: 'aevmos',

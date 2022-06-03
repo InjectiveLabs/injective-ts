@@ -71,7 +71,13 @@ export class KeplrWallet {
     }
   }
 
-  async getAccounts() {
+  async getAccounts(): Promise<
+    {
+      address: string
+      algo: any
+      pubkey: Uint8Array
+    }[]
+  > {
     const { window, chainId } = this
 
     if (!window) {
@@ -83,7 +89,11 @@ export class KeplrWallet {
     }
 
     try {
-      return window.getOfflineSigner(chainId).getAccounts()
+      return window.getOfflineSigner(chainId).getAccounts() as unknown as {
+        address: string
+        algo: any
+        pubkey: Uint8Array
+      }[]
     } catch (e: any) {
       throw new Error(e.message)
     }

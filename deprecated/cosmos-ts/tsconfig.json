@@ -1,20 +1,43 @@
 {
-  "extends": "../../tsconfig.json",
-  "references": [
-    {
-      "path": "../ts-types/tsconfig.json"
-    },
-    {
-      "path": "../token-metadata/tsconfig.json"
-    },
-    {
-      "path": "../utils/tsconfig.json"
-    },
-    {
-      "path": "../sdk-ts/tsconfig.json"
-    },
-    {
-      "path": "../injective-tx/tsconfig.json"
-    }
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "rootDir": ".",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "lib": [
+      "DOM",
+      "es2019",
+      "es2021",
+    ],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "removeComments": false,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "types": [
+      "node",
+      "jest"
+    ]
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "./deprecated",
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 }

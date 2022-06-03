@@ -15,6 +15,7 @@ export enum BridgingNetwork {
   Osmosis = 'osmosis',
   Persistence = 'Persistence',
   Terra = 'terra',
+  Moonbeam = 'moonbeam',
 }
 
 export const MintScanExplorerUrl = {

@@ -21,7 +21,7 @@ import {
 import { SigningStargateClient } from '@cosmjs/stargate'
 import Long from 'long'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { MsgTransfer } from '@injectivelabs/sdk-ts/core'
+import { MsgTransfer } from '@injectivelabs/sdk-ts'
 import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { fromBase64 } from '@cosmjs/encoding'
 import { createSignedTx, createTransaction } from '@injectivelabs/injective-tx'

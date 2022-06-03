@@ -9,6 +9,9 @@
     },
     {
       "path": "../utils/tsconfig.json"
+    },
+    {
+      "path": "../contracts/tsconfig.json"
     }
   ]
 }

@@ -24,6 +24,12 @@
       "@injectivelabs/referral-consumer": [
         "./packages/referral-consumer"
       ],
+      "@injectivelabs/ui-common": [
+        "./deprecated/ui-common"
+      ],
+      "@injectivelabs/cosmos-ts": [
+        "./deprecated/cosmos-ts"
+      ],
       "@injectivelabs/sdk-ts": [
         "packages/sdk-ts"
       ],

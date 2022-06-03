@@ -645,7 +645,7 @@ export default {
     logo: 'dot.jpeg',
     symbol: 'DOT',
     decimals: 10,
-    address: '',
+    address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     coinGeckoId: 'polkadot',
   },
   'DOT-PLANCK': {
@@ -653,7 +653,7 @@ export default {
     logo: 'dot.jpeg',
     symbol: 'DOT',
     decimals: 10,
-    address: '',
+    address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     coinGeckoId: 'polkadot',
   },
 }
