@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.11...@injectivelabs/wallet-ts@0.0.12) (2022-06-03)
+
+
+### Bug Fixes
+
+* axelar api moonbeam ([aee6731](https://github.com/InjectiveLabs/injective-ts/commit/aee673125984bf74bb2e8b3483935eb1a46b8f6d))
+
+
+
+
+
 ## [0.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.10...@injectivelabs/wallet-ts@0.0.11) (2022-06-03)
 
 
