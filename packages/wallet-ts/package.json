@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use different types of wallets on Injective.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
