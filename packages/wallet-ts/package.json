@@ -15,8 +15,8 @@
     ".": "./dist/index.js",
     "./transaction": "./dist/transaction/index.js",
     "./keplr": "./dist/keplr/index.js",
-    "./cosmos": "./dist/cosmos/index.js",
-    "./axelar": "./dist/axelar/index.js"
+    "./axelar": "./dist/axelar/index.js",
+    "./cosmos": "./dist/cosmos/index.js"
   },
   "typesVersions": {
     "*": {
@@ -29,11 +29,11 @@
       "keplr": [
         "./dist/keplr/index.d.ts"
       ],
-      "cosmos": [
-        "./dist/cosmos/index.d.ts"
-      ],
       "axelar": [
         "./dist/axelar/index.d.ts"
+      ],
+      "cosmos": [
+        "./dist/cosmos/index.d.ts"
       ]
     }
   },
