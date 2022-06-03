@@ -47,6 +47,7 @@ export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Juno,
   BridgingNetwork.Evmos,
   BridgingNetwork.Persistence,
+  BridgingNetwork.Moonbeam,
 ]
 
 export const tokenDenomsPerNetwork = [
@@ -89,6 +90,11 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Persistence,
     denoms: ['uxprt', 'inj'],
     symbols: ['xprt'],
+  },
+  {
+    network: BridgingNetwork.Moonbeam,
+    denoms: ['dot-planck'],
+    symbols: ['dot'],
   },
 ] as NetworkConfig[]
 
