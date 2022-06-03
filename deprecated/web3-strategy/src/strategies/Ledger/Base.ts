@@ -23,12 +23,7 @@ const domainHash = (message: any) =>
   TypedDataUtils.hashStruct('EIP712Domain', message.domain, message.types, true)
 
 const messageHash = (message: any) =>
-  TypedDataUtils.hashStruct(
-    message.primaryType,
-    message.message,
-    message.types,
-    true,
-  )
+  TypedDataUtils.hashStruct(message.primaryType, message.message, message.types)
 
 const commonLockedErrors = (error: any) => {
   const message = error.message || error
