@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.36...@injectivelabs/sdk-ui-ts@0.0.37) (2022-06-06)
+
+
+### Bug Fixes
+
+* token price service import ([3253bf5](https://github.com/InjectiveLabs/injective-ts/commit/3253bf51edbcfe3c55302026bdae106fcdc74ae5))
+
+
+
+
+
 ## [0.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.35...@injectivelabs/sdk-ui-ts@0.0.36) (2022-06-06)
 
 
