@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.48...@injectivelabs/sdk-ts@0.0.49) (2022-06-06)
+
+
+### Features
+
+* added insurance funds explorer api types ([5dcf7da](https://github.com/InjectiveLabs/injective-ts/commit/5dcf7da4323546ef4e4cff064960aa59f4a67ea6))
+
+
+
+
+
 ## [0.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.47...@injectivelabs/sdk-ts@0.0.48) (2022-06-06)
 
 
