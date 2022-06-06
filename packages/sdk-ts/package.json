@@ -12,6 +12,9 @@
   "files": [
     "dist"
   ],
+  "_moduleAliases": {
+    "~sdk-ts": "dist"
+  },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
