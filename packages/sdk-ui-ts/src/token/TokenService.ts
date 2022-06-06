@@ -14,6 +14,7 @@ import {
   BankBalanceWithToken,
   DenomTrace,
   IbcBankBalanceWithToken,
+  IbcToken,
   SubaccountBalanceWithToken,
   Token,
   UiBridgeTransaction,
@@ -66,8 +67,15 @@ export class TokenService {
           network,
         ).getTokenMetaDataBySymbol()
 
-        return tokenMetaToToken(tokenMeta, denom)
+        return {
+          isIbc: true,
+          channelId: denomTraceFromCache.path.replace('transfer/', ''),
+          ...denomTraceFromCache,
+          ...tokenMetaToToken(tokenMeta, denom),
+        } as IbcToken
       }
+
+      return (await new Denom(denom, network).getIbcDenomToken()) as IbcToken
     }
 
     return await new Denom(denom, network).getDenomToken()
@@ -142,6 +150,7 @@ export class TokenService {
           return {
             denom,
             baseDenom,
+            isIbc: true,
             balance: ibcBalances[denom],
             channelId: path.replace('transfer/', ''),
             token: await this.getDenomToken(denom),
