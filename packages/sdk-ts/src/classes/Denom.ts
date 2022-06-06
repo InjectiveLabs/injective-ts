@@ -56,6 +56,7 @@ export class Denom {
 
     return {
       baseDenom,
+      isIbc: true,
       channelId: path.replace('transfer/', ''),
       ...tokenMetaToToken(tokenMeta, denom),
     } as IbcToken
@@ -69,7 +70,19 @@ export class Denom {
       denom.toLowerCase() === INJ_DENOM
 
     if (!isDenom) {
-      return (await this.getTokenMetaDataBySymbol(denom)) as Token
+      const bySymbol = this.getTokenMetaDataBySymbol(denom)
+
+      if (bySymbol) {
+        return tokenMetaToToken(bySymbol, denom) as Token
+      }
+
+      const byAddress = this.getTokenMetaDataByAddress(denom)
+
+      if (byAddress) {
+        return tokenMetaToToken(byAddress, denom) as Token
+      }
+
+      throw new Error(`Token meta for ${denom} denom does not exist`)
     }
 
     const tokenMeta = await this.getDenomTokenMeta()
@@ -98,6 +111,12 @@ export class Denom {
     const { erc20TokenMeta } = this
 
     return erc20TokenMeta.getMetaBySymbol(symbol)
+  }
+
+  getTokenMetaDataByAddress(symbol: string): TokenMeta | undefined {
+    const { erc20TokenMeta } = this
+
+    return erc20TokenMeta.getMetaByAddress(symbol)
   }
 
   async fetchDenomTrace() {

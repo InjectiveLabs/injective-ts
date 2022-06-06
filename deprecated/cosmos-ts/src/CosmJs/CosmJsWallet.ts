@@ -17,6 +17,7 @@ import {
   HttpClient,
   DEFAULT_STD_FEE,
   BigNumber,
+  // BigNumber,
 } from '@injectivelabs/utils'
 import { SigningStargateClient } from '@cosmjs/stargate'
 import Long from 'long'
@@ -216,19 +217,22 @@ export class CosmJsWallet {
     fee?: StdFee
     memo?: string
   }) {
+    const timeoutTimestampInMs = 300 * 1000
+    const now = new Date()
+    const timestamp = new Date(now.getTime() + timeoutTimestampInMs)
+    const actualTimeoutTimestamp =
+      (timeoutTimestamp || timestamp.getTime()) * 1e6
+
     if (
       ethereumCurveBasedAddressesPrefixes.some((prefix) =>
         senderAddress.startsWith(prefix),
       )
     ) {
-      const now = new Date()
-      const timestamp = new Date(now.getTime() + 1000 * 300)
-      const actualTimestamp = timeoutTimestamp || timestamp.getTime()
       const latestBlock = await this.fetchLatestBlock()
       const ibcMessage = MsgTransfer.fromJSON({
         channelId: sourceChannel,
         port: sourcePort,
-        timeout: actualTimestamp * 1e6,
+        timeout: actualTimeoutTimestamp,
         height: {
           revisionHeight: new BigNumber(latestBlock.header.height)
             .plus(100)
@@ -267,7 +271,7 @@ export class CosmJsWallet {
 
         return await (
           await this.getSigningStargateClient()
-        ).broadcastTx(TxRaw.encode(txRaw).finish())
+        ).broadcastTx(TxRaw.encode(txRaw).finish(), timeoutTimestampInMs)
       } catch (e) {
         throw new Error(e as any)
       }
@@ -280,7 +284,7 @@ export class CosmJsWallet {
       sourcePort,
       sourceChannel,
       timeoutHeight,
-      timeoutTimestamp,
+      actualTimeoutTimestamp,
       {
         amount: [
           {

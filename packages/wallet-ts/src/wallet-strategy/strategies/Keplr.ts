@@ -10,7 +10,7 @@ import Web3 from 'web3'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
-import { CosmJsWallet } from '../../cosmos/CosmosWallet'
+import { CosmosWallet } from '../../cosmos/CosmosWallet'
 import { CosmosChainId } from '../../keplr/types'
 import { createSignedTx } from '../../transaction'
 
@@ -107,9 +107,8 @@ export default class Keplr
     const endpoints = await keplrWallet.getChainEndpoints()
     const key = await keplrWallet.getKey()
     const signer = await keplrWallet.getOfflineSigner()
-    const cosmWallet = new CosmJsWallet({
+    const cosmWallet = new CosmosWallet({
       ...endpoints,
-      chainId: cosmosChainId,
       signer,
     })
 

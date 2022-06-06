@@ -1,123 +1,37 @@
-import { SigningStargateClient } from '@cosmjs/stargate'
 import type {
   OfflineDirectSigner,
   DirectSignResponse,
 } from '@cosmjs/proto-signing'
-import { HttpClient } from '@injectivelabs/utils'
+import { StargateClient, DeliverTxResponse } from '@cosmjs/stargate'
 import { Coin } from '@injectivelabs/ts-types'
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
-import {
-  AccountDetails,
-  AccountRestResponse,
-  BankBalancesRestResponse,
-  BlockLatestRestResponse,
-  NodeInfoRestResponse,
-} from '../types/lcd'
-import { createTransaction } from '../transaction'
+import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
+import { SigningCosmosClient } from '@cosmjs/launchpad'
+import { createSignedTx, createTransaction } from '../transaction'
+import { CosmosQuery } from './CosmosQuery'
 
-export class CosmJsWallet {
+export class CosmosWallet {
   private rest: string
 
   private rpc: string
 
-  private signer: OfflineDirectSigner
+  private query: CosmosQuery
 
-  private client: HttpClient
+  private signer: OfflineDirectSigner
 
   constructor({
     rpc,
     rest,
     signer,
   }: {
-    chainId: string
     rpc: string
     rest: string
     signer: OfflineDirectSigner
   }) {
     this.rpc = rpc
-    this.signer = signer
     this.rest = rest
-    this.client = new HttpClient(this.rest)
-  }
-
-  async getSigningStargateClient() {
-    const { rpc, signer } = this
-
-    return SigningStargateClient.connectWithSigner(rpc, signer)
-  }
-
-  async fetchBalance({ address, denom }: { address: string; denom?: string }) {
-    const { client } = this
-    const { data } = (await client.get(
-      `cosmos/bank/v1beta1/balances/${address}`,
-    )) as { data: BankBalancesRestResponse }
-
-    if (!denom) {
-      return data.balances
-    }
-
-    const balance = data.balances.find((balance) => balance.denom === denom)
-
-    if (!balance) {
-      return {
-        amount: '0',
-        denom,
-      }
-    }
-
-    return balance
-  }
-
-  async fetchAccountDetails(address: string): Promise<AccountDetails> {
-    const { client } = this
-
-    /**
-     * Injective has different response than the rest of the
-     * cosmos chains when querying the auth account endpoint
-     * */
-    const isInjectiveAddress = address.startsWith('inj')
-    const path = isInjectiveAddress
-      ? 'auth/accounts'
-      : 'cosmos/auth/v1beta1/accounts'
-
-    const { data } = (await client.get(`${path}/${address}`)) as {
-      data: AccountRestResponse
-    }
-    const { base_account: baseAccount } = data.account
-
-    return {
-      address: baseAccount.address,
-      accountNumber: baseAccount.account_number,
-      sequence: baseAccount.sequence,
-      pubKey: {
-        type: baseAccount.pub_key['@type'],
-        key: baseAccount.pub_key.key,
-      },
-    } as AccountDetails
-  }
-
-  async fetchLatestBlock(): Promise<BlockLatestRestResponse['block']> {
-    const { client } = this
-    const { data } = (await client.get(
-      `cosmos/base/tendermint/v1beta1/blocks/latest`,
-    )) as { data: BlockLatestRestResponse }
-
-    return data.block
-  }
-
-  async fetchNodeInfo(): Promise<{
-    nodeInfo: NodeInfoRestResponse['default_node_info']
-    applicationVersion: NodeInfoRestResponse['application_version']
-  }> {
-    const { client } = this
-    const { data } = (await client.get(
-      `cosmos/base/tendermint/v1beta1/node_info`,
-    )) as { data: NodeInfoRestResponse }
-
-    return {
-      nodeInfo: data.default_node_info,
-      applicationVersion: data.application_version,
-    }
+    this.signer = signer
+    this.query = new CosmosQuery({ rpc, rest })
   }
 
   async signTransaction({
@@ -142,7 +56,7 @@ export class CosmJsWallet {
     memo?: string
   }): Promise<DirectSignResponse> {
     const { signer } = this
-    const accountDetails = await this.fetchAccountDetails(address)
+    const accountDetails = await this.query.fetchAccountDetails(address)
     const { authInfoBytes, bodyBytes, accountNumber } = createTransaction({
       message,
       memo,
@@ -160,5 +74,60 @@ export class CosmJsWallet {
     })
 
     return signer.signDirect(address, cosmosSignDoc)
+  }
+
+  async broadcastTransaction(
+    signResponse: DirectSignResponse,
+  ): Promise<DeliverTxResponse> {
+    const client = await this.getStargateClient()
+    const txRaw = createSignedTx(signResponse)
+
+    return client.broadcastTx(
+      txRaw.serializeBinary(),
+      DEFAULT_TIMESTAMP_TIMEOUT_MS,
+    )
+  }
+
+  /**
+   * Can be used only for broadcasting transactions for
+   * cosmos chains that follow the cosmos conventions for
+   * account public key derivation and coin type.
+   *
+   * For example, for the Injective chain, you should use a combination of
+   * signTransaction + broadcastTransaction as it follows the Ethereum conventions
+   * for public key derivation and coin type
+   */
+  async signAndBroadcastTransaction({
+    message,
+    address,
+    fee,
+    memo = '',
+  }: {
+    address: string
+    message: {
+      type: string
+      value: any
+    }
+    fee: {
+      amount: Coin[]
+      gas: string
+    }
+    memo?: string
+  }) {
+    const signingClient = await this.getStargateSigningClient(address)
+
+    return signingClient.signAndBroadcast([message], fee, memo)
+  }
+
+  private async getStargateClient() {
+    const { rpc } = this
+
+    return StargateClient.connect(rpc)
+  }
+
+  private async getStargateSigningClient(address: string) {
+    const { signer, rest } = this
+
+    return new SigningCosmosClient(rest, address, signer as any)
   }
 }
