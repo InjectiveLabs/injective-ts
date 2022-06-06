@@ -7,6 +7,7 @@ export * from './account'
 export * from './explorer'
 export * from './auction'
 export * from './oracle'
+export * from './insurance-funds'
 
 export interface StreamStatusResponse {
   details: string
