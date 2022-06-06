@@ -2,6 +2,7 @@
 import {
   BlockWithTxs as BaseBlockWithTxs,
   Transaction as BaseTransaction,
+  ValidatorUptime,
 } from './explorer'
 
 export interface ExplorerApiResponse<T> {
@@ -84,6 +85,22 @@ export type TransactionListItem = {
 
 export interface BlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
   txs: Transaction[]
+}
+
+export enum ValidatorUptimeStatus {
+  Proposed = 'proposed',
+  Signed = 'signed',
+  Missed = 'missed',
+}
+
+export interface ValidatorUptimeFromExplorerApiResponse {
+  block_number: number
+  status: ValidatorUptimeStatus
+}
+
+export interface ExplorerValidatorUptime
+  extends Omit<ValidatorUptime, 'status'> {
+  status: ValidatorUptimeStatus
 }
 
 export { BaseTransaction }

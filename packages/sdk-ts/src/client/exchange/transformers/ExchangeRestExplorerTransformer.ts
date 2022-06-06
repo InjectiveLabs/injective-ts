@@ -1,10 +1,12 @@
-import { Block } from '../types/explorer'
+import { Block, ExplorerValidator } from '../types/explorer'
 import {
   BlockFromExplorerApiResponse,
   BlockWithTxs,
   BaseTransaction,
   Transaction,
   TransactionFromExplorerApiResponse,
+  ValidatorUptimeFromExplorerApiResponse,
+  ExplorerValidatorUptime,
 } from '../types/explorer-rest'
 
 export const blockToBlock = (block: BlockFromExplorerApiResponse): Block => ({
@@ -84,6 +86,31 @@ export const baseTransactionToTransaction = (
   memo: transaction.memo || '',
 })
 
+export const validatorExplorerToValidator = (
+  validators: any[],
+): Partial<ExplorerValidator>[] => {
+  return validators.map((validator) => {
+    return {
+      operatorAddress: validator.operator_address,
+      proposed: validator.proposed,
+      signed: validator.signed,
+      missed: validator.missed,
+      uptimePercentage: validator.uptime_percentage,
+    }
+  })
+}
+
+export const validatorUptimeToExplorerValidatorUptime = (
+  validatorUptimeList: ValidatorUptimeFromExplorerApiResponse[],
+): ExplorerValidatorUptime[] => {
+  return validatorUptimeList.map(
+    (validatorUptime: ValidatorUptimeFromExplorerApiResponse) => ({
+      blockNumber: validatorUptime.block_number,
+      status: validatorUptime.status,
+    }),
+  )
+}
+
 export class ExchangeRestExplorerTransformer {
   static blockToBlock = blockToBlock
 
@@ -98,4 +125,9 @@ export class ExchangeRestExplorerTransformer {
   static blockWithTxToBlockWithTx = blockWithTxToBlockWithTx
 
   static baseTransactionToTransaction = baseTransactionToTransaction
+
+  static validatorExplorerToValidator = validatorExplorerToValidator
+
+  static validatorUptimeToExplorerValidatorUptime =
+    validatorUptimeToExplorerValidatorUptime
 }

@@ -32,7 +32,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.Portfolio
       >(request, InjectiveAccountsRPC.Portfolio)
 
-      return response.getPortfolio()
+      return response
     } catch (e: any) {
       throw new Error(e.message)
     }
