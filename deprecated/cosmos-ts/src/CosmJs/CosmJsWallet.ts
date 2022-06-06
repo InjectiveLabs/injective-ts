@@ -221,13 +221,14 @@ export class CosmJsWallet {
         senderAddress.startsWith(prefix),
       )
     ) {
-      const actualTimestamp =
-        timeoutTimestamp || Math.floor(Date.now() / 1000) + 1000
+      const now = new Date()
+      const timestamp = new Date(now.getTime() + 1000 * 300)
+      const actualTimestamp = timeoutTimestamp || timestamp.getTime()
       const latestBlock = await this.fetchLatestBlock()
       const ibcMessage = MsgTransfer.fromJSON({
         channelId: sourceChannel,
         port: sourcePort,
-        timeout: actualTimestamp * 1_000_000_000,
+        timeout: actualTimestamp * 1e6,
         height: {
           revisionHeight: new BigNumber(latestBlock.header.height)
             .plus(100)
