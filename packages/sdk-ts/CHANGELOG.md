@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.50...@injectivelabs/sdk-ts@0.0.51) (2022-06-06)
+
+
+### Features
+
+* added validator details and uptime ([b775f91](https://github.com/InjectiveLabs/injective-ts/commit/b775f919eeb652d18c37abd557d2c2a429c3ac21))
+
+
+
+
+
 ## [0.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.49...@injectivelabs/sdk-ts@0.0.50) (2022-06-06)
 
 
