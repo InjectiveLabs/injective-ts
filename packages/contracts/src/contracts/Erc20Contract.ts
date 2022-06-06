@@ -1,30 +1,30 @@
 import { ContractException } from '@injectivelabs/exceptions'
 import {
   AccountAddress,
-  ChainId,
+  EthereumChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
-import Web3 from 'web3'
+import type Web3 from 'web3'
 import abi from './abi/injective'
 import { ContractFunctionObj, ContractTxFunctionObj } from '../types'
 import { getTransactionOptionsAsNonPayableTx } from '../utils'
 import BaseContract from '../BaseContract'
 
-export class BaseCurrencyContract extends BaseContract<any> {
-  static contractName = 'BaseCurrency'
+export class Erc20Contract extends BaseContract<any> {
+  static contractName = 'Erc20'
 
   constructor({
-    chainId,
+    ethereumChainId,
     web3,
     address,
   }: {
-    chainId: ChainId
+    ethereumChainId: EthereumChainId
     web3: Web3
     address: string
   }) {
     super({
       abi,
-      chainId,
+      ethereumChainId,
       address,
       web3,
     })

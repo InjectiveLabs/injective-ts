@@ -1,11 +1,7 @@
 import { BigNumberInWei, BigNumberInBase } from '@injectivelabs/utils'
+import { Coin } from '@injectivelabs/ts-types'
 
-export interface UiCoin {
-  denom: string
-  amount: string
-}
-
-export interface UiSupplyCoinForSelect extends UiCoin {
+export interface CoinWithLabel extends Coin {
   code: string
   label: string
 }

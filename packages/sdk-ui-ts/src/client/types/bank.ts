@@ -1,7 +1,7 @@
-import { UiCoin } from './common'
+import { Coin } from '@injectivelabs/ts-types'
 
 export type BankBalances = Record<string, string>
 
-export interface UiSupplyCoin extends UiCoin {
+export interface UiSupplyCoin extends Coin {
   //
 }

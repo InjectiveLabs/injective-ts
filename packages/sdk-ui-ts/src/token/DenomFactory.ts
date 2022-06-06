@@ -1,5 +1,5 @@
 import { Network } from '@injectivelabs/networks'
-import { Denom } from '@injectivelabs/sdk-ts'
+import { Denom, tokenMetaToToken } from '@injectivelabs/sdk-ts'
 import { ibcTokens } from '@injectivelabs/token-metadata'
 import { DenomTrace } from '../types/token'
 
@@ -28,39 +28,37 @@ export class DenomFactory {
       const denomTraceFromCache = await this.fetchDenomTraceFromCache(denom)
 
       if (denomTraceFromCache) {
-        return denomTraceFromCache
+        const tokenMeta = await new Denom(
+          denomTraceFromCache.baseDenom,
+        ).getTokenMetaDataBySymbol()
+
+        return tokenMetaToToken(tokenMeta, denom)
       }
     }
 
     return await new Denom(denom, network).getDenomToken()
   }
 
-  async getIbcDenomToken(denom: string) {
-    const { network } = this
-
-    if (denom.startsWith('ibc/')) {
-      const denomTraceFromCache = await this.fetchDenomTraceFromCache(denom)
-
-      if (denomTraceFromCache) {
-        return denomTraceFromCache
-      }
+  async getDenomTrace(denom: string) {
+    if (!denom.startsWith('ibc/')) {
+      throw new Error(`${denom} is not an IBC denom`)
     }
 
-    return await new Denom(denom, network).getIbcDenomToken()
-  }
+    const denomTraceFromCache = await this.fetchDenomTraceFromCache(denom)
 
-  async getPeggyDenomToken(denom: string) {
-    const { network } = this
-
-    if (denom.startsWith('ibc/')) {
-      const denomTraceFromCache = await this.fetchDenomTraceFromCache(denom)
-
-      if (denomTraceFromCache) {
-        return denomTraceFromCache
-      }
+    if (denomTraceFromCache) {
+      return denomTraceFromCache
     }
 
-    return await new Denom(denom, network).getPeggyDenomToken()
+    const { baseDenom, path } = await new Denom(
+      denom,
+      this.network,
+    ).fetchDenomTrace()
+
+    return {
+      path,
+      baseDenom,
+    }
   }
 
   private async fetchDenomTraceFromCache(denom: string) {

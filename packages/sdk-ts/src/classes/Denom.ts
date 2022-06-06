@@ -52,7 +52,7 @@ export class Denom {
   async getIbcDenomToken(): Promise<IbcToken> {
     const { denom } = this
     const { baseDenom, path } = await this.fetchDenomTrace()
-    const tokenMeta = this.getTokenMetaDataBySymbol(baseDenom)
+    const tokenMeta = await new Denom(baseDenom).getIbcDenomToken()
 
     return {
       baseDenom,
@@ -70,13 +70,13 @@ export class Denom {
       denom.toLowerCase() === INJ_DENOM
 
     if (!isDenom) {
-      const bySymbol = this.getTokenMetaDataBySymbol(denom)
+      const bySymbol = this.getTokenMetaDataBySymbol()
 
       if (bySymbol) {
         return tokenMetaToToken(bySymbol, denom) as Token
       }
 
-      const byAddress = this.getTokenMetaDataByAddress(denom)
+      const byAddress = this.getTokenMetaDataByAddress()
 
       if (byAddress) {
         return tokenMetaToToken(byAddress, denom) as Token
@@ -101,22 +101,22 @@ export class Denom {
     return tokenMetaToToken(tokenMeta, denom) as Token
   }
 
-  getCoinGeckoId(symbol: string): string {
-    const { erc20TokenMeta } = this
+  getCoinGeckoId(): string {
+    const { erc20TokenMeta, denom } = this
 
-    return erc20TokenMeta.getCoinGeckoIdFromSymbol(symbol)
+    return erc20TokenMeta.getCoinGeckoIdFromSymbol(denom)
   }
 
-  getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
-    const { erc20TokenMeta } = this
+  getTokenMetaDataBySymbol(): TokenMeta | undefined {
+    const { erc20TokenMeta, denom } = this
 
-    return erc20TokenMeta.getMetaBySymbol(symbol)
+    return erc20TokenMeta.getMetaBySymbol(denom)
   }
 
-  getTokenMetaDataByAddress(symbol: string): TokenMeta | undefined {
-    const { erc20TokenMeta } = this
+  getTokenMetaDataByAddress(): TokenMeta | undefined {
+    const { erc20TokenMeta, denom } = this
 
-    return erc20TokenMeta.getMetaByAddress(symbol)
+    return erc20TokenMeta.getMetaByAddress(denom)
   }
 
   async fetchDenomTrace() {

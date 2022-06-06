@@ -1,4 +1,4 @@
-import { GrpcCoin } from '@injectivelabs/sdk-ts'
+import { Coin, GrpcCoin } from '@injectivelabs/sdk-ts'
 import {
   ChainGrpcBankApi,
   ChainGrpcBankTransformer,
@@ -7,7 +7,6 @@ import { BigNumberInWei } from '@injectivelabs/utils'
 import { BankBalances, UiSupplyCoin } from '../../types/bank'
 import { ChainMetrics } from '../../types/metrics'
 import { INJ_DENOM } from '../../../constants'
-import { UiCoin } from '../../types/common'
 import { BaseApi } from '../../../BaseApi'
 import { ApiOptions } from '../../types'
 
@@ -92,7 +91,7 @@ export class UiChainGrpcBankApi extends BaseApi {
     }
   }
 
-  async fetchTotalInjSupply(): Promise<UiCoin> {
+  async fetchTotalInjSupply(): Promise<Coin> {
     const promise = this.client.fetchTotalSupply()
     const response = await this.fetchOrFetchAndMeasure(
       promise,

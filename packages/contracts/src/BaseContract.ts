@@ -1,6 +1,6 @@
 import { AbiItem } from 'web3-utils'
-import { ChainId } from '@injectivelabs/ts-types'
-import Web3 from 'web3'
+import { EthereumChainId } from '@injectivelabs/ts-types'
+import type Web3 from 'web3'
 
 export default class BaseContract<T extends any> {
   public readonly abi: AbiItem[]
@@ -17,7 +17,7 @@ export default class BaseContract<T extends any> {
     web3,
   }: {
     abi: AbiItem[]
-    chainId?: ChainId
+    ethereumChainId?: EthereumChainId
     address: string
     web3: Web3
   }) {
