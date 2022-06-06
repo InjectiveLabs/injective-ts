@@ -1,5 +1,9 @@
 import { isServerSide, sleep } from '@injectivelabs/utils'
-import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import Web3 from 'web3'
 import {
@@ -22,7 +26,11 @@ export default class Metamask
 {
   private ethereum: Eip1993ProviderWithMetamask
 
-  constructor(args: { chainId: ChainId; web3: Web3 }) {
+  constructor(args: {
+    ethereumChainId: EthereumChainId
+    web3: Web3
+    chainId: ChainId
+  }) {
     super(args)
     this.ethereum = $window.ethereum
   }
@@ -60,7 +68,7 @@ export default class Metamask
 
   async sendEthereumTransaction(
     transaction: unknown,
-    _options: { address: AccountAddress; chainId: ChainId },
+    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
     const { ethereum } = this
 

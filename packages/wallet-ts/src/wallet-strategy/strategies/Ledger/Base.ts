@@ -1,5 +1,9 @@
 /* eslint-disable class-methods-use-this */
-import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import { TypedDataUtils } from 'eth-sig-util'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import ledgerService from '@ledgerhq/hw-app-eth/lib/services/ledger'
@@ -57,13 +61,15 @@ export default class LedgerBase
   constructor({
     chainId,
     web3,
+    ethereumChainId,
     derivationPathType,
   }: {
+    ethereumChainId: EthereumChainId
     chainId: ChainId
     web3: Web3
     derivationPathType: LedgerDerivationPathType
   }) {
-    super({ chainId, web3 })
+    super({ chainId, web3, ethereumChainId })
 
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
     this.derivationPathType = derivationPathType
@@ -99,7 +105,10 @@ export default class LedgerBase
 
   async sendEthereumTransaction(
     txData: any,
-    options: { address: string; chainId: ChainId },
+    options: {
+      address: string
+      ethereumChainId: EthereumChainId
+    },
   ): Promise<string> {
     const signedTransaction = await this.signEthereumTransaction(
       txData,
@@ -164,10 +173,10 @@ export default class LedgerBase
 
   private async signEthereumTransaction(
     txData: any,
-    options: { address: string; chainId: ChainId },
+    options: { address: string; ethereumChainId: EthereumChainId },
   ) {
-    const chainId = parseInt(options.chainId.toString(), 10)
-    const isMainnet = chainId === ChainId.Mainnet
+    const chainId = parseInt(options.ethereumChainId.toString(), 10)
+    const isMainnet = chainId === EthereumChainId.Mainnet
     const nonce = await this.web3.eth.getTransactionCount(options.address)
 
     const common = new Common({

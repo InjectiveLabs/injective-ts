@@ -21,22 +21,33 @@ export default class WalletStrategy {
 
   public wallet: Wallet
 
-  constructor({ wallet, chainId, options }: WalletStrategyArguments) {
-    const alchemyUrl = options.wsRpcUrls[chainId] || options.rpcUrls[chainId]
+  constructor({
+    wallet,
+    chainId,
+    ethereumChainId,
+    options,
+  }: WalletStrategyArguments) {
+    const alchemyUrl =
+      options.wsRpcUrls[ethereumChainId] || options.rpcUrls[ethereumChainId]
     const web3 = createAlchemyWeb3(alchemyUrl) as unknown as Web3
 
     this.strategies = {
-      [Wallet.Metamask]: new Metamask({ chainId, web3 }),
-      [Wallet.Ledger]: new LedgerLive({ chainId, web3 }),
-      [Wallet.LedgerLegacy]: new LedgerLegacy({ chainId, web3 }),
-      [Wallet.Keplr]: new Keplr({
+      [Wallet.Metamask]: new Metamask({ chainId, ethereumChainId, web3 }),
+      [Wallet.Ledger]: new LedgerLive({ chainId, ethereumChainId, web3 }),
+      [Wallet.LedgerLegacy]: new LedgerLegacy({
         chainId,
+        ethereumChainId,
         web3,
-        cosmosChainId: options.cosmosChainId,
       }),
-      [Wallet.Trezor]: new Trezor({ chainId, web3 }),
-      [Wallet.Torus]: new Torus({ chainId, web3 }),
+      [Wallet.Keplr]: new Keplr({
+        ethereumChainId,
+        web3,
+        chainId,
+      }),
+      [Wallet.Trezor]: new Trezor({ chainId, ethereumChainId, web3 }),
+      [Wallet.Torus]: new Torus({ chainId, ethereumChainId, web3 }),
       [Wallet.WalletConnect]: new WalletConnect({
+        ethereumChainId,
         chainId,
         walletOptions: options,
       }),

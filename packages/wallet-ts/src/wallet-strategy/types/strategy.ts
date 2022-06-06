@@ -1,6 +1,9 @@
-import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import type Web3 from 'web3'
-import { CosmosChainId } from '../../keplr/types'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void
@@ -11,9 +14,8 @@ export enum LedgerDerivationPathType {
 }
 
 export interface WalletOptions {
-  rpcUrls: Record<ChainId, string>
-  wsRpcUrls: Record<ChainId, string>
-  cosmosChainId?: CosmosChainId
+  rpcUrls: Record<EthereumChainId, string>
+  wsRpcUrls: Record<EthereumChainId, string>
 }
 
 export interface ConcreteWalletStrategy {
@@ -38,7 +40,7 @@ export interface ConcreteWalletStrategy {
    */
   sendEthereumTransaction(
     transaction: unknown,
-    options: { address: string; chainId: ChainId },
+    options: { address: string; ethereumChainId: EthereumChainId },
   ): Promise<string>
 
   signTransaction(eip712json: string, address: AccountAddress): Promise<string>

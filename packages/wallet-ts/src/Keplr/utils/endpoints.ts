@@ -1,7 +1,8 @@
+import { ChainId } from '@injectivelabs/ts-types'
 import { CosmosChainId, TestnetCosmosChainId } from '../types'
 
 export const getEndpointsFromChainId = (
-  chainId: TestnetCosmosChainId | CosmosChainId,
+  chainId: TestnetCosmosChainId | CosmosChainId | ChainId,
 ): { rpc: string; rest: string } => {
   switch (chainId) {
     case CosmosChainId.Cosmoshub:

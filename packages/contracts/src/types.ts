@@ -1,4 +1,4 @@
-import { ChainId } from '@injectivelabs/ts-types'
+import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
 
 export interface ContractAddresses {
@@ -6,7 +6,10 @@ export interface ContractAddresses {
   injective: string
 }
 
-export type ContractAddressesForChainId = Record<ChainId, ContractAddresses>
+export type ContractAddressesForChainId = Record<
+  EthereumChainId,
+  ContractAddresses
+>
 export type ContractAddressesForNetwork = Record<Network, ContractAddresses>
 
 export interface ContractFunctionObj<T> {

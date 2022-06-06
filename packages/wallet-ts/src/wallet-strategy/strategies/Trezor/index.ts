@@ -1,6 +1,10 @@
 /* eslint-disable camelcase */
 /* eslint-disable class-methods-use-this */
-import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import { addHexPrefix } from 'ethereumjs-util'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import Common, { Chain, Hardfork } from '@ethereumjs/common'
@@ -33,7 +37,11 @@ export default class Trezor
 {
   private trezor: TrezorHW
 
-  constructor(args: { chainId: ChainId; web3: Web3 }) {
+  constructor(args: {
+    ethereumChainId: EthereumChainId
+    chainId: ChainId
+    web3: Web3
+  }) {
     super(args)
     this.trezor = new TrezorHW()
   }
@@ -60,7 +68,7 @@ export default class Trezor
 
   async sendEthereumTransaction(
     txData: any,
-    options: { address: string; chainId: ChainId },
+    options: { address: string; ethereumChainId: EthereumChainId },
   ): Promise<string> {
     const signedTransaction = await this.signEthereumTransaction(
       txData,
@@ -146,10 +154,10 @@ export default class Trezor
 
   private async signEthereumTransaction(
     txData: any,
-    options: { address: string; chainId: ChainId },
+    options: { address: string; ethereumChainId: EthereumChainId },
   ) {
-    const chainId = parseInt(options.chainId.toString(), 10)
-    const isMainnet = chainId === ChainId.Mainnet
+    const chainId = parseInt(options.ethereumChainId.toString(), 10)
+    const isMainnet = chainId === EthereumChainId.Mainnet
     const nonce = await this.web3.eth.getTransactionCount(options.address)
 
     const common = new Common({

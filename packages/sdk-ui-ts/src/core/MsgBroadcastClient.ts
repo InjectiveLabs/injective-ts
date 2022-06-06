@@ -9,7 +9,7 @@ import {
   DEFAULT_GAS_LIMIT,
 } from '@injectivelabs/utils'
 import { WalletStrategy } from '@injectivelabs/wallet-ts'
-import { ChainId } from '@injectivelabs/ts-types'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 export interface MsgBroadcastTxOptions {
   bucket?: string
@@ -26,6 +26,7 @@ export interface MsgBroadcastOptions {
     exchangeApi: string
   }
   chainId: ChainId
+  ethereumChainId: EthereumChainId
   walletStrategy: WalletStrategy
   metricsProvider?: MetricsProvider
 }
@@ -69,14 +70,14 @@ export class MsgBroadcastClient {
 
   private async broadcastWeb3(tx: MsgBroadcastTxOptions) {
     const { options, transactionApi } = this
-    const { walletStrategy, chainId, metricsProvider } = options
+    const { walletStrategy, ethereumChainId, metricsProvider } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
     const prepareTx = async () => {
       try {
         const promise = transactionApi.prepareTxRequest({
-          chainId,
+          chainId: ethereumChainId,
           memo: tx.memo,
           address: tx.address,
           message: web3Msgs,
@@ -120,9 +121,9 @@ export class MsgBroadcastClient {
 
       const promise = transactionApi.broadcastTxRequest({
         signature,
-        chainId,
         txResponse,
         message: web3Msgs,
+        chainId: ethereumChainId,
       })
 
       if (!metricsProvider) {

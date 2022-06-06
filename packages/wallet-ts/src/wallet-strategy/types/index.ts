@@ -1,5 +1,5 @@
 import Eip1993Provider from 'eip1193-provider'
-import { ChainId, InjectiveChainId } from '@injectivelabs/ts-types'
+import { EthereumChainId, ChainId } from '@injectivelabs/ts-types'
 import HDNode from 'hdkey'
 import { Wallet } from './enums'
 import { WalletOptions } from './strategy'
@@ -21,8 +21,8 @@ export interface WindowWithLedgerSupport extends Window {
 }
 
 export interface WalletStrategyArguments {
-  ethereumChainId: ChainId
-  chainId: InjectiveChainId
+  ethereumChainId: EthereumChainId
+  chainId: ChainId
   wallet?: Wallet
   options: WalletOptions
 }

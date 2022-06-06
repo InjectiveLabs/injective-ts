@@ -1,12 +1,16 @@
 /* eslint-disable class-methods-use-this */
-import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import {
   BigNumberInBase,
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
 } from '@injectivelabs/utils'
-import Web3 from 'web3'
+import type Web3 from 'web3'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -20,20 +24,18 @@ export default class Keplr
 {
   private keplrWallet: KeplrWallet
 
-  private cosmosChainId: CosmosChainId
-
   constructor(args: {
+    ethereumChainId: EthereumChainId
     chainId: ChainId
     web3: Web3
-    cosmosChainId?: CosmosChainId
   }) {
     super(args)
-    this.cosmosChainId = args.cosmosChainId || CosmosChainId.Injective
-    this.keplrWallet = new KeplrWallet(this.cosmosChainId)
+    this.chainId = args.chainId || CosmosChainId.Injective
+    this.keplrWallet = new KeplrWallet(args.chainId)
   }
 
   async getAddresses(): Promise<string[]> {
-    const { keplrWallet, cosmosChainId, chainId } = this
+    const { keplrWallet, chainId } = this
 
     if (!keplrWallet) {
       throw new Web3Exception('Please install Keplr extension')
@@ -44,7 +46,7 @@ export default class Keplr
     }
 
     try {
-      if (!KeplrWallet.checkChainIdSupport(cosmosChainId)) {
+      if (!KeplrWallet.checkChainIdSupport(chainId)) {
         await keplrWallet.experimentalSuggestChain()
       }
 
@@ -73,7 +75,7 @@ export default class Keplr
   // eslint-disable-next-line class-methods-use-this
   async sendEthereumTransaction(
     _transaction: unknown,
-    _options: { address: AccountAddress; chainId: ChainId },
+    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
     throw new Error(
       'sendEthereumTransaction is not supported. Keplr only supports sending cosmos transactions',
@@ -98,7 +100,7 @@ export default class Keplr
     transaction: any,
     address: AccountAddress,
   ): Promise<any> {
-    const { keplrWallet, cosmosChainId } = this
+    const { keplrWallet, chainId } = this
 
     if (!keplrWallet) {
       throw new Web3Exception('Please install Keplr extension')
@@ -125,7 +127,7 @@ export default class Keplr
     }
 
     return cosmWallet.signTransaction({
-      chainId: cosmosChainId,
+      chainId,
       message: transaction.message,
       memo: transaction.memo,
       pubKey: Buffer.from(key.pubKey).toString('base64'),

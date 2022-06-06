@@ -1,4 +1,4 @@
-export enum ChainId {
+export enum EthereumChainId {
   Mainnet = 1,
   Ropsten = 3,
   Rinkeby = 4,
@@ -8,7 +8,7 @@ export enum ChainId {
   HardHat = 31337,
 }
 
-export enum InjectiveChainId {
+export enum ChainId {
   Mainnet = 'injective-1',
   Testnet = 'injective-888',
   Devnet = 'injective-777',

@@ -1,6 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import { sleep } from '@injectivelabs/utils'
-import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import Web3 from 'web3'
 import TorusWallet from '@toruslabs/torus-embed'
@@ -15,23 +19,29 @@ export default class Torus
 
   private connected = false
 
-  constructor(args: { chainId: ChainId; web3: Web3 }) {
+  constructor(args: {
+    chainId: ChainId
+    ethereumChainId: EthereumChainId
+    web3: Web3
+  }) {
     super(args)
     this.torus = new TorusWallet()
   }
 
   async connect(): Promise<void> {
-    if (this.connected) {
+    const { connected, torus, ethereumChainId } = this
+
+    if (connected) {
       return
     }
 
-    await this.torus.init({
+    await torus.init({
       buildEnv: 'production',
       network: {
-        host: this.chainId === ChainId.Kovan ? 'kovan' : 'mainnet',
-        chainId: this.chainId,
+        chainId: ethereumChainId,
+        host: ethereumChainId === EthereumChainId.Kovan ? 'kovan' : 'mainnet',
         networkName:
-          this.chainId === ChainId.Kovan
+          ethereumChainId === EthereumChainId.Kovan
             ? 'Kovan Test Network'
             : 'Main Ethereum Network',
       },
@@ -70,7 +80,7 @@ export default class Torus
 
   async sendEthereumTransaction(
     transaction: unknown,
-    _options: { address: AccountAddress; chainId: ChainId },
+    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
     await this.connect()
 

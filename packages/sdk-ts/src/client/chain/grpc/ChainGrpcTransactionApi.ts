@@ -8,7 +8,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb'
 import { InjectiveExchangeRPC } from '@injectivelabs/exchange-api/injective_exchange_rpc_pb_service'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { ChainId, AccountAddress } from '@injectivelabs/ts-types'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_EXCHANGE_LIMIT,
@@ -31,7 +31,7 @@ export class ChainGrpcTransactionApi extends BaseConsumer {
     timeoutHeight,
   }: {
     address: AccountAddress
-    chainId: ChainId
+    chainId: EthereumChainId
     message: any
     estimateGas?: boolean
     gasLimit?: number
@@ -95,7 +95,7 @@ export class ChainGrpcTransactionApi extends BaseConsumer {
     delegatedFee,
   }: {
     address: AccountAddress
-    chainId: ChainId
+    chainId: EthereumChainId
     message: any
     estimateGas?: boolean
     gasLimit?: number
@@ -158,7 +158,7 @@ export class ChainGrpcTransactionApi extends BaseConsumer {
     txResponse,
   }: {
     signature: string
-    chainId: ChainId
+    chainId: EthereumChainId
     txResponse: PrepareTxResponse
     message: Record<string, any>
   }) {

@@ -1,5 +1,9 @@
 import { sleep } from '@injectivelabs/utils'
-import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3 from 'web3'
@@ -20,7 +24,11 @@ export default class WalletConnect implements ConcreteWalletStrategy {
     this.web3 = new Web3(this.walletConnectProvider as any)
   }
 
-  constructor(args: { chainId: ChainId; walletOptions: WalletOptions }) {
+  constructor(args: {
+    chainId: ChainId
+    ethereumChainId: EthereumChainId
+    walletOptions: WalletOptions
+  }) {
     this.walletOptions = args.walletOptions
     this.createWalletConnectProvider()
   }
@@ -91,7 +99,7 @@ export default class WalletConnect implements ConcreteWalletStrategy {
 
   async sendEthereumTransaction(
     transaction: unknown,
-    _options: { address: AccountAddress; chainId: ChainId },
+    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
     await this.connect()
 
