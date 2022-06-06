@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.13...@injectivelabs/wallet-ts@0.0.14) (2022-06-06)
+
+
+### Bug Fixes
+
+* added InjectiveChainId enum ([8d9d7a6](https://github.com/InjectiveLabs/injective-ts/commit/8d9d7a65da23db77bba34276e0537faf56e174d5))
+
+
+
+
+
 ## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.12...@injectivelabs/wallet-ts@0.0.13) (2022-06-06)
 
 
