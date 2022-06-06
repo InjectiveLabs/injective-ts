@@ -18,7 +18,7 @@ import {
   PeggyTxResponse,
   UiBridgeTransaction,
 } from './../../types/bridge'
-import { UserDeposit } from '@injectivelabs/sdk-ts/client'
+import { UserDeposit } from '@injectivelabs/sdk-ts/dist/client'
 import {
   getExplorerUrl,
   getCosmosExplorerUrl,

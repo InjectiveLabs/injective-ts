@@ -6,9 +6,11 @@ import {
   EvmChain,
 } from '@axelar-network/axelarjs-sdk'
 import { providers, Contract } from 'ethers'
+import { BigNumberInWei } from '@injectivelabs/utils'
+import { MOONBEAM_MAINNET_CHAIN_ID } from './constants'
 import { erc20Abi } from './erc20'
 
-export class AxelarAPI {
+export class AxelarApi {
   private axelarJsSDK: AxelarAssetTransfer
 
   private axelarGatewayAddress: string
@@ -71,11 +73,35 @@ export class AxelarAPI {
     return response
   }
 
+  public async transferTokens({
+    receiver,
+    amount,
+    contractAddress,
+  }: {
+    receiver: string
+    amount: string
+    contractAddress: string
+  }): Promise<any> {
+    await this.validateNetwork()
+    const { signer } = await this.getAxelarGateway()
+    const contract = new Contract(contractAddress, erc20Abi, signer)
+
+    const feeData = await signer.getFeeData()
+    const tx = await contract.transfer(receiver, amount, {
+      maxFeePerGas: feeData.gasPrice || feeData.maxFeePerGas,
+      maxPriorityFeePerGas:
+        feeData.maxPriorityFeePerGas || '0xB2D05E00' /* 3 Gwei in HEX */,
+    })
+
+    return tx.wait()
+  }
+
   public async getBalance(address: string, contractAddress: string) {
     const { provider } = await this.getAxelarGateway()
     const contract = new Contract(contractAddress, erc20Abi, provider)
+    const balance = (await contract.balanceOf(address)) as BigNumberInWei
 
-    return contract.balanceOf(address)
+    return new BigNumberInWei(balance.toNumber()).toString()
   }
 
   public async getTokenAddress(symbol: string) {
@@ -92,13 +118,35 @@ export class AxelarAPI {
       throw new Error('Please install Metamask extension')
     }
 
+    await this.validateNetwork()
+
     const web3Provider = new providers.Web3Provider(provider, 'any')
+
     const signer = web3Provider.getSigner()
 
     return {
       axelarGateway: new AxelarGateway(axelarGatewayAddress, web3Provider),
       provider: web3Provider,
       signer,
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  private async validateNetwork() {
+    const provider = (window as any).ethereum
+
+    if (!provider) {
+      throw new Error('Please install Metamask extension')
+    }
+
+    const web3Provider = new providers.Web3Provider(provider, 'any')
+
+    const network = await web3Provider.getNetwork()
+
+    if (network.chainId !== MOONBEAM_MAINNET_CHAIN_ID) {
+      throw new Error(
+        'Please switch to the Moonbeam mainnet network in Metamask',
+      )
     }
   }
 }

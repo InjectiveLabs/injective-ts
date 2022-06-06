@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/cosmos-ts",
   "description": "Cosmos related wrappers.",
-  "version": "0.5.53",
+  "version": "0.5.55",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,6 +32,7 @@
     "@cosmjs/launchpad": "^0.27.1",
     "@cosmjs/proto-signing": "^0.27.1",
     "@cosmjs/stargate": "^0.27.1",
+    "@cosmjs/utils": "^0.28.4",
     "@injectivelabs/chain-api": "^1.7.1",
     "@injectivelabs/injective-tx": "^0.0.6",
     "@injectivelabs/sdk-ts": "^0.0.42",

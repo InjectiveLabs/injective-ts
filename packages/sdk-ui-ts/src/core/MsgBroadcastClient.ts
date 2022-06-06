@@ -1,6 +1,6 @@
-import { Msgs } from '@injectivelabs/sdk-ts/core'
-import { getInjectiveAddress } from '@injectivelabs/sdk-ts/utils'
-import { ChainGrpcTransactionApi } from '@injectivelabs/sdk-ts/client'
+import { Msgs } from '@injectivelabs/sdk-ts/dist/core'
+import { getInjectiveAddress } from '@injectivelabs/sdk-ts/dist/utils'
+import { ChainGrpcTransactionApi } from '@injectivelabs/sdk-ts/dist/client'
 import { Wallet } from '@injectivelabs/ts-types'
 import { MetricsProvider } from '../classes/MetricsProvider'
 import {

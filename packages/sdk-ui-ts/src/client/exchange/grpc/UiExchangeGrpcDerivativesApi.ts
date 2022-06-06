@@ -7,7 +7,7 @@ import {
 import {
   ExchangeGrpcDerivativesApi,
   ExchangeGrpcDerivativeTransformer,
-} from '@injectivelabs/sdk-ts/client/exchange'
+} from '@injectivelabs/sdk-ts/dist/client/exchange'
 import { Orderbook } from '@injectivelabs/sdk-ts'
 import { BaseApi } from '../../../BaseApi'
 import { ApiOptions } from '../../types'

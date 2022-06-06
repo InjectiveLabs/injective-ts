@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use different types of wallets on Injective.",
-  "version": "0.0.7",
+  "version": "0.0.12",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,32 +10,6 @@
   ],
   "_moduleAliases": {
     "~wallet-ts": "dist"
-  },
-  "exports": {
-    ".": "./dist/index.js",
-    "./transaction": "./dist/transaction/index.js",
-    "./keplr": "./dist/keplr/index.js",
-    "./cosmos": "./dist/cosmos/index.js",
-    "./axelar": "./dist/cosmos/index.js"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/index.d.ts"
-      ],
-      "transaction": [
-        "./dist/transaction/index.d.ts"
-      ],
-      "keplr": [
-        "./dist/keplr/index.d.ts"
-      ],
-      "cosmos": [
-        "./dist/cosmos/index.d.ts"
-      ],
-      "axelar": [
-        "./dist/axelar/index.d.ts"
-      ]
-    }
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",

@@ -2,7 +2,7 @@ import { AccountMetrics } from '../../types/metrics'
 import {
   ExchangeGrpcAccountTransformer,
   ExchangeGrpcAccountApi,
-} from '@injectivelabs/sdk-ts/client/exchange'
+} from '@injectivelabs/sdk-ts/dist/client/exchange'
 import { UiSubaccount } from '../../types/account'
 import { UiAccountTransformer } from '../../transformers/UiAccountTransformer'
 import { ApiOptions } from '../../types/index'
