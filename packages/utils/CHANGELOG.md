@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.5.4...@injectivelabs/utils@0.5.5) (2022-06-06)
+
+
+### Bug Fixes
+
+* cosmos wallet fixes ([71965cb](https://github.com/InjectiveLabs/injective-ts/commit/71965cbc3a8cba1a8fab5dbd0a9e73adf9566714))
+
+
+
+
+
 ## [0.5.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@0.5.3...@injectivelabs/utils@0.5.4) (2022-06-02)
 
 **Note:** Version bump only for package @injectivelabs/utils

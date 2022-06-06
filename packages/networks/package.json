@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/networks",
   "description": "Endpoints, networks, etc. Can be reused throughout Injective's projects.",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "^0.5.3",
-    "@injectivelabs/utils": "^0.5.4",
+    "@injectivelabs/utils": "^0.5.5",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },

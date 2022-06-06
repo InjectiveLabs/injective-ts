@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.12...@injectivelabs/wallet-ts@0.0.13) (2022-06-06)
+
+
+### Bug Fixes
+
+* cosmos wallet fixes ([71965cb](https://github.com/InjectiveLabs/injective-ts/commit/71965cbc3a8cba1a8fab5dbd0a9e73adf9566714))
+
+
+### Features
+
+* timeout timestamp unification ([41085d0](https://github.com/InjectiveLabs/injective-ts/commit/41085d06989ed843bdeffeb02e27e9dcf1d2e9c8))
+
+
+
+
+
 ## [0.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.11...@injectivelabs/wallet-ts@0.0.12) (2022-06-03)
 
 
