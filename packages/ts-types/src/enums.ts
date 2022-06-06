@@ -8,6 +8,12 @@ export enum ChainId {
   HardHat = 31337,
 }
 
+export enum InjectiveChainId {
+  Mainnet = 'injective-1',
+  Testnet = 'injective-888',
+  Devnet = 'injective-777',
+}
+
 export enum Wallet {
   Metamask = 'metamask',
   Ledger = 'ledger',
