@@ -20,7 +20,6 @@ import {
   UiBridgeTransaction,
   UiBridgeTransactionWithToken,
 } from '../types'
-import { TokenPrice } from './TokenPrice'
 import { ibcTokens } from '@injectivelabs/token-metadata'
 
 export class TokenService {
@@ -28,22 +27,11 @@ export class TokenService {
 
   public chainId: ChainId
 
-  public priceClient: TokenPrice
-
   protected cachedDenomTraces: Record<string, DenomTrace> = {}
 
-  constructor({
-    chainId,
-    network,
-    coinGeckoOptions,
-  }: {
-    chainId: ChainId
-    network: Network
-    coinGeckoOptions: { baseUrl: string; apiKey: string }
-  }) {
+  constructor({ chainId, network }: { chainId: ChainId; network: Network }) {
     this.network = network
     this.chainId = chainId
-    this.priceClient = new TokenPrice(coinGeckoOptions)
     this.cachedDenomTraces = Object.keys(ibcTokens).reduce(
       (cachedDenomTraces, ibcTokenKey) => ({
         ...cachedDenomTraces,

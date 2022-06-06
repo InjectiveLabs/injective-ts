@@ -25,6 +25,9 @@
       "path": "../wallet-ts/tsconfig.build.json"
     },
     {
+      "path": "../token-utils/tsconfig.build.json"
+    },
+    {
       "path": "../sdk-ts/tsconfig.build.json"
     },
   ],

@@ -37,6 +37,7 @@
     "@injectivelabs/exceptions": "^0.5.4",
     "@injectivelabs/networks": "^0.5.9",
     "@injectivelabs/sdk-ts": "^0.0.48",
+    "@injectivelabs/token-utils": "^0.5.6",
     "@injectivelabs/ts-types": "^0.5.3",
     "@injectivelabs/utils": "^0.5.6",
     "link-module-alias": "^1.2.0",
