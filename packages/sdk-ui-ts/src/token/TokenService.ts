@@ -43,7 +43,7 @@ export class TokenService {
     )
   }
 
-  async getDenomToken(denom: string) {
+  async getDenomToken(denom: string): Promise<Token> {
     const { network } = this
 
     if (denom.startsWith('ibc/')) {
@@ -109,6 +109,16 @@ export class TokenService {
         return this.getDenomToken(coin.denom)
       }),
     )) as Token[]
+
+    return tokens.filter((token) => token)
+  }
+
+  async getIbcSupplyWithToken(supply: Coin[]): Promise<Token[]> {
+    const tokens = (await Promise.all(
+      supply.map((coin) => {
+        return this.getDenomToken(coin.denom)
+      }),
+    )) as IbcToken[]
 
     return tokens.filter((token) => token)
   }
