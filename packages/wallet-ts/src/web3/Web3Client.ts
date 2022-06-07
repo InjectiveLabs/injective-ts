@@ -173,11 +173,9 @@ export class Web3Client {
   async fetchTokenBalanceAndAllowance({
     address,
     contractAddress,
-    network,
   }: {
     address: string
     contractAddress: string
-    network: Network
   }): Promise<{ balance: string; allowance: string }> {
     if (contractAddress.startsWith('ibc/')) {
       return {
@@ -187,7 +185,7 @@ export class Web3Client {
     }
 
     try {
-      const { walletStrategy } = this
+      const { walletStrategy, network } = this
       const web3 = walletStrategy.getWeb3() as any
       const tokenBalances = await web3.alchemy.getTokenBalances(address, [
         contractAddress,
