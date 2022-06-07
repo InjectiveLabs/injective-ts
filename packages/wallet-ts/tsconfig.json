@@ -8,6 +8,12 @@
       "path": "../exceptions/tsconfig.json"
     },
     {
+      "path": "../networks/tsconfig.json"
+    },
+    {
+      "path": "../contracts/tsconfig.json"
+    },
+    {
       "path": "../utils/tsconfig.json"
     },
     {

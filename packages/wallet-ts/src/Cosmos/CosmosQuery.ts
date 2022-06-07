@@ -5,7 +5,7 @@ import {
   BankBalancesRestResponse,
   BlockLatestRestResponse,
   NodeInfoRestResponse,
-} from '../types/lcd'
+} from './types'
 
 export class CosmosQuery {
   private rest: string

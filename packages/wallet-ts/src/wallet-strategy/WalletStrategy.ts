@@ -1,5 +1,9 @@
 import Web3 from 'web3'
-import { AccountAddress, ChainId } from '@injectivelabs/ts-types'
+import {
+  AccountAddress,
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import Metamask from './strategies/Metamask'
 import {
@@ -103,6 +107,13 @@ export default class WalletStrategy {
     options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     return this.getStrategy().sendTransaction(tx, options)
+  }
+
+  public async sendEthereumTransaction(
+    tx: any,
+    options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+  ): Promise<string> {
+    return this.getStrategy().sendEthereumTransaction(tx, options)
   }
 
   public async signTransaction(
