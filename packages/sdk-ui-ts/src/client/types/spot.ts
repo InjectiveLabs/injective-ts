@@ -53,6 +53,8 @@ export enum SpotMarketMap {
   STOP_SELL = 4,
   TAKE_BUY = 5,
   TAKE_SELL = 6,
+  BUY_PO = 7,
+  SELL_PO = 8,
 }
 
 export {
