@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.54...@injectivelabs/sdk-ts@0.0.55) (2022-06-07)
+
+
+### Bug Fixes
+
+* gov modules ([beb1eb4](https://github.com/InjectiveLabs/injective-ts/commit/beb1eb4935e4fd9c156d761cb9487e805a585646))
+
+
+
+
+
 ## [0.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.53...@injectivelabs/sdk-ts@0.0.54) (2022-06-07)
 
 
