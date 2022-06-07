@@ -16,7 +16,6 @@ export declare namespace MsgCreateSpotMarketOrder {
     triggerPrice?: string
     feeRecipient: string
     price: string
-    margin: string
     quantity: string
   }
 
