@@ -53,6 +53,8 @@ export class Web3Client {
     })
 
     await walletStrategy.getEthereumTransactionReceipt(txHash)
+
+    return txHash
   }
 
   async getSetTokenAllowanceTx({
