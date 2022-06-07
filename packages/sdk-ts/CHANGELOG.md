@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.57...@injectivelabs/sdk-ts@0.0.58) (2022-06-07)
+
+
+### Bug Fixes
+
+* return types from stream ([45ff576](https://github.com/InjectiveLabs/injective-ts/commit/45ff576e663209c01f2c95e71880da3fa40f65c9))
+
+
+
+
+
 ## [0.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.56...@injectivelabs/sdk-ts@0.0.57) (2022-06-07)
 
 
