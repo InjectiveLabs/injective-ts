@@ -7,10 +7,18 @@ import {
 } from '@injectivelabs/exchange-api/injective_auction_rpc_pb'
 
 export class ExchangeGrpcAuctionTransformer {
-  static auctionResponseToAuction(response: AuctionResponse): Auction {
-    return ExchangeGrpcAuctionTransformer.grpcAuctionToAuction(
-      response.getAuction()!,
-    )
+  static auctionResponseToAuction(response: AuctionResponse): {
+    auction: Auction
+    bids: Bid[]
+  } {
+    return {
+      auction: ExchangeGrpcAuctionTransformer.grpcAuctionToAuction(
+        response.getAuction()!,
+      ),
+      bids: response
+        .getBidsList()
+        .map(ExchangeGrpcAuctionTransformer.grpcBidToBid),
+    }
   }
 
   static auctionsResponseToAuctions(response: AuctionsResponse): Auction[] {
@@ -22,8 +30,8 @@ export class ExchangeGrpcAuctionTransformer {
   static grpcBidToBid(grpcBid: GrpcExchangeBid): Bid {
     return {
       bidder: grpcBid.getBidder(),
-      bidAmount: grpcBid.getAmount(),
-      bidTimestamp: grpcBid.getTimestamp(),
+      amount: grpcBid.getAmount(),
+      timestamp: grpcBid.getTimestamp(),
     }
   }
 
