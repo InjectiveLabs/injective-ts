@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.46...@injectivelabs/sdk-ui-ts@0.0.47) (2022-06-07)
+
+
+### Bug Fixes
+
+* peggy graphql address ([3ee35ff](https://github.com/InjectiveLabs/injective-ts/commit/3ee35ff4fb25feb37a9fa3f08a71333e5d4a5111))
+
+
+
+
+
 ## [0.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.45...@injectivelabs/sdk-ui-ts@0.0.46) (2022-06-07)
 
 
