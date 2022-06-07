@@ -51,7 +51,7 @@ export const PEGGY_DEVNET_GRAPH_URL =
 export const PEGGY_DEVNET1_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
 
-export const PEGGY_GRAPH_URL_FOR_NETWORK = (network: Network): string => {
+export const peggyGraphQlEndpointForNetwork = (network: Network): string => {
   if (network === Network.Devnet) {
     return PEGGY_DEVNET_GRAPH_URL
   }
