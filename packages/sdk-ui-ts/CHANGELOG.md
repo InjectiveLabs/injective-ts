@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.41...@injectivelabs/sdk-ui-ts@0.0.42) (2022-06-07)
+
+
+### Features
+
+* response transformers ([b72ce57](https://github.com/InjectiveLabs/injective-ts/commit/b72ce575d5f613a92ad9dd49748a88f220d05bf5))
+
+
+
+
+
 ## [0.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.40...@injectivelabs/sdk-ui-ts@0.0.41) (2022-06-06)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
