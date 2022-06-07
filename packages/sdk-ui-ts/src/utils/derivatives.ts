@@ -26,7 +26,7 @@ export const derivativeOrderTypeToGrpcOrderType = (
     case DerivativeOrderSide.BuyPO:
       return DerivativeMarketMap.BUY_PO
     case DerivativeOrderSide.SellPO:
-      return DerivativeOrderSide.SELL_PO
+      return DerivativeMarketMap.SELL_PO
     default:
       return DerivativeMarketMap.BUY
   }

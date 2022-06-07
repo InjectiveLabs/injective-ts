@@ -1,11 +1,11 @@
 import { OracleTypeMap } from '@injectivelabs/chain-api/injective/oracle/v1beta1/oracle_pb'
 import {
-  InsuranceFund as GrpcInsuranceFund,
-  RedemptionSchedule as GrpcRedemptionSchedule,
+  InsuranceFund as GrpcExchangeInsuranceFund,
+  RedemptionSchedule as GrpcExchangeRedemptionSchedule,
 } from '@injectivelabs/exchange-api/injective_insurance_rpc_pb'
-import { OracleType } from './exchange'
+import { ExchangeOracleType } from './exchange'
 
-export interface InsuranceFund {
+export interface ExchangeInsuranceFund {
   depositDenom: string
   insurancePoolTokenDenom: string
   redemptionNoticePeriodDuration?: number
@@ -16,7 +16,7 @@ export interface InsuranceFund {
   marketTicker: string
   oracleBase: string
   oracleQuote: string
-  oracleType: OracleType
+  oracleType: ExchangeOracleType
   expiry: number
 }
 
@@ -47,4 +47,4 @@ export interface InsuranceFundCreateParams {
   expiry?: number
 }
 
-export { GrpcInsuranceFund, GrpcRedemptionSchedule }
+export { GrpcExchangeInsuranceFund, GrpcExchangeRedemptionSchedule }

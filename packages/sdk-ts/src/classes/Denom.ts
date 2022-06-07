@@ -121,18 +121,17 @@ export class Denom {
 
   async fetchDenomTrace() {
     const { denom } = this
-    const response = await this.ibcApi.fetchDenomTrace(
+    const denomTrace = await this.ibcApi.fetchDenomTrace(
       denom.replace('ibc/', ''),
     )
-    const denomTrace = response.getDenomTrace()
 
     if (!denomTrace) {
       throw new Error(`Denom trace not found for ${denom}`)
     }
 
     return {
-      path: denomTrace.getPath(),
-      baseDenom: denomTrace.getBaseDenom(),
+      path: denomTrace.path,
+      baseDenom: denomTrace.baseDenom,
     }
   }
 

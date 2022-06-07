@@ -1,8 +1,8 @@
-import { RedemptionSchedule } from '@injectivelabs/exchange-api/injective_insurance_rpc_pb'
-import { OracleType } from '../types'
+import { ExchangeOracleType } from '../types'
 import {
-  InsuranceFund,
-  GrpcInsuranceFund,
+  ExchangeInsuranceFund,
+  GrpcExchangeInsuranceFund,
+  GrpcExchangeRedemptionSchedule,
   Redemption,
   RedemptionStatus,
 } from './../types/insurance-funds'
@@ -29,8 +29,8 @@ export class ExchangeGrpcInsuranceFundTransformer {
   }
 
   static grpcInsuranceFundToInsuranceFund(
-    grpcInsuranceFund: GrpcInsuranceFund,
-  ): InsuranceFund {
+    grpcInsuranceFund: GrpcExchangeInsuranceFund,
+  ): ExchangeInsuranceFund {
     const redemptionNoticePeriodDuration =
       grpcInsuranceFund.getRedemptionNoticePeriodDuration()
     const tokenMeta = grpcInsuranceFund.getDepositTokenMeta()
@@ -47,21 +47,23 @@ export class ExchangeGrpcInsuranceFundTransformer {
       marketTicker: grpcInsuranceFund.getMarketTicker(),
       oracleBase: grpcInsuranceFund.getOracleBase(),
       oracleQuote: grpcInsuranceFund.getOracleQuote(),
-      oracleType: parseInt(grpcInsuranceFund.getOracleType()) as OracleType,
+      oracleType: parseInt(
+        grpcInsuranceFund.getOracleType(),
+      ) as ExchangeOracleType,
       expiry: grpcInsuranceFund.getExpiry(),
     }
   }
 
   static grpcInsuranceFundsToInsuranceFunds(
-    grpcInsuranceFunds: GrpcInsuranceFund[],
-  ): InsuranceFund[] {
+    grpcInsuranceFunds: GrpcExchangeInsuranceFund[],
+  ): ExchangeInsuranceFund[] {
     return grpcInsuranceFunds.map(
       ExchangeGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund,
     )
   }
 
   static grpcRedemptionToRedemption(
-    redemption: RedemptionSchedule,
+    redemption: GrpcExchangeRedemptionSchedule,
   ): Redemption {
     return {
       redemptionId: redemption.getRedemptionId(),
@@ -78,7 +80,7 @@ export class ExchangeGrpcInsuranceFundTransformer {
   }
 
   static grpcRedemptionsToRedemptions(
-    redemptions: RedemptionSchedule[],
+    redemptions: GrpcExchangeRedemptionSchedule[],
   ): Redemption[] {
     return redemptions.map(
       ExchangeGrpcInsuranceFundTransformer.grpcRedemptionToRedemption,

@@ -23,7 +23,7 @@ export interface TokenMeta {
   updatedAt: number
 }
 
-export enum OracleType {
+export enum ExchangeOracleType {
   UNSPECIFIED = 0,
   BAND = 1,
   PRICEFEED = 2,

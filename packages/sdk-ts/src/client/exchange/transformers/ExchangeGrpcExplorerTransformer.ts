@@ -33,7 +33,7 @@ import {
   GetPeggyWithdrawalTxsResponse,
   GetIBCTransferTxsResponse,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
-import { grpcPagingToPaging } from 'packages/sdk-ts/src/utils'
+import { grpcPagingToPaging } from '../../../utils'
 
 export class ExchangeGrpcExplorerTransformer {
   static getTxByTxHashResponseToTx(tx: GetTxByTxHashResponse): Transaction {

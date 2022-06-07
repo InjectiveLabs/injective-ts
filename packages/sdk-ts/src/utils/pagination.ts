@@ -34,7 +34,9 @@ export const paginationRequestFromPagination = (
   return paginationForRequest
 }
 
-export const generatePagination = (pagination: Pagination | undefined) => {
+export const generatePagination = (
+  pagination: Pagination | PagePagination | undefined,
+) => {
   if (!pagination) {
     return
   }
@@ -62,8 +64,8 @@ export const pageResponseToPagination = ({
   newPagination,
   oldPagination,
 }: {
-  newPagination?: PageResponse | undefined
   oldPagination: PagePagination | undefined
+  newPagination?: Pagination | undefined
 }): PagePagination => {
   if (!newPagination) {
     return {
@@ -73,7 +75,7 @@ export const pageResponseToPagination = ({
     }
   }
 
-  const next = paginationUint8ArrayToString(newPagination.getNextKey_asB64())
+  const next = paginationUint8ArrayToString(newPagination.next)
 
   if (!oldPagination) {
     return {

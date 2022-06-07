@@ -3,7 +3,7 @@ import {
   QueryDelegationRewardsResponse,
   QueryDelegationTotalRewardsResponse,
 } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb'
-import { cosmosSdkDecToBigNumber } from '@injectivelabs/sdk-ts'
+import { cosmosSdkDecToBigNumber } from '../../../utils'
 import { Coin } from '@injectivelabs/ts-types'
 import { DistributionModuleParams } from '../types/distribution'
 import { ValidatorRewards } from '../types/distribution'
