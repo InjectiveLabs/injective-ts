@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.52...@injectivelabs/sdk-ts@0.0.53) (2022-06-07)
+
+
+### Bug Fixes
+
+* transform response ([3c56d5f](https://github.com/InjectiveLabs/injective-ts/commit/3c56d5faf71b680b80591297bfc633308f3b626b))
+
+
+
+
+
 ## [0.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.51...@injectivelabs/sdk-ts@0.0.52) (2022-06-07)
 
 
