@@ -20,6 +20,11 @@ export interface CurrentBasket {
   highestBidAmount: string
 }
 
+export interface AuctionModuleParams {
+  auctionPeriod: number
+  minNextBidIncrementRate: string
+}
+
 export interface AuctionModuleStateParams {
   auctionPeriod: number
   minNextBidIncrementRate: string
