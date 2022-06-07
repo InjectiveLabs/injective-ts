@@ -20,21 +20,40 @@ import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer'
 
 export class ChainGrpcGovApi extends BaseConsumer {
-  async fetchParamsByType(type: string) {
-    const request = new QueryGovernanceParamsRequest()
+  async fetchModuleParams() {
+    const paramTypes = ['voting', 'deposit', 'tallying']
+    const requests = paramTypes.map((type) => {
+      const request = new QueryGovernanceParamsRequest()
+      request.setParamsType(type)
 
-    request.setParamsType(type)
+      return request
+    })
 
     try {
-      const response = await this.request<
-        QueryGovernanceParamsRequest,
-        QueryGovernanceParamsResponse,
-        typeof GovernanceQuery.Params
-      >(request, GovernanceQuery.Params)
-
-      return ChainGrpcGovTransformer.moduleParamsResponseToModuleParams(
-        response,
+      const responses = await Promise.all(
+        requests.map((request) =>
+          this.request<
+            QueryGovernanceParamsRequest,
+            QueryGovernanceParamsResponse,
+            typeof GovernanceQuery.Params
+          >(request, GovernanceQuery.Params),
+        ),
       )
+      const votingParams = responses.find((response) =>
+        response.hasVotingParams(),
+      )!
+      const tallyParams = responses.find((response) =>
+        response.hasTallyParams(),
+      )!
+      const depositParams = responses.find((response) =>
+        response.hasDepositParams(),
+      )!
+
+      return ChainGrpcGovTransformer.moduleParamsResponseToModuleParamsByType({
+        votingParams: votingParams.getVotingParams()!,
+        tallyParams: tallyParams.getTallyParams()!,
+        depositParams: depositParams.getDepositParams()!,
+      })
     } catch (e: any) {
       throw new Error(e.message)
     }

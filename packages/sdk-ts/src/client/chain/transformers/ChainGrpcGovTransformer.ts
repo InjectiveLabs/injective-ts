@@ -15,6 +15,9 @@ import {
   Vote,
   TallyResult,
   GrpcTallyResult,
+  GrpcGovernanceDepositParams,
+  GrpcGovernanceVotingParams,
+  GrpcGovernanceTallyParams,
 } from '../types/gov'
 import { Pagination } from '../../../types/index'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
@@ -28,6 +31,34 @@ export class ChainGrpcGovTransformer {
     const votingParams = response.getVotingParams()!
     const tallyParams = response.getTallyParams()!
 
+    return {
+      depositParams: {
+        minDepositList: depositParams
+          ?.getMinDepositList()
+          .map((m) => m.toObject()),
+        maxDepositPeriod:
+          depositParams?.getMaxDepositPeriod()?.getSeconds() || 0,
+      },
+      votingParams: {
+        votingPeriod: votingParams.getVotingPeriod()?.getSeconds() || 0,
+      },
+      tallyParams: {
+        quorum: uint8ArrayToString(tallyParams.getQuorum()) || '',
+        threshold: uint8ArrayToString(tallyParams.getThreshold()) || '',
+        vetoThreshold: uint8ArrayToString(tallyParams.getVetoThreshold()) || '',
+      },
+    }
+  }
+
+  static moduleParamsResponseToModuleParamsByType({
+    depositParams,
+    votingParams,
+    tallyParams,
+  }: {
+    depositParams: GrpcGovernanceDepositParams
+    votingParams: GrpcGovernanceVotingParams
+    tallyParams: GrpcGovernanceTallyParams
+  }): GovModuleStateParams {
     return {
       depositParams: {
         minDepositList: depositParams
