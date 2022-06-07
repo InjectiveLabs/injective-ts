@@ -40,16 +40,30 @@ export const peggyDenomToContractAddress = (
 export class Web3Client {
   private walletStrategy: WalletStrategy
 
-  constructor(walletStrategy: WalletStrategy) {
+  private network: Network
+
+  private ethereumChainId: EthereumChainId
+
+  constructor({
+    walletStrategy,
+    ethereumChainId,
+    network,
+  }: {
+    walletStrategy: WalletStrategy
+    ethereumChainId: EthereumChainId
+    network: Network
+  }) {
     this.walletStrategy = walletStrategy
+    this.ethereumChainId = ethereumChainId
+    this.network = network
   }
 
   async sendTransaction(args: SendTransactionOptions) {
-    const { walletStrategy } = this
+    const { walletStrategy, ethereumChainId } = this
 
     const txHash = await walletStrategy.sendEthereumTransaction(args.tx, {
+      ethereumChainId,
       address: args.address,
-      ethereumChainId: args.ethereumChainId,
     })
 
     await walletStrategy.getEthereumTransactionReceipt(txHash)
@@ -60,19 +74,15 @@ export class Web3Client {
   async getSetTokenAllowanceTx({
     address,
     amount,
-    network,
-    ethereumChainId,
     gasPrice,
     tokenAddress,
   }: {
     address: string
-    network: Network
-    ethereumChainId: EthereumChainId
     amount: string
     gasPrice: string
     tokenAddress: string
   }) {
-    const { walletStrategy } = this
+    const { walletStrategy, ethereumChainId, network } = this
     const web3 = walletStrategy.getWeb3() as any
     const erc20Contract = new Erc20Contract({
       ethereumChainId,
@@ -109,21 +119,17 @@ export class Web3Client {
   async getPeggyTransferTx({
     address,
     amount,
-    network,
-    ethereumChainId,
     denom,
     destinationAddress,
     gasPrice,
   }: {
-    network: Network
-    ethereumChainId: EthereumChainId
     address: string
     amount: string // BigNumberInWi
     denom: string
     destinationAddress: string
     gasPrice: string // BigNumberInWei
   }) {
-    const { walletStrategy } = this
+    const { walletStrategy, network, ethereumChainId } = this
     const web3 = walletStrategy.getWeb3() as any
     const contractAddresses = getContractAddressesForNetworkOrThrow(network)
     const contractAddress = peggyDenomToContractAddress(

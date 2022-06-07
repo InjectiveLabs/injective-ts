@@ -1,5 +1,3 @@
-import { EthereumChainId } from '@injectivelabs/ts-types'
-
 export interface SendTransactionOptions {
   tx: {
     from: string
@@ -10,5 +8,4 @@ export interface SendTransactionOptions {
     data: any
   }
   address: string
-  ethereumChainId: EthereumChainId
 }
