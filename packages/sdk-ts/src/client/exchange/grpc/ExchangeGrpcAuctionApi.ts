@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_auction_rpc_pb'
 import { InjectiveAuctionRPC } from '@injectivelabs/exchange-api/injective_auction_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ExchangeGrpcAuctionTransformer } from '../transformers'
 
 export class ExchangeGrpcAuctionApi extends BaseConsumer {
   async fetchAuction(round?: number) {
@@ -23,7 +24,7 @@ export class ExchangeGrpcAuctionApi extends BaseConsumer {
         typeof InjectiveAuctionRPC.AuctionEndpoint
       >(request, InjectiveAuctionRPC.AuctionEndpoint)
 
-      return response
+      return ExchangeGrpcAuctionTransformer.auctionResponseToAuction(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -39,7 +40,7 @@ export class ExchangeGrpcAuctionApi extends BaseConsumer {
         typeof InjectiveAuctionRPC.Auctions
       >(request, InjectiveAuctionRPC.Auctions)
 
-      return response
+      return ExchangeGrpcAuctionTransformer.auctionsResponseToAuctions(response)
     } catch (e: any) {
       throw new Error(e.message)
     }

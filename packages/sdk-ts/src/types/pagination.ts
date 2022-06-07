@@ -7,8 +7,19 @@ export interface PaginationOption {
   countTotal?: boolean
 }
 
-export interface Pagination {
+export interface PagePagination {
   next: string | null
   prev: string | null
   current: string | null
+}
+
+export interface Pagination {
+  next: string | null
+  total: number
+}
+
+export interface ExchangePagination {
+  to: number
+  from: number
+  total: number
 }

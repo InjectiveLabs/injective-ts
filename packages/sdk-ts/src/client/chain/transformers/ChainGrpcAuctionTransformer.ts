@@ -1,29 +1,45 @@
 import {
   QueryCurrentAuctionBasketResponse,
   QueryModuleStateResponse,
+  QueryAuctionParamsResponse,
 } from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
 import { GenesisState } from '@injectivelabs/chain-api/injective/auction/v1beta1/genesis_pb'
-import { AuctionModuleState, CurrentBasket } from '../types/auction'
+import {
+  AuctionModuleState,
+  CurrentBasket,
+  AuctionModuleStateParams,
+} from '../types/auction'
 
 export class ChainGrpcAuctionTransformer {
-  static grpcCurrentBasketToCurrentBasket(
-    basket: QueryCurrentAuctionBasketResponse,
-  ): CurrentBasket {
+  static moduleParamsResponseToModuleParams(
+    response: QueryAuctionParamsResponse,
+  ): AuctionModuleStateParams {
+    const params = response.getParams()
+
     return {
-      amountList: basket
-        .getAmountList()
-        .map((coin) => ({ amount: coin.getAmount(), denom: coin.getDenom() })),
-      auctionRound: basket.getAuctionround(),
-      auctionClosingTime: basket.getAuctionclosingtime(),
-      highestBidder: basket.getHighestbidder(),
-      highestBidAmount: basket.getHighestbidamount(),
+      auctionPeriod: params?.getAuctionPeriod() || 0,
+      minNextBidIncrementRate: params?.getMinNextBidIncrementRate() || '0',
     }
   }
 
-  static grpcAuctionModuleStateToAuctionModuleState(
-    auctionModuleState: QueryModuleStateResponse,
+  static currentBasketResponseToCurrentBasket(
+    response: QueryCurrentAuctionBasketResponse,
+  ): CurrentBasket {
+    return {
+      amountList: response
+        .getAmountList()
+        .map((coin) => ({ amount: coin.getAmount(), denom: coin.getDenom() })),
+      auctionRound: response.getAuctionround(),
+      auctionClosingTime: response.getAuctionclosingtime(),
+      highestBidder: response.getHighestbidder(),
+      highestBidAmount: response.getHighestbidamount(),
+    }
+  }
+
+  static auctionModuleStateResponseToAuctionModuleState(
+    response: QueryModuleStateResponse,
   ): AuctionModuleState {
-    const state = auctionModuleState.getState() as GenesisState
+    const state = response.getState() as GenesisState
     const bid = state.getHighestBid()
     const params = state.getParams()!
 

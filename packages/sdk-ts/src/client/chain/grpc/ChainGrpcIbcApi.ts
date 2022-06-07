@@ -19,7 +19,7 @@ export class ChainGrpcIbcApi extends BaseConsumer {
         typeof IBCQuery.DenomTrace
       >(request, IBCQuery.DenomTrace)
 
-      return response
+      return response.getDenomTrace()!.toObject()
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -35,7 +35,7 @@ export class ChainGrpcIbcApi extends BaseConsumer {
         typeof IBCQuery.DenomTraces
       >(request, IBCQuery.DenomTraces)
 
-      return response
+      return response.getDenomTracesList().map((trace) => trace.toObject())
     } catch (e: any) {
       throw new Error(e.message)
     }

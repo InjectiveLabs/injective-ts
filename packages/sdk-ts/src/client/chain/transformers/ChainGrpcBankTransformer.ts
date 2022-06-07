@@ -1,20 +1,65 @@
-import { GrpcCoin } from '../../../types/index'
+import { GrpcCoin, Pagination } from '../../../types/index'
 import { Coin } from '@injectivelabs/ts-types'
 import { cosmosSdkDecToBigNumber } from '../../../utils/numbers'
-
-export const grpcCoinToCoin = (coin: GrpcCoin): Coin => {
-  return {
-    denom: coin.getDenom(),
-    amount: cosmosSdkDecToBigNumber(coin.getAmount()).toFixed(),
-  }
-}
-
-export const grpcCoinsToCoins = (coins: GrpcCoin[]): Coin[] => {
-  return coins.map((coin) => grpcCoinToCoin(coin))
-}
+import {
+  QueryAllBalancesResponse,
+  QueryBalanceResponse,
+  QueryTotalSupplyResponse,
+  QueryParamsResponse as QueryBankParamsResponse,
+} from '@injectivelabs/chain-api/cosmos/bank/v1beta1/query_pb'
+import { BankModuleParams, TotalSupply } from '../types'
+import { grpcPaginationToPagination } from '../../../utils/pagination'
 
 export class ChainGrpcBankTransformer {
-  static grpcCoinToCoin = grpcCoinToCoin
+  static grpcCoinToCoin(coin: GrpcCoin): Coin {
+    return {
+      denom: coin.getDenom(),
+      amount: cosmosSdkDecToBigNumber(coin.getAmount()).toFixed(),
+    }
+  }
 
-  static grpcCoinsToCoins = grpcCoinsToCoins
+  static grpcCoinsToCoins(coins: GrpcCoin[]): Coin[] {
+    return coins.map(ChainGrpcBankTransformer.grpcCoinToCoin)
+  }
+
+  static moduleParamsResponseToModuleParams(
+    response: QueryBankParamsResponse,
+  ): BankModuleParams {
+    const params = response.getParams()!
+
+    return {
+      sendEnabledList: params.getSendEnabledList().map((e) => e.toObject()),
+      defaultSendEnabled: params.getDefaultSendEnabled(),
+    }
+  }
+
+  static totalSupplyResponseToTotalSupply(response: QueryTotalSupplyResponse): {
+    supply: TotalSupply
+    pagination: Pagination
+  } {
+    const balances = response.getSupplyList()
+    const pagination = response.getPagination()
+
+    return {
+      supply: balances.map(ChainGrpcBankTransformer.grpcCoinToCoin),
+      pagination: grpcPaginationToPagination(pagination),
+    }
+  }
+
+  static balanceResponseToBalance(response: QueryBalanceResponse): Coin {
+    return ChainGrpcBankTransformer.grpcCoinToCoin(response.getBalance()!)
+  }
+
+  static balancesResponseToBalances(response: QueryAllBalancesResponse): {
+    balances: Coin[]
+    pagination: Pagination
+  } {
+    const balances = response.getBalancesList()
+    const pagination = response.getPagination()
+
+    return {
+      balances: ChainGrpcBankTransformer.grpcCoinsToCoins(balances),
+      pagination: grpcPaginationToPagination(pagination),
+    }
+  }
 }

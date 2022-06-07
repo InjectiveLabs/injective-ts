@@ -1,7 +1,8 @@
 import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
-import { PaginationOption } from '../types/pagination'
-import { Pagination } from '../types/pagination'
+import { ExchangePagination, PaginationOption } from '../types/pagination'
+import { Pagination, PagePagination } from '../types/pagination'
 import { PageResponse } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
+import { Paging } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,
@@ -62,8 +63,8 @@ export const pageResponseToPagination = ({
   oldPagination,
 }: {
   newPagination?: PageResponse | undefined
-  oldPagination: Pagination | undefined
-}): Pagination => {
+  oldPagination: PagePagination | undefined
+}): PagePagination => {
   if (!newPagination) {
     return {
       prev: null,
@@ -87,4 +88,31 @@ export const pageResponseToPagination = ({
     current: oldPagination.next,
     next,
   }
+}
+
+export const grpcPaginationToPagination = (
+  pagination: PageResponse | undefined,
+): Pagination => {
+  return {
+    total: pagination
+      ? parseInt(paginationUint8ArrayToString(pagination.getTotal()), 10)
+      : 0,
+    next: pagination
+      ? paginationUint8ArrayToString(pagination.getNextKey_asB64())
+      : '',
+  }
+}
+
+export const grpcPagingToPaging = (
+  pagination: Paging | undefined,
+): ExchangePagination => {
+  if (!pagination) {
+    return {
+      to: 0,
+      from: 0,
+      total: 0,
+    }
+  }
+
+  return pagination.toObject()
 }

@@ -4,6 +4,7 @@ import {
   QueryParamsResponse as QueryOracleParamsResponse,
 } from '@injectivelabs/chain-api/injective/oracle/v1beta1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { OracleParams } from '../types'
 
 export class ChainGrpcOracleApi extends BaseConsumer {
   async fetchModuleParams() {
@@ -16,7 +17,7 @@ export class ChainGrpcOracleApi extends BaseConsumer {
         typeof OracleQuery.Params
       >(request, OracleQuery.Params)
 
-      return response
+      return response.toObject() as OracleParams
     } catch (e: any) {
       throw new Error(e.message)
     }

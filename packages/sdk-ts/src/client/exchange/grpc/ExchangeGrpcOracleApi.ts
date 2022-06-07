@@ -51,7 +51,7 @@ export class ExchangeGrpcOracleApi extends BaseConsumer {
         typeof InjectiveOracleRPC.Price
       >(request, InjectiveOracleRPC.Price)
 
-      return response
+      return response.toObject()
     } catch (e: any) {
       throw new Error(e.message)
     }

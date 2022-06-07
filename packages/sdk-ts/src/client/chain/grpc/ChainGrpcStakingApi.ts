@@ -13,8 +13,6 @@ import {
   QueryValidatorsResponse,
   QueryDelegationResponse,
   QueryDelegationRequest,
-  QueryUnbondingDelegationResponse,
-  QueryUnbondingDelegationRequest,
   QueryValidatorRequest,
   QueryValidatorResponse,
   QueryParamsRequest as QueryStakingParamsRequest,
@@ -26,6 +24,7 @@ import { Query as StakingQuery } from '@injectivelabs/chain-api/cosmos/staking/v
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
+import { ChainGrpcStakingTransformer } from '../transformers'
 
 export class ChainGrpcStakingApi extends BaseConsumer {
   async fetchModuleParams() {
@@ -38,7 +37,9 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.Params
       >(request, StakingQuery.Params)
 
-      return response
+      return ChainGrpcStakingTransformer.moduleParamsResponseToModuleParams(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -54,7 +55,7 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.Pool
       >(request, StakingQuery.Pool)
 
-      return response.getPool()
+      return ChainGrpcStakingTransformer.poolResponseToPool(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -70,7 +71,9 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.Validators
       >(request, StakingQuery.Validators)
 
-      return response
+      return ChainGrpcStakingTransformer.validatorsResponseToValidators(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -87,7 +90,7 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.Validator
       >(request, StakingQuery.Validator)
 
-      return response
+      return ChainGrpcStakingTransformer.validatorResponseToValidator(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -116,7 +119,9 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.ValidatorDelegations
       >(request, StakingQuery.ValidatorDelegations)
 
-      return response
+      return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -145,7 +150,9 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.ValidatorUnbondingDelegations
       >(request, StakingQuery.ValidatorUnbondingDelegations)
 
-      return response
+      return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -169,7 +176,9 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.Delegation
       >(request, StakingQuery.Delegation)
 
-      return response
+      return ChainGrpcStakingTransformer.delegationResponseToDelegation(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -198,7 +207,9 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.DelegatorDelegations
       >(request, StakingQuery.DelegatorDelegations)
 
-      return response
+      return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -227,31 +238,9 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.ValidatorDelegations
       >(request, StakingQuery.ValidatorDelegations)
 
-      return response
-    } catch (e: any) {
-      throw new Error(e.message)
-    }
-  }
-
-  async fetchUnbondingDelegation({
-    injectiveAddress,
-    validatorAddress,
-  }: {
-    injectiveAddress: string
-    validatorAddress: string
-  }) {
-    const request = new QueryUnbondingDelegationRequest()
-    request.setDelegatorAddr(injectiveAddress)
-    request.setValidatorAddr(validatorAddress)
-
-    try {
-      const response = await this.request<
-        QueryUnbondingDelegationRequest,
-        QueryUnbondingDelegationResponse,
-        typeof StakingQuery.UnbondingDelegation
-      >(request, StakingQuery.UnbondingDelegation)
-
-      return response
+      return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -280,7 +269,9 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.DelegatorUnbondingDelegations
       >(request, StakingQuery.DelegatorUnbondingDelegations)
 
-      return response
+      return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -309,7 +300,9 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         typeof StakingQuery.Redelegations
       >(request, StakingQuery.Redelegations)
 
-      return response
+      return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

@@ -14,6 +14,7 @@ import {
   QueryExchangeParamsResponse,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ChainGrpcExchangeTransformer } from '../transformers'
 
 /**
  * The Chain Consumer Client is used to
@@ -30,7 +31,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         typeof ExchangeQuery.QueryExchangeParams
       >(request, ExchangeQuery.QueryExchangeParams)
 
-      return response
+      return ChainGrpcExchangeTransformer.moduleParamsResponseToParams(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -46,7 +47,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         typeof ExchangeQuery.ExchangeModuleState
       >(request, ExchangeQuery.ExchangeModuleState)
 
-      return response
+      return response.getState()!.toObject() /* TODO */
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -62,7 +63,9 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         typeof ExchangeQuery.FeeDiscountSchedule
       >(request, ExchangeQuery.FeeDiscountSchedule)
 
-      return response
+      return ChainGrpcExchangeTransformer.feeDiscountScheduleResponseToFeeDiscountSchedule(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -79,7 +82,9 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         typeof ExchangeQuery.FeeDiscountAccountInfo
       >(request, ExchangeQuery.FeeDiscountAccountInfo)
 
-      return response
+      return ChainGrpcExchangeTransformer.feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -95,7 +100,9 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         typeof ExchangeQuery.TradeRewardCampaign
       >(request, ExchangeQuery.TradeRewardCampaign)
 
-      return response
+      return ChainGrpcExchangeTransformer.tradingRewardsCampaignResponseToTradingRewardsCampaign(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -112,7 +119,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         typeof ExchangeQuery.TradeRewardPoints
       >(request, ExchangeQuery.TradeRewardPoints)
 
-      return response
+      return response.getAccountTradeRewardPointsList()
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -123,6 +130,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
     timestamp?: number,
   ) {
     const request = new QueryTradeRewardPointsRequest()
+
     request.setAccountsList(injectiveAddresses)
 
     if (timestamp) {
@@ -136,7 +144,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         typeof ExchangeQuery.PendingTradeRewardPoints
       >(request, ExchangeQuery.PendingTradeRewardPoints)
 
-      return response
+      return response.getAccountTradeRewardPointsList()
     } catch (e: any) {
       throw new Error(e.message)
     }

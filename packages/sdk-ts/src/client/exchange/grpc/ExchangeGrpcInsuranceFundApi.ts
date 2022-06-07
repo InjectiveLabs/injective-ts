@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_insurance_rpc_pb'
 import { InjectiveInsuranceRPC } from '@injectivelabs/exchange-api/injective_insurance_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ExchangeGrpcInsuranceFundTransformer } from '../transformers'
 
 export class ExchangeGrpcInsuranceFundApi extends BaseConsumer {
   async fetchRedemptions({
@@ -35,7 +36,9 @@ export class ExchangeGrpcInsuranceFundApi extends BaseConsumer {
         typeof InjectiveInsuranceRPC.Redemptions
       >(request, InjectiveInsuranceRPC.Redemptions)
 
-      return response
+      return ExchangeGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -51,7 +54,9 @@ export class ExchangeGrpcInsuranceFundApi extends BaseConsumer {
         typeof InjectiveInsuranceRPC.Funds
       >(request, InjectiveInsuranceRPC.Funds)
 
-      return response
+      return ExchangeGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

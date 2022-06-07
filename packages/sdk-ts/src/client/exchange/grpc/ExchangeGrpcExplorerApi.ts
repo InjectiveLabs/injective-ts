@@ -16,6 +16,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 import { InjectiveExplorerRPC } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ExchangeGrpcExplorerTransformer } from '../transformers'
 
 export class ExchangeGrpcExplorerApi extends BaseConsumer {
   async fetchTxByHash(hash: string) {
@@ -29,7 +30,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetTxByTxHash
       >(request, InjectiveExplorerRPC.GetTxByTxHash)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getTxByTxHashResponseToTx(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -62,7 +63,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetAccountTxs
       >(request, InjectiveExplorerRPC.GetAccountTxs)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getAccountTxsResponseToAccountTxs(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -79,7 +82,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetValidator
       >(request, InjectiveExplorerRPC.GetValidator)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.validatorResponseToValidator(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -96,7 +101,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetValidatorUptime
       >(request, InjectiveExplorerRPC.GetValidatorUptime)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getValidatorUptimeResponseToValidatorUptime(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -138,7 +145,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetPeggyDepositTxs
       >(request, InjectiveExplorerRPC.GetPeggyDepositTxs)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getPeggyDepositTxsResponseToPeggyDepositTxs(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -180,7 +189,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetPeggyWithdrawalTxs
       >(request, InjectiveExplorerRPC.GetPeggyWithdrawalTxs)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -243,7 +254,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetIBCTransferTxs
       >(request, InjectiveExplorerRPC.GetIBCTransferTxs)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getIBCTransferTxsResponseToIBCTransferTxs(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

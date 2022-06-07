@@ -8,6 +8,7 @@ import {
   QueryCurrentAuctionBasketResponse,
 } from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ChainGrpcAuctionTransformer } from '../transformers'
 
 export class ChainGrpcAuctionApi extends BaseConsumer {
   async fetchModuleParams() {
@@ -20,7 +21,9 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
         typeof AuctionQuery.AuctionParams
       >(request, AuctionQuery.AuctionParams)
 
-      return response
+      return ChainGrpcAuctionTransformer.moduleParamsResponseToModuleParams(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -30,13 +33,15 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
     const request = new QueryModuleStateRequest()
 
     try {
-      const response = this.request<
+      const response = await this.request<
         QueryModuleStateRequest,
         QueryModuleStateResponse,
         typeof AuctionQuery.AuctionModuleState
       >(request, AuctionQuery.AuctionModuleState)
 
-      return response
+      return ChainGrpcAuctionTransformer.auctionModuleStateResponseToAuctionModuleState(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -46,13 +51,15 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
     const request = new QueryCurrentAuctionBasketRequest()
 
     try {
-      const response = this.request<
+      const response = await this.request<
         QueryCurrentAuctionBasketRequest,
         QueryCurrentAuctionBasketResponse,
         typeof AuctionQuery.CurrentAuctionBasket
       >(request, AuctionQuery.CurrentAuctionBasket)
 
-      return response
+      return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

@@ -1,8 +1,24 @@
 import { GrpcCoin } from '../../../types/index'
 import { GrpcExchangeBid, GrpcAuction, Bid, Auction } from '../types/auction'
 import { Coin } from '@injectivelabs/ts-types'
+import {
+  AuctionResponse,
+  AuctionsResponse,
+} from '@injectivelabs/exchange-api/injective_auction_rpc_pb'
 
 export class ExchangeGrpcAuctionTransformer {
+  static auctionResponseToAuction(response: AuctionResponse): Auction {
+    return ExchangeGrpcAuctionTransformer.grpcAuctionToAuction(
+      response.getAuction()!,
+    )
+  }
+
+  static auctionsResponseToAuctions(response: AuctionsResponse): Auction[] {
+    return response
+      .getAuctionsList()
+      .map((a) => ExchangeGrpcAuctionTransformer.grpcAuctionToAuction(a))
+  }
+
   static grpcBidToBid(grpcBid: GrpcExchangeBid): Bid {
     return {
       bidder: grpcBid.getBidder(),

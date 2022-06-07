@@ -19,10 +19,12 @@ import {
 import { InjectiveAccountsRPC } from '@injectivelabs/exchange-api/injective_accounts_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
+import { ExchangeGrpcAccountTransformer } from '../transformers'
 
 export class ExchangeGrpcAccountApi extends BaseConsumer {
   async fetchPortfolio(address: string) {
     const request = new PortfolioRequest()
+
     request.setAccountAddress(address)
 
     try {
@@ -32,7 +34,9 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.Portfolio
       >(request, InjectiveAccountsRPC.Portfolio)
 
-      return response
+      return ExchangeGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -40,6 +44,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
 
   async fetchRewards({ address, epoch }: { address: string; epoch: number }) {
     const request = new RewardsRequest()
+
     request.setAccountAddress(address)
 
     if (epoch) {
@@ -53,7 +58,9 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.Rewards
       >(request, InjectiveAccountsRPC.Rewards)
 
-      return response
+      return ExchangeGrpcAccountTransformer.tradingRewardsResponseToTradingRewards(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -61,6 +68,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
 
   async fetchSubaccountsList(address: string) {
     const request = new SubaccountsListRequest()
+
     request.setAccountAddress(address)
 
     try {
@@ -70,7 +78,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.SubaccountsList
       >(request, InjectiveAccountsRPC.SubaccountsList)
 
-      return response
+      return response.getSubaccountsList()
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -78,6 +86,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
 
   async fetchSubaccountBalance(subaccountId: string, denom: string) {
     const request = new SubaccountBalanceRequest()
+
     request.setSubaccountId(subaccountId)
     request.setDenom(denom)
 
@@ -88,7 +97,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.SubaccountBalanceEndpoint
       >(request, InjectiveAccountsRPC.SubaccountBalanceEndpoint)
 
-      return response
+      return ExchangeGrpcAccountTransformer.balanceResponseToBalance(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -96,6 +105,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
 
   async fetchSubaccountBalancesList(subaccountId: string) {
     const request = new SubaccountBalancesListRequest()
+
     request.setSubaccountId(subaccountId)
 
     try {
@@ -105,7 +115,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.SubaccountBalancesList
       >(request, InjectiveAccountsRPC.SubaccountBalancesList)
 
-      return response
+      return ExchangeGrpcAccountTransformer.balancesResponseToBalances(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -123,6 +133,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const request = new SubaccountHistoryRequest()
+
     request.setSubaccountId(subaccountId)
 
     if (denom) {
@@ -150,7 +161,9 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.SubaccountHistory
       >(request, InjectiveAccountsRPC.SubaccountHistory)
 
-      return response
+      return ExchangeGrpcAccountTransformer.transferHistoryResponseToTransferHistory(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -166,6 +179,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
     orderDirection?: string /* TODO */
   }) {
     const request = new SubaccountOrderSummaryRequest()
+
     request.setSubaccountId(subaccountId)
 
     if (marketId) {
@@ -183,7 +197,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.SubaccountOrderSummary
       >(request, InjectiveAccountsRPC.SubaccountOrderSummary)
 
-      return response
+      return response.toObject()
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -195,6 +209,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
   }) {
     const { spotOrderHashes = [], derivativeOrderHashes = [] } = params || {}
     const request = new OrderStatesRequest()
+
     request.setSpotOrderHashesList(spotOrderHashes)
     request.setDerivativeOrderHashesList(derivativeOrderHashes)
 
@@ -205,7 +220,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.OrderStates
       >(request, InjectiveAccountsRPC.OrderStates)
 
-      return response
+      return response /* TODO */
     } catch (e: any) {
       throw new Error(e.message)
     }

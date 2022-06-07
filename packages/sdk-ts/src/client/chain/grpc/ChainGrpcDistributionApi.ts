@@ -8,6 +8,7 @@ import {
 } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb'
 import { Query as DistributionQuery } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ChainGrpcDistributionTransformer } from '../transformers'
 
 export class ChainGrpcDistributionApi extends BaseConsumer {
   async fetchModuleParams() {
@@ -20,7 +21,9 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         typeof DistributionQuery.Params
       >(request, DistributionQuery.Params)
 
-      return response
+      return ChainGrpcDistributionTransformer.moduleParamsResponseToModuleParams(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -44,7 +47,9 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         typeof DistributionQuery.DelegationRewards
       >(request, DistributionQuery.DelegationRewards)
 
-      return response
+      return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -61,7 +66,9 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         typeof DistributionQuery.DelegationTotalRewards
       >(request, DistributionQuery.DelegationTotalRewards)
 
-      return response
+      return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

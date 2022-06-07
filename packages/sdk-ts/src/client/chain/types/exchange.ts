@@ -102,6 +102,10 @@ export interface ExchangeParams {
   tradingRewardsVestingDuration: number
 }
 
+export interface ExchangeModuleParams extends ExchangeParams {
+  //
+}
+
 export type GrpcOrderType = GrpcOrderTypeMap[keyof GrpcOrderTypeMap]
 
 export {

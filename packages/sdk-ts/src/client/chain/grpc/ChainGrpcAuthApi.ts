@@ -4,14 +4,36 @@ import {
   QueryAccountsRequest,
   QueryAccountsResponse,
   QueryAccountResponse,
+  QueryParamsRequest,
+  QueryParamsResponse,
 } from '@injectivelabs/chain-api/cosmos/auth/v1beta1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
+import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
 
 export class ChainGrpcAuthApi extends BaseConsumer {
+  async fetchModuleParams() {
+    const request = new QueryParamsRequest()
+
+    try {
+      const response = await this.request<
+        QueryParamsRequest,
+        QueryParamsResponse,
+        typeof AuthQuery.Params
+      >(request, AuthQuery.Params)
+
+      return ChainGrpcAuthTransformer.moduleParamsResponseToModuleParams(
+        response,
+      )
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
   async fetchAccount(address: string) {
     const request = new QueryAccountRequest()
+
     request.setAddress(address)
 
     try {
@@ -21,6 +43,7 @@ export class ChainGrpcAuthApi extends BaseConsumer {
         typeof AuthQuery.Account
       >(request, AuthQuery.Account)
 
+      // TODO map response
       return response
     } catch (e: any) {
       throw new Error(e.message)
@@ -42,6 +65,7 @@ export class ChainGrpcAuthApi extends BaseConsumer {
         typeof AuthQuery.Accounts
       >(request, AuthQuery.Accounts)
 
+      // TODO map response
       return response
     } catch (e: any) {
       throw new Error(e.message)

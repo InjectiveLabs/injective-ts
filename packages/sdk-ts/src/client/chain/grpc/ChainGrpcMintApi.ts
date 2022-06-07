@@ -8,6 +8,9 @@ import {
   QueryAnnualProvisionsResponse,
 } from '@injectivelabs/chain-api/cosmos/mint/v1beta1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils'
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer'
 
 export class ChainGrpcMintApi extends BaseConsumer {
   async fetchModuleParams() {
@@ -20,7 +23,9 @@ export class ChainGrpcMintApi extends BaseConsumer {
         typeof MintQuery.Params
       >(request, MintQuery.Params)
 
-      return response
+      return ChainGrpcMintTransformer.moduleParamsResponseToModuleParams(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -36,7 +41,11 @@ export class ChainGrpcMintApi extends BaseConsumer {
         typeof MintQuery.Inflation
       >(request, MintQuery.Inflation)
 
-      return response
+      return {
+        inflation: cosmosSdkDecToBigNumber(
+          new BigNumberInBase(uint8ArrayToString(response.getInflation())),
+        ).toFixed(),
+      }
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -52,7 +61,13 @@ export class ChainGrpcMintApi extends BaseConsumer {
         typeof MintQuery.AnnualProvisions
       >(request, MintQuery.AnnualProvisions)
 
-      return response
+      return {
+        annualProvisions: cosmosSdkDecToBigNumber(
+          new BigNumberInBase(
+            uint8ArrayToString(response.getAnnualProvisions()),
+          ),
+        ).toFixed(),
+      }
     } catch (e: any) {
       throw new Error(e.message)
     }

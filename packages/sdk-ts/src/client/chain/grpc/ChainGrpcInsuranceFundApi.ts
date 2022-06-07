@@ -12,6 +12,7 @@ import {
   QueryPendingRedemptionsResponse,
 } from '@injectivelabs/chain-api/injective/insurance/v1beta1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer'
 
 export class ChainGrpcInsuranceFundApi extends BaseConsumer {
   async fetchModuleParams() {
@@ -24,7 +25,9 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
         typeof InsuranceFundQuery.InsuranceParams
       >(request, InsuranceFundQuery.InsuranceParams)
 
-      return response
+      return ChainGrpcInsuranceFundTransformer.moduleParamsResponseToModuleParams(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -40,7 +43,9 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
         typeof InsuranceFundQuery.InsuranceFunds
       >(request, InsuranceFundQuery.InsuranceFunds)
 
-      return response
+      return ChainGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -57,7 +62,9 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
         typeof InsuranceFundQuery.InsuranceFund
       >(request, InsuranceFundQuery.InsuranceFund)
 
-      return response
+      return ChainGrpcInsuranceFundTransformer.insuranceFundResponseToInsuranceFund(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -81,7 +88,9 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
         typeof InsuranceFundQuery.EstimatedRedemptions
       >(request, InsuranceFundQuery.EstimatedRedemptions)
 
-      return response
+      return ChainGrpcInsuranceFundTransformer.estimatedRedemptionsResponseToEstimatedRedemptions(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -105,7 +114,9 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
         typeof InsuranceFundQuery.PendingRedemptions
       >(request, InsuranceFundQuery.PendingRedemptions)
 
-      return response
+      return ChainGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

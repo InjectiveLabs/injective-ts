@@ -12,6 +12,7 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
+import { ChainGrpcBankTransformer } from '../transformers'
 
 export class ChainGrpcBankApi extends BaseConsumer {
   async fetchModuleParams() {
@@ -24,7 +25,9 @@ export class ChainGrpcBankApi extends BaseConsumer {
         typeof BankQuery.Params
       >(request, BankQuery.Params)
 
-      return response
+      return ChainGrpcBankTransformer.moduleParamsResponseToModuleParams(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -48,7 +51,7 @@ export class ChainGrpcBankApi extends BaseConsumer {
         typeof BankQuery.Balance
       >(request, BankQuery.Balance)
 
-      return response
+      return ChainGrpcBankTransformer.balanceResponseToBalance(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -65,7 +68,7 @@ export class ChainGrpcBankApi extends BaseConsumer {
         typeof BankQuery.AllBalances
       >(request, BankQuery.AllBalances)
 
-      return response
+      return ChainGrpcBankTransformer.balancesResponseToBalances(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -86,7 +89,7 @@ export class ChainGrpcBankApi extends BaseConsumer {
         typeof BankQuery.TotalSupply
       >(request, BankQuery.TotalSupply)
 
-      return response
+      return ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply(response)
     } catch (e: any) {
       throw new Error(e.message)
     }

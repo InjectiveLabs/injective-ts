@@ -17,10 +17,12 @@ import { ProposalStatusMap } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/g
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
+import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer'
 
 export class ChainGrpcGovApi extends BaseConsumer {
   async fetchParamsByType(type: string) {
     const request = new QueryGovernanceParamsRequest()
+
     request.setParamsType(type)
 
     try {
@@ -30,7 +32,9 @@ export class ChainGrpcGovApi extends BaseConsumer {
         typeof GovernanceQuery.Params
       >(request, GovernanceQuery.Params)
 
-      return response
+      return ChainGrpcGovTransformer.moduleParamsResponseToModuleParams(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -44,6 +48,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const request = new QueryProposalsRequest()
+
     request.setProposalStatus(status)
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
@@ -59,7 +64,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
         typeof GovernanceQuery.Proposals
       >(request, GovernanceQuery.Proposals)
 
-      return response
+      return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -67,6 +72,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
 
   async fetchProposal(proposalId: number) {
     const request = new QueryProposalRequest()
+
     request.setProposalId(proposalId)
 
     try {
@@ -76,7 +82,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
         typeof GovernanceQuery.Proposal
       >(request, GovernanceQuery.Proposal)
 
-      return response
+      return ChainGrpcGovTransformer.proposalResponseToProposal(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -90,6 +96,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const request = new QueryDepositsRequest()
+
     request.setProposalId(proposalId)
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
@@ -105,7 +112,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
         typeof GovernanceQuery.Deposits
       >(request, GovernanceQuery.Deposits)
 
-      return response
+      return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -119,6 +126,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const request = new QueryVotesRequest()
+
     request.setProposalId(proposalId)
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
@@ -133,7 +141,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
         typeof GovernanceQuery.Votes
       >(request, GovernanceQuery.Votes)
 
-      return response
+      return ChainGrpcGovTransformer.votesResponseToVotes(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -141,6 +149,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
 
   async fetchProposalTally(proposalId: number) {
     const request = new QueryTallyResultRequest()
+
     request.setProposalId(proposalId)
 
     try {
@@ -150,7 +159,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
         typeof GovernanceQuery.TallyResult
       >(request, GovernanceQuery.TallyResult)
 
-      return response
+      return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
