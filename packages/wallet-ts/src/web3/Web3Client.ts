@@ -25,17 +25,8 @@ export const getTransactionOptions = (
     : DEFAULT_GAS_PRICE.toString(),
 })
 
-export const peggyDenomToContractAddress = (
-  denom: string,
-  injectiveContractAddress: string,
-): string => {
-  const denomLowerCased = denom.toLowerCase()
-  const contractAddress = denomLowerCased.replace('peggy', '')
-
-  return denomLowerCased === INJ_DENOM
-    ? injectiveContractAddress
-    : contractAddress
-}
+export const peggyDenomToContractAddress = (denom: string): string =>
+  denom.toLowerCase().replace('peggy', '')
 
 export class Web3Client {
   private walletStrategy: WalletStrategy
@@ -132,10 +123,10 @@ export class Web3Client {
     const { walletStrategy, network, ethereumChainId } = this
     const web3 = walletStrategy.getWeb3() as any
     const contractAddresses = getContractAddressesForNetworkOrThrow(network)
-    const contractAddress = peggyDenomToContractAddress(
-      denom,
-      contractAddresses.injective,
-    )
+    const contractAddress =
+      denom === INJ_DENOM
+        ? contractAddresses.injective
+        : peggyDenomToContractAddress(denom)
     const peggyContractAddress = contractAddresses.peggy
     const contract = new PeggyContract({
       address: peggyContractAddress,
@@ -187,8 +178,9 @@ export class Web3Client {
     try {
       const { walletStrategy, network } = this
       const web3 = walletStrategy.getWeb3() as any
+      const tokenAddress = peggyDenomToContractAddress(contractAddress)
       const tokenBalances = await web3.alchemy.getTokenBalances(address, [
-        contractAddress,
+        tokenAddress,
       ])
       const tokenBalance = tokenBalances.tokenBalances
         .filter((tokenBalance: any) => tokenBalance.tokenBalance)
@@ -196,7 +188,7 @@ export class Web3Client {
           (tokenBalance: any) =>
             (
               tokenBalance as unknown as { contractAddress: string }
-            ).contractAddress.toLowerCase() === contractAddress.toLowerCase(),
+            ).contractAddress.toLowerCase() === tokenAddress.toLowerCase(),
         )
       const balance = tokenBalance ? tokenBalance.tokenBalance || 0 : 0
 
@@ -204,7 +196,7 @@ export class Web3Client {
       const allowance = await web3.alchemy.getTokenAllowance({
         owner: address,
         spender: contractAddresses.peggy,
-        contract: contractAddress,
+        contract: tokenAddress,
       })
 
       return {
