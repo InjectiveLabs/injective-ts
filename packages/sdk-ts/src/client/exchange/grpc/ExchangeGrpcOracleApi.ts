@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_oracle_rpc_pb'
 import { InjectiveOracleRPC } from '@injectivelabs/exchange-api/injective_oracle_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ExchangeGrpcOracleTransformer } from '../transformers/ExchangeGrpcOracleTransformer'
 
 export class ExchangeGrpcOracleApi extends BaseConsumer {
   async fetchOracleList() {
@@ -18,7 +19,7 @@ export class ExchangeGrpcOracleApi extends BaseConsumer {
         typeof InjectiveOracleRPC.OracleList
       >(request, InjectiveOracleRPC.OracleList)
 
-      return response
+      return ExchangeGrpcOracleTransformer.oraclesResponseToOracles(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
