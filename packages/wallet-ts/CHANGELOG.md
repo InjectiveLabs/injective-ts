@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.17...@injectivelabs/wallet-ts@0.0.18) (2022-06-07)
+
+
+### Bug Fixes
+
+* web3client args ([94337e4](https://github.com/InjectiveLabs/injective-ts/commit/94337e4c609e33c9dddc09fd0a73cbe47028f4b5))
+
+
+
+
+
 ## [0.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.16...@injectivelabs/wallet-ts@0.0.17) (2022-06-07)
 
 
