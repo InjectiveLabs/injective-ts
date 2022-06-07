@@ -44,7 +44,7 @@ export class Web3Client {
     this.walletStrategy = walletStrategy
   }
 
-  async signTransaction(args: SendTransactionOptions) {
+  async sendTransaction(args: SendTransactionOptions) {
     const { walletStrategy } = this
 
     const txHash = await walletStrategy.sendEthereumTransaction(args.tx, {
