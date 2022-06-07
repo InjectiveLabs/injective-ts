@@ -3,6 +3,7 @@ import {
   BigNumberInBase,
   BigNumberInWei,
 } from '@injectivelabs/utils'
+import { Network } from '@injectivelabs/networks'
 
 export const INJ_DENOM = 'inj'
 export const INJECTIVE_DENOM = 'inj'
@@ -49,6 +50,22 @@ export const PEGGY_DEVNET_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
 export const PEGGY_DEVNET1_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
+
+export const PEGGY_GRAPH_URL_FOR_NETWORK = (network: Network): string => {
+  if (network === Network.Devnet) {
+    return PEGGY_DEVNET_GRAPH_URL
+  }
+
+  if (network === Network.Devnet1) {
+    return PEGGY_DEVNET1_GRAPH_URL
+  }
+
+  if ([Network.Testnet, Network.TestnetK8s]) {
+    return PEGGY_TESTNET_GRAPH_URL
+  }
+
+  return PEGGY_TESTNET_GRAPH_URL
+}
 
 export const ASSET_PRICE_SERVICE_URL =
   'https://k8s.mainnet.asset.injective.network/asset-price/v1/coin/'
