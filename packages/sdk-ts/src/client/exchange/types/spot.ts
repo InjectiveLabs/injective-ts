@@ -15,6 +15,8 @@ export enum SpotOrderSide {
   StopSell = 'stop_sell',
   TakeBuy = 'take_buy',
   TakeSell = 'take_sell',
+  BuyPO = 'buy_po',
+  SellPO = 'sell_po',
 }
 
 export enum SpotOrderState {
