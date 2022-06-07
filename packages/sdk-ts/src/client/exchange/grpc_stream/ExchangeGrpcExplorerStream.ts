@@ -8,9 +8,21 @@ import {
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { ExplorerStreamTransformer } from '../transformers'
 
-export type BlocksStreamCallback = (response: StreamBlocksResponse) => void
-export type TransactionsStreamCallback = (response: StreamTxsResponse) => void
+export type BlocksStreamCallback = (
+  response: ReturnType<typeof ExplorerStreamTransformer.blocksStreamCallback>,
+) => void
+export type BlocksWithTxsStreamCallback = (
+  response: ReturnType<
+    typeof ExplorerStreamTransformer.blocksWithTxsStreamCallback
+  >,
+) => void
+export type TransactionsStreamCallback = (
+  response: ReturnType<
+    typeof ExplorerStreamTransformer.transactionsStreamCallback
+  >,
+) => void
 
 export class ExchangeGrpcExplorerStream {
   protected client: InjectiveExplorerRPCClient
@@ -35,7 +47,35 @@ export class ExchangeGrpcExplorerStream {
     const stream = this.client.streamBlocks(request)
 
     stream.on('data', (response: StreamBlocksResponse) => {
-      callback(response)
+      callback(ExplorerStreamTransformer.blocksStreamCallback(response))
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+  }
+
+  blocksWithTxs({
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    callback: BlocksWithTxsStreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamBlocksRequest()
+
+    const stream = this.client.streamBlocks(request)
+
+    stream.on('data', (response: StreamBlocksResponse) => {
+      callback(ExplorerStreamTransformer.blocksWithTxsStreamCallback(response))
     })
 
     if (onEndCallback) {
@@ -62,7 +102,7 @@ export class ExchangeGrpcExplorerStream {
     const stream = this.client.streamTxs(request)
 
     stream.on('data', (response: StreamTxsResponse) => {
-      callback(response)
+      callback(ExplorerStreamTransformer.transactionsStreamCallback(response))
     })
 
     if (onEndCallback) {
