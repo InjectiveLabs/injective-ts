@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.58...@injectivelabs/sdk-ts@0.0.59) (2022-06-07)
+
+
+### Features
+
+* web3 client ([8f286b2](https://github.com/InjectiveLabs/injective-ts/commit/8f286b2b42d0955ecf7cc74344f4bf28e2409e0b))
+
+
+
+
+
 ## [0.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.57...@injectivelabs/sdk-ts@0.0.58) (2022-06-07)
 
 
