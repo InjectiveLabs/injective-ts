@@ -25,7 +25,7 @@ const fetchGasPriceFromEtherchain = async (): Promise<string> => {
     }
 
     return new BigNumberInWei(
-      new BigNumber(response.data.fast * 10).multipliedBy(GWEI_IN_WEI),
+      new BigNumber(response.data.fastest * 10).multipliedBy(GWEI_IN_WEI),
     ).toString()
   } catch (e: any) {
     throw new Error(e.message)
@@ -45,7 +45,7 @@ const fetchGasPriceFromEthGasStation = async (): Promise<string> => {
     }
 
     return new BigNumberInWei(
-      new BigNumber(response.data.fast / 10).multipliedBy(GWEI_IN_WEI),
+      new BigNumber(response.data.fastest / 10).multipliedBy(GWEI_IN_WEI),
     ).toString()
   } catch (e: any) {
     throw new Error(e.message)
