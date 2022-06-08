@@ -3,6 +3,7 @@ import {
   AccountAddress,
   ChainId,
   EthereumChainId,
+  CosmosChainId,
 } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import {
@@ -15,7 +16,6 @@ import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
 import { CosmosWallet } from '../../cosmos/CosmosWallet'
-import { CosmosChainId } from '../../keplr/types'
 import { createSignedTx } from '../../transaction'
 
 export default class Keplr

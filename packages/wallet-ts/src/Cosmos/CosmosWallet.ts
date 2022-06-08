@@ -11,11 +11,11 @@ import { createSignedTx, createTransaction } from '../transaction'
 import { CosmosQuery } from './CosmosQuery'
 
 export class CosmosWallet {
+  public query: CosmosQuery
+
   private rest: string
 
   private rpc: string
-
-  private query: CosmosQuery
 
   private signer: OfflineDirectSigner
 
