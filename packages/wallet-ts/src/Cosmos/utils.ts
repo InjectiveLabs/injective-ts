@@ -1,4 +1,4 @@
-import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from 'packages/utils/dist'
+import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
 
 /**
  * Returns a timeout timestamp in milliseconds so its compatible
