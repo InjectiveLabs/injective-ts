@@ -36,3 +36,27 @@ export interface ServiceWeb3ActionOptions {
   options: ServiceOptions
   web3Strategy: Web3Strategy
 }
+
+export enum SpotOrderSide {
+  Unspecified = 'unspecified',
+  Buy = 'buy',
+  Sell = 'sell',
+  StopBuy = 'stop_buy',
+  StopSell = 'stop_sell',
+  TakeBuy = 'take_buy',
+  TakeSell = 'take_sell',
+  BuyPO = 'buy_po',
+  SellPO = 'sell_po',
+}
+
+export enum DerivativeOrderSide {
+  Unspecified = 'unspecified',
+  Buy = 'buy',
+  Sell = 'sell',
+  StopBuy = 'stop_buy',
+  StopSell = 'stop_sell',
+  TakeBuy = 'take_buy',
+  TakeSell = 'take_sell',
+  BuyPO = 'buy_po',
+  SellPO = 'sell_po',
+}
