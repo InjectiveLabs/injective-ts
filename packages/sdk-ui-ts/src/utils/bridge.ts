@@ -12,10 +12,7 @@ import {
   PEGGY_DEVNET1_GRAPH_URL,
   PEGGY_TESTNET_GRAPH_URL,
 } from '../constants'
-import {
-  CosmosChainId,
-  TestnetCosmosChainId,
-} from '@injectivelabs/wallet-ts/dist/keplr'
+import { CosmosChainId, TestnetCosmosChainId } from '@injectivelabs/ts-types'
 import { erc20TokenMeta } from '@injectivelabs/token-metadata'
 import { Token } from '../types'
 
