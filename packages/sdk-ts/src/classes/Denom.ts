@@ -52,7 +52,7 @@ export class Denom {
   async getIbcDenomToken(): Promise<IbcToken> {
     const { denom } = this
     const { baseDenom, path } = await this.fetchDenomTrace()
-    const tokenMeta = await new Denom(baseDenom).getIbcDenomToken()
+    const tokenMeta = await new Denom(baseDenom).getDenomToken()
 
     return {
       baseDenom,
@@ -82,7 +82,15 @@ export class Denom {
         return tokenMetaToToken(byAddress, denom) as Token
       }
 
-      throw new Error(`Token meta for ${denom} denom does not exist`)
+      return {
+        denom,
+        name: denom,
+        logo: '',
+        symbol: '',
+        decimals: 18,
+        address: '',
+        coinGeckoId: '',
+      }
     }
 
     const tokenMeta = await this.getDenomTokenMeta()

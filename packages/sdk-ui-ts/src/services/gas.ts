@@ -52,6 +52,50 @@ const fetchGasPriceFromEthGasStation = async (): Promise<string> => {
   }
 }
 
+const fetchGasPriceFromMetamaskGasServer = async (): Promise<string> => {
+  try {
+    const response = (await new HttpClient(
+      'https://mock-gas-server.herokuapp.com',
+    ).get('')) as {
+      data: MetamaskGasServerResult
+    }
+
+    if (!response || (response && !response.data)) {
+      throw new Error('No response from Metamask')
+    }
+
+    return new BigNumberInWei(
+      new BigNumber(response.data.medium.suggestedMaxFeePerGas)
+        .div(1000)
+        .multipliedBy(GWEI_IN_WEI),
+    ).toString()
+  } catch (e: any) {
+    throw new Error(e.message)
+  }
+}
+
+export interface MetamaskGasServerResult {
+  low: {
+    minWaitTimeEstimate: number
+    maxWaitTimeEstimate: number
+    suggestedMaxPriorityFeePerGas: string
+    suggestedMaxFeePerGas: string
+  }
+  medium: {
+    minWaitTimeEstimate: number
+    maxWaitTimeEstimate: number
+    suggestedMaxPriorityFeePerGas: string
+    suggestedMaxFeePerGas: string
+  }
+  high: {
+    minWaitTimeEstimate: number
+    maxWaitTimeEstimate: number
+    suggestedMaxPriorityFeePerGas: string
+    suggestedMaxFeePerGas: string
+  }
+  estimateBaseFee: string
+}
+
 export interface GasInfo {
   gasPrice: string
   estimatedTimeMs: number
@@ -84,6 +128,12 @@ export interface EtherchainResult {
 export const fetchGasPrice = async (network: Network): Promise<string> => {
   if (isTestnet(network)) {
     return new BigNumberInWei(DEFAULT_GAS_PRICE).toString()
+  }
+
+  try {
+    return await fetchGasPriceFromMetamaskGasServer()
+  } catch (e) {
+    //
   }
 
   try {

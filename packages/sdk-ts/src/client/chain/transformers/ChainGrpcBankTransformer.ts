@@ -1,6 +1,5 @@
 import { GrpcCoin, Pagination } from '../../../types/index'
 import { Coin } from '@injectivelabs/ts-types'
-import { cosmosSdkDecToBigNumber } from '../../../utils/numbers'
 import {
   QueryAllBalancesResponse,
   QueryBalanceResponse,
@@ -14,7 +13,7 @@ export class ChainGrpcBankTransformer {
   static grpcCoinToCoin(coin: GrpcCoin): Coin {
     return {
       denom: coin.getDenom(),
-      amount: cosmosSdkDecToBigNumber(coin.getAmount()).toFixed(),
+      amount: coin.getAmount(),
     }
   }
 
