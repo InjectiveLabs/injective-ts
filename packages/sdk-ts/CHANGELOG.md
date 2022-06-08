@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.61...@injectivelabs/sdk-ts@0.0.62) (2022-06-08)
+
+
+### Features
+
+* gas price fetching ([476f4e4](https://github.com/InjectiveLabs/injective-ts/commit/476f4e49f62ecdfc482ddde6789483fd09fd4fff))
+
+
+
+
+
 ## [0.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.60...@injectivelabs/sdk-ts@0.0.61) (2022-06-08)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
