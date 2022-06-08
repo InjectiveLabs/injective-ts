@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.5.3...@injectivelabs/ts-types@0.5.4) (2022-06-08)
+
+
+### Bug Fixes
+
+* path import ([ae57777](https://github.com/InjectiveLabs/injective-ts/commit/ae57777119f650c3f819cd0919ee568e646c82a4))
+
+
+
+
+
 ## [0.5.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.5.2...@injectivelabs/ts-types@0.5.3) (2022-06-06)
 
 
