@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.24...@injectivelabs/wallet-ts@0.0.25) (2022-06-08)
+
+
+### Features
+
+* terra walet on wallet-ts ([2263181](https://github.com/InjectiveLabs/injective-ts/commit/22631819f934e38142e56bfdbdd91f4e2cc640a5))
+
+
+
+
+
 ## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.23...@injectivelabs/wallet-ts@0.0.24) (2022-06-08)
 
 
