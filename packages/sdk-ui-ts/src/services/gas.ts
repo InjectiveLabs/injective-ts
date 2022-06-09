@@ -21,7 +21,7 @@ export interface MetamaskGasServerResult {
     suggestedMaxPriorityFeePerGas: string
     suggestedMaxFeePerGas: string
   }
-  estimateBaseFee: string
+  estimatedBaseFee: string
 }
 
 export interface OwlracleResult {
@@ -111,7 +111,7 @@ const fetchGasPriceFromOwlracle = async (): Promise<string> => {
 
     return new BigNumberInWei(
       new BigNumber(faster.gasPrice).multipliedBy(GWEI_IN_WEI),
-    ).toString()
+    ).toFixed(0)
   } catch (e: any) {
     throw new Error(e.message)
   }
@@ -133,7 +133,7 @@ const fetchGasPriceFromEtherchain = async (): Promise<string> => {
       new BigNumber(
         response.data.currentBaseFee * response.data.fast,
       ).multipliedBy(GWEI_IN_WEI),
-    ).toString()
+    ).toFixed(0)
   } catch (e: any) {
     throw new Error(e.message)
   }
@@ -152,8 +152,10 @@ const fetchGasPriceFromEthGasStation = async (): Promise<string> => {
     }
 
     return new BigNumberInWei(
-      new BigNumber(response.data.fastest / 10).multipliedBy(GWEI_IN_WEI),
-    ).toString()
+      new BigNumber(response.data.fastest / 10)
+        .times(2.125)
+        .multipliedBy(GWEI_IN_WEI),
+    ).toFixed(0)
   } catch (e: any) {
     throw new Error(e.message)
   }
@@ -173,10 +175,11 @@ const fetchGasPriceFromMetaswapGasServer = async (): Promise<string> => {
     }
 
     return new BigNumberInWei(
-      new BigNumber(response.data.medium.suggestedMaxFeePerGas)
+      new BigNumber(response.data.estimatedBaseFee)
         .div(1000)
+        .times(2.125)
         .multipliedBy(GWEI_IN_WEI),
-    ).toString()
+    ).toFixed(0)
   } catch (e: any) {
     throw new Error(e.message)
   }
@@ -184,7 +187,13 @@ const fetchGasPriceFromMetaswapGasServer = async (): Promise<string> => {
 
 export const fetchGasPrice = async (network: Network): Promise<string> => {
   if (isTestnet(network)) {
-    return new BigNumberInWei(DEFAULT_GAS_PRICE).toString()
+    return new BigNumberInWei(DEFAULT_GAS_PRICE).toFixed(0)
+  }
+
+  try {
+    return await fetchGasPriceFromEtherchain()
+  } catch (e) {
+    //
   }
 
   try {
@@ -195,12 +204,6 @@ export const fetchGasPrice = async (network: Network): Promise<string> => {
 
   try {
     return await fetchGasPriceFromEthGasStation()
-  } catch (e) {
-    //
-  }
-
-  try {
-    return await fetchGasPriceFromEtherchain()
   } catch (e) {
     //
   }
