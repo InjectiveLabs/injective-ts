@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.63...@injectivelabs/sdk-ts@0.0.64) (2022-06-09)
+
+
+### Bug Fixes
+
+* cosmos wallet ([c3416df](https://github.com/InjectiveLabs/injective-ts/commit/c3416dfb68f32d6d4568a6fdb5dd0a7e2bfb60d2))
+
+
+
+
+
 ## [0.0.63](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.62...@injectivelabs/sdk-ts@0.0.63) (2022-06-08)
 
 
