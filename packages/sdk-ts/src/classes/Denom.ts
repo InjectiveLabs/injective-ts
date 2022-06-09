@@ -7,6 +7,7 @@ import { IbcToken, Token } from '../types/denom'
 import { TokenMeta } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '../utils'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
+import path from 'path'
 
 export const tokenMetaToToken = (
   tokenMeta: TokenMeta | undefined,
@@ -18,7 +19,14 @@ export const tokenMetaToToken = (
 
   return {
     denom,
-    logo: tokenMeta.logo,
+    logo: path.join(
+      '/',
+      'vendors',
+      '@injectivelabs',
+      'token-metadata',
+      tokenMeta.logo,
+    ),
+    icon: tokenMeta.logo,
     symbol: tokenMeta.symbol,
     name: tokenMeta.name,
     decimals: tokenMeta.decimals,
@@ -85,6 +93,7 @@ export class Denom {
       return {
         denom,
         name: denom,
+        icon: '',
         logo: '',
         symbol: '',
         decimals: 18,

@@ -12,6 +12,29 @@ const isTestnet = (network: Network) => {
   ].includes(network)
 }
 
+const fetchGasPriceFromOwlracle = async (): Promise<string> => {
+  try {
+    const response = (await new HttpClient('https://owlracle.info/eth').get(
+      'gas',
+    )) as {
+      data: OwlracleResult
+    }
+
+    if (!response || (response && !response.data)) {
+      throw new Error('No response from Owrlacle')
+    }
+    const { speeds } = response.data
+    // @ts-ignore
+    const [slow, fast, faster, fastest] = speeds
+
+    return new BigNumberInWei(
+      new BigNumber(faster.gasPrice).multipliedBy(GWEI_IN_WEI),
+    ).toString()
+  } catch (e: any) {
+    throw new Error(e.message)
+  }
+}
+
 const fetchGasPriceFromEtherchain = async (): Promise<string> => {
   try {
     const response = (await new HttpClient(
@@ -25,7 +48,9 @@ const fetchGasPriceFromEtherchain = async (): Promise<string> => {
     }
 
     return new BigNumberInWei(
-      new BigNumber(response.data.fastest * 10).multipliedBy(GWEI_IN_WEI),
+      new BigNumber(
+        response.data.currentBaseFee * response.data.fast,
+      ).multipliedBy(GWEI_IN_WEI),
     ).toString()
   } catch (e: any) {
     throw new Error(e.message)
@@ -52,6 +77,7 @@ const fetchGasPriceFromEthGasStation = async (): Promise<string> => {
   }
 }
 
+// @ts-ignore
 const fetchGasPriceFromMetamaskGasServer = async (): Promise<string> => {
   try {
     const response = (await new HttpClient(
@@ -96,6 +122,37 @@ export interface MetamaskGasServerResult {
   estimateBaseFee: string
 }
 
+export interface OwlracleResult {
+  timestamp: Date
+  lastBlock: number
+  avgTime: number
+  avgTx: number
+  avgGas: number
+  speeds: [
+    {
+      acceptance: number
+      gasPrice: number
+      estimatedFee: number
+    },
+    {
+      acceptance: number
+      gasPrice: number
+      estimatedFee: number
+    },
+    {
+      acceptance: number
+      gasPrice: number
+      estimatedFee: number
+    },
+    {
+      acceptance: number
+      gasPrice: number
+      estimatedFee: number
+    },
+  ]
+  baseFee: number
+}
+
 export interface GasInfo {
   gasPrice: string
   estimatedTimeMs: number
@@ -131,7 +188,7 @@ export const fetchGasPrice = async (network: Network): Promise<string> => {
   }
 
   try {
-    return await fetchGasPriceFromMetamaskGasServer()
+    return await fetchGasPriceFromOwlracle()
   } catch (e) {
     //
   }

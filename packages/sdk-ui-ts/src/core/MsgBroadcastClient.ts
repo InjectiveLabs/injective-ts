@@ -150,22 +150,18 @@ export class MsgBroadcastClient {
     const injectiveAddress = getInjectiveAddress(tx.address)
 
     try {
-      const [msg] = msgs.map((msg) => msg.toDirectSign())
-
+      const [message] = msgs.map((msg) => msg.toDirectSign())
       const transaction = {
-        message: {
-          type: msg.type,
-          value: msg.message,
-        },
+        message,
         memo: tx.memo,
       }
 
-      const signResponse = (await walletStrategy.signTransaction(
+      const { directSignResponse } = (await walletStrategy.signTransaction(
         transaction,
         injectiveAddress,
       )) as any
 
-      return await walletStrategy.sendTransaction(signResponse, {
+      return await walletStrategy.sendTransaction(directSignResponse, {
         chainId,
         address: injectiveAddress,
       })

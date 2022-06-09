@@ -1,8 +1,18 @@
 /* eslint-disable camelcase */
 export interface AccountRestResponse {
   account: {
-    '@type': string
-    code_hash: string
+    address: string
+    account_number: string
+    sequence: string
+    pub_key: {
+      '@type': string
+      key: string
+    }
+  }
+}
+
+export interface InjectiveAccountRestResponse {
+  account: {
     base_account: {
       address: string
       account_number: string

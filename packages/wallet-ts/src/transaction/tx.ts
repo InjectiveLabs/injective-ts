@@ -26,31 +26,25 @@ export const getPublicKey = ({
   chainId: string
   key: string
 }) => {
-  let publicKey
+  let proto
+  let path
 
   if (chainId.startsWith('injective')) {
-    publicKey = {
-      proto: new PubKey(),
-      path: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
-    }
+    proto = new PubKey()
+    path = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
   } else if (chainId.startsWith('evmos')) {
-    publicKey = {
-      proto: new PubKey(),
-      path: '/ethermint.crypto.v1.ethsecp256k1.PubKey',
-    }
+    proto = new PubKey()
+    path = '/ethermint.crypto.v1.ethsecp256k1.PubKey'
   } else {
-    publicKey = {
-      proto: new CosmosPubKey(),
-      path: '/cosmos.crypto.secp256k1.PubKey',
-    }
+    proto = new CosmosPubKey()
+    path = '/cosmos.crypto.secp256k1.PubKey'
   }
 
-  const pubkeyProto = publicKey.proto
-  pubkeyProto.setKey(key)
+  proto.setKey(key)
 
   return createAny(
-    Buffer.from(pubkeyProto.serializeBinary()).toString('base64'),
-    publicKey.path,
+    Buffer.from(proto.serializeBinary()).toString('base64'),
+    path,
   )
 }
 

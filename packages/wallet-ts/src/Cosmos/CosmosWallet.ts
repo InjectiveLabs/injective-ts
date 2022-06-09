@@ -4,9 +4,10 @@ import type {
 } from '@cosmjs/proto-signing'
 import { StargateClient, DeliverTxResponse } from '@cosmjs/stargate'
 import { Coin } from '@injectivelabs/ts-types'
-import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
+import { SignDoc, TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
 import { SigningCosmosClient } from '@cosmjs/launchpad'
+import { fromBase64 } from '@cosmjs/encoding'
 import { createSignedTx, createTransaction } from '../transaction'
 import { CosmosQuery } from './CosmosQuery'
 
@@ -50,19 +51,24 @@ export class CosmosWallet {
       amount: Coin[]
       gas: string
     }
+    pubKey?: string
     chainId: string
     address: string
-    pubKey: string /* in base64 */
     memo?: string
-  }): Promise<DirectSignResponse> {
+  }): Promise<{
+    txRaw: TxRaw
+    signature: string
+    directSignResponse: DirectSignResponse
+  }> {
     const { signer } = this
     const accountDetails = await this.query.fetchAccountDetails(address)
     const { authInfoBytes, bodyBytes, accountNumber } = createTransaction({
-      message,
-      memo,
       fee,
+      memo,
+      message,
       chainId,
-      pubKey,
+      pubKey:
+        pubKey || Buffer.from(accountDetails.pubKey.key).toString('base64'),
       sequence: parseInt(accountDetails.sequence.toString(), 10),
       accountNumber: parseInt(accountDetails.accountNumber.toString(), 10),
     })
@@ -73,7 +79,19 @@ export class CosmosWallet {
       accountNumber,
     })
 
-    return signer.signDirect(address, cosmosSignDoc)
+    const response = await signer.signDirect(address, cosmosSignDoc)
+
+    const txRaw = TxRaw.fromPartial({
+      bodyBytes: response.signed.bodyBytes,
+      authInfoBytes: response.signed.authInfoBytes,
+      signatures: [fromBase64(response.signature.signature)],
+    })
+
+    return {
+      txRaw,
+      directSignResponse: response,
+      signature: response.signature.signature,
+    }
   }
 
   async broadcastTransaction(

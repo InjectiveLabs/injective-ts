@@ -5,6 +5,7 @@ import { TokenMeta } from '@injectivelabs/token-metadata'
  * alongside the TokenMeta (name, decimals, symbol, etc)
  */
 export interface Token extends TokenMeta {
+  icon: string
   denom: string
   isIbc?: boolean
 }
