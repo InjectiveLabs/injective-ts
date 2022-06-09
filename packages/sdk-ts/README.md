@@ -6,9 +6,32 @@
 
 _Accessing decentralized finance through TypeScript (for Web and Node environment)_
 
----
+`@injectivelabs/sdk-ts` is a TypeScript SDK for writing applications on top of the Injective chain in both a Node.js and a browser environment.
 
-## 📚 Installation
+<p align="center">
+  <a href="#"><strong>Documentation</strong></a>
+  ·
+  <a href="https://github.com/InjectiveLabs/sdk-ts-examples">Examples</a>
+  ·
+  <a href="#">API Reference</a>
+  ·
+  <a href="https://www.npmjs.com/package/@injectivelabs/sdk-ts">NPM Package</a>
+  ·
+  <a href="https://github.com/injectivelabs/sdk-ts">GitHub</a>
+</p>
+
+### ✨ Features
+
+- **Written in TypeScript**, with type definitions,
+- Works in Node.js and in the browser,
+- Exposes on-chain data and the exchange-api data,
+- Parses responses into native JavaScript types
+- much more ...
+
+We highly suggest using the `@injectivelabs/sdk-ts` with TypeScript, or JavaScript in a code editor that has support for type declarations, so you can take advantage of the helpful type hints that are included with the package.
+
+
+### 📚 Installation
 
 ```bash
 yarn add @injectivelabs/sdk-ts
@@ -18,48 +41,35 @@ yarn add @injectivelabs/sdk-ts
 
 ## 📖 Documentation
 
-There are couple of components within this package. This package offers clients that can be easily instantiated so you can access all functionalities easily. Also, it offer decoupled exports so you can instantiate classes that you only need so you can utilize tree-shaking in the build process and reduce the file-size of the imports.
+There are two pieces of the `sdk-ts` - **querying a data source** and **making transactions**.
 
-We are going to go through all of the components of the package and explain them in depth.
+### Querying a data source
 
-### Classes
+There are 2 data sources that can be accessed through the `sdk-ts`:
 
-This package contains some utility classes that can enhance the developer experience.
+- The Injective chain itself through a sentry node,
+- The Exchange API indexer (indexer of events from the Injective chain to a MongoDB),
 
-- `Address` class -> Can be used to get details about an injective address,
+For each of the data sources there are two ways that they can be queried:
 
-### Client
+- using the gRPC protocol,
+- using REST
 
-This package contains utility classes which ease the way we consume data from data sources.
+We also have a GraphQL consumer of the Peggy subgraph on Ethereum (used only for tracking deposits and withdrawals on Ethereum).
 
-There are two data sources available:
-- Chain -> Consuming data directly from the chain,
-- Exchange -> Consuming data directly from the exchange (indexer) API,
+For the 2 main data sources, there are abstraction classes that developers can use to access specific modules of the Injective Chain **or** specific modules within the Exchange API. The responses of these requests are always mapped into normal JavaScript objects (regardless of the data source type) and served to the end user.
 
-At the moment, only the gRPC method of consuming the data is supported, we might introduce REST as well in the future.
+### Making Transactions
 
-### Core
+To interact with Injective, the user has to issue a transaction. Each transaction that is broadcasted to Injective can hold multiple messages that can change the state of the Injective chain. Within the `core` folder, developers can find a convenient way to make these messages with methods that can convert these messages in a way that they can be used by developers in different scenarios (broadcasting using the normal cosmos way or converted to EIP712 to be signed using Ethereum wallets).
 
-This package contains utility message classes that can help generate messages which can be packed into a transaction and broadcasted to the chain. Messages are separated into folders that correspond to a module on the Injective chain.
-
-Every message is represented as a `MsgBase` class, which has couple of mapping functionalities:
+Every message extends the `MsgBase` interface, which has couple of mapping functionalities:
 - `toData` -> Converts the Message to a simple Object representation,
-- `toProto` -> Returns a proto representation of the message,
-- `toDirectSign` -> Converts the Message to a proto representation + type (ready for client side usage),
-- `toWeb3` -> Converts the Message to a web3 representation + type (ready for web3-gateway usage i.e browser),
+- `toProto` -> Returns a proto representation of the Message,
+- `toDirectSign` -> Converts the Message to a proto representation (ready to be used in the normal Cosmos way of handling transactions),
+- `toWeb3` -> Converts the Message to a web3 representation + type (ready to be used in the Ethereum way of handling transactions using EIP712 typed data),
 
-### Utils
-
-This package contains some utility functions and constants.
-
-### Local
-
-This package contains some utility functions and constants for client-side usage (a local - node environment)
-
-- `Network` class -> Can be used to get a pre-defined set of endpoints (sentry, api, etc) for easier usage,
-- `PrivateKey` class -> Can be used to sign transactions, etc
-- `InjectiveTx` class -> Can be used to prepare a transaction for signing/broadcasting on the client side,
-- `TxService` class -> Can be used for simulating or broadcasting a transaction on the client side
+There are also some utility classes and functions that are exposed from the package. There is also a `local` folder that exposes some utility classes that can be used to make developers life easier in a Node environment.
 
 ---
 
@@ -69,17 +79,48 @@ Let's go through couple of use-cases of the `sdk-ts` so developers can have a re
 
 ### Consuming data
 
-- Fetching user's balance from the chain
+- Fetching user's inj balance from the chain
 
 ```ts
-// Using the client
-import { ChainClient, Network } from '@injectivelabs/sdk-ts'
+import { getNetworkInfo, Network } from "@injectivelabs/networks";
+import { ExchangeGrpcClient } from "@injectivelabs/sdk-ts/dist/client/exchange/ExchangeGrpcClient";
 
-const network = Network.testnet()
-const injectiveAddress = 'inj1hkhdaj2a2clmq5jq6mspsggqs32vynpk228q3r'
-const denom = 'inj'
-const chainGrpcClient = new ChainClient.GrpcClient(network.sentryGrpcApi)
-console.log(await chainGrpcClient.bankApi.balance({ injectiveAddress, denom }))
+(async () => {
+  const network = getNetworkInfo(Network.TestnetK8s);
+  const injectiveAddress = "inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku";
+  const chainClient = new ExchangeGrpcClient(
+    network.sentryGrpcApi
+  );
+
+  const balances = await chainClient.bank.fetchBalances(
+    injectiveAddress
+  );
+  const injBalance = balances.find(balace => balance.denom === 'inj')
+
+  console.log(injBalance);
+})();
+
+```
+
+- Fetching user's subaccount balance from the exchange api
+
+```ts
+import { getNetworkInfo, Network } from "@injectivelabs/networks";
+import { ChainGrpcClient } from "@injectivelabs/sdk-ts/dist/client/chain/ChainGrpcClient";
+
+(async () => {
+  const network = getNetworkInfo(Network.TestnetK8s);
+  const subaccountId = "0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000000";
+  const exchangeClient = new ChainGrpcClient(
+    network.exchangeApi
+  );
+
+  const subaccountBalancesList = await exchangeClient.account.fetchSubaccountBalancesList(
+    subaccountId
+  );
+
+  console.log(subaccountBalancesList);
+})();
 ```
 
 ```ts
@@ -115,81 +156,118 @@ console.log(await derivativesApi.markets())
 
 ### Broadcasting Transactions
 
-- Creating a spot limit order transaction and broadcasting it to the chain
+- Bidding on an auction
 
 ```ts
-import { Network, ExchangeCore, ExchangeClient, PrivateKey, InjectiveTx, TxService } from '@injectivelabs/sdk-ts'
+import { getNetworkInfo, Network } from "@injectivelabs/networks";
+import {
+  AuctionCore,
+  ChainClient,
+  PrivateKey,
+  BaseAccount,
+  TxInjective,
+  TxService,
+} from "@injectivelabs/sdk-ts";
+import { BigNumberInBase } from "@injectivelabs/utils";
 
-const network = Network.testnet()
-const privateKey = PrivateKey.fromPrivateKey('f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3')
+/** MsgBid Example */
+(async () => {
+  const network = getNetworkInfo(Network.TestnetK8s);
+  const privateKey = PrivateKey.fromPrivateKey(
+    "f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3"
+  );
+  const injectiveAddress = privateKey.toBech32();
+  console.log(injectiveAddress, privateKey.toHex());
 
-/** Account Details **/
-const injectiveAddress = "inj1ql0alrq4e4ec6rv9svqjwer0k6ewfjkaay9lne";
-const authApi = new ExchangeClient.AuthApi(network.sentryGrpcApi)
-const accountDetails = await authApi.account(injectiveAddress)
+  /** Account Details **/
+  const accountDetails = await new ChainClient.AuthRestApi(
+    network.sentryHttpApi
+  ).account(injectiveAddress);
+  const baseAccount = BaseAccount.fromRestApi(accountDetails);
 
-/** Limit Order Details */
-const price = 5;
-const quantity = 10;
-const baseDecimals = 18; // INJ has 18 decimals
-const quoteDecimals = 6; // USDT has 6 decimals
-const marketId =
-  "0xa508cb32923323679f29a032c70342c147c17d0145625922b0ef22e955c844c0"; // INJ/USDT on testnet;
-const subaccountId =
-  "0x07dfdf8c15cd738d0d85830127646fb6b2e4cadd000000000000000000000000";
-const orderType = 1; /* Buy, 2 for Sale */
+  /** Prepare the Message */
+  const auctionModuleState = await new ChainClient.AuctionApi(
+    network.sentryGrpcApi
+  ).moduleState();
+  const latestRound = auctionModuleState.getState()?.getAuctionRound();
+  const round = latestRound || 1;
+  const bid = 1; /** 100 INJ */
+  const amount = {
+    amount: new BigNumberInBase(bid).toWei().toFixed(),
+    denom: "inj",
+  };
+  const msg = new AuctionCore.MsgBid({
+    round,
+    amount,
+    injectiveAddress,
+  });
 
-/** Preparing the transaction */
-const msg = new ExchangeCore.MsgCreateSpotLimitOrder({
-  marketId,
-  subaccountId,
-  injectiveAddress,
-  orderType,
-  price,
-  quantity,
-  triggerPrice: '0',
-  feeRecipient: injectiveAddress
-})
-const injectiveTx = new InjectiveTx({
-  accountDetails,
-  tx: {
+  /** Prepare the Transaction **/
+  const txInjective = new TxInjective({
+    baseAccount,
     msgs: [msg],
     chainId: network.chainId,
-    address: injectiveAddress
-  }
-})
-const signature = privateKey.sign(injectiveTx.signDoc.serializeBinary())
-const txRaw = injectiveTx.toTxRaw(signature)
-console.log(`Transaction Hash: ${InjectiveTx.getTxHash(txRaw)}`);
+    address: injectiveAddress,
+  });
 
-/** Simulating and Broadcasting a transaction */
-const txService = new TxService({ txRaw, endpoint: network.sentryGrpcApi })
-const simulationResponse = await txService.simulate()
-console.log(
-  `Transaction simulation response: ${JSON.stringify(simulationResponse.gasInfo)}`
-);
+  /** Sign transaction */
+  const signature = await privateKey.sign(txInjective.signBytes);
+  const signedTxInjective = txInjective.withSignature(signature);
 
-const txResponse = await txService.broadcast()
-console.log(
-  `Broadcasted transaction hash: ${JSON.stringify(txResponse.txhash)}`
-);
+  /** Calculate hash of the transaction */
+  console.log(`Transaction Hash: ${signedTxInjective.getTxHash()}`);
+
+  const txService = new TxService({
+    txInjective: signedTxInjective,
+    endpoint: network.sentryGrpcApi,
+  });
+
+  /** Simulate transaction */
+  const simulationResponse = await txService.simulate();
+  console.log(
+    `Transaction simulation response: ${JSON.stringify(
+      simulationResponse.gasInfo
+    )}`
+  );
+
+  /** Broadcast transaction */
+  const txResponse = await txService.broadcast();
+  console.log(
+    `Broadcasted transaction hash: ${JSON.stringify(txResponse.txhash)}`
+  );
+})();
 ```
 
 ### Streaming Data
 
----
+- Streaming users subaccount balances from the exchange API
 
-## 🖱️ Examples
+```ts
+import { getNetworkInfo, Network } from "@injectivelabs/networks";
+import { protoObjectToJson } from "@injectivelabs/sdk-ts";
+import { ExchangeGrpcStreamClient } from "@injectivelabs/sdk-ts/dist/client/exchange/ExchangeGrpcStreamClient";
 
-To run an example, `cd` into the `examples` folder and execute the desired example by running:
+(async () => {
+  const network = getNetworkInfo(Network.TestnetK8s);
 
-```bash
-yarn ts-node pathToExample
+  const subaccountId =
+    "0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000000";
 
-## Example: yarn ts-node ./core/MsgBid.ts
+  const exchangeClient = new ExchangeGrpcStreamClient(
+    network.exchangeApi
+  );
+
+  await exchangeClient.account.streamSubaccountBalance({
+    subaccountId,
+    callback: (subaccountBalance) => {
+      console.log(protoObjectToJson(subaccountBalance));
+    },
+    onEndCallback: (status) => {
+      console.log("Stream has ended with status: " + status);
+    },
+  });
+})();
 ```
-
-Don't forget to do `yarn` and install dependencies before executing any example.
 
 ---
 
@@ -197,9 +275,18 @@ Don't forget to do `yarn` and install dependencies before executing any example.
 
 Reach out to us at one of the following places!
 
-- Website at <a href="https://injectiveprotocol.com" target="_blank">`injectiveprotocol.com`</a>
+- Website at <a href="https://injective.com" target="_blank">`injective.com`</a>
 - Twitter at <a href="https://twitter.com/InjectiveLabs" target="_blank">`@InjectiveLabs`</a>
+- Discord at <a href="https://discord.com/invite/NK4qdbv" target="_blank">`Discord`</a>
+- Telegram at <a href="https://t.me/joininjective" target="_blank">`Telegram`</a>
 
 ---
 
 ## 🔓 License
+
+This software is licensed under the MIT license. See [LICENSE](./LICENSE) for full disclosure.
+
+<p>&nbsp;</p>
+<div align="center">
+  <sub><em>Powering the future of decentralized finance.</em></sub>
+</div>
