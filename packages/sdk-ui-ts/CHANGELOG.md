@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.59...@injectivelabs/sdk-ui-ts@0.0.60) (2022-06-09)
+
+
+### Bug Fixes
+
+* gas prices ([2efbc98](https://github.com/InjectiveLabs/injective-ts/commit/2efbc980f079a284049188e6e4ab89040a47b572))
+
+
+
+
+
 ## [0.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.58...@injectivelabs/sdk-ui-ts@0.0.59) (2022-06-09)
 
 
