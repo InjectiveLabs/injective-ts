@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.64...@injectivelabs/sdk-ts@0.0.65) (2022-06-09)
+
+
+### Bug Fixes
+
+* path import for icons ([ef07786](https://github.com/InjectiveLabs/injective-ts/commit/ef0778652376013a8b91109935156cd5d410932b))
+
+
+
+
+
 ## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.63...@injectivelabs/sdk-ts@0.0.64) (2022-06-09)
 
 
