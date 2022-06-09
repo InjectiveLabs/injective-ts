@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.61...@injectivelabs/sdk-ui-ts@0.0.62) (2022-06-09)
+
+
+### Bug Fixes
+
+* signature derivation ([6f0b5d2](https://github.com/InjectiveLabs/injective-ts/commit/6f0b5d27fafbddaf49831d01bc53e27fe92d53f7))
+
+
+
+
+
 ## [0.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.60...@injectivelabs/sdk-ui-ts@0.0.61) (2022-06-09)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
