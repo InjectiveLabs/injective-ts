@@ -115,7 +115,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     limit,
     skip,
   }: {
-    receiver: string
+    receiver?: string
     sender?: string
     limit?: number
     skip?: number
@@ -157,7 +157,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     limit,
     skip,
   }: {
-    sender: string
+    sender?: string
     receiver?: string
     limit?: number
     skip?: number
@@ -311,8 +311,8 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     limit,
     skip,
   }: {
-    sender: string
-    receiver: string
+    sender?: string
+    receiver?: string
     srcChannel?: string
     srcPort?: string
     destChannel?: string
