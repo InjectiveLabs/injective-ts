@@ -72,7 +72,7 @@ export interface Message {
   message: any
 }
 
-export interface Transaction extends Omit<BaseTransaction, 'messages'> {
+export interface ExplorerTransaction extends Omit<BaseTransaction, 'messages'> {
   memo: string
   messages: Message[]
   parsedMessages?: Message[]
@@ -80,11 +80,11 @@ export interface Transaction extends Omit<BaseTransaction, 'messages'> {
 
 export type TransactionListItem = {
   key: number
-  list: Transaction[]
+  list: ExplorerTransaction[]
 }
 
-export interface BlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
-  txs: Transaction[]
+export interface ExplorerBlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
+  txs: ExplorerTransaction[]
 }
 
 export enum ValidatorUptimeStatus {

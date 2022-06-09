@@ -2,9 +2,9 @@ import BaseRestConsumer from '../../BaseRestConsumer'
 import {
   ExplorerApiResponse,
   BlockFromExplorerApiResponse,
-  BlockWithTxs,
+  ExplorerBlockWithTxs,
   TransactionFromExplorerApiResponse,
-  Transaction,
+  ExplorerTransaction,
   ValidatorUptimeFromExplorerApiResponse,
   ExplorerValidatorUptime,
 } from '../types/explorer-rest'
@@ -18,7 +18,7 @@ import { ExchangeRestExplorerTransformer } from '../transformers'
 import { Block, ExplorerValidator } from '../types/explorer'
 
 export class ExchangeRestExplorerApi extends BaseRestConsumer {
-  async fetchBlock(blockHashHeight: string): Promise<BlockWithTxs> {
+  async fetchBlock(blockHashHeight: string): Promise<ExplorerBlockWithTxs> {
     try {
       const response = (await this.client.get(
         `blocks/${blockHashHeight}`,
@@ -52,7 +52,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
   async fetchBlocksWithTx(params?: {
     before?: number
     limit?: number
-  }): Promise<{ total: number; blocks: BlockWithTxs[] }> {
+  }): Promise<{ total: number; blocks: ExplorerBlockWithTxs[] }> {
     try {
       const { before, limit } = params || { limit: 50 }
       const response = (await this.client.get('blocks', {
@@ -77,7 +77,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     before?: number
     limit?: number
     skip?: number
-  }): Promise<{ total: number; transactions: Transaction[] }> {
+  }): Promise<{ total: number; transactions: ExplorerTransaction[] }> {
     try {
       const { before, limit, skip } = params || { limit: 50 }
       const response = (await this.client.get('txs', {
@@ -109,7 +109,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     before?: number
     limit?: number
     skip?: number
-  }): Promise<{ total: number; transactions: Transaction[] }> {
+  }): Promise<{ total: number; transactions: ExplorerTransaction[] }> {
     try {
       const response = (await this.client.get(`accountTxs/${account}`, {
         before,
@@ -129,7 +129,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchTransaction(hash: string): Promise<Transaction> {
+  async fetchTransaction(hash: string): Promise<ExplorerTransaction> {
     try {
       const response = (await this.client.get(
         `txs/${hash}`,
