@@ -21,7 +21,7 @@ export const tokenMetaToToken = (
     denom,
     logo: path.join(
       '/',
-      'vendors',
+      'vendor',
       '@injectivelabs',
       'token-metadata',
       tokenMeta.logo,
