@@ -271,6 +271,12 @@ import { ExchangeGrpcStreamClient } from "@injectivelabs/sdk-ts/dist/client/exch
 
 ---
 
+## 📜 Contribution
+
+**Contribution guides and practices will be available once there is a stable foundation of the whole package set within the `injective-ts` repo.**
+
+---
+
 ## ⛑ Support
 
 Reach out to us at one of the following places!

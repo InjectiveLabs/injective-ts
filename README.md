@@ -52,6 +52,12 @@ To get a sense of the packages and their functionality, we are going to list the
 
 ---
 
+## 📜 Contribution
+
+**Contribution guides and practices will be available once there is a stable foundation of the whole package set within the `injective-ts` repo.**
+
+---
+
 ## ⛑ Support
 
 Reach out to us at one of the following places!
