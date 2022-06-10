@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.2 (2022-06-10)
+
+
+### Features
+
+* added tx-ts ([ae9ebc7](https://github.com/InjectiveLabs/injective-ts/commit/ae9ebc7e2c34eaf60e894cd70e6b0778e6b71bbf))
+
+
+
+
+
 ## [0.5.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.5.3...@injectivelabs/ts-types@0.5.4) (2022-06-08)
 
 
