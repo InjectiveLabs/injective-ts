@@ -14,6 +14,10 @@ To get a sense of the packages and their functionality, we are going to list the
 
 - `@injectivelabs/sdk-ts` is the sdk powerhouse that provides easily accessing data from any data source (chain, api), regardless of the type of access (grpc, rest), and provides a way to easily compose Messages, pack them into Transactions that can be broadcasted to Injective
 
+
+- `@injectivelabs/wallet-ts` provides a way for different wallet provides to be used to prepare, sign and broadcast transactions on the Injective Chain. There are also some implementations and utility functions for specific blockchains that are not exported as default from the package but they can be reused based on the developers needs.
+
+
 - `@injectivelabs/contracts` is a npm package used for providing an abstraction over some Ethereum smart contracts that can be useful while building applications on top of Injective. These include the `ERC20Contract`, and the `PeggyContract` which is the contract deployed on the Ethereum Network used for the Peggy bridge between Ethereum and Injective. It can also be used to fetch some common contract addresses based on the `ethereumChainId`
 
 - `@injectivelabs/exceptions` provides some exception classes that can be used to provide more context about the Error type thrown from within the applications built on top of Injective
@@ -37,7 +41,7 @@ To get a sense of the packages and their functionality, we are going to list the
 - `@injectivelabs/utils` provides some commonly used utility functions and classes
 
 
-- `@injectivelabs/wallet-ts` provides a way for different wallet provides to be used to prepare, sign and broadcast transactions on the Injective Chain. There are also some implementations and utility functions for specific blockchains that are not exported as default from the package but they can be reused based on the developers needs.
+- `@injectivelabs/tx-ts` provides a way to prepare and broadcast transactions for Injective
 
 
 - `@injectivelabs/dmm-consumer` provides abstractions over some `dmm` functionalities that are used to power up the DMM Dashboard which is part of the Astro incentives program on Injective.

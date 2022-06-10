@@ -20,6 +20,9 @@
       "path": "../token-metadata/tsconfig.json"
     },
     {
+      "path": "../tx-ts/tsconfig.json"
+    },
+    {
       "path": "../contracts/tsconfig.json"
     }
   ]

@@ -8,11 +8,11 @@ import {
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import type Web3 from 'web3'
+import { createTxRaw } from '@injectivelabs/tx-ts'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
 import { CosmosWallet } from '../../cosmos/CosmosWallet'
-import { createSignedTx } from '../../transaction'
 
 export default class Keplr
   extends BaseConcreteStrategy
@@ -83,7 +83,7 @@ export default class Keplr
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     const { keplrWallet } = this
-    const txRaw = createSignedTx(signResponse)
+    const txRaw = createTxRaw(signResponse)
 
     try {
       return keplrWallet.broadcastTx(txRaw)

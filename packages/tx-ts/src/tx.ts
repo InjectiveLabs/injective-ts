@@ -2,22 +2,34 @@ import { StdFee } from '@cosmjs/amino'
 import { Keccak } from 'sha3'
 import {
   TxBody,
-  TxRaw,
   SignDoc,
   SignerInfo,
   AuthInfo,
   ModeInfo,
   Fee,
+  TxRaw,
 } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { SignMode } from '@injectivelabs/chain-api/cosmos/tx/signing/v1beta1/signing_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { PubKey as CosmosPubKey } from '@injectivelabs/chain-api/cosmos/crypto/secp256k1/keys_pb'
 import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { ServiceClient } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/service_pb_service'
+import {
+  BroadcastTxRequest,
+  BroadcastMode,
+  SimulateRequest,
+} from '@injectivelabs/chain-api/cosmos/tx/v1beta1/service_pb'
+import {
+  GasInfo,
+  Result,
+  TxResponse,
+} from '@injectivelabs/chain-api/cosmos/base/abci/v1beta1/abci_pb'
+import { isServerSide } from '@injectivelabs/utils'
 import { createAny, createAnyMessage } from './utils'
 
 export const SIGN_DIRECT = SignMode.SIGN_MODE_DIRECT
-export const LEGACY_AMINO = SignMode.SIGN_MODE_LEGACY_AMINO_JSON
 
 export const getPublicKey = ({
   chainId,
@@ -212,11 +224,83 @@ export const createTransaction = ({
   }
 }
 
-export const createSignedTx = (signatureResponse: DirectSignResponse) => {
+export const createTxRaw = (signatureResponse: DirectSignResponse) => {
   const txRaw = new TxRaw()
   txRaw.setAuthInfoBytes(signatureResponse.signed.authInfoBytes)
   txRaw.setBodyBytes(signatureResponse.signed.bodyBytes)
   txRaw.setSignaturesList([signatureResponse.signature.signature])
 
   return txRaw
+}
+
+export const simulateTx = async ({
+  txRaw,
+  endpoint,
+}: {
+  endpoint: string
+  txRaw: TxRaw
+}): Promise<{
+  result: Result.AsObject
+  gasInfo: GasInfo.AsObject
+}> => {
+  const txService = new ServiceClient(endpoint, {
+    transport: isServerSide() ? NodeHttpTransport() : undefined,
+  })
+
+  const simulateRequest = new SimulateRequest()
+  simulateRequest.setTxBytes(txRaw.serializeBinary())
+
+  try {
+    return new Promise((resolve, reject) =>
+      txService.simulate(simulateRequest, (error, response) => {
+        if (error || !response) {
+          return reject(error)
+        }
+
+        const result = response.getResult()
+        const gasInfo = response.getGasInfo()
+
+        return resolve({
+          result: result ? result.toObject() : ({} as Result.AsObject),
+          gasInfo: gasInfo ? gasInfo.toObject() : ({} as GasInfo.AsObject),
+        })
+      }),
+    )
+  } catch (e: any) {
+    throw new Error(e.message)
+  }
+}
+
+export const broadcastTx = async ({
+  endpoint,
+  txRaw,
+}: {
+  endpoint: string
+  txRaw: TxRaw
+}): Promise<TxResponse.AsObject> => {
+  const txService = new ServiceClient(endpoint, {
+    transport: isServerSide() ? NodeHttpTransport() : undefined,
+  })
+
+  const broadcastTxRequest = new BroadcastTxRequest()
+  broadcastTxRequest.setTxBytes(txRaw.serializeBinary())
+  broadcastTxRequest.setMode(BroadcastMode.BROADCAST_MODE_BLOCK)
+
+  try {
+    return new Promise((resolve, reject) =>
+      txService.broadcastTx(broadcastTxRequest, (error, response) => {
+        if (error || !response) {
+          return reject(error)
+        }
+
+        const txResponse = response.getTxResponse()
+
+        return resolve(
+          (txResponse ? txResponse.toObject() : {}) as TxResponse.AsObject,
+        )
+      }),
+    )
+  } catch (e: any) {
+    throw new Error(e.message)
+  }
 }

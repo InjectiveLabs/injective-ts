@@ -8,7 +8,7 @@ import { SignDoc, TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
 import { SigningCosmosClient } from '@cosmjs/launchpad'
 import { fromBase64 } from '@cosmjs/encoding'
-import { createSignedTx, createTransaction } from '../transaction'
+import { createTxRaw, createTransaction } from '@injectivelabs/tx-ts'
 import { CosmosQuery } from './CosmosQuery'
 
 export class CosmosWallet {
@@ -98,7 +98,7 @@ export class CosmosWallet {
     signResponse: DirectSignResponse,
   ): Promise<DeliverTxResponse> {
     const client = await this.getStargateClient()
-    const txRaw = createSignedTx(signResponse)
+    const txRaw = createTxRaw(signResponse)
 
     return client.broadcastTx(
       txRaw.serializeBinary(),
