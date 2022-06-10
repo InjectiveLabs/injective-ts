@@ -2,13 +2,11 @@ import type {
   OfflineDirectSigner,
   DirectSignResponse,
 } from '@cosmjs/proto-signing'
-import { StargateClient, DeliverTxResponse } from '@cosmjs/stargate'
 import { Coin } from '@injectivelabs/ts-types'
 import { SignDoc, TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
-import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
 import { SigningCosmosClient } from '@cosmjs/launchpad'
 import { fromBase64 } from '@cosmjs/encoding'
-import { createTxRaw, createTransaction } from '@injectivelabs/tx-ts'
+import { createTransaction } from '@injectivelabs/tx-ts'
 import { CosmosQuery } from './CosmosQuery'
 
 export class CosmosWallet {
@@ -16,6 +14,7 @@ export class CosmosWallet {
 
   private rest: string
 
+  // @ts-ignore
   private rpc: string
 
   private signer: OfflineDirectSigner
@@ -94,18 +93,6 @@ export class CosmosWallet {
     }
   }
 
-  async broadcastTransaction(
-    signResponse: DirectSignResponse,
-  ): Promise<DeliverTxResponse> {
-    const client = await this.getStargateClient()
-    const txRaw = createTxRaw(signResponse)
-
-    return client.broadcastTx(
-      txRaw.serializeBinary(),
-      DEFAULT_TIMESTAMP_TIMEOUT_MS,
-    )
-  }
-
   /**
    * Can be used only for broadcasting transactions for
    * cosmos chains that follow the cosmos conventions for
@@ -135,12 +122,6 @@ export class CosmosWallet {
     const signingClient = await this.getStargateSigningClient(address)
 
     return signingClient.signAndBroadcast([message], fee, memo)
-  }
-
-  private async getStargateClient() {
-    const { rpc } = this
-
-    return StargateClient.connect(rpc)
   }
 
   private async getStargateSigningClient(address: string) {
