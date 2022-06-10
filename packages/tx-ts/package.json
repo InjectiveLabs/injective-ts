@@ -27,8 +27,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@cosmjs/amino": "^0.28.4",
-    "@cosmjs/proto-signing": "^0.28.4",
+    "@cosmjs/amino": "0.28.4",
+    "@cosmjs/proto-signing": "0.28.4",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/chain-api": "^1.8.0-rc2",
     "@injectivelabs/utils": "^0.5.7",
