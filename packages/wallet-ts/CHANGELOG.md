@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.28...@injectivelabs/wallet-ts@0.0.29) (2022-06-10)
+
+
+### Bug Fixes
+
+* decoupling wallet from client ([00ce45a](https://github.com/InjectiveLabs/injective-ts/commit/00ce45a4e8f94080feab7535ad0e5f826aa8a885))
+
+
+
+
+
 ## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.27...@injectivelabs/wallet-ts@0.0.28) (2022-06-10)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
