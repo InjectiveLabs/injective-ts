@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use different types of wallets on Injective.",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -41,7 +41,7 @@
     "@injectivelabs/networks": "^0.5.10",
     "@injectivelabs/token-metadata": "^0.5.28",
     "@injectivelabs/ts-types": "^0.5.4",
-    "@injectivelabs/tx-ts": "^0.0.4",
+    "@injectivelabs/tx-ts": "^0.0.5",
     "@injectivelabs/utils": "^0.5.7",
     "@keplr-wallet/cosmos": "^0.10.5",
     "@keplr-wallet/types": "^0.10.5",
