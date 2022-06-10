@@ -22,7 +22,7 @@
         "./packages/tokens-metadata"
       ],
       "@injectivelabs/referral-consumer": [
-        "./packages/referral-consumer"
+        "deprecated/referral-consumer"
       ],
       "@injectivelabs/ui-common": [
         "./deprecated/ui-common"

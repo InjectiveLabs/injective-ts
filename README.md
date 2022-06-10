@@ -43,13 +43,6 @@ To get a sense of the packages and their functionality, we are going to list the
 
 - `@injectivelabs/tx-ts` provides a way to prepare and broadcast transactions for Injective
 
-
-- `@injectivelabs/dmm-consumer` provides abstractions over some `dmm` functionalities that are used to power up the DMM Dashboard which is part of the Astro incentives program on Injective.
-
-
-- `@injectivelabs/referral-consumer` provides abstractions over a simple off-chain service built for enabling referrals functionality for exchanges built on top of Injective.
-
-
 ---
 
 ## 📜 Contribution
