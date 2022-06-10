@@ -35,7 +35,7 @@
     "@cosmjs/stargate": "^0.28.4",
     "@ethereumjs/common": "^2.6.3",
     "@ethereumjs/tx": "^3.5.1",
-    "@injectivelabs/chain-api": "^1.8.0-rc1",
+    "@injectivelabs/chain-api": "^1.8.0-rc2",
     "@injectivelabs/contracts": "^0.5.28",
     "@injectivelabs/exceptions": "^0.5.5",
     "@injectivelabs/networks": "^0.5.10",
