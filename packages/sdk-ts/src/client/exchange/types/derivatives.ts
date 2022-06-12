@@ -12,7 +12,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
-import { TokenMeta } from './exchange'
+import { TokenMeta } from '@injectivelabs/token-metadata'
 
 export enum DerivativeOrderSide {
   Unspecified = 'unspecified',

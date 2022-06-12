@@ -20,6 +20,9 @@
       "path": "../token-utils/tsconfig.json"
     },
     {
+      "path": "../token-metadata/tsconfig.json"
+    },
+    {
       "path": "../sdk-ts/tsconfig.json"
     },
   ],

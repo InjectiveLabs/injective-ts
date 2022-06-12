@@ -36,6 +36,7 @@
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/exceptions": "^0.5.5",
     "@injectivelabs/networks": "^0.5.10",
+    "@injectivelabs/token-metadata": "^0.5.28",
     "@injectivelabs/sdk-ts": "^0.0.61",
     "@injectivelabs/token-utils": "^0.5.7",
     "@injectivelabs/ts-types": "^0.5.4",

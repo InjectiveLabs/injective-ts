@@ -14,15 +14,6 @@ export interface Orderbook {
   sells: PriceLevel[]
 }
 
-export interface TokenMeta {
-  name: string
-  address: string
-  symbol: string
-  logo: string
-  decimals: number
-  updatedAt: number
-}
-
 export enum ExchangeOracleType {
   UNSPECIFIED = 0,
   BAND = 1,
@@ -35,6 +26,10 @@ export enum ExchangeOracleType {
   UMA = 8,
   PYTH = 9,
   BANDIBC = 10,
+}
+
+export interface ExchangeTokenMeta extends GrpcTokenMeta.AsObject {
+  coinGeckoId: string
 }
 
 export { GrpcTokenMeta, GrpcPriceLevel }

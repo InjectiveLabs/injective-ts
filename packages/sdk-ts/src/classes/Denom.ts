@@ -1,10 +1,9 @@
 import { ChainGrpcIbcApi } from '../client/chain/grpc/ChainGrpcIbcApi'
 import {
-  Erc20TokenMetaFactory,
-  Erc20TokenMeta,
+  TokenMetaUtilFactory,
+  TokenMetaUtil,
 } from '@injectivelabs/token-metadata'
-import { IbcToken, Token } from '../types/denom'
-import { TokenMeta } from '@injectivelabs/token-metadata'
+import { TokenMeta, IbcToken, Token } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '../utils'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
 
@@ -32,14 +31,14 @@ export class Denom {
 
   protected ibcApi: ChainGrpcIbcApi
 
-  protected erc20TokenMeta: Erc20TokenMeta
+  protected erc20TokenMeta: TokenMetaUtil
 
   constructor(denom: string, network: Network = Network.Mainnet) {
     this.denom = denom
 
     const endpoints = getEndpointsForNetwork(network)
     this.ibcApi = new ChainGrpcIbcApi(endpoints.sentryGrpcApi)
-    this.erc20TokenMeta = Erc20TokenMetaFactory.make(network)
+    this.erc20TokenMeta = TokenMetaUtilFactory.make(network)
   }
 
   async getPeggyDenomToken(): Promise<Token> {

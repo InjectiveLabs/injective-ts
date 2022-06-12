@@ -13,8 +13,8 @@ import {
   PEGGY_TESTNET_GRAPH_URL,
 } from '../constants'
 import { CosmosChainId, TestnetCosmosChainId } from '@injectivelabs/ts-types'
-import { erc20TokenMeta } from '@injectivelabs/token-metadata'
-import { Token } from '../types'
+import { tokenMetaUtil } from '@injectivelabs/token-metadata'
+import { Token } from '@injectivelabs/token-metadata'
 
 export const InProgressStates = [
   BridgeTransactionState.Confirming,
@@ -97,66 +97,66 @@ export const tokenDenomsPerNetwork = [
 
 export const cosmosNativeDenomsFromChainId = {
   [CosmosChainId.Cosmoshub]: {
-    ...erc20TokenMeta.getMetaBySymbol('ATOM'),
+    ...tokenMetaUtil.getMetaBySymbol('ATOM'),
     denom: 'uatom',
   },
   [CosmosChainId.Osmosis]: [
     {
-      ...erc20TokenMeta.getMetaBySymbol('OSMO'),
+      ...tokenMetaUtil.getMetaBySymbol('OSMO'),
       denom: 'uosmo',
     },
     {
-      ...erc20TokenMeta.getMetaBySymbol('INJ'),
+      ...tokenMetaUtil.getMetaBySymbol('INJ'),
       denom:
         'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
     },
   ],
   [CosmosChainId.Terra]: [
     {
-      ...erc20TokenMeta.getMetaBySymbol('LUNA'),
+      ...tokenMetaUtil.getMetaBySymbol('LUNA'),
       denom: 'uluna',
     },
     {
-      ...erc20TokenMeta.getMetaBySymbol('UST'),
+      ...tokenMetaUtil.getMetaBySymbol('UST'),
       denom: 'uusd',
     },
   ],
   [CosmosChainId.Injective]: {
-    ...erc20TokenMeta.getMetaBySymbol('INJ'),
+    ...tokenMetaUtil.getMetaBySymbol('INJ'),
     denom: 'inj',
   },
   [CosmosChainId.Chihuahua]: {
-    ...erc20TokenMeta.getMetaBySymbol('HUAHUA'),
+    ...tokenMetaUtil.getMetaBySymbol('HUAHUA'),
     denom: 'uhuahua',
   },
   [CosmosChainId.Juno]: {
-    ...erc20TokenMeta.getMetaBySymbol('JUNO'),
+    ...tokenMetaUtil.getMetaBySymbol('JUNO'),
     denom: 'ujuno',
   },
   [CosmosChainId.Axelar]: [
     {
-      ...erc20TokenMeta.getMetaBySymbol('AXL'),
+      ...tokenMetaUtil.getMetaBySymbol('AXL'),
       denom: 'uaxl',
     },
     {
-      ...erc20TokenMeta.getMetaBySymbol('DOT'),
+      ...tokenMetaUtil.getMetaBySymbol('DOT'),
       denom: 'dot-planck',
     },
   ],
   [CosmosChainId.Evmos]: {
-    ...erc20TokenMeta.getMetaBySymbol('EVMOS'),
+    ...tokenMetaUtil.getMetaBySymbol('EVMOS'),
     denom: 'aevmos',
   },
   [CosmosChainId.Persistence]: {
-    ...erc20TokenMeta.getMetaBySymbol('XPRT'),
+    ...tokenMetaUtil.getMetaBySymbol('XPRT'),
     denom: 'uxprt',
   },
   [TestnetCosmosChainId.Cosmoshub]: {
-    ...erc20TokenMeta.getMetaBySymbol('UPHOTON'),
+    ...tokenMetaUtil.getMetaBySymbol('UPHOTON'),
     denom: 'uphoton',
   },
   [TestnetCosmosChainId.Injective]: {
-    ...erc20TokenMeta.getMetaBySymbol('INJ'),
+    ...tokenMetaUtil.getMetaBySymbol('INJ'),
     denom: 'inj',
   },
 } as Record<string, Token | Token[]>

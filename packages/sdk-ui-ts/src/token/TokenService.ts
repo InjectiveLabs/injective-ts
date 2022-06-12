@@ -14,13 +14,12 @@ import {
   BankBalanceWithToken,
   DenomTrace,
   IbcBankBalanceWithToken,
-  IbcToken,
   SubaccountBalanceWithToken,
-  Token,
   UiBridgeTransaction,
   UiBridgeTransactionWithToken,
 } from '../types'
 import { ibcTokens } from '@injectivelabs/token-metadata'
+import { Token, IbcToken } from '@injectivelabs/token-metadata'
 
 export class TokenService {
   public network: Network

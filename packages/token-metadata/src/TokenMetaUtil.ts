@@ -1,7 +1,7 @@
 import { getMappedTokensByAddress } from './tokens/helpers/mapByAddress'
 import { TokenMeta } from './types'
 
-export class Erc20TokenMeta {
+export class TokenMetaUtil {
   protected tokens: Record<string, TokenMeta>
 
   protected tokensByAddress: Record<string, TokenMeta>

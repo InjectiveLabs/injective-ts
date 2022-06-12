@@ -15,7 +15,7 @@ import {
   Orderbook,
   PriceLevel,
   GrpcTokenMeta,
-  TokenMeta,
+  ExchangeTokenMeta,
 } from '../types/exchange'
 import {
   MarketsResponse as SpotMarketsResponse,
@@ -35,7 +35,7 @@ const zeroPriceLevel = () => ({
 export class ExchangeGrpcSpotTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,
-  ): TokenMeta | undefined {
+  ): ExchangeTokenMeta | undefined {
     if (!tokenMeta) {
       return
     }
@@ -47,6 +47,7 @@ export class ExchangeGrpcSpotTransformer {
       logo: tokenMeta.getLogo(),
       decimals: tokenMeta.getDecimals(),
       updatedAt: tokenMeta.getUpdatedAt(),
+      coinGeckoId: '',
     }
   }
 

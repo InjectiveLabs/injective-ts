@@ -10,7 +10,7 @@ import {
   ChronosDerivativeMarketSummary,
   AllChronosDerivativeMarketSummary,
 } from '@injectivelabs/sdk-ts/dist/client/exchange/types/derivatives-rest'
-import { Token } from './../../types/token'
+import { Token } from '@injectivelabs/token-metadata'
 import { Change, MarketBase, MarketType } from './common'
 
 export interface UiBaseDerivativeMarket

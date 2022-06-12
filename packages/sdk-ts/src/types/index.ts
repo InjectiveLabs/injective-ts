@@ -1,7 +1,6 @@
 import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 
 export * from './exchange'
-export * from './denom'
 export * from './pagination'
 
 export interface Coin {

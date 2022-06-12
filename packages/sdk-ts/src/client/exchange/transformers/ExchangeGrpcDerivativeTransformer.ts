@@ -29,7 +29,7 @@ import {
   Orderbook,
   PriceLevel,
   GrpcTokenMeta,
-  TokenMeta,
+  ExchangeTokenMeta,
 } from '../types/exchange'
 import {
   FundingPaymentsResponse,
@@ -53,7 +53,7 @@ const zeroPositionDelta = () => ({
 export class ExchangeGrpcDerivativeTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,
-  ): TokenMeta | undefined {
+  ): ExchangeTokenMeta | undefined {
     if (!tokenMeta) {
       return
     }
@@ -65,6 +65,7 @@ export class ExchangeGrpcDerivativeTransformer {
       logo: tokenMeta.getLogo(),
       decimals: tokenMeta.getDecimals(),
       updatedAt: tokenMeta.getUpdatedAt(),
+      coinGeckoId: '',
     }
   }
 
