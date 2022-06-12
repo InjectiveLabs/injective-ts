@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.73](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.72...@injectivelabs/sdk-ts@0.0.73) (2022-06-12)
+
+
+### Bug Fixes
+
+* bid type map ([8cd3a6d](https://github.com/InjectiveLabs/injective-ts/commit/8cd3a6db24c241eea5255e8d713a058d4036de94))
+
+
+
+
+
 ## [0.0.72](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.71...@injectivelabs/sdk-ts@0.0.72) (2022-06-12)
 
 
