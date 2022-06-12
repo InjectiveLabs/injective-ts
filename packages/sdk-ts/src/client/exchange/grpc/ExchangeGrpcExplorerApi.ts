@@ -13,12 +13,19 @@ import {
   GetPeggyWithdrawalTxsResponse,
   GetIBCTransferTxsRequest,
   GetIBCTransferTxsResponse,
+  GetBlockRequest,
+  GetBlockResponse,
+  GetBlocksRequest,
+  GetBlocksResponse,
+  GetTxsRequest,
+  GetTxsResponse,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 import { InjectiveExplorerRPC } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ExchangeGrpcExplorerTransformer } from '../transformers'
 
 export class ExchangeGrpcExplorerApi extends BaseConsumer {
+
   async fetchTxByHash(hash: string) {
     const request = new GetTxByTxHashRequest()
     request.setHash(hash)
@@ -42,7 +49,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     type,
   }: {
     address: string
-    limit: number
+    limit?: number
     type?: string
   }) {
     const request = new GetAccountTxsRequest()
@@ -115,7 +122,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     limit,
     skip,
   }: {
-    receiver: string
+    receiver?: string
     sender?: string
     limit?: number
     skip?: number
@@ -159,7 +166,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     limit,
     skip,
   }: {
-    sender: string
+    sender?: string
     receiver?: string
     limit?: number
     skip?: number
@@ -197,6 +204,114 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     }
   }
 
+  async fetchBlocks({
+    before,
+    after,
+    limit,
+  }: {
+    before?: number
+    after?: number
+    limit?: number
+  }) {
+    const request = new GetBlocksRequest()
+
+    if (before) {
+      request.setBefore(before)
+    }
+
+    if (after) {
+      request.setAfter(after)
+    }
+
+    if (limit) {
+      request.setLimit(limit)
+    }
+
+    try {
+      const response = await this.request<
+        GetBlocksRequest,
+        GetBlocksResponse,
+        typeof InjectiveExplorerRPC.GetBlocks
+        >(request, InjectiveExplorerRPC.GetBlocks)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchBlock(id: string) {
+    const request = new GetBlockRequest()
+
+    request.setId(id)
+
+    try {
+      const response = await this.request<
+        GetBlockRequest,
+        GetBlockResponse,
+        typeof InjectiveExplorerRPC.GetBlock
+        >(request, InjectiveExplorerRPC.GetBlock)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchTxs({
+    before,
+    after,
+    limit,
+    skip,
+    type,
+    module,
+  }: {
+    before?: number
+    after?: number
+    limit?: number
+    skip?: number
+    type?: string
+    module?: string
+  }) {
+    const request = new GetTxsRequest()
+
+    if (before) {
+      request.setBefore(before)
+    }
+
+    if (after) {
+      request.setAfter(after)
+    }
+
+    if (limit) {
+      request.setLimit(limit)
+    }
+
+    if (skip) {
+      request.setSkip(skip)
+    }
+
+    if (type) {
+      request.setType(type)
+    }
+
+    if (module) {
+      request.setModule(module)
+    }
+
+    try {
+      const response = await this.request<
+        GetTxsRequest,
+        GetTxsResponse,
+        typeof InjectiveExplorerRPC.GetTxs
+        >(request, InjectiveExplorerRPC.GetTxs)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
   async fetchIBCTransferTxs({
     sender,
     receiver,
@@ -207,7 +322,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     limit,
     skip,
   }: {
-    sender: string
+    sender?: string
     receiver?: string
     srcChannel?: string
     srcPort?: string
@@ -264,4 +379,5 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
       throw new Error(e.message)
     }
   }
+
 }
