@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.72](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.71...@injectivelabs/sdk-ts@0.0.72) (2022-06-12)
+
+
+### Bug Fixes
+
+* change limit param to optional ([daae254](https://github.com/InjectiveLabs/injective-ts/commit/daae254755b3f8c495e358a6b95fba0b0b35c03e))
+* trigger price null ([4ea1a7c](https://github.com/InjectiveLabs/injective-ts/commit/4ea1a7ce46ad668fd12eda61479366403f0d52b0))
+
+
+### Features
+
+* add more methods in ExplorerRPC ([08b4a0a](https://github.com/InjectiveLabs/injective-ts/commit/08b4a0a6f076379bbfaee6d1f25a07ed9755cf11))
+
+
+
+
+
 ## [0.0.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.70...@injectivelabs/sdk-ts@0.0.71) (2022-06-12)
 
 
