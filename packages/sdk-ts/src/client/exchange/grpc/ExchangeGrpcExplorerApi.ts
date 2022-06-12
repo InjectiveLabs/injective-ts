@@ -208,7 +208,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     skip,
   }: {
     sender: string
-    receiver: string
+    receiver?: string
     srcChannel?: string
     srcPort?: string
     destChannel?: string
@@ -237,12 +237,15 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     if (srcChannel) {
       request.setSrcChannel(srcChannel)
     }
+
     if (srcPort) {
       request.setSrcPort(srcPort)
     }
+
     if (destChannel) {
       request.setDestChannel(destChannel)
     }
+
     if (destPort) {
       request.setDestPort(destPort)
     }
