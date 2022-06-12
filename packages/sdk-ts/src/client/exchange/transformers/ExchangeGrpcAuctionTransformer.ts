@@ -1,5 +1,10 @@
 import { GrpcCoin } from '../../../types/index'
-import { GrpcExchangeBid, GrpcAuction, Bid, Auction } from '../types/auction'
+import {
+  GrpcExchangeBid,
+  GrpcAuction,
+  ExchangeBid,
+  Auction,
+} from '../types/auction'
 import { Coin } from '@injectivelabs/ts-types'
 import {
   AuctionResponse,
@@ -9,7 +14,7 @@ import {
 export class ExchangeGrpcAuctionTransformer {
   static auctionResponseToAuction(response: AuctionResponse): {
     auction: Auction
-    bids: Bid[]
+    bids: ExchangeBid[]
   } {
     return {
       auction: ExchangeGrpcAuctionTransformer.grpcAuctionToAuction(
@@ -27,11 +32,11 @@ export class ExchangeGrpcAuctionTransformer {
       .map((a) => ExchangeGrpcAuctionTransformer.grpcAuctionToAuction(a))
   }
 
-  static grpcBidToBid(grpcBid: GrpcExchangeBid): Bid {
+  static grpcBidToBid(grpcBid: GrpcExchangeBid): ExchangeBid {
     return {
       bidder: grpcBid.getBidder(),
-      amount: grpcBid.getAmount(),
-      timestamp: grpcBid.getTimestamp(),
+      bidAmount: grpcBid.getAmount(),
+      bidTimestamp: grpcBid.getTimestamp(),
     }
   }
 

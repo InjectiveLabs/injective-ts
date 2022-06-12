@@ -1,5 +1,6 @@
 import { StreamOperation } from '@injectivelabs/ts-types'
 import { StreamBidsResponse } from '@injectivelabs/exchange-api/injective_auction_rpc_pb'
+import { ExchangeBid } from '../types'
 
 export class ExchangeAuctionStreamTransformer {
   static bidsStreamCallback = (response: StreamBidsResponse) => ({
@@ -7,7 +8,7 @@ export class ExchangeAuctionStreamTransformer {
       bidder: response.getBidder(),
       bidAmount: response.getBidAmount(),
       bidTimestamp: response.getTimestamp(),
-    },
+    } as ExchangeBid,
     operation: StreamOperation.Insert,
   })
 }

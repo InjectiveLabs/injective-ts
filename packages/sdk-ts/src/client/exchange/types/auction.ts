@@ -5,10 +5,10 @@ import {
 } from '@injectivelabs/exchange-api/injective_auction_rpc_pb'
 import { Coin } from '@injectivelabs/ts-types'
 
-export interface Bid {
+export interface ExchangeBid {
   bidder: string
-  amount: string
-  timestamp: number
+  bidAmount: string
+  bidTimestamp: number
 }
 
 export interface Auction {
