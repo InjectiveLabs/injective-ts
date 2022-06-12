@@ -6,7 +6,6 @@ import {
 import { TokenMeta, IbcToken, Token } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '../utils'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
-import path from 'path'
 
 export const tokenMetaToToken = (
   tokenMeta: TokenMeta | undefined,
@@ -18,13 +17,7 @@ export const tokenMetaToToken = (
 
   return {
     denom,
-    logo: path.join(
-      '/',
-      'vendor',
-      '@injectivelabs',
-      'token-metadata',
-      tokenMeta.logo,
-    ),
+    logo: '/' + tokenMeta.logo,
     icon: tokenMeta.logo,
     symbol: tokenMeta.symbol,
     name: tokenMeta.name,

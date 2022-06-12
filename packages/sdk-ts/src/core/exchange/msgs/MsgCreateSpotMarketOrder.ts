@@ -42,18 +42,16 @@ const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
   orderInfo.setPrice(params.price)
   orderInfo.setQuantity(params.quantity)
 
-  const derivativeOrder = new SpotOrder()
-  derivativeOrder.setMarketId(params.marketId)
-  derivativeOrder.setOrderType(params.orderType)
-  derivativeOrder.setOrderInfo(orderInfo)
+  const spotOrder = new SpotOrder()
+  spotOrder.setMarketId(params.marketId)
+  spotOrder.setOrderType(params.orderType)
+  spotOrder.setOrderInfo(orderInfo)
 
-  if (params.triggerPrice) {
-    derivativeOrder.setTriggerPrice(params.triggerPrice)
-  }
+  spotOrder.setTriggerPrice(params.triggerPrice || '0')
 
   const message = new BaseMsgCreateSpotMarketOrder()
   message.setSender(params.injectiveAddress)
-  message.setOrder(derivativeOrder)
+  message.setOrder(spotOrder)
 
   return message
 }

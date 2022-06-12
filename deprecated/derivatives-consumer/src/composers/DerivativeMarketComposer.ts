@@ -66,9 +66,7 @@ export class DerivativeMarketComposer {
       derivativeOrder.setOrderInfo(orderInfo)
       derivativeOrder.setMargin(margin)
 
-      if (triggerPrice) {
-        derivativeOrder.setTriggerPrice(triggerPrice)
-      }
+      derivativeOrder.setTriggerPrice(triggerPrice || '0')
 
       const message = new MsgCreateDerivativeLimitOrder()
       message.setSender(injectiveAddress)
@@ -142,9 +140,7 @@ export class DerivativeMarketComposer {
       derivativeOrder.setOrderInfo(orderInfo)
       derivativeOrder.setMargin(margin)
 
-      if (triggerPrice) {
-        derivativeOrder.setTriggerPrice(triggerPrice)
-      }
+      derivativeOrder.setTriggerPrice(triggerPrice || '0')
 
       const message = new MsgCreateDerivativeMarketOrder()
       message.setSender(injectiveAddress)
