@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.28...@injectivelabs/token-metadata@0.5.29) (2022-06-12)
+
+
+### Bug Fixes
+
+* token type unification ([8dc921b](https://github.com/InjectiveLabs/injective-ts/commit/8dc921b6e620eb01ddff3ac3154fcb1fce651982))
+
+
+
+
+
 ## [0.5.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.27...@injectivelabs/token-metadata@0.5.28) (2022-06-08)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
