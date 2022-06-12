@@ -25,7 +25,6 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { ExchangeGrpcExplorerTransformer } from '../transformers'
 
 export class ExchangeGrpcExplorerApi extends BaseConsumer {
-
   async fetchTxByHash(hash: string) {
     const request = new GetTxByTxHashRequest()
     request.setHash(hash)
@@ -232,7 +231,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         GetBlocksRequest,
         GetBlocksResponse,
         typeof InjectiveExplorerRPC.GetBlocks
-        >(request, InjectiveExplorerRPC.GetBlocks)
+      >(request, InjectiveExplorerRPC.GetBlocks)
 
       return response
     } catch (e: any) {
@@ -250,7 +249,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         GetBlockRequest,
         GetBlockResponse,
         typeof InjectiveExplorerRPC.GetBlock
-        >(request, InjectiveExplorerRPC.GetBlock)
+      >(request, InjectiveExplorerRPC.GetBlock)
 
       return response
     } catch (e: any) {
@@ -304,7 +303,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         GetTxsRequest,
         GetTxsResponse,
         typeof InjectiveExplorerRPC.GetTxs
-        >(request, InjectiveExplorerRPC.GetTxs)
+      >(request, InjectiveExplorerRPC.GetTxs)
 
       return response
     } catch (e: any) {
@@ -379,5 +378,4 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
       throw new Error(e.message)
     }
   }
-
 }
