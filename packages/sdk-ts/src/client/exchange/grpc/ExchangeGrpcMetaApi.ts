@@ -20,7 +20,7 @@ export class ExchangeGrpcMetaApi extends BaseConsumer {
         typeof InjectiveMetaRPC.Ping
       >(request, InjectiveMetaRPC.Ping)
 
-      return response
+      return response.toObject()
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -36,7 +36,7 @@ export class ExchangeGrpcMetaApi extends BaseConsumer {
         typeof InjectiveMetaRPC.Version
       >(request, InjectiveMetaRPC.Version)
 
-      return response
+      return response.toObject()
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -52,7 +52,7 @@ export class ExchangeGrpcMetaApi extends BaseConsumer {
         typeof InjectiveMetaRPC.Info
       >(request, InjectiveMetaRPC.Info)
 
-      return response
+      return response.toObject()
     } catch (e: any) {
       throw new Error(e.message)
     }

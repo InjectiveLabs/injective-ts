@@ -3,6 +3,82 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.28...@injectivelabs/token-metadata@0.5.29) (2022-06-12)
+
+
+### Bug Fixes
+
+* token type unification ([8dc921b](https://github.com/InjectiveLabs/injective-ts/commit/8dc921b6e620eb01ddff3ac3154fcb1fce651982))
+
+
+
+
+
+## [0.5.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.27...@injectivelabs/token-metadata@0.5.28) (2022-06-08)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [0.5.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.26...@injectivelabs/token-metadata@0.5.27) (2022-06-06)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [0.5.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.25...@injectivelabs/token-metadata@0.5.26) (2022-06-06)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [0.5.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.24...@injectivelabs/token-metadata@0.5.25) (2022-06-03)
+
+
+### Features
+
+* axelar and moonbeam ([49a41ae](https://github.com/InjectiveLabs/injective-ts/commit/49a41ae7e7408390c0ff2bd7b5c65d3b613d488b))
+
+
+
+
+
+## [0.5.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.23...@injectivelabs/token-metadata@0.5.24) (2022-06-02)
+
+
+### Bug Fixes
+
+* dot decimals ([5c73be9](https://github.com/InjectiveLabs/injective-ts/commit/5c73be9b7f7d1ee2f62f1fb323c18525128f6bc0))
+
+
+
+
+
+## [0.5.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.22...@injectivelabs/token-metadata@0.5.23) (2022-06-02)
+
+
+### Features
+
+* dot tokenmetadata ([6698c87](https://github.com/InjectiveLabs/injective-ts/commit/6698c8781bab4aeccc52256958f755c2e31890be))
+
+
+
+
+
+## [0.5.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.21...@injectivelabs/token-metadata@0.5.22) (2022-06-02)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
 ## [0.5.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@0.5.20...@injectivelabs/token-metadata@0.5.21) (2022-05-26)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

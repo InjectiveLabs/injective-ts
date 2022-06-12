@@ -135,17 +135,20 @@ export class NetworkService extends BaseService {
     before,
     limit,
     skip,
+    type,
   }: {
     account: string
     before?: number | undefined
     limit?: number | undefined
     skip?: number | undefined
+    type?: string | undefined
   }): Promise<{ total: number; transactions: Transaction[] }> {
     try {
       const promise = this.consumer.get(`accountTxs/${account}`, {
         before,
         limit,
         skip,
+        type,
       })
 
       const response = (await this.fetchOrFetchAndMeasure(

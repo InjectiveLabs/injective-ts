@@ -29,8 +29,19 @@ import {
   Orderbook,
   PriceLevel,
   GrpcTokenMeta,
-  TokenMeta,
+  ExchangeTokenMeta,
 } from '../types/exchange'
+import {
+  FundingPaymentsResponse,
+  FundingRatesResponse,
+  MarketsResponse as DerivativeMarketsResponse,
+  MarketResponse as DerivativeMarketResponse,
+  OrderbookResponse as DerivativeOrderbookResponse,
+  OrdersResponse as DerivativeOrdersResponse,
+  TradesResponse as DerivativeTradesResponse,
+  PositionsResponse as DerivativePositionsResponse,
+  OrderbooksResponse as DerivativeOrderbooksResponse,
+} from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -42,7 +53,7 @@ const zeroPositionDelta = () => ({
 export class ExchangeGrpcDerivativeTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,
-  ): TokenMeta | undefined {
+  ): ExchangeTokenMeta | undefined {
     if (!tokenMeta) {
       return
     }
@@ -54,6 +65,7 @@ export class ExchangeGrpcDerivativeTransformer {
       logo: tokenMeta.getLogo(),
       decimals: tokenMeta.getDecimals(),
       updatedAt: tokenMeta.getUpdatedAt(),
+      coinGeckoId: '',
     }
   }
 
@@ -97,6 +109,78 @@ export class ExchangeGrpcDerivativeTransformer {
       expirationTimestamp: expiryFuturesMarketInfo.getExpirationTimestamp(),
       settlementPrice: expiryFuturesMarketInfo.getSettlementPrice(),
     }
+  }
+
+  static marketResponseToMarket(response: DerivativeMarketResponse) {
+    const market = response.getMarket()!
+
+    return ExchangeGrpcDerivativeTransformer.grpcMarketToMarket(market)
+  }
+
+  static marketsResponseToMarkets(response: DerivativeMarketsResponse) {
+    const markets = response.getMarketsList()
+
+    return ExchangeGrpcDerivativeTransformer.grpcMarketsToMarkets(markets)
+  }
+
+  static ordersResponseToOrders(response: DerivativeOrdersResponse) {
+    const orders = response.getOrdersList()
+
+    return ExchangeGrpcDerivativeTransformer.grpcOrdersToOrders(orders)
+  }
+
+  static positionsResponseToPositions(response: DerivativePositionsResponse) {
+    const positions = response.getPositionsList()
+
+    return ExchangeGrpcDerivativeTransformer.grpcPositionsToPositions(positions)
+  }
+
+  static tradesResponseToTrades(response: DerivativeTradesResponse) {
+    const trades = response.getTradesList()
+
+    return ExchangeGrpcDerivativeTransformer.grpcTradesToTrades(trades)
+  }
+
+  static fundingPaymentsResponseToFundingPayments(
+    response: FundingPaymentsResponse,
+  ) {
+    const fundingPayments = response.getPaymentsList()
+
+    return ExchangeGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(
+      fundingPayments,
+    )
+  }
+
+  static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {
+    const fundingRates = response.getFundingRatesList()
+
+    return ExchangeGrpcDerivativeTransformer.grpcFundingRatesToFundingRates(
+      fundingRates,
+    )
+  }
+
+  static orderbookResponseToOrderbook(response: DerivativeOrderbookResponse) {
+    const orderbook = response.getOrderbook()!
+
+    return ExchangeGrpcDerivativeTransformer.grpcOrderbookToOrderbook({
+      buys: orderbook?.getBuysList(),
+      sells: orderbook?.getSellsList(),
+    })
+  }
+
+  static orderbooksResponseToOrderbooks(
+    response: DerivativeOrderbooksResponse,
+  ) {
+    const orderbooks = response.getOrderbooksList()!
+
+    return orderbooks.map((o) => {
+      const orderbook = o.getOrderbook()!
+
+      return ExchangeGrpcDerivativeTransformer.grpcOrderbookToOrderbook({
+        buys: orderbook.getBuysList(),
+        sells: orderbook.getSellsList(),
+      })
+    })
   }
 
   static grpcMarketToMarket(
@@ -181,8 +265,11 @@ export class ExchangeGrpcDerivativeTransformer {
     sells: GrpcPriceLevel[]
   }): Orderbook {
     return {
-      buys: ExchangeGrpcDerivativeTransformer.grpcPriceLevelsToPriceLevels(buys),
-      sells: ExchangeGrpcDerivativeTransformer.grpcPriceLevelsToPriceLevels(sells),
+      buys: ExchangeGrpcDerivativeTransformer.grpcPriceLevelsToPriceLevels(
+        buys,
+      ),
+      sells:
+        ExchangeGrpcDerivativeTransformer.grpcPriceLevelsToPriceLevels(sells),
     }
   }
 

@@ -1,18 +1,6 @@
 /* eslint-disable camelcase */
-import { TokenMeta } from '@injectivelabs/token-metadata'
-
-export type TokenAddress = string
-export type TokenAssetData = string
-export type TokenSymbol = string
-
-export interface GrpcTokenMeta {
-  name: string
-  address: string
-  symbol: string
-  logo: string
-  decimals: number
-  updatedAt: number
-}
+import { Token, TokenMeta } from '@injectivelabs/token-metadata'
+import { UiBridgeTransaction } from './bridge'
 
 export interface CoinPriceFromInjectiveService {
   id: string
@@ -39,20 +27,6 @@ export interface CoinPriceFromInjectiveService {
   atl_change_percentage: number
   atl_date: string
   last_updated: Date
-}
-
-/**
- * Token is an interface that includes the denom
- * alongside the TokenMeta (name, decimals, symbol, etc)
- */
-export interface Token extends TokenMeta {
-  denom: string
-  isIbc?: boolean
-}
-
-export interface IbcToken extends Token {
-  baseDenom: string
-  channelId: string
 }
 
 export interface TokenWithBalance extends Token {
@@ -130,4 +104,12 @@ export interface SubaccountBalanceWithTokenAndUsdPriceAndUsdBalance
 export interface DenomTrace {
   baseDenom: string
   path: string
+}
+
+export interface UiBridgeTransactionWithToken extends UiBridgeTransaction {
+  token: Token
+}
+
+export interface TokenMetaWithUsdPrice extends TokenMeta {
+  usdPrice?: number
 }

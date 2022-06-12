@@ -6,8 +6,13 @@ import {
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { ExchangeAuctionStreamTransformer } from '../transformers'
 
-export type BidsStreamCallback = (response: StreamBidsResponse) => void
+export type BidsStreamCallback = (
+  response: ReturnType<
+    typeof ExchangeAuctionStreamTransformer.bidsStreamCallback
+  >,
+) => void
 
 export class ExchangeGrpcAuctionStream {
   protected client: InjectiveAuctionRPCClient
@@ -32,7 +37,7 @@ export class ExchangeGrpcAuctionStream {
     const stream = this.client.streamBids(request)
 
     stream.on('data', (response: StreamBidsResponse) => {
-      callback(response)
+      callback(ExchangeAuctionStreamTransformer.bidsStreamCallback(response))
     })
 
     if (onEndCallback) {

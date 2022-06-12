@@ -6,9 +6,12 @@ import {
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { ExchangeAccountStreamTransformer } from '../transformers'
 
 export type BalanceStreamCallback = (
-  response: StreamSubaccountBalanceResponse,
+  response: ReturnType<
+    typeof ExchangeAccountStreamTransformer.balanceStreamCallback
+  >,
 ) => void
 
 export class ExchangeGrpcAccountStream {
@@ -37,7 +40,7 @@ export class ExchangeGrpcAccountStream {
     const stream = this.client.streamSubaccountBalance(request)
 
     stream.on('data', (response: StreamSubaccountBalanceResponse) => {
-      callback(response)
+      callback(ExchangeAccountStreamTransformer.balanceStreamCallback(response))
     })
 
     if (onEndCallback) {

@@ -1,7 +1,7 @@
 import { ContractException } from '@injectivelabs/exceptions'
 import {
   AccountAddress,
-  ChainId,
+  EthereumChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
 import Web3 from 'web3'
@@ -14,17 +14,17 @@ export class PeggyContract extends BaseContract<any> {
   static contractName = 'Peggy'
 
   constructor({
-    chainId,
+    ethereumChainId,
     address,
     web3,
   }: {
-    chainId: ChainId
+    ethereumChainId: EthereumChainId
     web3: Web3
     address: string
   }) {
     super({
       abi,
-      chainId,
+      ethereumChainId,
       web3,
       address,
     })

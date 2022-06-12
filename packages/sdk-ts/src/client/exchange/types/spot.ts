@@ -5,7 +5,8 @@ import {
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
-import { PriceLevel, TokenMeta } from './exchange'
+import { PriceLevel } from './exchange'
+import { TokenMeta } from '@injectivelabs/token-metadata'
 
 export enum SpotOrderSide {
   Unspecified = 'unspecified',
@@ -15,6 +16,8 @@ export enum SpotOrderSide {
   StopSell = 'stop_sell',
   TakeBuy = 'take_buy',
   TakeSell = 'take_sell',
+  BuyPO = 'buy_po',
+  SellPO = 'sell_po',
 }
 
 export enum SpotOrderState {

@@ -1,9 +1,6 @@
-import {
-  UiDerivativeMarketSummary,
-  DerivativeMarketMap,
-  DerivativeOrderSide,
-} from './types'
+import { UiDerivativeMarketSummary, DerivativeMarketMap } from './types'
 import { Change } from '../../types'
+import { DerivativeOrderSide } from './../../types'
 
 export const derivativeOrderTypeToGrpcOrderType = (
   orderType: DerivativeOrderSide,
@@ -23,6 +20,10 @@ export const derivativeOrderTypeToGrpcOrderType = (
       return DerivativeMarketMap.TAKE_BUY
     case DerivativeOrderSide.TakeSell:
       return DerivativeMarketMap.TAKE_SELL
+    case DerivativeOrderSide.BuyPO:
+      return DerivativeMarketMap.BUY_PO
+    case DerivativeOrderSide.SellPO:
+      return DerivativeMarketMap.SELL_PO
     default:
       return DerivativeMarketMap.BUY
   }

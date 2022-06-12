@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ts",
   "description": "SDK in TypeScript for building Injective applications in a Node environment.",
-  "version": "0.0.36",
+  "version": "0.0.71",
   "license": "MIT",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -14,60 +14,6 @@
   ],
   "_moduleAliases": {
     "~sdk-ts": "dist"
-  },
-  "exports": {
-    ".": "./dist/index.js",
-    "./local": "./dist/local/index.js",
-    "./utils": "./dist/utils/index.js",
-    "./types": "./dist/types/index.js",
-    "./classes": "./dist/classes/index.js",
-    "./core": "./dist/core/index.js",
-    "./client": "./dist/client/index.js",
-    "./chain-grpc-client": "./dist/client/chain/ChainGrpcClient.js",
-    "./chain-rest-client": "./dist/client/chain/ChainRestClient.js",
-    "./exchange-grpc-client": "./dist/client/exchange/ExchangeGrpcClient.js",
-    "./exchange-rest-client": "./dist/client/exchange/ExchangeRestClient.js",
-    "./exchange-grpc-stream-client": "./dist/client/exchange/ExchangeGrpcStreamClient.js"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/index.d.ts"
-      ],
-      "local": [
-        "./dist/local/index.d.ts"
-      ],
-      "utils": [
-        "./dist/utils/index.d.ts"
-      ],
-      "classes": [
-        "./dist/classes/index.d.ts"
-      ],
-      "types": [
-        "./dist/types/index.d.ts"
-      ],
-      "core": [
-        "./dist/core/index.d.ts"
-      ],
-      "client": [
-        "./dist/client/index.d.ts"
-      ],
-      "chain-grpc-client": [
-        "./dist/client/chain/ChainGrpcClient.d.ts"
-      ],
-      "chain-rest-client": [
-        "./dist/client/chain/ChainRestClient.d.ts"
-      ],
-      "exchange-grpc-client": [
-        "./dist/client/exchange/ExchangeGrpcClient.d.ts"
-      ],
-      "exchange-rest-client": [
-        "./dist/client/exchange/ExchangeRestClient.d.ts"
-      ],
-      "exchange-grpc-stream-client": [
-        "./dist/client/exchange/ExchangeGrpcStreamClient.d.ts"
-      ]
-    }
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
@@ -88,29 +34,25 @@
     "@apollo/client": "^3.5.8",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
-    "@injectivelabs/chain-api": "^1.7.1",
-    "@injectivelabs/exceptions": "^0.5.2",
+    "@injectivelabs/chain-api": "^1.8.0-rc2",
+    "@injectivelabs/exceptions": "^0.5.5",
     "@injectivelabs/exchange-api": "^2.2.70",
-    "@injectivelabs/networks": "^0.5.6",
-    "@injectivelabs/token-metadata": "^0.5.21",
-    "@injectivelabs/ts-types": "^0.5.1",
-    "@injectivelabs/tx-utils": "^0.5.2",
-    "@injectivelabs/utils": "^0.5.3",
+    "@injectivelabs/networks": "^0.5.10",
+    "@injectivelabs/token-metadata": "^0.5.29",
+    "@injectivelabs/ts-types": "^0.5.4",
+    "@injectivelabs/utils": "^0.5.7",
+    "@metamask/eth-sig-util": "^4.0.1",
     "@types/google-protobuf": "^3.15.5",
     "bech32": "^2.0.0",
-    "bip32": "^3.0.1",
     "bip39": "^3.0.4",
     "ethereumjs-util": "^7.1.4",
-    "ethereumjs-wallet": "^1.0.2",
     "ethers": "^5.6.4",
     "graphql": "^16.3.0",
-    "js-sha3": "^0.8.0",
     "keccak256": "^1.0.6",
     "link-module-alias": "^1.2.0",
     "secp256k1": "^4.0.3",
     "shx": "^0.3.2",
-    "snakecase-keys": "^5.4.1",
-    "tiny-secp256k1": "^2.2.1"
+    "snakecase-keys": "^5.4.1"
   },
   "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4"
 }

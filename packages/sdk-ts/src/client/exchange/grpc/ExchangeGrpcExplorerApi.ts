@@ -22,6 +22,7 @@ import {
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 import { InjectiveExplorerRPC } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ExchangeGrpcExplorerTransformer } from '../transformers'
 
 export class ExchangeGrpcExplorerApi extends BaseConsumer {
 
@@ -36,7 +37,7 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetTxByTxHash
       >(request, InjectiveExplorerRPC.GetTxByTxHash)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getTxByTxHashResponseToTx(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -69,7 +70,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetAccountTxs
       >(request, InjectiveExplorerRPC.GetAccountTxs)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getAccountTxsResponseToAccountTxs(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -86,7 +89,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetValidator
       >(request, InjectiveExplorerRPC.GetValidator)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.validatorResponseToValidator(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -103,7 +108,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetValidatorUptime
       >(request, InjectiveExplorerRPC.GetValidatorUptime)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getValidatorUptimeResponseToValidatorUptime(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -145,7 +152,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetPeggyDepositTxs
       >(request, InjectiveExplorerRPC.GetPeggyDepositTxs)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getPeggyDepositTxsResponseToPeggyDepositTxs(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -187,17 +196,19 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetPeggyWithdrawalTxs
       >(request, InjectiveExplorerRPC.GetPeggyWithdrawalTxs)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
   }
 
   async fetchBlocks({
-                                  before,
-                                  after,
-                                  limit,
-                                }: {
+    before,
+    after,
+    limit,
+  }: {
     before?: number
     after?: number
     limit?: number
@@ -248,13 +259,13 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
   }
 
   async fetchTxs({
-                      before,
-                      after,
-                      limit,
-                      skip,
-                      type,
-                      module,
-                    }: {
+    before,
+    after,
+    limit,
+    skip,
+    type,
+    module,
+  }: {
     before?: number
     after?: number
     limit?: number
@@ -341,12 +352,15 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
     if (srcChannel) {
       request.setSrcChannel(srcChannel)
     }
+
     if (srcPort) {
       request.setSrcPort(srcPort)
     }
+
     if (destChannel) {
       request.setDestChannel(destChannel)
     }
+
     if (destPort) {
       request.setDestPort(destPort)
     }
@@ -358,7 +372,9 @@ export class ExchangeGrpcExplorerApi extends BaseConsumer {
         typeof InjectiveExplorerRPC.GetIBCTransferTxs
       >(request, InjectiveExplorerRPC.GetIBCTransferTxs)
 
-      return response
+      return ExchangeGrpcExplorerTransformer.getIBCTransferTxsResponseToIBCTransferTxs(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

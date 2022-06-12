@@ -1,4 +1,4 @@
-import { Token } from './token'
+import { Token } from '@injectivelabs/token-metadata'
 
 export interface TokenAndPrice extends Token {
   usdPrice: number

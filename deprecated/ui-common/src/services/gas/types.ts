@@ -26,3 +26,25 @@ export interface EtherchainResult {
   currentBaseFee: number
   recommendedBaseFee: number
 }
+
+export interface MetamaskGasServerResult {
+  low: {
+    minWaitTimeEstimate: number
+    maxWaitTimeEstimate: number
+    suggestedMaxPriorityFeePerGas: string
+    suggestedMaxFeePerGas: string
+  }
+  medium: {
+    minWaitTimeEstimate: number
+    maxWaitTimeEstimate: number
+    suggestedMaxPriorityFeePerGas: string
+    suggestedMaxFeePerGas: string
+  }
+  high: {
+    minWaitTimeEstimate: number
+    maxWaitTimeEstimate: number
+    suggestedMaxPriorityFeePerGas: string
+    suggestedMaxFeePerGas: string
+  }
+  estimateBaseFee: string
+}

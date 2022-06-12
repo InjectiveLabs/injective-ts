@@ -9,6 +9,7 @@ export const DEFAULT_BRIDGE_FEE_DENOM = 'inj'
 export const DEFAULT_BRIDGE_FEE_PRICE = '500000000'
 export const DEFAULT_BRIDGE_FEE_AMOUNT = '200000000000000'
 export const DEFAULT_TIMEOUT_HEIGHT = 40
+export const DEFAULT_TIMESTAMP_TIMEOUT_MS = 30 * 1000
 
 export const DEFAULT_STD_FEE = {
   amount: [
@@ -21,3 +22,15 @@ export const DEFAULT_STD_FEE = {
   ],
   gas: DEFAULT_GAS_LIMIT.toString(),
 }
+
+export const DEFAULT_STD_FEE_BY_DENOM = (denom: string = 'inj') => ({
+  amount: [
+    {
+      denom,
+      amount: new BigNumberInBase(DEFAULT_GAS_LIMIT)
+        .times(DEFAULT_GAS_PRICE)
+        .toString(),
+    },
+  ],
+  gas: DEFAULT_GAS_LIMIT.toString(),
+})

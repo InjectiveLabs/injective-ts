@@ -1,5 +1,4 @@
 import {
-  GrpcFeeDiscountSchedule,
   FeeDiscountSchedule,
   FeeDiscountTierInfo,
   PointsMultiplier,
@@ -12,17 +11,23 @@ import {
   TradingRewardCampaignBoostInfo,
   GrpcFeeDiscountTierInfo,
   TradeRewardCampaign,
-  GrpcTradeRewardCampaign,
   FeeDiscountAccountInfo,
-  GrpcFeeDiscountAccountInfo,
   FeeDiscountTierTTL,
   GrpcFeeDiscountTierTTL,
-  GrpcExchangeParams,
-  ExchangeParams,
+  ExchangeModuleParams,
 } from '../types/exchange'
+import {
+  QueryFeeDiscountAccountInfoResponse,
+  QueryTradeRewardCampaignResponse,
+  QueryFeeDiscountScheduleResponse,
+  QueryExchangeParamsResponse,
+} from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
 
 export class ChainGrpcExchangeTransformer {
-  static grpcParamsToParams(params: GrpcExchangeParams): ExchangeParams {
+  static moduleParamsResponseToParams(
+    response: QueryExchangeParamsResponse,
+  ): ExchangeModuleParams {
+    const params = response.getParams()!
     const spotMarketInstantListingFee = params.getSpotMarketInstantListingFee()
     const derivativeMarketInstantListingFee =
       params.getDerivativeMarketInstantListingFee()
@@ -58,6 +63,65 @@ export class ChainGrpcExchangeTransformer {
     }
   }
 
+  static feeDiscountScheduleResponseToFeeDiscountSchedule(
+    response: QueryFeeDiscountScheduleResponse,
+  ): FeeDiscountSchedule {
+    const schedule = response.getFeeDiscountSchedule()!
+
+    return {
+      bucketCount: schedule.getBucketCount(),
+      bucketDuration: schedule.getBucketDuration(),
+      quoteDenomsList: schedule.getQuoteDenomsList(),
+      tierInfosList: schedule
+        .getTierInfosList()
+        .map(
+          ChainGrpcExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo,
+        )
+        .filter((info) => info) as FeeDiscountTierInfo[],
+      disqualifiedMarketIdsList: schedule.getDisqualifiedMarketIdsList(),
+    }
+  }
+
+  static tradingRewardsCampaignResponseToTradingRewardsCampaign(
+    response: QueryTradeRewardCampaignResponse,
+  ): TradeRewardCampaign {
+    return {
+      tradingRewardCampaignInfo:
+        ChainGrpcExchangeTransformer.grpcTradingRewardCampaignInfoToTradingRewardCampaignInfo(
+          response.getTradingRewardCampaignInfo(),
+        ),
+      tradingRewardPoolCampaignScheduleList: response
+        .getTradingRewardPoolCampaignScheduleList()
+        .map(
+          ChainGrpcExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool,
+        ),
+      pendingTradingRewardPoolCampaignScheduleList: response
+        .getPendingTradingRewardPoolCampaignScheduleList()
+        .map(
+          ChainGrpcExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool,
+        ),
+      totalTradeRewardPoints: response.getTotalTradeRewardPoints(),
+      pendingTotalTradeRewardPointsList:
+        response.getPendingTotalTradeRewardPointsList(),
+    }
+  }
+
+  static feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
+    response: QueryFeeDiscountAccountInfoResponse,
+  ): FeeDiscountAccountInfo {
+    return {
+      tierLevel: response.getTierLevel(),
+      accountInfo:
+        ChainGrpcExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo(
+          response.getAccountInfo(),
+        ),
+      accountTtl:
+        ChainGrpcExchangeTransformer.grpcFeeDiscountTierTTLToFeeDiscountTierTTL(
+          response.getAccountTtl()!,
+        ),
+    }
+  }
+
   static grpcFeeDiscountTierInfoToFeeDiscountTierInfo(
     info?: GrpcFeeDiscountTierInfo,
   ): FeeDiscountTierInfo | undefined {
@@ -69,7 +133,7 @@ export class ChainGrpcExchangeTransformer {
       makerDiscountRate: info.getMakerDiscountRate(),
       takerDiscountRate: info.getTakerDiscountRate(),
       stakedAmount: info.getStakedAmount(),
-      feePaidAmount: info.getFeePaidAmount(),
+      feePaidAmount: info.getVolume(),
     }
   }
 
@@ -83,23 +147,6 @@ export class ChainGrpcExchangeTransformer {
     return {
       tier: info.getTier(),
       ttlTimestamp: info.getTtlTimestamp(),
-    }
-  }
-
-  static grpcFeeDiscountScheduleToFeeDiscountSchedule(
-    schedule: GrpcFeeDiscountSchedule,
-  ): FeeDiscountSchedule {
-    return {
-      bucketCount: schedule.getBucketCount(),
-      bucketDuration: schedule.getBucketDuration(),
-      quoteDenomsList: schedule.getQuoteDenomsList(),
-      tierInfosList: schedule
-        .getTierInfosList()
-        .map(
-          ChainGrpcExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo,
-        )
-        .filter((info) => info) as FeeDiscountTierInfo[],
-      disqualifiedMarketIdsList: schedule.getDisqualifiedMarketIdsList(),
     }
   }
 
@@ -161,46 +208,6 @@ export class ChainGrpcExchangeTransformer {
       maxCampaignRewardsList: pool
         .getMaxCampaignRewardsList()
         .map((coin) => ({ amount: coin.getAmount(), denom: coin.getDenom() })),
-    }
-  }
-
-  static grpcTradingRewardsCampaignToTradingRewardsCampaign(
-    campaign: GrpcTradeRewardCampaign,
-  ): TradeRewardCampaign {
-    return {
-      tradingRewardCampaignInfo:
-        ChainGrpcExchangeTransformer.grpcTradingRewardCampaignInfoToTradingRewardCampaignInfo(
-          campaign.getTradingRewardCampaignInfo(),
-        ),
-      tradingRewardPoolCampaignScheduleList: campaign
-        .getTradingRewardPoolCampaignScheduleList()
-        .map(
-          ChainGrpcExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool,
-        ),
-      pendingTradingRewardPoolCampaignScheduleList: campaign
-        .getPendingTradingRewardPoolCampaignScheduleList()
-        .map(
-          ChainGrpcExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool,
-        ),
-      totalTradeRewardPoints: campaign.getTotalTradeRewardPoints(),
-      pendingTotalTradeRewardPointsList:
-        campaign.getPendingTotalTradeRewardPointsList(),
-    }
-  }
-
-  static grpcFeeDiscountAccountInfoToFeeDiscountAccountInfo(
-    info: GrpcFeeDiscountAccountInfo,
-  ): FeeDiscountAccountInfo {
-    return {
-      tierLevel: info.getTierLevel(),
-      accountInfo:
-        ChainGrpcExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo(
-          info.getAccountInfo(),
-        ),
-      accountTtl:
-        ChainGrpcExchangeTransformer.grpcFeeDiscountTierTTLToFeeDiscountTierTTL(
-          info.getAccountTtl()!,
-        ),
     }
   }
 }

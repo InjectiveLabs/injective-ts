@@ -25,6 +25,7 @@ import {
 } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import { SpotOrderSide } from '../types/spot'
+import { ExchangeGrpcSpotTransformer } from '../transformers'
 
 export class ExchangeGrpcSpotApi extends BaseConsumer {
   async fetchMarkets(params?: {
@@ -54,7 +55,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.Markets
       >(request, InjectiveSpotExchangeRPC.Markets)
 
-      return response
+      return ExchangeGrpcSpotTransformer.marketsResponseToMarkets(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -71,7 +72,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.Market
       >(request, InjectiveSpotExchangeRPC.Market)
 
-      return response
+      return ExchangeGrpcSpotTransformer.marketResponseToMarket(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -88,7 +89,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.Orderbook
       >(request, InjectiveSpotExchangeRPC.Orderbook)
 
-      return response
+      return ExchangeGrpcSpotTransformer.orderbookResponseToOrderbook(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -132,7 +133,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.Orders
       >(request, InjectiveSpotExchangeRPC.Orders)
 
-      return response
+      return ExchangeGrpcSpotTransformer.ordersResponseToOrders(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -182,7 +183,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.Trades
       >(request, InjectiveSpotExchangeRPC.Trades)
 
-      return response
+      return ExchangeGrpcSpotTransformer.tradesResponseToTrades(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -221,7 +222,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.SubaccountOrdersList
       >(request, InjectiveSpotExchangeRPC.SubaccountOrdersList)
 
-      return response
+      return ExchangeGrpcSpotTransformer.ordersResponseToOrders(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -271,7 +272,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.SubaccountTradesList
       >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
 
-      return response
+      return ExchangeGrpcSpotTransformer.tradesResponseToTrades(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -291,7 +292,9 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.Orderbooks
       >(request, InjectiveSpotExchangeRPC.Orderbooks)
 
-      return response
+      return ExchangeGrpcSpotTransformer.orderbooksResponseToOrderbooks(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

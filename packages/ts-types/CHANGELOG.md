@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.5.3...@injectivelabs/ts-types@0.5.4) (2022-06-08)
+
+
+### Bug Fixes
+
+* path import ([ae57777](https://github.com/InjectiveLabs/injective-ts/commit/ae57777119f650c3f819cd0919ee568e646c82a4))
+
+
+
+
+
+## [0.5.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.5.2...@injectivelabs/ts-types@0.5.3) (2022-06-06)
+
+
+### Bug Fixes
+
+* added InjectiveChainId enum ([8d9d7a6](https://github.com/InjectiveLabs/injective-ts/commit/8d9d7a65da23db77bba34276e0537faf56e174d5))
+
+
+
+
+
+## [0.5.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.5.1...@injectivelabs/ts-types@0.5.2) (2022-06-02)
+
+
+### Features
+
+* Wallet Connect - basic integration ([b260f5b](https://github.com/InjectiveLabs/injective-ts/commit/b260f5b7ed39d3cbf0f80b4a6515aa1d5b513731))
+
+
+
+
+
 ## [0.5.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@0.5.0...@injectivelabs/ts-types@0.5.1) (2022-04-11)
 
 

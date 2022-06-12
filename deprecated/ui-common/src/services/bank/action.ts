@@ -71,7 +71,7 @@ export class BankActionService extends BaseActionService {
       denom,
       port,
       channelId,
-      timeout: timestamp,
+      timeout: timestamp * 1e6,
       height: {
         revisionHeight: new BigNumber(block.header.height).plus(100).toNumber(),
         revisionNumber: new BigNumber(block.header.version.block).toNumber(),

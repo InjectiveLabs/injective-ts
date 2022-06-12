@@ -15,8 +15,16 @@ import {
   Orderbook,
   PriceLevel,
   GrpcTokenMeta,
-  TokenMeta,
+  ExchangeTokenMeta,
 } from '../types/exchange'
+import {
+  MarketsResponse as SpotMarketsResponse,
+  MarketResponse as SpotMarketResponse,
+  OrderbookResponse as SpotOrderbookResponse,
+  OrdersResponse as SpotOrdersResponse,
+  TradesResponse as SpotTradesResponse,
+  OrderbooksResponse as SpotOrderbooksResponse,
+} from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 
 const zeroPriceLevel = () => ({
   price: '0',
@@ -27,7 +35,7 @@ const zeroPriceLevel = () => ({
 export class ExchangeGrpcSpotTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,
-  ): TokenMeta | undefined {
+  ): ExchangeTokenMeta | undefined {
     if (!tokenMeta) {
       return
     }
@@ -39,7 +47,54 @@ export class ExchangeGrpcSpotTransformer {
       logo: tokenMeta.getLogo(),
       decimals: tokenMeta.getDecimals(),
       updatedAt: tokenMeta.getUpdatedAt(),
+      coinGeckoId: '',
     }
+  }
+
+  static marketResponseToMarket(response: SpotMarketResponse) {
+    const market = response.getMarket()!
+
+    return ExchangeGrpcSpotTransformer.grpcMarketToMarket(market)
+  }
+
+  static marketsResponseToMarkets(response: SpotMarketsResponse) {
+    const markets = response.getMarketsList()
+
+    return ExchangeGrpcSpotTransformer.grpcMarketsToMarkets(markets)
+  }
+
+  static ordersResponseToOrders(response: SpotOrdersResponse) {
+    const orders = response.getOrdersList()
+
+    return ExchangeGrpcSpotTransformer.grpcOrdersToOrders(orders)
+  }
+
+  static tradesResponseToTrades(response: SpotTradesResponse) {
+    const trades = response.getTradesList()
+
+    return ExchangeGrpcSpotTransformer.grpcTradesToTrades(trades)
+  }
+
+  static orderbookResponseToOrderbook(response: SpotOrderbookResponse) {
+    const orderbook = response.getOrderbook()!
+
+    return ExchangeGrpcSpotTransformer.grpcOrderbookToOrderbook({
+      buys: orderbook?.getBuysList(),
+      sells: orderbook?.getSellsList(),
+    })
+  }
+
+  static orderbooksResponseToOrderbooks(response: SpotOrderbooksResponse) {
+    const orderbooks = response.getOrderbooksList()!
+
+    return orderbooks.map((o) => {
+      const orderbook = o.getOrderbook()!
+
+      return ExchangeGrpcSpotTransformer.grpcOrderbookToOrderbook({
+        buys: orderbook.getBuysList(),
+        sells: orderbook.getSellsList(),
+      })
+    })
   }
 
   static grpcMarketToMarket(market: GrpcSpotMarketInfo): SpotMarket {
@@ -116,7 +171,9 @@ export class ExchangeGrpcSpotTransformer {
   }
 
   static grpcOrdersToOrders(orders: GrpcSpotLimitOrder[]): SpotLimitOrder[] {
-    return orders.map((order) => ExchangeGrpcSpotTransformer.grpcOrderToOrder(order))
+    return orders.map((order) =>
+      ExchangeGrpcSpotTransformer.grpcOrderToOrder(order),
+    )
   }
 
   static grpcTradeToTrade(trade: GrpcSpotTrade): SpotTrade {
@@ -140,6 +197,8 @@ export class ExchangeGrpcSpotTransformer {
   }
 
   static grpcTradesToTrades(trades: GrpcSpotTrade[]): SpotTrade[] {
-    return trades.map((trade) => ExchangeGrpcSpotTransformer.grpcTradeToTrade(trade))
+    return trades.map((trade) =>
+      ExchangeGrpcSpotTransformer.grpcTradeToTrade(trade),
+    )
   }
 }

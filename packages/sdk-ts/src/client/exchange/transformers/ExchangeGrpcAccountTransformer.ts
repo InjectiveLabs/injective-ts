@@ -1,3 +1,10 @@
+import {
+  PortfolioResponse,
+  RewardsResponse,
+  SubaccountBalanceResponse,
+  SubaccountHistoryResponse,
+  SubaccountBalancesListResponse,
+} from '@injectivelabs/exchange-api/injective_accounts_rpc_pb'
 import { Coin } from '@injectivelabs/ts-types'
 import { GrpcCoin } from '../../../types/index'
 import {
@@ -17,6 +24,23 @@ import {
 } from '../types/account'
 
 export class ExchangeGrpcAccountTransformer {
+  static accountPortfolioResponseToAccountPortfolio(
+    response: PortfolioResponse,
+  ): AccountPortfolio {
+    const portfolio = response.getPortfolio()!
+    const subaccounts = portfolio?.getSubaccountsList() || []
+
+    return {
+      portfolioValue: portfolio.getPortfolioValue(),
+      availableBalance: portfolio.getAvailableBalance(),
+      lockedBalance: portfolio.getLockedBalance(),
+      unrealizedPnl: portfolio.getUnrealizedPnl(),
+      subaccountsList: subaccounts.map(
+        ExchangeGrpcAccountTransformer.grpcSubaccountPortfolioToSubaccountPortfolio,
+      ),
+    }
+  }
+
   static grpcSubaccountPortfolioToSubaccountPortfolio(
     subaccountPortfolio: GrpcSubaccountPortfolio,
   ): SubaccountPortfolio {
@@ -60,6 +84,22 @@ export class ExchangeGrpcAccountTransformer {
     }
   }
 
+  static balancesResponseToBalances(
+    response: SubaccountBalancesListResponse,
+  ): SubaccountBalance[] {
+    return response
+      .getBalancesList()
+      .map((b) => ExchangeGrpcAccountTransformer.grpcBalanceToBalance(b))
+  }
+
+  static balanceResponseToBalance(
+    response: SubaccountBalanceResponse,
+  ): SubaccountBalance {
+    return ExchangeGrpcAccountTransformer.grpcBalanceToBalance(
+      response.getBalance()!,
+    )
+  }
+
   static grpcBalanceToBalance(
     balance: GrpcSubaccountBalance,
   ): SubaccountBalance {
@@ -101,10 +141,22 @@ export class ExchangeGrpcAccountTransformer {
     }
   }
 
+  static tradingRewardsResponseToTradingRewards(
+    response: RewardsResponse,
+  ): TradingReward[] {
+    const rewards = response.getRewardsList()
+
+    return rewards.map(
+      ExchangeGrpcAccountTransformer.grpcTradingRewardToTradingReward,
+    )
+  }
+
   static grpcTradingRewardsToTradingRewards(
     rewards: GrpcTradingReward[],
   ): TradingReward[] {
-    return rewards.map(ExchangeGrpcAccountTransformer.grpcTradingRewardToTradingReward)
+    return rewards.map(
+      ExchangeGrpcAccountTransformer.grpcTradingRewardToTradingReward,
+    )
   }
 
   static grpcTradingRewardToTradingReward(
@@ -117,6 +169,18 @@ export class ExchangeGrpcAccountTransformer {
         .map((r) => ({ amount: r.getAmount(), denom: r.getDenom() })),
       distributedAt: reward.getDistributedAt(),
     }
+  }
+
+  static transferHistoryResponseToTransferHistory(
+    response: SubaccountHistoryResponse,
+  ): SubaccountTransfer[] {
+    return response
+      .getTransfersList()
+      .map((transfer) =>
+        ExchangeGrpcAccountTransformer.grpcTransferHistoryEntryToTransferHistoryEntry(
+          transfer,
+        ),
+      )
   }
 
   static grpcTransferHistoryToTransferHistory(

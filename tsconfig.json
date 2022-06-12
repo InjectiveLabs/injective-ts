@@ -12,29 +12,17 @@
       "@injectivelabs/utils": [
         "./packages/utils"
       ],
-      "@injectivelabs/tx-utils": [
-        "./packages/tx-utils"
+      "@injectivelabs/wallet-ts": [
+        "./packages/wallet-ts"
       ],
-      "@injectivelabs/assert": [
-        "./packages/assert"
-      ],
-      "@injectivelabs/web3-strategy": [
-        "./packages/web3-strategy"
+      "@injectivelabs/tx-ts": [
+        "./packages/tx-ts"
       ],
       "@injectivelabs/contracts": [
         "./packages/contracts"
       ],
       "@injectivelabs/tokens-metadata": [
         "./packages/tokens-metadata"
-      ],
-      "@injectivelabs/cosmos-ts": [
-        "./packages/cosmos-ts"
-      ],
-      "@injectivelabs/protocol-stats": [
-        "./packages/protocol-stats"
-      ],
-      "@injectivelabs/referral-consumer": [
-        "./packages/referral-consumer"
       ],
       "@injectivelabs/sdk-ts": [
         "packages/sdk-ts"

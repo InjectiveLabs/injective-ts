@@ -2,9 +2,11 @@ import BaseRestConsumer from '../../BaseRestConsumer'
 import {
   ExplorerApiResponse,
   BlockFromExplorerApiResponse,
-  BlockWithTxs,
+  ExplorerBlockWithTxs,
   TransactionFromExplorerApiResponse,
-  Transaction,
+  ExplorerTransaction,
+  ValidatorUptimeFromExplorerApiResponse,
+  ExplorerValidatorUptime,
 } from '../types/explorer-rest'
 import {
   BlockNotFoundException,
@@ -13,10 +15,10 @@ import {
 } from '@injectivelabs/exceptions'
 import { DEFAULT_PAGINATION_TOTAL_COUNT } from '../../../utils/constants'
 import { ExchangeRestExplorerTransformer } from '../transformers'
-import { Block } from '../types/explorer'
+import { Block, ExplorerValidator } from '../types/explorer'
 
 export class ExchangeRestExplorerApi extends BaseRestConsumer {
-  async fetchBlock(blockHashHeight: string): Promise<BlockWithTxs> {
+  async fetchBlock(blockHashHeight: string): Promise<ExplorerBlockWithTxs> {
     try {
       const response = (await this.client.get(
         `blocks/${blockHashHeight}`,
@@ -50,7 +52,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
   async fetchBlocksWithTx(params?: {
     before?: number
     limit?: number
-  }): Promise<{ total: number; blocks: BlockWithTxs[] }> {
+  }): Promise<{ total: number; blocks: ExplorerBlockWithTxs[] }> {
     try {
       const { before, limit } = params || { limit: 50 }
       const response = (await this.client.get('blocks', {
@@ -75,7 +77,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     before?: number
     limit?: number
     skip?: number
-  }): Promise<{ total: number; transactions: Transaction[] }> {
+  }): Promise<{ total: number; transactions: ExplorerTransaction[] }> {
     try {
       const { before, limit, skip } = params || { limit: 50 }
       const response = (await this.client.get('txs', {
@@ -107,7 +109,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     before?: number
     limit?: number
     skip?: number
-  }): Promise<{ total: number; transactions: Transaction[] }> {
+  }): Promise<{ total: number; transactions: ExplorerTransaction[] }> {
     try {
       const response = (await this.client.get(`accountTxs/${account}`, {
         before,
@@ -127,7 +129,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchTransaction(hash: string): Promise<Transaction> {
+  async fetchTransaction(hash: string): Promise<ExplorerTransaction> {
     try {
       const response = (await this.client.get(
         `txs/${hash}`,
@@ -142,6 +144,44 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
       } else {
         throw new HttpException(error.message)
       }
+    }
+  }
+
+  async fetchValidators(): Promise<Partial<ExplorerValidator>[]> {
+    try {
+      const response = (await this.client.get(
+        `validators`,
+      )) as ExplorerApiResponse<any[]>
+
+      if (!response.data || !response.data.data) {
+        return []
+      }
+
+      return ExchangeRestExplorerTransformer.validatorExplorerToValidator(
+        response.data.data,
+      )
+    } catch (error) {
+      throw new HttpException((error as any).message)
+    }
+  }
+
+  async fetchValidatorUptime(
+    validatorConsensusAddress: string,
+  ): Promise<ExplorerValidatorUptime[]> {
+    try {
+      const response = (await this.client.get(
+        `validator_uptime/${validatorConsensusAddress}`,
+      )) as ExplorerApiResponse<ValidatorUptimeFromExplorerApiResponse[]>
+
+      if (!response.data || !response.data.data) {
+        return []
+      }
+
+      return ExchangeRestExplorerTransformer.validatorUptimeToExplorerValidatorUptime(
+        response.data.data,
+      )
+    } catch (error) {
+      throw new HttpException((error as any).message)
     }
   }
 }

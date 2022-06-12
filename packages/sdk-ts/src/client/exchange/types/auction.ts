@@ -7,8 +7,8 @@ import { Coin } from '@injectivelabs/ts-types'
 
 export interface Bid {
   bidder: string
-  bidAmount: string
-  bidTimestamp: number
+  amount: string
+  timestamp: number
 }
 
 export interface Auction {

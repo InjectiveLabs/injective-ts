@@ -30,11 +30,13 @@ import {
 } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ExchangeGrpcDerivativeTransformer } from '../transformers'
 import { DerivativeOrderSide } from '../types/derivatives'
 
 export class ExchangeGrpcDerivativesApi extends BaseConsumer {
   async fetchMarkets(params?: { marketStatus?: string; quoteDenom?: string }) {
     const { marketStatus, quoteDenom } = params || {}
+
     const request = new DerivativeMarketsRequest()
 
     if (marketStatus) {
@@ -51,7 +53,9 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.Markets
       >(request, InjectiveDerivativeExchangeRPC.Markets)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.marketsResponseToMarkets(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -59,6 +63,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
   async fetchMarket(marketId: string) {
     const request = new DerivativeMarketRequest()
+
     request.setMarketId(marketId)
 
     try {
@@ -68,7 +73,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.Market
       >(request, InjectiveDerivativeExchangeRPC.Market)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.marketResponseToMarket(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -76,6 +81,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
   async fetchOrderbook(marketId: string) {
     const request = new DerivativeOrderbookRequest()
+
     request.setMarketId(marketId)
 
     try {
@@ -85,7 +91,9 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.Orderbook
       >(request, InjectiveDerivativeExchangeRPC.Orderbook)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.orderbookResponseToOrderbook(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -98,6 +106,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const { marketId, subaccountId, orderSide, pagination } = params || {}
+
     const request = new DerivativeOrdersRequest()
 
     if (marketId) {
@@ -129,7 +138,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.Orders
       >(request, InjectiveDerivativeExchangeRPC.Orders)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.ordersResponseToOrders(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -141,6 +150,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const { marketId, subaccountId, pagination } = params || {}
+
     const request = new DerivativePositionsRequest()
 
     if (marketId) {
@@ -168,7 +178,9 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.Positions
       >(request, InjectiveDerivativeExchangeRPC.Positions)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.positionsResponseToPositions(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -183,6 +195,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
   }) {
     const { marketId, subaccountId, direction, pagination, executionSide } =
       params || {}
+
     const request = new DerivativeTradesRequest()
 
     if (marketId) {
@@ -218,7 +231,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.Trades
       >(request, InjectiveDerivativeExchangeRPC.Trades)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.tradesResponseToTrades(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -230,6 +243,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const { marketId, subaccountId, pagination } = params || {}
+
     const request = new FundingPaymentsRequest()
 
     if (marketId) {
@@ -257,7 +271,9 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.FundingPayments
       >(request, InjectiveDerivativeExchangeRPC.FundingPayments)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.fundingPaymentsResponseToFundingPayments(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -268,6 +284,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const { marketId, pagination } = params || {}
+
     const request = new FundingRatesRequest()
 
     if (marketId) {
@@ -291,7 +308,9 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.FundingRates
       >(request, InjectiveDerivativeExchangeRPC.FundingRates)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.fundingRatesResponseToFundingRates(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -303,6 +322,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const { marketId, subaccountId, pagination } = params || {}
+
     const request = new DerivativeSubaccountOrdersListRequest()
 
     if (marketId) {
@@ -330,7 +350,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.SubaccountOrdersList
       >(request, InjectiveDerivativeExchangeRPC.SubaccountOrdersList)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.ordersResponseToOrders(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -345,6 +365,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
   }) {
     const { marketId, subaccountId, direction, executionType, pagination } =
       params || {}
+
     const request = new DerivativeSubaccountTradesListRequest()
 
     if (marketId) {
@@ -380,7 +401,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList
       >(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.tradesResponseToTrades(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -400,7 +421,9 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.Orderbooks
       >(request, InjectiveDerivativeExchangeRPC.Orderbooks)
 
-      return response
+      return ExchangeGrpcDerivativeTransformer.orderbooksResponseToOrderbooks(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

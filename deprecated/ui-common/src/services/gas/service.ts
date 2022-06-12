@@ -2,13 +2,23 @@ import { ChainId } from '@injectivelabs/ts-types'
 import { HttpClient, BigNumber, BigNumberInWei } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { GWEI_IN_WEI, DEFAULT_GAS_PRICE } from '../../constants'
-import { EtherchainResult, EthGasStationResult } from './types'
+import {
+  EtherchainResult,
+  EthGasStationResult,
+  MetamaskGasServerResult,
+} from './types'
 import { BaseService } from '../BaseService'
 
 export class GasService extends BaseService {
   async fetchGasPrice(): Promise<string> {
     if (this.isTestnet()) {
       return new BigNumberInWei(DEFAULT_GAS_PRICE).toString()
+    }
+
+    try {
+      return await GasService.fetchGasPriceFromMetamaskGasServer()
+    } catch (e) {
+      //
     }
 
     try {
@@ -37,6 +47,28 @@ export class GasService extends BaseService {
         Network.TestnetK8s,
       ].includes(options.network) || options.chainId === ChainId.Kovan
     )
+  }
+
+  private static async fetchGasPriceFromMetamaskGasServer(): Promise<string> {
+    try {
+      const response = (await new HttpClient(
+        'https://mock-gas-server.herokuapp.com',
+      ).get('')) as {
+        data: MetamaskGasServerResult
+      }
+
+      if (!response || (response && !response.data)) {
+        throw new Error('No response from Etherchain')
+      }
+
+      return new BigNumberInWei(
+        new BigNumber(response.data.medium.suggestedMaxFeePerGas)
+          .div(1000)
+          .multipliedBy(GWEI_IN_WEI),
+      ).toString()
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
   }
 
   private static async fetchGasPriceFromEtherchain(): Promise<string> {

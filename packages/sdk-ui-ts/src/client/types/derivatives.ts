@@ -10,7 +10,7 @@ import {
   ChronosDerivativeMarketSummary,
   AllChronosDerivativeMarketSummary,
 } from '@injectivelabs/sdk-ts/dist/client/exchange/types/derivatives-rest'
-import { Token } from './../../types/token'
+import { Token } from '@injectivelabs/token-metadata'
 import { Change, MarketBase, MarketType } from './common'
 
 export interface UiBaseDerivativeMarket
@@ -57,6 +57,8 @@ export enum DerivativeMarketMap {
   STOP_SELL = 4,
   TAKE_BUY = 5,
   TAKE_SELL = 6,
+  BUY_PO = 7,
+  SELL_PO = 8,
 }
 
 export {

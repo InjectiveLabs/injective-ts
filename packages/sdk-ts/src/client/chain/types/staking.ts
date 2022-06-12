@@ -12,6 +12,11 @@ import {
   Pool as GrpcPool,
 } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/staking_pb'
 
+export interface StakingModuleParams
+  extends Omit<GrpcStakingParams.AsObject, 'unbondingTime'> {
+  unbondingTime: number
+}
+
 export interface Delegation {
   delegation: {
     delegatorAddress: string
@@ -41,14 +46,6 @@ export interface UnBondingDelegation {
   completionTime: number
   initialBalance: string // BigNumberInWei
   balance: string // BigNumberInWei
-}
-
-export interface Reward {
-  validatorAddress: string
-  rewards: {
-    denom: string
-    amount: string // BigNumberInWei
-  }[]
 }
 
 export interface Pool {

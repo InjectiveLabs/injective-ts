@@ -15,16 +15,21 @@ import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { PaginationOption } from '../../../types/pagination'
 import { SpotOrderSide } from '../types/spot'
-
-export type SpotOrderbookStreamCallback = (
-  response: StreamOrderbookResponse,
-) => void
+import { SpotStreamTransformer } from '../transformers'
 
 export type MarketsStreamCallback = (response: StreamMarketsResponse) => void
 
-export type SpotOrdersStreamCallback = (response: StreamOrdersResponse) => void
+export type SpotOrderbookStreamCallback = (
+  response: ReturnType<typeof SpotStreamTransformer.orderbookStreamCallback>,
+) => void
 
-export type SpotTradesStreamCallback = (response: StreamTradesResponse) => void
+export type SpotOrdersStreamCallback = (
+  response: ReturnType<typeof SpotStreamTransformer.ordersStreamCallback>,
+) => void
+
+export type SpotTradesStreamCallback = (
+  response: ReturnType<typeof SpotStreamTransformer.tradesStreamCallback>,
+) => void
 
 export class ExchangeGrpcSpotStream {
   protected client: InjectiveSpotExchangeRPCClient
@@ -52,7 +57,7 @@ export class ExchangeGrpcSpotStream {
     const stream = this.client.streamOrderbook(request)
 
     stream.on('data', (response: StreamOrderbookResponse) => {
-      callback(response)
+      callback(SpotStreamTransformer.orderbookStreamCallback(response))
     })
 
     if (onEndCallback) {
@@ -98,7 +103,7 @@ export class ExchangeGrpcSpotStream {
     const stream = this.client.streamOrders(request)
 
     stream.on('data', (response: StreamOrdersResponse) => {
-      callback(response)
+      callback(SpotStreamTransformer.ordersStreamCallback(response))
     })
 
     if (onEndCallback) {
@@ -174,7 +179,7 @@ export class ExchangeGrpcSpotStream {
     const stream = this.client.streamTrades(request)
 
     stream.on('data', (response: StreamTradesResponse) => {
-      callback(response)
+      callback(SpotStreamTransformer.tradesStreamCallback(response))
     })
 
     if (onEndCallback) {

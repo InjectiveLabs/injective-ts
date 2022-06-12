@@ -1,6 +1,5 @@
 import {
   BlockInfo,
-  GetValidatorResponse,
   TxData,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 import {
@@ -25,8 +24,112 @@ import {
   GrpcPeggyDepositTx,
   GrpcPeggyWithdrawalTx,
 } from '../types/explorer'
+import {
+  GetTxByTxHashResponse,
+  GetAccountTxsResponse,
+  GetValidatorResponse,
+  GetValidatorUptimeResponse,
+  GetPeggyDepositTxsResponse,
+  GetPeggyWithdrawalTxsResponse,
+  GetIBCTransferTxsResponse,
+} from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
+import { grpcPagingToPaging } from '../../../utils'
 
 export class ExchangeGrpcExplorerTransformer {
+  static getTxByTxHashResponseToTx(tx: GetTxByTxHashResponse): Transaction {
+    return ExchangeGrpcExplorerTransformer.grpcTransactionToTransaction(tx)
+  }
+
+  static getAccountTxsResponseToAccountTxs(response: GetAccountTxsResponse) {
+    const txs = response.getDataList()
+    const pagination = response.getPaging()
+
+    return {
+      txs: ExchangeGrpcExplorerTransformer.grpcTransactionsToTransactions(txs),
+      pagination: grpcPagingToPaging(pagination),
+    }
+  }
+
+  static getValidatorUptimeResponseToValidatorUptime(
+    response: GetValidatorUptimeResponse,
+  ) {
+    return response
+      .getFieldList()
+      .map((field) =>
+        ExchangeGrpcExplorerTransformer.grpcValidatorUptimeToValidatorUptime(
+          field,
+        ),
+      )
+  }
+
+  static getPeggyDepositTxsResponseToPeggyDepositTxs(
+    response: GetPeggyDepositTxsResponse,
+  ) {
+    return response
+      .getFieldList()
+      .map((field) => ExchangeGrpcExplorerTransformer.grpcPeggyDepositTx(field))
+  }
+
+  static getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
+    response: GetPeggyWithdrawalTxsResponse,
+  ) {
+    return response
+      .getFieldList()
+      .map((field) =>
+        ExchangeGrpcExplorerTransformer.grpcPeggyWithdrawalTx(field),
+      )
+  }
+
+  static getIBCTransferTxsResponseToIBCTransferTxs(
+    response: GetIBCTransferTxsResponse,
+  ) {
+    return response
+      .getFieldList()
+      .map((field) =>
+        ExchangeGrpcExplorerTransformer.grpcIBCTransferTxToIBCTransferTx(field),
+      )
+  }
+
+  static validatorResponseToValidator(
+    validator: GetValidatorResponse,
+  ): ExplorerValidator {
+    return {
+      id: validator.getId(),
+      moniker: validator.getMoniker(),
+      operatorAddress: validator.getOperatorAddress(),
+      consensusAddress: validator.getConsensusAddress(),
+      jailed: validator.getJailed(),
+      status: validator.getStatus(),
+      tokens: validator.getTokens(),
+      delegatorShares: validator.getDelegatorShares(),
+      description:
+        ExchangeGrpcExplorerTransformer.grpcValidatorDescriptionToValidatorDescription(
+          validator.getDescription()!,
+        ),
+      unbondingHeight: validator.getUnbondingHeight(),
+      unbondingTime: validator.getUnbondingTime(),
+      commissionRate: validator.getCommissionRate(),
+      commissionMaxRate: validator.getCommissionMaxRate(),
+      commissionMaxChangeRate: validator.getCommissionMaxChangeRate(),
+      commissionUpdateTime: validator.getCommissionUpdateTime(),
+      proposed: validator.getProposed(),
+      signed: validator.getSigned(),
+      missed: validator.getMissed(),
+      uptimePercentage: validator.getUptimePercentage(),
+      timestamp: validator.getTimestamp(),
+      uptimesList: validator
+        .getUptimesList()
+        .map(
+          ExchangeGrpcExplorerTransformer.grpcValidatorUptimeToValidatorUptime,
+        ),
+      slashingEventsList: validator
+        .getSlashingEventsList()
+        .map(
+          ExchangeGrpcExplorerTransformer.grpcValidatorSlashingEventToValidatorSlashingEvent,
+        ),
+    }
+  }
+
   static grpcGasFeeToGasFee(gasFee: GrpcGasFee): GasFee {
     const amounts = gasFee.getAmountList().map((amount) => ({
       amount: amount.getAmount(),
@@ -69,7 +172,9 @@ export class ExchangeGrpcExplorerTransformer {
       gasUsed: tx.getGasUsed(),
       codespace: tx.getCodespace(),
       data: tx.getData(),
-      gasFee: ExchangeGrpcExplorerTransformer.grpcGasFeeToGasFee(tx.getGasFee()!),
+      gasFee: ExchangeGrpcExplorerTransformer.grpcGasFeeToGasFee(
+        tx.getGasFee()!,
+      ),
       txType: tx.getTxType(),
       signatures: tx.getSignaturesList().map((signature) => ({
         pubkey: signature.getPubkey(),
@@ -174,42 +279,6 @@ export class ExchangeGrpcExplorerTransformer {
       reason: validatorUptime.getReason(),
       jailed: validatorUptime.getJailed(),
       missedBlocks: validatorUptime.getMissedBlocks(),
-    }
-  }
-
-  static grpcValidatorToValidator(validator: GetValidatorResponse): ExplorerValidator {
-    return {
-      id: validator.getId(),
-      moniker: validator.getMoniker(),
-      operatorAddress: validator.getOperatorAddress(),
-      consensusAddress: validator.getConsensusAddress(),
-      jailed: validator.getJailed(),
-      status: validator.getStatus(),
-      tokens: validator.getTokens(),
-      delegatorShares: validator.getDelegatorShares(),
-      description:
-        ExchangeGrpcExplorerTransformer.grpcValidatorDescriptionToValidatorDescription(
-          validator.getDescription()!,
-        ),
-      unbondingHeight: validator.getUnbondingHeight(),
-      unbondingTime: validator.getUnbondingTime(),
-      commissionRate: validator.getCommissionRate(),
-      commissionMaxRate: validator.getCommissionMaxRate(),
-      commissionMaxChangeRate: validator.getCommissionMaxChangeRate(),
-      commissionUpdateTime: validator.getCommissionUpdateTime(),
-      proposed: validator.getProposed(),
-      signed: validator.getSigned(),
-      missed: validator.getMissed(),
-      uptimePercentage: validator.getUptimePercentage(),
-      timestamp: validator.getTimestamp(),
-      uptimesList: validator
-        .getUptimesList()
-        .map(ExchangeGrpcExplorerTransformer.grpcValidatorUptimeToValidatorUptime),
-      slashingEventsList: validator
-        .getSlashingEventsList()
-        .map(
-          ExchangeGrpcExplorerTransformer.grpcValidatorSlashingEventToValidatorSlashingEvent,
-        ),
     }
   }
 

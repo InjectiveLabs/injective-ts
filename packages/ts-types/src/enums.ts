@@ -1,4 +1,4 @@
-export enum ChainId {
+export enum EthereumChainId {
   Mainnet = 1,
   Ropsten = 3,
   Rinkeby = 4,
@@ -8,6 +8,12 @@ export enum ChainId {
   HardHat = 31337,
 }
 
+export enum ChainId {
+  Mainnet = 'injective-1',
+  Testnet = 'injective-888',
+  Devnet = 'injective-777',
+}
+
 export enum Wallet {
   Metamask = 'metamask',
   Ledger = 'ledger',
@@ -15,4 +21,5 @@ export enum Wallet {
   Trezor = 'trezor',
   Keplr = 'keplr',
   Torus = 'torus',
+  WalletConnect = 'wallet-connect',
 }

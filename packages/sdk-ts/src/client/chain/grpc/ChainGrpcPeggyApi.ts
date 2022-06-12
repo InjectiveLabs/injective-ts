@@ -4,6 +4,7 @@ import {
   QueryParamsResponse as QueryPeggyParamsResponse,
 } from '@injectivelabs/chain-api/injective/peggy/v1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ChainGrpcPeggyTransformer } from '../transformers'
 
 export class ChainGrpcPeggyApi extends BaseConsumer {
   async fetchModuleParams() {
@@ -16,7 +17,9 @@ export class ChainGrpcPeggyApi extends BaseConsumer {
         typeof PeggyQuery.Params
       >(request, PeggyQuery.Params)
 
-      return response
+      return ChainGrpcPeggyTransformer.moduleParamsResponseToModuleParams(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

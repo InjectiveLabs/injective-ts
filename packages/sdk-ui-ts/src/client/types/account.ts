@@ -1,5 +1,5 @@
 import { SubaccountTransfer } from '@injectivelabs/sdk-ts/dist/client/exchange/types/account'
-import { Token } from './../../types/token'
+import { Token } from '@injectivelabs/token-metadata'
 
 export interface UiSubaccountBalance {
   totalBalance: string

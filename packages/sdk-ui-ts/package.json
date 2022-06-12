@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ui-ts",
   "description": "SDK in TypeScript for building Injective UI applications in a browser environment.",
-  "version": "0.0.16",
+  "version": "0.0.69",
   "license": "MIT",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -14,32 +14,6 @@
   ],
   "_moduleAliases": {
     "~sdk-ui-ts": "dist"
-  },
-  "exports": {
-    ".": "./main.js",
-    "./types": "./dist/types/index.js",
-    "./core": "./dist/core/index.js",
-    "./client": "./dist/client/index.js",
-    "./token": "./dist/client/index.js"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/index.d.ts"
-      ],
-      "types": [
-        "./dist/types/index.d.ts"
-      ],
-      "core": [
-        "./dist/core/index.d.ts"
-      ],
-      "client": [
-        "./dist/client/index.d.ts"
-      ],
-      "token": [
-        "./dist/token/index.d.ts"
-      ]
-    }
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
@@ -57,15 +31,14 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@alch/alchemy-web3": "^1.4.2",
-    "@improbable-eng/grpc-web": "^0.15.0",
-    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
-    "@injectivelabs/exceptions": "^0.5.2",
-    "@injectivelabs/networks": "^0.5.6",
-    "@injectivelabs/sdk-ts": "^0.0.36",
-    "@injectivelabs/ts-types": "^0.5.1",
-    "@injectivelabs/utils": "^0.5.3",
-    "@injectivelabs/web3-strategy": "^0.5.39",
+    "@injectivelabs/exceptions": "^0.5.5",
+    "@injectivelabs/networks": "^0.5.10",
+    "@injectivelabs/sdk-ts": "^0.0.71",
+    "@injectivelabs/token-metadata": "^0.5.29",
+    "@injectivelabs/token-utils": "^0.5.7",
+    "@injectivelabs/ts-types": "^0.5.4",
+    "@injectivelabs/utils": "^0.5.7",
+    "@injectivelabs/wallet-ts": "^0.0.31",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   }

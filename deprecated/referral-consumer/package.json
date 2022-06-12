@@ -1,0 +1,42 @@
+{
+  "name": "@injectivelabs/referral-consumer",
+  "description": "Referral API on Injective Protocol made easy. Can be reused throughout Injective's projects.",
+  "version": "0.5.7",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~referral-consumer": "dist"
+  },
+  "scripts": {
+    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "test": "jest",
+    "test:unit": "jest test/unit",
+    "test:integration": "jest test/unit",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@improbable-eng/grpc-web": "^0.15.0",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
+    "@injectivelabs/common-rpc": "^1.0.2",
+    "@injectivelabs/exceptions": "^0.5.5",
+    "@injectivelabs/referral-api": "^1.0.20",
+    "@injectivelabs/ts-types": "^0.5.4",
+    "@injectivelabs/utils": "^0.5.7",
+    "link-module-alias": "^1.2.0",
+    "shx": "^0.3.2",
+    "snakecase-keys": "^3.2.1"
+  },
+  "gitHead": "a12e5c2c5d1038ab42e9669b6eeb1e91873626c2"
+}

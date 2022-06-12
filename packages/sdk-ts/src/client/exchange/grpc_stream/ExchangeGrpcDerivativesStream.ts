@@ -17,21 +17,26 @@ import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { PaginationOption } from '../../../types/pagination'
 import { DerivativeOrderSide } from '../types/derivatives'
+import { DerivativeStreamTransformer } from '../transformers'
 
 export type DerivativeOrderbookStreamCallback = (
-  response: StreamOrderbookResponse,
+  response: ReturnType<
+    typeof DerivativeStreamTransformer.orderbookStreamCallback
+  >,
 ) => void
 
 export type DerivativeOrdersStreamCallback = (
-  response: StreamOrdersResponse,
+  response: ReturnType<typeof DerivativeStreamTransformer.ordersStreamCallback>,
 ) => void
 
 export type DerivativeTradesStreamCallback = (
-  response: StreamTradesResponse,
+  response: ReturnType<typeof DerivativeStreamTransformer.tradesStreamCallback>,
 ) => void
 
 export type PositionsStreamCallback = (
-  response: StreamPositionsResponse,
+  response: ReturnType<
+    typeof DerivativeStreamTransformer.positionStreamCallback
+  >,
 ) => void
 
 export type MarketStreamCallback = (response: StreamMarketResponse) => void
@@ -62,7 +67,7 @@ export class ExchangeGrpcDerivativesStream {
     const stream = this.client.streamOrderbook(request)
 
     stream.on('data', (response: StreamOrderbookResponse) => {
-      callback(response)
+      callback(DerivativeStreamTransformer.orderbookStreamCallback(response))
     })
 
     if (onEndCallback) {
@@ -108,7 +113,7 @@ export class ExchangeGrpcDerivativesStream {
     const stream = this.client.streamOrders(request)
 
     stream.on('data', (response: StreamOrdersResponse) => {
-      callback(response)
+      callback(DerivativeStreamTransformer.ordersStreamCallback(response))
     })
 
     if (onEndCallback) {
@@ -184,7 +189,7 @@ export class ExchangeGrpcDerivativesStream {
     const stream = this.client.streamTrades(request)
 
     stream.on('data', (response: StreamTradesResponse) => {
-      callback(response)
+      callback(DerivativeStreamTransformer.tradesStreamCallback(response))
     })
 
     if (onEndCallback) {
@@ -224,7 +229,7 @@ export class ExchangeGrpcDerivativesStream {
     const stream = this.client.streamPositions(request)
 
     stream.on('data', (response: StreamPositionsResponse) => {
-      callback(response)
+      callback(DerivativeStreamTransformer.positionStreamCallback(response))
     })
 
     if (onEndCallback) {

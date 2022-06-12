@@ -14,7 +14,13 @@
       "path": "../networks/tsconfig.json"
     },
     {
-      "path": "../web3-strategy/tsconfig.json"
+      "path": "../wallet-ts/tsconfig.json"
+    },
+    {
+      "path": "../token-utils/tsconfig.json"
+    },
+    {
+      "path": "../token-metadata/tsconfig.json"
     },
     {
       "path": "../sdk-ts/tsconfig.json"

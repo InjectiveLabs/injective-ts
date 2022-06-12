@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "../ts-types/tsconfig.json"
+    },
+    {
+      "path": "../exceptions/tsconfig.json"
+    },
+    {
+      "path": "../networks/tsconfig.json"
+    },
+    {
+      "path": "../contracts/tsconfig.json"
+    },
+    {
+      "path": "../utils/tsconfig.json"
+    },
+    {
+      "path": "../token-metadata/tsconfig.json"
+    },
+    {
+      "path": "../tx-ts/tsconfig.json"
+    },
+    {
+      "path": "../contracts/tsconfig.json"
+    }
+  ]
+}

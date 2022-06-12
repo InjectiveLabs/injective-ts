@@ -2,6 +2,7 @@
 import {
   BlockWithTxs as BaseBlockWithTxs,
   Transaction as BaseTransaction,
+  ValidatorUptime,
 } from './explorer'
 
 export interface ExplorerApiResponse<T> {
@@ -71,7 +72,7 @@ export interface Message {
   message: any
 }
 
-export interface Transaction extends Omit<BaseTransaction, 'messages'> {
+export interface ExplorerTransaction extends Omit<BaseTransaction, 'messages'> {
   memo: string
   messages: Message[]
   parsedMessages?: Message[]
@@ -79,11 +80,27 @@ export interface Transaction extends Omit<BaseTransaction, 'messages'> {
 
 export type TransactionListItem = {
   key: number
-  list: Transaction[]
+  list: ExplorerTransaction[]
 }
 
-export interface BlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
-  txs: Transaction[]
+export interface ExplorerBlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
+  txs: ExplorerTransaction[]
+}
+
+export enum ValidatorUptimeStatus {
+  Proposed = 'proposed',
+  Signed = 'signed',
+  Missed = 'missed',
+}
+
+export interface ValidatorUptimeFromExplorerApiResponse {
+  block_number: number
+  status: ValidatorUptimeStatus
+}
+
+export interface ExplorerValidatorUptime
+  extends Omit<ValidatorUptime, 'status'> {
+  status: ValidatorUptimeStatus
 }
 
 export { BaseTransaction }

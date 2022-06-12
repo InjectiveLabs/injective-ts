@@ -1,6 +1,6 @@
-import { Msgs } from '@injectivelabs/sdk-ts/dist/core/msgs'
-import { getInjectiveAddress } from '@injectivelabs/sdk-ts/utils'
-import { ChainGrpcTransactionApi } from '@injectivelabs/sdk-ts/client'
+import { Msgs } from '@injectivelabs/sdk-ts/dist/core'
+import { getInjectiveAddress } from '@injectivelabs/sdk-ts/dist/utils'
+import { ExchangeGrpcTransactionApi } from '@injectivelabs/sdk-ts/dist/client'
 import { Wallet } from '@injectivelabs/ts-types'
 import { MetricsProvider } from '../classes/MetricsProvider'
 import {
@@ -8,8 +8,8 @@ import {
   DEFAULT_EXCHANGE_LIMIT,
   DEFAULT_GAS_LIMIT,
 } from '@injectivelabs/utils'
-import { Web3Strategy } from '@injectivelabs/web3-strategy'
-import { ChainId } from '@injectivelabs/ts-types'
+import { WalletStrategy } from '@injectivelabs/wallet-ts'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 export interface MsgBroadcastTxOptions {
   bucket?: string
@@ -26,7 +26,8 @@ export interface MsgBroadcastOptions {
     exchangeApi: string
   }
   chainId: ChainId
-  web3Strategy: Web3Strategy
+  ethereumChainId: EthereumChainId
+  walletStrategy: WalletStrategy
   metricsProvider?: MetricsProvider
 }
 
@@ -49,34 +50,34 @@ const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
 export class MsgBroadcastClient {
   public options: MsgBroadcastOptions
 
-  public transactionApi: ChainGrpcTransactionApi
+  public transactionApi: ExchangeGrpcTransactionApi
 
   constructor(options: MsgBroadcastOptions) {
     this.options = options
-    this.transactionApi = new ChainGrpcTransactionApi(
+    this.transactionApi = new ExchangeGrpcTransactionApi(
       options.endpoints.exchangeApi,
     )
   }
 
   async broadcast(tx: MsgBroadcastTxOptions) {
     const { options } = this
-    const { web3Strategy } = options
+    const { walletStrategy } = options
 
-    return web3Strategy.wallet === Wallet.Keplr
+    return walletStrategy.wallet === Wallet.Keplr
       ? this.broadcastKeplr(tx)
       : this.broadcastWeb3(tx)
   }
 
   private async broadcastWeb3(tx: MsgBroadcastTxOptions) {
     const { options, transactionApi } = this
-    const { web3Strategy, chainId, metricsProvider } = options
+    const { walletStrategy, ethereumChainId, metricsProvider } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
     const prepareTx = async () => {
       try {
         const promise = transactionApi.prepareTxRequest({
-          chainId,
+          chainId: ethereumChainId,
           memo: tx.memo,
           address: tx.address,
           message: web3Msgs,
@@ -99,7 +100,7 @@ export class MsgBroadcastClient {
 
     const signTx = async (txData: any) => {
       try {
-        const promise = web3Strategy.signTypedDataV4(txData, tx.address)
+        const promise = walletStrategy.signTransaction(txData, tx.address)
 
         if (!metricsProvider) {
           return await promise
@@ -120,23 +121,28 @@ export class MsgBroadcastClient {
 
       const promise = transactionApi.broadcastTxRequest({
         signature,
-        chainId,
         txResponse,
         message: web3Msgs,
+        chainId: ethereumChainId,
       })
 
-      if (!metricsProvider) {
-        const { txHash } = await promise
+      try {
+        if (!metricsProvider) {
+          const { txHash } = await promise
 
+          return txHash
+        }
+
+        const { txHash } =
+          await metricsProvider.sendAndRecordWithoutProbability(
+            promise,
+            `${tx.bucket}BroadcastTx`,
+          )
         return txHash
+      } catch (e) {
+        console.log('e =>', e)
       }
-
-      const { txHash } = await metricsProvider.sendAndRecordWithoutProbability(
-        promise,
-        `${tx.bucket}BroadcastTx`,
-      )
-
-      return txHash
+      return ''
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -144,27 +150,23 @@ export class MsgBroadcastClient {
 
   private async broadcastKeplr(tx: MsgBroadcastTxOptions) {
     const { options } = this
-    const { web3Strategy, chainId } = options
+    const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const injectiveAddress = getInjectiveAddress(tx.address)
 
     try {
-      const [msg] = msgs.map((msg) => msg.toDirectSign())
-
+      const [message] = msgs.map((msg) => msg.toDirectSign())
       const transaction = {
-        message: {
-          type: msg.type,
-          value: msg.message,
-        },
+        message,
         memo: tx.memo,
       }
 
-      const signResponse = (await web3Strategy.signTypedDataV4(
+      const { directSignResponse } = (await walletStrategy.signTransaction(
         transaction,
         injectiveAddress,
       )) as any
 
-      return await web3Strategy.sendTransaction(signResponse, {
+      return await walletStrategy.sendTransaction(directSignResponse, {
         chainId,
         address: injectiveAddress,
       })
