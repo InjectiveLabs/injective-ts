@@ -193,7 +193,7 @@ export default class LedgerBase
       gasLimit: addHexPrefix(txData.gas),
       maxFeePerGas: addHexPrefix(txData.gasPrice || txData.maxFeePerGas),
       maxPriorityFeePerGas: addHexPrefix(
-        txData.maxPriorityFeePerGas || '0xB2D05E00' /* 3 Gwei in HEX */,
+        txData.maxPriorityFeePerGas || '0x77359400' /* 2 Gwei in HEX */,
       ),
     }
 

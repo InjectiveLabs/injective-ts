@@ -1,6 +1,6 @@
 import { Bech32Address } from '@keplr-wallet/cosmos'
+import { TestnetCosmosChainId, CosmosChainId } from '@injectivelabs/ts-types'
 import { getEndpointsFromChainId } from './endpoints'
-import { TestnetCosmosChainId, CosmosChainId } from '../types'
 
 export const experimentalChainsConfig = {
   [TestnetCosmosChainId.Cosmoshub]: {

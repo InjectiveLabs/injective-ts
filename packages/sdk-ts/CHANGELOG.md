@@ -3,6 +3,88 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.68...@injectivelabs/sdk-ts@0.0.69) (2022-06-10)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [0.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.67...@injectivelabs/sdk-ts@0.0.68) (2022-06-10)
+
+
+### Features
+
+* added tx-ts ([ae9ebc7](https://github.com/InjectiveLabs/injective-ts/commit/ae9ebc7e2c34eaf60e894cd70e6b0778e6b71bbf))
+
+
+
+
+
+## [0.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.66...@injectivelabs/sdk-ts@0.0.67) (2022-06-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [0.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.65...@injectivelabs/sdk-ts@0.0.66) (2022-06-09)
+
+
+### Bug Fixes
+
+* signature derivation ([6f0b5d2](https://github.com/InjectiveLabs/injective-ts/commit/6f0b5d27fafbddaf49831d01bc53e27fe92d53f7))
+
+
+
+
+
+## [0.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.64...@injectivelabs/sdk-ts@0.0.65) (2022-06-09)
+
+
+### Bug Fixes
+
+* path import for icons ([ef07786](https://github.com/InjectiveLabs/injective-ts/commit/ef0778652376013a8b91109935156cd5d410932b))
+
+
+
+
+
+## [0.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.63...@injectivelabs/sdk-ts@0.0.64) (2022-06-09)
+
+
+### Bug Fixes
+
+* cosmos wallet ([c3416df](https://github.com/InjectiveLabs/injective-ts/commit/c3416dfb68f32d6d4568a6fdb5dd0a7e2bfb60d2))
+
+
+
+
+
+## [0.0.63](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.62...@injectivelabs/sdk-ts@0.0.63) (2022-06-08)
+
+
+### Features
+
+* proposal decomposer ([cf63bc0](https://github.com/InjectiveLabs/injective-ts/commit/cf63bc0fa2aae144c4f1bdffd3c6bc7ecb55c41d))
+
+
+
+
+
+## [0.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.61...@injectivelabs/sdk-ts@0.0.62) (2022-06-08)
+
+
+### Features
+
+* gas price fetching ([476f4e4](https://github.com/InjectiveLabs/injective-ts/commit/476f4e49f62ecdfc482ddde6789483fd09fd4fff))
+
+
+
+
+
 ## [0.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.60...@injectivelabs/sdk-ts@0.0.61) (2022-06-08)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

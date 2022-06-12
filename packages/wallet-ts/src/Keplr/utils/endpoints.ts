@@ -1,5 +1,8 @@
-import { ChainId } from '@injectivelabs/ts-types'
-import { CosmosChainId, TestnetCosmosChainId } from '../types'
+import {
+  ChainId,
+  CosmosChainId,
+  TestnetCosmosChainId,
+} from '@injectivelabs/ts-types'
 
 export const getEndpointsFromChainId = (
   chainId: TestnetCosmosChainId | CosmosChainId | ChainId,

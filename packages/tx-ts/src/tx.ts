@@ -2,12 +2,12 @@ import { StdFee } from '@cosmjs/amino'
 import { Keccak } from 'sha3'
 import {
   TxBody,
-  TxRaw,
   SignDoc,
   SignerInfo,
   AuthInfo,
   ModeInfo,
   Fee,
+  TxRaw,
 } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { SignMode } from '@injectivelabs/chain-api/cosmos/tx/signing/v1beta1/signing_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
@@ -17,7 +17,6 @@ import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { createAny, createAnyMessage } from './utils'
 
 export const SIGN_DIRECT = SignMode.SIGN_MODE_DIRECT
-export const LEGACY_AMINO = SignMode.SIGN_MODE_LEGACY_AMINO_JSON
 
 export const getPublicKey = ({
   chainId,
@@ -26,31 +25,25 @@ export const getPublicKey = ({
   chainId: string
   key: string
 }) => {
-  let publicKey
+  let proto
+  let path
 
   if (chainId.startsWith('injective')) {
-    publicKey = {
-      proto: new PubKey(),
-      path: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
-    }
+    proto = new PubKey()
+    path = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
   } else if (chainId.startsWith('evmos')) {
-    publicKey = {
-      proto: new PubKey(),
-      path: '/ethermint.crypto.v1.ethsecp256k1.PubKey',
-    }
+    proto = new PubKey()
+    path = '/ethermint.crypto.v1.ethsecp256k1.PubKey'
   } else {
-    publicKey = {
-      proto: new CosmosPubKey(),
-      path: '/cosmos.crypto.secp256k1.PubKey',
-    }
+    proto = new CosmosPubKey()
+    path = '/cosmos.crypto.secp256k1.PubKey'
   }
 
-  const pubkeyProto = publicKey.proto
-  pubkeyProto.setKey(key)
+  proto.setKey(key)
 
   return createAny(
-    Buffer.from(pubkeyProto.serializeBinary()).toString('base64'),
-    publicKey.path,
+    Buffer.from(proto.serializeBinary()).toString('base64'),
+    path,
   )
 }
 
@@ -218,7 +211,7 @@ export const createTransaction = ({
   }
 }
 
-export const createSignedTx = (signatureResponse: DirectSignResponse) => {
+export const createTxRaw = (signatureResponse: DirectSignResponse) => {
   const txRaw = new TxRaw()
   txRaw.setAuthInfoBytes(signatureResponse.signed.authInfoBytes)
   txRaw.setBodyBytes(signatureResponse.signed.bodyBytes)

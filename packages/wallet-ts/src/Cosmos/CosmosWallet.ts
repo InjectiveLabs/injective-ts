@@ -2,20 +2,20 @@ import type {
   OfflineDirectSigner,
   DirectSignResponse,
 } from '@cosmjs/proto-signing'
-import { StargateClient, DeliverTxResponse } from '@cosmjs/stargate'
 import { Coin } from '@injectivelabs/ts-types'
-import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
-import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
+import { SignDoc, TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { SigningCosmosClient } from '@cosmjs/launchpad'
-import { createSignedTx, createTransaction } from '../transaction'
+import { fromBase64 } from '@cosmjs/encoding'
+import { createTransaction } from '@injectivelabs/tx-ts'
 import { CosmosQuery } from './CosmosQuery'
 
 export class CosmosWallet {
+  public query: CosmosQuery
+
   private rest: string
 
+  // @ts-ignore
   private rpc: string
-
-  private query: CosmosQuery
 
   private signer: OfflineDirectSigner
 
@@ -50,19 +50,24 @@ export class CosmosWallet {
       amount: Coin[]
       gas: string
     }
+    pubKey?: string
     chainId: string
     address: string
-    pubKey: string /* in base64 */
     memo?: string
-  }): Promise<DirectSignResponse> {
+  }): Promise<{
+    txRaw: TxRaw
+    signature: string
+    directSignResponse: DirectSignResponse
+  }> {
     const { signer } = this
     const accountDetails = await this.query.fetchAccountDetails(address)
     const { authInfoBytes, bodyBytes, accountNumber } = createTransaction({
-      message,
-      memo,
       fee,
+      memo,
+      message,
       chainId,
-      pubKey,
+      pubKey:
+        pubKey || Buffer.from(accountDetails.pubKey.key).toString('base64'),
       sequence: parseInt(accountDetails.sequence.toString(), 10),
       accountNumber: parseInt(accountDetails.accountNumber.toString(), 10),
     })
@@ -73,19 +78,19 @@ export class CosmosWallet {
       accountNumber,
     })
 
-    return signer.signDirect(address, cosmosSignDoc)
-  }
+    const response = await signer.signDirect(address, cosmosSignDoc)
 
-  async broadcastTransaction(
-    signResponse: DirectSignResponse,
-  ): Promise<DeliverTxResponse> {
-    const client = await this.getStargateClient()
-    const txRaw = createSignedTx(signResponse)
+    const txRaw = TxRaw.fromPartial({
+      bodyBytes: response.signed.bodyBytes,
+      authInfoBytes: response.signed.authInfoBytes,
+      signatures: [fromBase64(response.signature.signature)],
+    })
 
-    return client.broadcastTx(
-      txRaw.serializeBinary(),
-      DEFAULT_TIMESTAMP_TIMEOUT_MS,
-    )
+    return {
+      txRaw,
+      directSignResponse: response,
+      signature: response.signature.signature,
+    }
   }
 
   /**
@@ -117,12 +122,6 @@ export class CosmosWallet {
     const signingClient = await this.getStargateSigningClient(address)
 
     return signingClient.signAndBroadcast([message], fee, memo)
-  }
-
-  private async getStargateClient() {
-    const { rpc } = this
-
-    return StargateClient.connect(rpc)
   }
 
   private async getStargateSigningClient(address: string) {

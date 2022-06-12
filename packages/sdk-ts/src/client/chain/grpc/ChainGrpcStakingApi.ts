@@ -127,6 +127,41 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     }
   }
 
+  async fetchValidatorDelegationsNoThrow({
+    validatorAddress,
+    pagination,
+  }: {
+    validatorAddress: string
+    pagination?: PaginationOption
+  }) {
+    const request = new QueryValidatorDelegationsRequest()
+    request.setValidatorAddr(validatorAddress)
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.setPagination(paginationForRequest)
+    }
+
+    try {
+      const response = await this.request<
+        QueryValidatorDelegationsRequest,
+        QueryValidatorDelegationsResponse,
+        typeof StakingQuery.ValidatorDelegations
+      >(request, StakingQuery.ValidatorDelegations)
+
+      return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
+        response,
+      )
+    } catch (e: any) {
+      if (e.message.includes('does not exist')) {
+        return { delegations: [], pagination: { total: 0, next: '' } }
+      }
+
+      throw new Error(e.message)
+    }
+  }
+
   async fetchValidatorUnbondingDelegations({
     validatorAddress,
     pagination,
@@ -154,6 +189,41 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         response,
       )
     } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchValidatorUnbondingDelegationsNoThrow({
+    validatorAddress,
+    pagination,
+  }: {
+    validatorAddress: string
+    pagination?: PaginationOption
+  }) {
+    const request = new QueryValidatorUnbondingDelegationsRequest()
+    request.setValidatorAddr(validatorAddress)
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.setPagination(paginationForRequest)
+    }
+
+    try {
+      const response = await this.request<
+        QueryValidatorUnbondingDelegationsRequest,
+        QueryValidatorUnbondingDelegationsResponse,
+        typeof StakingQuery.ValidatorUnbondingDelegations
+      >(request, StakingQuery.ValidatorUnbondingDelegations)
+
+      return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
+        response,
+      )
+    } catch (e: any) {
+      if (e.message.includes('does not exist')) {
+        return { unbondingDelegations: [], pagination: { total: 0, next: '' } }
+      }
+
       throw new Error(e.message)
     }
   }
@@ -215,6 +285,41 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     }
   }
 
+  async fetchDelegationsNoThrow({
+    injectiveAddress,
+    pagination,
+  }: {
+    injectiveAddress: string
+    pagination?: PaginationOption
+  }) {
+    const request = new QueryDelegatorDelegationsRequest()
+    request.setDelegatorAddr(injectiveAddress)
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.setPagination(paginationForRequest)
+    }
+
+    try {
+      const response = await this.request<
+        QueryDelegatorDelegationsRequest,
+        QueryDelegatorDelegationsResponse,
+        typeof StakingQuery.DelegatorDelegations
+      >(request, StakingQuery.DelegatorDelegations)
+
+      return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
+        response,
+      )
+    } catch (e: any) {
+      if (e.message.includes('does not exist')) {
+        return { delegations: [], pagination: { total: 0, next: '' } }
+      }
+
+      throw new Error(e.message)
+    }
+  }
+
   async fetchDelegators({
     validatorAddress,
     pagination,
@@ -242,6 +347,41 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         response,
       )
     } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchDelegatorsNoThrow({
+    validatorAddress,
+    pagination,
+  }: {
+    validatorAddress: string
+    pagination?: PaginationOption
+  }) {
+    const request = new QueryValidatorDelegationsRequest()
+    request.setValidatorAddr(validatorAddress)
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.setPagination(paginationForRequest)
+    }
+
+    try {
+      const response = await this.request<
+        QueryValidatorDelegationsRequest,
+        QueryValidatorDelegationsResponse,
+        typeof StakingQuery.ValidatorDelegations
+      >(request, StakingQuery.ValidatorDelegations)
+
+      return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
+        response,
+      )
+    } catch (e: any) {
+      if (e.message.includes('does not exist')) {
+        return { delegations: [], pagination: { total: 0, next: '' } }
+      }
+
       throw new Error(e.message)
     }
   }
@@ -277,6 +417,41 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     }
   }
 
+  async fetchUnbondingDelegationsNoThrow({
+    injectiveAddress,
+    pagination,
+  }: {
+    injectiveAddress: string
+    pagination?: PaginationOption
+  }) {
+    const request = new QueryDelegatorUnbondingDelegationsRequest()
+    request.setDelegatorAddr(injectiveAddress)
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.setPagination(paginationForRequest)
+    }
+
+    try {
+      const response = await this.request<
+        QueryDelegatorUnbondingDelegationsRequest,
+        QueryDelegatorUnbondingDelegationsResponse,
+        typeof StakingQuery.DelegatorUnbondingDelegations
+      >(request, StakingQuery.DelegatorUnbondingDelegations)
+
+      return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
+        response,
+      )
+    } catch (e: any) {
+      if (e.message.includes('does not exist')) {
+        return { unbondingDelegations: [], pagination: { total: 0, next: '' } }
+      }
+
+      throw new Error(e.message)
+    }
+  }
+
   async fetchReDelegations({
     injectiveAddress,
     pagination,
@@ -304,6 +479,41 @@ export class ChainGrpcStakingApi extends BaseConsumer {
         response,
       )
     } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchReDelegationsNoThrow({
+    injectiveAddress,
+    pagination,
+  }: {
+    injectiveAddress: string
+    pagination?: PaginationOption
+  }) {
+    const request = new QueryRedelegationsRequest()
+    request.setDelegatorAddr(injectiveAddress)
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.setPagination(paginationForRequest)
+    }
+
+    try {
+      const response = await this.request<
+        QueryRedelegationsRequest,
+        QueryRedelegationsResponse,
+        typeof StakingQuery.Redelegations
+      >(request, StakingQuery.Redelegations)
+
+      return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
+        response,
+      )
+    } catch (e: any) {
+      if (e.message.includes('does not exist')) {
+        return { redelegations: [], pagination: { total: 0, next: '' } }
+      }
+
       throw new Error(e.message)
     }
   }

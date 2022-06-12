@@ -25,6 +25,12 @@
       "path": "../utils/tsconfig.build.json"
     },
     {
+      "path": "../token-metadata/tsconfig.build.json"
+    },
+    {
+      "path": "../tx-ts/tsconfig.build.json"
+    },
+    {
       "path": "../contracts/tsconfig.build.json"
     }
   ]

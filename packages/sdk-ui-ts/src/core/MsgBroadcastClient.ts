@@ -1,6 +1,6 @@
 import { Msgs } from '@injectivelabs/sdk-ts/dist/core'
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts/dist/utils'
-import { ChainGrpcTransactionApi } from '@injectivelabs/sdk-ts/dist/client'
+import { ExchangeGrpcTransactionApi } from '@injectivelabs/sdk-ts/dist/client'
 import { Wallet } from '@injectivelabs/ts-types'
 import { MetricsProvider } from '../classes/MetricsProvider'
 import {
@@ -50,11 +50,11 @@ const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
 export class MsgBroadcastClient {
   public options: MsgBroadcastOptions
 
-  public transactionApi: ChainGrpcTransactionApi
+  public transactionApi: ExchangeGrpcTransactionApi
 
   constructor(options: MsgBroadcastOptions) {
     this.options = options
-    this.transactionApi = new ChainGrpcTransactionApi(
+    this.transactionApi = new ExchangeGrpcTransactionApi(
       options.endpoints.exchangeApi,
     )
   }
@@ -126,18 +126,23 @@ export class MsgBroadcastClient {
         chainId: ethereumChainId,
       })
 
-      if (!metricsProvider) {
-        const { txHash } = await promise
+      try {
+        if (!metricsProvider) {
+          const { txHash } = await promise
 
+          return txHash
+        }
+
+        const { txHash } =
+          await metricsProvider.sendAndRecordWithoutProbability(
+            promise,
+            `${tx.bucket}BroadcastTx`,
+          )
         return txHash
+      } catch (e) {
+        console.log('e =>', e)
       }
-
-      const { txHash } = await metricsProvider.sendAndRecordWithoutProbability(
-        promise,
-        `${tx.bucket}BroadcastTx`,
-      )
-
-      return txHash
+      return ''
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -150,22 +155,18 @@ export class MsgBroadcastClient {
     const injectiveAddress = getInjectiveAddress(tx.address)
 
     try {
-      const [msg] = msgs.map((msg) => msg.toDirectSign())
-
+      const [message] = msgs.map((msg) => msg.toDirectSign())
       const transaction = {
-        message: {
-          type: msg.type,
-          value: msg.message,
-        },
+        message,
         memo: tx.memo,
       }
 
-      const signResponse = (await walletStrategy.signTransaction(
+      const { directSignResponse } = (await walletStrategy.signTransaction(
         transaction,
         injectiveAddress,
       )) as any
 
-      return await walletStrategy.sendTransaction(signResponse, {
+      return await walletStrategy.sendTransaction(directSignResponse, {
         chainId,
         address: injectiveAddress,
       })

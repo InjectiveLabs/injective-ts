@@ -90,7 +90,7 @@ export class AxelarApi {
     const tx = await contract.transfer(receiver, amount, {
       maxFeePerGas: feeData.gasPrice || feeData.maxFeePerGas,
       maxPriorityFeePerGas:
-        feeData.maxPriorityFeePerGas || '0xB2D05E00' /* 3 Gwei in HEX */,
+        feeData.maxPriorityFeePerGas || '0x77359400' /* 2 Gwei in HEX */,
     })
 
     return tx.wait()

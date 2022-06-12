@@ -10,23 +10,18 @@ import {
   Result,
   TxResponse,
 } from '@injectivelabs/chain-api/cosmos/base/abci/v1beta1/abci_pb'
-import { TxInjective } from './TxInjective'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { isServerSide } from '@injectivelabs/utils'
 
 export class TxService {
   public txService: ServiceClient
 
-  public txInjective: TxInjective
+  public txRaw: TxRaw
 
-  constructor({
-    txInjective,
-    endpoint,
-  }: {
-    txInjective: TxInjective
-    endpoint: string
-  }) {
-    this.txInjective = txInjective
+  constructor({ txRaw, endpoint }: { txRaw: TxRaw; endpoint: string }) {
+    this.txRaw = txRaw
     this.txService = new ServiceClient(endpoint, {
-      transport: NodeHttpTransport(),
+      transport: isServerSide() ? NodeHttpTransport() : undefined,
     })
   }
 
@@ -34,8 +29,7 @@ export class TxService {
     result: Result.AsObject
     gasInfo: GasInfo.AsObject
   }> {
-    const { txService, txInjective } = this
-    const txRaw = txInjective.toTxRaw()
+    const { txService, txRaw } = this
 
     const simulateRequest = new SimulateRequest()
     simulateRequest.setTxBytes(txRaw.serializeBinary())
@@ -62,8 +56,7 @@ export class TxService {
   }
 
   public async broadcast(): Promise<TxResponse.AsObject> {
-    const { txService, txInjective } = this
-    const txRaw = txInjective.toTxRaw()
+    const { txService, txRaw } = this
 
     const broadcastTxRequest = new BroadcastTxRequest()
     broadcastTxRequest.setTxBytes(txRaw.serializeBinary())

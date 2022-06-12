@@ -4,6 +4,7 @@ import {
   AccountRestResponse,
   BankBalancesRestResponse,
   BlockLatestRestResponse,
+  InjectiveAccountRestResponse,
   NodeInfoRestResponse,
 } from './types'
 
@@ -51,14 +52,14 @@ export class CosmosQuery {
      * cosmos chains when querying the auth account endpoint
      * */
     const isInjectiveAddress = address.startsWith('inj')
-    const path = isInjectiveAddress
-      ? 'auth/accounts'
-      : 'cosmos/auth/v1beta1/accounts'
-
-    const { data } = (await client.get(`${path}/${address}`)) as {
-      data: AccountRestResponse
+    const { data } = (await client.get(
+      `cosmos/auth/v1beta1/accounts/${address}`,
+    )) as {
+      data: AccountRestResponse | InjectiveAccountRestResponse
     }
-    const { base_account: baseAccount } = data.account
+    const baseAccount = isInjectiveAddress
+      ? (data as InjectiveAccountRestResponse).account.base_account
+      : (data as AccountRestResponse).account
 
     return {
       address: baseAccount.address,

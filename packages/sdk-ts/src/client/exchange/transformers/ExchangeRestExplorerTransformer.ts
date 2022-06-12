@@ -1,9 +1,9 @@
 import { Block, ExplorerValidator } from '../types/explorer'
 import {
   BlockFromExplorerApiResponse,
-  BlockWithTxs,
+  ExplorerBlockWithTxs,
   BaseTransaction,
-  Transaction,
+  ExplorerTransaction,
   TransactionFromExplorerApiResponse,
   ValidatorUptimeFromExplorerApiResponse,
   ExplorerValidatorUptime,
@@ -29,7 +29,7 @@ export class ExchangeRestExplorerTransformer {
 
   static transactionToTransaction(
     transaction: TransactionFromExplorerApiResponse,
-  ): Transaction {
+  ): ExplorerTransaction {
     return {
       id: transaction.id,
       blockNumber: transaction.block_number,
@@ -60,7 +60,7 @@ export class ExchangeRestExplorerTransformer {
 
   static transactionsToTransactions(
     transactions: TransactionFromExplorerApiResponse[],
-  ): Transaction[] {
+  ): ExplorerTransaction[] {
     return transactions.map(
       ExchangeRestExplorerTransformer.transactionToTransaction,
     )
@@ -68,7 +68,7 @@ export class ExchangeRestExplorerTransformer {
 
   static blockWithTxToBlockWithTx(
     block: BlockFromExplorerApiResponse,
-  ): BlockWithTxs {
+  ): ExplorerBlockWithTxs {
     return {
       height: block.height,
       proposer: block.proposer,
@@ -86,13 +86,13 @@ export class ExchangeRestExplorerTransformer {
 
   static blocksWithTxsToBlocksWithTxs(
     blocks: BlockFromExplorerApiResponse[],
-  ): BlockWithTxs[] {
+  ): ExplorerBlockWithTxs[] {
     return blocks.map(ExchangeRestExplorerTransformer.blockWithTxToBlockWithTx)
   }
 
   static baseTransactionToTransaction(
     transaction: BaseTransaction,
-  ): Transaction {
+  ): ExplorerTransaction {
     return {
       ...transaction,
       messages: (transaction.messages || []).map((message) => ({

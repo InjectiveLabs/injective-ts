@@ -15,7 +15,7 @@ export class ChainGrpcDistributionTransformer {
     const params = response.getParams()!
 
     return {
-      communityTax: params.getCommunityTax(),
+      communityTax: cosmosSdkDecToBigNumber(params.getCommunityTax()).toFixed(),
       baseProposerReward: params.getBaseProposerReward(),
       bonusProposerReward: params.getBonusProposerReward(),
       withdrawAddrEnabled: params.getWithdrawAddrEnabled(),

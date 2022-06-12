@@ -43,9 +43,15 @@ export class ChainGrpcGovTransformer {
         votingPeriod: votingParams.getVotingPeriod()?.getSeconds() || 0,
       },
       tallyParams: {
-        quorum: uint8ArrayToString(tallyParams.getQuorum()) || '',
-        threshold: uint8ArrayToString(tallyParams.getThreshold()) || '',
-        vetoThreshold: uint8ArrayToString(tallyParams.getVetoThreshold()) || '',
+        quorum: cosmosSdkDecToBigNumber(
+          uint8ArrayToString(tallyParams.getQuorum()) as string,
+        ).toFixed(),
+        threshold: cosmosSdkDecToBigNumber(
+          uint8ArrayToString(tallyParams.getThreshold()) as string,
+        ).toFixed(),
+        vetoThreshold: cosmosSdkDecToBigNumber(
+          uint8ArrayToString(tallyParams.getVetoThreshold()) as string,
+        ).toFixed(),
       },
     }
   }

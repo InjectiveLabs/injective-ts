@@ -3,6 +3,88 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.29...@injectivelabs/wallet-ts@0.0.30) (2022-06-10)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [0.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.28...@injectivelabs/wallet-ts@0.0.29) (2022-06-10)
+
+
+### Bug Fixes
+
+* decoupling wallet from client ([00ce45a](https://github.com/InjectiveLabs/injective-ts/commit/00ce45a4e8f94080feab7535ad0e5f826aa8a885))
+
+
+
+
+
+## [0.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.27...@injectivelabs/wallet-ts@0.0.28) (2022-06-10)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [0.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.26...@injectivelabs/wallet-ts@0.0.27) (2022-06-10)
+
+
+### Features
+
+* added tx-ts ([ae9ebc7](https://github.com/InjectiveLabs/injective-ts/commit/ae9ebc7e2c34eaf60e894cd70e6b0778e6b71bbf))
+
+
+
+
+
+## [0.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.25...@injectivelabs/wallet-ts@0.0.26) (2022-06-09)
+
+
+### Bug Fixes
+
+* cosmos wallet ([c3416df](https://github.com/InjectiveLabs/injective-ts/commit/c3416dfb68f32d6d4568a6fdb5dd0a7e2bfb60d2))
+
+
+
+
+
+## [0.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.24...@injectivelabs/wallet-ts@0.0.25) (2022-06-08)
+
+
+### Features
+
+* terra walet on wallet-ts ([2263181](https://github.com/InjectiveLabs/injective-ts/commit/22631819f934e38142e56bfdbdd91f4e2cc640a5))
+
+
+
+
+
+## [0.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.23...@injectivelabs/wallet-ts@0.0.24) (2022-06-08)
+
+
+### Bug Fixes
+
+* types export ([800b506](https://github.com/InjectiveLabs/injective-ts/commit/800b5062ad97123868806081a040ad5ad3430964))
+
+
+
+
+
+## [0.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.22...@injectivelabs/wallet-ts@0.0.23) (2022-06-08)
+
+
+### Features
+
+* gas price fetching ([476f4e4](https://github.com/InjectiveLabs/injective-ts/commit/476f4e49f62ecdfc482ddde6789483fd09fd4fff))
+
+
+
+
+
 ## [0.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@0.0.21...@injectivelabs/wallet-ts@0.0.22) (2022-06-08)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

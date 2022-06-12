@@ -2,13 +2,16 @@ import type { Keplr, Window as KeplrWindow } from '@keplr-wallet/types'
 import type { OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
 import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { ChainId } from '@injectivelabs/ts-types'
+import {
+  ChainId,
+  CosmosChainId,
+  TestnetCosmosChainId,
+} from '@injectivelabs/ts-types'
 import {
   getExperimentalChainConfigBasedOnChainId,
   keplrSupportedChainIds,
   getEndpointsFromChainId,
 } from './utils'
-import { CosmosChainId, TestnetCosmosChainId } from './types'
 
 export class KeplrWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId

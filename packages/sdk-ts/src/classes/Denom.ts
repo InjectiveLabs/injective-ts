@@ -6,6 +6,7 @@ import {
 import { TokenMeta, IbcToken, Token } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '../utils'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
+import path from 'path'
 
 export const tokenMetaToToken = (
   tokenMeta: TokenMeta | undefined,
@@ -17,7 +18,14 @@ export const tokenMetaToToken = (
 
   return {
     denom,
-    logo: tokenMeta.logo,
+    logo: path.join(
+      '/',
+      'vendor',
+      '@injectivelabs',
+      'token-metadata',
+      tokenMeta.logo,
+    ),
+    icon: tokenMeta.logo,
     symbol: tokenMeta.symbol,
     name: tokenMeta.name,
     decimals: tokenMeta.decimals,
@@ -31,14 +39,14 @@ export class Denom {
 
   protected ibcApi: ChainGrpcIbcApi
 
-  protected erc20TokenMeta: TokenMetaUtil
+  protected tokenMetaUtil: TokenMetaUtil
 
   constructor(denom: string, network: Network = Network.Mainnet) {
     this.denom = denom
 
     const endpoints = getEndpointsForNetwork(network)
     this.ibcApi = new ChainGrpcIbcApi(endpoints.sentryGrpcApi)
-    this.erc20TokenMeta = TokenMetaUtilFactory.make(network)
+    this.tokenMetaUtil = TokenMetaUtilFactory.make(network)
   }
 
   async getPeggyDenomToken(): Promise<Token> {
@@ -51,7 +59,7 @@ export class Denom {
   async getIbcDenomToken(): Promise<IbcToken> {
     const { denom } = this
     const { baseDenom, path } = await this.fetchDenomTrace()
-    const tokenMeta = await new Denom(baseDenom).getIbcDenomToken()
+    const tokenMeta = await new Denom(baseDenom).getDenomToken()
 
     return {
       baseDenom,
@@ -81,7 +89,16 @@ export class Denom {
         return tokenMetaToToken(byAddress, denom) as Token
       }
 
-      throw new Error(`Token meta for ${denom} denom does not exist`)
+      return {
+        denom,
+        name: denom,
+        icon: '',
+        logo: '',
+        symbol: '',
+        decimals: 18,
+        address: '',
+        coinGeckoId: '',
+      }
     }
 
     const tokenMeta = await this.getDenomTokenMeta()
@@ -101,21 +118,21 @@ export class Denom {
   }
 
   getCoinGeckoId(): string {
-    const { erc20TokenMeta, denom } = this
+    const { tokenMetaUtil, denom } = this
 
-    return erc20TokenMeta.getCoinGeckoIdFromSymbol(denom)
+    return tokenMetaUtil.getCoinGeckoIdFromSymbol(denom)
   }
 
   getTokenMetaDataBySymbol(): TokenMeta | undefined {
-    const { erc20TokenMeta, denom } = this
+    const { tokenMetaUtil, denom } = this
 
-    return erc20TokenMeta.getMetaBySymbol(denom)
+    return tokenMetaUtil.getMetaBySymbol(denom)
   }
 
   getTokenMetaDataByAddress(): TokenMeta | undefined {
-    const { erc20TokenMeta, denom } = this
+    const { tokenMetaUtil, denom } = this
 
-    return erc20TokenMeta.getMetaByAddress(denom)
+    return tokenMetaUtil.getMetaByAddress(denom)
   }
 
   async fetchDenomTrace() {
@@ -136,24 +153,24 @@ export class Denom {
 
   private getPeggyDenomTokenMeta(): TokenMeta | undefined {
     const { denom } = this
-    const { erc20TokenMeta } = this
+    const { tokenMetaUtil } = this
 
     if (denom.toLowerCase() === INJ_DENOM) {
-      return erc20TokenMeta.getMetaBySymbol('INJ')
+      return tokenMetaUtil.getMetaBySymbol('INJ')
     }
 
     const address = denom.startsWith('peggy')
       ? denom.replace('peggy', '')
       : denom
 
-    return erc20TokenMeta.getMetaByAddress(address)
+    return tokenMetaUtil.getMetaByAddress(address)
   }
 
   private async getIbcDenomTokenMeta(): Promise<TokenMeta | undefined> {
-    const { erc20TokenMeta } = this
+    const { tokenMetaUtil } = this
     const { baseDenom: symbol } = await this.fetchDenomTrace()
 
-    return erc20TokenMeta.getMetaBySymbol(symbol)
+    return tokenMetaUtil.getMetaBySymbol(symbol)
   }
 
   private async getDenomTokenMeta(): Promise<TokenMeta | undefined> {

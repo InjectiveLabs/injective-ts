@@ -65,9 +65,6 @@ export default class MsgTransfer extends MsgBase<
     if (params.height) {
       timeoutHeight.setRevisionHeight(params.height.revisionHeight)
       timeoutHeight.setRevisionNumber(params.height.revisionNumber)
-    } else {
-      timeoutHeight.setRevisionHeight(0)
-      timeoutHeight.setRevisionNumber(1)
     }
 
     message.setTimeoutHeight(timeoutHeight)

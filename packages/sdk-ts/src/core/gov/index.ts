@@ -5,3 +5,5 @@ export { default as MsgSubmitProposalPerpetualMarketLaunch } from './msgs/MsgSub
 export { default as MsgSubmitProposalSpotMarketLaunch } from './msgs/MsgSubmitProposalSpotMarketLaunch'
 export { default as MsgSubmitProposalSpotMarketParamUpdate } from './msgs/MsgSubmitProposalSpotMarketParamUpdate'
 export { default as MsgSubmitTextProposal } from './msgs/MsgSubmitTextProposal'
+
+export * from './ProposalContentDecomposer'
