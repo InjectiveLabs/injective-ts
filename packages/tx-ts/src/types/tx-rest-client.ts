@@ -101,10 +101,6 @@ export enum BroadcastMode {
 }
 
 export interface TxResult {
-  tx: TxInfo
-}
-
-export interface TxResultParams {
   tx: Tx
   tx_response: TxInfo
 }

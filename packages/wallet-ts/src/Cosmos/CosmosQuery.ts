@@ -47,29 +47,34 @@ export class CosmosQuery {
   async fetchAccountDetails(address: string): Promise<AccountDetails> {
     const { client } = this
 
-    /**
-     * Injective has different response than the rest of the
-     * cosmos chains when querying the auth account endpoint
-     * */
-    const isInjectiveAddress = address.startsWith('inj')
-    const { data } = (await client.get(
-      `cosmos/auth/v1beta1/accounts/${address}`,
-    )) as {
-      data: AccountRestResponse | InjectiveAccountRestResponse
-    }
-    const baseAccount = isInjectiveAddress
-      ? (data as InjectiveAccountRestResponse).account.base_account
-      : (data as AccountRestResponse).account
+    try {
+      /**
+       * Injective has different response than the rest of the
+       * cosmos chains when querying the auth account endpoint
+       * */
+      const isInjectiveAddress = address.startsWith('inj')
+      const { data } = (await client.get(
+        `cosmos/auth/v1beta1/accounts/${address}`,
+      )) as {
+        data: AccountRestResponse | InjectiveAccountRestResponse
+      }
+      const baseAccount = isInjectiveAddress
+        ? (data as InjectiveAccountRestResponse).account.base_account
+        : (data as AccountRestResponse).account
 
-    return {
-      address: baseAccount.address,
-      accountNumber: baseAccount.account_number,
-      sequence: baseAccount.sequence,
-      pubKey: {
-        type: baseAccount.pub_key['@type'],
-        key: baseAccount.pub_key.key,
-      },
-    } as AccountDetails
+      return {
+        address: baseAccount.address,
+        accountNumber: baseAccount.account_number,
+        sequence: baseAccount.sequence,
+        pubKey: {
+          type: baseAccount.pub_key ? baseAccount.pub_key['@type'] : '',
+          key: baseAccount.pub_key ? baseAccount.pub_key.key : '',
+        },
+      } as AccountDetails
+    } catch (e) {
+      console.log(e)
+      throw new Error((e as any).message)
+    }
   }
 
   async fetchLatestBlock(): Promise<BlockLatestRestResponse['block']> {

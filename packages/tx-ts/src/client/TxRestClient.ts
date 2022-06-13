@@ -52,14 +52,17 @@ export class TxRestClient {
     }
   }
 
-  public async txInfo(txHash: string, params: APIParams = {}): Promise<TxInfo> {
+  public async txInfo(
+    txHash: string,
+    params: APIParams = {},
+  ): Promise<TxResult> {
     try {
       const response = await this.getRaw<TxResult>(
         `/cosmos/tx/v1beta1/txs/${txHash}`,
         params,
       )
 
-      return response.tx
+      return response
     } catch (e) {
       throw new Error((e as any).message)
     }
@@ -82,7 +85,8 @@ export class TxRestClient {
     const txInfos: TxInfo[] = []
 
     for (const txhash of txHashes) {
-      txInfos.push(await this.txInfo(txhash))
+      const txInfo = await this.txInfo(txhash)
+      txInfos.push(txInfo.tx_response)
     }
 
     return txInfos
@@ -149,17 +153,20 @@ export class TxRestClient {
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
         const txInfo = await this.txInfo(txResponse.txhash)
+        const { tx_response: txInfoSearchResponse } = txInfo
 
-        return {
-          txhash: txInfo.txhash,
-          raw_log: txInfo.raw_log,
-          gas_wanted: parseInt(txInfo.gas_wanted, 10),
-          gas_used: parseInt(txInfo.gas_used, 10),
-          height: parseInt(txInfo.height, 10),
-          logs: txInfo.logs,
-          code: txInfo.code,
-          codespace: txInfo.codespace,
-          timestamp: txInfo.timestamp,
+        if (txInfoSearchResponse) {
+          return {
+            txhash: txInfoSearchResponse.txhash,
+            raw_log: txInfoSearchResponse.raw_log,
+            gas_wanted: parseInt(txInfoSearchResponse.gas_wanted, 10),
+            gas_used: parseInt(txInfoSearchResponse.gas_used, 10),
+            height: parseInt(txInfoSearchResponse.height, 10),
+            logs: txInfoSearchResponse.logs,
+            code: txInfoSearchResponse.code,
+            codespace: txInfoSearchResponse.codespace,
+            timestamp: txInfoSearchResponse.timestamp,
+          }
         }
       } catch (error) {
         // Errors when transaction is not found.
