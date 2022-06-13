@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.75...@injectivelabs/sdk-ts@0.0.76) (2022-06-13)
+
+
+### Bug Fixes
+
+* batch update web3 parsing ([13be8ea](https://github.com/InjectiveLabs/injective-ts/commit/13be8eae21fa0dd48c1104d57c59a6e6fbf83a0d))
+
+
+
+
+
 ## [0.0.75](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@0.0.74...@injectivelabs/sdk-ts@0.0.75) (2022-06-13)
 
 
