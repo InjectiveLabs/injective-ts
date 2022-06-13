@@ -6,7 +6,7 @@ import {
   PeggyContract,
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
-import { WalletStrategy } from '../wallet-strategy'
+import { WalletStrategy } from '@injectivelabs/wallet-ts'
 import { SendTransactionOptions } from './types'
 import {
   DEFAULT_GAS_PRICE,
