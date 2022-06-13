@@ -1,8 +1,12 @@
 {
   "name": "@injectivelabs/token-metadata",
   "description": "ERC20 token metadata. Name, symbol, decimals, etc.",
-  "version": "0.5.29",
+  "version": "1.0.0",
   "license": "MIT",
+  "author": {
+    "name": "Bojan Angjelkoski",
+    "email": "bojan@injectivelabs.org"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
