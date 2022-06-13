@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.3...@injectivelabs/sdk-ui-ts@1.0.4) (2022-06-13)
+
+
+### Features
+
+* import web3 in the sdk-ui-ts ([12bbb93](https://github.com/InjectiveLabs/injective-ts/commit/12bbb936c5e057abdaa89127f5c65fcd9f5f1572))
+
+
+
+
+
 ## [1.0.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.2...@injectivelabs/sdk-ui-ts@1.0.3) (2022-06-13)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
