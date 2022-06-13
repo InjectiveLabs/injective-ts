@@ -179,9 +179,13 @@ export class Web3Client {
       const { walletStrategy, network } = this
       const web3 = walletStrategy.getWeb3() as any
       const tokenAddress = peggyDenomToContractAddress(contractAddress)
+      const contractAddresses = getContractAddressesForNetworkOrThrow(network)
+      const tokenContractAddress =
+        tokenAddress === INJ_DENOM ? contractAddresses.injective : tokenAddress
       const tokenBalances = await web3.alchemy.getTokenBalances(address, [
-        tokenAddress,
+        tokenContractAddress,
       ])
+
       const tokenBalance = tokenBalances.tokenBalances
         .filter((tokenBalance: any) => tokenBalance.tokenBalance)
         .find(
@@ -192,7 +196,6 @@ export class Web3Client {
         )
       const balance = tokenBalance ? tokenBalance.tokenBalance || 0 : 0
 
-      const contractAddresses = getContractAddressesForNetworkOrThrow(network)
       const allowance = await web3.alchemy.getTokenAllowance({
         owner: address,
         spender: contractAddresses.peggy,

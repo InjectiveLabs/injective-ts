@@ -22,28 +22,6 @@
     web3-utils "1.5.2"
     websocket "^1.0.28"
 
-"@alch/alchemy-web3@^1.3.0":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@alch/alchemy-web3/-/alchemy-web3-1.4.2.tgz#2615e15093f06122e39dd9fe70c46cad2f430243"
-  integrity sha512-LYL7+63gX4/ScikArbC5YUrIOs93GSbOXm8pYWr+U538BfszAzhwwG9GHZsnUeERIWX+TPfxrfZCKvf90Da5CA==
-  dependencies:
-    "@types/web3" "^1.2.2"
-    assert-never "^1.2.0"
-    eventemitter3 "^3.1.2"
-    fetch-ponyfill "^6.0.2"
-    sturdy-websocket "^0.2.1"
-    tslib "^2.1.0"
-    urijs "^1.19.7"
-    web3 "1.7.1"
-    web3-core "1.7.1"
-    web3-core-helpers "1.7.1"
-    web3-core-method "1.7.1"
-    web3-core-subscriptions "1.7.1"
-    web3-eth "1.7.1"
-    web3-eth-abi "1.7.1"
-    web3-utils "1.7.1"
-    websocket "^1.0.28"
-
 "@apollo/client@^3.5.8":
   version "3.6.6"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.6.6.tgz#3fb1f5b11da9a64b51b5a86b62450bee034e7f41"
