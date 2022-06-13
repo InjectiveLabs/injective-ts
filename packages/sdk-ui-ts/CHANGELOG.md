@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.1...@injectivelabs/sdk-ui-ts@1.0.2) (2022-06-13)
+
+
+### Bug Fixes
+
+* alchemy version ([b3cdb5f](https://github.com/InjectiveLabs/injective-ts/commit/b3cdb5fd3aaf0feb51332af65749d113ac666c5c))
+
+
+
+
+
 ## [1.0.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@0.0.74...@injectivelabs/sdk-ui-ts@1.0.1) (2022-06-13)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
