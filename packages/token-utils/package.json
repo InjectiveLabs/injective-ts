@@ -31,8 +31,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^0.5.5",
-    "@injectivelabs/utils": "^0.5.7",
+    "@injectivelabs/exceptions": "^1.0.1",
+    "@injectivelabs/utils": "^1.0.1",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },

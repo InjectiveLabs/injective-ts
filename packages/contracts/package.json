@@ -31,10 +31,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^0.5.5",
-    "@injectivelabs/networks": "^0.5.10",
-    "@injectivelabs/ts-types": "^0.5.4",
-    "@injectivelabs/utils": "^0.5.7",
+    "@injectivelabs/exceptions": "^1.0.1",
+    "@injectivelabs/networks": "^1.0.1",
+    "@injectivelabs/ts-types": "^1.0.1",
+    "@injectivelabs/utils": "^1.0.1",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.3",
     "web3": "^1.7.2",

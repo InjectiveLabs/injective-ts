@@ -31,14 +31,14 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^0.5.5",
-    "@injectivelabs/networks": "^0.5.10",
-    "@injectivelabs/sdk-ts": "^0.0.76",
-    "@injectivelabs/token-metadata": "^0.5.29",
-    "@injectivelabs/token-utils": "^0.5.7",
-    "@injectivelabs/ts-types": "^0.5.4",
-    "@injectivelabs/utils": "^0.5.7",
-    "@injectivelabs/wallet-ts": "^0.0.31",
+    "@injectivelabs/exceptions": "^1.0.1",
+    "@injectivelabs/networks": "^1.0.1",
+    "@injectivelabs/sdk-ts": "^1.0.3",
+    "@injectivelabs/token-metadata": "^1.0.1",
+    "@injectivelabs/token-utils": "^1.0.1",
+    "@injectivelabs/ts-types": "^1.0.1",
+    "@injectivelabs/utils": "^1.0.1",
+    "@injectivelabs/wallet-ts": "^1.0.2",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   }
