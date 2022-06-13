@@ -213,6 +213,62 @@ export default class MsgBatchUpdateOrders extends MsgBase<
   toWeb3(): MsgBatchUpdateOrders.Web3 {
     const proto = this.toProto()
 
+    /*
+    const web3Message = proto.toObject() as any
+
+    delete web3Message.spotMarketIdsToCancelAllList
+    delete web3Message.derivativeMarketIdsToCancelAllList
+    delete web3Message.spotOrdersToCancelList
+    delete web3Message.derivativeOrdersToCancelList
+    delete web3Message.spotOrdersToCreateList
+    delete web3Message.derivativeOrdersToCreateList
+    // delete web3Message.subaccountId
+
+    /*
+    if (web3Message.derivativeMarketIdsToCancelAllList !== undefined) {
+      web3Message.derivative_market_ids_to_cancel_all =
+        web3Message.derivativeMarketIdsToCancelAllList
+
+      delete web3Message.derivativeMarketIdsToCancelAllList
+    }
+
+    if (web3Message.spotMarketIdsToCancelAllList !== undefined) {
+      web3Message.spot_market_ids_to_cancel_all =
+        web3Message.spotMarketIdsToCancelAllList
+
+      delete web3Message.spotMarketIdsToCancelAllList
+    }
+
+    if (web3Message.spotOrdersToCancelList !== undefined) {
+      web3Message.spot_orders_to_cancel = web3Message.spotOrdersToCancelList
+
+      delete web3Message.spotOrdersToCancelList
+    }
+
+    if (web3Message.derivativeOrdersToCancelList !== undefined) {
+      web3Message.derivative_orders_to_cancel =
+        web3Message.derivativeOrdersToCancelList
+
+      delete web3Message.derivativeOrdersToCancelList
+    }
+
+    if (web3Message.spotOrdersToCreateList !== undefined) {
+      web3Message.spot_orders_to_create = web3Message.spotOrdersToCreateList
+
+      delete web3Message.spotOrdersToCreateList
+    }
+
+    if (web3Message.derivativeOrdersToCreateList !== undefined) {
+      web3Message.derivative_orders_to_create =
+        web3Message.derivativeOrdersToCreateList
+
+      delete web3Message.derivativeOrdersToCreateList
+    }
+
+    if (!web3Message.subaccountId) {
+      delete web3Message.subaccountId
+    }*/
+
     return {
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
       ...proto.toObject(),
