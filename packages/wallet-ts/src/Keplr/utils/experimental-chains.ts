@@ -233,5 +233,5 @@ export const keplrSupportedChainIds = [
   'juno-1',
   'straightedge-2',
   'axelar-dojo-1',
-  'evmos-9001-2',
+  'evmos_9001-2',
 ]
