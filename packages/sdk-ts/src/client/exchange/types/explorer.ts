@@ -1,3 +1,4 @@
+import { BigNumberInBase } from '@injectivelabs/utils'
 import {
   IBCTransferTx as GrpcIBCTransferTx,
   PeggyDepositTx as GrpcPeggyDepositTx,
@@ -7,6 +8,7 @@ import {
   ValidatorDescription as GrpcExchangeValidatorDescription,
   SlashingEvent as GrpcValidatorSlashingEvent,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
+import { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
 
 export interface IBCTransferTx {
   sender: string
@@ -196,6 +198,59 @@ export interface ExplorerValidator {
   timestamp: string
   uptimesList: ValidatorUptime[]
   slashingEventsList: ValidatorSlashingEvent[]
+}
+
+export interface CW20Message {
+  decimals: number
+  initial_balances: [
+    {
+      address: string
+      amount: string
+    },
+  ]
+  marketing: {}
+  mint: {
+    minter: string
+  }
+  name: string
+  symbol: string
+}
+
+export interface Contract {
+  label: string
+  address: string
+  txHash: string
+  creator: string
+  executes: number
+  instantiatedAt: number
+  lastExecutedAt: number
+  funds?: number
+  codeId: number
+  admin?: string
+  initMessage?: CW20Message
+  currentMigrateMessage?: CW20Message
+}
+
+export interface ContractTransaction {
+  txHash: string
+  type: string
+  code: number
+  amount: BigNumberInBase
+  fee: BigNumberInBase
+  height: number
+  time: number
+}
+
+export interface WasmCode {
+  id: number
+  txHash: string
+  creator: string
+  contractType: string
+  version: string
+  instantiates: number
+  creationDate: number
+  checksum?: CosmWasmChecksum
+  permission?: CosmWasmPermission
 }
 
 export { GrpcIBCTransferTx, GrpcPeggyDepositTx, GrpcPeggyWithdrawalTx }

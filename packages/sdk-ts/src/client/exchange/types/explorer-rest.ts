@@ -5,9 +5,32 @@ import {
   ValidatorUptime,
 } from './explorer'
 
+export enum AccessTypeCode {
+  AccessTypeUnspecified = 0,
+  AccessTypeNobody = 1,
+  AccessTypeOnlyAddress = 2,
+  AccessTypeEverybody = 3,
+}
+
+export enum AccessType {
+  AccessTypeUnspecified = 'Unspecified',
+  AccessTypeNobody = 'Nobody',
+  AccessTypeOnlyAddress = 'Only Address',
+  AccessTypeEverybody = 'Everybody',
+}
+
+export interface Paging {
+  from: number
+  to: number
+  total: number
+}
 export interface ExplorerApiResponse<T> {
+  data: T
+}
+
+export interface ExplorerApiResponseWithPagination<T> {
   data: {
-    paging: any
+    paging: Paging
     data: T
   }
 }
@@ -101,6 +124,71 @@ export interface ValidatorUptimeFromExplorerApiResponse {
 export interface ExplorerValidatorUptime
   extends Omit<ValidatorUptime, 'status'> {
   status: ValidatorUptimeStatus
+}
+
+export interface CosmWasmPermission {
+  access_type: AccessTypeCode
+  address: string
+}
+
+export interface CosmWasmChecksum {
+  algorithm: string
+  hash: string
+}
+
+export interface WasmCodeExplorerApiResponse {
+  checksum: CosmWasmChecksum
+  code_id: number
+  code_schema: string
+  code_view: string
+  contract_type: string
+  created_at: number
+  creator: string
+  instantiates: number
+  permission: CosmWasmPermission
+  tx_hash: string
+  version: string
+}
+
+export interface ContractExplorerApiResponse {
+  label: string
+  address: string
+  tx_hash: string
+  creator: string
+  executes: number
+  instantiated_at: number
+  init_message: string
+  last_executed_at: number
+  funds?: number
+  code_id: number
+  admin?: string
+  current_migrate_message: string
+}
+
+export interface ContractTransactionExplorerApiResponse {
+  hash: string
+  code: number
+  block_number: number
+  block_unix_timestamp: number
+  gas_fee: {
+    amount: [
+      {
+        amount: number
+      },
+    ]
+  }
+  messages: [
+    {
+      type: string
+      value: {
+        msg: {
+          transfer: {
+            amount: number
+          }
+        }
+      }
+    },
+  ]
 }
 
 export { BaseTransaction }
