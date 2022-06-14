@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.6...@injectivelabs/wallet-ts@1.0.7) (2022-06-14)
+
+
+### Bug Fixes
+
+* evmos support for Keplr ([edda166](https://github.com/InjectiveLabs/injective-ts/commit/edda166c397b3745ca8d4d4db917aa6e0ec4b515))
+
+
+
+
+
 ## [1.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.5...@injectivelabs/wallet-ts@1.0.6) (2022-06-13)
 
 
