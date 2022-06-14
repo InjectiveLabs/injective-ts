@@ -36,6 +36,15 @@ export class CosmosClient {
     )
   }
 
+  async simulateTransaction(txRaw: TxRaw): Promise<DeliverTxResponse> {
+    const client = await this.getStargateClient()
+
+    return client.broadcastTx(
+      txRaw.serializeBinary(),
+      DEFAULT_TIMESTAMP_TIMEOUT_MS,
+    )
+  }
+
   private async getStargateClient() {
     const { rpc } = this
 

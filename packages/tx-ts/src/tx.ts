@@ -39,12 +39,9 @@ export const getPublicKey = ({
     path = '/cosmos.crypto.secp256k1.PubKey'
   }
 
-  proto.setKey(key)
+  proto.setKey(Buffer.from(key, 'base64'))
 
-  return createAny(
-    Buffer.from(proto.serializeBinary()).toString('base64'),
-    path,
-  )
+  return createAny(proto.serializeBinary(), path)
 }
 
 export const createBody = ({

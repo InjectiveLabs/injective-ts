@@ -1,7 +1,11 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use different types of wallets on Injective.",
-  "version": "0.0.31",
+  "version": "1.0.6",
+  "author": {
+    "name": "Bojan Angjelkoski",
+    "email": "bojan@injectivelabs.org"
+  },
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,7 +31,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@alch/alchemy-web3": "^1.3.0",
+    "@alch/alchemy-web3": "1.1.3",
     "@axelar-network/axelarjs-sdk": "0.5.32",
     "@cosmjs/encoding": "0.28.4",
     "@cosmjs/launchpad": "0.27.1",
@@ -36,13 +40,13 @@
     "@ethereumjs/common": "^2.6.3",
     "@ethereumjs/tx": "^3.5.1",
     "@injectivelabs/chain-api": "^1.8.0-rc2",
-    "@injectivelabs/contracts": "^0.5.28",
-    "@injectivelabs/exceptions": "^0.5.5",
-    "@injectivelabs/networks": "^0.5.10",
-    "@injectivelabs/token-metadata": "^0.5.29",
-    "@injectivelabs/ts-types": "^0.5.4",
-    "@injectivelabs/tx-ts": "^0.0.6",
-    "@injectivelabs/utils": "^0.5.7",
+    "@injectivelabs/contracts": "^1.0.2",
+    "@injectivelabs/exceptions": "^1.0.2",
+    "@injectivelabs/networks": "^1.0.2",
+    "@injectivelabs/token-metadata": "^1.0.2",
+    "@injectivelabs/ts-types": "^1.0.1",
+    "@injectivelabs/tx-ts": "^1.0.4",
+    "@injectivelabs/utils": "^1.0.2",
     "@keplr-wallet/cosmos": "^0.10.5",
     "@keplr-wallet/types": "^0.10.5",
     "@ledgerhq/hw-app-eth": "^6.27.1",

@@ -1,10 +1,14 @@
 {
   "name": "@injectivelabs/token-utils",
-  "version": "0.5.7",
+  "version": "1.0.2",
   "description": "Token Utils is a package for querying different data about tokens",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "author": {
+    "name": "Bojan Angjelkoski",
+    "email": "bojan@injectivelabs.org"
+  },
   "files": [
     "dist"
   ],
@@ -27,8 +31,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^0.5.5",
-    "@injectivelabs/utils": "^0.5.7",
+    "@injectivelabs/exceptions": "^1.0.2",
+    "@injectivelabs/utils": "^1.0.2",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },

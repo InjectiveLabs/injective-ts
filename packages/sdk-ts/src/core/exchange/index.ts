@@ -1,6 +1,7 @@
 export { default as MsgBatchCancelDerivativeOrders } from './msgs/MsgBatchCancelDerivativeOrders'
 export { default as MsgBatchCancelSpotOrders } from './msgs/MsgBatchCancelSpotOrders'
 export { default as MsgCancelDerivativeOrder } from './msgs/MsgCancelDerivativeOrder'
+export { default as MsgBatchUpdateOrders } from './msgs/MsgBatchUpdateOrders'
 export { default as MsgCancelSpotOrder } from './msgs/MsgCancelSpotOrder'
 export { default as MsgCreateDerivativeLimitOrder } from './msgs/MsgCreateDerivativeLimitOrder'
 export { default as MsgCreateDerivativeMarketOrder } from './msgs/MsgCreateDerivativeMarketOrder'

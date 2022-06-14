@@ -1,10 +1,14 @@
 {
   "name": "@injectivelabs/contracts",
   "description": "Contracts wrapper that can be reused throughout Injective's projects.",
-  "version": "0.5.28",
+  "version": "1.0.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": {
+    "name": "Bojan Angjelkoski",
+    "email": "bojan@injectivelabs.org"
+  },
   "files": [
     "dist"
   ],
@@ -27,10 +31,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^0.5.5",
-    "@injectivelabs/networks": "^0.5.10",
-    "@injectivelabs/ts-types": "^0.5.4",
-    "@injectivelabs/utils": "^0.5.7",
+    "@injectivelabs/exceptions": "^1.0.2",
+    "@injectivelabs/networks": "^1.0.2",
+    "@injectivelabs/ts-types": "^1.0.1",
+    "@injectivelabs/utils": "^1.0.2",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.3",
     "web3": "^1.7.2",

@@ -11,6 +11,7 @@ import MsgCreateDerivativeLimitOrder from './exchange/msgs/MsgCreateDerivativeLi
 import MsgCreateDerivativeMarketOrder from './exchange/msgs/MsgCreateDerivativeMarketOrder'
 import MsgCreateSpotLimitOrder from './exchange/msgs/MsgCreateSpotLimitOrder'
 import MsgCreateSpotMarketOrder from './exchange/msgs/MsgCreateSpotMarketOrder'
+import MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders'
 import MsgDeposit from './exchange/msgs/MsgDeposit'
 import MsgIncreasePositionMargin from './exchange/msgs/MsgIncreasePositionMargin'
 import MsgInstantSpotMarketLaunch from './exchange/msgs/MsgInstantSpotMarketLaunch'
@@ -68,6 +69,7 @@ export type Msgs =
   | MsgBeginRedelegate
   | MsgExecuteContract
   | MsgExec
+  | MsgBatchUpdateOrders
 
 export type ExchangeMsgs =
   | MsgBatchCancelDerivativeOrders
@@ -83,3 +85,4 @@ export type ExchangeMsgs =
   | MsgInstantSpotMarketLaunch
   | MsgWithdraw
   | MsgExec
+  | MsgBatchUpdateOrders

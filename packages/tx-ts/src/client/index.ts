@@ -1,2 +1,3 @@
-export * from './grpc'
-export * from './rest'
+export * from './TxGrpcClient'
+export * from './TxRestClient'
+export * from './TxClient'

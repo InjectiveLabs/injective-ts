@@ -1,10 +1,14 @@
 {
   "name": "@injectivelabs/tx-ts",
   "description": "Utilities for creating transactions for Injective",
-  "version": "0.0.6",
+  "version": "1.0.4",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": {
+    "name": "Bojan Angjelkoski",
+    "email": "bojan@injectivelabs.org"
+  },
   "files": [
     "dist"
   ],
@@ -31,8 +35,9 @@
     "@cosmjs/proto-signing": "0.28.4",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/chain-api": "^1.8.0-rc2",
-    "@injectivelabs/utils": "^0.5.7",
+    "@injectivelabs/utils": "^1.0.2",
     "google-protobuf": "^3.20.1",
+    "jscrypto": "^1.0.3",
     "link-module-alias": "^1.2.0",
     "sha3": "^2.1.4",
     "shx": "^0.3.2"
