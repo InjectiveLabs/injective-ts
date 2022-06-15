@@ -1,19 +1,24 @@
 import BaseRestConsumer from '../../BaseRestConsumer'
 import {
-  ExplorerApiResponse,
   BlockFromExplorerApiResponse,
+  ContractExplorerApiResponse,
+  ContractTransactionExplorerApiResponse,
+  ExplorerApiResponse,
+  ExplorerApiResponseWithPagination,
   ExplorerBlockWithTxs,
-  TransactionFromExplorerApiResponse,
   ExplorerTransaction,
-  ValidatorUptimeFromExplorerApiResponse,
   ExplorerValidatorUptime,
+  Paging,
+  TransactionFromExplorerApiResponse,
+  ValidatorUptimeFromExplorerApiResponse,
+  WasmCodeExplorerApiResponse,
 } from '../types/explorer-rest'
+import { Contract, ContractTransaction, WasmCode } from '../types/explorer'
 import {
   BlockNotFoundException,
   TransactionNotFoundException,
   HttpException,
 } from '@injectivelabs/exceptions'
-import { DEFAULT_PAGINATION_TOTAL_COUNT } from '../../../utils/constants'
 import { ExchangeRestExplorerTransformer } from '../transformers'
 import { Block, ExplorerValidator } from '../types/explorer'
 
@@ -22,7 +27,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     try {
       const response = (await this.client.get(
         `blocks/${blockHashHeight}`,
-      )) as ExplorerApiResponse<BlockFromExplorerApiResponse>
+      )) as ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse>
 
       return ExchangeRestExplorerTransformer.blockWithTxToBlockWithTx(
         response.data.data,
@@ -36,12 +41,18 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchBlocks(params?: { limit?: number }): Promise<Block[]> {
+  async fetchBlocks(params?: {
+    before?: number
+    limit?: number
+    skip?: number
+  }): Promise<Block[]> {
     try {
-      const { limit } = params || { limit: 50 }
+      const { before, limit, skip } = params || { limit: 12 }
       const response = (await this.client.get('blocks', {
+        before,
         limit,
-      })) as ExplorerApiResponse<BlockFromExplorerApiResponse[]>
+        skip,
+      })) as ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
 
       return ExchangeRestExplorerTransformer.blocksToBlocks(response.data.data)
     } catch (error) {
@@ -52,18 +63,18 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
   async fetchBlocksWithTx(params?: {
     before?: number
     limit?: number
-  }): Promise<{ total: number; blocks: ExplorerBlockWithTxs[] }> {
+  }): Promise<{ paging: Paging; blocks: ExplorerBlockWithTxs[] }> {
     try {
       const { before, limit } = params || { limit: 50 }
       const response = (await this.client.get('blocks', {
         limit,
         before,
-      })) as ExplorerApiResponse<BlockFromExplorerApiResponse[]>
+      })) as ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
 
       const { paging, data } = response.data
 
       return {
-        total: paging.total > 0 ? paging.total : DEFAULT_PAGINATION_TOTAL_COUNT,
+        paging,
         blocks: data
           ? ExchangeRestExplorerTransformer.blocksWithTxsToBlocksWithTxs(data)
           : [],
@@ -77,19 +88,21 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     before?: number
     limit?: number
     skip?: number
-  }): Promise<{ total: number; transactions: ExplorerTransaction[] }> {
+  }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     try {
-      const { before, limit, skip } = params || { limit: 50 }
+      const { before, limit, skip } = params || { limit: 12 }
       const response = (await this.client.get('txs', {
         before,
         limit,
         skip,
-      })) as ExplorerApiResponse<TransactionFromExplorerApiResponse[]>
+      })) as ExplorerApiResponseWithPagination<
+        TransactionFromExplorerApiResponse[]
+      >
 
       const { paging, data } = response.data
 
       return {
-        total: paging.total > 0 ? paging.total : DEFAULT_PAGINATION_TOTAL_COUNT,
+        paging,
         transactions: data
           ? ExchangeRestExplorerTransformer.transactionsToTransactions(data)
           : [],
@@ -101,25 +114,28 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
 
   async fetchAccountTransactions({
     account,
-    before,
-    limit,
-    skip,
+    params,
   }: {
     account: string
-    before?: number
-    limit?: number
-    skip?: number
-  }): Promise<{ total: number; transactions: ExplorerTransaction[] }> {
+    params?: {
+      before?: number
+      limit?: number
+      skip?: number
+    }
+  }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     try {
+      const { before, limit, skip } = params || { limit: 12 }
       const response = (await this.client.get(`accountTxs/${account}`, {
         before,
         limit,
         skip,
-      })) as ExplorerApiResponse<TransactionFromExplorerApiResponse[]>
+      })) as ExplorerApiResponseWithPagination<
+        TransactionFromExplorerApiResponse[]
+      >
       const { paging, data } = response.data
 
       return {
-        total: paging.total > 0 ? paging.total : DEFAULT_PAGINATION_TOTAL_COUNT,
+        paging,
         transactions: data
           ? ExchangeRestExplorerTransformer.transactionsToTransactions(data)
           : [],
@@ -133,7 +149,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     try {
       const response = (await this.client.get(
         `txs/${hash}`,
-      )) as ExplorerApiResponse<TransactionFromExplorerApiResponse>
+      )) as ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse>
 
       return ExchangeRestExplorerTransformer.transactionToTransaction(
         response.data.data,
@@ -151,7 +167,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     try {
       const response = (await this.client.get(
         `validators`,
-      )) as ExplorerApiResponse<any[]>
+      )) as ExplorerApiResponseWithPagination<any[]>
 
       if (!response.data || !response.data.data) {
         return []
@@ -171,7 +187,9 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     try {
       const response = (await this.client.get(
         `validator_uptime/${validatorConsensusAddress}`,
-      )) as ExplorerApiResponse<ValidatorUptimeFromExplorerApiResponse[]>
+      )) as ExplorerApiResponseWithPagination<
+        ValidatorUptimeFromExplorerApiResponse[]
+      >
 
       if (!response.data || !response.data.data) {
         return []
@@ -182,6 +200,116 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
       )
     } catch (error) {
       throw new HttpException((error as any).message)
+    }
+  }
+
+  async fetchContract(contractAddress: string): Promise<Contract> {
+    try {
+      const response = (await this.client.get(
+        `/wasm/contracts/${contractAddress}`,
+      )) as ExplorerApiResponse<ContractExplorerApiResponse>
+
+      return ExchangeRestExplorerTransformer.contractToExplorerContract(
+        response.data,
+      )
+    } catch (error: any) {
+      throw new HttpException(error.message)
+    }
+  }
+
+  async fetchContracts(params?: {
+    before?: number
+    limit?: number
+    skip?: number
+  }): Promise<{
+    paging: Paging
+    contracts: Contract[]
+  }> {
+    try {
+      const { before, limit, skip } = params || { limit: 12 }
+      const response = (await this.client.get('/wasm/contracts', {
+        before,
+        limit,
+        skip,
+      })) as ExplorerApiResponseWithPagination<ContractExplorerApiResponse[]>
+
+      const { paging, data } = response.data
+
+      return {
+        paging,
+        contracts: data
+          ? data.map(ExchangeRestExplorerTransformer.contractToExplorerContract)
+          : [],
+      }
+    } catch (error: any) {
+      throw new HttpException(error.message)
+    }
+  }
+
+  async fetchContractTransactions(
+    contractAddress: string,
+  ): Promise<{ paging: Paging; transactions: ContractTransaction[] }> {
+    try {
+      const response = (await this.client.get(
+        `/txs?contract_address=${contractAddress}`,
+      )) as ExplorerApiResponseWithPagination<
+        ContractTransactionExplorerApiResponse[]
+      >
+
+      const { paging, data } = response.data
+      return {
+        paging,
+        transactions: data
+          ? data.map(
+              ExchangeRestExplorerTransformer.contractTransactionToExplorerContractTransaction,
+            )
+          : [],
+      }
+    } catch (error: any) {
+      throw new HttpException(error.message)
+    }
+  }
+
+  async fetchWasmCode(codeId: number): Promise<WasmCode> {
+    try {
+      const response = (await this.client.get(
+        `/wasm/codes/${codeId}`,
+      )) as ExplorerApiResponse<WasmCodeExplorerApiResponse>
+
+      return ExchangeRestExplorerTransformer.wasmCodeToExplorerWasmCode(
+        response.data,
+      )
+    } catch (error: any) {
+      throw new HttpException(error.message)
+    }
+  }
+
+  async fetchWasmCodes(params?: {
+    before?: number
+    limit?: number
+    skip?: number
+  }): Promise<{
+    paging: Paging
+    wasmCodes: WasmCode[]
+  }> {
+    try {
+      const { before, limit, skip } = params || { limit: 12 }
+      const response = (await this.client.get('/wasm/codes', {
+        before,
+        limit,
+        skip,
+      })) as ExplorerApiResponseWithPagination<WasmCodeExplorerApiResponse[]>
+
+      const { paging, data } = response.data
+
+      return {
+        paging,
+        wasmCodes: data
+          ? data.map(ExchangeRestExplorerTransformer.wasmCodeToExplorerWasmCode)
+          : [],
+      }
+    } catch (error: any) {
+      throw new HttpException(error.message)
     }
   }
 }
