@@ -17,7 +17,7 @@ export const tokenMetaToToken = (
 
   return {
     denom,
-    logo: '/' + tokenMeta.logo,
+    logo: tokenMeta.logo,
     icon: tokenMeta.logo,
     symbol: tokenMeta.symbol,
     name: tokenMeta.name,

@@ -50,7 +50,6 @@ export default class MsgTransfer extends MsgBase<
   toProto(): MsgTransfer.Proto {
     const { params } = this
 
-    const timeoutHeight = new Height()
     const token = new Coin()
     token.setDenom(params.amount.denom)
     token.setAmount(params.amount.amount)
@@ -63,11 +62,12 @@ export default class MsgTransfer extends MsgBase<
     message.setToken(token)
 
     if (params.height) {
+      const timeoutHeight = new Height()
       timeoutHeight.setRevisionHeight(params.height.revisionHeight)
       timeoutHeight.setRevisionNumber(params.height.revisionNumber)
-    }
 
-    message.setTimeoutHeight(timeoutHeight)
+      message.setTimeoutHeight(timeoutHeight)
+    }
 
     if (params.timeout) {
       message.setTimeoutTimestamp(params.timeout)
