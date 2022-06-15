@@ -1,4 +1,3 @@
-import { ZERO_IN_BASE } from '@injectivelabs/sdk-ui-ts'
 import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
 import { Block, ExplorerValidator } from '../types/explorer'
 import {
@@ -24,7 +23,7 @@ const getContractTransactionAmount = (
   ApiTransaction: ContractTransactionExplorerApiResponse,
 ): BigNumberInBase => {
   if (!ApiTransaction.messages[0].type.includes('MsgExecuteContract')) {
-    return ZERO_IN_BASE
+    return new BigNumberInBase(0)
   }
 
   return new BigNumberInWei(
