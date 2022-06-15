@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.8...@injectivelabs/sdk-ts@1.0.9) (2022-06-15)
+
+
+### Bug Fixes
+
+* peggy denom ([d3976f6](https://github.com/InjectiveLabs/injective-ts/commit/d3976f6203ac325d9cf5a7e68a11764ac832b6a1))
+
+
+
+
+
 ## [1.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.7...@injectivelabs/sdk-ts@1.0.8) (2022-06-15)
 
 
