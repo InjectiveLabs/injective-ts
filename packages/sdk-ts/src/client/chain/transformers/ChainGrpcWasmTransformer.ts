@@ -3,6 +3,7 @@ import {
   ContractAccountBalance,
   ContractAccountsBalanceWithPagination,
 } from '../types/wasm'
+import { grpcPaginationToPagination } from './../../../utils/pagination'
 
 export class ChainGrpcWasmTransformer {
   static allContractStateResponseToContractAccountsBalanceWithPagination(
@@ -16,26 +17,18 @@ export class ChainGrpcWasmTransformer {
             .toString('utf-8')
             .split('balance')
             .pop(),
-          balance: Buffer.from(model.getValue_asB64(), 'base64').toString(
-            'utf-8',
-          ),
+          balance: Buffer.from(model.getValue_asB64(), 'base64')
+            .toString('utf-8')
+            .replace(/['"]+/g, ''),
         }
       })
       .filter(({ account }) => {
         return account && account.startsWith('inj')
       }) as ContractAccountBalance[]
 
-    const responsePagination = response.getPagination()
-    const pagination = responsePagination
-      ? {
-          nextKey: responsePagination.getNextKey(),
-          total: responsePagination.getTotal(),
-        }
-      : undefined
-
     return {
       contractAccountsBalance,
-      pagination,
+      pagination: grpcPaginationToPagination(response.getPagination()),
     }
   }
 }

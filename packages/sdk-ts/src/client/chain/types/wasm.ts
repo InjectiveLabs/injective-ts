@@ -1,4 +1,4 @@
-import { PageResponse } from './base'
+import { Pagination } from './../../../types/pagination'
 
 export interface ContractAccountBalance {
   account: string
@@ -7,5 +7,5 @@ export interface ContractAccountBalance {
 
 export interface ContractAccountsBalanceWithPagination {
   contractAccountsBalance: ContractAccountBalance[]
-  pagination?: PageResponse
+  pagination?: Pagination
 }
