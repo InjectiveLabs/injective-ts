@@ -76,7 +76,7 @@ export class ExchangeTransformer {
       makerDiscountRate: info.getMakerDiscountRate(),
       takerDiscountRate: info.getTakerDiscountRate(),
       stakedAmount: info.getStakedAmount(),
-      feePaidAmount: info.getFeePaidAmount(),
+      volume: info.getVolume(),
     }
   }
 
