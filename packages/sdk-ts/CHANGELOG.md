@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.9...@injectivelabs/sdk-ts@1.0.10) (2022-06-15)
+
+
+### Features
+
+* add functionality to query on chain cosmswasm contract info ([1215b7a](https://github.com/InjectiveLabs/injective-ts/commit/1215b7a84ae3506ba1fc885d8551dfeb799f9253))
+* add functionality to query on chain cosmwasm data ([7b7793a](https://github.com/InjectiveLabs/injective-ts/commit/7b7793a6e34b560831779311b462bc83fead7d12))
+
+
+
+
+
 ## [1.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.8...@injectivelabs/sdk-ts@1.0.9) (2022-06-15)
 
 
