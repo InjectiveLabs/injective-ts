@@ -56,7 +56,7 @@ export default class MsgSendToEth extends MsgBase<
 
     const bridgeFee = new Coin()
     bridgeFee.setDenom(
-      params.bridgeFee ? params.bridgeFee.amount : DEFAULT_BRIDGE_FEE_DENOM,
+      params.bridgeFee ? params.bridgeFee.denom : DEFAULT_BRIDGE_FEE_DENOM,
     )
     bridgeFee.setAmount(
       params.bridgeFee ? params.bridgeFee.amount : DEFAULT_BRIDGE_FEE_AMOUNT,
