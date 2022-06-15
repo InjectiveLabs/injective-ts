@@ -52,7 +52,8 @@ export class CosmosQuery {
        * Injective has different response than the rest of the
        * cosmos chains when querying the auth account endpoint
        * */
-      const isInjectiveAddress = address.startsWith('inj')
+      const isInjectiveAddress =
+        address.startsWith('inj') || address.startsWith('evmos')
       const { data } = (await client.get(
         `cosmos/auth/v1beta1/accounts/${address}`,
       )) as {
