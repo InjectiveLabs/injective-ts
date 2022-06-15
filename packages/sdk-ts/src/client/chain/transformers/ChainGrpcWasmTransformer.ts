@@ -2,6 +2,8 @@ import { QueryAllContractStateResponse } from '@injectivelabs/chain-api/cosmwasm
 import {
   ContractAccountBalance,
   ContractAccountsBalanceWithPagination,
+  ContractInfo,
+  grpcContractInfo,
 } from '../types/wasm'
 import { grpcPaginationToPagination } from './../../../utils/pagination'
 
@@ -29,6 +31,31 @@ export class ChainGrpcWasmTransformer {
     return {
       contractAccountsBalance,
       pagination: grpcPaginationToPagination(response.getPagination()),
+    }
+  }
+
+  static contactInfoResponseToContractInfo(
+    contractInfo: grpcContractInfo,
+  ): ContractInfo {
+    const absoluteTxPosition = contractInfo.getCreated()
+    const extension = contractInfo.getExtension$()
+
+    return {
+      codeId: contractInfo.getCodeId(),
+      creator: contractInfo.getCreator(),
+      admin: contractInfo.getAdmin(),
+      label: contractInfo.getLabel(),
+      created: {
+        blockHeight: absoluteTxPosition
+          ? absoluteTxPosition.getBlockHeight()
+          : 0,
+        txIndex: absoluteTxPosition ? absoluteTxPosition.getTxIndex() : 0,
+      },
+      ibcPortId: contractInfo.getIbcPortId(),
+      extension: {
+        typeUrl: extension ? extension.getTypeUrl() : '',
+        value: extension ? extension.getValue() : '',
+      },
     }
   }
 }
