@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.15...@injectivelabs/sdk-ui-ts@1.0.16) (2022-06-16)
+
+
+### Features
+
+* binary options support on the sdk ([c5f6bc8](https://github.com/InjectiveLabs/injective-ts/commit/c5f6bc8313cc48281a426f84a352f212449bbb98))
+
+
+
+
+
 ## [1.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.14...@injectivelabs/sdk-ui-ts@1.0.15) (2022-06-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

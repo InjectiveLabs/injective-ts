@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.7...@injectivelabs/tx-ts@1.0.8) (2022-06-16)
+
+
+### Features
+
+* binary options support on the sdk ([c5f6bc8](https://github.com/InjectiveLabs/injective-ts/commit/c5f6bc8313cc48281a426f84a352f212449bbb98))
+
+
+
+
+
 ## [1.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.6...@injectivelabs/tx-ts@1.0.7) (2022-06-15)
 
 
