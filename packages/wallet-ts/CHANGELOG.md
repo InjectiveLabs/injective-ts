@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.9...@injectivelabs/wallet-ts@1.0.10) (2022-06-15)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.8...@injectivelabs/wallet-ts@1.0.9) (2022-06-15)
+
+
+### Bug Fixes
+
+* evmos bridge account query ([94cf260](https://github.com/InjectiveLabs/injective-ts/commit/94cf2604ecf0e5bca6beb652e59c837a2978c2fb))
+
+
+
+
+
 ## [1.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.7...@injectivelabs/wallet-ts@1.0.8) (2022-06-15)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

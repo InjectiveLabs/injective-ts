@@ -101,11 +101,6 @@ export interface ExplorerTransaction extends Omit<BaseTransaction, 'messages'> {
   parsedMessages?: Message[]
 }
 
-export type TransactionListItem = {
-  key: number
-  list: ExplorerTransaction[]
-}
-
 export interface ExplorerBlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
   txs: ExplorerTransaction[]
 }

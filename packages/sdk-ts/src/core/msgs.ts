@@ -11,17 +11,12 @@ import MsgCreateDerivativeLimitOrder from './exchange/msgs/MsgCreateDerivativeLi
 import MsgCreateDerivativeMarketOrder from './exchange/msgs/MsgCreateDerivativeMarketOrder'
 import MsgCreateSpotLimitOrder from './exchange/msgs/MsgCreateSpotLimitOrder'
 import MsgCreateSpotMarketOrder from './exchange/msgs/MsgCreateSpotMarketOrder'
-import MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders'
+// import MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders'
 import MsgDeposit from './exchange/msgs/MsgDeposit'
 import MsgIncreasePositionMargin from './exchange/msgs/MsgIncreasePositionMargin'
 import MsgInstantSpotMarketLaunch from './exchange/msgs/MsgInstantSpotMarketLaunch'
 import MsgWithdraw from './exchange/msgs/MsgWithdraw'
 import MsgGovDeposit from './gov/msgs/MsgDeposit'
-import MsgSubmitProposalExpiryFuturesMarketLaunch from './gov/msgs/MsgSubmitProposalExpiryFuturesMarketLaunch'
-import MsgSubmitProposalPerpetualMarketLaunch from './gov/msgs/MsgSubmitProposalPerpetualMarketLaunch'
-import MsgSubmitProposalSpotMarketLaunch from './gov/msgs/MsgSubmitProposalSpotMarketLaunch'
-import MsgSubmitProposalSpotMarketParamUpdate from './gov/msgs/MsgSubmitProposalSpotMarketParamUpdate'
-import MsgSubmitTextProposal from './gov/msgs/MsgSubmitTextProposal'
 import MsgVote from './gov/msgs/MsgVote'
 import MsgTransfer from './ibc/msgs/MsgTransfer'
 import MsgCreateInsuranceFund from './insurance/msgs/MsgCreateInsuranceFund'
@@ -33,12 +28,14 @@ import MsgUndelegate from './staking/msgs/MsgUndelegate'
 import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
 import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
 import MsgExec from './wasm/msgs/MsgExec'
+import { MsgSubmitProposal } from './gov'
 
 export type Msgs =
   | MsgBid
   | MsgGrant
   | MsgRevoke
   | MsgSend
+  // | MsgBatchUpdateOrders
   | MsgWithdrawDelegatorReward
   | MsgBatchCancelDerivativeOrders
   | MsgBatchCancelSpotOrders
@@ -53,11 +50,7 @@ export type Msgs =
   | MsgInstantSpotMarketLaunch
   | MsgWithdraw
   | MsgGovDeposit
-  | MsgSubmitProposalExpiryFuturesMarketLaunch
-  | MsgSubmitProposalPerpetualMarketLaunch
-  | MsgSubmitProposalSpotMarketLaunch
-  | MsgSubmitProposalSpotMarketParamUpdate
-  | MsgSubmitTextProposal
+  | MsgSubmitProposal
   | MsgVote
   | MsgTransfer
   | MsgCreateInsuranceFund
@@ -69,7 +62,6 @@ export type Msgs =
   | MsgBeginRedelegate
   | MsgExecuteContract
   | MsgExec
-  | MsgBatchUpdateOrders
 
 export type ExchangeMsgs =
   | MsgBatchCancelDerivativeOrders
@@ -85,4 +77,4 @@ export type ExchangeMsgs =
   | MsgInstantSpotMarketLaunch
   | MsgWithdraw
   | MsgExec
-  | MsgBatchUpdateOrders
+// | MsgBatchUpdateOrders

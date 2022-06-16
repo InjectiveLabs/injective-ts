@@ -44,14 +44,12 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
   async fetchBlocks(params?: {
     before?: number
     limit?: number
-    skip?: number
   }): Promise<Block[]> {
     try {
-      const { before, limit, skip } = params || { limit: 12 }
+      const { before, limit } = params || { limit: 12 }
       const response = (await this.client.get('blocks', {
         before,
         limit,
-        skip,
       })) as ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
 
       return ExchangeRestExplorerTransformer.blocksToBlocks(response.data.data)
@@ -65,10 +63,10 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     limit?: number
   }): Promise<{ paging: Paging; blocks: ExplorerBlockWithTxs[] }> {
     try {
-      const { before, limit } = params || { limit: 50 }
+      const { before, limit } = params || { limit: 12 }
       const response = (await this.client.get('blocks', {
-        limit,
         before,
+        limit,
       })) as ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
 
       const { paging, data } = response.data
@@ -85,16 +83,16 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
   }
 
   async fetchTransactions(params?: {
-    before?: number
+    from_number?: number
     limit?: number
-    skip?: number
+    to_number?: number
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     try {
-      const { before, limit, skip } = params || { limit: 12 }
+      const { from_number, limit, to_number } = params || { limit: 12 }
       const response = (await this.client.get('txs', {
-        before,
+        from_number,
         limit,
-        skip,
+        to_number,
       })) as ExplorerApiResponseWithPagination<
         TransactionFromExplorerApiResponse[]
       >
@@ -118,17 +116,19 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
   }: {
     account: string
     params?: {
-      before?: number
+      from_number?: number
       limit?: number
+      to_number?: number
       skip?: number
     }
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     try {
-      const { before, limit, skip } = params || { limit: 12 }
+      const { from_number, limit, skip, to_number } = params || { limit: 12 }
       const response = (await this.client.get(`accountTxs/${account}`, {
-        before,
+        from_number,
         limit,
         skip,
+        to_number,
       })) as ExplorerApiResponseWithPagination<
         TransactionFromExplorerApiResponse[]
       >
@@ -218,19 +218,19 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
   }
 
   async fetchContracts(params?: {
-    before?: number
+    from_number?: number
     limit?: number
-    skip?: number
+    to_number?: number
   }): Promise<{
     paging: Paging
     contracts: Contract[]
   }> {
     try {
-      const { before, limit, skip } = params || { limit: 12 }
+      const { from_number, limit, to_number } = params || { limit: 12 }
       const response = (await this.client.get('/wasm/contracts', {
-        before,
+        from_number,
         limit,
-        skip,
+        to_number,
       })) as ExplorerApiResponseWithPagination<ContractExplorerApiResponse[]>
 
       const { paging, data } = response.data
@@ -246,12 +246,28 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchContractTransactions(
-    contractAddress: string,
-  ): Promise<{ paging: Paging; transactions: ContractTransaction[] }> {
+  async fetchContractTransactions({
+    contractAddress,
+    params,
+  }: {
+    contractAddress: string
+    params?: {
+      from_number?: number
+      limit?: number
+      to_number?: number
+      skip?: number
+    }
+  }): Promise<{ paging: Paging; transactions: ContractTransaction[] }> {
     try {
+      const { from_number, limit, skip, to_number } = params || { limit: 12 }
       const response = (await this.client.get(
         `/txs?contract_address=${contractAddress}`,
+        {
+          from_number,
+          limit,
+          skip,
+          to_number,
+        },
       )) as ExplorerApiResponseWithPagination<
         ContractTransactionExplorerApiResponse[]
       >
@@ -285,19 +301,19 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
   }
 
   async fetchWasmCodes(params?: {
-    before?: number
+    from_number?: number
     limit?: number
-    skip?: number
+    to_number?: number
   }): Promise<{
     paging: Paging
     wasmCodes: WasmCode[]
   }> {
     try {
-      const { before, limit, skip } = params || { limit: 12 }
+      const { from_number, limit, to_number } = params || { limit: 12 }
       const response = (await this.client.get('/wasm/codes', {
-        before,
+        from_number,
         limit,
-        skip,
+        to_number,
       })) as ExplorerApiResponseWithPagination<WasmCodeExplorerApiResponse[]>
 
       const { paging, data } = response.data
