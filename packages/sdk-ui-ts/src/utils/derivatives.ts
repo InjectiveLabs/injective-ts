@@ -1,34 +1,34 @@
 import {
   UiDerivativeMarketSummary,
-  DerivativeMarketMap,
+  DerivativeOrderMap,
   DerivativeOrderSide,
 } from '../client/types/derivatives'
 import { Change } from '../client/types/common'
 
 export const derivativeOrderTypeToGrpcOrderType = (
   orderType: DerivativeOrderSide,
-): DerivativeMarketMap => {
+): DerivativeOrderMap => {
   switch (orderType) {
     case DerivativeOrderSide.Unspecified:
-      return DerivativeMarketMap.UNSPECIFIED
+      return DerivativeOrderMap.UNSPECIFIED
     case DerivativeOrderSide.Buy:
-      return DerivativeMarketMap.BUY
+      return DerivativeOrderMap.BUY
     case DerivativeOrderSide.Sell:
-      return DerivativeMarketMap.SELL
+      return DerivativeOrderMap.SELL
     case DerivativeOrderSide.StopBuy:
-      return DerivativeMarketMap.STOP_BUY
+      return DerivativeOrderMap.STOP_BUY
     case DerivativeOrderSide.StopSell:
-      return DerivativeMarketMap.STOP_SELL
+      return DerivativeOrderMap.STOP_SELL
     case DerivativeOrderSide.TakeBuy:
-      return DerivativeMarketMap.TAKE_BUY
+      return DerivativeOrderMap.TAKE_BUY
     case DerivativeOrderSide.TakeSell:
-      return DerivativeMarketMap.TAKE_SELL
+      return DerivativeOrderMap.TAKE_SELL
     case DerivativeOrderSide.BuyPO:
-      return DerivativeMarketMap.BUY_PO
+      return DerivativeOrderMap.BUY_PO
     case DerivativeOrderSide.SellPO:
-      return DerivativeMarketMap.SELL_PO
+      return DerivativeOrderMap.SELL_PO
     default:
-      return DerivativeMarketMap.BUY
+      return DerivativeOrderMap.BUY
   }
 }
 

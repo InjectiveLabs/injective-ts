@@ -20,6 +20,7 @@ export enum OracleType {
   UMA = 8,
   PYTH = 9,
   BANDIBC = 10,
+  PROVIDER = 11,
 }
 
 export interface InsuranceFund {

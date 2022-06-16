@@ -20,6 +20,10 @@ import {
 } from '../types'
 import { ibcTokens } from '@injectivelabs/token-metadata'
 import { Token, IbcToken } from '@injectivelabs/token-metadata'
+import {
+  UiBaseBinaryOptionsMarket,
+  UiBaseBinaryOptionsMarketWithToken,
+} from '../client/types/binary-options'
 
 export class TokenService {
   public network: Network
@@ -278,6 +282,47 @@ export class TokenService {
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
     ) as UiBaseDerivativeMarketWithToken[]
+  }
+
+  async getBinaryOptionsMarketWithToken(
+    market: UiBaseBinaryOptionsMarket,
+  ): Promise<UiBaseBinaryOptionsMarketWithToken> {
+    const quoteToken = await this.getDenomToken(market.quoteDenom)
+    const slug = market.ticker
+      .replace('/', '-')
+      .replaceAll(' ', '-')
+      .toLowerCase()
+    const [baseTokenSymbol] = slug.replace(quoteToken.symbol, '')
+    const baseToken = {
+      denom: slug,
+      logo: '',
+      icon: '',
+      symbol: baseTokenSymbol,
+      name: baseTokenSymbol,
+      decimals: 18,
+      address: '',
+      coinGeckoId: '',
+    }
+
+    return {
+      ...market,
+      slug,
+      baseToken,
+      quoteToken,
+    } as UiBaseBinaryOptionsMarketWithToken
+  }
+
+  async getBinaryOptionsMarketsWithToken(
+    markets: UiBaseBinaryOptionsMarket[],
+  ): Promise<UiBaseBinaryOptionsMarketWithToken[]> {
+    return (
+      await Promise.all(
+        markets.map(this.getBinaryOptionsMarketWithToken.bind(this)),
+      )
+    ).filter(
+      (market) =>
+        market.baseToken !== undefined && market.quoteToken !== undefined,
+    ) as UiBaseBinaryOptionsMarketWithToken[]
   }
 
   async getBridgeTransactionWithToken(

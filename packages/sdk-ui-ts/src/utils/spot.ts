@@ -1,6 +1,6 @@
 import { Change } from '../client/types/common'
 import {
-  SpotMarketMap,
+  SpotOrderMap,
   SpotOrderSide,
   UiSpotMarketSummary,
 } from '../client/types/spot'
@@ -21,25 +21,25 @@ export const zeroSpotMarketSummary = (
 
 export const spotOrderTypeToGrpcOrderType = (
   orderType: SpotOrderSide,
-): SpotMarketMap => {
+): SpotOrderMap => {
   switch (orderType) {
     case SpotOrderSide.Unspecified:
-      return SpotMarketMap.UNSPECIFIED
+      return SpotOrderMap.UNSPECIFIED
     case SpotOrderSide.Buy:
-      return SpotMarketMap.BUY
+      return SpotOrderMap.BUY
     case SpotOrderSide.Sell:
-      return SpotMarketMap.SELL
+      return SpotOrderMap.SELL
     case SpotOrderSide.StopBuy:
-      return SpotMarketMap.STOP_BUY
+      return SpotOrderMap.STOP_BUY
     case SpotOrderSide.TakeBuy:
-      return SpotMarketMap.TAKE_BUY
+      return SpotOrderMap.TAKE_BUY
     case SpotOrderSide.TakeSell:
-      return SpotMarketMap.TAKE_SELL
+      return SpotOrderMap.TAKE_SELL
     case SpotOrderSide.BuyPO:
-      return SpotMarketMap.BUY_PO
+      return SpotOrderMap.BUY_PO
     case SpotOrderSide.SellPO:
-      return SpotMarketMap.SELL_PO
+      return SpotOrderMap.SELL_PO
     default:
-      return SpotMarketMap.BUY
+      return SpotOrderMap.BUY
   }
 }

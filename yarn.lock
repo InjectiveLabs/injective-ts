@@ -1916,18 +1916,18 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@^1.8.0-rc2":
-  version "1.8.0-rc2"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.8.0-rc2.tgz#7d83b1ebf37e0cf2dfe0f1831b3b18f7b3a59a0f"
-  integrity sha512-eVFTwVDm0QekhcRUg+Ief6HrlC+osXIbFXxLYv6AQv60XZ1s1QbPTC1jG4HO4/H52WwJSwJr4JjmDASaRWeeUg==
+"@injectivelabs/chain-api@^1.8.0-rc3":
+  version "1.8.0-rc3"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.8.0-rc3.tgz#7b446615c460f91c8c521e8fd4d0066286a59f75"
+  integrity sha512-zuxCdehNqCBlc1EnCuRcPE5w7xT8IP5jkF02VjFd6NUHfJbtAWR8KRNkOAhzL2EGsIijy0PKoCnWZhYM32PiGQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
-"@injectivelabs/exchange-api@^2.2.70":
-  version "2.2.70"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.70.tgz#acebf715010d87ace2eda1e9bb86ee1919b10b4a"
-  integrity sha512-i+WwnBdOjtzowTXFdQv7u+J1vF+YCWblq5LKpTBvASq3WDW8UowOYoMPT9wBmtHXT5FsB195pdwlLf1shHwDnw==
+"@injectivelabs/exchange-api@^2.2.71":
+  version "2.2.71"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.71.tgz#b3c78098df2b9e57ecac273296cc78d3eed6f4bc"
+  integrity sha512-TWP5fweZYtJQDIUorJ5jHTD4S7gbRXxegy4Q5fvOtCTX/lkezhoYyuPspHb12sDuJcbW0VzcWcpCw1h3OWV4jg==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"

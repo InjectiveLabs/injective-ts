@@ -26,6 +26,7 @@ export enum ExchangeOracleType {
   UMA = 8,
   PYTH = 9,
   BANDIBC = 10,
+  PROVIDER = 11,
 }
 
 export interface ExchangeTokenMeta extends GrpcTokenMeta.AsObject {

@@ -19,6 +19,7 @@ export enum MarketType {
   Derivative = 'Derivative',
   Perpetual = 'Perpetual',
   Futures = 'Futures',
+  BinaryOptions = 'BinaryOptions',
 }
 
 export enum MarketBase {

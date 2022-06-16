@@ -45,7 +45,7 @@ export interface UiSpotMarketAndSummary {
   summary: UiSpotMarketSummary
 }
 
-export enum SpotMarketMap {
+export enum SpotOrderMap {
   UNSPECIFIED = 0,
   BUY = 1,
   SELL = 2,

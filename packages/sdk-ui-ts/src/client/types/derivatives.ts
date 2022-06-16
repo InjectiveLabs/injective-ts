@@ -49,7 +49,7 @@ export interface UiDerivativeMarketAndSummary {
   summary: UiDerivativeMarketSummary
 }
 
-export enum DerivativeMarketMap {
+export enum DerivativeOrderMap {
   UNSPECIFIED = 0,
   BUY = 1,
   SELL = 2,
