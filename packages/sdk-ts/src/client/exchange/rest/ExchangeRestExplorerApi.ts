@@ -44,7 +44,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
   async fetchBlocks(params?: {
     before?: number
     limit?: number
-  }): Promise<Block[]> {
+  }): Promise<{ paging: Paging; blocks: Block[] }> {
     try {
       const { before, limit } = params || { limit: 12 }
       const response = (await this.client.get('blocks', {
@@ -52,7 +52,12 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         limit,
       })) as ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
 
-      return ExchangeRestExplorerTransformer.blocksToBlocks(response.data.data)
+      const { paging, data } = response.data
+
+      return {
+        paging,
+        blocks: ExchangeRestExplorerTransformer.blocksToBlocks(data),
+      }
     } catch (error) {
       throw new HttpException((error as any).message)
     }
@@ -261,7 +266,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
     try {
       const { from_number, limit, skip, to_number } = params || { limit: 12 }
       const response = (await this.client.get(
-        `/txs?contract_address=${contractAddress}`,
+        `/contractTxs/${contractAddress}`,
         {
           from_number,
           limit,
