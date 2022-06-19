@@ -192,7 +192,8 @@ export class Web3Client {
           (tokenBalance: any) =>
             (
               tokenBalance as unknown as { contractAddress: string }
-            ).contractAddress.toLowerCase() === tokenAddress.toLowerCase(),
+            ).contractAddress.toLowerCase() ===
+            tokenContractAddress.toLowerCase(),
         )
       const balance = tokenBalance ? tokenBalance.tokenBalance || 0 : 0
 
