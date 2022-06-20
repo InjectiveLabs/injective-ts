@@ -83,13 +83,13 @@ export class MsgBroadcastClient {
     const prepareTx = async () => {
       try {
         const promise = transactionApi.prepareTxRequest({
+          useCorrectEIP712Hash: this.options.useCorrectEIP712Hash,
           chainId: ethereumChainId,
           memo: tx.memo,
           address: tx.address,
           message: web3Msgs,
           gasLimit: getGasPriceBasedOnMessage(msgs),
           estimateGas: false,
-          useCorrectEIP712Hash: false,
         })
 
         if (!metricsProvider) {
