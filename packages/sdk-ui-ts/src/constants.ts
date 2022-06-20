@@ -60,11 +60,11 @@ export const peggyGraphQlEndpointForNetwork = (network: Network): string => {
     return PEGGY_DEVNET1_GRAPH_URL
   }
 
-  if ([Network.Testnet, Network.TestnetK8s]) {
+  if ([Network.Testnet, Network.TestnetK8s].includes(network)) {
     return PEGGY_TESTNET_GRAPH_URL
   }
 
-  return PEGGY_TESTNET_GRAPH_URL
+  return PEGGY_GRAPH_URL
 }
 
 export const ASSET_PRICE_SERVICE_URL =
