@@ -54,12 +54,6 @@ export class MsgBroadcastClient {
 
   constructor(options: MsgBroadcastOptions) {
     this.options = options
-    // TODO: something like this
-    // if options.walletStrategy == TrustWallet {
-    //   this.options.useCorrectEIP712Hash = true
-    // }
-    this.options.useCorrectEIP712Hash = true
-
     this.transactionApi = new ExchangeGrpcTransactionApi(
       options.endpoints.exchangeApi,
     )
@@ -83,11 +77,11 @@ export class MsgBroadcastClient {
     const prepareTx = async () => {
       try {
         const promise = transactionApi.prepareTxRequest({
-          useCorrectEIP712Hash: this.options.useCorrectEIP712Hash,
-          chainId: ethereumChainId,
           memo: tx.memo,
-          address: tx.address,
           message: web3Msgs,
+          address: tx.address,
+          chainId: ethereumChainId,
+          useCorrectEIP712Hash: walletStrategy.wallet !== Wallet.Metamask,
           gasLimit: getGasPriceBasedOnMessage(msgs),
           estimateGas: false,
         })
