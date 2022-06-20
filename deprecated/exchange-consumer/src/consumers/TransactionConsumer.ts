@@ -30,6 +30,7 @@ export class TransactionConsumer extends BaseConsumer {
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
     timeoutHeight,
+
   }: {
     address: AccountAddress
     chainId: ChainId

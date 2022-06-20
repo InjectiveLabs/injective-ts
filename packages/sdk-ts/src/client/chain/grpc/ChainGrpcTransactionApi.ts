@@ -29,6 +29,7 @@ export class ChainGrpcTransactionApi extends BaseConsumer {
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
     timeoutHeight,
+    useCorrectHash = false,
   }: {
     address: AccountAddress
     chainId: EthereumChainId
@@ -39,6 +40,7 @@ export class ChainGrpcTransactionApi extends BaseConsumer {
     timeoutHeight?: number
     feeDenom?: string
     feePrice?: string
+    useCorrectHash?: boolean
   }) {
     const txFeeAmount = new Coin()
     txFeeAmount.setDenom(feeDenom)
@@ -68,6 +70,8 @@ export class ChainGrpcTransactionApi extends BaseConsumer {
     if (memo) {
       prepareTxRequest.setMemo(memo)
     }
+
+    prepareTxRequest.setUseCorrectHash(useCorrectHash)
 
     try {
       const response = await this.request<
