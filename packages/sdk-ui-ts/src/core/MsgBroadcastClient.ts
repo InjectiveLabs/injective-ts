@@ -28,7 +28,6 @@ export interface MsgBroadcastOptions {
   ethereumChainId: EthereumChainId
   walletStrategy: WalletStrategy
   metricsProvider?: MetricsProvider
-  useCorrectEIP712Hash: boolean
 }
 
 const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
