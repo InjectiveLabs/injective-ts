@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.18...@injectivelabs/sdk-ui-ts@1.0.19) (2022-06-20)
+
+
+### Bug Fixes
+
+* peggyGraphQlEndpointForNetwork returning wrong endpoint for mainnet issue ([d8a851a](https://github.com/InjectiveLabs/injective-ts/commit/d8a851a97863acf95302d96d1df3176bd0817c76))
+
+
+
+
+
 ## [1.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.17...@injectivelabs/sdk-ui-ts@1.0.18) (2022-06-19)
 
 
