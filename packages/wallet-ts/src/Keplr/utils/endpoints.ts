@@ -60,7 +60,7 @@ export const getEndpointsFromChainId = (
       }
     case CosmosChainId.Evmos:
       return {
-        rpc: 'https://rpc-evmos.keplr.app',
+        rpc: 'https://tm.evmos.injective.network/',
         rest: 'https://lcd-evmos.keplr.app',
       }
     case CosmosChainId.Persistence:
