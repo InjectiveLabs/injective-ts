@@ -7,11 +7,14 @@ import MsgBatchCancelDerivativeOrders from './exchange/msgs/MsgBatchCancelDeriva
 import MsgBatchCancelSpotOrders from './exchange/msgs/MsgBatchCancelSpotOrders'
 import MsgCancelDerivativeOrder from './exchange/msgs/MsgCancelDerivativeOrder'
 import MsgCancelSpotOrder from './exchange/msgs/MsgCancelSpotOrder'
+import MsgCancelBinaryOptionsOrder from './exchange/msgs/MsgCancelBinaryOptionsOrder'
 import MsgCreateDerivativeLimitOrder from './exchange/msgs/MsgCreateDerivativeLimitOrder'
 import MsgCreateDerivativeMarketOrder from './exchange/msgs/MsgCreateDerivativeMarketOrder'
+import MsgCreateBinaryOptionsLimitOrder from './exchange/msgs/MsgCreateBinaryOptionsLimitOrder'
+import MsgCreateBinaryOptionsMarketOrder from './exchange/msgs/MsgCreateBinaryOptionsMarketOrder'
 import MsgCreateSpotLimitOrder from './exchange/msgs/MsgCreateSpotLimitOrder'
 import MsgCreateSpotMarketOrder from './exchange/msgs/MsgCreateSpotMarketOrder'
-// import MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders'
+import MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders'
 import MsgDeposit from './exchange/msgs/MsgDeposit'
 import MsgIncreasePositionMargin from './exchange/msgs/MsgIncreasePositionMargin'
 import MsgInstantSpotMarketLaunch from './exchange/msgs/MsgInstantSpotMarketLaunch'
@@ -35,7 +38,7 @@ export type Msgs =
   | MsgGrant
   | MsgRevoke
   | MsgSend
-  // | MsgBatchUpdateOrders
+  | MsgBatchUpdateOrders
   | MsgWithdrawDelegatorReward
   | MsgBatchCancelDerivativeOrders
   | MsgBatchCancelSpotOrders
@@ -62,6 +65,9 @@ export type Msgs =
   | MsgBeginRedelegate
   | MsgExecuteContract
   | MsgExec
+  | MsgCreateBinaryOptionsLimitOrder
+  | MsgCreateBinaryOptionsMarketOrder
+  | MsgCancelBinaryOptionsOrder
 
 export type ExchangeMsgs =
   | MsgBatchCancelDerivativeOrders
@@ -77,4 +83,7 @@ export type ExchangeMsgs =
   | MsgInstantSpotMarketLaunch
   | MsgWithdraw
   | MsgExec
-// | MsgBatchUpdateOrders
+  | MsgBatchUpdateOrders
+  | MsgCreateBinaryOptionsLimitOrder
+  | MsgCreateBinaryOptionsMarketOrder
+  | MsgCancelBinaryOptionsOrder

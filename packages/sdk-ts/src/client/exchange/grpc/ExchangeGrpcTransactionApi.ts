@@ -71,7 +71,9 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
       prepareTxRequest.setMemo(memo)
     }
 
-    prepareTxRequest.setUseCorrectHash(useCorrectEIP712Hash)
+    if (useCorrectEIP712Hash !== undefined) {
+      prepareTxRequest.setUseCorrectHash(useCorrectEIP712Hash)
+    }
 
     try {
       const response = await this.request<
@@ -95,6 +97,7 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     gasLimit = DEFAULT_EXCHANGE_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
+    useCorrectEIP712Hash = false,
     timeoutHeight,
     delegatedFee,
   }: {
@@ -108,6 +111,7 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     feePrice?: string
     timeoutHeight?: number
     delegatedFee?: boolean
+    useCorrectEIP712Hash?: boolean
   }) {
     const txFeeAmount = new Coin()
     txFeeAmount.setDenom(feeDenom)
@@ -140,6 +144,10 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
 
     if (memo) {
       prepareTxRequest.setMemo(memo)
+    }
+
+    if (useCorrectEIP712Hash !== undefined) {
+      prepareTxRequest.setUseCorrectHash(useCorrectEIP712Hash)
     }
 
     try {

@@ -94,7 +94,7 @@ export class UiDerivativeTransformer {
     )
   }
 
-  static derivativeMarketsToUiSpotMarkets(
+  static derivativeMarketsToUiDerivativeMarkets(
     markets: UiBaseDerivativeMarketWithToken[],
   ) {
     return markets.map(
