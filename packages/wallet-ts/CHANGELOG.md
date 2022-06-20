@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.11...@injectivelabs/wallet-ts@1.0.12) (2022-06-20)
+
+
+### Bug Fixes
+
+* evmos public rpc ([be4a985](https://github.com/InjectiveLabs/injective-ts/commit/be4a98557b7e460c4934e7f1e018f395c1e2b0d4))
+
+
+
+
+
 ## [1.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.10...@injectivelabs/wallet-ts@1.0.11) (2022-06-16)
 
 
