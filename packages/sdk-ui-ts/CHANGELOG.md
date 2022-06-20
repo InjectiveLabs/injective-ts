@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.23...@injectivelabs/sdk-ui-ts@1.0.24) (2022-06-20)
+
+
+### Bug Fixes
+
+* passing boolean to the broadcaster ([e2e3741](https://github.com/InjectiveLabs/injective-ts/commit/e2e374142c2ec1447eb605ad5c5abefbf4e711d6))
+
+
+
+
+
 ## [1.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.22...@injectivelabs/sdk-ui-ts@1.0.23) (2022-06-20)
 
 
