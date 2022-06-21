@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.26...@injectivelabs/sdk-ui-ts@1.0.27) (2022-06-21)
+
+
+### Bug Fixes
+
+* temp for eip712 ([5578196](https://github.com/InjectiveLabs/injective-ts/commit/5578196e5c286ab9deda955d21f91e5caa847dda))
+
+
+
+
+
 ## [1.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.25...@injectivelabs/sdk-ui-ts@1.0.26) (2022-06-21)
 
 
