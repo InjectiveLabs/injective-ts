@@ -34,7 +34,7 @@ export class PeggyContract extends BaseContract<any> {
     contractAddress,
     address,
     amount,
-    data,
+    data = '',
     transactionOptions,
   }: {
     contractAddress: string
