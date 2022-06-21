@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.18...@injectivelabs/sdk-ts@1.0.19) (2022-06-21)
+
+
+### Bug Fixes
+
+* binary options unify ([fa1c0aa](https://github.com/InjectiveLabs/injective-ts/commit/fa1c0aab00d977f73243703bd5f1d4d5e3ec1fb0))
+* token utils coingecko api ([69c1533](https://github.com/InjectiveLabs/injective-ts/commit/69c15339bef85a9537a70ef1524debec413ddea2))
+* undefined prop on PrepareTx ([a14f810](https://github.com/InjectiveLabs/injective-ts/commit/a14f810901a77f08277eb04b92e263e991bf9be3))
+
+
+
+
+
 ## [1.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.17...@injectivelabs/sdk-ts@1.0.18) (2022-06-20)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.12...@injectivelabs/wallet-ts@1.0.13) (2022-06-21)
+
+
+### Bug Fixes
+
+* token utils coingecko api ([69c1533](https://github.com/InjectiveLabs/injective-ts/commit/69c15339bef85a9537a70ef1524debec413ddea2))
+
+
+
+
+
 ## [1.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.11...@injectivelabs/wallet-ts@1.0.12) (2022-06-20)
 
 
