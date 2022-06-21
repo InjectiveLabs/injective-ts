@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.4...@injectivelabs/contracts@1.0.5) (2022-06-21)
+
+
+### Features
+
+* peggy upgrade ([b2e658f](https://github.com/InjectiveLabs/injective-ts/commit/b2e658f405dee42c62005c2cc623658068534878))
+
+
+
+
+
 ## [1.0.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.3...@injectivelabs/contracts@1.0.4) (2022-06-15)
 
 **Note:** Version bump only for package @injectivelabs/contracts

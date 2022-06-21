@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.28...@injectivelabs/sdk-ui-ts@1.0.29) (2022-06-21)
+
+
+### Features
+
+* peggy upgrade ([b2e658f](https://github.com/InjectiveLabs/injective-ts/commit/b2e658f405dee42c62005c2cc623658068534878))
+
+
+
+
+
 ## [1.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.27...@injectivelabs/sdk-ui-ts@1.0.28) (2022-06-21)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
