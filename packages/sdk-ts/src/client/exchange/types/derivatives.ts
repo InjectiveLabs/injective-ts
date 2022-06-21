@@ -9,6 +9,7 @@ import {
   ExpiryFuturesMarketInfo as GrpcExpiryFuturesMarketInfo,
   FundingPayment as GrpcFundingPayment,
   FundingRate as GrpcFundingRate,
+  BinaryOptionsMarketInfo as GrpcBinaryOptionsMarketInfo,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
@@ -72,13 +73,8 @@ export interface ExpiryFuturesMarketInfo {
   settlementPrice: string
 }
 
-export interface DerivativeMarket {
-  oracleBase: string
-  oracleQuote: string
+export interface BaseDerivativeMarket {
   oracleType: string
-  initialMarginRatio: string
-  maintenanceMarginRatio: string
-  isPerpetual: boolean
   marketId: string
   marketStatus: string
   ticker: string
@@ -89,10 +85,51 @@ export interface DerivativeMarket {
   serviceProviderFee: string
   minPriceTickSize: number
   minQuantityTickSize: number
+}
+
+export interface PerpetualMarket extends BaseDerivativeMarket {
+  initialMarginRatio: string
+  maintenanceMarginRatio: string
+  isPerpetual: boolean
+  oracleBase: string
+  oracleQuote: string
   perpetualMarketInfo?: PerpetualMarketInfo
   perpetualMarketFunding?: PerpetualMarketFunding
+}
+
+export interface ExpiryFuturesMarket extends BaseDerivativeMarket {
+  initialMarginRatio: string
+  maintenanceMarginRatio: string
+  isPerpetual: boolean
+  oracleBase: string
+  oracleQuote: string
   expiryFuturesMarketInfo?: ExpiryFuturesMarketInfo
 }
+
+export interface BinaryOptionsMarket
+  extends Omit<
+    BaseDerivativeMarket,
+    'minPriceTickSize' | 'minQuantityTickSize'
+  > {
+  oracleSymbol: string
+  oracleProvider: string
+  oracleScaleFactor: number
+  expirationTimestamp: number
+  settlementTimestamp: number
+  serviceProviderFee: string
+  minPriceTickSize: string
+  minQuantityTickSize: string
+  settlementPrice: string
+}
+
+export type DerivativeMarket =
+  | PerpetualMarket
+  | ExpiryFuturesMarket
+  | BinaryOptionsMarket
+
+export type DerivativeMarketWithoutBinaryOptions =
+  | PerpetualMarket
+  | ExpiryFuturesMarket
 
 export interface DerivativeLimitOrder {
   orderHash: string
@@ -165,4 +202,5 @@ export {
   GrpcExpiryFuturesMarketInfo,
   GrpcDerivativeTrade,
   GrpcPositionDelta,
+  GrpcBinaryOptionsMarketInfo,
 }

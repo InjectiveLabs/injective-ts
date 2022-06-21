@@ -1,7 +1,6 @@
 export * from './exchange'
 export * from './derivatives'
 export * from './derivatives-rest'
-export * from './binary-options'
 export * from './spot'
 export * from './spot-rest'
 export * from './account'

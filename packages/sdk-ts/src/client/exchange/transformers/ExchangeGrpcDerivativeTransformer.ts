@@ -23,6 +23,8 @@ import {
   FundingPayment,
   FundingRate,
   ExpiryFuturesMarketInfo,
+  GrpcBinaryOptionsMarketInfo,
+  BinaryOptionsMarket,
 } from '../types/derivatives'
 import {
   GrpcPriceLevel,
@@ -42,10 +44,6 @@ import {
   PositionsResponse as DerivativePositionsResponse,
   OrderbooksResponse as DerivativeOrderbooksResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
-import {
-  GrpcBinaryOptionsMarketInfo,
-  BinaryOptionsMarket,
-} from '../types/binary-options'
 import {
   BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
   BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,

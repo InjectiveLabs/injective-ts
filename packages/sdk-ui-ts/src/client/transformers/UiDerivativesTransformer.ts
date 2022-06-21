@@ -2,29 +2,40 @@ import { BigNumber, BigNumberInBase } from '@injectivelabs/utils'
 import { MarketType, Change } from '../types/common'
 import { getDecimalsFromNumber } from '@injectivelabs/sdk-ts'
 import {
-  UiBaseDerivativeMarketWithToken,
+  ExpiryFuturesMarketWithTokenAndSlug,
+  PerpetualMarketWithTokenAndSlug,
+  BinaryOptionsMarketWithTokenAndSlug,
   UiDerivativeMarketSummary,
-  UiDerivativeMarketWithToken,
+  UiPerpetualMarketWithToken,
+  UiExpiryFuturesMarketWithToken,
+  UiBinaryOptionsMarketWithToken,
 } from '../types/derivatives'
 import { derivativeOrderTypeToGrpcOrderType } from '../../utils/derivatives'
 
 export class UiDerivativeTransformer {
   static derivativeOrderTypeToGrpcOrderType = derivativeOrderTypeToGrpcOrderType
 
-  static derivativeMarketToUiDerivativeMarket(
-    market: UiBaseDerivativeMarketWithToken,
-  ): UiDerivativeMarketWithToken {
+  static derivativeMarketToUiDerivativeMarket<
+    T extends
+      | PerpetualMarketWithTokenAndSlug
+      | ExpiryFuturesMarketWithTokenAndSlug
+      | BinaryOptionsMarketWithTokenAndSlug,
+    R extends
+      | UiPerpetualMarketWithToken
+      | UiExpiryFuturesMarketWithToken
+      | UiBinaryOptionsMarketWithToken,
+  >(market: T, subType: MarketType): R {
     return {
       ...market,
       type: MarketType.Derivative,
-      subType: MarketType.Perpetual,
+      subType: subType,
       quantityDecimals: getDecimalsFromNumber(market.minQuantityTickSize),
       priceDecimals: getDecimalsFromNumber(
         new BigNumberInBase(market.minPriceTickSize)
           .toWei(-market.quoteToken.decimals)
           .toNumber(),
       ),
-    }
+    } as unknown as R
   }
 
   static derivativeMarketSummaryToUiMarketSummary(
@@ -94,11 +105,36 @@ export class UiDerivativeTransformer {
     )
   }
 
-  static derivativeMarketsToUiDerivativeMarkets(
-    markets: UiBaseDerivativeMarketWithToken[],
-  ) {
-    return markets.map(
-      UiDerivativeTransformer.derivativeMarketToUiDerivativeMarket,
+  static perpetualMarketsToUiPerpetualMarkets(
+    markets: Array<PerpetualMarketWithTokenAndSlug>,
+  ): UiPerpetualMarketWithToken[] {
+    return markets.map((m) =>
+      UiDerivativeTransformer.derivativeMarketToUiDerivativeMarket(
+        m,
+        MarketType.Perpetual,
+      ),
+    )
+  }
+
+  static expiryFuturesMarketsToUiExpiryFuturesMarkets(
+    markets: Array<ExpiryFuturesMarketWithTokenAndSlug>,
+  ): UiExpiryFuturesMarketWithToken[] {
+    return markets.map((m) =>
+      UiDerivativeTransformer.derivativeMarketToUiDerivativeMarket(
+        m,
+        MarketType.Futures,
+      ),
+    )
+  }
+
+  static binaryOptionsMarketsToUiBinaryOptionsMarkets(
+    markets: BinaryOptionsMarketWithTokenAndSlug[],
+  ): UiBinaryOptionsMarketWithToken[] {
+    return markets.map((m) =>
+      UiDerivativeTransformer.derivativeMarketToUiDerivativeMarket(
+        m,
+        MarketType.BinaryOptions,
+      ),
     )
   }
 }

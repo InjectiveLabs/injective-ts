@@ -3,12 +3,14 @@ import { ChainId, Coin } from '@injectivelabs/ts-types'
 import { Denom, tokenMetaToToken } from '@injectivelabs/sdk-ts'
 import {
   BankBalances,
-  UiBaseDerivativeMarket,
-  UiBaseDerivativeMarketWithToken,
   UiBaseSpotMarket,
   UiBaseSpotMarketWithToken,
   UiSubaccountBalance,
   CoinWithLabel,
+  UiBaseBinaryOptionsMarket,
+  BinaryOptionsMarketWithTokenAndSlug,
+  DerivativeMarketWithTokenAndSlug,
+  BaseDerivativeMarket,
 } from '../client/types'
 import {
   BankBalanceWithToken,
@@ -20,10 +22,6 @@ import {
 } from '../types'
 import { ibcTokens } from '@injectivelabs/token-metadata'
 import { Token, IbcToken } from '@injectivelabs/token-metadata'
-import {
-  UiBaseBinaryOptionsMarket,
-  UiBaseBinaryOptionsMarketWithToken,
-} from '../client/types/binary-options'
 
 export class TokenService {
   public network: Network
@@ -250,8 +248,8 @@ export class TokenService {
   }
 
   async getDerivativeMarketWithToken(
-    market: UiBaseDerivativeMarket,
-  ): Promise<UiBaseDerivativeMarketWithToken> {
+    market: BaseDerivativeMarket,
+  ): Promise<DerivativeMarketWithTokenAndSlug> {
     const slug = market.ticker
       .replace('/', '-')
       .replaceAll(' ', '-')
@@ -268,12 +266,12 @@ export class TokenService {
       slug,
       baseToken,
       quoteToken,
-    } as UiBaseDerivativeMarketWithToken
+    } as DerivativeMarketWithTokenAndSlug
   }
 
   async getDerivativeMarketsWithToken(
-    markets: UiBaseDerivativeMarket[],
-  ): Promise<UiBaseDerivativeMarketWithToken[]> {
+    markets: BaseDerivativeMarket[],
+  ): Promise<DerivativeMarketWithTokenAndSlug[]> {
     return (
       await Promise.all(
         markets.map(this.getDerivativeMarketWithToken.bind(this)),
@@ -281,12 +279,12 @@ export class TokenService {
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
-    ) as UiBaseDerivativeMarketWithToken[]
+    ) as DerivativeMarketWithTokenAndSlug[]
   }
 
   async getBinaryOptionsMarketWithToken(
     market: UiBaseBinaryOptionsMarket,
-  ): Promise<UiBaseBinaryOptionsMarketWithToken> {
+  ): Promise<BinaryOptionsMarketWithTokenAndSlug> {
     const quoteToken = await this.getDenomToken(market.quoteDenom)
     const slug = market.ticker
       .replace('/', '-')
@@ -295,8 +293,8 @@ export class TokenService {
     const [baseTokenSymbol] = slug.replace(quoteToken.symbol, '')
     const baseToken = {
       denom: slug,
-      logo: '',
-      icon: '',
+      logo: 'binary-option-market.svg',
+      icon: 'binary-option-market.svg',
       symbol: baseTokenSymbol,
       name: baseTokenSymbol,
       decimals: 18,
@@ -309,12 +307,12 @@ export class TokenService {
       slug,
       baseToken,
       quoteToken,
-    } as UiBaseBinaryOptionsMarketWithToken
+    } as BinaryOptionsMarketWithTokenAndSlug
   }
 
   async getBinaryOptionsMarketsWithToken(
     markets: UiBaseBinaryOptionsMarket[],
-  ): Promise<UiBaseBinaryOptionsMarketWithToken[]> {
+  ): Promise<BinaryOptionsMarketWithTokenAndSlug[]> {
     return (
       await Promise.all(
         markets.map(this.getBinaryOptionsMarketWithToken.bind(this)),
@@ -322,7 +320,7 @@ export class TokenService {
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
-    ) as UiBaseBinaryOptionsMarketWithToken[]
+    ) as BinaryOptionsMarketWithTokenAndSlug[]
   }
 
   async getBridgeTransactionWithToken(

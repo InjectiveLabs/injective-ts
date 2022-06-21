@@ -1,5 +1,8 @@
 import {
-  DerivativeMarket as BaseUiDerivativeMarket,
+  BaseDerivativeMarket as BaseUiDerivativeMarket,
+  PerpetualMarket as BaseUiPerpetualMarket,
+  ExpiryFuturesMarket as BaseUiExpiryFuturesMarket,
+  BinaryOptionsMarket as BaseUiBinaryOptionsMarket,
   DerivativeTrade,
   Position as UiPosition,
   DerivativeLimitOrder as UiDerivativeLimitOrder,
@@ -13,18 +16,17 @@ import {
 import { Token } from '@injectivelabs/token-metadata'
 import { Change, MarketBase, MarketType } from './common'
 
-export interface UiBaseDerivativeMarket
+export interface BaseDerivativeMarket
   extends Omit<BaseUiDerivativeMarket, 'quoteToken'> {}
 
-export interface UiBaseDerivativeMarketWithToken
-  extends UiBaseDerivativeMarket {
+export interface DerivativeMarketWithTokenAndSlug extends BaseDerivativeMarket {
   slug: string
   quoteToken: Token
   baseToken: Token
 }
 
-export interface UiDerivativeMarketWithToken
-  extends UiBaseDerivativeMarketWithToken {
+export interface BaseDerivativeMarketWithToken
+  extends DerivativeMarketWithTokenAndSlug {
   priceDecimals: number
   quantityDecimals: number
   type: MarketType
@@ -32,6 +34,43 @@ export interface UiDerivativeMarketWithToken
   marketBase?: MarketBase
   upcoming?: boolean
 }
+
+export interface UiBasePerpetualMarket
+  extends Omit<BaseUiPerpetualMarket, 'quoteToken'> {}
+
+export interface UiBaseExpiryFuturesMarket
+  extends Omit<BaseUiExpiryFuturesMarket, 'quoteToken'> {}
+
+export interface UiBaseBinaryOptionsMarket
+  extends Omit<BaseUiBinaryOptionsMarket, 'quoteToken'> {}
+
+export type PerpetualMarketWithTokenAndSlug = BaseUiPerpetualMarket &
+  DerivativeMarketWithTokenAndSlug
+
+export type ExpiryFuturesMarketWithTokenAndSlug = BaseUiExpiryFuturesMarket &
+  DerivativeMarketWithTokenAndSlug
+
+export type BinaryOptionsMarketWithTokenAndSlug = BaseUiBinaryOptionsMarket &
+  DerivativeMarketWithTokenAndSlug
+
+export type UiPerpetualMarketWithToken = PerpetualMarketWithTokenAndSlug &
+  BaseDerivativeMarketWithToken
+
+export type UiExpiryFuturesMarketWithToken =
+  ExpiryFuturesMarketWithTokenAndSlug & BaseDerivativeMarketWithToken
+
+export type UiBinaryOptionsMarketWithToken =
+  BinaryOptionsMarketWithTokenAndSlug & BaseDerivativeMarketWithToken
+
+export type UiBaseDerivativeMarketWithTokenAndSlug =
+  | PerpetualMarketWithTokenAndSlug
+  | ExpiryFuturesMarketWithTokenAndSlug
+  | BinaryOptionsMarketWithTokenAndSlug
+
+export type UiDerivativeMarketWithToken =
+  | UiPerpetualMarketWithToken
+  | UiExpiryFuturesMarketWithToken
+  | UiBinaryOptionsMarketWithToken
 
 export interface UiDerivativeTrade extends DerivativeTrade {
   ticker?: string
