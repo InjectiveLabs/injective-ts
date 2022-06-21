@@ -1,4 +1,4 @@
-import { BinaryOptionsMarketInfo as GrpcBinaryOptionsMarketInfo } from '@injectivelabs/exchange-api/injective_binary_options_exchange_rpc_pb'
+import { BinaryOptionsMarketInfo as GrpcBinaryOptionsMarketInfo } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { TokenMeta } from '@injectivelabs/token-metadata'
 
 export interface BinaryOptionsMarket {

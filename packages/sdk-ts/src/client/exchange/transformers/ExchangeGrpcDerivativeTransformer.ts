@@ -42,6 +42,14 @@ import {
   PositionsResponse as DerivativePositionsResponse,
   OrderbooksResponse as DerivativeOrderbooksResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
+import {
+  GrpcBinaryOptionsMarketInfo,
+  BinaryOptionsMarket,
+} from '../types/binary-options'
+import {
+  BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
+  BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,
+} from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -181,6 +189,60 @@ export class ExchangeGrpcDerivativeTransformer {
         sells: orderbook.getSellsList(),
       })
     })
+  }
+
+  static binaryOptionsMarketResponseToBinaryOptionsMarket(
+    response: BinaryOptionsMarketResponse,
+  ) {
+    const market = response.getMarket()!
+
+    return ExchangeGrpcDerivativeTransformer.grpcBinaryOptionsMarketToBinaryOptionsMarket(
+      market,
+    )
+  }
+
+  static binaryOptionsMarketsResponseToBinaryOptionsMarkets(
+    response: BinaryOptionsMarketsResponse,
+  ) {
+    const markets = response.getMarketsList()
+
+    return ExchangeGrpcDerivativeTransformer.grpcBinaryOptionsMarketsToBinaryOptionsMarkets(
+      markets,
+    )
+  }
+
+  static grpcBinaryOptionsMarketToBinaryOptionsMarket(
+    market: GrpcBinaryOptionsMarketInfo,
+  ): BinaryOptionsMarket {
+    return {
+      marketId: market.getMarketId(),
+      marketStatus: market.getMarketStatus(),
+      ticker: market.getTicker(),
+      oracleSymbol: market.getOracleSymbol(),
+      oracleProvider: market.getOracleProvider(),
+      oracleType: market.getOracleType(),
+      oracleScaleFactor: market.getOracleScaleFactor(),
+      expirationTimestamp: market.getExpirationTimestamp(),
+      settlementTimestamp: market.getSettlementTimestamp(),
+      quoteDenom: market.getQuoteDenom(),
+      quoteToken: ExchangeGrpcDerivativeTransformer.grpcTokenMetaToTokenMeta(
+        market.getQuoteTokenMeta(),
+      ),
+      makerFeeRate: market.getMakerFeeRate(),
+      takerFeeRate: market.getTakerFeeRate(),
+      serviceProviderFee: market.getServiceProviderFee(),
+      minPriceTickSize: market.getMinPriceTickSize(),
+      minQuantityTickSize: market.getMinQuantityTickSize(),
+      settlementPrice: market.getSettlementPrice(),
+    }
+  }
+
+  static grpcBinaryOptionsMarketsToBinaryOptionsMarkets(
+    markets: GrpcBinaryOptionsMarketInfo[],
+  ): BinaryOptionsMarket[] {
+    return markets.map(
+      ExchangeGrpcDerivativeTransformer.grpcBinaryOptionsMarketToBinaryOptionsMarket,
+    )
   }
 
   static grpcMarketToMarket(

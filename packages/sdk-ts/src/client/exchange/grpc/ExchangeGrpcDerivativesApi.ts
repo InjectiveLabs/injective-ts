@@ -5,8 +5,12 @@ import {
   FundingRatesResponse,
   MarketsRequest as DerivativeMarketsRequest,
   MarketsResponse as DerivativeMarketsResponse,
+  BinaryOptionsMarketsRequest as BinaryOptionsMarketsRequest,
+  BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
   MarketRequest as DerivativeMarketRequest,
   MarketResponse as DerivativeMarketResponse,
+  BinaryOptionsMarketRequest as BinaryOptionsMarketRequest,
+  BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,
   OrderbookRequest as DerivativeOrderbookRequest,
   OrderbookResponse as DerivativeOrderbookResponse,
   OrdersRequest as DerivativeOrdersRequest,
@@ -74,6 +78,56 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Market)
 
       return ExchangeGrpcDerivativeTransformer.marketResponseToMarket(response)
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchBinaryOptionsMarkets(params?: {
+    marketStatus?: string
+    quoteDenom?: string
+  }) {
+    const { marketStatus, quoteDenom } = params || {}
+
+    const request = new BinaryOptionsMarketsRequest()
+
+    if (marketStatus) {
+      request.setMarketStatus(marketStatus)
+    }
+    if (quoteDenom) {
+      request.setQuoteDenom(quoteDenom)
+    }
+
+    try {
+      const response = await this.request<
+        BinaryOptionsMarketsRequest,
+        BinaryOptionsMarketsResponse,
+        typeof InjectiveDerivativeExchangeRPC.BinaryOptionsMarkets
+      >(request, InjectiveDerivativeExchangeRPC.BinaryOptionsMarkets)
+
+      return ExchangeGrpcDerivativeTransformer.binaryOptionsMarketsResponseToBinaryOptionsMarkets(
+        response,
+      )
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchBinaryOptionsMarket(marketId: string) {
+    const request = new BinaryOptionsMarketRequest()
+
+    request.setMarketId(marketId)
+
+    try {
+      const response = await this.request<
+        BinaryOptionsMarketRequest,
+        BinaryOptionsMarketResponse,
+        typeof InjectiveDerivativeExchangeRPC.BinaryOptionsMarket
+      >(request, InjectiveDerivativeExchangeRPC.BinaryOptionsMarket)
+
+      return ExchangeGrpcDerivativeTransformer.binaryOptionsMarketResponseToBinaryOptionsMarket(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
