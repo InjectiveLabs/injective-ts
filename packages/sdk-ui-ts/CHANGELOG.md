@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.38...@injectivelabs/sdk-ui-ts@1.0.39) (2022-06-21)
+
+
+### Bug Fixes
+
+* erc20 inj balances always returned as 0 ([fe70d49](https://github.com/InjectiveLabs/injective-ts/commit/fe70d49d27aac9b209d11c85b5fd5561a760974e))
+
+
+
+
+
 ## [1.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.37...@injectivelabs/sdk-ui-ts@1.0.38) (2022-06-21)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

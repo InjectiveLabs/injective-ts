@@ -255,7 +255,7 @@ export class Web3Client {
       const allowance = await web3.alchemy.getTokenAllowance({
         owner: address,
         spender: contractAddresses.peggy,
-        contract: tokenAddress,
+        contract: tokenContractAddress,
       })
 
       return {
