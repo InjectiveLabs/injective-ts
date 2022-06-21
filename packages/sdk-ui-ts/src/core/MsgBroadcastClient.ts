@@ -80,7 +80,7 @@ export class MsgBroadcastClient {
           message: web3Msgs,
           address: tx.address,
           chainId: ethereumChainId,
-          useCorrectEIP712Hash: walletStrategy.wallet !== Wallet.Metamask,
+          // useCorrectEIP712Hash: walletStrategy.wallet !== Wallet.Metamask,
           gasLimit: getGasPriceBasedOnMessage(msgs),
           estimateGas: false,
         })
