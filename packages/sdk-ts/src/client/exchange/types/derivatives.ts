@@ -83,8 +83,8 @@ export interface BaseDerivativeMarket {
   quoteToken: TokenMeta | undefined
   takerFeeRate: string
   serviceProviderFee: string
-  minPriceTickSize: number
-  minQuantityTickSize: number
+  minPriceTickSize: number | string
+  minQuantityTickSize: number | string
 }
 
 export interface PerpetualMarket extends BaseDerivativeMarket {
