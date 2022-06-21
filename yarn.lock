@@ -1924,10 +1924,10 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
-"@injectivelabs/exchange-api@^2.2.73":
-  version "2.2.73"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.73.tgz#8ff743c74c86b6433970a121ae760c75eb766fe6"
-  integrity sha512-CJRPqaRvGB3aSKbsC45M8yT8Cr2kY5sAK5fJeqXCFwSeqWdxwuvnD8piuezD1xmU7fJx3txPVq+SEgydYnwenQ==
+"@injectivelabs/exchange-api@^2.2.74":
+  version "2.2.74"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exchange-api/-/exchange-api-2.2.74.tgz#edc145c0f3598a4e0c481a429a6c00a73740084b"
+  integrity sha512-gOFi/O+USTYMPIPUG8tGu38pFJzKFW16y3swmKouYugz2h2NEOJSIYEckv7mLoJNtiuxkhnOxdXCZrNCmF+Svg==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"

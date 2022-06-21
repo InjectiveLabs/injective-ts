@@ -31,6 +31,18 @@ type EthereumTransactionEIP1559 = {
   maxPriorityFeePerGas: string
 }
 
+const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
+  if (chainId === EthereumChainId.Goerli) {
+    return Chain.Goerli
+  }
+
+  if (chainId === EthereumChainId.Kovan) {
+    return Chain.Kovan
+  }
+
+  return Chain.Mainnet
+}
+
 export default class Trezor
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
@@ -157,11 +169,10 @@ export default class Trezor
     options: { address: string; ethereumChainId: EthereumChainId },
   ) {
     const chainId = parseInt(options.ethereumChainId.toString(), 10)
-    const isMainnet = chainId === EthereumChainId.Mainnet
     const nonce = await this.web3.eth.getTransactionCount(options.address)
 
     const common = new Common({
-      chain: isMainnet ? Chain.Mainnet : Chain.Kovan,
+      chain: getNetworkFromChainId(chainId),
       hardfork: Hardfork.London,
     })
 

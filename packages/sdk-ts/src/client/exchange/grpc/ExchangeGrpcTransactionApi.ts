@@ -72,7 +72,6 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     }
 
     if (useCorrectEIP712Hash !== undefined) {
-      // @ts-ignore
       prepareTxRequest.setUseCorrectHash(useCorrectEIP712Hash)
     }
 
@@ -148,7 +147,6 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     }
 
     if (useCorrectEIP712Hash !== undefined) {
-      // @ts-ignore
       prepareTxRequest.setUseCorrectHash(useCorrectEIP712Hash)
     }
 

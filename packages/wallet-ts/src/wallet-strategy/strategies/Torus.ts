@@ -11,6 +11,29 @@ import TorusWallet from '@toruslabs/torus-embed'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
 
+export const getNetworkFromChainId = (
+  chainId: EthereumChainId,
+): { host: string; networkName: string } => {
+  if (chainId === EthereumChainId.Goerli) {
+    return {
+      host: 'kovan',
+      networkName: 'Goerli Test Network',
+    }
+  }
+
+  if (chainId === EthereumChainId.Kovan) {
+    return {
+      host: 'goerli',
+      networkName: 'Kovan Test Network',
+    }
+  }
+
+  return {
+    host: 'mainnet',
+    networkName: 'Main Ethereum Network',
+  }
+}
+
 export default class Torus
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
@@ -39,11 +62,7 @@ export default class Torus
       buildEnv: 'production',
       network: {
         chainId: ethereumChainId,
-        host: ethereumChainId === EthereumChainId.Kovan ? 'kovan' : 'mainnet',
-        networkName:
-          ethereumChainId === EthereumChainId.Kovan
-            ? 'Kovan Test Network'
-            : 'Main Ethereum Network',
+        ...getNetworkFromChainId(ethereumChainId),
       },
       showTorusButton: false,
     })
