@@ -10,6 +10,8 @@ import {
 export default class CoinGeckoApi {
   private httpClient: HttpClient
 
+  private apiKey: string
+
   constructor({ apiKey, baseUrl }: { apiKey: string; baseUrl: string }) {
     const headers = {
       'Content-Type': 'application/json',
@@ -19,6 +21,7 @@ export default class CoinGeckoApi {
       headers['X-Cg-Pro-Api-Key'] = apiKey
     }
 
+    this.apiKey = apiKey
     this.httpClient = new HttpClient(baseUrl).setConfig({
       headers,
     })
@@ -35,6 +38,7 @@ export default class CoinGeckoApi {
         tickers: false,
         sparkline: false,
         developer_data: false,
+        x_cg_pro_api_key: this.apiKey,
         ...options,
       }
 
@@ -60,6 +64,7 @@ export default class CoinGeckoApi {
         tickers: false,
         sparkline: false,
         developer_data: false,
+        x_cg_pro_api_key: this.apiKey,
         ...options,
       }
 
@@ -85,6 +90,7 @@ export default class CoinGeckoApi {
         tickers: false,
         sparkline: false,
         developer_data: false,
+        x_cg_pro_api_key: this.apiKey,
         ...options,
       }
 
@@ -103,6 +109,7 @@ export default class CoinGeckoApi {
     try {
       const actualParams = {
         include_platform: false,
+        x_cg_pro_api_key: this.apiKey,
         ...params,
       }
 
@@ -119,6 +126,7 @@ export default class CoinGeckoApi {
     try {
       const actualParams = {
         ...params,
+        x_cg_pro_api_key: this.apiKey,
       }
 
       const { data } = (await this.httpClient.get(
@@ -136,6 +144,7 @@ export default class CoinGeckoApi {
     try {
       const actualParams = {
         ...params,
+        x_cg_pro_api_key: this.apiKey,
       }
 
       const { data } = (await this.httpClient.get(

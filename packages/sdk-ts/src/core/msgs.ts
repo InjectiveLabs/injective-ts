@@ -5,6 +5,7 @@ import MsgSend from './bank/msgs/MsgSend'
 import MsgWithdrawDelegatorReward from './distribution/msgs/MsgWithdrawDelegatorReward'
 import MsgBatchCancelDerivativeOrders from './exchange/msgs/MsgBatchCancelDerivativeOrders'
 import MsgBatchCancelSpotOrders from './exchange/msgs/MsgBatchCancelSpotOrders'
+import MsgBatchCancelBinaryOptionsOrders from './exchange/msgs/MsgBatchCancelBinaryOptionsOrders'
 import MsgCancelDerivativeOrder from './exchange/msgs/MsgCancelDerivativeOrder'
 import MsgCancelSpotOrder from './exchange/msgs/MsgCancelSpotOrder'
 import MsgCancelBinaryOptionsOrder from './exchange/msgs/MsgCancelBinaryOptionsOrder'
@@ -68,6 +69,7 @@ export type Msgs =
   | MsgCreateBinaryOptionsLimitOrder
   | MsgCreateBinaryOptionsMarketOrder
   | MsgCancelBinaryOptionsOrder
+  | MsgBatchCancelBinaryOptionsOrders
 
 export type ExchangeMsgs =
   | MsgBatchCancelDerivativeOrders
@@ -87,3 +89,4 @@ export type ExchangeMsgs =
   | MsgCreateBinaryOptionsLimitOrder
   | MsgCreateBinaryOptionsMarketOrder
   | MsgCancelBinaryOptionsOrder
+  | MsgBatchCancelBinaryOptionsOrders

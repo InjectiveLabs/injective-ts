@@ -1,5 +1,6 @@
 export { default as MsgBatchCancelDerivativeOrders } from './msgs/MsgBatchCancelDerivativeOrders'
 export { default as MsgBatchCancelSpotOrders } from './msgs/MsgBatchCancelSpotOrders'
+export { default as MsgBatchCancelBinaryOptionsOrders } from './msgs/MsgBatchCancelBinaryOptionsOrders'
 export { default as MsgCancelDerivativeOrder } from './msgs/MsgCancelDerivativeOrder'
 export { default as MsgBatchUpdateOrders } from './msgs/MsgBatchUpdateOrders'
 export { default as MsgCancelSpotOrder } from './msgs/MsgCancelSpotOrder'

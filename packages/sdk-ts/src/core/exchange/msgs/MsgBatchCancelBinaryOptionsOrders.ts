@@ -1,11 +1,11 @@
 import {
-  MsgBatchCancelDerivativeOrders as BaseMsgBatchCancelDerivativeOrders,
+  MsgBatchCancelBinaryOptionsOrders as BaseMsgBatchCancelBinaryOptionsOrders,
   OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
-export declare namespace MsgBatchCancelDerivativeOrders {
+export declare namespace MsgBatchCancelBinaryOptionsOrders {
   export interface Params {
     injectiveAddress: string
     orders: {
@@ -16,35 +16,35 @@ export declare namespace MsgBatchCancelDerivativeOrders {
   }
 
   export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
-    message: BaseMsgBatchCancelDerivativeOrders
+    type: '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders'
+    message: BaseMsgBatchCancelBinaryOptionsOrders
   }
 
-  export interface Data extends BaseMsgBatchCancelDerivativeOrders.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
+  export interface Data extends BaseMsgBatchCancelBinaryOptionsOrders.AsObject {
+    '@type': '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders'
   }
 
-  export interface Web3 extends BaseMsgBatchCancelDerivativeOrders.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
+  export interface Web3 extends BaseMsgBatchCancelBinaryOptionsOrders.AsObject {
+    '@type': '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders'
   }
 
-  export type Proto = BaseMsgBatchCancelDerivativeOrders
+  export type Proto = BaseMsgBatchCancelBinaryOptionsOrders
 }
 
-export default class MsgBatchCancelDerivativeOrders extends MsgBase<
-  MsgBatchCancelDerivativeOrders.Params,
-  MsgBatchCancelDerivativeOrders.Data,
-  MsgBatchCancelDerivativeOrders.Proto,
-  MsgBatchCancelDerivativeOrders.Web3,
-  MsgBatchCancelDerivativeOrders.DirectSign
+export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
+  MsgBatchCancelBinaryOptionsOrders.Params,
+  MsgBatchCancelBinaryOptionsOrders.Data,
+  MsgBatchCancelBinaryOptionsOrders.Proto,
+  MsgBatchCancelBinaryOptionsOrders.Web3,
+  MsgBatchCancelBinaryOptionsOrders.DirectSign
 > {
   static fromJSON(
-    params: MsgBatchCancelDerivativeOrders.Params,
-  ): MsgBatchCancelDerivativeOrders {
-    return new MsgBatchCancelDerivativeOrders(params)
+    params: MsgBatchCancelBinaryOptionsOrders.Params,
+  ): MsgBatchCancelBinaryOptionsOrders {
+    return new MsgBatchCancelBinaryOptionsOrders(params)
   }
 
-  toProto(): MsgBatchCancelDerivativeOrders.Proto {
+  toProto(): MsgBatchCancelBinaryOptionsOrders.Proto {
     const { params } = this
 
     const orderDataList = params.orders.map((order) => {
@@ -56,42 +56,42 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
       return orderData
     })
 
-    const message = new BaseMsgBatchCancelDerivativeOrders()
+    const message = new BaseMsgBatchCancelBinaryOptionsOrders()
     message.setSender(params.injectiveAddress)
     message.setDataList(orderDataList.map((o) => o))
 
     return message
   }
 
-  toData(): MsgBatchCancelDerivativeOrders.Data {
+  toData(): MsgBatchCancelBinaryOptionsOrders.Data {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
+      '@type': '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders',
       ...proto.toObject(),
     }
   }
 
-  toWeb3(): MsgBatchCancelDerivativeOrders.Web3 {
+  toWeb3(): MsgBatchCancelBinaryOptionsOrders.Web3 {
     const proto = this.toProto()
     const orderData = proto
       .getDataList()
       .map((orderData) => snakeCaseKeys(orderData.toObject()))
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
+      '@type': '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders',
       ...snakeCaseKeys({
         sender: proto.getSender(),
         data: [...orderData],
       }),
-    } as unknown as MsgBatchCancelDerivativeOrders.Web3
+    } as unknown as MsgBatchCancelBinaryOptionsOrders.Web3
   }
 
-  toDirectSign(): MsgBatchCancelDerivativeOrders.DirectSign {
+  toDirectSign(): MsgBatchCancelBinaryOptionsOrders.DirectSign {
     const proto = this.toProto()
 
     return {
-      type: '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
+      type: '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders',
       message: proto,
     }
   }
