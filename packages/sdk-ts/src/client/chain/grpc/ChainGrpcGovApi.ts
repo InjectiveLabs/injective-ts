@@ -39,15 +39,7 @@ export class ChainGrpcGovApi extends BaseConsumer {
           >(request, GovernanceQuery.Params),
         ),
       )
-      const votingParams = responses.find((response) =>
-        response.hasVotingParams(),
-      )!
-      const tallyParams = responses.find((response) =>
-        response.hasTallyParams(),
-      )!
-      const depositParams = responses.find((response) =>
-        response.hasDepositParams(),
-      )!
+      const [votingParams, depositParams, tallyParams] = responses
 
       return ChainGrpcGovTransformer.moduleParamsResponseToModuleParamsByType({
         votingParams: votingParams.getVotingParams()!,
