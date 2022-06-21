@@ -171,6 +171,18 @@ const abi = [
     type: 'function',
   },
   {
+    inputs: [
+      { internalType: 'address', name: '_tokenContract', type: 'address' },
+      { internalType: 'bytes32', name: '_destination', type: 'bytes32' },
+      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      { internalType: 'string', name: '_data', type: 'string' },
+    ],
+    name: 'sendToInjective',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     name: 'state_invalidationMapping',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],

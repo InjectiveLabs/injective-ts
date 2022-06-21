@@ -71,4 +71,48 @@ export class PeggyContract extends BaseContract<any> {
       },
     }
   }
+
+  sendToInjective({
+    contractAddress,
+    address,
+    amount,
+    data,
+    transactionOptions,
+  }: {
+    contractAddress: string
+    address: AccountAddress
+    amount: string
+    data?: any
+    transactionOptions: TransactionOptions
+  }): ContractTxFunctionObj<string> {
+    const { contract } = this
+
+    return {
+      callAsync() {
+        throw new ContractException(
+          'You cannot call this contract method as a call',
+        )
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods
+          .sendToInjective(contractAddress, address, amount, data)
+          .encodeABI()
+      },
+
+      async sendTransactionAsync(): Promise<string> {
+        const { transactionHash } = await contract.methods
+          .sendToInjective(contractAddress, address, amount)
+          .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
+
+        return transactionHash
+      },
+
+      async estimateGasAsync(): Promise<number> {
+        return contract.methods
+          .sendToInjective(contractAddress, address, amount)
+          .estimateGas(transactionOptions)
+      },
+    }
+  }
 }

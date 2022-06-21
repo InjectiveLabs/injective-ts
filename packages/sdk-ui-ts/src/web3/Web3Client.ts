@@ -161,6 +161,60 @@ export class Web3Client {
     }
   }
 
+  async getPeggyTransferTxUpdated({
+    address,
+    amount,
+    denom,
+    destinationAddress,
+    gasPrice,
+  }: {
+    address: string
+    amount: string // BigNumberInWi
+    denom: string
+    destinationAddress: string
+    gasPrice: string // BigNumberInWei
+  }) {
+    const { walletStrategy, network, ethereumChainId } = this
+    const web3 = walletStrategy.getWeb3() as any
+    const contractAddresses = getContractAddressesForNetworkOrThrow(network)
+    const contractAddress =
+      denom === INJ_DENOM
+        ? contractAddresses.injective
+        : peggyDenomToContractAddress(denom)
+    const peggyContractAddress = contractAddresses.peggy
+    const contract = new PeggyContract({
+      address: peggyContractAddress,
+      ethereumChainId,
+      web3: web3 as any,
+    })
+
+    const depositForContractFunction = contract.sendToInjective({
+      contractAddress,
+      amount: new BigNumberInWei(amount).toFixed(),
+      address: `0x${'0'.repeat(24)}${destinationAddress.slice(2)}`,
+      transactionOptions: getTransactionOptions({
+        gasPrice: '0',
+        from: address,
+      }),
+    })
+
+    const data = depositForContractFunction.getABIEncodedTransactionData()
+    const gas = new BigNumberInWei(
+      await depositForContractFunction.estimateGasAsync(),
+    )
+
+    return {
+      from: address,
+      to: peggyContractAddress,
+      gas: new BigNumberInWei(gas.times(GAS_LIMIT_MULTIPLIER).toFixed(0))
+        .toNumber()
+        .toString(16),
+      maxFeePerGas: new BigNumberInWei(gasPrice).toNumber().toString(16),
+      maxPriorityFeePerGas: null,
+      data,
+    }
+  }
+
   async fetchTokenBalanceAndAllowance({
     address,
     contractAddress,
