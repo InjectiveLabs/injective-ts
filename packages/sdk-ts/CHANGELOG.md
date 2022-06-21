@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.19...@injectivelabs/sdk-ts@1.0.20) (2022-06-21)
+
+
+### Bug Fixes
+
+* gov transformer ([46e1113](https://github.com/InjectiveLabs/injective-ts/commit/46e111336e7cafbbef17d3be064f1e57964473a9))
+
+
+
+
+
 ## [1.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.18...@injectivelabs/sdk-ts@1.0.19) (2022-06-21)
 
 
