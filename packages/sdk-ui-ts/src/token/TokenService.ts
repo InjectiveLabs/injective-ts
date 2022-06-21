@@ -9,8 +9,10 @@ import {
   CoinWithLabel,
   UiBaseBinaryOptionsMarket,
   BinaryOptionsMarketWithTokenAndSlug,
-  DerivativeMarketWithTokenAndSlug,
-  BaseDerivativeMarket,
+  UiBasePerpetualMarket,
+  UiBaseExpiryFuturesMarket,
+  PerpetualMarketWithTokenAndSlug,
+  ExpiryFuturesMarketWithTokenAndSlug,
 } from '../client/types'
 import {
   BankBalanceWithToken,
@@ -247,9 +249,12 @@ export class TokenService {
     ) as UiBaseSpotMarketWithToken[]
   }
 
-  async getDerivativeMarketWithToken(
-    market: BaseDerivativeMarket,
-  ): Promise<DerivativeMarketWithTokenAndSlug> {
+  async getDerivativeMarketWithToken<
+    T extends UiBasePerpetualMarket | UiBaseExpiryFuturesMarket,
+    R extends
+      | PerpetualMarketWithTokenAndSlug
+      | ExpiryFuturesMarketWithTokenAndSlug,
+  >(market: T): Promise<R> {
     const slug = market.ticker
       .replace('/', '-')
       .replaceAll(' ', '-')
@@ -266,12 +271,14 @@ export class TokenService {
       slug,
       baseToken,
       quoteToken,
-    } as DerivativeMarketWithTokenAndSlug
+    } as unknown as R
   }
 
   async getDerivativeMarketsWithToken(
-    markets: BaseDerivativeMarket[],
-  ): Promise<DerivativeMarketWithTokenAndSlug[]> {
+    markets: Array<UiBasePerpetualMarket | UiBaseExpiryFuturesMarket>,
+  ): Promise<
+    Array<PerpetualMarketWithTokenAndSlug | ExpiryFuturesMarketWithTokenAndSlug>
+  > {
     return (
       await Promise.all(
         markets.map(this.getDerivativeMarketWithToken.bind(this)),
@@ -279,7 +286,9 @@ export class TokenService {
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
-    ) as DerivativeMarketWithTokenAndSlug[]
+    ) as Array<
+      PerpetualMarketWithTokenAndSlug | ExpiryFuturesMarketWithTokenAndSlug
+    >
   }
 
   async getBinaryOptionsMarketWithToken(
