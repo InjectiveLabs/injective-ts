@@ -29,7 +29,7 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
     timeoutHeight,
-    useCorrectEIP712Hash = false,
+    useCorrectEIP712Hash,
   }: {
     address: AccountAddress
     chainId: EthereumChainId
@@ -98,9 +98,9 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     gasLimit = DEFAULT_EXCHANGE_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
-    useCorrectEIP712Hash = false,
     timeoutHeight,
     delegatedFee,
+    useCorrectEIP712Hash,
   }: {
     address: AccountAddress
     chainId: EthereumChainId
