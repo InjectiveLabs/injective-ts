@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.6...@injectivelabs/contracts@1.0.7) (2022-06-21)
+
+
+### Bug Fixes
+
+* contract address ([48aeaaa](https://github.com/InjectiveLabs/injective-ts/commit/48aeaaa302e6783e616f7c5e298dcae35ddae436))
+
+
+
+
+
 ## [1.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.5...@injectivelabs/contracts@1.0.6) (2022-06-21)
 
 **Note:** Version bump only for package @injectivelabs/contracts
