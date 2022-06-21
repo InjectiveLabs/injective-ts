@@ -60,7 +60,7 @@ export class PeggyContract extends BaseContract<any> {
 
       async sendTransactionAsync(): Promise<string> {
         const { transactionHash } = await contract.methods
-          .sendToInjective(contractAddress, address, amount)
+          .sendToInjective(contractAddress, address, amount, data)
           .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
 
         return transactionHash
