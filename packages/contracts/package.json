@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/contracts",
   "description": "Contracts wrapper that can be reused throughout Injective's projects.",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
