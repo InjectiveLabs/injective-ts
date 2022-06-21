@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.11...@injectivelabs/contracts@1.0.12) (2022-06-21)
+
+
+### Bug Fixes
+
+* old peggy contract ([e32ff67](https://github.com/InjectiveLabs/injective-ts/commit/e32ff6700ae9bd06ee837c7f7de74ed4ffe90c6d))
+
+
+
+
+
 ## [1.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.10...@injectivelabs/contracts@1.0.11) (2022-06-21)
 
 
