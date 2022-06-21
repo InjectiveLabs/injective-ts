@@ -68,7 +68,7 @@ export class PeggyContract extends BaseContract<any> {
 
       async estimateGasAsync(): Promise<number> {
         return contract.methods
-          .sendToInjective(contractAddress, address, amount)
+          .sendToInjective(contractAddress, address, amount, data)
           .estimateGas(transactionOptions)
       },
     }
