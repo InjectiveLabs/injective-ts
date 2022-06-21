@@ -6,12 +6,12 @@ import {
 } from '@injectivelabs/ts-types'
 import Web3 from 'web3'
 import { getTransactionOptionsAsNonPayableTx } from '../utils'
-import abi from './abi/peggy'
+import abi from './abi/peggy-old'
 import { ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'
 
-export class PeggyContract extends BaseContract<any> {
-  static contractName = 'Peggy'
+export class PeggyOldContract extends BaseContract<any> {
+  static contractName = 'PeggyOld'
 
   constructor({
     ethereumChainId,
@@ -30,17 +30,15 @@ export class PeggyContract extends BaseContract<any> {
     })
   }
 
-  sendToInjective({
+  sendToCosmos({
     contractAddress,
     address,
     amount,
-    data,
     transactionOptions,
   }: {
     contractAddress: string
     address: AccountAddress
     amount: string
-    data?: any
     transactionOptions: TransactionOptions
   }): ContractTxFunctionObj<string> {
     const { contract } = this
@@ -54,13 +52,13 @@ export class PeggyContract extends BaseContract<any> {
 
       getABIEncodedTransactionData(): string {
         return contract.methods
-          .sendToInjective(contractAddress, address, amount, data)
+          .sendToCosmos(contractAddress, address, amount)
           .encodeABI()
       },
 
       async sendTransactionAsync(): Promise<string> {
         const { transactionHash } = await contract.methods
-          .sendToInjective(contractAddress, address, amount)
+          .sendToCosmos(contractAddress, address, amount)
           .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
 
         return transactionHash
@@ -68,7 +66,7 @@ export class PeggyContract extends BaseContract<any> {
 
       async estimateGasAsync(): Promise<number> {
         return contract.methods
-          .sendToInjective(contractAddress, address, amount)
+          .sendToCosmos(contractAddress, address, amount)
           .estimateGas(transactionOptions)
       },
     }

@@ -4,6 +4,7 @@ import { BigNumberInWei } from '@injectivelabs/utils'
 import {
   Erc20Contract,
   PeggyContract,
+  PeggyOldContract,
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
 import { WalletStrategy } from '@injectivelabs/wallet-ts'
@@ -107,7 +108,7 @@ export class Web3Client {
     }
   }
 
-  async getPeggyTransferTx({
+  async getPeggyTransferTxOld({
     address,
     amount,
     denom,
@@ -128,7 +129,7 @@ export class Web3Client {
         ? contractAddresses.injective
         : peggyDenomToContractAddress(denom)
     const peggyContractAddress = contractAddresses.peggy
-    const contract = new PeggyContract({
+    const contract = new PeggyOldContract({
       address: peggyContractAddress,
       ethereumChainId,
       web3: web3 as any,
@@ -161,7 +162,7 @@ export class Web3Client {
     }
   }
 
-  async getPeggyTransferTxUpdated({
+  async getPeggyTransferTx({
     address,
     amount,
     denom,

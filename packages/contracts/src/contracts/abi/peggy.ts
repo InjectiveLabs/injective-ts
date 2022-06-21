@@ -372,29 +372,6 @@ const abi = [
         name: '_amount',
         type: 'uint256',
       },
-    ],
-    name: 'sendToCosmos',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_tokenContract',
-        type: 'address',
-      },
-      {
-        internalType: 'bytes32',
-        name: '_destination',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'uint256',
-        name: '_amount',
-        type: 'uint256',
-      },
       {
         internalType: 'string',
         name: '_data',
