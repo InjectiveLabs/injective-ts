@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.25...@injectivelabs/sdk-ts@1.0.26) (2022-06-22)
+
+
+### Features
+
+* update oracle price stream ([2c8de1b](https://github.com/InjectiveLabs/injective-ts/commit/2c8de1bd1c81a997b56f38260d9f54c70b2814bc))
+
+
+
+
+
 ## [1.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.24...@injectivelabs/sdk-ts@1.0.25) (2022-06-21)
 
 
