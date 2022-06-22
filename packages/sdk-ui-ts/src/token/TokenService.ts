@@ -299,11 +299,11 @@ export class TokenService {
       .replace('/', '-')
       .replaceAll(' ', '-')
       .toLowerCase()
-    const [baseTokenSymbol] = slug.replace(quoteToken.symbol, '')
+    const [baseTokenSymbol] = market.ticker.replace(quoteToken.symbol, '')
     const baseToken = {
       denom: slug,
-      logo: 'binary-option-market.svg',
-      icon: 'binary-option-market.svg',
+      logo: 'injective-v3.svg',
+      icon: 'injective-v3.svg',
       symbol: baseTokenSymbol,
       name: baseTokenSymbol,
       decimals: 18,
