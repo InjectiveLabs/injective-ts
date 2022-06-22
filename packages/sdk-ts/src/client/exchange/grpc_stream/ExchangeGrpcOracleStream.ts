@@ -32,15 +32,22 @@ export class ExchangeGrpcOracleStream {
     onStatusCallback,
   }: {
     oracleType: string
-    baseSymbol: string
-    quoteSymbol: string
+    baseSymbol?: string
+    quoteSymbol?: string
     callback: OraclePriceStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamPricesRequest()
-    request.setBaseSymbol(baseSymbol)
-    request.setQuoteSymbol(quoteSymbol)
+
+    if (baseSymbol) {
+      request.setBaseSymbol(baseSymbol)
+    }
+
+    if (quoteSymbol) {
+      request.setQuoteSymbol(quoteSymbol)
+    }
+
     request.setOracleType(oracleType)
 
     const stream = this.client.streamPrices(request)
