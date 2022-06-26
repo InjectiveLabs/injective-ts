@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.44...@injectivelabs/sdk-ui-ts@1.0.45) (2022-06-26)
+
+
+### Bug Fixes
+
+* MsgBroadcastClient ([a446031](https://github.com/InjectiveLabs/injective-ts/commit/a446031fb9fdf7cab65786bc9d5fbf7d99e5a773))
+
+
+
+
+
 ## [1.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.43...@injectivelabs/sdk-ui-ts@1.0.44) (2022-06-22)
 
 
