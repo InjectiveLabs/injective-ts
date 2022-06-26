@@ -53,6 +53,7 @@ export interface NetworkMeta {
   text: string
   value: string
   icon: string
+  symbol?: string
 }
 
 export interface NetworkConfig {
