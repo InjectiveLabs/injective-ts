@@ -143,10 +143,9 @@ export class MsgBroadcastClient {
             `${tx.bucket}BroadcastTx`,
           )
         return txHash
-      } catch (e) {
-        console.log('e =>', e)
+      } catch (e: any) {
+        throw new Error(e.message)
       }
-      return ''
     } catch (e: any) {
       throw new Error(e.message)
     }
