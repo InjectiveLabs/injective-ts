@@ -307,7 +307,10 @@ export class TokenService extends BaseService {
   async getSpotMarketWithToken(
     market: UiBaseSpotMarket,
   ): Promise<UiBaseSpotMarketWithToken> {
-    const slug = market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
+    const slug = market.ticker
+      .replaceAll('/', '-')
+      .replaceAll(' ', '-')
+      .toLowerCase()
 
     const baseToken = await this.getDenomToken(market.baseDenom)
     const quoteToken = await this.getDenomToken(market.quoteDenom)
@@ -343,7 +346,7 @@ export class TokenService extends BaseService {
     market: UiBaseDerivativeMarket,
   ): Promise<UiBaseDerivativeMarketWithToken> {
     const slug = market.ticker
-      .replace('/', '-')
+      .replaceAll('/', '-')
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
