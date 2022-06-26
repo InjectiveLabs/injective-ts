@@ -256,7 +256,7 @@ export class TokenService {
       | ExpiryFuturesMarketWithTokenAndSlug,
   >(market: T): Promise<R> {
     const slug = market.ticker
-      .replace('/', '-')
+      .replaceAll('/', '-')
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
@@ -296,7 +296,7 @@ export class TokenService {
   ): Promise<BinaryOptionsMarketWithTokenAndSlug> {
     const quoteToken = await this.getDenomToken(market.quoteDenom)
     const slug = market.ticker
-      .replace('/', '-')
+      .replaceAll('/', '-')
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = market.ticker.replace(quoteToken.symbol, '')
