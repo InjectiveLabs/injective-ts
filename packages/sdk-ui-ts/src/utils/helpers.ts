@@ -9,5 +9,9 @@ export const getTokenLogoWithVendorPathPrefix = (image: string) => {
     return image
   }
 
+  if (image.includes('bridgingNetworks')) {
+    return image
+  }
+
   return path.join('/', 'vendor', '@injectivelabs', 'token-metadata', image)
 }
