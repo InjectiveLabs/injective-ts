@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.26...@injectivelabs/sdk-ts@1.0.27) (2022-06-27)
+
+
+### Bug Fixes
+
+* ExchangeRestExplorerTransformer contract transaction transfomer add support for null gas_fee txs ([36b566c](https://github.com/InjectiveLabs/injective-ts/commit/36b566c5ed1bee3c73ed866061cd1e2b150b5142))
+
+
+
+
+
 ## [1.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.25...@injectivelabs/sdk-ts@1.0.26) (2022-06-22)
 
 
