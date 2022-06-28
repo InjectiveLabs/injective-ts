@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.27...@injectivelabs/sdk-ts@1.0.28) (2022-06-28)
+
+
+### Bug Fixes
+
+* added no throw variant of oracle prices for BO ([7fbfd77](https://github.com/InjectiveLabs/injective-ts/commit/7fbfd77998aa5259f774d6f22e0b2d6cb6aeb26c))
+
+
+
+
+
 ## [1.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.26...@injectivelabs/sdk-ts@1.0.27) (2022-06-27)
 
 
