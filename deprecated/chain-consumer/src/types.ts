@@ -80,6 +80,7 @@ export interface FeeDiscountTierInfo {
   makerDiscountRate: string
   takerDiscountRate: string
   stakedAmount: string
+  feePaidAmount: string
   volume: string
 }
 
