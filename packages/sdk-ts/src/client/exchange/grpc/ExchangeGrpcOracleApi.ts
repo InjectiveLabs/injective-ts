@@ -57,4 +57,43 @@ export class ExchangeGrpcOracleApi extends BaseConsumer {
       throw new Error(e.message)
     }
   }
+
+  async fetchOraclePriceNoThrow({
+    baseSymbol,
+    quoteSymbol,
+    oracleScaleFactor,
+    oracleType,
+  }: {
+    baseSymbol: string
+    quoteSymbol: string
+    oracleType: string
+    oracleScaleFactor?: number
+  }) {
+    const request = new PriceRequest()
+    request.setBaseSymbol(baseSymbol)
+    request.setQuoteSymbol(quoteSymbol)
+    request.setOracleType(oracleType)
+
+    if (oracleScaleFactor) {
+      request.setOracleScaleFactor(oracleScaleFactor)
+    }
+
+    try {
+      const response = await this.request<
+        PriceRequest,
+        PriceResponse,
+        typeof InjectiveOracleRPC.Price
+      >(request, InjectiveOracleRPC.Price)
+
+      return response.toObject()
+    } catch (e: any) {
+      if (e.message.includes('object not found')) {
+        return {
+          price: '0',
+        }
+      }
+
+      throw new Error(e.message)
+    }
+  }
 }
