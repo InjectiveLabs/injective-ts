@@ -278,6 +278,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
       >
 
       const { paging, data } = response.data
+
       return {
         paging,
         transactions: data

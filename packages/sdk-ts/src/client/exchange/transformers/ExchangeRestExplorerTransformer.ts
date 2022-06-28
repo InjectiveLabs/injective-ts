@@ -19,16 +19,25 @@ import {
   WasmCode,
 } from '../types/explorer'
 
+const ZERO_IN_BASE = new BigNumberInBase(0)
+
 const getContractTransactionAmount = (
   ApiTransaction: ContractTransactionExplorerApiResponse,
 ): BigNumberInBase => {
-  if (!ApiTransaction.messages[0].type.includes('MsgExecuteContract')) {
-    return new BigNumberInBase(0)
+  const {
+    type,
+    value: { msg },
+  } = ApiTransaction.messages[0]
+
+  if (!type.includes('MsgExecuteContract')) {
+    return ZERO_IN_BASE
   }
 
-  return new BigNumberInWei(
-    ApiTransaction.messages[0].value.msg.transfer.amount,
-  ).toBase()
+  if (!msg.transfer) {
+    return ZERO_IN_BASE
+  }
+
+  return new BigNumberInWei(msg.transfer.amount).toBase()
 }
 
 const parseCW20Message = (jsonObject: string): CW20Message | undefined => {
@@ -186,7 +195,9 @@ export class ExchangeRestExplorerTransformer {
       height: transaction.block_number,
       time: transaction.block_unix_timestamp,
       type: transaction.messages[0].type,
-      fee: new BigNumberInWei(transaction.gas_fee.amount[0].amount).toBase(),
+      fee: transaction.gas_fee.amount
+        ? new BigNumberInWei(transaction.gas_fee.amount[0].amount).toBase()
+        : ZERO_IN_BASE,
       amount: getContractTransactionAmount(transaction),
     }
   }
