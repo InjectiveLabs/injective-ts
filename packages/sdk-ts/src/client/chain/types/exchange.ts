@@ -30,6 +30,7 @@ export interface FeeDiscountTierInfo {
   takerDiscountRate: string
   stakedAmount: string
   feePaidAmount: string
+  volume: string
 }
 
 export interface FeeDiscountSchedule {

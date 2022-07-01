@@ -76,7 +76,9 @@ export class ExchangeTransformer {
       makerDiscountRate: info.getMakerDiscountRate(),
       takerDiscountRate: info.getTakerDiscountRate(),
       stakedAmount: info.getStakedAmount(),
-      feePaidAmount: info.getFeePaidAmount(),
+      // @ts-ignore
+      feePaidAmount: info.getFeePaidAmount !== undefined ? info.getFeePaidAmount() : '0',
+      volume: info.getVolume !== undefined ? info.getVolume() : '0'
     }
   }
 
