@@ -69,8 +69,7 @@ export class MsgBroadcastClient {
 
   private async broadcastWeb3(tx: MsgBroadcastTxOptions) {
     const { options, transactionApi } = this
-    const { walletStrategy, ethereumChainId, chainId, metricsProvider } =
-      options
+    const { walletStrategy, ethereumChainId, metricsProvider } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
@@ -81,10 +80,6 @@ export class MsgBroadcastClient {
           message: web3Msgs,
           address: tx.address,
           chainId: ethereumChainId,
-          useCorrectEIP712Hash:
-            chainId === ChainId.Mainnet
-              ? undefined
-              : walletStrategy.wallet !== Wallet.Metamask,
           gasLimit: getGasPriceBasedOnMessage(msgs),
           estimateGas: false,
         })

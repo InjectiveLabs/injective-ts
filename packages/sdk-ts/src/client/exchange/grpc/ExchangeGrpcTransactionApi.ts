@@ -171,6 +171,7 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
   }: {
     signature: string
     chainId: EthereumChainId
+    useCorrectEIP712Hash?: boolean
     txResponse: PrepareTxResponse
     message: Record<string, any>
   }) {
