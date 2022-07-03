@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.12...@injectivelabs/contracts@1.0.13) (2022-07-03)
+
+
+### Bug Fixes
+
+* goerli contract address update ([56d3a2b](https://github.com/InjectiveLabs/injective-ts/commit/56d3a2bb4c15ab2b845f9e97a53240160efd8da5))
+
+
+
+
+
 ## [1.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.11...@injectivelabs/contracts@1.0.12) (2022-06-21)
 
 
