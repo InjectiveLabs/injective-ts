@@ -21,8 +21,8 @@ export const contractAddresses: ContractAddressesForChainId = {
     injective: ZERO_ADDRESS,
   },
   '5': {
-    peggy: '0xd6Da9dA014806Fdb64bF39b48fcA386AE3420d21',
-    injective: '0x0FA925f53949C1796eb75E3F95B4a863d39b81C6',
+    peggy: '0xd2C6753F6B1783EF0a3857275e16e79D91b539a3',
+    injective: '0x85AbEac4F09762e28a49D7dA91260A46766F4F79',
   },
   '42': {
     peggy: '0xd6Da9dA014806Fdb64bF39b48fcA386AE3420d21',
@@ -68,12 +68,12 @@ export const contractAddressesByNetwork: ContractAddressesForNetwork = {
     injective: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
   },
   [Network.Testnet]: {
-    peggy: '0xd6Da9dA014806Fdb64bF39b48fcA386AE3420d21',
-    injective: '0x96853aBD7e589D06b7dade1b9264f1a5c2d3176E',
+    peggy: '0xd2C6753F6B1783EF0a3857275e16e79D91b539a3',
+    injective: '0x85AbEac4F09762e28a49D7dA91260A46766F4F79',
   },
   [Network.TestnetK8s]: {
-    peggy: '0xd6Da9dA014806Fdb64bF39b48fcA386AE3420d21',
-    injective: '0x96853aBD7e589D06b7dade1b9264f1a5c2d3176E',
+    peggy: '0xd2C6753F6B1783EF0a3857275e16e79D91b539a3',
+    injective: '0x85AbEac4F09762e28a49D7dA91260A46766F4F79',
   },
   [Network.Devnet]: {
     peggy: '0x2Ba911FBAd02F2Fd56eeBb4a9A5e049873a4B546',
