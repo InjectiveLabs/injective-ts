@@ -88,6 +88,12 @@ export default class LedgerBase
     this.ledger = new LedgerHW()
   }
 
+  public async clearAddresses() {
+    const accountManager = await this.ledger.getAccountManager()
+
+    accountManager.clearAddresses()
+  }
+
   public async getAddresses(): Promise<string[]> {
     const { baseDerivationPath, derivationPathType } = this
 
@@ -97,6 +103,7 @@ export default class LedgerBase
         baseDerivationPath,
         derivationPathType,
       )
+
       return wallets.map((k) => k.address)
     } catch (e: any) {
       throw new Error(

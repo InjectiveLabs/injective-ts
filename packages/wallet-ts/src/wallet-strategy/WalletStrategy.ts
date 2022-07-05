@@ -127,6 +127,12 @@ export default class WalletStrategy {
     return this.getStrategy().getWeb3()
   }
 
+  public clearAddresses(): void {
+    if (this.getStrategy().clearAddresses) {
+      return this.getStrategy().clearAddresses!()
+    }
+  }
+
   public onAccountChange(callback: onAccountChangeCallback): void {
     if (this.getStrategy().onAccountChange) {
       return this.getStrategy().onAccountChange!(callback)

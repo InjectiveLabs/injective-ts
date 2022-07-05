@@ -30,6 +30,10 @@ export default class AccountManager {
     this.hdKey = hdKey
   }
 
+  clearAddresses() {
+    this.wallets = []
+  }
+
   async getWallets(): Promise<TrezorWalletInfo[]> {
     const { start, end } = this.getOffset()
 

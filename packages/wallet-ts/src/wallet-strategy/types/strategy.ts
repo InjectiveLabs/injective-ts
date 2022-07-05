@@ -51,6 +51,8 @@ export interface ConcreteWalletStrategy {
 
   getEthereumTransactionReceipt(txHash: string): void
 
+  clearAddresses?(): void
+
   onAccountChange?(callback: onAccountChangeCallback): void
 
   onChainIdChange?(callback: onChainIdChangeCallback): void

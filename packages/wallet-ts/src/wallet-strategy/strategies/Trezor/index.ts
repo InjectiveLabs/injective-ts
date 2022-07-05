@@ -58,6 +58,12 @@ export default class Trezor
     this.trezor = new TrezorHW()
   }
 
+  public async clearAddresses() {
+    const accountManager = await this.trezor.getAccountManager()
+
+    accountManager.clearAddresses()
+  }
+
   public async getAddresses(): Promise<string[]> {
     try {
       await this.trezor.connect()

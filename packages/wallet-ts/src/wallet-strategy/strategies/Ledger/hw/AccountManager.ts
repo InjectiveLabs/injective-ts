@@ -27,6 +27,10 @@ export default class AccountManager {
     this.wallets = []
   }
 
+  clearAddresses() {
+    this.wallets = []
+  }
+
   async getWallets(
     baseDerivationPath: string,
     derivationPathType: LedgerDerivationPathType,
