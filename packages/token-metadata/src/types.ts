@@ -1,3 +1,9 @@
+export enum TokenType {
+  IBC = 'ibc',
+  CW20 = 'cw20',
+  ERC20 = 'erc20',
+}
+
 export interface TokenMeta {
   name: string
   logo: string
