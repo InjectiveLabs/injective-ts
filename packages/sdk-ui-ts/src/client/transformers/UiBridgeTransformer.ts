@@ -108,7 +108,7 @@ export const convertPeggyToUiBridgeTransaction = async ({
     txHash: transaction.txHash,
     explorerLink: isDeposit
       ? `${getEthereumExplorerUrl(network)}/tx/${transaction.txHash}`
-      : `${getExplorerUrl(network)}/transaction/${transaction.txHash}`,
+      : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`,
     timestamp: Date.now(),
     state: BridgeTransactionState.Submitted,
   }
@@ -126,7 +126,7 @@ export const convertInjectiveIBCToUiBridgeTransaction = async ({
   receiver: transaction.receiver,
   sender: transaction.sender,
   txHash: transaction.txHash,
-  explorerLink: `${getExplorerUrl(network)}/transaction/${transaction.txHash}`,
+  explorerLink: `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`,
   timeoutTimestamp: transaction.timeoutTimestamp,
   timestamp: Date.now(),
   state: BridgeTransactionState.Submitted,
@@ -208,7 +208,7 @@ export const convertIBCTransferTxToUiBridgeTransaction = async ({
     txHash: txHash || '',
     txHashes: transaction.txHashesList,
     explorerLink: txHash
-      ? `${getExplorerUrl(network)}/transaction/${txHash}`
+      ? `${getExplorerUrl(network)}/transaction/${txHash}/`
       : '',
     timestamp: Date.parse(transaction.createdAt),
     state: transaction.state as BridgeTransactionState,
@@ -239,7 +239,7 @@ export const convertPeggyDepositTxToUiBridgeTransaction = async ({
     txHash: txHash || '',
     txHashes: transaction.txHashesList,
     explorerLink: txHash
-      ? `${getExplorerUrl(network)}/transaction/${txHash}`
+      ? `${getExplorerUrl(network)}/transaction/${txHash}/`
       : '',
     timestamp: Date.parse(transaction.createdAt),
     state: transaction.state as BridgeTransactionState,
@@ -276,7 +276,7 @@ export const convertPeggyWithdrawalTxToUiBridgeTransaction = async ({
     txHash: txHash || '',
     txHashes: transaction.txHashesList,
     explorerLink: txHash
-      ? `${getExplorerUrl(network)}/transaction/${txHash}`
+      ? `${getExplorerUrl(network)}/transaction/${txHash}/`
       : '',
     timestamp: Date.parse(transaction.createdAt),
     state: transaction.state as BridgeTransactionState,
