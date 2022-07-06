@@ -1,3 +1,4 @@
+import { TokenMeta } from '@injectivelabs/token-metadata'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import {
   IBCTransferTx as GrpcIBCTransferTx,
@@ -214,6 +215,14 @@ export interface CW20Message {
   }
   name: string
   symbol: string
+}
+
+export interface CW20BalanceWithToken {
+  contractAddress: string
+  account: string
+  balance: string
+  updatedAt: number
+  token: TokenMeta
 }
 
 export interface Contract {

@@ -5,6 +5,7 @@ import {
   BlockFromExplorerApiResponse,
   ContractExplorerApiResponse,
   ContractTransactionExplorerApiResponse,
+  CW20BalanceExplorerApiResponse,
   ExplorerBlockWithTxs,
   ExplorerTransaction,
   ExplorerValidatorUptime,
@@ -16,6 +17,7 @@ import {
   Contract,
   ContractTransaction,
   CW20Message,
+  CW20BalanceWithToken,
   WasmCode,
 } from '../types/explorer'
 
@@ -215,6 +217,30 @@ export class ExchangeRestExplorerTransformer {
       creationDate: wasmCode.created_at,
       checksum: wasmCode.checksum,
       permission: wasmCode.permission,
+    }
+  }
+
+  static CW20BalanceToExplorerCW20Balance(
+    balance: CW20BalanceExplorerApiResponse,
+  ): CW20BalanceWithToken {
+    const {
+      marketing_info: { logo },
+      token_info: { name, symbol, decimals },
+    } = balance.cw20_metadata
+
+    return {
+      contractAddress: balance.contract_address,
+      account: balance.account,
+      balance: balance.balance,
+      updatedAt: balance.updated_at,
+      token: {
+        decimals,
+        name,
+        symbol,
+        logo: logo || '',
+        address: balance.contract_address,
+        coinGeckoId: name,
+      },
     }
   }
 }
