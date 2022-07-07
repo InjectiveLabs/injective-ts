@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.30...@injectivelabs/sdk-ts@1.0.31) (2022-07-07)
+
+
+### Bug Fixes
+
+* keplr eth sign based on features ([b70e568](https://github.com/InjectiveLabs/injective-ts/commit/b70e5688a79f250798a6b21fa4e9d9fbac2a17d1))
+
+
+
+
+
 ## [1.0.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.29...@injectivelabs/sdk-ts@1.0.30) (2022-07-03)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
