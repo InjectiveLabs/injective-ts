@@ -16,10 +16,6 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcExchangeTransformer } from '../transformers'
 
-/**
- * The Chain Consumer Client is used to
- * consume data from the Chain Directly
- */
 export class ChainGrpcExchangeApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryExchangeParamsRequest()

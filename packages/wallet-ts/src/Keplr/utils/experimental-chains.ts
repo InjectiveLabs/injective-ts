@@ -82,7 +82,7 @@ export const experimentalChainsConfig = {
     rpcConfig: undefined,
     restConfig: undefined,
     chainId: 'injective-1',
-    chainName: 'Injective (Beta)',
+    chainName: 'Injective - Beta',
     stakeCurrency: {
       coinDenom: 'INJ',
       coinMinimalDenom: 'inj',
@@ -116,7 +116,14 @@ export const experimentalChainsConfig = {
       average: 25000000000,
       high: 40000000000,
     },
-    features: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
+    features: [
+      'stargate',
+      'ibc-transfer',
+      'no-legacy-stdTx',
+      'ibc-go',
+      'eth-address-gen',
+      'eth-key-sign',
+    ],
     beta: true,
   },
   [CosmosChainId.Terra]: {
