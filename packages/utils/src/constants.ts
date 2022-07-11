@@ -9,7 +9,7 @@ export const DEFAULT_BRIDGE_FEE_DENOM = 'inj'
 export const DEFAULT_BRIDGE_FEE_PRICE = '500000000'
 export const DEFAULT_BRIDGE_FEE_AMOUNT = '200000000000000'
 export const DEFAULT_TIMEOUT_HEIGHT = 40
-export const DEFAULT_TIMESTAMP_TIMEOUT_MS = 30 * 1000
+export const DEFAULT_TIMESTAMP_TIMEOUT_MS = 60 * 1000 * 3
 
 export const DEFAULT_STD_FEE = {
   amount: [
