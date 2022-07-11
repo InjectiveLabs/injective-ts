@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/contracts",
   "description": "Contracts wrapper that can be reused throughout Injective's projects.",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,9 +32,9 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "^1.0.5",
-    "@injectivelabs/networks": "^1.0.5",
+    "@injectivelabs/networks": "^1.0.6",
     "@injectivelabs/ts-types": "^1.0.4",
-    "@injectivelabs/utils": "^1.0.5",
+    "@injectivelabs/utils": "^1.0.6",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.3",
     "web3": "^1.7.2",
