@@ -71,8 +71,12 @@ export class ExchangeGrpcSpotTransformer {
 
   static tradesResponseToTrades(response: SpotTradesResponse) {
     const trades = response.getTradesList()
+    const paging = response.getPaging()
 
-    return ExchangeGrpcSpotTransformer.grpcTradesToTrades(trades)
+    return {
+      trades: ExchangeGrpcSpotTransformer.grpcTradesToTrades(trades),
+      paging: ExchangeGrpcSpotTransformer.grpcPagingToPaging(paging),
+    }
   }
 
   static orderbookResponseToOrderbook(response: SpotOrderbookResponse) {
@@ -200,5 +204,12 @@ export class ExchangeGrpcSpotTransformer {
     return trades.map((trade) =>
       ExchangeGrpcSpotTransformer.grpcTradeToTrade(trade),
     )
+  }
+
+  static grpcPagingToPaging(paging: any): any {
+    console.log(paging)
+
+    return {
+    }
   }
 }

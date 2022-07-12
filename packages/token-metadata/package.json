@@ -37,10 +37,8 @@
     "@types/lodash.values": "^4.3.6",
     "copyfiles": "^2.4.1",
     "jsonschema": "^1.4.0",
-    "link-module-alias": "^1.2.0",
     "lodash": "^4.17.21",
-    "lodash.values": "^4.3.0",
-    "shx": "^0.3.2"
+    "lodash.values": "^4.3.0"
   },
   "gitHead": "a12e5c2c5d1038ab42e9669b6eeb1e91873626c2"
 }

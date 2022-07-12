@@ -8,14 +8,16 @@ import {
   OrderbookResponse as SpotOrderbookResponse,
   OrdersRequest as SpotOrdersRequest,
   OrdersResponse as SpotOrdersResponse,
-  TradesRequest as SpotTradesRequest,
-  TradesResponse as SpotTradesResponse,
+  // TradesRequest as SpotTradesRequest,
+  // TradesResponse as SpotTradesResponse,
   SubaccountOrdersListRequest as SpotSubaccountOrdersListRequest,
   SubaccountOrdersListResponse as SpotSubaccountOrdersListResponse,
-  SubaccountTradesListRequest as SpotSubaccountTradesListRequest,
-  SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
+  // SubaccountTradesListRequest as SpotSubaccountTradesListRequest,
+  // SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
   OrderbooksRequest as SpotOrderbooksRequest,
   OrderbooksResponse as SpotOrderbooksResponse,
+  TradesResponse,
+  TradesRequest,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import {
@@ -143,12 +145,16 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     marketId?: string
     pagination?: PaginationOption
     subaccountId?: string
+    executionType?: TradeExecutionType
     executionSide?: TradeExecutionSide
-    direction?: TradeDirection
-  }) {
-    const { marketId, subaccountId, pagination, executionSide, direction } =
+    direction?: TradeDirection,
+    skip?: number,
+    limit?: number,
+    endTime?: number
+  }): Promise<any> {
+    const { marketId, subaccountId, pagination, executionType, executionSide, direction, skip, limit, endTime } =
       params || {}
-    const request = new SpotTradesRequest()
+    const request = new TradesRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
@@ -156,6 +162,10 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (executionType) {
+      request.setExecutionType(executionType)
     }
 
     if (executionSide) {
@@ -176,10 +186,22 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
       }
     }
 
+    if (skip !== undefined) {
+      request.setSkip(skip)
+    }
+
+    if (limit !== undefined) {
+      request.setLimit(limit)
+    }
+
+    if (endTime !== undefined) {
+      request.setEndTime(endTime)
+    }
+
     try {
       const response = await this.request<
-        SpotTradesRequest,
-        SpotTradesResponse,
+        TradesRequest,
+        TradesResponse,
         typeof InjectiveSpotExchangeRPC.Trades
       >(request, InjectiveSpotExchangeRPC.Trades)
 
@@ -233,11 +255,12 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     marketId?: string
     direction?: TradeDirection
     executionType?: TradeExecutionType
+    executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
-    const { subaccountId, marketId, direction, executionType, pagination } =
+    const { subaccountId, marketId, direction, executionType, executionSide, pagination } =
       params || {}
-    const request = new SpotSubaccountTradesListRequest()
+    const request = new TradesRequest()
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
@@ -255,6 +278,10 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
       request.setExecutionType(executionType)
     }
 
+    if (executionSide) {
+      request.setExecutionSide(executionSide)
+    }
+
     if (pagination) {
       if (pagination.skip !== undefined) {
         request.setSkip(pagination.skip)
@@ -267,10 +294,10 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
 
     try {
       const response = await this.request<
-        SpotSubaccountTradesListRequest,
-        SpotSubaccountTradesListResponse,
-        typeof InjectiveSpotExchangeRPC.SubaccountTradesList
-      >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
+        TradesRequest,
+        TradesResponse,
+        typeof InjectiveSpotExchangeRPC.Trades
+      >(request, InjectiveSpotExchangeRPC.Trades)
 
       return ExchangeGrpcSpotTransformer.tradesResponseToTrades(response)
     } catch (e: any) {

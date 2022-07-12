@@ -21,10 +21,12 @@ import {
   PositionsResponse as DerivativePositionsResponse,
   SubaccountOrdersListRequest as DerivativeSubaccountOrdersListRequest,
   SubaccountOrdersListResponse as DerivativeSubaccountOrdersListResponse,
-  SubaccountTradesListRequest as DerivativeSubaccountTradesListRequest,
-  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
+  // SubaccountTradesListRequest as DerivativeSubaccountTradesListRequest,
+  // SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
   OrderbooksRequest as DerivativeOrderbooksRequest,
   OrderbooksResponse as DerivativeOrderbooksResponse,
+  TradesRequest,
+  TradesResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb_service'
 import {
@@ -415,12 +417,13 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     subaccountId?: string
     direction?: TradeDirection
     executionType?: TradeExecutionType
+    executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, direction, executionType, pagination } =
+    const { marketId, subaccountId, direction, executionType, executionSide, pagination } =
       params || {}
 
-    const request = new DerivativeSubaccountTradesListRequest()
+    const request = new TradesRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
@@ -438,6 +441,10 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
       request.setExecutionType(executionType)
     }
 
+    if (executionSide) {
+      request.setExecutionSide(executionSide)
+    }
+
     if (pagination) {
       if (pagination.skip !== undefined) {
         request.setSkip(pagination.skip)
@@ -450,10 +457,10 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
     try {
       const response = await this.request<
-        DerivativeSubaccountTradesListRequest,
-        DerivativeSubaccountTradesListResponse,
-        typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList
-      >(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
+        TradesRequest,
+        TradesResponse,
+        typeof InjectiveDerivativeExchangeRPC.Trades
+      >(request, InjectiveDerivativeExchangeRPC.Trades)
 
       return ExchangeGrpcDerivativeTransformer.tradesResponseToTrades(response)
     } catch (e: any) {
