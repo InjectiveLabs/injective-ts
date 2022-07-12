@@ -147,13 +147,22 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     subaccountId?: string
     executionType?: TradeExecutionType
     executionSide?: TradeExecutionSide
-    direction?: TradeDirection,
-    skip?: number,
-    limit?: number,
+    direction?: TradeDirection
+    skip?: number
+    limit?: number
     endTime?: number
-  }): Promise<any> {
-    const { marketId, subaccountId, pagination, executionType, executionSide, direction, skip, limit, endTime } =
-      params || {}
+  }) {
+    const {
+      marketId,
+      subaccountId,
+      pagination,
+      executionType,
+      executionSide,
+      direction,
+      skip,
+      limit,
+      endTime,
+    } = params || {}
     const request = new TradesRequest()
 
     if (marketId) {
@@ -258,8 +267,14 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
-    const { subaccountId, marketId, direction, executionType, executionSide, pagination } =
-      params || {}
+    const {
+      subaccountId,
+      marketId,
+      direction,
+      executionType,
+      executionSide,
+      pagination,
+    } = params || {}
     const request = new TradesRequest()
 
     if (subaccountId) {

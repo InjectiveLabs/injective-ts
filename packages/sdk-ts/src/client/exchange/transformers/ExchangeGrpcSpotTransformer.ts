@@ -25,6 +25,7 @@ import {
   TradesResponse as SpotTradesResponse,
   OrderbooksResponse as SpotOrderbooksResponse,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
+import { grpcPagingToPaging } from '@injectivelabs/sdk-ts'
 
 const zeroPriceLevel = () => ({
   price: '0',
@@ -75,7 +76,7 @@ export class ExchangeGrpcSpotTransformer {
 
     return {
       trades: ExchangeGrpcSpotTransformer.grpcTradesToTrades(trades),
-      paging: ExchangeGrpcSpotTransformer.grpcPagingToPaging(paging),
+      paging: grpcPagingToPaging(paging),
     }
   }
 
@@ -209,7 +210,6 @@ export class ExchangeGrpcSpotTransformer {
   static grpcPagingToPaging(paging: any): any {
     console.log(paging)
 
-    return {
-    }
+    return {}
   }
 }
