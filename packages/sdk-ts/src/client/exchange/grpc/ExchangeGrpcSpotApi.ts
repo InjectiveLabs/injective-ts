@@ -163,6 +163,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
       limit,
       endTime,
     } = params || {}
+
     const request = new TradesRequest()
 
     if (marketId) {
