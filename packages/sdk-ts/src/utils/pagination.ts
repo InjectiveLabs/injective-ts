@@ -13,7 +13,9 @@ export const paginationRequestFromPagination = (
     return
   }
 
-  paginationForRequest.setKey(pagination.key)
+  if (pagination.key) {
+    paginationForRequest.setKey(pagination.key)
+  }
 
   if (pagination.limit !== undefined) {
     paginationForRequest.setLimit(pagination.limit)

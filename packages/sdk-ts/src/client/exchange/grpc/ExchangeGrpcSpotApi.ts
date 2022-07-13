@@ -148,9 +148,6 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     executionType?: TradeExecutionType
     executionSide?: TradeExecutionSide
     direction?: TradeDirection
-    skip?: number
-    limit?: number
-    endTime?: number
   }) {
     const {
       marketId,
@@ -158,10 +155,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
       pagination,
       executionType,
       executionSide,
-      direction,
-      skip,
-      limit,
-      endTime,
+      direction
     } = params || {}
 
     const request = new TradesRequest()
@@ -194,18 +188,10 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
-    }
 
-    if (skip !== undefined) {
-      request.setSkip(skip)
-    }
-
-    if (limit !== undefined) {
-      request.setLimit(limit)
-    }
-
-    if (endTime !== undefined) {
-      request.setEndTime(endTime)
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
     }
 
     try {

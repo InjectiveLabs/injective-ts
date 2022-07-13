@@ -203,10 +203,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
   async fetchPositions(params?: {
     marketId?: string
     subaccountId?: string
-    pagination?: PaginationOption,
-    skip?: number
-    limit?: number
-    endTime?: number
+    pagination?: PaginationOption
   }) {
     const { marketId, subaccountId, pagination } = params || {}
 
@@ -299,12 +296,13 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
   async fetchFundingPayments(params?: {
     marketId?: string
     subaccountId?: string
-    pagination?: PaginationOption,
-    skip?: number
-    limit?: number
-    endTime?: number
+    pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, pagination, skip, limit, endTime } = params || {}
+    const {
+      marketId,
+      subaccountId,
+      pagination
+    } = params || {}
 
     const request = new FundingPaymentsRequest()
 
@@ -324,18 +322,10 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
-    }
 
-    if (skip !== undefined) {
-      request.setSkip(skip)
-    }
-
-    if (limit !== undefined) {
-      request.setLimit(limit)
-    }
-
-    if (endTime !== undefined) {
-      request.setEndTime(endTime)
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
     }
 
     try {

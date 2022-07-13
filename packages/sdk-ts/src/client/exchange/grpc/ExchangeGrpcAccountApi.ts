@@ -125,19 +125,13 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
     subaccountId: string
     denom?: string
     transferTypes?: string[]
-    pagination?: PaginationOption,
-    skip?: number
-    limit?: number
-    endTime?: number
+    pagination?: PaginationOption
   }) {
     const {
       subaccountId,
       denom,
       transferTypes = [],
-      pagination,
-      skip,
-      limit,
-      endTime
+      pagination
     } = params || {}
 
     const request = new SubaccountHistoryRequest()
@@ -162,18 +156,10 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
-    }
 
-    if (skip !== undefined) {
-      request.setSkip(skip)
-    }
-
-    if (limit !== undefined) {
-      request.setLimit(limit)
-    }
-
-    if (endTime !== undefined) {
-      request.setEndTime(endTime)
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
     }
 
     try {
