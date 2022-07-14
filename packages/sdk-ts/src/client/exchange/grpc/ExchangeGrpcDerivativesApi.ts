@@ -15,8 +15,6 @@ import {
   OrderbookResponse as DerivativeOrderbookResponse,
   OrdersRequest as DerivativeOrdersRequest,
   OrdersResponse as DerivativeOrdersResponse,
-  TradesRequest as DerivativeTradesRequest,
-  TradesResponse as DerivativeTradesResponse,
   PositionsRequest as DerivativePositionsRequest,
   PositionsResponse as DerivativePositionsResponse,
   SubaccountOrdersListRequest as DerivativeSubaccountOrdersListRequest,
@@ -247,12 +245,19 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     direction?: TradeDirection
     subaccountId?: string
     executionSide?: TradeExecutionSide
+    executionType?: TradeExecutionType
     pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, direction, pagination, executionSide } =
-      params || {}
+    const {
+      marketId,
+      subaccountId,
+      pagination,
+      executionType,
+      executionSide,
+      direction
+    } = params || {}
 
-    const request = new DerivativeTradesRequest()
+    const request = new TradesRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
@@ -260,6 +265,10 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (executionType) {
+      request.setExecutionType(executionType)
     }
 
     if (executionSide) {
@@ -278,12 +287,16 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
+
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
     }
 
     try {
       const response = await this.request<
-        DerivativeTradesRequest,
-        DerivativeTradesResponse,
+        TradesRequest,
+        TradesResponse,
         typeof InjectiveDerivativeExchangeRPC.Trades
       >(request, InjectiveDerivativeExchangeRPC.Trades)
 
@@ -428,8 +441,14 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, direction, executionType, executionSide, pagination } =
-      params || {}
+    const {
+      marketId,
+      subaccountId,
+      direction,
+      executionType,
+      executionSide,
+      pagination
+    } = params || {}
 
     const request = new TradesRequest()
 

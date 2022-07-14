@@ -144,8 +144,12 @@ export class ExchangeGrpcDerivativeTransformer {
 
   static tradesResponseToTrades(response: DerivativeTradesResponse) {
     const trades = response.getTradesList()
+    const paging = response.getPaging()
 
-    return ExchangeGrpcDerivativeTransformer.grpcTradesToTrades(trades)
+    return {
+      trades: ExchangeGrpcDerivativeTransformer.grpcTradesToTrades(trades),
+      paging: grpcPagingToPaging(paging)
+    }
   }
 
   static fundingPaymentsResponseToFundingPayments(
