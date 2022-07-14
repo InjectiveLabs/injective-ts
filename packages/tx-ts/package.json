@@ -38,6 +38,8 @@
     "@injectivelabs/utils": "^1.0.6",
     "google-protobuf": "^3.20.1",
     "jscrypto": "^1.0.3",
-    "sha3": "^2.1.4"
+    "link-module-alias": "^1.2.0",
+    "sha3": "^2.1.4",
+    "shx": "^0.3.2"
   }
 }

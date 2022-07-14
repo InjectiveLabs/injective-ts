@@ -242,6 +242,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
   async fetchTrades(params?: {
     marketId?: string
+    marketIds?: string[]
     direction?: TradeDirection
     subaccountId?: string
     executionSide?: TradeExecutionSide
@@ -250,6 +251,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
   }) {
     const {
       marketId,
+      marketIds,
       subaccountId,
       pagination,
       executionType,
@@ -261,6 +263,10 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
     }
 
     if (subaccountId) {
@@ -308,11 +314,13 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
   async fetchFundingPayments(params?: {
     marketId?: string
+    marketIds?: string[]
     subaccountId?: string
     pagination?: PaginationOption
   }) {
     const {
       marketId,
+      marketIds,
       subaccountId,
       pagination
     } = params || {}
@@ -325,6 +333,10 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
     }
 
     if (pagination) {

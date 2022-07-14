@@ -143,6 +143,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
 
   async fetchTrades(params?: {
     marketId?: string
+    marketIds?: string[]
     pagination?: PaginationOption
     subaccountId?: string
     executionType?: TradeExecutionType
@@ -151,6 +152,7 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
   }) {
     const {
       marketId,
+      marketIds,
       subaccountId,
       pagination,
       executionType,
@@ -162,6 +164,10 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
 
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
     }
 
     if (subaccountId) {
