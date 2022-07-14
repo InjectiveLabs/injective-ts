@@ -182,10 +182,13 @@ export class ExchangeGrpcDerivativeTransformer {
     return orderbooks.map((o) => {
       const orderbook = o.getOrderbook()!
 
-      return ExchangeGrpcDerivativeTransformer.grpcOrderbookToOrderbook({
-        buys: orderbook.getBuysList(),
-        sells: orderbook.getSellsList(),
-      })
+      return {
+        marketId: o.getMarketId(),
+        orderbook: ExchangeGrpcDerivativeTransformer.grpcOrderbookToOrderbook({
+          buys: orderbook.getBuysList(),
+          sells: orderbook.getSellsList(),
+        }),
+      }
     })
   }
 
