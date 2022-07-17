@@ -143,11 +143,20 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     marketId?: string
     pagination?: PaginationOption
     subaccountId?: string
+    startTime?: number
+    endTime?: number
     executionSide?: TradeExecutionSide
     direction?: TradeDirection
   }) {
-    const { marketId, subaccountId, pagination, executionSide, direction } =
-      params || {}
+    const {
+      marketId,
+      subaccountId,
+      startTime,
+      endTime,
+      pagination,
+      executionSide,
+      direction,
+    } = params || {}
     const request = new SpotTradesRequest()
 
     if (marketId) {
@@ -164,6 +173,14 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
 
     if (direction) {
       request.setDirection(direction)
+    }
+
+    if (startTime) {
+      request.setStartTime(startTime)
+    }
+
+    if (endTime) {
+      request.setEndTime(endTime)
     }
 
     if (pagination) {

@@ -244,11 +244,20 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     marketId?: string
     direction?: TradeDirection
     subaccountId?: string
+    startTime?: number
+    endTime?: number
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, direction, pagination, executionSide } =
-      params || {}
+    const {
+      marketId,
+      subaccountId,
+      startTime,
+      endTime,
+      direction,
+      pagination,
+      executionSide,
+    } = params || {}
 
     const request = new DerivativeTradesRequest()
 
@@ -266,6 +275,14 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
     if (direction) {
       request.setDirection(direction)
+    }
+
+    if (startTime) {
+      request.setStartTime(startTime)
+    }
+
+    if (endTime) {
+      request.setEndTime(endTime)
     }
 
     if (pagination) {
