@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.35...@injectivelabs/sdk-ts@1.0.36) (2022-07-17)
+
+
+### Features
+
+* added timestamp filtering for trades ([541554f](https://github.com/InjectiveLabs/injective-ts/commit/541554fa9ff145c3ed6e64f1bd8239a9ade6ad0b))
+
+
+
+
+
 ## [1.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.34...@injectivelabs/sdk-ts@1.0.35) (2022-07-17)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
