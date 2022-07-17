@@ -1,9 +1,19 @@
-import { QueryAllContractStateResponse } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/query_pb'
+import {
+  QueryAllContractStateResponse,
+  QueryCodeResponse,
+  QueryCodesResponse,
+  QueryContractHistoryResponse,
+  QueryContractsByCodeResponse,
+} from '@injectivelabs/chain-api/cosmwasm/wasm/v1/query_pb'
 import {
   ContractAccountBalance,
   ContractAccountsBalanceWithPagination,
+  ContractCodeHistoryEntry,
   ContractInfo,
+  GrpcContractCodeHistoryEntry,
   grpcContractInfo,
+  CodeInfoResponse,
+  GrpcCodeInfoResponse,
 } from '../types/wasm'
 import { grpcPaginationToPagination } from './../../../utils/pagination'
 
@@ -56,6 +66,74 @@ export class ChainGrpcWasmTransformer {
         typeUrl: extension ? extension.getTypeUrl() : '',
         value: extension ? extension.getValue() : '',
       },
+    }
+  }
+
+  static grpcContractCodeHistoryEntryToContractCodeHistoryEntry(
+    entry: GrpcContractCodeHistoryEntry,
+  ): ContractCodeHistoryEntry {
+    const updated = entry.getUpdated()
+
+    return {
+      operation: entry.getOperation(),
+      codeId: entry.getCodeId(),
+      updated: updated
+        ? {
+            blockHeight: updated.getBlockHeight(),
+            txIndex: updated.getTxIndex(),
+          }
+        : undefined,
+      msg: entry.getMsg(),
+    }
+  }
+
+  static grpcCodeInfoResponseToCodeInfoResponse(
+    info: GrpcCodeInfoResponse,
+  ): CodeInfoResponse {
+    return {
+      codeId: info.getCodeId(),
+      creator: info.getCreator(),
+      dataHash: info.getDataHash(),
+    }
+  }
+
+  static contactHistoryResponseToContractHistory(
+    response: QueryContractHistoryResponse,
+  ) {
+    return {
+      entriesList: response
+        .getEntriesList()
+        .map(
+          ChainGrpcWasmTransformer.grpcContractCodeHistoryEntryToContractCodeHistoryEntry,
+        ),
+      pagination: grpcPaginationToPagination(response.getPagination()),
+    }
+  }
+
+  static contractCodesResponseToContractCodes(response: QueryCodesResponse) {
+    return {
+      codeInfosList: response
+        .getCodeInfosList()
+        .map(ChainGrpcWasmTransformer.grpcCodeInfoResponseToCodeInfoResponse),
+      pagination: grpcPaginationToPagination(response.getPagination()),
+    }
+  }
+
+  static contractCodeResponseToContractCode(response: QueryCodeResponse) {
+    return {
+      codeInfo: ChainGrpcWasmTransformer.grpcCodeInfoResponseToCodeInfoResponse(
+        response.getCodeInfo()!,
+      ),
+      data: response.getData(),
+    }
+  }
+
+  static contractByCodeResponseToContractByCode(
+    response: QueryContractsByCodeResponse,
+  ) {
+    return {
+      contractsList: response.getContractsList(),
+      pagination: grpcPaginationToPagination(response.getPagination()),
     }
   }
 }
