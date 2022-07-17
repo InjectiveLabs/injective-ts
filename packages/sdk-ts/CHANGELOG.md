@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.33...@injectivelabs/sdk-ts@1.0.34) (2022-07-17)
+
+
+### Features
+
+* wasm code grpc queries ([91e618d](https://github.com/InjectiveLabs/injective-ts/commit/91e618de8c83e58052cbebe6bc4bd3ed5d826ff5))
+
+
+
+
+
 ## [1.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.32...@injectivelabs/sdk-ts@1.0.33) (2022-07-14)
 
 
