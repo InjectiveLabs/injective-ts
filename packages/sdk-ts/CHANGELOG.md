@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.37...@injectivelabs/sdk-ts@1.0.38) (2022-07-19)
+
+
+### Bug Fixes
+
+* export wasm ([1d2112f](https://github.com/InjectiveLabs/injective-ts/commit/1d2112fa9cb715ef4ca439947c28c382de1a98db))
+
+
+
+
+
 ## [1.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.36...@injectivelabs/sdk-ts@1.0.37) (2022-07-19)
 
 
