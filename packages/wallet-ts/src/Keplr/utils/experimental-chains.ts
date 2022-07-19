@@ -93,51 +93,7 @@ export const experimentalChainsConfig = {
     rpcConfig: undefined,
     restConfig: undefined,
     chainId: 'injective-777',
-    chainName: 'Injective Devnet',
-    stakeCurrency: {
-      coinDenom: 'INJ',
-      coinMinimalDenom: 'inj',
-      coinDecimals: 18,
-      coinGeckoId: 'injective-protocol',
-    },
-    walletUrl: 'https://hub.injective.dev/',
-    walletUrlForStaking: 'https://hub.injective.dev/',
-    bip44: {
-      coinType: 60,
-    },
-    bech32Config: Bech32Address.defaultBech32Config('inj'),
-    currencies: [
-      {
-        coinDenom: 'INJ',
-        coinMinimalDenom: 'inj',
-        coinDecimals: 18,
-        coinGeckoId: 'injective-protocol',
-      },
-    ],
-    feeCurrencies: [
-      {
-        coinDenom: 'INJ',
-        coinMinimalDenom: 'inj',
-        coinDecimals: 18,
-        coinGeckoId: 'injective-protocol',
-      },
-    ],
-    coinType: 60,
-    features: [
-      'stargate',
-      'ibc-transfer',
-      'no-legacy-stdTx',
-      'ibc-go',
-      'eth-address-gen',
-      'eth-key-sign',
-    ],
-  },
-  [DevnetCosmosChainId.Injective1]: {
-    ...getEndpointsFromChainId(DevnetCosmosChainId.Injective1),
-    rpcConfig: undefined,
-    restConfig: undefined,
-    chainId: 'injective-777',
-    chainName: 'Injective Devnet 1',
+    chainName: 'Injective - Devnet',
     stakeCurrency: {
       coinDenom: 'INJ',
       coinMinimalDenom: 'inj',
@@ -340,6 +296,4 @@ export const keplrSupportedChainIds = [
   'straightedge-2',
   'axelar-dojo-1',
   'evmos_9001-2',
-  'injective-777',
-  'injective-888',
 ]

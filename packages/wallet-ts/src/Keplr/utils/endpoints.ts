@@ -54,11 +54,6 @@ export const getEndpointsFromChainId = (
         rpc: 'https://devnet.tm.injective.dev',
         rest: 'https://devnet.lcd.injective.dev',
       }
-    case DevnetCosmosChainId.Injective1:
-      return {
-        rpc: 'https://devnet-1.tm.injective.dev',
-        rest: 'https://devnet-1.lcd.injective.dev',
-      }
     case CosmosChainId.Chihuahua:
       return {
         rpc: 'https://rpc.chihuahua.wtf',

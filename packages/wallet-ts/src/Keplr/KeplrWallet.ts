@@ -11,6 +11,7 @@ import {
   getExperimentalChainConfigBasedOnChainId,
   keplrSupportedChainIds,
   getEndpointsFromChainId,
+  experimentalChainsConfig,
 } from './utils'
 
 export class KeplrWallet {
@@ -71,6 +72,8 @@ export class KeplrWallet {
     }
 
     const chainData = getExperimentalChainConfigBasedOnChainId(chainId)
+
+    console.log(chainData, chainId, experimentalChainsConfig)
 
     if (!chainData) {
       throw new Error(`There is no data for ${chainId}`)

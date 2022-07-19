@@ -46,7 +46,7 @@ export default class Keplr
 
       return accounts.map((account) => account.address)
     } catch (e: any) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+      throw new Web3Exception(`Keplr: ${e.message}`)
     }
   }
 
