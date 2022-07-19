@@ -1,10 +1,15 @@
-import { ExecArgsBase } from '../../ExecArgsBase'
+import {
+  dataToExecData,
+  ExecArgsBase,
+  ExecDataRepresentation,
+} from '../../ExecArgsBase'
 
 export declare namespace ExecArgVaultRedeem {
   export interface Params {
     vaultSubaccountId: string
     subscriberSubaccountId: string
     marginRatio: string
+    origin: string
   }
 
   export interface Data {
@@ -30,5 +35,15 @@ export default class ExecArgVaultRedeem extends ExecArgsBase<
       subscriberSubaccountId: params.subscriberSubaccountId,
       marginRatio: params.marginRatio,
     }
+  }
+
+  toExecData(): ExecDataRepresentation<ExecArgVaultRedeem.Data> {
+    const { params } = this
+
+    return dataToExecData(this.toData(), {
+      origin: params.origin,
+      name: 'VaultRedeem',
+      action: 'Redeem',
+    })
   }
 }

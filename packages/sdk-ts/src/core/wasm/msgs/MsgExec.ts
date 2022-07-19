@@ -72,7 +72,7 @@ export default class MsgExec extends MsgBase<
 
     message.setSender(params.sender)
     message.setContractAddress(params.contractAddress)
-    message.setData(params.data.toJSON())
+    message.setData(params.data.toExecJSON())
 
     return message
   }
