@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.4...@injectivelabs/ts-types@1.0.5) (2022-07-19)
+
+
+### Features
+
+* enable keplr on devnet ([021a315](https://github.com/InjectiveLabs/injective-ts/commit/021a3156090398fde4b645bf3aecf5fa3a327b1c))
+
+
+
+
+
 ## [1.0.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.3...@injectivelabs/ts-types@1.0.4) (2022-06-21)
 
 
