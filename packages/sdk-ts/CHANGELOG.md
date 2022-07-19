@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.40...@injectivelabs/sdk-ts@1.0.41) (2022-07-19)
+
+
+### Bug Fixes
+
+* msgexec params ([3f01ef8](https://github.com/InjectiveLabs/injective-ts/commit/3f01ef8fc1d632014b751bb2c308d0b97471523e))
+
+
+
+
+
 ## [1.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.39...@injectivelabs/sdk-ts@1.0.40) (2022-07-19)
 
 
