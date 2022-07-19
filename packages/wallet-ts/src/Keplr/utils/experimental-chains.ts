@@ -1,5 +1,9 @@
 import { Bech32Address } from '@keplr-wallet/cosmos'
-import { TestnetCosmosChainId, CosmosChainId } from '@injectivelabs/ts-types'
+import {
+  TestnetCosmosChainId,
+  DevnetCosmosChainId,
+  CosmosChainId,
+} from '@injectivelabs/ts-types'
 import { getEndpointsFromChainId } from './endpoints'
 
 export const experimentalChainsConfig = {
@@ -55,7 +59,7 @@ export const experimentalChainsConfig = {
     walletUrl: 'https://hub.injective.dev/',
     walletUrlForStaking: 'https://hub.injective.dev/',
     bip44: {
-      coinType: 118,
+      coinType: 60,
     },
     bech32Config: Bech32Address.defaultBech32Config('inj'),
     currencies: [
@@ -74,8 +78,103 @@ export const experimentalChainsConfig = {
         coinGeckoId: 'injective-protocol',
       },
     ],
-    coinType: 118,
-    features: ['stargate', 'ibc-transfer'],
+    coinType: 60,
+    features: [
+      'stargate',
+      'ibc-transfer',
+      'no-legacy-stdTx',
+      'ibc-go',
+      'eth-address-gen',
+      'eth-key-sign',
+    ],
+  },
+  [DevnetCosmosChainId.Injective]: {
+    ...getEndpointsFromChainId(DevnetCosmosChainId.Injective),
+    rpcConfig: undefined,
+    restConfig: undefined,
+    chainId: 'injective-777',
+    chainName: 'Injective Devnet',
+    stakeCurrency: {
+      coinDenom: 'INJ',
+      coinMinimalDenom: 'inj',
+      coinDecimals: 18,
+      coinGeckoId: 'injective-protocol',
+    },
+    walletUrl: 'https://hub.injective.dev/',
+    walletUrlForStaking: 'https://hub.injective.dev/',
+    bip44: {
+      coinType: 60,
+    },
+    bech32Config: Bech32Address.defaultBech32Config('inj'),
+    currencies: [
+      {
+        coinDenom: 'INJ',
+        coinMinimalDenom: 'inj',
+        coinDecimals: 18,
+        coinGeckoId: 'injective-protocol',
+      },
+    ],
+    feeCurrencies: [
+      {
+        coinDenom: 'INJ',
+        coinMinimalDenom: 'inj',
+        coinDecimals: 18,
+        coinGeckoId: 'injective-protocol',
+      },
+    ],
+    coinType: 60,
+    features: [
+      'stargate',
+      'ibc-transfer',
+      'no-legacy-stdTx',
+      'ibc-go',
+      'eth-address-gen',
+      'eth-key-sign',
+    ],
+  },
+  [DevnetCosmosChainId.Injective1]: {
+    ...getEndpointsFromChainId(DevnetCosmosChainId.Injective1),
+    rpcConfig: undefined,
+    restConfig: undefined,
+    chainId: 'injective-777',
+    chainName: 'Injective Devnet 1',
+    stakeCurrency: {
+      coinDenom: 'INJ',
+      coinMinimalDenom: 'inj',
+      coinDecimals: 18,
+      coinGeckoId: 'injective-protocol',
+    },
+    walletUrl: 'https://hub.injective.dev/',
+    walletUrlForStaking: 'https://hub.injective.dev/',
+    bip44: {
+      coinType: 60,
+    },
+    bech32Config: Bech32Address.defaultBech32Config('inj'),
+    currencies: [
+      {
+        coinDenom: 'INJ',
+        coinMinimalDenom: 'inj',
+        coinDecimals: 18,
+        coinGeckoId: 'injective-protocol',
+      },
+    ],
+    feeCurrencies: [
+      {
+        coinDenom: 'INJ',
+        coinMinimalDenom: 'inj',
+        coinDecimals: 18,
+        coinGeckoId: 'injective-protocol',
+      },
+    ],
+    coinType: 60,
+    features: [
+      'stargate',
+      'ibc-transfer',
+      'no-legacy-stdTx',
+      'ibc-go',
+      'eth-address-gen',
+      'eth-key-sign',
+    ],
   },
   [CosmosChainId.Injective]: {
     ...getEndpointsFromChainId(CosmosChainId.Injective),
@@ -241,4 +340,6 @@ export const keplrSupportedChainIds = [
   'straightedge-2',
   'axelar-dojo-1',
   'evmos_9001-2',
+  'injective-777',
+  'injective-888',
 ]

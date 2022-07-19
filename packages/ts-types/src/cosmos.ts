@@ -28,3 +28,8 @@ export enum TestnetCosmosChainId {
   Injective = 'injective-888',
   Cosmoshub = 'cosmoshub-testnet',
 }
+
+export enum DevnetCosmosChainId {
+  Injective = 'injective-777',
+  Injective1 = 'injective-777',
+}

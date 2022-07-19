@@ -37,10 +37,6 @@ export default class Keplr
       throw new Web3Exception('Please install Keplr extension')
     }
 
-    if (chainId !== ChainId.Mainnet) {
-      throw new Error('Keplr is only supported on Mainnet')
-    }
-
     try {
       if (!KeplrWallet.checkChainIdSupport(chainId)) {
         await keplrWallet.experimentalSuggestChain()

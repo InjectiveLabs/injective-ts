@@ -2,6 +2,7 @@ import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgExec as BaseMsgExec } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { ExecArgs } from '../../exec-args'
 import { MsgBase } from '../../MsgBase'
+import snakeCaseKeys from 'snakecase-keys'
 
 export declare namespace MsgExec {
   export interface Params {
@@ -91,12 +92,37 @@ export default class MsgExec extends MsgBase<
   }
 
   toWeb3(): MsgExec.Web3 {
+    const { params } = this
     const proto = this.toProto()
+    const message = {
+      ...snakeCaseKeys(proto.toObject()),
+    }
+
+    if (params.subaccountDeposits) {
+      // @ts-ignore
+      message['deposit_funds'] = params.subaccountDeposits
+    }
+
+    if (params.bankFunds) {
+      // @ts-ignore
+      message['bank_funds'] = params.bankFunds
+    }
+
+    // @ts-ignore
+    delete message.bank_funds_list
+    // @ts-ignore
+    delete message.bankFundsList
+    // @ts-ignore
+    delete message.depositFundsList
+    // @ts-ignore
+    delete message.deposit_funds_list
+
+    const messageWithProperKeys = snakeCaseKeys(message)
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgExec',
-      ...proto.toObject(),
-    }
+      ...messageWithProperKeys,
+    } as unknown as MsgExec.Web3
   }
 
   toDirectSign(): MsgExec.DirectSign {

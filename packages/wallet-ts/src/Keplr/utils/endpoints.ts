@@ -2,10 +2,11 @@ import {
   ChainId,
   CosmosChainId,
   TestnetCosmosChainId,
+  DevnetCosmosChainId,
 } from '@injectivelabs/ts-types'
 
 export const getEndpointsFromChainId = (
-  chainId: TestnetCosmosChainId | CosmosChainId | ChainId,
+  chainId: TestnetCosmosChainId | CosmosChainId | ChainId | DevnetCosmosChainId,
 ): { rpc: string; rest: string } => {
   switch (chainId) {
     case CosmosChainId.Cosmoshub:
@@ -47,6 +48,16 @@ export const getEndpointsFromChainId = (
       return {
         rpc: 'https://testnet.tm.injective.dev',
         rest: 'https://testnet.lcd.injective.dev',
+      }
+    case DevnetCosmosChainId.Injective:
+      return {
+        rpc: 'https://devnet.tm.injective.dev',
+        rest: 'https://devnet.lcd.injective.dev',
+      }
+    case DevnetCosmosChainId.Injective1:
+      return {
+        rpc: 'https://devnet-1.tm.injective.dev',
+        rest: 'https://devnet-1.lcd.injective.dev',
       }
     case CosmosChainId.Chihuahua:
       return {
