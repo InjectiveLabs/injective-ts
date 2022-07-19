@@ -7,15 +7,15 @@ import {
 export declare namespace ExecArgVaultSubscribe {
   export interface Params {
     vaultSubaccountId: string
-    redeemerSubaccountId: string
-    lpTokenBurnAmount: string
+    subscriberSubaccountId: string
+    marginRatio: string
     origin: string
   }
 
   export interface Data {
     vaultSubaccountId: string
-    redeemerSubaccountId: string
-    lpTokenBurnAmount: string
+    subscriberSubaccountId: string
+    marginRatio: string
   }
 }
 
@@ -32,8 +32,8 @@ export default class ExecArgVaultSubscribe extends ExecArgsBase<
 
     return {
       vaultSubaccountId: params.vaultSubaccountId,
-      redeemerSubaccountId: params.redeemerSubaccountId,
-      lpTokenBurnAmount: params.lpTokenBurnAmount,
+      subscriberSubaccountId: params.subscriberSubaccountId,
+      marginRatio: params.marginRatio,
     }
   }
 

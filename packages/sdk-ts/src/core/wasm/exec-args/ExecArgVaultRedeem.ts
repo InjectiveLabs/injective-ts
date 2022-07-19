@@ -7,15 +7,15 @@ import {
 export declare namespace ExecArgVaultRedeem {
   export interface Params {
     vaultSubaccountId: string
-    subscriberSubaccountId: string
-    marginRatio: string
+    redeemerSubaccountId: string
+    lpTokenBurnAmount: string
     origin: string
   }
 
   export interface Data {
     vaultSubaccountId: string
-    subscriberSubaccountId: string
-    marginRatio: string
+    redeemerSubaccountId: string
+    lpTokenBurnAmount: string
   }
 }
 
@@ -32,8 +32,8 @@ export default class ExecArgVaultRedeem extends ExecArgsBase<
 
     return {
       vaultSubaccountId: params.vaultSubaccountId,
-      subscriberSubaccountId: params.subscriberSubaccountId,
-      marginRatio: params.marginRatio,
+      redeemerSubaccountId: params.redeemerSubaccountId,
+      lpTokenBurnAmount: params.lpTokenBurnAmount,
     }
   }
 
@@ -42,8 +42,8 @@ export default class ExecArgVaultRedeem extends ExecArgsBase<
 
     return dataToExecData(this.toData(), {
       origin: params.origin,
-      name: 'VaultRedeem',
-      action: 'Redeem',
+      name: 'VaultSubscribe',
+      action: 'Subscribe',
     })
   }
 }
