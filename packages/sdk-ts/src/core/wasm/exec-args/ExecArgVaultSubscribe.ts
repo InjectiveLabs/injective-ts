@@ -4,7 +4,7 @@ import {
   ExecDataRepresentation,
 } from '../../ExecArgsBase'
 
-export declare namespace ExecArgVaultRedeem {
+export declare namespace ExecArgVaultSubscribe {
   export interface Params {
     vaultSubaccountId: string
     redeemerSubaccountId: string
@@ -19,15 +19,15 @@ export declare namespace ExecArgVaultRedeem {
   }
 }
 
-export default class ExecArgVaultRedeem extends ExecArgsBase<
-  ExecArgVaultRedeem.Params,
-  ExecArgVaultRedeem.Data
+export default class ExecArgVaultSubscribe extends ExecArgsBase<
+  ExecArgVaultSubscribe.Params,
+  ExecArgVaultSubscribe.Data
 > {
-  static fromJSON(params: ExecArgVaultRedeem.Params): ExecArgVaultRedeem {
-    return new ExecArgVaultRedeem(params)
+  static fromJSON(params: ExecArgVaultSubscribe.Params): ExecArgVaultSubscribe {
+    return new ExecArgVaultSubscribe(params)
   }
 
-  toData(): ExecArgVaultRedeem.Data {
+  toData(): ExecArgVaultSubscribe.Data {
     const { params } = this
 
     return {
@@ -37,7 +37,7 @@ export default class ExecArgVaultRedeem extends ExecArgsBase<
     }
   }
 
-  toExecData(): ExecDataRepresentation<ExecArgVaultRedeem.Data> {
+  toExecData(): ExecDataRepresentation<ExecArgVaultSubscribe.Data> {
     const { params } = this
 
     return dataToExecData(this.toData(), {
