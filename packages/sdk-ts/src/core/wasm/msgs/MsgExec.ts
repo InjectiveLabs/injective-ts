@@ -59,13 +59,18 @@ export default class MsgExec extends MsgBase<
     const funds = new Coin()
 
     if (params.subaccountId) {
-      funds.setAmount(params.subaccountDeposits!.amount)
-      funds.setDenom(params.subaccountDeposits!.denom)
-      message.setDepositFundsList([funds])
       message.setDepositsSubaccountId(params.subaccountId!)
-    } else {
-      funds.setAmount(params.subaccountDeposits!.amount)
-      funds.setDenom(params.subaccountDeposits!.denom)
+    }
+
+    if (params.subaccountDeposits) {
+      funds.setAmount(params.subaccountDeposits.amount)
+      funds.setDenom(params.subaccountDeposits.denom)
+      message.setDepositFundsList([funds])
+    }
+
+    if (params.bankFunds) {
+      funds.setAmount(params.bankFunds.amount)
+      funds.setDenom(params.bankFunds.denom)
       message.setBankFundsList([funds])
     }
 
