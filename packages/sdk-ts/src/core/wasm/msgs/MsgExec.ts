@@ -1,8 +1,7 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgExec as BaseMsgExec } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { ExecArgs } from '../../exec-args'
 import { MsgBase } from '../../MsgBase'
-import ExecArgVaultRedeem from '../exec-args/ExecArgVaultRedeem'
-import ExecArgVaultSubscribe from '../exec-args/ExecArgVaultSubscribe'
 
 export declare namespace MsgExec {
   export interface Params {
@@ -17,7 +16,7 @@ export declare namespace MsgExec {
     }
     sender: string
     contractAddress: string
-    data: ExecArgVaultRedeem | ExecArgVaultSubscribe
+    data: ExecArgs
   }
 
   export interface DirectSign {
