@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.36...@injectivelabs/sdk-ts@1.0.37) (2022-07-19)
+
+
+### Features
+
+* exec exchange contracts ([3e365ce](https://github.com/InjectiveLabs/injective-ts/commit/3e365ceda17721862dc669bdd169a86a97944be4))
+
+
+
+
+
 ## [1.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.35...@injectivelabs/sdk-ts@1.0.36) (2022-07-17)
 
 
