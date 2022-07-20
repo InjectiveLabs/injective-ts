@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.28...@injectivelabs/wallet-ts@1.0.29) (2022-07-20)
+
+
+### Bug Fixes
+
+* variable casing for MsgExec ([bc50627](https://github.com/InjectiveLabs/injective-ts/commit/bc50627e50d9313f45d2a6ead12b1e2a74c45ff0))
+
+
+
+
+
 ## [1.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.27...@injectivelabs/wallet-ts@1.0.28) (2022-07-19)
 
 
