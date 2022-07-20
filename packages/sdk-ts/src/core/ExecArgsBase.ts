@@ -4,7 +4,7 @@ export type ExecDataRepresentation<Data> = {
   origin: string
   name: string
   args: {
-    [key: string]: Data
+    [key: string]: { args: Data }
   }
 }
 
@@ -20,7 +20,9 @@ export const dataToExecData = <T>(
     origin: execParams.origin,
     name: execParams.name,
     args: {
-      [execParams.action]: data,
+      [execParams.action]: {
+        args: data,
+      },
     },
   }
 }
