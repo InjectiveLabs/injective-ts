@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.42...@injectivelabs/sdk-ts@1.0.43) (2022-07-20)
+
+
+### Bug Fixes
+
+* snakekeys vault exec args ([243450a](https://github.com/InjectiveLabs/injective-ts/commit/243450afc9f4a19a7ed951bf8742182e0565a4d1))
+
+
+
+
+
 ## [1.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.41...@injectivelabs/sdk-ts@1.0.42) (2022-07-19)
 
 
