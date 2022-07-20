@@ -78,6 +78,11 @@ export const experimentalChainsConfig = {
         coinGeckoId: 'injective-protocol',
       },
     ],
+    gasPriceStep: {
+      low: 5000000000,
+      average: 25000000000,
+      high: 40000000000,
+    },
     coinType: 60,
     features: [
       'stargate',
@@ -122,6 +127,11 @@ export const experimentalChainsConfig = {
         coinGeckoId: 'injective-protocol',
       },
     ],
+    gasPriceStep: {
+      low: 5000000000,
+      average: 25000000000,
+      high: 40000000000,
+    },
     coinType: 60,
     features: [
       'stargate',
