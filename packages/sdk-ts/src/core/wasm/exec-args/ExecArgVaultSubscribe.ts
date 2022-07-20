@@ -3,6 +3,7 @@ import {
   ExecArgsBase,
   ExecDataRepresentation,
 } from '../../ExecArgsBase'
+import snakeCaseKeys from 'snakecase-keys'
 
 export declare namespace ExecArgVaultSubscribe {
   export interface Params {
@@ -40,10 +41,12 @@ export default class ExecArgVaultSubscribe extends ExecArgsBase<
   toExecData(): ExecDataRepresentation<ExecArgVaultSubscribe.Data> {
     const { params } = this
 
-    return dataToExecData(this.toData(), {
-      origin: params.origin,
-      name: 'VaultSubscribe',
-      action: 'Subscribe',
-    })
+    return snakeCaseKeys(
+      dataToExecData(this.toData(), {
+        origin: params.origin,
+        name: 'VaultSubscribe',
+        action: 'Subscribe',
+      }),
+    )
   }
 }
