@@ -1,15 +1,9 @@
 import { prepareSignBytes } from './utils'
 
 export type ExecDataRepresentation<Data> = {
-  injective_exec: {
-    origin: string
-    name: string
-    args: {
-      [key: string]: {
-        args: Data
-      }
-    }
-  }
+  origin: string
+  name: string
+  args: Data
 }
 
 export const dataToExecData = <T>(
@@ -17,19 +11,12 @@ export const dataToExecData = <T>(
   execParams: {
     origin: string
     name: string
-    action: string
   },
 ): ExecDataRepresentation<T> => {
   return {
-    injective_exec: {
-      origin: execParams.origin,
-      name: execParams.name,
-      args: {
-        [execParams.action]: {
-          args: data,
-        },
-      },
-    },
+    origin: execParams.origin,
+    name: execParams.name,
+    args: data,
   }
 }
 

@@ -43,7 +43,6 @@ export default class ExecArgVaultRedeem extends ExecArgsBase<
     return dataToExecData(this.toData(), {
       origin: params.origin,
       name: 'VaultSubscribe',
-      action: 'Subscribe',
     })
   }
 }
