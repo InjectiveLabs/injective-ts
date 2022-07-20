@@ -133,7 +133,7 @@ export class KeplrWallet {
     const keplr = await this.getKeplrWallet()
 
     return Buffer.from(
-      await keplr.sendTx(chainId, txRaw.serializeBinary(), BroadcastMode.Sync),
+      await keplr.sendTx(chainId, txRaw.serializeBinary(), BroadcastMode.Block),
     ).toString('hex')
   }
 

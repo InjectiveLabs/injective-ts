@@ -3,7 +3,9 @@ import { prepareSignBytes } from './utils'
 export type ExecDataRepresentation<Data> = {
   origin: string
   name: string
-  args: Data
+  args: {
+    [key: string]: Data
+  }
 }
 
 export const dataToExecData = <T>(
@@ -11,12 +13,15 @@ export const dataToExecData = <T>(
   execParams: {
     origin: string
     name: string
+    action: string
   },
 ): ExecDataRepresentation<T> => {
   return {
     origin: execParams.origin,
     name: execParams.name,
-    args: data,
+    args: {
+      [execParams.action]: data,
+    },
   }
 }
 
