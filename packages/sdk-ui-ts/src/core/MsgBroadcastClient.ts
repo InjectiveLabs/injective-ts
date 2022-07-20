@@ -1,5 +1,8 @@
-import { Msgs, getInjectiveAddress } from '@injectivelabs/sdk-ts'
-import { ExchangeGrpcTransactionApi } from '@injectivelabs/sdk-ts/dist/client'
+import {
+  Msgs,
+  getInjectiveAddress,
+  ExchangeGrpcTransactionApi,
+} from '@injectivelabs/sdk-ts'
 import { Wallet } from '@injectivelabs/ts-types'
 import { MetricsProvider } from '../classes/MetricsProvider'
 import {
@@ -32,8 +35,18 @@ export interface MsgBroadcastOptions {
 
 const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
   const hasMultipleMessages = Array.isArray(msgs)
+  const isMsgExecMessage = (message: Msgs) =>
+    message.toWeb3()['@type'].includes('MsgExec')
   const isExchangeMessage = (message: Msgs) =>
     message.toWeb3()['@type'].startsWith('/injective')
+
+  const hasMsgExecMessages = Array.isArray(msgs)
+    ? msgs.some(isMsgExecMessage)
+    : isMsgExecMessage(msgs)
+
+  if (hasMsgExecMessages) {
+    return DEFAULT_GAS_LIMIT * 1.2
+  }
 
   const hasExchangeMessages = Array.isArray(msgs)
     ? msgs.some(isExchangeMessage)
@@ -156,6 +169,7 @@ export class MsgBroadcastClient {
       const [message] = msgs.map((msg) => msg.toDirectSign())
       const transaction = {
         message,
+        gas: tx.gasLimit ? tx.gasLimit : getGasPriceBasedOnMessage(msgs),
         memo: tx.memo,
       }
 

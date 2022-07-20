@@ -109,7 +109,10 @@ export default class Keplr
     return cosmWallet.signTransaction({
       address,
       chainId,
-      fee: DEFAULT_STD_FEE,
+      fee: {
+        ...DEFAULT_STD_FEE,
+        gas: transaction.gas || DEFAULT_STD_FEE.gas,
+      },
       message: transaction.message,
       memo: transaction.memo,
       pubKey: Buffer.from(key.pubKey).toString('base64'),
