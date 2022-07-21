@@ -2,10 +2,30 @@ import { ChainGrpcIbcApi } from '../client/chain/grpc/ChainGrpcIbcApi'
 import {
   TokenMetaUtilFactory,
   TokenMetaUtil,
+  TokenType,
+  TokenMeta,
+  IbcToken,
+  Token,
 } from '@injectivelabs/token-metadata'
-import { TokenMeta, IbcToken, Token } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '../utils'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
+
+const getTokenTypeFromDenom = (denom: string): TokenType => {
+  switch (true) {
+    case denom === 'inj':
+      return TokenType.Native
+    case denom.includes('peggy'):
+      return TokenType.ERC20
+    case denom.startsWith('inj'):
+      return TokenType.CW20
+    case denom.includes('share'):
+      return TokenType.InsuranceFund
+    case denom.includes('ibc'):
+      return TokenType.IBC
+    default:
+      return TokenType.Native
+  }
+}
 
 export const tokenMetaToToken = (
   tokenMeta: TokenMeta | undefined,
@@ -15,15 +35,17 @@ export const tokenMetaToToken = (
     return
   }
 
+  const tokenType = getTokenTypeFromDenom(denom)
+
   return {
     denom,
-    logo: tokenMeta.logo,
-    icon: tokenMeta.logo,
-    symbol: tokenMeta.symbol,
-    name: tokenMeta.name,
-    decimals: tokenMeta.decimals,
+    tokenType,
     address: tokenMeta.address,
     coinGeckoId: tokenMeta.coinGeckoId,
+    decimals: tokenMeta.decimals,
+    logo: tokenMeta.logo,
+    name: tokenMeta.name,
+    symbol: tokenMeta.symbol,
   }
 }
 
@@ -56,7 +78,7 @@ export class Denom {
 
     return {
       baseDenom,
-      isIbc: true,
+      isCanonical: false,
       channelId: path.replace('transfer/', ''),
       ...tokenMetaToToken(tokenMeta, denom),
     } as IbcToken
@@ -82,15 +104,17 @@ export class Denom {
         return tokenMetaToToken(byAddress, denom) as Token
       }
 
+      const tokenType = getTokenTypeFromDenom(denom)
+
       return {
         denom,
         name: denom,
-        icon: '',
         logo: '',
         symbol: '',
         decimals: 18,
         address: '',
         coinGeckoId: '',
+        tokenType,
       }
     }
 

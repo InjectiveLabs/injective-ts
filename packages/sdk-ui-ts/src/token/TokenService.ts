@@ -22,8 +22,12 @@ import {
   UiBridgeTransaction,
   UiBridgeTransactionWithToken,
 } from '../types'
-import { ibcTokens } from '@injectivelabs/token-metadata'
-import { Token, IbcToken } from '@injectivelabs/token-metadata'
+import {
+  ibcTokens,
+  Token,
+  IbcToken,
+  TokenType,
+} from '@injectivelabs/token-metadata'
 
 export class TokenService {
   public network: Network
@@ -59,7 +63,6 @@ export class TokenService {
         ).getTokenMetaDataBySymbol()
 
         return {
-          isIbc: true,
           channelId: denomTraceFromCache.path.replace('transfer/', ''),
           ...denomTraceFromCache,
           ...tokenMetaToToken(tokenMeta, denom),
@@ -151,7 +154,6 @@ export class TokenService {
           return {
             denom,
             baseDenom,
-            isIbc: true,
             balance: ibcBalances[denom],
             channelId: path.replace('transfer/', ''),
             token: await this.getDenomToken(denom),
@@ -299,7 +301,21 @@ export class TokenService {
       .replaceAll('/', '-')
       .replaceAll(' ', '-')
       .toLowerCase()
+
     const [baseTokenSymbol] = market.ticker.replace(quoteToken.symbol, '')
+
+    let tokenType
+    switch (true) {
+      case slug.toLowerCase() === 'inj':
+        tokenType = TokenType.Native
+        break
+      case slug.toLowerCase() === 'usdt':
+        tokenType = TokenType.ERC20
+        break
+      default:
+        tokenType = TokenType.IBC
+    }
+
     const baseToken = {
       denom: slug,
       logo: 'injective-v3.svg',
@@ -309,6 +325,7 @@ export class TokenService {
       decimals: 18,
       address: '',
       coinGeckoId: '',
+      tokenType,
     }
 
     return {

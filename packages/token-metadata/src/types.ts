@@ -2,12 +2,13 @@ export enum TokenType {
   IBC = 'ibc',
   CW20 = 'cw20',
   ERC20 = 'erc20',
+  Native = 'native',
+  InsuranceFund = 'InsuranceFund',
 }
 
 export interface TokenMeta {
   name: string
   logo: string
-  icon?: string
   symbol: string
   decimals: number
   address: string
@@ -17,12 +18,13 @@ export interface TokenMeta {
 
 export interface Token extends TokenMeta {
   denom: string
-  isIbc?: boolean
+  tokenType: TokenType
 }
 
 export interface IbcToken extends Token {
   baseDenom: string
   channelId: string
+  isCanonical?: boolean
 }
 
 export type TokenAddress = string

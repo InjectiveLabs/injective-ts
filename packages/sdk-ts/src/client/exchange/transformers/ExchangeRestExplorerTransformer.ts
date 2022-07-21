@@ -20,6 +20,7 @@ import {
   CW20BalanceWithToken,
   WasmCode,
 } from '../types/explorer'
+import { TokenType } from '@injectivelabs/token-metadata'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
 
@@ -240,6 +241,8 @@ export class ExchangeRestExplorerTransformer {
         logo: logo || '',
         address: balance.contract_address,
         coinGeckoId: name,
+        denom: balance.contract_address,
+        tokenType: TokenType.CW20,
       },
     }
   }
