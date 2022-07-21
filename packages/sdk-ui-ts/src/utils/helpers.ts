@@ -1,4 +1,5 @@
 import path from 'path'
+import { TokenType } from '@injectivelabs/token-metadata'
 
 export const getTokenLogoWithVendorPathPrefix = (image: string) => {
   if (image.includes('@injectivelabs')) {
@@ -24,4 +25,15 @@ export const getTokenLogoWithVendorPathPrefix = (image: string) => {
   }
 
   return path.join('/', 'vendor', '@injectivelabs', 'token-metadata', image)
+}
+
+export const getTokenTypeFromSlug = (slug: string) => {
+  switch (true) {
+    case slug.toLowerCase() === 'inj':
+      return TokenType.Native
+    case slug.toLowerCase() === 'usdt':
+      return TokenType.ERC20
+    default:
+      return TokenType.IBC
+  }
 }

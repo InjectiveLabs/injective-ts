@@ -22,12 +22,8 @@ import {
   UiBridgeTransaction,
   UiBridgeTransactionWithToken,
 } from '../types'
-import {
-  ibcTokens,
-  Token,
-  IbcToken,
-  TokenType,
-} from '@injectivelabs/token-metadata'
+import { getTokenTypeFromSlug } from '../utils'
+import { ibcTokens, Token, IbcToken } from '@injectivelabs/token-metadata'
 
 export class TokenService {
   public network: Network
@@ -304,22 +300,11 @@ export class TokenService {
 
     const [baseTokenSymbol] = market.ticker.replace(quoteToken.symbol, '')
 
-    let tokenType
-    switch (true) {
-      case slug.toLowerCase() === 'inj':
-        tokenType = TokenType.Native
-        break
-      case slug.toLowerCase() === 'usdt':
-        tokenType = TokenType.ERC20
-        break
-      default:
-        tokenType = TokenType.IBC
-    }
+    const tokenType = getTokenTypeFromSlug(slug)
 
     const baseToken = {
       denom: slug,
       logo: 'injective-v3.svg',
-      icon: 'injective-v3.svg',
       symbol: baseTokenSymbol,
       name: baseTokenSymbol,
       decimals: 18,
