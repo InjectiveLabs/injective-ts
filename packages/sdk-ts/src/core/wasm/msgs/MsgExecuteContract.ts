@@ -5,7 +5,7 @@ import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
-    amount: {
+    amount?: {
       denom: string
       amount: string
     }
@@ -44,15 +44,17 @@ export default class MsgExecuteContract extends MsgBase<
   toProto(): MsgExecuteContract.Proto {
     const { params } = this
 
-    const funds = new Coin()
-    funds.setAmount(params.amount.amount)
-    funds.setDenom(params.amount.denom)
-
     const message = new BaseMsgExecuteContract()
-    message.setFundsList([funds])
     message.setMsg(toUtf8(JSON.stringify(params.msg)))
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
+
+    if (params.amount) {
+      const funds = new Coin()
+      funds.setAmount(params.amount.amount)
+      funds.setDenom(params.amount.denom)
+      message.setFundsList([funds])
+    }
 
     return message
   }
