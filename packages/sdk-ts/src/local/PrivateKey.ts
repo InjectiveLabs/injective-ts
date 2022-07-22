@@ -5,6 +5,7 @@ import keccak256 from 'keccak256'
 import { DEFAULT_DERIVATION_PATH } from '../utils/constants'
 import { PublicKey } from './PublicKey'
 import { Address } from '../classes/Address'
+import * as BytesUtils from '@ethersproject/bytes'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -93,7 +94,7 @@ export class PrivateKey {
    * @param {any} message: the message that will be hashed and signed
    * @returns {string} a signature of this private key over the given message
    */
-  async sign(message: any): Promise<Uint8Array> {
+  async signEcda(message: any): Promise<Uint8Array> {
     const { wallet } = this
 
     const msgHash = keccak256(Buffer.from(message))
@@ -104,5 +105,21 @@ export class PrivateKey {
     const { signature } = secp256k1.ecdsaSign(msgHash, privateKey)
 
     return signature
+  }
+
+  /**
+   * Sign the given message using the edcsa sign_deterministic function.
+   * @param {any} message: the message that will be hashed and signed
+   * @returns {string} a signature of this private key over the given message
+   */
+  async sign(message: any): Promise<Uint8Array> {
+    const { wallet } = this
+
+    const signature = await wallet._signingKey().signDigest(keccak256(message))
+    const splitSignature = BytesUtils.splitSignature(signature)
+
+    return BytesUtils.arrayify(
+      BytesUtils.concat([splitSignature.r, splitSignature.s]),
+    )
   }
 }
