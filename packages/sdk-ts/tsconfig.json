@@ -17,4 +17,9 @@
       "path": "../token-metadata/tsconfig.json"
     },
   ],
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "Injective Protocol - SDK TS"
+  }
 }
