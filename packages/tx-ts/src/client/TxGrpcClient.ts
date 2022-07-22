@@ -4,6 +4,7 @@ import {
   BroadcastTxRequest,
   BroadcastMode,
   SimulateRequest,
+  BroadcastModeMap,
 } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/service_pb'
 import {
   GasInfo,
@@ -13,7 +14,7 @@ import {
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { isServerSide } from '@injectivelabs/utils'
 
-export class TxService {
+export class TxGrpcClient {
   public txService: ServiceClient
 
   public txRaw: TxRaw
@@ -55,12 +56,14 @@ export class TxService {
     }
   }
 
-  public async broadcast(): Promise<TxResponse.AsObject> {
+  public async broadcast(
+    broadcastMode: BroadcastModeMap[keyof BroadcastModeMap] = BroadcastMode.BROADCAST_MODE_BLOCK,
+  ): Promise<TxResponse.AsObject> {
     const { txService, txRaw } = this
 
     const broadcastTxRequest = new BroadcastTxRequest()
     broadcastTxRequest.setTxBytes(txRaw.serializeBinary())
-    broadcastTxRequest.setMode(BroadcastMode.BROADCAST_MODE_BLOCK)
+    broadcastTxRequest.setMode(broadcastMode)
 
     try {
       return new Promise((resolve, reject) =>
