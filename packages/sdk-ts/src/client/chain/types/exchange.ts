@@ -13,7 +13,9 @@ import {
   TradingRewardCampaignInfo as GrpcTradingRewardCampaignInfo,
   CampaignRewardPool as GrpcCampaignRewardPool,
   OrderTypeMap as GrpcOrderTypeMap,
+  Position as GrpcChainPosition,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+import { DerivativePosition as GrpcChainDerivativePosition } from '@injectivelabs/chain-api/injective/exchange/v1beta1/genesis_pb'
 import {
   QueryFeeDiscountAccountInfoResponse as GrpcFeeDiscountAccountInfo,
   QueryTradeRewardCampaignResponse as GrpcTradeRewardCampaign,
@@ -109,6 +111,20 @@ export interface ExchangeModuleParams extends ExchangeParams {
 
 export type GrpcOrderType = GrpcOrderTypeMap[keyof GrpcOrderTypeMap]
 
+export interface ChainPosition {
+  islong: boolean
+  quantity: string
+  entryPrice: string
+  margin: string
+  cumulativeFundingEntry: string
+}
+
+export interface ChainDerivativePosition {
+  subaccountId: string
+  marketId: string
+  position?: ChainPosition
+}
+
 export {
   GrpcFeeDiscountSchedule,
   GrpcFeeDiscountTierInfo,
@@ -120,7 +136,9 @@ export {
   GrpcPointsMultiplier,
   GrpcCampaignRewardPool,
   GrpcSpotMarket,
+  GrpcChainPosition,
   GrpcMarketStatus,
+  GrpcChainDerivativePosition,
   GrpcMarketStatusMap,
   GrpcSpotMarketOrder,
   GrpcSpotOrder,
