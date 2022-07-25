@@ -190,7 +190,8 @@ export const createTransaction = ({
     accountNumber,
   })
 
-  const toSign = keccak256(Buffer.from(signDoc.serializeBinary()))
+  const toSignBytes = Buffer.from(signDoc.serializeBinary())
+  const toSignHash = keccak256(Buffer.from(signDoc.serializeBinary()))
 
   const txRaw = new TxRaw()
   txRaw.setAuthInfoBytes(authInfo.serializeBinary())
@@ -202,7 +203,8 @@ export const createTransaction = ({
     accountNumber,
     bodyBytes: body.serializeBinary(),
     authInfoBytes: authInfo.serializeBinary(),
-    signBytes: toSign,
+    signBytes: toSignBytes,
+    signHashedBytes: toSignHash,
   }
 }
 
