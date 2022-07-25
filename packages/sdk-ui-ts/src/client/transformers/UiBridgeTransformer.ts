@@ -382,13 +382,29 @@ export const getLatestSelectedTransaction = ({
 export const removeDuplicatedTransactionByTxHash = (
   ibcTransferBridgeTransactions: UiBridgeTransactionWithToken[],
 ) => {
-  return [
-    ...new Map(
-      [...ibcTransferBridgeTransactions]
-        .reverse()
-        .map((transaction) => [transaction.txHash, transaction]),
-    ).values(),
-  ]
+  const filteredList = ibcTransferBridgeTransactions.reduce(
+    (
+      list: Record<string, UiBridgeTransactionWithToken>,
+      transaction: UiBridgeTransactionWithToken,
+    ) => {
+      if (!transaction.txHashes || transaction.txHashes.length === 0) {
+        return list
+      }
+
+      const initialTxHash = transaction.txHashes[0]
+
+      if (!list[initialTxHash]) {
+        list[initialTxHash] = transaction
+      } else if (transaction.state === BridgeTransactionState.Completed) {
+        list[initialTxHash] = transaction
+      }
+
+      return Object.assign({}, list)
+    },
+    {} as Record<string, UiBridgeTransactionWithToken>,
+  )
+
+  return Object.values(filteredList)
 }
 
 /**
