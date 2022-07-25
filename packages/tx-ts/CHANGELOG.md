@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.14...@injectivelabs/tx-ts@1.0.15) (2022-07-25)
+
+
+### Bug Fixes
+
+* double hashing ([6408b32](https://github.com/InjectiveLabs/injective-ts/commit/6408b3292b38e3e3cda7a2c617c2b7cde3264727))
+
+
+
+
+
 ## [1.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.13...@injectivelabs/tx-ts@1.0.14) (2022-07-22)
 
 
