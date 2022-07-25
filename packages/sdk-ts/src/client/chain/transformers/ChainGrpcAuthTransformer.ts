@@ -6,6 +6,7 @@ import {
   QueryParamsResponse,
 } from '@injectivelabs/chain-api/cosmos/auth/v1beta1/query_pb'
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
+import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { uint8ArrayToString } from '../../../utils'
 import { Account, AuthModuleParams, EthAccount } from '../types/auth'
 
@@ -52,11 +53,12 @@ export class ChainGrpcAuthTransformer {
     return ChainGrpcAuthTransformer.grpcAccountToAccount(response.getAccount()!)
   }
 
-  static accountsResponseToAccounts(
-    response: QueryAccountsResponse,
-  ): Account[] {
-    return response
-      .getAccountsList()
-      .map(ChainGrpcAuthTransformer.grpcAccountToAccount)
+  static accountsResponseToAccounts(response: QueryAccountsResponse) {
+    return {
+      pagination: grpcPaginationToPagination(response.getPagination()!),
+      accounts: response
+        .getAccountsList()
+        .map(ChainGrpcAuthTransformer.grpcAccountToAccount),
+    }
   }
 }
