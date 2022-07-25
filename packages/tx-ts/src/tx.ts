@@ -1,5 +1,5 @@
 import { StdFee } from '@cosmjs/amino'
-import { Keccak } from 'sha3'
+import keccak256 from 'keccak256'
 import {
   TxBody,
   SignDoc,
@@ -190,9 +190,7 @@ export const createTransaction = ({
     accountNumber,
   })
 
-  const hash = new Keccak(256)
-  hash.update(Buffer.from(signDoc.serializeBinary()))
-  const toSign = hash.digest('binary')
+  const toSign = keccak256(Buffer.from(signDoc.serializeBinary()))
 
   const txRaw = new TxRaw()
   txRaw.setAuthInfoBytes(authInfo.serializeBinary())
@@ -204,7 +202,7 @@ export const createTransaction = ({
     accountNumber,
     bodyBytes: body.serializeBinary(),
     authInfoBytes: authInfo.serializeBinary(),
-    signBytes: toSign.toString('base64'),
+    signBytes: toSign,
   }
 }
 

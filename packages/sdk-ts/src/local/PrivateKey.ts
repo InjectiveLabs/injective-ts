@@ -90,14 +90,31 @@ export class PrivateKey {
   }
 
   /**
-   * Sign the given message using the edcsa sign_deterministic function.
-   * @param {any} message: the message that will be hashed and signed
-   * @returns {string} a signature of this private key over the given message
+   * Sign the given message using the wallet's _signingKey function.
+   * @param {string} messageBytes: the message that will be hashed and signed, a Buffer made of bytes
+   * @returns {Uint8Array} a signature of this private key over the given message
    */
-  async signEcda(message: any): Promise<Uint8Array> {
+  async sign(messageBytes: Buffer): Promise<Uint8Array> {
     const { wallet } = this
 
-    const msgHash = keccak256(Buffer.from(message))
+    const msgHash = keccak256(messageBytes)
+    const signature = await wallet._signingKey().signDigest(msgHash)
+    const splitSignature = BytesUtils.splitSignature(signature)
+
+    return BytesUtils.arrayify(
+      BytesUtils.concat([splitSignature.r, splitSignature.s]),
+    )
+  }
+
+  /**
+   * Sign the given message using the edcsa sign_deterministic function.
+   * @param {Buffer} messageBytes: the message that will be hashed and signed, a Buffer made of bytes
+   * @returns {Uint8Array} a signature of this private key over the given message
+   */
+  async signEcda(messageBytes: Buffer): Promise<Uint8Array> {
+    const { wallet } = this
+
+    const msgHash = keccak256(messageBytes)
     const privateKeyHex = wallet.privateKey.startsWith('0x')
       ? wallet.privateKey.slice(2)
       : wallet.privateKey
@@ -105,21 +122,5 @@ export class PrivateKey {
     const { signature } = secp256k1.ecdsaSign(msgHash, privateKey)
 
     return signature
-  }
-
-  /**
-   * Sign the given message using the edcsa sign_deterministic function.
-   * @param {any} message: the message that will be hashed and signed
-   * @returns {string} a signature of this private key over the given message
-   */
-  async sign(message: any): Promise<Uint8Array> {
-    const { wallet } = this
-
-    const signature = await wallet._signingKey().signDigest(keccak256(message))
-    const splitSignature = BytesUtils.splitSignature(signature)
-
-    return BytesUtils.arrayify(
-      BytesUtils.concat([splitSignature.r, splitSignature.s]),
-    )
   }
 }
