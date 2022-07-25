@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.15...@injectivelabs/tx-ts@1.0.16) (2022-07-25)
+
+
+### Bug Fixes
+
+* export naming ([0b1b863](https://github.com/InjectiveLabs/injective-ts/commit/0b1b863dd592c3ed09d82cbfb2dfae20e4077334))
+
+
+
+
+
 ## [1.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.14...@injectivelabs/tx-ts@1.0.15) (2022-07-25)
 
 
