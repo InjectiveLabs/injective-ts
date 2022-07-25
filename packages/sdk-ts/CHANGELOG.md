@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.55...@injectivelabs/sdk-ts@1.0.56) (2022-07-25)
+
+
+### Bug Fixes
+
+* account pagination ([3edcd33](https://github.com/InjectiveLabs/injective-ts/commit/3edcd334245ed13d84e7ec65600c1999bada06e6))
+
+
+
+
+
 ## [1.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.54...@injectivelabs/sdk-ts@1.0.55) (2022-07-25)
 
 
