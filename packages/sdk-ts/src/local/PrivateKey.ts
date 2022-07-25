@@ -123,4 +123,37 @@ export class PrivateKey {
 
     return signature
   }
+
+  /**
+   * Sign the given message using the wallet's _signingKey function.
+   * @param {string} messageHashedBytes: the message that will be signed, a Buffer made of bytes
+   * @returns {Uint8Array} a signature of this private key over the given message
+   */
+  async signHashed(messageHashedBytes: Buffer): Promise<Uint8Array> {
+    const { wallet } = this
+
+    const signature = await wallet._signingKey().signDigest(messageHashedBytes)
+    const splitSignature = BytesUtils.splitSignature(signature)
+
+    return BytesUtils.arrayify(
+      BytesUtils.concat([splitSignature.r, splitSignature.s]),
+    )
+  }
+
+  /**
+   * Sign the given message using the edcsa sign_deterministic function.
+   * @param {Buffer} messageHashedBytes: the message that will be signed, a Buffer made of bytes
+   * @returns {Uint8Array} a signature of this private key over the given message
+   */
+  async signHashedEcda(messageHashedBytes: Buffer): Promise<Uint8Array> {
+    const { wallet } = this
+
+    const privateKeyHex = wallet.privateKey.startsWith('0x')
+      ? wallet.privateKey.slice(2)
+      : wallet.privateKey
+    const privateKey = Uint8Array.from(Buffer.from(privateKeyHex, 'hex'))
+    const { signature } = secp256k1.ecdsaSign(messageHashedBytes, privateKey)
+
+    return signature
+  }
 }
