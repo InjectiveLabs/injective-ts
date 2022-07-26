@@ -29,16 +29,16 @@ export interface CoinPriceFromInjectiveService {
   last_updated: Date
 }
 
-export interface TokenWithBalance extends Token {
+export type TokenWithBalance = Token & {
   balance: string
   allowance: string
 }
 
-export interface TokenWithUsdPrice extends Token {
+export type TokenWithUsdPrice = Token & {
   usdPrice: number
 }
 
-export interface TokenWithBalanceAndPrice extends TokenWithBalance {
+export type TokenWithBalanceAndPrice = TokenWithBalance & {
   usdPrice: number
 }
 

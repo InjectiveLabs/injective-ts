@@ -1,3 +1,17 @@
+export const canonicalChannelIds = [
+  'channel-1',
+  'channel-4',
+  'channel-5',
+  'channel-6',
+  'channel-8',
+  'channel-74',
+  'channel-76',
+  'channel-77',
+  'channel-78',
+  'channel-82',
+  'channel-83',
+]
+
 export default {
   '16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821': {
     path: 'transfer/channel-83',

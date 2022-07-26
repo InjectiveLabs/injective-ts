@@ -1,23 +1,48 @@
+export enum TokenType {
+  Native = 'native',
+  Erc20 = 'erc20',
+  Ibc = 'ibc',
+  Cw20 = 'cw20',
+  InsuranceFund = 'insuranceFund',
+}
+
 export interface TokenMeta {
   name: string
   logo: string
-  icon?: string
   symbol: string
   decimals: number
-  address: string
+  address?: string
   coinGeckoId: string
-  updatedAt?: number
 }
 
-export interface Token extends TokenMeta {
+export type BaseToken = TokenMeta & {
   denom: string
-  isIbc?: boolean
+  tokenType: TokenType
 }
 
-export interface IbcToken extends Token {
+export interface NativeToken extends TokenMeta {
+  denom: string
+}
+
+export interface Erc20Token extends BaseToken {
+  address: string
+}
+
+export interface IbcToken extends BaseToken {
   baseDenom: string
   channelId: string
+  isCanonical: boolean
 }
+
+export interface Cw20Token extends BaseToken {
+  address: string
+}
+
+export interface InsuranceFundToken extends BaseToken {
+  //
+}
+
+export type Token = Erc20Token | IbcToken | Cw20Token | InsuranceFundToken
 
 export type TokenAddress = string
 export type TokenAssetData = string

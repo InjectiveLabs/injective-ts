@@ -1,3 +1,5 @@
+import { TokenMeta } from '../types'
+
 export default {
   BTC: {
     name: 'Bitcoin',
@@ -656,4 +658,4 @@ export default {
     address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     coinGeckoId: 'polkadot',
   },
-}
+} as Record<string, TokenMeta>

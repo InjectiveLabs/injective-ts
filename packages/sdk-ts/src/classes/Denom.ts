@@ -2,10 +2,49 @@ import { ChainGrpcIbcApi } from '../client/chain/grpc/ChainGrpcIbcApi'
 import {
   TokenMetaUtilFactory,
   TokenMetaUtil,
+  TokenType,
 } from '@injectivelabs/token-metadata'
-import { TokenMeta, IbcToken, Token } from '@injectivelabs/token-metadata'
+import {
+  TokenMeta,
+  IbcToken,
+  Token,
+  canonicalChannelIds,
+} from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '../utils'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
+
+export const getTokenTypeFromDenom = (denom: string): TokenType => {
+  if (denom === INJ_DENOM) {
+    return TokenType.Native
+  }
+
+  if (denom.startsWith('peggy')) {
+    return TokenType.Erc20
+  }
+
+  if (denom.startsWith('ibc')) {
+    return TokenType.Ibc
+  }
+
+  if (denom.startsWith('share')) {
+    return TokenType.InsuranceFund
+  }
+
+  return TokenType.Cw20
+}
+
+export const checkIsIbcDenomCanonical = (path: string): boolean => {
+  const pathParts = path.replace('transfer/', '').split('/')
+
+  /** More than one channelId */
+  if (pathParts.length > 1) {
+    return false
+  }
+
+  const [channelId] = pathParts
+
+  return canonicalChannelIds.includes(channelId)
+}
 
 export const tokenMetaToToken = (
   tokenMeta: TokenMeta | undefined,
@@ -18,11 +57,11 @@ export const tokenMetaToToken = (
   return {
     denom,
     logo: tokenMeta.logo,
-    icon: tokenMeta.logo,
     symbol: tokenMeta.symbol,
     name: tokenMeta.name,
     decimals: tokenMeta.decimals,
     address: tokenMeta.address,
+    tokenType: getTokenTypeFromDenom(denom),
     coinGeckoId: tokenMeta.coinGeckoId,
   }
 }
@@ -56,7 +95,7 @@ export class Denom {
 
     return {
       baseDenom,
-      isIbc: true,
+      isCanonical: checkIsIbcDenomCanonical(path),
       channelId: path.replace('transfer/', ''),
       ...tokenMetaToToken(tokenMeta, denom),
     } as IbcToken
@@ -85,7 +124,7 @@ export class Denom {
       return {
         denom,
         name: denom,
-        icon: '',
+        tokenType: getTokenTypeFromDenom(denom),
         logo: '',
         symbol: '',
         decimals: 18,

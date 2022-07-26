@@ -1,6 +1,10 @@
 import { Network } from '@injectivelabs/networks'
 import { ChainId, Coin } from '@injectivelabs/ts-types'
-import { Denom, tokenMetaToToken } from '@injectivelabs/sdk-ts'
+import {
+  checkIsIbcDenomCanonical,
+  Denom,
+  tokenMetaToToken,
+} from '@injectivelabs/sdk-ts'
 import {
   BankBalances,
   UiBaseSpotMarket,
@@ -22,7 +26,7 @@ import {
   UiBridgeTransaction,
   UiBridgeTransactionWithToken,
 } from '../types'
-import { ibcTokens } from '@injectivelabs/token-metadata'
+import { ibcTokens, TokenType } from '@injectivelabs/token-metadata'
 import { Token, IbcToken } from '@injectivelabs/token-metadata'
 
 export class TokenService {
@@ -59,8 +63,8 @@ export class TokenService {
         ).getTokenMetaDataBySymbol()
 
         return {
-          isIbc: true,
           channelId: denomTraceFromCache.path.replace('transfer/', ''),
+          isCanonical: checkIsIbcDenomCanonical(denomTraceFromCache.path),
           ...denomTraceFromCache,
           ...tokenMetaToToken(tokenMeta, denom),
         } as IbcToken
@@ -306,6 +310,7 @@ export class TokenService {
       icon: 'injective-v3.svg',
       symbol: baseTokenSymbol,
       name: baseTokenSymbol,
+      tokenType: TokenType.Erc20 /* Todo */,
       decimals: 18,
       address: '',
       coinGeckoId: '',
@@ -362,7 +367,7 @@ export class TokenService {
         ...transaction,
         token: tokenMetaToToken(
           tokenFromSymbol,
-          tokenFromSymbol.address,
+          tokenFromSymbol.address!,
         ) as Token,
       }
     }
