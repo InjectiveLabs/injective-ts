@@ -4,8 +4,9 @@ import {
   ExecDataRepresentation,
 } from '../../ExecArgsBase'
 
-export declare namespace ExecArgsUpdateSpotVaultConfig {
+export declare namespace ExecArgsInstantiateSpotVault {
   export interface Params {
+    masterAddress: string
     marketId: string
     orderDensity: string
     balanceReduceRatio: string
@@ -31,10 +32,15 @@ export declare namespace ExecArgsUpdateSpotVaultConfig {
     firstThreshold: string
     secondThreshold: string
     reduceProportion: string
+    cw20CodeId: string
+    lpName: string
+    lpSymbol: string
+    cW20Label: string
     origin: string
   }
 
   export interface Data {
+    master_address: string
     market_id: string
     order_density: string
     balance_reduce_ratio: string
@@ -60,23 +66,28 @@ export declare namespace ExecArgsUpdateSpotVaultConfig {
     first_threshold: string
     second_threshold: string
     reduce_proportion: string
+    cw20_code_id: string
+    lp_name: string
+    lp_symbol: string
+    c_w20_label: string
   }
 }
 
-export default class ExecArgsUpdateSpotVaultConfig extends ExecArgsBase<
-  ExecArgsUpdateSpotVaultConfig.Params,
-  ExecArgsUpdateSpotVaultConfig.Data
+export default class ExecArgsInstantiateSpotVault extends ExecArgsBase<
+  ExecArgsInstantiateSpotVault.Params,
+  ExecArgsInstantiateSpotVault.Data
 > {
   static fromJSON(
-    params: ExecArgsUpdateSpotVaultConfig.Params,
-  ): ExecArgsUpdateSpotVaultConfig {
-    return new ExecArgsUpdateSpotVaultConfig(params)
+    params: ExecArgsInstantiateSpotVault.Params,
+  ): ExecArgsInstantiateSpotVault {
+    return new ExecArgsInstantiateSpotVault(params)
   }
 
-  toData(): ExecArgsUpdateSpotVaultConfig.Data {
+  toData(): ExecArgsInstantiateSpotVault.Data {
     const { params } = this
 
     return {
+      master_address: params.masterAddress,
       market_id: params.marketId,
       order_density: params.orderDensity,
       balance_reduce_ratio: params.balanceReduceRatio,
@@ -108,16 +119,20 @@ export default class ExecArgsUpdateSpotVaultConfig extends ExecArgsBase<
       first_threshold: params.firstThreshold,
       second_threshold: params.secondThreshold,
       reduce_proportion: params.reduceProportion,
+      cw20_code_id: params.cw20CodeId,
+      lp_name: params.lpName,
+      lp_symbol: params.lpSymbol,
+      c_w20_label: params.cW20Label,
     }
   }
 
-  toExecData(): ExecDataRepresentation<ExecArgsUpdateSpotVaultConfig.Data> {
+  toExecData(): ExecDataRepresentation<ExecArgsInstantiateSpotVault.Data> {
     const { params } = this
 
     return dataToExecData(this.toData(), {
       origin: params.origin,
-      name: 'UpdateSpotVaultConfig',
-      action: 'update_spot_vault_config',
+      name: 'InstantiateSpotVaultMsg',
+      action: 'instantiate_spot_vault_msg',
     })
   }
 }

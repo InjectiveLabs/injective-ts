@@ -12,7 +12,6 @@ export declare namespace ExecArgsUpdateDerivativeVaultConfig {
     reservationPriceSensitivityRatio: string
     reservationSpreadSensitivityRatio: string
     maxActiveCapitalUtilizationRatio: string
-    leveragedActiveCapitalToMaxPositionExposureRatio: string
     headChangeToleranceRatio: string
     headToTailDeviationRatio: string
     minProximityToLiquidation: string
@@ -35,7 +34,6 @@ export declare namespace ExecArgsUpdateDerivativeVaultConfig {
     reservation_price_sensitivity_ratio: string
     reservation_spread_sensitivity_ratio: string
     max_active_capital_utilization_ratio: string
-    leveraged_active_capital_to_max_position_exposure_ratio: string
     head_change_tolerance_ratio: string
     head_to_tail_deviation_ratio: string
     min_proximity_to_liquidation: string
@@ -74,8 +72,6 @@ export default class ExecArgsUpdateDerivativeVaultConfig extends ExecArgsBase<
         params.reservationSpreadSensitivityRatio,
       max_active_capital_utilization_ratio:
         params.maxActiveCapitalUtilizationRatio,
-      leveraged_active_capital_to_max_position_exposure_ratio:
-        params.leveragedActiveCapitalToMaxPositionExposureRatio,
       head_change_tolerance_ratio: params.headChangeToleranceRatio,
       head_to_tail_deviation_ratio: params.headToTailDeviationRatio,
       min_proximity_to_liquidation: params.minProximityToLiquidation,
