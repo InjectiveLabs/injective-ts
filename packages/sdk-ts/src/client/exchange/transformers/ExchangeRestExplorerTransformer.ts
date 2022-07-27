@@ -1,5 +1,6 @@
 import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
 import { Block, ExplorerValidator } from '../types/explorer'
+import { TokenType } from '@injectivelabs/token-metadata'
 import {
   BaseTransaction,
   BlockFromExplorerApiResponse,
@@ -240,6 +241,8 @@ export class ExchangeRestExplorerTransformer {
         logo: logo || '',
         address: balance.contract_address,
         coinGeckoId: name,
+        denom: '',
+        tokenType: TokenType.Cw20,
       },
     }
   }
