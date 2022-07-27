@@ -1,7 +1,9 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgInstantiateContract as BaseMsgInstantiateContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
 import { toUtf8 } from '../../../utils'
+import { InstantiateExecArgs } from '../../exec-args'
 import { MsgBase } from '../../MsgBase'
+import snakeCaseKeys from 'snakecase-keys'
 
 export declare namespace MsgInstantiateContract {
   export interface Params {
@@ -9,7 +11,7 @@ export declare namespace MsgInstantiateContract {
     admin: string
     codeId: string
     label: string
-    msg: Object
+    data: InstantiateExecArgs
     amount?: {
       denom: string
       amount: string
@@ -49,7 +51,7 @@ export default class MsgInstantiateContract extends MsgBase<
     const { params } = this
 
     const message = new BaseMsgInstantiateContract()
-    message.setMsg(toUtf8(JSON.stringify(params.msg)))
+    message.setMsg(toUtf8(JSON.stringify(params.data.toExecJSON())))
     message.setSender(params.sender)
     message.setAdmin(params.admin)
     message.setCodeId(Number(params.codeId))
@@ -77,12 +79,29 @@ export default class MsgInstantiateContract extends MsgBase<
   }
 
   toWeb3(): MsgInstantiateContract.Web3 {
+    const { params } = this
     const proto = this.toProto()
+    const message = {
+      ...snakeCaseKeys(proto.toObject()),
+    }
+
+    if (params.amount) {
+      // @ts-ignore
+      message['funds'] = params.amount
+    }
+
+    // @ts-ignore
+    delete message.funds_list
+    // @ts-ignore
+    delete message.fundsList
+
+    const messageWithProperKeys = snakeCaseKeys(message)
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract',
+      ...messageWithProperKeys,
       ...proto.toObject(),
-    }
+    } as unknown as MsgInstantiateContract.Web3
   }
 
   toDirectSign(): MsgInstantiateContract.DirectSign {
