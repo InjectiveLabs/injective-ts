@@ -32,6 +32,7 @@ import MsgUndelegate from './staking/msgs/MsgUndelegate'
 import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
 import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
 import MsgExec from './wasm/msgs/MsgExec'
+import MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract'
 import { MsgSubmitProposal } from './gov'
 
 export type Msgs =
@@ -66,6 +67,7 @@ export type Msgs =
   | MsgBeginRedelegate
   | MsgExecuteContract
   | MsgExec
+  | MsgInstantiateContract
   | MsgCreateBinaryOptionsLimitOrder
   | MsgCreateBinaryOptionsMarketOrder
   | MsgCancelBinaryOptionsOrder

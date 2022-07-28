@@ -18,12 +18,7 @@ export declare namespace ExecArgsUpdateSpotVaultConfig {
     minHeadToTailDeviationRatio: string
     headChangeToleranceRatio: string
     minHeadToMidDeviationRatio: string
-    minProximityToLiquidation: string
-    postReductionPercOfMaxPosition: string
     maxAvgOrdersPriceDeviationRatio: string
-    oracleVolatilityGroupSec: string
-    minOracleVolatilitySampleSize: string
-    emergencyOracleVolatilitySampleSize: string
     tradeVolatilityGroupCount: string
     tradeVolatilityGroupSec: string
     minTradeVolatilitySampleSize: string
@@ -47,12 +42,7 @@ export declare namespace ExecArgsUpdateSpotVaultConfig {
     min_head_to_tail_deviation_ratio: string
     head_change_tolerance_ratio: string
     min_head_to_mid_deviation_ratio: string
-    min_proximity_to_liquidation: string
-    post_reduction_perc_of_max_position: string
     max_avg_orders_price_deviation_ratio: string
-    oracle_volatility_group_sec: string
-    min_oracle_volatility_sample_size: string
-    emergency_oracle_volatility_sample_size: string
     trade_volatility_group_count: string
     trade_volatility_group_sec: string
     min_trade_volatility_sample_size: string
@@ -92,15 +82,8 @@ export default class ExecArgsUpdateSpotVaultConfig extends ExecArgsBase<
       min_head_to_tail_deviation_ratio: params.minHeadToTailDeviationRatio,
       head_change_tolerance_ratio: params.headChangeToleranceRatio,
       min_head_to_mid_deviation_ratio: params.minHeadToMidDeviationRatio,
-      min_proximity_to_liquidation: params.minProximityToLiquidation,
-      post_reduction_perc_of_max_position:
-        params.postReductionPercOfMaxPosition,
       max_avg_orders_price_deviation_ratio:
         params.maxAvgOrdersPriceDeviationRatio,
-      oracle_volatility_group_sec: params.oracleVolatilityGroupSec,
-      min_oracle_volatility_sample_size: params.minOracleVolatilitySampleSize,
-      emergency_oracle_volatility_sample_size:
-        params.emergencyOracleVolatilitySampleSize,
       trade_volatility_group_count: params.tradeVolatilityGroupCount,
       trade_volatility_group_sec: params.tradeVolatilityGroupSec,
       min_trade_volatility_sample_size: params.minTradeVolatilitySampleSize,

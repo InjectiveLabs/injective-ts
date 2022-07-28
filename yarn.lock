@@ -1916,10 +1916,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@^1.8.0-rc4":
-  version "1.8.0-rc4"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.8.0-rc4.tgz#fab2d66f3ad6f2afbe13d15a59e54a1c2d43379c"
-  integrity sha512-ENelKHe+ASfq4t0biA3RjHREEaqZTql6k+01wSXOjDJ+O03KhT1xcE4Bm2nvC2hGUnUhUqxCWStC1gpKaCFojg==
+"@injectivelabs/chain-api@^1.8.1-rc4":
+  version "1.8.1-rc4"
+  resolved "https://registry.npmjs.org/@injectivelabs/chain-api/-/chain-api-1.8.1-rc4.tgz#68ae3a7003b18421eb8d4e817a05888515446ac4"
+  integrity sha512-CLjvHXU17HvidF/6KDzASESotkBUj1ljjm6Nqf5aq47RLbt5VMvDc+JgGAB8Iu9DOvZFfv04/fTDX8RFh3qApA==
   dependencies:
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"

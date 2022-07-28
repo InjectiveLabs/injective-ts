@@ -44,8 +44,6 @@ export default class MsgExecuteContract extends MsgBase<
   toProto(): MsgExecuteContract.Proto {
     const { params } = this
 
-    console.log(params)
-
     const message = new BaseMsgExecuteContract()
     message.setMsg(toUtf8(JSON.stringify(params.msg)))
     message.setSender(params.sender)

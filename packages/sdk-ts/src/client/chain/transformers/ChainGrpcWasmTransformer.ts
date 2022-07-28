@@ -48,7 +48,6 @@ export class ChainGrpcWasmTransformer {
     contractInfo: grpcContractInfo,
   ): ContractInfo {
     const absoluteTxPosition = contractInfo.getCreated()
-    const extension = contractInfo.getExtension()
 
     return {
       codeId: contractInfo.getCodeId(),
@@ -62,10 +61,6 @@ export class ChainGrpcWasmTransformer {
         txIndex: absoluteTxPosition ? absoluteTxPosition.getTxIndex() : 0,
       },
       ibcPortId: contractInfo.getIbcPortId(),
-      extension: {
-        typeUrl: extension ? extension.getTypeUrl() : '',
-        value: extension ? extension.getValue() : '',
-      },
     }
   }
 
