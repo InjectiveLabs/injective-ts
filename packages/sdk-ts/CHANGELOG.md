@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.60...@injectivelabs/sdk-ts@1.0.61) (2022-07-28)
+
+
+### Features
+
+* add support for CW20 balance ([0eeb3b8](https://github.com/InjectiveLabs/injective-ts/commit/0eeb3b80c5319db10d77c31b286b69b654a155d1))
+
+
+
+
+
 ## [1.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.59...@injectivelabs/sdk-ts@1.0.60) (2022-07-27)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
