@@ -358,4 +358,28 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
       throw new HttpException(error.message)
     }
   }
+
+  async fetchCW20BalancesNoThrow(
+    address: string,
+  ): Promise<CW20BalanceWithToken[]> {
+    try {
+      const response = (await this.client.get(
+        `/wasm/${address}/cw20-balance`,
+      )) as ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
+
+      if (response.data.length === 0) {
+        return []
+      }
+
+      return response.data.map(
+        ExchangeRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
+      )
+    } catch (error: any) {
+      if (error.message.includes(404) || error.message.includes(500)) {
+        return []
+      }
+
+      throw new HttpException(error.message)
+    }
+  }
 }
