@@ -137,7 +137,7 @@ import {
   DEFAULT_STD_FEE,
 } from "@injectivelabs/sdk-ts";
 import { createTransaction } from "@injectivelabs/tx-ts";
-import { TxService, TxClient } from "@injectivelabs/tx-ts/dist/client";
+import { TxGrpcClient, TxClient } from "@injectivelabs/tx-ts/dist/client";
 import { BigNumberInBase } from "@injectivelabs/utils";
 
 /** MsgSend Example */
@@ -191,7 +191,7 @@ import { BigNumberInBase } from "@injectivelabs/utils";
   /** Calculate hash of the transaction */
   console.log(`Transaction Hash: ${await TxClient.hash(txRaw)}`);
 
-  const txService = new TxService({
+  const txService = new TxGrpcClient({
     txRaw,
     endpoint: network.sentryGrpcApi,
   });
