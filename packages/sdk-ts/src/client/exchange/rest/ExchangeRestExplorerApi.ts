@@ -1,4 +1,4 @@
-import { TokenType } from '@injectivelabs/token-metadata'
+import BaseRestConsumer from '../../BaseRestConsumer'
 import {
   BlockFromExplorerApiResponse,
   ContractExplorerApiResponse,
@@ -355,24 +355,28 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         ExchangeRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
       )
     } catch (error: any) {
+      throw new HttpException(error.message)
+    }
+  }
+
+  async fetchCW20BalancesNoThrow(
+    address: string,
+  ): Promise<CW20BalanceWithToken[]> {
+    try {
+      const response = (await this.client.get(
+        `/wasm/${address}/cw20-balance`,
+      )) as ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
+
+      if (response.data.length === 0) {
+        return []
+      }
+
+      return response.data.map(
+        ExchangeRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
+      )
+    } catch (error: any) {
       if (error.message.includes(404) || error.message.includes(500)) {
-        return [
-          {
-            contractAddress: '',
-            account: '',
-            balance: '',
-            updatedAt: 0,
-            token: {
-              name: '',
-              logo: '',
-              symbol: '',
-              decimals: 0,
-              coinGeckoId: '',
-              denom: '',
-              tokenType: TokenType.Native,
-            },
-          },
-        ]
+        return []
       }
 
       throw new HttpException(error.message)
