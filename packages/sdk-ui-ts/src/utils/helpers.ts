@@ -19,7 +19,6 @@ export const getTokenLogoWithVendorPathPrefix = (image: string) => {
 
 export const getTokenLogoFromTokenType = (token: Token) => {
   const { tokenType, logo } = token
-
   const { isCanonical } = token as IbcToken
 
   const isIbcOrEthTokenWithVendorLogo =

@@ -1,4 +1,4 @@
-import BaseRestConsumer from '../../BaseRestConsumer'
+import { TokenType } from '@injectivelabs/token-metadata'
 import {
   BlockFromExplorerApiResponse,
   ContractExplorerApiResponse,
@@ -355,6 +355,26 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         ExchangeRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
       )
     } catch (error: any) {
+      if (error.message.includes(404) || error.message.includes(500)) {
+        return [
+          {
+            contractAddress: '',
+            account: '',
+            balance: '',
+            updatedAt: 0,
+            token: {
+              name: '',
+              logo: '',
+              symbol: '',
+              decimals: 0,
+              coinGeckoId: '',
+              denom: '',
+              tokenType: TokenType.Native,
+            },
+          },
+        ]
+      }
+
       throw new HttpException(error.message)
     }
   }
