@@ -3,8 +3,6 @@ import {
   TokenMetaUtilFactory,
   TokenMetaUtil,
   TokenType,
-} from '@injectivelabs/token-metadata'
-import {
   TokenMeta,
   IbcToken,
   Token,

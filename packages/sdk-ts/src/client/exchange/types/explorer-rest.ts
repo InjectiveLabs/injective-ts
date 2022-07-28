@@ -186,4 +186,25 @@ export interface ContractTransactionExplorerApiResponse {
   ]
 }
 
+export interface CW20BalanceExplorerApiResponse {
+  contract_address: string
+  account: string
+  balance: string
+  updated_at: number
+  cw20_metadata: {
+    token_info: {
+      name: string
+      symbol: string
+      decimals: number
+      total_supply: string
+    }
+    marketing_info: {
+      project?: string
+      description?: string
+      logo?: string
+      marketing?: string
+    }
+  }
+}
+
 export { BaseTransaction }
