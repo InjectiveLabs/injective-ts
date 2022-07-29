@@ -52,7 +52,7 @@ export default class MsgInstantiateContract extends MsgBase<
 
     const message = new BaseMsgInstantiateContract()
 
-    message.setMsg(toUtf8(JSON.stringify(params.data.toJSON())))
+    message.setMsg(toUtf8(params.data.toJSON()))
     message.setSender(params.sender)
     message.setAdmin(params.admin)
     message.setCodeId(Number(params.codeId))

@@ -27,10 +27,10 @@ export declare namespace ExecArgsInstantiateSpotVault {
     firstThreshold: string
     secondThreshold: string
     reduceProportion: string
-    cw20CodeId: string
+    cw20CodeId: number
     lpName: string
     lpSymbol: string
-    cW20Label: string
+    cw20Label: string
     origin: string
   }
 
@@ -56,10 +56,10 @@ export declare namespace ExecArgsInstantiateSpotVault {
     first_threshold: string
     second_threshold: string
     reduce_proportion: string
-    cw20_code_id: string
+    cw20_code_id: number
     lp_name: string
     lp_symbol: string
-    c_w20_label: string
+    cw20_label: string
   }
 }
 
@@ -105,7 +105,7 @@ export default class ExecArgsInstantiateSpotVault extends ExecArgsBase<
       cw20_code_id: params.cw20CodeId,
       lp_name: params.lpName,
       lp_symbol: params.lpSymbol,
-      c_w20_label: params.cW20Label,
+      cw20_label: params.cw20Label,
     }
   }
 

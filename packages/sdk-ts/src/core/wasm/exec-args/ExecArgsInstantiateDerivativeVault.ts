@@ -24,10 +24,10 @@ export declare namespace ExecArgsInstantiateDerivativeVault {
     minTradeVolatilitySampleSize: string
     defaultMidPriceVolatilityRatio: string
     lastValidMarkPrice: string
-    cw20CodeId: string
+    cw20CodeId: number
     lpName: string
     lpSymbol: string
-    cW20Label: string
+    cw20Label: string
     origin: string
   }
 
@@ -50,10 +50,10 @@ export declare namespace ExecArgsInstantiateDerivativeVault {
     min_trade_volatility_sample_size: string
     default_mid_price_volatility_ratio: string
     last_valid_mark_price: string
-    cw20_code_id: string
+    cw20_code_id: number
     lp_name: string
     lp_symbol: string
-    c_w20_label: string
+    cw20_label: string
   }
 }
 
@@ -97,7 +97,7 @@ export default class ExecArgsInstantiateDerivativeVault extends ExecArgsBase<
       cw20_code_id: params.cw20CodeId,
       lp_name: params.lpName,
       lp_symbol: params.lpSymbol,
-      c_w20_label: params.cW20Label,
+      cw20_label: params.cw20Label,
     }
   }
 
