@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.8...@injectivelabs/utils@1.0.9) (2022-07-30)
+
+
+### Bug Fixes
+
+* bignumber conversion ([7559a3c](https://github.com/InjectiveLabs/injective-ts/commit/7559a3c82bd0acc427d3c0528e1ae8b8ef28cced))
+
+
+
+
+
 ## [1.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.7...@injectivelabs/utils@1.0.8) (2022-07-30)
 
 
