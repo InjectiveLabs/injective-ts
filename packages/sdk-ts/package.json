@@ -45,6 +45,7 @@
     "@types/google-protobuf": "^3.15.5",
     "bech32": "^2.0.0",
     "bip39": "^3.0.4",
+    "eth-crypto": "^2.3.0",
     "ethereumjs-abi": "^0.6.8",
     "ethereumjs-util": "^7.1.4",
     "ethers": "^5.6.4",

@@ -1,6 +1,6 @@
-// eslint-disable-next-line import/no-cycle
-import BigNumberInBase from './BigNumberInBase'
+import type BigNumberInBase from './BigNumberInBase'
 import BigNumber from './BigNumber'
+import { bigNumberWeiToBase } from './utils'
 
 export default class BigNumberInWei extends BigNumber {
   static make(number: BigNumber.Value): BigNumberInWei {
@@ -36,6 +36,6 @@ export default class BigNumberInWei extends BigNumber {
   }
 
   toBase(decimals = 18): BigNumberInBase {
-    return new BigNumberInBase(super.dividedBy(new BigNumber(10).pow(decimals)))
+    return bigNumberWeiToBase(this, decimals)
   }
 }

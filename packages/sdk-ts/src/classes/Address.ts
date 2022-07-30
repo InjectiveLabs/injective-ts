@@ -57,8 +57,9 @@ export class Address {
     hex: string,
     prefix: string = BECH32_ADDR_ACC_PREFIX,
   ): Address {
+    const addressHex = hex.startsWith('0x') ? hex : `0x${hex}`
     const addressBuffer = EthereumUtilsAddress.fromString(
-      hex.toString(),
+      addressHex.toString(),
     ).toBuffer()
     const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
 
