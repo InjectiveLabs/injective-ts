@@ -6,16 +6,20 @@ import { toBuffer } from 'ethereumjs-util'
 import secp256k1 from 'secp256k1'
 import { Address } from '../classes'
 import EthCrypto from 'eth-crypto'
-const keccak256 = require('js-sha3').keccak256
+import { keccak256 } from 'js-sha3'
 
 export class PublicKey {
   private type: string
 
   private key: Uint8Array
 
-  private constructor(key: Uint8Array, type: string) {
+  private constructor(key: Uint8Array, type?: string) {
     this.key = key
-    this.type = type
+    this.type = type || '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
+  }
+
+  static fromBase64(publicKey: string): PublicKey {
+    return new PublicKey(Buffer.from(publicKey, 'base64'))
   }
 
   static fromHex(privateKey: string | Uint8Array): PublicKey {

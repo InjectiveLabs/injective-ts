@@ -26,3 +26,13 @@ it('the correct Injective address is derived from a PublicKey', () => {
     'inj1hkhdaj2a2clmq5jq6mspsggqs32vynpk228q3r',
   )
 })
+
+it('the correct PublicKey is derived from a public key', () => {
+  const publicKey = PublicKey.fromBase64(
+    'A13cTVZCuTg+Lwh7LuiLcgf2KG68nzEOnfFAbszCwxgT',
+  )
+
+  expect(publicKey.toBase64()).toEqual(
+    'A13cTVZCuTg+Lwh7LuiLcgf2KG68nzEOnfFAbszCwxgT',
+  )
+})
