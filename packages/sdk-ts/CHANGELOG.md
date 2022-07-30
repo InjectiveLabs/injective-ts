@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.65...@injectivelabs/sdk-ts@1.0.66) (2022-07-30)
+
+
+### Features
+
+* added fromBase64 init for PublicKey ([77b6104](https://github.com/InjectiveLabs/injective-ts/commit/77b610476d75096176605e6c73729e0f7163dbcc))
+
+
+
+
+
 ## [1.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.64...@injectivelabs/sdk-ts@1.0.65) (2022-07-30)
 
 
