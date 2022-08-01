@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.19...@injectivelabs/tx-ts@1.0.20) (2022-08-01)
+
+
+### Features
+
+* multiple messages support ([1fc425b](https://github.com/InjectiveLabs/injective-ts/commit/1fc425ba3182cee4d342b32c329dafc8a27cdac1))
+
+
+
+
+
 ## [1.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.18...@injectivelabs/tx-ts@1.0.19) (2022-07-30)
 
 **Note:** Version bump only for package @injectivelabs/tx-ts
