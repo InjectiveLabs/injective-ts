@@ -16,6 +16,10 @@ import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsec
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { createAny, createAnyMessage } from './utils'
 
+export type MsgArg = {
+  type: string
+  message: any
+}
 export const SIGN_DIRECT = SignMode.SIGN_MODE_DIRECT
 
 export const getPublicKey = ({
@@ -48,19 +52,20 @@ export const createBody = ({
   message,
   memo,
 }: {
-  message: {
-    type: string
-    message: any
-  }
+  message: MsgArg | MsgArg[]
   memo: string
 }) => {
+  const messages = Array.isArray(message) ? message : [message]
+
   const txBody = new TxBody()
-  txBody.setMessagesList([
-    createAnyMessage({
-      value: message.message,
-      type: message.type,
-    }),
-  ])
+  txBody.setMessagesList(
+    messages.map((message) =>
+      createAnyMessage({
+        value: message.message,
+        type: message.type,
+      }),
+    ),
+  )
   txBody.setMemo(memo)
 
   return txBody
@@ -154,10 +159,7 @@ export const createTransaction = ({
   accountNumber,
   chainId,
 }: {
-  message: {
-    type: string
-    message: any
-  }
+  message: MsgArg | MsgArg[]
   memo: string
   fee: StdFee
   pubKey: string
