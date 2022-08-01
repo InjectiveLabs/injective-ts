@@ -100,12 +100,12 @@ export default class MsgExec extends MsgBase<
 
     if (params.subaccountDeposits) {
       // @ts-ignore
-      message['deposit_funds'] = params.subaccountDeposits
+      message['deposit_funds'] = [params.subaccountDeposits]
     }
 
     if (params.bankFunds) {
       // @ts-ignore
-      message['bank_funds'] = params.bankFunds
+      message['bank_funds'] = [params.bankFunds]
     }
 
     // @ts-ignore
