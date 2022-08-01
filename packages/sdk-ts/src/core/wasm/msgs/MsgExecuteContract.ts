@@ -9,6 +9,7 @@ export declare namespace MsgExecuteContract {
       denom: string
       amount: string
     }
+    action: string
     sender: string
     contractAddress: string
     msg: Object
@@ -45,7 +46,9 @@ export default class MsgExecuteContract extends MsgBase<
     const { params } = this
 
     const message = new BaseMsgExecuteContract()
-    message.setMsg(toUtf8(JSON.stringify(params.msg)))
+    const msg = { [params.action]: params.msg }
+
+    message.setMsg(toUtf8(JSON.stringify(msg)))
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
 
