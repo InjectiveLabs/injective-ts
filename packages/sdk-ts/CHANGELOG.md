@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.67...@injectivelabs/sdk-ts@1.0.68) (2022-08-01)
+
+
+### Bug Fixes
+
+* instantiate vault cw20 code id typing ([f2dbd5e](https://github.com/InjectiveLabs/injective-ts/commit/f2dbd5e83ea4a1519edc90486708e12193775b27))
+* msgExec cannot unmarshal object into Go value of type []json.RawMessage error ([146d17e](https://github.com/InjectiveLabs/injective-ts/commit/146d17ea725eba2835776598232caa00dacc8651))
+
+
+
+
+
 ## [1.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.66...@injectivelabs/sdk-ts@1.0.67) (2022-07-30)
 
 
