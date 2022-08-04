@@ -13,13 +13,13 @@ export class TokenMetaUtil {
 
   getMetaBySymbol(symbol: string): TokenMeta | undefined {
     const { tokens: tokensBySymbol } = this
-    const erc20Symbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
+    const tokenSymbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
 
-    if (!tokensBySymbol[erc20Symbol]) {
+    if (!tokensBySymbol[tokenSymbol]) {
       return
     }
 
-    return tokensBySymbol[erc20Symbol]
+    return tokensBySymbol[tokenSymbol]
   }
 
   getMetaByAddress(address: string): TokenMeta | undefined {
