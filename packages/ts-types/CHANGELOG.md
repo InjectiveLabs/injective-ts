@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.5...@injectivelabs/ts-types@1.0.6) (2022-08-05)
+
+
+### Bug Fixes
+
+* missing secret chainId ([641e7b9](https://github.com/InjectiveLabs/injective-ts/commit/641e7b9e88102f153928315aac8d24267d6511a8))
+
+
+
+
+
 ## [1.0.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.4...@injectivelabs/ts-types@1.0.5) (2022-07-19)
 
 
