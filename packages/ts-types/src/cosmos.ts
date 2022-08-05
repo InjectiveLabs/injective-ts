@@ -22,6 +22,7 @@ export enum CosmosChainId {
   Axelar = 'axelar-dojo-1',
   Evmos = 'evmos_9001-2',
   Persistence = 'core-1',
+  Secret = 'secret-4',
 }
 
 export enum TestnetCosmosChainId {
