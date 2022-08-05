@@ -11,8 +11,8 @@ export default {
   'channel-41': { chainA: 'Persistence', chainB: 'Injective' },
   'channel-76': { chainA: 'Injective', chainB: 'Chihuahua' },
   'channel-12': { chainA: 'Chihuahua', chainB: 'Injective' },
-  'channel-74': { chainA: 'Injective', chainB: 'Secret' },
-  'channel-7': { chainA: 'Secret', chainB: 'Injective' },
+  'channel-88': { chainA: 'Injective', chainB: 'Secret Network' },
+  'channel-23': { chainA: 'Secret Network', chainB: 'Injective' },
   'channel-78': { chainA: 'Injective', chainB: 'Juno' },
   'channel-59': { chainA: 'Juno', chainB: 'Injective' },
 }

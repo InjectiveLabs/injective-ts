@@ -74,6 +74,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://tm.persistence.injective.network',
         rest: 'https://lcd.persistence.injective.network',
       }
+    case CosmosChainId.Secret:
+      return {
+        rpc: 'https://tm.secret.injective.network',
+        rest: 'https://lcd.secret.injective.network',
+      }
     default:
       throw new Error(`Endpoints for ${chainId} not found`)
   }
