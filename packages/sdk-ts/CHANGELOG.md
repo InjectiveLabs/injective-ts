@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.69...@injectivelabs/sdk-ts@1.0.70) (2022-08-06)
+
+
+### Features
+
+* indexer migration ([351320b](https://github.com/InjectiveLabs/injective-ts/commit/351320b46ac7244af44728db7b67472e6b9a8105))
+
+
+
+
+
 ## [1.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.68...@injectivelabs/sdk-ts@1.0.69) (2022-08-05)
 
 
