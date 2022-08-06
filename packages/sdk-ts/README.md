@@ -9,7 +9,7 @@ _Accessing decentralized finance through TypeScript (for Web and Node environmen
 `@injectivelabs/sdk-ts` is a TypeScript SDK for writing applications on top of the Injective chain in both a Node.js and a browser environment.
 
 <p align="center">
-  <a href="https://github.com/injectivelabs/sdk-ts" target="_blank"><strong>Documentation</strong></a>
+  <a href="https://github.com/InjectiveLabs/injective-ts/tree/master/packages/sdk-ts" target="_blank"><strong>Documentation</strong></a>
   ·
   <a href="https://github.com/InjectiveLabs/sdk-ts-examples" target="_blank">Examples</a>
   ·
@@ -17,7 +17,7 @@ _Accessing decentralized finance through TypeScript (for Web and Node environmen
   ·
   <a href="https://www.npmjs.com/package/@injectivelabs/sdk-ts" target="_blank">NPM Package</a>
   ·
-  <a href="https://github.com/injectivelabs/sdk-ts" target="_blank">GitHub</a>
+  <a href="https://github.com/InjectiveLabs/injective-ts/tree/master/packages/sdk-ts" target="_blank">GitHub</a>
 </p>
 
 ### ✨ Features
@@ -48,7 +48,7 @@ There are two pieces of the `sdk-ts` - **querying a data source** and **making t
 There are 2 data sources that can be accessed through the `sdk-ts`:
 
 - The Injective chain itself through a sentry node,
-- The Exchange API indexer (indexer of events from the Injective chain to a MongoDB),
+- The Indexer API (indexer of events from the Injective chain to a MongoDB),
 
 For each of the data sources there are two ways that they can be queried:
 
@@ -107,19 +107,19 @@ console.log(await chainGrpcClient.bank.fetchBalance({ injectiveAddress, denom })
 
 ```ts
 // Importing only the needed API
-import { ExchangeGrpcDerivativesApi, Network } from '@injectivelabs/sdk-ts'
+import { IndexerGrpcDerivativesApi, Network } from '@injectivelabs/sdk-ts'
 
 const network = Network.testnet()
-const exchangeGrpcDerivativesApi = new ExchangeGrpcDerivativesApi(network.exchangeApi)
+const exchangeGrpcDerivativesApi = new IndexerGrpcDerivativesApi(network.exchangeApi)
 console.log(await exchangeGrpcDerivativesApi.fetchMarkets())
 ```
 
 ```ts
 // Using the client
-import { ExchangeGrpcClient, Network } from '@injectivelabs/sdk-ts'
+import { IndexerGrpcClient, Network } from '@injectivelabs/sdk-ts'
 
 const network = Network.testnet()
-const exchangeGrpcClient = new ExchangeGrpcClient(network.exchangeApi)
+const exchangeGrpcClient = new IndexerGrpcClient(network.exchangeApi)
 console.log(await exchangeGrpcClient.derivatives.fetchMarkets())
 ```
 
@@ -214,12 +214,11 @@ import { BigNumberInBase } from "@injectivelabs/utils";
 
 ### Streaming Data
 
-- Streaming users subaccount balances from the exchange API
+- Streaming users subaccount balances from the indexer API
 
 ```ts
 import { getNetworkInfo, Network } from "@injectivelabs/networks";
-import { protoObjectToJson } from "@injectivelabs/sdk-ts";
-import { ExchangeGrpcStreamClient } from "@injectivelabs/sdk-ts/dist/client/exchange/ExchangeGrpcStreamClient";
+import { IndexerGrpcStreamClient } from "@injectivelabs/sdk-ts/dist/client/indexer/IndexerGrpcStreamClient";
 
 (async () => {
   const network = getNetworkInfo(Network.TestnetK8s);
@@ -227,14 +226,14 @@ import { ExchangeGrpcStreamClient } from "@injectivelabs/sdk-ts/dist/client/exch
   const subaccountId =
     "0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000000";
 
-  const exchangeClient = new ExchangeGrpcStreamClient(
+  const exchangeClient = new IndexerGrpcStreamClient(
     network.exchangeApi
   );
 
   await exchangeClient.account.streamSubaccountBalance({
     subaccountId,
     callback: (subaccountBalance) => {
-      console.log(protoObjectToJson(subaccountBalance));
+      console.log(subaccountBalance);
     },
     onEndCallback: (status) => {
       console.log("Stream has ended with status: " + status);
