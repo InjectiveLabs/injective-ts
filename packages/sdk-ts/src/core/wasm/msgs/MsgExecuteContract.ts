@@ -24,7 +24,7 @@ export declare namespace MsgExecuteContract {
     '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
   }
 
-  export interface Web3 extends BaseMsgExecuteContract.AsObject {
+  export interface Amino extends BaseMsgExecuteContract.AsObject {
     '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
   }
 
@@ -35,7 +35,7 @@ export default class MsgExecuteContract extends MsgBase<
   MsgExecuteContract.Params,
   MsgExecuteContract.Data,
   MsgExecuteContract.Proto,
-  MsgExecuteContract.Web3,
+  MsgExecuteContract.Amino,
   MsgExecuteContract.DirectSign
 > {
   static fromJSON(params: MsgExecuteContract.Params): MsgExecuteContract {
@@ -73,7 +73,7 @@ export default class MsgExecuteContract extends MsgBase<
     }
   }
 
-  toWeb3(): MsgExecuteContract.Web3 {
+  toAmino(): MsgExecuteContract.Amino {
     const proto = this.toProto()
 
     return {

@@ -18,7 +18,7 @@ export declare namespace MsgCancelSpotOrder {
     '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder'
   }
 
-  export interface Web3 extends BaseMsgCancelSpotOrder.AsObject {
+  export interface Amino extends BaseMsgCancelSpotOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder'
   }
 
@@ -29,7 +29,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
   MsgCancelSpotOrder.Params,
   MsgCancelSpotOrder.Data,
   MsgCancelSpotOrder.Proto,
-  MsgCancelSpotOrder.Web3,
+  MsgCancelSpotOrder.Amino,
   MsgCancelSpotOrder.DirectSign
 > {
   static fromJSON(params: MsgCancelSpotOrder.Params): MsgCancelSpotOrder {
@@ -57,7 +57,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCancelSpotOrder.Web3 {
+  toAmino(): MsgCancelSpotOrder.Amino {
     const proto = this.toProto()
 
     return {

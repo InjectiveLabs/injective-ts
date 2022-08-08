@@ -29,7 +29,7 @@ export declare namespace MsgCreateInsuranceFund {
     '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund'
   }
 
-  export interface Web3 extends BaseMsgCreateInsuranceFund.AsObject {
+  export interface Amino extends BaseMsgCreateInsuranceFund.AsObject {
     '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund'
   }
 
@@ -40,7 +40,7 @@ export default class MsgCreateInsuranceFund extends MsgBase<
   MsgCreateInsuranceFund.Params,
   MsgCreateInsuranceFund.Data,
   MsgCreateInsuranceFund.Proto,
-  MsgCreateInsuranceFund.Web3,
+  MsgCreateInsuranceFund.Amino,
   MsgCreateInsuranceFund.DirectSign
 > {
   static fromJSON(
@@ -78,7 +78,7 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCreateInsuranceFund.Web3 {
+  toAmino(): MsgCreateInsuranceFund.Amino {
     const proto = this.toProto()
 
     return {

@@ -21,7 +21,7 @@ export declare namespace MsgBeginRedelegate {
     '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate'
   }
 
-  export interface Web3 extends BaseMsgBeginRedelegate.AsObject {
+  export interface Amino extends BaseMsgBeginRedelegate.AsObject {
     '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate'
   }
 
@@ -32,7 +32,7 @@ export default class MsgBeginRedelegate extends MsgBase<
   MsgBeginRedelegate.Params,
   MsgBeginRedelegate.Data,
   MsgBeginRedelegate.Proto,
-  MsgBeginRedelegate.Web3,
+  MsgBeginRedelegate.Amino,
   MsgBeginRedelegate.DirectSign
 > {
   static fromJSON(params: MsgBeginRedelegate.Params): MsgBeginRedelegate {
@@ -64,7 +64,7 @@ export default class MsgBeginRedelegate extends MsgBase<
     }
   }
 
-  toWeb3(): MsgBeginRedelegate.Web3 {
+  toAmino(): MsgBeginRedelegate.Amino {
     const proto = this.toProto()
 
     return {

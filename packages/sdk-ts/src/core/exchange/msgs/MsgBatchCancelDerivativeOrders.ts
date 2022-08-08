@@ -24,7 +24,7 @@ export declare namespace MsgBatchCancelDerivativeOrders {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
   }
 
-  export interface Web3 extends BaseMsgBatchCancelDerivativeOrders.AsObject {
+  export interface Amino extends BaseMsgBatchCancelDerivativeOrders.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
   }
 
@@ -35,7 +35,7 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
   MsgBatchCancelDerivativeOrders.Params,
   MsgBatchCancelDerivativeOrders.Data,
   MsgBatchCancelDerivativeOrders.Proto,
-  MsgBatchCancelDerivativeOrders.Web3,
+  MsgBatchCancelDerivativeOrders.Amino,
   MsgBatchCancelDerivativeOrders.DirectSign
 > {
   static fromJSON(
@@ -72,7 +72,7 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
     }
   }
 
-  toWeb3(): MsgBatchCancelDerivativeOrders.Web3 {
+  toAmino(): MsgBatchCancelDerivativeOrders.Amino {
     const proto = this.toProto()
     const orderData = proto
       .getDataList()
@@ -84,7 +84,7 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
         sender: proto.getSender(),
         data: [...orderData],
       }),
-    } as unknown as MsgBatchCancelDerivativeOrders.Web3
+    } as unknown as MsgBatchCancelDerivativeOrders.Amino
   }
 
   toDirectSign(): MsgBatchCancelDerivativeOrders.DirectSign {

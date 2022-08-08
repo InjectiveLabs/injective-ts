@@ -24,7 +24,8 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders'
   }
 
-  export interface Web3 extends BaseMsgBatchCancelBinaryOptionsOrders.AsObject {
+  export interface Amino
+    extends BaseMsgBatchCancelBinaryOptionsOrders.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders'
   }
 
@@ -35,7 +36,7 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
   MsgBatchCancelBinaryOptionsOrders.Params,
   MsgBatchCancelBinaryOptionsOrders.Data,
   MsgBatchCancelBinaryOptionsOrders.Proto,
-  MsgBatchCancelBinaryOptionsOrders.Web3,
+  MsgBatchCancelBinaryOptionsOrders.Amino,
   MsgBatchCancelBinaryOptionsOrders.DirectSign
 > {
   static fromJSON(
@@ -72,7 +73,7 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
     }
   }
 
-  toWeb3(): MsgBatchCancelBinaryOptionsOrders.Web3 {
+  toAmino(): MsgBatchCancelBinaryOptionsOrders.Amino {
     const proto = this.toProto()
     const orderData = proto
       .getDataList()
@@ -84,7 +85,7 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
         sender: proto.getSender(),
         data: [...orderData],
       }),
-    } as unknown as MsgBatchCancelBinaryOptionsOrders.Web3
+    } as unknown as MsgBatchCancelBinaryOptionsOrders.Amino
   }
 
   toDirectSign(): MsgBatchCancelBinaryOptionsOrders.DirectSign {

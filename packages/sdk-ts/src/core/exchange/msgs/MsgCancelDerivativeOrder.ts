@@ -18,7 +18,7 @@ export declare namespace MsgCancelDerivativeOrder {
     '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder'
   }
 
-  export interface Web3 extends BaseMsgCancelDerivativeOrder.AsObject {
+  export interface Amino extends BaseMsgCancelDerivativeOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder'
   }
 
@@ -29,7 +29,7 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
   MsgCancelDerivativeOrder.Params,
   MsgCancelDerivativeOrder.Data,
   MsgCancelDerivativeOrder.Proto,
-  MsgCancelDerivativeOrder.Web3,
+  MsgCancelDerivativeOrder.Amino,
   MsgCancelDerivativeOrder.DirectSign
 > {
   static fromJSON(
@@ -59,7 +59,7 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCancelDerivativeOrder.Web3 {
+  toAmino(): MsgCancelDerivativeOrder.Amino {
     const proto = this.toProto()
 
     return {

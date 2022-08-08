@@ -67,7 +67,8 @@ Every message extends the `MsgBase` interface, which has couple of mapping funct
 - `toData` -> Converts the Message to a simple Object representation,
 - `toProto` -> Returns a proto representation of the Message,
 - `toDirectSign` -> Converts the Message to a proto representation (ready to be used in the normal Cosmos way of handling transactions),
-- `toWeb3` -> Converts the Message to a web3 representation + type (ready to be used in the Ethereum way of handling transactions using EIP712 typed data),
+- `toAmino` -> Converts the Message to a amino representation + type (usually used to covert the message to EIP712 typed data to be signable in Ethereum native wallets),
+- `toWeb3` -> same as toAmino (deprecated)
 
 There are also some utility classes and functions that are exposed from the package. There is also a `local` folder that exposes some utility classes that can be used to make developers life easier in a Node environment.
 

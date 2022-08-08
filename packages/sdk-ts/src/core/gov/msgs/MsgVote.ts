@@ -18,7 +18,7 @@ export declare namespace MsgVote {
     '@type': '/cosmos.gov.v1beta1.MsgVote'
   }
 
-  export interface Web3 extends BaseMsgVote.AsObject {
+  export interface Amino extends BaseMsgVote.AsObject {
     '@type': '/cosmos.gov.v1beta1.MsgVote'
   }
 
@@ -29,7 +29,7 @@ export default class MsgVote extends MsgBase<
   MsgVote.Params,
   MsgVote.Data,
   MsgVote.Proto,
-  MsgVote.Web3,
+  MsgVote.Amino,
   MsgVote.DirectSign
 > {
   static fromJSON(params: MsgVote.Params): MsgVote {
@@ -56,7 +56,7 @@ export default class MsgVote extends MsgBase<
     }
   }
 
-  toWeb3(): MsgVote.Web3 {
+  toAmino(): MsgVote.Amino {
     const proto = this.toProto()
 
     return {

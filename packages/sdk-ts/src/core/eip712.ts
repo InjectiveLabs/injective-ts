@@ -149,11 +149,11 @@ export const getEipTxDetails = ({
 export const convertCosmosMsgToEip712 = (msgs: Msgs | Msgs[]) => {
   const actualMsgs = Array.isArray(msgs) ? msgs : [msgs]
   const [msg] = actualMsgs
-  const types = objectKeysToEip712Types(msg.toWeb3())
+  const types = objectKeysToEip712Types(msg.toAmino())
 
   return {
     msgs: actualMsgs.map((m) => {
-      const { ['@type']: type, ...value } = m.toWeb3()
+      const { ['@type']: type, ...value } = m.toAmino()
 
       return {
         type: protoTypeToAminoType(type),

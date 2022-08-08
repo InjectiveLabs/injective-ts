@@ -24,7 +24,7 @@ export declare namespace MsgBatchCancelSpotOrders {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders'
   }
 
-  export interface Web3 extends BaseMsgBatchCancelSpotOrders.AsObject {
+  export interface Amino extends BaseMsgBatchCancelSpotOrders.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders'
   }
 
@@ -35,7 +35,7 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
   MsgBatchCancelSpotOrders.Params,
   MsgBatchCancelSpotOrders.Data,
   MsgBatchCancelSpotOrders.Proto,
-  MsgBatchCancelSpotOrders.Web3,
+  MsgBatchCancelSpotOrders.Amino,
   MsgBatchCancelSpotOrders.DirectSign
 > {
   static fromJSON(
@@ -72,7 +72,7 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     }
   }
 
-  toWeb3(): MsgBatchCancelSpotOrders.Web3 {
+  toAmino(): MsgBatchCancelSpotOrders.Amino {
     const proto = this.toProto()
     const orderData = proto
       .getDataList()
@@ -84,7 +84,7 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
         sender: proto.getSender(),
         data: [...orderData],
       }),
-    } as unknown as MsgBatchCancelSpotOrders.Web3
+    } as unknown as MsgBatchCancelSpotOrders.Amino
   }
 
   toDirectSign(): MsgBatchCancelSpotOrders.DirectSign {

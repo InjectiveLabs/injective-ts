@@ -29,7 +29,7 @@ export declare namespace MsgTransfer {
     '@type': '/ibc.applications.transfer.v1.MsgTransfer'
   }
 
-  export interface Web3 extends BaseMsgTransfer.AsObject {
+  export interface Amino extends BaseMsgTransfer.AsObject {
     '@type': '/ibc.applications.transfer.v1.MsgTransfer'
   }
 
@@ -40,7 +40,7 @@ export default class MsgTransfer extends MsgBase<
   MsgTransfer.Params,
   MsgTransfer.Data,
   MsgTransfer.Proto,
-  MsgTransfer.Web3,
+  MsgTransfer.Amino,
   MsgTransfer.DirectSign
 > {
   static fromJSON(params: MsgTransfer.Params): MsgTransfer {
@@ -85,7 +85,7 @@ export default class MsgTransfer extends MsgBase<
     }
   }
 
-  toWeb3(): MsgTransfer.Web3 {
+  toAmino(): MsgTransfer.Amino {
     const proto = this.toProto()
 
     return {

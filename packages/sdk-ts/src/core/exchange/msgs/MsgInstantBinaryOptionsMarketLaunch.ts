@@ -32,7 +32,7 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
     '@type': '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch'
   }
 
-  export interface Web3
+  export interface Amino
     extends BaseMsgInstantBinaryOptionsMarketLaunch.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch'
   }
@@ -44,7 +44,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
   MsgInstantBinaryOptionsMarketLaunch.Params,
   MsgInstantBinaryOptionsMarketLaunch.Data,
   MsgInstantBinaryOptionsMarketLaunch.Proto,
-  MsgInstantBinaryOptionsMarketLaunch.Web3,
+  MsgInstantBinaryOptionsMarketLaunch.Amino,
   MsgInstantBinaryOptionsMarketLaunch.DirectSign
 > {
   static fromJSON(
@@ -85,7 +85,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
     }
   }
 
-  toWeb3(): MsgInstantBinaryOptionsMarketLaunch.Web3 {
+  toAmino(): MsgInstantBinaryOptionsMarketLaunch.Amino {
     const proto = this.toProto()
 
     return {

@@ -21,7 +21,7 @@ export declare namespace MsgRequestRedemption {
     '@type': '/injective.insurance.v1beta1.MsgRequestRedemption'
   }
 
-  export interface Web3 extends BaseMsgRequestRedemption.AsObject {
+  export interface Amino extends BaseMsgRequestRedemption.AsObject {
     '@type': '/injective.insurance.v1beta1.MsgRequestRedemption'
   }
 
@@ -32,7 +32,7 @@ export default class MsgRequestRedemption extends MsgBase<
   MsgRequestRedemption.Params,
   MsgRequestRedemption.Data,
   MsgRequestRedemption.Proto,
-  MsgRequestRedemption.Web3,
+  MsgRequestRedemption.Amino,
   MsgRequestRedemption.DirectSign
 > {
   static fromJSON(params: MsgRequestRedemption.Params): MsgRequestRedemption {
@@ -63,7 +63,7 @@ export default class MsgRequestRedemption extends MsgBase<
     }
   }
 
-  toWeb3(): MsgRequestRedemption.Web3 {
+  toAmino(): MsgRequestRedemption.Amino {
     const proto = this.toProto()
 
     return {

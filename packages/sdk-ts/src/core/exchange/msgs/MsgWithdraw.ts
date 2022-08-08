@@ -21,7 +21,7 @@ export declare namespace MsgWithdraw {
     '@type': '/injective.exchange.v1beta1.MsgWithdraw'
   }
 
-  export interface Web3 extends BaseMsgWithdraw.AsObject {
+  export interface Amino extends BaseMsgWithdraw.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgWithdraw'
   }
 
@@ -32,7 +32,7 @@ export default class MsgWithdraw extends MsgBase<
   MsgWithdraw.Params,
   MsgWithdraw.Data,
   MsgWithdraw.Proto,
-  MsgWithdraw.Web3,
+  MsgWithdraw.Amino,
   MsgWithdraw.DirectSign
 > {
   static fromJSON(params: MsgWithdraw.Params): MsgWithdraw {
@@ -63,7 +63,7 @@ export default class MsgWithdraw extends MsgBase<
     }
   }
 
-  toWeb3(): MsgWithdraw.Web3 {
+  toAmino(): MsgWithdraw.Amino {
     const proto = this.toProto()
 
     return {

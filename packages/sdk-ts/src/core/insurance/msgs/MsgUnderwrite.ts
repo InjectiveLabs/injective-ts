@@ -21,7 +21,7 @@ export declare namespace MsgUnderwrite {
     '@type': '/injective.insurance.v1beta1.MsgUnderwrite'
   }
 
-  export interface Web3 extends BaseMsgUnderwrite.AsObject {
+  export interface Amino extends BaseMsgUnderwrite.AsObject {
     '@type': '/injective.insurance.v1beta1.MsgUnderwrite'
   }
 
@@ -32,7 +32,7 @@ export default class MsgUnderwrite extends MsgBase<
   MsgUnderwrite.Params,
   MsgUnderwrite.Data,
   MsgUnderwrite.Proto,
-  MsgUnderwrite.Web3,
+  MsgUnderwrite.Amino,
   MsgUnderwrite.DirectSign
 > {
   static fromJSON(params: MsgUnderwrite.Params): MsgUnderwrite {
@@ -63,7 +63,7 @@ export default class MsgUnderwrite extends MsgBase<
     }
   }
 
-  toWeb3(): MsgUnderwrite.Web3 {
+  toAmino(): MsgUnderwrite.Amino {
     const proto = this.toProto()
 
     return {

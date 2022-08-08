@@ -23,7 +23,7 @@ export declare namespace MsgInstantSpotMarketLaunch {
     '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
   }
 
-  export interface Web3 extends BaseMsgInstantSpotMarketLaunch.AsObject {
+  export interface Amino extends BaseMsgInstantSpotMarketLaunch.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
   }
 
@@ -34,7 +34,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
   MsgInstantSpotMarketLaunch.Params,
   MsgInstantSpotMarketLaunch.Data,
   MsgInstantSpotMarketLaunch.Proto,
-  MsgInstantSpotMarketLaunch.Web3,
+  MsgInstantSpotMarketLaunch.Amino,
   MsgInstantSpotMarketLaunch.DirectSign
 > {
   static fromJSON(
@@ -65,7 +65,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
     }
   }
 
-  toWeb3(): MsgInstantSpotMarketLaunch.Web3 {
+  toAmino(): MsgInstantSpotMarketLaunch.Amino {
     const proto = this.toProto()
 
     return {

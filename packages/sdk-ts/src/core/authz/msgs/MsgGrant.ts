@@ -24,7 +24,7 @@ export declare namespace MsgGrant {
     '@type': '/cosmos.authz.v1beta1.MsgGrant'
   }
 
-  export interface Web3 extends BaseMsgGrant.AsObject {
+  export interface Amino extends BaseMsgGrant.AsObject {
     '@type': '/cosmos.authz.v1beta1.MsgGrant'
   }
 
@@ -35,7 +35,7 @@ export default class MsgGrant extends MsgBase<
   MsgGrant.Params,
   MsgGrant.Data,
   MsgGrant.Proto,
-  MsgGrant.Web3,
+  MsgGrant.Amino,
   MsgGrant.DirectSign
 > {
   static fromJSON(params: MsgGrant.Params): MsgGrant {
@@ -76,7 +76,7 @@ export default class MsgGrant extends MsgBase<
     }
   }
 
-  toWeb3(): MsgGrant.Web3 {
+  toAmino(): MsgGrant.Amino {
     const proto = this.toProto()
     const timestamp = this.getTimestamp()
     const message = proto.toObject()
@@ -97,7 +97,7 @@ export default class MsgGrant extends MsgBase<
     return {
       '@type': '/cosmos.authz.v1beta1.MsgGrant',
       ...messageWithAuthorizationType,
-    } as unknown as MsgGrant.Web3
+    } as unknown as MsgGrant.Amino
   }
 
   toDirectSign(): MsgGrant.DirectSign {
@@ -118,6 +118,7 @@ export default class MsgGrant extends MsgBase<
       dateNow.getMonth(),
       dateNow.getDate(),
     )
+
     const timestamp = new Timestamp()
     timestamp.setSeconds(expiration.getTime() / 1000)
 

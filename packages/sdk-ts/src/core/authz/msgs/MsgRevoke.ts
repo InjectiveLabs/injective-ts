@@ -17,7 +17,7 @@ export declare namespace MsgRevoke {
     '@type': '/cosmos.authz.v1beta1.MsgRevoke'
   }
 
-  export interface Web3 extends BaseMsgRevoke.AsObject {
+  export interface Amino extends BaseMsgRevoke.AsObject {
     '@type': '/cosmos.authz.v1beta1.MsgRevoke'
   }
 
@@ -28,7 +28,7 @@ export default class MsgRevoke extends MsgBase<
   MsgRevoke.Params,
   MsgRevoke.Data,
   MsgRevoke.Proto,
-  MsgRevoke.Web3,
+  MsgRevoke.Amino,
   MsgRevoke.DirectSign
 > {
   static fromJSON(params: MsgRevoke.Params): MsgRevoke {
@@ -55,7 +55,7 @@ export default class MsgRevoke extends MsgBase<
     }
   }
 
-  toWeb3(): MsgRevoke.Web3 {
+  toAmino(): MsgRevoke.Amino {
     const proto = this.toProto()
 
     return {

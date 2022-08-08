@@ -29,7 +29,7 @@ export declare namespace MsgExec {
     '@type': '/injective.exchange.v1beta1.MsgExec'
   }
 
-  export interface Web3 extends BaseMsgExec.AsObject {
+  export interface Amino extends BaseMsgExec.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgExec'
   }
 
@@ -40,7 +40,7 @@ export default class MsgExec extends MsgBase<
   MsgExec.Params,
   MsgExec.Data,
   MsgExec.Proto,
-  MsgExec.Web3,
+  MsgExec.Amino,
   MsgExec.DirectSign
 > {
   static fromJSON(params: MsgExec.Params): MsgExec {
@@ -91,7 +91,7 @@ export default class MsgExec extends MsgBase<
     }
   }
 
-  toWeb3(): MsgExec.Web3 {
+  toAmino(): MsgExec.Amino {
     const { params } = this
     const proto = this.toProto()
     const message = {
@@ -122,7 +122,7 @@ export default class MsgExec extends MsgBase<
     return {
       '@type': '/injective.exchange.v1beta1.MsgExec',
       ...messageWithProperKeys,
-    } as unknown as MsgExec.Web3
+    } as unknown as MsgExec.Amino
   }
 
   toDirectSign(): MsgExec.DirectSign {

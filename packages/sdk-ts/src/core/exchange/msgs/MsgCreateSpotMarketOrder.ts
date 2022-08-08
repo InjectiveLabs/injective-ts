@@ -28,7 +28,7 @@ export declare namespace MsgCreateSpotMarketOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateSpotMarketOrder.AsObject {
+  export interface Amino extends BaseMsgCreateSpotMarketOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder'
   }
 
@@ -60,7 +60,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
   MsgCreateSpotMarketOrder.Params,
   MsgCreateSpotMarketOrder.Data,
   MsgCreateSpotMarketOrder.Proto,
-  MsgCreateSpotMarketOrder.Web3,
+  MsgCreateSpotMarketOrder.Amino,
   MsgCreateSpotMarketOrder.DirectSign
 > {
   static fromJSON(
@@ -92,7 +92,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCreateSpotMarketOrder.Web3 {
+  toAmino(): MsgCreateSpotMarketOrder.Amino {
     const { params } = this
     const proto = createMarketOrder(params)
 
