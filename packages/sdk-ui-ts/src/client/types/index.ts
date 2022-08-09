@@ -3,7 +3,7 @@ import { ChainId } from '@injectivelabs/ts-types'
 import { MetricsProvider } from '../../classes/MetricsProvider'
 
 export interface ApiOptionsEndpoints {
-  exchangeApi: string
+  indexerApi: string
   sentryGrpcApi: string
   sentryHttpApi: string
 }

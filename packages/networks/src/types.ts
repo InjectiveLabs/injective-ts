@@ -13,7 +13,8 @@ export enum Network {
 }
 
 export type NetworkEndpoints = {
-  exchangeApi: string
+  exchangeApi: string // @deprecated
+  indexerApi: string
   sentryGrpcApi: string
   sentryHttpApi: string
   tendermintApi?: string

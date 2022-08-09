@@ -16,7 +16,9 @@ export class ExchangeRestClient {
         : `${endpoints.exchangeApi}/api/chronos/v1`
     }`
 
-    this.explorer = new ExchangeRestExplorerApi(`${chronosBase}/api/explorer/v1`)
+    this.explorer = new ExchangeRestExplorerApi(
+      `${chronosBase}/api/explorer/v1`,
+    )
     this.derivativesChronos = new ExchangeRestDerivativesChronosApi(
       `${chronosBase}/derivative`,
     )

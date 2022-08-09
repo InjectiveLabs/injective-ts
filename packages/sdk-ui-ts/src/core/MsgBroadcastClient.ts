@@ -25,7 +25,7 @@ export interface MsgBroadcastTxOptions {
 
 export interface MsgBroadcastOptions {
   endpoints: {
-    exchangeApi: string
+    indexerApi: string
   }
   chainId: ChainId
   ethereumChainId: EthereumChainId
@@ -67,7 +67,7 @@ export class MsgBroadcastClient {
   constructor(options: MsgBroadcastOptions) {
     this.options = options
     this.transactionApi = new IndexerGrpcTransactionApi(
-      options.endpoints.exchangeApi,
+      options.endpoints.indexerApi,
     )
   }
 

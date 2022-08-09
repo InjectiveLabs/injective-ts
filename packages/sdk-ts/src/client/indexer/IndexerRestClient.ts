@@ -9,11 +9,11 @@ export class IndexerRestClient {
 
   explorer: IndexerRestExplorerApi
 
-  constructor(endpoints: { exchangeApi: string; chronosApi?: string }) {
+  constructor(endpoints: { indexerApi: string; chronosApi?: string }) {
     const chronosBase = `${
       endpoints.chronosApi
         ? `${endpoints.chronosApi}/api/v1`
-        : `${endpoints.exchangeApi}/api/chronos/v1`
+        : `${endpoints.indexerApi}/api/chronos/v1`
     }`
 
     this.explorer = new IndexerRestExplorerApi(`${chronosBase}/api/explorer/v1`)

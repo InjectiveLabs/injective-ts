@@ -111,7 +111,7 @@ console.log(await chainGrpcClient.bank.fetchBalance({ injectiveAddress, denom })
 import { IndexerGrpcDerivativesApi, Network } from '@injectivelabs/sdk-ts'
 
 const network = Network.testnet()
-const exchangeGrpcDerivativesApi = new IndexerGrpcDerivativesApi(network.exchangeApi)
+const exchangeGrpcDerivativesApi = new IndexerGrpcDerivativesApi(network.indexerApi)
 console.log(await exchangeGrpcDerivativesApi.fetchMarkets())
 ```
 
@@ -120,7 +120,7 @@ console.log(await exchangeGrpcDerivativesApi.fetchMarkets())
 import { IndexerGrpcClient, Network } from '@injectivelabs/sdk-ts'
 
 const network = Network.testnet()
-const exchangeGrpcClient = new IndexerGrpcClient(network.exchangeApi)
+const exchangeGrpcClient = new IndexerGrpcClient(network.indexerApi)
 console.log(await exchangeGrpcClient.derivatives.fetchMarkets())
 ```
 
@@ -228,7 +228,7 @@ import { IndexerGrpcStreamClient } from "@injectivelabs/sdk-ts/dist/client/index
     "0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000000";
 
   const exchangeClient = new IndexerGrpcStreamClient(
-    network.exchangeApi
+    network.indexerApi
   );
 
   await exchangeClient.account.streamSubaccountBalance({
