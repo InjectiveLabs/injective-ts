@@ -245,7 +245,6 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     marketIds?: string[]
     pagination?: PaginationOption
     subaccountId?: string
-    executionType?: TradeExecutionType
     executionSide?: TradeExecutionSide
     startTime?: number
     endTime?: number
@@ -256,7 +255,6 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
       marketIds,
       pagination,
       subaccountId,
-      executionType,
       executionSide,
       startTime,
       endTime,
@@ -275,10 +273,6 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
-    }
-
-    if (executionType) {
-      request.setExecutionType(executionType)
     }
 
     if (executionSide) {
@@ -326,13 +320,11 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
   async fetchFundingPayments(params?: {
     marketId?: string
-    marketIds?: string[]
     subaccountId?: string
     pagination?: PaginationOption
   }) {
     const {
       marketId,
-      marketIds,
       subaccountId,
       pagination
     } = params || {}
@@ -347,10 +339,6 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
       request.setSubaccountId(subaccountId)
     }
 
-    if (marketIds) {
-      request.setMarketIdsList(marketIds)
-    }
-
     if (pagination) {
       if (pagination.skip !== undefined) {
         request.setSkip(pagination.skip)
@@ -358,10 +346,6 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
-      }
-
-      if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
       }
     }
 
@@ -469,7 +453,6 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
       marketId,
       subaccountId,
       direction,
-      executionType,
       executionSide,
       pagination
     } = params || {}
@@ -487,11 +470,6 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     if (direction) {
       request.setDirection(direction)
     }
-
-    if (executionType) {
-      request.setExecutionType(executionType)
-    }
-
     if (executionSide) {
       request.setExecutionSide(executionSide)
     }

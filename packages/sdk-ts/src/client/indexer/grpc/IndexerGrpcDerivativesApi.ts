@@ -240,20 +240,24 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
   async fetchTrades(params?: {
     marketId?: string
+    marketIds?: string[]
     direction?: TradeDirection
     subaccountId?: string
     startTime?: number
     endTime?: number
+    executionType: TradeExecutionType
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
     const {
       marketId,
+      marketIds,
       subaccountId,
       startTime,
       endTime,
       direction,
       pagination,
+      executionType,
       executionSide,
     } = params || {}
 
@@ -263,8 +267,16 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       request.setMarketId(marketId)
     }
 
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (executionType) {
+      request.setExecutionType(executionType)
     }
 
     if (executionSide) {
@@ -291,6 +303,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
+
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
     }
 
     try {
@@ -308,10 +324,11 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
   async fetchFundingPayments(params?: {
     marketId?: string
+    marketIds?: string[]
     subaccountId?: string
     pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, pagination } = params || {}
+    const { marketId, marketIds, subaccountId, pagination } = params || {}
 
     const request = new FundingPaymentsRequest()
 
@@ -323,6 +340,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       request.setSubaccountId(subaccountId)
     }
 
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
     if (pagination) {
       if (pagination.skip !== undefined) {
         request.setSkip(pagination.skip)
@@ -330,6 +351,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
+      }
+
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
       }
     }
 
@@ -470,7 +495,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList
       >(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
 
-      return IndexerGrpcDerivativeTransformer.tradesResponseToTrades(response)
+      return IndexerGrpcDerivativeTransformer.subaccountTradesListResponseToSubaccountTradesList(response)
     } catch (e: any) {
       throw new Error(e.message)
     }

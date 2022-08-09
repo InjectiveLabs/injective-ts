@@ -141,30 +141,43 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
   async fetchTrades(params?: {
     marketId?: string
+    marketIds?: string[]
     pagination?: PaginationOption
     subaccountId?: string
+    executionType?: TradeExecutionType
+    executionSide?: TradeExecutionSide
     startTime?: number
     endTime?: number
-    executionSide?: TradeExecutionSide
     direction?: TradeDirection
   }) {
     const {
       marketId,
+      marketIds,
+      pagination,
       subaccountId,
+      executionType,
+      executionSide,
       startTime,
       endTime,
-      pagination,
-      executionSide,
       direction,
     } = params || {}
+
     const request = new SpotTradesRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
     }
 
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (executionType) {
+      request.setExecutionType(executionType)
     }
 
     if (executionSide) {
@@ -190,6 +203,10 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
+      }
+
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
       }
     }
 
@@ -289,7 +306,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.SubaccountTradesList
       >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
 
-      return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
+      return IndexerGrpcSpotTransformer.subaccountTradesListResponseToTradesList(response)
     } catch (e: any) {
       throw new Error(e.message)
     }

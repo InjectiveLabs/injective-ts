@@ -156,10 +156,6 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
-
-      if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
-      }
     }
 
     try {

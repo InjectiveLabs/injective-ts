@@ -22,8 +22,7 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 import {
   TradeExecutionSide,
-  TradeDirection,
-  TradeExecutionType,
+  TradeDirection
 } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import { SpotOrderSide } from '../types/spot'
@@ -146,7 +145,6 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     marketIds?: string[]
     pagination?: PaginationOption
     subaccountId?: string
-    executionType?: TradeExecutionType
     executionSide?: TradeExecutionSide
     startTime?: number
     endTime?: number
@@ -157,7 +155,6 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
       marketIds,
       pagination,
       subaccountId,
-      executionType,
       executionSide,
       startTime,
       endTime,
@@ -176,10 +173,6 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
-    }
-
-    if (executionType) {
-      request.setExecutionType(executionType)
     }
 
     if (executionSide) {
@@ -268,7 +261,6 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     subaccountId?: string
     marketId?: string
     direction?: TradeDirection
-    executionType?: TradeExecutionType
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
@@ -276,7 +268,6 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
       subaccountId,
       marketId,
       direction,
-      executionType,
       executionSide,
       pagination,
     } = params || {}
@@ -292,10 +283,6 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
 
     if (direction) {
       request.setDirection(direction)
-    }
-
-    if (executionType) {
-      request.setExecutionType(executionType)
     }
 
     if (executionSide) {

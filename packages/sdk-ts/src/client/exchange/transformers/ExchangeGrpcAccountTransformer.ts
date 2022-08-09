@@ -22,7 +22,6 @@ import {
   TradingReward,
   GrpcTradingReward,
 } from '../types/account'
-import { grpcPagingToPaging } from '../../../utils/pagination'
 
 export class ExchangeGrpcAccountTransformer {
   static accountPortfolioResponseToAccountPortfolio(
@@ -175,13 +174,13 @@ export class ExchangeGrpcAccountTransformer {
   static transferHistoryResponseToTransferHistory(
     response: SubaccountHistoryResponse,
   ) {
-    const transfers = response.getTransfersList()
-    const paging = response.getPaging()
-
-    return {
-      transfers: transfers.map((transfer) => ExchangeGrpcAccountTransformer.grpcTransferHistoryEntryToTransferHistoryEntry(transfer)),
-      paging: grpcPagingToPaging(paging)
-    }
+    return response
+      .getTransfersList()
+      .map((transfer) =>
+        ExchangeGrpcAccountTransformer.grpcTransferHistoryEntryToTransferHistoryEntry(
+          transfer,
+        ),
+      )
   }
 
   static grpcTransferHistoryToTransferHistory(

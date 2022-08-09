@@ -43,11 +43,13 @@ import {
   TradesResponse as DerivativeTradesResponse,
   PositionsResponse as DerivativePositionsResponse,
   OrderbooksResponse as DerivativeOrderbooksResponse,
+  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
 import {
   BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
   BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
+import { grpcPagingToPaging } from '../../../utils/pagination'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -143,18 +145,33 @@ export class IndexerGrpcDerivativeTransformer {
 
   static tradesResponseToTrades(response: DerivativeTradesResponse) {
     const trades = response.getTradesList()
+    const paging = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades)
+    return {
+      trades: IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades),
+      paging: grpcPagingToPaging(paging),
+    }
+  }
+
+  static subaccountTradesListResponseToSubaccountTradesList(response: DerivativeSubaccountTradesListResponse) {
+    const tradesList = response.getTradesList()
+
+    return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(tradesList)
   }
 
   static fundingPaymentsResponseToFundingPayments(
     response: FundingPaymentsResponse,
   ) {
     const fundingPayments = response.getPaymentsList()
+    const paging = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(
-      fundingPayments,
-    )
+    return {
+      fundingPayments:
+        IndexerGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(
+          fundingPayments,
+        ),
+      paging: grpcPagingToPaging(paging),
+    }
   }
 
   static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {

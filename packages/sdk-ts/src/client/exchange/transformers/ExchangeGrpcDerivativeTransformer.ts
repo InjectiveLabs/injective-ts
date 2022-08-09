@@ -48,7 +48,6 @@ import {
   BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
   BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,
 } from '@injectivelabs/exchange-api/injective_derivative_exchange_rpc_pb'
-import { grpcPagingToPaging } from '../../../utils/pagination'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -144,24 +143,16 @@ export class ExchangeGrpcDerivativeTransformer {
 
   static tradesResponseToTrades(response: DerivativeTradesResponse) {
     const trades = response.getTradesList()
-    const paging = response.getPaging()
 
-    return {
-      trades: ExchangeGrpcDerivativeTransformer.grpcTradesToTrades(trades),
-      paging: grpcPagingToPaging(paging)
-    }
+    return ExchangeGrpcDerivativeTransformer.grpcTradesToTrades(trades)
   }
 
   static fundingPaymentsResponseToFundingPayments(
     response: FundingPaymentsResponse,
   ) {
     const fundingPayments = response.getPaymentsList()
-    const paging = response.getPaging()
 
-    return {
-      fundingPayments: ExchangeGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(fundingPayments),
-      paging: grpcPagingToPaging(paging)
-    }
+    return ExchangeGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(fundingPayments)
   }
 
   static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {
