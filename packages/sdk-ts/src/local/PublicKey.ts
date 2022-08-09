@@ -23,8 +23,11 @@ export class PublicKey {
   }
 
   static fromHex(privateKey: string | Uint8Array): PublicKey {
-    const privateKeyHex = Buffer.from(privateKey.toString(), 'hex')
-    const publicKeyByte = secp256k1.publicKeyCreate(privateKeyHex, true)
+    const isString = typeof privateKey === 'string'
+    const privateKeyHex =
+      isString && privateKey.startsWith('0x') ? privateKey.slice(2) : privateKey
+    const privateKeyBuff = Buffer.from(privateKeyHex.toString(), 'hex')
+    const publicKeyByte = secp256k1.publicKeyCreate(privateKeyBuff, true)
     const type = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
 
     return new PublicKey(publicKeyByte, type)
