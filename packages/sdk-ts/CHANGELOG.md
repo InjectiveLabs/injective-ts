@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.74](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.73...@injectivelabs/sdk-ts@1.0.74) (2022-08-09)
+
+
+### Bug Fixes
+
+* public key derivation from private key hex ([90b2de6](https://github.com/InjectiveLabs/injective-ts/commit/90b2de66bf26f7aff6fc18bfe30fb05c877bd3e8))
+
+
+
+
+
+## [1.0.73](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.72...@injectivelabs/sdk-ts@1.0.73) (2022-08-09)
+
+
+### Bug Fixes
+
+* public key derivation from private key hex ([354b3c0](https://github.com/InjectiveLabs/injective-ts/commit/354b3c003b4e74d0392b85ea157e22a642c82aae))
+
+
+
+
+
 ## [1.0.72](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.71...@injectivelabs/sdk-ts@1.0.72) (2022-08-09)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
