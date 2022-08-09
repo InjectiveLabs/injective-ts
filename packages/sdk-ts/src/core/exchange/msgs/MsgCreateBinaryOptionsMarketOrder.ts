@@ -29,7 +29,8 @@ export declare namespace MsgCreateBinaryOptionsMarketOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateBinaryOptionsMarketOrder.AsObject {
+  export interface Amino
+    extends BaseMsgCreateBinaryOptionsMarketOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder'
   }
 
@@ -64,7 +65,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
   MsgCreateBinaryOptionsMarketOrder.Params,
   MsgCreateBinaryOptionsMarketOrder.Data,
   MsgCreateBinaryOptionsMarketOrder.Proto,
-  MsgCreateBinaryOptionsMarketOrder.Web3,
+  MsgCreateBinaryOptionsMarketOrder.Amino,
   MsgCreateBinaryOptionsMarketOrder.DirectSign
 > {
   static fromJSON(
@@ -97,7 +98,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCreateBinaryOptionsMarketOrder.Web3 {
+  toAmino(): MsgCreateBinaryOptionsMarketOrder.Amino {
     const { params } = this
     const proto = createMarketOrder(params)
 

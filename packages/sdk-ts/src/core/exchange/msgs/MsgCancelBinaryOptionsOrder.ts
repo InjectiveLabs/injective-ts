@@ -18,7 +18,7 @@ export declare namespace MsgCancelBinaryOptionsOrder {
     '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
   }
 
-  export interface Web3 extends BaseMsgCancelBinaryOptionsOrder.AsObject {
+  export interface Amino extends BaseMsgCancelBinaryOptionsOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
   }
 
@@ -29,7 +29,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
   MsgCancelBinaryOptionsOrder.Params,
   MsgCancelBinaryOptionsOrder.Data,
   MsgCancelBinaryOptionsOrder.Proto,
-  MsgCancelBinaryOptionsOrder.Web3,
+  MsgCancelBinaryOptionsOrder.Amino,
   MsgCancelBinaryOptionsOrder.DirectSign
 > {
   static fromJSON(
@@ -59,7 +59,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCancelBinaryOptionsOrder.Web3 {
+  toAmino(): MsgCancelBinaryOptionsOrder.Amino {
     const proto = this.toProto()
 
     return {

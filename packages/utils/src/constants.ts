@@ -1,4 +1,4 @@
-import BigNumberInBase from './classes/BigNumberInBase'
+import BigNumber from './classes/BigNumber/BigNumber'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -14,7 +14,7 @@ export const DEFAULT_TIMESTAMP_TIMEOUT_MS = 60 * 1000 * 3
 export const DEFAULT_STD_FEE = {
   amount: [
     {
-      amount: new BigNumberInBase(DEFAULT_GAS_LIMIT)
+      amount: new BigNumber(DEFAULT_GAS_LIMIT)
         .times(DEFAULT_GAS_PRICE)
         .toString(),
       denom: 'inj',
@@ -27,7 +27,7 @@ export const DEFAULT_STD_FEE_BY_DENOM = (denom: string = 'inj') => ({
   amount: [
     {
       denom,
-      amount: new BigNumberInBase(DEFAULT_GAS_LIMIT)
+      amount: new BigNumber(DEFAULT_GAS_LIMIT)
         .times(DEFAULT_GAS_PRICE)
         .toString(),
     },

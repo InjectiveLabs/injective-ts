@@ -1,9 +1,3 @@
-import { Token } from '@injectivelabs/token-metadata'
-
-export interface TokenAndPrice extends Token {
-  usdPrice: number
-}
-
 export interface CosmosChannel {
   aChainId: string
   bChainId: string

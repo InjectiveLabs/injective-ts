@@ -3,6 +3,98 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.20...@injectivelabs/tx-ts@1.0.21) (2022-08-05)
+
+**Note:** Version bump only for package @injectivelabs/tx-ts
+
+
+
+
+
+## [1.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.19...@injectivelabs/tx-ts@1.0.20) (2022-08-01)
+
+
+### Features
+
+* multiple messages support ([1fc425b](https://github.com/InjectiveLabs/injective-ts/commit/1fc425ba3182cee4d342b32c329dafc8a27cdac1))
+
+
+
+
+
+## [1.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.18...@injectivelabs/tx-ts@1.0.19) (2022-07-30)
+
+**Note:** Version bump only for package @injectivelabs/tx-ts
+
+
+
+
+
+## [1.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.17...@injectivelabs/tx-ts@1.0.18) (2022-07-30)
+
+**Note:** Version bump only for package @injectivelabs/tx-ts
+
+
+
+
+
+## [1.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.16...@injectivelabs/tx-ts@1.0.17) (2022-07-28)
+
+**Note:** Version bump only for package @injectivelabs/tx-ts
+
+
+
+
+
+## [1.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.15...@injectivelabs/tx-ts@1.0.16) (2022-07-25)
+
+
+### Bug Fixes
+
+* export naming ([0b1b863](https://github.com/InjectiveLabs/injective-ts/commit/0b1b863dd592c3ed09d82cbfb2dfae20e4077334))
+
+
+
+
+
+## [1.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.14...@injectivelabs/tx-ts@1.0.15) (2022-07-25)
+
+
+### Bug Fixes
+
+* double hashing ([6408b32](https://github.com/InjectiveLabs/injective-ts/commit/6408b3292b38e3e3cda7a2c617c2b7cde3264727))
+
+
+
+
+
+## [1.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.13...@injectivelabs/tx-ts@1.0.14) (2022-07-22)
+
+
+### Bug Fixes
+
+* naming ([b299879](https://github.com/InjectiveLabs/injective-ts/commit/b299879fb637acf833dc11ec2e68b88e05d19ce1))
+
+
+
+
+
+## [1.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.12...@injectivelabs/tx-ts@1.0.13) (2022-07-22)
+
+**Note:** Version bump only for package @injectivelabs/tx-ts
+
+
+
+
+
+## [1.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.11...@injectivelabs/tx-ts@1.0.12) (2022-07-19)
+
+**Note:** Version bump only for package @injectivelabs/tx-ts
+
+
+
+
+
 ## [1.0.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.10...@injectivelabs/tx-ts@1.0.11) (2022-07-11)
 
 **Note:** Version bump only for package @injectivelabs/tx-ts

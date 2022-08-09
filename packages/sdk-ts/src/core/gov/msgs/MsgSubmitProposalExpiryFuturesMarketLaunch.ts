@@ -41,7 +41,7 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
     '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
   }
 
-  export interface Web3 extends BaseMsgSubmitProposal.AsObject {
+  export interface Amino extends BaseMsgSubmitProposal.AsObject {
     '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
   }
 
@@ -52,7 +52,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
   MsgSubmitProposalExpiryFuturesMarketLaunch.Params,
   MsgSubmitProposalExpiryFuturesMarketLaunch.Data,
   MsgSubmitProposalExpiryFuturesMarketLaunch.Proto,
-  MsgSubmitProposalExpiryFuturesMarketLaunch.Web3,
+  MsgSubmitProposalExpiryFuturesMarketLaunch.Amino,
   MsgSubmitProposalExpiryFuturesMarketLaunch.DirectSign
 > {
   static fromJSON(
@@ -93,7 +93,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     }
   }
 
-  toWeb3(): MsgSubmitProposalExpiryFuturesMarketLaunch.Web3 {
+  toAmino(): MsgSubmitProposalExpiryFuturesMarketLaunch.Amino {
     const { params } = this
     const content = this.getContent()
     const proposalType =
@@ -118,7 +118,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
       ...messageWithProposalType,
-    } as unknown as MsgSubmitProposalExpiryFuturesMarketLaunch.Web3
+    } as unknown as MsgSubmitProposalExpiryFuturesMarketLaunch.Amino
   }
 
   toDirectSign(): MsgSubmitProposalExpiryFuturesMarketLaunch.DirectSign {

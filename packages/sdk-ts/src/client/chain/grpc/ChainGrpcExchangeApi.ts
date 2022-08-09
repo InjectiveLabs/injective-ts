@@ -7,6 +7,8 @@ import {
   QueryTradeRewardPointsRequest,
   QueryModuleStateRequest,
   QueryModuleStateResponse,
+  QueryPositionsRequest,
+  QueryPositionsResponse,
   QueryTradeRewardPointsResponse,
   QueryFeeDiscountAccountInfoResponse,
   QueryTradeRewardCampaignResponse,
@@ -141,6 +143,22 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
       >(request, ExchangeQuery.PendingTradeRewardPoints)
 
       return response.getAccountTradeRewardPointsList()
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchPositions() {
+    const request = new QueryPositionsRequest()
+
+    try {
+      const response = await this.request<
+        QueryPositionsRequest,
+        QueryPositionsResponse,
+        typeof ExchangeQuery.Positions
+      >(request, ExchangeQuery.Positions)
+
+      return ChainGrpcExchangeTransformer.positionsResponseToPositions(response)
     } catch (e: any) {
       throw new Error(e.message)
     }

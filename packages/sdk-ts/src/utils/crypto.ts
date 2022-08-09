@@ -16,8 +16,28 @@ export const ripemd160 = (data: Uint8Array): Uint8Array => {
   return RIPEMD160.hash(new Word32Array(data)).toUint8Array()
 }
 
-export const privateKeyToPublicKeyBase64 = (
-  privateKey: Uint8Array,
-): Uint8Array => {
+export const privateKeyToPublicKey = (privateKey: Uint8Array): Uint8Array => {
   return secp256k1.publicKeyCreate(privateKey, true)
+}
+
+export const privateKeyHashToPublicKey = (
+  privateKeyHash: string,
+): Uint8Array => {
+  const privateKey = privateKeyHash.startsWith('0x')
+    ? privateKeyHash.slice(2)
+    : privateKeyHash
+
+  return secp256k1.publicKeyCreate(Buffer.from(privateKey, 'hex'), true)
+}
+
+export const privateKeyToPublicKeyBase64 = (privateKey: Uint8Array): string => {
+  return Buffer.from(privateKeyToPublicKey(privateKey)).toString('base64')
+}
+
+export const privateKeyHashToPublicKeyBase64 = (
+  privateKeyHash: string,
+): string => {
+  return Buffer.from(privateKeyHashToPublicKey(privateKeyHash)).toString(
+    'base64',
+  )
 }

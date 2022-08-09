@@ -95,10 +95,13 @@ export class ExchangeGrpcSpotTransformer {
     return orderbooks.map((o) => {
       const orderbook = o.getOrderbook()!
 
-      return ExchangeGrpcSpotTransformer.grpcOrderbookToOrderbook({
-        buys: orderbook.getBuysList(),
-        sells: orderbook.getSellsList(),
-      })
+      return {
+        marketId: o.getMarketId(),
+        orderbook: ExchangeGrpcSpotTransformer.grpcOrderbookToOrderbook({
+          buys: orderbook.getBuysList(),
+          sells: orderbook.getSellsList(),
+        }),
+      }
     })
   }
 

@@ -43,8 +43,7 @@ export class ChainGrpcAuthApi extends BaseConsumer {
         typeof AuthQuery.Account
       >(request, AuthQuery.Account)
 
-      // TODO map response
-      return response
+      return ChainGrpcAuthTransformer.accountResponseToAccount(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -65,8 +64,7 @@ export class ChainGrpcAuthApi extends BaseConsumer {
         typeof AuthQuery.Accounts
       >(request, AuthQuery.Accounts)
 
-      // TODO map response
-      return response
+      return ChainGrpcAuthTransformer.accountsResponseToAccounts(response)
     } catch (e: any) {
       throw new Error(e.message)
     }

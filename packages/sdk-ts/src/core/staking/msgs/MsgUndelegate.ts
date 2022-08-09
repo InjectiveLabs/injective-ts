@@ -20,7 +20,7 @@ export declare namespace MsgUndelegate {
     '@type': '/cosmos.staking.v1beta1.MsgUndelegate'
   }
 
-  export interface Web3 extends BaseMsgUndelegate.AsObject {
+  export interface Amino extends BaseMsgUndelegate.AsObject {
     '@type': '/cosmos.staking.v1beta1.MsgUndelegate'
   }
 
@@ -31,7 +31,7 @@ export default class MsgUndelegate extends MsgBase<
   MsgUndelegate.Params,
   MsgUndelegate.Data,
   MsgUndelegate.Proto,
-  MsgUndelegate.Web3,
+  MsgUndelegate.Amino,
   MsgUndelegate.DirectSign
 > {
   static fromJSON(params: MsgUndelegate.Params): MsgUndelegate {
@@ -62,7 +62,7 @@ export default class MsgUndelegate extends MsgBase<
     }
   }
 
-  toWeb3(): MsgUndelegate.Web3 {
+  toAmino(): MsgUndelegate.Amino {
     const proto = this.toProto()
 
     return {

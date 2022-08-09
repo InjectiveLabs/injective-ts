@@ -2,21 +2,22 @@ import {
   ChainId,
   CosmosChainId,
   TestnetCosmosChainId,
+  DevnetCosmosChainId,
 } from '@injectivelabs/ts-types'
 
 export const getEndpointsFromChainId = (
-  chainId: TestnetCosmosChainId | CosmosChainId | ChainId,
+  chainId: TestnetCosmosChainId | CosmosChainId | ChainId | DevnetCosmosChainId,
 ): { rpc: string; rest: string } => {
   switch (chainId) {
     case CosmosChainId.Cosmoshub:
       return {
         rpc: 'https://tm.cosmos.injective.network',
-        rest: 'https://lcd-cosmoshub.keplr.app',
+        rest: 'https://lcd.cosmos.injective.network',
       }
     case CosmosChainId.Osmosis:
       return {
         rpc: 'https://tm.osmosis.injective.network',
-        rest: 'https://lcd-osmosis.keplr.app',
+        rest: 'https://lcd.osmosis.injective.network',
       }
     case CosmosChainId.Injective:
       return {
@@ -25,8 +26,8 @@ export const getEndpointsFromChainId = (
       }
     case CosmosChainId.Juno:
       return {
-        rpc: 'https://rpc-juno.itastakers.com',
-        rest: 'https://lcd-juno.itastakers.com',
+        rpc: 'https://tm.juno.injective.network',
+        rest: 'https://lcd.juno.injective.network',
       }
     case CosmosChainId.Terra:
       return {
@@ -48,6 +49,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://testnet.tm.injective.dev',
         rest: 'https://testnet.lcd.injective.dev',
       }
+    case DevnetCosmosChainId.Injective:
+      return {
+        rpc: 'https://devnet.tm.injective.dev',
+        rest: 'https://devnet.lcd.injective.dev',
+      }
     case CosmosChainId.Chihuahua:
       return {
         rpc: 'https://rpc.chihuahua.wtf',
@@ -55,18 +61,23 @@ export const getEndpointsFromChainId = (
       }
     case CosmosChainId.Axelar:
       return {
-        rpc: 'https://rpc-axelar.keplr.app',
-        rest: 'https://lcd-axelar.keplr.app',
+        rpc: 'https://tm.axelar.injective.network',
+        rest: 'https://lcd.axelar.injective.network',
       }
     case CosmosChainId.Evmos:
       return {
-        rpc: 'https://tm.evmos.injective.network/',
-        rest: 'https://lcd-evmos.keplr.app',
+        rpc: 'https://tm.evmos.injective.network',
+        rest: 'https://lcd.evmos.injective.network',
       }
     case CosmosChainId.Persistence:
       return {
-        rpc: 'https://rpc-persistence.keplr.app',
-        rest: 'https://lcd-persistence.keplr.app',
+        rpc: 'https://tm.persistence.injective.network',
+        rest: 'https://lcd.persistence.injective.network',
+      }
+    case CosmosChainId.Secret:
+      return {
+        rpc: 'https://tm.secret.injective.network',
+        rest: 'https://lcd.secret.injective.network',
       }
     default:
       throw new Error(`Endpoints for ${chainId} not found`)

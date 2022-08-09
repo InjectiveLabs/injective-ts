@@ -28,7 +28,7 @@ export declare namespace MsgCreateSpotLimitOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateSpotLimitOrder.AsObject {
+  export interface Amino extends BaseMsgCreateSpotLimitOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder'
   }
 
@@ -60,7 +60,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
   MsgCreateSpotLimitOrder.Params,
   MsgCreateSpotLimitOrder.Data,
   MsgCreateSpotLimitOrder.Proto,
-  MsgCreateSpotLimitOrder.Web3,
+  MsgCreateSpotLimitOrder.Amino,
   MsgCreateSpotLimitOrder.DirectSign
 > {
   static fromJSON(
@@ -92,7 +92,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCreateSpotLimitOrder.Web3 {
+  toAmino(): MsgCreateSpotLimitOrder.Amino {
     const { params } = this
     const proto = createLimitOrder(params)
 

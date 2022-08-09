@@ -20,7 +20,7 @@ export declare namespace MsgIncreasePositionMargin {
     '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin'
   }
 
-  export interface Web3 extends BaseMsgIncreasePositionMargin.AsObject {
+  export interface Amino extends BaseMsgIncreasePositionMargin.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin'
   }
 
@@ -42,7 +42,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
   MsgIncreasePositionMargin.Params,
   MsgIncreasePositionMargin.Data,
   MsgIncreasePositionMargin.Proto,
-  MsgIncreasePositionMargin.Web3,
+  MsgIncreasePositionMargin.Amino,
   MsgIncreasePositionMargin.DirectSign
 > {
   static fromJSON(
@@ -70,7 +70,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
     }
   }
 
-  toWeb3(): MsgIncreasePositionMargin.Web3 {
+  toAmino(): MsgIncreasePositionMargin.Amino {
     const { params } = this
     const proto = addMarginToPosition(params)
 

@@ -22,9 +22,15 @@ export enum CosmosChainId {
   Axelar = 'axelar-dojo-1',
   Evmos = 'evmos_9001-2',
   Persistence = 'core-1',
+  Secret = 'secret-4',
 }
 
 export enum TestnetCosmosChainId {
   Injective = 'injective-888',
   Cosmoshub = 'cosmoshub-testnet',
+}
+
+export enum DevnetCosmosChainId {
+  Injective = 'injective-777',
+  Injective1 = 'injective-777',
 }

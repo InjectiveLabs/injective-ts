@@ -3,6 +3,179 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.44...@injectivelabs/wallet-ts@1.0.45) (2022-08-08)
+
+
+### Bug Fixes
+
+* ledgerhq package version ([3c98991](https://github.com/InjectiveLabs/injective-ts/commit/3c989915ecf77b6d57f0cb7e4e6114957b29cbef))
+
+
+
+
+
+## [1.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.43...@injectivelabs/wallet-ts@1.0.44) (2022-08-05)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.42...@injectivelabs/wallet-ts@1.0.43) (2022-08-01)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.41...@injectivelabs/wallet-ts@1.0.42) (2022-07-30)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.40...@injectivelabs/wallet-ts@1.0.41) (2022-07-30)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.39...@injectivelabs/wallet-ts@1.0.40) (2022-07-28)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.38...@injectivelabs/wallet-ts@1.0.39) (2022-07-28)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.37...@injectivelabs/wallet-ts@1.0.38) (2022-07-26)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.36...@injectivelabs/wallet-ts@1.0.37) (2022-07-25)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.35...@injectivelabs/wallet-ts@1.0.36) (2022-07-25)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.34...@injectivelabs/wallet-ts@1.0.35) (2022-07-22)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.33...@injectivelabs/wallet-ts@1.0.34) (2022-07-22)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.32...@injectivelabs/wallet-ts@1.0.33) (2022-07-22)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.31...@injectivelabs/wallet-ts@1.0.32) (2022-07-20)
+
+
+### Bug Fixes
+
+* gas limit support for keplr ([e7492e6](https://github.com/InjectiveLabs/injective-ts/commit/e7492e6671473968affb038f68ece897dba37074))
+
+
+
+
+
+## [1.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.30...@injectivelabs/wallet-ts@1.0.31) (2022-07-20)
+
+
+### Bug Fixes
+
+* exec params for vaults ([ec3f4d7](https://github.com/InjectiveLabs/injective-ts/commit/ec3f4d72195a37d2c1b329ebfbf2bc7dde900495))
+
+
+
+
+
+## [1.0.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.29...@injectivelabs/wallet-ts@1.0.30) (2022-07-20)
+
+
+### Bug Fixes
+
+* console logs ([26aae87](https://github.com/InjectiveLabs/injective-ts/commit/26aae87d938204db5f42961d8383e16611ba0da7))
+
+
+
+
+
+## [1.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.28...@injectivelabs/wallet-ts@1.0.29) (2022-07-20)
+
+
+### Bug Fixes
+
+* variable casing for MsgExec ([bc50627](https://github.com/InjectiveLabs/injective-ts/commit/bc50627e50d9313f45d2a6ead12b1e2a74c45ff0))
+
+
+
+
+
+## [1.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.27...@injectivelabs/wallet-ts@1.0.28) (2022-07-19)
+
+
+### Bug Fixes
+
+* keplr supported chain ids ([ba90bd6](https://github.com/InjectiveLabs/injective-ts/commit/ba90bd66bdbabb20482e17f4ccf85c0e40deeaf8))
+
+
+
+
+
+## [1.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.26...@injectivelabs/wallet-ts@1.0.27) (2022-07-19)
+
+
+### Features
+
+* enable keplr on devnet ([021a315](https://github.com/InjectiveLabs/injective-ts/commit/021a3156090398fde4b645bf3aecf5fa3a327b1c))
+
+
+
+
+
 ## [1.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.25...@injectivelabs/wallet-ts@1.0.26) (2022-07-11)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

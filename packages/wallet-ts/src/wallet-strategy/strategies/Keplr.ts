@@ -37,10 +37,6 @@ export default class Keplr
       throw new Web3Exception('Please install Keplr extension')
     }
 
-    if (chainId !== ChainId.Mainnet) {
-      throw new Error('Keplr is only supported on Mainnet')
-    }
-
     try {
       if (!KeplrWallet.checkChainIdSupport(chainId)) {
         await keplrWallet.experimentalSuggestChain()
@@ -50,7 +46,7 @@ export default class Keplr
 
       return accounts.map((account) => account.address)
     } catch (e: any) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+      throw new Web3Exception(`Keplr: ${e.message}`)
     }
   }
 
@@ -86,7 +82,7 @@ export default class Keplr
     const txRaw = createTxRaw(signResponse)
 
     try {
-      return keplrWallet.broadcastTx(txRaw)
+      return await keplrWallet.broadcastTx(txRaw)
     } catch (e) {
       throw new Error((e as any).message)
     }
@@ -113,7 +109,10 @@ export default class Keplr
     return cosmWallet.signTransaction({
       address,
       chainId,
-      fee: DEFAULT_STD_FEE,
+      fee: {
+        ...DEFAULT_STD_FEE,
+        gas: transaction.gas || DEFAULT_STD_FEE.gas,
+      },
       message: transaction.message,
       memo: transaction.memo,
       pubKey: Buffer.from(key.pubKey).toString('base64'),

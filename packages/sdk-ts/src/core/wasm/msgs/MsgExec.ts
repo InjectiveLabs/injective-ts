@@ -1,8 +1,8 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgExec as BaseMsgExec } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { ExecArgs } from '../../exec-args'
 import { MsgBase } from '../../MsgBase'
-import ExecArgVaultRedeem from '../exec-args/ExecArgVaultRedeem'
-import ExecArgVaultSubscribe from '../exec-args/ExecArgVaultSubscribe'
+import snakeCaseKeys from 'snakecase-keys'
 
 export declare namespace MsgExec {
   export interface Params {
@@ -17,7 +17,7 @@ export declare namespace MsgExec {
     }
     sender: string
     contractAddress: string
-    data: ExecArgVaultRedeem | ExecArgVaultSubscribe
+    data: ExecArgs
   }
 
   export interface DirectSign {
@@ -29,7 +29,7 @@ export declare namespace MsgExec {
     '@type': '/injective.exchange.v1beta1.MsgExec'
   }
 
-  export interface Web3 extends BaseMsgExec.AsObject {
+  export interface Amino extends BaseMsgExec.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgExec'
   }
 
@@ -40,7 +40,7 @@ export default class MsgExec extends MsgBase<
   MsgExec.Params,
   MsgExec.Data,
   MsgExec.Proto,
-  MsgExec.Web3,
+  MsgExec.Amino,
   MsgExec.DirectSign
 > {
   static fromJSON(params: MsgExec.Params): MsgExec {
@@ -60,19 +60,24 @@ export default class MsgExec extends MsgBase<
     const funds = new Coin()
 
     if (params.subaccountId) {
-      funds.setAmount(params.subaccountDeposits!.amount)
-      funds.setDenom(params.subaccountDeposits!.denom)
-      message.setDepositFundsList([funds])
       message.setDepositsSubaccountId(params.subaccountId!)
-    } else {
-      funds.setAmount(params.subaccountDeposits!.amount)
-      funds.setDenom(params.subaccountDeposits!.denom)
+    }
+
+    if (params.subaccountDeposits) {
+      funds.setAmount(params.subaccountDeposits.amount)
+      funds.setDenom(params.subaccountDeposits.denom)
+      message.setDepositFundsList([funds])
+    }
+
+    if (params.bankFunds) {
+      funds.setAmount(params.bankFunds.amount)
+      funds.setDenom(params.bankFunds.denom)
       message.setBankFundsList([funds])
     }
 
     message.setSender(params.sender)
     message.setContractAddress(params.contractAddress)
-    message.setData(params.data.toJSON())
+    message.setData(params.data.toExecJSON())
 
     return message
   }
@@ -86,13 +91,38 @@ export default class MsgExec extends MsgBase<
     }
   }
 
-  toWeb3(): MsgExec.Web3 {
+  toAmino(): MsgExec.Amino {
+    const { params } = this
     const proto = this.toProto()
+    const message = {
+      ...snakeCaseKeys(proto.toObject()),
+    }
+
+    if (params.subaccountDeposits) {
+      // @ts-ignore
+      message['deposit_funds'] = [params.subaccountDeposits]
+    }
+
+    if (params.bankFunds) {
+      // @ts-ignore
+      message['bank_funds'] = [params.bankFunds]
+    }
+
+    // @ts-ignore
+    delete message.bank_funds_list
+    // @ts-ignore
+    delete message.bankFundsList
+    // @ts-ignore
+    delete message.depositFundsList
+    // @ts-ignore
+    delete message.deposit_funds_list
+
+    const messageWithProperKeys = snakeCaseKeys(message)
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgExec',
-      ...proto.toObject(),
-    }
+      ...messageWithProperKeys,
+    } as unknown as MsgExec.Amino
   }
 
   toDirectSign(): MsgExec.DirectSign {

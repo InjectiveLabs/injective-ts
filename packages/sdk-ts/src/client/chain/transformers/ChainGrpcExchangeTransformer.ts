@@ -15,12 +15,16 @@ import {
   FeeDiscountTierTTL,
   GrpcFeeDiscountTierTTL,
   ExchangeModuleParams,
+  GrpcChainPosition,
+  ChainPosition,
+  ChainDerivativePosition,
 } from '../types/exchange'
 import {
   QueryFeeDiscountAccountInfoResponse,
   QueryTradeRewardCampaignResponse,
   QueryFeeDiscountScheduleResponse,
   QueryExchangeParamsResponse,
+  QueryPositionsResponse,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
 
 export class ChainGrpcExchangeTransformer {
@@ -133,9 +137,10 @@ export class ChainGrpcExchangeTransformer {
       makerDiscountRate: info.getMakerDiscountRate(),
       takerDiscountRate: info.getTakerDiscountRate(),
       stakedAmount: info.getStakedAmount(),
-      // @ts-ignore
-      feePaidAmount: info.getFeePaidAmount !== undefined ? info.getFeePaidAmount() : '0',
-      volume: info.getVolume !== undefined ? info.getVolume() : '0'
+      feePaidAmount:
+        // @ts-ignore
+        info.getFeePaidAmount !== undefined ? info.getFeePaidAmount() : '0',
+      volume: info.getVolume !== undefined ? info.getVolume() : '0',
     }
   }
 
@@ -211,5 +216,23 @@ export class ChainGrpcExchangeTransformer {
         .getMaxCampaignRewardsList()
         .map((coin) => ({ amount: coin.getAmount(), denom: coin.getDenom() })),
     }
+  }
+
+  static grpcPositionToPosition(position: GrpcChainPosition): ChainPosition {
+    return position.toObject()
+  }
+
+  static positionsResponseToPositions(
+    response: QueryPositionsResponse,
+  ): ChainDerivativePosition[] {
+    return response.getStateList().map((position) => {
+      return {
+        subaccountId: position.getSubaccountId(),
+        marketId: position.getMarketId(),
+        position: ChainGrpcExchangeTransformer.grpcPositionToPosition(
+          position.getPosition()!,
+        ),
+      }
+    })
   }
 }

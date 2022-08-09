@@ -3,6 +3,406 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.70...@injectivelabs/sdk-ts@1.0.71) (2022-08-08)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.69...@injectivelabs/sdk-ts@1.0.70) (2022-08-06)
+
+
+### Features
+
+* indexer migration ([351320b](https://github.com/InjectiveLabs/injective-ts/commit/351320b46ac7244af44728db7b67472e6b9a8105))
+
+
+
+
+
+## [1.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.68...@injectivelabs/sdk-ts@1.0.69) (2022-08-05)
+
+
+### Features
+
+* initial eip712 ([956d451](https://github.com/InjectiveLabs/injective-ts/commit/956d451f487a120395d42318aafaa2fc856e4a81))
+
+
+
+
+
+## [1.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.67...@injectivelabs/sdk-ts@1.0.68) (2022-08-01)
+
+
+### Bug Fixes
+
+* instantiate vault cw20 code id typing ([f2dbd5e](https://github.com/InjectiveLabs/injective-ts/commit/f2dbd5e83ea4a1519edc90486708e12193775b27))
+* msgExec cannot unmarshal object into Go value of type []json.RawMessage error ([146d17e](https://github.com/InjectiveLabs/injective-ts/commit/146d17ea725eba2835776598232caa00dacc8651))
+
+
+
+
+
+## [1.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.66...@injectivelabs/sdk-ts@1.0.67) (2022-07-30)
+
+
+### Bug Fixes
+
+* bignumber conversion ([7559a3c](https://github.com/InjectiveLabs/injective-ts/commit/7559a3c82bd0acc427d3c0528e1ae8b8ef28cced))
+
+
+
+
+
+## [1.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.65...@injectivelabs/sdk-ts@1.0.66) (2022-07-30)
+
+
+### Features
+
+* added fromBase64 init for PublicKey ([77b6104](https://github.com/InjectiveLabs/injective-ts/commit/77b610476d75096176605e6c73729e0f7163dbcc))
+
+
+
+
+
+## [1.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.64...@injectivelabs/sdk-ts@1.0.65) (2022-07-30)
+
+
+### Bug Fixes
+
+* simple jest setup ([0ccea6e](https://github.com/InjectiveLabs/injective-ts/commit/0ccea6ed99319adaa6a47fa7d7b4b267f5900b46))
+
+
+
+
+
+## [1.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.63...@injectivelabs/sdk-ts@1.0.64) (2022-07-28)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.63](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.62...@injectivelabs/sdk-ts@1.0.63) (2022-07-28)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.61...@injectivelabs/sdk-ts@1.0.62) (2022-07-28)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.60...@injectivelabs/sdk-ts@1.0.61) (2022-07-28)
+
+
+### Features
+
+* add support for CW20 balance ([0eeb3b8](https://github.com/InjectiveLabs/injective-ts/commit/0eeb3b80c5319db10d77c31b286b69b654a155d1))
+
+
+
+
+
+## [1.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.59...@injectivelabs/sdk-ts@1.0.60) (2022-07-27)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.58...@injectivelabs/sdk-ts@1.0.59) (2022-07-27)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.57...@injectivelabs/sdk-ts@1.0.58) (2022-07-27)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.56...@injectivelabs/sdk-ts@1.0.57) (2022-07-26)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.55...@injectivelabs/sdk-ts@1.0.56) (2022-07-25)
+
+
+### Bug Fixes
+
+* account pagination ([3edcd33](https://github.com/InjectiveLabs/injective-ts/commit/3edcd334245ed13d84e7ec65600c1999bada06e6))
+
+
+
+
+
+## [1.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.54...@injectivelabs/sdk-ts@1.0.55) (2022-07-25)
+
+
+### Bug Fixes
+
+* auth support and positions querying ([bdebabb](https://github.com/InjectiveLabs/injective-ts/commit/bdebabbd3d8218e99a5ba1b66c62465994c8b5ba))
+
+
+
+
+
+## [1.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.53...@injectivelabs/sdk-ts@1.0.54) (2022-07-25)
+
+
+### Bug Fixes
+
+* added version to sign only a hashed message ([ad31809](https://github.com/InjectiveLabs/injective-ts/commit/ad318090893900df76a6de24de55a2964f9610f0))
+
+
+
+
+
+## [1.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.52...@injectivelabs/sdk-ts@1.0.53) (2022-07-25)
+
+
+### Bug Fixes
+
+* double hashing ([6408b32](https://github.com/InjectiveLabs/injective-ts/commit/6408b3292b38e3e3cda7a2c617c2b7cde3264727))
+
+
+
+
+
+## [1.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.51...@injectivelabs/sdk-ts@1.0.52) (2022-07-22)
+
+
+### Bug Fixes
+
+* signing with private key ([ac1032b](https://github.com/InjectiveLabs/injective-ts/commit/ac1032b2beca129d0ba07065944ee8b65e6c80ed))
+
+
+
+
+
+## [1.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.50...@injectivelabs/sdk-ts@1.0.51) (2022-07-22)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.49...@injectivelabs/sdk-ts@1.0.50) (2022-07-22)
+
+
+### Bug Fixes
+
+* optional params ([e4a9b24](https://github.com/InjectiveLabs/injective-ts/commit/e4a9b243690f29ff31158300d91c926b32e4a43e))
+
+
+
+
+
+## [1.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.48...@injectivelabs/sdk-ts@1.0.49) (2022-07-20)
+
+
+### Bug Fixes
+
+* exec function ([e22460e](https://github.com/InjectiveLabs/injective-ts/commit/e22460ec5a50fb573c8a89c9ba10f645e3b10b4d))
+
+
+
+
+
+## [1.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.47...@injectivelabs/sdk-ts@1.0.48) (2022-07-20)
+
+
+### Bug Fixes
+
+* exec vault data ([248a3c5](https://github.com/InjectiveLabs/injective-ts/commit/248a3c53f49ff1bee4beb1949de6acfb2e6c62db))
+
+
+
+
+
+## [1.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.46...@injectivelabs/sdk-ts@1.0.47) (2022-07-20)
+
+
+### Bug Fixes
+
+* exec params for vaults ([1196e13](https://github.com/InjectiveLabs/injective-ts/commit/1196e13037f6bab7a0132c7e6dc0f6c107506113))
+
+
+
+
+
+## [1.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.45...@injectivelabs/sdk-ts@1.0.46) (2022-07-20)
+
+
+### Bug Fixes
+
+* exec params for vaults ([ec3f4d7](https://github.com/InjectiveLabs/injective-ts/commit/ec3f4d72195a37d2c1b329ebfbf2bc7dde900495))
+
+
+
+
+
+## [1.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.44...@injectivelabs/sdk-ts@1.0.45) (2022-07-20)
+
+
+### Bug Fixes
+
+* args for MsgExec ([33d5bf4](https://github.com/InjectiveLabs/injective-ts/commit/33d5bf42da38db60e659f640809f37895cfbc32a))
+
+
+
+
+
+## [1.0.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.43...@injectivelabs/sdk-ts@1.0.44) (2022-07-20)
+
+
+### Bug Fixes
+
+* variable casing for MsgExec ([bc50627](https://github.com/InjectiveLabs/injective-ts/commit/bc50627e50d9313f45d2a6ead12b1e2a74c45ff0))
+
+
+
+
+
+## [1.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.42...@injectivelabs/sdk-ts@1.0.43) (2022-07-20)
+
+
+### Bug Fixes
+
+* snakekeys vault exec args ([243450a](https://github.com/InjectiveLabs/injective-ts/commit/243450afc9f4a19a7ed951bf8742182e0565a4d1))
+
+
+
+
+
+## [1.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.41...@injectivelabs/sdk-ts@1.0.42) (2022-07-19)
+
+
+### Features
+
+* enable keplr on devnet ([021a315](https://github.com/InjectiveLabs/injective-ts/commit/021a3156090398fde4b645bf3aecf5fa3a327b1c))
+
+
+
+
+
+## [1.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.40...@injectivelabs/sdk-ts@1.0.41) (2022-07-19)
+
+
+### Bug Fixes
+
+* msgexec params ([3f01ef8](https://github.com/InjectiveLabs/injective-ts/commit/3f01ef8fc1d632014b751bb2c308d0b97471523e))
+
+
+
+
+
+## [1.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.39...@injectivelabs/sdk-ts@1.0.40) (2022-07-19)
+
+
+### Bug Fixes
+
+* subscribe and redeem from vault ([4a47e6f](https://github.com/InjectiveLabs/injective-ts/commit/4a47e6ff14424543fbdab7e6548c55bed482dd41))
+
+
+
+
+
+## [1.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.38...@injectivelabs/sdk-ts@1.0.39) (2022-07-19)
+
+
+### Bug Fixes
+
+* class name export ([21c58ab](https://github.com/InjectiveLabs/injective-ts/commit/21c58abd9f5496b43ccfc7a0420d424bb88aa7c3))
+
+
+
+
+
+## [1.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.37...@injectivelabs/sdk-ts@1.0.38) (2022-07-19)
+
+
+### Bug Fixes
+
+* export wasm ([1d2112f](https://github.com/InjectiveLabs/injective-ts/commit/1d2112fa9cb715ef4ca439947c28c382de1a98db))
+
+
+
+
+
+## [1.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.36...@injectivelabs/sdk-ts@1.0.37) (2022-07-19)
+
+
+### Features
+
+* exec exchange contracts ([3e365ce](https://github.com/InjectiveLabs/injective-ts/commit/3e365ceda17721862dc669bdd169a86a97944be4))
+
+
+
+
+
+## [1.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.35...@injectivelabs/sdk-ts@1.0.36) (2022-07-17)
+
+
+### Features
+
+* added timestamp filtering for trades ([541554f](https://github.com/InjectiveLabs/injective-ts/commit/541554fa9ff145c3ed6e64f1bd8239a9ade6ad0b))
+
+
+
+
+
+## [1.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.34...@injectivelabs/sdk-ts@1.0.35) (2022-07-17)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.33...@injectivelabs/sdk-ts@1.0.34) (2022-07-17)
+
+
+### Features
+
+* wasm code grpc queries ([91e618d](https://github.com/InjectiveLabs/injective-ts/commit/91e618de8c83e58052cbebe6bc4bd3ed5d826ff5))
+
+
+
+
+
+## [1.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.32...@injectivelabs/sdk-ts@1.0.33) (2022-07-14)
+
+
+### Bug Fixes
+
+* orderbooks response ([d6225f2](https://github.com/InjectiveLabs/injective-ts/commit/d6225f20d94344ab65955b4f82f66b0a88711dbd))
+
+
+
+
+
 ## [1.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.31...@injectivelabs/sdk-ts@1.0.32) (2022-07-11)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

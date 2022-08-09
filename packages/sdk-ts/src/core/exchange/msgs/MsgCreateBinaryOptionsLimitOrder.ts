@@ -29,7 +29,7 @@ export declare namespace MsgCreateBinaryOptionsLimitOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateBinaryOptionsLimitOrder.AsObject {
+  export interface Amino extends BaseMsgCreateBinaryOptionsLimitOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder'
   }
 
@@ -62,7 +62,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
   MsgCreateBinaryOptionsLimitOrder.Params,
   MsgCreateBinaryOptionsLimitOrder.Data,
   MsgCreateBinaryOptionsLimitOrder.Proto,
-  MsgCreateBinaryOptionsLimitOrder.Web3,
+  MsgCreateBinaryOptionsLimitOrder.Amino,
   MsgCreateBinaryOptionsLimitOrder.DirectSign
 > {
   static fromJSON(
@@ -95,7 +95,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCreateBinaryOptionsLimitOrder.Web3 {
+  toAmino(): MsgCreateBinaryOptionsLimitOrder.Amino {
     const { params } = this
     const proto = createLimitOrder(params)
 

@@ -26,4 +26,9 @@
       "path": "../sdk-ts/tsconfig.json"
     },
   ],
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "Injective Protocol - SDK UI TS"
+  }
 }

@@ -5,10 +5,11 @@ import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
-    amount: {
+    amount?: {
       denom: string
       amount: string
     }
+    action: string
     sender: string
     contractAddress: string
     msg: Object
@@ -23,7 +24,7 @@ export declare namespace MsgExecuteContract {
     '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
   }
 
-  export interface Web3 extends BaseMsgExecuteContract.AsObject {
+  export interface Amino extends BaseMsgExecuteContract.AsObject {
     '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
   }
 
@@ -34,7 +35,7 @@ export default class MsgExecuteContract extends MsgBase<
   MsgExecuteContract.Params,
   MsgExecuteContract.Data,
   MsgExecuteContract.Proto,
-  MsgExecuteContract.Web3,
+  MsgExecuteContract.Amino,
   MsgExecuteContract.DirectSign
 > {
   static fromJSON(params: MsgExecuteContract.Params): MsgExecuteContract {
@@ -44,15 +45,21 @@ export default class MsgExecuteContract extends MsgBase<
   toProto(): MsgExecuteContract.Proto {
     const { params } = this
 
-    const funds = new Coin()
-    funds.setAmount(params.amount.amount)
-    funds.setDenom(params.amount.denom)
-
     const message = new BaseMsgExecuteContract()
-    message.setFundsList([funds])
-    message.setMsg(toUtf8(JSON.stringify(params.msg)))
+    const msg = { [params.action]: params.msg }
+
+    message.setMsg(toUtf8(JSON.stringify(msg)))
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
+
+    if (params.amount) {
+      const funds = new Coin()
+
+      funds.setAmount(params.amount.amount)
+      funds.setDenom(params.amount.denom)
+
+      message.setFundsList([funds])
+    }
 
     return message
   }
@@ -66,7 +73,7 @@ export default class MsgExecuteContract extends MsgBase<
     }
   }
 
-  toWeb3(): MsgExecuteContract.Web3 {
+  toAmino(): MsgExecuteContract.Amino {
     const proto = this.toProto()
 
     return {

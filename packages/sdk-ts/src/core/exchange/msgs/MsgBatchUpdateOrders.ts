@@ -54,7 +54,7 @@ export declare namespace MsgBatchUpdateOrders {
     '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
   }
 
-  export interface Web3 extends BaseMsgBatchUpdateOrders.AsObject {
+  export interface Amino extends BaseMsgBatchUpdateOrders.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
   }
 
@@ -65,7 +65,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
   MsgBatchUpdateOrders.Params,
   MsgBatchUpdateOrders.Data,
   MsgBatchUpdateOrders.Proto,
-  MsgBatchUpdateOrders.Web3,
+  MsgBatchUpdateOrders.Amino,
   MsgBatchUpdateOrders.DirectSign
 > {
   static fromJSON(params: MsgBatchUpdateOrders.Params): MsgBatchUpdateOrders {
@@ -210,7 +210,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     }
   }
 
-  toWeb3(): MsgBatchUpdateOrders.Web3 {
+  toAmino(): MsgBatchUpdateOrders.Amino {
     const proto = this.toProto()
 
     /*

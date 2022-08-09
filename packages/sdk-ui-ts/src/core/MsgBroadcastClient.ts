@@ -1,5 +1,8 @@
-import { Msgs, getInjectiveAddress } from '@injectivelabs/sdk-ts'
-import { ExchangeGrpcTransactionApi } from '@injectivelabs/sdk-ts/dist/client'
+import {
+  Msgs,
+  getInjectiveAddress,
+  IndexerGrpcTransactionApi,
+} from '@injectivelabs/sdk-ts'
 import { Wallet } from '@injectivelabs/ts-types'
 import { MetricsProvider } from '../classes/MetricsProvider'
 import {
@@ -32,8 +35,18 @@ export interface MsgBroadcastOptions {
 
 const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
   const hasMultipleMessages = Array.isArray(msgs)
+  const isMsgExecMessage = (message: Msgs) =>
+    message.toAmino()['@type'].includes('MsgExec')
   const isExchangeMessage = (message: Msgs) =>
-    message.toWeb3()['@type'].startsWith('/injective')
+    message.toAmino()['@type'].startsWith('/injective')
+
+  const hasMsgExecMessages = Array.isArray(msgs)
+    ? msgs.some(isMsgExecMessage)
+    : isMsgExecMessage(msgs)
+
+  if (hasMsgExecMessages) {
+    return DEFAULT_GAS_LIMIT * 1.2
+  }
 
   const hasExchangeMessages = Array.isArray(msgs)
     ? msgs.some(isExchangeMessage)
@@ -49,11 +62,11 @@ const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
 export class MsgBroadcastClient {
   public options: MsgBroadcastOptions
 
-  public transactionApi: ExchangeGrpcTransactionApi
+  public transactionApi: IndexerGrpcTransactionApi
 
   constructor(options: MsgBroadcastOptions) {
     this.options = options
-    this.transactionApi = new ExchangeGrpcTransactionApi(
+    this.transactionApi = new IndexerGrpcTransactionApi(
       options.endpoints.exchangeApi,
     )
   }
@@ -71,7 +84,7 @@ export class MsgBroadcastClient {
     const { options, transactionApi } = this
     const { walletStrategy, ethereumChainId, metricsProvider } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
-    const web3Msgs = msgs.map((msg) => msg.toWeb3())
+    const web3Msgs = msgs.map((msg) => msg.toAmino())
 
     const prepareTx = async () => {
       try {
@@ -156,6 +169,7 @@ export class MsgBroadcastClient {
       const [message] = msgs.map((msg) => msg.toDirectSign())
       const transaction = {
         message,
+        gas: tx.gasLimit ? tx.gasLimit : getGasPriceBasedOnMessage(msgs),
         memo: tx.memo,
       }
 

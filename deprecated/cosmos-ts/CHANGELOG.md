@@ -654,11 +654,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-<<<<<<< HEAD
 * axelar ([2fc77d3](https://github.com/InjectiveLabs/injective-ts/commit/2fc77d384d94976e06f399b074fecb4663814f62))
-=======
 * chihuahua added ([0176a3a](https://github.com/InjectiveLabs/injective-ts/commit/0176a3aa44bfcf13779b29a1f6cb7dec915e130f))
->>>>>>> 4bc6a49a125e58f2dd5dce2d1e6da8557b64a976
 
 
 
@@ -878,9 +875,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-<<<<<<< HEAD
 * experimental keplr wallet add with data ([363134b](https://github.com/InjectiveLabs/injective-ts/commit/363134bc9bf1581df1d651d1ef8df11a97cec0a5))
-=======
 * added cosmos-ts package ([4c56fbf](https://github.com/InjectiveLabs/injective-ts/commit/4c56fbf5ea217c8d841fbc063ca1a8d9773d5817))
 * added luna as gas currency ([2881761](https://github.com/InjectiveLabs/injective-ts/commit/2881761953d4d89969c1949e1e077913d678e4a8))
 * added stargate signer ([8da2961](https://github.com/InjectiveLabs/injective-ts/commit/8da29610f532fb1a64f90183a058d638733d344f))
@@ -893,7 +888,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * terra wallet ([7403790](https://github.com/InjectiveLabs/injective-ts/commit/74037909b7eca809d9d73eb78376baf7b11ff3b5))
 * token price utils ([1d79620](https://github.com/InjectiveLabs/injective-ts/commit/1d796200d4f1fe0c09a71cd0318305983fdf44ad))
 * uatom added ([2354c55](https://github.com/InjectiveLabs/injective-ts/commit/2354c551f67d380dc178036900d9c7a4e1782084))
->>>>>>> ebbf18b5522d5b204f2473b36b61e539352e545d
 
 
 

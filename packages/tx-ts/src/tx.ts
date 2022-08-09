@@ -1,5 +1,5 @@
 import { StdFee } from '@cosmjs/amino'
-import { Keccak } from 'sha3'
+import keccak256 from 'keccak256'
 import {
   TxBody,
   SignDoc,
@@ -16,6 +16,10 @@ import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsec
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { createAny, createAnyMessage } from './utils'
 
+export type MsgArg = {
+  type: string
+  message: any
+}
 export const SIGN_DIRECT = SignMode.SIGN_MODE_DIRECT
 
 export const getPublicKey = ({
@@ -48,19 +52,20 @@ export const createBody = ({
   message,
   memo,
 }: {
-  message: {
-    type: string
-    message: any
-  }
+  message: MsgArg | MsgArg[]
   memo: string
 }) => {
+  const messages = Array.isArray(message) ? message : [message]
+
   const txBody = new TxBody()
-  txBody.setMessagesList([
-    createAnyMessage({
-      value: message.message,
-      type: message.type,
-    }),
-  ])
+  txBody.setMessagesList(
+    messages.map((message) =>
+      createAnyMessage({
+        value: message.message,
+        type: message.type,
+      }),
+    ),
+  )
   txBody.setMemo(memo)
 
   return txBody
@@ -154,10 +159,7 @@ export const createTransaction = ({
   accountNumber,
   chainId,
 }: {
-  message: {
-    type: string
-    message: any
-  }
+  message: MsgArg | MsgArg[]
   memo: string
   fee: StdFee
   pubKey: string
@@ -190,9 +192,8 @@ export const createTransaction = ({
     accountNumber,
   })
 
-  const hash = new Keccak(256)
-  hash.update(Buffer.from(signDoc.serializeBinary()))
-  const toSign = hash.digest('binary')
+  const toSignBytes = Buffer.from(signDoc.serializeBinary())
+  const toSignHash = keccak256(Buffer.from(signDoc.serializeBinary()))
 
   const txRaw = new TxRaw()
   txRaw.setAuthInfoBytes(authInfo.serializeBinary())
@@ -204,7 +205,8 @@ export const createTransaction = ({
     accountNumber,
     bodyBytes: body.serializeBinary(),
     authInfoBytes: authInfo.serializeBinary(),
-    signBytes: toSign.toString('base64'),
+    signBytes: toSignBytes,
+    signHashedBytes: toSignHash,
   }
 }
 

@@ -29,7 +29,7 @@ export declare namespace MsgCreateDerivativeLimitOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateDerivativeLimitOrder.AsObject {
+  export interface Amino extends BaseMsgCreateDerivativeLimitOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
   }
 
@@ -62,7 +62,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
   MsgCreateDerivativeLimitOrder.Params,
   MsgCreateDerivativeLimitOrder.Data,
   MsgCreateDerivativeLimitOrder.Proto,
-  MsgCreateDerivativeLimitOrder.Web3,
+  MsgCreateDerivativeLimitOrder.Amino,
   MsgCreateDerivativeLimitOrder.DirectSign
 > {
   static fromJSON(
@@ -95,7 +95,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCreateDerivativeLimitOrder.Web3 {
+  toAmino(): MsgCreateDerivativeLimitOrder.Amino {
     const { params } = this
     const proto = createLimitOrder(params)
 

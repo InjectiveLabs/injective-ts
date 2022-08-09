@@ -25,7 +25,7 @@ export declare namespace MsgSubmitTextProposal {
     '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
   }
 
-  export interface Web3 extends BaseMsgSubmitProposal.AsObject {
+  export interface Amino extends BaseMsgSubmitProposal.AsObject {
     '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
   }
 
@@ -36,7 +36,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
   MsgSubmitTextProposal.Params,
   MsgSubmitTextProposal.Data,
   MsgSubmitTextProposal.Proto,
-  MsgSubmitTextProposal.Web3,
+  MsgSubmitTextProposal.Amino,
   MsgSubmitTextProposal.DirectSign
 > {
   static fromJSON(params: MsgSubmitTextProposal.Params): MsgSubmitTextProposal {
@@ -74,7 +74,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     }
   }
 
-  toWeb3(): MsgSubmitTextProposal.Web3 {
+  toAmino(): MsgSubmitTextProposal.Amino {
     const { params } = this
     const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
@@ -98,7 +98,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
       ...messageWithProposalType,
-    } as unknown as MsgSubmitTextProposal.Web3
+    } as unknown as MsgSubmitTextProposal.Amino
   }
 
   toDirectSign(): MsgSubmitTextProposal.DirectSign {

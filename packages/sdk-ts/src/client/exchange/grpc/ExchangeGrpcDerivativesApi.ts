@@ -243,19 +243,23 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
   async fetchTrades(params?: {
     marketId?: string
     marketIds?: string[]
-    direction?: TradeDirection
-    subaccountId?: string
-    executionSide?: TradeExecutionSide
-    executionType?: TradeExecutionType
     pagination?: PaginationOption
+    subaccountId?: string
+    executionType?: TradeExecutionType
+    executionSide?: TradeExecutionSide
+    startTime?: number
+    endTime?: number
+    direction?: TradeDirection
   }) {
     const {
       marketId,
       marketIds,
-      subaccountId,
       pagination,
+      subaccountId,
       executionType,
       executionSide,
+      startTime,
+      endTime,
       direction
     } = params || {}
 
@@ -283,6 +287,14 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
 
     if (direction) {
       request.setDirection(direction)
+    }
+
+    if (startTime) {
+      request.setStartTime(startTime)
+    }
+
+    if (endTime) {
+      request.setEndTime(endTime)
     }
 
     if (pagination) {

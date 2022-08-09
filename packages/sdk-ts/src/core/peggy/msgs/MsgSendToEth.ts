@@ -29,7 +29,7 @@ export declare namespace MsgSendToEth {
     '@type': '/injective.peggy.v1.MsgSendToEth'
   }
 
-  export interface Web3 extends BaseMsgSendToEth.AsObject {
+  export interface Amino extends BaseMsgSendToEth.AsObject {
     '@type': '/injective.peggy.v1.MsgSendToEth'
   }
 
@@ -40,7 +40,7 @@ export default class MsgSendToEth extends MsgBase<
   MsgSendToEth.Params,
   MsgSendToEth.Data,
   MsgSendToEth.Proto,
-  MsgSendToEth.Web3,
+  MsgSendToEth.Amino,
   MsgSendToEth.DirectSign
 > {
   static fromJSON(params: MsgSendToEth.Params): MsgSendToEth {
@@ -80,7 +80,7 @@ export default class MsgSendToEth extends MsgBase<
     }
   }
 
-  toWeb3(): MsgSendToEth.Web3 {
+  toAmino(): MsgSendToEth.Amino {
     const proto = this.toProto()
 
     return {

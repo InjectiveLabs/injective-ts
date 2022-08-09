@@ -3,6 +3,7 @@ import {
   BlockFromExplorerApiResponse,
   ContractExplorerApiResponse,
   ContractTransactionExplorerApiResponse,
+  CW20BalanceExplorerApiResponse,
   ExplorerApiResponse,
   ExplorerApiResponseWithPagination,
   ExplorerBlockWithTxs,
@@ -13,7 +14,12 @@ import {
   ValidatorUptimeFromExplorerApiResponse,
   WasmCodeExplorerApiResponse,
 } from '../types/explorer-rest'
-import { Contract, ContractTransaction, WasmCode } from '../types/explorer'
+import {
+  Contract,
+  ContractTransaction,
+  CW20BalanceWithToken,
+  WasmCode,
+} from '../types/explorer'
 import {
   BlockNotFoundException,
   TransactionNotFoundException,
@@ -331,6 +337,48 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (error: any) {
+      throw new HttpException(error.message)
+    }
+  }
+
+  async fetchCW20Balances(address: string): Promise<CW20BalanceWithToken[]> {
+    try {
+      const response = (await this.client.get(
+        `/wasm/${address}/cw20-balance`,
+      )) as ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
+
+      if (response.data.length === 0) {
+        return []
+      }
+
+      return response.data.map(
+        ExchangeRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
+      )
+    } catch (error: any) {
+      throw new HttpException(error.message)
+    }
+  }
+
+  async fetchCW20BalancesNoThrow(
+    address: string,
+  ): Promise<CW20BalanceWithToken[]> {
+    try {
+      const response = (await this.client.get(
+        `/wasm/${address}/cw20-balance`,
+      )) as ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
+
+      if (response.data.length === 0) {
+        return []
+      }
+
+      return response.data.map(
+        ExchangeRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
+      )
+    } catch (error: any) {
+      if (error.message.includes(404) || error.message.includes(500)) {
+        return []
+      }
+
       throw new HttpException(error.message)
     }
   }

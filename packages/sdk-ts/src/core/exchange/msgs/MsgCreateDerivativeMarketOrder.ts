@@ -29,7 +29,7 @@ export declare namespace MsgCreateDerivativeMarketOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateDerivativeMarketOrder.AsObject {
+  export interface Amino extends BaseMsgCreateDerivativeMarketOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
   }
 
@@ -62,7 +62,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
   MsgCreateDerivativeMarketOrder.Params,
   MsgCreateDerivativeMarketOrder.Data,
   MsgCreateDerivativeMarketOrder.Proto,
-  MsgCreateDerivativeMarketOrder.Web3,
+  MsgCreateDerivativeMarketOrder.Amino,
   MsgCreateDerivativeMarketOrder.DirectSign
 > {
   static fromJSON(
@@ -95,7 +95,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
     }
   }
 
-  toWeb3(): MsgCreateDerivativeMarketOrder.Web3 {
+  toAmino(): MsgCreateDerivativeMarketOrder.Amino {
     const { params } = this
     const proto = createMarketOrder(params)
 

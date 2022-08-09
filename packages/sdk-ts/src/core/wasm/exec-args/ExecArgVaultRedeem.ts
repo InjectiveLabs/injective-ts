@@ -1,16 +1,21 @@
-import { ExecArgsBase } from '../../ExecArgsBase'
+import {
+  dataToExecData,
+  ExecArgsBase,
+  ExecDataRepresentation,
+} from '../../ExecArgsBase'
 
 export declare namespace ExecArgVaultRedeem {
   export interface Params {
     vaultSubaccountId: string
-    subscriberSubaccountId: string
-    marginRatio: string
+    redeemerSubaccountId: string
+    lpTokenBurnAmount: string
+    origin: string
   }
 
   export interface Data {
-    vaultSubaccountId: string
-    subscriberSubaccountId: string
-    marginRatio: string
+    vault_subaccount_id: string
+    redeemer_subaccount_id: string
+    lp_token_burn_amount: string
   }
 }
 
@@ -26,9 +31,19 @@ export default class ExecArgVaultRedeem extends ExecArgsBase<
     const { params } = this
 
     return {
-      vaultSubaccountId: params.vaultSubaccountId,
-      subscriberSubaccountId: params.subscriberSubaccountId,
-      marginRatio: params.marginRatio,
+      vault_subaccount_id: params.vaultSubaccountId,
+      redeemer_subaccount_id: params.redeemerSubaccountId,
+      lp_token_burn_amount: params.lpTokenBurnAmount,
     }
+  }
+
+  toExecData(): ExecDataRepresentation<ExecArgVaultRedeem.Data> {
+    const { params } = this
+
+    return dataToExecData(this.toData(), {
+      origin: params.origin,
+      name: 'VaultRedeem',
+      action: 'Redeem',
+    })
   }
 }

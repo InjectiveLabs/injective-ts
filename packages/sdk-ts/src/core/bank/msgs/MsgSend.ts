@@ -22,7 +22,7 @@ export declare namespace MsgSend {
     '@type': '/cosmos.bank.v1beta1.MsgSend'
   }
 
-  export interface Web3 extends BaseMsgSend.AsObject {
+  export interface Amino extends BaseMsgSend.AsObject {
     '@type': '/cosmos.bank.v1beta1.MsgSend'
   }
 
@@ -33,7 +33,7 @@ export default class MsgSend extends MsgBase<
   MsgSend.Params,
   MsgSend.Data,
   MsgSend.Proto,
-  MsgSend.Web3,
+  MsgSend.Amino,
   MsgSend.DirectSign
 > {
   static fromJSON(params: MsgSend.Params): MsgSend {
@@ -64,7 +64,7 @@ export default class MsgSend extends MsgBase<
     }
   }
 
-  toWeb3(): MsgSend.Web3 {
+  toAmino(): MsgSend.Amino {
     const { params } = this
     const proto = this.toProto()
     const message = {
@@ -78,7 +78,7 @@ export default class MsgSend extends MsgBase<
     return {
       '@type': '/cosmos.bank.v1beta1.MsgSend',
       ...message,
-    } as unknown as MsgSend.Web3
+    } as unknown as MsgSend.Amino
   }
 
   toDirectSign(): MsgSend.DirectSign {

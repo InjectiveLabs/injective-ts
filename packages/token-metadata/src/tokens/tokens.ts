@@ -1,3 +1,5 @@
+import { TokenMeta } from '../types'
+
 export default {
   BTC: {
     name: 'Bitcoin',
@@ -587,6 +589,15 @@ export default {
     coinGeckoId: 'apecoin',
   },
 
+  USCRT: {
+    name: 'Secret Network',
+    logo: 'scrt.png',
+    symbol: 'SCRT',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'secret',
+  },
+
   XPRT: {
     name: 'Persistence',
     logo: 'xprt.svg',
@@ -656,4 +667,4 @@ export default {
     address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     coinGeckoId: 'polkadot',
   },
-}
+} as Record<string, TokenMeta>

@@ -1,4 +1,11 @@
-import { ContractInfo as grpcContractInfo } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/types_pb'
+import {
+  ContractInfo as grpcContractInfo,
+  ContractInfo as GrpcContractInfo,
+  ContractCodeHistoryEntry as GrpcContractCodeHistoryEntry,
+  ContractCodeHistoryOperationTypeMap,
+  AbsoluteTxPosition as GrpcAbsoluteTxPosition,
+} from '@injectivelabs/chain-api/cosmwasm/wasm/v1/types_pb'
+import { CodeInfoResponse as GrpcCodeInfoResponse } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/query_pb'
 import { Pagination } from './../../../types/pagination'
 
 export interface AbsoluteTxPosition {
@@ -31,4 +38,29 @@ export interface ContractInfo {
   extension?: GoogleProtoBufAny
 }
 
-export { grpcContractInfo }
+export interface AbsoluteTxPosition {
+  blockHeight: number
+  txIndex: number
+}
+
+export interface ContractCodeHistoryEntry {
+  operation: ContractCodeHistoryOperationTypeMap[keyof ContractCodeHistoryOperationTypeMap]
+  codeId: number
+  updated?: AbsoluteTxPosition
+  msg: Uint8Array | string
+}
+
+export interface CodeInfoResponse {
+  codeId: number
+  creator: string
+  dataHash: Uint8Array | string
+}
+
+export {
+  grpcContractInfo,
+  GrpcContractInfo,
+  GrpcContractCodeHistoryEntry,
+  GrpcAbsoluteTxPosition,
+  ContractCodeHistoryOperationTypeMap,
+  GrpcCodeInfoResponse,
+}

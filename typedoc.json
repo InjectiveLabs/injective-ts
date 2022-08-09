@@ -1,0 +1,11 @@
+{
+  "entryPointStrategy": "packages",
+  "out": "./docs",
+  "entryPoints": [
+    "./packages/sdk-ts",
+    "./packages/sdk-ui-ts",
+    "./packages/wallet-ts",
+    "./packages/tx-ts"
+  ],
+  "name": "Injective TS API"
+}

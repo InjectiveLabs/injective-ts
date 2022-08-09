@@ -21,7 +21,7 @@ export declare namespace MsgDeposit {
     '@type': '/injective.exchange.v1beta1.MsgDeposit'
   }
 
-  export interface Web3 extends BaseMsgDeposit.AsObject {
+  export interface Amino extends BaseMsgDeposit.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgDeposit'
   }
 
@@ -32,7 +32,7 @@ export default class MsgDeposit extends MsgBase<
   MsgDeposit.Params,
   MsgDeposit.Data,
   MsgDeposit.Proto,
-  MsgDeposit.Web3,
+  MsgDeposit.Amino,
   MsgDeposit.DirectSign
 > {
   static fromJSON(params: MsgDeposit.Params): MsgDeposit {
@@ -63,7 +63,7 @@ export default class MsgDeposit extends MsgBase<
     }
   }
 
-  toWeb3(): MsgDeposit.Web3 {
+  toAmino(): MsgDeposit.Amino {
     const proto = this.toProto()
 
     return {

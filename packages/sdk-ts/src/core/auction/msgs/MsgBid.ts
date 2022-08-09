@@ -21,7 +21,7 @@ export declare namespace MsgBid {
     '@type': '/injective.auction.v1beta1.MsgBid'
   }
 
-  export interface Web3 extends BaseMsgBid.AsObject {
+  export interface Amino extends BaseMsgBid.AsObject {
     '@type': '/injective.auction.v1beta1.MsgBid'
   }
 
@@ -32,7 +32,7 @@ export default class MsgBid extends MsgBase<
   MsgBid.Params,
   MsgBid.Data,
   MsgBid.Proto,
-  MsgBid.Web3,
+  MsgBid.Amino,
   MsgBid.DirectSign
 > {
   static fromJSON(params: MsgBid.Params): MsgBid {
@@ -63,7 +63,7 @@ export default class MsgBid extends MsgBase<
     }
   }
 
-  toWeb3(): MsgBid.Web3 {
+  toAmino(): MsgBid.Amino {
     const proto = this.toProto()
 
     return {

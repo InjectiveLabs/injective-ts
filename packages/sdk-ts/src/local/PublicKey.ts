@@ -1,53 +1,60 @@
-import { BECH32_ADDR_ACC_PREFIX, BECH32_PUBKEY_ACC_PREFIX } from '../utils'
+import { BECH32_PUBKEY_ACC_PREFIX } from '../utils'
 import { bech32 } from 'bech32'
-// import { sha256, ripemd160 } from '../util/hash'
 import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
+import { toBuffer } from 'ethereumjs-util'
 import secp256k1 from 'secp256k1'
+import { Address } from '../classes'
+import EthCrypto from 'eth-crypto'
+import { keccak256 } from 'js-sha3'
 
 export class PublicKey {
   private type: string
 
-  private key: string
+  private key: Uint8Array
 
-  private constructor(key: string, type: string) {
+  private constructor(key: Uint8Array, type?: string) {
     this.key = key
-    this.type = type
+    this.type = type || '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
+  }
+
+  static fromBase64(publicKey: string): PublicKey {
+    return new PublicKey(Buffer.from(publicKey, 'base64'))
   }
 
   static fromHex(privateKey: string | Uint8Array): PublicKey {
     const privateKeyHex = Buffer.from(privateKey.toString(), 'hex')
-    const publicKeyByte = secp256k1.publicKeyCreate(privateKeyHex)
-
-    const buf1 = Buffer.from([10])
-    const buf2 = Buffer.from([publicKeyByte.length])
-    const buf3 = Buffer.from(publicKeyByte)
-
-    const key = Buffer.concat([buf1, buf2, buf3]).toString('base64')
+    const publicKeyByte = secp256k1.publicKeyCreate(privateKeyHex, true)
     const type = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
 
-    return new PublicKey(key, type)
+    return new PublicKey(publicKeyByte, type)
   }
 
-  public toHex(): Uint8Array {
-    return new Uint8Array([]) /* TODO */
+  public toPubKeyBytes(): Uint8Array {
+    return this.key
   }
 
-  public toPubKey(): string {
-    const pubkeyDirectSignPrefixSecp256k1 = Buffer.from(
-      'eb5ae987' + '21',
-      'hex',
-    )
-    const pubKeyBytes = Buffer.concat([
-      pubkeyDirectSignPrefixSecp256k1,
-      Buffer.from(this.key, 'base64'),
-    ])
+  public toBase64(): string {
+    return Buffer.from(this.toPubKeyBytes()).toString('base64')
+  }
 
-    return bech32.encode(BECH32_PUBKEY_ACC_PREFIX, bech32.toWords(pubKeyBytes))
+  public toHex(): string {
+    return Buffer.from(this.toPubKeyBytes()).toString('hex')
   }
 
   public toBech32(): string {
-    return bech32.encode(BECH32_ADDR_ACC_PREFIX, bech32.toWords(this.toHex()))
+    return bech32.encode(BECH32_PUBKEY_ACC_PREFIX, this.key)
+  }
+
+  public toAddress(): Address {
+    const publicKeyHex = this.toHex()
+    const decompressedPublicKey = EthCrypto.publicKey.decompress(publicKeyHex)
+    const addressBuffer = Buffer.from(
+      keccak256(toBuffer(EthCrypto.util.addLeading0x(decompressedPublicKey))),
+      'hex',
+    ).subarray(-20)
+
+    return Address.fromHex(addressBuffer.toString('hex').toLowerCase())
   }
 
   public toProto() {

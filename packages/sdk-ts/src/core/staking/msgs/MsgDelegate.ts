@@ -20,7 +20,7 @@ export declare namespace MsgDelegate {
     '@type': '/cosmos.staking.v1beta1.MsgDelegate'
   }
 
-  export interface Web3 extends BaseMsgDelegate.AsObject {
+  export interface Amino extends BaseMsgDelegate.AsObject {
     '@type': '/cosmos.staking.v1beta1.MsgDelegate'
   }
 
@@ -31,7 +31,7 @@ export default class MsgDelegate extends MsgBase<
   MsgDelegate.Params,
   MsgDelegate.Data,
   MsgDelegate.Proto,
-  MsgDelegate.Web3,
+  MsgDelegate.Amino,
   MsgDelegate.DirectSign
 > {
   static fromJSON(params: MsgDelegate.Params): MsgDelegate {
@@ -62,7 +62,7 @@ export default class MsgDelegate extends MsgBase<
     }
   }
 
-  toWeb3(): MsgDelegate.Web3 {
+  toAmino(): MsgDelegate.Amino {
     const proto = this.toProto()
 
     return {
