@@ -70,7 +70,7 @@ export class PrivateKey {
    * @returns {PublicKey} a Public key that can be used to verify the signatures made with this PrivateKey
    **/
   toPublicKey(): PublicKey {
-    return PublicKey.fromHex(this.wallet.publicKey)
+    return PublicKey.fromHex(this.wallet.privateKey)
   }
 
   /**
