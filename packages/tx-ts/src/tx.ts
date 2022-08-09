@@ -20,6 +20,29 @@ export type MsgArg = {
   type: string
   message: any
 }
+
+/** @type {CreateTransactionArgs} */
+export interface CreateTransactionArgs {
+  message: MsgArg | MsgArg[] // the message that should be packed into the transaction
+  memo: string // the memo to include in the transaction
+  fee: StdFee // the fee to include in the transaction
+  pubKey: string // the pubKey of the signer of the transaction in base64
+  sequence: number // the sequence (nonce) of the signer of the transaction
+  accountNumber: number // the account number of the signer of the transaction
+  chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
+}
+
+/** @type {CreateTransactionResult} */
+export interface CreateTransactionResult {
+  txRaw: TxRaw // the Tx raw that was created
+  signDoc: SignDoc // the SignDoc that was created - used for signing of the transaction
+  accountNumber: number // the account number of the signer of the transaction
+  bodyBytes: Uint8Array // the body bytes of the transaction
+  authInfoBytes: Uint8Array // the auth info bytes of the transaction
+  signBytes: Uint8Array // the sign bytes of the transaction (SignDoc serialized to binary)
+  signHashedBytes: Uint8Array // the sign bytes of the transaction (SignDoc serialized to binary) and hashed using keccak256
+}
+
 export const SIGN_DIRECT = SignMode.SIGN_MODE_DIRECT
 
 export const getPublicKey = ({
@@ -150,6 +173,27 @@ export const createSigDoc = ({
   return signDoc
 }
 
+/**
+ * @typedef {Object} CreateTransactionArgs
+ * @param {CreateTransactionArgs} params
+ * @property {MsgArg | MsgArg[]} message - the Cosmos messages to wrap them in a transaction
+ * @property {string} memo - the memo to attach to the transaction
+ * @property {StdFee} fee - the fee to attach to the transaction
+ * @property {string} sequence - the account sequence to attach to the transaction
+ * @property {number} number - the account number to attach to the transaction
+ * @property {number} chainId - the chain-id to attach to the transaction
+ * @property {string} pubKey - the account pubKey to attach to the transaction (in base64)
+ *
+ * @typedef {Object} CreateTransactionResult
+ * @property {TxRaw} txRaw  // the Tx raw that was created
+ * @property {SignDoc} signDoc  // the SignDoc that was created - used for signing of the transaction
+ * @property {number} accountNumber  // the account number of the signer of the transaction
+ * @property {Uint8Array} bodyBytes  // the body bytes of the transaction
+ * @property {Uint8Array} authInfoBytes  // the auth info bytes of the transaction
+ * @property {Uint8Array} signBytes  // the sign bytes of the transaction (SignDoc serialized to binary)
+ * @property {Uint8Array} signHashedBytes  // the sign bytes of the transaction (SignDoc serialized to binary) and hashed using keccak256
+ * @returns {CreateTransactionResult} result
+ */
 export const createTransaction = ({
   message,
   memo,
@@ -158,15 +202,7 @@ export const createTransaction = ({
   sequence,
   accountNumber,
   chainId,
-}: {
-  message: MsgArg | MsgArg[]
-  memo: string
-  fee: StdFee
-  pubKey: string
-  sequence: number
-  accountNumber: number
-  chainId: string
-}) => {
+}: CreateTransactionArgs): CreateTransactionResult => {
   const body = createBody({ message, memo })
   const feeMessage = createFee({
     fee: fee.amount[0],
