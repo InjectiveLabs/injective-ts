@@ -185,7 +185,7 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     parsedTypedData.message.msgs = null
 
     const broadcastTxRequest = new BroadcastTxRequest()
-    broadcastTxRequest.setMode('block')
+    broadcastTxRequest.setMode('sync')
     broadcastTxRequest.setChainId(chainId)
     broadcastTxRequest.setPubKey(cosmosPubKey)
     broadcastTxRequest.setSignature(signature)

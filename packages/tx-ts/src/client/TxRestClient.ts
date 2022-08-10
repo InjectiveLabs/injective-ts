@@ -125,34 +125,12 @@ export class TxRestClient {
     }
   }
 
-  public async broadcast(
-    tx: TxRaw,
-    timeout = 30000,
-  ): Promise<WaitTxBroadcastResult> {
+  public async waitTxBroadcast(txHash: string, timeout = 30000) {
     const POLL_INTERVAL = 500
-    const { tx_response: txResponse } = await this.broadcastTx<{
-      tx_response: SyncTxBroadcastResult
-    }>(tx, BroadcastMode.Sync)
-
-    if ((txResponse as TxError).code !== 0) {
-      const result: WaitTxBroadcastResult = {
-        height: txResponse.height,
-        txhash: txResponse.txhash,
-        raw_log: txResponse.raw_log,
-        code: (txResponse as TxError).code,
-        codespace: (txResponse as TxError).codespace,
-        gas_used: 0,
-        gas_wanted: 0,
-        timestamp: '',
-        logs: [],
-      }
-
-      return result
-    }
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
-        const txInfo = await this.txInfo(txResponse.txhash)
+        const txInfo = await this.txInfo(txHash)
         const { tx_response: txInfoSearchResponse } = txInfo
 
         if (txInfoSearchResponse) {
@@ -178,6 +156,33 @@ export class TxRestClient {
     throw new Error(
       `Transaction was not included in a block before timeout of ${timeout}ms`,
     )
+  }
+
+  public async broadcast(
+    tx: TxRaw,
+    timeout = 30000,
+  ): Promise<WaitTxBroadcastResult> {
+    const { tx_response: txResponse } = await this.broadcastTx<{
+      tx_response: SyncTxBroadcastResult
+    }>(tx, BroadcastMode.Sync)
+
+    if ((txResponse as TxError).code !== 0) {
+      const result: WaitTxBroadcastResult = {
+        height: txResponse.height,
+        txhash: txResponse.txhash,
+        raw_log: txResponse.raw_log,
+        code: (txResponse as TxError).code,
+        codespace: (txResponse as TxError).codespace,
+        gas_used: 0,
+        gas_wanted: 0,
+        timestamp: '',
+        logs: [],
+      }
+
+      return result
+    }
+
+    return this.waitTxBroadcast(txResponse.txhash, timeout)
   }
 
   /**

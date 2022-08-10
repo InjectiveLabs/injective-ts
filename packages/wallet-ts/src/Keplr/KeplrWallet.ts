@@ -7,6 +7,7 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
+import { TxRestClient } from '@injectivelabs/tx-ts'
 import {
   getExperimentalChainConfigBasedOnChainId,
   keplrSupportedChainIds,
@@ -128,13 +129,32 @@ export class KeplrWallet {
     }
   }
 
+  /**
+   * This method is used to broadcast a transaction to the network.
+   * Since it uses the `Sync` mode, it will not wait for the transaction to be included in a block,
+   * so we have to make sure the transaction is included in a block after its broadcasted
+   *
+   * @param txRaw - raw transaction to broadcast
+   * @returns tx hash
+   */
   async broadcastTx(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
+    const txHashBuff = await keplr.sendTx(
+      chainId,
+      txRaw.serializeBinary(),
+      BroadcastMode.Sync,
+    )
 
-    return Buffer.from(
-      await keplr.sendTx(chainId, txRaw.serializeBinary(), BroadcastMode.Block),
-    ).toString('hex')
+    return Buffer.from(txHashBuff).toString('hex')
+  }
+
+  async waitTxBroadcasted(txHash: string): Promise<string> {
+    const endpoints = await this.getChainEndpoints()
+    const txClient = new TxRestClient(endpoints.rest)
+    const result = await txClient.waitTxBroadcast(txHash)
+
+    return result.txhash
   }
 
   async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {

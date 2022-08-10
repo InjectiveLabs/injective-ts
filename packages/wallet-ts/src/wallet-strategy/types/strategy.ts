@@ -4,6 +4,7 @@ import {
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import type Web3 from 'web3'
+import { Wallet } from './enums'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void
@@ -16,6 +17,7 @@ export enum LedgerDerivationPathType {
 export interface WalletOptions {
   rpcUrls: Record<EthereumChainId, string>
   wsRpcUrls: Record<EthereumChainId, string>
+  disabledWallets?: Wallet[]
 }
 
 export interface ConcreteWalletStrategy {
