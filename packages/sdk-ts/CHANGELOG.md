@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.77](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.76...@injectivelabs/sdk-ts@1.0.77) (2022-08-10)
+
+
+### Features
+
+* enabled disabling a wallet for wallet-ts, refactored to use sync broadcasting mode ([c1dde3f](https://github.com/InjectiveLabs/injective-ts/commit/c1dde3f5efd644de194d4e50b77c8c484d11a4b9))
+
+
+
+
+
 ## [1.0.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.75...@injectivelabs/sdk-ts@1.0.76) (2022-08-09)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
