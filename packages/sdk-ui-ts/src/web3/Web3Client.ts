@@ -176,6 +176,7 @@ export class Web3Client {
     gasPrice: string // BigNumberInWei
   }) {
     const { walletStrategy, network, ethereumChainId } = this
+
     const web3 = walletStrategy.getWeb3() as any
     const contractAddresses = getContractAddressesForNetworkOrThrow(network)
     const contractAddress =
