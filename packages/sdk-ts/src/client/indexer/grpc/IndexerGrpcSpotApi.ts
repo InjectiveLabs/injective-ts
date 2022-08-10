@@ -97,16 +97,27 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
   async fetchOrders(params?: {
     marketId?: string
+    // marketIds?: string[]
     subaccountId?: string
     orderSide?: SpotOrderSide
     pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, orderSide, pagination } = params || {}
+    const {
+      marketId,
+      // marketIds,
+      subaccountId,
+      orderSide,
+      pagination
+    } = params || {}
     const request = new SpotOrdersRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
     }
+
+    // if (marketIds) {
+    //   request.setMarketIds(marketIds)
+    // }
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
@@ -124,6 +135,10 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
+
+      // if (pagination.endTime !== undefined) {
+      //   request.setEndTime(pagination.endTime)
+      // }
     }
 
     try {

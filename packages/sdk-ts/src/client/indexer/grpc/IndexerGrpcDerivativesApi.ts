@@ -153,17 +153,28 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
   async fetchOrders(params?: {
     marketId?: string
+    // marketIds?: string[]
     orderSide?: DerivativeOrderSide
     subaccountId?: string
     pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, orderSide, pagination } = params || {}
+    const {
+      marketId,
+      // marketIds,
+      subaccountId,
+      orderSide,
+      pagination
+    } = params || {}
 
     const request = new DerivativeOrdersRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
     }
+
+    // if (marketIds) {
+    //   request.setMarketIds(marketIds)
+    // }
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
@@ -181,6 +192,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
+
+      // if (pagination.endTime !== undefined) {
+      //   request.setEndTime(pagination.endTime)
+      // }
     }
 
     try {
@@ -198,16 +213,26 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
   async fetchPositions(params?: {
     marketId?: string
+    // marketIds?: string[]
     subaccountId?: string
     pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, pagination } = params || {}
+    const {
+      marketId,
+      // marketIds,
+      subaccountId,
+      pagination
+    } = params || {}
 
     const request = new DerivativePositionsRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
     }
+
+    // if (marketIds) {
+    //   request.setMarketIds(marketIds)
+    // }
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
@@ -221,6 +246,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
+
+      // if (pagination.endTime !== undefined) {
+      //   request.setEndTime(pagination.endTime)
+      // }
     }
 
     try {
@@ -245,7 +274,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     subaccountId?: string
     startTime?: number
     endTime?: number
-    executionType: TradeExecutionType
+    executionType?: TradeExecutionType
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {

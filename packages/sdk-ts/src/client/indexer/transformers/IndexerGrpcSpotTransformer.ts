@@ -67,8 +67,12 @@ export class IndexerGrpcSpotTransformer {
 
   static ordersResponseToOrders(response: SpotOrdersResponse) {
     const orders = response.getOrdersList()
+    const paging = response.getPaging()
 
-    return IndexerGrpcSpotTransformer.grpcOrdersToOrders(orders)
+    return {
+      orders: IndexerGrpcSpotTransformer.grpcOrdersToOrders(orders),
+      paging: grpcPagingToPaging(paging)
+    }
   }
 
   static tradesResponseToTrades(response: SpotTradesResponse) {

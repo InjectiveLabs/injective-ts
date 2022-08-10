@@ -133,14 +133,22 @@ export class IndexerGrpcDerivativeTransformer {
 
   static ordersResponseToOrders(response: DerivativeOrdersResponse) {
     const orders = response.getOrdersList()
+    const paging = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcOrdersToOrders(orders)
+    return {
+      orders: IndexerGrpcDerivativeTransformer.grpcOrdersToOrders(orders),
+      paging: grpcPagingToPaging(paging)
+    }
   }
 
   static positionsResponseToPositions(response: DerivativePositionsResponse) {
     const positions = response.getPositionsList()
+    const paging = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcPositionsToPositions(positions)
+    return {
+      positions: IndexerGrpcDerivativeTransformer.grpcPositionsToPositions(positions),
+      paging: grpcPagingToPaging(paging)
+    }
   }
 
   static tradesResponseToTrades(response: DerivativeTradesResponse) {
