@@ -19,8 +19,6 @@ import {
   PositionsResponse as DerivativePositionsResponse,
   SubaccountOrdersListRequest as DerivativeSubaccountOrdersListRequest,
   SubaccountOrdersListResponse as DerivativeSubaccountOrdersListResponse,
-  // SubaccountTradesListRequest as DerivativeSubaccountTradesListRequest,
-  // SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
   OrderbooksRequest as DerivativeOrderbooksRequest,
   OrderbooksResponse as DerivativeOrderbooksResponse,
   TradesRequest,
