@@ -14,6 +14,7 @@ import {
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
+import { ExchangePagination } from '../../../types'
 
 export enum DerivativeOrderSide {
   Unspecified = 'unspecified',
@@ -189,6 +190,11 @@ export interface FundingRate {
   marketId: string
   rate: string
   timestamp: number
+}
+
+export interface FundingRateWithPagination {
+  fundingRates: FundingRate[]
+  pagination: ExchangePagination
 }
 
 export {

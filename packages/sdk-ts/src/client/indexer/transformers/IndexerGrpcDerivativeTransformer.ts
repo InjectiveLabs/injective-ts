@@ -9,6 +9,7 @@ import {
   DerivativeMarket,
   DerivativeLimitOrder,
   DerivativeTrade,
+  FundingRateWithPagination,
   PositionDelta,
   GrpcDerivativePosition,
   Position,
@@ -48,6 +49,7 @@ import {
   BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
   BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
+import { grpcPagingToPaging } from '../../../utils'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -157,12 +159,19 @@ export class IndexerGrpcDerivativeTransformer {
     )
   }
 
-  static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {
+  static fundingRatesResponseToFundingRates(
+    response: FundingRatesResponse,
+  ): FundingRateWithPagination {
     const fundingRates = response.getFundingRatesList()
+    const pagination = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcFundingRatesToFundingRates(
-      fundingRates,
-    )
+    return {
+      fundingRates:
+        IndexerGrpcDerivativeTransformer.grpcFundingRatesToFundingRates(
+          fundingRates,
+        ),
+      pagination: grpcPagingToPaging(pagination),
+    }
   }
 
   static orderbookResponseToOrderbook(response: DerivativeOrderbookResponse) {
