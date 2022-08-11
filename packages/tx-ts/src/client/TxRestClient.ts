@@ -42,16 +42,6 @@ export class TxRestClient {
     this.httpClient = new HttpClient(endpoint)
   }
 
-  public async simulate(txRaw: TxRaw): Promise<any> {
-    try {
-      return await this.httpClient.post('cosmos/tx/v1beta1/simulate', {
-        tx_bytes: Buffer.from(txRaw.serializeBinary()).toString('base64'),
-      })
-    } catch (e: any) {
-      throw new Error(e)
-    }
-  }
-
   public async txInfo(
     txHash: string,
     params: APIParams = {},
@@ -93,39 +83,6 @@ export class TxRestClient {
     return txInfos
   }
 
-  public async simulateTx(txRaw: TxRaw): Promise<SimulationResponse> {
-    try {
-      txRaw.clearSignaturesList()
-
-      const response = await this.postRaw<SimulationResponse>(
-        '/cosmos/tx/v1beta1/simulate',
-        {
-          tx_bytes: TxClient.encode(txRaw),
-        },
-      )
-
-      return response
-    } catch (e: any) {
-      throw new Error(e)
-    }
-  }
-
-  private async broadcastTx<T>(
-    txRaw: TxRaw,
-    mode: BroadcastMode = BroadcastMode.Sync,
-  ): Promise<T> {
-    try {
-      const response = await this.postRaw<T>('cosmos/tx/v1beta1/txs', {
-        tx_bytes: TxClient.encode(txRaw),
-        mode,
-      })
-
-      return response
-    } catch (e: any) {
-      throw new Error(e)
-    }
-  }
-
   public async waitTxBroadcast(txHash: string, timeout = 30000) {
     const POLL_INTERVAL = 1000
 
@@ -159,6 +116,39 @@ export class TxRestClient {
     throw new Error(
       `Transaction was not included in a block before timeout of ${timeout}ms`,
     )
+  }
+
+  public async simulateTx(txRaw: TxRaw): Promise<SimulationResponse> {
+    try {
+      txRaw.clearSignaturesList()
+
+      const response = await this.postRaw<SimulationResponse>(
+        '/cosmos/tx/v1beta1/simulate',
+        {
+          tx_bytes: TxClient.encode(txRaw),
+        },
+      )
+
+      return response
+    } catch (e: any) {
+      throw new Error(e)
+    }
+  }
+
+  private async broadcastTx<T>(
+    txRaw: TxRaw,
+    mode: BroadcastMode = BroadcastMode.Sync,
+  ): Promise<T> {
+    try {
+      const response = await this.postRaw<T>('cosmos/tx/v1beta1/txs', {
+        tx_bytes: TxClient.encode(txRaw),
+        mode,
+      })
+
+      return response
+    } catch (e: any) {
+      throw new Error(e)
+    }
   }
 
   public async broadcast(
