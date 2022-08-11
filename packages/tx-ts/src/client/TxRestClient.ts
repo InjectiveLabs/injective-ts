@@ -48,7 +48,7 @@ export class TxRestClient {
         tx_bytes: Buffer.from(txRaw.serializeBinary()).toString('base64'),
       })
     } catch (e: any) {
-      throw new Error(e.message)
+      throw new Error(e)
     }
   }
 
@@ -63,8 +63,8 @@ export class TxRestClient {
       )
 
       return response
-    } catch (e) {
-      throw new Error((e as any).message)
+    } catch (e: any) {
+      throw new Error(e)
     }
   }
 
@@ -86,6 +86,7 @@ export class TxRestClient {
 
     for (const txhash of txHashes) {
       const txInfo = await this.txInfo(txhash)
+
       txInfos.push(txInfo.tx_response)
     }
 
@@ -105,7 +106,7 @@ export class TxRestClient {
 
       return response
     } catch (e: any) {
-      throw new Error(e.message)
+      throw new Error(e)
     }
   }
 
@@ -121,12 +122,12 @@ export class TxRestClient {
 
       return response
     } catch (e: any) {
-      throw new Error(e.message)
+      throw new Error(e)
     }
   }
 
   public async waitTxBroadcast(txHash: string, timeout = 30000) {
-    const POLL_INTERVAL = 500
+    const POLL_INTERVAL = 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
@@ -146,8 +147,10 @@ export class TxRestClient {
             timestamp: txInfoSearchResponse.timestamp,
           }
         }
-      } catch (error) {
-        // Errors when transaction is not found.
+      } catch (error: any) {
+        if (!error.toString().includes('404')) {
+          throw error
+        }
       }
 
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
