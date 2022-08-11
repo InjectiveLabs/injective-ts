@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.23...@injectivelabs/tx-ts@1.0.24) (2022-08-11)
+
+
+### Bug Fixes
+
+* removed 404 error from tx fetcher ([2a9534a](https://github.com/InjectiveLabs/injective-ts/commit/2a9534aa66d64981b180d10abb8cf8de3a22c952))
+
+
+
+
+
 ## [1.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.22...@injectivelabs/tx-ts@1.0.23) (2022-08-10)
 
 
