@@ -117,8 +117,6 @@ export class Address {
       bech32.fromWords(bech32.decode(bech32Address).words),
     ).toString('hex')
 
-    console.log('to Hex => ' + bech32Address + ' ' + address)
-
     return address.startsWith('0x') ? address : `0x${address}`
   }
 
