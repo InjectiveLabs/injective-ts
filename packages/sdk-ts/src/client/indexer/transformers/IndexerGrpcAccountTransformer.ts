@@ -6,6 +6,7 @@ import {
   SubaccountBalancesListResponse,
 } from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
 import { Coin } from '@injectivelabs/ts-types'
+import { grpcPagingToPaging } from '../../..//utils/pagination'
 import { GrpcCoin } from '../../../types/index'
 import {
   GrpcSubaccountBalance,
@@ -173,14 +174,18 @@ export class IndexerGrpcAccountTransformer {
 
   static transferHistoryResponseToTransferHistory(
     response: SubaccountHistoryResponse,
-  ): SubaccountTransfer[] {
-    return response
-      .getTransfersList()
-      .map((transfer) =>
+  ) {
+    const transfers = response.getTransfersList()
+    const pagination = response.getPaging()
+
+    return {
+      transfers: transfers.map((transfer) =>
         IndexerGrpcAccountTransformer.grpcTransferHistoryEntryToTransferHistoryEntry(
           transfer,
         ),
-      )
+      ),
+      pagination: grpcPagingToPaging(pagination),
+    }
   }
 
   static grpcTransferHistoryToTransferHistory(

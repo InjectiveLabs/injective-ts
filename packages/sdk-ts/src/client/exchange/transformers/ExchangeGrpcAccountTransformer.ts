@@ -173,7 +173,7 @@ export class ExchangeGrpcAccountTransformer {
 
   static transferHistoryResponseToTransferHistory(
     response: SubaccountHistoryResponse,
-  ): SubaccountTransfer[] {
+  ) {
     return response
       .getTransfersList()
       .map((transfer) =>

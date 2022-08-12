@@ -121,20 +121,24 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
     }
   }
 
-  async fetchSubaccountHistory({
-    subaccountId,
-    denom,
-    transferTypes = [],
-    pagination,
-  }: {
+  async fetchSubaccountHistory(params?: {
     subaccountId: string
     denom?: string
     transferTypes?: string[]
     pagination?: PaginationOption
   }) {
+    const {
+      subaccountId,
+      denom,
+      transferTypes = [],
+      pagination
+    } = params || {}
+
     const request = new SubaccountHistoryRequest()
 
-    request.setSubaccountId(subaccountId)
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
 
     if (denom) {
       request.setDenom(denom)

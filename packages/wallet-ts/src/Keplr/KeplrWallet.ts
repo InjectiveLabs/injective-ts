@@ -149,6 +149,25 @@ export class KeplrWallet {
     return Buffer.from(txHashBuff).toString('hex')
   }
 
+  /**
+   * This method is used to broadcast a transaction to the network.
+   * Since it uses the `Block` mode, and it will wait for the transaction to be included in a block,
+   *
+   * @param txRaw - raw transaction to broadcast
+   * @returns tx hash
+   */
+  async broadcastTxBlock(txRaw: TxRaw): Promise<string> {
+    const { chainId } = this
+    const keplr = await this.getKeplrWallet()
+    const result = keplr.sendTx(
+      chainId,
+      txRaw.serializeBinary(),
+      BroadcastMode.Block,
+    )
+
+    return Buffer.from(result).toString('hex')
+  }
+
   async waitTxBroadcasted(txHash: string): Promise<string> {
     const endpoints = await this.getChainEndpoints()
     const txClient = new TxRestClient(endpoints.rest)

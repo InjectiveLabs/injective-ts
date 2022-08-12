@@ -82,9 +82,7 @@ export default class Keplr
     const txRaw = createTxRaw(signResponse)
 
     try {
-      const txHash = await keplrWallet.broadcastTx(txRaw)
-
-      return await keplrWallet.waitTxBroadcasted(txHash)
+      return await keplrWallet.broadcastTxBlock(txRaw)
     } catch (e) {
       throw new Error((e as any).message)
     }

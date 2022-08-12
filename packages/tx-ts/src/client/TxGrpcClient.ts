@@ -17,20 +17,17 @@ import { isServerSide } from '@injectivelabs/utils'
 export class TxGrpcClient {
   public txService: ServiceClient
 
-  public txRaw: TxRaw
-
-  constructor({ txRaw, endpoint }: { txRaw: TxRaw; endpoint: string }) {
-    this.txRaw = txRaw
+  constructor(endpoint: string) {
     this.txService = new ServiceClient(endpoint, {
       transport: isServerSide() ? NodeHttpTransport() : undefined,
     })
   }
 
-  public async simulate(): Promise<{
+  public async simulate(txRaw: TxRaw): Promise<{
     result: Result.AsObject
     gasInfo: GasInfo.AsObject
   }> {
-    const { txService, txRaw } = this
+    const { txService } = this
 
     const simulateRequest = new SimulateRequest()
     simulateRequest.setTxBytes(txRaw.serializeBinary())
@@ -57,9 +54,10 @@ export class TxGrpcClient {
   }
 
   public async broadcast(
+    txRaw: TxRaw,
     broadcastMode: BroadcastModeMap[keyof BroadcastModeMap] = BroadcastMode.BROADCAST_MODE_BLOCK,
   ): Promise<TxResponse.AsObject> {
-    const { txService, txRaw } = this
+    const { txService } = this
 
     const broadcastTxRequest = new BroadcastTxRequest()
     broadcastTxRequest.setTxBytes(txRaw.serializeBinary())

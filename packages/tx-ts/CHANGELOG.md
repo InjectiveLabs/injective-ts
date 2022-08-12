@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.24...@injectivelabs/tx-ts@1.0.25) (2022-08-11)
+
+
+### Bug Fixes
+
+* block mode for Keplr and TxGrpcClient refactor so it accepts txRaw in the methods and not constructor ([863a51f](https://github.com/InjectiveLabs/injective-ts/commit/863a51fa2d5eddf7678a5e65f492810d9d3de32e))
+
+
+
+
+
 ## [1.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.23...@injectivelabs/tx-ts@1.0.24) (2022-08-11)
 
 
