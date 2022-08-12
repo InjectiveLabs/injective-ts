@@ -24,7 +24,7 @@ import {
   OrdersResponse as SpotOrdersResponse,
   TradesResponse as SpotTradesResponse,
   OrderbooksResponse as SpotOrderbooksResponse,
-  SubaccountTradesListResponse as SpotSubaccountTradesListResponse
+  SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
 } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
 import { grpcPagingToPaging } from '../../../utils/pagination'
 
@@ -71,7 +71,7 @@ export class IndexerGrpcSpotTransformer {
 
     return {
       orders: IndexerGrpcSpotTransformer.grpcOrdersToOrders(orders),
-      paging: grpcPagingToPaging(paging)
+      paging: grpcPagingToPaging(paging),
     }
   }
 
@@ -81,22 +81,16 @@ export class IndexerGrpcSpotTransformer {
 
     return {
       trades: IndexerGrpcSpotTransformer.grpcTradesToTrades(trades),
-      paging: grpcPagingToPaging(paging)
+      paging: grpcPagingToPaging(paging),
     }
   }
 
-  static subaccountTradesListResponseToTradesList(response: SpotSubaccountTradesListResponse) {
+  static subaccountTradesListResponseToTradesList(
+    response: SpotSubaccountTradesListResponse,
+  ) {
     const tradesList = response.getTradesList()
 
     return IndexerGrpcSpotTransformer.grpcTradesToTrades(tradesList)
-  }
-
-  static subaccountTradeListResponseToSubaccountTradeList(
-    response: SpotSubaccountTradesListResponse,
-  ) {
-    const trades = response.getTradesList()
-
-    return IndexerGrpcSpotTransformer.grpcTradesToTrades(trades)
   }
 
   static orderbookResponseToOrderbook(response: SpotOrderbookResponse) {

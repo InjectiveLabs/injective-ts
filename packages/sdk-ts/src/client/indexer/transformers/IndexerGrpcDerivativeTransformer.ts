@@ -137,7 +137,7 @@ export class IndexerGrpcDerivativeTransformer {
 
     return {
       orders: IndexerGrpcDerivativeTransformer.grpcOrdersToOrders(orders),
-      paging: grpcPagingToPaging(paging)
+      paging: grpcPagingToPaging(paging),
     }
   }
 
@@ -146,8 +146,9 @@ export class IndexerGrpcDerivativeTransformer {
     const paging = response.getPaging()
 
     return {
-      positions: IndexerGrpcDerivativeTransformer.grpcPositionsToPositions(positions),
-      paging: grpcPagingToPaging(paging)
+      positions:
+        IndexerGrpcDerivativeTransformer.grpcPositionsToPositions(positions),
+      paging: grpcPagingToPaging(paging),
     }
   }
 
@@ -161,18 +162,12 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
-  static subaccountTradesListResponseToSubaccountTradesList(response: DerivativeSubaccountTradesListResponse) {
+  static subaccountTradesListResponseToSubaccountTradesList(
+    response: DerivativeSubaccountTradesListResponse,
+  ) {
     const tradesList = response.getTradesList()
 
     return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(tradesList)
-  }
-
-  static subaccountTradeListResponseToSubaccountTradeList(
-    response: DerivativeSubaccountTradesListResponse,
-  ) {
-    const trades = response.getTradesList()
-
-    return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades)
   }
 
   static fundingPaymentsResponseToFundingPayments(
