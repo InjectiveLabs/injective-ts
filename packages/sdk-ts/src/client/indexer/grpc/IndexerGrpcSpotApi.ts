@@ -102,13 +102,8 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     orderSide?: SpotOrderSide
     pagination?: PaginationOption
   }) {
-    const {
-      marketId,
-      marketIds,
-      subaccountId,
-      orderSide,
-      pagination
-    } = params || {}
+    const { marketId, marketIds, subaccountId, orderSide, pagination } =
+      params || {}
     const request = new SpotOrdersRequest()
 
     if (marketId) {
@@ -321,7 +316,9 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.SubaccountTradesList
       >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
 
-      return IndexerGrpcSpotTransformer.subaccountTradesListResponseToTradesList(response)
+      return IndexerGrpcSpotTransformer.subaccountTradesListResponseToTradesList(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

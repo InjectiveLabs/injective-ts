@@ -158,13 +158,8 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     subaccountId?: string
     pagination?: PaginationOption
   }) {
-    const {
-      marketId,
-      marketIds,
-      subaccountId,
-      orderSide,
-      pagination
-    } = params || {}
+    const { marketId, marketIds, subaccountId, orderSide, pagination } =
+      params || {}
 
     const request = new DerivativeOrdersRequest()
 
@@ -217,12 +212,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     subaccountId?: string
     pagination?: PaginationOption
   }) {
-    const {
-      marketId,
-      marketIds,
-      subaccountId,
-      pagination
-    } = params || {}
+    const { marketId, marketIds, subaccountId, pagination } = params || {}
 
     const request = new DerivativePositionsRequest()
 
@@ -524,7 +514,9 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList
       >(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
 
-      return IndexerGrpcDerivativeTransformer.subaccountTradesListResponseToSubaccountTradesList(response)
+      return IndexerGrpcDerivativeTransformer.subaccountTradesListResponseToSubaccountTradesList(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

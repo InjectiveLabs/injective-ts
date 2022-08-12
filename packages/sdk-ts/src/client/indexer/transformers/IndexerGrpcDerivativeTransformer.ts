@@ -187,10 +187,15 @@ export class IndexerGrpcDerivativeTransformer {
 
   static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {
     const fundingRates = response.getFundingRatesList()
+    const pagination = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcFundingRatesToFundingRates(
-      fundingRates,
-    )
+    return {
+      fundingRates:
+        IndexerGrpcDerivativeTransformer.grpcFundingRatesToFundingRates(
+          fundingRates,
+        ),
+      pagination: grpcPagingToPaging(pagination),
+    }
   }
 
   static orderbookResponseToOrderbook(response: DerivativeOrderbookResponse) {
