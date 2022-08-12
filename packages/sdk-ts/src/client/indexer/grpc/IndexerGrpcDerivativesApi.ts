@@ -153,14 +153,14 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
   async fetchOrders(params?: {
     marketId?: string
-    // marketIds?: string[]
+    marketIds?: string[]
     orderSide?: DerivativeOrderSide
     subaccountId?: string
     pagination?: PaginationOption
   }) {
     const {
       marketId,
-      // marketIds,
+      marketIds,
       subaccountId,
       orderSide,
       pagination
@@ -172,9 +172,9 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       request.setMarketId(marketId)
     }
 
-    // if (marketIds) {
-    //   request.setMarketIds(marketIds)
-    // }
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
@@ -193,9 +193,9 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
         request.setLimit(pagination.limit)
       }
 
-      // if (pagination.endTime !== undefined) {
-      //   request.setEndTime(pagination.endTime)
-      // }
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
     }
 
     try {
@@ -213,13 +213,13 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
   async fetchPositions(params?: {
     marketId?: string
-    // marketIds?: string[]
+    marketIds?: string[]
     subaccountId?: string
     pagination?: PaginationOption
   }) {
     const {
       marketId,
-      // marketIds,
+      marketIds,
       subaccountId,
       pagination
     } = params || {}
@@ -230,9 +230,9 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       request.setMarketId(marketId)
     }
 
-    // if (marketIds) {
-    //   request.setMarketIds(marketIds)
-    // }
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
@@ -247,9 +247,9 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
         request.setLimit(pagination.limit)
       }
 
-      // if (pagination.endTime !== undefined) {
-      //   request.setEndTime(pagination.endTime)
-      // }
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
     }
 
     try {
