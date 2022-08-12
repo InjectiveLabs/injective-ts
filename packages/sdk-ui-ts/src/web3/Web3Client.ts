@@ -175,7 +175,7 @@ export class Web3Client {
     denom: string
     destinationAddress: string
     gasPrice: string // BigNumberInWei,
-    data: string
+    data?: string
   }) {
     const { walletStrategy, network, ethereumChainId } = this
 
@@ -191,8 +191,6 @@ export class Web3Client {
       ethereumChainId,
       web3: web3 as any,
     })
-
-    console.log(data)
 
     const depositForContractFunction = contract.sendToInjective({
       contractAddress,
