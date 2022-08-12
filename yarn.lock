@@ -2120,6 +2120,7 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
+
 "@injectivelabs/indexer-api@^1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-api/-/indexer-api-1.0.5.tgz#1b20d6473efe04e476a47188a6cac523772e6ac2"

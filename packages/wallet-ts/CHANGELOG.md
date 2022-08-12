@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.50...@injectivelabs/wallet-ts@1.0.51) (2022-08-11)
+
+
+### Bug Fixes
+
+* block mode for Keplr and TxGrpcClient refactor so it accepts txRaw in the methods and not constructor ([863a51f](https://github.com/InjectiveLabs/injective-ts/commit/863a51fa2d5eddf7678a5e65f492810d9d3de32e))
+
+
+
+
+
+## [1.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.49...@injectivelabs/wallet-ts@1.0.50) (2022-08-11)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.48...@injectivelabs/wallet-ts@1.0.49) (2022-08-10)
+
+
+### Features
+
+* enabled disabling a wallet for wallet-ts, refactored to use sync broadcasting mode ([c1dde3f](https://github.com/InjectiveLabs/injective-ts/commit/c1dde3f5efd644de194d4e50b77c8c484d11a4b9))
+
+
+
+
+
+## [1.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.47...@injectivelabs/wallet-ts@1.0.48) (2022-08-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.46...@injectivelabs/wallet-ts@1.0.47) (2022-08-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
 ## [1.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.45...@injectivelabs/wallet-ts@1.0.46) (2022-08-09)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

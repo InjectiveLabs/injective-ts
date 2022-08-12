@@ -29,7 +29,6 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
     timeoutHeight,
-    useCorrectEIP712Hash,
   }: {
     address: AccountAddress
     chainId: EthereumChainId
@@ -40,7 +39,6 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     timeoutHeight?: number
     feeDenom?: string
     feePrice?: string
-    useCorrectEIP712Hash?: boolean
   }) {
     const txFeeAmount = new Coin()
     txFeeAmount.setDenom(feeDenom)
@@ -71,10 +69,6 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
       prepareTxRequest.setMemo(memo)
     }
 
-    if (useCorrectEIP712Hash !== undefined) {
-      // prepareTxRequest.setUseCorrectHash(useCorrectEIP712Hash)
-    }
-
     try {
       const response = await this.request<
         PrepareTxRequest,
@@ -99,7 +93,6 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,
     timeoutHeight,
     delegatedFee,
-    useCorrectEIP712Hash,
   }: {
     address: AccountAddress
     chainId: EthereumChainId
@@ -111,7 +104,6 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     feePrice?: string
     timeoutHeight?: number
     delegatedFee?: boolean
-    useCorrectEIP712Hash?: boolean
   }) {
     const txFeeAmount = new Coin()
     txFeeAmount.setDenom(feeDenom)
@@ -144,10 +136,6 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
 
     if (memo) {
       prepareTxRequest.setMemo(memo)
-    }
-
-    if (useCorrectEIP712Hash !== undefined) {
-      // prepareTxRequest.setUseCorrectHash(useCorrectEIP712Hash)
     }
 
     try {
@@ -185,7 +173,7 @@ export class ExchangeGrpcTransactionApi extends BaseConsumer {
     parsedTypedData.message.msgs = null
 
     const broadcastTxRequest = new BroadcastTxRequest()
-    broadcastTxRequest.setMode('block')
+    broadcastTxRequest.setMode('sync')
     broadcastTxRequest.setChainId(chainId)
     broadcastTxRequest.setPubKey(cosmosPubKey)
     broadcastTxRequest.setSignature(signature)

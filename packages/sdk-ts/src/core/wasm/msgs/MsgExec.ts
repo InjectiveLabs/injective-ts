@@ -9,12 +9,12 @@ export declare namespace MsgExec {
     bankFunds?: {
       denom: string
       amount: string
-    }
+    }[]
     subaccountId?: string
     subaccountDeposits?: {
       denom: string
       amount: string
-    }
+    }[]
     sender: string
     contractAddress: string
     data: ExecArgs
@@ -57,22 +57,37 @@ export default class MsgExec extends MsgBase<
     }
 
     const message = new BaseMsgExec()
-    const funds = new Coin()
 
     if (params.subaccountId) {
       message.setDepositsSubaccountId(params.subaccountId!)
     }
 
     if (params.subaccountDeposits) {
-      funds.setAmount(params.subaccountDeposits.amount)
-      funds.setDenom(params.subaccountDeposits.denom)
-      message.setDepositFundsList([funds])
+      const depositFundList = params.subaccountDeposits.map(
+        ({ amount, denom }) => {
+          const funds = new Coin()
+
+          funds.setAmount(amount)
+          funds.setDenom(denom)
+
+          return funds
+        },
+      )
+
+      message.setDepositFundsList(depositFundList)
     }
 
     if (params.bankFunds) {
-      funds.setAmount(params.bankFunds.amount)
-      funds.setDenom(params.bankFunds.denom)
-      message.setBankFundsList([funds])
+      const bankFundList = params.bankFunds.map(({ amount, denom }) => {
+        const funds = new Coin()
+
+        funds.setAmount(amount)
+        funds.setDenom(denom)
+
+        return funds
+      })
+
+      message.setBankFundsList(bankFundList)
     }
 
     message.setSender(params.sender)
@@ -100,12 +115,12 @@ export default class MsgExec extends MsgBase<
 
     if (params.subaccountDeposits) {
       // @ts-ignore
-      message['deposit_funds'] = [params.subaccountDeposits]
+      message['deposit_funds'] = params.subaccountDeposits
     }
 
     if (params.bankFunds) {
       // @ts-ignore
-      message['bank_funds'] = [params.bankFunds]
+      message['bank_funds'] = params.bankFunds
     }
 
     // @ts-ignore

@@ -3,12 +3,12 @@ import {
   SpotTrade,
   SpotLimitOrder as UiSpotLimitOrder,
   SpotOrderSide,
-} from '@injectivelabs/sdk-ts/dist/client/exchange/types/spot'
-import { Orderbook as UiSpotOrderbook } from '@injectivelabs/sdk-ts/dist/client/exchange/types/exchange'
+} from '@injectivelabs/sdk-ts/dist/client/indexer/types/spot'
+import { Orderbook as UiSpotOrderbook } from '@injectivelabs/sdk-ts/dist/client/indexer/types/exchange'
 import {
   ChronosSpotMarketSummary,
   AllChronosSpotMarketSummary,
-} from '@injectivelabs/sdk-ts/dist/client/exchange/types/spot-rest'
+} from '@injectivelabs/sdk-ts/dist/client/indexer/types/spot-rest'
 import { Token } from '@injectivelabs/token-metadata'
 import { Change, MarketBase, MarketType } from './common'
 

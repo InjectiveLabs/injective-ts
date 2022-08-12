@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.24...@injectivelabs/tx-ts@1.0.25) (2022-08-11)
+
+
+### Bug Fixes
+
+* block mode for Keplr and TxGrpcClient refactor so it accepts txRaw in the methods and not constructor ([863a51f](https://github.com/InjectiveLabs/injective-ts/commit/863a51fa2d5eddf7678a5e65f492810d9d3de32e))
+
+
+
+
+
+## [1.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.23...@injectivelabs/tx-ts@1.0.24) (2022-08-11)
+
+
+### Bug Fixes
+
+* removed 404 error from tx fetcher ([2a9534a](https://github.com/InjectiveLabs/injective-ts/commit/2a9534aa66d64981b180d10abb8cf8de3a22c952))
+
+
+
+
+
+## [1.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.22...@injectivelabs/tx-ts@1.0.23) (2022-08-10)
+
+
+### Features
+
+* enabled disabling a wallet for wallet-ts, refactored to use sync broadcasting mode ([c1dde3f](https://github.com/InjectiveLabs/injective-ts/commit/c1dde3f5efd644de194d4e50b77c8c484d11a4b9))
+
+
+
+
+
+## [1.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.21...@injectivelabs/tx-ts@1.0.22) (2022-08-09)
+
+**Note:** Version bump only for package @injectivelabs/tx-ts
+
+
+
+
+
 ## [1.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.20...@injectivelabs/tx-ts@1.0.21) (2022-08-05)
 
 **Note:** Version bump only for package @injectivelabs/tx-ts

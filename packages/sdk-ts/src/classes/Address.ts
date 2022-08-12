@@ -38,10 +38,10 @@ export class Address {
       bech32.fromWords(bech32.decode(bech).words),
     ).toString('hex')
     const addressInHex = address.startsWith('0x') ? address : `0x${address}`
-    const bech32Address = bech32.encode(
-      prefix,
-      bech32.toWords(Buffer.from(addressInHex.toString())),
-    )
+    const addressBuffer = EthereumUtilsAddress.fromString(
+      addressInHex.toString(),
+    ).toBuffer()
+    const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
 
     return new Address(bech32Address)
   }
@@ -72,9 +72,9 @@ export class Address {
    * @returns {string}
    */
   toBech32(prefix: string = BECH32_ADDR_ACC_PREFIX): string {
-    const addressBuffer = EthereumUtilsAddress.fromString(
-      this.toHex(),
-    ).toBuffer()
+    const address = this.toHex()
+    const addressHex = address.startsWith('0x') ? address : `0x${address}`
+    const addressBuffer = EthereumUtilsAddress.fromString(addressHex).toBuffer()
 
     return bech32.encode(prefix, bech32.toWords(addressBuffer))
   }

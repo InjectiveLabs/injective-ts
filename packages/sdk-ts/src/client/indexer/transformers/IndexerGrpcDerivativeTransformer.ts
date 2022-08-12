@@ -167,6 +167,14 @@ export class IndexerGrpcDerivativeTransformer {
     return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(tradesList)
   }
 
+  static subaccountTradeListResponseToSubaccountTradeList(
+    response: DerivativeSubaccountTradesListResponse,
+  ) {
+    const trades = response.getTradesList()
+
+    return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades)
+  }
+
   static fundingPaymentsResponseToFundingPayments(
     response: FundingPaymentsResponse,
   ) {

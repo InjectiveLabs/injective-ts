@@ -168,14 +168,17 @@ export class Web3Client {
     denom,
     destinationAddress,
     gasPrice,
+    data = '',
   }: {
     address: string
     amount: string // BigNumberInWi
     denom: string
     destinationAddress: string
-    gasPrice: string // BigNumberInWei
+    gasPrice: string // BigNumberInWei,
+    data?: string
   }) {
     const { walletStrategy, network, ethereumChainId } = this
+
     const web3 = walletStrategy.getWeb3() as any
     const contractAddresses = getContractAddressesForNetworkOrThrow(network)
     const contractAddress =
@@ -191,6 +194,7 @@ export class Web3Client {
 
     const depositForContractFunction = contract.sendToInjective({
       contractAddress,
+      data,
       amount: new BigNumberInWei(amount).toFixed(),
       address: `0x${'0'.repeat(24)}${destinationAddress.slice(2)}`,
       transactionOptions: getTransactionOptions({
@@ -199,7 +203,8 @@ export class Web3Client {
       }),
     })
 
-    const data = depositForContractFunction.getABIEncodedTransactionData()
+    const abiEncodedData =
+      depositForContractFunction.getABIEncodedTransactionData()
     const gas = new BigNumberInWei(
       await depositForContractFunction.estimateGasAsync(),
     )
@@ -212,7 +217,7 @@ export class Web3Client {
         .toString(16),
       maxFeePerGas: new BigNumberInWei(gasPrice).toNumber().toString(16),
       maxPriorityFeePerGas: null,
-      data,
+      data: abiEncodedData,
     }
   }
 

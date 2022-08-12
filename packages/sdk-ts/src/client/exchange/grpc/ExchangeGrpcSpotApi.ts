@@ -302,7 +302,9 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.Trades
       >(request, InjectiveSpotExchangeRPC.Trades)
 
-      return ExchangeGrpcSpotTransformer.tradesResponseToTrades(response)
+      return ExchangeGrpcSpotTransformer.subaccountTradesListResponseToTrades(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

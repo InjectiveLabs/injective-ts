@@ -1,10 +1,10 @@
 export { default as MsgVote } from './msgs/MsgVote'
 export { default as MsgGovDeposit } from './msgs/MsgDeposit'
-import { default as MsgSubmitProposalExpiryFuturesMarketLaunch } from './msgs/MsgSubmitProposalExpiryFuturesMarketLaunch'
-import { default as MsgSubmitProposalPerpetualMarketLaunch } from './msgs/MsgSubmitProposalPerpetualMarketLaunch'
-import { default as MsgSubmitProposalSpotMarketLaunch } from './msgs/MsgSubmitProposalSpotMarketLaunch'
-import { default as MsgSubmitProposalSpotMarketParamUpdate } from './msgs/MsgSubmitProposalSpotMarketParamUpdate'
-import { default as MsgSubmitTextProposal } from './msgs/MsgSubmitTextProposal'
+import MsgSubmitProposalExpiryFuturesMarketLaunch from './msgs/MsgSubmitProposalExpiryFuturesMarketLaunch'
+import MsgSubmitProposalPerpetualMarketLaunch from './msgs/MsgSubmitProposalPerpetualMarketLaunch'
+import MsgSubmitProposalSpotMarketLaunch from './msgs/MsgSubmitProposalSpotMarketLaunch'
+import MsgSubmitProposalSpotMarketParamUpdate from './msgs/MsgSubmitProposalSpotMarketParamUpdate'
+import MsgSubmitTextProposal from './msgs/MsgSubmitTextProposal'
 
 export type MsgSubmitProposal =
   | MsgSubmitProposalExpiryFuturesMarketLaunch

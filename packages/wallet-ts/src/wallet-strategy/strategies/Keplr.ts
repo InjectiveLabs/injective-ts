@@ -82,7 +82,7 @@ export default class Keplr
     const txRaw = createTxRaw(signResponse)
 
     try {
-      return await keplrWallet.broadcastTx(txRaw)
+      return await keplrWallet.broadcastTxBlock(txRaw)
     } catch (e) {
       throw new Error((e as any).message)
     }

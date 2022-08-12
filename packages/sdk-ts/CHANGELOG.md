@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.81](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.80...@injectivelabs/sdk-ts@1.0.81) (2022-08-12)
+
+
+### Bug Fixes
+
+* update sdk-ui-ts typings to import from sdk-ts indexer instead of exchange ([950079e](https://github.com/InjectiveLabs/injective-ts/commit/950079ea7b1703ff7ea0a4d2c8a8ae14a0bb4df7))
+
+
+
+
+
+## [1.0.80](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.79...@injectivelabs/sdk-ts@1.0.80) (2022-08-12)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.78...@injectivelabs/sdk-ts@1.0.79) (2022-08-11)
+
+
+### Bug Fixes
+
+* gov proposal msg typings ([31b354f](https://github.com/InjectiveLabs/injective-ts/commit/31b354fc52fa8d1cb58ce8a97213e8da9cddb391))
+
+
+
+
+
+## [1.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.77...@injectivelabs/sdk-ts@1.0.78) (2022-08-11)
+
+
+### Bug Fixes
+
+* console log removal ([da3dda8](https://github.com/InjectiveLabs/injective-ts/commit/da3dda8f4e02a2bf98ff8c8448eccb437bd94f8b))
+
+
+
+
+
+## [1.0.77](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.76...@injectivelabs/sdk-ts@1.0.77) (2022-08-10)
+
+
+### Features
+
+* enabled disabling a wallet for wallet-ts, refactored to use sync broadcasting mode ([c1dde3f](https://github.com/InjectiveLabs/injective-ts/commit/c1dde3f5efd644de194d4e50b77c8c484d11a4b9))
+
+
+
+
+
+## [1.0.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.75...@injectivelabs/sdk-ts@1.0.76) (2022-08-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.75](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.74...@injectivelabs/sdk-ts@1.0.75) (2022-08-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
 ## [1.0.74](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.73...@injectivelabs/sdk-ts@1.0.74) (2022-08-09)
 
 

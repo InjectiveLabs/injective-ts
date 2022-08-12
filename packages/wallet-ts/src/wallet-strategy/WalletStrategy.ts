@@ -20,44 +20,73 @@ import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
 import WalletConnect from './strategies/WalletConnect'
 
+const createWallet = ({
+  wallet,
+  args,
+  web3,
+}: {
+  wallet: Wallet
+  args: WalletStrategyArguments
+  web3: Web3
+}): ConcreteWalletStrategy | undefined => {
+  const disabledWallets = args.options.disabledWallets || []
+
+  if (disabledWallets.includes(wallet)) {
+    return undefined
+  }
+
+  switch (wallet) {
+    case Wallet.Metamask:
+      return new Metamask({ ...args, web3 })
+    case Wallet.Ledger:
+      return new LedgerLive({ ...args, web3 })
+    case Wallet.LedgerLegacy:
+      return new LedgerLegacy({ ...args, web3 })
+    case Wallet.Keplr:
+      return new Keplr({ ...args, web3 })
+    case Wallet.Trezor:
+      return new Trezor({ ...args, web3 })
+    case Wallet.Torus:
+      return new Torus({ ...args, web3 })
+    case Wallet.WalletConnect:
+      return new WalletConnect({ ...args, walletOptions: args.options })
+    default:
+      throw new Error(`The ${wallet} concrete wallet strategy is not supported`)
+  }
+}
+
+const createWallets = (
+  args: WalletStrategyArguments,
+  web3: Web3,
+): Record<Wallet, ConcreteWalletStrategy | undefined> =>
+  Object.values(Wallet).reduce(
+    (strategies, wallet) => ({
+      ...strategies,
+      [wallet]: createWallet({ wallet, args, web3 }),
+    }),
+    {} as Record<Wallet, ConcreteWalletStrategy | undefined>,
+  )
+
+const createWeb3 = (args: WalletStrategyArguments): Web3 => {
+  const alchemyUrl =
+    args.options.wsRpcUrls[args.ethereumChainId] ||
+    args.options.rpcUrls[args.ethereumChainId]
+
+  return createAlchemyWeb3(alchemyUrl) as unknown as Web3
+}
+
 export default class WalletStrategy {
-  private readonly strategies: Record<Wallet, ConcreteWalletStrategy>
+  private readonly strategies: Record<
+    Wallet,
+    ConcreteWalletStrategy | undefined
+  >
 
   public wallet: Wallet
 
-  constructor({
-    wallet,
-    chainId,
-    ethereumChainId,
-    options,
-  }: WalletStrategyArguments) {
-    const alchemyUrl =
-      options.wsRpcUrls[ethereumChainId] || options.rpcUrls[ethereumChainId]
-    const web3 = createAlchemyWeb3(alchemyUrl) as unknown as Web3
-
-    this.strategies = {
-      [Wallet.Metamask]: new Metamask({ chainId, ethereumChainId, web3 }),
-      [Wallet.Ledger]: new LedgerLive({ chainId, ethereumChainId, web3 }),
-      [Wallet.LedgerLegacy]: new LedgerLegacy({
-        chainId,
-        ethereumChainId,
-        web3,
-      }),
-      [Wallet.Keplr]: new Keplr({
-        ethereumChainId,
-        web3,
-        chainId,
-      }),
-      [Wallet.Trezor]: new Trezor({ chainId, ethereumChainId, web3 }),
-      [Wallet.Torus]: new Torus({ chainId, ethereumChainId, web3 }),
-      [Wallet.WalletConnect]: new WalletConnect({
-        ethereumChainId,
-        chainId,
-        walletOptions: options,
-      }),
-    } as Record<Wallet, ConcreteWalletStrategy>
-
-    this.wallet = wallet || Wallet.Metamask
+  constructor(args: WalletStrategyArguments) {
+    const web3 = createWeb3(args)
+    this.strategies = createWallets(args, web3)
+    this.wallet = args.wallet || Wallet.Metamask
   }
 
   public getWallet(): Wallet {
@@ -69,7 +98,11 @@ export default class WalletStrategy {
   }
 
   public getStrategy(): ConcreteWalletStrategy {
-    return this.strategies[this.wallet]
+    if (!this.strategies[this.wallet]) {
+      throw new Error(`Wallet ${this.wallet} is not enabled/available!`)
+    }
+
+    return this.strategies[this.wallet] as ConcreteWalletStrategy
   }
 
   public getAddresses(): Promise<AccountAddress[]> {

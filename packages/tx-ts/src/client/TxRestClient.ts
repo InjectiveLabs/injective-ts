@@ -42,16 +42,6 @@ export class TxRestClient {
     this.httpClient = new HttpClient(endpoint)
   }
 
-  public async simulate(txRaw: TxRaw): Promise<any> {
-    try {
-      return await this.httpClient.post('cosmos/tx/v1beta1/simulate', {
-        tx_bytes: Buffer.from(txRaw.serializeBinary()).toString('base64'),
-      })
-    } catch (e: any) {
-      throw new Error(e.message)
-    }
-  }
-
   public async txInfo(
     txHash: string,
     params: APIParams = {},
@@ -63,8 +53,8 @@ export class TxRestClient {
       )
 
       return response
-    } catch (e) {
-      throw new Error((e as any).message)
+    } catch (e: any) {
+      throw new Error(e)
     }
   }
 
@@ -86,10 +76,46 @@ export class TxRestClient {
 
     for (const txhash of txHashes) {
       const txInfo = await this.txInfo(txhash)
+
       txInfos.push(txInfo.tx_response)
     }
 
     return txInfos
+  }
+
+  public async waitTxBroadcast(txHash: string, timeout = 30000) {
+    const POLL_INTERVAL = 1000
+
+    for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
+      try {
+        const txInfo = await this.txInfo(txHash)
+        const { tx_response: txInfoSearchResponse } = txInfo
+
+        if (txInfoSearchResponse) {
+          return {
+            txhash: txInfoSearchResponse.txhash,
+            raw_log: txInfoSearchResponse.raw_log,
+            gas_wanted: parseInt(txInfoSearchResponse.gas_wanted, 10),
+            gas_used: parseInt(txInfoSearchResponse.gas_used, 10),
+            height: parseInt(txInfoSearchResponse.height, 10),
+            logs: txInfoSearchResponse.logs,
+            code: txInfoSearchResponse.code,
+            codespace: txInfoSearchResponse.codespace,
+            timestamp: txInfoSearchResponse.timestamp,
+          }
+        }
+      } catch (error: any) {
+        if (!error.toString().includes('404')) {
+          throw error
+        }
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
+    }
+
+    throw new Error(
+      `Transaction was not included in a block before timeout of ${timeout}ms`,
+    )
   }
 
   public async simulateTx(txRaw: TxRaw): Promise<SimulationResponse> {
@@ -105,7 +131,7 @@ export class TxRestClient {
 
       return response
     } catch (e: any) {
-      throw new Error(e.message)
+      throw new Error(e)
     }
   }
 
@@ -121,7 +147,7 @@ export class TxRestClient {
 
       return response
     } catch (e: any) {
-      throw new Error(e.message)
+      throw new Error(e)
     }
   }
 
@@ -129,7 +155,6 @@ export class TxRestClient {
     tx: TxRaw,
     timeout = 30000,
   ): Promise<WaitTxBroadcastResult> {
-    const POLL_INTERVAL = 500
     const { tx_response: txResponse } = await this.broadcastTx<{
       tx_response: SyncTxBroadcastResult
     }>(tx, BroadcastMode.Sync)
@@ -150,34 +175,7 @@ export class TxRestClient {
       return result
     }
 
-    for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
-      try {
-        const txInfo = await this.txInfo(txResponse.txhash)
-        const { tx_response: txInfoSearchResponse } = txInfo
-
-        if (txInfoSearchResponse) {
-          return {
-            txhash: txInfoSearchResponse.txhash,
-            raw_log: txInfoSearchResponse.raw_log,
-            gas_wanted: parseInt(txInfoSearchResponse.gas_wanted, 10),
-            gas_used: parseInt(txInfoSearchResponse.gas_used, 10),
-            height: parseInt(txInfoSearchResponse.height, 10),
-            logs: txInfoSearchResponse.logs,
-            code: txInfoSearchResponse.code,
-            codespace: txInfoSearchResponse.codespace,
-            timestamp: txInfoSearchResponse.timestamp,
-          }
-        }
-      } catch (error) {
-        // Errors when transaction is not found.
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
-    }
-
-    throw new Error(
-      `Transaction was not included in a block before timeout of ${timeout}ms`,
-    )
+    return this.waitTxBroadcast(txResponse.txhash, timeout)
   }
 
   /**

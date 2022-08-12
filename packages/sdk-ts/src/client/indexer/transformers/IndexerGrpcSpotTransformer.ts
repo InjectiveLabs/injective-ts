@@ -91,6 +91,14 @@ export class IndexerGrpcSpotTransformer {
     return IndexerGrpcSpotTransformer.grpcTradesToTrades(tradesList)
   }
 
+  static subaccountTradeListResponseToSubaccountTradeList(
+    response: SpotSubaccountTradesListResponse,
+  ) {
+    const trades = response.getTradesList()
+
+    return IndexerGrpcSpotTransformer.grpcTradesToTrades(trades)
+  }
+
   static orderbookResponseToOrderbook(response: SpotOrderbookResponse) {
     const orderbook = response.getOrderbook()!
 
