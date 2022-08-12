@@ -112,7 +112,7 @@ export default class MsgGrant extends MsgBase<
 
   private getTimestamp() {
     const { params } = this
-    const defaultExpiryYears = 5
+    const defaultExpiryYears = params.expiryInSeconds ? 0 : 5
     const dateNow = new Date()
     const expiration = new Date(
       dateNow.getFullYear() + (params.expiryInYears || defaultExpiryYears),

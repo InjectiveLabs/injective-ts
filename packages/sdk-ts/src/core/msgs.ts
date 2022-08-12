@@ -1,6 +1,7 @@
 import MsgBid from './auction/msgs/MsgBid'
 import MsgGrant from './authz/msgs/MsgGrant'
 import MsgRevoke from './authz/msgs/MsgRevoke'
+import MsgAuthzExec from './authz/msgs/MsgExec'
 import MsgSend from './bank/msgs/MsgSend'
 import MsgWithdrawDelegatorReward from './distribution/msgs/MsgWithdrawDelegatorReward'
 import MsgBatchCancelDerivativeOrders from './exchange/msgs/MsgBatchCancelDerivativeOrders'
@@ -39,6 +40,7 @@ export type Msgs =
   | MsgBid
   | MsgGrant
   | MsgRevoke
+  | MsgAuthzExec
   | MsgSend
   | MsgBatchUpdateOrders
   | MsgWithdrawDelegatorReward

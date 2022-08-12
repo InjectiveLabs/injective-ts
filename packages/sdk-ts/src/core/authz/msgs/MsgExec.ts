@@ -1,13 +1,13 @@
 import { MsgExec as BaseMsgExec } from '@injectivelabs/chain-api/cosmos/authz/v1beta1/tx_pb'
-import { Message } from 'google-protobuf'
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
 
 import { MsgBase } from '../../MsgBase'
+import { Msgs } from '../../msgs'
 
 export declare namespace MsgExec {
   export interface Params {
     grantee: string
-    msgs: MsgBase<unknown, any, Message, unknown, unknown> | MsgBase<unknown, any, Message, unknown, unknown>[]
+    msgs: Msgs | Msgs[]
   }
 
   export interface DirectSign {
@@ -43,21 +43,14 @@ export default class MsgExec extends MsgBase<
     const message = new BaseMsgExec()
     message.setGrantee(params.grantee)
 
-    if (Array.isArray(params.msgs)) {
-      params.msgs.forEach(msg => {
-        const msgValue = new Any()
-        msgValue.setTypeUrl(msg.toData()['@type'])
-        msgValue.setValue(msg.toProto().serializeBinary())
-    
-        message.addMsgs(msgValue)
-      });
-    } else {
-      const msg = params.msgs;
+    const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
+    msgs.forEach(msg => {
       const msgValue = new Any()
       msgValue.setTypeUrl(msg.toData()['@type'])
       msgValue.setValue(msg.toProto().serializeBinary())
+
       message.addMsgs(msgValue)
-    }
+    });
 
     return message
   }
