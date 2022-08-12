@@ -1,3 +1,4 @@
+import { objectKeysToEip712Types, TypedDataField } from './eip712'
 import { prepareSignBytes } from './utils'
 
 export abstract class MsgBase<
@@ -27,6 +28,24 @@ export abstract class MsgBase<
 
   public toJSON(): string {
     return JSON.stringify(prepareSignBytes(this.toData()))
+  }
+
+  public toEip712Types(): Map<string, TypedDataField[]> {
+    return objectKeysToEip712Types(this.toAmino())
+  }
+
+  public toEip712(): {
+    type: string
+    value: Omit<AminoRepresentation, 'type'>
+  } {
+    const amino = this.toAmino()
+    // @ts-ignore
+    const { type, ...value } = amino
+
+    return {
+      type: type as string,
+      value: value,
+    }
   }
 
   public toDirectSignJSON(): string {

@@ -22,21 +22,22 @@ export interface TypedDataField {
   type: string
 }
 
-export const getEip712FromCosmosMsg = ({
-  msgs,
-  tx,
-  fee,
-  ethereumChainId,
-}: {
-  msgs: Msgs | Msgs[]
-  tx: Eip712ConvertTxArgs
-  fee?: Eip712ConvertFeeArgs
-  ethereumChainId: EthereumChainId
-}): any => {
-  const actualMsgs = Array.isArray(msgs) ? msgs : [msgs]
-  const { msgs: convertedMsgs, msgTypes } = convertCosmosMsgToEip712(actualMsgs)
+export type MapOfTypedDataField = Map<string, TypedDataField[]>
 
-  const eip712TypedData = {
+export const getEip712Domain = (ethereumChainId: EthereumChainId) => {
+  return {
+    domain: {
+      name: 'Injective Web3',
+      version: '1.0.0',
+      chainId: new BigNumberInBase(ethereumChainId).toString(16),
+      salt: '0',
+      verifyingContract: 'cosmos',
+    },
+  }
+}
+
+export const getDefaultEip712Types = () => {
+  return {
     types: {
       EIP712Domain: [
         { name: 'name', type: 'string' },
@@ -57,7 +58,6 @@ export const getEip712FromCosmosMsg = ({
       Fee: [
         { name: 'amount', type: 'Coin[]' },
         { name: 'gas', type: 'string' },
-        { ...(fee?.feePayer && { name: 'feePayer', type: 'string' }) },
       ],
       Coin: [
         { name: 'amount', type: 'string' },
@@ -67,24 +67,49 @@ export const getEip712FromCosmosMsg = ({
         { name: 'type', type: 'string' },
         { name: 'value', type: 'MsgValue' },
       ],
+    },
+  }
+}
+
+export const getEip712Tx = ({
+  msgs,
+  tx,
+  fee,
+  ethereumChainId,
+}: {
+  msgs: Msgs | Msgs[]
+  tx: Eip712ConvertTxArgs
+  fee?: Eip712ConvertFeeArgs
+  ethereumChainId: EthereumChainId
+}): any => {
+  const actualMsgs = Array.isArray(msgs) ? msgs : [msgs]
+  const [msg] = actualMsgs
+
+  const msgTypes = msg.toEip712Types()
+  const types = getDefaultEip712Types()
+  const actualTypes = {
+    types: {
+      ...types.types,
       ...Object.fromEntries(msgTypes),
-    },
-    primaryType: 'Tx',
-    domain: {
-      name: 'Injective Web3',
-      version: '1.0.0',
-      chainId: new BigNumberInBase(ethereumChainId).toString(16),
-      salt: '0',
-      verifyingContract: 'cosmos',
-    },
-    message: {
-      ...getEipTxDetails(tx),
-      ...getEip712Fee(fee),
-      msgs: convertedMsgs,
     },
   }
 
-  return eip712TypedData
+  const eip712Msgs = actualMsgs.map((m) => m.toEip712())
+
+  if (fee && fee.feePayer) {
+    types.types['Fee'].push({ name: 'feePayer', type: 'string' })
+  }
+
+  return {
+    primaryType: 'Tx',
+    ...actualTypes,
+    ...getEip712Domain(ethereumChainId),
+    message: {
+      ...getEipTxDetails(tx),
+      ...getEip712Fee(fee),
+      msgs: eip712Msgs,
+    },
+  }
 }
 
 export const getEip712Fee = (
@@ -143,24 +168,6 @@ export const getEipTxDetails = ({
     chain_id: chainId,
     memo: memo || '',
     sequence,
-  }
-}
-
-export const convertCosmosMsgToEip712 = (msgs: Msgs | Msgs[]) => {
-  const actualMsgs = Array.isArray(msgs) ? msgs : [msgs]
-  const [msg] = actualMsgs
-  const types = objectKeysToEip712Types(msg.toAmino())
-
-  return {
-    msgs: actualMsgs.map((m) => {
-      const { type, ...value } = m.toAmino()
-
-      return {
-        type: protoTypeToAminoType(type),
-        value: value,
-      }
-    }),
-    msgTypes: types,
   }
 }
 
