@@ -8,20 +8,17 @@ import {
   OrderbookResponse as SpotOrderbookResponse,
   OrdersRequest as SpotOrdersRequest,
   OrdersResponse as SpotOrdersResponse,
-  TradesRequest as SpotTradesRequest,
-  TradesResponse as SpotTradesResponse,
   SubaccountOrdersListRequest as SpotSubaccountOrdersListRequest,
   SubaccountOrdersListResponse as SpotSubaccountOrdersListResponse,
-  SubaccountTradesListRequest as SpotSubaccountTradesListRequest,
-  SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
   OrderbooksRequest as SpotOrderbooksRequest,
   OrderbooksResponse as SpotOrderbooksResponse,
+  TradesResponse,
+  TradesRequest,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import {
   TradeExecutionSide,
-  TradeDirection,
-  TradeExecutionType,
+  TradeDirection
 } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import { SpotOrderSide } from '../types/spot'
@@ -141,26 +138,33 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
 
   async fetchTrades(params?: {
     marketId?: string
+    marketIds?: string[]
     pagination?: PaginationOption
     subaccountId?: string
+    executionSide?: TradeExecutionSide
     startTime?: number
     endTime?: number
-    executionSide?: TradeExecutionSide
     direction?: TradeDirection
   }) {
     const {
       marketId,
+      marketIds,
+      pagination,
       subaccountId,
+      executionSide,
       startTime,
       endTime,
-      pagination,
-      executionSide,
       direction,
     } = params || {}
-    const request = new SpotTradesRequest()
+
+    const request = new TradesRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
     }
 
     if (subaccountId) {
@@ -191,12 +195,16 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
       }
+
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
     }
 
     try {
       const response = await this.request<
-        SpotTradesRequest,
-        SpotTradesResponse,
+        TradesRequest,
+        TradesResponse,
         typeof InjectiveSpotExchangeRPC.Trades
       >(request, InjectiveSpotExchangeRPC.Trades)
 
@@ -249,12 +257,17 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     subaccountId?: string
     marketId?: string
     direction?: TradeDirection
-    executionType?: TradeExecutionType
+    executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
-    const { subaccountId, marketId, direction, executionType, pagination } =
-      params || {}
-    const request = new SpotSubaccountTradesListRequest()
+    const {
+      subaccountId,
+      marketId,
+      direction,
+      executionSide,
+      pagination,
+    } = params || {}
+    const request = new TradesRequest()
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
@@ -268,8 +281,8 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
       request.setDirection(direction)
     }
 
-    if (executionType) {
-      request.setExecutionType(executionType)
+    if (executionSide) {
+      request.setExecutionSide(executionSide)
     }
 
     if (pagination) {
@@ -284,12 +297,14 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
 
     try {
       const response = await this.request<
-        SpotSubaccountTradesListRequest,
-        SpotSubaccountTradesListResponse,
-        typeof InjectiveSpotExchangeRPC.SubaccountTradesList
-      >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
+        TradesRequest,
+        TradesResponse,
+        typeof InjectiveSpotExchangeRPC.Trades
+      >(request, InjectiveSpotExchangeRPC.Trades)
 
-      return ExchangeGrpcSpotTransformer.tradesResponseToTrades(response)
+      return ExchangeGrpcSpotTransformer.subaccountTradesListResponseToTrades(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }

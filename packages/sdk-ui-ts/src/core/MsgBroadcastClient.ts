@@ -36,9 +36,9 @@ export interface MsgBroadcastOptions {
 const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
   const hasMultipleMessages = Array.isArray(msgs)
   const isMsgExecMessage = (message: Msgs) =>
-    message.toAmino()['@type'].includes('MsgExec')
+    message.toWeb3()['@type'].includes('MsgExec')
   const isExchangeMessage = (message: Msgs) =>
-    message.toAmino()['@type'].startsWith('/injective')
+    message.toWeb3()['@type'].startsWith('/injective')
 
   const hasMsgExecMessages = Array.isArray(msgs)
     ? msgs.some(isMsgExecMessage)
@@ -84,7 +84,7 @@ export class MsgBroadcastClient {
     const { options, transactionApi } = this
     const { walletStrategy, ethereumChainId, metricsProvider } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
-    const web3Msgs = msgs.map((msg) => msg.toAmino())
+    const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
     const prepareTx = async () => {
       try {

@@ -68,15 +68,6 @@ export default class MsgRevoke extends MsgBase<
     }
   }
 
-  public toDirectSign(): MsgRevoke.DirectSign {
-    const proto = this.toProto()
-
-    return {
-      type: '/cosmos.authz.v1beta1.MsgRevoke',
-      message: proto,
-    }
-  }
-
   public toWeb3(): MsgRevoke.Web3 {
     const amino = this.toAmino()
     const { type, ...rest } = amino
@@ -84,6 +75,15 @@ export default class MsgRevoke extends MsgBase<
     return {
       '@type': '/cosmos.authz.v1beta1.MsgRevoke',
       ...rest,
+    }
+  }
+
+  public toDirectSign(): MsgRevoke.DirectSign {
+    const proto = this.toProto()
+
+    return {
+      type: '/cosmos.authz.v1beta1.MsgRevoke',
+      message: proto,
     }
   }
 }

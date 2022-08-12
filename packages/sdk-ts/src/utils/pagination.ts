@@ -13,7 +13,9 @@ export const paginationRequestFromPagination = (
     return
   }
 
-  paginationForRequest.setKey(pagination.key)
+  if (pagination.key) {
+    paginationForRequest.setKey(pagination.key)
+  }
 
   if (pagination.limit !== undefined) {
     paginationForRequest.setLimit(pagination.limit)
@@ -116,5 +118,9 @@ export const grpcPagingToPaging = (
     }
   }
 
-  return pagination.toObject()
+  return {
+    ...pagination.toObject(),
+    to: pagination.getTo() || 0,
+    from: pagination.getFrom() || 0,
+  }
 }

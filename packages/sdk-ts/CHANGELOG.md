@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.81](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.80...@injectivelabs/sdk-ts@1.0.81) (2022-08-12)
+
+
+### Bug Fixes
+
+* update sdk-ui-ts typings to import from sdk-ts indexer instead of exchange ([950079e](https://github.com/InjectiveLabs/injective-ts/commit/950079ea7b1703ff7ea0a4d2c8a8ae14a0bb4df7))
+
+
+
+
+
+## [1.0.80](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.79...@injectivelabs/sdk-ts@1.0.80) (2022-08-12)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.78...@injectivelabs/sdk-ts@1.0.79) (2022-08-11)
+
+
+### Bug Fixes
+
+* gov proposal msg typings ([31b354f](https://github.com/InjectiveLabs/injective-ts/commit/31b354fc52fa8d1cb58ce8a97213e8da9cddb391))
+
+
+
+
+
 ## [1.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.77...@injectivelabs/sdk-ts@1.0.78) (2022-08-11)
 
 

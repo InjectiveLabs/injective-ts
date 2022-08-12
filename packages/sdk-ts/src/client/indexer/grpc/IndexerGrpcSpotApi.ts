@@ -97,15 +97,21 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
   async fetchOrders(params?: {
     marketId?: string
+    marketIds?: string[]
     subaccountId?: string
     orderSide?: SpotOrderSide
     pagination?: PaginationOption
   }) {
-    const { marketId, subaccountId, orderSide, pagination } = params || {}
+    const { marketId, marketIds, subaccountId, orderSide, pagination } =
+      params || {}
     const request = new SpotOrdersRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
     }
 
     if (subaccountId) {
@@ -123,6 +129,10 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
+      }
+
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
       }
     }
 
@@ -143,22 +153,25 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     marketId?: string
     pagination?: PaginationOption
     subaccountId?: string
+    executionType?: TradeExecutionType
+    executionSide?: TradeExecutionSide
     startTime?: number
     endTime?: number
-    executionSide?: TradeExecutionSide
     direction?: TradeDirection
     marketIds?: string[]
   }) {
     const {
       marketId,
+      pagination,
       subaccountId,
+      executionType,
+      executionSide,
       startTime,
       endTime,
-      pagination,
-      executionSide,
       direction,
       marketIds,
     } = params || {}
+
     const request = new SpotTradesRequest()
 
     if (marketId) {
@@ -173,6 +186,10 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (executionType) {
+      request.setExecutionType(executionType)
     }
 
     if (executionSide) {
@@ -198,6 +215,10 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
       if (pagination.limit !== undefined) {
         request.setLimit(pagination.limit)
+      }
+
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
       }
     }
 
@@ -299,7 +320,9 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
         typeof InjectiveSpotExchangeRPC.SubaccountTradesList
       >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
 
-      return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
+      return IndexerGrpcSpotTransformer.subaccountTradesListResponseToTradesList(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
