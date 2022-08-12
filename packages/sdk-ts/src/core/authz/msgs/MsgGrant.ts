@@ -25,6 +25,10 @@ export declare namespace MsgGrant {
   }
 
   export interface Amino extends BaseMsgGrant.AsObject {
+    type: 'cosmos-sdk/MsgGrant'
+  }
+
+  export interface Web3 extends BaseMsgGrant.AsObject {
     '@type': '/cosmos.authz.v1beta1.MsgGrant'
   }
 
@@ -42,7 +46,7 @@ export default class MsgGrant extends MsgBase<
     return new MsgGrant(params)
   }
 
-  toProto(): MsgGrant.Proto {
+  public toProto(): MsgGrant.Proto {
     const { params } = this
 
     const timestamp = this.getTimestamp()
@@ -67,7 +71,7 @@ export default class MsgGrant extends MsgBase<
     return message
   }
 
-  toData(): MsgGrant.Data {
+  public toData(): MsgGrant.Data {
     const proto = this.toProto()
 
     return {
@@ -76,7 +80,7 @@ export default class MsgGrant extends MsgBase<
     }
   }
 
-  toAmino(): MsgGrant.Amino {
+  public toAmino(): MsgGrant.Amino {
     const proto = this.toProto()
     const timestamp = this.getTimestamp()
     const message = proto.toObject()
@@ -95,18 +99,28 @@ export default class MsgGrant extends MsgBase<
     }
 
     return {
-      '@type': '/cosmos.authz.v1beta1.MsgGrant',
+      type: 'cosmos-sdk/MsgGrant',
       ...messageWithAuthorizationType,
     } as unknown as MsgGrant.Amino
   }
 
-  toDirectSign(): MsgGrant.DirectSign {
+  public toDirectSign(): MsgGrant.DirectSign {
     const proto = this.toProto()
 
     return {
       type: '/cosmos.authz.v1beta1.MsgGrant',
       message: proto,
     }
+  }
+
+  public toWeb3(): MsgGrant.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.authz.v1beta1.MsgGrant',
+      ...rest,
+    } as unknown as MsgGrant.Web3
   }
 
   private getTimestamp() {

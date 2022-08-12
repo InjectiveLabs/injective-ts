@@ -30,6 +30,10 @@ export declare namespace MsgExec {
   }
 
   export interface Amino extends BaseMsgExec.AsObject {
+    type: 'exchange/MsgExec'
+  }
+
+  export interface Web3 extends BaseMsgExec.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgExec'
   }
 
@@ -47,7 +51,7 @@ export default class MsgExec extends MsgBase<
     return new MsgExec(params)
   }
 
-  toProto(): MsgExec.Proto {
+  public toProto(): MsgExec.Proto {
     const { params } = this
     const subaccountOrBankDeposit =
       (!params.subaccountDeposits || !params.subaccountId) && !params.bankFunds
@@ -97,7 +101,7 @@ export default class MsgExec extends MsgBase<
     return message
   }
 
-  toData(): MsgExec.Data {
+  public toData(): MsgExec.Data {
     const proto = this.toProto()
 
     return {
@@ -106,7 +110,7 @@ export default class MsgExec extends MsgBase<
     }
   }
 
-  toAmino(): MsgExec.Amino {
+  public toAmino(): MsgExec.Amino {
     const { params } = this
     const proto = this.toProto()
     const message = {
@@ -135,12 +139,22 @@ export default class MsgExec extends MsgBase<
     const messageWithProperKeys = snakeCaseKeys(message)
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgExec',
+      type: 'exchange/MsgExec',
       ...messageWithProperKeys,
     } as unknown as MsgExec.Amino
   }
 
-  toDirectSign(): MsgExec.DirectSign {
+  public toWeb3(): MsgExec.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgExec',
+      ...rest,
+    } as unknown as MsgExec.Web3
+  }
+
+  public toDirectSign(): MsgExec.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -34,6 +34,11 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
 
   export interface Amino
     extends BaseMsgInstantBinaryOptionsMarketLaunch.AsObject {
+    type: 'exchange/MsgInstantBinaryOptionsMarketLaunch'
+  }
+
+  export interface Web3
+    extends BaseMsgInstantBinaryOptionsMarketLaunch.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch'
   }
 
@@ -53,7 +58,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
     return new MsgInstantBinaryOptionsMarketLaunch(params)
   }
 
-  toProto(): MsgInstantBinaryOptionsMarketLaunch.Proto {
+  public toProto(): MsgInstantBinaryOptionsMarketLaunch.Proto {
     const { params } = this
     const message = new BaseMsgInstantBinaryOptionsMarketLaunch()
 
@@ -75,7 +80,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
     return message
   }
 
-  toData(): MsgInstantBinaryOptionsMarketLaunch.Data {
+  public toData(): MsgInstantBinaryOptionsMarketLaunch.Data {
     const proto = this.toProto()
 
     return {
@@ -85,17 +90,27 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
     }
   }
 
-  toAmino(): MsgInstantBinaryOptionsMarketLaunch.Amino {
+  public toAmino(): MsgInstantBinaryOptionsMarketLaunch.Amino {
     const proto = this.toProto()
 
     return {
-      '@type':
-        '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch',
+      type: 'exchange/MsgInstantBinaryOptionsMarketLaunch',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgInstantBinaryOptionsMarketLaunch.DirectSign {
+  public toWeb3(): MsgInstantBinaryOptionsMarketLaunch.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type':
+        '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch',
+      ...rest,
+    } as unknown as MsgInstantBinaryOptionsMarketLaunch.Web3
+  }
+
+  public toDirectSign(): MsgInstantBinaryOptionsMarketLaunch.DirectSign {
     const proto = this.toProto()
 
     return {

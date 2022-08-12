@@ -19,6 +19,10 @@ export declare namespace MsgCancelDerivativeOrder {
   }
 
   export interface Amino extends BaseMsgCancelDerivativeOrder.AsObject {
+    type: 'exchange/MsgCancelDerivativeOrder'
+  }
+
+  export interface Web3 extends BaseMsgCancelDerivativeOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder'
   }
 
@@ -38,7 +42,7 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
     return new MsgCancelDerivativeOrder(params)
   }
 
-  toProto(): MsgCancelDerivativeOrder.Proto {
+  public toProto(): MsgCancelDerivativeOrder.Proto {
     const { params } = this
 
     const message = new BaseMsgCancelDerivativeOrder()
@@ -50,7 +54,7 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
     return message
   }
 
-  toData(): MsgCancelDerivativeOrder.Data {
+  public toData(): MsgCancelDerivativeOrder.Data {
     const proto = this.toProto()
 
     return {
@@ -59,16 +63,26 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCancelDerivativeOrder.Amino {
+  public toAmino(): MsgCancelDerivativeOrder.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder',
+      type: 'exchange/MsgCancelDerivativeOrder',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgCancelDerivativeOrder.DirectSign {
+  public toWeb3(): MsgCancelDerivativeOrder.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder',
+      ...rest,
+    } as unknown as MsgCancelDerivativeOrder.Web3
+  }
+
+  public toDirectSign(): MsgCancelDerivativeOrder.DirectSign {
     const proto = this.toProto()
 
     return {

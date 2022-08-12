@@ -30,9 +30,12 @@ export declare namespace MsgCreateDerivativeLimitOrder {
   }
 
   export interface Amino extends BaseMsgCreateDerivativeLimitOrder.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
+    type: 'exchange/MsgCreateDerivativeLimitOrder'
   }
 
+  export interface Web3 extends BaseMsgCreateDerivativeLimitOrder.AsObject {
+    '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
+  }
   export type Proto = BaseMsgCreateDerivativeLimitOrder
 }
 
@@ -71,7 +74,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
     return new MsgCreateDerivativeLimitOrder(params)
   }
 
-  toProto(): MsgCreateDerivativeLimitOrder.Proto {
+  public toProto(): MsgCreateDerivativeLimitOrder.Proto {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -86,7 +89,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
     return createLimitOrder(params)
   }
 
-  toData(): MsgCreateDerivativeLimitOrder.Data {
+  public toData(): MsgCreateDerivativeLimitOrder.Data {
     const proto = this.toProto()
 
     return {
@@ -95,17 +98,27 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCreateDerivativeLimitOrder.Amino {
+  public toAmino(): MsgCreateDerivativeLimitOrder.Amino {
     const { params } = this
     const proto = createLimitOrder(params)
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder',
+      type: 'exchange/MsgCreateDerivativeLimitOrder',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgCreateDerivativeLimitOrder.DirectSign {
+  public toWeb3(): MsgCreateDerivativeLimitOrder.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder',
+      ...rest,
+    } as unknown as MsgCreateDerivativeLimitOrder.Web3
+  }
+
+  public toDirectSign(): MsgCreateDerivativeLimitOrder.DirectSign {
     const proto = this.toProto()
 
     return {

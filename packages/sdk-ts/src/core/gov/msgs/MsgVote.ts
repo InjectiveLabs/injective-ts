@@ -19,7 +19,11 @@ export declare namespace MsgVote {
   }
 
   export interface Amino extends BaseMsgVote.AsObject {
-    '@type': '/cosmos.gov.v1beta1.MsgVote'
+    type: 'cosmos-sdk/MsgVote'
+  }
+
+  export interface Web3 extends BaseMsgVote.AsObject {
+    '@type': '/cosmos.authz.v1beta1.MsgVote'
   }
 
   export type Proto = BaseMsgVote
@@ -36,7 +40,7 @@ export default class MsgVote extends MsgBase<
     return new MsgVote(params)
   }
 
-  toProto(): MsgVote.Proto {
+  public toProto(): MsgVote.Proto {
     const { params } = this
 
     const message = new BaseMsgVote()
@@ -47,7 +51,7 @@ export default class MsgVote extends MsgBase<
     return message
   }
 
-  toData(): MsgVote.Data {
+  public toData(): MsgVote.Data {
     const proto = this.toProto()
 
     return {
@@ -56,16 +60,26 @@ export default class MsgVote extends MsgBase<
     }
   }
 
-  toAmino(): MsgVote.Amino {
+  public toAmino(): MsgVote.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/cosmos.gov.v1beta1.MsgVote',
+      type: 'cosmos-sdk/MsgVote',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgVote.DirectSign {
+  public toWeb3(): MsgVote.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.gov.v1beta1.MsgVote',
+      ...rest,
+    } as unknown as MsgVote.Web3
+  }
+
+  public toDirectSign(): MsgVote.DirectSign {
     const proto = this.toProto()
 
     return {

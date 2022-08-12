@@ -147,6 +147,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     endTime?: number
     executionSide?: TradeExecutionSide
     direction?: TradeDirection
+    marketIds?: string[]
   }) {
     const {
       marketId,
@@ -156,11 +157,18 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       pagination,
       executionSide,
       direction,
+      marketIds,
     } = params || {}
     const request = new SpotTradesRequest()
 
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    } else {
+      request.setMarketIdsList([])
     }
 
     if (subaccountId) {
@@ -199,6 +207,8 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
         SpotTradesResponse,
         typeof InjectiveSpotExchangeRPC.Trades
       >(request, InjectiveSpotExchangeRPC.Trades)
+
+      console.log(1)
 
       return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
     } catch (e: any) {

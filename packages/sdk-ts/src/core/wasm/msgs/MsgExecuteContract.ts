@@ -25,6 +25,10 @@ export declare namespace MsgExecuteContract {
   }
 
   export interface Amino extends BaseMsgExecuteContract.AsObject {
+    type: 'wasm/MsgExecuteContract'
+  }
+
+  export interface Web3 extends BaseMsgExecuteContract.AsObject {
     '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
   }
 
@@ -42,7 +46,7 @@ export default class MsgExecuteContract extends MsgBase<
     return new MsgExecuteContract(params)
   }
 
-  toProto(): MsgExecuteContract.Proto {
+  public toProto(): MsgExecuteContract.Proto {
     const { params } = this
 
     const message = new BaseMsgExecuteContract()
@@ -64,7 +68,7 @@ export default class MsgExecuteContract extends MsgBase<
     return message
   }
 
-  toData(): MsgExecuteContract.Data {
+  public toData(): MsgExecuteContract.Data {
     const proto = this.toProto()
 
     return {
@@ -73,16 +77,26 @@ export default class MsgExecuteContract extends MsgBase<
     }
   }
 
-  toAmino(): MsgExecuteContract.Amino {
+  public toAmino(): MsgExecuteContract.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/cosmwasm.wasm.v1.MsgExecuteContract',
+      type: 'wasm/MsgExecuteContract',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgExecuteContract.DirectSign {
+  public toWeb3(): MsgExecuteContract.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmwasm.wasm.v1.MsgExecuteContract',
+      ...rest,
+    } as unknown as MsgExecuteContract.Web3
+  }
+
+  public toDirectSign(): MsgExecuteContract.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -19,6 +19,10 @@ export declare namespace MsgCancelSpotOrder {
   }
 
   export interface Amino extends BaseMsgCancelSpotOrder.AsObject {
+    type: 'exchange/MsgCancelSpotOrder'
+  }
+
+  export interface Web3 extends BaseMsgCancelSpotOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder'
   }
 
@@ -36,7 +40,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
     return new MsgCancelSpotOrder(params)
   }
 
-  toProto(): MsgCancelSpotOrder.Proto {
+  public toProto(): MsgCancelSpotOrder.Proto {
     const { params } = this
 
     const message = new BaseMsgCancelSpotOrder()
@@ -48,7 +52,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
     return message
   }
 
-  toData(): MsgCancelSpotOrder.Data {
+  public toData(): MsgCancelSpotOrder.Data {
     const proto = this.toProto()
 
     return {
@@ -57,16 +61,26 @@ export default class MsgCancelSpotOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCancelSpotOrder.Amino {
+  public toAmino(): MsgCancelSpotOrder.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder',
+      type: 'exchange/MsgCancelSpotOrder',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgCancelSpotOrder.DirectSign {
+  public toWeb3(): MsgCancelSpotOrder.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder',
+      ...rest,
+    } as unknown as MsgCancelSpotOrder.Web3
+  }
+
+  public toDirectSign(): MsgCancelSpotOrder.DirectSign {
     const proto = this.toProto()
 
     return {

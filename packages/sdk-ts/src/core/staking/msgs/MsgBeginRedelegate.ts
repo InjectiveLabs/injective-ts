@@ -22,7 +22,11 @@ export declare namespace MsgBeginRedelegate {
   }
 
   export interface Amino extends BaseMsgBeginRedelegate.AsObject {
-    '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate'
+    type: 'cosmos-sdk/MsgBeginRedelegate'
+  }
+
+  export interface Web3 extends BaseMsgBeginRedelegate.AsObject {
+    '@type': '/cosmos.authz.v1beta1.MsgBeginRedelegate'
   }
 
   export type Proto = BaseMsgBeginRedelegate
@@ -39,7 +43,7 @@ export default class MsgBeginRedelegate extends MsgBase<
     return new MsgBeginRedelegate(params)
   }
 
-  toProto(): MsgBeginRedelegate.Proto {
+  public toProto(): MsgBeginRedelegate.Proto {
     const { params } = this
 
     const coinAmount = new Coin()
@@ -55,7 +59,7 @@ export default class MsgBeginRedelegate extends MsgBase<
     return message
   }
 
-  toData(): MsgBeginRedelegate.Data {
+  public toData(): MsgBeginRedelegate.Data {
     const proto = this.toProto()
 
     return {
@@ -64,16 +68,26 @@ export default class MsgBeginRedelegate extends MsgBase<
     }
   }
 
-  toAmino(): MsgBeginRedelegate.Amino {
+  public toAmino(): MsgBeginRedelegate.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate',
+      type: 'cosmos-sdk/MsgBeginRedelegate',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgBeginRedelegate.DirectSign {
+  public toWeb3(): MsgBeginRedelegate.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate',
+      ...rest,
+    } as unknown as MsgBeginRedelegate.Web3
+  }
+
+  public toDirectSign(): MsgBeginRedelegate.DirectSign {
     const proto = this.toProto()
 
     return {

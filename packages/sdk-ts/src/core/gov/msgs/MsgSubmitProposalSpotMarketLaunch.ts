@@ -35,7 +35,11 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
   }
 
   export interface Amino extends BaseMsgSubmitProposal.AsObject {
-    '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
+    type: 'cosmos-sdk/MsgSubmitProposal'
+  }
+
+  export interface Web3 extends BaseMsgSubmitProposal.AsObject {
+    '@type': '/cosmos.authz.v1beta1.MsgSubmitProposal'
   }
 
   export type Proto = BaseMsgSubmitProposal
@@ -54,7 +58,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     return new MsgSubmitProposalSpotMarketLaunch(params)
   }
 
-  toProto(): MsgSubmitProposalSpotMarketLaunch.Proto {
+  public toProto(): MsgSubmitProposalSpotMarketLaunch.Proto {
     const { params } = this
 
     const depositParams = new Coin()
@@ -76,7 +80,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     return message
   }
 
-  toData(): MsgSubmitProposalSpotMarketLaunch.Data {
+  public toData(): MsgSubmitProposalSpotMarketLaunch.Data {
     const proto = this.toProto()
 
     return {
@@ -85,7 +89,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     }
   }
 
-  toAmino(): MsgSubmitProposalSpotMarketLaunch.Amino {
+  public toAmino(): MsgSubmitProposalSpotMarketLaunch.Amino {
     const { params } = this
     const content = this.getContent()
     const proposalType = '/injective.exchange.v1beta1.SpotMarketLaunchProposal'
@@ -107,12 +111,22 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     }
 
     return {
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+      type: 'cosmos-sdk/MsgSubmitProposal',
       ...messageWithProposalType,
     } as unknown as MsgSubmitProposalSpotMarketLaunch.Amino
   }
 
-  toDirectSign(): MsgSubmitProposalSpotMarketLaunch.DirectSign {
+  public toWeb3(): MsgSubmitProposalSpotMarketLaunch.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+      ...rest,
+    } as unknown as MsgSubmitProposalSpotMarketLaunch.Web3
+  }
+
+  public toDirectSign(): MsgSubmitProposalSpotMarketLaunch.DirectSign {
     const proto = this.toProto()
 
     return {

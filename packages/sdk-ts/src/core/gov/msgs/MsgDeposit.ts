@@ -23,7 +23,11 @@ export declare namespace MsgDeposit {
   }
 
   export interface Amino extends BaseMsgDeposit.AsObject {
-    '@type': '/cosmos.gov.v1beta1.MsgDeposit'
+    type: 'cosmos-sdk/MsgDeposit'
+  }
+
+  export interface Web3 extends BaseMsgDeposit.AsObject {
+    '@type': '/cosmos.authz.v1beta1.MsgDeposit'
   }
 
   export type Proto = BaseMsgDeposit
@@ -40,7 +44,7 @@ export default class MsgDeposit extends MsgBase<
     return new MsgDeposit(params)
   }
 
-  toProto(): MsgDeposit.Proto {
+  public toProto(): MsgDeposit.Proto {
     const { params } = this
 
     const deposit = new Coin()
@@ -55,7 +59,7 @@ export default class MsgDeposit extends MsgBase<
     return message
   }
 
-  toData(): MsgDeposit.Data {
+  public toData(): MsgDeposit.Data {
     const proto = this.toProto()
 
     return {
@@ -64,7 +68,7 @@ export default class MsgDeposit extends MsgBase<
     }
   }
 
-  toAmino(): MsgDeposit.Amino {
+  public toAmino(): MsgDeposit.Amino {
     const { params } = this
     const proto = this.toProto()
     const message = {
@@ -76,12 +80,22 @@ export default class MsgDeposit extends MsgBase<
     delete message.amount_list
 
     return {
-      '@type': '/cosmos.gov.v1beta1.MsgDeposit',
+      type: 'cosmos-sdk/MsgDeposit',
       ...message,
     } as unknown as MsgDeposit.Amino
   }
 
-  toDirectSign(): MsgDeposit.DirectSign {
+  public toWeb3(): MsgDeposit.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.gov.v1beta1.MsgDeposit',
+      ...rest,
+    } as unknown as MsgDeposit.Web3
+  }
+
+  public toDirectSign(): MsgDeposit.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -30,6 +30,10 @@ export declare namespace MsgTransfer {
   }
 
   export interface Amino extends BaseMsgTransfer.AsObject {
+    type: 'cosmos-sdk/MsgTransfer'
+  }
+
+  export interface Web3 extends BaseMsgTransfer.AsObject {
     '@type': '/ibc.applications.transfer.v1.MsgTransfer'
   }
 
@@ -47,7 +51,7 @@ export default class MsgTransfer extends MsgBase<
     return new MsgTransfer(params)
   }
 
-  toProto(): MsgTransfer.Proto {
+  public toProto(): MsgTransfer.Proto {
     const { params } = this
 
     const token = new Coin()
@@ -76,7 +80,7 @@ export default class MsgTransfer extends MsgBase<
     return message
   }
 
-  toData(): MsgTransfer.Data {
+  public toData(): MsgTransfer.Data {
     const proto = this.toProto()
 
     return {
@@ -85,16 +89,26 @@ export default class MsgTransfer extends MsgBase<
     }
   }
 
-  toAmino(): MsgTransfer.Amino {
+  public toAmino(): MsgTransfer.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/ibc.applications.transfer.v1.MsgTransfer',
+      type: 'cosmos-sdk/MsgTransfer',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgTransfer.DirectSign {
+  public toWeb3(): MsgTransfer.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/ibc.applications.transfer.v1.MsgTransfer',
+      ...rest,
+    } as unknown as MsgTransfer.Web3
+  }
+
+  public toDirectSign(): MsgTransfer.DirectSign {
     const proto = this.toProto()
 
     return {

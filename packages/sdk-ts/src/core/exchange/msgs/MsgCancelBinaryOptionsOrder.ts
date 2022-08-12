@@ -19,6 +19,10 @@ export declare namespace MsgCancelBinaryOptionsOrder {
   }
 
   export interface Amino extends BaseMsgCancelBinaryOptionsOrder.AsObject {
+    type: 'exchange/MsgCancelBinaryOptionsOrder'
+  }
+
+  export interface Web3 extends BaseMsgCancelBinaryOptionsOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
   }
 
@@ -38,7 +42,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     return new MsgCancelBinaryOptionsOrder(params)
   }
 
-  toProto(): MsgCancelBinaryOptionsOrder.Proto {
+  public toProto(): MsgCancelBinaryOptionsOrder.Proto {
     const { params } = this
 
     const message = new BaseMsgCancelBinaryOptionsOrder()
@@ -50,7 +54,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     return message
   }
 
-  toData(): MsgCancelBinaryOptionsOrder.Data {
+  public toData(): MsgCancelBinaryOptionsOrder.Data {
     const proto = this.toProto()
 
     return {
@@ -59,16 +63,26 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCancelBinaryOptionsOrder.Amino {
+  public toAmino(): MsgCancelBinaryOptionsOrder.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder',
+      type: 'exchange/MsgCancelBinaryOptionsOrder',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgCancelBinaryOptionsOrder.DirectSign {
+  public toWeb3(): MsgCancelBinaryOptionsOrder.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder',
+      ...rest,
+    } as unknown as MsgCancelBinaryOptionsOrder.Web3
+  }
+
+  public toDirectSign(): MsgCancelBinaryOptionsOrder.DirectSign {
     const proto = this.toProto()
 
     return {

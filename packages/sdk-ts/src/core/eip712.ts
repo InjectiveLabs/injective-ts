@@ -153,7 +153,7 @@ export const convertCosmosMsgToEip712 = (msgs: Msgs | Msgs[]) => {
 
   return {
     msgs: actualMsgs.map((m) => {
-      const { ['@type']: type, ...value } = m.toAmino()
+      const { type, ...value } = m.toAmino()
 
       return {
         type: protoTypeToAminoType(type),
@@ -255,7 +255,6 @@ export const objectKeysToEip712Types = (
 
 export const protoTypeToAminoType = (type: string): string => {
   const actualType = type.startsWith('/') ? type.substring(1) : type
-  console.log(actualType)
 
   switch (actualType) {
     // Exchange

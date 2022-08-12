@@ -23,6 +23,10 @@ export declare namespace MsgSend {
   }
 
   export interface Amino extends BaseMsgSend.AsObject {
+    type: 'cosmos-sdk/MsgSend'
+  }
+
+  export interface Web3 extends BaseMsgSend.AsObject {
     '@type': '/cosmos.bank.v1beta1.MsgSend'
   }
 
@@ -40,7 +44,7 @@ export default class MsgSend extends MsgBase<
     return new MsgSend(params)
   }
 
-  toProto(): MsgSend.Proto {
+  public toProto(): MsgSend.Proto {
     const { params } = this
 
     const amountToSend = new Coin()
@@ -55,7 +59,7 @@ export default class MsgSend extends MsgBase<
     return message
   }
 
-  toData(): MsgSend.Data {
+  public toData(): MsgSend.Data {
     const proto = this.toProto()
 
     return {
@@ -64,7 +68,7 @@ export default class MsgSend extends MsgBase<
     }
   }
 
-  toAmino(): MsgSend.Amino {
+  public toAmino(): MsgSend.Amino {
     const { params } = this
     const proto = this.toProto()
     const message = {
@@ -76,12 +80,22 @@ export default class MsgSend extends MsgBase<
     delete message.amount_list
 
     return {
-      '@type': '/cosmos.bank.v1beta1.MsgSend',
+      type: 'cosmos-sdk/MsgSend',
       ...message,
     } as unknown as MsgSend.Amino
   }
 
-  toDirectSign(): MsgSend.DirectSign {
+  public toWeb3(): MsgSend.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.bank.v1beta1.MsgSend',
+      ...rest,
+    } as unknown as MsgSend.Web3
+  }
+
+  public toDirectSign(): MsgSend.DirectSign {
     const proto = this.toProto()
 
     return {

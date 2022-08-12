@@ -29,6 +29,10 @@ export declare namespace MsgCreateSpotLimitOrder {
   }
 
   export interface Amino extends BaseMsgCreateSpotLimitOrder.AsObject {
+    type: 'exchange/MsgCreateSpotLimitOrder'
+  }
+
+  export interface Web3 extends BaseMsgCreateSpotLimitOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder'
   }
 
@@ -69,7 +73,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     return new MsgCreateSpotLimitOrder(params)
   }
 
-  toProto(): MsgCreateSpotLimitOrder.Proto {
+  public toProto(): MsgCreateSpotLimitOrder.Proto {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -83,7 +87,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     return createLimitOrder(params)
   }
 
-  toData(): MsgCreateSpotLimitOrder.Data {
+  public toData(): MsgCreateSpotLimitOrder.Data {
     const proto = this.toProto()
 
     return {
@@ -92,17 +96,27 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCreateSpotLimitOrder.Amino {
+  public toAmino(): MsgCreateSpotLimitOrder.Amino {
     const { params } = this
     const proto = createLimitOrder(params)
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder',
+      type: 'exchange/MsgCreateSpotLimitOrder',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgCreateSpotLimitOrder.DirectSign {
+  public toWeb3(): MsgCreateSpotLimitOrder.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder',
+      ...rest,
+    } as unknown as MsgCreateSpotLimitOrder.Web3
+  }
+
+  public toDirectSign(): MsgCreateSpotLimitOrder.DirectSign {
     const proto = this.toProto()
 
     return {

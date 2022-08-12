@@ -18,6 +18,10 @@ export declare namespace MsgRevoke {
   }
 
   export interface Amino extends BaseMsgRevoke.AsObject {
+    type: 'cosmos-sdk/MsgRevoke'
+  }
+
+  export interface Web3 extends BaseMsgRevoke.AsObject {
     '@type': '/cosmos.authz.v1beta1.MsgRevoke'
   }
 
@@ -35,7 +39,7 @@ export default class MsgRevoke extends MsgBase<
     return new MsgRevoke(params)
   }
 
-  toProto(): MsgRevoke.Proto {
+  public toProto(): MsgRevoke.Proto {
     const { params } = this
 
     const message = new BaseMsgRevoke()
@@ -46,7 +50,7 @@ export default class MsgRevoke extends MsgBase<
     return message
   }
 
-  toData(): MsgRevoke.Data {
+  public toData(): MsgRevoke.Data {
     const proto = this.toProto()
 
     return {
@@ -55,21 +59,31 @@ export default class MsgRevoke extends MsgBase<
     }
   }
 
-  toAmino(): MsgRevoke.Amino {
+  public toAmino(): MsgRevoke.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/cosmos.authz.v1beta1.MsgRevoke',
+      type: 'cosmos-sdk/MsgRevoke',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgRevoke.DirectSign {
+  public toDirectSign(): MsgRevoke.DirectSign {
     const proto = this.toProto()
 
     return {
       type: '/cosmos.authz.v1beta1.MsgRevoke',
       message: proto,
+    }
+  }
+
+  public toWeb3(): MsgRevoke.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.authz.v1beta1.MsgRevoke',
+      ...rest,
     }
   }
 }

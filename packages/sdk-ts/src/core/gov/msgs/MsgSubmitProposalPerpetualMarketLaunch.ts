@@ -41,6 +41,10 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   }
 
   export interface Amino extends BaseMsgSubmitProposal.AsObject {
+    type: 'cosmos-sdk/MsgSubmitProposal'
+  }
+
+  export interface Web3 extends BaseMsgSubmitProposal.AsObject {
     '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
   }
 
@@ -60,7 +64,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     return new MsgSubmitProposalPerpetualMarketLaunch(params)
   }
 
-  toProto(): MsgSubmitProposalPerpetualMarketLaunch.Proto {
+  public toProto(): MsgSubmitProposalPerpetualMarketLaunch.Proto {
     const { params } = this
 
     const depositParams = new Coin()
@@ -83,7 +87,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     return message
   }
 
-  toData(): MsgSubmitProposalPerpetualMarketLaunch.Data {
+  public toData(): MsgSubmitProposalPerpetualMarketLaunch.Data {
     const proto = this.toProto()
 
     return {
@@ -92,7 +96,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     }
   }
 
-  toAmino(): MsgSubmitProposalPerpetualMarketLaunch.Amino {
+  public toAmino(): MsgSubmitProposalPerpetualMarketLaunch.Amino {
     const { params } = this
     const content = this.getContent()
     const proposalType =
@@ -115,12 +119,22 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     }
 
     return {
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+      type: 'cosmos-sdk/MsgSubmitProposal',
       ...messageWithProposalType,
     } as unknown as MsgSubmitProposalPerpetualMarketLaunch.Amino
   }
 
-  toDirectSign(): MsgSubmitProposalPerpetualMarketLaunch.DirectSign {
+  public toWeb3(): MsgSubmitProposalPerpetualMarketLaunch.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+      ...rest,
+    } as unknown as MsgSubmitProposalPerpetualMarketLaunch.Web3
+  }
+
+  public toDirectSign(): MsgSubmitProposalPerpetualMarketLaunch.DirectSign {
     const proto = this.toProto()
 
     return {

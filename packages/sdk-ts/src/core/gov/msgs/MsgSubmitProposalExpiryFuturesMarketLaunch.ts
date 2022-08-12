@@ -42,7 +42,11 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
   }
 
   export interface Amino extends BaseMsgSubmitProposal.AsObject {
-    '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
+    type: 'cosmos-sdk/MsgSubmitProposal'
+  }
+
+  export interface Web3 extends BaseMsgSubmitProposal.AsObject {
+    '@type': '/cosmos.authz.v1beta1.MsgSubmitProposal'
   }
 
   export type Proto = BaseMsgSubmitProposal
@@ -61,7 +65,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     return new MsgSubmitProposalExpiryFuturesMarketLaunch(params)
   }
 
-  toProto(): MsgSubmitProposalExpiryFuturesMarketLaunch.Proto {
+  public toProto(): MsgSubmitProposalExpiryFuturesMarketLaunch.Proto {
     const { params } = this
 
     const depositParams = new Coin()
@@ -84,7 +88,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     return message
   }
 
-  toData(): MsgSubmitProposalExpiryFuturesMarketLaunch.Data {
+  public toData(): MsgSubmitProposalExpiryFuturesMarketLaunch.Data {
     const proto = this.toProto()
 
     return {
@@ -93,7 +97,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     }
   }
 
-  toAmino(): MsgSubmitProposalExpiryFuturesMarketLaunch.Amino {
+  public toAmino(): MsgSubmitProposalExpiryFuturesMarketLaunch.Amino {
     const { params } = this
     const content = this.getContent()
     const proposalType =
@@ -116,12 +120,22 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     }
 
     return {
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+      type: 'cosmos-sdk/MsgSubmitProposal',
       ...messageWithProposalType,
     } as unknown as MsgSubmitProposalExpiryFuturesMarketLaunch.Amino
   }
 
-  toDirectSign(): MsgSubmitProposalExpiryFuturesMarketLaunch.DirectSign {
+  public toWeb3(): MsgSubmitProposalExpiryFuturesMarketLaunch.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+      ...rest,
+    } as unknown as MsgSubmitProposalExpiryFuturesMarketLaunch.Web3
+  }
+
+  public toDirectSign(): MsgSubmitProposalExpiryFuturesMarketLaunch.DirectSign {
     const proto = this.toProto()
 
     return {

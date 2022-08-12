@@ -246,6 +246,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     endTime?: number
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
+    marketIds?: string[]
   }) {
     const {
       marketId,
@@ -255,6 +256,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       direction,
       pagination,
       executionSide,
+      marketIds,
     } = params || {}
 
     const request = new DerivativeTradesRequest()
@@ -265,6 +267,12 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
     if (subaccountId) {
       request.setSubaccountId(subaccountId)
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    } else {
+      request.setMarketIdsList([])
     }
 
     if (executionSide) {

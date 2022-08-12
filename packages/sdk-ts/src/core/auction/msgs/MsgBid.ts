@@ -22,6 +22,10 @@ export declare namespace MsgBid {
   }
 
   export interface Amino extends BaseMsgBid.AsObject {
+    type: 'auction/bid'
+  }
+
+  export interface Web3 extends BaseMsgBid.AsObject {
     '@type': '/injective.auction.v1beta1.MsgBid'
   }
 
@@ -39,7 +43,7 @@ export default class MsgBid extends MsgBase<
     return new MsgBid(params)
   }
 
-  toProto(): MsgBid.Proto {
+  public toProto(): MsgBid.Proto {
     const { params } = this
 
     const amountCoin = new Coin()
@@ -54,7 +58,7 @@ export default class MsgBid extends MsgBase<
     return message
   }
 
-  toData(): MsgBid.Data {
+  public toData(): MsgBid.Data {
     const proto = this.toProto()
 
     return {
@@ -63,21 +67,31 @@ export default class MsgBid extends MsgBase<
     }
   }
 
-  toAmino(): MsgBid.Amino {
+  public toAmino(): MsgBid.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.auction.v1beta1.MsgBid',
+      type: 'auction/bid',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgBid.DirectSign {
+  public toDirectSign(): MsgBid.DirectSign {
     const proto = this.toProto()
 
     return {
       type: '/injective.auction.v1beta1.MsgBid',
       message: proto,
+    }
+  }
+
+  public toWeb3(): MsgBid.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.auction.v1beta1.MsgBid',
+      ...rest,
     }
   }
 }

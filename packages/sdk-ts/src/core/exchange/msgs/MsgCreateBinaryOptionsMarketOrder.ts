@@ -31,6 +31,10 @@ export declare namespace MsgCreateBinaryOptionsMarketOrder {
 
   export interface Amino
     extends BaseMsgCreateBinaryOptionsMarketOrder.AsObject {
+    type: 'exchange/MsgCreateBinaryOptionsMarketOrder'
+  }
+
+  export interface Web3 extends BaseMsgCreateBinaryOptionsMarketOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder'
   }
 
@@ -74,7 +78,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     return new MsgCreateBinaryOptionsMarketOrder(params)
   }
 
-  toProto(): MsgCreateBinaryOptionsMarketOrder.Proto {
+  public toProto(): MsgCreateBinaryOptionsMarketOrder.Proto {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -89,7 +93,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     return createMarketOrder(params)
   }
 
-  toData(): MsgCreateBinaryOptionsMarketOrder.Data {
+  public toData(): MsgCreateBinaryOptionsMarketOrder.Data {
     const proto = this.toProto()
 
     return {
@@ -98,17 +102,27 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCreateBinaryOptionsMarketOrder.Amino {
+  public toAmino(): MsgCreateBinaryOptionsMarketOrder.Amino {
     const { params } = this
     const proto = createMarketOrder(params)
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
+      type: 'exchange/MsgCreateBinaryOptionsMarketOrder',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgCreateBinaryOptionsMarketOrder.DirectSign {
+  public toWeb3(): MsgCreateBinaryOptionsMarketOrder.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
+      ...rest,
+    } as unknown as MsgCreateBinaryOptionsMarketOrder.Web3
+  }
+
+  public toDirectSign(): MsgCreateBinaryOptionsMarketOrder.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -21,7 +21,11 @@ export declare namespace MsgUndelegate {
   }
 
   export interface Amino extends BaseMsgUndelegate.AsObject {
-    '@type': '/cosmos.staking.v1beta1.MsgUndelegate'
+    type: 'cosmos-sdk/MsgUndelegate'
+  }
+
+  export interface Web3 extends BaseMsgUndelegate.AsObject {
+    '@type': '/cosmos.authz.v1beta1.MsgUndelegate'
   }
 
   export type Proto = BaseMsgUndelegate
@@ -38,7 +42,7 @@ export default class MsgUndelegate extends MsgBase<
     return new MsgUndelegate(params)
   }
 
-  toProto(): MsgUndelegate.Proto {
+  public toProto(): MsgUndelegate.Proto {
     const { params } = this
 
     const coinAmount = new Coin()
@@ -53,7 +57,7 @@ export default class MsgUndelegate extends MsgBase<
     return message
   }
 
-  toData(): MsgUndelegate.Data {
+  public toData(): MsgUndelegate.Data {
     const proto = this.toProto()
 
     return {
@@ -62,16 +66,26 @@ export default class MsgUndelegate extends MsgBase<
     }
   }
 
-  toAmino(): MsgUndelegate.Amino {
+  public toAmino(): MsgUndelegate.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/cosmos.staking.v1beta1.MsgUndelegate',
+      type: 'cosmos-sdk/MsgUndelegate',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgUndelegate.DirectSign {
+  public toWeb3(): MsgUndelegate.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.staking.v1beta1.MsgUndelegate',
+      ...rest,
+    } as unknown as MsgUndelegate.Web3
+  }
+
+  public toDirectSign(): MsgUndelegate.DirectSign {
     const proto = this.toProto()
 
     return {

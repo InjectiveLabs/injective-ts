@@ -22,6 +22,10 @@ export declare namespace MsgDeposit {
   }
 
   export interface Amino extends BaseMsgDeposit.AsObject {
+    type: 'exchange/MsgDeposit'
+  }
+
+  export interface Web3 extends BaseMsgDeposit.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgDeposit'
   }
 
@@ -39,7 +43,7 @@ export default class MsgDeposit extends MsgBase<
     return new MsgDeposit(params)
   }
 
-  toProto(): MsgDeposit.Proto {
+  public toProto(): MsgDeposit.Proto {
     const { params } = this
 
     const amountCoin = new Coin()
@@ -54,7 +58,7 @@ export default class MsgDeposit extends MsgBase<
     return message
   }
 
-  toData(): MsgDeposit.Data {
+  public toData(): MsgDeposit.Data {
     const proto = this.toProto()
 
     return {
@@ -63,16 +67,26 @@ export default class MsgDeposit extends MsgBase<
     }
   }
 
-  toAmino(): MsgDeposit.Amino {
+  public toAmino(): MsgDeposit.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgDeposit',
+      type: 'exchange/MsgDeposit',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgDeposit.DirectSign {
+  public toWeb3(): MsgDeposit.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgDeposit',
+      ...rest,
+    } as unknown as MsgDeposit.Web3
+  }
+
+  public toDirectSign(): MsgDeposit.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -30,7 +30,11 @@ export declare namespace MsgSendToEth {
   }
 
   export interface Amino extends BaseMsgSendToEth.AsObject {
-    '@type': '/injective.peggy.v1.MsgSendToEth'
+    type: 'peggy/MsgSendToEth'
+  }
+
+  export interface Web3 extends BaseMsgSendToEth.AsObject {
+    '@type': '/injective.peggy.v1beta1.MsgSendToEth'
   }
 
   export type Proto = BaseMsgSendToEth
@@ -47,7 +51,7 @@ export default class MsgSendToEth extends MsgBase<
     return new MsgSendToEth(params)
   }
 
-  toProto(): MsgSendToEth.Proto {
+  public toProto(): MsgSendToEth.Proto {
     const { params } = this
 
     const coinAmount = new Coin()
@@ -71,7 +75,7 @@ export default class MsgSendToEth extends MsgBase<
     return message
   }
 
-  toData(): MsgSendToEth.Data {
+  public toData(): MsgSendToEth.Data {
     const proto = this.toProto()
 
     return {
@@ -80,16 +84,26 @@ export default class MsgSendToEth extends MsgBase<
     }
   }
 
-  toAmino(): MsgSendToEth.Amino {
+  public toAmino(): MsgSendToEth.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.peggy.v1.MsgSendToEth',
+      type: 'peggy/MsgSendToEth',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgSendToEth.DirectSign {
+  public toWeb3(): MsgSendToEth.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.peggy.v1.MsgSendToEth',
+      ...rest,
+    } as unknown as MsgSendToEth.Web3
+  }
+
+  public toDirectSign(): MsgSendToEth.DirectSign {
     const proto = this.toProto()
 
     return {

@@ -22,6 +22,10 @@ export declare namespace MsgUnderwrite {
   }
 
   export interface Amino extends BaseMsgUnderwrite.AsObject {
+    type: 'insurance/MsgUnderwrite'
+  }
+
+  export interface Web3 extends BaseMsgUnderwrite.AsObject {
     '@type': '/injective.insurance.v1beta1.MsgUnderwrite'
   }
 
@@ -39,7 +43,7 @@ export default class MsgUnderwrite extends MsgBase<
     return new MsgUnderwrite(params)
   }
 
-  toProto(): MsgUnderwrite.Proto {
+  public toProto(): MsgUnderwrite.Proto {
     const { params } = this
 
     const amountCoin = new Coin()
@@ -54,7 +58,7 @@ export default class MsgUnderwrite extends MsgBase<
     return message
   }
 
-  toData(): MsgUnderwrite.Data {
+  public toData(): MsgUnderwrite.Data {
     const proto = this.toProto()
 
     return {
@@ -63,16 +67,26 @@ export default class MsgUnderwrite extends MsgBase<
     }
   }
 
-  toAmino(): MsgUnderwrite.Amino {
+  public toAmino(): MsgUnderwrite.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.insurance.v1beta1.MsgUnderwrite',
+      type: 'insurance/MsgUnderwrite',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgUnderwrite.DirectSign {
+  public toWeb3(): MsgUnderwrite.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.insurance.v1beta1.MsgUnderwrite',
+      ...rest,
+    } as unknown as MsgUnderwrite.Web3
+  }
+
+  public toDirectSign(): MsgUnderwrite.DirectSign {
     const proto = this.toProto()
 
     return {

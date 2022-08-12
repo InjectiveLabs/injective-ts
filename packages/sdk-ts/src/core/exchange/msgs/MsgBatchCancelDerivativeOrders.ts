@@ -25,6 +25,10 @@ export declare namespace MsgBatchCancelDerivativeOrders {
   }
 
   export interface Amino extends BaseMsgBatchCancelDerivativeOrders.AsObject {
+    type: 'exchange/MsgBatchCancelDerivativeOrders'
+  }
+
+  export interface Web3 extends BaseMsgBatchCancelDerivativeOrders.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
   }
 
@@ -44,7 +48,7 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
     return new MsgBatchCancelDerivativeOrders(params)
   }
 
-  toProto(): MsgBatchCancelDerivativeOrders.Proto {
+  public toProto(): MsgBatchCancelDerivativeOrders.Proto {
     const { params } = this
 
     const orderDataList = params.orders.map((order) => {
@@ -63,7 +67,7 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
     return message
   }
 
-  toData(): MsgBatchCancelDerivativeOrders.Data {
+  public toData(): MsgBatchCancelDerivativeOrders.Data {
     const proto = this.toProto()
 
     return {
@@ -72,14 +76,14 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
     }
   }
 
-  toAmino(): MsgBatchCancelDerivativeOrders.Amino {
+  public toAmino(): MsgBatchCancelDerivativeOrders.Amino {
     const proto = this.toProto()
     const orderData = proto
       .getDataList()
       .map((orderData) => snakeCaseKeys(orderData.toObject()))
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
+      type: 'exchange/MsgBatchCancelDerivativeOrders',
       ...snakeCaseKeys({
         sender: proto.getSender(),
         data: [...orderData],
@@ -87,7 +91,17 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
     } as unknown as MsgBatchCancelDerivativeOrders.Amino
   }
 
-  toDirectSign(): MsgBatchCancelDerivativeOrders.DirectSign {
+  public toWeb3(): MsgBatchCancelDerivativeOrders.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
+      ...rest,
+    } as unknown as MsgBatchCancelDerivativeOrders.Web3
+  }
+
+  public toDirectSign(): MsgBatchCancelDerivativeOrders.DirectSign {
     const proto = this.toProto()
 
     return {

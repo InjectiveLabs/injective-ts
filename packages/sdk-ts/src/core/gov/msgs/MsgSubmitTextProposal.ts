@@ -26,7 +26,11 @@ export declare namespace MsgSubmitTextProposal {
   }
 
   export interface Amino extends BaseMsgSubmitProposal.AsObject {
-    '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
+    type: 'cosmos-sdk/MsgSubmitProposal'
+  }
+
+  export interface Web3 extends BaseMsgSubmitProposal.AsObject {
+    '@type': '/cosmos.authz.v1beta1.MsgSubmitProposal'
   }
 
   export type Proto = BaseMsgSubmitProposal
@@ -43,7 +47,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     return new MsgSubmitTextProposal(params)
   }
 
-  toProto(): MsgSubmitTextProposal.Proto {
+  public toProto(): MsgSubmitTextProposal.Proto {
     const { params } = this
 
     const depositParams = new Coin()
@@ -65,7 +69,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     return message
   }
 
-  toData(): MsgSubmitTextProposal.Data {
+  public toData(): MsgSubmitTextProposal.Data {
     const proto = this.toProto()
 
     return {
@@ -74,7 +78,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     }
   }
 
-  toAmino(): MsgSubmitTextProposal.Amino {
+  public toAmino(): MsgSubmitTextProposal.Amino {
     const { params } = this
     const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
@@ -96,12 +100,22 @@ export default class MsgSubmitTextProposal extends MsgBase<
     }
 
     return {
-      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+      type: 'cosmos-sdk/MsgSubmitProposal',
       ...messageWithProposalType,
     } as unknown as MsgSubmitTextProposal.Amino
   }
 
-  toDirectSign(): MsgSubmitTextProposal.DirectSign {
+  public toWeb3(): MsgSubmitTextProposal.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
+      ...rest,
+    } as unknown as MsgSubmitTextProposal.Web3
+  }
+
+  public toDirectSign(): MsgSubmitTextProposal.DirectSign {
     const proto = this.toProto()
 
     return {

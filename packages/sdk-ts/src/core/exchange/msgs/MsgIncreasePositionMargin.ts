@@ -21,6 +21,10 @@ export declare namespace MsgIncreasePositionMargin {
   }
 
   export interface Amino extends BaseMsgIncreasePositionMargin.AsObject {
+    type: 'exchange/MsgIncreasePositionMargin'
+  }
+
+  export interface Web3 extends BaseMsgIncreasePositionMargin.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin'
   }
 
@@ -51,7 +55,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
     return new MsgIncreasePositionMargin(params)
   }
 
-  toProto(): MsgIncreasePositionMargin.Proto {
+  public toProto(): MsgIncreasePositionMargin.Proto {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -61,7 +65,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
     return addMarginToPosition(params)
   }
 
-  toData(): MsgIncreasePositionMargin.Data {
+  public toData(): MsgIncreasePositionMargin.Data {
     const proto = this.toProto()
 
     return {
@@ -70,17 +74,27 @@ export default class MsgIncreasePositionMargin extends MsgBase<
     }
   }
 
-  toAmino(): MsgIncreasePositionMargin.Amino {
+  public toAmino(): MsgIncreasePositionMargin.Amino {
     const { params } = this
     const proto = addMarginToPosition(params)
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin',
+      type: 'exchange/MsgIncreasePositionMargin',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgIncreasePositionMargin.DirectSign {
+  public toWeb3(): MsgIncreasePositionMargin.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin',
+      ...rest,
+    } as unknown as MsgIncreasePositionMargin.Web3
+  }
+
+  public toDirectSign(): MsgIncreasePositionMargin.DirectSign {
     const proto = this.toProto()
 
     return {

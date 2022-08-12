@@ -55,6 +55,10 @@ export declare namespace MsgBatchUpdateOrders {
   }
 
   export interface Amino extends BaseMsgBatchUpdateOrders.AsObject {
+    type: 'exchange/MsgBatchUpdateOrders'
+  }
+
+  export interface Web3 extends BaseMsgBatchUpdateOrders.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
   }
 
@@ -72,7 +76,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     return new MsgBatchUpdateOrders(params)
   }
 
-  toProto(): MsgBatchUpdateOrders.Proto {
+  public toProto(): MsgBatchUpdateOrders.Proto {
     const { params } = this
 
     const message = new BaseMsgBatchUpdateOrders()
@@ -201,7 +205,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     return message
   }
 
-  toData(): MsgBatchUpdateOrders.Data {
+  public toData(): MsgBatchUpdateOrders.Data {
     const proto = this.toProto()
 
     return {
@@ -210,7 +214,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     }
   }
 
-  toAmino(): MsgBatchUpdateOrders.Amino {
+  public toAmino(): MsgBatchUpdateOrders.Amino {
     const proto = this.toProto()
 
     /*
@@ -270,12 +274,22 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     }*/
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
+      type: 'exchange/MsgBatchUpdateOrders',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgBatchUpdateOrders.DirectSign {
+  public toWeb3(): MsgBatchUpdateOrders.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
+      ...rest,
+    } as unknown as MsgBatchUpdateOrders.Web3
+  }
+
+  public toDirectSign(): MsgBatchUpdateOrders.DirectSign {
     const proto = this.toProto()
 
     return {

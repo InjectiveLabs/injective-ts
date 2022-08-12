@@ -17,6 +17,10 @@ export declare namespace MsgWithdrawDelegatorReward {
   }
 
   export interface Amino extends BaseMsgWithdrawDelegatorReward.AsObject {
+    type: 'cosmos-sdk/MsgWithdrawDelegatorReward'
+  }
+
+  export interface Web3 extends BaseMsgWithdrawDelegatorReward.AsObject {
     '@type': '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward'
   }
 
@@ -36,7 +40,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
     return new MsgWithdrawDelegatorReward(params)
   }
 
-  toProto(): MsgWithdrawDelegatorReward.Proto {
+  public toProto(): MsgWithdrawDelegatorReward.Proto {
     const { params } = this
 
     const message = new BaseMsgWithdrawDelegatorReward()
@@ -46,7 +50,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
     return message
   }
 
-  toData(): MsgWithdrawDelegatorReward.Data {
+  public toData(): MsgWithdrawDelegatorReward.Data {
     const proto = this.toProto()
 
     return {
@@ -55,16 +59,26 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
     }
   }
 
-  toAmino(): MsgWithdrawDelegatorReward.Amino {
+  public toAmino(): MsgWithdrawDelegatorReward.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
+      type: 'cosmos-sdk/MsgWithdrawDelegatorReward',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgWithdrawDelegatorReward.DirectSign {
+  public toWeb3(): MsgWithdrawDelegatorReward.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
+      ...rest,
+    }
+  }
+
+  public toDirectSign(): MsgWithdrawDelegatorReward.DirectSign {
     const proto = this.toProto()
 
     return {

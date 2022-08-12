@@ -30,6 +30,10 @@ export declare namespace MsgCreateInsuranceFund {
   }
 
   export interface Amino extends BaseMsgCreateInsuranceFund.AsObject {
+    type: 'insurance/MsgCreateInsuranceFund'
+  }
+
+  export interface Web3 extends BaseMsgCreateInsuranceFund.AsObject {
     '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund'
   }
 
@@ -49,7 +53,7 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     return new MsgCreateInsuranceFund(params)
   }
 
-  toProto(): MsgCreateInsuranceFund.Proto {
+  public toProto(): MsgCreateInsuranceFund.Proto {
     const { params } = this
 
     const amountCoin = new Coin()
@@ -69,7 +73,7 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     return message
   }
 
-  toData(): MsgCreateInsuranceFund.Data {
+  public toData(): MsgCreateInsuranceFund.Data {
     const proto = this.toProto()
 
     return {
@@ -78,16 +82,26 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     }
   }
 
-  toAmino(): MsgCreateInsuranceFund.Amino {
+  public toAmino(): MsgCreateInsuranceFund.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund',
+      type: 'insurance/MsgCreateInsuranceFund',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgCreateInsuranceFund.DirectSign {
+  public toWeb3(): MsgCreateInsuranceFund.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund',
+      ...rest,
+    } as unknown as MsgCreateInsuranceFund.Web3
+  }
+
+  public toDirectSign(): MsgCreateInsuranceFund.DirectSign {
     const proto = this.toProto()
 
     return {

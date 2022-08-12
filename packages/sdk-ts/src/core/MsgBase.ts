@@ -21,12 +21,8 @@ export abstract class MsgBase<
 
   public abstract toAmino(): AminoRepresentation
 
-  /**
-   * @deprecated use toAmino instead
-   * @returns AminoRepresentation
-   */
-  public toWeb3(): AminoRepresentation {
-    return this.toAmino()
+  public abstract toWeb3(): Omit<AminoRepresentation, 'type'> & {
+    '@type': string
   }
 
   public toJSON(): string {

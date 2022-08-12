@@ -27,6 +27,10 @@ export declare namespace MsgInstantiateContract {
   }
 
   export interface Amino extends BaseMsgInstantiateContract.AsObject {
+    type: 'wasm/MsgInstantiateContract'
+  }
+
+  export interface Web3 extends BaseMsgInstantiateContract.AsObject {
     '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract'
   }
 
@@ -46,7 +50,7 @@ export default class MsgInstantiateContract extends MsgBase<
     return new MsgInstantiateContract(params)
   }
 
-  toProto(): MsgInstantiateContract.Proto {
+  public toProto(): MsgInstantiateContract.Proto {
     const { params } = this
 
     const message = new BaseMsgInstantiateContract()
@@ -69,7 +73,7 @@ export default class MsgInstantiateContract extends MsgBase<
     return message
   }
 
-  toData(): MsgInstantiateContract.Data {
+  public toData(): MsgInstantiateContract.Data {
     const proto = this.toProto()
 
     return {
@@ -78,7 +82,7 @@ export default class MsgInstantiateContract extends MsgBase<
     }
   }
 
-  toAmino(): MsgInstantiateContract.Amino {
+  public toAmino(): MsgInstantiateContract.Amino {
     const proto = this.toProto()
     const message = {
       ...snakeCaseKeys(proto.toObject()),
@@ -90,12 +94,22 @@ export default class MsgInstantiateContract extends MsgBase<
     const messageWithProperKeys = snakeCaseKeys(message)
 
     return {
-      '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract',
+      type: 'wasm/MsgInstantiateContract',
       ...messageWithProperKeys,
     } as unknown as MsgInstantiateContract.Amino
   }
 
-  toDirectSign(): MsgInstantiateContract.DirectSign {
+  public toWeb3(): MsgInstantiateContract.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract',
+      ...rest,
+    } as unknown as MsgInstantiateContract.Web3
+  }
+
+  public toDirectSign(): MsgInstantiateContract.DirectSign {
     const proto = this.toProto()
 
     return {

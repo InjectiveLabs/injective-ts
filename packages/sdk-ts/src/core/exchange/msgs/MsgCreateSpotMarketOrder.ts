@@ -27,8 +27,11 @@ export declare namespace MsgCreateSpotMarketOrder {
   export interface Data extends BaseMsgCreateSpotMarketOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder'
   }
-
   export interface Amino extends BaseMsgCreateSpotMarketOrder.AsObject {
+    type: 'exchange/MsgCreateSpotMarketOrder'
+  }
+
+  export interface Web3 extends BaseMsgCreateSpotMarketOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder'
   }
 
@@ -69,7 +72,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     return new MsgCreateSpotMarketOrder(params)
   }
 
-  toProto(): MsgCreateSpotMarketOrder.Proto {
+  public toProto(): MsgCreateSpotMarketOrder.Proto {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -83,7 +86,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     return createMarketOrder(params)
   }
 
-  toData(): MsgCreateSpotMarketOrder.Data {
+  public toData(): MsgCreateSpotMarketOrder.Data {
     const proto = this.toProto()
 
     return {
@@ -92,17 +95,27 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCreateSpotMarketOrder.Amino {
+  public toAmino(): MsgCreateSpotMarketOrder.Amino {
     const { params } = this
     const proto = createMarketOrder(params)
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder',
+      type: 'exchange/MsgCreateSpotMarketOrder',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgCreateSpotMarketOrder.DirectSign {
+  public toWeb3(): MsgCreateSpotMarketOrder.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder',
+      ...rest,
+    } as unknown as MsgCreateSpotMarketOrder.Web3
+  }
+
+  public toDirectSign(): MsgCreateSpotMarketOrder.DirectSign {
     const proto = this.toProto()
 
     return {

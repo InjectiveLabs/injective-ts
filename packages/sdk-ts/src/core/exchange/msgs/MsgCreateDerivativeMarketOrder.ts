@@ -30,6 +30,10 @@ export declare namespace MsgCreateDerivativeMarketOrder {
   }
 
   export interface Amino extends BaseMsgCreateDerivativeMarketOrder.AsObject {
+    type: 'exchange/MsgCreateDerivativeMarketOrder'
+  }
+
+  export interface Web3 extends BaseMsgCreateDerivativeMarketOrder.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
   }
 
@@ -71,7 +75,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
     return new MsgCreateDerivativeMarketOrder(params)
   }
 
-  toProto(): MsgCreateDerivativeMarketOrder.Proto {
+  public toProto(): MsgCreateDerivativeMarketOrder.Proto {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -86,7 +90,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
     return createMarketOrder(params)
   }
 
-  toData(): MsgCreateDerivativeMarketOrder.Data {
+  public toData(): MsgCreateDerivativeMarketOrder.Data {
     const proto = this.toProto()
 
     return {
@@ -95,17 +99,27 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
     }
   }
 
-  toAmino(): MsgCreateDerivativeMarketOrder.Amino {
+  public toAmino(): MsgCreateDerivativeMarketOrder.Amino {
     const { params } = this
     const proto = createMarketOrder(params)
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder',
+      type: 'exchange/MsgCreateDerivativeMarketOrder',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgCreateDerivativeMarketOrder.DirectSign {
+  public toWeb3(): MsgCreateDerivativeMarketOrder.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder',
+      ...rest,
+    } as unknown as MsgCreateDerivativeMarketOrder.Web3
+  }
+
+  public toDirectSign(): MsgCreateDerivativeMarketOrder.DirectSign {
     const proto = this.toProto()
 
     return {

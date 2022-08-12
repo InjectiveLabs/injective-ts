@@ -25,6 +25,10 @@ export declare namespace MsgBatchCancelSpotOrders {
   }
 
   export interface Amino extends BaseMsgBatchCancelSpotOrders.AsObject {
+    type: 'exchange/MsgBatchCancelSpotOrders'
+  }
+
+  export interface Web3 extends BaseMsgBatchCancelSpotOrders.AsObject {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders'
   }
 
@@ -44,7 +48,7 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     return new MsgBatchCancelSpotOrders(params)
   }
 
-  toProto(): MsgBatchCancelSpotOrders.Proto {
+  public toProto(): MsgBatchCancelSpotOrders.Proto {
     const { params } = this
 
     const orderDataList = params.orders.map((order) => {
@@ -63,7 +67,7 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     return message
   }
 
-  toData(): MsgBatchCancelSpotOrders.Data {
+  public toData(): MsgBatchCancelSpotOrders.Data {
     const proto = this.toProto()
 
     return {
@@ -72,14 +76,14 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     }
   }
 
-  toAmino(): MsgBatchCancelSpotOrders.Amino {
+  public toAmino(): MsgBatchCancelSpotOrders.Amino {
     const proto = this.toProto()
     const orderData = proto
       .getDataList()
       .map((orderData) => snakeCaseKeys(orderData.toObject()))
 
     return {
-      '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders',
+      type: 'exchange/MsgBatchCancelSpotOrders',
       ...snakeCaseKeys({
         sender: proto.getSender(),
         data: [...orderData],
@@ -87,7 +91,17 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     } as unknown as MsgBatchCancelSpotOrders.Amino
   }
 
-  toDirectSign(): MsgBatchCancelSpotOrders.DirectSign {
+  public toWeb3(): MsgBatchCancelSpotOrders.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders',
+      ...rest,
+    } as unknown as MsgBatchCancelSpotOrders.Web3
+  }
+
+  public toDirectSign(): MsgBatchCancelSpotOrders.DirectSign {
     const proto = this.toProto()
 
     return {

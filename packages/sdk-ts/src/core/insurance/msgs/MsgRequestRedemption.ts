@@ -22,6 +22,10 @@ export declare namespace MsgRequestRedemption {
   }
 
   export interface Amino extends BaseMsgRequestRedemption.AsObject {
+    type: 'insurance/MsgRequestRedemption'
+  }
+
+  export interface Web3 extends BaseMsgRequestRedemption.AsObject {
     '@type': '/injective.insurance.v1beta1.MsgRequestRedemption'
   }
 
@@ -39,7 +43,7 @@ export default class MsgRequestRedemption extends MsgBase<
     return new MsgRequestRedemption(params)
   }
 
-  toProto(): MsgRequestRedemption.Proto {
+  public toProto(): MsgRequestRedemption.Proto {
     const { params } = this
 
     const amountCoin = new Coin()
@@ -54,7 +58,7 @@ export default class MsgRequestRedemption extends MsgBase<
     return message
   }
 
-  toData(): MsgRequestRedemption.Data {
+  public toData(): MsgRequestRedemption.Data {
     const proto = this.toProto()
 
     return {
@@ -63,16 +67,26 @@ export default class MsgRequestRedemption extends MsgBase<
     }
   }
 
-  toAmino(): MsgRequestRedemption.Amino {
+  public toAmino(): MsgRequestRedemption.Amino {
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.insurance.v1beta1.MsgRequestRedemption',
+      type: 'insurance/MsgRequestRedemption',
       ...proto.toObject(),
     }
   }
 
-  toDirectSign(): MsgRequestRedemption.DirectSign {
+  public toWeb3(): MsgRequestRedemption.Web3 {
+    const amino = this.toAmino()
+    const { type, ...rest } = amino
+
+    return {
+      '@type': '/injective.insurance.v1beta1.MsgRequestRedemption',
+      ...rest,
+    } as unknown as MsgRequestRedemption.Web3
+  }
+
+  public toDirectSign(): MsgRequestRedemption.DirectSign {
     const proto = this.toProto()
 
     return {
