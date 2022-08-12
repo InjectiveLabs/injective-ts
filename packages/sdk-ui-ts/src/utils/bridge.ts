@@ -317,15 +317,15 @@ export const getCosmosExplorerUrl = (
 export const getEthereumExplorerUrl = (network: Network): string => {
   switch (network) {
     case Network.Devnet:
-      return 'https://kovan.etherscan.io'
+      return 'https://goerli.etherscan.io'
     case Network.Mainnet:
       return 'https://etherscan.io'
     case Network.Public:
       return 'https://etherscan.io'
     case Network.Local:
-      return 'https://kovan.etherscan.io'
+      return 'https://goerli.etherscan.io'
     case Network.Testnet:
-      return 'https://kovan.etherscan.io'
+      return 'https://goerli.etherscan.io'
     default:
       return 'https://etherscan.io'
   }

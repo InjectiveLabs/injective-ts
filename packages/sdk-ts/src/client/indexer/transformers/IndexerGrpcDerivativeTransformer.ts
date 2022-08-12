@@ -43,6 +43,7 @@ import {
   TradesResponse as DerivativeTradesResponse,
   PositionsResponse as DerivativePositionsResponse,
   OrderbooksResponse as DerivativeOrderbooksResponse,
+  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
 import {
   BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
@@ -142,6 +143,14 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static tradesResponseToTrades(response: DerivativeTradesResponse) {
+    const trades = response.getTradesList()
+
+    return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades)
+  }
+
+  static subaccountTradeListResponseToSubaccountTradeList(
+    response: DerivativeSubaccountTradesListResponse,
+  ) {
     const trades = response.getTradesList()
 
     return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades)
