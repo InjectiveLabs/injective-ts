@@ -176,7 +176,7 @@ export class IndexerGrpcAccountTransformer {
     response: SubaccountHistoryResponse,
   ) {
     const transfers = response.getTransfersList()
-    const paging = response.getPaging()
+    const pagination = response.getPaging()
 
     return {
       transfers: transfers.map((transfer) =>
@@ -184,7 +184,7 @@ export class IndexerGrpcAccountTransformer {
           transfer,
         ),
       ),
-      paging: grpcPagingToPaging(paging),
+      pagination: grpcPagingToPaging(pagination),
     }
   }
 
