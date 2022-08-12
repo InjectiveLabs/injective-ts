@@ -13,6 +13,7 @@ export declare namespace MsgGrant {
     grantee: string
     granter: string
     expiryInYears?: number
+    expiryInSeconds?: number
   }
 
   export interface DirectSign {
@@ -111,7 +112,7 @@ export default class MsgGrant extends MsgBase<
 
   private getTimestamp() {
     const { params } = this
-    const defaultExpiryYears = 5
+    const defaultExpiryYears = params.expiryInSeconds ? 0 : 5
     const dateNow = new Date()
     const expiration = new Date(
       dateNow.getFullYear() + (params.expiryInYears || defaultExpiryYears),
@@ -120,7 +121,7 @@ export default class MsgGrant extends MsgBase<
     )
 
     const timestamp = new Timestamp()
-    timestamp.setSeconds(expiration.getTime() / 1000)
+    timestamp.setSeconds(expiration.getTime() / 1000 + (params.expiryInSeconds || 0))
 
     return timestamp
   }
