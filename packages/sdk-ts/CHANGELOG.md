@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.82](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.81...@injectivelabs/sdk-ts@1.0.82) (2022-08-12)
+
+
+### Bug Fixes
+
+* paging pagination ([bfbac3e](https://github.com/InjectiveLabs/injective-ts/commit/bfbac3ed608368d6bef066569f1b819b1afb1b36))
+
+
+### Features
+
+* activity page pagination ([068d54e](https://github.com/InjectiveLabs/injective-ts/commit/068d54e33dd2a5df91485246b3c4732bb1eeb960))
+* activity page pagination ([35dc4e3](https://github.com/InjectiveLabs/injective-ts/commit/35dc4e34235f09cb8060fc2c4932a5714e118df1))
+* activity page pagination ([79e85b9](https://github.com/InjectiveLabs/injective-ts/commit/79e85b99d7ff81b4c96069c1db20777e3cc94213))
+* activity page pagination ([1da66fc](https://github.com/InjectiveLabs/injective-ts/commit/1da66fcdce9698687ee6fd3fbd7e00c647e5e720))
+* activity page pagination ([60e91d0](https://github.com/InjectiveLabs/injective-ts/commit/60e91d09358c6b18fa7f6e234dc750e6aeb5b420))
+* activity pagination ([41f2ca2](https://github.com/InjectiveLabs/injective-ts/commit/41f2ca2c4624da8ca04155826a6f870ec8855e31))
+* activity pagination ([bb91c17](https://github.com/InjectiveLabs/injective-ts/commit/bb91c17460cd313d24df8666449ef0b76cbdad2f))
+* activity pagination ([a91bb5e](https://github.com/InjectiveLabs/injective-ts/commit/a91bb5e94788e423e0c803a0e503a7a97a6c8eb5))
+* activity pagination - bump to indexer 1.0.5 ([a7d98a3](https://github.com/InjectiveLabs/injective-ts/commit/a7d98a33fa8afecf29f9d23c750042fe7676067e))
+* activity pagination - remove duplicate code ([5c6efec](https://github.com/InjectiveLabs/injective-ts/commit/5c6efece6e7d133eddfe94872216ad435d736412))
+* activity pagination - removed unused code ([9e73339](https://github.com/InjectiveLabs/injective-ts/commit/9e73339f0c1b2fa111cababd2605fd4565173787))
+* activity pagination - renamed paging -> pagination ([9227787](https://github.com/InjectiveLabs/injective-ts/commit/9227787ecbc8b247516004f1bc95afab4e77f44f))
+* activity pagination - use indexer instead of exchange api ([7de4dca](https://github.com/InjectiveLabs/injective-ts/commit/7de4dca9a4b9b8490710d4e80a31d4951706416c))
+* added amino and proper web3 support for all msgs ([83f1857](https://github.com/InjectiveLabs/injective-ts/commit/83f1857981468ed16c2295c3f814eaa12256c7b3))
+* authz module - add MsgExec and new param MsgGrant ([#57](https://github.com/InjectiveLabs/injective-ts/issues/57)) ([3c2b103](https://github.com/InjectiveLabs/injective-ts/commit/3c2b10300828c751dd2dcc92e01729b0afa9925d))
+
+
+
+
+
 ## [1.0.81](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.80...@injectivelabs/sdk-ts@1.0.81) (2022-08-12)
 
 
