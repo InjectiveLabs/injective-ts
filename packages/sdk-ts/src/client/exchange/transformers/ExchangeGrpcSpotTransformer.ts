@@ -24,6 +24,7 @@ import {
   OrdersResponse as SpotOrdersResponse,
   TradesResponse as SpotTradesResponse,
   OrderbooksResponse as SpotOrderbooksResponse,
+  SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 
 const zeroPriceLevel = () => ({
@@ -70,6 +71,14 @@ export class ExchangeGrpcSpotTransformer {
   }
 
   static tradesResponseToTrades(response: SpotTradesResponse) {
+    const trades = response.getTradesList()
+
+    return ExchangeGrpcSpotTransformer.grpcTradesToTrades(trades)
+  }
+
+  static subaccountTradesListResponseToTrades(
+    response: SpotSubaccountTradesListResponse,
+  ) {
     const trades = response.getTradesList()
 
     return ExchangeGrpcSpotTransformer.grpcTradesToTrades(trades)
