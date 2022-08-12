@@ -192,8 +192,6 @@ export class Web3Client {
       web3: web3 as any,
     })
 
-    console.log(data)
-
     const depositForContractFunction = contract.sendToInjective({
       contractAddress,
       data,
