@@ -9,7 +9,6 @@ import {
   DerivativeMarket,
   DerivativeLimitOrder,
   DerivativeTrade,
-  FundingRateWithPagination,
   PositionDelta,
   GrpcDerivativePosition,
   Position,
@@ -159,9 +158,7 @@ export class IndexerGrpcDerivativeTransformer {
     )
   }
 
-  static fundingRatesResponseToFundingRates(
-    response: FundingRatesResponse,
-  ): FundingRateWithPagination {
+  static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {
     const fundingRates = response.getFundingRatesList()
     const pagination = response.getPaging()
 

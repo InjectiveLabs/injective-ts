@@ -288,9 +288,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
         SpotSubaccountTradesListResponse,
         typeof InjectiveSpotExchangeRPC.SubaccountTradesList
       >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
-      return IndexerGrpcSpotTransformer.tradesResponseToTrades(
-        response as SpotTradesResponse,
-      )
+      return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
     } catch (e: any) {
       throw new Error(e.message)
     }

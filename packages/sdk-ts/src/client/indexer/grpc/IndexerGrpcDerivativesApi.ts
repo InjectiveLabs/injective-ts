@@ -469,9 +469,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
         DerivativeSubaccountTradesListResponse,
         typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList
       >(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
-      return IndexerGrpcDerivativeTransformer.tradesResponseToTrades(
-        response as DerivativeTradesResponse,
-      )
+      return IndexerGrpcDerivativeTransformer.tradesResponseToTrades(response)
     } catch (e: any) {
       throw new Error(e.message)
     }
