@@ -1,10 +1,11 @@
 export interface PaginationOption {
-  key: string
+  key?: string
   offset?: number
   skip?: number
   limit?: number
   reverse?: boolean
-  countTotal?: boolean
+  countTotal?: boolean,
+  endTime?: number
 }
 
 export interface PagePagination {

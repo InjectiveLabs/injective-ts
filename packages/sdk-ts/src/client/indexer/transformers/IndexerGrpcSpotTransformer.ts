@@ -26,6 +26,7 @@ import {
   OrderbooksResponse as SpotOrderbooksResponse,
   SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
 } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
+import { grpcPagingToPaging } from '../../../utils/pagination'
 
 const zeroPriceLevel = () => ({
   price: '0',
@@ -66,22 +67,30 @@ export class IndexerGrpcSpotTransformer {
 
   static ordersResponseToOrders(response: SpotOrdersResponse) {
     const orders = response.getOrdersList()
+    const pagination = response.getPaging()
 
-    return IndexerGrpcSpotTransformer.grpcOrdersToOrders(orders)
+    return {
+      orders: IndexerGrpcSpotTransformer.grpcOrdersToOrders(orders),
+      pagination: grpcPagingToPaging(pagination),
+    }
   }
 
   static tradesResponseToTrades(response: SpotTradesResponse) {
     const trades = response.getTradesList()
+    const pagination = response.getPaging()
 
-    return IndexerGrpcSpotTransformer.grpcTradesToTrades(trades)
+    return {
+      trades: IndexerGrpcSpotTransformer.grpcTradesToTrades(trades),
+      pagination: grpcPagingToPaging(pagination),
+    }
   }
 
-  static subaccountTradeListResponseToSubaccountTradeList(
+  static subaccountTradesListResponseToTradesList(
     response: SpotSubaccountTradesListResponse,
   ) {
-    const trades = response.getTradesList()
+    const tradesList = response.getTradesList()
 
-    return IndexerGrpcSpotTransformer.grpcTradesToTrades(trades)
+    return IndexerGrpcSpotTransformer.grpcTradesToTrades(tradesList)
   }
 
   static orderbookResponseToOrderbook(response: SpotOrderbookResponse) {

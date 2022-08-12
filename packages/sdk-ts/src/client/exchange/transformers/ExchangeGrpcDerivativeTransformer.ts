@@ -161,9 +161,7 @@ export class ExchangeGrpcDerivativeTransformer {
   ) {
     const fundingPayments = response.getPaymentsList()
 
-    return ExchangeGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(
-      fundingPayments,
-    )
+    return ExchangeGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(fundingPayments)
   }
 
   static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {

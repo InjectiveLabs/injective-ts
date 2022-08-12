@@ -49,6 +49,7 @@ import {
   BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
   BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
+import { grpcPagingToPaging } from '../../../utils/pagination'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -132,38 +133,56 @@ export class IndexerGrpcDerivativeTransformer {
 
   static ordersResponseToOrders(response: DerivativeOrdersResponse) {
     const orders = response.getOrdersList()
+    const pagination = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcOrdersToOrders(orders)
+    return {
+      orders: IndexerGrpcDerivativeTransformer.grpcOrdersToOrders(orders),
+      pagination: grpcPagingToPaging(pagination),
+    }
   }
 
   static positionsResponseToPositions(response: DerivativePositionsResponse) {
     const positions = response.getPositionsList()
+    const pagination = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcPositionsToPositions(positions)
+    return {
+      positions:
+        IndexerGrpcDerivativeTransformer.grpcPositionsToPositions(positions),
+      pagination: grpcPagingToPaging(pagination),
+    }
   }
 
   static tradesResponseToTrades(response: DerivativeTradesResponse) {
     const trades = response.getTradesList()
+    const pagination = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades)
+    return {
+      trades: IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades),
+      pagination: grpcPagingToPaging(pagination),
+    }
   }
 
-  static subaccountTradeListResponseToSubaccountTradeList(
+  static subaccountTradesListResponseToSubaccountTradesList(
     response: DerivativeSubaccountTradesListResponse,
   ) {
-    const trades = response.getTradesList()
+    const tradesList = response.getTradesList()
 
-    return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades)
+    return IndexerGrpcDerivativeTransformer.grpcTradesToTrades(tradesList)
   }
 
   static fundingPaymentsResponseToFundingPayments(
     response: FundingPaymentsResponse,
   ) {
     const fundingPayments = response.getPaymentsList()
+    const pagination = response.getPaging()
 
-    return IndexerGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(
-      fundingPayments,
-    )
+    return {
+      fundingPayments:
+        IndexerGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(
+          fundingPayments,
+        ),
+      pagination: grpcPagingToPaging(pagination),
+    }
   }
 
   static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {
