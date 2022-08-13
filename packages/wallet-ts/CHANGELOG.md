@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.51...@injectivelabs/wallet-ts@1.0.52) (2022-08-13)
+
+
+### Features
+
+* experimental support for eip712 broadcasting ([69fc77a](https://github.com/InjectiveLabs/injective-ts/commit/69fc77aa16862d88556d0d8fb560e41c99710abe))
+
+
+
+
+
 ## [1.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.50...@injectivelabs/wallet-ts@1.0.51) (2022-08-11)
 
 

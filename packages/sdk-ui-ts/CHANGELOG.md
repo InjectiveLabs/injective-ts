@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.121](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.120...@injectivelabs/sdk-ui-ts@1.0.121) (2022-08-13)
+
+
+### Features
+
+* experimental support for eip712 broadcasting ([69fc77a](https://github.com/InjectiveLabs/injective-ts/commit/69fc77aa16862d88556d0d8fb560e41c99710abe))
+
+
+
+
+
 ## [1.0.120](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.119...@injectivelabs/sdk-ui-ts@1.0.120) (2022-08-12)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
