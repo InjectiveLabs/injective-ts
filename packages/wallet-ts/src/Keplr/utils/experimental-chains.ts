@@ -42,7 +42,7 @@ export const experimentalChainsConfig = {
       },
     ],
     coinType: 118,
-    features: ['stargate', 'ibc-transfer'],
+    features: ['ibc-transfer'],
   },
   [TestnetCosmosChainId.Injective]: {
     ...getEndpointsFromChainId(TestnetCosmosChainId.Injective),
@@ -84,14 +84,7 @@ export const experimentalChainsConfig = {
       high: 40000000000,
     },
     coinType: 60,
-    features: [
-      'stargate',
-      'ibc-transfer',
-      'no-legacy-stdTx',
-      'ibc-go',
-      'eth-address-gen',
-      'eth-key-sign',
-    ],
+    features: ['ibc-transfer', 'ibc-go', 'eth-address-gen', 'eth-key-sign'],
   },
   [DevnetCosmosChainId.Injective]: {
     ...getEndpointsFromChainId(DevnetCosmosChainId.Injective),
@@ -133,14 +126,7 @@ export const experimentalChainsConfig = {
       high: 40000000000,
     },
     coinType: 60,
-    features: [
-      'stargate',
-      'ibc-transfer',
-      'no-legacy-stdTx',
-      'ibc-go',
-      'eth-address-gen',
-      'eth-key-sign',
-    ],
+    features: ['ibc-transfer', 'ibc-go', 'eth-address-gen', 'eth-key-sign'],
   },
   [CosmosChainId.Injective]: {
     ...getEndpointsFromChainId(CosmosChainId.Injective),
@@ -181,14 +167,7 @@ export const experimentalChainsConfig = {
       average: 25000000000,
       high: 40000000000,
     },
-    features: [
-      'stargate',
-      'ibc-transfer',
-      'no-legacy-stdTx',
-      'ibc-go',
-      'eth-address-gen',
-      'eth-key-sign',
-    ],
+    features: ['ibc-transfer', 'ibc-go', 'eth-address-gen', 'eth-key-sign'],
     beta: true,
   },
   [CosmosChainId.Terra]: {
@@ -277,7 +256,7 @@ export const experimentalChainsConfig = {
       average: 0.03,
       high: 0.035,
     },
-    features: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
+    features: ['ibc-transfer', 'ibc-go'],
   },
 } as Record<string, any>
 

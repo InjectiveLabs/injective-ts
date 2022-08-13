@@ -159,7 +159,7 @@ export class KeplrWallet {
   async broadcastTxBlock(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
-    const result = keplr.sendTx(
+    const result = await keplr.sendTx(
       chainId,
       txRaw.serializeBinary(),
       BroadcastMode.Block,
