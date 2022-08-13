@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.26...@injectivelabs/tx-ts@1.0.27) (2022-08-13)
+
+
+### Bug Fixes
+
+* timeoutHeight not being passed to the tx builder ([07c14f3](https://github.com/InjectiveLabs/injective-ts/commit/07c14f3cf88bb6da4713e922d1328f6d02705834))
+
+
+
+
+
 ## [1.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.25...@injectivelabs/tx-ts@1.0.26) (2022-08-13)
 
 
