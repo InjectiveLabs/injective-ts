@@ -7,7 +7,7 @@ import {
   DEFAULT_STD_FEE,
   hexToBase64,
   hexToBuff,
-  // DEFAULT_TIMEOUT_HEIGHT,
+  DEFAULT_TIMEOUT_HEIGHT,
 } from '@injectivelabs/sdk-ts'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
 import { Wallet } from '@injectivelabs/ts-types'
@@ -18,7 +18,7 @@ import {
   SIGN_AMINO,
   TxGrpcClient,
 } from '@injectivelabs/tx-ts'
-// import { BigNumberInBase } from '@injectivelabs/utils'
+import { BigNumberInBase } from '@injectivelabs/utils'
 import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
 import { getGasPriceBasedOnMessage } from './utils'
 
@@ -68,8 +68,9 @@ export class MsgBroadcastExperimentalClient {
     )
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
-
-    console.log(latestHeight)
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+      DEFAULT_TIMEOUT_HEIGHT,
+    )
 
     try {
       /** EIP712 for signing on Ethereum wallets */
@@ -78,7 +79,7 @@ export class MsgBroadcastExperimentalClient {
         tx: {
           accountNumber: accountDetails.accountNumber.toString(),
           sequence: accountDetails.sequence.toString(),
-          timeoutHeight: '4317',
+          timeoutHeight: timeoutHeight.toFixed(),
           chainId: chainId,
         },
         ethereumChainId: ethereumChainId,
@@ -107,13 +108,12 @@ export class MsgBroadcastExperimentalClient {
         fee: DEFAULT_STD_FEE,
         pubKey: publicKeyBase64,
         sequence: baseAccount.sequence,
+        timeoutHeight: timeoutHeight.toNumber(),
         accountNumber: baseAccount.accountNumber,
         chainId: chainId,
       })
       const web3Extension = createWeb3Extension({
         ethereumChainId,
-        feePayer: injectiveAddress,
-        feePayerSig: signatureBuff,
       })
       const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
@@ -125,9 +125,9 @@ export class MsgBroadcastExperimentalClient {
 
       if (response.code !== 0) {
         throw new Error(`Transaction failed: ${response.rawLog}`)
-      } else {
-        return response.txhash
       }
+
+      return response.txhash
     } catch (e: any) {
       throw new Error(e.message)
     }

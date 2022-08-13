@@ -37,6 +37,7 @@ export interface CreateTransactionArgs {
   accountNumber: number // the account number of the signer of the transaction
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
   signMode?: SignModeMap[keyof SignModeMap]
+  timeoutHeight?: number // the height at which the transaction should be considered invalid
 }
 
 /** @type {CreateTransactionResult} */
@@ -82,9 +83,11 @@ export const getPublicKey = ({
 export const createBody = ({
   message,
   memo,
+  timeoutHeight,
 }: {
   message: MsgArg | MsgArg[]
   memo: string
+  timeoutHeight?: number
 }) => {
   const messages = Array.isArray(message) ? message : [message]
 
@@ -98,6 +101,10 @@ export const createBody = ({
     ),
   )
   txBody.setMemo(memo)
+
+  if (timeoutHeight) {
+    txBody.setTimeoutHeight(timeoutHeight)
+  }
 
   return txBody
 }
@@ -211,8 +218,9 @@ export const createTransaction = ({
   fee = DEFAULT_STD_FEE,
   signMode = SIGN_DIRECT,
   accountNumber,
+  timeoutHeight,
 }: CreateTransactionArgs): CreateTransactionResult => {
-  const body = createBody({ message, memo })
+  const body = createBody({ message, memo, timeoutHeight })
   const feeMessage = createFee({
     fee: fee.amount[0],
     gasLimit: parseInt(fee.gas, 10),
@@ -288,13 +296,19 @@ export const createWeb3Extension = ({
   feePayerSig,
 }: {
   ethereumChainId: EthereumChainId
-  feePayer: string
-  feePayerSig: Uint8Array
+  feePayer?: string
+  feePayerSig?: Uint8Array
 }) => {
   const web3Extension = new ExtensionOptionsWeb3Tx()
   web3Extension.setTypeddatachainid(ethereumChainId)
-  web3Extension.setFeepayer(feePayer)
-  web3Extension.setFeepayersig(feePayerSig)
+
+  if (feePayer) {
+    web3Extension.setFeepayer(feePayer)
+  }
+
+  if (feePayerSig) {
+    web3Extension.setFeepayersig(feePayerSig)
+  }
 
   return web3Extension
 }
