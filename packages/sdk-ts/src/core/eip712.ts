@@ -6,6 +6,7 @@ import { Msgs } from './msgs'
 export type Eip712ConvertTxArgs = {
   accountNumber: string
   sequence: string
+  timeoutHeight: string
   chainId: string
   memo?: string
 }
@@ -29,7 +30,7 @@ export const getEip712Domain = (ethereumChainId: EthereumChainId) => {
     domain: {
       name: 'Injective Web3',
       version: '1.0.0',
-      chainId: new BigNumberInBase(ethereumChainId).toString(16),
+      chainId: '0x' + new BigNumberInBase(ethereumChainId).toString(16),
       salt: '0',
       verifyingContract: 'cosmos',
     },
@@ -51,17 +52,17 @@ export const getDefaultEip712Types = () => {
         { name: 'chain_id', type: 'string' },
         { name: 'fee', type: 'Fee' },
         { name: 'memo', type: 'string' },
+        { name: 'msgs', type: 'Msg[]' },
         { name: 'sequence', type: 'string' },
         { name: 'timeout_height', type: 'string' },
-        { name: 'msgs', type: 'Msg[]' },
       ],
       Fee: [
         { name: 'amount', type: 'Coin[]' },
         { name: 'gas', type: 'string' },
       ],
       Coin: [
-        { name: 'amount', type: 'string' },
         { name: 'denom', type: 'string' },
+        { name: 'amount', type: 'string' },
       ],
       Msg: [
         { name: 'type', type: 'string' },
@@ -81,7 +82,7 @@ export const getEip712Tx = ({
   tx: Eip712ConvertTxArgs
   fee?: Eip712ConvertFeeArgs
   ethereumChainId: EthereumChainId
-}): any => {
+}) => {
   const actualMsgs = Array.isArray(msgs) ? msgs : [msgs]
   const [msg] = actualMsgs
 
@@ -155,17 +156,20 @@ export const getEip712Fee = (
 export const getEipTxDetails = ({
   accountNumber,
   sequence,
+  timeoutHeight,
   chainId,
   memo,
 }: Eip712ConvertTxArgs): {
   account_number: string
   chain_id: string
   sequence: string
+  timeout_height: string
   memo: string
 } => {
   return {
     account_number: accountNumber,
     chain_id: chainId,
+    timeout_height: timeoutHeight,
     memo: memo || '',
     sequence,
   }
@@ -177,9 +181,10 @@ export const objectKeysToEip712Types = (
 ) => {
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
+  // const sortedProperties = Object.keys(object).sort()
 
   for (const property in object) {
-    if (property === '@type') {
+    if (property === '@type' || property === 'type') {
       continue
     }
 

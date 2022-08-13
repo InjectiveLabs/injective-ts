@@ -8,7 +8,7 @@ import {
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import type Web3 from 'web3'
-import { createTxRaw } from '@injectivelabs/tx-ts'
+import { createTxRawFromSigResponse } from '@injectivelabs/tx-ts'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -79,7 +79,7 @@ export default class Keplr
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     const { keplrWallet } = this
-    const txRaw = createTxRaw(signResponse)
+    const txRaw = createTxRawFromSigResponse(signResponse)
 
     try {
       return await keplrWallet.broadcastTxBlock(txRaw)

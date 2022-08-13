@@ -1,1 +1,1 @@
-export * from './MsgBroadcastClient'
+export * from './clients'

@@ -1,63 +1,10 @@
 import {
-  Msgs,
   getInjectiveAddress,
   IndexerGrpcTransactionApi,
 } from '@injectivelabs/sdk-ts'
 import { Wallet } from '@injectivelabs/ts-types'
-import { MetricsProvider } from '../classes/MetricsProvider'
-import {
-  BigNumberInBase,
-  DEFAULT_EXCHANGE_LIMIT,
-  DEFAULT_GAS_LIMIT,
-} from '@injectivelabs/utils'
-import { WalletStrategy } from '@injectivelabs/wallet-ts'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-
-export interface MsgBroadcastTxOptions {
-  bucket?: string
-  memo?: string
-  address: string
-  msgs: Msgs | Msgs[]
-  feePrice?: string
-  feeDenom?: string
-  gasLimit?: number
-}
-
-export interface MsgBroadcastOptions {
-  endpoints: {
-    indexerApi: string
-  }
-  chainId: ChainId
-  ethereumChainId: EthereumChainId
-  walletStrategy: WalletStrategy
-  metricsProvider?: MetricsProvider
-}
-
-const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
-  const hasMultipleMessages = Array.isArray(msgs)
-  const isMsgExecMessage = (message: Msgs) =>
-    message.toWeb3()['@type'].includes('MsgExec')
-  const isExchangeMessage = (message: Msgs) =>
-    message.toWeb3()['@type'].startsWith('/injective')
-
-  const hasMsgExecMessages = Array.isArray(msgs)
-    ? msgs.some(isMsgExecMessage)
-    : isMsgExecMessage(msgs)
-
-  if (hasMsgExecMessages) {
-    return DEFAULT_GAS_LIMIT * 1.2
-  }
-
-  const hasExchangeMessages = Array.isArray(msgs)
-    ? msgs.some(isExchangeMessage)
-    : isExchangeMessage(msgs)
-
-  return new BigNumberInBase(
-    hasExchangeMessages ? DEFAULT_EXCHANGE_LIMIT : DEFAULT_GAS_LIMIT,
-  )
-    .times(hasMultipleMessages ? msgs.length : 1)
-    .toNumber()
-}
+import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
+import { getGasPriceBasedOnMessage } from './utils'
 
 export class MsgBroadcastClient {
   public options: MsgBroadcastOptions
@@ -130,6 +77,7 @@ export class MsgBroadcastClient {
     try {
       const txResponse = await prepareTx()
       const signature = await signTx(txResponse.getData())
+      // console.log(txResponse.getData(), signature)
 
       const promise = transactionApi.broadcastTxRequest({
         signature,

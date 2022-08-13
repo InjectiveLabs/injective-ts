@@ -2,6 +2,9 @@
   "extends": "../../tsconfig.json",
   "references": [
     {
+      "path": "../ts-types/tsconfig.json"
+    },
+    {
       "path": "../utils/tsconfig.json"
     },
   ],

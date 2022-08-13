@@ -1,7 +1,7 @@
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { StargateClient, DeliverTxResponse } from '@cosmjs/stargate'
 import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
-import { createTxRaw } from '@injectivelabs/tx-ts'
+import { createTxRawFromSigResponse } from '@injectivelabs/tx-ts'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 
 export class CosmosClient {
@@ -19,7 +19,7 @@ export class CosmosClient {
     signResponse: DirectSignResponse,
   ): Promise<DeliverTxResponse> {
     const client = await this.getStargateClient()
-    const txRaw = createTxRaw(signResponse)
+    const txRaw = createTxRawFromSigResponse(signResponse)
 
     return client.broadcastTx(
       txRaw.serializeBinary(),

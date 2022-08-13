@@ -9,11 +9,17 @@ import {
   Fee,
   TxRaw,
 } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { SignMode } from '@injectivelabs/chain-api/cosmos/tx/signing/v1beta1/signing_pb'
+import {
+  SignMode,
+  SignModeMap,
+} from '@injectivelabs/chain-api/cosmos/tx/signing/v1beta1/signing_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { PubKey as CosmosPubKey } from '@injectivelabs/chain-api/cosmos/crypto/secp256k1/keys_pb'
 import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
+import { ExtensionOptionsWeb3Tx } from '@injectivelabs/chain-api/injective/types/v1beta1/tx_ext_pb'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import { EthereumChainId } from '@injectivelabs/ts-types'
 import { createAny, createAnyMessage } from './utils'
 
 export type MsgArg = {
@@ -25,11 +31,12 @@ export type MsgArg = {
 export interface CreateTransactionArgs {
   message: MsgArg | MsgArg[] // the message that should be packed into the transaction
   memo: string // the memo to include in the transaction
-  fee: StdFee // the fee to include in the transaction
+  fee?: StdFee // the fee to include in the transaction
   pubKey: string // the pubKey of the signer of the transaction in base64
   sequence: number // the sequence (nonce) of the signer of the transaction
   accountNumber: number // the account number of the signer of the transaction
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
+  signMode?: SignModeMap[keyof SignModeMap]
 }
 
 /** @type {CreateTransactionResult} */
@@ -44,6 +51,7 @@ export interface CreateTransactionResult {
 }
 
 export const SIGN_DIRECT = SignMode.SIGN_MODE_DIRECT
+export const SIGN_AMINO = SignMode.SIGN_MODE_LEGACY_AMINO_JSON
 
 export const getPublicKey = ({
   chainId,
@@ -121,12 +129,12 @@ export const createSignerInfo = ({
   chainId: string
   publicKey: string
   sequence: number
-  mode: number
+  mode: SignModeMap[keyof SignModeMap]
 }) => {
   const pubKey = getPublicKey({ chainId, key: publicKey })
 
   const single = new ModeInfo.Single()
-  single.setMode(mode as any)
+  single.setMode(mode)
 
   const modeInfo = new ModeInfo()
   modeInfo.setSingle(single)
@@ -195,13 +203,14 @@ export const createSigDoc = ({
  * @returns {CreateTransactionResult} result
  */
 export const createTransaction = ({
-  message,
   memo,
-  fee,
   pubKey,
-  sequence,
-  accountNumber,
   chainId,
+  message,
+  sequence,
+  fee = DEFAULT_STD_FEE,
+  signMode = SIGN_DIRECT,
+  accountNumber,
 }: CreateTransactionArgs): CreateTransactionResult => {
   const body = createBody({ message, memo })
   const feeMessage = createFee({
@@ -212,7 +221,7 @@ export const createTransaction = ({
   const signInfo = createSignerInfo({
     chainId,
     sequence,
-    mode: SIGN_DIRECT,
+    mode: signMode,
     publicKey: pubKey,
   })
 
@@ -246,11 +255,46 @@ export const createTransaction = ({
   }
 }
 
-export const createTxRaw = (signatureResponse: DirectSignResponse) => {
+export const createTxRawFromSigResponse = (
+  signatureResponse: DirectSignResponse,
+) => {
   const txRaw = new TxRaw()
   txRaw.setAuthInfoBytes(signatureResponse.signed.authInfoBytes)
   txRaw.setBodyBytes(signatureResponse.signed.bodyBytes)
   txRaw.setSignaturesList([signatureResponse.signature.signature])
 
   return txRaw
+}
+
+export const createTxRawEIP712 = (
+  txRaw: TxRaw,
+  extension: ExtensionOptionsWeb3Tx,
+) => {
+  const body = TxBody.deserializeBinary(txRaw.getBodyBytes_asU8())
+  const extensionAny = createAny(
+    extension.serializeBinary(),
+    '/injective.types.v1beta1.ExtensionOptionsWeb3Tx',
+  )
+  body.addExtensionOptions(extensionAny)
+
+  txRaw.setBodyBytes(body.serializeBinary())
+
+  return txRaw
+}
+
+export const createWeb3Extension = ({
+  ethereumChainId,
+  feePayer,
+  feePayerSig,
+}: {
+  ethereumChainId: EthereumChainId
+  feePayer: string
+  feePayerSig: Uint8Array
+}) => {
+  const web3Extension = new ExtensionOptionsWeb3Tx()
+  web3Extension.setTypeddatachainid(ethereumChainId)
+  web3Extension.setFeepayer(feePayer)
+  web3Extension.setFeepayersig(feePayerSig)
+
+  return web3Extension
 }
