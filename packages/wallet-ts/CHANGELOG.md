@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.53...@injectivelabs/wallet-ts@1.0.54) (2022-08-13)
+
+
+### Bug Fixes
+
+* keplr wallet broadcast ([ae87c67](https://github.com/InjectiveLabs/injective-ts/commit/ae87c67565549d00a4b053948bcf7498ebbd78c9))
+
+
+
+
+
 ## [1.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.52...@injectivelabs/wallet-ts@1.0.53) (2022-08-13)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
