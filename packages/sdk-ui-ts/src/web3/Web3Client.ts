@@ -274,4 +274,13 @@ export class Web3Client {
       }
     }
   }
+
+  async fetchTokenMetaData(address: string) {
+    const { walletStrategy } = this
+
+    const web3 = walletStrategy.getWeb3() as any
+    const tokenMeta = await web3.alchemy.getTokenMetadata(address)
+
+    return tokenMeta
+  }
 }
