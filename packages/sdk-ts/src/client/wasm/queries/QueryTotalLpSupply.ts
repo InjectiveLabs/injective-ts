@@ -1,12 +1,12 @@
 import { BaseWasmQuery } from './BaseWasmQuery'
 import {
-  GetTotalLpSupplyPayload,
-  GetTotalLpSupplyResponse,
+  QueryTotalLpSupplyPayload,
+  QueryTotalLpSupplyResponse,
   TotalLpSupply,
-} from './../types'
+} from '../types'
 
-export class GetTotalLpSupplyQuery extends BaseWasmQuery {
-  toPayload(payload: GetTotalLpSupplyPayload) {
+export class QueryTotalLpSupply extends BaseWasmQuery {
+  toPayload(payload: QueryTotalLpSupplyPayload) {
     return this.encodeToBase64({
       get_total_lp_supply: {
         subaccount_id: payload.subaccountId,
@@ -15,7 +15,7 @@ export class GetTotalLpSupplyQuery extends BaseWasmQuery {
   }
 
   toData({ data }: { data: string }): TotalLpSupply {
-    const response = this.decodeFromBase64(data) as GetTotalLpSupplyResponse
+    const response = this.decodeFromBase64(data) as QueryTotalLpSupplyResponse
 
     return { totalSupply: response.total_supply }
   }

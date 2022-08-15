@@ -2,11 +2,11 @@ export interface MarketId {
   marketId: string
 }
 
-export interface GetMarketIdPayload {
+export interface QueryMarketIdPayload {
   subaccountId: string
 }
 
-export interface GetMarketIdResponse {
+export interface QueryMarketIdResponse {
   market_id: string
 }
 
@@ -15,7 +15,7 @@ export interface RegisteredVault {
   vaultAddress: string
 }
 
-export interface RegisteredVaultResponse {
+export interface QueryRegisteredVaultResponse {
   registered_vaults: {
     master_subaccount_id: string
     vault_address: string
@@ -26,11 +26,11 @@ export interface TotalLpSupply {
   totalSupply: string
 }
 
-export interface GetTotalLpSupplyPayload {
+export interface QueryTotalLpSupplyPayload {
   subaccountId: string
 }
 
-export interface GetTotalLpSupplyResponse {
+export interface QueryTotalLpSupplyResponse {
   total_supply: string
 }
 
@@ -38,12 +38,12 @@ export interface UserLpBalance {
   balance: string
 }
 
-export interface GetUserLpBalancePayload {
+export interface QueryUserLpBalancePayload {
   subaccountId: string
   userAddress: string
 }
 
-export interface GetUserLpBalanceResponse {
+export interface QueryUserLpBalanceResponse {
   balance: string
 }
 
@@ -60,9 +60,9 @@ export interface GetConfigResponse {
 }
 
 export type WasmQueryPayload =
-  | GetMarketIdPayload
-  | GetTotalLpSupplyPayload
-  | GetUserLpBalancePayload
+  | QueryMarketIdPayload
+  | QueryTotalLpSupplyPayload
+  | QueryUserLpBalancePayload
 
 export interface WasmContractQueryResponse {
   data: string
