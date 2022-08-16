@@ -598,6 +598,15 @@ export default {
     coinGeckoId: 'secret',
   },
 
+  SCRT: {
+    name: 'Secret Network',
+    logo: 'scrt.png',
+    symbol: 'SCRT',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'secret',
+  },
+
   XPRT: {
     name: 'Persistence',
     logo: 'xprt.svg',
