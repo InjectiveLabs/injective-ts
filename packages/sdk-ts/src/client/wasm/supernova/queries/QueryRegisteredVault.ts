@@ -1,17 +1,11 @@
 import { BaseWasmQuery } from './BaseWasmQuery'
-import { RegisteredVault, QueryRegisteredVaultResponse } from '../types'
+import { toBase64 } from '../../../../utils'
 
-export class QueryRegisteredVaults extends BaseWasmQuery {
+export declare namespace QueryRegisteredVaultsArg {
+  export interface Params {}
+}
+export class QueryRegisteredVaults extends BaseWasmQuery<QueryRegisteredVaultsArg.Params> {
   toPayload() {
-    return this.encodeToBase64({ get_registered_vaults: {} })
-  }
-
-  toData({ data }: { data: string }): RegisteredVault[] {
-    const response = this.decodeFromBase64(data) as QueryRegisteredVaultResponse
-
-    return response.registered_vaults.map((payload) => ({
-      masterSubaccountId: payload.master_subaccount_id,
-      vaultAddress: payload.vault_address,
-    }))
+    return toBase64({ get_registered_vaults: {} })
   }
 }
