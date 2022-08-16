@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.18...@injectivelabs/token-metadata@1.0.19) (2022-08-16)
+
+
+### Bug Fixes
+
+* uscrt token metadata ([b5eb130](https://github.com/InjectiveLabs/injective-ts/commit/b5eb130a5bb01cc4ddb276a8af2eee4cf52ce4cb))
+
+
+
+
+
 ## [1.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.17...@injectivelabs/token-metadata@1.0.18) (2022-08-16)
 
 
