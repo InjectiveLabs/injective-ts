@@ -169,6 +169,11 @@ export const cosmosNativeDenomsFromChainId = {
     tokenType: TokenType.Ibc,
     denom: 'uxprt',
   },
+  [CosmosChainId.Secret]: {
+    ...tokenMetaUtil.getMetaBySymbol('SCRT'),
+    tokenType: TokenType.Ibc,
+    denom: 'uscrt',
+  },
   [TestnetCosmosChainId.Cosmoshub]: {
     ...tokenMetaUtil.getMetaBySymbol('UPHOTON'),
     tokenType: TokenType.Ibc,
