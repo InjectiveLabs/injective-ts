@@ -71,6 +71,10 @@ export class KeplrWallet {
       throw new Error('Please install Keplr extension')
     }
 
+    if (await this.checkChainIdSupportInExtensionState()) {
+      return
+    }
+
     const chainData = getExperimentalChainConfigBasedOnChainId(chainId)
 
     if (!chainData) {
@@ -188,4 +192,25 @@ export class KeplrWallet {
 
   static checkChainIdSupport = (chainId: string) =>
     keplrSupportedChainIds.includes(chainId)
+
+  private checkChainIdSupportInExtensionState = async () => {
+    const { window, chainId } = this
+
+    if (!window) {
+      throw new Error('Please install Keplr extension')
+    }
+
+    if (!window.keplr) {
+      throw new Error('Please install Keplr extension')
+    }
+
+    try {
+      await window.keplr.getKey(chainId)
+
+      // Chain exists already on Keplr
+      return true
+    } catch (e) {
+      return false
+    }
+  }
 }

@@ -36,6 +36,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Juno,
   BridgingNetwork.Persistence,
   BridgingNetwork.Evmos,
+  BridgingNetwork.Secret,
 ]
 
 export const tokenSelectorDisabledNetworks = [
@@ -92,6 +93,11 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Moonbeam,
     denoms: ['dot-planck'],
     symbols: ['dot'],
+  },
+  {
+    network: BridgingNetwork.Secret,
+    denoms: ['uscrt'],
+    symbols: ['scrt'],
   },
 ] as NetworkConfig[]
 
@@ -404,6 +410,10 @@ export const getNetworkFromSender = (sender: string): BridgingNetwork => {
 
   if (sender.startsWith('persistence')) {
     return BridgingNetwork.Persistence
+  }
+
+  if (sender.startsWith('secret')) {
+    return BridgingNetwork.Secret
   }
 
   return BridgingNetwork.CosmosHub
