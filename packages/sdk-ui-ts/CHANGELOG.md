@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.128](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.127...@injectivelabs/sdk-ui-ts@1.0.128) (2022-08-16)
+
+
+### Bug Fixes
+
+* scrt token metadata ([140c192](https://github.com/InjectiveLabs/injective-ts/commit/140c1928edb56311c71cf81c5215d34e575c2055))
+
+
+
+
+
 ## [1.0.127](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.126...@injectivelabs/sdk-ui-ts@1.0.127) (2022-08-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
