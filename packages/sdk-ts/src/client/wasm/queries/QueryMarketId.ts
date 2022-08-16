@@ -1,8 +1,8 @@
 import { BaseWasmQuery } from './BaseWasmQuery'
-import { GetMarketIdPayload, MarketId, GetMarketIdResponse } from '../types'
+import { QueryMarketIdPayload, MarketId, QueryMarketIdResponse } from '../types'
 
-export class GetMarketIdQuery extends BaseWasmQuery {
-  toPayload(payload: GetMarketIdPayload) {
+export class QueryMarketId extends BaseWasmQuery {
+  toPayload(payload: QueryMarketIdPayload) {
     return this.encodeToBase64({
       get_market_id: {
         subaccount_id: payload.subaccountId,
@@ -11,7 +11,7 @@ export class GetMarketIdQuery extends BaseWasmQuery {
   }
 
   toData({ data }: { data: string }): MarketId {
-    const response = this.decodeFromBase64(data) as GetMarketIdResponse
+    const response = this.decodeFromBase64(data) as QueryMarketIdResponse
 
     return { marketId: response.market_id }
   }

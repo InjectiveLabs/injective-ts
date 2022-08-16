@@ -1,7 +1,7 @@
 import { BaseWasmQuery } from './BaseWasmQuery'
-import { GetConfigResponse, Config } from './../types'
+import { GetConfigResponse, Config } from '../types'
 
-export class GetConfigQuery extends BaseWasmQuery {
+export class QueryConfig extends BaseWasmQuery {
   toPayload() {
     return this.encodeToBase64({ config: {} })
   }
