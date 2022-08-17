@@ -210,9 +210,11 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     marketId?: string
     marketIds?: string[]
     subaccountId?: string
+    direction?: TradeDirection
     pagination?: PaginationOption
   }) {
-    const { marketId, marketIds, subaccountId, pagination } = params || {}
+    const { marketId, marketIds, subaccountId, direction, pagination } =
+      params || {}
 
     const request = new DerivativePositionsRequest()
 
@@ -222,6 +224,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
     if (marketIds) {
       request.setMarketIdsList(marketIds)
+    }
+
+    if (direction) {
+      request.setDirection(direction)
     }
 
     if (subaccountId) {
@@ -263,7 +269,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     subaccountId?: string
     startTime?: number
     endTime?: number
-    executionType?: TradeExecutionType
+    executionTypes?: TradeExecutionType[]
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
     marketIds?: string[]
@@ -275,7 +281,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       endTime,
       direction,
       pagination,
-      executionType,
+      executionTypes,
       executionSide,
       marketIds,
     } = params || {}
@@ -300,8 +306,8 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       request.setMarketIdsList([])
     }
 
-    if (executionType) {
-      request.setExecutionType(executionType)
+    if (executionTypes) {
+      request.setExecutionTypesList(executionTypes)
     }
 
     if (executionSide) {

@@ -153,7 +153,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     marketId?: string
     pagination?: PaginationOption
     subaccountId?: string
-    executionType?: TradeExecutionType
+    executionTypes?: TradeExecutionType[]
     executionSide?: TradeExecutionSide
     startTime?: number
     endTime?: number
@@ -164,7 +164,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       marketId,
       pagination,
       subaccountId,
-      executionType,
+      executionTypes,
       executionSide,
       startTime,
       endTime,
@@ -188,8 +188,8 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       request.setSubaccountId(subaccountId)
     }
 
-    if (executionType) {
-      request.setExecutionType(executionType)
+    if (executionTypes) {
+      request.setExecutionTypesList(executionTypes)
     }
 
     if (executionSide) {
@@ -228,8 +228,6 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
         SpotTradesResponse,
         typeof InjectiveSpotExchangeRPC.Trades
       >(request, InjectiveSpotExchangeRPC.Trades)
-
-      console.log(1)
 
       return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
     } catch (e: any) {
