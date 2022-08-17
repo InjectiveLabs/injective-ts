@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.91](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.90...@injectivelabs/sdk-ts@1.0.91) (2022-08-17)
+
+
+### Features
+
+* activity pagination updates ([#63](https://github.com/InjectiveLabs/injective-ts/issues/63)) ([f999db1](https://github.com/InjectiveLabs/injective-ts/commit/f999db13b635a95433a91815e357d927ae793602))
+
+
+
+
+
 ## [1.0.90](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.89...@injectivelabs/sdk-ts@1.0.90) (2022-08-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
