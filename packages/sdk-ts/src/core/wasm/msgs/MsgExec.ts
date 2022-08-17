@@ -53,12 +53,6 @@ export default class MsgExec extends MsgBase<
 
   public toProto(): MsgExec.Proto {
     const { params } = this
-    const subaccountOrBankDeposit =
-      (!params.subaccountDeposits || !params.subaccountId) && !params.bankFunds
-
-    if (subaccountOrBankDeposit) {
-      throw new Error('Subaccount or bank funds must be specified')
-    }
 
     const message = new BaseMsgExec()
 
