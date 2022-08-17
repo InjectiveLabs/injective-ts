@@ -6,10 +6,10 @@ export const canonicalChannelIds = [
   'channel-8',
   'channel-74',
   'channel-76',
-  'channel-77',
   'channel-78',
   'channel-82',
   'channel-83',
+  'channel-84',
   'channel-88',
 ]
 
@@ -44,6 +44,10 @@ export default {
   },
   C49B72C4E85AE5361C3E0F0587B24F509CB16ECEB8970B6F917D697036AF49BE: {
     path: 'transfer/channel-77',
+    baseDenom: 'uaxl',
+  },
+  B68C1D2682A8B69E20BB921E34C6A3A2B6D1E13E3E8C0092E373826F546DEE65: {
+    path: 'transfer/channel-84',
     baseDenom: 'uaxl',
   },
   C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9: {

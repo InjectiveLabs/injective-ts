@@ -65,7 +65,7 @@ export default {
   },
 
   USDT: {
-    name: 'USDT',
+    name: 'Tether',
     logo: 'usdt.svg',
     symbol: 'USDT',
     decimals: 6,
@@ -74,7 +74,7 @@ export default {
   },
 
   USDC: {
-    name: 'USDC',
+    name: 'USD Coin',
     logo: 'usdc.svg',
     symbol: 'USDC',
     decimals: 6,
