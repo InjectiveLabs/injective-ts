@@ -15,6 +15,7 @@ import {
   CodeInfoResponse,
   GrpcCodeInfoResponse,
 } from '../types/wasm'
+import { fromUtf8 } from '../../../utils'
 import { grpcPaginationToPagination } from './../../../utils/pagination'
 
 export class ChainGrpcWasmTransformer {
@@ -78,7 +79,7 @@ export class ChainGrpcWasmTransformer {
             txIndex: updated.getTxIndex(),
           }
         : undefined,
-      msg: entry.getMsg(),
+      msg: fromUtf8(entry.getMsg_asU8()),
     }
   }
 

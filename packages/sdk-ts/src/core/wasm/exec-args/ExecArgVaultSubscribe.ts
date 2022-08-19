@@ -8,14 +8,14 @@ export declare namespace ExecArgVaultSubscribe {
   export interface Params {
     vaultSubaccountId: string
     subscriberSubaccountId: string
-    marginRatio: string
+    marginRatio?: string
     origin: string
   }
 
   export interface Data {
     vault_subaccount_id: string
     subscriber_subaccount_id: string
-    margin_ratio: string
+    margin_ratio?: string
   }
 }
 

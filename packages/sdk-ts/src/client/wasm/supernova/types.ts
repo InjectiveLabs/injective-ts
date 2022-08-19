@@ -4,6 +4,21 @@ export interface QueryMastContractConfigResponse {
   owner: string
 }
 
+export interface QueryVaultContractConfigResponse {
+  config: {
+    lp_name: string
+    lp_symbol: string
+    lp_token_address: string
+  }
+}
+
+export interface QueryVaultUserLpContractAllowanceResponse {
+  allowance: string
+  expires: {
+    never: {}
+  }
+}
+
 export interface QueryVaultMarketIdResponse {
   market_id: string
 }

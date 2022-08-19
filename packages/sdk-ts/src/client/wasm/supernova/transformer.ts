@@ -3,13 +3,15 @@ import {
   WasmContractQueryResponse,
   QueryMastContractConfigResponse,
   QueryRegisteredVaultResponse,
+  QueryVaultUserLpContractAllowanceResponse,
+  QueryVaultContractConfigResponse,
   QueryVaultMarketIdResponse,
   QueryVaultTotalLpSupplyResponse,
   QueryVaultUserLpBalanceResponse,
 } from './types'
 
 export class SupernovaQueryTransformer {
-  static contractConfigResponseToContractConfig(
+  static masterContractConfigResponseToMasterContractConfig(
     response: WasmContractQueryResponse,
   ) {
     const data = fromBase64(response.data) as QueryMastContractConfigResponse
@@ -18,6 +20,30 @@ export class SupernovaQueryTransformer {
       distributionContract: data.distribution_contract,
       ninjaToken: data.ninja_token,
       owner: data.owner,
+    }
+  }
+
+  static vaultContractConfigResponseToVaultContractConfig(
+    response: WasmContractQueryResponse,
+  ) {
+    const data = fromBase64(response.data) as QueryVaultContractConfigResponse
+
+    return {
+      lpName: data.config.lp_name,
+      lpSymbol: data.config.lp_symbol,
+      lpTokenAddress: data.config.lp_token_address,
+    }
+  }
+
+  static vaultUserLpAllowanceResponseToVaultUserLpAllowance(
+    response: WasmContractQueryResponse,
+  ) {
+    const data = fromBase64(
+      response.data,
+    ) as QueryVaultUserLpContractAllowanceResponse
+
+    return {
+      allowance: data.allowance,
     }
   }
 
