@@ -15,6 +15,8 @@ import {
   OrderbookResponse as DerivativeOrderbookResponse,
   OrdersRequest as DerivativeOrdersRequest,
   OrdersResponse as DerivativeOrdersResponse,
+  OrdersHistoryRequest as DerivativeOrdersHistoryRequest,
+  OrdersHistoryResponse as DerivativeOrdersHistoryResponse,
   TradesRequest as DerivativeTradesRequest,
   TradesResponse as DerivativeTradesResponse,
   PositionsRequest as DerivativePositionsRequest,
@@ -202,6 +204,64 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
       return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
     } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchOrderHistory(params?: {
+    subaccountId?: string
+    marketId?: string
+    orderType?: TradeExecutionType
+    direction?: TradeDirection
+    isConditional?: boolean
+    pagination?: PaginationOption
+  }) {
+    const { subaccountId, marketId, direction, isConditional, pagination } =
+      params || {}
+
+    const request = new DerivativeOrdersHistoryRequest()
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (isConditional) {
+      request.setIsConditional(isConditional)
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
+    }
+
+    try {
+      const response = await this.request<
+        DerivativeOrdersHistoryRequest,
+        DerivativeOrdersHistoryResponse,
+        typeof InjectiveDerivativeExchangeRPC.OrdersHistory
+      >(request, InjectiveDerivativeExchangeRPC.OrdersHistory)
+
+      return IndexerGrpcDerivativeTransformer.orderHistoryResponseToOrderHistory(
+        response
+      )
+    } catch(e: any) {
       throw new Error(e.message)
     }
   }

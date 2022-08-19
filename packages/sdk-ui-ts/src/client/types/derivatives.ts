@@ -6,6 +6,7 @@ import {
   DerivativeTrade,
   Position as UiPosition,
   DerivativeLimitOrder as UiDerivativeLimitOrder,
+  DerivativeOrderHistory as UiDerivativeOrderHistory,
   DerivativeOrderSide,
 } from '@injectivelabs/sdk-ts/dist/client/indexer/types/derivatives'
 import { Orderbook as UiDerivativeOrderbook } from '@injectivelabs/sdk-ts/dist/client/indexer/types/exchange'
@@ -103,6 +104,7 @@ export enum DerivativeOrderMap {
 export {
   UiPosition,
   UiDerivativeLimitOrder,
+  UiDerivativeOrderHistory,
   DerivativeOrderSide,
   BaseUiDerivativeMarket,
   ChronosDerivativeMarketSummary,
