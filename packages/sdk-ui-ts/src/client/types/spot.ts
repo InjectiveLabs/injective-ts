@@ -2,6 +2,7 @@ import {
   SpotMarket as BaseUiSpotMarket,
   SpotTrade,
   SpotLimitOrder as UiSpotLimitOrder,
+  SpotOrderHistory as UiSpotOrderHistory,
   SpotOrderSide,
 } from '@injectivelabs/sdk-ts/dist/client/indexer/types/spot'
 import { Orderbook as UiSpotOrderbook } from '@injectivelabs/sdk-ts/dist/client/indexer/types/exchange'
@@ -59,6 +60,7 @@ export enum SpotOrderMap {
 
 export {
   UiSpotLimitOrder,
+  UiSpotOrderHistory,
   SpotOrderSide,
   BaseUiSpotMarket,
   ChronosSpotMarketSummary,

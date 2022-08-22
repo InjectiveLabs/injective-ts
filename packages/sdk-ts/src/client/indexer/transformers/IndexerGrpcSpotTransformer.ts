@@ -5,6 +5,8 @@ import {
   SpotOrderState,
   GrpcSpotMarketInfo,
   GrpcSpotLimitOrder,
+  SpotOrderHistory,
+  GrpcSpotOrderHistory,
   GrpcSpotTrade,
   SpotMarket,
   SpotLimitOrder,
@@ -22,6 +24,7 @@ import {
   MarketResponse as SpotMarketResponse,
   OrderbookResponse as SpotOrderbookResponse,
   OrdersResponse as SpotOrdersResponse,
+  OrdersHistoryResponse as SpotOrdersHistoryResponse,
   TradesResponse as SpotTradesResponse,
   OrderbooksResponse as SpotOrderbooksResponse,
   SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
@@ -72,6 +75,19 @@ export class IndexerGrpcSpotTransformer {
     return {
       orders: IndexerGrpcSpotTransformer.grpcOrdersToOrders(orders),
       pagination: grpcPagingToPaging(pagination),
+    }
+  }
+
+  static orderHistoryResponseToOrderHistory(
+    response: SpotOrdersHistoryResponse,
+  ) {
+    const orderHistory = response.getOrdersList()
+
+    return {
+      orderHistory:
+        IndexerGrpcSpotTransformer.grpcOrderHistoryListToOrderHistoryList(
+          orderHistory,
+        ),
     }
   }
 
@@ -194,6 +210,25 @@ export class IndexerGrpcSpotTransformer {
   static grpcOrdersToOrders(orders: GrpcSpotLimitOrder[]): SpotLimitOrder[] {
     return orders.map((order) =>
       IndexerGrpcSpotTransformer.grpcOrderToOrder(order),
+    )
+  }
+
+  static grpcOrderHistoryToOrderHistory(
+    orderHistory: GrpcSpotOrderHistory,
+  ): SpotOrderHistory {
+    return {
+      subaccountId: orderHistory.getSubaccountId(),
+      marketId: orderHistory.getMarketId(),
+      orderType: orderHistory.getOrderType(),
+      direction: orderHistory.getDirection(),
+    }
+  }
+
+  static grpcOrderHistoryListToOrderHistoryList(
+    orderHistory: GrpcSpotOrderHistory[],
+  ): SpotOrderHistory[] {
+    return orderHistory.map((orderHistory) =>
+      IndexerGrpcSpotTransformer.grpcOrderHistoryToOrderHistory(orderHistory),
     )
   }
 
