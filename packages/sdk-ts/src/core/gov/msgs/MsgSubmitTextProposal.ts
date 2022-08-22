@@ -80,6 +80,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
   public toAmino(): MsgSubmitTextProposal.Amino {
     const { params } = this
+    const proto = this.toProto()
     const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
 
@@ -88,7 +89,9 @@ export default class MsgSubmitTextProposal extends MsgBase<
       content: {
         ...content.toObject(),
       },
-      initial_deposit: [{ ...snakeCaseKeys(params.deposit) }],
+      initial_deposit: proto
+        .getInitialDepositList()
+        .map((amount) => snakeCaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {

@@ -93,6 +93,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
   public toAmino(): MsgSubmitProposalSpotMarketParamUpdate.Amino {
     const { params } = this
+    const proto = this.toProto()
     const content = this.getContent()
     const proposalType =
       '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
@@ -102,7 +103,9 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
       content: {
         ...content.toObject(),
       },
-      initial_deposit: [{ ...snakeCaseKeys(params.deposit) }],
+      initial_deposit: proto
+        .getInitialDepositList()
+        .map((amount) => snakeCaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {
