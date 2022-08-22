@@ -1,3 +1,4 @@
+import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import {
   MsgBatchCancelDerivativeOrders as BaseMsgBatchCancelDerivativeOrders,
   OrderData,
@@ -12,6 +13,7 @@ export declare namespace MsgBatchCancelDerivativeOrders {
       marketId: string
       subaccountId: string
       orderHash: string
+      orderMask?: OrderMaskMap[keyof OrderMaskMap]
     }[]
   }
 
@@ -56,6 +58,10 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
       orderData.setMarketId(order.marketId)
       orderData.setOrderHash(order.orderHash)
       orderData.setSubaccountId(order.subaccountId)
+
+      if (order.orderMask) {
+        orderData.setOrderMask(order.orderMask)
+      }
 
       return orderData
     })
