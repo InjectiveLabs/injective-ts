@@ -25,6 +25,8 @@ import {
   ExpiryFuturesMarketInfo,
   GrpcBinaryOptionsMarketInfo,
   BinaryOptionsMarket,
+  GrpcDerivativeOrderHistory,
+  DerivativeOrderHistory
 } from '../types/derivatives'
 import {
   GrpcPriceLevel,
@@ -40,10 +42,11 @@ import {
   MarketResponse as DerivativeMarketResponse,
   OrderbookResponse as DerivativeOrderbookResponse,
   OrdersResponse as DerivativeOrdersResponse,
+  OrdersHistoryResponse as DerivativeOrdersHistoryResponse,
   TradesResponse as DerivativeTradesResponse,
   PositionsResponse as DerivativePositionsResponse,
   OrderbooksResponse as DerivativeOrderbooksResponse,
-  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
+  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
 import {
   BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
@@ -138,6 +141,14 @@ export class IndexerGrpcDerivativeTransformer {
     return {
       orders: IndexerGrpcDerivativeTransformer.grpcOrdersToOrders(orders),
       pagination: grpcPagingToPaging(pagination),
+    }
+  }
+
+  static orderHistoryResponseToOrderHistory(response: DerivativeOrdersHistoryResponse) {
+    const orderHistory = response.getOrdersList()
+
+    return {
+      orderHistory: IndexerGrpcDerivativeTransformer.grpcOrderHistoryListToOrderHistoryList(orderHistory)
     }
   }
 
@@ -391,6 +402,39 @@ export class IndexerGrpcDerivativeTransformer {
   ): DerivativeLimitOrder[] {
     return orders.map((order) =>
       IndexerGrpcDerivativeTransformer.grpcOrderToOrder(order),
+    )
+  }
+
+  static grpcOrderHistoryToOrderHistory(
+    orderHistory: GrpcDerivativeOrderHistory,
+  ): DerivativeOrderHistory {
+    return {
+      orderHash: orderHistory.getOrderHash(),
+      marketId: orderHistory.getMarketId(),
+      isActive: orderHistory.getIsActive(),
+      subaccountId: orderHistory.getSubaccountId(),
+      executionType: orderHistory.getExecutionType(),
+      orderType: orderHistory.getOrderType(),
+      price: orderHistory.getPrice(),
+      triggerPrice: orderHistory.getTriggerPrice(),
+      quantity: orderHistory.getQuantity(),
+      filledQuantity: orderHistory.getFilledQuantity(),
+      state: orderHistory.getState(),
+      createdAt: orderHistory.getCreatedAt(),
+      updatedAt: orderHistory.getUpdatedAt(),
+      isReduceOnly: orderHistory.getIsReduceOnly(),
+      direction: orderHistory.getDirection(),
+      isConditional: orderHistory.getIsConditional(),
+      triggerAt: orderHistory.getTriggerAt(),
+      placedOrderHash: orderHistory.getPlacedOrderHash(),
+    }
+  }
+
+  static grpcOrderHistoryListToOrderHistoryList(
+    orderHistory: GrpcDerivativeOrderHistory[]
+  ): DerivativeOrderHistory[] {
+    return orderHistory.map((orderHistory) =>
+      IndexerGrpcDerivativeTransformer.grpcOrderHistoryToOrderHistory(orderHistory),
     )
   }
 

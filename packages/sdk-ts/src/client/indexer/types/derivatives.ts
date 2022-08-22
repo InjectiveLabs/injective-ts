@@ -10,6 +10,7 @@ import {
   FundingPayment as GrpcFundingPayment,
   FundingRate as GrpcFundingRate,
   BinaryOptionsMarketInfo as GrpcBinaryOptionsMarketInfo,
+  DerivativeOrderHistory as GrpcDerivativeOrderHistory
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
@@ -146,6 +147,27 @@ export interface DerivativeLimitOrder {
   state: DerivativeOrderState
 }
 
+export interface DerivativeOrderHistory {
+  orderHash: string
+  marketId: string
+  isActive: boolean
+  subaccountId: string
+  executionType: string
+  orderType: string
+  price: string
+  triggerPrice: string
+  quantity: string
+  filledQuantity: string
+  state: string
+  createdAt: number
+  updatedAt: number
+  isReduceOnly: boolean
+  direction: string
+  isConditional: boolean
+  triggerAt: number
+  placedOrderHash: string
+}
+
 export interface DerivativeTrade extends PositionDelta {
   orderHash: string
   subaccountId: string
@@ -203,4 +225,5 @@ export {
   GrpcDerivativeTrade,
   GrpcPositionDelta,
   GrpcBinaryOptionsMarketInfo,
+  GrpcDerivativeOrderHistory
 }

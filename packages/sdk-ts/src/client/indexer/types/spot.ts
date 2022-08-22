@@ -2,6 +2,7 @@ import {
   SpotMarketInfo as GrpcSpotMarketInfo,
   SpotLimitOrder as GrpcSpotLimitOrder,
   SpotTrade as GrpcSpotTrade,
+  SpotOrderHistory as GrpcSpotOrderHistory,
 } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
 import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
@@ -56,6 +57,18 @@ export interface SpotLimitOrder {
   feeRecipient: string
 }
 
+// TODO: Implement pagination once Indexer supports it.
+export interface SpotOrderHistory {
+  subaccountId: string
+  marketId: string
+  // skip: number
+  // limit: number
+  orderType: string
+  direction: string
+  // startTime: number
+  // endTime: number
+}
+
 export interface SpotTrade extends PriceLevel {
   orderHash: string
   subaccountId: string
@@ -85,4 +98,9 @@ export interface BatchSpotOrderCancelParams {
   marketId: string
 }
 
-export { GrpcSpotMarketInfo, GrpcSpotLimitOrder, GrpcSpotTrade }
+export {
+  GrpcSpotMarketInfo,
+  GrpcSpotLimitOrder,
+  GrpcSpotOrderHistory,
+  GrpcSpotTrade,
+}

@@ -8,6 +8,8 @@ import {
   OrderbookResponse as SpotOrderbookResponse,
   OrdersRequest as SpotOrdersRequest,
   OrdersResponse as SpotOrdersResponse,
+  OrdersHistoryRequest as SpotOrdersHistoryRequest,
+  OrdersHistoryResponse as SpotOrdersHistoryResponse,
   TradesRequest as SpotTradesRequest,
   TradesResponse as SpotTradesResponse,
   SubaccountOrdersListRequest as SpotSubaccountOrdersListRequest,
@@ -144,6 +146,69 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Orders)
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
+  }
+
+  async fetchOrderHistory(params?: {
+    subaccountId?: string
+    marketId?: string
+    orderType?: SpotOrderSide
+    direction?: TradeDirection
+    isConditional?: boolean
+    pagination?: PaginationOption
+  }) {
+    const { subaccountId, marketId, orderType, direction, pagination } =
+      params || {}
+
+    const request = new SpotOrdersHistoryRequest()
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (orderType) {
+      request.setOrderType(orderType)
+    }
+
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    // TODO: Implement this once Indexer supports it.
+    // if (isConditional) {
+    //   request.setIsConditional(isConditional)
+    // }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+
+      if (pagination.endTime !== undefined) {
+        request.setEndTime(pagination.endTime)
+      }
+    }
+
+    try {
+      const response = await this.request<
+        SpotOrdersHistoryRequest,
+        SpotOrdersHistoryResponse,
+        typeof InjectiveSpotExchangeRPC.OrdersHistory
+      >(request, InjectiveSpotExchangeRPC.OrdersHistory)
+
+      return IndexerGrpcSpotTransformer.orderHistoryResponseToOrderHistory(
+        response,
+      )
     } catch (e: any) {
       throw new Error(e.message)
     }
