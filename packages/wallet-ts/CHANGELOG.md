@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.58...@injectivelabs/wallet-ts@1.0.59) (2022-08-22)
+
+
+### Features
+
+* cancelation order bitmask ([70fed5e](https://github.com/InjectiveLabs/injective-ts/commit/70fed5ee71bd3ea4b5624096e6cd73ed2d43120c))
+
+
+
+
+
 ## [1.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.57...@injectivelabs/wallet-ts@1.0.58) (2022-08-17)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.27...@injectivelabs/tx-ts@1.0.28) (2022-08-22)
+
+
+### Features
+
+* cancelation order bitmask ([70fed5e](https://github.com/InjectiveLabs/injective-ts/commit/70fed5ee71bd3ea4b5624096e6cd73ed2d43120c))
+
+
+
+
+
 ## [1.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.26...@injectivelabs/tx-ts@1.0.27) (2022-08-13)
 
 
