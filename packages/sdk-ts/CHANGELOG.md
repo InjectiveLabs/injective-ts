@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.94](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.93...@injectivelabs/sdk-ts@1.0.94) (2022-08-22)
+
+
+### Bug Fixes
+
+* eip712 typing order ([10e4b6d](https://github.com/InjectiveLabs/injective-ts/commit/10e4b6dad70ae7130a73f23097311f40d61f4859))
+
+
+
+
+
 ## [1.0.93](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.92...@injectivelabs/sdk-ts@1.0.93) (2022-08-22)
 
 
