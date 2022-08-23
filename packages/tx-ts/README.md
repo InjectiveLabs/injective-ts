@@ -70,7 +70,7 @@ Also, both of the clients have a `simulate` method which simulates the transacti
 Reach out to us at one of the following places!
 
 - Website at <a href="https://injective.com" target="_blank">`injective.com`</a>
-- Twitter at <a href="https://twitter.com/InjectiveLabs" target="_blank">`@InjectiveLabs`</a>
+- Twitter at <a href="https://twitter.com/Injective_" target="_blank">`@Injective`</a>
 - Discord at <a href="https://discord.com/invite/NK4qdbv" target="_blank">`Discord`</a>
 - Telegram at <a href="https://t.me/joininjective" target="_blank">`Telegram`</a>
 
