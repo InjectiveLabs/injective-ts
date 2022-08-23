@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.137](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.136...@injectivelabs/sdk-ui-ts@1.0.137) (2022-08-23)
+
+
+### Bug Fixes
+
+* orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
+
+
+
+
+
 ## [1.0.136](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.135...@injectivelabs/sdk-ui-ts@1.0.136) (2022-08-23)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

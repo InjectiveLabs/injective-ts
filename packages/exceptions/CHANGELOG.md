@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.7...@injectivelabs/exceptions@1.0.8) (2022-08-23)
+
+
+### Bug Fixes
+
+* orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
+
+
+
+
+
 ## [1.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.6...@injectivelabs/exceptions@1.0.7) (2022-08-05)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
