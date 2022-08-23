@@ -1,3 +1,4 @@
+import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import {
   MsgBatchCancelBinaryOptionsOrders as BaseMsgBatchCancelBinaryOptionsOrders,
   OrderData,
@@ -12,6 +13,7 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
       marketId: string
       subaccountId: string
       orderHash: string
+      orderMask?: OrderMaskMap[keyof OrderMaskMap]
     }[]
   }
 

@@ -1,3 +1,4 @@
+import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgCancelBinaryOptionsOrder as BaseMsgCancelBinaryOptionsOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
 
@@ -7,6 +8,7 @@ export declare namespace MsgCancelBinaryOptionsOrder {
     subaccountId: string
     injectiveAddress: string
     orderHash: string
+    orderMask?: OrderMaskMap[keyof OrderMaskMap]
   }
 
   export interface DirectSign {

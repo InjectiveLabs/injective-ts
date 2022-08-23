@@ -59,7 +59,7 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
       orderData.setOrderHash(order.orderHash)
       orderData.setSubaccountId(order.subaccountId)
 
-      if (order.orderMask) {
+      if (order.orderMask !== undefined) {
         orderData.setOrderMask(order.orderMask)
       }
 

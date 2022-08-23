@@ -53,7 +53,7 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
     message.setOrderHash(params.orderHash)
     message.setSubaccountId(params.subaccountId)
 
-    if (params.orderMask) {
+    if (params.orderMask !== undefined) {
       message.setOrderMask(params.orderMask)
     }
 
