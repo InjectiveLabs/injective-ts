@@ -85,6 +85,9 @@ export class MsgBroadcastExperimentalClient {
         ethereumChainId: ethereumChainId,
       })
 
+      console.log(eip712TypedData)
+      console.log(msgs.map((m) => m.toDirectSign()))
+
       /** Signing on Ethereum */
       const signature = (await walletStrategy.signTransaction(
         JSON.stringify(eip712TypedData),

@@ -77,6 +77,7 @@ export class MsgBroadcastClient {
     try {
       const txResponse = await prepareTx()
       const signature = await signTx(txResponse.getData())
+      console.log(txResponse.getData())
 
       const promise = transactionApi.broadcastTxRequest({
         signature,
