@@ -15,6 +15,7 @@ import { ChainGrpcWasmXApi } from './grpc/ChainGrpcWasmXApi'
 
 /**
  * @category Chain Grpc API
+ * @hidden
  */
 export class ChainGrpcClient {
   auction: ChainGrpcAuctionApi

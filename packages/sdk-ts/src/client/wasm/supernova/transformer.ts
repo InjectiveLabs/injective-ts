@@ -10,6 +10,9 @@ import {
   QueryVaultUserLpBalanceResponse,
 } from './types'
 
+/**
+ * @hidden
+ */
 export class SupernovaQueryTransformer {
   static masterContractConfigResponseToMasterContractConfig(
     response: WasmContractQueryResponse,

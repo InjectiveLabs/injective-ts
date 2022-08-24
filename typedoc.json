@@ -9,5 +9,6 @@
   ],
   "theme": "oxide",
   "plugin": ["typedoc-monorepo-link-types", "typedoc-theme-oxide"],
+  "exclude": ["./packages/**/*.spec.ts", "./packages/**/*.spec.ts"],
   "name": "Injective TS API"
 }

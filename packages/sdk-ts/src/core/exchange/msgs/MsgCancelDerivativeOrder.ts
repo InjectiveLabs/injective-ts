@@ -74,10 +74,16 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
 
   public toAmino(): MsgCancelDerivativeOrder.Amino {
     const proto = this.toProto()
+    const object = proto.toObject()
+
+    if (object.orderMask === 0) {
+      // @ts-ignore TODO remove on chain upgrade
+      delete object.orderMask
+    }
 
     return {
       type: 'exchange/MsgCancelDerivativeOrder',
-      ...proto.toObject(),
+      ...object,
     }
   }
 

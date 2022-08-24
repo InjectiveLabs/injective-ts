@@ -6,6 +6,9 @@ if (isServerSide()) {
   grpc.setDefaultTransport(NodeHttpTransport())
 }
 
+/**
+ * @hidden
+ */
 export default class BaseGrpcConsumer {
   protected endpoint: string
 

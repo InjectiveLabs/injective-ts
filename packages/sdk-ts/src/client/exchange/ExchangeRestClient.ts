@@ -4,6 +4,7 @@ import { ExchangeRestSpotChronosApi } from './rest/ExchangeRestSpotChronosApi'
 
 /**
  * @category Exchange Rest API
+ * @hidden
  */
 export class ExchangeRestClient {
   derivativesChronos: ExchangeRestDerivativesChronosApi

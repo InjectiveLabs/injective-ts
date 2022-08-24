@@ -87,9 +87,16 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
 
   public toAmino(): MsgBatchCancelDerivativeOrders.Amino {
     const proto = this.toProto()
-    const orderData = proto
-      .getDataList()
-      .map((orderData) => snakeCaseKeys(orderData.toObject()))
+    const orderData = proto.getDataList().map((orderData) => {
+      const object = orderData.toObject()
+
+      if (orderData.getOrderMask() === 0) {
+        // @ts-ignore TODO remove on chain upgrade
+        delete object.orderMask
+      }
+
+      return snakeCaseKeys(object)
+    })
 
     return {
       type: 'exchange/MsgBatchCancelDerivativeOrders',

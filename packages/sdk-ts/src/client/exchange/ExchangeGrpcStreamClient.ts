@@ -7,6 +7,7 @@ import { ExchangeGrpcExplorerStream } from './grpc_stream/ExchangeGrpcExplorerSt
 
 /**
  * @category Exchange Grpc Stream
+ * @hidden
  */
 export class ExchangeGrpcStreamClient {
   derivatives: ExchangeGrpcDerivativesStream

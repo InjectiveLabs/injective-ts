@@ -7,6 +7,9 @@ import {
 import { USER_DEPOSITS, USER_BRIDGE_DEPOSITS } from './queries'
 import { UserDepositResponse } from './types'
 
+/**
+ * @hidden
+ */
 export class ApolloConsumer {
   private apolloClient: ApolloClient<NormalizedCacheObject>
 

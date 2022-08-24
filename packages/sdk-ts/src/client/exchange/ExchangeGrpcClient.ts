@@ -9,6 +9,7 @@ import { ExchangeGrpcSpotApi } from './grpc/ExchangeGrpcSpotApi'
 
 /**
  * @category Exchange Grpc API
+ * @hidden
  */
 export class ExchangeGrpcClient {
   account: ExchangeGrpcAccountApi

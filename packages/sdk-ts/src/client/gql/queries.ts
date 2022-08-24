@@ -1,5 +1,8 @@
 import { gql } from '@apollo/client/core'
 
+/**
+ * @hidden
+ */
 export const USER_DEPOSITS = gql`
   query Deposits($destination: Bytes!) {
     deposits(

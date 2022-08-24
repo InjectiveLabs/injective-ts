@@ -1,3 +1,6 @@
+/**
+ * @hidden
+ */
 export interface UserDeposit {
   id: string
   tokenContract: string
@@ -9,6 +12,9 @@ export interface UserDeposit {
   blockHeight: number
 }
 
+/**
+ * @hidden
+ */
 export interface UserDepositResponse {
   deposits: UserDeposit[]
 }

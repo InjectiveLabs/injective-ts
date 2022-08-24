@@ -70,10 +70,16 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
 
   public toAmino(): MsgCancelBinaryOptionsOrder.Amino {
     const proto = this.toProto()
+    const object = proto.toObject()
+
+    if (object.orderMask === 0) {
+      // @ts-ignore TODO remove on chain upgrade
+      delete object.orderMask
+    }
 
     return {
       type: 'exchange/MsgCancelBinaryOptionsOrder',
-      ...proto.toObject(),
+      ...object,
     }
   }
 
