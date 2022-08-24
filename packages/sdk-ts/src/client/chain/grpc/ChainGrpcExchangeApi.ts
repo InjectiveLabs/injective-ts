@@ -18,6 +18,9 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcExchangeTransformer } from '../transformers'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcExchangeApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryExchangeParamsRequest()

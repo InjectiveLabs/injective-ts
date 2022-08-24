@@ -27,6 +27,9 @@ export declare namespace MsgWithdrawDelegatorReward {
   export type Proto = BaseMsgWithdrawDelegatorReward
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgWithdrawDelegatorReward extends MsgBase<
   MsgWithdrawDelegatorReward.Params,
   MsgWithdrawDelegatorReward.Data,

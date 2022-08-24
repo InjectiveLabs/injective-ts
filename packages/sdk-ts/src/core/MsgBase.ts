@@ -1,6 +1,9 @@
 import { objectKeysToEip712Types, TypedDataField } from './eip712'
 import { prepareSignBytes } from './utils'
 
+/**
+ * @category Messages
+ */
 export abstract class MsgBase<
   Params,
   DataRepresentation,

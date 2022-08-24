@@ -2,6 +2,9 @@ import { IndexerGrpcAccountTransformer } from './IndexerGrpcAccountTransformer'
 import { StreamSubaccountBalanceResponse } from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
 import { StreamOperation } from '../../../types'
 
+/**
+ * @category Indexer Stream Transformer
+ */
 export class IndexerAccountStreamTransformer {
   static balanceStreamCallback = (
     response: StreamSubaccountBalanceResponse,

@@ -29,6 +29,9 @@ export declare namespace MsgVote {
   export type Proto = BaseMsgVote
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgVote extends MsgBase<
   MsgVote.Params,
   MsgVote.Data,

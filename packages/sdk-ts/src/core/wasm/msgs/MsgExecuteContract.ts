@@ -35,6 +35,9 @@ export declare namespace MsgExecuteContract {
   export type Proto = BaseMsgExecuteContract
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgExecuteContract extends MsgBase<
   MsgExecuteContract.Params,
   MsgExecuteContract.Data,

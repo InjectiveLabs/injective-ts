@@ -6,6 +6,9 @@ import {
 import { StreamOperation } from '../../../types'
 import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer'
 
+/**
+ * @category Indexer Stream Transformer
+ */
 export class IndexerSpotStreamTransformer {
   static orderbookStreamCallback = (response: StreamOrderbookResponse) => {
     const orderbook = response.getOrderbook()

@@ -33,6 +33,9 @@ const zeroPriceLevel = () => ({
   timestamp: 0,
 })
 
+/**
+ * @category Exchange Grpc Transformer
+ */
 export class ExchangeGrpcSpotTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,

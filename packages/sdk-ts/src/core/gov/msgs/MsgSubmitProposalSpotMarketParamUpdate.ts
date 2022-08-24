@@ -46,6 +46,9 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
   export type Proto = BaseMsgSubmitProposal
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   MsgSubmitProposalSpotMarketParamUpdate.Params,
   MsgSubmitProposalSpotMarketParamUpdate.Data,

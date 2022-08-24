@@ -12,6 +12,9 @@ import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcAuthApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryParamsRequest()

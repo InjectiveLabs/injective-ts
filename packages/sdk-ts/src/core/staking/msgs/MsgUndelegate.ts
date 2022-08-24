@@ -31,6 +31,9 @@ export declare namespace MsgUndelegate {
   export type Proto = BaseMsgUndelegate
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgUndelegate extends MsgBase<
   MsgUndelegate.Params,
   MsgUndelegate.Data,

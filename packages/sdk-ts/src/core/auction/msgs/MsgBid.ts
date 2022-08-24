@@ -32,6 +32,9 @@ export declare namespace MsgBid {
   export type Proto = BaseMsgBid
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgBid extends MsgBase<
   MsgBid.Params,
   MsgBid.Data,

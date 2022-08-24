@@ -22,6 +22,9 @@ import { ChainGrpcWasmTransformer } from '../transformers'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcWasmApi extends BaseConsumer {
   async fetchContractAccountsBalance({
     contractAddress,

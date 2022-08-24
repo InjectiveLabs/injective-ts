@@ -32,6 +32,9 @@ export declare namespace MsgWithdraw {
   export type Proto = BaseMsgWithdraw
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgWithdraw extends MsgBase<
   MsgWithdraw.Params,
   MsgWithdraw.Data,

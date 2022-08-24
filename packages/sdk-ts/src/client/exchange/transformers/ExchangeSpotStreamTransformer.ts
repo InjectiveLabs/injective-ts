@@ -6,6 +6,9 @@ import {
 import { StreamOperation } from '../../../types'
 import { ExchangeGrpcSpotTransformer } from './ExchangeGrpcSpotTransformer'
 
+/**
+ * @category Exchange Grpc Stream Transformer
+ */
 export class SpotStreamTransformer {
   static orderbookStreamCallback = (response: StreamOrderbookResponse) => {
     const orderbook = response.getOrderbook()
@@ -27,7 +30,9 @@ export class SpotStreamTransformer {
     const trade = response.getTrade()
 
     return {
-      trade: trade ? ExchangeGrpcSpotTransformer.grpcTradeToTrade(trade) : undefined,
+      trade: trade
+        ? ExchangeGrpcSpotTransformer.grpcTradeToTrade(trade)
+        : undefined,
       operation: response.getOperationType() as StreamOperation,
       timestamp: response.getTimestamp(),
     }
@@ -37,7 +42,9 @@ export class SpotStreamTransformer {
     const order = response.getOrder()
 
     return {
-      order: order ? ExchangeGrpcSpotTransformer.grpcOrderToOrder(order) : undefined,
+      order: order
+        ? ExchangeGrpcSpotTransformer.grpcOrderToOrder(order)
+        : undefined,
       operation: response.getOperationType() as StreamOperation,
       timestamp: response.getTimestamp(),
     }

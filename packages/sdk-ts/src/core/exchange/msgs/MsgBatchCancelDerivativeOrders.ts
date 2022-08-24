@@ -37,6 +37,9 @@ export declare namespace MsgBatchCancelDerivativeOrders {
   export type Proto = BaseMsgBatchCancelDerivativeOrders
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgBatchCancelDerivativeOrders extends MsgBase<
   MsgBatchCancelDerivativeOrders.Params,
   MsgBatchCancelDerivativeOrders.Data,

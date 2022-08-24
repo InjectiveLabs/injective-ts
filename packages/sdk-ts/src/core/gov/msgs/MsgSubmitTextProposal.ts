@@ -36,6 +36,9 @@ export declare namespace MsgSubmitTextProposal {
   export type Proto = BaseMsgSubmitProposal
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgSubmitTextProposal extends MsgBase<
   MsgSubmitTextProposal.Params,
   MsgSubmitTextProposal.Data,

@@ -7,5 +7,7 @@
     "./packages/wallet-ts",
     "./packages/tx-ts"
   ],
+  "theme": "oxide",
+  "plugin": ["typedoc-monorepo-link-types", "typedoc-theme-oxide"],
   "name": "Injective TS API"
 }

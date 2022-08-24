@@ -10,6 +10,9 @@ import {
   AuctionModuleStateParams,
 } from '../types/auction'
 
+/**
+ * @category Chain Grpc Transformer
+ */
 export class ChainGrpcAuctionTransformer {
   static moduleParamsResponseToModuleParams(
     response: QueryAuctionParamsResponse,

@@ -5,6 +5,9 @@ import {
   StreamTxsResponse,
 } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
 
+/**
+ * @category Exchange Grpc Stream Transformer
+ */
 export class ExplorerStreamTransformer {
   static blocksStreamCallback = (response: StreamBlocksResponse) => ({
     block: ExchangeGrpcExplorerTransformer.grpcBlockToBlock(response),
@@ -17,7 +20,8 @@ export class ExplorerStreamTransformer {
   })
 
   static transactionsStreamCallback = (response: StreamTxsResponse) => ({
-    block: ExchangeGrpcExplorerTransformer.grpcTransactionToTransaction(response),
+    block:
+      ExchangeGrpcExplorerTransformer.grpcTransactionToTransaction(response),
     operation: StreamOperation.Insert,
   })
 }

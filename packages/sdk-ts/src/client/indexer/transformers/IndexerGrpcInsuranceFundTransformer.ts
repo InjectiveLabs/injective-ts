@@ -11,6 +11,9 @@ import {
   RedemptionsResponse,
 } from '@injectivelabs/indexer-api/injective_insurance_rpc_pb'
 
+/**
+ * @category Indexer Grpc Transformer
+ */
 export class IndexerGrpcInsuranceFundTransformer {
   static insuranceFundsResponseToInsuranceFunds(response: FundsResponse) {
     const insuranceFunds = response.getFundsList()

@@ -13,6 +13,9 @@ import { ChainGrpcStakingApi } from './grpc/ChainGrpcStakingApi'
 import { ChainGrpcWasmApi } from './grpc/ChainGrpcWasmApi'
 import { ChainGrpcWasmXApi } from './grpc/ChainGrpcWasmXApi'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcClient {
   auction: ChainGrpcAuctionApi
 

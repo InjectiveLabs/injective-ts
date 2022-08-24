@@ -7,6 +7,9 @@ import {
 import { StreamOperation } from '../../../types/index'
 import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer'
 
+/**
+ * @category Indexer Stream Transformer
+ */
 export class IndexerDerivativeStreamTransformer {
   static orderbookStreamCallback = (response: StreamOrderbookResponse) => {
     const orderbook = response.getOrderbook()

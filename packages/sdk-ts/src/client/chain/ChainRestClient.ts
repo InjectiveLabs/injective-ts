@@ -1,5 +1,8 @@
 import { ChainRestAuthApi } from './rest/ChainRestAuthApi'
 
+/**
+ * @category Chain Rest API
+ */
 export class ChainRestClient {
   auth: ChainRestAuthApi
 

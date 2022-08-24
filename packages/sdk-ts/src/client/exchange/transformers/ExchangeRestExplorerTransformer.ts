@@ -51,6 +51,9 @@ const parseCW20Message = (jsonObject: string): CW20Message | undefined => {
   return JSON.parse(jsonObject) as CW20Message
 }
 
+/**
+ * @category Exchange Grpc Transformer
+ */
 export class ExchangeRestExplorerTransformer {
   static blockToBlock(block: BlockFromExplorerApiResponse): Block {
     return {

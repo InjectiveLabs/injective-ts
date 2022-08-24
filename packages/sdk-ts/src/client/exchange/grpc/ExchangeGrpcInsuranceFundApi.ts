@@ -8,6 +8,9 @@ import { InjectiveInsuranceRPC } from '@injectivelabs/exchange-api/injective_ins
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ExchangeGrpcInsuranceFundTransformer } from '../transformers'
 
+/**
+ * @category Exchange Grpc API
+ */
 export class ExchangeGrpcInsuranceFundApi extends BaseConsumer {
   async fetchRedemptions({
     denom,

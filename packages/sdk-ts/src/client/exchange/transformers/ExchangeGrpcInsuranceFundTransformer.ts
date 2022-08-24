@@ -11,6 +11,9 @@ import {
   RedemptionsResponse,
 } from '@injectivelabs/exchange-api/injective_insurance_rpc_pb'
 
+/**
+ * @category Exchange Grpc Transformer
+ */
 export class ExchangeGrpcInsuranceFundTransformer {
   static insuranceFundsResponseToInsuranceFunds(response: FundsResponse) {
     const insuranceFunds = response.getFundsList()

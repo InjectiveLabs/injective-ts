@@ -65,6 +65,9 @@ export declare namespace MsgBatchUpdateOrders {
   export type Proto = BaseMsgBatchUpdateOrders
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgBatchUpdateOrders extends MsgBase<
   MsgBatchUpdateOrders.Params,
   MsgBatchUpdateOrders.Data,

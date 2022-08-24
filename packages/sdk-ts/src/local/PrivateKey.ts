@@ -9,6 +9,8 @@ import * as BytesUtils from '@ethersproject/bytes'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
+ *
+ * @category Crypto Utility Classes
  */
 export class PrivateKey {
   private wallet: Wallet

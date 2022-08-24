@@ -7,6 +7,9 @@ import {
 } from '@injectivelabs/chain-api/injective/wasmx/v1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcWasmXApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryWasmxParamsRequest()

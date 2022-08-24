@@ -39,6 +39,9 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcDerivativeTransformer } from '../transformers'
 import { DerivativeOrderSide } from '../types/derivatives'
 
+/**
+ * @category Indexer Grpc API
+ */
 export class IndexerGrpcDerivativesApi extends BaseConsumer {
   async fetchMarkets(params?: { marketStatus?: string; quoteDenom?: string }) {
     const { marketStatus, quoteDenom } = params || {}

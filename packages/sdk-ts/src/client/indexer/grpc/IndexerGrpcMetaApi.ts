@@ -9,6 +9,9 @@ import {
 import { InjectiveMetaRPC } from '@injectivelabs/indexer-api/injective_meta_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
 
+/**
+ * @category Indexer Grpc API
+ */
 export class IndexerGrpcMetaApi extends BaseConsumer {
   async fetchPing() {
     const request = new PingRequest()

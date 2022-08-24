@@ -40,6 +40,9 @@ export declare namespace MsgTransfer {
   export type Proto = BaseMsgTransfer
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgTransfer extends MsgBase<
   MsgTransfer.Params,
   MsgTransfer.Data,

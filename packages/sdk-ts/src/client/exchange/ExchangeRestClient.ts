@@ -2,6 +2,9 @@ import { ExchangeRestDerivativesChronosApi } from './rest/ExchangeRestDerivative
 import { ExchangeRestExplorerApi } from './rest/ExchangeRestExplorerApi'
 import { ExchangeRestSpotChronosApi } from './rest/ExchangeRestSpotChronosApi'
 
+/**
+ * @category Exchange Rest API
+ */
 export class ExchangeRestClient {
   derivativesChronos: ExchangeRestDerivativesChronosApi
 

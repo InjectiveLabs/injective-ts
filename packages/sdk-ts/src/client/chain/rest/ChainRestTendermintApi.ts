@@ -4,6 +4,9 @@ import {
   NodeInfoRestResponse,
 } from './../types/tendermint-rest'
 
+/**
+ * @category Chain Rest API
+ */
 export class ChainRestTendermintApi extends BaseRestConsumer {
   async fetchLatestBlock(): Promise<BlockLatestRestResponse['block']> {
     const { data } = (await this.client.get(

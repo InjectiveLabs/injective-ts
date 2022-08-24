@@ -37,6 +37,9 @@ const zeroPriceLevel = () => ({
   timestamp: 0,
 })
 
+/**
+ * @category Indexer Grpc Transformer
+ */
 export class IndexerGrpcSpotTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,

@@ -31,6 +31,9 @@ export type SpotTradesStreamCallback = (
   response: ReturnType<typeof SpotStreamTransformer.tradesStreamCallback>,
 ) => void
 
+/**
+ * @category Exchange Grpc Stream
+ */
 export class ExchangeGrpcSpotStream {
   protected client: InjectiveSpotExchangeRPCClient
 

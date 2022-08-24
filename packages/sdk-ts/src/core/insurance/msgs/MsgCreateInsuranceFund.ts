@@ -40,6 +40,9 @@ export declare namespace MsgCreateInsuranceFund {
   export type Proto = BaseMsgCreateInsuranceFund
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgCreateInsuranceFund extends MsgBase<
   MsgCreateInsuranceFund.Params,
   MsgCreateInsuranceFund.Data,

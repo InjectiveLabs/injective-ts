@@ -14,6 +14,9 @@ export type BalanceStreamCallback = (
   >,
 ) => void
 
+/**
+ * @category Indexer Grpc Stream
+ */
 export class IndexerGrpcAccountStream {
   protected client: InjectiveAccountsRPCClient
 

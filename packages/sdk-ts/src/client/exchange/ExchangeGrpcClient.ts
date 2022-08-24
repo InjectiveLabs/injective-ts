@@ -7,6 +7,9 @@ import { ExchangeGrpcInsuranceFundApi } from './grpc/ExchangeGrpcInsuranceFundAp
 import { ExchangeGrpcDerivativesApi } from './grpc/ExchangeGrpcDerivativesApi'
 import { ExchangeGrpcSpotApi } from './grpc/ExchangeGrpcSpotApi'
 
+/**
+ * @category Exchange Grpc API
+ */
 export class ExchangeGrpcClient {
   account: ExchangeGrpcAccountApi
 

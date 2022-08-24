@@ -5,6 +5,9 @@ import { ExchangeGrpcOracleStream } from './grpc_stream/ExchangeGrpcOracleStream
 import { ExchangeGrpcSpotStream } from './grpc_stream/ExchangeGrpcSpotStream'
 import { ExchangeGrpcExplorerStream } from './grpc_stream/ExchangeGrpcExplorerStream'
 
+/**
+ * @category Exchange Grpc Stream
+ */
 export class ExchangeGrpcStreamClient {
   derivatives: ExchangeGrpcDerivativesStream
 

@@ -8,6 +8,9 @@ import {
 } from '@injectivelabs/chain-api/injective/insurance/v1beta1/query_pb'
 import { GrpcInsuranceFund } from '../types/insurance'
 
+/**
+ * @category Chain Grpc Transformer
+ */
 export class ChainGrpcInsuranceFundTransformer {
   static moduleParamsResponseToModuleParams(
     response: QueryInsuranceParamsResponse,

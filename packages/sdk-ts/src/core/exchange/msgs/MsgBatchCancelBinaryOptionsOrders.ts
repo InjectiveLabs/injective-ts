@@ -38,6 +38,9 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
   export type Proto = BaseMsgBatchCancelBinaryOptionsOrders
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
   MsgBatchCancelBinaryOptionsOrders.Params,
   MsgBatchCancelBinaryOptionsOrders.Data,

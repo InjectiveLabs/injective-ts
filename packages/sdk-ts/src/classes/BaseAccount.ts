@@ -2,6 +2,9 @@ import { Address } from './Address'
 import { AccountResponse } from '../client/chain'
 import { AccountDetails } from '../types/auth'
 
+/**
+ * @category Utility Classes
+ */
 export class BaseAccount extends Address {
   public accountNumber: number
 

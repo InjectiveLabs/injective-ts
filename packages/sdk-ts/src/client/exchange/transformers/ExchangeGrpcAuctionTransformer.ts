@@ -11,6 +11,9 @@ import {
   AuctionsResponse,
 } from '@injectivelabs/exchange-api/injective_auction_rpc_pb'
 
+/**
+ * @category Exchange Grpc Transformer
+ */
 export class ExchangeGrpcAuctionTransformer {
   static auctionResponseToAuction(response: AuctionResponse): {
     auction: Auction

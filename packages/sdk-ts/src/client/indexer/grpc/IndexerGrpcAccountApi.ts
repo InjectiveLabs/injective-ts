@@ -21,6 +21,9 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { IndexerGrpcAccountTransformer } from '../transformers'
 
+/**
+ * @category Indexer Grpc API
+ */
 export class IndexerGrpcAccountApi extends BaseConsumer {
   async fetchPortfolio(address: string) {
     const request = new PortfolioRequest()

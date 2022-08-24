@@ -18,6 +18,9 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { recoverTypedSignaturePubKey } from '../../../utils/transaction'
 
+/**
+ * @category Indexer Grpc API
+ */
 export class IndexerGrpcTransactionApi extends BaseConsumer {
   async prepareTxRequest({
     address,

@@ -60,6 +60,9 @@ const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
   return message
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgCreateSpotLimitOrder extends MsgBase<
   MsgCreateSpotLimitOrder.Params,
   MsgCreateSpotLimitOrder.Data,

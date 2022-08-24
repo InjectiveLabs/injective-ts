@@ -5,6 +5,9 @@ import {
 } from '../types/derivatives-rest'
 import BaseRestConsumer from '../../BaseRestConsumer'
 
+/**
+ * @category Exchange Chronos API
+ */
 export class ExchangeRestDerivativesChronosApi extends BaseRestConsumer {
   async fetchMarketSummary(marketId: string) {
     const path = `market_summary`

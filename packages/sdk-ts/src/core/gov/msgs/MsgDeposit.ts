@@ -33,6 +33,9 @@ export declare namespace MsgDeposit {
   export type Proto = BaseMsgDeposit
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgDeposit extends MsgBase<
   MsgDeposit.Params,
   MsgDeposit.Data,

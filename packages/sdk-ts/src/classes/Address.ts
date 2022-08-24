@@ -6,6 +6,9 @@ import {
   BECH32_ADDR_VAL_PREFIX,
 } from '../utils/constants'
 
+/**
+ * @category Utility Classes
+ */
 export class Address {
   public bech32Address: string
 

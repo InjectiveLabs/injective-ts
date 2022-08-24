@@ -14,6 +14,9 @@ export type OraclePriceStreamCallback = (
   >,
 ) => void
 
+/**
+ * @category Exchange Grpc Stream
+ */
 export class ExchangeGrpcOracleStream {
   protected client: InjectiveOracleRPCClient
 

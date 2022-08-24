@@ -29,6 +29,9 @@ export declare namespace MsgCancelSpotOrder {
   export type Proto = BaseMsgCancelSpotOrder
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgCancelSpotOrder extends MsgBase<
   MsgCancelSpotOrder.Params,
   MsgCancelSpotOrder.Data,
