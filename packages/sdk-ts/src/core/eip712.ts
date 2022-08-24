@@ -181,7 +181,6 @@ export const objectKeysToEip712Types = (
 ) => {
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
-  // const sortedProperties = Object.keys(object).sort()
 
   for (const property in object) {
     if (property === '@type' || property === 'type') {

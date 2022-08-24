@@ -33,6 +33,9 @@ export declare namespace MsgDeposit {
   export type Proto = BaseMsgDeposit
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgDeposit extends MsgBase<
   MsgDeposit.Params,
   MsgDeposit.Data,
@@ -69,11 +72,12 @@ export default class MsgDeposit extends MsgBase<
   }
 
   public toAmino(): MsgDeposit.Amino {
-    const { params } = this
     const proto = this.toProto()
     const message = {
       ...snakeCaseKeys(proto.toObject()),
-      amount: [{ ...snakeCaseKeys(params.amount) }],
+      amount: proto
+        .getAmountList()
+        .map((amount) => snakeCaseKeys(amount.toObject())),
     }
 
     // @ts-ignore

@@ -61,6 +61,9 @@ const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
   return message
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgCreateDerivativeLimitOrder extends MsgBase<
   MsgCreateDerivativeLimitOrder.Params,
   MsgCreateDerivativeLimitOrder.Data,

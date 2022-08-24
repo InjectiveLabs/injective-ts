@@ -1,6 +1,9 @@
 import { QueryParamsResponse } from '@injectivelabs/chain-api/injective/peggy/v1/query_pb'
 import { PeggyModuleParams } from '../types/peggy'
 
+/**
+ * @category Chain Grpc Transformer
+ */
 export class ChainGrpcPeggyTransformer {
   static moduleParamsResponseToModuleParams(
     response: QueryParamsResponse,

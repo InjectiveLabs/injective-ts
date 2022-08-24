@@ -32,6 +32,9 @@ export declare namespace MsgRequestRedemption {
   export type Proto = BaseMsgRequestRedemption
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgRequestRedemption extends MsgBase<
   MsgRequestRedemption.Params,
   MsgRequestRedemption.Data,

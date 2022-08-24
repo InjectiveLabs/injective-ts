@@ -21,6 +21,9 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { ExchangeGrpcAccountTransformer } from '../transformers'
 
+/**
+ * @category Exchange Grpc API
+ */
 export class ExchangeGrpcAccountApi extends BaseConsumer {
   async fetchPortfolio(address: string) {
     const request = new PortfolioRequest()
@@ -127,12 +130,7 @@ export class ExchangeGrpcAccountApi extends BaseConsumer {
     transferTypes?: string[]
     pagination?: PaginationOption
   }) {
-    const {
-      subaccountId,
-      denom,
-      transferTypes = [],
-      pagination
-    } = params || {}
+    const { subaccountId, denom, transferTypes = [], pagination } = params || {}
 
     const request = new SubaccountHistoryRequest()
 

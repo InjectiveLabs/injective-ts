@@ -31,6 +31,9 @@ export declare namespace MsgDelegate {
   export type Proto = BaseMsgDelegate
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgDelegate extends MsgBase<
   MsgDelegate.Params,
   MsgDelegate.Data,

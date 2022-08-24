@@ -32,6 +32,9 @@ export declare namespace MsgUnderwrite {
   export type Proto = BaseMsgUnderwrite
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgUnderwrite extends MsgBase<
   MsgUnderwrite.Params,
   MsgUnderwrite.Data,

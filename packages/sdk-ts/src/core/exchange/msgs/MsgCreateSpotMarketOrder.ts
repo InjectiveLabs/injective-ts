@@ -59,6 +59,9 @@ const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
   return message
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgCreateSpotMarketOrder extends MsgBase<
   MsgCreateSpotMarketOrder.Params,
   MsgCreateSpotMarketOrder.Data,

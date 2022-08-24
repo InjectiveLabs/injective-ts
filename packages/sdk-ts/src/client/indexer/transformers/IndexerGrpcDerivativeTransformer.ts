@@ -61,6 +61,9 @@ const zeroPositionDelta = () => ({
   executionMargin: '0',
 })
 
+/**
+ * @category Indexer Grpc Transformer
+ */
 export class IndexerGrpcDerivativeTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,

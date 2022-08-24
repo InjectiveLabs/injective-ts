@@ -45,6 +45,9 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
   export type Proto = BaseMsgSubmitProposal
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
   MsgSubmitProposalSpotMarketLaunch.Params,
   MsgSubmitProposalSpotMarketLaunch.Data,
@@ -91,6 +94,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
 
   public toAmino(): MsgSubmitProposalSpotMarketLaunch.Amino {
     const { params } = this
+    const proto = this.toProto()
     const content = this.getContent()
     const proposalType = '/injective.exchange.v1beta1.SpotMarketLaunchProposal'
 
@@ -99,7 +103,9 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
       content: {
         ...content.toObject(),
       },
-      initial_deposit: [{ ...snakeCaseKeys(params.deposit) }],
+      initial_deposit: proto
+        .getInitialDepositList()
+        .map((amount) => snakeCaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {

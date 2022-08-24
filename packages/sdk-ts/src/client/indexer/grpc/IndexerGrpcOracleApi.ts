@@ -8,6 +8,9 @@ import { InjectiveOracleRPC } from '@injectivelabs/indexer-api/injective_oracle_
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer'
 
+/**
+ * @category Indexer Grpc API
+ */
 export class IndexerGrpcOracleApi extends BaseConsumer {
   async fetchOracleList() {
     const request = new OracleListRequest()

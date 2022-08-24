@@ -62,6 +62,9 @@ const createMarketOrder = (params: MsgCreateDerivativeMarketOrder.Params) => {
   return message
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgCreateDerivativeMarketOrder extends MsgBase<
   MsgCreateDerivativeMarketOrder.Params,
   MsgCreateDerivativeMarketOrder.Data,

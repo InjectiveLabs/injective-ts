@@ -62,6 +62,9 @@ const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
   return message
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
   MsgCreateBinaryOptionsLimitOrder.Params,
   MsgCreateBinaryOptionsLimitOrder.Data,

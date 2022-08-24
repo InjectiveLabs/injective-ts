@@ -6,6 +6,9 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { OracleModuleParams } from '../types'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcOracleApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryOracleParamsRequest()

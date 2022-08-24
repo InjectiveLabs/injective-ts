@@ -33,6 +33,9 @@ export declare namespace MsgSend {
   export type Proto = BaseMsgSend
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgSend extends MsgBase<
   MsgSend.Params,
   MsgSend.Data,
@@ -69,11 +72,12 @@ export default class MsgSend extends MsgBase<
   }
 
   public toAmino(): MsgSend.Amino {
-    const { params } = this
     const proto = this.toProto()
     const message = {
       ...snakeCaseKeys(proto.toObject()),
-      amount: [{ ...snakeCaseKeys(params.amount) }],
+      amount: proto
+        .getAmountList()
+        .map((amount) => snakeCaseKeys(amount.toObject())),
     }
 
     // @ts-ignore

@@ -30,6 +30,9 @@ export declare namespace MsgExec {
   export type Proto = BaseMsgExec
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgExec extends MsgBase<
   MsgExec.Params,
   MsgExec.Data,

@@ -5,6 +5,9 @@ import {
   StreamTxsResponse,
 } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
 
+/**
+ * @category Indexer Stream Transformer
+ */
 export class ExplorerStreamTransformer {
   static blocksStreamCallback = (response: StreamBlocksResponse) => ({
     block: IndexerGrpcExplorerTransformer.grpcBlockToBlock(response),

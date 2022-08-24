@@ -51,6 +51,9 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   export type Proto = BaseMsgSubmitProposal
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
   MsgSubmitProposalPerpetualMarketLaunch.Params,
   MsgSubmitProposalPerpetualMarketLaunch.Data,
@@ -98,6 +101,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
 
   public toAmino(): MsgSubmitProposalPerpetualMarketLaunch.Amino {
     const { params } = this
+    const proto = this.toProto()
     const content = this.getContent()
     const proposalType =
       '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal'
@@ -107,7 +111,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
       content: {
         ...content.toObject(),
       },
-      initial_deposit: [{ ...snakeCaseKeys(params.deposit) }],
+      initial_deposit: proto
+        .getInitialDepositList()
+        .map((amount) => snakeCaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {

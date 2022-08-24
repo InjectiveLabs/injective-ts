@@ -8,6 +8,9 @@ import { InjectiveOracleRPC } from '@injectivelabs/exchange-api/injective_oracle
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ExchangeGrpcOracleTransformer } from '../transformers/ExchangeGrpcOracleTransformer'
 
+/**
+ * @category Exchange Grpc API
+ */
 export class ExchangeGrpcOracleApi extends BaseConsumer {
   async fetchOracleList() {
     const request = new OracleListRequest()

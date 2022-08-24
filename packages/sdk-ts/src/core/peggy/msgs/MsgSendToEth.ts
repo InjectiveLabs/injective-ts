@@ -40,6 +40,9 @@ export declare namespace MsgSendToEth {
   export type Proto = BaseMsgSendToEth
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgSendToEth extends MsgBase<
   MsgSendToEth.Params,
   MsgSendToEth.Data,

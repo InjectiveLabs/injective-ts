@@ -52,6 +52,9 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
   export type Proto = BaseMsgSubmitProposal
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
   MsgSubmitProposalExpiryFuturesMarketLaunch.Params,
   MsgSubmitProposalExpiryFuturesMarketLaunch.Data,
@@ -99,6 +102,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
 
   public toAmino(): MsgSubmitProposalExpiryFuturesMarketLaunch.Amino {
     const { params } = this
+    const proto = this.toProto()
     const content = this.getContent()
     const proposalType =
       '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal'
@@ -108,7 +112,9 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
       content: {
         ...content.toObject(),
       },
-      initial_deposit: [{ ...snakeCaseKeys(params.deposit) }],
+      initial_deposit: proto
+        .getInitialDepositList()
+        .map((amount) => snakeCaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {

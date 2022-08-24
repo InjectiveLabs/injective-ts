@@ -2,6 +2,10 @@ import { IndexerRestDerivativesChronosApi } from './rest/IndexerRestDerivativesC
 import { IndexerRestExplorerApi } from './rest/IndexerRestExplorerApi'
 import { IndexerRestSpotChronosApi } from './rest/IndexerRestSpotChronosApi'
 
+/**
+ * @category Indexer Grpc API
+ * @hidden
+ */
 export class IndexerRestClient {
   derivativesChronos: IndexerRestDerivativesChronosApi
 

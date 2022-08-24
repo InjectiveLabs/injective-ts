@@ -28,6 +28,9 @@ import {
 import { IndexerRestExplorerTransformer } from '../transformers'
 import { Block, ExplorerValidator } from '../types/explorer'
 
+/**
+ * @category Indexer Rest API
+ */
 export class IndexerRestExplorerApi extends BaseRestConsumer {
   async fetchBlock(blockHashHeight: string): Promise<ExplorerBlockWithTxs> {
     try {

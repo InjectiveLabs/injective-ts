@@ -7,6 +7,9 @@ import {
 import { StreamOperation } from '../../../types/index'
 import { ExchangeGrpcDerivativeTransformer } from './ExchangeGrpcDerivativeTransformer'
 
+/**
+ * @category Exchange Grpc Stream Transformer
+ */
 export class DerivativeStreamTransformer {
   static orderbookStreamCallback = (response: StreamOrderbookResponse) => {
     const orderbook = response.getOrderbook()

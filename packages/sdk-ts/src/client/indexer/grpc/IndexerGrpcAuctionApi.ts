@@ -8,6 +8,9 @@ import { InjectiveAuctionRPC } from '@injectivelabs/indexer-api/injective_auctio
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcAuctionTransformer } from '../transformers'
 
+/**
+ * @category Indexer Grpc API
+ */
 export class IndexerGrpcAuctionApi extends BaseConsumer {
   async fetchAuction(round?: number) {
     const request = new AuctionRequest()

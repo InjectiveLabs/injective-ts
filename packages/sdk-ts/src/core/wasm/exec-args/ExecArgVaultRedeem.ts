@@ -19,6 +19,9 @@ export declare namespace ExecArgVaultRedeem {
   }
 }
 
+/**
+ * @category Contract Exec Arguments
+ */
 export default class ExecArgVaultRedeem extends ExecArgsBase<
   ExecArgVaultRedeem.Params,
   ExecArgVaultRedeem.Data

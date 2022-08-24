@@ -29,6 +29,9 @@ import { PaginationOption } from '../../../types/pagination'
 import { SpotOrderSide } from '../types/spot'
 import { IndexerGrpcSpotTransformer } from '../transformers'
 
+/**
+ * @category Indexer Grpc API
+ */
 export class IndexerGrpcSpotApi extends BaseConsumer {
   async fetchMarkets(params?: {
     baseDenom?: string

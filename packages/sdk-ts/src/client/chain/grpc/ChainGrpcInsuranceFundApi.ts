@@ -14,6 +14,9 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcInsuranceFundApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryInsuranceParamsRequest()

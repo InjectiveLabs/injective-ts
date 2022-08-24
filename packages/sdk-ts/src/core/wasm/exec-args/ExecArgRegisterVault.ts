@@ -15,6 +15,9 @@ export declare namespace ExecArgRegisterVault {
   }
 }
 
+/**
+ * @category Contract Exec Arguments
+ */
 export default class ExecArgRegisterVault extends ExecArgsBase<
   ExecArgRegisterVault.Params,
   ExecArgRegisterVault.Data

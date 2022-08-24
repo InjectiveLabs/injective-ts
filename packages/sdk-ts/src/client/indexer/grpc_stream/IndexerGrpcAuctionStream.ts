@@ -14,6 +14,9 @@ export type BidsStreamCallback = (
   >,
 ) => void
 
+/**
+ * @category Indexer Grpc Stream
+ */
 export class IndexerGrpcAuctionStream {
   protected client: InjectiveAuctionRPCClient
 

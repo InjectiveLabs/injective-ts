@@ -1,6 +1,9 @@
 import { objectKeysToEip712Types, TypedDataField } from './eip712'
 import { prepareSignBytes } from './utils'
 
+/**
+ * @category Messages
+ */
 export abstract class MsgBase<
   Params,
   DataRepresentation,
@@ -31,7 +34,7 @@ export abstract class MsgBase<
   }
 
   public toEip712Types(): Map<string, TypedDataField[]> {
-    return objectKeysToEip712Types(this.toAmino())
+    return objectKeysToEip712Types(this.toAmino() as Record<string, any>)
   }
 
   public toEip712(): {

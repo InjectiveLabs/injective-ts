@@ -19,6 +19,9 @@ import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcGovApi extends BaseConsumer {
   async fetchModuleParams() {
     const paramTypes = ['voting', 'deposit', 'tallying']

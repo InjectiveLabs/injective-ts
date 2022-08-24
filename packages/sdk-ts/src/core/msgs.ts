@@ -36,6 +36,9 @@ import MsgExec from './wasm/msgs/MsgExec'
 import MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract'
 import { MsgSubmitProposal } from './gov'
 
+/**
+ * @category Messages
+ */
 export type Msgs =
   | MsgBid
   | MsgGrant
@@ -75,6 +78,9 @@ export type Msgs =
   | MsgCancelBinaryOptionsOrder
   | MsgBatchCancelBinaryOptionsOrders
 
+/**
+ * @category Messages
+ */
 export type ExchangeMsgs =
   | MsgBatchCancelDerivativeOrders
   | MsgBatchCancelSpotOrders

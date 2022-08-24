@@ -32,6 +32,9 @@ export declare namespace MsgBeginRedelegate {
   export type Proto = BaseMsgBeginRedelegate
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgBeginRedelegate extends MsgBase<
   MsgBeginRedelegate.Params,
   MsgBeginRedelegate.Data,

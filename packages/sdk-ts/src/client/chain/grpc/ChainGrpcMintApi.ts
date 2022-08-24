@@ -12,6 +12,9 @@ import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcMintApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryMintParamsRequest()

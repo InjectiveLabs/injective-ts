@@ -14,6 +14,9 @@ export type OraclePriceStreamCallback = (
   >,
 ) => void
 
+/**
+ * @category Indexer Grpc Stream
+ */
 export class IndexerGrpcOracleStream {
   protected client: InjectiveOracleRPCClient
 

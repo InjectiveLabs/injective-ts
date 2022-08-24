@@ -23,6 +23,9 @@ import {
   GrpcTradingReward,
 } from '../types/account'
 
+/**
+ * @category Exchange Grpc Transformer
+ */
 export class ExchangeGrpcAccountTransformer {
   static accountPortfolioResponseToAccountPortfolio(
     response: PortfolioResponse,

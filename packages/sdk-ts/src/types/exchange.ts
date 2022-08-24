@@ -1,3 +1,5 @@
+import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+
 export enum TradeExecutionType {
   Market = 'market',
   LimitFill = 'limitFill',
@@ -16,3 +18,16 @@ export enum TradeDirection {
   Long = 'long',
   Short = 'short',
 }
+
+export enum OrderMask {
+  Unused = 0,
+  Any = 1,
+  Regular = 2,
+  Conditional = 4,
+  DirectionBuyOrHigher = 8,
+  DirectionSellOrLower = 16,
+  TypeMarket = 32,
+  TypeLimit = 64,
+}
+
+export { OrderMaskMap }

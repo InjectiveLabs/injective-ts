@@ -5,6 +5,10 @@ import { IndexerGrpcOracleStream } from './grpc_stream/IndexerGrpcOracleStream'
 import { IndexerGrpcSpotStream } from './grpc_stream/IndexerGrpcSpotStream'
 import { IndexerGrpcExplorerStream } from './grpc_stream/IndexerGrpcExplorerStream'
 
+/**
+ * @category Indexer Grpc API
+ * @hidden
+ */
 export class IndexerGrpcStreamClient {
   derivatives: IndexerGrpcDerivativesStream
 

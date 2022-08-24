@@ -42,6 +42,9 @@ const addMarginToPosition = (params: MsgIncreasePositionMargin.Params) => {
   return message
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgIncreasePositionMargin extends MsgBase<
   MsgIncreasePositionMargin.Params,
   MsgIncreasePositionMargin.Data,

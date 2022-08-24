@@ -65,6 +65,9 @@ const createMarketOrder = (
   return message
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
   MsgCreateBinaryOptionsMarketOrder.Params,
   MsgCreateBinaryOptionsMarketOrder.Data,

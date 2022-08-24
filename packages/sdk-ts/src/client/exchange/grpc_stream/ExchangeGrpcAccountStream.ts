@@ -14,6 +14,9 @@ export type BalanceStreamCallback = (
   >,
 ) => void
 
+/**
+ * @category Exchange Grpc Stream
+ */
 export class ExchangeGrpcAccountStream {
   protected client: InjectiveAccountsRPCClient
 

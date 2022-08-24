@@ -24,6 +24,9 @@ export type TransactionsStreamCallback = (
   >,
 ) => void
 
+/**
+ * @category Indexer Grpc Stream
+ */
 export class IndexerGrpcExplorerStream {
   protected client: InjectiveExplorerRPCClient
 

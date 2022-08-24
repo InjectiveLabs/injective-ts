@@ -27,6 +27,9 @@ import {
   QueryPositionsResponse,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
 
+/**
+ * @category Chain Grpc Transformer
+ */
 export class ChainGrpcExchangeTransformer {
   static moduleParamsResponseToParams(
     response: QueryExchangeParamsResponse,
