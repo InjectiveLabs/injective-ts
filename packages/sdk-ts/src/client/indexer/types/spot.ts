@@ -55,6 +55,8 @@ export interface SpotLimitOrder {
   unfilledQuantity: string
   triggerPrice: string
   feeRecipient: string
+  createdAt: number
+  updatedAt: number
 }
 
 // TODO: Implement pagination once Indexer supports it.

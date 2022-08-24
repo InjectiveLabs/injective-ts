@@ -26,7 +26,7 @@ import {
   GrpcBinaryOptionsMarketInfo,
   BinaryOptionsMarket,
   GrpcDerivativeOrderHistory,
-  DerivativeOrderHistory
+  DerivativeOrderHistory,
 } from '../types/derivatives'
 import {
   GrpcPriceLevel,
@@ -46,7 +46,7 @@ import {
   TradesResponse as DerivativeTradesResponse,
   PositionsResponse as DerivativePositionsResponse,
   OrderbooksResponse as DerivativeOrderbooksResponse,
-  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse
+  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
 import {
   BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
@@ -147,11 +147,16 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
-  static orderHistoryResponseToOrderHistory(response: DerivativeOrdersHistoryResponse) {
+  static orderHistoryResponseToOrderHistory(
+    response: DerivativeOrdersHistoryResponse,
+  ) {
     const orderHistory = response.getOrdersList()
 
     return {
-      orderHistory: IndexerGrpcDerivativeTransformer.grpcOrderHistoryListToOrderHistoryList(orderHistory)
+      orderHistory:
+        IndexerGrpcDerivativeTransformer.grpcOrderHistoryListToOrderHistoryList(
+          orderHistory,
+        ),
     }
   }
 
@@ -397,6 +402,13 @@ export class IndexerGrpcDerivativeTransformer {
       triggerPrice: order.getTriggerPrice(),
       feeRecipient: order.getFeeRecipient(),
       state: order.getState() as DerivativeOrderState,
+      createdAt: order.getCreatedAt(),
+      updatedAt: order.getUpdatedAt(),
+      orderNumber: order.getOrderNumber(),
+      orderType: order.getOrderType(),
+      isConditional: order.getIsConditional(),
+      triggerAt: order.getTriggerAt(),
+      placedOrderHash: order.getPlacedOrderHash(),
     }
   }
 
@@ -434,10 +446,12 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static grpcOrderHistoryListToOrderHistoryList(
-    orderHistory: GrpcDerivativeOrderHistory[]
+    orderHistory: GrpcDerivativeOrderHistory[],
   ): DerivativeOrderHistory[] {
     return orderHistory.map((orderHistory) =>
-      IndexerGrpcDerivativeTransformer.grpcOrderHistoryToOrderHistory(orderHistory),
+      IndexerGrpcDerivativeTransformer.grpcOrderHistoryToOrderHistory(
+        orderHistory,
+      ),
     )
   }
 

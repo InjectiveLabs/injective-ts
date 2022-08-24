@@ -207,6 +207,8 @@ export class IndexerGrpcSpotTransformer {
       unfilledQuantity: order.getUnfilledQuantity(),
       triggerPrice: order.getTriggerPrice(),
       feeRecipient: order.getFeeRecipient(),
+      createdAt: order.getCreatedAt(),
+      updatedAt: order.getUpdatedAt(),
     }
   }
 
