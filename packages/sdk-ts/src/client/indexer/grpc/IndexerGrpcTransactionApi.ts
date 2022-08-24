@@ -38,7 +38,7 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     message: any
     estimateGas?: boolean
     gasLimit?: number
-    memo?: string
+    memo?: string | number
     timeoutHeight?: number
     feeDenom?: string
     feePrice?: string
@@ -69,7 +69,9 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     }
 
     if (memo) {
-      prepareTxRequest.setMemo(memo)
+      prepareTxRequest.setMemo(
+        typeof memo === 'number' ? memo.toString() : memo,
+      )
     }
 
     try {
@@ -102,7 +104,7 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     message: any
     estimateGas?: boolean
     gasLimit?: number
-    memo?: string
+    memo?: string | number
     feeDenom?: string
     feePrice?: string
     timeoutHeight?: number
@@ -138,7 +140,9 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     }
 
     if (memo) {
-      prepareTxRequest.setMemo(memo)
+      prepareTxRequest.setMemo(
+        typeof memo === 'number' ? memo.toString() : memo,
+      )
     }
 
     try {
