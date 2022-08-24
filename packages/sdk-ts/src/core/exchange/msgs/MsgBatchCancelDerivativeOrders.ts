@@ -3,6 +3,7 @@ import {
   MsgBatchCancelDerivativeOrders as BaseMsgBatchCancelDerivativeOrders,
   OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { OrderMask } from '../../../types/exchange'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -61,10 +62,9 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
       orderData.setMarketId(order.marketId)
       orderData.setOrderHash(order.orderHash)
       orderData.setSubaccountId(order.subaccountId)
-
-      if (order.orderMask !== undefined) {
-        orderData.setOrderMask(order.orderMask)
-      }
+      orderData.setOrderMask(
+        order.orderMask !== undefined ? order.orderMask : OrderMask.Any,
+      )
 
       return orderData
     })
@@ -87,16 +87,9 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
 
   public toAmino(): MsgBatchCancelDerivativeOrders.Amino {
     const proto = this.toProto()
-    const orderData = proto.getDataList().map((orderData) => {
-      const object = orderData.toObject()
-
-      if (orderData.getOrderMask() === 0) {
-        // @ts-ignore TODO remove on chain upgrade
-        delete object.orderMask
-      }
-
-      return snakeCaseKeys(object)
-    })
+    const orderData = proto
+      .getDataList()
+      .map((orderData) => snakeCaseKeys(orderData.toObject()))
 
     return {
       type: 'exchange/MsgBatchCancelDerivativeOrders',

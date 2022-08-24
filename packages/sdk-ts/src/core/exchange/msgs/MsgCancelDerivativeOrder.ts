@@ -1,5 +1,6 @@
 import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgCancelDerivativeOrder as BaseMsgCancelDerivativeOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { OrderMask } from '../../../types/exchange'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgCancelDerivativeOrder {
@@ -31,9 +32,6 @@ export declare namespace MsgCancelDerivativeOrder {
   export type Proto = BaseMsgCancelDerivativeOrder
 }
 
-/**
- * @category Messages
- */
 export default class MsgCancelDerivativeOrder extends MsgBase<
   MsgCancelDerivativeOrder.Params,
   MsgCancelDerivativeOrder.Data,
@@ -55,10 +53,9 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
     message.setMarketId(params.marketId)
     message.setOrderHash(params.orderHash)
     message.setSubaccountId(params.subaccountId)
-
-    if (params.orderMask !== undefined) {
-      message.setOrderMask(params.orderMask)
-    }
+    message.setOrderMask(
+      params.orderMask !== undefined ? params.orderMask : OrderMask.Any,
+    )
 
     return message
   }
@@ -74,16 +71,10 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
 
   public toAmino(): MsgCancelDerivativeOrder.Amino {
     const proto = this.toProto()
-    const object = proto.toObject()
-
-    if (object.orderMask === 0) {
-      // @ts-ignore TODO remove on chain upgrade
-      delete object.orderMask
-    }
 
     return {
       type: 'exchange/MsgCancelDerivativeOrder',
-      ...object,
+      ...proto.toObject(),
     }
   }
 
