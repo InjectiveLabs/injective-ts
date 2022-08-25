@@ -191,9 +191,9 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       request.setOrderSide(orderSide)
     }
 
-    request.setIsConditional(
-      isConditional !== undefined ? (isConditional ? 'true' : 'false') : '',
-    )
+    if (isConditional !== undefined) {
+      request.setIsConditional(isConditional ? 'true' : 'false')
+    }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
@@ -257,9 +257,9 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       request.setDirection(direction)
     }
 
-    request.setIsConditional(
-      isConditional !== undefined ? (isConditional ? 'true' : 'false') : '',
-    )
+    if (isConditional !== undefined) {
+      request.setIsConditional(isConditional ? 'true' : 'false')
+    }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
