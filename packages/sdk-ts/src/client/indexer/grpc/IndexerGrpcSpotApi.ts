@@ -134,6 +134,12 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       request.setOrderSide(orderSide)
     }
 
+    // TODO: Implement this once indexer supports spot conditional orders.
+
+    // request.setIsConditional(
+      // isConditional === undefined ? '' : isConditional ? 'true' : 'false'
+    // )
+
     if (pagination) {
       if (pagination.skip !== undefined) {
         request.setSkip(pagination.skip)
