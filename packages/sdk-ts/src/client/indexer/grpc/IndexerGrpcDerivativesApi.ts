@@ -283,7 +283,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.OrdersHistory)
 
       return IndexerGrpcDerivativeTransformer.orderHistoryResponseToOrderHistory(
-        response
+        response,
       )
     } catch (e: any) {
       throw new Error(e.message)

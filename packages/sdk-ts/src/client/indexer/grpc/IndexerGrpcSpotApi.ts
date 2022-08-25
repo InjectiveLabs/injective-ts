@@ -137,7 +137,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     // TODO: Implement this once indexer supports spot conditional orders.
 
     // request.setIsConditional(
-      // isConditional === undefined ? '' : isConditional ? 'true' : 'false'
+    // isConditional === undefined ? '' : isConditional ? 'true' : 'false'
     // )
 
     if (pagination) {
@@ -223,7 +223,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.OrdersHistory)
 
       return IndexerGrpcSpotTransformer.orderHistoryResponseToOrderHistory(
-        response
+        response,
       )
     } catch (e: any) {
       throw new Error(e.message)

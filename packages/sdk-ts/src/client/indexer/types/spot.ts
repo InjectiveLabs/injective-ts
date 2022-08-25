@@ -55,6 +55,8 @@ export interface SpotLimitOrder {
   unfilledQuantity: string
   triggerPrice: string
   feeRecipient: string
+  createdAt: number
+  updatedAt: number
 }
 
 export interface SpotOrderHistory {
