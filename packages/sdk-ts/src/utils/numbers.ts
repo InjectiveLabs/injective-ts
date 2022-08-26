@@ -511,3 +511,9 @@ export const getDecimalsFromNumber = (number: number | string): number => {
     ? UI_DEFAULT_MAX_DISPLAY_DECIMALS
     : actualDecimals
 }
+
+export const getTriggerPrice = (triggerPrice?: number | string) => {
+  return triggerPrice
+    ? amountToCosmosSdkDecAmount(triggerPrice || 0).toFixed()
+    : ''
+}

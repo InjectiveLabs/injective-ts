@@ -5,7 +5,10 @@ import {
   OrderTypeMap,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase'
-import { amountToCosmosSdkDecAmount } from '../../../utils/numbers'
+import {
+  amountToCosmosSdkDecAmount,
+  getTriggerPrice,
+} from '../../../utils/numbers'
 
 export declare namespace MsgCreateBinaryOptionsMarketOrder {
   export interface Params {
@@ -56,7 +59,7 @@ const createMarketOrder = (
   derivativeOrder.setOrderInfo(orderInfo)
   derivativeOrder.setMargin(params.margin)
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
+  derivativeOrder.setTriggerPrice(params.triggerPrice || '')
 
   const message = new BaseMsgCreateBinaryOptionsMarketOrder()
   message.setSender(params.injectiveAddress)
@@ -87,9 +90,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
       ...initialParams,
       price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
       margin: amountToCosmosSdkDecAmount(initialParams.margin).toFixed(),
-      triggerPrice: amountToCosmosSdkDecAmount(
-        initialParams.triggerPrice || 0,
-      ).toFixed(),
+      triggerPrice: getTriggerPrice(initialParams.triggerPrice),
       quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
     } as MsgCreateBinaryOptionsMarketOrder.Params
 
