@@ -85,12 +85,14 @@ export class IndexerGrpcSpotTransformer {
     response: SpotOrdersHistoryResponse,
   ) {
     const orderHistory = response.getOrdersList()
+    const pagination = response.getPaging()
 
     return {
       orderHistory:
         IndexerGrpcSpotTransformer.grpcOrderHistoryListToOrderHistoryList(
           orderHistory,
         ),
+      pagination: grpcPagingToPaging(pagination),
     }
   }
 
@@ -222,9 +224,19 @@ export class IndexerGrpcSpotTransformer {
     orderHistory: GrpcSpotOrderHistory,
   ): SpotOrderHistory {
     return {
-      subaccountId: orderHistory.getSubaccountId(),
+      orderHash: orderHistory.getOrderHash(),
       marketId: orderHistory.getMarketId(),
+      active: orderHistory.getIsActive(),
+      subaccountId: orderHistory.getSubaccountId(),
+      executionType: orderHistory.getExecutionType(),
       orderType: orderHistory.getOrderType(),
+      price: orderHistory.getPrice(),
+      triggerPrice: orderHistory.getTriggerPrice(),
+      quantity: orderHistory.getQuantity(),
+      filledQuantity: orderHistory.getFilledQuantity(),
+      state: orderHistory.getState(),
+      createdAt: orderHistory.getCreatedAt(),
+      updatedAt: orderHistory.getUpdatedAt(),
       direction: orderHistory.getDirection(),
     }
   }

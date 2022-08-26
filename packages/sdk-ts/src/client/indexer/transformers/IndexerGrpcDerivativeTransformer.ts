@@ -151,12 +151,14 @@ export class IndexerGrpcDerivativeTransformer {
     response: DerivativeOrdersHistoryResponse,
   ) {
     const orderHistory = response.getOrdersList()
+    const pagination = response.getPaging()
 
     return {
       orderHistory:
         IndexerGrpcDerivativeTransformer.grpcOrderHistoryListToOrderHistoryList(
           orderHistory,
         ),
+      pagination: grpcPagingToPaging(pagination),
     }
   }
 
@@ -467,6 +469,7 @@ export class IndexerGrpcDerivativeTransformer {
       liquidationPrice: position.getLiquidationPrice(),
       markPrice: position.getMarkPrice(),
       ticker: position.getTicker(),
+      updatedAt: position.getUpdatedAt(),
     }
   }
 
