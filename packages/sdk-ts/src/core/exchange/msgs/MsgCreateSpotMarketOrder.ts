@@ -53,9 +53,7 @@ const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
   spotOrder.setOrderType(params.orderType)
   spotOrder.setOrderInfo(orderInfo)
 
-  if (params.triggerPrice) {
-    spotOrder.setTriggerPrice(params.triggerPrice || '0')
-  }
+  spotOrder.setTriggerPrice(params.triggerPrice || '0')
 
   const message = new BaseMsgCreateSpotMarketOrder()
   message.setSender(params.injectiveAddress)

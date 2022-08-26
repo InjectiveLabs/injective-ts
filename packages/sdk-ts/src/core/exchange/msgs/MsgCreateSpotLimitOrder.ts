@@ -54,9 +54,7 @@ const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
   spotOrder.setOrderType(params.orderType)
   spotOrder.setOrderInfo(orderInfo)
 
-  if (params.triggerPrice) {
-    spotOrder.setTriggerPrice(params.triggerPrice || '0')
-  }
+  spotOrder.setTriggerPrice(params.triggerPrice || '0')
 
   const message = new BaseMsgCreateSpotLimitOrder()
   message.setSender(params.injectiveAddress)
