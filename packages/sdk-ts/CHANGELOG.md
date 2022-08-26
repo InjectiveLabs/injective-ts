@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.105](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.104...@injectivelabs/sdk-ts@1.0.105) (2022-08-26)
+
+
+### Bug Fixes
+
+* trigger price ([9a9294b](https://github.com/InjectiveLabs/injective-ts/commit/9a9294b46ea3b40125ae597ef3b1f07ab893412a))
+
+
+
+
+
 ## [1.0.104](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.103...@injectivelabs/sdk-ts@1.0.104) (2022-08-26)
 
 
