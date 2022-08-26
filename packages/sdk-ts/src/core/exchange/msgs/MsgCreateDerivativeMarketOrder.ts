@@ -56,7 +56,7 @@ const createMarketOrder = (params: MsgCreateDerivativeMarketOrder.Params) => {
   derivativeOrder.setOrderInfo(orderInfo)
   derivativeOrder.setMargin(params.margin)
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '')
+  derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
 
   const message = new BaseMsgCreateDerivativeMarketOrder()
   message.setSender(params.injectiveAddress)

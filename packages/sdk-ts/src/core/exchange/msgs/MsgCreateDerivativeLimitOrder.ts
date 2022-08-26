@@ -55,7 +55,7 @@ const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
   derivativeOrder.setOrderInfo(orderInfo)
   derivativeOrder.setMargin(params.margin)
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '')
+  derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
 
   const message = new BaseMsgCreateDerivativeLimitOrder()
   message.setSender(params.injectiveAddress)
