@@ -56,7 +56,9 @@ const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
   derivativeOrder.setOrderInfo(orderInfo)
   derivativeOrder.setMargin(params.margin)
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '')
+  if (params.triggerPrice) {
+    derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
+  }
 
   const message = new BaseMsgCreateBinaryOptionsLimitOrder()
   message.setSender(params.injectiveAddress)

@@ -59,7 +59,9 @@ const createMarketOrder = (
   derivativeOrder.setOrderInfo(orderInfo)
   derivativeOrder.setMargin(params.margin)
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '')
+  if (params.triggerPrice) {
+    derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
+  }
 
   const message = new BaseMsgCreateBinaryOptionsMarketOrder()
   message.setSender(params.injectiveAddress)
