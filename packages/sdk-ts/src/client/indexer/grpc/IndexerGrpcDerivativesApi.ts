@@ -160,11 +160,18 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     marketId?: string
     marketIds?: string[]
     orderSide?: DerivativeOrderSide
+    isConditional?: boolean
     subaccountId?: string
     pagination?: PaginationOption
   }) {
-    const { marketId, marketIds, subaccountId, orderSide, pagination } =
-      params || {}
+    const {
+      marketId,
+      marketIds,
+      subaccountId,
+      orderSide,
+      isConditional,
+      pagination,
+    } = params || {}
 
     const request = new DerivativeOrdersRequest()
 
@@ -182,6 +189,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
     if (orderSide) {
       request.setOrderSide(orderSide)
+    }
+
+    if (isConditional !== undefined) {
+      request.setIsConditional(isConditional ? 'true' : 'false')
     }
 
     if (pagination) {
@@ -214,13 +225,19 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   async fetchOrderHistory(params?: {
     subaccountId?: string
     marketId?: string
-    orderType?: DerivativeOrderSide
+    orderTypes?: DerivativeOrderSide[]
     direction?: TradeDirection
     isConditional?: boolean
     pagination?: PaginationOption
   }) {
-    const { subaccountId, marketId, orderType, direction, isConditional, pagination } =
-      params || {}
+    const {
+      subaccountId,
+      marketId,
+      orderTypes,
+      direction,
+      isConditional,
+      pagination,
+    } = params || {}
 
     const request = new DerivativeOrdersHistoryRequest()
 
@@ -232,16 +249,16 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       request.setMarketId(marketId)
     }
 
-    if (orderType) {
-      request.setOrderType(orderType)
+    if (orderTypes) {
+      request.setOrderTypesList(orderTypes)
     }
 
     if (direction) {
       request.setDirection(direction)
     }
 
-    if (isConditional) {
-      request.setIsConditional(isConditional)
+    if (isConditional !== undefined) {
+      request.setIsConditional(isConditional ? 'true' : 'false')
     }
 
     if (pagination) {
@@ -266,9 +283,9 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.OrdersHistory)
 
       return IndexerGrpcDerivativeTransformer.orderHistoryResponseToOrderHistory(
-        response
+        response,
       )
-    } catch(e: any) {
+    } catch (e: any) {
       throw new Error(e.message)
     }
   }

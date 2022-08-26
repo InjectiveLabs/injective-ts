@@ -53,7 +53,8 @@ export interface Position {
   liquidationPrice: string
   markPrice: string
   ticker: string
-  aggregateReduceOnlyQuantity: string
+  aggregateReduceOnlyQuantity: string,
+  updatedAt: number
 }
 
 export interface PerpetualMarketInfo {
