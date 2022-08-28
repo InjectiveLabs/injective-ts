@@ -1,4 +1,4 @@
-export interface UiMarketsHistory {
+export interface UiMarketHistory {
   marketId: string
   resolution: string
   time: number[]

@@ -1,9 +1,9 @@
 import { AllChronosMarketHistory } from '@injectivelabs/sdk-ts'
-import { UiMarketsHistory } from '../types/markets-history-rest'
+import { UiMarketHistory } from '../types/markets-history-rest'
 export class UiMarketsHistoryTransformer {
   static marketsHistoryToUiMarketsHistory(
     marketsHistory: AllChronosMarketHistory[],
-  ): UiMarketsHistory[] {
+  ): UiMarketHistory[] {
     return marketsHistory.map((m) => {
       return {
         marketId: m.marketID,
