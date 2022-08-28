@@ -1,5 +1,5 @@
 export type AllChronosMarketHistory = {
-  marketId: string
+  marketID: string
   resolution: string
   t: number[]
   v: number[]
