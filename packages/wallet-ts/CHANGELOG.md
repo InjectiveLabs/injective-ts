@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.61...@injectivelabs/wallet-ts@1.0.62) (2022-08-26)
+
+
+### Features
+
+* leap wallet support ([0a9569d](https://github.com/InjectiveLabs/injective-ts/commit/0a9569d558d153209bc87cbb14f08be8025eaf60))
+
+
+
+
+
+## [1.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.60...@injectivelabs/wallet-ts@1.0.61) (2022-08-23)
+
+
+### Bug Fixes
+
+* orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
+
+
+
+
+
 ## [1.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.59...@injectivelabs/wallet-ts@1.0.60) (2022-08-23)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

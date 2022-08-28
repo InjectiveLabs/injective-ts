@@ -41,6 +41,9 @@ export type PositionsStreamCallback = (
 
 export type MarketStreamCallback = (response: StreamMarketResponse) => void
 
+/**
+ * @category Exchange Grpc Stream
+ */
 export class ExchangeGrpcDerivativesStream {
   protected client: InjectiveDerivativeExchangeRPCClient
 

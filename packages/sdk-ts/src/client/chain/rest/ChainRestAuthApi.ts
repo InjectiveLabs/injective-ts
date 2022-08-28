@@ -1,6 +1,9 @@
 import BaseRestConsumer from '../../BaseRestConsumer'
 import { AccountResponse, RestApiResponse } from './../types/auth-rest'
 
+/**
+ * @category Chain Rest API
+ */
 export class ChainRestAuthApi extends BaseRestConsumer {
   /**
    * Looks up the account information for the Injective address.

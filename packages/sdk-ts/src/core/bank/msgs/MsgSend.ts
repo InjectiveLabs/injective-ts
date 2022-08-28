@@ -33,6 +33,9 @@ export declare namespace MsgSend {
   export type Proto = BaseMsgSend
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgSend extends MsgBase<
   MsgSend.Params,
   MsgSend.Data,

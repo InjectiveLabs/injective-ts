@@ -10,6 +10,9 @@ import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { uint8ArrayToString } from '../../../utils'
 import { Account, AuthModuleParams, EthAccount } from '../types/auth'
 
+/**
+ * @category Chain Grpc Transformer
+ */
 export class ChainGrpcAuthTransformer {
   static moduleParamsResponseToModuleParams(
     response: QueryParamsResponse,

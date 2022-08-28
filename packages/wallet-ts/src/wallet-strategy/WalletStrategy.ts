@@ -14,6 +14,7 @@ import {
   WalletStrategyArguments,
 } from './types'
 import Keplr from './strategies/Keplr'
+import Leap from './strategies/Leap'
 import Trezor from './strategies/Trezor'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
@@ -48,6 +49,8 @@ const createWallet = ({
       return new Trezor({ ...args, web3 })
     case Wallet.Torus:
       return new Torus({ ...args, web3 })
+    case Wallet.Leap:
+      return new Leap({ ...args, web3 })
     case Wallet.WalletConnect:
       return new WalletConnect({ ...args, walletOptions: args.options })
     default:

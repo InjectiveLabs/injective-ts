@@ -37,6 +37,9 @@ import {
 } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
 import { grpcPagingToPaging } from '../../../utils'
 
+/**
+ * @category Indexer Grpc Transformer
+ */
 export class IndexerGrpcExplorerTransformer {
   static getTxByTxHashResponseToTx(tx: GetTxByTxHashResponse): Transaction {
     return IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(tx)

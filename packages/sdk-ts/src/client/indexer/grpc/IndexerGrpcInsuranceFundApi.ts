@@ -8,6 +8,9 @@ import { InjectiveInsuranceRPC } from '@injectivelabs/indexer-api/injective_insu
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers'
 
+/**
+ * @category Indexer Grpc API
+ */
 export class IndexerGrpcInsuranceFundApi extends BaseConsumer {
   async fetchRedemptions({
     denom,

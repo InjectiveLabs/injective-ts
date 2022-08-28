@@ -18,6 +18,9 @@ import {
 import { fromUtf8 } from '../../../utils'
 import { grpcPaginationToPagination } from './../../../utils/pagination'
 
+/**
+ * @category Chain Grpc Transformer
+ */
 export class ChainGrpcWasmTransformer {
   static allContractStateResponseToContractAccountsBalanceWithPagination(
     response: QueryAllContractStateResponse,

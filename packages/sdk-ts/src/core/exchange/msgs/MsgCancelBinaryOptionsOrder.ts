@@ -1,6 +1,7 @@
 import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgCancelBinaryOptionsOrder as BaseMsgCancelBinaryOptionsOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
+import { OrderMask } from '../../../types/exchange'
 
 export declare namespace MsgCancelBinaryOptionsOrder {
   export interface Params {
@@ -31,6 +32,9 @@ export declare namespace MsgCancelBinaryOptionsOrder {
   export type Proto = BaseMsgCancelBinaryOptionsOrder
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgCancelBinaryOptionsOrder extends MsgBase<
   MsgCancelBinaryOptionsOrder.Params,
   MsgCancelBinaryOptionsOrder.Data,
@@ -52,6 +56,9 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     message.setMarketId(params.marketId)
     message.setOrderHash(params.orderHash)
     message.setSubaccountId(params.subaccountId)
+    message.setOrderMask(
+      params.orderMask !== undefined ? params.orderMask : OrderMask.Any,
+    )
 
     return message
   }

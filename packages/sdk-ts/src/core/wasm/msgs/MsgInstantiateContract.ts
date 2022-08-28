@@ -37,6 +37,9 @@ export declare namespace MsgInstantiateContract {
   export type Proto = BaseMsgInstantiateContract
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgInstantiateContract extends MsgBase<
   MsgInstantiateContract.Params,
   MsgInstantiateContract.Data,

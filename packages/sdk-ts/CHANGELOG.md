@@ -3,6 +3,125 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.108](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.107...@injectivelabs/sdk-ts@1.0.108) (2022-08-26)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.107](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.106...@injectivelabs/sdk-ts@1.0.107) (2022-08-26)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.106](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.105...@injectivelabs/sdk-ts@1.0.106) (2022-08-26)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.105](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.104...@injectivelabs/sdk-ts@1.0.105) (2022-08-26)
+
+
+### Bug Fixes
+
+* trigger price ([9a9294b](https://github.com/InjectiveLabs/injective-ts/commit/9a9294b46ea3b40125ae597ef3b1f07ab893412a))
+
+
+
+
+
+## [1.0.104](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.103...@injectivelabs/sdk-ts@1.0.104) (2022-08-26)
+
+
+### Bug Fixes
+
+* snakecase fields ([96b5b47](https://github.com/InjectiveLabs/injective-ts/commit/96b5b4763f9b672e1b8e9b7782fce36671e0edd7))
+
+
+### Features
+
+* order history ([#65](https://github.com/InjectiveLabs/injective-ts/issues/65)) ([c179735](https://github.com/InjectiveLabs/injective-ts/commit/c179735d5b3f7168a017073720721332e44319cb))
+
+
+
+
+
+## [1.0.103](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.102...@injectivelabs/sdk-ts@1.0.103) (2022-08-25)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.102](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.101...@injectivelabs/sdk-ts@1.0.102) (2022-08-24)
+
+
+### Features
+
+* update order object ([2857701](https://github.com/InjectiveLabs/injective-ts/commit/2857701d89c94db9e2377e4efc7f970bdb58fb0c))
+
+
+
+
+
+## [1.0.101](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.100...@injectivelabs/sdk-ts@1.0.101) (2022-08-24)
+
+
+### Bug Fixes
+
+* memo as a number ([1ce2d9c](https://github.com/InjectiveLabs/injective-ts/commit/1ce2d9c897b0dcc134410056d53dd72b0b231449))
+
+
+
+
+
+## [1.0.100](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.99...@injectivelabs/sdk-ts@1.0.100) (2022-08-24)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.99](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.98...@injectivelabs/sdk-ts@1.0.99) (2022-08-24)
+
+
+### Bug Fixes
+
+* orderMask field ([9670e1e](https://github.com/InjectiveLabs/injective-ts/commit/9670e1ecb0621a73aa75c7df37b9c5bf27dc9828))
+
+
+
+
+
+## [1.0.98](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.97...@injectivelabs/sdk-ts@1.0.98) (2022-08-24)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.97](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.96...@injectivelabs/sdk-ts@1.0.97) (2022-08-23)
+
+
+### Bug Fixes
+
+* orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
+
+
+
+
+
 ## [1.0.96](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.95...@injectivelabs/sdk-ts@1.0.96) (2022-08-23)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

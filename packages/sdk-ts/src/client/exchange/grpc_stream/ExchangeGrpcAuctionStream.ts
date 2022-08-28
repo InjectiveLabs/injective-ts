@@ -14,6 +14,9 @@ export type BidsStreamCallback = (
   >,
 ) => void
 
+/**
+ * @category Exchange Grpc Stream
+ */
 export class ExchangeGrpcAuctionStream {
   protected client: InjectiveAuctionRPCClient
 

@@ -45,6 +45,9 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
   export type Proto = BaseMsgInstantBinaryOptionsMarketLaunch
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
   MsgInstantBinaryOptionsMarketLaunch.Params,
   MsgInstantBinaryOptionsMarketLaunch.Data,

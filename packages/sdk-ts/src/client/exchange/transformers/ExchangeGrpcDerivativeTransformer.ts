@@ -57,6 +57,9 @@ const zeroPositionDelta = () => ({
   executionMargin: '0',
 })
 
+/**
+ * @category Exchange Grpc Transformer
+ */
 export class ExchangeGrpcDerivativeTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,
@@ -161,7 +164,9 @@ export class ExchangeGrpcDerivativeTransformer {
   ) {
     const fundingPayments = response.getPaymentsList()
 
-    return ExchangeGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(fundingPayments)
+    return ExchangeGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(
+      fundingPayments,
+    )
   }
 
   static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {

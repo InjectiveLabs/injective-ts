@@ -3,6 +3,7 @@ import {
   MsgBatchCancelBinaryOptionsOrders as BaseMsgBatchCancelBinaryOptionsOrders,
   OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { OrderMask } from '../../../types/exchange'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -38,6 +39,9 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
   export type Proto = BaseMsgBatchCancelBinaryOptionsOrders
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
   MsgBatchCancelBinaryOptionsOrders.Params,
   MsgBatchCancelBinaryOptionsOrders.Data,
@@ -59,6 +63,9 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
       orderData.setMarketId(order.marketId)
       orderData.setOrderHash(order.orderHash)
       orderData.setSubaccountId(order.subaccountId)
+      orderData.setOrderMask(
+        order.orderMask !== undefined ? order.orderMask : OrderMask.Any,
+      )
 
       return orderData
     })

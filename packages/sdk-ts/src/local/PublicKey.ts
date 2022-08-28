@@ -8,6 +8,9 @@ import { Address } from '../classes'
 import EthCrypto from 'eth-crypto'
 import { keccak256 } from 'js-sha3'
 
+/**
+ * @category Crypto Utility Classes
+ */
 export class PublicKey {
   private type: string
 

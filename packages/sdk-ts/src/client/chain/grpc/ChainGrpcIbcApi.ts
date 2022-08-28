@@ -7,6 +7,9 @@ import {
 } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcIbcApi extends BaseConsumer {
   async fetchDenomTrace(hash: string) {
     const request = new QueryDenomTraceRequest()

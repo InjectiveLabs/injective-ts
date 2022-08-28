@@ -12,6 +12,9 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcDistributionTransformer } from '../transformers'
 import { ValidatorRewards } from '../types'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcDistributionApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryDistributionParamsRequest()

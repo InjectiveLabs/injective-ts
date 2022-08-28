@@ -34,6 +34,9 @@ export declare namespace MsgInstantSpotMarketLaunch {
   export type Proto = BaseMsgInstantSpotMarketLaunch
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgInstantSpotMarketLaunch extends MsgBase<
   MsgInstantSpotMarketLaunch.Params,
   MsgInstantSpotMarketLaunch.Data,

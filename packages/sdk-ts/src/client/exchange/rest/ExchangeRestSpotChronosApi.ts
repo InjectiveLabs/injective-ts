@@ -5,6 +5,9 @@ import {
 } from '../types/spot-rest'
 import BaseRestConsumer from '../../BaseRestConsumer'
 
+/**
+ * @category Exchange Chronos API
+ */
 export class ExchangeRestSpotChronosApi extends BaseRestConsumer {
   async fetchMarketSummary(marketId: string) {
     const path = `market_summary`

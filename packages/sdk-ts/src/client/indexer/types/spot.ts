@@ -55,18 +55,25 @@ export interface SpotLimitOrder {
   unfilledQuantity: string
   triggerPrice: string
   feeRecipient: string
+  createdAt: number
+  updatedAt: number
 }
 
-// TODO: Implement pagination once Indexer supports it.
 export interface SpotOrderHistory {
-  subaccountId: string
+  orderHash: string
   marketId: string
-  // skip: number
-  // limit: number
+  active: boolean
+  subaccountId: string
+  executionType: string,
   orderType: string
+  price: string
+  triggerPrice: string
+  quantity: string
+  filledQuantity: string
+  state: string
+  createdAt: number
+  updatedAt: number
   direction: string
-  // startTime: number
-  // endTime: number
 }
 
 export interface SpotTrade extends PriceLevel {

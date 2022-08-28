@@ -6,6 +6,9 @@ import {
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcPeggyTransformer } from '../transformers'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcPeggyApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryPeggyParamsRequest()

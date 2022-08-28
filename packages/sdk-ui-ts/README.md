@@ -26,7 +26,7 @@ yarn add @injectivelabs/sdk-ui-ts
 Reach out to us at one of the following places!
 
 - Website at <a href="https://injective.com" target="_blank">`injective.com`</a>
-- Twitter at <a href="https://twitter.com/InjectiveLabs" target="_blank">`@InjectiveLabs`</a>
+- Twitter at <a href="https://twitter.com/Injective_" target="_blank">`@Injective`</a>
 
 ---
 

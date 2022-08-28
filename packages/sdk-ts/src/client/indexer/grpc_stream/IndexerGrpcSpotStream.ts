@@ -37,6 +37,9 @@ export type SpotTradesStreamCallback = (
   >,
 ) => void
 
+/**
+ * @category Indexer Grpc Stream
+ */
 export class IndexerGrpcSpotStream {
   protected client: InjectiveSpotExchangeRPCClient
 

@@ -11,6 +11,9 @@ import {
   AuctionsResponse,
 } from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
 
+/**
+ * @category Indexer Grpc Transformer
+ */
 export class IndexerGrpcAuctionTransformer {
   static auctionResponseToAuction(response: AuctionResponse): {
     auction: Auction

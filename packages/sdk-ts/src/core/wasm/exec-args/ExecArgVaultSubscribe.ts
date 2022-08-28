@@ -19,6 +19,9 @@ export declare namespace ExecArgVaultSubscribe {
   }
 }
 
+/**
+ * @category Contract Exec Arguments
+ */
 export default class ExecArgVaultSubscribe extends ExecArgsBase<
   ExecArgVaultSubscribe.Params,
   ExecArgVaultSubscribe.Data

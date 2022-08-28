@@ -16,14 +16,14 @@ import {
   TradesRequest,
 } from '@injectivelabs/exchange-api/injective_spot_exchange_rpc_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
-import {
-  TradeExecutionSide,
-  TradeDirection
-} from '../../../types/exchange'
+import { TradeExecutionSide, TradeDirection } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
 import { SpotOrderSide } from '../types/spot'
 import { ExchangeGrpcSpotTransformer } from '../transformers'
 
+/**
+ * @category Exchange Grpc API
+ */
 export class ExchangeGrpcSpotApi extends BaseConsumer {
   async fetchMarkets(params?: {
     baseDenom?: string
@@ -260,13 +260,8 @@ export class ExchangeGrpcSpotApi extends BaseConsumer {
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
-    const {
-      subaccountId,
-      marketId,
-      direction,
-      executionSide,
-      pagination,
-    } = params || {}
+    const { subaccountId, marketId, direction, executionSide, pagination } =
+      params || {}
     const request = new TradesRequest()
 
     if (subaccountId) {

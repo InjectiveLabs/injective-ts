@@ -24,6 +24,9 @@ import { InjectiveExplorerRPC } from '@injectivelabs/exchange-api/injective_expl
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ExchangeGrpcExplorerTransformer } from '../transformers'
 
+/**
+ * @category Exchange Grpc API
+ */
 export class ExchangeGrpcExplorerApi extends BaseConsumer {
   async fetchTxByHash(hash: string) {
     const request = new GetTxByTxHashRequest()

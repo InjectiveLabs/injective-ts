@@ -252,8 +252,6 @@ export const createTransaction = ({
   txRaw.setAuthInfoBytes(authInfo.serializeBinary())
   txRaw.setBodyBytes(body.serializeBinary())
 
-  console.log({ body: body.toObject(), authInfo: authInfo.toObject() })
-
   return {
     txRaw,
     signDoc,

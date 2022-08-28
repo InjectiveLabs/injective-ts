@@ -35,6 +35,9 @@ export declare namespace MsgBatchCancelSpotOrders {
   export type Proto = BaseMsgBatchCancelSpotOrders
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgBatchCancelSpotOrders extends MsgBase<
   MsgBatchCancelSpotOrders.Params,
   MsgBatchCancelSpotOrders.Data,

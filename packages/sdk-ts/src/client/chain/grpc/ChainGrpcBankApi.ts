@@ -14,6 +14,9 @@ import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcBankTransformer } from '../transformers'
 
+/**
+ * @category Chain Grpc API
+ */
 export class ChainGrpcBankApi extends BaseConsumer {
   async fetchModuleParams() {
     const request = new QueryBankParamsRequest()

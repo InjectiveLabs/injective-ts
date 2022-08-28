@@ -36,6 +36,9 @@ export declare namespace MsgGrant {
   export type Proto = BaseMsgGrant
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgGrant extends MsgBase<
   MsgGrant.Params,
   MsgGrant.Data,

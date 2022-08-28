@@ -26,7 +26,7 @@ import {
   GrpcBinaryOptionsMarketInfo,
   BinaryOptionsMarket,
   GrpcDerivativeOrderHistory,
-  DerivativeOrderHistory
+  DerivativeOrderHistory,
 } from '../types/derivatives'
 import {
   GrpcPriceLevel,
@@ -46,7 +46,7 @@ import {
   TradesResponse as DerivativeTradesResponse,
   PositionsResponse as DerivativePositionsResponse,
   OrderbooksResponse as DerivativeOrderbooksResponse,
-  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse
+  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
 import {
   BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
@@ -61,6 +61,9 @@ const zeroPositionDelta = () => ({
   executionMargin: '0',
 })
 
+/**
+ * @category Indexer Grpc Transformer
+ */
 export class IndexerGrpcDerivativeTransformer {
   static grpcTokenMetaToTokenMeta(
     tokenMeta: GrpcTokenMeta | undefined,
@@ -144,11 +147,18 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
-  static orderHistoryResponseToOrderHistory(response: DerivativeOrdersHistoryResponse) {
+  static orderHistoryResponseToOrderHistory(
+    response: DerivativeOrdersHistoryResponse,
+  ) {
     const orderHistory = response.getOrdersList()
+    const pagination = response.getPaging()
 
     return {
-      orderHistory: IndexerGrpcDerivativeTransformer.grpcOrderHistoryListToOrderHistoryList(orderHistory)
+      orderHistory:
+        IndexerGrpcDerivativeTransformer.grpcOrderHistoryListToOrderHistoryList(
+          orderHistory,
+        ),
+      pagination: grpcPagingToPaging(pagination),
     }
   }
 
@@ -394,6 +404,13 @@ export class IndexerGrpcDerivativeTransformer {
       triggerPrice: order.getTriggerPrice(),
       feeRecipient: order.getFeeRecipient(),
       state: order.getState() as DerivativeOrderState,
+      createdAt: order.getCreatedAt(),
+      updatedAt: order.getUpdatedAt(),
+      orderNumber: order.getOrderNumber(),
+      orderType: order.getOrderType(),
+      isConditional: order.getIsConditional(),
+      triggerAt: order.getTriggerAt(),
+      placedOrderHash: order.getPlacedOrderHash(),
     }
   }
 
@@ -431,10 +448,12 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static grpcOrderHistoryListToOrderHistoryList(
-    orderHistory: GrpcDerivativeOrderHistory[]
+    orderHistory: GrpcDerivativeOrderHistory[],
   ): DerivativeOrderHistory[] {
     return orderHistory.map((orderHistory) =>
-      IndexerGrpcDerivativeTransformer.grpcOrderHistoryToOrderHistory(orderHistory),
+      IndexerGrpcDerivativeTransformer.grpcOrderHistoryToOrderHistory(
+        orderHistory,
+      ),
     )
   }
 
@@ -450,6 +469,7 @@ export class IndexerGrpcDerivativeTransformer {
       liquidationPrice: position.getLiquidationPrice(),
       markPrice: position.getMarkPrice(),
       ticker: position.getTicker(),
+      updatedAt: position.getUpdatedAt(),
     }
   }
 

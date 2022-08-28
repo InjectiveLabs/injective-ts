@@ -3,6 +3,7 @@ import {
   MsgBatchCancelDerivativeOrders as BaseMsgBatchCancelDerivativeOrders,
   OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { OrderMask } from '../../../types/exchange'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -37,6 +38,9 @@ export declare namespace MsgBatchCancelDerivativeOrders {
   export type Proto = BaseMsgBatchCancelDerivativeOrders
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgBatchCancelDerivativeOrders extends MsgBase<
   MsgBatchCancelDerivativeOrders.Params,
   MsgBatchCancelDerivativeOrders.Data,
@@ -58,10 +62,9 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
       orderData.setMarketId(order.marketId)
       orderData.setOrderHash(order.orderHash)
       orderData.setSubaccountId(order.subaccountId)
-
-      if (order.orderMask !== undefined) {
-        orderData.setOrderMask(order.orderMask)
-      }
+      orderData.setOrderMask(
+        order.orderMask !== undefined ? order.orderMask : OrderMask.Any,
+      )
 
       return orderData
     })

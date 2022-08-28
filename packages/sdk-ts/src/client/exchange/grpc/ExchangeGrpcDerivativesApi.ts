@@ -35,6 +35,9 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { ExchangeGrpcDerivativeTransformer } from '../transformers'
 import { DerivativeOrderSide } from '../types/derivatives'
 
+/**
+ * @category Exchange Grpc API
+ */
 export class ExchangeGrpcDerivativesApi extends BaseConsumer {
   async fetchMarkets(params?: { marketStatus?: string; quoteDenom?: string }) {
     const { marketStatus, quoteDenom } = params || {}
@@ -256,7 +259,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
       executionSide,
       startTime,
       endTime,
-      direction
+      direction,
     } = params || {}
 
     const request = new TradesRequest()
@@ -321,11 +324,7 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     subaccountId?: string
     pagination?: PaginationOption
   }) {
-    const {
-      marketId,
-      subaccountId,
-      pagination
-    } = params || {}
+    const { marketId, subaccountId, pagination } = params || {}
 
     const request = new FundingPaymentsRequest()
 
@@ -447,13 +446,8 @@ export class ExchangeGrpcDerivativesApi extends BaseConsumer {
     executionSide?: TradeExecutionSide
     pagination?: PaginationOption
   }) {
-    const {
-      marketId,
-      subaccountId,
-      direction,
-      executionSide,
-      pagination
-    } = params || {}
+    const { marketId, subaccountId, direction, executionSide, pagination } =
+      params || {}
 
     const request = new TradesRequest()
 

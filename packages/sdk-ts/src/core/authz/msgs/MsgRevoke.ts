@@ -28,6 +28,9 @@ export declare namespace MsgRevoke {
   export type Proto = BaseMsgRevoke
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgRevoke extends MsgBase<
   MsgRevoke.Params,
   MsgRevoke.Data,

@@ -7,6 +7,10 @@ import { IndexerGrpcInsuranceFundApi } from './grpc/IndexerGrpcInsuranceFundApi'
 import { IndexerGrpcDerivativesApi } from './grpc/IndexerGrpcDerivativesApi'
 import { IndexerGrpcSpotApi } from './grpc/IndexerGrpcSpotApi'
 
+/**
+ * @category Indexer Grpc API
+ * @hidden
+ */
 export class IndexerGrpcClient {
   account: IndexerGrpcAccountApi
 

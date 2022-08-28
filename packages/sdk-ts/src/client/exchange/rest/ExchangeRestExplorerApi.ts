@@ -28,6 +28,9 @@ import {
 import { ExchangeRestExplorerTransformer } from '../transformers'
 import { Block, ExplorerValidator } from '../types/explorer'
 
+/**
+ * @category Exchange Rest API
+ */
 export class ExchangeRestExplorerApi extends BaseRestConsumer {
   async fetchBlock(blockHashHeight: string): Promise<ExplorerBlockWithTxs> {
     try {
