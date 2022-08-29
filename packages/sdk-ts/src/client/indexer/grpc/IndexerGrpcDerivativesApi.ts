@@ -226,6 +226,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     subaccountId?: string
     marketId?: string
     orderTypes?: DerivativeOrderSide[]
+    executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
     isConditional?: boolean
     pagination?: PaginationOption
@@ -234,6 +235,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       subaccountId,
       marketId,
       orderTypes,
+      executionTypes,
       direction,
       isConditional,
       pagination,
@@ -251,6 +253,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
     if (orderTypes) {
       request.setOrderTypesList(orderTypes)
+    }
+
+    if (executionTypes) {
+      request.setExecutionTypesList(executionTypes)
     }
 
     if (direction) {

@@ -171,12 +171,19 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     subaccountId?: string
     marketId?: string
     orderTypes?: SpotOrderSide[]
+    executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
     isConditional?: boolean
     pagination?: PaginationOption
   }) {
-    const { subaccountId, marketId, orderTypes, direction, pagination } =
-      params || {}
+    const {
+      subaccountId,
+      marketId,
+      orderTypes,
+      executionTypes,
+      direction,
+      pagination,
+    } = params || {}
 
     const request = new SpotOrdersHistoryRequest()
 
@@ -190,6 +197,10 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
     if (orderTypes) {
       request.setOrderTypesList(orderTypes)
+    }
+
+    if (executionTypes) {
+      request.setExecutionTypesList(executionTypes)
     }
 
     if (direction) {
