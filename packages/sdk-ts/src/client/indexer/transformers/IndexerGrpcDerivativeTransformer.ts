@@ -444,6 +444,7 @@ export class IndexerGrpcDerivativeTransformer {
       isConditional: orderHistory.getIsConditional(),
       triggerAt: orderHistory.getTriggerAt(),
       placedOrderHash: orderHistory.getPlacedOrderHash(),
+      margin: orderHistory.getMargin()
     }
   }
 
