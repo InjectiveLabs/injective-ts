@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.110](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.109...@injectivelabs/sdk-ts@1.0.110) (2022-08-29)
+
+
+### Features
+
+* order history updates ([#67](https://github.com/InjectiveLabs/injective-ts/issues/67)) ([43d8472](https://github.com/InjectiveLabs/injective-ts/commit/43d84721c97fa964ef61eece8e60bcbcdd26f999))
+
+
+
+
+
 ## [1.0.109](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.108...@injectivelabs/sdk-ts@1.0.109) (2022-08-29)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
