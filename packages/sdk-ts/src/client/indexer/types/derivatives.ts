@@ -152,7 +152,7 @@ export interface DerivativeLimitOrder {
   orderType: string
   isConditional: boolean
   triggerAt: number
-  placedOrderHash: number
+  placedOrderHash: string
 }
 
 export interface DerivativeOrderHistory {
@@ -174,6 +174,7 @@ export interface DerivativeOrderHistory {
   isConditional: boolean
   triggerAt: number
   placedOrderHash: string
+  margin: string
 }
 
 export interface DerivativeTrade extends PositionDelta {

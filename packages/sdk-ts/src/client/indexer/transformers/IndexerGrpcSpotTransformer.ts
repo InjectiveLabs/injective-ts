@@ -237,7 +237,7 @@ export class IndexerGrpcSpotTransformer {
       state: orderHistory.getState(),
       createdAt: orderHistory.getCreatedAt(),
       updatedAt: orderHistory.getUpdatedAt(),
-      direction: orderHistory.getDirection(),
+      direction: orderHistory.getDirection()
     }
   }
 
