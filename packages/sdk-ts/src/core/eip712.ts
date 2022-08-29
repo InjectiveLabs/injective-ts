@@ -1,5 +1,6 @@
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { BigNumberInBase } from '@injectivelabs/utils'
+import snakecaseKeys from 'snakecase-keys'
 import { DEFAULT_GAS_LIMIT, DEFAULT_STD_FEE } from '../utils'
 import { Msgs } from './msgs'
 
@@ -182,18 +183,18 @@ export const objectKeysToEip712Types = (
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
 
-  for (const property in object) {
+  for (const property in snakecaseKeys(object)) {
     if (property === '@type' || property === 'type') {
       continue
     }
 
-    const val = object[property]
+    const val = snakecaseKeys(object)[property]
     const type = typeof val
 
     if (type === 'boolean') {
       types.push({ name: property, type: 'bool' })
     } else if (type === 'number' || type === 'bigint') {
-      types.push({ name: property, type: 'uint256' })
+      types.push({ name: property, type: getNumberType(property) })
     } else if (type === 'string') {
       types.push({ name: property, type: 'string' })
     } else if (type === 'object') {
@@ -504,4 +505,19 @@ export const protoTypeToAminoType = (type: string): string => {
     default:
       throw new Error('Unknown message type: ' + type)
   }
+}
+
+export const getNumberType = (property?: string) => {
+  if (!property) {
+    return 'uint256'
+  }
+
+  switch (true) {
+    case ['order_mask'].includes(property):
+      return 'int32'
+    default:
+      'uint256'
+  }
+
+  return 'uint256'
 }

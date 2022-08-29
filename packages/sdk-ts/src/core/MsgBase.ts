@@ -1,3 +1,4 @@
+import snakecaseKeys from 'snakecase-keys'
 import { objectKeysToEip712Types, TypedDataField } from './eip712'
 import { prepareSignBytes } from './utils'
 
@@ -47,7 +48,7 @@ export abstract class MsgBase<
 
     return {
       type: type as string,
-      value: value,
+      value: snakecaseKeys(value) as Omit<AminoRepresentation, 'type'>,
     }
   }
 

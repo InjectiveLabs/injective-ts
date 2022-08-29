@@ -5,7 +5,10 @@ import {
   OrderTypeMap,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase'
-import { amountToCosmosSdkDecAmount } from '../../../utils/numbers'
+import {
+  amountToCosmosSdkDecAmount,
+  getTriggerPrice,
+} from '../../../utils/numbers'
 
 export declare namespace MsgCreateSpotLimitOrder {
   export interface Params {
@@ -81,9 +84,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     const params = {
       ...initialParams,
       price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
-      triggerPrice: amountToCosmosSdkDecAmount(
-        initialParams.triggerPrice || 0,
-      ).toFixed(),
+      triggerPrice: getTriggerPrice(initialParams.triggerPrice),
       quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
     } as MsgCreateSpotLimitOrder.Params
 

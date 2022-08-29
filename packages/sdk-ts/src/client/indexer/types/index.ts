@@ -1,6 +1,7 @@
 export * from './exchange'
 export * from './derivatives'
 export * from './derivatives-rest'
+export * from './markets-history-rest'
 export * from './spot'
 export * from './spot-rest'
 export * from './account'
