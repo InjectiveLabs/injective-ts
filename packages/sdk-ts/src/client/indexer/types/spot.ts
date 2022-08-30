@@ -25,8 +25,10 @@ export enum SpotOrderState {
   Unfilled = 'unfilled',
   Booked = 'booked',
   PartialFilled = 'partial_filled',
+  PartiallyFilled = 'partially_filled',
   Filled = 'filled',
   Canceled = 'canceled',
+  Triggered = 'triggered'
 }
 
 export interface SpotMarket {
