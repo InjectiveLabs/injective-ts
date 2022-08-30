@@ -155,6 +155,7 @@ export interface DerivativeLimitOrder {
   isConditional: boolean
   triggerAt: number
   placedOrderHash: string
+  executionType: string
 }
 
 export interface DerivativeOrderHistory {

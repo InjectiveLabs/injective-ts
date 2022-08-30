@@ -411,6 +411,7 @@ export class IndexerGrpcDerivativeTransformer {
       isConditional: order.getIsConditional(),
       triggerAt: order.getTriggerAt(),
       placedOrderHash: order.getPlacedOrderHash(),
+      executionType: order.getExecutionType()
     }
   }
 
