@@ -16,3 +16,11 @@ export enum TradeDirection {
   Long = 'long',
   Short = 'short',
 }
+
+export enum OrderState {
+  Booked = 'booked',
+  PartiallyFilled = 'partially_filled',
+  Filled = 'filled',
+  Canceled = 'canceled',
+  Triggered = 'triggered'
+}

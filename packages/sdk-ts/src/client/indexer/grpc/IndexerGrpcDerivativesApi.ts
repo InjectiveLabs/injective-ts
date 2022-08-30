@@ -37,7 +37,7 @@ import {
 import { PaginationOption } from '../../../types/pagination'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcDerivativeTransformer } from '../transformers'
-import { DerivativeOrderSide } from '../types/derivatives'
+import { DerivativeOrderSide, DerivativeOrderState } from '../types/derivatives'
 
 /**
  * @category Indexer Grpc API
@@ -229,6 +229,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
     isConditional?: boolean
+    state?: DerivativeOrderState
     pagination?: PaginationOption
   }) {
     const {
@@ -238,6 +239,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       executionTypes,
       direction,
       isConditional,
+      state,
       pagination,
     } = params || {}
 
@@ -265,6 +267,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
     if (isConditional !== undefined) {
       request.setIsConditional(isConditional ? 'true' : 'false')
+    }
+
+    if (state) {
+      request.setState(state)
     }
 
     if (pagination) {

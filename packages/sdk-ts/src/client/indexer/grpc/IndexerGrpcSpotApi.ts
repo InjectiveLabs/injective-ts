@@ -26,7 +26,7 @@ import {
   TradeExecutionType,
 } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
-import { SpotOrderSide } from '../types/spot'
+import { SpotOrderSide, SpotOrderState } from '../types/spot'
 import { IndexerGrpcSpotTransformer } from '../transformers'
 
 /**
@@ -174,6 +174,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
     isConditional?: boolean
+    state?: SpotOrderState
     pagination?: PaginationOption
   }) {
     const {
@@ -182,6 +183,8 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       orderTypes,
       executionTypes,
       direction,
+      // isConditional,
+      state,
       pagination,
     } = params || {}
 
@@ -205,6 +208,10 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
     if (direction) {
       request.setDirection(direction)
+    }
+
+    if (state) {
+      request.setState(state)
     }
 
     // TODO: Implement this once Indexer supports it.
