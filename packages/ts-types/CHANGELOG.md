@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.7...@injectivelabs/ts-types@1.0.8) (2022-08-30)
+
+
+### Features
+
+* order history ([#70](https://github.com/InjectiveLabs/injective-ts/issues/70)) ([74dcc0f](https://github.com/InjectiveLabs/injective-ts/commit/74dcc0f1373c3cc13934cee8b70095df17032cb4))
+
+
+
+
+
 ## [1.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.6...@injectivelabs/ts-types@1.0.7) (2022-08-23)
 
 
