@@ -63,12 +63,8 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
       orderData.setOrderHash(order.orderHash)
       orderData.setSubaccountId(order.subaccountId)
 
+      // TODO: Send order.orderMask instead when chain handles order mask properly.
       orderData.setOrderMask(OrderMask.Any)
-
-      // TODO: Use this instead once chain handles order mask properly.
-      // message.setOrderMask(
-      //   params.orderMask !== undefined ? params.orderMask : OrderMask.Any,
-      // )
 
       return orderData
     })

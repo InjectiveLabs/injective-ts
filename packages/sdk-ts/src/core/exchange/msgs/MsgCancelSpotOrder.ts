@@ -55,7 +55,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
     message.setOrderHash(params.orderHash)
     message.setSubaccountId(params.subaccountId)
 
-    // TODO: Enable this once chain handles it properly.
+    // TODO: message.setOrderMask does not exist yet, enable this once it does.
     // message.setOrderMask(
     //   params.orderMask !== undefined ? params.orderMask : OrderMask.Any,
     // )
