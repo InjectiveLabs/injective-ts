@@ -1,7 +1,9 @@
+import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import {
   MsgBatchCancelSpotOrders as BaseMsgBatchCancelSpotOrders,
   OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { OrderMask } from '../../../types/exchange'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -11,7 +13,8 @@ export declare namespace MsgBatchCancelSpotOrders {
     orders: {
       marketId: string
       subaccountId: string
-      orderHash: string
+      orderHash: string,
+      orderMask?: OrderMaskMap[keyof OrderMaskMap]
     }[]
   }
 
@@ -59,6 +62,9 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
       orderData.setMarketId(order.marketId)
       orderData.setOrderHash(order.orderHash)
       orderData.setSubaccountId(order.subaccountId)
+
+      // TODO: Send order.orderMask instead when chain handles order mask properly.
+      orderData.setOrderMask(OrderMask.Any)
 
       return orderData
     })

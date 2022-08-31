@@ -63,9 +63,9 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
       orderData.setMarketId(order.marketId)
       orderData.setOrderHash(order.orderHash)
       orderData.setSubaccountId(order.subaccountId)
-      orderData.setOrderMask(
-        order.orderMask !== undefined ? order.orderMask : OrderMask.Any,
-      )
+
+      // TODO: Send order.orderMask instead when chain handles order mask properly.
+      orderData.setOrderMask(OrderMask.Any)
 
       return orderData
     })
