@@ -1,4 +1,6 @@
+// import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgCancelSpotOrder as BaseMsgCancelSpotOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+// import { OrderMask } from '../../../types/exchange'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgCancelSpotOrder {
@@ -7,6 +9,7 @@ export declare namespace MsgCancelSpotOrder {
     subaccountId: string
     injectiveAddress: string
     orderHash: string
+    // orderMask?: OrderMaskMap[keyof OrderMaskMap]
   }
 
   export interface DirectSign {
@@ -51,6 +54,11 @@ export default class MsgCancelSpotOrder extends MsgBase<
     message.setMarketId(params.marketId)
     message.setOrderHash(params.orderHash)
     message.setSubaccountId(params.subaccountId)
+
+    // TODO: Enable this once chain handles it properly.
+    // message.setOrderMask(
+    //   params.orderMask !== undefined ? params.orderMask : OrderMask.Any,
+    // )
 
     return message
   }
