@@ -39,6 +39,8 @@
     "@injectivelabs/ts-types": "^1.0.8",
     "@injectivelabs/tx-ts": "^1.0.31",
     "@injectivelabs/utils": "^1.0.12",
-    "@injectivelabs/wallet-ts": "^1.0.63"
+    "@injectivelabs/wallet-ts": "^1.0.63",
+    "link-module-alias": "^1.2.0",
+    "shx": "^0.3.2"
   }
 }
