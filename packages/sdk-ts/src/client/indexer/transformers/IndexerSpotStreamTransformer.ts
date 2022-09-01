@@ -2,6 +2,7 @@ import {
   StreamOrderbookResponse,
   StreamTradesResponse,
   StreamOrdersResponse,
+  StreamOrdersHistoryResponse,
 } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
 import { StreamOperation } from '../../../types'
 import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer'
@@ -44,6 +45,18 @@ export class IndexerSpotStreamTransformer {
     return {
       order: order
         ? IndexerGrpcSpotTransformer.grpcOrderToOrder(order)
+        : undefined,
+      operation: response.getOperationType() as StreamOperation,
+      timestamp: response.getTimestamp(),
+    }
+  }
+
+  static orderHistoryStreamCallback = (response: StreamOrdersHistoryResponse) => {
+    const order = response.getOrder()
+
+    return {
+      order: order
+        ? IndexerGrpcSpotTransformer.grpcOrderHistoryToOrderHistory(order)
         : undefined,
       operation: response.getOperationType() as StreamOperation,
       timestamp: response.getTimestamp(),

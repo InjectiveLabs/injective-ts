@@ -37,7 +37,7 @@
     "@injectivelabs/chain-api": "^1.8.0-rc8",
     "@injectivelabs/exceptions": "^1.0.9",
     "@injectivelabs/exchange-api": "^2.2.77",
-    "@injectivelabs/indexer-api": "^1.0.15",
+    "@injectivelabs/indexer-api": "^1.0.16",
     "@injectivelabs/networks": "^1.0.14",
     "@injectivelabs/token-metadata": "^1.0.22",
     "@injectivelabs/ts-types": "^1.0.8",

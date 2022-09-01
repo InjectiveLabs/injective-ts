@@ -7,14 +7,20 @@ import {
   StreamTradesResponse,
   StreamMarketsRequest,
   StreamMarketsResponse,
+  StreamOrdersHistoryRequest,
+  StreamOrdersHistoryResponse,
 } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
 import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb_service'
-import { TradeExecutionSide, TradeDirection } from '../../../types'
+import {
+  TradeExecutionSide,
+  TradeDirection,
+  TradeExecutionType,
+} from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { PaginationOption } from '../../../types/pagination'
-import { SpotOrderSide } from '../types/spot'
+import { SpotOrderSide, SpotOrderState } from '../types/spot'
 import { IndexerSpotStreamTransformer } from '../transformers'
 
 export type MarketsStreamCallback = (response: StreamMarketsResponse) => void
@@ -28,6 +34,12 @@ export type SpotOrderbookStreamCallback = (
 export type SpotOrdersStreamCallback = (
   response: ReturnType<
     typeof IndexerSpotStreamTransformer.ordersStreamCallback
+  >,
+) => void
+
+export type SpotOrderHistoryStreamCallback = (
+  response: ReturnType<
+    typeof IndexerSpotStreamTransformer.orderHistoryStreamCallback
   >,
 ) => void
 
@@ -113,6 +125,72 @@ export class IndexerGrpcSpotStream {
 
     stream.on('data', (response: StreamOrdersResponse) => {
       callback(IndexerSpotStreamTransformer.ordersStreamCallback(response))
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+  }
+
+  streamSpotOrderHistory({
+    marketId,
+    subaccountId,
+    orderTypes,
+    executionTypes,
+    direction,
+    state,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketId?: string
+    subaccountId?: string
+    orderTypes?: SpotOrderSide[]
+    executionTypes?: TradeExecutionType[]
+    direction?: TradeDirection
+    state?: SpotOrderState
+    callback: SpotOrderHistoryStreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamOrdersHistoryRequest()
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (orderTypes) {
+      request.setOrderTypesList(orderTypes)
+    }
+
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (state) {
+      request.setState(state)
+    }
+
+    if (executionTypes) {
+      request.setExecutionTypesList(executionTypes)
+    }
+
+    const stream = this.client.streamOrdersHistory(request)
+
+    stream.on('data', (response: StreamOrdersHistoryResponse) => {
+      callback(
+        IndexerSpotStreamTransformer.orderHistoryStreamCallback(response)
+      )
     })
 
     if (onEndCallback) {

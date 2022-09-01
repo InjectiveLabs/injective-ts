@@ -3,6 +3,7 @@ import {
   StreamTradesResponse,
   StreamPositionsResponse,
   StreamOrdersResponse,
+  StreamOrdersHistoryResponse
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
 import { StreamOperation } from '../../../types/index'
 import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer'
@@ -59,6 +60,18 @@ export class IndexerDerivativeStreamTransformer {
         : undefined,
       operation: response.getOperationType() as StreamOperation,
       timestamp: response.getTimestamp(),
+    }
+  }
+
+  static orderHistoryStreamCallback = (response: StreamOrdersHistoryResponse) => {
+    const order = response.getOrder()
+
+    return {
+      order: order
+        ? IndexerGrpcDerivativeTransformer.grpcOrderHistoryToOrderHistory(order)
+        : undefined,
+      operation: response.getOperationType() as StreamOperation,
+      timestamp: response.getTimestamp()
     }
   }
 }
