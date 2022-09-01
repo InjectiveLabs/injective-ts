@@ -32,9 +32,7 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "^1.0.9",
-    "@injectivelabs/utils": "^1.0.12",
-    "link-module-alias": "^1.2.0",
-    "shx": "^0.3.2"
+    "@injectivelabs/utils": "^1.0.12"
   },
   "gitHead": "a12e5c2c5d1038ab42e9669b6eeb1e91873626c2"
 }

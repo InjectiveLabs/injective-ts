@@ -35,8 +35,6 @@
     "@injectivelabs/networks": "^1.0.14",
     "@injectivelabs/ts-types": "^1.0.8",
     "@injectivelabs/utils": "^1.0.12",
-    "link-module-alias": "^1.2.0",
-    "shx": "^0.3.3",
     "web3": "^1.7.2",
     "web3-utils": "^1.7.2"
   },

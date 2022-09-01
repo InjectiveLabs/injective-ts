@@ -9,14 +9,20 @@ import {
   StreamPositionsResponse,
   StreamMarketRequest,
   StreamMarketResponse,
+  StreamOrdersHistoryRequest,
+  StreamOrdersHistoryResponse,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb_service'
-import { TradeDirection, TradeExecutionSide } from '../../../types'
+import {
+  TradeDirection,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { PaginationOption } from '../../../types/pagination'
-import { DerivativeOrderSide } from '../types/derivatives'
+import { DerivativeOrderSide, DerivativeOrderState } from '../types/derivatives'
 import { IndexerDerivativeStreamTransformer } from '../transformers'
 
 export type DerivativeOrderbookStreamCallback = (
@@ -28,6 +34,12 @@ export type DerivativeOrderbookStreamCallback = (
 export type DerivativeOrdersStreamCallback = (
   response: ReturnType<
     typeof IndexerDerivativeStreamTransformer.ordersStreamCallback
+  >,
+) => void
+
+export type DerivativeOrderHistoryStreamCallback = (
+  resposne: ReturnType<
+    typeof IndexerDerivativeStreamTransformer.orderHistoryStreamCallback
   >,
 ) => void
 
@@ -124,6 +136,72 @@ export class IndexerGrpcDerivativesStream {
     stream.on('data', (response: StreamOrdersResponse) => {
       callback(
         IndexerDerivativeStreamTransformer.ordersStreamCallback(response),
+      )
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+  }
+
+  streamDerivativeOrderHistory({
+    subaccountId,
+    marketId,
+    orderTypes,
+    executionTypes,
+    direction,
+    state,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketId?: string
+    subaccountId?: string
+    orderTypes?: DerivativeOrderSide[]
+    executionTypes?: TradeExecutionType[]
+    direction?: TradeDirection
+    state?: DerivativeOrderState
+    callback: DerivativeOrderHistoryStreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamOrdersHistoryRequest()
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (marketId) {
+      request.setMarketId(marketId)
+    }
+
+    if (orderTypes) {
+      request.setOrderTypesList(orderTypes)
+    }
+
+    if (direction) {
+      request.setDirection(direction)
+    }
+
+    if (state) {
+      request.setState(state)
+    }
+
+    if (executionTypes) {
+      request.setExecutionTypesList(executionTypes)
+    }
+
+    const stream = this.client.streamOrdersHistory(request)
+
+    stream.on('data', (response: StreamOrdersHistoryResponse) => {
+      callback(
+        IndexerDerivativeStreamTransformer.orderHistoryStreamCallback(response),
       )
     })
 
