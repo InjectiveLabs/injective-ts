@@ -14,7 +14,7 @@ import { leapSupportedChainIds } from './utils'
 export class LeapWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  private window: Window & { leap: Leap }
+  private window: Window & { leap?: Leap }
 
   constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
     this.chainId = chainId
@@ -48,12 +48,16 @@ export class LeapWallet {
       throw new Error('Please install Leap extension')
     }
 
-    if (!window.getOfflineSigner) {
+    if (!window.leap) {
+      throw new Error('Please install Leap extension')
+    }
+
+    if (!window.leap.getOfflineSigner) {
       throw new Error('Please install Leap extension')
     }
 
     try {
-      return window.getOfflineSigner(chainId).getAccounts()
+      return window.leap.getOfflineSigner(chainId).getAccounts()
     } catch (e: any) {
       throw new Error(e.message)
     }

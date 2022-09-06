@@ -95,12 +95,16 @@ export class KeplrWallet {
       throw new Error('Please install Keplr extension')
     }
 
-    if (!window.getOfflineSigner) {
+    if (!window.keplr) {
+      throw new Error('Please install Keplr extension')
+    }
+
+    if (!window.keplr.getOfflineSigner) {
       throw new Error('Please install Keplr extension')
     }
 
     try {
-      return window.getOfflineSigner(chainId).getAccounts()
+      return window.keplr.getOfflineSigner(chainId).getAccounts()
     } catch (e: any) {
       throw new Error(e.message)
     }
