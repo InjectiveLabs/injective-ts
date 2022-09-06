@@ -19,6 +19,7 @@ import {
   TxRestClient,
 } from '@injectivelabs/tx-ts'
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
+import { TxError } from '@injectivelabs/tx-ts/dist/types/tx-rest-client'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -155,8 +156,11 @@ export default class Keplr
         txRaw,
         DEFAULT_TIMESTAMP_TIMEOUT_MS,
       )
+      const errorResponse = response as TxError
 
-      return response.txhash
+      if (errorResponse.code && errorResponse.code !== 0) {
+        throw new Error(response.raw_log)
+      }
     } catch (e) {
       throw new Error(e as any)
     }

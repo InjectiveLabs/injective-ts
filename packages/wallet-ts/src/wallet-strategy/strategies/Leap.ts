@@ -19,6 +19,7 @@ import {
   TxRestClient,
 } from '@injectivelabs/tx-ts'
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
+import { TxError } from '@injectivelabs/tx-ts/dist/types/tx-rest-client'
 import { LeapWallet } from '../../leap'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -156,7 +157,11 @@ export default class Leap
         DEFAULT_TIMESTAMP_TIMEOUT_MS,
       )
 
-      return response.txhash
+      const errorResponse = response as TxError
+
+      if (errorResponse.code && errorResponse.code !== 0) {
+        throw new Error(response.raw_log)
+      }
     } catch (e) {
       throw new Error(e as any)
     }
