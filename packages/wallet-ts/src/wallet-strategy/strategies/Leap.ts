@@ -6,19 +6,29 @@ import {
   CosmosChainId,
 } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import {
+  BigNumberInBase,
+  DEFAULT_STD_FEE,
+  DEFAULT_TIMEOUT_HEIGHT,
+  DEFAULT_TIMESTAMP_TIMEOUT_MS,
+} from '@injectivelabs/utils'
 import type Web3 from 'web3'
-import { createTxRawFromSigResponse } from '@injectivelabs/tx-ts'
+import {
+  createTransaction,
+  createTxRawFromSigResponse,
+  TxRestClient,
+} from '@injectivelabs/tx-ts'
+import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { LeapWallet } from '../../leap'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
-import { CosmosWallet } from '../../cosmos/CosmosWallet'
+import { CosmosQuery } from '../../cosmos'
 
 export default class Leap
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  private keplrWallet: LeapWallet
+  private leapWallet: LeapWallet
 
   constructor(args: {
     ethereumChainId: EthereumChainId
@@ -27,13 +37,13 @@ export default class Leap
   }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.keplrWallet = new LeapWallet(args.chainId)
+    this.leapWallet = new LeapWallet(args.chainId)
   }
 
   async getAddresses(): Promise<string[]> {
-    const { keplrWallet, chainId } = this
+    const { leapWallet, chainId } = this
 
-    if (!keplrWallet) {
+    if (!leapWallet) {
       throw new Web3Exception('Please install Leap extension')
     }
 
@@ -42,7 +52,7 @@ export default class Leap
         throw new Error(`Leap doesn't support ${chainId} yet!`)
       }
 
-      const accounts = await keplrWallet.getAccounts()
+      const accounts = await leapWallet.getAccounts()
 
       return accounts.map((account) => account.address)
     } catch (e: any) {
@@ -51,9 +61,9 @@ export default class Leap
   }
 
   async confirm(address: AccountAddress): Promise<string> {
-    const { keplrWallet } = this
+    const { leapWallet } = this
 
-    if (!keplrWallet) {
+    if (!leapWallet) {
       throw new Web3Exception('Please install Leap extension')
     }
 
@@ -78,11 +88,11 @@ export default class Leap
     signResponse: any,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    const { keplrWallet } = this
+    const { leapWallet } = this
     const txRaw = createTxRawFromSigResponse(signResponse)
 
     try {
-      return await keplrWallet.broadcastTxBlock(txRaw)
+      return await leapWallet.broadcastTxBlock(txRaw)
     } catch (e) {
       throw new Error((e as any).message)
     }
@@ -92,31 +102,64 @@ export default class Leap
     transaction: any,
     address: AccountAddress,
   ): Promise<any> {
-    const { keplrWallet, chainId } = this
+    const { leapWallet, chainId } = this
 
-    if (!keplrWallet) {
-      throw new Web3Exception('Please install Leap extension')
+    if (!leapWallet) {
+      throw new Web3Exception('Please install Keplr extension')
     }
 
-    const endpoints = await keplrWallet.getChainEndpoints()
-    const key = await keplrWallet.getKey()
-    const signer = await keplrWallet.getOfflineSigner()
-    const cosmWallet = new CosmosWallet({
-      ...endpoints,
-      signer,
-    })
+    const endpoints = await leapWallet.getChainEndpoints()
+    const key = await leapWallet.getKey()
+    const signer = await leapWallet.getOfflineSigner()
+    const query = new CosmosQuery(endpoints)
+    const txClient = new TxRestClient(endpoints.rest)
 
-    return cosmWallet.signTransaction({
-      address,
-      chainId,
+    /** Account Details * */
+    const accountDetails = await query.fetchAccountDetails(address)
+
+    /** Block Details */
+    const latestBlock = await query.fetchLatestBlock()
+    const latestHeight = latestBlock.header.height
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+      DEFAULT_TIMEOUT_HEIGHT,
+    )
+
+    /** Prepare the Transaction * */
+    const { bodyBytes, authInfoBytes, accountNumber } = createTransaction({
+      message: transaction.message,
+      memo: transaction.memo,
       fee: {
         ...DEFAULT_STD_FEE,
         gas: transaction.gas || DEFAULT_STD_FEE.gas,
       },
-      message: transaction.message,
-      memo: transaction.memo,
       pubKey: Buffer.from(key.pubKey).toString('base64'),
+      sequence: Number(accountDetails.sequence),
+      timeoutHeight: timeoutHeight.toNumber(),
+      accountNumber: Number(accountDetails.accountNumber),
+      chainId,
     })
+    const cosmosSignDoc = SignDoc.fromPartial({
+      bodyBytes,
+      authInfoBytes,
+      chainId,
+      accountNumber,
+    })
+
+    /* Sign the transaction */
+    const signResponse = await signer.signDirect(address, cosmosSignDoc)
+    const txRaw = createTxRawFromSigResponse(signResponse)
+
+    /* Broadcast the transaction */
+    try {
+      const response = await txClient.broadcast(
+        txRaw,
+        DEFAULT_TIMESTAMP_TIMEOUT_MS,
+      )
+
+      return response.txhash
+    } catch (e) {
+      throw new Error(e as any)
+    }
   }
 
   async getNetworkId(): Promise<string> {

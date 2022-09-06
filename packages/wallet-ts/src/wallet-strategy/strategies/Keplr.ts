@@ -6,13 +6,23 @@ import {
   CosmosChainId,
 } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import {
+  BigNumberInBase,
+  DEFAULT_STD_FEE,
+  DEFAULT_TIMEOUT_HEIGHT,
+  DEFAULT_TIMESTAMP_TIMEOUT_MS,
+} from '@injectivelabs/utils'
 import type Web3 from 'web3'
-import { createTxRawFromSigResponse } from '@injectivelabs/tx-ts'
+import {
+  createTransaction,
+  createTxRawFromSigResponse,
+  TxRestClient,
+} from '@injectivelabs/tx-ts'
+import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
-import { CosmosWallet } from '../../cosmos/CosmosWallet'
+import { CosmosQuery } from '../../cosmos'
 
 export default class Keplr
   extends BaseConcreteStrategy
@@ -101,22 +111,55 @@ export default class Keplr
     const endpoints = await keplrWallet.getChainEndpoints()
     const key = await keplrWallet.getKey()
     const signer = await keplrWallet.getOfflineSigner()
-    const cosmWallet = new CosmosWallet({
-      ...endpoints,
-      signer,
-    })
+    const query = new CosmosQuery(endpoints)
+    const txClient = new TxRestClient(endpoints.rest)
 
-    return cosmWallet.signTransaction({
-      address,
-      chainId,
+    /** Account Details * */
+    const accountDetails = await query.fetchAccountDetails(address)
+
+    /** Block Details */
+    const latestBlock = await query.fetchLatestBlock()
+    const latestHeight = latestBlock.header.height
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+      DEFAULT_TIMEOUT_HEIGHT,
+    )
+
+    /** Prepare the Transaction * */
+    const { bodyBytes, authInfoBytes, accountNumber } = createTransaction({
+      message: transaction.message,
+      memo: transaction.memo,
       fee: {
         ...DEFAULT_STD_FEE,
         gas: transaction.gas || DEFAULT_STD_FEE.gas,
       },
-      message: transaction.message,
-      memo: transaction.memo,
       pubKey: Buffer.from(key.pubKey).toString('base64'),
+      sequence: Number(accountDetails.sequence),
+      timeoutHeight: timeoutHeight.toNumber(),
+      accountNumber: Number(accountDetails.accountNumber),
+      chainId,
     })
+    const cosmosSignDoc = SignDoc.fromPartial({
+      bodyBytes,
+      authInfoBytes,
+      chainId,
+      accountNumber,
+    })
+
+    /* Sign the transaction */
+    const signResponse = await signer.signDirect(address, cosmosSignDoc)
+    const txRaw = createTxRawFromSigResponse(signResponse)
+
+    /* Broadcast the transaction */
+    try {
+      const response = await txClient.broadcast(
+        txRaw,
+        DEFAULT_TIMESTAMP_TIMEOUT_MS,
+      )
+
+      return response.txhash
+    } catch (e) {
+      throw new Error(e as any)
+    }
   }
 
   async getNetworkId(): Promise<string> {
