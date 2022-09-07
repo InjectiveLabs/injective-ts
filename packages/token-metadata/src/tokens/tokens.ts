@@ -676,4 +676,20 @@ export default {
     address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     coinGeckoId: 'polkadot',
   },
+  USTRD: {
+    name: 'Stride',
+    logo: 'stride.png',
+    symbol: 'STRD',
+    decimals: 6,
+    address: '',
+    coinGeckoId: '',
+  },
+  STRD: {
+    name: 'Stride',
+    logo: 'stride.png',
+    symbol: 'STRD',
+    decimals: 6,
+    address: '',
+    coinGeckoId: '',
+  },
 } as Record<string, TokenMeta>

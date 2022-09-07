@@ -37,6 +37,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Persistence,
   BridgingNetwork.Evmos,
   BridgingNetwork.Secret,
+  BridgingNetwork.Stride,
 ]
 
 export const tokenSelectorDisabledNetworks = [
@@ -98,6 +99,11 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Secret,
     denoms: ['uscrt'],
     symbols: ['scrt'],
+  },
+  {
+    network: BridgingNetwork.Stride,
+    denoms: ['ustrd'],
+    symbols: ['strd'],
   },
 ] as NetworkConfig[]
 
@@ -173,6 +179,11 @@ export const cosmosNativeDenomsFromChainId = {
     ...tokenMetaUtil.getMetaBySymbol('SCRT'),
     tokenType: TokenType.Ibc,
     denom: 'uscrt',
+  },
+  [CosmosChainId.Stride]: {
+    ...tokenMetaUtil.getMetaBySymbol('STRD'),
+    tokenType: TokenType.Ibc,
+    denom: 'ustrd',
   },
   [TestnetCosmosChainId.Cosmoshub]: {
     ...tokenMetaUtil.getMetaBySymbol('UPHOTON'),
@@ -419,6 +430,10 @@ export const getNetworkFromSender = (sender: string): BridgingNetwork => {
 
   if (sender.startsWith('secret')) {
     return BridgingNetwork.Secret
+  }
+
+  if (sender.startsWith('stride')) {
+    return BridgingNetwork.Stride
   }
 
   return BridgingNetwork.CosmosHub

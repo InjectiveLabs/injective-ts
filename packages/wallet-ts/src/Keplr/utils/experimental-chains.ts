@@ -269,6 +269,7 @@ export const keplrSupportedChainIds = [
   'osmosis-1',
   'secret-3',
   'secret-4',
+  'stride-1',
   'akashnet-2',
   'crypto-org-chain-mainnet-1',
   'iov-mainnet-ibc',

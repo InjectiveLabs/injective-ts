@@ -66,4 +66,8 @@ export default {
     path: 'transfer/channel-76',
     baseDenom: 'uhuahua',
   },
+  '3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25': {
+    path: 'transfer/channel-89',
+    baseDenom: 'ustrd',
+  },
 }
