@@ -39,7 +39,12 @@ export class TxRestClient {
   public httpClient: HttpClient
 
   constructor(endpoint: string) {
-    this.httpClient = new HttpClient(endpoint)
+    this.httpClient = new HttpClient(endpoint, {
+      headers: {
+        Accept: 'application/json',
+      },
+      timeout: 3000,
+    })
   }
 
   public async txInfo(

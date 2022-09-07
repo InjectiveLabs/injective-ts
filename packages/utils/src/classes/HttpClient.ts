@@ -5,12 +5,17 @@ export default class HttpClient {
 
   private config: AxiosRequestConfig = {}
 
-  constructor(endpoint: string) {
-    this.client = axios.create({
-      baseURL: endpoint,
+  constructor(
+    endpoint: string,
+    options: Record<string, any> = {
       headers: {
         'Content-Type': 'application/json',
       },
+    },
+  ) {
+    this.client = axios.create({
+      baseURL: endpoint,
+      ...options,
     })
 
     this.config = {}
