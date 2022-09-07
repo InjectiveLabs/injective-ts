@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.33...@injectivelabs/tx-ts@1.0.34) (2022-09-07)
+
+
+### Features
+
+* config for axios ([53b3316](https://github.com/InjectiveLabs/injective-ts/commit/53b3316c9f6293e980cd59ebadc6847cc711f4c3))
+
+
+
+
+
 ## [1.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.32...@injectivelabs/tx-ts@1.0.33) (2022-09-07)
 
 
