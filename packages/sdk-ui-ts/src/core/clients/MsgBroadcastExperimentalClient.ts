@@ -147,7 +147,7 @@ export class MsgBroadcastExperimentalClient {
         memo: tx.memo,
       }
 
-      const { directSignResponse } = (await walletStrategy.signTransaction(
+      const directSignResponse = (await walletStrategy.signTransaction(
         transaction,
         injectiveAddress,
       )) as any

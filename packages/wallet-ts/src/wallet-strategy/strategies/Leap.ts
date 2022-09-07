@@ -10,7 +10,6 @@ import {
   BigNumberInBase,
   DEFAULT_STD_FEE,
   DEFAULT_TIMEOUT_HEIGHT,
-  DEFAULT_TIMESTAMP_TIMEOUT_MS,
 } from '@injectivelabs/utils'
 import type Web3 from 'web3'
 import {
@@ -18,8 +17,6 @@ import {
   createTxRawFromSigResponse,
 } from '@injectivelabs/tx-ts'
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
-import { TxError } from '@injectivelabs/tx-ts/dist/types/tx-rest-client'
-import { StargateClient } from '@cosmjs/stargate'
 import { LeapWallet } from '../../leap'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -113,7 +110,6 @@ export default class Leap
     const key = await leapWallet.getKey()
     const signer = await leapWallet.getOfflineSigner()
     const query = new CosmosQuery(endpoints)
-    const txClient = await StargateClient.connect(endpoints.rpc)
 
     /** Account Details * */
     const accountDetails = await query.fetchAccountDetails(address)
@@ -147,25 +143,7 @@ export default class Leap
     })
 
     /* Sign the transaction */
-    const signResponse = await signer.signDirect(address, cosmosSignDoc)
-    const txRaw = createTxRawFromSigResponse(signResponse)
-
-    /* Broadcast the transaction */
-    try {
-      const response = await txClient.broadcastTx(
-        txRaw.serializeBinary(),
-        DEFAULT_TIMESTAMP_TIMEOUT_MS,
-      )
-      const errorResponse = response as TxError
-
-      if (errorResponse.code && errorResponse.code !== 0) {
-        throw new Error(response.rawLog)
-      }
-
-      return response.transactionHash
-    } catch (e) {
-      throw new Error(e as any)
-    }
+    return signer.signDirect(address, cosmosSignDoc)
   }
 
   async getNetworkId(): Promise<string> {
