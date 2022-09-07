@@ -8,8 +8,8 @@ import {
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
 import { TxRestClient } from '@injectivelabs/tx-ts'
-import { getEndpointsFromChainId } from '../keplr/utils'
 import { leapSupportedChainIds } from './utils'
+import { getEndpointsFromChainId } from '../cosmos'
 
 export class LeapWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
