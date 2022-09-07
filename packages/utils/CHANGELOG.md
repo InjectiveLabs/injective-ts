@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.13...@injectivelabs/utils@1.0.14) (2022-09-07)
+
+
+### Features
+
+* added sync mode to TxGrpcClient ([0a125e0](https://github.com/InjectiveLabs/injective-ts/commit/0a125e0d1297b0ce8095f90e9d053b8e84462b0b))
+
+
+
+
+
 ## [1.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.12...@injectivelabs/utils@1.0.13) (2022-09-07)
 
 **Note:** Version bump only for package @injectivelabs/utils
