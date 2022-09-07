@@ -660,6 +660,7 @@ export default {
     address: '',
     coinGeckoId: 'blockstack',
   },
+
   DOT: {
     name: 'Polkadot',
     logo: 'dot.jpeg',
@@ -668,6 +669,7 @@ export default {
     address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     coinGeckoId: 'polkadot',
   },
+
   'DOT-PLANCK': {
     name: 'Polkadot',
     logo: 'dot.jpeg',
@@ -676,6 +678,7 @@ export default {
     address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     coinGeckoId: 'polkadot',
   },
+
   USTRD: {
     name: 'Stride',
     logo: 'stride.png',
@@ -684,6 +687,7 @@ export default {
     address: '',
     coinGeckoId: '',
   },
+
   STRD: {
     name: 'Stride',
     logo: 'stride.png',

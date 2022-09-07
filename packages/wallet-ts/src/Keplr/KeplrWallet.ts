@@ -11,8 +11,8 @@ import { TxRestClient } from '@injectivelabs/tx-ts'
 import {
   getExperimentalChainConfigBasedOnChainId,
   keplrSupportedChainIds,
-  getEndpointsFromChainId,
 } from './utils'
+import { getEndpointsFromChainId } from '../cosmos/endpoints'
 
 export class KeplrWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
