@@ -395,7 +395,12 @@ export const removeDuplicatedTransactionByTxHash = (
 
       if (!list[initialTxHash]) {
         list[initialTxHash] = transaction
-      } else if (transaction.state === BridgeTransactionState.Completed) {
+      } else if (
+        [
+          BridgeTransactionState.Completed,
+          BridgeTransactionState.Failed,
+        ].includes(transaction.state)
+      ) {
         list[initialTxHash] = transaction
       }
 

@@ -2,19 +2,24 @@ import { BigNumberInBase, BigNumber } from './classes'
 
 export const SECONDS_IN_A_DAY: BigNumber = new BigNumber(60 * 60 * 24)
 
-export const convertTimestampToMilliseconds = (timestamp: number) => {
+export const convertTimestampToMilliseconds = (
+  timestamp: number | string,
+): number => {
+  const timestampInBigNumber = new BigNumberInBase(timestamp)
+
   if (timestamp.toString().length > 13) {
-    return parseInt(timestamp.toString().slice(0, 13), 10)
+    return timestampInBigNumber
+      .precision(13, BigNumber.ROUND_HALF_UP)
+      .toNumber()
   }
 
   if (timestamp.toString().length < 13) {
-    return parseInt(
-      `${timestamp}${'0'.repeat(13 - timestamp.toString().length)}`,
-      10,
-    )
+    const trailingZeros = 13 - timestamp.toString().length
+
+    return timestampInBigNumber.times(10 ** trailingZeros).toNumber()
   }
 
-  return timestamp
+  return timestampInBigNumber.toNumber()
 }
 
 export const getUTCDateFromTimestamp = (timestamp: number) => {
