@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.15...@injectivelabs/utils@1.0.16) (2022-09-09)
+
+
+### Bug Fixes
+
+* ibc bridge transaction incorrect timeout timestamp format ([03e5b11](https://github.com/InjectiveLabs/injective-ts/commit/03e5b11a751d984b52d9895fd6a66d9e18335c92))
+
+
+
+
+
 ## [1.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.14...@injectivelabs/utils@1.0.15) (2022-09-07)
 
 

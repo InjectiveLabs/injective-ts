@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/tx-ts",
   "description": "Utilities for creating transactions for Injective",
-  "version": "1.0.34",
+  "version": "1.0.35",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,7 +37,7 @@
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/chain-api": "^1.8.0-rc8",
     "@injectivelabs/ts-types": "^1.0.9",
-    "@injectivelabs/utils": "^1.0.15",
+    "@injectivelabs/utils": "^1.0.16",
     "google-protobuf": "^3.20.1",
     "jscrypto": "^1.0.3",
     "keccak256": "^1.0.6",
