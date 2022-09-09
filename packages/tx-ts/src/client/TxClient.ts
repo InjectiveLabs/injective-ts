@@ -22,9 +22,7 @@ export class TxClient {
    * Get the transaction's hash
    * @param tx transaction to hash
    */
-  public static async hash(tx: TxRaw): Promise<string> {
-    const txBytes = await TxClient.encode(tx)
-
-    return hashToHex(txBytes)
+  public static hash(tx: TxRaw): string {
+    return hashToHex(TxClient.encode(tx))
   }
 }

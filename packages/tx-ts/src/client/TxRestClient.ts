@@ -125,8 +125,6 @@ export class TxRestClient {
 
   public async simulateTx(txRaw: TxRaw): Promise<SimulationResponse> {
     try {
-      txRaw.clearSignaturesList()
-
       const response = await this.postRaw<SimulationResponse>(
         '/cosmos/tx/v1beta1/simulate',
         {

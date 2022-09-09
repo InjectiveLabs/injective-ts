@@ -51,6 +51,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     if (marketStatus) {
       request.setMarketStatus(marketStatus)
     }
+
     if (quoteDenom) {
       request.setQuoteDenom(quoteDenom)
     }
@@ -97,6 +98,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     if (marketStatus) {
       request.setMarketStatus(marketStatus)
     }
+
     if (quoteDenom) {
       request.setQuoteDenom(quoteDenom)
     }

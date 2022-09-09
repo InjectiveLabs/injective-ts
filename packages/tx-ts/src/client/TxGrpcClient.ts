@@ -24,6 +24,9 @@ if (isServerSide()) {
   grpc.setDefaultTransport(NodeHttpTransport())
 }
 
+/**
+ * It is recommended to use TxRestClient instead of TxGrpcClient
+ */
 export class TxGrpcClient {
   public txService: ServiceClient
 
@@ -76,7 +79,7 @@ export class TxGrpcClient {
           }
         }
       } catch (error: any) {
-        if (!error.toString().includes('404')) {
+        if (!error.toString().includes('tx not found')) {
           throw error
         }
       }
