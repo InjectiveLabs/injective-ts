@@ -31,7 +31,7 @@ export interface TxLog {
   events: { type: string; attributes: { key: string; value: string }[] }[]
 }
 
-export interface TxInfo {
+export interface TxInfoResponse {
   height: string
   txhash: string
   codespace: string
@@ -46,7 +46,22 @@ export interface TxInfo {
   timestamp: string
 }
 
-export interface Wait {
+export interface TxInfo {
+  height: string
+  txhash: string
+  codespace: string
+  code: number
+  data: string
+  rawLog: string
+  gasWanted: string
+  gasUsed: string
+  logs: TxLog[]
+  info: string
+  tx: Tx
+  timestamp: string
+}
+
+export interface WaitResponse {
   height: number
   txhash: string
   raw_log: string
@@ -56,18 +71,39 @@ export interface Wait {
   timestamp: string
 }
 
+export interface Wait {
+  height: number
+  txhash: string
+  rawLog: string
+  gasWanted: number
+  gasUsed: number
+  logs: TxLog[]
+  timestamp: string
+}
+
 export interface Block extends Wait {
   info: string
   data: string
 }
 
-export interface Sync {
+export interface SyncResponse {
   height: number
   txhash: string
   raw_log: string
 }
 
+export interface Sync {
+  height: number
+  txhash: string
+  rawLog: string
+}
+
 export interface Async {
+  height: number
+  txhash: string
+}
+
+export interface AsyncResponse {
   height: number
   txhash: string
 }
@@ -100,9 +136,14 @@ export enum BroadcastMode {
   Block = 'BROADCAST_MODE_BLOCK',
 }
 
+export interface TxResultResponse {
+  tx: Tx
+  tx_response: TxInfoResponse
+}
+
 export interface TxResult {
   tx: Tx
-  tx_response: TxInfo
+  txResponse: TxInfo
 }
 
 export interface TxSearchResult {
@@ -120,6 +161,18 @@ export interface SimulationResponse {
   gas_info: {
     gas_wanted: string
     gas_used: string
+  }
+  result: {
+    data: string
+    log: string
+    events: { type: string; attributes: { key: string; value: string }[] }[]
+  }
+}
+
+export interface TxSimulation {
+  gasInfo: {
+    gasWanted: string
+    gasUsed: string
   }
   result: {
     data: string

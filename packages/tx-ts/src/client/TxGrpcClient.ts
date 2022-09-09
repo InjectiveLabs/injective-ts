@@ -68,11 +68,11 @@ export class TxGrpcClient {
         if (txInfo.hasTxResponse()) {
           return {
             txhash: txResponse.getTxhash(),
-            raw_log: txResponse.getRawLog(),
-            gas_wanted: txResponse.getGasWanted(),
-            gas_used: txResponse.getGasUsed(),
+            rawLog: txResponse.getRawLog(),
+            gasWanted: txResponse.getGasWanted(),
+            gasUsed: txResponse.getGasUsed(),
             height: txResponse.getHeight(),
-            logs: txResponse.getLogsList(),
+            logs: txResponse.getLogsList().map((l) => l.toObject()),
             code: txResponse.getCode(),
             codespace: txResponse.getCodespace(),
             timestamp: txResponse.getTimestamp(),
@@ -135,7 +135,7 @@ export class TxGrpcClient {
 
     try {
       return new Promise((resolve, reject) =>
-        txService.broadcastTx(broadcastTxRequest, (error, response) => {
+        txService.broadcastTx(broadcastTxRequest, async (error, response) => {
           if (error || !response) {
             return reject(error)
           }
@@ -146,7 +146,18 @@ export class TxGrpcClient {
             return resolve(txResponse.toObject())
           }
 
-          return this.waitTxBroadcast(txResponse.getTxhash(), timeout)
+          const result = await this.waitTxBroadcast(
+            txResponse.getTxhash(),
+            timeout,
+          )
+
+          return resolve({
+            ...result,
+            info: '',
+            data: '',
+            logsList: result.logs,
+            eventsList: [],
+          })
         }),
       )
     } catch (e: any) {

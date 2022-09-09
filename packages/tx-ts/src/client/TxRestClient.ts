@@ -17,6 +17,8 @@ import {
   SyncTxBroadcastResult,
   BlockTxBroadcastResult,
   TxSearchResult,
+  TxResultResponse,
+  TxSimulation,
 } from '../types/tx-rest-client'
 import { APIParams, TxSearchOptions } from '../types/rest-client'
 import { BlockInfo } from '../types/block'
@@ -52,12 +54,20 @@ export class TxRestClient {
     params: APIParams = {},
   ): Promise<TxResult> {
     try {
-      const response = await this.getRaw<TxResult>(
+      const response = await this.getRaw<TxResultResponse>(
         `/cosmos/tx/v1beta1/txs/${txHash}`,
         params,
       )
 
-      return response
+      return {
+        ...response,
+        txResponse: {
+          ...response.tx_response,
+          rawLog: response.tx_response.raw_log,
+          gasWanted: response.tx_response.gas_wanted,
+          gasUsed: response.tx_response.gas_used,
+        },
+      }
     } catch (e: any) {
       throw new Error(e)
     }
@@ -82,7 +92,7 @@ export class TxRestClient {
     for (const txhash of txHashes) {
       const txInfo = await this.txInfo(txhash)
 
-      txInfos.push(txInfo.tx_response)
+      txInfos.push(txInfo.txResponse)
     }
 
     return txInfos
@@ -94,14 +104,14 @@ export class TxRestClient {
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
         const txInfo = await this.txInfo(txHash)
-        const { tx_response: txInfoSearchResponse } = txInfo
+        const { txResponse: txInfoSearchResponse } = txInfo
 
         if (txInfoSearchResponse) {
           return {
             txhash: txInfoSearchResponse.txhash,
-            raw_log: txInfoSearchResponse.raw_log,
-            gas_wanted: parseInt(txInfoSearchResponse.gas_wanted, 10),
-            gas_used: parseInt(txInfoSearchResponse.gas_used, 10),
+            rawLog: txInfoSearchResponse.rawLog,
+            gasWanted: parseInt(txInfoSearchResponse.gasWanted, 10),
+            gasUsed: parseInt(txInfoSearchResponse.gasUsed, 10),
             height: parseInt(txInfoSearchResponse.height, 10),
             logs: txInfoSearchResponse.logs,
             code: txInfoSearchResponse.code,
@@ -123,7 +133,7 @@ export class TxRestClient {
     )
   }
 
-  public async simulateTx(txRaw: TxRaw): Promise<SimulationResponse> {
+  public async simulate(txRaw: TxRaw): Promise<TxSimulation> {
     try {
       const response = await this.postRaw<SimulationResponse>(
         '/cosmos/tx/v1beta1/simulate',
@@ -132,7 +142,13 @@ export class TxRestClient {
         },
       )
 
-      return response
+      return {
+        ...response,
+        gasInfo: {
+          gasUsed: response.gas_info.gas_used,
+          gasWanted: response.gas_info.gas_wanted,
+        },
+      }
     } catch (e: any) {
       throw new Error(e)
     }
@@ -166,11 +182,11 @@ export class TxRestClient {
       const result: WaitTxBroadcastResult = {
         height: txResponse.height,
         txhash: txResponse.txhash,
-        raw_log: txResponse.raw_log,
+        rawLog: txResponse.rawLog,
         code: (txResponse as TxError).code,
         codespace: (txResponse as TxError).codespace,
-        gas_used: 0,
-        gas_wanted: 0,
+        gasUsed: 0,
+        gasWanted: 0,
         timestamp: '',
         logs: [],
       }
@@ -194,9 +210,9 @@ export class TxRestClient {
 
     return {
       txhash: txResponse.txhash,
-      raw_log: txResponse.raw_log,
-      gas_wanted: txResponse.gas_wanted,
-      gas_used: txResponse.gas_used,
+      rawLog: txResponse.rawLog,
+      gasWanted: txResponse.gasWanted,
+      gasUsed: txResponse.gasUsed,
       height: txResponse.height,
       logs: txResponse.logs,
       code: (txResponse as TxError).code,
@@ -224,7 +240,7 @@ export class TxRestClient {
     const blockResult: any = {
       height: txResponse.height,
       txhash: txResponse.txhash,
-      raw_log: txResponse.raw_log,
+      rawLog: txResponse.rawLog,
     }
 
     if ((txResponse as TxError).code) {
