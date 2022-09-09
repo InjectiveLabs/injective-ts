@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.35...@injectivelabs/tx-ts@1.0.36) (2022-09-09)
+
+
+### Bug Fixes
+
+* tx broadcast clients ([72fb92a](https://github.com/InjectiveLabs/injective-ts/commit/72fb92a54334a6aa6d943c29f2b9c5bba699a778))
+
+
+
+
+
 ## [1.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/tx-ts@1.0.34...@injectivelabs/tx-ts@1.0.35) (2022-09-09)
 
 **Note:** Version bump only for package @injectivelabs/tx-ts
