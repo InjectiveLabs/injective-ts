@@ -84,12 +84,12 @@ export class SupernovaQueryTransformer {
     ) as QueryVaultContractSpotConfigResponse
 
     return {
-      balanceReduceRatio: config.balance_reduce_ratio || '',
       cw20CodeId: config.cw20_code_id || '',
       cw20Label: config.cw20_label || '',
       defaultMidPriceVolatilityRatio:
         config.default_mid_price_volatility_ratio || '',
-      firstThreshold: config.first_threshold || '',
+      inventoryImbalanceMarketOrderThreshold:
+        config.inventory_imbalance_market_order_threshold || '',
       headChangeToleranceRatio: config.head_change_tolerance_ratio || '',
       lpName: config.lp_name || '',
       lpSymbol: config.lp_symbol || '',
@@ -100,8 +100,6 @@ export class SupernovaQueryTransformer {
       masterAddress: config.master_address || '',
       maxActiveCapitalUtilizationRatio:
         config.max_active_capital_utilization_ratio || '',
-      maxAvgOrdersPriceDeviationRatio:
-        config.max_avg_orders_price_deviation_ratio || '',
       midPriceTailDeviationRatio: config.mid_price_tail_deviation_ratio || '',
       minHeadToMidDeviationRatio: config.min_head_to_mid_deviation_ratio || '',
       minHeadToTailDeviationRatio:
@@ -114,7 +112,6 @@ export class SupernovaQueryTransformer {
         config.reservation_price_sensitivity_ratio || '',
       reservationSpreadSensitivityRatio:
         config.reservation_spread_sensitivity_ratio || '',
-      secondThreshold: config.second_threshold || '',
       tradeVolatilityGroupCount: config.trade_volatility_group_count || '',
       tradeVolatilityGroupSec: config.trade_volatility_group_sec || '',
       cw20MarketingInfo: config.cw20_marketing_info,
