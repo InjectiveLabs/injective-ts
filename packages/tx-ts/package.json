@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/tx-ts",
   "description": "Utilities for creating transactions for Injective",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
