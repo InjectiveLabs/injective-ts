@@ -107,7 +107,6 @@ export class SupernovaQueryTransformer {
       minTradeVolatilitySampleSize:
         config.min_trade_volatility_sample_size || '',
       orderDensity: config.order_density || '',
-      reduceProportion: config.reduce_proportion || '',
       reservationPriceSensitivityRatio:
         config.reservation_price_sensitivity_ratio || '',
       reservationSpreadSensitivityRatio:

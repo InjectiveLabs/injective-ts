@@ -58,7 +58,6 @@ export interface QueryVaultContractSpotConfigResponse {
     min_head_to_tail_deviation_ratio: string
     min_trade_volatility_sample_size: string
     order_density: string
-    reduce_proportion: string
     reservation_price_sensitivity_ratio: string
     reservation_spread_sensitivity_ratio: string
     subaccount_id: string
