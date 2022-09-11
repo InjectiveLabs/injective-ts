@@ -1,5 +1,5 @@
 import snakecaseKeys from 'snakecase-keys'
-import { objectKeysToEip712Types, TypedDataField } from './eip712'
+import { objectKeysToEip712Types, TypedDataField } from '../Eip712'
 import { prepareSignBytes } from './utils'
 
 /**

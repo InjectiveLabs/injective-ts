@@ -1,6 +1,6 @@
 import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgCancelDerivativeOrder as BaseMsgCancelDerivativeOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { OrderMask } from '../../../types/exchange'
+import { OrderMask } from '../../../../types/exchange'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgCancelDerivativeOrder {

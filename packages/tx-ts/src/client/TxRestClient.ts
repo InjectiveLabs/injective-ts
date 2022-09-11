@@ -150,7 +150,7 @@ export class TxRestClient {
         },
       }
     } catch (e: any) {
-      throw new Error(e)
+      throw new Error(e.response ? e.response.data.message : e)
     }
   }
 
@@ -166,7 +166,7 @@ export class TxRestClient {
 
       return response
     } catch (e: any) {
-      throw new Error(e)
+      throw new Error(e.response ? e.response.data.message : e)
     }
   }
 

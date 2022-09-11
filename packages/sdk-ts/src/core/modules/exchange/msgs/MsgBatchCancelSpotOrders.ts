@@ -3,7 +3,7 @@ import {
   MsgBatchCancelSpotOrders as BaseMsgBatchCancelSpotOrders,
   OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { OrderMask } from '../../../types/exchange'
+import { OrderMask } from '../../../../types/exchange'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -13,7 +13,7 @@ export declare namespace MsgBatchCancelSpotOrders {
     orders: {
       marketId: string
       subaccountId: string
-      orderHash: string,
+      orderHash: string
       orderMask?: OrderMaskMap[keyof OrderMaskMap]
     }[]
   }

@@ -8,7 +8,7 @@ import { MsgBase } from '../../MsgBase'
 import {
   amountToCosmosSdkDecAmount,
   getTriggerPrice,
-} from '../../../utils/numbers'
+} from '../../../../utils/numbers'
 
 export declare namespace MsgCreateBinaryOptionsMarketOrder {
   export interface Params {

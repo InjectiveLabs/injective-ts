@@ -1,5 +1,5 @@
 import { MsgIncreasePositionMargin as BaseMsgIncreasePositionMargin } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { amountToCosmosSdkDecAmount } from '../../../utils/numbers'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgIncreasePositionMargin {

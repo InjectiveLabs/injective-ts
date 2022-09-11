@@ -1,5 +1,5 @@
 import { MsgInstantBinaryOptionsMarketLaunch as BaseMsgInstantBinaryOptionsMarketLaunch } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { OracleType } from '../../../client'
+import { OracleType } from '../../../../client'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgInstantBinaryOptionsMarketLaunch {

@@ -1,7 +1,7 @@
 import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgCancelBinaryOptionsOrder as BaseMsgCancelBinaryOptionsOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
-import { OrderMask } from '../../../types/exchange'
+import { OrderMask } from '../../../../types/exchange'
 
 export declare namespace MsgCancelBinaryOptionsOrder {
   export interface Params {

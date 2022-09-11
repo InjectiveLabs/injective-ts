@@ -4,7 +4,7 @@ import { MsgBase } from '../../MsgBase'
 import {
   DEFAULT_BRIDGE_FEE_AMOUNT,
   DEFAULT_BRIDGE_FEE_DENOM,
-} from '../../../utils/constants'
+} from '../../../../utils/constants'
 
 export declare namespace MsgSendToEth {
   export interface Params {
