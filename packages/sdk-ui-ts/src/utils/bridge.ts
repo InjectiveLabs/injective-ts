@@ -268,9 +268,7 @@ export const findIBCTransactionByTimeoutTimestamp = (
   transaction.timeoutTimestamp &&
   comparingTransaction.timeoutTimestamp &&
   convertTimestampToMilliseconds(transaction.timeoutTimestamp) ===
-    convertTimestampToMilliseconds(
-      comparingTransaction.timeoutTimestamp.toString(),
-    )
+    convertTimestampToMilliseconds(comparingTransaction.timeoutTimestamp)
 
 export const ibcTxNotPartOfInjectiveIbcTxs =
   (injectiveIbcTransactions: UiBridgeTransaction[]) =>

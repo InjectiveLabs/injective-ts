@@ -40,11 +40,10 @@ export interface QueryVaultContractDerivativeConfigResponse {
 
 export interface QueryVaultContractSpotConfigResponse {
   config: {
-    balance_reduce_ratio: string
     cw20_code_id: string
     cw20_label: string
     default_mid_price_volatility_ratio: string
-    first_threshold: string
+    inventory_imbalance_market_order_threshold: string
     head_change_tolerance_ratio: string
     lp_name: string
     lp_symbol: string
@@ -54,16 +53,13 @@ export interface QueryVaultContractSpotConfigResponse {
     market_order_upper_bound_ratio: string
     master_address: string
     max_active_capital_utilization_ratio: string
-    max_avg_orders_price_deviation_ratio: string
     mid_price_tail_deviation_ratio: string
     min_head_to_mid_deviation_ratio: string
     min_head_to_tail_deviation_ratio: string
     min_trade_volatility_sample_size: string
     order_density: string
-    reduce_proportion: string
     reservation_price_sensitivity_ratio: string
     reservation_spread_sensitivity_ratio: string
-    second_threshold: string
     subaccount_id: string
     trade_volatility_group_count: string
     trade_volatility_group_sec: string
