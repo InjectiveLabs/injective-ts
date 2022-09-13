@@ -2,7 +2,7 @@ import {
   getInjectiveAddress,
   IndexerGrpcTransactionApi,
 } from '@injectivelabs/sdk-ts'
-import { Wallet } from '@injectivelabs/ts-types'
+import { Wallet } from '@injectivelabs/wallet-ts'
 import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
 import { getGasPriceBasedOnMessage } from './utils'
 
@@ -22,8 +22,8 @@ export class MsgBroadcastClient {
     const { options } = this
     const { walletStrategy } = options
 
-    return walletStrategy.wallet === Wallet.Keplr
-      ? this.broadcastKeplr(tx)
+    return [Wallet.Keplr, Wallet.Leap].includes(walletStrategy.wallet)
+      ? this.broadcastCosmos(tx)
       : this.broadcastWeb3(tx)
   }
 
@@ -106,7 +106,7 @@ export class MsgBroadcastClient {
     }
   }
 
-  private async broadcastKeplr(tx: MsgBroadcastTxOptions) {
+  private async broadcastCosmos(tx: MsgBroadcastTxOptions) {
     const { options } = this
     const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]

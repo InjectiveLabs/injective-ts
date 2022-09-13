@@ -10,7 +10,7 @@ import {
   DEFAULT_TIMEOUT_HEIGHT,
 } from '@injectivelabs/sdk-ts'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
-import { Wallet } from '@injectivelabs/ts-types'
+import { Wallet } from '@injectivelabs/wallet-ts'
 import {
   createTransaction,
   createTxRawEIP712,
@@ -33,7 +33,7 @@ export class MsgBroadcastExperimentalClient {
     const { options } = this
     const { walletStrategy } = options
 
-    return walletStrategy.wallet === Wallet.Keplr
+    return [Wallet.Keplr, Wallet.Leap].includes(walletStrategy.wallet)
       ? this.broadcastKeplr(tx)
       : this.broadcastWeb3(tx)
   }

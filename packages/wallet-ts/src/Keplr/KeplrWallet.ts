@@ -154,6 +154,10 @@ export class KeplrWallet {
       BroadcastMode.Sync,
     )
 
+    if (!txHashBuff) {
+      throw new Error('Transaction failed to be broadcasted')
+    }
+
     return Buffer.from(txHashBuff).toString('hex')
   }
 
@@ -172,6 +176,10 @@ export class KeplrWallet {
       txRaw.serializeBinary(),
       BroadcastMode.Block,
     )
+
+    if (!result) {
+      throw new Error('Transaction failed to be broadcasted')
+    }
 
     return Buffer.from(result).toString('hex')
   }

@@ -14,13 +14,3 @@ export enum ChainId {
   Testnet = 'injective-888',
   Devnet = 'injective-777',
 }
-
-export enum Wallet {
-  Metamask = 'metamask',
-  Ledger = 'ledger',
-  LedgerLegacy = 'ledger-legacy',
-  Trezor = 'trezor',
-  Keplr = 'keplr',
-  Torus = 'torus',
-  WalletConnect = 'wallet-connect',
-}

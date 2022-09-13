@@ -70,10 +70,10 @@ export class LeapWallet {
     address: Uint8Array
     bech32Address: string
   }> {
-    const keplr = await this.getLeapWallet()
+    const leap = await this.getLeapWallet()
 
     try {
-      return keplr.getKey(this.chainId)
+      return leap.getKey(this.chainId)
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -81,10 +81,10 @@ export class LeapWallet {
 
   async getOfflineSigner(): Promise<OfflineDirectSigner> {
     const { chainId } = this
-    const keplr = await this.getLeapWallet()
+    const leap = await this.getLeapWallet()
 
     try {
-      return keplr.getOfflineSigner(chainId) as unknown as OfflineDirectSigner
+      return leap.getOfflineSigner(chainId) as unknown as OfflineDirectSigner
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -100,12 +100,16 @@ export class LeapWallet {
    */
   async broadcastTx(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
-    const keplr = await this.getLeapWallet()
-    const txHashBuff = await keplr.sendTx(
+    const leap = await this.getLeapWallet()
+    const txHashBuff = await leap.sendTx(
       chainId,
       txRaw.serializeBinary(),
       BroadcastMode.Sync,
     )
+
+    if (!txHashBuff) {
+      throw new Error('Transaction failed to be broadcasted')
+    }
 
     return Buffer.from(txHashBuff).toString('hex')
   }
@@ -119,12 +123,16 @@ export class LeapWallet {
    */
   async broadcastTxBlock(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
-    const keplr = await this.getLeapWallet()
-    const result = await keplr.sendTx(
+    const leap = await this.getLeapWallet()
+    const result = await leap.sendTx(
       chainId,
       txRaw.serializeBinary(),
       BroadcastMode.Block,
     )
+
+    if (!result) {
+      throw new Error('Transaction failed to be broadcasted')
+    }
 
     return Buffer.from(result).toString('hex')
   }
