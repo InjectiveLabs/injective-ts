@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.9...@injectivelabs/ts-types@1.0.10) (2022-09-13)
+
+
+### Bug Fixes
+
+* leap wallet ([9ffd089](https://github.com/InjectiveLabs/injective-ts/commit/9ffd0899b462cb6ca6871a858fcc4a3353845fa3))
+
+
+
+
+
 ## [1.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.8...@injectivelabs/ts-types@1.0.9) (2022-09-07)
 
 **Note:** Version bump only for package @injectivelabs/ts-types
