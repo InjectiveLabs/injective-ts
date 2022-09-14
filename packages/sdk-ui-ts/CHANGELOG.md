@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.173](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.172...@injectivelabs/sdk-ui-ts@1.0.173) (2022-09-14)
+
+
+### Bug Fixes
+
+* insurance fund eip712 msg ([cccb603](https://github.com/InjectiveLabs/injective-ts/commit/cccb603aca811f2661ff58c4aa280901218e155a))
+
+
+
+
+
 ## [1.0.172](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.171...@injectivelabs/sdk-ui-ts@1.0.172) (2022-09-14)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
