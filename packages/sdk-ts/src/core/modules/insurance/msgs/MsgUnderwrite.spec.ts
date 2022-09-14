@@ -1,11 +1,11 @@
-import { MsgDelegate as BaseMsgDelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
+import { MsgUnderwrite as BaseMsgUnderwrite } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgDelegate from './MsgDelegate'
+import MsgUnderwrite from './MsgUnderwrite'
 import { mockFactory } from '../../../../../../../mocks'
 import snakecaseKeys from 'snakecase-keys'
 
-const params: MsgDelegate['params'] = {
-  validatorAddress: mockFactory.validatorAddress,
+const params: MsgUnderwrite['params'] = {
+  marketId: mockFactory.spotMarketId,
   injectiveAddress: mockFactory.injectiveAddress,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
@@ -13,20 +13,20 @@ const params: MsgDelegate['params'] = {
   },
 }
 
-const protoType = '/cosmos.staking.v1beta1.MsgDelegate'
+const protoType = '/injective.insurance.v1beta1.MsgUnderwrite'
 const protoParams = {
-  validatorAddress: params.validatorAddress,
-  delegatorAddress: params.injectiveAddress,
-  amount: params.amount,
+  marketId: params.marketId,
+  sender: params.injectiveAddress,
+  deposit: params.amount,
 }
 
-const message = MsgDelegate.fromJSON(params)
+const message = MsgUnderwrite.fromJSON(params)
 
-describe.only('MsgDelegate', () => {
+describe.only('MsgUnderwrite', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgDelegate).toBe(true)
+    expect(proto instanceof BaseMsgUnderwrite).toBe(true)
     expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
@@ -43,7 +43,7 @@ describe.only('MsgDelegate', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'cosmos-sdk/MsgDelegate',
+      type: 'insurance/MsgUnderwrite',
       ...protoParams,
     })
   })
@@ -52,14 +52,14 @@ describe.only('MsgDelegate', () => {
     const eip712Types = message.toEip712Types()
 
     expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeAmount: [
+      TypeDeposit: [
         { name: 'denom', type: 'string' },
         { name: 'amount', type: 'string' },
       ],
       MsgValue: [
-        { name: 'delegator_address', type: 'string' },
-        { name: 'validator_address', type: 'string' },
-        { name: 'amount', type: 'TypeAmount' },
+        { name: 'sender', type: 'string' },
+        { name: 'market_id', type: 'string' },
+        { name: 'deposit', type: 'TypeDeposit' },
       ],
     })
   })
@@ -68,7 +68,7 @@ describe.only('MsgDelegate', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'cosmos-sdk/MsgDelegate',
+      type: 'insurance/MsgUnderwrite',
       value: snakecaseKeys(protoParams),
     })
   })

@@ -1,14 +1,23 @@
 import { MsgUndelegate as BaseMsgUndelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgUndelegate from './MsgUndelegate'
+import { mockFactory } from '../../../../../../../mocks'
+import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgUndelegate['params'] = {
-  validatorAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm48',
-  injectiveAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+  validatorAddress: mockFactory.validatorAddress,
+  injectiveAddress: mockFactory.injectiveAddress,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
     denom: 'inj',
   },
+}
+
+const protoType = '/cosmos.staking.v1beta1.MsgUndelegate'
+const protoParams = {
+  validatorAddress: params.validatorAddress,
+  delegatorAddress: params.injectiveAddress,
+  amount: params.amount,
 }
 
 const message = MsgUndelegate.fromJSON(params)
@@ -18,21 +27,15 @@ describe.only('MsgUndelegate', () => {
     const proto = message.toProto()
 
     expect(proto instanceof BaseMsgUndelegate).toBe(true)
-    expect(proto.toObject()).toStrictEqual({
-      validatorAddress: params.validatorAddress,
-      delegatorAddress: params.injectiveAddress,
-      amount: params.amount,
-    })
+    expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {
     const data = message.toData()
 
     expect(data).toStrictEqual({
-      '@type': '/cosmos.staking.v1beta1.MsgUndelegate',
-      validatorAddress: params.validatorAddress,
-      delegatorAddress: params.injectiveAddress,
-      amount: params.amount,
+      '@type': protoType,
+      ...protoParams,
     })
   })
 
@@ -41,9 +44,7 @@ describe.only('MsgUndelegate', () => {
 
     expect(amino).toStrictEqual({
       type: 'cosmos-sdk/MsgUndelegate',
-      validatorAddress: params.validatorAddress,
-      delegatorAddress: params.injectiveAddress,
-      amount: params.amount,
+      ...protoParams,
     })
   })
 
@@ -68,11 +69,7 @@ describe.only('MsgUndelegate', () => {
 
     expect(eip712).toStrictEqual({
       type: 'cosmos-sdk/MsgUndelegate',
-      value: {
-        validator_address: params.validatorAddress,
-        delegator_address: params.injectiveAddress,
-        amount: params.amount,
-      },
+      value: snakecaseKeys(protoParams),
     })
   })
 
@@ -80,10 +77,8 @@ describe.only('MsgUndelegate', () => {
     const web3 = message.toWeb3()
 
     expect(web3).toStrictEqual({
-      '@type': '/cosmos.staking.v1beta1.MsgUndelegate',
-      validatorAddress: params.validatorAddress,
-      delegatorAddress: params.injectiveAddress,
-      amount: params.amount,
+      '@type': protoType,
+      ...protoParams,
     })
   })
 })

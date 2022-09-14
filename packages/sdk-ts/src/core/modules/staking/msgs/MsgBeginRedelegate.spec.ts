@@ -1,15 +1,25 @@
 import { MsgBeginRedelegate as BaseMsgBeginRedelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgBeginRedelegate from './MsgBeginRedelegate'
+import { mockFactory } from '../../../../../../../mocks'
+import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgBeginRedelegate['params'] = {
-  srcValidatorAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm48',
-  dstValidatorAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
-  injectiveAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm50',
+  srcValidatorAddress: mockFactory.validatorAddress,
+  dstValidatorAddress: mockFactory.validatorAddress2,
+  injectiveAddress: mockFactory.injectiveAddress,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
     denom: 'inj',
   },
+}
+
+const protoType = '/cosmos.staking.v1beta1.MsgBeginRedelegate'
+const protoParams = {
+  validatorDstAddress: params.dstValidatorAddress,
+  validatorSrcAddress: params.srcValidatorAddress,
+  delegatorAddress: params.injectiveAddress,
+  amount: params.amount,
 }
 
 const message = MsgBeginRedelegate.fromJSON(params)
@@ -19,23 +29,15 @@ describe.only('MsgBeginRedelegate', () => {
     const proto = message.toProto()
 
     expect(proto instanceof BaseMsgBeginRedelegate).toBe(true)
-    expect(proto.toObject()).toStrictEqual({
-      validatorDstAddress: params.dstValidatorAddress,
-      validatorSrcAddress: params.srcValidatorAddress,
-      delegatorAddress: params.injectiveAddress,
-      amount: params.amount,
-    })
+    expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {
     const data = message.toData()
 
     expect(data).toStrictEqual({
-      '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate',
-      validatorDstAddress: params.dstValidatorAddress,
-      validatorSrcAddress: params.srcValidatorAddress,
-      delegatorAddress: params.injectiveAddress,
-      amount: params.amount,
+      '@type': protoType,
+      ...protoParams,
     })
   })
 
@@ -44,10 +46,7 @@ describe.only('MsgBeginRedelegate', () => {
 
     expect(amino).toStrictEqual({
       type: 'cosmos-sdk/MsgBeginRedelegate',
-      validatorDstAddress: params.dstValidatorAddress,
-      validatorSrcAddress: params.srcValidatorAddress,
-      delegatorAddress: params.injectiveAddress,
-      amount: params.amount,
+      ...protoParams,
     })
   })
 
@@ -73,12 +72,7 @@ describe.only('MsgBeginRedelegate', () => {
 
     expect(eip712).toStrictEqual({
       type: 'cosmos-sdk/MsgBeginRedelegate',
-      value: {
-        validator_dst_address: params.dstValidatorAddress,
-        validator_src_address: params.srcValidatorAddress,
-        delegator_address: params.injectiveAddress,
-        amount: params.amount,
-      },
+      value: snakecaseKeys(protoParams),
     })
   })
 
@@ -86,7 +80,7 @@ describe.only('MsgBeginRedelegate', () => {
     const web3 = message.toWeb3()
 
     expect(web3).toStrictEqual({
-      '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate',
+      '@type': protoType,
       validatorDstAddress: params.dstValidatorAddress,
       validatorSrcAddress: params.srcValidatorAddress,
       delegatorAddress: params.injectiveAddress,
