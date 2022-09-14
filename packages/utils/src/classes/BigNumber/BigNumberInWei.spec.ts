@@ -1,4 +1,4 @@
-import { BigNumberInWei } from '../../../dist'
+import BigNumberInWei from './BigNumberInWei'
 
 describe('bigNumberInWei', () => {
   it('should convert base to wei', () => {

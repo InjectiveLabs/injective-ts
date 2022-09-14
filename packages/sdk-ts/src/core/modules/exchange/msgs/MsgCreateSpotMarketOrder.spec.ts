@@ -1,6 +1,6 @@
 import { MsgCreateSpotMarketOrder as BaseMsgCreateSpotMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateSpotMarketOrder from './MsgCreateSpotMarketOrder'
-import { mockFactory } from '../../../../../../../tests/mocks'
+import { mockFactory } from '~/tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgCreateSpotMarketOrder['params'] = {

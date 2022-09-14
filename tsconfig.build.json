@@ -17,8 +17,8 @@
     "removeComments": false,
     "composite": true,
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
+    "declarationMap": false,
+    "sourceMap": false,
     "esModuleInterop": true,
     "incremental": true,
     "resolveJsonModule": true,
@@ -33,6 +33,5 @@
     "dist",
     "./deprecated",
     "**/*.test.ts",
-    "**/*.spec.ts",
   ]
 }

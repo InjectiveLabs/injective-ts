@@ -1,7 +1,7 @@
 import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgDeposit from './MsgDeposit'
-import { mockFactory } from '@tests/mocks'
+import { mockFactory } from '~/tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgDeposit['params'] = {

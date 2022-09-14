@@ -3,12 +3,11 @@
   "out": "./docs",
   "entryPoints": [
     "./packages/sdk-ts",
-    "./packages/sdk-ui-ts",
     "./packages/wallet-ts",
     "./packages/tx-ts"
   ],
   "theme": "oxide",
   "plugin": ["typedoc-monorepo-link-types", "typedoc-theme-oxide"],
   "exclude": ["./packages/**/*.spec.ts", "./packages/**/*.spec.ts"],
-  "name": "Injective TS API"
+  "name": "API Reference - Injective's TypeScript monorepo"
 }

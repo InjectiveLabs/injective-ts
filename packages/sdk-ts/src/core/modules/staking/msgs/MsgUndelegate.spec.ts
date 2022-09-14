@@ -1,7 +1,7 @@
 import { MsgUndelegate as BaseMsgUndelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgUndelegate from './MsgUndelegate'
-import { mockFactory } from '@tests/mocks'
+import { mockFactory } from '~/tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgUndelegate['params'] = {

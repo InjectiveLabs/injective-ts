@@ -1,7 +1,7 @@
 import { MsgSend as BaseMsgSend } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgSend from './MsgSend'
-import { mockFactory } from '../../../../../../../tests/mocks'
+import { mockFactory } from '~/tests/mocks'
 
 const params: MsgSend['params'] = {
   dstInjectiveAddress: mockFactory.injectiveAddress,

@@ -1,5 +1,8 @@
 {
   "extends": "../../tsconfig.json",
+  "include": [
+    "../../tests/**/*.ts"
+  ],
   "references": [
     {
       "path": "../ts-types/tsconfig.json"
@@ -19,7 +22,10 @@
   ],
   "typedoc": {
     "entryPoint": "./src/index.ts",
+    "name": "sdk-ts Documentation",
     "readmeFile": "./README.md",
-    "displayName": "Injective Protocol - SDK TS"
+    "excludeExternals": "true",
+    "excludePrivate": "true",
+    "exclude": "**/*.spec.ts",
   }
 }

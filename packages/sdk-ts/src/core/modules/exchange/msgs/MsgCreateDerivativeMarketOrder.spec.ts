@@ -1,6 +1,6 @@
 import { MsgCreateDerivativeMarketOrder as BaseMsgCreateDerivativeMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateDerivativeMarketOrder from './MsgCreateDerivativeMarketOrder'
-import { mockFactory } from '../../../../../../../tests/mocks'
+import { mockFactory } from '~/tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgCreateDerivativeMarketOrder['params'] = {

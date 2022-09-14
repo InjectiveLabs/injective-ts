@@ -1,6 +1,27 @@
 const { pathsToModuleNameMapper } = require('ts-jest')
 const { compilerOptions } = require('./tsconfig')
 
+const packagePaths = Object.keys(compilerOptions.paths).reduce(
+  (result, key) => {
+    if (key.includes('@injective')) {
+      return { ...result, [key]: compilerOptions.paths[key] }
+    }
+
+    return result
+  },
+  {},
+)
+const directoryPaths = Object.keys(compilerOptions.paths).reduce(
+  (result, key) => {
+    if (!key.includes('@injective')) {
+      return { ...result, [key]: compilerOptions.paths[key] }
+    }
+
+    return result
+  },
+  {},
+)
+
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
@@ -68,10 +89,8 @@ module.exports = {
   //   '^@injectivelabs/(.*)$': '<rootDir>/../$1/src'
   // },
   moduleNameMapper: {
-    ...pathsToModuleNameMapper(
-      compilerOptions.paths /* , { prefix: '<rootDir>/' }, */,
-    ),
-    '^@tests/(.*)$': '<rootDir>/tests/$1',
+    ...pathsToModuleNameMapper(packagePaths),
+    ...pathsToModuleNameMapper(directoryPaths, { prefix: '<rootDir>/' }),
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -155,7 +174,7 @@ module.exports = {
   // A map from regular expressions to paths to transformers
   transform: {
     '^.+\\.ts?$': 'ts-jest',
-    '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.js?$': 'babel-jest',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation

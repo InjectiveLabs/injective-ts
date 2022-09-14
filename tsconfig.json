@@ -3,6 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "~/tests/*": [
+        "./tests/*"
+      ],
       "@injectivelabs/ts-types": [
         "packages/ts-types"
       ],
@@ -29,9 +32,6 @@
       ],
       "@injectivelabs/sdk-ui-ts": [
         "packages/sdk-ui-ts"
-      ],
-      "@tests/*": [
-        "./tests"
       ]
     }
   }

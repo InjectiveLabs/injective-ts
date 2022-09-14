@@ -1,6 +1,6 @@
 import { MsgInstantSpotMarketLaunch as BaseMsgInstantSpotMarketLaunch } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch'
-import { mockFactory } from '@tests/mocks'
+import { mockFactory } from '~/tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const market = mockFactory.injUsdtSpotMarket

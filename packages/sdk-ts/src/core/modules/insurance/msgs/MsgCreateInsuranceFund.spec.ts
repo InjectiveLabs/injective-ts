@@ -1,7 +1,7 @@
 import { MsgCreateInsuranceFund as BaseMsgCreateInsuranceFund } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgCreateInsuranceFund from './MsgCreateInsuranceFund'
-import { mockFactory } from '../../../../../../../tests/mocks'
+import { mockFactory } from '~/tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const market = mockFactory.injUsdtDerivativeMarket
