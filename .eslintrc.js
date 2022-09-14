@@ -19,7 +19,7 @@ const common = {
     'jest/no-test-return-statement': 'off',
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
-    'no-console': 'off',
+    'no-console': 'warn',
     'import/no-named-as-default': 'off',
     'no-redeclare': 'off',
     'no-iterator': 'off',
