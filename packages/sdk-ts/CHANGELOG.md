@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.127](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.126...@injectivelabs/sdk-ts@1.0.127) (2022-09-14)
+
+
+### Features
+
+* jest setup, msgBid unit tests ([9caa08f](https://github.com/InjectiveLabs/injective-ts/commit/9caa08f68617661dc0d675c3238bbf6592b494f4))
+
+
+
+
+
 ## [1.0.126](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.125...@injectivelabs/sdk-ts@1.0.126) (2022-09-14)
 
 

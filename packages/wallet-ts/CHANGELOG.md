@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.77...@injectivelabs/wallet-ts@1.0.78) (2022-09-14)
+
+
+### Features
+
+* jest setup, msgBid unit tests ([9caa08f](https://github.com/InjectiveLabs/injective-ts/commit/9caa08f68617661dc0d675c3238bbf6592b494f4))
+
+
+
+
+
 ## [1.0.77](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.76...@injectivelabs/wallet-ts@1.0.77) (2022-09-14)
 
 
