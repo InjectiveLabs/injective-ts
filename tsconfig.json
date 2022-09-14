@@ -12,6 +12,9 @@
       "@injectivelabs/utils": [
         "packages/utils"
       ],
+      "@injectivelabs/test-utils": [
+        "packages/test-utils"
+      ],
       "@injectivelabs/wallet-ts": [
         "packages/wallet-ts"
       ],

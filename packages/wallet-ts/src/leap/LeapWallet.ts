@@ -18,7 +18,7 @@ export class LeapWallet {
 
   constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
     this.chainId = chainId
-    this.window = window as Window & { leap: Leap }
+    this.window = window as unknown as Window & { leap: Leap }
   }
 
   async getLeapWallet() {

@@ -25,10 +25,5 @@
     {
       "path": "../contracts/tsconfig.json"
     }
-  ],
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "Injective Protocol - Wallet TS"
-  }
+  ]
 }

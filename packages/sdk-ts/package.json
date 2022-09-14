@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ts",
   "description": "SDK in TypeScript for building Injective applications in a Node environment.",
-  "version": "1.0.127",
+  "version": "1.0.129",
   "license": "MIT",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -35,13 +35,13 @@
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/chain-api": "^1.8.0-rc8",
-    "@injectivelabs/exceptions": "^1.0.11",
+    "@injectivelabs/exceptions": "^1.0.12",
     "@injectivelabs/exchange-api": "^2.2.77",
     "@injectivelabs/indexer-api": "^1.0.16",
-    "@injectivelabs/networks": "^1.0.19",
-    "@injectivelabs/token-metadata": "^1.0.27",
-    "@injectivelabs/ts-types": "^1.0.10",
-    "@injectivelabs/utils": "^1.0.17",
+    "@injectivelabs/networks": "^1.0.20",
+    "@injectivelabs/token-metadata": "^1.0.28",
+    "@injectivelabs/ts-types": "^1.0.11",
+    "@injectivelabs/utils": "^1.0.18",
     "@metamask/eth-sig-util": "^4.0.1",
     "@types/google-protobuf": "^3.15.5",
     "bech32": "^2.0.0",
@@ -59,5 +59,10 @@
     "shx": "^0.3.2",
     "snakecase-keys": "^5.4.1"
   },
-  "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4"
+  "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4",
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "sdk-ts API documentation"
+  }
 }

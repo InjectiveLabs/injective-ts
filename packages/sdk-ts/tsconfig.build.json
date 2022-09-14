@@ -3,10 +3,14 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "tsBuildInfoFile": "../../.build-cache/sdk-ts.tsbuildinfo"
+    "tsBuildInfoFile": "../../.build-cache/sdk-ts.tsbuildinfo",
   },
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+  ],
+  "exclude": [
+    "./src/**/*.spec.ts",
+    "./src/**/*.test.ts"
   ],
   "references": [
     {
@@ -17,6 +21,9 @@
     },
     {
       "path": "../utils/tsconfig.build.json"
+    },
+    {
+      "path": "../test-utils/tsconfig.build.json"
     },
     {
       "path": "../networks/tsconfig.build.json"

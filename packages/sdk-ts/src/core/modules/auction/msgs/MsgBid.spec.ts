@@ -1,14 +1,23 @@
 import { MsgBid as BaseMsgBid } from '@injectivelabs/chain-api/injective/auction/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
+import { mockFactory } from '@injectivelabs/test-utils'
 import MsgBid from './MsgBid'
 
 const params: MsgBid['params'] = {
   round: 1,
-  injectiveAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+  injectiveAddress: mockFactory.injectiveAddress,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
     denom: 'inj',
   },
+}
+
+const protoType = '/injective.auction.v1beta1.MsgBid'
+const protoTypeAmino = 'auction/MsgBid'
+const protoParams = {
+  sender: params.injectiveAddress,
+  bidAmount: params.amount,
+  round: params.round,
 }
 
 const message = MsgBid.fromJSON(params)
@@ -18,21 +27,15 @@ describe.only('MsgBid', () => {
     const proto = message.toProto()
 
     expect(proto instanceof BaseMsgBid).toBe(true)
-    expect(proto.toObject()).toStrictEqual({
-      sender: params.injectiveAddress,
-      bidAmount: params.amount,
-      round: params.round,
-    })
+    expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {
     const data = message.toData()
 
     expect(data).toStrictEqual({
-      '@type': '/injective.auction.v1beta1.MsgBid',
-      sender: params.injectiveAddress,
-      bidAmount: params.amount,
-      round: params.round,
+      '@type': protoType,
+      ...protoParams,
     })
   })
 
@@ -40,10 +43,8 @@ describe.only('MsgBid', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'auction/MsgBid',
-      sender: params.injectiveAddress,
-      bidAmount: params.amount,
-      round: params.round,
+      type: protoTypeAmino,
+      ...protoParams,
     })
   })
 
@@ -67,7 +68,7 @@ describe.only('MsgBid', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'auction/MsgBid',
+      type: protoTypeAmino,
       value: {
         sender: params.injectiveAddress,
         bid_amount: params.amount,
@@ -80,10 +81,8 @@ describe.only('MsgBid', () => {
     const web3 = message.toWeb3()
 
     expect(web3).toStrictEqual({
-      '@type': '/injective.auction.v1beta1.MsgBid',
-      sender: params.injectiveAddress,
-      bidAmount: params.amount,
-      round: params.round,
+      '@type': protoType,
+      ...protoParams,
     })
   })
 })

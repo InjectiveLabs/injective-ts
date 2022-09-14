@@ -5,10 +5,7 @@ import {
   OrderTypeMap,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase'
-import {
-  amountToCosmosSdkDecAmount,
-  getTriggerPrice,
-} from '../../../../utils/numbers'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 
 export declare namespace MsgCreateDerivativeMarketOrder {
   export interface Params {
@@ -87,7 +84,9 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
       ...initialParams,
       price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
       margin: amountToCosmosSdkDecAmount(initialParams.margin).toFixed(),
-      triggerPrice: getTriggerPrice(initialParams.triggerPrice),
+      triggerPrice: amountToCosmosSdkDecAmount(
+        initialParams.triggerPrice || 0,
+      ).toFixed(),
       quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
     } as MsgCreateDerivativeMarketOrder.Params
 

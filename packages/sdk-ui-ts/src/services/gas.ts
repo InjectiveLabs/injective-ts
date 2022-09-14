@@ -106,8 +106,7 @@ const fetchGasPriceFromOwlracle = async (): Promise<string> => {
       throw new Error('No response from Owrlacle')
     }
     const { speeds } = response.data
-    // @ts-ignore
-    const [slow, fast, faster, fastest] = speeds
+    const [, , faster] = speeds
 
     return new BigNumberInWei(
       new BigNumber(faster.gasPrice).multipliedBy(GWEI_IN_WEI),

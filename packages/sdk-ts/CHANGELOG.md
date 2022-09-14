@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.129](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.128...@injectivelabs/sdk-ts@1.0.129) (2022-09-14)
+
+
+### Bug Fixes
+
+* lgtm ([55ca9bb](https://github.com/InjectiveLabs/injective-ts/commit/55ca9bb8330462d38518812894af65bee395ff49))
+
+
+
+
+
+## [1.0.128](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.127...@injectivelabs/sdk-ts@1.0.128) (2022-09-14)
+
+
+### Features
+
+* add unit test coverage for cosmos bank MsgSend message ([78a269c](https://github.com/InjectiveLabs/injective-ts/commit/78a269ce62bc3f24ae68f9bdffa49fe2dace54af))
+* add unit test coverage for cosmos distribution MsgWithdrawDelegatorReward message ([0f8551d](https://github.com/InjectiveLabs/injective-ts/commit/0f8551d7a61aa4d531fcf0bf76214aac9d4a6584))
+* add unit test coverage for cosmos gov MsgDeposit message ([d554213](https://github.com/InjectiveLabs/injective-ts/commit/d55421360d74bb31ddbf421d9eede100e6f00901))
+* add unit test coverage for cosmos gov MsgVote message ([eb3f044](https://github.com/InjectiveLabs/injective-ts/commit/eb3f04417a5a16f987080d1586e077f88743d482))
+* add unit test coverage for cosmos staking MsgBeginRedelegate message ([752f8bc](https://github.com/InjectiveLabs/injective-ts/commit/752f8bc7e7b627384949f354b03d737693062d4c))
+* add unit test coverage for cosmos staking MsgDelegate  message ([8992ef0](https://github.com/InjectiveLabs/injective-ts/commit/8992ef064314fd505f0c4a9c6890e4d97dca3512))
+* add unit test coverage for cosmos staking MsgUndelegate message ([5c3da5b](https://github.com/InjectiveLabs/injective-ts/commit/5c3da5b578d1a02ad80f5dfdb8321f887414605e))
+* add unit test coverage for injective exchange MsgCreateBinaryOptionsLimitOrder message ([a05159c](https://github.com/InjectiveLabs/injective-ts/commit/a05159c46479475abd726f27c1f3fb606040f824))
+* add unit test coverage for injective exchange MsgCreateBinaryOptionsMarketOrder message ([2832942](https://github.com/InjectiveLabs/injective-ts/commit/283294239845fcbf437d914c2d1dbf2696ddd9bc))
+* add unit test coverage for injective exchange MsgCreateDerivativeLimitOrder message ([712480d](https://github.com/InjectiveLabs/injective-ts/commit/712480de1238f26bf1bf16ac65d684a99b2bf2c5))
+* add unit test coverage for injective exchange MsgCreateDerivativeMarketOrder message ([0af0813](https://github.com/InjectiveLabs/injective-ts/commit/0af0813cf08411d5824b5c1aa4eb31e0322241a3))
+* add unit test coverage for injective exchange MsgCreateSpotLimitOrder message ([05f4eb5](https://github.com/InjectiveLabs/injective-ts/commit/05f4eb5b0520b005e7ecf3120789947e647cc40a))
+* add unit test coverage for injective exchange MsgCreateSpotMarketOrder message ([a674677](https://github.com/InjectiveLabs/injective-ts/commit/a6746770967dfc8635b52162d24abe6520f096e7))
+* add unit test coverage for injective exchange MsgDeposit message ([068fe70](https://github.com/InjectiveLabs/injective-ts/commit/068fe70a35a447a816e123c74a3c89e29d909810))
+* add unit test coverage for injective exchange MsgIncreasePositionMargin message ([cb98d2c](https://github.com/InjectiveLabs/injective-ts/commit/cb98d2c6b42fa612ba4e7b976f537341ade5ea3d))
+* add unit test coverage for injective exchange MsgInstantSpotMarketLaunch message ([27e4ce7](https://github.com/InjectiveLabs/injective-ts/commit/27e4ce7aa997dc30fca77e8302215bc573e3ee67))
+* add unit test coverage for injective exchange MsgWithdraw message ([e369a93](https://github.com/InjectiveLabs/injective-ts/commit/e369a93778c9953f16d78eb406f4b8e7fe0c7165))
+* add unit test coverage for injective insurance MsgCreateInsuranceFund message ([4eb34e0](https://github.com/InjectiveLabs/injective-ts/commit/4eb34e02a2f9bdb28919aa080acc10f6ab08aa25))
+* add unit test coverage for injective insurance MsgRequestRedemption message ([4944809](https://github.com/InjectiveLabs/injective-ts/commit/494480941306a5132fdf96f0a6e3a3eadc17aa75))
+* add unit test coverage for injective insurance MsgUnderwrite message ([b2e280a](https://github.com/InjectiveLabs/injective-ts/commit/b2e280a8e0e2209a5d1ee4306bbaa9485051711b))
+* path mapping ([692362d](https://github.com/InjectiveLabs/injective-ts/commit/692362db2fe44f2a1418fd61de29d798f7044dfb))
+
+
+
+
+
 ## [1.0.127](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.126...@injectivelabs/sdk-ts@1.0.127) (2022-09-14)
 
 

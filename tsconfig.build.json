@@ -26,13 +26,14 @@
     "types": [
       "node",
       "jest"
-    ]
+    ],
   },
   "exclude": [
     "node_modules",
     "dist",
+    "docs",
     "./deprecated",
     "**/*.test.ts",
-    "**/*.spec.ts"
+    "**/*.specs.ts",
   ]
 }
