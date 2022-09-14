@@ -1,7 +1,7 @@
 import { MsgRequestRedemption as BaseMsgRequestRedemption } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgRequestRedemption from './MsgRequestRedemption'
-import { mockFactory } from '@tests/mock'
+import { mockFactory } from '@tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgRequestRedemption['params'] = {
@@ -14,6 +14,7 @@ const params: MsgRequestRedemption['params'] = {
 }
 
 const protoType = '/injective.insurance.v1beta1.MsgRequestRedemption'
+const protoTypeAmino = 'insurance/MsgRequestRedemption'
 const protoParams = {
   marketId: params.marketId,
   sender: params.injectiveAddress,
@@ -43,7 +44,7 @@ describe.only('MsgRequestRedemption', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'insurance/MsgRequestRedemption',
+      type: protoTypeAmino,
       ...protoParams,
     })
   })
@@ -68,7 +69,7 @@ describe.only('MsgRequestRedemption', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'insurance/MsgRequestRedemption',
+      type: protoTypeAmino,
       value: snakecaseKeys(protoParams),
     })
   })

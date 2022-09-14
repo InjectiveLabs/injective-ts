@@ -1,7 +1,7 @@
 import { MsgDelegate as BaseMsgDelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgDelegate from './MsgDelegate'
-import { mockFactory } from '@tests/mock'
+import { mockFactory } from '@tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgDelegate['params'] = {
@@ -14,6 +14,7 @@ const params: MsgDelegate['params'] = {
 }
 
 const protoType = '/cosmos.staking.v1beta1.MsgDelegate'
+const protoTypeAmino = 'cosmos-sdk/MsgDelegate'
 const protoParams = {
   validatorAddress: params.validatorAddress,
   delegatorAddress: params.injectiveAddress,
@@ -43,7 +44,7 @@ describe.only('MsgDelegate', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'cosmos-sdk/MsgDelegate',
+      type: protoTypeAmino,
       ...protoParams,
     })
   })
@@ -68,7 +69,7 @@ describe.only('MsgDelegate', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'cosmos-sdk/MsgDelegate',
+      type: protoTypeAmino,
       value: snakecaseKeys(protoParams),
     })
   })

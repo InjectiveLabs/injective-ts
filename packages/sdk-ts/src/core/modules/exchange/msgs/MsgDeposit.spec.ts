@@ -1,11 +1,11 @@
-import { MsgUnderwrite as BaseMsgUnderwrite } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
+import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgUnderwrite from './MsgUnderwrite'
+import MsgDeposit from './MsgDeposit'
 import { mockFactory } from '@tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
-const params: MsgUnderwrite['params'] = {
-  marketId: mockFactory.derivativeMarketId,
+const params: MsgDeposit['params'] = {
+  subaccountId: mockFactory.subaccountId,
   injectiveAddress: mockFactory.injectiveAddress,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
@@ -13,21 +13,21 @@ const params: MsgUnderwrite['params'] = {
   },
 }
 
-const protoType = '/injective.insurance.v1beta1.MsgUnderwrite'
-const protoTypeAmino = 'insurance/MsgUnderwrite'
+const protoType = '/injective.exchange.v1beta1.MsgDeposit'
+const protoTypeAmino = 'exchange/MsgDeposit'
 const protoParams = {
-  marketId: params.marketId,
+  subaccountId: params.subaccountId,
   sender: params.injectiveAddress,
-  deposit: params.amount,
+  amount: params.amount,
 }
 
-const message = MsgUnderwrite.fromJSON(params)
+const message = MsgDeposit.fromJSON(params)
 
-describe.only('MsgUnderwrite', () => {
+describe.only('MsgDeposit', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgUnderwrite).toBe(true)
+    expect(proto instanceof BaseMsgDeposit).toBe(true)
     expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
@@ -53,14 +53,14 @@ describe.only('MsgUnderwrite', () => {
     const eip712Types = message.toEip712Types()
 
     expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeDeposit: [
+      TypeAmount: [
         { name: 'denom', type: 'string' },
         { name: 'amount', type: 'string' },
       ],
       MsgValue: [
         { name: 'sender', type: 'string' },
-        { name: 'market_id', type: 'string' },
-        { name: 'deposit', type: 'TypeDeposit' },
+        { name: 'subaccount_id', type: 'string' },
+        { name: 'amount', type: 'TypeAmount' },
       ],
     })
   })

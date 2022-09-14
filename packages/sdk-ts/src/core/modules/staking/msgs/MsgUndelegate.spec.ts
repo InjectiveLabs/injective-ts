@@ -1,7 +1,7 @@
 import { MsgUndelegate as BaseMsgUndelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgUndelegate from './MsgUndelegate'
-import { mockFactory } from '@tests/mock'
+import { mockFactory } from '@tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgUndelegate['params'] = {
@@ -14,6 +14,7 @@ const params: MsgUndelegate['params'] = {
 }
 
 const protoType = '/cosmos.staking.v1beta1.MsgUndelegate'
+const protoTypeAmino = 'cosmos-sdk/MsgUndelegate'
 const protoParams = {
   validatorAddress: params.validatorAddress,
   delegatorAddress: params.injectiveAddress,
@@ -43,7 +44,7 @@ describe.only('MsgUndelegate', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'cosmos-sdk/MsgUndelegate',
+      type: protoTypeAmino,
       ...protoParams,
     })
   })
@@ -68,7 +69,7 @@ describe.only('MsgUndelegate', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'cosmos-sdk/MsgUndelegate',
+      type: protoTypeAmino,
       value: snakecaseKeys(protoParams),
     })
   })

@@ -1,7 +1,7 @@
 import { MsgBeginRedelegate as BaseMsgBeginRedelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgBeginRedelegate from './MsgBeginRedelegate'
-import { mockFactory } from '@tests/mock'
+import { mockFactory } from '@tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgBeginRedelegate['params'] = {
@@ -15,6 +15,7 @@ const params: MsgBeginRedelegate['params'] = {
 }
 
 const protoType = '/cosmos.staking.v1beta1.MsgBeginRedelegate'
+const protoTypeAmino = 'cosmos-sdk/MsgBeginRedelegate'
 const protoParams = {
   validatorDstAddress: params.dstValidatorAddress,
   validatorSrcAddress: params.srcValidatorAddress,
@@ -45,7 +46,7 @@ describe.only('MsgBeginRedelegate', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'cosmos-sdk/MsgBeginRedelegate',
+      type: protoTypeAmino,
       ...protoParams,
     })
   })
@@ -71,7 +72,7 @@ describe.only('MsgBeginRedelegate', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'cosmos-sdk/MsgBeginRedelegate',
+      type: protoTypeAmino,
       value: snakecaseKeys(protoParams),
     })
   })

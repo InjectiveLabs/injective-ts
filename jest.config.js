@@ -71,6 +71,7 @@ module.exports = {
     ...pathsToModuleNameMapper(
       compilerOptions.paths /* , { prefix: '<rootDir>/' }, */,
     ),
+    '^@tests/(.*)$': '<rootDir>/tests/$1',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

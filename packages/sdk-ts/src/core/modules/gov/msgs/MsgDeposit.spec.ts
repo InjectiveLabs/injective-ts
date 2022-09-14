@@ -1,34 +1,40 @@
-import { MsgUnderwrite as BaseMsgUnderwrite } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
+import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgUnderwrite from './MsgUnderwrite'
+import MsgDeposit from './MsgDeposit'
 import { mockFactory } from '@tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
-const params: MsgUnderwrite['params'] = {
-  marketId: mockFactory.derivativeMarketId,
-  injectiveAddress: mockFactory.injectiveAddress,
+const params: MsgDeposit['params'] = {
+  proposalId: 1,
+  depositor: mockFactory.injectiveAddress,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
     denom: 'inj',
   },
 }
 
-const protoType = '/injective.insurance.v1beta1.MsgUnderwrite'
-const protoTypeAmino = 'insurance/MsgUnderwrite'
-const protoParams = {
-  marketId: params.marketId,
-  sender: params.injectiveAddress,
-  deposit: params.amount,
+const protoType = '/cosmos.gov.v1beta1.MsgDeposit'
+const protoTypeAmino = 'cosmos-sdk/MsgDeposit'
+const protoParamsBefore = {
+  proposalId: params.proposalId,
+  depositor: params.depositor,
+  amountList: [params.amount],
 }
 
-const message = MsgUnderwrite.fromJSON(params)
+const protoParamsAfter = {
+  proposal_id: params.proposalId,
+  depositor: params.depositor,
+  amount: [params.amount],
+}
 
-describe.only('MsgUnderwrite', () => {
+const message = MsgDeposit.fromJSON(params)
+
+describe.only('MsgDeposit', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgUnderwrite).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto instanceof BaseMsgDeposit).toBe(true)
+    expect(proto.toObject()).toStrictEqual(protoParamsBefore)
   })
 
   it('generates proper data', () => {
@@ -36,7 +42,7 @@ describe.only('MsgUnderwrite', () => {
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsBefore,
     })
   })
 
@@ -45,7 +51,7 @@ describe.only('MsgUnderwrite', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParams,
+      ...protoParamsAfter,
     })
   })
 
@@ -53,14 +59,14 @@ describe.only('MsgUnderwrite', () => {
     const eip712Types = message.toEip712Types()
 
     expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeDeposit: [
+      TypeAmount: [
         { name: 'denom', type: 'string' },
         { name: 'amount', type: 'string' },
       ],
       MsgValue: [
-        { name: 'sender', type: 'string' },
-        { name: 'market_id', type: 'string' },
-        { name: 'deposit', type: 'TypeDeposit' },
+        { name: 'proposal_id', type: 'uint64' },
+        { name: 'depositor', type: 'string' },
+        { name: 'amount', type: 'TypeAmount[]' },
       ],
     })
   })
@@ -70,7 +76,10 @@ describe.only('MsgUnderwrite', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeAmino,
-      value: snakecaseKeys(protoParams),
+      value: snakecaseKeys({
+        ...protoParamsAfter,
+        proposal_id: params.proposalId.toString(),
+      }),
     })
   })
 
@@ -79,7 +88,7 @@ describe.only('MsgUnderwrite', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAfter,
     })
   })
 })
