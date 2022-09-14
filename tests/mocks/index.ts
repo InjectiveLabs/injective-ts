@@ -39,6 +39,36 @@ export const injUsdtSpotMarket = {
   minQuantityTickSize: '1000000000000000',
 }
 
+export const injUsdtDerivativeMarket = {
+  oracleBase: 'INJ',
+  oracleQuote: 'USDT',
+  oracleType: 'pricefeed',
+  initialMarginRatio: '0.05',
+  maintenanceMarginRatio: '0.02',
+  isPerpetual: true,
+  marketId:
+    '0x7cc8b10d7deb61e744ef83bdec2bbcf4a056867e89b062c6a453020ca82bd4e4',
+  marketStatus: 'active',
+  ticker: 'INJ/USDT PERP',
+  quoteDenom: 'peggy0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  makerFeeRate: '0.001',
+  takerFeeRate: '0.002',
+  serviceProviderFee: '0.4',
+  minPriceTickSize: 1000,
+  minQuantityTickSize: 0.001,
+  perpetualMarketInfo: {
+    hourlyFundingRateCap: '0.000625',
+    hourlyInterestRate: '0.00000416666',
+    nextFundingTimestamp: 1662649966,
+    fundingInterval: 3600,
+  },
+  perpetualMarketFunding: {
+    cumulativeFunding: '-2172.542776314322575',
+    cumulativePrice: '-2.770342429398565393',
+    lastTimestamp: 1662648237,
+  },
+}
+
 export const mockFactory = {
   injectiveAddress,
   injectiveAddress2,
@@ -48,4 +78,5 @@ export const mockFactory = {
   spotMarketId,
   subaccountId,
   injUsdtSpotMarket,
+  injUsdtDerivativeMarket,
 }
