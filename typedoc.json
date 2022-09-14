@@ -6,8 +6,8 @@
     "./packages/wallet-ts",
     "./packages/tx-ts"
   ],
-  "theme": "oxide",
-  "plugin": ["typedoc-monorepo-link-types", "typedoc-theme-oxide"],
-  "exclude": ["./packages/**/*.spec.ts", "./packages/**/*.spec.ts"],
-  "name": "API Reference - Injective's TypeScript monorepo"
+  "theme": ["fons"],
+  "plugin": ["@bangjelkoski/typedoc-theme"],
+  "name": "API Reference - Injective's TypeScript monorepo",
+  "exclude": "\"**/*+(index|.spec|.e2e).ts\""
 }

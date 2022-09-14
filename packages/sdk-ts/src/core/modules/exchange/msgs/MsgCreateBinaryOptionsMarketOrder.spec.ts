@@ -1,6 +1,6 @@
 import { MsgCreateBinaryOptionsMarketOrder as BaseMsgCreateBinaryOptionsMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateBinaryOptionsMarketOrder from './MsgCreateBinaryOptionsMarketOrder'
-import { mockFactory } from '../../../../../../../tests/mocks'
+import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgCreateBinaryOptionsMarketOrder['params'] = {

@@ -1,6 +1,6 @@
 import { MsgCreateDerivativeLimitOrder as BaseMsgCreateDerivativeLimitOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateDerivativeLimitOrder from './MsgCreateDerivativeLimitOrder'
-import { mockFactory } from '../../../../../../../tests/mocks'
+import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgCreateDerivativeLimitOrder['params'] = {

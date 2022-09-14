@@ -44,5 +44,10 @@
     "link-module-alias": "^1.2.0",
     "sha3": "^2.1.4",
     "shx": "^0.3.2"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "tx-ts Documentation"
   }
 }

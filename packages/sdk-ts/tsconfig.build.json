@@ -23,6 +23,9 @@
       "path": "../utils/tsconfig.build.json"
     },
     {
+      "path": "../test-utils/tsconfig.build.json"
+    },
+    {
       "path": "../networks/tsconfig.build.json"
     },
     {

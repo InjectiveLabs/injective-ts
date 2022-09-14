@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "include": [
-    "../../tests/**/*.ts"
-  ],
   "references": [
     {
       "path": "../ts-types/tsconfig.json"
@@ -14,18 +11,13 @@
       "path": "../utils/tsconfig.json"
     },
     {
+      "path": "../test-utils/tsconfig.json"
+    },
+    {
       "path": "../networks/tsconfig.json"
     },
     {
       "path": "../token-metadata/tsconfig.json"
     },
-  ],
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "name": "sdk-ts Documentation",
-    "readmeFile": "./README.md",
-    "excludeExternals": "true",
-    "excludePrivate": "true",
-    "exclude": "**/*.spec.ts",
-  }
+  ]
 }

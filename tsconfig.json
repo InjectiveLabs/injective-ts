@@ -3,9 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "~/tests/*": [
-        "./tests/*"
-      ],
       "@injectivelabs/ts-types": [
         "packages/ts-types"
       ],
@@ -14,6 +11,9 @@
       ],
       "@injectivelabs/utils": [
         "packages/utils"
+      ],
+      "@injectivelabs/test-utils": [
+        "packages/test-utils"
       ],
       "@injectivelabs/wallet-ts": [
         "packages/wallet-ts"

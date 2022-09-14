@@ -1,6 +1,6 @@
 import { MsgBid as BaseMsgBid } from '@injectivelabs/chain-api/injective/auction/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { mockFactory } from '~/tests/mocks'
+import { mockFactory } from '@injectivelabs/test-utils'
 import MsgBid from './MsgBid'
 
 const params: MsgBid['params'] = {

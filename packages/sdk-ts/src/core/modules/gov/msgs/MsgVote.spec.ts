@@ -1,6 +1,6 @@
 import { MsgVote as BaseMsgVote } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import MsgVote from './MsgVote'
-import { mockFactory } from '~/tests/mocks'
+import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgVote['params'] = {

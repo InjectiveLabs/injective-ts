@@ -1,7 +1,7 @@
 import { MsgDelegate as BaseMsgDelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgDelegate from './MsgDelegate'
-import { mockFactory } from '~/tests/mocks'
+import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgDelegate['params'] = {

@@ -59,5 +59,10 @@
     "shx": "^0.3.2",
     "snakecase-keys": "^5.4.1"
   },
-  "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4"
+  "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4",
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "sdk-ts Documentation"
+  }
 }

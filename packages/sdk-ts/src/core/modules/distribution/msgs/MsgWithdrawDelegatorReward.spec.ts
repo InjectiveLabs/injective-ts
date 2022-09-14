@@ -1,6 +1,6 @@
 import { MsgWithdrawDelegatorReward as BaseMsgWithdrawDelegatorReward } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/tx_pb'
 import MsgWithdrawDelegatorReward from './MsgWithdrawDelegatorReward'
-import { mockFactory } from '~/tests/mocks'
+import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgWithdrawDelegatorReward['params'] = {

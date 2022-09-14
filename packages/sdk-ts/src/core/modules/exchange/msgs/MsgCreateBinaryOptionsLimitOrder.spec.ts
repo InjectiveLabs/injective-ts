@@ -1,6 +1,6 @@
 import { MsgCreateBinaryOptionsLimitOrder as BaseMsgCreateBinaryOptionsLimitOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateBinaryOptionsLimitOrder from './MsgCreateBinaryOptionsLimitOrder'
-import { mockFactory } from '../../../../../../../tests/mocks'
+import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgCreateBinaryOptionsLimitOrder['params'] = {

@@ -1,6 +1,6 @@
 import { MsgCreateSpotLimitOrder as BaseMsgCreateSpotLimitOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateSpotLimitOrder from './MsgCreateSpotLimitOrder'
-import { mockFactory } from '../../../../../../../tests/mocks'
+import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgCreateSpotLimitOrder['params'] = {

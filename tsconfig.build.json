@@ -17,8 +17,8 @@
     "removeComments": false,
     "composite": true,
     "declaration": true,
-    "declarationMap": false,
-    "sourceMap": false,
+    "declarationMap": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "incremental": true,
     "resolveJsonModule": true,
@@ -31,7 +31,9 @@
   "exclude": [
     "node_modules",
     "dist",
+    "docs",
     "./deprecated",
     "**/*.test.ts",
+    "**/*.specs.ts",
   ]
 }
