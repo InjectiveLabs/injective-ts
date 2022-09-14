@@ -1,7 +1,7 @@
 import { MsgRequestRedemption as BaseMsgRequestRedemption } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgRequestRedemption from './MsgRequestRedemption'
-import { mockFactory } from '../../../../../../../mocks'
+import { mockFactory } from '../../../../../../../tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgRequestRedemption['params'] = {

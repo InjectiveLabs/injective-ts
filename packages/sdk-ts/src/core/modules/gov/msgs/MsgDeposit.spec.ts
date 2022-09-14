@@ -1,33 +1,39 @@
-import { MsgUndelegate as BaseMsgUndelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
+import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgUndelegate from './MsgUndelegate'
+import MsgDeposit from './MsgDeposit'
 import { mockFactory } from '../../../../../../../tests/mocks'
 import snakecaseKeys from 'snakecase-keys'
 
-const params: MsgUndelegate['params'] = {
-  validatorAddress: mockFactory.validatorAddress,
-  injectiveAddress: mockFactory.injectiveAddress,
+const params: MsgDeposit['params'] = {
+  proposalId: 1,
+  depositor: mockFactory.injectiveAddress,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
     denom: 'inj',
   },
 }
 
-const protoType = '/cosmos.staking.v1beta1.MsgUndelegate'
-const protoParams = {
-  validatorAddress: params.validatorAddress,
-  delegatorAddress: params.injectiveAddress,
-  amount: params.amount,
+const protoType = '/cosmos.gov.v1beta1.MsgDeposit'
+const protoParamsBefore = {
+  proposalId: params.proposalId,
+  depositor: params.depositor,
+  amountList: [params.amount],
 }
 
-const message = MsgUndelegate.fromJSON(params)
+const protoParamsAfter = {
+  proposal_id: params.proposalId,
+  depositor: params.depositor,
+  amount: [params.amount],
+}
 
-describe.only('MsgUndelegate', () => {
+const message = MsgDeposit.fromJSON(params)
+
+describe.only('MsgDeposit', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgUndelegate).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto instanceof BaseMsgDeposit).toBe(true)
+    expect(proto.toObject()).toStrictEqual(protoParamsBefore)
   })
 
   it('generates proper data', () => {
@@ -35,7 +41,7 @@ describe.only('MsgUndelegate', () => {
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsBefore,
     })
   })
 
@@ -43,8 +49,8 @@ describe.only('MsgUndelegate', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'cosmos-sdk/MsgUndelegate',
-      ...protoParams,
+      type: 'cosmos-sdk/MsgDeposit',
+      ...protoParamsAfter,
     })
   })
 
@@ -57,9 +63,9 @@ describe.only('MsgUndelegate', () => {
         { name: 'amount', type: 'string' },
       ],
       MsgValue: [
-        { name: 'delegator_address', type: 'string' },
-        { name: 'validator_address', type: 'string' },
-        { name: 'amount', type: 'TypeAmount' },
+        { name: 'proposal_id', type: 'uint64' },
+        { name: 'depositor', type: 'string' },
+        { name: 'amount', type: 'TypeAmount[]' },
       ],
     })
   })
@@ -68,8 +74,11 @@ describe.only('MsgUndelegate', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'cosmos-sdk/MsgUndelegate',
-      value: snakecaseKeys(protoParams),
+      type: 'cosmos-sdk/MsgDeposit',
+      value: snakecaseKeys({
+        ...protoParamsAfter,
+        proposal_id: params.proposalId.toString(),
+      }),
     })
   })
 
@@ -78,7 +87,7 @@ describe.only('MsgUndelegate', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAfter,
     })
   })
 })
