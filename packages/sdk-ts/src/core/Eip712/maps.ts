@@ -112,6 +112,8 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
       return 'int32'
     case 'order_type':
       return 'int32'
+    case 'oracle_type':
+      return 'int32'
     case 'round':
       return 'uint64'
     case 'oracle_scale_factor':
@@ -135,6 +137,10 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
  *
  * 2. We need to convert every `sdk.Dec` value from a raw value to shifted by 1e18 value
  * ex: 0.01 -> 0.01000000000000000000, 1 -> 1.000000000000000000
+ *
+ * 3. For some fields, like 'amount' in the 'MsgIncreasePositionMargin' we have
+ * to also specify the Message type to apply the sdk.Dec conversion because there
+ * are other amount fields in other messages as well and we don't want to affect them
  */
 export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
   object: T,
@@ -147,6 +153,7 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
     'timeout_timestamp',
     'revision_height',
     'revision_number',
+    'expiry',
   ]
   const sdkDecKeys = [
     'min_price_tick_size',
@@ -202,7 +209,7 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
         }
       }
 
-      // Message Type Specific chec
+      // Message Type Specific checks
       if (messageTypeUrl) {
         const typeInMap = Object.keys(sdkDecKeyWithTypeMaps).find(
           (key) => key === messageTypeUrl,
