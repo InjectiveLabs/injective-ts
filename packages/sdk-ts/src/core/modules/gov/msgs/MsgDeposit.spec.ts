@@ -14,6 +14,7 @@ const params: MsgDeposit['params'] = {
 }
 
 const protoType = '/cosmos.gov.v1beta1.MsgDeposit'
+const protoTypeShort = 'cosmos-sdk/MsgDeposit'
 const protoParamsBefore = {
   proposalId: params.proposalId,
   depositor: params.depositor,
@@ -49,7 +50,7 @@ describe.only('MsgDeposit', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'cosmos-sdk/MsgDeposit',
+      type: protoTypeShort,
       ...protoParamsAfter,
     })
   })
@@ -74,7 +75,7 @@ describe.only('MsgDeposit', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'cosmos-sdk/MsgDeposit',
+      type: protoTypeShort,
       value: snakecaseKeys({
         ...protoParamsAfter,
         proposal_id: params.proposalId.toString(),

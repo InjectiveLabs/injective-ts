@@ -14,6 +14,7 @@ const params: MsgRequestRedemption['params'] = {
 }
 
 const protoType = '/injective.insurance.v1beta1.MsgRequestRedemption'
+const protoTypeShort = 'insurance/MsgRequestRedemption'
 const protoParams = {
   marketId: params.marketId,
   sender: params.injectiveAddress,
@@ -43,7 +44,7 @@ describe.only('MsgRequestRedemption', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'insurance/MsgRequestRedemption',
+      type: protoTypeShort,
       ...protoParams,
     })
   })
@@ -68,7 +69,7 @@ describe.only('MsgRequestRedemption', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'insurance/MsgRequestRedemption',
+      type: protoTypeShort,
       value: snakecaseKeys(protoParams),
     })
   })

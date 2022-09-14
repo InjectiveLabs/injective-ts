@@ -15,6 +15,7 @@ const params: MsgBeginRedelegate['params'] = {
 }
 
 const protoType = '/cosmos.staking.v1beta1.MsgBeginRedelegate'
+const protoTypeShort = 'cosmos-sdk/MsgBeginRedelegate'
 const protoParams = {
   validatorDstAddress: params.dstValidatorAddress,
   validatorSrcAddress: params.srcValidatorAddress,
@@ -45,7 +46,7 @@ describe.only('MsgBeginRedelegate', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'cosmos-sdk/MsgBeginRedelegate',
+      type: protoTypeShort,
       ...protoParams,
     })
   })
@@ -71,7 +72,7 @@ describe.only('MsgBeginRedelegate', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'cosmos-sdk/MsgBeginRedelegate',
+      type: protoTypeShort,
       value: snakecaseKeys(protoParams),
     })
   })

@@ -14,6 +14,7 @@ const params: MsgUndelegate['params'] = {
 }
 
 const protoType = '/cosmos.staking.v1beta1.MsgUndelegate'
+const protoTypeShort = 'cosmos-sdk/MsgUndelegate'
 const protoParams = {
   validatorAddress: params.validatorAddress,
   delegatorAddress: params.injectiveAddress,
@@ -43,7 +44,7 @@ describe.only('MsgUndelegate', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'cosmos-sdk/MsgUndelegate',
+      type: protoTypeShort,
       ...protoParams,
     })
   })
@@ -68,7 +69,7 @@ describe.only('MsgUndelegate', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'cosmos-sdk/MsgUndelegate',
+      type: protoTypeShort,
       value: snakecaseKeys(protoParams),
     })
   })

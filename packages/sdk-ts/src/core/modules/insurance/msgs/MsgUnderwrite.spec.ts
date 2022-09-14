@@ -14,6 +14,7 @@ const params: MsgUnderwrite['params'] = {
 }
 
 const protoType = '/injective.insurance.v1beta1.MsgUnderwrite'
+const protoTypeShort = 'insurance/MsgUnderwrite'
 const protoParams = {
   marketId: params.marketId,
   sender: params.injectiveAddress,
@@ -43,7 +44,7 @@ describe.only('MsgUnderwrite', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'insurance/MsgUnderwrite',
+      type: protoTypeShort,
       ...protoParams,
     })
   })
@@ -68,7 +69,7 @@ describe.only('MsgUnderwrite', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'insurance/MsgUnderwrite',
+      type: protoTypeShort,
       value: snakecaseKeys(protoParams),
     })
   })

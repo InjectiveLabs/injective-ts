@@ -1,10 +1,11 @@
-import { MsgBid as BaseMsgBid } from '@injectivelabs/chain-api/injective/auction/v1beta1/tx_pb'
+import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgBid from './MsgBid'
+import MsgDeposit from './MsgDeposit'
 import { mockFactory } from '../../../../../../../tests/mocks'
+import snakecaseKeys from 'snakecase-keys'
 
-const params: MsgBid['params'] = {
-  round: 1,
+const params: MsgDeposit['params'] = {
+  subaccountId: mockFactory.subaccountId,
   injectiveAddress: mockFactory.injectiveAddress,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
@@ -12,21 +13,21 @@ const params: MsgBid['params'] = {
   },
 }
 
-const protoType = '/injective.auction.v1beta1.MsgBid'
-const protoTypeShort = 'auction/MsgBid'
+const protoType = '/injective.exchange.v1beta1.MsgDeposit'
+const protoTypeShort = 'exchange/MsgDeposit'
 const protoParams = {
+  subaccountId: params.subaccountId,
   sender: params.injectiveAddress,
-  bidAmount: params.amount,
-  round: params.round,
+  amount: params.amount,
 }
 
-const message = MsgBid.fromJSON(params)
+const message = MsgDeposit.fromJSON(params)
 
-describe.only('MsgBid', () => {
+describe.only('MsgDeposit', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgBid).toBe(true)
+    expect(proto instanceof BaseMsgDeposit).toBe(true)
     expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
@@ -52,14 +53,14 @@ describe.only('MsgBid', () => {
     const eip712Types = message.toEip712Types()
 
     expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeBidAmount: [
+      TypeAmount: [
         { name: 'denom', type: 'string' },
         { name: 'amount', type: 'string' },
       ],
       MsgValue: [
         { name: 'sender', type: 'string' },
-        { name: 'bid_amount', type: 'TypeBidAmount' },
-        { name: 'round', type: 'uint64' },
+        { name: 'subaccount_id', type: 'string' },
+        { name: 'amount', type: 'TypeAmount' },
       ],
     })
   })
@@ -69,11 +70,7 @@ describe.only('MsgBid', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
-      value: {
-        sender: params.injectiveAddress,
-        bid_amount: params.amount,
-        round: params.round.toString(),
-      },
+      value: snakecaseKeys(protoParams),
     })
   })
 

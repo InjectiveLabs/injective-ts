@@ -14,6 +14,7 @@ const params: MsgDelegate['params'] = {
 }
 
 const protoType = '/cosmos.staking.v1beta1.MsgDelegate'
+const protoTypeShort = 'cosmos-sdk/MsgDelegate'
 const protoParams = {
   validatorAddress: params.validatorAddress,
   delegatorAddress: params.injectiveAddress,
@@ -43,7 +44,7 @@ describe.only('MsgDelegate', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'cosmos-sdk/MsgDelegate',
+      type: protoTypeShort,
       ...protoParams,
     })
   })
@@ -68,7 +69,7 @@ describe.only('MsgDelegate', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'cosmos-sdk/MsgDelegate',
+      type: protoTypeShort,
       value: snakecaseKeys(protoParams),
     })
   })
