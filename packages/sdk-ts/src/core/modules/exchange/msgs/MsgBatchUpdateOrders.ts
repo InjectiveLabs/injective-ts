@@ -15,12 +15,18 @@ export declare namespace MsgBatchUpdateOrders {
     subaccountId: string
     spotMarketIdsToCancelAll?: string[]
     derivativeMarketIdsToCancelAll?: string[]
+    binaryOptionsMarketIdsToCancelAll?: string[]
     spotOrdersToCancel?: {
       marketId: string
       subaccountId: string
       orderHash: string
     }[]
     derivativeOrdersToCancel?: {
+      marketId: string
+      subaccountId: string
+      orderHash: string
+    }[]
+    binaryOptionsOrdersToCancel?: {
       marketId: string
       subaccountId: string
       orderHash: string
@@ -34,6 +40,15 @@ export declare namespace MsgBatchUpdateOrders {
       quantity: string
     }[]
     derivativeOrdersToCreate?: {
+      orderType: OrderTypeMap[keyof OrderTypeMap]
+      triggerPrice?: string
+      feeRecipient: string
+      marketId: string
+      price: string
+      margin: string
+      quantity: string
+    }[]
+    binaryOptionsOrdersToCreate?: {
       orderType: OrderTypeMap[keyof OrderTypeMap]
       triggerPrice?: string
       feeRecipient: string
@@ -102,6 +117,15 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       )
       message.setSubaccountId(params.subaccountId)
     }
+    if (
+      params.binaryOptionsMarketIdsToCancelAll &&
+      params.binaryOptionsMarketIdsToCancelAll.length > 0
+    ) {
+      message.setBinaryOptionsMarketIdsToCancelAllList(
+        params.binaryOptionsMarketIdsToCancelAll,
+      )
+      message.setSubaccountId(params.subaccountId)
+    }
 
     if (params.spotOrdersToCancel && params.spotOrdersToCancel.length > 0) {
       const orderDataList = params.spotOrdersToCancel.map(
@@ -123,6 +147,23 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       params.derivativeOrdersToCancel.length > 0
     ) {
       const orderDataList = params.derivativeOrdersToCancel.map(
+        ({ marketId, subaccountId, orderHash }) => {
+          const orderData = new OrderData()
+          orderData.setMarketId(marketId)
+          orderData.setSubaccountId(subaccountId)
+          orderData.setOrderHash(orderHash)
+
+          return orderData
+        },
+      )
+
+      message.setDerivativeOrdersToCancelList(orderDataList)
+    }
+    if (
+      params.binaryOptionsOrdersToCancel &&
+      params.binaryOptionsOrdersToCancel.length > 0
+    ) {
+      const orderDataList = params.binaryOptionsOrdersToCancel.map(
         ({ marketId, subaccountId, orderHash }) => {
           const orderData = new OrderData()
           orderData.setMarketId(marketId)
@@ -173,6 +214,42 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       params.derivativeOrdersToCreate.length > 0
     ) {
       const orderDataList = params.derivativeOrdersToCreate.map(
+        ({
+          orderType,
+          marketId,
+          price,
+          quantity,
+          margin,
+          triggerPrice,
+          feeRecipient,
+        }) => {
+          const orderInfo = new OrderInfo()
+          orderInfo.setSubaccountId(params.subaccountId)
+          orderInfo.setFeeRecipient(feeRecipient)
+          orderInfo.setPrice(price)
+          orderInfo.setQuantity(quantity)
+
+          const order = new DerivativeOrder()
+          order.setMarketId(marketId)
+          order.setOrderType(orderType)
+          order.setOrderInfo(orderInfo)
+          order.setMargin(margin)
+
+          if (triggerPrice) {
+            order.setTriggerPrice(triggerPrice)
+          }
+
+          return order
+        },
+      )
+
+      message.setDerivativeOrdersToCreateList(orderDataList)
+    }
+    if (
+      params.binaryOptionsOrdersToCreate &&
+      params.binaryOptionsOrdersToCreate.length > 0
+    ) {
+      const orderDataList = params.binaryOptionsOrdersToCreate.map(
         ({
           orderType,
           marketId,
