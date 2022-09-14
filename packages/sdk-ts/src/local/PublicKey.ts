@@ -5,7 +5,10 @@ import { Any } from 'google-protobuf/google/protobuf/any_pb'
 import { toBuffer } from 'ethereumjs-util'
 import secp256k1 from 'secp256k1'
 import { Address } from '../classes'
-import EthCrypto from 'eth-crypto'
+import {
+  publicKey as EthCryptoPublicKey,
+  util as EthCryptoUtil,
+} from 'eth-crypto'
 import { keccak256 } from 'js-sha3'
 
 /**
@@ -54,9 +57,9 @@ export class PublicKey {
 
   public toAddress(): Address {
     const publicKeyHex = this.toHex()
-    const decompressedPublicKey = EthCrypto.publicKey.decompress(publicKeyHex)
+    const decompressedPublicKey = EthCryptoPublicKey.decompress(publicKeyHex)
     const addressBuffer = Buffer.from(
-      keccak256(toBuffer(EthCrypto.util.addLeading0x(decompressedPublicKey))),
+      keccak256(toBuffer(EthCryptoUtil.addLeading0x(decompressedPublicKey))),
       'hex',
     ).subarray(-20)
 

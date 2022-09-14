@@ -71,6 +71,7 @@
     "hdkey": "^2.0.1",
     "link-module-alias": "^1.2.0",
     "rxjs": "^7.5.5",
+    "secp256k1": "^4.0.3",
     "shx": "^0.3.3",
     "trezor-connect": "^8.2.8",
     "web3": "^1.7.3",

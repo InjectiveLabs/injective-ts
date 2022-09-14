@@ -153,17 +153,21 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    // '.(ts|tsx)': 'ts-jest',
+    '^.+\\.ts?$': 'ts-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: ['^.+\\.js$', '^.+\\.json$'],
+  transformIgnorePatterns: [
+    '^.+\\.json$',
+    'node_modules/(?!(ethereum-cryptography|eth-crypto)/)',
+  ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run
-  // verbose: null,
+  verbose: false,
 
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],
