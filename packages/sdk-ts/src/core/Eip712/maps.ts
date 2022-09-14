@@ -1,6 +1,11 @@
 import { TypedDataField } from 'ethers'
 import snakecaseKeys from 'snakecase-keys'
+import { numberToCosmosSdkDecString, snakeToPascal } from '../../utils'
 
+/**
+ * Function used to generate EIP712 types based on a message object
+ * and its structure (recursive)
+ */
 export const objectKeysToEip712Types = (
   object: Record<string, any>,
   primaryType = 'MsgValue',
@@ -50,16 +55,17 @@ export const objectKeysToEip712Types = (
             types.push({ name: property, type: 'string[]' })
           }
         } else if (arrayFirstType === 'object') {
-          const recursiveOutput = objectKeysToEip712Types(val[0], primaryType)
-          const recursiveTypes = recursiveOutput.get(primaryType)
-          const propertyType = `Type${
-            property.charAt(0).toUpperCase() + property.substring(1)
-          }`
+          const propertyType = appendTypePrefixToPropertyType(
+            snakeToPascal(property),
+            primaryType,
+          )
+          const recursiveOutput = objectKeysToEip712Types(val[0], propertyType)
+          const recursiveTypes = recursiveOutput.get(propertyType)
 
           types.push({ name: property, type: `${propertyType}[]` })
           output.set(propertyType, recursiveTypes!)
 
-          for (const key in recursiveOutput) {
+          for (const key of recursiveOutput.keys()) {
             if (key !== primaryType) {
               output.set(key, recursiveOutput.get(key)!)
             }
@@ -68,16 +74,17 @@ export const objectKeysToEip712Types = (
           throw new Error('Array with elements of unknown type found')
         }
       } else {
-        const recursiveOutput = objectKeysToEip712Types(val, primaryType)
-        const recursiveTypes = recursiveOutput.get(primaryType)
-        const propertyType = `Type${
-          property.charAt(0).toUpperCase() + property.substring(1)
-        }`
+        const propertyType = appendTypePrefixToPropertyType(
+          snakeToPascal(property),
+          primaryType,
+        )
+        const recursiveOutput = objectKeysToEip712Types(val, propertyType)
+        const recursiveTypes = recursiveOutput.get(propertyType)
 
         types.push({ name: property, type: propertyType })
         output.set(propertyType, recursiveTypes!)
 
-        for (const key in recursiveOutput) {
+        for (const key of recursiveOutput.keys()) {
           if (key !== primaryType) {
             output.set(key, recursiveOutput.get(key)!)
           }
@@ -93,9 +100,17 @@ export const objectKeysToEip712Types = (
   return output
 }
 
+/**
+ * JavaScript doesn't know the exact number types that
+ * we represent these fields on chain so we have to map
+ * them in their chain representation from the number value
+ * that is available in JavaScript
+ */
 export const numberTypeToReflectionNumberType = (property?: string) => {
   switch (property) {
     case 'order_mask':
+      return 'int32'
+    case 'order_type':
       return 'int32'
     case 'round':
       return 'uint64'
@@ -103,6 +118,8 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
       return 'uint64'
     case 'expiry':
       return 'int64'
+    case 'option':
+      return 'int32'
     case 'proposal_id':
       return 'uint64'
     default:
@@ -110,6 +127,128 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
   }
 }
 
+/**
+ * We need to represent some of the values in a proper format acceptable by the chain.
+ *
+ * 1. We need to represent some values from a number to string
+ * This needs to be done for every number value except for maps (ex: vote option)
+ *
+ * 2. We need to convert every `sdk.Dec` value from a raw value to shifted by 1e18 value
+ * ex: 0.01 -> 0.01000000000000000000, 1 -> 1.000000000000000000
+ */
+export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
+  object: T,
+  messageTypeUrl?: string,
+): T => {
+  const numberToStringKeys = [
+    'proposal_id',
+    'round',
+    'oracle_scale_factor',
+    'timeout_timestamp',
+    'revision_height',
+    'revision_number',
+  ]
+  const sdkDecKeys = [
+    'min_price_tick_size',
+    'price',
+    'quantity',
+    'margin',
+    'trigger_price',
+    'min_quantity_tick_size',
+  ]
+  const sdkDecKeyWithTypeMaps = {
+    'exchange/MsgIncreasePositionMargin': ['amount'],
+  }
+
+  return Object.keys(object).reduce((result, key) => {
+    const value = object[key]
+
+    if (!value) {
+      return result
+    }
+
+    if (typeof value === 'object') {
+      if (Array.isArray(value)) {
+        return {
+          ...result,
+          [key]: value.map((item) =>
+            mapValuesToProperValueType(item as Record<string, unknown>),
+          ),
+        }
+      }
+
+      return {
+        ...result,
+        [key]: mapValuesToProperValueType(value as Record<string, unknown>),
+      }
+    }
+
+    if (typeof value === 'number') {
+      if (numberToStringKeys.includes(key)) {
+        return {
+          ...result,
+          [key]: value.toString(),
+        }
+      }
+
+      // Maybe some other check needed
+    }
+
+    if (typeof value === 'string') {
+      if (sdkDecKeys.includes(key)) {
+        return {
+          ...result,
+          [key]: numberToCosmosSdkDecString(value),
+        }
+      }
+
+      // Message Type Specific chec
+      if (messageTypeUrl) {
+        const typeInMap = Object.keys(sdkDecKeyWithTypeMaps).find(
+          (key) => key === messageTypeUrl,
+        )
+
+        if (typeInMap) {
+          const sdkDecKeys =
+            sdkDecKeyWithTypeMaps[
+              typeInMap as keyof typeof sdkDecKeyWithTypeMaps
+            ]
+
+          if (sdkDecKeys.includes(key)) {
+            return {
+              ...result,
+              [key]: numberToCosmosSdkDecString(value),
+            }
+          }
+        }
+      }
+    }
+
+    return {
+      ...result,
+      [key]: value,
+    }
+  }, {} as T)
+}
+
+/**
+ * Append Type prefix to a Level0 EIP712 type
+ * including its parent property type
+ */
+export const appendTypePrefixToPropertyType = (
+  property: string,
+  parentProperty: string = '',
+) => {
+  const propertyWithoutTypePrefix = property.replace('Type', '')
+  const parentPropertyWithoutTypePrefix =
+    parentProperty === 'MsgValue' ? '' : parentProperty.replace('Type', '')
+
+  return `Type${parentPropertyWithoutTypePrefix + propertyWithoutTypePrefix}`
+}
+
+/**
+ * Mapping a path type to amino type for messages
+ */
 export const protoTypeToAminoType = (type: string): string => {
   const actualType = type.startsWith('/') ? type.substring(1) : type
 

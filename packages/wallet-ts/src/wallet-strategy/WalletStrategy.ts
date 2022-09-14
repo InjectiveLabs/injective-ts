@@ -79,10 +79,7 @@ const createWeb3 = (args: WalletStrategyArguments): Web3 => {
 }
 
 export default class WalletStrategy {
-  private readonly strategies: Record<
-    Wallet,
-    ConcreteWalletStrategy | undefined
-  >
+  public strategies: Record<Wallet, ConcreteWalletStrategy | undefined>
 
   public wallet: Wallet
 

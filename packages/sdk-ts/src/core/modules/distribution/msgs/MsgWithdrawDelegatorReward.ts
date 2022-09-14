@@ -17,7 +17,7 @@ export declare namespace MsgWithdrawDelegatorReward {
   }
 
   export interface Amino extends BaseMsgWithdrawDelegatorReward.AsObject {
-    type: 'cosmos-sdk/MsgWithdrawDelegatorReward'
+    type: 'cosmos-sdk/MsgWithdrawDelegationReward'
   }
 
   export interface Web3 extends BaseMsgWithdrawDelegatorReward.AsObject {
@@ -66,7 +66,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: 'cosmos-sdk/MsgWithdrawDelegatorReward',
+      type: 'cosmos-sdk/MsgWithdrawDelegationReward',
       ...proto.toObject(),
     }
   }

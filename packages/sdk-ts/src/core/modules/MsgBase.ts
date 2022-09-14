@@ -1,5 +1,9 @@
 import snakecaseKeys from 'snakecase-keys'
-import { objectKeysToEip712Types, TypedDataField } from '../Eip712'
+import {
+  mapValuesToProperValueType,
+  objectKeysToEip712Types,
+  TypedDataField,
+} from '../Eip712'
 import { prepareSignBytes } from './utils'
 
 /**
@@ -43,12 +47,12 @@ export abstract class MsgBase<
     value: Omit<AminoRepresentation, 'type'>
   } {
     const amino = this.toAmino()
-    // @ts-ignore
-    const { type, ...value } = amino
+    const { type, ...rest } = amino as { type: string } & Record<string, any>
+    const value = snakecaseKeys(rest) as Omit<AminoRepresentation, 'type'>
 
     return {
-      type: type as string,
-      value: snakecaseKeys(value) as Omit<AminoRepresentation, 'type'>,
+      type,
+      value: mapValuesToProperValueType(value, type),
     }
   }
 

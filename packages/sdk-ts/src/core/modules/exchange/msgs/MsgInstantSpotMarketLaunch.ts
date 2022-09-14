@@ -1,4 +1,5 @@
 import { MsgInstantSpotMarketLaunch as BaseMsgInstantSpotMarketLaunch } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgInstantSpotMarketLaunch {
@@ -34,6 +35,19 @@ export declare namespace MsgInstantSpotMarketLaunch {
   export type Proto = BaseMsgInstantSpotMarketLaunch
 }
 
+const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
+  const message = new BaseMsgInstantSpotMarketLaunch()
+
+  message.setSender(params.proposer)
+  message.setQuoteDenom(params.market.quoteDenom)
+  message.setTicker(params.market.ticker)
+  message.setBaseDenom(params.market.baseDenom)
+  message.setMinPriceTickSize(params.market.minPriceTickSize)
+  message.setMinQuantityTickSize(params.market.minQuantityTickSize)
+
+  return message
+}
+
 /**
  * @category Messages
  */
@@ -51,16 +65,22 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
   }
 
   public toProto(): MsgInstantSpotMarketLaunch.Proto {
-    const { params } = this
-    const message = new BaseMsgInstantSpotMarketLaunch()
+    const { params: initialParams } = this
 
-    message.setSender(params.proposer)
-    message.setQuoteDenom(params.market.quoteDenom)
-    message.setTicker(params.market.ticker)
-    message.setBaseDenom(params.market.baseDenom)
-    message.setMinPriceTickSize(params.market.minPriceTickSize)
-    message.setMinQuantityTickSize(params.market.minQuantityTickSize)
-    return message
+    const params = {
+      ...initialParams,
+      market: {
+        ...initialParams.market,
+        minPriceTickSize: amountToCosmosSdkDecAmount(
+          initialParams.market.minPriceTickSize,
+        ).toFixed(),
+        minQuantityTickSize: amountToCosmosSdkDecAmount(
+          initialParams.market.minQuantityTickSize,
+        ).toFixed(),
+      },
+    } as MsgInstantSpotMarketLaunch.Params
+
+    return createMessage(params)
   }
 
   public toData(): MsgInstantSpotMarketLaunch.Data {
@@ -73,7 +93,8 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
   }
 
   public toAmino(): MsgInstantSpotMarketLaunch.Amino {
-    const proto = this.toProto()
+    const { params } = this
+    const proto = createMessage(params)
 
     return {
       type: 'exchange/MsgInstantSpotMarketLaunch',

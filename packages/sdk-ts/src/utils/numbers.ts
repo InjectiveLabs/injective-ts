@@ -499,6 +499,12 @@ export const cosmosSdkDecToBigNumber = (
   number: string | number | BigNumber,
 ): BigNumber => new BigNumber(number).dividedBy(new BigNumber(10).pow(18))
 
+export const numberToCosmosSdkDecString = (
+  value: string | number | BigNumber,
+): string => {
+  return new BigNumber(value).toFixed(18)
+}
+
 export const getDecimalsFromNumber = (number: number | string): number => {
   const UI_DEFAULT_MAX_DISPLAY_DECIMALS = 4
   const numberToBn = new BigNumber(number).toNumber()

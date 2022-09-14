@@ -22,7 +22,7 @@ export declare namespace MsgBid {
   }
 
   export interface Amino extends BaseMsgBid.AsObject {
-    type: 'auction/bid'
+    type: 'auction/MsgBid'
   }
 
   export interface Web3 extends BaseMsgBid.AsObject {
@@ -74,7 +74,7 @@ export default class MsgBid extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: 'auction/bid',
+      type: 'auction/MsgBid',
       ...proto.toObject(),
     }
   }
