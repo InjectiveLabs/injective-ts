@@ -1,10 +1,10 @@
-import { MsgUnderwrite as BaseMsgUnderwrite } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
+import { MsgRequestRedemption as BaseMsgRequestRedemption } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgUnderwrite from './MsgUnderwrite'
+import MsgRequestRedemption from './MsgRequestRedemption'
 import { mockFactory } from '../../../../../../../mocks'
 import snakecaseKeys from 'snakecase-keys'
 
-const params: MsgUnderwrite['params'] = {
+const params: MsgRequestRedemption['params'] = {
   marketId: mockFactory.derivativeMarketId,
   injectiveAddress: mockFactory.injectiveAddress,
   amount: {
@@ -13,20 +13,20 @@ const params: MsgUnderwrite['params'] = {
   },
 }
 
-const protoType = '/injective.insurance.v1beta1.MsgUnderwrite'
+const protoType = '/injective.insurance.v1beta1.MsgRequestRedemption'
 const protoParams = {
   marketId: params.marketId,
   sender: params.injectiveAddress,
-  deposit: params.amount,
+  amount: params.amount,
 }
 
-const message = MsgUnderwrite.fromJSON(params)
+const message = MsgRequestRedemption.fromJSON(params)
 
-describe.only('MsgUnderwrite', () => {
+describe.only('MsgRequestRedemption', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgUnderwrite).toBe(true)
+    expect(proto instanceof BaseMsgRequestRedemption).toBe(true)
     expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
@@ -43,7 +43,7 @@ describe.only('MsgUnderwrite', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: 'insurance/MsgUnderwrite',
+      type: 'insurance/MsgRequestRedemption',
       ...protoParams,
     })
   })
@@ -52,14 +52,14 @@ describe.only('MsgUnderwrite', () => {
     const eip712Types = message.toEip712Types()
 
     expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeDeposit: [
+      TypeAmount: [
         { name: 'denom', type: 'string' },
         { name: 'amount', type: 'string' },
       ],
       MsgValue: [
         { name: 'sender', type: 'string' },
         { name: 'market_id', type: 'string' },
-        { name: 'deposit', type: 'TypeDeposit' },
+        { name: 'amount', type: 'TypeAmount' },
       ],
     })
   })
@@ -68,7 +68,7 @@ describe.only('MsgUnderwrite', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: 'insurance/MsgUnderwrite',
+      type: 'insurance/MsgRequestRedemption',
       value: snakecaseKeys(protoParams),
     })
   })
