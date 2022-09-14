@@ -1,10 +1,11 @@
 import { MsgBid as BaseMsgBid } from '@injectivelabs/chain-api/injective/auction/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
+import { mockFactory } from '@tests/mocks'
 import MsgBid from './MsgBid'
 
 const params: MsgBid['params'] = {
   round: 1,
-  injectiveAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+  injectiveAddress: mockFactory,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
     denom: 'inj',

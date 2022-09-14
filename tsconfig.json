@@ -1,8 +1,14 @@
 {
   "extends": "./tsconfig.build.json",
+  "include": [
+    "./tests",
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@tests/*": [
+        "tests/*"
+      ],
       "@injectivelabs/ts-types": [
         "packages/ts-types"
       ],
