@@ -81,6 +81,6 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "wallet-ts Documentation"
+    "displayName": "wallet-ts API Documentation"
   }
 }

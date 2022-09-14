@@ -519,7 +519,5 @@ export const getDecimalsFromNumber = (number: number | string): number => {
 }
 
 export const getTriggerPrice = (triggerPrice?: number | string) => {
-  return triggerPrice
-    ? amountToCosmosSdkDecAmount(triggerPrice || 0).toFixed()
-    : ''
+  return triggerPrice ? amountToCosmosSdkDecAmount(triggerPrice).toFixed() : ''
 }

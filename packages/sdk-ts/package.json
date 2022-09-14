@@ -63,6 +63,6 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "sdk-ts Documentation"
+    "displayName": "sdk-ts API documentation"
   }
 }

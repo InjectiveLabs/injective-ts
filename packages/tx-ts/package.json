@@ -48,6 +48,6 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "tx-ts Documentation"
+    "displayName": "tx-ts API Documentation"
   }
 }
