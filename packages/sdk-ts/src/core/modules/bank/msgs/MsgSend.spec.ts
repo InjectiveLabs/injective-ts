@@ -14,12 +14,12 @@ const params: MsgSend['params'] = {
 
 const protoType = '/cosmos.bank.v1beta1.MsgSend'
 const protoTypeShort = 'cosmos-sdk/MsgSend'
-const protoParamsBefore = {
+const protoParams = {
   toAddress: params.dstInjectiveAddress,
   fromAddress: params.srcInjectiveAddress,
   amountList: [params.amount],
 }
-const protoParamsAfter = {
+const protoParamsAmino = {
   to_address: params.dstInjectiveAddress,
   from_address: params.srcInjectiveAddress,
   amount: [params.amount],
@@ -32,7 +32,7 @@ describe.only('MsgSend', () => {
     const proto = message.toProto()
 
     expect(proto instanceof BaseMsgSend).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParamsBefore)
+    expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {
@@ -40,7 +40,7 @@ describe.only('MsgSend', () => {
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParamsBefore,
+      ...protoParams,
     })
   })
 
@@ -49,7 +49,7 @@ describe.only('MsgSend', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParamsAfter,
+      ...protoParamsAmino,
     })
   })
 
@@ -74,7 +74,7 @@ describe.only('MsgSend', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
-      value: protoParamsAfter,
+      value: protoParamsAmino,
     })
   })
 
@@ -83,7 +83,7 @@ describe.only('MsgSend', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParamsAfter,
+      ...protoParamsAmino,
     })
   })
 })

@@ -15,13 +15,13 @@ const params: MsgDeposit['params'] = {
 
 const protoType = '/cosmos.gov.v1beta1.MsgDeposit'
 const protoTypeAmino = 'cosmos-sdk/MsgDeposit'
-const protoParamsBefore = {
+const protoParams = {
   proposalId: params.proposalId,
   depositor: params.depositor,
   amountList: [params.amount],
 }
 
-const protoParamsAfter = {
+const protoParamsAmino = {
   proposal_id: params.proposalId,
   depositor: params.depositor,
   amount: [params.amount],
@@ -34,7 +34,7 @@ describe.only('MsgDeposit', () => {
     const proto = message.toProto()
 
     expect(proto instanceof BaseMsgDeposit).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParamsBefore)
+    expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {
@@ -42,7 +42,7 @@ describe.only('MsgDeposit', () => {
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParamsBefore,
+      ...protoParams,
     })
   })
 
@@ -51,7 +51,7 @@ describe.only('MsgDeposit', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParamsAfter,
+      ...protoParamsAmino,
     })
   })
 
@@ -77,7 +77,7 @@ describe.only('MsgDeposit', () => {
     expect(eip712).toStrictEqual({
       type: protoTypeAmino,
       value: snakecaseKeys({
-        ...protoParamsAfter,
+        ...protoParamsAmino,
         proposal_id: params.proposalId.toString(),
       }),
     })
@@ -88,7 +88,7 @@ describe.only('MsgDeposit', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParamsAfter,
+      ...protoParamsAmino,
     })
   })
 })
