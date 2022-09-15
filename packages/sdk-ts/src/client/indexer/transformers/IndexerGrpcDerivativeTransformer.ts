@@ -415,7 +415,7 @@ export class IndexerGrpcDerivativeTransformer {
       isConditional: order.getIsConditional(),
       triggerAt: order.getTriggerAt(),
       placedOrderHash: order.getPlacedOrderHash(),
-      executionType: order.getExecutionType(),
+      executionType: order.getExecutionType()
     }
   }
 
@@ -449,7 +449,7 @@ export class IndexerGrpcDerivativeTransformer {
       isConditional: orderHistory.getIsConditional(),
       triggerAt: orderHistory.getTriggerAt(),
       placedOrderHash: orderHistory.getPlacedOrderHash(),
-      margin: orderHistory.getMargin(),
+      margin: orderHistory.getMargin()
     }
   }
 

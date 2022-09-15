@@ -22,5 +22,5 @@ export enum OrderState {
   PartiallyFilled = 'partially_filled',
   Filled = 'filled',
   Canceled = 'canceled',
-  Triggered = 'triggered',
+  Triggered = 'triggered'
 }
