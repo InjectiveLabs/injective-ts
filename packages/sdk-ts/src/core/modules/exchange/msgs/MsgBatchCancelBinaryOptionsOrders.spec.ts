@@ -27,12 +27,12 @@ const ordersWithOrderMask = params.orders.map((order) => ({
   orderMask: 1,
 }))
 
-const protoParamsBefore = {
+const protoParams = {
   sender: params.injectiveAddress,
   dataList: ordersWithOrderMask,
 }
 
-const protoParamsAfter = {
+const protoParamsAmino = {
   sender: params.injectiveAddress,
   data: snakecaseKeys(ordersWithOrderMask),
 }
@@ -44,7 +44,7 @@ describe.only('MsgBatchCancelDerivativeOrders', () => {
     const proto = message.toProto()
 
     expect(proto instanceof BaseMsgBatchCancelDerivativeOrders).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParamsBefore)
+    expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {
@@ -52,7 +52,7 @@ describe.only('MsgBatchCancelDerivativeOrders', () => {
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParamsBefore,
+      ...protoParams,
     })
   })
 
@@ -61,7 +61,7 @@ describe.only('MsgBatchCancelDerivativeOrders', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParamsAfter,
+      ...protoParamsAmino,
     })
   })
 
@@ -87,7 +87,7 @@ describe.only('MsgBatchCancelDerivativeOrders', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
-      value: protoParamsAfter,
+      value: protoParamsAmino,
     })
   })
 
@@ -96,7 +96,7 @@ describe.only('MsgBatchCancelDerivativeOrders', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParamsAfter,
+      ...protoParamsAmino,
     })
   })
 })
