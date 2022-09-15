@@ -4,7 +4,11 @@ import {
   SpotTrade as GrpcSpotTrade,
   SpotOrderHistory as GrpcSpotOrderHistory,
 } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
-import { TradeExecutionType, TradeDirection, TradeExecutionSide } from '@injectivelabs/ts-types'
+import {
+  TradeExecutionType,
+  TradeDirection,
+  TradeExecutionSide,
+} from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { PriceLevel } from './exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
@@ -18,7 +22,7 @@ export enum SpotOrderSide {
   TakeBuy = 'take_buy',
   TakeSell = 'take_sell',
   BuyPO = 'buy_po',
-  SellPO = 'sell_po',
+  SellPO = 'sell_po'
 }
 
 export enum SpotOrderState {
@@ -66,7 +70,7 @@ export interface SpotOrderHistory {
   marketId: string
   active: boolean
   subaccountId: string
-  executionType: string,
+  executionType: string
   orderType: string
   price: string
   triggerPrice: string
@@ -112,5 +116,5 @@ export {
   GrpcSpotMarketInfo,
   GrpcSpotLimitOrder,
   GrpcSpotOrderHistory,
-  GrpcSpotTrade,
+  GrpcSpotTrade
 }
