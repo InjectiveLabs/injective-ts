@@ -1,4 +1,8 @@
-import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
+import {
+  TradeDirection,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
 import {
   SpotOrderSide,
@@ -237,7 +241,7 @@ export class IndexerGrpcSpotTransformer {
       state: orderHistory.getState(),
       createdAt: orderHistory.getCreatedAt(),
       updatedAt: orderHistory.getUpdatedAt(),
-      direction: orderHistory.getDirection()
+      direction: orderHistory.getDirection(),
     }
   }
 
@@ -263,6 +267,7 @@ export class IndexerGrpcSpotTransformer {
       feeRecipient:
         trade.getFeeRecipient !== undefined ? trade.getFeeRecipient() : '', // TODO: remove the check
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
+      executionSide: trade.getExecutionSide() as TradeExecutionSide,
       tradeDirection: trade.getTradeDirection() as TradeDirection,
       fee: trade.getFee(),
       ...mappedPrice,

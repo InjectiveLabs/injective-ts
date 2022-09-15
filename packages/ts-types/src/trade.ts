@@ -6,7 +6,7 @@ export enum TradeExecutionType {
 }
 
 export enum TradeExecutionSide {
-  Maker = 'market',
+  Maker = 'maker',
   Taker = 'taker',
 }
 
@@ -22,5 +22,5 @@ export enum OrderState {
   PartiallyFilled = 'partially_filled',
   Filled = 'filled',
   Canceled = 'canceled',
-  Triggered = 'triggered'
+  Triggered = 'triggered',
 }

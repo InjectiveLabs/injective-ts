@@ -4,7 +4,7 @@ import {
   SpotTrade as GrpcSpotTrade,
   SpotOrderHistory as GrpcSpotOrderHistory,
 } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
-import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
+import { TradeExecutionType, TradeDirection, TradeExecutionSide } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { PriceLevel } from './exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
@@ -84,6 +84,7 @@ export interface SpotTrade extends PriceLevel {
   marketId: string
   executedAt: number
   tradeExecutionType: TradeExecutionType
+  executionSide: TradeExecutionSide
   tradeDirection: TradeDirection
   fee: string
   feeRecipient: string

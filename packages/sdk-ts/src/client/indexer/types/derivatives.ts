@@ -12,7 +12,11 @@ import {
   BinaryOptionsMarketInfo as GrpcBinaryOptionsMarketInfo,
   DerivativeOrderHistory as GrpcDerivativeOrderHistory,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
-import { TradeExecutionType, TradeDirection } from '@injectivelabs/ts-types'
+import {
+  TradeExecutionType,
+  TradeDirection,
+  TradeExecutionSide,
+} from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
 
@@ -35,7 +39,7 @@ export enum DerivativeOrderState {
   PartiallyFilled = 'partially_filled',
   Filled = 'filled',
   Canceled = 'canceled',
-  Triggered = 'triggered'
+  Triggered = 'triggered',
 }
 
 export interface PositionDelta {
@@ -55,7 +59,7 @@ export interface Position {
   liquidationPrice: string
   markPrice: string
   ticker: string
-  aggregateReduceOnlyQuantity: string,
+  aggregateReduceOnlyQuantity: string
   updatedAt: number
 }
 
@@ -187,6 +191,7 @@ export interface DerivativeTrade extends PositionDelta {
   executedAt: number
   tradeExecutionType: TradeExecutionType
   tradeDirection: TradeDirection
+  executionSide: TradeExecutionSide
   fee: string
   feeRecipient: string
   isLiquidation: boolean
