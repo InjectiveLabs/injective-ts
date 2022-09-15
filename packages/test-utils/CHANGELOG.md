@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@1.0.2...@injectivelabs/test-utils@1.0.3) (2022-09-15)
+
+
+### Features
+
+* add unit test for remaining eip 712 messages ([#77](https://github.com/InjectiveLabs/injective-ts/issues/77)) ([2584aa0](https://github.com/InjectiveLabs/injective-ts/commit/2584aa09eb3f410f911509a23aca753ba696d773))
+
+
+
+
+
 ## [1.0.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@0.5.0...@injectivelabs/test-utils@1.0.2) (2022-09-14)
 
 
