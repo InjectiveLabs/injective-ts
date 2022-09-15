@@ -4,7 +4,7 @@ import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgCancelSpotOrder['params'] = {
-  injectiveAddress: mockFactory.subaccountId,
+  injectiveAddress: mockFactory.injectiveAddress,
   marketId: mockFactory.injUsdtSpotMarket.marketId,
   orderHash: mockFactory.orderHash,
   subaccountId: mockFactory.subaccountId,
@@ -13,7 +13,7 @@ const params: MsgCancelSpotOrder['params'] = {
 const protoType = '/injective.exchange.v1beta1.MsgCancelSpotOrder'
 const protoTypeShort = 'exchange/MsgCancelSpotOrder'
 const protoParams = {
-  sender: params.subaccountId,
+  sender: params.injectiveAddress,
   marketId: params.marketId,
   orderHash: params.orderHash,
   subaccountId: params.subaccountId,

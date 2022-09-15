@@ -1,17 +1,17 @@
-import { MsgCancelDerivativeOrder as BaseMsgCancelDerivativeOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import MsgCancelDerivativeOrder from './MsgCancelDerivativeOrder'
+import { MsgCancelBinaryOptionsOrder as BaseMsgCancelBinaryOptionsOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import MsgCancelBinaryOptionsOrder from './MsgCancelBinaryOptionsOrder'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
-const params: MsgCancelDerivativeOrder['params'] = {
+const params: MsgCancelBinaryOptionsOrder['params'] = {
   injectiveAddress: mockFactory.injectiveAddress,
   marketId: mockFactory.injUsdtDerivativeMarket.marketId,
   orderHash: mockFactory.orderHash,
   subaccountId: mockFactory.subaccountId,
 }
 
-const protoType = '/injective.exchange.v1beta1.MsgCancelDerivativeOrder'
-const protoTypeShort = 'exchange/MsgCancelDerivativeOrder'
+const protoType = '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
+const protoTypeShort = 'exchange/MsgCancelBinaryOptionsOrder'
 const protoParams = {
   sender: params.injectiveAddress,
   marketId: params.marketId,
@@ -20,13 +20,13 @@ const protoParams = {
   orderMask: 1,
 }
 
-const message = MsgCancelDerivativeOrder.fromJSON(params)
+const message = MsgCancelBinaryOptionsOrder.fromJSON(params)
 
-describe.only('MsgCancelDerivativeOrder', () => {
+describe.only('MsgCancelBinaryOptionsOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgCancelDerivativeOrder).toBe(true)
+    expect(proto instanceof BaseMsgCancelBinaryOptionsOrder).toBe(true)
     expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
