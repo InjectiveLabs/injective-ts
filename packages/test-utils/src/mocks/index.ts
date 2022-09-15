@@ -10,6 +10,10 @@ const subaccountId =
   '0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000000'
 const subaccountId2 =
   '0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000001'
+const orderHash =
+  '0x3b1bcc8ab01e1e0f1f2cf9de5f44267bed6368fabd62adbcf3826a207340194e'
+const orderHash2 =
+  '0x3b1bcc8ab01e1e0f1f2cf9de5f44267bed6368fabd62adbcf3826a207340194e'
 
 export const injUsdtSpotMarket = {
   marketId:
@@ -82,4 +86,6 @@ export const mockFactory = {
   subaccountId2,
   injUsdtSpotMarket,
   injUsdtDerivativeMarket,
+  orderHash,
+  orderHash2,
 }
