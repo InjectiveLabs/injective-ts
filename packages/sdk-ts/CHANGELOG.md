@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.132](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.131...@injectivelabs/sdk-ts@1.0.132) (2022-09-15)
+
+
+### Bug Fixes
+
+* added executionSide prop to trade objects ([#78](https://github.com/InjectiveLabs/injective-ts/issues/78)) ([35da59c](https://github.com/InjectiveLabs/injective-ts/commit/35da59c33c9fb8a198306b4bbcaf27dd407a4fda))
+* minor todos ([b661ec9](https://github.com/InjectiveLabs/injective-ts/commit/b661ec9f38030c51c7cae67754ff30557e2f9275))
+
+
+
+
+
 ## [1.0.131](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.130...@injectivelabs/sdk-ts@1.0.131) (2022-09-15)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.12...@injectivelabs/ts-types@1.0.13) (2022-09-15)
+
+
+### Bug Fixes
+
+* added executionSide prop to trade objects ([#78](https://github.com/InjectiveLabs/injective-ts/issues/78)) ([35da59c](https://github.com/InjectiveLabs/injective-ts/commit/35da59c33c9fb8a198306b4bbcaf27dd407a4fda))
+
+
+
+
+
 ## [1.0.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.10...@injectivelabs/ts-types@1.0.12) (2022-09-14)
 
 
