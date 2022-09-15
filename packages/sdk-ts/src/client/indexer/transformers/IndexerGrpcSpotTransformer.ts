@@ -1,4 +1,8 @@
-import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
+import {
+  TradeDirection,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
 import {
   SpotOrderSide,
@@ -262,6 +266,7 @@ export class IndexerGrpcSpotTransformer {
       executedAt: trade.getExecutedAt(),
       feeRecipient: trade.getFeeRecipient(),
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
+      executionSide: trade.getExecutionSide() as TradeExecutionSide,
       tradeDirection: trade.getTradeDirection() as TradeDirection,
       fee: trade.getFee(),
       ...mappedPrice,

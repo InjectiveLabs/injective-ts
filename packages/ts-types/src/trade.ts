@@ -6,7 +6,7 @@ export enum TradeExecutionType {
 }
 
 export enum TradeExecutionSide {
-  Maker = 'market',
+  Maker = 'maker',
   Taker = 'taker',
 }
 
