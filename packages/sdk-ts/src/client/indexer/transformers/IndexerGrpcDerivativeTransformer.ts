@@ -1,4 +1,8 @@
-import { TradeDirection, TradeExecutionType } from '@injectivelabs/ts-types'
+import {
+  TradeDirection,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
 import {
   DerivativeOrderSide,
@@ -497,6 +501,7 @@ export class IndexerGrpcDerivativeTransformer {
       marketId: trade.getMarketId(),
       executedAt: trade.getExecutedAt(),
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
+      executionSide: trade.getExecutionSide() as TradeExecutionSide,
       fee: trade.getFee(),
       feeRecipient:
         trade.getFeeRecipient !== undefined ? trade.getFeeRecipient() : '', // TODO: remove the check
