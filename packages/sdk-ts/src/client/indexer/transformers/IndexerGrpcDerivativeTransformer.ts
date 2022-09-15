@@ -411,7 +411,7 @@ export class IndexerGrpcDerivativeTransformer {
       isConditional: order.getIsConditional(),
       triggerAt: order.getTriggerAt(),
       placedOrderHash: order.getPlacedOrderHash(),
-      executionType: order.getExecutionType()
+      executionType: order.getExecutionType(),
     }
   }
 
@@ -445,7 +445,7 @@ export class IndexerGrpcDerivativeTransformer {
       isConditional: orderHistory.getIsConditional(),
       triggerAt: orderHistory.getTriggerAt(),
       placedOrderHash: orderHistory.getPlacedOrderHash(),
-      margin: orderHistory.getMargin()
+      margin: orderHistory.getMargin(),
     }
   }
 
@@ -498,8 +498,7 @@ export class IndexerGrpcDerivativeTransformer {
       executedAt: trade.getExecutedAt(),
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
       fee: trade.getFee(),
-      feeRecipient:
-        trade.getFeeRecipient !== undefined ? trade.getFeeRecipient() : '', // TODO: remove the check
+      feeRecipient: trade.getFeeRecipient(),
       isLiquidation: trade.getIsLiquidation(),
       payout: trade.getPayout(),
       ...mappedPositionDelta,

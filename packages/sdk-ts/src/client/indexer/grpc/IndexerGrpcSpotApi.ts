@@ -108,14 +108,8 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     isConditional?: boolean
     pagination?: PaginationOption
   }) {
-    const {
-      marketId,
-      marketIds,
-      subaccountId,
-      orderSide,
-      // isConditional,
-      pagination,
-    } = params || {}
+    const { marketId, marketIds, subaccountId, orderSide, pagination } =
+      params || {}
     const request = new SpotOrdersRequest()
 
     if (marketId) {
@@ -134,11 +128,11 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       request.setOrderSide(orderSide)
     }
 
-    // TODO: Implement this once indexer supports spot conditional orders.
-
-    // request.setIsConditional(
-    // isConditional === undefined ? '' : isConditional ? 'true' : 'false'
-    // )
+    /*
+    if (isConditional !== undefined) {
+      request.setIsConditional(isConditional)
+    }
+    */
 
     if (pagination) {
       if (pagination.skip !== undefined) {
@@ -183,7 +177,6 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       orderTypes,
       executionTypes,
       direction,
-      // isConditional,
       state,
       pagination,
     } = params || {}
@@ -214,10 +207,11 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       request.setState(state)
     }
 
-    // TODO: Implement this once Indexer supports it.
-    // if (isConditional) {
-    //   request.setIsConditional(isConditional)
-    // }
+    /*
+    if (isConditional !== undefined) {
+      request.setIsConditional(isConditional)
+    }
+    */
 
     if (pagination) {
       if (pagination.skip !== undefined) {

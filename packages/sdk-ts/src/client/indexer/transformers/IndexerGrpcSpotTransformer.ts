@@ -237,7 +237,7 @@ export class IndexerGrpcSpotTransformer {
       state: orderHistory.getState(),
       createdAt: orderHistory.getCreatedAt(),
       updatedAt: orderHistory.getUpdatedAt(),
-      direction: orderHistory.getDirection()
+      direction: orderHistory.getDirection(),
     }
   }
 
@@ -260,8 +260,7 @@ export class IndexerGrpcSpotTransformer {
       subaccountId: trade.getSubaccountId(),
       marketId: trade.getMarketId(),
       executedAt: trade.getExecutedAt(),
-      feeRecipient:
-        trade.getFeeRecipient !== undefined ? trade.getFeeRecipient() : '', // TODO: remove the check
+      feeRecipient: trade.getFeeRecipient(),
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
       tradeDirection: trade.getTradeDirection() as TradeDirection,
       fee: trade.getFee(),

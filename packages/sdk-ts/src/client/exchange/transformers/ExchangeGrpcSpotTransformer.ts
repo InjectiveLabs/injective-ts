@@ -202,8 +202,7 @@ export class ExchangeGrpcSpotTransformer {
       subaccountId: trade.getSubaccountId(),
       marketId: trade.getMarketId(),
       executedAt: trade.getExecutedAt(),
-      feeRecipient:
-        trade.getFeeRecipient !== undefined ? trade.getFeeRecipient() : '', // TODO: remove the check
+      feeRecipient: trade.getFeeRecipient(),
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
       tradeDirection: trade.getTradeDirection() as TradeDirection,
       fee: trade.getFee(),

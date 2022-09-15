@@ -413,8 +413,7 @@ export class ExchangeGrpcDerivativeTransformer {
       executedAt: trade.getExecutedAt(),
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
       fee: trade.getFee(),
-      feeRecipient:
-        trade.getFeeRecipient !== undefined ? trade.getFeeRecipient() : '', // TODO: remove the check
+      feeRecipient: trade.getFeeRecipient(),
       isLiquidation: trade.getIsLiquidation(),
       payout: trade.getPayout(),
       ...mappedPositionDelta,

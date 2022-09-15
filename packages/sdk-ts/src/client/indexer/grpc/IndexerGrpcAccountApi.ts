@@ -183,7 +183,7 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
   }: {
     subaccountId: string
     marketId?: string
-    orderDirection?: string /* TODO */
+    orderDirection?: string
   }) {
     const request = new SubaccountOrderSummaryRequest()
 
@@ -227,7 +227,7 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
         typeof InjectiveAccountsRPC.OrderStates
       >(request, InjectiveAccountsRPC.OrderStates)
 
-      return response /* TODO */
+      return response.toObject() /* TODO */
     } catch (e: any) {
       throw new Error(e.message)
     }

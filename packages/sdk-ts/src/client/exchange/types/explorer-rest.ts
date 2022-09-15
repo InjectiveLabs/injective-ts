@@ -62,9 +62,9 @@ export interface TransactionFromExplorerApiResponse {
     payer: string
     granter: string
   }
-  events: Array<any> // TODO
+  events: Array<any>
   codespace: string
-  messages: Array<{ value: any; type: string }> // TODO
+  messages: Array<{ value: any; type: string }>
 }
 
 export interface BlockFromExplorerApiResponse {
