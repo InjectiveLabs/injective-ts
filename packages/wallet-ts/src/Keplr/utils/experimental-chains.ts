@@ -12,7 +12,7 @@ export const experimentalChainsConfig = {
     rpcConfig: undefined,
     restConfig: undefined,
     chainId: 'injective-1',
-    chainName: 'Injective v1.0',
+    chainName: 'Injective v1.1',
     stakeCurrency: {
       coinDenom: 'INJ',
       coinMinimalDenom: 'inj',
@@ -39,13 +39,13 @@ export const experimentalChainsConfig = {
         coinMinimalDenom: 'inj',
         coinDecimals: 18,
         coinGeckoId: 'injective-protocol',
+        gasPriceStep: {
+          low: 5000000000,
+          average: 25000000000,
+          high: 50000000000,
+        },
       },
     ],
-    gasPriceStep: {
-      low: 5000000000,
-      average: 25000000000,
-      high: 40000000000,
-    },
     features: ['ibc-transfer', 'ibc-go', 'eth-address-gen', 'eth-key-sign'],
     beta: true,
   },
