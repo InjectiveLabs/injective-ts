@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.83](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.82...@injectivelabs/wallet-ts@1.0.83) (2022-09-17)
+
+
+### Bug Fixes
+
+* gasStep in feeCurrency ([1a4de24](https://github.com/InjectiveLabs/injective-ts/commit/1a4de24b1446a14ca4873e885d0bbcf215354e53))
+
+
+
+
+
 ## [1.0.82](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.81...@injectivelabs/wallet-ts@1.0.82) (2022-09-15)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
