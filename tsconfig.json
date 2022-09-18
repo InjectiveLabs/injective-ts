@@ -18,9 +18,6 @@
       "@injectivelabs/wallet-ts": [
         "packages/wallet-ts"
       ],
-      "@injectivelabs/tx-ts": [
-        "packages/tx-ts"
-      ],
       "@injectivelabs/contracts": [
         "packages/contracts"
       ],

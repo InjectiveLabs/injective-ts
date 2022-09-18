@@ -32,7 +32,7 @@
       "path": "../token-metadata/tsconfig.build.json"
     },
     {
-      "path": "../tx-ts/tsconfig.build.json"
+      "path": "../sdk-ts/tsconfig.build.json"
     },
     {
       "path": "../contracts/tsconfig.build.json"

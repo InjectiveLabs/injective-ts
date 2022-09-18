@@ -32,6 +32,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.8",
+    "@cosmjs/amino": "^0.29.0",
+    "@cosmjs/proto-signing": "^0.29.0",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/chain-api": "^1.8.0-rc8",
@@ -51,6 +53,7 @@
     "ethereumjs-util": "^7.1.4",
     "ethers": "^5.6.4",
     "ethjs-util": "^0.1.6",
+    "google-protobuf": "^3.21.0",
     "graphql": "^16.3.0",
     "jscrypto": "^1.0.3",
     "keccak256": "^1.0.6",

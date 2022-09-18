@@ -14,7 +14,7 @@ To get a sense of the packages and their functionality, we are going to list the
 
 **Detailed documentation and usage can be found within each package's respective folder in the `packages` folder**
 
-- `@injectivelabs/sdk-ts` is the sdk powerhouse that provides easily accessing data from any data source (chain, api), regardless of the type of access (grpc, rest), and provides a way to easily compose Messages, pack them into Transactions that can be broadcasted to Injective
+- `@injectivelabs/sdk-ts` is the sdk powerhouse that provides easily accessing data from any data source (chain, api), regardless of the type of access (grpc, rest), and provides a way to easily compose Messages, pack them into Transactions that can be broadcasted to Injective. It also provides a way to prepare and broadcast transactions for Injective
 
 
 - `@injectivelabs/wallet-ts` provides a way for different wallet provides to be used to prepare, sign and broadcast transactions on the Injective Chain. There are also some implementations and utility functions for specific blockchains that are not exported as default from the package but they can be reused based on the developers needs.

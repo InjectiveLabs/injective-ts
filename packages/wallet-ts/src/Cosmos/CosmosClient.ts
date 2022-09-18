@@ -1,7 +1,7 @@
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { StargateClient, DeliverTxResponse } from '@cosmjs/stargate'
 import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
-import { createTxRawFromSigResponse } from '@injectivelabs/tx-ts'
+import { createTxRawFromSigResponse } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 
 export class CosmosClient {

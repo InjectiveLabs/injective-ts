@@ -138,8 +138,7 @@ import {
   MsgSend,
   DEFAULT_STD_FEE,
 } from "@injectivelabs/sdk-ts";
-import { createTransaction } from "@injectivelabs/tx-ts";
-import { TxGrpcClient, TxClient } from "@injectivelabs/tx-ts/dist/client";
+import { createTransaction, TxGrpcClient, TxClient } from "@injectivelabs/sdk-ts/dist/core/transaction";
 import { BigNumberInBase } from "@injectivelabs/utils";
 
 /** MsgSend Example */

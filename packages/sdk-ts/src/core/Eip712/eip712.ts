@@ -9,7 +9,7 @@ import {
   getTypesIncludingFeePayer,
 } from './utils'
 
-export const getEip712Tx = ({
+export const getEip712TypedData = ({
   msgs,
   tx,
   fee,

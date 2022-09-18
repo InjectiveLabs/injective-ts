@@ -7,7 +7,7 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxRestClient } from '@injectivelabs/tx-ts'
+import { TxRestClient } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { leapSupportedChainIds } from './utils'
 import { getEndpointsFromChainId } from '../cosmos'
 

@@ -1,7 +1,7 @@
 # 🌟 Injective Protocol - Networks and Endpoints
 
-[![downloads](https://img.shields.io/npm/dm/@injectivelabs/tx-ts.svg)](https://www.npmjs.com/package/@injectivelabs/tx-ts)
-[![npm-version](https://img.shields.io/npm/v/@injectivelabs/tx-ts.svg)](https://www.npmjs.com/package/@injectivelabs/tx-ts)
+[![downloads](https://img.shields.io/npm/dm/@injectivelabs/networks.svg)](https://www.npmjs.com/package/@injectivelabs/networks)
+[![npm-version](https://img.shields.io/npm/v/@injectivelabs/networks.svg)](https://www.npmjs.com/package/@injectivelabs/networks)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
 _Accessing decentralized finance through TypeScript (for Web and Node environment)_

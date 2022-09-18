@@ -6,7 +6,7 @@ import { Coin } from '@injectivelabs/ts-types'
 import { SignDoc, TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { SigningCosmosClient } from '@cosmjs/launchpad'
 import { fromBase64 } from '@cosmjs/encoding'
-import { createTransaction } from '@injectivelabs/tx-ts'
+import { createTransaction } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { CosmosQuery } from './CosmosQuery'
 
 export class CosmosWallet {

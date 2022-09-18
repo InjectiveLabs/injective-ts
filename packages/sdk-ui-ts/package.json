@@ -37,7 +37,6 @@
     "@injectivelabs/token-metadata": "^1.0.30",
     "@injectivelabs/token-utils": "^1.0.21",
     "@injectivelabs/ts-types": "^1.0.13",
-    "@injectivelabs/tx-ts": "^1.0.43",
     "@injectivelabs/utils": "^1.0.20",
     "@injectivelabs/wallet-ts": "^1.0.83",
     "link-module-alias": "^1.2.0",

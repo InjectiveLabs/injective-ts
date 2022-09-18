@@ -15,7 +15,7 @@ import type Web3 from 'web3'
 import {
   createTransaction,
   createTxRawFromSigResponse,
-} from '@injectivelabs/tx-ts'
+} from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'

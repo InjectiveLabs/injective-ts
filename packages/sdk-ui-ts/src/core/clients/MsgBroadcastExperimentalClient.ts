@@ -17,7 +17,7 @@ import {
   createWeb3Extension,
   SIGN_AMINO,
   TxGrpcClient,
-} from '@injectivelabs/tx-ts'
+} from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
 import { getGasPriceBasedOnMessage } from './utils'

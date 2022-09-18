@@ -3,7 +3,7 @@ import {
   mapValuesToProperValueType,
   objectKeysToEip712Types,
   TypedDataField,
-} from '../Eip712'
+} from '../eip712'
 import { prepareSignBytes } from './utils'
 
 /**
