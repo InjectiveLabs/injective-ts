@@ -13,10 +13,9 @@ import {
 } from '@injectivelabs/utils'
 import type Web3 from 'web3'
 import {
-  createTransaction,
+  createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
 } from '@injectivelabs/sdk-ts/dist/core/transaction'
-import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '@injectivelabs/sdk-ts'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
@@ -125,7 +124,7 @@ export default class Keplr
     )
 
     /** Prepare the Transaction * */
-    const { bodyBytes, authInfoBytes, accountNumber } = createTransaction({
+    const { cosmosSignDoc } = createCosmosSignDocFromTransaction({
       chainId,
       memo: transaction.memo,
       message: transaction.message,
@@ -137,13 +136,6 @@ export default class Keplr
         ...DEFAULT_STD_FEE,
         gas: transaction.gas || DEFAULT_STD_FEE.gas,
       },
-    })
-
-    const cosmosSignDoc = SignDoc.fromPartial({
-      bodyBytes,
-      authInfoBytes,
-      chainId,
-      accountNumber,
     })
 
     /* Sign the transaction */

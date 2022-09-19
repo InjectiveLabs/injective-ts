@@ -24,6 +24,7 @@ import { createAny, createAnyMessage } from './utils'
 import { Msgs } from '../modules'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client'
 import { DEFAULT_TIMEOUT_HEIGHT } from '../../utils'
+import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 
 export type MsgArg = {
   type: string
@@ -360,6 +361,22 @@ export const createTransactionForAddressAndMsg = async (
     accountNumber: Number(accountDetails.account.base_account.account_number),
     message: messages.map((m) => m.toDirectSign()),
   })
+}
+
+export const createCosmosSignDocFromTransaction = (
+  args: CreateTransactionArgs,
+) => {
+  const result = createTransaction(args)
+
+  return {
+    ...result,
+    cosmosSignDoc: CosmosSignDoc.fromPartial({
+      bodyBytes: result.bodyBytes,
+      authInfoBytes: result.authInfoBytes,
+      accountNumber: result.accountNumber,
+      chainId: args.chainId,
+    }),
+  }
 }
 
 export const createTxRawEIP712 = (
