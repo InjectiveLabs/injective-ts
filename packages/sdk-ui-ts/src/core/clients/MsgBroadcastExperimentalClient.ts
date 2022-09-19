@@ -127,7 +127,7 @@ export class MsgBroadcastExperimentalClient {
         throw new Error(`Transaction failed: ${response.rawLog}`)
       }
 
-      return response.txhash
+      return response.txHash
     } catch (e: any) {
       throw new Error(e.message)
     }

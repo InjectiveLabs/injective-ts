@@ -1,4 +1,5 @@
 import BaseRestConsumer from '../../BaseRestConsumer'
+import { RestApiResponse } from '../types'
 import {
   BlockLatestRestResponse,
   NodeInfoRestResponse,
@@ -9,24 +10,24 @@ import {
  */
 export class ChainRestTendermintApi extends BaseRestConsumer {
   async fetchLatestBlock(): Promise<BlockLatestRestResponse['block']> {
-    const { data } = (await this.client.get(
+    const response = (await this.client.get(
       `cosmos/base/tendermint/v1beta1/blocks/latest`,
-    )) as { data: BlockLatestRestResponse }
+    )) as RestApiResponse<BlockLatestRestResponse>
 
-    return data.block
+    return response.data.block
   }
 
   async fetchNodeInfo(): Promise<{
     nodeInfo: NodeInfoRestResponse['default_node_info']
     applicationVersion: NodeInfoRestResponse['application_version']
   }> {
-    const { data } = (await this.client.get(
+    const response = (await this.client.get(
       `cosmos/base/tendermint/v1beta1/node_info`,
-    )) as { data: NodeInfoRestResponse }
+    )) as RestApiResponse<NodeInfoRestResponse>
 
     return {
-      nodeInfo: data.default_node_info,
-      applicationVersion: data.application_version,
+      nodeInfo: response.data.default_node_info,
+      applicationVersion: response.data.application_version,
     }
   }
 }

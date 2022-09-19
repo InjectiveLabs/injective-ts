@@ -8,7 +8,7 @@ import {
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
 import { TxRestClient } from '@injectivelabs/sdk-ts/dist/core/transaction'
-import { getEndpointsFromChainId } from '../cosmos'
+import { getEndpointsFromChainId } from '../cosmos/endpoints'
 
 export class LeapWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
@@ -139,7 +139,7 @@ export class LeapWallet {
   async waitTxBroadcasted(txHash: string): Promise<string> {
     const endpoints = await this.getChainEndpoints()
     const txClient = new TxRestClient(endpoints.rest)
-    const result = await txClient.waitTxBroadcast(txHash)
+    const result = await txClient.fetchTxPoll(txHash)
 
     return result.txhash
   }

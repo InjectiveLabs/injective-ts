@@ -61,75 +61,6 @@ export interface TxInfo {
   timestamp: string
 }
 
-export interface WaitResponse {
-  height: number
-  txhash: string
-  raw_log: string
-  gas_wanted: number
-  gas_used: number
-  logs: TxLog[]
-  timestamp: string
-}
-
-export interface Wait {
-  height: number
-  txhash: string
-  rawLog: string
-  gasWanted: number
-  gasUsed: number
-  logs: TxLog[]
-  timestamp: string
-}
-
-export interface Block extends Wait {
-  info: string
-  data: string
-}
-
-export interface SyncResponse {
-  height: number
-  txhash: string
-  raw_log: string
-}
-
-export interface Sync {
-  height: number
-  txhash: string
-  rawLog: string
-}
-
-export interface Async {
-  height: number
-  txhash: string
-}
-
-export interface AsyncResponse {
-  height: number
-  txhash: string
-}
-
-export interface TxSuccess {
-  logs: TxLog[]
-}
-
-export interface TxError {
-  code: number | string
-  codespace?: string
-}
-
-export type TxBroadcastResult<
-  B extends Wait | Block | Sync | Async,
-  C extends TxSuccess | TxError | {},
-> = B & C
-
-export type WaitTxBroadcastResult = TxBroadcastResult<Wait, TxSuccess | TxError>
-export type BlockTxBroadcastResult = TxBroadcastResult<
-  Block,
-  TxSuccess | TxError
->
-export type SyncTxBroadcastResult = TxBroadcastResult<Sync, TxError | {}>
-export type AsyncTxBroadcastResult = TxBroadcastResult<Async, {}>
-
 export enum BroadcastMode {
   Sync = 'BROADCAST_MODE_SYNC',
   Async = 'BROADCAST_MODE_ASYNC',
@@ -161,18 +92,6 @@ export interface SimulationResponse {
   gas_info: {
     gas_wanted: string
     gas_used: string
-  }
-  result: {
-    data: string
-    log: string
-    events: { type: string; attributes: { key: string; value: string }[] }[]
-  }
-}
-
-export interface TxSimulation {
-  gasInfo: {
-    gasWanted: string
-    gasUsed: string
   }
   result: {
     data: string

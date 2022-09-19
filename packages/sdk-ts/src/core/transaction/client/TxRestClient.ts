@@ -1,43 +1,16 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable camelcase */
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { HttpClient } from '@injectivelabs/utils'
 import {
-  Wait,
-  Block,
-  Sync,
-  TxSuccess,
-  TxBroadcastResult,
-  TxError,
-  TxInfo,
-  TxResult,
   BroadcastMode,
   SimulationResponse,
-  WaitTxBroadcastResult,
-  SyncTxBroadcastResult,
-  BlockTxBroadcastResult,
-  TxSearchResult,
+  TxInfo,
   TxResultResponse,
-  TxSimulation,
 } from '../types/tx-rest-client'
-import { APIParams, TxSearchOptions } from '../types/rest-client'
-import { BlockInfo } from '../types/block'
+import { APIParams } from '../types/rest-client'
 import { TxClient } from './TxClient'
-import { hashToHex } from '../utils/crypto'
+import { TxClientBroadcastOptions, TxConcreteClient } from '../types/tx'
 
-export function isTxError<
-  C extends TxSuccess | TxError | {},
-  B extends Wait | Block | Sync,
-  T extends TxBroadcastResult<B, C>,
->(x: T): x is T & TxBroadcastResult<B, TxError> {
-  return (
-    (x as T & TxError).code !== undefined &&
-    (x as T & TxError).code !== 0 &&
-    (x as T & TxError).code !== '0'
-  )
-}
-
-export class TxRestClient {
+export class TxRestClient implements TxConcreteClient {
   public httpClient: HttpClient
 
   constructor(endpoint: string) {
@@ -49,75 +22,42 @@ export class TxRestClient {
     })
   }
 
-  public async txInfo(
-    txHash: string,
-    params: APIParams = {},
-  ): Promise<TxResult> {
+  public async fetchTx(txHash: string, params: APIParams = {}) {
     try {
       const response = await this.getRaw<TxResultResponse>(
         `/cosmos/tx/v1beta1/txs/${txHash}`,
         params,
       )
 
+      const { tx_response: txResponse } = response
+
+      if (!txResponse) {
+        return undefined
+      }
+
       return {
-        ...response,
-        txResponse: {
-          ...response.tx_response,
-          rawLog: response.tx_response.raw_log,
-          gasWanted: response.tx_response.gas_wanted,
-          gasUsed: response.tx_response.gas_used,
-        },
+        ...txResponse,
+        rawLog: txResponse.raw_log,
+        gasWanted: parseInt(txResponse.gas_wanted, 10),
+        gasUsed: parseInt(txResponse.gas_used, 10),
+        height: parseInt(txResponse.height, 10),
+        txHash: txResponse.txhash,
       }
     } catch (e: any) {
       throw new Error(e)
     }
   }
 
-  public async txInfosByHeight(height: number | undefined): Promise<TxInfo[]> {
-    const endpoint =
-      height !== undefined
-        ? `/cosmos/base/tendermint/v1beta1/blocks/${height}`
-        : `/cosmos/base/tendermint/v1beta1/blocks/latest`
-
-    const blockInfo = await this.getRaw<BlockInfo>(endpoint)
-    const { txs } = blockInfo.block.data
-
-    if (!txs) {
-      return []
-    }
-
-    const txHashes = txs.map((txData) => hashToHex(txData))
-    const txInfos: TxInfo[] = []
-
-    for (const txhash of txHashes) {
-      const txInfo = await this.txInfo(txhash)
-
-      txInfos.push(txInfo.txResponse)
-    }
-
-    return txInfos
-  }
-
-  public async waitTxBroadcast(txHash: string, timeout = 30000) {
+  public async fetchTxPoll(txHash: string, timeout = 30000) {
     const POLL_INTERVAL = 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
-        const txInfo = await this.txInfo(txHash)
-        const { txResponse: txInfoSearchResponse } = txInfo
+        const txInfo = await this.fetchTx(txHash)
+        const txResponse = txInfo
 
-        if (txInfoSearchResponse) {
-          return {
-            txhash: txInfoSearchResponse.txhash,
-            rawLog: txInfoSearchResponse.rawLog,
-            gasWanted: parseInt(txInfoSearchResponse.gasWanted, 10),
-            gasUsed: parseInt(txInfoSearchResponse.gasUsed, 10),
-            height: parseInt(txInfoSearchResponse.height, 10),
-            logs: txInfoSearchResponse.logs,
-            code: txInfoSearchResponse.code,
-            codespace: txInfoSearchResponse.codespace,
-            timestamp: txInfoSearchResponse.timestamp,
-          }
+        if (txResponse) {
+          return txResponse
         }
       } catch (error: any) {
         if (!error.toString().includes('404')) {
@@ -133,7 +73,7 @@ export class TxRestClient {
     )
   }
 
-  public async simulate(txRaw: TxRaw): Promise<TxSimulation> {
+  public async simulate(txRaw: TxRaw) {
     try {
       const response = await this.postRaw<SimulationResponse>(
         '/cosmos/tx/v1beta1/simulate',
@@ -143,14 +83,70 @@ export class TxRestClient {
       )
 
       return {
-        ...response,
+        result: {
+          data: response.result.data,
+          log: response.result.log,
+          eventsList: response.result.events,
+        },
         gasInfo: {
-          gasUsed: response.gas_info.gas_used,
-          gasWanted: response.gas_info.gas_wanted,
+          gasWanted: parseInt(response.gas_info.gas_wanted, 10),
+          gasUsed: parseInt(response.gas_info.gas_used, 10),
         },
       }
     } catch (e: any) {
       throw new Error(e.response ? e.response.data.message : e)
+    }
+  }
+
+  public async broadcast(tx: TxRaw, options?: TxClientBroadcastOptions) {
+    const { timeout } = options || { timeout: 30000 }
+    const { tx_response: txResponse } = await this.broadcastTx<{
+      tx_response: TxInfo
+    }>(tx, BroadcastMode.Sync)
+
+    if (txResponse.code !== 0) {
+      return {
+        height: parseInt(txResponse.height || '0', 10),
+        txHash: txResponse.txhash,
+        rawLog: txResponse.rawLog,
+        code: txResponse.code,
+        codespace: txResponse.codespace,
+        gasUsed: 0,
+        gasWanted: 0,
+        timestamp: '',
+        logs: [],
+        data: '',
+        info: '',
+        tx: undefined,
+      }
+    }
+
+    return this.fetchTxPoll(txResponse.txhash, timeout)
+  }
+
+  /**
+   * Broadcast the transaction using the "block" mode, waiting for its inclusion in the blockchain.
+   * @param tx transaction to broadcast
+   */
+  public async broadcastBlock(tx: TxRaw) {
+    const response = await this.broadcastTx<{
+      tx_response: TxInfo
+    }>(tx, BroadcastMode.Block)
+
+    const { tx_response: txResponse } = response
+
+    return {
+      txHash: txResponse.txhash,
+      rawLog: txResponse.rawLog,
+      gasWanted: parseInt(txResponse.gasWanted || '0', 10),
+      gasUsed: parseInt(txResponse.gasUsed || '0', 10),
+      height: parseInt(txResponse.height || '0', 10),
+      logs: txResponse.logs || [],
+      code: txResponse.code,
+      codespace: txResponse.codespace,
+      data: txResponse.data,
+      info: txResponse.info,
+      timestamp: txResponse.timestamp || '0',
     }
   }
 
@@ -168,121 +164,6 @@ export class TxRestClient {
     } catch (e: any) {
       throw new Error(e.response ? e.response.data.message : e)
     }
-  }
-
-  public async broadcast(
-    tx: TxRaw,
-    timeout = 30000,
-  ): Promise<WaitTxBroadcastResult> {
-    const { tx_response: txResponse } = await this.broadcastTx<{
-      tx_response: SyncTxBroadcastResult
-    }>(tx, BroadcastMode.Sync)
-
-    if ((txResponse as TxError).code !== 0) {
-      const result: WaitTxBroadcastResult = {
-        height: txResponse.height,
-        txhash: txResponse.txhash,
-        rawLog: txResponse.rawLog,
-        code: (txResponse as TxError).code,
-        codespace: (txResponse as TxError).codespace,
-        gasUsed: 0,
-        gasWanted: 0,
-        timestamp: '',
-        logs: [],
-      }
-
-      return result
-    }
-
-    return this.waitTxBroadcast(txResponse.txhash, timeout)
-  }
-
-  /**
-   * Broadcast the transaction using the "block" mode, waiting for its inclusion in the blockchain.
-   * @param tx transaction to broadcast
-   */
-  public async broadcastBlock(tx: TxRaw): Promise<BlockTxBroadcastResult> {
-    const response = await this.broadcastTx<{
-      tx_response: BlockTxBroadcastResult
-    }>(tx, BroadcastMode.Block)
-
-    const { tx_response: txResponse } = response
-
-    return {
-      txhash: txResponse.txhash,
-      rawLog: txResponse.rawLog,
-      gasWanted: txResponse.gasWanted,
-      gasUsed: txResponse.gasUsed,
-      height: txResponse.height,
-      logs: txResponse.logs,
-      code: (txResponse as TxError).code,
-      codespace: (txResponse as TxError).codespace,
-      data: txResponse.data,
-      info: txResponse.info,
-      timestamp: txResponse.timestamp,
-    }
-  }
-
-  /**
-   * NOTE: This is not a synchronous function and is unconventionally named. This function
-   * can be await as it returns a `Promise`.
-   *
-   * Broadcast the transaction using the "sync" mode, returning after CheckTx() is performed.
-   * @param tx transaction to broadcast
-   */
-  public async broadcastSync(tx: TxRaw): Promise<SyncTxBroadcastResult> {
-    const response = await this.broadcastTx<{
-      tx_response: BlockTxBroadcastResult
-    }>(tx, BroadcastMode.Sync)
-
-    const { tx_response: txResponse } = response
-
-    const blockResult: any = {
-      height: txResponse.height,
-      txhash: txResponse.txhash,
-      rawLog: txResponse.rawLog,
-    }
-
-    if ((txResponse as TxError).code) {
-      blockResult.code = (txResponse as TxError).code
-    }
-
-    if ((txResponse as TxError).codespace) {
-      blockResult.codespace = (txResponse as TxError).codespace
-    }
-
-    return blockResult
-  }
-
-  /**
-   * Search for transactions based on event attributes.
-   * @param options
-   */
-  public async search(
-    options: Partial<TxSearchOptions>,
-  ): Promise<TxSearchResult> {
-    const params = new URLSearchParams()
-
-    // build search params
-    options.events?.forEach((v) =>
-      params.append(
-        'events',
-        v.key === 'tx.height' ? `${v.key}=${v.value}` : `${v.key}='${v.value}'`,
-      ),
-    )
-
-    delete options.events
-
-    Object.entries(options).forEach((v) => {
-      params.append(v[0], v[1] as string)
-    })
-
-    const response = await this.getRaw<TxSearchResult>(
-      `cosmos/tx/v1beta1/txs`,
-      params,
-    )
-
-    return response
   }
 
   private async postRaw<T>(

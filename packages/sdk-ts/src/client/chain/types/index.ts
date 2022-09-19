@@ -12,3 +12,7 @@ export * from './peggy'
 export * from './spot'
 export * from './staking'
 export * from './wasm'
+
+export interface RestApiResponse<T> {
+  data: T
+}

@@ -1,5 +1,6 @@
 import BaseRestConsumer from '../../BaseRestConsumer'
-import { AccountResponse, RestApiResponse } from './../types/auth-rest'
+import { RestApiResponse } from '../types'
+import { AccountResponse } from './../types/auth-rest'
 
 /**
  * @category Chain Rest API

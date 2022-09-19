@@ -180,7 +180,7 @@ export class KeplrWallet {
   async waitTxBroadcasted(txHash: string): Promise<string> {
     const endpoints = await this.getChainEndpoints()
     const txClient = new TxRestClient(endpoints.rest)
-    const result = await txClient.waitTxBroadcast(txHash)
+    const result = await txClient.fetchTxPoll(txHash)
 
     return result.txhash
   }

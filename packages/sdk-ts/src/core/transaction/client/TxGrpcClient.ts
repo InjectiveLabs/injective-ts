@@ -14,11 +14,16 @@ import {
 import {
   GasInfo,
   Result,
-  TxResponse,
 } from '@injectivelabs/chain-api/cosmos/base/abci/v1beta1/abci_pb'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { isServerSide } from '@injectivelabs/utils'
 import { grpc } from '@improbable-eng/grpc-web'
+import {
+  TxClientBroadcastOptions,
+  TxClientBroadcastResponse,
+  TxClientSimulateResponse,
+  TxConcreteClient,
+} from '../types/tx'
 
 if (isServerSide()) {
   grpc.setDefaultTransport(NodeHttpTransport())
@@ -27,7 +32,7 @@ if (isServerSide()) {
 /**
  * It is recommended to use TxRestClient instead of TxGrpcClient
  */
-export class TxGrpcClient {
+export class TxGrpcClient implements TxConcreteClient {
   public txService: ServiceClient
 
   public endpoint: string
@@ -39,7 +44,7 @@ export class TxGrpcClient {
     })
   }
 
-  public async getTx(hash: string) {
+  public async fetchTx(hash: string) {
     const request = new GetTxRequest()
 
     request.setHash(hash)
@@ -51,32 +56,30 @@ export class TxGrpcClient {
         typeof Service.GetTx
       >(request, Service.GetTx)
 
-      return response
+      const txResponse = response.getTxResponse()
+
+      if (!txResponse) {
+        return undefined
+      }
+
+      return {
+        ...txResponse.toObject(),
+        txHash: txResponse.getTxhash(),
+      }
     } catch (e: any) {
       throw new Error(e.message)
     }
   }
 
-  public async waitTxBroadcast(txHash: string, timeout = 30000) {
+  public async fetchTxPoll(txHash: string, timeout = 30000) {
     const POLL_INTERVAL = 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
-        const txInfo = await this.getTx(txHash)
-        const txResponse = txInfo.getTxResponse()!
+        const txResponse = await this.fetchTx(txHash)
 
-        if (txInfo.hasTxResponse()) {
-          return {
-            txhash: txResponse.getTxhash(),
-            rawLog: txResponse.getRawLog(),
-            gasWanted: txResponse.getGasWanted(),
-            gasUsed: txResponse.getGasUsed(),
-            height: txResponse.getHeight(),
-            logs: txResponse.getLogsList().map((l) => l.toObject()),
-            code: txResponse.getCode(),
-            codespace: txResponse.getCodespace(),
-            timestamp: txResponse.getTimestamp(),
-          }
+        if (txResponse) {
+          return txResponse
         }
       } catch (error: any) {
         if (!error.toString().includes('tx not found')) {
@@ -92,73 +95,69 @@ export class TxGrpcClient {
     )
   }
 
-  public async simulate(txRaw: TxRaw): Promise<{
-    result: Result.AsObject
-    gasInfo: GasInfo.AsObject
-  }> {
+  public async simulate(txRaw: TxRaw) {
     const { txService } = this
 
     const simulateRequest = new SimulateRequest()
     simulateRequest.setTxBytes(txRaw.serializeBinary())
 
     try {
-      return new Promise((resolve, reject) =>
-        txService.simulate(simulateRequest, (error, response) => {
-          if (error || !response) {
-            return reject(error)
-          }
+      return new Promise(
+        (resolve: (value: TxClientSimulateResponse) => void, reject) =>
+          txService.simulate(simulateRequest, (error, response) => {
+            if (error || !response) {
+              return reject(error)
+            }
 
-          const result = response.getResult()
-          const gasInfo = response.getGasInfo()
+            const result = response.getResult()
+            const gasInfo = response.getGasInfo()
 
-          return resolve({
-            result: result ? result.toObject() : ({} as Result.AsObject),
-            gasInfo: gasInfo ? gasInfo.toObject() : ({} as GasInfo.AsObject),
-          })
-        }),
+            return resolve({
+              result: result ? result.toObject() : ({} as Result.AsObject),
+              gasInfo: gasInfo ? gasInfo.toObject() : ({} as GasInfo.AsObject),
+            })
+          }),
       )
     } catch (e: any) {
       throw new Error(e.message)
     }
   }
 
-  public async broadcast(
-    txRaw: TxRaw,
-    timeout = 30000,
-    broadcastMode: BroadcastModeMap[keyof BroadcastModeMap] = BroadcastMode.BROADCAST_MODE_SYNC,
-  ): Promise<TxResponse.AsObject> {
+  public async broadcast(txRaw: TxRaw, options?: TxClientBroadcastOptions) {
     const { txService } = this
+    const { mode, timeout } = options || {
+      mode: BroadcastMode.BROADCAST_MODE_SYNC,
+      timeout: 30000,
+    }
 
     const broadcastTxRequest = new BroadcastTxRequest()
     broadcastTxRequest.setTxBytes(txRaw.serializeBinary())
-    broadcastTxRequest.setMode(broadcastMode)
+    broadcastTxRequest.setMode(mode)
 
     try {
-      return new Promise((resolve, reject) =>
-        txService.broadcastTx(broadcastTxRequest, async (error, response) => {
-          if (error || !response) {
-            return reject(error)
-          }
+      return new Promise(
+        (resolve: (value: TxClientBroadcastResponse) => void, reject) =>
+          txService.broadcastTx(broadcastTxRequest, async (error, response) => {
+            if (error || !response) {
+              return reject(error)
+            }
 
-          const txResponse = response.getTxResponse()!
+            const txResponse = response.getTxResponse()!
 
-          if (txResponse.getCode() !== 0) {
-            return resolve(txResponse.toObject())
-          }
+            if (txResponse.getCode() !== 0) {
+              return resolve({
+                ...txResponse.toObject(),
+                txHash: txResponse.getTxhash(),
+              })
+            }
 
-          const result = await this.waitTxBroadcast(
-            txResponse.getTxhash(),
-            timeout,
-          )
+            const result = await this.fetchTxPoll(
+              txResponse.getTxhash(),
+              timeout,
+            )
 
-          return resolve({
-            ...result,
-            info: '',
-            data: '',
-            logsList: result.logs,
-            eventsList: [],
-          })
-        }),
+            return resolve(result)
+          }),
       )
     } catch (e: any) {
       throw new Error(e.message)
@@ -168,7 +167,7 @@ export class TxGrpcClient {
   public async broadcastBlock(
     txRaw: TxRaw,
     broadcastMode: BroadcastModeMap[keyof BroadcastModeMap] = BroadcastMode.BROADCAST_MODE_BLOCK,
-  ): Promise<TxResponse.AsObject> {
+  ) {
     const { txService } = this
 
     const broadcastTxRequest = new BroadcastTxRequest()
@@ -176,18 +175,28 @@ export class TxGrpcClient {
     broadcastTxRequest.setMode(broadcastMode)
 
     try {
-      return new Promise((resolve, reject) =>
-        txService.broadcastTx(broadcastTxRequest, (error, response) => {
-          if (error || !response) {
-            return reject(error)
-          }
+      return new Promise(
+        (resolve: (value: TxClientBroadcastResponse) => void, reject) =>
+          txService.broadcastTx(broadcastTxRequest, (error, response) => {
+            if (error || !response) {
+              return reject(error)
+            }
 
-          const txResponse = response.getTxResponse()
+            const txResponse = response.getTxResponse()
 
-          return resolve(
-            (txResponse ? txResponse.toObject() : {}) as TxResponse.AsObject,
-          )
-        }),
+            if (!txResponse) {
+              return reject(
+                new Error('There was an issue broadcasting the transaction'),
+              )
+            }
+
+            const result: TxClientBroadcastResponse = {
+              ...txResponse.toObject(),
+              txHash: txResponse.getTxhash(),
+            }
+
+            return resolve(result as TxClientBroadcastResponse)
+          }),
       )
     } catch (e: any) {
       throw new Error(e.message)

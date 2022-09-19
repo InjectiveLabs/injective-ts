@@ -1,7 +1,3 @@
-export interface RestApiResponse<T> {
-  data: T
-}
-
 export interface AccountsResponse {
   accounts: {
     '@type': string

@@ -39,30 +39,12 @@ export class TxGrpcClient {
     })
   }
 
-  public async getTx(hash: string) {
-    const request = new GetTxRequest()
-
-    request.setHash(hash)
-
-    try {
-      const response = await this.request<
-        GetTxRequest,
-        GetTxResponse,
-        typeof Service.GetTx
-      >(request, Service.GetTx)
-
-      return response
-    } catch (e: any) {
-      throw new Error(e.message)
-    }
-  }
-
   public async waitTxBroadcast(txHash: string, timeout = 30000) {
     const POLL_INTERVAL = 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
-        const txInfo = await this.getTx(txHash)
+        const txInfo = await this.fetchTx(txHash)
         const txResponse = txInfo.getTxResponse()!
 
         if (txInfo.hasTxResponse()) {
@@ -214,5 +196,23 @@ export class TxGrpcClient {
         },
       })
     })
+  }
+
+  private async fetchTx(hash: string) {
+    const request = new GetTxRequest()
+
+    request.setHash(hash)
+
+    try {
+      const response = await this.request<
+        GetTxRequest,
+        GetTxResponse,
+        typeof Service.GetTx
+      >(request, Service.GetTx)
+
+      return response
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
   }
 }

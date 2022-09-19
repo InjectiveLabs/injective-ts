@@ -18,10 +18,12 @@ import { PubKey as CosmosPubKey } from '@injectivelabs/chain-api/cosmos/crypto/s
 import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
 import { ExtensionOptionsWeb3Tx } from '@injectivelabs/chain-api/injective/types/v1beta1/tx_ext_pb'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { createAny, createAnyMessage } from './utils'
 import { Msgs } from '../modules'
+import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client'
+import { DEFAULT_TIMEOUT_HEIGHT } from '../../utils'
 
 export type MsgArg = {
   type: string
@@ -264,6 +266,11 @@ export const createTransaction = ({
   }
 }
 
+/**
+ * Used when we want to pass a Msg class instead of the {type, message}
+ * object of the Message (using the toDirectSign() method)
+ * @returns
+ */
 export const createTransactionFromMsg = (
   params: Omit<CreateTransactionArgs, 'message'> & { message: Msgs | Msgs[] },
 ) => {
@@ -277,6 +284,18 @@ export const createTransactionFromMsg = (
   })
 }
 
+/**
+ * Used when we get a DirectSignResponse from
+ * Cosmos native wallets like Keplr, Leap, etc after
+ * the TxRaw has been signed.
+ *
+ * The reason why we need to create a new TxRaw and
+ * not use the one that we passed to signing is that the users
+ * can change the gas fees and that will alter the original
+ * TxRaw which will cause signature miss match if we broadcast
+ * that transaction on chain
+ * @returns
+ */
 export const createTxRawFromSigResponse = (
   signatureResponse: DirectSignResponse,
 ) => {
@@ -286,6 +305,61 @@ export const createTxRawFromSigResponse = (
   txRaw.setSignaturesList([signatureResponse.signature.signature])
 
   return txRaw
+}
+
+/**
+ * Used when we don't have account details and block details
+ * and we pass the message and the user's address only
+ * @returns
+ */
+export const createTransactionForAddressAndMsg = async (
+  params: Omit<
+    CreateTransactionArgs,
+    'message' | 'sequence' | 'pubKey' | 'accountNumber'
+  > & {
+    message: Msgs | Msgs[]
+    address: string
+    pubKey?: string
+    endpoint: string
+  },
+) => {
+  const messages = Array.isArray(params.message)
+    ? params.message
+    : [params.message]
+
+  // Clients
+  const chainRestApi = new ChainRestAuthApi(params.endpoint)
+  const tendermintRestApi = new ChainRestTendermintApi(params.endpoint)
+
+  /** Account Details * */
+  const accountDetails = await chainRestApi.fetchAccount(params.address)
+
+  /** Block Details */
+  const latestBlock = await tendermintRestApi.fetchLatestBlock()
+  const latestHeight = latestBlock.header.height
+  const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+    DEFAULT_TIMEOUT_HEIGHT,
+  )
+
+  const pubKey =
+    params.pubKey || accountDetails.account.base_account?.pub_key.key
+
+  if (pubKey) {
+    throw new Error(`The pubKey for ${params.address} is missing.`)
+  }
+
+  return createTransaction({
+    ...params,
+    pubKey:
+      params.pubKey ||
+      Buffer.from(accountDetails.account.base_account.pub_key.key).toString(
+        'base64',
+      ),
+    sequence: Number(accountDetails.account.base_account.sequence),
+    timeoutHeight: timeoutHeight.toNumber(),
+    accountNumber: Number(accountDetails.account.base_account.account_number),
+    message: messages.map((m) => m.toDirectSign()),
+  })
 }
 
 export const createTxRawEIP712 = (
