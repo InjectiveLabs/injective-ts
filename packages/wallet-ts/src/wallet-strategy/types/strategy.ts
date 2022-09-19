@@ -3,7 +3,10 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
+import type { Msgs } from '@injectivelabs/sdk-ts'
 import type Web3 from 'web3'
+import type { DirectSignResponse } from '@cosmjs/proto-signing'
+import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { Wallet } from './enums'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
@@ -31,7 +34,7 @@ export interface ConcreteWalletStrategy {
    * @param options
    */
   sendTransaction(
-    transaction: unknown,
+    transaction: DirectSignResponse | TxRaw,
     options: { address: string; chainId: ChainId },
   ): Promise<string>
 
@@ -45,7 +48,16 @@ export interface ConcreteWalletStrategy {
     options: { address: string; ethereumChainId: EthereumChainId },
   ): Promise<string>
 
-  signTransaction(eip712json: string, address: AccountAddress): Promise<string>
+  signTransaction(
+    data:
+      | string /* EIP712 Typed Data in JSON */
+      | {
+          memo: string
+          gas: string
+          message: Msgs | Msgs[]
+        },
+    address: AccountAddress,
+  ): Promise<string | DirectSignResponse>
 
   getNetworkId(): Promise<string>
 

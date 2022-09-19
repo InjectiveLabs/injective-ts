@@ -140,11 +140,10 @@ export class MsgBroadcastExperimentalClient {
     const injectiveAddress = getInjectiveAddress(tx.address)
 
     try {
-      const [message] = msgs.map((msg) => msg.toDirectSign())
       const transaction = {
-        message,
-        gas: tx.gasLimit ? tx.gasLimit : getGasPriceBasedOnMessage(msgs),
-        memo: tx.memo,
+        message: msgs,
+        memo: tx.memo || '',
+        gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
       }
 
       const directSignResponse = (await walletStrategy.signTransaction(

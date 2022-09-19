@@ -12,6 +12,8 @@ import {
   createTxRawFromSigResponse,
   createTransactionAndCosmosSignDocForAddressAndMsg,
 } from '@injectivelabs/sdk-ts'
+import type { Msgs } from '@injectivelabs/sdk-ts'
+import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { LeapWallet } from '../../leap'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -77,7 +79,7 @@ export default class Leap
   }
 
   async sendTransaction(
-    signResponse: any,
+    signResponse: DirectSignResponse,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     const { leapWallet } = this
@@ -91,9 +93,13 @@ export default class Leap
   }
 
   async signTransaction(
-    transaction: any,
+    transaction: {
+      memo: string
+      gas: string
+      message: Msgs | Msgs[]
+    },
     address: AccountAddress,
-  ): Promise<any> {
+  ) {
     const { leapWallet, chainId } = this
 
     if (!leapWallet) {

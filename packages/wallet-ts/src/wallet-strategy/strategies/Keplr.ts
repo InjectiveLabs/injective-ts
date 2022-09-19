@@ -12,6 +12,8 @@ import {
   createTransactionAndCosmosSignDocForAddressAndMsg,
   createTxRawFromSigResponse,
 } from '@injectivelabs/sdk-ts/dist/core/transaction'
+import type { Msgs } from '@injectivelabs/sdk-ts'
+import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -77,7 +79,7 @@ export default class Keplr
   }
 
   async sendTransaction(
-    signResponse: any,
+    signResponse: DirectSignResponse,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     const { keplrWallet } = this
@@ -91,9 +93,13 @@ export default class Keplr
   }
 
   async signTransaction(
-    transaction: any,
-    address: AccountAddress,
-  ): Promise<any> {
+    transaction: {
+      memo: string
+      gas: string
+      message: Msgs | Msgs[]
+    },
+    injectiveAddress: AccountAddress,
+  ) {
     const { keplrWallet, chainId } = this
 
     if (!keplrWallet) {
@@ -107,9 +113,9 @@ export default class Keplr
     /** Prepare the Transaction * */
     const { cosmosSignDoc } =
       await createTransactionAndCosmosSignDocForAddressAndMsg({
-        address,
         chainId,
         memo: transaction.memo,
+        address: injectiveAddress,
         message: transaction.message,
         pubKey: Buffer.from(key.pubKey).toString('base64'),
         endpoint: endpoints.rest,
@@ -120,7 +126,7 @@ export default class Keplr
       })
 
     /* Sign the transaction */
-    return signer.signDirect(address, cosmosSignDoc)
+    return signer.signDirect(injectiveAddress, cosmosSignDoc)
   }
 
   async getNetworkId(): Promise<string> {

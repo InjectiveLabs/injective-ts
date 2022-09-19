@@ -5,6 +5,8 @@ import {
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { Msgs } from '@injectivelabs/sdk-ts'
 import Metamask from './strategies/Metamask'
 import {
   ConcreteWalletStrategy,
@@ -136,23 +138,28 @@ export default class WalletStrategy {
   }
 
   public async sendTransaction(
-    tx: any,
+    tx: DirectSignResponse,
     options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     return this.getStrategy().sendTransaction(tx, options)
   }
 
   public async sendEthereumTransaction(
-    tx: any,
-    options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    tx: any /* TODO */,
+    options: {
+      address: AccountAddress /* Ethereum address */
+      ethereumChainId: EthereumChainId
+    },
   ): Promise<string> {
     return this.getStrategy().sendEthereumTransaction(tx, options)
   }
 
   public async signTransaction(
-    data: any,
+    data:
+      | string /* When using EIP712 typed data */
+      | { memo: string; gas: string; message: Msgs | Msgs[] },
     address: AccountAddress,
-  ): Promise<string | any> {
+  ): Promise<string | DirectSignResponse> {
     return this.getStrategy().signTransaction(data, address)
   }
 

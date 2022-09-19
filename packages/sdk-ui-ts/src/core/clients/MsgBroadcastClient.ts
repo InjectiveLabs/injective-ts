@@ -76,7 +76,7 @@ export class MsgBroadcastClient {
 
     try {
       const txResponse = await prepareTx()
-      const signature = await signTx(txResponse.getData())
+      const signature = (await signTx(txResponse.getData())) as string
 
       const promise = transactionApi.broadcastTxRequest({
         signature,
@@ -113,11 +113,10 @@ export class MsgBroadcastClient {
     const injectiveAddress = getInjectiveAddress(tx.address)
 
     try {
-      const [message] = msgs.map((msg) => msg.toDirectSign())
       const transaction = {
-        message,
-        gas: tx.gasLimit ? tx.gasLimit : getGasPriceBasedOnMessage(msgs),
-        memo: tx.memo,
+        message: msgs,
+        memo: tx.memo || '',
+        gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
       }
 
       const directSignResponse = (await walletStrategy.signTransaction(
