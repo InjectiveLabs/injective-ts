@@ -6,17 +6,12 @@ import {
   CosmosChainId,
 } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import {
-  BigNumberInBase,
-  DEFAULT_STD_FEE,
-  DEFAULT_TIMEOUT_HEIGHT,
-} from '@injectivelabs/utils'
+import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import type Web3 from 'web3'
 import {
-  createCosmosSignDocFromTransaction,
+  createTransactionAndCosmosSignDocForAddressAndMsg,
   createTxRawFromSigResponse,
 } from '@injectivelabs/sdk-ts/dist/core/transaction'
-import { ChainRestAuthApi, ChainRestTendermintApi } from '@injectivelabs/sdk-ts'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -109,34 +104,20 @@ export default class Keplr
     const key = await keplrWallet.getKey()
     const signer = await keplrWallet.getOfflineSigner()
 
-    // Clients
-    const chainRestApi = new ChainRestAuthApi(endpoints.rest)
-    const tendermintRestApi = new ChainRestTendermintApi(endpoints.rest)
-
-    /** Account Details * */
-    const accountDetails = await chainRestApi.fetchAccount(address)
-
-    /** Block Details */
-    const latestBlock = await tendermintRestApi.fetchLatestBlock()
-    const latestHeight = latestBlock.header.height
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_TIMEOUT_HEIGHT,
-    )
-
     /** Prepare the Transaction * */
-    const { cosmosSignDoc } = createCosmosSignDocFromTransaction({
-      chainId,
-      memo: transaction.memo,
-      message: transaction.message,
-      pubKey: Buffer.from(key.pubKey).toString('base64'),
-      sequence: Number(accountDetails.account.base_account.sequence),
-      timeoutHeight: timeoutHeight.toNumber(),
-      accountNumber: Number(accountDetails.account.base_account.account_number),
-      fee: {
-        ...DEFAULT_STD_FEE,
-        gas: transaction.gas || DEFAULT_STD_FEE.gas,
-      },
-    })
+    const { cosmosSignDoc } =
+      await createTransactionAndCosmosSignDocForAddressAndMsg({
+        address,
+        chainId,
+        memo: transaction.memo,
+        message: transaction.message,
+        pubKey: Buffer.from(key.pubKey).toString('base64'),
+        endpoint: endpoints.rest,
+        fee: {
+          ...DEFAULT_STD_FEE,
+          gas: transaction.gas || DEFAULT_STD_FEE.gas,
+        },
+      })
 
     /* Sign the transaction */
     return signer.signDirect(address, cosmosSignDoc)
