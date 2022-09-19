@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.88](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.87...@injectivelabs/wallet-ts@1.0.88) (2022-09-19)
+
+
+### Features
+
+* unified tx clients ([e404930](https://github.com/InjectiveLabs/injective-ts/commit/e404930c4fe095972c135bd982d7287cdd19dddd))
+
+
+
+
+
 ## [1.0.87](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.86...@injectivelabs/wallet-ts@1.0.87) (2022-09-19)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
