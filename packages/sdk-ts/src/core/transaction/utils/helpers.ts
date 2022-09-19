@@ -10,6 +10,7 @@ import { DEFAULT_TIMEOUT_HEIGHT } from '../../../utils'
 import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { createTransaction, CreateTransactionArgs } from '../tx'
 import { MessageGenerated } from '../types'
+import { BaseAccount } from '../../../classes'
 
 export const createAnyMessage = (msg: MessageGenerated) => {
   const message = new Any()
@@ -94,6 +95,7 @@ export const createTransactionForAddressAndMsg = async (
 
   /** Account Details * */
   const accountDetails = await chainRestApi.fetchAccount(params.address)
+  const baseAccount = BaseAccount.fromRestApi(accountDetails)
 
   /** Block Details */
   const latestBlock = await tendermintRestApi.fetchLatestBlock()
@@ -102,8 +104,7 @@ export const createTransactionForAddressAndMsg = async (
     DEFAULT_TIMEOUT_HEIGHT,
   )
 
-  const pubKey =
-    params.pubKey || accountDetails.account.base_account?.pub_key.key
+  const pubKey = params.pubKey || baseAccount.pubKey.key
 
   if (!pubKey) {
     throw new Error(`The pubKey for ${params.address} is missing.`)
@@ -112,13 +113,10 @@ export const createTransactionForAddressAndMsg = async (
   return createTransaction({
     ...params,
     pubKey:
-      params.pubKey ||
-      Buffer.from(accountDetails.account.base_account.pub_key.key).toString(
-        'base64',
-      ),
-    sequence: Number(accountDetails.account.base_account.sequence),
+      params.pubKey || Buffer.from(baseAccount.pubKey.key).toString('base64'),
+    sequence: Number(baseAccount.sequence),
     timeoutHeight: timeoutHeight.toNumber(),
-    accountNumber: Number(accountDetails.account.base_account.account_number),
+    accountNumber: Number(baseAccount.accountNumber),
     message: messages.map((m) => m.toDirectSign()),
   })
 }

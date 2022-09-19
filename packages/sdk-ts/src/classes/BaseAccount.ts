@@ -40,8 +40,10 @@ export class BaseAccount extends Address {
 
     return new BaseAccount({
       address: baseAccount.address,
-      accountNumber: parseInt(baseAccount.account_number, 10),
-      sequence: parseInt(baseAccount.sequence, 10),
+      accountNumber: baseAccount.account_number
+        ? parseInt(baseAccount.account_number, 10)
+        : 0,
+      sequence: baseAccount.sequence ? parseInt(baseAccount.sequence, 10) : 0,
       pubKey: baseAccount.pub_key
         ? {
             type: baseAccount.pub_key['@type'],
