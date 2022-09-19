@@ -17,10 +17,10 @@ import {
   createTxRawFromSigResponse,
 } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
+import { ChainRestAuthApi, ChainRestTendermintApi } from '@injectivelabs/sdk-ts'
 import { LeapWallet } from '../../leap'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
-import { CosmosQuery } from '../../cosmos'
 
 export default class Leap
   extends BaseConcreteStrategy
@@ -109,13 +109,16 @@ export default class Leap
     const endpoints = await leapWallet.getChainEndpoints()
     const key = await leapWallet.getKey()
     const signer = await leapWallet.getOfflineSigner()
-    const query = new CosmosQuery(endpoints)
+
+    // Clients
+    const chainRestApi = new ChainRestAuthApi(endpoints.rest)
+    const tendermintRestApi = new ChainRestTendermintApi(endpoints.rest)
 
     /** Account Details * */
-    const accountDetails = await query.fetchAccountDetails(address)
+    const accountDetails = await chainRestApi.fetchAccount(address)
 
     /** Block Details */
-    const latestBlock = await query.fetchLatestBlock()
+    const latestBlock = await tendermintRestApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
       DEFAULT_TIMEOUT_HEIGHT,
@@ -123,18 +126,19 @@ export default class Leap
 
     /** Prepare the Transaction * */
     const { bodyBytes, authInfoBytes, accountNumber } = createTransaction({
-      message: transaction.message,
+      chainId,
       memo: transaction.memo,
+      message: transaction.message,
+      pubKey: Buffer.from(key.pubKey).toString('base64'),
+      sequence: Number(accountDetails.account.base_account.sequence),
+      timeoutHeight: timeoutHeight.toNumber(),
+      accountNumber: Number(accountDetails.account.base_account.account_number),
       fee: {
         ...DEFAULT_STD_FEE,
         gas: transaction.gas || DEFAULT_STD_FEE.gas,
       },
-      pubKey: Buffer.from(key.pubKey).toString('base64'),
-      sequence: Number(accountDetails.sequence),
-      timeoutHeight: timeoutHeight.toNumber(),
-      accountNumber: Number(accountDetails.accountNumber),
-      chainId,
     })
+
     const cosmosSignDoc = SignDoc.fromPartial({
       bodyBytes,
       authInfoBytes,
