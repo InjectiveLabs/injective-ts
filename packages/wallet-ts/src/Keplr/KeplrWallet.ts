@@ -8,10 +8,7 @@ import {
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
 import { TxRestClient } from '@injectivelabs/sdk-ts/dist/core/transaction'
-import {
-  getExperimentalChainConfigBasedOnChainId,
-  keplrSupportedChainIds,
-} from './utils'
+import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
 
 export class KeplrWallet {
@@ -69,10 +66,6 @@ export class KeplrWallet {
 
     if (!window.keplr) {
       throw new Error('Please install Keplr extension')
-    }
-
-    if (await this.checkChainIdSupportInExtensionState()) {
-      return
     }
 
     const chainData = getExperimentalChainConfigBasedOnChainId(chainId)
@@ -202,10 +195,7 @@ export class KeplrWallet {
     }
   }
 
-  static checkChainIdSupport = (chainId: string) =>
-    keplrSupportedChainIds.includes(chainId)
-
-  private checkChainIdSupportInExtensionState = async () => {
+  public checkChainIdSupport = async () => {
     const { window, chainId } = this
 
     if (!window) {

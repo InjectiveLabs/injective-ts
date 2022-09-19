@@ -1,6 +1,5 @@
 import {
   getInjectiveAddress,
-  getEip712Tx,
   ChainRestAuthApi,
   ChainRestTendermintApi,
   BaseAccount,
@@ -21,6 +20,7 @@ import {
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
 import { getGasPriceBasedOnMessage } from './utils'
+import { getEip712TypedData } from '@injectivelabs/sdk-ts/dist/core/eip712'
 
 export class MsgBroadcastExperimentalClient {
   public options: MsgBroadcastOptions
@@ -74,7 +74,7 @@ export class MsgBroadcastExperimentalClient {
 
     try {
       /** EIP712 for signing on Ethereum wallets */
-      const eip712TypedData = getEip712Tx({
+      const eip712TypedData = getEip712TypedData({
         msgs: msgs,
         tx: {
           accountNumber: accountDetails.accountNumber.toString(),

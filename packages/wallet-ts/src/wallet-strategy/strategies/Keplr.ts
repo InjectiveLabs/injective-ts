@@ -39,14 +39,14 @@ export default class Keplr
   }
 
   async getAddresses(): Promise<string[]> {
-    const { keplrWallet, chainId } = this
+    const { keplrWallet } = this
 
     if (!keplrWallet) {
       throw new Web3Exception('Please install Keplr extension')
     }
 
     try {
-      if (!KeplrWallet.checkChainIdSupport(chainId)) {
+      if (!(await keplrWallet.checkChainIdSupport())) {
         await keplrWallet.experimentalSuggestChain()
       }
 

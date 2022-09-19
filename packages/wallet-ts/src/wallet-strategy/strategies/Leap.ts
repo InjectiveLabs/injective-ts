@@ -46,8 +46,8 @@ export default class Leap
     }
 
     try {
-      if (!LeapWallet.checkChainIdSupport(chainId)) {
-        throw new Error(`Leap doesn't support ${chainId} yet!`)
+      if (!(await leapWallet.checkChainIdSupport())) {
+        throw new Error(`The ${chainId} is not supported on Leap.`)
       }
 
       const accounts = await leapWallet.getAccounts()

@@ -8,7 +8,6 @@ import {
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
 import { TxRestClient } from '@injectivelabs/sdk-ts/dist/core/transaction'
-import { leapSupportedChainIds } from './utils'
 import { getEndpointsFromChainId } from '../cosmos'
 
 export class LeapWallet {
@@ -155,6 +154,24 @@ export class LeapWallet {
     }
   }
 
-  static checkChainIdSupport = (chainId: string) =>
-    leapSupportedChainIds.includes(chainId)
+  public checkChainIdSupport = async () => {
+    const { window, chainId } = this
+
+    if (!window) {
+      throw new Error('Please install Leap extension')
+    }
+
+    if (!window.leap) {
+      throw new Error('Please install Leap extension')
+    }
+
+    try {
+      await window.leap.getKey(chainId)
+
+      // Chain exists already on Leap
+      return true
+    } catch (e) {
+      return false
+    }
+  }
 }
