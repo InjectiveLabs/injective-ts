@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.137](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.136...@injectivelabs/sdk-ts@1.0.137) (2022-09-19)
+
+
+### Features
+
+* cosmos sdk doc convenient method ([8b8dab7](https://github.com/InjectiveLabs/injective-ts/commit/8b8dab7f25b657f4419ec916823807336548852d))
+
+
+
+
+
 ## [1.0.136](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.135...@injectivelabs/sdk-ts@1.0.136) (2022-09-19)
 
 
