@@ -16,14 +16,14 @@ export const getNetworkFromChainId = (
 ): { host: string; networkName: string } => {
   if (chainId === EthereumChainId.Goerli) {
     return {
-      host: 'kovan',
+      host: 'goerli',
       networkName: 'Goerli Test Network',
     }
   }
 
   if (chainId === EthereumChainId.Kovan) {
     return {
-      host: 'goerli',
+      host: 'kovan',
       networkName: 'Kovan Test Network',
     }
   }
