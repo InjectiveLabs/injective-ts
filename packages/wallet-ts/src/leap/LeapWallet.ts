@@ -10,53 +10,52 @@ import {
 import { TxRestClient } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
 
+const $window = (window || {}) as Window & { leap?: Leap }
+
 export class LeapWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  private window: Window & { leap?: Leap }
-
   constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
     this.chainId = chainId
-    this.window = window as unknown as Window & { leap: Leap }
   }
 
   async getLeapWallet() {
-    const { window, chainId } = this
+    const { chainId } = this
 
-    if (!window) {
+    if (!$window) {
       throw new Error('Please install Leap extension')
     }
 
-    if (!window.leap) {
+    if (!$window.leap) {
       throw new Error('Please install Leap extension')
     }
 
     try {
-      await window.leap.enable(chainId)
+      await $window.leap.enable(chainId)
 
-      return window.leap as Leap
+      return $window.leap as Leap
     } catch (e: any) {
       throw new Error(e.message)
     }
   }
 
   async getAccounts() {
-    const { window, chainId } = this
+    const { chainId } = this
 
-    if (!window) {
+    if (!$window) {
       throw new Error('Please install Leap extension')
     }
 
-    if (!window.leap) {
+    if (!$window.leap) {
       throw new Error('Please install Leap extension')
     }
 
-    if (!window.leap.getOfflineSigner) {
+    if (!$window.leap.getOfflineSigner) {
       throw new Error('Please install Leap extension')
     }
 
     try {
-      return window.leap.getOfflineSigner(chainId).getAccounts()
+      return $window.leap.getOfflineSigner(chainId).getAccounts()
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -155,18 +154,18 @@ export class LeapWallet {
   }
 
   public checkChainIdSupport = async () => {
-    const { window, chainId } = this
+    const { chainId } = this
 
-    if (!window) {
+    if (!$window) {
       throw new Error('Please install Leap extension')
     }
 
-    if (!window.leap) {
+    if (!$window.leap) {
       throw new Error('Please install Leap extension')
     }
 
     try {
-      await window.leap.getKey(chainId)
+      await $window.leap.getKey(chainId)
 
       // Chain exists already on Leap
       return true

@@ -11,14 +11,13 @@ import { TxRestClient } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
 
+const $window = (window || {}) as KeplrWindow
+
 export class KeplrWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  private window: KeplrWindow
-
   constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
     this.chainId = chainId
-    this.window = window as KeplrWindow
   }
 
   static async experimentalSuggestChainWithChainData(chainData: any) {
@@ -38,33 +37,33 @@ export class KeplrWallet {
   }
 
   async getKeplrWallet() {
-    const { window, chainId } = this
+    const { chainId } = this
 
-    if (!window) {
+    if (!$window) {
       throw new Error('Please install Keplr extension')
     }
 
-    if (!window.keplr) {
+    if (!$window.keplr) {
       throw new Error('Please install Keplr extension')
     }
 
     try {
-      await window.keplr.enable(chainId)
+      await $window.keplr.enable(chainId)
 
-      return window.keplr as Keplr
+      return $window.keplr as Keplr
     } catch (e: any) {
       throw new Error(e.message)
     }
   }
 
   async experimentalSuggestChain() {
-    const { window, chainId } = this
+    const { chainId } = this
 
-    if (!window) {
+    if (!$window) {
       throw new Error('Please install Keplr extension')
     }
 
-    if (!window.keplr) {
+    if (!$window.keplr) {
       throw new Error('Please install Keplr extension')
     }
 
@@ -75,29 +74,29 @@ export class KeplrWallet {
     }
 
     try {
-      await window.keplr.experimentalSuggestChain(chainData)
+      await $window.keplr.experimentalSuggestChain(chainData)
     } catch (e: any) {
       throw new Error(e.message)
     }
   }
 
   async getAccounts() {
-    const { window, chainId } = this
+    const { chainId } = this
 
-    if (!window) {
+    if (!$window) {
       throw new Error('Please install Keplr extension')
     }
 
-    if (!window.keplr) {
+    if (!$window.keplr) {
       throw new Error('Please install Keplr extension')
     }
 
-    if (!window.keplr.getOfflineSigner) {
+    if (!$window.keplr.getOfflineSigner) {
       throw new Error('Please install Keplr extension')
     }
 
     try {
-      return window.keplr.getOfflineSigner(chainId).getAccounts()
+      return $window.keplr.getOfflineSigner(chainId).getAccounts()
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -195,19 +194,19 @@ export class KeplrWallet {
     }
   }
 
-  public checkChainIdSupport = async () => {
-    const { window, chainId } = this
+  public async checkChainIdSupport() {
+    const { chainId } = this
 
-    if (!window) {
+    if (!$window) {
       throw new Error('Please install Keplr extension')
     }
 
-    if (!window.keplr) {
+    if (!$window.keplr) {
       throw new Error('Please install Keplr extension')
     }
 
     try {
-      await window.keplr.getKey(chainId)
+      await $window.keplr.getKey(chainId)
 
       // Chain exists already on Keplr
       return true
