@@ -2,30 +2,30 @@ import { Fee, ModeInfo } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { PublicKey } from '@injectivelabs/chain-api/tendermint/crypto/keys_pb'
 
 /* eslint-disable camelcase */
-export interface SignerInfo {
+export interface RestSignerInfo {
   public_key: PublicKey | null
   mode_info: ModeInfo
   sequence: string
 }
 
-export interface AuthInfo {
-  signer_infos: SignerInfo[]
+export interface RestAuthInfo {
+  signer_infos: RestSignerInfo[]
   fee: Fee
 }
 
-export interface TxBody {
+export interface RestTxBody {
   messages: any[]
   memo: string
   timeout_height: string
 }
 
-export interface Tx {
-  body: TxBody
-  auth_info: AuthInfo
+export interface RestTx {
+  body: RestTxBody
+  auth_info: RestAuthInfo
   signatures: string[]
 }
 
-export interface TxLog {
+export interface RestTxLog {
   msg_index: number
   log: string
   events: { type: string; attributes: { key: string; value: string }[] }[]
@@ -38,11 +38,11 @@ export interface TxInfoResponse {
   code: number
   data: string
   raw_log: string
-  logs: TxLog[]
+  logs: RestTxLog[]
   info: string
   gas_wanted: string
   gas_used: string
-  tx: Tx
+  tx: RestTx
   timestamp: string
 }
 
@@ -55,9 +55,9 @@ export interface TxInfo {
   rawLog: string
   gasWanted: string
   gasUsed: string
-  logs: TxLog[]
+  logs: RestTxLog[]
   info: string
-  tx: Tx
+  tx: RestTx
   timestamp: string
 }
 
@@ -68,12 +68,12 @@ export enum BroadcastMode {
 }
 
 export interface TxResultResponse {
-  tx: Tx
+  tx: RestTx
   tx_response: TxInfoResponse
 }
 
 export interface TxResult {
-  tx: Tx
+  tx: RestTx
   txResponse: TxInfo
 }
 
@@ -83,7 +83,7 @@ export interface TxSearchResult {
 }
 
 export interface TxSearchResultParams {
-  txs: Tx
+  txs: RestTx[]
   tx_responses: TxInfo
   pagination: any
 }

@@ -5,7 +5,7 @@ import { BalancesResponse, DenomBalance } from './../types/bank-rest'
 /**
  * @category Chain Rest API
  */
-export class ChainRestAuthApi extends BaseRestConsumer {
+export class ChainRestBankApi extends BaseRestConsumer {
   /**
    * Get address's balance
    *

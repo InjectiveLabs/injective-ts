@@ -1,5 +1,7 @@
 export * from './auction'
 export * from './auth-rest'
+export * from './bank-rest'
+export * from './tendermint-rest'
 export * from './bank'
 export * from './derivatives'
 export * from './distribution'

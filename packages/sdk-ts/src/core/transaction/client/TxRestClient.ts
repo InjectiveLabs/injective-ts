@@ -6,7 +6,6 @@ import {
   TxInfo,
   TxResultResponse,
 } from '../types/tx-rest-client'
-import { APIParams } from '../types/rest-client'
 import { TxClient } from './TxClient'
 import { TxClientBroadcastOptions, TxConcreteClient } from '../types/tx'
 
@@ -22,7 +21,7 @@ export class TxRestClient implements TxConcreteClient {
     })
   }
 
-  public async fetchTx(txHash: string, params: APIParams = {}) {
+  public async fetchTx(txHash: string, params: any = {}) {
     try {
       const response = await this.getRaw<TxResultResponse>(
         `/cosmos/tx/v1beta1/txs/${txHash}`,
@@ -168,19 +167,19 @@ export class TxRestClient implements TxConcreteClient {
 
   private async postRaw<T>(
     endpoint: string,
-    params: URLSearchParams | APIParams = {},
+    params: URLSearchParams | any = {},
   ): Promise<T> {
     return this.httpClient
-      .post<URLSearchParams | APIParams, { data: T }>(endpoint, params)
+      .post<URLSearchParams | any, { data: T }>(endpoint, params)
       .then((d) => d.data)
   }
 
   private async getRaw<T>(
     endpoint: string,
-    params: URLSearchParams | APIParams = {},
+    params: URLSearchParams | any = {},
   ): Promise<T> {
     return this.httpClient
-      .get<URLSearchParams | APIParams, { data: T }>(endpoint, params)
+      .get<URLSearchParams | any, { data: T }>(endpoint, params)
       .then((d) => d.data)
   }
 }
