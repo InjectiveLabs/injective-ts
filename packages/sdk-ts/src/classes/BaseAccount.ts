@@ -1,5 +1,5 @@
 import { Address } from './Address'
-import { AccountResponse } from '../client/chain'
+import { AccountResponse, BaseAccountRestResponse } from '../client/chain'
 import { AccountDetails } from '../types/auth'
 
 /**
@@ -48,6 +48,27 @@ export class BaseAccount extends Address {
         ? {
             type: baseAccount.pub_key['@type'],
             key: baseAccount.pub_key.key,
+          }
+        : {
+            type: '',
+            key: '',
+          },
+    })
+  }
+
+  static fromRestCosmosApi(accountResponse: BaseAccountRestResponse) {
+    return new BaseAccount({
+      address: accountResponse.address,
+      accountNumber: accountResponse.account_number
+        ? parseInt(accountResponse.account_number, 10)
+        : 0,
+      sequence: accountResponse.sequence
+        ? parseInt(accountResponse.sequence, 10)
+        : 0,
+      pubKey: accountResponse.pub_key
+        ? {
+            type: accountResponse.pub_key['@type'],
+            key: accountResponse.pub_key.key,
           }
         : {
             type: '',

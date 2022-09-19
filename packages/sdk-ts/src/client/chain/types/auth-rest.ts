@@ -33,3 +33,25 @@ export interface AccountResponse {
     }
   }
 }
+
+export interface CosmosAccountRestResponse {
+  account: {
+    address: string
+    account_number: string
+    sequence: string
+    pub_key: {
+      '@type': string
+      key: string
+    }
+  }
+}
+
+export interface BaseAccountRestResponse {
+  address: string
+  account_number: string
+  sequence: string
+  pub_key: {
+    '@type': string
+    key: string
+  }
+}

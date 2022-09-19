@@ -90,12 +90,14 @@ export const createTransactionForAddressAndMsg = async (
     : [params.message]
 
   // Clients
-  const chainRestApi = new ChainRestAuthApi(params.endpoint)
+  const chainRestAuthApi = new ChainRestAuthApi(params.endpoint)
   const tendermintRestApi = new ChainRestTendermintApi(params.endpoint)
 
   /** Account Details * */
-  const accountDetails = await chainRestApi.fetchAccount(params.address)
-  const baseAccount = BaseAccount.fromRestApi(accountDetails)
+  const accountDetails = await chainRestAuthApi.fetchCosmosAccount(
+    params.address,
+  )
+  const baseAccount = BaseAccount.fromRestCosmosApi(accountDetails)
 
   /** Block Details */
   const latestBlock = await tendermintRestApi.fetchLatestBlock()
