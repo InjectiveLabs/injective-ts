@@ -105,7 +105,7 @@ export const createTransactionForAddressAndMsg = async (
   const pubKey =
     params.pubKey || accountDetails.account.base_account?.pub_key.key
 
-  if (pubKey) {
+  if (!pubKey) {
     throw new Error(`The pubKey for ${params.address} is missing.`)
   }
 
