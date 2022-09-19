@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.193](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.192...@injectivelabs/sdk-ui-ts@1.0.193) (2022-09-19)
+
+
+### Bug Fixes
+
+* concrete typing ([0f7e7b1](https://github.com/InjectiveLabs/injective-ts/commit/0f7e7b135c2b0d60ef475d84ad3a98d80daf0677))
+
+
+
+
+
 ## [1.0.192](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.191...@injectivelabs/sdk-ui-ts@1.0.192) (2022-09-19)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
