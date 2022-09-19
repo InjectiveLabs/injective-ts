@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.143](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.142...@injectivelabs/sdk-ts@1.0.143) (2022-09-19)
+
+
+### Bug Fixes
+
+* auth parsing for different cosmos accounts ([eb8ebf0](https://github.com/InjectiveLabs/injective-ts/commit/eb8ebf0ce1d4ee40134c685f0dee0f9f5367a4ea))
+
+
+
+
+
 ## [1.0.142](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.141...@injectivelabs/sdk-ts@1.0.142) (2022-09-19)
 
 
