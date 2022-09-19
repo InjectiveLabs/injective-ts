@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.89](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.88...@injectivelabs/wallet-ts@1.0.89) (2022-09-19)
+
+
+### Bug Fixes
+
+* torus chain host name ([02f4c32](https://github.com/InjectiveLabs/injective-ts/commit/02f4c325546c7fe11565707b01243f13fa34612b))
+
+
+
+
+
 ## [1.0.88](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.87...@injectivelabs/wallet-ts@1.0.88) (2022-09-19)
 
 
