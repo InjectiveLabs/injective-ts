@@ -2359,6 +2359,11 @@
   resolved "https://registry.yarnpkg.com/@improbable-eng/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.15.0.tgz#5a064472ef43489cbd075a91fb831c2abeb09d68"
   integrity sha512-HLgJfVolGGpjc9DWPhmMmXJx8YGzkek7jcCFO1YYkSOoO81MWRZentPOd/JiKiZuU08wtc4BG+WNuGzsQB5jZA==
 
+"@improbable-eng/grpc-web-react-native-transport@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@improbable-eng/grpc-web-react-native-transport/-/grpc-web-react-native-transport-0.15.0.tgz#f630b9022f6ba2bb0258b0b040cca746084c8bc6"
+  integrity sha512-Xk+abATz3eacJ0gA5sRYpyMCA+z/37ht4u6AsbtfcE3SXLYIPbTQ2iLQYyELAoyUWgAyEQxZ3iTs6OpR4z06FQ==
+
 "@improbable-eng/grpc-web@^0.13.0":
   version "0.13.0"
   resolved "https://registry.npmjs.org/@improbable-eng/grpc-web/-/grpc-web-0.13.0.tgz#289e6fc4dafc00b1af8e2b93b970e6892299014d"
