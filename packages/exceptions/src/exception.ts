@@ -55,15 +55,10 @@ export abstract class ConcreteException extends Error implements Exception {
     super(error.message)
     this.parseError(error)
     this.parseContext(context)
-    this.parseMessage()
-    this.parseCode()
+    this.parse()
   }
 
-  public parseMessage(): void {
-    //
-  }
-
-  public parseCode(): void {
+  public parse(): void {
     //
   }
 
@@ -111,6 +106,10 @@ export abstract class ConcreteException extends Error implements Exception {
 
   public setContextModule(contextModule: string) {
     this.contextModule = contextModule
+  }
+
+  public setContextCode(code: ErrorContextCode) {
+    this.contextCode = code
   }
 
   public toOriginalError(): Error {

@@ -78,9 +78,7 @@ export interface Exception {
    */
   errorMessage: string
 
-  parseMessage?(): void
-
-  parseCode?(): void
+  parse?(): void
 
   parseError(error: Error): void
 
