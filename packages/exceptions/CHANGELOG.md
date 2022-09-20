@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.17...@injectivelabs/exceptions@1.0.18) (2022-09-20)
+
+
+### Features
+
+* compact error for reporting ([381dc6d](https://github.com/InjectiveLabs/injective-ts/commit/381dc6d58a171851aa57779e214b4d96c930cd50))
+
+
+
+
+
 ## [1.0.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.16...@injectivelabs/exceptions@1.0.17) (2022-09-20)
 
 
