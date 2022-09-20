@@ -21,6 +21,11 @@ import { BigNumberInBase } from '@injectivelabs/utils'
 import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
 import { getGasPriceBasedOnMessage } from './utils'
 import { getEip712TypedData } from '@injectivelabs/sdk-ts/dist/core/eip712'
+import {
+  ErrorType,
+  TransactionException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 export class MsgBroadcastExperimentalClient {
   public options: MsgBroadcastOptions
@@ -120,7 +125,11 @@ export class MsgBroadcastExperimentalClient {
     const response = await txRestClient.broadcast(txRawEip712)
 
     if (response.code !== 0) {
-      throw new Error(`Transaction failed: ${response.rawLog}`)
+      throw new TransactionException(new Error(response.rawLog), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.ChainError,
+        contextCode: response.code,
+      })
     }
 
     return response.txHash

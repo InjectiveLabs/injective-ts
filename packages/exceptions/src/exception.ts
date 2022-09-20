@@ -34,7 +34,7 @@ export abstract class ConcreteException extends Error implements Exception {
    * Providing more context as to why the exception was thrown
    * (ex: on-chain error code, etc)
    */
-  public contextCode?: ErrorContextCode = UnspecifiedErrorCode
+  public contextCode?: ErrorContextCode
 
   /**
    * Parsed message of the exception
