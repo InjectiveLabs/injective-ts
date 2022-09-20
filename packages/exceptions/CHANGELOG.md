@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.15...@injectivelabs/exceptions@1.0.16) (2022-09-20)
+
+
+### Features
+
+* message map ([fd237b2](https://github.com/InjectiveLabs/injective-ts/commit/fd237b225dc9f82661e1fea2f6559de28798fafa))
+* transaction error handling ([d0bc738](https://github.com/InjectiveLabs/injective-ts/commit/d0bc738ab4b99248b81e3387dba5914974ae0c17))
+
+
+
+
+
 ## [1.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.14...@injectivelabs/exceptions@1.0.15) (2022-09-20)
 
 

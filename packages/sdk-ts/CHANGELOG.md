@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.145](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.144...@injectivelabs/sdk-ts@1.0.145) (2022-09-20)
+
+
+### Features
+
+* transaction error handling ([d0bc738](https://github.com/InjectiveLabs/injective-ts/commit/d0bc738ab4b99248b81e3387dba5914974ae0c17))
+
+
+
+
+
 ## [1.0.144](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.143...@injectivelabs/sdk-ts@1.0.144) (2022-09-20)
 
 

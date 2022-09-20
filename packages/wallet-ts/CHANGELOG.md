@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.99](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.98...@injectivelabs/wallet-ts@1.0.99) (2022-09-20)
+
+
+### Features
+
+* transaction error handling ([d0bc738](https://github.com/InjectiveLabs/injective-ts/commit/d0bc738ab4b99248b81e3387dba5914974ae0c17))
+
+
+
+
+
 ## [1.0.98](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.97...@injectivelabs/wallet-ts@1.0.98) (2022-09-20)
 
 
