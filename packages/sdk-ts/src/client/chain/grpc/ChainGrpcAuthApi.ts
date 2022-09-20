@@ -12,10 +12,7 @@ import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
 import { ChainModule } from '../types'
-import {
-  GrpcUnaryRequestException,
-  UnspecifiedErrorCode,
-} from '@injectivelabs/exceptions'
+import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
@@ -41,10 +38,7 @@ export class ChainGrpcAuthApi extends BaseConsumer {
         throw e
       }
 
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        contextModule: this.module,
-      })
+      throw new GrpcUnaryRequestException(e as Error)
     }
   }
 
@@ -66,10 +60,7 @@ export class ChainGrpcAuthApi extends BaseConsumer {
         throw e
       }
 
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        contextModule: this.module,
-      })
+      throw new GrpcUnaryRequestException(e as Error)
     }
   }
 
@@ -94,10 +85,7 @@ export class ChainGrpcAuthApi extends BaseConsumer {
         throw e
       }
 
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        contextModule: this.module,
-      })
+      throw new GrpcUnaryRequestException(e as Error)
     }
   }
 }

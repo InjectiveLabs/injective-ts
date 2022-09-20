@@ -1,4 +1,4 @@
-import { Exception } from '../exception'
+import { ConcreteException } from '../exception'
 import { ErrorContext, ErrorType } from '../types'
 
 const isCommonLockedError = (error: string) =>
@@ -12,19 +12,20 @@ const isCommonLockedError = (error: string) =>
     error.includes('UNKNOWN_ERROR')
   )
 
-export class LedgerException extends Exception {
+export class LedgerException extends ConcreteException {
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
 
     this.type = ErrorType.WalletError
   }
 
-  protected parseMessage(): void {
+  public parseMessage(): void {
     const { message } = this
 
     if (isCommonLockedError(message)) {
-      this.message =
-        'Please ensure your Ledger is connected, unlocked and your Ethereum app is open.'
+      this.setMessage(
+        'Please ensure your Ledger is connected, unlocked and your Ethereum app is open.',
+      )
     }
   }
 }

@@ -47,7 +47,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
+        contextModule: ChainModule.Exchange,
       })
     }
   }
@@ -70,7 +70,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
+        contextModule: ChainModule.Exchange,
       })
     }
   }
@@ -95,7 +95,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
+        contextModule: ChainModule.Exchange,
       })
     }
   }
@@ -121,7 +121,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
+        contextModule: ChainModule.Exchange,
       })
     }
   }
@@ -146,7 +146,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
+        contextModule: ChainModule.Exchange,
       })
     }
   }
@@ -170,7 +170,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
+        contextModule: ChainModule.Exchange,
       })
     }
   }
@@ -202,7 +202,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
+        contextModule: ChainModule.Exchange,
       })
     }
   }
@@ -225,7 +225,7 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
+        contextModule: ChainModule.Exchange,
       })
     }
   }

@@ -10,7 +10,7 @@ import { Query as DistributionQuery } from '@injectivelabs/chain-api/cosmos/dist
 import { Coin } from '@injectivelabs/ts-types'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcDistributionTransformer } from '../transformers'
-import { ChainModule, ValidatorRewards } from '../types'
+import { ValidatorRewards, ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,

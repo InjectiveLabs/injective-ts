@@ -4,7 +4,7 @@ import {
   ErrorType,
   GeneralException,
   UnspecifiedErrorCode,
-} from 'packages/exceptions/dist'
+} from '@injectivelabs/exceptions'
 
 export default abstract class BaseConcreteStrategy {
   protected ethereumChainId: EthereumChainId

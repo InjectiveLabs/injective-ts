@@ -1,4 +1,4 @@
-import { Exception } from '../exception'
+import { ConcreteException } from '../exception'
 import { ErrorContext, ErrorType } from '../types'
 
 const removeMetamaskFromErrorString = (message: string): string =>
@@ -7,16 +7,16 @@ const removeMetamaskFromErrorString = (message: string): string =>
     .replaceAll('MetaMask', '')
     .replaceAll('Metamask:', '')
 
-export class MetamaskException extends Exception {
+export class MetamaskException extends ConcreteException {
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
 
     this.type = ErrorType.WalletError
   }
 
-  protected parseMessage(): void {
+  public parseMessage(): void {
     const { message } = this
 
-    this.message = removeMetamaskFromErrorString(message)
+    this.setMessage(removeMetamaskFromErrorString(message))
   }
 }

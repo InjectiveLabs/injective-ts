@@ -34,76 +34,59 @@ export class MsgBroadcastClient {
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
     const prepareTx = async () => {
-      try {
-        const promise = transactionApi.prepareTxRequest({
-          memo: tx.memo,
-          message: web3Msgs,
-          address: tx.address,
-          chainId: ethereumChainId,
-          gasLimit: getGasPriceBasedOnMessage(msgs),
-          estimateGas: false,
-        })
+      const promise = transactionApi.prepareTxRequest({
+        memo: tx.memo,
+        message: web3Msgs,
+        address: tx.address,
+        chainId: ethereumChainId,
+        gasLimit: getGasPriceBasedOnMessage(msgs),
+        estimateGas: false,
+      })
 
-        if (!metricsProvider) {
-          return await promise
-        }
-
-        return await metricsProvider.sendAndRecordWithoutProbability(
-          promise,
-          `${tx.bucket}PrepareTx`,
-        )
-      } catch (e: any) {
-        throw new Error(e.message)
+      if (!metricsProvider) {
+        return await promise
       }
+
+      return await metricsProvider.sendAndRecordWithoutProbability(
+        promise,
+        `${tx.bucket}PrepareTx`,
+      )
     }
 
     const signTx = async (txData: any) => {
-      try {
-        const promise = walletStrategy.signTransaction(txData, tx.address)
+      const promise = walletStrategy.signTransaction(txData, tx.address)
 
-        if (!metricsProvider) {
-          return await promise
-        }
-
-        return await metricsProvider.sendAndRecordWithoutProbability(
-          promise,
-          `${tx.bucket}SignTx`,
-        )
-      } catch (e: any) {
-        throw new Error(e.message)
+      if (!metricsProvider) {
+        return await promise
       }
+
+      return await metricsProvider.sendAndRecordWithoutProbability(
+        promise,
+        `${tx.bucket}SignTx`,
+      )
     }
 
-    try {
-      const txResponse = await prepareTx()
-      const signature = (await signTx(txResponse.getData())) as string
+    const txResponse = await prepareTx()
+    const signature = (await signTx(txResponse.getData())) as string
 
-      const promise = transactionApi.broadcastTxRequest({
-        signature,
-        txResponse,
-        message: web3Msgs,
-        chainId: ethereumChainId,
-      })
+    const promise = transactionApi.broadcastTxRequest({
+      signature,
+      txResponse,
+      message: web3Msgs,
+      chainId: ethereumChainId,
+    })
 
-      try {
-        if (!metricsProvider) {
-          const { txHash } = await promise
+    if (!metricsProvider) {
+      const { txHash } = await promise
 
-          return txHash
-        }
-
-        const { txHash } =
-          await metricsProvider.sendAndRecordWithoutProbability(
-            promise,
-            `${tx.bucket}BroadcastTx`,
-          )
-        return txHash
-      } catch (e: any) {
-        throw new Error(e.message)
-      }
-    } catch (e: any) {
-      throw new Error(e.message)
+      return txHash
     }
+
+    const { txHash } = await metricsProvider.sendAndRecordWithoutProbability(
+      promise,
+      `${tx.bucket}BroadcastTx`,
+    )
+    return txHash
   }
 
   private async broadcastCosmos(tx: MsgBroadcastTxOptions) {
@@ -112,24 +95,20 @@ export class MsgBroadcastClient {
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const injectiveAddress = getInjectiveAddress(tx.address)
 
-    try {
-      const transaction = {
-        message: msgs,
-        memo: tx.memo || '',
-        gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
-      }
-
-      const directSignResponse = (await walletStrategy.signTransaction(
-        transaction,
-        injectiveAddress,
-      )) as any
-
-      return await walletStrategy.sendTransaction(directSignResponse, {
-        chainId,
-        address: injectiveAddress,
-      })
-    } catch (e: any) {
-      throw new Error(e.message)
+    const transaction = {
+      message: msgs,
+      memo: tx.memo || '',
+      gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
     }
+
+    const directSignResponse = (await walletStrategy.signTransaction(
+      transaction,
+      injectiveAddress,
+    )) as any
+
+    return await walletStrategy.sendTransaction(directSignResponse, {
+      chainId,
+      address: injectiveAddress,
+    })
   }
 }

@@ -1,3 +1,5 @@
+import { IndexerErrorModule } from '@injectivelabs/exceptions'
+
 export * from './exchange'
 export * from './derivatives'
 export * from './derivatives-rest'
@@ -17,17 +19,4 @@ export interface StreamStatusResponse {
   metadata: any
 }
 
-export enum IndexerModule {
-  Account = 'indexer-account',
-  Auction = 'indexer-auction',
-  Derivatives = 'indexer-derivatives',
-  Explorer = 'indexer-explorer',
-  InsuranceFund = 'indexer-insurance-fund',
-  Meta = 'indexer-meta',
-  Oracle = 'indexer-oracle',
-  Spot = 'indexer-spot',
-  Transaction = 'indexer-transaction',
-  ChronosDerivative = 'indexer-chronos-derivative',
-  ChronosSpot = 'indexer-chronos-spot',
-  ChronosMarkets = 'indexer-chronos-markets',
-}
+export const IndexerModule = { ...IndexerErrorModule }
