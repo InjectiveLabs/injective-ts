@@ -1,6 +1,11 @@
-import { ChainCosmosErrorCode, ChainExchangeModuleErrorCode } from './types'
+import {
+  ChainAuctionErrorCodes,
+  ChainCosmosErrorCode,
+  ChainExchangeModuleErrorCode,
+  ChainInsuranceErrorCodes,
+} from './types'
 
-export const messagesMap = {
+export const chainErrorMessagesMap = {
   'insufficient fee': {
     message: 'You do not have enough funds to cover transaction fees.',
     code: ChainCosmosErrorCode.ErrInsufficientFee,
@@ -14,6 +19,256 @@ export const messagesMap = {
   'tx timeout height': {
     message: 'The transaction failed to be included within a block on time.',
     code: ChainCosmosErrorCode.ErrTxTimeoutHeight,
+  },
+
+  'tx parse error': {
+    message: 'There is an issue while parsing the transaction',
+    code: ChainCosmosErrorCode.ErrTxDecode,
+  },
+
+  'invalid sequence': {
+    message: 'The sequence number is not valid',
+    code: ChainCosmosErrorCode.ErrInvalidSequence,
+  },
+
+  unauthorized: {
+    message: 'Unauthorized',
+    code: ChainCosmosErrorCode.ErrUnauthorized,
+  },
+
+  'unknown request': {
+    message: 'The request is not known',
+    code: ChainCosmosErrorCode.ErrUnknownRequest,
+  },
+
+  'invalid address': {
+    message: 'The address is not valid',
+    code: ChainCosmosErrorCode.ErrInvalidAddress,
+  },
+
+  'invalid pubkey': {
+    message: 'The public key is not valid',
+    code: ChainCosmosErrorCode.ErrInvalidPubKey,
+  },
+
+  'unknown address': {
+    message: 'The address is unknown',
+    code: ChainCosmosErrorCode.ErrUnknownAddress,
+  },
+
+  'invalid coins': {
+    message: 'The coins are not valid',
+    code: ChainCosmosErrorCode.ErrInvalidCoins,
+  },
+
+  'out of gas': {
+    message: 'The transaction run out of gas',
+    code: ChainCosmosErrorCode.ErrOutOfGas,
+  },
+  'memo too large': {
+    message: 'The memo field in the transaction is too large',
+    code: ChainCosmosErrorCode.ErrMemoTooLarge,
+  },
+
+  'maximum number of signatures exceeded': {
+    message: 'The transaction exceeded the maximum number of signatures',
+    code: ChainCosmosErrorCode.ErrTooManySignatures,
+  },
+
+  'no signatures supplied': {
+    message: 'There are no signatures appended on the transaction',
+    code: ChainCosmosErrorCode.ErrNoSignatures,
+  },
+
+  'failed to marshal JSON bytes': {
+    message: 'There is an issue while parsing the transaction',
+    code: ChainCosmosErrorCode.ErrJSONMarshal,
+  },
+
+  'failed to unmarshal JSON bytes': {
+    message: 'There is an issue while parsing the transaction',
+    code: ChainCosmosErrorCode.ErrJSONUnmarshal,
+  },
+
+  'invalid request': {
+    message: 'invalid request',
+    code: ChainCosmosErrorCode.ErrInvalidRequest,
+  },
+
+  'tx already in mempool': {
+    message: 'The transaction is already in the mempool',
+    code: ChainCosmosErrorCode.ErrTxInMempoolCache,
+  },
+
+  'mempool is full': {
+    message: 'The mempool is full',
+    code: ChainCosmosErrorCode.ErrMempoolIsFull,
+  },
+
+  'tx too large': {
+    message: 'The transaction is too large',
+    code: ChainCosmosErrorCode.ErrTxTooLarge,
+  },
+
+  'key not found': {
+    message: 'The key has not been found',
+    code: ChainCosmosErrorCode.ErrKeyNotFound,
+  },
+
+  'invalid account password': {
+    message: 'invalid account password',
+    code: ChainCosmosErrorCode.ErrWrongPassword,
+  },
+
+  'tx intended signer does not match the given signer': {
+    message: 'tx intended signer does not match the given signer',
+    code: ChainCosmosErrorCode.ErrorInvalidSigner,
+  },
+
+  'invalid gas adjustment': {
+    message: 'invalid gas adjustment',
+    code: ChainCosmosErrorCode.ErrorInvalidGasAdjustment,
+  },
+
+  'invalid height': {
+    message: 'The height provided in the transaction is not valid',
+    code: ChainCosmosErrorCode.ErrInvalidHeight,
+  },
+
+  'invalid version': {
+    message: 'The version provided in the transaction is not valid',
+    code: ChainCosmosErrorCode.ErrInvalidVersion,
+  },
+
+  'invalid chain-id': {
+    message: 'The chainId provided in the transaction is not valid',
+    code: ChainCosmosErrorCode.ErrInvalidChainID,
+  },
+
+  'invalid type': {
+    message: 'The type provided in the transaction is not valid',
+    code: ChainCosmosErrorCode.ErrInvalidType,
+  },
+
+  'unknown extension options': {
+    message: 'The extension options provided in the transaction is unknown',
+    code: ChainCosmosErrorCode.ErrUnknownExtensionOptions,
+  },
+
+  'incorrect account sequence': {
+    message: 'The sequence number provided in the transaction is incorrect',
+    code: ChainCosmosErrorCode.ErrWrongSequence,
+  },
+
+  'failed packing protobuf message to Any': {
+    message: 'failed packing protobuf message to Any',
+    code: ChainCosmosErrorCode.ErrPackAny,
+  },
+
+  'failed unpacking protobuf message from Any': {
+    message: 'failed unpacking protobuf message from Any',
+    code: ChainCosmosErrorCode.ErrUnpackAny,
+  },
+
+  'internal logic error': {
+    message: 'Internal logic error',
+    code: ChainCosmosErrorCode.ErrLogic,
+  },
+
+  conflict: { message: 'conflict', code: ChainCosmosErrorCode.ErrConflict },
+
+  'feature not supported': {
+    message: 'The feature is not supported',
+    code: ChainCosmosErrorCode.ErrNotSupported,
+  },
+
+  'not found': { message: 'not found', code: ChainCosmosErrorCode.ErrNotFound },
+
+  'Internal IO error': {
+    message: 'Internal IO error',
+    code: ChainCosmosErrorCode.ErrIO,
+  },
+
+  'error in app.toml': {
+    message: 'error in app.toml',
+    code: ChainCosmosErrorCode.ErrAppConfig,
+  },
+
+  'invalid gas limit': {
+    message: 'The gas limit provided in the transaction is not valid',
+    code: ChainCosmosErrorCode.ErrInvalidGasLimit,
+  },
+
+  // Auction Module Messages
+  'invalid bid denom': {
+    message: 'The gas limit provided in the transaction is not valid',
+    code: ChainAuctionErrorCodes.ErrBidInvalid,
+  },
+
+  'invalid bid round': {
+    message: 'The gas limit provided in the transaction is not valid',
+    code: ChainAuctionErrorCodes.ErrBidRound,
+  },
+
+  // Insurance Module Messages
+  'insurance fund already exists': {
+    message: 'The insurance fund already exists',
+    code: ChainInsuranceErrorCodes.ErrInsuranceFundAlreadyExists,
+  },
+
+  'insurance fund not found': {
+    message: 'The insurance fund is not found',
+    code: ChainInsuranceErrorCodes.ErrInsuranceFundNotFound,
+  },
+
+  'redemption already exists': {
+    message: 'The redemption already exists',
+    code: ChainInsuranceErrorCodes.ErrRedemptionAlreadyExists,
+  },
+
+  'invalid deposit amount': {
+    message: 'The deposit amount is not valid',
+    code: ChainInsuranceErrorCodes.ErrInvalidDepositAmount,
+  },
+
+  'invalid deposit denom': {
+    message: 'The deposit denom is not valid',
+    code: ChainInsuranceErrorCodes.ErrInvalidDepositDenom,
+  },
+
+  'insurance payout exceeds deposits': {
+    message: 'The insurance fund payout exceeds the deposits',
+    code: ChainInsuranceErrorCodes.ErrPayoutTooLarge,
+  },
+
+  'invalid ticker': {
+    message: 'The ticker is not valid',
+    code: ChainInsuranceErrorCodes.ErrInvalidTicker,
+  },
+
+  'invalid quote denom': {
+    message: 'The quote denom is not valid',
+    code: ChainInsuranceErrorCodes.ErrInvalidQuoteDenom,
+  },
+
+  'invalid oracle': {
+    message: 'The oracle is not valid',
+    code: ChainInsuranceErrorCodes.ErrInvalidOracle,
+  },
+
+  'invalid expiration time': {
+    message: 'The expiration time is not valid',
+    code: ChainInsuranceErrorCodes.ErrInvalidExpirationTime,
+  },
+
+  'invalid marketID': {
+    message: 'The marketId is not valid',
+    code: ChainInsuranceErrorCodes.ErrInvalidMarketID,
+  },
+
+  'invalid share denom': {
+    message: 'The share denom is not valid',
+    code: ChainInsuranceErrorCodes.ErrInvalidShareDenom,
   },
 
   // Exchange Module Messages
@@ -67,38 +322,23 @@ export const messagesMap = {
     code: ChainExchangeModuleErrorCode.ErrBadSubaccountID,
   },
 
-  'invalid ticker': {
-    message: "The market's ticker is not valid",
-    code: ChainExchangeModuleErrorCode.ErrInvalidTicker,
-  },
-
   'invalid base denom': {
     message: '',
     code: ChainExchangeModuleErrorCode.ErrInvalidBaseDenom,
   },
 
-  'invalid quote denom': {
-    message: '',
-    code: ChainExchangeModuleErrorCode.ErrInvalidQuoteDenom,
-  },
-
-  'invalid oracle': {
-    message: 'The oracle is invalid',
-    code: ChainExchangeModuleErrorCode.ErrInvalidOracle,
-  },
-
   'invalid expiry': {
-    message: 'The expiry date is invalid',
+    message: 'The expiry date is not valid',
     code: ChainExchangeModuleErrorCode.ErrInvalidExpiry,
   },
 
   'invalid price': {
-    message: 'The price is invalid',
+    message: 'The price is not valid',
     code: ChainExchangeModuleErrorCode.ErrInvalidPrice,
   },
 
   'invalid quantity': {
-    message: 'The quantity is invalid',
+    message: 'The quantity is not valid',
     code: ChainExchangeModuleErrorCode.ErrInvalidQuantity,
   },
 
@@ -329,7 +569,7 @@ export const messagesMap = {
   },
 
   'invalid margin ratio': {
-    message: 'The margin ratio is invalid',
+    message: 'The margin ratio is not valid',
     code: ChainExchangeModuleErrorCode.ErrInvalidMarginRatio,
   },
 
@@ -404,7 +644,7 @@ export const messagesMap = {
   },
 
   'state is invalid': {
-    message: 'The state is invalid',
+    message: 'The state is not valid',
     code: ChainExchangeModuleErrorCode.ErrInvalidState,
   },
 

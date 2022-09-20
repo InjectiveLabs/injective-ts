@@ -1,4 +1,4 @@
-import { messagesMap } from '../messages'
+import { chainErrorMessagesMap } from '../messages'
 import { ErrorContextCode, UnspecifiedErrorCode } from '../types'
 
 export const parseMessage = (message: string) => {
@@ -23,12 +23,14 @@ export const mapFailedTransactionMessage = (
 ): { message: string; code: ErrorContextCode } => {
   const parsedMessage = parseMessage(message)
   const messageInMapKey = (
-    Object.keys(messagesMap) as Array<keyof typeof messagesMap>
+    Object.keys(chainErrorMessagesMap) as Array<
+      keyof typeof chainErrorMessagesMap
+    >
   ).find((key) => key.toLowerCase() === parsedMessage.toLowerCase())
 
   if (!messageInMapKey) {
     return { message: parsedMessage, code: UnspecifiedErrorCode }
   }
 
-  return messagesMap[messageInMapKey]
+  return chainErrorMessagesMap[messageInMapKey]
 }

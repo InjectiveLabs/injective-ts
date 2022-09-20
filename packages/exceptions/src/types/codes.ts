@@ -255,6 +255,40 @@ export enum ChainExchangeModuleErrorCode {
   ErrInvalidArgument = 84,
 }
 
+export enum ChainAuctionErrorCodes {
+  // invalid bid denom
+  ErrBidInvalid = 1,
+  // invalid bid round
+  ErrBidRound = 2,
+}
+
+export enum ChainInsuranceErrorCodes {
+  // insurance fund already exists
+  ErrInsuranceFundAlreadyExists = 1,
+  // insurance fund not found
+  ErrInsuranceFundNotFound = 2,
+  // redemption already exists
+  ErrRedemptionAlreadyExists = 3,
+  // invalid deposit amount
+  ErrInvalidDepositAmount = 4,
+  // invalid deposit denom
+  ErrInvalidDepositDenom = 5,
+  // insurance payout exceeds deposits
+  ErrPayoutTooLarge = 6,
+  // invalid ticker
+  ErrInvalidTicker = 7,
+  // invalid quote denom
+  ErrInvalidQuoteDenom = 8,
+  // invalid oracle
+  ErrInvalidOracle = 9,
+  // invalid expiration time
+  ErrInvalidExpirationTime = 10,
+  // invalid marketID
+  ErrInvalidMarketID = 11,
+  // invalid share denom
+  ErrInvalidShareDenom = 12,
+}
+
 export type IndexerApiErrorCode = number
 
 export const UnspecifiedErrorCode = -1
@@ -264,4 +298,6 @@ export type ErrorCode = StatusCodes | typeof UnspecifiedErrorCode | grpc.Code
 export type ErrorContextCode =
   | ChainExchangeModuleErrorCode
   | ChainCosmosErrorCode
+  | ChainAuctionErrorCodes
+  | ChainInsuranceErrorCodes
   | typeof UnspecifiedErrorCode
