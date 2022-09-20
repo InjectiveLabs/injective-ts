@@ -16,10 +16,10 @@ export default class BaseGrpcConsumer {
 
   protected endpoint: string
 
-  constructor(endpoint: string, RNTransport?: boolean) {
+  constructor(endpoint: string, options?: { RNTransport?: boolean }) {
     this.endpoint = endpoint
 
-    if (RNTransport) {
+    if (options?.RNTransport) {
       grpc.setDefaultTransport(ReactNativeTransport({ withCredentials: true }))
     }
   }
