@@ -7,11 +7,18 @@ import {
 import { InjectiveOracleRPC } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer'
+import { IndexerModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcOracleApi extends BaseConsumer {
+  protected module: string = IndexerModule.Oracle
+
   async fetchOracleList() {
     const request = new OracleListRequest()
 
@@ -23,8 +30,15 @@ export class IndexerGrpcOracleApi extends BaseConsumer {
       >(request, InjectiveOracleRPC.OracleList)
 
       return IndexerGrpcOracleTransformer.oraclesResponseToOracles(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -56,8 +70,15 @@ export class IndexerGrpcOracleApi extends BaseConsumer {
       >(request, InjectiveOracleRPC.Price)
 
       return response.toObject()
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -89,14 +110,21 @@ export class IndexerGrpcOracleApi extends BaseConsumer {
       >(request, InjectiveOracleRPC.Price)
 
       return response.toObject()
-    } catch (e: any) {
-      if (e.message.includes('object not found')) {
+    } catch (e: unknown) {
+      if ((e as any).message.includes('object not found')) {
         return {
           price: '0',
         }
       }
 
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

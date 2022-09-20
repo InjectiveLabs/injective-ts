@@ -20,11 +20,6 @@ import {
   CW20BalanceWithToken,
   WasmCode,
 } from '../types/explorer'
-import {
-  BlockNotFoundException,
-  TransactionNotFoundException,
-  HttpException,
-} from '@injectivelabs/exceptions'
 import { ExchangeRestExplorerTransformer } from '../transformers'
 import { Block, ExplorerValidator } from '../types/explorer'
 
@@ -43,9 +38,9 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
       )
     } catch (error: any) {
       if (error.response.status === 404) {
-        throw new BlockNotFoundException(error.message)
+        throw new Error(error.message)
       } else {
-        throw new HttpException(error.message)
+        throw new Error(error.message)
       }
     }
   }
@@ -68,7 +63,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         blocks: ExchangeRestExplorerTransformer.blocksToBlocks(data),
       }
     } catch (error) {
-      throw new HttpException((error as any).message)
+      throw new Error((error as any).message)
     }
   }
 
@@ -92,7 +87,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (error: any) {
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 
@@ -120,7 +115,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (error: any) {
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 
@@ -155,7 +150,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (error: any) {
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 
@@ -170,9 +165,9 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
       )
     } catch (error: any) {
       if (error.response.status === 404) {
-        throw new TransactionNotFoundException(error.message)
+        throw new Error(error.message)
       } else {
-        throw new HttpException(error.message)
+        throw new Error(error.message)
       }
     }
   }
@@ -191,7 +186,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         response.data.data,
       )
     } catch (error) {
-      throw new HttpException((error as any).message)
+      throw new Error((error as any).message)
     }
   }
 
@@ -213,7 +208,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         response.data.data,
       )
     } catch (error) {
-      throw new HttpException((error as any).message)
+      throw new Error((error as any).message)
     }
   }
 
@@ -227,7 +222,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         response.data,
       )
     } catch (error: any) {
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 
@@ -256,7 +251,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (error: any) {
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 
@@ -297,7 +292,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (error: any) {
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 
@@ -311,7 +306,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         response.data,
       )
     } catch (error: any) {
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 
@@ -340,7 +335,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (error: any) {
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 
@@ -358,7 +353,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         ExchangeRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
       )
     } catch (error: any) {
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 
@@ -382,7 +377,7 @@ export class ExchangeRestExplorerApi extends BaseRestConsumer {
         return []
       }
 
-      throw new HttpException(error.message)
+      throw new Error(error.message)
     }
   }
 }

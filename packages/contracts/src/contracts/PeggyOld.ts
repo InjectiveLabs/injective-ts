@@ -1,13 +1,13 @@
-import { ContractException } from '@injectivelabs/exceptions'
 import {
   AccountAddress,
   EthereumChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
 import Web3 from 'web3'
+import { UnspecifiedErrorCode, Web3Exception } from '@injectivelabs/exceptions'
 import { getTransactionOptionsAsNonPayableTx } from '../utils'
 import abi from './abi/peggy-old'
-import { ContractTxFunctionObj } from '../types'
+import { Contract, ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'
 
 export class PeggyOldContract extends BaseContract<any> {
@@ -45,8 +45,12 @@ export class PeggyOldContract extends BaseContract<any> {
 
     return {
       callAsync() {
-        throw new ContractException(
-          'You cannot call this contract method as a call',
+        throw new Web3Exception(
+          new Error('You cannot call this contract method as a call'),
+          {
+            code: UnspecifiedErrorCode,
+            contextModule: Contract.PeggyOld,
+          },
         )
       },
 

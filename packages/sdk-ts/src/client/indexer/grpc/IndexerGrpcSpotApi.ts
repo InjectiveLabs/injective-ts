@@ -28,11 +28,18 @@ import {
 import { PaginationOption } from '../../../types/pagination'
 import { SpotOrderSide, SpotOrderState } from '../types/spot'
 import { IndexerGrpcSpotTransformer } from '../transformers'
+import { IndexerModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcSpotApi extends BaseConsumer {
+  protected module: string = IndexerModule.Spot
+
   async fetchMarkets(params?: {
     baseDenom?: string
     marketStatus?: string
@@ -61,8 +68,15 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Markets)
 
       return IndexerGrpcSpotTransformer.marketsResponseToMarkets(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -78,8 +92,15 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Market)
 
       return IndexerGrpcSpotTransformer.marketResponseToMarket(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -95,8 +116,15 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Orderbook)
 
       return IndexerGrpcSpotTransformer.orderbookResponseToOrderbook(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -156,8 +184,15 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Orders)
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -237,8 +272,15 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       return IndexerGrpcSpotTransformer.orderHistoryResponseToOrderHistory(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -323,8 +365,15 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Trades)
 
       return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -362,8 +411,15 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.SubaccountOrdersList)
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -414,8 +470,15 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       return IndexerGrpcSpotTransformer.subaccountTradesListResponseToTradesList(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -434,8 +497,15 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Orderbooks)
 
       return IndexerGrpcSpotTransformer.orderbooksResponseToOrderbooks(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

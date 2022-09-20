@@ -7,13 +7,20 @@ import {
   QueryCurrentAuctionBasketRequest,
   QueryCurrentAuctionBasketResponse,
 } from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcAuctionTransformer } from '../transformers'
+import { ChainModule } from '../types'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcAuctionApi extends BaseConsumer {
+  protected module: string = ChainModule.Auction
+
   async fetchModuleParams() {
     const request = new QueryAuctionParamsResponse()
 
@@ -27,8 +34,15 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
       return ChainGrpcAuctionTransformer.moduleParamsResponseToModuleParams(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -45,8 +59,15 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
       return ChainGrpcAuctionTransformer.auctionModuleStateResponseToAuctionModuleState(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -63,8 +84,15 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
       return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

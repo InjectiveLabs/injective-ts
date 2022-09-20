@@ -1,4 +1,3 @@
-import { HttpException } from '@injectivelabs/exceptions'
 import {
   ChronosSpotMarketSummaryResponse,
   AllSpotMarketSummaryResponse,
@@ -20,7 +19,7 @@ export class ExchangeRestSpotChronosApi extends BaseRestConsumer {
 
       return data
     } catch (e: any) {
-      throw new HttpException(e.response ? e.response.data.message : e.message)
+      throw new Error(e.response ? e.response.data.message : e.message)
     }
   }
 
@@ -34,7 +33,7 @@ export class ExchangeRestSpotChronosApi extends BaseRestConsumer {
 
       return data
     } catch (e: any) {
-      throw new HttpException(e.response ? e.response.data.message : e.message)
+      throw new Error(e.response ? e.response.data.message : e.message)
     }
   }
 }

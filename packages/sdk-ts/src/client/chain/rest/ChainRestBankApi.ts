@@ -1,5 +1,12 @@
+import { StatusCodes } from 'http-status-codes'
+import {
+  ErrorType,
+  GeneralException,
+  HttpRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import BaseRestConsumer from '../../BaseRestConsumer'
-import { RestApiResponse } from '../types'
+import { ChainModule, RestApiResponse } from '../types'
 import { BalancesResponse, DenomBalance } from './../types/bank-rest'
 
 /**
@@ -12,11 +19,22 @@ export class ChainRestBankApi extends BaseRestConsumer {
    * @param address address of account to look up
    */
   public async fetchBalances(address: string): Promise<BalancesResponse> {
-    const response = (await this.client.get(
-      `cosmos/bank/v1beta1/balances/${address}`,
-    )) as RestApiResponse<BalancesResponse>
+    try {
+      const response = (await this.get(
+        `cosmos/bank/v1beta1/balances/${address}`,
+      )) as RestApiResponse<BalancesResponse>
 
-    return response.data
+      return response.data
+    } catch (e) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        contextModule: ChainModule.Bank,
+      })
+    }
   }
 
   /**
@@ -28,18 +46,39 @@ export class ChainRestBankApi extends BaseRestConsumer {
     address: string,
     denom: string,
   ): Promise<DenomBalance> {
-    const response = (await this.client.get(
-      `cosmos/bank/v1beta1/balances/${address}`,
-    )) as RestApiResponse<BalancesResponse>
+    try {
+      const response = (await this.get(
+        `cosmos/bank/v1beta1/balances/${address}`,
+      )) as RestApiResponse<BalancesResponse>
 
-    const balance = response.data.balances.find(
-      (balance) => balance.denom === denom,
-    )
+      const balance = response.data.balances.find(
+        (balance) => balance.denom === denom,
+      )
 
-    if (!balance) {
-      throw new Error(`The ${denom} balance was not found`)
+      if (!balance) {
+        throw new GeneralException(
+          new Error(`The ${denom} balance was not found`),
+          {
+            code: StatusCodes.NOT_FOUND,
+            type: ErrorType.NotFoundError,
+          },
+        )
+      }
+
+      return balance
+    } catch (e) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      if (e instanceof GeneralException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        contextModule: ChainModule.Bank,
+      })
     }
-
-    return balance
   }
 }

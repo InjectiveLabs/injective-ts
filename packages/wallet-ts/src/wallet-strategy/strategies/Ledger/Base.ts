@@ -4,16 +4,21 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import { TypedDataUtils } from 'eth-sig-util'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import ledgerService from '@ledgerhq/hw-app-eth/lib/services/ledger'
 import Common, { Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
+import {
+  ErrorType,
+  LedgerException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import Web3 from 'web3'
 import {
   ConcreteWalletStrategy,
   LedgerDerivationPathType,
   LedgerWalletInfo,
+  WalletAction,
 } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
@@ -22,31 +27,7 @@ import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '../../constants'
 import LedgerHW from './hw'
-
-const domainHash = (message: any) =>
-  TypedDataUtils.hashStruct('EIP712Domain', message.domain, message.types, true)
-
-const messageHash = (message: any) =>
-  TypedDataUtils.hashStruct(
-    message.primaryType,
-    message.message,
-    message.types,
-    true,
-  )
-
-const commonLockedErrors = (error: any) => {
-  const message = error.message || error
-
-  return !!(
-    message.includes('Ledger device: Incorrect length') ||
-    message.includes('Ledger device: INS_NOT_SUPPORTED') ||
-    message.includes('Ledger device: CLA_NOT_SUPPORTED') ||
-    message.includes('Failed to open the device') ||
-    message.includes('Failed to open the device') ||
-    message.includes('Ledger Device is busy') ||
-    message.includes('UNKNOWN_ERROR')
-  )
-}
+import { domainHash, messageHash } from './utils'
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
@@ -98,12 +79,12 @@ export default class LedgerBase
         derivationPathType,
       )
       return wallets.map((k) => k.address)
-    } catch (e: any) {
-      throw new Error(
-        commonLockedErrors(e)
-          ? 'Please ensure your Ledger is connected, unlocked and your Ethereum app is open'
-          : `Ledger: ${e.message || e}`,
-      )
+    } catch (e: unknown) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
     }
   }
 
@@ -128,17 +109,17 @@ export default class LedgerBase
     )
 
     try {
-      const txReceipt = await this.web3.eth.sendSignedTransaction(
+      const txReceipt = await this.getWeb3().eth.sendSignedTransaction(
         addHexPrefix(signedTransaction.serialize().toString('hex')),
       )
 
       return txReceipt.transactionHash
-    } catch (e: any) {
-      throw new Error(
-        commonLockedErrors(e)
-          ? 'Please ensure your Ledger is connected, unlocked and your Ethereum app is open'
-          : `Ledger: ${e.message || e}`,
-      )
+    } catch (e: unknown) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendEthereumTransaction,
+      })
     }
   }
 
@@ -147,8 +128,15 @@ export default class LedgerBase
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    throw new Error(
-      'sendTransaction is not supported. Ledger only supports sending transaction to Ethereum',
+    throw new LedgerException(
+      new Error(
+        'sendTransaction is not supported. Ledger only supports sending transaction to Ethereum',
+      ),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
     )
   }
 
@@ -174,12 +162,12 @@ export default class LedgerBase
       const combined = `${result.r}${result.s}${result.v.toString(16)}`
 
       return combined.startsWith('0x') ? combined : `0x${combined}`
-    } catch (e: any) {
-      throw new Error(
-        commonLockedErrors(e)
-          ? 'Please ensure your Ledger is connected, unlocked and your Ethereum app is open'
-          : `Ledger: ${e.message || e}`,
-      )
+    } catch (e: unknown) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
     }
   }
 
@@ -188,7 +176,7 @@ export default class LedgerBase
     options: { address: string; ethereumChainId: EthereumChainId },
   ) {
     const chainId = parseInt(options.ethereumChainId.toString(), 10)
-    const nonce = await this.web3.eth.getTransactionCount(options.address)
+    const nonce = await this.getWeb3().eth.getTransactionCount(options.address)
 
     const common = new Common({
       chain: getNetworkFromChainId(chainId),
@@ -236,21 +224,21 @@ export default class LedgerBase
       return FeeMarketEIP1559Transaction.fromTxData(signedTxData, {
         common,
       })
-    } catch (e: any) {
-      throw new Error(
-        commonLockedErrors(e)
-          ? 'Please ensure your Ledger is connected, unlocked and your Ethereum app is open'
-          : `Ledger: ${e.message || e}`,
-      )
+    } catch (e: unknown) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignEthereumTransaction,
+      })
     }
   }
 
   async getNetworkId(): Promise<string> {
-    return (await this.web3.eth.net.getId()).toString()
+    return (await this.getWeb3().eth.net.getId()).toString()
   }
 
   async getChainId(): Promise<string> {
-    return (await this.web3.eth.getChainId()).toString()
+    return (await this.getWeb3().eth.getChainId()).toString()
   }
 
   async getEthereumTransactionReceipt(txHash: string): Promise<string> {

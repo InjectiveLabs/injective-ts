@@ -1,3 +1,5 @@
+import { ChainErrorModule } from '@injectivelabs/exceptions'
+
 export * from './auction'
 export * from './auth-rest'
 export * from './bank-rest'
@@ -18,3 +20,5 @@ export * from './wasm'
 export interface RestApiResponse<T> {
   data: T
 }
+
+export const ChainModule = { ...ChainErrorModule }

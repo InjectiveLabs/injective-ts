@@ -7,11 +7,18 @@ import {
 import { InjectiveAuctionRPC } from '@injectivelabs/indexer-api/injective_auction_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcAuctionTransformer } from '../transformers'
+import { IndexerModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcAuctionApi extends BaseConsumer {
+  protected module: string = IndexerModule.Account
+
   async fetchAuction(round?: number) {
     const request = new AuctionRequest()
 
@@ -28,8 +35,15 @@ export class IndexerGrpcAuctionApi extends BaseConsumer {
       >(request, InjectiveAuctionRPC.AuctionEndpoint)
 
       return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -44,8 +58,15 @@ export class IndexerGrpcAuctionApi extends BaseConsumer {
       >(request, InjectiveAuctionRPC.Auctions)
 
       return IndexerGrpcAuctionTransformer.auctionsResponseToAuctions(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

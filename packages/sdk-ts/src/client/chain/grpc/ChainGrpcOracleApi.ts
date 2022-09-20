@@ -4,12 +4,18 @@ import {
   QueryParamsResponse as QueryOracleParamsResponse,
 } from '@injectivelabs/chain-api/injective/oracle/v1beta1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
-import { OracleModuleParams } from '../types'
+import { ChainModule, OracleModuleParams } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcOracleApi extends BaseConsumer {
+  protected module: string = ChainModule.Oracle
+
   async fetchModuleParams() {
     const request = new QueryOracleParamsRequest()
 
@@ -21,8 +27,15 @@ export class ChainGrpcOracleApi extends BaseConsumer {
       >(request, OracleQuery.Params)
 
       return response.toObject() as OracleModuleParams
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

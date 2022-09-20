@@ -17,11 +17,19 @@ import {
 } from '@injectivelabs/utils'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { recoverTypedSignaturePubKey } from '../../../utils/transaction'
+import { IndexerModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  TransactionException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcTransactionApi extends BaseConsumer {
+  protected module: string = IndexerModule.Transaction
+
   async prepareTxRequest({
     address,
     chainId,
@@ -82,8 +90,19 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       >(prepareTxRequest, InjectiveExchangeRPC.PrepareTx)
 
       return response
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw new TransactionException(e.toOriginalError(), {
+          code: e.code,
+          type: e.type,
+          contextModule: e.contextModule,
+        })
+      }
+
+      throw new TransactionException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -153,8 +172,19 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       >(prepareTxRequest, InjectiveExchangeRPC.PrepareTx)
 
       return response
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw new TransactionException(e.toOriginalError(), {
+          code: e.code,
+          type: e.type,
+          contextModule: e.contextModule,
+        })
+      }
+
+      throw new TransactionException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -204,8 +234,19 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       >(broadcastTxRequest, InjectiveExchangeRPC.BroadcastTx)
 
       return response.toObject()
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw new TransactionException(e.toOriginalError(), {
+          code: e.code,
+          type: e.type,
+          contextModule: e.contextModule,
+        })
+      }
+
+      throw new TransactionException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

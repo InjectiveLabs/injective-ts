@@ -1,5 +1,6 @@
+import { WalletErrorActionModule } from '@injectivelabs/exceptions'
+
 export enum Wallet {
-  // PrivateKey = 'private-key',
   Metamask = 'metamask',
   Ledger = 'ledger',
   LedgerLegacy = 'ledger-legacy',
@@ -9,3 +10,5 @@ export enum Wallet {
   WalletConnect = 'wallet-connect',
   Leap = 'leap',
 }
+
+export const WalletAction = { ...WalletErrorActionModule }

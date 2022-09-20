@@ -1,3 +1,5 @@
+import { IndexerErrorModule } from '@injectivelabs/exceptions'
+
 export * from './exchange'
 export * from './derivatives'
 export * from './derivatives-rest'
@@ -16,3 +18,5 @@ export interface StreamStatusResponse {
   code: number
   metadata: any
 }
+
+export const IndexerModule = { ...IndexerErrorModule }

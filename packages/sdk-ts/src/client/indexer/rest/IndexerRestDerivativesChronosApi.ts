@@ -1,9 +1,12 @@
-import { HttpException } from '@injectivelabs/exceptions'
 import {
   ChronosDerivativeMarketSummaryResponse,
   AllDerivativeMarketSummaryResponse,
 } from '../types/derivatives-rest'
 import BaseRestConsumer from '../../BaseRestConsumer'
+import {
+  HttpRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Indexer Chronos API
@@ -13,14 +16,21 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
     const path = `market_summary`
 
     try {
-      const { data } = (await this.client.get(path, {
+      const { data } = (await this.get(path, {
         marketId,
         resolution: '24h',
       })) as ChronosDerivativeMarketSummaryResponse
 
       return data
-    } catch (e: any) {
-      throw new HttpException(e.response ? e.response.data.message : e.message)
+    } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        contextModule: 'GET',
+      })
     }
   }
 
@@ -28,13 +38,20 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
     const path = `market_summary_all`
 
     try {
-      const { data } = (await this.client.get(path, {
+      const { data } = (await this.get(path, {
         resolution: '24h',
       })) as AllDerivativeMarketSummaryResponse
 
       return data
-    } catch (e: any) {
-      throw new HttpException(e.response ? e.response.data.message : e.message)
+    } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        contextModule: 'GET',
+      })
     }
   }
 }

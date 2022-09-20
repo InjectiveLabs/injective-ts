@@ -1,5 +1,6 @@
 import { bech32 } from 'bech32'
 import { Address as EthereumUtilsAddress } from 'ethereumjs-util'
+import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 import {
   BECH32_ADDR_ACC_PREFIX,
   BECH32_ADDR_CONS_PREFIX,
@@ -37,16 +38,22 @@ export class Address {
     bech: string,
     prefix: string = BECH32_ADDR_ACC_PREFIX,
   ): Address {
-    const address = Buffer.from(
-      bech32.fromWords(bech32.decode(bech).words),
-    ).toString('hex')
-    const addressInHex = address.startsWith('0x') ? address : `0x${address}`
-    const addressBuffer = EthereumUtilsAddress.fromString(
-      addressInHex.toString(),
-    ).toBuffer()
-    const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
+    try {
+      const address = Buffer.from(
+        bech32.fromWords(bech32.decode(bech).words),
+      ).toString('hex')
+      const addressInHex = address.startsWith('0x') ? address : `0x${address}`
+      const addressBuffer = EthereumUtilsAddress.fromString(
+        addressInHex.toString(),
+      ).toBuffer()
+      const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
 
-    return new Address(bech32Address)
+      return new Address(bech32Address)
+    } catch (e) {
+      throw new GeneralException(new Error((e as any).message), {
+        type: ErrorType.ValidationError,
+      })
+    }
   }
 
   /**

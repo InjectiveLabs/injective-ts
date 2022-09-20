@@ -72,65 +72,58 @@ export class MsgBroadcastExperimentalClient {
       DEFAULT_TIMEOUT_HEIGHT,
     )
 
-    try {
-      /** EIP712 for signing on Ethereum wallets */
-      const eip712TypedData = getEip712TypedData({
-        msgs: msgs,
-        tx: {
-          accountNumber: accountDetails.accountNumber.toString(),
-          sequence: accountDetails.sequence.toString(),
-          timeoutHeight: timeoutHeight.toFixed(),
-          chainId: chainId,
-        },
-        ethereumChainId: ethereumChainId,
-      })
-
-      /** Signing on Ethereum */
-      const signature = (await walletStrategy.signTransaction(
-        JSON.stringify(eip712TypedData),
-        tx.address,
-      )) as string
-      const signatureBuff = hexToBuff(signature)
-
-      /** Get Public Key of the signer */
-      const publicKeyHex = recoverTypedSignaturePubKey(
-        eip712TypedData,
-        signature,
-      )
-      const publicKeyBase64 = hexToBase64(publicKeyHex)
-
-      /** Preparing the transaction for client broadcasting */
-      const txRestClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
-      const { txRaw } = createTransaction({
-        message: msgs.map((m) => m.toDirectSign()),
-        memo: '',
-        signMode: SIGN_AMINO,
-        fee: DEFAULT_STD_FEE,
-        pubKey: publicKeyBase64,
-        sequence: baseAccount.sequence,
-        timeoutHeight: timeoutHeight.toNumber(),
-        accountNumber: baseAccount.accountNumber,
+    /** EIP712 for signing on Ethereum wallets */
+    const eip712TypedData = getEip712TypedData({
+      msgs: msgs,
+      tx: {
+        accountNumber: accountDetails.accountNumber.toString(),
+        sequence: accountDetails.sequence.toString(),
+        timeoutHeight: timeoutHeight.toFixed(),
         chainId: chainId,
-      })
-      const web3Extension = createWeb3Extension({
-        ethereumChainId,
-      })
-      const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
+      },
+      ethereumChainId: ethereumChainId,
+    })
 
-      /** Append Signatures */
-      txRawEip712.setSignaturesList([signatureBuff])
+    /** Signing on Ethereum */
+    const signature = (await walletStrategy.signTransaction(
+      JSON.stringify(eip712TypedData),
+      tx.address,
+    )) as string
+    const signatureBuff = hexToBuff(signature)
 
-      /** Broadcast the transaction */
-      const response = await txRestClient.broadcast(txRawEip712)
+    /** Get Public Key of the signer */
+    const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature)
+    const publicKeyBase64 = hexToBase64(publicKeyHex)
 
-      if (response.code !== 0) {
-        throw new Error(`Transaction failed: ${response.rawLog}`)
-      }
+    /** Preparing the transaction for client broadcasting */
+    const txRestClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
+    const { txRaw } = createTransaction({
+      message: msgs.map((m) => m.toDirectSign()),
+      memo: '',
+      signMode: SIGN_AMINO,
+      fee: DEFAULT_STD_FEE,
+      pubKey: publicKeyBase64,
+      sequence: baseAccount.sequence,
+      timeoutHeight: timeoutHeight.toNumber(),
+      accountNumber: baseAccount.accountNumber,
+      chainId: chainId,
+    })
+    const web3Extension = createWeb3Extension({
+      ethereumChainId,
+    })
+    const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
-      return response.txHash
-    } catch (e: any) {
-      throw new Error(e.message)
+    /** Append Signatures */
+    txRawEip712.setSignaturesList([signatureBuff])
+
+    /** Broadcast the transaction */
+    const response = await txRestClient.broadcast(txRawEip712)
+
+    if (response.code !== 0) {
+      throw new Error(`Transaction failed: ${response.rawLog}`)
     }
+
+    return response.txHash
   }
 
   private async broadcastKeplr(tx: MsgBroadcastTxOptions) {
@@ -139,24 +132,20 @@ export class MsgBroadcastExperimentalClient {
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const injectiveAddress = getInjectiveAddress(tx.address)
 
-    try {
-      const transaction = {
-        message: msgs,
-        memo: tx.memo || '',
-        gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
-      }
-
-      const directSignResponse = (await walletStrategy.signTransaction(
-        transaction,
-        injectiveAddress,
-      )) as any
-
-      return await walletStrategy.sendTransaction(directSignResponse, {
-        chainId,
-        address: injectiveAddress,
-      })
-    } catch (e: any) {
-      throw new Error(e.message)
+    const transaction = {
+      message: msgs,
+      memo: tx.memo || '',
+      gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
     }
+
+    const directSignResponse = (await walletStrategy.signTransaction(
+      transaction,
+      injectiveAddress,
+    )) as any
+
+    return await walletStrategy.sendTransaction(directSignResponse, {
+      chainId,
+      address: injectiveAddress,
+    })
   }
 }

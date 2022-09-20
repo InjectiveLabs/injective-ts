@@ -13,11 +13,18 @@ import {
 } from '@injectivelabs/chain-api/injective/insurance/v1beta1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer'
+import { ChainModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcInsuranceFundApi extends BaseConsumer {
+  protected module: string = ChainModule.InsuranceFund
+
   async fetchModuleParams() {
     const request = new QueryInsuranceParamsRequest()
 
@@ -31,8 +38,15 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
       return ChainGrpcInsuranceFundTransformer.moduleParamsResponseToModuleParams(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -49,8 +63,15 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
       return ChainGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -68,8 +89,15 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
       return ChainGrpcInsuranceFundTransformer.insuranceFundResponseToInsuranceFund(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -94,8 +122,15 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
       return ChainGrpcInsuranceFundTransformer.estimatedRedemptionsResponseToEstimatedRedemptions(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -120,8 +155,15 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
       return ChainGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

@@ -46,13 +46,13 @@ const createWallet = ({
     case Wallet.LedgerLegacy:
       return new LedgerLegacy({ ...args, web3 })
     case Wallet.Keplr:
-      return new Keplr({ ...args, web3 })
+      return new Keplr({ ...args })
     case Wallet.Trezor:
       return new Trezor({ ...args, web3 })
     case Wallet.Torus:
       return new Torus({ ...args, web3 })
     case Wallet.Leap:
-      return new Leap({ ...args, web3 })
+      return new Leap({ ...args })
     case Wallet.WalletConnect:
       return new WalletConnect({ ...args, walletOptions: args.options })
     default:

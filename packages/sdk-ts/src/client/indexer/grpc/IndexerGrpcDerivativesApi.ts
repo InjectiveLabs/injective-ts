@@ -37,12 +37,19 @@ import {
 import { PaginationOption } from '../../../types/pagination'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcDerivativeTransformer } from '../transformers'
+import { IndexerModule } from '../types'
 import { DerivativeOrderSide, DerivativeOrderState } from '../types/derivatives'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcDerivativesApi extends BaseConsumer {
+  protected module: string = IndexerModule.Derivatives
+
   async fetchMarkets(params?: { marketStatus?: string; quoteDenom?: string }) {
     const { marketStatus, quoteDenom } = params || {}
 
@@ -64,8 +71,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Markets)
 
       return IndexerGrpcDerivativeTransformer.marketsResponseToMarkets(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -82,8 +96,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Market)
 
       return IndexerGrpcDerivativeTransformer.marketResponseToMarket(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -113,8 +134,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       return IndexerGrpcDerivativeTransformer.binaryOptionsMarketsResponseToBinaryOptionsMarkets(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -133,8 +161,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       return IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseToBinaryOptionsMarket(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -153,8 +188,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       return IndexerGrpcDerivativeTransformer.orderbookResponseToOrderbook(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -219,8 +261,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Orders)
 
       return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -299,8 +348,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       return IndexerGrpcDerivativeTransformer.orderHistoryResponseToOrderHistory(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -356,8 +412,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       return IndexerGrpcDerivativeTransformer.positionsResponseToPositions(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -446,8 +509,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Trades)
 
       return IndexerGrpcDerivativeTransformer.tradesResponseToTrades(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -497,8 +567,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       return IndexerGrpcDerivativeTransformer.fundingPaymentsResponseToFundingPayments(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -534,8 +611,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       return IndexerGrpcDerivativeTransformer.fundingRatesResponseToFundingRates(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -574,8 +658,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.SubaccountOrdersList)
 
       return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -627,8 +718,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       return IndexerGrpcDerivativeTransformer.subaccountTradesListResponseToSubaccountTradesList(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -649,8 +747,15 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       return IndexerGrpcDerivativeTransformer.orderbooksResponseToOrderbooks(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

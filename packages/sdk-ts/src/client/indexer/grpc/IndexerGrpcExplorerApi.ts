@@ -23,11 +23,18 @@ import {
 import { InjectiveExplorerRPC } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcExplorerTransformer } from '../transformers'
+import { IndexerModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcExplorerApi extends BaseConsumer {
+  protected module: string = IndexerModule.Explorer
+
   async fetchTxByHash(hash: string) {
     const request = new GetTxByTxHashRequest()
     request.setHash(hash)
@@ -40,8 +47,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       >(request, InjectiveExplorerRPC.GetTxByTxHash)
 
       return IndexerGrpcExplorerTransformer.getTxByTxHashResponseToTx(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -75,8 +89,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       return IndexerGrpcExplorerTransformer.getAccountTxsResponseToAccountTxs(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -94,8 +115,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       return IndexerGrpcExplorerTransformer.validatorResponseToValidator(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -113,8 +141,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       return IndexerGrpcExplorerTransformer.getValidatorUptimeResponseToValidatorUptime(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -157,8 +192,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       return IndexerGrpcExplorerTransformer.getPeggyDepositTxsResponseToPeggyDepositTxs(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -201,8 +243,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       return IndexerGrpcExplorerTransformer.getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -237,8 +286,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       >(request, InjectiveExplorerRPC.GetBlocks)
 
       return response
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -255,8 +311,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       >(request, InjectiveExplorerRPC.GetBlock)
 
       return response
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -309,8 +372,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       >(request, InjectiveExplorerRPC.GetTxs)
 
       return response
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -377,8 +447,15 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       return IndexerGrpcExplorerTransformer.getIBCTransferTxsResponseToIBCTransferTxs(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

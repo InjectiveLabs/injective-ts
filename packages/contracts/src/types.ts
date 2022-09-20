@@ -1,5 +1,6 @@
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
+import { ContractErrorModule } from '@injectivelabs/exceptions'
 
 export interface ContractAddresses {
   peggy: string
@@ -20,4 +21,8 @@ export interface ContractFunctionObj<T> {
 export interface ContractTxFunctionObj<T> extends ContractFunctionObj<T> {
   sendTransactionAsync(): Promise<string>
   estimateGasAsync(): Promise<number>
+}
+
+export const Contract = {
+  ...ContractErrorModule,
 }
