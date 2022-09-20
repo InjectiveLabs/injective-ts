@@ -20,7 +20,7 @@ import { recoverTypedSignaturePubKey } from '../../../utils/transaction'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
-  TransactionException,
+  Web3GatewayTransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 
@@ -92,14 +92,14 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
-        throw new TransactionException(e.toOriginalError(), {
+        throw new Web3GatewayTransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
           contextModule: e.contextModule,
         })
       }
 
-      throw new TransactionException(e as Error, {
+      throw new Web3GatewayTransactionException(e as Error, {
         code: UnspecifiedErrorCode,
         contextModule: this.module,
       })
@@ -174,14 +174,14 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
-        throw new TransactionException(e.toOriginalError(), {
+        throw new Web3GatewayTransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
           contextModule: e.contextModule,
         })
       }
 
-      throw new TransactionException(e as Error, {
+      throw new Web3GatewayTransactionException(e as Error, {
         code: UnspecifiedErrorCode,
         contextModule: this.module,
       })
@@ -236,14 +236,14 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       return response.toObject()
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
-        throw new TransactionException(e.toOriginalError(), {
+        throw new Web3GatewayTransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
           contextModule: e.contextModule,
         })
       }
 
-      throw new TransactionException(e as Error, {
+      throw new Web3GatewayTransactionException(e as Error, {
         code: UnspecifiedErrorCode,
         contextModule: this.module,
       })

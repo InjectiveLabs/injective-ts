@@ -8,6 +8,7 @@ import {
 import {
   UnspecifiedErrorCode,
   CosmosWalletException,
+  TransactionException,
   ErrorType,
 } from '@injectivelabs/exceptions'
 import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
@@ -89,9 +90,9 @@ export default class Leap
     try {
       return await leapWallet.broadcastTxBlock(txRaw)
     } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
+      throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
+        type: ErrorType.ChainError,
         contextModule: WalletAction.SendTransaction,
       })
     }

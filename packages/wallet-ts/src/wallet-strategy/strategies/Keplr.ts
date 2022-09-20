@@ -16,6 +16,7 @@ import {
   UnspecifiedErrorCode,
   CosmosWalletException,
   ErrorType,
+  TransactionException,
 } from '@injectivelabs/exceptions'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy, WalletAction } from '../types'
@@ -88,9 +89,9 @@ export default class Keplr
     try {
       return await keplrWallet.broadcastTxBlock(txRaw)
     } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
+      throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
+        type: ErrorType.ChainError,
         contextModule: WalletAction.SendTransaction,
       })
     }
