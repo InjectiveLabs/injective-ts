@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.14...@injectivelabs/exceptions@1.0.15) (2022-09-20)
+
+
+### Bug Fixes
+
+* proper parsing ([f2738eb](https://github.com/InjectiveLabs/injective-ts/commit/f2738ebed9d0f75a29ad439b5a62faddf5baa2cb))
+
+
+### Features
+
+* exceptions part 2 ([1919620](https://github.com/InjectiveLabs/injective-ts/commit/191962094f9ec7036c54425e35c6aa476c70ea79))
+* initial exceptions setup ([6da9f2e](https://github.com/InjectiveLabs/injective-ts/commit/6da9f2eb2df2fcd2995fc9cd25a615dc607da253))
+
+
+
+
+
 ## [1.0.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.13...@injectivelabs/exceptions@1.0.14) (2022-09-15)
 
 **Note:** Version bump only for package @injectivelabs/exceptions

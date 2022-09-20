@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.144](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.143...@injectivelabs/sdk-ts@1.0.144) (2022-09-20)
+
+
+### Features
+
+* exceptions part 2 ([1919620](https://github.com/InjectiveLabs/injective-ts/commit/191962094f9ec7036c54425e35c6aa476c70ea79))
+* initial exceptions setup ([6da9f2e](https://github.com/InjectiveLabs/injective-ts/commit/6da9f2eb2df2fcd2995fc9cd25a615dc607da253))
+
+
+
+
+
 ## [1.0.143](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.142...@injectivelabs/sdk-ts@1.0.143) (2022-09-19)
 
 

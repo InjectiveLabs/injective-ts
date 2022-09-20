@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.21...@injectivelabs/token-utils@1.0.22) (2022-09-20)
+
+
+### Features
+
+* initial exceptions setup ([6da9f2e](https://github.com/InjectiveLabs/injective-ts/commit/6da9f2eb2df2fcd2995fc9cd25a615dc607da253))
+
+
+
+
+
 ## [1.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.20...@injectivelabs/token-utils@1.0.21) (2022-09-15)
 
 **Note:** Version bump only for package @injectivelabs/token-utils

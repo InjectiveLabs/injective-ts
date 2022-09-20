@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.33...@injectivelabs/contracts@1.0.34) (2022-09-20)
+
+
+### Features
+
+* exceptions part 2 ([1919620](https://github.com/InjectiveLabs/injective-ts/commit/191962094f9ec7036c54425e35c6aa476c70ea79))
+* initial exceptions setup ([6da9f2e](https://github.com/InjectiveLabs/injective-ts/commit/6da9f2eb2df2fcd2995fc9cd25a615dc607da253))
+
+
+
+
+
 ## [1.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.32...@injectivelabs/contracts@1.0.33) (2022-09-18)
 
 **Note:** Version bump only for package @injectivelabs/contracts
