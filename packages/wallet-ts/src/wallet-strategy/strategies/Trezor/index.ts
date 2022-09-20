@@ -10,7 +10,16 @@ import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import Common, { Chain, Hardfork } from '@ethereumjs/common'
 import TrezorConnect from 'trezor-connect'
 import Web3 from 'web3'
-import { ConcreteWalletStrategy, TrezorWalletInfo } from '../../types'
+import {
+  ErrorType,
+  TrezorException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
+import {
+  ConcreteWalletStrategy,
+  TrezorWalletInfo,
+  WalletAction,
+} from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
@@ -65,8 +74,12 @@ export default class Trezor
       const wallets = await accountManager.getWallets()
 
       return wallets.map((k) => k.address)
-    } catch (e: any) {
-      throw new Error(`Trezor: ${e.message || e}`)
+    } catch (e: unknown) {
+      throw new TrezorException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
     }
   }
 
@@ -88,13 +101,17 @@ export default class Trezor
     )
 
     try {
-      const txReceipt = await this.web3.eth.sendSignedTransaction(
+      const txReceipt = await this.getWeb3().eth.sendSignedTransaction(
         addHexPrefix(signedTransaction.serialize().toString('hex')),
       )
 
       return txReceipt.transactionHash
-    } catch (e: any) {
-      throw new Error(`Trezor: ${e.message || e}`)
+    } catch (e: unknown) {
+      throw new TrezorException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendEthereumTransaction,
+      })
     }
   }
 
@@ -103,8 +120,15 @@ export default class Trezor
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    throw new Error(
-      'sendTransaction is not supported. Trezor only supports sending transaction to Ethereum',
+    throw new TrezorException(
+      new Error(
+        'sendTransaction is not supported. Trezor only supports sending transaction to Ethereum',
+      ),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
     )
   }
 
@@ -159,8 +183,12 @@ export default class Trezor
       }
 
       return response.payload.signature
-    } catch (e: any) {
-      throw new Error(`Trezor: ${e.message || e}`)
+    } catch (e: unknown) {
+      throw new TrezorException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
     }
   }
 
@@ -169,7 +197,7 @@ export default class Trezor
     options: { address: string; ethereumChainId: EthereumChainId },
   ) {
     const chainId = parseInt(options.ethereumChainId.toString(), 10)
-    const nonce = await this.web3.eth.getTransactionCount(options.address)
+    const nonce = await this.getWeb3().eth.getTransactionCount(options.address)
 
     const common = new Common({
       chain: getNetworkFromChainId(chainId),
@@ -206,10 +234,16 @@ export default class Trezor
       })
 
       if (!response.success) {
-        // noinspection ExceptionCaughtLocallyJS
-        throw new Error(
-          (response.payload && response.payload.error) ||
-            'Something happened while signing with Trezor',
+        throw new TrezorException(
+          new Error(
+            (response.payload && response.payload.error) ||
+              'Something happened while signing with Trezor',
+          ),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletError,
+            contextModule: WalletAction.SignEthereumTransaction,
+          },
         )
       }
 
@@ -223,17 +257,25 @@ export default class Trezor
       return FeeMarketEIP1559Transaction.fromTxData(signedTxData, {
         common,
       })
-    } catch (e: any) {
-      throw new Error(`Trezor: ${e.message || e}`)
+    } catch (e: unknown) {
+      if (e instanceof TrezorException) {
+        throw e
+      }
+
+      throw new TrezorException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignEthereumTransaction,
+      })
     }
   }
 
   async getNetworkId(): Promise<string> {
-    return (await this.web3.eth.net.getId()).toString()
+    return (await this.getWeb3().eth.net.getId()).toString()
   }
 
   async getChainId(): Promise<string> {
-    return (await this.web3.eth.getChainId()).toString()
+    return (await this.getWeb3().eth.getChainId()).toString()
   }
 
   async getEthereumTransactionReceipt(txHash: string): Promise<string> {

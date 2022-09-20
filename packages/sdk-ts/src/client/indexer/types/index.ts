@@ -27,4 +27,7 @@ export enum IndexerModule {
   Oracle = 'indexer-oracle',
   Spot = 'indexer-spot',
   Transaction = 'indexer-transaction',
+  ChronosDerivative = 'indexer-chronos-derivative',
+  ChronosSpot = 'indexer-chronos-spot',
+  ChronosMarkets = 'indexer-chronos-markets',
 }

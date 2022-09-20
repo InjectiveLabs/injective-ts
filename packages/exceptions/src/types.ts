@@ -1,9 +1,21 @@
 import type { grpc } from '@improbable-eng/grpc-web'
 
+export enum HttpRequestMethod {
+  Get = 'GET',
+  Post = 'POST',
+  Options = 'OPTIONS',
+}
+
 export enum ErrorType {
   Unspecified = 'unspecified',
+  ExecutionError = 'execution-error',
+  NotFoundError = 'not-found-error',
+  ValidationError = 'validation-error',
+  WalletError = 'wallet-error',
+  WalletNotInstalledError = 'wallet-not-installed-error',
   GrpcUnaryRequest = 'grpc-unary-request',
-  HttpGetRequest = 'http-get-request',
+  HttpRequest = 'http-request',
+  Web3 = 'web3',
 }
 
 export enum ChainErrorCode {}

@@ -3,9 +3,10 @@ import {
   EthereumChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
+import { UnspecifiedErrorCode, Web3Exception } from '@injectivelabs/exceptions'
 import type Web3 from 'web3'
 import abi from './abi/injective'
-import { ContractFunctionObj, ContractTxFunctionObj } from '../types'
+import { Contract, ContractFunctionObj, ContractTxFunctionObj } from '../types'
 import { getTransactionOptionsAsNonPayableTx } from '../utils'
 import BaseContract from '../BaseContract'
 
@@ -73,7 +74,13 @@ export class Erc20Contract extends BaseContract<any> {
 
     return {
       callAsync() {
-        throw new Error('You cannot call this contract method as a call')
+        throw new Web3Exception(
+          new Error('You cannot call this contract method as a call'),
+          {
+            code: UnspecifiedErrorCode,
+            contextModule: Contract.Erc20Contract,
+          },
+        )
       },
 
       getABIEncodedTransactionData(): string {

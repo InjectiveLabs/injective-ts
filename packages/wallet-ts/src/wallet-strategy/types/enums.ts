@@ -9,3 +9,14 @@ export enum Wallet {
   WalletConnect = 'wallet-connect',
   Leap = 'leap',
 }
+
+export enum WalletAction {
+  SignTransaction = 'sign-transaction',
+  SignEthereumTransaction = 'sign-ethereum-transaction',
+  SendTransaction = 'send-transaction',
+  SendEthereumTransaction = 'send-ethereum-transaction',
+  GetAccounts = 'get-accounts',
+  GetNetworkId = 'get-network-id',
+  GetChainId = 'get-chain-id',
+  GetEthereumTransactionReceipt = 'get-ethereum-transaction-receipt',
+}

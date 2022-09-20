@@ -21,8 +21,11 @@ export abstract class Exception {
   constructor(error: Error, context?: ErrorContext) {
     this.parseError(error)
     this.parseContext(context)
+    this.parseMessage()
     Object.setPrototypeOf(this, Exception.prototype)
   }
+
+  protected abstract parseMessage(): void
 
   protected parseError(error: Error) {
     this.message = error.message

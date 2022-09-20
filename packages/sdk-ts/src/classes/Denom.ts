@@ -10,6 +10,7 @@ import {
 } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '../utils'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
+import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
 
 export const getTokenTypeFromDenom = (denom: string): TokenType => {
   if (denom === INJ_DENOM) {
@@ -144,7 +145,12 @@ export class Denom {
     const tokenMeta = await this.getDenomToken()
 
     if (!tokenMeta) {
-      throw new Error(`Token meta for ${denom} denom does not exist`)
+      throw new GeneralException(
+        new Error(`Token meta for ${denom} denom does not exist`),
+        {
+          type: ErrorType.NotFoundError,
+        },
+      )
     }
 
     return tokenMetaToToken(tokenMeta, denom) as Token
@@ -175,7 +181,12 @@ export class Denom {
     )
 
     if (!denomTrace) {
-      throw new Error(`Denom trace not found for ${denom}`)
+      throw new GeneralException(
+        new Error(`Denom trace not found for ${denom}`),
+        {
+          type: ErrorType.NotFoundError,
+        },
+      )
     }
 
     return {

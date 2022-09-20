@@ -5,9 +5,12 @@ import {
   EthereumChainId,
   CosmosChainId,
 } from '@injectivelabs/ts-types'
-import { Web3Exception } from '@injectivelabs/exceptions'
+import {
+  UnspecifiedErrorCode,
+  CosmosWalletException,
+  ErrorType,
+} from '@injectivelabs/exceptions'
 import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
-import type Web3 from 'web3'
 import {
   createTxRawFromSigResponse,
   createTransactionAndCosmosSignDocForAddressAndMsg,
@@ -15,7 +18,7 @@ import {
 import type { Msgs } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { LeapWallet } from '../../leap'
-import { ConcreteWalletStrategy } from '../types'
+import { ConcreteWalletStrategy, WalletAction } from '../types'
 import BaseConcreteStrategy from './Base'
 
 export default class Leap
@@ -24,22 +27,15 @@ export default class Leap
 {
   private leapWallet: LeapWallet
 
-  constructor(args: {
-    ethereumChainId: EthereumChainId
-    chainId: ChainId
-    web3: Web3
-  }) {
+  constructor(args: { ethereumChainId: EthereumChainId; chainId: ChainId }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
     this.leapWallet = new LeapWallet(args.chainId)
   }
 
   async getAddresses(): Promise<string[]> {
-    const { leapWallet, chainId } = this
-
-    if (!leapWallet) {
-      throw new Web3Exception('Please install Leap extension')
-    }
+    const { chainId } = this
+    const leapWallet = this.getLeapWallet()
 
     try {
       if (!(await leapWallet.checkChainIdSupport())) {
@@ -49,18 +45,16 @@ export default class Leap
       const accounts = await leapWallet.getAccounts()
 
       return accounts.map((account) => account.address)
-    } catch (e: any) {
-      throw new Web3Exception(`Leap: ${e.message}`)
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
     }
   }
 
   async confirm(address: AccountAddress): Promise<string> {
-    const { leapWallet } = this
-
-    if (!leapWallet) {
-      throw new Web3Exception('Please install Leap extension')
-    }
-
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -73,8 +67,15 @@ export default class Leap
     _transaction: unknown,
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
-    throw new Error(
-      'sendEthereumTransaction is not supported. Leap only supports sending cosmos transactions',
+    throw new CosmosWalletException(
+      new Error(
+        'sendEthereumTransaction is not supported. Leap only supports sending cosmos transactions',
+      ),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendEthereumTransaction,
+      },
     )
   }
 
@@ -87,8 +88,12 @@ export default class Leap
 
     try {
       return await leapWallet.broadcastTxBlock(txRaw)
-    } catch (e) {
-      throw new Error((e as any).message)
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      })
     }
   }
 
@@ -100,44 +105,87 @@ export default class Leap
     },
     address: AccountAddress,
   ) {
-    const { leapWallet, chainId } = this
-
-    if (!leapWallet) {
-      throw new Web3Exception('Please install Keplr extension')
-    }
+    const { chainId } = this
+    const leapWallet = this.getLeapWallet()
 
     const endpoints = await leapWallet.getChainEndpoints()
     const key = await leapWallet.getKey()
     const signer = await leapWallet.getOfflineSigner()
 
-    /** Prepare the Transaction * */
-    const { cosmosSignDoc } =
-      await createTransactionAndCosmosSignDocForAddressAndMsg({
-        address,
-        chainId,
-        memo: transaction.memo,
-        message: transaction.message,
-        pubKey: Buffer.from(key.pubKey).toString('base64'),
-        endpoint: endpoints.rest,
-        fee: {
-          ...DEFAULT_STD_FEE,
-          gas: transaction.gas || DEFAULT_STD_FEE.gas,
-        },
-      })
+    try {
+      /** Prepare the Transaction * */
+      const { cosmosSignDoc } =
+        await createTransactionAndCosmosSignDocForAddressAndMsg({
+          address,
+          chainId,
+          memo: transaction.memo,
+          message: transaction.message,
+          pubKey: Buffer.from(key.pubKey).toString('base64'),
+          endpoint: endpoints.rest,
+          fee: {
+            ...DEFAULT_STD_FEE,
+            gas: transaction.gas || DEFAULT_STD_FEE.gas,
+          },
+        })
 
-    /* Sign the transaction */
-    return signer.signDirect(address, cosmosSignDoc)
+      /* Sign the transaction */
+      return signer.signDirect(address, cosmosSignDoc)
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      })
+    }
   }
 
   async getNetworkId(): Promise<string> {
-    throw new Error('getNetworkId is not supported on Leap')
+    throw new CosmosWalletException(
+      new Error('getNetworkId is not supported on Leap'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetNetworkId,
+      },
+    )
   }
 
   async getChainId(): Promise<string> {
-    throw new Error('getChainId is not supported on Leap')
+    throw new CosmosWalletException(
+      new Error('getChainId is not supported on Leap'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetChainId,
+      },
+    )
   }
 
   async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
-    throw new Error('getEthereumTransactionReceipt is not supported on Leap')
+    throw new CosmosWalletException(
+      new Error('getEthereumTransactionReceipt is not supported on Leap'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetEthereumTransactionReceipt,
+      },
+    )
+  }
+
+  private getLeapWallet(): LeapWallet {
+    const { leapWallet } = this
+
+    if (!leapWallet) {
+      throw new CosmosWalletException(
+        new Error('Please install the Leap wallet extension'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletNotInstalledError,
+          contextModule: WalletAction.SignTransaction,
+        },
+      )
+    }
+
+    return leapWallet
   }
 }

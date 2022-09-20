@@ -21,3 +21,9 @@ export interface ContractTxFunctionObj<T> extends ContractFunctionObj<T> {
   sendTransactionAsync(): Promise<string>
   estimateGasAsync(): Promise<number>
 }
+
+export enum Contract {
+  Erc20Contract = 'erc20-contract',
+  Peggy = 'peggy-contract',
+  PeggyOld = 'peggy-old-contract',
+}

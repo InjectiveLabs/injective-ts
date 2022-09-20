@@ -4,11 +4,16 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import { Web3Exception } from '@injectivelabs/exceptions'
 import Web3 from 'web3'
+import {
+  ErrorType,
+  MetamaskException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import {
   ConcreteWalletStrategy,
   Eip1993ProviderWithMetamask,
+  WalletAction,
   WindowWithEip1193Provider,
 } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -16,9 +21,6 @@ import BaseConcreteStrategy from './Base'
 const $window = (isServerSide()
   ? {}
   : window) as unknown as WindowWithEip1193Provider
-
-const removeMetamaskFromErrorString = (message: string): string =>
-  message.replace('Metamask', '').replace('MetaMask', '')
 
 export default class Metamask
   extends BaseConcreteStrategy
@@ -36,29 +38,23 @@ export default class Metamask
   }
 
   async getAddresses(): Promise<string[]> {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      throw new Web3Exception('Metamask: You need Metamask extension installed')
-    }
+    const ethereum = this.getEthereum()
 
     try {
       return await ethereum.request({
         method: 'eth_requestAccounts',
       })
-    } catch (e: any) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
   async confirm(address: AccountAddress): Promise<string> {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      throw new Web3Exception('Metamask: You need Metamask extension installed')
-    }
-
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -70,21 +66,19 @@ export default class Metamask
     transaction: unknown,
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      throw new Web3Exception('Metamask: You need Metamask extension installed')
-    }
+    const ethereum = this.getEthereum()
 
     try {
       return await ethereum.request({
         method: 'eth_sendTransaction',
         params: [transaction],
       })
-    } catch (e: any) {
-      throw new Web3Exception(
-        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
-      )
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendEthereumTransaction,
+      })
     }
   }
 
@@ -93,8 +87,15 @@ export default class Metamask
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    throw new Error(
-      'sendTransaction is not supported. Metamask only supports sending transaction to Ethereum',
+    throw new MetamaskException(
+      new Error(
+        'sendTransaction is not supported. Metamask only supports sending transaction to Ethereum',
+      ),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
     )
   }
 
@@ -106,62 +107,52 @@ export default class Metamask
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      throw new Web3Exception('Metamask: You need Metamask extension installed')
-    }
+    const ethereum = this.getEthereum()
 
     try {
       return await ethereum.request({
         method: 'eth_signTypedData_v4',
         params: [address, eip712json],
       })
-    } catch (e: any) {
-      throw new Web3Exception(
-        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
-      )
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
     }
   }
 
   async getNetworkId(): Promise<string> {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      throw new Web3Exception('Metamask: You need Metamask extension installed')
-    }
+    const ethereum = this.getEthereum()
 
     try {
       return ethereum.request({ method: 'net_version' })
-    } catch (e: any) {
-      throw new Web3Exception(
-        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
-      )
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetNetworkId,
+      })
     }
   }
 
   async getChainId(): Promise<string> {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      throw new Web3Exception('Metamask: You need Metamask extension installed')
-    }
+    const ethereum = this.getEthereum()
 
     try {
       return ethereum.request({ method: 'eth_chainId' })
-    } catch (e: any) {
-      throw new Web3Exception(
-        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
-      )
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetChainId,
+      })
     }
   }
 
   async getEthereumTransactionReceipt(txHash: string): Promise<string> {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      throw new Web3Exception('Metamask: You need Metamask extension installed')
-    }
+    const ethereum = this.getEthereum()
 
     const interval = 1000
     const transactionReceiptRetry = async () => {
@@ -180,10 +171,12 @@ export default class Metamask
 
     try {
       return await transactionReceiptRetry()
-    } catch (e: any) {
-      throw new Web3Exception(
-        `Metamask: ${removeMetamaskFromErrorString(e.message)}`,
-      )
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetEthereumTransactionReceipt,
+      })
     }
   }
 
@@ -229,5 +222,22 @@ export default class Metamask
     if (ethereum) {
       ethereum.removeAllListeners()
     }
+  }
+
+  private getEthereum(): Eip1993ProviderWithMetamask {
+    const { ethereum } = this
+
+    if (!ethereum) {
+      throw new MetamaskException(
+        new Error('Please install the Metamask wallet extension.'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletNotInstalledError,
+          contextModule: WalletAction.GetAccounts,
+        },
+      )
+    }
+
+    return ethereum
   }
 }

@@ -1,5 +1,9 @@
-import { HttpException } from '@injectivelabs/exceptions'
+import {
+  HttpRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import BaseRestConsumer from '../../BaseRestConsumer'
+import { IndexerModule } from '../types'
 import { ChronosMarketHistoryResponse } from '../types/markets-history-rest'
 
 export class IndexerRestMarketChronosApi extends BaseRestConsumer {
@@ -16,6 +20,7 @@ export class IndexerRestMarketChronosApi extends BaseRestConsumer {
     const queryMarketIds = marketIds.map((marketId) => ({
       marketIDs: marketId,
     }))
+
     const params = [
       ...queryMarketIds,
       { resolution: String(resolution) },
@@ -27,13 +32,20 @@ export class IndexerRestMarketChronosApi extends BaseRestConsumer {
     const pathWithParams = `${path}?${stringifiedParams}`
 
     try {
-      const { data } = (await this.client.get(
+      const { data } = (await this.get(
         pathWithParams,
       )) as ChronosMarketHistoryResponse
 
       return data
-    } catch (e: any) {
-      throw new HttpException(e.response ? e.response.data.message : e.message)
+    } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        contextModule: IndexerModule.ChronosMarkets,
+      })
     }
   }
 }

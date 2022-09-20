@@ -34,4 +34,5 @@ export enum ChainModule {
   Staking = 'chain-staking',
   Wasm = 'chain-wasm',
   WasmX = 'chain-wasmx',
+  Tendermint = 'chain-tendermint',
 }

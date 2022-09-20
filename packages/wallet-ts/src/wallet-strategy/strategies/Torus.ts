@@ -5,10 +5,14 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import { Web3Exception } from '@injectivelabs/exceptions'
+import {
+  ErrorType,
+  MetamaskException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import Web3 from 'web3'
 import TorusWallet from '@toruslabs/torus-embed'
-import { ConcreteWalletStrategy } from '../types'
+import { ConcreteWalletStrategy, WalletAction } from '../types'
 import BaseConcreteStrategy from './Base'
 
 export const getNetworkFromChainId = (
@@ -81,8 +85,12 @@ export default class Torus
       })
 
       return accounts && accounts.length > 0 ? (accounts as string[]) : []
-    } catch (e: any) {
-      throw new Web3Exception(`Metamask: ${e.message}`)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
     }
   }
 
@@ -110,8 +118,12 @@ export default class Torus
       })
 
       return response || ''
-    } catch (e: any) {
-      throw new Web3Exception(e.message)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendEthereumTransaction,
+      })
     }
   }
 
@@ -120,8 +132,15 @@ export default class Torus
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    throw new Error(
-      'sendTransaction is not supported. Trezor only supports sending transaction to Ethereum',
+    throw new MetamaskException(
+      new Error(
+        'sendTransaction is not supported. Torus only supports sending transaction to Ethereum',
+      ),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
     )
   }
 
@@ -142,8 +161,12 @@ export default class Torus
       })
 
       return response || ''
-    } catch (e: any) {
-      throw new Web3Exception(e.message)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
     }
   }
 
@@ -156,8 +179,12 @@ export default class Torus
       })
 
       return response || ''
-    } catch (e: any) {
-      throw new Web3Exception(e.message)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetNetworkId,
+      })
     }
   }
 
@@ -170,8 +197,12 @@ export default class Torus
       })
 
       return response || ''
-    } catch (e: any) {
-      throw new Web3Exception(e.message)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetChainId,
+      })
     }
   }
 
@@ -195,8 +226,12 @@ export default class Torus
 
     try {
       return await transactionReceiptRetry()
-    } catch (e: any) {
-      throw new Web3Exception(e.message)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetEthereumTransactionReceipt,
+      })
     }
   }
 

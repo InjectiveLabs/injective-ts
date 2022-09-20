@@ -4,16 +4,22 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import { Web3Exception } from '@injectivelabs/exceptions'
+import {
+  ErrorType,
+  MetamaskException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3 from 'web3'
 import { TransactionConfig } from 'web3-core'
-import { ConcreteWalletStrategy, WalletOptions } from '../types'
+import { ConcreteWalletStrategy, WalletAction, WalletOptions } from '../types'
+import BaseConcreteStrategy from './Base'
 
-export default class WalletConnect implements ConcreteWalletStrategy {
+export default class WalletConnect
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   private walletConnectProvider: WalletConnectProvider | undefined
-
-  private web3: Web3 | undefined
 
   private readonly walletOptions: WalletOptions
 
@@ -29,6 +35,7 @@ export default class WalletConnect implements ConcreteWalletStrategy {
     ethereumChainId: EthereumChainId
     walletOptions: WalletOptions
   }) {
+    super(args)
     this.walletOptions = args.walletOptions
     this.createWalletConnectProvider()
   }
@@ -48,22 +55,17 @@ export default class WalletConnect implements ConcreteWalletStrategy {
     this.createWalletConnectProvider()
   }
 
-  getWeb3(): Web3 {
-    if (this.web3) {
-      return this.web3
-    }
-    throw new Web3Exception(
-      `WalletConnect must be connected before web3 instance can be used`,
-    )
-  }
-
   async getAddresses(): Promise<string[]> {
     await this.connect()
 
     try {
-      return await this.web3!.eth.getAccounts()
-    } catch (e: any) {
-      throw new Web3Exception(`WalletConnect: ${e.message}`)
+      return await this.getWeb3().eth.getAccounts()
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
     }
   }
 
@@ -92,8 +94,12 @@ export default class WalletConnect implements ConcreteWalletStrategy {
         method: 'eth_signTypedData',
         params: [address, eip712json],
       })
-    } catch (e: any) {
-      throw new Web3Exception(`WalletConnect: ${e.message}`)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
     }
   }
 
@@ -116,10 +122,14 @@ export default class WalletConnect implements ConcreteWalletStrategy {
 
     // walletConnect doesn't seem to support hex format, so it's necessay to convert to decimal
     try {
-      const txHash = await this.web3!.eth.sendTransaction(transactionConfig)
+      const txHash = await this.getWeb3().eth.sendTransaction(transactionConfig)
       return txHash.transactionHash
-    } catch (e: any) {
-      throw new Web3Exception(`WalletConnect: ${e.message}`)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendEthereumTransaction,
+      })
     }
   }
 
@@ -128,8 +138,15 @@ export default class WalletConnect implements ConcreteWalletStrategy {
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    throw new Error(
-      'sendTransaction is not supported. Wallet only supports sending transaction to Ethereum',
+    throw new MetamaskException(
+      new Error(
+        'sendTransaction is not supported. WalletConnect only supports sending transaction to Ethereum',
+      ),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
     )
   }
 
@@ -153,8 +170,12 @@ export default class WalletConnect implements ConcreteWalletStrategy {
 
     try {
       return await transactionReceiptRetry()
-    } catch (e: any) {
-      throw new Web3Exception(`WalletConnect: ${e.message}`)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetEthereumTransactionReceipt,
+      })
     }
   }
 
@@ -162,11 +183,15 @@ export default class WalletConnect implements ConcreteWalletStrategy {
     await this.connect()
 
     try {
-      const result = await this.web3!.eth.net.getId()
+      const result = await this.getWeb3().eth.net.getId()
 
       return result.toString()
-    } catch (e: any) {
-      throw new Web3Exception(e.message)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetNetworkId,
+      })
     }
   }
 
@@ -174,11 +199,15 @@ export default class WalletConnect implements ConcreteWalletStrategy {
     await this.connect()
 
     try {
-      const result = await this.web3!.eth.getChainId()
+      const result = await this.getWeb3().eth.getChainId()
 
       return result.toString()
-    } catch (e: any) {
-      throw new Web3Exception(e.message)
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetChainId,
+      })
     }
   }
 
