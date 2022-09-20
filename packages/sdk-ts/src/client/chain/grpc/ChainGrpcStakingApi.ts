@@ -25,11 +25,18 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcStakingTransformer } from '../transformers'
+import { ChainModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcStakingApi extends BaseConsumer {
+  protected module: string = ChainModule.Staking
+
   async fetchModuleParams() {
     const request = new QueryStakingParamsRequest()
 
@@ -43,8 +50,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.moduleParamsResponseToModuleParams(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -59,8 +73,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       >(request, StakingQuery.Pool)
 
       return ChainGrpcStakingTransformer.poolResponseToPool(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -77,8 +98,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.validatorsResponseToValidators(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -94,8 +122,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       >(request, StakingQuery.Validator)
 
       return ChainGrpcStakingTransformer.validatorResponseToValidator(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -125,8 +160,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -156,12 +198,19 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
       )
-    } catch (e: any) {
-      if (e.message.includes('does not exist')) {
+    } catch (e: unknown) {
+      if ((e as any).message.includes('does not exist')) {
         return { delegations: [], pagination: { total: 0, next: '' } }
       }
 
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -191,8 +240,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -222,12 +278,19 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
       )
-    } catch (e: any) {
-      if (e.message.includes('does not exist')) {
+    } catch (e: unknown) {
+      if ((e as any).message.includes('does not exist')) {
         return { unbondingDelegations: [], pagination: { total: 0, next: '' } }
       }
 
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -252,8 +315,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.delegationResponseToDelegation(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -283,8 +353,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -314,12 +391,19 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
       )
-    } catch (e: any) {
-      if (e.message.includes('does not exist')) {
+    } catch (e: unknown) {
+      if ((e as any).message.includes('does not exist')) {
         return { delegations: [], pagination: { total: 0, next: '' } }
       }
 
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -349,8 +433,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -380,12 +471,19 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
       )
-    } catch (e: any) {
-      if (e.message.includes('does not exist')) {
+    } catch (e: unknown) {
+      if ((e as any).message.includes('does not exist')) {
         return { delegations: [], pagination: { total: 0, next: '' } }
       }
 
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -415,8 +513,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -446,12 +551,19 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
       )
-    } catch (e: any) {
-      if (e.message.includes('does not exist')) {
+    } catch (e: unknown) {
+      if ((e as any).message.includes('does not exist')) {
         return { unbondingDelegations: [], pagination: { total: 0, next: '' } }
       }
 
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -481,8 +593,15 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -512,12 +631,19 @@ export class ChainGrpcStakingApi extends BaseConsumer {
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
         response,
       )
-    } catch (e: any) {
-      if (e.message.includes('does not exist')) {
+    } catch (e: unknown) {
+      if ((e as any).message.includes('does not exist')) {
         return { redelegations: [], pagination: { total: 0, next: '' } }
       }
 
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

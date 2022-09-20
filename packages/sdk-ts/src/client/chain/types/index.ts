@@ -18,3 +18,20 @@ export * from './wasm'
 export interface RestApiResponse<T> {
   data: T
 }
+
+export enum ChainModule {
+  Auction = 'chain-auction',
+  Auth = 'chain-auth',
+  Bank = 'chain-bank',
+  Distribution = 'chain-distribution',
+  Exchange = 'chain-exchange',
+  Gov = 'chain-gov',
+  Ibc = 'chain-ibc',
+  InsuranceFund = 'chain-insurance',
+  Mint = 'chain-mint',
+  Oracle = 'chain-oracle',
+  Peggy = 'chain-peggy',
+  Staking = 'chain-staking',
+  Wasm = 'chain-wasm',
+  WasmX = 'chain-wasmx',
+}

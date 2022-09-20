@@ -1,6 +1,7 @@
 import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { isServerSide } from '../utils/helpers'
+import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
 
 if (isServerSide()) {
   grpc.setDefaultTransport(NodeHttpTransport())
@@ -10,6 +11,8 @@ if (isServerSide()) {
  * @hidden
  */
 export default class BaseGrpcConsumer {
+  protected module: string = ''
+
   protected endpoint: string
 
   constructor(endpoint: string) {
@@ -29,10 +32,15 @@ export default class BaseGrpcConsumer {
           const { statusMessage, status, message } = res
 
           if (status === grpc.Code.OK && message) {
-            resolve(message as TResponse)
+            return resolve(message as TResponse)
           }
 
-          reject(new Error(statusMessage))
+          return reject(
+            new GrpcUnaryRequestException(new Error(statusMessage), {
+              code: status,
+              contextModule: this.module,
+            }),
+          )
         },
       })
     })

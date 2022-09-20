@@ -11,11 +11,18 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer'
+import { ChainModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcMintApi extends BaseConsumer {
+  protected module: string = ChainModule.Mint
+
   async fetchModuleParams() {
     const request = new QueryMintParamsRequest()
 
@@ -29,8 +36,15 @@ export class ChainGrpcMintApi extends BaseConsumer {
       return ChainGrpcMintTransformer.moduleParamsResponseToModuleParams(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -49,8 +63,15 @@ export class ChainGrpcMintApi extends BaseConsumer {
           new BigNumberInBase(uint8ArrayToString(response.getInflation())),
         ).toFixed(),
       }
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -71,8 +92,15 @@ export class ChainGrpcMintApi extends BaseConsumer {
           ),
         ).toFixed(),
       }
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

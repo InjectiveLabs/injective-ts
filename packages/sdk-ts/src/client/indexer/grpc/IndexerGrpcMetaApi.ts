@@ -8,11 +8,18 @@ import {
 } from '@injectivelabs/indexer-api/injective_meta_rpc_pb'
 import { InjectiveMetaRPC } from '@injectivelabs/indexer-api/injective_meta_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { IndexerModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcMetaApi extends BaseConsumer {
+  protected module: string = IndexerModule.Meta
+
   async fetchPing() {
     const request = new PingRequest()
 
@@ -24,8 +31,15 @@ export class IndexerGrpcMetaApi extends BaseConsumer {
       >(request, InjectiveMetaRPC.Ping)
 
       return response.toObject()
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -40,8 +54,15 @@ export class IndexerGrpcMetaApi extends BaseConsumer {
       >(request, InjectiveMetaRPC.Version)
 
       return response.toObject()
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -56,8 +77,15 @@ export class IndexerGrpcMetaApi extends BaseConsumer {
       >(request, InjectiveMetaRPC.Info)
 
       return response.toObject()
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

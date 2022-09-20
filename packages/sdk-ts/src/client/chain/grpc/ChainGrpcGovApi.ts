@@ -18,11 +18,18 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer'
+import { ChainModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcGovApi extends BaseConsumer {
+  protected module: string = ChainModule.Gov
+
   async fetchModuleParams() {
     const paramTypes = ['voting', 'deposit', 'tallying']
     const requests = paramTypes.map((type) => {
@@ -50,7 +57,14 @@ export class ChainGrpcGovApi extends BaseConsumer {
         depositParams: depositParams.getDepositParams()!,
       })
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -80,7 +94,14 @@ export class ChainGrpcGovApi extends BaseConsumer {
 
       return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -98,7 +119,14 @@ export class ChainGrpcGovApi extends BaseConsumer {
 
       return ChainGrpcGovTransformer.proposalResponseToProposal(response)
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -128,7 +156,14 @@ export class ChainGrpcGovApi extends BaseConsumer {
 
       return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -157,7 +192,14 @@ export class ChainGrpcGovApi extends BaseConsumer {
 
       return ChainGrpcGovTransformer.votesResponseToVotes(response)
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -175,7 +217,14 @@ export class ChainGrpcGovApi extends BaseConsumer {
 
       return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

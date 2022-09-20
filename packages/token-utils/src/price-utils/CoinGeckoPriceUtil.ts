@@ -1,5 +1,4 @@
 import { HttpClient } from '@injectivelabs/utils'
-import { HttpException } from '@injectivelabs/exceptions'
 import { CoinGeckoReturnObject, CoinGeckoCoinResponse } from '../types'
 import { TokenPriceUtilBase } from './TokenPriceUtilBase'
 import { TokenPriceUtilOptions } from './types'
@@ -37,7 +36,7 @@ export default class CoinGeckoPriceUtil extends TokenPriceUtilBase {
 
       return data?.market_data?.current_price
     } catch (e: any) {
-      throw new HttpException(e.message)
+      throw new Error(e.message)
     }
   }
 
@@ -63,7 +62,7 @@ export default class CoinGeckoPriceUtil extends TokenPriceUtilBase {
 
       return data?.market_data?.current_price?.usd
     } catch (e: any) {
-      throw new HttpException(e.message)
+      throw new Error(e.message)
     }
   }
 }

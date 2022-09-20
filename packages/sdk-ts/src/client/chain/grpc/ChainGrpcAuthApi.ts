@@ -11,11 +11,18 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
+import { ChainModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcAuthApi extends BaseConsumer {
+  protected module: string = ChainModule.Auction
+
   async fetchModuleParams() {
     const request = new QueryParamsRequest()
 
@@ -29,8 +36,15 @@ export class ChainGrpcAuthApi extends BaseConsumer {
       return ChainGrpcAuthTransformer.moduleParamsResponseToModuleParams(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -47,8 +61,15 @@ export class ChainGrpcAuthApi extends BaseConsumer {
       >(request, AuthQuery.Account)
 
       return ChainGrpcAuthTransformer.accountResponseToAccount(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -68,8 +89,15 @@ export class ChainGrpcAuthApi extends BaseConsumer {
       >(request, AuthQuery.Accounts)
 
       return ChainGrpcAuthTransformer.accountsResponseToAccounts(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

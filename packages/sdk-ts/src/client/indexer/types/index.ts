@@ -16,3 +16,15 @@ export interface StreamStatusResponse {
   code: number
   metadata: any
 }
+
+export enum IndexerModule {
+  Account = 'indexer-account',
+  Auction = 'indexer-auction',
+  Derivatives = 'indexer-derivatives',
+  Explorer = 'indexer-explorer',
+  InsuranceFund = 'indexer-insurance-fund',
+  Meta = 'indexer-meta',
+  Oracle = 'indexer-oracle',
+  Spot = 'indexer-spot',
+  Transaction = 'indexer-transaction',
+}

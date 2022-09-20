@@ -1,4 +1,3 @@
-import { ContractException } from '@injectivelabs/exceptions'
 import {
   AccountAddress,
   EthereumChainId,
@@ -45,9 +44,7 @@ export class PeggyOldContract extends BaseContract<any> {
 
     return {
       callAsync() {
-        throw new ContractException(
-          'You cannot call this contract method as a call',
-        )
+        throw new Error('You cannot call this contract method as a call')
       },
 
       getABIEncodedTransactionData(): string {

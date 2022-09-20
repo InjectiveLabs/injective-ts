@@ -1,5 +1,4 @@
 import { HttpClient } from '@injectivelabs/utils'
-import { HttpException } from '@injectivelabs/exceptions'
 import {
   CoinGeckoCoin,
   CoinGeckoReturnObject,
@@ -49,7 +48,7 @@ export default class CoinGeckoApi {
 
       return data
     } catch (e: any) {
-      throw new HttpException(e.message)
+      throw new Error(e.message)
     }
   }
 
@@ -75,7 +74,7 @@ export default class CoinGeckoApi {
 
       return data?.market_data?.current_price
     } catch (e: any) {
-      throw new HttpException(e.message)
+      throw new Error(e.message)
     }
   }
 
@@ -101,7 +100,7 @@ export default class CoinGeckoApi {
 
       return data?.market_data?.current_price?.usd
     } catch (e: any) {
-      throw new HttpException(e.message)
+      throw new Error(e.message)
     }
   }
 
@@ -118,7 +117,7 @@ export default class CoinGeckoApi {
         actualParams,
       )) as CoinGeckoReturnObject<CoinGeckoCoin[]>
     } catch (e: any) {
-      throw new HttpException(e.message)
+      throw new Error(e.message)
     }
   }
 
@@ -136,7 +135,7 @@ export default class CoinGeckoApi {
 
       return data
     } catch (e: any) {
-      throw new HttpException(e.message)
+      throw new Error(e.message)
     }
   }
 
@@ -154,7 +153,7 @@ export default class CoinGeckoApi {
 
       return data
     } catch (e: any) {
-      throw new HttpException(e.message)
+      throw new Error(e.message)
     }
   }
 }

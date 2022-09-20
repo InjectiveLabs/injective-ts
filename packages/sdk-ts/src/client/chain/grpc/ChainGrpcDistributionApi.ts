@@ -10,12 +10,18 @@ import { Query as DistributionQuery } from '@injectivelabs/chain-api/cosmos/dist
 import { Coin } from '@injectivelabs/ts-types'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcDistributionTransformer } from '../transformers'
-import { ValidatorRewards } from '../types'
+import { ChainModule, ValidatorRewards } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcDistributionApi extends BaseConsumer {
+  protected module: string = ChainModule.Distribution
+
   async fetchModuleParams() {
     const request = new QueryDistributionParamsRequest()
 
@@ -30,7 +36,14 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         response,
       )
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -56,7 +69,11 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         response,
       )
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error)
     }
   }
 
@@ -86,7 +103,11 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         return [] as Coin[]
       }
 
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error)
     }
   }
 
@@ -105,7 +126,11 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         response,
       )
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error)
     }
   }
 
@@ -128,7 +153,11 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         return [] as ValidatorRewards[]
       }
 
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error)
     }
   }
 }

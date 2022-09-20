@@ -20,11 +20,18 @@ import { InjectiveAccountsRPC } from '@injectivelabs/indexer-api/injective_accou
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { IndexerGrpcAccountTransformer } from '../transformers'
+import { IndexerModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcAccountApi extends BaseConsumer {
+  protected module: string = IndexerModule.Account
+
   async fetchPortfolio(address: string) {
     const request = new PortfolioRequest()
 
@@ -40,8 +47,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
       return IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -64,8 +78,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
       return IndexerGrpcAccountTransformer.tradingRewardsResponseToTradingRewards(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -82,8 +103,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
       >(request, InjectiveAccountsRPC.SubaccountsList)
 
       return response.getSubaccountsList()
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -101,8 +129,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
       >(request, InjectiveAccountsRPC.SubaccountBalanceEndpoint)
 
       return IndexerGrpcAccountTransformer.balanceResponseToBalance(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -119,8 +154,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
       >(request, InjectiveAccountsRPC.SubaccountBalancesList)
 
       return IndexerGrpcAccountTransformer.balancesResponseToBalances(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -171,8 +213,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
       return IndexerGrpcAccountTransformer.transferHistoryResponseToTransferHistory(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -205,8 +254,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
       >(request, InjectiveAccountsRPC.SubaccountOrderSummary)
 
       return response.toObject()
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -228,8 +284,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
       >(request, InjectiveAccountsRPC.OrderStates)
 
       return response.toObject() /* TODO */
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

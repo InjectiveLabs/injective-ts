@@ -13,11 +13,18 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcBankTransformer } from '../transformers'
+import { ChainModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcBankApi extends BaseConsumer {
+  protected module: string = ChainModule.Bank
+
   async fetchModuleParams() {
     const request = new QueryBankParamsRequest()
 
@@ -31,8 +38,15 @@ export class ChainGrpcBankApi extends BaseConsumer {
       return ChainGrpcBankTransformer.moduleParamsResponseToModuleParams(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -55,8 +69,15 @@ export class ChainGrpcBankApi extends BaseConsumer {
       >(request, BankQuery.Balance)
 
       return ChainGrpcBankTransformer.balanceResponseToBalance(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -72,8 +93,15 @@ export class ChainGrpcBankApi extends BaseConsumer {
       >(request, BankQuery.AllBalances)
 
       return ChainGrpcBankTransformer.balancesResponseToBalances(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -93,8 +121,15 @@ export class ChainGrpcBankApi extends BaseConsumer {
       >(request, BankQuery.TotalSupply)
 
       return ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply(response)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

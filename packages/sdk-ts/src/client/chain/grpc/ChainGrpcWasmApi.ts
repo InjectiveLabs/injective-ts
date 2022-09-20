@@ -21,11 +21,18 @@ import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcWasmTransformer } from '../transformers'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
+import { ChainModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcWasmApi extends BaseConsumer {
+  protected module: string = ChainModule.Wasm
+
   async fetchContractAccountsBalance({
     contractAddress,
     pagination,
@@ -51,8 +58,15 @@ export class ChainGrpcWasmApi extends BaseConsumer {
       return ChainGrpcWasmTransformer.allContractStateResponseToContractAccountsBalanceWithPagination(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -75,8 +89,15 @@ export class ChainGrpcWasmApi extends BaseConsumer {
       return ChainGrpcWasmTransformer.contactInfoResponseToContractInfo(
         contractInfo,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -94,8 +115,15 @@ export class ChainGrpcWasmApi extends BaseConsumer {
       return ChainGrpcWasmTransformer.contactHistoryResponseToContractHistory(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -115,8 +143,15 @@ export class ChainGrpcWasmApi extends BaseConsumer {
       >(request, WasmQuery.SmartContractState)
 
       return response.toObject()
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -136,8 +171,15 @@ export class ChainGrpcWasmApi extends BaseConsumer {
       >(request, WasmQuery.RawContractState)
 
       return response.toObject()
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -160,8 +202,15 @@ export class ChainGrpcWasmApi extends BaseConsumer {
       return ChainGrpcWasmTransformer.contractCodesResponseToContractCodes(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -179,8 +228,15 @@ export class ChainGrpcWasmApi extends BaseConsumer {
       return ChainGrpcWasmTransformer.contractCodeResponseToContractCode(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -207,8 +263,15 @@ export class ChainGrpcWasmApi extends BaseConsumer {
       return ChainGrpcWasmTransformer.contractByCodeResponseToContractByCode(
         response,
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

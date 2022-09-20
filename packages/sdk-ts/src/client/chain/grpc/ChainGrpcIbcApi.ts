@@ -6,11 +6,18 @@ import {
   QueryDenomTracesResponse,
 } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
+import { ChainModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcIbcApi extends BaseConsumer {
+  protected module: string = ChainModule.Ibc
+
   async fetchDenomTrace(hash: string) {
     const request = new QueryDenomTraceRequest()
     request.setHash(hash)
@@ -24,7 +31,14 @@ export class ChainGrpcIbcApi extends BaseConsumer {
 
       return response.getDenomTrace()!.toObject()
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -40,7 +54,14 @@ export class ChainGrpcIbcApi extends BaseConsumer {
 
       return response.getDenomTracesList().map((trace) => trace.toObject())
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }

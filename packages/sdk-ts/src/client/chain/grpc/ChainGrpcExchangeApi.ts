@@ -17,11 +17,18 @@ import {
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcExchangeTransformer } from '../transformers'
+import { ChainModule } from '../types'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcExchangeApi extends BaseConsumer {
+  protected module: string = ChainModule.Exchange
+
   async fetchModuleParams() {
     const request = new QueryExchangeParamsRequest()
 
@@ -34,7 +41,14 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       return ChainGrpcExchangeTransformer.moduleParamsResponseToParams(response)
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -50,7 +64,14 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       return response.getState()!.toObject() /* TODO */
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -68,7 +89,14 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         response,
       )
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -87,7 +115,14 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         response,
       )
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -105,7 +140,14 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
         response,
       )
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -122,7 +164,14 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       return response.getAccountTradeRewardPointsList()
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -147,7 +196,14 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       return response.getAccountTradeRewardPointsList()
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 
@@ -163,7 +219,14 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
 
       return ChainGrpcExchangeTransformer.positionsResponseToPositions(response)
     } catch (e: any) {
-      throw new Error(e.message)
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
     }
   }
 }
