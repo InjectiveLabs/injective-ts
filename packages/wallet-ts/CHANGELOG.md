@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.104](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.103...@injectivelabs/wallet-ts@1.0.104) (2022-09-21)
+
+
+### Features
+
+* cosmostation initial support ([ea941e5](https://github.com/InjectiveLabs/injective-ts/commit/ea941e554121c548af13e0129d2101038c924dde))
+
+
+
+
+
 ## [1.0.103](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.102...@injectivelabs/wallet-ts@1.0.103) (2022-09-21)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

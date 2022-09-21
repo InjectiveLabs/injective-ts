@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.20...@injectivelabs/exceptions@1.0.21) (2022-09-21)
+
+
+### Features
+
+* cosmostation initial support ([ea941e5](https://github.com/InjectiveLabs/injective-ts/commit/ea941e554121c548af13e0129d2101038c924dde))
+
+
+
+
+
 ## [1.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.19...@injectivelabs/exceptions@1.0.20) (2022-09-21)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
