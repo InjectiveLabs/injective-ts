@@ -19,8 +19,8 @@ import {
   GetBlocksResponse,
   GetTxsRequest,
   GetTxsResponse,
-} from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
-import { InjectiveExplorerRPC } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb_service'
+} from '@injectivelabs/indexer-api/explorer_api_pb'
+import { ExplorerAPI } from '@injectivelabs/indexer-api/explorer_api_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcExplorerTransformer } from '../transformers'
 import { IndexerModule } from '../types'
@@ -43,8 +43,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetTxByTxHashRequest,
         GetTxByTxHashResponse,
-        typeof InjectiveExplorerRPC.GetTxByTxHash
-      >(request, InjectiveExplorerRPC.GetTxByTxHash)
+        typeof ExplorerAPI.GetTxByTxHash
+      >(request, ExplorerAPI.GetTxByTxHash)
 
       return IndexerGrpcExplorerTransformer.getTxByTxHashResponseToTx(response)
     } catch (e: unknown) {
@@ -83,8 +83,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetAccountTxsRequest,
         GetAccountTxsResponse,
-        typeof InjectiveExplorerRPC.GetAccountTxs
-      >(request, InjectiveExplorerRPC.GetAccountTxs)
+        typeof ExplorerAPI.GetAccountTxs
+      >(request, ExplorerAPI.GetAccountTxs)
 
       return IndexerGrpcExplorerTransformer.getAccountTxsResponseToAccountTxs(
         response,
@@ -109,8 +109,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetValidatorRequest,
         GetValidatorResponse,
-        typeof InjectiveExplorerRPC.GetValidator
-      >(request, InjectiveExplorerRPC.GetValidator)
+        typeof ExplorerAPI.GetValidator
+      >(request, ExplorerAPI.GetValidator)
 
       return IndexerGrpcExplorerTransformer.validatorResponseToValidator(
         response,
@@ -135,8 +135,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetValidatorUptimeRequest,
         GetValidatorUptimeResponse,
-        typeof InjectiveExplorerRPC.GetValidatorUptime
-      >(request, InjectiveExplorerRPC.GetValidatorUptime)
+        typeof ExplorerAPI.GetValidatorUptime
+      >(request, ExplorerAPI.GetValidatorUptime)
 
       return IndexerGrpcExplorerTransformer.getValidatorUptimeResponseToValidatorUptime(
         response,
@@ -186,8 +186,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetPeggyDepositTxsRequest,
         GetPeggyDepositTxsResponse,
-        typeof InjectiveExplorerRPC.GetPeggyDepositTxs
-      >(request, InjectiveExplorerRPC.GetPeggyDepositTxs)
+        typeof ExplorerAPI.GetPeggyDepositTxs
+      >(request, ExplorerAPI.GetPeggyDepositTxs)
 
       return IndexerGrpcExplorerTransformer.getPeggyDepositTxsResponseToPeggyDepositTxs(
         response,
@@ -237,8 +237,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetPeggyWithdrawalTxsRequest,
         GetPeggyWithdrawalTxsResponse,
-        typeof InjectiveExplorerRPC.GetPeggyWithdrawalTxs
-      >(request, InjectiveExplorerRPC.GetPeggyWithdrawalTxs)
+        typeof ExplorerAPI.GetPeggyWithdrawalTxs
+      >(request, ExplorerAPI.GetPeggyWithdrawalTxs)
 
       return IndexerGrpcExplorerTransformer.getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
         response,
@@ -282,8 +282,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetBlocksRequest,
         GetBlocksResponse,
-        typeof InjectiveExplorerRPC.GetBlocks
-      >(request, InjectiveExplorerRPC.GetBlocks)
+        typeof ExplorerAPI.GetBlocks
+      >(request, ExplorerAPI.GetBlocks)
 
       return response
     } catch (e: unknown) {
@@ -307,8 +307,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetBlockRequest,
         GetBlockResponse,
-        typeof InjectiveExplorerRPC.GetBlock
-      >(request, InjectiveExplorerRPC.GetBlock)
+        typeof ExplorerAPI.GetBlock
+      >(request, ExplorerAPI.GetBlock)
 
       return response
     } catch (e: unknown) {
@@ -368,8 +368,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetTxsRequest,
         GetTxsResponse,
-        typeof InjectiveExplorerRPC.GetTxs
-      >(request, InjectiveExplorerRPC.GetTxs)
+        typeof ExplorerAPI.GetTxs
+      >(request, ExplorerAPI.GetTxs)
 
       return response
     } catch (e: unknown) {
@@ -441,8 +441,8 @@ export class IndexerGrpcExplorerApi extends BaseConsumer {
       const response = await this.request<
         GetIBCTransferTxsRequest,
         GetIBCTransferTxsResponse,
-        typeof InjectiveExplorerRPC.GetIBCTransferTxs
-      >(request, InjectiveExplorerRPC.GetIBCTransferTxs)
+        typeof ExplorerAPI.GetIBCTransferTxs
+      >(request, ExplorerAPI.GetIBCTransferTxs)
 
       return IndexerGrpcExplorerTransformer.getIBCTransferTxsResponseToIBCTransferTxs(
         response,

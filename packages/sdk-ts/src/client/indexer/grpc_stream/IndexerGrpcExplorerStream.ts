@@ -1,10 +1,10 @@
-import { InjectiveExplorerRPCClient } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb_service'
+import { ExplorerAPIClient } from '@injectivelabs/indexer-api/explorer_api_pb_service'
 import {
   StreamBlocksRequest,
   StreamBlocksResponse,
   StreamTxsRequest,
   StreamTxsResponse,
-} from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
+} from '@injectivelabs/indexer-api/explorer_api_pb'
 import { StreamStatusResponse } from '../types'
 import { isServerSide } from '../../../utils/helpers'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
@@ -28,10 +28,10 @@ export type TransactionsStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcExplorerStream {
-  protected client: InjectiveExplorerRPCClient
+  protected client: ExplorerAPIClient
 
   constructor(endpoint: string) {
-    this.client = new InjectiveExplorerRPCClient(endpoint, {
+    this.client = new ExplorerAPIClient(endpoint, {
       transport: isServerSide() ? NodeHttpTransport() : undefined,
     })
   }

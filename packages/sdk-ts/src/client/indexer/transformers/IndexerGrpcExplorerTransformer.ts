@@ -1,8 +1,8 @@
 import {
   BlockInfo,
-  GetTxByTxHashResponse as TxData,
   StreamTxsResponse,
-} from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
+  TxDetailData,
+} from '@injectivelabs/indexer-api/explorer_api_pb'
 import {
   BankMsgSendTransaction,
   Block,
@@ -34,23 +34,27 @@ import {
   GetPeggyDepositTxsResponse,
   GetPeggyWithdrawalTxsResponse,
   GetIBCTransferTxsResponse,
-} from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
-import { grpcPagingToPaging } from '../../../utils'
+} from '@injectivelabs/indexer-api/explorer_api_pb'
+import { fromUtf8, grpcPagingToPaging } from '../../../utils'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcExplorerTransformer {
   static getTxByTxHashResponseToTx(tx: GetTxByTxHashResponse): Transaction {
-    return IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(tx)
+    return IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(
+      tx.getData()!,
+    )
   }
 
   static getAccountTxsResponseToAccountTxs(response: GetAccountTxsResponse) {
-    const txs = response.getDataList()
+    const txsData = response.getDataList()
     const pagination = response.getPaging()
 
     return {
-      txs: IndexerGrpcExplorerTransformer.grpcTransactionsToTransactions(txs),
+      txs: IndexerGrpcExplorerTransformer.grpcTransactionsToTransactions(
+        txsData,
+      ),
       pagination: grpcPagingToPaging(pagination),
     }
   }
@@ -59,7 +63,7 @@ export class IndexerGrpcExplorerTransformer {
     response: GetValidatorUptimeResponse,
   ) {
     return response
-      .getFieldList()
+      .getDataList()
       .map((field) =>
         IndexerGrpcExplorerTransformer.grpcValidatorUptimeToValidatorUptime(
           field,
@@ -96,8 +100,10 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static validatorResponseToValidator(
-    validator: GetValidatorResponse,
+    validatorResponse: GetValidatorResponse,
   ): ExplorerValidator {
+    const validator = validatorResponse.getData()!
+
     return {
       id: validator.getId(),
       moniker: validator.getMoniker(),
@@ -166,9 +172,11 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcTransactionToBankMsgSendTransaction(
-    tx: TxData,
+    tx: TxDetailData,
   ): BankMsgSendTransaction {
-    const [message] = JSON.parse(tx.getMessages()) as GrpcBankMsgSendMessage[]
+    const [message] = JSON.parse(
+      fromUtf8(tx.getMessages()),
+    ) as GrpcBankMsgSendMessage[]
 
     return {
       blockNumber: tx.getBlockNumber(),
@@ -181,7 +189,7 @@ export class IndexerGrpcExplorerTransformer {
     }
   }
 
-  static grpcTransactionToTransaction(tx: TxData): Transaction {
+  static grpcTransactionToTransaction(tx: TxDetailData): Transaction {
     return {
       id: tx.getId(),
       blockNumber: tx.getBlockNumber(),
@@ -216,12 +224,12 @@ export class IndexerGrpcExplorerTransformer {
             {},
           ),
       })),
-      messages: JSON.parse(tx.getMessages()),
+      messages: JSON.parse(fromUtf8(tx.getMessages())),
     }
   }
 
   static grpcTransactionsToTransactions(
-    txs: Array<TxData>,
+    txs: Array<TxDetailData>,
   ): Array<Transaction> {
     return txs.map((tx) =>
       IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(tx),
