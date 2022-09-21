@@ -1567,6 +1567,11 @@
   resolved "https://registry.yarnpkg.com/@cosmjs/utils/-/utils-0.29.0.tgz#0a61e6d608e9f6f89a278cc71f4e7cee01199657"
   integrity sha512-NiJk3ISX+FU1cQcTTgmJcY84A8mV/p8L5CRewp/2jc/lUmo8j9lMGbX17U7NxVQ9RX5RmrwgdjYnBASzhRCVmA==
 
+"@cosmostation/extension-client@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@cosmostation/extension-client/-/extension-client-0.1.9.tgz#fe1dfa95ab9f05f3590c82acd0323f5b1eed2659"
+  integrity sha512-WVimcOsSZh6/mCMJmyiQIMt551uzMjfz2eqohHjNpgD8VewMw3cMgGBic037/Yigmp6fcuUh7D0IMdb1Xd7eMg==
+
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
   resolved "https://registry.npmjs.org/@cspotcode/source-map-support/-/source-map-support-0.8.1.tgz#00629c35a688e05a88b1cda684fb9d5e73f000a1"

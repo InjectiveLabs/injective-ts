@@ -7,12 +7,12 @@ import {
 
 export const chainErrorMessagesMap = {
   'insufficient fee': {
-    message: 'You do not have enough funds to cover transaction fees.',
+    message: 'You do not have enough funds to cover the transaction fees.',
     code: ChainCosmosErrorCode.ErrInsufficientFee,
   },
 
   'insufficient funds': {
-    message: 'You do not have enough funds to cover transaction fees.',
+    message: 'You do not have enough funds.',
     code: ChainCosmosErrorCode.ErrInsufficientFunds,
   },
 

@@ -18,6 +18,7 @@ import {
 } from './types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
+import Cosmostation from './strategies/Cosmostation'
 import Trezor from './strategies/Trezor'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
@@ -54,6 +55,8 @@ const createWallet = ({
       return new Torus({ ...args, web3 })
     case Wallet.Leap:
       return new Leap({ ...args })
+    case Wallet.Cosmostation:
+      return new Cosmostation({ ...args })
     case Wallet.WalletConnect:
       return new WalletConnect({ ...args, walletOptions: args.options })
     default:
