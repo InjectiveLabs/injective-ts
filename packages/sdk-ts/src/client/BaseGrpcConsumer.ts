@@ -31,8 +31,6 @@ export default class BaseGrpcConsumer {
         onEnd: (res) => {
           const { statusMessage, status, message } = res
 
-          console.log({ statusMessage, status, message, headers: res.headers })
-
           if (status === grpc.Code.OK && message) {
             return resolve(message as TResponse)
           }

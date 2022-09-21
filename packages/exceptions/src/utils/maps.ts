@@ -26,11 +26,21 @@ export const mapFailedTransactionMessage = (
     Object.keys(chainErrorMessagesMap) as Array<
       keyof typeof chainErrorMessagesMap
     >
-  ).find((key) => key.toLowerCase() === parsedMessage.toLowerCase())
+  ).find((key) => parsedMessage.toLowerCase().includes(key.toLowerCase()))
 
   if (!messageInMapKey) {
     return { message: parsedMessage, code: UnspecifiedErrorCode }
   }
 
   return chainErrorMessagesMap[messageInMapKey]
+}
+
+export const mapMetamaskMessage = (message: string): string => {
+  const parsedMessage = message.trim().toLowerCase()
+
+  if (parsedMessage.includes('User denied message signature'.toLowerCase())) {
+    return 'You have rejected signing the transaction'
+  }
+
+  return parsedMessage
 }

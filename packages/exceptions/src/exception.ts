@@ -134,7 +134,7 @@ export abstract class ConcreteException extends Error implements Exception {
         message: this.message,
         code: this.code,
         type: this.type,
-        contextModule: this.contextCode,
+        contextModule: this.contextModule,
         contextCode: this.contextCode,
       }),
     )

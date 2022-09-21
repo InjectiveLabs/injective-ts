@@ -1,5 +1,6 @@
 import { ConcreteException } from '../exception'
 import { ErrorContext, ErrorType } from '../types'
+import { mapMetamaskMessage } from '../utils/maps'
 
 const removeMetamaskFromErrorString = (message: string): string =>
   message
@@ -17,6 +18,6 @@ export class MetamaskException extends ConcreteException {
   public parseMessage(): void {
     const { message } = this
 
-    this.setMessage(removeMetamaskFromErrorString(message))
+    this.setMessage(mapMetamaskMessage(removeMetamaskFromErrorString(message)))
   }
 }
