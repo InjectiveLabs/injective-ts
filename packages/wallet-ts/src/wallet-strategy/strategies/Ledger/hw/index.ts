@@ -4,6 +4,7 @@ import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 import TransportU2F from '@ledgerhq/hw-transport-u2f'
 import EthereumApp from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
+import { LedgerException } from '@injectivelabs/exceptions'
 import AccountManager from './AccountManager'
 
 export default class LedgerTransport {
@@ -38,26 +39,8 @@ export default class LedgerTransport {
 
         return await TransportWebUSB.request()
       }
-    } catch (e: any) {
-      const message = e.message || e
-
-      if (message.includes('No device selected.')) {
-        throw new Error(
-          'Please make sure your Ledger device is connected, unlocked and your Ethereum app is open',
-        )
-      }
-
-      if (message.includes('Unable to set device configuration.')) {
-        throw new Error(
-          'Please restart your Ledger device and try connecting again',
-        )
-      }
-
-      if (message.includes('Cannot read properties of undefined')) {
-        throw new Error('Please make sure your Ledger device is connected')
-      }
-
-      throw new Error(message)
+    } catch (e: unknown) {
+      throw new LedgerException(new Error((e as any).message))
     }
 
     return TransportU2F.create()

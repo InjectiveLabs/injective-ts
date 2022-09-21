@@ -4,6 +4,7 @@ import {
   NormalizedCacheObject,
   ApolloQueryResult,
 } from '@apollo/client/core'
+import { HttpRequestException } from '@injectivelabs/exceptions'
 import { USER_DEPOSITS, USER_BRIDGE_DEPOSITS } from './queries'
 import { UserDepositResponse } from './types'
 
@@ -37,7 +38,7 @@ export class ApolloConsumer {
     })) as ApolloQueryResult<UserDepositResponse>
 
     if (response.errors && response.errors.length > 0) {
-      throw new Error(response.errors[0].message)
+      throw new HttpRequestException(new Error(response.errors[0].message))
     }
 
     return response.data.deposits
@@ -53,7 +54,7 @@ export class ApolloConsumer {
     })) as ApolloQueryResult<UserDepositResponse>
 
     if (response.errors && response.errors.length > 0) {
-      throw new Error(response.errors[0].message)
+      throw new HttpRequestException(new Error(response.errors[0].message))
     }
 
     return response.data.deposits

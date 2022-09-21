@@ -1,6 +1,7 @@
 import { HttpClient, BigNumber, BigNumberInWei } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { GWEI_IN_WEI, DEFAULT_GAS_PRICE } from '../constants'
+import { HttpRequestException } from '@injectivelabs/exceptions'
 
 export interface MetamaskGasServerResult {
   low: {
@@ -103,16 +104,21 @@ const fetchGasPriceFromOwlracle = async (): Promise<string> => {
     }
 
     if (!response || (response && !response.data)) {
-      throw new Error('No response from Owrlacle')
+      throw new HttpRequestException(new Error('No response from Owrlacle'))
     }
+
     const { speeds } = response.data
     const [, , faster] = speeds
 
     return new BigNumberInWei(
       new BigNumber(faster.gasPrice).multipliedBy(GWEI_IN_WEI),
     ).toFixed(0)
-  } catch (e: any) {
-    throw new Error(e.message)
+  } catch (e: unknown) {
+    if (e instanceof HttpRequestException) {
+      throw e
+    }
+
+    throw new HttpRequestException(new Error((e as any).message))
   }
 }
 
@@ -125,7 +131,7 @@ const fetchGasPriceFromEtherchain = async (): Promise<string> => {
     }
 
     if (!response || (response && !response.data)) {
-      throw new Error('No response from Etherchain')
+      throw new HttpRequestException(new Error('No response from Etherchain'))
     }
 
     return new BigNumberInWei(
@@ -133,8 +139,12 @@ const fetchGasPriceFromEtherchain = async (): Promise<string> => {
         response.data.currentBaseFee * response.data.fast,
       ).multipliedBy(GWEI_IN_WEI),
     ).toFixed(0)
-  } catch (e: any) {
-    throw new Error(e.message)
+  } catch (e: unknown) {
+    if (e instanceof HttpRequestException) {
+      throw e
+    }
+
+    throw new HttpRequestException(new Error((e as any).message))
   }
 }
 
@@ -147,7 +157,9 @@ const fetchGasPriceFromEthGasStation = async (): Promise<string> => {
     }
 
     if (!response || (response && !response.data)) {
-      throw new Error('No response from Ethgasstation')
+      throw new HttpRequestException(
+        new Error('No response from Ethgasstation'),
+      )
     }
 
     return new BigNumberInWei(
@@ -155,8 +167,12 @@ const fetchGasPriceFromEthGasStation = async (): Promise<string> => {
         .times(2.125)
         .multipliedBy(GWEI_IN_WEI),
     ).toFixed(0)
-  } catch (e: any) {
-    throw new Error(e.message)
+  } catch (e: unknown) {
+    if (e instanceof HttpRequestException) {
+      throw e
+    }
+
+    throw new HttpRequestException(new Error((e as any).message))
   }
 }
 
@@ -170,7 +186,7 @@ const fetchGasPriceFromMetaswapGasServer = async (): Promise<string> => {
     }
 
     if (!response || (response && !response.data)) {
-      throw new Error('No response from Metamask')
+      throw new HttpRequestException(new Error('No response from Metamask'))
     }
 
     return new BigNumberInWei(
@@ -179,8 +195,12 @@ const fetchGasPriceFromMetaswapGasServer = async (): Promise<string> => {
         .times(2.125)
         .multipliedBy(GWEI_IN_WEI),
     ).toFixed(0)
-  } catch (e: any) {
-    throw new Error(e.message)
+  } catch (e: unknown) {
+    if (e instanceof HttpRequestException) {
+      throw e
+    }
+
+    throw new HttpRequestException(new Error((e as any).message))
   }
 }
 

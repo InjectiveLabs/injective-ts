@@ -7,6 +7,11 @@ import {
 } from '@axelar-network/axelarjs-sdk'
 import { providers, Contract } from 'ethers'
 import { BigNumberInWei } from '@injectivelabs/utils'
+import {
+  ErrorType,
+  MetamaskException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import { MOONBEAM_MAINNET_CHAIN_ID } from './constants'
 import { erc20Abi } from './erc20'
 
@@ -115,7 +120,13 @@ export class AxelarApi {
     const provider = (window as any).ethereum
 
     if (!provider) {
-      throw new Error('Please install Metamask extension')
+      throw new MetamaskException(
+        new Error('Please install Metamask extension'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletNotInstalledError,
+        },
+      )
     }
 
     await this.validateNetwork()
@@ -136,7 +147,13 @@ export class AxelarApi {
     const provider = (window as any).ethereum
 
     if (!provider) {
-      throw new Error('Please install Metamask extension')
+      throw new MetamaskException(
+        new Error('Please install Metamask extension'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletNotInstalledError,
+        },
+      )
     }
 
     const web3Provider = new providers.Web3Provider(provider, 'any')
@@ -144,8 +161,12 @@ export class AxelarApi {
     const network = await web3Provider.getNetwork()
 
     if (network.chainId !== MOONBEAM_MAINNET_CHAIN_ID) {
-      throw new Error(
-        'Please switch to the Moonbeam mainnet network in Metamask',
+      throw new MetamaskException(
+        new Error('Please switch to the Moonbeam mainnet network in Metamask'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+        },
       )
     }
   }

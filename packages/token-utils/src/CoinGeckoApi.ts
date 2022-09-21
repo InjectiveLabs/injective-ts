@@ -1,4 +1,5 @@
 import { HttpClient } from '@injectivelabs/utils'
+import { HttpRequestException } from '@injectivelabs/exceptions'
 import {
   CoinGeckoCoin,
   CoinGeckoReturnObject,
@@ -47,8 +48,8 @@ export default class CoinGeckoApi {
       )) as CoinGeckoReturnObject<CoinGeckoCoinResponse>
 
       return data
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 
@@ -73,8 +74,8 @@ export default class CoinGeckoApi {
       )) as CoinGeckoReturnObject<CoinGeckoCoinResponse>
 
       return data?.market_data?.current_price
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 
@@ -99,8 +100,8 @@ export default class CoinGeckoApi {
       )) as CoinGeckoReturnObject<CoinGeckoCoinResponse>
 
       return data?.market_data?.current_price?.usd
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 
@@ -116,8 +117,8 @@ export default class CoinGeckoApi {
         '/coins/list',
         actualParams,
       )) as CoinGeckoReturnObject<CoinGeckoCoin[]>
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 
@@ -134,8 +135,8 @@ export default class CoinGeckoApi {
       )) as CoinGeckoReturnObject<CoinGeckoMarketChartResponse>
 
       return data
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 
@@ -152,8 +153,8 @@ export default class CoinGeckoApi {
       )) as CoinGeckoReturnObject<CoinGeckoCoinResponse>
 
       return data
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 }

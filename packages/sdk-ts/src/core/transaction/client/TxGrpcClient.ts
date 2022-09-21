@@ -24,6 +24,10 @@ import {
   TxClientSimulateResponse,
   TxConcreteClient,
 } from '../types/tx'
+import {
+  HttpRequestException,
+  TransactionException,
+} from '@injectivelabs/exceptions'
 
 if (isServerSide()) {
   grpc.setDefaultTransport(NodeHttpTransport())
@@ -66,8 +70,10 @@ export class TxGrpcClient implements TxConcreteClient {
         ...txResponse.toObject(),
         txHash: txResponse.getTxhash(),
       }
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message), {
+        contextModule: 'tx',
+      })
     }
   }
 
@@ -90,8 +96,10 @@ export class TxGrpcClient implements TxConcreteClient {
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
     }
 
-    throw new Error(
-      `Transaction was not included in a block before timeout of ${timeout}ms`,
+    throw new TransactionException(
+      new Error(
+        `Transaction was not included in a block before timeout of ${timeout}ms`,
+      ),
     )
   }
 
@@ -118,8 +126,8 @@ export class TxGrpcClient implements TxConcreteClient {
             })
           }),
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new TransactionException(new Error((e as any).message))
     }
   }
 
@@ -159,8 +167,12 @@ export class TxGrpcClient implements TxConcreteClient {
             return resolve(result)
           }),
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new TransactionException(new Error((e as any).message))
     }
   }
 
@@ -186,7 +198,9 @@ export class TxGrpcClient implements TxConcreteClient {
 
             if (!txResponse) {
               return reject(
-                new Error('There was an issue broadcasting the transaction'),
+                new Error(
+                  'There was an problem while broadcasting the transaction',
+                ),
               )
             }
 
@@ -198,8 +212,8 @@ export class TxGrpcClient implements TxConcreteClient {
             return resolve(result as TxClientBroadcastResponse)
           }),
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new TransactionException(new Error((e as any).message))
     }
   }
 

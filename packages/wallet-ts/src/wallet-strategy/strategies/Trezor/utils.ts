@@ -1,4 +1,7 @@
 /* eslint-disable camelcase */
+
+import { TrezorException } from '@injectivelabs/exceptions'
+
 // eslint-disable-next-line import/no-unresolved
 const sigUtil = require('@metamask/eth-sig-util')
 
@@ -39,7 +42,9 @@ export const transformTypedData = <T>(
   metamask_v4_compat: boolean = true,
 ): { domain_separator_hash: string; message_hash?: string } & T => {
   if (!metamask_v4_compat) {
-    throw new Error('Trezor: Only version 4 of typed data signing is supported')
+    throw new TrezorException(
+      new Error('Trezor: Only version 4 of typed data signing is supported'),
+    )
   }
 
   const version = sigUtil.SignTypedDataVersion.V4

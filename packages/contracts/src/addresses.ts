@@ -1,6 +1,7 @@
 import { ZERO_ADDRESS } from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
+import { GeneralException } from '@injectivelabs/exceptions'
 import {
   ContractAddressesForChainId,
   ContractAddressesForNetwork,
@@ -97,7 +98,7 @@ export const getContractAddressesForChainOrThrow = (
   } = contractAddresses
 
   if (chainToAddresses[chainId] === undefined) {
-    throw new Error(`Unknown chain id (${chainId}).`)
+    throw new GeneralException(new Error(`Unknown chain id (${chainId}).`))
   }
 
   return { ...chainToAddresses[chainId] }
@@ -111,7 +112,7 @@ export const getContractAddressesForNetworkOrThrow = (
   } = contractAddressesByNetwork
 
   if (chainToAddresses[network] === undefined) {
-    throw new Error(`Unknown network (${network}).`)
+    throw new GeneralException(new Error(`Unknown network (${network}).`))
   }
 
   return { ...chainToAddresses[network] }

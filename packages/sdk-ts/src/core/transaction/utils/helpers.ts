@@ -11,6 +11,7 @@ import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { createTransaction, CreateTransactionArgs } from '../tx'
 import { MessageGenerated } from '../types'
 import { BaseAccount } from '../../../classes'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export const createAnyMessage = (msg: MessageGenerated) => {
   const message = new Any()
@@ -109,7 +110,9 @@ export const createTransactionForAddressAndMsg = async (
   const pubKey = params.pubKey || baseAccount.pubKey.key
 
   if (!pubKey) {
-    throw new Error(`The pubKey for ${params.address} is missing.`)
+    throw new GeneralException(
+      new Error(`The pubKey for ${params.address} is missing.`),
+    )
   }
 
   return createTransaction({

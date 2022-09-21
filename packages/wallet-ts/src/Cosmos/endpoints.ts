@@ -4,6 +4,7 @@ import {
   TestnetCosmosChainId,
   DevnetCosmosChainId,
 } from '@injectivelabs/ts-types'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export const getEndpointsFromChainId = (
   chainId: TestnetCosmosChainId | CosmosChainId | ChainId | DevnetCosmosChainId,
@@ -85,6 +86,8 @@ export const getEndpointsFromChainId = (
         rest: 'https://lcd.stride.injective.network',
       }
     default:
-      throw new Error(`Endpoints for ${chainId} not found`)
+      throw new GeneralException(
+        new Error(`Endpoints for ${chainId} not found`),
+      )
   }
 }

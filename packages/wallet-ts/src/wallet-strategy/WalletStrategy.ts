@@ -7,6 +7,7 @@ import {
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { Msgs } from '@injectivelabs/sdk-ts'
+import { GeneralException } from '@injectivelabs/exceptions'
 import Metamask from './strategies/Metamask'
 import {
   ConcreteWalletStrategy,
@@ -56,7 +57,9 @@ const createWallet = ({
     case Wallet.WalletConnect:
       return new WalletConnect({ ...args, walletOptions: args.options })
     default:
-      throw new Error(`The ${wallet} concrete wallet strategy is not supported`)
+      throw new GeneralException(
+        new Error(`The ${wallet} concrete wallet strategy is not supported`),
+      )
   }
 }
 
@@ -101,7 +104,9 @@ export default class WalletStrategy {
 
   public getStrategy(): ConcreteWalletStrategy {
     if (!this.strategies[this.wallet]) {
-      throw new Error(`Wallet ${this.wallet} is not enabled/available!`)
+      throw new GeneralException(
+        new Error(`Wallet ${this.wallet} is not enabled/available!`),
+      )
     }
 
     return this.strategies[this.wallet] as ConcreteWalletStrategy

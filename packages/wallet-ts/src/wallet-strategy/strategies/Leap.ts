@@ -40,7 +40,10 @@ export default class Leap
 
     try {
       if (!(await leapWallet.checkChainIdSupport())) {
-        throw new Error(`The ${chainId} is not supported on Leap.`)
+        throw new CosmosWalletException(
+          new Error(`The ${chainId} is not supported on Leap.`),
+          { type: ErrorType.WalletError },
+        )
       }
 
       const accounts = await leapWallet.getAccounts()

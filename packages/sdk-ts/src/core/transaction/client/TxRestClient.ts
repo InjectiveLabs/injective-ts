@@ -8,6 +8,14 @@ import {
 } from '../types/tx-rest-client'
 import { TxClient } from './TxClient'
 import { TxClientBroadcastOptions, TxConcreteClient } from '../types/tx'
+import {
+  HttpRequestException,
+  HttpRequestMethod,
+  TransactionException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
+import axios, { AxiosError } from 'axios'
+import { StatusCodes } from 'http-status-codes'
 
 export class TxRestClient implements TxConcreteClient {
   public httpClient: HttpClient
@@ -42,8 +50,10 @@ export class TxRestClient implements TxConcreteClient {
         height: parseInt(txResponse.height, 10),
         txHash: txResponse.txhash,
       }
-    } catch (e: any) {
-      throw new Error(e)
+    } catch (e: unknown) {
+      throw new TransactionException(new Error((e as any).message), {
+        contextModule: 'tx',
+      })
     }
   }
 
@@ -67,60 +77,68 @@ export class TxRestClient implements TxConcreteClient {
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
     }
 
-    throw new Error(
-      `Transaction was not included in a block before timeout of ${timeout}ms`,
+    throw new TransactionException(
+      new Error(
+        `Transaction was not included in a block before timeout of ${timeout}ms`,
+      ),
     )
   }
 
   public async simulate(txRaw: TxRaw) {
-    try {
-      const response = await this.postRaw<SimulationResponse>(
-        '/cosmos/tx/v1beta1/simulate',
-        {
-          tx_bytes: TxClient.encode(txRaw),
-        },
-      )
+    const response = await this.postRaw<SimulationResponse>(
+      '/cosmos/tx/v1beta1/simulate',
+      {
+        tx_bytes: TxClient.encode(txRaw),
+      },
+    )
 
-      return {
-        result: {
-          data: response.result.data,
-          log: response.result.log,
-          eventsList: response.result.events,
-        },
-        gasInfo: {
-          gasWanted: parseInt(response.gas_info.gas_wanted, 10),
-          gasUsed: parseInt(response.gas_info.gas_used, 10),
-        },
-      }
-    } catch (e: any) {
-      throw new Error(e.response ? e.response.data.message : e)
+    return {
+      result: {
+        data: response.result.data,
+        log: response.result.log,
+        eventsList: response.result.events,
+      },
+      gasInfo: {
+        gasWanted: parseInt(response.gas_info.gas_wanted, 10),
+        gasUsed: parseInt(response.gas_info.gas_used, 10),
+      },
     }
   }
 
   public async broadcast(tx: TxRaw, options?: TxClientBroadcastOptions) {
     const { timeout } = options || { timeout: 30000 }
-    const { tx_response: txResponse } = await this.broadcastTx<{
-      tx_response: TxInfo
-    }>(tx, BroadcastMode.Sync)
 
-    if (txResponse.code !== 0) {
-      return {
-        height: parseInt(txResponse.height || '0', 10),
-        txHash: txResponse.txhash,
-        rawLog: txResponse.rawLog,
-        code: txResponse.code,
-        codespace: txResponse.codespace,
-        gasUsed: 0,
-        gasWanted: 0,
-        timestamp: '',
-        logs: [],
-        data: '',
-        info: '',
-        tx: undefined,
+    try {
+      const { tx_response: txResponse } = await this.broadcastTx<{
+        tx_response: TxInfo
+      }>(tx, BroadcastMode.Sync)
+
+      if (txResponse.code !== 0) {
+        return {
+          height: parseInt(txResponse.height || '0', 10),
+          txHash: txResponse.txhash,
+          rawLog: txResponse.rawLog,
+          code: txResponse.code,
+          codespace: txResponse.codespace,
+          gasUsed: 0,
+          gasWanted: 0,
+          timestamp: '',
+          logs: [],
+          data: '',
+          info: '',
+          tx: undefined,
+        }
       }
-    }
 
-    return this.fetchTxPoll(txResponse.txhash, timeout)
+      return this.fetchTxPoll(txResponse.txhash, timeout)
+    } catch (e) {
+      if (e instanceof HttpRequestException) {
+        if (e.code === StatusCodes.OK) {
+        }
+      }
+
+      throw e
+    }
   }
 
   /**
@@ -153,33 +171,77 @@ export class TxRestClient implements TxConcreteClient {
     txRaw: TxRaw,
     mode: BroadcastMode = BroadcastMode.Sync,
   ): Promise<T> {
-    try {
-      const response = await this.postRaw<T>('cosmos/tx/v1beta1/txs', {
-        tx_bytes: TxClient.encode(txRaw),
-        mode,
-      })
+    const response = await this.postRaw<T>('cosmos/tx/v1beta1/txs', {
+      tx_bytes: TxClient.encode(txRaw),
+      mode,
+    })
 
-      return response
-    } catch (e: any) {
-      throw new Error(e.response ? e.response.data.message : e)
-    }
+    return response
   }
 
   private async postRaw<T>(
     endpoint: string,
     params: URLSearchParams | any = {},
   ): Promise<T> {
-    return this.httpClient
-      .post<URLSearchParams | any, { data: T }>(endpoint, params)
-      .then((d) => d.data)
+    try {
+      return this.httpClient
+        .post<URLSearchParams | any, { data: T }>(endpoint, params)
+        .then((d) => d.data)
+    } catch (e) {
+      const error = e as Error | AxiosError
+
+      if (axios.isAxiosError(error)) {
+        const message = error.response
+          ? typeof error.response.data === 'string'
+            ? error.response.data
+            : error.response.statusText
+          : `The request to ${endpoint} has failed.`
+
+        throw new HttpRequestException(new Error(message), {
+          code: error.response
+            ? error.response.status
+            : StatusCodes.BAD_REQUEST,
+          method: HttpRequestMethod.Post,
+        })
+      }
+
+      throw new HttpRequestException(new Error((error as any).message), {
+        code: UnspecifiedErrorCode,
+        contextModule: HttpRequestMethod.Post,
+      })
+    }
   }
 
   private async getRaw<T>(
     endpoint: string,
     params: URLSearchParams | any = {},
   ): Promise<T> {
-    return this.httpClient
-      .get<URLSearchParams | any, { data: T }>(endpoint, params)
-      .then((d) => d.data)
+    try {
+      return this.httpClient
+        .get<URLSearchParams | any, { data: T }>(endpoint, params)
+        .then((d) => d.data)
+    } catch (e) {
+      const error = e as Error | AxiosError
+
+      if (axios.isAxiosError(error)) {
+        const message = error.response
+          ? typeof error.response.data === 'string'
+            ? error.response.data
+            : error.response.statusText
+          : `The request to ${endpoint} has failed.`
+
+        throw new HttpRequestException(new Error(message), {
+          code: error.response
+            ? error.response.status
+            : StatusCodes.BAD_REQUEST,
+          method: HttpRequestMethod.Get,
+        })
+      }
+
+      throw new HttpRequestException(new Error((error as any).message), {
+        code: UnspecifiedErrorCode,
+        contextModule: HttpRequestMethod.Get,
+      })
+    }
   }
 }

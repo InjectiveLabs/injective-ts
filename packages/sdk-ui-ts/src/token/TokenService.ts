@@ -28,6 +28,7 @@ import {
 } from '../types'
 import { ibcTokens, TokenType } from '@injectivelabs/token-metadata'
 import { Token, IbcToken } from '@injectivelabs/token-metadata'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export class TokenService {
   public network: Network
@@ -80,7 +81,7 @@ export class TokenService {
     const { network } = this
 
     if (!denom.startsWith('ibc/')) {
-      throw new Error(`${denom} is not an IBC denom`)
+      throw new GeneralException(new Error(`${denom} is not an IBC denom`))
     }
 
     const denomTraceFromCache = await this.fetchDenomTraceFromCache(denom)

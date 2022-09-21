@@ -32,6 +32,7 @@ export default class BaseRestConsumer {
             ? error.response.data
             : error.response.statusText
           : `The request to ${endpoint} has failed.`
+
         throw new HttpRequestException(new Error(message), {
           code: error.response
             ? error.response.status

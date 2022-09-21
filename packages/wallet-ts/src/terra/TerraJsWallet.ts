@@ -10,6 +10,7 @@ import {
 import { Height } from '@terra-money/terra.js/dist/core/ibc/msgs/client/Height'
 import { BigNumberInBase, DEFAULT_GAS_LIMIT, sleep } from '@injectivelabs/utils'
 import { firstValueFrom } from 'rxjs'
+import { CosmosWalletException } from '@injectivelabs/exceptions'
 
 export class TerraJsWallet {
   private walletController?: WalletController
@@ -38,13 +39,15 @@ export class TerraJsWallet {
       await this.extensionConnectTypeIsInAvailableConnectTypes()
 
     if (!extensionIsEnabled) {
-      throw new Error('Extension connect type is not available')
+      throw new CosmosWalletException(
+        new Error('Extension connect type is not available'),
+      )
     }
 
     try {
       controller.connect(ConnectType.EXTENSION)
     } catch (e: any) {
-      throw new Error(e.message)
+      throw new CosmosWalletException(new Error(e.message))
     }
   }
 
@@ -52,7 +55,9 @@ export class TerraJsWallet {
     const wallets = await this.getWallets()
 
     if (!wallets) {
-      throw new Error('There are no wallets connected on Terra Extension')
+      throw new CosmosWalletException(
+        new Error('There are no wallets connected on Terra Extension'),
+      )
     }
 
     return wallets.map((wallet) => wallet.terraAddress)
@@ -68,7 +73,9 @@ export class TerraJsWallet {
     const networkInfo = await this.getNetwork()
 
     if (!networkInfo) {
-      throw new Error('We could not fetch network info from Terra Extension')
+      throw new CosmosWalletException(
+        new Error('We could not fetch network info from Terra Extension'),
+      )
     }
 
     const lcdClient = new LCDClient({
@@ -89,7 +96,9 @@ export class TerraJsWallet {
       )
 
       if (!balance) {
-        throw new Error(`No balance found for ${denom}`)
+        throw new CosmosWalletException(
+          new Error(`No balance found for ${denom}`),
+        )
       }
 
       return [{ denom: balance.denom, amount: balance.amount.toString() }]
@@ -121,7 +130,9 @@ export class TerraJsWallet {
       const networkInfo = await this.getNetwork()
 
       if (!networkInfo) {
-        throw new Error('We could not fetch network info from Terra Extension')
+        throw new CosmosWalletException(
+          new Error('We could not fetch network info from Terra Extension'),
+        )
       }
 
       const lcdClient = new LCDClient({
@@ -133,7 +144,9 @@ export class TerraJsWallet {
       )) as any
       responseHeight = height
     } catch (e) {
-      throw new Error('We could not fetch network info from Terra Extension')
+      throw new CosmosWalletException(
+        new Error('We could not fetch network info from Terra Extension'),
+      )
     }
 
     const decimalPlaces = 6
@@ -172,7 +185,7 @@ export class TerraJsWallet {
 
       return response
     } catch (e: any) {
-      throw new Error(e.message)
+      throw new CosmosWalletException(new Error(e.message))
     }
   }
 

@@ -1,4 +1,5 @@
 import { TypedDataField } from 'ethers'
+import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
 import { numberToCosmosSdkDecString, snakeToPascal } from '../../utils'
 
@@ -32,7 +33,7 @@ export const objectKeysToEip712Types = (
       types.push({ name: property, type: 'string' })
     } else if (type === 'object') {
       if (Array.isArray(val) && val.length === 0) {
-        throw new Error('Array with length 0 found')
+        throw new GeneralException(new Error('Array with length 0 found'))
       } else if (Array.isArray(val) && val.length > 0) {
         const arrayFirstType = typeof val[0]
         const isPrimitive =
@@ -43,7 +44,9 @@ export const objectKeysToEip712Types = (
         if (isPrimitive) {
           for (const arrayEntry in val) {
             if (typeof arrayEntry !== arrayFirstType) {
-              throw new Error('Array with different types found')
+              throw new GeneralException(
+                new Error('Array with different types found'),
+              )
             }
           }
 
@@ -71,7 +74,9 @@ export const objectKeysToEip712Types = (
             }
           }
         } else {
-          throw new Error('Array with elements of unknown type found')
+          throw new GeneralException(
+            new Error('Array with elements of unknown type found'),
+          )
         }
       } else {
         const propertyType = appendTypePrefixToPropertyType(
@@ -91,7 +96,7 @@ export const objectKeysToEip712Types = (
         }
       }
     } else {
-      throw new Error(`Type ${property} not found`)
+      throw new GeneralException(new Error(`Type ${property} not found`))
     }
   }
 
@@ -494,6 +499,6 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'cosmos-sdk/MsgTransfer'
 
     default:
-      throw new Error('Unknown message type: ' + type)
+      throw new GeneralException(new Error('Unknown message type: ' + type))
   }
 }

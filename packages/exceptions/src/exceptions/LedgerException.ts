@@ -27,5 +27,21 @@ export class LedgerException extends ConcreteException {
         'Please ensure your Ledger is connected, unlocked and your Ethereum app is open.',
       )
     }
+
+    if (message.includes('No device selected.')) {
+      this.setMessage(
+        'Please make sure your Ledger device is connected, unlocked and your Ethereum app is open',
+      )
+    }
+
+    if (message.includes('Unable to set device configuration.')) {
+      this.setMessage(
+        'Please restart your Ledger device and try connecting again',
+      )
+    }
+
+    if (message.includes('Cannot read properties of undefined')) {
+      this.setMessage('Please make sure your Ledger device is connected')
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
 import { BigNumberInBase, HttpClient } from '@injectivelabs/utils'
+import { HttpRequestException } from '@injectivelabs/exceptions'
 import { ASSET_PRICE_SERVICE_URL } from '../constants'
 import { CoinPriceFromInjectiveService } from '../types/token'
 
@@ -58,8 +59,8 @@ export class TokenPrice {
       }
 
       return 0
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 
@@ -99,8 +100,8 @@ export class TokenPrice {
       this.cache[coinId] = priceInUsd
 
       return priceInUsd
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 
@@ -121,8 +122,8 @@ export class TokenPrice {
       this.cache[coinId] = priceInUsd
 
       return priceInUsd
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 
@@ -139,7 +140,7 @@ export class TokenPrice {
       }
 
       return new BigNumberInBase(priceInUsd).toNumber()
-    } catch (e: any) {
+    } catch (e: unknown) {
       return 0
     }
   }
@@ -151,8 +152,8 @@ export class TokenPrice {
       if (cacheIsEmpty) {
         await this.initCache()
       }
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
 
     if (this.cache[coinId]) {
@@ -184,8 +185,8 @@ export class TokenPrice {
         }),
         {},
       )
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new HttpRequestException(new Error((e as any).message))
     }
   }
 }

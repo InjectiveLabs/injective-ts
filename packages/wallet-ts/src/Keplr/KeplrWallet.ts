@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import type { Keplr, Window as KeplrWindow } from '@keplr-wallet/types'
 import type { OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
@@ -8,6 +9,14 @@ import {
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
 import { TxRestClient } from '@injectivelabs/sdk-ts/dist/core/transaction'
+import {
+  CosmosWalletException,
+  ErrorType,
+  GeneralException,
+  TransactionException,
+  UnspecifiedErrorCode,
+  WalletErrorActionModule,
+} from '@injectivelabs/exceptions'
 import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
 
@@ -21,84 +30,60 @@ export class KeplrWallet {
   }
 
   static async experimentalSuggestChainWithChainData(chainData: any) {
-    if (!window) {
-      throw new Error('Please install Keplr extension')
-    }
-
-    if (!window.keplr) {
-      throw new Error('Please install Keplr extension')
+    if (!window || (window && !window.keplr)) {
+      throw new CosmosWalletException(
+        new Error('Please install Keplr extension'),
+        { code: UnspecifiedErrorCode, type: ErrorType.WalletNotInstalledError },
+      )
     }
 
     try {
-      await window.keplr.experimentalSuggestChain(chainData)
-    } catch (e: any) {
-      throw new Error(e.message)
+      await window.keplr!.experimentalSuggestChain(chainData)
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message))
     }
   }
 
   async getKeplrWallet() {
     const { chainId } = this
-
-    if (!$window) {
-      throw new Error('Please install Keplr extension')
-    }
-
-    if (!$window.keplr) {
-      throw new Error('Please install Keplr extension')
-    }
+    const keplr = this.getKeplr()
 
     try {
-      await $window.keplr.enable(chainId)
+      await keplr.enable(chainId)
 
-      return $window.keplr as Keplr
-    } catch (e: any) {
-      throw new Error(e.message)
+      return keplr as Keplr
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message))
     }
   }
 
   async experimentalSuggestChain() {
     const { chainId } = this
-
-    if (!$window) {
-      throw new Error('Please install Keplr extension')
-    }
-
-    if (!$window.keplr) {
-      throw new Error('Please install Keplr extension')
-    }
+    const keplr = this.getKeplr()
 
     const chainData = getExperimentalChainConfigBasedOnChainId(chainId)
 
     if (!chainData) {
-      throw new Error(`There is no data for ${chainId}`)
+      throw new GeneralException(new Error(`There is no data for ${chainId}`))
     }
 
     try {
-      await $window.keplr.experimentalSuggestChain(chainData)
-    } catch (e: any) {
-      throw new Error(e.message)
+      await keplr.experimentalSuggestChain(chainData)
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message))
     }
   }
 
   async getAccounts() {
     const { chainId } = this
-
-    if (!$window) {
-      throw new Error('Please install Keplr extension')
-    }
-
-    if (!$window.keplr) {
-      throw new Error('Please install Keplr extension')
-    }
-
-    if (!$window.keplr.getOfflineSigner) {
-      throw new Error('Please install Keplr extension')
-    }
+    const keplr = this.getKeplr()
 
     try {
-      return $window.keplr.getOfflineSigner(chainId).getAccounts()
-    } catch (e: any) {
-      throw new Error(e.message)
+      return keplr.getOfflineSigner(chainId).getAccounts()
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        contextModule: WalletErrorActionModule.GetAccounts,
+      })
     }
   }
 
@@ -113,8 +98,10 @@ export class KeplrWallet {
 
     try {
       return keplr.getKey(this.chainId)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        contextModule: 'Keplr',
+      })
     }
   }
 
@@ -124,8 +111,10 @@ export class KeplrWallet {
 
     try {
       return keplr.getOfflineSigner(chainId) as unknown as OfflineDirectSigner
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        contextModule: 'Keplr',
+      })
     }
   }
 
@@ -147,7 +136,10 @@ export class KeplrWallet {
     )
 
     if (!txHashBuff) {
-      throw new Error('Transaction failed to be broadcasted')
+      throw new TransactionException(
+        new Error('Transaction failed to be broadcasted'),
+        { contextModule: 'Keplr' },
+      )
     }
 
     return Buffer.from(txHashBuff).toString('hex')
@@ -170,7 +162,10 @@ export class KeplrWallet {
     )
 
     if (!result) {
-      throw new Error('Transaction failed to be broadcasted')
+      throw new TransactionException(
+        new Error('Transaction failed to be broadcasted'),
+        { contextModule: 'Keplr' },
+      )
     }
 
     return Buffer.from(result).toString('hex')
@@ -189,29 +184,50 @@ export class KeplrWallet {
 
     try {
       return getEndpointsFromChainId(chainId)
-    } catch (e: any) {
-      throw new Error(e.message)
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        contextModule: 'Keplr',
+      })
     }
   }
 
   public async checkChainIdSupport() {
     const { chainId } = this
-
-    if (!$window) {
-      throw new Error('Please install Keplr extension')
-    }
-
-    if (!$window.keplr) {
-      throw new Error('Please install Keplr extension')
-    }
+    const keplr = this.getKeplr()
 
     try {
-      await $window.keplr.getKey(chainId)
+      await keplr.getKey(chainId)
 
       // Chain exists already on Keplr
       return true
     } catch (e) {
       return false
     }
+  }
+
+  private getKeplr() {
+    if (!$window) {
+      throw new CosmosWalletException(
+        new Error('Please install Keplr extension'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletNotInstalledError,
+          contextModule: 'Keplr',
+        },
+      )
+    }
+
+    if (!$window.keplr) {
+      throw new CosmosWalletException(
+        new Error('Please install Keplr extension'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletNotInstalledError,
+          contextModule: 'Keplr',
+        },
+      )
+    }
+
+    return $window.keplr!
   }
 }
