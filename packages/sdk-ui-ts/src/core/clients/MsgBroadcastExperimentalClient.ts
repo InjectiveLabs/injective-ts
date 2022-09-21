@@ -9,7 +9,6 @@ import {
   DEFAULT_TIMEOUT_HEIGHT,
 } from '@injectivelabs/sdk-ts'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
-import { Wallet } from '@injectivelabs/wallet-ts'
 import {
   createTransaction,
   createTxRawEIP712,
@@ -26,6 +25,7 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { isCosmosWallet } from '@injectivelabs/wallet-ts'
 
 export class MsgBroadcastExperimentalClient {
   public options: MsgBroadcastOptions
@@ -38,7 +38,7 @@ export class MsgBroadcastExperimentalClient {
     const { options } = this
     const { walletStrategy } = options
 
-    return [Wallet.Keplr, Wallet.Leap].includes(walletStrategy.wallet)
+    return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastKeplr(tx)
       : this.broadcastWeb3(tx)
   }

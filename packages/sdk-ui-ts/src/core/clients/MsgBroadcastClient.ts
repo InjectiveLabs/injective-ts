@@ -2,7 +2,7 @@ import {
   getInjectiveAddress,
   IndexerGrpcTransactionApi,
 } from '@injectivelabs/sdk-ts'
-import { Wallet } from '@injectivelabs/wallet-ts'
+import { isCosmosWallet } from '@injectivelabs/wallet-ts'
 import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
 import { getGasPriceBasedOnMessage } from './utils'
 
@@ -22,7 +22,7 @@ export class MsgBroadcastClient {
     const { options } = this
     const { walletStrategy } = options
 
-    return [Wallet.Keplr, Wallet.Leap].includes(walletStrategy.wallet)
+    return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(tx)
       : this.broadcastWeb3(tx)
   }
