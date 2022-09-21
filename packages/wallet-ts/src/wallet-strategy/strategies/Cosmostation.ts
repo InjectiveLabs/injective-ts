@@ -24,6 +24,8 @@ import { ConcreteWalletStrategy, WalletAction } from '../types'
 import BaseConcreteStrategy from './Base'
 import { getEndpointsFromChainId } from '../../cosmos'
 
+const INJECTIVE_CHAIN_NAME = 'injective'
+
 export default class Cosmostation
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
@@ -39,7 +41,7 @@ export default class Cosmostation
     const provider = await this.getProvider()
 
     try {
-      const accounts = await provider.requestAccount('injective')
+      const accounts = await provider.requestAccount(INJECTIVE_CHAIN_NAME)
 
       return [accounts.address]
     } catch (e: unknown) {
@@ -96,7 +98,7 @@ export default class Cosmostation
 
     try {
       const response = await provider.sendTransaction(
-        'injective',
+        INJECTIVE_CHAIN_NAME,
         txRaw.serializeBinary(),
         SEND_TRANSACTION_MODE.ASYNC,
       )
@@ -121,7 +123,7 @@ export default class Cosmostation
   ) {
     const { chainId } = this
     const provider = await this.getProvider()
-    const signer = await provider.getAccount('injective')
+    const signer = await provider.getAccount(INJECTIVE_CHAIN_NAME)
     const endpoints = getEndpointsFromChainId(chainId)
 
     try {
@@ -142,7 +144,7 @@ export default class Cosmostation
 
       /* Sign the transaction */
       const signDirectResponse = await provider.signDirect(
-        address,
+        INJECTIVE_CHAIN_NAME,
         {
           chain_id: chainId,
           body_bytes: bodyBytes,
