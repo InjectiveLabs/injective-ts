@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.203](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.202...@injectivelabs/sdk-ui-ts@1.0.203) (2022-09-21)
+
+
+### Features
+
+* check for cosmos wallet ([925f68b](https://github.com/InjectiveLabs/injective-ts/commit/925f68b39288eeff51958577a5f504719ff3ed4b))
+
+
+
+
+
 ## [1.0.202](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.201...@injectivelabs/sdk-ui-ts@1.0.202) (2022-09-21)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
