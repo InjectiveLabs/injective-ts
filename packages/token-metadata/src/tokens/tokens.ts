@@ -696,4 +696,13 @@ export default {
     address: '',
     coinGeckoId: '',
   },
+
+  PROJ: {
+    name: 'PROJ',
+    logo: 'projx.png',
+    symbol: 'ProjectX',
+    decimals: 6,
+    address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    coinGeckoId: 'tether',
+  },
 } as Record<string, TokenMeta>

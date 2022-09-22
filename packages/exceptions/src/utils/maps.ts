@@ -39,7 +39,7 @@ export const mapMetamaskMessage = (message: string): string => {
   const parsedMessage = message.trim().toLowerCase()
 
   if (parsedMessage.includes('User denied message signature'.toLowerCase())) {
-    return 'You have rejected signing the transaction'
+    return 'The request has been rejected'
   }
 
   return parsedMessage
