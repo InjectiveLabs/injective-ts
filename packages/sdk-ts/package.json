@@ -37,6 +37,7 @@
     "@cosmjs/tendermint-rpc": "^0.29.0",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
+    "@improbable-eng/grpc-web-react-native-transport": "^0.15.0",
     "@injectivelabs/chain-api": "^1.8.0-rc8",
     "@injectivelabs/exceptions": "^1.0.22",
     "@injectivelabs/exchange-api": "^2.2.77",

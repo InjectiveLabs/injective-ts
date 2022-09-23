@@ -19,11 +19,10 @@ import {
   TradeExecutionType,
 } from '../../../types'
 import { StreamStatusResponse } from '../types'
-import { isServerSide } from '../../../utils/helpers'
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { PaginationOption } from '../../../types/pagination'
 import { DerivativeOrderSide, DerivativeOrderState } from '../types/derivatives'
 import { IndexerDerivativeStreamTransformer } from '../transformers'
+import { getGrpcTransport } from '../../../utils/grpc'
 
 export type DerivativeOrderbookStreamCallback = (
   response: ReturnType<
@@ -65,7 +64,7 @@ export class IndexerGrpcDerivativesStream {
 
   constructor(endpoint: string) {
     this.client = new InjectiveDerivativeExchangeRPCClient(endpoint, {
-      transport: isServerSide() ? NodeHttpTransport() : undefined,
+      transport: getGrpcTransport(),
     })
   }
 

@@ -4,9 +4,9 @@ import {
   StreamBidsResponse,
 } from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
 import { StreamStatusResponse } from '../types'
-import { isServerSide } from '../../../utils/helpers'
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+
 import { IndexerAuctionStreamTransformer } from '../transformers'
+import { getGrpcTransport } from '../../../utils/grpc'
 
 export type BidsStreamCallback = (
   response: ReturnType<
@@ -22,7 +22,7 @@ export class IndexerGrpcAuctionStream {
 
   constructor(endpoint: string) {
     this.client = new InjectiveAuctionRPCClient(endpoint, {
-      transport: isServerSide() ? NodeHttpTransport() : undefined,
+      transport: getGrpcTransport(),
     })
   }
 

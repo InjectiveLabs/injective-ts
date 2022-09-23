@@ -3,6 +3,24 @@ import { Coin } from '@injectivelabs/ts-types'
 
 export const isServerSide = () => typeof window === 'undefined'
 
+export const isReactNative = () => {
+  return (
+    typeof document === 'undefined' &&
+    typeof navigator !== 'undefined' &&
+    navigator.product === 'ReactNative'
+  )
+}
+export const isNode = () => {
+  return (
+    typeof process !== 'undefined' &&
+    typeof process.versions !== 'undefined' &&
+    typeof process.versions.node !== 'undefined'
+  )
+}
+export const isBrowser = () => {
+  return !isReactNative() && !isNode()
+}
+
 export const objectToJson = (
   object: Record<string, any>,
   params?:

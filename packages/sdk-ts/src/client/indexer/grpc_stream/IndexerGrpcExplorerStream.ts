@@ -6,9 +6,8 @@ import {
   StreamTxsResponse,
 } from '@injectivelabs/indexer-api/explorer_api_pb'
 import { StreamStatusResponse } from '../types'
-import { isServerSide } from '../../../utils/helpers'
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { ExplorerStreamTransformer } from '../transformers'
+import { getGrpcTransport } from '../../../utils/grpc'
 
 export type BlocksStreamCallback = (
   response: ReturnType<typeof ExplorerStreamTransformer.blocksStreamCallback>,
@@ -32,7 +31,7 @@ export class IndexerGrpcExplorerStream {
 
   constructor(endpoint: string) {
     this.client = new ExplorerAPIClient(endpoint, {
-      transport: isServerSide() ? NodeHttpTransport() : undefined,
+      transport: getGrpcTransport(),
     })
   }
 

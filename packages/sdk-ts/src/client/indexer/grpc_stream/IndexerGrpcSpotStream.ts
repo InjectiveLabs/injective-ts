@@ -17,11 +17,10 @@ import {
   TradeExecutionType,
 } from '../../../types'
 import { StreamStatusResponse } from '../types'
-import { isServerSide } from '../../../utils/helpers'
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { PaginationOption } from '../../../types/pagination'
 import { SpotOrderSide, SpotOrderState } from '../types/spot'
 import { IndexerSpotStreamTransformer } from '../transformers'
+import { getGrpcTransport } from '../../../utils/grpc'
 
 export type MarketsStreamCallback = (response: StreamMarketsResponse) => void
 
@@ -57,7 +56,7 @@ export class IndexerGrpcSpotStream {
 
   constructor(endpoint: string) {
     this.client = new InjectiveSpotExchangeRPCClient(endpoint, {
-      transport: isServerSide() ? NodeHttpTransport() : undefined,
+      transport: getGrpcTransport(),
     })
   }
 
@@ -189,7 +188,7 @@ export class IndexerGrpcSpotStream {
 
     stream.on('data', (response: StreamOrdersHistoryResponse) => {
       callback(
-        IndexerSpotStreamTransformer.orderHistoryStreamCallback(response)
+        IndexerSpotStreamTransformer.orderHistoryStreamCallback(response),
       )
     })
 

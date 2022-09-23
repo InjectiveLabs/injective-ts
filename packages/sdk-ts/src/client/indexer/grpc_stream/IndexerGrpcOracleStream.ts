@@ -4,9 +4,8 @@ import {
 } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb'
 import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb_service'
 import { StreamStatusResponse } from '../types'
-import { isServerSide } from '../../../utils/helpers'
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer'
+import { getGrpcTransport } from '../../../utils/grpc'
 
 export type OraclePriceStreamCallback = (
   response: ReturnType<
@@ -22,7 +21,7 @@ export class IndexerGrpcOracleStream {
 
   constructor(endpoint: string) {
     this.client = new InjectiveOracleRPCClient(endpoint, {
-      transport: isServerSide() ? NodeHttpTransport() : undefined,
+      transport: getGrpcTransport(),
     })
   }
 

@@ -1,4 +1,3 @@
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import {
   ServiceClient,
   Service,
@@ -16,7 +15,6 @@ import {
   Result,
 } from '@injectivelabs/chain-api/cosmos/base/abci/v1beta1/abci_pb'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { isServerSide } from '@injectivelabs/utils'
 import { grpc } from '@improbable-eng/grpc-web'
 import {
   TxClientBroadcastOptions,
@@ -28,9 +26,11 @@ import {
   HttpRequestException,
   TransactionException,
 } from '@injectivelabs/exceptions'
+import { getGrpcTransport } from '../../../utils/grpc'
+import { isBrowser } from '../../../utils/helpers'
 
-if (isServerSide()) {
-  grpc.setDefaultTransport(NodeHttpTransport())
+if (!isBrowser()) {
+  grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
 }
 
 /**
@@ -44,7 +44,7 @@ export class TxGrpcClient implements TxConcreteClient {
   constructor(endpoint: string) {
     this.endpoint = endpoint
     this.txService = new ServiceClient(endpoint, {
-      transport: isServerSide() ? NodeHttpTransport() : undefined,
+      transport: getGrpcTransport(),
     })
   }
 

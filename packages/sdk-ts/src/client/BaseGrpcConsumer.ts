@@ -1,10 +1,10 @@
 import { grpc } from '@improbable-eng/grpc-web'
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
-import { isServerSide } from '../utils/helpers'
 import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
+import { isBrowser } from '../utils'
+import { getGrpcTransport } from '../utils/grpc'
 
-if (isServerSide()) {
-  grpc.setDefaultTransport(NodeHttpTransport())
+if (!isBrowser()) {
+  grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
 }
 
 /**
