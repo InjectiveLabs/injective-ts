@@ -15,6 +15,7 @@ import {
   INJ_DENOM,
   TX_DEFAULTS_GAS,
 } from './constants'
+import { Web3Exception } from '@injectivelabs/exceptions'
 
 export const getTransactionOptions = (
   transactionOptions: Partial<TransactionOptions>,
@@ -53,14 +54,18 @@ export class Web3Client {
   async sendTransaction(args: SendTransactionOptions) {
     const { walletStrategy, ethereumChainId } = this
 
-    const txHash = await walletStrategy.sendEthereumTransaction(args.tx, {
-      ethereumChainId,
-      address: args.address,
-    })
+    try {
+      const txHash = await walletStrategy.sendEthereumTransaction(args.tx, {
+        ethereumChainId,
+        address: args.address,
+      })
 
-    await walletStrategy.getEthereumTransactionReceipt(txHash)
+      await walletStrategy.getEthereumTransactionReceipt(txHash)
 
-    return txHash
+      return txHash
+    } catch (e: unknown) {
+      throw new Web3Exception(new Error((e as any).message))
+    }
   }
 
   async getSetTokenAllowanceTx({
@@ -279,8 +284,13 @@ export class Web3Client {
     const { walletStrategy } = this
 
     const web3 = walletStrategy.getWeb3() as any
-    const tokenMeta = await web3.alchemy.getTokenMetadata(address)
 
-    return tokenMeta
+    try {
+      const tokenMeta = await web3.alchemy.getTokenMetadata(address)
+
+      return tokenMeta
+    } catch (e: unknown) {
+      throw new Web3Exception(new Error((e as any).message))
+    }
   }
 }

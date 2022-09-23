@@ -36,10 +36,13 @@ export default class BaseGrpcConsumer {
           }
 
           return reject(
-            new GrpcUnaryRequestException(new Error(statusMessage), {
-              code: status,
-              contextModule: this.module,
-            }),
+            new GrpcUnaryRequestException(
+              new Error(statusMessage || 'The request failed.'),
+              {
+                code: status,
+                contextModule: this.module,
+              },
+            ),
           )
         },
       })
