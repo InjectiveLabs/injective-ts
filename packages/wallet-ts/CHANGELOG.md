@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.111](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.110...@injectivelabs/wallet-ts@1.0.111) (2022-09-23)
+
+
+### Bug Fixes
+
+* web3 instance ([c94bcc6](https://github.com/InjectiveLabs/injective-ts/commit/c94bcc6efe81419eddf32a4ad7dde687bc696042))
+
+
+
+
+
 ## [1.0.110](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.109...@injectivelabs/wallet-ts@1.0.110) (2022-09-22)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
