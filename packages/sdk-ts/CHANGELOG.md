@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.156](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.155...@injectivelabs/sdk-ts@1.0.156) (2022-09-24)
+
+
+### Bug Fixes
+
+* explorer rpc service ([6ab6652](https://github.com/InjectiveLabs/injective-ts/commit/6ab6652af86efc47b300446ea9b7db1cfe074ffc))
+
+
+
+
+
 ## [1.0.155](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.154...@injectivelabs/sdk-ts@1.0.155) (2022-09-23)
 
 

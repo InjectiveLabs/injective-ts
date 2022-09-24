@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.40...@injectivelabs/token-metadata@1.0.41) (2022-09-24)
+
+
+### Bug Fixes
+
+* explorer rpc service ([6ab6652](https://github.com/InjectiveLabs/injective-ts/commit/6ab6652af86efc47b300446ea9b7db1cfe074ffc))
+
+
+
+
+
 ## [1.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.39...@injectivelabs/token-metadata@1.0.40) (2022-09-22)
 
 
