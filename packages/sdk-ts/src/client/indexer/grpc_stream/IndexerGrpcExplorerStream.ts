@@ -1,10 +1,10 @@
-import { ExplorerAPIClient } from '@injectivelabs/indexer-api/explorer_api_pb_service'
+import { InjectiveExplorerRPCClient } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb_service'
 import {
   StreamBlocksRequest,
   StreamBlocksResponse,
   StreamTxsRequest,
   StreamTxsResponse,
-} from '@injectivelabs/indexer-api/explorer_api_pb'
+} from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
 import { StreamStatusResponse } from '../types'
 import { ExplorerStreamTransformer } from '../transformers'
 import { getGrpcTransport } from '../../../utils/grpc'
@@ -27,10 +27,10 @@ export type TransactionsStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcExplorerStream {
-  protected client: ExplorerAPIClient
+  protected client: InjectiveExplorerRPCClient
 
   constructor(endpoint: string) {
-    this.client = new ExplorerAPIClient(endpoint, {
+    this.client = new InjectiveExplorerRPCClient(endpoint, {
       transport: getGrpcTransport(),
     })
   }

@@ -700,7 +700,7 @@ export default {
   PROJ: {
     name: 'PROJ',
     logo: 'projx.png',
-    symbol: 'ProjectX',
+    symbol: 'Proj',
     decimals: 6,
     address: '',
     coinGeckoId: '',

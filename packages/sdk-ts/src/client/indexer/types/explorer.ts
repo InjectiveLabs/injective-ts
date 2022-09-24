@@ -8,7 +8,7 @@ import {
   ValidatorUptime as GrpcValidatorUptime,
   ValidatorDescription as GrpcIndexerValidatorDescription,
   SlashingEvent as GrpcValidatorSlashingEvent,
-} from '@injectivelabs/indexer-api/explorer_api_pb'
+} from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
 import { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
 
 export interface IBCTransferTx {

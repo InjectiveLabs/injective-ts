@@ -3,7 +3,7 @@ import { StreamOperation } from '../../../types'
 import {
   StreamBlocksResponse,
   StreamTxsResponse,
-} from '@injectivelabs/indexer-api/explorer_api_pb'
+} from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
 
 /**
  * @category Indexer Stream Transformer
