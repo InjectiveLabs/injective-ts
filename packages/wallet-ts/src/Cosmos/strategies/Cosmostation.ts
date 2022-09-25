@@ -19,10 +19,20 @@ import { ConcreteCosmosWalletStrategy } from '../types/strategy'
 import { WalletAction } from '../../wallet-strategy/types/enums'
 import { getEndpointsFromChainId } from '../endpoints'
 
-const INJECTIVE_CHAIN_NAME = 'injective'
-
 const getChainNameFromChainId = (chainId: CosmosChainId) => {
   const [chainName] = chainId.split('-')
+
+  if (chainName.includes('cosmoshub')) {
+    return 'cosmos'
+  }
+
+  if (chainName.includes('core')) {
+    return 'persistence'
+  }
+
+  if (chainName.includes('evmos')) {
+    return 'evmos'
+  }
 
   return chainName
 }
@@ -108,7 +118,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
   }) {
     const { chainName, chainId } = this
     const provider = await this.getProvider()
-    const signer = await provider.getAccount(INJECTIVE_CHAIN_NAME)
+    const signer = await provider.getAccount(chainName)
     const endpoints = getEndpointsFromChainId(chainId)
 
     try {
