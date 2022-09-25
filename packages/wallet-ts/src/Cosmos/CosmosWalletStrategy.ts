@@ -1,4 +1,4 @@
-import { AccountAddress } from '@injectivelabs/ts-types'
+import { AccountAddress, CosmosChainId } from '@injectivelabs/ts-types'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { Msgs } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
@@ -73,6 +73,10 @@ export default class CosmosWalletStrategy {
 
   public getAddresses(): Promise<AccountAddress[]> {
     return this.getStrategy().getAddresses()
+  }
+
+  public isChainIdSupported(chainId?: CosmosChainId): Promise<boolean> {
+    return this.getStrategy().isChainIdSupported(chainId)
   }
 
   public async sendTransaction(tx: DirectSignResponse): Promise<string> {
