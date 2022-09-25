@@ -88,7 +88,7 @@ export default class CosmosWalletStrategy {
     memo: string
     gas: string
     message: Msgs | Msgs[]
-  }): Promise<string | DirectSignResponse> {
+  }): Promise<DirectSignResponse> {
     return this.getStrategy().signTransaction(data)
   }
 }
