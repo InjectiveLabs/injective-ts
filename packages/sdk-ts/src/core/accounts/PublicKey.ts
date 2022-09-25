@@ -28,6 +28,10 @@ export class PublicKey {
     return new PublicKey(Buffer.from(publicKey, 'base64'))
   }
 
+  static fromBytes(publicKey: Uint8Array): PublicKey {
+    return new PublicKey(publicKey)
+  }
+
   static fromHex(privateKey: string | Uint8Array): PublicKey {
     const isString = typeof privateKey === 'string'
     const privateKeyHex =
