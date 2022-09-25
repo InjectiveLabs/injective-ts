@@ -67,7 +67,9 @@ export class PublicKey {
       'hex',
     ).subarray(-20)
 
-    return Address.fromHex(addressBuffer.toString('hex').toLowerCase())
+    return Address.fromHex(
+      Buffer.from(addressBuffer).toString('hex').toLowerCase(),
+    )
   }
 
   public toProto() {
