@@ -117,7 +117,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
         await createTransactionAndCosmosSignDocForAddressAndMsg({
           chainId,
           address: transaction.address,
-          memo: transaction.memo,
+          memo: transaction.memo || '',
           message: transaction.message,
           pubKey: Buffer.from(signer.publicKey).toString('base64'),
           endpoint: endpoints.rest,

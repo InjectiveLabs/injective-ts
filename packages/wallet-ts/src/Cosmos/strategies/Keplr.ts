@@ -88,7 +88,7 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
       const { cosmosSignDoc } =
         await createTransactionAndCosmosSignDocForAddressAndMsg({
           chainId,
-          memo: transaction.memo,
+          memo: transaction.memo || '',
           address: transaction.address,
           message: transaction.message,
           pubKey: Buffer.from(key.pubKey).toString('base64'),

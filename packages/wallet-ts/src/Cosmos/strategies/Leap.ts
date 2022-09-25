@@ -91,7 +91,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
         await createTransactionAndCosmosSignDocForAddressAndMsg({
           chainId,
           address: transaction.address,
-          memo: transaction.memo,
+          memo: transaction.memo || '',
           message: transaction.message,
           pubKey: Buffer.from(key.pubKey).toString('base64'),
           endpoint: endpoints.rest,

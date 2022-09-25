@@ -18,10 +18,10 @@ export interface ConcreteCosmosWalletStrategy {
 
   signTransaction(data: {
     address: string
-    memo: string
-    gas: string
+    memo?: string
+    gas?: string
     message: Msgs | Msgs[]
-  }): Promise<string | DirectSignResponse>
+  }): Promise<DirectSignResponse>
 }
 
 export interface CosmosWalletStrategyArguments {
