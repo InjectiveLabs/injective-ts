@@ -10,6 +10,7 @@ export const isReactNative = () => {
     navigator.product === 'ReactNative'
   )
 }
+
 export const isNode = () => {
   return (
     typeof process !== 'undefined' &&
@@ -17,7 +18,12 @@ export const isNode = () => {
     typeof process.versions.node !== 'undefined'
   )
 }
+
 export const isBrowser = () => {
+  if (typeof window !== 'undefined') {
+    return true
+  }
+
   return !isReactNative() && !isNode()
 }
 

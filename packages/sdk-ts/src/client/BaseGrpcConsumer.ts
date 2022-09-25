@@ -1,6 +1,6 @@
 import { grpc } from '@improbable-eng/grpc-web'
 import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
-import { isBrowser } from '../utils'
+import { isBrowser } from '../utils/helpers'
 import { getGrpcTransport } from '../utils/grpc'
 
 if (!isBrowser()) {
