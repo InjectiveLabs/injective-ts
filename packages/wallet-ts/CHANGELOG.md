@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.125](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.124...@injectivelabs/wallet-ts@1.0.125) (2022-09-25)
+
+
+### Bug Fixes
+
+* chain name for cosmostation ([c80a1b6](https://github.com/InjectiveLabs/injective-ts/commit/c80a1b6b5439af30f3e3cfe54c94cd05039083da))
+
+
+
+
+
 ## [1.0.124](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.123...@injectivelabs/wallet-ts@1.0.124) (2022-09-25)
 
 
