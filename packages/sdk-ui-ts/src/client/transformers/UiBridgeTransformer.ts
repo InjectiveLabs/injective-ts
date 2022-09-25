@@ -38,7 +38,7 @@ import {
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
 import { UiBridgeTransactionWithToken } from '../../types'
 
-export const convertKeplrToUiBridgeTransaction = async ({
+export const convertCosmosWalletToUiBridgeTransaction = async ({
   transaction,
   network,
 }: {
@@ -460,8 +460,10 @@ export class UiBridgeTransformer {
   static removeDuplicatedInProgressIbxTransfers =
     removeDuplicatedInProgressIbxTransfers
 
-  async convertKeplrToUiBridgeTransaction(transaction: KeplrWalletResponse) {
-    return convertKeplrToUiBridgeTransaction({
+  async convertCosmosWalletToUiBridgeTransaction(
+    transaction: KeplrWalletResponse,
+  ) {
+    return convertCosmosWalletToUiBridgeTransaction({
       transaction,
       network: this.network,
     })
