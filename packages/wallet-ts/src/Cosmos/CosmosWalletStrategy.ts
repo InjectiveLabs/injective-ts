@@ -10,6 +10,9 @@ import {
   ConcreteCosmosWalletStrategy,
   CosmosWalletStrategyArguments,
 } from './types/strategy'
+import { isCosmosWallet } from '../wallet-strategy'
+
+export const cosmosWallets = [Wallet.Keplr, Wallet.Leap, Wallet.Cosmostation]
 
 const createWallet = ({
   wallet,
@@ -35,7 +38,7 @@ const createWallet = ({
 const createWallets = (
   args: CosmosWalletStrategyArguments,
 ): Record<Wallet, ConcreteCosmosWalletStrategy | undefined> =>
-  Object.values(Wallet).reduce(
+  cosmosWallets.reduce(
     (strategies, wallet) => ({
       ...strategies,
       [wallet]: createWallet({ wallet, args }),
@@ -58,7 +61,7 @@ export default class CosmosWalletStrategy {
   }
 
   public setWallet(wallet: Wallet) {
-    this.wallet = wallet
+    this.wallet = isCosmosWallet(wallet) ? wallet : Wallet.Keplr
   }
 
   public getStrategy(): ConcreteCosmosWalletStrategy {
