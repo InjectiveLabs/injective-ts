@@ -2,9 +2,9 @@ import bip39 from 'bip39'
 import { Wallet } from 'ethers'
 import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
-import { DEFAULT_DERIVATION_PATH } from '../utils/constants'
+import { DEFAULT_DERIVATION_PATH } from '../../utils/constants'
 import { PublicKey } from './PublicKey'
-import { Address } from '../classes/Address'
+import { Address } from './Address'
 import * as BytesUtils from '@ethersproject/bytes'
 
 /**

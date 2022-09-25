@@ -1,10 +1,10 @@
-import { BECH32_PUBKEY_ACC_PREFIX } from '../utils'
+import { BECH32_PUBKEY_ACC_PREFIX } from '../../utils'
 import { bech32 } from 'bech32'
 import { PubKey } from '@injectivelabs/chain-api/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
 import { toBuffer } from 'ethereumjs-util'
 import secp256k1 from 'secp256k1'
-import { Address } from '../classes'
+import { Address } from './Address'
 import {
   publicKey as EthCryptoPublicKey,
   util as EthCryptoUtil,

@@ -10,7 +10,7 @@ import { DEFAULT_TIMEOUT_HEIGHT } from '../../../utils'
 import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { createTransaction, CreateTransactionArgs } from '../tx'
 import { MessageGenerated } from '../types'
-import { BaseAccount } from '../../../classes'
+import { BaseAccount } from './../../accounts/BaseAccount'
 import { GeneralException } from '@injectivelabs/exceptions'
 
 export const createAnyMessage = (msg: MessageGenerated) => {

@@ -1,4 +1,4 @@
-import { ChainGrpcIbcApi } from '../client/chain/grpc/ChainGrpcIbcApi'
+import { ChainGrpcIbcApi } from '../../client/chain/grpc/ChainGrpcIbcApi'
 import {
   TokenMetaUtilFactory,
   TokenMetaUtil,
@@ -8,7 +8,7 @@ import {
   Token,
   canonicalChannelIds,
 } from '@injectivelabs/token-metadata'
-import { INJ_DENOM } from '../utils'
+import { INJ_DENOM } from '..'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
 
