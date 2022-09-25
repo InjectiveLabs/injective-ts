@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.120](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.119...@injectivelabs/wallet-ts@1.0.120) (2022-09-25)
+
+
+### Bug Fixes
+
+* cosmos wallet strategy method ([091cdb1](https://github.com/InjectiveLabs/injective-ts/commit/091cdb1a4f4c6add9c5d3ea0cf99d1f664334e15))
+
+
+
+
+
 ## [1.0.119](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.118...@injectivelabs/wallet-ts@1.0.119) (2022-09-25)
 
 
