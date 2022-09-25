@@ -40,6 +40,27 @@ export const KeplrNetworks = [
   BridgingNetwork.Stride,
 ]
 
+export const LeapNetworks = [
+  BridgingNetwork.CosmosHub,
+  BridgingNetwork.Osmosis,
+  BridgingNetwork.Axelar,
+  BridgingNetwork.Juno,
+  BridgingNetwork.Persistence,
+  BridgingNetwork.Stride,
+]
+
+export const CosmostationNetworks = [
+  BridgingNetwork.CosmosHub,
+  BridgingNetwork.Chihuahua,
+  BridgingNetwork.Osmosis,
+  BridgingNetwork.Axelar,
+  BridgingNetwork.Juno,
+  BridgingNetwork.Persistence,
+  BridgingNetwork.Evmos,
+  BridgingNetwork.Secret,
+  BridgingNetwork.Stride,
+]
+
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Chihuahua,
   BridgingNetwork.CosmosHub,
