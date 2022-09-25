@@ -61,6 +61,18 @@ export const CosmostationNetworks = [
   BridgingNetwork.Stride,
 ]
 
+export const CosmosNetworks = [
+  BridgingNetwork.CosmosHub,
+  BridgingNetwork.Chihuahua,
+  BridgingNetwork.Osmosis,
+  BridgingNetwork.Axelar,
+  BridgingNetwork.Juno,
+  BridgingNetwork.Persistence,
+  BridgingNetwork.Evmos,
+  BridgingNetwork.Secret,
+  BridgingNetwork.Stride,
+]
+
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Chihuahua,
   BridgingNetwork.CosmosHub,

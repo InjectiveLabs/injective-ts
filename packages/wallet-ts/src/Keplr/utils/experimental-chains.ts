@@ -170,40 +170,6 @@ export const experimentalChainsConfig = {
     coinType: 60,
     features: ['ibc-transfer', 'ibc-go', 'eth-address-gen', 'eth-key-sign'],
   },
-  [CosmosChainId.Chihuahua]: {
-    ...getEndpointsFromChainId(CosmosChainId.Chihuahua),
-    chainId: 'chihuahua-1',
-    chainName: 'Chihuahua',
-    stakeCurrency: {
-      coinDenom: 'HUAHUA',
-      coinMinimalDenom: 'uhuahua',
-      coinDecimals: 6,
-    },
-    bip44: {
-      coinType: 118,
-    },
-    bech32Config: Bech32Address.defaultBech32Config('chihuahua'),
-    currencies: [
-      {
-        coinDenom: 'HUAHUA',
-        coinMinimalDenom: 'uhuahua',
-        coinDecimals: 6,
-      },
-    ],
-    feeCurrencies: [
-      {
-        coinDenom: 'HUAHUA',
-        coinMinimalDenom: 'uhuahua',
-        coinDecimals: 6,
-        gasPriceStep: {
-          low: 0.025,
-          average: 0.03,
-          high: 0.035,
-        },
-      },
-    ],
-    features: ['ibc-transfer', 'ibc-go'],
-  },
 } as Record<string, any>
 
 export const getExperimentalChainConfigBasedOnChainId = (
