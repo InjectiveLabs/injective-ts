@@ -18,7 +18,9 @@ import {
 } from '@injectivelabs/exceptions'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
 
-const $window = (window || {}) as Window & { leap?: Leap }
+const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
+  leap?: Leap
+}
 
 export class LeapWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId

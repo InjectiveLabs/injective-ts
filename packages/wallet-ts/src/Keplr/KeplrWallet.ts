@@ -20,7 +20,7 @@ import {
 import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
 
-const $window = (window || {}) as KeplrWindow
+const $window = (typeof window !== 'undefined' ? window : {}) as KeplrWindow
 
 export class KeplrWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
@@ -30,7 +30,7 @@ export class KeplrWallet {
   }
 
   static async experimentalSuggestChainWithChainData(chainData: any) {
-    if (!window || (window && !window.keplr)) {
+    if (!$window || ($window && !$window.keplr)) {
       throw new CosmosWalletException(
         new Error('Please install Keplr extension'),
         { code: UnspecifiedErrorCode, type: ErrorType.WalletNotInstalledError },
@@ -38,7 +38,7 @@ export class KeplrWallet {
     }
 
     try {
-      await window.keplr!.experimentalSuggestChain(chainData)
+      await $window.keplr!.experimentalSuggestChain(chainData)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message))
     }
