@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.126](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.125...@injectivelabs/wallet-ts@1.0.126) (2022-09-26)
+
+
+### Bug Fixes
+
+* window undefined ([d7fb0de](https://github.com/InjectiveLabs/injective-ts/commit/d7fb0decea8acb83e228473f51e936e83f3e623c))
+
+
+
+
+
 ## [1.0.125](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.124...@injectivelabs/wallet-ts@1.0.125) (2022-09-25)
 
 
