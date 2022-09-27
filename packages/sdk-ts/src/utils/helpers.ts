@@ -20,6 +20,10 @@ export const isNode = () => {
 }
 
 export const isBrowser = () => {
+  if (isReactNative()) {
+    return false
+  }
+
   if (typeof window !== 'undefined') {
     return true
   }
