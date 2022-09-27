@@ -20,11 +20,15 @@ export const isNode = () => {
 }
 
 export const isBrowser = () => {
-  if (typeof window !== 'undefined') {
+  if (isReactNative()) {
+    return false
+  }
+
+  if (isNode()) {
     return true
   }
 
-  return !isReactNative() && !isNode()
+  return typeof window !== 'undefined'
 }
 
 export const objectToJson = (
