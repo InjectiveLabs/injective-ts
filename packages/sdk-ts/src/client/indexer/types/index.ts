@@ -12,6 +12,7 @@ export * from './explorer-rest'
 export * from './auction'
 export * from './oracle'
 export * from './insurance-funds'
+export * from './leaderboard-rest'
 
 export interface StreamStatusResponse {
   details: string

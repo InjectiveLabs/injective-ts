@@ -2,3 +2,4 @@ export { IndexerRestDerivativesChronosApi } from './IndexerRestDerivativesChrono
 export { IndexerRestSpotChronosApi } from './IndexerRestSpotChronosApi'
 export { IndexerRestExplorerApi } from './IndexerRestExplorerApi'
 export { IndexerRestMarketChronosApi } from './IndexerRestMarketChronosApi'
+export { IndexerRestLeaderboardChronosApi } from './IndexerRestLeaderboardChronosApi'
