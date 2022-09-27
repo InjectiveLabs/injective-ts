@@ -38,6 +38,8 @@
     "@injectivelabs/token-utils": "^1.0.29",
     "@injectivelabs/ts-types": "^1.0.13",
     "@injectivelabs/utils": "^1.0.28",
-    "@injectivelabs/wallet-ts": "^1.0.127"
+    "@injectivelabs/wallet-ts": "^1.0.127",
+    "link-module-alias": "^1.2.0",
+    "shx": "^0.3.2"
   }
 }

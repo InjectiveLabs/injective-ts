@@ -35,6 +35,8 @@
     "@injectivelabs/ts-types": "^1.0.13",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
+    "link-module-alias": "^1.2.0",
+    "shx": "^0.3.2",
     "snakecase-keys": "^5.1.2",
     "store2": "^2.12.0"
   },

@@ -61,7 +61,9 @@
     "http-status-codes": "^2.2.0",
     "jscrypto": "^1.0.3",
     "keccak256": "^1.0.6",
+    "link-module-alias": "^1.2.0",
     "secp256k1": "^4.0.3",
+    "shx": "^0.3.2",
     "snakecase-keys": "^5.4.1"
   },
   "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4",
