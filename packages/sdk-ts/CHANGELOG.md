@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.163](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.162...@injectivelabs/sdk-ts@1.0.163) (2022-09-27)
+
+
+### Bug Fixes
+
+* react native check ([b7815b9](https://github.com/InjectiveLabs/injective-ts/commit/b7815b91f7fa63d049c65e8a854e43590ff3f9fe))
+
+
+
+
+
 ## [1.0.162](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.161...@injectivelabs/sdk-ts@1.0.162) (2022-09-27)
 
 
