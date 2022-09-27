@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.228](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.227...@injectivelabs/sdk-ui-ts@1.0.228) (2022-09-27)
+
+
+### Bug Fixes
+
+* leaderboard export ([104c328](https://github.com/InjectiveLabs/injective-ts/commit/104c3285885a5a983ebaccb0d33aeaa6a20ee55e))
+
+
+
+
+
 ## [1.0.227](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.226...@injectivelabs/sdk-ui-ts@1.0.227) (2022-09-27)
 
 
