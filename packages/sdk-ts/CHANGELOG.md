@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.162](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.161...@injectivelabs/sdk-ts@1.0.162) (2022-09-27)
+
+
+### Features
+
+* leaderboard ([f69cee4](https://github.com/InjectiveLabs/injective-ts/commit/f69cee45ca4354333056cde17c35d8537ff37fb8))
+* leaderboard - restore shx & link-module-alias ([71236e2](https://github.com/InjectiveLabs/injective-ts/commit/71236e20528a5306216628be96ab022e97bf988c))
+
+
+
+
+
 ## [1.0.161](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.160...@injectivelabs/sdk-ts@1.0.161) (2022-09-26)
 
 

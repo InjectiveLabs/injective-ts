@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.227](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.226...@injectivelabs/sdk-ui-ts@1.0.227) (2022-09-27)
+
+
+### Bug Fixes
+
+* import ([32aa88f](https://github.com/InjectiveLabs/injective-ts/commit/32aa88f6a55ab6f1d4129e76ce24352fabdff9c1))
+
+
+### Features
+
+* leaderboard ([f69cee4](https://github.com/InjectiveLabs/injective-ts/commit/f69cee45ca4354333056cde17c35d8537ff37fb8))
+* leaderboard - formatting ([1e74433](https://github.com/InjectiveLabs/injective-ts/commit/1e74433fd958662a2a5d6b6bec98027eb9061cd9))
+* leaderboard - restore shx & link-module-alias ([71236e2](https://github.com/InjectiveLabs/injective-ts/commit/71236e20528a5306216628be96ab022e97bf988c))
+
+
+
+
+
 ## [1.0.226](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.225...@injectivelabs/sdk-ui-ts@1.0.226) (2022-09-26)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
