@@ -7,7 +7,7 @@ import type { Msgs } from '@injectivelabs/sdk-ts'
 import type Web3 from 'web3'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { Wallet } from './enums'
+import { Wallet } from '../../types/enums'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void

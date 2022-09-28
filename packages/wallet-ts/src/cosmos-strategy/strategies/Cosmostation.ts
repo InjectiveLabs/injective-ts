@@ -16,8 +16,8 @@ import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { ConcreteCosmosWalletStrategy } from '../types/strategy'
-import { WalletAction } from '../../wallet-strategy/types/enums'
-import { getEndpointsFromChainId } from '../endpoints'
+import { WalletAction } from '../../types/enums'
+import { getEndpointsFromChainId } from '../../cosmos/endpoints'
 
 const getChainNameFromChainId = (chainId: CosmosChainId) => {
   const [chainName] = chainId.split('-')

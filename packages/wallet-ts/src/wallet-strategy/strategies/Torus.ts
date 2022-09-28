@@ -12,8 +12,9 @@ import {
 } from '@injectivelabs/exceptions'
 import Web3 from 'web3'
 import TorusWallet from '@toruslabs/torus-embed'
-import { ConcreteWalletStrategy, WalletAction } from '../types'
+import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
+import { WalletAction } from '../../types/enums'
 
 export const getNetworkFromChainId = (
   chainId: EthereumChainId,

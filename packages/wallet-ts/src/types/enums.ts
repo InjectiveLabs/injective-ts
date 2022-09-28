@@ -10,6 +10,7 @@ export enum Wallet {
   WalletConnect = 'wallet-connect',
   Leap = 'leap',
   Cosmostation = 'cosmostation',
+  CosmostationEth = 'cosmostation-eth',
 }
 
 export const WalletAction = { ...WalletErrorActionModule }

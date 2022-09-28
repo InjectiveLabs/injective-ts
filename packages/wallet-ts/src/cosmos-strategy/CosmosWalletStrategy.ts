@@ -2,7 +2,7 @@ import { AccountAddress, CosmosChainId } from '@injectivelabs/ts-types'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { Msgs } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { Wallet } from '../wallet-strategy/types'
+import { Wallet } from '../types/enums'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
 import Cosmostation from './strategies/Cosmostation'
@@ -10,7 +10,7 @@ import {
   ConcreteCosmosWalletStrategy,
   CosmosWalletStrategyArguments,
 } from './types/strategy'
-import { isCosmosWallet } from '../wallet-strategy'
+import { isCosmosWallet } from '../cosmos/utils'
 
 export const cosmosWallets = [Wallet.Keplr, Wallet.Leap, Wallet.Cosmostation]
 

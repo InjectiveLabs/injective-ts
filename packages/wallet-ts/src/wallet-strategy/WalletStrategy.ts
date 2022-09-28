@@ -13,7 +13,6 @@ import {
   ConcreteWalletStrategy,
   onAccountChangeCallback,
   onChainIdChangeCallback,
-  Wallet,
   WalletStrategyArguments,
 } from './types'
 import Keplr from './strategies/Keplr'
@@ -24,6 +23,8 @@ import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
 import WalletConnect from './strategies/WalletConnect'
+import CosmostationEth from './strategies/CosmostationEth'
+import { Wallet } from '../types/enums'
 
 const createWallet = ({
   wallet,
@@ -57,6 +58,8 @@ const createWallet = ({
       return new Leap({ ...args })
     case Wallet.Cosmostation:
       return new Cosmostation({ ...args })
+    case Wallet.CosmostationEth:
+      return new CosmostationEth({ ...args })
     case Wallet.WalletConnect:
       return new WalletConnect({ ...args, walletOptions: args.options })
     default:

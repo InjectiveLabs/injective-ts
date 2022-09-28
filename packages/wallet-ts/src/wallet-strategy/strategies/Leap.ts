@@ -19,8 +19,9 @@ import {
 import type { Msgs } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { LeapWallet } from '../../leap'
-import { ConcreteWalletStrategy, WalletAction } from '../types'
+import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
+import { WalletAction } from '../../types/enums'
 
 export default class Leap
   extends BaseConcreteStrategy

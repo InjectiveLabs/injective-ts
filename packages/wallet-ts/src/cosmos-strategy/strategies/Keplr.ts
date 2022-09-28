@@ -1,51 +1,49 @@
 /* eslint-disable class-methods-use-this */
 import { CosmosChainId } from '@injectivelabs/ts-types'
+import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import {
+  createTransactionAndCosmosSignDocForAddressAndMsg,
+  createTxRawFromSigResponse,
+} from '@injectivelabs/sdk-ts/dist/core/transaction'
+import type { Msgs } from '@injectivelabs/sdk-ts'
+import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   UnspecifiedErrorCode,
   CosmosWalletException,
-  TransactionException,
   ErrorType,
+  TransactionException,
 } from '@injectivelabs/exceptions'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
-import {
-  createTxRawFromSigResponse,
-  createTransactionAndCosmosSignDocForAddressAndMsg,
-} from '@injectivelabs/sdk-ts'
-import type { Msgs } from '@injectivelabs/sdk-ts'
-import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import { LeapWallet } from '../../leap'
-import { WalletAction } from '../../wallet-strategy/types/enums'
+import { KeplrWallet } from '../../keplr'
 import { ConcreteCosmosWalletStrategy } from '../types/strategy'
+import { WalletAction } from '../../types/enums'
 
-export default class Leap implements ConcreteCosmosWalletStrategy {
+export default class Keplr implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
 
-  private leapWallet: LeapWallet
+  private keplrWallet: KeplrWallet
 
   constructor(args: { chainId: CosmosChainId }) {
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.leapWallet = new LeapWallet(args.chainId)
+    this.keplrWallet = new KeplrWallet(args.chainId)
   }
 
   async isChainIdSupported(chainId?: CosmosChainId): Promise<boolean> {
-    const leapWallet = chainId ? new LeapWallet(chainId) : this.getLeapWallet()
+    const keplrWallet = chainId
+      ? new KeplrWallet(chainId)
+      : this.getKeplrWallet()
 
-    return leapWallet.checkChainIdSupport()
+    return keplrWallet.checkChainIdSupport()
   }
 
   async getAddresses(): Promise<string[]> {
-    const { chainId } = this
-    const leapWallet = this.getLeapWallet()
+    const keplrWallet = this.getKeplrWallet()
 
     try {
-      if (!(await leapWallet.checkChainIdSupport())) {
-        throw new CosmosWalletException(
-          new Error(`The ${chainId} is not supported on Leap.`),
-          { type: ErrorType.WalletError },
-        )
+      if (!(await keplrWallet.checkChainIdSupport())) {
+        await keplrWallet.experimentalSuggestChain()
       }
 
-      const accounts = await leapWallet.getAccounts()
+      const accounts = await keplrWallet.getAccounts()
 
       return accounts.map((account) => account.address)
     } catch (e: unknown) {
@@ -58,11 +56,11 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
   }
 
   async sendTransaction(signResponse: DirectSignResponse): Promise<string> {
-    const { leapWallet } = this
+    const { keplrWallet } = this
     const txRaw = createTxRawFromSigResponse(signResponse)
 
     try {
-      return await leapWallet.broadcastTxBlock(txRaw)
+      return await keplrWallet.broadcastTxBlock(txRaw)
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -79,19 +77,19 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     message: Msgs | Msgs[]
   }) {
     const { chainId } = this
-    const leapWallet = this.getLeapWallet()
+    const keplrWallet = this.getKeplrWallet()
 
-    const endpoints = await leapWallet.getChainEndpoints()
-    const key = await leapWallet.getKey()
-    const signer = await leapWallet.getOfflineSigner()
+    const endpoints = await keplrWallet.getChainEndpoints()
+    const key = await keplrWallet.getKey()
+    const signer = await keplrWallet.getOfflineSigner()
 
     try {
       /** Prepare the Transaction * */
       const { cosmosSignDoc } =
         await createTransactionAndCosmosSignDocForAddressAndMsg({
           chainId,
-          address: transaction.address,
           memo: transaction.memo || '',
+          address: transaction.address,
           message: transaction.message,
           pubKey: Buffer.from(key.pubKey).toString('base64'),
           endpoint: endpoints.rest,
@@ -112,12 +110,12 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     }
   }
 
-  private getLeapWallet(): LeapWallet {
-    const { leapWallet } = this
+  private getKeplrWallet(): KeplrWallet {
+    const { keplrWallet } = this
 
-    if (!leapWallet) {
+    if (!keplrWallet) {
       throw new CosmosWalletException(
-        new Error('Please install the Leap wallet extension'),
+        new Error('Please install the Keplr wallet extension'),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
@@ -126,6 +124,6 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
       )
     }
 
-    return leapWallet
+    return keplrWallet
   }
 }

@@ -7,9 +7,11 @@ import LedgerLive from './Ledger/LedgerLive'
 import LedgerLegacy from './Ledger/LedgerLegacy'
 import Torus from './Torus'
 import WalletConnect from './WalletConnect'
+import CosmostationEth from './CosmostationEth'
 
 export {
   Keplr,
+  CosmostationEth,
   Leap,
   Cosmostation,
   Trezor,

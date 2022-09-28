@@ -1,51 +1,54 @@
-import { isServerSide, sleep } from '@injectivelabs/utils'
+/* eslint-disable class-methods-use-this */
 import {
   AccountAddress,
   ChainId,
   EthereumChainId,
+  CosmosChainId,
 } from '@injectivelabs/ts-types'
-import Web3 from 'web3'
 import {
-  ErrorType,
-  MetamaskException,
   UnspecifiedErrorCode,
+  CosmosWalletException,
+  ErrorType,
 } from '@injectivelabs/exceptions'
-import {
-  ConcreteWalletStrategy,
-  Eip1993ProviderWithMetamask,
-  WindowWithEip1193Provider,
-} from '../types'
+import { sleep } from '@injectivelabs/utils'
+import { ethereum, InstallError } from '@cosmostation/extension-client'
+import Web3 from 'web3'
+import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction } from '../../types/enums'
+import { UnwrappedPromise } from '../../types'
 
-const $window = (isServerSide()
-  ? {}
-  : window) as unknown as WindowWithEip1193Provider
-
-export default class Metamask
+export default class CosmostationEth
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  private ethereum: Eip1993ProviderWithMetamask
+  private ethereum?: UnwrappedPromise<ReturnType<typeof ethereum>>
 
-  constructor(args: {
-    ethereumChainId: EthereumChainId
-    web3: Web3
-    chainId: ChainId
-  }) {
+  constructor(args: { ethereumChainId: EthereumChainId; chainId: ChainId }) {
     super(args)
-    this.ethereum = $window.ethereum
+    this.chainId = args.chainId || CosmosChainId.Injective
   }
 
   async getAddresses(): Promise<string[]> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
-      return await ethereum.request({
+      return (await ethereum.request({
         method: 'eth_requestAccounts',
-      })
+      })) as string[]
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      if ((e as any).code === 4001) {
+        throw new CosmosWalletException(
+          new Error('The user rejected the request'),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletError,
+            contextModule: WalletAction.GetAccounts,
+          },
+        )
+      }
+
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,
@@ -53,7 +56,6 @@ export default class Metamask
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async confirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
@@ -66,15 +68,15 @@ export default class Metamask
     transaction: unknown,
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
-      return await ethereum.request({
+      return (await ethereum.request({
         method: 'eth_sendTransaction',
         params: [transaction],
-      })
+      })) as string
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SendEthereumTransaction,
@@ -87,7 +89,7 @@ export default class Metamask
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    throw new MetamaskException(
+    throw new CosmosWalletException(
       new Error(
         'sendTransaction is not supported. Metamask only supports sending transaction to Ethereum',
       ),
@@ -107,15 +109,15 @@ export default class Metamask
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
-      return await ethereum.request({
+      return (await ethereum.request({
         method: 'eth_signTypedData_v4',
         params: [address, eip712json],
-      })
+      })) as string
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignTransaction,
@@ -124,12 +126,12 @@ export default class Metamask
   }
 
   async getNetworkId(): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
-      return ethereum.request({ method: 'net_version' })
+      return (await ethereum.request({ method: 'net_version' })) as string
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetNetworkId,
@@ -138,12 +140,12 @@ export default class Metamask
   }
 
   async getChainId(): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
-      return ethereum.request({ method: 'eth_chainId' })
+      return (await ethereum.request({ method: 'eth_chainId' })) as string
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetChainId,
@@ -152,7 +154,7 @@ export default class Metamask
   }
 
   async getEthereumTransactionReceipt(txHash: string): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     const interval = 1000
     const transactionReceiptRetry = async () => {
@@ -166,13 +168,13 @@ export default class Metamask
         await transactionReceiptRetry()
       }
 
-      return receipt
+      return receipt as string
     }
 
     try {
       return await transactionReceiptRetry()
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetEthereumTransactionReceipt,
@@ -180,64 +182,33 @@ export default class Metamask
     }
   }
 
-  onChainIdChanged(callback: () => void): void {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      return
+  private async getEthereum(): Promise<ReturnType<typeof ethereum>> {
+    if (this.ethereum) {
+      return this.ethereum
     }
 
-    ethereum.on('chainChanged', callback)
-  }
+    try {
+      const provider = await ethereum()
 
-  onAccountChange(callback: (account: AccountAddress) => void): void {
-    const { ethereum } = this
+      this.web3 = new Web3(provider)
+      this.ethereum = provider
 
-    if (!ethereum) {
-      return
+      return provider
+    } catch (e) {
+      if (e instanceof InstallError) {
+        throw new CosmosWalletException(
+          new Error('Please install the Cosmostation extension'),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletNotInstalledError,
+          },
+        )
+      }
+
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+      })
     }
-
-    ethereum.on('accountsChanged', callback)
-  }
-
-  cancelOnChainIdChange(): void {
-    const { ethereum } = this
-
-    if (ethereum) {
-      // ethereum.removeListener('chainChanged', handler)
-    }
-  }
-
-  cancelOnAccountChange(): void {
-    const { ethereum } = this
-
-    if (ethereum) {
-      // ethereum.removeListener('chainChanged', handler)
-    }
-  }
-
-  cancelAllEvents(): void {
-    const { ethereum } = this
-
-    if (ethereum) {
-      ethereum.removeAllListeners()
-    }
-  }
-
-  private getEthereum(): Eip1993ProviderWithMetamask {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      throw new MetamaskException(
-        new Error('Please install the Metamask wallet extension.'),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletNotInstalledError,
-          contextModule: WalletAction.GetAccounts,
-        },
-      )
-    }
-
-    return ethereum
   }
 }

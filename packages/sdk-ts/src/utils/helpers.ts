@@ -13,7 +13,7 @@ export const isReactNative = () => {
 
 export const isNode = () => {
   if (typeof window === 'undefined') {
-    true
+    return true
   }
 
   return (

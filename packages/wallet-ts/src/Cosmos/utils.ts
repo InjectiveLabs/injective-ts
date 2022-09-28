@@ -1,4 +1,5 @@
 import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
+import { Wallet } from '../types/enums'
 
 /**
  * Returns a timeout timestamp in milliseconds so its compatible
@@ -21,3 +22,6 @@ export const makeTimeoutTimestamp = (
 export const makeTimeoutTimestampInNs = (
   timeoutInMs: number = DEFAULT_TIMESTAMP_TIMEOUT_MS,
 ) => makeTimeoutTimestamp(timeoutInMs) * 1e6
+
+export const isCosmosWallet = (wallet: Wallet): boolean =>
+  [Wallet.Cosmostation, Wallet.Leap, Wallet.Keplr].includes(wallet)

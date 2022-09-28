@@ -19,8 +19,9 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import { KeplrWallet } from '../../keplr'
-import { ConcreteWalletStrategy, WalletAction } from '../types'
+import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
+import { WalletAction } from '../../types/enums'
 
 export default class Keplr
   extends BaseConcreteStrategy

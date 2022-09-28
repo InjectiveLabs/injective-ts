@@ -12,8 +12,9 @@ import {
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3 from 'web3'
 import { TransactionConfig } from 'web3-core'
-import { ConcreteWalletStrategy, WalletAction, WalletOptions } from '../types'
+import { ConcreteWalletStrategy, WalletOptions } from '../types'
 import BaseConcreteStrategy from './Base'
+import { WalletAction } from '../../types/enums'
 
 export default class WalletConnect
   extends BaseConcreteStrategy
