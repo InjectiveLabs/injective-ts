@@ -49,8 +49,8 @@ export interface QueryVaultContractSpotConfigResponse {
     lp_symbol: string
     lp_token_address: string
     market_id: string
-    market_order_lower_bound_ratio: string
-    market_order_upper_bound_ratio: string
+    market_buy_mid_price_deviation_percent: string
+    market_sell_mid_price_deviation_percent: string
     master_address: string
     max_active_capital_utilization_ratio: string
     mid_price_tail_deviation_ratio: string
@@ -91,7 +91,14 @@ export interface QueryVaultUserLpBalanceResponse {
 export interface QueryRegisteredVaultResponse {
   registered_vaults: {
     master_subaccount_id: string
-    vault_address: string
+    vault: {
+      spot?: {
+        address: string
+      }
+      derivative?: {
+        address: string
+      }
+    }
   }[]
 }
 
