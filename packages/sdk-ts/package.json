@@ -35,6 +35,7 @@
     "@cosmjs/amino": "^0.29.0",
     "@cosmjs/proto-signing": "^0.29.0",
     "@cosmjs/tendermint-rpc": "^0.29.0",
+    "@ethersproject/bytes": "^5.7.0",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@improbable-eng/grpc-web-react-native-transport": "^0.15.0",

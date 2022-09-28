@@ -12,6 +12,10 @@ export const isReactNative = () => {
 }
 
 export const isNode = () => {
+  if (typeof window === 'undefined') {
+    true
+  }
+
   return (
     typeof process !== 'undefined' &&
     typeof process.versions !== 'undefined' &&
@@ -25,7 +29,7 @@ export const isBrowser = () => {
   }
 
   if (isNode()) {
-    return true
+    return false
   }
 
   return typeof window !== 'undefined'
