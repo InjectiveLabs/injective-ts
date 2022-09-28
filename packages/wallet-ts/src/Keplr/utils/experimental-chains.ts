@@ -4,7 +4,7 @@ import {
   DevnetCosmosChainId,
   CosmosChainId,
 } from '@injectivelabs/ts-types'
-import { getEndpointsFromChainId } from '../../cosmos/endpoints'
+import { getEndpointsFromChainId } from '../../Cosmos/endpoints'
 
 export const experimentalChainsConfig = {
   [CosmosChainId.Injective]: {

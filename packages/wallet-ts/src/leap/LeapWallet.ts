@@ -16,7 +16,7 @@ import {
   UnspecifiedErrorCode,
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
-import { getEndpointsFromChainId } from '../cosmos/endpoints'
+import { getEndpointsFromChainId } from '../Cosmos/endpoints'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
   leap?: Leap

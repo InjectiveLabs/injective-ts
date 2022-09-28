@@ -18,7 +18,7 @@ import {
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
 import { getExperimentalChainConfigBasedOnChainId } from './utils'
-import { getEndpointsFromChainId } from '../cosmos/endpoints'
+import { getEndpointsFromChainId } from '../Cosmos/endpoints'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as KeplrWindow
 
