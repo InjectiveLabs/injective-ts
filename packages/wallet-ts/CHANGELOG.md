@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.132](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.131...@injectivelabs/wallet-ts@1.0.132) (2022-09-28)
+
+
+### Bug Fixes
+
+* type improt ([f31c34c](https://github.com/InjectiveLabs/injective-ts/commit/f31c34c5b510ede4af8af8a28d2fd35dc5e047e9))
+
+
+### Features
+
+* comsostation eth version ([a10d278](https://github.com/InjectiveLabs/injective-ts/commit/a10d27849b593b6cedec2d66e7d08e691f0a0c47))
+
+
+
+
+
 ## [1.0.131](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.130...@injectivelabs/wallet-ts@1.0.131) (2022-09-28)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
