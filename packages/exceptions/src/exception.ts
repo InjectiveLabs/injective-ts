@@ -130,13 +130,13 @@ export abstract class ConcreteException extends Error implements Exception {
 
   public toCompactError(): Error {
     const error = new Error(
-      JSON.stringify({
+      `${this.message} | ${JSON.stringify({
         message: this.message,
         code: this.code,
         type: this.type,
         contextModule: this.contextModule,
         contextCode: this.contextCode,
-      }),
+      })}`,
     )
     error.stack = this.stack
     error.name = this.name || ''
