@@ -15,11 +15,7 @@ import {
   TrezorException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import {
-  ConcreteWalletStrategy,
-  TrezorWalletInfo,
-  WalletAction,
-} from '../../types'
+import { ConcreteWalletStrategy, TrezorWalletInfo } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
@@ -27,6 +23,7 @@ import {
 } from '../../constants'
 import TrezorHW from './hw'
 import { transformTypedData } from './utils'
+import { WalletAction } from '../../../types/enums'
 
 type EthereumTransactionEIP1559 = {
   to: string

@@ -18,7 +18,6 @@ import {
   ConcreteWalletStrategy,
   LedgerDerivationPathType,
   LedgerWalletInfo,
-  WalletAction,
 } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
@@ -28,6 +27,7 @@ import {
 } from '../../constants'
 import LedgerHW from './hw'
 import { domainHash, messageHash } from './utils'
+import { WalletAction } from '../../../types/enums'
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
