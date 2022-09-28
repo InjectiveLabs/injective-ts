@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/networks",
   "description": "Endpoints, networks, etc. Can be reused throughout Injective's projects.",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "license": "MIT",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -31,8 +31,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.0.22",
-    "@injectivelabs/utils": "^1.0.28",
+    "@injectivelabs/exceptions": "^1.0.23",
+    "@injectivelabs/utils": "^1.0.29",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },
