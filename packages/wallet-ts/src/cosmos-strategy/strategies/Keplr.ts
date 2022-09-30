@@ -13,7 +13,7 @@ import {
   ErrorType,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import { KeplrWallet } from '../../keplr'
+import { KeplrWallet } from '../../Keplr'
 import { ConcreteCosmosWalletStrategy } from '../types/strategy'
 import { WalletAction } from '../../types/enums'
 

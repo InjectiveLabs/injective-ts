@@ -10,7 +10,7 @@ import {
   ConcreteCosmosWalletStrategy,
   CosmosWalletStrategyArguments,
 } from './types/strategy'
-import { isCosmosWallet } from '../cosmos/utils'
+import { isCosmosWallet } from '../Cosmos/utils'
 
 export const cosmosWallets = [Wallet.Keplr, Wallet.Leap, Wallet.Cosmostation]
 
