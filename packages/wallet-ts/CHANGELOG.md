@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.135](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.134...@injectivelabs/wallet-ts@1.0.135) (2022-09-30)
+
+
+### Bug Fixes
+
+* rename wallet ts folder structure to lowercase only ([b2ffe42](https://github.com/InjectiveLabs/injective-ts/commit/b2ffe4216ea8b7c08ad2592f2790dfd1ce89a722))
+
+
+
+
+
 ## [1.0.134](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.133...@injectivelabs/wallet-ts@1.0.134) (2022-09-30)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
