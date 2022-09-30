@@ -22,7 +22,7 @@ import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
-import { getEndpointsFromChainId } from '../../Cosmos/endpoints'
+import { getEndpointsFromChainId } from '../../cosmos/endpoints'
 import { WalletAction } from '../../types/enums'
 
 const INJECTIVE_CHAIN_NAME = 'injective'

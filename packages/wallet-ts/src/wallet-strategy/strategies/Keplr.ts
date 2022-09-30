@@ -18,7 +18,7 @@ import {
   ErrorType,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import { KeplrWallet } from '../../Keplr'
+import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction } from '../../types/enums'
