@@ -17,8 +17,8 @@ import {
   createTransactionAndCosmosSignDocForAddressAndMsg,
 } from '@injectivelabs/sdk-ts'
 import type { Msgs } from '@injectivelabs/sdk-ts'
-import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
+import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
