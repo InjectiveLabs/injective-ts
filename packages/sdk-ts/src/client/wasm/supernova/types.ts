@@ -1,3 +1,17 @@
+export interface QueryContractTokenInfoResponse {
+  name: string
+  symbol: string
+  decimals: number
+  total_supply: string
+}
+
+export interface QueryContractMarketingInfoResponse {
+  project: string
+  description: string
+  logo: string
+  marketing: string
+}
+
 export interface QueryMastContractConfigResponse {
   distribution_contract: string
   ninja_token: string

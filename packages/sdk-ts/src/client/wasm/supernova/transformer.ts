@@ -1,6 +1,8 @@
 import { fromBase64 } from '../../../utils'
 import {
   WasmContractQueryResponse,
+  QueryContractMarketingInfoResponse,
+  QueryContractTokenInfoResponse,
   QueryMastContractConfigResponse,
   QueryRegisteredVaultResponse,
   QueryVaultUserLpContractAllowanceResponse,
@@ -18,6 +20,32 @@ import {
 const formatToString = (value?: string | number) =>
   value ? value.toString() : ''
 export class SupernovaQueryTransformer {
+  static contractMarketingInfoResponseToContractMarketingInfo(
+    response: WasmContractQueryResponse,
+  ) {
+    const data = fromBase64(response.data) as QueryContractMarketingInfoResponse
+
+    return {
+      project: data.project,
+      description: data.description,
+      logo: data.logo,
+      marketing: data.marketing,
+    }
+  }
+
+  static contractTokenInfoResponseToContractTokenInfo(
+    response: WasmContractQueryResponse,
+  ) {
+    const data = fromBase64(response.data) as QueryContractTokenInfoResponse
+
+    return {
+      name: data.name,
+      symbol: data.symbol,
+      decimals: data.decimals,
+      totalSupply: data.total_supply,
+    }
+  }
+
   static masterContractConfigResponseToMasterContractConfig(
     response: WasmContractQueryResponse,
   ) {
