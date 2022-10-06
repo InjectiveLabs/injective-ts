@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.42...@injectivelabs/token-metadata@1.0.43) (2022-10-06)
+
+
+### Bug Fixes
+
+* token decimals for terra from 6 to 18 ([7b6b217](https://github.com/InjectiveLabs/injective-ts/commit/7b6b217905a2690f7d381de301423ed9a50ea952))
+
+
+
+
+
 ## [1.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.41...@injectivelabs/token-metadata@1.0.42) (2022-09-28)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
