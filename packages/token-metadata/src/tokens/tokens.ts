@@ -458,7 +458,7 @@ export default {
     coinGeckoId: 'terrausd',
     name: 'TerraUSD',
     symbol: 'UST',
-    decimals: 6,
+    decimals: 18,
     logo: 'ust.png',
   },
 
@@ -467,7 +467,7 @@ export default {
     coinGeckoId: 'terrausd',
     name: 'TerraUSD',
     symbol: 'UST',
-    decimals: 6,
+    decimals: 18,
     logo: 'ust.png',
   },
 
