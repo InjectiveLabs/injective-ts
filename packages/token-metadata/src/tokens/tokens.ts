@@ -685,7 +685,7 @@ export default {
     symbol: 'STRD',
     decimals: 6,
     address: '',
-    coinGeckoId: '',
+    coinGeckoId: 'stride',
   },
 
   STRD: {
@@ -694,7 +694,7 @@ export default {
     symbol: 'STRD',
     decimals: 6,
     address: '',
-    coinGeckoId: '',
+    coinGeckoId: 'stride',
   },
 
   PROJ: {
