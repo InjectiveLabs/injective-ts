@@ -192,7 +192,7 @@ export default {
 
   AXS: {
     name: 'Axie Infinity',
-    logo: 'axs.svg',
+    logo: 'axs.png',
     symbol: 'AXS',
     decimals: 18,
     address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
