@@ -23,7 +23,7 @@ import {
   TxConcreteClient,
 } from '../types/tx'
 import {
-  HttpRequestException,
+  GrpcUnaryRequestException,
   TransactionException,
 } from '@injectivelabs/exceptions'
 import { getGrpcTransport } from '../../../utils/grpc'
@@ -71,7 +71,16 @@ export class TxGrpcClient implements TxConcreteClient {
         txHash: txResponse.getTxhash(),
       }
     } catch (e: unknown) {
-      throw new HttpRequestException(new Error((e as any).message), {
+      if ((e as any).toString().includes('400')) {
+        throw new TransactionException(
+          new Error('There was an issue while fetching transaction details'),
+          {
+            contextModule: 'tx',
+          },
+        )
+      }
+
+      throw new GrpcUnaryRequestException(new Error((e as any).message), {
         contextModule: 'tx',
       })
     }
@@ -168,7 +177,7 @@ export class TxGrpcClient implements TxConcreteClient {
           }),
       )
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (e instanceof GrpcUnaryRequestException) {
         throw e
       }
 

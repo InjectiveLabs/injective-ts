@@ -129,7 +129,7 @@ export class LeapWallet {
       BroadcastMode.Block,
     )
 
-    if (!result) {
+    if (!result || result.length === 0) {
       throw new TransactionException(
         new Error('Transaction failed to be broadcasted'),
         { contextModule: 'Leap' },

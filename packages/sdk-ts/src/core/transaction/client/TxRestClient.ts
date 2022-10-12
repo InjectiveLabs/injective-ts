@@ -51,6 +51,15 @@ export class TxRestClient implements TxConcreteClient {
         txHash: txResponse.txhash,
       }
     } catch (e: unknown) {
+      if ((e as any).toString().includes('400')) {
+        throw new TransactionException(
+          new Error('There was an issue while fetching transaction details'),
+          {
+            contextModule: 'tx',
+          },
+        )
+      }
+
       throw new TransactionException(new Error((e as any).message), {
         contextModule: 'tx',
       })
