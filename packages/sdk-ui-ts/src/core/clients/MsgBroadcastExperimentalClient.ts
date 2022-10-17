@@ -39,7 +39,7 @@ export class MsgBroadcastExperimentalClient {
     const { walletStrategy } = options
 
     return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastKeplr(tx)
+      ? this.broadcastCosmos(tx)
       : this.broadcastWeb3(tx)
   }
 
@@ -135,7 +135,7 @@ export class MsgBroadcastExperimentalClient {
     return response.txHash
   }
 
-  private async broadcastKeplr(tx: MsgBroadcastTxOptions) {
+  private async broadcastCosmos(tx: MsgBroadcastTxOptions) {
     const { options } = this
     const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]

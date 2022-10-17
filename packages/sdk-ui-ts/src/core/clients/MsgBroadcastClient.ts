@@ -86,6 +86,7 @@ export class MsgBroadcastClient {
       promise,
       `${tx.bucket}BroadcastTx`,
     )
+
     return txHash
   }
 
