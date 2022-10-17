@@ -26,7 +26,21 @@ export class InjectiveAssetService {
         }
       }
 
-      return pricesResponse.data.data
+      if (pricesResponse.data.data.length === 0) {
+        throw new HttpRequestException(
+          new Error(`The price for ${coinId} could not be fetched`),
+        )
+      }
+
+      const [response] = pricesResponse.data.data
+
+      if (!response) {
+        throw new HttpRequestException(
+          new Error(`The price for ${coinId} could not be fetched`),
+        )
+      }
+
+      return response
     } catch (e: unknown) {
       throw new HttpRequestException(new Error((e as any).message), {
         contextModule: 'asset-service',

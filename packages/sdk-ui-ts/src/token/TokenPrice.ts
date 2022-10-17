@@ -70,7 +70,7 @@ export class TokenPrice {
     }
 
     try {
-      const pricesResponse = (await this.httpClient.get('price', {
+      const pricesResponse = (await this.httpClient.get('coin/price', {
         coinIds: coinId,
         currency: 'usd',
       })) as {
@@ -165,7 +165,7 @@ export class TokenPrice {
 
   private async initCache(): Promise<void> {
     try {
-      const pricesResponse = (await this.httpClient.get('price', {
+      const pricesResponse = (await this.httpClient.get('coin/price', {
         coinIds: commonlyUsedCoinGeckoIds.join(','),
         currency: 'usd',
       })) as {
