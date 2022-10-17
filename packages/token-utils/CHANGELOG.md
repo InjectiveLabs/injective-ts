@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.31...@injectivelabs/token-utils@1.0.32) (2022-10-17)
+
+
+### Bug Fixes
+
+* asset service ([5968d23](https://github.com/InjectiveLabs/injective-ts/commit/5968d236efc2b98aecbde26a13823cb2fdad1dfe))
+
+
+
+
+
 ## [1.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.30...@injectivelabs/token-utils@1.0.31) (2022-10-17)
 
 
