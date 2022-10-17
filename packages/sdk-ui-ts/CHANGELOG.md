@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.242](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.241...@injectivelabs/sdk-ui-ts@1.0.242) (2022-10-17)
+
+
+### Features
+
+* added new asset service ([59f846f](https://github.com/InjectiveLabs/injective-ts/commit/59f846fcd0939b8d2fd317773558681e2a8b424f))
+
+
+
+
+
 ## [1.0.241](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.240...@injectivelabs/sdk-ui-ts@1.0.241) (2022-10-12)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
