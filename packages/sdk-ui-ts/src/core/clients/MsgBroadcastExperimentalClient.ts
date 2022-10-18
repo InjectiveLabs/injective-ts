@@ -16,7 +16,11 @@ import {
   TxGrpcClient,
 } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
+import {
+  MsgBroadcastOptions,
+  MsgBroadcastTxOptions,
+  MsgBroadcastTxOptionsWithAddresses,
+} from './types'
 import {
   getEthereumSignerAddress,
   getGasPriceBasedOnMessage,
@@ -48,7 +52,7 @@ export class MsgBroadcastExperimentalClient {
       injectiveAddress: getInjectiveSignerAddress(
         tx.injectiveAddress || tx.address,
       ),
-    } as MsgBroadcastTxOptions
+    } as MsgBroadcastTxOptionsWithAddresses
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
@@ -63,7 +67,7 @@ export class MsgBroadcastExperimentalClient {
    * @param tx The transaction that needs to be broadcasted
    * @returns transaction hash
    */
-  private async broadcastWeb3(tx: MsgBroadcastTxOptions) {
+  private async broadcastWeb3(tx: MsgBroadcastTxOptionsWithAddresses) {
     const { options } = this
     const { walletStrategy, chainId, ethereumChainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
@@ -103,7 +107,7 @@ export class MsgBroadcastExperimentalClient {
     /** Signing on Ethereum */
     const signature = (await walletStrategy.signTransaction(
       JSON.stringify(eip712TypedData),
-      tx.address,
+      tx.ethereumAddress,
     )) as string
     const signatureBuff = hexToBuff(signature)
 
@@ -146,7 +150,7 @@ export class MsgBroadcastExperimentalClient {
     return response.txHash
   }
 
-  private async broadcastCosmos(tx: MsgBroadcastTxOptions) {
+  private async broadcastCosmos(tx: MsgBroadcastTxOptionsWithAddresses) {
     const { options } = this
     const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]

@@ -1,6 +1,10 @@
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 import { isCosmosWallet } from '@injectivelabs/wallet-ts'
-import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
+import {
+  MsgBroadcastOptions,
+  MsgBroadcastTxOptions,
+  MsgBroadcastTxOptionsWithAddresses,
+} from './types'
 import {
   getEthereumSignerAddress,
   getGasPriceBasedOnMessage,
@@ -30,14 +34,14 @@ export class MsgBroadcastClient {
       injectiveAddress: getInjectiveSignerAddress(
         tx.injectiveAddress || tx.address,
       ),
-    } as MsgBroadcastTxOptions
+    } as MsgBroadcastTxOptionsWithAddresses
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
       : this.broadcastWeb3(txWithAddresses)
   }
 
-  private async broadcastWeb3(tx: MsgBroadcastTxOptions) {
+  private async broadcastWeb3(tx: MsgBroadcastTxOptionsWithAddresses) {
     const { options, transactionApi } = this
     const { walletStrategy, ethereumChainId, metricsProvider } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
@@ -64,7 +68,7 @@ export class MsgBroadcastClient {
     }
 
     const signTx = async (txData: any) => {
-      const promise = walletStrategy.signTransaction(txData, tx.address)
+      const promise = walletStrategy.signTransaction(txData, tx.ethereumAddress)
 
       if (!metricsProvider) {
         return await promise
@@ -100,7 +104,7 @@ export class MsgBroadcastClient {
     return txHash
   }
 
-  private async broadcastCosmos(tx: MsgBroadcastTxOptions) {
+  private async broadcastCosmos(tx: MsgBroadcastTxOptionsWithAddresses) {
     const { options } = this
     const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]

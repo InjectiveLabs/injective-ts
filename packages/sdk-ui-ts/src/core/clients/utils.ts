@@ -35,7 +35,11 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
     .toNumber()
 }
 
-export const getInjectiveSignerAddress = (address: string) => {
+export const getInjectiveSignerAddress = (address: string | undefined) => {
+  if (!address) {
+    return ''
+  }
+
   if (address.startsWith('inj')) {
     return address
   }
@@ -47,7 +51,11 @@ export const getInjectiveSignerAddress = (address: string) => {
   return ''
 }
 
-export const getEthereumSignerAddress = (address: string) => {
+export const getEthereumSignerAddress = (address: string | undefined) => {
+  if (!address) {
+    return ''
+  }
+
   if (address.startsWith('0x')) {
     return address
   }
