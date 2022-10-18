@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.245](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.244...@injectivelabs/sdk-ui-ts@1.0.245) (2022-10-18)
+
+
+### Bug Fixes
+
+* addresses conversion for broadcast client ([3cf9cbc](https://github.com/InjectiveLabs/injective-ts/commit/3cf9cbc09f809914581a437f39b2b28e40640f37))
+
+
+
+
+
 ## [1.0.244](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.243...@injectivelabs/sdk-ui-ts@1.0.244) (2022-10-18)
 
 
