@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.244](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.243...@injectivelabs/sdk-ui-ts@1.0.244) (2022-10-18)
+
+
+### Features
+
+* support for injective address signer ([f583335](https://github.com/InjectiveLabs/injective-ts/commit/f5833356a184caa81ffa51b20313a53eb11cc338))
+
+
+
+
+
 ## [1.0.243](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.242...@injectivelabs/sdk-ui-ts@1.0.243) (2022-10-17)
 
 
