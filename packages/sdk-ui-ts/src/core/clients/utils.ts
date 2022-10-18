@@ -1,4 +1,8 @@
-import { Msgs } from '@injectivelabs/sdk-ts'
+import {
+  getAddressFromInjectiveAddress,
+  getInjectiveAddress,
+  Msgs,
+} from '@injectivelabs/sdk-ts'
 import {
   BigNumberInBase,
   DEFAULT_EXCHANGE_LIMIT,
@@ -29,4 +33,28 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
   )
     .times(hasMultipleMessages ? msgs.length : 1)
     .toNumber()
+}
+
+export const getInjectiveSignerAddress = (address: string) => {
+  if (address.startsWith('inj')) {
+    return address
+  }
+
+  if (address.startsWith('0x')) {
+    return getInjectiveAddress(address)
+  }
+
+  return ''
+}
+
+export const getEthereumSignerAddress = (address: string) => {
+  if (address.startsWith('0x')) {
+    return address
+  }
+
+  if (address.startsWith('inj')) {
+    return getAddressFromInjectiveAddress(address)
+  }
+
+  return ''
 }

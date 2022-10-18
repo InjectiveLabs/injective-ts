@@ -1,5 +1,4 @@
 import {
-  getInjectiveAddress,
   ChainRestAuthApi,
   ChainRestTendermintApi,
   BaseAccount,
@@ -18,7 +17,11 @@ import {
 } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
-import { getGasPriceBasedOnMessage } from './utils'
+import {
+  getEthereumSignerAddress,
+  getGasPriceBasedOnMessage,
+  getInjectiveSignerAddress,
+} from './utils'
 import { getEip712TypedData } from '@injectivelabs/sdk-ts/dist/core/eip712'
 import {
   ErrorType,
@@ -37,10 +40,19 @@ export class MsgBroadcastExperimentalClient {
   async broadcast(tx: MsgBroadcastTxOptions) {
     const { options } = this
     const { walletStrategy } = options
+    const txWithAddresses = {
+      ...tx,
+      ethereumAddress: getEthereumSignerAddress(
+        tx.injectiveAddress || tx.address,
+      ),
+      injectiveAddress: getInjectiveSignerAddress(
+        tx.injectiveAddress || tx.address,
+      ),
+    } as MsgBroadcastTxOptions
 
     return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastCosmos(tx)
-      : this.broadcastWeb3(tx)
+      ? this.broadcastCosmos(txWithAddresses)
+      : this.broadcastWeb3(txWithAddresses)
   }
 
   /**
@@ -55,14 +67,13 @@ export class MsgBroadcastExperimentalClient {
     const { options } = this
     const { walletStrategy, chainId, ethereumChainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
-    const injectiveAddress = getInjectiveAddress(tx.address)
 
     /** Account Details **/
     const chainRestAuthApi = new ChainRestAuthApi(
       options.endpoints.sentryHttpApi,
     )
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      injectiveAddress,
+      tx.injectiveAddress,
     )
     const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
     const accountDetails = baseAccount.toAccountDetails()
@@ -139,7 +150,6 @@ export class MsgBroadcastExperimentalClient {
     const { options } = this
     const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
-    const injectiveAddress = getInjectiveAddress(tx.address)
 
     const transaction = {
       message: msgs,
@@ -149,12 +159,12 @@ export class MsgBroadcastExperimentalClient {
 
     const directSignResponse = (await walletStrategy.signTransaction(
       transaction,
-      injectiveAddress,
+      tx.injectiveAddress,
     )) as any
 
     return await walletStrategy.sendTransaction(directSignResponse, {
       chainId,
-      address: injectiveAddress,
+      address: tx.injectiveAddress,
     })
   }
 }

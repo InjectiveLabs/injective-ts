@@ -6,7 +6,9 @@ import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 export interface MsgBroadcastTxOptions {
   bucket?: string
   memo?: string
-  address: string
+  address: string /* Deprecated */
+  ethereumAddress: string
+  injectiveAddress: string
   msgs: Msgs | Msgs[]
   feePrice?: string
   feeDenom?: string

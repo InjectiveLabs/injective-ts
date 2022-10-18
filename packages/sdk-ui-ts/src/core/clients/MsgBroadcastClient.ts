@@ -1,10 +1,11 @@
-import {
-  getInjectiveAddress,
-  IndexerGrpcTransactionApi,
-} from '@injectivelabs/sdk-ts'
+import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 import { isCosmosWallet } from '@injectivelabs/wallet-ts'
 import { MsgBroadcastOptions, MsgBroadcastTxOptions } from './types'
-import { getGasPriceBasedOnMessage } from './utils'
+import {
+  getEthereumSignerAddress,
+  getGasPriceBasedOnMessage,
+  getInjectiveSignerAddress,
+} from './utils'
 
 export class MsgBroadcastClient {
   public options: MsgBroadcastOptions
@@ -21,10 +22,19 @@ export class MsgBroadcastClient {
   async broadcast(tx: MsgBroadcastTxOptions) {
     const { options } = this
     const { walletStrategy } = options
+    const txWithAddresses = {
+      ...tx,
+      ethereumAddress: getEthereumSignerAddress(
+        tx.injectiveAddress || tx.address,
+      ),
+      injectiveAddress: getInjectiveSignerAddress(
+        tx.injectiveAddress || tx.address,
+      ),
+    } as MsgBroadcastTxOptions
 
     return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastCosmos(tx)
-      : this.broadcastWeb3(tx)
+      ? this.broadcastCosmos(txWithAddresses)
+      : this.broadcastWeb3(txWithAddresses)
   }
 
   private async broadcastWeb3(tx: MsgBroadcastTxOptions) {
@@ -37,7 +47,7 @@ export class MsgBroadcastClient {
       const promise = transactionApi.prepareTxRequest({
         memo: tx.memo,
         message: web3Msgs,
-        address: tx.address,
+        address: tx.ethereumAddress,
         chainId: ethereumChainId,
         gasLimit: getGasPriceBasedOnMessage(msgs),
         estimateGas: false,
@@ -94,7 +104,6 @@ export class MsgBroadcastClient {
     const { options } = this
     const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
-    const injectiveAddress = getInjectiveAddress(tx.address)
 
     const transaction = {
       message: msgs,
@@ -104,12 +113,12 @@ export class MsgBroadcastClient {
 
     const directSignResponse = (await walletStrategy.signTransaction(
       transaction,
-      injectiveAddress,
+      tx.injectiveAddress,
     )) as any
 
     return await walletStrategy.sendTransaction(directSignResponse, {
       chainId,
-      address: injectiveAddress,
+      address: tx.injectiveAddress,
     })
   }
 }
