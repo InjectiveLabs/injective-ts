@@ -178,6 +178,7 @@ export class SupernovaQueryTransformer {
       reservationSpreadSensitivityRatio: formatToString(
         config.reservation_spread_sensitivity_ratio,
       ),
+      targetBaseWeight: formatToString(config.target_base_weight),
       tradeVolatilityGroupCount: formatToString(
         config.trade_volatility_group_count,
       ),

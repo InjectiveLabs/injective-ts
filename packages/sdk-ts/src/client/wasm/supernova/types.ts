@@ -75,6 +75,7 @@ export interface QueryVaultContractSpotConfigResponse {
     reservation_price_sensitivity_ratio: string
     reservation_spread_sensitivity_ratio: string
     subaccount_id: string
+    target_base_weight: string
     trade_volatility_group_count: string
     trade_volatility_group_sec: string
     fee_recipient: string
