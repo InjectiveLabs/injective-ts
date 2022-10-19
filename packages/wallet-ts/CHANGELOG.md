@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.142](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.141...@injectivelabs/wallet-ts@1.0.142) (2022-10-19)
+
+
+### Features
+
+* msgTransferAndExecute support ([4a2c286](https://github.com/InjectiveLabs/injective-ts/commit/4a2c286b1e964b9f97fe7be0439208fe376d7d17))
+
+
+
+
+
 ## [1.0.141](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.140...@injectivelabs/wallet-ts@1.0.141) (2022-10-12)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
