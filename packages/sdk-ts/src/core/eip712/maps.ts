@@ -354,6 +354,8 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'exchange/BinaryOptionsMarketParamUpdateProposal'
     case 'injective.exchange.v1beta1.BinaryOptionsMarketLaunchProposal':
       return 'exchange/BinaryOptionsMarketLaunchProposal'
+    case 'injective.exchange.v1beta1.MsgTransferAndExecute':
+      return 'exchange/MsgTransferAndExecute'
 
     case 'injective.exchange.v1beta1.CreateSpotLimitOrderAuthz':
       return 'exchange/CreateSpotLimitOrderAuthz'

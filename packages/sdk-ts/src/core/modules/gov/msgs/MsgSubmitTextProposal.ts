@@ -85,6 +85,36 @@ export default class MsgSubmitTextProposal extends MsgBase<
     const { params } = this
     const proto = this.toProto()
     const content = this.getContent()
+    const proposalType = 'cosmos-sdk/TextProposal'
+
+    const message = {
+      proposer: params.proposer,
+      content: {
+        ...content.toObject(),
+      },
+      initial_deposit: proto
+        .getInitialDepositList()
+        .map((amount) => snakeCaseKeys(amount.toObject())),
+    }
+
+    const messageWithProposalType = {
+      ...message,
+      content: {
+        ...message.content,
+        type: proposalType,
+      },
+    }
+
+    return {
+      type: 'cosmos-sdk/MsgSubmitProposal',
+      ...messageWithProposalType,
+    } as unknown as MsgSubmitTextProposal.Amino
+  }
+
+  public toWeb3(): MsgSubmitTextProposal.Web3 {
+    const { params } = this
+    const proto = this.toProto()
+    const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
 
     const message = {
@@ -101,23 +131,13 @@ export default class MsgSubmitTextProposal extends MsgBase<
       ...message,
       content: {
         ...message.content,
-        '@type': proposalType,
+        type: proposalType,
       },
     }
 
     return {
-      type: 'cosmos-sdk/MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitTextProposal.Amino
-  }
-
-  public toWeb3(): MsgSubmitTextProposal.Web3 {
-    const amino = this.toAmino()
-    const { type, ...rest } = amino
-
-    return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...rest,
+      ...messageWithProposalType,
     } as unknown as MsgSubmitTextProposal.Web3
   }
 
