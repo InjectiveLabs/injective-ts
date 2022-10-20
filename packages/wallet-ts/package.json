@@ -40,7 +40,7 @@
     "@cosmostation/extension-client": "^0.1.11-alpha.0",
     "@ethereumjs/common": "^2.6.3",
     "@ethereumjs/tx": "^3.5.1",
-    "@injectivelabs/chain-api": "^1.8.0-rc8-debug-reclaim",
+    "@injectivelabs/chain-api": "^1.8.0-rc9",
     "@injectivelabs/contracts": "^1.0.44",
     "@injectivelabs/exceptions": "^1.0.23",
     "@injectivelabs/networks": "^1.0.32",
