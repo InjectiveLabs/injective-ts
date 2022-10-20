@@ -192,13 +192,10 @@ import { BigNumberInBase } from "@injectivelabs/utils";
   /** Calculate hash of the transaction */
   console.log(`Transaction Hash: ${await TxClient.hash(txRaw)}`);
 
-  const txService = new TxGrpcClient({
-    txRaw,
-    endpoint: network.sentryGrpcApi,
-  });
+  const txService = new TxGrpcClient(network.sentryGrpcApi);
 
   /** Simulate transaction */
-  const simulationResponse = await txService.simulate();
+  const simulationResponse = await txService.simulate(txRaw);
   console.log(
     `Transaction simulation response: ${JSON.stringify(
       simulationResponse.gasInfo
@@ -206,7 +203,7 @@ import { BigNumberInBase } from "@injectivelabs/utils";
   );
 
   /** Broadcast transaction */
-  const txResponse = await txService.broadcast();
+  const txResponse = await txService.broadcast(txRaw);
   console.log(
     `Broadcasted transaction hash: ${JSON.stringify(txResponse.txhash)}`
   );
