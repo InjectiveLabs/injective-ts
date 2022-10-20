@@ -1,3 +1,4 @@
+/*
 import { MsgReclaimLockedFunds as BaseMsgReclaimLockedFunds } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
 
@@ -29,9 +30,6 @@ export declare namespace MsgReclaimLockedFunds {
   export type Proto = BaseMsgReclaimLockedFunds
 }
 
-/**
- * @category Messages
- */
 export default class MsgReclaimLockedFunds extends MsgBase<
   MsgReclaimLockedFunds.Params,
   MsgReclaimLockedFunds.Data,
@@ -92,3 +90,4 @@ export default class MsgReclaimLockedFunds extends MsgBase<
     }
   }
 }
+*/

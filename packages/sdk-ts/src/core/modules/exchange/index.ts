@@ -16,5 +16,5 @@ export { default as MsgCreateBinaryOptionsLimitOrder } from './msgs/MsgCreateBin
 export { default as MsgCreateBinaryOptionsMarketOrder } from './msgs/MsgCreateBinaryOptionsMarketOrder'
 export { default as MsgCancelBinaryOptionsOrder } from './msgs/MsgCancelBinaryOptionsOrder'
 export { default as MsgInstantBinaryOptionsMarketLaunch } from './msgs/MsgInstantBinaryOptionsMarketLaunch'
-// export { default as MsgTransferAndExecute } from './msgs/MsgTransferAndExecute'
-export { default as MsgReclaimLockedFunds } from './msgs/MsgReclaimLockedFunds'
+export { default as MsgTransferAndExecute } from './msgs/MsgTransferAndExecute'
+// export { default as MsgReclaimLockedFunds } from './msgs/MsgReclaimLockedFunds'
