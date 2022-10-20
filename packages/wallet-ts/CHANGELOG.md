@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.149](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.148...@injectivelabs/wallet-ts@1.0.149) (2022-10-20)
+
+
+### Features
+
+* msgMultiExecute ([c53cb78](https://github.com/InjectiveLabs/injective-ts/commit/c53cb78ec5a4df95b376eb1a4db173e9f5336280))
+
+
+
+
+
 ## [1.0.148](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.147...@injectivelabs/wallet-ts@1.0.148) (2022-10-20)
 
 
