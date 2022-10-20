@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.147](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.146...@injectivelabs/wallet-ts@1.0.147) (2022-10-20)
+
+
+### Features
+
+* msgReclaimLockedFunds ([b6b7ce8](https://github.com/InjectiveLabs/injective-ts/commit/b6b7ce8d4c7e644623068e2f5afaedb12f102a33))
+
+
+
+
+
 ## [1.0.146](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.145...@injectivelabs/wallet-ts@1.0.146) (2022-10-19)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

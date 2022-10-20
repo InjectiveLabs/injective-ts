@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.178](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.177...@injectivelabs/sdk-ts@1.0.178) (2022-10-20)
+
+
+### Bug Fixes
+
+* sdk-ts docs ([cc4bf85](https://github.com/InjectiveLabs/injective-ts/commit/cc4bf85c33389e313b7263f11091012f7f6e91ee))
+
+
+### Features
+
+* msgReclaimLockedFunds ([b6b7ce8](https://github.com/InjectiveLabs/injective-ts/commit/b6b7ce8d4c7e644623068e2f5afaedb12f102a33))
+
+
+
+
+
 ## [1.0.177](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.176...@injectivelabs/sdk-ts@1.0.177) (2022-10-19)
 
 
