@@ -16,9 +16,9 @@ import MsgCreateBinaryOptionsLimitOrder from './exchange/msgs/MsgCreateBinaryOpt
 import MsgCreateBinaryOptionsMarketOrder from './exchange/msgs/MsgCreateBinaryOptionsMarketOrder'
 import MsgCreateSpotLimitOrder from './exchange/msgs/MsgCreateSpotLimitOrder'
 import MsgCreateSpotMarketOrder from './exchange/msgs/MsgCreateSpotMarketOrder'
-// import MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds'
 import MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders'
 import MsgTransferAndExecute from './exchange/msgs/MsgTransferAndExecute'
+import MsgMultiExecute from './exchange/msgs/MsgMultiExecute'
 import MsgDeposit from './exchange/msgs/MsgDeposit'
 import MsgIncreasePositionMargin from './exchange/msgs/MsgIncreasePositionMargin'
 import MsgInstantSpotMarketLaunch from './exchange/msgs/MsgInstantSpotMarketLaunch'
@@ -36,6 +36,7 @@ import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
 import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
 import MsgExec from './wasm/msgs/MsgExec'
 import MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract'
+// import MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds'
 import { MsgSubmitProposal } from './gov'
 
 /**
@@ -80,6 +81,7 @@ export type Msgs =
   | MsgCancelBinaryOptionsOrder
   | MsgBatchCancelBinaryOptionsOrders
   | MsgTransferAndExecute
+  | MsgMultiExecute
 // | MsgReclaimLockedFunds
 
 /**
@@ -105,4 +107,5 @@ export type ExchangeMsgs =
   | MsgCancelBinaryOptionsOrder
   | MsgBatchCancelBinaryOptionsOrders
   | MsgTransferAndExecute
+  | MsgMultiExecute
 // | MsgReclaimLockedFunds
