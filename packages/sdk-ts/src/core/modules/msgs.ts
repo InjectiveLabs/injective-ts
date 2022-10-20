@@ -16,8 +16,9 @@ import MsgCreateBinaryOptionsLimitOrder from './exchange/msgs/MsgCreateBinaryOpt
 import MsgCreateBinaryOptionsMarketOrder from './exchange/msgs/MsgCreateBinaryOptionsMarketOrder'
 import MsgCreateSpotLimitOrder from './exchange/msgs/MsgCreateSpotLimitOrder'
 import MsgCreateSpotMarketOrder from './exchange/msgs/MsgCreateSpotMarketOrder'
+import MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds'
 import MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders'
-import MsgTransferAndExecute from './exchange/msgs/MsgTransferAndExecute'
+// import MsgTransferAndExecute from './exchange/msgs/MsgTransferAndExecute'
 import MsgDeposit from './exchange/msgs/MsgDeposit'
 import MsgIncreasePositionMargin from './exchange/msgs/MsgIncreasePositionMargin'
 import MsgInstantSpotMarketLaunch from './exchange/msgs/MsgInstantSpotMarketLaunch'
@@ -78,7 +79,8 @@ export type Msgs =
   | MsgCreateBinaryOptionsMarketOrder
   | MsgCancelBinaryOptionsOrder
   | MsgBatchCancelBinaryOptionsOrders
-  | MsgTransferAndExecute
+  // | MsgTransferAndExecute
+  | MsgReclaimLockedFunds
 
 /**
  * @category Messages
@@ -102,4 +104,5 @@ export type ExchangeMsgs =
   | MsgCreateBinaryOptionsMarketOrder
   | MsgCancelBinaryOptionsOrder
   | MsgBatchCancelBinaryOptionsOrders
-  | MsgTransferAndExecute
+  // | MsgTransferAndExecute
+  | MsgReclaimLockedFunds

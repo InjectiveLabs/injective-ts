@@ -1,31 +1,33 @@
-import { MsgReclaimLockedFunds as BaseMsgReclaimLockedFunds } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import MsgReclaimLockedFunds from './MsgReclaimLockedFunds'
+import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { BigNumberInBase } from '@injectivelabs/utils'
+import MsgDeposit from './MsgDeposit'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
-const params: MsgReclaimLockedFunds['params'] = {
-  sender: mockFactory.injectiveAddress,
-  lockedAccount: mockFactory.injectiveAddress2,
-  lockedAccountPubKey: mockFactory.injectiveAddress,
-  unlockAuthorizationSignature: mockFactory.injectiveAddress,
+const params: MsgDeposit['params'] = {
+  subaccountId: mockFactory.subaccountId,
+  injectiveAddress: mockFactory.injectiveAddress,
+  amount: {
+    amount: new BigNumberInBase(1).toFixed(),
+    denom: 'inj',
+  },
 }
 
-const protoType = '/injective.exchange.v1beta1.MsgReclaimLockedFunds'
-const protoTypeAmino = 'exchange/MsgReclaimLockedFunds'
+const protoType = '/injective.exchange.v1beta1.MsgDeposit'
+const protoTypeAmino = 'exchange/MsgDeposit'
 const protoParams = {
-  sender: params.sender,
-  lockedAccount: params.lockedAccount,
-  lockedAccountPubKey: params.lockedAccountPubKey,
-  unlockAuthorizationSignature: params.unlockAuthorizationSignature,
+  subaccountId: params.subaccountId,
+  sender: params.injectiveAddress,
+  amount: params.amount,
 }
 
-const message = MsgReclaimLockedFunds.fromJSON(params)
+const message = MsgDeposit.fromJSON(params)
 
-describe.only('MsgReclaimLockedFunds', () => {
+describe.only('MsgDeposit', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgReclaimLockedFunds).toBe(true)
+    expect(proto instanceof BaseMsgDeposit).toBe(true)
     expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
@@ -51,11 +53,14 @@ describe.only('MsgReclaimLockedFunds', () => {
     const eip712Types = message.toEip712Types()
 
     expect(Object.fromEntries(eip712Types)).toStrictEqual({
+      TypeAmount: [
+        { name: 'denom', type: 'string' },
+        { name: 'amount', type: 'string' },
+      ],
       MsgValue: [
         { name: 'sender', type: 'string' },
-        { name: 'locked_account', type: 'string' },
-        { name: 'locked_account_pub_key', type: 'string' },
-        { name: 'unlock_authorization_signature', type: 'string' },
+        { name: 'subaccount_id', type: 'string' },
+        { name: 'amount', type: 'TypeAmount' },
       ],
     })
   })
