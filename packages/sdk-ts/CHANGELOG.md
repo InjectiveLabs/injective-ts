@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.181](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.180...@injectivelabs/sdk-ts@1.0.181) (2022-10-21)
+
+
+### Features
+
+* added cosmos fee delegation support ([f3e2b0f](https://github.com/InjectiveLabs/injective-ts/commit/f3e2b0ff1bdea77c8b408c7fa88a32c610063000))
+
+
+
+
+
 ## [1.0.180](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.179...@injectivelabs/sdk-ts@1.0.180) (2022-10-20)
 
 
