@@ -154,7 +154,7 @@ export class MsgBroadcastClientCosmosFeeDelegation {
     const txRaw = createTxRawFromSigResponse(directSignResponse)
     txRaw.setSignaturesList([
       txResponse.getFeePayerSig(),
-      ...directSignResponse.signature.signature,
+      directSignResponse.signature.signature,
     ])
 
     return await walletStrategy.sendTransaction(txRaw, {
