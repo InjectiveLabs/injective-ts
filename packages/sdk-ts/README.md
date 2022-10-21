@@ -132,8 +132,8 @@ console.log(await exchangeGrpcClient.derivatives.fetchMarkets())
 ```ts
 import { getNetworkInfo, Network } from "@injectivelabs/networks";
 import { ChainRestAuthApi } from "@injectivelabs/sdk-ts";
-import { PrivateKey } from "@injectivelabs/sdk-ts/dist/local";
 import {
+  PrivateKey,
   privateKeyToPublicKeyBase64,
   MsgSend,
   DEFAULT_STD_FEE,
