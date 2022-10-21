@@ -3,11 +3,11 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import type { Msgs } from '@injectivelabs/sdk-ts'
 import type Web3 from 'web3'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { Wallet } from '../../types/enums'
+import { CosmosWalletSignTransactionArgs } from '../../types'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
 export type onChainIdChangeCallback = () => void
@@ -51,11 +51,7 @@ export interface ConcreteWalletStrategy {
   signTransaction(
     data:
       | string /* EIP712 Typed Data in JSON */
-      | {
-          memo: string
-          gas: string
-          message: Msgs | Msgs[]
-        },
+      | CosmosWalletSignTransactionArgs,
     address: AccountAddress,
   ): Promise<string | DirectSignResponse>
 

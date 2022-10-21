@@ -108,9 +108,11 @@ export const createBody = ({
 
 export const createFee = ({
   fee,
+  payer,
   gasLimit,
 }: {
   fee: { amount: string; denom: string }
+  payer?: string
   gasLimit: number
 }) => {
   const feeAmount = new Coin()
@@ -120,6 +122,10 @@ export const createFee = ({
   const feeProto = new Fee()
   feeProto.setGasLimit(gasLimit)
   feeProto.setAmountList([feeAmount])
+
+  if (payer) {
+    feeProto.setPayer(payer)
+  }
 
   return feeProto
 }
@@ -220,6 +226,7 @@ export const createTransaction = ({
   const body = createBody({ message, memo, timeoutHeight })
   const feeMessage = createFee({
     fee: fee.amount[0],
+    payer: fee.payer,
     gasLimit: parseInt(fee.gas, 10),
   })
 
@@ -257,5 +264,18 @@ export const createTransaction = ({
     authInfoBytes: authInfo.serializeBinary(),
     signBytes: toSignBytes,
     signHashedBytes: toSignHash,
+  }
+}
+
+export const getTransactionPartsFromTxRaw = (
+  txRaw: TxRaw,
+): { authInfo: AuthInfo; body: TxBody; signatures: Uint8Array[] } => {
+  const authInfo = AuthInfo.deserializeBinary(txRaw.getAuthInfoBytes_asU8())
+  const body = TxBody.deserializeBinary(txRaw.getBodyBytes_asU8())
+
+  return {
+    body,
+    authInfo,
+    signatures: txRaw.getSignaturesList_asU8(),
   }
 }

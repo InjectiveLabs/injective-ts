@@ -32,7 +32,11 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { isCosmosWallet } from '@injectivelabs/wallet-ts'
+import {
+  isCosmosWallet,
+  CosmosWalletSignTransactionArgs,
+} from '@injectivelabs/wallet-ts'
+import type { DirectSignResponse } from '@cosmjs/proto-signing'
 
 export class MsgBroadcastExperimentalClient {
   public options: MsgBroadcastOptions
@@ -159,12 +163,12 @@ export class MsgBroadcastExperimentalClient {
       message: msgs,
       memo: tx.memo || '',
       gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
-    }
+    } as CosmosWalletSignTransactionArgs
 
     const directSignResponse = (await walletStrategy.signTransaction(
       transaction,
       tx.injectiveAddress,
-    )) as any
+    )) as DirectSignResponse
 
     return await walletStrategy.sendTransaction(directSignResponse, {
       chainId,

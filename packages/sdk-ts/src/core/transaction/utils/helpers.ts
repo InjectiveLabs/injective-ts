@@ -57,7 +57,7 @@ export const createTransactionFromMsg = (
  * can change the gas fees and that will alter the original
  * TxRaw which will cause signature miss match if we broadcast
  * that transaction on chain
- * @returns
+ * @returns TxRaw
  */
 export const createTxRawFromSigResponse = (
   signatureResponse: DirectSignResponse,

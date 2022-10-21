@@ -16,14 +16,15 @@ import {
   createTxRawFromSigResponse,
   createTransactionAndCosmosSignDocForAddressAndMsg,
 } from '@injectivelabs/sdk-ts'
-import type { Msgs } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
 import { getEndpointsFromChainId } from '../../cosmos/endpoints'
 import { WalletAction } from '../../types/enums'
+import { CosmosWalletSignTransactionArgs } from '../../types/strategy'
 
 const INJECTIVE_CHAIN_NAME = 'injective'
 
@@ -91,11 +92,14 @@ export default class Cosmostation
   }
 
   async sendTransaction(
-    signResponse: DirectSignResponse,
+    transaction: DirectSignResponse | TxRaw,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     const provider = await this.getProvider()
-    const txRaw = createTxRawFromSigResponse(signResponse)
+    const txRaw =
+      transaction instanceof TxRaw
+        ? transaction
+        : createTxRawFromSigResponse(transaction)
 
     try {
       const response = await provider.sendTransaction(
@@ -115,11 +119,7 @@ export default class Cosmostation
   }
 
   async signTransaction(
-    transaction: {
-      memo: string
-      gas: string
-      message: Msgs | Msgs[]
-    },
+    transaction: CosmosWalletSignTransactionArgs,
     address: AccountAddress,
   ) {
     const { chainId } = this
@@ -140,6 +140,7 @@ export default class Cosmostation
           fee: {
             ...DEFAULT_STD_FEE,
             gas: transaction.gas || DEFAULT_STD_FEE.gas,
+            payer: transaction.feePayer || '',
           },
         })
 

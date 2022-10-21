@@ -6,8 +6,8 @@ import {
 } from '@injectivelabs/ts-types'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { Msgs } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import Metamask from './strategies/Metamask'
 import {
   ConcreteWalletStrategy,
@@ -25,6 +25,7 @@ import Torus from './strategies/Torus'
 import WalletConnect from './strategies/WalletConnect'
 import CosmostationEth from './strategies/CosmostationEth'
 import { Wallet } from '../types/enums'
+import { CosmosWalletSignTransactionArgs } from '../types/strategy'
 
 const createWallet = ({
   wallet,
@@ -149,7 +150,7 @@ export default class WalletStrategy {
   }
 
   public async sendTransaction(
-    tx: DirectSignResponse,
+    tx: DirectSignResponse | TxRaw,
     options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     return this.getStrategy().sendTransaction(tx, options)
@@ -168,7 +169,7 @@ export default class WalletStrategy {
   public async signTransaction(
     data:
       | string /* When using EIP712 typed data */
-      | { memo: string; gas: string; message: Msgs | Msgs[] },
+      | CosmosWalletSignTransactionArgs,
     address: AccountAddress,
   ): Promise<string | DirectSignResponse> {
     return this.getStrategy().signTransaction(data, address)

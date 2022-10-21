@@ -1,4 +1,7 @@
-import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
+import {
+  createTxRawFromSigResponse,
+  IndexerGrpcTransactionApi,
+} from '@injectivelabs/sdk-ts'
 import {
   isCosmosWallet,
   CosmosWalletSignTransactionArgs,
@@ -15,7 +18,7 @@ import {
 } from './utils'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 
-export class MsgBroadcastClient {
+export class MsgBroadcastClientCosmosFeeDelegation {
   public options: MsgBroadcastOptions
 
   public transactionApi: IndexerGrpcTransactionApi
@@ -109,14 +112,38 @@ export class MsgBroadcastClient {
   }
 
   private async broadcastCosmos(tx: MsgBroadcastTxOptionsWithAddresses) {
-    const { options } = this
-    const { walletStrategy, chainId } = options
+    const { options, transactionApi } = this
+    const { walletStrategy, chainId, ethereumChainId, metricsProvider } =
+      options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
+    const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
+    const prepareTx = async () => {
+      const promise = transactionApi.prepareTxRequest({
+        memo: tx.memo,
+        message: web3Msgs,
+        address: tx.ethereumAddress,
+        chainId: ethereumChainId,
+        gasLimit: getGasPriceBasedOnMessage(msgs),
+        estimateGas: false,
+      })
+
+      if (!metricsProvider) {
+        return await promise
+      }
+
+      return await metricsProvider.sendAndRecordWithoutProbability(
+        promise,
+        `${tx.bucket}PrepareTx`,
+      )
+    }
+
+    const txResponse = await prepareTx()
     const transaction = {
       message: msgs,
       memo: tx.memo || '',
       gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
+      feePayer: txResponse.getFeePayer(),
     } as CosmosWalletSignTransactionArgs
 
     const directSignResponse = (await walletStrategy.signTransaction(
@@ -124,7 +151,13 @@ export class MsgBroadcastClient {
       tx.injectiveAddress,
     )) as DirectSignResponse
 
-    return await walletStrategy.sendTransaction(directSignResponse, {
+    const txRaw = createTxRawFromSigResponse(directSignResponse)
+    txRaw.setSignaturesList([
+      txResponse.getFeePayerSig(),
+      ...directSignResponse.signature.signature,
+    ])
+
+    return await walletStrategy.sendTransaction(txRaw, {
       chainId,
       address: tx.injectiveAddress,
     })

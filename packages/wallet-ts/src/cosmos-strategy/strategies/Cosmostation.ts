@@ -11,13 +11,14 @@ import {
   createTxRawFromSigResponse,
   createTransactionAndCosmosSignDocForAddressAndMsg,
 } from '@injectivelabs/sdk-ts'
-import type { Msgs } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { ConcreteCosmosWalletStrategy } from '../types/strategy'
 import { WalletAction } from '../../types/enums'
 import { getEndpointsFromChainId } from '../../cosmos/endpoints'
+import { CosmosWalletSignTransactionArgs } from '../../types/strategy'
 
 const getChainNameFromChainId = (chainId: CosmosChainId) => {
   const [chainName] = chainId.split('-')
@@ -88,10 +89,15 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     }
   }
 
-  async sendTransaction(signResponse: DirectSignResponse): Promise<string> {
+  async sendTransaction(
+    transaction: DirectSignResponse | TxRaw,
+  ): Promise<string> {
     const { chainName } = this
     const provider = await this.getProvider()
-    const txRaw = createTxRawFromSigResponse(signResponse)
+    const txRaw =
+      transaction instanceof TxRaw
+        ? transaction
+        : createTxRawFromSigResponse(transaction)
 
     try {
       const response = await provider.sendTransaction(
@@ -110,12 +116,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     }
   }
 
-  async signTransaction(transaction: {
-    memo: string
-    address: string
-    gas: string
-    message: Msgs | Msgs[]
-  }) {
+  async signTransaction(transaction: CosmosWalletSignTransactionArgs) {
     const { chainName, chainId } = this
     const provider = await this.getProvider()
     const signer = await provider.getAccount(chainName)
@@ -134,6 +135,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
           fee: {
             ...DEFAULT_STD_FEE,
             gas: transaction.gas || DEFAULT_STD_FEE.gas,
+            payer: transaction.feePayer || '',
           },
         })
 

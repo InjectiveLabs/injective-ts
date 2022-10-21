@@ -10,7 +10,6 @@ import {
   createTransactionAndCosmosSignDocForAddressAndMsg,
   createTxRawFromSigResponse,
 } from '@injectivelabs/sdk-ts/dist/core/transaction'
-import type { Msgs } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   UnspecifiedErrorCode,
@@ -18,10 +17,12 @@ import {
   ErrorType,
   TransactionException,
 } from '@injectivelabs/exceptions'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction } from '../../types/enums'
+import { CosmosWalletSignTransactionArgs } from '../../types/strategy'
 
 export default class Keplr
   extends BaseConcreteStrategy
@@ -81,11 +82,14 @@ export default class Keplr
   }
 
   async sendTransaction(
-    signResponse: DirectSignResponse,
+    transaction: DirectSignResponse | TxRaw,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
     const { keplrWallet } = this
-    const txRaw = createTxRawFromSigResponse(signResponse)
+    const txRaw =
+      transaction instanceof TxRaw
+        ? transaction
+        : createTxRawFromSigResponse(transaction)
 
     try {
       return await keplrWallet.broadcastTxBlock(txRaw)
@@ -99,11 +103,7 @@ export default class Keplr
   }
 
   async signTransaction(
-    transaction: {
-      memo: string
-      gas: string
-      message: Msgs | Msgs[]
-    },
+    transaction: CosmosWalletSignTransactionArgs,
     injectiveAddress: AccountAddress,
   ) {
     const { chainId } = this
@@ -126,6 +126,7 @@ export default class Keplr
           fee: {
             ...DEFAULT_STD_FEE,
             gas: transaction.gas || DEFAULT_STD_FEE.gas,
+            payer: transaction.feePayer || '',
           },
         })
 
