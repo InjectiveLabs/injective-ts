@@ -174,7 +174,7 @@ import { BigNumberInBase } from "@injectivelabs/utils";
     message: msg.toDirectSign(),
     memo: "",
     fee: DEFAULT_STD_FEE,
-    pubKey: Buffer.from(publicKey).toString("base64"),
+    pubKey: publicKey,
     sequence: parseInt(accountDetails.account.base_account.sequence, 10),
     accountNumber: parseInt(
       accountDetails.account.base_account.account_number,
