@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.255](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.254...@injectivelabs/sdk-ui-ts@1.0.255) (2022-10-21)
+
+
+### Bug Fixes
+
+* cosmos fee delegation signatures ([9c8870d](https://github.com/InjectiveLabs/injective-ts/commit/9c8870dceb69e5d62bf99acf06ee8daea44b914c))
+
+
+
+
+
 ## [1.0.254](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.253...@injectivelabs/sdk-ui-ts@1.0.254) (2022-10-21)
 
 
