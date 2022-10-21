@@ -149,7 +149,7 @@ import { BigNumberInBase } from "@injectivelabs/utils";
   const privateKey = PrivateKey.fromPrivateKey(privateKeyHash);
   const injectiveAddress = privateKey.toBech32();
   const publicKey = privateKeyToPublicKeyBase64(
-    Buffer.from(privateKeyHash, "hex")
+    Buffer.from(privateKeyHash.replace("0x", ""), "hex")
   );
 
   /** Account Details **/
