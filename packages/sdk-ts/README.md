@@ -169,7 +169,7 @@ import { BigNumberInBase } from "@injectivelabs/utils";
     dstInjectiveAddress: injectiveAddress,
   });
 
-  /** Prepare the Transaction **/
+  /** Prepare the Transaction */
   const { signBytes, txRaw } = createTransaction({
     message: msg.toDirectSign(),
     memo: "",
