@@ -132,8 +132,8 @@ console.log(await exchangeGrpcClient.derivatives.fetchMarkets())
 ```ts
 import { getNetworkInfo, Network } from "@injectivelabs/networks";
 import { ChainRestAuthApi } from "@injectivelabs/sdk-ts";
-import { PrivateKey } from "@injectivelabs/sdk-ts/dist/local";
 import {
+  PrivateKey,
   privateKeyToPublicKeyBase64,
   MsgSend,
   DEFAULT_STD_FEE,
@@ -149,7 +149,7 @@ import { BigNumberInBase } from "@injectivelabs/utils";
   const privateKey = PrivateKey.fromPrivateKey(privateKeyHash);
   const injectiveAddress = privateKey.toBech32();
   const publicKey = privateKeyToPublicKeyBase64(
-    Buffer.from(privateKeyHash, "hex")
+    Buffer.from(privateKeyHash.replace("0x", ""), "hex")
   );
 
   /** Account Details **/
@@ -169,12 +169,12 @@ import { BigNumberInBase } from "@injectivelabs/utils";
     dstInjectiveAddress: injectiveAddress,
   });
 
-  /** Prepare the Transaction **/
+  /** Prepare the Transaction */
   const { signBytes, txRaw } = createTransaction({
     message: msg.toDirectSign(),
     memo: "",
     fee: DEFAULT_STD_FEE,
-    pubKey: Buffer.from(publicKey).toString("base64"),
+    pubKey: publicKey,
     sequence: parseInt(accountDetails.account.base_account.sequence, 10),
     accountNumber: parseInt(
       accountDetails.account.base_account.account_number,
