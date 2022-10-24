@@ -2385,7 +2385,7 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@^1.8.0-rc10":
+"@injectivelabs/chain-api@1.8.0-rc10":
   version "1.8.0-rc10"
   resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.8.0-rc10.tgz#641e9b449eada609ba5f6688935841ba57a29cb2"
   integrity sha512-PPEUVnJddrsbD4gj+INpFCtK3av4Dr3jj5oIxAVs05VOLNFG5Y0aDXNTMRvpCTY2lUXIUtzG1xjNrVa3hGsDIw==
@@ -2393,17 +2393,9 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
-"@injectivelabs/exchange-api@^2.2.77":
-  version "2.2.77"
-  resolved "https://registry.npmjs.org/@injectivelabs/exchange-api/-/exchange-api-2.2.77.tgz#ec2273bcaa344e8e2029417f222a441f12e67d1d"
-  integrity sha512-/48dzUEMDIfuncl//vi+bSXhhiAk7pRPC21Ar/OqHDo46eXfm2bcVxUOI6f524lEbgeNxAlsUxtl3R/VpTXTvQ==
-  dependencies:
-    "@improbable-eng/grpc-web" "^0.14.0"
-    google-protobuf "^3.14.0"
-
-"@injectivelabs/indexer-api@^1.0.21":
+"@injectivelabs/indexer-api@1.0.21":
   version "1.0.21"
-  resolved "https://registry.npmjs.org/@injectivelabs/indexer-api/-/indexer-api-1.0.21.tgz#b1767f415de6e32982587e3217d279c8218f7059"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-api/-/indexer-api-1.0.21.tgz#b1767f415de6e32982587e3217d279c8218f7059"
   integrity sha512-AwDTe+o2tVM8cmKCez/8rQKrR2AUjpD82jQ5IwMmLP4wvhnFJ1fRYWY+I+QgAwdULgN3bQs3jjYZg55iqS3GkQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"

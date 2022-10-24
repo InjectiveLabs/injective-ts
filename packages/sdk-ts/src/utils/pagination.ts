@@ -2,7 +2,7 @@ import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/
 import { ExchangePagination, PaginationOption } from '../types/pagination'
 import { Pagination, PagePagination } from '../types/pagination'
 import { PageResponse } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
-import { Paging } from '@injectivelabs/exchange-api/injective_explorer_rpc_pb'
+import { Paging } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
 
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,
