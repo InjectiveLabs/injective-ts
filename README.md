@@ -1,6 +1,9 @@
 # 🌟 Injective's TypeScript Monorepo
 
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/context:javascript)
+[![Wiki](https://img.shields.io/static/v1?label=Wiki&message=Documentation&color=blue)](https://github.com/InjectiveLabs/injective-ts/wiki)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/alerts/)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/context:javascript)
+
 
 _Access Limitless DeFi Markets with Zero Barriers._
 
@@ -42,8 +45,6 @@ To get a sense of the packages and their functionality, we are going to list the
 
 - `@injectivelabs/utils` provides some commonly used utility functions and classes
 
-
-- `@injectivelabs/tx-ts` provides a way to prepare and broadcast transactions for Injective
 
 ---
 

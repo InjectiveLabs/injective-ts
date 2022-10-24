@@ -5,7 +5,7 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/context:javascript)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Accessing decentralized finance through TypeScript (for Web and Node environment)_
+_Accessing decentralized finance through TypeScript (for Web, Node and React Native environment)_
 
 `@injectivelabs/sdk-ts` is a TypeScript SDK for writing applications on top of the Injective chain in both a Node.js and a browser environment.
 
@@ -46,32 +46,11 @@ There are two pieces of the `sdk-ts` - **querying a data source** and **making t
 
 ### Querying a data source
 
-There are 2 data sources that can be accessed through the `sdk-ts`:
-
-- The Injective chain itself through a sentry node,
-- The Indexer API (indexer of events from the Injective chain to a MongoDB),
-
-For each of the data sources there are two ways that they can be queried:
-
-- using the gRPC protocol,
-- using REST
-
-We also have a GraphQL consumer of the Peggy subgraph on Ethereum (used only for tracking deposits and withdrawals on Ethereum).
-
-For the 2 main data sources, there are abstraction classes that developers can use to access specific modules of the Injective Chain **or** specific modules within the Exchange API. The responses of these requests are always mapped into normal JavaScript objects (regardless of the data source type) and served to the end user.
+Read more and find example usages on our [Querying Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/01Querying)
 
 ### Making Transactions
 
-To interact with Injective, the user has to issue a transaction. Each transaction that is broadcasted to Injective can hold multiple messages that can change the state of the Injective chain. Within the `core` folder, developers can find a convenient way to make these messages with methods that can convert these messages in a way that they can be used by developers in different scenarios (broadcasting using the normal cosmos way or converted to EIP712 to be signed using Ethereum wallets).
-
-Every message extends the `MsgBase` interface, which has couple of mapping functionalities:
-- `toData` -> Converts the Message to a simple Object representation,
-- `toProto` -> Returns a proto representation of the Message,
-- `toDirectSign` -> Converts the Message to a proto representation (ready to be used in the normal Cosmos way of handling transactions),
-- `toAmino` -> Converts the Message to a amino representation + type (usually used to covert the message to EIP712 typed data to be signable in Ethereum native wallets),
-- `toWeb3` -> same as toAmino (deprecated)
-
-There are also some utility classes and functions that are exposed from the package. There is also a `local` folder that exposes some utility classes that can be used to make developers life easier in a Node environment.
+Read more and find example usages on our [Transactions Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/02Transactions)
 
 ---
 

@@ -4,7 +4,7 @@
 [![npm-version](https://img.shields.io/npm/v/@injectivelabs/networks.svg)](https://www.npmjs.com/package/@injectivelabs/networks)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Accessing decentralized finance through TypeScript (for Web and Node environment)_
+_Accessing decentralized finance through TypeScript (for Web, Node and React Native environment)_
 
 `@injectivelabs/networks` is a TypeScript package for providing a pre-defined set of endpoints which can be used to fetch data from different data sources, broadcast transactions to sentry nodes, use the Tendermint RPC, etc, for different environments (Mainnet, Testnet, Devnet, etc).
 

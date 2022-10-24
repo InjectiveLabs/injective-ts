@@ -18,6 +18,7 @@ yarn add @injectivelabs/sdk-ui-ts
 
 ## 📖 Documentation
 
+This package is mostly having some utility functions and maps that help build UIs.
 
 ---
 
