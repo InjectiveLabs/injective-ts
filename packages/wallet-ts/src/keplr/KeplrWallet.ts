@@ -129,20 +129,20 @@ export class KeplrWallet {
   async broadcastTx(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
-    const txHashBuff = await keplr.sendTx(
+    const result = await keplr.sendTx(
       chainId,
       txRaw.serializeBinary(),
       BroadcastMode.Sync,
     )
 
-    if (!txHashBuff) {
+    if (!result || result.length === 0) {
       throw new TransactionException(
         new Error('Transaction failed to be broadcasted'),
         { contextModule: 'Keplr' },
       )
     }
 
-    return Buffer.from(txHashBuff).toString('hex')
+    return Buffer.from(result).toString('hex')
   }
 
   /**

@@ -68,7 +68,9 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
         : createTxRawFromSigResponse(transaction)
 
     try {
-      return await leapWallet.broadcastTxBlock(txRaw)
+      return await leapWallet.waitTxBroadcasted(
+        await leapWallet.broadcastTx(txRaw),
+      )
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

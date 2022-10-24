@@ -97,20 +97,20 @@ export class LeapWallet {
   async broadcastTx(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
     const leap = await this.getLeapWallet()
-    const txHashBuff = await leap.sendTx(
+    const result = await leap.sendTx(
       chainId,
       txRaw.serializeBinary(),
       BroadcastMode.Sync,
     )
 
-    if (!txHashBuff) {
+    if (!result || result.length === 0) {
       throw new TransactionException(
         new Error('Transaction failed to be broadcasted'),
         { contextModule: 'Leap' },
       )
     }
 
-    return Buffer.from(txHashBuff).toString('hex')
+    return Buffer.from(result).toString('hex')
   }
 
   /**

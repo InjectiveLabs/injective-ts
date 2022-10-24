@@ -66,7 +66,9 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
         : createTxRawFromSigResponse(transaction)
 
     try {
-      return await keplrWallet.broadcastTxBlock(txRaw)
+      return await keplrWallet.waitTxBroadcasted(
+        await keplrWallet.broadcastTx(txRaw),
+      )
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

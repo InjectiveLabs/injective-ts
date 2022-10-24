@@ -1,13 +1,13 @@
 import { NetworkEndpoints } from './types'
 
 export const urlEndpointsMainnetK8s: NetworkEndpoints = {
-  exchangeApi: 'https://k8s-api.injective.network',
-  indexerApi: 'https://k8s-api.injective.network',
-  chronosApi: 'https://k8s-api.injective.network',
-  sentryGrpcApi: 'https://k8s-grpc.injective.network',
-  tendermintApi: 'https://tm.injective.network',
-  sentryHttpApi: 'https://k8s-lcd.injective.network',
-  exchangeWeb3GatewayApi: 'https://k8s-gateway.injective.network',
+  exchangeApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
+  indexerApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
+  chronosApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
+  sentryGrpcApi: 'https://k8s.mainnet.grpc.injective.network/',
+  tendermintApi: 'https://k8s.mainnet.tm.injective.network/',
+  sentryHttpApi: 'https://k8s.mainnet.lcd.injective.network/',
+  exchangeWeb3GatewayApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
 }
 
 export const urlEndpointsMainnet: NetworkEndpoints = {
