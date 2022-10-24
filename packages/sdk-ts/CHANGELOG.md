@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.182](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.181...@injectivelabs/sdk-ts@1.0.182) (2022-10-24)
+
+
+### Bug Fixes
+
+* sdk-ts README.md (format) ([27b9440](https://github.com/InjectiveLabs/injective-ts/commit/27b9440bdae644833ae02adc6661a234dfe6a202))
+* sdk-ts README.md (hex string type) ([c107257](https://github.com/InjectiveLabs/injective-ts/commit/c107257d4e3210f7e537133db2d08e335003d88e))
+* sdk-ts README.md (PrivateKey import path) ([9d6f6cb](https://github.com/InjectiveLabs/injective-ts/commit/9d6f6cb572fdcb4a2b18e6c502d284f193ed4d6c))
+* sdk-ts README.md (pubKey type) ([0fd1a4f](https://github.com/InjectiveLabs/injective-ts/commit/0fd1a4f29f1281fcb0090e06d7a169be95baa77b))
+
+
+### Features
+
+* minor util and readme update ([9be782b](https://github.com/InjectiveLabs/injective-ts/commit/9be782bf5f085743bdb631ba601368a02abca795))
+
+
+
+
+
 ## [1.0.181](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.180...@injectivelabs/sdk-ts@1.0.181) (2022-10-21)
 
 
