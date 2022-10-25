@@ -60,8 +60,8 @@ export default class AccountManager {
       const address = addressOfHDKey(hdKey)
 
       this.wallets.push({
-        address,
         hdKey,
+        address: address.toLowerCase(),
         derivationPath: `${DEFAULT_BASE_DERIVATION_PATH}/0'/0/${index}`,
       })
     }
@@ -88,13 +88,17 @@ export default class AccountManager {
 
   hasWalletForAddress(address: AccountAddress): boolean {
     return (
-      this.wallets.find((wallet) => wallet.address === address) !== undefined
+      this.wallets.find(
+        (wallet) => wallet.address.toLowerCase() === address.toLowerCase(),
+      ) !== undefined
     )
   }
 
   async getWalletForAddress(
     address: AccountAddress,
   ): Promise<TrezorWalletInfo | undefined> {
-    return this.wallets.find((wallet) => wallet.address === address)
+    return this.wallets.find(
+      (wallet) => wallet.address.toLowerCase() === address.toLowerCase(),
+    )
   }
 }

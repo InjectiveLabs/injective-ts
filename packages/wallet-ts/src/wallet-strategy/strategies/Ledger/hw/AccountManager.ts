@@ -91,8 +91,8 @@ export default class AccountManager {
 
       this.wallets.push({
         hdKey,
-        address,
         baseDerivationPath,
+        address: address.toLowerCase(),
         derivationPath: path,
       })
     }
@@ -119,13 +119,17 @@ export default class AccountManager {
 
   hasWalletForAddress(address: AccountAddress): boolean {
     return (
-      this.wallets.find((wallet) => wallet.address === address) !== undefined
+      this.wallets.find(
+        (wallet) => wallet.address.toLowerCase() === address.toLowerCase(),
+      ) !== undefined
     )
   }
 
   async getWalletForAddress(
     address: AccountAddress,
   ): Promise<LedgerWalletInfo | undefined> {
-    return this.wallets.find((wallet) => wallet.address === address)
+    return this.wallets.find(
+      (wallet) => wallet.address.toLowerCase() === address.toLowerCase(),
+    )
   }
 }

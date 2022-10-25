@@ -1,16 +1,24 @@
 import { ConcreteException } from '../exception'
 import { ErrorContext, ErrorType } from '../types'
 
-const isCommonLockedError = (error: string) =>
-  !!(
-    error.includes('Ledger device: Incorrect length') ||
-    error.includes('Ledger device: INS_NOT_SUPPORTED') ||
-    error.includes('Ledger device: CLA_NOT_SUPPORTED') ||
-    error.includes('Failed to open the device') ||
-    error.includes('Failed to open the device') ||
-    error.includes('Ledger Device is busy') ||
-    error.includes('UNKNOWN_ERROR')
+const isCommonLockedError = (error: string) => {
+  const commonMessages = [
+    'Ledger device: Incorrect length',
+    'Ledger device: INS_NOT_SUPPORTED',
+    'Ledger device: CLA_NOT_SUPPORTED',
+    'Failed to open the device',
+    'Failed to open the device',
+    'Ledger Device is busy',
+    'UNKNOWN_ERROR',
+  ]
+
+  return (
+    commonMessages.some((m) => m.includes(error)) ||
+    commonMessages
+      .map((m) => m.toLowerCase())
+      .some((m) => m.includes(error.toLowerCase()))
   )
+}
 
 export class LedgerException extends ConcreteException {
   constructor(error: Error, context?: ErrorContext) {
