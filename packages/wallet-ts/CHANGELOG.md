@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.154](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.153...@injectivelabs/wallet-ts@1.0.154) (2022-10-25)
+
+
+### Bug Fixes
+
+* lowercase address for hardware wallets ([705ec01](https://github.com/InjectiveLabs/injective-ts/commit/705ec01aec3e15b2a5c42c802fc3c572b7006804))
+
+
+
+
+
 ## [1.0.153](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.152...@injectivelabs/wallet-ts@1.0.153) (2022-10-24)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

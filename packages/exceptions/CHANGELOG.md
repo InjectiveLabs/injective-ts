@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.23...@injectivelabs/exceptions@1.0.24) (2022-10-25)
+
+
+### Bug Fixes
+
+* lowercase address for hardware wallets ([705ec01](https://github.com/InjectiveLabs/injective-ts/commit/705ec01aec3e15b2a5c42c802fc3c572b7006804))
+
+
+
+
+
 ## [1.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.22...@injectivelabs/exceptions@1.0.23) (2022-09-28)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
