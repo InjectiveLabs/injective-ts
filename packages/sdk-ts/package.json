@@ -41,7 +41,7 @@
     "@improbable-eng/grpc-web-react-native-transport": "^0.15.0",
     "@injectivelabs/chain-api": "1.8.0-rc10",
     "@injectivelabs/exceptions": "^1.0.24",
-    "@injectivelabs/indexer-api": "1.0.23",
+    "@injectivelabs/indexer-api": "1.0.25",
     "@injectivelabs/networks": "^1.0.35",
     "@injectivelabs/token-metadata": "^1.0.49",
     "@injectivelabs/ts-types": "^1.0.13",
