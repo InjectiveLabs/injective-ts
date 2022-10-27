@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.187](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.186...@injectivelabs/sdk-ts@1.0.187) (2022-10-27)
+
+
+### Features
+
+* added msgEditValidator and msgWithdrawValidatorCommission ([09a03a5](https://github.com/InjectiveLabs/injective-ts/commit/09a03a548035c11c571d238da90f15b047fdf96a))
+
+
+
+
+
 ## [1.0.186](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.185...@injectivelabs/sdk-ts@1.0.186) (2022-10-26)
 
 
