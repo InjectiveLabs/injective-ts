@@ -4,6 +4,7 @@ import MsgRevoke from './authz/msgs/MsgRevoke'
 import MsgAuthzExec from './authz/msgs/MsgExec'
 import MsgSend from './bank/msgs/MsgSend'
 import MsgWithdrawDelegatorReward from './distribution/msgs/MsgWithdrawDelegatorReward'
+import MsgWithdrawValidatorCommission from './distribution/msgs/MsgWithdrawValidatorCommission'
 import MsgBatchCancelDerivativeOrders from './exchange/msgs/MsgBatchCancelDerivativeOrders'
 import MsgBatchCancelSpotOrders from './exchange/msgs/MsgBatchCancelSpotOrders'
 import MsgBatchCancelBinaryOptionsOrders from './exchange/msgs/MsgBatchCancelBinaryOptionsOrders'
@@ -32,6 +33,7 @@ import MsgUnderwrite from './insurance/msgs/MsgUnderwrite'
 import MsgSendToEth from './peggy/msgs/MsgSendToEth'
 import MsgDelegate from './staking/msgs/MsgDelegate'
 import MsgUndelegate from './staking/msgs/MsgUndelegate'
+import MsgEditValidator from './staking/msgs/MsgEditValidator'
 import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
 import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
 import MsgExec from './wasm/msgs/MsgExec'
@@ -82,6 +84,8 @@ export type Msgs =
   | MsgBatchCancelBinaryOptionsOrders
   | MsgTransferAndExecute
   | MsgMultiExecute
+  | MsgWithdrawValidatorCommission
+  | MsgEditValidator
 // | MsgReclaimLockedFunds
 
 /**

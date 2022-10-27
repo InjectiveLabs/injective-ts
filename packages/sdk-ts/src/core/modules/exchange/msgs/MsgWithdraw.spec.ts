@@ -23,7 +23,7 @@ const protoParams = {
 
 const message = MsgWithdraw.fromJSON(params)
 
-describe.only('MsgWithdraw', () => {
+describe('MsgWithdraw', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

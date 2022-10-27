@@ -23,7 +23,7 @@ const protoParams = {
 
 const message = MsgUndelegate.fromJSON(params)
 
-describe.only('MsgUndelegate', () => {
+describe('MsgUndelegate', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

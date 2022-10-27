@@ -27,7 +27,7 @@ const protoParamsAmino = {
 
 const message = MsgSend.fromJSON(params)
 
-describe.only('MsgSend', () => {
+describe('MsgSend', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

@@ -21,7 +21,7 @@ const protoParams = {
 
 const message = MsgCancelSpotOrder.fromJSON(params)
 
-describe.only('MsgCancelSpotOrder', () => {
+describe('MsgCancelSpotOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

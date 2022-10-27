@@ -29,7 +29,7 @@ const protoParamsAmino = {
 
 const message = MsgDeposit.fromJSON(params)
 
-describe.only('MsgDeposit', () => {
+describe('MsgDeposit', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

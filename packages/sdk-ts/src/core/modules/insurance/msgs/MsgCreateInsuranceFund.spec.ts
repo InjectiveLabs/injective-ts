@@ -32,7 +32,7 @@ const protoParams = {
 
 const message = MsgCreateInsuranceFund.fromJSON(params)
 
-describe.only('MsgCreateInsuranceFund', () => {
+describe('MsgCreateInsuranceFund', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

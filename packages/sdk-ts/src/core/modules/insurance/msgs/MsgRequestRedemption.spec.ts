@@ -23,7 +23,7 @@ const protoParams = {
 
 const message = MsgRequestRedemption.fromJSON(params)
 
-describe.only('MsgRequestRedemption', () => {
+describe('MsgRequestRedemption', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

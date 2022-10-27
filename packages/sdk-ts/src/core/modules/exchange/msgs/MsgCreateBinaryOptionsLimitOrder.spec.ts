@@ -47,7 +47,7 @@ const formattedProtoParams = {
 
 const message = MsgCreateBinaryOptionsLimitOrder.fromJSON(params)
 
-describe.only('MsgCreateBinaryOptionsLimitOrder', () => {
+describe('MsgCreateBinaryOptionsLimitOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

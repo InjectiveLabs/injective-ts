@@ -17,7 +17,7 @@ const protoParams = {
 
 const message = MsgWithdrawDelegatorReward.fromJSON(params)
 
-describe.only('MsgWithdrawDelegatorReward', () => {
+describe('MsgWithdrawDelegatorReward', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

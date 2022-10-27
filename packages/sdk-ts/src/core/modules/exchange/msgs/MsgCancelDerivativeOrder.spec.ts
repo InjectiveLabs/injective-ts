@@ -22,7 +22,7 @@ const protoParams = {
 
 const message = MsgCancelDerivativeOrder.fromJSON(params)
 
-describe.only('MsgCancelDerivativeOrder', () => {
+describe('MsgCancelDerivativeOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

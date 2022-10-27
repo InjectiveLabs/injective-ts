@@ -22,7 +22,7 @@ const protoParams = {
 
 const message = MsgBid.fromJSON(params)
 
-describe.only('MsgBid', () => {
+describe('MsgBid', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

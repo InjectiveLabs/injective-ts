@@ -1,33 +1,25 @@
-import { MsgDelegate as BaseMsgDelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgDelegate from './MsgDelegate'
+import { MsgWithdrawValidatorCommission as BaseMsgWithdrawValidatorCommission } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/tx_pb'
+import MsgWithdrawValidatorCommission from './MsgWithdrawValidatorCommission'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
-const params: MsgDelegate['params'] = {
+const params: MsgWithdrawValidatorCommission['params'] = {
   validatorAddress: mockFactory.validatorAddress,
-  injectiveAddress: mockFactory.injectiveAddress,
-  amount: {
-    amount: new BigNumberInBase(1).toFixed(),
-    denom: 'inj',
-  },
 }
 
-const protoType = '/cosmos.staking.v1beta1.MsgDelegate'
-const protoTypeAmino = 'cosmos-sdk/MsgDelegate'
+const protoType = '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission'
+const protoTypeShort = 'cosmos-sdk/MsgWithdrawDelegationReward'
 const protoParams = {
   validatorAddress: params.validatorAddress,
-  delegatorAddress: params.injectiveAddress,
-  amount: params.amount,
 }
 
-const message = MsgDelegate.fromJSON(params)
+const message = MsgWithdrawValidatorCommission.fromJSON(params)
 
-describe('MsgDelegate', () => {
+describe('MsgWithdrawValidatorCommission', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgDelegate).toBe(true)
+    expect(proto instanceof BaseMsgWithdrawValidatorCommission).toBe(true)
     expect(proto.toObject()).toStrictEqual(protoParams)
   })
 
@@ -44,7 +36,7 @@ describe('MsgDelegate', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: protoTypeAmino,
+      type: protoTypeShort,
       ...protoParams,
     })
   })
@@ -53,15 +45,7 @@ describe('MsgDelegate', () => {
     const eip712Types = message.toEip712Types()
 
     expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeAmount: [
-        { name: 'denom', type: 'string' },
-        { name: 'amount', type: 'string' },
-      ],
-      MsgValue: [
-        { name: 'delegator_address', type: 'string' },
-        { name: 'validator_address', type: 'string' },
-        { name: 'amount', type: 'TypeAmount' },
-      ],
+      MsgValue: [{ name: 'validator_address', type: 'string' }],
     })
   })
 
@@ -69,7 +53,7 @@ describe('MsgDelegate', () => {
     const eip712 = message.toEip712()
 
     expect(eip712).toStrictEqual({
-      type: protoTypeAmino,
+      type: protoTypeShort,
       value: snakecaseKeys(protoParams),
     })
   })

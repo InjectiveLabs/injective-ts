@@ -19,7 +19,7 @@ const protoParams = {
 
 const message = MsgVote.fromJSON(params)
 
-describe.only('MsgVote', () => {
+describe('MsgVote', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

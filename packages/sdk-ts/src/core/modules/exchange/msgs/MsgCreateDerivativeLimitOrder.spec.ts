@@ -47,7 +47,7 @@ const formattedProtoParams = {
 
 const message = MsgCreateDerivativeLimitOrder.fromJSON(params)
 
-describe.only('MsgCreateDerivativeLimitOrder', () => {
+describe('MsgCreateDerivativeLimitOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

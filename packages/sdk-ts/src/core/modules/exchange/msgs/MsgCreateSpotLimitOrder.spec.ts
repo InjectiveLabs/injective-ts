@@ -44,7 +44,7 @@ const formattedProtoParams = {
 
 const message = MsgCreateSpotLimitOrder.fromJSON(params)
 
-describe.only('MsgCreateSpotLimitOrder', () => {
+describe('MsgCreateSpotLimitOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

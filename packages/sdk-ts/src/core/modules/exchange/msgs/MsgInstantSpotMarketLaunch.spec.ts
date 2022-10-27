@@ -25,7 +25,7 @@ const protoParams = {
 
 const message = MsgInstantSpotMarketLaunch.fromJSON(params)
 
-describe.only('MsgInstantSpotMarketLaunch', () => {
+describe('MsgInstantSpotMarketLaunch', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

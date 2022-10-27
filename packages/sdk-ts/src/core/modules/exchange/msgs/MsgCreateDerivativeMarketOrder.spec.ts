@@ -47,7 +47,7 @@ const formattedProtoParams = {
 
 const message = MsgCreateDerivativeMarketOrder.fromJSON(params)
 
-describe.only('MsgCreateDerivativeMarketOrder', () => {
+describe('MsgCreateDerivativeMarketOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

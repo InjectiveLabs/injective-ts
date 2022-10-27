@@ -23,7 +23,7 @@ const protoParams = {
 
 const message = MsgUnderwrite.fromJSON(params)
 
-describe.only('MsgUnderwrite', () => {
+describe('MsgUnderwrite', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

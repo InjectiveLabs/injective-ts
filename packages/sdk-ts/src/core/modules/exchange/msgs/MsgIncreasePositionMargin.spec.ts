@@ -23,7 +23,7 @@ const protoParams = {
 
 const message = MsgIncreasePositionMargin.fromJSON(params)
 
-describe.only('MsgIncreasePositionMargin', () => {
+describe('MsgIncreasePositionMargin', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

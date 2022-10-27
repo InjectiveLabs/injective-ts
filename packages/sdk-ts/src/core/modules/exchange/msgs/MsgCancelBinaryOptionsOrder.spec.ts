@@ -22,7 +22,7 @@ const protoParams = {
 
 const message = MsgCancelBinaryOptionsOrder.fromJSON(params)
 
-describe.only('MsgCancelBinaryOptionsOrder', () => {
+describe('MsgCancelBinaryOptionsOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

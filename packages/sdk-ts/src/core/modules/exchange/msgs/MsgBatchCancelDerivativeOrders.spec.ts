@@ -39,7 +39,7 @@ const protoParamsAmino = {
 
 const message = MsgBatchCancelDerivativeOrders.fromJSON(params)
 
-describe.only('MsgBatchCancelDerivativeOrders', () => {
+describe('MsgBatchCancelDerivativeOrders', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

@@ -48,7 +48,7 @@ const formattedProtoParams = {
 
 const message = MsgCreateBinaryOptionsMarketOrder.fromJSON(params)
 
-describe.only('MsgCreateBinaryOptionsMarketOrder', () => {
+describe('MsgCreateBinaryOptionsMarketOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

@@ -25,7 +25,7 @@ const protoParams = {
 
 const message = MsgBeginRedelegate.fromJSON(params)
 
-describe.only('MsgBeginRedelegate', () => {
+describe('MsgBeginRedelegate', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
