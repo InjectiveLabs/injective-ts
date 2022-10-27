@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.186](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.185...@injectivelabs/sdk-ts@1.0.186) (2022-10-26)
+
+
+### Bug Fixes
+
+* indexerRestMarketChronosApi casing ([335757f](https://github.com/InjectiveLabs/injective-ts/commit/335757f584e25ee64c5ad05732ace69ae7a11f9d))
+
+
+
+
+
 ## [1.0.185](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.184...@injectivelabs/sdk-ts@1.0.185) (2022-10-25)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
