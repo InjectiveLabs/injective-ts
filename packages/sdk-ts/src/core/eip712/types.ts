@@ -1,3 +1,8 @@
+export interface TypedDataField {
+  name: string
+  type: string
+}
+
 export type Eip712ConvertTxArgs = {
   accountNumber: string
   sequence: string

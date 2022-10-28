@@ -1,7 +1,7 @@
-import { TypedDataField } from 'ethers'
 import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
 import { numberToCosmosSdkDecString, snakeToPascal } from '../../utils'
+import { TypedDataField } from './types'
 
 /**
  * Function used to generate EIP712 types based on a message object
