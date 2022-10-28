@@ -1,4 +1,3 @@
-/*
 import { MsgMultiExecute as BaseMsgMultiExecute } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
 import { Msgs } from '../../msgs'
@@ -32,7 +31,7 @@ export declare namespace MsgMultiExecute {
 
 /**
  * @category Messages
-
+ */
 export default class MsgMultiExecute extends MsgBase<
   MsgMultiExecute.Params,
   MsgMultiExecute.Data,
@@ -98,4 +97,3 @@ export default class MsgMultiExecute extends MsgBase<
     }
   }
 }
-*/

@@ -1,3 +1,4 @@
+/*
 import { MsgReclaimLockedFunds as BaseMsgReclaimLockedFunds } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { toUtf8 } from '../../../../utils/utf8'
 import { MsgBase } from '../../MsgBase'
@@ -86,3 +87,4 @@ export default class MsgReclaimLockedFunds extends MsgBase<
     }
   }
 }
+*/
