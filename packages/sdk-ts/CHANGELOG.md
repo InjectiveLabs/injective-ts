@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.198](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.197...@injectivelabs/sdk-ts@1.0.198) (2022-10-28)
+
+
+### Bug Fixes
+
+* ethers import ([3ea3eae](https://github.com/InjectiveLabs/injective-ts/commit/3ea3eae37f7ab3126d0d67d2a3154d7badc082bd))
+
+
+
+
+
 ## [1.0.197](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.196...@injectivelabs/sdk-ts@1.0.197) (2022-10-28)
 
 
