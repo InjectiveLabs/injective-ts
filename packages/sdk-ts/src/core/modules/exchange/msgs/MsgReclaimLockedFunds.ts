@@ -1,12 +1,11 @@
-/*
 import { MsgReclaimLockedFunds as BaseMsgReclaimLockedFunds } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { toUtf8 } from '../../../../utils/utf8'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgReclaimLockedFunds {
   export interface Params {
     sender: string
-    signData: string
+    lockedAccountPubKey: string
+    signature: string
   }
 
   export interface DirectSign {
@@ -29,6 +28,9 @@ export declare namespace MsgReclaimLockedFunds {
   export type Proto = BaseMsgReclaimLockedFunds
 }
 
+/**
+ * @category Messages
+ */
 export default class MsgReclaimLockedFunds extends MsgBase<
   MsgReclaimLockedFunds.Params,
   MsgReclaimLockedFunds.Data,
@@ -45,7 +47,8 @@ export default class MsgReclaimLockedFunds extends MsgBase<
 
     const message = new BaseMsgReclaimLockedFunds()
     message.setSender(params.sender)
-    message.setSignData(Buffer.from(toUtf8(params.signData)).toString('base64'))
+    message.setLockedaccountpubkey(params.lockedAccountPubKey)
+    message.setSignature(params.signature)
 
     return message
   }
@@ -87,4 +90,3 @@ export default class MsgReclaimLockedFunds extends MsgBase<
     }
   }
 }
-*/
