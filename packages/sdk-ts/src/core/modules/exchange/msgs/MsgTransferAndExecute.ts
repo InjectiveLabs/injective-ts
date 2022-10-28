@@ -1,3 +1,4 @@
+/*
 import {
   FundsDirectionMap,
   MsgTransferAndExecute as BaseMsgTransferAndExecute,
@@ -41,7 +42,7 @@ export declare namespace MsgTransferAndExecute {
 
 /**
  * @category Messages
- */
+
 export default class MsgTransferAndExecute extends MsgBase<
   MsgTransferAndExecute.Params,
   MsgTransferAndExecute.Data,
@@ -137,3 +138,4 @@ export default class MsgTransferAndExecute extends MsgBase<
     }
   }
 }
+*/
