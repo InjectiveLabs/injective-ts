@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.190](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.190...@injectivelabs/sdk-ts@1.0.190) (2022-10-28)
+
+
+### Features
+
+* msg multi execute ([2f67682](https://github.com/InjectiveLabs/injective-ts/commit/2f67682e030be0dc3fd7eeee87c24891ad605dd2))
+
+
+
+
+
 ## [1.0.190](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.189...@injectivelabs/sdk-ts@1.0.190) (2022-10-28)
 
 
