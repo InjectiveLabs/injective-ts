@@ -2385,14 +2385,6 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/chain-api@1.8.0-rc8-debug-reclaim-1":
-  version "1.8.0-rc8-debug-reclaim-1"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.8.0-rc8-debug-reclaim-1.tgz#9b16d684032ca5921da6e498373d9b1f02402261"
-  integrity sha512-CBnGaLBd+mlwi+SzwMRZapOmwc+xo/AEAiCN7lrneWpROrnpLPCEeYuEwhsFkJxTNyEeqeJXYRmH6IoUSdQD/g==
-  dependencies:
-    "@improbable-eng/grpc-web" "^0.13.0"
-    google-protobuf "^3.13.0"
-
 "@injectivelabs/chain-api@1.8.2":
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/@injectivelabs/chain-api/-/chain-api-1.8.2.tgz#aea885e76e664dd98326ddd70f3a568c159e05cc"
