@@ -5,7 +5,7 @@ export declare namespace MsgReclaimLockedFunds {
   export interface Params {
     sender: string
     lockedAccountPubKey: string
-    signature: string
+    signature: Uint8Array
   }
 
   export interface DirectSign {
