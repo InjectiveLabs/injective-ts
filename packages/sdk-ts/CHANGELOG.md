@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.190](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.189...@injectivelabs/sdk-ts@1.0.190) (2022-10-28)
+
+
+### Features
+
+* keplr reclaim funds ([6f35de5](https://github.com/InjectiveLabs/injective-ts/commit/6f35de51585a87dd47d37d4a34b496b234f2f185))
+
+
+
+
+
 ## [1.0.189](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.188...@injectivelabs/sdk-ts@1.0.189) (2022-10-27)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
