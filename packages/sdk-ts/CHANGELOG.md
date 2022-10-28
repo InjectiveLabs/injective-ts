@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.193](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.192...@injectivelabs/sdk-ts@1.0.193) (2022-10-28)
+
+
+### Bug Fixes
+
+* keplrReclaimFunds message ([dd2136e](https://github.com/InjectiveLabs/injective-ts/commit/dd2136ee3c62ab3dcdc3141928f3ef56446200e1))
+
+
+
+
+
 ## [1.0.192](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.190...@injectivelabs/sdk-ts@1.0.192) (2022-10-28)
 
 
