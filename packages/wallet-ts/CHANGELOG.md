@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.167](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.166...@injectivelabs/wallet-ts@1.0.167) (2022-10-31)
+
+
+### Bug Fixes
+
+* eip712 for msgExecuteContract ([b923f1c](https://github.com/InjectiveLabs/injective-ts/commit/b923f1cd6737587f4975fdafee2553c22ec2bd4e))
+
+
+
+
+
 ## [1.0.166](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.165...@injectivelabs/wallet-ts@1.0.166) (2022-10-28)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

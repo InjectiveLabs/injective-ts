@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.272](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.271...@injectivelabs/sdk-ui-ts@1.0.272) (2022-10-31)
+
+
+### Bug Fixes
+
+* eip712 for msgExecuteContract ([b923f1c](https://github.com/InjectiveLabs/injective-ts/commit/b923f1cd6737587f4975fdafee2553c22ec2bd4e))
+
+
+
+
+
 ## [1.0.271](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.270...@injectivelabs/sdk-ui-ts@1.0.271) (2022-10-28)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
