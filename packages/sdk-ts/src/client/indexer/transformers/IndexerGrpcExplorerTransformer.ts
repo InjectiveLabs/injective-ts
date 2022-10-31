@@ -50,6 +50,7 @@ export class IndexerGrpcExplorerTransformer {
     const pagination = response.getPaging()
 
     return {
+      // @ts-ignore
       txs: IndexerGrpcExplorerTransformer.grpcTransactionsToTransactions(txs),
       pagination: grpcPagingToPaging(pagination),
     }
@@ -58,13 +59,13 @@ export class IndexerGrpcExplorerTransformer {
   static getValidatorUptimeResponseToValidatorUptime(
     response: GetValidatorUptimeResponse,
   ) {
-    return response
-      .getFieldList()
-      .map((field) =>
-        IndexerGrpcExplorerTransformer.grpcValidatorUptimeToValidatorUptime(
-          field,
-        ),
-      )
+    const data = response.getDataList()
+
+    return data.map((field) =>
+      IndexerGrpcExplorerTransformer.grpcValidatorUptimeToValidatorUptime(
+        field,
+      ),
+    )
   }
 
   static getPeggyDepositTxsResponseToPeggyDepositTxs(
@@ -98,36 +99,38 @@ export class IndexerGrpcExplorerTransformer {
   static validatorResponseToValidator(
     validator: GetValidatorResponse,
   ): ExplorerValidator {
+    const data = validator.getData()!
+
     return {
-      id: validator.getId(),
-      moniker: validator.getMoniker(),
-      operatorAddress: validator.getOperatorAddress(),
-      consensusAddress: validator.getConsensusAddress(),
-      jailed: validator.getJailed(),
-      status: validator.getStatus(),
-      tokens: validator.getTokens(),
-      delegatorShares: validator.getDelegatorShares(),
+      id: data.getId(),
+      moniker: data.getMoniker(),
+      operatorAddress: data.getOperatorAddress(),
+      consensusAddress: data.getConsensusAddress(),
+      jailed: data.getJailed(),
+      status: data.getStatus(),
+      tokens: data.getTokens(),
+      delegatorShares: data.getDelegatorShares(),
       description:
         IndexerGrpcExplorerTransformer.grpcValidatorDescriptionToValidatorDescription(
-          validator.getDescription()!,
+          data.getDescription()!,
         ),
-      unbondingHeight: validator.getUnbondingHeight(),
-      unbondingTime: validator.getUnbondingTime(),
-      commissionRate: validator.getCommissionRate(),
-      commissionMaxRate: validator.getCommissionMaxRate(),
-      commissionMaxChangeRate: validator.getCommissionMaxChangeRate(),
-      commissionUpdateTime: validator.getCommissionUpdateTime(),
-      proposed: validator.getProposed(),
-      signed: validator.getSigned(),
-      missed: validator.getMissed(),
-      uptimePercentage: validator.getUptimePercentage(),
-      timestamp: validator.getTimestamp(),
-      uptimesList: validator
+      unbondingHeight: data.getUnbondingHeight(),
+      unbondingTime: data.getUnbondingTime(),
+      commissionRate: data.getCommissionRate(),
+      commissionMaxRate: data.getCommissionMaxRate(),
+      commissionMaxChangeRate: data.getCommissionMaxChangeRate(),
+      commissionUpdateTime: data.getCommissionUpdateTime(),
+      proposed: data.getProposed(),
+      signed: data.getSigned(),
+      missed: data.getMissed(),
+      uptimePercentage: data.getUptimePercentage(),
+      timestamp: data.getTimestamp(),
+      uptimesList: data
         .getUptimesList()
         .map(
           IndexerGrpcExplorerTransformer.grpcValidatorUptimeToValidatorUptime,
         ),
-      slashingEventsList: validator
+      slashingEventsList: data
         .getSlashingEventsList()
         .map(
           IndexerGrpcExplorerTransformer.grpcValidatorSlashingEventToValidatorSlashingEvent,
@@ -168,12 +171,15 @@ export class IndexerGrpcExplorerTransformer {
   static grpcTransactionToBankMsgSendTransaction(
     tx: TxData,
   ): BankMsgSendTransaction {
-    const [message] = JSON.parse(tx.getMessages()) as GrpcBankMsgSendMessage[]
+    const data = tx.getData()!
+    const [message] = JSON.parse(
+      data.getMessages() as string,
+    ) as GrpcBankMsgSendMessage[]
 
     return {
-      blockNumber: tx.getBlockNumber(),
-      blockTimestamp: tx.getBlockTimestamp(),
-      hash: tx.getHash(),
+      blockNumber: data.getBlockNumber(),
+      blockTimestamp: data.getBlockTimestamp(),
+      hash: data.getHash(),
       amount: message.value.amount[0].amount,
       denom: message.value.amount[0].denom,
       sender: message.value.from_address,
@@ -182,28 +188,30 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcTransactionToTransaction(tx: TxData): Transaction {
+    const data = tx.getData()!
+
     return {
-      id: tx.getId(),
-      blockNumber: tx.getBlockNumber(),
-      blockTimestamp: tx.getBlockTimestamp(),
-      hash: tx.getHash(),
-      code: tx.getCode(),
-      info: tx.getInfo(),
-      gasWanted: tx.getGasWanted(),
-      gasUsed: tx.getGasUsed(),
-      codespace: tx.getCodespace(),
-      data: tx.getData(),
+      id: data.getId(),
+      blockNumber: data.getBlockNumber(),
+      blockTimestamp: data.getBlockTimestamp(),
+      hash: data.getHash(),
+      code: data.getCode(),
+      info: data.getInfo(),
+      gasWanted: data.getGasWanted(),
+      gasUsed: data.getGasUsed(),
+      codespace: data.getCodespace(),
+      data: data.getData(),
       gasFee: IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(
-        tx.getGasFee()!,
+        data.getGasFee()!,
       ),
-      txType: tx.getTxType(),
-      signatures: tx.getSignaturesList().map((signature) => ({
+      txType: data.getTxType(),
+      signatures: data.getSignaturesList().map((signature) => ({
         pubkey: signature.getPubkey(),
         address: signature.getAddress(),
         sequence: signature.getSequence(),
         signature: signature.getSignature(),
       })),
-      events: tx.getEventsList().map((event) => ({
+      events: data.getEventsList().map((event) => ({
         type: event.getType(),
         attributes: event
           .getAttributesMap()
@@ -216,7 +224,7 @@ export class IndexerGrpcExplorerTransformer {
             {},
           ),
       })),
-      messages: JSON.parse(tx.getMessages()),
+      messages: JSON.parse(data.getMessages() as string),
     }
   }
 

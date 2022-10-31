@@ -1,11 +1,12 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
+import snakeCaseKeys from 'snakecase-keys'
 import { toUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
-    amount?: {
+    funds?: {
       denom: string
       amount: string
     }
@@ -59,11 +60,11 @@ export default class MsgExecuteContract extends MsgBase<
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
 
-    if (params.amount) {
+    if (params.funds) {
       const funds = new Coin()
 
-      funds.setAmount(params.amount.amount)
-      funds.setDenom(params.amount.denom)
+      funds.setAmount(params.funds.amount)
+      funds.setDenom(params.funds.denom)
 
       message.setFundsList([funds])
     }
@@ -81,12 +82,24 @@ export default class MsgExecuteContract extends MsgBase<
   }
 
   public toAmino(): MsgExecuteContract.Amino {
+    const { params } = this
     const proto = this.toProto()
+    const message = {
+      ...snakeCaseKeys(proto.toObject()),
+      ...(params.funds && {
+        funds: proto
+          .getFundsList()
+          .map((amount) => snakeCaseKeys(amount.toObject())),
+      }),
+    }
+
+    // @ts-ignore
+    delete message.funds_list
 
     return {
       type: 'wasm/MsgExecuteContract',
-      ...proto.toObject(),
-    }
+      ...message,
+    } as unknown as MsgExecuteContract.Amino
   }
 
   public toWeb3(): MsgExecuteContract.Web3 {

@@ -33,6 +33,7 @@ export const objectKeysToEip712Types = (
       types.push({ name: property, type: 'string' })
     } else if (type === 'object') {
       if (Array.isArray(val) && val.length === 0) {
+        console.log({ val, property, type })
         throw new GeneralException(new Error('Array with length 0 found'))
       } else if (Array.isArray(val) && val.length > 0) {
         const arrayFirstType = typeof val[0]
