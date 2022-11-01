@@ -409,8 +409,6 @@ export const getPeggoGraphQlEndpoint = (network: Network): string => {
       Network.Mainnet,
       Network.MainnetK8s,
       Network.Public,
-      Network.MainnetOld,
-      Network.MainnetStaging,
       Network.Staging,
     ].includes(network)
   ) {

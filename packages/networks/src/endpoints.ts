@@ -1,7 +1,6 @@
 import { NetworkEndpoints } from './types'
 
 export const urlEndpointsMainnetK8s: NetworkEndpoints = {
-  exchangeApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
   indexerApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
   chronosApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
   sentryGrpcApi: 'https://k8s.mainnet.grpc.injective.network/',
@@ -11,7 +10,6 @@ export const urlEndpointsMainnetK8s: NetworkEndpoints = {
 }
 
 export const urlEndpointsMainnet: NetworkEndpoints = {
-  exchangeApi: 'https://api.injective.network',
   indexerApi: 'https://api.injective.network',
   chronosApi: 'https://api.injective.network',
   sentryGrpcApi: 'https://grpc.injective.network',
@@ -20,8 +18,7 @@ export const urlEndpointsMainnet: NetworkEndpoints = {
   exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
 }
 
-export const urlEndpointsMainnetStaging: NetworkEndpoints = {
-  exchangeApi: 'https://staging.api.injective.network',
+export const urlEndpointsStaging: NetworkEndpoints = {
   indexerApi: 'https://staging.api.injective.network',
   chronosApi: 'https://staging.api.injective.network',
   sentryGrpcApi: 'https://staging.grpc.injective.network',
@@ -30,18 +27,7 @@ export const urlEndpointsMainnetStaging: NetworkEndpoints = {
   exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
 }
 
-export const urlEndpointsMainnetOld: NetworkEndpoints = {
-  exchangeApi: 'https://api.injective.network',
-  indexerApi: 'https://api.injective.network',
-  chronosApi: 'https://api.injective.network',
-  sentryGrpcApi: 'https://grpc.injective.network',
-  tendermintApi: 'https://tm.injective.network',
-  sentryHttpApi: 'https://lcd.injective.network',
-  exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
-}
-
 export const urlEndpointsPublic: NetworkEndpoints = {
-  exchangeApi: 'https://public.api.injective.network',
   indexerApi: 'https://public.api.injective.network',
   chronosApi: 'https://public.api.injective.network',
   sentryGrpcApi: 'https://public.grpc.injective.network',
@@ -50,18 +36,7 @@ export const urlEndpointsPublic: NetworkEndpoints = {
   exchangeWeb3GatewayApi: 'https://public.web3-gateway.injective.network',
 }
 
-export const urlEndpointsTestnet: NetworkEndpoints = {
-  exchangeApi: 'https://testnet.api.injective.dev',
-  indexerApi: 'https://testnet.api.injective.dev',
-  chronosApi: 'https://testnet.api.injective.dev',
-  sentryGrpcApi: 'https://testnet.grpc.injective.dev',
-  tendermintApi: 'https://testnet.tm.injective.dev',
-  sentryHttpApi: 'https://testnet.lcd.injective.dev',
-  exchangeWeb3GatewayApi: 'https://testnet.web3-gateway.injective.dev',
-}
-
 export const urlEndpointsTestnetK8s: NetworkEndpoints = {
-  exchangeApi: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   indexerApi: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   chronosApi: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   sentryGrpcApi: 'https://k8s.testnet.chain.grpc-web.injective.network',
@@ -70,8 +45,11 @@ export const urlEndpointsTestnetK8s: NetworkEndpoints = {
   exchangeWeb3GatewayApi: 'https://staging.web3-gateway.injective.network',
 }
 
+export const urlEndpointsTestnet: NetworkEndpoints = {
+  ...urlEndpointsTestnetK8s,
+}
+
 export const urlEndpointsDevnet: NetworkEndpoints = {
-  exchangeApi: 'https://devnet.api.injective.dev',
   indexerApi: 'https://devnet.api.injective.dev',
   chronosApi: 'https://devnet.api.injective.dev',
   sentryGrpcApi: 'https://devnet.grpc.injective.dev',
@@ -81,7 +59,6 @@ export const urlEndpointsDevnet: NetworkEndpoints = {
 }
 
 export const urlEndpointsDevnet1: NetworkEndpoints = {
-  exchangeApi: 'https://devnet-1.api.injective.dev',
   indexerApi: 'https://devnet-1.api.injective.dev',
   chronosApi: 'https://devnet-1.api.injective.dev',
   sentryGrpcApi: 'https://devnet-1.grpc.injective.dev',
@@ -91,7 +68,6 @@ export const urlEndpointsDevnet1: NetworkEndpoints = {
 }
 
 export const urlEndpointsLocal: NetworkEndpoints = {
-  exchangeApi: 'https://localhost:4444',
   indexerApi: 'https://localhost:4444',
   chronosApi: 'https://localhost:4444',
   sentryGrpcApi: 'http://localhost:9091',

@@ -12,16 +12,14 @@ import {
   urlEndpointsPublic,
   urlEndpointsDevnet,
   urlEndpointsMainnetK8s,
-  urlEndpointsMainnetStaging,
+  urlEndpointsStaging,
   urlEndpointsDevnet1,
 } from './endpoints'
 import { ChainInfo, Network, NetworkEndpoints } from './types'
 
 export const networkEndpoints: Record<Network, NetworkEndpoints> = {
   [Network.MainnetK8s]: urlEndpointsMainnetK8s,
-  [Network.MainnetOld]: urlEndpointsMainnet,
-  [Network.MainnetStaging]: urlEndpointsMainnetStaging,
-  [Network.Staging]: urlEndpointsMainnetStaging,
+  [Network.Staging]: urlEndpointsStaging,
   [Network.Mainnet]: urlEndpointsMainnet,
   [Network.Public]: urlEndpointsPublic,
   [Network.Devnet]: urlEndpointsDevnet,
@@ -33,8 +31,6 @@ export const networkEndpoints: Record<Network, NetworkEndpoints> = {
 
 export const chainInfos: Record<Network, ChainInfo> = {
   [Network.MainnetK8s]: mainnetChainInfo,
-  [Network.MainnetOld]: mainnetChainInfo,
-  [Network.MainnetStaging]: mainnetChainInfo,
   [Network.Staging]: mainnetChainInfo,
   [Network.Mainnet]: mainnetChainInfo,
   [Network.Public]: mainnetChainInfo,

@@ -1,19 +1,16 @@
 export enum Network {
-  Local = 'local',
-  Public = 'public',
-  Devnet = 'devnet',
-  Devnet1 = 'devnet1',
-  Testnet = 'testnet',
-  TestnetK8s = 'testnetK8s',
+  MainnetK8s = 'mainnetK8s',
   Mainnet = 'mainnet',
   Staging = 'staging',
-  MainnetStaging = 'mainnetStaging',
-  MainnetK8s = 'mainnetK8s',
-  MainnetOld = 'mainnetOld',
+  Public = 'public',
+  TestnetK8s = 'testnetK8s',
+  Testnet = 'testnet',
+  Devnet1 = 'devnet1',
+  Devnet = 'devnet',
+  Local = 'local',
 }
 
 export type NetworkEndpoints = {
-  exchangeApi: string // @deprecated
   indexerApi: string
   sentryGrpcApi: string
   sentryHttpApi: string

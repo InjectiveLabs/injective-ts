@@ -17,8 +17,8 @@ export const getEndpointsFromChainId = (
       }
     case TestnetCosmosChainId.Injective:
       return {
-        rpc: 'https://testnet.tm.injective.dev',
-        rest: 'https://testnet.lcd.injective.dev',
+        rpc: 'https://k8s.testnet.tm.injective.network',
+        rest: 'https://k8s.testnet.lcd.injective.network',
       }
     case DevnetCosmosChainId.Injective:
       return {
