@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.47...@injectivelabs/contracts@1.0.48) (2022-11-01)
+
+
+### Bug Fixes
+
+* testnet endpoints ([a016c9c](https://github.com/InjectiveLabs/injective-ts/commit/a016c9c69036249ee42bbd0d6501c33f874e2f51))
+
+
+
+
+
 ## [1.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.46...@injectivelabs/contracts@1.0.47) (2022-10-25)
 
 **Note:** Version bump only for package @injectivelabs/contracts
