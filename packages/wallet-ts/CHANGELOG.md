@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.170](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.169...@injectivelabs/wallet-ts@1.0.170) (2022-11-02)
+
+
+### Features
+
+* ethereum native wallets optional on wallet-ts ([15300dc](https://github.com/InjectiveLabs/injective-ts/commit/15300dc2a182d7e557b5337847ba7a81977e1ce8))
+
+
+
+
+
 ## [1.0.169](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.168...@injectivelabs/wallet-ts@1.0.169) (2022-11-02)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
