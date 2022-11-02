@@ -13,9 +13,9 @@ import {
   LedgerException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import Web3 from 'web3'
 import {
   ConcreteWalletStrategy,
+  EthereumWalletStrategyArgs,
   LedgerDerivationPathType,
   LedgerWalletInfo,
 } from '../../types'
@@ -51,21 +51,15 @@ export default class LedgerBase
 
   private ledger: LedgerHW
 
-  constructor({
-    chainId,
-    web3,
-    ethereumChainId,
-    derivationPathType,
-  }: {
-    ethereumChainId: EthereumChainId
-    chainId: ChainId
-    web3: Web3
-    derivationPathType: LedgerDerivationPathType
-  }) {
-    super({ chainId, web3, ethereumChainId })
+  constructor(
+    args: EthereumWalletStrategyArgs & {
+      derivationPathType: LedgerDerivationPathType
+    },
+  ) {
+    super(args)
 
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
-    this.derivationPathType = derivationPathType
+    this.derivationPathType = args.derivationPathType
     this.ledger = new LedgerHW()
   }
 

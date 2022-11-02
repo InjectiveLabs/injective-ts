@@ -5,25 +5,28 @@ import {
   GeneralException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { WalletStrategyEthereumOptions } from '../types'
 
 export default abstract class BaseConcreteStrategy {
-  protected ethereumChainId: EthereumChainId
-
   protected chainId: ChainId
+
+  protected ethereumChainId?: EthereumChainId
 
   protected web3?: Web3
 
   protected constructor({
-    ethereumChainId,
+    ethereumOptions,
     chainId,
     web3,
   }: {
-    ethereumChainId: EthereumChainId
-    chainId: ChainId
     web3?: Web3
+    chainId: ChainId
+    ethereumOptions?: WalletStrategyEthereumOptions
   }) {
     this.web3 = web3
-    this.ethereumChainId = ethereumChainId
+    this.ethereumChainId = ethereumOptions
+      ? ethereumOptions.ethereumChainId
+      : undefined
     this.chainId = chainId
   }
 

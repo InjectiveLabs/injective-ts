@@ -9,13 +9,16 @@ import { addHexPrefix } from 'ethereumjs-util'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import Common, { Chain, Hardfork } from '@ethereumjs/common'
 import TrezorConnect from 'trezor-connect'
-import Web3 from 'web3'
 import {
   ErrorType,
   TrezorException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { ConcreteWalletStrategy, TrezorWalletInfo } from '../../types'
+import {
+  ConcreteWalletStrategy,
+  EthereumWalletStrategyArgs,
+  TrezorWalletInfo,
+} from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
@@ -55,11 +58,7 @@ export default class Trezor
 {
   private trezor: TrezorHW
 
-  constructor(args: {
-    ethereumChainId: EthereumChainId
-    chainId: ChainId
-    web3: Web3
-  }) {
+  constructor(args: EthereumWalletStrategyArgs) {
     super(args)
     this.trezor = new TrezorHW()
   }

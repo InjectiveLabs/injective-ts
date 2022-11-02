@@ -8,11 +8,16 @@ import {
   ErrorType,
   MetamaskException,
   UnspecifiedErrorCode,
+  WalletException,
 } from '@injectivelabs/exceptions'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3 from 'web3'
 import { TransactionConfig } from 'web3-core'
-import { ConcreteWalletStrategy, WalletOptions } from '../types'
+import {
+  ConcreteWalletStrategy,
+  EthereumWalletStrategyArgs,
+  WalletStrategyEthereumOptions,
+} from '../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction } from '../../types/enums'
 
@@ -22,22 +27,24 @@ export default class WalletConnect
 {
   private walletConnectProvider: WalletConnectProvider | undefined
 
-  private readonly walletOptions: WalletOptions
+  private readonly ethereumOptions: WalletStrategyEthereumOptions | undefined
 
   private createWalletConnectProvider() {
+    const { ethereumOptions } = this
+
+    if (!ethereumOptions) {
+      throw new WalletException(new Error('Please provide Ethereum options'))
+    }
+
     this.walletConnectProvider = new WalletConnectProvider({
-      rpc: this.walletOptions.rpcUrls,
+      rpc: ethereumOptions.rpcUrls,
     })
     this.web3 = new Web3(this.walletConnectProvider as any)
   }
 
-  constructor(args: {
-    chainId: ChainId
-    ethereumChainId: EthereumChainId
-    walletOptions: WalletOptions
-  }) {
+  constructor(args: EthereumWalletStrategyArgs) {
     super(args)
-    this.walletOptions = args.walletOptions
+    this.ethereumOptions = args.ethereumOptions
     this.createWalletConnectProvider()
   }
 

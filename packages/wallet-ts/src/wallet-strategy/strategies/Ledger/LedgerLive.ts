@@ -1,15 +1,12 @@
 /* eslint-disable class-methods-use-this */
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import Web3 from 'web3'
-import { LedgerDerivationPathType } from '../../types'
+import {
+  EthereumWalletStrategyArgs,
+  LedgerDerivationPathType,
+} from '../../types'
 import LedgerBase from './Base'
 
 export default class LedgerLive extends LedgerBase {
-  constructor(args: {
-    ethereumChainId: EthereumChainId
-    chainId: ChainId
-    web3: Web3
-  }) {
+  constructor(args: EthereumWalletStrategyArgs) {
     super({
       ...args,
       derivationPathType: LedgerDerivationPathType.LedgerLive,

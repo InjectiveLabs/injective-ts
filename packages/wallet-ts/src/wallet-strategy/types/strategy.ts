@@ -6,7 +6,6 @@ import {
 import type Web3 from 'web3'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { Wallet } from '../../types/enums'
 import { CosmosWalletSignTransactionArgs } from '../../types'
 
 export type onAccountChangeCallback = (account: AccountAddress) => void
@@ -15,12 +14,6 @@ export type onChainIdChangeCallback = () => void
 export enum LedgerDerivationPathType {
   LedgerLive = 'ledger-live',
   LedgerMew = 'ledger-mew',
-}
-
-export interface WalletOptions {
-  rpcUrls: Record<EthereumChainId, string>
-  wsRpcUrls: Record<EthereumChainId, string>
-  disabledWallets?: Wallet[]
 }
 
 export interface ConcreteWalletStrategy {

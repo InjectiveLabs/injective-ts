@@ -30,7 +30,7 @@ export default class Keplr
 {
   private keplrWallet: KeplrWallet
 
-  constructor(args: { ethereumChainId: EthereumChainId; chainId: ChainId }) {
+  constructor(args: { chainId: ChainId }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
     this.keplrWallet = new KeplrWallet(args.chainId)

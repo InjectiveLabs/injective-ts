@@ -348,18 +348,13 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     cosmosPubKey.setType(pubKey.type)
     cosmosPubKey.setKey(`0x${pubKeyInHex}`)
 
+    txRaw.clearSignaturesList()
+
     const broadcastTxRequest = new BroadcastCosmosTxRequest()
     broadcastTxRequest.setSenderAddress(address)
     broadcastTxRequest.setPubKey(cosmosPubKey)
     broadcastTxRequest.setSignature(`0x${signatureInHex}`)
     broadcastTxRequest.setTx(txRaw.serializeBinary())
-
-    console.log({
-      senderAddress: address,
-      signature: `0x${signatureInHex}`,
-      pubKey: Buffer.from(cosmosPubKey.serializeBinary()).toString('base64'),
-      tx: Buffer.from(txRaw.serializeBinary()).toString('base64'),
-    })
 
     try {
       const response = await this.request<

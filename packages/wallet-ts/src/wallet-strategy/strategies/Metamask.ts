@@ -4,7 +4,6 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import Web3 from 'web3'
 import {
   ErrorType,
   MetamaskException,
@@ -13,6 +12,7 @@ import {
 import {
   ConcreteWalletStrategy,
   Eip1993ProviderWithMetamask,
+  EthereumWalletStrategyArgs,
   WindowWithEip1193Provider,
 } from '../types'
 import BaseConcreteStrategy from './Base'
@@ -28,11 +28,7 @@ export default class Metamask
 {
   private ethereum: Eip1993ProviderWithMetamask
 
-  constructor(args: {
-    ethereumChainId: EthereumChainId
-    web3: Web3
-    chainId: ChainId
-  }) {
+  constructor(args: EthereumWalletStrategyArgs) {
     super(args)
     this.ethereum = $window.ethereum
   }

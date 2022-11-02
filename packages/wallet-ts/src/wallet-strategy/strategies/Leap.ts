@@ -30,7 +30,7 @@ export default class Leap
 {
   private leapWallet: LeapWallet
 
-  constructor(args: { ethereumChainId: EthereumChainId; chainId: ChainId }) {
+  constructor(args: { chainId: ChainId }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
     this.leapWallet = new LeapWallet(args.chainId)

@@ -1,8 +1,8 @@
 import Eip1993Provider from 'eip1193-provider'
 import { EthereumChainId, ChainId } from '@injectivelabs/ts-types'
 import HDNode from 'hdkey'
+import Web3 from 'web3'
 import { Wallet } from '../../types/enums'
-import { WalletOptions } from './strategy'
 
 export * from './strategy'
 
@@ -19,11 +19,23 @@ export interface WindowWithLedgerSupport extends Window {
   Websocket?: any
 }
 
-export interface WalletStrategyArguments {
+export interface WalletStrategyEthereumOptions {
   ethereumChainId: EthereumChainId
+  rpcUrls: Record<EthereumChainId, string>
+  wsRpcUrls: Record<EthereumChainId, string>
+}
+
+export interface EthereumWalletStrategyArgs {
   chainId: ChainId
+  ethereumOptions: WalletStrategyEthereumOptions
+  web3: Web3
+}
+
+export interface WalletStrategyArguments {
+  chainId: ChainId
+  ethereumOptions?: WalletStrategyEthereumOptions
+  disabledWallets?: Wallet[]
   wallet?: Wallet
-  options: WalletOptions
 }
 
 export interface LedgerWalletInfo {

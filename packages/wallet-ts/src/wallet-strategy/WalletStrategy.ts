@@ -6,14 +6,16 @@ import {
 } from '@injectivelabs/ts-types'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { GeneralException } from '@injectivelabs/exceptions'
+import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import Metamask from './strategies/Metamask'
 import {
   ConcreteWalletStrategy,
+  EthereumWalletStrategyArgs,
   onAccountChangeCallback,
   onChainIdChangeCallback,
   WalletStrategyArguments,
+  WalletStrategyEthereumOptions,
 } from './types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
@@ -26,43 +28,78 @@ import WalletConnect from './strategies/WalletConnect'
 import CosmostationEth from './strategies/CosmostationEth'
 import { Wallet } from '../types/enums'
 import { CosmosWalletSignTransactionArgs } from '../types/strategy'
+import { isEthWallet } from './utils'
 
-const createWallet = ({
+const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
+  const { ethereumOptions } = args
+
+  if (!ethereumOptions) {
+    return true
+  }
+
+  const { wsRpcUrls, rpcUrls, ethereumChainId } = ethereumOptions
+
+  if (!ethereumChainId) {
+    return true
+  }
+
+  if (!wsRpcUrls && !rpcUrls) {
+    return true
+  }
+
+  return false
+}
+
+const createStrategy = ({
   wallet,
   args,
   web3,
 }: {
   wallet: Wallet
   args: WalletStrategyArguments
-  web3: Web3
+  web3?: Web3
 }): ConcreteWalletStrategy | undefined => {
-  const disabledWallets = args.options.disabledWallets || []
+  const disabledWallets = args.disabledWallets || []
 
   if (disabledWallets.includes(wallet)) {
     return undefined
   }
 
+  /**
+   * If we only want to use Cosmos Native Wallets
+   * We are not creating strategies for Ethereum Native Wallets
+   */
+  if (isEthWallet(wallet) && !web3) {
+    return undefined
+  }
+
+  const ethWalletArgs = {
+    web3: web3 as Web3,
+    chainId: args.chainId,
+    ethereumOptions: args.ethereumOptions as WalletStrategyEthereumOptions,
+  } as EthereumWalletStrategyArgs
+
   switch (wallet) {
     case Wallet.Metamask:
-      return new Metamask({ ...args, web3 })
+      return new Metamask(ethWalletArgs)
     case Wallet.Ledger:
-      return new LedgerLive({ ...args, web3 })
+      return new LedgerLive(ethWalletArgs)
     case Wallet.LedgerLegacy:
-      return new LedgerLegacy({ ...args, web3 })
+      return new LedgerLegacy(ethWalletArgs)
+    case Wallet.Trezor:
+      return new Trezor(ethWalletArgs)
+    case Wallet.Torus:
+      return new Torus(ethWalletArgs)
+    case Wallet.CosmostationEth:
+      return new CosmostationEth(ethWalletArgs)
+    case Wallet.WalletConnect:
+      return new WalletConnect(ethWalletArgs)
     case Wallet.Keplr:
       return new Keplr({ ...args })
-    case Wallet.Trezor:
-      return new Trezor({ ...args, web3 })
-    case Wallet.Torus:
-      return new Torus({ ...args, web3 })
     case Wallet.Leap:
       return new Leap({ ...args })
     case Wallet.Cosmostation:
       return new Cosmostation({ ...args })
-    case Wallet.CosmostationEth:
-      return new CosmostationEth({ ...args })
-    case Wallet.WalletConnect:
-      return new WalletConnect({ ...args, walletOptions: args.options })
     default:
       throw new GeneralException(
         new Error(`The ${wallet} concrete wallet strategy is not supported`),
@@ -70,24 +107,44 @@ const createWallet = ({
   }
 }
 
-const createWallets = (
+const createWeb3 = (args: WalletStrategyArguments): Web3 => {
+  const { ethereumOptions } = args
+
+  if (!ethereumOptions) {
+    throw new WalletException(new Error('Please provide Ethereum chainId'))
+  }
+
+  const { wsRpcUrls, rpcUrls, ethereumChainId } = ethereumOptions
+
+  if (!ethereumChainId) {
+    throw new WalletException(new Error('Please provide Ethereum chainId'))
+  }
+
+  if (!wsRpcUrls && !rpcUrls) {
+    throw new WalletException(
+      new Error('Please provide Ethereum RPC endpoints'),
+    )
+  }
+
+  const alchemyUrl =
+    (wsRpcUrls as Record<EthereumChainId, string>)[ethereumChainId] ||
+    (rpcUrls as Record<EthereumChainId, string>)[ethereumChainId]
+
+  return createAlchemyWeb3(alchemyUrl) as unknown as Web3
+}
+
+const createStrategies = (
   args: WalletStrategyArguments,
-  web3: Web3,
-): Record<Wallet, ConcreteWalletStrategy | undefined> =>
-  Object.values(Wallet).reduce(
+): Record<Wallet, ConcreteWalletStrategy | undefined> => {
+  const web3 = ethereumWalletsDisabled(args) ? createWeb3(args) : undefined
+
+  return Object.values(Wallet).reduce(
     (strategies, wallet) => ({
       ...strategies,
-      [wallet]: createWallet({ wallet, args, web3 }),
+      [wallet]: createStrategy({ wallet, args, web3 }),
     }),
     {} as Record<Wallet, ConcreteWalletStrategy | undefined>,
   )
-
-const createWeb3 = (args: WalletStrategyArguments): Web3 => {
-  const alchemyUrl =
-    args.options.wsRpcUrls[args.ethereumChainId] ||
-    args.options.rpcUrls[args.ethereumChainId]
-
-  return createAlchemyWeb3(alchemyUrl) as unknown as Web3
 }
 
 export default class WalletStrategy {
@@ -96,9 +153,9 @@ export default class WalletStrategy {
   public wallet: Wallet
 
   constructor(args: WalletStrategyArguments) {
-    const web3 = createWeb3(args)
-    this.strategies = createWallets(args, web3)
-    this.wallet = args.wallet || Wallet.Metamask
+    this.strategies = createStrategies(args)
+    this.wallet =
+      args.wallet || args.ethereumOptions ? Wallet.Metamask : Wallet.Keplr
   }
 
   public getWallet(): Wallet {

@@ -34,7 +34,7 @@ export default class Cosmostation
 {
   private provider?: Cosmos
 
-  constructor(args: { ethereumChainId: EthereumChainId; chainId: ChainId }) {
+  constructor(args: { chainId: ChainId }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
   }

@@ -13,7 +13,7 @@ import {
 import { sleep } from '@injectivelabs/utils'
 import { ethereum, InstallError } from '@cosmostation/extension-client'
 import Web3 from 'web3'
-import { ConcreteWalletStrategy } from '../types'
+import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction } from '../../types/enums'
 import { UnwrappedPromise } from '../../types'
@@ -24,7 +24,7 @@ export default class CosmostationEth
 {
   private ethereum?: UnwrappedPromise<ReturnType<typeof ethereum>>
 
-  constructor(args: { ethereumChainId: EthereumChainId; chainId: ChainId }) {
+  constructor(args: EthereumWalletStrategyArgs) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
   }

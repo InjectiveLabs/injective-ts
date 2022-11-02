@@ -9,10 +9,10 @@ import {
   ErrorType,
   MetamaskException,
   UnspecifiedErrorCode,
+  WalletException,
 } from '@injectivelabs/exceptions'
-import Web3 from 'web3'
 import TorusWallet from '@toruslabs/torus-embed'
-import { ConcreteWalletStrategy } from '../types'
+import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction } from '../../types/enums'
 
@@ -47,11 +47,7 @@ export default class Torus
 
   private connected = false
 
-  constructor(args: {
-    chainId: ChainId
-    ethereumChainId: EthereumChainId
-    web3: Web3
-  }) {
+  constructor(args: EthereumWalletStrategyArgs) {
     super(args)
     this.torus = new TorusWallet()
   }
@@ -61,6 +57,10 @@ export default class Torus
 
     if (connected) {
       return
+    }
+
+    if (!ethereumChainId) {
+      throw new WalletException(new Error('Please provide Ethereum chainId'))
     }
 
     await torus.init({
