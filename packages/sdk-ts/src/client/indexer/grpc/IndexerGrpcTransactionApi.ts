@@ -1,10 +1,10 @@
 import {
   PrepareTxRequest,
   PrepareTxResponse,
-  PrepareCosmoTxRequest,
-  PrepareCosmoTxResponse,
-  BroadcastCosmoTxRequest,
-  BroadcastCosmoTxResponse,
+  PrepareCosmosTxRequest,
+  PrepareCosmosTxResponse,
+  BroadcastCosmosTxRequest,
+  BroadcastCosmosTxResponse,
   BroadcastTxRequest,
   BroadcastTxResponse,
   CosmosTxFee,
@@ -141,7 +141,7 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       cosmosTxFee.setGas(gasLimit)
     }
 
-    const prepareTxRequest = new PrepareCosmoTxRequest()
+    const prepareTxRequest = new PrepareCosmosTxRequest()
     prepareTxRequest.setFee(cosmosTxFee)
     prepareTxRequest.setSenderAddress(address)
 
@@ -162,10 +162,10 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
 
     try {
       const response = await this.request<
-        PrepareCosmoTxRequest,
-        PrepareCosmoTxResponse,
-        typeof InjectiveExchangeRPC.PrepareCosmoTx
-      >(prepareTxRequest, InjectiveExchangeRPC.PrepareCosmoTx)
+        PrepareCosmosTxRequest,
+        PrepareCosmosTxResponse,
+        typeof InjectiveExchangeRPC.PrepareCosmosTx
+      >(prepareTxRequest, InjectiveExchangeRPC.PrepareCosmosTx)
 
       return response
     } catch (e: unknown) {
@@ -348,7 +348,7 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     cosmosPubKey.setType(pubKey.type)
     cosmosPubKey.setKey(`0x${pubKeyInHex}`)
 
-    const broadcastTxRequest = new BroadcastCosmoTxRequest()
+    const broadcastTxRequest = new BroadcastCosmosTxRequest()
     broadcastTxRequest.setSenderAddress(address)
     broadcastTxRequest.setPubKey(cosmosPubKey)
     broadcastTxRequest.setSignature(`0x${signatureInHex}`)
@@ -363,10 +363,10 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
 
     try {
       const response = await this.request<
-        BroadcastCosmoTxRequest,
-        BroadcastCosmoTxResponse,
-        typeof InjectiveExchangeRPC.BroadcastCosmoTx
-      >(broadcastTxRequest, InjectiveExchangeRPC.BroadcastCosmoTx)
+        BroadcastCosmosTxRequest,
+        BroadcastCosmosTxResponse,
+        typeof InjectiveExchangeRPC.BroadcastCosmosTx
+      >(broadcastTxRequest, InjectiveExchangeRPC.BroadcastCosmosTx)
 
       return response.toObject()
     } catch (e: unknown) {
