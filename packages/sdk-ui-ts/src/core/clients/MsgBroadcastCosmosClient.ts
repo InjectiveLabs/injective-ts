@@ -149,6 +149,8 @@ export class MsgBroadcastCosmosClient {
       tx.injectiveAddress,
     )) as DirectSignResponse
 
+    console.log(directSignResponse.signed)
+
     const promise = transactionApi.broadcastCosmosTxRequest({
       address: tx.injectiveAddress,
       txRaw: createTxRawFromSigResponse(directSignResponse),

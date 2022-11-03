@@ -20,7 +20,11 @@ export interface CreateTransactionArgs {
 export interface CreateTransactionResult {
   txRaw: TxRaw // the Tx raw that was created
   signDoc: SignDoc // the SignDoc that was created - used for signing of the transaction
-  accountNumber: number // the account number of the signer of the transaction
+  signers: {
+    pubKey: string // the pubKey of the signer of the transaction in base64
+    sequence: number // the sequence (nonce) of the signer of the transaction
+    accountNumber: number // the account number of the signer of the transaction
+  }
   bodyBytes: Uint8Array // the body bytes of the transaction
   authInfoBytes: Uint8Array // the auth info bytes of the transaction
   signBytes: Uint8Array // the sign bytes of the transaction (SignDoc serialized to binary)

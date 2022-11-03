@@ -120,8 +120,8 @@ export const createTransactionForAddressAndMsg = async (
     pubKey:
       params.pubKey || Buffer.from(baseAccount.pubKey.key).toString('base64'),
     sequence: Number(baseAccount.sequence),
-    timeoutHeight: timeoutHeight.toNumber(),
     accountNumber: Number(baseAccount.accountNumber),
+    timeoutHeight: timeoutHeight.toNumber(),
     message: messages.map((m) => m.toDirectSign()),
   })
 }
@@ -130,13 +130,16 @@ export const createTransactionAndCosmosSignDoc = (
   args: CreateTransactionArgs,
 ) => {
   const result = createTransaction(args)
+  const [signer] = Array.isArray(result.signers)
+    ? result.signers
+    : [result.signers]
 
   return {
     ...result,
     cosmosSignDoc: CosmosSignDoc.fromPartial({
       bodyBytes: result.bodyBytes,
       authInfoBytes: result.authInfoBytes,
-      accountNumber: result.accountNumber,
+      accountNumber: signer.accountNumber,
       chainId: args.chainId,
     }),
   }
@@ -154,13 +157,16 @@ export const createTransactionAndCosmosSignDocForAddressAndMsg = async (
   },
 ) => {
   const result = await createTransactionForAddressAndMsg(params)
+  const [signer] = Array.isArray(result.signers)
+    ? result.signers
+    : [result.signers]
 
   return {
     ...result,
     cosmosSignDoc: CosmosSignDoc.fromPartial({
       bodyBytes: result.bodyBytes,
       authInfoBytes: result.authInfoBytes,
-      accountNumber: result.accountNumber,
+      accountNumber: signer.accountNumber,
       chainId: params.chainId,
     }),
   }

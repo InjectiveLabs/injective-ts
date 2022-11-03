@@ -124,20 +124,23 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
 
     try {
       /** Prepare the Transaction * */
-      const { bodyBytes, authInfoBytes, accountNumber } =
-        await createTransactionAndCosmosSignDocForAddressAndMsg({
-          chainId,
-          address: transaction.address,
-          memo: transaction.memo || '',
-          message: transaction.message,
-          pubKey: Buffer.from(signer.publicKey).toString('base64'),
-          endpoint: endpoints.rest,
-          fee: {
-            ...DEFAULT_STD_FEE,
-            gas: transaction.gas || DEFAULT_STD_FEE.gas,
-            payer: transaction.feePayer || '',
-          },
-        })
+      const {
+        bodyBytes,
+        authInfoBytes,
+        signer: txSigner,
+      } = await createTransactionAndCosmosSignDocForAddressAndMsg({
+        chainId,
+        address: transaction.address,
+        memo: transaction.memo || '',
+        message: transaction.message,
+        pubKey: Buffer.from(signer.publicKey).toString('base64'),
+        endpoint: endpoints.rest,
+        fee: {
+          ...DEFAULT_STD_FEE,
+          gas: transaction.gas || DEFAULT_STD_FEE.gas,
+          payer: transaction.feePayer || '',
+        },
+      })
 
       /* Sign the transaction */
       const signDirectResponse = await provider.signDirect(
@@ -146,7 +149,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
           chain_id: chainId,
           body_bytes: bodyBytes,
           auth_info_bytes: authInfoBytes,
-          account_number: accountNumber.toString(),
+          account_number: txSigner.accountNumber.toString(),
         },
         { fee: false, memo: true },
       )

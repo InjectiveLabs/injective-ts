@@ -356,6 +356,8 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     broadcastTxRequest.setSignature(`0x${signatureInHex}`)
     broadcastTxRequest.setTx(txRaw.serializeBinary())
 
+    console.log(Buffer.from(txRaw.serializeBinary()).toString('hex'))
+
     try {
       const response = await this.request<
         BroadcastCosmosTxRequest,
