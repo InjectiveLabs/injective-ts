@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.279](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.278...@injectivelabs/sdk-ui-ts@1.0.279) (2022-11-03)
+
+
+### Bug Fixes
+
+* pubKey in base64 ([7181b4a](https://github.com/InjectiveLabs/injective-ts/commit/7181b4acff8bfe2c9fdbf4a05bfcfaf441fd1dcb))
+
+
+
+
+
 ## [1.0.278](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.277...@injectivelabs/sdk-ui-ts@1.0.278) (2022-11-03)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
