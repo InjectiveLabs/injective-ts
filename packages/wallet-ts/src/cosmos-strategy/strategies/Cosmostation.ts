@@ -155,6 +155,34 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     }
   }
 
+  async getPubKey(): Promise<string> {
+    const { chainName } = this
+    const provider = await this.getProvider()
+
+    try {
+      const account = await provider.requestAccount(chainName)
+
+      return Buffer.from(account.publicKey).toString('base64')
+    } catch (e: unknown) {
+      if ((e as any).code === 4001) {
+        throw new CosmosWalletException(
+          new Error('The user rejected the request'),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletError,
+            contextModule: WalletAction.GetAccounts,
+          },
+        )
+      }
+
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
+  }
+
   private async getProvider(): Promise<Cosmos> {
     if (this.provider) {
       return this.provider

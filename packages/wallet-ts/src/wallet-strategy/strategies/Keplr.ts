@@ -102,7 +102,15 @@ export default class Keplr
     }
   }
 
+  /** @deprecated */
   async signTransaction(
+    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
+    injectiveAddress: AccountAddress,
+  ) {
+    return this.signCosmosTransaction(transaction, injectiveAddress)
+  }
+
+  async signCosmosTransaction(
     transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
     injectiveAddress: AccountAddress,
   ) {
@@ -119,6 +127,20 @@ export default class Keplr
         contextModule: WalletAction.SendTransaction,
       })
     }
+  }
+
+  async signEip712TypedData(
+    _eip712TypedData: string,
+    _address: AccountAddress,
+  ): Promise<string> {
+    throw new CosmosWalletException(
+      new Error('This wallet does not support signing Ethereum transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   async getNetworkId(): Promise<string> {
@@ -152,6 +174,13 @@ export default class Keplr
         contextModule: WalletAction.GetEthereumTransactionReceipt,
       },
     )
+  }
+
+  async getPubKey(): Promise<string> {
+    const keplrWallet = this.getKeplrWallet()
+    const key = await keplrWallet.getKey()
+
+    return Buffer.from(key.pubKey).toString('base64')
   }
 
   private getKeplrWallet(): KeplrWallet {

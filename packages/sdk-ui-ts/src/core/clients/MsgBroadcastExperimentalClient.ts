@@ -107,7 +107,7 @@ export class MsgBroadcastExperimentalClient {
     })
 
     /** Signing on Ethereum */
-    const signature = (await walletStrategy.signTransaction(
+    const signature = (await walletStrategy.signEip712TypedData(
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
     )) as string
@@ -196,7 +196,7 @@ export class MsgBroadcastExperimentalClient {
       },
     })
 
-    const directSignResponse = (await walletStrategy.signTransaction(
+    const directSignResponse = (await walletStrategy.signCosmosTransaction(
       { txRaw: txRaw, accountNumber: accountDetails.accountNumber, chainId },
       tx.injectiveAddress,
     )) as DirectSignResponse

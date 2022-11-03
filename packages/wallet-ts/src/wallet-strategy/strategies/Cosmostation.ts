@@ -115,7 +115,15 @@ export default class Cosmostation
     }
   }
 
+  /** @deprecated * */
   async signTransaction(
+    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
+    address: AccountAddress,
+  ) {
+    return this.signCosmosTransaction(transaction, address)
+  }
+
+  async signCosmosTransaction(
     transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
     _address: AccountAddress,
   ) {
@@ -154,6 +162,47 @@ export default class Cosmostation
         contextModule: WalletAction.SendTransaction,
       })
     }
+  }
+
+  async getPubKey(): Promise<string> {
+    const provider = await this.getProvider()
+
+    try {
+      const account = await provider.requestAccount(INJECTIVE_CHAIN_NAME)
+
+      return Buffer.from(account.publicKey).toString('base64')
+    } catch (e: unknown) {
+      if ((e as any).code === 4001) {
+        throw new CosmosWalletException(
+          new Error('The user rejected the request'),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletError,
+            contextModule: WalletAction.GetAccounts,
+          },
+        )
+      }
+
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
+  }
+
+  async signEip712TypedData(
+    _eip712TypedData: string,
+    _address: AccountAddress,
+  ): Promise<string> {
+    throw new CosmosWalletException(
+      new Error('This wallet does not support signing Ethereum transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   async getNetworkId(): Promise<string> {

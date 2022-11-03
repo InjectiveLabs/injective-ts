@@ -95,6 +95,13 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
     }
   }
 
+  async getPubKey(): Promise<string> {
+    const keplrWallet = this.getKeplrWallet()
+    const key = await keplrWallet.getKey()
+
+    return Buffer.from(key.pubKey).toString('base64')
+  }
+
   private getKeplrWallet(): KeplrWallet {
     const { keplrWallet } = this
 

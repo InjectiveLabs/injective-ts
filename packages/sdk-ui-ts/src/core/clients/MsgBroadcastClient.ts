@@ -77,7 +77,10 @@ export class MsgBroadcastClient {
     }
 
     const signTx = async (txData: any) => {
-      const promise = walletStrategy.signTransaction(txData, tx.ethereumAddress)
+      const promise = walletStrategy.signEip712TypedData(
+        txData,
+        tx.ethereumAddress,
+      )
 
       if (!metricsProvider) {
         return await promise

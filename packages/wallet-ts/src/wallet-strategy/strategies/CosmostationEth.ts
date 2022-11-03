@@ -7,12 +7,14 @@ import {
 } from '@injectivelabs/ts-types'
 import {
   UnspecifiedErrorCode,
-  CosmosWalletException,
+  WalletException,
   ErrorType,
 } from '@injectivelabs/exceptions'
 import { sleep } from '@injectivelabs/utils'
 import { ethereum, InstallError } from '@cosmostation/extension-client'
 import Web3 from 'web3'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction } from '../../types/enums'
@@ -38,17 +40,14 @@ export default class CosmostationEth
       })) as string[]
     } catch (e: unknown) {
       if ((e as any).code === 4001) {
-        throw new CosmosWalletException(
-          new Error('The user rejected the request'),
-          {
-            code: UnspecifiedErrorCode,
-            type: ErrorType.WalletError,
-            contextModule: WalletAction.GetAccounts,
-          },
-        )
+        throw new WalletException(new Error('The user rejected the request'), {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetAccounts,
+        })
       }
 
-      throw new CosmosWalletException(new Error((e as any).message), {
+      throw new WalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,
@@ -76,7 +75,7 @@ export default class CosmostationEth
         params: [transaction],
       })) as string
     } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
+      throw new WalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SendEthereumTransaction,
@@ -89,7 +88,7 @@ export default class CosmostationEth
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<string> {
-    throw new CosmosWalletException(
+    throw new WalletException(
       new Error(
         'sendTransaction is not supported. Metamask only supports sending transaction to Ethereum',
       ),
@@ -101,11 +100,15 @@ export default class CosmostationEth
     )
   }
 
-  /**
-   * When using Ethereum based wallets, the cosmos transaction
-   * is being converted to EIP712 and then sent for signing
-   */
+  /** @deprecated */
   async signTransaction(
+    eip712json: string,
+    address: AccountAddress,
+  ): Promise<string> {
+    return this.signEip712TypedData(eip712json, address)
+  }
+
+  async signEip712TypedData(
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
@@ -117,12 +120,27 @@ export default class CosmostationEth
         params: [address, eip712json],
       })) as string
     } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
+      throw new WalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignTransaction,
       })
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async signCosmosTransaction(
+    _transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
+    _address: AccountAddress,
+  ): Promise<DirectSignResponse> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   async getNetworkId(): Promise<string> {
@@ -131,7 +149,7 @@ export default class CosmostationEth
     try {
       return (await ethereum.request({ method: 'net_version' })) as string
     } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
+      throw new WalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetNetworkId,
@@ -145,7 +163,7 @@ export default class CosmostationEth
     try {
       return (await ethereum.request({ method: 'eth_chainId' })) as string
     } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
+      throw new WalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetChainId,
@@ -174,12 +192,19 @@ export default class CosmostationEth
     try {
       return await transactionReceiptRetry()
     } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
+      throw new WalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetEthereumTransactionReceipt,
       })
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getPubKey(): Promise<string> {
+    throw new WalletException(
+      new Error('You can only fetch PubKey from Cosmos native wallets'),
+    )
   }
 
   private async getEthereum(): Promise<ReturnType<typeof ethereum>> {
@@ -196,7 +221,7 @@ export default class CosmostationEth
       return provider
     } catch (e) {
       if (e instanceof InstallError) {
-        throw new CosmosWalletException(
+        throw new WalletException(
           new Error('Please install the Cosmostation extension'),
           {
             code: UnspecifiedErrorCode,
@@ -205,7 +230,7 @@ export default class CosmostationEth
         )
       }
 
-      throw new CosmosWalletException(new Error((e as any).message), {
+      throw new WalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
       })

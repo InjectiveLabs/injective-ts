@@ -5,10 +5,13 @@ import {
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
+  WalletException,
   ErrorType,
   MetamaskException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   ConcreteWalletStrategy,
   Eip1993ProviderWithMetamask,
@@ -95,11 +98,15 @@ export default class Metamask
     )
   }
 
-  /**
-   * When using Ethereum based wallets, the cosmos transaction
-   * is being converted to EIP712 and then sent for signing
-   */
+  /** @deprecated */
   async signTransaction(
+    eip712json: string,
+    address: AccountAddress,
+  ): Promise<string> {
+    return this.signEip712TypedData(eip712json, address)
+  }
+
+  async signEip712TypedData(
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
@@ -117,6 +124,21 @@ export default class Metamask
         contextModule: WalletAction.SignTransaction,
       })
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async signCosmosTransaction(
+    _transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
+    _address: AccountAddress,
+  ): Promise<DirectSignResponse> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   async getNetworkId(): Promise<string> {
@@ -174,6 +196,13 @@ export default class Metamask
         contextModule: WalletAction.GetEthereumTransactionReceipt,
       })
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getPubKey(): Promise<string> {
+    throw new WalletException(
+      new Error('You can only fetch PubKey from Cosmos native wallets'),
+    )
   }
 
   onChainIdChanged(callback: () => void): void {

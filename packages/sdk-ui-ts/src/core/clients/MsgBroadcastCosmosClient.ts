@@ -78,7 +78,10 @@ export class MsgBroadcastCosmosClient {
     }
 
     const signTx = async (txData: any) => {
-      const promise = walletStrategy.signTransaction(txData, tx.ethereumAddress)
+      const promise = walletStrategy.signEip712TypedData(
+        txData,
+        tx.ethereumAddress,
+      )
 
       if (!metricsProvider) {
         return await promise
@@ -159,7 +162,7 @@ export class MsgBroadcastCosmosClient {
     const feePayerBaseAccount = BaseAccount.fromRestApi(
       feePayerAccountDetailsResponse,
     )
-    const feePayerAccountDetails = baseAccount.toAccountDetails()
+    const feePayerAccountDetails = feePayerBaseAccount.toAccountDetails()
 
     /** Block Details */
     const chainRestTendermintApi = new ChainRestTendermintApi(
@@ -198,7 +201,7 @@ export class MsgBroadcastCosmosClient {
       },
     })
 
-    const directSignResponse = (await walletStrategy.signTransaction(
+    const directSignResponse = (await walletStrategy.signCosmosTransaction(
       { txRaw, accountNumber: accountDetails.accountNumber, chainId },
       tx.injectiveAddress,
     )) as DirectSignResponse

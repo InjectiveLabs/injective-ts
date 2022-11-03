@@ -18,6 +18,9 @@ export enum LedgerDerivationPathType {
 export interface ConcreteWalletStrategy {
   getAddresses(): Promise<string[]>
 
+  /* in base64 */
+  getPubKey(): Promise<string>
+
   confirm(address: AccountAddress): Promise<string>
 
   /**
@@ -40,12 +43,23 @@ export interface ConcreteWalletStrategy {
     options: { address: string; ethereumChainId: EthereumChainId },
   ): Promise<string>
 
+  /** @deprecated * */
   signTransaction(
     data:
       | string /* EIP712 Typed Data in JSON */
       | { txRaw: TxRaw; accountNumber: number; chainId: string },
     address: AccountAddress,
   ): Promise<string | DirectSignResponse>
+
+  signCosmosTransaction(
+    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
+    address: AccountAddress,
+  ): Promise<DirectSignResponse>
+
+  signEip712TypedData(
+    eip712TypedData: string,
+    address: AccountAddress,
+  ): Promise<string>
 
   getNetworkId(): Promise<string>
 

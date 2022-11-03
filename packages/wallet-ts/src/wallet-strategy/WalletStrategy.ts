@@ -28,6 +28,7 @@ import WalletConnect from './strategies/WalletConnect'
 import CosmostationEth from './strategies/CosmostationEth'
 import { Wallet } from '../types/enums'
 import { isEthWallet } from './utils'
+import { isCosmosWallet } from '../cosmos'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { ethereumOptions } = args
@@ -179,6 +180,10 @@ export default class WalletStrategy {
     return this.getStrategy().getAddresses()
   }
 
+  public getPubKey(): Promise<string> {
+    return this.getStrategy().getPubKey()
+  }
+
   public getChainId(): Promise<string> {
     return this.getStrategy().getChainId()
   }
@@ -222,6 +227,7 @@ export default class WalletStrategy {
     return this.getStrategy().sendEthereumTransaction(tx, options)
   }
 
+  /** @deprecated * */
   public async signTransaction(
     data:
       | string /* When using EIP712 typed data */
@@ -229,6 +235,32 @@ export default class WalletStrategy {
     address: AccountAddress,
   ): Promise<string | DirectSignResponse> {
     return this.getStrategy().signTransaction(data, address)
+  }
+
+  public async signEip712TypedData(
+    eip712TypedData: string,
+    address: AccountAddress,
+  ): Promise<string> {
+    if (isCosmosWallet(this.wallet)) {
+      throw new WalletException(
+        new Error(`You can't sign Ethereum Transaction using ${this.wallet}`),
+      )
+    }
+
+    return this.getStrategy().signEip712TypedData(eip712TypedData, address)
+  }
+
+  public async signCosmosTransaction(
+    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
+    address: AccountAddress,
+  ): Promise<DirectSignResponse> {
+    if (isEthWallet(this.wallet)) {
+      throw new WalletException(
+        new Error(`You can't sign Cosmos Transaction using ${this.wallet}`),
+      )
+    }
+
+    return this.getStrategy().signCosmosTransaction(transaction, address)
   }
 
   public getWeb3(): Web3 {

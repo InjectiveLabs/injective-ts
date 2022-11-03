@@ -97,6 +97,13 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     }
   }
 
+  async getPubKey(): Promise<string> {
+    const keplrWallet = this.getLeapWallet()
+    const key = await keplrWallet.getKey()
+
+    return Buffer.from(key.pubKey).toString('base64')
+  }
+
   private getLeapWallet(): LeapWallet {
     const { leapWallet } = this
 

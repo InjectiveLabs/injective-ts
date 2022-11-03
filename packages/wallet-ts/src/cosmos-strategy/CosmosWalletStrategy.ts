@@ -74,6 +74,10 @@ export default class CosmosWalletStrategy {
     return this.strategies[this.wallet] as ConcreteCosmosWalletStrategy
   }
 
+  public getPubKey(): Promise<string> {
+    return this.getStrategy().getPubKey()
+  }
+
   public getAddresses(): Promise<AccountAddress[]> {
     return this.getStrategy().getAddresses()
   }

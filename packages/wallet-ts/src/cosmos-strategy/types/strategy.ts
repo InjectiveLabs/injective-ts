@@ -6,6 +6,9 @@ import { Wallet } from '../../types/enums'
 export interface ConcreteCosmosWalletStrategy {
   getAddresses(): Promise<string[]>
 
+  /* in base64 */
+  getPubKey(): Promise<string>
+
   /**
    * Sends Cosmos transaction. Returns a transaction hash
    * @param transaction should implement TransactionConfig

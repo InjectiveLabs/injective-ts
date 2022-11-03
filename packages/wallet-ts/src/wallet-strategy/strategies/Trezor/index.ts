@@ -13,7 +13,10 @@ import {
   ErrorType,
   TrezorException,
   UnspecifiedErrorCode,
+  WalletException,
 } from '@injectivelabs/exceptions'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
@@ -128,11 +131,15 @@ export default class Trezor
     )
   }
 
-  /**
-   * When using Ethereum based wallets, the cosmos transaction
-   * is being converted to EIP712 and then sent for signing
-   */
+  /** @deprecated */
   async signTransaction(
+    eip712json: string,
+    address: AccountAddress,
+  ): Promise<string> {
+    return this.signEip712TypedData(eip712json, address)
+  }
+
+  async signEip712TypedData(
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
@@ -186,6 +193,40 @@ export default class Trezor
         contextModule: WalletAction.SignTransaction,
       })
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async signCosmosTransaction(
+    _transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
+    _address: AccountAddress,
+  ): Promise<DirectSignResponse> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
+  }
+
+  async getNetworkId(): Promise<string> {
+    return (await this.getWeb3().eth.net.getId()).toString()
+  }
+
+  async getChainId(): Promise<string> {
+    return (await this.getWeb3().eth.getChainId()).toString()
+  }
+
+  async getEthereumTransactionReceipt(txHash: string): Promise<string> {
+    return Promise.resolve(txHash)
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getPubKey(): Promise<string> {
+    throw new WalletException(
+      new Error('You can only fetch PubKey from Cosmos native wallets'),
+    )
   }
 
   private async signEthereumTransaction(
@@ -264,18 +305,6 @@ export default class Trezor
         contextModule: WalletAction.SignEthereumTransaction,
       })
     }
-  }
-
-  async getNetworkId(): Promise<string> {
-    return (await this.getWeb3().eth.net.getId()).toString()
-  }
-
-  async getChainId(): Promise<string> {
-    return (await this.getWeb3().eth.getChainId()).toString()
-  }
-
-  async getEthereumTransactionReceipt(txHash: string): Promise<string> {
-    return Promise.resolve(txHash)
   }
 
   private async getWalletForAddress(
