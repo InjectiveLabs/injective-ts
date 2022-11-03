@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.171](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.170...@injectivelabs/wallet-ts@1.0.171) (2022-11-03)
+
+
+### Bug Fixes
+
+* web3 strategy for ethereum native wallets condition ([3c5ab07](https://github.com/InjectiveLabs/injective-ts/commit/3c5ab07a39a60cedbd2e4ffb29a73709c4eef88f))
+
+
+### Features
+
+* added multiple signers while creating a transaction ([c10442d](https://github.com/InjectiveLabs/injective-ts/commit/c10442d172fa49a479f2e4708c3c8a5ed7ef6e77))
+
+
+
+
+
 ## [1.0.170](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.169...@injectivelabs/wallet-ts@1.0.170) (2022-11-02)
 
 

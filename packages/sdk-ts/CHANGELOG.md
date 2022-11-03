@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.203](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.202...@injectivelabs/sdk-ts@1.0.203) (2022-11-03)
+
+
+### Features
+
+* added multiple signers while creating a transaction ([c10442d](https://github.com/InjectiveLabs/injective-ts/commit/c10442d172fa49a479f2e4708c3c8a5ed7ef6e77))
+
+
+
+
+
 ## [1.0.202](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.201...@injectivelabs/sdk-ts@1.0.202) (2022-11-02)
 
 
