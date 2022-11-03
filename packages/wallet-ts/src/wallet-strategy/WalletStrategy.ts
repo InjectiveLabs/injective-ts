@@ -136,7 +136,7 @@ const createWeb3 = (args: WalletStrategyArguments): Web3 => {
 const createStrategies = (
   args: WalletStrategyArguments,
 ): Record<Wallet, ConcreteWalletStrategy | undefined> => {
-  const web3 = ethereumWalletsDisabled(args) ? createWeb3(args) : undefined
+  const web3 = ethereumWalletsDisabled(args) ? undefined : createWeb3(args)
 
   return Object.values(Wallet).reduce(
     (strategies, wallet) => ({
