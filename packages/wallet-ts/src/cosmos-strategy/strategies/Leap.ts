@@ -6,17 +6,15 @@ import {
   TransactionException,
   ErrorType,
 } from '@injectivelabs/exceptions'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import {
+  createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
-  createTransactionAndCosmosSignDocForAddressAndMsg,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { LeapWallet } from '../../leap'
 import { WalletAction } from '../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../types/strategy'
-import { CosmosWalletSignTransactionArgs } from '../../types/strategy'
 
 export default class Leap implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -80,33 +78,16 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     }
   }
 
-  async signTransaction(transaction: CosmosWalletSignTransactionArgs) {
-    const { chainId } = this
+  async signTransaction(
+    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
+    address: string,
+  ) {
     const leapWallet = this.getLeapWallet()
-
-    const endpoints = await leapWallet.getChainEndpoints()
-    const key = await leapWallet.getKey()
     const signer = await leapWallet.getOfflineSigner()
+    const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      /** Prepare the Transaction * */
-      const { cosmosSignDoc } =
-        await createTransactionAndCosmosSignDocForAddressAndMsg({
-          chainId,
-          address: transaction.address,
-          memo: transaction.memo || '',
-          message: transaction.message,
-          pubKey: Buffer.from(key.pubKey).toString('base64'),
-          endpoint: endpoints.rest,
-          fee: {
-            ...DEFAULT_STD_FEE,
-            gas: transaction.gas || DEFAULT_STD_FEE.gas,
-            payer: transaction.feePayer || '',
-          },
-        })
-
-      /* Sign the transaction */
-      return signer.signDirect(transaction.address, cosmosSignDoc)
+      return signer.signDirect(address, signDoc)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

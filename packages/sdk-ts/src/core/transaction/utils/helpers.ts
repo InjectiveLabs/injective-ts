@@ -145,6 +145,19 @@ export const createTransactionAndCosmosSignDoc = (
   }
 }
 
+export const createCosmosSignDocFromTransaction = (args: {
+  txRaw: TxRaw
+  chainId: string
+  accountNumber: number
+}) => {
+  return CosmosSignDoc.fromPartial({
+    bodyBytes: args.txRaw.getBodyBytes_asU8(),
+    authInfoBytes: args.txRaw.getAuthInfoBytes_asU8(),
+    accountNumber: args.accountNumber,
+    chainId: args.chainId,
+  })
+}
+
 export const createTransactionAndCosmosSignDocForAddressAndMsg = async (
   params: Omit<
     CreateTransactionArgs,

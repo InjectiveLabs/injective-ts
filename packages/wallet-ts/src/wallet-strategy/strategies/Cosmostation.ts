@@ -11,10 +11,9 @@ import {
   TransactionException,
   ErrorType,
 } from '@injectivelabs/exceptions'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import {
+  createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
-  createTransactionAndCosmosSignDocForAddressAndMsg,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
@@ -22,9 +21,7 @@ import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
-import { getEndpointsFromChainId } from '../../cosmos/endpoints'
 import { WalletAction } from '../../types/enums'
-import { CosmosWalletSignTransactionArgs } from '../../types/strategy'
 
 const INJECTIVE_CHAIN_NAME = 'injective'
 
@@ -119,42 +116,22 @@ export default class Cosmostation
   }
 
   async signTransaction(
-    transaction: CosmosWalletSignTransactionArgs,
-    address: AccountAddress,
+    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
+    _address: AccountAddress,
   ) {
     const { chainId } = this
     const provider = await this.getProvider()
-    const signer = await provider.getAccount(INJECTIVE_CHAIN_NAME)
-    const endpoints = getEndpointsFromChainId(chainId)
+    const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      /** Prepare the Transaction * */
-      const {
-        bodyBytes,
-        authInfoBytes,
-        signer: txSigner,
-      } = await createTransactionAndCosmosSignDocForAddressAndMsg({
-        address,
-        chainId,
-        memo: transaction.memo,
-        message: transaction.message,
-        pubKey: Buffer.from(signer.publicKey).toString('base64'),
-        endpoint: endpoints.rest,
-        fee: {
-          ...DEFAULT_STD_FEE,
-          gas: transaction.gas || DEFAULT_STD_FEE.gas,
-          payer: transaction.feePayer || '',
-        },
-      })
-
       /* Sign the transaction */
       const signDirectResponse = await provider.signDirect(
         INJECTIVE_CHAIN_NAME,
         {
           chain_id: chainId,
-          body_bytes: bodyBytes,
-          auth_info_bytes: authInfoBytes,
-          account_number: txSigner.accountNumber.toString(),
+          body_bytes: signDoc.bodyBytes,
+          auth_info_bytes: signDoc.authInfoBytes,
+          account_number: signDoc.accountNumber.toString(),
         },
         { fee: true, memo: true },
       )

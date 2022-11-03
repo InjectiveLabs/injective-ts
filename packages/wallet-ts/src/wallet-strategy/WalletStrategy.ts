@@ -27,7 +27,6 @@ import Torus from './strategies/Torus'
 import WalletConnect from './strategies/WalletConnect'
 import CosmostationEth from './strategies/CosmostationEth'
 import { Wallet } from '../types/enums'
-import { CosmosWalletSignTransactionArgs } from '../types/strategy'
 import { isEthWallet } from './utils'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
@@ -226,7 +225,7 @@ export default class WalletStrategy {
   public async signTransaction(
     data:
       | string /* When using EIP712 typed data */
-      | CosmosWalletSignTransactionArgs,
+      | { txRaw: TxRaw; accountNumber: number; chainId: string },
     address: AccountAddress,
   ): Promise<string | DirectSignResponse> {
     return this.getStrategy().signTransaction(data, address)

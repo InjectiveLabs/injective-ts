@@ -6,10 +6,9 @@ import {
   TransactionException,
   ErrorType,
 } from '@injectivelabs/exceptions'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import {
+  createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
-  createTransactionAndCosmosSignDocForAddressAndMsg,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
@@ -17,8 +16,6 @@ import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { ConcreteCosmosWalletStrategy } from '../types/strategy'
 import { WalletAction } from '../../types/enums'
-import { getEndpointsFromChainId } from '../../cosmos/endpoints'
-import { CosmosWalletSignTransactionArgs } from '../../types/strategy'
 
 const getChainNameFromChainId = (chainId: CosmosChainId) => {
   const [chainName] = chainId.split('-')
@@ -116,40 +113,24 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     }
   }
 
-  async signTransaction(transaction: CosmosWalletSignTransactionArgs) {
+  async signTransaction(transaction: {
+    txRaw: TxRaw
+    accountNumber: number
+    chainId: string
+  }) {
     const { chainName, chainId } = this
     const provider = await this.getProvider()
-    const signer = await provider.getAccount(chainName)
-    const endpoints = getEndpointsFromChainId(chainId)
+    const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      /** Prepare the Transaction * */
-      const {
-        bodyBytes,
-        authInfoBytes,
-        signer: txSigner,
-      } = await createTransactionAndCosmosSignDocForAddressAndMsg({
-        chainId,
-        address: transaction.address,
-        memo: transaction.memo || '',
-        message: transaction.message,
-        pubKey: Buffer.from(signer.publicKey).toString('base64'),
-        endpoint: endpoints.rest,
-        fee: {
-          ...DEFAULT_STD_FEE,
-          gas: transaction.gas || DEFAULT_STD_FEE.gas,
-          payer: transaction.feePayer || '',
-        },
-      })
-
       /* Sign the transaction */
       const signDirectResponse = await provider.signDirect(
         chainName,
         {
           chain_id: chainId,
-          body_bytes: bodyBytes,
-          auth_info_bytes: authInfoBytes,
-          account_number: txSigner.accountNumber.toString(),
+          body_bytes: signDoc.bodyBytes,
+          auth_info_bytes: signDoc.authInfoBytes,
+          account_number: transaction.accountNumber.toString(),
         },
         { fee: false, memo: true },
       )

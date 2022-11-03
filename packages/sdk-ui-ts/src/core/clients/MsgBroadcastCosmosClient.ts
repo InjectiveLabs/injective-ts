@@ -1,11 +1,13 @@
 import {
+  BaseAccount,
+  ChainRestAuthApi,
+  ChainRestTendermintApi,
+  createTransactionWithSigners,
   createTxRawFromSigResponse,
+  DEFAULT_TIMEOUT_HEIGHT,
   IndexerGrpcTransactionApi,
 } from '@injectivelabs/sdk-ts'
-import {
-  isCosmosWallet,
-  CosmosWalletSignTransactionArgs,
-} from '@injectivelabs/wallet-ts'
+import { isCosmosWallet } from '@injectivelabs/wallet-ts'
 import {
   MsgBroadcastOptions,
   MsgBroadcastTxOptions,
@@ -17,6 +19,7 @@ import {
   getInjectiveSignerAddress,
 } from './utils'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
+import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
 
 export class MsgBroadcastCosmosClient {
   public options: MsgBroadcastOptions
@@ -113,7 +116,7 @@ export class MsgBroadcastCosmosClient {
 
   private async broadcastCosmos(tx: MsgBroadcastTxOptionsWithAddresses) {
     const { options, transactionApi } = this
-    const { walletStrategy, metricsProvider } = options
+    const { walletStrategy, metricsProvider, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
@@ -137,19 +140,70 @@ export class MsgBroadcastCosmosClient {
     }
 
     const txResponse = await prepareTx()
-    const transaction = {
-      message: msgs,
+    const feePayer = txResponse.getFeePayer()
+
+    /** Account Details **/
+    const chainRestAuthApi = new ChainRestAuthApi(
+      options.endpoints.sentryHttpApi,
+    )
+    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
+      tx.injectiveAddress,
+    )
+    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
+    const accountDetails = baseAccount.toAccountDetails()
+
+    /** Fee Payer Account Details */
+    const feePayerAccountDetailsResponse = await chainRestAuthApi.fetchAccount(
+      feePayer,
+    )
+    const feePayerBaseAccount = BaseAccount.fromRestApi(
+      feePayerAccountDetailsResponse,
+    )
+    const feePayerAccountDetails = baseAccount.toAccountDetails()
+
+    /** Block Details */
+    const chainRestTendermintApi = new ChainRestTendermintApi(
+      options.endpoints.sentryHttpApi,
+    )
+    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
+    const latestHeight = latestBlock.header.height
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+      DEFAULT_TIMEOUT_HEIGHT,
+    )
+
+    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+
+    /** Prepare the Transaction **/
+    const { txRaw } = createTransactionWithSigners({
+      chainId,
       memo: tx.memo || '',
-      feePayer: txResponse.getFeePayer(),
-      gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
-    } as CosmosWalletSignTransactionArgs
+      message: msgs.map((m) => m.toDirectSign()),
+      timeoutHeight: timeoutHeight.toNumber(),
+      signers: [
+        {
+          pubKey: Buffer.from(feePayerBaseAccount.pubKey.key).toString(
+            'base64',
+          ),
+          accountNumber: feePayerAccountDetails.accountNumber,
+          sequence: feePayerAccountDetails.sequence,
+        },
+        {
+          pubKey: Buffer.from(baseAccount.pubKey.key).toString('base64'),
+          accountNumber: accountDetails.accountNumber,
+          sequence: accountDetails.sequence,
+        },
+      ],
+      fee: {
+        ...DEFAULT_STD_FEE,
+        gas: gas || DEFAULT_STD_FEE.gas,
+        payer: feePayer,
+      },
+    })
 
     const directSignResponse = (await walletStrategy.signTransaction(
-      transaction,
+      { txRaw, accountNumber: accountDetails.accountNumber, chainId },
       tx.injectiveAddress,
     )) as DirectSignResponse
-
-    console.log(directSignResponse.signed)
 
     const promise = transactionApi.broadcastCosmosTxRequest({
       address: tx.injectiveAddress,

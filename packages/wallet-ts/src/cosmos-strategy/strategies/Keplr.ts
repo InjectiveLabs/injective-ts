@@ -1,8 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { CosmosChainId } from '@injectivelabs/ts-types'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import {
-  createTransactionAndCosmosSignDocForAddressAndMsg,
+  createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
 } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -16,7 +15,6 @@ import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { KeplrWallet } from '../../keplr'
 import { ConcreteCosmosWalletStrategy } from '../types/strategy'
 import { WalletAction } from '../../types/enums'
-import { CosmosWalletSignTransactionArgs } from '../../types/strategy'
 
 export default class Keplr implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -78,33 +76,16 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
     }
   }
 
-  async signTransaction(transaction: CosmosWalletSignTransactionArgs) {
-    const { chainId } = this
+  async signTransaction(
+    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
+    address: string,
+  ) {
     const keplrWallet = this.getKeplrWallet()
-
-    const endpoints = await keplrWallet.getChainEndpoints()
-    const key = await keplrWallet.getKey()
     const signer = await keplrWallet.getOfflineSigner()
+    const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      /** Prepare the Transaction * */
-      const { cosmosSignDoc } =
-        await createTransactionAndCosmosSignDocForAddressAndMsg({
-          chainId,
-          memo: transaction.memo || '',
-          address: transaction.address,
-          message: transaction.message,
-          pubKey: Buffer.from(key.pubKey).toString('base64'),
-          endpoint: endpoints.rest,
-          fee: {
-            ...DEFAULT_STD_FEE,
-            gas: transaction.gas || DEFAULT_STD_FEE.gas,
-            payer: transaction.feePayer || '',
-          },
-        })
-
-      /* Sign the transaction */
-      return signer.signDirect(transaction.address, cosmosSignDoc)
+      return signer.signDirect(address, signDoc)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

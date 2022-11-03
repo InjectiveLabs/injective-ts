@@ -10,6 +10,7 @@ import {
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
 import {
   createTransaction,
+  createTransactionWithSigners,
   createTxRawEIP712,
   createWeb3Extension,
   SIGN_AMINO,
@@ -32,10 +33,7 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import {
-  isCosmosWallet,
-  CosmosWalletSignTransactionArgs,
-} from '@injectivelabs/wallet-ts'
+import { isCosmosWallet } from '@injectivelabs/wallet-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 
 export class MsgBroadcastExperimentalClient {
@@ -159,14 +157,47 @@ export class MsgBroadcastExperimentalClient {
     const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
-    const transaction = {
-      message: msgs,
+    /** Account Details **/
+    const chainRestAuthApi = new ChainRestAuthApi(
+      options.endpoints.sentryHttpApi,
+    )
+    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
+      tx.injectiveAddress,
+    )
+    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
+    const accountDetails = baseAccount.toAccountDetails()
+
+    /** Block Details */
+    const chainRestTendermintApi = new ChainRestTendermintApi(
+      options.endpoints.sentryHttpApi,
+    )
+    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
+    const latestHeight = latestBlock.header.height
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+      DEFAULT_TIMEOUT_HEIGHT,
+    )
+
+    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+
+    /** Prepare the Transaction * */
+    const { txRaw } = createTransactionWithSigners({
+      chainId,
       memo: tx.memo || '',
-      gas: (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString(),
-    } as CosmosWalletSignTransactionArgs
+      message: msgs.map((m) => m.toDirectSign()),
+      timeoutHeight: timeoutHeight.toNumber(),
+      signers: {
+        pubKey: Buffer.from(baseAccount.pubKey.key).toString('base64'),
+        accountNumber: accountDetails.accountNumber,
+        sequence: accountDetails.sequence,
+      },
+      fee: {
+        ...DEFAULT_STD_FEE,
+        gas: gas || DEFAULT_STD_FEE.gas,
+      },
+    })
 
     const directSignResponse = (await walletStrategy.signTransaction(
-      transaction,
+      { txRaw: txRaw, accountNumber: accountDetails.accountNumber, chainId },
       tx.injectiveAddress,
     )) as DirectSignResponse
 

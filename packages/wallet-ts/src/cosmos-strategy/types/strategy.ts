@@ -2,7 +2,6 @@ import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { CosmosChainId } from '@injectivelabs/ts-types'
 import { Wallet } from '../../types/enums'
-import { CosmosWalletSignTransactionArgs } from '../../types'
 
 export interface ConcreteCosmosWalletStrategy {
   getAddresses(): Promise<string[]>
@@ -17,7 +16,8 @@ export interface ConcreteCosmosWalletStrategy {
   isChainIdSupported(chainId?: CosmosChainId): Promise<boolean>
 
   signTransaction(
-    data: CosmosWalletSignTransactionArgs,
+    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
+    address: string,
   ): Promise<DirectSignResponse>
 }
 

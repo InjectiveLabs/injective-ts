@@ -5,9 +5,8 @@ import {
   EthereumChainId,
   CosmosChainId,
 } from '@injectivelabs/ts-types'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import {
-  createTransactionAndCosmosSignDocForAddressAndMsg,
+  createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
 } from '@injectivelabs/sdk-ts/dist/core/transaction'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -22,7 +21,6 @@ import { KeplrWallet } from '../../keplr'
 import { ConcreteWalletStrategy } from '../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction } from '../../types/enums'
-import { CosmosWalletSignTransactionArgs } from '../../types/strategy'
 
 export default class Keplr
   extends BaseConcreteStrategy
@@ -105,35 +103,15 @@ export default class Keplr
   }
 
   async signTransaction(
-    transaction: CosmosWalletSignTransactionArgs,
+    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
     injectiveAddress: AccountAddress,
   ) {
-    const { chainId } = this
     const keplrWallet = this.getKeplrWallet()
-
-    const endpoints = await keplrWallet.getChainEndpoints()
-    const key = await keplrWallet.getKey()
     const signer = await keplrWallet.getOfflineSigner()
+    const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      /** Prepare the Transaction * */
-      const { cosmosSignDoc } =
-        await createTransactionAndCosmosSignDocForAddressAndMsg({
-          chainId,
-          memo: transaction.memo,
-          address: injectiveAddress,
-          message: transaction.message,
-          pubKey: Buffer.from(key.pubKey).toString('base64'),
-          endpoint: endpoints.rest,
-          fee: {
-            ...DEFAULT_STD_FEE,
-            gas: transaction.gas || DEFAULT_STD_FEE.gas,
-            payer: transaction.feePayer || '',
-          },
-        })
-
-      /* Sign the transaction */
-      return signer.signDirect(injectiveAddress, cosmosSignDoc)
+      return signer.signDirect(injectiveAddress, signDoc)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

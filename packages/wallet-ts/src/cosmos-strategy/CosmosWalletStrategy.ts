@@ -1,7 +1,7 @@
 import { AccountAddress, CosmosChainId } from '@injectivelabs/ts-types'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { Msgs } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { Wallet } from '../types/enums'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
@@ -86,12 +86,10 @@ export default class CosmosWalletStrategy {
     return this.getStrategy().sendTransaction(tx)
   }
 
-  public async signTransaction(data: {
-    address: string
-    memo: string
-    gas: string
-    message: Msgs | Msgs[]
-  }): Promise<DirectSignResponse> {
-    return this.getStrategy().signTransaction(data)
+  public async signTransaction(
+    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
+    address: string,
+  ): Promise<DirectSignResponse> {
+    return this.getStrategy().signTransaction(transaction, address)
   }
 }
