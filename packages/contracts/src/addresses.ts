@@ -22,7 +22,7 @@ export const contractAddresses: ContractAddressesForChainId = {
     injective: ZERO_ADDRESS,
   },
   '5': {
-    peggy: '0x3C85870d673900ED820a466F9612D8FA7EEE33b4',
+    peggy: '0x430544ca09F7914077a0E8F405Da62292428F49D',
     injective: '0xBe8d71D26525440A03311cc7fa372262c5354A3c',
   },
   '42': {
@@ -69,7 +69,7 @@ export const contractAddressesByNetwork: ContractAddressesForNetwork = {
     injective: '0x85AbEac4F09762e28a49D7dA91260A46766F4F79',
   },
   [Network.Devnet]: {
-    peggy: '0x3C85870d673900ED820a466F9612D8FA7EEE33b4',
+    peggy: '0x430544ca09F7914077a0E8F405Da62292428F49D',
     injective: '0xBe8d71D26525440A03311cc7fa372262c5354A3c',
   },
   [Network.Devnet1]: {
