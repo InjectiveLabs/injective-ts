@@ -181,14 +181,12 @@ export class MsgBroadcastCosmosClient {
       timeoutHeight: timeoutHeight.toNumber(),
       signers: [
         {
-          pubKey: Buffer.from(feePayerBaseAccount.pubKey.key).toString(
-            'base64',
-          ),
+          pubKey: feePayerBaseAccount.pubKey.key,
           accountNumber: feePayerAccountDetails.accountNumber,
           sequence: feePayerAccountDetails.sequence,
         },
         {
-          pubKey: Buffer.from(baseAccount.pubKey.key).toString('base64'),
+          pubKey: baseAccount.pubKey.key,
           accountNumber: accountDetails.accountNumber,
           sequence: accountDetails.sequence,
         },
