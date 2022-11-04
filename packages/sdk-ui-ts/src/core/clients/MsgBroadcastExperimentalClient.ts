@@ -177,6 +177,9 @@ export class MsgBroadcastExperimentalClient {
       DEFAULT_TIMEOUT_HEIGHT,
     )
 
+    const pubKey = baseAccount.pubKey.key
+      ? Buffer.from(baseAccount.pubKey.key).toString('base64')
+      : await walletStrategy.getPubKey()
     const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
@@ -186,7 +189,7 @@ export class MsgBroadcastExperimentalClient {
       message: msgs.map((m) => m.toDirectSign()),
       timeoutHeight: timeoutHeight.toNumber(),
       signers: {
-        pubKey: Buffer.from(baseAccount.pubKey.key).toString('base64'),
+        pubKey: pubKey,
         accountNumber: accountDetails.accountNumber,
         sequence: accountDetails.sequence,
       },

@@ -174,6 +174,9 @@ export class MsgBroadcastCosmosClient {
       DEFAULT_TIMEOUT_HEIGHT,
     )
 
+    const pubKey = baseAccount.pubKey.key
+      ? Buffer.from(baseAccount.pubKey.key).toString('base64')
+      : await walletStrategy.getPubKey()
     const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction **/
@@ -189,7 +192,7 @@ export class MsgBroadcastCosmosClient {
           sequence: feePayerAccountDetails.sequence,
         },
         {
-          pubKey: baseAccount.pubKey.key,
+          pubKey: pubKey,
           accountNumber: accountDetails.accountNumber,
           sequence: accountDetails.sequence,
         },
