@@ -6,6 +6,7 @@ import {
   createTxRawFromSigResponse,
   DEFAULT_TIMEOUT_HEIGHT,
   IndexerGrpcTransactionApi,
+  PublicKey,
 } from '@injectivelabs/sdk-ts'
 import { isCosmosWallet } from '@injectivelabs/wallet-ts'
 import {
@@ -20,6 +21,7 @@ import {
 } from './utils'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export class MsgBroadcastCosmosClient {
   public options: MsgBroadcastOptions
@@ -121,29 +123,13 @@ export class MsgBroadcastCosmosClient {
     const { options, transactionApi } = this
     const { walletStrategy, metricsProvider, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
-    const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
-    const prepareTx = async () => {
-      const promise = transactionApi.prepareCosmosTxRequest({
-        memo: tx.memo,
-        message: web3Msgs,
-        address: tx.injectiveAddress,
-        gasLimit: getGasPriceBasedOnMessage(msgs),
-        estimateGas: false,
-      })
-
-      if (!metricsProvider) {
-        return await promise
-      }
-
-      return await metricsProvider.sendAndRecordWithoutProbability(
-        promise,
-        `${tx.bucket}PrepareCosmosTx`,
-      )
+    if (!options.feePayerPubKey) {
+      throw new GeneralException(new Error('Please provide a feePayerPubKey'))
     }
 
-    const txResponse = await prepareTx()
-    const feePayer = txResponse.getFeePayer()
+    const feePayerPubKey = PublicKey.fromBase64(options.feePayerPubKey)
+    const feePayer = feePayerPubKey.toAddress().address
 
     /** Account Details **/
     const chainRestAuthApi = new ChainRestAuthApi(
@@ -187,7 +173,7 @@ export class MsgBroadcastCosmosClient {
       timeoutHeight: timeoutHeight.toNumber(),
       signers: [
         {
-          pubKey: feePayerBaseAccount.pubKey.key,
+          pubKey: feePayerPubKey.toBase64(),
           accountNumber: feePayerAccountDetails.accountNumber,
           sequence: feePayerAccountDetails.sequence,
         },

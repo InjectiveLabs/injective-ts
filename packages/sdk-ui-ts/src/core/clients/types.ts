@@ -29,6 +29,7 @@ export interface MsgBroadcastOptions {
   }
   chainId: ChainId
   ethereumChainId: EthereumChainId
+  feePayerPubKey?: string
   walletStrategy: WalletStrategy
   metricsProvider?: MetricsProvider
 }
