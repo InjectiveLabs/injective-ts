@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.282](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.281...@injectivelabs/sdk-ui-ts@1.0.282) (2022-11-04)
+
+
+### Features
+
+* feePayerPubKey param for broadcasting ([cf36b26](https://github.com/InjectiveLabs/injective-ts/commit/cf36b268d8cc8312c404555ed2c1020aa7e6738d))
+
+
+
+
+
 ## [1.0.281](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.280...@injectivelabs/sdk-ui-ts@1.0.281) (2022-11-04)
 
 
