@@ -6,16 +6,14 @@ import {
   hexToBase64,
   hexToBuff,
   DEFAULT_TIMEOUT_HEIGHT,
-} from '@injectivelabs/sdk-ts'
-import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
-import {
   createTransaction,
   createTransactionWithSigners,
   createTxRawEIP712,
   createWeb3Extension,
   SIGN_AMINO,
   TxGrpcClient,
-} from '@injectivelabs/sdk-ts/dist/core/transaction'
+} from '@injectivelabs/sdk-ts'
+import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import {
   MsgBroadcastOptions,
@@ -177,9 +175,7 @@ export class MsgBroadcastExperimentalClient {
       DEFAULT_TIMEOUT_HEIGHT,
     )
 
-    const pubKey = baseAccount.pubKey.key
-      ? Buffer.from(baseAccount.pubKey.key).toString('base64')
-      : await walletStrategy.getPubKey()
+    const pubKey = await walletStrategy.getPubKey()
     const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
