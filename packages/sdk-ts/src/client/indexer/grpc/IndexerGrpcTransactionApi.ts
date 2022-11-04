@@ -3,6 +3,8 @@ import {
   PrepareTxResponse,
   PrepareCosmosTxRequest,
   PrepareCosmosTxResponse,
+  GetFeePayerRequest,
+  GetFeePayerResponse,
   BroadcastCosmosTxRequest,
   BroadcastCosmosTxResponse,
   BroadcastTxRequest,
@@ -364,6 +366,33 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
         BroadcastCosmosTxResponse,
         typeof InjectiveExchangeRPC.BroadcastCosmosTx
       >(broadcastTxRequest, InjectiveExchangeRPC.BroadcastCosmosTx)
+
+      return response.toObject()
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw new Web3GatewayTransactionException(e.toOriginalError(), {
+          code: e.code,
+          type: e.type,
+          contextModule: e.contextModule,
+        })
+      }
+
+      throw new Web3GatewayTransactionException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchFeePayer() {
+    const getFeePayer = new GetFeePayerRequest()
+
+    try {
+      const response = await this.request<
+        GetFeePayerRequest,
+        GetFeePayerResponse,
+        typeof InjectiveExchangeRPC.GetFeePayer
+      >(getFeePayer, InjectiveExchangeRPC.GetFeePayer)
 
       return response.toObject()
     } catch (e: unknown) {

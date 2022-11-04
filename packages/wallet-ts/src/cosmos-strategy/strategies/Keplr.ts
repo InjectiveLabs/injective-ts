@@ -3,7 +3,7 @@ import { CosmosChainId } from '@injectivelabs/ts-types'
 import {
   createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
-} from '@injectivelabs/sdk-ts/dist/core/transaction'
+} from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   UnspecifiedErrorCode,

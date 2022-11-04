@@ -1,10 +1,8 @@
 import { Msgs } from '@injectivelabs/sdk-ts'
-import { MetricsProvider } from '../../classes/MetricsProvider'
 import { WalletStrategy } from '@injectivelabs/wallet-ts'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 export interface MsgBroadcastTxOptions {
-  bucket?: string
   memo?: string
   address?: string /* Deprecated */
   ethereumAddress?: string
@@ -28,8 +26,7 @@ export interface MsgBroadcastOptions {
     sentryHttpApi: string
   }
   chainId: ChainId
-  ethereumChainId: EthereumChainId
+  ethereumChainId?: EthereumChainId
   feePayerPubKey?: string
   walletStrategy: WalletStrategy
-  metricsProvider?: MetricsProvider
 }
