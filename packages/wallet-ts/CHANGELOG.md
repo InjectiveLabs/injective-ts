@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.175](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.174...@injectivelabs/wallet-ts@1.0.175) (2022-11-04)
+
+
+### Features
+
+* fee payer fetching from indexer api ([439f245](https://github.com/InjectiveLabs/injective-ts/commit/439f245e52037d0f5d06a79402cad08918c25512))
+
+
+
+
+
 ## [1.0.174](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.173...@injectivelabs/wallet-ts@1.0.174) (2022-11-03)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
