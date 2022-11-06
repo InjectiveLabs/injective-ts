@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.208](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.207...@injectivelabs/sdk-ts@1.0.208) (2022-11-06)
+
+
+### Features
+
+* msgBroadcaster on wallet-ts ([d06a3db](https://github.com/InjectiveLabs/injective-ts/commit/d06a3db58400577a0c4cfdf6bc2b56659fac734a))
+
+
+
+
+
 ## [1.0.207](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.206...@injectivelabs/sdk-ts@1.0.207) (2022-11-06)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
