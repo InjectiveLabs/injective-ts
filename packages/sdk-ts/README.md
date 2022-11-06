@@ -46,11 +46,11 @@ There are two pieces of the `sdk-ts` - **querying a data source** and **making t
 
 ### Querying a data source
 
-Read more and find example usages on our [Querying Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/01Querying)
+Read more and find example usages on our [Querying Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/02Querying)
 
 ### Making Transactions
 
-Read more and find example usages on our [Transactions Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/02Transactions)
+Read more and find example usages on our [Transactions Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/03Transactions)
 
 ---
 

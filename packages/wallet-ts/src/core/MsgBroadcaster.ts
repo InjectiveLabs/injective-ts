@@ -17,17 +17,6 @@ import {
   TxGrpcClient,
 } from '@injectivelabs/sdk-ts'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
-import { isCosmosWallet } from '@injectivelabs/wallet-ts'
-import {
-  MsgBroadcastOptions,
-  MsgBroadcastTxOptions,
-  MsgBroadcastTxOptionsWithAddresses,
-} from './types'
-import {
-  getEthereumSignerAddress,
-  getGasPriceBasedOnMessage,
-  getInjectiveSignerAddress,
-} from './utils'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import {
@@ -36,8 +25,18 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import {
+  getEthereumSignerAddress,
+  getGasPriceBasedOnMessage,
+  getInjectiveSignerAddress,
+} from './utils'
+import {
+  MsgBroadcastOptions,
+  MsgBroadcasterTxOptions,
+  MsgBroadcasterTxOptionsWithAddresses,
+} from './types'
+import { isCosmosWallet } from '../cosmos'
 
-/** @deprecated - use the MsgBroadcaster from the wallet-ts package */
 export class MsgBroadcastClient {
   public options: MsgBroadcastOptions
 
@@ -57,7 +56,7 @@ export class MsgBroadcastClient {
    * @param tx
    * @returns {string} transaction hash
    */
-  async broadcast(tx: MsgBroadcastTxOptions) {
+  async broadcast(tx: MsgBroadcasterTxOptions) {
     const { options } = this
     const { walletStrategy } = options
     const txWithAddresses = {
@@ -68,7 +67,7 @@ export class MsgBroadcastClient {
       injectiveAddress: getInjectiveSignerAddress(
         tx.injectiveAddress || tx.address,
       ),
-    } as MsgBroadcastTxOptionsWithAddresses
+    } as MsgBroadcasterTxOptionsWithAddresses
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
@@ -85,7 +84,7 @@ export class MsgBroadcastClient {
    * @returns {string} transaction hash
    * @deprecated
    */
-  async broadcastOld(tx: MsgBroadcastTxOptions) {
+  async broadcastOld(tx: MsgBroadcasterTxOptions) {
     const { options } = this
     const { walletStrategy } = options
     const txWithAddresses = {
@@ -96,7 +95,7 @@ export class MsgBroadcastClient {
       injectiveAddress: getInjectiveSignerAddress(
         tx.injectiveAddress || tx.address,
       ),
-    } as MsgBroadcastTxOptionsWithAddresses
+    } as MsgBroadcasterTxOptionsWithAddresses
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
@@ -110,7 +109,7 @@ export class MsgBroadcastClient {
    * @param tx
    * @returns {string} transaction hash
    */
-  async broadcastWithFeeDelegation(tx: MsgBroadcastTxOptions) {
+  async broadcastWithFeeDelegation(tx: MsgBroadcasterTxOptions) {
     const { options } = this
     const { walletStrategy } = options
     const txWithAddresses = {
@@ -121,7 +120,7 @@ export class MsgBroadcastClient {
       injectiveAddress: getInjectiveSignerAddress(
         tx.injectiveAddress || tx.address,
       ),
-    } as MsgBroadcastTxOptionsWithAddresses
+    } as MsgBroadcasterTxOptionsWithAddresses
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmosWithFeeDelegation(txWithAddresses)
@@ -135,7 +134,7 @@ export class MsgBroadcastClient {
    * @param tx The transaction that needs to be broadcasted
    * @returns transaction hash
    */
-  private async broadcastWeb3(tx: MsgBroadcastTxOptionsWithAddresses) {
+  private async broadcastWeb3(tx: MsgBroadcasterTxOptionsWithAddresses) {
     const { options } = this
     const { walletStrategy, chainId, ethereumChainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
@@ -144,7 +143,7 @@ export class MsgBroadcastClient {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    /** Account Details **/
+    /** Account Details * */
     const chainRestAuthApi = new ChainRestAuthApi(
       options.endpoints.sentryHttpApi,
     )
@@ -166,14 +165,14 @@ export class MsgBroadcastClient {
 
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
-      msgs: msgs,
+      msgs,
       tx: {
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
         timeoutHeight: timeoutHeight.toFixed(),
-        chainId: chainId,
+        chainId,
       },
-      ethereumChainId: ethereumChainId,
+      ethereumChainId,
     })
 
     /** Signing on Ethereum */
@@ -198,7 +197,7 @@ export class MsgBroadcastClient {
       sequence: baseAccount.sequence,
       timeoutHeight: timeoutHeight.toNumber(),
       accountNumber: baseAccount.accountNumber,
-      chainId: chainId,
+      chainId,
     })
     const web3Extension = createWeb3Extension({
       ethereumChainId,
@@ -230,7 +229,7 @@ export class MsgBroadcastClient {
    * @returns transaction hash
    */
   private async broadcastWeb3WithFeeDelegation(
-    tx: MsgBroadcastTxOptionsWithAddresses,
+    tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
     const { options, transactionApi } = this
     const { walletStrategy, ethereumChainId } = options
@@ -271,12 +270,12 @@ export class MsgBroadcastClient {
    * @param tx The transaction that needs to be broadcasted
    * @returns transaction hash
    */
-  private async broadcastCosmos(tx: MsgBroadcastTxOptionsWithAddresses) {
+  private async broadcastCosmos(tx: MsgBroadcasterTxOptionsWithAddresses) {
     const { options } = this
     const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
-    /** Account Details **/
+    /** Account Details * */
     const chainRestAuthApi = new ChainRestAuthApi(
       options.endpoints.sentryHttpApi,
     )
@@ -306,7 +305,7 @@ export class MsgBroadcastClient {
       message: msgs.map((m) => m.toDirectSign()),
       timeoutHeight: timeoutHeight.toNumber(),
       signers: {
-        pubKey: pubKey,
+        pubKey,
         accountNumber: accountDetails.accountNumber,
         sequence: accountDetails.sequence,
       },
@@ -317,11 +316,11 @@ export class MsgBroadcastClient {
     })
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction(
-      { txRaw: txRaw, accountNumber: accountDetails.accountNumber, chainId },
+      { txRaw, accountNumber: accountDetails.accountNumber, chainId },
       tx.injectiveAddress,
     )) as DirectSignResponse
 
-    return await walletStrategy.sendTransaction(directSignResponse, {
+    return walletStrategy.sendTransaction(directSignResponse, {
       chainId,
       address: tx.injectiveAddress,
     })
@@ -335,7 +334,7 @@ export class MsgBroadcastClient {
    * @returns transaction hash
    */
   private async broadcastCosmosWithFeeDelegation(
-    tx: MsgBroadcastTxOptionsWithAddresses,
+    tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
     const { options, transactionApi } = this
     const { walletStrategy, chainId } = options
@@ -347,7 +346,7 @@ export class MsgBroadcastClient {
     const feePayerPublicKey = PublicKey.fromBase64(feePayerPubKey)
     const feePayer = feePayerPublicKey.toAddress().address
 
-    /** Account Details **/
+    /** Account Details * */
     const chainRestAuthApi = new ChainRestAuthApi(
       options.endpoints.sentryHttpApi,
     )
@@ -379,7 +378,7 @@ export class MsgBroadcastClient {
     const pubKey = await walletStrategy.getPubKey()
     const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
 
-    /** Prepare the Transaction **/
+    /** Prepare the Transaction * */
     const { txRaw } = createTransactionWithSigners({
       chainId,
       memo: tx.memo || '',
@@ -387,7 +386,7 @@ export class MsgBroadcastClient {
       timeoutHeight: timeoutHeight.toNumber(),
       signers: [
         {
-          pubKey: pubKey,
+          pubKey,
           accountNumber: accountDetails.accountNumber,
           sequence: accountDetails.sequence,
         },
