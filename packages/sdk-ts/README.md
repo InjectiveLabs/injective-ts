@@ -3,7 +3,6 @@
 [![downloads](https://img.shields.io/npm/dm/@injectivelabs/sdk-ts.svg)](https://www.npmjs.com/package/@injectivelabs/sdk-ts)
 [![npm-version](https://img.shields.io/npm/v/@injectivelabs/sdk-ts.svg)](https://www.npmjs.com/package/@injectivelabs/sdk-ts)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/context:javascript)
-[![license](https://img.shields.io/npm/l/express.svg)]()
 
 _Accessing decentralized finance through TypeScript (for Web, Node and React Native environment)_
 
@@ -81,3 +80,9 @@ Originally released by Injective Labs Inc. under: <br />
 Apache License <br />
 Version 2.0, January 2004 <br />
 http://www.apache.org/licenses/
+
+
+<p>&nbsp;</p>
+<div align="center">
+  <sub><em>Powering the future of decentralized finance.</em></sub>
+</div>

@@ -41,3 +41,9 @@ Originally released by Injective Labs Inc. under: <br />
 Apache License <br />
 Version 2.0, January 2004 <br />
 http://www.apache.org/licenses/
+
+
+<p>&nbsp;</p>
+<div align="center">
+  <sub><em>Powering the future of decentralized finance.</em></sub>
+</div>
