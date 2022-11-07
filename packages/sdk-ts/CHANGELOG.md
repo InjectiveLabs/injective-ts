@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.211](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.210...@injectivelabs/sdk-ts@1.0.211) (2022-11-07)
+
+
+### Features
+
+* MsgBroadcaster in sdk-ts ([7747ea8](https://github.com/InjectiveLabs/injective-ts/commit/7747ea8f6aaa61f9a81fde8178a10b2c48535775))
+
+
+
+
+
 ## [1.0.210](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.209...@injectivelabs/sdk-ts@1.0.210) (2022-11-07)
 
 
