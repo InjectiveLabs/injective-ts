@@ -6,7 +6,11 @@ import { BigNumberInBase } from '@injectivelabs/utils'
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Msgs } from '../../modules'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../../client'
-import { DEFAULT_TIMEOUT_HEIGHT } from '../../../utils'
+import {
+  DEFAULT_TIMEOUT_HEIGHT,
+  getAddressFromInjectiveAddress,
+  getInjectiveAddress,
+} from '../../../utils'
 import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { createTransaction, CreateTransactionArgs } from '../tx'
 import { MessageGenerated } from '../types'
@@ -222,4 +226,36 @@ export const createWeb3Extension = ({
   }
 
   return web3Extension
+}
+
+export const getInjectiveSignerAddress = (address: string | undefined) => {
+  if (!address) {
+    return ''
+  }
+
+  if (address.startsWith('inj')) {
+    return address
+  }
+
+  if (address.startsWith('0x')) {
+    return getInjectiveAddress(address)
+  }
+
+  return ''
+}
+
+export const getEthereumSignerAddress = (address: string | undefined) => {
+  if (!address) {
+    return ''
+  }
+
+  if (address.startsWith('0x')) {
+    return address
+  }
+
+  if (address.startsWith('inj')) {
+    return getAddressFromInjectiveAddress(address)
+  }
+
+  return ''
 }

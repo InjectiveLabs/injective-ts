@@ -1,24 +1,43 @@
+import { BaseAccount, PrivateKey } from '../accounts'
+import { Msgs } from '../modules'
+import { createTransaction } from './tx'
+import { TxRestClient } from './client/TxRestClient'
 import {
-  BaseAccount,
   ChainRestAuthApi,
   ChainRestTendermintApi,
-  createTransaction,
-  Msgs,
-  PrivateKey,
-  TxRestClient,
-} from '@injectivelabs/sdk-ts'
+} from './../../client/chain/rest'
 import {
   BigNumberInBase,
   DEFAULT_STD_FEE,
   DEFAULT_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
-import { GeneralException } from 'packages/exceptions/dist'
+import { GeneralException } from '@injectivelabs/exceptions'
 import {
-  MsgBroadcasterOptionsLocal,
-  MsgBroadcasterTxOptions,
-  MsgBroadcasterTxOptionsWithAddresses,
-} from './types'
-import { getEthereumSignerAddress, getInjectiveSignerAddress } from './utils'
+  getEthereumSignerAddress,
+  getInjectiveSignerAddress,
+} from './utils/helpers'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+
+interface MsgBroadcasterTxOptions {
+  msgs: Msgs | Msgs[]
+  injectiveAddress: string
+  ethereumAddress?: string
+  memo?: string
+  feePrice?: string
+  feeDenom?: string
+  gasLimit?: number
+}
+
+interface MsgBroadcasterOptionsLocal {
+  endpoints: {
+    indexerApi: string
+    sentryGrpcApi: string
+    sentryHttpApi: string
+  }
+  chainId: ChainId
+  privateKey: string
+  ethereumChainId?: EthereumChainId
+}
 
 /**
  * This class is used to broadcast transactions
@@ -51,13 +70,9 @@ export class MsgBroadcasterLocal {
       msgs: Array.isArray(transaction.msgs)
         ? transaction.msgs
         : [transaction.msgs],
-      ethereumAddress: getEthereumSignerAddress(
-        transaction.injectiveAddress || transaction.address,
-      ),
-      injectiveAddress: getInjectiveSignerAddress(
-        transaction.injectiveAddress || transaction.address,
-      ),
-    } as MsgBroadcasterTxOptionsWithAddresses
+      ethereumAddress: getEthereumSignerAddress(transaction.injectiveAddress),
+      injectiveAddress: getInjectiveSignerAddress(transaction.injectiveAddress),
+    } as MsgBroadcasterTxOptions
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
@@ -127,13 +142,9 @@ export class MsgBroadcasterLocal {
       msgs: Array.isArray(transaction.msgs)
         ? transaction.msgs
         : [transaction.msgs],
-      ethereumAddress: getEthereumSignerAddress(
-        transaction.injectiveAddress || transaction.address,
-      ),
-      injectiveAddress: getInjectiveSignerAddress(
-        transaction.injectiveAddress || transaction.address,
-      ),
-    } as MsgBroadcasterTxOptionsWithAddresses
+      ethereumAddress: getEthereumSignerAddress(transaction.injectiveAddress),
+      injectiveAddress: getInjectiveSignerAddress(transaction.injectiveAddress),
+    } as MsgBroadcasterTxOptions
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
