@@ -52,9 +52,28 @@ export class PrivateKey {
    * If path is not given, default to Band's HD prefix 494 and all other indexes being zeroes.
    * @param {string} privateKey  the private key
    * @returns {PrivateKey} Initialized PrivateKey object
+   *
+   * @deprecated - use fromHex instead
    */
   static fromPrivateKey(privateKey: string): PrivateKey {
     return new PrivateKey(new Wallet(privateKey))
+  }
+
+  /**
+   * Create a PrivateKey instance from a given private key and a HD derivation path.
+   * If path is not given, default to Band's HD prefix 494 and all other indexes being zeroes.
+   * @param {string} privateKey  the private key
+   * @returns {PrivateKey} Initialized PrivateKey object
+   */
+  static fromHex(privateKey: string | Uint8Array): PrivateKey {
+    const isString = typeof privateKey === 'string'
+    const privateKeyHex =
+      isString && privateKey.startsWith('0x') ? privateKey.slice(2) : privateKey
+    const privateKeyBuff = isString
+      ? Buffer.from(privateKeyHex.toString(), 'hex')
+      : privateKey
+
+    return new PrivateKey(new Wallet(privateKeyBuff))
   }
 
   /**

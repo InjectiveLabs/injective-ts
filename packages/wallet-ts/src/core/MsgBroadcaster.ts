@@ -31,18 +31,30 @@ import {
   getInjectiveSignerAddress,
 } from './utils'
 import {
-  MsgBroadcastOptions,
+  MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
 } from './types'
 import { isCosmosWallet } from '../cosmos'
 
-export class MsgBroadcastClient {
-  public options: MsgBroadcastOptions
+/**
+ * This class is used to broadcast transactions
+ * using the WalletStrategy as a handler
+ * for the sign/broadcast flow of the transactions
+ *
+ * Mainly used for building UI products
+ */
+export class MsgBroadcaster {
+  public options: MsgBroadcasterOptions
 
+  /**
+   * Used to interact with the Web3Gateway service
+   * to provide feeDelegation support for executing
+   * transactions
+   */
   public transactionApi: IndexerGrpcTransactionApi
 
-  constructor(options: MsgBroadcastOptions) {
+  constructor(options: MsgBroadcasterOptions) {
     this.options = options
     this.transactionApi = new IndexerGrpcTransactionApi(
       options.endpoints.indexerApi,

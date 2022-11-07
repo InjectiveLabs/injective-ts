@@ -4,7 +4,7 @@ import { WalletStrategy } from '../wallet-strategy'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string
-  address?: string /* Deprecated */
+  address?: string /* @deprecated */
   ethereumAddress?: string
   injectiveAddress?: string
   msgs: Msgs | Msgs[]
@@ -19,7 +19,7 @@ export interface MsgBroadcasterTxOptionsWithAddresses
   injectiveAddress: string
 }
 
-export interface MsgBroadcastOptions {
+export interface MsgBroadcasterOptions {
   endpoints: {
     indexerApi: string
     sentryGrpcApi: string
@@ -29,4 +29,9 @@ export interface MsgBroadcastOptions {
   ethereumChainId?: EthereumChainId
   feePayerPubKey?: string
   walletStrategy: WalletStrategy
+}
+
+export interface MsgBroadcasterOptionsLocal
+  extends Omit<MsgBroadcasterOptions, 'feePayerPubKey' | 'walletStrategy'> {
+  privateKey: string
 }
