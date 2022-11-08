@@ -39,7 +39,7 @@ export default class WalletConnect
     }
 
     this.walletConnectProvider = new WalletConnectProvider({
-      rpc: ethereumOptions.rpcUrls,
+      rpc: { [ethereumOptions.ethereumChainId]: ethereumOptions.rpcUrl },
     })
     this.web3 = new Web3(this.walletConnectProvider as any)
   }

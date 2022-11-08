@@ -21,8 +21,8 @@ export interface WindowWithLedgerSupport extends Window {
 
 export interface WalletStrategyEthereumOptions {
   ethereumChainId: EthereumChainId
-  rpcUrls: Record<EthereumChainId, string>
-  wsRpcUrls: Record<EthereumChainId, string>
+  rpcUrl: string
+  wsRpcUrl: string
 }
 
 export interface EthereumWalletStrategyArgs {

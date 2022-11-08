@@ -37,13 +37,13 @@ const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
     return true
   }
 
-  const { wsRpcUrls, rpcUrls, ethereumChainId } = ethereumOptions
+  const { wsRpcUrl, rpcUrl, ethereumChainId } = ethereumOptions
 
   if (!ethereumChainId) {
     return true
   }
 
-  if (!wsRpcUrls && !rpcUrls) {
+  if (!wsRpcUrl && !rpcUrl) {
     return true
   }
 
@@ -114,21 +114,19 @@ const createWeb3 = (args: WalletStrategyArguments): Web3 => {
     throw new WalletException(new Error('Please provide Ethereum chainId'))
   }
 
-  const { wsRpcUrls, rpcUrls, ethereumChainId } = ethereumOptions
+  const { wsRpcUrl, rpcUrl, ethereumChainId } = ethereumOptions
 
   if (!ethereumChainId) {
     throw new WalletException(new Error('Please provide Ethereum chainId'))
   }
 
-  if (!wsRpcUrls && !rpcUrls) {
+  if (!wsRpcUrl && !rpcUrl) {
     throw new WalletException(
       new Error('Please provide Ethereum RPC endpoints'),
     )
   }
 
-  const alchemyUrl =
-    (wsRpcUrls as Record<EthereumChainId, string>)[ethereumChainId] ||
-    (rpcUrls as Record<EthereumChainId, string>)[ethereumChainId]
+  const alchemyUrl = (wsRpcUrl as string) || (rpcUrl as string)
 
   return createAlchemyWeb3(alchemyUrl) as unknown as Web3
 }
