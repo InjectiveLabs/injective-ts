@@ -214,13 +214,6 @@ export class MsgBroadcaster {
       chainId,
     })
 
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate(
-        txRaw,
-        new TxGrpcClient(options.endpoints.sentryGrpcApi),
-      )
-    }
-
     const web3Extension = createWeb3Extension({
       ethereumChainId,
     })
@@ -228,6 +221,15 @@ export class MsgBroadcaster {
 
     /** Append Signatures */
     txRawEip712.setSignaturesList([signatureBuff])
+
+    /* Simulate Transaction */
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate({
+        txRaw,
+        signature: signatureBuff,
+        txClient: new TxGrpcClient(options.endpoints.sentryGrpcApi),
+      })
+    }
 
     /** Broadcast the transaction */
     const response = await txRestClient.broadcast(txRawEip712)
@@ -338,17 +340,19 @@ export class MsgBroadcaster {
       },
     })
 
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate(
-        txRaw,
-        new TxGrpcClient(options.endpoints.sentryGrpcApi),
-      )
-    }
-
     const directSignResponse = (await walletStrategy.signCosmosTransaction(
       { txRaw, accountNumber: accountDetails.accountNumber, chainId },
       tx.injectiveAddress,
     )) as DirectSignResponse
+
+    /* Simulate Transaction */
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate({
+        txRaw,
+        signature: directSignResponse.signature.signature,
+        txClient: new TxGrpcClient(options.endpoints.sentryGrpcApi),
+      })
+    }
 
     return walletStrategy.sendTransaction(directSignResponse, {
       chainId,
@@ -433,17 +437,19 @@ export class MsgBroadcaster {
       },
     })
 
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate(
-        txRaw,
-        new TxGrpcClient(options.endpoints.sentryGrpcApi),
-      )
-    }
-
     const directSignResponse = (await walletStrategy.signCosmosTransaction(
       { txRaw, accountNumber: accountDetails.accountNumber, chainId },
       tx.injectiveAddress,
     )) as DirectSignResponse
+
+    /* Simulate Transaction */
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate({
+        txRaw,
+        signature: directSignResponse.signature.signature,
+        txClient: new TxGrpcClient(options.endpoints.sentryGrpcApi),
+      })
+    }
 
     const response = await transactionApi.broadcastCosmosTxRequest({
       address: tx.injectiveAddress,
@@ -470,12 +476,20 @@ export class MsgBroadcaster {
     return response.feePayerPubKey.key
   }
 
-  private static async simulate(
-    txRaw: TxRaw,
-    txClient: TxGrpcClient | TxRestClient,
-  ) {
+  private static async simulate({
+    txRaw,
+    txClient,
+    signature,
+  }: {
+    txRaw: TxRaw
+    signature: string | Buffer | Uint8Array
+    txClient: TxGrpcClient | TxRestClient
+  }) {
+    const txRawWithSignature = txRaw.clone()
+    txRawWithSignature.setSignaturesList([signature])
+
     try {
-      return await txClient.simulate(txRaw)
+      return await txClient.simulate(txRawWithSignature)
     } catch (e) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
