@@ -15,6 +15,7 @@ import {
   PublicKey,
   SIGN_AMINO,
   TxGrpcClient,
+  TxRestClient,
 } from '@injectivelabs/sdk-ts'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -25,6 +26,7 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   getEthereumSignerAddress,
   getGasPriceBasedOnMessage,
@@ -211,6 +213,14 @@ export class MsgBroadcaster {
       accountNumber: baseAccount.accountNumber,
       chainId,
     })
+
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate(
+        txRaw,
+        new TxGrpcClient(options.endpoints.sentryGrpcApi),
+      )
+    }
+
     const web3Extension = createWeb3Extension({
       ethereumChainId,
     })
@@ -260,6 +270,7 @@ export class MsgBroadcaster {
       gasLimit: getGasPriceBasedOnMessage(msgs),
       estimateGas: false,
     })
+
     const signature = await walletStrategy.signEip712TypedData(
       txResponse.getData(),
       tx.ethereumAddress,
@@ -326,6 +337,13 @@ export class MsgBroadcaster {
         gas: gas || DEFAULT_STD_FEE.gas,
       },
     })
+
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate(
+        txRaw,
+        new TxGrpcClient(options.endpoints.sentryGrpcApi),
+      )
+    }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction(
       { txRaw, accountNumber: accountDetails.accountNumber, chainId },
@@ -415,6 +433,13 @@ export class MsgBroadcaster {
       },
     })
 
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate(
+        txRaw,
+        new TxGrpcClient(options.endpoints.sentryGrpcApi),
+      )
+    }
+
     const directSignResponse = (await walletStrategy.signCosmosTransaction(
       { txRaw, accountNumber: accountDetails.accountNumber, chainId },
       tx.injectiveAddress,
@@ -443,5 +468,20 @@ export class MsgBroadcaster {
     }
 
     return response.feePayerPubKey.key
+  }
+
+  private static async simulate(
+    txRaw: TxRaw,
+    txClient: TxGrpcClient | TxRestClient,
+  ) {
+    try {
+      return await txClient.simulate(txRaw)
+    } catch (e) {
+      throw new TransactionException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.ChainError,
+        contextModule: 'simulate-tx',
+      })
+    }
   }
 }

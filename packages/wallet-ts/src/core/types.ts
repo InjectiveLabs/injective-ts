@@ -28,6 +28,7 @@ export interface MsgBroadcasterOptions {
   chainId: ChainId
   ethereumChainId?: EthereumChainId
   feePayerPubKey?: string
+  simulateTx?: boolean
   walletStrategy: WalletStrategy
 }
 
