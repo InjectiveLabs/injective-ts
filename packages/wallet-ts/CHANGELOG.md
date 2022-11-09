@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.185](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.184...@injectivelabs/wallet-ts@1.0.185) (2022-11-09)
+
+
+### Bug Fixes
+
+* txraw for simulation includes signatures ([21e8309](https://github.com/InjectiveLabs/injective-ts/commit/21e8309753cd701b0ca0dec1cfd89d2b5867fdc6))
+
+
+
+
+
 ## [1.0.184](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.183...@injectivelabs/wallet-ts@1.0.184) (2022-11-09)
 
 
