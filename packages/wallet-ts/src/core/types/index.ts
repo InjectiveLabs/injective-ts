@@ -1,6 +1,6 @@
 import { Msgs } from '@injectivelabs/sdk-ts'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import { WalletStrategy } from '../wallet-strategy'
+import { WalletStrategy } from '../../wallet-strategy'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string
@@ -35,4 +35,16 @@ export interface MsgBroadcasterOptions {
 export interface MsgBroadcasterOptionsLocal
   extends Omit<MsgBroadcasterOptions, 'feePayerPubKey' | 'walletStrategy'> {
   privateKey: string
+}
+
+export interface SendTransactionOptions {
+  tx: {
+    from: string
+    to: string
+    gas: string
+    maxFeePerGas: string
+    maxPriorityFeePerGas: string | null
+    data: any
+  }
+  address: string
 }

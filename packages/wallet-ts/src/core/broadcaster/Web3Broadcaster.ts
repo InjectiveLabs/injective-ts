@@ -7,15 +7,15 @@ import {
   PeggyOldContract,
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
-import { WalletStrategy } from '@injectivelabs/wallet-ts'
-import { SendTransactionOptions } from './types'
+import { Web3Exception } from '@injectivelabs/exceptions'
+import { WalletStrategy } from '../../wallet-strategy'
+import { SendTransactionOptions } from '../types'
 import {
   DEFAULT_GAS_PRICE,
   GAS_LIMIT_MULTIPLIER,
   INJ_DENOM,
   TX_DEFAULTS_GAS,
-} from './constants'
-import { Web3Exception } from '@injectivelabs/exceptions'
+} from '../utils/constants'
 
 export const getTransactionOptions = (
   transactionOptions: Partial<TransactionOptions>,
