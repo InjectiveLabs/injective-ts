@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.184](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.183...@injectivelabs/wallet-ts@1.0.184) (2022-11-09)
+
+
+### Features
+
+* simulation added, web3 broadcast moved to wallet-ts ([d521af3](https://github.com/InjectiveLabs/injective-ts/commit/d521af304f6a864e9a7b0e7efa8bd7468ef44c55))
+
+
+
+
+
 ## [1.0.183](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.182...@injectivelabs/wallet-ts@1.0.183) (2022-11-09)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.293](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.292...@injectivelabs/sdk-ui-ts@1.0.293) (2022-11-09)
+
+
+### Features
+
+* simulation added, web3 broadcast moved to wallet-ts ([d521af3](https://github.com/InjectiveLabs/injective-ts/commit/d521af304f6a864e9a7b0e7efa8bd7468ef44c55))
+
+
+
+
+
 ## [1.0.292](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.291...@injectivelabs/sdk-ui-ts@1.0.292) (2022-11-09)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
