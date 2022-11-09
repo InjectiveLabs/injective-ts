@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.183](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.182...@injectivelabs/wallet-ts@1.0.183) (2022-11-09)
+
+
+### Features
+
+* added the ability to simulate a transaction ([9d24ec4](https://github.com/InjectiveLabs/injective-ts/commit/9d24ec48140b089d403a8dc1473d122931de7e3a))
+
+
+
+
+
 ## [1.0.182](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.181...@injectivelabs/wallet-ts@1.0.182) (2022-11-08)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
