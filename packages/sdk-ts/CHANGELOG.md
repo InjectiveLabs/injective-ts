@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.212](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.211...@injectivelabs/sdk-ts@1.0.212) (2022-11-10)
+
+
+### Bug Fixes
+
+* MsgSubmitTextProposal type not found issue ([9cb4db7](https://github.com/InjectiveLabs/injective-ts/commit/9cb4db7e80454bf2655e61dbfe0715a7487ba743))
+
+
+
+
+
 ## [1.0.211](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.210...@injectivelabs/sdk-ts@1.0.211) (2022-11-07)
 
 
