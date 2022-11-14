@@ -1,8 +1,10 @@
 import { CONTRACTS } from '@certusone/wormhole-sdk'
 import { ChainId } from '@injectivelabs/ts-types'
+import { PublicKey } from '@solana/web3.js'
 
 export interface SolanaTransferMsgArgs {
   tokenAddress: string /* Solana asset address */
+  signerPubKey?: PublicKey
   amount: string
   recipientChainId: ChainId | number | string
   recipient: string /* Injective Address to receive the assets */

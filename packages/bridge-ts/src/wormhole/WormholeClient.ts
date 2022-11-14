@@ -30,12 +30,11 @@ import {
 import {
   Connection,
   PublicKey as SolanaPublicKey,
-  Signer,
-  sendAndConfirmTransaction,
   TransactionResponse,
 } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { ethers } from 'ethers'
+import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import {
   WORMHOLE_CHAINS,
   WORMHOLE_CONTRACT_BY_NETWORK,
@@ -284,14 +283,18 @@ export class WormholeClient {
 
   async transferFromSolanaToInjective(
     args: SolanaTransferMsgArgs,
-    signer: Signer,
+    provider: BaseMessageSignerWalletAdapter,
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
-    const { amount, recipient } = args
+    const { amount, recipient, signerPubKey } = args
     const endpoints = getEndpointsForNetwork(network)
 
     if (!solanaHostUrl) {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    if (!signerPubKey) {
+      throw new GeneralException(new Error(`Please provide signerPubKey`))
     }
 
     if (!wormholeRpcUrl) {
@@ -338,7 +341,7 @@ export class WormholeClient {
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const solanaMintKey = new SolanaPublicKey(foreignAsset)
-    const ownerKey = new SolanaPublicKey(signer.publicKey.toBytes())
+    const ownerKey = new SolanaPublicKey(signerPubKey.toBytes())
     const recipientAddress = await getAssociatedTokenAddress(
       solanaMintKey,
       ownerKey,
@@ -359,14 +362,10 @@ export class WormholeClient {
       WORMHOLE_CHAINS.injective,
     )
 
-    transaction.partialSign(signer)
-
-    const transactionId = await sendAndConfirmTransaction(
-      connection,
-      transaction,
-      [signer],
+    const signed = await provider.signTransaction(transaction)
+    const transactionId = await connection.sendRawTransaction(
+      signed.serialize(),
     )
-
     const info = await connection.getTransaction(transactionId, {
       commitment: 'finalized',
       maxSupportedTransactionVersion: 0,
