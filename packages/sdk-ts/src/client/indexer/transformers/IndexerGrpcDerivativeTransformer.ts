@@ -260,6 +260,21 @@ export class IndexerGrpcDerivativeTransformer {
     )
   }
 
+  static binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
+    response: BinaryOptionsMarketsResponse,
+  ) {
+    const markets = response.getMarketsList()
+    const pagination = response.getPaging()
+
+    return {
+      markets:
+        IndexerGrpcDerivativeTransformer.grpcBinaryOptionsMarketsToBinaryOptionsMarkets(
+          markets,
+        ),
+      pagination: grpcPagingToPaging(pagination),
+    }
+  }
+
   static binaryOptionsMarketsResponseToBinaryOptionsMarkets(
     response: BinaryOptionsMarketsResponse,
   ) {

@@ -2567,10 +2567,10 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
-"@injectivelabs/indexer-api@1.0.31":
-  version "1.0.31"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-api/-/indexer-api-1.0.31.tgz#391f22edc674f22238a7d0b27a3351853921445c"
-  integrity sha512-OtUiAsj41fIOfLQFQTAUBG/vJj5eKwzPNcUjCLBoiYZmGSwaWXVe9aTqtlbIP0Z+vmKreI1v6cwacNaxZnACVw==
+"@injectivelabs/indexer-api@1.0.32-rc":
+  version "1.0.32-rc"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-api/-/indexer-api-1.0.32-rc.tgz#67acbf0f456967a817fccda7579f3c458e810c4f"
+  integrity sha512-LNU4lZMhVXN4b9w72SAcVIesyD9We3Oq466KHDOd2S9asnNjO6EuQ4EtA2l4qiIvIat9Gh9/VZOfSXguTlVp8g==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"

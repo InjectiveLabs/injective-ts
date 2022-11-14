@@ -111,8 +111,9 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   async fetchBinaryOptionsMarkets(params?: {
     marketStatus?: string
     quoteDenom?: string
+    pagination?: PaginationOption
   }) {
-    const { marketStatus, quoteDenom } = params || {}
+    const { marketStatus, quoteDenom, pagination } = params || {}
 
     const request = new BinaryOptionsMarketsRequest()
 
@@ -124,6 +125,16 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       request.setQuoteDenom(quoteDenom)
     }
 
+    if (pagination) {
+      if (pagination.skip !== undefined && request.setSkip !== undefined) {
+        request.setSkip(pagination.skip)
+      }
+
+      if (pagination.limit !== undefined && request.setLimit !== undefined) {
+        request.setLimit(pagination.limit)
+      }
+    }
+
     try {
       const response = await this.request<
         BinaryOptionsMarketsRequest,
@@ -131,9 +142,13 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
         typeof InjectiveDerivativeExchangeRPC.BinaryOptionsMarkets
       >(request, InjectiveDerivativeExchangeRPC.BinaryOptionsMarkets)
 
-      return IndexerGrpcDerivativeTransformer.binaryOptionsMarketsResponseToBinaryOptionsMarkets(
-        response,
-      )
+      return pagination
+        ? IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
+            response,
+          )
+        : IndexerGrpcDerivativeTransformer.binaryOptionsMarketsResponseToBinaryOptionsMarkets(
+            response,
+          )
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
