@@ -2,7 +2,7 @@
   "name": "@injectivelabs/exceptions",
   "description": "List of exceptions that can be reused throughout Injective's projects.",
   "version": "1.0.26",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": {
@@ -37,5 +37,5 @@
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },
-  "gitHead": "a12e5c2c5d1038ab42e9669b6eeb1e91873626c2"
+  "gitHead": "00176548701ceed002a45fd690bac43653b88d60"
 }

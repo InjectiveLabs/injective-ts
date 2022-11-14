@@ -6,7 +6,7 @@
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -73,7 +73,7 @@
     "web3": "^1.7.3",
     "web3-core": "^1.7.3"
   },
-  "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4",
+  "gitHead": "00176548701ceed002a45fd690bac43653b88d60",
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",

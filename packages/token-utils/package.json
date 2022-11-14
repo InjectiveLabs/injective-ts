@@ -4,7 +4,7 @@
   "description": "Token Utils is a package for querying different data about tokens",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
@@ -36,5 +36,5 @@
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },
-  "gitHead": "a12e5c2c5d1038ab42e9669b6eeb1e91873626c2"
+  "gitHead": "00176548701ceed002a45fd690bac43653b88d60"
 }

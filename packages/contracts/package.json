@@ -2,7 +2,7 @@
   "name": "@injectivelabs/contracts",
   "description": "Contracts wrapper that can be reused throughout Injective's projects.",
   "version": "1.0.52",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": {
@@ -40,5 +40,5 @@
     "web3": "^1.7.2",
     "web3-utils": "^1.7.2"
   },
-  "gitHead": "301db22f30cc88ffaf3f32731774386f172f6ee4"
+  "gitHead": "00176548701ceed002a45fd690bac43653b88d60"
 }

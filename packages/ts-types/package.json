@@ -2,7 +2,7 @@
   "name": "@injectivelabs/ts-types",
   "description": "List of types that can be reused throughout Injective's projects.",
   "version": "1.0.15",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": {
@@ -33,5 +33,6 @@
   "dependencies": {
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
-  }
+  },
+  "gitHead": "00176548701ceed002a45fd690bac43653b88d60"
 }
