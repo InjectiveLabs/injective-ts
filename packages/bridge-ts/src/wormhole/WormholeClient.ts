@@ -288,12 +288,13 @@ export class WormholeClient {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
     const { amount, recipient, signerPubKey } = args
     const endpoints = getEndpointsForNetwork(network)
+    const pubKey = provider.publicKey || signerPubKey
 
     if (!solanaHostUrl) {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    if (!signerPubKey) {
+    if (!pubKey) {
       throw new GeneralException(new Error(`Please provide signerPubKey`))
     }
 
@@ -341,7 +342,7 @@ export class WormholeClient {
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const solanaMintKey = new SolanaPublicKey(foreignAsset)
-    const ownerKey = new SolanaPublicKey(signerPubKey.toBytes())
+    const ownerKey = new SolanaPublicKey(pubKey.toBytes())
     const recipientAddress = await getAssociatedTokenAddress(
       solanaMintKey,
       ownerKey,
