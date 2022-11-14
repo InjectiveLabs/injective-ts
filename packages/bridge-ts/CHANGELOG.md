@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.5...@injectivelabs/bridge-ts@1.0.6) (2022-11-14)
+
+
+### Bug Fixes
+
+* wormhole client recipient ([7a59d0d](https://github.com/InjectiveLabs/injective-ts/commit/7a59d0d197505e35ceff2477b9e87da44d168cb4))
+
+
+
+
+
 ## [1.0.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.4...@injectivelabs/bridge-ts@1.0.5) (2022-11-14)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
