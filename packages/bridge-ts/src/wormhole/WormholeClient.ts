@@ -351,7 +351,6 @@ export class WormholeClient {
       WORMHOLE_CHAINS.injective,
     )
 
-    // sign, send, and confirm transaction
     transaction.partialSign(signer)
 
     const transactionId = await sendAndConfirmTransaction(
@@ -374,7 +373,6 @@ export class WormholeClient {
       solanaContractAddresses.token_bridge,
     )
 
-    // poll until the guardian(s) witness and sign the vaa
     const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
       [wormholeRpcUrl],
       WORMHOLE_CHAINS.solana,
@@ -384,6 +382,18 @@ export class WormholeClient {
         transport: isBrowser() ? undefined : NodeHttpTransport(),
       },
     )
+
+    const result = await getIsTransferCompletedInjective(
+      contractAddresses.token_bridge,
+      signedVAA,
+      chainGrpcWasmApi,
+    )
+
+    if (!result) {
+      throw new GeneralException(
+        new Error(`Transfer has not been completed on Injective`),
+      )
+    }
 
     return redeemOnInjective(contractAddresses.token_bridge, address, signedVAA)
   }
