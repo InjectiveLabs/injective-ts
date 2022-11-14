@@ -131,7 +131,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
       ...message,
       content: {
         ...message.content,
-        type: proposalType,
+        '@type': proposalType,
       },
     }
 
