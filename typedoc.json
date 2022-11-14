@@ -3,10 +3,14 @@
   "out": "./docs",
   "entryPoints": [
     "./packages/sdk-ts",
-    "./packages/wallet-ts",
-    "./packages/tx-ts"
+    "./packages/wallet-ts"
   ],
-  "plugin": ["typedoc-monorepo-link-types"],
-  "exclude": ["./packages/**/*.spec.ts", "./packages/**/*.spec.ts"],
+  "plugin": [
+    "typedoc-monorepo-link-types"
+  ],
+  "exclude": [
+    "./packages/**/*.spec.ts",
+    "./packages/**/*.spec.ts"
+  ],
   "name": "API Reference | Injective - Powering the future of decentralized finance."
 }

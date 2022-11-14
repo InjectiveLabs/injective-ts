@@ -1,5 +1,6 @@
 const common = {
   env: {
+    es2020: true,
     node: true,
     es6: true,
     browser: true,

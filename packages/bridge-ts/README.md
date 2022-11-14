@@ -1,11 +1,13 @@
-# 🌟 Injective Protocol - TypeScript Types
+# 🌟 Injective Protocol - Bridge TS
+
+_Building decentralized finance UIs through TypeScript_
 
 ---
 
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/ts-types
+yarn add @injectivelabs/bridge-ts
 ```
 
 ---

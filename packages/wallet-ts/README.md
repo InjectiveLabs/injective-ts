@@ -20,7 +20,6 @@ yarn add @injectivelabs/wallet-ts
 
 Read more and find example usages on our [WalletStrategy Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/01WalletStrategy)
 
-
 ---
 
 ## 📜 Contribution

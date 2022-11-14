@@ -2,9 +2,21 @@
 
 ---
 
-## 📚 Getting Started
+## 📚 Installation
+
+```bash
+yarn add @injectivelabs/exceptions
+```
+
+---
 
 ## 📖 Documentation
+
+🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
+
+This documentation is currently under work in progress.
+
+🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
 ---
 
@@ -12,8 +24,10 @@
 
 Reach out to us at one of the following places!
 
-- Website at <a href="https://injectiveprotocol.com" target="_blank">`injectiveprotocol.com`</a>
+- Website at <a href="https://injective.com" target="_blank">`injective.com`</a>
 - Twitter at <a href="https://twitter.com/Injective_" target="_blank">`@Injective`</a>
+- Discord at <a href="https://discord.com/invite/NK4qdbv" target="_blank">`Discord`</a>
+- Telegram at <a href="https://t.me/joininjective" target="_blank">`Telegram`</a>
 
 ---
 

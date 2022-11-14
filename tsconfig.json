@@ -29,6 +29,9 @@
       ],
       "@injectivelabs/sdk-ui-ts": [
         "packages/sdk-ui-ts"
+      ],
+      "@injectivelabs/bridge-ts": [
+        "packages/bridge-ts"
       ]
     }
   }

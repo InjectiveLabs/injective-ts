@@ -2,9 +2,21 @@
 
 ---
 
-## 📚 Getting Started
+## 📚 Installation
+
+```bash
+yarn add @injectivelabs/contracts
+```
+
+---
 
 ## 📖 Documentation
+
+🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
+
+This documentation is currently under work in progress.
+
+🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
 ---
 

@@ -1,6 +1,6 @@
 import { Msgs } from '@injectivelabs/sdk-ts'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import { WalletStrategy } from '../../wallet-strategy'
+import { WalletStrategy } from '../../strategies/wallet'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string

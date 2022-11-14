@@ -10,6 +10,10 @@ export function fromUtf8(data: Uint8Array | string): string {
   return new TextDecoder('utf-8', { fatal: true }).decode(data)
 }
 
+export function binaryToBase64(data: string | Uint8Array): string {
+  return typeof data === 'string' ? data : Buffer.from(data).toString('base64')
+}
+
 export function toBase64(data: Record<string, any>): string {
   return Buffer.from(JSON.stringify(data)).toString('base64')
 }

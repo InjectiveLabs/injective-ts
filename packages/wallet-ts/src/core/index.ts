@@ -1,3 +1,4 @@
-export * from './broadcaster/MsgBroadcaster'
-export * from './broadcaster/Web3Broadcaster'
+export * from './transactions/MsgBroadcaster'
+export * from './transactions/Web3Broadcaster'
 export * from './types'
+export * from './cosmos'

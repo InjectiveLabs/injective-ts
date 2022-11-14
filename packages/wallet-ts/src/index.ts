@@ -1,5 +1,3 @@
-export * from './wallet-strategy'
+export * from './strategies'
 export * from './core'
-export * from './cosmos'
-export * from './cosmos-strategy'
 export * from './types'
