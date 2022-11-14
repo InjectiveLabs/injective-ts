@@ -9,6 +9,10 @@ export const WORMHOLE_SOLANA_CONTRACT_BY_NETWORK = {
   [Network.Testnet]: CONTRACTS.TESTNET.solana,
 }
 
+export const WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK = {
+  [Network.Testnet]: CONTRACTS.TESTNET.ethereum,
+}
+
 export const WORMHOLE_CHAINS = CHAINS
 
 export const WORMHOLE_CONTRACTS = CONTRACTS

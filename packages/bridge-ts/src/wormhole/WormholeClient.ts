@@ -1,21 +1,26 @@
-import { Network } from '@injectivelabs/networks'
+import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
 import {
   MsgExecuteContract,
   binaryToBase64,
   INJ_DENOM,
   isBrowser,
+  ChainGrpcWasmApi,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
   tryNativeToHexString,
-  getForeignAssetSolana,
-  hexToUint8Array,
   transferFromSolana,
   tryNativeToUint8Array,
   parseSequenceFromLogSolana,
   getEmitterAddressSolana,
   getSignedVAAWithRetry,
   redeemOnInjective,
+  transferFromEth,
+  getForeignAssetInjective,
+  approveEth,
+  parseSequenceFromLogEth,
+  getEmitterAddressEth,
+  getIsTransferCompletedInjective,
 } from '@certusone/wormhole-sdk'
 import {
   getAssociatedTokenAddress,
@@ -30,24 +35,27 @@ import {
   TransactionResponse,
 } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { ethers } from 'ethers'
 import {
   WORMHOLE_CHAINS,
   WORMHOLE_CONTRACT_BY_NETWORK,
   WORMHOLE_SOLANA_CONTRACT_BY_NETWORK,
 } from './constants'
 import {
-  TransferMsgArgs,
+  SolanaTransferMsgArgs,
+  EthereumTransferMsgArgs,
   WormholeContractAddresses,
   WormholeSolanaContractAddresses,
+  WormholeEthereumContractAddresses,
 } from './types'
 import { createTransferContractMsgExec } from './utils'
 
 export class WormholeClient {
   public network: Network
 
-  public solanaHostUrl: string
+  public solanaHostUrl?: string
 
-  public wormholeRpcUrl: string
+  public wormholeRpcUrl?: string
 
   constructor({
     network,
@@ -55,8 +63,8 @@ export class WormholeClient {
     wormholeRpcUrl,
   }: {
     network: Network
-    solanaHostUrl: string
-    wormholeRpcUrl: string
+    solanaHostUrl?: string
+    wormholeRpcUrl?: string
   }) {
     this.network = network
     this.solanaHostUrl = solanaHostUrl
@@ -93,7 +101,7 @@ export class WormholeClient {
     })
   }
 
-  async getFromInjectiveTransferMsg(args: TransferMsgArgs) {
+  async getFromInjectiveTransferMsg(args: SolanaTransferMsgArgs) {
     const { network } = this
     const { amount, address, tokenAddress, payload } = args
 
@@ -167,9 +175,120 @@ export class WormholeClient {
     ]
   }
 
-  async transferFromSolanaToInjective(args: TransferMsgArgs, signer: Signer) {
+  async transferFromEthereumToInjective(
+    args: EthereumTransferMsgArgs,
+    provider: ethers.providers.Web3Provider,
+  ) {
+    const { network, wormholeRpcUrl } = this
+    const { amount, address } = args
+    const endpoints = getEndpointsForNetwork(network)
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    const ethereumContractAddresses = (
+      WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
+        [key: string]: WormholeEthereumContractAddresses
+      }
+    )[network] as WormholeEthereumContractAddresses
+
+    const contractAddresses = (
+      WORMHOLE_CONTRACT_BY_NETWORK as {
+        [key: string]: WormholeContractAddresses
+      }
+    )[network] as WormholeContractAddresses
+
+    if (!contractAddresses.token_bridge) {
+      throw new GeneralException(
+        new Error(`Token Bridge Address for ${network} on Injective not found`),
+      )
+    }
+
+    if (!ethereumContractAddresses.token_bridge) {
+      throw new GeneralException(
+        new Error(`Token Bridge Address for ${network} on Ethereum not found`),
+      )
+    }
+
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+    const foreignAsset = await getForeignAssetInjective(
+      contractAddresses.token_bridge,
+      chainGrpcWasmApi,
+      WORMHOLE_CHAINS.ethereum,
+      new Uint8Array(
+        Buffer.from(tryNativeToHexString(args.tokenAddress, 'injective')),
+      ),
+    )
+
+    if (!foreignAsset) {
+      throw new GeneralException(new Error(`Foreign Injective asset not found`))
+    }
+
+    await approveEth(
+      ethereumContractAddresses.token_bridge,
+      args.tokenAddress,
+      provider.getSigner(),
+      amount,
+    )
+
+    const receipt = await transferFromEth(
+      ethereumContractAddresses.token_bridge,
+      provider.getSigner(),
+      args.tokenAddress,
+      amount,
+      WORMHOLE_CHAINS.injective,
+      tryNativeToUint8Array(args.address, WORMHOLE_CHAINS.injective),
+    )
+
+    const sequence = parseSequenceFromLogEth(
+      receipt,
+      ethereumContractAddresses.core,
+    )
+    const emitterAddress = getEmitterAddressEth(
+      ethereumContractAddresses.token_bridge,
+    )
+
+    const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
+      [wormholeRpcUrl],
+      WORMHOLE_CHAINS.ethereum,
+      emitterAddress,
+      sequence,
+      {
+        transport: isBrowser() ? undefined : NodeHttpTransport(),
+      },
+    )
+
+    const result = await getIsTransferCompletedInjective(
+      contractAddresses.token_bridge,
+      signedVAA,
+      chainGrpcWasmApi,
+    )
+
+    if (!result) {
+      throw new GeneralException(
+        new Error(`Transfer has not been completed on Injective`),
+      )
+    }
+
+    return redeemOnInjective(contractAddresses.token_bridge, address, signedVAA)
+  }
+
+  async transferFromSolanaToInjective(
+    args: SolanaTransferMsgArgs,
+    signer: Signer,
+  ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
-    const { amount, address, tokenAddress, pubKey } = args
+    const { amount, address, pubKey } = args
+    const endpoints = getEndpointsForNetwork(network)
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
 
     const solanaContractAddresses = (
       WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
@@ -185,31 +304,32 @@ export class WormholeClient {
 
     if (!contractAddresses.token_bridge) {
       throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} not found`),
+        new Error(`Token Bridge Address for ${network} on Injective not found`),
       )
     }
 
     if (!solanaContractAddresses.token_bridge) {
       throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} not found`),
+        new Error(`Token Bridge Address for ${network} on Solana not found`),
       )
     }
 
-    const connection = new Connection(solanaHostUrl, 'confirmed')
-    const foreignSolanaAsset = await getForeignAssetSolana(
-      connection,
-      solanaContractAddresses.token_bridge,
-      WORMHOLE_CHAINS.injective,
-      hexToUint8Array(
-        tryNativeToHexString(tokenAddress, WORMHOLE_CHAINS.injective) || '',
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+    const foreignAsset = await getForeignAssetInjective(
+      contractAddresses.token_bridge,
+      chainGrpcWasmApi,
+      WORMHOLE_CHAINS.solana,
+      new Uint8Array(
+        Buffer.from(tryNativeToHexString(args.tokenAddress, 'injective')),
       ),
     )
 
-    if (!foreignSolanaAsset) {
-      throw new GeneralException(new Error(`Foreign Solana asset not found`))
+    if (!foreignAsset) {
+      throw new GeneralException(new Error(`Foreign Injective asset not found`))
     }
 
-    const solanaMintKey = new SolanaPublicKey(foreignSolanaAsset)
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+    const solanaMintKey = new SolanaPublicKey(foreignAsset)
     const ownerKey = new SolanaPublicKey(Buffer.from(pubKey, 'base64'))
     const recipientAddress = await getAssociatedTokenAddress(
       solanaMintKey,
