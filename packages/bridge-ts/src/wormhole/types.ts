@@ -2,23 +2,20 @@ import { CONTRACTS } from '@certusone/wormhole-sdk'
 import { ChainId } from '@injectivelabs/ts-types'
 
 export interface SolanaTransferMsgArgs {
-  address: string
-  pubKey: string
-  tokenAddress: string
+  tokenAddress: string /* Solana asset address */
   amount: string
   recipientChainId: ChainId | number | string
   recipient: string /* Injective Address to receive the assets */
-  relayerFee: string
+  relayerFee?: string
   payload?: Uint8Array | null
 }
 
 export interface EthereumTransferMsgArgs {
-  address: string
   tokenAddress: string /* ERC20 address */
   amount: string
   recipientChainId: ChainId | number | string
   recipient: string /* Injective Address to receive the assets */
-  relayerFee: string
+  relayerFee?: string
   payload?: Uint8Array | null
 }
 

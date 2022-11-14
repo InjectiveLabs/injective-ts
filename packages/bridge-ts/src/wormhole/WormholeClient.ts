@@ -101,9 +101,13 @@ export class WormholeClient {
     })
   }
 
-  async getFromInjectiveTransferMsg(args: SolanaTransferMsgArgs) {
+  async getFromInjectiveTransferMsg(
+    args: (SolanaTransferMsgArgs | EthereumTransferMsgArgs) & {
+      address: string
+    },
+  ) {
     const { network } = this
-    const { amount, address, tokenAddress, payload } = args
+    const { amount, recipient, address, tokenAddress, payload } = args
 
     const contractAddresses = (
       WORMHOLE_CONTRACT_BY_NETWORK as {
@@ -128,7 +132,7 @@ export class WormholeClient {
     if (tokenAddress.startsWith('peggy') || tokenAddress === INJ_DENOM) {
       return [
         MsgExecuteContract.fromJSON({
-          sender: address,
+          sender: recipient,
           action: 'deposit_tokens',
           contractAddress: contractAddresses.token_bridge,
           funds: { denom: tokenAddress, amount },
@@ -136,7 +140,7 @@ export class WormholeClient {
         }),
         MsgExecuteContract.fromJSON({
           action,
-          sender: address,
+          sender: recipient,
           contractAddress: contractAddresses.token_bridge,
           msg: createTransferContractMsgExec(
             { ...args, recipient: recipientAddress },
@@ -180,7 +184,7 @@ export class WormholeClient {
     provider: ethers.providers.Web3Provider,
   ) {
     const { network, wormholeRpcUrl } = this
-    const { amount, address } = args
+    const { amount, recipient } = args
     const endpoints = getEndpointsForNetwork(network)
 
     if (!wormholeRpcUrl) {
@@ -238,7 +242,7 @@ export class WormholeClient {
       args.tokenAddress,
       amount,
       WORMHOLE_CHAINS.injective,
-      tryNativeToUint8Array(args.address, WORMHOLE_CHAINS.injective),
+      tryNativeToUint8Array(args.recipient, WORMHOLE_CHAINS.injective),
     )
 
     const sequence = parseSequenceFromLogEth(
@@ -271,7 +275,11 @@ export class WormholeClient {
       )
     }
 
-    return redeemOnInjective(contractAddresses.token_bridge, address, signedVAA)
+    return redeemOnInjective(
+      contractAddresses.token_bridge,
+      recipient,
+      signedVAA,
+    )
   }
 
   async transferFromSolanaToInjective(
@@ -279,7 +287,7 @@ export class WormholeClient {
     signer: Signer,
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
-    const { amount, address, pubKey } = args
+    const { amount, recipient } = args
     const endpoints = getEndpointsForNetwork(network)
 
     if (!solanaHostUrl) {
@@ -330,7 +338,7 @@ export class WormholeClient {
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const solanaMintKey = new SolanaPublicKey(foreignAsset)
-    const ownerKey = new SolanaPublicKey(Buffer.from(pubKey, 'base64'))
+    const ownerKey = new SolanaPublicKey(signer.publicKey.toBytes())
     const recipientAddress = await getAssociatedTokenAddress(
       solanaMintKey,
       ownerKey,
@@ -347,7 +355,7 @@ export class WormholeClient {
       recipientAddress,
       solanaMintKey,
       BigInt(amount),
-      tryNativeToUint8Array(address, WORMHOLE_CHAINS.injective),
+      tryNativeToUint8Array(recipient, WORMHOLE_CHAINS.injective),
       WORMHOLE_CHAINS.injective,
     )
 
@@ -395,6 +403,10 @@ export class WormholeClient {
       )
     }
 
-    return redeemOnInjective(contractAddresses.token_bridge, address, signedVAA)
+    return redeemOnInjective(
+      contractAddresses.token_bridge,
+      recipient,
+      signedVAA,
+    )
   }
 }
