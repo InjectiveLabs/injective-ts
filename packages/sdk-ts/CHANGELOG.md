@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.215](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.214...@injectivelabs/sdk-ts@1.0.215) (2022-11-14)
+
+
+### Features
+
+* pagination for binary options markets ([e9ce348](https://github.com/InjectiveLabs/injective-ts/commit/e9ce3489bb20b118ecb7d2ff7d3aabb0415bad4b))
+
+
+
+
+
 ## [1.0.214](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.213...@injectivelabs/sdk-ts@1.0.214) (2022-11-14)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
