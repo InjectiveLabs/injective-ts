@@ -29,6 +29,7 @@ import {
 } from '@solana/spl-token'
 import {
   Connection,
+  PublicKey,
   PublicKey as SolanaPublicKey,
   TransactionResponse,
 } from '@solana/web3.js'
@@ -39,6 +40,7 @@ import {
   WORMHOLE_CHAINS,
   WORMHOLE_CONTRACT_BY_NETWORK,
   WORMHOLE_SOLANA_CONTRACT_BY_NETWORK,
+  WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
 } from './constants'
 import {
   SolanaTransferMsgArgs,
@@ -191,7 +193,7 @@ export class WormholeClient {
     }
 
     const ethereumContractAddresses = (
-      WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
+      WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK as {
         [key: string]: WormholeEthereumContractAddresses
       }
     )[network] as WormholeEthereumContractAddresses
@@ -201,6 +203,18 @@ export class WormholeClient {
         [key: string]: WormholeContractAddresses
       }
     )[network] as WormholeContractAddresses
+
+    if (!contractAddresses) {
+      throw new GeneralException(
+        new Error(`Contracts for ${network} on Injective not found`),
+      )
+    }
+
+    if (!ethereumContractAddresses) {
+      throw new GeneralException(
+        new Error(`Contracts for ${network} on Solana not found`),
+      )
+    }
 
     if (!contractAddresses.token_bridge) {
       throw new GeneralException(
@@ -288,13 +302,13 @@ export class WormholeClient {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
     const { amount, recipient, signerPubKey } = args
     const endpoints = getEndpointsForNetwork(network)
-    const pubKey = provider.publicKey || signerPubKey
+    const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
 
     if (!solanaHostUrl) {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    if (!pubKey) {
+    if (pubKey.toBuffer().length === 0) {
       throw new GeneralException(new Error(`Please provide signerPubKey`))
     }
 
@@ -313,6 +327,18 @@ export class WormholeClient {
         [key: string]: WormholeContractAddresses
       }
     )[network] as WormholeContractAddresses
+
+    if (!contractAddresses) {
+      throw new GeneralException(
+        new Error(`Contracts for ${network} on Injective not found`),
+      )
+    }
+
+    if (!solanaContractAddresses) {
+      throw new GeneralException(
+        new Error(`Contracts for ${network} on Solana not found`),
+      )
+    }
 
     if (!contractAddresses.token_bridge) {
       throw new GeneralException(
