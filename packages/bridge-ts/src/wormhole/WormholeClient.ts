@@ -298,7 +298,7 @@ export class WormholeClient {
   }
 
   async attestFromSolanaToInjective(
-    args: SolanaTransferMsgArgs,
+    args: Omit<SolanaTransferMsgArgs, 'address' | 'amount'>,
     provider: BaseMessageSignerWalletAdapter,
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
