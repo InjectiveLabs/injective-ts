@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.9...@injectivelabs/bridge-ts@1.0.10) (2022-11-15)
+
+
+### Features
+
+* added attest from solana to injective ([40f770e](https://github.com/InjectiveLabs/injective-ts/commit/40f770e54edb3179de1e76f252f379cd5e45a013))
+
+
+
+
+
 ## [1.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.8...@injectivelabs/bridge-ts@1.0.9) (2022-11-15)
 
 
