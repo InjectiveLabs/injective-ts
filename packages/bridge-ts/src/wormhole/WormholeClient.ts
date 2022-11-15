@@ -20,21 +20,12 @@ import {
   approveEth,
   parseSequenceFromLogEth,
   getEmitterAddressEth,
-  getIsTransferCompletedInjective,
   attestFromSolana,
   createWrappedOnInjective,
+  hexToUint8Array,
 } from '@certusone/wormhole-sdk'
-import {
-  getAssociatedTokenAddress,
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-  TOKEN_PROGRAM_ID,
-} from '@solana/spl-token'
-import {
-  Connection,
-  PublicKey,
-  PublicKey as SolanaPublicKey,
-  TransactionResponse,
-} from '@solana/web3.js'
+import { getAssociatedTokenAddress } from '@solana/spl-token'
+import { Connection, PublicKey, TransactionResponse } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { ethers } from 'ethers'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
@@ -51,7 +42,10 @@ import {
   WormholeSolanaContractAddresses,
   WormholeEthereumContractAddresses,
 } from './types'
-import { createTransferContractMsgExec } from './utils'
+import {
+  createTransferContractMsgExec,
+  getSolanaTransactionInfo,
+} from './utils'
 
 export class WormholeClient {
   public network: Network
@@ -278,18 +272,6 @@ export class WormholeClient {
       },
     )
 
-    const result = await getIsTransferCompletedInjective(
-      contractAddresses.token_bridge,
-      signedVAA,
-      chainGrpcWasmApi,
-    )
-
-    if (!result) {
-      throw new GeneralException(
-        new Error(`Transfer has not been completed on Injective`),
-      )
-    }
-
     return redeemOnInjective(
       contractAddresses.token_bridge,
       recipient,
@@ -303,7 +285,6 @@ export class WormholeClient {
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
     const { tokenAddress, recipient, signerPubKey } = args
-    const endpoints = getEndpointsForNetwork(network)
     const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
 
     if (!solanaHostUrl) {
@@ -354,15 +335,12 @@ export class WormholeClient {
       )
     }
 
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
     const connection = new Connection(solanaHostUrl, 'confirmed')
-    const ownerKey = new SolanaPublicKey(pubKey.toBytes())
-
     const transaction = await attestFromSolana(
       connection,
       solanaContractAddresses.core,
       solanaContractAddresses.token_bridge,
-      ownerKey,
+      pubKey,
       tokenAddress,
     )
 
@@ -370,10 +348,8 @@ export class WormholeClient {
     const transactionId = await connection.sendRawTransaction(
       signed.serialize(),
     )
-    const info = await connection.getTransaction(transactionId, {
-      commitment: 'finalized',
-      maxSupportedTransactionVersion: 0,
-    })
+
+    const info = await getSolanaTransactionInfo(transactionId, connection)
 
     if (!info) {
       throw new Error('An error occurred while fetching the transaction info')
@@ -393,18 +369,6 @@ export class WormholeClient {
         transport: isBrowser() ? undefined : NodeHttpTransport(),
       },
     )
-
-    const result = await getIsTransferCompletedInjective(
-      contractAddresses.token_bridge,
-      signedVAA,
-      chainGrpcWasmApi,
-    )
-
-    if (!result) {
-      throw new GeneralException(
-        new Error(`Transfer has not been completed on Injective`),
-      )
-    }
 
     return createWrappedOnInjective(
       contractAddresses.token_bridge,
@@ -471,13 +435,16 @@ export class WormholeClient {
     }
 
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+
+    const originAssetHex = tryNativeToHexString(
+      args.tokenAddress,
+      WORMHOLE_CHAINS.solana,
+    )
     const foreignAsset = await getForeignAssetInjective(
       contractAddresses.token_bridge,
       chainGrpcWasmApi,
       WORMHOLE_CHAINS.solana,
-      new Uint8Array(
-        Buffer.from(tryNativeToHexString(args.tokenAddress, 'injective')),
-      ),
+      hexToUint8Array(originAssetHex),
     )
 
     if (!foreignAsset) {
@@ -485,23 +452,17 @@ export class WormholeClient {
     }
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
-    const solanaMintKey = new SolanaPublicKey(foreignAsset)
-    const ownerKey = new SolanaPublicKey(pubKey.toBytes())
-    const recipientAddress = await getAssociatedTokenAddress(
-      solanaMintKey,
-      ownerKey,
-      false,
-      ASSOCIATED_TOKEN_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
-    )
+    const fromAddress = (
+      await getAssociatedTokenAddress(new PublicKey(args.tokenAddress), pubKey)
+    ).toString()
 
     const transaction = await transferFromSolana(
       connection,
       solanaContractAddresses.core,
       solanaContractAddresses.token_bridge,
-      ownerKey,
-      recipientAddress,
-      solanaMintKey,
+      pubKey,
+      fromAddress,
+      args.tokenAddress,
       BigInt(amount),
       tryNativeToUint8Array(recipient, WORMHOLE_CHAINS.injective),
       WORMHOLE_CHAINS.injective,
@@ -511,10 +472,8 @@ export class WormholeClient {
     const transactionId = await connection.sendRawTransaction(
       signed.serialize(),
     )
-    const info = await connection.getTransaction(transactionId, {
-      commitment: 'finalized',
-      maxSupportedTransactionVersion: 0,
-    })
+
+    const info = await getSolanaTransactionInfo(transactionId, connection)
 
     if (!info) {
       throw new Error('An error occurred while fetching the transaction info')
@@ -534,18 +493,6 @@ export class WormholeClient {
         transport: isBrowser() ? undefined : NodeHttpTransport(),
       },
     )
-
-    const result = await getIsTransferCompletedInjective(
-      contractAddresses.token_bridge,
-      signedVAA,
-      chainGrpcWasmApi,
-    )
-
-    if (!result) {
-      throw new GeneralException(
-        new Error(`Transfer has not been completed on Injective`),
-      )
-    }
 
     return redeemOnInjective(
       contractAddresses.token_bridge,
