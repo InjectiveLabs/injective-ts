@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.8...@injectivelabs/bridge-ts@1.0.9) (2022-11-15)
+
+
+### Bug Fixes
+
+* networks for wormhole constants ([e4ccdfd](https://github.com/InjectiveLabs/injective-ts/commit/e4ccdfdcad79051361c3126da3149135023761d5))
+
+
+
+
+
 ## [1.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.7...@injectivelabs/bridge-ts@1.0.8) (2022-11-14)
 
 
