@@ -24,6 +24,7 @@ export enum CosmosChainId {
   Persistence = 'core-1',
   Secret = 'secret-4',
   Stride = 'stride-1',
+  Crescent = 'crescent-1',
 }
 
 export enum TestnetCosmosChainId {

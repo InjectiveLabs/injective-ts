@@ -8,15 +8,15 @@ import {
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { WalletStrategy } from '../../strategies/wallet'
-import { SendTransactionOptions } from '../types'
+import { WalletStrategy } from '../strategies/wallet'
+import { SendTransactionOptions } from '../core/types'
 import {
   DEFAULT_GAS_PRICE,
   GAS_LIMIT_MULTIPLIER,
   GAS_PRICE_MULTIPLIER,
   INJ_DENOM,
   TX_DEFAULTS_GAS,
-} from '../utils/constants'
+} from '../core/utils/constants'
 
 export const getTransactionOptions = (
   transactionOptions: Partial<TransactionOptions>,

@@ -1,19 +1,3 @@
-export const canonicalChannelIds = [
-  'channel-1',
-  'channel-4',
-  'channel-5',
-  'channel-6',
-  'channel-8',
-  'channel-74',
-  'channel-76',
-  'channel-78',
-  'channel-82',
-  'channel-83',
-  'channel-84',
-  'channel-88',
-  'channel-89',
-]
-
 export default {
   '16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821': {
     path: 'transfer/channel-83',
@@ -70,5 +54,9 @@ export default {
   '3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25': {
     path: 'transfer/channel-89',
     baseDenom: 'ustrd',
+  },
+  '3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6': {
+    path: 'transfer/channel-90',
+    baseDenom: 'ucre',
   },
 }

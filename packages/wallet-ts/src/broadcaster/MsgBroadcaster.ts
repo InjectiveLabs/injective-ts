@@ -31,13 +31,13 @@ import {
   getEthereumSignerAddress,
   getGasPriceBasedOnMessage,
   getInjectiveSignerAddress,
-} from '../utils/utils'
+} from '../core/utils/utils'
 import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
-} from '../types'
-import { isCosmosWallet } from '../cosmos'
+} from '../core/types'
+import { isCosmosWallet } from '../core/cosmos'
 
 /**
  * This class is used to broadcast transactions

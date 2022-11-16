@@ -697,6 +697,24 @@ export default {
     coinGeckoId: 'stride',
   },
 
+  UCRE: {
+    name: 'Crescent',
+    logo: 'crescent.jpeg',
+    symbol: 'CRE',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'crescent',
+  },
+
+  CRE: {
+    name: 'Stride',
+    logo: 'crescent.jpeg',
+    symbol: 'CRE',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'crescent',
+  },
+
   PROJ: {
     name: 'PROJ',
     logo: 'projx.png',

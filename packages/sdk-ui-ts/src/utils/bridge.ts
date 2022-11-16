@@ -138,6 +138,11 @@ export const tokenDenomsPerNetwork = [
     denoms: ['ustrd'],
     symbols: ['strd'],
   },
+  {
+    network: BridgingNetwork.Crescent,
+    denoms: ['ucre'],
+    symbols: ['cre'],
+  },
 ] as NetworkConfig[]
 
 export const cosmosNativeDenomsFromChainId = {
@@ -217,6 +222,11 @@ export const cosmosNativeDenomsFromChainId = {
     ...tokenMetaUtil.getMetaBySymbol('STRD'),
     tokenType: TokenType.Ibc,
     denom: 'ustrd',
+  },
+  [CosmosChainId.Stride]: {
+    ...tokenMetaUtil.getMetaBySymbol('CRE'),
+    tokenType: TokenType.Ibc,
+    denom: 'ucre',
   },
   [TestnetCosmosChainId.Cosmoshub]: {
     ...tokenMetaUtil.getMetaBySymbol('UPHOTON'),
@@ -465,6 +475,10 @@ export const getNetworkFromSender = (sender: string): BridgingNetwork => {
 
   if (sender.startsWith('stride')) {
     return BridgingNetwork.Stride
+  }
+
+  if (sender.startsWith('crescent')) {
+    return BridgingNetwork.Crescent
   }
 
   return BridgingNetwork.CosmosHub

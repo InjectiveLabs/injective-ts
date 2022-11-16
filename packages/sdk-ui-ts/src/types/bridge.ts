@@ -18,6 +18,7 @@ export enum BridgingNetwork {
   Moonbeam = 'moonbeam',
   Secret = 'secret',
   Stride = 'stride',
+  Crescent = 'crescent',
 }
 
 export const MintScanExplorerUrl = {
@@ -29,6 +30,7 @@ export const MintScanExplorerUrl = {
   [BridgingNetwork.Osmosis]: 'osmosis',
   [BridgingNetwork.Secret]: 'secret',
   [BridgingNetwork.Stride]: 'stride',
+  [BridgingNetwork.Crescent]: 'crescent',
 } as Record<BridgingNetwork, string>
 
 export enum BridgeTransactionState {

@@ -80,6 +80,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://rpc.chihuahua.wtf',
         rest: 'https://api.chihuahua.wtf',
       }
+    case CosmosChainId.Crescent:
+      return {
+        rpc: 'https://tm.crescent.injective.network',
+        rest: 'https://lcd.crescent.injective.network',
+      }
     case TestnetCosmosChainId.Cosmoshub:
       return {
         rpc: 'https://testnet.tm.cosmos.injective.dev',
