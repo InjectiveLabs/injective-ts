@@ -28,6 +28,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { getGrpcTransport } from '../../../utils/grpc'
 import { isBrowser } from '../../../utils/helpers'
+import { isTxNotFoundError } from './utils'
 
 if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
@@ -71,11 +72,7 @@ export class TxGrpcClient implements TxConcreteClient {
         txHash: txResponse.getTxhash(),
       }
     } catch (e: unknown) {
-      const errorToString = (e as any).toString()
-      const transactionNotYetFound =
-        errorToString.includes('404') || errorToString.includes('not found')
-
-      if (!transactionNotYetFound) {
+      if (!isTxNotFoundError(e)) {
         throw new TransactionException(
           new Error('There was an issue while fetching transaction details'),
           {
@@ -101,13 +98,7 @@ export class TxGrpcClient implements TxConcreteClient {
           return txResponse
         }
       } catch (error: any) {
-        const errorToString = error.toString()
-        const acceptableErrorStrings = ['tx not found', 'not found']
-        const errorContainsAcceptableErrorCodes = acceptableErrorStrings.some(
-          (code) => errorToString.includes(code),
-        )
-
-        if (!errorContainsAcceptableErrorCodes) {
+        if (!isTxNotFoundError(error)) {
           throw error
         }
       }

@@ -16,6 +16,7 @@ import {
 } from '@injectivelabs/exceptions'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
+import { isTxNotFoundError } from './utils'
 
 export class TxRestClient implements TxConcreteClient {
   public httpClient: HttpClient
@@ -51,11 +52,7 @@ export class TxRestClient implements TxConcreteClient {
         txHash: txResponse.txhash,
       }
     } catch (e: unknown) {
-      const errorToString = (e as any).toString()
-      const transactionNotYetFound =
-        errorToString.includes('404') || errorToString.includes('not found')
-
-      if (!transactionNotYetFound) {
+      if (!isTxNotFoundError(e)) {
         throw new TransactionException(
           new Error('There was an issue while fetching transaction details'),
           {
@@ -82,13 +79,7 @@ export class TxRestClient implements TxConcreteClient {
           return txResponse
         }
       } catch (error: any) {
-        const errorToString = error.toString()
-        const acceptableErrorCodes = ['404', '400']
-        const errorContainsAcceptableErrorCodes = acceptableErrorCodes.some(
-          (code) => errorToString.includes(code),
-        )
-
-        if (!errorContainsAcceptableErrorCodes) {
+        if (!isTxNotFoundError(error)) {
           throw error
         }
       }
