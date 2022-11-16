@@ -28,7 +28,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { getGrpcTransport } from '../../../utils/grpc'
 import { isBrowser } from '../../../utils/helpers'
-import { isTxNotFoundError } from './utils'
+import { errorToErrorMessage, isTxNotFoundError } from './utils'
 
 if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
@@ -81,7 +81,7 @@ export class TxGrpcClient implements TxConcreteClient {
         )
       }
 
-      throw new GrpcUnaryRequestException(new Error((e as any).message), {
+      throw new GrpcUnaryRequestException(new Error(errorToErrorMessage(e)), {
         contextModule: 'tx',
       })
     }

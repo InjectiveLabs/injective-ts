@@ -16,7 +16,7 @@ import {
 } from '@injectivelabs/exceptions'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
-import { isTxNotFoundError } from './utils'
+import { errorToErrorMessage, isTxNotFoundError } from './utils'
 
 export class TxRestClient implements TxConcreteClient {
   public httpClient: HttpClient
@@ -61,7 +61,7 @@ export class TxRestClient implements TxConcreteClient {
         )
       }
 
-      throw new TransactionException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(errorToErrorMessage(e)), {
         contextModule: 'tx',
       })
     }

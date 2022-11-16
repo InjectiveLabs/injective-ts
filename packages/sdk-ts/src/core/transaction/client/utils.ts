@@ -1,9 +1,9 @@
 export const isTxNotFoundError = (error: any) => {
   if (!error.response) {
     const errorToString = error.toString()
-    const acceptableErrorCodes = ['404']
+    const acceptableErrorStrings = ['404', 'not found']
 
-    return acceptableErrorCodes.some((code) => errorToString.includes(code))
+    return acceptableErrorStrings.some((code) => errorToString.includes(code))
   }
 
   const message = error.response.data
@@ -19,4 +19,16 @@ export const isTxNotFoundError = (error: any) => {
   }
 
   return false
+}
+
+export const errorToErrorMessage = (error: any) => {
+  if (!error.response) {
+    return error.toString()
+  }
+
+  const message = error.response.data
+    ? error.response.data.message
+    : error.toString()
+
+  return message
 }
