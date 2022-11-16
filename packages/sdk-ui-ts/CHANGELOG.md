@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.300](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.299...@injectivelabs/sdk-ui-ts@1.0.300) (2022-11-16)
+
+
+### Bug Fixes
+
+* crescent add to cosmostation ([0360627](https://github.com/InjectiveLabs/injective-ts/commit/03606270b92e8c3b28d59eb4b9707b9be4df3fd9))
+
+
+
+
+
 ## [1.0.299](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.298...@injectivelabs/sdk-ui-ts@1.0.299) (2022-11-16)
 
 
