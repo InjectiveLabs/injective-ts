@@ -71,7 +71,11 @@ export class TxGrpcClient implements TxConcreteClient {
         txHash: txResponse.getTxhash(),
       }
     } catch (e: unknown) {
-      if ((e as any).toString().includes('400')) {
+      const errorToString = (e as any).toString()
+      const transactionNotYetFound =
+        errorToString.includes('404') || errorToString.includes('not found')
+
+      if (!transactionNotYetFound) {
         throw new TransactionException(
           new Error('There was an issue while fetching transaction details'),
           {
