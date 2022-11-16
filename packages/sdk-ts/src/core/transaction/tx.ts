@@ -33,7 +33,7 @@ export interface SignerDetails {
 /** @type {CreateTransactionWithSignersArgs} */
 export interface CreateTransactionWithSignersArgs {
   fee?: StdFee // the fee to include in the transaction
-  memo: string // the memo to include in the transaction
+  memo?: string // the memo to include in the transaction
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
   message: MsgArg | MsgArg[] // the message that should be packed into the transaction
   signers: SignerDetails | SignerDetails[] // the signers of the transaction
@@ -44,7 +44,7 @@ export interface CreateTransactionWithSignersArgs {
 /** @type {CreateTransactionArgs} */
 export interface CreateTransactionArgs {
   fee?: StdFee // the fee to include in the transaction
-  memo: string // the memo to include in the transaction
+  memo?: string // the memo to include in the transaction
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
   message: MsgArg | MsgArg[] // the message that should be packed into the transaction
   pubKey: string // the pubKey of the signer of the transaction in base64
@@ -97,11 +97,11 @@ export const getPublicKey = ({
 
 export const createBody = ({
   message,
-  memo,
+  memo = '',
   timeoutHeight,
 }: {
   message: MsgArg | MsgArg[]
-  memo: string
+  memo?: string
   timeoutHeight?: number
 }) => {
   const messages = Array.isArray(message) ? message : [message]
@@ -250,13 +250,13 @@ export const createSigDoc = ({
  * @returns {CreateTransactionResult} result
  */
 export const createTransactionWithSigners = ({
-  memo,
   signers,
   chainId,
   message,
+  timeoutHeight,
+  memo = '',
   fee = DEFAULT_STD_FEE,
   signMode = SIGN_DIRECT,
-  timeoutHeight,
 }: CreateTransactionWithSignersArgs): CreateTransactionResult => {
   const actualSigners = Array.isArray(signers) ? signers : [signers]
   const [signer] = actualSigners
