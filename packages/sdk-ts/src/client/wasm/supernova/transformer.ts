@@ -66,13 +66,20 @@ export class SupernovaQueryTransformer {
     ) as QueryVaultContractDerivativeConfigResponse
 
     return {
-      cw20CodeId: formatToString(config.cw20_code_id),
-      cw20Label: formatToString(config.cw20_label),
-      defaultMidPriceVolatilityRatio: formatToString(
-        config.default_mid_price_volatility_ratio,
+      owner: formatToString(config.owner),
+      marketId: formatToString(config.market_id),
+      subaccountId: formatToString(config.subaccount_id),
+      feeRecipient: formatToString(config.fee_recipient),
+      leverage: formatToString(config.leverage),
+      orderDensity: formatToString(config.order_density),
+      reservationPriceSensitivityRatio: formatToString(
+        config.reservation_price_sensitivity_ratio,
       ),
-      emergencyOracleVolatilitySampleSize: formatToString(
-        config.emergency_oracle_volatility_sample_size,
+      reservationSpreadSensitivityRatio: formatToString(
+        config.reservation_spread_sensitivity_ratio,
+      ),
+      maxActiveCapitalUtilizationRatio: formatToString(
+        config.max_active_capital_utilization_ratio,
       ),
       headChangeToleranceRatio: formatToString(
         config.head_change_tolerance_ratio,
@@ -80,49 +87,39 @@ export class SupernovaQueryTransformer {
       headToTailDeviationRatio: formatToString(
         config.head_to_tail_deviation_ratio,
       ),
-      lastValidMarkPrice: formatToString(config.last_valid_mark_price),
-      leverage: formatToString(config.leverage),
-      leveragedActiveCapitalToMaxPositionExposureRatio: formatToString(
-        config.leveraged_active_capital_to_max_position_exposure_ratio,
+      signedMinHeadToFairPriceDeviationRatio: formatToString(
+        config.signed_min_head_to_fair_price_deviation_ratio,
       ),
-      lpName: formatToString(config.lp_name),
-      lpSymbol: formatToString(config.lp_symbol),
-      lpTokenAddress: formatToString(config.lp_token_address),
-      marketId: formatToString(config.market_id),
-      masterAddress: formatToString(config.master_address),
-      maxActiveCapitalUtilizationRatio: formatToString(
-        config.max_active_capital_utilization_ratio,
-      ),
-      minOracleVolatilitySampleSize: formatToString(
-        config.min_oracle_volatility_sample_size,
+      signedMinHeadToTobDeviationRatio: formatToString(
+        config.signed_min_head_to_tob_deviation_ratio,
       ),
       minProximityToLiquidation: formatToString(
         config.min_proximity_to_liquidation,
       ),
-      minTradeVolatilitySampleSize: formatToString(
-        config.min_trade_volatility_sample_size,
-      ),
-      minVolatilityRatio: formatToString(config.min_volatility_ratio),
-      oracleVolatilityGroupSec: formatToString(
-        config.oracle_volatility_group_sec,
-      ),
-      orderDensity: formatToString(config.order_density),
       postReductionPercOfMaxPosition: formatToString(
         config.post_reduction_perc_of_max_position,
       ),
-      reservationPriceSensitivityRatio: formatToString(
-        config.reservation_price_sensitivity_ratio,
+      oracleVolatilityGroupSec: formatToString(
+        config.oracle_volatility_group_sec,
       ),
-      reservationSpreadSensitivityRatio: formatToString(
-        config.reservation_spread_sensitivity_ratio,
+      minOracleVolatilitySampleSize: formatToString(
+        config.min_oracle_volatility_sample_size,
+      ),
+      emergencyOracleVolatilitySampleSize: formatToString(
+        config.emergency_oracle_volatility_sample_size,
       ),
       tradeVolatilityGroupSec: formatToString(
         config.trade_volatility_group_sec,
       ),
-      cw20MarketingInfo: formatToString(config.cw20_marketing_info),
-      feeRecipient: formatToString(config.fee_recipient),
-      owner: formatToString(config.owner),
-      subaccountId: formatToString(config.subaccount_id),
+      minTradeVolatilitySampleSize: formatToString(
+        config.min_trade_volatility_sample_size,
+      ),
+      defaultMidPriceVolatilityRatio: formatToString(
+        config.default_mid_price_volatility_ratio,
+      ),
+      minVolatilityRatio: formatToString(config.min_volatility_ratio),
+      lastValidMarkPrice: formatToString(config.last_valid_mark_price),
+      masterAddress: formatToString(config.master_address),
     }
   }
 
@@ -134,36 +131,20 @@ export class SupernovaQueryTransformer {
     ) as QueryVaultContractSpotConfigResponse
 
     return {
-      cw20CodeId: formatToString(config.cw20_code_id),
-      cw20Label: formatToString(config.cw20_label),
       defaultMidPriceVolatilityRatio: formatToString(
         config.default_mid_price_volatility_ratio,
       ),
-      inventoryImbalanceMarketOrderThreshold: formatToString(
-        config.inventory_imbalance_market_order_threshold,
+      fairPriceTailDeviationRatio: formatToString(
+        config.fair_price_tail_deviation_ratio,
       ),
+      feeRecipient: formatToString(config.fee_recipient),
       headChangeToleranceRatio: formatToString(
         config.head_change_tolerance_ratio,
       ),
-      lpName: formatToString(config.lp_name),
-      lpSymbol: formatToString(config.lp_symbol),
-      lpTokenAddress: formatToString(config.lp_token_address),
       marketId: formatToString(config.market_id),
-      marketBuyMidPriceDeviationPercent: formatToString(
-        config.market_buy_mid_price_deviation_percent,
-      ),
-      marketSellMidPriceDeviationPercent: formatToString(
-        config.market_sell_mid_price_deviation_percent,
-      ),
       masterAddress: formatToString(config.master_address),
       maxActiveCapitalUtilizationRatio: formatToString(
         config.max_active_capital_utilization_ratio,
-      ),
-      midPriceTailDeviationRatio: formatToString(
-        config.mid_price_tail_deviation_ratio,
-      ),
-      minHeadToMidDeviationRatio: formatToString(
-        config.min_head_to_mid_deviation_ratio,
       ),
       minHeadToTailDeviationRatio: formatToString(
         config.min_head_to_tail_deviation_ratio,
@@ -171,13 +152,22 @@ export class SupernovaQueryTransformer {
       minTradeVolatilitySampleSize: formatToString(
         config.min_trade_volatility_sample_size,
       ),
+      oracleType: formatToString(config.oracle_type),
       orderDensity: formatToString(config.order_density),
+      owner: formatToString(config.owner),
       reservationPriceSensitivityRatio: formatToString(
         config.reservation_price_sensitivity_ratio,
       ),
       reservationSpreadSensitivityRatio: formatToString(
         config.reservation_spread_sensitivity_ratio,
       ),
+      signedMinHeadToFairPriceDeviationRatio: formatToString(
+        config.signed_min_head_to_fair_price_deviation_ratio,
+      ),
+      signedMinHeadToTobDeviationRatio: formatToString(
+        config.signed_min_head_to_tob_deviation_ratio,
+      ),
+      subaccountId: formatToString(config.subaccount_id),
       targetBaseWeight: formatToString(config.target_base_weight),
       tradeVolatilityGroupCount: formatToString(
         config.trade_volatility_group_count,
@@ -185,10 +175,6 @@ export class SupernovaQueryTransformer {
       tradeVolatilityGroupSec: formatToString(
         config.trade_volatility_group_sec,
       ),
-      cw20MarketingInfo: formatToString(),
-      feeRecipient: formatToString(config.fee_recipient),
-      owner: formatToString(config.owner),
-      subaccountId: formatToString(config.subaccount_id),
     }
   }
 
