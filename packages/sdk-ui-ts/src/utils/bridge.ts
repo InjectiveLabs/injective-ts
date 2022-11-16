@@ -59,6 +59,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Evmos,
   BridgingNetwork.Secret,
   BridgingNetwork.Stride,
+  BridgingNetwork.Crescent,
 ]
 
 export const CosmosNetworks = [
