@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.299](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.298...@injectivelabs/sdk-ui-ts@1.0.299) (2022-11-16)
+
+
+### Features
+
+* add crescent ([c902e84](https://github.com/InjectiveLabs/injective-ts/commit/c902e84fe1addf9f7fc01ba2098629a1ef313d69))
+
+
+
+
+
 ## [1.0.298](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.297...@injectivelabs/sdk-ui-ts@1.0.298) (2022-11-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

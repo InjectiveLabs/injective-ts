@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/bridge-ts",
   "description": "Bridge utilities and abstractions in TypeScript to be used in Injective products",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
@@ -34,11 +34,11 @@
     "@axelar-network/axelarjs-sdk": "^0.11.7",
     "@certusone/wormhole-sdk": "^0.9.2",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
-    "@injectivelabs/exceptions": "^1.0.27",
-    "@injectivelabs/networks": "^1.0.39",
-    "@injectivelabs/sdk-ts": "^1.0.216",
-    "@injectivelabs/ts-types": "^1.0.16",
-    "@injectivelabs/utils": "^1.0.33",
+    "@injectivelabs/exceptions": "^1.0.28",
+    "@injectivelabs/networks": "^1.0.40",
+    "@injectivelabs/sdk-ts": "^1.0.217",
+    "@injectivelabs/ts-types": "^1.0.17",
+    "@injectivelabs/utils": "^1.0.34",
     "@solana/spl-token": "^0.3.6",
     "@solana/wallet-adapter-base": "^0.9.18",
     "@solana/web3.js": "^1.66.2",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.53...@injectivelabs/token-metadata@1.0.54) (2022-11-16)
+
+
+### Features
+
+* add crescent ([c902e84](https://github.com/InjectiveLabs/injective-ts/commit/c902e84fe1addf9f7fc01ba2098629a1ef313d69))
+
+
+
+
+
 ## [1.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.52...@injectivelabs/token-metadata@1.0.53) (2022-11-14)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
