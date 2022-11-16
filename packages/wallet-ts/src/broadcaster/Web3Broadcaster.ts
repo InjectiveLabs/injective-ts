@@ -9,14 +9,14 @@ import {
 } from '@injectivelabs/contracts'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { WalletStrategy } from '../strategies/wallet'
-import { SendTransactionOptions } from '../core/types'
+import { SendTransactionOptions } from '../wallets/types'
 import {
   DEFAULT_GAS_PRICE,
   GAS_LIMIT_MULTIPLIER,
   GAS_PRICE_MULTIPLIER,
   INJ_DENOM,
   TX_DEFAULTS_GAS,
-} from '../core/utils/constants'
+} from '../wallets/utils/constants'
 
 export const getTransactionOptions = (
   transactionOptions: Partial<TransactionOptions>,

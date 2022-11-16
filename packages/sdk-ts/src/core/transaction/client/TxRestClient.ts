@@ -78,7 +78,13 @@ export class TxRestClient implements TxConcreteClient {
           return txResponse
         }
       } catch (error: any) {
-        if (!error.toString().includes('404')) {
+        const errorToString = error.toString()
+        const acceptableErrorCodes = ['404', '400']
+        const errorContainsAcceptableErrorCodes = acceptableErrorCodes.some(
+          (code) => errorToString.includes(code),
+        )
+
+        if (!errorContainsAcceptableErrorCodes) {
           throw error
         }
       }

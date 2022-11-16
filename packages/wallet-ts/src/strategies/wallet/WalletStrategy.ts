@@ -28,7 +28,7 @@ import WalletConnect from './strategies/WalletConnect'
 import CosmostationEth from './strategies/CosmostationEth'
 import { Wallet } from '../../types/enums'
 import { isEthWallet } from './utils'
-import { isCosmosWallet } from '../../core/cosmos'
+import { isCosmosWallet } from '../../wallets/cosmos'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { ethereumOptions } = args

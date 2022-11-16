@@ -1,3 +1,3 @@
 export * from './strategies'
-export * from './core'
+export * from './wallets'
 export * from './types'

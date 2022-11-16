@@ -97,7 +97,13 @@ export class TxGrpcClient implements TxConcreteClient {
           return txResponse
         }
       } catch (error: any) {
-        if (!error.toString().includes('tx not found')) {
+        const errorToString = error.toString()
+        const acceptableErrorStrings = ['tx not found', 'not found']
+        const errorContainsAcceptableErrorCodes = acceptableErrorStrings.some(
+          (code) => errorToString.includes(code),
+        )
+
+        if (!errorContainsAcceptableErrorCodes) {
           throw error
         }
       }

@@ -12,7 +12,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { LeapWallet } from '../../../core/leap'
+import { LeapWallet } from '../../../wallets/leap'
 import { WalletAction } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../types/strategy'
 
