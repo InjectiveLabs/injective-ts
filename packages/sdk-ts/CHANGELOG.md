@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.219](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.218...@injectivelabs/sdk-ts@1.0.219) (2022-11-16)
+
+
+### Bug Fixes
+
+* not found tx polling ([226f2bf](https://github.com/InjectiveLabs/injective-ts/commit/226f2bf6a4368d33cd17428f87752fe6bb56a6c5))
+
+
+
+
+
 ## [1.0.218](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.217...@injectivelabs/sdk-ts@1.0.218) (2022-11-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
