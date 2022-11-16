@@ -20,67 +20,55 @@ export interface QueryMastContractConfigResponse {
 
 export interface QueryVaultContractDerivativeConfigResponse {
   config: {
-    cw20_code_id: string
-    cw20_label: string
-    default_mid_price_volatility_ratio: string
-    emergency_oracle_volatility_sample_size: string
-    head_change_tolerance_ratio: string
-    head_to_tail_deviation_ratio: string
-    last_valid_mark_price: string
-    leverage: string
-    leveraged_active_capital_to_max_position_exposure_ratio: string
-    lp_name: string
-    lp_symbol: string
-    lp_token_address: string
+    owner: string
     market_id: string
-    master_address: string
-    max_active_capital_utilization_ratio: string
-    min_oracle_volatility_sample_size: string
-    min_proximity_to_liquidation: string
-    min_trade_volatility_sample_size: string
-    min_volatility_ratio: string
-    oracle_volatility_group_sec: string
+    subaccount_id: string
+    fee_recipient: string
+    leverage: string
     order_density: string
-    post_reduction_perc_of_max_position: string
     reservation_price_sensitivity_ratio: string
     reservation_spread_sensitivity_ratio: string
+    max_active_capital_utilization_ratio: string
+    head_change_tolerance_ratio: string
+    head_to_tail_deviation_ratio: string
+    signed_min_head_to_fair_price_deviation_ratio: string
+    signed_min_head_to_tob_deviation_ratio: string
+    min_proximity_to_liquidation: string
+    post_reduction_perc_of_max_position: string
+    oracle_volatility_group_sec: string
+    min_oracle_volatility_sample_size: string
+    emergency_oracle_volatility_sample_size: string
     trade_volatility_group_sec: string
-    cw20_marketing_info?: any
-    fee_recipient: string
-    owner: string
-    subaccount_id: string
+    min_trade_volatility_sample_size: string
+    default_mid_price_volatility_ratio: string
+    min_volatility_ratio: string
+    last_valid_mark_price: string
+    master_address: string
   }
 }
 
 export interface QueryVaultContractSpotConfigResponse {
   config: {
-    cw20_code_id: string
-    cw20_label: string
     default_mid_price_volatility_ratio: string
-    inventory_imbalance_market_order_threshold: string
+    fair_price_tail_deviation_ratio: string
+    fee_recipient: string
     head_change_tolerance_ratio: string
-    lp_name: string
-    lp_symbol: string
-    lp_token_address: string
     market_id: string
-    market_buy_mid_price_deviation_percent: string
-    market_sell_mid_price_deviation_percent: string
     master_address: string
     max_active_capital_utilization_ratio: string
-    mid_price_tail_deviation_ratio: string
-    min_head_to_mid_deviation_ratio: string
     min_head_to_tail_deviation_ratio: string
     min_trade_volatility_sample_size: string
+    oracle_type: string
     order_density: string
+    owner: string
     reservation_price_sensitivity_ratio: string
     reservation_spread_sensitivity_ratio: string
+    signed_min_head_to_fair_price_deviation_ratio: string
+    signed_min_head_to_tob_deviation_ratio: string
     subaccount_id: string
     target_base_weight: string
     trade_volatility_group_count: string
     trade_volatility_group_sec: string
-    fee_recipient: string
-    owner: string
-    cw20_marketing_info?: any
   }
 }
 
