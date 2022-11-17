@@ -1,4 +1,4 @@
-export { default as MsgExec } from './msgs/MsgExec'
+export { default as MsgPrivilegedExecuteContract } from './msgs/MsgPrivilegedExecuteContract'
 export { default as MsgExecuteContract } from './msgs/MsgExecuteContract'
 export { default as MsgInstantiateContract } from './msgs/MsgInstantiateContract'
 
