@@ -68,6 +68,13 @@ export class WormholeClient {
     this.wormholeRpcUrl = wormholeRpcUrl
   }
 
+  async getBalances(address: PublicKey) {
+    const { solanaHostUrl } = this
+    const connection = new Connection(solanaHostUrl || '')
+
+    return connection.getBalance(address)
+  }
+
   async getRedeemOnInjectiveMsg({
     address,
     signed,
