@@ -4,7 +4,7 @@ import { PublicKey } from '@solana/web3.js'
 
 export interface TransferMsgArgs {
   address?: string
-  tokenAddress: string
+  tokenAddress?: string
   signerPubKey?: PublicKey
   amount: string
   recipientChainId: ChainId | number | string

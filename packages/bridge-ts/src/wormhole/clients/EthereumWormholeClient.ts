@@ -39,6 +39,10 @@ export class EthereumWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
+    if (!args.tokenAddress) {
+      throw new GeneralException(new Error(`Please provide tokenAddress`))
+    }
+
     const ethereumContractAddresses = (
       WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK as {
         [key: string]: WormholeEthereumContractAddresses

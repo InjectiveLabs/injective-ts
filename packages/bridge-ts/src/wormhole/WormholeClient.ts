@@ -65,6 +65,10 @@ export class WormholeClient {
       throw new GeneralException(new Error(`Please provide address`))
     }
 
+    if (!tokenAddress) {
+      throw new GeneralException(new Error(`Please provide tokenAddress`))
+    }
+
     const contractAddresses = (
       WORMHOLE_CONTRACT_BY_NETWORK as {
         [key: string]: WormholeContractAddresses

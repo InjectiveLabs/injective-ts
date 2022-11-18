@@ -63,6 +63,10 @@ export class SolanaWormholeClient extends WormholeClient {
     const { tokenAddress, recipient, signerPubKey } = args
     const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
 
+    if (!tokenAddress) {
+      throw new GeneralException(new Error(`Please provide tokenAddress`))
+    }
+
     if (!solanaHostUrl) {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
@@ -264,6 +268,10 @@ export class SolanaWormholeClient extends WormholeClient {
 
     if (!solanaHostUrl) {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    if (!args.tokenAddress) {
+      throw new GeneralException(new Error(`Please provide tokenAddress`))
     }
 
     if (pubKey.toBuffer().length === 0) {
