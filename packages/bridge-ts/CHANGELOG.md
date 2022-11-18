@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.22...@injectivelabs/bridge-ts@1.0.23) (2022-11-18)
+
+
+### Features
+
+* transfer native sol option ([ae17950](https://github.com/InjectiveLabs/injective-ts/commit/ae17950e0798235e0914a44c67128c58b457f279))
+
+
+
+
+
 ## [1.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.21...@injectivelabs/bridge-ts@1.0.22) (2022-11-18)
 
 
