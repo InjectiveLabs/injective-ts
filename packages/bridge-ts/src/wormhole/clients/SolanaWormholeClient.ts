@@ -13,6 +13,7 @@ import {
   attestFromSolana,
   createWrappedOnInjective,
   hexToUint8Array,
+  transferNativeSol,
 } from '@certusone/wormhole-sdk'
 import { getAssociatedTokenAddress } from '@solana/spl-token'
 import { Connection, PublicKey, TransactionResponse } from '@solana/web3.js'
@@ -146,6 +147,106 @@ export class SolanaWormholeClient extends WormholeClient {
     )
 
     return createWrappedOnInjective(
+      contractAddresses.token_bridge,
+      recipient,
+      signedVAA,
+    )
+  }
+
+  async transferNativeSolFromSolanaToInjective(
+    args: TransferMsgArgs,
+    provider: BaseMessageSignerWalletAdapter,
+  ) {
+    const { network, solanaHostUrl, wormholeRpcUrl } = this
+    const { amount, recipient, signerPubKey } = args
+    const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    if (pubKey.toBuffer().length === 0) {
+      throw new GeneralException(new Error(`Please provide signerPubKey`))
+    }
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    const solanaContractAddresses = (
+      WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
+        [key: string]: WormholeSolanaContractAddresses
+      }
+    )[network] as WormholeSolanaContractAddresses
+
+    const contractAddresses = (
+      WORMHOLE_CONTRACT_BY_NETWORK as {
+        [key: string]: WormholeContractAddresses
+      }
+    )[network] as WormholeContractAddresses
+
+    if (!contractAddresses) {
+      throw new GeneralException(
+        new Error(`Contracts for ${network} on Injective not found`),
+      )
+    }
+
+    if (!solanaContractAddresses) {
+      throw new GeneralException(
+        new Error(`Contracts for ${network} on Solana not found`),
+      )
+    }
+
+    if (!contractAddresses.token_bridge) {
+      throw new GeneralException(
+        new Error(`Token Bridge Address for ${network} on Injective not found`),
+      )
+    }
+
+    if (!solanaContractAddresses.token_bridge) {
+      throw new GeneralException(
+        new Error(`Token Bridge Address for ${network} on Solana not found`),
+      )
+    }
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+    const transaction = await transferNativeSol(
+      connection,
+      solanaContractAddresses.core,
+      solanaContractAddresses.token_bridge,
+      pubKey,
+      BigInt(amount),
+      tryNativeToUint8Array(recipient, WORMHOLE_CHAINS.injective),
+      WORMHOLE_CHAINS.injective,
+    )
+
+    const signed = await provider.signTransaction(transaction)
+    const transactionId = await connection.sendRawTransaction(
+      signed.serialize(),
+    )
+
+    const info = await getSolanaTransactionInfo(transactionId, connection)
+
+    if (!info) {
+      throw new Error('An error occurred while fetching the transaction info')
+    }
+
+    const sequence = parseSequenceFromLogSolana(info as TransactionResponse)
+    const emitterAddress = await getEmitterAddressSolana(
+      solanaContractAddresses.token_bridge,
+    )
+
+    const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
+      [wormholeRpcUrl],
+      WORMHOLE_CHAINS.solana,
+      emitterAddress,
+      sequence,
+      {
+        transport: isBrowser() ? undefined : NodeHttpTransport(),
+      },
+    )
+
+    return redeemOnInjective(
       contractAddresses.token_bridge,
       recipient,
       signedVAA,
