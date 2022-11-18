@@ -1,9 +1,9 @@
 import { binaryToBase64 } from '@injectivelabs/sdk-ts'
 import { Connection } from '@solana/web3.js'
-import { SolanaTransferMsgArgs, EthereumTransferMsgArgs } from './types'
+import { TransferMsgArgs } from './types'
 
 export const createTransferContractMsgExec = (
-  args: SolanaTransferMsgArgs | EthereumTransferMsgArgs,
+  args: TransferMsgArgs,
   info: Record<string, any>,
 ) => {
   const nonce = Math.round(Math.random() * 100000)
