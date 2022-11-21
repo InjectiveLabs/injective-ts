@@ -59,4 +59,8 @@ export default {
     path: 'transfer/channel-90',
     baseDenom: 'ucre',
   },
+  E8AC6B792CDE60AB208CA060CA010A3881F682A7307F624347AB71B6A0B0BF89: {
+    path: 'transfer/channel-13',
+    baseDenom: 'ASTRO',
+  },
 }

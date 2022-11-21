@@ -723,4 +723,13 @@ export default {
     address: '',
     coinGeckoId: '',
   },
+
+  ASTRO: {
+    name: 'ASTRO',
+    logo: 'astroport.png',
+    symbol: 'ASTRO',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'astroport-fi',
+  },
 } as Record<string, TokenMeta>
