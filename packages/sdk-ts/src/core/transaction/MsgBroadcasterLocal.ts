@@ -9,7 +9,7 @@ import {
 import {
   BigNumberInBase,
   DEFAULT_STD_FEE,
-  DEFAULT_TIMEOUT_HEIGHT,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -92,7 +92,7 @@ export class MsgBroadcasterLocal {
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_TIMEOUT_HEIGHT,
+      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
     /** Prepare the Transaction * */
@@ -164,7 +164,7 @@ export class MsgBroadcasterLocal {
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_TIMEOUT_HEIGHT,
+      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
     /** Prepare the Transaction * */

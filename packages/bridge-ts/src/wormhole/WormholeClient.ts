@@ -1,9 +1,6 @@
+import { INJ_DENOM } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
-import {
-  MsgExecuteContract,
-  binaryToBase64,
-  INJ_DENOM,
-} from '@injectivelabs/sdk-ts'
+import { MsgExecuteContract, binaryToBase64 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { tryNativeToHexString } from '@certusone/wormhole-sdk'
 import { WORMHOLE_CHAINS, WORMHOLE_CONTRACT_BY_NETWORK } from './constants'

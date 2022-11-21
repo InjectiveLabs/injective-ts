@@ -1,5 +1,9 @@
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { HttpClient } from '@injectivelabs/utils'
+import {
+  HttpClient,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_BLOCK_TIME_IN_SECONDS,
+} from '@injectivelabs/utils'
 import {
   BroadcastMode,
   SimulationResponse,
@@ -67,7 +71,10 @@ export class TxRestClient implements TxConcreteClient {
     }
   }
 
-  public async fetchTxPoll(txHash: string, timeout = 30000) {
+  public async fetchTxPoll(
+    txHash: string,
+    timeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT * DEFAULT_BLOCK_TIME_IN_SECONDS,
+  ) {
     const POLL_INTERVAL = 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {

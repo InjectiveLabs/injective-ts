@@ -7,7 +7,6 @@ import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Msgs } from '../../modules'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../../client'
 import {
-  DEFAULT_TIMEOUT_HEIGHT,
   getAddressFromInjectiveAddress,
   getInjectiveAddress,
 } from '../../../utils'
@@ -16,6 +15,7 @@ import { createTransaction, CreateTransactionArgs } from '../tx'
 import { MessageGenerated } from '../types'
 import { BaseAccount } from './../../accounts/BaseAccount'
 import { GeneralException } from '@injectivelabs/exceptions'
+import { DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
 
 export const createAnyMessage = (msg: MessageGenerated) => {
   const message = new Any()
@@ -108,7 +108,7 @@ export const createTransactionForAddressAndMsg = async (
   const latestBlock = await tendermintRestApi.fetchLatestBlock()
   const latestHeight = latestBlock.header.height
   const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-    DEFAULT_TIMEOUT_HEIGHT,
+    DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   )
 
   const pubKey = params.pubKey || baseAccount.pubKey.key

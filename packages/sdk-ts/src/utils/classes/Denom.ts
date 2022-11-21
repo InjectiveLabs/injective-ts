@@ -8,7 +8,7 @@ import {
   Token,
   canonicalChannelIds,
 } from '@injectivelabs/token-metadata'
-import { INJ_DENOM } from '..'
+import { INJ_DENOM } from '@injectivelabs/utils'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
 

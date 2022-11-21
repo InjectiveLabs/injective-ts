@@ -7,7 +7,6 @@ import {
   createTxRawEIP712,
   createTxRawFromSigResponse,
   createWeb3Extension,
-  DEFAULT_TIMEOUT_HEIGHT,
   getEip712TypedData,
   hexToBase64,
   hexToBuff,
@@ -19,7 +18,11 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import {
+  BigNumberInBase,
+  DEFAULT_STD_FEE,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+} from '@injectivelabs/utils'
 import {
   ErrorType,
   GeneralException,
@@ -174,7 +177,7 @@ export class MsgBroadcaster {
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_TIMEOUT_HEIGHT,
+      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
     /** EIP712 for signing on Ethereum wallets */
@@ -317,7 +320,7 @@ export class MsgBroadcaster {
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_TIMEOUT_HEIGHT,
+      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
     const pubKey = await walletStrategy.getPubKey()
@@ -406,7 +409,7 @@ export class MsgBroadcaster {
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_TIMEOUT_HEIGHT,
+      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
     const pubKey = await walletStrategy.getPubKey()
