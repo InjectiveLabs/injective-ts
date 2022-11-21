@@ -2583,6 +2583,14 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
+"@injectivelabs/ninja-api@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@injectivelabs/ninja-api/-/ninja-api-1.0.0.tgz#2690f7c35ecf641763258d9be454ee82b826d3ce"
+  integrity sha512-y+bdCejmPsPKZGU6hlkLN7BtklvJ5J0j80bkW+wyHqFCg04XMFNMLKTfekhNy4yAMqIHRzkAHMbHVDPKvrKVyQ==
+  dependencies:
+    "@improbable-eng/grpc-web" "^0.14.0"
+    google-protobuf "^3.14.0"
+
 "@iov/crypto@2.1.0":
   version "2.1.0"
   resolved "https://registry.npmjs.org/@iov/crypto/-/crypto-2.1.0.tgz#10e91b6692e154958c11626dfd096a80e8a481a4"
