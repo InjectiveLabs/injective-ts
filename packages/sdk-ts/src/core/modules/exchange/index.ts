@@ -19,3 +19,4 @@ export { default as MsgInstantBinaryOptionsMarketLaunch } from './msgs/MsgInstan
 export { default as MsgTransferAndExecute } from './msgs/MsgTransferAndExecute'
 export { default as MsgMultiExecute } from './msgs/MsgMultiExecute'
 export { default as MsgReclaimLockedFunds } from './msgs/MsgReclaimLockedFunds'
+export { default as MsgExternalTransfer } from './msgs/MsgExternalTransfer'

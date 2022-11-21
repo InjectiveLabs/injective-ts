@@ -39,6 +39,7 @@ import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
 import MsgExec from './wasm/msgs/MsgPrivilegedExecuteContract'
 import MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract'
 import MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds'
+import MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer'
 import { MsgSubmitProposal } from './gov'
 
 /**
@@ -87,6 +88,7 @@ export type Msgs =
   | MsgWithdrawValidatorCommission
   | MsgEditValidator
   | MsgReclaimLockedFunds
+  | MsgExternalTransfer
 
 /**
  * @category Messages
@@ -113,3 +115,4 @@ export type ExchangeMsgs =
   | MsgTransferAndExecute
   | MsgMultiExecute
   | MsgReclaimLockedFunds
+  | MsgExternalTransfer
