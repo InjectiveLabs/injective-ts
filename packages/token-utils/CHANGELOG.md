@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.37...@injectivelabs/token-utils@1.0.38) (2022-11-21)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
 ## [1.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.36...@injectivelabs/token-utils@1.0.37) (2022-11-16)
 
 **Note:** Version bump only for package @injectivelabs/token-utils

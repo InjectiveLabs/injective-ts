@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.226](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.225...@injectivelabs/sdk-ts@1.0.226) (2022-11-21)
+
+
+### Features
+
+* add grpc support for ninja api ([0445623](https://github.com/InjectiveLabs/injective-ts/commit/04456234d2efa44a692beeccaf89e38894e71081))
+
+
+
+
+
 ## [1.0.225](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.224...@injectivelabs/sdk-ts@1.0.225) (2022-11-18)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
