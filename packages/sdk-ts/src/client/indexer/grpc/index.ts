@@ -1,6 +1,7 @@
 export { IndexerGrpcAccountApi } from './IndexerGrpcAccountApi'
 export { IndexerGrpcAuctionApi } from './IndexerGrpcAuctionApi'
 export { IndexerGrpcExplorerApi } from './IndexerGrpcExplorerApi'
+export { IndexerGrpcNinjaApi } from './IndexerGrpcNinjaApi'
 export { IndexerGrpcMetaApi } from './IndexerGrpcMetaApi'
 export { IndexerGrpcOracleApi } from './IndexerGrpcOracleApi'
 export { IndexerGrpcInsuranceFundApi } from './IndexerGrpcInsuranceFundApi'

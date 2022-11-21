@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.28...@injectivelabs/exceptions@1.0.29) (2022-11-21)
+
+
+### Features
+
+* add grpc support for ninja api ([0445623](https://github.com/InjectiveLabs/injective-ts/commit/04456234d2efa44a692beeccaf89e38894e71081))
+
+
+
+
+
 ## [1.0.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.27...@injectivelabs/exceptions@1.0.28) (2022-11-16)
 
 **Note:** Version bump only for package @injectivelabs/exceptions

@@ -28,6 +28,7 @@ export enum IndexerErrorModule {
   Derivatives = 'indexer-derivatives',
   Explorer = 'indexer-explorer',
   InsuranceFund = 'indexer-insurance-fund',
+  Ninja = 'indexer-ninja',
   Meta = 'indexer-meta',
   Oracle = 'indexer-oracle',
   Spot = 'indexer-spot',
