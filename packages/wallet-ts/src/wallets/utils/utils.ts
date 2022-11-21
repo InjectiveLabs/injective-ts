@@ -13,8 +13,6 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
   const hasMultipleMessages = Array.isArray(msgs)
   const isMsgExecMessage = (message: Msgs) =>
     message.toWeb3()['@type'].includes('MsgExec')
-  const isExchangeMessage = (message: Msgs) =>
-    message.toWeb3()['@type'].startsWith('/injective')
 
   const hasMsgExecMessages = Array.isArray(msgs)
     ? msgs.some(isMsgExecMessage)
@@ -24,6 +22,8 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
     return DEFAULT_GAS_LIMIT * 1.2
   }
 
+  const isExchangeMessage = (message: Msgs) =>
+    message.toWeb3()['@type'].startsWith('/injective')
   const hasExchangeMessages = Array.isArray(msgs)
     ? msgs.some(isExchangeMessage)
     : isExchangeMessage(msgs)
