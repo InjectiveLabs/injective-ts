@@ -1,5 +1,10 @@
 /* eslint-disable class-methods-use-this */
-import type { Keplr, Window as KeplrWindow } from '@keplr-wallet/types'
+import type {
+  AminoSignResponse,
+  Keplr,
+  StdSignDoc,
+  Window as KeplrWindow,
+} from '@keplr-wallet/types'
 import type { OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
 import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
@@ -90,6 +95,7 @@ export class KeplrWallet {
   async getKey(): Promise<{
     name: string
     algo: string
+    isNanoLedger: boolean
     pubKey: Uint8Array
     address: Uint8Array
     bech32Address: string
@@ -177,6 +183,31 @@ export class KeplrWallet {
     const result = await txClient.fetchTxPoll(txHash)
 
     return result.txhash
+  }
+
+  async signEIP712CosmosTx({
+    eip712,
+    signDoc,
+  }: {
+    eip712: any
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
+    const { chainId } = this
+    const keplr = await this.getKeplrWallet()
+    const key = await this.getKey()
+
+    try {
+      return keplr.experimentalSignEIP712CosmosTx_v0(
+        chainId,
+        key.bech32Address,
+        eip712,
+        signDoc,
+      )
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        contextModule: 'Keplr',
+      })
+    }
   }
 
   async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {
