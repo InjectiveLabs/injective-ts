@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.210](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.209...@injectivelabs/wallet-ts@1.0.210) (2022-11-22)
+
+
+### Features
+
+* initial eip712 support for keplr ([09c7ac6](https://github.com/InjectiveLabs/injective-ts/commit/09c7ac6ebe2c89c64cb0f89e1971f3ade642ec45))
+
+
+
+
+
 ## [1.0.209](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.208...@injectivelabs/wallet-ts@1.0.209) (2022-11-22)
 
 
