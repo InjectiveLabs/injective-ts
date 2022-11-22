@@ -17,7 +17,6 @@ import { TxRestClient } from '@injectivelabs/sdk-ts'
 import {
   CosmosWalletException,
   ErrorType,
-  GeneralException,
   TransactionException,
   UnspecifiedErrorCode,
   WalletErrorActionModule,
@@ -69,7 +68,11 @@ export class KeplrWallet {
     const chainData = getExperimentalChainConfigBasedOnChainId(chainId)
 
     if (!chainData) {
-      throw new GeneralException(new Error(`There is no data for ${chainId}`))
+      throw new CosmosWalletException(
+        new Error(
+          `Keplr doesn't support ${chainId} chainId. Please use another wallet`,
+        ),
+      )
     }
 
     try {

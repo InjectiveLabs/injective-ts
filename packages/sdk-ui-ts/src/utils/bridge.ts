@@ -226,7 +226,7 @@ export const cosmosNativeDenomsFromChainId = {
     tokenType: TokenType.Ibc,
     denom: 'ustrd',
   },
-  [CosmosChainId.Stride]: {
+  [CosmosChainId.Crescent]: {
     ...tokenMetaUtil.getMetaBySymbol('CRE'),
     tokenType: TokenType.Ibc,
     denom: 'ucre',
