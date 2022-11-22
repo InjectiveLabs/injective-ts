@@ -73,7 +73,7 @@ export class TxRestClient implements TxConcreteClient {
 
   public async fetchTxPoll(
     txHash: string,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
   ) {
     const POLL_INTERVAL = DEFAULT_BLOCK_TIME_IN_SECONDS * 1000
 
@@ -98,6 +98,9 @@ export class TxRestClient implements TxConcreteClient {
       new Error(
         `Transaction was not included in a block before timeout of ${timeout}ms`,
       ),
+      {
+        contextModule: 'TxRestClient',
+      },
     )
   }
 
@@ -124,7 +127,7 @@ export class TxRestClient implements TxConcreteClient {
 
   public async broadcast(tx: TxRaw, options?: TxClientBroadcastOptions) {
     const { timeout } = options || {
-      timeout: DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+      timeout: DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
     }
 
     try {

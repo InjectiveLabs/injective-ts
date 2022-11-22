@@ -8,7 +8,7 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxRestClient } from '@injectivelabs/sdk-ts/dist/core/transaction'
+import { TxRestClient } from '@injectivelabs/sdk-ts'
 import {
   CosmosWalletException,
   ErrorType,
