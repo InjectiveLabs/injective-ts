@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.38...@injectivelabs/utils@1.0.39) (2022-11-22)
+
+
+### Features
+
+* added a way to get default fee for token ([65bb3b4](https://github.com/InjectiveLabs/injective-ts/commit/65bb3b4e8266614eb9ad3d390f856ded3fe5c459))
+
+
+
+
+
 ## [1.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.37...@injectivelabs/utils@1.0.38) (2022-11-22)
 
 
