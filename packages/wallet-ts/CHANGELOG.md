@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.209](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.208...@injectivelabs/wallet-ts@1.0.209) (2022-11-22)
+
+
+### Bug Fixes
+
+* gas limit on eip712 ([fa6fa3a](https://github.com/InjectiveLabs/injective-ts/commit/fa6fa3a0d2c5985544f299d1e93ee9ee1ea75af4))
+
+
+### Features
+
+* broadcast allow fee price to be overwritten ([85a53d7](https://github.com/InjectiveLabs/injective-ts/commit/85a53d79f747786e00dae7248491ad7d0d97685f))
+
+
+
+
+
 ## [1.0.208](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.207...@injectivelabs/wallet-ts@1.0.208) (2022-11-22)
 
 
