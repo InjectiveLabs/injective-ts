@@ -183,6 +183,9 @@ export class MsgBroadcaster {
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
+      fee: {
+        gas: tx.feePrice,
+      },
       tx: {
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
