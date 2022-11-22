@@ -180,11 +180,13 @@ export class MsgBroadcaster {
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
+    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
       fee: {
-        gas: tx.feePrice,
+        gas: gas || DEFAULT_STD_FEE.gas,
       },
       tx: {
         accountNumber: accountDetails.accountNumber.toString(),
@@ -212,7 +214,10 @@ export class MsgBroadcaster {
       message: msgs.map((m) => m.toDirectSign()),
       memo: '',
       signMode: SIGN_AMINO,
-      fee: DEFAULT_STD_FEE,
+      fee: {
+        ...DEFAULT_STD_FEE,
+        gas: gas || DEFAULT_STD_FEE.gas,
+      },
       pubKey: publicKeyBase64,
       sequence: baseAccount.sequence,
       timeoutHeight: timeoutHeight.toNumber(),
