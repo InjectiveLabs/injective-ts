@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.31...@injectivelabs/bridge-ts@1.0.32) (2022-11-22)
+
+
+### Bug Fixes
+
+* update moonbeam mainnet chain id ([2a17825](https://github.com/InjectiveLabs/injective-ts/commit/2a17825f004023202d3fc52c8988332773176270))
+
+
+
+
+
 ## [1.0.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.30...@injectivelabs/bridge-ts@1.0.31) (2022-11-22)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
