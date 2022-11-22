@@ -51,9 +51,14 @@ export const getStdFeeForToken = (
     denom: string
     decimals: number
   } = { denom: 'inj', decimals: 18 },
+  gasPrice?: string,
 ) => {
-  const gasPrice = new BigNumberInWei(DEFAULT_GAS_PRICE).toBase()
-  const gasPriceScaled = gasPrice.toWei(token.decimals)
+  const gasPriceInBase = new BigNumberInWei(
+    gasPrice || DEFAULT_GAS_PRICE,
+  ).toBase()
+  const gasPriceScaled = new BigNumberInBase(gasPriceInBase).toWei(
+    token.decimals,
+  )
 
   return {
     amount: [
