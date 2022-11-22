@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@axelar-network/axelarjs-sdk": "^0.11.7",
-    "@certusone/wormhole-sdk": "^0.9.2",
+    "@certusone/wormhole-sdk": "^0.9.3",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/exceptions": "^1.0.30",
     "@injectivelabs/networks": "^1.0.44",
