@@ -1,4 +1,7 @@
 import { ComposerResponse } from '@injectivelabs/ts-types'
+import BigNumberInBase from './classes/BigNumber/BigNumberInBase'
+import BigNumberInWei from './classes/BigNumber/BigNumberInWei'
+import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from './constants'
 
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))
@@ -42,3 +45,25 @@ export const mapMultipleComposerResponseMessages = <T, R>(
       directBroadcastMessage: [] as { type: string; message: T }[],
     },
   )
+
+export const getStdFeeForToken = (
+  token: {
+    denom: string
+    decimals: number
+  } = { denom: 'inj', decimals: 18 },
+) => {
+  const gasPrice = new BigNumberInWei(DEFAULT_GAS_PRICE).toBase()
+  const gasPriceScaled = gasPrice.toWei(token.decimals)
+
+  return {
+    amount: [
+      {
+        denom: token.denom,
+        amount: new BigNumberInBase(DEFAULT_GAS_LIMIT)
+          .times(gasPriceScaled)
+          .toString(),
+      },
+    ],
+    gas: DEFAULT_GAS_LIMIT.toString(),
+  }
+}
