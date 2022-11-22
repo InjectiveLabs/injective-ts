@@ -65,6 +65,7 @@ export const CosmostationNetworks = [
 export const CosmosNetworks = [
   BridgingNetwork.CosmosHub,
   BridgingNetwork.Chihuahua,
+  BridgingNetwork.Crescent,
   BridgingNetwork.Osmosis,
   BridgingNetwork.Axelar,
   BridgingNetwork.Juno,
@@ -77,6 +78,7 @@ export const CosmosNetworks = [
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Chihuahua,
   BridgingNetwork.CosmosHub,
+  BridgingNetwork.Crescent,
   BridgingNetwork.Juno,
   BridgingNetwork.Evmos,
   BridgingNetwork.Persistence,
