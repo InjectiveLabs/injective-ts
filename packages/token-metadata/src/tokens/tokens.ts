@@ -703,16 +703,16 @@ export default {
     symbol: 'CRE',
     decimals: 6,
     address: '',
-    coinGeckoId: 'crescent',
+    coinGeckoId: 'crescent-network',
   },
 
   CRE: {
-    name: 'Stride',
+    name: 'Crescent',
     logo: 'crescent.jpeg',
     symbol: 'CRE',
     decimals: 6,
     address: '',
-    coinGeckoId: 'crescent',
+    coinGeckoId: 'crescent-network',
   },
 
   PROJ: {
@@ -722,5 +722,14 @@ export default {
     decimals: 6,
     address: '',
     coinGeckoId: '',
+  },
+
+  ASTRO: {
+    name: 'ASTRO',
+    logo: 'astroport.png',
+    symbol: 'ASTRO',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'astroport-fi',
   },
 } as Record<string, TokenMeta>
