@@ -703,16 +703,16 @@ export default {
     symbol: 'CRE',
     decimals: 6,
     address: '',
-    coinGeckoId: 'crescent',
+    coinGeckoId: 'crescent-network',
   },
 
   CRE: {
-    name: 'Stride',
+    name: 'Crescent',
     logo: 'crescent.jpeg',
     symbol: 'CRE',
     decimals: 6,
     address: '',
-    coinGeckoId: 'crescent',
+    coinGeckoId: 'crescent-network',
   },
 
   PROJ: {
