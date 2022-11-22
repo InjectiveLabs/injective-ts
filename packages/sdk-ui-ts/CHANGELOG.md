@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.317](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.316...@injectivelabs/sdk-ui-ts@1.0.317) (2022-11-22)
+
+
+### Bug Fixes
+
+* cre chain-id ([b7ab896](https://github.com/InjectiveLabs/injective-ts/commit/b7ab896fcb5a0f4ae66d0100e4a29d79361c3abf))
+
+
+
+
+
 ## [1.0.316](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.315...@injectivelabs/sdk-ui-ts@1.0.316) (2022-11-22)
 
 
