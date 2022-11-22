@@ -30,7 +30,7 @@ import { getGrpcTransport } from '../../../utils/grpc'
 import { isBrowser } from '../../../utils/helpers'
 import { errorToErrorMessage, isTxNotFoundError } from './utils'
 import {
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
 
@@ -93,9 +93,9 @@ export class TxGrpcClient implements TxConcreteClient {
 
   public async fetchTxPoll(
     txHash: string,
-    timeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT * DEFAULT_BLOCK_TIME_IN_SECONDS,
+    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   ) {
-    const POLL_INTERVAL = 1000
+    const POLL_INTERVAL = DEFAULT_BLOCK_TIME_IN_SECONDS * 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
@@ -152,7 +152,7 @@ export class TxGrpcClient implements TxConcreteClient {
     const { txService } = this
     const { mode, timeout } = options || {
       mode: BroadcastMode.BROADCAST_MODE_SYNC,
-      timeout: DEFAULT_BLOCK_TIMEOUT_HEIGHT * DEFAULT_BLOCK_TIME_IN_SECONDS,
+      timeout: DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
     }
 
     const broadcastTxRequest = new BroadcastTxRequest()
