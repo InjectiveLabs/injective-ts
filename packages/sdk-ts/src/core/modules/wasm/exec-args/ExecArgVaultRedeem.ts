@@ -8,14 +8,14 @@ export declare namespace ExecArgVaultRedeem {
   export interface Params {
     vaultSubaccountId: string
     redeemerSubaccountId: string
-    lpTokenBurnAmount: string
+    redemptionType: string
     origin: string
   }
 
   export interface Data {
     vault_subaccount_id: string
     redeemer_subaccount_id: string
-    lp_token_burn_amount: string
+    redemption_type: string
   }
 }
 
@@ -36,7 +36,7 @@ export default class ExecArgVaultRedeem extends ExecArgsBase<
     return {
       vault_subaccount_id: params.vaultSubaccountId,
       redeemer_subaccount_id: params.redeemerSubaccountId,
-      lp_token_burn_amount: params.lpTokenBurnAmount,
+      redemption_type: params.redemptionType,
     }
   }
 

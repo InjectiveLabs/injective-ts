@@ -63,7 +63,7 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
   }: {
     pageSize?: number
     pageIndex?: number
-    codeId: number
+    codeId?: number
   }) {
     const request = new GetVaultsRequest()
 
@@ -75,7 +75,9 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
       request.setPageIndex(pageIndex)
     }
 
-    request.setCodeId(codeId)
+    if (codeId) {
+      request.setCodeId(codeId)
+    }
 
     try {
       const response = await this.request<
@@ -110,8 +112,8 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
     to,
   }: {
     vaultAddress: string
-    from: number
-    to: number
+    from?: number
+    to?: number
   }) {
     const request = new LPTokenPriceChartRequest()
 
@@ -153,8 +155,8 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
     to,
   }: {
     vaultAddress: string
-    from: number
-    to: number
+    from?: number
+    to?: number
   }) {
     const request = new TVLChartRequest()
 
