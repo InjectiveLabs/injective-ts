@@ -3,11 +3,7 @@ import {
   BridgeTransactionState,
   BridgingNetwork,
 } from './../types/bridge'
-import {
-  BigNumberInWei,
-  convertTimestampToMilliseconds,
-  DEFAULT_GAS_PRICE,
-} from '@injectivelabs/utils'
+import { convertTimestampToMilliseconds } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { UiBridgeTransaction, MintScanExplorerUrl } from './../types/bridge'
 import {
@@ -508,13 +504,13 @@ export const getGasPriceForCosmosNetwork = (network: BridgingNetwork) => {
     case BridgingNetwork.Persistence:
       return 0.04
     case BridgingNetwork.Evmos:
-      return new BigNumberInWei(40000000000).toBase().toNumber()
+      return 0.01
     case BridgingNetwork.Axelar:
       return 0.01
     case BridgingNetwork.Juno:
-      return 0.004
+      return 0.01
     default:
-      return new BigNumberInWei(DEFAULT_GAS_PRICE).toBase().toNumber()
+      return 0.01
   }
 }
 
@@ -535,14 +531,14 @@ export const getGasPriceForChainId = (chainId: CosmosChainId) => {
     case CosmosChainId.Persistence:
       return 0.04
     case CosmosChainId.Evmos:
-      return new BigNumberInWei(40000000000).toBase().toNumber()
+      return 0.01
     case CosmosChainId.Axelar:
       return 0.01
     case CosmosChainId.Juno:
-      return 0.004
+      return 0.01
     case CosmosChainId.Injective:
-      return new BigNumberInWei(DEFAULT_GAS_PRICE).toBase().toNumber()
+      return 0.01
     default:
-      return new BigNumberInWei(DEFAULT_GAS_PRICE).toBase().toNumber()
+      return 0.01
   }
 }
