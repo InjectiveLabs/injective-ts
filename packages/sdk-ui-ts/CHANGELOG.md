@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.323](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.322...@injectivelabs/sdk-ui-ts@1.0.323) (2022-11-23)
+
+
+### Bug Fixes
+
+* evmos gas price ([ff45852](https://github.com/InjectiveLabs/injective-ts/commit/ff458528a200bd616db01a4ea23abbbfbca94c15))
+
+
+
+
+
 ## [1.0.322](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.321...@injectivelabs/sdk-ui-ts@1.0.322) (2022-11-23)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
