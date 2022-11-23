@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use different types of wallets on Injective.",
-  "version": "1.0.217",
+  "version": "1.0.218",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
@@ -41,7 +41,7 @@
     "@injectivelabs/contracts": "^1.0.62",
     "@injectivelabs/exceptions": "^1.0.30",
     "@injectivelabs/networks": "^1.0.48",
-    "@injectivelabs/sdk-ts": "^1.0.237",
+    "@injectivelabs/sdk-ts": "^1.0.238",
     "@injectivelabs/token-metadata": "^1.0.64",
     "@injectivelabs/ts-types": "^1.0.17",
     "@injectivelabs/utils": "^1.0.42",
