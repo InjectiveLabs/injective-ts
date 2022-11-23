@@ -31,6 +31,9 @@ export interface Profits {
   threeMonthsChange: number
   oneMonthChange: number
   oneDayChange: number
+  oneWeekChange: number
+  oneYearChange: number
+  threeYearsChange: number
 }
 
 export interface VaultDenomBalance {
@@ -54,6 +57,7 @@ export interface Vault {
   vaultType: string
   lpTokenPrice: number
   subaccountInfo?: VaultSubaccountBalance
+  masterContractAddress: string
 }
 
 export interface Subscription {

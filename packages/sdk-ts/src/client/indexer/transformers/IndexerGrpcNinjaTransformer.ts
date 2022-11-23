@@ -51,6 +51,9 @@ export class IndexerGrpcNinjaTransformer {
       threeMonthsChange: grpcProfits.getThreeMonthsChange(),
       oneMonthChange: grpcProfits.getOneMonthChange(),
       oneDayChange: grpcProfits.getOneDayChange(),
+      oneWeekChange: grpcProfits.getOneWeekChange(),
+      oneYearChange: grpcProfits.getOneYearChange(),
+      threeYearsChange: grpcProfits.getThreeYearsChange(),
     }
   }
 
@@ -90,6 +93,7 @@ export class IndexerGrpcNinjaTransformer {
         IndexerGrpcNinjaTransformer.grpcVaultSubaccountInfoToVaultSubaccountInfo(
           grpcVault.getSubaccountInfo(),
         ),
+      masterContractAddress: grpcVault.getMasterContractAddress(),
     }
   }
 
