@@ -132,7 +132,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
           auth_info_bytes: signDoc.authInfoBytes,
           account_number: transaction.accountNumber.toString(),
         },
-        { fee: false, memo: true },
+        { fee: true, memo: true },
       )
 
       return {

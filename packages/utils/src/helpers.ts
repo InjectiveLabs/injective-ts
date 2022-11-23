@@ -63,9 +63,7 @@ export const getStdFeeForToken = (
     amount: [
       {
         denom: token.denom,
-        amount: new BigNumberInBase(DEFAULT_GAS_LIMIT)
-          .times(gasPriceScaled)
-          .toString(),
+        amount: gasPriceScaled.toString(),
       },
     ],
     gas: DEFAULT_GAS_LIMIT.toString(),
