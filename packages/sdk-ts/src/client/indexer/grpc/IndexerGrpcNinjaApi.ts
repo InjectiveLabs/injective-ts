@@ -201,12 +201,15 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
     pageSize?: number
     pageIndex?: number
     holderAddress: string
-    vaultAddress: string
+    vaultAddress?: string
   }) {
     const request = new VaultsByHolderAddressRequest()
 
     request.setHolderAddress(holderAddress)
-    request.setVaultAddress(vaultAddress)
+
+    if (vaultAddress) {
+      request.setVaultAddress(vaultAddress)
+    }
 
     if (pageSize) {
       request.setPageSize(pageSize)

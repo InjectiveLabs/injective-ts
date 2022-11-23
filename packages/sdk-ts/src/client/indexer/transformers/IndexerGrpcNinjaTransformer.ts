@@ -114,6 +114,7 @@ export class IndexerGrpcNinjaTransformer {
         grpcSubscription.getVaultInfo(),
       ),
       lpAmount: grpcSubscription.getLpAmount(),
+      lpAmountPercentage: grpcSubscription.getLpAmountPercentage(),
       holderAddress: grpcSubscription.getHolderAddress(),
     }
   }

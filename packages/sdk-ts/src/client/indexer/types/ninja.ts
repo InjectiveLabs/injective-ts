@@ -63,6 +63,7 @@ export interface Vault {
 export interface Subscription {
   vaultInfo?: Vault
   lpAmount: string
+  lpAmountPercentage: number
   holderAddress: string
 }
 
