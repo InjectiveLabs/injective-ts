@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.216](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.215...@injectivelabs/wallet-ts@1.0.216) (2022-11-23)
+
+
+### Features
+
+* added gas prices for chains ([321c5d7](https://github.com/InjectiveLabs/injective-ts/commit/321c5d73c6b8d7d27edcddd0e3094473c688f071))
+
+
+
+
+
 ## [1.0.215](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.214...@injectivelabs/wallet-ts@1.0.215) (2022-11-23)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
