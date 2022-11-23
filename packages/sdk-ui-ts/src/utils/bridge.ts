@@ -3,7 +3,11 @@ import {
   BridgeTransactionState,
   BridgingNetwork,
 } from './../types/bridge'
-import { convertTimestampToMilliseconds } from '@injectivelabs/utils'
+import {
+  BigNumberInWei,
+  convertTimestampToMilliseconds,
+  DEFAULT_GAS_PRICE,
+} from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { UiBridgeTransaction, MintScanExplorerUrl } from './../types/bridge'
 import {
@@ -480,9 +484,65 @@ export const getNetworkFromSender = (sender: string): BridgingNetwork => {
     return BridgingNetwork.Stride
   }
 
-  if (sender.startsWith('crescent')) {
+  if (sender.startsWith('cre')) {
     return BridgingNetwork.Crescent
   }
 
   return BridgingNetwork.CosmosHub
+}
+
+export const getGasPriceForCosmosNetwork = (network: BridgingNetwork) => {
+  switch (network) {
+    case BridgingNetwork.Chihuahua:
+      return 0.02
+    case BridgingNetwork.CosmosHub:
+      return 0.04
+    case BridgingNetwork.Osmosis:
+      return 0.04
+    case BridgingNetwork.Crescent:
+      return 0.02
+    case BridgingNetwork.Stride:
+      return 0.04
+    case BridgingNetwork.Secret:
+      return 0.25
+    case BridgingNetwork.Persistence:
+      return 0.04
+    case BridgingNetwork.Evmos:
+      return new BigNumberInWei(40000000000).toBase().toNumber()
+    case BridgingNetwork.Axelar:
+      return 0.01
+    case BridgingNetwork.Juno:
+      return 0.004
+    default:
+      return new BigNumberInWei(DEFAULT_GAS_PRICE).toBase().toNumber()
+  }
+}
+
+export const getGasPriceForChainId = (chainId: CosmosChainId) => {
+  switch (chainId) {
+    case CosmosChainId.Chihuahua:
+      return 0.02
+    case CosmosChainId.Cosmoshub:
+      return 0.04
+    case CosmosChainId.Osmosis:
+      return 0.04
+    case CosmosChainId.Crescent:
+      return 0.02
+    case CosmosChainId.Stride:
+      return 0.04
+    case CosmosChainId.Secret:
+      return 0.25
+    case CosmosChainId.Persistence:
+      return 0.04
+    case CosmosChainId.Evmos:
+      return new BigNumberInWei(40000000000).toBase().toNumber()
+    case CosmosChainId.Axelar:
+      return 0.01
+    case CosmosChainId.Juno:
+      return 0.004
+    case CosmosChainId.Injective:
+      return new BigNumberInWei(DEFAULT_GAS_PRICE).toBase().toNumber()
+    default:
+      return new BigNumberInWei(DEFAULT_GAS_PRICE).toBase().toNumber()
+  }
 }
