@@ -1,20 +1,20 @@
 import {
-  Vault as GrpcVault,
-  Profits as GrpcProfits,
-  SubaccountBalance as GrpcVaultSubaccountBalance,
-  DenomBalance as GrpcVaultDenomBalance,
-  Pagination as GrpcVaultPagination,
-  PriceSnapshot as GrpcPriceSnapshot,
-  Subscription as GrpcSubscription,
-  Holders as GrpcHolders,
+  Vault as GrpcNinjaVault,
+  Profits as GrpcNinjaProfits,
+  SubaccountBalance as GrpcNinjaSubaccountBalance,
+  DenomBalance as GrpcNinjaDenomBalance,
+  Pagination as GrpcNinjaPagination,
+  PriceSnapshot as GrpcNinjaPriceSnapshot,
+  Subscription as GrpcNinjaSubscription,
+  Holders as GrpcNinjaHolders,
 } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
 
-export enum RedemptionType {
+export enum NinjaRedemptionType {
   BaseOnly = 'BaseOnly',
   QuoteOnly = 'QuoteOnly',
   BaseAndQuote = 'BaseAndQuote',
 }
-export interface Holders {
+export interface NinjaHolders {
   holderAddress: string
   vaultAddress: string
   amount: string
@@ -22,12 +22,12 @@ export interface Holders {
   lpAmountPercentage: number
 }
 
-export interface PriceSnapshot {
+export interface NinjaPriceSnapshot {
   price: number
   updatedAt: number
 }
 
-export interface Profits {
+export interface NinjaProfits {
   allTimeChange: number
   threeMonthsChange: number
   oneMonthChange: number
@@ -38,32 +38,32 @@ export interface Profits {
   sixMonthsChange: number
 }
 
-export interface VaultDenomBalance {
+export interface NinjaDenomBalance {
   denom: string
   totalBalance: string
 }
 
-export interface VaultSubaccountBalance {
+export interface NinjaSubaccountBalance {
   subaccountId: string
-  balancesList: VaultDenomBalance[]
+  balancesList: NinjaDenomBalance[]
 }
 
-export interface Vault {
+export interface NinjaVault {
   contractAddress: string
   codeId: number
   vaultName: string
   marketId: string
   currentTvl: number
-  profits?: Profits
+  profits?: NinjaProfits
   updatedAt: number
   vaultType: string
   lpTokenPrice: number
-  subaccountInfo?: VaultSubaccountBalance
+  subaccountInfo?: NinjaSubaccountBalance
   masterContractAddress: string
 }
 
-export interface Subscription {
-  vaultInfo?: Vault
+export interface NinjaSubscription {
+  vaultInfo?: NinjaVault
   lpAmount: string
   lpAmountPercentage: number
   holderAddress: string
@@ -73,13 +73,20 @@ export interface NinjaPagination {
   total: Number
 }
 
+export interface NinjaPortfolio {
+  totalValue: number
+  pnl: number
+  totalValueChartList: NinjaPriceSnapshot[]
+  pnlChartList: NinjaPriceSnapshot[]
+}
+
 export {
-  GrpcVault,
-  GrpcProfits,
-  GrpcVaultSubaccountBalance,
-  GrpcVaultDenomBalance,
-  GrpcVaultPagination,
-  GrpcPriceSnapshot,
-  GrpcSubscription,
-  GrpcHolders,
+  GrpcNinjaVault,
+  GrpcNinjaProfits,
+  GrpcNinjaSubaccountBalance,
+  GrpcNinjaDenomBalance,
+  GrpcNinjaPagination,
+  GrpcNinjaPriceSnapshot,
+  GrpcNinjaSubscription,
+  GrpcNinjaHolders,
 }
