@@ -19,6 +19,7 @@ export interface Holders {
   vaultAddress: string
   amount: string
   updatedAt: number
+  lpAmountPercentage: number
 }
 
 export interface PriceSnapshot {
@@ -34,6 +35,7 @@ export interface Profits {
   oneWeekChange: number
   oneYearChange: number
   threeYearsChange: number
+  sixMonthsChange: number
 }
 
 export interface VaultDenomBalance {

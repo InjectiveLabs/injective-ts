@@ -54,6 +54,7 @@ export class IndexerGrpcNinjaTransformer {
       oneWeekChange: grpcProfits.getOneWeekChange(),
       oneYearChange: grpcProfits.getOneYearChange(),
       threeYearsChange: grpcProfits.getThreeYearsChange(),
+      sixMonthsChange: grpcProfits.getSixMonthsChange(),
     }
   }
 
@@ -125,6 +126,7 @@ export class IndexerGrpcNinjaTransformer {
       vaultAddress: grpcHolders.getVaultAddress(),
       amount: grpcHolders.getAmount(),
       updatedAt: grpcHolders.getUpdatedAt(),
+      lpAmountPercentage: grpcHolders.getLpAmountPercentage(),
     }
   }
 }
