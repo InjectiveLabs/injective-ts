@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.221](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.220...@injectivelabs/wallet-ts@1.0.221) (2022-11-26)
+
+
+### Features
+
+* experimental ledger support for keplr ([1afd947](https://github.com/InjectiveLabs/injective-ts/commit/1afd947a3714db9da63be89e862d5525ad15fc01))
+
+
+
+
+
 ## [1.0.220](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.219...@injectivelabs/wallet-ts@1.0.220) (2022-11-24)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
