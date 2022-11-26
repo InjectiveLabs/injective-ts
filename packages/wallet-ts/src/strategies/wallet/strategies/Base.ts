@@ -5,7 +5,7 @@ import {
   GeneralException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { WalletStrategyEthereumOptions } from '../types'
+import { WalletStrategyEthereumOptions } from '../../types'
 
 export default abstract class BaseConcreteStrategy {
   protected chainId: ChainId

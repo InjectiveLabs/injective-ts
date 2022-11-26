@@ -20,8 +20,8 @@ import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
-  TrezorWalletInfo,
-} from '../../types'
+} from '../../../types'
+import { TrezorWalletInfo } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
@@ -29,7 +29,7 @@ import {
 } from '../../constants'
 import TrezorHW from './hw'
 import { transformTypedData } from './utils'
-import { WalletAction } from '../../../../types/enums'
+import { WalletAction, WalletDeviceType } from '../../../../types/enums'
 
 type EthereumTransactionEIP1559 = {
   to: string
@@ -64,6 +64,10 @@ export default class Trezor
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
     this.trezor = new TrezorHW()
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    return Promise.resolve(WalletDeviceType.Hardware)
   }
 
   public async getAddresses(): Promise<string[]> {

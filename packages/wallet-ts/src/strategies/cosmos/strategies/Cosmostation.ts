@@ -14,8 +14,8 @@ import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { ConcreteCosmosWalletStrategy } from '../types/strategy'
-import { WalletAction } from '../../../types/enums'
+import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
+import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
 const getChainNameFromChainId = (chainId: CosmosChainId) => {
   const [chainName] = chainId.split('-')
@@ -45,6 +45,10 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
   constructor(args: { chainId: CosmosChainId }) {
     this.chainId = args.chainId
     this.chainName = getChainNameFromChainId(args.chainId)
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    return Promise.resolve(WalletDeviceType.Browser)
   }
 
   async isChainIdSupported(chainId?: CosmosChainId): Promise<boolean> {

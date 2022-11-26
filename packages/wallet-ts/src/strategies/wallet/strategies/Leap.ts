@@ -18,9 +18,9 @@ import {
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { LeapWallet } from '../../../wallets/leap'
-import { ConcreteWalletStrategy } from '../types'
+import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
-import { WalletAction } from '../../../types/enums'
+import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
 export default class Leap
   extends BaseConcreteStrategy
@@ -32,6 +32,10 @@ export default class Leap
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
     this.leapWallet = new LeapWallet(args.chainId)
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    return Promise.resolve(WalletDeviceType.Browser)
   }
 
   async getAddresses(): Promise<string[]> {

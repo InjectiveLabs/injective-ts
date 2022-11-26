@@ -15,9 +15,9 @@ import { ethereum, InstallError } from '@cosmostation/extension-client'
 import Web3 from 'web3'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../types'
+import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import BaseConcreteStrategy from './Base'
-import { WalletAction } from '../../../types/enums'
+import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { UnwrappedPromise } from '../../../types'
 
 export default class CosmostationEth
@@ -29,6 +29,10 @@ export default class CosmostationEth
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    return Promise.resolve(WalletDeviceType.Browser)
   }
 
   async getAddresses(): Promise<string[]> {

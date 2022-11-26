@@ -13,8 +13,8 @@ import {
 } from '@injectivelabs/exceptions'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { KeplrWallet } from '../../../wallets/keplr'
-import { ConcreteCosmosWalletStrategy } from '../types/strategy'
-import { WalletAction } from '../../../types/enums'
+import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
+import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
 export default class Keplr implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -24,6 +24,15 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
   constructor(args: { chainId: CosmosChainId }) {
     this.chainId = args.chainId || CosmosChainId.Injective
     this.keplrWallet = new KeplrWallet(args.chainId)
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    const keplrWallet = this.getKeplrWallet()
+    const key = await keplrWallet.getKey()
+
+    return key.isNanoLedger
+      ? Promise.resolve(WalletDeviceType.Hardware)
+      : Promise.resolve(WalletDeviceType.Browser)
   }
 
   async isChainIdSupported(chainId?: CosmosChainId): Promise<boolean> {

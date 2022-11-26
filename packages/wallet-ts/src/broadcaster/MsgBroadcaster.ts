@@ -41,6 +41,8 @@ import {
   MsgBroadcasterTxOptionsWithAddresses,
 } from '../wallets/types'
 import { isCosmosWallet } from '../wallets/cosmos'
+import { Wallet, WalletDeviceType } from '../types'
+import { createStdSignDoc, KeplrWallet } from '../wallets/keplr'
 
 /**
  * This class is used to broadcast transactions
@@ -212,7 +214,7 @@ export class MsgBroadcaster {
     const txRestClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
     const { txRaw } = createTransaction({
       message: msgs.map((m) => m.toDirectSign()),
-      memo: '',
+      memo: tx.memo,
       signMode: SIGN_AMINO,
       fee: {
         ...DEFAULT_STD_FEE,
@@ -311,6 +313,20 @@ export class MsgBroadcaster {
     const { walletStrategy, chainId } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
+    /**
+     * When using Ledger with Keplr we have
+     * to send EIP712 to sign on Keplr
+     */
+    if (walletStrategy.getWallet() === Wallet.Keplr) {
+      const walletDeviceType = await walletStrategy.getWalletDeviceType()
+      const isLedgerConnectedOnKeplr =
+        walletDeviceType === WalletDeviceType.Hardware
+
+      if (isLedgerConnectedOnKeplr) {
+        return this.experimentalBroadcastKeplrWithLedger(tx)
+      }
+    }
+
     /** Account Details * */
     const chainRestAuthApi = new ChainRestAuthApi(
       options.endpoints.sentryHttpApi,
@@ -337,7 +353,7 @@ export class MsgBroadcaster {
     /** Prepare the Transaction * */
     const { txRaw } = createTransactionWithSigners({
       chainId,
-      memo: tx.memo || '',
+      memo: tx.memo,
       message: msgs.map((m) => m.toDirectSign()),
       timeoutHeight: timeoutHeight.toNumber(),
       signers: {
@@ -369,6 +385,138 @@ export class MsgBroadcaster {
       chainId,
       address: tx.injectiveAddress,
     })
+  }
+
+  /**
+   * We use this method only when we want to broadcast a transaction using Ledger on Keplr for Injective
+   *
+   * @param tx the transaction that needs to be broadcasted
+   */
+  private async experimentalBroadcastKeplrWithLedger(
+    tx: MsgBroadcasterTxOptionsWithAddresses,
+  ) {
+    const { options } = this
+    const { walletStrategy, chainId, ethereumChainId } = options
+    const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
+
+    /**
+     * We can only use this method when Keplr is connected
+     * with ledger
+     */
+    if (walletStrategy.getWallet() === Wallet.Keplr) {
+      const walletDeviceType = await walletStrategy.getWalletDeviceType()
+      const isLedgerConnectedOnKeplr =
+        walletDeviceType === WalletDeviceType.Hardware
+
+      if (!isLedgerConnectedOnKeplr) {
+        throw new GeneralException(
+          new Error(
+            'This method can only be used when Keplr is connected with Ledger',
+          ),
+        )
+      }
+    }
+
+    if (!ethereumChainId) {
+      throw new GeneralException(new Error('Please provide ethereumChainId'))
+    }
+
+    const keplrWallet = new KeplrWallet(chainId)
+    /** Account Details * */
+    const chainRestAuthApi = new ChainRestAuthApi(
+      options.endpoints.sentryHttpApi,
+    )
+    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
+      tx.injectiveAddress,
+    )
+    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
+    const accountDetails = baseAccount.toAccountDetails()
+
+    /** Block Details */
+    const chainRestTendermintApi = new ChainRestTendermintApi(
+      options.endpoints.sentryHttpApi,
+    )
+    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
+    const latestHeight = latestBlock.header.height
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+    )
+
+    const pubKey = await walletStrategy.getPubKey()
+    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+
+    /** EIP712 for signing on Ethereum wallets */
+    const eip712TypedData = getEip712TypedData({
+      msgs,
+      fee: {
+        gas: gas || DEFAULT_STD_FEE.gas,
+      },
+      tx: {
+        accountNumber: accountDetails.accountNumber.toString(),
+        sequence: accountDetails.sequence.toString(),
+        timeoutHeight: timeoutHeight.toFixed(),
+        chainId,
+      },
+      ethereumChainId,
+    })
+
+    const aminoSignResponse = await keplrWallet.signEIP712CosmosTx({
+      eip712: eip712TypedData,
+      signDoc: createStdSignDoc({ ...baseAccount, ...tx, chainId, msgs }),
+    })
+
+    /**
+     * Create TxRaw from the signed tx that we
+     * get as a response in case the user changed the fee/memo
+     * on the Keplr popup
+     */
+    const { txRaw } = createTransaction({
+      message: msgs.map((m) => m.toDirectSign()),
+      memo: aminoSignResponse.signed.memo,
+      signMode: SIGN_AMINO,
+      fee: aminoSignResponse.signed.fee,
+      pubKey: pubKey,
+      sequence: parseInt(aminoSignResponse.signed.sequence, 10),
+      timeoutHeight: timeoutHeight.toNumber(),
+      accountNumber: parseInt(aminoSignResponse.signed.account_number, 10),
+      chainId,
+    })
+
+    /** Preparing the transaction for client broadcasting */
+    const txRestClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
+    const web3Extension = createWeb3Extension({
+      ethereumChainId,
+    })
+    const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
+
+    /** Append Signatures */
+    const signatureBuff = Buffer.from(
+      aminoSignResponse.signature.signature,
+      'base64',
+    )
+    txRawEip712.setSignaturesList([signatureBuff])
+
+    /* Simulate Transaction */
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate({
+        txRaw,
+        signature: signatureBuff,
+        txClient: new TxGrpcClient(options.endpoints.sentryGrpcApi),
+      })
+    }
+
+    /** Broadcast the transaction */
+    const response = await txRestClient.broadcast(txRawEip712)
+
+    if (response.code !== 0) {
+      throw new TransactionException(new Error(response.rawLog), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.ChainError,
+        contextCode: response.code,
+      })
+    }
+
+    return response.txHash
   }
 
   /**
@@ -426,7 +574,7 @@ export class MsgBroadcaster {
     /** Prepare the Transaction * */
     const { txRaw } = createTransactionWithSigners({
       chainId,
-      memo: tx.memo || '',
+      memo: tx.memo,
       message: msgs.map((m) => m.toDirectSign()),
       timeoutHeight: timeoutHeight.toNumber(),
       signers: [

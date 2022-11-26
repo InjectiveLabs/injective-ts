@@ -52,7 +52,10 @@ export class LedgerException extends ConcreteException {
       this.setMessage('Please make sure your Ledger device is connected')
     }
 
-    if (message.includes('Ledger device: Condition of use not satisfied')) {
+    if (
+      message.includes('Condition of use not satisfied') ||
+      message.includes('0x6985')
+    ) {
       this.setMessage('The request has been rejected')
     }
 

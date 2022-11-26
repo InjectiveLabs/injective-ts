@@ -2,14 +2,14 @@ import { AccountAddress, CosmosChainId } from '@injectivelabs/ts-types'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { Wallet } from '../../types/enums'
+import { Wallet, WalletDeviceType } from '../../types/enums'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
 import Cosmostation from './strategies/Cosmostation'
 import {
   ConcreteCosmosWalletStrategy,
   CosmosWalletStrategyArguments,
-} from './types/strategy'
+} from '../types/strategy'
 import { isCosmosWallet } from '../../wallets/cosmos/utils'
 
 export const cosmosWallets = [Wallet.Keplr, Wallet.Leap, Wallet.Cosmostation]
@@ -72,6 +72,10 @@ export default class CosmosWalletStrategy {
     }
 
     return this.strategies[this.wallet] as ConcreteCosmosWalletStrategy
+  }
+
+  public getWalletDeviceType(): Promise<WalletDeviceType> {
+    return this.getStrategy().getWalletDeviceType()
   }
 
   public getPubKey(): Promise<string> {

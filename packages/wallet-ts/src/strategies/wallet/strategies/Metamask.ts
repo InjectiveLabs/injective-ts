@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { isServerSide, sleep } from '@injectivelabs/utils'
 import {
   AccountAddress,
@@ -12,14 +13,13 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import {
-  ConcreteWalletStrategy,
   Eip1993ProviderWithMetamask,
-  EthereumWalletStrategyArgs,
   WindowWithEip1193Provider,
 } from '../types'
 import BaseConcreteStrategy from './Base'
-import { WalletAction } from '../../../types/enums'
+import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
 const $window = (isServerSide()
   ? {}
@@ -34,6 +34,10 @@ export default class Metamask
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
     this.ethereum = $window.ethereum
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    return Promise.resolve(WalletDeviceType.Browser)
   }
 
   async getAddresses(): Promise<string[]> {

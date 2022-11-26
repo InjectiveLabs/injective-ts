@@ -16,7 +16,7 @@ import {
   onChainIdChangeCallback,
   WalletStrategyArguments,
   WalletStrategyEthereumOptions,
-} from './types'
+} from './../types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
 import Cosmostation from './strategies/Cosmostation'
@@ -26,7 +26,7 @@ import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
 import WalletConnect from './strategies/WalletConnect'
 import CosmostationEth from './strategies/CosmostationEth'
-import { Wallet } from '../../types/enums'
+import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet } from './utils'
 import { isCosmosWallet } from '../../wallets/cosmos'
 
@@ -176,6 +176,10 @@ export default class WalletStrategy {
 
   public getAddresses(): Promise<AccountAddress[]> {
     return this.getStrategy().getAddresses()
+  }
+
+  public getWalletDeviceType(): Promise<WalletDeviceType> {
+    return this.getStrategy().getWalletDeviceType()
   }
 
   public getPubKey(): Promise<string> {

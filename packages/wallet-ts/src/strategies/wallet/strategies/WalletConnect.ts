@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { sleep } from '@injectivelabs/utils'
 import {
   AccountAddress,
@@ -19,9 +20,9 @@ import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
-} from '../types'
+} from '../../types'
 import BaseConcreteStrategy from './Base'
-import { WalletAction } from '../../../types/enums'
+import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
 export default class WalletConnect
   extends BaseConcreteStrategy
@@ -48,6 +49,10 @@ export default class WalletConnect
     super(args)
     this.ethereumOptions = args.ethereumOptions
     this.createWalletConnectProvider()
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    return Promise.resolve(WalletDeviceType.Browser)
   }
 
   private async connect(): Promise<void> {

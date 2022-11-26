@@ -4,8 +4,8 @@ import { DEFAULT_BASE_DERIVATION_PATH } from '../../../constants'
 import AccountManager from './AccountManager'
 
 const TREZOR_CONNECT_MANIFEST = {
-  email: 'contact@injective.com',
-  appUrl: 'https://injective.com',
+  email: 'contact@injectivelabs.org',
+  appUrl: 'https://injectivelabs.org',
 }
 
 export default class TrezorTransport {

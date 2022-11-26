@@ -19,9 +19,9 @@ import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { ConcreteWalletStrategy } from '../types'
+import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
-import { WalletAction } from '../../../types/enums'
+import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
 const INJECTIVE_CHAIN_NAME = 'injective'
 
@@ -34,6 +34,10 @@ export default class Cosmostation
   constructor(args: { chainId: ChainId }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    return Promise.resolve(WalletDeviceType.Browser)
   }
 
   async getAddresses(): Promise<string[]> {

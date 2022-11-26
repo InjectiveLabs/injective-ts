@@ -13,8 +13,8 @@ import {
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { LeapWallet } from '../../../wallets/leap'
-import { WalletAction } from '../../../types/enums'
-import { ConcreteCosmosWalletStrategy } from '../types/strategy'
+import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
 
 export default class Leap implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -24,6 +24,10 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
   constructor(args: { chainId: CosmosChainId }) {
     this.chainId = args.chainId || CosmosChainId.Injective
     this.leapWallet = new LeapWallet(args.chainId)
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    return Promise.resolve(WalletDeviceType.Browser)
   }
 
   async isChainIdSupported(chainId?: CosmosChainId): Promise<boolean> {

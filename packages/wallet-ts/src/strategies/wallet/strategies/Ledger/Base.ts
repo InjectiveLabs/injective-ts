@@ -19,9 +19,8 @@ import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
-  LedgerDerivationPathType,
-  LedgerWalletInfo,
-} from '../../types'
+} from '../../../types'
+import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_BASE_DERIVATION_PATH,
@@ -30,7 +29,7 @@ import {
 } from '../../constants'
 import LedgerHW from './hw'
 import { domainHash, messageHash } from './utils'
-import { WalletAction } from '../../../../types/enums'
+import { WalletAction, WalletDeviceType } from '../../../../types/enums'
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
@@ -64,6 +63,10 @@ export default class LedgerBase
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
     this.derivationPathType = args.derivationPathType
     this.ledger = new LedgerHW()
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    return Promise.resolve(WalletDeviceType.Hardware)
   }
 
   public async getAddresses(): Promise<string[]> {

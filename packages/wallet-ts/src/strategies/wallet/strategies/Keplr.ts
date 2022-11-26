@@ -18,9 +18,9 @@ import {
 } from '@injectivelabs/exceptions'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { KeplrWallet } from '../../../wallets/keplr'
-import { ConcreteWalletStrategy } from '../types'
+import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
-import { WalletAction } from '../../../types/enums'
+import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
 export default class Keplr
   extends BaseConcreteStrategy
@@ -32,6 +32,15 @@ export default class Keplr
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
     this.keplrWallet = new KeplrWallet(args.chainId)
+  }
+
+  async getWalletDeviceType(): Promise<WalletDeviceType> {
+    const keplrWallet = this.getKeplrWallet()
+    const key = await keplrWallet.getKey()
+
+    return key.isNanoLedger
+      ? Promise.resolve(WalletDeviceType.Hardware)
+      : Promise.resolve(WalletDeviceType.Browser)
   }
 
   async getAddresses(): Promise<string[]> {
@@ -130,7 +139,7 @@ export default class Keplr
   }
 
   async signEip712TypedData(
-    _eip712TypedData: string,
+    _transaction: string,
     _address: AccountAddress,
   ): Promise<string> {
     throw new CosmosWalletException(

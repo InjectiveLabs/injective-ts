@@ -13,4 +13,10 @@ export enum Wallet {
   CosmostationEth = 'cosmostation-eth',
 }
 
+export enum WalletDeviceType {
+  Browser = 'browser',
+  Hardware = 'hardware',
+  Mobile = 'mobile',
+}
+
 export const WalletAction = { ...WalletErrorActionModule }
