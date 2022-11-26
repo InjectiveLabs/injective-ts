@@ -42,7 +42,7 @@ import {
 } from '../wallets/types'
 import { isCosmosWallet } from '../wallets/cosmos'
 import { Wallet, WalletDeviceType } from '../types'
-import { createStdSignDoc, KeplrWallet } from '../wallets/keplr'
+import { createEip712StdSignDoc, KeplrWallet } from '../wallets/keplr'
 
 /**
  * This class is used to broadcast transactions
@@ -462,7 +462,13 @@ export class MsgBroadcaster {
 
     const aminoSignResponse = await keplrWallet.signEIP712CosmosTx({
       eip712: eip712TypedData,
-      signDoc: createStdSignDoc({ ...baseAccount, ...tx, chainId, msgs }),
+      signDoc: createEip712StdSignDoc({
+        ...tx,
+        ...baseAccount,
+        msgs,
+        chainId,
+        timeoutHeight: timeoutHeight.toFixed(),
+      }),
     })
 
     /**
@@ -477,7 +483,10 @@ export class MsgBroadcaster {
       fee: aminoSignResponse.signed.fee,
       pubKey: pubKey,
       sequence: parseInt(aminoSignResponse.signed.sequence, 10),
-      timeoutHeight: timeoutHeight.toNumber(),
+      timeoutHeight: parseInt(
+        (aminoSignResponse.signed as any).timeout_height,
+        10,
+      ),
       accountNumber: parseInt(aminoSignResponse.signed.account_number, 10),
       chainId,
     })
