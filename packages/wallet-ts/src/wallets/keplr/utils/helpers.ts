@@ -25,11 +25,11 @@ export const createStdSignDoc = ({
     gas: gas || DEFAULT_STD_FEE.gas,
   },
   msgs: msgs.map((m) => {
-    const message = m.toDirectSign()
+    const { type, ...value } = m.toAmino()
 
     return {
-      value: Buffer.from(message.message.serializeBinary()).toString('base64'),
-      type: message.type,
+      value,
+      type,
     }
   }),
   memo: memo || '',
