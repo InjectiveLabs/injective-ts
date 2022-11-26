@@ -1,26 +1,28 @@
 import {
-  VaultDenomBalance,
-  GrpcVaultDenomBalance,
-  GrpcHolders,
-  GrpcVaultPagination,
-  GrpcPriceSnapshot,
-  GrpcProfits,
-  GrpcSubscription,
-  GrpcVault,
-  GrpcVaultSubaccountBalance,
-  Holders,
-  PriceSnapshot,
-  Profits,
-  Subscription,
-  Vault,
-  VaultSubaccountBalance,
+  GrpcNinjaVault,
+  GrpcNinjaProfits,
+  GrpcNinjaSubaccountBalance,
+  GrpcNinjaDenomBalance,
+  GrpcNinjaPagination,
+  GrpcNinjaPriceSnapshot,
+  GrpcNinjaSubscription,
+  GrpcNinjaHolders,
+  NinjaDenomBalance,
+  NinjaHolders,
+  NinjaPriceSnapshot,
+  NinjaProfits,
+  NinjaSubscription,
+  NinjaVault,
+  NinjaSubaccountBalance,
+  NinjaPortfolio,
 } from '../types/ninja'
+import { PortfolioResponse } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcNinjaTransformer {
-  static grpcPaginationToPagination(grpcPagination?: GrpcVaultPagination) {
+  static grpcPaginationToPagination(grpcPagination?: GrpcNinjaPagination) {
     if (!grpcPagination) {
       return {
         total: 0,
@@ -33,15 +35,17 @@ export class IndexerGrpcNinjaTransformer {
   }
 
   static grpcDenomBalanceToDenomBalance(
-    grpcDenomBalance: GrpcVaultDenomBalance,
-  ): VaultDenomBalance {
+    grpcDenomBalance: GrpcNinjaDenomBalance,
+  ): NinjaDenomBalance {
     return {
       denom: grpcDenomBalance.getDenom(),
       totalBalance: grpcDenomBalance.getTotalBalance(),
     }
   }
 
-  static grpcProfitsToProfits(grpcProfits?: GrpcProfits): Profits | undefined {
+  static grpcProfitsToProfits(
+    grpcProfits?: GrpcNinjaProfits,
+  ): NinjaProfits | undefined {
     if (!grpcProfits) {
       return undefined
     }
@@ -54,12 +58,13 @@ export class IndexerGrpcNinjaTransformer {
       oneWeekChange: grpcProfits.getOneWeekChange(),
       oneYearChange: grpcProfits.getOneYearChange(),
       threeYearsChange: grpcProfits.getThreeYearsChange(),
+      sixMonthsChange: grpcProfits.getSixMonthsChange(),
     }
   }
 
   static grpcVaultSubaccountInfoToVaultSubaccountInfo(
-    grpcSubaccountInfo?: GrpcVaultSubaccountBalance,
-  ): VaultSubaccountBalance | undefined {
+    grpcSubaccountInfo?: GrpcNinjaSubaccountBalance,
+  ): NinjaSubaccountBalance | undefined {
     if (!grpcSubaccountInfo) {
       return
     }
@@ -72,7 +77,7 @@ export class IndexerGrpcNinjaTransformer {
     }
   }
 
-  static grpcVaultToVault(grpcVault?: GrpcVault): Vault | undefined {
+  static grpcVaultToVault(grpcVault?: GrpcNinjaVault): NinjaVault | undefined {
     if (!grpcVault) {
       return
     }
@@ -98,8 +103,8 @@ export class IndexerGrpcNinjaTransformer {
   }
 
   static grpcPriceSnapShotToPriceSnapShot(
-    grpcPriceSnapshot: GrpcPriceSnapshot,
-  ): PriceSnapshot {
+    grpcPriceSnapshot: GrpcNinjaPriceSnapshot,
+  ): NinjaPriceSnapshot {
     return {
       price: grpcPriceSnapshot.getPrice(),
       updatedAt: grpcPriceSnapshot.getUpdatedAt(),
@@ -107,23 +112,40 @@ export class IndexerGrpcNinjaTransformer {
   }
 
   static grpcSubscriptionToSubscription(
-    grpcSubscription: GrpcSubscription,
-  ): Subscription {
+    grpcSubscription: GrpcNinjaSubscription,
+  ): NinjaSubscription {
     return {
       vaultInfo: IndexerGrpcNinjaTransformer.grpcVaultToVault(
         grpcSubscription.getVaultInfo(),
       ),
       lpAmount: grpcSubscription.getLpAmount(),
+      lpAmountPercentage: grpcSubscription.getLpAmountPercentage(),
       holderAddress: grpcSubscription.getHolderAddress(),
     }
   }
 
-  static grpcHoldersToHolders(grpcHolders: GrpcHolders): Holders {
+  static grpcHoldersToHolders(grpcHolders: GrpcNinjaHolders): NinjaHolders {
     return {
       holderAddress: grpcHolders.getHolderAddress(),
       vaultAddress: grpcHolders.getVaultAddress(),
       amount: grpcHolders.getAmount(),
       updatedAt: grpcHolders.getUpdatedAt(),
+      lpAmountPercentage: grpcHolders.getLpAmountPercentage(),
+    }
+  }
+
+  static grpcPortfolioToPortfolio(
+    grpcPortfolioResponse: PortfolioResponse,
+  ): NinjaPortfolio {
+    return {
+      totalValue: grpcPortfolioResponse.getTotalValue(),
+      pnl: grpcPortfolioResponse.getPnl(),
+      totalValueChartList: grpcPortfolioResponse
+        .getTotalValueChartList()
+        .map(IndexerGrpcNinjaTransformer.grpcPriceSnapShotToPriceSnapShot),
+      pnlChartList: grpcPortfolioResponse
+        .getPnlChartList()
+        .map(IndexerGrpcNinjaTransformer.grpcPriceSnapShotToPriceSnapShot),
     }
   }
 }

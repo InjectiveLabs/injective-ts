@@ -11,6 +11,8 @@ import {
   VaultsByHolderAddressResponse,
   LPHoldersRequest,
   LPHoldersResponse,
+  PortfolioRequest,
+  PortfolioResponse,
 } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
 import { NinjaAPI } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
@@ -201,12 +203,15 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
     pageSize?: number
     pageIndex?: number
     holderAddress: string
-    vaultAddress: string
+    vaultAddress?: string
   }) {
     const request = new VaultsByHolderAddressRequest()
 
     request.setHolderAddress(holderAddress)
-    request.setVaultAddress(vaultAddress)
+
+    if (vaultAddress) {
+      request.setVaultAddress(vaultAddress)
+    }
 
     if (pageSize) {
       request.setPageSize(pageSize)
@@ -269,6 +274,31 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
       return response
         .getHoldersList()
         .map(IndexerGrpcNinjaTransformer.grpcHoldersToHolders)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchHolderPortfolio(holderAddress: string) {
+    const request = new PortfolioRequest()
+
+    request.setHolderAddress(holderAddress)
+
+    try {
+      const response = await this.request<
+        PortfolioRequest,
+        PortfolioResponse,
+        typeof NinjaAPI.Portfolio
+      >(request, NinjaAPI.Portfolio)
+
+      return IndexerGrpcNinjaTransformer.grpcPortfolioToPortfolio(response)
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
