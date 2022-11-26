@@ -28,7 +28,7 @@ export const createStdSignDoc = ({
     const message = m.toDirectSign()
 
     return {
-      value: message.message.serializeBinary(),
+      value: Buffer.from(message.message.serializeBinary()).toString('base64'),
       type: message.type,
     }
   }),
