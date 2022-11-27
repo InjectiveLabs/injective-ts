@@ -38,6 +38,7 @@
     "@injectivelabs/token-utils": "^1.0.46",
     "@injectivelabs/ts-types": "^1.0.17",
     "@injectivelabs/utils": "^1.0.43",
+    "alchemy-sdk": "^2.2.3",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },

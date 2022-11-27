@@ -2,6 +2,7 @@ import { HttpClient, BigNumber, BigNumberInWei } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { GWEI_IN_WEI, DEFAULT_GAS_PRICE } from '../constants'
 import { HttpRequestException } from '@injectivelabs/exceptions'
+import { Network as AlchemyNetwork, Alchemy } from 'alchemy-sdk'
 
 export interface MetamaskGasServerResult {
   low: {
@@ -122,6 +123,29 @@ const fetchGasPriceFromOwlracle = async (): Promise<string> => {
   }
 }
 
+const fetchGasPriceFromAlchemy = async (key: string): Promise<string> => {
+  try {
+    const settings = {
+      apiKey: key,
+      network: AlchemyNetwork.ETH_MAINNET,
+    }
+    const alchemy = new Alchemy(settings)
+    const response = await alchemy.core.getGasPrice()
+
+    if (!response) {
+      throw new HttpRequestException(new Error('No response from Alchemy'))
+    }
+
+    return response.toString()
+  } catch (e: unknown) {
+    if (e instanceof HttpRequestException) {
+      throw e
+    }
+
+    throw new HttpRequestException(new Error((e as any).message))
+  }
+}
+
 const fetchGasPriceFromEtherchain = async (): Promise<string> => {
   try {
     const response = (await new HttpClient(
@@ -204,9 +228,24 @@ const fetchGasPriceFromMetaswapGasServer = async (): Promise<string> => {
   }
 }
 
-export const fetchGasPrice = async (network: Network): Promise<string> => {
+export const fetchGasPrice = async (
+  network: Network,
+  options: { alchemyKey: string },
+): Promise<string> => {
   if (isTestnet(network)) {
     return new BigNumberInWei(DEFAULT_GAS_PRICE).toFixed(0)
+  }
+
+  try {
+    return await fetchGasPriceFromAlchemy(options.alchemyKey)
+  } catch (e) {
+    //
+  }
+
+  try {
+    return await fetchGasPriceFromEthGasStation()
+  } catch (e) {
+    //
   }
 
   try {
@@ -217,12 +256,6 @@ export const fetchGasPrice = async (network: Network): Promise<string> => {
 
   try {
     return await fetchGasPriceFromMetaswapGasServer()
-  } catch (e) {
-    //
-  }
-
-  try {
-    return await fetchGasPriceFromEthGasStation()
   } catch (e) {
     //
   }
