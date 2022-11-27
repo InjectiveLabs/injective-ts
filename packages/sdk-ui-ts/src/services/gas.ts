@@ -1,4 +1,9 @@
-import { HttpClient, BigNumber, BigNumberInWei } from '@injectivelabs/utils'
+import {
+  HttpClient,
+  BigNumber,
+  BigNumberInWei,
+  BigNumberInBase,
+} from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { GWEI_IN_WEI, DEFAULT_GAS_PRICE } from '../constants'
 import { HttpRequestException } from '@injectivelabs/exceptions'
@@ -130,13 +135,25 @@ const fetchGasPriceFromAlchemy = async (key: string): Promise<string> => {
       network: AlchemyNetwork.ETH_MAINNET,
     }
     const alchemy = new Alchemy(settings)
-    const response = await alchemy.core.getGasPrice()
+    const response = await alchemy.core.getFeeData()
 
     if (!response) {
       throw new HttpRequestException(new Error('No response from Alchemy'))
     }
 
-    return response.toString()
+    if (response.maxFeePerGas) {
+      return response.maxFeePerGas.toString()
+    }
+
+    const gasPrice = await alchemy.core.getGasPrice()
+
+    if (!gasPrice) {
+      throw new HttpRequestException(
+        new Error('No gas price response from Alchemy'),
+      )
+    }
+
+    return new BigNumberInBase(gasPrice.toString()).times(1.5).toFixed()
   } catch (e: unknown) {
     if (e instanceof HttpRequestException) {
       throw e
