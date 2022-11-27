@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.330](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.329...@injectivelabs/sdk-ui-ts@1.0.330) (2022-11-27)
+
+
+### Bug Fixes
+
+* added alchemy as gas price source ([108df09](https://github.com/InjectiveLabs/injective-ts/commit/108df0983c2f0b152392cd2989830d0d97dd1d27))
+
+
+
+
+
 ## [1.0.329](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.328...@injectivelabs/sdk-ui-ts@1.0.329) (2022-11-27)
 
 
