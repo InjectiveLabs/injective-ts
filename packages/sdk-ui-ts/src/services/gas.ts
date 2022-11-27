@@ -230,16 +230,18 @@ const fetchGasPriceFromMetaswapGasServer = async (): Promise<string> => {
 
 export const fetchGasPrice = async (
   network: Network,
-  options: { alchemyKey: string },
+  options?: { alchemyKey: string },
 ): Promise<string> => {
   if (isTestnet(network)) {
     return new BigNumberInWei(DEFAULT_GAS_PRICE).toFixed(0)
   }
 
-  try {
-    return await fetchGasPriceFromAlchemy(options.alchemyKey)
-  } catch (e) {
-    //
+  if (options && options.alchemyKey) {
+    try {
+      return await fetchGasPriceFromAlchemy(options.alchemyKey)
+    } catch (e) {
+      //
+    }
   }
 
   try {
