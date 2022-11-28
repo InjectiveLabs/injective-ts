@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.42...@injectivelabs/bridge-ts@1.0.43) (2022-11-28)
+
+
+### Features
+
+* getting bridged wrapped tokens balance ([dc3e36b](https://github.com/InjectiveLabs/injective-ts/commit/dc3e36bbe95677acdff307b7207c490cec65ebca))
+
+
+
+
+
 ## [1.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.41...@injectivelabs/bridge-ts@1.0.42) (2022-11-28)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
