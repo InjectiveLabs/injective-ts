@@ -4,6 +4,7 @@ export enum TokenType {
   Ibc = 'ibc',
   Cw20 = 'cw20',
   InsuranceFund = 'insuranceFund',
+  TokenFactory = 'tokenFactory',
 }
 
 export interface TokenMeta {
