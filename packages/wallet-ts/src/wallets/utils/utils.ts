@@ -28,9 +28,26 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
     ? msgs.some(isExchangeMessage)
     : isExchangeMessage(msgs)
 
-  return new BigNumberInBase(
-    hasExchangeMessages ? DEFAULT_EXCHANGE_LIMIT : DEFAULT_GAS_LIMIT,
-  )
+  if (hasExchangeMessages) {
+    return new BigNumberInBase(DEFAULT_EXCHANGE_LIMIT)
+      .times(hasMultipleMessages ? msgs.length : 1)
+      .toNumber()
+  }
+
+  const isGovMessage = (message: Msgs) =>
+    message.toWeb3()['@type'].includes('gov')
+  const hasGovMessages = Array.isArray(msgs)
+    ? msgs.some(isGovMessage)
+    : isGovMessage(msgs)
+
+  if (hasGovMessages) {
+    return new BigNumberInBase(DEFAULT_GAS_LIMIT)
+      .times(15)
+      .times(hasMultipleMessages ? msgs.length : 1)
+      .toNumber()
+  }
+
+  return new BigNumberInBase(DEFAULT_GAS_LIMIT)
     .times(hasMultipleMessages ? msgs.length : 1)
     .toNumber()
 }
