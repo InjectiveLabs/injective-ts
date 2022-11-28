@@ -15,7 +15,7 @@ import {
   hexToUint8Array,
   transferNativeSol,
 } from '@certusone/wormhole-sdk'
-import { getAssociatedTokenAddress } from '@solana/spl-token'
+import { getAssociatedTokenAddress, NATIVE_MINT } from '@solana/spl-token'
 import { Connection, PublicKey, TransactionResponse } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
@@ -53,6 +53,89 @@ export class SolanaWormholeClient extends WormholeClient {
     const connection = new Connection(solanaHostUrl || '')
 
     return connection.getBalance(address)
+  }
+
+  async getBridgedAssetBalance(
+    injectiveAddress: string,
+    tokenAddress: string = NATIVE_MINT.toString(),
+  ) {
+    const { network } = this
+    const endpoints = getEndpointsForNetwork(network)
+
+    const solanaContractAddresses = (
+      WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
+        [key: string]: WormholeSolanaContractAddresses
+      }
+    )[network] as WormholeSolanaContractAddresses
+
+    const contractAddresses = (
+      WORMHOLE_CONTRACT_BY_NETWORK as {
+        [key: string]: WormholeContractAddresses
+      }
+    )[network] as WormholeContractAddresses
+
+    if (!contractAddresses) {
+      throw new GeneralException(
+        new Error(`Contracts for ${network} on Injective not found`),
+      )
+    }
+
+    if (!solanaContractAddresses) {
+      throw new GeneralException(
+        new Error(`Contracts for ${network} on Solana not found`),
+      )
+    }
+
+    if (!contractAddresses.token_bridge) {
+      throw new GeneralException(
+        new Error(`Token Bridge Address for ${network} on Injective not found`),
+      )
+    }
+
+    if (!solanaContractAddresses.token_bridge) {
+      throw new GeneralException(
+        new Error(`Token Bridge Address for ${network} on Solana not found`),
+      )
+    }
+
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+    const originAssetHex = tryNativeToHexString(
+      tokenAddress,
+      WORMHOLE_CHAINS.solana,
+    )
+    const foreignAsset = await getForeignAssetInjective(
+      contractAddresses.token_bridge,
+      chainGrpcWasmApi,
+      WORMHOLE_CHAINS.solana,
+      hexToUint8Array(originAssetHex),
+    )
+
+    if (!foreignAsset) {
+      throw new GeneralException(new Error(`Foreign asset not found`))
+    }
+
+    const response = await chainGrpcWasmApi.fetchSmartContractState(
+      foreignAsset,
+      Buffer.from(
+        JSON.stringify({
+          balance: {
+            address: injectiveAddress,
+          },
+        }),
+      ).toString('base64'),
+    )
+
+    if (typeof response.data === 'string') {
+      const balance = JSON.parse(
+        Buffer.from(response.data, 'base64').toString('utf-8'),
+      )
+
+      return balance
+    }
+
+    throw new GeneralException(
+      new Error(`Could not get the balance from the token bridge contract`),
+    )
   }
 
   async attestFromSolanaToInjective(
