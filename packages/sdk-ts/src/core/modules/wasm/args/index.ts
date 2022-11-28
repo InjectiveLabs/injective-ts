@@ -16,3 +16,12 @@ export const getCw20SendArgs = ({
     },
   }
 }
+
+export const getCw20AdapterRedeemAndTransferArgs = (recipient: string) => {
+  return {
+    action: 'redeem_and_transfer',
+    msg: {
+      recipient,
+    },
+  }
+}
