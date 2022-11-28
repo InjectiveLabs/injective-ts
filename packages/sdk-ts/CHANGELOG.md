@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.248](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.247...@injectivelabs/sdk-ts@1.0.248) (2022-11-28)
+
+
+### Features
+
+* added token factory token type ([ad23e66](https://github.com/InjectiveLabs/injective-ts/commit/ad23e6662cc10d721da0545368642e6a6ae0665d))
+
+
+
+
+
 ## [1.0.247](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.246...@injectivelabs/sdk-ts@1.0.247) (2022-11-28)
 
 
