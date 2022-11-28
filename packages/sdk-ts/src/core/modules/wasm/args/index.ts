@@ -8,7 +8,8 @@ export const getCw20SendArgs = ({
   msg?: object
 }) => {
   return {
-    send: {
+    action: 'send',
+    msg: {
       contract: contractAddress,
       amount: amount,
       msg: Buffer.from(JSON.stringify(msg)).toString('base64'),
