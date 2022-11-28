@@ -3,7 +3,7 @@ export const getCw20SendArgs = ({
   amount,
   msg = {},
 }: {
-  contractAddress: string
+  contractAddress: string /** The contract address which receives the CW20 */
   amount: string
   msg?: object
 }) => {

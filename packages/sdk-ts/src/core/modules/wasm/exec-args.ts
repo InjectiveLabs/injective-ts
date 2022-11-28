@@ -6,5 +6,3 @@ export type ExecArgs =
   | ExecArgRegisterVault
   | ExecArgVaultRedeem
   | ExecArgVaultSubscribe
-
-export type MsgExecArgs = any
