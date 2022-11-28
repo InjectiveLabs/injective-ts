@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.227](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.226...@injectivelabs/wallet-ts@1.0.227) (2022-11-28)
+
+
+### Features
+
+* cw20 send args ([22ee502](https://github.com/InjectiveLabs/injective-ts/commit/22ee502ba8c7f6af165c85db15b21f5c826aed93))
+
+
+
+
+
 ## [1.0.226](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.225...@injectivelabs/wallet-ts@1.0.226) (2022-11-28)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
