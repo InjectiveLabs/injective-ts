@@ -60,6 +60,7 @@ export interface NinjaVault {
   lpTokenPrice: number
   subaccountInfo?: NinjaSubaccountBalance
   masterContractAddress: string
+  totalLpAmount: string
 }
 
 export interface NinjaSubscription {
