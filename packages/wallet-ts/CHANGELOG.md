@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.230](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.229...@injectivelabs/wallet-ts@1.0.230) (2022-11-28)
+
+
+### Bug Fixes
+
+* increase gas for gov messages ([4cfdfbb](https://github.com/InjectiveLabs/injective-ts/commit/4cfdfbb72d143cf1ccc1f56ad7ae7461c3b91eac))
+
+
+
+
+
 ## [1.0.229](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.228...@injectivelabs/wallet-ts@1.0.229) (2022-11-28)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
