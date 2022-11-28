@@ -99,6 +99,7 @@ export class IndexerGrpcNinjaTransformer {
           grpcVault.getSubaccountInfo(),
         ),
       masterContractAddress: grpcVault.getMasterContractAddress(),
+      totalLpAmount: grpcVault.getTotalLpAmount(),
     }
   }
 
