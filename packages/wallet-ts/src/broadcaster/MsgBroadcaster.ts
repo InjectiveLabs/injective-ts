@@ -477,11 +477,11 @@ export class MsgBroadcaster {
      * on the Keplr popup
      */
     const { txRaw } = createTransaction({
+      pubKey,
       message: msgs.map((m) => m.toDirectSign()),
       memo: aminoSignResponse.signed.memo,
       signMode: SIGN_AMINO,
       fee: aminoSignResponse.signed.fee,
-      pubKey: pubKey,
       sequence: parseInt(aminoSignResponse.signed.sequence, 10),
       timeoutHeight: parseInt(
         (aminoSignResponse.signed as any).timeout_height,

@@ -1,5 +1,5 @@
 import { MsgPrivilegedExecuteContract as BaseMsgPrivilegedExecuteContract } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { ExecArgs } from '../../exec-args'
+import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import snakeCaseKeys from 'snakecase-keys'
 

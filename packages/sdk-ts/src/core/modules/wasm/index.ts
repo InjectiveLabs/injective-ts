@@ -5,3 +5,6 @@ export { default as MsgInstantiateContract } from './msgs/MsgInstantiateContract
 export { default as ExecArgRegisterVault } from './exec-args/ExecArgRegisterVault'
 export { default as ExecArgVaultRedeem } from './exec-args/ExecArgVaultRedeem'
 export { default as ExecArgVaultSubscribe } from './exec-args/ExecArgVaultSubscribe'
+
+export * from './exec-args'
+export * from './args'

@@ -126,11 +126,14 @@ export class SolanaWormholeClient extends WormholeClient {
     )
 
     if (typeof response.data === 'string') {
-      const balance = JSON.parse(
+      const state = JSON.parse(
         Buffer.from(response.data, 'base64').toString('utf-8'),
-      )
+      ) as { balance: string }
 
-      return balance
+      return { address: foreignAsset, balance: state.balance } as {
+        address: string
+        balance: string
+      }
     }
 
     throw new GeneralException(

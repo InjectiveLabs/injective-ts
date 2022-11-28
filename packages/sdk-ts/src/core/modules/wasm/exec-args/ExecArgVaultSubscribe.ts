@@ -2,7 +2,7 @@ import {
   dataToExecData,
   ExecArgsBase,
   ExecDataRepresentation,
-} from '../../ExecArgsBase'
+} from '../ExecArgsBase'
 
 export declare namespace ExecArgVaultSubscribe {
   export interface Params {

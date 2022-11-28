@@ -1,4 +1,4 @@
-import { prepareSignBytes } from './utils'
+import { prepareSignBytes } from '../utils'
 
 export type ExecDataRepresentation<Data> = {
   origin: string
@@ -58,6 +58,7 @@ export const dataToExecDataWithInjectiveExec = <T>(
   }
 }
 
+/** Executing Messages with injective_exec */
 export abstract class ExecArgsBase<Params, DataRepresentation> {
   params: Params
 
@@ -75,5 +76,19 @@ export abstract class ExecArgsBase<Params, DataRepresentation> {
 
   public toExecJSON(): string {
     return JSON.stringify(prepareSignBytes(this.toExecData()))
+  }
+}
+
+export abstract class MsgExecArgsBase<Params, DataRepresentation> {
+  params: Params
+
+  constructor(params: Params) {
+    this.params = params
+  }
+
+  public abstract toData(): DataRepresentation
+
+  public toJSON(): string {
+    return JSON.stringify(prepareSignBytes(this.toData()))
   }
 }
