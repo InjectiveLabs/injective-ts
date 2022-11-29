@@ -1,6 +1,18 @@
 import { binaryToBase64 } from '@injectivelabs/sdk-ts'
+import { Network } from '@injectivelabs/networks'
 import { Connection } from '@solana/web3.js'
-import { TransferMsgArgs } from './types'
+import { GeneralException } from '@injectivelabs/exceptions'
+import {
+  TransferMsgArgs,
+  WormholeContractAddresses,
+  WormholeEthereumContractAddresses,
+  WormholeSolanaContractAddresses,
+} from './types'
+import {
+  WORMHOLE_CONTRACT_BY_NETWORK,
+  WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
+  WORMHOLE_SOLANA_CONTRACT_BY_NETWORK,
+} from './constants'
 
 export const createTransferContractMsgExec = (
   args: TransferMsgArgs,
@@ -43,4 +55,90 @@ export const getSolanaTransactionInfo = async (
   }
 
   return null
+}
+
+export const getEthereumContractAddresses = (network: Network) => {
+  const ethereumContractAddresses = (
+    WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK as {
+      [key: string]: WormholeEthereumContractAddresses
+    }
+  )[network] as WormholeEthereumContractAddresses
+
+  const contractAddresses = (
+    WORMHOLE_CONTRACT_BY_NETWORK as {
+      [key: string]: WormholeContractAddresses
+    }
+  )[network] as WormholeContractAddresses
+
+  if (!contractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Injective not found`),
+    )
+  }
+
+  if (!ethereumContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Solana not found`),
+    )
+  }
+
+  if (!contractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Injective not found`),
+    )
+  }
+
+  if (!ethereumContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Ethereum not found`),
+    )
+  }
+
+  return {
+    contractAddresses,
+    ethereumContractAddresses,
+  }
+}
+
+export const getSolanaContractAddresses = (network: Network) => {
+  const solanaContractAddresses = (
+    WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
+      [key: string]: WormholeSolanaContractAddresses
+    }
+  )[network] as WormholeSolanaContractAddresses
+
+  const contractAddresses = (
+    WORMHOLE_CONTRACT_BY_NETWORK as {
+      [key: string]: WormholeContractAddresses
+    }
+  )[network] as WormholeContractAddresses
+
+  if (!contractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Injective not found`),
+    )
+  }
+
+  if (!solanaContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Solana not found`),
+    )
+  }
+
+  if (!contractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Injective not found`),
+    )
+  }
+
+  if (!solanaContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Solana not found`),
+    )
+  }
+
+  return {
+    contractAddresses,
+    solanaContractAddresses,
+  }
 }

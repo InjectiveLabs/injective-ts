@@ -34,7 +34,7 @@ import {
   getEthereumSignerAddress,
   getGasPriceBasedOnMessage,
   getInjectiveSignerAddress,
-} from '../wallets/utils/utils'
+} from '../utils/utils'
 import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
@@ -211,7 +211,7 @@ export class MsgBroadcaster {
     const publicKeyBase64 = hexToBase64(publicKeyHex)
 
     /** Preparing the transaction for client broadcasting */
-    const txRestClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
+    const txGrpcClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
     const { txRaw } = createTransaction({
       message: msgs.map((m) => m.toDirectSign()),
       memo: tx.memo,
@@ -240,12 +240,12 @@ export class MsgBroadcaster {
       await MsgBroadcaster.simulate({
         txRaw,
         signature: signatureBuff,
-        txClient: new TxGrpcClient(options.endpoints.sentryGrpcApi),
+        txClient: txGrpcClient,
       })
     }
 
     /** Broadcast the transaction */
-    const response = await txRestClient.broadcast(txRawEip712)
+    const response = await txGrpcClient.broadcast(txRawEip712)
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
@@ -492,7 +492,7 @@ export class MsgBroadcaster {
     })
 
     /** Preparing the transaction for client broadcasting */
-    const txRestClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
+    const txGrpcClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
     const web3Extension = createWeb3Extension({
       ethereumChainId,
     })
@@ -510,12 +510,12 @@ export class MsgBroadcaster {
       await MsgBroadcaster.simulate({
         txRaw,
         signature: signatureBuff,
-        txClient: new TxGrpcClient(options.endpoints.sentryGrpcApi),
+        txClient: txGrpcClient,
       })
     }
 
     /** Broadcast the transaction */
-    const response = await txRestClient.broadcast(txRawEip712)
+    const response = await txGrpcClient.broadcast(txRawEip712)
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {

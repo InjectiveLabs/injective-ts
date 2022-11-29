@@ -14,6 +14,7 @@ import {
   createWrappedOnInjective,
   hexToUint8Array,
   transferNativeSol,
+  getIsTransferCompletedSolana,
 } from '@certusone/wormhole-sdk'
 import { getAssociatedTokenAddress, NATIVE_MINT } from '@solana/spl-token'
 import { Connection, PublicKey, TransactionResponse } from '@solana/web3.js'
@@ -25,11 +26,12 @@ import {
   WORMHOLE_SOLANA_CONTRACT_BY_NETWORK,
 } from '../constants'
 import {
-  TransferMsgArgs,
+  SolanaNativeSolTransferMsgArgs,
+  SolanaTransferMsgArgs,
   WormholeContractAddresses,
   WormholeSolanaContractAddresses,
 } from '../types'
-import { getSolanaTransactionInfo } from '../utils'
+import { getSolanaContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
 export class SolanaWormholeClient extends WormholeClient {
@@ -62,41 +64,7 @@ export class SolanaWormholeClient extends WormholeClient {
     const { network } = this
     const endpoints = getEndpointsForNetwork(network)
 
-    const solanaContractAddresses = (
-      WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeSolanaContractAddresses
-      }
-    )[network] as WormholeSolanaContractAddresses
-
-    const contractAddresses = (
-      WORMHOLE_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeContractAddresses
-      }
-    )[network] as WormholeContractAddresses
-
-    if (!contractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Injective not found`),
-      )
-    }
-
-    if (!solanaContractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Solana not found`),
-      )
-    }
-
-    if (!contractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Injective not found`),
-      )
-    }
-
-    if (!solanaContractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Solana not found`),
-      )
-    }
+    const { contractAddresses } = getSolanaContractAddresses(network)
 
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
     const originAssetHex = tryNativeToHexString(
@@ -142,7 +110,7 @@ export class SolanaWormholeClient extends WormholeClient {
   }
 
   async attestFromSolanaToInjective(
-    args: Omit<TransferMsgArgs, 'address' | 'amount'>,
+    args: Omit<SolanaTransferMsgArgs, 'amount'>,
     provider: BaseMessageSignerWalletAdapter,
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
@@ -165,41 +133,8 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    const solanaContractAddresses = (
-      WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeSolanaContractAddresses
-      }
-    )[network] as WormholeSolanaContractAddresses
-
-    const contractAddresses = (
-      WORMHOLE_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeContractAddresses
-      }
-    )[network] as WormholeContractAddresses
-
-    if (!contractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Injective not found`),
-      )
-    }
-
-    if (!solanaContractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Solana not found`),
-      )
-    }
-
-    if (!contractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Injective not found`),
-      )
-    }
-
-    if (!solanaContractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Solana not found`),
-      )
-    }
+    const { contractAddresses, solanaContractAddresses } =
+      getSolanaContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const transaction = await attestFromSolana(
@@ -244,7 +179,7 @@ export class SolanaWormholeClient extends WormholeClient {
   }
 
   async transferNativeSolFromSolanaToInjective(
-    args: TransferMsgArgs,
+    args: SolanaNativeSolTransferMsgArgs,
     provider: BaseMessageSignerWalletAdapter,
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
@@ -263,41 +198,8 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    const solanaContractAddresses = (
-      WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeSolanaContractAddresses
-      }
-    )[network] as WormholeSolanaContractAddresses
-
-    const contractAddresses = (
-      WORMHOLE_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeContractAddresses
-      }
-    )[network] as WormholeContractAddresses
-
-    if (!contractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Injective not found`),
-      )
-    }
-
-    if (!solanaContractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Solana not found`),
-      )
-    }
-
-    if (!contractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Injective not found`),
-      )
-    }
-
-    if (!solanaContractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Solana not found`),
-      )
-    }
+    const { contractAddresses, solanaContractAddresses } =
+      getSolanaContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const transaction = await transferNativeSol(
@@ -336,6 +238,16 @@ export class SolanaWormholeClient extends WormholeClient {
       },
     )
 
+    const transferIsCompleted = await getIsTransferCompletedSolana(
+      solanaContractAddresses.token_bridge,
+      signedVAA,
+      connection,
+    )
+
+    if (!transferIsCompleted) {
+      throw new Error('The transfer has not been completed')
+    }
+
     return redeemOnInjective(
       contractAddresses.token_bridge,
       recipient,
@@ -344,7 +256,7 @@ export class SolanaWormholeClient extends WormholeClient {
   }
 
   async transferFromSolanaToInjective(
-    args: TransferMsgArgs,
+    args: SolanaTransferMsgArgs,
     provider: BaseMessageSignerWalletAdapter,
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
@@ -463,6 +375,16 @@ export class SolanaWormholeClient extends WormholeClient {
         transport: isBrowser() ? undefined : NodeHttpTransport(),
       },
     )
+
+    const transferIsCompleted = await getIsTransferCompletedSolana(
+      solanaContractAddresses.token_bridge,
+      signedVAA,
+      connection,
+    )
+
+    if (!transferIsCompleted) {
+      throw new Error('The transfer has not been completed')
+    }
 
     return redeemOnInjective(
       contractAddresses.token_bridge,

@@ -16,7 +16,7 @@ import {
   GAS_PRICE_MULTIPLIER,
   INJ_DENOM,
   TX_DEFAULTS_GAS,
-} from '../wallets/utils/constants'
+} from '../utils/constants'
 
 export const getTransactionOptions = (
   transactionOptions: Partial<TransactionOptions>,

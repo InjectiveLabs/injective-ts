@@ -34,8 +34,15 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
       .toNumber()
   }
 
-  const isGovMessage = (message: Msgs) =>
-    message.toWeb3()['@type'].includes('gov')
+  const isGovMessage = (message: Msgs) => {
+    const type = message.toWeb3()['@type']
+
+    if (!type.includes('gov')) {
+      return false
+    }
+
+    return type.includes('MsgDeposit') || type.includes('MsgSubmitProposal')
+  }
   const hasGovMessages = Array.isArray(msgs)
     ? msgs.some(isGovMessage)
     : isGovMessage(msgs)

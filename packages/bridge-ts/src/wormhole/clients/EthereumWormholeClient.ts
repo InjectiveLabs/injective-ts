@@ -11,24 +11,18 @@ import {
   approveEth,
   parseSequenceFromLogEth,
   getEmitterAddressEth,
+  getIsTransferCompletedEth,
 } from '@certusone/wormhole-sdk'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { ethers } from 'ethers'
-import {
-  WORMHOLE_CHAINS,
-  WORMHOLE_CONTRACT_BY_NETWORK,
-  WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
-} from '../constants'
-import {
-  WormholeContractAddresses,
-  WormholeEthereumContractAddresses,
-  TransferMsgArgs,
-} from '../types'
+import { WORMHOLE_CHAINS } from '../constants'
+import { EthereumTransferMsgArgs } from '../types'
 import { WormholeClient } from '../WormholeClient'
+import { getEthereumContractAddresses } from '../utils'
 
 export class EthereumWormholeClient extends WormholeClient {
   async transferFromEthereumToInjective(
-    args: TransferMsgArgs,
+    args: EthereumTransferMsgArgs,
     provider: ethers.providers.Web3Provider,
   ) {
     const { network, wormholeRpcUrl } = this
@@ -43,41 +37,8 @@ export class EthereumWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide tokenAddress`))
     }
 
-    const ethereumContractAddresses = (
-      WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeEthereumContractAddresses
-      }
-    )[network] as WormholeEthereumContractAddresses
-
-    const contractAddresses = (
-      WORMHOLE_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeContractAddresses
-      }
-    )[network] as WormholeContractAddresses
-
-    if (!contractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Injective not found`),
-      )
-    }
-
-    if (!ethereumContractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Solana not found`),
-      )
-    }
-
-    if (!contractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Injective not found`),
-      )
-    }
-
-    if (!ethereumContractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Ethereum not found`),
-      )
-    }
+    const { contractAddresses, ethereumContractAddresses } =
+      getEthereumContractAddresses(network)
 
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
     const foreignAsset = await getForeignAssetInjective(
@@ -126,6 +87,16 @@ export class EthereumWormholeClient extends WormholeClient {
         transport: isBrowser() ? undefined : NodeHttpTransport(),
       },
     )
+
+    const transferIsCompleted = await getIsTransferCompletedEth(
+      ethereumContractAddresses.token_bridge,
+      provider,
+      signedVAA,
+    )
+
+    if (!transferIsCompleted) {
+      throw new Error('The transfer has not been completed')
+    }
 
     return redeemOnInjective(
       contractAddresses.token_bridge,

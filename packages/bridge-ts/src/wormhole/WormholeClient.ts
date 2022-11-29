@@ -54,7 +54,9 @@ export class WormholeClient {
     })
   }
 
-  async getFromInjectiveTransferMsg(args: TransferMsgArgs) {
+  async getFromInjectiveTransferMsg(
+    args: TransferMsgArgs & { address: string; tokenAddress: string },
+  ) {
     const { network } = this
     const { amount, recipient, address, tokenAddress, payload } = args
 
