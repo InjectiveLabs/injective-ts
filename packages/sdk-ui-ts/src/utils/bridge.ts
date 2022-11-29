@@ -78,7 +78,6 @@ export const CosmosNetworks = [
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Chihuahua,
   BridgingNetwork.CosmosHub,
-  BridgingNetwork.Crescent,
   BridgingNetwork.Juno,
   BridgingNetwork.Evmos,
   BridgingNetwork.Persistence,
@@ -143,7 +142,7 @@ export const tokenDenomsPerNetwork = [
   },
   {
     network: BridgingNetwork.Crescent,
-    denoms: ['ucre'],
+    denoms: ['ucre', 'inj'],
     symbols: ['cre'],
   },
 ] as NetworkConfig[]
@@ -226,11 +225,19 @@ export const cosmosNativeDenomsFromChainId = {
     tokenType: TokenType.Ibc,
     denom: 'ustrd',
   },
-  [CosmosChainId.Crescent]: {
-    ...tokenMetaUtil.getMetaBySymbol('CRE'),
-    tokenType: TokenType.Ibc,
-    denom: 'ucre',
-  },
+  [CosmosChainId.Crescent]: [
+    {
+      ...tokenMetaUtil.getMetaBySymbol('CRE'),
+      tokenType: TokenType.Ibc,
+      denom: 'ucre',
+    },
+    {
+      ...tokenMetaUtil.getMetaBySymbol('INJ'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
+    },
+  ],
   [TestnetCosmosChainId.Cosmoshub]: {
     ...tokenMetaUtil.getMetaBySymbol('UPHOTON'),
     tokenType: TokenType.Ibc,
