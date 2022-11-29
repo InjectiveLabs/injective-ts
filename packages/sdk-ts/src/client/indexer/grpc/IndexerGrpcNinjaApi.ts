@@ -13,6 +13,8 @@ import {
   LPHoldersResponse,
   PortfolioRequest,
   PortfolioResponse,
+  LeaderboardRequest,
+  LeaderboardResponse,
 } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
 import { NinjaAPI } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
@@ -299,6 +301,29 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
       >(request, NinjaAPI.Portfolio)
 
       return IndexerGrpcNinjaTransformer.grpcPortfolioToPortfolio(response)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchLeaderboard() {
+    const request = new LeaderboardRequest()
+
+    try {
+      const response = await this.request<
+        LeaderboardRequest,
+        LeaderboardResponse,
+        typeof NinjaAPI.Leaderboard
+      >(request, NinjaAPI.Leaderboard)
+
+      return IndexerGrpcNinjaTransformer.grpcLeaderboardToLeaderboard(response)
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e

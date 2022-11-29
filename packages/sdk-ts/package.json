@@ -43,7 +43,7 @@
     "@injectivelabs/exceptions": "^1.0.31",
     "@injectivelabs/indexer-api": "1.0.32-rc",
     "@injectivelabs/networks": "^1.0.49",
-    "@injectivelabs/ninja-api": "^1.0.6",
+    "@injectivelabs/ninja-api": "^1.0.7",
     "@injectivelabs/token-metadata": "^1.0.66",
     "@injectivelabs/ts-types": "^1.0.17",
     "@injectivelabs/utils": "^1.0.43",

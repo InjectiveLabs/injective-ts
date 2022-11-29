@@ -7,6 +7,7 @@ import {
   PriceSnapshot as GrpcNinjaPriceSnapshot,
   Subscription as GrpcNinjaSubscription,
   Holders as GrpcNinjaHolders,
+  LeaderboardEntry as GrpcNinjaLeaderboardEntry,
 } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
 
 export enum NinjaRedemptionType {
@@ -81,6 +82,18 @@ export interface NinjaPortfolio {
   pnlChartList: NinjaPriceSnapshot[]
 }
 
+export interface NinjaLeaderboardEntry {
+  address: string
+  pnl: number
+  updatedAt: number
+}
+
+export interface NinjaLeaderboard {
+  entriesList: NinjaLeaderboardEntry[]
+  snapshotBlock: number
+  nextSnapshotBlock: number
+}
+
 export {
   GrpcNinjaVault,
   GrpcNinjaProfits,
@@ -90,4 +103,5 @@ export {
   GrpcNinjaPriceSnapshot,
   GrpcNinjaSubscription,
   GrpcNinjaHolders,
+  GrpcNinjaLeaderboardEntry,
 }

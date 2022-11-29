@@ -1,22 +1,28 @@
 import {
-  GrpcNinjaVault,
-  GrpcNinjaProfits,
-  GrpcNinjaSubaccountBalance,
   GrpcNinjaDenomBalance,
+  GrpcNinjaHolders,
+  GrpcNinjaLeaderboardEntry,
   GrpcNinjaPagination,
   GrpcNinjaPriceSnapshot,
+  GrpcNinjaProfits,
+  GrpcNinjaSubaccountBalance,
   GrpcNinjaSubscription,
-  GrpcNinjaHolders,
+  GrpcNinjaVault,
   NinjaDenomBalance,
   NinjaHolders,
+  NinjaLeaderboard,
+  NinjaLeaderboardEntry,
+  NinjaPortfolio,
   NinjaPriceSnapshot,
   NinjaProfits,
+  NinjaSubaccountBalance,
   NinjaSubscription,
   NinjaVault,
-  NinjaSubaccountBalance,
-  NinjaPortfolio,
 } from '../types/ninja'
-import { PortfolioResponse } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
+import {
+  LeaderboardResponse,
+  PortfolioResponse,
+} from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
 
 /**
  * @category Indexer Grpc Transformer
@@ -147,6 +153,30 @@ export class IndexerGrpcNinjaTransformer {
       pnlChartList: grpcPortfolioResponse
         .getPnlChartList()
         .map(IndexerGrpcNinjaTransformer.grpcPriceSnapShotToPriceSnapShot),
+    }
+  }
+
+  static grpcLeaderboardEntryToLeaderboardEntry(
+    grpcNinjaLeaderboardEntry: GrpcNinjaLeaderboardEntry,
+  ): NinjaLeaderboardEntry {
+    return {
+      address: grpcNinjaLeaderboardEntry.getAddress(),
+      pnl: grpcNinjaLeaderboardEntry.getPnl(),
+      updatedAt: grpcNinjaLeaderboardEntry.getUpdatedAt(),
+    }
+  }
+
+  static grpcLeaderboardToLeaderboard(
+    grpcLeaderboardResponse: LeaderboardResponse,
+  ): NinjaLeaderboard {
+    return {
+      entriesList: grpcLeaderboardResponse
+        .getEntriesList()
+        .map(
+          IndexerGrpcNinjaTransformer.grpcLeaderboardEntryToLeaderboardEntry,
+        ),
+      snapshotBlock: grpcLeaderboardResponse.getSnapshotBlock(),
+      nextSnapshotBlock: grpcLeaderboardResponse.getNextSnapshotBlock(),
     }
   }
 }
