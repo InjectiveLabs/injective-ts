@@ -253,6 +253,8 @@ export const cosmosNativeDenomsFromChainId = {
 export const ibcHashToNativeInjPerNetwork = {
   [BridgingNetwork.Osmosis]:
     'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
+  [BridgingNetwork.Crescent]:
+    'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
   [BridgingNetwork.Persistence]:
     'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
 } as Partial<Record<BridgingNetwork, string>>
