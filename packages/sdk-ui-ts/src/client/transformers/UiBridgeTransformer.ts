@@ -337,7 +337,11 @@ export const convertMoonbeamToUiBridgeTransaction = async (
     sender: transaction.sender,
     txHash: transaction.txHash,
     explorerLink: transaction.explorerLink || '',
-    timestamp: Date.now(),
+    timestamp: new BigNumberInBase(
+      Math.floor(new BigNumberInBase(Date.now()).div(1000).toNumber()),
+    )
+      .times(1000)
+      .toNumber(),
     state: BridgeTransactionState.Confirming,
   }
 }
@@ -353,7 +357,11 @@ export const convertWormholeToUiBridgeTransaction = async (
     sender: transaction.sender,
     txHash: transaction.txHash,
     explorerLink: transaction.explorerLink || '',
-    timestamp: Date.now(),
+    timestamp: new BigNumberInBase(
+      Math.floor(new BigNumberInBase(Date.now()).div(1000).toNumber()),
+    )
+      .times(1000)
+      .toNumber(),
     state: BridgeTransactionState.Confirming,
   }
 }
