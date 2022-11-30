@@ -368,4 +368,30 @@ export class SolanaWormholeClient extends WormholeClient {
       Buffer.from(signed, 'base64'),
     )
   }
+
+  async signSendAndConfirmTransactionOnSolana(
+    transaction: Transaction,
+    provider: BaseMessageSignerWalletAdapter,
+  ) {
+    const { solanaHostUrl } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const signed = await provider.signTransaction(transaction)
+    const transactionId = await connection.sendRawTransaction(
+      signed.serialize(),
+    )
+
+    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
+
+    if (!txResponse) {
+      throw new Error('An error occurred while fetching the transaction info')
+    }
+
+    return txResponse as TransactionResponse
+  }
 }
