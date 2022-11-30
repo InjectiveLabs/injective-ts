@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.347](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.346...@injectivelabs/sdk-ui-ts@1.0.347) (2022-11-30)
+
+
+### Bug Fixes
+
+* bridge transformer ([a47e859](https://github.com/InjectiveLabs/injective-ts/commit/a47e8597d22826b1a08bb132aa9f5949c3dfaf8e))
+
+
+
+
+
 ## [1.0.346](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.345...@injectivelabs/sdk-ui-ts@1.0.346) (2022-11-30)
 
 
