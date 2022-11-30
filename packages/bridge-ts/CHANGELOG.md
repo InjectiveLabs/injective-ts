@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.58...@injectivelabs/bridge-ts@1.0.59) (2022-11-30)
+
+
+### Features
+
+* added solana sign transfer and confirm ([cbb334f](https://github.com/InjectiveLabs/injective-ts/commit/cbb334fdbe9f3227f3bdcb8df7506431df4842d5))
+
+
+
+
+
 ## [1.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.57...@injectivelabs/bridge-ts@1.0.58) (2022-11-30)
 
 
