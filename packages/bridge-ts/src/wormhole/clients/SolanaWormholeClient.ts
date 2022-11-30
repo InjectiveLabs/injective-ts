@@ -8,29 +8,24 @@ import {
   parseSequenceFromLogSolana,
   getEmitterAddressSolana,
   getSignedVAAWithRetry,
-  redeemOnInjective,
   getForeignAssetInjective,
   attestFromSolana,
-  createWrappedOnInjective,
   hexToUint8Array,
   transferNativeSol,
   getIsTransferCompletedSolana,
+  redeemOnSolana,
 } from '@certusone/wormhole-sdk'
 import { getAssociatedTokenAddress, NATIVE_MINT } from '@solana/spl-token'
-import { Connection, PublicKey, TransactionResponse } from '@solana/web3.js'
+import {
+  Connection,
+  PublicKey,
+  Transaction,
+  TransactionResponse,
+} from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
-import {
-  WORMHOLE_CHAINS,
-  WORMHOLE_CONTRACT_BY_NETWORK,
-  WORMHOLE_SOLANA_CONTRACT_BY_NETWORK,
-} from '../constants'
-import {
-  SolanaNativeSolTransferMsgArgs,
-  SolanaTransferMsgArgs,
-  WormholeContractAddresses,
-  WormholeSolanaContractAddresses,
-} from '../types'
+import { WORMHOLE_CHAINS } from '../constants'
+import { SolanaNativeSolTransferMsgArgs, SolanaTransferMsgArgs } from '../types'
 import { getSolanaContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
@@ -110,11 +105,11 @@ export class SolanaWormholeClient extends WormholeClient {
   }
 
   async attestFromSolanaToInjective(
-    args: Omit<SolanaTransferMsgArgs, 'amount'>,
+    args: Omit<SolanaTransferMsgArgs, 'amount' | 'recipient'>,
     provider: BaseMessageSignerWalletAdapter,
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
-    const { tokenAddress, recipient, signerPubKey } = args
+    const { tokenAddress, signerPubKey } = args
     const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
 
     if (!tokenAddress) {
@@ -133,8 +128,7 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    const { contractAddresses, solanaContractAddresses } =
-      getSolanaContractAddresses(network)
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const transaction = await attestFromSolana(
@@ -150,13 +144,25 @@ export class SolanaWormholeClient extends WormholeClient {
       signed.serialize(),
     )
 
-    const info = await getSolanaTransactionInfo(transactionId, connection)
+    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
 
-    if (!info) {
+    if (!txResponse) {
       throw new Error('An error occurred while fetching the transaction info')
     }
 
-    const sequence = parseSequenceFromLogSolana(info as TransactionResponse)
+    return txResponse as TransactionResponse
+  }
+
+  async confirmAttestFromSolanaToInjective(txResponse: TransactionResponse) {
+    const { network, wormholeRpcUrl } = this
+
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    const sequence = parseSequenceFromLogSolana(txResponse)
     const emitterAddress = await getEmitterAddressSolana(
       solanaContractAddresses.token_bridge,
     )
@@ -171,11 +177,7 @@ export class SolanaWormholeClient extends WormholeClient {
       },
     )
 
-    return createWrappedOnInjective(
-      contractAddresses.token_bridge,
-      recipient,
-      signedVAA,
-    )
+    return signedVAA
   }
 
   async transferNativeSolFromSolanaToInjective(
@@ -198,8 +200,7 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    const { contractAddresses, solanaContractAddresses } =
-      getSolanaContractAddresses(network)
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const transaction = await transferNativeSol(
@@ -217,13 +218,35 @@ export class SolanaWormholeClient extends WormholeClient {
       signed.serialize(),
     )
 
-    const info = await getSolanaTransactionInfo(transactionId, connection)
+    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
 
-    if (!info) {
+    if (!txResponse) {
       throw new Error('An error occurred while fetching the transaction info')
     }
 
-    const sequence = parseSequenceFromLogSolana(info as TransactionResponse)
+    return txResponse as TransactionResponse
+  }
+
+  async confirmTransferNativeSolFromSolanaToInjective(
+    txResponse: TransactionResponse,
+  ) {
+    const { network, solanaHostUrl, wormholeRpcUrl } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const sequence = parseSequenceFromLogSolana(
+      txResponse as TransactionResponse,
+    )
     const emitterAddress = await getEmitterAddressSolana(
       solanaContractAddresses.token_bridge,
     )
@@ -248,11 +271,7 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new Error('The transfer has not been completed')
     }
 
-    return redeemOnInjective(
-      contractAddresses.token_bridge,
-      recipient,
-      signedVAA,
-    )
+    return signedVAA
   }
 
   async transferFromSolanaToInjective(
@@ -268,6 +287,10 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
     if (!args.tokenAddress) {
       throw new GeneralException(new Error(`Please provide tokenAddress`))
     }
@@ -276,45 +299,8 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide signerPubKey`))
     }
 
-    if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
-    }
-
-    const solanaContractAddresses = (
-      WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeSolanaContractAddresses
-      }
-    )[network] as WormholeSolanaContractAddresses
-
-    const contractAddresses = (
-      WORMHOLE_CONTRACT_BY_NETWORK as {
-        [key: string]: WormholeContractAddresses
-      }
-    )[network] as WormholeContractAddresses
-
-    if (!contractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Injective not found`),
-      )
-    }
-
-    if (!solanaContractAddresses) {
-      throw new GeneralException(
-        new Error(`Contracts for ${network} on Solana not found`),
-      )
-    }
-
-    if (!contractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Injective not found`),
-      )
-    }
-
-    if (!solanaContractAddresses.token_bridge) {
-      throw new GeneralException(
-        new Error(`Token Bridge Address for ${network} on Solana not found`),
-      )
-    }
+    const { contractAddresses, solanaContractAddresses } =
+      getSolanaContractAddresses(network)
 
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
 
@@ -355,13 +341,31 @@ export class SolanaWormholeClient extends WormholeClient {
       signed.serialize(),
     )
 
-    const info = await getSolanaTransactionInfo(transactionId, connection)
+    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
 
-    if (!info) {
+    if (!txResponse) {
       throw new Error('An error occurred while fetching the transaction info')
     }
 
-    const sequence = parseSequenceFromLogSolana(info as TransactionResponse)
+    return txResponse as TransactionResponse
+  }
+
+  async confirmTransferFromSolanaToInjective(txResponse: TransactionResponse) {
+    const { network, wormholeRpcUrl, solanaHostUrl } = this
+
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const sequence = parseSequenceFromLogSolana(txResponse)
     const emitterAddress = await getEmitterAddressSolana(
       solanaContractAddresses.token_bridge,
     )
@@ -386,10 +390,32 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new Error('The transfer has not been completed')
     }
 
-    return redeemOnInjective(
-      contractAddresses.token_bridge,
-      recipient,
-      signedVAA,
+    return signedVAA
+  }
+
+  async redeemOnSolana({
+    solanaPubKey,
+    signed,
+  }: {
+    solanaPubKey: string
+    signed: Uint8Array
+  }): Promise<Transaction> {
+    const { network, solanaHostUrl } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    return redeemOnSolana(
+      connection,
+      solanaContractAddresses.core,
+      solanaContractAddresses.token_bridge,
+      new PublicKey(solanaPubKey),
+      signed,
     )
   }
 }

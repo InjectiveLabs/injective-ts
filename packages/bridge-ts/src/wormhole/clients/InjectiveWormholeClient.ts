@@ -3,27 +3,20 @@ import {
   isBrowser,
   createTransactionAndCosmosSignDocForAddressAndMsg,
   TxGrpcClient,
+  TxInfoResponse,
+  MsgExecuteContract,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
   tryNativeToUint8Array,
   getSignedVAAWithRetry,
-  getForeignAssetSolana,
-  CHAINS,
   transferFromInjective,
   parseSequenceFromLogInjective,
   getEmitterAddressInjective,
-  redeemOnSolana,
+  redeemOnInjective,
+  createWrappedOnInjective,
 } from '@certusone/wormhole-sdk'
-import {
-  createAssociatedTokenAccountInstruction,
-  getAssociatedTokenAddress,
-} from '@solana/spl-token'
-import {
-  Connection,
-  PublicKey as SolanaPublicKey,
-  Transaction,
-} from '@solana/web3.js'
+import { PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { ChainId } from '@injectivelabs/ts-types'
@@ -58,23 +51,14 @@ export class InjectiveWormholeClient extends WormholeClient {
   async transferFromInjectiveToSolana({
     args,
     provider,
-    solanaOptions,
   }: {
-    args: Omit<
-      InjectiveTransferMsgArgs,
-      'recipient'
-    > /* The recipient is taken from the solanaOptions */
+    args: InjectiveTransferMsgArgs
     provider: InjectiveProviderArgs
-    solanaOptions: {
-      provider: BaseMessageSignerWalletAdapter
-      host: string
-    }
   }) {
     const { network, wormholeRpcUrl } = this
-    const { amount } = args
+    const { amount, recipient } = args
     const endpoints = getEndpointsForNetwork(network)
-    const solanaPubKey =
-      solanaOptions.provider.publicKey || new SolanaPublicKey('')
+    const solanaPubKey = new SolanaPublicKey(recipient)
 
     if (!args.tokenAddress) {
       throw new GeneralException(new Error(`Please provide tokenAddress`))
@@ -90,48 +74,7 @@ export class InjectiveWormholeClient extends WormholeClient {
       )
     }
 
-    const { contractAddresses, solanaContractAddresses } =
-      getSolanaContractAddresses(network)
-
-    const connection = new Connection(solanaOptions.host, 'confirmed')
-    const solanaMintKey = new SolanaPublicKey(
-      (await getForeignAssetSolana(
-        connection,
-        solanaContractAddresses.token_bridge,
-        CHAINS.injective,
-        tryNativeToUint8Array(args.tokenAddress, WORMHOLE_CHAINS.injective),
-      )) || '',
-    )
-    const recipient = await getAssociatedTokenAddress(
-      solanaMintKey,
-      solanaPubKey,
-    )
-
-    // create the associated token account if it doesn't exist
-    const associatedAddressInfo = await connection.getAccountInfo(recipient)
-
-    if (!associatedAddressInfo) {
-      const transaction = new Transaction().add(
-        await createAssociatedTokenAccountInstruction(
-          solanaPubKey,
-          new SolanaPublicKey(recipient),
-          solanaPubKey,
-          solanaMintKey,
-        ),
-      )
-
-      const { blockhash } = await connection.getLatestBlockhash()
-
-      transaction.recentBlockhash = blockhash
-      transaction.feePayer = solanaPubKey
-
-      const signed = await solanaOptions.provider.signTransaction(transaction)
-      const transactionId = await connection.sendRawTransaction(
-        signed.serialize(),
-      )
-
-      await connection.confirmTransaction(transactionId)
-    }
+    const { contractAddresses } = getSolanaContractAddresses(network)
 
     const messages = await transferFromInjective(
       args.injectiveAddress,
@@ -166,7 +109,20 @@ export class InjectiveWormholeClient extends WormholeClient {
       chainId: args.chainId as ChainId,
       address: args.injectiveAddress,
     })
+
     const txResponse = await txGrpcClient.fetchTx(txHash)
+
+    return txResponse
+  }
+
+  async confirmTransferFromInjectiveToSolana(txResponse: TxInfoResponse) {
+    const { network, wormholeRpcUrl } = this
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
 
     const sequence = parseSequenceFromLogInjective(txResponse)
     const emitterAddress = await getEmitterAddressInjective(
@@ -183,12 +139,42 @@ export class InjectiveWormholeClient extends WormholeClient {
       },
     )
 
-    return redeemOnSolana(
-      connection,
-      solanaContractAddresses.core,
-      solanaContractAddresses.token_bridge,
-      solanaPubKey,
-      signedVAA,
+    return signedVAA
+  }
+
+  async redeemOnInjective({
+    injectiveAddress,
+    signed,
+  }: {
+    injectiveAddress: string
+    signed: Uint8Array
+  }): Promise<MsgExecuteContract> {
+    const { network } = this
+
+    const { contractAddresses } = getSolanaContractAddresses(network)
+
+    return redeemOnInjective(
+      contractAddresses.token_bridge,
+      injectiveAddress,
+      signed,
+    )
+  }
+
+  async createWrappedOnInjective({
+    injectiveAddress,
+    signed,
+  }: {
+    injectiveAddress: string
+    signed: Uint8Array
+  }) {
+    const { network } = this
+
+    const { contractAddresses } = getSolanaContractAddresses(network)
+
+    return createWrappedOnInjective(
+      contractAddresses.token_bridge,
+      injectiveAddress,
+      signed,
     )
   }
 }

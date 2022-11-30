@@ -21,6 +21,7 @@ import { WormholeClient } from '../WormholeClient'
 import { getEthereumContractAddresses } from '../utils'
 
 export class EthereumWormholeClient extends WormholeClient {
+  /** TODO: Refactor */
   async transferFromEthereumToInjective(
     args: EthereumTransferMsgArgs,
     provider: ethers.providers.Web3Provider,
