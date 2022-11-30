@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.61...@injectivelabs/bridge-ts@1.0.62) (2022-11-30)
+
+
+### Bug Fixes
+
+* createAssociatedTokenAddress ([a479244](https://github.com/InjectiveLabs/injective-ts/commit/a47924421eff335865079d0494f252427ae1f5b6))
+
+
+
+
+
 ## [1.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.60...@injectivelabs/bridge-ts@1.0.61) (2022-11-30)
 
 
