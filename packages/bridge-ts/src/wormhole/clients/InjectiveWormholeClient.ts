@@ -3,7 +3,6 @@ import {
   isBrowser,
   createTransactionAndCosmosSignDocForAddressAndMsg,
   TxGrpcClient,
-  TxInfoResponse,
   MsgExecuteContract,
   ChainGrpcWasmApi,
   TxResponse,
@@ -178,7 +177,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     return txResponse
   }
 
-  async confirmTransferFromInjectiveToSolana(txResponse: TxInfoResponse) {
+  async confirmTransferFromInjectiveToSolana(txResponse: TxResponse) {
     const { network, wormholeRpcUrl } = this
 
     if (!wormholeRpcUrl) {
