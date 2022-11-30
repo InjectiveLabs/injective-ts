@@ -15,7 +15,7 @@ import {
   // getIsTransferCompletedSolana,
   redeemOnSolana,
 } from '@certusone/wormhole-sdk'
-import { getAssociatedTokenAddress, NATIVE_MINT } from '@solana/spl-token'
+import { getAssociatedTokenAddress } from '@solana/spl-token'
 import {
   Connection,
   PublicKey,
@@ -50,58 +50,6 @@ export class SolanaWormholeClient extends WormholeClient {
     const connection = new Connection(solanaHostUrl || '')
 
     return connection.getBalance(address)
-  }
-
-  async getBridgedAssetBalance(
-    injectiveAddress: string,
-    tokenAddress: string = NATIVE_MINT.toString(),
-  ) {
-    const { network } = this
-    const endpoints = getEndpointsForNetwork(network)
-
-    const { contractAddresses } = getSolanaContractAddresses(network)
-
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
-    const originAssetHex = tryNativeToHexString(
-      tokenAddress,
-      WORMHOLE_CHAINS.solana,
-    )
-    const foreignAsset = await getForeignAssetInjective(
-      contractAddresses.token_bridge,
-      chainGrpcWasmApi,
-      WORMHOLE_CHAINS.solana,
-      hexToUint8Array(originAssetHex),
-    )
-
-    if (!foreignAsset) {
-      throw new GeneralException(new Error(`Foreign asset not found`))
-    }
-
-    const response = await chainGrpcWasmApi.fetchSmartContractState(
-      foreignAsset,
-      Buffer.from(
-        JSON.stringify({
-          balance: {
-            address: injectiveAddress,
-          },
-        }),
-      ).toString('base64'),
-    )
-
-    if (typeof response.data === 'string') {
-      const state = JSON.parse(
-        Buffer.from(response.data, 'base64').toString('utf-8'),
-      ) as { balance: string }
-
-      return { address: foreignAsset, balance: state.balance } as {
-        address: string
-        balance: string
-      }
-    }
-
-    throw new GeneralException(
-      new Error(`Could not get the balance from the token bridge contract`),
-    )
   }
 
   async attestFromSolanaToInjective(

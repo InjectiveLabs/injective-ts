@@ -228,9 +228,9 @@ export class IndexerRestExplorerTransformer {
     balance: CW20BalanceExplorerApiResponse,
   ): CW20BalanceWithToken {
     const {
-      marketing_info: { logo },
+      marketing_info,
       token_info: { name, symbol, decimals },
-    } = balance.cw20_metadata
+    } = balance.cw20_metadata || { token_info: {} }
 
     return {
       contractAddress: balance.contract_address,
@@ -241,7 +241,7 @@ export class IndexerRestExplorerTransformer {
         decimals,
         name,
         symbol,
-        logo: logo || '',
+        logo: marketing_info ? marketing_info.logo || '' : '',
         address: balance.contract_address,
         coinGeckoId: name,
         denom: '',

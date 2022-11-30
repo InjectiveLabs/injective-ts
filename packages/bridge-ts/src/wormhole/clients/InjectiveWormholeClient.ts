@@ -5,6 +5,7 @@ import {
   TxGrpcClient,
   TxInfoResponse,
   MsgExecuteContract,
+  ChainGrpcWasmApi,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -15,11 +16,15 @@ import {
   getEmitterAddressInjective,
   redeemOnInjective,
   createWrappedOnInjective,
+  tryNativeToHexString,
+  getForeignAssetInjective,
+  hexToUint8Array,
 } from '@certusone/wormhole-sdk'
 import { PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { ChainId } from '@injectivelabs/ts-types'
+import { NATIVE_MINT } from '@solana/spl-token'
 import { WORMHOLE_CHAINS } from '../constants'
 import {
   InjectiveProviderArgs,
@@ -46,6 +51,58 @@ export class InjectiveWormholeClient extends WormholeClient {
     _provider: BaseMessageSignerWalletAdapter,
   ) {
     throw new GeneralException(new Error(`Not implemented yet!`))
+  }
+
+  async getSolanaBridgedAssetBalance(
+    injectiveAddress: string,
+    tokenAddress: string = NATIVE_MINT.toString(),
+  ) {
+    const { network } = this
+    const endpoints = getEndpointsForNetwork(network)
+
+    const { contractAddresses } = getSolanaContractAddresses(network)
+
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+    const originAssetHex = tryNativeToHexString(
+      tokenAddress,
+      WORMHOLE_CHAINS.solana,
+    )
+    const foreignAsset = await getForeignAssetInjective(
+      contractAddresses.token_bridge,
+      chainGrpcWasmApi,
+      WORMHOLE_CHAINS.solana,
+      hexToUint8Array(originAssetHex),
+    )
+
+    if (!foreignAsset) {
+      throw new GeneralException(new Error(`Foreign asset not found`))
+    }
+
+    const response = await chainGrpcWasmApi.fetchSmartContractState(
+      foreignAsset,
+      Buffer.from(
+        JSON.stringify({
+          balance: {
+            address: injectiveAddress,
+          },
+        }),
+      ).toString('base64'),
+    )
+
+    if (typeof response.data === 'string') {
+      const state = JSON.parse(
+        Buffer.from(response.data, 'base64').toString('utf-8'),
+      ) as { balance: string }
+
+      return { address: foreignAsset, balance: state.balance } as {
+        address: string
+        balance: string
+      }
+    }
+
+    throw new GeneralException(
+      new Error(`Could not get the balance from the token bridge contract`),
+    )
   }
 
   async transferFromInjectiveToSolana({
