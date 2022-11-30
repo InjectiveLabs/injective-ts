@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.344](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.343...@injectivelabs/sdk-ui-ts@1.0.344) (2022-11-30)
+
+
+### Features
+
+* added sol token metadata ([c991973](https://github.com/InjectiveLabs/injective-ts/commit/c991973ac4e6db312a83d5a426e77bb73d844bb8))
+
+
+
+
+
 ## [1.0.343](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.342...@injectivelabs/sdk-ui-ts@1.0.343) (2022-11-30)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
