@@ -178,7 +178,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     return txResponse
   }
 
-  async confirmTransferFromInjectiveToSolana(txResponse: TxResponse) {
+  async getSignedVAAOnInjective(txResponse: TxResponse) {
     const { network, wormholeRpcUrl } = this
 
     if (!wormholeRpcUrl) {
