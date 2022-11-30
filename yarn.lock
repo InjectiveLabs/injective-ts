@@ -2079,10 +2079,10 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
-"@injectivelabs/ninja-api@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/@injectivelabs/ninja-api/-/ninja-api-1.0.7.tgz#05109e117277e06ca714952eea4af043aafe1fb8"
-  integrity sha512-lUSwamLR+Gcjg7uudf7vR0xnorlhshJ8f/o7wl7gNXfTpg7/9iSK/i29Gf0yT5PQEpdegrJTBDGd5wC+kx3okQ==
+"@injectivelabs/ninja-api@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.npmjs.org/@injectivelabs/ninja-api/-/ninja-api-1.0.8.tgz#ddcc83f33e1a0d105d77eaf67def8f61aeae443c"
+  integrity sha512-E4j7QfLSg5D7oyDZIIv3ihn824LTKAjXOllt6+Sm4ed42lS0veJRNVeu9lhC4dxKULtfFL1zppCwqrIPuTdT1Q==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"

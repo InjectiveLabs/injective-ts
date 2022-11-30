@@ -162,7 +162,6 @@ export class IndexerGrpcNinjaTransformer {
     return {
       address: grpcNinjaLeaderboardEntry.getAddress(),
       pnl: grpcNinjaLeaderboardEntry.getPnl(),
-      updatedAt: grpcNinjaLeaderboardEntry.getUpdatedAt(),
     }
   }
 
@@ -176,7 +175,7 @@ export class IndexerGrpcNinjaTransformer {
           IndexerGrpcNinjaTransformer.grpcLeaderboardEntryToLeaderboardEntry,
         ),
       snapshotBlock: grpcLeaderboardResponse.getSnapshotBlock(),
-      nextSnapshotBlock: grpcLeaderboardResponse.getNextSnapshotBlock(),
+      updatedAt: grpcLeaderboardResponse.getUpdatedAt(),
     }
   }
 }
