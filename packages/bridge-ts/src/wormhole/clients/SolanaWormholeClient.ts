@@ -14,8 +14,13 @@ import {
   transferNativeSol,
   // getIsTransferCompletedSolana,
   redeemOnSolana,
+  getForeignAssetSolana,
+  CHAINS,
 } from '@certusone/wormhole-sdk'
-import { getAssociatedTokenAddress } from '@solana/spl-token'
+import {
+  createAssociatedTokenAccountInstruction,
+  getAssociatedTokenAddress,
+} from '@solana/spl-token'
 import {
   Connection,
   PublicKey,
@@ -367,6 +372,74 @@ export class SolanaWormholeClient extends WormholeClient {
       new PublicKey(solanaPubKey),
       Buffer.from(signed, 'base64'),
     )
+  }
+
+  async createAssociatedTokenAddress({
+    solanaPubKey,
+    tokenAddress,
+    provider,
+  }: {
+    solanaPubKey: string
+    tokenAddress: string
+    provider: BaseMessageSignerWalletAdapter
+  }) {
+    const { solanaHostUrl, network } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const solanaPublicKey = new PublicKey(solanaPubKey)
+    const solanaMintKey = new PublicKey(
+      (await getForeignAssetSolana(
+        connection,
+        solanaContractAddresses.token_bridge,
+        CHAINS.injective,
+        tryNativeToUint8Array(tokenAddress, CHAINS.injective),
+      )) || '',
+    )
+    const recipient = await getAssociatedTokenAddress(
+      solanaMintKey,
+      solanaPublicKey,
+    )
+    // create the associated token account if it doesn't exist
+    const associatedAddressInfo = await connection.getAccountInfo(recipient)
+
+    if (!associatedAddressInfo) {
+      const transaction = new Transaction().add(
+        await createAssociatedTokenAccountInstruction(
+          solanaPublicKey,
+          recipient,
+          solanaPublicKey,
+          solanaMintKey,
+        ),
+      )
+
+      const { blockhash } = await connection.getLatestBlockhash()
+
+      transaction.recentBlockhash = blockhash
+      transaction.feePayer = solanaPublicKey
+
+      const signed = await provider.signTransaction(transaction)
+      const transactionId = await connection.sendRawTransaction(
+        signed.serialize(),
+      )
+
+      const txResponse = await getSolanaTransactionInfo(
+        transactionId,
+        connection,
+      )
+
+      if (!txResponse) {
+        throw new Error('An error occurred while fetching the transaction info')
+      }
+    }
+
+    return recipient.toString()
   }
 
   async signSendAndConfirmTransactionOnSolana(
