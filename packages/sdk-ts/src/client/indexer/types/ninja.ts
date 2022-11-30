@@ -85,13 +85,12 @@ export interface NinjaPortfolio {
 export interface NinjaLeaderboardEntry {
   address: string
   pnl: number
-  updatedAt: number
 }
 
 export interface NinjaLeaderboard {
   entriesList: NinjaLeaderboardEntry[]
   snapshotBlock: number
-  nextSnapshotBlock: number
+  updatedAt: number
 }
 
 export {
