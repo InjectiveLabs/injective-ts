@@ -29,7 +29,7 @@ export class WormholeClient {
     signed,
   }: {
     address: string
-    signed: Uint8Array | string
+    signed: string /* in base 64 */
   }) {
     const { network } = this
     const contractAddresses = (

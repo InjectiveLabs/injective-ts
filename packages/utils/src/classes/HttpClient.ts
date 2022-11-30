@@ -15,6 +15,7 @@ export default class HttpClient {
   ) {
     this.client = axios.create({
       baseURL: endpoint,
+      timeout: 15000,
       ...options,
     })
 

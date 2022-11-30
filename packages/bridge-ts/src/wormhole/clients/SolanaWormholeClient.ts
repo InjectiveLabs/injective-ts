@@ -177,7 +177,7 @@ export class SolanaWormholeClient extends WormholeClient {
       },
     )
 
-    return signedVAA
+    return Buffer.from(signedVAA).toString('base64')
   }
 
   async transferNativeSolFromSolanaToInjective(
@@ -271,7 +271,7 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new Error('The transfer has not been completed')
     }
 
-    return signedVAA
+    return Buffer.from(signedVAA).toString('base64')
   }
 
   async transferFromSolanaToInjective(
@@ -390,7 +390,7 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new Error('The transfer has not been completed')
     }
 
-    return signedVAA
+    return Buffer.from(signedVAA).toString('base64')
   }
 
   async redeemOnSolana({
@@ -398,7 +398,7 @@ export class SolanaWormholeClient extends WormholeClient {
     signed,
   }: {
     solanaPubKey: string
-    signed: Uint8Array
+    signed: string /* in base 64 */
   }): Promise<Transaction> {
     const { network, solanaHostUrl } = this
 
@@ -415,7 +415,7 @@ export class SolanaWormholeClient extends WormholeClient {
       solanaContractAddresses.core,
       solanaContractAddresses.token_bridge,
       new PublicKey(solanaPubKey),
-      signed,
+      Buffer.from(signed, 'base64'),
     )
   }
 }

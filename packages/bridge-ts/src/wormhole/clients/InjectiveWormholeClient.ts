@@ -139,7 +139,7 @@ export class InjectiveWormholeClient extends WormholeClient {
       },
     )
 
-    return signedVAA
+    return Buffer.from(signedVAA).toString('base64')
   }
 
   async redeemOnInjective({
@@ -147,7 +147,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     signed,
   }: {
     injectiveAddress: string
-    signed: Uint8Array
+    signed: string /* in base 64 */
   }): Promise<MsgExecuteContract> {
     const { network } = this
 
@@ -156,7 +156,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     return redeemOnInjective(
       contractAddresses.token_bridge,
       injectiveAddress,
-      signed,
+      Buffer.from(signed, 'base64'),
     )
   }
 
@@ -165,7 +165,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     signed,
   }: {
     injectiveAddress: string
-    signed: Uint8Array
+    signed: string /* in base 64 */
   }) {
     const { network } = this
 
@@ -174,7 +174,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     return createWrappedOnInjective(
       contractAddresses.token_bridge,
       injectiveAddress,
-      signed,
+      Buffer.from(signed, 'base64'),
     )
   }
 }
