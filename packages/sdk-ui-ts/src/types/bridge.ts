@@ -96,11 +96,14 @@ export interface PeggyTxResponse {
   bridgeFee?: string
 }
 
-export interface MoonbeamTxResponse extends CosmosTxResponse {
-  //
+export interface MoonbeamTxResponse
+  extends Omit<CosmosTxResponse, 'timeoutTimestamp'> {
+  explorerLink?: string
 }
 
-export interface WormholeTxResponse extends CosmosTxResponse {
+export interface WormholeTxResponse
+  extends Omit<CosmosTxResponse, 'timeoutTimestamp'> {
+  explorerLink?: string
   source: BridgingNetwork
   destination: BridgingNetwork
 }

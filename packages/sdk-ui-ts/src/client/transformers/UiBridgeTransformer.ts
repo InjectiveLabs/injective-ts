@@ -336,8 +336,7 @@ export const convertMoonbeamToUiBridgeTransaction = async (
     receiver: transaction.receiver,
     sender: transaction.sender,
     txHash: transaction.txHash,
-    explorerLink: '',
-    timeoutTimestamp: transaction.timeoutTimestamp,
+    explorerLink: transaction.explorerLink || '',
     timestamp: Date.now(),
     state: BridgeTransactionState.Confirming,
   }
@@ -353,8 +352,7 @@ export const convertWormholeToUiBridgeTransaction = async (
     receiver: transaction.receiver,
     sender: transaction.sender,
     txHash: transaction.txHash,
-    explorerLink: '',
-    timeoutTimestamp: transaction.timeoutTimestamp,
+    explorerLink: transaction.explorerLink || '',
     timestamp: Date.now(),
     state: BridgeTransactionState.Confirming,
   }
