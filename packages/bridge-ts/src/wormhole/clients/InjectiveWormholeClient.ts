@@ -64,6 +64,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     const { contractAddresses } = getSolanaContractAddresses(network)
 
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+
     const originAssetHex = tryNativeToHexString(
       tokenAddress,
       WORMHOLE_CHAINS.solana,

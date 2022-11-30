@@ -555,7 +555,7 @@ export class UiBridgeTransformer {
   }
 
   async convertWormholeToUiBridgeTransaction(transaction: WormholeTxResponse) {
-    return convertMoonbeamToUiBridgeTransaction(transaction)
+    return convertWormholeToUiBridgeTransaction(transaction)
   }
 
   async convertPeggyToUiBridgeTransaction(
