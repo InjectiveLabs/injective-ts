@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.346](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.345...@injectivelabs/sdk-ui-ts@1.0.346) (2022-11-30)
+
+
+### Features
+
+* added bridge transaction type ([fee3a80](https://github.com/InjectiveLabs/injective-ts/commit/fee3a8007c735772f8ba9556f3a3b6fe5291fedc))
+* added wormhole and moonbeam bridge tx transformers ([f499006](https://github.com/InjectiveLabs/injective-ts/commit/f4990060c1593ee3c95b09c0a475736d776fbadd))
+
+
+
+
+
 ## [1.0.345](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.344...@injectivelabs/sdk-ui-ts@1.0.345) (2022-11-30)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
