@@ -12,9 +12,11 @@ import {
   attestFromSolana,
   hexToUint8Array,
   transferNativeSol,
-  // getIsTransferCompletedSolana,
+  postVaaSolanaWithRetry,
   redeemOnSolana,
   getOriginalAssetInjective,
+  redeemAndUnwrapOnSolana,
+  getIsTransferCompletedSolana,
 } from '@certusone/wormhole-sdk'
 import {
   createAssociatedTokenAccountInstruction,
@@ -28,6 +30,7 @@ import {
 } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
+import { TransactionSignatureAndResponse } from '@certusone/wormhole-sdk/lib/cjs/solana'
 import { WORMHOLE_CHAINS } from '../constants'
 import { SolanaNativeSolTransferMsgArgs, SolanaTransferMsgArgs } from '../types'
 import { getSolanaContractAddresses, getSolanaTransactionInfo } from '../utils'
@@ -373,6 +376,63 @@ export class SolanaWormholeClient extends WormholeClient {
     )
   }
 
+  async redeemNativeSolOnSolana({
+    solanaPubKey,
+    signed,
+  }: {
+    solanaPubKey: string
+    signed: string /* in base 64 */
+  }): Promise<Transaction> {
+    const { network, solanaHostUrl } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    return redeemAndUnwrapOnSolana(
+      connection,
+      solanaContractAddresses.core,
+      solanaContractAddresses.token_bridge,
+      new PublicKey(solanaPubKey),
+      Buffer.from(signed, 'base64'),
+    )
+  }
+
+  async postVaaSolanaWithRetry(
+    {
+      solanaPubKey,
+      signed,
+    }: {
+      solanaPubKey: string
+      signed: string /* in base 64 */
+    },
+    provider: BaseMessageSignerWalletAdapter,
+  ): Promise<TransactionSignatureAndResponse[]> {
+    const { network, solanaHostUrl } = this
+    const MAX_VAA_UPLOAD_RETRIES_SOLANA = 5
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    return postVaaSolanaWithRetry(
+      connection,
+      provider.signTransaction.bind(provider),
+      solanaContractAddresses.core,
+      new PublicKey(solanaPubKey),
+      Buffer.from(signed, 'base64'),
+      MAX_VAA_UPLOAD_RETRIES_SOLANA,
+    )
+  }
+
   async createAssociatedTokenAddress(
     tokenAddress: string,
     provider: BaseMessageSignerWalletAdapter,
@@ -457,5 +517,23 @@ export class SolanaWormholeClient extends WormholeClient {
     }
 
     return txResponse as TransactionResponse
+  }
+
+  async getIsTransferCompletedInjective(signedVAA: string /* in base 64 */) {
+    const { solanaHostUrl, network } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const { contractAddresses } = getSolanaContractAddresses(network)
+
+    return getIsTransferCompletedSolana(
+      contractAddresses.token_bridge,
+      Buffer.from(signedVAA, 'base64'),
+      connection,
+    )
   }
 }
