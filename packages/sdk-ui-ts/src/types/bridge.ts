@@ -19,7 +19,7 @@ export enum BridgingNetwork {
   Secret = 'secret',
   Stride = 'stride',
   Crescent = 'crescent',
-  Solana = 'solana'
+  Solana = 'solana',
 }
 
 export const MintScanExplorerUrl = {

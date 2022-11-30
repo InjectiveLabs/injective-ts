@@ -732,4 +732,31 @@ export default {
     address: '',
     coinGeckoId: 'astroport-fi',
   },
+
+  SOL: {
+    name: 'Solana',
+    logo: 'solana.png',
+    symbol: 'SOL',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'solana',
+  },
+
+  WSOL: {
+    name: 'Solana',
+    logo: 'solana.png',
+    symbol: 'SOL',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'solana',
+  },
+
+  CW20SOL: {
+    name: 'Solana',
+    logo: 'solana.png',
+    symbol: 'SOL',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'solana',
+  },
 } as Record<string, TokenMeta>

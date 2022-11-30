@@ -14,8 +14,7 @@ import {
   transferNativeSol,
   // getIsTransferCompletedSolana,
   redeemOnSolana,
-  getForeignAssetSolana,
-  CHAINS,
+  getOriginalAssetInjective,
 } from '@certusone/wormhole-sdk'
 import {
   createAssociatedTokenAccountInstruction,
@@ -379,24 +378,21 @@ export class SolanaWormholeClient extends WormholeClient {
     provider: BaseMessageSignerWalletAdapter,
   ) {
     const { solanaHostUrl, network } = this
+    const endpoints = getEndpointsForNetwork(network)
 
     if (!solanaHostUrl) {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    const { solanaContractAddresses } = getSolanaContractAddresses(network)
-
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
     const solanaPublicKey = new PublicKey(provider.publicKey || '')
-    const solanaMintKey = new PublicKey(
-      (await getForeignAssetSolana(
-        connection,
-        solanaContractAddresses.token_bridge,
-        CHAINS.injective,
-        tryNativeToUint8Array(tokenAddress, CHAINS.injective),
-      )) || '',
+    const originalAsset = await getOriginalAssetInjective(
+      tokenAddress,
+      chainGrpcWasmApi,
     )
+    const solanaMintKey = new PublicKey(originalAsset.assetAddress)
     const recipient = await getAssociatedTokenAddress(
       solanaMintKey,
       solanaPublicKey,

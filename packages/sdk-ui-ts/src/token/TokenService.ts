@@ -359,16 +359,16 @@ export class TokenService {
       }
     }
 
-    const tokenFromSymbol = (await this.getDenomToken(
+    const tokenFromDenomAsSymbol = (await this.getDenomToken(
       transaction.denom,
     )) as Token
 
-    if (tokenFromSymbol) {
+    if (tokenFromDenomAsSymbol) {
       return {
         ...transaction,
         token: tokenMetaToToken(
-          tokenFromSymbol,
-          tokenFromSymbol.address!,
+          tokenFromDenomAsSymbol,
+          tokenFromDenomAsSymbol.address!,
         ) as Token,
       }
     }

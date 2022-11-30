@@ -193,7 +193,7 @@ export class InjectiveWormholeClient extends WormholeClient {
 
     const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
       [wormholeRpcUrl],
-      WORMHOLE_CHAINS.solana,
+      WORMHOLE_CHAINS.injective,
       emitterAddress,
       sequence,
       {
