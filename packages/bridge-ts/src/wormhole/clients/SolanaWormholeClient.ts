@@ -374,15 +374,10 @@ export class SolanaWormholeClient extends WormholeClient {
     )
   }
 
-  async createAssociatedTokenAddress({
-    solanaPubKey,
-    tokenAddress,
-    provider,
-  }: {
-    solanaPubKey: string
-    tokenAddress: string
-    provider: BaseMessageSignerWalletAdapter
-  }) {
+  async createAssociatedTokenAddress(
+    tokenAddress: string,
+    provider: BaseMessageSignerWalletAdapter,
+  ) {
     const { solanaHostUrl, network } = this
 
     if (!solanaHostUrl) {
@@ -393,7 +388,7 @@ export class SolanaWormholeClient extends WormholeClient {
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
-    const solanaPublicKey = new PublicKey(solanaPubKey)
+    const solanaPublicKey = new PublicKey(provider.publicKey || '')
     const solanaMintKey = new PublicKey(
       (await getForeignAssetSolana(
         connection,
