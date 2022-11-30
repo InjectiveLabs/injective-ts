@@ -144,7 +144,7 @@ export class LeapWallet {
     const txClient = new TxRestClient(endpoints.rest)
     const result = await txClient.fetchTxPoll(txHash)
 
-    return result.txhash
+    return result.txHash
   }
 
   async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {

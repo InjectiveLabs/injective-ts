@@ -21,6 +21,7 @@ import {
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { errorToErrorMessage, isTxNotFoundError } from './utils'
+import { TxResponse } from './types'
 
 export class TxRestClient implements TxConcreteClient {
   public httpClient: HttpClient
@@ -34,7 +35,10 @@ export class TxRestClient implements TxConcreteClient {
     })
   }
 
-  public async fetchTx(txHash: string, params: any = {}) {
+  public async fetchTx(
+    txHash: string,
+    params: any = {},
+  ): Promise<TxResponse | undefined> {
     try {
       const response = await this.getRaw<TxResultResponse>(
         `/cosmos/tx/v1beta1/txs/${txHash}`,
@@ -74,7 +78,7 @@ export class TxRestClient implements TxConcreteClient {
   public async fetchTxPoll(
     txHash: string,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
-  ) {
+  ): Promise<TxResponse> {
     const POLL_INTERVAL = DEFAULT_BLOCK_TIME_IN_SECONDS * 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {

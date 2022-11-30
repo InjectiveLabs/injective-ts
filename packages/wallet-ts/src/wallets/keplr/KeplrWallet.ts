@@ -185,7 +185,7 @@ export class KeplrWallet {
     const txClient = new TxRestClient(endpoints.rest)
     const result = await txClient.fetchTxPoll(txHash)
 
-    return result.txhash
+    return result.txHash
   }
 
   async signEIP712CosmosTx({

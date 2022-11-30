@@ -6,6 +6,7 @@ import {
   TxInfoResponse,
   MsgExecuteContract,
   ChainGrpcWasmApi,
+  TxResponse,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -168,7 +169,11 @@ export class InjectiveWormholeClient extends WormholeClient {
       address: args.injectiveAddress,
     })
 
-    const txResponse = await txGrpcClient.fetchTx(txHash)
+    const txResponse = (await txGrpcClient.fetchTx(txHash)) as TxResponse
+
+    if (!txResponse) {
+      throw new GeneralException(new Error('Transaction can not be found!'))
+    }
 
     return txResponse
   }

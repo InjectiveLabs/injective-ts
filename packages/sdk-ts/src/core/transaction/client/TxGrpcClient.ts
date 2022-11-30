@@ -33,6 +33,7 @@ import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
+import { TxResponse } from './types'
 
 if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
@@ -53,7 +54,7 @@ export class TxGrpcClient implements TxConcreteClient {
     })
   }
 
-  public async fetchTx(hash: string) {
+  public async fetchTx(hash: string): Promise<TxResponse | undefined> {
     const request = new GetTxRequest()
 
     request.setHash(hash)
@@ -94,7 +95,7 @@ export class TxGrpcClient implements TxConcreteClient {
   public async fetchTxPoll(
     txHash: string,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
-  ) {
+  ): Promise<TxResponse> {
     const POLL_INTERVAL = DEFAULT_BLOCK_TIME_IN_SECONDS * 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
