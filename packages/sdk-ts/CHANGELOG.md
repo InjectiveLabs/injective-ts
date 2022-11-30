@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.251](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.250...@injectivelabs/sdk-ts@1.0.251) (2022-11-30)
+
+
+### Bug Fixes
+
+* marketing info undefined on contract ([72dce9f](https://github.com/InjectiveLabs/injective-ts/commit/72dce9f8f8372b1ea9169356d53c53765a6c8eee))
+
+
+
+
+
 ## [1.0.250](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.249...@injectivelabs/sdk-ts@1.0.250) (2022-11-30)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
