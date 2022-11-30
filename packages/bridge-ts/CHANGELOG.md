@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.52...@injectivelabs/bridge-ts@1.0.53) (2022-11-30)
+
+
+### Bug Fixes
+
+* base64 instead of binary ([5db26dc](https://github.com/InjectiveLabs/injective-ts/commit/5db26dc4ad1c3a2144c29a3dc87849548c39568f))
+
+
+
+
+
 ## [1.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.51...@injectivelabs/bridge-ts@1.0.52) (2022-11-30)
 
 
