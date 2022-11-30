@@ -452,7 +452,7 @@ export const getPeggoGraphQlEndpoint = (network: Network): string => {
   return ''
 }
 
-export const getNetworkFromSender = (sender: string): BridgingNetwork => {
+export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
   if (sender.startsWith('juno')) {
     return BridgingNetwork.Juno
   }
@@ -494,6 +494,13 @@ export const getNetworkFromSender = (sender: string): BridgingNetwork => {
   }
 
   return BridgingNetwork.CosmosHub
+}
+
+export const getBridgeTransactionType = (
+  srcNetwork: BridgingNetwork,
+  dstNetwork: BridgingNetwork,
+): `${BridgingNetwork}-${BridgingNetwork}` => {
+  return `${srcNetwork}-${dstNetwork}` as `${BridgingNetwork}-${BridgingNetwork}`
 }
 
 export const getGasPriceForCosmosNetwork = (network: BridgingNetwork) => {

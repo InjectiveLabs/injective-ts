@@ -17,6 +17,9 @@ import {
   BridgeTransactionState,
   PeggyTxResponse,
   UiBridgeTransaction,
+  BridgingNetwork,
+  MoonbeamTxResponse,
+  WormholeTxResponse,
 } from './../../types/bridge'
 import { UserDeposit } from '@injectivelabs/sdk-ts/dist/client'
 import {
@@ -33,7 +36,8 @@ import {
   getCachedIBCTransactionState,
   ibcTxNotPartOfInjectiveIbcTxs,
   txNotPartOfPeggoDeposit,
-  getNetworkFromSender,
+  getNetworkFromAddress,
+  getBridgeTransactionType,
 } from './../../utils/bridge'
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
 import { UiBridgeTransactionWithToken } from '../../types'
@@ -70,13 +74,14 @@ export const convertCosmosWalletToUiBridgeTransaction = async ({
     packetData.value,
   ) as KeplrWalletSendPacketAttribute
 
-  const bridgingNetwork = getNetworkFromSender(sender)
+  const bridgingNetwork = getNetworkFromAddress(sender)
 
   return {
     amount,
     denom,
     receiver,
     sender,
+    type: getBridgeTransactionType(bridgingNetwork, BridgingNetwork.Injective),
     timestamp: Date.now(),
     txHash: transaction.transactionHash,
     explorerLink: `${getCosmosExplorerUrl(bridgingNetwork, network)}/txs/${
@@ -100,6 +105,15 @@ export const convertPeggyToUiBridgeTransaction = async ({
 
   return {
     blockHeight,
+    type: isDeposit
+      ? getBridgeTransactionType(
+          BridgingNetwork.Ethereum,
+          BridgingNetwork.Injective,
+        )
+      : getBridgeTransactionType(
+          BridgingNetwork.Injective,
+          BridgingNetwork.Ethereum,
+        ),
     bridgeFee: transaction.bridgeFee,
     denom: transaction.denom,
     amount: transaction.amount,
@@ -120,17 +134,24 @@ export const convertInjectiveIBCToUiBridgeTransaction = async ({
 }: {
   transaction: CosmosTxResponse
   network: Network
-}): Promise<UiBridgeTransaction> => ({
-  denom: transaction.denom,
-  amount: transaction.amount,
-  receiver: transaction.receiver,
-  sender: transaction.sender,
-  txHash: transaction.txHash,
-  explorerLink: `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`,
-  timeoutTimestamp: transaction.timeoutTimestamp,
-  timestamp: Date.now(),
-  state: BridgeTransactionState.Submitted,
-})
+}): Promise<UiBridgeTransaction> => {
+  const bridgingNetwork = getNetworkFromAddress(transaction.receiver)
+
+  return {
+    type: getBridgeTransactionType(BridgingNetwork.Injective, bridgingNetwork),
+    denom: transaction.denom,
+    amount: transaction.amount,
+    receiver: transaction.receiver,
+    sender: transaction.sender,
+    txHash: transaction.txHash,
+    explorerLink: `${getExplorerUrl(network)}/transaction/${
+      transaction.txHash
+    }/`,
+    timeoutTimestamp: transaction.timeoutTimestamp,
+    timestamp: Date.now(),
+    state: BridgeTransactionState.Submitted,
+  }
+}
 
 export const convertPeggoToUiBridgeTransaction = async ({
   transaction,
@@ -147,6 +168,10 @@ export const convertPeggoToUiBridgeTransaction = async ({
 
   return {
     txHash,
+    type: getBridgeTransactionType(
+      BridgingNetwork.Injective,
+      BridgingNetwork.Ethereum,
+    ),
     amount: transaction.amount,
     blockHeight: transaction.blockHeight,
     denom: transaction.tokenContract,
@@ -174,11 +199,15 @@ export const convertTerraToUiBridgeTransaction = async ({
   } = transaction.msgs[0]
 
   return {
-    amount: amount.toString(),
     denom,
-    receiver,
     sender,
+    receiver,
     timeoutTimestamp,
+    type: getBridgeTransactionType(
+      BridgingNetwork.Terra,
+      BridgingNetwork.Injective,
+    ),
+    amount: amount.toString(),
     timestamp: Date.now(),
     state: BridgeTransactionState.Submitted,
     txHash: transaction.result.txhash,
@@ -199,10 +228,12 @@ export const convertIBCTransferTxToUiBridgeTransaction = async ({
   const denom = transaction.denom.includes('transfer/channel')
     ? (transaction.denom.split('/').pop() as string)
     : transaction.denom
+  const bridgingNetwork = getNetworkFromAddress(transaction.receiver)
 
   return {
-    amount: transaction.amount,
     denom,
+    type: getBridgeTransactionType(BridgingNetwork.Injective, bridgingNetwork),
+    amount: transaction.amount,
     receiver: transaction.receiver,
     sender: transaction.sender,
     txHash: txHash || '',
@@ -226,12 +257,15 @@ export const convertPeggyDepositTxToUiBridgeTransaction = async ({
   const isFailedOrCancelled = FailedStates.includes(
     transaction.state as BridgeTransactionState,
   )
-
   const txHash = isFailedOrCancelled
     ? transaction.txHashesList.pop()
     : transaction.txHashesList[0]
 
   return {
+    type: getBridgeTransactionType(
+      BridgingNetwork.Injective,
+      BridgingNetwork.Ethereum,
+    ),
     amount: transaction.amount,
     denom: transaction.denom,
     receiver: transaction.receiver,
@@ -268,6 +302,10 @@ export const convertPeggyWithdrawalTxToUiBridgeTransaction = async ({
     .toString()
 
   return {
+    type: getBridgeTransactionType(
+      BridgingNetwork.Injective,
+      BridgingNetwork.Ethereum,
+    ),
     amount: amountIncludingBridgeFee,
     bridgeFee: transaction.bridgeFee,
     denom: transaction.denom,
@@ -282,6 +320,43 @@ export const convertPeggyWithdrawalTxToUiBridgeTransaction = async ({
     state: transaction.state as BridgeTransactionState,
     blockHeight: transaction.eventHeight,
     nonce: transaction.eventNonce,
+  }
+}
+
+export const convertMoonbeamToUiBridgeTransaction = async (
+  transaction: MoonbeamTxResponse,
+): Promise<UiBridgeTransaction> => {
+  return {
+    type: getBridgeTransactionType(
+      BridgingNetwork.Moonbeam,
+      BridgingNetwork.Injective,
+    ),
+    denom: transaction.denom,
+    amount: transaction.amount,
+    receiver: transaction.receiver,
+    sender: transaction.sender,
+    txHash: transaction.txHash,
+    explorerLink: '',
+    timeoutTimestamp: transaction.timeoutTimestamp,
+    timestamp: Date.now(),
+    state: BridgeTransactionState.Confirming,
+  }
+}
+
+export const convertWormholeToUiBridgeTransaction = async (
+  transaction: WormholeTxResponse,
+): Promise<UiBridgeTransaction> => {
+  return {
+    type: getBridgeTransactionType(transaction.source, transaction.destination),
+    denom: transaction.denom,
+    amount: transaction.amount,
+    receiver: transaction.receiver,
+    sender: transaction.sender,
+    txHash: transaction.txHash,
+    explorerLink: '',
+    timeoutTimestamp: transaction.timeoutTimestamp,
+    timestamp: Date.now(),
+    state: BridgeTransactionState.Confirming,
   }
 }
 
@@ -446,7 +521,7 @@ export class UiBridgeTransformer {
     this.network = network
   }
 
-  static getNetworkFromSender = getNetworkFromSender
+  static getNetworkFromAddress = getNetworkFromAddress
 
   static computeLatestTransactions = computeLatestTransactions
 
@@ -467,6 +542,14 @@ export class UiBridgeTransformer {
       transaction,
       network: this.network,
     })
+  }
+
+  async convertMoonbeamToUiBridgeTransaction(transaction: MoonbeamTxResponse) {
+    return convertMoonbeamToUiBridgeTransaction(transaction)
+  }
+
+  async convertWormholeToUiBridgeTransaction(transaction: WormholeTxResponse) {
+    return convertMoonbeamToUiBridgeTransaction(transaction)
   }
 
   async convertPeggyToUiBridgeTransaction(

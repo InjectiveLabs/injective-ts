@@ -3,6 +3,7 @@ import {
   PeggyDepositTx,
   PeggyWithdrawalTx,
 } from '@injectivelabs/sdk-ts/dist/client'
+import { CosmosTxResponse } from './cosmos'
 
 export enum BridgingNetwork {
   Axelar = 'axelar',
@@ -93,6 +94,15 @@ export interface PeggyTxResponse {
   sender: string
   txHash: string
   bridgeFee?: string
+}
+
+export interface MoonbeamTxResponse extends CosmosTxResponse {
+  //
+}
+
+export interface WormholeTxResponse extends CosmosTxResponse {
+  source: BridgingNetwork
+  destination: BridgingNetwork
 }
 
 export { IBCTransferTx, PeggyDepositTx, PeggyWithdrawalTx }
