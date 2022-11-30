@@ -184,11 +184,11 @@ export class InjectiveWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+    const { contractAddresses } = getSolanaContractAddresses(network)
 
     const sequence = parseSequenceFromLogInjective(txResponse)
     const emitterAddress = await getEmitterAddressInjective(
-      solanaContractAddresses.token_bridge,
+      contractAddresses.token_bridge,
     )
 
     const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
