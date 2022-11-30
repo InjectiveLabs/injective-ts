@@ -12,7 +12,7 @@ import {
   attestFromSolana,
   hexToUint8Array,
   transferNativeSol,
-  getIsTransferCompletedSolana,
+  // getIsTransferCompletedSolana,
   redeemOnSolana,
 } from '@certusone/wormhole-sdk'
 import { getAssociatedTokenAddress, NATIVE_MINT } from '@solana/spl-token'
@@ -242,7 +242,7 @@ export class SolanaWormholeClient extends WormholeClient {
 
     const { solanaContractAddresses } = getSolanaContractAddresses(network)
 
-    const connection = new Connection(solanaHostUrl, 'confirmed')
+    // const connection = new Connection(solanaHostUrl, 'confirmed')
 
     const sequence = parseSequenceFromLogSolana(
       txResponse as TransactionResponse,
@@ -261,6 +261,7 @@ export class SolanaWormholeClient extends WormholeClient {
       },
     )
 
+    /*
     const transferIsCompleted = await getIsTransferCompletedSolana(
       solanaContractAddresses.token_bridge,
       signedVAA,
@@ -269,7 +270,7 @@ export class SolanaWormholeClient extends WormholeClient {
 
     if (!transferIsCompleted) {
       throw new Error('The transfer has not been completed')
-    }
+    } */
 
     return Buffer.from(signedVAA).toString('base64')
   }
@@ -363,7 +364,7 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    const connection = new Connection(solanaHostUrl, 'confirmed')
+    // const connection = new Connection(solanaHostUrl, 'confirmed')
 
     const sequence = parseSequenceFromLogSolana(txResponse)
     const emitterAddress = await getEmitterAddressSolana(
@@ -380,6 +381,7 @@ export class SolanaWormholeClient extends WormholeClient {
       },
     )
 
+    /*
     const transferIsCompleted = await getIsTransferCompletedSolana(
       solanaContractAddresses.token_bridge,
       signedVAA,
@@ -388,7 +390,7 @@ export class SolanaWormholeClient extends WormholeClient {
 
     if (!transferIsCompleted) {
       throw new Error('The transfer has not been completed')
-    }
+    } */
 
     return Buffer.from(signedVAA).toString('base64')
   }
