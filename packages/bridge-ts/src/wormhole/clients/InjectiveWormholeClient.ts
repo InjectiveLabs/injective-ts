@@ -19,6 +19,7 @@ import {
   tryNativeToHexString,
   getForeignAssetInjective,
   hexToUint8Array,
+  getIsTransferCompletedInjective,
 } from '@certusone/wormhole-sdk'
 import { PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
@@ -232,6 +233,21 @@ export class InjectiveWormholeClient extends WormholeClient {
       contractAddresses.token_bridge,
       injectiveAddress,
       Buffer.from(signed, 'base64'),
+    )
+  }
+
+  async getIsTransferCompletedInjective(signedVAA: string /* in base 64 */) {
+    const { network } = this
+    const endpoints = getEndpointsForNetwork(network)
+
+    const { contractAddresses } = getSolanaContractAddresses(network)
+
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+
+    return getIsTransferCompletedInjective(
+      contractAddresses.token_bridge,
+      Buffer.from(signedVAA, 'base64'),
+      chainGrpcWasmApi,
     )
   }
 }
