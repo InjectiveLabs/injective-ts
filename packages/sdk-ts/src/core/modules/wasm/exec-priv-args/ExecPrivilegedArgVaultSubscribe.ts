@@ -1,10 +1,10 @@
 import {
   dataToExecData,
-  ExecArgsBase,
+  ExecPrivilegedArgBase,
   ExecDataRepresentation,
-} from '../ExecArgsBase'
+} from '../ExecPrivilegedArgBase'
 
-export declare namespace ExecArgVaultSubscribe {
+export declare namespace ExecPrivilegedArgVaultSubscribe {
   export interface Params {
     vaultSubaccountId: string
     subscriberSubaccountId: string
@@ -22,15 +22,17 @@ export declare namespace ExecArgVaultSubscribe {
 /**
  * @category Contract Exec Arguments
  */
-export default class ExecArgVaultSubscribe extends ExecArgsBase<
-  ExecArgVaultSubscribe.Params,
-  ExecArgVaultSubscribe.Data
+export default class ExecPrivilegedArgVaultSubscribe extends ExecPrivilegedArgBase<
+  ExecPrivilegedArgVaultSubscribe.Params,
+  ExecPrivilegedArgVaultSubscribe.Data
 > {
-  static fromJSON(params: ExecArgVaultSubscribe.Params): ExecArgVaultSubscribe {
-    return new ExecArgVaultSubscribe(params)
+  static fromJSON(
+    params: ExecPrivilegedArgVaultSubscribe.Params,
+  ): ExecPrivilegedArgVaultSubscribe {
+    return new ExecPrivilegedArgVaultSubscribe(params)
   }
 
-  toData(): ExecArgVaultSubscribe.Data {
+  toData(): ExecPrivilegedArgVaultSubscribe.Data {
     const { params } = this
 
     return {
@@ -40,7 +42,7 @@ export default class ExecArgVaultSubscribe extends ExecArgsBase<
     }
   }
 
-  toExecData(): ExecDataRepresentation<ExecArgVaultSubscribe.Data> {
+  toExecData(): ExecDataRepresentation<ExecPrivilegedArgVaultSubscribe.Data> {
     const { params } = this
 
     return dataToExecData(this.toData(), {
