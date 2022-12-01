@@ -28,10 +28,20 @@ import { IndexerRestExplorerTransformer } from '../transformers'
 import { Block, ExplorerValidator } from '../types/explorer'
 import { IndexerModule } from '../types'
 
+const explorerEndpointSuffix = 'api/explorer/v1'
+
 /**
  * @category Indexer Rest API
  */
 export class IndexerRestExplorerApi extends BaseRestConsumer {
+  constructor(endpoint: string) {
+    super(
+      endpoint.includes(explorerEndpointSuffix)
+        ? endpoint
+        : `${endpoint}/${explorerEndpointSuffix}`,
+    )
+  }
+
   async fetchBlock(blockHashHeight: string): Promise<ExplorerBlockWithTxs> {
     try {
       const response = (await this.get(
