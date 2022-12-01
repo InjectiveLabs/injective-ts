@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.256](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.255...@injectivelabs/sdk-ts@1.0.256) (2022-12-01)
+
+
+### Features
+
+* msgExecuteContract add typing support ([866c605](https://github.com/InjectiveLabs/injective-ts/commit/866c6059d2f54826f4d799500274b0a1d8984b06))
+
+
+
+
+
 ## [1.0.255](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.254...@injectivelabs/sdk-ts@1.0.255) (2022-11-30)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
