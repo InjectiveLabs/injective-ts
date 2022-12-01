@@ -1,9 +1,7 @@
-import { binaryToBase64 } from '@injectivelabs/sdk-ts'
 import { Network } from '@injectivelabs/networks'
 import { Connection } from '@solana/web3.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
-  TransferMsgArgs,
   WormholeContractAddresses,
   WormholeEthereumContractAddresses,
   WormholeSolanaContractAddresses,
@@ -13,25 +11,6 @@ import {
   WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
   WORMHOLE_SOLANA_CONTRACT_BY_NETWORK,
 } from './constants'
-
-export const createTransferContractMsgExec = (
-  args: TransferMsgArgs,
-  info: Record<string, any>,
-) => {
-  const nonce = Math.round(Math.random() * 100000)
-
-  return {
-    nonce,
-    asset: {
-      amount: args.amount,
-      info,
-    },
-    recipient_chain: args.recipientChainId,
-    recipient: binaryToBase64(args.recipient),
-    fee: args.relayerFee || '0',
-    ...(args.payload && { payload: binaryToBase64(args.payload) }),
-  }
-}
 
 export const getSolanaTransactionInfo = async (
   transactionId: string,

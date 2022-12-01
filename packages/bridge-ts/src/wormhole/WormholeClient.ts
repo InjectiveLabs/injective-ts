@@ -1,11 +1,16 @@
 import { INJ_DENOM } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
-import { MsgExecuteContract, binaryToBase64 } from '@injectivelabs/sdk-ts'
+import {
+  ExecArgDepositTokens,
+  ExecArgIncreaseAllowance,
+  ExecArgSubmitVaa,
+  ExecArgInitiateTransfer,
+  MsgExecuteContract,
+} from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { tryNativeToHexString } from '@certusone/wormhole-sdk'
 import { WORMHOLE_CHAINS, WORMHOLE_CONTRACT_BY_NETWORK } from './constants'
 import { WormholeContractAddresses, TransferMsgArgs } from './types'
-import { createTransferContractMsgExec } from './utils'
 
 export class WormholeClient {
   public network: Network
@@ -44,13 +49,12 @@ export class WormholeClient {
       )
     }
 
+    const msg = ExecArgSubmitVaa.fromJSON({ signed })
+
     return MsgExecuteContract.fromJSON({
       contractAddress: contractAddresses.token_bridge,
       sender: address,
-      msg: {
-        data: binaryToBase64(signed),
-      },
-      action: 'submit_vaa',
+      msg,
     })
   }
 
@@ -84,56 +88,58 @@ export class WormholeClient {
       args.recipient,
       WORMHOLE_CHAINS.injective,
     )
-    const action = payload
-      ? 'initiate_transfer_with_payload'
-      : 'initiate_transfer'
+    const initiateTransferArgs = {
+      ...args,
+      payload,
+      recipient: recipientAddress,
+    }
 
     if (tokenAddress.startsWith('peggy') || tokenAddress === INJ_DENOM) {
+      const depositTokensMsg = ExecArgDepositTokens.fromJSON({})
+      const initiateTransferMsg = ExecArgInitiateTransfer.fromJSON({
+        ...initiateTransferArgs,
+        info: {
+          native_token: { denom: tokenAddress },
+        },
+      })
+
       return [
         MsgExecuteContract.fromJSON({
           sender: recipient,
-          action: 'deposit_tokens',
           contractAddress: contractAddresses.token_bridge,
           funds: { denom: tokenAddress, amount },
-          msg: {},
+          msg: depositTokensMsg,
         }),
         MsgExecuteContract.fromJSON({
-          action,
           sender: recipient,
           contractAddress: contractAddresses.token_bridge,
-          msg: createTransferContractMsgExec(
-            { ...args, recipient: recipientAddress },
-            {
-              native_token: { denom: tokenAddress },
-            },
-          ),
+          msg: initiateTransferMsg,
         }),
       ]
     }
+
+    const increaseAllowanceMsg = ExecArgIncreaseAllowance.fromJSON({
+      amount,
+      spender: contractAddresses.token_bridge,
+      expires: { never: {} },
+    })
+    const initiateTransferMsg = ExecArgInitiateTransfer.fromJSON({
+      ...initiateTransferArgs,
+      info: {
+        token: { contract_addr: tokenAddress },
+      },
+    })
 
     return [
       MsgExecuteContract.fromJSON({
         sender: address,
         contractAddress: contractAddresses.token_bridge,
-        msg: {
-          amount,
-          spender: contractAddresses.token_bridge,
-          expires: {
-            never: {},
-          },
-        },
-        action: 'increase_allowance',
+        msg: increaseAllowanceMsg,
       }),
       MsgExecuteContract.fromJSON({
-        action,
         sender: address,
         contractAddress: contractAddresses.token_bridge,
-        msg: createTransferContractMsgExec(
-          { ...args, recipient: recipientAddress },
-          {
-            token: { contract_addr: tokenAddress },
-          },
-        ),
+        msg: initiateTransferMsg,
       }),
     ]
   }

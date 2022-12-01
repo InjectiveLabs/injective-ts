@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.68...@injectivelabs/bridge-ts@1.0.69) (2022-12-01)
+
+
+### Features
+
+* msgExecuteContract add typing support ([866c605](https://github.com/InjectiveLabs/injective-ts/commit/866c6059d2f54826f4d799500274b0a1d8984b06))
+
+
+
+
+
 ## [1.0.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.67...@injectivelabs/bridge-ts@1.0.68) (2022-11-30)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
