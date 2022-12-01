@@ -59,7 +59,7 @@ export const dataToExecDataWithInjectiveExec = <T>(
 }
 
 /** Executing Messages with injective_exec */
-export abstract class ExecArgsBase<Params, DataRepresentation> {
+export abstract class ExecPrivilegedArgBase<Params, DataRepresentation> {
   params: Params
 
   constructor(params: Params) {
@@ -79,7 +79,7 @@ export abstract class ExecArgsBase<Params, DataRepresentation> {
   }
 }
 
-export abstract class MsgExecArgsBase<Params, DataRepresentation> {
+export abstract class MsgExecPrivilegedArgBase<Params, DataRepresentation> {
   params: Params
 
   constructor(params: Params) {

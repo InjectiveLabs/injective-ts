@@ -1,10 +1,10 @@
 import {
   dataToExecData,
-  ExecArgsBase,
+  ExecPrivilegedArgBase,
   ExecDataRepresentation,
-} from '../ExecArgsBase'
+} from '../ExecPrivilegedArgBase'
 
-export declare namespace ExecArgVaultRedeem {
+export declare namespace ExecPrivilegedArgVaultRedeem {
   export interface Params {
     vaultSubaccountId: string
     redeemerSubaccountId: string
@@ -22,15 +22,17 @@ export declare namespace ExecArgVaultRedeem {
 /**
  * @category Contract Exec Arguments
  */
-export default class ExecArgVaultRedeem extends ExecArgsBase<
-  ExecArgVaultRedeem.Params,
-  ExecArgVaultRedeem.Data
+export default class ExecPrivilegedArgVaultRedeem extends ExecPrivilegedArgBase<
+  ExecPrivilegedArgVaultRedeem.Params,
+  ExecPrivilegedArgVaultRedeem.Data
 > {
-  static fromJSON(params: ExecArgVaultRedeem.Params): ExecArgVaultRedeem {
-    return new ExecArgVaultRedeem(params)
+  static fromJSON(
+    params: ExecPrivilegedArgVaultRedeem.Params,
+  ): ExecPrivilegedArgVaultRedeem {
+    return new ExecPrivilegedArgVaultRedeem(params)
   }
 
-  toData(): ExecArgVaultRedeem.Data {
+  toData(): ExecPrivilegedArgVaultRedeem.Data {
     const { params } = this
 
     return {
@@ -40,7 +42,7 @@ export default class ExecArgVaultRedeem extends ExecArgsBase<
     }
   }
 
-  toExecData(): ExecDataRepresentation<ExecArgVaultRedeem.Data> {
+  toExecData(): ExecDataRepresentation<ExecPrivilegedArgVaultRedeem.Data> {
     const { params } = this
 
     return dataToExecData(this.toData(), {

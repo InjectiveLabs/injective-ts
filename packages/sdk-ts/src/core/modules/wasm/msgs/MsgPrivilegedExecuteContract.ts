@@ -1,5 +1,5 @@
 import { MsgPrivilegedExecuteContract as BaseMsgPrivilegedExecuteContract } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { ExecArgs } from '../exec-args'
+import { ExecPrivilegedArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import snakeCaseKeys from 'snakecase-keys'
 
@@ -8,7 +8,7 @@ export declare namespace MsgPrivilegedExecuteContract {
     sender: string
     funds: string
     contractAddress: string
-    data: ExecArgs
+    data: ExecPrivilegedArgs
   }
 
   export interface DirectSign {

@@ -1,7 +1,7 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
 import snakeCaseKeys from 'snakecase-keys'
-import { toUtf8 } from '../../../../utils'
+import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgExecuteContract {
@@ -10,10 +10,9 @@ export declare namespace MsgExecuteContract {
       denom: string
       amount: string
     }
-    action: string
     sender: string
     contractAddress: string
-    msg: Object
+    msg: ExecArgs
   }
 
   export interface DirectSign {
@@ -54,9 +53,8 @@ export default class MsgExecuteContract extends MsgBase<
     const { params } = this
 
     const message = new BaseMsgExecuteContract()
-    const msg = { [params.action]: params.msg }
 
-    message.setMsg(toUtf8(JSON.stringify(msg)))
+    message.setMsg(params.msg.toExecJSON())
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
 
