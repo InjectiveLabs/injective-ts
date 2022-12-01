@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.259](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.258...@injectivelabs/sdk-ts@1.0.259) (2022-12-01)
+
+
+### Bug Fixes
+
+* explorer endpoint ([a39fd93](https://github.com/InjectiveLabs/injective-ts/commit/a39fd93143640d960b075c187d013682e119021a))
+
+
+
+
+
 ## [1.0.258](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.257...@injectivelabs/sdk-ts@1.0.258) (2022-12-01)
 
 
