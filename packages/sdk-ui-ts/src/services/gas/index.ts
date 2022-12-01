@@ -5,62 +5,14 @@ import {
   BigNumberInBase,
 } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
-import { GWEI_IN_WEI, DEFAULT_GAS_PRICE } from '../constants'
+import {
+  GWEI_IN_WEI,
+  DEFAULT_GAS_PRICE,
+  DEFAULT_MAINNET_GAS_PRICE,
+} from '../../constants'
 import { HttpRequestException } from '@injectivelabs/exceptions'
 import { Network as AlchemyNetwork, Alchemy } from 'alchemy-sdk'
-
-export interface MetamaskGasServerResult {
-  low: {
-    minWaitTimeEstimate: number
-    maxWaitTimeEstimate: number
-    suggestedMaxPriorityFeePerGas: string
-    suggestedMaxFeePerGas: string
-  }
-  medium: {
-    minWaitTimeEstimate: number
-    maxWaitTimeEstimate: number
-    suggestedMaxPriorityFeePerGas: string
-    suggestedMaxFeePerGas: string
-  }
-  high: {
-    minWaitTimeEstimate: number
-    maxWaitTimeEstimate: number
-    suggestedMaxPriorityFeePerGas: string
-    suggestedMaxFeePerGas: string
-  }
-  estimatedBaseFee: string
-}
-
-export interface OwlracleResult {
-  timestamp: Date
-  lastBlock: number
-  avgTime: number
-  avgTx: number
-  avgGas: number
-  speeds: [
-    {
-      acceptance: number
-      gasPrice: number
-      estimatedFee: number
-    },
-    {
-      acceptance: number
-      gasPrice: number
-      estimatedFee: number
-    },
-    {
-      acceptance: number
-      gasPrice: number
-      estimatedFee: number
-    },
-    {
-      acceptance: number
-      gasPrice: number
-      estimatedFee: number
-    },
-  ]
-  baseFee: number
-}
+import { fetchEstimatorGasPrice } from './estimator'
 
 export interface GasInfo {
   gasPrice: string
@@ -101,33 +53,6 @@ const isTestnet = (network: Network) => {
   ].includes(network)
 }
 
-const fetchGasPriceFromOwlracle = async (): Promise<string> => {
-  try {
-    const response = (await new HttpClient('https://owlracle.info/eth').get(
-      'gas',
-    )) as {
-      data: OwlracleResult
-    }
-
-    if (!response || (response && !response.data)) {
-      throw new HttpRequestException(new Error('No response from Owrlacle'))
-    }
-
-    const { speeds } = response.data
-    const [, , faster] = speeds
-
-    return new BigNumberInWei(
-      new BigNumber(faster.gasPrice).multipliedBy(GWEI_IN_WEI),
-    ).toFixed(0)
-  } catch (e: unknown) {
-    if (e instanceof HttpRequestException) {
-      throw e
-    }
-
-    throw new HttpRequestException(new Error((e as any).message))
-  }
-}
-
 const fetchGasPriceFromAlchemy = async (key: string): Promise<string> => {
   try {
     const settings = {
@@ -153,7 +78,7 @@ const fetchGasPriceFromAlchemy = async (key: string): Promise<string> => {
       )
     }
 
-    return new BigNumberInBase(gasPrice.toString()).times(1.5).toFixed()
+    return new BigNumberInBase(gasPrice.toString()).toFixed()
   } catch (e: unknown) {
     if (e instanceof HttpRequestException) {
       throw e
@@ -176,9 +101,7 @@ const fetchGasPriceFromEtherchain = async (): Promise<string> => {
     }
 
     return new BigNumberInWei(
-      new BigNumber(
-        response.data.currentBaseFee * response.data.fast,
-      ).multipliedBy(GWEI_IN_WEI),
+      new BigNumber(response.data.recommendedBaseFee).multipliedBy(GWEI_IN_WEI),
     ).toFixed(0)
   } catch (e: unknown) {
     if (e instanceof HttpRequestException) {
@@ -203,36 +126,10 @@ const fetchGasPriceFromEthGasStation = async (): Promise<string> => {
       )
     }
 
+    console.log(response.data)
+
     return new BigNumberInWei(
       new BigNumber(response.data.fastest / 10)
-        .times(2.125)
-        .multipliedBy(GWEI_IN_WEI),
-    ).toFixed(0)
-  } catch (e: unknown) {
-    if (e instanceof HttpRequestException) {
-      throw e
-    }
-
-    throw new HttpRequestException(new Error((e as any).message))
-  }
-}
-
-// @ts-ignore
-const fetchGasPriceFromMetaswapGasServer = async (): Promise<string> => {
-  try {
-    const response = (await new HttpClient(
-      'https://gas-api.metaswap.codefi.network/networks/1/suggestedGasFees',
-    ).get('')) as {
-      data: MetamaskGasServerResult
-    }
-
-    if (!response || (response && !response.data)) {
-      throw new HttpRequestException(new Error('No response from Metamask'))
-    }
-
-    return new BigNumberInWei(
-      new BigNumber(response.data.estimatedBaseFee)
-        .div(1000)
         .times(2.125)
         .multipliedBy(GWEI_IN_WEI),
     ).toFixed(0)
@@ -255,35 +152,45 @@ export const fetchGasPrice = async (
 
   if (options && options.alchemyKey) {
     try {
-      return await fetchGasPriceFromAlchemy(options.alchemyKey)
+      const gasPrice = await fetchEstimatorGasPrice(options.alchemyKey)
+
+      if (gasPrice) {
+        return gasPrice.fast.toString()
+      }
+    } catch (e) {
+      //
+    }
+
+    try {
+      const gasPrice = await fetchGasPriceFromAlchemy(options.alchemyKey)
+
+      if (gasPrice) {
+        return gasPrice.toString()
+      }
     } catch (e) {
       //
     }
   }
 
   try {
-    return await fetchGasPriceFromEthGasStation()
+    const gasPrice = await fetchGasPriceFromEtherchain()
+
+    if (gasPrice) {
+      return gasPrice.toString()
+    }
   } catch (e) {
     //
   }
 
   try {
-    return await fetchGasPriceFromEtherchain()
+    const gasPrice = await fetchGasPriceFromEthGasStation()
+
+    if (gasPrice) {
+      return gasPrice.toString()
+    }
   } catch (e) {
     //
   }
 
-  try {
-    return await fetchGasPriceFromMetaswapGasServer()
-  } catch (e) {
-    //
-  }
-
-  try {
-    return await fetchGasPriceFromOwlracle()
-  } catch (e) {
-    //
-  }
-
-  return new BigNumberInWei(DEFAULT_GAS_PRICE).toString()
+  return new BigNumberInWei(DEFAULT_MAINNET_GAS_PRICE).toString()
 }

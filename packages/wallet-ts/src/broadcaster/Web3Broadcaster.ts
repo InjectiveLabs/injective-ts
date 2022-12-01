@@ -31,7 +31,11 @@ export const getTransactionOptions = (
 export const peggyDenomToContractAddress = (denom: string): string =>
   denom.toLowerCase().replace('peggy', '')
 
-export class Web3Client {
+/**
+ * Preparing and broadcasting
+ * Ethereum transactions
+ */
+export class Web3Broadcaster {
   private walletStrategy: WalletStrategy
 
   private network: Network
@@ -112,7 +116,7 @@ export class Web3Client {
         .times(GAS_PRICE_MULTIPLIER)
         .toNumber()
         .toString(16),
-      maxPriorityFeePerGas: null,
+      maxPriorityFeePerGas: '0x77359400' /* 2 gwei in hex */,
       data,
     }
   }
@@ -169,7 +173,7 @@ export class Web3Client {
         .times(GAS_PRICE_MULTIPLIER)
         .toNumber()
         .toString(16),
-      maxPriorityFeePerGas: null,
+      maxPriorityFeePerGas: '0x77359400' /* 2 gwei in hex */,
       data,
     }
   }
@@ -231,7 +235,7 @@ export class Web3Client {
         .times(GAS_PRICE_MULTIPLIER)
         .toNumber()
         .toString(16),
-      maxPriorityFeePerGas: null,
+      maxPriorityFeePerGas: '0x77359400' /* 2 gwei in hex */,
       data: abiEncodedData,
     }
   }
