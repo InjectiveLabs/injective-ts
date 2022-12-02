@@ -48,7 +48,7 @@ export const fetchEstimatorGasPrice = async (alchemyRpcUrl: string) => {
       },
     })
     .post(alchemyRpcUrl, {
-      id: Date.now(),
+      id: Date.now().toString(16),
       jsonrpc: '2.0',
       method: 'eth_feeHistory',
       params: [4, 4, 4],
