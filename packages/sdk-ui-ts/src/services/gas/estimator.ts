@@ -51,7 +51,7 @@ export const fetchEstimatorGasPrice = async (alchemyRpcUrl: string) => {
       id: Date.now().toString(16),
       jsonrpc: '2.0',
       method: 'eth_feeHistory',
-      params: [4, 4, 4],
+      params: ['0x5', 'latest', [25, 50, 75]],
     })) as any[]
 
   const blocks = formatFeeHistory(feeHistory)
