@@ -13,8 +13,8 @@ import { SendTransactionOptions } from '../wallets/types'
 import {
   DEFAULT_GAS_PRICE,
   GAS_LIMIT_MULTIPLIER,
-  GAS_PRICE_MULTIPLIER,
   INJ_DENOM,
+  TIP_IN_GWEI,
   TX_DEFAULTS_GAS,
 } from '../utils/constants'
 
@@ -110,13 +110,14 @@ export class Web3Broadcaster {
       from: address,
       to: tokenAddress,
       gas: new BigNumberInWei(gas.times(GAS_LIMIT_MULTIPLIER).toFixed(0))
+        .decimalPlaces(0)
         .toNumber()
         .toString(16),
       maxFeePerGas: new BigNumberInWei(gasPrice)
-        .times(GAS_PRICE_MULTIPLIER)
+        .decimalPlaces(0)
         .toNumber()
         .toString(16),
-      maxPriorityFeePerGas: '0x77359400' /* 2 gwei in hex */,
+      maxPriorityFeePerGas: TIP_IN_GWEI.toString(16),
       data,
     }
   }
@@ -167,13 +168,14 @@ export class Web3Broadcaster {
       from: address,
       to: peggyContractAddress,
       gas: new BigNumberInWei(gas.times(GAS_LIMIT_MULTIPLIER).toFixed(0))
+        .decimalPlaces(0)
         .toNumber()
         .toString(16),
       maxFeePerGas: new BigNumberInWei(gasPrice)
-        .times(GAS_PRICE_MULTIPLIER)
+        .decimalPlaces(0)
         .toNumber()
         .toString(16),
-      maxPriorityFeePerGas: '0x77359400' /* 2 gwei in hex */,
+      maxPriorityFeePerGas: TIP_IN_GWEI.toString(16),
       data,
     }
   }
@@ -229,13 +231,14 @@ export class Web3Broadcaster {
       from: address,
       to: peggyContractAddress,
       gas: new BigNumberInWei(gas.times(GAS_LIMIT_MULTIPLIER).toFixed(0))
+        .decimalPlaces(0)
         .toNumber()
         .toString(16),
       maxFeePerGas: new BigNumberInWei(gasPrice)
-        .times(GAS_PRICE_MULTIPLIER)
+        .decimalPlaces(0)
         .toNumber()
         .toString(16),
-      maxPriorityFeePerGas: '0x77359400' /* 2 gwei in hex */,
+      maxPriorityFeePerGas: TIP_IN_GWEI.toString(16),
       data: abiEncodedData,
     }
   }

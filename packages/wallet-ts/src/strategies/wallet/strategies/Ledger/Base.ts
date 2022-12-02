@@ -16,6 +16,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TIP_IN_GWEI } from 'packages/wallet-ts/src/utils'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
@@ -230,7 +231,7 @@ export default class LedgerBase
       gasLimit: addHexPrefix(txData.gas),
       maxFeePerGas: addHexPrefix(txData.gasPrice || txData.maxFeePerGas),
       maxPriorityFeePerGas: addHexPrefix(
-        txData.maxPriorityFeePerGas || '0x77359400' /* 2 Gwei in HEX */,
+        txData.maxPriorityFeePerGas || TIP_IN_GWEI.toString(16),
       ),
     }
 
