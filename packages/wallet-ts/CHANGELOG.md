@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.245](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.244...@injectivelabs/wallet-ts@1.0.245) (2022-12-02)
+
+
+### Bug Fixes
+
+* gas prices for metamask ([b02150f](https://github.com/InjectiveLabs/injective-ts/commit/b02150fb6b268b8477de9572ca95f6b1f634e18f))
+
+
+
+
+
 ## [1.0.244](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.243...@injectivelabs/wallet-ts@1.0.244) (2022-12-01)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
