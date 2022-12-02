@@ -48,12 +48,10 @@ export const fetchEstimatorGasPrice = async (alchemyRpcUrl: string) => {
       },
     })
     .post(alchemyRpcUrl, {
-      body: JSON.stringify({
-        id: Date.now(),
-        jsonrpc: '2.0',
-        method: 'eth_feeHistory',
-        params: [4, 4, 4],
-      }),
+      id: Date.now(),
+      jsonrpc: '2.0',
+      method: 'eth_feeHistory',
+      params: [4, 4, 4],
     })) as any[]
 
   const blocks = formatFeeHistory(feeHistory)
