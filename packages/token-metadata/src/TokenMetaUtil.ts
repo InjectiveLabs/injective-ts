@@ -24,13 +24,14 @@ export class TokenMetaUtil {
 
   getMetaByAddress(address: string): TokenMeta | undefined {
     const { tokensByAddress } = this
-    const erc20Address = address.toLowerCase() as keyof typeof tokensByAddress
+    const contractAddress =
+      address.toLowerCase() as keyof typeof tokensByAddress
 
-    if (!tokensByAddress[erc20Address]) {
+    if (!tokensByAddress[contractAddress]) {
       return
     }
 
-    return tokensByAddress[erc20Address]
+    return tokensByAddress[contractAddress]
   }
 
   getCoinGeckoIdFromSymbol(symbol: string): string {

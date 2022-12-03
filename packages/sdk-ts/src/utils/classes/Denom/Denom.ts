@@ -1,73 +1,19 @@
-import { ChainGrpcIbcApi } from '../../client/chain/grpc/ChainGrpcIbcApi'
+import { ChainGrpcIbcApi } from '../../../client/chain/grpc/ChainGrpcIbcApi'
 import {
   TokenMetaUtilFactory,
   TokenMetaUtil,
-  TokenType,
   TokenMeta,
   IbcToken,
   Token,
-  canonicalChannelIds,
 } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '@injectivelabs/utils'
 import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
-
-export const getTokenTypeFromDenom = (denom: string): TokenType => {
-  if (denom === INJ_DENOM) {
-    return TokenType.Native
-  }
-
-  if (denom.startsWith('peggy')) {
-    return TokenType.Erc20
-  }
-
-  if (denom.startsWith('ibc')) {
-    return TokenType.Ibc
-  }
-
-  if (denom.startsWith('share')) {
-    return TokenType.InsuranceFund
-  }
-
-  if (denom.startsWith('factory')) {
-    return TokenType.TokenFactory
-  }
-
-  return TokenType.Cw20
-}
-
-export const checkIsIbcDenomCanonical = (path: string): boolean => {
-  const pathParts = path.replace('transfer/', '').split('/')
-
-  /** More than one channelId */
-  if (pathParts.length > 1) {
-    return false
-  }
-
-  const [channelId] = pathParts
-
-  return canonicalChannelIds.includes(channelId)
-}
-
-export const tokenMetaToToken = (
-  tokenMeta: TokenMeta | undefined,
-  denom: string,
-): Token | undefined => {
-  if (!tokenMeta) {
-    return
-  }
-
-  return {
-    denom,
-    logo: tokenMeta.logo,
-    symbol: tokenMeta.symbol,
-    name: tokenMeta.name,
-    decimals: tokenMeta.decimals,
-    address: tokenMeta.address,
-    tokenType: getTokenTypeFromDenom(denom),
-    coinGeckoId: tokenMeta.coinGeckoId,
-  }
-}
+import {
+  checkIsIbcDenomCanonical,
+  getTokenTypeFromDenom,
+  tokenMetaToToken,
+} from './utils'
 
 /**
  * @category Utility Classes
@@ -107,11 +53,29 @@ export class Denom {
     } as IbcToken
   }
 
+  async getFactoryDenomToken(): Promise<Token> {
+    const { denom } = this
+    const tokenMeta = await this.getFactoryDenomTokenMeta()
+
+    return tokenMetaToToken(tokenMeta, denom) as Token
+  }
+
+  async getCw20DenomToken(): Promise<Token> {
+    const { denom } = this
+    const tokenMeta = await this.getCw20DenomTokenMeta()
+
+    return tokenMetaToToken(
+      tokenMeta,
+      tokenMeta ? tokenMeta.symbol : denom,
+    ) as Token
+  }
+
   async getDenomToken(): Promise<Token> {
     const { denom } = this
     const isDenom =
       denom.startsWith('ibc/') ||
       denom.startsWith('peggy') ||
+      denom.startsWith('factory') ||
       denom.toLowerCase() === INJ_DENOM
 
     if (!isDenom) {
@@ -214,6 +178,18 @@ export class Denom {
     return tokenMetaUtil.getMetaByAddress(address)
   }
 
+  private async getCw20DenomTokenMeta(): Promise<TokenMeta | undefined> {
+    const { denom } = this
+    const { tokenMetaUtil } = this
+
+    if (!denom.startsWith('inj')) {
+      throw new GeneralException(
+        new Error(`The address ${denom} is not a valid CW20 address`),
+      )
+    }
+    return tokenMetaUtil.getMetaByAddress(denom)
+  }
+
   private async getIbcDenomTokenMeta(): Promise<TokenMeta | undefined> {
     const { tokenMetaUtil } = this
     const { baseDenom: symbol } = await this.fetchDenomTrace()
@@ -221,11 +197,29 @@ export class Denom {
     return tokenMetaUtil.getMetaBySymbol(symbol)
   }
 
-  private async getDenomTokenMeta(): Promise<TokenMeta | undefined> {
-    const { denom } = this
+  private async getFactoryDenomTokenMeta(): Promise<TokenMeta | undefined> {
+    const { tokenMetaUtil, denom } = this
 
-    return denom.startsWith('ibc/')
-      ? this.getIbcDenomTokenMeta()
-      : this.getPeggyDenomTokenMeta()
+    const [, , address] = denom.split('/')
+
+    return tokenMetaUtil.getMetaByAddress(address)
+  }
+
+  private async getDenomTokenMeta(): Promise<TokenMeta | undefined> {
+    const { denom, tokenMetaUtil } = this
+
+    if (denom === INJ_DENOM) {
+      return tokenMetaUtil.getMetaBySymbol('INJ')
+    }
+
+    if (denom.startsWith('ibc/')) {
+      return this.getIbcDenomTokenMeta()
+    }
+
+    if (denom.startsWith('factory')) {
+      return this.getFactoryDenomTokenMeta()
+    }
+
+    return this.getPeggyDenomTokenMeta()
   }
 }

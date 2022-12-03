@@ -12,7 +12,7 @@ export interface TokenMeta {
   logo: string
   symbol: string
   decimals: number
-  address?: string
+  address?: string /* erc20 contract address | cw20 contract address */
   coinGeckoId: string
 }
 
