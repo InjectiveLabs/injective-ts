@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.69...@injectivelabs/token-metadata@1.0.70) (2022-12-03)
+
+
+### Features
+
+* denom client ([581977b](https://github.com/InjectiveLabs/injective-ts/commit/581977b7e8534fa0e80fa8b41845b38500293ca0))
+
+
+
+
+
 ## [1.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.68...@injectivelabs/token-metadata@1.0.69) (2022-11-30)
 
 
