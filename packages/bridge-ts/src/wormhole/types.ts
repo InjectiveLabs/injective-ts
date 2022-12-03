@@ -1,6 +1,7 @@
 import { CONTRACTS } from '@certusone/wormhole-sdk'
 import { ChainId } from '@injectivelabs/ts-types'
 import { PublicKey } from '@solana/web3.js'
+import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 
 export interface TransferMsgArgs {
   amount: string
@@ -53,3 +54,5 @@ export type WormholeContractAddresses = typeof CONTRACTS.TESTNET.injective
 export type WormholeSolanaContractAddresses = typeof CONTRACTS.TESTNET.solana
 export type WormholeEthereumContractAddresses =
   typeof CONTRACTS.TESTNET.ethereum
+
+export { BaseMessageSignerWalletAdapter }

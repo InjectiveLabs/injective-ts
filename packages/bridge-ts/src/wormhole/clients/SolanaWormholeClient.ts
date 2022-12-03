@@ -60,11 +60,12 @@ export class SolanaWormholeClient extends WormholeClient {
   }
 
   async attestFromSolanaToInjective(
-    args: Omit<SolanaTransferMsgArgs, 'amount' | 'recipient'>,
-    provider: BaseMessageSignerWalletAdapter,
+    args: Omit<SolanaTransferMsgArgs, 'amount' | 'recipient'> & {
+      provider: BaseMessageSignerWalletAdapter
+    },
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
-    const { tokenAddress, signerPubKey } = args
+    const { tokenAddress, signerPubKey, provider } = args
     const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
 
     if (!tokenAddress) {
@@ -138,11 +139,12 @@ export class SolanaWormholeClient extends WormholeClient {
   }
 
   async transferNativeSolFromSolanaToInjective(
-    args: SolanaNativeSolTransferMsgArgs,
-    provider: BaseMessageSignerWalletAdapter,
+    args: SolanaNativeSolTransferMsgArgs & {
+      provider: BaseMessageSignerWalletAdapter
+    },
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
-    const { amount, recipient, signerPubKey } = args
+    const { amount, recipient, signerPubKey, provider } = args
     const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
 
     if (!solanaHostUrl) {
@@ -185,11 +187,10 @@ export class SolanaWormholeClient extends WormholeClient {
   }
 
   async transferFromSolanaToInjective(
-    args: SolanaTransferMsgArgs,
-    provider: BaseMessageSignerWalletAdapter,
+    args: SolanaTransferMsgArgs & { provider: BaseMessageSignerWalletAdapter },
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
-    const { amount, recipient, signerPubKey } = args
+    const { amount, recipient, signerPubKey, provider } = args
     const endpoints = getEndpointsForNetwork(network)
     const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
 
@@ -306,10 +307,10 @@ export class SolanaWormholeClient extends WormholeClient {
 
   async redeemOnSolana({
     solanaPubKey,
-    signed,
+    signedVAA,
   }: {
     solanaPubKey: string
-    signed: string /* in base 64 */
+    signedVAA: string /* in base 64 */
   }): Promise<Transaction> {
     const { network, solanaHostUrl } = this
 
@@ -326,16 +327,16 @@ export class SolanaWormholeClient extends WormholeClient {
       solanaContractAddresses.core,
       solanaContractAddresses.token_bridge,
       new PublicKey(solanaPubKey),
-      Buffer.from(signed, 'base64'),
+      Buffer.from(signedVAA, 'base64'),
     )
   }
 
   async redeemNativeSolOnSolana({
     solanaPubKey,
-    signed,
+    signedVAA,
   }: {
     solanaPubKey: string
-    signed: string /* in base 64 */
+    signedVAA: string /* in base 64 */
   }): Promise<Transaction> {
     const { network, solanaHostUrl } = this
 
@@ -352,20 +353,19 @@ export class SolanaWormholeClient extends WormholeClient {
       solanaContractAddresses.core,
       solanaContractAddresses.token_bridge,
       new PublicKey(solanaPubKey),
-      Buffer.from(signed, 'base64'),
+      Buffer.from(signedVAA, 'base64'),
     )
   }
 
-  async postVaaSolanaWithRetry(
-    {
-      solanaPubKey,
-      signed,
-    }: {
-      solanaPubKey: string
-      signed: string /* in base 64 */
-    },
-    provider: BaseMessageSignerWalletAdapter,
-  ): Promise<TransactionSignatureAndResponse[]> {
+  async postVaaSolanaWithRetry({
+    solanaPubKey,
+    signedVAA,
+    provider,
+  }: {
+    solanaPubKey: string
+    signedVAA: string /* in base 64 */
+    provider: BaseMessageSignerWalletAdapter
+  }): Promise<TransactionSignatureAndResponse[]> {
     const { network, solanaHostUrl } = this
     const MAX_VAA_UPLOAD_RETRIES_SOLANA = 5
 
@@ -382,7 +382,7 @@ export class SolanaWormholeClient extends WormholeClient {
       provider.signTransaction.bind(provider),
       solanaContractAddresses.core,
       new PublicKey(solanaPubKey),
-      Buffer.from(signed, 'base64'),
+      Buffer.from(signedVAA, 'base64'),
       MAX_VAA_UPLOAD_RETRIES_SOLANA,
     )
   }
@@ -489,5 +489,23 @@ export class SolanaWormholeClient extends WormholeClient {
       Buffer.from(signedVAA, 'base64'),
       connection,
     )
+  }
+
+  async getTransactionResponse(transactionId: string) {
+    const { solanaHostUrl } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
+
+    if (!txResponse) {
+      throw new Error('An error occurred while fetching the transaction info')
+    }
+
+    return txResponse
   }
 }

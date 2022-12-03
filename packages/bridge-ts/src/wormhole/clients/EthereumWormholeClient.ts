@@ -23,11 +23,10 @@ import { getEthereumContractAddresses } from '../utils'
 export class EthereumWormholeClient extends WormholeClient {
   /** TODO: Refactor */
   async transferFromEthereumToInjective(
-    args: EthereumTransferMsgArgs,
-    provider: ethers.providers.Web3Provider,
+    args: EthereumTransferMsgArgs & { provider: ethers.providers.Web3Provider },
   ) {
     const { network, wormholeRpcUrl } = this
-    const { amount, recipient } = args
+    const { amount, recipient, provider } = args
     const endpoints = getEndpointsForNetwork(network)
 
     if (!wormholeRpcUrl) {
