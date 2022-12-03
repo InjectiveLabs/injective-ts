@@ -31,10 +31,22 @@ import {
 export class IndexerGrpcNinjaApi extends BaseConsumer {
   protected module: string = IndexerModule.Ninja
 
-  async fetchVault(contractAddress: string) {
+  async fetchVault({
+    contractAddress,
+    slug,
+  }: {
+    contractAddress?: string
+    slug?: string
+  }) {
     const request = new GetVaultRequest()
 
-    request.setContractAddress(contractAddress)
+    if (contractAddress) {
+      request.setContractAddress(contractAddress)
+    }
+
+    if (slug) {
+      request.setSlug(slug)
+    }
 
     try {
       const response = await this.request<
@@ -43,11 +55,9 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
         typeof NinjaAPI.GetVault
       >(request, NinjaAPI.GetVault)
 
-      if (!response.hasVault()) {
-        return
-      }
-
-      return IndexerGrpcNinjaTransformer.grpcVaultToVault(response.getVault())
+      return response
+        .getVaultList()
+        .map(IndexerGrpcNinjaTransformer.grpcVaultToVault)
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
