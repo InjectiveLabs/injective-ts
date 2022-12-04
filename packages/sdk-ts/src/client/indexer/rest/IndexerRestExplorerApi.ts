@@ -17,7 +17,7 @@ import {
 import {
   Contract,
   ContractTransaction,
-  CW20BalanceWithToken,
+  ExplorerCW20BalanceWithToken,
   WasmCode,
 } from '../types/explorer'
 import {
@@ -434,7 +434,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchCW20Balances(address: string): Promise<CW20BalanceWithToken[]> {
+  async fetchCW20Balances(
+    address: string,
+  ): Promise<ExplorerCW20BalanceWithToken[]> {
     try {
       const response = (await this.get(
         `/wasm/${address}/cw20-balance`,
@@ -461,7 +463,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
   async fetchCW20BalancesNoThrow(
     address: string,
-  ): Promise<CW20BalanceWithToken[]> {
+  ): Promise<ExplorerCW20BalanceWithToken[]> {
     try {
       const response = (await this.get(
         `/wasm/${address}/cw20-balance`,

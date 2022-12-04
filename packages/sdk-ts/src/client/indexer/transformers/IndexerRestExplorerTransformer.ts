@@ -18,7 +18,7 @@ import {
   Contract,
   ContractTransaction,
   CW20Message,
-  CW20BalanceWithToken,
+  ExplorerCW20BalanceWithToken,
   WasmCode,
 } from '../types/explorer'
 
@@ -226,7 +226,7 @@ export class IndexerRestExplorerTransformer {
 
   static CW20BalanceToExplorerCW20Balance(
     balance: CW20BalanceExplorerApiResponse,
-  ): CW20BalanceWithToken {
+  ): ExplorerCW20BalanceWithToken {
     const {
       marketing_info,
       token_info: { name, symbol, decimals },

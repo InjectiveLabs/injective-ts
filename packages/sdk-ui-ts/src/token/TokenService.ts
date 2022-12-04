@@ -2,6 +2,7 @@ import { Network } from '@injectivelabs/networks'
 import { ChainId, Coin } from '@injectivelabs/ts-types'
 import {
   checkIsIbcDenomCanonical,
+  ExplorerCW20BalanceWithToken,
   Denom,
   tokenMetaToToken,
 } from '@injectivelabs/sdk-ts'
@@ -20,6 +21,7 @@ import {
 } from '../client/types'
 import {
   BankBalanceWithToken,
+  Cw20BalanceWithToken,
   DenomTrace,
   IbcBankBalanceWithToken,
   SubaccountBalanceWithToken,
@@ -171,6 +173,28 @@ export class TokenService {
       bankBalancesWithToken,
       ibcBankBalancesWithToken,
     }
+  }
+
+  async getCW20BalancesWithToken(
+    cw20Balances: ExplorerCW20BalanceWithToken[],
+  ): Promise<Cw20BalanceWithToken[]> {
+    return await Promise.all(
+      cw20Balances.map(async (balance) => {
+        const token = await this.getDenomToken(balance.contractAddress)
+
+        return {
+          ...balance,
+          token: {
+            ...token,
+            type: TokenType.Cw20,
+          },
+          denom: token.symbol,
+          contractDetails: {
+            address: balance.contractAddress,
+          },
+        }
+      }),
+    )
   }
 
   async getSupplyWithLabel({

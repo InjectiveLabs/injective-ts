@@ -229,7 +229,7 @@ export interface CW20Message {
   symbol: string
 }
 
-export interface CW20BalanceWithToken {
+export interface ExplorerCW20BalanceWithToken {
   contractAddress: string
   account: string
   balance: string

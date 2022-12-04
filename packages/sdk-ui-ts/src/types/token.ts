@@ -77,6 +77,15 @@ export interface IbcBankBalanceWithTokenAndBalance
   token: TokenWithBalance
 }
 
+export interface Cw20BalanceWithToken {
+  balance: string
+  denom: string
+  token: Token
+  contractDetails: {
+    address: string
+  }
+}
+
 export interface SubaccountBalanceWithToken {
   availableBalance: string
   totalBalance: string
