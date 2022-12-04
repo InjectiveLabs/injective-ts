@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.77](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.76...@injectivelabs/bridge-ts@1.0.77) (2022-12-04)
+
+
+### Bug Fixes
+
+* wallet provider in args ([fc849bc](https://github.com/InjectiveLabs/injective-ts/commit/fc849bc0f7c6866d48d4ddb5001d41adf41a371a))
+
+
+
+
+
 ## [1.0.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.75...@injectivelabs/bridge-ts@1.0.76) (2022-12-04)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
