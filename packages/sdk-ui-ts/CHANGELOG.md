@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.361](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.360...@injectivelabs/sdk-ui-ts@1.0.361) (2022-12-04)
+
+
+### Features
+
+* token service for cw20 balances ([4850924](https://github.com/InjectiveLabs/injective-ts/commit/4850924e3caa7499eef86d794f31681120d5e7f7))
+
+
+
+
+
 ## [1.0.360](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.359...@injectivelabs/sdk-ui-ts@1.0.360) (2022-12-04)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
