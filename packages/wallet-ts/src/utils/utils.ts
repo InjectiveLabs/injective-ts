@@ -11,15 +11,25 @@ import {
 
 export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
   const hasMultipleMessages = Array.isArray(msgs)
-  const isMsgExecMessage = (message: Msgs) =>
-    message.toWeb3()['@type'].includes('MsgExec')
 
-  const hasMsgExecMessages = Array.isArray(msgs)
-    ? msgs.some(isMsgExecMessage)
-    : isMsgExecMessage(msgs)
+  const isMsgPrivilegedExecuteContractMessage = (message: Msgs) =>
+    message.toWeb3()['@type'].includes('MsgPrivilegedExecuteContract')
+  const hasMsgPrivilegedExecuteContractMessages = Array.isArray(msgs)
+    ? msgs.some(isMsgPrivilegedExecuteContractMessage)
+    : isMsgPrivilegedExecuteContractMessage(msgs)
 
-  if (hasMsgExecMessages) {
+  if (hasMsgPrivilegedExecuteContractMessages) {
     return DEFAULT_GAS_LIMIT * 1.2
+  }
+
+  const isMsgExecuteContractMessage = (message: Msgs) =>
+    message.toWeb3()['@type'].includes('MsgExecuteContract')
+  const hasMsgExecuteContractMessages = Array.isArray(msgs)
+    ? msgs.some(isMsgExecuteContractMessage)
+    : isMsgExecuteContractMessage(msgs)
+
+  if (hasMsgExecuteContractMessages) {
+    return DEFAULT_GAS_LIMIT * 12
   }
 
   const isExchangeMessage = (message: Msgs) =>

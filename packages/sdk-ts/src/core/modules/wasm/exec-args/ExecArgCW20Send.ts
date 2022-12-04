@@ -11,7 +11,7 @@ export declare namespace ExecArgCW20Send {
   }
 
   export interface Data {
-    contract_address: string
+    contract: string
     amount: string
   }
 }
@@ -31,7 +31,7 @@ export default class ExecArgCW20Send extends ExecArgBase<
     const { params } = this
 
     return {
-      contract_address: params.contractAddress,
+      contract: params.contractAddress,
       amount: params.amount,
     }
   }
