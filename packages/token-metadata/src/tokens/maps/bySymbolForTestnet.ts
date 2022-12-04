@@ -3,6 +3,7 @@ import {
   devnetSymbolToAddressMap,
   devnet1SymbolToAddressMap,
   testnetSymbolToAddressMap,
+  testnetSymbolToCw20AddressMap,
 } from '../helpers/testnetMap'
 import tokens from '../tokens'
 
@@ -10,8 +11,11 @@ export const tokensBySymbolForTestnet = (
   Object.keys(tokens) as Array<keyof typeof tokens>
 ).reduce((result, token) => {
   const tokenKey = token as keyof typeof testnetSymbolToAddressMap
+  const tokenCw20Key = token as keyof typeof testnetSymbolToCw20AddressMap
   const testnetAddressFromMap = testnetSymbolToAddressMap[tokenKey]
+  const testnetCw20AddressFromMap = testnetSymbolToCw20AddressMap[tokenCw20Key]
   const testnetAddress = (testnetAddressFromMap ||
+    testnetCw20AddressFromMap ||
     tokens[token].address) as string
 
   return {
