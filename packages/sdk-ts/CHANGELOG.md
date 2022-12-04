@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.268](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.267...@injectivelabs/sdk-ts@1.0.268) (2022-12-04)
+
+
+### Bug Fixes
+
+* timeout for rest queries ([4d64636](https://github.com/InjectiveLabs/injective-ts/commit/4d6463674ee9f1b63138d8cc7e1cb81b19e09835))
+
+
+
+
+
 ## [1.0.267](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.266...@injectivelabs/sdk-ts@1.0.267) (2022-12-04)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
