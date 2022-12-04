@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.70...@injectivelabs/token-metadata@1.0.71) (2022-12-04)
+
+
+### Bug Fixes
+
+* solana image ([31d9466](https://github.com/InjectiveLabs/injective-ts/commit/31d9466dd6725649b0775c8cda77b218467a0ea4))
+
+
+
+
+
 ## [1.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.69...@injectivelabs/token-metadata@1.0.70) (2022-12-03)
 
 
