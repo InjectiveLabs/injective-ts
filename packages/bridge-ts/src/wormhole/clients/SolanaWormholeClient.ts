@@ -4,7 +4,6 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import {
   tryNativeToHexString,
   transferFromSolana,
-  tryNativeToUint8Array,
   parseSequenceFromLogSolana,
   getEmitterAddressSolana,
   getSignedVAAWithRetry,
@@ -17,6 +16,8 @@ import {
   getOriginalAssetInjective,
   redeemAndUnwrapOnSolana,
   getIsTransferCompletedSolana,
+  uint8ArrayToHex,
+  cosmos,
 } from '@certusone/wormhole-sdk'
 import {
   createAssociatedTokenAccountInstruction,
@@ -31,6 +32,7 @@ import {
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { TransactionSignatureAndResponse } from '@certusone/wormhole-sdk/lib/cjs/solana'
+import { zeroPad } from 'ethers/lib/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { SolanaNativeSolTransferMsgArgs, SolanaTransferMsgArgs } from '../types'
 import { getSolanaContractAddresses, getSolanaTransactionInfo } from '../utils'
@@ -170,7 +172,9 @@ export class SolanaWormholeClient extends WormholeClient {
       solanaContractAddresses.token_bridge,
       pubKey,
       BigInt(amount),
-      tryNativeToUint8Array(recipient, WORMHOLE_CHAINS.injective),
+      hexToUint8Array(
+        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
+      ),
       WORMHOLE_CHAINS.injective,
     )
 
@@ -247,7 +251,9 @@ export class SolanaWormholeClient extends WormholeClient {
       fromAddress,
       args.tokenAddress,
       BigInt(amount),
-      tryNativeToUint8Array(recipient, WORMHOLE_CHAINS.injective),
+      hexToUint8Array(
+        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
+      ),
       WORMHOLE_CHAINS.injective,
     )
 
