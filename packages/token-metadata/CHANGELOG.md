@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.72](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.71...@injectivelabs/token-metadata@1.0.72) (2022-12-04)
+
+
+### Bug Fixes
+
+* cw20 address token metadata ([0d8c33b](https://github.com/InjectiveLabs/injective-ts/commit/0d8c33b20702efc6704d0b923d439a94755649f9))
+
+
+
+
+
 ## [1.0.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.70...@injectivelabs/token-metadata@1.0.71) (2022-12-04)
 
 
