@@ -735,7 +735,7 @@ export default {
 
   SOL: {
     name: 'Solana',
-    logo: 'solana.png',
+    logo: 'solana.svg',
     symbol: 'SOL',
     decimals: 9,
     address: '',
@@ -744,7 +744,7 @@ export default {
 
   WSOL: {
     name: 'Solana',
-    logo: 'solana.png',
+    logo: 'solana.svg',
     symbol: 'SOL',
     decimals: 9,
     address: '',
@@ -753,7 +753,7 @@ export default {
 
   CW20SOL: {
     name: 'Solana',
-    logo: 'solana.png',
+    logo: 'solana.svg',
     symbol: 'SOL',
     decimals: 9,
     address: '',
