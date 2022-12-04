@@ -52,11 +52,11 @@ export class SolanaWormholeClient extends WormholeClient {
     this.solanaHostUrl = solanaHostUrl
   }
 
-  async getBalances(address: PublicKey) {
+  async getBalances(address: PublicKey | string) {
     const { solanaHostUrl } = this
     const connection = new Connection(solanaHostUrl || '')
 
-    return connection.getBalance(address)
+    return connection.getBalance(new PublicKey(address))
   }
 
   async attestFromSolanaToInjective(
@@ -106,7 +106,9 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new Error('An error occurred while fetching the transaction info')
     }
 
-    return txResponse as TransactionResponse
+    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+      txHash: string
+    }
   }
 
   async getSignedVAAOnSolana(txResponse: TransactionResponse) {
@@ -183,7 +185,9 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new Error('An error occurred while fetching the transaction info')
     }
 
-    return txResponse as TransactionResponse
+    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+      txHash: string
+    }
   }
 
   async transferFromSolanaToInjective(
@@ -258,7 +262,9 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new Error('An error occurred while fetching the transaction info')
     }
 
-    return txResponse as TransactionResponse
+    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+      txHash: string
+    }
   }
 
   async confirmTransferFromSolanaToInjective(txResponse: TransactionResponse) {
@@ -470,7 +476,9 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new Error('An error occurred while fetching the transaction info')
     }
 
-    return txResponse as TransactionResponse
+    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+      txHash: string
+    }
   }
 
   async getIsTransferCompletedSolana(signedVAA: string /* in base 64 */) {
@@ -506,6 +514,8 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new Error('An error occurred while fetching the transaction info')
     }
 
-    return txResponse
+    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+      txHash: string
+    }
   }
 }
