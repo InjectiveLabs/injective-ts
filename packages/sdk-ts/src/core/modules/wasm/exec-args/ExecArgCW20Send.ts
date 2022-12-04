@@ -1,3 +1,4 @@
+import { toUtf8 } from '../../../../utils/utf8'
 import {
   dataToExecData,
   ExecArgBase,
@@ -8,11 +9,13 @@ export declare namespace ExecArgCW20Send {
   export interface Params {
     contractAddress: string
     amount: string
+    msg?: object
   }
 
   export interface Data {
     contract: string
     amount: string
+    msg: string
   }
 }
 
@@ -33,6 +36,9 @@ export default class ExecArgCW20Send extends ExecArgBase<
     return {
       contract: params.contractAddress,
       amount: params.amount,
+      msg: Buffer.from(toUtf8(JSON.stringify(params.msg || {}))).toString(
+        'base64',
+      ),
     }
   }
 

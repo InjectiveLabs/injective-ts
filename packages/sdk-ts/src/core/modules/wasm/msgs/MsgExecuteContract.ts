@@ -3,6 +3,7 @@ import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/cha
 import snakeCaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
+import { toUtf8 } from '../../../../utils/utf8'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
@@ -12,7 +13,7 @@ export declare namespace MsgExecuteContract {
     }
     sender: string
     contractAddress: string
-    msg: ExecArgs
+    msg: ExecArgs | object
   }
 
   export interface DirectSign {
@@ -54,7 +55,11 @@ export default class MsgExecuteContract extends MsgBase<
 
     const message = new BaseMsgExecuteContract()
 
-    message.setMsg(params.msg.toExecJSON())
+    message.setMsg(
+      (params.msg as ExecArgs).toExecJSON !== undefined
+        ? (params.msg as ExecArgs).toExecJSON()
+        : toUtf8(JSON.stringify(params.msg)),
+    )
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
 
