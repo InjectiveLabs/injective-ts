@@ -107,15 +107,11 @@ export class InjectiveWormholeClient extends WormholeClient {
     )
   }
 
-  async transferFromInjectiveToSolana({
-    args,
-    provider,
-  }: {
-    args: InjectiveTransferMsgArgs
-    provider: InjectiveProviderArgs
-  }) {
+  async transferFromInjectiveToSolana(
+    args: InjectiveTransferMsgArgs & { provider: InjectiveProviderArgs },
+  ) {
     const { network, wormholeRpcUrl } = this
-    const { amount, recipient } = args
+    const { amount, recipient, provider } = args
     const endpoints = getEndpointsForNetwork(network)
     const solanaPubKey = new SolanaPublicKey(recipient)
 
