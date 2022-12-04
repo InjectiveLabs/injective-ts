@@ -19,3 +19,7 @@ export const testnetSymbolToCw20AddressMap = {
   WSOL: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
   CW20SOL: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
 }
+
+export const wormholeCw20Contracts = [
+  'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
+]

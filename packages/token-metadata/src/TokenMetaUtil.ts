@@ -1,4 +1,5 @@
 import { getMappedTokensByAddress } from './tokens/helpers/mapByAddress'
+import { wormholeCw20Contracts } from './tokens/helpers/testnetMap'
 import { TokenMeta } from './types'
 
 export class TokenMetaUtil {
@@ -29,6 +30,16 @@ export class TokenMetaUtil {
 
     if (!tokensByAddress[contractAddress]) {
       return
+    }
+
+    const tokenMeta = tokensByAddress[contractAddress]
+
+    /** Wormhole CW20 versions can't have more than 8 decimals */
+    if (wormholeCw20Contracts.includes(contractAddress)) {
+      return {
+        ...tokenMeta,
+        decimals: Math.max(0, Math.min(tokenMeta.decimals, 8)),
+      }
     }
 
     return tokensByAddress[contractAddress]
