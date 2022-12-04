@@ -1,7 +1,7 @@
 export const isTxNotFoundError = (error: any) => {
   if (!error.response) {
     const errorToString = error.toString()
-    const acceptableErrorStrings = ['404', 'not found']
+    const acceptableErrorStrings = ['404', 'not found', 'timeout', 'exceeded']
 
     return acceptableErrorStrings.some((code) => errorToString.includes(code))
   }

@@ -31,7 +31,7 @@ export class TxRestClient implements TxConcreteClient {
       headers: {
         Accept: 'application/json',
       },
-      timeout: 3000,
+      timeout: 15000,
     })
   }
 
