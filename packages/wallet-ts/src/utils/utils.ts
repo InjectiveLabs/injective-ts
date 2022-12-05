@@ -10,62 +10,46 @@ import {
 } from '@injectivelabs/utils'
 
 export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
-  const hasMultipleMessages = Array.isArray(msgs)
+  const messages = Array.isArray(msgs) ? msgs : [msgs]
+  const messageType = messages[0].toDirectSign().type
 
-  const isMsgPrivilegedExecuteContractMessage = (message: Msgs) =>
-    message.toWeb3()['@type'].includes('MsgPrivilegedExecuteContract')
-  const hasMsgPrivilegedExecuteContractMessages = Array.isArray(msgs)
-    ? msgs.some(isMsgPrivilegedExecuteContractMessage)
-    : isMsgPrivilegedExecuteContractMessage(msgs)
-
-  if (hasMsgPrivilegedExecuteContractMessages) {
-    return DEFAULT_GAS_LIMIT * 1.2
-  }
-
-  const isMsgExecuteContractMessage = (message: Msgs) =>
-    message.toWeb3()['@type'].includes('MsgExecuteContract')
-  const hasMsgExecuteContractMessages = Array.isArray(msgs)
-    ? msgs.some(isMsgExecuteContractMessage)
-    : isMsgExecuteContractMessage(msgs)
-
-  if (hasMsgExecuteContractMessages) {
-    return DEFAULT_GAS_LIMIT * 12
-  }
-
-  const isExchangeMessage = (message: Msgs) =>
-    message.toWeb3()['@type'].startsWith('/injective')
-  const hasExchangeMessages = Array.isArray(msgs)
-    ? msgs.some(isExchangeMessage)
-    : isExchangeMessage(msgs)
-
-  if (hasExchangeMessages) {
-    return new BigNumberInBase(DEFAULT_EXCHANGE_LIMIT)
-      .times(hasMultipleMessages ? msgs.length : 1)
+  if (messageType.includes('MsgPrivilegedExecuteContract')) {
+    return new BigNumberInBase(DEFAULT_GAS_LIMIT)
+      .times(1.2)
+      .times(messages.length)
+      .decimalPlaces(0)
       .toNumber()
   }
 
-  const isGovMessage = (message: Msgs) => {
-    const type = message.toWeb3()['@type']
-
-    if (!type.includes('gov')) {
-      return false
-    }
-
-    return type.includes('MsgDeposit') || type.includes('MsgSubmitProposal')
+  if (messageType.includes('MsgExecuteContract')) {
+    return new BigNumberInBase(DEFAULT_GAS_LIMIT)
+      .times(2.5)
+      .times(messages.length)
+      .decimalPlaces(0)
+      .toNumber()
   }
-  const hasGovMessages = Array.isArray(msgs)
-    ? msgs.some(isGovMessage)
-    : isGovMessage(msgs)
 
-  if (hasGovMessages) {
+  if (messageType.includes('exchange')) {
+    return new BigNumberInBase(DEFAULT_EXCHANGE_LIMIT)
+      .times(messages.length)
+      .decimalPlaces(0)
+      .toNumber()
+  }
+
+  if (
+    messageType.includes('gov') &&
+    (messageType.includes('MsgDeposit') ||
+      messageType.includes('MsgSubmitProposal'))
+  ) {
     return new BigNumberInBase(DEFAULT_GAS_LIMIT)
       .times(15)
-      .times(hasMultipleMessages ? msgs.length : 1)
+      .times(messages.length)
+      .decimalPlaces(0)
       .toNumber()
   }
 
   return new BigNumberInBase(DEFAULT_GAS_LIMIT)
-    .times(hasMultipleMessages ? msgs.length : 1)
+    .times(messages.length)
     .toNumber()
 }
 
