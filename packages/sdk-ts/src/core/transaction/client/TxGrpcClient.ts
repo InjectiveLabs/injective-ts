@@ -84,6 +84,10 @@ export class TxGrpcClient implements TxConcreteClient {
         txHash: txResponse.getTxhash(),
       }
     } catch (e: unknown) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
       if (!isTxNotFoundError(e)) {
         throw new TransactionException(
           new Error('There was an issue while fetching transaction details'),
