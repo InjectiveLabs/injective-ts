@@ -51,6 +51,13 @@ export class TxRestClient implements TxConcreteClient {
         return undefined
       }
 
+      if (txResponse.code !== 0) {
+        throw new TransactionException(new Error(txResponse.raw_log), {
+          contextCode: txResponse.code,
+          contextModule: 'TxRestClient',
+        })
+      }
+
       return {
         ...txResponse,
         rawLog: txResponse.raw_log,

@@ -72,6 +72,13 @@ export class TxGrpcClient implements TxConcreteClient {
         return undefined
       }
 
+      if (txResponse.getCode() !== 0) {
+        throw new TransactionException(new Error(txResponse.getRawLog()), {
+          contextCode: txResponse.getCode(),
+          contextModule: 'TxGrpcClient',
+        })
+      }
+
       return {
         ...txResponse.toObject(),
         txHash: txResponse.getTxhash(),
