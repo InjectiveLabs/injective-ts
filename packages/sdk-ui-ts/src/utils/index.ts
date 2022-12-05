@@ -1,4 +1,5 @@
 export * from './bridge'
 export * from './derivatives'
+export * from './explorer'
 export * from './spot'
 export * from './helpers'
