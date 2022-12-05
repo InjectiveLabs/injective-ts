@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.256](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.255...@injectivelabs/wallet-ts@1.0.256) (2022-12-05)
+
+
+### Bug Fixes
+
+* gas limit for contracts ([8677227](https://github.com/InjectiveLabs/injective-ts/commit/86772270ae17fbf69829243509f2c68fba7d0d6e))
+
+
+
+
+
 ## [1.0.255](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.254...@injectivelabs/wallet-ts@1.0.255) (2022-12-04)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

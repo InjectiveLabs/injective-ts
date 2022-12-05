@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.269](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.268...@injectivelabs/sdk-ts@1.0.269) (2022-12-05)
+
+
+### Bug Fixes
+
+* gas limit for contracts ([8677227](https://github.com/InjectiveLabs/injective-ts/commit/86772270ae17fbf69829243509f2c68fba7d0d6e))
+
+
+
+
+
 ## [1.0.268](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.267...@injectivelabs/sdk-ts@1.0.268) (2022-12-04)
 
 
