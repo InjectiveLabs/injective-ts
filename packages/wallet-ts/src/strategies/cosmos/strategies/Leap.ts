@@ -82,16 +82,18 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     }
   }
 
-  async signTransaction(
-    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
-    address: string,
-  ) {
+  async signTransaction(transaction: {
+    txRaw: TxRaw
+    chainId: string
+    accountNumber: number
+    address: string
+  }) {
     const leapWallet = this.getLeapWallet()
     const signer = await leapWallet.getOfflineSigner()
     const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      return signer.signDirect(address, signDoc)
+      return signer.signDirect(transaction.address, signDoc)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

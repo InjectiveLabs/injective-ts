@@ -112,15 +112,15 @@ export class InjectiveWormholeClient extends WormholeClient {
   async transferFromInjectiveToSolana(
     args: InjectiveTransferMsgArgs & {
       /**
-       * Additional messages that we run before the bridge, as an example
-       * redeeming from the token factory to CW20
+       * Additional messages that we run before the bridge, an example
+       * could be redeeming from the token factory to CW20
        */
-      msgs?: MsgExecuteContract[]
+      additionalMsgs?: MsgExecuteContract[]
       provider: InjectiveWalletProvider
     },
   ) {
     const { network, wormholeRpcUrl } = this
-    const { amount, recipient, provider, msgs = [] } = args
+    const { amount, recipient, provider, additionalMsgs = [] } = args
     const endpoints = getEndpointsForNetwork(network)
     const solanaPubKey = new SolanaPublicKey(recipient)
 
@@ -153,7 +153,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     const { txRaw, cosmosSignDoc } =
       await createTransactionAndCosmosSignDocForAddressAndMsg({
         chainId: args.chainId,
-        message: [...msgs, ...messages],
+        message: [...additionalMsgs, ...messages],
         fee: {
           ...DEFAULT_STD_FEE,
           gas: new BigNumberInBase(DEFAULT_GAS_LIMIT)
@@ -168,14 +168,12 @@ export class InjectiveWormholeClient extends WormholeClient {
         pubKey: await provider.getPubKey(),
       })
 
-    const directSignResponse = (await provider.signCosmosTransaction(
-      {
-        txRaw,
-        accountNumber: cosmosSignDoc.accountNumber.toNumber(),
-        chainId: args.chainId,
-      },
-      args.injectiveAddress,
-    )) as any
+    const directSignResponse = (await provider.signCosmosTransaction({
+      txRaw,
+      accountNumber: cosmosSignDoc.accountNumber.toNumber(),
+      chainId: args.chainId,
+      address: args.injectiveAddress,
+    })) as any
 
     const txHash = await provider.sendTransaction(directSignResponse, {
       chainId: args.chainId as ChainId,

@@ -367,10 +367,12 @@ export class MsgBroadcaster {
       },
     })
 
-    const directSignResponse = (await walletStrategy.signCosmosTransaction(
-      { txRaw, accountNumber: accountDetails.accountNumber, chainId },
-      tx.injectiveAddress,
-    )) as DirectSignResponse
+    const directSignResponse = (await walletStrategy.signCosmosTransaction({
+      txRaw,
+      chainId,
+      address: tx.injectiveAddress,
+      accountNumber: accountDetails.accountNumber,
+    })) as DirectSignResponse
 
     /* Simulate Transaction */
     if (options.simulateTx) {
@@ -605,10 +607,12 @@ export class MsgBroadcaster {
       },
     })
 
-    const directSignResponse = (await walletStrategy.signCosmosTransaction(
-      { txRaw, accountNumber: accountDetails.accountNumber, chainId },
-      tx.injectiveAddress,
-    )) as DirectSignResponse
+    const directSignResponse = (await walletStrategy.signCosmosTransaction({
+      txRaw,
+      chainId,
+      address: tx.injectiveAddress,
+      accountNumber: accountDetails.accountNumber,
+    })) as DirectSignResponse
 
     /* Simulate Transaction */
     if (options.simulateTx) {

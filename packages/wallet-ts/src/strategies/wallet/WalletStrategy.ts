@@ -16,7 +16,7 @@ import {
   onChainIdChangeCallback,
   WalletStrategyArguments,
   WalletStrategyEthereumOptions,
-} from './../types'
+} from '../types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
 import Cosmostation from './strategies/Cosmostation'
@@ -252,17 +252,19 @@ export default class WalletStrategy {
     return this.getStrategy().signEip712TypedData(eip712TypedData, address)
   }
 
-  public async signCosmosTransaction(
-    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
-    address: AccountAddress,
-  ): Promise<DirectSignResponse> {
+  public async signCosmosTransaction(transaction: {
+    txRaw: TxRaw
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<DirectSignResponse> {
     if (isEthWallet(this.wallet)) {
       throw new WalletException(
         new Error(`You can't sign Cosmos Transaction using ${this.wallet}`),
       )
     }
 
-    return this.getStrategy().signCosmosTransaction(transaction, address)
+    return this.getStrategy().signCosmosTransaction(transaction)
   }
 
   public getWeb3(): Web3 {

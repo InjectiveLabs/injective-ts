@@ -115,19 +115,24 @@ export default class Leap
     transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
     injectiveAddress: AccountAddress,
   ) {
-    return this.signCosmosTransaction(transaction, injectiveAddress)
+    return this.signCosmosTransaction({
+      ...transaction,
+      address: injectiveAddress,
+    })
   }
 
-  async signCosmosTransaction(
-    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
-    address: AccountAddress,
-  ) {
+  async signCosmosTransaction(transaction: {
+    txRaw: TxRaw
+    accountNumber: number
+    chainId: string
+    address: AccountAddress
+  }) {
     const leapWallet = this.getLeapWallet()
     const signer = await leapWallet.getOfflineSigner()
     const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      return signer.signDirect(address, signDoc)
+      return signer.signDirect(transaction.address, signDoc)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

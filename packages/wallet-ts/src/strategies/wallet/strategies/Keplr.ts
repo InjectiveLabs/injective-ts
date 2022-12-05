@@ -116,19 +116,24 @@ export default class Keplr
     transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
     injectiveAddress: AccountAddress,
   ) {
-    return this.signCosmosTransaction(transaction, injectiveAddress)
+    return this.signCosmosTransaction({
+      ...transaction,
+      address: injectiveAddress,
+    })
   }
 
-  async signCosmosTransaction(
-    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
-    injectiveAddress: AccountAddress,
-  ) {
+  async signCosmosTransaction(transaction: {
+    txRaw: TxRaw
+    accountNumber: number
+    chainId: string
+    address: string
+  }) {
     const keplrWallet = this.getKeplrWallet()
     const signer = await keplrWallet.getOfflineSigner()
     const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      return signer.signDirect(injectiveAddress, signDoc)
+      return signer.signDirect(transaction.address, signDoc)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

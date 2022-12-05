@@ -124,13 +124,15 @@ export default class Cosmostation
     transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
     address: AccountAddress,
   ) {
-    return this.signCosmosTransaction(transaction, address)
+    return this.signCosmosTransaction({ ...transaction, address })
   }
 
-  async signCosmosTransaction(
-    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
-    _address: AccountAddress,
-  ) {
+  async signCosmosTransaction(transaction: {
+    txRaw: TxRaw
+    chainId: string
+    address: string
+    accountNumber: number
+  }) {
     const { chainId } = this
     const provider = await this.getProvider()
     const signDoc = createCosmosSignDocFromTransaction(transaction)

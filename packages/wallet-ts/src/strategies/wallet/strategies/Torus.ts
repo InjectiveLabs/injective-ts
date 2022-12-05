@@ -182,10 +182,12 @@ export default class Torus
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async signCosmosTransaction(
-    _transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
-    _address: AccountAddress,
-  ): Promise<DirectSignResponse> {
+  async signCosmosTransaction(_transaction: {
+    txRaw: TxRaw
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<DirectSignResponse> {
     throw new WalletException(
       new Error('This wallet does not support signing Cosmos transactions'),
       {

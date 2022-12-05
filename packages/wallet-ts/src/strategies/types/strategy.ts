@@ -50,10 +50,12 @@ export interface ConcreteCosmosWalletStrategy {
 
   isChainIdSupported(chainId?: CosmosChainId): Promise<boolean>
 
-  signTransaction(
-    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
-    address: string,
-  ): Promise<DirectSignResponse>
+  signTransaction(transaction: {
+    txRaw: TxRaw
+    chainId: string
+    accountNumber: number
+    address: string
+  }): Promise<DirectSignResponse>
 }
 
 export interface CosmosWalletStrategyArguments {
@@ -115,10 +117,12 @@ export interface ConcreteWalletStrategy
    * @param transaction
    * @param address - injective address
    */
-  signCosmosTransaction(
-    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
-    address: string,
-  ): Promise<DirectSignResponse>
+  signCosmosTransaction(transaction: {
+    txRaw: TxRaw
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<DirectSignResponse>
 
   /**
    * Sign EIP712 TypedData using the wallet provider

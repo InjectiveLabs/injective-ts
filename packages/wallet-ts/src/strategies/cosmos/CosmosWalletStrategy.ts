@@ -94,10 +94,12 @@ export default class CosmosWalletStrategy {
     return this.getStrategy().sendTransaction(tx)
   }
 
-  public async signTransaction(
-    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
-    address: string,
-  ): Promise<DirectSignResponse> {
-    return this.getStrategy().signTransaction(transaction, address)
+  public async signTransaction(transaction: {
+    txRaw: TxRaw
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<DirectSignResponse> {
+    return this.getStrategy().signTransaction(transaction)
   }
 }

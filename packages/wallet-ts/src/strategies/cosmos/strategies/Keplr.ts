@@ -85,16 +85,18 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
     }
   }
 
-  async signTransaction(
-    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
-    address: string,
-  ) {
+  async signTransaction(transaction: {
+    txRaw: TxRaw
+    chainId: string
+    accountNumber: number
+    address: string
+  }) {
     const keplrWallet = this.getKeplrWallet()
     const signer = await keplrWallet.getOfflineSigner()
     const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      return signer.signDirect(address, signDoc)
+      return signer.signDirect(transaction.address, signDoc)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
