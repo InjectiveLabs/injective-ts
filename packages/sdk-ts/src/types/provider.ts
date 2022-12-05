@@ -1,6 +1,6 @@
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { ChainId } from '@injectivelabs/ts-types'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 export interface InjectiveWalletProvider {
   /**
@@ -15,6 +15,16 @@ export interface InjectiveWalletProvider {
   getPubKey(): Promise<string>
 
   /**
+   * Sends Ethereum transaction. Returns a transaction hash
+   * @param transaction should implement TransactionConfig
+   * @param options
+   */
+  sendEthereumTransaction(
+    transaction: unknown,
+    options: { address: string; ethereumChainId: EthereumChainId },
+  ): Promise<string>
+
+  /**
    * Sends Cosmos transaction. Returns a transaction hash
    * @param transaction should implement TransactionConfig
    * @param options
@@ -23,11 +33,6 @@ export interface InjectiveWalletProvider {
     transaction: DirectSignResponse | TxRaw,
     options: { address: string; chainId: ChainId },
   ): Promise<string>
-
-  signTransaction(
-    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
-    address: string,
-  ): Promise<DirectSignResponse>
 
   /**
    * Sign a cosmos transaction using the wallet provider
@@ -41,4 +46,11 @@ export interface InjectiveWalletProvider {
     chainId: string
     address: string
   }): Promise<DirectSignResponse>
+
+  /**
+   * Sign EIP712 TypedData using the wallet provider
+   * @param eip712TypedData
+   * @param address - ethereum address
+   */
+  signEip712TypedData(eip712TypedData: string, address: string): Promise<string>
 }
