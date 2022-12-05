@@ -32,24 +32,6 @@ export interface InjectiveTransferMsgArgs extends TransferMsgArgs {
   chainId: string
 }
 
-export interface InjectiveProviderArgs {
-  signCosmosTransaction(
-    transaction: {
-      txRaw: any /* TODO */
-      chainId: string
-      accountNumber: number
-    },
-    address: string,
-  ): Promise<any /* TODO */>
-
-  getPubKey(): Promise<string>
-
-  sendTransaction(
-    transaction: any,
-    options: { address: string; chainId: ChainId },
-  ): Promise<string>
-}
-
 export type WormholeContractAddresses = typeof CONTRACTS.TESTNET.injective
 export type WormholeSolanaContractAddresses = typeof CONTRACTS.TESTNET.solana
 export type WormholeEthereumContractAddresses =

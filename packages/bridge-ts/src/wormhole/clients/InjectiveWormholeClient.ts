@@ -6,6 +6,7 @@ import {
   MsgExecuteContract,
   ChainGrpcWasmApi,
   TxResponse,
+  InjectiveWalletProvider,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -26,12 +27,13 @@ import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { ChainId } from '@injectivelabs/ts-types'
 import { NATIVE_MINT } from '@solana/spl-token'
-import { WORMHOLE_CHAINS } from '../constants'
 import {
-  InjectiveProviderArgs,
-  InjectiveTransferMsgArgs,
-  TransferMsgArgs,
-} from '../types'
+  BigNumberInBase,
+  DEFAULT_GAS_LIMIT,
+  DEFAULT_STD_FEE,
+} from '@injectivelabs/utils'
+import { WORMHOLE_CHAINS } from '../constants'
+import { InjectiveTransferMsgArgs, TransferMsgArgs } from '../types'
 import { getSolanaContractAddresses } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
@@ -108,10 +110,17 @@ export class InjectiveWormholeClient extends WormholeClient {
   }
 
   async transferFromInjectiveToSolana(
-    args: InjectiveTransferMsgArgs & { provider: InjectiveProviderArgs },
+    args: InjectiveTransferMsgArgs & {
+      /**
+       * Additional messages that we run before the bridge, as an example
+       * redeeming from the token factory to CW20
+       */
+      msgs?: MsgExecuteContract[]
+      provider: InjectiveWalletProvider
+    },
   ) {
     const { network, wormholeRpcUrl } = this
-    const { amount, recipient, provider } = args
+    const { amount, recipient, provider, msgs = [] } = args
     const endpoints = getEndpointsForNetwork(network)
     const solanaPubKey = new SolanaPublicKey(recipient)
 
@@ -144,7 +153,15 @@ export class InjectiveWormholeClient extends WormholeClient {
     const { txRaw, cosmosSignDoc } =
       await createTransactionAndCosmosSignDocForAddressAndMsg({
         chainId: args.chainId,
-        message: messages,
+        message: [...msgs, ...messages],
+        fee: {
+          ...DEFAULT_STD_FEE,
+          gas: new BigNumberInBase(DEFAULT_GAS_LIMIT)
+            .times(2.5)
+            .times(messages.length)
+            .decimalPlaces(0)
+            .toFixed(0),
+        },
         address: args.injectiveAddress,
         endpoint: endpoints.sentryHttpApi,
         memo: 'Wormhole Transfer From Injective to Solana',

@@ -1,5 +1,5 @@
 import {
-  getAddressFromInjectiveAddress,
+  getEthereumAddress,
   getInjectiveAddress,
   Msgs,
 } from '@injectivelabs/sdk-ts'
@@ -79,7 +79,7 @@ export const getEthereumSignerAddress = (address: string | undefined) => {
   }
 
   if (address.startsWith('inj')) {
-    return getAddressFromInjectiveAddress(address)
+    return getEthereumAddress(address)
   }
 
   return ''

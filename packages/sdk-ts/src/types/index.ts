@@ -1,7 +1,10 @@
 import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 
 export * from './exchange'
 export * from './pagination'
+export * from './provider'
 
 export interface Coin {
   denom: string
@@ -16,4 +19,4 @@ export enum StreamOperation {
   Invalidate = 'invalidate',
 }
 
-export { GrpcCoin }
+export { GrpcCoin, DirectSignResponse, TxRaw }
