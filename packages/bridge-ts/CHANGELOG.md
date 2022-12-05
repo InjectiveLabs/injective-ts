@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.87](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.86...@injectivelabs/bridge-ts@1.0.87) (2022-12-05)
+
+
+### Features
+
+* explorer utils and generic types for wallet provider ([b31b3ff](https://github.com/InjectiveLabs/injective-ts/commit/b31b3ff3bf27e74208cf03f10ea8fff762b0cae9))
+
+
+
+
+
 ## [1.0.86](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.85...@injectivelabs/bridge-ts@1.0.86) (2022-12-05)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
