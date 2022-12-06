@@ -9,7 +9,6 @@ import {
 } from '@injectivelabs/contracts'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { WalletStrategy } from '../strategies/wallet'
-import { SendTransactionOptions } from '../wallets/types'
 import {
   DEFAULT_GAS_PRICE,
   GAS_LIMIT_MULTIPLIER,
@@ -17,6 +16,7 @@ import {
   TIP_IN_GWEI,
   TX_DEFAULTS_GAS,
 } from '../utils/constants'
+import { SendTransactionOptions } from './types'
 
 export const getTransactionOptions = (
   transactionOptions: Partial<TransactionOptions>,

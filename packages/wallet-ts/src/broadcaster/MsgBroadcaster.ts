@@ -45,7 +45,7 @@ import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
-} from '../wallets/types'
+} from './types'
 import { isCosmosWallet } from '../wallets/cosmos'
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../wallets/keplr'

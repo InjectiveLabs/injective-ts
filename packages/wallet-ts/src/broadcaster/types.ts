@@ -1,7 +1,7 @@
 import { Msgs } from '@injectivelabs/sdk-ts'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
-import { WalletStrategy } from '../../strategies/wallet'
+import type { WalletStrategy } from '../strategies'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string
@@ -40,11 +40,6 @@ export interface MsgBroadcasterOptions {
   feePayerPubKey?: string
   simulateTx?: boolean
   walletStrategy: WalletStrategy
-}
-
-export interface MsgBroadcasterOptionsLocal
-  extends Omit<MsgBroadcasterOptions, 'feePayerPubKey' | 'walletStrategy'> {
-  privateKey: string
 }
 
 export interface SendTransactionOptions {
