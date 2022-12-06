@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.50...@injectivelabs/networks@1.0.51) (2022-12-06)
+
+
+### Features
+
+* simplified networks ([9b9733b](https://github.com/InjectiveLabs/injective-ts/commit/9b9733baee722c368dbdf8f4634fa1ecb036d4c0))
+
+
+
+
+
 ## [1.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.49...@injectivelabs/networks@1.0.50) (2022-11-30)
 
 **Note:** Version bump only for package @injectivelabs/networks
