@@ -1,77 +1,61 @@
 import { NetworkEndpoints } from './types'
 
-export const urlEndpointsMainnetK8s: NetworkEndpoints = {
-  indexerApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
-  chronosApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
-  sentryGrpcApi: 'https://k8s.mainnet.grpc.injective.network/',
-  tendermintApi: 'https://k8s.mainnet.tm.injective.network/',
-  sentryHttpApi: 'https://k8s.mainnet.lcd.injective.network/',
-  exchangeWeb3GatewayApi: 'https://k8s.mainnet.exchange.grpc.injective.network',
+export const endpointsMainnetK8s: NetworkEndpoints = {
+  indexer: 'https://k8s.mainnet.exchange.grpc-web.injective.network',
+  grpc: 'https://k8s.mainnet.chain.grpc-web.injective.network',
+  rpc: 'https://k8s.mainnet.tm.injective.network',
+  rest: 'https://k8s.mainnet.lcd.injective.network',
 }
 
-export const urlEndpointsMainnet: NetworkEndpoints = {
-  indexerApi: 'https://api.injective.network',
-  chronosApi: 'https://api.injective.network',
-  sentryGrpcApi: 'https://grpc.injective.network',
-  tendermintApi: 'https://tm.injective.network',
-  sentryHttpApi: 'https://lcd.injective.network',
-  exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
+export const endpointsMainnet: NetworkEndpoints = {
+  indexer: 'https://api.injective.network',
+  grpc: 'https://grpc.injective.network',
+  rpc: 'https://tm.injective.network',
+  rest: 'https://lcd.injective.network',
 }
 
-export const urlEndpointsStaging: NetworkEndpoints = {
-  indexerApi: 'https://staging.api.injective.network',
-  chronosApi: 'https://staging.api.injective.network',
-  sentryGrpcApi: 'https://staging.grpc.injective.network',
-  tendermintApi: 'https://staging.tm.injective.network',
-  sentryHttpApi: 'https://staging.lcd.injective.network',
-  exchangeWeb3GatewayApi: 'https://web3-gateway.injective.network',
+export const endpointsStaging: NetworkEndpoints = {
+  indexer: 'https://staging.api.injective.network',
+  grpc: 'https://staging.grpc.injective.network',
+  rpc: 'https://staging.tm.injective.network',
+  rest: 'https://staging.lcd.injective.network',
 }
 
-export const urlEndpointsPublic: NetworkEndpoints = {
-  indexerApi: 'https://public.api.injective.network',
-  chronosApi: 'https://public.api.injective.network',
-  sentryGrpcApi: 'https://public.grpc.injective.network',
-  tendermintApi: 'https://tm.injective.network',
-  sentryHttpApi: 'https://public.lcd.injective.network',
-  exchangeWeb3GatewayApi: 'https://public.web3-gateway.injective.network',
+export const endpointsPublic: NetworkEndpoints = {
+  indexer: 'https://public.api.injective.network',
+  grpc: 'https://public.grpc.injective.network',
+  rpc: 'https://tm.injective.network',
+  rest: 'https://public.lcd.injective.network',
 }
 
-export const urlEndpointsTestnetK8s: NetworkEndpoints = {
-  indexerApi: 'https://k8s.testnet.exchange.grpc-web.injective.network',
-  chronosApi: 'https://k8s.testnet.exchange.grpc-web.injective.network',
-  sentryGrpcApi: 'https://k8s.testnet.chain.grpc-web.injective.network',
-  tendermintApi: 'https://k8s.testnet.tm.injective.network',
-  sentryHttpApi: 'https://k8s.testnet.lcd.injective.network',
-  exchangeWeb3GatewayApi: 'https://staging.web3-gateway.injective.network',
+export const endpointsTestnetK8s: NetworkEndpoints = {
+  indexer: 'https://k8s.testnet.exchange.grpc-web.injective.network',
+  grpc: 'https://k8s.testnet.chain.grpc-web.injective.network',
+  rpc: 'https://k8s.testnet.tm.injective.network',
+  rest: 'https://k8s.testnet.lcd.injective.network',
 }
 
-export const urlEndpointsTestnet: NetworkEndpoints = {
-  ...urlEndpointsTestnetK8s,
+export const endpointsTestnet: NetworkEndpoints = {
+  ...endpointsTestnetK8s,
 }
 
-export const urlEndpointsDevnet: NetworkEndpoints = {
-  indexerApi: 'https://devnet.api.injective.dev',
-  chronosApi: 'https://devnet.api.injective.dev',
-  sentryGrpcApi: 'https://devnet.grpc.injective.dev',
-  tendermintApi: 'https://devnet.tm.injective.dev',
-  sentryHttpApi: 'https://devnet.lcd.injective.dev',
-  exchangeWeb3GatewayApi: 'https://devnet.gateway.injective.dev',
+export const endpointsDevnet: NetworkEndpoints = {
+  indexer: 'https://devnet.api.injective.dev',
+  grpc: 'https://devnet.grpc.injective.dev',
+  rpc: 'https://devnet.tm.injective.dev',
+  rest: 'https://devnet.lcd.injective.dev',
 }
 
-export const urlEndpointsDevnet1: NetworkEndpoints = {
-  indexerApi: 'https://devnet-1.api.injective.dev',
-  chronosApi: 'https://devnet-1.api.injective.dev',
-  sentryGrpcApi: 'https://devnet-1.grpc.injective.dev',
-  tendermintApi: 'https://devnet-1.tm.injective.dev',
-  sentryHttpApi: 'https://devnet-1.lcd.injective.dev',
-  exchangeWeb3GatewayApi: 'https://devnet-1.gateway.injective.dev',
+export const endpointsDevnet1: NetworkEndpoints = {
+  indexer: 'https://devnet-1.api.injective.dev',
+  grpc: 'https://devnet-1.grpc.injective.dev',
+  rpc: 'https://devnet-1.tm.injective.dev',
+  rest: 'https://devnet-1.lcd.injective.dev',
 }
 
-export const urlEndpointsLocal: NetworkEndpoints = {
-  indexerApi: 'https://localhost:4444',
-  chronosApi: 'https://localhost:4444',
-  sentryGrpcApi: 'http://localhost:9091',
-  tendermintApi: 'http://localhost:9091',
-  sentryHttpApi: 'http://localhost:9091',
-  exchangeWeb3GatewayApi: 'https://localhost:4445',
+export const endpointsLocal: NetworkEndpoints = {
+  indexer: 'https://localhost:4444',
+  grpc: 'http://localhost:9091',
+  rpc: 'http://localhost:9091',
+  rest: 'http://localhost:9091',
 }

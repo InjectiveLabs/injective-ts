@@ -10,13 +10,20 @@ export enum Network {
   Local = 'local',
 }
 
-export type NetworkEndpoints = {
+export type OldNetworkEndpoints = {
   indexerApi: string
   sentryGrpcApi: string
   sentryHttpApi: string
   tendermintApi?: string
   chronosApi?: string
   exchangeWeb3GatewayApi?: string
+}
+
+export type NetworkEndpoints = {
+  indexer: string // Indexer API
+  grpc: string // Sentry gRPC
+  rest: string // LCD
+  rpc?: string // Tendermint
 }
 
 export type UrlEndpoints = NetworkEndpoints /** Deprecated */
