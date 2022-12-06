@@ -1,4 +1,4 @@
-import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import {
   isBrowser,
   createTransactionAndCosmosSignDocForAddressAndMsg,
@@ -61,11 +61,11 @@ export class InjectiveWormholeClient extends WormholeClient {
     tokenAddress: string = NATIVE_MINT.toString(),
   ) {
     const { network } = this
-    const endpoints = getEndpointsForNetwork(network)
+    const endpoints = getNetworkEndpoints(network)
 
     const { contractAddresses } = getSolanaContractAddresses(network)
 
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
     const originAssetHex = tryNativeToHexString(
       tokenAddress,
@@ -121,7 +121,7 @@ export class InjectiveWormholeClient extends WormholeClient {
   ) {
     const { network, wormholeRpcUrl } = this
     const { amount, recipient, provider, additionalMsgs = [] } = args
-    const endpoints = getEndpointsForNetwork(network)
+    const endpoints = getNetworkEndpoints(network)
     const solanaPubKey = new SolanaPublicKey(recipient)
 
     if (!args.tokenAddress) {
@@ -149,7 +149,7 @@ export class InjectiveWormholeClient extends WormholeClient {
       tryNativeToUint8Array(solanaPubKey.toString(), WORMHOLE_CHAINS.solana),
     )
 
-    const txGrpcClient = new TxGrpcClient(endpoints.sentryGrpcApi)
+    const txGrpcClient = new TxGrpcClient(endpoints.grpc)
     const { txRaw, cosmosSignDoc } =
       await createTransactionAndCosmosSignDocForAddressAndMsg({
         chainId: args.chainId,
@@ -163,7 +163,7 @@ export class InjectiveWormholeClient extends WormholeClient {
             .toFixed(0),
         },
         address: args.injectiveAddress,
-        endpoint: endpoints.sentryHttpApi,
+        endpoint: endpoints.rest,
         memo: 'Wormhole Transfer From Injective to Solana',
         pubKey: await provider.getPubKey(),
       })
@@ -254,11 +254,11 @@ export class InjectiveWormholeClient extends WormholeClient {
 
   async getIsTransferCompletedInjective(signedVAA: string /* in base 64 */) {
     const { network } = this
-    const endpoints = getEndpointsForNetwork(network)
+    const endpoints = getNetworkEndpoints(network)
 
     const { contractAddresses } = getSolanaContractAddresses(network)
 
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
     return getIsTransferCompletedInjective(
       contractAddresses.token_bridge,

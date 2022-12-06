@@ -7,7 +7,7 @@ import {
   Token,
 } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '@injectivelabs/utils'
-import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
 import {
   checkIsIbcDenomCanonical,
@@ -28,8 +28,8 @@ export class Denom {
   constructor(denom: string, network: Network = Network.Mainnet) {
     this.denom = denom
 
-    const endpoints = getEndpointsForNetwork(network)
-    this.ibcApi = new ChainGrpcIbcApi(endpoints.sentryGrpcApi)
+    const endpoints = getNetworkEndpoints(network)
+    this.ibcApi = new ChainGrpcIbcApi(endpoints.grpc)
     this.tokenMetaUtil = TokenMetaUtilFactory.make(network)
   }
 

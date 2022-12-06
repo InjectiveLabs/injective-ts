@@ -17,6 +17,12 @@ import {
   getInjectiveSignerAddress,
 } from './utils/helpers'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import {
+  getNetworkEndpoints,
+  getNetworkInfo,
+  Network,
+  NetworkEndpoints,
+} from '@injectivelabs/networks'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
@@ -29,12 +35,17 @@ interface MsgBroadcasterTxOptions {
 }
 
 interface MsgBroadcasterOptionsLocal {
-  endpoints: {
-    indexerApi: string
-    sentryGrpcApi: string
-    sentryHttpApi: string
+  network: Network
+
+  /**
+   * Only used if we want to override the default
+   * endpoints taken from the network param
+   */
+  endpoints?: {
+    indexer: string
+    grpc: string
+    rest: string
   }
-  chainId: ChainId
   privateKey: string
   ethereumChainId?: EthereumChainId
 }
@@ -48,12 +59,18 @@ interface MsgBroadcasterOptionsLocal {
  * Mainly used for working in a Node Environment
  */
 export class MsgBroadcasterLocal {
-  public options: MsgBroadcasterOptionsLocal
+  public endpoints: NetworkEndpoints
+
+  public chainId: ChainId
 
   public privateKey: PrivateKey
 
   constructor(options: MsgBroadcasterOptionsLocal) {
-    this.options = options
+    const networkInfo = getNetworkInfo(options.network)
+    const endpoints = getNetworkEndpoints(options.network)
+
+    this.chainId = networkInfo.chainId
+    this.endpoints = { ...endpoints, ...(endpoints || {}) }
     this.privateKey = PrivateKey.fromHex(options.privateKey)
   }
 
@@ -64,7 +81,7 @@ export class MsgBroadcasterLocal {
    * @returns {string} transaction hash
    */
   async broadcast(transaction: MsgBroadcasterTxOptions) {
-    const { options, privateKey } = this
+    const { chainId, privateKey, endpoints } = this
     const tx = {
       ...transaction,
       msgs: Array.isArray(transaction.msgs)
@@ -76,9 +93,7 @@ export class MsgBroadcasterLocal {
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
-    const chainRestAuthApi = new ChainRestAuthApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
       tx.injectiveAddress,
     )
@@ -86,9 +101,7 @@ export class MsgBroadcasterLocal {
     const accountDetails = baseAccount.toAccountDetails()
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -104,7 +117,7 @@ export class MsgBroadcasterLocal {
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,
       accountNumber: accountDetails.accountNumber,
-      chainId: options.chainId,
+      chainId: chainId,
     })
 
     /** Sign transaction */
@@ -114,9 +127,7 @@ export class MsgBroadcasterLocal {
     txRaw.setSignaturesList([signature])
 
     /** Broadcast transaction */
-    const txResponse = await new TxRestClient(
-      options.endpoints.sentryHttpApi,
-    ).broadcast(txRaw)
+    const txResponse = await new TxRestClient(endpoints.rest).broadcast(txRaw)
 
     if (txResponse.code !== 0) {
       throw new GeneralException(
@@ -136,7 +147,7 @@ export class MsgBroadcasterLocal {
    * @returns {string} transaction hash
    */
   async simulate(transaction: MsgBroadcasterTxOptions) {
-    const { options, privateKey } = this
+    const { privateKey, endpoints, chainId } = this
     const tx = {
       ...transaction,
       msgs: Array.isArray(transaction.msgs)
@@ -148,9 +159,7 @@ export class MsgBroadcasterLocal {
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
-    const chainRestAuthApi = new ChainRestAuthApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
       tx.injectiveAddress,
     )
@@ -158,9 +167,7 @@ export class MsgBroadcasterLocal {
     const accountDetails = baseAccount.toAccountDetails()
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -176,7 +183,7 @@ export class MsgBroadcasterLocal {
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,
       accountNumber: accountDetails.accountNumber,
-      chainId: options.chainId,
+      chainId: chainId,
     })
 
     /** Sign transaction */
@@ -186,9 +193,9 @@ export class MsgBroadcasterLocal {
     txRaw.setSignaturesList([signature])
 
     /** Simulate transaction */
-    const simulationResponse = await new TxRestClient(
-      options.endpoints.sentryHttpApi,
-    ).simulate(txRaw)
+    const simulationResponse = await new TxRestClient(endpoints.rest).simulate(
+      txRaw,
+    )
 
     return simulationResponse
   }

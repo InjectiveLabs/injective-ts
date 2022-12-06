@@ -1,25 +1,30 @@
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { ChainInfo } from './types'
 
 export const mainnetChainInfo: ChainInfo = {
   feeDenom: 'inj',
-  chainId: 'injective-1',
+  chainId: ChainId.Mainnet,
+  ethereumChainId: EthereumChainId.Mainnet,
   env: 'mainnet',
 }
 
 export const testnetChainInfo: ChainInfo = {
   feeDenom: 'inj',
-  chainId: 'injective-888',
+  chainId: ChainId.Testnet,
+  ethereumChainId: EthereumChainId.Goerli,
   env: 'testnet',
 }
 
 export const devnetChainInfo: ChainInfo = {
   feeDenom: 'inj',
-  chainId: 'injective-777',
+  chainId: ChainId.Devnet,
+  ethereumChainId: EthereumChainId.Goerli,
   env: 'devnet',
 }
 
 export const localChainInfo: ChainInfo = {
   feeDenom: 'inj',
-  chainId: 'injective-1',
+  chainId: ChainId.Devnet,
+  ethereumChainId: EthereumChainId.Goerli,
   env: 'local',
 }

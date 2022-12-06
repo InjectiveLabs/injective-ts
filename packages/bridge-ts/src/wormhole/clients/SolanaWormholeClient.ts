@@ -1,4 +1,4 @@
-import { getEndpointsForNetwork, Network } from '@injectivelabs/networks'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { isBrowser, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -199,7 +199,7 @@ export class SolanaWormholeClient extends WormholeClient {
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
     const { amount, recipient, signerPubKey, provider } = args
-    const endpoints = getEndpointsForNetwork(network)
+    const endpoints = getNetworkEndpoints(network)
     const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
 
     if (!solanaHostUrl) {
@@ -221,7 +221,7 @@ export class SolanaWormholeClient extends WormholeClient {
     const { contractAddresses, solanaContractAddresses } =
       getSolanaContractAddresses(network)
 
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
     const originAssetHex = tryNativeToHexString(
       args.tokenAddress,
@@ -404,13 +404,13 @@ export class SolanaWormholeClient extends WormholeClient {
     provider: BaseMessageSignerWalletAdapter,
   ) {
     const { solanaHostUrl, network } = this
-    const endpoints = getEndpointsForNetwork(network)
+    const endpoints = getNetworkEndpoints(network)
 
     if (!solanaHostUrl) {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
     const solanaPublicKey = new PublicKey(provider.publicKey || '')

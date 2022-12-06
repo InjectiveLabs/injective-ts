@@ -5,6 +5,9 @@
       "path": "../exceptions/tsconfig.json"
     },
     {
+      "path": "../ts-types/tsconfig.json"
+    },
+    {
       "path": "../utils/tsconfig.json"
     }
   ],

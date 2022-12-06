@@ -1,3 +1,5 @@
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+
 export enum Network {
   MainnetK8s = 'mainnetK8s',
   Mainnet = 'mainnet',
@@ -28,4 +30,9 @@ export type NetworkEndpoints = {
 
 export type UrlEndpoints = NetworkEndpoints /** Deprecated */
 
-export type ChainInfo = { feeDenom: string; chainId: string; env: string }
+export type ChainInfo = {
+  feeDenom: string
+  chainId: ChainId
+  env: string
+  ethereumChainId?: EthereumChainId
+}

@@ -1,4 +1,4 @@
-import { getEndpointsForNetwork } from '@injectivelabs/networks'
+import { getNetworkEndpoints } from '@injectivelabs/networks'
 import { isBrowser, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -27,7 +27,7 @@ export class EthereumWormholeClient extends WormholeClient {
   ) {
     const { network, wormholeRpcUrl } = this
     const { amount, recipient, provider } = args
-    const endpoints = getEndpointsForNetwork(network)
+    const endpoints = getNetworkEndpoints(network)
 
     if (!wormholeRpcUrl) {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
@@ -40,7 +40,7 @@ export class EthereumWormholeClient extends WormholeClient {
     const { contractAddresses, ethereumContractAddresses } =
       getEthereumContractAddresses(network)
 
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.sentryGrpcApi)
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
     const foreignAsset = await getForeignAssetInjective(
       contractAddresses.token_bridge,
       chainGrpcWasmApi,

@@ -31,6 +31,12 @@ import {
 } from '@injectivelabs/exceptions'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
+  getNetworkEndpoints,
+  getNetworkInfo,
+  NetworkEndpoints,
+} from '@injectivelabs/networks'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import {
   getEthereumSignerAddress,
   getGasPriceBasedOnMessage,
   getInjectiveSignerAddress,
@@ -54,6 +60,12 @@ import { createEip712StdSignDoc, KeplrWallet } from '../wallets/keplr'
 export class MsgBroadcaster {
   public options: MsgBroadcasterOptions
 
+  public endpoints: NetworkEndpoints
+
+  public chainId: ChainId
+
+  public ethereumChainId?: EthereumChainId
+
   /**
    * Used to interact with the Web3Gateway service
    * to provide feeDelegation support for executing
@@ -62,10 +74,14 @@ export class MsgBroadcaster {
   public transactionApi: IndexerGrpcTransactionApi
 
   constructor(options: MsgBroadcasterOptions) {
+    const networkInfo = getNetworkInfo(options.network)
+    const endpoints = getNetworkEndpoints(options.network)
+
     this.options = options
-    this.transactionApi = new IndexerGrpcTransactionApi(
-      options.endpoints.indexerApi,
-    )
+    this.chainId = networkInfo.chainId
+    this.ethereumChainId = networkInfo.ethereumChainId
+    this.endpoints = endpoints
+    this.transactionApi = new IndexerGrpcTransactionApi(networkInfo.indexer)
   }
 
   /**
@@ -154,8 +170,8 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastWeb3(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { options } = this
-    const { walletStrategy, chainId, ethereumChainId } = options
+    const { options, endpoints, chainId, ethereumChainId } = this
+    const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     if (!ethereumChainId) {
@@ -163,9 +179,7 @@ export class MsgBroadcaster {
     }
 
     /** Account Details * */
-    const chainRestAuthApi = new ChainRestAuthApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
       tx.injectiveAddress,
     )
@@ -173,9 +187,7 @@ export class MsgBroadcaster {
     const accountDetails = baseAccount.toAccountDetails()
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -211,7 +223,7 @@ export class MsgBroadcaster {
     const publicKeyBase64 = hexToBase64(publicKeyHex)
 
     /** Preparing the transaction for client broadcasting */
-    const txGrpcClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
+    const txGrpcClient = new TxGrpcClient(endpoints.grpc)
     const { txRaw } = createTransaction({
       message: msgs.map((m) => m.toDirectSign()),
       memo: tx.memo,
@@ -268,8 +280,8 @@ export class MsgBroadcaster {
   private async broadcastWeb3WithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, transactionApi } = this
-    const { walletStrategy, ethereumChainId } = options
+    const { options, ethereumChainId, transactionApi } = this
+    const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
@@ -309,8 +321,8 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastCosmos(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { options } = this
-    const { walletStrategy, chainId } = options
+    const { options, endpoints, chainId } = this
+    const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
@@ -328,9 +340,7 @@ export class MsgBroadcaster {
     }
 
     /** Account Details * */
-    const chainRestAuthApi = new ChainRestAuthApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
       tx.injectiveAddress,
     )
@@ -338,9 +348,7 @@ export class MsgBroadcaster {
     const accountDetails = baseAccount.toAccountDetails()
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -379,7 +387,7 @@ export class MsgBroadcaster {
       await MsgBroadcaster.simulate({
         txRaw,
         signature: directSignResponse.signature.signature,
-        txClient: new TxGrpcClient(options.endpoints.sentryGrpcApi),
+        txClient: new TxGrpcClient(endpoints.grpc),
       })
     }
 
@@ -397,8 +405,8 @@ export class MsgBroadcaster {
   private async experimentalBroadcastKeplrWithLedger(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options } = this
-    const { walletStrategy, chainId, ethereumChainId } = options
+    const { options, endpoints, chainId, ethereumChainId } = this
+    const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
@@ -425,9 +433,7 @@ export class MsgBroadcaster {
 
     const keplrWallet = new KeplrWallet(chainId)
     /** Account Details * */
-    const chainRestAuthApi = new ChainRestAuthApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
       tx.injectiveAddress,
     )
@@ -435,9 +441,7 @@ export class MsgBroadcaster {
     const accountDetails = baseAccount.toAccountDetails()
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -494,7 +498,7 @@ export class MsgBroadcaster {
     })
 
     /** Preparing the transaction for client broadcasting */
-    const txGrpcClient = new TxGrpcClient(options.endpoints.sentryGrpcApi)
+    const txGrpcClient = new TxGrpcClient(endpoints.grpc)
     const web3Extension = createWeb3Extension({
       ethereumChainId,
     })
@@ -540,8 +544,8 @@ export class MsgBroadcaster {
   private async broadcastCosmosWithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, transactionApi } = this
-    const { walletStrategy, chainId } = options
+    const { options, chainId, endpoints, transactionApi } = this
+    const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     const feePayerPubKey = await this.fetchFeePayerPubKey(
@@ -551,9 +555,7 @@ export class MsgBroadcaster {
     const feePayer = feePayerPublicKey.toAddress().address
 
     /** Account Details * */
-    const chainRestAuthApi = new ChainRestAuthApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
       tx.injectiveAddress,
     )
@@ -570,9 +572,7 @@ export class MsgBroadcaster {
     const feePayerAccountDetails = feePayerBaseAccount.toAccountDetails()
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(
-      options.endpoints.sentryHttpApi,
-    )
+    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
     const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
     const latestHeight = latestBlock.header.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -619,7 +619,7 @@ export class MsgBroadcaster {
       await MsgBroadcaster.simulate({
         txRaw,
         signature: directSignResponse.signature.signature,
-        txClient: new TxGrpcClient(options.endpoints.sentryGrpcApi),
+        txClient: new TxGrpcClient(endpoints.grpc),
       })
     }
 

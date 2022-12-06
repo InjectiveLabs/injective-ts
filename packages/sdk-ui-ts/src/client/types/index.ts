@@ -1,18 +1,3 @@
-import { Network } from '@injectivelabs/networks'
-import { ChainId } from '@injectivelabs/ts-types'
-
-export interface ApiOptionsEndpoints {
-  indexerApi: string
-  sentryGrpcApi: string
-  sentryHttpApi: string
-}
-
-export interface ApiOptions {
-  chainId: ChainId
-  network: Network
-  endpoints: ApiOptionsEndpoints
-}
-
 export * from './account'
 export * from './bank'
 export * from './common'

@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "^1.0.31",
+    "@injectivelabs/ts-types": "^1.0.17",
     "@injectivelabs/utils": "^1.0.44",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
