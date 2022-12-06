@@ -100,6 +100,7 @@ export class IndexerRestExplorerTransformer {
         type: message.type,
         message: message.value,
       })),
+      errorLog: transaction.error_log,
     }
   }
 

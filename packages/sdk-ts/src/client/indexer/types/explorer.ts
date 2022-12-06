@@ -128,6 +128,7 @@ export interface Transaction {
   }>
   codespace: string
   messages?: Array<TxMessage>
+  errorLog?: string
 }
 
 export interface IndexerStreamTransaction {
