@@ -65,6 +65,7 @@ export interface TransactionFromExplorerApiResponse {
   events: Array<any>
   codespace: string
   messages: Array<{ value: any; type: string }>
+  error_log?: string
 }
 
 export interface BlockFromExplorerApiResponse {
@@ -99,6 +100,7 @@ export interface ExplorerTransaction extends Omit<BaseTransaction, 'messages'> {
   memo: string
   messages: Message[]
   parsedMessages?: Message[]
+  errorLog?: string
 }
 
 export interface ExplorerBlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
