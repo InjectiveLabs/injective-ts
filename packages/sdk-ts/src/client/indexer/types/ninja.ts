@@ -10,11 +10,6 @@ import {
   LeaderboardEntry as GrpcNinjaLeaderboardEntry,
 } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
 
-export enum NinjaRedemptionType {
-  BaseOnly = 'BaseOnly',
-  QuoteOnly = 'QuoteOnly',
-  BaseAndQuote = 'BaseAndQuote',
-}
 export interface NinjaHolders {
   holderAddress: string
   vaultAddress: string

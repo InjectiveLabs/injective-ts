@@ -8,14 +8,14 @@ export declare namespace ExecPrivilegedArgVaultRedeem {
   export interface Params {
     vaultSubaccountId: string
     redeemerSubaccountId: string
-    redemptionType: string
+    redemptionType: Record<string, any>
     origin: string
   }
 
   export interface Data {
     vault_subaccount_id: string
     redeemer_subaccount_id: string
-    redemption_type: string
+    redemption_type: Record<string, any>
   }
 }
 
