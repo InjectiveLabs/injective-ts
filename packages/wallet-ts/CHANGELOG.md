@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.264](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.263...@injectivelabs/wallet-ts@1.0.264) (2022-12-09)
+
+
+### Bug Fixes
+
+* :bug: fixes walletconnect signed tx type ([ad77c8d](https://github.com/InjectiveLabs/injective-ts/commit/ad77c8d6aa74e0092213c98e7e0b66be3d57a3f7))
+
+
+
+
+
 ## [1.0.263](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.262...@injectivelabs/wallet-ts@1.0.263) (2022-12-06)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
