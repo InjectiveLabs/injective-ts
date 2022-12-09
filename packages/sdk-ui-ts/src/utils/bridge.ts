@@ -507,12 +507,8 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
     return BridgingNetwork.Crescent
   }
 
-  if (sender.startsWith('cre')) {
-    return BridgingNetwork.Crescent
-  }
-
   if (sender.startsWith('somm')) {
-    return BridgingNetwork.Crescent
+    return BridgingNetwork.Sommelier
   }
 
   return BridgingNetwork.CosmosHub
