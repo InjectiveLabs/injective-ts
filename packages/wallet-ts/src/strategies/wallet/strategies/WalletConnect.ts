@@ -13,7 +13,7 @@ import {
 } from '@injectivelabs/exceptions'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3 from 'web3'
-import { TransactionConfig } from 'web3-core'
+import { provider, TransactionConfig } from 'web3-core'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -28,53 +28,41 @@ export default class WalletConnect
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  private walletConnectProvider: WalletConnectProvider | undefined
+  private walletConnectProvider: WalletConnectProvider
+
+  protected web3: Web3
 
   private readonly ethereumOptions: WalletStrategyEthereumOptions | undefined
-
-  private createWalletConnectProvider() {
-    const { ethereumOptions } = this
-
-    if (!ethereumOptions) {
-      throw new WalletException(new Error('Please provide Ethereum options'))
-    }
-
-    this.walletConnectProvider = new WalletConnectProvider({
-      rpc: { [ethereumOptions.ethereumChainId]: ethereumOptions.rpcUrl },
-    })
-    this.web3 = new Web3(this.walletConnectProvider as any)
-  }
 
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
     this.ethereumOptions = args.ethereumOptions
-    this.createWalletConnectProvider()
+    this.walletConnectProvider = this.createWalletConnectProvider()
+    this.web3 = new Web3(this.walletConnectProvider as unknown as provider)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  private async connect(): Promise<void> {
-    if (!this.walletConnectProvider?.connected) {
-      // WalletConnect seems to have a problem with connecting multiple times with the same instance, hence it's necessary
-      // to create a new one each time user wants to connect
-      this.createWalletConnectProvider()
-      await this.walletConnectProvider?.enable()
-    }
-  }
-
   async disconnect(): Promise<void> {
-    await this.walletConnectProvider?.disconnect()
-    // walletConnect will not display QRModal again with the same instance for some reason, so it's necessary to destroy the instance
-    this.createWalletConnectProvider()
+    const provider = await this.getWalletConnectProvider()
+
+    await provider.disconnect()
+
+    /**
+     * WalletConnect will not display QRModal again with the
+     * same instance for some reason,
+     * so it's necessary to destroy the instance
+     */
+    this.walletConnectProvider = this.createWalletConnectProvider()
   }
 
   async getAddresses(): Promise<string[]> {
-    await this.connect()
+    await this.getWalletConnectProvider()
 
     try {
-      return await this.getWeb3().eth.getAccounts()
+      return await this.web3.eth.getAccounts()
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -85,8 +73,6 @@ export default class WalletConnect
   }
 
   async confirm(address: AccountAddress): Promise<string> {
-    await this.connect()
-
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -106,10 +92,10 @@ export default class WalletConnect
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    await this.connect()
+    const provider = await this.getWalletConnectProvider()
 
     try {
-      return await this.walletConnectProvider!.request({
+      return await provider.request({
         jsonrpc: '2.0',
         method: 'eth_signTypedData_v4',
         params: [address, eip712json],
@@ -127,8 +113,7 @@ export default class WalletConnect
     transaction: unknown,
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
-    await this.connect()
-
+    await this.getWalletConnectProvider()
     const transactionConfig = transaction as TransactionConfig
 
     transactionConfig.gas = parseInt(
@@ -140,9 +125,9 @@ export default class WalletConnect
       16,
     ).toString(10)
 
-    // walletConnect doesn't seem to support hex format, so it's necessay to convert to decimal
     try {
-      const txHash = await this.getWeb3().eth.sendTransaction(transactionConfig)
+      const txHash = await this.web3.eth.sendTransaction(transactionConfig)
+
       return txHash.transactionHash
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
@@ -188,11 +173,11 @@ export default class WalletConnect
   }
 
   async getEthereumTransactionReceipt(txHash: string): Promise<string> {
-    await this.connect()
+    const provider = await this.getWalletConnectProvider()
 
     const interval = 1000
     const transactionReceiptRetry = async () => {
-      const receipt = await this.walletConnectProvider!.request({
+      const receipt = await provider.request({
         method: 'eth_getTransactionReceipt',
         params: [txHash],
       })
@@ -217,10 +202,10 @@ export default class WalletConnect
   }
 
   async getNetworkId(): Promise<string> {
-    await this.connect()
+    await this.getWalletConnectProvider()
 
     try {
-      const result = await this.getWeb3().eth.net.getId()
+      const result = await this.web3.eth.net.getId()
 
       return result.toString()
     } catch (e: unknown) {
@@ -233,10 +218,10 @@ export default class WalletConnect
   }
 
   async getChainId(): Promise<string> {
-    await this.connect()
+    await this.getWalletConnectProvider()
 
     try {
-      const result = await this.getWeb3().eth.getChainId()
+      const result = await this.web3.eth.getChainId()
 
       return result.toString()
     } catch (e: unknown) {
@@ -257,5 +242,40 @@ export default class WalletConnect
 
   onAccountChange(callback: (account: AccountAddress) => void): void {
     this.walletConnectProvider?.on('accountsChanged', callback)
+  }
+
+  private async getWalletConnectProvider(): Promise<WalletConnectProvider> {
+    if (this.walletConnectProvider) {
+      /**
+       * WalletConnect seems to have a problem with connecting
+       * multiple times with the same instance, hence it's necessary
+       * to create a new one each time user wants to connect
+       */
+      if (this.walletConnectProvider.connected) {
+        this.walletConnectProvider = this.createWalletConnectProvider()
+      }
+
+      await this.walletConnectProvider.enable()
+
+      return this.walletConnectProvider
+    }
+
+    throw new WalletException(
+      new Error('walletConnectProvider not initialized'),
+    )
+  }
+
+  private createWalletConnectProvider() {
+    const { ethereumOptions } = this
+
+    if (!ethereumOptions) {
+      throw new WalletException(new Error('Please provide Ethereum options'))
+    }
+
+    return new WalletConnectProvider({
+      rpc: {
+        [ethereumOptions.ethereumChainId]: ethereumOptions.rpcUrl,
+      },
+    }) as WalletConnectProvider
   }
 }

@@ -7,6 +7,8 @@ import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb'
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
 import { MsgBase } from '../../MsgBase'
 
+const genericAuthorizationType = '/cosmos.authz.v1beta1.GenericAuthorization'
+
 export declare namespace MsgGrant {
   export interface Params {
     messageType: string
@@ -58,11 +60,11 @@ export default class MsgGrant extends MsgBase<
     const genericAuthorization = new GenericAuthorization()
     genericAuthorization.setMsg(params.messageType)
 
-    const genericAuthorizationType =
-      '/cosmos.authz.v1beta1.GenericAuthorization'
     const authorization = new Any()
     authorization.setTypeUrl(genericAuthorizationType)
-    authorization.setValue(Buffer.from(genericAuthorization.serializeBinary()).toString("base64"))
+    authorization.setValue(
+      Buffer.from(genericAuthorization.serializeBinary()).toString('base64'),
+    )
 
     const grant = new Grant()
     grant.setExpiration(timestamp)
@@ -86,12 +88,12 @@ export default class MsgGrant extends MsgBase<
   }
 
   public toAmino(): MsgGrant.Amino {
+    const { params } = this
+
     const proto = this.toProto()
     const timestamp = this.getTimestamp()
     const message = proto.toObject()
-    const { params } = this
-    const genericAuthorizationType =
-      '/cosmos.authz.v1beta1.GenericAuthorization'
+
     const messageWithAuthorizationType = {
       ...message,
       grant: {
@@ -134,7 +136,9 @@ export default class MsgGrant extends MsgBase<
 
     if (params.expiration) {
       const timestamp = new Timestamp()
+
       timestamp.setSeconds(params.expiration)
+
       return timestamp
     }
 
