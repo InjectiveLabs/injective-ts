@@ -759,4 +759,49 @@ export default {
     address: '',
     coinGeckoId: 'solana',
   },
+
+  SOMM: {
+    name: 'Sommelier',
+    logo: 'sommelier.svg',
+    symbol: 'SOMM',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'sommelier',
+  },
+
+  USOMM: {
+    name: 'Sommelier',
+    logo: 'sommelier.svg',
+    symbol: 'SOMM',
+    decimals: 6,
+    address: '',
+    coinGeckoId: 'sommelier',
+  },
+
+  ETHBTCTREND: {
+    name: 'ETHBTC Trend',
+    logo: 'ethbtctrend.svg',
+    symbol: 'ETHBTCTrend',
+    decimals: 18,
+    address: '0x6b7f87279982d919Bbf85182DDeAB179B366D8f2',
+    coinGeckoId: '',
+  },
+
+  STEADYETH: {
+    name: 'SteadyETH',
+    logo: 'steadyeth.svg',
+    symbol: 'SteadyETH',
+    decimals: 18,
+    address: '0x3F07A84eCdf494310D397d24c1C78B041D2fa622',
+    coinGeckoId: '',
+  },
+
+  STEADYBTC: {
+    name: 'SteadyBTC',
+    logo: 'steadybtc.svg',
+    symbol: 'SteadyBTC',
+    decimals: 18,
+    address: '0x4986fD36b6b16f49b43282Ee2e24C5cF90ed166d',
+    coinGeckoId: '',
+  },
 } as Record<string, TokenMeta>

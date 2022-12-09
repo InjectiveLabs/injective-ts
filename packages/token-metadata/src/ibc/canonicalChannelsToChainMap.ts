@@ -38,6 +38,7 @@ export const canonicalChannelsToChainMapFromInjective = {
   'channel-89': { chainA: 'Injective', chainB: 'Stride' },
   'channel-23': { chainA: 'Injective', chainB: 'Crescent' },
   'channel-13': { chainA: 'Injective', chainB: '' },
+  'channel-93': { chainA: 'Injective', chainB: 'Sommelier' },
 }
 export const canonicalChannelsToChainMapToInjective = {
   'channel-220': { chainA: 'CosmosHub', chainB: 'Injective' },
@@ -49,4 +50,5 @@ export const canonicalChannelsToChainMapToInjective = {
   'channel-59': { chainA: 'Juno', chainB: 'Injective' },
   'channel-6': { chainA: 'Stride', chainB: 'Injective' },
   'channel-90': { chainA: 'Crescent', chainB: 'Injective' },
+  'channel-1': { chainA: 'Sommelier', chainB: 'Injective' },
 }
