@@ -12,6 +12,7 @@ export declare namespace MsgGrant {
     messageType: string
     grantee: string
     granter: string
+    expiration?: number
     expiryInYears?: number
     expiryInSeconds?: number
   }
@@ -61,7 +62,7 @@ export default class MsgGrant extends MsgBase<
       '/cosmos.authz.v1beta1.GenericAuthorization'
     const authorization = new Any()
     authorization.setTypeUrl(genericAuthorizationType)
-    authorization.setValue(genericAuthorization.getMsg())
+    authorization.setValue(Buffer.from(genericAuthorization.serializeBinary()).toString("base64"))
 
     const grant = new Grant()
     grant.setExpiration(timestamp)
@@ -88,6 +89,7 @@ export default class MsgGrant extends MsgBase<
     const proto = this.toProto()
     const timestamp = this.getTimestamp()
     const message = proto.toObject()
+    const { params } = this
     const genericAuthorizationType =
       '/cosmos.authz.v1beta1.GenericAuthorization'
     const messageWithAuthorizationType = {
@@ -95,7 +97,7 @@ export default class MsgGrant extends MsgBase<
       grant: {
         ...message.grant,
         authorization: {
-          msg: message.grant?.authorization?.value,
+          msg: params.messageType,
           '@type': genericAuthorizationType,
         },
         expiration: timestamp.toDate(),
@@ -129,6 +131,13 @@ export default class MsgGrant extends MsgBase<
 
   private getTimestamp() {
     const { params } = this
+
+    if (params.expiration) {
+      const timestamp = new Timestamp()
+      timestamp.setSeconds(params.expiration)
+      return timestamp
+    }
+
     const defaultExpiryYears = params.expiryInSeconds ? 0 : 5
     const dateNow = new Date()
     const expiration = new Date(
