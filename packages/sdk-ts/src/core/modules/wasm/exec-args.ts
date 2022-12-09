@@ -3,6 +3,7 @@ import ExecArgCW20Send from './exec-args/ExecArgCW20Send'
 import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
+import ExecArgRegisterVault from './exec-args/ExecArgRegisterVault'
 import ExecArgSubmitVaa from './exec-args/ExecArgSubmitVaa'
 import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
 import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
@@ -17,6 +18,7 @@ export type ExecArgs =
   | ExecArgDepositTokens
   | ExecArgIncreaseAllowance
   | ExecArgInitiateTransfer
+  | ExecArgRegisterVault
   | ExecArgSubmitVaa
   | ExecArgUpdateDerivativeVaultConfig
   | ExecArgUpdateSpotVaultConfig
