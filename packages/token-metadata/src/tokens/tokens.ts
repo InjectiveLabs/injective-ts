@@ -762,7 +762,7 @@ export default {
 
   SOMM: {
     name: 'Sommelier',
-    logo: 'sommelier.svg',
+    logo: 'sommelier.png',
     symbol: 'SOMM',
     decimals: 6,
     address: '',
@@ -771,7 +771,7 @@ export default {
 
   USOMM: {
     name: 'Sommelier',
-    logo: 'sommelier.svg',
+    logo: 'sommelier.png',
     symbol: 'SOMM',
     decimals: 6,
     address: '',
