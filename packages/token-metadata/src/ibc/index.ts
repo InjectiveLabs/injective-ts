@@ -21,4 +21,5 @@ export const canonicalChannelIds = [
   'channel-88',
   'channel-89',
   'channel-90',
+  'channel-93',
 ]

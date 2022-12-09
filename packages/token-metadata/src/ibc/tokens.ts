@@ -63,4 +63,8 @@ export default {
     path: 'transfer/channel-13',
     baseDenom: 'ASTRO',
   },
+  '34346a60a95eb030d62d6f5bdd4b745be18e8a693372a8a347d5d53dbbb1328b': {
+    path: 'transfer/channel-93',
+    baseDenom: 'usomm',
+  },
 }
