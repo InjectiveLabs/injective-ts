@@ -110,7 +110,8 @@ export default class WalletConnect
 
     try {
       return await this.walletConnectProvider!.request({
-        method: 'eth_signTypedData',
+        jsonrpc: '2.0',
+        method: 'eth_signTypedData_v4',
         params: [address, eip712json],
       })
     } catch (e: unknown) {
