@@ -8,6 +8,7 @@ export declare namespace ExecPrivilegedArgVaultSubscribe {
   export interface Params {
     vaultSubaccountId: string
     subscriberSubaccountId: string
+    marginRatio?: string
     origin: string
     subscriptionType: Record<string, any>
   }
@@ -15,6 +16,7 @@ export declare namespace ExecPrivilegedArgVaultSubscribe {
   export interface Data {
     vault_subaccount_id: string
     subscriber_subaccount_id: string
+    margin_ratio?: string
     subscription_type: Record<string, any>
   }
 }
@@ -38,6 +40,7 @@ export default class ExecPrivilegedArgVaultSubscribe extends ExecPrivilegedArgBa
     return {
       vault_subaccount_id: params.vaultSubaccountId,
       subscriber_subaccount_id: params.subscriberSubaccountId,
+      margin_ratio: params.marginRatio,
       subscription_type: params.subscriptionType,
     }
   }
