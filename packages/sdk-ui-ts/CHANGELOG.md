@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.383](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.382...@injectivelabs/sdk-ui-ts@1.0.383) (2022-12-13)
+
+
+### Features
+
+* added tens multiplier to markets ([6221cba](https://github.com/InjectiveLabs/injective-ts/commit/6221cba5eee40fef7149bd46e178f4aa940c0857))
+
+
+
+
+
 ## [1.0.382](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.381...@injectivelabs/sdk-ui-ts@1.0.382) (2022-12-13)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
