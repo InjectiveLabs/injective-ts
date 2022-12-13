@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.385](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.384...@injectivelabs/sdk-ui-ts@1.0.385) (2022-12-13)
+
+
+### Bug Fixes
+
+* decimals for derivative markets ([e1e4259](https://github.com/InjectiveLabs/injective-ts/commit/e1e42595b9ddd0940bddac17937b55b897639c3b))
+
+
+
+
+
 ## [1.0.384](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.383...@injectivelabs/sdk-ui-ts@1.0.384) (2022-12-13)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
