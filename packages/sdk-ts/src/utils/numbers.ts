@@ -544,7 +544,7 @@ export const getTensMultiplier = (number: number | string): number => {
 
   const [, zerosInTheNumber] = numberToBn.toNumber().toString().split('1')
 
-  return new BigNumber(zerosInTheNumber).toNumber()
+  return zerosInTheNumber.length
 }
 
 export const getExactDecimalsFromNumber = (number: number | string): number => {
