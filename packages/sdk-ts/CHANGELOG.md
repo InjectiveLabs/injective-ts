@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.284](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.283...@injectivelabs/sdk-ts@1.0.284) (2022-12-13)
+
+
+### Features
+
+* getExactDecimalsFromNumber ([07421dd](https://github.com/InjectiveLabs/injective-ts/commit/07421dd15884f4b89f677ea58da1a83f6a53b80d))
+
+
+
+
+
 ## [1.0.283](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.282...@injectivelabs/sdk-ts@1.0.283) (2022-12-13)
 
 
