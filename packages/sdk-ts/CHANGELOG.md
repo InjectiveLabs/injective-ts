@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.283](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.282...@injectivelabs/sdk-ts@1.0.283) (2022-12-13)
+
+
+### Features
+
+* getTensMultiplier function for handling decimals ([3b66d5d](https://github.com/InjectiveLabs/injective-ts/commit/3b66d5d8e9f608b153b11c61e0e65dad0d44041a))
+
+
+
+
+
 ## [1.0.282](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.281...@injectivelabs/sdk-ts@1.0.282) (2022-12-13)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
