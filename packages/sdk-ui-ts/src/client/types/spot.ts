@@ -25,6 +25,8 @@ export interface UiBaseSpotMarketWithToken extends UiBaseSpotMarket {
 export interface UiSpotMarketWithToken extends UiBaseSpotMarketWithToken {
   priceDecimals: number
   quantityDecimals: number
+  priceTensMultiplier: number
+  quantityTensMultiplier: number
   type: MarketType
   subType: MarketType
   marketBase?: MarketBase

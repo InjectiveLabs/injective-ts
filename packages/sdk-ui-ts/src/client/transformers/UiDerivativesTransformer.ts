@@ -35,6 +35,12 @@ export class UiDerivativeTransformer {
           .toWei(-market.quoteToken.decimals)
           .toNumber(),
       ),
+      quantityTensMultiplier: getTensMultiplier(market.minQuantityTickSize),
+      priceTensMultiplier: getTensMultiplier(
+        new BigNumberInBase(market.minPriceTickSize)
+          .toWei(-market.quoteToken.decimals)
+          .toNumber(),
+      ),
     } as unknown as R
   }
 

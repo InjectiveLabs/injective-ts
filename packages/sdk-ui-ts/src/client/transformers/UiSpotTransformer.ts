@@ -4,7 +4,7 @@ import {
   BigNumberInWei,
 } from '@injectivelabs/utils'
 import { Change, MarketType } from '../types/common'
-import { getTensMultiplier } from '@injectivelabs/sdk-ts'
+import { getTensMultiplier, getDecimalsFromNumber } from '@injectivelabs/sdk-ts'
 import {
   UiBaseSpotMarketWithToken,
   UiSpotMarketWithToken,
@@ -22,12 +22,22 @@ export class UiSpotTransformer {
       ...market,
       type: MarketType.Spot,
       subType: MarketType.Spot,
-      priceDecimals: getTensMultiplier(
+      priceDecimals: getDecimalsFromNumber(
         new BigNumberInWei(market.minPriceTickSize)
           .toBase(market.quoteToken.decimals - market.baseToken.decimals)
           .toNumber(),
       ),
-      quantityDecimals: getTensMultiplier(
+      quantityDecimals: getDecimalsFromNumber(
+        new BigNumberInBase(market.minQuantityTickSize)
+          .toWei(-market.baseToken.decimals)
+          .toNumber(),
+      ),
+      priceTensMultiplier: getTensMultiplier(
+        new BigNumberInWei(market.minPriceTickSize)
+          .toBase(market.quoteToken.decimals - market.baseToken.decimals)
+          .toNumber(),
+      ),
+      quantityTensMultiplier: getTensMultiplier(
         new BigNumberInBase(market.minQuantityTickSize)
           .toWei(-market.baseToken.decimals)
           .toNumber(),

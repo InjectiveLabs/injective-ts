@@ -30,6 +30,8 @@ export interface BaseDerivativeMarketWithToken
   extends DerivativeMarketWithTokenAndSlug {
   priceDecimals: number
   quantityDecimals: number
+  priceTensMultiplier: number
+  quantityTensMultiplier: number
   type: MarketType
   subType: MarketType
   marketBase?: MarketBase
