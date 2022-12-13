@@ -599,6 +599,7 @@ export const formatNumberToAllowableTensMultiplier = (
   roundingMode?: BigNumber.RoundingMode,
 ): string => {
   const valueToString = value.toString()
+  const valueToBn = new BigNumberInBase(value)
 
   if (tensMultiplier === 0) {
     return valueToString
@@ -606,8 +607,11 @@ export const formatNumberToAllowableTensMultiplier = (
 
   const tensMul = new BigNumberInBase(10).pow(tensMultiplier)
 
-  return new BigNumberInBase(valueToString)
-    .div(tensMul)
+  if (valueToBn.lte(tensMul)) {
+    return tensMul.toFixed(0, roundingMode)
+  }
+
+  return new BigNumberInBase(valueToBn.div(tensMul).toFixed(0))
     .multipliedBy(tensMul)
     .toFixed(0, roundingMode)
 }
