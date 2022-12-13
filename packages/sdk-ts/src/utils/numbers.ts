@@ -1,4 +1,4 @@
-import { BigNumber } from '@injectivelabs/utils'
+import { BigNumber, BigNumberInBase } from '@injectivelabs/utils'
 
 const $BigNumber = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN })
 
@@ -522,10 +522,10 @@ export const getDecimalsFromNumber = (number: number | string): number => {
  * This function returns a multiplier of 10
  * based on the input. There are two cases:
  *
- * 1. If the number is less than 1, it returns a POSITIVE
+ * 1. If the number is less than 1, it returns a NEGATIVE
  * number which is the number of decimals the number has
  *
- * 2. If the number is higher than 1, it returns a NEGATIVE
+ * 2. If the number is higher than 1, it returns a POSITIVE
  * number which is the number of 10 multiplier the number has
  *
  * @param number
@@ -539,12 +539,12 @@ export const getTensMultiplier = (number: number | string): number => {
   }
 
   if (numberToBn.lt(1)) {
-    return getDecimalsFromNumber(number)
+    return -1 * getDecimalsFromNumber(number)
   }
 
   const [, zerosInTheNumber] = numberToBn.toNumber().toString().split('1')
 
-  return new BigNumber(zerosInTheNumber).times(-1).toNumber()
+  return new BigNumber(zerosInTheNumber).toNumber()
 }
 
 export const getExactDecimalsFromNumber = (number: number | string): number => {
@@ -567,4 +567,107 @@ export const getExactDecimalsFromNumber = (number: number | string): number => {
 
 export const getTriggerPrice = (triggerPrice?: number | string) => {
   return triggerPrice ? amountToCosmosSdkDecAmount(triggerPrice).toFixed() : ''
+}
+
+export const formatNumberToAllowableDecimals = (
+  value: string | number,
+  allowableDecimals: number,
+  roundingMode?: BigNumber.RoundingMode,
+): string => {
+  const decimalPlacesInValue = new BigNumberInBase(
+    getExactDecimalsFromNumber(value),
+  )
+  const valueToString = value.toString()
+
+  if (decimalPlacesInValue.lte(0)) {
+    return valueToString
+  }
+
+  const decimalMoreThanAllowance = decimalPlacesInValue.gte(allowableDecimals)
+
+  return decimalMoreThanAllowance
+    ? new BigNumberInBase(valueToString).toFixed(
+        allowableDecimals,
+        roundingMode,
+      )
+    : valueToString
+}
+
+export const formatNumberToAllowableTensMultiplier = (
+  value: string | number,
+  tensMultiplier: number,
+  roundingMode?: BigNumber.RoundingMode,
+): string => {
+  const valueToString = value.toString()
+
+  if (tensMultiplier === 0) {
+    return valueToString
+  }
+
+  const tensMul = new BigNumberInBase(10).pow(tensMultiplier)
+
+  return new BigNumberInBase(valueToString)
+    .div(tensMul)
+    .multipliedBy(tensMul)
+    .toFixed(0, roundingMode)
+}
+
+export const formatAmountToAllowableAmount = (
+  value: string | number,
+  tensMultiplier: number,
+): string => {
+  return tensMultiplier < 0
+    ? formatNumberToAllowableDecimals(
+        value,
+        -tensMultiplier,
+        BigNumberInBase.ROUND_DOWN,
+      )
+    : formatNumberToAllowableTensMultiplier(
+        value,
+        tensMultiplier,
+        BigNumberInBase.ROUND_DOWN,
+      )
+}
+
+export const formatPriceToAllowablePrice = (
+  value: string | number,
+  tensMultiplier: number,
+): string => {
+  return tensMultiplier <= 0
+    ? formatNumberToAllowableDecimals(value, -tensMultiplier)
+    : formatNumberToAllowableTensMultiplier(value, tensMultiplier)
+}
+
+/**
+ *
+ * Legacy function - use formatNumberToAllowableDecimals
+ *
+ * @param value
+ * @param allowableDecimals
+ * @returns
+ */
+export const formatAmountToAllowableDecimals = (
+  value: string | number,
+  allowableDecimals: number,
+): string => {
+  return formatNumberToAllowableDecimals(
+    value,
+    allowableDecimals,
+    BigNumberInBase.ROUND_DOWN,
+  )
+}
+
+/**
+ *
+ * Legacy function - use formatNumberToAllowableDecimals
+ *
+ * @param value
+ * @param allowableDecimals
+ * @returns
+ */
+export const formatPriceToAllowableDecimals = (
+  value: string | number,
+  allowableDecimals: number,
+): string => {
+  return formatNumberToAllowableDecimals(value, allowableDecimals)
 }
