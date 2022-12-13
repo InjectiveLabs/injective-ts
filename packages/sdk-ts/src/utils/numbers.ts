@@ -518,6 +518,35 @@ export const getDecimalsFromNumber = (number: number | string): number => {
     : actualDecimals
 }
 
+/**
+ * This function returns a multiplier of 10
+ * based on the input. There are two cases:
+ *
+ * 1. If the number is less than 1, it returns a POSITIVE
+ * number which is the number of decimals the number has
+ *
+ * 2. If the number is higher than 1, it returns a NEGATIVE
+ * number which is the number of 10 multiplier the number has
+ *
+ * @param number
+ * @returns {number}
+ */
+export const getTensMultiplier = (number: number | string): number => {
+  const numberToBn = new BigNumber(number)
+
+  if (numberToBn.eq(1)) {
+    return 0
+  }
+
+  if (numberToBn.lt(1)) {
+    return getDecimalsFromNumber(number)
+  }
+
+  const [, zerosInTheNumber] = numberToBn.toNumber().toString().split('1')
+
+  return new BigNumber(zerosInTheNumber).times(-1).toNumber()
+}
+
 export const getTriggerPrice = (triggerPrice?: number | string) => {
   return triggerPrice ? amountToCosmosSdkDecAmount(triggerPrice).toFixed() : ''
 }
