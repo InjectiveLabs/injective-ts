@@ -547,6 +547,24 @@ export const getTensMultiplier = (number: number | string): number => {
   return new BigNumber(zerosInTheNumber).times(-1).toNumber()
 }
 
+export const getExactDecimalsFromNumber = (number: number | string): number => {
+  if (!number.toString().includes('.')) {
+    return 0
+  }
+
+  if (Number(number) % 1 === 0) {
+    return 0
+  }
+
+  const [, decimals] = number.toString().split('.')
+
+  if (!decimals) {
+    return 0
+  }
+
+  return decimals.length
+}
+
 export const getTriggerPrice = (triggerPrice?: number | string) => {
   return triggerPrice ? amountToCosmosSdkDecAmount(triggerPrice).toFixed() : ''
 }
