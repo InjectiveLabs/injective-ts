@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.287](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.286...@injectivelabs/sdk-ts@1.0.287) (2022-12-13)
+
+
+### Bug Fixes
+
+* rounding to tick size ([c693113](https://github.com/InjectiveLabs/injective-ts/commit/c6931139e248a1c18faeb15255c9d7dc62c20404))
+
+
+
+
+
 ## [1.0.286](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.285...@injectivelabs/sdk-ts@1.0.286) (2022-12-13)
 
 
