@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberInBase } from '@injectivelabs/utils'
 import { MarketType, Change } from '../types/common'
-import { getTensMultiplier } from '@injectivelabs/sdk-ts'
+import { getTensMultiplier, getDecimalsFromNumber } from '@injectivelabs/sdk-ts'
 import {
   ExpiryFuturesMarketWithTokenAndSlug,
   PerpetualMarketWithTokenAndSlug,
@@ -29,8 +29,8 @@ export class UiDerivativeTransformer {
       ...market,
       type: MarketType.Derivative,
       subType: subType,
-      quantityDecimals: getTensMultiplier(market.minQuantityTickSize),
-      priceDecimals: getTensMultiplier(
+      quantityDecimals: getDecimalsFromNumber(market.minQuantityTickSize),
+      priceDecimals: getDecimalsFromNumber(
         new BigNumberInBase(market.minPriceTickSize)
           .toWei(-market.quoteToken.decimals)
           .toNumber(),
