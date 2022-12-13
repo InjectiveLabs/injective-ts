@@ -6,13 +6,13 @@ import {
 
 export declare namespace ExecArgRegisterVault {
   export interface Params {
-    vaultCodeId: string
+    vaultCodeId: number
     vaultLabel: string
     instantiateVaultMsg: Record<string, any>
   }
 
   export interface Data {
-    vault_code_id: string
+    vault_code_id: number
     vault_label: string
     instantiate_vault_msg: Record<string, any>
   }

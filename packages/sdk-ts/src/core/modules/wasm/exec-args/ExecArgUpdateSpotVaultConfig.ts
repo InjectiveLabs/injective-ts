@@ -7,8 +7,6 @@ import {
 export declare namespace ExecArgUpdateSpotVaultConfig {
   export interface Params {
     marketId: string
-    subaccountId: string
-    feeRecipient: string
     orderDensity: number
     reservationPriceSensitivityRatio: string
     reservationSpreadSensitivityRatio: string
@@ -19,17 +17,16 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     signedMinHeadToFairPriceDeviationRatio: string
     signedMinHeadToTobDeviationRatio: string
     targetBaseWeight: string
-    oracleType: string
-    tradeVolatilityGroupCount: number
+    oracleType?: string
     tradeVolatilityGroupSec: number
     minTradeVolatilitySampleSize: number
     defaultMidPriceVolatilityRatio: string
+    allowedSubscriptionTypes: number
+    allowedRedemptionTypes: number
   }
 
   export interface Data {
     market_id: string
-    subaccount_id: string
-    fee_recipient: string
     order_density: number
     reservation_price_sensitivity_ratio: string
     reservation_spread_sensitivity_ratio: string
@@ -40,11 +37,12 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     signed_min_head_to_fair_price_deviation_ratio: string
     signed_min_head_to_tob_deviation_ratio: string
     target_base_weight: string
-    oracle_type: string
-    trade_volatility_group_count: number
+    oracle_type?: string
     trade_volatility_group_sec: number
     min_trade_volatility_sample_size: number
     default_mid_price_volatility_ratio: string
+    allowed_subscription_types: number
+    allowed_redemption_types: number
   }
 }
 
@@ -66,8 +64,6 @@ export default class ExecArgUpdateSpotVaultConfig extends ExecArgBase<
 
     return {
       market_id: params.marketId,
-      subaccount_id: params.subaccountId,
-      fee_recipient: params.feeRecipient,
       order_density: params.orderDensity,
       reservation_price_sensitivity_ratio:
         params.reservationPriceSensitivityRatio,
@@ -83,11 +79,12 @@ export default class ExecArgUpdateSpotVaultConfig extends ExecArgBase<
       signed_min_head_to_tob_deviation_ratio:
         params.signedMinHeadToTobDeviationRatio,
       target_base_weight: params.targetBaseWeight,
-      oracle_type: params.oracleType,
-      trade_volatility_group_count: params.tradeVolatilityGroupCount,
+      ...(params.oracleType ? { oracle_type: params.oracleType } : {}),
       trade_volatility_group_sec: params.tradeVolatilityGroupSec,
       min_trade_volatility_sample_size: params.minTradeVolatilitySampleSize,
       default_mid_price_volatility_ratio: params.defaultMidPriceVolatilityRatio,
+      allowed_subscription_types: params.allowedSubscriptionTypes,
+      allowed_redemption_types: params.allowedRedemptionTypes,
     }
   }
 

@@ -16,6 +16,7 @@ export interface NinjaHolders {
   amount: string
   updatedAt: number
   lpAmountPercentage: number
+  redemptionLockTime: number
 }
 
 export interface NinjaPriceSnapshot {
@@ -57,6 +58,7 @@ export interface NinjaVault {
   subaccountInfo?: NinjaSubaccountBalance
   masterContractAddress: string
   totalLpAmount: string
+  redemptionLockTimeDuration: number
 }
 
 export interface NinjaSubscription {

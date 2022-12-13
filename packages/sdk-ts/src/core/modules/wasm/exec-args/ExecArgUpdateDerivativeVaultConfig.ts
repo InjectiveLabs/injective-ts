@@ -7,17 +7,15 @@ import {
 export declare namespace ExecArgUpdateDerivativeVaultConfig {
   export interface Params {
     marketId: string
-    subaccountId: string
-    feeRecipient: string
     leverage: string
     orderDensity: number
+    signedMinHeadToFairPriceDeviationRatio: string
+    signedMinHeadToTobDeviationRatio: string
     reservationPriceSensitivityRatio: string
     reservationSpreadSensitivityRatio: string
     maxActiveCapitalUtilizationRatio: string
     headChangeToleranceRatio: string
-    headToTailDeviationRatio: string
-    signedMinHeadToFairPriceDeviationRatio: string
-    signedMinHeadToTobDeviationRatio: string
+    minHeadToTailDeviationRatio: string
     minProximityToLiquidation: string
     postReductionPercOfMaxPosition: string
     oracleVolatilityGroupSec: number
@@ -28,21 +26,21 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     defaultMidPriceVolatilityRatio: string
     minVolatilityRatio: string
     lastValidMarkPrice: string
+    allowedSubscriptionTypes: number
+    allowedRedemptionTypes: number
   }
 
   export interface Data {
     market_id: string
-    subaccount_id: string
-    fee_recipient: string
     leverage: string
     order_density: number
+    signed_min_head_to_fair_price_deviation_ratio: string
+    signed_min_head_to_tob_deviation_ratio: string
     reservation_price_sensitivity_ratio: string
     reservation_spread_sensitivity_ratio: string
     max_active_capital_utilization_ratio: string
     head_change_tolerance_ratio: string
-    head_to_tail_deviation_ratio: string
-    signed_min_head_to_fair_price_deviation_ratio: string
-    signed_min_head_to_tob_deviation_ratio: string
+    min_head_to_tail_deviation_ratio: string
     min_proximity_to_liquidation: string
     post_reduction_perc_of_max_position: string
     oracle_volatility_group_sec: number
@@ -53,6 +51,8 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     default_mid_price_volatility_ratio: string
     min_volatility_ratio: string
     last_valid_mark_price: string
+    allowed_subscription_types: number
+    allowed_redemption_types: number
   }
 }
 
@@ -74,10 +74,12 @@ export default class ExecArgUpdateDerivativeVaultConfig extends ExecArgBase<
 
     return {
       market_id: params.marketId,
-      subaccount_id: params.subaccountId,
-      fee_recipient: params.feeRecipient,
       leverage: params.leverage,
       order_density: params.orderDensity,
+      signed_min_head_to_fair_price_deviation_ratio:
+        params.signedMinHeadToFairPriceDeviationRatio,
+      signed_min_head_to_tob_deviation_ratio:
+        params.signedMinHeadToTobDeviationRatio,
       reservation_price_sensitivity_ratio:
         params.reservationPriceSensitivityRatio,
       reservation_spread_sensitivity_ratio:
@@ -85,11 +87,7 @@ export default class ExecArgUpdateDerivativeVaultConfig extends ExecArgBase<
       max_active_capital_utilization_ratio:
         params.maxActiveCapitalUtilizationRatio,
       head_change_tolerance_ratio: params.headChangeToleranceRatio,
-      head_to_tail_deviation_ratio: params.headToTailDeviationRatio,
-      signed_min_head_to_fair_price_deviation_ratio:
-        params.signedMinHeadToFairPriceDeviationRatio,
-      signed_min_head_to_tob_deviation_ratio:
-        params.signedMinHeadToTobDeviationRatio,
+      min_head_to_tail_deviation_ratio: params.minHeadToTailDeviationRatio,
       min_proximity_to_liquidation: params.minProximityToLiquidation,
       post_reduction_perc_of_max_position:
         params.postReductionPercOfMaxPosition,
@@ -102,6 +100,8 @@ export default class ExecArgUpdateDerivativeVaultConfig extends ExecArgBase<
       default_mid_price_volatility_ratio: params.defaultMidPriceVolatilityRatio,
       min_volatility_ratio: params.minVolatilityRatio,
       last_valid_mark_price: params.lastValidMarkPrice,
+      allowed_subscription_types: params.allowedSubscriptionTypes,
+      allowed_redemption_types: params.allowedRedemptionTypes,
     }
   }
 

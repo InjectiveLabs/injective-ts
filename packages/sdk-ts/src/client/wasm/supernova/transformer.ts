@@ -5,6 +5,7 @@ import {
   QueryContractTokenInfoResponse,
   QueryMastContractConfigResponse,
   QueryRegisteredVaultResponse,
+  QueryVaultContractBaseConfig,
   QueryVaultUserLpContractAllowanceResponse,
   QueryVaultContractDerivativeConfigResponse,
   QueryVaultContractSpotConfigResponse,
@@ -58,19 +59,14 @@ export class SupernovaQueryTransformer {
     }
   }
 
-  static vaultContractConfigResponseToDerivativeVaultConfig(
-    response: WasmContractQueryResponse,
+  static vaultContractBaseConfigResponseToBaseConfig(
+    config: QueryVaultContractBaseConfig,
   ) {
-    const { config } = fromBase64(
-      response.data,
-    ) as QueryVaultContractDerivativeConfigResponse
-
     return {
       owner: formatToString(config.owner),
       marketId: formatToString(config.market_id),
       subaccountId: formatToString(config.subaccount_id),
       feeRecipient: formatToString(config.fee_recipient),
-      leverage: formatToString(config.leverage),
       orderDensity: formatToString(config.order_density),
       reservationPriceSensitivityRatio: formatToString(
         config.reservation_price_sensitivity_ratio,
@@ -84,8 +80,8 @@ export class SupernovaQueryTransformer {
       headChangeToleranceRatio: formatToString(
         config.head_change_tolerance_ratio,
       ),
-      headToTailDeviationRatio: formatToString(
-        config.head_to_tail_deviation_ratio,
+      minHeadToTailDeviationRatio: formatToString(
+        config.min_head_to_tail_deviation_ratio,
       ),
       signedMinHeadToFairPriceDeviationRatio: formatToString(
         config.signed_min_head_to_fair_price_deviation_ratio,
@@ -93,6 +89,33 @@ export class SupernovaQueryTransformer {
       signedMinHeadToTobDeviationRatio: formatToString(
         config.signed_min_head_to_tob_deviation_ratio,
       ),
+      tradeVolatilityGroupSec: formatToString(
+        config.trade_volatility_group_sec,
+      ),
+      defaultMidPriceVolatilityRatio: formatToString(
+        config.default_mid_price_volatility_ratio,
+      ),
+      minTradeVolatilitySampleSize: formatToString(
+        config.min_trade_volatility_sample_size,
+      ),
+      minVolatilityRatio: formatToString(config.min_volatility_ratio),
+      masterAddress: formatToString(config.master_address),
+      redemptionLockTime: formatToString(config.redemption_lock_time),
+    }
+  }
+
+  static vaultContractConfigResponseToDerivativeVaultConfig(
+    response: WasmContractQueryResponse,
+  ) {
+    const { config } = fromBase64(
+      response.data,
+    ) as QueryVaultContractDerivativeConfigResponse
+
+    return {
+      ...SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
+        config.base_config,
+      ),
+      leverage: formatToString(config.leverage),
       minProximityToLiquidation: formatToString(
         config.min_proximity_to_liquidation,
       ),
@@ -108,18 +131,11 @@ export class SupernovaQueryTransformer {
       emergencyOracleVolatilitySampleSize: formatToString(
         config.emergency_oracle_volatility_sample_size,
       ),
-      tradeVolatilityGroupSec: formatToString(
-        config.trade_volatility_group_sec,
-      ),
-      minTradeVolatilitySampleSize: formatToString(
-        config.min_trade_volatility_sample_size,
-      ),
-      defaultMidPriceVolatilityRatio: formatToString(
-        config.default_mid_price_volatility_ratio,
-      ),
-      minVolatilityRatio: formatToString(config.min_volatility_ratio),
       lastValidMarkPrice: formatToString(config.last_valid_mark_price),
-      masterAddress: formatToString(config.master_address),
+      allowedSubscriptionTypes: formatToString(
+        config.allowed_subscription_types,
+      ),
+      allowedRedemptionTypes: formatToString(config.allowed_redemption_types),
     }
   }
 
@@ -131,50 +147,18 @@ export class SupernovaQueryTransformer {
     ) as QueryVaultContractSpotConfigResponse
 
     return {
-      defaultMidPriceVolatilityRatio: formatToString(
-        config.default_mid_price_volatility_ratio,
+      ...SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
+        config.base_config,
       ),
+      oracleType: formatToString(config.oracle_type),
       fairPriceTailDeviationRatio: formatToString(
         config.fair_price_tail_deviation_ratio,
       ),
-      feeRecipient: formatToString(config.fee_recipient),
-      headChangeToleranceRatio: formatToString(
-        config.head_change_tolerance_ratio,
-      ),
-      marketId: formatToString(config.market_id),
-      masterAddress: formatToString(config.master_address),
-      maxActiveCapitalUtilizationRatio: formatToString(
-        config.max_active_capital_utilization_ratio,
-      ),
-      minHeadToTailDeviationRatio: formatToString(
-        config.min_head_to_tail_deviation_ratio,
-      ),
-      minTradeVolatilitySampleSize: formatToString(
-        config.min_trade_volatility_sample_size,
-      ),
-      oracleType: formatToString(config.oracle_type),
-      orderDensity: formatToString(config.order_density),
-      owner: formatToString(config.owner),
-      reservationPriceSensitivityRatio: formatToString(
-        config.reservation_price_sensitivity_ratio,
-      ),
-      reservationSpreadSensitivityRatio: formatToString(
-        config.reservation_spread_sensitivity_ratio,
-      ),
-      signedMinHeadToFairPriceDeviationRatio: formatToString(
-        config.signed_min_head_to_fair_price_deviation_ratio,
-      ),
-      signedMinHeadToTobDeviationRatio: formatToString(
-        config.signed_min_head_to_tob_deviation_ratio,
-      ),
-      subaccountId: formatToString(config.subaccount_id),
       targetBaseWeight: formatToString(config.target_base_weight),
-      tradeVolatilityGroupCount: formatToString(
-        config.trade_volatility_group_count,
+      allowedSubscriptionTypes: formatToString(
+        config.allowed_subscription_types,
       ),
-      tradeVolatilityGroupSec: formatToString(
-        config.trade_volatility_group_sec,
-      ),
+      allowedRedemptionTypes: formatToString(config.allowed_redemption_types),
     }
   }
 

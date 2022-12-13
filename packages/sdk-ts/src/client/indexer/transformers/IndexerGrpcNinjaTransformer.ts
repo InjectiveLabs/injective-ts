@@ -106,6 +106,7 @@ export class IndexerGrpcNinjaTransformer {
         ),
       masterContractAddress: grpcVault.getMasterContractAddress(),
       totalLpAmount: grpcVault.getTotalLpAmount(),
+      redemptionLockTimeDuration: grpcVault.getRedemptionLockTimeDuration(),
     }
   }
 
@@ -138,6 +139,7 @@ export class IndexerGrpcNinjaTransformer {
       amount: grpcHolders.getAmount(),
       updatedAt: grpcHolders.getUpdatedAt(),
       lpAmountPercentage: grpcHolders.getLpAmountPercentage(),
+      redemptionLockTime: grpcHolders.getRedemptionLockTime(),
     }
   }
 

@@ -18,57 +18,50 @@ export interface QueryMastContractConfigResponse {
   owner: string
 }
 
+export interface QueryVaultContractBaseConfig {
+  owner: string
+  market_id: string
+  subaccount_id: string
+  fee_recipient: string
+  order_density: string
+  reservation_price_sensitivity_ratio: string
+  reservation_spread_sensitivity_ratio: string
+  max_active_capital_utilization_ratio: string
+  head_change_tolerance_ratio: string
+  min_head_to_tail_deviation_ratio: string
+  signed_min_head_to_fair_price_deviation_ratio: string
+  signed_min_head_to_tob_deviation_ratio: string
+  trade_volatility_group_sec: string
+  min_trade_volatility_sample_size: string
+  default_mid_price_volatility_ratio: string
+  min_volatility_ratio: string
+  master_address: string
+  redemption_lock_time: string
+}
+
 export interface QueryVaultContractDerivativeConfigResponse {
   config: {
-    owner: string
-    market_id: string
-    subaccount_id: string
-    fee_recipient: string
+    base_config: QueryVaultContractBaseConfig
     leverage: string
-    order_density: string
-    reservation_price_sensitivity_ratio: string
-    reservation_spread_sensitivity_ratio: string
-    max_active_capital_utilization_ratio: string
-    head_change_tolerance_ratio: string
-    head_to_tail_deviation_ratio: string
-    signed_min_head_to_fair_price_deviation_ratio: string
-    signed_min_head_to_tob_deviation_ratio: string
     min_proximity_to_liquidation: string
     post_reduction_perc_of_max_position: string
     oracle_volatility_group_sec: string
     min_oracle_volatility_sample_size: string
     emergency_oracle_volatility_sample_size: string
-    trade_volatility_group_sec: string
-    min_trade_volatility_sample_size: string
-    default_mid_price_volatility_ratio: string
-    min_volatility_ratio: string
     last_valid_mark_price: string
-    master_address: string
+    allowed_subscription_types: string
+    allowed_redemption_types: string
   }
 }
 
 export interface QueryVaultContractSpotConfigResponse {
   config: {
-    default_mid_price_volatility_ratio: string
-    fair_price_tail_deviation_ratio: string
-    fee_recipient: string
-    head_change_tolerance_ratio: string
-    market_id: string
-    master_address: string
-    max_active_capital_utilization_ratio: string
-    min_head_to_tail_deviation_ratio: string
-    min_trade_volatility_sample_size: string
+    base_config: QueryVaultContractBaseConfig
     oracle_type: string
-    order_density: string
-    owner: string
-    reservation_price_sensitivity_ratio: string
-    reservation_spread_sensitivity_ratio: string
-    signed_min_head_to_fair_price_deviation_ratio: string
-    signed_min_head_to_tob_deviation_ratio: string
-    subaccount_id: string
+    fair_price_tail_deviation_ratio: string
     target_base_weight: string
-    trade_volatility_group_count: string
-    trade_volatility_group_sec: string
+    allowed_subscription_types: string
+    allowed_redemption_types: string
   }
 }
 
