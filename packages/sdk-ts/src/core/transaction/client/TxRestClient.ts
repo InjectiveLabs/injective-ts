@@ -51,7 +51,7 @@ export class TxRestClient implements TxConcreteClient {
         return undefined
       }
 
-      if (txResponse.code !== 0) {
+      if (parseInt(txResponse.code.toString(), 10) !== 0) {
         throw new TransactionException(new Error(txResponse.raw_log), {
           contextCode: txResponse.code,
           contextModule: 'TxRestClient',
@@ -100,9 +100,13 @@ export class TxRestClient implements TxConcreteClient {
         if (txResponse) {
           return txResponse
         }
-      } catch (error: any) {
-        if (!isTxNotFoundError(error)) {
-          throw error
+      } catch (e: unknown) {
+        if (e instanceof TransactionException) {
+          throw e
+        }
+
+        if (!isTxNotFoundError(e)) {
+          throw e
         }
       }
 

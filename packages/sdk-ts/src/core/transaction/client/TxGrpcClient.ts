@@ -116,9 +116,13 @@ export class TxGrpcClient implements TxConcreteClient {
         if (txResponse) {
           return txResponse
         }
-      } catch (error: any) {
-        if (!isTxNotFoundError(error)) {
-          throw error
+      } catch (e: unknown) {
+        if (e instanceof TransactionException) {
+          throw e
+        }
+
+        if (!isTxNotFoundError(e)) {
+          throw e
         }
       }
 
