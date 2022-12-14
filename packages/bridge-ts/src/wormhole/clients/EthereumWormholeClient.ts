@@ -1,5 +1,9 @@
 import { getNetworkEndpoints } from '@injectivelabs/networks'
-import { isBrowser, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
+import {
+  isBrowser,
+  ChainGrpcWasmApi,
+  MsgExecuteContract,
+} from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
   tryNativeToHexString,
@@ -24,7 +28,7 @@ export class EthereumWormholeClient extends WormholeClient {
   /** TODO: Refactor */
   async transferFromEthereumToInjective(
     args: EthereumTransferMsgArgs & { provider: ethers.providers.Web3Provider },
-  ) {
+  ): Promise<MsgExecuteContract> {
     const { network, wormholeRpcUrl } = this
     const { amount, recipient, provider } = args
     const endpoints = getNetworkEndpoints(network)
@@ -43,6 +47,7 @@ export class EthereumWormholeClient extends WormholeClient {
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
     const foreignAsset = await getForeignAssetInjective(
       contractAddresses.token_bridge,
+      // @ts-ignore
       chainGrpcWasmApi,
       WORMHOLE_CHAINS.ethereum,
       new Uint8Array(

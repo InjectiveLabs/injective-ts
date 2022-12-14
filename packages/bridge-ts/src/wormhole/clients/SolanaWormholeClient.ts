@@ -229,6 +229,7 @@ export class SolanaWormholeClient extends WormholeClient {
     )
     const foreignAsset = await getForeignAssetInjective(
       contractAddresses.token_bridge,
+      // @ts-ignore
       chainGrpcWasmApi,
       WORMHOLE_CHAINS.solana,
       hexToUint8Array(originAssetHex),
@@ -416,6 +417,7 @@ export class SolanaWormholeClient extends WormholeClient {
     const solanaPublicKey = new PublicKey(provider.publicKey || '')
     const originalAsset = await getOriginalAssetInjective(
       tokenAddress,
+      // @ts-ignore
       chainGrpcWasmApi,
     )
     const solanaMintKey = new PublicKey(originalAsset.assetAddress)

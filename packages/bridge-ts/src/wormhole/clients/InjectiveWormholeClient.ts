@@ -73,6 +73,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     )
     const foreignAsset = await getForeignAssetInjective(
       contractAddresses.token_bridge,
+      // @ts-ignore
       chainGrpcWasmApi,
       WORMHOLE_CHAINS.solana,
       hexToUint8Array(originAssetHex),
@@ -240,7 +241,7 @@ export class InjectiveWormholeClient extends WormholeClient {
   }: {
     injectiveAddress: string
     signedVAA: string /* in base 64 */
-  }) {
+  }): Promise<MsgExecuteContract> {
     const { network } = this
 
     const { contractAddresses } = getSolanaContractAddresses(network)
@@ -263,6 +264,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     return getIsTransferCompletedInjective(
       contractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
+      // @ts-ignore
       chainGrpcWasmApi,
     )
   }
