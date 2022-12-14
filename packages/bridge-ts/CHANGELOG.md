@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.111](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.111...@injectivelabs/bridge-ts@1.0.111) (2022-12-14)
+
+
+### Bug Fixes
+
+* dependency issue ([5cc2795](https://github.com/InjectiveLabs/injective-ts/commit/5cc27953cb120debe44ed048114e70dd14cdb055))
+
+
+
+
+
 ## [1.0.111](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.110...@injectivelabs/bridge-ts@1.0.111) (2022-12-14)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
