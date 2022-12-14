@@ -162,7 +162,7 @@ export class AxelarClient {
 
     if (network.chainId !== MOONBEAM_MAINNET_CHAIN_ID) {
       throw new MetamaskException(
-        new Error('Please switch to the Moonbeam mainnet network in Metamask'),
+        new Error('Please switch to the Moonbeam network in Metamask'),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletError,
