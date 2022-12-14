@@ -1,5 +1,5 @@
 import { getMappedTokensByAddress } from './tokens/helpers/mapByAddress'
-import { wormholeCw20Contracts } from './tokens/helpers/testnetMap'
+import { wormholeCw20Contracts } from './tokens/helpers'
 import { TokenMeta } from './types'
 
 export class TokenMetaUtil {
