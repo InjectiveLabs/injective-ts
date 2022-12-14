@@ -49,12 +49,10 @@ export class WormholeClient {
       )
     }
 
-    const msg = ExecArgSubmitVaa.fromJSON({ signed })
-
     return MsgExecuteContract.fromJSON({
       contractAddress: contractAddresses.token_bridge,
       sender: address,
-      msg,
+      execArgs: ExecArgSubmitVaa.fromJSON({ signed }),
     })
   }
 
@@ -108,12 +106,12 @@ export class WormholeClient {
           sender: recipient,
           contractAddress: contractAddresses.token_bridge,
           funds: { denom: tokenAddress, amount },
-          msg: depositTokensMsg,
+          execArgs: depositTokensMsg,
         }),
         MsgExecuteContract.fromJSON({
           sender: recipient,
           contractAddress: contractAddresses.token_bridge,
-          msg: initiateTransferMsg,
+          execArgs: initiateTransferMsg,
         }),
       ]
     }
@@ -134,12 +132,12 @@ export class WormholeClient {
       MsgExecuteContract.fromJSON({
         sender: address,
         contractAddress: contractAddresses.token_bridge,
-        msg: increaseAllowanceMsg,
+        execArgs: increaseAllowanceMsg,
       }),
       MsgExecuteContract.fromJSON({
         sender: address,
         contractAddress: contractAddresses.token_bridge,
-        msg: initiateTransferMsg,
+        execArgs: initiateTransferMsg,
       }),
     ]
   }

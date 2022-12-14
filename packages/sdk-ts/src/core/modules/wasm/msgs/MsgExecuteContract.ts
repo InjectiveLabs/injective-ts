@@ -13,7 +13,13 @@ export declare namespace MsgExecuteContract {
     }
     sender: string
     contractAddress: string
-    msg: ExecArgs | object
+    /* Used to provide type safety for execution messages */
+    execArgs?: ExecArgs
+    /* Pass any arbitrary message object to execute */
+    exec?: {
+      msg: object
+      action: string
+    }
   }
 
   export interface DirectSign {
@@ -55,11 +61,20 @@ export default class MsgExecuteContract extends MsgBase<
 
     const message = new BaseMsgExecuteContract()
 
-    message.setMsg(
-      (params.msg as ExecArgs).toExecJSON !== undefined
-        ? (params.msg as ExecArgs).toExecJSON()
-        : toUtf8(JSON.stringify(params.msg)),
-    )
+    if (params.execArgs) {
+      message.setMsg(params.execArgs.toExecJSON())
+    }
+
+    if (params.exec) {
+      message.setMsg(
+        toUtf8(
+          JSON.stringify({
+            [params.exec.action]: params.exec.msg,
+          }),
+        ),
+      )
+    }
+
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
 
