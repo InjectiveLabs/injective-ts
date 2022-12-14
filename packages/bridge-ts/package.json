@@ -50,8 +50,5 @@
     "snakecase-keys": "^5.1.2",
     "store2": "^2.12.0"
   },
-  "resolutions": {
-    "your-dependency-name": "1.0.290"
-  },
   "gitHead": "00176548701ceed002a45fd690bac43653b88d60"
 }
