@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.288](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.287...@injectivelabs/sdk-ts@1.0.288) (2022-12-14)
+
+
+### Features
+
+* wormhole mainnet ([600926f](https://github.com/InjectiveLabs/injective-ts/commit/600926f6e14724cfcd1d78cc0789bca15a51426a))
+
+
+
+
+
 ## [1.0.287](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.286...@injectivelabs/sdk-ts@1.0.287) (2022-12-13)
 
 
