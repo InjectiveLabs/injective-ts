@@ -73,9 +73,7 @@ export class AxelarClient {
       tokenAddress: address,
     })
 
-    const response = await transaction.send(signer)
-
-    return response
+    return transaction.send(signer)
   }
 
   public async transferTokens({
