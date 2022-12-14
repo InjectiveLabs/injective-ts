@@ -66,6 +66,7 @@ export interface NinjaSubscription {
   lpAmount: string
   lpAmountPercentage: number
   holderAddress: string
+  redemptionLockTime: number
 }
 
 export interface NinjaPagination {

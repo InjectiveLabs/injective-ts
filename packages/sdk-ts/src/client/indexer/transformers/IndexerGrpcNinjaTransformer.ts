@@ -129,6 +129,7 @@ export class IndexerGrpcNinjaTransformer {
       lpAmount: grpcSubscription.getLpAmount(),
       lpAmountPercentage: grpcSubscription.getLpAmountPercentage(),
       holderAddress: grpcSubscription.getHolderAddress(),
+      redemptionLockTime: grpcSubscription.getRedemptionLockTime(),
     }
   }
 
