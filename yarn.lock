@@ -1056,14 +1056,16 @@
     "@types/long" "^4.0.2"
     "@types/node" "^18.0.3"
 
-"@certusone/wormhole-sdk@^0.9.5":
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/@certusone/wormhole-sdk/-/wormhole-sdk-0.9.5.tgz#d0bc3691b9d237441b225bf6ba363bd0bc689b41"
-  integrity sha512-qgWXMO2f/23dUeyd+OCRE73DK/hs7HmH/hVOUE8qROvbEN4u6vVASAii+iqSQmQJyR7vkDM0PCjRke+VPPkeVA==
+"@certusone/wormhole-sdk@^0.9.6":
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/@certusone/wormhole-sdk/-/wormhole-sdk-0.9.6.tgz#3228fc55b1d26267100a2f20fd68daa8c092adcc"
+  integrity sha512-yWUtH+SiWyx1gdjSkOTO2SCdPhz6LUucFSRD+6zidqe4oHRX5bV8sRlwybH37H9xu8Ul5jqrjP0nCg8iejszGQ==
   dependencies:
     "@certusone/wormhole-sdk-proto-web" "0.0.6"
     "@certusone/wormhole-sdk-wasm" "^0.0.1"
-    "@injectivelabs/sdk-ts" "^1.0.211"
+    "@injectivelabs/networks" "^1.0.52"
+    "@injectivelabs/sdk-ts" "1.0.289"
+    "@injectivelabs/utils" "1.0.45"
     "@project-serum/anchor" "^0.25.0"
     "@solana/spl-token" "^0.3.5"
     "@solana/web3.js" "^1.66.2"

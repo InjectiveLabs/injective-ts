@@ -9,7 +9,7 @@ _Accessing decentralized finance through TypeScript (for Web, Node and React Nat
 `@injectivelabs/sdk-ts` is a TypeScript SDK for writing applications on top of the Injective chain in both a Node.js,  browser and react native environment.
 
 <p align="center">
-  <a href="https://github.com/InjectiveLabs/injective-ts/tree/master/packages/sdk-ts" target="_blank"><strong>Documentation</strong></a>
+  <a href="https://github.com/InjectiveLabs/injective-ts/wiki" target="_blank"><strong>Documentation</strong></a>
   ·
   <a href="https://github.com/InjectiveLabs/sdk-ts-examples" target="_blank">Examples</a>
   ·
@@ -17,7 +17,7 @@ _Accessing decentralized finance through TypeScript (for Web, Node and React Nat
   ·
   <a href="https://www.npmjs.com/package/@injectivelabs/sdk-ts" target="_blank">NPM Package</a>
   ·
-  <a href="https://github.com/InjectiveLabs/injective-ts/tree/master/packages/sdk-ts" target="_blank">GitHub</a>
+  <a href="https://github.com/InjectiveLabs/injective-ts/wiki" target="_blank">GitHub</a>
 </p>
 
 ### ✨ Features
