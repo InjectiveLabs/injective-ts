@@ -5,7 +5,10 @@ import {
   testnetSymbolToAddressMap,
   testnetSymbolToCw20AddressMap,
 } from '../helpers/testnetMap'
-import tokens from '../tokens'
+import cw20Tokens from '../cw20-tokens'
+import erc20Tokens from '../tokens'
+
+const tokens = { ...erc20Tokens, ...cw20Tokens } as Record<string, TokenMeta>
 
 export const tokensBySymbolForTestnet = (
   Object.keys(tokens) as Array<keyof typeof tokens>
