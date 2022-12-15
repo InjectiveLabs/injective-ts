@@ -93,6 +93,12 @@ export class DenomClient {
         return tokenMetaToToken(byAddress, denom) as Token
       }
 
+      const byName = this.getTokenMetaDataByName(denom)
+
+      if (byName) {
+        return tokenMetaToToken(byName, denom) as Token
+      }
+
       return {
         denom,
         name: denom,
@@ -141,6 +147,12 @@ export class DenomClient {
     const { tokenMetaUtil } = this
 
     return tokenMetaUtil.getMetaByAddress(address)
+  }
+
+  getTokenMetaDataByName(name: string): TokenMeta | undefined {
+    const { tokenMetaUtil } = this
+
+    return tokenMetaUtil.getMetaByName(name)
   }
 
   fetchDenomTrace(denom: string) {
