@@ -5,6 +5,7 @@ import {
   ExplorerCW20BalanceWithToken,
   Denom,
   tokenMetaToToken,
+  ContractAccountBalance,
 } from '@injectivelabs/sdk-ts'
 import {
   BankBalances,
@@ -21,6 +22,7 @@ import {
 } from '../client/types'
 import {
   BankBalanceWithToken,
+  ContractAccountBalanceWithToken,
   Cw20BalanceWithToken,
   DenomTrace,
   IbcBankBalanceWithToken,
@@ -195,6 +197,26 @@ export class TokenService {
         }
       }),
     )
+  }
+
+  async getCW20AccountsBalanceWithToken({
+    contractAccountsBalance,
+    contractAddress,
+  }: {
+    contractAccountsBalance: ContractAccountBalance[]
+    contractAddress: string
+  }): Promise<ContractAccountBalanceWithToken[]> {
+    const token = await this.getDenomToken(contractAddress)
+
+    return contractAccountsBalance.map((balance) => {
+      return {
+        ...balance,
+        token: {
+          ...token,
+          type: TokenType.Cw20,
+        },
+      }
+    })
   }
 
   async getSupplyWithLabel({
