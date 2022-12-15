@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { Token, TokenMeta } from '@injectivelabs/token-metadata'
 import { UiBridgeTransaction } from './bridge'
+import { ContractAccountBalance } from '@injectivelabs/sdk-ts'
 
 export interface CoinPriceFromInjectiveService {
   id: string
@@ -84,6 +85,11 @@ export interface Cw20BalanceWithToken {
   contractDetails: {
     address: string
   }
+}
+
+export interface ContractAccountBalanceWithToken
+  extends ContractAccountBalance {
+  token: Token
 }
 
 export interface SubaccountBalanceWithToken {
