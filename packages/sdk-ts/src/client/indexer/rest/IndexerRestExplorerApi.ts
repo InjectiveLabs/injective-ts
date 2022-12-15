@@ -297,19 +297,21 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   }
 
   async fetchContracts(params?: {
+    assets_only?: boolean
     from_number?: number
     limit?: number
-    to_number?: number
+    skip?: number
   }): Promise<{
     paging: Paging
     contracts: Contract[]
   }> {
     try {
-      const { from_number, limit, to_number } = params || { limit: 12 }
+      const { assets_only, from_number, limit, skip } = params || { limit: 12 }
       const response = (await this.get('/wasm/contracts', {
+        assets_only,
         from_number,
         limit,
-        to_number,
+        skip,
       })) as ExplorerApiResponseWithPagination<ContractExplorerApiResponse[]>
 
       const { paging, data } = response.data
