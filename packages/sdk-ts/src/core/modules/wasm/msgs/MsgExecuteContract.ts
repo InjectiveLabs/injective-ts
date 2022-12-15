@@ -4,6 +4,7 @@ import snakeCaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import { toUtf8 } from '../../../../utils/utf8'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
@@ -60,21 +61,9 @@ export default class MsgExecuteContract extends MsgBase<
     const { params } = this
 
     const message = new BaseMsgExecuteContract()
+    const msg = this.getMsgObject()
 
-    if (params.execArgs) {
-      message.setMsg(params.execArgs.toExecJSON())
-    }
-
-    if (params.exec) {
-      message.setMsg(
-        toUtf8(
-          JSON.stringify({
-            [params.exec.action]: params.exec.msg,
-          }),
-        ),
-      )
-    }
-
+    message.setMsg(toUtf8(JSON.stringify(msg)))
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
 
@@ -102,13 +91,17 @@ export default class MsgExecuteContract extends MsgBase<
   public toAmino(): MsgExecuteContract.Amino {
     const { params } = this
     const proto = this.toProto()
+    const funds = params.funds && {
+      funds: proto
+        .getFundsList()
+        .map((amount) => snakeCaseKeys(amount.toObject())),
+    }
+    const msg = this.getMsgObject()
+
     const message = {
       ...snakeCaseKeys(proto.toObject()),
-      ...(params.funds && {
-        funds: proto
-          .getFundsList()
-          .map((amount) => snakeCaseKeys(amount.toObject())),
-      }),
+      ...funds,
+      msg,
     }
 
     // @ts-ignore
@@ -137,5 +130,29 @@ export default class MsgExecuteContract extends MsgBase<
       type: '/cosmwasm.wasm.v1.MsgExecuteContract',
       message: proto,
     }
+  }
+
+  private getMsgObject() {
+    const { params } = this
+
+    if (params.exec && params.execArgs) {
+      throw new GeneralException(
+        new Error('Please provide only one exec argument'),
+      )
+    }
+
+    if (params.execArgs) {
+      return params.execArgs.toExecData()
+    }
+
+    if (params.exec) {
+      return {
+        [params.exec.action]: params.exec.msg,
+      }
+    }
+
+    throw new GeneralException(
+      new Error('Please provide at least one exec argument'),
+    )
   }
 }

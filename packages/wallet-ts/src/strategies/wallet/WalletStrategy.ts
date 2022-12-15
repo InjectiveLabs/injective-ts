@@ -30,6 +30,14 @@ import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet } from './utils'
 import { isCosmosWallet } from '../../wallets/cosmos'
 
+const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
+  if (args.wallet) {
+    return args.wallet
+  }
+
+  return args.ethereumOptions ? Wallet.Metamask : Wallet.Keplr
+}
+
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { ethereumOptions } = args
 
@@ -152,8 +160,7 @@ export default class WalletStrategy {
 
   constructor(args: WalletStrategyArguments) {
     this.strategies = createStrategies(args)
-    this.wallet =
-      args.wallet || args.ethereumOptions ? Wallet.Metamask : Wallet.Keplr
+    this.wallet = getInitialWallet(args)
   }
 
   public getWallet(): Wallet {

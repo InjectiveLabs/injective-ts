@@ -126,8 +126,6 @@ const fetchGasPriceFromEthGasStation = async (): Promise<string> => {
       )
     }
 
-    console.log(response.data)
-
     return new BigNumberInWei(
       new BigNumber(response.data.fastest / 10)
         .times(2.125)
