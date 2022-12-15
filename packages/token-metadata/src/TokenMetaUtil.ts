@@ -26,7 +26,7 @@ export class TokenMetaUtil {
 
     const tokenMeta = tokensBySymbol[tokenSymbol]
 
-    /** Wormhole CW20 versions can't have more than 8 decimals */
+    /** Wormhole tokens can't have more than 8 decimals */
     if (wormholeCw20Contracts.includes(tokenMeta.address || '')) {
       return {
         ...tokenMeta,
