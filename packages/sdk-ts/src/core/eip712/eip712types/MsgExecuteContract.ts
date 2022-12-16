@@ -11,7 +11,7 @@ export const eip712Types = new Map(
       },
       {
         name: 'msg',
-        type: 'uint8',
+        type: 'string',
       },
     ],
   }),

@@ -8,7 +8,7 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxRestClient } from '@injectivelabs/sdk-ts'
+import { TxGrpcClient } from '@injectivelabs/sdk-ts'
 import {
   CosmosWalletException,
   ErrorType,
@@ -141,8 +141,7 @@ export class LeapWallet {
 
   async waitTxBroadcasted(txHash: string): Promise<string> {
     const endpoints = await this.getChainEndpoints()
-    const txClient = new TxRestClient(endpoints.rest)
-    const result = await txClient.fetchTxPoll(txHash)
+    const result = await new TxGrpcClient(endpoints.rest).fetchTxPoll(txHash)
 
     return result.txHash
   }

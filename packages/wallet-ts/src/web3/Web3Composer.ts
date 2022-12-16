@@ -1,4 +1,4 @@
-import { EthereumChainId, TransactionOptions } from '@injectivelabs/ts-types'
+import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
 import { BigNumberInWei } from '@injectivelabs/utils'
 import {
@@ -7,70 +7,49 @@ import {
   PeggyOldContract,
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
-import { Web3Exception } from '@injectivelabs/exceptions'
-import { WalletStrategy } from '../strategies/wallet'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { createAlchemyWeb3 } from '@alch/alchemy-web3'
+import Web3 from 'web3'
 import {
-  DEFAULT_GAS_PRICE,
   GAS_LIMIT_MULTIPLIER,
   INJ_DENOM,
   TIP_IN_GWEI,
-  TX_DEFAULTS_GAS,
 } from '../utils/constants'
-import { SendTransactionOptions } from './types'
-
-export const getTransactionOptions = (
-  transactionOptions: Partial<TransactionOptions>,
-): TransactionOptions => ({
-  from: transactionOptions.from,
-  gas: transactionOptions.gas ? transactionOptions.gas : TX_DEFAULTS_GAS,
-  gasPrice: transactionOptions.gasPrice
-    ? transactionOptions.gasPrice.toString()
-    : DEFAULT_GAS_PRICE.toString(),
-})
-
-export const peggyDenomToContractAddress = (denom: string): string =>
-  denom.toLowerCase().replace('peggy', '')
+import { getTransactionOptions, peggyDenomToContractAddress } from './utils'
 
 /**
  * Preparing and broadcasting
  * Ethereum transactions
  */
-export class Web3Broadcaster {
-  private walletStrategy: WalletStrategy
-
+export class Web3Composer {
   private network: Network
 
   private ethereumChainId: EthereumChainId
 
+  private web3: Web3
+
   constructor({
-    walletStrategy,
     ethereumChainId,
     network,
+    rpc,
+    web3,
   }: {
-    walletStrategy: WalletStrategy
+    rpc?: string
+    web3?: Web3
     ethereumChainId: EthereumChainId
     network: Network
   }) {
-    this.walletStrategy = walletStrategy
+    if (!web3 && !rpc) {
+      throw new GeneralException(
+        new Error(
+          'Please provide either a web3 instance of a Ethereum rpc url',
+        ),
+      )
+    }
+
+    this.web3 = web3 || createAlchemyWeb3(rpc as string)
     this.ethereumChainId = ethereumChainId
     this.network = network
-  }
-
-  async sendTransaction(args: SendTransactionOptions) {
-    const { walletStrategy, ethereumChainId } = this
-
-    try {
-      const txHash = await walletStrategy.sendEthereumTransaction(args.tx, {
-        ethereumChainId,
-        address: args.address,
-      })
-
-      await walletStrategy.getEthereumTransactionReceipt(txHash)
-
-      return txHash
-    } catch (e: unknown) {
-      throw new Web3Exception(new Error((e as any).message))
-    }
   }
 
   async getSetTokenAllowanceTx({
@@ -84,13 +63,14 @@ export class Web3Broadcaster {
     gasPrice: string
     tokenAddress: string
   }) {
-    const { walletStrategy, ethereumChainId, network } = this
-    const web3 = walletStrategy.getWeb3() as any
+    const { ethereumChainId, network, web3 } = this
+
     const erc20Contract = new Erc20Contract({
+      web3,
       ethereumChainId,
-      web3: web3 as any,
       address: tokenAddress,
     })
+
     const contractAddresses = getContractAddressesForNetworkOrThrow(network)
     const setAllowanceOfContractFunction = erc20Contract.setAllowanceOf({
       amount,
@@ -130,19 +110,20 @@ export class Web3Broadcaster {
     gasPrice,
   }: {
     address: string
-    amount: string // BigNumberInWi
+    amount: string // BigNumberInWei
     denom: string
     destinationAddress: string
     gasPrice: string // BigNumberInWei
   }) {
-    const { walletStrategy, network, ethereumChainId } = this
-    const web3 = walletStrategy.getWeb3() as any
+    const { web3, network, ethereumChainId } = this
+
     const contractAddresses = getContractAddressesForNetworkOrThrow(network)
     const contractAddress =
       denom === INJ_DENOM
         ? contractAddresses.injective
         : peggyDenomToContractAddress(denom)
     const peggyContractAddress = contractAddresses.peggy
+
     const contract = new PeggyOldContract({
       address: peggyContractAddress,
       ethereumChainId,
@@ -195,19 +176,19 @@ export class Web3Broadcaster {
     gasPrice: string // BigNumberInWei,
     data?: string
   }) {
-    const { walletStrategy, network, ethereumChainId } = this
+    const { network, web3, ethereumChainId } = this
 
-    const web3 = walletStrategy.getWeb3() as any
     const contractAddresses = getContractAddressesForNetworkOrThrow(network)
     const contractAddress =
       denom === INJ_DENOM
         ? contractAddresses.injective
         : peggyDenomToContractAddress(denom)
     const peggyContractAddress = contractAddresses.peggy
+
     const contract = new PeggyContract({
-      address: peggyContractAddress,
+      web3,
       ethereumChainId,
-      web3: web3 as any,
+      address: peggyContractAddress,
     })
 
     const depositForContractFunction = contract.sendToInjective({
@@ -240,74 +221,6 @@ export class Web3Broadcaster {
         .toString(16),
       maxPriorityFeePerGas: TIP_IN_GWEI.toString(16),
       data: abiEncodedData,
-    }
-  }
-
-  async fetchTokenBalanceAndAllowance({
-    address,
-    contractAddress,
-  }: {
-    address: string
-    contractAddress: string
-  }): Promise<{ balance: string; allowance: string }> {
-    if (contractAddress.startsWith('ibc/')) {
-      return {
-        balance: new BigNumberInWei(0).toFixed(),
-        allowance: new BigNumberInWei(0).toFixed(),
-      }
-    }
-
-    try {
-      const { walletStrategy, network } = this
-      const web3 = walletStrategy.getWeb3() as any
-      const tokenAddress = peggyDenomToContractAddress(contractAddress)
-      const contractAddresses = getContractAddressesForNetworkOrThrow(network)
-      const tokenContractAddress =
-        tokenAddress === INJ_DENOM ? contractAddresses.injective : tokenAddress
-      const tokenBalances = await web3.alchemy.getTokenBalances(address, [
-        tokenContractAddress,
-      ])
-
-      const tokenBalance = tokenBalances.tokenBalances
-        .filter((tokenBalance: any) => tokenBalance.tokenBalance)
-        .find(
-          (tokenBalance: any) =>
-            (
-              tokenBalance as unknown as { contractAddress: string }
-            ).contractAddress.toLowerCase() ===
-            tokenContractAddress.toLowerCase(),
-        )
-      const balance = tokenBalance ? tokenBalance.tokenBalance || 0 : 0
-
-      const allowance = await web3.alchemy.getTokenAllowance({
-        owner: address,
-        spender: contractAddresses.peggy,
-        contract: tokenContractAddress,
-      })
-
-      return {
-        balance: new BigNumberInWei(balance || 0).toFixed(),
-        allowance: new BigNumberInWei(allowance || 0).toFixed(),
-      }
-    } catch (e) {
-      return {
-        balance: new BigNumberInWei(0).toFixed(),
-        allowance: new BigNumberInWei(0).toFixed(),
-      }
-    }
-  }
-
-  async fetchTokenMetaData(address: string) {
-    const { walletStrategy } = this
-
-    const web3 = walletStrategy.getWeb3() as any
-
-    try {
-      const tokenMeta = await web3.alchemy.getTokenMetadata(address)
-
-      return tokenMeta
-    } catch (e: unknown) {
-      throw new Web3Exception(new Error((e as any).message))
     }
   }
 }

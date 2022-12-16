@@ -39,9 +39,6 @@ if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
 }
 
-/**
- * It is recommended to use TxRestClient instead of TxGrpcClient
- */
 export class TxGrpcClient implements TxConcreteClient {
   public txService: ServiceClient
 

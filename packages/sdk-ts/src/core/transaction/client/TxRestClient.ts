@@ -23,6 +23,9 @@ import { StatusCodes } from 'http-status-codes'
 import { errorToErrorMessage, isTxNotFoundError } from './utils'
 import { TxResponse } from './types'
 
+/**
+ * It is recommended to use TxGrpcClient instead of TxRestClient
+ */
 export class TxRestClient implements TxConcreteClient {
   public httpClient: HttpClient
 

@@ -96,12 +96,11 @@ export default class MsgExecuteContract extends MsgBase<
         .getFundsList()
         .map((amount) => snakeCaseKeys(amount.toObject())),
     }
-    const msg = this.getMsgObject()
 
     const message = {
       ...snakeCaseKeys(proto.toObject()),
       ...funds,
-      msg,
+      msg: this.getMsgObject(),
     }
 
     // @ts-ignore
