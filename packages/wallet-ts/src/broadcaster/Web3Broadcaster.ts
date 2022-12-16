@@ -19,7 +19,7 @@ interface SendTransactionOptions {
  * Preparing and broadcasting
  * Ethereum transactions
  */
-export class Web3Client {
+export class Web3Broadcaster {
   private walletStrategy: WalletStrategy
 
   private ethereumChainId: EthereumChainId
