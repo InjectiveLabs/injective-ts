@@ -19,11 +19,11 @@ export class TokenMetaUtil {
     const { tokens: tokensBySymbol } = this
     const tokenSymbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
 
-    if (!tokensBySymbol[tokenSymbol]) {
+    if (!tokensBySymbol[tokenSymbol] || !tokensBySymbol[symbol]) {
       return
     }
 
-    return tokensBySymbol[tokenSymbol]
+    return tokensBySymbol[tokenSymbol] || tokensBySymbol[symbol]
   }
 
   getMetaByAddress(address: string): TokenMeta | undefined {
@@ -42,11 +42,11 @@ export class TokenMetaUtil {
     const { tokensByName } = this
     const tokenName = name.toLowerCase() as keyof typeof tokensByName
 
-    if (!tokensByName[tokenName]) {
+    if (!tokensByName[tokenName] || !tokensByName[name]) {
       return
     }
 
-    return tokensByName[tokenName]
+    return tokensByName[tokenName] || tokensByName[name]
   }
 
   getCoinGeckoIdFromSymbol(symbol: string): string {
