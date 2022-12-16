@@ -19,7 +19,7 @@ export class TokenMetaUtil {
     const { tokens: tokensBySymbol } = this
     const tokenSymbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
 
-    if (!tokensBySymbol[tokenSymbol] || !tokensBySymbol[symbol]) {
+    if (!tokensBySymbol[tokenSymbol] && !tokensBySymbol[symbol]) {
       return
     }
 
@@ -42,7 +42,7 @@ export class TokenMetaUtil {
     const { tokensByName } = this
     const tokenName = name.toLowerCase() as keyof typeof tokensByName
 
-    if (!tokensByName[tokenName] || !tokensByName[name]) {
+    if (!tokensByName[tokenName] && !tokensByName[name]) {
       return
     }
 
