@@ -222,6 +222,7 @@ export class IndexerRestExplorerTransformer {
       creationDate: wasmCode.created_at,
       checksum: wasmCode.checksum,
       permission: wasmCode.permission,
+      proposalId: wasmCode.proposal_id,
     }
   }
 

@@ -145,6 +145,7 @@ export interface WasmCodeExplorerApiResponse {
   permission: CosmWasmPermission
   tx_hash: string
   version: string
+  proposal_id?: number
 }
 
 export interface ContractExplorerApiResponse {
