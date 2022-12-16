@@ -273,6 +273,7 @@ export interface WasmCode {
   creationDate: number
   checksum?: CosmWasmChecksum
   permission?: CosmWasmPermission
+  proposalId?: number
 }
 
 export { GrpcIBCTransferTx, GrpcPeggyDepositTx, GrpcPeggyWithdrawalTx }
