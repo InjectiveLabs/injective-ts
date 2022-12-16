@@ -1,4 +1,5 @@
 import { TokenMeta } from '../../types'
 import tokens from '../tokens'
+import nativeTokens from '../native-tokens'
 
-export default tokens as Record<string, TokenMeta>
+export default { ...tokens, ...nativeTokens } as Record<string, TokenMeta>
