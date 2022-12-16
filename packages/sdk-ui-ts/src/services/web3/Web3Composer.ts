@@ -7,14 +7,9 @@ import {
   PeggyOldContract,
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
-import { GeneralException } from '@injectivelabs/exceptions'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import Web3 from 'web3'
-import {
-  GAS_LIMIT_MULTIPLIER,
-  INJ_DENOM,
-  TIP_IN_GWEI,
-} from '../utils/constants'
+import { GAS_LIMIT_MULTIPLIER, INJ_DENOM, TIP_IN_GWEI } from '../../constants'
 import { getTransactionOptions, peggyDenomToContractAddress } from './utils'
 
 /**
@@ -32,22 +27,12 @@ export class Web3Composer {
     ethereumChainId,
     network,
     rpc,
-    web3,
   }: {
-    rpc?: string
-    web3?: Web3
+    rpc: string
     ethereumChainId: EthereumChainId
     network: Network
   }) {
-    if (!web3 && !rpc) {
-      throw new GeneralException(
-        new Error(
-          'Please provide either a web3 instance of a Ethereum rpc url',
-        ),
-      )
-    }
-
-    this.web3 = web3 || createAlchemyWeb3(rpc as string)
+    this.web3 = createAlchemyWeb3(rpc)
     this.ethereumChainId = ethereumChainId
     this.network = network
   }

@@ -1,5 +1,4 @@
 export * from './broadcaster'
-export * from './web3'
 export * from './strategies'
 export * from './wallets'
 export * from './types'

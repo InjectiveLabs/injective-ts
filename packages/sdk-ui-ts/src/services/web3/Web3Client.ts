@@ -1,57 +1,23 @@
-import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
 import { BigNumberInWei } from '@injectivelabs/utils'
 import { getContractAddressesForNetworkOrThrow } from '@injectivelabs/contracts'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
-import { WalletStrategy } from '../strategies/wallet'
-import { INJ_DENOM } from '../utils/constants'
-import { SendTransactionOptions } from './types'
 import { peggyDenomToContractAddress } from './utils'
+import { INJ_DENOM } from '../../constants'
 
 /**
  * Preparing and broadcasting
  * Ethereum transactions
  */
 export class Web3Client {
-  private walletStrategy: WalletStrategy
-
   private network: Network
-
-  private ethereumChainId: EthereumChainId
 
   private web3: ReturnType<typeof createAlchemyWeb3>
 
-  constructor({
-    walletStrategy,
-    ethereumChainId,
-    network,
-  }: {
-    walletStrategy: WalletStrategy
-    ethereumChainId: EthereumChainId
-    network: Network
-  }) {
-    this.web3 = walletStrategy.getWeb3() as ReturnType<typeof createAlchemyWeb3>
-    this.walletStrategy = walletStrategy
-    this.ethereumChainId = ethereumChainId
+  constructor({ rpc, network }: { rpc: string; network: Network }) {
+    this.web3 = createAlchemyWeb3(rpc as string)
     this.network = network
-  }
-
-  async sendTransaction(args: SendTransactionOptions) {
-    const { walletStrategy, ethereumChainId } = this
-
-    try {
-      const txHash = await walletStrategy.sendEthereumTransaction(args.tx, {
-        ethereumChainId,
-        address: args.address,
-      })
-
-      await walletStrategy.getEthereumTransactionReceipt(txHash)
-
-      return txHash
-    } catch (e: unknown) {
-      throw new Web3Exception(new Error((e as any).message))
-    }
   }
 
   async fetchTokenBalanceAndAllowance({
@@ -111,9 +77,7 @@ export class Web3Client {
   }
 
   async fetchTokenMetaData(address: string) {
-    const { walletStrategy } = this
-
-    const web3 = walletStrategy.getWeb3() as any
+    const { web3 } = this
 
     try {
       return await web3.alchemy.getTokenMetadata(address)

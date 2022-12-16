@@ -1,5 +1,5 @@
 import { TransactionOptions } from '@injectivelabs/ts-types'
-import { DEFAULT_GAS_PRICE, TX_DEFAULTS_GAS } from '../utils'
+import { DEFAULT_GAS_PRICE, TX_DEFAULTS_GAS } from '../../constants'
 
 export const getTransactionOptions = (
   transactionOptions: Partial<TransactionOptions>,
