@@ -1,4 +1,4 @@
-import { TokenMeta } from '../types'
+import { TokenMeta } from '../../types'
 
 export default {
   vMOMO: {
