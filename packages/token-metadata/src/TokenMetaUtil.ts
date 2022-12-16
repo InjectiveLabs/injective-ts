@@ -1,6 +1,5 @@
 import { getMappedTokensByAddress } from './tokens/helpers/mapByAddress'
 import { getMappedTokensByName } from './tokens/helpers/mapByName'
-import { wormholeCw20Contracts } from './tokens/helpers'
 import { TokenMeta } from './types'
 
 export class TokenMetaUtil {
@@ -24,16 +23,6 @@ export class TokenMetaUtil {
       return
     }
 
-    const tokenMeta = tokensBySymbol[tokenSymbol]
-
-    /** Wormhole tokens can't have more than 8 decimals */
-    if (wormholeCw20Contracts.includes(tokenMeta.address || '')) {
-      return {
-        ...tokenMeta,
-        decimals: Math.max(0, Math.min(tokenMeta.decimals, 8)),
-      }
-    }
-
     return tokensBySymbol[tokenSymbol]
   }
 
@@ -46,16 +35,6 @@ export class TokenMetaUtil {
       return
     }
 
-    const tokenMeta = tokensByAddress[contractAddress]
-
-    /** Wormhole CW20 versions can't have more than 8 decimals */
-    if (wormholeCw20Contracts.includes(contractAddress)) {
-      return {
-        ...tokenMeta,
-        decimals: Math.max(0, Math.min(tokenMeta.decimals, 8)),
-      }
-    }
-
     return tokensByAddress[contractAddress]
   }
 
@@ -65,16 +44,6 @@ export class TokenMetaUtil {
 
     if (!tokensByName[tokenName]) {
       return
-    }
-
-    const tokenMeta = tokensByName[tokenName]
-
-    /** Wormhole CW20 versions can't have more than 8 decimals */
-    if (wormholeCw20Contracts.includes(tokenMeta.address || '')) {
-      return {
-        ...tokenMeta,
-        decimals: Math.max(0, Math.min(tokenMeta.decimals, 8)),
-      }
     }
 
     return tokensByName[tokenName]
