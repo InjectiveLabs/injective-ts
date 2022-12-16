@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.85](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.84...@injectivelabs/token-metadata@1.0.85) (2022-12-16)
+
+
+### Bug Fixes
+
+* search symbol by symbol not uppercase ([de32593](https://github.com/InjectiveLabs/injective-ts/commit/de325936ba5d75fc9f3564f635774c9a303b7ca6))
+
+
+
+
+
 ## [1.0.84](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.83...@injectivelabs/token-metadata@1.0.84) (2022-12-16)
 
 
