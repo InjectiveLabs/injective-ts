@@ -4,7 +4,7 @@ import {
   objectKeysToEip712Types,
   TypedDataField,
 } from '../eip712'
-import { hardcodedEip712Types } from '../eip712/eip712types'
+// import { hardcodedEip712Types } from '../eip712/eip712types'
 import { prepareSignBytes } from './utils'
 
 /**
@@ -42,9 +42,10 @@ export abstract class MsgBase<
   public toEip712Types(): Map<string, TypedDataField[]> {
     const amino = this.toAmino() as { type: string }
 
+    /*
     if (hardcodedEip712Types[amino.type]) {
       return hardcodedEip712Types[amino.type]
-    }
+    }*/
 
     return objectKeysToEip712Types(amino as Record<string, any>)
   }
