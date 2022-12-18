@@ -6,7 +6,7 @@ import { DEFAULT_DERIVATION_PATH } from '../../utils/constants'
 import { PublicKey } from './PublicKey'
 import { Address } from './Address'
 import * as BytesUtils from '@ethersproject/bytes'
-import { SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
+import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -187,15 +187,16 @@ export class PrivateKey {
   async signTypedData(eip712Data: any): Promise<Uint8Array> {
     const { wallet } = this
 
-    const hash = TypedDataUtils.eip712Hash(eip712Data, SignTypedDataVersion.V4)
-
     const privateKeyHex = wallet.privateKey.startsWith('0x')
       ? wallet.privateKey.slice(2)
       : wallet.privateKey
-    const privateKey = Uint8Array.from(Buffer.from(privateKeyHex, 'hex'))
-    const { signature } = secp256k1.ecdsaSign(hash, privateKey)
+    const signature = signTypedData({
+      privateKey: Buffer.from(privateKeyHex, 'hex'),
+      data: eip712Data,
+      version: SignTypedDataVersion.V4,
+    })
 
-    return signature
+    return Buffer.from(signature.replace('0x', ''), 'hex')
   }
 
   /**
