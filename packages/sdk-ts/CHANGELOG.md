@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.306](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.305...@injectivelabs/sdk-ts@1.0.306) (2022-12-18)
+
+
+### Bug Fixes
+
+* pk signing eip712 ([c042f4a](https://github.com/InjectiveLabs/injective-ts/commit/c042f4af8982fd5913ee9eb2b24220fc1d8aa910))
+
+
+
+
+
 ## [1.0.305](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.304...@injectivelabs/sdk-ts@1.0.305) (2022-12-18)
 
 
