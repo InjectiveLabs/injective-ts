@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.305](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.304...@injectivelabs/sdk-ts@1.0.305) (2022-12-18)
+
+
+### Bug Fixes
+
+* added eip712 sign on private key ([84b628c](https://github.com/InjectiveLabs/injective-ts/commit/84b628c967d57c977b981faeca2021d8711a0de1))
+
+
+
+
+
 ## [1.0.304](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.303...@injectivelabs/sdk-ts@1.0.304) (2022-12-17)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
