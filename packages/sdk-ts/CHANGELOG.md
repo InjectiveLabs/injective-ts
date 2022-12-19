@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.310](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.309...@injectivelabs/sdk-ts@1.0.310) (2022-12-19)
+
+
+### Bug Fixes
+
+* denom client return undefined for no token denom ([29c6080](https://github.com/InjectiveLabs/injective-ts/commit/29c60809b7f785b23fa34fb0919731cdd40da42b))
+
+
+
+
+
 ## [1.0.309](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.308...@injectivelabs/sdk-ts@1.0.309) (2022-12-19)
 
 
