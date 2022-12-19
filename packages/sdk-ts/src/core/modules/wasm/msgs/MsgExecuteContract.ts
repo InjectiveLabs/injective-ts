@@ -21,6 +21,12 @@ export declare namespace MsgExecuteContract {
       msg: object
       action: string
     }
+    /**
+     * Same as exec but you don't pass
+     * the action as a separate property
+     * but as a whole object
+     */
+    msg?: object
   }
 
   export interface DirectSign {
@@ -134,9 +140,9 @@ export default class MsgExecuteContract extends MsgBase<
   private getMsgObject() {
     const { params } = this
 
-    if (params.exec && params.execArgs) {
+    if ((params.exec || params.msg) && params.execArgs) {
       throw new GeneralException(
-        new Error('Please provide only one exec argument'),
+        new Error('Please provide only one exec|msg argument'),
       )
     }
 
@@ -148,6 +154,10 @@ export default class MsgExecuteContract extends MsgBase<
       return {
         [params.exec.action]: params.exec.msg,
       }
+    }
+
+    if (params.msg) {
+      return params.msg
     }
 
     throw new GeneralException(

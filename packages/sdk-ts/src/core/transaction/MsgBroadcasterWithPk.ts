@@ -46,7 +46,7 @@ interface MsgBroadcasterOptionsWithPk {
     grpc: string
     rest: string
   }
-  privateKey: string
+  privateKey: string | PrivateKey /* hex or PrivateKey class */
   ethereumChainId?: EthereumChainId
 }
 
@@ -71,7 +71,10 @@ export class MsgBroadcasterWithPk {
 
     this.chainId = networkInfo.chainId
     this.endpoints = { ...endpoints, ...(endpoints || {}) }
-    this.privateKey = PrivateKey.fromHex(options.privateKey)
+    this.privateKey =
+      options.privateKey instanceof PrivateKey
+        ? options.privateKey
+        : PrivateKey.fromHex(options.privateKey)
   }
 
   /**
