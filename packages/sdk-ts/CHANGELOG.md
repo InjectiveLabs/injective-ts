@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.308](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.307...@injectivelabs/sdk-ts@1.0.308) (2022-12-19)
+
+
+### Features
+
+* added ability to pass pk as a class to MsgBroadcastWithPk ([7ab121d](https://github.com/InjectiveLabs/injective-ts/commit/7ab121dd91f60484a61b92c05b12eafaa1e7b0c1))
+
+
+
+
+
 ## [1.0.307](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.306...@injectivelabs/sdk-ts@1.0.307) (2022-12-19)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
