@@ -10,11 +10,7 @@ import { INJ_DENOM } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
 import { DenomTrace } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/transfer_pb'
-import {
-  checkIsIbcDenomCanonical,
-  getTokenTypeFromDenom,
-  tokenMetaToToken,
-} from './utils'
+import { checkIsIbcDenomCanonical, tokenMetaToToken } from './utils'
 
 /**
  * This client can be used to fetch token
@@ -73,7 +69,7 @@ export class DenomClient {
     } as IbcToken
   }
 
-  getDenomToken(denom: string): Token {
+  getDenomToken(denom: string): Token | undefined {
     const isDenom =
       denom.startsWith('ibc/') ||
       denom.startsWith('peggy') ||
@@ -99,21 +95,16 @@ export class DenomClient {
         return tokenMetaToToken(byName, denom) as Token
       }
 
-      return {
-        denom,
-        name: denom,
-        tokenType: getTokenTypeFromDenom(denom),
-        logo: '',
-        symbol: '',
-        decimals: 18,
-        address: '',
-        coinGeckoId: '',
-      }
+      return
     }
 
-    const tokenMeta = this.getDenomTokenMeta(denom)
+    try {
+      const tokenMeta = this.getDenomTokenMeta(denom)
 
-    return tokenMetaToToken(tokenMeta, denom) as Token
+      return tokenMetaToToken(tokenMeta, denom) as Token
+    } catch (e) {
+      return
+    }
   }
 
   getDenomTokenThrow(denom: string): Token {
