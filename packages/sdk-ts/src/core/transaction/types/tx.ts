@@ -33,7 +33,7 @@ export interface TxClientSimulateResponse {
   }
 }
 
-export interface TxConcreteClient {
+export interface TxConcreteApi {
   broadcast(
     txRaw: TxRaw,
     options?: TxClientBroadcastOptions,

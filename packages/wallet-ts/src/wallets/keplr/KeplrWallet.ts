@@ -13,7 +13,7 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxGrpcClient } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts'
 import {
   CosmosWalletException,
   ErrorType,
@@ -182,7 +182,7 @@ export class KeplrWallet {
 
   async waitTxBroadcasted(txHash: string): Promise<string> {
     const endpoints = await this.getChainEndpoints()
-    const result = await new TxGrpcClient(endpoints.rest).fetchTxPoll(txHash)
+    const result = await new TxGrpcApi(endpoints.rest).fetchTxPoll(txHash)
 
     return result.txHash
   }

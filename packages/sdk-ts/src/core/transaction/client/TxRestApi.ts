@@ -11,7 +11,7 @@ import {
   TxResultResponse,
 } from '../types/tx-rest-client'
 import { TxClient } from './TxClient'
-import { TxClientBroadcastOptions, TxConcreteClient } from '../types/tx'
+import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx'
 import {
   HttpRequestException,
   HttpRequestMethod,
@@ -24,9 +24,9 @@ import { errorToErrorMessage, isTxNotFoundError } from './utils'
 import { TxResponse } from './types'
 
 /**
- * It is recommended to use TxGrpcClient instead of TxRestClient
+ * It is recommended to use TxGrpcClient instead of TxRestApi
  */
-export class TxRestClient implements TxConcreteClient {
+export class TxRestApi implements TxConcreteApi {
   public httpClient: HttpClient
 
   constructor(endpoint: string) {
@@ -57,7 +57,7 @@ export class TxRestClient implements TxConcreteClient {
       if (parseInt(txResponse.code.toString(), 10) !== 0) {
         throw new TransactionException(new Error(txResponse.raw_log), {
           contextCode: txResponse.code,
-          contextModule: 'TxRestClient',
+          contextModule: 'TxRestApi',
         })
       }
 
@@ -121,7 +121,7 @@ export class TxRestClient implements TxConcreteClient {
         `Transaction was not included in a block before timeout of ${timeout}ms`,
       ),
       {
-        contextModule: 'TxRestClient',
+        contextModule: 'TxRestApi',
       },
     )
   }
@@ -171,7 +171,7 @@ export class TxRestClient implements TxConcreteClient {
           data: '',
           info: '',
           tx: undefined,
-        }
+        } as TxResponse
       }
 
       return this.fetchTxPoll(txResponse.txhash, timeout)

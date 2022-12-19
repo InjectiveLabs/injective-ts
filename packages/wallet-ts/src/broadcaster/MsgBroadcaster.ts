@@ -13,8 +13,8 @@ import {
   IndexerGrpcTransactionApi,
   PublicKey,
   SIGN_AMINO,
-  TxGrpcClient,
-  TxRestClient,
+  TxGrpcApi,
+  TxRestApi,
 } from '@injectivelabs/sdk-ts'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -223,7 +223,7 @@ export class MsgBroadcaster {
     const publicKeyBase64 = hexToBase64(publicKeyHex)
 
     /** Preparing the transaction for client broadcasting */
-    const txGrpcClient = new TxGrpcClient(endpoints.grpc)
+    const txApi = new TxGrpcApi(endpoints.grpc)
     const { txRaw } = createTransaction({
       message: msgs.map((m) => m.toDirectSign()),
       memo: tx.memo,
@@ -252,12 +252,12 @@ export class MsgBroadcaster {
       await MsgBroadcaster.simulate({
         txRaw,
         signature: signatureBuff,
-        txClient: txGrpcClient,
+        txClient: txApi,
       })
     }
 
     /** Broadcast the transaction */
-    const response = await txGrpcClient.broadcast(txRawEip712)
+    const response = await txApi.broadcast(txRawEip712)
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
@@ -387,7 +387,7 @@ export class MsgBroadcaster {
       await MsgBroadcaster.simulate({
         txRaw,
         signature: directSignResponse.signature.signature,
-        txClient: new TxGrpcClient(endpoints.grpc),
+        txClient: new TxGrpcApi(endpoints.grpc),
       })
     }
 
@@ -498,7 +498,7 @@ export class MsgBroadcaster {
     })
 
     /** Preparing the transaction for client broadcasting */
-    const txGrpcClient = new TxGrpcClient(endpoints.grpc)
+    const txApi = new TxGrpcApi(endpoints.grpc)
     const web3Extension = createWeb3Extension({
       ethereumChainId,
     })
@@ -516,12 +516,12 @@ export class MsgBroadcaster {
       await MsgBroadcaster.simulate({
         txRaw,
         signature: signatureBuff,
-        txClient: txGrpcClient,
+        txClient: txApi,
       })
     }
 
     /** Broadcast the transaction */
-    const response = await txGrpcClient.broadcast(txRawEip712)
+    const response = await txApi.broadcast(txRawEip712)
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
@@ -619,7 +619,7 @@ export class MsgBroadcaster {
       await MsgBroadcaster.simulate({
         txRaw,
         signature: directSignResponse.signature.signature,
-        txClient: new TxGrpcClient(endpoints.grpc),
+        txClient: new TxGrpcApi(endpoints.grpc),
       })
     }
 
@@ -655,7 +655,7 @@ export class MsgBroadcaster {
   }: {
     txRaw: TxRaw
     signature: string | Buffer | Uint8Array
-    txClient: TxGrpcClient | TxRestClient
+    txClient: TxGrpcApi | TxRestApi
   }) {
     const txRawWithSignature = txRaw.clone()
     txRawWithSignature.setSignaturesList([signature])

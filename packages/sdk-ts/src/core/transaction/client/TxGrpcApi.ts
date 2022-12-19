@@ -20,7 +20,7 @@ import {
   TxClientBroadcastOptions,
   TxClientBroadcastResponse,
   TxClientSimulateResponse,
-  TxConcreteClient,
+  TxConcreteApi,
 } from '../types/tx'
 import {
   GrpcUnaryRequestException,
@@ -39,7 +39,7 @@ if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
 }
 
-export class TxGrpcClient implements TxConcreteClient {
+export class TxGrpcApi implements TxConcreteApi {
   public txService: ServiceClient
 
   public endpoint: string
@@ -72,7 +72,7 @@ export class TxGrpcClient implements TxConcreteClient {
       if (txResponse.getCode() !== 0) {
         throw new TransactionException(new Error(txResponse.getRawLog()), {
           contextCode: txResponse.getCode(),
-          contextModule: 'TxGrpcClient',
+          contextModule: 'TxGrpcApi',
         })
       }
 
@@ -131,7 +131,7 @@ export class TxGrpcClient implements TxConcreteClient {
         `Transaction was not included in a block before timeout of ${timeout}ms`,
       ),
       {
-        contextModule: 'TxGrpcClient',
+        contextModule: 'TxGrpcApi',
       },
     )
   }
@@ -179,6 +179,8 @@ export class TxGrpcClient implements TxConcreteClient {
       return new Promise(
         (resolve: (value: TxClientBroadcastResponse) => void, reject) =>
           txService.broadcastTx(broadcastTxRequest, async (error, response) => {
+            console.log(JSON.stringify(error))
+
             if (error || !response) {
               return reject(error)
             }

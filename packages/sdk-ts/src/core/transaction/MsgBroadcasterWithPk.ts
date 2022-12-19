@@ -1,11 +1,11 @@
 import { BaseAccount, PrivateKey } from '../accounts'
 import { Msgs } from '../modules'
 import { createTransaction } from './tx'
-import { TxRestClient } from './client/TxRestClient'
+import { TxGrpcApi } from './client/TxGrpcApi'
 import {
   ChainRestAuthApi,
   ChainRestTendermintApi,
-} from './../../client/chain/rest'
+} from '../../client/chain/rest'
 import {
   BigNumberInBase,
   DEFAULT_STD_FEE,
@@ -34,7 +34,7 @@ interface MsgBroadcasterTxOptions {
   gasLimit?: number
 }
 
-interface MsgBroadcasterOptionsLocal {
+interface MsgBroadcasterOptionsWithPk {
   network: Network
 
   /**
@@ -58,14 +58,14 @@ interface MsgBroadcasterOptionsLocal {
  *
  * Mainly used for working in a Node Environment
  */
-export class MsgBroadcasterLocal {
+export class MsgBroadcasterWithPk {
   public endpoints: NetworkEndpoints
 
   public chainId: ChainId
 
   public privateKey: PrivateKey
 
-  constructor(options: MsgBroadcasterOptionsLocal) {
+  constructor(options: MsgBroadcasterOptionsWithPk) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints = getNetworkEndpoints(options.network)
 
@@ -127,7 +127,8 @@ export class MsgBroadcasterLocal {
     txRaw.setSignaturesList([signature])
 
     /** Broadcast transaction */
-    const txResponse = await new TxRestClient(endpoints.rest).broadcast(txRaw)
+    const txApi = new TxGrpcApi(endpoints.grpc)
+    const txResponse = await txApi.broadcast(txRaw)
 
     if (txResponse.code !== 0) {
       throw new GeneralException(
@@ -193,7 +194,7 @@ export class MsgBroadcasterLocal {
     txRaw.setSignaturesList([signature])
 
     /** Simulate transaction */
-    const simulationResponse = await new TxRestClient(endpoints.rest).simulate(
+    const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(
       txRaw,
     )
 
