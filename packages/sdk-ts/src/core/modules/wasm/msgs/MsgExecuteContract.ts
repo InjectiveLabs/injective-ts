@@ -8,10 +8,15 @@ import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
-    funds?: {
-      denom: string
-      amount: string
-    }
+    funds?:
+      | {
+          denom: string
+          amount: string
+        }
+      | {
+          denom: string
+          amount: string
+        }[]
     sender: string
     contractAddress: string
     /* Used to provide type safety for execution messages */
@@ -74,12 +79,20 @@ export default class MsgExecuteContract extends MsgBase<
     message.setContract(params.contractAddress)
 
     if (params.funds) {
-      const funds = new Coin()
+      const fundsToArray = Array.isArray(params.funds)
+        ? params.funds
+        : [params.funds]
 
-      funds.setAmount(params.funds.amount)
-      funds.setDenom(params.funds.denom)
+      const funds = fundsToArray.map((coin) => {
+        const funds = new Coin()
 
-      message.setFundsList([funds])
+        funds.setAmount(coin.amount)
+        funds.setDenom(coin.denom)
+
+        return funds
+      })
+
+      message.setFundsList(funds)
     }
 
     return message
