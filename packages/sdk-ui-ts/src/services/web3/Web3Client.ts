@@ -30,7 +30,7 @@ export class Web3Client {
     const { web3, network } = this
 
     if (
-      !contractAddress.startsWith('peggy') ||
+      !contractAddress.startsWith('peggy') &&
       !contractAddress.startsWith('0x')
     ) {
       return {
