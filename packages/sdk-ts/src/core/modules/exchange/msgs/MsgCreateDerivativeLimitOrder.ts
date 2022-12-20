@@ -90,8 +90,6 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
       quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
     } as MsgCreateDerivativeLimitOrder.Params
 
-    console.log({ initialParams, params })
-
     return createLimitOrder(params)
   }
 

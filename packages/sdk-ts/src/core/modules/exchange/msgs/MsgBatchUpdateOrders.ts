@@ -8,6 +8,7 @@ import {
   MsgBatchUpdateOrders as BaseMsgBatchUpdateOrders,
   OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { amountToCosmosSdkDecAmount } from '@injectivelabs/utils'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgBatchUpdateOrders {
@@ -179,33 +180,33 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     }
 
     if (params.spotOrdersToCreate && params.spotOrdersToCreate.length > 0) {
-      const orderDataList = params.spotOrdersToCreate.map(
-        ({
-          orderType,
-          marketId,
-          price,
-          quantity,
-          triggerPrice,
-          feeRecipient,
-        }) => {
-          const orderInfo = new OrderInfo()
-          orderInfo.setSubaccountId(params.subaccountId)
-          orderInfo.setFeeRecipient(feeRecipient)
-          orderInfo.setPrice(price)
-          orderInfo.setQuantity(quantity)
+      const orderDataList = params.spotOrdersToCreate.map((args) => {
+        const orderInfo = new OrderInfo()
+        const paramsFromArgs = {
+          ...args,
+          price: amountToCosmosSdkDecAmount(args.price).toFixed(),
+          triggerPrice: amountToCosmosSdkDecAmount(
+            args.triggerPrice || 0,
+          ).toFixed(),
+          quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
+        }
 
-          const order = new SpotOrder()
-          order.setMarketId(marketId)
-          order.setOrderType(orderType)
-          order.setOrderInfo(orderInfo)
+        orderInfo.setSubaccountId(params.subaccountId)
+        orderInfo.setFeeRecipient(paramsFromArgs.feeRecipient)
+        orderInfo.setPrice(paramsFromArgs.price)
+        orderInfo.setQuantity(paramsFromArgs.quantity)
 
-          if (triggerPrice) {
-            order.setTriggerPrice(triggerPrice)
-          }
+        const order = new SpotOrder()
+        order.setMarketId(paramsFromArgs.marketId)
+        order.setOrderType(paramsFromArgs.orderType)
+        order.setOrderInfo(orderInfo)
 
-          return order
-        },
-      )
+        if (paramsFromArgs.triggerPrice) {
+          order.setTriggerPrice(paramsFromArgs.triggerPrice)
+        }
+
+        return order
+      })
 
       message.setSpotOrdersToCreateList(orderDataList)
     }
@@ -214,35 +215,35 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       params.derivativeOrdersToCreate &&
       params.derivativeOrdersToCreate.length > 0
     ) {
-      const orderDataList = params.derivativeOrdersToCreate.map(
-        ({
-          orderType,
-          marketId,
-          price,
-          quantity,
-          margin,
-          triggerPrice,
-          feeRecipient,
-        }) => {
-          const orderInfo = new OrderInfo()
-          orderInfo.setSubaccountId(params.subaccountId)
-          orderInfo.setFeeRecipient(feeRecipient)
-          orderInfo.setPrice(price)
-          orderInfo.setQuantity(quantity)
+      const orderDataList = params.derivativeOrdersToCreate.map((args) => {
+        const paramsFromArgs = {
+          ...args,
+          price: amountToCosmosSdkDecAmount(args.price).toFixed(),
+          margin: amountToCosmosSdkDecAmount(args.margin).toFixed(),
+          triggerPrice: amountToCosmosSdkDecAmount(
+            args.triggerPrice || 0,
+          ).toFixed(),
+          quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
+        }
 
-          const order = new DerivativeOrder()
-          order.setMarketId(marketId)
-          order.setOrderType(orderType)
-          order.setOrderInfo(orderInfo)
-          order.setMargin(margin)
+        const orderInfo = new OrderInfo()
+        orderInfo.setSubaccountId(params.subaccountId)
+        orderInfo.setFeeRecipient(paramsFromArgs.feeRecipient)
+        orderInfo.setPrice(paramsFromArgs.price)
+        orderInfo.setQuantity(paramsFromArgs.quantity)
 
-          if (triggerPrice) {
-            order.setTriggerPrice(triggerPrice)
-          }
+        const order = new DerivativeOrder()
+        order.setMarketId(paramsFromArgs.marketId)
+        order.setOrderType(paramsFromArgs.orderType)
+        order.setOrderInfo(orderInfo)
+        order.setMargin(paramsFromArgs.margin)
 
-          return order
-        },
-      )
+        if (paramsFromArgs.triggerPrice) {
+          order.setTriggerPrice(paramsFromArgs.triggerPrice)
+        }
+
+        return order
+      })
 
       message.setDerivativeOrdersToCreateList(orderDataList)
     }
@@ -250,35 +251,34 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       params.binaryOptionsOrdersToCreate &&
       params.binaryOptionsOrdersToCreate.length > 0
     ) {
-      const orderDataList = params.binaryOptionsOrdersToCreate.map(
-        ({
-          orderType,
-          marketId,
-          price,
-          quantity,
-          margin,
-          triggerPrice,
-          feeRecipient,
-        }) => {
-          const orderInfo = new OrderInfo()
-          orderInfo.setSubaccountId(params.subaccountId)
-          orderInfo.setFeeRecipient(feeRecipient)
-          orderInfo.setPrice(price)
-          orderInfo.setQuantity(quantity)
+      const orderDataList = params.binaryOptionsOrdersToCreate.map((args) => {
+        const paramsFromArgs = {
+          ...args,
+          price: amountToCosmosSdkDecAmount(args.price).toFixed(),
+          margin: amountToCosmosSdkDecAmount(args.margin).toFixed(),
+          triggerPrice: amountToCosmosSdkDecAmount(
+            args.triggerPrice || 0,
+          ).toFixed(),
+          quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
+        }
+        const orderInfo = new OrderInfo()
+        orderInfo.setSubaccountId(params.subaccountId)
+        orderInfo.setFeeRecipient(paramsFromArgs.feeRecipient)
+        orderInfo.setPrice(paramsFromArgs.price)
+        orderInfo.setQuantity(paramsFromArgs.quantity)
 
-          const order = new DerivativeOrder()
-          order.setMarketId(marketId)
-          order.setOrderType(orderType)
-          order.setOrderInfo(orderInfo)
-          order.setMargin(margin)
+        const order = new DerivativeOrder()
+        order.setMarketId(paramsFromArgs.marketId)
+        order.setOrderType(paramsFromArgs.orderType)
+        order.setOrderInfo(orderInfo)
+        order.setMargin(paramsFromArgs.margin)
 
-          if (triggerPrice) {
-            order.setTriggerPrice(triggerPrice)
-          }
+        if (paramsFromArgs.triggerPrice) {
+          order.setTriggerPrice(paramsFromArgs.triggerPrice)
+        }
 
-          return order
-        },
-      )
+        return order
+      })
 
       message.setDerivativeOrdersToCreateList(orderDataList)
     }

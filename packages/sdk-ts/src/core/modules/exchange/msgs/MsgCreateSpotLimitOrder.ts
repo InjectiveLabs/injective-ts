@@ -78,6 +78,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
 
   public toProto(): MsgCreateSpotLimitOrder.Proto {
     const { params: initialParams } = this
+
     const params = {
       ...initialParams,
       price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
