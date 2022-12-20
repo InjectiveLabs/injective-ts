@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.318](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.317...@injectivelabs/sdk-ts@1.0.318) (2022-12-20)
+
+
+### Features
+
+* removed numbers converters from utils ([36b7bcf](https://github.com/InjectiveLabs/injective-ts/commit/36b7bcf8ec7eb5ea8a815e4a808ddd0494565735))
+
+
+
+
+
 ## [1.0.317](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.316...@injectivelabs/sdk-ts@1.0.317) (2022-12-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

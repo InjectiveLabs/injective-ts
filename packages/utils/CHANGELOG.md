@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.45...@injectivelabs/utils@1.0.46) (2022-12-20)
+
+
+### Features
+
+* removed numbers converters from utils ([36b7bcf](https://github.com/InjectiveLabs/injective-ts/commit/36b7bcf8ec7eb5ea8a815e4a808ddd0494565735))
+
+
+
+
+
 ## [1.0.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.44...@injectivelabs/utils@1.0.45) (2022-12-09)
 
 **Note:** Version bump only for package @injectivelabs/utils
