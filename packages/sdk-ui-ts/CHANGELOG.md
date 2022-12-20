@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.413](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.412...@injectivelabs/sdk-ui-ts@1.0.413) (2022-12-20)
+
+
+### Bug Fixes
+
+* web3Client eth allowance ([626061e](https://github.com/InjectiveLabs/injective-ts/commit/626061efa613c835eda3a0acbaf2b259d9468f11))
+
+
+
+
+
 ## [1.0.412](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.411...@injectivelabs/sdk-ui-ts@1.0.412) (2022-12-19)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
