@@ -35,7 +35,6 @@ export declare namespace MsgBatchUpdateOrders {
       orderType: OrderTypeMap[keyof OrderTypeMap]
       triggerPrice?: string
       marketId: string
-      subaccountId: string
       feeRecipient: string
       price: string
       quantity: string
@@ -45,7 +44,6 @@ export declare namespace MsgBatchUpdateOrders {
       triggerPrice?: string
       feeRecipient: string
       marketId: string
-      subaccountId: string
       price: string
       margin: string
       quantity: string
@@ -55,7 +53,6 @@ export declare namespace MsgBatchUpdateOrders {
       triggerPrice?: string
       feeRecipient: string
       marketId: string
-      subaccountId: string
       price: string
       margin: string
       quantity: string
@@ -188,7 +185,6 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           price,
           quantity,
           triggerPrice,
-          subaccountId,
           feeRecipient,
         }) => {
           const orderInfo = new OrderInfo()
@@ -196,7 +192,6 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           orderInfo.setFeeRecipient(feeRecipient)
           orderInfo.setPrice(price)
           orderInfo.setQuantity(quantity)
-          orderInfo.setSubaccountId(subaccountId)
 
           const order = new SpotOrder()
           order.setMarketId(marketId)
@@ -225,7 +220,6 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           price,
           quantity,
           margin,
-          subaccountId,
           triggerPrice,
           feeRecipient,
         }) => {
@@ -234,7 +228,6 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           orderInfo.setFeeRecipient(feeRecipient)
           orderInfo.setPrice(price)
           orderInfo.setQuantity(quantity)
-          orderInfo.setSubaccountId(subaccountId)
 
           const order = new DerivativeOrder()
           order.setMarketId(marketId)
@@ -261,7 +254,6 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           orderType,
           marketId,
           price,
-          subaccountId,
           quantity,
           margin,
           triggerPrice,
@@ -272,7 +264,6 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           orderInfo.setFeeRecipient(feeRecipient)
           orderInfo.setPrice(price)
           orderInfo.setQuantity(quantity)
-          orderInfo.setSubaccountId(subaccountId)
 
           const order = new DerivativeOrder()
           order.setMarketId(marketId)
