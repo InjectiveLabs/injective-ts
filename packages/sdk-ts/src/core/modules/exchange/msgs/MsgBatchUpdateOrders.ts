@@ -8,7 +8,7 @@ import {
   MsgBatchUpdateOrders as BaseMsgBatchUpdateOrders,
   OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { amountToCosmosSdkDecAmount } from '@injectivelabs/utils'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgBatchUpdateOrders {
