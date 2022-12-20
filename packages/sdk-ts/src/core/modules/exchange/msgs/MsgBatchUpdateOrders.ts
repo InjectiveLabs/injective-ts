@@ -117,6 +117,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       )
       message.setSubaccountId(params.subaccountId)
     }
+
     if (
       params.binaryOptionsMarketIdsToCancelAll &&
       params.binaryOptionsMarketIdsToCancelAll.length > 0
