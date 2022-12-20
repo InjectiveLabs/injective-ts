@@ -82,6 +82,15 @@ export default {
     coinGeckoId: 'usd-coin',
   },
 
+  CW20USDC: {
+    name: 'USD Coin',
+    logo: 'usdc.svg',
+    symbol: 'USDC',
+    decimals: 6,
+    address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
+    coinGeckoId: 'usd-coin',
+  },
+
   GRT: {
     name: 'Graph Token',
     logo: 'graphToken.svg',
@@ -803,5 +812,23 @@ export default {
     decimals: 18,
     address: '0x4986fD36b6b16f49b43282Ee2e24C5cF90ed166d',
     coinGeckoId: '',
+  },
+
+  CW20XPLA: {
+    name: 'XPLA',
+    logo: 'xpla.svg',
+    symbol: 'XPLA',
+    decimals: 8,
+    address: 'inj1j08452mqwadp8xu25kn9rleyl2gufgfjqjvewe',
+    coinGeckoId: 'xpla',
+  },
+
+  CW20AVAX: {
+    name: 'AVAX',
+    logo: 'avax.webp',
+    symbol: 'WAVAX',
+    decimals: 8,
+    address: 'inj18a2u6az6dzw528rptepfg6n49ak6hdzkny4um6',
+    coinGeckoId: 'AVAX',
   },
 } as Record<string, TokenMeta>
