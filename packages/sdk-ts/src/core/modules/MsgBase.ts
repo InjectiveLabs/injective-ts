@@ -42,11 +42,6 @@ export abstract class MsgBase<
   public toEip712Types(): Map<string, TypedDataField[]> {
     const amino = this.toAmino() as { type: string }
 
-    /*
-    if (hardcodedEip712Types[amino.type]) {
-      return hardcodedEip712Types[amino.type]
-    }*/
-
     return objectKeysToEip712Types(amino as Record<string, any>)
   }
 

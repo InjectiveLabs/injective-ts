@@ -3,6 +3,8 @@ import snakecaseKeys from 'snakecase-keys'
 import { numberToCosmosSdkDecString, snakeToPascal } from '../../utils'
 import { TypedDataField } from './types'
 
+const msgExecuteContractType = 'wasm/MsgExecuteContract'
+
 /**
  * Function used to generate EIP712 types based on a message object
  * and its structure (recursive)
@@ -15,12 +17,15 @@ export const objectKeysToEip712Types = (
   const types = new Array<TypedDataField>()
 
   for (const property in snakecaseKeys(object)) {
+    const propertyValue = snakecaseKeys(object)[property]
+
     if (property === '@type' || property === 'type') {
-      continue
+      if (![msgExecuteContractType].includes(propertyValue)) {
+        continue
+      }
     }
 
-    const val = snakecaseKeys(object)[property]
-    const type = typeof val
+    const type = typeof propertyValue
 
     if (type === 'boolean') {
       types.push({ name: property, type: 'bool' })
@@ -32,17 +37,17 @@ export const objectKeysToEip712Types = (
     } else if (type === 'string') {
       types.push({ name: property, type: 'string' })
     } else if (type === 'object') {
-      if (Array.isArray(val) && val.length === 0) {
+      if (Array.isArray(propertyValue) && propertyValue.length === 0) {
         throw new GeneralException(new Error('Array with length 0 found'))
-      } else if (Array.isArray(val) && val.length > 0) {
-        const arrayFirstType = typeof val[0]
+      } else if (Array.isArray(propertyValue) && propertyValue.length > 0) {
+        const arrayFirstType = typeof propertyValue[0]
         const isPrimitive =
           arrayFirstType === 'boolean' ||
           arrayFirstType === 'number' ||
           arrayFirstType === 'string'
 
         if (isPrimitive) {
-          for (const arrayEntry in val) {
+          for (const arrayEntry in propertyValue) {
             if (typeof arrayEntry !== arrayFirstType) {
               throw new GeneralException(
                 new Error('Array with different types found'),
@@ -58,11 +63,15 @@ export const objectKeysToEip712Types = (
             types.push({ name: property, type: 'string[]' })
           }
         } else if (arrayFirstType === 'object') {
-          const propertyType = appendTypePrefixToPropertyType(
+          const propertyType = getObjectEip712PropertyType(
             snakeToPascal(property),
             primaryType,
+            propertyValue[0],
           )
-          const recursiveOutput = objectKeysToEip712Types(val[0], propertyType)
+          const recursiveOutput = objectKeysToEip712Types(
+            propertyValue[0],
+            propertyType,
+          )
           const recursiveTypes = recursiveOutput.get(propertyType)
 
           types.push({ name: property, type: `${propertyType}[]` })
@@ -79,11 +88,15 @@ export const objectKeysToEip712Types = (
           )
         }
       } else {
-        const propertyType = appendTypePrefixToPropertyType(
+        const propertyType = getObjectEip712PropertyType(
           snakeToPascal(property),
           primaryType,
+          propertyValue,
         )
-        const recursiveOutput = objectKeysToEip712Types(val, propertyType)
+        const recursiveOutput = objectKeysToEip712Types(
+          propertyValue,
+          propertyType,
+        )
         const recursiveTypes = recursiveOutput.get(propertyType)
 
         types.push({ name: property, type: propertyType })
@@ -104,7 +117,6 @@ export const objectKeysToEip712Types = (
 
   return output
 }
-
 /**
  * JavaScript doesn't know the exact number types that
  * we represent these fields on chain so we have to map
@@ -243,11 +255,46 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
   }, {} as T)
 }
 
+export const getObjectEip712PropertyType = (
+  property: string,
+  parentProperty: string,
+  type?: string,
+) => {
+  console.log(type)
+
+  if (type === msgExecuteContractType) {
+    return appendWasmTypePrefixToPropertyType(property, parentProperty)
+  }
+
+  return appendTypePrefixToPropertyType(property, parentProperty)
+}
+
+/**
+ * Append Wasm Type prefix to a Level0 EIP712 type
+ * including its parent property type
+ */
+
+const appendWasmTypePrefixToPropertyType = (
+  property: string,
+  parentProperty: string = '',
+) => {
+  const propertyWithoutTypePrefix = property.replace('Type', '')
+
+  if (propertyWithoutTypePrefix === 'msg') {
+    return 'CosmwasmInnerMsgMarker'
+  }
+
+  const parentPropertyWithoutTypePrefix =
+    parentProperty === 'MsgValue' ? '' : parentProperty.replace('Type', '')
+
+  return `${parentPropertyWithoutTypePrefix + propertyWithoutTypePrefix}Value`
+}
+
 /**
  * Append Type prefix to a Level0 EIP712 type
  * including its parent property type
  */
-export const appendTypePrefixToPropertyType = (
+const appendTypePrefixToPropertyType = (
   property: string,
   parentProperty: string = '',
 ) => {
