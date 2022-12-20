@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.315](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.314...@injectivelabs/sdk-ts@1.0.315) (2022-12-20)
+
+
+### Features
+
+* added number flooring for chain numbers ([83eafe9](https://github.com/InjectiveLabs/injective-ts/commit/83eafe901501713263fbd39aef7238001afd2467))
+
+
+
+
+
 ## [1.0.314](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.313...@injectivelabs/sdk-ts@1.0.314) (2022-12-20)
 
 
