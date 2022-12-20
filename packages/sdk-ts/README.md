@@ -11,7 +11,7 @@ _Accessing decentralized finance through TypeScript (for Web, Node and React Nat
 <p align="center">
   <a href="https://github.com/InjectiveLabs/injective-ts/wiki" target="_blank"><strong>Documentation</strong></a>
   ·
-  <a href="https://github.com/InjectiveLabs/sdk-ts-examples" target="_blank">Examples</a>
+  <a href="https://github.com/InjectiveLabs/injective-sdk-ts-examples" target="_blank">Examples</a>
   ·
   <a href="https://injectivelabs.github.io/injective-ts/modules/_injectivelabs_sdk_ts.html" target="_blank">API Reference</a>
   ·
