@@ -9,10 +9,15 @@ const msgExecuteContractType = 'wasm/MsgExecuteContract'
  * Function used to generate EIP712 types based on a message object
  * and its structure (recursive)
  */
-export const objectKeysToEip712Types = (
-  object: Record<string, any>,
+export const objectKeysToEip712Types = ({
+  object,
+  messageType,
   primaryType = 'MsgValue',
-) => {
+}: {
+  object: Record<string, any>
+  messageType?: string
+  primaryType?: string
+}) => {
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
 
@@ -20,9 +25,7 @@ export const objectKeysToEip712Types = (
     const propertyValue = snakecaseKeys(object)[property]
 
     if (property === '@type' || property === 'type') {
-      if (![msgExecuteContractType].includes(propertyValue)) {
-        continue
-      }
+      continue
     }
 
     const type = typeof propertyValue
@@ -63,15 +66,16 @@ export const objectKeysToEip712Types = (
             types.push({ name: property, type: 'string[]' })
           }
         } else if (arrayFirstType === 'object') {
-          const propertyType = getObjectEip712PropertyType(
-            snakeToPascal(property),
-            primaryType,
-            propertyValue[0],
-          )
-          const recursiveOutput = objectKeysToEip712Types(
-            propertyValue[0],
-            propertyType,
-          )
+          const propertyType = getObjectEip712PropertyType({
+            property: snakeToPascal(property),
+            parentProperty: primaryType,
+            messageType,
+          })
+          const recursiveOutput = objectKeysToEip712Types({
+            object: propertyValue[0],
+            primaryType: propertyType,
+            messageType,
+          })
           const recursiveTypes = recursiveOutput.get(propertyType)
 
           types.push({ name: property, type: `${propertyType}[]` })
@@ -88,15 +92,16 @@ export const objectKeysToEip712Types = (
           )
         }
       } else {
-        const propertyType = getObjectEip712PropertyType(
-          snakeToPascal(property),
-          primaryType,
-          propertyValue,
-        )
-        const recursiveOutput = objectKeysToEip712Types(
-          propertyValue,
-          propertyType,
-        )
+        const propertyType = getObjectEip712PropertyType({
+          property: snakeToPascal(property),
+          parentProperty: primaryType,
+          messageType,
+        })
+        const recursiveOutput = objectKeysToEip712Types({
+          object: propertyValue,
+          primaryType: propertyType,
+          messageType,
+        })
         const recursiveTypes = recursiveOutput.get(propertyType)
 
         types.push({ name: property, type: propertyType })
@@ -255,14 +260,16 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
   }, {} as T)
 }
 
-export const getObjectEip712PropertyType = (
-  property: string,
-  parentProperty: string,
-  type?: string,
-) => {
-  console.log(type)
-
-  if (type === msgExecuteContractType) {
+export const getObjectEip712PropertyType = ({
+  property,
+  parentProperty,
+  messageType,
+}: {
+  property: string
+  parentProperty: string
+  messageType?: string
+}) => {
+  if (messageType === msgExecuteContractType) {
     return appendWasmTypePrefixToPropertyType(property, parentProperty)
   }
 
@@ -273,19 +280,21 @@ export const getObjectEip712PropertyType = (
  * Append Wasm Type prefix to a Level0 EIP712 type
  * including its parent property type
  */
-
 const appendWasmTypePrefixToPropertyType = (
   property: string,
   parentProperty: string = '',
 ) => {
+  const cosmWasmMsgPrefix = 'CosmwasmInnerMsgMarker'
   const propertyWithoutTypePrefix = property.replace('Type', '')
 
-  if (propertyWithoutTypePrefix === 'msg') {
-    return 'CosmwasmInnerMsgMarker'
+  if (propertyWithoutTypePrefix === 'Msg') {
+    return cosmWasmMsgPrefix
   }
 
-  const parentPropertyWithoutTypePrefix =
-    parentProperty === 'MsgValue' ? '' : parentProperty.replace('Type', '')
+  const parentPropertyWithoutTypePrefix = parentProperty.replace(
+    cosmWasmMsgPrefix,
+    '',
+  )
 
   return `${parentPropertyWithoutTypePrefix + propertyWithoutTypePrefix}Value`
 }

@@ -42,7 +42,10 @@ export abstract class MsgBase<
   public toEip712Types(): Map<string, TypedDataField[]> {
     const amino = this.toAmino() as { type: string }
 
-    return objectKeysToEip712Types(amino as Record<string, any>)
+    return objectKeysToEip712Types({
+      object: amino as Record<string, any>,
+      messageType: amino.type,
+    })
   }
 
   public toEip712(): {
