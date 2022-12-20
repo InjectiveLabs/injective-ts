@@ -2,6 +2,113 @@ import { BigNumber, BigNumberInBase } from '@injectivelabs/utils'
 
 const $BigNumber = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN })
 
+export const formatNumberToAllowableDecimals = (
+  value: string | number,
+  allowableDecimals: number,
+  roundingMode?: BigNumber.RoundingMode,
+): string => {
+  const decimalPlacesInValue = new BigNumberInBase(
+    getExactDecimalsFromNumber(value),
+  )
+  const valueToString = value.toString()
+
+  if (decimalPlacesInValue.lte(0)) {
+    return valueToString
+  }
+
+  const decimalMoreThanAllowance = decimalPlacesInValue.gte(allowableDecimals)
+
+  return decimalMoreThanAllowance
+    ? new BigNumberInBase(valueToString).toFixed(
+        allowableDecimals,
+        roundingMode,
+      )
+    : valueToString
+}
+
+export const formatNumberToAllowableTensMultiplier = (
+  value: string | number,
+  tensMultiplier: number,
+  roundingMode?: BigNumber.RoundingMode,
+): string => {
+  const valueToString = value.toString()
+  const valueToBn = new BigNumberInBase(value)
+
+  if (tensMultiplier === 0) {
+    return valueToString
+  }
+
+  const tensMul = new BigNumberInBase(10).pow(tensMultiplier)
+
+  if (valueToBn.lte(tensMul)) {
+    return tensMul.toFixed(0, roundingMode)
+  }
+
+  return new BigNumberInBase(valueToBn.div(tensMul).toFixed(0))
+    .multipliedBy(tensMul)
+    .toFixed(0, roundingMode)
+}
+
+export const formatAmountToAllowableAmount = (
+  value: string | number,
+  tensMultiplier: number,
+): string => {
+  return tensMultiplier < 0
+    ? formatNumberToAllowableDecimals(
+        value,
+        -tensMultiplier,
+        BigNumberInBase.ROUND_DOWN,
+      )
+    : formatNumberToAllowableTensMultiplier(
+        value,
+        tensMultiplier,
+        BigNumberInBase.ROUND_DOWN,
+      )
+}
+
+export const formatPriceToAllowablePrice = (
+  value: string | number,
+  tensMultiplier: number,
+): string => {
+  return tensMultiplier <= 0
+    ? formatNumberToAllowableDecimals(value, -tensMultiplier)
+    : formatNumberToAllowableTensMultiplier(value, tensMultiplier)
+}
+
+/**
+ *
+ * Legacy function - use formatNumberToAllowableDecimals
+ *
+ * @param value
+ * @param allowableDecimals
+ * @returns
+ */
+export const formatAmountToAllowableDecimals = (
+  value: string | number,
+  allowableDecimals: number,
+): string => {
+  return formatNumberToAllowableDecimals(
+    value,
+    allowableDecimals,
+    BigNumberInBase.ROUND_DOWN,
+  )
+}
+
+/**
+ *
+ * Legacy function - use formatNumberToAllowableDecimals
+ *
+ * @param value
+ * @param allowableDecimals
+ * @returns
+ */
+export const formatPriceToAllowableDecimals = (
+  value: string | number,
+  allowableDecimals: number,
+): string => {
+  return formatNumberToAllowableDecimals(value, allowableDecimals)
+}
+
 export const getSignificantDecimalsFromNumber = (
   number: BigNumber | number | string,
 ): number => {
@@ -70,15 +177,25 @@ export const denomAmountToChainDenomAmount = ({
 export const denomAmountToChainDenomAmountToFixed = ({
   value,
   decimals = 18,
+  tensMultiplier,
   decimalPlaces = undefined,
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   value: number | string | BigNumber
   decimals?: number | string
+  tensMultiplier?: number
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = denomAmountToChainDenomAmount({ value, decimals })
+  const valueToBn = new BigNumberInBase(value).toFixed()
+  const flooredValue = tensMultiplier
+    ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
+    : value
+
+  const number = denomAmountToChainDenomAmount({
+    value: flooredValue,
+    decimals,
+  })
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -142,15 +259,25 @@ export const derivativeMarginToChainMargin = ({
 export const derivativeMarginToChainMarginToFixed = ({
   value,
   quoteDecimals = 18,
+  tensMultiplier,
   decimalPlaces = undefined,
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   decimalPlaces?: number
+  tensMultiplier?: number
   roundingMode?: BigNumber.RoundingMode
   value: number | string | BigNumber
   quoteDecimals?: number | string
 }) => {
-  const number = derivativeMarginToChainMargin({ value, quoteDecimals })
+  const valueToBn = new BigNumberInBase(value).toFixed()
+  const flooredValue = tensMultiplier
+    ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
+    : value
+
+  const number = derivativeMarginToChainMargin({
+    value: flooredValue,
+    quoteDecimals,
+  })
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -213,16 +340,26 @@ export const derivativePriceToChainPrice = ({
  */
 export const derivativePriceToChainPriceToFixed = ({
   value,
+  tensMultiplier,
   quoteDecimals = 18,
   decimalPlaces = undefined,
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   value: number | string | BigNumber
+  tensMultiplier?: number
   quoteDecimals?: number | string
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = derivativePriceToChainPrice({ value, quoteDecimals })
+  const valueToBn = new BigNumberInBase(value).toFixed()
+  const flooredValue = tensMultiplier
+    ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
+    : value
+
+  const number = derivativePriceToChainPrice({
+    value: flooredValue,
+    quoteDecimals,
+  })
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -284,13 +421,20 @@ export const derivativeQuantityToChainQuantity = ({
 export const derivativeQuantityToChainQuantityToFixed = ({
   value,
   decimalPlaces = undefined,
+  tensMultiplier,
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   value: number | string | BigNumber
   decimalPlaces?: number
+  tensMultiplier?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = derivativeQuantityToChainQuantity({ value })
+  const valueToBn = new BigNumberInBase(value).toFixed()
+  const flooredValue = tensMultiplier
+    ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
+    : value
+
+  const number = derivativeQuantityToChainQuantity({ value: flooredValue })
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -356,6 +500,7 @@ export const spotPriceToChainPriceToFixed = ({
   value,
   baseDecimals = 18,
   quoteDecimals = 6,
+  tensMultiplier,
   decimalPlaces = undefined,
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
@@ -363,9 +508,19 @@ export const spotPriceToChainPriceToFixed = ({
   quoteDecimals?: number | string
   baseDecimals?: number | string
   decimalPlaces?: number
+  tensMultiplier?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = spotPriceToChainPrice({ value, baseDecimals, quoteDecimals })
+  const valueToBn = new BigNumberInBase(value).toFixed()
+  const flooredValue = tensMultiplier
+    ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
+    : value
+
+  const number = spotPriceToChainPrice({
+    value: flooredValue,
+    baseDecimals,
+    quoteDecimals,
+  })
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -436,16 +591,23 @@ export const spotQuantityToChainQuantity = ({
 export const spotQuantityToChainQuantityToFixed = ({
   value,
   baseDecimals = 18,
+  tensMultiplier,
   decimalPlaces = undefined,
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   value: number | string | BigNumber
+  tensMultiplier?: number
   baseDecimals?: number | string
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
+  const valueToBn = new BigNumberInBase(value).toFixed()
+  const flooredValue = tensMultiplier
+    ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
+    : value
+
   const number = spotQuantityToChainQuantity({
-    value,
+    value: flooredValue,
     baseDecimals,
   })
 
@@ -567,111 +729,4 @@ export const getExactDecimalsFromNumber = (number: number | string): number => {
 
 export const getTriggerPrice = (triggerPrice?: number | string) => {
   return triggerPrice ? amountToCosmosSdkDecAmount(triggerPrice).toFixed() : ''
-}
-
-export const formatNumberToAllowableDecimals = (
-  value: string | number,
-  allowableDecimals: number,
-  roundingMode?: BigNumber.RoundingMode,
-): string => {
-  const decimalPlacesInValue = new BigNumberInBase(
-    getExactDecimalsFromNumber(value),
-  )
-  const valueToString = value.toString()
-
-  if (decimalPlacesInValue.lte(0)) {
-    return valueToString
-  }
-
-  const decimalMoreThanAllowance = decimalPlacesInValue.gte(allowableDecimals)
-
-  return decimalMoreThanAllowance
-    ? new BigNumberInBase(valueToString).toFixed(
-        allowableDecimals,
-        roundingMode,
-      )
-    : valueToString
-}
-
-export const formatNumberToAllowableTensMultiplier = (
-  value: string | number,
-  tensMultiplier: number,
-  roundingMode?: BigNumber.RoundingMode,
-): string => {
-  const valueToString = value.toString()
-  const valueToBn = new BigNumberInBase(value)
-
-  if (tensMultiplier === 0) {
-    return valueToString
-  }
-
-  const tensMul = new BigNumberInBase(10).pow(tensMultiplier)
-
-  if (valueToBn.lte(tensMul)) {
-    return tensMul.toFixed(0, roundingMode)
-  }
-
-  return new BigNumberInBase(valueToBn.div(tensMul).toFixed(0))
-    .multipliedBy(tensMul)
-    .toFixed(0, roundingMode)
-}
-
-export const formatAmountToAllowableAmount = (
-  value: string | number,
-  tensMultiplier: number,
-): string => {
-  return tensMultiplier < 0
-    ? formatNumberToAllowableDecimals(
-        value,
-        -tensMultiplier,
-        BigNumberInBase.ROUND_DOWN,
-      )
-    : formatNumberToAllowableTensMultiplier(
-        value,
-        tensMultiplier,
-        BigNumberInBase.ROUND_DOWN,
-      )
-}
-
-export const formatPriceToAllowablePrice = (
-  value: string | number,
-  tensMultiplier: number,
-): string => {
-  return tensMultiplier <= 0
-    ? formatNumberToAllowableDecimals(value, -tensMultiplier)
-    : formatNumberToAllowableTensMultiplier(value, tensMultiplier)
-}
-
-/**
- *
- * Legacy function - use formatNumberToAllowableDecimals
- *
- * @param value
- * @param allowableDecimals
- * @returns
- */
-export const formatAmountToAllowableDecimals = (
-  value: string | number,
-  allowableDecimals: number,
-): string => {
-  return formatNumberToAllowableDecimals(
-    value,
-    allowableDecimals,
-    BigNumberInBase.ROUND_DOWN,
-  )
-}
-
-/**
- *
- * Legacy function - use formatNumberToAllowableDecimals
- *
- * @param value
- * @param allowableDecimals
- * @returns
- */
-export const formatPriceToAllowableDecimals = (
-  value: string | number,
-  allowableDecimals: number,
-): string => {
-  return formatNumberToAllowableDecimals(value, allowableDecimals)
 }

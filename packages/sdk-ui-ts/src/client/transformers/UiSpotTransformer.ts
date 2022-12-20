@@ -1,10 +1,9 @@
-import {
-  BigNumber,
-  BigNumberInBase,
-  BigNumberInWei,
-} from '@injectivelabs/utils'
+import { BigNumber } from '@injectivelabs/utils'
 import { Change, MarketType } from '../types/common'
-import { getTensMultiplier, getDecimalsFromNumber } from '@injectivelabs/sdk-ts'
+import {
+  getSpotMarketTensMultiplier,
+  getSpotMarketDecimals,
+} from '@injectivelabs/sdk-ts'
 import {
   UiBaseSpotMarketWithToken,
   UiSpotMarketWithToken,
@@ -22,26 +21,18 @@ export class UiSpotTransformer {
       ...market,
       type: MarketType.Spot,
       subType: MarketType.Spot,
-      priceDecimals: getDecimalsFromNumber(
-        new BigNumberInWei(market.minPriceTickSize)
-          .toBase(market.quoteToken.decimals - market.baseToken.decimals)
-          .toNumber(),
-      ),
-      quantityDecimals: getDecimalsFromNumber(
-        new BigNumberInBase(market.minQuantityTickSize)
-          .toWei(-market.baseToken.decimals)
-          .toNumber(),
-      ),
-      priceTensMultiplier: getTensMultiplier(
-        new BigNumberInWei(market.minPriceTickSize)
-          .toBase(market.quoteToken.decimals - market.baseToken.decimals)
-          .toNumber(),
-      ),
-      quantityTensMultiplier: getTensMultiplier(
-        new BigNumberInBase(market.minQuantityTickSize)
-          .toWei(-market.baseToken.decimals)
-          .toNumber(),
-      ),
+      ...getSpotMarketDecimals({
+        minPriceTickSize: market.minPriceTickSize,
+        minQuantityTickSize: market.minQuantityTickSize,
+        baseDecimals: market.baseToken.decimals,
+        quoteDecimals: market.quoteToken.decimals,
+      }),
+      ...getSpotMarketTensMultiplier({
+        minPriceTickSize: market.minPriceTickSize,
+        minQuantityTickSize: market.minQuantityTickSize,
+        baseDecimals: market.baseToken.decimals,
+        quoteDecimals: market.quoteToken.decimals,
+      }),
     }
   }
 

@@ -79,6 +79,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
 
   public toProto(): MsgCreateDerivativeLimitOrder.Proto {
     const { params: initialParams } = this
+
     const params = {
       ...initialParams,
       price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
@@ -88,6 +89,8 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
       ).toFixed(),
       quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
     } as MsgCreateDerivativeLimitOrder.Params
+
+    console.log({ initialParams, params })
 
     return createLimitOrder(params)
   }
