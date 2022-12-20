@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.312](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.311...@injectivelabs/sdk-ts@1.0.312) (2022-12-20)
+
+
+### Features
+
+* cosmwasm map ([697422e](https://github.com/InjectiveLabs/injective-ts/commit/697422ed3608750f025b315236680a185e411b5f))
+
+
+
+
+
 ## [1.0.311](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.310...@injectivelabs/sdk-ts@1.0.311) (2022-12-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
