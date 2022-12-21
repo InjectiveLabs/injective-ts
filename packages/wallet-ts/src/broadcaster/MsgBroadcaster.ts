@@ -267,7 +267,7 @@ export class MsgBroadcaster {
       })
     }
 
-    return response.txHash
+    return response
   }
 
   /**
@@ -310,7 +310,7 @@ export class MsgBroadcaster {
       chainId: ethereumChainId,
     })
 
-    return response.txHash
+    return response
   }
 
   /**
@@ -531,7 +531,7 @@ export class MsgBroadcaster {
       })
     }
 
-    return response.txHash
+    return response
   }
 
   /**
@@ -630,7 +630,7 @@ export class MsgBroadcaster {
       pubKey: directSignResponse.signature.pub_key,
     })
 
-    return response.txHash
+    return response
   }
 
   private async fetchFeePayerPubKey(existingFeePayerPubKey?: string) {

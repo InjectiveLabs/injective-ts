@@ -1,11 +1,11 @@
-import { BaseAccount, PrivateKey } from '../accounts'
-import { Msgs } from '../modules'
-import { createTransaction } from './tx'
-import { TxGrpcApi } from './client/TxGrpcApi'
+import { BaseAccount, PrivateKey } from '../../../accounts'
+import { Msgs } from '../../..'
+import { createTransaction } from '..'
+import { TxGrpcApi } from '../api/TxGrpcApi'
 import {
   ChainRestAuthApi,
   ChainRestTendermintApi,
-} from '../../client/chain/rest'
+} from '../../../../client/chain/rest'
 import {
   BigNumberInBase,
   DEFAULT_STD_FEE,
@@ -15,7 +15,7 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import {
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
-} from './utils/helpers'
+} from '../utils/helpers'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   getNetworkEndpoints,
@@ -141,7 +141,7 @@ export class MsgBroadcasterWithPk {
       )
     }
 
-    return txResponse.txHash
+    return txResponse
   }
 
   /**

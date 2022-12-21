@@ -3,8 +3,7 @@ import {
   mapValuesToProperValueType,
   objectKeysToEip712Types,
   TypedDataField,
-} from '../eip712'
-// import { hardcodedEip712Types } from '../eip712/eip712types'
+} from './tx/eip712'
 import { prepareSignBytes } from './utils'
 
 /**

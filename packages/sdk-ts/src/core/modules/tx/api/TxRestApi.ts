@@ -10,7 +10,7 @@ import {
   TxInfo,
   TxResultResponse,
 } from '../types/tx-rest-client'
-import { TxClient } from './TxClient'
+import { TxClient } from '../utils/classes/TxClient'
 import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx'
 import {
   HttpRequestException,
@@ -20,8 +20,8 @@ import {
 } from '@injectivelabs/exceptions'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
-import { errorToErrorMessage, isTxNotFoundError } from './utils'
-import { TxResponse } from './types'
+import { errorToErrorMessage, isTxNotFoundError } from '../utils/api'
+import { TxResponse } from '../types/tx'
 
 /**
  * It is recommended to use TxGrpcClient instead of TxRestApi

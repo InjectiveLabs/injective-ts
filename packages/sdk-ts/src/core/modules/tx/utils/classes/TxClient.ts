@@ -1,5 +1,5 @@
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { hashToHex } from '../../../utils/crypto'
+import { hashToHex } from '../../../../../utils/crypto'
 
 export class TxClient {
   /**

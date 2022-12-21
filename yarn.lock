@@ -1067,7 +1067,7 @@
     "@certusone/wormhole-sdk-proto-web" "0.0.6"
     "@certusone/wormhole-sdk-wasm" "^0.0.1"
     "@injectivelabs/networks" "^1.0.52"
-    "@injectivelabs/sdk-ts" "^1.0.289"
+    "@injectivelabs/sdk-ts" "1.0.289"
     "@injectivelabs/utils" "1.0.45"
     "@project-serum/anchor" "^0.25.0"
     "@solana/spl-token" "^0.3.5"
@@ -1474,7 +1474,7 @@
     cosmjs-types "^0.5.2"
     long "^4.0.0"
 
-"@cosmjs/proto-signing@^0.29.0":
+"@cosmjs/proto-signing@^0.29.0", "@cosmjs/proto-signing@^0.29.5":
   version "0.29.5"
   resolved "https://registry.yarnpkg.com/@cosmjs/proto-signing/-/proto-signing-0.29.5.tgz#af3b62a46c2c2f1d2327d678b13b7262db1fe87c"
   integrity sha512-QRrS7CiKaoETdgIqvi/7JC2qCwCR7lnWaUsTzh/XfRy3McLkEd+cXbKAW3cygykv7IN0VAEIhZd2lyIfT8KwNA==
@@ -1525,6 +1525,24 @@
     protobufjs "~6.11.3"
     xstream "^11.14.0"
 
+"@cosmjs/stargate@^0.29.5":
+  version "0.29.5"
+  resolved "https://registry.yarnpkg.com/@cosmjs/stargate/-/stargate-0.29.5.tgz#d597af1c85a3c2af7b5bdbec34d5d40692cc09e4"
+  integrity sha512-hjEv8UUlJruLrYGJcUZXM/CziaINOKwfVm2BoSdUnNTMxGvY/jC1ABHKeZUYt9oXHxEJ1n9+pDqzbKc8pT0nBw==
+  dependencies:
+    "@confio/ics23" "^0.6.8"
+    "@cosmjs/amino" "^0.29.5"
+    "@cosmjs/encoding" "^0.29.5"
+    "@cosmjs/math" "^0.29.5"
+    "@cosmjs/proto-signing" "^0.29.5"
+    "@cosmjs/stream" "^0.29.5"
+    "@cosmjs/tendermint-rpc" "^0.29.5"
+    "@cosmjs/utils" "^0.29.5"
+    cosmjs-types "^0.5.2"
+    long "^4.0.0"
+    protobufjs "~6.11.3"
+    xstream "^11.14.0"
+
 "@cosmjs/stream@0.28.13":
   version "0.28.13"
   resolved "https://registry.yarnpkg.com/@cosmjs/stream/-/stream-0.28.13.tgz#1e79d1116fda1e63e5ecddbd9d803d403942b1fa"
@@ -1555,7 +1573,7 @@
     readonly-date "^1.0.0"
     xstream "^11.14.0"
 
-"@cosmjs/tendermint-rpc@^0.29.0":
+"@cosmjs/tendermint-rpc@^0.29.0", "@cosmjs/tendermint-rpc@^0.29.5":
   version "0.29.5"
   resolved "https://registry.yarnpkg.com/@cosmjs/tendermint-rpc/-/tendermint-rpc-0.29.5.tgz#f205c10464212bdf843f91bb2e4a093b618cb5c2"
   integrity sha512-ar80twieuAxsy0x2za/aO3kBr2DFPAXDmk2ikDbmkda+qqfXgl35l9CVAAjKRqd9d+cRvbQyb5M4wy6XQpEV6w==
@@ -2104,6 +2122,20 @@
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
+
+"@injectivelabs/utils@1.0.45":
+  version "1.0.45"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/utils/-/utils-1.0.45.tgz#3027762c1a629c42c0f632f37f862859fd6d2bcc"
+  integrity sha512-ndmsKAMrQVbwh6BU5HMbuZQilfpMZVNwwO8m8OjQtvUm0lQ0HyEkugJd20HwcX2K3k+fSq/OlVy0F9gab8Cp6Q==
+  dependencies:
+    "@injectivelabs/exceptions" "^1.0.32"
+    "@injectivelabs/ts-types" "^1.0.18"
+    axios "^0.21.1"
+    bignumber.js "^9.0.1"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+    snakecase-keys "^5.1.2"
+    store2 "^2.12.0"
 
 "@iov/crypto@2.1.0":
   version "2.1.0"

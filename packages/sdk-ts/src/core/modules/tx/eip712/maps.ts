@@ -1,6 +1,6 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
-import { numberToCosmosSdkDecString, snakeToPascal } from '../../utils'
+import { numberToCosmosSdkDecString, snakeToPascal } from '../../../../utils'
 import { TypedDataField } from './types'
 
 const msgExecuteContractType = 'wasm/MsgExecuteContract'

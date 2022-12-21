@@ -1,10 +1,8 @@
-import { TxRestApi } from './TxRestApi'
-import { TxGrpcApi } from './TxGrpcApi'
+import { TxRestApi } from '../api/TxRestApi'
+import { TxGrpcApi } from '../api/TxGrpcApi'
 
 export * from './TxGrpcApi'
 export * from './TxRestApi'
-export * from './TxClient'
-export * from './types'
 
 /**
  * @deprecated use TxRestApi and TxGrpcApi

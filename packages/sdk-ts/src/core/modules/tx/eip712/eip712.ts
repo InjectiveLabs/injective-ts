@@ -1,5 +1,5 @@
 import { EthereumChainId } from '@injectivelabs/ts-types'
-import { Msgs } from '../modules/msgs'
+import { Msgs } from '../../msgs'
 import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types'
 import {
   getDefaultEip712Types,

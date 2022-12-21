@@ -26,14 +26,14 @@ import {
   GrpcUnaryRequestException,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import { getGrpcTransport } from '../../../utils/grpc'
-import { isBrowser } from '../../../utils/helpers'
-import { errorToErrorMessage, isTxNotFoundError } from './utils'
+import { getGrpcTransport } from '../../../../utils/grpc'
+import { isBrowser } from '../../../../utils/helpers'
+import { errorToErrorMessage, isTxNotFoundError } from '../utils/api'
 import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
-import { TxResponse } from './types'
+import { TxResponse } from '../types/tx'
 
 if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
