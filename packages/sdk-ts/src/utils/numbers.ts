@@ -31,11 +31,10 @@ export const formatNumberToAllowableTensMultiplier = (
   tensMultiplier: number,
   roundingMode?: BigNumber.RoundingMode,
 ): string => {
-  const valueToString = value.toString()
   const valueToBn = new BigNumberInBase(value)
 
   if (tensMultiplier === 0) {
-    return valueToString
+    return valueToBn.toFixed(0, roundingMode)
   }
 
   const tensMul = new BigNumberInBase(10).pow(tensMultiplier)
