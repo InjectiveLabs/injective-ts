@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.320](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.319...@injectivelabs/sdk-ts@1.0.320) (2022-12-21)
+
+
+### Bug Fixes
+
+* handle 0 case differently in tens multiplier logic ([246ff6a](https://github.com/InjectiveLabs/injective-ts/commit/246ff6a2a574e07deb0ae8d58adccea0491f52ce))
+
+
+
+
+
 ## [1.0.319](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.318...@injectivelabs/sdk-ts@1.0.319) (2022-12-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
