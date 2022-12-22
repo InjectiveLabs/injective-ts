@@ -54,6 +54,8 @@ export const PEGGY_DEVNET_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
 export const PEGGY_DEVNET1_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
+export const PEGGY_DEVNET2_GRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
 
 export const peggyGraphQlEndpointForNetwork = (network: Network): string => {
   if (network === Network.Devnet) {
@@ -62,6 +64,10 @@ export const peggyGraphQlEndpointForNetwork = (network: Network): string => {
 
   if (network === Network.Devnet1) {
     return PEGGY_DEVNET1_GRAPH_URL
+  }
+
+  if (network === Network.Devnet2) {
+    return PEGGY_DEVNET2_GRAPH_URL
   }
 
   if ([Network.Testnet, Network.TestnetK8s].includes(network)) {

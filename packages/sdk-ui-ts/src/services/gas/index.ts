@@ -48,6 +48,7 @@ const isTestnet = (network: Network) => {
     Network.Local,
     Network.Devnet,
     Network.Devnet1,
+    Network.Devnet2,
     Network.Testnet,
     Network.TestnetK8s,
   ].includes(network)

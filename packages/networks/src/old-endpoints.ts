@@ -53,6 +53,13 @@ export const oldEndpointsDevnet1: OldNetworkEndpoints = {
   sentryHttpApi: 'https://devnet-1.lcd.injective.dev',
 }
 
+export const oldEndpointsDevnet2: OldNetworkEndpoints = {
+  indexerApi: 'https://devnet-2.api.injective.dev',
+  sentryGrpcApi: 'https://devnet-2.grpc.injective.dev',
+  tendermintApi: 'https://devnet-2.tm.injective.dev',
+  sentryHttpApi: 'https://devnet-2.lcd.injective.dev',
+}
+
 export const oldEndpointsLocal: OldNetworkEndpoints = {
   indexerApi: 'https://localhost:4444',
   sentryGrpcApi: 'http://localhost:9091',

@@ -53,6 +53,13 @@ export const endpointsDevnet1: NetworkEndpoints = {
   rest: 'https://devnet-1.lcd.injective.dev',
 }
 
+export const endpointsDevnet2: NetworkEndpoints = {
+  indexer: 'https://devnet-2.api.injective.dev',
+  grpc: 'https://devnet-2.grpc.injective.dev',
+  rpc: 'https://devnet-2.tm.injective.dev',
+  rest: 'https://devnet-2.lcd.injective.dev',
+}
+
 export const endpointsLocal: NetworkEndpoints = {
   indexer: 'https://localhost:4444',
   grpc: 'http://localhost:9091',
