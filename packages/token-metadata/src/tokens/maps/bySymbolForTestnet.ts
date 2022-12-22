@@ -2,6 +2,7 @@ import { TokenMeta } from '../../types'
 import {
   devnetSymbolToAddressMap,
   devnet1SymbolToAddressMap,
+  devnet2SymbolToAddressMap,
   testnetSymbolToAddressMap,
   testnetSymbolToCw20AddressMap,
 } from '../helpers/testnetMap'
@@ -43,6 +44,20 @@ export const tokensBySymbolForDevnet1 = (
 ).reduce((result, token) => {
   const tokenKey = token as keyof typeof devnet1SymbolToAddressMap
   const testnetAddressFromMap = devnet1SymbolToAddressMap[tokenKey]
+  const testnetAddress = (testnetAddressFromMap ||
+    tokens[token].address) as string
+
+  return {
+    ...result,
+    [token.toUpperCase()]: { ...tokens[token], address: testnetAddress },
+  }
+}, {}) as Record<string, TokenMeta>
+
+export const tokensBySymbolForDevnet2 = (
+  Object.keys(tokens) as Array<keyof typeof tokens>
+).reduce((result, token) => {
+  const tokenKey = token as keyof typeof devnet2SymbolToAddressMap
+  const testnetAddressFromMap = devnet2SymbolToAddressMap[tokenKey]
   const testnetAddress = (testnetAddressFromMap ||
     tokens[token].address) as string
 

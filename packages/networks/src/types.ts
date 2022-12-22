@@ -8,6 +8,7 @@ export enum Network {
   TestnetK8s = 'testnetK8s',
   Testnet = 'testnet',
   Devnet1 = 'devnet1',
+  Devnet2 = 'devnet2',
   Devnet = 'devnet',
   Local = 'local',
 }

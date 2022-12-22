@@ -4,6 +4,7 @@ import {
   tokensBySymbol,
   tokensBySymbolForDevnet,
   tokensBySymbolForDevnet1,
+  tokensBySymbolForDevnet2,
   tokensBySymbolForTestnet,
 } from './tokens'
 
@@ -18,6 +19,8 @@ export class TokenMetaUtilFactory {
         return new TokenMetaUtil(tokensBySymbolForDevnet)
       case Network.Devnet1:
         return new TokenMetaUtil(tokensBySymbolForDevnet1)
+      case Network.Devnet2:
+        return new TokenMetaUtil(tokensBySymbolForDevnet2)
       case Network.Local:
         return new TokenMetaUtil(tokensBySymbol)
       case Network.Testnet:

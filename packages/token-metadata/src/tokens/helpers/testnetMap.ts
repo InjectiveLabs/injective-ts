@@ -14,6 +14,10 @@ export const devnet1SymbolToAddressMap = {
   INJ: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
 }
 
+export const devnet2SymbolToAddressMap = {
+  INJ: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
+}
+
 export const testnetSymbolToCw20AddressMap = {
   SOL: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
   WSOL: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
