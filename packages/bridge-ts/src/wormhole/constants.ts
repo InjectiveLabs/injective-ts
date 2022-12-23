@@ -10,6 +10,7 @@ export const WORMHOLE_CONTRACT_BY_NETWORK = {
   [Network.TestnetK8s]: CONTRACTS.TESTNET.injective,
   [Network.Devnet]: CONTRACTS.TESTNET.injective,
   [Network.Devnet1]: CONTRACTS.TESTNET.injective,
+  [Network.Devnet2]: CONTRACTS.TESTNET.injective,
   [Network.Local]: CONTRACTS.TESTNET.injective,
 }
 
@@ -22,6 +23,7 @@ export const WORMHOLE_SOLANA_CONTRACT_BY_NETWORK = {
   [Network.TestnetK8s]: CONTRACTS.TESTNET.solana,
   [Network.Devnet]: CONTRACTS.TESTNET.solana,
   [Network.Devnet1]: CONTRACTS.TESTNET.solana,
+  [Network.Devnet2]: CONTRACTS.TESTNET.solana,
   [Network.Local]: CONTRACTS.TESTNET.solana,
 }
 
@@ -34,6 +36,7 @@ export const WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK = {
   [Network.TestnetK8s]: CONTRACTS.TESTNET.ethereum,
   [Network.Devnet]: CONTRACTS.TESTNET.ethereum,
   [Network.Devnet1]: CONTRACTS.TESTNET.ethereum,
+  [Network.Devnet2]: CONTRACTS.TESTNET.solana,
   [Network.Local]: CONTRACTS.TESTNET.ethereum,
 }
 
