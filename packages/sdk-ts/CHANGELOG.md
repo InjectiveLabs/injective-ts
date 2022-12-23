@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.322](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.321...@injectivelabs/sdk-ts@1.0.322) (2022-12-23)
+
+
+### Features
+
+* added cw20transfer args ([5861fe5](https://github.com/InjectiveLabs/injective-ts/commit/5861fe5b5fdec2cf5066d49fe950bdb579aca273))
+* added cw20transfer args ([0b53619](https://github.com/InjectiveLabs/injective-ts/commit/0b53619d29fe3203c9a2bdc44cb819ca42e36f4c))
+
+
+
+
+
 ## [1.0.321](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.320...@injectivelabs/sdk-ts@1.0.321) (2022-12-22)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
