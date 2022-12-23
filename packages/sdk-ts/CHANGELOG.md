@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.323](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.322...@injectivelabs/sdk-ts@1.0.323) (2022-12-23)
+
+
+### Features
+
+* initial order hash manage ([3f1c9ec](https://github.com/InjectiveLabs/injective-ts/commit/3f1c9ec4276120df49b5692c34fc3295714fa36d))
+
+
+
+
+
 ## [1.0.322](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.321...@injectivelabs/sdk-ts@1.0.322) (2022-12-23)
 
 
