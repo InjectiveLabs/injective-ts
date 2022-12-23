@@ -7,13 +7,14 @@ import {
 
 /**
  * When we execute the `send` action on
- * a CW20 contract we actually send an execution
- * message to be executed no the CW20 contract itself
- * and NOT SEND CW20 TOKENS from one address to another.
- *  *
- * Keep in mind that using this argument is EXPERIMENTAL at this point
- * and it might break your app. Use ExecArgsCW20Transfer if you want
- * to send CW20 assets from one address to another.
+ * a CW20 contract the  flow is the following:
+ * Contract A -> moves tokens to Contract B -> Contract B executed a `receive` method
+ * to move the tokens from its ownership to the recipient
+ *
+ * From the CW20 docs
+ * Send{contract, amount, msg} - Moves amount tokens from the env.sender account to the recipient account.
+ * contract must be an address of a contract that implements the Receiver interface.
+ * The msg will be passed to the recipient contract, along with the amount.
  *
  * @experimental
  */

@@ -4,6 +4,15 @@ import {
   ExecDataRepresentation,
 } from '../ExecArgBase'
 
+/**
+ * When we execute the `transfer` action on
+ * a CW20 contract the  flow is the following:
+ * Contract A moves ownership of the tokens from Bob to Alice
+ *
+ * Transfer{recipient, amount} - Moves amount tokens from the env.sender account to the recipient account.
+ * This is designed to send to an address controlled by a private key and
+ * does not trigger any actions on the recipient if it is a contract.
+ */
 export declare namespace ExecArgCW20Transfer {
   export interface Params {
     amount: string
