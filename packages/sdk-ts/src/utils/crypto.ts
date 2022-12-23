@@ -3,6 +3,7 @@ import { RIPEMD160 } from 'jscrypto/RIPEMD160'
 import { Base64 } from 'jscrypto/Base64'
 import { Word32Array } from 'jscrypto'
 import * as secp256k1 from 'secp256k1'
+import { SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
 
 export const hashToHex = (data: string): string => {
   return SHA256.hash(Base64.parse(data)).toString().toUpperCase()
@@ -41,3 +42,19 @@ export const privateKeyHashToPublicKeyBase64 = (
     'base64',
   )
 }
+
+export const domainHash = (message: any) =>
+  TypedDataUtils.hashStruct(
+    'EIP712Domain',
+    message.domain,
+    message.types,
+    SignTypedDataVersion.V4,
+  )
+
+export const messageHash = (message: any) =>
+  TypedDataUtils.hashStruct(
+    message.primaryType,
+    message.message,
+    message.types,
+    SignTypedDataVersion.V4,
+  )

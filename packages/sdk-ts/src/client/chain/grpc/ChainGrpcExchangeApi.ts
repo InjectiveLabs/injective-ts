@@ -3,6 +3,8 @@ import {
   QueryExchangeParamsRequest,
   QueryFeeDiscountScheduleRequest,
   QueryTradeRewardCampaignRequest,
+  QuerySubaccountTradeNonceRequest,
+  QuerySubaccountTradeNonceResponse,
   QueryFeeDiscountAccountInfoRequest,
   QueryTradeRewardPointsRequest,
   QueryModuleStateRequest,
@@ -218,6 +220,31 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
       >(request, ExchangeQuery.Positions)
 
       return ChainGrpcExchangeTransformer.positionsResponseToPositions(response)
+    } catch (e: any) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
+
+  async fetchSubaccountTradeNonce(subaccountId: string) {
+    const request = new QuerySubaccountTradeNonceRequest()
+
+    request.setSubaccountId(subaccountId)
+
+    try {
+      const response = await this.request<
+        QuerySubaccountTradeNonceRequest,
+        QuerySubaccountTradeNonceResponse,
+        typeof ExchangeQuery.SubaccountTradeNonce
+      >(request, ExchangeQuery.SubaccountTradeNonce)
+
+      return response.toObject()
     } catch (e: any) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
