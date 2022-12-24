@@ -4,6 +4,7 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import { Address } from '../../../../accounts/Address'
 import { ChainGrpcExchangeApi } from '../../../../../client/chain/grpc/ChainGrpcExchangeApi'
 import { domainHash, messageHash } from '../../../../../utils/crypto'
+import { cosmosSdkDecToBigNumber } from '../../../../../utils/numbers'
 import keccak256 from 'keccak256'
 
 interface OrderInfo {
@@ -16,9 +17,8 @@ interface OrderInfo {
 interface SpotOrder {
   marketId: string
   orderInfo: OrderInfo
-  salt: string
   orderType: string
-  triggerPrice: string
+  triggerPrice?: string
 }
 
 interface DerivativeOrder extends SpotOrder {
@@ -28,42 +28,99 @@ interface DerivativeOrder extends SpotOrder {
 const spotOrderPrimaryType = 'SpotOrder'
 const derivativeOrderPrimaryType = 'DerivativeOrder'
 const EIP712DomainType = [
-  { name: 'name', type: 'string' },
-  { name: 'version', type: 'string' },
-  { name: 'chainId', type: 'uint256' },
-  { name: 'verifyingContract', type: 'string' },
-  { name: 'salt', type: 'string' },
+  {
+    name: 'name',
+    type: 'string',
+  },
+  {
+    name: 'version',
+    type: 'string',
+  },
+  {
+    name: 'chainId',
+    type: 'uint256',
+  },
+  {
+    name: 'verifyingContract',
+    type: 'address',
+  },
+  {
+    name: 'salt',
+    type: 'bytes32',
+  },
 ]
 const SpotOrderType = [
-  { name: 'MarketId', type: 'string' },
-  { name: 'OrderInfo', type: 'OrderInfo' },
-  { name: 'Salt', type: 'string' },
-  { name: 'OrderType', type: 'string' },
-  { name: 'TriggerPrice', type: 'string' },
+  {
+    name: 'MarketId',
+    type: 'string',
+  },
+  {
+    name: 'OrderInfo',
+    type: 'OrderInfo',
+  },
+  {
+    name: 'Salt',
+    type: 'string',
+  },
+  {
+    name: 'OrderType',
+    type: 'string',
+  },
+  {
+    name: 'TriggerPrice',
+    type: 'string',
+  },
 ]
 const DerivativeOrderType = [
-  { name: 'MarketDd', type: 'string' },
-  { name: 'OrderInfo', type: 'OrderInfo' },
-  { name: 'OrderType', type: 'string' },
-  { name: 'Margin', type: 'string' },
-  { name: 'TriggerPrice', type: 'string' },
-  { name: 'Salt', type: 'string' },
+  {
+    name: 'MarketId',
+    type: 'string',
+  },
+  {
+    name: 'OrderInfo',
+    type: 'OrderInfo',
+  },
+  {
+    name: 'OrderType',
+    type: 'string',
+  },
+  {
+    name: 'Margin',
+    type: 'string',
+  },
+  {
+    name: 'TriggerPrice',
+    type: 'string',
+  },
+  {
+    name: 'Salt',
+    type: 'string',
+  },
 ]
 const OrderInfoType = [
   {
     name: 'SubaccountId',
     type: 'string',
   },
-  { name: 'FeeRecipient', type: 'string' },
-  { name: 'Price', type: 'string' },
-  { name: 'Quantity', type: 'string' },
+  {
+    name: 'FeeRecipient',
+    type: 'string',
+  },
+  {
+    name: 'Price',
+    type: 'string',
+  },
+  {
+    name: 'Quantity',
+    type: 'string',
+  },
 ]
 const EIP712Domain = {
   name: 'Injective Protocol',
   version: '2.0.0',
-  chainId: '888',
-  salt: '0x0000000000000000000000000000000000000000000000000000000000000000',
+  chainId: `0x${new BigNumber(888).toString(16)}`,
   verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+  salt: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 const EIP712Types = {
@@ -83,12 +140,16 @@ const getEip712ForSpotOrder = (spotOrder: SpotOrder, nonce: number) => {
       OrderInfo: {
         SubaccountId: spotOrder.orderInfo.subaccountId,
         FeeRecipient: spotOrder.orderInfo.feeRecipient,
-        Price: spotOrder.orderInfo.price,
-        Quantity: spotOrder.orderInfo.quantity,
+        Price: cosmosSdkDecToBigNumber(spotOrder.orderInfo.price).toFixed(),
+        Quantity: cosmosSdkDecToBigNumber(
+          spotOrder.orderInfo.quantity,
+        ).toFixed(),
       },
       Salt: nonce.toString(),
-      OrderType: '0x' + new BigNumber(spotOrder.orderType).toString(16),
-      TriggerPrice: spotOrder.triggerPrice || '',
+      OrderType: `0x${new BigNumber(spotOrder.orderType).toString(16)}`,
+      TriggerPrice: spotOrder.triggerPrice
+        ? cosmosSdkDecToBigNumber(spotOrder.triggerPrice)
+        : '',
     },
   }
 }
@@ -106,12 +167,18 @@ const getEip712ForDerivativeOrder = (
       OrderInfo: {
         SubaccountId: derivativeOrder.orderInfo.subaccountId,
         FeeRecipient: derivativeOrder.orderInfo.feeRecipient,
-        Price: derivativeOrder.orderInfo.price,
-        Quantity: derivativeOrder.orderInfo.quantity,
+        Price: cosmosSdkDecToBigNumber(
+          derivativeOrder.orderInfo.price,
+        ).toFixed(),
+        Quantity: cosmosSdkDecToBigNumber(
+          derivativeOrder.orderInfo.quantity,
+        ).toFixed(),
       },
-      Margin: derivativeOrder.margin,
-      OrderType: '0x' + new BigNumber(derivativeOrder.orderType).toString(16),
-      TriggerPrice: derivativeOrder.triggerPrice || '',
+      Margin: cosmosSdkDecToBigNumber(derivativeOrder.margin).toFixed(),
+      OrderType: `0x${new BigNumber(derivativeOrder.orderType).toString(16)}`,
+      TriggerPrice: derivativeOrder.triggerPrice
+        ? cosmosSdkDecToBigNumber(derivativeOrder.triggerPrice)
+        : '',
       Salt: nonce.toString(),
     },
   }
@@ -202,6 +269,8 @@ export class OrderHashManager {
   }
 
   private hashTypedData(eip712: any) {
+    console.log(JSON.stringify(eip712))
+
     const bytesToHash = Buffer.concat([
       Buffer.from('19', 'hex'),
       Buffer.from('01', 'hex'),
@@ -209,6 +278,11 @@ export class OrderHashManager {
       messageHash(eip712),
     ])
 
-    return '0x' + Buffer.from(keccak256(bytesToHash)).toString('hex')
+    try {
+      return `0x${Buffer.from(keccak256(bytesToHash)).toString('hex')}`
+    } catch (e) {
+      console.log(e)
+      return ''
+    }
   }
 }

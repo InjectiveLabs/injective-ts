@@ -72,8 +72,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     )
     const foreignAsset = await getForeignAssetInjective(
       contractAddresses.token_bridge,
-      // @ts-ignore
-      chainGrpcWasmApi,
+      chainGrpcWasmApi as any /* TODO */,
       WORMHOLE_CHAINS.solana,
       hexToUint8Array(originAssetHex),
     )
@@ -152,7 +151,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     const { txRaw, cosmosSignDoc } =
       await createTransactionAndCosmosSignDocForAddressAndMsg({
         chainId: args.chainId,
-        message: [...additionalMsgs, ...messages],
+        message: [...additionalMsgs, ...messages] as MsgExecuteContract[],
         fee: {
           ...DEFAULT_STD_FEE,
           gas: new BigNumberInBase(DEFAULT_GAS_LIMIT)
@@ -228,7 +227,7 @@ export class InjectiveWormholeClient extends WormholeClient {
       contractAddresses.token_bridge,
       injectiveAddress,
       Buffer.from(signedVAA, 'base64'),
-    )
+    ) as Promise<MsgExecuteContract>
   }
 
   async createWrappedOnInjective({
@@ -246,7 +245,7 @@ export class InjectiveWormholeClient extends WormholeClient {
       contractAddresses.token_bridge,
       injectiveAddress,
       Buffer.from(signedVAA, 'base64'),
-    )
+    ) as Promise<MsgExecuteContract>
   }
 
   async getIsTransferCompletedInjective(signedVAA: string /* in base 64 */) {
@@ -260,8 +259,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     return getIsTransferCompletedInjective(
       contractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
-      // @ts-ignore
-      chainGrpcWasmApi,
+      chainGrpcWasmApi as any /* TODO */,
     )
   }
 }

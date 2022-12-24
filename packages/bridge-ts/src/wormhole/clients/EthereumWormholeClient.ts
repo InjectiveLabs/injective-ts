@@ -47,8 +47,7 @@ export class EthereumWormholeClient extends WormholeClient {
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
     const foreignAsset = await getForeignAssetInjective(
       contractAddresses.token_bridge,
-      // @ts-ignore
-      chainGrpcWasmApi,
+      chainGrpcWasmApi as any /* TODO */,
       WORMHOLE_CHAINS.ethereum,
       new Uint8Array(
         Buffer.from(tryNativeToHexString(args.tokenAddress, 'injective')),
@@ -107,6 +106,6 @@ export class EthereumWormholeClient extends WormholeClient {
       contractAddresses.token_bridge,
       recipient,
       signedVAA,
-    )
+    ) as Promise<MsgExecuteContract>
   }
 }

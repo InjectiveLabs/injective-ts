@@ -27,7 +27,7 @@ const protoParams = {
 
 const message = MsgEditValidator.fromJSON(params)
 
-describe.only('MsgEditValidator', () => {
+describe('MsgEditValidator', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
