@@ -2,7 +2,6 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import {
   isBrowser,
   createTransactionAndCosmosSignDocForAddressAndMsg,
-  TxGrpcApi,
   MsgExecuteContract,
   ChainGrpcWasmApi,
   TxResponse,
@@ -150,7 +149,6 @@ export class InjectiveWormholeClient extends WormholeClient {
       tryNativeToUint8Array(solanaPubKey.toString(), WORMHOLE_CHAINS.solana),
     )
 
-    const txApi = new TxGrpcApi(endpoints.grpc)
     const { txRaw, cosmosSignDoc } =
       await createTransactionAndCosmosSignDocForAddressAndMsg({
         chainId: args.chainId,
@@ -176,12 +174,10 @@ export class InjectiveWormholeClient extends WormholeClient {
       address: args.injectiveAddress,
     })) as any
 
-    const txHash = await provider.sendTransaction(directSignResponse, {
+    const txResponse = await provider.sendTransaction(directSignResponse, {
       chainId: args.chainId as ChainId,
       address: args.injectiveAddress,
     })
-
-    const txResponse = (await txApi.fetchTx(txHash)) as TxResponse
 
     if (!txResponse) {
       throw new GeneralException(new Error('Transaction can not be found!'))
