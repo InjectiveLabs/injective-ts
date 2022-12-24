@@ -9,6 +9,7 @@ import {
 import {
   createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
+  TxResponse,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
@@ -62,7 +63,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-  ): Promise<string> {
+  ): Promise<TxResponse> {
     const { leapWallet } = this
     const txRaw =
       transaction instanceof TxRaw

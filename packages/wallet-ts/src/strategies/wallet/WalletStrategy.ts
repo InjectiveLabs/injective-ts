@@ -8,6 +8,7 @@ import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxResponse } from '@injectivelabs/sdk-ts'
 import Metamask from './strategies/Metamask'
 import {
   ConcreteWalletStrategy,
@@ -222,7 +223,7 @@ export default class WalletStrategy {
   public async sendTransaction(
     tx: DirectSignResponse | TxRaw,
     options: { address: AccountAddress; chainId: ChainId },
-  ): Promise<string> {
+  ): Promise<TxResponse> {
     return this.getStrategy().sendTransaction(tx, options)
   }
 

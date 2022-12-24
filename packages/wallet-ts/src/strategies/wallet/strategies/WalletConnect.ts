@@ -16,6 +16,7 @@ import Web3 from 'web3'
 import { provider, TransactionConfig } from 'web3-core'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
@@ -142,7 +143,7 @@ export default class WalletConnect
   async sendTransaction(
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
-  ): Promise<string> {
+  ): Promise<TxResponse> {
     throw new MetamaskException(
       new Error(
         'sendTransaction is not supported. WalletConnect only supports sending transaction to Ethereum',

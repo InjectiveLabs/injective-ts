@@ -164,7 +164,10 @@ export class TxGrpcApi implements TxConcreteApi {
     }
   }
 
-  public async broadcast(txRaw: TxRaw, options?: TxClientBroadcastOptions) {
+  public async broadcast(
+    txRaw: TxRaw,
+    options?: TxClientBroadcastOptions,
+  ): Promise<TxResponse> {
     const { txService } = this
     const { mode, timeout } = options || {
       mode: BroadcastMode.BROADCAST_MODE_SYNC,

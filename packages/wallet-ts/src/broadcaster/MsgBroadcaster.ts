@@ -14,6 +14,7 @@ import {
   PublicKey,
   SIGN_AMINO,
   TxGrpcApi,
+  TxResponse,
   TxRestApi,
 } from '@injectivelabs/sdk-ts'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
@@ -310,7 +311,11 @@ export class MsgBroadcaster {
       chainId: ethereumChainId,
     })
 
-    return response
+    return {
+      ...response,
+      gasUsed: 0 /** not available from the API */,
+      gasWanted: 0 /** not available from the API */,
+    } as TxResponse
   }
 
   /**

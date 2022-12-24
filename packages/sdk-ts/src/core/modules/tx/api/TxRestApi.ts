@@ -147,7 +147,10 @@ export class TxRestApi implements TxConcreteApi {
     }
   }
 
-  public async broadcast(tx: TxRaw, options?: TxClientBroadcastOptions) {
+  public async broadcast(
+    tx: TxRaw,
+    options?: TxClientBroadcastOptions,
+  ): Promise<TxResponse> {
     const { timeout } = options || {
       timeout: DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
     }

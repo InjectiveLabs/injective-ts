@@ -13,6 +13,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxResponse } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import {
   Eip1993ProviderWithMetamask,
@@ -89,7 +90,7 @@ export default class Metamask
   async sendTransaction(
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
-  ): Promise<string> {
+  ): Promise<TxResponse> {
     throw new MetamaskException(
       new Error(
         'sendTransaction is not supported. Metamask only supports sending transaction to Ethereum',

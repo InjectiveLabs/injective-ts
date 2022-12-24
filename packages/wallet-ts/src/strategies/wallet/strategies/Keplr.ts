@@ -8,6 +8,7 @@ import {
 import {
   createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
+  TxResponse,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -91,7 +92,7 @@ export default class Keplr
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
     _options: { address: AccountAddress; chainId: ChainId },
-  ): Promise<string> {
+  ): Promise<TxResponse> {
     const { keplrWallet } = this
     const txRaw =
       transaction instanceof TxRaw

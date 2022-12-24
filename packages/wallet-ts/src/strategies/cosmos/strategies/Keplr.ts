@@ -3,6 +3,7 @@ import { CosmosChainId } from '@injectivelabs/ts-types'
 import {
   createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
+  TxResponse,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -65,7 +66,7 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-  ): Promise<string> {
+  ): Promise<TxResponse> {
     const { keplrWallet } = this
     const txRaw =
       transaction instanceof TxRaw

@@ -8,7 +8,7 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxRestApi } from '@injectivelabs/sdk-ts'
+import { TxRestApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   CosmosWalletException,
   ErrorType,
@@ -139,11 +139,10 @@ export class LeapWallet {
     return Buffer.from(result).toString('hex')
   }
 
-  async waitTxBroadcasted(txHash: string): Promise<string> {
+  async waitTxBroadcasted(txHash: string): Promise<TxResponse> {
     const endpoints = await this.getChainEndpoints()
-    const result = await new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
 
-    return result.txHash
+    return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
   }
 
   async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {

@@ -17,6 +17,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxResponse } from '@injectivelabs/sdk-ts'
 import { TIP_IN_GWEI } from '../../../../utils/constants'
 import {
   ConcreteWalletStrategy,
@@ -123,7 +124,7 @@ export default class Trezor
   async sendTransaction(
     _transaction: unknown,
     _options: { address: AccountAddress; chainId: ChainId },
-  ): Promise<string> {
+  ): Promise<TxResponse> {
     throw new TrezorException(
       new Error(
         'sendTransaction is not supported. Trezor only supports sending transaction to Ethereum',

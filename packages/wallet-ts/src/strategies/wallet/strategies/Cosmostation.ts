@@ -14,6 +14,7 @@ import {
 import {
   createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
+  TxResponse,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
@@ -95,7 +96,7 @@ export default class Cosmostation
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
     _options: { address: AccountAddress; chainId: ChainId },
-  ): Promise<string> {
+  ): Promise<TxResponse> {
     const provider = await this.getProvider()
     const txRaw =
       transaction instanceof TxRaw
@@ -109,7 +110,17 @@ export default class Cosmostation
         SEND_TRANSACTION_MODE.ASYNC,
       )
 
-      return response.tx_response.txhash
+      return {
+        ...response.tx_response,
+        gasUsed: parseInt((response.tx_response.gas_used || '0') as string, 10),
+        gasWanted: parseInt(
+          (response.tx_response.gas_wanted || '0') as string,
+          10,
+        ),
+        height: parseInt((response.tx_response.height || '0') as string, 10),
+        txHash: response.tx_response.txhash as string,
+        rawLog: response.tx_response.raw_log as string,
+      } as TxResponse
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

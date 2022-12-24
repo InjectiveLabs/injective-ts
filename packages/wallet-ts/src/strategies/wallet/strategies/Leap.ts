@@ -14,6 +14,7 @@ import {
 import {
   createCosmosSignDocFromTransaction,
   createTxRawFromSigResponse,
+  TxResponse,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
@@ -90,7 +91,7 @@ export default class Leap
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
     _options: { address: AccountAddress; chainId: ChainId },
-  ): Promise<string> {
+  ): Promise<TxResponse> {
     const { leapWallet } = this
     const txRaw =
       transaction instanceof TxRaw

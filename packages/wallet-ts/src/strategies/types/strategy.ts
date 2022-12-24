@@ -5,6 +5,7 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
+import { TxResponse } from '@injectivelabs/sdk-ts'
 import type Web3 from 'web3'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 
@@ -46,7 +47,7 @@ export interface ConcreteCosmosWalletStrategy {
    * @param transaction should implement TransactionConfig
    * @param options
    */
-  sendTransaction(transaction: DirectSignResponse | TxRaw): Promise<string>
+  sendTransaction(transaction: DirectSignResponse | TxRaw): Promise<TxResponse>
 
   isChainIdSupported(chainId?: CosmosChainId): Promise<boolean>
 
@@ -85,7 +86,7 @@ export interface ConcreteWalletStrategy
   sendTransaction(
     transaction: DirectSignResponse | TxRaw,
     options: { address: string; chainId: ChainId },
-  ): Promise<string>
+  ): Promise<TxResponse>
 
   /**
    * Confirm the address on the wallet
