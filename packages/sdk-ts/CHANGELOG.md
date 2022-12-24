@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.324](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.323...@injectivelabs/sdk-ts@1.0.324) (2022-12-24)
+
+
+### Features
+
+* tx response now returned instead of the txhash only ([7959791](https://github.com/InjectiveLabs/injective-ts/commit/7959791eb86a81eb32b6b10411ad503deb9bdd07))
+
+
+
+
+
 ## [1.0.323](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.322...@injectivelabs/sdk-ts@1.0.323) (2022-12-23)
 
 

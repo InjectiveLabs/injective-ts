@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.315](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.314...@injectivelabs/wallet-ts@1.0.315) (2022-12-24)
+
+
+### Features
+
+* tx response now returned instead of the txhash only ([7959791](https://github.com/InjectiveLabs/injective-ts/commit/7959791eb86a81eb32b6b10411ad503deb9bdd07))
+
+
+
+
+
 ## [1.0.314](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.313...@injectivelabs/wallet-ts@1.0.314) (2022-12-23)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
