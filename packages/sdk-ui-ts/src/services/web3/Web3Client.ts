@@ -31,7 +31,8 @@ export class Web3Client {
 
     if (
       !contractAddress.startsWith('peggy') &&
-      !contractAddress.startsWith('0x')
+      !contractAddress.startsWith('0x') &&
+      contractAddress !== INJ_DENOM
     ) {
       return {
         balance: new BigNumberInWei(0).toFixed(),
