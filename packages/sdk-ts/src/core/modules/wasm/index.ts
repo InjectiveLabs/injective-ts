@@ -11,6 +11,7 @@ export { default as ExecArgUpdateSpotVaultConfig } from './exec-args/ExecArgUpda
 export { default as MsgPrivilegedExecuteContract } from './msgs/MsgPrivilegedExecuteContract'
 export { default as MsgExecuteContract } from './msgs/MsgExecuteContract'
 export { default as MsgInstantiateContract } from './msgs/MsgInstantiateContract'
+export { default as MsgStoreCode } from './msgs/MsgStoreCode'
 
 export { default as ExecPrivilegedArgRegisterVault } from './exec-priv-args/ExecPrivilegedRegisterVault'
 export { default as ExecPrivilegedArgVaultRedeem } from './exec-priv-args/ExecPrivilegedArgVaultRedeem'

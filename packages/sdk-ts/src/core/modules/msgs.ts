@@ -38,6 +38,7 @@ import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
 import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
 import MsgExec from './wasm/msgs/MsgPrivilegedExecuteContract'
 import MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract'
+import MsgStoreCode from './wasm/msgs/MsgStoreCode'
 import MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds'
 import MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer'
 import { MsgSubmitProposal } from './gov'
@@ -89,6 +90,7 @@ export type Msgs =
   | MsgEditValidator
   | MsgReclaimLockedFunds
   | MsgExternalTransfer
+  | MsgStoreCode
 
 /**
  * @category Messages
@@ -116,3 +118,4 @@ export type ExchangeMsgs =
   | MsgMultiExecute
   | MsgReclaimLockedFunds
   | MsgExternalTransfer
+  | MsgStoreCode
