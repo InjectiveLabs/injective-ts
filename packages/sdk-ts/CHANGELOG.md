@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.327](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.326...@injectivelabs/sdk-ts@1.0.327) (2023-01-03)
+
+
+### Features
+
+* added msg store code ([7159995](https://github.com/InjectiveLabs/injective-ts/commit/715999592efa2d912e69860cec5d7d206df1f2cc))
+
+
+
+
+
 ## [1.0.326](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.325...@injectivelabs/sdk-ts@1.0.326) (2022-12-24)
 
 
