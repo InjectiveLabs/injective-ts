@@ -1,6 +1,6 @@
 import { Msgs } from '@injectivelabs/sdk-ts'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import { Network } from '@injectivelabs/networks'
+import { Network, NetworkEndpoints } from '@injectivelabs/networks'
 import type { WalletStrategy } from '../strategies'
 
 export interface MsgBroadcasterTxOptions {
@@ -22,6 +22,8 @@ export interface MsgBroadcasterTxOptionsWithAddresses
 
 export interface MsgBroadcasterOptions {
   network: Network
+  networkEndpoints?: NetworkEndpoints
+
   /**
    * Only used if we want to override the default
    * endpoints taken from the network param

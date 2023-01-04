@@ -76,7 +76,8 @@ export class MsgBroadcaster {
 
   constructor(options: MsgBroadcasterOptions) {
     const networkInfo = getNetworkInfo(options.network)
-    const endpoints = getNetworkEndpoints(options.network)
+    const endpoints =
+      options.networkEndpoints || getNetworkEndpoints(options.network)
 
     this.options = options
     this.chainId = networkInfo.chainId
