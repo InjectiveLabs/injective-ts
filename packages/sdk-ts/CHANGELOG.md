@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.329](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.328...@injectivelabs/sdk-ts@1.0.329) (2023-01-05)
+
+
+### Features
+
+* gas based on message ([929f117](https://github.com/InjectiveLabs/injective-ts/commit/929f117934120122286e87428707d4536e026f35))
+
+
+
+
+
 ## [1.0.328](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.327...@injectivelabs/sdk-ts@1.0.328) (2023-01-05)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
