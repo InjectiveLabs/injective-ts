@@ -15,6 +15,7 @@ import {
   SIGN_AMINO,
   TxGrpcApi,
   TxResponse,
+  getGasPriceBasedOnMessage,
   TxRestApi,
 } from '@injectivelabs/sdk-ts'
 import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
@@ -39,7 +40,6 @@ import {
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   getEthereumSignerAddress,
-  getGasPriceBasedOnMessage,
   getInjectiveSignerAddress,
 } from '../utils/utils'
 import {

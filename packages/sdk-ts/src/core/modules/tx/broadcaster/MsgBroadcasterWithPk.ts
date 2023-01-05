@@ -23,6 +23,7 @@ import {
   Network,
   NetworkEndpoints,
 } from '@injectivelabs/networks'
+import { getGasPriceBasedOnMessage } from '../../../../utils/msgs'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
@@ -85,11 +86,13 @@ export class MsgBroadcasterWithPk {
    */
   async broadcast(transaction: MsgBroadcasterTxOptions) {
     const { chainId, privateKey, endpoints } = this
+    const msgs = Array.isArray(transaction.msgs)
+      ? transaction.msgs
+      : [transaction.msgs]
+
     const tx = {
       ...transaction,
-      msgs: Array.isArray(transaction.msgs)
-        ? transaction.msgs
-        : [transaction.msgs],
+      msgs: msgs,
       ethereumAddress: getEthereumSignerAddress(transaction.injectiveAddress),
       injectiveAddress: getInjectiveSignerAddress(transaction.injectiveAddress),
     } as MsgBroadcasterTxOptions
@@ -111,11 +114,18 @@ export class MsgBroadcasterWithPk {
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
+    const gas = (
+      transaction.gasLimit || getGasPriceBasedOnMessage(msgs)
+    ).toString()
+
     /** Prepare the Transaction * */
     const { signBytes, txRaw } = createTransaction({
       memo: '',
-      fee: DEFAULT_STD_FEE,
-      message: (tx.msgs as Msgs[]).map((m) => m.toDirectSign()),
+      fee: {
+        ...DEFAULT_STD_FEE,
+        gas: gas || DEFAULT_STD_FEE.gas,
+      },
+      message: msgs.map((m) => m.toDirectSign()),
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,
