@@ -36,6 +36,7 @@ import MsgUndelegate from './staking/msgs/MsgUndelegate'
 import MsgEditValidator from './staking/msgs/MsgEditValidator'
 import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
 import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
+import MsgMigrateContract from './wasm/msgs/MsgMigrateContract'
 import MsgExec from './wasm/msgs/MsgPrivilegedExecuteContract'
 import MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract'
 import MsgStoreCode from './wasm/msgs/MsgStoreCode'
@@ -78,6 +79,7 @@ export type Msgs =
   | MsgUndelegate
   | MsgBeginRedelegate
   | MsgExecuteContract
+  | MsgMigrateContract
   | MsgExec
   | MsgInstantiateContract
   | MsgCreateBinaryOptionsLimitOrder
