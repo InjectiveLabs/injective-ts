@@ -54,6 +54,8 @@ export default class MsgStoreCode extends MsgBase<
         : params.wasmBytes,
     )
 
+    message.setSender(params.sender)
+
     return message
   }
 
