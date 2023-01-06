@@ -48,13 +48,12 @@ export default class MsgStoreCode extends MsgBase<
 
     const message = new BaseMsgStoreCode()
 
+    message.setSender(params.sender)
     message.setWasmByteCode(
       typeof params.wasmBytes === 'string'
         ? toUtf8(params.wasmBytes)
         : params.wasmBytes,
     )
-
-    message.setSender(params.sender)
 
     return message
   }
