@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.331](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.330...@injectivelabs/sdk-ts@1.0.331) (2023-01-08)
+
+
+### Bug Fixes
+
+* signature list on simulating transaction ([ac77679](https://github.com/InjectiveLabs/injective-ts/commit/ac77679b8651ffc22b2e19275f2ffbb8397a5e12))
+
+
+
+
+
 ## [1.0.330](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.329...@injectivelabs/sdk-ts@1.0.330) (2023-01-06)
 
 
