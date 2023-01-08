@@ -139,8 +139,14 @@ export class TxGrpcApi implements TxConcreteApi {
   public async simulate(txRaw: TxRaw) {
     const { txService } = this
 
+    const txRawClone = txRaw.clone()
     const simulateRequest = new SimulateRequest()
-    simulateRequest.setTxBytes(txRaw.serializeBinary())
+
+    if (txRawClone.getSignaturesList().length === 0) {
+      txRawClone.setSignaturesList([new Uint8Array(0)])
+    }
+
+    simulateRequest.setTxBytes(txRawClone.serializeBinary())
 
     try {
       return new Promise(

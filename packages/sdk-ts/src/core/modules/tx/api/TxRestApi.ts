@@ -127,10 +127,16 @@ export class TxRestApi implements TxConcreteApi {
   }
 
   public async simulate(txRaw: TxRaw) {
+    const txRawClone = txRaw.clone()
+
+    if (txRawClone.getSignaturesList().length === 0) {
+      txRawClone.setSignaturesList([new Uint8Array(0)])
+    }
+
     const response = await this.postRaw<SimulationResponse>(
       '/cosmos/tx/v1beta1/simulate',
       {
-        tx_bytes: TxClient.encode(txRaw),
+        tx_bytes: TxClient.encode(txRawClone),
       },
     )
 
