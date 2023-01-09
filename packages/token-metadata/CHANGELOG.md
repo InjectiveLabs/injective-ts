@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.94](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.93...@injectivelabs/token-metadata@1.0.94) (2023-01-09)
+
+
+### Features
+
+* add bonk to token-metadata ([457e409](https://github.com/InjectiveLabs/injective-ts/commit/457e4097f15207a485c972e88e45e305a508806c))
+
+
+
+
+
 ## [1.0.93](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.92...@injectivelabs/token-metadata@1.0.93) (2023-01-09)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
