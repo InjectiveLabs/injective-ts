@@ -4,7 +4,7 @@ import {
   BridgingNetwork,
 } from './../types/bridge'
 import { convertTimestampToMilliseconds } from '@injectivelabs/utils'
-import { Network } from '@injectivelabs/networks'
+import { isTestnet, Network } from '@injectivelabs/networks'
 import { UiBridgeTransaction, MintScanExplorerUrl } from './../types/bridge'
 import {
   PEGGY_GRAPH_URL,
@@ -452,7 +452,7 @@ export const getPeggoGraphQlEndpoint = (network: Network): string => {
     return PEGGY_GRAPH_URL
   }
 
-  if ([Network.Testnet, Network.TestnetK8s].includes(network)) {
+  if (isTestnet(network)) {
     return PEGGY_TESTNET_GRAPH_URL
   }
 

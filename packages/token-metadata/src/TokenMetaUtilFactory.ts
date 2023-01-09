@@ -12,8 +12,8 @@ export class TokenMetaUtilFactory {
   static make(network: Network = Network.Mainnet): TokenMetaUtil {
     switch (network) {
       case Network.Mainnet:
-        return new TokenMetaUtil(tokensBySymbol)
       case Network.MainnetK8s:
+      case Network.Local:
         return new TokenMetaUtil(tokensBySymbol)
       case Network.Devnet:
         return new TokenMetaUtil(tokensBySymbolForDevnet)
@@ -21,10 +21,8 @@ export class TokenMetaUtilFactory {
         return new TokenMetaUtil(tokensBySymbolForDevnet1)
       case Network.Devnet2:
         return new TokenMetaUtil(tokensBySymbolForDevnet2)
-      case Network.Local:
-        return new TokenMetaUtil(tokensBySymbol)
       case Network.Testnet:
-        return new TokenMetaUtil(tokensBySymbolForTestnet)
+      case Network.TestnetOld:
       case Network.TestnetK8s:
         return new TokenMetaUtil(tokensBySymbolForTestnet)
       default:
