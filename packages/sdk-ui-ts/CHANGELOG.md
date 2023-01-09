@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.436](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.435...@injectivelabs/sdk-ui-ts@1.0.436) (2023-01-09)
+
+
+### Features
+
+* added testnet old endpoints ([79358b1](https://github.com/InjectiveLabs/injective-ts/commit/79358b1ce2f775cacb8c278a58caaea90a8e98bb))
+
+
+
+
+
 ## [1.0.435](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.434...@injectivelabs/sdk-ui-ts@1.0.435) (2023-01-08)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

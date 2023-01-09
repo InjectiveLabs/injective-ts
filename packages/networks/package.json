@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/networks",
   "description": "Endpoints, networks, etc. Can be reused throughout Injective's projects.",
-  "version": "1.0.55",
+  "version": "1.0.56",
   "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
