@@ -1,4 +1,4 @@
-import { HttpClient } from '@injectivelabs/utils'
+import { HttpRestClient } from '@injectivelabs/utils'
 import { HttpRequestException } from '@injectivelabs/exceptions'
 import {
   CoinGeckoCoin,
@@ -8,7 +8,7 @@ import {
 } from './types'
 
 export default class CoinGeckoApi {
-  private httpClient: HttpClient
+  private httpClient: HttpRestClient
 
   private apiKey: string
 
@@ -22,7 +22,7 @@ export default class CoinGeckoApi {
     }
 
     this.apiKey = apiKey
-    this.httpClient = new HttpClient(baseUrl).setConfig({
+    this.httpClient = new HttpRestClient(baseUrl).setConfig({
       headers,
     })
   }
@@ -49,6 +49,10 @@ export default class CoinGeckoApi {
 
       return data
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
@@ -75,6 +79,10 @@ export default class CoinGeckoApi {
 
       return data?.market_data?.current_price
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
@@ -101,6 +109,10 @@ export default class CoinGeckoApi {
 
       return data?.market_data?.current_price?.usd
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
@@ -118,6 +130,10 @@ export default class CoinGeckoApi {
         actualParams,
       )) as CoinGeckoReturnObject<CoinGeckoCoin[]>
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
@@ -136,6 +152,10 @@ export default class CoinGeckoApi {
 
       return data
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
@@ -154,6 +174,10 @@ export default class CoinGeckoApi {
 
       return data
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }

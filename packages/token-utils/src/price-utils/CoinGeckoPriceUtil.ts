@@ -1,17 +1,17 @@
-import { HttpClient } from '@injectivelabs/utils'
+import { HttpRestClient } from '@injectivelabs/utils'
 import { HttpRequestException } from '@injectivelabs/exceptions'
 import { CoinGeckoReturnObject, CoinGeckoCoinResponse } from '../types'
 import { TokenPriceUtilBase } from './TokenPriceUtilBase'
 import { TokenPriceUtilOptions } from './types'
 
 export default class CoinGeckoPriceUtil extends TokenPriceUtilBase {
-  private httpClient: HttpClient
+  private httpClient: HttpRestClient
 
   private apiKey: string
 
   constructor({ apiKey, baseUrl }: TokenPriceUtilOptions) {
     super()
-    this.httpClient = new HttpClient(baseUrl)
+    this.httpClient = new HttpRestClient(baseUrl)
     this.apiKey = apiKey as string
   }
 
@@ -37,6 +37,10 @@ export default class CoinGeckoPriceUtil extends TokenPriceUtilBase {
 
       return data?.market_data?.current_price
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
@@ -63,6 +67,10 @@ export default class CoinGeckoPriceUtil extends TokenPriceUtilBase {
 
       return data?.market_data?.current_price?.usd
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
