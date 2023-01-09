@@ -8,6 +8,7 @@ import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
+    /* Keep in mind that funds have to be lexicographically sorted by denom */
     funds?:
       | {
           denom: string

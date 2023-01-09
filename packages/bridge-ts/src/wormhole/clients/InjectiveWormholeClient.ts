@@ -14,8 +14,6 @@ import {
   transferFromInjective,
   parseSequenceFromLogInjective,
   getEmitterAddressInjective,
-  redeemOnInjective,
-  createWrappedOnInjective,
   tryNativeToHexString,
   getForeignAssetInjective,
   hexToUint8Array,
@@ -223,11 +221,15 @@ export class InjectiveWormholeClient extends WormholeClient {
 
     const { contractAddresses } = getSolanaContractAddresses(network)
 
-    return redeemOnInjective(
-      contractAddresses.token_bridge,
-      injectiveAddress,
-      Buffer.from(signedVAA, 'base64'),
-    ) as Promise<MsgExecuteContract>
+    return MsgExecuteContract.fromJSON({
+      contractAddress: contractAddresses.token_bridge,
+      sender: injectiveAddress,
+      msg: {
+        submit_vaa: {
+          data: signedVAA,
+        },
+      },
+    })
   }
 
   async createWrappedOnInjective({
@@ -241,11 +243,15 @@ export class InjectiveWormholeClient extends WormholeClient {
 
     const { contractAddresses } = getSolanaContractAddresses(network)
 
-    return createWrappedOnInjective(
-      contractAddresses.token_bridge,
-      injectiveAddress,
-      Buffer.from(signedVAA, 'base64'),
-    ) as Promise<MsgExecuteContract>
+    return MsgExecuteContract.fromJSON({
+      contractAddress: contractAddresses.token_bridge,
+      sender: injectiveAddress,
+      msg: {
+        submit_vaa: {
+          data: signedVAA,
+        },
+      },
+    })
   }
 
   async getIsTransferCompletedInjective(signedVAA: string /* in base 64 */) {
