@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.334](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.333...@injectivelabs/sdk-ts@1.0.334) (2023-01-09)
+
+
+### Features
+
+* added httpRestClient which handles timeout exceptions ([c200bc2](https://github.com/InjectiveLabs/injective-ts/commit/c200bc25fe67901ad80462166c5cc841449df6b8))
+
+
+
+
+
 ## [1.0.333](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.332...@injectivelabs/sdk-ts@1.0.333) (2023-01-09)
 
 

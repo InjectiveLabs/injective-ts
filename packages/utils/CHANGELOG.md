@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.47...@injectivelabs/utils@1.0.48) (2023-01-09)
+
+
+### Features
+
+* added httpRestClient which handles timeout exceptions ([c200bc2](https://github.com/InjectiveLabs/injective-ts/commit/c200bc25fe67901ad80462166c5cc841449df6b8))
+
+
+
+
+
 ## [1.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.46...@injectivelabs/utils@1.0.47) (2022-12-22)
 
 **Note:** Version bump only for package @injectivelabs/utils
