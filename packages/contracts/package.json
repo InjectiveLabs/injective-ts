@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/contracts",
   "description": "Contracts wrapper that can be reused throughout Injective's projects.",
-  "version": "1.0.80",
+  "version": "1.0.81",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,10 +31,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.0.41",
-    "@injectivelabs/networks": "^1.0.66",
-    "@injectivelabs/ts-types": "^1.0.26",
-    "@injectivelabs/utils": "^1.0.57",
+    "@injectivelabs/exceptions": "^1.0.42",
+    "@injectivelabs/networks": "^1.0.67",
+    "@injectivelabs/ts-types": "^1.0.27",
+    "@injectivelabs/utils": "^1.0.58",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.3",
     "web3": "^1.7.2",
