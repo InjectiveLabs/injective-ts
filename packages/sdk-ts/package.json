@@ -48,7 +48,7 @@
     "@injectivelabs/token-metadata": "^1.0.104",
     "@injectivelabs/ts-types": "^1.0.27",
     "@injectivelabs/utils": "^1.0.58",
-    "@metamask/eth-sig-util": "^5.0.1",
+    "@metamask/eth-sig-util": "^4.0.0",
     "@types/google-protobuf": "^3.15.5",
     "axios": "^0.27.2",
     "bech32": "^2.0.0",

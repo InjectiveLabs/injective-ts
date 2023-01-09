@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2015",
     "module": "commonjs",
     "moduleResolution": "node",
     "rootDir": ".",
     "lib": [
       "DOM",
+      "es2018",
       "es2019",
       "es2021",
     ],
