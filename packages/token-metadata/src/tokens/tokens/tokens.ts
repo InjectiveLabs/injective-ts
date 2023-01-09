@@ -831,4 +831,13 @@ export default {
     address: 'inj18a2u6az6dzw528rptepfg6n49ak6hdzkny4um6',
     coinGeckoId: 'AVAX',
   },
+
+  BONK: {
+    name: 'BONK',
+    logo: 'bonk.jpeg',
+    symbol: 'BONK',
+    decimals: 5,
+    address: '',
+    coinGeckoId: 'bonk',
+  },
 } as Record<string, TokenMeta>
