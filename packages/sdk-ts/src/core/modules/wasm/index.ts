@@ -1,5 +1,6 @@
 export { default as ExecArgCW20AdapterRedeemAndTransfer } from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 export { default as ExecArgCW20Send } from './exec-args/ExecArgCW20Send'
+export { default as ExecArgCW20Transfer } from './exec-args/ExecArgCW20Transfer'
 export { default as ExecArgDepositTokens } from './exec-args/ExecArgDepositTokens'
 export { default as ExecArgIncreaseAllowance } from './exec-args/ExecArgIncreaseAllowance'
 export { default as ExecArgInitiateTransfer } from './exec-args/ExecArgInitiateTransfer'
