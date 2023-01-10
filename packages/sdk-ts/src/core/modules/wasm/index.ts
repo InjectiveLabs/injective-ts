@@ -10,6 +10,7 @@ export { default as ExecArgUpdateSpotVaultConfig } from './exec-args/ExecArgUpda
 
 export { default as MsgPrivilegedExecuteContract } from './msgs/MsgPrivilegedExecuteContract'
 export { default as MsgExecuteContract } from './msgs/MsgExecuteContract'
+export { default as MsgExecuteContractCompat } from './msgs/MsgExecuteContractCompat'
 export { default as MsgInstantiateContract } from './msgs/MsgInstantiateContract'
 export { default as MsgStoreCode } from './msgs/MsgStoreCode'
 export { default as MsgMigrateContract } from './msgs/MsgMigrateContract'
