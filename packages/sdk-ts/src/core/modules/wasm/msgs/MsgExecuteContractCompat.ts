@@ -1,9 +1,8 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { MsgExecuteContract as BaseMsgExecuteContractCompat } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
+import { MsgExecuteContractCompat as BaseMsgExecuteContractCompat } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
 import snakeCaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
-import { toUtf8 } from '../../../../utils/utf8'
 import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgExecuteContractCompat {
@@ -77,7 +76,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     const message = new BaseMsgExecuteContractCompat()
     const msg = this.getMsgObject()
 
-    message.setMsg(toUtf8(JSON.stringify(msg)))
+    message.setMsg(JSON.stringify(msg))
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
 

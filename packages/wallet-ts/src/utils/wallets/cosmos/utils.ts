@@ -1,5 +1,5 @@
 import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
-import { Wallet } from '../../types/enums'
+import { Wallet } from '../../../types/enums'
 
 /**
  * Returns a timeout timestamp in milliseconds so its compatible

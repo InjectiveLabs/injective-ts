@@ -47,9 +47,9 @@ import {
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
 } from './types'
-import { isCosmosWallet } from '../wallets/cosmos'
+import { isCosmosWallet } from '../utils/wallets/cosmos'
 import { Wallet, WalletDeviceType } from '../types'
-import { createEip712StdSignDoc, KeplrWallet } from '../wallets/keplr'
+import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
 
 /**
  * This class is used to broadcast transactions
