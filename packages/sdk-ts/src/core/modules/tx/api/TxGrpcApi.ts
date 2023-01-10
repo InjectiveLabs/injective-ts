@@ -188,8 +188,6 @@ export class TxGrpcApi implements TxConcreteApi {
       return new Promise(
         (resolve: (value: TxClientBroadcastResponse) => void, reject) =>
           txService.broadcastTx(broadcastTxRequest, async (error, response) => {
-            console.log(JSON.stringify(error))
-
             if (error || !response) {
               return reject(error)
             }
