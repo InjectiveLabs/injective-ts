@@ -143,7 +143,9 @@ export class InjectiveWormholeClient extends WormholeClient {
       tryNativeToUint8Array(solanaPubKey.toString(), WORMHOLE_CHAINS.solana),
     )
 
-    const gas = getGasPriceBasedOnMessage(messages).toString()
+    const gas = getGasPriceBasedOnMessage(
+      messages as any /** Todo */,
+    ).toString()
 
     const { txRaw, cosmosSignDoc } =
       await createTransactionAndCosmosSignDocForAddressAndMsg({

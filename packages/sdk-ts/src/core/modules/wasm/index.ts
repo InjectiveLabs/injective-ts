@@ -15,6 +15,7 @@ export { default as MsgExecuteContractCompat } from './msgs/MsgExecuteContractCo
 export { default as MsgInstantiateContract } from './msgs/MsgInstantiateContract'
 export { default as MsgStoreCode } from './msgs/MsgStoreCode'
 export { default as MsgMigrateContract } from './msgs/MsgMigrateContract'
+export { default as MsgUpdateAdmin } from './msgs/MsgUpdateAdmin'
 
 export { default as ExecPrivilegedArgRegisterVault } from './exec-priv-args/ExecPrivilegedRegisterVault'
 export { default as ExecPrivilegedArgVaultRedeem } from './exec-priv-args/ExecPrivilegedArgVaultRedeem'
