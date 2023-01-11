@@ -8,8 +8,9 @@ import {
 } from '../../../../client/chain/rest'
 import {
   BigNumberInBase,
-  DEFAULT_STD_FEE,
+  getStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_STD_FEE,
 } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -121,10 +122,7 @@ export class MsgBroadcasterWithPk {
     /** Prepare the Transaction * */
     const { signBytes, txRaw } = createTransaction({
       memo: '',
-      fee: {
-        ...DEFAULT_STD_FEE,
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
       message: msgs.map((m) => m.toDirectSign()),
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),

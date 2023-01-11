@@ -6,6 +6,7 @@ import {
   ChainGrpcWasmApi,
   TxResponse,
   InjectiveWalletProvider,
+  getGasPriceBasedOnMessage,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -24,11 +25,7 @@ import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { ChainId } from '@injectivelabs/ts-types'
 import { NATIVE_MINT } from '@solana/spl-token'
-import {
-  BigNumberInBase,
-  DEFAULT_GAS_LIMIT,
-  DEFAULT_STD_FEE,
-} from '@injectivelabs/utils'
+import { getStdFee } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { InjectiveTransferMsgArgs, TransferMsgArgs } from '../types'
 import { getSolanaContractAddresses } from '../utils'
@@ -146,18 +143,13 @@ export class InjectiveWormholeClient extends WormholeClient {
       tryNativeToUint8Array(solanaPubKey.toString(), WORMHOLE_CHAINS.solana),
     )
 
+    const gas = getGasPriceBasedOnMessage(messages).toString()
+
     const { txRaw, cosmosSignDoc } =
       await createTransactionAndCosmosSignDocForAddressAndMsg({
         chainId: args.chainId,
         message: [...additionalMsgs, ...messages] as MsgExecuteContractCompat[],
-        fee: {
-          ...DEFAULT_STD_FEE,
-          gas: new BigNumberInBase(DEFAULT_GAS_LIMIT)
-            .times(2.5)
-            .times(messages.length)
-            .decimalPlaces(0)
-            .toFixed(0),
-        },
+        fee: getStdFee(gas),
         address: args.injectiveAddress,
         endpoint: endpoints.rest,
         memo: 'Wormhole Transfer From Injective to Solana',

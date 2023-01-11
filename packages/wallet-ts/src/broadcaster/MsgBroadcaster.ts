@@ -22,7 +22,7 @@ import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/tr
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   BigNumberInBase,
-  DEFAULT_STD_FEE,
+  getStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
@@ -201,9 +201,7 @@ export class MsgBroadcaster {
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: {
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
       tx: {
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
@@ -230,10 +228,7 @@ export class MsgBroadcaster {
       message: msgs.map((m) => m.toDirectSign()),
       memo: tx.memo,
       signMode: SIGN_AMINO,
-      fee: {
-        ...DEFAULT_STD_FEE,
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
       pubKey: publicKeyBase64,
       sequence: baseAccount.sequence,
       timeoutHeight: timeoutHeight.toNumber(),
@@ -374,10 +369,7 @@ export class MsgBroadcaster {
         accountNumber: accountDetails.accountNumber,
         sequence: accountDetails.sequence,
       },
-      fee: {
-        ...DEFAULT_STD_FEE,
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
     })
 
     /* Simulate Transaction */
@@ -458,9 +450,7 @@ export class MsgBroadcaster {
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: {
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
       tx: {
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
@@ -604,8 +594,7 @@ export class MsgBroadcaster {
         },
       ],
       fee: {
-        ...DEFAULT_STD_FEE,
-        gas: gas || DEFAULT_STD_FEE.gas,
+        ...getStdFee(gas),
         payer: feePayer,
       },
     })
