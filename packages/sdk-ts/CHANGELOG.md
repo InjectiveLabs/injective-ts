@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.352](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.351...@injectivelabs/sdk-ts@1.0.352) (2023-01-11)
+
+
+### Features
+
+* path updated for wasmx ([2bebb9d](https://github.com/InjectiveLabs/injective-ts/commit/2bebb9d02999f2b7a1be6494c353d0650475cfdf))
+
+
+
+
+
 ## [1.0.351](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.350...@injectivelabs/sdk-ts@1.0.351) (2023-01-11)
 
 
