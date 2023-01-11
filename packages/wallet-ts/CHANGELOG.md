@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.343](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.342...@injectivelabs/wallet-ts@1.0.343) (2023-01-11)
+
+
+### Features
+
+* path updated for wasmx ([36b594a](https://github.com/InjectiveLabs/injective-ts/commit/36b594a4465227e01ec60d3caae226fe03c3ab1b))
+
+
+
+
+
 ## [1.0.342](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.341...@injectivelabs/wallet-ts@1.0.342) (2023-01-10)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
