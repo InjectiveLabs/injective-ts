@@ -2,7 +2,7 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import {
   isBrowser,
   createTransactionAndCosmosSignDocForAddressAndMsg,
-  MsgExecuteContract,
+  MsgExecuteContractCompat,
   ChainGrpcWasmApi,
   TxResponse,
   InjectiveWalletProvider,
@@ -112,7 +112,7 @@ export class InjectiveWormholeClient extends WormholeClient {
        * Additional messages that we run before the bridge, an example
        * could be redeeming from the token factory to CW20
        */
-      additionalMsgs?: MsgExecuteContract[]
+      additionalMsgs?: MsgExecuteContractCompat[]
       provider: InjectiveWalletProvider
     },
   ) {
@@ -149,7 +149,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     const { txRaw, cosmosSignDoc } =
       await createTransactionAndCosmosSignDocForAddressAndMsg({
         chainId: args.chainId,
-        message: [...additionalMsgs, ...messages] as MsgExecuteContract[],
+        message: [...additionalMsgs, ...messages] as MsgExecuteContractCompat[],
         fee: {
           ...DEFAULT_STD_FEE,
           gas: new BigNumberInBase(DEFAULT_GAS_LIMIT)
@@ -216,12 +216,12 @@ export class InjectiveWormholeClient extends WormholeClient {
   }: {
     injectiveAddress: string
     signedVAA: string /* in base 64 */
-  }): Promise<MsgExecuteContract> {
+  }): Promise<MsgExecuteContractCompat> {
     const { network } = this
 
     const { contractAddresses } = getSolanaContractAddresses(network)
 
-    return MsgExecuteContract.fromJSON({
+    return MsgExecuteContractCompat.fromJSON({
       contractAddress: contractAddresses.token_bridge,
       sender: injectiveAddress,
       msg: {
@@ -238,12 +238,12 @@ export class InjectiveWormholeClient extends WormholeClient {
   }: {
     injectiveAddress: string
     signedVAA: string /* in base 64 */
-  }): Promise<MsgExecuteContract> {
+  }): Promise<MsgExecuteContractCompat> {
     const { network } = this
 
     const { contractAddresses } = getSolanaContractAddresses(network)
 
-    return MsgExecuteContract.fromJSON({
+    return MsgExecuteContractCompat.fromJSON({
       contractAddress: contractAddresses.token_bridge,
       sender: injectiveAddress,
       msg: {
@@ -260,12 +260,10 @@ export class InjectiveWormholeClient extends WormholeClient {
 
     const { contractAddresses } = getSolanaContractAddresses(network)
 
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
-
     return getIsTransferCompletedInjective(
       contractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
-      chainGrpcWasmApi as any /* TODO */,
+      new ChainGrpcWasmApi(endpoints.grpc) as any /* TODO */,
     )
   }
 }
