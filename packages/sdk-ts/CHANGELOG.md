@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.354](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.353...@injectivelabs/sdk-ts@1.0.354) (2023-01-11)
+
+
+### Bug Fixes
+
+* updated std fee based on gas ([0a86900](https://github.com/InjectiveLabs/injective-ts/commit/0a869004eacfaaa2fc1b1b0567937eb948bd1c59))
+
+
+
+
+
 ## [1.0.353](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.352...@injectivelabs/sdk-ts@1.0.353) (2023-01-11)
 
 
