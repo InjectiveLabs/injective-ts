@@ -35,12 +35,12 @@ export declare namespace MsgExecuteContractCompat {
   }
 
   export interface DirectSign {
-    type: '/cosmwasm.wasm.v1.MsgExecuteContractCompat'
+    type: '/injective.wasmx.v1.MsgExecuteContractCompat'
     message: BaseMsgExecuteContractCompat
   }
 
   export interface Data extends BaseMsgExecuteContractCompat.AsObject {
-    '@type': '/cosmwasm.wasm.v1.MsgExecuteContractCompat'
+    '@type': '/injective.wasmx.v1.MsgExecuteContractCompat'
   }
 
   export interface Amino extends BaseMsgExecuteContractCompat.AsObject {
@@ -48,7 +48,7 @@ export declare namespace MsgExecuteContractCompat {
   }
 
   export interface Web3 extends BaseMsgExecuteContractCompat.AsObject {
-    '@type': '/cosmwasm.wasm.v1.MsgExecuteContractCompat'
+    '@type': '/injective.wasmx.v1.MsgExecuteContractCompat'
   }
 
   export type Proto = BaseMsgExecuteContractCompat
@@ -104,7 +104,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     const proto = this.toProto()
 
     return {
-      '@type': '/cosmwasm.wasm.v1.MsgExecuteContractCompat',
+      '@type': '/injective.wasmx.v1.MsgExecuteContractCompat',
       ...proto.toObject(),
     }
   }
@@ -128,7 +128,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     delete message.funds_list
 
     return {
-      type: 'wasm/MsgExecuteContractCompat',
+      type: 'wasmx/MsgExecuteContractCompat',
       ...message,
     } as unknown as MsgExecuteContractCompat.Amino
   }
@@ -138,7 +138,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     const { type, ...rest } = amino
 
     return {
-      '@type': '/cosmwasm.wasm.v1.MsgExecuteContractCompat',
+      '@type': '/injective.wasmx.v1.MsgExecuteContractCompat',
       ...rest,
     } as unknown as MsgExecuteContractCompat.Web3
   }
@@ -147,7 +147,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: '/cosmwasm.wasm.v1.MsgExecuteContractCompat',
+      type: '/injective.wasmx.v1.MsgExecuteContractCompat',
       message: proto,
     }
   }
