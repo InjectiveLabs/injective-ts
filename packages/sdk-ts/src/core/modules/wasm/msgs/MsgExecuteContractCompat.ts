@@ -44,7 +44,7 @@ export declare namespace MsgExecuteContractCompat {
   }
 
   export interface Amino extends BaseMsgExecuteContractCompat.AsObject {
-    type: 'wasm/MsgExecuteContractCompat'
+    type: 'wasmx/MsgExecuteContractCompat'
   }
 
   export interface Web3 extends BaseMsgExecuteContractCompat.AsObject {
