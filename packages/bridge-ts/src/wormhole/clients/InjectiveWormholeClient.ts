@@ -155,7 +155,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     )
 
     const txResponse = (await provider.broadcastOld({
-      msgs: [...messages, ...additionalMsgs],
+      msgs: [...additionalMsgs, ...messages],
       injectiveAddress: args.injectiveAddress,
     })) as TxResponse
 
