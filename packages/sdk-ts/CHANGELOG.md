@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.356](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.355...@injectivelabs/sdk-ts@1.0.356) (2023-01-12)
+
+
+### Features
+
+* funds stringified ([14d262f](https://github.com/InjectiveLabs/injective-ts/commit/14d262f32b7ad5d0840e1597798ee49787f66d26))
+
+
+
+
+
 ## [1.0.355](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.354...@injectivelabs/sdk-ts@1.0.355) (2023-01-12)
 
 
