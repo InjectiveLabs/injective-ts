@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.355](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.354...@injectivelabs/sdk-ts@1.0.355) (2023-01-12)
+
+
+### Features
+
+* broadcaster used instead of provider to support metamask ([bed89c0](https://github.com/InjectiveLabs/injective-ts/commit/bed89c0bbff34e74731885f5367f7276a0706383))
+
+
+
+
+
 ## [1.0.354](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.353...@injectivelabs/sdk-ts@1.0.354) (2023-01-11)
 
 
