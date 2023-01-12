@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.180](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.179...@injectivelabs/bridge-ts@1.0.180) (2023-01-12)
+
+
+### Bug Fixes
+
+* broadcast method ([870b68c](https://github.com/InjectiveLabs/injective-ts/commit/870b68c2eb2d82e198be70ca1ddf6a597a70cdb1))
+
+
+
+
+
 ## [1.0.179](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.178...@injectivelabs/bridge-ts@1.0.179) (2023-01-12)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
