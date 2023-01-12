@@ -90,7 +90,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
 
       message.setFunds(funds.join(','))
     } else {
-      message.setFunds('')
+      message.setFunds('0')
     }
 
     return message
