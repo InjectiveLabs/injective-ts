@@ -627,7 +627,7 @@ export const spotQuantityFromChainQuantity = ({
 }: {
   value: number | string | BigNumber
   baseDecimals?: number | string
-}) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(baseDecimals))
+}) => new $BigNumber(value).dividedBy(new $BigNumber(10).pow(baseDecimals))
 
 /**
  * Amount that the chain returns is in the x * 10^(baseDecimals) format

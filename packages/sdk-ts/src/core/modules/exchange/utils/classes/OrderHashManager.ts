@@ -269,8 +269,6 @@ export class OrderHashManager {
   }
 
   private hashTypedData(eip712: any) {
-    console.log(JSON.stringify(eip712))
-
     const bytesToHash = Buffer.concat([
       Buffer.from('19', 'hex'),
       Buffer.from('01', 'hex'),
