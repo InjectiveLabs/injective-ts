@@ -12,6 +12,9 @@
       "@injectivelabs/utils": [
         "packages/utils"
       ],
+      "@injectivelabs/networks": [
+        "packages/networks"
+      ],
       "@injectivelabs/test-utils": [
         "packages/test-utils"
       ],

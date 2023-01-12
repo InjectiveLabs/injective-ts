@@ -33,6 +33,7 @@ import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { TransactionSignatureAndResponse } from '@certusone/wormhole-sdk/lib/cjs/solana'
 import { zeroPad } from 'ethers/lib/utils'
+import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { SolanaNativeSolTransferMsgArgs, SolanaTransferMsgArgs } from '../types'
 import { getSolanaContractAddresses, getSolanaTransactionInfo } from '../utils'
@@ -505,6 +506,21 @@ export class SolanaWormholeClient extends WormholeClient {
       Buffer.from(signedVAA, 'base64'),
       connection,
     )
+  }
+
+  async getIsTransferCompletedSolanaRetry(signedVAA: string /* in base 64 */) {
+    const RETRIES = 2
+    const TIMEOUT_BETWEEN_RETRIES = 2000
+
+    for (let i = 0; i < RETRIES; i += 1) {
+      if (await this.getIsTransferCompletedSolana(signedVAA)) {
+        return true
+      }
+
+      await sleep(TIMEOUT_BETWEEN_RETRIES)
+    }
+
+    return false
   }
 
   async getTransactionResponse(transactionId: string) {

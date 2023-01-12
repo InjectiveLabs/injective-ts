@@ -4,7 +4,6 @@ import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 
 export * from './exchange'
 export * from './pagination'
-export * from './provider'
 
 export interface Coin {
   denom: string

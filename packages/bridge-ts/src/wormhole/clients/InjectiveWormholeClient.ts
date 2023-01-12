@@ -1,12 +1,9 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import {
   isBrowser,
-  createTransactionAndCosmosSignDocForAddressAndMsg,
   MsgExecuteContractCompat,
   ChainGrpcWasmApi,
   TxResponse,
-  InjectiveWalletProvider,
-  getGasPriceBasedOnMessage,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -23,9 +20,8 @@ import {
 import { PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
-import { ChainId } from '@injectivelabs/ts-types'
 import { NATIVE_MINT } from '@solana/spl-token'
-import { getStdFee, sleep } from '@injectivelabs/utils'
+import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { InjectiveTransferMsgArgs, TransferMsgArgs } from '../types'
 import { getSolanaContractAddresses } from '../utils'
@@ -110,12 +106,11 @@ export class InjectiveWormholeClient extends WormholeClient {
        * could be redeeming from the token factory to CW20
        */
       additionalMsgs?: MsgExecuteContractCompat[]
-      provider: InjectiveWalletProvider
+      provider: { broadcast: (params: any) => TxResponse } /* TODO */
     },
   ) {
     const { network, wormholeRpcUrl } = this
     const { amount, recipient, provider, additionalMsgs = [] } = args
-    const endpoints = getNetworkEndpoints(network)
     const solanaPubKey = new SolanaPublicKey(recipient)
 
     if (!args.tokenAddress) {
@@ -143,32 +138,10 @@ export class InjectiveWormholeClient extends WormholeClient {
       tryNativeToUint8Array(solanaPubKey.toString(), WORMHOLE_CHAINS.solana),
     )
 
-    const gas = getGasPriceBasedOnMessage(
-      messages as any /** Todo */,
-    ).toString()
-
-    const { txRaw, cosmosSignDoc } =
-      await createTransactionAndCosmosSignDocForAddressAndMsg({
-        chainId: args.chainId,
-        message: [...additionalMsgs, ...messages] as MsgExecuteContractCompat[],
-        fee: getStdFee(gas),
-        address: args.injectiveAddress,
-        endpoint: endpoints.rest,
-        memo: 'Wormhole Transfer From Injective to Solana',
-        pubKey: await provider.getPubKey(),
-      })
-
-    const directSignResponse = (await provider.signCosmosTransaction({
-      txRaw,
-      accountNumber: cosmosSignDoc.accountNumber.toNumber(),
-      chainId: args.chainId,
-      address: args.injectiveAddress,
-    })) as any
-
-    const txResponse = await provider.sendTransaction(directSignResponse, {
-      chainId: args.chainId as ChainId,
-      address: args.injectiveAddress,
-    })
+    const txResponse = (await provider.broadcast({
+      msgs: [...messages, ...additionalMsgs],
+      injectiveAddress: args.injectiveAddress,
+    })) as TxResponse
 
     if (!txResponse) {
       throw new GeneralException(new Error('Transaction can not be found!'))
