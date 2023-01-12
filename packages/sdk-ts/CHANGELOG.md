@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.361](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.360...@injectivelabs/sdk-ts@1.0.361) (2023-01-12)
+
+
+### Bug Fixes
+
+* set funds as 0 for msgExecuteContractCompat ([bbcfa54](https://github.com/InjectiveLabs/injective-ts/commit/bbcfa54a6e678b0a2f9613c9e1b5098c9d9cf63d))
+
+
+
+
+
 ## [1.0.360](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.359...@injectivelabs/sdk-ts@1.0.360) (2023-01-12)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
