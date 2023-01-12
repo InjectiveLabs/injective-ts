@@ -1,4 +1,3 @@
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgExecuteContractCompat as BaseMsgExecuteContractCompat } from '@injectivelabs/chain-api/injective/wasmx/v1/tx_pb'
 import snakeCaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
@@ -86,15 +85,12 @@ export default class MsgExecuteContractCompat extends MsgBase<
         : [params.funds]
 
       const funds = fundsToArray.map((coin) => {
-        const funds = new Coin()
-
-        funds.setAmount(coin.amount)
-        funds.setDenom(coin.denom)
-
-        return funds
+        return `${coin.amount}${coin.denom}`
       })
 
-      message.setFundsList(funds)
+      message.setFunds(funds.join(','))
+    } else {
+      message.setFunds('')
     }
 
     return message
@@ -110,17 +106,10 @@ export default class MsgExecuteContractCompat extends MsgBase<
   }
 
   public toAmino(): MsgExecuteContractCompat.Amino {
-    const { params } = this
     const proto = this.toProto()
-    const funds = params.funds && {
-      funds: proto
-        .getFundsList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
-    }
 
     const message = {
       ...snakeCaseKeys(proto.toObject()),
-      ...funds,
       msg: JSON.stringify(this.getMsgObject()),
     }
 
