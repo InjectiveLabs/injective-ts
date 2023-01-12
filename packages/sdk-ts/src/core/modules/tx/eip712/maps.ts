@@ -188,11 +188,35 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
   const sdkDecKeyWithTypeMaps = {
     'exchange/MsgIncreasePositionMargin': ['amount'],
   }
+  const nullableStringsTypeMaps = {
+    'wasmx/MsgExecuteContractCompat': ['funds'],
+  }
 
   return Object.keys(object).reduce((result, key) => {
     const value = object[key]
 
     if (!value) {
+      // Message Type Specific checks
+      if (messageTypeUrl) {
+        const typeInMap = Object.keys(nullableStringsTypeMaps).find(
+          (key) => key === messageTypeUrl,
+        )
+
+        if (typeInMap) {
+          const nullableStringKeys =
+            nullableStringsTypeMaps[
+              typeInMap as keyof typeof nullableStringsTypeMaps
+            ]
+
+          if (nullableStringKeys.includes(key)) {
+            return {
+              ...result,
+              [key]: value,
+            }
+          }
+        }
+      }
+
       return result
     }
 
