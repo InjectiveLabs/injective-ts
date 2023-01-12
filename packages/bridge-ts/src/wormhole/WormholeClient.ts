@@ -8,7 +8,7 @@ import {
   MsgExecuteContract,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { tryNativeToHexString } from '@certusone/wormhole-sdk'
+import { tryNativeToHexString } from '@injectivelabs/wormhole-sdk'
 import { WORMHOLE_CHAINS, WORMHOLE_CONTRACT_BY_NETWORK } from './constants'
 import { WormholeContractAddresses, TransferMsgArgs } from './types'
 

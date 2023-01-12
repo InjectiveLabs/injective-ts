@@ -16,7 +16,7 @@ import {
   getForeignAssetInjective,
   hexToUint8Array,
   getIsTransferCompletedInjective,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import { PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
@@ -69,7 +69,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     )
     const foreignAsset = await getForeignAssetInjective(
       contractAddresses.token_bridge,
-      chainGrpcWasmApi as any /* TODO */,
+      chainGrpcWasmApi,
       WORMHOLE_CHAINS.solana,
       hexToUint8Array(originAssetHex),
     )
@@ -241,7 +241,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     return getIsTransferCompletedInjective(
       contractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
-      new ChainGrpcWasmApi(endpoints.grpc) as any /* TODO */,
+      new ChainGrpcWasmApi(endpoints.grpc),
     )
   }
 

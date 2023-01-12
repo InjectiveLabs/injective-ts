@@ -18,7 +18,7 @@ import {
   getIsTransferCompletedSolana,
   uint8ArrayToHex,
   cosmos,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import {
   createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddress,
@@ -31,7 +31,7 @@ import {
 } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
-import { TransactionSignatureAndResponse } from '@certusone/wormhole-sdk/lib/cjs/solana'
+import { TransactionSignatureAndResponse } from '@injectivelabs/wormhole-sdk/lib/cjs/solana'
 import { zeroPad } from 'ethers/lib/utils'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
