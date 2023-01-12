@@ -30,6 +30,7 @@ import {
   BigNumberInBase,
   DEFAULT_GAS_LIMIT,
   DEFAULT_STD_FEE,
+  sleep,
 } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { InjectiveTransferMsgArgs, TransferMsgArgs } from '../types'
@@ -261,5 +262,22 @@ export class InjectiveWormholeClient extends WormholeClient {
       Buffer.from(signedVAA, 'base64'),
       chainGrpcWasmApi as any /* TODO */,
     )
+  }
+
+  async getIsTransferCompletedInjectiveRetry(
+    signedVAA: string /* in base 64 */,
+  ) {
+    const RETRIES = 2
+    const TIMEOUT_BETWEEN_RETRIES = 2000
+
+    for (let i = 0; i < RETRIES; i += 1) {
+      if (await this.getIsTransferCompletedInjective(signedVAA)) {
+        return true
+      }
+
+      await sleep(TIMEOUT_BETWEEN_RETRIES)
+    }
+
+    return false
   }
 }
