@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.359](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.358...@injectivelabs/sdk-ts@1.0.359) (2023-01-12)
+
+
+### Bug Fixes
+
+* spot order price ([e278d73](https://github.com/InjectiveLabs/injective-ts/commit/e278d73a7eafe52fa22232ce7de44414ddbd3ce3))
+
+
+
+
+
 ## [1.0.358](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.357...@injectivelabs/sdk-ts@1.0.358) (2023-01-12)
 
 
