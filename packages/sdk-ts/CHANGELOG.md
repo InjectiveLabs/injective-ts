@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.358](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.357...@injectivelabs/sdk-ts@1.0.358) (2023-01-12)
+
+
+### Bug Fixes
+
+* remove blank strings ([104b4ea](https://github.com/InjectiveLabs/injective-ts/commit/104b4ea3c273492027e8eafa52d37b50a3334b6d))
+
+
+
+
+
 ## [1.0.357](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.356...@injectivelabs/sdk-ts@1.0.357) (2023-01-12)
 
 
