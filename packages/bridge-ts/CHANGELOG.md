@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.179](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.178...@injectivelabs/bridge-ts@1.0.179) (2023-01-12)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
 ## [1.0.178](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.177...@injectivelabs/bridge-ts@1.0.178) (2023-01-12)
 
 
