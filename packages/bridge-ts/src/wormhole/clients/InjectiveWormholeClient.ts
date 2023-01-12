@@ -27,8 +27,13 @@ import { InjectiveTransferMsgArgs, TransferMsgArgs } from '../types'
 import { getSolanaContractAddresses } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
+interface MsgBroadcaster {
+  broadcast: (params: any) => Promise<TxResponse>
+  broadcastOld: (params: any) => Promise<TxResponse>
+}
+
 export class InjectiveWormholeClient extends WormholeClient {
-  public provider?: { broadcast: (params: any) => Promise<TxResponse> }
+  public provider?: MsgBroadcaster
 
   constructor({
     network,
@@ -37,7 +42,7 @@ export class InjectiveWormholeClient extends WormholeClient {
   }: {
     network: Network
     wormholeRpcUrl?: string
-    provider?: { broadcast: (params: any) => Promise<TxResponse> }
+    provider?: MsgBroadcaster
   }) {
     super({ network, wormholeRpcUrl })
 
@@ -149,7 +154,7 @@ export class InjectiveWormholeClient extends WormholeClient {
       tryNativeToUint8Array(solanaPubKey.toString(), WORMHOLE_CHAINS.solana),
     )
 
-    const txResponse = (await provider.broadcast({
+    const txResponse = (await provider.broadcastOld({
       msgs: [...messages, ...additionalMsgs],
       injectiveAddress: args.injectiveAddress,
     })) as TxResponse
