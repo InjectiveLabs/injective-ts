@@ -28,14 +28,20 @@ import { getSolanaContractAddresses } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
 export class InjectiveWormholeClient extends WormholeClient {
+  public provider?: { broadcast: (params: any) => Promise<TxResponse> }
+
   constructor({
     network,
     wormholeRpcUrl,
+    provider,
   }: {
     network: Network
     wormholeRpcUrl?: string
+    provider?: { broadcast: (params: any) => Promise<TxResponse> }
   }) {
     super({ network, wormholeRpcUrl })
+
+    this.provider = provider
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -106,11 +112,10 @@ export class InjectiveWormholeClient extends WormholeClient {
        * could be redeeming from the token factory to CW20
        */
       additionalMsgs?: MsgExecuteContractCompat[]
-      provider: { broadcast: (params: any) => TxResponse } /* TODO */
     },
   ) {
-    const { network, wormholeRpcUrl } = this
-    const { amount, recipient, provider, additionalMsgs = [] } = args
+    const { network, wormholeRpcUrl, provider } = this
+    const { amount, recipient, additionalMsgs = [] } = args
     const solanaPubKey = new SolanaPublicKey(recipient)
 
     if (!args.tokenAddress) {
@@ -124,6 +129,12 @@ export class InjectiveWormholeClient extends WormholeClient {
     if (!solanaPubKey) {
       throw new GeneralException(
         new Error(`Please provide solanaOptions.provider`),
+      )
+    }
+
+    if (!provider) {
+      throw new GeneralException(
+        new Error(`Please provide Injective wallet provider`),
       )
     }
 
