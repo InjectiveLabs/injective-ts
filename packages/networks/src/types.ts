@@ -6,6 +6,7 @@ export enum Network {
   Staging = 'staging',
   Public = 'public',
   TestnetK8s = 'testnetK8s',
+  TestnetOld = 'testnetOld',
   Testnet = 'testnet',
   Devnet1 = 'devnet1',
   Devnet2 = 'devnet2',

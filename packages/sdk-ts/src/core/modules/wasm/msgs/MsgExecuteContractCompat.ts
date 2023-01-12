@@ -1,12 +1,11 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
+import { MsgExecuteContractCompat as BaseMsgExecuteContractCompat } from '@injectivelabs/chain-api/injective/wasmx/v1/tx_pb'
 import snakeCaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
-import { toUtf8 } from '../../../../utils/utf8'
 import { GeneralException } from '@injectivelabs/exceptions'
 
-export declare namespace MsgExecuteContract {
+export declare namespace MsgExecuteContractCompat {
   export interface Params {
     /* Keep in mind that funds have to be lexicographically sorted by denom */
     funds?:
@@ -36,46 +35,48 @@ export declare namespace MsgExecuteContract {
   }
 
   export interface DirectSign {
-    type: '/cosmwasm.wasm.v1.MsgExecuteContract'
-    message: BaseMsgExecuteContract
+    type: '/injective.wasmx.v1.MsgExecuteContractCompat'
+    message: BaseMsgExecuteContractCompat
   }
 
-  export interface Data extends BaseMsgExecuteContract.AsObject {
-    '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
+  export interface Data extends BaseMsgExecuteContractCompat.AsObject {
+    '@type': '/injective.wasmx.v1.MsgExecuteContractCompat'
   }
 
-  export interface Amino extends BaseMsgExecuteContract.AsObject {
-    type: 'wasm/MsgExecuteContract'
+  export interface Amino extends BaseMsgExecuteContractCompat.AsObject {
+    type: 'wasmx/MsgExecuteContractCompat'
   }
 
-  export interface Web3 extends BaseMsgExecuteContract.AsObject {
-    '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
+  export interface Web3 extends BaseMsgExecuteContractCompat.AsObject {
+    '@type': '/injective.wasmx.v1.MsgExecuteContractCompat'
   }
 
-  export type Proto = BaseMsgExecuteContract
+  export type Proto = BaseMsgExecuteContractCompat
 }
 
 /**
  * @category Messages
  */
-export default class MsgExecuteContract extends MsgBase<
-  MsgExecuteContract.Params,
-  MsgExecuteContract.Data,
-  MsgExecuteContract.Proto,
-  MsgExecuteContract.Amino,
-  MsgExecuteContract.DirectSign
+export default class MsgExecuteContractCompat extends MsgBase<
+  MsgExecuteContractCompat.Params,
+  MsgExecuteContractCompat.Data,
+  MsgExecuteContractCompat.Proto,
+  MsgExecuteContractCompat.Amino,
+  MsgExecuteContractCompat.DirectSign
 > {
-  static fromJSON(params: MsgExecuteContract.Params): MsgExecuteContract {
-    return new MsgExecuteContract(params)
+  static fromJSON(
+    params: MsgExecuteContractCompat.Params,
+  ): MsgExecuteContractCompat {
+    return new MsgExecuteContractCompat(params)
   }
 
-  public toProto(): MsgExecuteContract.Proto {
+  public toProto(): MsgExecuteContractCompat.Proto {
     const { params } = this
 
-    const message = new BaseMsgExecuteContract()
+    const message = new BaseMsgExecuteContractCompat()
     const msg = this.getMsgObject()
 
-    message.setMsg(toUtf8(JSON.stringify(msg)))
+    message.setMsg(JSON.stringify(msg))
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
 
@@ -99,16 +100,16 @@ export default class MsgExecuteContract extends MsgBase<
     return message
   }
 
-  public toData(): MsgExecuteContract.Data {
+  public toData(): MsgExecuteContractCompat.Data {
     const proto = this.toProto()
 
     return {
-      '@type': '/cosmwasm.wasm.v1.MsgExecuteContract',
+      '@type': '/injective.wasmx.v1.MsgExecuteContractCompat',
       ...proto.toObject(),
     }
   }
 
-  public toAmino(): MsgExecuteContract.Amino {
+  public toAmino(): MsgExecuteContractCompat.Amino {
     const { params } = this
     const proto = this.toProto()
     const funds = params.funds && {
@@ -120,33 +121,33 @@ export default class MsgExecuteContract extends MsgBase<
     const message = {
       ...snakeCaseKeys(proto.toObject()),
       ...funds,
-      msg: this.getMsgObject(),
+      msg: JSON.stringify(this.getMsgObject()),
     }
 
     // @ts-ignore
     delete message.funds_list
 
     return {
-      type: 'wasm/MsgExecuteContract',
+      type: 'wasmx/MsgExecuteContractCompat',
       ...message,
-    } as unknown as MsgExecuteContract.Amino
+    } as unknown as MsgExecuteContractCompat.Amino
   }
 
-  public toWeb3(): MsgExecuteContract.Web3 {
+  public toWeb3(): MsgExecuteContractCompat.Web3 {
     const amino = this.toAmino()
     const { type, ...rest } = amino
 
     return {
-      '@type': '/cosmwasm.wasm.v1.MsgExecuteContract',
+      '@type': '/injective.wasmx.v1.MsgExecuteContractCompat',
       ...rest,
-    } as unknown as MsgExecuteContract.Web3
+    } as unknown as MsgExecuteContractCompat.Web3
   }
 
-  public toDirectSign(): MsgExecuteContract.DirectSign {
+  public toDirectSign(): MsgExecuteContractCompat.DirectSign {
     const proto = this.toProto()
 
     return {
-      type: '/cosmwasm.wasm.v1.MsgExecuteContract',
+      type: '/injective.wasmx.v1.MsgExecuteContractCompat',
       message: proto,
     }
   }

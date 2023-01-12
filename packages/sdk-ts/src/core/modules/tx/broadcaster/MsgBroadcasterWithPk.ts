@@ -8,8 +8,9 @@ import {
 } from '../../../../client/chain/rest'
 import {
   BigNumberInBase,
-  DEFAULT_STD_FEE,
+  getStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_STD_FEE,
 } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -121,10 +122,7 @@ export class MsgBroadcasterWithPk {
     /** Prepare the Transaction * */
     const { signBytes, txRaw } = createTransaction({
       memo: '',
-      fee: {
-        ...DEFAULT_STD_FEE,
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
       message: msgs.map((m) => m.toDirectSign()),
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
@@ -189,7 +187,7 @@ export class MsgBroadcasterWithPk {
     )
 
     /** Prepare the Transaction * */
-    const { signBytes, txRaw } = createTransaction({
+    const { txRaw } = createTransaction({
       memo: '',
       fee: DEFAULT_STD_FEE,
       message: (tx.msgs as Msgs[]).map((m) => m.toDirectSign()),
@@ -200,11 +198,8 @@ export class MsgBroadcasterWithPk {
       chainId: chainId,
     })
 
-    /** Sign transaction */
-    const signature = await privateKey.sign(Buffer.from(signBytes))
-
-    /** Append Signatures */
-    txRaw.setSignaturesList([signature])
+    /** Append Blank Signatures */
+    txRaw.setSignaturesList([new Uint8Array(0)])
 
     /** Simulate transaction */
     const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(

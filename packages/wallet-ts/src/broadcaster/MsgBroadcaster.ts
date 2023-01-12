@@ -22,7 +22,7 @@ import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/tr
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   BigNumberInBase,
-  DEFAULT_STD_FEE,
+  getStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
@@ -47,9 +47,9 @@ import {
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
 } from './types'
-import { isCosmosWallet } from '../wallets/cosmos'
+import { isCosmosWallet } from '../utils/wallets/cosmos'
 import { Wallet, WalletDeviceType } from '../types'
-import { createEip712StdSignDoc, KeplrWallet } from '../wallets/keplr'
+import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
 
 /**
  * This class is used to broadcast transactions
@@ -201,9 +201,7 @@ export class MsgBroadcaster {
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: {
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
       tx: {
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
@@ -230,10 +228,7 @@ export class MsgBroadcaster {
       message: msgs.map((m) => m.toDirectSign()),
       memo: tx.memo,
       signMode: SIGN_AMINO,
-      fee: {
-        ...DEFAULT_STD_FEE,
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
       pubKey: publicKeyBase64,
       sequence: baseAccount.sequence,
       timeoutHeight: timeoutHeight.toNumber(),
@@ -246,17 +241,16 @@ export class MsgBroadcaster {
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
-    /** Append Signatures */
-    txRawEip712.setSignaturesList([signatureBuff])
-
     /* Simulate Transaction */
     if (options.simulateTx) {
       await MsgBroadcaster.simulate({
         txRaw,
-        signature: signatureBuff,
         txClient: txApi,
       })
     }
+
+    /** Append Signatures */
+    txRawEip712.setSignaturesList([signatureBuff])
 
     /** Broadcast the transaction */
     const response = await txApi.broadcast(txRawEip712)
@@ -375,11 +369,16 @@ export class MsgBroadcaster {
         accountNumber: accountDetails.accountNumber,
         sequence: accountDetails.sequence,
       },
-      fee: {
-        ...DEFAULT_STD_FEE,
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
     })
+
+    /* Simulate Transaction */
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate({
+        txRaw,
+        txClient: new TxGrpcApi(endpoints.grpc),
+      })
+    }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
@@ -387,15 +386,6 @@ export class MsgBroadcaster {
       address: tx.injectiveAddress,
       accountNumber: accountDetails.accountNumber,
     })) as DirectSignResponse
-
-    /* Simulate Transaction */
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate({
-        txRaw,
-        signature: directSignResponse.signature.signature,
-        txClient: new TxGrpcApi(endpoints.grpc),
-      })
-    }
 
     return walletStrategy.sendTransaction(directSignResponse, {
       chainId,
@@ -460,9 +450,7 @@ export class MsgBroadcaster {
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: {
-        gas: gas || DEFAULT_STD_FEE.gas,
-      },
+      fee: getStdFee(gas),
       tx: {
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
@@ -510,21 +498,20 @@ export class MsgBroadcaster {
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
+    /* Simulate Transaction */
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate({
+        txRaw,
+        txClient: txApi,
+      })
+    }
+
     /** Append Signatures */
     const signatureBuff = Buffer.from(
       aminoSignResponse.signature.signature,
       'base64',
     )
     txRawEip712.setSignaturesList([signatureBuff])
-
-    /* Simulate Transaction */
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate({
-        txRaw,
-        signature: signatureBuff,
-        txClient: txApi,
-      })
-    }
 
     /** Broadcast the transaction */
     const response = await txApi.broadcast(txRawEip712)
@@ -607,11 +594,18 @@ export class MsgBroadcaster {
         },
       ],
       fee: {
-        ...DEFAULT_STD_FEE,
-        gas: gas || DEFAULT_STD_FEE.gas,
+        ...getStdFee(gas),
         payer: feePayer,
       },
     })
+
+    /* Simulate Transaction */
+    if (options.simulateTx) {
+      await MsgBroadcaster.simulate({
+        txRaw,
+        txClient: new TxGrpcApi(endpoints.grpc),
+      })
+    }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
@@ -619,15 +613,6 @@ export class MsgBroadcaster {
       address: tx.injectiveAddress,
       accountNumber: accountDetails.accountNumber,
     })) as DirectSignResponse
-
-    /* Simulate Transaction */
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate({
-        txRaw,
-        signature: directSignResponse.signature.signature,
-        txClient: new TxGrpcApi(endpoints.grpc),
-      })
-    }
 
     const response = await transactionApi.broadcastCosmosTxRequest({
       address: tx.injectiveAddress,
@@ -657,14 +642,12 @@ export class MsgBroadcaster {
   private static async simulate({
     txRaw,
     txClient,
-    signature,
   }: {
     txRaw: TxRaw
-    signature: string | Buffer | Uint8Array
     txClient: TxGrpcApi | TxRestApi
   }) {
     const txRawWithSignature = txRaw.clone()
-    txRawWithSignature.setSignaturesList([signature])
+    txRawWithSignature.setSignaturesList([new Uint8Array(0)])
 
     try {
       return await txClient.simulate(txRawWithSignature)

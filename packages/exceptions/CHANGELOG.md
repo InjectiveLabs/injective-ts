@@ -3,6 +3,86 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.41...@injectivelabs/exceptions@1.0.42) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.40...@injectivelabs/exceptions@1.0.41) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.39...@injectivelabs/exceptions@1.0.40) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.38...@injectivelabs/exceptions@1.0.39) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.37...@injectivelabs/exceptions@1.0.38) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.36...@injectivelabs/exceptions@1.0.37) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.35...@injectivelabs/exceptions@1.0.36) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.34...@injectivelabs/exceptions@1.0.35) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.33...@injectivelabs/exceptions@1.0.34) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.32...@injectivelabs/exceptions@1.0.33) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
 ## [1.0.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.31...@injectivelabs/exceptions@1.0.32) (2022-12-09)
 
 **Note:** Version bump only for package @injectivelabs/exceptions

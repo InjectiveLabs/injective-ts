@@ -3,6 +3,228 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.354](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.353...@injectivelabs/sdk-ts@1.0.354) (2023-01-11)
+
+
+### Bug Fixes
+
+* updated std fee based on gas ([0a86900](https://github.com/InjectiveLabs/injective-ts/commit/0a869004eacfaaa2fc1b1b0567937eb948bd1c59))
+
+
+
+
+
+## [1.0.353](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.352...@injectivelabs/sdk-ts@1.0.353) (2023-01-11)
+
+
+### Bug Fixes
+
+* typo ([b673377](https://github.com/InjectiveLabs/injective-ts/commit/b6733777a47f659c4912015a1f373adbb2354912))
+
+
+
+
+
+## [1.0.352](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.351...@injectivelabs/sdk-ts@1.0.352) (2023-01-11)
+
+
+### Features
+
+* path updated for wasmx ([2bebb9d](https://github.com/InjectiveLabs/injective-ts/commit/2bebb9d02999f2b7a1be6494c353d0650475cfdf))
+
+
+
+
+
+## [1.0.351](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.350...@injectivelabs/sdk-ts@1.0.351) (2023-01-11)
+
+
+### Features
+
+* path updated for wasmx ([36b594a](https://github.com/InjectiveLabs/injective-ts/commit/36b594a4465227e01ec60d3caae226fe03c3ab1b))
+
+
+
+
+
+## [1.0.350](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.349...@injectivelabs/sdk-ts@1.0.350) (2023-01-10)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.349](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.348...@injectivelabs/sdk-ts@1.0.349) (2023-01-10)
+
+
+### Bug Fixes
+
+* leftover console log ([c3d7c89](https://github.com/InjectiveLabs/injective-ts/commit/c3d7c894be06ff4ab53c8a6af818e5411df4ca84))
+
+
+
+
+
+## [1.0.348](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.347...@injectivelabs/sdk-ts@1.0.348) (2023-01-10)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.347](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.346...@injectivelabs/sdk-ts@1.0.347) (2023-01-10)
+
+
+### Features
+
+* msgExecuteContractCompat ([9c63a64](https://github.com/InjectiveLabs/injective-ts/commit/9c63a645493af7077a5561f25e526a4a20d2d218))
+
+
+
+
+
+## [1.0.346](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.345...@injectivelabs/sdk-ts@1.0.346) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.345](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.344...@injectivelabs/sdk-ts@1.0.345) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.344](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.343...@injectivelabs/sdk-ts@1.0.344) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.343](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.342...@injectivelabs/sdk-ts@1.0.343) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.342](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.341...@injectivelabs/sdk-ts@1.0.342) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.341](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.340...@injectivelabs/sdk-ts@1.0.341) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.340](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.339...@injectivelabs/sdk-ts@1.0.340) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.339](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.338...@injectivelabs/sdk-ts@1.0.339) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.338](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.337...@injectivelabs/sdk-ts@1.0.338) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.337](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.336...@injectivelabs/sdk-ts@1.0.337) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.336](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.335...@injectivelabs/sdk-ts@1.0.336) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.335](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.334...@injectivelabs/sdk-ts@1.0.335) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.334](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.333...@injectivelabs/sdk-ts@1.0.334) (2023-01-09)
+
+
+### Features
+
+* added httpRestClient which handles timeout exceptions ([c200bc2](https://github.com/InjectiveLabs/injective-ts/commit/c200bc25fe67901ad80462166c5cc841449df6b8))
+
+
+
+
+
+## [1.0.333](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.332...@injectivelabs/sdk-ts@1.0.333) (2023-01-09)
+
+
+### Features
+
+* redeem from sdk-ts not wormhole-sdk ([6492495](https://github.com/InjectiveLabs/injective-ts/commit/64924954d2e635c0d0098594ff18191beca300f5))
+
+
+
+
+
+## [1.0.332](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.331...@injectivelabs/sdk-ts@1.0.332) (2023-01-09)
+
+
+### Features
+
+* added testnet old endpoints ([79358b1](https://github.com/InjectiveLabs/injective-ts/commit/79358b1ce2f775cacb8c278a58caaea90a8e98bb))
+
+
+
+
+
+## [1.0.331](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.330...@injectivelabs/sdk-ts@1.0.331) (2023-01-08)
+
+
+### Bug Fixes
+
+* signature list on simulating transaction ([ac77679](https://github.com/InjectiveLabs/injective-ts/commit/ac77679b8651ffc22b2e19275f2ffbb8397a5e12))
+
+
+
+
+
 ## [1.0.330](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.329...@injectivelabs/sdk-ts@1.0.330) (2023-01-06)
 
 

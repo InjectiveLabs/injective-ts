@@ -1,5 +1,5 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
-import { BigNumberInBase, HttpClient } from '@injectivelabs/utils'
+import { BigNumberInBase, HttpRestClient } from '@injectivelabs/utils'
 import { HttpRequestException } from '@injectivelabs/exceptions'
 import { ASSET_PRICE_SERVICE_URL } from '../constants'
 import { CoinPriceFromInjectiveService } from '../types/token'
@@ -15,13 +15,13 @@ const commonlyUsedCoinGeckoIds = [
 export class TokenPrice {
   private coinGeckoApi: CoinGeckoApi
 
-  private httpClient: HttpClient
+  private restClient: HttpRestClient
 
   private cache: Record<string, number> = {} // coinGeckoId -> priceInUsd
 
   constructor(coinGeckoOptions: { baseUrl: string; apiKey: string }) {
+    this.restClient = new HttpRestClient(ASSET_PRICE_SERVICE_URL)
     this.coinGeckoApi = new CoinGeckoApi(coinGeckoOptions)
-    this.httpClient = new HttpClient(ASSET_PRICE_SERVICE_URL)
   }
 
   async fetchUsdTokenPrice(coinId: string) {
@@ -60,6 +60,10 @@ export class TokenPrice {
 
       return 0
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
@@ -70,7 +74,7 @@ export class TokenPrice {
     }
 
     try {
-      const pricesResponse = (await this.httpClient.get('coin/price', {
+      const pricesResponse = (await this.restClient.get('coin/price', {
         coinIds: coinId,
         currency: 'usd',
       })) as {
@@ -101,6 +105,10 @@ export class TokenPrice {
 
       return priceInUsd
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
@@ -123,6 +131,10 @@ export class TokenPrice {
 
       return priceInUsd
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }
@@ -165,7 +177,7 @@ export class TokenPrice {
 
   private async initCache(): Promise<void> {
     try {
-      const pricesResponse = (await this.httpClient.get('coin/price', {
+      const pricesResponse = (await this.restClient.get('coin/price', {
         coinIds: commonlyUsedCoinGeckoIds.join(','),
         currency: 'usd',
       })) as {
@@ -186,6 +198,10 @@ export class TokenPrice {
         {},
       )
     } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
       throw new HttpRequestException(new Error((e as any).message))
     }
   }

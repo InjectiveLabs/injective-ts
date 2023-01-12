@@ -1,5 +1,6 @@
 export { default as ExecArgCW20AdapterRedeemAndTransfer } from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 export { default as ExecArgCW20Send } from './exec-args/ExecArgCW20Send'
+export { default as ExecArgCW20Transfer } from './exec-args/ExecArgCW20Transfer'
 export { default as ExecArgDepositTokens } from './exec-args/ExecArgDepositTokens'
 export { default as ExecArgIncreaseAllowance } from './exec-args/ExecArgIncreaseAllowance'
 export { default as ExecArgInitiateTransfer } from './exec-args/ExecArgInitiateTransfer'
@@ -10,9 +11,11 @@ export { default as ExecArgUpdateSpotVaultConfig } from './exec-args/ExecArgUpda
 
 export { default as MsgPrivilegedExecuteContract } from './msgs/MsgPrivilegedExecuteContract'
 export { default as MsgExecuteContract } from './msgs/MsgExecuteContract'
+export { default as MsgExecuteContractCompat } from './msgs/MsgExecuteContractCompat'
 export { default as MsgInstantiateContract } from './msgs/MsgInstantiateContract'
 export { default as MsgStoreCode } from './msgs/MsgStoreCode'
 export { default as MsgMigrateContract } from './msgs/MsgMigrateContract'
+export { default as MsgUpdateAdmin } from './msgs/MsgUpdateAdmin'
 
 export { default as ExecPrivilegedArgRegisterVault } from './exec-priv-args/ExecPrivilegedRegisterVault'
 export { default as ExecPrivilegedArgVaultRedeem } from './exec-priv-args/ExecPrivilegedArgVaultRedeem'

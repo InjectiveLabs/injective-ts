@@ -3,6 +3,105 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.62](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.61...@injectivelabs/token-utils@1.0.62) (2023-01-11)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.60...@injectivelabs/token-utils@1.0.61) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.59...@injectivelabs/token-utils@1.0.60) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.58...@injectivelabs/token-utils@1.0.59) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.57...@injectivelabs/token-utils@1.0.58) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.56...@injectivelabs/token-utils@1.0.57) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.55...@injectivelabs/token-utils@1.0.56) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.54...@injectivelabs/token-utils@1.0.55) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.53...@injectivelabs/token-utils@1.0.54) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.52...@injectivelabs/token-utils@1.0.53) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.51...@injectivelabs/token-utils@1.0.52) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.50...@injectivelabs/token-utils@1.0.51) (2023-01-09)
+
+
+### Features
+
+* added httpRestClient which handles timeout exceptions ([c200bc2](https://github.com/InjectiveLabs/injective-ts/commit/c200bc25fe67901ad80462166c5cc841449df6b8))
+
+
+
+
+
 ## [1.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.49...@injectivelabs/token-utils@1.0.50) (2022-12-22)
 
 **Note:** Version bump only for package @injectivelabs/token-utils

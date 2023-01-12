@@ -139,8 +139,14 @@ export class TxGrpcApi implements TxConcreteApi {
   public async simulate(txRaw: TxRaw) {
     const { txService } = this
 
+    const txRawClone = txRaw.clone()
     const simulateRequest = new SimulateRequest()
-    simulateRequest.setTxBytes(txRaw.serializeBinary())
+
+    if (txRawClone.getSignaturesList().length === 0) {
+      txRawClone.setSignaturesList([new Uint8Array(0)])
+    }
+
+    simulateRequest.setTxBytes(txRawClone.serializeBinary())
 
     try {
       return new Promise(
@@ -182,8 +188,6 @@ export class TxGrpcApi implements TxConcreteApi {
       return new Promise(
         (resolve: (value: TxClientBroadcastResponse) => void, reject) =>
           txService.broadcastTx(broadcastTxRequest, async (error, response) => {
-            console.log(JSON.stringify(error))
-
             if (error || !response) {
               return reject(error)
             }

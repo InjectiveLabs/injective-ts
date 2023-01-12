@@ -1,6 +1,11 @@
-import { chainErrorMessagesMap } from '../messages'
-import { ErrorContextCode, UnspecifiedErrorCode } from '../types'
+import { chainErrorMessagesMap, chainCodeErrorMessagesMap } from '../messages'
+import {
+  ErrorContextCode,
+  UnspecifiedErrorCode,
+  ChainCosmosErrorCode,
+} from '../types'
 
+/* todo: remove this with the next chain upgrade */
 export const parseMessage = (message: string) => {
   const firstParse = message.split('message index: 0:')
 
@@ -18,10 +23,12 @@ export const parseMessage = (message: string) => {
   return actualMessage.trim().trimEnd()
 }
 
-export const mapFailedTransactionMessage = (
+/* todo: remove this with the next chain upgrade */
+const mapMessageByContent = (
   message: string,
 ): { message: string; code: ErrorContextCode } => {
   const parsedMessage = parseMessage(message)
+
   const messageInMapKey = (
     Object.keys(chainErrorMessagesMap) as Array<
       keyof typeof chainErrorMessagesMap
@@ -33,6 +40,50 @@ export const mapFailedTransactionMessage = (
   }
 
   return chainErrorMessagesMap[messageInMapKey]
+}
+
+const getABCICode = (message: string): number | undefined => {
+  const chainCodePattern = /{key:"ABCICode" (.*?)}/g
+  const numericPattern = /\d+/g
+
+  const chainCodeMsg = message.match(chainCodePattern)
+
+  if (!chainCodeMsg || chainCodeMsg.length === 0) {
+    return
+  }
+
+  const chainCode = chainCodeMsg[0].match(numericPattern)
+
+  if (!chainCode || chainCode.length === 0) {
+    return
+  }
+
+  return Number(chainCode[0])
+}
+
+export const mapFailedTransactionMessage = (
+  message: string,
+): { message: string; code: ErrorContextCode } => {
+  const ABCICode = getABCICode(message)
+
+  if (!ABCICode) {
+    return mapMessageByContent(message)
+  }
+
+  const chainCodeErrorMessage = chainCodeErrorMessagesMap[ABCICode]
+
+  if (!chainCodeErrorMessage) {
+    return {
+      message:
+        chainCodeErrorMessagesMap[ChainCosmosErrorCode.ErrUnknownRequest],
+      code: ChainCosmosErrorCode.ErrUnknownRequest,
+    }
+  }
+
+  return {
+    message: chainCodeErrorMessage,
+    code: ABCICode,
+  }
 }
 
 export const mapMetamaskMessage = (message: string): string => {

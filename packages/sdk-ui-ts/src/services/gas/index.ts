@@ -4,7 +4,7 @@ import {
   BigNumberInWei,
   BigNumberInBase,
 } from '@injectivelabs/utils'
-import { Network } from '@injectivelabs/networks'
+import { Network, isTestnetOrDevnet } from '@injectivelabs/networks'
 import {
   GWEI_IN_WEI,
   DEFAULT_GAS_PRICE,
@@ -41,17 +41,6 @@ export interface EtherchainResult {
   safeLow: number
   currentBaseFee: number
   recommendedBaseFee: number
-}
-
-const isTestnet = (network: Network) => {
-  return [
-    Network.Local,
-    Network.Devnet,
-    Network.Devnet1,
-    Network.Devnet2,
-    Network.Testnet,
-    Network.TestnetK8s,
-  ].includes(network)
 }
 
 const fetchGasPriceFromAlchemy = async (key: string): Promise<string> => {
@@ -145,7 +134,7 @@ export const fetchGasPrice = async (
   network: Network,
   options?: { alchemyKey: string },
 ): Promise<string> => {
-  if (isTestnet(network)) {
+  if (isTestnetOrDevnet(network)) {
     return new BigNumberInWei(DEFAULT_GAS_PRICE).toFixed(0)
   }
 

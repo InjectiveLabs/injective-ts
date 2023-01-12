@@ -1,5 +1,6 @@
 import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 import ExecArgCW20Send from './exec-args/ExecArgCW20Send'
+import ExecArgCW20Transfer from './exec-args/ExecArgCW20Transfer'
 import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
@@ -15,6 +16,7 @@ import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgV
 export type ExecArgs =
   | ExecArgCW20AdapterRedeemAndTransfer
   | ExecArgCW20Send
+  | ExecArgCW20Transfer
   | ExecArgDepositTokens
   | ExecArgIncreaseAllowance
   | ExecArgInitiateTransfer

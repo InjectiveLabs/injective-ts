@@ -29,7 +29,7 @@ import WalletConnect from './strategies/WalletConnect'
 import CosmostationEth from './strategies/CosmostationEth'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet } from './utils'
-import { isCosmosWallet } from '../../wallets/cosmos'
+import { isCosmosWallet } from '../../utils/wallets/cosmos'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {

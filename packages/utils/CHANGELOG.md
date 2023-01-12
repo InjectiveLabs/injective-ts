@@ -3,6 +3,108 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.58...@injectivelabs/utils@1.0.59) (2023-01-11)
+
+
+### Bug Fixes
+
+* updated std fee based on gas ([0a86900](https://github.com/InjectiveLabs/injective-ts/commit/0a869004eacfaaa2fc1b1b0567937eb948bd1c59))
+
+
+
+
+
+## [1.0.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.57...@injectivelabs/utils@1.0.58) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.56...@injectivelabs/utils@1.0.57) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.55...@injectivelabs/utils@1.0.56) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.54...@injectivelabs/utils@1.0.55) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.53...@injectivelabs/utils@1.0.54) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.52...@injectivelabs/utils@1.0.53) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.51...@injectivelabs/utils@1.0.52) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.50...@injectivelabs/utils@1.0.51) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.49...@injectivelabs/utils@1.0.50) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.48...@injectivelabs/utils@1.0.49) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.47...@injectivelabs/utils@1.0.48) (2023-01-09)
+
+
+### Features
+
+* added httpRestClient which handles timeout exceptions ([c200bc2](https://github.com/InjectiveLabs/injective-ts/commit/c200bc25fe67901ad80462166c5cc841449df6b8))
+
+
+
+
+
 ## [1.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.46...@injectivelabs/utils@1.0.47) (2022-12-22)
 
 **Note:** Version bump only for package @injectivelabs/utils

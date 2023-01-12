@@ -3,6 +3,78 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.26...@injectivelabs/ts-types@1.0.27) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
+## [1.0.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.25...@injectivelabs/ts-types@1.0.26) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
+## [1.0.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.24...@injectivelabs/ts-types@1.0.25) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
+## [1.0.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.23...@injectivelabs/ts-types@1.0.24) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
+## [1.0.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.22...@injectivelabs/ts-types@1.0.23) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
+## [1.0.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.21...@injectivelabs/ts-types@1.0.22) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
+## [1.0.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.20...@injectivelabs/ts-types@1.0.21) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
+## [1.0.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.19...@injectivelabs/ts-types@1.0.20) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
+## [1.0.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.18...@injectivelabs/ts-types@1.0.19) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
 ## [1.0.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.0.17...@injectivelabs/ts-types@1.0.18) (2022-12-09)
 
 

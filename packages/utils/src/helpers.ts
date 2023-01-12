@@ -1,7 +1,12 @@
 import { ComposerResponse } from '@injectivelabs/ts-types'
+import BigNumber from 'bignumber.js'
+import {
+  DEFAULT_STD_FEE,
+  DEFAULT_GAS_LIMIT,
+  DEFAULT_GAS_PRICE,
+} from './constants'
 import BigNumberInBase from './classes/BigNumber/BigNumberInBase'
 import BigNumberInWei from './classes/BigNumber/BigNumberInWei'
-import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from './constants'
 
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))
@@ -69,3 +74,18 @@ export const getStdFeeForToken = (
     gas: DEFAULT_GAS_LIMIT.toString(),
   }
 }
+
+export const getStdFee = (
+  gas: string = DEFAULT_GAS_LIMIT.toString(),
+  gasPrice = DEFAULT_GAS_PRICE,
+) => ({
+  amount: [
+    {
+      denom: 'inj',
+      amount: new BigNumber(gas).times(gasPrice).toString(),
+    },
+  ],
+  gas: DEFAULT_GAS_LIMIT.toString(),
+})
+
+export const getDefaultStdFee = () => DEFAULT_STD_FEE

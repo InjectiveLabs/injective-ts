@@ -9,6 +9,7 @@ import {
   oldEndpointsLocal,
   oldEndpointsTestnet,
   oldEndpointsTestnetK8s,
+  oldEndpointsTestnetOld,
   oldEndpointsPublic,
   oldEndpointsDevnet,
   oldEndpointsMainnetK8s,
@@ -21,6 +22,7 @@ import {
   endpointsLocal,
   endpointsTestnet,
   endpointsTestnetK8s,
+  endpointsTestnetOld,
   endpointsPublic,
   endpointsDevnet,
   endpointsMainnetK8s,
@@ -48,6 +50,7 @@ export const oldNetworkEndpoints: Record<Network, OldNetworkEndpoints> = {
   [Network.Devnet2]: oldEndpointsDevnet2,
   [Network.Testnet]: oldEndpointsTestnet,
   [Network.TestnetK8s]: oldEndpointsTestnetK8s,
+  [Network.TestnetOld]: oldEndpointsTestnetOld,
   [Network.Local]: oldEndpointsLocal,
 }
 
@@ -61,6 +64,7 @@ export const networkEndpoints: Record<Network, NetworkEndpoints> = {
   [Network.Devnet2]: endpointsDevnet2,
   [Network.Testnet]: endpointsTestnet,
   [Network.TestnetK8s]: endpointsTestnetK8s,
+  [Network.TestnetOld]: endpointsTestnetOld,
   [Network.Local]: endpointsLocal,
 }
 
@@ -73,6 +77,7 @@ export const chainInfos: Record<Network, ChainInfo> = {
   [Network.Devnet1]: devnetChainInfo,
   [Network.Devnet2]: devnetChainInfo,
   [Network.Testnet]: testnetChainInfo,
+  [Network.TestnetOld]: testnetChainInfo,
   [Network.TestnetK8s]: testnetChainInfo,
   [Network.Local]: localChainInfo,
 }
@@ -113,4 +118,7 @@ export const isDevnet = (network: Network) =>
   )
 
 export const isTestnet = (network: Network) =>
-  [Network.Testnet, Network.TestnetK8s].includes(network)
+  [Network.Testnet, Network.TestnetOld, Network.TestnetK8s].includes(network)
+
+export const isTestnetOrDevnet = (network: Network) =>
+  isDevnet(network) || isTestnet(network)

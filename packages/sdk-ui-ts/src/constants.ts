@@ -3,7 +3,7 @@ import {
   BigNumberInBase,
   BigNumberInWei,
 } from '@injectivelabs/utils'
-import { Network } from '@injectivelabs/networks'
+import { isTestnet, Network } from '@injectivelabs/networks'
 
 export const INJ_DENOM = 'inj'
 export const INJECTIVE_DENOM = 'inj'
@@ -70,7 +70,7 @@ export const peggyGraphQlEndpointForNetwork = (network: Network): string => {
     return PEGGY_DEVNET2_GRAPH_URL
   }
 
-  if ([Network.Testnet, Network.TestnetK8s].includes(network)) {
+  if (isTestnet(network)) {
     return PEGGY_TESTNET_GRAPH_URL
   }
 

@@ -35,6 +35,13 @@ export const oldEndpointsTestnetK8s: OldNetworkEndpoints = {
   sentryHttpApi: 'https://k8s.testnet.lcd.injective.network',
 }
 
+export const oldEndpointsTestnetOld: OldNetworkEndpoints = {
+  indexerApi: 'https://testnet.api.injective.dev',
+  sentryGrpcApi: 'https://testnet.grpc.injective.dev',
+  tendermintApi: 'https://testnet.tm.injective.dev',
+  sentryHttpApi: 'https://testnet.lcd.injective.dev',
+}
+
 export const oldEndpointsTestnet: OldNetworkEndpoints = {
   ...oldEndpointsTestnetK8s,
 }

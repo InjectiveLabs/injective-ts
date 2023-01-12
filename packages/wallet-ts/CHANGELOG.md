@@ -3,6 +3,207 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.346](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.345...@injectivelabs/wallet-ts@1.0.346) (2023-01-11)
+
+
+### Bug Fixes
+
+* updated std fee based on gas ([0a86900](https://github.com/InjectiveLabs/injective-ts/commit/0a869004eacfaaa2fc1b1b0567937eb948bd1c59))
+
+
+
+
+
+## [1.0.345](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.344...@injectivelabs/wallet-ts@1.0.345) (2023-01-11)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.344](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.343...@injectivelabs/wallet-ts@1.0.344) (2023-01-11)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.343](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.342...@injectivelabs/wallet-ts@1.0.343) (2023-01-11)
+
+
+### Features
+
+* path updated for wasmx ([36b594a](https://github.com/InjectiveLabs/injective-ts/commit/36b594a4465227e01ec60d3caae226fe03c3ab1b))
+
+
+
+
+
+## [1.0.342](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.341...@injectivelabs/wallet-ts@1.0.342) (2023-01-10)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.341](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.340...@injectivelabs/wallet-ts@1.0.341) (2023-01-10)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.340](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.339...@injectivelabs/wallet-ts@1.0.340) (2023-01-10)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.339](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.338...@injectivelabs/wallet-ts@1.0.339) (2023-01-10)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.338](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.337...@injectivelabs/wallet-ts@1.0.338) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.337](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.336...@injectivelabs/wallet-ts@1.0.337) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.336](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.335...@injectivelabs/wallet-ts@1.0.336) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.335](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.334...@injectivelabs/wallet-ts@1.0.335) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.334](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.333...@injectivelabs/wallet-ts@1.0.334) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.333](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.332...@injectivelabs/wallet-ts@1.0.333) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.332](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.331...@injectivelabs/wallet-ts@1.0.332) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.331](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.330...@injectivelabs/wallet-ts@1.0.331) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.330](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.329...@injectivelabs/wallet-ts@1.0.330) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.329](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.328...@injectivelabs/wallet-ts@1.0.329) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.328](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.327...@injectivelabs/wallet-ts@1.0.328) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.327](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.326...@injectivelabs/wallet-ts@1.0.327) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.326](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.325...@injectivelabs/wallet-ts@1.0.326) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.325](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.324...@injectivelabs/wallet-ts@1.0.325) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.324](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.323...@injectivelabs/wallet-ts@1.0.324) (2023-01-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.323](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.322...@injectivelabs/wallet-ts@1.0.323) (2023-01-08)
+
+
+### Bug Fixes
+
+* signature list on simulating transaction ([ac77679](https://github.com/InjectiveLabs/injective-ts/commit/ac77679b8651ffc22b2e19275f2ffbb8397a5e12))
+
+
+
+
+
 ## [1.0.322](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.321...@injectivelabs/wallet-ts@1.0.322) (2023-01-06)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

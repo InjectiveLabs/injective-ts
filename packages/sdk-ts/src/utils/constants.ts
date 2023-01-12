@@ -1,5 +1,5 @@
 import { Network } from '@injectivelabs/networks'
-import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '@injectivelabs/utils'
+import { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM } from '@injectivelabs/utils'
 
 export const BECH32_PUBKEY_ACC_PREFIX = 'injpub'
 export const BECH32_PUBKEY_VAL_PREFIX = 'injvaloperpub'
@@ -22,28 +22,11 @@ export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Staging]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Testnet]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.TestnetK8s]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
+  [Network.TestnetOld]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.Devnet]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.Devnet1]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.Devnet2]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.Local]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
 }
 
-export const DEFAULT_STD_FEE = {
-  amount: [
-    {
-      amount: (DEFAULT_GAS_LIMIT * DEFAULT_GAS_PRICE).toString(),
-      denom: 'inj',
-    },
-  ],
-  gas: DEFAULT_GAS_LIMIT.toString(),
-}
-
-export const DEFAULT_STD_FEE_BY_DENOM = (denom: string = 'inj') => ({
-  amount: [
-    {
-      denom,
-      amount: (DEFAULT_GAS_LIMIT * DEFAULT_GAS_PRICE).toString(),
-    },
-  ],
-  gas: DEFAULT_GAS_LIMIT.toString(),
-})
+export { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM }
