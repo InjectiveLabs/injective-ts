@@ -85,7 +85,7 @@ export const getStdFee = (
       amount: new BigNumber(gas).times(gasPrice).toString(),
     },
   ],
-  gas: DEFAULT_GAS_LIMIT.toString(),
+  gas,
 })
 
 export const getDefaultStdFee = () => DEFAULT_STD_FEE
