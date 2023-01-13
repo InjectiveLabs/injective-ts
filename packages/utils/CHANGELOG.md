@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.61](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.60...@injectivelabs/utils@1.0.61) (2023-01-13)
+
+
+### Bug Fixes
+
+* gas used ([6375f80](https://github.com/InjectiveLabs/injective-ts/commit/6375f8083e422e4c033e9ca30c3d1214ee9ac89d))
+
+
+
+
+
 ## [1.0.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.59...@injectivelabs/utils@1.0.60) (2023-01-12)
 
 **Note:** Version bump only for package @injectivelabs/utils
