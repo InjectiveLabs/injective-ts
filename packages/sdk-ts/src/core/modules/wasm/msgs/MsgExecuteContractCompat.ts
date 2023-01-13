@@ -20,6 +20,7 @@ export declare namespace MsgExecuteContractCompat {
     contractAddress: string
     /* Used to provide type safety for execution messages */
     execArgs?: ExecArgs
+
     /* Pass any arbitrary message object to execute */
     exec?: {
       msg: object
