@@ -263,6 +263,7 @@ export class IndexerGrpcSpotTransformer {
       orderHash: trade.getOrderHash(),
       subaccountId: trade.getSubaccountId(),
       marketId: trade.getMarketId(),
+      tradeId: trade.getTradeId(),
       executedAt: trade.getExecutedAt(),
       feeRecipient: trade.getFeeRecipient(),
       tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,

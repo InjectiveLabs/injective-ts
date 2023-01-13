@@ -22,7 +22,7 @@ export enum SpotOrderSide {
   TakeBuy = 'take_buy',
   TakeSell = 'take_sell',
   BuyPO = 'buy_po',
-  SellPO = 'sell_po'
+  SellPO = 'sell_po',
 }
 
 export enum SpotOrderState {
@@ -32,7 +32,7 @@ export enum SpotOrderState {
   PartiallyFilled = 'partially_filled',
   Filled = 'filled',
   Canceled = 'canceled',
-  Triggered = 'triggered'
+  Triggered = 'triggered',
 }
 
 export interface SpotMarket {
@@ -86,6 +86,7 @@ export interface SpotTrade extends PriceLevel {
   orderHash: string
   subaccountId: string
   marketId: string
+  tradeId: string
   executedAt: number
   tradeExecutionType: TradeExecutionType
   executionSide: TradeExecutionSide
@@ -116,5 +117,5 @@ export {
   GrpcSpotMarketInfo,
   GrpcSpotLimitOrder,
   GrpcSpotOrderHistory,
-  GrpcSpotTrade
+  GrpcSpotTrade,
 }

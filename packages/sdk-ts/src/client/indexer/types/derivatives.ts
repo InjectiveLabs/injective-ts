@@ -29,7 +29,7 @@ export enum DerivativeOrderSide {
   TakeBuy = 'take_buy',
   TakeSell = 'take_sell',
   BuyPO = 'buy_po',
-  SellPO = 'sell_po'
+  SellPO = 'sell_po',
 }
 
 export enum DerivativeOrderState {
@@ -39,7 +39,7 @@ export enum DerivativeOrderState {
   PartiallyFilled = 'partially_filled',
   Filled = 'filled',
   Canceled = 'canceled',
-  Triggered = 'triggered'
+  Triggered = 'triggered',
 }
 
 export interface PositionDelta {
@@ -187,6 +187,7 @@ export interface DerivativeOrderHistory {
 export interface DerivativeTrade extends PositionDelta {
   orderHash: string
   subaccountId: string
+  tradeId: string
   marketId: string
   executedAt: number
   tradeExecutionType: TradeExecutionType
@@ -242,5 +243,5 @@ export {
   GrpcDerivativeTrade,
   GrpcPositionDelta,
   GrpcBinaryOptionsMarketInfo,
-  GrpcDerivativeOrderHistory
+  GrpcDerivativeOrderHistory,
 }

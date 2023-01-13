@@ -512,6 +512,7 @@ export class IndexerGrpcDerivativeTransformer {
 
     return {
       orderHash: trade.getOrderHash(),
+      tradeId: trade.getTradeId(),
       subaccountId: trade.getSubaccountId(),
       marketId: trade.getMarketId(),
       executedAt: trade.getExecutedAt(),
