@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.364](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.363...@injectivelabs/sdk-ts@1.0.364) (2023-01-13)
+
+
+### Features
+
+* added tradeId ([21dba26](https://github.com/InjectiveLabs/injective-ts/commit/21dba26fd094b9eb15d891ac4a7ec106d0337142))
+
+
+
+
+
 ## [1.0.363](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.362...@injectivelabs/sdk-ts@1.0.363) (2023-01-13)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
