@@ -6,7 +6,7 @@ export class HttpRequestException extends ConcreteException {
 
   constructor(
     error: Error,
-    context?: ErrorContext & { method?: HttpRequestMethod },
+    context?: ErrorContext & { method?: HttpRequestMethod; endpoint?: string },
   ) {
     super(error, context)
 

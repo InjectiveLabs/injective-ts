@@ -279,7 +279,6 @@ export class OrderHashManager {
     try {
       return `0x${Buffer.from(keccak256(bytesToHash)).toString('hex')}`
     } catch (e) {
-      console.log(e)
       return ''
     }
   }

@@ -25,6 +25,15 @@ export enum ErrorType {
 export interface ErrorContext {
   code?: ErrorCode
   type?: ErrorType
+
+  /**
+   * Additional context needed for the exception
+   */
+  context?: string
+
+  /**
+   * Where is the exception thrown
+   */
   contextModule?: string
 
   /**

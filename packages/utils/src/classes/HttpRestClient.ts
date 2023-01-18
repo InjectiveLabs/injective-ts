@@ -53,6 +53,7 @@ export default class HttpRestClient {
         const message = getErrorMessage(error, endpoint)
 
         throw new HttpRequestException(new Error(message), {
+          context: endpoint,
           code: error.response
             ? error.response.status
             : StatusCodes.BAD_REQUEST,
@@ -62,6 +63,7 @@ export default class HttpRestClient {
 
       throw new HttpRequestException(new Error((error as any).message), {
         code: UnspecifiedErrorCode,
+        context: endpoint,
         contextModule: HttpRequestMethod.Get,
       })
     }
@@ -90,12 +92,14 @@ export default class HttpRestClient {
           code: error.response
             ? error.response.status
             : StatusCodes.BAD_REQUEST,
+          context: endpoint,
           contextModule: HttpRequestMethod.Post,
         })
       }
 
       throw new HttpRequestException(new Error((error as any).message), {
         code: UnspecifiedErrorCode,
+        context: endpoint,
         contextModule: HttpRequestMethod.Post,
       })
     }

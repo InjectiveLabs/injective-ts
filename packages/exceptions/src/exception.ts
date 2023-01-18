@@ -25,6 +25,12 @@ export abstract class ConcreteException extends Error implements Exception {
   public name!: string
 
   /**
+   * Providing more context
+   * (ex: endpoint on http request)
+   */
+  public context?: string
+
+  /**
    * Providing more context as to where the exception was thrown
    * (ex: on-chain module, etc)
    */
@@ -69,13 +75,15 @@ export abstract class ConcreteException extends Error implements Exception {
     this.errorMessage = error.message
   }
 
-  public parseContext(context?: ErrorContext) {
-    const { contextModule, type, code } = context || {
+  public parseContext(errorContext?: ErrorContext) {
+    const { contextModule, type, code, context } = errorContext || {
       contextModule: '',
+      context: '',
       code: UnspecifiedErrorCode,
       type: ErrorType.Unspecified,
     }
 
+    this.context = context
     this.contextModule = contextModule
     this.type = type || ErrorType.Unspecified
     this.code = code || UnspecifiedErrorCode
@@ -87,6 +95,10 @@ export abstract class ConcreteException extends Error implements Exception {
 
   public setCode(code: ErrorCode) {
     this.code = code
+  }
+
+  public setContext(context: string) {
+    this.context = context
   }
 
   public setStack(stack: string) {
@@ -134,6 +146,7 @@ export abstract class ConcreteException extends Error implements Exception {
         message: this.message,
         code: this.code,
         type: this.type,
+        context: this.context,
         contextModule: this.contextModule,
         contextCode: this.contextCode,
       })}`,
