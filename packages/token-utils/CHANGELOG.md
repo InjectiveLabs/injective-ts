@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.66...@injectivelabs/token-utils@1.0.67) (2023-01-18)
+
+
+### Bug Fixes
+
+* assset service exception handling ([236916c](https://github.com/InjectiveLabs/injective-ts/commit/236916c888d0abd09fe970a092c0e76172079755))
+
+
+
+
+
 ## [1.0.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.65...@injectivelabs/token-utils@1.0.66) (2023-01-18)
 
 **Note:** Version bump only for package @injectivelabs/token-utils
