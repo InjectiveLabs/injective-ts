@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ui-ts",
   "description": "SDK in TypeScript for building Injective UI applications in a browser environment.",
-  "version": "1.0.469",
+  "version": "1.0.470",
   "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -32,14 +32,14 @@
   },
   "dependencies": {
     "@alch/alchemy-web3": "1.4.7",
-    "@injectivelabs/contracts": "^1.0.85",
-    "@injectivelabs/exceptions": "^1.0.43",
-    "@injectivelabs/networks": "^1.0.71",
-    "@injectivelabs/sdk-ts": "^1.0.365",
-    "@injectivelabs/token-metadata": "^1.0.108",
-    "@injectivelabs/token-utils": "^1.0.65",
+    "@injectivelabs/contracts": "^1.0.86",
+    "@injectivelabs/exceptions": "^1.0.44",
+    "@injectivelabs/networks": "^1.0.72",
+    "@injectivelabs/sdk-ts": "^1.0.366",
+    "@injectivelabs/token-metadata": "^1.0.109",
+    "@injectivelabs/token-utils": "^1.0.66",
     "@injectivelabs/ts-types": "^1.0.28",
-    "@injectivelabs/utils": "^1.0.61",
+    "@injectivelabs/utils": "^1.0.62",
     "alchemy-sdk": "^2.2.3",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
