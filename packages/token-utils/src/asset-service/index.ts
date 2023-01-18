@@ -1,4 +1,4 @@
-import { HttpClient } from '@injectivelabs/utils'
+import { HttpRestClient } from '@injectivelabs/utils'
 import { HttpRequestException } from '@injectivelabs/exceptions'
 import { CoinPriceFromInjectiveService } from './types'
 import {
@@ -9,10 +9,13 @@ import {
 } from '../types'
 
 export class InjectiveAssetService {
-  private client: HttpClient
+  private client: HttpRestClient
+
+  public endpoint: string
 
   constructor(endpoint: string) {
-    this.client = new HttpClient(endpoint)
+    this.client = new HttpRestClient(endpoint)
+    this.endpoint = endpoint
   }
 
   async fetchPrice(coinId: string) {
@@ -43,6 +46,7 @@ export class InjectiveAssetService {
       return response
     } catch (e: unknown) {
       throw new HttpRequestException(new Error((e as any).message), {
+        context: `${this.endpoint}/coins/price `,
         contextModule: 'asset-service',
       })
     }
@@ -60,7 +64,14 @@ export class InjectiveAssetService {
 
       return data
     } catch (e: unknown) {
-      throw new HttpRequestException(new Error((e as any).message))
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        context: `${this.endpoint}/coins/${coinId}`,
+        contextModule: 'asset-service',
+      })
     }
   }
 
@@ -71,7 +82,14 @@ export class InjectiveAssetService {
         params,
       )) as CoinGeckoReturnObject<CoinGeckoCoin[]>
     } catch (e: unknown) {
-      throw new HttpRequestException(new Error((e as any).message))
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        context: `${this.endpoint}/coins/list`,
+        contextModule: 'asset-service',
+      })
     }
   }
 
@@ -84,7 +102,14 @@ export class InjectiveAssetService {
 
       return data
     } catch (e: unknown) {
-      throw new HttpRequestException(new Error((e as any).message))
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        context: `${this.endpoint}/coins/${id}/market_chart/range`,
+        contextModule: 'asset-service',
+      })
     }
   }
 
@@ -97,7 +122,14 @@ export class InjectiveAssetService {
 
       return data
     } catch (e: unknown) {
-      throw new HttpRequestException(new Error((e as any).message))
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        context: `${this.endpoint}/coins/${id}/history`,
+        contextModule: 'asset-service',
+      })
     }
   }
 }
