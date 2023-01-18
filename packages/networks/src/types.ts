@@ -25,6 +25,8 @@ export type OldNetworkEndpoints = {
 
 export type NetworkEndpoints = {
   indexer: string // Indexer API
+  chronos: string
+  explorer: string
   grpc: string // Sentry gRPC
   rest: string // LCD
   rpc?: string // Tendermint
