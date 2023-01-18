@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.70...@injectivelabs/networks@1.0.71) (2023-01-18)
+
+
+### Bug Fixes
+
+* explorer port ([4458129](https://github.com/InjectiveLabs/injective-ts/commit/445812967c5336134c15764a981f8d5d61d93778))
+
+
+### Features
+
+* added chronos and explorer specific endpoints ([1d74cfc](https://github.com/InjectiveLabs/injective-ts/commit/1d74cfcebf6769e3096dbc02ef3736d51c4454a6))
+
+
+
+
+
 ## [1.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.69...@injectivelabs/networks@1.0.70) (2023-01-13)
 
 **Note:** Version bump only for package @injectivelabs/networks

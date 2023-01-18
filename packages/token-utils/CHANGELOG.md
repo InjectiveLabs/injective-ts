@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.64...@injectivelabs/token-utils@1.0.65) (2023-01-18)
+
+
+### Bug Fixes
+
+* price fetch from the asset service ([289b586](https://github.com/InjectiveLabs/injective-ts/commit/289b58667e3578c8b6bdae49d0d80f437bf0a48a))
+
+
+
+
+
 ## [1.0.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.63...@injectivelabs/token-utils@1.0.64) (2023-01-13)
 
 **Note:** Version bump only for package @injectivelabs/token-utils
