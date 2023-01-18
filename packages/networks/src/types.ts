@@ -2,6 +2,7 @@ import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 export enum Network {
   MainnetK8s = 'mainnetK8s',
+  MainnetLB = 'mainnetLB',
   Mainnet = 'mainnet',
   Staging = 'staging',
   Public = 'public',

@@ -17,6 +17,7 @@ export const DEFAULT_PAGINATION_TOTAL_COUNT: number = 1000000
 
 export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
+  [Network.MainnetLB]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.MainnetK8s]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Public]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Staging]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',

@@ -7,6 +7,13 @@ export const oldEndpointsMainnetK8s: OldNetworkEndpoints = {
   sentryHttpApi: 'https://k8s.mainnet.lcd.injective.network',
 }
 
+export const oldEndpointsMainnetLB: OldNetworkEndpoints = {
+  indexerApi: 'https://k8s.mainnet.exchange.grpc-web.injective.network',
+  sentryGrpcApi: 'https://k8s.mainnet.chain.grpc-web.injective.network',
+  tendermintApi: 'https://k8s.mainnet.tm.injective.network',
+  sentryHttpApi: 'https://k8s.mainnet.lcd.injective.network',
+}
+
 export const oldEndpointsMainnet: OldNetworkEndpoints = {
   indexerApi: 'https://api.injective.network',
   sentryGrpcApi: 'https://grpc.injective.network',
