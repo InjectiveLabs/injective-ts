@@ -100,5 +100,5 @@ export const endpointsLocal: NetworkEndpoints = {
   rpc: 'http://localhost:9091',
   rest: 'http://localhost:9091',
   chronos: 'https://localhost:4445',
-  explorer: 'https://localhost:4444',
+  explorer: 'https://localhost:4446',
 }
