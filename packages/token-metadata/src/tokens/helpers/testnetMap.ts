@@ -22,4 +22,6 @@ export const testnetSymbolToCw20AddressMap = {
   SOL: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
   WSOL: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
   CW20SOL: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
+  USDCso: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
+  USDCet: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
 }

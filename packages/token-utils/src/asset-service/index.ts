@@ -17,7 +17,7 @@ export class InjectiveAssetService {
 
   async fetchPrice(coinId: string) {
     try {
-      const pricesResponse = (await this.client.get('price', {
+      const pricesResponse = (await this.client.get('/coins/price', {
         coinIds: coinId,
         currency: 'usd',
       })) as {

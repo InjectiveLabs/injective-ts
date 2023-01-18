@@ -840,4 +840,22 @@ export default {
     address: '',
     coinGeckoId: 'bonk',
   },
+
+  USDCet: {
+    name: 'USD Coin',
+    logo: 'usdc.svg',
+    symbol: 'USDCet',
+    decimals: 6,
+    address: 'inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk',
+    coinGeckoId: 'usd-coin',
+  },
+
+  USDCso: {
+    name: 'USD Coin',
+    logo: 'usdc.svg',
+    symbol: 'USDCso',
+    decimals: 6,
+    address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
+    coinGeckoId: 'usd-coin',
+  },
 } as Record<string, TokenMeta>
