@@ -2,6 +2,7 @@ import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 export enum Network {
   MainnetK8s = 'mainnetK8s',
+  MainnetLB = 'mainnetLB',
   Mainnet = 'mainnet',
   Staging = 'staging',
   Public = 'public',
@@ -25,6 +26,8 @@ export type OldNetworkEndpoints = {
 
 export type NetworkEndpoints = {
   indexer: string // Indexer API
+  chronos: string
+  explorer: string
   grpc: string // Sentry gRPC
   rest: string // LCD
   rpc?: string // Tendermint

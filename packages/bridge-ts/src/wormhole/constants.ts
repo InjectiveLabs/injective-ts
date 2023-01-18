@@ -4,6 +4,7 @@ import { CHAINS, CONTRACTS } from '@injectivelabs/wormhole-sdk'
 export const WORMHOLE_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: CONTRACTS.MAINNET.injective,
   [Network.MainnetK8s]: CONTRACTS.MAINNET.injective,
+  [Network.MainnetLB]: CONTRACTS.MAINNET.injective,
   [Network.Public]: CONTRACTS.MAINNET.injective,
   [Network.Staging]: CONTRACTS.MAINNET.injective,
   [Network.Testnet]: CONTRACTS.TESTNET.injective,
@@ -18,6 +19,7 @@ export const WORMHOLE_CONTRACT_BY_NETWORK = {
 export const WORMHOLE_SOLANA_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: CONTRACTS.MAINNET.solana,
   [Network.MainnetK8s]: CONTRACTS.MAINNET.solana,
+  [Network.MainnetLB]: CONTRACTS.MAINNET.solana,
   [Network.Public]: CONTRACTS.MAINNET.solana,
   [Network.Staging]: CONTRACTS.MAINNET.solana,
   [Network.Testnet]: CONTRACTS.TESTNET.solana,
@@ -32,6 +34,7 @@ export const WORMHOLE_SOLANA_CONTRACT_BY_NETWORK = {
 export const WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: CONTRACTS.MAINNET.ethereum,
   [Network.MainnetK8s]: CONTRACTS.MAINNET.ethereum,
+  [Network.MainnetLB]: CONTRACTS.MAINNET.ethereum,
   [Network.Public]: CONTRACTS.MAINNET.ethereum,
   [Network.Staging]: CONTRACTS.MAINNET.ethereum,
   [Network.Testnet]: CONTRACTS.TESTNET.ethereum,

@@ -13,6 +13,7 @@ import {
   oldEndpointsPublic,
   oldEndpointsDevnet,
   oldEndpointsMainnetK8s,
+  oldEndpointsMainnetLB,
   oldEndpointsStaging,
   oldEndpointsDevnet1,
   oldEndpointsDevnet2,
@@ -26,6 +27,7 @@ import {
   endpointsPublic,
   endpointsDevnet,
   endpointsMainnetK8s,
+  endpointsMainnetLB,
   endpointsStaging,
   endpointsDevnet1,
   endpointsDevnet2,
@@ -42,6 +44,7 @@ import {
  */
 export const oldNetworkEndpoints: Record<Network, OldNetworkEndpoints> = {
   [Network.MainnetK8s]: oldEndpointsMainnetK8s,
+  [Network.MainnetLB]: oldEndpointsMainnetLB,
   [Network.Staging]: oldEndpointsStaging,
   [Network.Mainnet]: oldEndpointsMainnet,
   [Network.Public]: oldEndpointsPublic,
@@ -55,6 +58,7 @@ export const oldNetworkEndpoints: Record<Network, OldNetworkEndpoints> = {
 }
 
 export const networkEndpoints: Record<Network, NetworkEndpoints> = {
+  [Network.MainnetLB]: endpointsMainnetLB,
   [Network.MainnetK8s]: endpointsMainnetK8s,
   [Network.Staging]: endpointsStaging,
   [Network.Mainnet]: endpointsMainnet,
@@ -69,6 +73,7 @@ export const networkEndpoints: Record<Network, NetworkEndpoints> = {
 }
 
 export const chainInfos: Record<Network, ChainInfo> = {
+  [Network.MainnetLB]: mainnetChainInfo,
   [Network.MainnetK8s]: mainnetChainInfo,
   [Network.Staging]: mainnetChainInfo,
   [Network.Mainnet]: mainnetChainInfo,
