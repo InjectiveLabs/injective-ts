@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.371](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.370...@injectivelabs/sdk-ts@1.0.371) (2023-01-20)
+
+
+### Bug Fixes
+
+* market quantity decimals ([b34b4ee](https://github.com/InjectiveLabs/injective-ts/commit/b34b4ee743c8fdf2d95bdbe95e52a55694c7c20d))
+
+
+
+
+
 ## [1.0.370](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.369...@injectivelabs/sdk-ts@1.0.370) (2023-01-20)
 
 
