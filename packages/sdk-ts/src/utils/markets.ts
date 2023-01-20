@@ -13,7 +13,7 @@ export const getDerivativeMarketTensMultiplier = ({
   return {
     quantityTensMultiplier: getTensMultiplier(minQuantityTickSize),
     priceTensMultiplier: getTensMultiplier(
-      new BigNumber(minPriceTickSize).shiftedBy(-quoteDecimals).toNumber(),
+      new BigNumber(minPriceTickSize).shiftedBy(-quoteDecimals).toFixed(),
     ),
   }
 }
@@ -33,10 +33,10 @@ export const getSpotMarketTensMultiplier = ({
     priceTensMultiplier: getTensMultiplier(
       new BigNumber(minPriceTickSize)
         .shiftedBy(baseDecimals - quoteDecimals)
-        .toNumber(),
+        .toFixed(),
     ),
     quantityTensMultiplier: getTensMultiplier(
-      new BigNumber(minQuantityTickSize).shiftedBy(-baseDecimals).toNumber(),
+      new BigNumber(minQuantityTickSize).shiftedBy(-baseDecimals).toFixed(),
     ),
   }
 }
@@ -53,7 +53,7 @@ export const getDerivativeMarketDecimals = ({
   return {
     quantityDecimals: getExactDecimalsFromNumber(minQuantityTickSize),
     priceDecimals: getExactDecimalsFromNumber(
-      new BigNumber(minPriceTickSize).shiftedBy(-quoteDecimals).toNumber(),
+      new BigNumber(minPriceTickSize).shiftedBy(-quoteDecimals).toFixed(),
     ),
   }
 }
@@ -73,10 +73,10 @@ export const getSpotMarketDecimals = ({
     priceDecimals: getExactDecimalsFromNumber(
       new BigNumber(minPriceTickSize)
         .shiftedBy(baseDecimals - quoteDecimals)
-        .toNumber(),
+        .toFixed(),
     ),
     quantityDecimals: getExactDecimalsFromNumber(
-      new BigNumber(minQuantityTickSize).shiftedBy(-baseDecimals).toNumber(),
+      new BigNumber(minQuantityTickSize).shiftedBy(-baseDecimals).toFixed(),
     ),
   }
 }

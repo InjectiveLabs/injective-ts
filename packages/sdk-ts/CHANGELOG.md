@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.370](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.369...@injectivelabs/sdk-ts@1.0.370) (2023-01-20)
+
+
+### Bug Fixes
+
+* tick sizes less than 0 not parsing properly ([5ad85dd](https://github.com/InjectiveLabs/injective-ts/commit/5ad85dde5c3a65503a5e5bbf3200269bd8dc9e6a))
+
+
+
+
+
 ## [1.0.369](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.368...@injectivelabs/sdk-ts@1.0.369) (2023-01-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

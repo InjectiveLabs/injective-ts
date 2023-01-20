@@ -15,7 +15,7 @@ describe('derivativeMarketTickSizes', () => {
       }),
     ).toStrictEqual({
       quantityDecimals: 1,
-      priceDecimals: 0,
+      priceDecimals: 10,
     })
     expect(
       getDerivativeMarketDecimals({
