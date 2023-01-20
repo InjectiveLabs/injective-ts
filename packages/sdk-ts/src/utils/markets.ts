@@ -1,5 +1,5 @@
-import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
-import { getDecimalsFromNumber, getTensMultiplier } from './numbers'
+import { BigNumber } from '@injectivelabs/utils'
+import { getExactDecimalsFromNumber, getTensMultiplier } from './numbers'
 
 export const getDerivativeMarketTensMultiplier = ({
   quoteDecimals,
@@ -13,7 +13,7 @@ export const getDerivativeMarketTensMultiplier = ({
   return {
     quantityTensMultiplier: getTensMultiplier(minQuantityTickSize),
     priceTensMultiplier: getTensMultiplier(
-      new BigNumberInBase(minPriceTickSize).toWei(-quoteDecimals).toNumber(),
+      new BigNumber(minPriceTickSize).shiftedBy(-quoteDecimals).toNumber(),
     ),
   }
 }
@@ -24,19 +24,19 @@ export const getSpotMarketTensMultiplier = ({
   minPriceTickSize,
   minQuantityTickSize,
 }: {
-  minPriceTickSize: number
-  minQuantityTickSize: number
+  minPriceTickSize: number | string
+  minQuantityTickSize: number | string
   baseDecimals: number
   quoteDecimals: number
 }) => {
   return {
     priceTensMultiplier: getTensMultiplier(
-      new BigNumberInWei(minPriceTickSize)
-        .toBase(quoteDecimals - baseDecimals)
+      new BigNumber(minPriceTickSize)
+        .shiftedBy(baseDecimals - quoteDecimals)
         .toNumber(),
     ),
     quantityTensMultiplier: getTensMultiplier(
-      new BigNumberInBase(minQuantityTickSize).toWei(-baseDecimals).toNumber(),
+      new BigNumber(minQuantityTickSize).shiftedBy(-baseDecimals).toNumber(),
     ),
   }
 }
@@ -51,9 +51,9 @@ export const getDerivativeMarketDecimals = ({
   quoteDecimals: number
 }) => {
   return {
-    quantityDecimals: getDecimalsFromNumber(minQuantityTickSize),
-    priceDecimals: getDecimalsFromNumber(
-      new BigNumberInBase(minPriceTickSize).toWei(-quoteDecimals).toNumber(),
+    quantityDecimals: getExactDecimalsFromNumber(minQuantityTickSize),
+    priceDecimals: getExactDecimalsFromNumber(
+      new BigNumber(minPriceTickSize).shiftedBy(-quoteDecimals).toNumber(),
     ),
   }
 }
@@ -64,19 +64,19 @@ export const getSpotMarketDecimals = ({
   baseDecimals,
   quoteDecimals,
 }: {
-  minPriceTickSize: number
-  minQuantityTickSize: number
+  minPriceTickSize: number | string
+  minQuantityTickSize: number | string
   baseDecimals: number
   quoteDecimals: number
 }) => {
   return {
-    priceDecimals: getDecimalsFromNumber(
-      new BigNumberInWei(minPriceTickSize)
-        .toBase(quoteDecimals - baseDecimals)
+    priceDecimals: getExactDecimalsFromNumber(
+      new BigNumber(minPriceTickSize)
+        .shiftedBy(baseDecimals - quoteDecimals)
         .toNumber(),
     ),
-    quantityDecimals: getDecimalsFromNumber(
-      new BigNumberInBase(minQuantityTickSize).toWei(-baseDecimals).toNumber(),
+    quantityDecimals: getExactDecimalsFromNumber(
+      new BigNumber(minQuantityTickSize).shiftedBy(-baseDecimals).toNumber(),
     ),
   }
 }
