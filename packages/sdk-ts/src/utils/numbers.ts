@@ -1,4 +1,9 @@
-import { BigNumber, BigNumberInBase } from '@injectivelabs/utils'
+import {
+  BigNumber,
+  BigNumberInBase,
+  getSignificantDecimalsFromNumber,
+  getExactDecimalsFromNumber,
+} from '@injectivelabs/utils'
 
 const $BigNumber = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN })
 
@@ -106,24 +111,6 @@ export const formatPriceToAllowableDecimals = (
   allowableDecimals: number,
 ): string => {
   return formatNumberToAllowableDecimals(value, allowableDecimals)
-}
-
-export const getSignificantDecimalsFromNumber = (
-  number: BigNumber | number | string,
-): number => {
-  if (Math.floor(new $BigNumber(number).toNumber()) === number) {
-    return 0
-  }
-
-  const parts = new $BigNumber(number).toFixed().split('.')
-  const [, decimals] = parts
-
-  /** Number doesn't have decimals */
-  if (!decimals) {
-    return 0
-  }
-
-  return decimals.length
 }
 
 /**
@@ -708,24 +695,8 @@ export const getTensMultiplier = (number: number | string): number => {
   return zerosInTheNumber.length
 }
 
-export const getExactDecimalsFromNumber = (number: number | string): number => {
-  if (!number.toString().includes('.')) {
-    return 0
-  }
-
-  if (Number(number) % 1 === 0) {
-    return 0
-  }
-
-  const [, decimals] = number.toString().split('.')
-
-  if (!decimals) {
-    return 0
-  }
-
-  return decimals.length
-}
-
 export const getTriggerPrice = (triggerPrice?: number | string) => {
   return triggerPrice ? amountToCosmosSdkDecAmount(triggerPrice).toFixed() : ''
 }
+
+export { getSignificantDecimalsFromNumber, getExactDecimalsFromNumber }

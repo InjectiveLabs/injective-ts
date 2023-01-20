@@ -19,3 +19,21 @@ export const getSignificantDecimalsFromNumber = (
 
   return decimals.length
 }
+
+export const getExactDecimalsFromNumber = (number: number | string): number => {
+  if (!number.toString().includes('.')) {
+    return 0
+  }
+
+  if (Number(number) % 1 === 0) {
+    return 0
+  }
+
+  const [, decimals] = number.toString().split('.')
+
+  if (!decimals) {
+    return 0
+  }
+
+  return decimals.length
+}
