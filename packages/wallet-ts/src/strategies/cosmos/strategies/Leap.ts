@@ -106,9 +106,18 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
 
   async getPubKey(): Promise<string> {
     const keplrWallet = this.getLeapWallet()
-    const key = await keplrWallet.getKey()
 
-    return Buffer.from(key.pubKey).toString('base64')
+    try {
+      const key = await keplrWallet.getKey()
+
+      return Buffer.from(key.pubKey).toString('base64')
+    } catch (e) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
   }
 
   private getLeapWallet(): LeapWallet {
