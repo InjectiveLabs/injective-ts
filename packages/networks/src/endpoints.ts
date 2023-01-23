@@ -63,8 +63,8 @@ export const endpointsTestnetOld: NetworkEndpoints = {
   grpc: 'https://testnet.grpc.injective.dev',
   rpc: 'https://testnet.tm.injective.dev',
   rest: 'https://testnet.lcd.injective.dev',
-  chronos: 'https://testnet.lcd.injective.dev',
-  explorer: 'https://testnet.lcd.injective.dev',
+  chronos: 'https://testnet.api.injective.dev',
+  explorer: 'https://testnet.api.injective.dev',
 }
 
 export const endpointsDevnet: NetworkEndpoints = {
@@ -72,8 +72,8 @@ export const endpointsDevnet: NetworkEndpoints = {
   grpc: 'https://devnet.grpc.injective.dev',
   rpc: 'https://devnet.tm.injective.dev',
   rest: 'https://devnet.lcd.injective.dev',
-  chronos: 'https://devnet.lcd.injective.dev',
-  explorer: 'https://devnet.lcd.injective.dev',
+  chronos: 'https://devnet.api.injective.dev',
+  explorer: 'https://devnet.api.injective.dev',
 }
 
 export const endpointsDevnet1: NetworkEndpoints = {
@@ -81,8 +81,8 @@ export const endpointsDevnet1: NetworkEndpoints = {
   grpc: 'https://devnet-1.grpc.injective.dev',
   rpc: 'https://devnet-1.tm.injective.dev',
   rest: 'https://devnet-1.lcd.injective.dev',
-  chronos: 'https://devnet-1.lcd.injective.dev',
-  explorer: 'https://devnet-1.lcd.injective.dev',
+  chronos: 'https://devnet-1.api.injective.dev',
+  explorer: 'https://devnet-1.api.injective.dev',
 }
 
 export const endpointsDevnet2: NetworkEndpoints = {
@@ -90,8 +90,8 @@ export const endpointsDevnet2: NetworkEndpoints = {
   grpc: 'https://devnet-2.grpc.injective.dev',
   rpc: 'https://devnet-2.tm.injective.dev',
   rest: 'https://devnet-2.lcd.injective.dev',
-  chronos: 'https://devnet-2.lcd.injective.dev',
-  explorer: 'https://devnet-2.lcd.injective.dev',
+  chronos: 'https://devnet-2.api.injective.dev',
+  explorer: 'https://devnet-2.api.injective.dev',
 }
 
 export const endpointsLocal: NetworkEndpoints = {
