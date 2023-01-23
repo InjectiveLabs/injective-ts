@@ -96,11 +96,13 @@ export default class MsgTransfer extends MsgBase<
   }
 
   public toAmino(): MsgTransfer.Amino {
+    const { params } = this
     const proto = this.toProto()
 
     return {
       type: 'cosmos-sdk/MsgTransfer',
       ...proto.toObject(),
+      memo: params.memo || '',
     }
   }
 
