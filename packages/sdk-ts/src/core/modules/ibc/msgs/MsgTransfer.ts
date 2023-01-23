@@ -9,6 +9,7 @@ export declare namespace MsgTransfer {
       denom: string
       amount: string
     }
+    memo?: string
     sender: string
     port: string
     receiver: string
@@ -79,6 +80,8 @@ export default class MsgTransfer extends MsgBase<
     if (params.timeout) {
       message.setTimeoutTimestamp(params.timeout)
     }
+
+    message.setMemo(params.memo || '')
 
     return message
   }

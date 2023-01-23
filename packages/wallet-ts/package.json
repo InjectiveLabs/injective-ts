@@ -37,7 +37,7 @@
     "@cosmostation/extension-client": "^0.1.11-alpha.0",
     "@ethereumjs/common": "^2.6.3",
     "@ethereumjs/tx": "^3.5.1",
-    "@injectivelabs/chain-api": "1.9.4",
+    "@injectivelabs/chain-api": "1.9.6",
     "@injectivelabs/contracts": "^1.0.88",
     "@injectivelabs/exceptions": "^1.0.45",
     "@injectivelabs/networks": "^1.0.74",
