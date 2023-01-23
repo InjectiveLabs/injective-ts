@@ -138,20 +138,32 @@ export class KeplrWallet {
   async broadcastTx(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
-    const result = await keplr.sendTx(
-      chainId,
-      txRaw.serializeBinary(),
-      BroadcastMode.Sync,
-    )
 
-    if (!result || result.length === 0) {
-      throw new TransactionException(
-        new Error('Transaction failed to be broadcasted'),
-        { contextModule: 'Keplr' },
+    try {
+      const result = await keplr.sendTx(
+        chainId,
+        txRaw.serializeBinary(),
+        BroadcastMode.Sync,
       )
-    }
 
-    return Buffer.from(result).toString('hex')
+      if (!result || result.length === 0) {
+        throw new TransactionException(
+          new Error('Transaction failed to be broadcasted'),
+          { contextModule: 'Keplr' },
+        )
+      }
+
+      return Buffer.from(result).toString('hex')
+    } catch (e) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
+      throw new CosmosWalletException(new Error((e as any).message), {
+        context: 'broadcast-tx',
+        contextModule: 'Keplr',
+      })
+    }
   }
 
   /**
@@ -164,20 +176,32 @@ export class KeplrWallet {
   async broadcastTxBlock(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
-    const result = await keplr.sendTx(
-      chainId,
-      txRaw.serializeBinary(),
-      BroadcastMode.Block,
-    )
 
-    if (!result || result.length === 0) {
-      throw new TransactionException(
-        new Error('Transaction failed to be broadcasted'),
-        { contextModule: 'Keplr' },
+    try {
+      const result = await keplr.sendTx(
+        chainId,
+        txRaw.serializeBinary(),
+        BroadcastMode.Block,
       )
-    }
 
-    return Buffer.from(result).toString('hex')
+      if (!result || result.length === 0) {
+        throw new TransactionException(
+          new Error('Transaction failed to be broadcasted'),
+          { contextModule: 'Keplr' },
+        )
+      }
+
+      return Buffer.from(result).toString('hex')
+    } catch (e) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
+      throw new CosmosWalletException(new Error((e as any).message), {
+        context: 'broadcast-tx-block',
+        contextModule: 'Keplr',
+      })
+    }
   }
 
   async waitTxBroadcasted(txHash: string): Promise<TxResponse> {

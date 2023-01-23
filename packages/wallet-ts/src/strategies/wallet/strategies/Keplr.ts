@@ -134,7 +134,7 @@ export default class Keplr
     const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      return signer.signDirect(transaction.address, signDoc)
+      return await signer.signDirect(transaction.address, signDoc)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
