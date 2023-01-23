@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.366](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.365...@injectivelabs/wallet-ts@1.0.366) (2023-01-23)
+
+
+### Bug Fixes
+
+* ibc transfer memo ([8815bf9](https://github.com/InjectiveLabs/injective-ts/commit/8815bf9f3aa6571802a6715ddd7f42e9b031e372))
+
+
+
+
+
 ## [1.0.365](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.364...@injectivelabs/wallet-ts@1.0.365) (2023-01-23)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
