@@ -50,7 +50,7 @@ export const endpointsTestnetK8s: NetworkEndpoints = {
   grpc: 'https://k8s.testnet.chain.grpc-web.injective.network',
   rpc: 'https://k8s.testnet.tm.injective.network',
   rest: 'https://k8s.testnet.lcd.injective.network',
-  chronos: 'https://k8s.testnet.chronos.grpc-web.injective.network',
+  chronos: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   explorer: 'https://k8s.testnet.explorer.grpc-web.injective.network',
 }
 

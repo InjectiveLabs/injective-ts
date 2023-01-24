@@ -6,6 +6,8 @@ export class TransactionException extends ConcreteException {
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
 
+    console.log({ error, context })
+
     this.type = ErrorType.ChainError
   }
 
