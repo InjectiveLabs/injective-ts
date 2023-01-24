@@ -64,10 +64,6 @@ const getABCICode = (message: string): number | undefined => {
 export const mapFailedTransactionMessage = (
   message: string,
 ): { message: string; code: ErrorContextCode } => {
-  // console.log({ errorContnxtCode: code })
-
-  console.log(message)
-
   const ABCICode = getABCICode(message)
 
   if (!ABCICode) {
