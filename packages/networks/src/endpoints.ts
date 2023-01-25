@@ -55,7 +55,12 @@ export const endpointsTestnetK8s: NetworkEndpoints = {
 }
 
 export const endpointsTestnet: NetworkEndpoints = {
-  ...endpointsTestnetK8s,
+  indexer: 'https://testnet.api.injective.network',
+  grpc: 'https://testnet.grpc.injective.network',
+  rpc: 'https://testnet.tm.injective.network',
+  rest: 'https://testnet.lcd.injective.network',
+  chronos: 'https://testnet.api.injective.network',
+  explorer: 'https://testnet.api.injective.network',
 }
 
 export const endpointsTestnetOld: NetworkEndpoints = {
