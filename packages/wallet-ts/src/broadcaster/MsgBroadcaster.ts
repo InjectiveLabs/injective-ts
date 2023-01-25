@@ -257,9 +257,10 @@ export class MsgBroadcaster {
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
+        code: response.code,
         type: ErrorType.ChainError,
         contextCode: response.code,
+        contextModule: response.codespace,
       })
     }
 
@@ -521,6 +522,7 @@ export class MsgBroadcaster {
         code: UnspecifiedErrorCode,
         type: ErrorType.ChainError,
         contextCode: response.code,
+        contextModule: response.codespace,
       })
     }
 
@@ -652,11 +654,7 @@ export class MsgBroadcaster {
     try {
       return await txClient.simulate(txRawWithSignature)
     } catch (e) {
-      throw new TransactionException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.ChainError,
-        contextModule: 'simulate-tx',
-      })
+      throw new TransactionException(new Error((e as any).message))
     }
   }
 }

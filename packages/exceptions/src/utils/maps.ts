@@ -32,7 +32,7 @@ export const mapFailedTransactionMessage = (
   const module = getContextModule(message)
 
   const defaultResponse = {
-    message: 'The request is not known',
+    message: 'Transaction execution has failed for unknown reason',
     code: UnspecifiedErrorCode,
     module: undefined,
   }

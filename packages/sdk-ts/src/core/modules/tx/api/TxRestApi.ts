@@ -55,7 +55,7 @@ export class TxRestApi implements TxConcreteApi {
       }
 
       if (parseInt(txResponse.code.toString(), 10) !== 0) {
-        throw new TransactionException(new Error(txResponse.raw_log), {
+        throw new HttpRequestException(new Error(txResponse.raw_log), {
           contextCode: txResponse.code,
           contextModule: 'TxRestApi',
         })
@@ -75,16 +75,16 @@ export class TxRestApi implements TxConcreteApi {
       }
 
       if (!isTxNotFoundError(e)) {
-        throw new TransactionException(
+        throw new HttpRequestException(
           new Error('There was an issue while fetching transaction details'),
           {
-            contextModule: 'tx',
+            contextModule: 'TxRestApi',
           },
         )
       }
 
       throw new HttpRequestException(new Error(errorToErrorMessage(e)), {
-        contextModule: 'tx',
+        contextModule: 'TxRestApi',
       })
     }
   }
@@ -116,7 +116,7 @@ export class TxRestApi implements TxConcreteApi {
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
     }
 
-    throw new TransactionException(
+    throw new HttpRequestException(
       new Error(
         `Transaction was not included in a block before timeout of ${timeout}ms`,
       ),

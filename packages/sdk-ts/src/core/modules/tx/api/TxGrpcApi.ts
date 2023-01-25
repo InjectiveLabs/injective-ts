@@ -70,9 +70,9 @@ export class TxGrpcApi implements TxConcreteApi {
       }
 
       if (txResponse.getCode() !== 0) {
-        throw new TransactionException(new Error(txResponse.getRawLog()), {
+        throw new GrpcUnaryRequestException(new Error(txResponse.getRawLog()), {
           contextCode: txResponse.getCode(),
-          contextModule: 'TxGrpcApi',
+          contextModule: txResponse.getCodespace(),
         })
       }
 
@@ -86,7 +86,7 @@ export class TxGrpcApi implements TxConcreteApi {
       }
 
       if (!isTxNotFoundError(e)) {
-        throw new TransactionException(
+        throw new GrpcUnaryRequestException(
           new Error('There was an issue while fetching transaction details'),
           {
             contextModule: 'tx',
@@ -126,7 +126,7 @@ export class TxGrpcApi implements TxConcreteApi {
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
     }
 
-    throw new TransactionException(
+    throw new GrpcUnaryRequestException(
       new Error(
         `Transaction was not included in a block before timeout of ${timeout}ms`,
       ),
@@ -255,7 +255,9 @@ export class TxGrpcApi implements TxConcreteApi {
           }),
       )
     } catch (e: unknown) {
-      throw new TransactionException(new Error((e as any).message))
+      throw new GrpcUnaryRequestException(new Error((e as any).message), {
+        contextModule: 'broadcast-tx',
+      })
     }
   }
 
