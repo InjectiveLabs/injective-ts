@@ -7,7 +7,6 @@ import { MetamaskException } from './MetamaskException'
 import { TrezorException } from './TrezorException'
 import { CosmosWalletException } from './CosmosWalletException'
 import { TransactionException } from './TransactionException'
-import { Web3GatewayTransactionException } from './Web3GatewayTransactionException'
 import { WalletException } from './WalletException'
 import { Exception } from '../types'
 import { ConcreteException } from '../exception'
@@ -23,7 +22,6 @@ export type ThrownException =
   | CosmosWalletException
   | TransactionException
   | WalletException
-  | Web3GatewayTransactionException
 
 export const isThrownException = (exception: Error | Exception): boolean => {
   if (exception instanceof ConcreteException) {
@@ -42,7 +40,6 @@ export const isThrownException = (exception: Error | Exception): boolean => {
       'CosmosWalletException',
       'TransactionException',
       'WalletException',
-      'Web3GatewayTransactionException',
     ].includes(exception.constructor.name)
   ) {
     return true
@@ -62,5 +59,4 @@ export {
   CosmosWalletException,
   TransactionException,
   WalletException,
-  Web3GatewayTransactionException,
 }

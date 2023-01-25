@@ -28,7 +28,6 @@ import {
 } from '@injectivelabs/exceptions'
 import { getGrpcTransport } from '../../../../utils/grpc'
 import { isBrowser } from '../../../../utils/helpers'
-import { errorToErrorMessage, isTxNotFoundError } from '../utils/api'
 import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
@@ -51,7 +50,7 @@ export class TxGrpcApi implements TxConcreteApi {
     })
   }
 
-  public async fetchTx(hash: string): Promise<TxResponse | undefined> {
+  public async fetchTx(hash: string): Promise<TxResponse> {
     const request = new GetTxRequest()
 
     request.setHash(hash)
@@ -66,13 +65,19 @@ export class TxGrpcApi implements TxConcreteApi {
       const txResponse = response.getTxResponse()
 
       if (!txResponse) {
-        return undefined
+        throw new GrpcUnaryRequestException(
+          new Error(`The transaction with ${hash} is not found`),
+          {
+            context: 'TxGrpcApi',
+            contextModule: 'fetch-tx',
+          },
+        )
       }
 
       if (txResponse.getCode() !== 0) {
         throw new TransactionException(new Error(txResponse.getRawLog()), {
           contextCode: txResponse.getCode(),
-          contextModule: 'TxGrpcApi',
+          contextModule: txResponse.getCodespace(),
         })
       }
 
@@ -81,22 +86,24 @@ export class TxGrpcApi implements TxConcreteApi {
         txHash: txResponse.getTxhash(),
       }
     } catch (e: unknown) {
+      // Transaction has failed on the chain
       if (e instanceof TransactionException) {
         throw e
       }
 
-      if (!isTxNotFoundError(e)) {
-        throw new TransactionException(
-          new Error('There was an issue while fetching transaction details'),
-          {
-            contextModule: 'tx',
-          },
-        )
+      // Failed to query the transaction on the chain
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
       }
 
-      throw new GrpcUnaryRequestException(new Error(errorToErrorMessage(e)), {
-        contextModule: 'tx',
-      })
+      // The response itself failed
+      throw new GrpcUnaryRequestException(
+        new Error('There was an issue while fetching transaction details'),
+        {
+          context: 'TxGrpcApi',
+          contextModule: 'fetch-tx',
+        },
+      )
     }
   }
 
@@ -114,11 +121,8 @@ export class TxGrpcApi implements TxConcreteApi {
           return txResponse
         }
       } catch (e: unknown) {
+        // We throw only if the transaction failed on chain
         if (e instanceof TransactionException) {
-          throw e
-        }
-
-        if (!isTxNotFoundError(e)) {
           throw e
         }
       }
@@ -126,12 +130,14 @@ export class TxGrpcApi implements TxConcreteApi {
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
     }
 
-    throw new TransactionException(
+    // Transaction was not included in the block in the desired timeout
+    throw new GrpcUnaryRequestException(
       new Error(
         `Transaction was not included in a block before timeout of ${timeout}ms`,
       ),
       {
-        contextModule: 'TxGrpcApi',
+        context: 'TxGrpcApi',
+        contextModule: 'fetch-tx-poll',
       },
     )
   }
@@ -194,7 +200,7 @@ export class TxGrpcApi implements TxConcreteApi {
 
             const txResponse = response.getTxResponse()!
 
-            if (txResponse.getCode() !== 0) {
+            if (txResponse.getCode() === 0) {
               return resolve({
                 ...txResponse.toObject(),
                 txHash: txResponse.getTxhash(),
@@ -210,10 +216,6 @@ export class TxGrpcApi implements TxConcreteApi {
           }),
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
-      }
-
       throw new TransactionException(new Error((e as any).message))
     }
   }
@@ -240,9 +242,7 @@ export class TxGrpcApi implements TxConcreteApi {
 
             if (!txResponse) {
               return reject(
-                new Error(
-                  'There was an problem while broadcasting the transaction',
-                ),
+                new Error('There was an issue broadcasting the transaction'),
               )
             }
 
@@ -251,10 +251,23 @@ export class TxGrpcApi implements TxConcreteApi {
               txHash: txResponse.getTxhash(),
             }
 
+            if (result.code !== 0) {
+              return reject(
+                new TransactionException(new Error(result.rawLog), {
+                  contextCode: result.code,
+                  contextModule: result.codespace,
+                }),
+              )
+            }
+
             return resolve(result as TxClientBroadcastResponse)
           }),
       )
     } catch (e: unknown) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
       throw new TransactionException(new Error((e as any).message))
     }
   }

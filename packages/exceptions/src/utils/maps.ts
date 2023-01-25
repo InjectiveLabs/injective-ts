@@ -1,88 +1,65 @@
-import { chainErrorMessagesMap, chainCodeErrorMessagesMap } from '../messages'
-import {
-  ErrorContextCode,
-  UnspecifiedErrorCode,
-  ChainCosmosErrorCode,
-} from '../types'
-
-/* todo: remove this with the next chain upgrade */
-export const parseMessage = (message: string) => {
-  const firstParse = message.split('message index: 0:')
-
-  if (firstParse.length === 1) {
-    const [firstParseString] = firstParse
-    const secondParse = firstParseString.split(': invalid request')
-    const [secondParseString] = secondParse
-
-    return secondParseString.trim().trimEnd()
-  }
-
-  const [, firstParseString] = firstParse
-  const [actualMessage] = firstParseString.split(': invalid request')
-
-  return actualMessage.trim().trimEnd()
-}
-
-/* todo: remove this with the next chain upgrade */
-const mapMessageByContent = (
-  message: string,
-): { message: string; code: ErrorContextCode } => {
-  const parsedMessage = parseMessage(message)
-
-  const messageInMapKey = (
-    Object.keys(chainErrorMessagesMap) as Array<
-      keyof typeof chainErrorMessagesMap
-    >
-  ).find((key) => parsedMessage.toLowerCase().includes(key.toLowerCase()))
-
-  if (!messageInMapKey) {
-    return { message: parsedMessage, code: UnspecifiedErrorCode }
-  }
-
-  return chainErrorMessagesMap[messageInMapKey]
-}
-
-const getABCICode = (message: string): number | undefined => {
-  const chainCodePattern = /{key:"ABCICode" (.*?)}/g
-  const numericPattern = /\d+/g
-
-  const chainCodeMsg = message.match(chainCodePattern)
-
-  if (!chainCodeMsg || chainCodeMsg.length === 0) {
-    return
-  }
-
-  const chainCode = chainCodeMsg[0].match(numericPattern)
-
-  if (!chainCode || chainCode.length === 0) {
-    return
-  }
-
-  return Number(chainCode[0])
-}
+import { chainModuleCodeErrorMessagesMap } from '../messages'
+import { ErrorContext, ErrorContextCode, UnspecifiedErrorCode } from '../types'
 
 export const mapFailedTransactionMessage = (
   message: string,
-): { message: string; code: ErrorContextCode } => {
-  const ABCICode = getABCICode(message)
+  context?: ErrorContext,
+): { message: string; code: ErrorContextCode; contextModule?: string } => {
+  const getABCICode = (message: string): number | undefined => {
+    const chainCodePattern = /{key:"ABCICode" value:"(.*?)"}/g
 
-  if (!ABCICode) {
-    return mapMessageByContent(message)
+    const chainCode = chainCodePattern.exec(message)
+
+    if (!chainCode || chainCode.length < 2) {
+      return
+    }
+
+    return Number(chainCode[1])
   }
 
-  const chainCodeErrorMessage = chainCodeErrorMessagesMap[ABCICode]
+  const getContextModule = (message: string): string | undefined => {
+    const chainModulePattern = /{key:"Codespace" value:"(.*?)"}/g
+
+    const chainCode = chainModulePattern.exec(message)
+
+    if (!chainCode || chainCode.length < 2) {
+      return
+    }
+
+    return chainCode[1]
+  }
+
+  const ABCICode = context && context.code ? context.code : getABCICode(message)
+  const contextModule =
+    context && context.contextModule
+      ? context.contextModule
+      : getContextModule(message)
+
+  const defaultResponse = {
+    message: 'Transaction execution has failed for unknown reason',
+    code: UnspecifiedErrorCode,
+    module: undefined,
+  }
+
+  if (
+    !ABCICode ||
+    !contextModule ||
+    !chainModuleCodeErrorMessagesMap[contextModule]
+  ) {
+    return defaultResponse
+  }
+
+  const chainCodeErrorMessage =
+    chainModuleCodeErrorMessagesMap[contextModule][ABCICode]
 
   if (!chainCodeErrorMessage) {
-    return {
-      message:
-        chainCodeErrorMessagesMap[ChainCosmosErrorCode.ErrUnknownRequest],
-      code: ChainCosmosErrorCode.ErrUnknownRequest,
-    }
+    return defaultResponse
   }
 
   return {
     message: chainCodeErrorMessage,
     code: ABCICode,
+    contextModule,
   }
 }
 

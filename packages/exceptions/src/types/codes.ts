@@ -1,6 +1,19 @@
 import type { grpc } from '@improbable-eng/grpc-web'
 import { StatusCodes } from 'http-status-codes'
 
+export enum ErrorModule {
+  Auction = 'auction',
+  CosmosSdk = 'sdk',
+  Exchange = 'exchange',
+  Insurance = 'insurance',
+  Ocr = 'ocr',
+  Oracle = 'oracle',
+  Peggy = 'peggy',
+  TokenFactory = 'tokenfactory',
+  Wasmx = 'wasmx',
+  Authz = 'authz',
+}
+
 export enum ChainCosmosErrorCode {
   // ErrTxDecode is returned if we cannot parse a transaction
   ErrTxDecode = 2,
@@ -253,6 +266,24 @@ export enum ChainExchangeModuleErrorCode {
   ErrInvalidAddress = 83,
   //  Invalid argument
   ErrInvalidArgument = 84,
+  // Invalid funds direction
+  ErrInvalidFundsDirection = 85,
+  // No funds provided
+  ErrNoFundsProvided = 86,
+  // Invalid signature
+  ErrInvalidSignature = 87,
+  // no funds to unlock
+  ErrNoFundsToUnlock = 88,
+  // No msgs provided
+  ErrNoMsgsProvided = 89,
+  // No msg provided
+  ErrNoMsgProvided = 90,
+  // Invalid amount
+  ErrInvalidAmount = 91,
+  // The current feature has been disabled
+  ErrFeatureDisabled = 92,
+  // Order has too much margin
+  ErrTooMuchOrderMargin = 93,
 }
 
 export enum ChainAuctionErrorCodes {
@@ -289,6 +320,199 @@ export enum ChainInsuranceErrorCodes {
   ErrInvalidShareDenom = 12,
 }
 
+export enum ChainOcrErrorCodes {
+  // stale report
+  ErrStaleReport = 1,
+  // incomplete proposal
+  ErrIncompleteProposal = 2,
+  // repeated oracle address
+  ErrRepeatedAddress = 3,
+  // too many signers
+  ErrTooManySigners = 4,
+  // incorrect config
+  ErrIncorrectConfig = 5,
+  // config digest doesn't match
+  ErrConfigDigestNotMatch = 6,
+  // wrong number of signatures
+  ErrWrongNumberOfSignatures = 7,
+  // incorrect signature
+  ErrIncorrectSignature = 8,
+  // no transmitter specified
+  ErrNoTransmitter = 9,
+  // incorrect transmission data
+  ErrIncorrectTransmissionData = 10,
+  // no transmissions found
+  ErrNoTransmissionsFound = 11,
+  // median value is out of bounds
+  ErrMedianValueOutOfBounds = 12,
+  // LINK denom doesn't match
+  ErrIncorrectRewardPoolDenom = 13,
+  // Reward Pool doesn't exist
+  ErrNoRewardPool = 14,
+  // wrong number of payees and transmitters
+  ErrInvalidPayees = 15,
+  // action is restricted to the module admin
+  ErrModuleAdminRestricted = 16,
+  // feed already exists
+  ErrFeedAlreadyExists = 17,
+  // feed doesnt exists
+  ErrFeedDoesntExists = 19,
+  // action is admin-restricted
+  ErrAdminRestricted = 20,
+  // insufficient reward pool
+  ErrInsufficientRewardPool = 21,
+  // payee already set
+  ErrPayeeAlreadySet = 22,
+  // action is payee-restricted
+  ErrPayeeRestricted = 23,
+  // feed config not found
+  ErrFeedConfigNotFound = 24,
+}
+
+export enum ChainOracleErrorCodes {
+  // relayer address is empty
+  ErrEmptyRelayerAddr = 1,
+  // bad rates count
+  ErrBadRatesCount = 2,
+  // bad resolve times
+  ErrBadResolveTimesCount = 3,
+  // bad request ID
+  ErrBadRequestIDsCount = 4,
+  // relayer not authorized
+  ErrRelayerNotAuthorized = 5,
+  // bad price feed base count
+  ErrBadPriceFeedBaseCount = 6,
+  // bad price feed quote count
+  ErrBadPriceFeedQuoteCount = 7,
+  // unsupported oracle type
+  ErrUnsupportedOracleType = 8,
+  // bad messages count
+  ErrBadMessagesCount = 9,
+  // bad Coinbase message
+  ErrBadCoinbaseMessage = 10,
+  // bad Ethereum signature
+  ErrInvalidEthereumSignature = 11,
+  // bad Coinbase message timestamp
+  ErrBadCoinbaseMessageTimestamp = 12,
+  // Coinbase price not found
+  ErrCoinbasePriceNotFound = 13,
+  // Prices must be positive
+  ErrBadPrice = 14,
+  // Prices must be less than 10 million.
+  ErrPriceTooLarge = 15,
+  // Invalid Band IBC Request
+  ErrInvalidBandIBCRequest = 16,
+  // sample error
+  ErrSample = 17,
+  // invalid packet timeout
+  ErrInvalidPacketTimeout = 18,
+  // invalid symbols count
+  ErrBadSymbolsCount = 19,
+  // could not claim port capability
+  ErrBadIBCPortBind = 20,
+  // invalid IBC Port ID
+  ErrInvalidPortID = 21,
+  // invalid IBC Channel ID
+  ErrInvalidChannelID = 22,
+  // invalid Band IBC request interval
+  ErrBadRequestInterval = 23,
+  // Invalid Band IBC Update Request Proposal
+  ErrInvalidBandIBCUpdateRequest = 24,
+  // Band IBC Oracle Request not found
+  ErrBandIBCRequestNotFound = 25,
+  // Base Info is empty
+  ErrEmptyBaseInfo = 26,
+  // provider is empty
+  ErrEmptyProvider = 27,
+  // invalid provider name
+  ErrInvalidProvider = 28,
+  // invalid symbol
+  ErrInvalidSymbol = 29,
+  // relayer already exists
+  ErrRelayerAlreadyExists = 30,
+  // provider price not found
+  ErrProviderPriceNotFound = 31,
+  // invalid oracle request
+  ErrInvalidOracleRequest = 32,
+  // no price for oracle was found
+  ErrOraclePriceNotFound = 33,
+}
+
+export enum ChainPeggyErrorCodes {
+  // internal
+  ErrInternal = 1,
+  // duplicate
+  ErrDuplicate = 2,
+  // invalid
+  ErrInvalid = 3,
+  // timeout
+  ErrTimeout = 4,
+  // unknown
+  ErrUnknown = 5,
+  // empty
+  ErrEmpty = 6,
+  // outdated
+  ErrOutdated = 7,
+  // unsupported
+  ErrUnsupported = 8,
+  // non contiguous event nonce
+  ErrNonContiguousEventNonce = 9,
+  // no unbatched txs found
+  ErrNoUnbatchedTxsFound = 10,
+  // can not set orchestrator addresses more than once
+  ErrResetDelegateKeys = 11,
+  // supply cannot exceed max ERC20 value
+  ErrSupplyOverflow = 12,
+  // invalid ethereum sender on claim
+  ErrInvalidEthSender = 13,
+  // invalid ethereum destination
+  ErrInvalidEthDestination = 14,
+}
+
+export enum ChainTokenFactoryErrorCodes {
+  // attempting to create a denom that already exists (has bank metadata)
+  ErrDenomExists = 2,
+  // unauthorized account
+  ErrUnauthorized = 3,
+  // invalid denom
+  ErrInvalidDenom = 4,
+  // invalid creator
+  ErrInvalidCreator = 5,
+  // invalid authority metadata
+  ErrInvalidAuthorityMetadata = 6,
+  // invalid genesis
+  ErrInvalidGenesis = 7,
+  // subdenom too long, max length is %d bytes
+  ErrSubdenomTooLong = 8,
+  // subdenom too short, min length is %d bytes
+  ErrSubdenomTooShort = 9,
+  // nested subdenom too short, each one should have at least %d bytes
+  ErrSubdenomNestedTooShort = 10,
+  // creator too long, max length is %d bytes
+  ErrCreatorTooLong = 11,
+  // denom does not exist
+  ErrDenomDoesNotExist = 12,
+  // amount has to be positive
+  ErrAmountNotPositive = 13,
+}
+
+export enum ChainWasmXErrorCodes {
+  // invalid gas limit
+  ErrInvalidGasLimit = 1,
+  // invalid gas price
+  ErrInvalidGasPrice = 2,
+  // invalid contract address
+  ErrInvalidContractAddress = 3,
+  // contract already registered
+  ErrAlreadyRegistered = 4,
+  // duplicate contract
+  ErrDuplicateContract = 5,
+  // no contract addresses found
+  ErrNoContractAddresses = 6,
+  // invalid code id
+  ErrInvalidCodeId = 7,
+}
+
 export type IndexerApiErrorCode = number
 
 export const UnspecifiedErrorCode = -1
@@ -296,8 +520,13 @@ export const UnspecifiedErrorCode = -1
 export type ErrorCode = StatusCodes | typeof UnspecifiedErrorCode | grpc.Code
 
 export type ErrorContextCode =
-  | ChainExchangeModuleErrorCode
-  | ChainCosmosErrorCode
   | ChainAuctionErrorCodes
+  | ChainCosmosErrorCode
+  | ChainExchangeModuleErrorCode
   | ChainInsuranceErrorCodes
+  | ChainOcrErrorCodes
+  | ChainOracleErrorCodes
+  | ChainPeggyErrorCodes
+  | ChainTokenFactoryErrorCodes
+  | ChainWasmXErrorCodes
   | typeof UnspecifiedErrorCode

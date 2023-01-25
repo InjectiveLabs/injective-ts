@@ -90,7 +90,7 @@ export class KeplrWallet {
       return keplr.getOfflineSigner(chainId).getAccounts()
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
-        contextModule: WalletErrorActionModule.GetAccounts,
+        context: WalletErrorActionModule.GetAccounts,
       })
     }
   }
@@ -109,7 +109,7 @@ export class KeplrWallet {
       return keplr.getKey(this.chainId)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
-        contextModule: 'Keplr',
+        context: 'Keplr',
       })
     }
   }
@@ -122,7 +122,7 @@ export class KeplrWallet {
       return keplr.getOfflineSigner(chainId) as unknown as OfflineDirectSigner
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
-        contextModule: 'Keplr',
+        context: 'Keplr',
       })
     }
   }
@@ -149,7 +149,7 @@ export class KeplrWallet {
       if (!result || result.length === 0) {
         throw new TransactionException(
           new Error('Transaction failed to be broadcasted'),
-          { contextModule: 'Keplr' },
+          { context: 'Keplr' },
         )
       }
 
@@ -160,8 +160,8 @@ export class KeplrWallet {
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
-        context: 'broadcast-tx',
-        contextModule: 'Keplr',
+        context: 'Keplr',
+        contextModule: 'broadcast-tx',
       })
     }
   }
@@ -187,7 +187,7 @@ export class KeplrWallet {
       if (!result || result.length === 0) {
         throw new TransactionException(
           new Error('Transaction failed to be broadcasted'),
-          { contextModule: 'Keplr' },
+          { context: 'Keplr' },
         )
       }
 
@@ -198,8 +198,8 @@ export class KeplrWallet {
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
-        context: 'broadcast-tx-block',
-        contextModule: 'Keplr',
+        context: 'Keplr',
+        contextModule: 'broadcast-tx-block',
       })
     }
   }
@@ -230,7 +230,8 @@ export class KeplrWallet {
       )
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
-        contextModule: 'Keplr',
+        context: 'Keplr',
+        contextModule: 'sign-eip712-cosmos-tx',
       })
     }
   }
@@ -242,7 +243,8 @@ export class KeplrWallet {
       return getEndpointsFromChainId(chainId)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
-        contextModule: 'Keplr',
+        context: 'Keplr',
+        contextModule: 'get-chain-endpoints',
       })
     }
   }
@@ -268,7 +270,7 @@ export class KeplrWallet {
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
-          contextModule: 'Keplr',
+          context: 'Keplr',
         },
       )
     }
@@ -279,7 +281,7 @@ export class KeplrWallet {
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
-          contextModule: 'Keplr',
+          context: 'Keplr',
         },
       )
     }

@@ -58,8 +58,7 @@ export default class Keplr
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetAccounts,
+        context: WalletAction.GetAccounts,
       })
     }
   }
@@ -83,8 +82,7 @@ export default class Keplr
       ),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendEthereumTransaction,
+        context: WalletAction.SendEthereumTransaction,
       },
     )
   }
@@ -106,8 +104,7 @@ export default class Keplr
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.ChainError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       })
     }
   }
@@ -138,8 +135,7 @@ export default class Keplr
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       })
     }
   }
@@ -152,8 +148,7 @@ export default class Keplr
       new Error('This wallet does not support signing Ethereum transactions'),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       },
     )
   }
@@ -163,8 +158,7 @@ export default class Keplr
       new Error('getNetworkId is not supported on Keplr'),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetNetworkId,
+        context: WalletAction.GetNetworkId,
       },
     )
   }
@@ -174,8 +168,7 @@ export default class Keplr
       new Error('getChainId is not supported on Keplr'),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetChainId,
+        context: WalletAction.GetChainId,
       },
     )
   }
@@ -185,8 +178,7 @@ export default class Keplr
       new Error('getEthereumTransactionReceipt is not supported on Keplr'),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetEthereumTransactionReceipt,
+        context: WalletAction.GetEthereumTransactionReceipt,
       },
     )
   }
@@ -207,7 +199,7 @@ export default class Keplr
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
-          contextModule: WalletAction.SignTransaction,
+          context: WalletAction.SignTransaction,
         },
       )
     }

@@ -20,11 +20,10 @@ import {
 } from '@injectivelabs/exceptions'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
-import { errorToErrorMessage, isTxNotFoundError } from '../utils/api'
 import { TxResponse } from '../types/tx'
 
 /**
- * It is recommended to use TxGrpcClient instead of TxRestApi
+ * It is recommended to use TxRestClient instead of TxRestApi
  */
 export class TxRestApi implements TxConcreteApi {
   public httpClient: HttpClient
@@ -38,10 +37,7 @@ export class TxRestApi implements TxConcreteApi {
     })
   }
 
-  public async fetchTx(
-    txHash: string,
-    params: any = {},
-  ): Promise<TxResponse | undefined> {
+  public async fetchTx(txHash: string, params: any = {}): Promise<TxResponse> {
     try {
       const response = await this.getRaw<TxResultResponse>(
         `/cosmos/tx/v1beta1/txs/${txHash}`,
@@ -51,13 +47,19 @@ export class TxRestApi implements TxConcreteApi {
       const { tx_response: txResponse } = response
 
       if (!txResponse) {
-        return undefined
+        throw new HttpRequestException(
+          new Error(`The transaction with ${txHash} is not found`),
+          {
+            context: 'TxRestApi',
+            contextModule: 'fetch-tx',
+          },
+        )
       }
 
       if (parseInt(txResponse.code.toString(), 10) !== 0) {
         throw new TransactionException(new Error(txResponse.raw_log), {
           contextCode: txResponse.code,
-          contextModule: 'TxRestApi',
+          contextModule: txResponse.codespace,
         })
       }
 
@@ -70,22 +72,24 @@ export class TxRestApi implements TxConcreteApi {
         txHash: txResponse.txhash,
       }
     } catch (e: unknown) {
+      // Transaction has failed on the chain
       if (e instanceof TransactionException) {
         throw e
       }
 
-      if (!isTxNotFoundError(e)) {
-        throw new TransactionException(
-          new Error('There was an issue while fetching transaction details'),
-          {
-            contextModule: 'tx',
-          },
-        )
+      // Failed to query the transaction on the chain
+      if (e instanceof HttpRequestException) {
+        throw e
       }
 
-      throw new HttpRequestException(new Error(errorToErrorMessage(e)), {
-        contextModule: 'tx',
-      })
+      // The response itself failed
+      throw new HttpRequestException(
+        new Error('There was an issue while fetching transaction details'),
+        {
+          context: 'TxRestApi',
+          contextModule: 'fetch-tx',
+        },
+      )
     }
   }
 
@@ -104,11 +108,8 @@ export class TxRestApi implements TxConcreteApi {
           return txResponse
         }
       } catch (e: unknown) {
+        // We throw only if the transaction failed on chain
         if (e instanceof TransactionException) {
-          throw e
-        }
-
-        if (!isTxNotFoundError(e)) {
           throw e
         }
       }
@@ -116,12 +117,13 @@ export class TxRestApi implements TxConcreteApi {
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
     }
 
-    throw new TransactionException(
+    throw new HttpRequestException(
       new Error(
         `Transaction was not included in a block before timeout of ${timeout}ms`,
       ),
       {
-        contextModule: 'TxRestApi',
+        context: 'TxRestApi',
+        contextModule: 'fetch-tx-poll',
       },
     )
   }
@@ -133,23 +135,27 @@ export class TxRestApi implements TxConcreteApi {
       txRawClone.setSignaturesList([new Uint8Array(0)])
     }
 
-    const response = await this.postRaw<SimulationResponse>(
-      '/cosmos/tx/v1beta1/simulate',
-      {
-        tx_bytes: TxClient.encode(txRawClone),
-      },
-    )
+    try {
+      const response = await this.postRaw<SimulationResponse>(
+        '/cosmos/tx/v1beta1/simulate',
+        {
+          tx_bytes: TxClient.encode(txRawClone),
+        },
+      )
 
-    return {
-      result: {
-        data: response.result.data,
-        log: response.result.log,
-        eventsList: response.result.events,
-      },
-      gasInfo: {
-        gasWanted: parseInt(response.gas_info.gas_wanted, 10),
-        gasUsed: parseInt(response.gas_info.gas_used, 10),
-      },
+      return {
+        result: {
+          data: response.result.data,
+          log: response.result.log,
+          eventsList: response.result.events,
+        },
+        gasInfo: {
+          gasWanted: parseInt(response.gas_info.gas_wanted, 10),
+          gasUsed: parseInt(response.gas_info.gas_used, 10),
+        },
+      }
+    } catch (e) {
+      throw new TransactionException(new Error((e as any).message))
     }
   }
 
@@ -167,20 +173,10 @@ export class TxRestApi implements TxConcreteApi {
       }>(tx, BroadcastMode.Sync)
 
       if (txResponse.code !== 0) {
-        return {
-          height: parseInt(txResponse.height || '0', 10),
-          txHash: txResponse.txhash,
-          rawLog: txResponse.rawLog,
-          code: txResponse.code,
-          codespace: txResponse.codespace,
-          gasUsed: 0,
-          gasWanted: 0,
-          timestamp: '',
-          logs: [],
-          data: '',
-          info: '',
-          tx: undefined,
-        } as TxResponse
+        throw new TransactionException(new Error(txResponse.rawLog), {
+          contextCode: txResponse.code,
+          contextModule: txResponse.codespace,
+        })
       }
 
       return this.fetchTxPoll(txResponse.txhash, timeout)
@@ -203,20 +199,35 @@ export class TxRestApi implements TxConcreteApi {
       tx_response: TxInfo
     }>(tx, BroadcastMode.Block)
 
-    const { tx_response: txResponse } = response
+    try {
+      const { tx_response: txResponse } = response
 
-    return {
-      txHash: txResponse.txhash,
-      rawLog: txResponse.rawLog,
-      gasWanted: parseInt(txResponse.gasWanted || '0', 10),
-      gasUsed: parseInt(txResponse.gasUsed || '0', 10),
-      height: parseInt(txResponse.height || '0', 10),
-      logs: txResponse.logs || [],
-      code: txResponse.code,
-      codespace: txResponse.codespace,
-      data: txResponse.data,
-      info: txResponse.info,
-      timestamp: txResponse.timestamp || '0',
+      if (txResponse.code !== 0) {
+        throw new TransactionException(new Error(txResponse.rawLog), {
+          contextCode: txResponse.code,
+          contextModule: txResponse.codespace,
+        })
+      }
+
+      return {
+        txHash: txResponse.txhash,
+        rawLog: txResponse.rawLog,
+        gasWanted: parseInt(txResponse.gasWanted || '0', 10),
+        gasUsed: parseInt(txResponse.gasUsed || '0', 10),
+        height: parseInt(txResponse.height || '0', 10),
+        logs: txResponse.logs || [],
+        code: txResponse.code,
+        codespace: txResponse.codespace,
+        data: txResponse.data,
+        info: txResponse.info,
+        timestamp: txResponse.timestamp || '0',
+      }
+    } catch (e: unknown) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
+      throw new TransactionException(new Error((e as any).message))
     }
   }
 
