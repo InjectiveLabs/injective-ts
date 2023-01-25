@@ -55,8 +55,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetAccounts,
+        context: WalletAction.GetAccounts,
       })
     }
   }
@@ -77,8 +76,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.ChainError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       })
     }
   }
@@ -98,8 +96,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       })
     }
   }
@@ -114,8 +111,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     } catch (e) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetAccounts,
+        context: WalletAction.GetAccounts,
       })
     }
   }
@@ -129,7 +125,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
-          contextModule: WalletAction.SignTransaction,
+          context: WalletAction.SignTransaction,
         },
       )
     }

@@ -26,7 +26,6 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
-  ErrorType,
   GeneralException,
   TransactionException,
   UnspecifiedErrorCode,
@@ -257,8 +256,7 @@ export class MsgBroadcaster {
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
-        code: response.code,
-        type: ErrorType.ChainError,
+        code: UnspecifiedErrorCode,
         contextCode: response.code,
         contextModule: response.codespace,
       })
@@ -520,7 +518,6 @@ export class MsgBroadcaster {
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.ChainError,
         contextCode: response.code,
         contextModule: response.codespace,
       })
@@ -654,6 +651,10 @@ export class MsgBroadcaster {
     try {
       return await txClient.simulate(txRawWithSignature)
     } catch (e) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
       throw new TransactionException(new Error((e as any).message))
     }
   }

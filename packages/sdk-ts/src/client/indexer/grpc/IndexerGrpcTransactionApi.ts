@@ -26,7 +26,7 @@ import { recoverTypedSignaturePubKey } from '../../../utils/transaction'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
-  Web3GatewayTransactionException,
+  TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
@@ -99,16 +99,14 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
-        throw new Web3GatewayTransactionException(e.toOriginalError(), {
+        throw new TransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
-          contextModule: e.contextModule,
         })
       }
 
-      throw new Web3GatewayTransactionException(e as Error, {
+      throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
       })
     }
   }
@@ -172,16 +170,14 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
-        throw new Web3GatewayTransactionException(e.toOriginalError(), {
+        throw new TransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
-          contextModule: e.contextModule,
         })
       }
 
-      throw new Web3GatewayTransactionException(e as Error, {
+      throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
       })
     }
   }
@@ -254,16 +250,14 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
-        throw new Web3GatewayTransactionException(e.toOriginalError(), {
+        throw new TransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
-          contextModule: e.contextModule,
         })
       }
 
-      throw new Web3GatewayTransactionException(e as Error, {
+      throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
       })
     }
   }
@@ -316,16 +310,14 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       return response.toObject()
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
-        throw new Web3GatewayTransactionException(e.toOriginalError(), {
+        throw new TransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
-          contextModule: e.contextModule,
         })
       }
 
-      throw new Web3GatewayTransactionException(e as Error, {
+      throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
       })
     }
   }
@@ -368,16 +360,14 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       return response.toObject()
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
-        throw new Web3GatewayTransactionException(e.toOriginalError(), {
+        throw new TransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
-          contextModule: e.contextModule,
         })
       }
 
-      throw new Web3GatewayTransactionException(e as Error, {
+      throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
       })
     }
   }
@@ -395,16 +385,14 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
       return response.toObject()
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
-        throw new Web3GatewayTransactionException(e.toOriginalError(), {
+        throw new TransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
-          contextModule: e.contextModule,
         })
       }
 
-      throw new Web3GatewayTransactionException(e as Error, {
+      throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        contextModule: this.module,
       })
     }
   }

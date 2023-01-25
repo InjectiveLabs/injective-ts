@@ -77,16 +77,14 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
           new Error('The user rejected the request'),
           {
             code: UnspecifiedErrorCode,
-            type: ErrorType.WalletError,
-            contextModule: WalletAction.GetAccounts,
+            context: WalletAction.GetAccounts,
           },
         )
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetAccounts,
+        context: WalletAction.GetAccounts,
       })
     }
   }
@@ -122,8 +120,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.ChainError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       })
     }
   }
@@ -164,8 +161,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       })
     }
   }
@@ -184,16 +180,14 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
           new Error('The user rejected the request'),
           {
             code: UnspecifiedErrorCode,
-            type: ErrorType.WalletError,
-            contextModule: WalletAction.GetAccounts,
+            context: WalletAction.GetAccounts,
           },
         )
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetAccounts,
+        context: WalletAction.GetAccounts,
       })
     }
   }
@@ -222,7 +216,6 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
 
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
       })
     }
   }

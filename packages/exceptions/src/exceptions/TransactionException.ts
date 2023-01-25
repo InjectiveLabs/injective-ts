@@ -10,19 +10,19 @@ export class TransactionException extends ConcreteException {
   }
 
   public parse(): void {
-    const { message } = this
+    const { message, contextModule, contextCode } = this
 
     const {
-      message: parsedMessage,
       code,
-      module,
-    } = mapFailedTransactionMessage(message)
+      contextModule: parsedContextModule,
+      message: parsedMessage,
+    } = mapFailedTransactionMessage(message, { contextCode, contextModule })
 
     this.setMessage(parsedMessage)
     this.setContextCode(code)
 
-    if (module) {
-      this.setContextModule(module)
+    if (parsedContextModule) {
+      this.setContextModule(parsedContextModule)
     }
   }
 }

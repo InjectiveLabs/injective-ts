@@ -54,16 +54,14 @@ export default class Cosmostation
           new Error('The user rejected the request'),
           {
             code: UnspecifiedErrorCode,
-            type: ErrorType.WalletError,
-            contextModule: WalletAction.GetAccounts,
+            context: WalletAction.GetAccounts,
           },
         )
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetAccounts,
+        context: WalletAction.GetAccounts,
       })
     }
   }
@@ -87,8 +85,7 @@ export default class Cosmostation
       ),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendEthereumTransaction,
+        context: WalletAction.SendEthereumTransaction,
       },
     )
   }
@@ -124,8 +121,7 @@ export default class Cosmostation
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.ChainError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       })
     }
   }
@@ -175,8 +171,7 @@ export default class Cosmostation
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       })
     }
   }
@@ -194,16 +189,14 @@ export default class Cosmostation
           new Error('The user rejected the request'),
           {
             code: UnspecifiedErrorCode,
-            type: ErrorType.WalletError,
-            contextModule: WalletAction.GetAccounts,
+            context: WalletAction.GetAccounts,
           },
         )
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetAccounts,
+        context: WalletAction.GetAccounts,
       })
     }
   }
@@ -216,8 +209,7 @@ export default class Cosmostation
       new Error('This wallet does not support signing Ethereum transactions'),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
+        context: WalletAction.SendTransaction,
       },
     )
   }
@@ -227,8 +219,7 @@ export default class Cosmostation
       new Error('getNetworkId is not supported on Cosmostation'),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetNetworkId,
+        context: WalletAction.GetNetworkId,
       },
     )
   }
@@ -238,8 +229,7 @@ export default class Cosmostation
       new Error('getChainId is not supported on Cosmostation'),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetChainId,
+        context: WalletAction.GetChainId,
       },
     )
   }
@@ -252,7 +242,7 @@ export default class Cosmostation
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.GetEthereumTransactionReceipt,
+        context: WalletAction.GetEthereumTransactionReceipt,
       },
     )
   }

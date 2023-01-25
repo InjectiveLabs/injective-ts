@@ -1,35 +1,39 @@
 import { chainModuleCodeErrorMessagesMap } from '../messages'
-import { ErrorContextCode, UnspecifiedErrorCode } from '../types'
-
-const getABCICode = (message: string): number | undefined => {
-  const chainCodePattern = /{key:"ABCICode" value:"(.*?)"}/g
-
-  const chainCode = chainCodePattern.exec(message)
-
-  if (!chainCode || chainCode.length < 2) {
-    return
-  }
-
-  return Number(chainCode[1])
-}
-
-const getContextModule = (message: string): string | undefined => {
-  const chainModulePattern = /{key:"Codespace" value:"(.*?)"}/g
-
-  const chainCode = chainModulePattern.exec(message)
-
-  if (!chainCode || chainCode.length < 2) {
-    return
-  }
-
-  return chainCode[1]
-}
+import { ErrorContext, ErrorContextCode, UnspecifiedErrorCode } from '../types'
 
 export const mapFailedTransactionMessage = (
   message: string,
-): { message: string; code: ErrorContextCode; module?: string } => {
-  const ABCICode = getABCICode(message)
-  const module = getContextModule(message)
+  context?: ErrorContext,
+): { message: string; code: ErrorContextCode; contextModule?: string } => {
+  const getABCICode = (message: string): number | undefined => {
+    const chainCodePattern = /{key:"ABCICode" value:"(.*?)"}/g
+
+    const chainCode = chainCodePattern.exec(message)
+
+    if (!chainCode || chainCode.length < 2) {
+      return
+    }
+
+    return Number(chainCode[1])
+  }
+
+  const getContextModule = (message: string): string | undefined => {
+    const chainModulePattern = /{key:"Codespace" value:"(.*?)"}/g
+
+    const chainCode = chainModulePattern.exec(message)
+
+    if (!chainCode || chainCode.length < 2) {
+      return
+    }
+
+    return chainCode[1]
+  }
+
+  const ABCICode = context && context.code ? context.code : getABCICode(message)
+  const contextModule =
+    context && context.contextModule
+      ? context.contextModule
+      : getContextModule(message)
 
   const defaultResponse = {
     message: 'Transaction execution has failed for unknown reason',
@@ -37,12 +41,16 @@ export const mapFailedTransactionMessage = (
     module: undefined,
   }
 
-  if (!ABCICode || !module || !chainModuleCodeErrorMessagesMap[module]) {
+  if (
+    !ABCICode ||
+    !contextModule ||
+    !chainModuleCodeErrorMessagesMap[contextModule]
+  ) {
     return defaultResponse
   }
 
   const chainCodeErrorMessage =
-    chainModuleCodeErrorMessagesMap[module][ABCICode]
+    chainModuleCodeErrorMessagesMap[contextModule][ABCICode]
 
   if (!chainCodeErrorMessage) {
     return defaultResponse
@@ -51,7 +59,7 @@ export const mapFailedTransactionMessage = (
   return {
     message: chainCodeErrorMessage,
     code: ABCICode,
-    module,
+    contextModule,
   }
 }
 
