@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.48](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.47...@injectivelabs/exceptions@1.0.48) (2023-01-25)
+
+
+### Bug Fixes
+
+* transaction exceptions ([2083bb8](https://github.com/InjectiveLabs/injective-ts/commit/2083bb80770b5ad954d2249d119ed72113f6b0c2))
+
+
+### Features
+
+* map chain error exception by module ([1714e80](https://github.com/InjectiveLabs/injective-ts/commit/1714e80e1bbabc8807bc56ef2d0085bea0a481a2))
+
+
+
+
+
 ## [1.0.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.46...@injectivelabs/exceptions@1.0.47) (2023-01-24)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
