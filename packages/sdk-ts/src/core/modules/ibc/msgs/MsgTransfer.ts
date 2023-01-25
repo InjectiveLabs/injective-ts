@@ -9,6 +9,7 @@ export declare namespace MsgTransfer {
       denom: string
       amount: string
     }
+    memo?: string
     sender: string
     port: string
     receiver: string
@@ -80,6 +81,8 @@ export default class MsgTransfer extends MsgBase<
       message.setTimeoutTimestamp(params.timeout)
     }
 
+    message.setMemo(params.memo || '')
+
     return message
   }
 
@@ -93,11 +96,13 @@ export default class MsgTransfer extends MsgBase<
   }
 
   public toAmino(): MsgTransfer.Amino {
+    const { params } = this
     const proto = this.toProto()
 
     return {
       type: 'cosmos-sdk/MsgTransfer',
       ...proto.toObject(),
+      memo: params.memo || '',
     }
   }
 
