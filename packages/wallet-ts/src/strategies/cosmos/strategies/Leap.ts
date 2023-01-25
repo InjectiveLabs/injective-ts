@@ -94,6 +94,10 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     try {
       return signer.signDirect(transaction.address, signDoc)
     } catch (e: unknown) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,

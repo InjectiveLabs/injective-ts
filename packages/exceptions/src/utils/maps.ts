@@ -1,5 +1,55 @@
-import { chainModuleCodeErrorMessagesMap } from '../messages'
-import { ErrorContext, ErrorContextCode, UnspecifiedErrorCode } from '../types'
+import {
+  chainErrorMessagesMap,
+  chainModuleCodeErrorMessagesMap,
+} from '../messages'
+import {
+  ErrorContext,
+  ErrorContextCode,
+  TransactionChainErrorModule,
+  UnspecifiedErrorCode,
+} from '../types'
+
+export const mapFailedTransactionMessageFromString = (
+  message: string,
+): {
+  message: string
+  code: ErrorContextCode
+  module?: TransactionChainErrorModule
+} => {
+  const parseMessage = (message: string) => {
+    const firstParse = message.split('message index: 0:')
+
+    if (firstParse.length === 1) {
+      const [firstParseString] = firstParse
+      const secondParse = firstParseString.split(': invalid request')
+      const [secondParseString] = secondParse
+
+      return secondParseString.trim().trimEnd()
+    }
+
+    const [, firstParseString] = firstParse
+    const [actualMessage] = firstParseString.split(': invalid request')
+
+    return actualMessage.trim().trimEnd()
+  }
+
+  const parsedMessage = parseMessage(message)
+  const messageInMapKey = (
+    Object.keys(chainErrorMessagesMap) as Array<
+      keyof typeof chainErrorMessagesMap
+    >
+  ).find((key) => parsedMessage.toLowerCase().includes(key.toLowerCase()))
+
+  if (!messageInMapKey) {
+    return {
+      message: parsedMessage,
+      code: UnspecifiedErrorCode,
+      module: undefined,
+    }
+  }
+
+  return chainErrorMessagesMap[messageInMapKey]
+}
 
 export const mapFailedTransactionMessage = (
   message: string,
@@ -35,25 +85,19 @@ export const mapFailedTransactionMessage = (
       ? context.contextModule
       : getContextModule(message)
 
-  const defaultResponse = {
-    message: 'Transaction execution has failed for unknown reason',
-    code: UnspecifiedErrorCode,
-    module: undefined,
-  }
-
   if (
     !ABCICode ||
     !contextModule ||
     !chainModuleCodeErrorMessagesMap[contextModule]
   ) {
-    return defaultResponse
+    return mapFailedTransactionMessageFromString(message)
   }
 
   const chainCodeErrorMessage =
     chainModuleCodeErrorMessagesMap[contextModule][ABCICode]
 
   if (!chainCodeErrorMessage) {
-    return defaultResponse
+    return mapFailedTransactionMessageFromString(message)
   }
 
   return {

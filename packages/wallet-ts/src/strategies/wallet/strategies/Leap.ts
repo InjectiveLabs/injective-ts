@@ -101,6 +101,10 @@ export default class Leap
         await leapWallet.broadcastTx(txRaw),
       )
     } catch (e: unknown) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,

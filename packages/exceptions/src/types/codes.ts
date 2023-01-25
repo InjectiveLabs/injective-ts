@@ -1,7 +1,7 @@
 import type { grpc } from '@improbable-eng/grpc-web'
 import { StatusCodes } from 'http-status-codes'
 
-export enum ErrorModule {
+export enum TransactionChainErrorModule {
   Auction = 'auction',
   CosmosSdk = 'sdk',
   Exchange = 'exchange',

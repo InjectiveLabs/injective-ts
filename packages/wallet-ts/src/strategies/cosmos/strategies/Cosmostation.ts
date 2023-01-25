@@ -118,6 +118,10 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
         rawLog: response.tx_response.raw_log as string,
       } as TxResponse
     } catch (e: unknown) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,

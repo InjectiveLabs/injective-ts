@@ -102,6 +102,10 @@ export default class Keplr
         await keplrWallet.broadcastTx(txRaw),
       )
     } catch (e: unknown) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,
