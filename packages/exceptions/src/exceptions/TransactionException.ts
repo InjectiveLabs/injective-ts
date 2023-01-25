@@ -12,10 +12,17 @@ export class TransactionException extends ConcreteException {
   public parse(): void {
     const { message } = this
 
-    const { message: parsedMessage, code } =
-      mapFailedTransactionMessage(message)
+    const {
+      message: parsedMessage,
+      code,
+      module,
+    } = mapFailedTransactionMessage(message)
 
     this.setMessage(parsedMessage)
     this.setContextCode(code)
+
+    if (module) {
+      this.setContextModule(module)
+    }
   }
 }
