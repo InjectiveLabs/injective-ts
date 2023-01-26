@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.96](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.95...@injectivelabs/contracts@1.0.96) (2023-01-26)
+
+
+### Features
+
+* added deployERC20 on peggy ([5f1f22e](https://github.com/InjectiveLabs/injective-ts/commit/5f1f22e95ab7d0a91d8957303325d75a6c7ede8f))
+
+
+
+
+
 ## [1.0.95](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.94...@injectivelabs/contracts@1.0.95) (2023-01-26)
 
 **Note:** Version bump only for package @injectivelabs/contracts
