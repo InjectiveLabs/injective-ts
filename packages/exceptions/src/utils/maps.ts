@@ -56,27 +56,27 @@ export const mapFailedTransactionMessage = (
   context?: ErrorContext,
 ): { message: string; code: ErrorContextCode; contextModule?: string } => {
   const getABCICode = (message: string): number | undefined => {
-    const chainCodePattern = /{key:"ABCICode" value:"(.*?)"}/g
+    const ABCICodePattern = /{key:"ABCICode"[ \t]+value:"(.*?)"}/g
 
-    const chainCode = chainCodePattern.exec(message)
+    const ABCICode = ABCICodePattern.exec(message)
 
-    if (!chainCode || chainCode.length < 2) {
+    if (!ABCICode || ABCICode.length < 2) {
       return
     }
 
-    return Number(chainCode[1])
+    return Number(ABCICode[1])
   }
 
   const getContextModule = (message: string): string | undefined => {
-    const chainModulePattern = /{key:"Codespace" value:"(.*?)"}/g
+    const codespacePattern = /{key:"Codespace"[ \t]+value:"(.*?)"}/g
 
-    const chainCode = chainModulePattern.exec(message)
+    const codespace = codespacePattern.exec(message)
 
-    if (!chainCode || chainCode.length < 2) {
+    if (!codespace || codespace.length < 2) {
       return
     }
 
-    return chainCode[1]
+    return codespace[1]
   }
 
   const ABCICode = context && context.code ? context.code : getABCICode(message)
