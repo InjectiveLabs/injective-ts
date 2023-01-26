@@ -77,4 +77,52 @@ export class PeggyContract extends BaseContract<any> {
       },
     }
   }
+
+  deployERC20({
+    denom,
+    name,
+    symbol,
+    decimals = 18,
+    transactionOptions,
+  }: {
+    denom: string
+    name: string
+    symbol: string
+    decimals?: number
+    transactionOptions: TransactionOptions
+  }): ContractTxFunctionObj<string> {
+    const { contract } = this
+
+    return {
+      callAsync() {
+        throw new Web3Exception(
+          new Error('You cannot call this contract method as a call'),
+          {
+            code: UnspecifiedErrorCode,
+            contextModule: Contract.Peggy,
+          },
+        )
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods
+          .deployERC20(denom, name, symbol, decimals)
+          .encodeABI()
+      },
+
+      async sendTransactionAsync(): Promise<string> {
+        const { transactionHash } = await contract.methods
+          .deployERC20(denom, name, symbol, decimals)
+          .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
+
+        return transactionHash
+      },
+
+      async estimateGasAsync(): Promise<number> {
+        return contract.methods
+          .deployERC20(denom, name, symbol, decimals)
+          .estimateGas(transactionOptions)
+      },
+    }
+  }
 }
