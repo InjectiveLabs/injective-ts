@@ -103,6 +103,48 @@ export class Erc20Contract extends BaseContract<any> {
     }
   }
 
+  transfer({
+    recipient,
+    amount,
+    transactionOptions,
+  }: {
+    recipient: string
+    amount: string
+    transactionOptions: TransactionOptions
+  }): ContractTxFunctionObj<string> {
+    const { contract } = this
+
+    return {
+      callAsync() {
+        throw new Web3Exception(
+          new Error('You cannot call this contract method as a call'),
+          {
+            code: UnspecifiedErrorCode,
+            contextModule: Contract.Erc20Contract,
+          },
+        )
+      },
+
+      getABIEncodedTransactionData(): string {
+        return contract.methods.transfer(recipient, amount).encodeABI()
+      },
+
+      async sendTransactionAsync(): Promise<string> {
+        const { transactionHash } = await contract.methods
+          .transfer(recipient, amount)
+          .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
+
+        return transactionHash
+      },
+
+      async estimateGasAsync(): Promise<number> {
+        return contract.methods
+          .transfer(recipient, amount)
+          .estimateGas(transactionOptions)
+      },
+    }
+  }
+
   getName(): ContractFunctionObj<string> {
     const { contract } = this
 
