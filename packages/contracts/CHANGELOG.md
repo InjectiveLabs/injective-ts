@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.97](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.96...@injectivelabs/contracts@1.0.97) (2023-01-27)
+
+
+### Features
+
+* transfer method on ERC20 ([b9c8b73](https://github.com/InjectiveLabs/injective-ts/commit/b9c8b73e885d22fd189f4b5cc360a5b6d22a0aa3))
+
+
+
+
+
 ## [1.0.96](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.95...@injectivelabs/contracts@1.0.96) (2023-01-26)
 
 
