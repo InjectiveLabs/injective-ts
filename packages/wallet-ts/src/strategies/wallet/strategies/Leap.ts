@@ -93,7 +93,6 @@ export default class Leap
     const { leapWallet } = this
     const txRaw = getTxRawFromTxRawOrDirectSignResponse(transaction)
 
-
     try {
       return await leapWallet.waitTxBroadcasted(
         await leapWallet.broadcastTx(txRaw),

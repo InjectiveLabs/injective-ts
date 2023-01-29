@@ -8,7 +8,7 @@
     "email": "bojan@injectivelabs.org"
   },
   "main": "dist/cjs/index.js",
-  "module": "dist/index.js",
+  "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
@@ -18,16 +18,16 @@
   "exports": {
     ".": {
       "require": "./dist/cjs/index.js",
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/esm/index.js"
     }
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && link-module-alias && yarn copy-files",
-    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && yarn build:post && yarn build:copy-files && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && yarn build:copy-files && link-module-alias",
+    "build:post": "shx cp ../../stub/package.json.stub dist/cjs/package.json && shx cp ../../stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
-    "copy-files": "copyfiles -u 1 ./src/images/* ./dist/",
+    "build:copy-files": "copyfiles -u 1 ./src/images/* ./dist/",
     "test": "jest",
     "test:unit": "jest test/unit",
     "test:integration": "jest test/unit",

@@ -8,7 +8,7 @@
     "email": "bojan@injectivelabs.org"
   },
   "main": "dist/cjs/index.js",
-  "module": "dist/index.js",
+  "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
@@ -18,14 +18,14 @@
   "exports": {
     ".": {
       "require": "./dist/cjs/index.js",
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.js"
     }
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build:post": "shx cp ../../stub/package.json.stub dist/cjs/package.json && shx cp ../../stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",

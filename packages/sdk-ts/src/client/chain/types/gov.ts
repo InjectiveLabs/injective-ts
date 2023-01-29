@@ -66,5 +66,6 @@ export {
   GrpcGovernanceDepositParams,
   GrpcTallyResult,
   GrpcVote,
+  ProposalStatus,
   ProposalStatus as GrpcProposalStatus,
 }

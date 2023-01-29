@@ -2101,14 +2101,6 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
-"@injectivelabs/core-proto-ts@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.1.tgz#d63ba0ae48c3245048aa6a2ec251296faf79d50c"
-  integrity sha512-WdsGw7Ixgtg3IUjcIpGDdeOqQEp5lonKMA4ucdhI9RQjzsQj2/fj7U00+938FPedLxrWYwk8Lj+hxlT7gpUJVQ==
-  dependencies:
-    "@improbable-eng/grpc-web" "^0.15.0"
-    protobufjs "^7.0.0"
-
 "@injectivelabs/core-proto-ts@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.2.tgz#a249ee932a4c9380a9208ba96e9200e150a7b295"
@@ -7547,7 +7539,7 @@ copy-to-clipboard@^3.3.1:
 
 copyfiles@^2.4.1:
   version "2.4.1"
-  resolved "https://registry.npmjs.org/copyfiles/-/copyfiles-2.4.1.tgz#d2dcff60aaad1015f09d0b66e7f0f1c5cd3c5da5"
+  resolved "https://registry.yarnpkg.com/copyfiles/-/copyfiles-2.4.1.tgz#d2dcff60aaad1015f09d0b66e7f0f1c5cd3c5da5"
   integrity sha512-fereAvAvxDrQDOXybk3Qu3dPbOoKoysFMWtkY3mv5BsL8//OSZVL5DCLYqgRfY5cWirgRzlC+WSrxp6Bo3eNZg==
   dependencies:
     glob "^7.0.5"

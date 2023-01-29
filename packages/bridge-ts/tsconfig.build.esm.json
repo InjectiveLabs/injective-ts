@@ -2,7 +2,7 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "module": "esnext",
-    "outDir": "./dist",
+    "outDir": "./dist/esm",
     "rootDir": "./src",
     "tsBuildInfoFile": "../../.build-cache/bridge-ts.esm.tsbuildinfo"
   },
