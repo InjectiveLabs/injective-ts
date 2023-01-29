@@ -6,7 +6,6 @@ import {
   GetTxRequest,
 } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/service'
 import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
-import { grpc } from '@improbable-eng/grpc-web'
 import {
   TxClientBroadcastOptions,
   TxClientBroadcastResponse,
@@ -16,18 +15,13 @@ import {
   GrpcUnaryRequestException,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import { getGrpcTransport } from '../../../../utils/grpc'
-import { isBrowser } from '../../../../utils/helpers'
 import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
 import { TxResponse } from '../types/tx'
-import { getRpcInterface } from '../../../../client/BaseGrpcConsumer'
-
-if (!isBrowser()) {
-  grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
-}
+import { getGrpcWebImpl } from '../../../../client/BaseGrpcWebConsumer'
+import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
 
 export class TxGrpcApi implements TxConcreteApi {
   public txService: ServiceClientImpl
@@ -36,7 +30,7 @@ export class TxGrpcApi implements TxConcreteApi {
 
   constructor(endpoint: string) {
     this.endpoint = endpoint
-    this.txService = new ServiceClientImpl(getRpcInterface(endpoint))
+    this.txService = new ServiceClientImpl(getGrpcWebImpl(endpoint))
   }
 
   public async fetchTx(hash: string): Promise<TxResponse> {
@@ -80,8 +74,10 @@ export class TxGrpcApi implements TxConcreteApi {
       }
 
       // Failed to query the transaction on the chain
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+        })
       }
 
       // The response itself failed

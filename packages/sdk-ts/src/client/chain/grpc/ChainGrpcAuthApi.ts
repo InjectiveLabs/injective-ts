@@ -9,7 +9,8 @@ import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
 import { ChainModule } from '../types'
 import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
-import { getRpcInterface } from '../../BaseGrpcConsumer'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
+import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
 
 /**
  * @category Chain Grpc API
@@ -20,7 +21,7 @@ export class ChainGrpcAuthApi {
   protected query: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
@@ -33,8 +34,11 @@ export class ChainGrpcAuthApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)
@@ -51,8 +55,11 @@ export class ChainGrpcAuthApi {
 
       return ChainGrpcAuthTransformer.accountResponseToAccount(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)
@@ -72,8 +79,11 @@ export class ChainGrpcAuthApi {
 
       return ChainGrpcAuthTransformer.accountsResponseToAccounts(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)

@@ -5,7 +5,7 @@ import {
   QueryTotalSupplyRequest,
   QueryParamsRequest as QueryBankParamsRequest,
 } from '@injectivelabs/core-proto-ts/cosmos/bank/v1beta1/query'
-import { getRpcInterface } from '../../BaseGrpcConsumer'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcBankTransformer } from '../transformers'
@@ -14,6 +14,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { ChainModule } from '../types'
+import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
 
 /**
  * @category Chain Grpc API
@@ -24,7 +25,7 @@ export class ChainGrpcBankApi {
   protected query: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
@@ -37,8 +38,11 @@ export class ChainGrpcBankApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -65,8 +69,11 @@ export class ChainGrpcBankApi {
 
       return ChainGrpcBankTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -86,8 +93,11 @@ export class ChainGrpcBankApi {
 
       return ChainGrpcBankTransformer.balancesResponseToBalances(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -110,8 +120,11 @@ export class ChainGrpcBankApi {
 
       return ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

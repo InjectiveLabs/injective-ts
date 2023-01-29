@@ -17,7 +17,8 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getRpcInterface } from '../../BaseGrpcConsumer'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
+import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
 
 /**
  * @category Chain Grpc API
@@ -28,7 +29,7 @@ export class ChainGrpcWasmApi {
   protected query: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchContractAccountsBalance({
@@ -55,8 +56,11 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -84,8 +88,11 @@ export class ChainGrpcWasmApi {
         contractInfo,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -107,8 +114,11 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -132,8 +142,11 @@ export class ChainGrpcWasmApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -157,8 +170,11 @@ export class ChainGrpcWasmApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -184,8 +200,11 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -207,8 +226,11 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -239,8 +261,11 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

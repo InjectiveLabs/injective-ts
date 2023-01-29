@@ -3,12 +3,13 @@ import {
   QueryDenomTraceRequest,
   QueryDenomTracesRequest,
 } from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/query'
-import { getRpcInterface } from '../../BaseGrpcConsumer'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
 
 /**
  * @category Chain Grpc API
@@ -19,7 +20,7 @@ export class ChainGrpcIbcApi {
   protected query: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchDenomTrace(hash: string) {
@@ -32,8 +33,11 @@ export class ChainGrpcIbcApi {
 
       return response.denomTrace!
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -51,8 +55,11 @@ export class ChainGrpcIbcApi {
 
       return response.denomTraces
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

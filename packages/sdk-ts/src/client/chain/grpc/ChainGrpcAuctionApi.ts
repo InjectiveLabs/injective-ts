@@ -4,11 +4,12 @@ import {
   QueryModuleStateRequest,
   QueryCurrentAuctionBasketRequest,
 } from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/query'
+import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getRpcInterface } from '../../BaseGrpcConsumer'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { ChainGrpcAuctionTransformer } from '../transformers'
 import { ChainModule } from '../types'
 
@@ -21,7 +22,7 @@ export class ChainGrpcAuctionApi {
   protected query: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
@@ -34,8 +35,11 @@ export class ChainGrpcAuctionApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -55,8 +59,11 @@ export class ChainGrpcAuctionApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -76,8 +83,11 @@ export class ChainGrpcAuctionApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

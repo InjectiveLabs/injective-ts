@@ -16,7 +16,8 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getRpcInterface } from '../../BaseGrpcConsumer'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
+import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
 
 /**
  * @category Chain Grpc API
@@ -27,7 +28,7 @@ export class ChainGrpcGovApi {
   protected query: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
@@ -51,8 +52,11 @@ export class ChainGrpcGovApi {
         depositParams: depositParams.depositParams!,
       })
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -84,8 +88,11 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -105,8 +112,11 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.proposalResponseToProposal(response)
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -138,8 +148,11 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -170,8 +183,11 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.votesResponseToVotes(response)
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -190,8 +206,11 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
