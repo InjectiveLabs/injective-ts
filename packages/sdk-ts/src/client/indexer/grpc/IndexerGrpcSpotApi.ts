@@ -199,6 +199,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
   async fetchOrderHistory(params?: {
     subaccountId?: string
     marketId?: string
+    marketIds?: string[]
     orderTypes?: SpotOrderSide[]
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
@@ -209,6 +210,7 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     const {
       subaccountId,
       marketId,
+      marketIds,
       orderTypes,
       executionTypes,
       direction,
@@ -224,6 +226,10 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
 
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
     }
 
     if (orderTypes) {

@@ -291,6 +291,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   async fetchOrderHistory(params?: {
     subaccountId?: string
     marketId?: string
+    marketIds?: string[]
     orderTypes?: DerivativeOrderSide[]
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
@@ -301,6 +302,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     const {
       subaccountId,
       marketId,
+      marketIds,
       orderTypes,
       executionTypes,
       direction,
@@ -317,6 +319,10 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
 
     if (marketId) {
       request.setMarketId(marketId)
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
     }
 
     if (orderTypes) {
