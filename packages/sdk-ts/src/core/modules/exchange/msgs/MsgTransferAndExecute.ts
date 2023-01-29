@@ -1,18 +1,17 @@
 import {
-  FundsDirectionMap,
+  FundsDirection,
   MsgTransferAndExecute as BaseMsgTransferAndExecute,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 import { Msgs } from '../../msgs'
-import { Any } from 'google-protobuf/google/protobuf/any_pb'
-import snakecaseKeys from 'snakecase-keys'
+import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 
 export declare namespace MsgTransferAndExecute {
   export interface Params {
     msg: Msgs
     injectiveAddress: string
-    fundsDirection: FundsDirectionMap[keyof FundsDirectionMap]
+    fundsDirection: FundsDirection
     funds: {
       amount: string
       denom: string
@@ -24,15 +23,15 @@ export declare namespace MsgTransferAndExecute {
     message: BaseMsgTransferAndExecute
   }
 
-  export interface Data extends BaseMsgTransferAndExecute.AsObject {
+  export interface Data extends BaseMsgTransferAndExecute {
     '@type': '/injective.exchange.v1beta1.MsgTransferAndExecute'
   }
 
-  export interface Amino extends BaseMsgTransferAndExecute.AsObject {
+  export interface Amino extends BaseMsgTransferAndExecute {
     type: 'exchange/MsgTransferAndExecute'
   }
 
-  export interface Web3 extends BaseMsgTransferAndExecute.AsObject {
+  export interface Web3 extends BaseMsgTransferAndExecute {
     '@type': '/injective.exchange.v1beta1.MsgTransferAndExecute'
   }
 
@@ -56,21 +55,21 @@ export default class MsgTransferAndExecute extends MsgBase<
   public toProto(): MsgTransferAndExecute.Proto {
     const { params } = this
 
-    const fundsCoin = new Coin()
-    fundsCoin.setAmount(params.funds.amount)
-    fundsCoin.setDenom(params.funds.denom)
+    const fundsCoin = Coin.create()
+    fundsCoin.amount = params.funds.amount
+    fundsCoin.denom = params.funds.denom
 
-    const messageAny = new Any()
-    messageAny.setValue(params.msg.toProto().serializeBinary())
-    messageAny.setTypeUrl(params.msg.toDirectSign().type)
+    const messageAny = Any.create()
+    messageAny.value = params.msg.toBinary()
+    messageAny.typeUrl = params.msg.toDirectSign().type
 
-    const message = new BaseMsgTransferAndExecute()
-    message.setSender(params.injectiveAddress)
-    message.setFundsDirection(params.fundsDirection)
-    message.setFundsList([fundsCoin])
-    message.setMsg(messageAny)
+    const message = BaseMsgTransferAndExecute.create()
+    message.sender = params.injectiveAddress
+    message.fundsDirection = params.fundsDirection
+    message.funds = [fundsCoin]
+    message.msg = messageAny
 
-    return message
+    return BaseMsgTransferAndExecute.fromPartial(message)
   }
 
   public toData(): MsgTransferAndExecute.Data {
@@ -78,7 +77,7 @@ export default class MsgTransferAndExecute extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgTransferAndExecute',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -87,9 +86,7 @@ export default class MsgTransferAndExecute extends MsgBase<
     const proto = this.toProto()
 
     const message = {
-      funds: proto
-        .getFundsList()
-        .map((amount) => snakecaseKeys(amount.toObject())),
+      funds: proto.funds,
       signer: params.injectiveAddress,
       fundsDirection: params.fundsDirection,
     }
@@ -110,9 +107,7 @@ export default class MsgTransferAndExecute extends MsgBase<
     const proto = this.toProto()
 
     const message = {
-      funds: proto
-        .getFundsList()
-        .map((amount) => snakecaseKeys(amount.toObject())),
+      funds: proto.funds,
       signer: params.injectiveAddress,
       fundsDirection: params.fundsDirection,
     }
@@ -135,5 +130,9 @@ export default class MsgTransferAndExecute extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgTransferAndExecute',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgTransferAndExecute.encode(this.toProto()).finish()
   }
 }

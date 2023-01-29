@@ -3,12 +3,12 @@ import {
   Bid as GrpcBid,
   EventBid as GrpcEventBid,
   EventAuctionResult as GrpcEventAuctionResult,
-} from '@injectivelabs/chain-api/injective/auction/v1beta1/auction_pb'
+} from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/auction'
 import { Coin } from '@injectivelabs/ts-types'
-import { QueryCurrentAuctionBasketResponse as GrpcQueryCurrentAuctionBasketResponse } from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
+import { QueryCurrentAuctionBasketResponse as GrpcQueryCurrentAuctionBasketResponse } from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/query'
 
 export interface GrpcCurrentBasket
-  extends GrpcQueryCurrentAuctionBasketResponse.AsObject {
+  extends GrpcQueryCurrentAuctionBasketResponse {
   //
 }
 

@@ -1,4 +1,4 @@
-import { MsgUpdateAdmin as BaseMsgUpdateAdmin } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
+import { MsgUpdateAdmin as BaseMsgUpdateAdmin } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
 import { MsgBase } from '../../MsgBase'
 import snakeCaseKeys from 'snakecase-keys'
 
@@ -14,15 +14,15 @@ export declare namespace MsgUpdateAdmin {
     message: BaseMsgUpdateAdmin
   }
 
-  export interface Data extends BaseMsgUpdateAdmin.AsObject {
+  export interface Data extends BaseMsgUpdateAdmin {
     '@type': '/cosmwasm.wasm.v1.MsgUpdateAdmin'
   }
 
-  export interface Amino extends BaseMsgUpdateAdmin.AsObject {
+  export interface Amino extends BaseMsgUpdateAdmin {
     type: 'wasm/MsgUpdateAdmin'
   }
 
-  export interface Web3 extends BaseMsgUpdateAdmin.AsObject {
+  export interface Web3 extends BaseMsgUpdateAdmin {
     '@type': '/cosmwasm.wasm.v1.MsgUpdateAdmin'
   }
 
@@ -46,13 +46,13 @@ export default class MsgUpdateAdmin extends MsgBase<
   public toProto(): MsgUpdateAdmin.Proto {
     const { params } = this
 
-    const message = new BaseMsgUpdateAdmin()
+    const message = BaseMsgUpdateAdmin.create()
 
-    message.setSender(params.sender)
-    message.setNewAdmin(params.newAdmin)
-    message.setContract(params.contract)
+    message.sender = params.sender
+    message.newAdmin = params.newAdmin
+    message.contract = params.contract
 
-    return message
+    return BaseMsgUpdateAdmin.fromPartial(message)
   }
 
   public toData(): MsgUpdateAdmin.Data {
@@ -60,14 +60,14 @@ export default class MsgUpdateAdmin extends MsgBase<
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgUpdateAdmin',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino(): MsgUpdateAdmin.Amino {
     const proto = this.toProto()
     const message = {
-      ...snakeCaseKeys(proto.toObject()),
+      ...snakeCaseKeys(proto),
     }
 
     const messageWithProperKeys = snakeCaseKeys(message)
@@ -95,5 +95,9 @@ export default class MsgUpdateAdmin extends MsgBase<
       type: '/cosmwasm.wasm.v1.MsgUpdateAdmin',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgUpdateAdmin.encode(this.toProto()).finish()
   }
 }

@@ -2,8 +2,8 @@
   "name": "@injectivelabs/token-utils",
   "version": "1.0.73",
   "description": "Token Utils is a package for querying different data about tokens",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/index.js",
   "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -15,11 +15,18 @@
   "_moduleAliases": {
     "~token-utils": "dist"
   },
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && link-module-alias",
-    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && link-module-alias",
+    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
     "test:integration": "jest test/unit",

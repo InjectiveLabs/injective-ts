@@ -1,4 +1,3 @@
-import { MsgCreateBinaryOptionsLimitOrder as BaseMsgCreateBinaryOptionsLimitOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateBinaryOptionsLimitOrder from './MsgCreateBinaryOptionsLimitOrder'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -51,8 +50,7 @@ describe('MsgCreateBinaryOptionsLimitOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgCreateBinaryOptionsLimitOrder).toBe(true)
-    expect(proto.toObject()).toStrictEqual(formattedProtoParams)
+    expect(proto).toStrictEqual(formattedProtoParams)
   })
 
   it('generates proper data', () => {

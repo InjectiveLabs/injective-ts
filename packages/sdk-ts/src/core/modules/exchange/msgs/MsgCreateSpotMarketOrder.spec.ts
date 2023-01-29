@@ -1,4 +1,3 @@
-import { MsgCreateSpotMarketOrder as BaseMsgCreateSpotMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateSpotMarketOrder from './MsgCreateSpotMarketOrder'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -48,8 +47,7 @@ describe('MsgCreateSpotMarketOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgCreateSpotMarketOrder).toBe(true)
-    expect(proto.toObject()).toStrictEqual(formattedProtoParams)
+    expect(proto).toStrictEqual(formattedProtoParams)
   })
 
   it('generates proper data', () => {

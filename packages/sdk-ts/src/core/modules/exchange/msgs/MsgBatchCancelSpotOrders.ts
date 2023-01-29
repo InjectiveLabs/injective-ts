@@ -1,9 +1,8 @@
-import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import {
   MsgBatchCancelSpotOrders as BaseMsgBatchCancelSpotOrders,
   OrderData,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { OrderMask } from '../../../../types/exchange'
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -14,7 +13,7 @@ export declare namespace MsgBatchCancelSpotOrders {
       marketId: string
       subaccountId: string
       orderHash: string
-      orderMask?: OrderMaskMap[keyof OrderMaskMap]
+      orderMask?: OrderMask
     }[]
   }
 
@@ -23,15 +22,15 @@ export declare namespace MsgBatchCancelSpotOrders {
     message: BaseMsgBatchCancelSpotOrders
   }
 
-  export interface Data extends BaseMsgBatchCancelSpotOrders.AsObject {
+  export interface Data extends BaseMsgBatchCancelSpotOrders {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders'
   }
 
-  export interface Amino extends BaseMsgBatchCancelSpotOrders.AsObject {
+  export interface Amino extends BaseMsgBatchCancelSpotOrders {
     type: 'exchange/MsgBatchCancelSpotOrders'
   }
 
-  export interface Web3 extends BaseMsgBatchCancelSpotOrders.AsObject {
+  export interface Web3 extends BaseMsgBatchCancelSpotOrders {
     '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders'
   }
 
@@ -58,22 +57,22 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     const { params } = this
 
     const orderDataList = params.orders.map((order) => {
-      const orderData = new OrderData()
-      orderData.setMarketId(order.marketId)
-      orderData.setOrderHash(order.orderHash)
-      orderData.setSubaccountId(order.subaccountId)
+      const orderData = OrderData.create()
+      orderData.marketId = order.marketId
+      orderData.orderHash = order.orderHash
+      orderData.subaccountId = order.subaccountId
 
       // TODO: Send order.orderMask instead when chain handles order mask properly.
-      orderData.setOrderMask(OrderMask.Any)
+      orderData.orderMask = OrderMask.ANY
 
       return orderData
     })
 
-    const message = new BaseMsgBatchCancelSpotOrders()
-    message.setSender(params.injectiveAddress)
-    message.setDataList(orderDataList.map((o) => o))
+    const message = BaseMsgBatchCancelSpotOrders.create()
+    message.sender = params.injectiveAddress
+    message.data = orderDataList.map((o) => o)
 
-    return message
+    return BaseMsgBatchCancelSpotOrders.fromPartial(message)
   }
 
   public toData(): MsgBatchCancelSpotOrders.Data {
@@ -81,21 +80,18 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino(): MsgBatchCancelSpotOrders.Amino {
     const proto = this.toProto()
-    const orderData = proto
-      .getDataList()
-      .map((orderData) => snakeCaseKeys(orderData.toObject()))
 
     return {
       type: 'exchange/MsgBatchCancelSpotOrders',
       ...snakeCaseKeys({
-        sender: proto.getSender(),
-        data: [...orderData],
+        sender: proto.sender,
+        data: [...proto.data],
       }),
     } as unknown as MsgBatchCancelSpotOrders.Amino
   }
@@ -117,5 +113,9 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgBatchCancelSpotOrders.encode(this.toProto()).finish()
   }
 }

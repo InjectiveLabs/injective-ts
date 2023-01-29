@@ -1,4 +1,4 @@
-import { MsgReclaimLockedFunds as BaseMsgReclaimLockedFunds } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { MsgReclaimLockedFunds as BaseMsgReclaimLockedFunds } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgReclaimLockedFunds {
@@ -13,15 +13,15 @@ export declare namespace MsgReclaimLockedFunds {
     message: BaseMsgReclaimLockedFunds
   }
 
-  export interface Data extends BaseMsgReclaimLockedFunds.AsObject {
+  export interface Data extends BaseMsgReclaimLockedFunds {
     '@type': '/injective.exchange.v1beta1.MsgReclaimLockedFunds'
   }
 
-  export interface Amino extends BaseMsgReclaimLockedFunds.AsObject {
+  export interface Amino extends BaseMsgReclaimLockedFunds {
     type: 'exchange/MsgReclaimLockedFunds'
   }
 
-  export interface Web3 extends BaseMsgReclaimLockedFunds.AsObject {
+  export interface Web3 extends BaseMsgReclaimLockedFunds {
     '@type': '/injective.exchange.v1beta1.MsgReclaimLockedFunds'
   }
 
@@ -45,12 +45,15 @@ export default class MsgReclaimLockedFunds extends MsgBase<
   public toProto(): MsgReclaimLockedFunds.Proto {
     const { params } = this
 
-    const message = new BaseMsgReclaimLockedFunds()
-    message.setSender(params.sender)
-    message.setLockedaccountpubkey(params.lockedAccountPubKey)
-    message.setSignature(params.signature)
+    const message = BaseMsgReclaimLockedFunds.create()
+    message.sender = params.sender
+    message.lockedAccountPubKey = Buffer.from(
+      params.lockedAccountPubKey,
+      'base64',
+    )
+    message.signature = params.signature
 
-    return message
+    return BaseMsgReclaimLockedFunds.fromPartial(message)
   }
 
   public toData(): MsgReclaimLockedFunds.Data {
@@ -58,7 +61,7 @@ export default class MsgReclaimLockedFunds extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgReclaimLockedFunds',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -67,7 +70,7 @@ export default class MsgReclaimLockedFunds extends MsgBase<
 
     return {
       type: 'exchange/MsgReclaimLockedFunds',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -88,5 +91,9 @@ export default class MsgReclaimLockedFunds extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgReclaimLockedFunds',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgReclaimLockedFunds.encode(this.toProto()).finish()
   }
 }

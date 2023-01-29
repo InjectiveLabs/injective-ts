@@ -12,7 +12,7 @@ import {
   WalletException,
 } from '@injectivelabs/exceptions'
 import TorusWallet from '@toruslabs/torus-embed'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxResponse } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'

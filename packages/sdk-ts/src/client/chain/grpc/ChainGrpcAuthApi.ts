@@ -1,34 +1,33 @@
-import { Query as AuthQuery } from '@injectivelabs/chain-api/cosmos/auth/v1beta1/query_pb_service'
 import {
+  QueryClientImpl,
   QueryAccountRequest,
   QueryAccountsRequest,
-  QueryAccountsResponse,
-  QueryAccountResponse,
   QueryParamsRequest,
-  QueryParamsResponse,
-} from '@injectivelabs/chain-api/cosmos/auth/v1beta1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/core-proto-ts/cosmos/auth/v1beta1/query'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
 import { ChainModule } from '../types'
 import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcAuthApi extends BaseConsumer {
-  protected module: string = ChainModule.Auction
+export class ChainGrpcAuthApi {
+  protected module: string = ChainModule.Auth
+
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
 
   async fetchModuleParams() {
-    const request = new QueryParamsRequest()
+    const request = QueryParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryParamsRequest,
-        QueryParamsResponse,
-        typeof AuthQuery.Params
-      >(request, AuthQuery.Params)
+      const response = await this.query.Params(request)
 
       return ChainGrpcAuthTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -43,16 +42,12 @@ export class ChainGrpcAuthApi extends BaseConsumer {
   }
 
   async fetchAccount(address: string) {
-    const request = new QueryAccountRequest()
+    const request = QueryAccountRequest.create()
 
-    request.setAddress(address)
+    request.address = address
 
     try {
-      const response = await this.request<
-        QueryAccountRequest,
-        QueryAccountResponse,
-        typeof AuthQuery.Account
-      >(request, AuthQuery.Account)
+      const response = await this.query.Account(request)
 
       return ChainGrpcAuthTransformer.accountResponseToAccount(response)
     } catch (e: unknown) {
@@ -65,19 +60,15 @@ export class ChainGrpcAuthApi extends BaseConsumer {
   }
 
   async fetchAccounts(pagination?: PaginationOption) {
-    const request = new QueryAccountsRequest()
+    const request = QueryAccountsRequest.create()
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryAccountsRequest,
-        QueryAccountsResponse,
-        typeof AuthQuery.Accounts
-      >(request, AuthQuery.Accounts)
+      const response = await this.query.Accounts(request)
 
       return ChainGrpcAuthTransformer.accountsResponseToAccounts(response)
     } catch (e: unknown) {

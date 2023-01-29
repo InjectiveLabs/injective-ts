@@ -30,6 +30,8 @@ export abstract class MsgBase<
 
   public abstract toAmino(): AminoRepresentation
 
+  public abstract toBinary(): Uint8Array
+
   public abstract toWeb3(): Omit<AminoRepresentation, 'type'> & {
     '@type': string
   }
@@ -38,6 +40,9 @@ export abstract class MsgBase<
     return JSON.stringify(prepareSignBytes(this.toData()))
   }
 
+  /**
+   * Returns the types of the message for EIP712
+   */
   public toEip712Types(): Map<string, TypedDataField[]> {
     const amino = this.toAmino() as { type: string }
 
@@ -47,6 +52,9 @@ export abstract class MsgBase<
     })
   }
 
+  /**
+   * Returns the values of the message for EIP712
+   */
   public toEip712(): {
     type: string
     value: Omit<AminoRepresentation, 'type'>

@@ -1,4 +1,4 @@
-import { MsgRevoke as BaseMsgRevoke } from '@injectivelabs/chain-api/cosmos/authz/v1beta1/tx_pb'
+import { MsgRevoke as BaseMsgRevoke } from '@injectivelabs/core-proto-ts/cosmos/authz/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgRevoke {
@@ -13,15 +13,15 @@ export declare namespace MsgRevoke {
     message: BaseMsgRevoke
   }
 
-  export interface Data extends BaseMsgRevoke.AsObject {
+  export interface Data extends BaseMsgRevoke {
     '@type': '/cosmos.authz.v1beta1.MsgRevoke'
   }
 
-  export interface Amino extends BaseMsgRevoke.AsObject {
+  export interface Amino extends BaseMsgRevoke {
     type: 'cosmos-sdk/MsgRevoke'
   }
 
-  export interface Web3 extends BaseMsgRevoke.AsObject {
+  export interface Web3 extends BaseMsgRevoke {
     '@type': '/cosmos.authz.v1beta1.MsgRevoke'
   }
 
@@ -45,12 +45,12 @@ export default class MsgRevoke extends MsgBase<
   public toProto(): MsgRevoke.Proto {
     const { params } = this
 
-    const message = new BaseMsgRevoke()
-    message.setGrantee(params.grantee)
-    message.setGranter(params.granter)
-    message.setMsgTypeUrl(params.messageType)
+    const message = BaseMsgRevoke.create()
+    message.grantee = params.grantee
+    message.granter = params.granter
+    message.msgTypeUrl = params.messageType
 
-    return message
+    return BaseMsgRevoke.fromPartial(message)
   }
 
   public toData(): MsgRevoke.Data {
@@ -58,7 +58,7 @@ export default class MsgRevoke extends MsgBase<
 
     return {
       '@type': '/cosmos.authz.v1beta1.MsgRevoke',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -67,7 +67,7 @@ export default class MsgRevoke extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgRevoke',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -88,5 +88,9 @@ export default class MsgRevoke extends MsgBase<
       type: '/cosmos.authz.v1beta1.MsgRevoke',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgRevoke.encode(this.toProto()).finish()
   }
 }

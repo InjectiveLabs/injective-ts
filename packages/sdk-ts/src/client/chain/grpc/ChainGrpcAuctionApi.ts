@@ -1,35 +1,34 @@
-import { Query as AuctionQuery } from '@injectivelabs/chain-api/injective/auction/v1beta1//query_pb_service'
 import {
+  QueryClientImpl,
   QueryAuctionParamsRequest,
-  QueryAuctionParamsResponse,
   QueryModuleStateRequest,
-  QueryModuleStateResponse,
   QueryCurrentAuctionBasketRequest,
-  QueryCurrentAuctionBasketResponse,
-} from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
+} from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/query'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseConsumer from '../../BaseGrpcConsumer'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 import { ChainGrpcAuctionTransformer } from '../transformers'
 import { ChainModule } from '../types'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcAuctionApi extends BaseConsumer {
+export class ChainGrpcAuctionApi {
   protected module: string = ChainModule.Auction
 
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
+
   async fetchModuleParams() {
-    const request = new QueryAuctionParamsResponse()
+    const request = QueryAuctionParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryAuctionParamsRequest,
-        QueryAuctionParamsResponse,
-        typeof AuctionQuery.AuctionParams
-      >(request, AuctionQuery.AuctionParams)
+      const response = await this.query.AuctionParams(request)
 
       return ChainGrpcAuctionTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -47,14 +46,10 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
   }
 
   async fetchModuleState() {
-    const request = new QueryModuleStateRequest()
+    const request = QueryModuleStateRequest.create()
 
     try {
-      const response = await this.request<
-        QueryModuleStateRequest,
-        QueryModuleStateResponse,
-        typeof AuctionQuery.AuctionModuleState
-      >(request, AuctionQuery.AuctionModuleState)
+      const response = await this.query.AuctionModuleState(request)
 
       return ChainGrpcAuctionTransformer.auctionModuleStateResponseToAuctionModuleState(
         response,
@@ -72,14 +67,10 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
   }
 
   async fetchCurrentBasket() {
-    const request = new QueryCurrentAuctionBasketRequest()
+    const request = QueryCurrentAuctionBasketRequest.create()
 
     try {
-      const response = await this.request<
-        QueryCurrentAuctionBasketRequest,
-        QueryCurrentAuctionBasketResponse,
-        typeof AuctionQuery.CurrentAuctionBasket
-      >(request, AuctionQuery.CurrentAuctionBasket)
+      const response = await this.query.CurrentAuctionBasket(request)
 
       return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(
         response,

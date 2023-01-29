@@ -2,11 +2,11 @@ import {
   Supply as GrpcSupply,
   Params as GrpcBankParams,
   SendEnabled,
-} from '@injectivelabs/chain-api/cosmos/bank/v1beta1/bank_pb'
+} from '@injectivelabs/core-proto-ts/cosmos/bank/v1beta1/bank'
 import { Coin } from '@injectivelabs/ts-types'
 
 export interface BankModuleParams {
-  sendEnabledList: Array<SendEnabled.AsObject>
+  sendEnabledList: Array<SendEnabled>
   defaultSendEnabled: boolean
 }
 

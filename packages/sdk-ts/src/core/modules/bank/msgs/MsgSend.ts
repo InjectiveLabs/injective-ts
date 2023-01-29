@@ -1,5 +1,5 @@
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { MsgSend as BaseMsgSend } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/tx_pb'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
+import { MsgSend as BaseMsgSend } from '@injectivelabs/core-proto-ts/cosmos/bank/v1beta1/tx'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -18,15 +18,15 @@ export declare namespace MsgSend {
     message: BaseMsgSend
   }
 
-  export interface Data extends BaseMsgSend.AsObject {
+  export interface Data extends BaseMsgSend {
     '@type': '/cosmos.bank.v1beta1.MsgSend'
   }
 
-  export interface Amino extends BaseMsgSend.AsObject {
+  export interface Amino extends BaseMsgSend {
     type: 'cosmos-sdk/MsgSend'
   }
 
-  export interface Web3 extends BaseMsgSend.AsObject {
+  export interface Web3 extends BaseMsgSend {
     '@type': '/cosmos.bank.v1beta1.MsgSend'
   }
 
@@ -50,16 +50,16 @@ export default class MsgSend extends MsgBase<
   public toProto(): MsgSend.Proto {
     const { params } = this
 
-    const amountToSend = new Coin()
-    amountToSend.setAmount(params.amount.amount)
-    amountToSend.setDenom(params.amount.denom)
+    const amountToSend = Coin.create()
+    amountToSend.amount = params.amount.amount
+    amountToSend.denom = params.amount.denom
 
-    const message = new BaseMsgSend()
-    message.setFromAddress(params.srcInjectiveAddress)
-    message.setToAddress(params.dstInjectiveAddress)
-    message.setAmountList([amountToSend])
+    const message = BaseMsgSend.create()
+    message.fromAddress = params.srcInjectiveAddress
+    message.toAddress = params.dstInjectiveAddress
+    message.amount = [amountToSend]
 
-    return message
+    return BaseMsgSend.fromPartial(message)
   }
 
   public toData(): MsgSend.Data {
@@ -67,21 +67,17 @@ export default class MsgSend extends MsgBase<
 
     return {
       '@type': '/cosmos.bank.v1beta1.MsgSend',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino(): MsgSend.Amino {
     const proto = this.toProto()
-    const message = {
-      ...snakeCaseKeys(proto.toObject()),
-      amount: proto
-        .getAmountList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
-    }
 
-    // @ts-ignore
-    delete message.amount_list
+    const message = {
+      ...snakeCaseKeys(proto),
+      amount: proto.amount.map((amount) => snakeCaseKeys(amount)),
+    }
 
     return {
       type: 'cosmos-sdk/MsgSend',
@@ -106,5 +102,9 @@ export default class MsgSend extends MsgBase<
       type: '/cosmos.bank.v1beta1.MsgSend',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgSend.encode(this.toProto()).finish()
   }
 }

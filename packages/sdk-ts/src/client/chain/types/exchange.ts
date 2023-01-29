@@ -1,7 +1,7 @@
 import {
   SpotMarket as GrpcSpotMarket,
   MarketStatus as GrpcMarketStatus,
-  MarketStatusMap as GrpcMarketStatusMap,
+  MarketStatus as GrpcMarketStatusMap,
   SpotMarketOrder as GrpcSpotMarketOrder,
   SpotOrder as GrpcSpotOrder,
   Params as GrpcExchangeParams,
@@ -12,14 +12,14 @@ import {
   TradingRewardCampaignBoostInfo as GrpcTradingRewardCampaignBoostInfo,
   TradingRewardCampaignInfo as GrpcTradingRewardCampaignInfo,
   CampaignRewardPool as GrpcCampaignRewardPool,
-  OrderTypeMap as GrpcOrderTypeMap,
+  OrderType as GrpcOrderTypeMap,
   Position as GrpcChainPosition,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
-import { DerivativePosition as GrpcChainDerivativePosition } from '@injectivelabs/chain-api/injective/exchange/v1beta1/genesis_pb'
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
+import { DerivativePosition as GrpcChainDerivativePosition } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/genesis'
 import {
   QueryFeeDiscountAccountInfoResponse as GrpcFeeDiscountAccountInfo,
   QueryTradeRewardCampaignResponse as GrpcTradeRewardCampaign,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/query'
 import { Coin } from '@injectivelabs/ts-types'
 
 export interface DepositProposalParams {
@@ -31,7 +31,6 @@ export interface FeeDiscountTierInfo {
   makerDiscountRate: string
   takerDiscountRate: string
   stakedAmount: string
-  feePaidAmount: string
   volume: string
 }
 
@@ -109,7 +108,7 @@ export interface ExchangeModuleParams extends ExchangeParams {
   //
 }
 
-export type GrpcOrderType = GrpcOrderTypeMap[keyof GrpcOrderTypeMap]
+export type GrpcOrderType = GrpcOrderTypeMap
 
 export interface ChainPosition {
   islong: boolean

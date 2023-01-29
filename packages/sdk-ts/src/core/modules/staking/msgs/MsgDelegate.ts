@@ -1,5 +1,5 @@
-import { MsgDelegate as BaseMsgDelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { MsgDelegate as BaseMsgDelegate } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/tx'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgDelegate {
@@ -16,15 +16,15 @@ export declare namespace MsgDelegate {
     message: BaseMsgDelegate
   }
 
-  export interface Data extends BaseMsgDelegate.AsObject {
+  export interface Data extends BaseMsgDelegate {
     '@type': '/cosmos.staking.v1beta1.MsgDelegate'
   }
 
-  export interface Amino extends BaseMsgDelegate.AsObject {
+  export interface Amino extends BaseMsgDelegate {
     type: 'cosmos-sdk/MsgDelegate'
   }
 
-  export interface Web3 extends BaseMsgDelegate.AsObject {
+  export interface Web3 extends BaseMsgDelegate {
     '@type': '/cosmos.authz.v1beta1.MsgDelegate'
   }
 
@@ -48,16 +48,16 @@ export default class MsgDelegate extends MsgBase<
   public toProto(): MsgDelegate.Proto {
     const { params } = this
 
-    const coinAmount = new Coin()
-    coinAmount.setDenom(params.amount.denom)
-    coinAmount.setAmount(params.amount.amount)
+    const coinAmount = Coin.create()
+    coinAmount.denom = params.amount.denom
+    coinAmount.amount = params.amount.amount
 
-    const message = new BaseMsgDelegate()
-    message.setAmount(coinAmount)
-    message.setDelegatorAddress(params.injectiveAddress)
-    message.setValidatorAddress(params.validatorAddress)
+    const message = BaseMsgDelegate.create()
+    message.amount = coinAmount
+    message.delegatorAddress = params.injectiveAddress
+    message.validatorAddress = params.validatorAddress
 
-    return message
+    return BaseMsgDelegate.fromPartial(message)
   }
 
   public toData(): MsgDelegate.Data {
@@ -65,7 +65,7 @@ export default class MsgDelegate extends MsgBase<
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgDelegate',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -74,7 +74,7 @@ export default class MsgDelegate extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgDelegate',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -95,5 +95,9 @@ export default class MsgDelegate extends MsgBase<
       type: '/cosmos.staking.v1beta1.MsgDelegate',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgDelegate.encode(this.toProto()).finish()
   }
 }

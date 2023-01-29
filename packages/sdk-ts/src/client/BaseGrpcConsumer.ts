@@ -7,6 +7,11 @@ if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
 }
 
+interface UnaryMethodDefinition extends grpc.UnaryMethodDefinition<any, any> {
+  requestStream: any
+  responseStream: any
+}
+
 /**
  * @hidden
  */
@@ -48,5 +53,40 @@ export default class BaseGrpcConsumer {
         },
       })
     })
+  }
+}
+
+export const getRpcInterface = (endpoint: string, contextModule = '') => {
+  return {
+    unary<S extends UnaryMethodDefinition>(
+      method: S,
+      request: any,
+      _metadata: grpc.Metadata | undefined,
+    ): Promise<any> {
+      return new Promise((resolve, reject) => {
+        grpc.unary(method, {
+          request,
+          host: endpoint,
+          onEnd: (res) => {
+            const { statusMessage, status, message } = res
+
+            if (status === grpc.Code.OK && message) {
+              return resolve(message)
+            }
+
+            return reject(
+              new GrpcUnaryRequestException(
+                new Error(statusMessage || 'The request failed.'),
+                {
+                  code: status,
+                  context: endpoint,
+                  contextModule: contextModule,
+                },
+              ),
+            )
+          },
+        })
+      })
+    },
   }
 }

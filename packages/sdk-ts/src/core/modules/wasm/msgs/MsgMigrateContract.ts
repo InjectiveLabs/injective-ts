@@ -1,14 +1,14 @@
-import { MsgMigrateContract as BaseMsgMigrateContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
+import { MsgMigrateContract as BaseMsgMigrateContract } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
 import { toUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
 import snakeCaseKeys from 'snakecase-keys'
 
 export declare namespace MsgMigrateContract {
   export interface Params {
-    sender: string,
-    contract: string,
-    codeId: number,
-    msg: object,
+    sender: string
+    contract: string
+    codeId: number
+    msg: object
   }
 
   export interface DirectSign {
@@ -16,15 +16,15 @@ export declare namespace MsgMigrateContract {
     message: BaseMsgMigrateContract
   }
 
-  export interface Data extends BaseMsgMigrateContract.AsObject {
+  export interface Data extends BaseMsgMigrateContract {
     '@type': '/cosmwasm.wasm.v1.MsgMigrateContract'
   }
 
-  export interface Amino extends BaseMsgMigrateContract.AsObject {
+  export interface Amino extends BaseMsgMigrateContract {
     type: 'wasm/MsgMigrateContract'
   }
 
-  export interface Web3 extends BaseMsgMigrateContract.AsObject {
+  export interface Web3 extends BaseMsgMigrateContract {
     '@type': '/cosmwasm.wasm.v1.MsgMigrateContract'
   }
 
@@ -48,13 +48,13 @@ export default class MsgMigrateContract extends MsgBase<
   public toProto(): MsgMigrateContract.Proto {
     const { params } = this
 
-    const message = new BaseMsgMigrateContract()
-    message.setCodeId(params.codeId)
-    message.setContract(params.contract)
-    message.setSender(params.sender)
-    message.setMsg(toUtf8(JSON.stringify(params.msg)))
+    const message = BaseMsgMigrateContract.create()
+    message.codeId = params.codeId.toString()
+    message.contract = params.contract
+    message.sender = params.sender
+    message.msg = toUtf8(JSON.stringify(params.msg))
 
-    return message
+    return BaseMsgMigrateContract.fromPartial(message)
   }
 
   public toData(): MsgMigrateContract.Data {
@@ -62,7 +62,7 @@ export default class MsgMigrateContract extends MsgBase<
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgMigrateContract',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -71,7 +71,7 @@ export default class MsgMigrateContract extends MsgBase<
     const proto = this.toProto()
 
     const message = {
-      ...snakeCaseKeys(proto.toObject()),
+      ...snakeCaseKeys(proto),
       msg: params.msg,
     }
 
@@ -98,5 +98,9 @@ export default class MsgMigrateContract extends MsgBase<
       type: '/cosmwasm.wasm.v1.MsgMigrateContract',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgMigrateContract.encode(this.toProto()).finish()
   }
 }

@@ -5,10 +5,10 @@ import {
   RevokePriceFeederPrivilegeProposal,
   AuthorizeBandOracleRequestProposal,
   EnableBandIBCProposal,
-} from '@injectivelabs/chain-api/injective/oracle/v1beta1/proposal_pb'
-import { TextProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
-import { SoftwareUpgradeProposal } from '@injectivelabs/chain-api/cosmos/upgrade/v1beta1/upgrade_pb'
-import { ParameterChangeProposal } from '@injectivelabs/chain-api/cosmos/params/v1beta1/params_pb'
+} from '@injectivelabs/core-proto-ts/injective/oracle/v1beta1/proposal'
+import { TextProposal } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/gov'
+import { SoftwareUpgradeProposal } from '@injectivelabs/core-proto-ts/cosmos/upgrade/v1beta1/upgrade'
+import { ParameterChangeProposal } from '@injectivelabs/core-proto-ts/cosmos/params/v1beta1/params'
 import {
   DerivativeMarketParamUpdateProposal,
   ExchangeEnableProposal,
@@ -19,78 +19,78 @@ import {
   SpotMarketParamUpdateProposal,
   TradingRewardCampaignLaunchProposal,
   TradingRewardCampaignUpdateProposal,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 
 export class ProposalDecomposer {
   static grantBandOraclePrivilegeProposal(content: Uint8Array) {
-    return GrantBandOraclePrivilegeProposal.deserializeBinary(content)
+    return GrantBandOraclePrivilegeProposal.decode(content)
   }
 
   static removeBandOraclePrivilegeProposal(content: Uint8Array) {
-    return RevokeBandOraclePrivilegeProposal.deserializeBinary(content)
+    return RevokeBandOraclePrivilegeProposal.decode(content)
   }
 
   static grantPriceFeederPrivilegeProposal(content: Uint8Array) {
-    return GrantPriceFeederPrivilegeProposal.deserializeBinary(content)
+    return GrantPriceFeederPrivilegeProposal.decode(content)
   }
 
   static removePriceFeederPrivilegeProposal(content: Uint8Array) {
-    return RevokePriceFeederPrivilegeProposal.deserializeBinary(content)
+    return RevokePriceFeederPrivilegeProposal.decode(content)
   }
 
   static textProposal(content: Uint8Array) {
-    return TextProposal.deserializeBinary(content)
+    return TextProposal.decode(content)
   }
 
   static SoftwareUpgrade(content: Uint8Array) {
-    return SoftwareUpgradeProposal.deserializeBinary(content)
+    return SoftwareUpgradeProposal.decode(content)
   }
 
   static spotMarketLaunch(content: Uint8Array) {
-    return SpotMarketLaunchProposal.deserializeBinary(content)
+    return SpotMarketLaunchProposal.decode(content)
   }
 
   static exchangeEnableProposal(content: Uint8Array) {
-    return ExchangeEnableProposal.deserializeBinary(content)
+    return ExchangeEnableProposal.decode(content)
   }
 
   static spotMarketUpdate(content: Uint8Array) {
-    return SpotMarketParamUpdateProposal.deserializeBinary(content)
+    return SpotMarketParamUpdateProposal.decode(content)
   }
 
   static perpetualMarketLaunch(content: Uint8Array) {
-    return PerpetualMarketLaunchProposal.deserializeBinary(content)
+    return PerpetualMarketLaunchProposal.decode(content)
   }
 
   static expiryFuturesMarketLaunch(content: Uint8Array) {
-    return ExpiryFuturesMarketLaunchProposal.deserializeBinary(content)
+    return ExpiryFuturesMarketLaunchProposal.decode(content)
   }
 
   static derivativeMarketUpdate(content: Uint8Array) {
-    return DerivativeMarketParamUpdateProposal.deserializeBinary(content)
+    return DerivativeMarketParamUpdateProposal.decode(content)
   }
 
   static FeeDiscount(content: Uint8Array) {
-    return FeeDiscountProposal.deserializeBinary(content)
+    return FeeDiscountProposal.decode(content)
   }
 
   static TradingRewardCampaignLaunch(content: Uint8Array) {
-    return TradingRewardCampaignLaunchProposal.deserializeBinary(content)
+    return TradingRewardCampaignLaunchProposal.decode(content)
   }
 
   static TradingRewardCampaignUpdate(content: Uint8Array) {
-    return TradingRewardCampaignUpdateProposal.deserializeBinary(content)
+    return TradingRewardCampaignUpdateProposal.decode(content)
   }
 
   static parametersChange(content: Uint8Array) {
-    return ParameterChangeProposal.deserializeBinary(content)
+    return ParameterChangeProposal.decode(content)
   }
 
   static EnableBandIBC(content: Uint8Array) {
-    return EnableBandIBCProposal.deserializeBinary(content)
+    return EnableBandIBCProposal.decode(content)
   }
 
   static AuthorizeBandOracleRequest(content: Uint8Array) {
-    return AuthorizeBandOracleRequestProposal.deserializeBinary(content)
+    return AuthorizeBandOracleRequestProposal.decode(content)
   }
 }

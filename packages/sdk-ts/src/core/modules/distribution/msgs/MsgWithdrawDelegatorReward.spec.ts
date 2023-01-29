@@ -1,4 +1,3 @@
-import { MsgWithdrawDelegatorReward as BaseMsgWithdrawDelegatorReward } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/tx_pb'
 import MsgWithdrawDelegatorReward from './MsgWithdrawDelegatorReward'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -21,8 +20,7 @@ describe('MsgWithdrawDelegatorReward', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgWithdrawDelegatorReward).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

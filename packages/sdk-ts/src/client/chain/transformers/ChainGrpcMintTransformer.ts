@@ -1,4 +1,4 @@
-import { QueryParamsResponse } from '@injectivelabs/chain-api/cosmos/mint/v1beta1/query_pb'
+import { QueryParamsResponse } from '@injectivelabs/core-proto-ts/cosmos/mint/v1beta1/query'
 import { MinModuleParams } from '../types/mint'
 
 /**
@@ -8,8 +8,8 @@ export class ChainGrpcMintTransformer {
   static moduleParamsResponseToModuleParams(
     response: QueryParamsResponse,
   ): MinModuleParams {
-    const params = response.getParams()!
+    const params = response.params!
 
-    return params.toObject()
+    return params
   }
 }

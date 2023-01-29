@@ -15,7 +15,7 @@ import {
   WalletException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { TxResponse } from '@injectivelabs/sdk-ts'
 import { TIP_IN_GWEI } from '../../../../utils/constants'
 import {

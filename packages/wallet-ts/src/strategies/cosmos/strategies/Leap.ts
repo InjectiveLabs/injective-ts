@@ -8,11 +8,11 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   createCosmosSignDocFromTransaction,
-  createTxRawFromSigResponse,
+  getTxRawFromTxRawOrDirectSignResponse,
   TxResponse,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { LeapWallet } from '../../../utils/wallets/leap'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
@@ -64,10 +64,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     transaction: DirectSignResponse | TxRaw,
   ): Promise<TxResponse> {
     const { leapWallet } = this
-    const txRaw =
-      transaction instanceof TxRaw
-        ? transaction
-        : createTxRawFromSigResponse(transaction)
+    const txRaw = getTxRawFromTxRawOrDirectSignResponse(transaction)
 
     try {
       return await leapWallet.waitTxBroadcasted(

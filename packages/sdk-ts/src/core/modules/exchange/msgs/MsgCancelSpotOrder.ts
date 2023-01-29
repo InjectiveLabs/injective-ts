@@ -1,6 +1,4 @@
-// import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
-import { MsgCancelSpotOrder as BaseMsgCancelSpotOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-// import { OrderMask } from '../../../types/exchange'
+import { MsgCancelSpotOrder as BaseMsgCancelSpotOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgCancelSpotOrder {
@@ -9,7 +7,6 @@ export declare namespace MsgCancelSpotOrder {
     subaccountId: string
     injectiveAddress: string
     orderHash: string
-    // orderMask?: OrderMaskMap[keyof OrderMaskMap]
   }
 
   export interface DirectSign {
@@ -17,15 +14,15 @@ export declare namespace MsgCancelSpotOrder {
     message: BaseMsgCancelSpotOrder
   }
 
-  export interface Data extends BaseMsgCancelSpotOrder.AsObject {
+  export interface Data extends BaseMsgCancelSpotOrder {
     '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder'
   }
 
-  export interface Amino extends BaseMsgCancelSpotOrder.AsObject {
+  export interface Amino extends BaseMsgCancelSpotOrder {
     type: 'exchange/MsgCancelSpotOrder'
   }
 
-  export interface Web3 extends BaseMsgCancelSpotOrder.AsObject {
+  export interface Web3 extends BaseMsgCancelSpotOrder {
     '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder'
   }
 
@@ -49,18 +46,15 @@ export default class MsgCancelSpotOrder extends MsgBase<
   public toProto(): MsgCancelSpotOrder.Proto {
     const { params } = this
 
-    const message = new BaseMsgCancelSpotOrder()
-    message.setSender(params.injectiveAddress)
-    message.setMarketId(params.marketId)
-    message.setOrderHash(params.orderHash)
-    message.setSubaccountId(params.subaccountId)
+    const message = BaseMsgCancelSpotOrder.create()
+    message.sender = params.injectiveAddress
+    message.marketId = params.marketId
+    message.orderHash = params.orderHash
+    message.subaccountId = params.subaccountId
 
     // TODO: message.setOrderMask does not exist yet, enable this once it does.
-    // message.setOrderMask(
-    //   params.orderMask !== undefined ? params.orderMask : OrderMask.Any,
-    // )
 
-    return message
+    return BaseMsgCancelSpotOrder.fromPartial(message)
   }
 
   public toData(): MsgCancelSpotOrder.Data {
@@ -68,7 +62,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -77,7 +71,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
 
     return {
       type: 'exchange/MsgCancelSpotOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -98,5 +92,9 @@ export default class MsgCancelSpotOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCancelSpotOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgCancelSpotOrder.encode(this.toProto()).finish()
   }
 }

@@ -17,8 +17,8 @@ import {
   TxResponse,
   getGasPriceBasedOnMessage,
   TxRestApi,
+  recoverTypedSignaturePubKey,
 } from '@injectivelabs/sdk-ts'
-import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   BigNumberInBase,
@@ -30,7 +30,7 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import {
   getNetworkEndpoints,
   getNetworkInfo,
@@ -249,7 +249,7 @@ export class MsgBroadcaster {
     }
 
     /** Append Signatures */
-    txRawEip712.setSignaturesList([signatureBuff])
+    txRawEip712.signatures = [signatureBuff]
 
     /** Broadcast the transaction */
     const response = await txApi.broadcast(txRawEip712)
@@ -510,7 +510,7 @@ export class MsgBroadcaster {
       aminoSignResponse.signature.signature,
       'base64',
     )
-    txRawEip712.setSignaturesList([signatureBuff])
+    txRawEip712.signatures = [signatureBuff]
 
     /** Broadcast the transaction */
     const response = await txApi.broadcast(txRawEip712)
@@ -645,8 +645,8 @@ export class MsgBroadcaster {
     txRaw: TxRaw
     txClient: TxGrpcApi | TxRestApi
   }) {
-    const txRawWithSignature = txRaw.clone()
-    txRawWithSignature.setSignaturesList([new Uint8Array(0)])
+    const txRawWithSignature = TxRaw.fromPartial({ ...txRaw })
+    txRawWithSignature.signatures = [new Uint8Array(0)]
 
     try {
       return await txClient.simulate(txRawWithSignature)

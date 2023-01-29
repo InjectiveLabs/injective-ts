@@ -1,4 +1,3 @@
-import { MsgSend as BaseMsgSend } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgSend from './MsgSend'
 import { mockFactory } from '@injectivelabs/test-utils'
@@ -31,8 +30,7 @@ describe('MsgSend', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgSend).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

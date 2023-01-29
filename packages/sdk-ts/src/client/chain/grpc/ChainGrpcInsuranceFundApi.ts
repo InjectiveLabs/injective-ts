@@ -1,17 +1,12 @@
-import { Query as InsuranceFundQuery } from '@injectivelabs/chain-api/injective/insurance/v1beta1/query_pb_service'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 import {
+  QueryClientImpl,
   QueryInsuranceParamsRequest,
-  QueryInsuranceParamsResponse,
   QueryInsuranceFundRequest,
-  QueryInsuranceFundResponse,
   QueryEstimatedRedemptionsRequest,
-  QueryEstimatedRedemptionsResponse,
   QueryInsuranceFundsRequest,
-  QueryInsuranceFundsResponse,
   QueryPendingRedemptionsRequest,
-  QueryPendingRedemptionsResponse,
-} from '@injectivelabs/chain-api/injective/insurance/v1beta1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/query'
 import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer'
 import { ChainModule } from '../types'
 import {
@@ -22,18 +17,20 @@ import {
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcInsuranceFundApi extends BaseConsumer {
+export class ChainGrpcInsuranceFundApi {
   protected module: string = ChainModule.InsuranceFund
 
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
+
   async fetchModuleParams() {
-    const request = new QueryInsuranceParamsRequest()
+    const request = QueryInsuranceParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryInsuranceParamsRequest,
-        QueryInsuranceParamsResponse,
-        typeof InsuranceFundQuery.InsuranceParams
-      >(request, InsuranceFundQuery.InsuranceParams)
+      const response = await this.query.InsuranceParams(request)
 
       return ChainGrpcInsuranceFundTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -51,14 +48,10 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
   }
 
   async fetchInsuranceFunds() {
-    const request = new QueryInsuranceFundsRequest()
+    const request = QueryInsuranceFundsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryInsuranceFundsRequest,
-        QueryInsuranceFundsResponse,
-        typeof InsuranceFundQuery.InsuranceFunds
-      >(request, InsuranceFundQuery.InsuranceFunds)
+      const response = await this.query.InsuranceFunds(request)
 
       return ChainGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
         response,
@@ -76,15 +69,12 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
   }
 
   async fetchInsuranceFund(marketId: string) {
-    const request = new QueryInsuranceFundRequest()
-    request.setMarketId(marketId)
+    const request = QueryInsuranceFundRequest.create()
+
+    request.marketId = marketId
 
     try {
-      const response = await this.request<
-        QueryInsuranceFundRequest,
-        QueryInsuranceFundResponse,
-        typeof InsuranceFundQuery.InsuranceFund
-      >(request, InsuranceFundQuery.InsuranceFund)
+      const response = await this.query.InsuranceFund(request)
 
       return ChainGrpcInsuranceFundTransformer.insuranceFundResponseToInsuranceFund(
         response,
@@ -108,16 +98,13 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
     marketId: string
     address: string
   }) {
-    const request = new QueryEstimatedRedemptionsRequest()
-    request.setMarketid(marketId)
-    request.setAddress(address)
+    const request = QueryEstimatedRedemptionsRequest.create()
+
+    request.marketId = marketId
+    request.address = address
 
     try {
-      const response = await this.request<
-        QueryEstimatedRedemptionsRequest,
-        QueryEstimatedRedemptionsResponse,
-        typeof InsuranceFundQuery.EstimatedRedemptions
-      >(request, InsuranceFundQuery.EstimatedRedemptions)
+      const response = await this.query.EstimatedRedemptions(request)
 
       return ChainGrpcInsuranceFundTransformer.estimatedRedemptionsResponseToEstimatedRedemptions(
         response,
@@ -141,16 +128,13 @@ export class ChainGrpcInsuranceFundApi extends BaseConsumer {
     marketId: string
     address: string
   }) {
-    const request = new QueryPendingRedemptionsRequest()
-    request.setMarketid(marketId)
-    request.setAddress(address)
+    const request = QueryPendingRedemptionsRequest.create()
+
+    request.marketId = marketId
+    request.address = address
 
     try {
-      const response = await this.request<
-        QueryPendingRedemptionsRequest,
-        QueryPendingRedemptionsResponse,
-        typeof InsuranceFundQuery.PendingRedemptions
-      >(request, InsuranceFundQuery.PendingRedemptions)
+      const response = await this.query.PendingRedemptions(request)
 
       return ChainGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
         response,

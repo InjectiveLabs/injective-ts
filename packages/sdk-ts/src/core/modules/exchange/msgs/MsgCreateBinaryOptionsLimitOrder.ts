@@ -1,9 +1,9 @@
-import { MsgCreateBinaryOptionsLimitOrder as BaseMsgCreateBinaryOptionsLimitOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { MsgCreateBinaryOptionsLimitOrder as BaseMsgCreateBinaryOptionsLimitOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import {
-  DerivativeOrder,
   OrderInfo,
-  OrderTypeMap,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+  OrderType,
+  DerivativeOrder,
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 
@@ -12,7 +12,7 @@ export declare namespace MsgCreateBinaryOptionsLimitOrder {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderTypeMap[keyof OrderTypeMap]
+    orderType: OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
@@ -25,15 +25,15 @@ export declare namespace MsgCreateBinaryOptionsLimitOrder {
     message: BaseMsgCreateBinaryOptionsLimitOrder
   }
 
-  export interface Data extends BaseMsgCreateBinaryOptionsLimitOrder.AsObject {
+  export interface Data extends BaseMsgCreateBinaryOptionsLimitOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder'
   }
 
-  export interface Amino extends BaseMsgCreateBinaryOptionsLimitOrder.AsObject {
+  export interface Amino extends BaseMsgCreateBinaryOptionsLimitOrder {
     type: 'exchange/MsgCreateBinaryOptionsLimitOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateBinaryOptionsLimitOrder.AsObject {
+  export interface Web3 extends BaseMsgCreateBinaryOptionsLimitOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder'
   }
 
@@ -41,25 +41,25 @@ export declare namespace MsgCreateBinaryOptionsLimitOrder {
 }
 
 const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
-  const orderInfo = new OrderInfo()
-  orderInfo.setSubaccountId(params.subaccountId)
-  orderInfo.setFeeRecipient(params.feeRecipient)
-  orderInfo.setPrice(params.price)
-  orderInfo.setQuantity(params.quantity)
+  const orderInfo = OrderInfo.create()
+  orderInfo.subaccountId = params.subaccountId
+  orderInfo.feeRecipient = params.feeRecipient
+  orderInfo.price = params.price
+  orderInfo.quantity = params.quantity
 
-  const derivativeOrder = new DerivativeOrder()
-  derivativeOrder.setMarketId(params.marketId)
-  derivativeOrder.setOrderType(params.orderType)
-  derivativeOrder.setOrderInfo(orderInfo)
-  derivativeOrder.setMargin(params.margin)
+  const derivativeOrder = DerivativeOrder.create()
+  derivativeOrder.marketId = params.marketId
+  derivativeOrder.orderType = params.orderType
+  derivativeOrder.orderInfo = orderInfo
+  derivativeOrder.margin = params.margin
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
+  derivativeOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = new BaseMsgCreateBinaryOptionsLimitOrder()
-  message.setSender(params.injectiveAddress)
-  message.setOrder(derivativeOrder)
+  const message = BaseMsgCreateBinaryOptionsLimitOrder.create()
+  message.sender = params.injectiveAddress
+  message.order = derivativeOrder
 
-  return message
+  return BaseMsgCreateBinaryOptionsLimitOrder.fromPartial(message)
 }
 
 /**
@@ -98,7 +98,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -108,7 +108,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
 
     return {
       type: 'exchange/MsgCreateBinaryOptionsLimitOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -129,5 +129,9 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgCreateBinaryOptionsLimitOrder.encode(this.toProto()).finish()
   }
 }

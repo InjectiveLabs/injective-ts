@@ -1,6 +1,6 @@
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { MsgTransfer as BaseMsgTransfer } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/tx_pb'
-import { Height } from '@injectivelabs/chain-api/ibc/core/client/v1/client_pb'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
+import { MsgTransfer as BaseMsgTransfer } from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/tx'
+import { Height } from '@injectivelabs/core-proto-ts/ibc/core/client/v1/client'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgTransfer {
@@ -26,15 +26,15 @@ export declare namespace MsgTransfer {
     message: BaseMsgTransfer
   }
 
-  export interface Data extends BaseMsgTransfer.AsObject {
+  export interface Data extends BaseMsgTransfer {
     '@type': '/ibc.applications.transfer.v1.MsgTransfer'
   }
 
-  export interface Amino extends BaseMsgTransfer.AsObject {
+  export interface Amino extends BaseMsgTransfer {
     type: 'cosmos-sdk/MsgTransfer'
   }
 
-  export interface Web3 extends BaseMsgTransfer.AsObject {
+  export interface Web3 extends BaseMsgTransfer {
     '@type': '/ibc.applications.transfer.v1.MsgTransfer'
   }
 
@@ -58,32 +58,32 @@ export default class MsgTransfer extends MsgBase<
   public toProto(): MsgTransfer.Proto {
     const { params } = this
 
-    const token = new Coin()
-    token.setDenom(params.amount.denom)
-    token.setAmount(params.amount.amount)
+    const token = Coin.create()
+    token.denom = params.amount.denom
+    token.amount = params.amount.amount
 
-    const message = new BaseMsgTransfer()
-    message.setReceiver(params.receiver)
-    message.setSender(params.sender)
-    message.setSourceChannel(params.channelId)
-    message.setSourcePort(params.port)
-    message.setToken(token)
+    const message = BaseMsgTransfer.create()
+    message.receiver = params.receiver
+    message.sender = params.sender
+    message.sourceChannel = params.channelId
+    message.sourcePort = params.port
+    message.token = token
 
     if (params.height) {
-      const timeoutHeight = new Height()
-      timeoutHeight.setRevisionHeight(params.height.revisionHeight)
-      timeoutHeight.setRevisionNumber(params.height.revisionNumber)
+      const timeoutHeight = Height.create()
+      timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
+      timeoutHeight.revisionNumber = params.height.revisionNumber.toString()
 
-      message.setTimeoutHeight(timeoutHeight)
+      message.timeoutHeight = timeoutHeight
     }
 
     if (params.timeout) {
-      message.setTimeoutTimestamp(params.timeout)
+      message.timeoutTimestamp = params.timeout.toString()
     }
 
-    message.setMemo(params.memo || '')
+    message.memo = params.memo || ''
 
-    return message
+    return BaseMsgTransfer.fromJSON(message)
   }
 
   public toData(): MsgTransfer.Data {
@@ -91,7 +91,7 @@ export default class MsgTransfer extends MsgBase<
 
     return {
       '@type': '/ibc.applications.transfer.v1.MsgTransfer',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -101,7 +101,7 @@ export default class MsgTransfer extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgTransfer',
-      ...proto.toObject(),
+      ...proto,
       memo: params.memo || '',
     }
   }
@@ -123,5 +123,9 @@ export default class MsgTransfer extends MsgBase<
       type: '/ibc.applications.transfer.v1.MsgTransfer',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgTransfer.encode(this.toProto()).finish()
   }
 }

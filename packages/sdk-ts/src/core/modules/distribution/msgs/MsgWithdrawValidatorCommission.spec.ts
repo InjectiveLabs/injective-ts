@@ -1,4 +1,3 @@
-import { MsgWithdrawValidatorCommission as BaseMsgWithdrawValidatorCommission } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/tx_pb'
 import MsgWithdrawValidatorCommission from './MsgWithdrawValidatorCommission'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -19,8 +18,7 @@ describe('MsgWithdrawValidatorCommission', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgWithdrawValidatorCommission).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

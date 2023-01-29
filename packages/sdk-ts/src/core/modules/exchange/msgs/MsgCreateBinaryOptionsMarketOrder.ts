@@ -1,9 +1,9 @@
-import { MsgCreateBinaryOptionsMarketOrder as BaseMsgCreateBinaryOptionsMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { MsgCreateBinaryOptionsMarketOrder as BaseMsgCreateBinaryOptionsMarketOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import {
   DerivativeOrder,
   OrderInfo,
-  OrderTypeMap,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+  OrderType,
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 
@@ -12,7 +12,7 @@ export declare namespace MsgCreateBinaryOptionsMarketOrder {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderTypeMap[keyof OrderTypeMap]
+    orderType: OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
@@ -25,16 +25,15 @@ export declare namespace MsgCreateBinaryOptionsMarketOrder {
     message: BaseMsgCreateBinaryOptionsMarketOrder
   }
 
-  export interface Data extends BaseMsgCreateBinaryOptionsMarketOrder.AsObject {
+  export interface Data extends BaseMsgCreateBinaryOptionsMarketOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder'
   }
 
-  export interface Amino
-    extends BaseMsgCreateBinaryOptionsMarketOrder.AsObject {
+  export interface Amino extends BaseMsgCreateBinaryOptionsMarketOrder {
     type: 'exchange/MsgCreateBinaryOptionsMarketOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateBinaryOptionsMarketOrder.AsObject {
+  export interface Web3 extends BaseMsgCreateBinaryOptionsMarketOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder'
   }
 
@@ -44,25 +43,25 @@ export declare namespace MsgCreateBinaryOptionsMarketOrder {
 const createMarketOrder = (
   params: MsgCreateBinaryOptionsMarketOrder.Params,
 ) => {
-  const orderInfo = new OrderInfo()
-  orderInfo.setSubaccountId(params.subaccountId)
-  orderInfo.setFeeRecipient(params.feeRecipient)
-  orderInfo.setPrice(params.price)
-  orderInfo.setQuantity(params.quantity)
+  const orderInfo = OrderInfo.create()
+  orderInfo.subaccountId = params.subaccountId
+  orderInfo.feeRecipient = params.feeRecipient
+  orderInfo.price = params.price
+  orderInfo.quantity = params.quantity
 
-  const derivativeOrder = new DerivativeOrder()
-  derivativeOrder.setMarketId(params.marketId)
-  derivativeOrder.setOrderType(params.orderType)
-  derivativeOrder.setOrderInfo(orderInfo)
-  derivativeOrder.setMargin(params.margin)
+  const derivativeOrder = DerivativeOrder.create()
+  derivativeOrder.marketId = params.marketId
+  derivativeOrder.orderType = params.orderType
+  derivativeOrder.orderInfo = orderInfo
+  derivativeOrder.margin = params.margin
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
+  derivativeOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = new BaseMsgCreateBinaryOptionsMarketOrder()
-  message.setSender(params.injectiveAddress)
-  message.setOrder(derivativeOrder)
+  const message = BaseMsgCreateBinaryOptionsMarketOrder.create()
+  message.sender = params.injectiveAddress
+  message.order = derivativeOrder
 
-  return message
+  return BaseMsgCreateBinaryOptionsMarketOrder.fromPartial(message)
 }
 
 /**
@@ -101,7 +100,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -111,7 +110,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
 
     return {
       type: 'exchange/MsgCreateBinaryOptionsMarketOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -132,5 +131,9 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgCreateBinaryOptionsMarketOrder.encode(this.toProto()).finish()
   }
 }

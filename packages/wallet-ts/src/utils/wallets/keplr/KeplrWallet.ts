@@ -7,7 +7,7 @@ import type {
 } from '@keplr-wallet/types'
 import type { OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
-import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import {
   ChainId,
   CosmosChainId,
@@ -142,7 +142,7 @@ export class KeplrWallet {
     try {
       const result = await keplr.sendTx(
         chainId,
-        txRaw.serializeBinary(),
+        TxRaw.encode(txRaw).finish(),
         BroadcastMode.Sync,
       )
 
@@ -180,7 +180,7 @@ export class KeplrWallet {
     try {
       const result = await keplr.sendTx(
         chainId,
-        txRaw.serializeBinary(),
+        TxRaw.encode(txRaw).finish(),
         BroadcastMode.Block,
       )
 

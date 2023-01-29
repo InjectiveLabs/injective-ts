@@ -5,7 +5,7 @@ import {
   QueryEstimatedRedemptionsResponse,
   QueryInsuranceFundsResponse,
   QueryPendingRedemptionsResponse,
-} from '@injectivelabs/chain-api/injective/insurance/v1beta1/query_pb'
+} from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/query'
 import { GrpcInsuranceFund } from '../types/insurance'
 
 /**
@@ -15,11 +15,13 @@ export class ChainGrpcInsuranceFundTransformer {
   static moduleParamsResponseToModuleParams(
     response: QueryInsuranceParamsResponse,
   ): InsuranceModuleParams {
-    const params = response.getParams()!
+    const params = response.params!
 
     return {
-      defaultRedemptionNoticePeriodDuration:
-        params.getDefaultRedemptionNoticePeriodDuration()?.getSeconds() || 0,
+      defaultRedemptionNoticePeriodDuration: parseInt(
+        params.defaultRedemptionNoticePeriodDuration?.seconds || '0',
+        10,
+      ),
     }
   }
 
@@ -27,19 +29,20 @@ export class ChainGrpcInsuranceFundTransformer {
     grpcFund: GrpcInsuranceFund,
   ): InsuranceFund {
     return {
-      depositDenom: grpcFund.getDepositDenom(),
-      insurancePoolTokenDenom: grpcFund.getInsurancePoolTokenDenom(),
-      redemptionNoticePeriodDuration: grpcFund
-        .getRedemptionNoticePeriodDuration()
-        ?.getSeconds(),
-      balance: grpcFund.getBalance(),
-      totalShare: grpcFund.getTotalShare(),
-      marketId: grpcFund.getMarketId(),
-      marketTicker: grpcFund.getMarketTicker(),
-      oracleBase: grpcFund.getOracleBase(),
-      oracleQuote: grpcFund.getOracleQuote(),
-      oracleType: grpcFund.getOracleType(),
-      expiry: grpcFund.getExpiry(),
+      depositDenom: grpcFund.depositDenom,
+      insurancePoolTokenDenom: grpcFund.insurancePoolTokenDenom,
+      redemptionNoticePeriodDuration: parseInt(
+        grpcFund.redemptionNoticePeriodDuration?.seconds || '0',
+        10,
+      ),
+      balance: grpcFund.balance,
+      totalShare: grpcFund.totalShare,
+      marketId: grpcFund.marketId,
+      marketTicker: grpcFund.marketTicker,
+      oracleBase: grpcFund.oracleBase,
+      oracleQuote: grpcFund.oracleQuote,
+      oracleType: grpcFund.oracleType,
+      expiry: parseInt(grpcFund.expiry, 10),
     }
   }
 
@@ -47,29 +50,25 @@ export class ChainGrpcInsuranceFundTransformer {
     response: QueryInsuranceFundResponse,
   ) {
     return ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(
-      response.getFund()!,
+      response.fund!,
     )
   }
 
   static insuranceFundsResponseToInsuranceFunds(
     response: QueryInsuranceFundsResponse,
   ) {
-    return response
-      .getFundsList()
-      .map((fund) =>
-        ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(
-          fund,
-        ),
-      )
+    return response.funds.map((fund) =>
+      ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(fund),
+    )
   }
 
   static redemptionsResponseToRedemptions(
     response: QueryEstimatedRedemptionsResponse,
   ) {
-    return response.getAmountList().map((amount) => {
+    return response.amount.map((amount) => {
       return {
-        amount: amount.getAmount(),
-        denom: amount.getDenom(),
+        amount: amount.amount,
+        denom: amount.denom,
       }
     })
   }
@@ -77,10 +76,10 @@ export class ChainGrpcInsuranceFundTransformer {
   static estimatedRedemptionsResponseToEstimatedRedemptions(
     response: QueryPendingRedemptionsResponse,
   ) {
-    return response.getAmountList().map((amount) => {
+    return response.amount.map((amount) => {
       return {
-        amount: amount.getAmount(),
-        denom: amount.getDenom(),
+        amount: amount.amount,
+        denom: amount.denom,
       }
     })
   }

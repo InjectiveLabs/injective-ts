@@ -1,4 +1,3 @@
-import { MsgCancelBinaryOptionsOrder as BaseMsgCancelBinaryOptionsOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCancelBinaryOptionsOrder from './MsgCancelBinaryOptionsOrder'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -26,8 +25,7 @@ describe('MsgCancelBinaryOptionsOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgCancelBinaryOptionsOrder).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

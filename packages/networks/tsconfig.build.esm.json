@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "../../.build-cache/networks.esm.tsbuildinfo"
+  },
+  "references": [
+    {
+      "path": "../exceptions/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../ts-types/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../utils/tsconfig.build.esm.json"
+    }
+  ],
+}

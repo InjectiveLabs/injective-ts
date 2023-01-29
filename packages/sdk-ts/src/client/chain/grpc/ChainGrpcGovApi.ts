@@ -1,20 +1,13 @@
 import {
-  QueryParamsResponse as QueryGovernanceParamsResponse,
+  QueryClientImpl,
   QueryParamsRequest as QueryGovernanceParamsRequest,
   QueryProposalRequest,
-  QueryProposalsResponse,
   QueryProposalsRequest,
-  QueryProposalResponse,
   QueryDepositsRequest,
-  QueryDepositsResponse,
   QueryTallyResultRequest,
-  QueryTallyResultResponse,
   QueryVotesRequest,
-  QueryVotesResponse,
-} from '@injectivelabs/chain-api/cosmos/gov/v1beta1/query_pb'
-import { Query as GovernanceQuery } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/query_pb_service'
-import { ProposalStatusMap } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/query'
+import { ProposalStatus } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/gov'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer'
@@ -23,38 +16,39 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcGovApi extends BaseConsumer {
+export class ChainGrpcGovApi {
   protected module: string = ChainModule.Gov
+
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
 
   async fetchModuleParams() {
     const paramTypes = ['voting', 'deposit', 'tallying']
     const requests = paramTypes.map((type) => {
-      const request = new QueryGovernanceParamsRequest()
-      request.setParamsType(type)
+      const request = QueryGovernanceParamsRequest.create()
+      request.paramsType = type
 
       return request
     })
 
     try {
       const responses = await Promise.all(
-        requests.map((request) =>
-          this.request<
-            QueryGovernanceParamsRequest,
-            QueryGovernanceParamsResponse,
-            typeof GovernanceQuery.Params
-          >(request, GovernanceQuery.Params),
-        ),
+        requests.map((request) => this.query.Params(request)),
       )
       const [votingParams, depositParams, tallyParams] = responses
 
       return ChainGrpcGovTransformer.moduleParamsResponseToModuleParamsByType({
-        votingParams: votingParams.getVotingParams()!,
-        tallyParams: tallyParams.getTallyParams()!,
-        depositParams: depositParams.getDepositParams()!,
+        votingParams: votingParams.votingParams!,
+        tallyParams: tallyParams.tallyParams!,
+        depositParams: depositParams.depositParams!,
       })
     } catch (e: any) {
       if (e instanceof GrpcUnaryRequestException) {
@@ -72,25 +66,21 @@ export class ChainGrpcGovApi extends BaseConsumer {
     status,
     pagination,
   }: {
-    status: ProposalStatusMap[keyof ProposalStatusMap]
+    status: ProposalStatus
     pagination?: PaginationOption
   }) {
-    const request = new QueryProposalsRequest()
+    const request = QueryProposalsRequest.create()
 
-    request.setProposalStatus(status)
+    request.proposalStatus = status
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryProposalsRequest,
-        QueryProposalsResponse,
-        typeof GovernanceQuery.Proposals
-      >(request, GovernanceQuery.Proposals)
+      const response = await this.query.Proposals(request)
 
       return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
     } catch (e: any) {
@@ -106,16 +96,12 @@ export class ChainGrpcGovApi extends BaseConsumer {
   }
 
   async fetchProposal(proposalId: number) {
-    const request = new QueryProposalRequest()
+    const request = QueryProposalRequest.create()
 
-    request.setProposalId(proposalId)
+    request.proposalId = proposalId.toString()
 
     try {
-      const response = await this.request<
-        QueryProposalRequest,
-        QueryProposalResponse,
-        typeof GovernanceQuery.Proposal
-      >(request, GovernanceQuery.Proposal)
+      const response = await this.query.Proposal(request)
 
       return ChainGrpcGovTransformer.proposalResponseToProposal(response)
     } catch (e: any) {
@@ -137,22 +123,18 @@ export class ChainGrpcGovApi extends BaseConsumer {
     proposalId: number
     pagination?: PaginationOption
   }) {
-    const request = new QueryDepositsRequest()
+    const request = QueryDepositsRequest.create()
 
-    request.setProposalId(proposalId)
+    request.proposalId = proposalId.toString()
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryDepositsRequest,
-        QueryDepositsResponse,
-        typeof GovernanceQuery.Deposits
-      >(request, GovernanceQuery.Deposits)
+      const response = await this.query.Deposits(request)
 
       return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
     } catch (e: any) {
@@ -174,21 +156,17 @@ export class ChainGrpcGovApi extends BaseConsumer {
     proposalId: number
     pagination?: PaginationOption
   }) {
-    const request = new QueryVotesRequest()
+    const request = QueryVotesRequest.create()
 
-    request.setProposalId(proposalId)
+    request.proposalId = proposalId.toString()
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
     try {
-      const response = await this.request<
-        QueryVotesRequest,
-        QueryVotesResponse,
-        typeof GovernanceQuery.Votes
-      >(request, GovernanceQuery.Votes)
+      const response = await this.query.Votes(request)
 
       return ChainGrpcGovTransformer.votesResponseToVotes(response)
     } catch (e: any) {
@@ -204,16 +182,11 @@ export class ChainGrpcGovApi extends BaseConsumer {
   }
 
   async fetchProposalTally(proposalId: number) {
-    const request = new QueryTallyResultRequest()
+    const request = QueryTallyResultRequest.create()
 
-    request.setProposalId(proposalId)
-
+    request.proposalId = proposalId.toString()
     try {
-      const response = await this.request<
-        QueryTallyResultRequest,
-        QueryTallyResultResponse,
-        typeof GovernanceQuery.TallyResult
-      >(request, GovernanceQuery.TallyResult)
+      const response = await this.query.TallyResult(request)
 
       return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
     } catch (e: any) {

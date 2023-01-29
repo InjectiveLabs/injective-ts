@@ -1,34 +1,34 @@
-import { Query as WasmXQuery } from '@injectivelabs/chain-api/injective/wasmx/v1/query_pb_service'
 import {
+  QueryClientImpl,
   QueryModuleStateRequest,
-  QueryModuleStateResponse,
   QueryWasmxParamsRequest,
-  QueryWasmxParamsResponse,
-} from '@injectivelabs/chain-api/injective/wasmx/v1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/core-proto-ts/injective/wasmx/v1/query'
 import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcWasmXApi extends BaseConsumer {
+export class ChainGrpcWasmXApi {
   protected module: string = ChainModule.WasmX
 
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
+
   async fetchModuleParams() {
-    const request = new QueryWasmxParamsRequest()
+    const request = QueryWasmxParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryWasmxParamsRequest,
-        QueryWasmxParamsResponse,
-        typeof WasmXQuery.WasmxParams
-      >(request, WasmXQuery.WasmxParams)
+      const response = await this.query.WasmxParams(request)
 
-      return response.toObject()
+      return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
@@ -42,16 +42,12 @@ export class ChainGrpcWasmXApi extends BaseConsumer {
   }
 
   async fetchModuleState() {
-    const request = new QueryModuleStateRequest()
+    const request = QueryModuleStateRequest.create()
 
     try {
-      const response = await this.request<
-        QueryModuleStateRequest,
-        QueryModuleStateResponse,
-        typeof WasmXQuery.WasmxModuleState
-      >(request, WasmXQuery.WasmxModuleState)
+      const response = await this.query.WasmxModuleState(request)
 
-      return response.getState()!.toObject() /* TODO */
+      return response.state /* TODO */
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e

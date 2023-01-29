@@ -7,19 +7,26 @@
     "email": "bojan@injectivelabs.org"
   },
   "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/index.js",
   "files": [
     "dist"
   ],
   "_moduleAliases": {
     "~wallet-ts": "dist"
   },
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
-    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && link-module-alias",
+    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
     "test:integration": "jest test/unit",
@@ -37,8 +44,8 @@
     "@cosmostation/extension-client": "^0.1.11-alpha.0",
     "@ethereumjs/common": "^2.6.3",
     "@ethereumjs/tx": "^3.5.1",
-    "@injectivelabs/chain-api": "1.9.6",
     "@injectivelabs/contracts": "^1.0.97",
+    "@injectivelabs/core-proto-ts": "^0.0.1",
     "@injectivelabs/exceptions": "^1.0.50",
     "@injectivelabs/networks": "^1.0.81",
     "@injectivelabs/sdk-ts": "^1.0.379",

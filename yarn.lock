@@ -2101,6 +2101,22 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
+"@injectivelabs/core-proto-ts@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.1.tgz#d63ba0ae48c3245048aa6a2ec251296faf79d50c"
+  integrity sha512-WdsGw7Ixgtg3IUjcIpGDdeOqQEp5lonKMA4ucdhI9RQjzsQj2/fj7U00+938FPedLxrWYwk8Lj+hxlT7gpUJVQ==
+  dependencies:
+    "@improbable-eng/grpc-web" "^0.15.0"
+    protobufjs "^7.0.0"
+
+"@injectivelabs/core-proto-ts@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.2.tgz#a249ee932a4c9380a9208ba96e9200e150a7b295"
+  integrity sha512-f7Wa11PeKh4bxvCV2dLSkwneiODFTXwFOnv66gIr5Hqbw+orJdHsZFDq5XJWSgj0jDsLPnJZWXtAjdaPV5YMMQ==
+  dependencies:
+    "@improbable-eng/grpc-web" "^0.15.0"
+    protobufjs "^7.0.0"
+
 "@injectivelabs/indexer-api@1.0.32-rc":
   version "1.0.32-rc"
   resolved "https://registry.npmjs.org/@injectivelabs/indexer-api/-/indexer-api-1.0.32-rc.tgz#67acbf0f456967a817fccda7579f3c458e810c4f"

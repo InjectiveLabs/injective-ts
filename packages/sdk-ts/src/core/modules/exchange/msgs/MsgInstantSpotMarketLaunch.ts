@@ -1,4 +1,4 @@
-import { MsgInstantSpotMarketLaunch as BaseMsgInstantSpotMarketLaunch } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { MsgInstantSpotMarketLaunch as BaseMsgInstantSpotMarketLaunch } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
 
@@ -20,15 +20,15 @@ export declare namespace MsgInstantSpotMarketLaunch {
     message: BaseMsgInstantSpotMarketLaunch
   }
 
-  export interface Data extends BaseMsgInstantSpotMarketLaunch.AsObject {
+  export interface Data extends BaseMsgInstantSpotMarketLaunch {
     '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
   }
 
-  export interface Amino extends BaseMsgInstantSpotMarketLaunch.AsObject {
+  export interface Amino extends BaseMsgInstantSpotMarketLaunch {
     type: 'exchange/MsgInstantSpotMarketLaunch'
   }
 
-  export interface Web3 extends BaseMsgInstantSpotMarketLaunch.AsObject {
+  export interface Web3 extends BaseMsgInstantSpotMarketLaunch {
     '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
   }
 
@@ -36,16 +36,16 @@ export declare namespace MsgInstantSpotMarketLaunch {
 }
 
 const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
-  const message = new BaseMsgInstantSpotMarketLaunch()
+  const message = BaseMsgInstantSpotMarketLaunch.create()
 
-  message.setSender(params.proposer)
-  message.setQuoteDenom(params.market.quoteDenom)
-  message.setTicker(params.market.ticker)
-  message.setBaseDenom(params.market.baseDenom)
-  message.setMinPriceTickSize(params.market.minPriceTickSize)
-  message.setMinQuantityTickSize(params.market.minQuantityTickSize)
+  message.sender = params.proposer
+  message.quoteDenom = params.market.quoteDenom
+  message.ticker = params.market.ticker
+  message.baseDenom = params.market.baseDenom
+  message.minPriceTickSize = params.market.minPriceTickSize
+  message.minQuantityTickSize = params.market.minQuantityTickSize
 
-  return message
+  return BaseMsgInstantSpotMarketLaunch.fromPartial(message)
 }
 
 /**
@@ -88,7 +88,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -98,7 +98,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
 
     return {
       type: 'exchange/MsgInstantSpotMarketLaunch',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -119,5 +119,9 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgInstantSpotMarketLaunch.encode(this.toProto()).finish()
   }
 }

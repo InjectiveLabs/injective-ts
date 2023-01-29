@@ -1,7 +1,4 @@
-import {
-  SubaccountBalance,
-  SubaccountTransfer,
-} from '@injectivelabs/sdk-ts/dist/client/indexer/types/account'
+import { SubaccountBalance, SubaccountTransfer } from '@injectivelabs/sdk-ts'
 import { UiSubaccountBalance } from '../types/account'
 
 export class UiAccountTransformer {

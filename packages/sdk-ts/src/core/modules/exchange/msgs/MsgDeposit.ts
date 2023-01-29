@@ -1,5 +1,5 @@
-import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgDeposit {
@@ -17,15 +17,15 @@ export declare namespace MsgDeposit {
     message: BaseMsgDeposit
   }
 
-  export interface Data extends BaseMsgDeposit.AsObject {
+  export interface Data extends BaseMsgDeposit {
     '@type': '/injective.exchange.v1beta1.MsgDeposit'
   }
 
-  export interface Amino extends BaseMsgDeposit.AsObject {
+  export interface Amino extends BaseMsgDeposit {
     type: 'exchange/MsgDeposit'
   }
 
-  export interface Web3 extends BaseMsgDeposit.AsObject {
+  export interface Web3 extends BaseMsgDeposit {
     '@type': '/injective.exchange.v1beta1.MsgDeposit'
   }
 
@@ -49,16 +49,16 @@ export default class MsgDeposit extends MsgBase<
   public toProto(): MsgDeposit.Proto {
     const { params } = this
 
-    const amountCoin = new Coin()
-    amountCoin.setAmount(params.amount.amount)
-    amountCoin.setDenom(params.amount.denom)
+    const amountCoin = Coin.create()
+    amountCoin.amount = params.amount.amount
+    amountCoin.denom = params.amount.denom
 
-    const message = new BaseMsgDeposit()
-    message.setSender(params.injectiveAddress)
-    message.setSubaccountId(params.subaccountId)
-    message.setAmount(amountCoin)
+    const message = BaseMsgDeposit.create()
+    message.sender = params.injectiveAddress
+    message.subaccountId = params.subaccountId
+    message.amount = amountCoin
 
-    return message
+    return BaseMsgDeposit.fromPartial(message)
   }
 
   public toData(): MsgDeposit.Data {
@@ -66,7 +66,7 @@ export default class MsgDeposit extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgDeposit',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -75,7 +75,7 @@ export default class MsgDeposit extends MsgBase<
 
     return {
       type: 'exchange/MsgDeposit',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -96,5 +96,9 @@ export default class MsgDeposit extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgDeposit',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgDeposit.encode(this.toProto()).finish()
   }
 }

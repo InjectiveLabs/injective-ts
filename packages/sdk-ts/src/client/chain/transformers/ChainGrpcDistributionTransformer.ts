@@ -2,7 +2,7 @@ import {
   QueryParamsResponse,
   QueryDelegationRewardsResponse,
   QueryDelegationTotalRewardsResponse,
-} from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb'
+} from '@injectivelabs/core-proto-ts/cosmos/distribution/v1beta1/query'
 import { cosmosSdkDecToBigNumber } from '../../../utils'
 import { Coin } from '@injectivelabs/ts-types'
 import { DistributionModuleParams } from '../types/distribution'
@@ -15,25 +15,25 @@ export class ChainGrpcDistributionTransformer {
   static moduleParamsResponseToModuleParams(
     response: QueryParamsResponse,
   ): DistributionModuleParams {
-    const params = response.getParams()!
+    const params = response.params!
 
     return {
-      communityTax: cosmosSdkDecToBigNumber(params.getCommunityTax()).toFixed(),
-      baseProposerReward: params.getBaseProposerReward(),
-      bonusProposerReward: params.getBonusProposerReward(),
-      withdrawAddrEnabled: params.getWithdrawAddrEnabled(),
+      communityTax: cosmosSdkDecToBigNumber(params.communityTax).toFixed(),
+      baseProposerReward: params.baseProposerReward,
+      bonusProposerReward: params.bonusProposerReward,
+      withdrawAddrEnabled: params.withdrawAddrEnabled,
     }
   }
 
   static delegationRewardResponseToReward(
     response: QueryDelegationRewardsResponse,
   ): Coin[] {
-    const grpcRewards = response.getRewardsList()
+    const grpcRewards = response.rewards
 
     return grpcRewards.map((grpcReward) => {
       return {
-        amount: cosmosSdkDecToBigNumber(grpcReward.getAmount()).toFixed(),
-        denom: grpcReward.getDenom(),
+        amount: cosmosSdkDecToBigNumber(grpcReward.amount).toFixed(),
+        denom: grpcReward.denom,
       }
     })
   }
@@ -41,17 +41,17 @@ export class ChainGrpcDistributionTransformer {
   static totalDelegationRewardResponseToTotalReward(
     response: QueryDelegationTotalRewardsResponse,
   ): ValidatorRewards[] {
-    const grpcRewards = response.getRewardsList()
+    const grpcRewards = response.rewards
 
     return grpcRewards.map((grpcReward) => {
-      const rewards = grpcReward.getRewardList().map((reward) => ({
-        amount: cosmosSdkDecToBigNumber(reward.getAmount()).toFixed(),
-        denom: reward.getDenom(),
+      const rewards = grpcReward.reward.map((reward) => ({
+        amount: cosmosSdkDecToBigNumber(reward.amount).toFixed(),
+        denom: reward.denom,
       }))
 
       return {
         rewards,
-        validatorAddress: grpcReward.getValidatorAddress(),
+        validatorAddress: grpcReward.validatorAddress,
       }
     })
   }

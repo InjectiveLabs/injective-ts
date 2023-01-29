@@ -1,9 +1,8 @@
-import { MsgSubmitProposal as BaseMsgSubmitProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import snakeCaseKeys from 'snakecase-keys'
-import { SpotMarketParamUpdateProposal } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { Any } from 'google-protobuf/google/protobuf/any_pb'
-import { MarketStatusMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+import { MsgSubmitProposal as BaseMsgSubmitProposal } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/tx'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
+import { SpotMarketParamUpdateProposal } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
+import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
+import { MarketStatus } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
@@ -17,7 +16,7 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
       relayerFeeShareRate: string
       minPriceTickSize: string
       minQuantityTickSize: string
-      status: MarketStatusMap[keyof MarketStatusMap]
+      status: MarketStatus
     }
     proposer: string
     deposit: {
@@ -31,15 +30,15 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
     message: BaseMsgSubmitProposal
   }
 
-  export interface Data extends BaseMsgSubmitProposal.AsObject {
+  export interface Data extends BaseMsgSubmitProposal {
     '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
   }
 
-  export interface Amino extends BaseMsgSubmitProposal.AsObject {
+  export interface Amino extends BaseMsgSubmitProposal {
     type: 'cosmos-sdk/MsgSubmitProposal'
   }
 
-  export interface Web3 extends BaseMsgSubmitProposal.AsObject {
+  export interface Web3 extends BaseMsgSubmitProposal {
     '@type': '/cosmos.authz.v1beta1.MsgSubmitProposal'
   }
 
@@ -65,24 +64,24 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   public toProto(): MsgSubmitProposalSpotMarketParamUpdate.Proto {
     const { params } = this
 
-    const depositParams = new Coin()
-    depositParams.setDenom(params.deposit.denom)
-    depositParams.setAmount(params.deposit.amount)
+    const depositParams = Coin.create()
+    depositParams.denom = params.deposit.denom
+    depositParams.amount = params.deposit.amount
 
     const content = this.getContent()
     const proposalType =
       '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
 
-    const contentAny = new Any()
-    contentAny.setValue(content.serializeBinary())
-    contentAny.setTypeUrl(proposalType)
+    const contentAny = Any.create()
+    contentAny.value = SpotMarketParamUpdateProposal.encode(content).finish()
+    contentAny.typeUrl = proposalType
 
-    const message = new BaseMsgSubmitProposal()
-    message.setContent(contentAny)
-    message.setProposer(params.proposer)
-    message.setInitialDepositList([depositParams])
+    const message = BaseMsgSubmitProposal.create()
+    message.content = contentAny
+    message.proposer = params.proposer
+    message.initialDeposit = [depositParams]
 
-    return message
+    return BaseMsgSubmitProposal.fromPartial(message)
   }
 
   public toData(): MsgSubmitProposalSpotMarketParamUpdate.Data {
@@ -90,24 +89,18 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino(): MsgSubmitProposalSpotMarketParamUpdate.Amino {
     const { params } = this
-    const proto = this.toProto()
     const content = this.getContent()
     const proposalType = 'exchange/SpotMarketParamUpdateProposal'
 
     const message = {
+      content,
       proposer: params.proposer,
-      content: {
-        ...content.toObject(),
-      },
-      initial_deposit: proto
-        .getInitialDepositList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {
@@ -126,19 +119,13 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
   public toWeb3(): MsgSubmitProposalSpotMarketParamUpdate.Web3 {
     const { params } = this
-    const proto = this.toProto()
     const content = this.getContent()
     const proposalType =
       '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
 
     const message = {
+      content,
       proposer: params.proposer,
-      content: {
-        ...content.toObject(),
-      },
-      initial_deposit: proto
-        .getInitialDepositList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {
@@ -164,20 +151,24 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     }
   }
 
+  public toBinary(): Uint8Array {
+    return BaseMsgSubmitProposal.encode(this.toProto()).finish()
+  }
+
   private getContent() {
     const { params } = this
 
-    const content = new SpotMarketParamUpdateProposal()
-    content.setTitle(params.market.title)
-    content.setDescription(params.market.description)
-    content.setMakerFeeRate(params.market.makerFeeRate)
-    content.setTakerFeeRate(params.market.takerFeeRate)
-    content.setRelayerFeeShareRate(params.market.relayerFeeShareRate)
-    content.setMarketId(params.market.marketId)
-    content.setStatus(params.market.status)
-    content.setMinPriceTickSize(params.market.minPriceTickSize)
-    content.setMinQuantityTickSize(params.market.minQuantityTickSize)
+    const content = SpotMarketParamUpdateProposal.create()
+    content.title = params.market.title
+    content.description = params.market.description
+    content.makerFeeRate = params.market.makerFeeRate
+    content.takerFeeRate = params.market.takerFeeRate
+    content.relayerFeeShareRate = params.market.relayerFeeShareRate
+    content.marketId = params.market.marketId
+    content.status = params.market.status
+    content.minPriceTickSize = params.market.minPriceTickSize
+    content.minQuantityTickSize = params.market.minQuantityTickSize
 
-    return content
+    return SpotMarketParamUpdateProposal.fromPartial(content)
   }
 }

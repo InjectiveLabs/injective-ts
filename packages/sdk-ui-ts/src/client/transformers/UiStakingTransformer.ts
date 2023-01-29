@@ -1,4 +1,4 @@
-import { Validator } from '@injectivelabs/sdk-ts/dist/client/chain/types/staking'
+import { Validator } from '@injectivelabs/sdk-ts'
 import { UiValidator } from '../types/staking'
 
 export class UiStakingTransformer {

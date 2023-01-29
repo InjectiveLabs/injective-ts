@@ -1,4 +1,4 @@
-import { MsgInstantBinaryOptionsMarketLaunch as BaseMsgInstantBinaryOptionsMarketLaunch } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { MsgInstantBinaryOptionsMarketLaunch as BaseMsgInstantBinaryOptionsMarketLaunch } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { OracleType } from '../../../../client'
 import { MsgBase } from '../../MsgBase'
@@ -28,18 +28,15 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
     message: BaseMsgInstantBinaryOptionsMarketLaunch
   }
 
-  export interface Data
-    extends BaseMsgInstantBinaryOptionsMarketLaunch.AsObject {
+  export interface Data extends BaseMsgInstantBinaryOptionsMarketLaunch {
     '@type': '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch'
   }
 
-  export interface Amino
-    extends BaseMsgInstantBinaryOptionsMarketLaunch.AsObject {
+  export interface Amino extends BaseMsgInstantBinaryOptionsMarketLaunch {
     type: 'exchange/MsgInstantBinaryOptionsMarketLaunch'
   }
 
-  export interface Web3
-    extends BaseMsgInstantBinaryOptionsMarketLaunch.AsObject {
+  export interface Web3 extends BaseMsgInstantBinaryOptionsMarketLaunch {
     '@type': '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch'
   }
 
@@ -47,24 +44,24 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
 }
 
 const createMessage = (params: MsgInstantBinaryOptionsMarketLaunch.Params) => {
-  const message = new BaseMsgInstantBinaryOptionsMarketLaunch()
+  const message = BaseMsgInstantBinaryOptionsMarketLaunch.create()
 
-  message.setSender(params.proposer)
-  message.setTicker(params.market.ticker)
-  message.setOracleSymbol(params.market.oracleSymbol)
-  message.setOracleProvider(params.market.oracleProvider)
-  message.setOracleType(params.market.oracleType)
-  message.setOracleScaleFactor(params.market.oracleScaleFactor)
-  message.setMakerFeeRate(params.market.makerFeeRate)
-  message.setTakerFeeRate(params.market.takerFeeRate)
-  message.setExpirationTimestamp(params.market.expirationTimestamp)
-  message.setSettlementTimestamp(params.market.settlementTimestamp)
-  message.setAdmin(params.market.admin)
-  message.setQuoteDenom(params.market.quoteDenom)
-  message.setMinPriceTickSize(params.market.minPriceTickSize)
-  message.setMinQuantityTickSize(params.market.minQuantityTickSize)
+  message.sender = params.proposer
+  message.ticker = params.market.ticker
+  message.oracleSymbol = params.market.oracleSymbol
+  message.oracleProvider = params.market.oracleProvider
+  message.oracleType = params.market.oracleType
+  message.oracleScaleFactor = params.market.oracleScaleFactor
+  message.makerFeeRate = params.market.makerFeeRate
+  message.takerFeeRate = params.market.takerFeeRate
+  message.expirationTimestamp = params.market.expirationTimestamp.toString()
+  message.settlementTimestamp = params.market.settlementTimestamp.toString()
+  message.admin = params.market.admin
+  message.quoteDenom = params.market.quoteDenom
+  message.minPriceTickSize = params.market.minPriceTickSize
+  message.minQuantityTickSize = params.market.minQuantityTickSize
 
-  return message
+  return BaseMsgInstantBinaryOptionsMarketLaunch.fromPartial(message)
 }
 
 /**
@@ -85,7 +82,6 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
 
   public toProto(): MsgInstantBinaryOptionsMarketLaunch.Proto {
     const { params: initialParams } = this
-    const message = new BaseMsgInstantBinaryOptionsMarketLaunch()
 
     const params = {
       ...initialParams,
@@ -106,21 +102,6 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
       },
     } as MsgInstantBinaryOptionsMarketLaunch.Params
 
-    message.setSender(params.proposer)
-    message.setTicker(params.market.ticker)
-    message.setOracleSymbol(params.market.oracleSymbol)
-    message.setOracleProvider(params.market.oracleProvider)
-    message.setOracleType(params.market.oracleType)
-    message.setOracleScaleFactor(params.market.oracleScaleFactor)
-    message.setMakerFeeRate(params.market.makerFeeRate)
-    message.setTakerFeeRate(params.market.takerFeeRate)
-    message.setExpirationTimestamp(params.market.expirationTimestamp)
-    message.setSettlementTimestamp(params.market.settlementTimestamp)
-    message.setAdmin(params.market.admin)
-    message.setQuoteDenom(params.market.quoteDenom)
-    message.setMinPriceTickSize(params.market.minPriceTickSize)
-    message.setMinQuantityTickSize(params.market.minQuantityTickSize)
-
     return createMessage(params)
   }
 
@@ -130,7 +111,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
     return {
       '@type':
         '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -140,7 +121,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
 
     return {
       type: 'exchange/MsgInstantBinaryOptionsMarketLaunch',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -162,5 +143,11 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgInstantBinaryOptionsMarketLaunch.encode(
+      this.toProto(),
+    ).finish()
   }
 }

@@ -1,5 +1,5 @@
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import {
   CosmosChainId,
   ChainId,

@@ -1,5 +1,5 @@
-import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/tx'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -18,15 +18,15 @@ export declare namespace MsgDeposit {
     message: BaseMsgDeposit
   }
 
-  export interface Data extends BaseMsgDeposit.AsObject {
+  export interface Data extends BaseMsgDeposit {
     '@type': '/cosmos.gov.v1beta1.MsgDeposit'
   }
 
-  export interface Amino extends BaseMsgDeposit.AsObject {
+  export interface Amino extends BaseMsgDeposit {
     type: 'cosmos-sdk/MsgDeposit'
   }
 
-  export interface Web3 extends BaseMsgDeposit.AsObject {
+  export interface Web3 extends BaseMsgDeposit {
     '@type': '/cosmos.authz.v1beta1.MsgDeposit'
   }
 
@@ -50,16 +50,16 @@ export default class MsgDeposit extends MsgBase<
   public toProto(): MsgDeposit.Proto {
     const { params } = this
 
-    const deposit = new Coin()
-    deposit.setAmount(params.amount.amount)
-    deposit.setDenom(params.amount.denom)
+    const deposit = Coin.create()
+    deposit.amount = params.amount.amount
+    deposit.denom = params.amount.denom
 
-    const message = new BaseMsgDeposit()
-    message.setDepositor(params.depositor)
-    message.setProposalId(params.proposalId)
-    message.setAmountList([deposit])
+    const message = BaseMsgDeposit.create()
+    message.depositor = params.depositor
+    message.proposalId = params.proposalId.toString()
+    message.amount = [deposit]
 
-    return message
+    return BaseMsgDeposit.fromPartial(message)
   }
 
   public toData(): MsgDeposit.Data {
@@ -67,21 +67,15 @@ export default class MsgDeposit extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgDeposit',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino(): MsgDeposit.Amino {
     const proto = this.toProto()
     const message = {
-      ...snakeCaseKeys(proto.toObject()),
-      amount: proto
-        .getAmountList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
+      ...snakeCaseKeys(proto),
     }
-
-    // @ts-ignore
-    delete message.amount_list
 
     return {
       type: 'cosmos-sdk/MsgDeposit',
@@ -106,5 +100,9 @@ export default class MsgDeposit extends MsgBase<
       type: '/cosmos.gov.v1beta1.MsgDeposit',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgDeposit.encode(this.toProto()).finish()
   }
 }

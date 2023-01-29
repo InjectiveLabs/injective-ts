@@ -1,5 +1,5 @@
-import { MsgUnderwrite as BaseMsgUnderwrite } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { MsgUnderwrite as BaseMsgUnderwrite } from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/tx'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgUnderwrite {
@@ -17,15 +17,15 @@ export declare namespace MsgUnderwrite {
     message: BaseMsgUnderwrite
   }
 
-  export interface Data extends BaseMsgUnderwrite.AsObject {
+  export interface Data extends BaseMsgUnderwrite {
     '@type': '/injective.insurance.v1beta1.MsgUnderwrite'
   }
 
-  export interface Amino extends BaseMsgUnderwrite.AsObject {
+  export interface Amino extends BaseMsgUnderwrite {
     type: 'insurance/MsgUnderwrite'
   }
 
-  export interface Web3 extends BaseMsgUnderwrite.AsObject {
+  export interface Web3 extends BaseMsgUnderwrite {
     '@type': '/injective.insurance.v1beta1.MsgUnderwrite'
   }
 
@@ -49,14 +49,14 @@ export default class MsgUnderwrite extends MsgBase<
   public toProto(): MsgUnderwrite.Proto {
     const { params } = this
 
-    const amountCoin = new Coin()
-    amountCoin.setAmount(params.amount.amount)
-    amountCoin.setDenom(params.amount.denom)
+    const amountCoin = Coin.create()
+    amountCoin.amount = params.amount.amount
+    amountCoin.denom = params.amount.denom
 
-    const message = new BaseMsgUnderwrite()
-    message.setDeposit(amountCoin)
-    message.setMarketId(params.marketId)
-    message.setSender(params.injectiveAddress)
+    const message = BaseMsgUnderwrite.create()
+    message.deposit = amountCoin
+    message.marketId = params.marketId
+    message.sender = params.injectiveAddress
 
     return message
   }
@@ -66,7 +66,7 @@ export default class MsgUnderwrite extends MsgBase<
 
     return {
       '@type': '/injective.insurance.v1beta1.MsgUnderwrite',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -75,7 +75,7 @@ export default class MsgUnderwrite extends MsgBase<
 
     return {
       type: 'insurance/MsgUnderwrite',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -96,5 +96,9 @@ export default class MsgUnderwrite extends MsgBase<
       type: '/injective.insurance.v1beta1.MsgUnderwrite',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgUnderwrite.encode(this.toProto()).finish()
   }
 }

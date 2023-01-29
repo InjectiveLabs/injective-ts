@@ -1,13 +1,13 @@
 import {
   DerivativeOrder,
   OrderInfo,
-  OrderTypeMap,
+  OrderType,
   SpotOrder,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import {
   MsgBatchUpdateOrders as BaseMsgBatchUpdateOrders,
   OrderData,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
 
@@ -33,7 +33,7 @@ export declare namespace MsgBatchUpdateOrders {
       orderHash: string
     }[]
     spotOrdersToCreate?: {
-      orderType: OrderTypeMap[keyof OrderTypeMap]
+      orderType: OrderType
       triggerPrice?: string
       marketId: string
       feeRecipient: string
@@ -41,7 +41,7 @@ export declare namespace MsgBatchUpdateOrders {
       quantity: string
     }[]
     derivativeOrdersToCreate?: {
-      orderType: OrderTypeMap[keyof OrderTypeMap]
+      orderType: OrderType
       triggerPrice?: string
       feeRecipient: string
       marketId: string
@@ -50,7 +50,7 @@ export declare namespace MsgBatchUpdateOrders {
       quantity: string
     }[]
     binaryOptionsOrdersToCreate?: {
-      orderType: OrderTypeMap[keyof OrderTypeMap]
+      orderType: OrderType
       triggerPrice?: string
       feeRecipient: string
       marketId: string
@@ -66,15 +66,15 @@ export declare namespace MsgBatchUpdateOrders {
     message: BaseMsgBatchUpdateOrders
   }
 
-  export interface Data extends BaseMsgBatchUpdateOrders.AsObject {
+  export interface Data extends BaseMsgBatchUpdateOrders {
     '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
   }
 
-  export interface Amino extends BaseMsgBatchUpdateOrders.AsObject {
+  export interface Amino extends BaseMsgBatchUpdateOrders {
     type: 'exchange/MsgBatchUpdateOrders'
   }
 
-  export interface Web3 extends BaseMsgBatchUpdateOrders.AsObject {
+  export interface Web3 extends BaseMsgBatchUpdateOrders {
     '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
   }
 
@@ -98,90 +98,88 @@ export default class MsgBatchUpdateOrders extends MsgBase<
   public toProto(): MsgBatchUpdateOrders.Proto {
     const { params } = this
 
-    const message = new BaseMsgBatchUpdateOrders()
-    message.setSender(params.injectiveAddress)
+    const message = BaseMsgBatchUpdateOrders.create()
+    message.sender = params.injectiveAddress
 
     if (
       params.spotMarketIdsToCancelAll &&
       params.spotMarketIdsToCancelAll.length > 0
     ) {
-      message.setSpotMarketIdsToCancelAllList(params.spotMarketIdsToCancelAll)
-      message.setSubaccountId(params.subaccountId)
+      message.spotMarketIdsToCancelAll = params.spotMarketIdsToCancelAll
+      message.subaccountId = params.subaccountId
     }
 
     if (
       params.derivativeMarketIdsToCancelAll &&
       params.derivativeMarketIdsToCancelAll.length > 0
     ) {
-      message.setDerivativeMarketIdsToCancelAllList(
-        params.derivativeMarketIdsToCancelAll,
-      )
-      message.setSubaccountId(params.subaccountId)
+      message.derivativeMarketIdsToCancelAll =
+        params.derivativeMarketIdsToCancelAll
+      message.subaccountId = params.subaccountId
     }
 
     if (
       params.binaryOptionsMarketIdsToCancelAll &&
       params.binaryOptionsMarketIdsToCancelAll.length > 0
     ) {
-      message.setBinaryOptionsMarketIdsToCancelAllList(
-        params.binaryOptionsMarketIdsToCancelAll,
-      )
-      message.setSubaccountId(params.subaccountId)
+      message.binaryOptionsMarketIdsToCancelAll =
+        params.binaryOptionsMarketIdsToCancelAll
+      message.subaccountId = params.subaccountId
     }
 
     if (params.spotOrdersToCancel && params.spotOrdersToCancel.length > 0) {
-      const orderDataList = params.spotOrdersToCancel.map(
+      const orderData = params.spotOrdersToCancel.map(
         ({ marketId, subaccountId, orderHash }) => {
-          const orderData = new OrderData()
-          orderData.setMarketId(marketId)
-          orderData.setSubaccountId(subaccountId)
-          orderData.setOrderHash(orderHash)
+          const orderData = OrderData.create()
+          orderData.marketId = marketId
+          orderData.subaccountId = subaccountId
+          orderData.orderHash = orderHash
 
           return orderData
         },
       )
 
-      message.setSpotOrdersToCancelList(orderDataList)
+      message.spotOrdersToCancel = orderData
     }
 
     if (
       params.derivativeOrdersToCancel &&
       params.derivativeOrdersToCancel.length > 0
     ) {
-      const orderDataList = params.derivativeOrdersToCancel.map(
+      const orderData = params.derivativeOrdersToCancel.map(
         ({ marketId, subaccountId, orderHash }) => {
-          const orderData = new OrderData()
-          orderData.setMarketId(marketId)
-          orderData.setSubaccountId(subaccountId)
-          orderData.setOrderHash(orderHash)
+          const orderData = OrderData.create()
+          orderData.marketId = marketId
+          orderData.subaccountId = subaccountId
+          orderData.orderHash = orderHash
 
           return orderData
         },
       )
 
-      message.setDerivativeOrdersToCancelList(orderDataList)
+      message.derivativeOrdersToCancel = orderData
     }
     if (
       params.binaryOptionsOrdersToCancel &&
       params.binaryOptionsOrdersToCancel.length > 0
     ) {
-      const orderDataList = params.binaryOptionsOrdersToCancel.map(
+      const orderData = params.binaryOptionsOrdersToCancel.map(
         ({ marketId, subaccountId, orderHash }) => {
-          const orderData = new OrderData()
-          orderData.setMarketId(marketId)
-          orderData.setSubaccountId(subaccountId)
-          orderData.setOrderHash(orderHash)
+          const orderData = OrderData.create()
+          orderData.marketId = marketId
+          orderData.subaccountId = subaccountId
+          orderData.orderHash = orderHash
 
           return orderData
         },
       )
 
-      message.setDerivativeOrdersToCancelList(orderDataList)
+      message.derivativeOrdersToCancel = orderData
     }
 
     if (params.spotOrdersToCreate && params.spotOrdersToCreate.length > 0) {
-      const orderDataList = params.spotOrdersToCreate.map((args) => {
-        const orderInfo = new OrderInfo()
+      const orderData = params.spotOrdersToCreate.map((args) => {
+        const orderInfo = OrderInfo.create()
         const paramsFromArgs = {
           ...args,
           price: amountToCosmosSdkDecAmount(args.price).toFixed(),
@@ -191,31 +189,31 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
         }
 
-        orderInfo.setSubaccountId(params.subaccountId)
-        orderInfo.setFeeRecipient(paramsFromArgs.feeRecipient)
-        orderInfo.setPrice(paramsFromArgs.price)
-        orderInfo.setQuantity(paramsFromArgs.quantity)
+        orderInfo.subaccountId = params.subaccountId
+        orderInfo.feeRecipient = paramsFromArgs.feeRecipient
+        orderInfo.price = paramsFromArgs.price
+        orderInfo.quantity = paramsFromArgs.quantity
 
-        const order = new SpotOrder()
-        order.setMarketId(paramsFromArgs.marketId)
-        order.setOrderType(paramsFromArgs.orderType)
-        order.setOrderInfo(orderInfo)
+        const order = SpotOrder.create()
+        order.marketId = paramsFromArgs.marketId
+        order.orderType = paramsFromArgs.orderType
+        order.orderInfo = orderInfo
 
         if (paramsFromArgs.triggerPrice) {
-          order.setTriggerPrice(paramsFromArgs.triggerPrice)
+          order.triggerPrice = paramsFromArgs.triggerPrice
         }
 
         return order
       })
 
-      message.setSpotOrdersToCreateList(orderDataList)
+      message.spotOrdersToCreate = orderData
     }
 
     if (
       params.derivativeOrdersToCreate &&
       params.derivativeOrdersToCreate.length > 0
     ) {
-      const orderDataList = params.derivativeOrdersToCreate.map((args) => {
+      const orderData = params.derivativeOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
           price: amountToCosmosSdkDecAmount(args.price).toFixed(),
@@ -226,32 +224,32 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
         }
 
-        const orderInfo = new OrderInfo()
-        orderInfo.setSubaccountId(params.subaccountId)
-        orderInfo.setFeeRecipient(paramsFromArgs.feeRecipient)
-        orderInfo.setPrice(paramsFromArgs.price)
-        orderInfo.setQuantity(paramsFromArgs.quantity)
+        const orderInfo = OrderInfo.create()
+        orderInfo.subaccountId = params.subaccountId
+        orderInfo.feeRecipient = paramsFromArgs.feeRecipient
+        orderInfo.price = paramsFromArgs.price
+        orderInfo.quantity = paramsFromArgs.quantity
 
-        const order = new DerivativeOrder()
-        order.setMarketId(paramsFromArgs.marketId)
-        order.setOrderType(paramsFromArgs.orderType)
-        order.setOrderInfo(orderInfo)
-        order.setMargin(paramsFromArgs.margin)
+        const order = DerivativeOrder.create()
+        order.marketId = paramsFromArgs.marketId
+        order.orderType = paramsFromArgs.orderType
+        order.orderInfo = orderInfo
+        order.margin = paramsFromArgs.margin
 
         if (paramsFromArgs.triggerPrice) {
-          order.setTriggerPrice(paramsFromArgs.triggerPrice)
+          order.triggerPrice = paramsFromArgs.triggerPrice
         }
 
         return order
       })
 
-      message.setDerivativeOrdersToCreateList(orderDataList)
+      message.derivativeOrdersToCreate = orderData
     }
     if (
       params.binaryOptionsOrdersToCreate &&
       params.binaryOptionsOrdersToCreate.length > 0
     ) {
-      const orderDataList = params.binaryOptionsOrdersToCreate.map((args) => {
+      const orderData = params.binaryOptionsOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
           price: amountToCosmosSdkDecAmount(args.price).toFixed(),
@@ -261,29 +259,29 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           ).toFixed(),
           quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
         }
-        const orderInfo = new OrderInfo()
-        orderInfo.setSubaccountId(params.subaccountId)
-        orderInfo.setFeeRecipient(paramsFromArgs.feeRecipient)
-        orderInfo.setPrice(paramsFromArgs.price)
-        orderInfo.setQuantity(paramsFromArgs.quantity)
+        const orderInfo = OrderInfo.create()
+        orderInfo.subaccountId = params.subaccountId
+        orderInfo.feeRecipient = paramsFromArgs.feeRecipient
+        orderInfo.price = paramsFromArgs.price
+        orderInfo.quantity = paramsFromArgs.quantity
 
-        const order = new DerivativeOrder()
-        order.setMarketId(paramsFromArgs.marketId)
-        order.setOrderType(paramsFromArgs.orderType)
-        order.setOrderInfo(orderInfo)
-        order.setMargin(paramsFromArgs.margin)
+        const order = DerivativeOrder.create()
+        order.marketId = paramsFromArgs.marketId
+        order.orderType = paramsFromArgs.orderType
+        order.orderInfo = orderInfo
+        order.margin = paramsFromArgs.margin
 
         if (paramsFromArgs.triggerPrice) {
-          order.setTriggerPrice(paramsFromArgs.triggerPrice)
+          order.triggerPrice = paramsFromArgs.triggerPrice
         }
 
         return order
       })
 
-      message.setDerivativeOrdersToCreateList(orderDataList)
+      message.derivativeOrdersToCreate = orderData
     }
 
-    return message
+    return BaseMsgBatchUpdateOrders.fromPartial(message)
   }
 
   public toData(): MsgBatchUpdateOrders.Data {
@@ -291,72 +289,16 @@ export default class MsgBatchUpdateOrders extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino(): MsgBatchUpdateOrders.Amino {
     const proto = this.toProto()
 
-    /*
-    const web3Message = proto.toObject() as any
-
-    delete web3Message.spotMarketIdsToCancelAllList
-    delete web3Message.derivativeMarketIdsToCancelAllList
-    delete web3Message.spotOrdersToCancelList
-    delete web3Message.derivativeOrdersToCancelList
-    delete web3Message.spotOrdersToCreateList
-    delete web3Message.derivativeOrdersToCreateList
-    // delete web3Message.subaccountId
-
-    /*
-    if (web3Message.derivativeMarketIdsToCancelAllList !== undefined) {
-      web3Message.derivative_market_ids_to_cancel_all =
-        web3Message.derivativeMarketIdsToCancelAllList
-
-      delete web3Message.derivativeMarketIdsToCancelAllList
-    }
-
-    if (web3Message.spotMarketIdsToCancelAllList !== undefined) {
-      web3Message.spot_market_ids_to_cancel_all =
-        web3Message.spotMarketIdsToCancelAllList
-
-      delete web3Message.spotMarketIdsToCancelAllList
-    }
-
-    if (web3Message.spotOrdersToCancelList !== undefined) {
-      web3Message.spot_orders_to_cancel = web3Message.spotOrdersToCancelList
-
-      delete web3Message.spotOrdersToCancelList
-    }
-
-    if (web3Message.derivativeOrdersToCancelList !== undefined) {
-      web3Message.derivative_orders_to_cancel =
-        web3Message.derivativeOrdersToCancelList
-
-      delete web3Message.derivativeOrdersToCancelList
-    }
-
-    if (web3Message.spotOrdersToCreateList !== undefined) {
-      web3Message.spot_orders_to_create = web3Message.spotOrdersToCreateList
-
-      delete web3Message.spotOrdersToCreateList
-    }
-
-    if (web3Message.derivativeOrdersToCreateList !== undefined) {
-      web3Message.derivative_orders_to_create =
-        web3Message.derivativeOrdersToCreateList
-
-      delete web3Message.derivativeOrdersToCreateList
-    }
-
-    if (!web3Message.subaccountId) {
-      delete web3Message.subaccountId
-    }*/
-
     return {
       type: 'exchange/MsgBatchUpdateOrders',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -377,5 +319,9 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgBatchUpdateOrders.encode(this.toProto()).finish()
   }
 }

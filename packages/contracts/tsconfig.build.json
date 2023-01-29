@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./dist",
+    "outDir": "./dist/cjs",
     "tsBuildInfoFile": "../../.build-cache/contracts.tsbuildinfo"
   },
   "include": [
@@ -15,11 +15,9 @@
   "references": [
     {
       "path": "../ts-types/tsconfig.build.json",
-      "prepend": false
     },
     {
       "path": "../exceptions/tsconfig.build.json",
-      "prepend": false
     },
     {
       "path": "../utils/tsconfig.build.json"

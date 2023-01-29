@@ -1,5 +1,5 @@
-import { MsgExec as BaseMsgExec } from '@injectivelabs/chain-api/cosmos/authz/v1beta1/tx_pb'
-import { Any } from 'google-protobuf/google/protobuf/any_pb'
+import { MsgExec as BaseMsgExec } from '@injectivelabs/core-proto-ts/cosmos/authz/v1beta1/tx'
+import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 
 import { MsgBase } from '../../MsgBase'
 import { Msgs } from '../../msgs'
@@ -15,15 +15,15 @@ export declare namespace MsgExec {
     message: BaseMsgExec
   }
 
-  export interface Data extends BaseMsgExec.AsObject {
+  export interface Data extends BaseMsgExec {
     '@type': '/cosmos.authz.v1beta1.MsgExec'
   }
 
-  export interface Amino extends BaseMsgExec.AsObject {
+  export interface Amino extends BaseMsgExec {
     type: 'cosmos-sdk/MsgExec'
   }
 
-  export interface Web3 extends BaseMsgExec.AsObject {
+  export interface Web3 extends BaseMsgExec {
     '@type': '/cosmos.authz.v1beta1.MsgExec'
   }
 
@@ -47,21 +47,21 @@ export default class MsgExec extends MsgBase<
   public toProto(): MsgExec.Proto {
     const { params } = this
 
-    const message = new BaseMsgExec()
-    message.setGrantee(params.grantee)
+    const message = BaseMsgExec.create()
+    message.grantee = params.grantee
 
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
     const actualMsgs = msgs.map((msg) => {
-      const msgValue = new Any()
-      msgValue.setTypeUrl(msg.toData()['@type'])
-      msgValue.setValue(msg.toProto().serializeBinary())
+      const msgValue = Any.create()
+      msgValue.typeUrl = msg.toData()['@type']
+      msgValue.value = msg.toBinary()
 
       return msgValue
     })
 
-    message.setMsgsList(actualMsgs)
+    message.msgs = actualMsgs
 
-    return message
+    return BaseMsgExec.fromPartial(message)
   }
 
   public toData(): MsgExec.Data {
@@ -69,7 +69,7 @@ export default class MsgExec extends MsgBase<
 
     return {
       '@type': '/cosmos.authz.v1beta1.MsgExec',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -78,7 +78,7 @@ export default class MsgExec extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgExec',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -99,5 +99,9 @@ export default class MsgExec extends MsgBase<
       type: '/cosmos.authz.v1beta1.MsgExec',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgExec.encode(this.toProto()).finish()
   }
 }

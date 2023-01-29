@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "../../.build-cache/ts-types.esm.tsbuildinfo"
+  }
+}

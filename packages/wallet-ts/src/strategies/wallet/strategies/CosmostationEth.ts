@@ -13,7 +13,7 @@ import {
 import { sleep } from '@injectivelabs/utils'
 import { ethereum, InstallError } from '@cosmostation/extension-client'
 import Web3 from 'web3'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxResponse } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'

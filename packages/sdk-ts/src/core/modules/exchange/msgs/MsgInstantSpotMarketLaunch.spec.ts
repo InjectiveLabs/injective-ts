@@ -1,4 +1,3 @@
-import { MsgInstantSpotMarketLaunch as BaseMsgInstantSpotMarketLaunch } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -29,8 +28,7 @@ describe('MsgInstantSpotMarketLaunch', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgInstantSpotMarketLaunch).toBe(true)
-    expect(proto.toObject()).toStrictEqual({
+    expect(proto).toStrictEqual({
       ...protoParams,
       minPriceTickSize: '1000',
       minQuantityTickSize: '1000000000000000000000000000000000',

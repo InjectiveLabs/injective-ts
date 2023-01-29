@@ -1,5 +1,5 @@
-import { MsgSendToEth as BaseMsgSendToEth } from '@injectivelabs/chain-api/injective/peggy/v1/msgs_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { MsgSendToEth as BaseMsgSendToEth } from '@injectivelabs/core-proto-ts/injective/peggy/v1/msgs'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 import {
   DEFAULT_BRIDGE_FEE_AMOUNT,
@@ -25,15 +25,15 @@ export declare namespace MsgSendToEth {
     message: BaseMsgSendToEth
   }
 
-  export interface Data extends BaseMsgSendToEth.AsObject {
+  export interface Data extends BaseMsgSendToEth {
     '@type': '/injective.peggy.v1.MsgSendToEth'
   }
 
-  export interface Amino extends BaseMsgSendToEth.AsObject {
+  export interface Amino extends BaseMsgSendToEth {
     type: 'peggy/MsgSendToEth'
   }
 
-  export interface Web3 extends BaseMsgSendToEth.AsObject {
+  export interface Web3 extends BaseMsgSendToEth {
     '@type': '/injective.peggy.v1beta1.MsgSendToEth'
   }
 
@@ -57,25 +57,26 @@ export default class MsgSendToEth extends MsgBase<
   public toProto(): MsgSendToEth.Proto {
     const { params } = this
 
-    const coinAmount = new Coin()
-    coinAmount.setDenom(params.amount.denom)
-    coinAmount.setAmount(params.amount.amount)
+    const coinAmount = Coin.create()
+    coinAmount.denom = params.amount.denom
+    coinAmount.amount = params.amount.amount
 
-    const bridgeFee = new Coin()
-    bridgeFee.setDenom(
-      params.bridgeFee ? params.bridgeFee.denom : DEFAULT_BRIDGE_FEE_DENOM,
-    )
-    bridgeFee.setAmount(
-      params.bridgeFee ? params.bridgeFee.amount : DEFAULT_BRIDGE_FEE_AMOUNT,
-    )
+    const bridgeFee = Coin.create()
+    bridgeFee.denom = params.bridgeFee
+      ? params.bridgeFee.denom
+      : DEFAULT_BRIDGE_FEE_DENOM
 
-    const message = new BaseMsgSendToEth()
-    message.setAmount(coinAmount)
-    message.setSender(params.injectiveAddress)
-    message.setEthDest(params.address)
-    message.setBridgeFee(bridgeFee)
+    bridgeFee.amount = params.bridgeFee
+      ? params.bridgeFee.amount
+      : DEFAULT_BRIDGE_FEE_AMOUNT
 
-    return message
+    const message = BaseMsgSendToEth.create()
+    message.amount = coinAmount
+    message.sender = params.injectiveAddress
+    message.ethDest = params.address
+    message.bridgeFee = bridgeFee
+
+    return BaseMsgSendToEth.fromPartial(message)
   }
 
   public toData(): MsgSendToEth.Data {
@@ -83,7 +84,7 @@ export default class MsgSendToEth extends MsgBase<
 
     return {
       '@type': '/injective.peggy.v1.MsgSendToEth',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -92,7 +93,7 @@ export default class MsgSendToEth extends MsgBase<
 
     return {
       type: 'peggy/MsgSendToEth',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -113,5 +114,9 @@ export default class MsgSendToEth extends MsgBase<
       type: '/injective.peggy.v1.MsgSendToEth',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgSendToEth.encode(this.toProto()).finish()
   }
 }

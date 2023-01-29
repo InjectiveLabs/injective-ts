@@ -1,4 +1,3 @@
-import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgDeposit from './MsgDeposit'
 import { mockFactory } from '@injectivelabs/test-utils'
@@ -27,8 +26,7 @@ describe('MsgDeposit', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgDeposit).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

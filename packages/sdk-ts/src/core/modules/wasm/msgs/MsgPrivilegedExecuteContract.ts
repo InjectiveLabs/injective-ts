@@ -1,4 +1,4 @@
-import { MsgPrivilegedExecuteContract as BaseMsgPrivilegedExecuteContract } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { MsgPrivilegedExecuteContract as BaseMsgPrivilegedExecuteContract } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { ExecPrivilegedArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import snakeCaseKeys from 'snakecase-keys'
@@ -16,15 +16,15 @@ export declare namespace MsgPrivilegedExecuteContract {
     message: BaseMsgPrivilegedExecuteContract
   }
 
-  export interface Data extends BaseMsgPrivilegedExecuteContract.AsObject {
+  export interface Data extends BaseMsgPrivilegedExecuteContract {
     '@type': '/injective.exchange.v1beta1.MsgPrivilegedExecuteContract'
   }
 
-  export interface Amino extends BaseMsgPrivilegedExecuteContract.AsObject {
+  export interface Amino extends BaseMsgPrivilegedExecuteContract {
     type: 'exchange/MsgPrivilegedExecuteContract'
   }
 
-  export interface Web3 extends BaseMsgPrivilegedExecuteContract.AsObject {
+  export interface Web3 extends BaseMsgPrivilegedExecuteContract {
     '@type': '/injective.exchange.v1beta1.MsgPrivilegedExecuteContract'
   }
 
@@ -50,14 +50,14 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
   public toProto(): MsgPrivilegedExecuteContract.Proto {
     const { params } = this
 
-    const message = new BaseMsgPrivilegedExecuteContract()
+    const message = BaseMsgPrivilegedExecuteContract.create()
 
-    message.setSender(params.sender)
-    message.setFunds(params.funds)
-    message.setContractAddress(params.contractAddress)
-    message.setData(params.data.toExecJSON())
+    message.sender = params.sender
+    message.funds = params.funds
+    message.contractAddress = params.contractAddress
+    message.data = params.data.toExecJSON()
 
-    return message
+    return BaseMsgPrivilegedExecuteContract.fromPartial(message)
   }
 
   public toData(): MsgPrivilegedExecuteContract.Data {
@@ -65,14 +65,14 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgPrivilegedExecuteContract',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino(): MsgPrivilegedExecuteContract.Amino {
     const proto = this.toProto()
     const message = {
-      ...snakeCaseKeys(proto.toObject()),
+      ...snakeCaseKeys(proto),
     }
 
     const messageWithProperKeys = snakeCaseKeys(message)
@@ -100,5 +100,9 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgPrivilegedExecuteContract',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgPrivilegedExecuteContract.encode(this.toProto()).finish()
   }
 }

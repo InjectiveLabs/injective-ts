@@ -1,4 +1,3 @@
-import { MsgBatchCancelSpotOrders as BaseMsgBatchCancelSpotOrders } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgBatchCancelSpotOrders from './MsgBatchCancelSpotOrders'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -43,8 +42,7 @@ describe('MsgBatchCancelSpotOrders', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgBatchCancelSpotOrders).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

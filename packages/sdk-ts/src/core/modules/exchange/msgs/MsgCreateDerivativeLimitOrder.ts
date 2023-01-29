@@ -1,9 +1,9 @@
-import { MsgCreateDerivativeLimitOrder as BaseMsgCreateDerivativeLimitOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { MsgCreateDerivativeLimitOrder as BaseMsgCreateDerivativeLimitOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import {
   DerivativeOrder,
   OrderInfo,
-  OrderTypeMap,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+  OrderType,
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 
@@ -12,7 +12,7 @@ export declare namespace MsgCreateDerivativeLimitOrder {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderTypeMap[keyof OrderTypeMap]
+    orderType: OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
@@ -25,38 +25,38 @@ export declare namespace MsgCreateDerivativeLimitOrder {
     message: BaseMsgCreateDerivativeLimitOrder
   }
 
-  export interface Data extends BaseMsgCreateDerivativeLimitOrder.AsObject {
+  export interface Data extends BaseMsgCreateDerivativeLimitOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
   }
 
-  export interface Amino extends BaseMsgCreateDerivativeLimitOrder.AsObject {
+  export interface Amino extends BaseMsgCreateDerivativeLimitOrder {
     type: 'exchange/MsgCreateDerivativeLimitOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateDerivativeLimitOrder.AsObject {
+  export interface Web3 extends BaseMsgCreateDerivativeLimitOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
   }
   export type Proto = BaseMsgCreateDerivativeLimitOrder
 }
 
 const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
-  const orderInfo = new OrderInfo()
-  orderInfo.setSubaccountId(params.subaccountId)
-  orderInfo.setFeeRecipient(params.feeRecipient)
-  orderInfo.setPrice(params.price)
-  orderInfo.setQuantity(params.quantity)
+  const orderInfo = OrderInfo.create()
+  orderInfo.subaccountId = params.subaccountId
+  orderInfo.feeRecipient = params.feeRecipient
+  orderInfo.price = params.price
+  orderInfo.quantity = params.quantity
 
-  const derivativeOrder = new DerivativeOrder()
-  derivativeOrder.setMarketId(params.marketId)
-  derivativeOrder.setOrderType(params.orderType)
-  derivativeOrder.setOrderInfo(orderInfo)
-  derivativeOrder.setMargin(params.margin)
+  const derivativeOrder = DerivativeOrder.create()
+  derivativeOrder.marketId = params.marketId
+  derivativeOrder.orderType = params.orderType
+  derivativeOrder.orderInfo = orderInfo
+  derivativeOrder.margin = params.margin
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
+  derivativeOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = new BaseMsgCreateDerivativeLimitOrder()
-  message.setSender(params.injectiveAddress)
-  message.setOrder(derivativeOrder)
+  const message = BaseMsgCreateDerivativeLimitOrder.create()
+  message.sender = params.injectiveAddress
+  message.order = derivativeOrder
 
   return message
 }
@@ -98,7 +98,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -108,7 +108,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
 
     return {
       type: 'exchange/MsgCreateDerivativeLimitOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -129,5 +129,9 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgCreateDerivativeLimitOrder.encode(this.toProto()).finish()
   }
 }

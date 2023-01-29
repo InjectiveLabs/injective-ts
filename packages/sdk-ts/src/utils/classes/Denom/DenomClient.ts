@@ -9,7 +9,7 @@ import {
 import { INJ_DENOM } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
-import { DenomTrace } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/transfer_pb'
+import { DenomTrace } from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/transfer'
 import { checkIsIbcDenomCanonical, tokenMetaToToken } from './utils'
 
 /**
@@ -19,7 +19,7 @@ import { checkIsIbcDenomCanonical, tokenMetaToToken } from './utils'
  * @category Utility Classes
  */
 export class DenomClient {
-  protected cachedDenomTraces: Record<string, DenomTrace.AsObject> = {}
+  protected cachedDenomTraces: Record<string, DenomTrace> = {}
 
   protected tokenMetaUtil: TokenMetaUtil
 
@@ -29,7 +29,7 @@ export class DenomClient {
         ...cachedDenomTraces,
         [ibcTokenKey.toString()]: ibcTokens[
           ibcTokenKey as unknown as string as keyof typeof ibcTokens
-        ] as DenomTrace.AsObject,
+        ] as DenomTrace,
       }),
       {},
     )

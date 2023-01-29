@@ -1,4 +1,4 @@
-import { GrpcCoin } from '../../../types/index'
+import { IndexerGrpcCoin } from '../../../types/index'
 import {
   GrpcIndexerBid,
   GrpcAuction,
@@ -43,7 +43,7 @@ export class IndexerGrpcAuctionTransformer {
     }
   }
 
-  static grpcCoinToCoin(grpcCoin: GrpcCoin): Coin {
+  static grpcCoinToCoin(grpcCoin: IndexerGrpcCoin): Coin {
     return {
       denom: grpcCoin.getDenom(),
       amount: grpcCoin.getAmount(),

@@ -5,7 +5,7 @@ import {
   QueryBalanceResponse,
   QueryTotalSupplyResponse,
   QueryParamsResponse as QueryBankParamsResponse,
-} from '@injectivelabs/chain-api/cosmos/bank/v1beta1/query_pb'
+} from '@injectivelabs/core-proto-ts/cosmos/bank/v1beta1/query'
 import { BankModuleParams, TotalSupply } from '../types'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
 
@@ -15,8 +15,8 @@ import { grpcPaginationToPagination } from '../../../utils/pagination'
 export class ChainGrpcBankTransformer {
   static grpcCoinToCoin(coin: GrpcCoin): Coin {
     return {
-      denom: coin.getDenom(),
-      amount: coin.getAmount(),
+      denom: coin.denom,
+      amount: coin.amount,
     }
   }
 
@@ -27,11 +27,11 @@ export class ChainGrpcBankTransformer {
   static moduleParamsResponseToModuleParams(
     response: QueryBankParamsResponse,
   ): BankModuleParams {
-    const params = response.getParams()!
+    const params = response.params!
 
     return {
-      sendEnabledList: params.getSendEnabledList().map((e) => e.toObject()),
-      defaultSendEnabled: params.getDefaultSendEnabled(),
+      sendEnabledList: params.sendEnabled,
+      defaultSendEnabled: params.defaultSendEnabled,
     }
   }
 
@@ -39,8 +39,8 @@ export class ChainGrpcBankTransformer {
     supply: TotalSupply
     pagination: Pagination
   } {
-    const balances = response.getSupplyList()
-    const pagination = response.getPagination()
+    const balances = response.supply
+    const pagination = response.pagination
 
     return {
       supply: balances.map(ChainGrpcBankTransformer.grpcCoinToCoin),
@@ -49,15 +49,15 @@ export class ChainGrpcBankTransformer {
   }
 
   static balanceResponseToBalance(response: QueryBalanceResponse): Coin {
-    return ChainGrpcBankTransformer.grpcCoinToCoin(response.getBalance()!)
+    return ChainGrpcBankTransformer.grpcCoinToCoin(response.balance!)
   }
 
   static balancesResponseToBalances(response: QueryAllBalancesResponse): {
     balances: Coin[]
     pagination: Pagination
   } {
-    const balances = response.getBalancesList()
-    const pagination = response.getPagination()
+    const balances = response.balances
+    const pagination = response.pagination
 
     return {
       balances: ChainGrpcBankTransformer.grpcCoinsToCoins(balances),

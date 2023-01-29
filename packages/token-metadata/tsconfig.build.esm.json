@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "../../.build-cache/token-metadata.esm.tsbuildinfo"
+  },
+  "references": [
+    {
+      "path": "../ts-types/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../networks/tsconfig.build.esm.json"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
-import { MsgMultiExecute as BaseMsgMultiExecute } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { MsgMultiExecute as BaseMsgMultiExecute } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 import { Msgs } from '../../msgs'
-import { Any } from 'google-protobuf/google/protobuf/any_pb'
+import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 
 export declare namespace MsgMultiExecute {
   export interface Params {
@@ -14,15 +14,15 @@ export declare namespace MsgMultiExecute {
     message: BaseMsgMultiExecute
   }
 
-  export interface Data extends BaseMsgMultiExecute.AsObject {
+  export interface Data extends BaseMsgMultiExecute {
     '@type': '/injective.exchange.v1beta1.MsgMultiExecute'
   }
 
-  export interface Amino extends BaseMsgMultiExecute.AsObject {
+  export interface Amino extends BaseMsgMultiExecute {
     type: 'exchange/MsgMultiExecute'
   }
 
-  export interface Web3 extends BaseMsgMultiExecute.AsObject {
+  export interface Web3 extends BaseMsgMultiExecute {
     '@type': '/injective.exchange.v1beta1.MsgMultiExecute'
   }
 
@@ -47,18 +47,18 @@ export default class MsgMultiExecute extends MsgBase<
     const { params } = this
 
     const messagesAny = params.msgs.map((m) => {
-      const messageAny = new Any()
-      messageAny.setValue(m.toProto().serializeBinary())
-      messageAny.setTypeUrl(m.toDirectSign().type)
+      const messageAny = Any.create()
+      messageAny.value = m.toBinary()
+      messageAny.typeUrl = m.toDirectSign().type
 
       return messageAny
     })
 
-    const message = new BaseMsgMultiExecute()
-    message.setSender(params.injectiveAddress)
-    message.setMsgsList(messagesAny)
+    const message = BaseMsgMultiExecute.create()
+    message.sender = params.injectiveAddress
+    message.msgs = messagesAny
 
-    return message
+    return BaseMsgMultiExecute.fromPartial(message)
   }
 
   public toData(): MsgMultiExecute.Data {
@@ -66,7 +66,7 @@ export default class MsgMultiExecute extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgMultiExecute',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -75,7 +75,7 @@ export default class MsgMultiExecute extends MsgBase<
 
     return {
       type: 'exchange/MsgMultiExecute',
-      ...proto.toObject(),
+      ...proto,
     } as unknown as MsgMultiExecute.Amino
   }
 
@@ -84,7 +84,7 @@ export default class MsgMultiExecute extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgMultiExecute',
-      ...proto.toObject(),
+      ...proto,
     } as unknown as MsgMultiExecute.Web3
   }
 
@@ -95,5 +95,9 @@ export default class MsgMultiExecute extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgMultiExecute',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgMultiExecute.encode(this.toProto()).finish()
   }
 }

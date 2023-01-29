@@ -1,27 +1,17 @@
 import {
+  QueryClientImpl,
   QueryDelegatorDelegationsRequest,
-  QueryDelegatorDelegationsResponse,
   QueryDelegatorUnbondingDelegationsRequest,
-  QueryDelegatorUnbondingDelegationsResponse,
   QueryValidatorDelegationsRequest,
   QueryRedelegationsRequest,
   QueryPoolRequest,
-  QueryPoolResponse,
-  QueryRedelegationsResponse,
-  QueryValidatorDelegationsResponse,
   QueryValidatorsRequest,
-  QueryValidatorsResponse,
-  QueryDelegationResponse,
   QueryDelegationRequest,
   QueryValidatorRequest,
-  QueryValidatorResponse,
   QueryParamsRequest as QueryStakingParamsRequest,
-  QueryParamsResponse as QueryStakingParamsResponse,
   QueryValidatorUnbondingDelegationsRequest,
-  QueryValidatorUnbondingDelegationsResponse,
-} from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb'
-import { Query as StakingQuery } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/query'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcStakingTransformer } from '../transformers'
@@ -34,18 +24,20 @@ import {
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcStakingApi extends BaseConsumer {
+export class ChainGrpcStakingApi {
   protected module: string = ChainModule.Staking
 
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
+
   async fetchModuleParams() {
-    const request = new QueryStakingParamsRequest()
+    const request = QueryStakingParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryStakingParamsRequest,
-        QueryStakingParamsResponse,
-        typeof StakingQuery.Params
-      >(request, StakingQuery.Params)
+      const response = await this.query.Params(request)
 
       return ChainGrpcStakingTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -63,14 +55,10 @@ export class ChainGrpcStakingApi extends BaseConsumer {
   }
 
   async fetchPool() {
-    const request = new QueryPoolRequest()
+    const request = QueryPoolRequest.create()
 
     try {
-      const response = await this.request<
-        QueryPoolRequest,
-        QueryPoolResponse,
-        typeof StakingQuery.Pool
-      >(request, StakingQuery.Pool)
+      const response = await this.query.Pool(request)
 
       return ChainGrpcStakingTransformer.poolResponseToPool(response)
     } catch (e: unknown) {
@@ -86,14 +74,10 @@ export class ChainGrpcStakingApi extends BaseConsumer {
   }
 
   async fetchValidators() {
-    const request = new QueryValidatorsRequest()
+    const request = QueryValidatorsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryValidatorsRequest,
-        QueryValidatorsResponse,
-        typeof StakingQuery.Validators
-      >(request, StakingQuery.Validators)
+      const response = await this.query.Validators(request)
 
       return ChainGrpcStakingTransformer.validatorsResponseToValidators(
         response,
@@ -111,15 +95,12 @@ export class ChainGrpcStakingApi extends BaseConsumer {
   }
 
   async fetchValidator(address: string) {
-    const request = new QueryValidatorRequest()
-    request.setValidatorAddr(address)
+    const request = QueryValidatorRequest.create()
+
+    request.validatorAddr = address
 
     try {
-      const response = await this.request<
-        QueryValidatorRequest,
-        QueryValidatorResponse,
-        typeof StakingQuery.Validator
-      >(request, StakingQuery.Validator)
+      const response = await this.query.Validator(request)
 
       return ChainGrpcStakingTransformer.validatorResponseToValidator(response)
     } catch (e: unknown) {
@@ -141,21 +122,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryValidatorDelegationsRequest()
-    request.setValidatorAddr(validatorAddress)
+    const request = QueryValidatorDelegationsRequest.create()
+
+    request.validatorAddr = validatorAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryValidatorDelegationsRequest,
-        QueryValidatorDelegationsResponse,
-        typeof StakingQuery.ValidatorDelegations
-      >(request, StakingQuery.ValidatorDelegations)
+      const response = await this.query.ValidatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -179,21 +157,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryValidatorDelegationsRequest()
-    request.setValidatorAddr(validatorAddress)
+    const request = QueryValidatorDelegationsRequest.create()
+
+    request.validatorAddr = validatorAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryValidatorDelegationsRequest,
-        QueryValidatorDelegationsResponse,
-        typeof StakingQuery.ValidatorDelegations
-      >(request, StakingQuery.ValidatorDelegations)
+      const response = await this.query.ValidatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -221,21 +196,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryValidatorUnbondingDelegationsRequest()
-    request.setValidatorAddr(validatorAddress)
+    const request = QueryValidatorUnbondingDelegationsRequest.create()
+
+    request.validatorAddr = validatorAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryValidatorUnbondingDelegationsRequest,
-        QueryValidatorUnbondingDelegationsResponse,
-        typeof StakingQuery.ValidatorUnbondingDelegations
-      >(request, StakingQuery.ValidatorUnbondingDelegations)
+      const response = await this.query.ValidatorUnbondingDelegations(request)
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -259,21 +231,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryValidatorUnbondingDelegationsRequest()
-    request.setValidatorAddr(validatorAddress)
+    const request = QueryValidatorUnbondingDelegationsRequest.create()
+
+    request.validatorAddr = validatorAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryValidatorUnbondingDelegationsRequest,
-        QueryValidatorUnbondingDelegationsResponse,
-        typeof StakingQuery.ValidatorUnbondingDelegations
-      >(request, StakingQuery.ValidatorUnbondingDelegations)
+      const response = await this.query.ValidatorUnbondingDelegations(request)
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -301,16 +270,13 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     injectiveAddress: string
     validatorAddress: string
   }) {
-    const request = new QueryDelegationRequest()
-    request.setDelegatorAddr(injectiveAddress)
-    request.setValidatorAddr(validatorAddress)
+    const request = QueryDelegationRequest.create()
+
+    request.delegatorAddr = injectiveAddress
+    request.validatorAddr = validatorAddress
 
     try {
-      const response = await this.request<
-        QueryDelegationRequest,
-        QueryDelegationResponse,
-        typeof StakingQuery.Delegation
-      >(request, StakingQuery.Delegation)
+      const response = await this.query.Delegation(request)
 
       return ChainGrpcStakingTransformer.delegationResponseToDelegation(
         response,
@@ -334,21 +300,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryDelegatorDelegationsRequest()
-    request.setDelegatorAddr(injectiveAddress)
+    const request = QueryDelegatorDelegationsRequest.create()
+
+    request.delegatorAddr = injectiveAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryDelegatorDelegationsRequest,
-        QueryDelegatorDelegationsResponse,
-        typeof StakingQuery.DelegatorDelegations
-      >(request, StakingQuery.DelegatorDelegations)
+      const response = await this.query.DelegatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -372,21 +335,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryDelegatorDelegationsRequest()
-    request.setDelegatorAddr(injectiveAddress)
+    const request = QueryDelegatorDelegationsRequest.create()
+
+    request.delegatorAddr = injectiveAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryDelegatorDelegationsRequest,
-        QueryDelegatorDelegationsResponse,
-        typeof StakingQuery.DelegatorDelegations
-      >(request, StakingQuery.DelegatorDelegations)
+      const response = await this.query.DelegatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -414,21 +374,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryValidatorDelegationsRequest()
-    request.setValidatorAddr(validatorAddress)
+    const request = QueryValidatorDelegationsRequest.create()
+
+    request.validatorAddr = validatorAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryValidatorDelegationsRequest,
-        QueryValidatorDelegationsResponse,
-        typeof StakingQuery.ValidatorDelegations
-      >(request, StakingQuery.ValidatorDelegations)
+      const response = await this.query.ValidatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -452,21 +409,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryValidatorDelegationsRequest()
-    request.setValidatorAddr(validatorAddress)
+    const request = QueryValidatorDelegationsRequest.create()
+
+    request.validatorAddr = validatorAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryValidatorDelegationsRequest,
-        QueryValidatorDelegationsResponse,
-        typeof StakingQuery.ValidatorDelegations
-      >(request, StakingQuery.ValidatorDelegations)
+      const response = await this.query.ValidatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -494,21 +448,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryDelegatorUnbondingDelegationsRequest()
-    request.setDelegatorAddr(injectiveAddress)
+    const request = QueryDelegatorUnbondingDelegationsRequest.create()
+
+    request.delegatorAddr = injectiveAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryDelegatorUnbondingDelegationsRequest,
-        QueryDelegatorUnbondingDelegationsResponse,
-        typeof StakingQuery.DelegatorUnbondingDelegations
-      >(request, StakingQuery.DelegatorUnbondingDelegations)
+      const response = await this.query.DelegatorUnbondingDelegations(request)
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -532,21 +483,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryDelegatorUnbondingDelegationsRequest()
-    request.setDelegatorAddr(injectiveAddress)
+    const request = QueryDelegatorUnbondingDelegationsRequest.create()
+
+    request.delegatorAddr = injectiveAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryDelegatorUnbondingDelegationsRequest,
-        QueryDelegatorUnbondingDelegationsResponse,
-        typeof StakingQuery.DelegatorUnbondingDelegations
-      >(request, StakingQuery.DelegatorUnbondingDelegations)
+      const response = await this.query.DelegatorUnbondingDelegations(request)
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -574,21 +522,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryRedelegationsRequest()
-    request.setDelegatorAddr(injectiveAddress)
+    const request = QueryRedelegationsRequest.create()
+
+    request.delegatorAddr = injectiveAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryRedelegationsRequest,
-        QueryRedelegationsResponse,
-        typeof StakingQuery.Redelegations
-      >(request, StakingQuery.Redelegations)
+      const response = await this.query.Redelegations(request)
 
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
         response,
@@ -612,21 +557,18 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryRedelegationsRequest()
-    request.setDelegatorAddr(injectiveAddress)
+    const request = QueryRedelegationsRequest.create()
+
+    request.delegatorAddr = injectiveAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryRedelegationsRequest,
-        QueryRedelegationsResponse,
-        typeof StakingQuery.Redelegations
-      >(request, StakingQuery.Redelegations)
+      const response = await this.query.Redelegations(request)
 
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
         response,

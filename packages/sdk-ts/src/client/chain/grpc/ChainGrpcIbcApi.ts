@@ -1,11 +1,9 @@
-import { Query as IBCQuery } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/query_pb_service'
 import {
+  QueryClientImpl,
   QueryDenomTraceRequest,
-  QueryDenomTraceResponse,
   QueryDenomTracesRequest,
-  QueryDenomTracesResponse,
-} from '@injectivelabs/chain-api/ibc/applications/transfer/v1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/query'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
@@ -15,21 +13,24 @@ import {
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcIbcApi extends BaseConsumer {
+export class ChainGrpcIbcApi {
   protected module: string = ChainModule.Ibc
 
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
+
   async fetchDenomTrace(hash: string) {
-    const request = new QueryDenomTraceRequest()
-    request.setHash(hash)
+    const request = QueryDenomTraceRequest.create()
+
+    request.hash = hash
 
     try {
-      const response = await this.request<
-        QueryDenomTraceRequest,
-        QueryDenomTraceResponse,
-        typeof IBCQuery.DenomTrace
-      >(request, IBCQuery.DenomTrace)
+      const response = await this.query.DenomTrace(request)
 
-      return response.getDenomTrace()!.toObject()
+      return response.denomTrace!
     } catch (e: any) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
@@ -43,16 +44,12 @@ export class ChainGrpcIbcApi extends BaseConsumer {
   }
 
   async fetchDenomsTrace() {
-    const request = new QueryDenomTracesRequest()
+    const request = QueryDenomTracesRequest.create()
 
     try {
-      const response = await this.request<
-        QueryDenomTracesRequest,
-        QueryDenomTracesResponse,
-        typeof IBCQuery.DenomTraces
-      >(request, IBCQuery.DenomTraces)
+      const response = await this.query.DenomTraces(request)
 
-      return response.getDenomTracesList().map((trace) => trace.toObject())
+      return response.denomTraces
     } catch (e: any) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e

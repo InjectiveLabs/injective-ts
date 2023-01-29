@@ -1,11 +1,11 @@
-import { MsgVote as BaseMsgVote } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
-import { VoteOptionMap } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
+import { MsgVote as BaseMsgVote } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/tx'
+import { VoteOption } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/gov'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgVote {
   export interface Params {
     proposalId: number
-    vote: VoteOptionMap[keyof VoteOptionMap]
+    vote: VoteOption
     voter: string
   }
 
@@ -14,15 +14,15 @@ export declare namespace MsgVote {
     message: BaseMsgVote
   }
 
-  export interface Data extends BaseMsgVote.AsObject {
+  export interface Data extends BaseMsgVote {
     '@type': '/cosmos.gov.v1beta1.MsgVote'
   }
 
-  export interface Amino extends BaseMsgVote.AsObject {
+  export interface Amino extends BaseMsgVote {
     type: 'cosmos-sdk/MsgVote'
   }
 
-  export interface Web3 extends BaseMsgVote.AsObject {
+  export interface Web3 extends BaseMsgVote {
     '@type': '/cosmos.authz.v1beta1.MsgVote'
   }
 
@@ -46,10 +46,10 @@ export default class MsgVote extends MsgBase<
   public toProto(): MsgVote.Proto {
     const { params } = this
 
-    const message = new BaseMsgVote()
-    message.setOption(params.vote)
-    message.setProposalId(params.proposalId)
-    message.setVoter(params.voter)
+    const message = BaseMsgVote.create()
+    message.option = params.vote
+    message.proposalId = params.proposalId.toString()
+    message.voter = params.voter
 
     return message
   }
@@ -59,7 +59,7 @@ export default class MsgVote extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgVote',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -68,7 +68,7 @@ export default class MsgVote extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgVote',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -89,5 +89,9 @@ export default class MsgVote extends MsgBase<
       type: '/cosmos.gov.v1beta1.MsgVote',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgVote.encode(this.toProto()).finish()
   }
 }

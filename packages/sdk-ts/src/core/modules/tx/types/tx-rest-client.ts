@@ -1,5 +1,8 @@
-import { Fee, ModeInfo } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { PublicKey } from '@injectivelabs/chain-api/tendermint/crypto/keys_pb'
+import {
+  Fee,
+  ModeInfo,
+} from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
+import { PublicKey } from '@injectivelabs/core-proto-ts/tendermint/crypto/keys'
 
 /* eslint-disable camelcase */
 export interface RestSignerInfo {

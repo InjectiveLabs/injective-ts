@@ -1,13 +1,13 @@
-import { BroadcastModeMap } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/service_pb'
+import { BroadcastMode } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/service'
 import {
   SignDoc,
   TxRaw,
-} from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+} from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { StdFee } from '@cosmjs/amino'
-import { SignModeMap } from '@injectivelabs/chain-api/cosmos/tx/signing/v1beta1/signing_pb'
+import { SignMode } from '@injectivelabs/core-proto-ts/cosmos/tx/signing/v1beta1/signing'
 
 export interface TxClientBroadcastOptions {
-  mode: BroadcastModeMap[keyof BroadcastModeMap]
+  mode: BroadcastMode
   timeout: number
 }
 
@@ -72,7 +72,7 @@ export interface CreateTransactionWithSignersArgs {
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
   message: MsgArg | MsgArg[] // the message that should be packed into the transaction
   signers: SignerDetails | SignerDetails[] // the signers of the transaction
-  signMode?: SignModeMap[keyof SignModeMap]
+  signMode?: SignMode
   timeoutHeight?: number // the height at which the transaction should be considered invalid
 }
 
@@ -85,7 +85,7 @@ export interface CreateTransactionArgs {
   pubKey: string // the pubKey of the signer of the transaction in base64
   sequence: number // the sequence (nonce) of the signer of the transaction
   accountNumber: number // the account number of the signer of the transaction
-  signMode?: SignModeMap[keyof SignModeMap]
+  signMode?: SignMode
   timeoutHeight?: number // the height at which the transaction should be considered invalid
 }
 

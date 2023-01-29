@@ -1,9 +1,9 @@
-import { MsgCreateDerivativeMarketOrder as BaseMsgCreateDerivativeMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { MsgCreateDerivativeMarketOrder as BaseMsgCreateDerivativeMarketOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import {
   DerivativeOrder,
   OrderInfo,
-  OrderTypeMap,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+  OrderType,
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 
@@ -12,7 +12,7 @@ export declare namespace MsgCreateDerivativeMarketOrder {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderTypeMap[keyof OrderTypeMap]
+    orderType: OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
@@ -25,15 +25,15 @@ export declare namespace MsgCreateDerivativeMarketOrder {
     message: BaseMsgCreateDerivativeMarketOrder
   }
 
-  export interface Data extends BaseMsgCreateDerivativeMarketOrder.AsObject {
+  export interface Data extends BaseMsgCreateDerivativeMarketOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
   }
 
-  export interface Amino extends BaseMsgCreateDerivativeMarketOrder.AsObject {
+  export interface Amino extends BaseMsgCreateDerivativeMarketOrder {
     type: 'exchange/MsgCreateDerivativeMarketOrder'
   }
 
-  export interface Web3 extends BaseMsgCreateDerivativeMarketOrder.AsObject {
+  export interface Web3 extends BaseMsgCreateDerivativeMarketOrder {
     '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
   }
 
@@ -41,25 +41,25 @@ export declare namespace MsgCreateDerivativeMarketOrder {
 }
 
 const createMarketOrder = (params: MsgCreateDerivativeMarketOrder.Params) => {
-  const orderInfo = new OrderInfo()
-  orderInfo.setSubaccountId(params.subaccountId)
-  orderInfo.setFeeRecipient(params.feeRecipient)
-  orderInfo.setPrice(params.price)
-  orderInfo.setQuantity(params.quantity)
+  const orderInfo = OrderInfo.create()
+  orderInfo.subaccountId = params.subaccountId
+  orderInfo.feeRecipient = params.feeRecipient
+  orderInfo.price = params.price
+  orderInfo.quantity = params.quantity
 
-  const derivativeOrder = new DerivativeOrder()
-  derivativeOrder.setMarketId(params.marketId)
-  derivativeOrder.setOrderType(params.orderType)
-  derivativeOrder.setOrderInfo(orderInfo)
-  derivativeOrder.setMargin(params.margin)
+  const derivativeOrder = DerivativeOrder.create()
+  derivativeOrder.marketId = params.marketId
+  derivativeOrder.orderType = params.orderType
+  derivativeOrder.orderInfo = orderInfo
+  derivativeOrder.margin = params.margin
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
+  derivativeOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = new BaseMsgCreateDerivativeMarketOrder()
-  message.setSender(params.injectiveAddress)
-  message.setOrder(derivativeOrder)
+  const message = BaseMsgCreateDerivativeMarketOrder.create()
+  message.sender = params.injectiveAddress
+  message.order = derivativeOrder
 
-  return message
+  return BaseMsgCreateDerivativeMarketOrder.fromPartial(message)
 }
 
 /**
@@ -98,7 +98,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -108,7 +108,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
 
     return {
       type: 'exchange/MsgCreateDerivativeMarketOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -129,5 +129,9 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgCreateDerivativeMarketOrder.encode(this.toProto()).finish()
   }
 }

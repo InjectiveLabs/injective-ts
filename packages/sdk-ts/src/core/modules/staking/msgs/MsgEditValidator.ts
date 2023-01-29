@@ -1,6 +1,6 @@
-import { MsgEditValidator as BaseMsgEditValidator } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
+import { MsgEditValidator as BaseMsgEditValidator } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
-import { Description } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/staking_pb'
+import { Description } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/staking'
 
 export declare namespace MsgEditValidator {
   export interface Params {
@@ -21,15 +21,15 @@ export declare namespace MsgEditValidator {
     message: BaseMsgEditValidator
   }
 
-  export interface Data extends BaseMsgEditValidator.AsObject {
+  export interface Data extends BaseMsgEditValidator {
     '@type': '/cosmos.staking.v1beta1.MsgEditValidator'
   }
 
-  export interface Amino extends BaseMsgEditValidator.AsObject {
+  export interface Amino extends BaseMsgEditValidator {
     type: 'cosmos-sdk/MsgEditValidator'
   }
 
-  export interface Web3 extends BaseMsgEditValidator.AsObject {
+  export interface Web3 extends BaseMsgEditValidator {
     '@type': '/cosmos.authz.v1beta1.MsgEditValidator'
   }
 
@@ -53,45 +53,45 @@ export default class MsgEditValidator extends MsgBase<
   public toProto(): MsgEditValidator.Proto {
     const { params } = this
 
-    const message = new BaseMsgEditValidator()
+    const message = BaseMsgEditValidator.create()
 
     if (params.commissionRate) {
-      message.setCommissionRate(params.commissionRate)
+      message.commissionRate = params.commissionRate
     }
 
     if (params.minSelfDelegation) {
-      message.setMinSelfDelegation(params.minSelfDelegation)
+      message.minSelfDelegation = params.minSelfDelegation
     }
 
     if (params.description) {
-      const description = new Description()
+      const description = Description.create()
 
       if (params.description.moniker) {
-        description.setMoniker(params.description.moniker)
+        description.moniker = params.description.moniker
       }
 
       if (params.description.identity) {
-        description.setIdentity(params.description.identity)
+        description.identity = params.description.identity
       }
 
       if (params.description.website) {
-        description.setWebsite(params.description.website)
+        description.website = params.description.website
       }
 
       if (params.description.securityContact) {
-        description.setSecurityContact(params.description.securityContact)
+        description.securityContact = params.description.securityContact
       }
 
       if (params.description.details) {
-        description.setDetails(params.description.details)
+        description.details = params.description.details
       }
 
-      message.setDescription(description)
+      message.description = description
     }
 
-    message.setValidatorAddress(params.validatorAddress)
+    message.validatorAddress = params.validatorAddress
 
-    return message
+    return BaseMsgEditValidator.fromPartial(message)
   }
 
   public toData(): MsgEditValidator.Data {
@@ -99,7 +99,7 @@ export default class MsgEditValidator extends MsgBase<
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgEditValidator',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -108,7 +108,7 @@ export default class MsgEditValidator extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgEditValidator',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -129,5 +129,9 @@ export default class MsgEditValidator extends MsgBase<
       type: '/cosmos.staking.v1beta1.MsgEditValidator',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgEditValidator.encode(this.toProto()).finish()
   }
 }

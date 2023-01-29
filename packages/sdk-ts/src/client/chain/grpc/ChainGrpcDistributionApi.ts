@@ -1,36 +1,35 @@
 import {
+  QueryClientImpl,
   QueryDelegationRewardsRequest,
-  QueryDelegationRewardsResponse,
   QueryDelegationTotalRewardsRequest,
-  QueryDelegationTotalRewardsResponse,
   QueryParamsRequest as QueryDistributionParamsRequest,
-  QueryParamsResponse as QueryDistributionParamsResponse,
-} from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb'
-import { Query as DistributionQuery } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb_service'
+} from '@injectivelabs/core-proto-ts/cosmos/distribution/v1beta1/query'
 import { Coin } from '@injectivelabs/ts-types'
-import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcDistributionTransformer } from '../transformers'
 import { ValidatorRewards, ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcDistributionApi extends BaseConsumer {
+export class ChainGrpcDistributionApi {
   protected module: string = ChainModule.Distribution
 
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
+
   async fetchModuleParams() {
-    const request = new QueryDistributionParamsRequest()
+    const request = QueryDistributionParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryDistributionParamsRequest,
-        QueryDistributionParamsResponse,
-        typeof DistributionQuery.Params
-      >(request, DistributionQuery.Params)
+      const response = await this.query.Params(request)
 
       return ChainGrpcDistributionTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -54,16 +53,13 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
     delegatorAddress: string
     validatorAddress: string
   }) {
-    const request = new QueryDelegationRewardsRequest()
-    request.setValidatorAddress(validatorAddress)
-    request.setDelegatorAddress(delegatorAddress)
+    const request = QueryDelegationRewardsRequest.create()
+
+    request.validatorAddress = validatorAddress
+    request.delegatorAddress = delegatorAddress
 
     try {
-      const response = await this.request<
-        QueryDelegationRewardsRequest,
-        QueryDelegationRewardsResponse,
-        typeof DistributionQuery.DelegationRewards
-      >(request, DistributionQuery.DelegationRewards)
+      const response = await this.query.DelegationRewards(request)
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
@@ -84,16 +80,13 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
     delegatorAddress: string
     validatorAddress: string
   }) {
-    const request = new QueryDelegationRewardsRequest()
-    request.setValidatorAddress(validatorAddress)
-    request.setDelegatorAddress(delegatorAddress)
+    const request = QueryDelegationRewardsRequest.create()
+
+    request.validatorAddress = validatorAddress
+    request.delegatorAddress = delegatorAddress
 
     try {
-      const response = await this.request<
-        QueryDelegationRewardsRequest,
-        QueryDelegationRewardsResponse,
-        typeof DistributionQuery.DelegationRewards
-      >(request, DistributionQuery.DelegationRewards)
+      const response = await this.query.DelegationRewards(request)
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
@@ -112,15 +105,12 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
   }
 
   async fetchDelegatorRewards(injectiveAddress: string) {
-    const request = new QueryDelegationTotalRewardsRequest()
-    request.setDelegatorAddress(injectiveAddress)
+    const request = QueryDelegationTotalRewardsRequest.create()
+
+    request.delegatorAddress = injectiveAddress
 
     try {
-      const response = await this.request<
-        QueryDelegationTotalRewardsRequest,
-        QueryDelegationTotalRewardsResponse,
-        typeof DistributionQuery.DelegationTotalRewards
-      >(request, DistributionQuery.DelegationTotalRewards)
+      const response = await this.query.DelegationTotalRewards(request)
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,
@@ -135,15 +125,12 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
   }
 
   async fetchDelegatorRewardsNoThrow(injectiveAddress: string) {
-    const request = new QueryDelegationTotalRewardsRequest()
-    request.setDelegatorAddress(injectiveAddress)
+    const request = QueryDelegationTotalRewardsRequest.create()
+
+    request.delegatorAddress = injectiveAddress
 
     try {
-      const response = await this.request<
-        QueryDelegationTotalRewardsRequest,
-        QueryDelegationTotalRewardsResponse,
-        typeof DistributionQuery.DelegationTotalRewards
-      >(request, DistributionQuery.DelegationTotalRewards)
+      const response = await this.query.DelegationTotalRewards(request)
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,

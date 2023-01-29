@@ -1,15 +1,11 @@
-import { Query as BankQuery } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/query_pb_service'
 import {
+  QueryClientImpl,
   QueryAllBalancesRequest,
-  QueryAllBalancesResponse,
   QueryBalanceRequest,
-  QueryBalanceResponse,
   QueryTotalSupplyRequest,
-  QueryTotalSupplyResponse,
   QueryParamsRequest as QueryBankParamsRequest,
-  QueryParamsResponse as QueryBankParamsResponse,
-} from '@injectivelabs/chain-api/cosmos/bank/v1beta1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/core-proto-ts/cosmos/bank/v1beta1/query'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcBankTransformer } from '../transformers'
@@ -22,18 +18,20 @@ import { ChainModule } from '../types'
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcBankApi extends BaseConsumer {
+export class ChainGrpcBankApi {
   protected module: string = ChainModule.Bank
 
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
+
   async fetchModuleParams() {
-    const request = new QueryBankParamsRequest()
+    const request = QueryBankParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryBankParamsRequest,
-        QueryBankParamsResponse,
-        typeof BankQuery.Params
-      >(request, BankQuery.Params)
+      const response = await this.query.Params(request)
 
       return ChainGrpcBankTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -57,16 +55,13 @@ export class ChainGrpcBankApi extends BaseConsumer {
     accountAddress: string
     denom: string
   }) {
-    const request = new QueryBalanceRequest()
-    request.setAddress(accountAddress)
-    request.setDenom(denom)
+    const request = QueryBalanceRequest.create()
+
+    request.address = accountAddress
+    request.denom = denom
 
     try {
-      const response = await this.request<
-        QueryBalanceRequest,
-        QueryBalanceResponse,
-        typeof BankQuery.Balance
-      >(request, BankQuery.Balance)
+      const response = await this.query.Balance(request)
 
       return ChainGrpcBankTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {
@@ -82,15 +77,12 @@ export class ChainGrpcBankApi extends BaseConsumer {
   }
 
   async fetchBalances(address: string) {
-    const request = new QueryAllBalancesRequest()
-    request.setAddress(address)
+    const request = QueryAllBalancesRequest.create()
+
+    request.address = address
 
     try {
-      const response = await this.request<
-        QueryAllBalancesRequest,
-        QueryAllBalancesResponse,
-        typeof BankQuery.AllBalances
-      >(request, BankQuery.AllBalances)
+      const response = await this.query.AllBalances(request)
 
       return ChainGrpcBankTransformer.balancesResponseToBalances(response)
     } catch (e: unknown) {
@@ -106,19 +98,15 @@ export class ChainGrpcBankApi extends BaseConsumer {
   }
 
   async fetchTotalSupply(pagination?: PaginationOption) {
-    const request = new QueryTotalSupplyRequest()
+    const request = QueryTotalSupplyRequest.create()
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryTotalSupplyRequest,
-        QueryTotalSupplyResponse,
-        typeof BankQuery.TotalSupply
-      >(request, BankQuery.TotalSupply)
+      const response = await this.query.TotalSupply(request)
 
       return ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply(response)
     } catch (e: unknown) {

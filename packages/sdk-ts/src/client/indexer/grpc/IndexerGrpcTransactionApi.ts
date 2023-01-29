@@ -13,7 +13,7 @@ import {
   CosmosPubKey,
 } from '@injectivelabs/indexer-api/injective_exchange_rpc_pb'
 import { InjectiveExchangeRPC } from '@injectivelabs/indexer-api/injective_exchange_rpc_pb_service'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { Coin as OldCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   DEFAULT_GAS_LIMIT,
@@ -29,7 +29,7 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 
 /**
  * @category Indexer Grpc API
@@ -58,7 +58,7 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     feeDenom?: string
     feePrice?: string
   }) {
-    const txFeeAmount = new Coin()
+    const txFeeAmount = new OldCoin()
     txFeeAmount.setDenom(feeDenom)
     txFeeAmount.setAmount(feePrice)
 
@@ -130,7 +130,7 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     feeDenom?: string
     feePrice?: string
   }) {
-    const txFeeAmount = new Coin()
+    const txFeeAmount = new OldCoin()
     txFeeAmount.setDenom(feeDenom)
     txFeeAmount.setAmount(feePrice)
 
@@ -205,7 +205,7 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     timeoutHeight?: number
     delegatedFee?: boolean
   }) {
-    const txFeeAmount = new Coin()
+    const txFeeAmount = new OldCoin()
     txFeeAmount.setDenom(feeDenom)
     txFeeAmount.setAmount(feePrice)
 
@@ -342,13 +342,13 @@ export class IndexerGrpcTransactionApi extends BaseConsumer {
     cosmosPubKey.setType(pubKey.type)
     cosmosPubKey.setKey(`0x${pubKeyInHex}`)
 
-    txRaw.clearSignaturesList()
+    txRaw.signatures = []
 
     const broadcastTxRequest = new BroadcastCosmosTxRequest()
     broadcastTxRequest.setSenderAddress(address)
     broadcastTxRequest.setPubKey(cosmosPubKey)
     broadcastTxRequest.setSignature(`0x${signatureInHex}`)
-    broadcastTxRequest.setTx(txRaw.serializeBinary())
+    broadcastTxRequest.setTx(TxRaw.encode(txRaw).finish())
 
     try {
       const response = await this.request<

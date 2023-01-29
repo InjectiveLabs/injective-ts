@@ -21,7 +21,7 @@ import {
   MoonbeamTxResponse,
   WormholeTxResponse,
 } from './../../types/bridge'
-import { UserDeposit } from '@injectivelabs/sdk-ts/dist/client'
+import { UserDeposit } from '@injectivelabs/sdk-ts'
 import {
   getExplorerUrl,
   getCosmosExplorerUrl,

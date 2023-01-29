@@ -1,4 +1,4 @@
-import { OracleTypeMap } from '@injectivelabs/chain-api/injective/oracle/v1beta1/oracle_pb'
+import { OracleType } from '@injectivelabs/core-proto-ts/injective/oracle/v1beta1/oracle'
 import {
   InsuranceFund as GrpcIndexerInsuranceFund,
   RedemptionSchedule as GrpcIndexerRedemptionSchedule,
@@ -43,7 +43,7 @@ export interface InsuranceFundCreateParams {
   quoteDenom: string
   oracleBase: string
   oracleQuote: string
-  oracleType: OracleTypeMap[keyof OracleTypeMap]
+  oracleType: OracleType
   expiry?: number
 }
 

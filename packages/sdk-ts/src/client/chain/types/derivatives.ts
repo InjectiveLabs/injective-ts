@@ -1,6 +1,6 @@
 import {
   OrderInfo as GrpcOrderInfo,
   DerivativeMarket as GrpcDerivativeMarket,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 
 export { GrpcOrderInfo, GrpcDerivativeMarket }

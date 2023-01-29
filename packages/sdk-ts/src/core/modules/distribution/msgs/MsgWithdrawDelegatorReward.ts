@@ -1,4 +1,4 @@
-import { MsgWithdrawDelegatorReward as BaseMsgWithdrawDelegatorReward } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/tx_pb'
+import { MsgWithdrawDelegatorReward as BaseMsgWithdrawDelegatorReward } from '@injectivelabs/core-proto-ts/cosmos/distribution/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgWithdrawDelegatorReward {
@@ -12,15 +12,15 @@ export declare namespace MsgWithdrawDelegatorReward {
     message: BaseMsgWithdrawDelegatorReward
   }
 
-  export interface Data extends BaseMsgWithdrawDelegatorReward.AsObject {
+  export interface Data extends BaseMsgWithdrawDelegatorReward {
     '@type': '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward'
   }
 
-  export interface Amino extends BaseMsgWithdrawDelegatorReward.AsObject {
+  export interface Amino extends BaseMsgWithdrawDelegatorReward {
     type: 'cosmos-sdk/MsgWithdrawDelegationReward'
   }
 
-  export interface Web3 extends BaseMsgWithdrawDelegatorReward.AsObject {
+  export interface Web3 extends BaseMsgWithdrawDelegatorReward {
     '@type': '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward'
   }
 
@@ -46,11 +46,11 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
   public toProto(): MsgWithdrawDelegatorReward.Proto {
     const { params } = this
 
-    const message = new BaseMsgWithdrawDelegatorReward()
-    message.setDelegatorAddress(params.delegatorAddress)
-    message.setValidatorAddress(params.validatorAddress)
+    const message = BaseMsgWithdrawDelegatorReward.create()
+    message.delegatorAddress = params.delegatorAddress
+    message.validatorAddress = params.validatorAddress
 
-    return message
+    return BaseMsgWithdrawDelegatorReward.fromPartial(message)
   }
 
   public toData(): MsgWithdrawDelegatorReward.Data {
@@ -58,7 +58,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
 
     return {
       '@type': '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -67,7 +67,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgWithdrawDelegationReward',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -88,5 +88,9 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
       type: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgWithdrawDelegatorReward.encode(this.toProto()).finish()
   }
 }

@@ -1,4 +1,4 @@
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { hashToHex } from '../../../../../utils/crypto'
 
 export class TxClient {
@@ -7,7 +7,7 @@ export class TxClient {
    * @param tx transaction to encode
    */
   public static encode(tx: TxRaw): string {
-    return Buffer.from(tx.serializeBinary()).toString('base64')
+    return Buffer.from(TxRaw.encode(tx).finish()).toString('base64')
   }
 
   /**
@@ -15,7 +15,7 @@ export class TxClient {
    * @param tx transaction string to decode
    */
   public static decode(encodedTx: string): TxRaw {
-    return TxRaw.deserializeBinary(Buffer.from(encodedTx, 'base64'))
+    return TxRaw.decode(Buffer.from(encodedTx, 'base64'))
   }
 
   /**

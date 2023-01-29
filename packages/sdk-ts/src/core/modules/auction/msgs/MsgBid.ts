@@ -1,5 +1,5 @@
-import { MsgBid as BaseMsgBid } from '@injectivelabs/chain-api/injective/auction/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { MsgBid as BaseMsgBid } from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/tx'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgBid {
@@ -17,15 +17,15 @@ export declare namespace MsgBid {
     message: BaseMsgBid
   }
 
-  export interface Data extends BaseMsgBid.AsObject {
+  export interface Data extends BaseMsgBid {
     '@type': '/injective.auction.v1beta1.MsgBid'
   }
 
-  export interface Amino extends BaseMsgBid.AsObject {
+  export interface Amino extends BaseMsgBid {
     type: 'auction/MsgBid'
   }
 
-  export interface Web3 extends BaseMsgBid.AsObject {
+  export interface Web3 extends BaseMsgBid {
     '@type': '/injective.auction.v1beta1.MsgBid'
   }
 
@@ -49,16 +49,16 @@ export default class MsgBid extends MsgBase<
   public toProto(): MsgBid.Proto {
     const { params } = this
 
-    const amountCoin = new Coin()
-    amountCoin.setAmount(params.amount.amount)
-    amountCoin.setDenom(params.amount.denom)
+    const amountCoin = Coin.create()
+    amountCoin.amount = params.amount.amount
+    amountCoin.denom = params.amount.denom
 
-    const message = new BaseMsgBid()
-    message.setSender(params.injectiveAddress)
-    message.setRound(params.round)
-    message.setBidAmount(amountCoin)
+    const message = BaseMsgBid.create()
+    message.sender = params.injectiveAddress
+    message.round = params.round.toString()
+    message.bidAmount = amountCoin
 
-    return message
+    return BaseMsgBid.fromPartial(message)
   }
 
   public toData(): MsgBid.Data {
@@ -66,7 +66,7 @@ export default class MsgBid extends MsgBase<
 
     return {
       '@type': '/injective.auction.v1beta1.MsgBid',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -75,7 +75,7 @@ export default class MsgBid extends MsgBase<
 
     return {
       type: 'auction/MsgBid',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -96,5 +96,9 @@ export default class MsgBid extends MsgBase<
       '@type': '/injective.auction.v1beta1.MsgBid',
       ...rest,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgBid.encode(this.toProto()).finish()
   }
 }

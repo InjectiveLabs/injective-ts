@@ -2,10 +2,10 @@ import {
   ContractInfo as grpcContractInfo,
   ContractInfo as GrpcContractInfo,
   ContractCodeHistoryEntry as GrpcContractCodeHistoryEntry,
-  ContractCodeHistoryOperationTypeMap,
+  ContractCodeHistoryOperationType,
   AbsoluteTxPosition as GrpcAbsoluteTxPosition,
-} from '@injectivelabs/chain-api/cosmwasm/wasm/v1/types_pb'
-import { CodeInfoResponse as GrpcCodeInfoResponse } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/query_pb'
+} from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/types'
+import { CodeInfoResponse as GrpcCodeInfoResponse } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/query'
 import { Pagination } from './../../../types/pagination'
 
 export interface AbsoluteTxPosition {
@@ -44,7 +44,7 @@ export interface AbsoluteTxPosition {
 }
 
 export interface ContractCodeHistoryEntry {
-  operation: ContractCodeHistoryOperationTypeMap[keyof ContractCodeHistoryOperationTypeMap]
+  operation: ContractCodeHistoryOperationType
   codeId: number
   updated?: AbsoluteTxPosition
   msg: Uint8Array | string
@@ -61,6 +61,6 @@ export {
   GrpcContractInfo,
   GrpcContractCodeHistoryEntry,
   GrpcAbsoluteTxPosition,
-  ContractCodeHistoryOperationTypeMap,
+  ContractCodeHistoryOperationType,
   GrpcCodeInfoResponse,
 }

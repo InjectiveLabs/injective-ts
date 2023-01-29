@@ -1,31 +1,32 @@
-import { Query as PeggyQuery } from '@injectivelabs/chain-api/injective/peggy/v1/query_pb_service'
 import {
+  QueryClientImpl,
   QueryParamsRequest as QueryPeggyParamsRequest,
-  QueryParamsResponse as QueryPeggyParamsResponse,
-} from '@injectivelabs/chain-api/injective/peggy/v1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/core-proto-ts/injective/peggy/v1/query'
 import { ChainGrpcPeggyTransformer } from '../transformers'
 import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcPeggyApi extends BaseConsumer {
+export class ChainGrpcPeggyApi {
   protected module: string = ChainModule.Peggy
 
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
+
   async fetchModuleParams() {
-    const request = new QueryPeggyParamsRequest()
+    const request = QueryPeggyParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryPeggyParamsRequest,
-        QueryPeggyParamsResponse,
-        typeof PeggyQuery.Params
-      >(request, PeggyQuery.Params)
+      const response = await this.query.Params(request)
 
       return ChainGrpcPeggyTransformer.moduleParamsResponseToModuleParams(
         response,

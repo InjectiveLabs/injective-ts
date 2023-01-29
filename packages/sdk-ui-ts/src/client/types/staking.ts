@@ -2,7 +2,7 @@ import {
   BondStatus,
   ValidatorCommission,
   ValidatorDescription,
-} from '@injectivelabs/sdk-ts/dist/client/chain'
+} from '@injectivelabs/sdk-ts'
 
 export interface UiValidator {
   jailed: boolean

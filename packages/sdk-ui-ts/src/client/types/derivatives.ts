@@ -8,12 +8,12 @@ import {
   DerivativeLimitOrder as UiDerivativeLimitOrder,
   DerivativeOrderHistory as UiDerivativeOrderHistory,
   DerivativeOrderSide,
-} from '@injectivelabs/sdk-ts/dist/client/indexer/types/derivatives'
-import { Orderbook as UiDerivativeOrderbook } from '@injectivelabs/sdk-ts/dist/client/indexer/types/exchange'
+} from '@injectivelabs/sdk-ts'
+import { Orderbook as UiDerivativeOrderbook } from '@injectivelabs/sdk-ts'
 import {
   ChronosDerivativeMarketSummary,
   AllChronosDerivativeMarketSummary,
-} from '@injectivelabs/sdk-ts/dist/client/indexer/types/derivatives-rest'
+} from '@injectivelabs/sdk-ts'
 import { Token } from '@injectivelabs/token-metadata'
 import { Change, MarketBase, MarketType } from './common'
 

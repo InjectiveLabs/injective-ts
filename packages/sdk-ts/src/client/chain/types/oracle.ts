@@ -1,5 +1,7 @@
-import { Params as GrpcOracleParams } from '@injectivelabs/chain-api/injective/oracle/v1beta1/oracle_pb'
+import { Params as GrpcOracleParams } from '@injectivelabs/core-proto-ts/injective/oracle/v1beta1/oracle'
 
-export interface OracleModuleParams extends GrpcOracleParams.AsObject {}
+export interface OracleModuleParams extends GrpcOracleParams {
+  //
+}
 
 export { GrpcOracleParams }

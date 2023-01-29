@@ -1,4 +1,4 @@
-import { MsgWithdrawValidatorCommission as BaseMsgWithdrawValidatorCommission } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/tx_pb'
+import { MsgWithdrawValidatorCommission as BaseMsgWithdrawValidatorCommission } from '@injectivelabs/core-proto-ts/cosmos/distribution/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgWithdrawValidatorCommission {
@@ -11,15 +11,15 @@ export declare namespace MsgWithdrawValidatorCommission {
     message: BaseMsgWithdrawValidatorCommission
   }
 
-  export interface Data extends BaseMsgWithdrawValidatorCommission.AsObject {
+  export interface Data extends BaseMsgWithdrawValidatorCommission {
     '@type': '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission'
   }
 
-  export interface Amino extends BaseMsgWithdrawValidatorCommission.AsObject {
+  export interface Amino extends BaseMsgWithdrawValidatorCommission {
     type: 'cosmos-sdk/MsgWithdrawDelegationReward'
   }
 
-  export interface Web3 extends BaseMsgWithdrawValidatorCommission.AsObject {
+  export interface Web3 extends BaseMsgWithdrawValidatorCommission {
     '@type': '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission'
   }
 
@@ -45,8 +45,8 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
   public toProto(): MsgWithdrawValidatorCommission.Proto {
     const { params } = this
 
-    const message = new BaseMsgWithdrawValidatorCommission()
-    message.setValidatorAddress(params.validatorAddress)
+    const message = BaseMsgWithdrawValidatorCommission.create()
+    message.validatorAddress = params.validatorAddress
 
     return message
   }
@@ -56,7 +56,7 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
 
     return {
       '@type': '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -65,7 +65,7 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgWithdrawDelegationReward',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -86,5 +86,9 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
       type: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgWithdrawValidatorCommission.encode(this.toProto()).finish()
   }
 }

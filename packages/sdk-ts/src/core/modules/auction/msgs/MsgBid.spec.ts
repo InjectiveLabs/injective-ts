@@ -1,4 +1,3 @@
-import { MsgBid as BaseMsgBid } from '@injectivelabs/chain-api/injective/auction/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/test-utils'
 import MsgBid from './MsgBid'
@@ -26,8 +25,7 @@ describe('MsgBid', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgBid).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

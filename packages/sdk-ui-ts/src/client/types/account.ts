@@ -1,4 +1,4 @@
-import { SubaccountTransfer } from '@injectivelabs/sdk-ts/dist/client/indexer/types/account'
+import { SubaccountTransfer } from '@injectivelabs/sdk-ts'
 import { Token } from '@injectivelabs/token-metadata'
 
 export interface UiSubaccountBalance {

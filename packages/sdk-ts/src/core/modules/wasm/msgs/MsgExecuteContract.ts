@@ -1,5 +1,5 @@
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
+import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
+import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
 import snakeCaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
@@ -40,15 +40,15 @@ export declare namespace MsgExecuteContract {
     message: BaseMsgExecuteContract
   }
 
-  export interface Data extends BaseMsgExecuteContract.AsObject {
+  export interface Data extends BaseMsgExecuteContract {
     '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
   }
 
-  export interface Amino extends BaseMsgExecuteContract.AsObject {
+  export interface Amino extends BaseMsgExecuteContract {
     type: 'wasm/MsgExecuteContract'
   }
 
-  export interface Web3 extends BaseMsgExecuteContract.AsObject {
+  export interface Web3 extends BaseMsgExecuteContract {
     '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
   }
 
@@ -72,12 +72,12 @@ export default class MsgExecuteContract extends MsgBase<
   public toProto(): MsgExecuteContract.Proto {
     const { params } = this
 
-    const message = new BaseMsgExecuteContract()
+    const message = BaseMsgExecuteContract.create()
     const msg = this.getMsgObject()
 
-    message.setMsg(toUtf8(JSON.stringify(msg)))
-    message.setSender(params.sender)
-    message.setContract(params.contractAddress)
+    message.msg = toUtf8(JSON.stringify(msg))
+    message.sender = params.sender
+    message.contract = params.contractAddress
 
     if (params.funds) {
       const fundsToArray = Array.isArray(params.funds)
@@ -85,18 +85,18 @@ export default class MsgExecuteContract extends MsgBase<
         : [params.funds]
 
       const funds = fundsToArray.map((coin) => {
-        const funds = new Coin()
+        const funds = Coin.create()
 
-        funds.setAmount(coin.amount)
-        funds.setDenom(coin.denom)
+        funds.amount = coin.amount
+        funds.denom = coin.denom
 
         return funds
       })
 
-      message.setFundsList(funds)
+      message.funds = funds
     }
 
-    return message
+    return BaseMsgExecuteContract.fromPartial(message)
   }
 
   public toData(): MsgExecuteContract.Data {
@@ -104,27 +104,17 @@ export default class MsgExecuteContract extends MsgBase<
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgExecuteContract',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino(): MsgExecuteContract.Amino {
-    const { params } = this
     const proto = this.toProto()
-    const funds = params.funds && {
-      funds: proto
-        .getFundsList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
-    }
 
     const message = {
-      ...snakeCaseKeys(proto.toObject()),
-      ...funds,
+      ...snakeCaseKeys(proto),
       msg: this.getMsgObject(),
     }
-
-    // @ts-ignore
-    delete message.funds_list
 
     return {
       type: 'wasm/MsgExecuteContract',
@@ -149,6 +139,10 @@ export default class MsgExecuteContract extends MsgBase<
       type: '/cosmwasm.wasm.v1.MsgExecuteContract',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgExecuteContract.encode(this.toProto()).finish()
   }
 
   private getMsgObject() {

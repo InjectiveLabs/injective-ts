@@ -1,7 +1,6 @@
-import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
-import { MsgCancelBinaryOptionsOrder as BaseMsgCancelBinaryOptionsOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
+import { MsgCancelBinaryOptionsOrder as BaseMsgCancelBinaryOptionsOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
-import { OrderMask } from '../../../../types/exchange'
 
 export declare namespace MsgCancelBinaryOptionsOrder {
   export interface Params {
@@ -9,7 +8,7 @@ export declare namespace MsgCancelBinaryOptionsOrder {
     subaccountId: string
     injectiveAddress: string
     orderHash: string
-    orderMask?: OrderMaskMap[keyof OrderMaskMap]
+    orderMask?: OrderMask
   }
 
   export interface DirectSign {
@@ -17,15 +16,15 @@ export declare namespace MsgCancelBinaryOptionsOrder {
     message: BaseMsgCancelBinaryOptionsOrder
   }
 
-  export interface Data extends BaseMsgCancelBinaryOptionsOrder.AsObject {
+  export interface Data extends BaseMsgCancelBinaryOptionsOrder {
     '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
   }
 
-  export interface Amino extends BaseMsgCancelBinaryOptionsOrder.AsObject {
+  export interface Amino extends BaseMsgCancelBinaryOptionsOrder {
     type: 'exchange/MsgCancelBinaryOptionsOrder'
   }
 
-  export interface Web3 extends BaseMsgCancelBinaryOptionsOrder.AsObject {
+  export interface Web3 extends BaseMsgCancelBinaryOptionsOrder {
     '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
   }
 
@@ -51,14 +50,14 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
   public toProto(): MsgCancelBinaryOptionsOrder.Proto {
     const { params } = this
 
-    const message = new BaseMsgCancelBinaryOptionsOrder()
-    message.setSender(params.injectiveAddress)
-    message.setMarketId(params.marketId)
-    message.setOrderHash(params.orderHash)
-    message.setSubaccountId(params.subaccountId)
+    const message = BaseMsgCancelBinaryOptionsOrder.create()
+    message.sender = params.injectiveAddress
+    message.marketId = params.marketId
+    message.orderHash = params.orderHash
+    message.subaccountId = params.subaccountId
 
     // TODO: Send order.orderMask instead when chain handles order mask properly.
-    message.setOrderMask(OrderMask.Any)
+    message.orderMask = OrderMask.ANY
 
     return message
   }
@@ -68,7 +67,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -77,7 +76,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
 
     return {
       type: 'exchange/MsgCancelBinaryOptionsOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -98,5 +97,9 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return BaseMsgCancelBinaryOptionsOrder.encode(this.toProto()).finish()
   }
 }

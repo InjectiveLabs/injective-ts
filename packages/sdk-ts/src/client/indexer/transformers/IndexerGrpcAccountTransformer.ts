@@ -7,7 +7,7 @@ import {
 } from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
 import { Coin } from '@injectivelabs/ts-types'
 import { grpcPagingToPaging } from '../../..//utils/pagination'
-import { GrpcCoin } from '../../../types/index'
+import { IndexerGrpcCoin } from '../../../types/index'
 import {
   GrpcSubaccountBalance,
   GrpcSubaccountBalanceTransfer,
@@ -72,7 +72,7 @@ export class IndexerGrpcAccountTransformer {
     }
   }
 
-  static grpcAmountToAmount(amount: GrpcCoin): Coin {
+  static grpcAmountToAmount(amount: IndexerGrpcCoin): Coin {
     return {
       amount: amount.getAmount(),
       denom: amount.getDenom(),

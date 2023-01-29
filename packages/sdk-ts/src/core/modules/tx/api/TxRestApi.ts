@@ -1,4 +1,4 @@
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import {
   HttpClient,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
@@ -129,10 +129,10 @@ export class TxRestApi implements TxConcreteApi {
   }
 
   public async simulate(txRaw: TxRaw) {
-    const txRawClone = txRaw.clone()
+    const txRawClone = TxRaw.fromPartial({ ...txRaw })
 
-    if (txRawClone.getSignaturesList().length === 0) {
-      txRawClone.setSignaturesList([new Uint8Array(0)])
+    if (txRawClone.signatures.length === 0) {
+      txRawClone.signatures = [new Uint8Array(0)]
     }
 
     try {
@@ -182,7 +182,7 @@ export class TxRestApi implements TxConcreteApi {
       return this.fetchTxPoll(txResponse.txhash, timeout)
     } catch (e) {
       if (e instanceof HttpRequestException) {
-        if (e.code === StatusCodes.OK) {
+        if ((e as any).code === StatusCodes.OK) {
         }
       }
 

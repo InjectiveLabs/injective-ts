@@ -1,36 +1,36 @@
-import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
+import { PageRequest } from '@injectivelabs/core-proto-ts/cosmos/base/query/v1beta1/pagination'
 import { ExchangePagination, PaginationOption } from '../types/pagination'
 import { Pagination, PagePagination } from '../types/pagination'
-import { PageResponse } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
+import { PageResponse } from '@injectivelabs/core-proto-ts/cosmos/base/query/v1beta1/pagination'
 import { Paging } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
 
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,
 ): PageRequest | undefined => {
-  const paginationForRequest = new PageRequest()
+  const paginationForRequest = PageRequest.create()
 
   if (!pagination) {
     return
   }
 
   if (pagination.key) {
-    paginationForRequest.setKey(pagination.key)
+    paginationForRequest.key = Buffer.from(pagination.key, 'base64')
   }
 
   if (pagination.limit !== undefined) {
-    paginationForRequest.setLimit(pagination.limit)
+    paginationForRequest.limit = pagination.limit.toString()
   }
 
   if (pagination.offset !== undefined) {
-    paginationForRequest.setOffset(pagination.offset)
+    paginationForRequest.offset = pagination.offset.toString()
   }
 
   if (pagination.reverse !== undefined) {
-    paginationForRequest.setReverse(pagination.reverse)
+    paginationForRequest.reverse = pagination.reverse
   }
 
   if (pagination.countTotal !== undefined) {
-    paginationForRequest.setCountTotal(pagination.countTotal)
+    paginationForRequest.countTotal = pagination.countTotal
   }
 
   return paginationForRequest
@@ -99,11 +99,9 @@ export const grpcPaginationToPagination = (
 ): Pagination => {
   return {
     total: pagination
-      ? parseInt(paginationUint8ArrayToString(pagination.getTotal()), 10)
+      ? parseInt(paginationUint8ArrayToString(pagination.total), 10)
       : 0,
-    next: pagination
-      ? paginationUint8ArrayToString(pagination.getNextKey_asB64())
-      : '',
+    next: pagination ? paginationUint8ArrayToString(pagination.nextKey) : '',
   }
 }
 

@@ -5,7 +5,7 @@ import {
   QueryDepositsResponse,
   QueryTallyResultResponse,
   QueryVotesResponse,
-} from '@injectivelabs/chain-api/cosmos/gov/v1beta1/query_pb'
+} from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/query'
 import { uint8ArrayToString } from '../../../utils'
 import {
   GovModuleStateParams,
@@ -30,30 +30,30 @@ export class ChainGrpcGovTransformer {
   static moduleParamsResponseToModuleParams(
     response: QueryGovernanceParamsResponse,
   ): GovModuleStateParams {
-    const depositParams = response.getDepositParams()!
-    const votingParams = response.getVotingParams()!
-    const tallyParams = response.getTallyParams()!
+    const depositParams = response.depositParams!
+    const votingParams = response.votingParams!
+    const tallyParams = response.tallyParams!
 
     return {
       depositParams: {
-        minDepositList: depositParams
-          ?.getMinDepositList()
-          .map((m) => m.toObject()),
-        maxDepositPeriod:
-          depositParams?.getMaxDepositPeriod()?.getSeconds() || 0,
+        minDepositList: depositParams?.minDeposit,
+        maxDepositPeriod: parseInt(
+          depositParams?.maxDepositPeriod?.seconds || '0',
+          10,
+        ),
       },
       votingParams: {
-        votingPeriod: votingParams.getVotingPeriod()?.getSeconds() || 0,
+        votingPeriod: parseInt(votingParams.votingPeriod?.seconds || '0'),
       },
       tallyParams: {
         quorum: cosmosSdkDecToBigNumber(
-          uint8ArrayToString(tallyParams.getQuorum()) as string,
+          uint8ArrayToString(tallyParams.quorum) as string,
         ).toFixed(),
         threshold: cosmosSdkDecToBigNumber(
-          uint8ArrayToString(tallyParams.getThreshold()) as string,
+          uint8ArrayToString(tallyParams.threshold) as string,
         ).toFixed(),
         vetoThreshold: cosmosSdkDecToBigNumber(
-          uint8ArrayToString(tallyParams.getVetoThreshold()) as string,
+          uint8ArrayToString(tallyParams.vetoThreshold) as string,
         ).toFixed(),
       },
     }
@@ -70,31 +70,31 @@ export class ChainGrpcGovTransformer {
   }): GovModuleStateParams {
     return {
       depositParams: {
-        minDepositList: depositParams
-          ?.getMinDepositList()
-          .map((m) => m.toObject()),
-        maxDepositPeriod:
-          depositParams?.getMaxDepositPeriod()?.getSeconds() || 0,
+        minDepositList: depositParams?.minDeposit,
+        maxDepositPeriod: parseInt(
+          depositParams?.maxDepositPeriod?.seconds || '0',
+          10,
+        ),
       },
       votingParams: {
-        votingPeriod: votingParams.getVotingPeriod()?.getSeconds() || 0,
+        votingPeriod: parseInt(votingParams.votingPeriod?.seconds || '0'),
       },
       tallyParams: {
         quorum: cosmosSdkDecToBigNumber(
-          uint8ArrayToString(tallyParams.getQuorum()) as string,
+          uint8ArrayToString(tallyParams.quorum) as string,
         ).toFixed(),
         threshold: cosmosSdkDecToBigNumber(
-          uint8ArrayToString(tallyParams.getThreshold()) as string,
+          uint8ArrayToString(tallyParams.threshold) as string,
         ).toFixed(),
         vetoThreshold: cosmosSdkDecToBigNumber(
-          uint8ArrayToString(tallyParams.getVetoThreshold()) as string,
+          uint8ArrayToString(tallyParams.vetoThreshold) as string,
         ).toFixed(),
       },
     }
   }
 
   static proposalResponseToProposal(response: QueryProposalResponse): Proposal {
-    const proposal = response.getProposal()!
+    const proposal = response.proposal!
 
     return ChainGrpcGovTransformer.grpcProposalToProposal(proposal)
   }
@@ -103,10 +103,10 @@ export class ChainGrpcGovTransformer {
     proposals: Proposal[]
     pagination: Pagination
   } {
-    const proposals = response
-      .getProposalsList()
-      .map((p) => ChainGrpcGovTransformer.grpcProposalToProposal(p))
-    const pagination = response.getPagination()
+    const proposals = response.proposals.map((p) =>
+      ChainGrpcGovTransformer.grpcProposalToProposal(p),
+    )
+    const pagination = response.pagination
 
     return {
       proposals: proposals,
@@ -118,13 +118,13 @@ export class ChainGrpcGovTransformer {
     deposits: ProposalDeposit[]
     pagination: Pagination
   } {
-    const pagination = response.getPagination()
-    const deposits = response.getDepositsList().map((deposit) => {
+    const pagination = response.pagination
+    const deposits = response.deposits.map((deposit) => {
       return {
-        depositor: deposit.getDepositor(),
-        amounts: deposit.getAmountList().map((coin) => ({
-          denom: coin.getDenom(),
-          amount: cosmosSdkDecToBigNumber(coin.getAmount()).toFixed(),
+        depositor: deposit.depositor,
+        amounts: deposit.amount.map((coin) => ({
+          denom: coin.denom,
+          amount: cosmosSdkDecToBigNumber(coin.amount).toFixed(),
         })),
       }
     })
@@ -139,17 +139,20 @@ export class ChainGrpcGovTransformer {
     votes: Vote[]
     pagination: Pagination
   } {
-    const pagination = response.getPagination()
-    const votes = response.getVotesList().map((v) => {
+    const pagination = response.pagination
+    const votes = response.votes.map((v) => {
       return {
-        proposalId: v.getProposalId(),
-        voter: v.getVoter(),
-        option: v.getOption(),
+        proposalId: v.proposalId,
+        voter: v.voter,
+        option: v.option,
       }
     })
 
     return {
-      votes: votes,
+      votes: votes.map((v) => ({
+        ...v,
+        proposalId: parseInt(v.proposalId, 10),
+      })),
       pagination: grpcPaginationToPagination(pagination),
     }
   }
@@ -157,7 +160,7 @@ export class ChainGrpcGovTransformer {
   static tallyResultResponseToTallyResult(
     response: QueryTallyResultResponse,
   ): TallyResult {
-    const result = response.getTally()
+    const result = response.tally
 
     return ChainGrpcGovTransformer.grpcTallyResultToTallyResult(result)
   }
@@ -166,35 +169,35 @@ export class ChainGrpcGovTransformer {
     result: GrpcTallyResult | undefined,
   ): TallyResult {
     return {
-      yes: result ? result.getYes() : '0',
-      abstain: result ? result.getAbstain() : '0',
-      no: result ? result.getNo() : '0',
-      noWithVeto: result ? result.getNoWithVeto() : '0',
+      yes: result ? result.yes : '0',
+      abstain: result ? result.abstain : '0',
+      no: result ? result.no : '0',
+      noWithVeto: result ? result.noWithVeto : '0',
     }
   }
 
   static grpcProposalToProposal(proposal: GrpcProposal): Proposal {
-    const finalTallyResult = proposal.getFinalTallyResult()
-    const content = proposal.getContent()!
+    const finalTallyResult = proposal.finalTallyResult
+    const content = proposal.content!
 
     return {
-      proposalId: proposal.getProposalId(),
+      proposalId: parseInt(proposal.proposalId, 10),
       content: {
-        type: content.getTypeName(),
-        value: content.getValue(),
+        type: content.typeUrl,
+        value: content.value,
       },
-      type: content.getTypeName(),
-      submitTime: proposal.getSubmitTime()!.getSeconds(),
-      status: proposal.getStatus(),
+      type: content.typeUrl,
+      submitTime: proposal.submitTime!.getSeconds(),
+      status: proposal.status,
       finalTallyResult:
         ChainGrpcGovTransformer.grpcTallyResultToTallyResult(finalTallyResult),
-      depositEndTime: proposal.getDepositEndTime()!.getSeconds(),
-      totalDeposits: proposal.getTotalDepositList().map((coin) => ({
-        denom: coin.getDenom(),
-        amount: cosmosSdkDecToBigNumber(coin.getAmount()).toFixed(),
+      depositEndTime: proposal.depositEndTime!.getSeconds(),
+      totalDeposits: proposal.totalDeposit.map((coin) => ({
+        denom: coin.denom,
+        amount: cosmosSdkDecToBigNumber(coin.amount).toFixed(),
       })),
-      votingStartTime: proposal.getVotingStartTime()!.getSeconds(),
-      votingEndTime: proposal.getVotingEndTime()!.getSeconds(),
+      votingStartTime: proposal.votingStartTime!.getSeconds(),
+      votingEndTime: proposal.votingEndTime!.getSeconds(),
     }
   }
 }

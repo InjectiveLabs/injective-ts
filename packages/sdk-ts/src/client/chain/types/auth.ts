@@ -1,4 +1,4 @@
-import { EthAccount } from '@injectivelabs/chain-api/injective/types/v1beta1/account_pb'
+import { EthAccount } from '@injectivelabs/core-proto-ts/injective/types/v1beta1/account'
 
 export interface AuthModuleParams {
   maxMemoCharacters: number

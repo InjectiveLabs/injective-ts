@@ -8,13 +8,13 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   createCosmosSignDocFromTransaction,
-  createTxRawFromSigResponse,
+  getTxRawFromTxRawOrDirectSignResponse,
   TxResponse,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
@@ -94,15 +94,12 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
   ): Promise<TxResponse> {
     const { chainName } = this
     const provider = await this.getProvider()
-    const txRaw =
-      transaction instanceof TxRaw
-        ? transaction
-        : createTxRawFromSigResponse(transaction)
+    const txRaw = getTxRawFromTxRawOrDirectSignResponse(transaction)
 
     try {
       const response = await provider.sendTransaction(
         chainName,
-        txRaw.serializeBinary(),
+        TxRaw.encode(txRaw).finish(),
         SEND_TRANSACTION_MODE.ASYNC,
       )
 

@@ -1,23 +1,14 @@
-import { Query as WasmQuery } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/query_pb_service'
 import {
+  QueryClientImpl,
   QueryAllContractStateRequest,
-  QueryAllContractStateResponse,
   QueryContractInfoRequest,
-  QueryContractInfoResponse,
   QueryContractHistoryRequest,
-  QueryContractHistoryResponse,
   QuerySmartContractStateRequest,
-  QuerySmartContractStateResponse,
   QueryCodeRequest,
-  QueryCodeResponse,
   QueryCodesRequest,
-  QueryCodesResponse,
   QueryContractsByCodeRequest,
-  QueryContractsByCodeResponse,
   QueryRawContractStateRequest,
-  QueryRawContractStateResponse,
-} from '@injectivelabs/chain-api/cosmwasm/wasm/v1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/query'
 import { ChainGrpcWasmTransformer } from '../transformers'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
@@ -26,12 +17,19 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getRpcInterface } from '../../BaseGrpcConsumer'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcWasmApi extends BaseConsumer {
+export class ChainGrpcWasmApi {
   protected module: string = ChainModule.Wasm
+
+  protected query: QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.query = new QueryClientImpl(getRpcInterface(endpoint))
+  }
 
   async fetchContractAccountsBalance({
     contractAddress,
@@ -40,21 +38,19 @@ export class ChainGrpcWasmApi extends BaseConsumer {
     contractAddress: string
     pagination?: PaginationOption
   }) {
-    const request = new QueryAllContractStateRequest()
-    request.setAddress(contractAddress)
+    const request = QueryAllContractStateRequest.create()
+
+    request.address = contractAddress
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryAllContractStateRequest,
-        QueryAllContractStateResponse,
-        typeof WasmQuery.AllContractState
-      >(request, WasmQuery.AllContractState)
+      const response = await this.query.AllContractState(request)
+
       return ChainGrpcWasmTransformer.allContractStateResponseToContractAccountsBalanceWithPagination(
         response,
       )
@@ -71,16 +67,14 @@ export class ChainGrpcWasmApi extends BaseConsumer {
   }
 
   async fetchContractInfo(contractAddress: string) {
-    const request = new QueryAllContractStateRequest()
-    request.setAddress(contractAddress)
+    const request = QueryContractInfoRequest.create()
+
+    request.address = contractAddress
 
     try {
-      const response = await this.request<
-        QueryContractInfoRequest,
-        QueryContractInfoResponse,
-        typeof WasmQuery.ContractInfo
-      >(request, WasmQuery.ContractInfo)
-      const contractInfo = response.getContractInfo()
+      const response = await this.query.ContractInfo(request)
+
+      const contractInfo = response.contractInfo
 
       if (!contractInfo) {
         return
@@ -102,15 +96,12 @@ export class ChainGrpcWasmApi extends BaseConsumer {
   }
 
   async fetchContractHistory(contractAddress: string) {
-    const request = new QueryContractHistoryRequest()
-    request.setAddress(contractAddress)
+    const request = QueryContractHistoryRequest.create()
+
+    request.address = contractAddress
 
     try {
-      const response = await this.request<
-        QueryContractHistoryRequest,
-        QueryContractHistoryResponse,
-        typeof WasmQuery.ContractHistory
-      >(request, WasmQuery.ContractHistory)
+      const response = await this.query.ContractHistory(request)
 
       return ChainGrpcWasmTransformer.contactHistoryResponseToContractHistory(
         response,
@@ -128,21 +119,18 @@ export class ChainGrpcWasmApi extends BaseConsumer {
   }
 
   async fetchSmartContractState(contractAddress: string, query?: string) {
-    const request = new QuerySmartContractStateRequest()
-    request.setAddress(contractAddress)
+    const request = QuerySmartContractStateRequest.create()
+
+    request.address = contractAddress
 
     if (query) {
-      request.setQueryData(query)
+      request.queryData = Buffer.from(query, 'base64')
     }
 
     try {
-      const response = await this.request<
-        QuerySmartContractStateRequest,
-        QuerySmartContractStateResponse,
-        typeof WasmQuery.SmartContractState
-      >(request, WasmQuery.SmartContractState)
+      const response = await this.query.SmartContractState(request)
 
-      return response.toObject()
+      return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
@@ -156,21 +144,18 @@ export class ChainGrpcWasmApi extends BaseConsumer {
   }
 
   async fetchRawContractState(contractAddress: string, query?: string) {
-    const request = new QueryRawContractStateRequest()
-    request.setAddress(contractAddress)
+    const request = QueryRawContractStateRequest.create()
+
+    request.address = contractAddress
 
     if (query) {
-      request.setQueryData(query)
+      request.queryData = Buffer.from(query, 'base64')
     }
 
     try {
-      const response = await this.request<
-        QueryRawContractStateRequest,
-        QueryRawContractStateResponse,
-        typeof WasmQuery.RawContractState
-      >(request, WasmQuery.RawContractState)
+      const response = await this.query.RawContractState(request)
 
-      return response.toObject()
+      return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
@@ -184,20 +169,16 @@ export class ChainGrpcWasmApi extends BaseConsumer {
   }
 
   async fetchContractCodes(pagination?: PaginationOption) {
-    const request = new QueryCodesRequest()
+    const request = QueryCodesRequest.create()
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryCodesRequest,
-        QueryCodesResponse,
-        typeof WasmQuery.Codes
-      >(request, WasmQuery.Codes)
+      const response = await this.query.Codes(request)
 
       return ChainGrpcWasmTransformer.contractCodesResponseToContractCodes(
         response,
@@ -215,15 +196,12 @@ export class ChainGrpcWasmApi extends BaseConsumer {
   }
 
   async fetchContractCode(codeId: number) {
-    const request = new QueryCodeRequest()
-    request.setCodeId(codeId)
+    const request = QueryCodeRequest.create()
+
+    request.codeId = codeId.toString()
 
     try {
-      const response = await this.request<
-        QueryCodeRequest,
-        QueryCodeResponse,
-        typeof WasmQuery.Code
-      >(request, WasmQuery.Code)
+      const response = await this.query.Code(request)
 
       return ChainGrpcWasmTransformer.contractCodeResponseToContractCode(
         response,
@@ -244,21 +222,18 @@ export class ChainGrpcWasmApi extends BaseConsumer {
     codeId: number,
     pagination?: PaginationOption,
   ) {
-    const request = new QueryContractsByCodeRequest()
-    request.setCodeId(codeId)
+    const request = QueryContractsByCodeRequest.create()
+
+    request.codeId = codeId.toString()
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryContractsByCodeRequest,
-        QueryContractsByCodeResponse,
-        typeof WasmQuery.ContractsByCode
-      >(request, WasmQuery.ContractsByCode)
+      const response = await this.query.ContractsByCode(request)
 
       return ChainGrpcWasmTransformer.contractByCodeResponseToContractByCode(
         response,
