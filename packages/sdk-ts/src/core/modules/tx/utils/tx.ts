@@ -1,7 +1,6 @@
 import { PubKey } from '@injectivelabs/core-proto-ts/cosmos/crypto/secp256k1/keys'
 import { PubKey as CosmosPubKey } from '@injectivelabs/core-proto-ts/cosmos/crypto/secp256k1/keys'
 import { createAny, createAnyMessage } from './helpers'
-import { MsgArg } from '../types'
 import {
   TxBody,
   SignDoc,
@@ -16,6 +15,7 @@ import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { ExtensionOptionsWeb3Tx } from '@injectivelabs/core-proto-ts/injective/types/v1beta1/tx_ext'
 import { EthereumChainId } from '@injectivelabs/ts-types'
+import { Msgs } from '../../msgs'
 
 export const getPublicKey = ({
   chainId,
@@ -52,7 +52,7 @@ export const createBody = ({
   memo = '',
   timeoutHeight,
 }: {
-  message: MsgArg | MsgArg[]
+  message: Msgs | Msgs[]
   memo?: string
   timeoutHeight?: number
 }) => {
@@ -62,8 +62,8 @@ export const createBody = ({
 
   txBody.messages = messages.map((message) =>
     createAnyMessage({
-      value: message.message,
-      type: message.type,
+      value: message.toBinary(),
+      type: message.toDirectSign().type,
     }),
   )
 

@@ -3,6 +3,7 @@ import {
   SignDoc,
   TxRaw,
 } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
+import { Msgs } from '../../msgs'
 import { StdFee } from '@cosmjs/amino'
 import { SignMode } from '@injectivelabs/core-proto-ts/cosmos/tx/signing/v1beta1/signing'
 
@@ -70,7 +71,7 @@ export interface CreateTransactionWithSignersArgs {
   fee?: StdFee // the fee to include in the transaction
   memo?: string // the memo to include in the transaction
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
-  message: MsgArg | MsgArg[] // the message that should be packed into the transaction
+  message: Msgs | Msgs[] // the message that should be packed into the transaction
   signers: SignerDetails | SignerDetails[] // the signers of the transaction
   signMode?: SignMode
   timeoutHeight?: number // the height at which the transaction should be considered invalid
@@ -81,7 +82,7 @@ export interface CreateTransactionArgs {
   fee?: StdFee // the fee to include in the transaction
   memo?: string // the memo to include in the transaction
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
-  message: MsgArg | MsgArg[] // the message that should be packed into the transaction
+  message: Msgs | Msgs[] // the message that should be packed into the transaction
   pubKey: string // the pubKey of the signer of the transaction in base64
   sequence: number // the sequence (nonce) of the signer of the transaction
   accountNumber: number // the account number of the signer of the transaction

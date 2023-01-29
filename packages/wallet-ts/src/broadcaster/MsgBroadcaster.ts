@@ -224,7 +224,7 @@ export class MsgBroadcaster {
     /** Preparing the transaction for client broadcasting */
     const txApi = new TxGrpcApi(endpoints.grpc)
     const { txRaw } = createTransaction({
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       memo: tx.memo,
       signMode: SIGN_AMINO,
       fee: getStdFee(gas),
@@ -361,7 +361,7 @@ export class MsgBroadcaster {
     const { txRaw } = createTransactionWithSigners({
       chainId,
       memo: tx.memo,
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
       signers: {
         pubKey,
@@ -477,7 +477,7 @@ export class MsgBroadcaster {
      */
     const { txRaw } = createTransaction({
       pubKey,
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       memo: aminoSignResponse.signed.memo,
       signMode: SIGN_AMINO,
       fee: aminoSignResponse.signed.fee,
@@ -578,7 +578,7 @@ export class MsgBroadcaster {
     const { txRaw } = createTransactionWithSigners({
       chainId,
       memo: tx.memo,
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
       signers: [
         {

@@ -123,7 +123,7 @@ export class MsgBroadcasterWithPk {
     const { signBytes, txRaw } = createTransaction({
       memo: '',
       fee: getStdFee(gas),
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,
@@ -190,7 +190,7 @@ export class MsgBroadcasterWithPk {
     const { txRaw } = createTransaction({
       memo: '',
       fee: DEFAULT_STD_FEE,
-      message: (tx.msgs as Msgs[]).map((m) => m.toDirectSign()),
+      message: tx.msgs as Msgs[],
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,

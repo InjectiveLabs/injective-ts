@@ -1,7 +1,8 @@
-import TrezorConnect from 'trezor-connect'
 import HDNode from 'hdkey'
 import { DEFAULT_BASE_DERIVATION_PATH } from '../../../constants'
 import AccountManager from './AccountManager'
+
+const TrezorConnect = require('trezor-connect').default
 
 const TREZOR_CONNECT_MANIFEST = {
   email: 'contact@injectivelabs.org',
@@ -14,7 +15,7 @@ export default class TrezorTransport {
   private hdKey: HDNode = new HDNode()
 
   constructor() {
-    TrezorConnect.on('DEVICE_EVENT', (event) => {
+    TrezorConnect.on('DEVICE_EVENT', (event: any) => {
       if (event && event.payload && event.payload.features) {
         //
       }
@@ -49,7 +50,7 @@ export default class TrezorTransport {
         path: `${DEFAULT_BASE_DERIVATION_PATH}/0'/0`,
         coin: 'ETH',
       })
-        .then((response) => {
+        .then((response: any) => {
           if (!response.success) {
             return reject(
               new Error(
@@ -64,7 +65,7 @@ export default class TrezorTransport {
 
           return resolve(TrezorConnect)
         })
-        .catch((e) => {
+        .catch((e: any) => {
           reject(
             new Error(
               (e && e.toString()) ||

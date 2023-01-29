@@ -1,10 +1,10 @@
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 import { getEthereumAddress, getInjectiveAddress } from '../../../../utils'
 
-export const createAnyMessage = (msg: { type: string; value: any }) => {
+export const createAnyMessage = (msg: { type: string; value: Uint8Array }) => {
   const message = Any.create()
   message.typeUrl = `${msg.type.startsWith('/') ? '' : '/'}${msg.type}`
-  message.value = msg.value.serializeBinary()
+  message.value = msg.value
 
   return message
 }

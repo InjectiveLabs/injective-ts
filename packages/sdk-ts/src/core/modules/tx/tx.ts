@@ -30,7 +30,7 @@ import { ChainRestAuthApi, ChainRestTendermintApi } from '../../../client'
 /**
  * @typedef {Object} CreateTransactionWithSignersArgs
  * @param {CreateTransactionWithSignersArgs} params
- * @property {MsgArg | MsgArg[]} message - the Cosmos messages to wrap them in a transaction
+ * @property {Msg | Msg[]} message - the Cosmos messages to wrap them in a transaction
  * @property {string} memo - the memo to attach to the transaction
  * @property {StdFee} fee - the fee to attach to the transaction
  * @property {SignerDetails} signers - the signers of the transaction
@@ -157,7 +157,7 @@ export const createTransactionFromMsg = (
 
   return createTransaction({
     ...params,
-    message: messages.map((m) => m.toDirectSign()),
+    message: messages,
   })
 }
 
@@ -238,7 +238,7 @@ export const createTransactionForAddressAndMsg = async (
     sequence: Number(baseAccount.sequence),
     accountNumber: Number(baseAccount.accountNumber),
     timeoutHeight: timeoutHeight.toNumber(),
-    message: messages.map((m) => m.toDirectSign()),
+    message: messages,
   })
 }
 
