@@ -14,6 +14,18 @@ export interface Orderbook {
   sells: PriceLevel[]
 }
 
+export interface OrderbookWithSequence {
+  sequence: number
+  buys: PriceLevel[]
+  sells: PriceLevel[]
+}
+
+export interface OrderbookWithSequence {
+  buys: PriceLevel[]
+  sells: PriceLevel[]
+  sequence: number
+}
+
 export enum IndexerOracleType {
   UNSPECIFIED = 0,
   BAND = 1,

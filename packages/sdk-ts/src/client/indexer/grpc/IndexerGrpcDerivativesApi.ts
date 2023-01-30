@@ -13,6 +13,10 @@ import {
   BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,
   OrderbookRequest as DerivativeOrderbookRequest,
   OrderbookResponse as DerivativeOrderbookResponse,
+  OrderbookV2Request as DerivativeOrderbookV2Request,
+  OrderbookV2Response as DerivativeOrderbookV2Response,
+  OrderbooksV2Request as DerivativeOrderbooksV2Request,
+  OrderbooksV2Response as DerivativeOrderbooksV2Response,
   OrdersRequest as DerivativeOrdersRequest,
   OrdersResponse as DerivativeOrdersResponse,
   OrdersHistoryRequest as DerivativeOrdersHistoryRequest,
@@ -766,6 +770,62 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       >(request, InjectiveDerivativeExchangeRPC.Orderbooks)
 
       return IndexerGrpcDerivativeTransformer.orderbooksResponseToOrderbooks(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchOrderbooksV2(marketIds: string[]) {
+    const request = new DerivativeOrderbooksV2Request()
+
+    if (marketIds.length > 0) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    try {
+      const response = await this.request<
+        DerivativeOrderbooksV2Request,
+        DerivativeOrderbooksV2Response,
+        typeof InjectiveDerivativeExchangeRPC.OrderbooksV2
+      >(request, InjectiveDerivativeExchangeRPC.OrderbooksV2)
+
+      return IndexerGrpcDerivativeTransformer.orderbooksV2ResponseToOrderbooksV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchOrderbookV2(marketId: string) {
+    const request = new DerivativeOrderbookV2Request()
+
+    request.setMarketId(marketId)
+
+    try {
+      const response = await this.request<
+        DerivativeOrderbookV2Request,
+        DerivativeOrderbookV2Response,
+        typeof InjectiveDerivativeExchangeRPC.OrderbookV2
+      >(request, InjectiveDerivativeExchangeRPC.OrderbookV2)
+
+      return IndexerGrpcDerivativeTransformer.orderbookV2ResponseToOrderbookV2(
         response,
       )
     } catch (e: unknown) {

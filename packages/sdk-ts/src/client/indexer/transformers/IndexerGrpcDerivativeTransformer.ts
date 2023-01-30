@@ -38,6 +38,7 @@ import {
   PriceLevel,
   GrpcTokenMeta,
   IndexerTokenMeta,
+  OrderbookWithSequence,
 } from '../types/exchange'
 import {
   FundingPaymentsResponse,
@@ -50,6 +51,8 @@ import {
   TradesResponse as DerivativeTradesResponse,
   PositionsResponse as DerivativePositionsResponse,
   OrderbooksResponse as DerivativeOrderbooksResponse,
+  OrderbooksV2Response as DerivativeOrderbooksV2Response,
+  OrderbookV2Response as DerivativeOrderbookV2Response,
   SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
 } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
 import {
@@ -232,6 +235,18 @@ export class IndexerGrpcDerivativeTransformer {
     })
   }
 
+  static orderbookV2ResponseToOrderbookV2(
+    response: DerivativeOrderbookV2Response,
+  ) {
+    const orderbook = response.getOrderbook()!
+
+    return IndexerGrpcDerivativeTransformer.grpcOrderbookV2ToOrderbookV2({
+      sequence: orderbook.getSequence(),
+      buys: orderbook?.getBuysList(),
+      sells: orderbook?.getSellsList(),
+    })
+  }
+
   static orderbooksResponseToOrderbooks(
     response: DerivativeOrderbooksResponse,
   ) {
@@ -246,6 +261,26 @@ export class IndexerGrpcDerivativeTransformer {
           buys: orderbook.getBuysList(),
           sells: orderbook.getSellsList(),
         }),
+      }
+    })
+  }
+
+  static orderbooksV2ResponseToOrderbooksV2(
+    response: DerivativeOrderbooksV2Response,
+  ) {
+    const orderbooks = response.getOrderbooksList()!
+
+    return orderbooks.map((o) => {
+      const orderbook = o.getOrderbook()!
+
+      return {
+        marketId: o.getMarketId(),
+        orderbook:
+          IndexerGrpcDerivativeTransformer.grpcOrderbookV2ToOrderbookV2({
+            sequence: orderbook.getSequence(),
+            buys: orderbook.getBuysList(),
+            sells: orderbook.getSellsList(),
+          }),
       }
     })
   }
@@ -401,6 +436,23 @@ export class IndexerGrpcDerivativeTransformer {
     sells: GrpcPriceLevel[]
   }): Orderbook {
     return {
+      buys: IndexerGrpcDerivativeTransformer.grpcPriceLevelsToPriceLevels(buys),
+      sells:
+        IndexerGrpcDerivativeTransformer.grpcPriceLevelsToPriceLevels(sells),
+    }
+  }
+
+  static grpcOrderbookV2ToOrderbookV2({
+    sequence,
+    buys,
+    sells,
+  }: {
+    sequence: number
+    buys: GrpcPriceLevel[]
+    sells: GrpcPriceLevel[]
+  }): OrderbookWithSequence {
+    return {
+      sequence,
       buys: IndexerGrpcDerivativeTransformer.grpcPriceLevelsToPriceLevels(buys),
       sells:
         IndexerGrpcDerivativeTransformer.grpcPriceLevelsToPriceLevels(sells),

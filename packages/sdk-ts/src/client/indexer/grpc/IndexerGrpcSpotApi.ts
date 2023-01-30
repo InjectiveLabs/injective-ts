@@ -6,6 +6,8 @@ import {
   MarketResponse as SpotMarketResponse,
   OrderbookRequest as SpotOrderbookRequest,
   OrderbookResponse as SpotOrderbookResponse,
+  OrderbookV2Request as SpotOrderbookV2Request,
+  OrderbookV2Response as SpotOrderbookV2Response,
   OrdersRequest as SpotOrdersRequest,
   OrdersResponse as SpotOrdersResponse,
   OrdersHistoryRequest as SpotOrdersHistoryRequest,
@@ -18,6 +20,8 @@ import {
   SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
   OrderbooksRequest as SpotOrderbooksRequest,
   OrderbooksResponse as SpotOrderbooksResponse,
+  OrderbooksV2Request as SpotOrderbooksV2Request,
+  OrderbooksV2Response as SpotOrderbooksV2Response,
 } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
 import BaseConsumer from '../../BaseGrpcConsumer'
 import {
@@ -503,6 +507,62 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       >(request, InjectiveSpotExchangeRPC.Orderbooks)
 
       return IndexerGrpcSpotTransformer.orderbooksResponseToOrderbooks(response)
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchOrderbooksV2(marketIds: string[]) {
+    const request = new SpotOrderbooksV2Request()
+
+    if (marketIds.length > 0) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    try {
+      const response = await this.request<
+        SpotOrderbooksV2Request,
+        SpotOrderbooksV2Response,
+        typeof InjectiveSpotExchangeRPC.OrderbooksV2
+      >(request, InjectiveSpotExchangeRPC.OrderbooksV2)
+
+      return IndexerGrpcSpotTransformer.orderbooksV2ResponseToOrderbooksV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchOrderbookV2(marketId: string) {
+    const request = new SpotOrderbookV2Request()
+
+    request.setMarketId(marketId)
+
+    try {
+      const response = await this.request<
+        SpotOrderbookV2Request,
+        SpotOrderbookV2Response,
+        typeof InjectiveSpotExchangeRPC.OrderbookV2
+      >(request, InjectiveSpotExchangeRPC.OrderbookV2)
+
+      return IndexerGrpcSpotTransformer.orderbookV2ResponseToOrderbookV2(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
