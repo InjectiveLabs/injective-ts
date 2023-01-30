@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.384-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.380...@injectivelabs/sdk-ts@1.0.384-alpha.0) (2023-01-30)
+
+
+### Bug Fixes
+
+* types for createTransaction ([b08b76d](https://github.com/InjectiveLabs/injective-ts/commit/b08b76dc71a83822ddb101657ef69e5e6994085b))
+
+
+### Features
+
+* migrated to grpcWebImpl ([bbf4e37](https://github.com/InjectiveLabs/injective-ts/commit/bbf4e3715c20cd2948b77e3be4dac45123b29859))
+
+
+
+
+
 ## [1.0.383-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.382-alpha.0...@injectivelabs/sdk-ts@1.0.383-alpha.0) (2023-01-29)
 
 
