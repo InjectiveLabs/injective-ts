@@ -37,4 +37,9 @@ export type WormholeSolanaContractAddresses = typeof CONTRACTS.TESTNET.solana
 export type WormholeEthereumContractAddresses =
   typeof CONTRACTS.TESTNET.ethereum
 
+export enum WormholeSource {
+  Ethereum = 'ethereum',
+  Solana = 'solana',
+}
+
 export { BaseMessageSignerWalletAdapter }

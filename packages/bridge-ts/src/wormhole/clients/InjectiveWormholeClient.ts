@@ -17,14 +17,16 @@ import {
   hexToUint8Array,
   getIsTransferCompletedInjective,
 } from '@injectivelabs/wormhole-sdk'
-import { PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
-import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { NATIVE_MINT } from '@solana/spl-token'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
-import { InjectiveTransferMsgArgs, TransferMsgArgs } from '../types'
-import { getSolanaContractAddresses } from '../utils'
+import { InjectiveTransferMsgArgs, WormholeSource } from '../types'
+import {
+  getAssociatedChain,
+  getAssociatedChainRecipient,
+  getContractAddresses,
+} from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
 interface MsgBroadcaster {
@@ -49,33 +51,24 @@ export class InjectiveWormholeClient extends WormholeClient {
     this.provider = provider
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async attestFromInjectiveToSolana(
-    _args: Omit<TransferMsgArgs, 'address' | 'amount'>,
-    _provider: BaseMessageSignerWalletAdapter,
-  ) {
-    throw new GeneralException(new Error(`Not implemented yet!`))
-  }
-
-  async getSolanaBridgedAssetBalance(
+  async getBridgedAssetBalance(
     injectiveAddress: string,
+    source = WormholeSource.Solana,
     tokenAddress: string = NATIVE_MINT.toString(),
   ) {
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
 
-    const { contractAddresses } = getSolanaContractAddresses(network)
+    const associatedChain = getAssociatedChain(source)
+    const { injectiveContractAddresses } = getContractAddresses(network)
 
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
-    const originAssetHex = tryNativeToHexString(
-      tokenAddress,
-      WORMHOLE_CHAINS.solana,
-    )
+    const originAssetHex = tryNativeToHexString(tokenAddress, associatedChain)
     const foreignAsset = await getForeignAssetInjective(
-      contractAddresses.token_bridge,
+      injectiveContractAddresses.token_bridge,
       chainGrpcWasmApi,
-      WORMHOLE_CHAINS.solana,
+      associatedChain,
       hexToUint8Array(originAssetHex),
     )
 
@@ -110,18 +103,26 @@ export class InjectiveWormholeClient extends WormholeClient {
     )
   }
 
-  async transferFromInjectiveToSolana(
+  async transferFromInjective(
     args: InjectiveTransferMsgArgs & {
       /**
        * Additional messages that we run before the bridge, an example
        * could be redeeming from the token factory to CW20
        */
       additionalMsgs?: MsgExecuteContractCompat[]
+      source?: WormholeSource
     },
   ) {
     const { network, wormholeRpcUrl, provider } = this
-    const { amount, recipient, additionalMsgs = [] } = args
-    const solanaPubKey = new SolanaPublicKey(recipient)
+    const {
+      amount,
+      recipient: recipientArg,
+      additionalMsgs = [],
+      source = WormholeSource.Solana,
+    } = args
+
+    const associatedChain = getAssociatedChain(source)
+    const recipient = getAssociatedChainRecipient(recipientArg)
 
     if (!args.tokenAddress) {
       throw new GeneralException(new Error(`Please provide tokenAddress`))
@@ -131,9 +132,9 @@ export class InjectiveWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    if (!solanaPubKey) {
+    if (!recipient) {
       throw new GeneralException(
-        new Error(`Please provide solanaOptions.provider`),
+        new Error(`Please provide the associatedChain provider`),
       )
     }
 
@@ -143,15 +144,15 @@ export class InjectiveWormholeClient extends WormholeClient {
       )
     }
 
-    const { contractAddresses } = getSolanaContractAddresses(network)
+    const { injectiveContractAddresses } = getContractAddresses(network)
 
     const messages = await transferFromInjective(
       args.injectiveAddress,
-      contractAddresses.token_bridge,
+      injectiveContractAddresses.token_bridge,
       args.tokenAddress,
       amount,
-      WORMHOLE_CHAINS.solana,
-      tryNativeToUint8Array(solanaPubKey.toString(), WORMHOLE_CHAINS.solana),
+      associatedChain,
+      tryNativeToUint8Array(recipient, associatedChain),
     )
 
     const txResponse = (await provider.broadcastOld({
@@ -166,18 +167,18 @@ export class InjectiveWormholeClient extends WormholeClient {
     return txResponse
   }
 
-  async getSignedVAAOnInjective(txResponse: TxResponse) {
+  async getSignedVAA(txResponse: TxResponse) {
     const { network, wormholeRpcUrl } = this
 
     if (!wormholeRpcUrl) {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    const { contractAddresses } = getSolanaContractAddresses(network)
+    const { injectiveContractAddresses } = getContractAddresses(network)
 
     const sequence = parseSequenceFromLogInjective(txResponse)
     const emitterAddress = await getEmitterAddressInjective(
-      contractAddresses.token_bridge,
+      injectiveContractAddresses.token_bridge,
     )
 
     const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
@@ -193,19 +194,19 @@ export class InjectiveWormholeClient extends WormholeClient {
     return Buffer.from(signedVAA).toString('base64')
   }
 
-  async redeemOnInjective({
+  async redeem({
     injectiveAddress,
     signedVAA,
   }: {
     injectiveAddress: string
+    source?: WormholeSource
     signedVAA: string /* in base 64 */
   }): Promise<MsgExecuteContractCompat> {
     const { network } = this
-
-    const { contractAddresses } = getSolanaContractAddresses(network)
+    const { injectiveContractAddresses } = getContractAddresses(network)
 
     return MsgExecuteContractCompat.fromJSON({
-      contractAddress: contractAddresses.token_bridge,
+      contractAddress: injectiveContractAddresses.token_bridge,
       sender: injectiveAddress,
       msg: {
         submit_vaa: {
@@ -215,7 +216,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     })
   }
 
-  async createWrappedOnInjective({
+  async createWrapped({
     injectiveAddress,
     signedVAA,
   }: {
@@ -223,11 +224,10 @@ export class InjectiveWormholeClient extends WormholeClient {
     signedVAA: string /* in base 64 */
   }): Promise<MsgExecuteContractCompat> {
     const { network } = this
-
-    const { contractAddresses } = getSolanaContractAddresses(network)
+    const { injectiveContractAddresses } = getContractAddresses(network)
 
     return MsgExecuteContractCompat.fromJSON({
-      contractAddress: contractAddresses.token_bridge,
+      contractAddress: injectiveContractAddresses.token_bridge,
       sender: injectiveAddress,
       msg: {
         submit_vaa: {
@@ -237,27 +237,25 @@ export class InjectiveWormholeClient extends WormholeClient {
     })
   }
 
-  async getIsTransferCompletedInjective(signedVAA: string /* in base 64 */) {
+  async getIsTransferCompleted(signedVAA: string /* in base 64 */) {
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
 
-    const { contractAddresses } = getSolanaContractAddresses(network)
+    const { injectiveContractAddresses } = getContractAddresses(network)
 
     return getIsTransferCompletedInjective(
-      contractAddresses.token_bridge,
+      injectiveContractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
       new ChainGrpcWasmApi(endpoints.grpc),
     )
   }
 
-  async getIsTransferCompletedInjectiveRetry(
-    signedVAA: string /* in base 64 */,
-  ) {
+  async getIsTransferCompletedRetry(signedVAA: string /* in base 64 */) {
     const RETRIES = 2
     const TIMEOUT_BETWEEN_RETRIES = 2000
 
     for (let i = 0; i < RETRIES; i += 1) {
-      if (await this.getIsTransferCompletedInjective(signedVAA)) {
+      if (await this.getIsTransferCompleted(signedVAA)) {
         return true
       }
 
