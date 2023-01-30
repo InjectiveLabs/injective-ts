@@ -26,6 +26,7 @@ import {
 import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
 
 /**
  * @category Indexer Grpc API
@@ -98,8 +99,8 @@ export class IndexerGrpcTransactionApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw new TransactionException(e.toOriginalError(), {
+      if (e instanceof GrpcWebError) {
+        throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
         })
@@ -165,8 +166,8 @@ export class IndexerGrpcTransactionApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw new TransactionException(e.toOriginalError(), {
+      if (e instanceof GrpcWebError) {
+        throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
         })
@@ -241,8 +242,8 @@ export class IndexerGrpcTransactionApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw new TransactionException(e.toOriginalError(), {
+      if (e instanceof GrpcWebError) {
+        throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
         })
@@ -301,8 +302,8 @@ export class IndexerGrpcTransactionApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw new TransactionException(e.toOriginalError(), {
+      if (e instanceof GrpcWebError) {
+        throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
         })
@@ -368,8 +369,8 @@ export class IndexerGrpcTransactionApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw new TransactionException(e.toOriginalError(), {
+      if (e instanceof GrpcWebError) {
+        throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
         })
