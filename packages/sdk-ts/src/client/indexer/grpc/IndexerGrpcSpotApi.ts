@@ -184,6 +184,7 @@ export class IndexerGrpcSpotApi {
   async fetchOrderHistory(params?: {
     subaccountId?: string
     marketId?: string
+    marketIds?: string[]
     orderTypes?: SpotOrderSide[]
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
@@ -194,6 +195,7 @@ export class IndexerGrpcSpotApi {
     const {
       subaccountId,
       marketId,
+      marketIds,
       orderTypes,
       executionTypes,
       direction,
@@ -209,6 +211,10 @@ export class IndexerGrpcSpotApi {
 
     if (marketId) {
       request.marketId = marketId
+    }
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
     }
 
     if (orderTypes) {
