@@ -23,7 +23,7 @@ export const getTokenTypeFromDenom = (denom: string): TokenType => {
     return TokenType.InsuranceFund
   }
 
-  if (denom.startsWith('factory')) {
+  if (denom.startsWith('factory/')) {
     return TokenType.TokenFactory
   }
 
