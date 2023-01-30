@@ -214,7 +214,7 @@ export class IndexerGrpcSpotApi {
     }
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      // request.marketIds = marketIds
     }
 
     if (orderTypes) {

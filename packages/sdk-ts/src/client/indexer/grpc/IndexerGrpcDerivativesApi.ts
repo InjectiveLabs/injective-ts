@@ -292,7 +292,7 @@ export class IndexerGrpcDerivativesApi {
     }
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      // request.marketIds = marketIds
     }
 
     if (orderTypes) {
