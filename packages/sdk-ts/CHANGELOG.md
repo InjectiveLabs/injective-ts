@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.382](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.381...@injectivelabs/sdk-ts@1.0.382) (2023-01-30)
+
+
+### Bug Fixes
+
+* export grpc related fns ([83c8b3c](https://github.com/InjectiveLabs/injective-ts/commit/83c8b3c676196989bf91bb50661a4793e675e178))
+
+
+
+
+
 ## [1.0.381](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.380...@injectivelabs/sdk-ts@1.0.381) (2023-01-30)
 
 

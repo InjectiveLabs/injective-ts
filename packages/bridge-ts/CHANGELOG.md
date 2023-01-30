@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.208](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.207...@injectivelabs/bridge-ts@1.0.208) (2023-01-30)
+
+
+### Bug Fixes
+
+* export grpc related fns ([83c8b3c](https://github.com/InjectiveLabs/injective-ts/commit/83c8b3c676196989bf91bb50661a4793e675e178))
+
+
+### Features
+
+* ethereum wormhole initial setup ([af78d52](https://github.com/InjectiveLabs/injective-ts/commit/af78d5257a1a4de021800ccbd6afb2d98bc82657))
+
+
+
+
+
 ## [1.0.207](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.206...@injectivelabs/bridge-ts@1.0.207) (2023-01-30)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
