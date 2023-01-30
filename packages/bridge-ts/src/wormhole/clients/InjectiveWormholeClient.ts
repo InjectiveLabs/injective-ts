@@ -53,8 +53,8 @@ export class InjectiveWormholeClient extends WormholeClient {
 
   async getBridgedAssetBalance(
     injectiveAddress: string,
-    source = WormholeSource.Solana,
     tokenAddress: string = NATIVE_MINT.toString(),
+    source = WormholeSource.Solana,
   ) {
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
