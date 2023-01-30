@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.381](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.380...@injectivelabs/sdk-ts@1.0.381) (2023-01-30)
+
+
+### Bug Fixes
+
+* handles invalid factory denom seperator format ([5bd9c35](https://github.com/InjectiveLabs/injective-ts/commit/5bd9c35bd4660e85c9659269f904833127020f68))
+
+
+
+
+
 ## [1.0.380](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.379...@injectivelabs/sdk-ts@1.0.380) (2023-01-30)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
