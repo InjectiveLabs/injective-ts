@@ -28,7 +28,6 @@ import {
   Transaction,
   TransactionResponse,
 } from '@solana/web3.js'
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { TransactionSignatureAndResponse } from '@injectivelabs/wormhole-sdk/lib/cjs/solana'
 import { zeroPad } from 'ethers/lib/utils'
