@@ -16,17 +16,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcOracleApi {
   protected module: string = ChainModule.Oracle
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryOracleParamsRequest.create()
 
     try {
-      const response = await this.query.Params(request)
+      const response = await this.client.Params(request)
 
       return response as OracleModuleParams
     } catch (e: unknown) {

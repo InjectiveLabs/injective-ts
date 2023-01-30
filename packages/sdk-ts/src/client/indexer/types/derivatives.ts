@@ -11,7 +11,7 @@ import {
   FundingRate as GrpcFundingRate,
   BinaryOptionsMarketInfo as GrpcBinaryOptionsMarketInfo,
   DerivativeOrderHistory as GrpcDerivativeOrderHistory,
-} from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_derivative_exchange_rpc'
 import {
   TradeExecutionType,
   TradeDirection,

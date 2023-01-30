@@ -1,6 +1,6 @@
-import { Oracle as GrpcOracle } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb'
+import { Oracle as GrpcOracle } from '@injectivelabs/indexer-proto-ts/injective_oracle_rpc'
 
-export interface Oracle extends GrpcOracle.AsObject {
+export interface Oracle extends GrpcOracle {
   //
 }
 

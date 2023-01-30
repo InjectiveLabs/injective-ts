@@ -1,23 +1,29 @@
 import {
+  InjectiveInsuranceRPCClientImpl,
   FundsRequest,
-  FundsResponse,
   RedemptionsRequest,
-  RedemptionsResponse,
-} from '@injectivelabs/indexer-api/injective_insurance_rpc_pb'
-import { InjectiveInsuranceRPC } from '@injectivelabs/indexer-api/injective_insurance_rpc_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/indexer-proto-ts/injective_insurance_rpc'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcInsuranceFundApi extends BaseConsumer {
+export class IndexerGrpcInsuranceFundApi {
   protected module: string = IndexerModule.InsuranceFund
+
+  protected client: InjectiveInsuranceRPCClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new InjectiveInsuranceRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
 
   async fetchRedemptions({
     denom,
@@ -28,24 +34,20 @@ export class IndexerGrpcInsuranceFundApi extends BaseConsumer {
     denom?: string
     status?: string
   }) {
-    const request = new RedemptionsRequest()
+    const request = RedemptionsRequest.create()
 
-    request.setRedeemer(address)
+    request.redeemer = address
 
     if (denom) {
-      request.setRedemptionDenom(denom)
+      request.redemptionDenom = denom
     }
 
     if (status) {
-      request.setStatus(status)
+      request.status = status
     }
 
     try {
-      const response = await this.request<
-        RedemptionsRequest,
-        RedemptionsResponse,
-        typeof InjectiveInsuranceRPC.Redemptions
-      >(request, InjectiveInsuranceRPC.Redemptions)
+      const response = await this.client.Redemptions(request)
 
       return IndexerGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
         response,
@@ -63,14 +65,10 @@ export class IndexerGrpcInsuranceFundApi extends BaseConsumer {
   }
 
   async fetchInsuranceFunds() {
-    const request = new FundsRequest()
+    const request = FundsRequest.create()
 
     try {
-      const response = await this.request<
-        FundsRequest,
-        FundsResponse,
-        typeof InjectiveInsuranceRPC.Funds
-      >(request, InjectiveInsuranceRPC.Funds)
+      const response = await this.client.Funds(request)
 
       return IndexerGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
         response,

@@ -19,17 +19,17 @@ import { ChainModule } from '../types'
 export class ChainGrpcAuctionApi {
   protected module: string = ChainModule.Auction
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryAuctionParamsRequest.create()
 
     try {
-      const response = await this.query.AuctionParams(request)
+      const response = await this.client.AuctionParams(request)
 
       return ChainGrpcAuctionTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -53,7 +53,7 @@ export class ChainGrpcAuctionApi {
     const request = QueryModuleStateRequest.create()
 
     try {
-      const response = await this.query.AuctionModuleState(request)
+      const response = await this.client.AuctionModuleState(request)
 
       return ChainGrpcAuctionTransformer.auctionModuleStateResponseToAuctionModuleState(
         response,
@@ -77,7 +77,7 @@ export class ChainGrpcAuctionApi {
     const request = QueryCurrentAuctionBasketRequest.create()
 
     try {
-      const response = await this.query.CurrentAuctionBasket(request)
+      const response = await this.client.CurrentAuctionBasket(request)
 
       return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(
         response,

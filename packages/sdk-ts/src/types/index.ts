@@ -1,7 +1,6 @@
 import { Coin as GrpcCoin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
-import { Coin as IndexerGrpcCoin } from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
 
 export * from './exchange'
 export * from './pagination'
@@ -19,4 +18,4 @@ export enum StreamOperation {
   Invalidate = 'invalidate',
 }
 
-export { GrpcCoin, DirectSignResponse, IndexerGrpcCoin, TxRaw }
+export { GrpcCoin, DirectSignResponse, TxRaw }

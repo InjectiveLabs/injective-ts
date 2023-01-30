@@ -17,17 +17,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcPeggyApi {
   protected module: string = ChainModule.Peggy
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryPeggyParamsRequest.create()
 
     try {
-      const response = await this.query.Params(request)
+      const response = await this.client.Params(request)
 
       return ChainGrpcPeggyTransformer.moduleParamsResponseToModuleParams(
         response,

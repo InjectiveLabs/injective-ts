@@ -294,7 +294,7 @@ export class MsgBroadcaster {
     })
 
     const signature = await walletStrategy.signEip712TypedData(
-      txResponse.getData(),
+      txResponse.data,
       tx.ethereumAddress,
     )
 
@@ -307,6 +307,8 @@ export class MsgBroadcaster {
 
     return {
       ...response,
+      data: Buffer.from(response.data).toString(),
+      height: parseInt(response.height, 10),
       gasUsed: 0 /** not available from the API */,
       gasWanted: 0 /** not available from the API */,
     } as TxResponse

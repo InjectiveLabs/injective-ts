@@ -1,13 +1,13 @@
 import { StreamOperation } from '../../../types'
-import { StreamPricesResponse } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb'
+import { StreamPricesResponse } from '@injectivelabs/indexer-proto-ts/injective_oracle_rpc'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerOracleStreamTransformer {
   static pricesStreamCallback = (response: StreamPricesResponse) => ({
-    price: response.getPrice(),
+    price: response.price,
     operation: StreamOperation.Update as StreamOperation,
-    timestamp: response.getTimestamp(),
+    timestamp: parseInt(response.timestamp, 10),
   })
 }

@@ -25,10 +25,10 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcGovApi {
   protected module: string = ChainModule.Gov
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
@@ -42,7 +42,7 @@ export class ChainGrpcGovApi {
 
     try {
       const responses = await Promise.all(
-        requests.map((request) => this.query.Params(request)),
+        requests.map((request) => this.client.Params(request)),
       )
       const [votingParams, depositParams, tallyParams] = responses
 
@@ -84,7 +84,7 @@ export class ChainGrpcGovApi {
     }
 
     try {
-      const response = await this.query.Proposals(request)
+      const response = await this.client.Proposals(request)
 
       return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
     } catch (e: any) {
@@ -108,7 +108,7 @@ export class ChainGrpcGovApi {
     request.proposalId = proposalId.toString()
 
     try {
-      const response = await this.query.Proposal(request)
+      const response = await this.client.Proposal(request)
 
       return ChainGrpcGovTransformer.proposalResponseToProposal(response)
     } catch (e: any) {
@@ -144,7 +144,7 @@ export class ChainGrpcGovApi {
     }
 
     try {
-      const response = await this.query.Deposits(request)
+      const response = await this.client.Deposits(request)
 
       return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
     } catch (e: any) {
@@ -179,7 +179,7 @@ export class ChainGrpcGovApi {
       request.pagination = paginationForRequest
     }
     try {
-      const response = await this.query.Votes(request)
+      const response = await this.client.Votes(request)
 
       return ChainGrpcGovTransformer.votesResponseToVotes(response)
     } catch (e: any) {
@@ -202,7 +202,7 @@ export class ChainGrpcGovApi {
 
     request.proposalId = proposalId.toString()
     try {
-      const response = await this.query.TallyResult(request)
+      const response = await this.client.TallyResult(request)
 
       return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
     } catch (e: any) {

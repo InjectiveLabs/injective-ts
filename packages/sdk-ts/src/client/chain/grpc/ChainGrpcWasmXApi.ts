@@ -17,17 +17,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcWasmXApi {
   protected module: string = ChainModule.WasmX
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryWasmxParamsRequest.create()
 
     try {
-      const response = await this.query.WasmxParams(request)
+      const response = await this.client.WasmxParams(request)
 
       return response
     } catch (e: unknown) {
@@ -48,7 +48,7 @@ export class ChainGrpcWasmXApi {
     const request = QueryModuleStateRequest.create()
 
     try {
-      const response = await this.query.WasmxModuleState(request)
+      const response = await this.client.WasmxModuleState(request)
 
       return response.state /* TODO */
     } catch (e: unknown) {

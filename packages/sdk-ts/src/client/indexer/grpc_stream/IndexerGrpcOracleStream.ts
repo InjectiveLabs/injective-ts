@@ -1,11 +1,11 @@
 import {
+  InjectiveOracleRPCClientImpl,
   StreamPricesRequest,
   StreamPricesResponse,
-} from '@injectivelabs/indexer-api/injective_oracle_rpc_pb'
-import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb_service'
+} from '@injectivelabs/indexer-proto-ts/injective_oracle_rpc'
 import { StreamStatusResponse } from '../types'
 import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer'
-import { getGrpcTransport } from '../../../utils/grpc'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 
 export type OraclePriceStreamCallback = (
   response: ReturnType<
@@ -17,12 +17,12 @@ export type OraclePriceStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcOracleStream {
-  protected client: InjectiveOracleRPCClient
+  protected client: InjectiveOracleRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveOracleRPCClient(endpoint, {
-      transport: getGrpcTransport(),
-    })
+    this.client = new InjectiveOracleRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
   }
 
   streamOraclePrices({
@@ -40,32 +40,34 @@ export class IndexerGrpcOracleStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
-    const request = new StreamPricesRequest()
+    const request = StreamPricesRequest.create()
 
     if (baseSymbol) {
-      request.setBaseSymbol(baseSymbol)
+      request.baseSymbol = baseSymbol
     }
 
     if (quoteSymbol) {
-      request.setQuoteSymbol(quoteSymbol)
+      request.quoteSymbol = quoteSymbol
     }
 
-    request.setOracleType(oracleType)
+    request.oracleType = oracleType
 
-    const stream = this.client.streamPrices(request)
+    const stream = this.client.StreamPrices(request)
 
-    stream.on('data', (response: StreamPricesResponse) => {
-      callback(IndexerOracleStreamTransformer.pricesStreamCallback(response))
+    return stream.subscribe({
+      next(response: StreamPricesResponse) {
+        callback(IndexerOracleStreamTransformer.pricesStreamCallback(response))
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
-
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
   }
 }

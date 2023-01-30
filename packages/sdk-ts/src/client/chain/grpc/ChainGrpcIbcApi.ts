@@ -17,10 +17,10 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcIbcApi {
   protected module: string = ChainModule.Ibc
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchDenomTrace(hash: string) {
@@ -29,7 +29,7 @@ export class ChainGrpcIbcApi {
     request.hash = hash
 
     try {
-      const response = await this.query.DenomTrace(request)
+      const response = await this.client.DenomTrace(request)
 
       return response.denomTrace!
     } catch (e: any) {
@@ -51,7 +51,7 @@ export class ChainGrpcIbcApi {
     const request = QueryDenomTracesRequest.create()
 
     try {
-      const response = await this.query.DenomTraces(request)
+      const response = await this.client.DenomTraces(request)
 
       return response.denomTraces
     } catch (e: any) {

@@ -5,7 +5,7 @@ import {
   AccountPortfolio as GrpcAccountPortfolio,
   SubaccountPortfolio as GrpcSubaccountPortfolio,
   Reward as GrpcTradingReward,
-} from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { Coin } from '@injectivelabs/ts-types'
 
 export enum TransferType {

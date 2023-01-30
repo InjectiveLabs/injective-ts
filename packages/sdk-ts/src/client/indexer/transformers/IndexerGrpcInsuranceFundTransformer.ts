@@ -1,4 +1,3 @@
-import { IndexerOracleType } from '../types'
 import {
   IndexerInsuranceFund,
   GrpcIndexerInsuranceFund,
@@ -9,14 +8,15 @@ import {
 import {
   FundsResponse,
   RedemptionsResponse,
-} from '@injectivelabs/indexer-api/injective_insurance_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_insurance_rpc'
+import { OracleType } from '../../chain'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcInsuranceFundTransformer {
   static insuranceFundsResponseToInsuranceFunds(response: FundsResponse) {
-    const insuranceFunds = response.getFundsList()
+    const insuranceFunds = response.funds
 
     return IndexerGrpcInsuranceFundTransformer.grpcInsuranceFundsToInsuranceFunds(
       insuranceFunds,
@@ -24,7 +24,7 @@ export class IndexerGrpcInsuranceFundTransformer {
   }
 
   static redemptionsResponseToRedemptions(response: RedemptionsResponse) {
-    const redemptions = response.getRedemptionSchedulesList()
+    const redemptions = response.redemptionSchedules
 
     return IndexerGrpcInsuranceFundTransformer.grpcRedemptionsToRedemptions(
       redemptions,
@@ -35,25 +35,26 @@ export class IndexerGrpcInsuranceFundTransformer {
     grpcInsuranceFund: GrpcIndexerInsuranceFund,
   ): IndexerInsuranceFund {
     const redemptionNoticePeriodDuration =
-      grpcInsuranceFund.getRedemptionNoticePeriodDuration()
-    const tokenMeta = grpcInsuranceFund.getDepositTokenMeta()
-    const depositDenom = grpcInsuranceFund.getDepositDenom()
+      grpcInsuranceFund.redemptionNoticePeriodDuration
+    const tokenMeta = grpcInsuranceFund.depositTokenMeta
+    const depositDenom = grpcInsuranceFund.depositDenom
 
     return {
       depositDenom,
-      insurancePoolTokenDenom: grpcInsuranceFund.getPoolTokenDenom(),
-      redemptionNoticePeriodDuration: redemptionNoticePeriodDuration || 0,
-      balance: grpcInsuranceFund.getBalance(),
-      totalShare: grpcInsuranceFund.getTotalShare(),
+      insurancePoolTokenDenom: grpcInsuranceFund.poolTokenDenom,
+      redemptionNoticePeriodDuration: parseInt(
+        redemptionNoticePeriodDuration || '0',
+        10,
+      ),
+      balance: grpcInsuranceFund.balance,
+      totalShare: grpcInsuranceFund.totalShare,
       depositTokenMeta: tokenMeta,
-      marketId: grpcInsuranceFund.getMarketId(),
-      marketTicker: grpcInsuranceFund.getMarketTicker(),
-      oracleBase: grpcInsuranceFund.getOracleBase(),
-      oracleQuote: grpcInsuranceFund.getOracleQuote(),
-      oracleType: parseInt(
-        grpcInsuranceFund.getOracleType(),
-      ) as IndexerOracleType,
-      expiry: grpcInsuranceFund.getExpiry(),
+      marketId: grpcInsuranceFund.marketId,
+      marketTicker: grpcInsuranceFund.marketTicker,
+      oracleBase: grpcInsuranceFund.oracleBase,
+      oracleQuote: grpcInsuranceFund.oracleQuote,
+      oracleType: parseInt(grpcInsuranceFund.oracleType) as OracleType,
+      expiry: parseInt(grpcInsuranceFund.expiry, 10),
     }
   }
 
@@ -69,16 +70,16 @@ export class IndexerGrpcInsuranceFundTransformer {
     redemption: GrpcIndexerRedemptionSchedule,
   ): Redemption {
     return {
-      redemptionId: redemption.getRedemptionId(),
-      status: redemption.getStatus() as RedemptionStatus,
-      redeemer: redemption.getRedeemer(),
-      claimableRedemptionTime: redemption.getClaimableRedemptionTime(),
-      redemptionAmount: redemption.getRedemptionAmount(),
-      redemptionDenom: redemption.getRedemptionDenom(),
-      requestedAt: redemption.getRequestedAt(),
-      disbursedAmount: redemption.getDisbursedAmount(),
-      disbursedDenom: redemption.getDisbursedDenom(),
-      disbursedAt: redemption.getDisbursedAt(),
+      redemptionId: parseInt(redemption.redemptionId, 10),
+      status: redemption.status as RedemptionStatus,
+      redeemer: redemption.redeemer,
+      claimableRedemptionTime: parseInt(redemption.claimableRedemptionTime, 10),
+      redemptionAmount: redemption.redemptionAmount,
+      redemptionDenom: redemption.redemptionDenom,
+      requestedAt: parseInt(redemption.requestedAt, 10),
+      disbursedAmount: redemption.disbursedAmount,
+      disbursedDenom: redemption.disbursedDenom,
+      disbursedAt: parseInt(redemption.disbursedAt, 10),
     }
   }
 

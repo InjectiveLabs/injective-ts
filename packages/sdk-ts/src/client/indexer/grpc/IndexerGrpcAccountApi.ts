@@ -1,23 +1,14 @@
 import {
+  InjectiveAccountsRPCClientImpl,
   OrderStatesRequest,
-  OrderStatesResponse,
   PortfolioRequest,
-  PortfolioResponse,
   RewardsRequest,
-  RewardsResponse,
   SubaccountBalanceRequest,
-  SubaccountBalanceResponse,
   SubaccountBalancesListRequest,
-  SubaccountBalancesListResponse,
   SubaccountHistoryRequest,
-  SubaccountHistoryResponse,
   SubaccountOrderSummaryRequest,
-  SubaccountOrderSummaryResponse,
   SubaccountsListRequest,
-  SubaccountsListResponse,
-} from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
-import { InjectiveAccountsRPC } from '@injectivelabs/indexer-api/injective_accounts_rpc_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { PaginationOption } from '../../../types/pagination'
 import { IndexerGrpcAccountTransformer } from '../transformers'
 import { IndexerModule } from '../types'
@@ -25,24 +16,29 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountApi extends BaseConsumer {
+export class IndexerGrpcAccountApi {
   protected module: string = IndexerModule.Account
 
-  async fetchPortfolio(address: string) {
-    const request = new PortfolioRequest()
+  protected client: InjectiveAccountsRPCClientImpl
 
-    request.setAccountAddress(address)
+  constructor(endpoint: string) {
+    this.client = new InjectiveAccountsRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
+
+  async fetchPortfolio(address: string) {
+    const request = PortfolioRequest.create()
+
+    request.accountAddress = address
 
     try {
-      const response = await this.request<
-        PortfolioRequest,
-        PortfolioResponse,
-        typeof InjectiveAccountsRPC.Portfolio
-      >(request, InjectiveAccountsRPC.Portfolio)
+      const response = await this.client.Portfolio(request)
 
       return IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio(
         response,
@@ -60,20 +56,16 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
   }
 
   async fetchRewards({ address, epoch }: { address: string; epoch: number }) {
-    const request = new RewardsRequest()
+    const request = RewardsRequest.create()
 
-    request.setAccountAddress(address)
+    request.accountAddress = address
 
     if (epoch) {
-      request.setEpoch(epoch)
+      request.epoch = epoch.toString()
     }
 
     try {
-      const response = await this.request<
-        RewardsRequest,
-        RewardsResponse,
-        typeof InjectiveAccountsRPC.Rewards
-      >(request, InjectiveAccountsRPC.Rewards)
+      const response = await this.client.Rewards(request)
 
       return IndexerGrpcAccountTransformer.tradingRewardsResponseToTradingRewards(
         response,
@@ -91,18 +83,14 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
   }
 
   async fetchSubaccountsList(address: string) {
-    const request = new SubaccountsListRequest()
+    const request = SubaccountsListRequest.create()
 
-    request.setAccountAddress(address)
+    request.accountAddress = address
 
     try {
-      const response = await this.request<
-        SubaccountsListRequest,
-        SubaccountsListResponse,
-        typeof InjectiveAccountsRPC.SubaccountsList
-      >(request, InjectiveAccountsRPC.SubaccountsList)
+      const response = await this.client.SubaccountsList(request)
 
-      return response.getSubaccountsList()
+      return response.subaccounts
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
@@ -116,17 +104,13 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
   }
 
   async fetchSubaccountBalance(subaccountId: string, denom: string) {
-    const request = new SubaccountBalanceRequest()
+    const request = SubaccountBalanceRequest.create()
 
-    request.setSubaccountId(subaccountId)
-    request.setDenom(denom)
+    request.subaccountId = subaccountId
+    request.denom = denom
 
     try {
-      const response = await this.request<
-        SubaccountBalanceRequest,
-        SubaccountBalanceResponse,
-        typeof InjectiveAccountsRPC.SubaccountBalanceEndpoint
-      >(request, InjectiveAccountsRPC.SubaccountBalanceEndpoint)
+      const response = await this.client.SubaccountBalanceEndpoint(request)
 
       return IndexerGrpcAccountTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {
@@ -142,16 +126,12 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
   }
 
   async fetchSubaccountBalancesList(subaccountId: string) {
-    const request = new SubaccountBalancesListRequest()
+    const request = SubaccountBalancesListRequest.create()
 
-    request.setSubaccountId(subaccountId)
+    request.subaccountId = subaccountId
 
     try {
-      const response = await this.request<
-        SubaccountBalancesListRequest,
-        SubaccountBalancesListResponse,
-        typeof InjectiveAccountsRPC.SubaccountBalancesList
-      >(request, InjectiveAccountsRPC.SubaccountBalancesList)
+      const response = await this.client.SubaccountBalancesList(request)
 
       return IndexerGrpcAccountTransformer.balancesResponseToBalances(response)
     } catch (e: unknown) {
@@ -177,38 +157,34 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
     transferTypes?: string[]
     pagination?: PaginationOption
   }) {
-    const request = new SubaccountHistoryRequest()
+    const request = SubaccountHistoryRequest.create()
 
-    request.setSubaccountId(subaccountId)
+    request.subaccountId = subaccountId
 
     if (denom) {
-      request.setDenom(denom)
+      request.denom = denom
     }
 
     if (transferTypes.length > 0) {
-      request.setTransferTypesList(transferTypes)
+      request.transferTypes = transferTypes
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
 
       if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
+        request.endTime = pagination.endTime.toString()
       }
     }
 
     try {
-      const response = await this.request<
-        SubaccountHistoryRequest,
-        SubaccountHistoryResponse,
-        typeof InjectiveAccountsRPC.SubaccountHistory
-      >(request, InjectiveAccountsRPC.SubaccountHistory)
+      const response = await this.client.SubaccountHistory(request)
 
       return IndexerGrpcAccountTransformer.transferHistoryResponseToTransferHistory(
         response,
@@ -234,26 +210,22 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
     marketId?: string
     orderDirection?: string
   }) {
-    const request = new SubaccountOrderSummaryRequest()
+    const request = SubaccountOrderSummaryRequest.create()
 
-    request.setSubaccountId(subaccountId)
+    request.subaccountId = subaccountId
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (orderDirection) {
-      request.setOrderDirection(orderDirection)
+      request.orderDirection = orderDirection
     }
 
     try {
-      const response = await this.request<
-        SubaccountOrderSummaryRequest,
-        SubaccountOrderSummaryResponse,
-        typeof InjectiveAccountsRPC.SubaccountOrderSummary
-      >(request, InjectiveAccountsRPC.SubaccountOrderSummary)
+      const response = await this.client.SubaccountOrderSummary(request)
 
-      return response.toObject()
+      return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
@@ -271,19 +243,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
     derivativeOrderHashes?: string[]
   }) {
     const { spotOrderHashes = [], derivativeOrderHashes = [] } = params || {}
-    const request = new OrderStatesRequest()
+    const request = OrderStatesRequest.create()
 
-    request.setSpotOrderHashesList(spotOrderHashes)
-    request.setDerivativeOrderHashesList(derivativeOrderHashes)
+    request.spotOrderHashes = spotOrderHashes
+    request.derivativeOrderHashes = derivativeOrderHashes
 
     try {
-      const response = await this.request<
-        OrderStatesRequest,
-        OrderStatesResponse,
-        typeof InjectiveAccountsRPC.OrderStates
-      >(request, InjectiveAccountsRPC.OrderStates)
+      const response = await this.client.OrderStates(request)
 
-      return response.toObject() /* TODO */
+      return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e

@@ -22,17 +22,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcBankApi {
   protected module: string = ChainModule.Bank
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryBankParamsRequest.create()
 
     try {
-      const response = await this.query.Params(request)
+      const response = await this.client.Params(request)
 
       return ChainGrpcBankTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -65,7 +65,7 @@ export class ChainGrpcBankApi {
     request.denom = denom
 
     try {
-      const response = await this.query.Balance(request)
+      const response = await this.client.Balance(request)
 
       return ChainGrpcBankTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {
@@ -89,7 +89,7 @@ export class ChainGrpcBankApi {
     request.address = address
 
     try {
-      const response = await this.query.AllBalances(request)
+      const response = await this.client.AllBalances(request)
 
       return ChainGrpcBankTransformer.balancesResponseToBalances(response)
     } catch (e: unknown) {
@@ -116,7 +116,7 @@ export class ChainGrpcBankApi {
     }
 
     try {
-      const response = await this.query.TotalSupply(request)
+      const response = await this.client.TotalSupply(request)
 
       return ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply(response)
     } catch (e: unknown) {

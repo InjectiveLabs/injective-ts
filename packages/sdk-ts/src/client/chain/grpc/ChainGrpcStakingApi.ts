@@ -28,17 +28,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcStakingApi {
   protected module: string = ChainModule.Staking
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryStakingParamsRequest.create()
 
     try {
-      const response = await this.query.Params(request)
+      const response = await this.client.Params(request)
 
       return ChainGrpcStakingTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -62,7 +62,7 @@ export class ChainGrpcStakingApi {
     const request = QueryPoolRequest.create()
 
     try {
-      const response = await this.query.Pool(request)
+      const response = await this.client.Pool(request)
 
       return ChainGrpcStakingTransformer.poolResponseToPool(response)
     } catch (e: unknown) {
@@ -84,7 +84,7 @@ export class ChainGrpcStakingApi {
     const request = QueryValidatorsRequest.create()
 
     try {
-      const response = await this.query.Validators(request)
+      const response = await this.client.Validators(request)
 
       return ChainGrpcStakingTransformer.validatorsResponseToValidators(
         response,
@@ -110,7 +110,7 @@ export class ChainGrpcStakingApi {
     request.validatorAddr = address
 
     try {
-      const response = await this.query.Validator(request)
+      const response = await this.client.Validator(request)
 
       return ChainGrpcStakingTransformer.validatorResponseToValidator(response)
     } catch (e: unknown) {
@@ -146,7 +146,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.ValidatorDelegations(request)
+      const response = await this.client.ValidatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -184,7 +184,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.ValidatorDelegations(request)
+      const response = await this.client.ValidatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -226,7 +226,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.ValidatorUnbondingDelegations(request)
+      const response = await this.client.ValidatorUnbondingDelegations(request)
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -264,7 +264,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.ValidatorUnbondingDelegations(request)
+      const response = await this.client.ValidatorUnbondingDelegations(request)
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -301,7 +301,7 @@ export class ChainGrpcStakingApi {
     request.validatorAddr = validatorAddress
 
     try {
-      const response = await this.query.Delegation(request)
+      const response = await this.client.Delegation(request)
 
       return ChainGrpcStakingTransformer.delegationResponseToDelegation(
         response,
@@ -339,7 +339,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.DelegatorDelegations(request)
+      const response = await this.client.DelegatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -377,7 +377,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.DelegatorDelegations(request)
+      const response = await this.client.DelegatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -419,7 +419,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.ValidatorDelegations(request)
+      const response = await this.client.ValidatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -457,7 +457,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.ValidatorDelegations(request)
+      const response = await this.client.ValidatorDelegations(request)
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -499,7 +499,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.DelegatorUnbondingDelegations(request)
+      const response = await this.client.DelegatorUnbondingDelegations(request)
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -537,7 +537,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.DelegatorUnbondingDelegations(request)
+      const response = await this.client.DelegatorUnbondingDelegations(request)
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -579,7 +579,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.Redelegations(request)
+      const response = await this.client.Redelegations(request)
 
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
         response,
@@ -617,7 +617,7 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.query.Redelegations(request)
+      const response = await this.client.Redelegations(request)
 
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
         response,

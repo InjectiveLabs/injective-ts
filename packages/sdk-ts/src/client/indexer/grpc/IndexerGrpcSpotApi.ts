@@ -1,25 +1,15 @@
-import { InjectiveSpotExchangeRPC } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb_service'
 import {
+  InjectiveSpotExchangeRPCClientImpl,
   MarketsRequest as SpotMarketsRequest,
-  MarketsResponse as SpotMarketsResponse,
   MarketRequest as SpotMarketRequest,
-  MarketResponse as SpotMarketResponse,
   OrderbookRequest as SpotOrderbookRequest,
-  OrderbookResponse as SpotOrderbookResponse,
   OrdersRequest as SpotOrdersRequest,
-  OrdersResponse as SpotOrdersResponse,
   OrdersHistoryRequest as SpotOrdersHistoryRequest,
-  OrdersHistoryResponse as SpotOrdersHistoryResponse,
   TradesRequest as SpotTradesRequest,
-  TradesResponse as SpotTradesResponse,
   SubaccountOrdersListRequest as SpotSubaccountOrdersListRequest,
-  SubaccountOrdersListResponse as SpotSubaccountOrdersListResponse,
   SubaccountTradesListRequest as SpotSubaccountTradesListRequest,
-  SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
   OrderbooksRequest as SpotOrderbooksRequest,
-  OrderbooksResponse as SpotOrderbooksResponse,
-} from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import {
   TradeExecutionSide,
   TradeDirection,
@@ -33,12 +23,21 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcSpotApi extends BaseConsumer {
+export class IndexerGrpcSpotApi {
   protected module: string = IndexerModule.Spot
+
+  protected client: InjectiveSpotExchangeRPCClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new InjectiveSpotExchangeRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
 
   async fetchMarkets(params?: {
     baseDenom?: string
@@ -46,26 +45,22 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     quoteDenom?: string
   }) {
     const { baseDenom, marketStatus, quoteDenom } = params || {}
-    const request = new SpotMarketsRequest()
+    const request = SpotMarketsRequest.create()
 
     if (baseDenom) {
-      request.setBaseDenom(baseDenom)
+      request.baseDenom = baseDenom
     }
 
     if (marketStatus) {
-      request.setMarketStatus(marketStatus)
+      request.marketStatus = marketStatus
     }
 
     if (quoteDenom) {
-      request.setQuoteDenom(quoteDenom)
+      request.quoteDenom = quoteDenom
     }
 
     try {
-      const response = await this.request<
-        SpotMarketsRequest,
-        SpotMarketsResponse,
-        typeof InjectiveSpotExchangeRPC.Markets
-      >(request, InjectiveSpotExchangeRPC.Markets)
+      const response = await this.client.Markets(request)
 
       return IndexerGrpcSpotTransformer.marketsResponseToMarkets(response)
     } catch (e: unknown) {
@@ -81,15 +76,12 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
   }
 
   async fetchMarket(marketId: string) {
-    const request = new SpotMarketRequest()
-    request.setMarketId(marketId)
+    const request = SpotMarketRequest.create()
+
+    request.marketId = marketId
 
     try {
-      const response = await this.request<
-        SpotMarketRequest,
-        SpotMarketResponse,
-        typeof InjectiveSpotExchangeRPC.Market
-      >(request, InjectiveSpotExchangeRPC.Market)
+      const response = await this.client.Market(request)
 
       return IndexerGrpcSpotTransformer.marketResponseToMarket(response)
     } catch (e: unknown) {
@@ -105,15 +97,12 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
   }
 
   async fetchOrderbook(marketId: string) {
-    const request = new SpotOrderbookRequest()
-    request.setMarketId(marketId)
+    const request = SpotOrderbookRequest.create()
+
+    request.marketId = marketId
 
     try {
-      const response = await this.request<
-        SpotOrderbookRequest,
-        SpotOrderbookResponse,
-        typeof InjectiveSpotExchangeRPC.Orderbook
-      >(request, InjectiveSpotExchangeRPC.Orderbook)
+      const response = await this.client.Orderbook(request)
 
       return IndexerGrpcSpotTransformer.orderbookResponseToOrderbook(response)
     } catch (e: unknown) {
@@ -138,50 +127,46 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
   }) {
     const { marketId, marketIds, subaccountId, orderSide, pagination } =
       params || {}
-    const request = new SpotOrdersRequest()
+    const request = SpotOrdersRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (orderSide) {
-      request.setOrderSide(orderSide)
+      request.orderSide = orderSide
     }
 
     /*
     if (isConditional !== undefined) {
-      request.setIsConditional(isConditional)
+      request.isConditional =isConditional
     }
     */
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
 
       if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
+        request.endTime = pagination.endTime.toString()
       }
     }
 
     try {
-      const response = await this.request<
-        SpotOrdersRequest,
-        SpotOrdersResponse,
-        typeof InjectiveSpotExchangeRPC.Orders
-      >(request, InjectiveSpotExchangeRPC.Orders)
+      const response = await this.client.Orders(request)
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
@@ -216,58 +201,54 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       pagination,
     } = params || {}
 
-    const request = new SpotOrdersHistoryRequest()
+    const request = SpotOrdersHistoryRequest.create()
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (orderTypes) {
-      request.setOrderTypesList(orderTypes)
+      request.orderTypes = orderTypes
     }
 
     if (executionTypes) {
-      request.setExecutionTypesList(executionTypes)
+      request.executionTypes = executionTypes
     }
 
     if (direction) {
-      request.setDirection(direction)
+      request.direction = direction
     }
 
     if (state) {
-      request.setState(state)
+      request.state = state
     }
 
     /*
     if (isConditional !== undefined) {
-      request.setIsConditional(isConditional)
+      request.isConditional =isConditional
     }
     */
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
 
       if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
+        request.endTime = pagination.endTime.toString()
       }
     }
 
     try {
-      const response = await this.request<
-        SpotOrdersHistoryRequest,
-        SpotOrdersHistoryResponse,
-        typeof InjectiveSpotExchangeRPC.OrdersHistory
-      >(request, InjectiveSpotExchangeRPC.OrdersHistory)
+      const response = await this.client.OrdersHistory(request)
 
       return IndexerGrpcSpotTransformer.orderHistoryResponseToOrderHistory(
         response,
@@ -307,62 +288,58 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
       marketIds,
     } = params || {}
 
-    const request = new SpotTradesRequest()
+    const request = SpotTradesRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     } else {
-      request.setMarketIdsList([])
+      request.marketIds = []
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (executionTypes) {
-      request.setExecutionTypesList(executionTypes)
+      request.executionTypes = executionTypes
     }
 
     if (executionSide) {
-      request.setExecutionSide(executionSide)
+      request.executionSide = executionSide
     }
 
     if (direction) {
-      request.setDirection(direction)
+      request.direction = direction
     }
 
     if (startTime) {
-      request.setStartTime(startTime)
+      request.startTime = startTime.toString()
     }
 
     if (endTime) {
-      request.setEndTime(endTime)
+      request.endTime = endTime.toString()
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
 
       if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
+        request.endTime = pagination.endTime.toString()
       }
     }
 
     try {
-      const response = await this.request<
-        SpotTradesRequest,
-        SpotTradesResponse,
-        typeof InjectiveSpotExchangeRPC.Trades
-      >(request, InjectiveSpotExchangeRPC.Trades)
+      const response = await this.client.Trades(request)
 
       return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
     } catch (e: unknown) {
@@ -383,32 +360,28 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
     pagination?: PaginationOption
   }) {
     const { subaccountId, marketId, pagination } = params || {}
-    const request = new SpotSubaccountOrdersListRequest()
+    const request = SpotSubaccountOrdersListRequest.create()
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
     }
 
     try {
-      const response = await this.request<
-        SpotSubaccountOrdersListRequest,
-        SpotSubaccountOrdersListResponse,
-        typeof InjectiveSpotExchangeRPC.SubaccountOrdersList
-      >(request, InjectiveSpotExchangeRPC.SubaccountOrdersList)
+      const response = await this.client.SubaccountOrdersList(request)
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
@@ -432,40 +405,36 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
   }) {
     const { subaccountId, marketId, direction, executionType, pagination } =
       params || {}
-    const request = new SpotSubaccountTradesListRequest()
+    const request = SpotSubaccountTradesListRequest.create()
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (direction) {
-      request.setDirection(direction)
+      request.direction = direction
     }
 
     if (executionType) {
-      request.setExecutionType(executionType)
+      request.executionType = executionType
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
     }
 
     try {
-      const response = await this.request<
-        SpotSubaccountTradesListRequest,
-        SpotSubaccountTradesListResponse,
-        typeof InjectiveSpotExchangeRPC.SubaccountTradesList
-      >(request, InjectiveSpotExchangeRPC.SubaccountTradesList)
+      const response = await this.client.SubaccountTradesList(request)
 
       return IndexerGrpcSpotTransformer.subaccountTradesListResponseToTradesList(
         response,
@@ -483,18 +452,14 @@ export class IndexerGrpcSpotApi extends BaseConsumer {
   }
 
   async fetchOrderbooks(marketIds: string[]) {
-    const request = new SpotOrderbooksRequest()
+    const request = SpotOrderbooksRequest.create()
 
     if (marketIds.length > 0) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
     try {
-      const response = await this.request<
-        SpotOrderbooksRequest,
-        SpotOrderbooksResponse,
-        typeof InjectiveSpotExchangeRPC.Orderbooks
-      >(request, InjectiveSpotExchangeRPC.Orderbooks)
+      const response = await this.client.Orderbooks(request)
 
       return IndexerGrpcSpotTransformer.orderbooksResponseToOrderbooks(response)
     } catch (e: unknown) {

@@ -1,11 +1,11 @@
-import { InjectiveAccountsRPCClient } from '@injectivelabs/indexer-api/injective_accounts_rpc_pb_service'
 import {
+  InjectiveAccountsRPCClientImpl,
   StreamSubaccountBalanceRequest,
   StreamSubaccountBalanceResponse,
-} from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { StreamStatusResponse } from '../types'
 import { IndexerAccountStreamTransformer } from '../transformers'
-import { getGrpcTransport } from '../../../utils/grpc'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 
 export type BalanceStreamCallback = (
   response: ReturnType<
@@ -17,12 +17,12 @@ export type BalanceStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcAccountStream {
-  protected client: InjectiveAccountsRPCClient
+  protected client: InjectiveAccountsRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveAccountsRPCClient(endpoint, {
-      transport: getGrpcTransport(),
-    })
+    this.client = new InjectiveAccountsRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
   }
 
   streamSubaccountBalance({
@@ -36,23 +36,27 @@ export class IndexerGrpcAccountStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
-    const request = new StreamSubaccountBalanceRequest()
-    request.setSubaccountId(subaccountId)
+    const request = StreamSubaccountBalanceRequest.create()
+    request.subaccountId = subaccountId
 
-    const stream = this.client.streamSubaccountBalance(request)
+    const stream = this.client.StreamSubaccountBalance(request)
 
-    stream.on('data', (response: StreamSubaccountBalanceResponse) => {
-      callback(IndexerAccountStreamTransformer.balanceStreamCallback(response))
+    return stream.subscribe({
+      next(response: StreamSubaccountBalanceResponse) {
+        callback(
+          IndexerAccountStreamTransformer.balanceStreamCallback(response),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
-
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
   }
 }

@@ -18,17 +18,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcAuthApi {
   protected module: string = ChainModule.Auth
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryParamsRequest.create()
 
     try {
-      const response = await this.query.Params(request)
+      const response = await this.client.Params(request)
 
       return ChainGrpcAuthTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -51,7 +51,7 @@ export class ChainGrpcAuthApi {
     request.address = address
 
     try {
-      const response = await this.query.Account(request)
+      const response = await this.client.Account(request)
 
       return ChainGrpcAuthTransformer.accountResponseToAccount(response)
     } catch (e: unknown) {
@@ -75,7 +75,7 @@ export class ChainGrpcAuthApi {
     }
 
     try {
-      const response = await this.query.Accounts(request)
+      const response = await this.client.Accounts(request)
 
       return ChainGrpcAuthTransformer.accountsResponseToAccounts(response)
     } catch (e: unknown) {

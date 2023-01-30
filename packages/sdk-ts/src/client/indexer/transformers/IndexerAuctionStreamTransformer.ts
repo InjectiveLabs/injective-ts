@@ -1,5 +1,5 @@
 import { StreamOperation } from '@injectivelabs/ts-types'
-import { StreamBidsResponse } from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
+import { StreamBidsResponse } from '@injectivelabs/indexer-proto-ts/injective_auction_rpc'
 import { IndexerBid } from '../types'
 
 /**
@@ -8,9 +8,9 @@ import { IndexerBid } from '../types'
 export class IndexerAuctionStreamTransformer {
   static bidsStreamCallback = (response: StreamBidsResponse) => ({
     bid: {
-      bidder: response.getBidder(),
-      bidAmount: response.getBidAmount(),
-      bidTimestamp: response.getTimestamp(),
+      bidder: response.bidder,
+      bidAmount: response.bidAmount,
+      bidTimestamp: parseInt(response.timestamp, 10),
     } as IndexerBid,
     operation: StreamOperation.Insert,
   })

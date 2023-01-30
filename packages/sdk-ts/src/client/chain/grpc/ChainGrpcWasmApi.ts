@@ -26,10 +26,10 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcWasmApi {
   protected module: string = ChainModule.Wasm
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchContractAccountsBalance({
@@ -50,7 +50,7 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.query.AllContractState(request)
+      const response = await this.client.AllContractState(request)
 
       return ChainGrpcWasmTransformer.allContractStateResponseToContractAccountsBalanceWithPagination(
         response,
@@ -76,7 +76,7 @@ export class ChainGrpcWasmApi {
     request.address = contractAddress
 
     try {
-      const response = await this.query.ContractInfo(request)
+      const response = await this.client.ContractInfo(request)
 
       const contractInfo = response.contractInfo
 
@@ -108,7 +108,7 @@ export class ChainGrpcWasmApi {
     request.address = contractAddress
 
     try {
-      const response = await this.query.ContractHistory(request)
+      const response = await this.client.ContractHistory(request)
 
       return ChainGrpcWasmTransformer.contactHistoryResponseToContractHistory(
         response,
@@ -138,7 +138,7 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.query.SmartContractState(request)
+      const response = await this.client.SmartContractState(request)
 
       return response
     } catch (e: unknown) {
@@ -166,7 +166,7 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.query.RawContractState(request)
+      const response = await this.client.RawContractState(request)
 
       return response
     } catch (e: unknown) {
@@ -194,7 +194,7 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.query.Codes(request)
+      const response = await this.client.Codes(request)
 
       return ChainGrpcWasmTransformer.contractCodesResponseToContractCodes(
         response,
@@ -220,7 +220,7 @@ export class ChainGrpcWasmApi {
     request.codeId = codeId.toString()
 
     try {
-      const response = await this.query.Code(request)
+      const response = await this.client.Code(request)
 
       return ChainGrpcWasmTransformer.contractCodeResponseToContractCode(
         response,
@@ -255,7 +255,7 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.query.ContractsByCode(request)
+      const response = await this.client.ContractsByCode(request)
 
       return ChainGrpcWasmTransformer.contractByCodeResponseToContractByCode(
         response,

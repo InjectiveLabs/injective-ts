@@ -20,17 +20,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcDistributionApi {
   protected module: string = ChainModule.Distribution
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryDistributionParamsRequest.create()
 
     try {
-      const response = await this.query.Params(request)
+      const response = await this.client.Params(request)
 
       return ChainGrpcDistributionTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -63,7 +63,7 @@ export class ChainGrpcDistributionApi {
     request.delegatorAddress = delegatorAddress
 
     try {
-      const response = await this.query.DelegationRewards(request)
+      const response = await this.client.DelegationRewards(request)
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
@@ -93,7 +93,7 @@ export class ChainGrpcDistributionApi {
     request.delegatorAddress = delegatorAddress
 
     try {
-      const response = await this.query.DelegationRewards(request)
+      const response = await this.client.DelegationRewards(request)
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
@@ -120,7 +120,7 @@ export class ChainGrpcDistributionApi {
     request.delegatorAddress = injectiveAddress
 
     try {
-      const response = await this.query.DelegationTotalRewards(request)
+      const response = await this.client.DelegationTotalRewards(request)
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,
@@ -143,7 +143,7 @@ export class ChainGrpcDistributionApi {
     request.delegatorAddress = injectiveAddress
 
     try {
-      const response = await this.query.DelegationTotalRewards(request)
+      const response = await this.client.DelegationTotalRewards(request)
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,

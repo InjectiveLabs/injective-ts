@@ -1,38 +1,43 @@
 import {
+  InjectiveAuctionRPCClientImpl,
   AuctionRequest,
-  AuctionResponse,
   AuctionsRequest,
-  AuctionsResponse,
-} from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
-import { InjectiveAuctionRPC } from '@injectivelabs/indexer-api/injective_auction_rpc_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/indexer-proto-ts/injective_auction_rpc'
 import { IndexerGrpcAuctionTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAuctionApi extends BaseConsumer {
+export class IndexerGrpcAuctionApi {
   protected module: string = IndexerModule.Account
 
-  async fetchAuction(round?: number) {
-    const request = new AuctionRequest()
+  protected client: InjectiveAuctionRPCClientImpl
 
-    // If round is provided, set it on the request, otherwise fetch latest round
+  constructor(endpoint: string) {
+    this.client = new InjectiveAuctionRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
+
+  async fetchAuction(round?: number) {
+    const request = AuctionRequest.create()
+
+    /**
+     * If round is provided, set it on the request,
+     * otherwise fetch latest round
+     **/
     if (round) {
-      request.setRound(round)
+      request.round = round.toString()
     }
 
     try {
-      const response = await this.request<
-        AuctionRequest,
-        AuctionResponse,
-        typeof InjectiveAuctionRPC.AuctionEndpoint
-      >(request, InjectiveAuctionRPC.AuctionEndpoint)
+      const response = await this.client.AuctionEndpoint(request)
 
       return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
     } catch (e: unknown) {
@@ -48,14 +53,10 @@ export class IndexerGrpcAuctionApi extends BaseConsumer {
   }
 
   async fetchAuctions() {
-    const request = new AuctionsRequest()
+    const request = AuctionsRequest.create()
 
     try {
-      const response = await this.request<
-        AuctionsRequest,
-        AuctionsResponse,
-        typeof InjectiveAuctionRPC.Auctions
-      >(request, InjectiveAuctionRPC.Auctions)
+      const response = await this.client.Auctions(request)
 
       return IndexerGrpcAuctionTransformer.auctionsResponseToAuctions(response)
     } catch (e: unknown) {

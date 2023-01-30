@@ -3,7 +3,7 @@ import {
   StreamTradesResponse,
   StreamOrdersResponse,
   StreamOrdersHistoryResponse,
-} from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import { StreamOperation } from '../../../types'
 import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer'
 
@@ -12,54 +12,56 @@ import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer'
  */
 export class IndexerSpotStreamTransformer {
   static orderbookStreamCallback = (response: StreamOrderbookResponse) => {
-    const orderbook = response.getOrderbook()
+    const orderbook = response.orderbook
 
     return {
       orderbook: orderbook
         ? IndexerGrpcSpotTransformer.grpcOrderbookToOrderbook({
-            buys: orderbook.getBuysList(),
-            sells: orderbook.getSellsList(),
+            buys: orderbook.buys,
+            sells: orderbook.sells,
           })
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      marketId: response.getMarketId(),
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      marketId: response.marketId,
+      timestamp: response.timestamp,
     }
   }
 
   static tradesStreamCallback = (response: StreamTradesResponse) => {
-    const trade = response.getTrade()
+    const trade = response.trade
 
     return {
       trade: trade
         ? IndexerGrpcSpotTransformer.grpcTradeToTrade(trade)
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      timestamp: response.timestamp,
     }
   }
 
   static ordersStreamCallback = (response: StreamOrdersResponse) => {
-    const order = response.getOrder()
+    const order = response.order
 
     return {
       order: order
         ? IndexerGrpcSpotTransformer.grpcOrderToOrder(order)
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      timestamp: response.timestamp,
     }
   }
 
-  static orderHistoryStreamCallback = (response: StreamOrdersHistoryResponse) => {
-    const order = response.getOrder()
+  static orderHistoryStreamCallback = (
+    response: StreamOrdersHistoryResponse,
+  ) => {
+    const order = response.order
 
     return {
       order: order
         ? IndexerGrpcSpotTransformer.grpcOrderHistoryToOrderHistory(order)
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      timestamp: response.timestamp,
     }
   }
 }

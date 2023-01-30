@@ -1,7 +1,7 @@
 import {
   TokenMeta as GrpcTokenMeta,
   PriceLevel as GrpcPriceLevel,
-} from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 
 export interface PriceLevel {
   price: string
@@ -14,22 +14,7 @@ export interface Orderbook {
   sells: PriceLevel[]
 }
 
-export enum IndexerOracleType {
-  UNSPECIFIED = 0,
-  BAND = 1,
-  PRICEFEED = 2,
-  COINBASE = 3,
-  CHAINLINK = 4,
-  RAZOR = 5,
-  DIA = 6,
-  API3 = 7,
-  UMA = 8,
-  PYTH = 9,
-  BANDIBC = 10,
-  PROVIDER = 11,
-}
-
-export interface IndexerTokenMeta extends GrpcTokenMeta.AsObject {
+export interface IndexerTokenMeta extends GrpcTokenMeta {
   coinGeckoId: string
 }
 

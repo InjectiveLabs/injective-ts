@@ -21,17 +21,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcMintApi {
   protected module: string = ChainModule.Mint
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryMintParamsRequest.create()
 
     try {
-      const response = await this.query.Params(request)
+      const response = await this.client.Params(request)
 
       return ChainGrpcMintTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -55,7 +55,7 @@ export class ChainGrpcMintApi {
     const request = QueryInflationRequest.create()
 
     try {
-      const response = await this.query.Inflation(request)
+      const response = await this.client.Inflation(request)
 
       return {
         inflation: cosmosSdkDecToBigNumber(
@@ -81,7 +81,7 @@ export class ChainGrpcMintApi {
     const request = QueryAnnualProvisionsRequest.create()
 
     try {
-      const response = await this.query.AnnualProvisions(request)
+      const response = await this.client.AnnualProvisions(request)
 
       return {
         annualProvisions: cosmosSdkDecToBigNumber(

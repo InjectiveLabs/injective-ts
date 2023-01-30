@@ -3,7 +3,7 @@ import {
   SpotLimitOrder as GrpcSpotLimitOrder,
   SpotTrade as GrpcSpotTrade,
   SpotOrderHistory as GrpcSpotOrderHistory,
-} from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import {
   TradeExecutionType,
   TradeDirection,

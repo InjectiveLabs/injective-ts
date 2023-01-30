@@ -2,7 +2,7 @@ import { PageRequest } from '@injectivelabs/core-proto-ts/cosmos/base/query/v1be
 import { ExchangePagination, PaginationOption } from '../types/pagination'
 import { Pagination, PagePagination } from '../types/pagination'
 import { PageResponse } from '@injectivelabs/core-proto-ts/cosmos/base/query/v1beta1/pagination'
-import { Paging } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
+import { Paging } from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
 
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,
@@ -117,8 +117,9 @@ export const grpcPagingToPaging = (
   }
 
   return {
-    ...pagination.toObject(),
-    to: pagination.getTo() || 0,
-    from: pagination.getFrom() || 0,
+    ...pagination,
+    to: parseInt(pagination.to.toString() || '0', 10),
+    from: parseInt(pagination.from.toString() || '0', 10),
+    total: parseInt(pagination.total || '0', 10),
   }
 }

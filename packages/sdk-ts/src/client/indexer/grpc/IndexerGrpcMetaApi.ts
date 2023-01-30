@@ -1,36 +1,37 @@
 import {
+  InjectiveMetaRPCClientImpl,
   InfoRequest,
-  InfoResponse,
   PingRequest,
-  PingResponse,
   VersionRequest,
-  VersionResponse,
-} from '@injectivelabs/indexer-api/injective_meta_rpc_pb'
-import { InjectiveMetaRPC } from '@injectivelabs/indexer-api/injective_meta_rpc_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/indexer-proto-ts/injective_meta_rpc'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcMetaApi extends BaseConsumer {
+export class IndexerGrpcMetaApi {
   protected module: string = IndexerModule.Meta
 
+  protected client: InjectiveMetaRPCClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new InjectiveMetaRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
+
   async fetchPing() {
-    const request = new PingRequest()
+    const request = PingRequest.create()
 
     try {
-      const response = await this.request<
-        PingRequest,
-        PingResponse,
-        typeof InjectiveMetaRPC.Ping
-      >(request, InjectiveMetaRPC.Ping)
+      const response = await this.client.Ping(request)
 
-      return response.toObject()
+      return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
@@ -44,16 +45,12 @@ export class IndexerGrpcMetaApi extends BaseConsumer {
   }
 
   async fetchVersion() {
-    const request = new VersionRequest()
+    const request = VersionRequest.create()
 
     try {
-      const response = await this.request<
-        VersionRequest,
-        VersionResponse,
-        typeof InjectiveMetaRPC.Version
-      >(request, InjectiveMetaRPC.Version)
+      const response = await this.client.Version(request)
 
-      return response.toObject()
+      return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
@@ -67,16 +64,12 @@ export class IndexerGrpcMetaApi extends BaseConsumer {
   }
 
   async fetchInfo() {
-    const request = new InfoRequest()
+    const request = InfoRequest.create()
 
     try {
-      const response = await this.request<
-        InfoRequest,
-        InfoResponse,
-        typeof InjectiveMetaRPC.Info
-      >(request, InjectiveMetaRPC.Info)
+      const response = await this.client.Info(request)
 
-      return response.toObject()
+      return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e

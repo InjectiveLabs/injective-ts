@@ -2,8 +2,7 @@ import { OracleType } from '@injectivelabs/core-proto-ts/injective/oracle/v1beta
 import {
   InsuranceFund as GrpcIndexerInsuranceFund,
   RedemptionSchedule as GrpcIndexerRedemptionSchedule,
-} from '@injectivelabs/indexer-api/injective_insurance_rpc_pb'
-import { IndexerOracleType } from './exchange'
+} from '@injectivelabs/indexer-proto-ts/injective_insurance_rpc'
 
 export interface IndexerInsuranceFund {
   depositDenom: string
@@ -16,7 +15,7 @@ export interface IndexerInsuranceFund {
   marketTicker: string
   oracleBase: string
   oracleQuote: string
-  oracleType: IndexerOracleType
+  oracleType: OracleType
   expiry: number
 }
 

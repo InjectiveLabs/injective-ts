@@ -1,33 +1,35 @@
 import {
+  InjectiveOracleRPCClientImpl,
   OracleListRequest,
-  OracleListResponse,
   PriceRequest,
-  PriceResponse,
-} from '@injectivelabs/indexer-api/injective_oracle_rpc_pb'
-import { InjectiveOracleRPC } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
+} from '@injectivelabs/indexer-proto-ts/injective_oracle_rpc'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcOracleApi extends BaseConsumer {
+export class IndexerGrpcOracleApi {
   protected module: string = IndexerModule.Oracle
 
+  protected client: InjectiveOracleRPCClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new InjectiveOracleRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
+
   async fetchOracleList() {
-    const request = new OracleListRequest()
+    const request = OracleListRequest.create()
 
     try {
-      const response = await this.request<
-        OracleListRequest,
-        OracleListResponse,
-        typeof InjectiveOracleRPC.OracleList
-      >(request, InjectiveOracleRPC.OracleList)
+      const response = await this.client.OracleList(request)
 
       return IndexerGrpcOracleTransformer.oraclesResponseToOracles(response)
     } catch (e: unknown) {
@@ -53,23 +55,20 @@ export class IndexerGrpcOracleApi extends BaseConsumer {
     oracleType: string
     oracleScaleFactor?: number
   }) {
-    const request = new PriceRequest()
-    request.setBaseSymbol(baseSymbol)
-    request.setQuoteSymbol(quoteSymbol)
-    request.setOracleType(oracleType)
+    const request = PriceRequest.create()
+
+    request.baseSymbol = baseSymbol
+    request.quoteSymbol = quoteSymbol
+    request.oracleType = oracleType
 
     if (oracleScaleFactor) {
-      request.setOracleScaleFactor(oracleScaleFactor)
+      request.oracleScaleFactor = oracleScaleFactor
     }
 
     try {
-      const response = await this.request<
-        PriceRequest,
-        PriceResponse,
-        typeof InjectiveOracleRPC.Price
-      >(request, InjectiveOracleRPC.Price)
+      const response = await this.client.Price(request)
 
-      return response.toObject()
+      return response
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw e
@@ -93,23 +92,20 @@ export class IndexerGrpcOracleApi extends BaseConsumer {
     oracleType: string
     oracleScaleFactor?: number
   }) {
-    const request = new PriceRequest()
-    request.setBaseSymbol(baseSymbol)
-    request.setQuoteSymbol(quoteSymbol)
-    request.setOracleType(oracleType)
+    const request = PriceRequest.create()
+
+    request.baseSymbol = baseSymbol
+    request.quoteSymbol = quoteSymbol
+    request.oracleType = oracleType
 
     if (oracleScaleFactor) {
-      request.setOracleScaleFactor(oracleScaleFactor)
+      request.oracleScaleFactor = oracleScaleFactor
     }
 
     try {
-      const response = await this.request<
-        PriceRequest,
-        PriceResponse,
-        typeof InjectiveOracleRPC.Price
-      >(request, InjectiveOracleRPC.Price)
+      const response = await this.client.Price(request)
 
-      return response.toObject()
+      return response
     } catch (e: unknown) {
       if ((e as any).message.includes('object not found')) {
         return {

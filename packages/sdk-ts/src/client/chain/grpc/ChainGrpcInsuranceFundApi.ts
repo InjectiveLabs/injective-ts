@@ -21,17 +21,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcInsuranceFundApi {
   protected module: string = ChainModule.InsuranceFund
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryInsuranceParamsRequest.create()
 
     try {
-      const response = await this.query.InsuranceParams(request)
+      const response = await this.client.InsuranceParams(request)
 
       return ChainGrpcInsuranceFundTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -55,7 +55,7 @@ export class ChainGrpcInsuranceFundApi {
     const request = QueryInsuranceFundsRequest.create()
 
     try {
-      const response = await this.query.InsuranceFunds(request)
+      const response = await this.client.InsuranceFunds(request)
 
       return ChainGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
         response,
@@ -81,7 +81,7 @@ export class ChainGrpcInsuranceFundApi {
     request.marketId = marketId
 
     try {
-      const response = await this.query.InsuranceFund(request)
+      const response = await this.client.InsuranceFund(request)
 
       return ChainGrpcInsuranceFundTransformer.insuranceFundResponseToInsuranceFund(
         response,
@@ -114,7 +114,7 @@ export class ChainGrpcInsuranceFundApi {
     request.address = address
 
     try {
-      const response = await this.query.EstimatedRedemptions(request)
+      const response = await this.client.EstimatedRedemptions(request)
 
       return ChainGrpcInsuranceFundTransformer.estimatedRedemptionsResponseToEstimatedRedemptions(
         response,
@@ -147,7 +147,7 @@ export class ChainGrpcInsuranceFundApi {
     request.address = address
 
     try {
-      const response = await this.query.PendingRedemptions(request)
+      const response = await this.client.PendingRedemptions(request)
 
       return ChainGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
         response,

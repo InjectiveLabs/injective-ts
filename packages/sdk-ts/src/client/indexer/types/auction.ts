@@ -2,7 +2,7 @@ import {
   Auction as GrpcAuction,
   Bid as GrpcIndexerBid,
   StreamBidsResponse,
-} from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_auction_rpc'
 import { Coin } from '@injectivelabs/ts-types'
 
 export interface IndexerBid {

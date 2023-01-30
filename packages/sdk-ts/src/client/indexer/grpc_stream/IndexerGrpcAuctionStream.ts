@@ -1,12 +1,12 @@
-import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-api/injective_auction_rpc_pb_service'
 import {
+  InjectiveAuctionRPCClientImpl,
   StreamBidsRequest,
   StreamBidsResponse,
-} from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_auction_rpc'
 import { StreamStatusResponse } from '../types'
 
 import { IndexerAuctionStreamTransformer } from '../transformers'
-import { getGrpcTransport } from '../../../utils/grpc'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 
 export type BidsStreamCallback = (
   response: ReturnType<
@@ -18,12 +18,12 @@ export type BidsStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcAuctionStream {
-  protected client: InjectiveAuctionRPCClient
+  protected client: InjectiveAuctionRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveAuctionRPCClient(endpoint, {
-      transport: getGrpcTransport(),
-    })
+    this.client = new InjectiveAuctionRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
   }
 
   streamBids({
@@ -35,22 +35,24 @@ export class IndexerGrpcAuctionStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
-    const request = new StreamBidsRequest()
+    const request = StreamBidsRequest.create()
 
-    const stream = this.client.streamBids(request)
+    const stream = this.client.StreamBids(request)
 
-    stream.on('data', (response: StreamBidsResponse) => {
-      callback(IndexerAuctionStreamTransformer.bidsStreamCallback(response))
+    return stream.subscribe({
+      next(response: StreamBidsResponse) {
+        callback(IndexerAuctionStreamTransformer.bidsStreamCallback(response))
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
-
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
   }
 }

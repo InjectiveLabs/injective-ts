@@ -24,17 +24,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcExchangeApi {
   protected module: string = ChainModule.Exchange
 
-  protected query: QueryClientImpl
+  protected client: QueryClientImpl
 
   constructor(endpoint: string) {
-    this.query = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
   }
 
   async fetchModuleParams() {
     const request = QueryExchangeParamsRequest.create()
 
     try {
-      const response = await this.query.QueryExchangeParams(request)
+      const response = await this.client.QueryExchangeParams(request)
 
       return ChainGrpcExchangeTransformer.moduleParamsResponseToParams(response)
     } catch (e: any) {
@@ -56,7 +56,7 @@ export class ChainGrpcExchangeApi {
     const request = QueryModuleStateRequest.create()
 
     try {
-      const response = await this.query.ExchangeModuleState(request)
+      const response = await this.client.ExchangeModuleState(request)
 
       return response.state!
     } catch (e: any) {
@@ -78,7 +78,7 @@ export class ChainGrpcExchangeApi {
     const request = QueryFeeDiscountScheduleRequest.create()
 
     try {
-      const response = await this.query.FeeDiscountSchedule(request)
+      const response = await this.client.FeeDiscountSchedule(request)
 
       return ChainGrpcExchangeTransformer.feeDiscountScheduleResponseToFeeDiscountSchedule(
         response,
@@ -104,7 +104,7 @@ export class ChainGrpcExchangeApi {
     request.account = injectiveAddress
 
     try {
-      const response = await this.query.FeeDiscountAccountInfo(request)
+      const response = await this.client.FeeDiscountAccountInfo(request)
 
       return ChainGrpcExchangeTransformer.feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
         response,
@@ -128,7 +128,7 @@ export class ChainGrpcExchangeApi {
     const request = QueryTradeRewardCampaignRequest.create()
 
     try {
-      const response = await this.query.TradeRewardCampaign(request)
+      const response = await this.client.TradeRewardCampaign(request)
 
       return ChainGrpcExchangeTransformer.tradingRewardsCampaignResponseToTradingRewardsCampaign(
         response,
@@ -154,7 +154,7 @@ export class ChainGrpcExchangeApi {
     request.accounts = injectiveAddresses
 
     try {
-      const response = await this.query.TradeRewardPoints(request)
+      const response = await this.client.TradeRewardPoints(request)
 
       return response.accountTradeRewardPoints
     } catch (e: any) {
@@ -185,7 +185,7 @@ export class ChainGrpcExchangeApi {
     }
 
     try {
-      const response = await this.query.PendingTradeRewardPoints(request)
+      const response = await this.client.PendingTradeRewardPoints(request)
 
       return response.accountTradeRewardPoints
     } catch (e: any) {
@@ -207,7 +207,7 @@ export class ChainGrpcExchangeApi {
     const request = QueryPositionsRequest.create()
 
     try {
-      const response = await this.query.Positions(request)
+      const response = await this.client.Positions(request)
 
       return ChainGrpcExchangeTransformer.positionsResponseToPositions(response)
     } catch (e: any) {
@@ -231,7 +231,7 @@ export class ChainGrpcExchangeApi {
     request.subaccountId = subaccountId
 
     try {
-      const response = await this.query.SubaccountTradeNonce(request)
+      const response = await this.client.SubaccountTradeNonce(request)
 
       return response
     } catch (e: any) {

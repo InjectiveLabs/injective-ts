@@ -4,10 +4,10 @@ import {
   SubaccountBalanceResponse,
   SubaccountHistoryResponse,
   SubaccountBalancesListResponse,
-} from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
+} from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { Coin } from '@injectivelabs/ts-types'
 import { grpcPagingToPaging } from '../../..//utils/pagination'
-import { IndexerGrpcCoin } from '../../../types/index'
+import { GrpcCoin } from '../../../types/index'
 import {
   GrpcSubaccountBalance,
   GrpcSubaccountBalanceTransfer,
@@ -31,14 +31,14 @@ export class IndexerGrpcAccountTransformer {
   static accountPortfolioResponseToAccountPortfolio(
     response: PortfolioResponse,
   ): AccountPortfolio {
-    const portfolio = response.getPortfolio()!
-    const subaccounts = portfolio?.getSubaccountsList() || []
+    const portfolio = response.portfolio!
+    const subaccounts = portfolio.subaccounts || []
 
     return {
-      portfolioValue: portfolio.getPortfolioValue(),
-      availableBalance: portfolio.getAvailableBalance(),
-      lockedBalance: portfolio.getLockedBalance(),
-      unrealizedPnl: portfolio.getUnrealizedPnl(),
+      portfolioValue: portfolio.portfolioValue,
+      availableBalance: portfolio.availableBalance,
+      lockedBalance: portfolio.lockedBalance,
+      unrealizedPnl: portfolio.unrealizedPnl,
       subaccountsList: subaccounts.map(
         IndexerGrpcAccountTransformer.grpcSubaccountPortfolioToSubaccountPortfolio,
       ),
@@ -49,10 +49,10 @@ export class IndexerGrpcAccountTransformer {
     subaccountPortfolio: GrpcSubaccountPortfolio,
   ): SubaccountPortfolio {
     return {
-      subaccountId: subaccountPortfolio.getSubaccountId(),
-      availableBalance: subaccountPortfolio.getAvailableBalance(),
-      lockedBalance: subaccountPortfolio.getLockedBalance(),
-      unrealizedPnl: subaccountPortfolio.getUnrealizedPnl(),
+      subaccountId: subaccountPortfolio.subaccountId,
+      availableBalance: subaccountPortfolio.availableBalance,
+      lockedBalance: subaccountPortfolio.lockedBalance,
+      unrealizedPnl: subaccountPortfolio.unrealizedPnl,
     }
   }
 
@@ -60,22 +60,20 @@ export class IndexerGrpcAccountTransformer {
     portfolio: GrpcAccountPortfolio,
   ): AccountPortfolio {
     return {
-      portfolioValue: portfolio.getPortfolioValue(),
-      availableBalance: portfolio.getAvailableBalance(),
-      lockedBalance: portfolio.getLockedBalance(),
-      unrealizedPnl: portfolio.getUnrealizedPnl(),
-      subaccountsList: portfolio
-        .getSubaccountsList()
-        .map(
-          IndexerGrpcAccountTransformer.grpcSubaccountPortfolioToSubaccountPortfolio,
-        ),
+      portfolioValue: portfolio.portfolioValue,
+      availableBalance: portfolio.availableBalance,
+      lockedBalance: portfolio.lockedBalance,
+      unrealizedPnl: portfolio.unrealizedPnl,
+      subaccountsList: portfolio.subaccounts.map(
+        IndexerGrpcAccountTransformer.grpcSubaccountPortfolioToSubaccountPortfolio,
+      ),
     }
   }
 
-  static grpcAmountToAmount(amount: IndexerGrpcCoin): Coin {
+  static grpcAmountToAmount(amount: GrpcCoin): Coin {
     return {
-      amount: amount.getAmount(),
-      denom: amount.getDenom(),
+      amount: amount.amount,
+      denom: amount.denom,
     }
   }
 
@@ -83,36 +81,34 @@ export class IndexerGrpcAccountTransformer {
     deposit: GrpcSubaccountDeposit,
   ): SubaccountDeposit {
     return {
-      totalBalance: deposit.getTotalBalance(),
-      availableBalance: deposit.getAvailableBalance(),
+      totalBalance: deposit.totalBalance,
+      availableBalance: deposit.availableBalance,
     }
   }
 
   static balancesResponseToBalances(
     response: SubaccountBalancesListResponse,
   ): SubaccountBalance[] {
-    return response
-      .getBalancesList()
-      .map((b) => IndexerGrpcAccountTransformer.grpcBalanceToBalance(b))
+    return response.balances.map((b) =>
+      IndexerGrpcAccountTransformer.grpcBalanceToBalance(b),
+    )
   }
 
   static balanceResponseToBalance(
     response: SubaccountBalanceResponse,
   ): SubaccountBalance {
-    return IndexerGrpcAccountTransformer.grpcBalanceToBalance(
-      response.getBalance()!,
-    )
+    return IndexerGrpcAccountTransformer.grpcBalanceToBalance(response.balance!)
   }
 
   static grpcBalanceToBalance(
     balance: GrpcSubaccountBalance,
   ): SubaccountBalance {
-    const deposit = balance.getDeposit()
+    const deposit = balance.deposit
 
     return {
-      subaccountId: balance.getSubaccountId(),
-      accountAddress: balance.getAccountAddress(),
-      denom: balance.getDenom(),
+      subaccountId: balance.subaccountId,
+      accountAddress: balance.accountAddress,
+      denom: balance.denom,
       deposit: deposit
         ? IndexerGrpcAccountTransformer.grpcDepositToDeposit(deposit)
         : undefined,
@@ -130,15 +126,15 @@ export class IndexerGrpcAccountTransformer {
   static grpcTransferHistoryEntryToTransferHistoryEntry(
     transfer: GrpcSubaccountBalanceTransfer,
   ): SubaccountTransfer {
-    const amount = transfer.getAmount()
+    const amount = transfer.amount
 
     return {
-      transferType: transfer.getTransferType() as TransferType,
-      srcSubaccountId: transfer.getSrcSubaccountId(),
-      srcSubaccountAddress: transfer.getSrcAccountAddress(),
-      dstSubaccountId: transfer.getDstSubaccountId(),
-      dstSubaccountAddress: transfer.getDstAccountAddress(),
-      executedAt: transfer.getExecutedAt(),
+      transferType: transfer.transferType as TransferType,
+      srcSubaccountId: transfer.srcSubaccountId,
+      srcSubaccountAddress: transfer.srcAccountAddress,
+      dstSubaccountId: transfer.dstSubaccountId,
+      dstSubaccountAddress: transfer.dstAccountAddress,
+      executedAt: parseInt(transfer.executedAt, 10),
       amount: amount
         ? IndexerGrpcAccountTransformer.grpcAmountToAmount(amount)
         : undefined,
@@ -148,7 +144,7 @@ export class IndexerGrpcAccountTransformer {
   static tradingRewardsResponseToTradingRewards(
     response: RewardsResponse,
   ): TradingReward[] {
-    const rewards = response.getRewardsList()
+    const rewards = response.rewards
 
     return rewards.map(
       IndexerGrpcAccountTransformer.grpcTradingRewardToTradingReward,
@@ -167,19 +163,20 @@ export class IndexerGrpcAccountTransformer {
     reward: GrpcTradingReward,
   ): TradingReward {
     return {
-      accountAddress: reward.getAccountAddress(),
-      rewards: reward
-        .getRewardsList()
-        .map((r) => ({ amount: r.getAmount(), denom: r.getDenom() })),
-      distributedAt: reward.getDistributedAt(),
+      accountAddress: reward.accountAddress,
+      rewards: reward.rewards.map((r) => ({
+        amount: r.amount,
+        denom: r.denom,
+      })),
+      distributedAt: parseInt(reward.distributedAt, 10),
     }
   }
 
   static transferHistoryResponseToTransferHistory(
     response: SubaccountHistoryResponse,
   ) {
-    const transfers = response.getTransfersList()
-    const pagination = response.getPaging()
+    const transfers = response.transfers
+    const pagination = response.paging
 
     return {
       transfers: transfers.map((transfer) =>
