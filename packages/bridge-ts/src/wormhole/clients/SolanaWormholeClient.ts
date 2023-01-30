@@ -1,5 +1,5 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { isBrowser, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
+import { getGrpcTransport, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
   tryNativeToHexString,
@@ -8,7 +8,6 @@ import {
   getEmitterAddressSolana,
   getSignedVAAWithRetry,
   getForeignAssetInjective,
-  attestFromSolana,
   hexToUint8Array,
   transferNativeSol,
   postVaaSolanaWithRetry,
@@ -29,14 +28,13 @@ import {
   Transaction,
   TransactionResponse,
 } from '@solana/web3.js'
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { TransactionSignatureAndResponse } from '@injectivelabs/wormhole-sdk/lib/cjs/solana'
 import { zeroPad } from 'ethers/lib/utils'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { SolanaNativeSolTransferMsgArgs, SolanaTransferMsgArgs } from '../types'
-import { getSolanaContractAddresses, getSolanaTransactionInfo } from '../utils'
+import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
 export class SolanaWormholeClient extends WormholeClient {
@@ -55,95 +53,14 @@ export class SolanaWormholeClient extends WormholeClient {
     this.solanaHostUrl = solanaHostUrl
   }
 
-  async getBalances(address: PublicKey | string) {
+  async getNativeSolBalance(address: PublicKey | string) {
     const { solanaHostUrl } = this
     const connection = new Connection(solanaHostUrl || '')
 
     return connection.getBalance(new PublicKey(address))
   }
 
-  async attestFromSolanaToInjective(
-    args: Omit<SolanaTransferMsgArgs, 'amount' | 'recipient'> & {
-      provider: BaseMessageSignerWalletAdapter
-    },
-  ) {
-    const { network, solanaHostUrl, wormholeRpcUrl } = this
-    const { tokenAddress, signerPubKey, provider } = args
-    const pubKey = provider.publicKey || signerPubKey || new PublicKey('')
-
-    if (!tokenAddress) {
-      throw new GeneralException(new Error(`Please provide tokenAddress`))
-    }
-
-    if (!solanaHostUrl) {
-      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
-    }
-
-    if (pubKey.toBuffer().length === 0) {
-      throw new GeneralException(new Error(`Please provide signerPubKey`))
-    }
-
-    if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
-    }
-
-    const { solanaContractAddresses } = getSolanaContractAddresses(network)
-
-    const connection = new Connection(solanaHostUrl, 'confirmed')
-    const transaction = await attestFromSolana(
-      connection,
-      solanaContractAddresses.core,
-      solanaContractAddresses.token_bridge,
-      pubKey,
-      tokenAddress,
-    )
-
-    const signed = await provider.signTransaction(transaction)
-    const transactionId = await connection.sendRawTransaction(
-      signed.serialize(),
-    )
-
-    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
-
-    if (!txResponse) {
-      throw new Error('An error occurred while fetching the transaction info')
-    }
-
-    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
-      txHash: string
-    }
-  }
-
-  async getSignedVAAOnSolana(txResponse: TransactionResponse) {
-    const { network, wormholeRpcUrl } = this
-
-    if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
-    }
-
-    const { solanaContractAddresses } = getSolanaContractAddresses(network)
-
-    const sequence = parseSequenceFromLogSolana(
-      txResponse as TransactionResponse,
-    )
-    const emitterAddress = await getEmitterAddressSolana(
-      solanaContractAddresses.token_bridge,
-    )
-
-    const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-      [wormholeRpcUrl],
-      WORMHOLE_CHAINS.solana,
-      emitterAddress,
-      sequence,
-      {
-        transport: isBrowser() ? undefined : NodeHttpTransport(),
-      },
-    )
-
-    return Buffer.from(signedVAA).toString('base64')
-  }
-
-  async transferNativeSolFromSolanaToInjective(
+  async transferNativeSolToInjective(
     args: SolanaNativeSolTransferMsgArgs & {
       provider: BaseMessageSignerWalletAdapter
     },
@@ -164,13 +81,13 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+    const { associatedChainContractAddresses } = getContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const transaction = await transferNativeSol(
       connection,
-      solanaContractAddresses.core,
-      solanaContractAddresses.token_bridge,
+      associatedChainContractAddresses.core,
+      associatedChainContractAddresses.token_bridge,
       pubKey,
       BigInt(amount),
       hexToUint8Array(
@@ -195,7 +112,7 @@ export class SolanaWormholeClient extends WormholeClient {
     }
   }
 
-  async transferFromSolanaToInjective(
+  async transferToInjective(
     args: SolanaTransferMsgArgs & { provider: BaseMessageSignerWalletAdapter },
   ) {
     const { network, solanaHostUrl, wormholeRpcUrl } = this
@@ -219,8 +136,8 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide signerPubKey`))
     }
 
-    const { contractAddresses, solanaContractAddresses } =
-      getSolanaContractAddresses(network)
+    const { injectiveContractAddresses, associatedChainContractAddresses } =
+      getContractAddresses(network)
 
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
@@ -229,7 +146,7 @@ export class SolanaWormholeClient extends WormholeClient {
       WORMHOLE_CHAINS.solana,
     )
     const foreignAsset = await getForeignAssetInjective(
-      contractAddresses.token_bridge,
+      injectiveContractAddresses.token_bridge,
       // @ts-ignore
       chainGrpcWasmApi,
       WORMHOLE_CHAINS.solana,
@@ -247,8 +164,8 @@ export class SolanaWormholeClient extends WormholeClient {
 
     const transaction = await transferFromSolana(
       connection,
-      solanaContractAddresses.core,
-      solanaContractAddresses.token_bridge,
+      associatedChainContractAddresses.core,
+      associatedChainContractAddresses.token_bridge,
       pubKey,
       fromAddress,
       args.tokenAddress,
@@ -275,24 +192,20 @@ export class SolanaWormholeClient extends WormholeClient {
     }
   }
 
-  async confirmTransferFromSolanaToInjective(txResponse: TransactionResponse) {
-    const { network, wormholeRpcUrl, solanaHostUrl } = this
-
-    const { solanaContractAddresses } = getSolanaContractAddresses(network)
-
-    if (!solanaHostUrl) {
-      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
-    }
+  async getSignedVAA(txResponse: TransactionResponse) {
+    const { network, wormholeRpcUrl } = this
 
     if (!wormholeRpcUrl) {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
     }
 
-    // const connection = new Connection(solanaHostUrl, 'confirmed')
+    const { associatedChainContractAddresses } = getContractAddresses(network)
 
-    const sequence = parseSequenceFromLogSolana(txResponse)
+    const sequence = parseSequenceFromLogSolana(
+      txResponse as TransactionResponse,
+    )
     const emitterAddress = await getEmitterAddressSolana(
-      solanaContractAddresses.token_bridge,
+      associatedChainContractAddresses.token_bridge,
     )
 
     const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
@@ -301,25 +214,14 @@ export class SolanaWormholeClient extends WormholeClient {
       emitterAddress,
       sequence,
       {
-        transport: isBrowser() ? undefined : NodeHttpTransport(),
+        transport: getGrpcTransport(),
       },
     )
-
-    /*
-    const transferIsCompleted = await getIsTransferCompletedSolana(
-      solanaContractAddresses.token_bridge,
-      signedVAA,
-      connection,
-    )
-
-    if (!transferIsCompleted) {
-      throw new Error('The transfer has not been completed')
-    } */
 
     return Buffer.from(signedVAA).toString('base64')
   }
 
-  async redeemOnSolana({
+  async redeem({
     solanaPubKey,
     signedVAA,
   }: {
@@ -332,20 +234,20 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+    const { associatedChainContractAddresses } = getContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
     return redeemOnSolana(
       connection,
-      solanaContractAddresses.core,
-      solanaContractAddresses.token_bridge,
+      associatedChainContractAddresses.core,
+      associatedChainContractAddresses.token_bridge,
       new PublicKey(solanaPubKey),
       Buffer.from(signedVAA, 'base64'),
     )
   }
 
-  async redeemNativeSolOnSolana({
+  async redeemNativeSol({
     solanaPubKey,
     signedVAA,
   }: {
@@ -358,20 +260,20 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+    const { associatedChainContractAddresses } = getContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
     return redeemAndUnwrapOnSolana(
       connection,
-      solanaContractAddresses.core,
-      solanaContractAddresses.token_bridge,
+      associatedChainContractAddresses.core,
+      associatedChainContractAddresses.token_bridge,
       new PublicKey(solanaPubKey),
       Buffer.from(signedVAA, 'base64'),
     )
   }
 
-  async postVaaSolanaWithRetry({
+  async postVAAWithRetry({
     solanaPubKey,
     signedVAA,
     provider,
@@ -387,14 +289,14 @@ export class SolanaWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    const { solanaContractAddresses } = getSolanaContractAddresses(network)
+    const { associatedChainContractAddresses } = getContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
     return postVaaSolanaWithRetry(
       connection,
       provider.signTransaction.bind(provider),
-      solanaContractAddresses.core,
+      associatedChainContractAddresses.core,
       new PublicKey(solanaPubKey),
       Buffer.from(signedVAA, 'base64'),
       MAX_VAA_UPLOAD_RETRIES_SOLANA,
@@ -462,7 +364,7 @@ export class SolanaWormholeClient extends WormholeClient {
     return recipient.toString()
   }
 
-  async signSendAndConfirmTransactionOnSolana(
+  async signSendAndConfirmTransaction(
     transaction: Transaction,
     provider: BaseMessageSignerWalletAdapter,
   ) {
@@ -490,7 +392,7 @@ export class SolanaWormholeClient extends WormholeClient {
     }
   }
 
-  async getIsTransferCompletedSolana(signedVAA: string /* in base 64 */) {
+  async getIsTransferCompleted(signedVAA: string /* in base 64 */) {
     const { solanaHostUrl, network } = this
 
     if (!solanaHostUrl) {
@@ -499,21 +401,21 @@ export class SolanaWormholeClient extends WormholeClient {
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
-    const { contractAddresses } = getSolanaContractAddresses(network)
+    const { injectiveContractAddresses } = getContractAddresses(network)
 
     return getIsTransferCompletedSolana(
-      contractAddresses.token_bridge,
+      injectiveContractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
       connection,
     )
   }
 
-  async getIsTransferCompletedSolanaRetry(signedVAA: string /* in base 64 */) {
+  async getIsTransferCompletedRetry(signedVAA: string /* in base 64 */) {
     const RETRIES = 2
     const TIMEOUT_BETWEEN_RETRIES = 2000
 
     for (let i = 0; i < RETRIES; i += 1) {
-      if (await this.getIsTransferCompletedSolana(signedVAA)) {
+      if (await this.getIsTransferCompleted(signedVAA)) {
         return true
       }
 

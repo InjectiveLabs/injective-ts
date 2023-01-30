@@ -22,15 +22,18 @@ import {
   PriceLevel,
   GrpcTokenMeta,
   IndexerTokenMeta,
+  OrderbookWithSequence,
 } from '../types/exchange'
 import {
   MarketsResponse as SpotMarketsResponse,
   MarketResponse as SpotMarketResponse,
   OrderbookResponse as SpotOrderbookResponse,
+  OrderbookV2Response as SpotOrderbookV2Response,
   OrdersResponse as SpotOrdersResponse,
   OrdersHistoryResponse as SpotOrdersHistoryResponse,
   TradesResponse as SpotTradesResponse,
   OrderbooksResponse as SpotOrderbooksResponse,
+  OrderbooksV2Response as SpotOrderbooksV2Response,
   SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
 } from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import { grpcPagingToPaging } from '../../../utils/pagination'
@@ -143,6 +146,35 @@ export class IndexerGrpcSpotTransformer {
     })
   }
 
+  static orderbookV2ResponseToOrderbookV2(response: SpotOrderbookV2Response) {
+    const orderbook = response.getOrderbook()!
+
+    return IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
+      sequence: orderbook.getSequence(),
+      buys: orderbook?.getBuysList(),
+      sells: orderbook?.getSellsList(),
+    })
+  }
+
+  static orderbooksV2ResponseToOrderbooksV2(
+    response: SpotOrderbooksV2Response,
+  ) {
+    const orderbooks = response.getOrderbooksList()!
+
+    return orderbooks.map((o) => {
+      const orderbook = o.getOrderbook()!
+
+      return {
+        marketId: o.getMarketId(),
+        orderbook: IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
+          sequence: orderbook.getSequence(),
+          buys: orderbook.getBuysList(),
+          sells: orderbook.getSellsList(),
+        }),
+      }
+    })
+  }
+
   static grpcMarketToMarket(market: GrpcSpotMarketInfo): SpotMarket {
     return {
       marketId: market.marketId,
@@ -194,6 +226,22 @@ export class IndexerGrpcSpotTransformer {
     sells: GrpcPriceLevel[]
   }): Orderbook {
     return {
+      buys: IndexerGrpcSpotTransformer.grpcPriceLevelsToPriceLevels(buys),
+      sells: IndexerGrpcSpotTransformer.grpcPriceLevelsToPriceLevels(sells),
+    }
+  }
+
+  static grpcOrderbookV2ToOrderbookV2({
+    buys,
+    sells,
+    sequence,
+  }: {
+    buys: GrpcPriceLevel[]
+    sells: GrpcPriceLevel[]
+    sequence: number
+  }): OrderbookWithSequence {
+    return {
+      sequence,
       buys: IndexerGrpcSpotTransformer.grpcPriceLevelsToPriceLevels(buys),
       sells: IndexerGrpcSpotTransformer.grpcPriceLevelsToPriceLevels(sells),
     }

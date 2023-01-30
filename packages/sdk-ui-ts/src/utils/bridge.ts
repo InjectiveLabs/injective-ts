@@ -155,6 +155,11 @@ export const tokenDenomsPerNetwork = [
     denoms: ['usomm'],
     symbols: ['somm'],
   },
+  {
+    network: BridgingNetwork.EthereumWh,
+    denoms: [],
+    symbols: ['USDCet'],
+  },
 ] as NetworkConfig[]
 
 export const cosmosNativeDenomsFromChainId = {

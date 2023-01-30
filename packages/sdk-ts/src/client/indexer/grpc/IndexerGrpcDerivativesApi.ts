@@ -14,6 +14,8 @@ import {
   SubaccountOrdersListRequest as DerivativeSubaccountOrdersListRequest,
   SubaccountTradesListRequest as DerivativeSubaccountTradesListRequest,
   OrderbooksRequest as DerivativeOrderbooksRequest,
+  OrderbookV2Request as DerivativeOrderbookV2Request,
+  OrderbooksV2Request as DerivativeOrderbooksV2Request,
 } from '@injectivelabs/indexer-proto-ts/injective_derivative_exchange_rpc'
 import {
   TradeDirection,
@@ -746,6 +748,54 @@ export class IndexerGrpcDerivativesApi {
           code: e.code,
           contextModule: this.module,
         })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchOrderbooksV2(marketIds: string[]) {
+    const request = DerivativeOrderbooksV2Request.create()
+
+    if (marketIds.length > 0) {
+      request.marketIds = marketIds
+    }
+
+    try {
+      const response = await this.client.OrderbooksV2(request)
+
+      return IndexerGrpcDerivativeTransformer.orderbooksV2ResponseToOrderbooksV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchOrderbookV2(marketId: string) {
+    const request = DerivativeOrderbookV2Request.create()
+
+    request.marketId = marketId
+
+    try {
+      const response = await this.client.OrderbookV2(request)
+
+      return IndexerGrpcDerivativeTransformer.orderbookV2ResponseToOrderbookV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

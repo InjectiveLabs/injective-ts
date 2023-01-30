@@ -9,6 +9,8 @@ import {
   SubaccountOrdersListRequest as SpotSubaccountOrdersListRequest,
   SubaccountTradesListRequest as SpotSubaccountTradesListRequest,
   OrderbooksRequest as SpotOrderbooksRequest,
+  OrderbooksV2Request as SpotOrderbooksV2Request,
+  OrderbooksRequest as SpotOrderbookV2Request,
 } from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import {
   TradeExecutionSide,
@@ -499,6 +501,54 @@ export class IndexerGrpcSpotApi {
           code: e.code,
           contextModule: this.module,
         })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchOrderbooksV2(marketIds: string[]) {
+    const request = SpotOrderbooksV2Request.create()
+
+    if (marketIds.length > 0) {
+      request.marketIds = marketIds
+    }
+
+    try {
+      const response = await this.client.OrderbooksV2(request)
+
+      return IndexerGrpcSpotTransformer.orderbooksV2ResponseToOrderbooksV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchOrderbookV2(marketId: string) {
+    const request = SpotOrderbookV2Request.create()
+
+    request.marketId = marketId
+
+    try {
+      const response = await this.client.OrderbookV2(request)
+
+      return IndexerGrpcSpotTransformer.orderbookV2ResponseToOrderbookV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof GrpcUnaryRequestException) {
+        throw e
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

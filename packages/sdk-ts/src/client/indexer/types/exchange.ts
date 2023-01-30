@@ -14,6 +14,12 @@ export interface Orderbook {
   sells: PriceLevel[]
 }
 
+export interface OrderbookWithSequence {
+  sequence: number
+  buys: PriceLevel[]
+  sells: PriceLevel[]
+}
+
 export interface IndexerTokenMeta extends GrpcTokenMeta {
   coinGeckoId: string
 }

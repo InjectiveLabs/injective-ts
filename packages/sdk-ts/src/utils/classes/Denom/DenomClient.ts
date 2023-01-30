@@ -73,7 +73,7 @@ export class DenomClient {
     const isDenom =
       denom.startsWith('ibc/') ||
       denom.startsWith('peggy') ||
-      denom.startsWith('factory') ||
+      denom.startsWith('factory/') ||
       denom.toLowerCase() === INJ_DENOM
 
     if (!isDenom) {
@@ -215,7 +215,7 @@ export class DenomClient {
       return this.getIbcDenomTokenMeta(denom)
     }
 
-    if (denom.startsWith('factory')) {
+    if (denom.startsWith('factory/')) {
       return this.getFactoryDenomTokenMeta(denom)
     }
 

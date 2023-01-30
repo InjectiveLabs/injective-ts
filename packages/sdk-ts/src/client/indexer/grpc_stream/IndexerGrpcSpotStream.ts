@@ -2,6 +2,8 @@ import {
   InjectiveSpotExchangeRPCClientImpl,
   StreamOrderbookRequest,
   StreamOrderbookResponse,
+  StreamOrderbookV2Request,
+  StreamOrderbookV2Response,
   StreamOrdersRequest,
   StreamOrdersResponse,
   StreamTradesRequest,
@@ -27,6 +29,12 @@ export type MarketsStreamCallback = (response: StreamMarketsResponse) => void
 export type SpotOrderbookStreamCallback = (
   response: ReturnType<
     typeof IndexerSpotStreamTransformer.orderbookStreamCallback
+  >,
+) => void
+
+export type SpotOrderbookV2StreamCallback = (
+  response: ReturnType<
+    typeof IndexerSpotStreamTransformer.orderbookV2StreamCallback
   >,
 ) => void
 
@@ -322,5 +330,36 @@ export class IndexerGrpcSpotStream {
         }
       },
     })
+  }
+
+  streamSpotOrderbookV2({
+    marketIds,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketIds: string[]
+    callback: SpotOrderbookV2StreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamOrderbookV2Request()
+    request.setMarketIdsList(marketIds)
+
+    const stream = this.client.streamOrderbookV2(request)
+
+    stream.on('data', (response: StreamOrderbookV2Response) => {
+      callback(IndexerSpotStreamTransformer.orderbookV2StreamCallback(response))
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
   }
 }

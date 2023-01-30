@@ -10,6 +10,7 @@ export enum BridgingNetwork {
   Chihuahua = 'chihuahua',
   CosmosHub = 'cosmosHub',
   Ethereum = 'ethereum',
+  EthereumWh = 'ethereumWh',
   Evmos = 'evmos',
   Injective = 'injective',
   Juno = 'juno',

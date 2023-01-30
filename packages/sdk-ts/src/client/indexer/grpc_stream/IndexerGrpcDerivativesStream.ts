@@ -2,6 +2,8 @@ import {
   InjectiveDerivativeExchangeRPCClientImpl,
   StreamOrderbookRequest,
   StreamOrderbookResponse,
+  StreamOrderbookV2Request,
+  StreamOrderbookV2Response,
   StreamOrdersRequest,
   StreamOrdersResponse,
   StreamTradesRequest,
@@ -30,6 +32,12 @@ export type DerivativeOrderbookStreamCallback = (
   >,
 ) => void
 
+export type DerivativeOrderbookV2StreamCallback = (
+  response: ReturnType<
+    typeof IndexerDerivativeStreamTransformer.orderbookV2StreamCallback
+  >,
+) => void
+
 export type DerivativeOrdersStreamCallback = (
   response: ReturnType<
     typeof IndexerDerivativeStreamTransformer.ordersStreamCallback
@@ -37,7 +45,7 @@ export type DerivativeOrdersStreamCallback = (
 ) => void
 
 export type DerivativeOrderHistoryStreamCallback = (
-  resposne: ReturnType<
+  response: ReturnType<
     typeof IndexerDerivativeStreamTransformer.orderHistoryStreamCallback
   >,
 ) => void
@@ -382,5 +390,38 @@ export class IndexerGrpcDerivativesStream {
         }
       },
     })
+  }
+
+  streamDerivativeOrderbookV2({
+    marketIds,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketIds: string[]
+    callback: DerivativeOrderbookV2StreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamOrderbookV2Request()
+    request.setMarketIdsList(marketIds)
+
+    const stream = this.client.streamOrderbookV2(request)
+
+    stream.on('data', (response: StreamOrderbookV2Response) => {
+      callback(
+        IndexerDerivativeStreamTransformer.orderbookV2StreamCallback(response),
+      )
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
   }
 }
