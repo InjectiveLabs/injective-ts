@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.383](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.382...@injectivelabs/sdk-ts@1.0.383) (2023-01-30)
+
+
+### Features
+
+* orderbook v2 ([889689d](https://github.com/InjectiveLabs/injective-ts/commit/889689d4939ace5b1e6396e6c91c795686e36a13))
+
+
+
+
+
 ## [1.0.382](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.381...@injectivelabs/sdk-ts@1.0.382) (2023-01-30)
 
 
