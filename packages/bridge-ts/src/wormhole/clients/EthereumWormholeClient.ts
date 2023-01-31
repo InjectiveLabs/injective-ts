@@ -28,27 +28,26 @@ import { WormholeClient } from '../WormholeClient'
 type Provider = ethers.providers.Web3Provider | undefined
 
 export class EthereumWormholeClient extends WormholeClient {
-  provider: Provider
-
   constructor({
     network,
-    provider,
     wormholeRpcUrl,
   }: {
     network: Network
-    provider: Provider
     wormholeRpcUrl?: string
   }) {
     super({ network, wormholeRpcUrl })
-
-    this.provider = provider
   }
 
-  async getErc20TokenBalance(
-    address: string /* in CW20 */,
-    tokenAddress: string,
-  ) {
-    const { provider, network } = this
+  async getErc20TokenBalance({
+    address,
+    tokenAddress,
+    provider,
+  }: {
+    address: string /* in CW20 */
+    tokenAddress: string
+    provider: Provider
+  }) {
+    const { network } = this
 
     if (!provider) {
       throw new GeneralException(new Error(`Please provide provider`))
@@ -84,9 +83,11 @@ export class EthereumWormholeClient extends WormholeClient {
     return (await tokenContract.balanceOf(address)).toString()
   }
 
-  async transferToInjective(args: EthereumTransferMsgArgs) {
-    const { network, provider, wormholeRpcUrl } = this
-    const { amount, recipient, tokenAddress } = args
+  async transferToInjective(
+    args: EthereumTransferMsgArgs & { provider: Provider },
+  ) {
+    const { network, wormholeRpcUrl } = this
+    const { amount, recipient, provider, tokenAddress } = args
     const endpoints = getNetworkEndpoints(network)
 
     if (!wormholeRpcUrl) {
@@ -191,12 +192,11 @@ export class EthereumWormholeClient extends WormholeClient {
     return Buffer.from(signedVAA).toString('base64')
   }
 
-  async redeem({
-    signedVAA,
-  }: {
-    signedVAA: string /* in base 64 */
-  }): Promise<ethers.ContractReceipt> {
-    const { network, provider } = this
+  async redeem(
+    signedVAA: string /* in base 64 */,
+    provider: Provider,
+  ): Promise<ethers.ContractReceipt> {
+    const { network } = this
 
     if (!provider) {
       throw new GeneralException(new Error(`Please provide provider`))
@@ -215,8 +215,11 @@ export class EthereumWormholeClient extends WormholeClient {
     )
   }
 
-  async getIsTransferCompleted(signedVAA: string /* in base 64 */) {
-    const { network, provider } = this
+  async getIsTransferCompleted(
+    signedVAA: string /* in base 64 */,
+    provider: Provider,
+  ) {
+    const { network } = this
 
     if (!provider) {
       throw new GeneralException(new Error(`Please provide provider`))
@@ -235,12 +238,15 @@ export class EthereumWormholeClient extends WormholeClient {
     )
   }
 
-  async getIsTransferCompletedRetry(signedVAA: string /* in base 64 */) {
+  async getIsTransferCompletedRetry(
+    signedVAA: string /* in base 64 */,
+    provider: Provider,
+  ) {
     const RETRIES = 2
     const TIMEOUT_BETWEEN_RETRIES = 2000
 
     for (let i = 0; i < RETRIES; i += 1) {
-      if (await this.getIsTransferCompleted(signedVAA)) {
+      if (await this.getIsTransferCompleted(signedVAA, provider)) {
         return true
       }
 

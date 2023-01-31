@@ -52,6 +52,7 @@
     "@ledgerhq/hw-transport-u2f": "^5.36.0-deprecated",
     "@ledgerhq/hw-transport-webhid": "6.27.1",
     "@ledgerhq/hw-transport-webusb": "6.27.1",
+    "@metamask/detect-provider": "^2.0.0",
     "@metamask/eth-sig-util": "^4.0.0",
     "@solana/wallet-adapter-wallets": "^0.19.5",
     "@terra-money/terra.js": "3.0.9",

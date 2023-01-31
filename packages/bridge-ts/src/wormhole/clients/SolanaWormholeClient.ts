@@ -221,13 +221,10 @@ export class SolanaWormholeClient extends WormholeClient {
     return Buffer.from(signedVAA).toString('base64')
   }
 
-  async redeem({
-    solanaPubKey,
-    signedVAA,
-  }: {
-    solanaPubKey: string
-    signedVAA: string /* in base 64 */
-  }): Promise<Transaction> {
+  async redeem(
+    solanaPubKey: string,
+    signedVAA: string /* in base 64 */,
+  ): Promise<Transaction> {
     const { network, solanaHostUrl } = this
 
     if (!solanaHostUrl) {
@@ -247,13 +244,10 @@ export class SolanaWormholeClient extends WormholeClient {
     )
   }
 
-  async redeemNativeSol({
-    solanaPubKey,
-    signedVAA,
-  }: {
-    solanaPubKey: string
-    signedVAA: string /* in base 64 */
-  }): Promise<Transaction> {
+  async redeemNativeSol(
+    solanaPubKey: string,
+    signedVAA: string /* in base 64 */,
+  ): Promise<Transaction> {
     const { network, solanaHostUrl } = this
 
     if (!solanaHostUrl) {

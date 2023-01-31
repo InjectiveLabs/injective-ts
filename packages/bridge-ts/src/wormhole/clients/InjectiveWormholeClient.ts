@@ -51,11 +51,15 @@ export class InjectiveWormholeClient extends WormholeClient {
     this.provider = provider
   }
 
-  async getBridgedAssetBalance(
-    injectiveAddress: string,
-    tokenAddress: string = NATIVE_MINT.toString(),
+  async getBridgedAssetBalance({
+    injectiveAddress,
+    tokenAddress = NATIVE_MINT.toString(),
     source = WormholeSource.Solana,
-  ) {
+  }: {
+    injectiveAddress: string
+    tokenAddress: string
+    source: WormholeSource
+  }) {
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
 
@@ -110,7 +114,10 @@ export class InjectiveWormholeClient extends WormholeClient {
        * could be redeeming from the token factory to CW20
        */
       additionalMsgs?: MsgExecuteContractCompat[]
-      source?: WormholeSource
+      /**
+       * The destination chain where we transfer to
+       */
+      destination?: WormholeSource
     },
   ) {
     const { network, wormholeRpcUrl, provider } = this
@@ -118,10 +125,10 @@ export class InjectiveWormholeClient extends WormholeClient {
       amount,
       recipient: recipientArg,
       additionalMsgs = [],
-      source = WormholeSource.Solana,
+      destination = WormholeSource.Solana,
     } = args
 
-    const associatedChain = getAssociatedChain(source)
+    const associatedChain = getAssociatedChain(destination)
     const recipient = getAssociatedChainRecipient(recipientArg)
 
     if (!args.tokenAddress) {
@@ -194,14 +201,10 @@ export class InjectiveWormholeClient extends WormholeClient {
     return Buffer.from(signedVAA).toString('base64')
   }
 
-  async redeem({
-    injectiveAddress,
-    signedVAA,
-  }: {
-    injectiveAddress: string
-    source?: WormholeSource
-    signedVAA: string /* in base 64 */
-  }): Promise<MsgExecuteContractCompat> {
+  async redeem(
+    injectiveAddress: string,
+    signedVAA: string /* in base 64 */,
+  ): Promise<MsgExecuteContractCompat> {
     const { network } = this
     const { injectiveContractAddresses } = getContractAddresses(network)
 
@@ -216,13 +219,10 @@ export class InjectiveWormholeClient extends WormholeClient {
     })
   }
 
-  async createWrapped({
-    injectiveAddress,
-    signedVAA,
-  }: {
-    injectiveAddress: string
-    signedVAA: string /* in base 64 */
-  }): Promise<MsgExecuteContractCompat> {
+  async createWrapped(
+    injectiveAddress: string,
+    signedVAA: string /* in base 64 */,
+  ): Promise<MsgExecuteContractCompat> {
     const { network } = this
     const { injectiveContractAddresses } = getContractAddresses(network)
 
@@ -246,6 +246,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     return getIsTransferCompletedInjective(
       injectiveContractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
+      // @ts-ignore
       new ChainGrpcWasmApi(endpoints.grpc),
     )
   }
