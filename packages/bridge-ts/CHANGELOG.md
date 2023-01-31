@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.211](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.210...@injectivelabs/bridge-ts@1.0.211) (2023-01-31)
+
+
+### Features
+
+* metamask provider for wh ([918db79](https://github.com/InjectiveLabs/injective-ts/commit/918db79567aea5f138955e09e67f68f7adce5316))
+
+
+
+
+
 ## [1.0.210](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.209...@injectivelabs/bridge-ts@1.0.210) (2023-01-30)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
