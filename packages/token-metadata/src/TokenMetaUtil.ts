@@ -90,7 +90,7 @@ export class TokenMetaUtil {
 
         const tokenMetaFromSymbol = tokens[symbol]
 
-        return tokenMetaFromSymbol && tokenMetaFromSymbol.cw20address
+        return tokenMetaFromSymbol && tokenMetaFromSymbol.cw20Address
       },
     )
 
@@ -129,7 +129,7 @@ export class TokenMetaUtil {
 
         const tokenMetaFromSymbol = tokens[symbol]
 
-        return tokenMetaFromSymbol && tokenMetaFromSymbol.erc20address
+        return tokenMetaFromSymbol && tokenMetaFromSymbol.erc20Address
       },
     )
 

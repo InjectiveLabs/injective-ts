@@ -6,8 +6,7 @@ export default {
     logo: 'momoshiki.svg',
     symbol: 'vMOMO',
     decimals: 18,
-    erc20address: '',
-    cw20address: '',
+    cw20Address: '',
     coinGeckoId: '',
   },
   vKIN: {
@@ -15,8 +14,7 @@ export default {
     logo: 'kinshiki.svg',
     symbol: 'vKIN',
     decimals: 18,
-    erc20address: '',
-    cw20address: '',
+    cw20Address: '',
     coinGeckoId: '',
   },
   vTON: {
@@ -24,8 +22,7 @@ export default {
     logo: 'toneri.svg',
     symbol: 'vTON',
     decimals: 18,
-    erc20address: '',
-    cw20address: '',
+    cw20Address: '',
     coinGeckoId: '',
   },
   vNAR: {
@@ -33,8 +30,7 @@ export default {
     logo: 'naruto.svg',
     symbol: 'vNAR',
     decimals: 18,
-    erc20address: '',
-    cw20address: '',
+    cw20Address: '',
     coinGeckoId: '',
   },
   vMAD: {
@@ -42,8 +38,7 @@ export default {
     logo: 'madara.svg',
     symbol: 'vMAD',
     decimals: 18,
-    erc20address: '',
-    cw20address: '',
+    cw20Address: '',
     coinGeckoId: '',
   },
   vMIN: {
@@ -51,8 +46,7 @@ export default {
     logo: 'minato.svg',
     symbol: 'vMAD',
     decimals: 18,
-    erc20address: '',
-    cw20address: '',
+    cw20Address: '',
     coinGeckoId: '',
   },
   vSPOT: {
@@ -60,8 +54,7 @@ export default {
     logo: 'minato.svg',
     symbol: 'vSPOT',
     decimals: 18,
-    erc20address: '',
-    cw20address: '',
+    cw20Address: '',
     coinGeckoId: '',
   },
   vDERI: {
@@ -69,8 +62,7 @@ export default {
     logo: 'minato.svg',
     symbol: 'vDERI',
     decimals: 18,
-    erc20address: '',
-    cw20address: '',
+    cw20Address: '',
     coinGeckoId: '',
   },
 } as Record<string, TokenMeta>

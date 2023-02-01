@@ -12,8 +12,8 @@ export interface TokenMeta {
   logo: string
   symbol: string
   decimals: number
-  erc20address?: string
-  cw20address?: string
+  erc20Address?: string
+  cw20Address?: string
   coinGeckoId: string
 }
 
@@ -27,7 +27,7 @@ export interface NativeToken extends TokenMeta {
 }
 
 export interface Erc20Token extends BaseToken {
-  erc20address: string
+  erc20Address: string
 }
 
 export interface IbcToken extends BaseToken {
@@ -37,7 +37,7 @@ export interface IbcToken extends BaseToken {
 }
 
 export interface Cw20Token extends BaseToken {
-  cw20address: string
+  cw20Address: string
 }
 
 export interface InsuranceFundToken extends BaseToken {

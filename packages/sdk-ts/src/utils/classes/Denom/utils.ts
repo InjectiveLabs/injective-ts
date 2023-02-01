@@ -57,8 +57,8 @@ export const tokenMetaToToken = (
     symbol: tokenMeta.symbol,
     name: tokenMeta.name,
     decimals: tokenMeta.decimals,
-    erc20address: tokenMeta.erc20address,
-    cw20address: tokenMeta.cw20address,
+    erc20Address: tokenMeta.erc20Address,
+    cw20Address: tokenMeta.cw20Address,
     tokenType: getTokenTypeFromDenom(denom),
     coinGeckoId: tokenMeta.coinGeckoId,
   }

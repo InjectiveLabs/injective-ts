@@ -414,7 +414,7 @@ export class TokenService {
         ...transaction,
         token: tokenMetaToToken(
           tokenFromDenomAsSymbol,
-          tokenFromDenomAsSymbol.erc20address!,
+          tokenFromDenomAsSymbol.erc20Address!,
         ) as Token,
       }
     }

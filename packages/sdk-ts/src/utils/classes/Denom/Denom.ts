@@ -98,8 +98,8 @@ export class Denom {
         logo: '',
         symbol: '',
         decimals: 18,
-        erc20address: '',
-        cw20address: '',
+        erc20Address: '',
+        cw20Address: '',
         coinGeckoId: '',
       }
     }
