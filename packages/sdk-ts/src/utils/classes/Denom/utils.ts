@@ -6,7 +6,7 @@ import {
 } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '@injectivelabs/utils'
 
-export const getTokenTypeFromDenom = (denom: string): TokenType => {
+export const getTokenTypeFromDenom = (denom: string = ''): TokenType => {
   if (denom === INJ_DENOM) {
     return TokenType.Native
   }

@@ -36,7 +36,7 @@ export class EthereumWormholeClient extends WormholeClient {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async getErc20TokenBalance({
+  async getErc20TokenBalanceNoThrow({
     address,
     tokenAddress,
     provider,
@@ -55,7 +55,11 @@ export class EthereumWormholeClient extends WormholeClient {
       signer,
     )
 
-    return (await tokenContract.balanceOf(address)).toString()
+    try {
+      return (await tokenContract.balanceOf(address)).toString()
+    } catch (e) {
+      return '0'
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this

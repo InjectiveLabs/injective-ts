@@ -33,12 +33,12 @@ export class TokenMetaUtil {
   }
 
   getMetaByAddress(address: string): TokenMeta | undefined {
-    return (
-      this.getMetaByErc20Address(address) || this.getMetaByCW20Address(address)
-    )
+    return address.startsWith('0x')
+      ? this.getMetaByErc20Address(address)
+      : this.getMetaByCw20Address(address)
   }
 
-  getMetaByCW20Address(address: string): TokenMeta | undefined {
+  getMetaByCw20Address(address: string): TokenMeta | undefined {
     const { tokensByCw20Address } = this
     const contractAddress =
       address.toLowerCase() as keyof typeof tokensByCw20Address
