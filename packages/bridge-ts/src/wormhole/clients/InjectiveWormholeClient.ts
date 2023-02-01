@@ -12,13 +12,9 @@ import {
   transferFromInjective,
   parseSequenceFromLogInjective,
   getEmitterAddressInjective,
-  tryNativeToHexString,
-  getForeignAssetInjective,
-  hexToUint8Array,
   getIsTransferCompletedInjective,
 } from '@injectivelabs/wormhole-sdk'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
-import { NATIVE_MINT } from '@solana/spl-token'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { InjectiveTransferMsgArgs, WormholeSource } from '../types'
@@ -51,37 +47,17 @@ export class InjectiveWormholeClient extends WormholeClient {
     this.provider = provider
   }
 
-  async getBridgedAssetBalance({
-    injectiveAddress,
-    tokenAddress = NATIVE_MINT.toString(),
-    source = WormholeSource.Solana,
-  }: {
-    injectiveAddress: string
-    tokenAddress: string
-    source: WormholeSource
-  }) {
+  async getBridgedAssetBalance(
+    injectiveAddress: string,
+    tokenAddress: string /* CW20 address on Injective */,
+  ) {
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
 
-    const associatedChain = getAssociatedChain(source)
-    const { injectiveContractAddresses } = getContractAddresses(network)
-
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
-    const originAssetHex = tryNativeToHexString(tokenAddress, associatedChain)
-    const foreignAsset = await getForeignAssetInjective(
-      injectiveContractAddresses.token_bridge,
-      chainGrpcWasmApi,
-      associatedChain,
-      hexToUint8Array(originAssetHex),
-    )
-
-    if (!foreignAsset) {
-      throw new GeneralException(new Error(`Foreign asset not found`))
-    }
-
     const response = await chainGrpcWasmApi.fetchSmartContractState(
-      foreignAsset,
+      tokenAddress,
       Buffer.from(
         JSON.stringify({
           balance: {
@@ -96,7 +72,7 @@ export class InjectiveWormholeClient extends WormholeClient {
         Buffer.from(response.data, 'base64').toString('utf-8'),
       ) as { balance: string }
 
-      return { address: foreignAsset, balance: state.balance } as {
+      return { address: tokenAddress, balance: state.balance } as {
         address: string
         balance: string
       }

@@ -521,6 +521,10 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
     return BridgingNetwork.Sommelier
   }
 
+  if (sender.startsWith('0x')) {
+    return BridgingNetwork.Ethereum
+  }
+
   return BridgingNetwork.CosmosHub
 }
 

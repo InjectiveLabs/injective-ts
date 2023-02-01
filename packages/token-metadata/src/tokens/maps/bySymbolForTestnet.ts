@@ -17,11 +17,11 @@ export const tokensBySymbolForTestnet = (
   const testnetCw20AddressFromMap = testnetSymbolToCw20AddressMap[tokenCw20Key]
   const testnetAddress = (testnetAddressFromMap ||
     testnetCw20AddressFromMap ||
-    tokens[token].address) as string
+    tokens[token].erc20address) as string
 
   return {
     ...result,
-    [token.toUpperCase()]: { ...tokens[token], address: testnetAddress },
+    [token.toUpperCase()]: { ...tokens[token], erc20address: testnetAddress },
   }
 }, {}) as Record<string, TokenMeta>
 
@@ -31,11 +31,11 @@ export const tokensBySymbolForDevnet = (
   const tokenKey = token as keyof typeof devnetSymbolToAddressMap
   const testnetAddressFromMap = devnetSymbolToAddressMap[tokenKey]
   const testnetAddress = (testnetAddressFromMap ||
-    tokens[token].address) as string
+    tokens[token].erc20address) as string
 
   return {
     ...result,
-    [token.toUpperCase()]: { ...tokens[token], address: testnetAddress },
+    [token.toUpperCase()]: { ...tokens[token], erc20address: testnetAddress },
   }
 }, {}) as Record<string, TokenMeta>
 
@@ -45,11 +45,11 @@ export const tokensBySymbolForDevnet1 = (
   const tokenKey = token as keyof typeof devnet1SymbolToAddressMap
   const testnetAddressFromMap = devnet1SymbolToAddressMap[tokenKey]
   const testnetAddress = (testnetAddressFromMap ||
-    tokens[token].address) as string
+    tokens[token].erc20address) as string
 
   return {
     ...result,
-    [token.toUpperCase()]: { ...tokens[token], address: testnetAddress },
+    [token.toUpperCase()]: { ...tokens[token], erc20address: testnetAddress },
   }
 }, {}) as Record<string, TokenMeta>
 
@@ -59,10 +59,10 @@ export const tokensBySymbolForDevnet2 = (
   const tokenKey = token as keyof typeof devnet2SymbolToAddressMap
   const testnetAddressFromMap = devnet2SymbolToAddressMap[tokenKey]
   const testnetAddress = (testnetAddressFromMap ||
-    tokens[token].address) as string
+    tokens[token].erc20address) as string
 
   return {
     ...result,
-    [token.toUpperCase()]: { ...tokens[token], address: testnetAddress },
+    [token.toUpperCase()]: { ...tokens[token], erc20address: testnetAddress },
   }
 }, {}) as Record<string, TokenMeta>

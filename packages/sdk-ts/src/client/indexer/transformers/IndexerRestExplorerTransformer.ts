@@ -244,7 +244,7 @@ export class IndexerRestExplorerTransformer {
         name,
         symbol,
         logo: marketing_info ? marketing_info.logo || '' : '',
-        address: balance.contract_address,
+        cw20address: balance.contract_address,
         coinGeckoId: name,
         denom: '',
         tokenType: TokenType.Cw20,

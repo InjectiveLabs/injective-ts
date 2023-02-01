@@ -1,17 +1,23 @@
-import { getMappedTokensByAddress } from './tokens/helpers/mapByAddress'
+import {
+  getMappedTokensByErc20Address,
+  getMappedTokensByCw20Address,
+} from './tokens/helpers/mapByAddress'
 import { getMappedTokensByName } from './tokens/helpers/mapByName'
 import { TokenMeta } from './types'
 
 export class TokenMetaUtil {
   protected tokens: Record<string, TokenMeta>
 
-  protected tokensByAddress: Record<string, TokenMeta>
+  protected tokensByErc20Address: Record<string, TokenMeta>
+
+  protected tokensByCw20Address: Record<string, TokenMeta>
 
   protected tokensByName: Record<string, TokenMeta>
 
   constructor(tokens: Record<string, TokenMeta>) {
     this.tokens = tokens
-    this.tokensByAddress = getMappedTokensByAddress(tokens)
+    this.tokensByErc20Address = getMappedTokensByErc20Address(tokens)
+    this.tokensByCw20Address = getMappedTokensByCw20Address(tokens)
     this.tokensByName = getMappedTokensByName(tokens)
   }
 
@@ -27,15 +33,111 @@ export class TokenMetaUtil {
   }
 
   getMetaByAddress(address: string): TokenMeta | undefined {
-    const { tokensByAddress } = this
-    const contractAddress =
-      address.toLowerCase() as keyof typeof tokensByAddress
+    return (
+      this.getMetaByErc20Address(address) || this.getMetaByCW20Address(address)
+    )
+  }
 
-    if (!tokensByAddress[contractAddress]) {
+  getMetaByCW20Address(address: string): TokenMeta | undefined {
+    const { tokensByCw20Address } = this
+    const contractAddress =
+      address.toLowerCase() as keyof typeof tokensByCw20Address
+
+    if (!tokensByCw20Address[contractAddress]) {
       return
     }
 
-    return tokensByAddress[contractAddress]
+    return tokensByCw20Address[contractAddress]
+  }
+
+  getMetaByErc20Address(address: string): TokenMeta | undefined {
+    const { tokensByErc20Address } = this
+    const contractAddress =
+      address.toLowerCase() as keyof typeof tokensByErc20Address
+
+    if (!tokensByErc20Address[contractAddress]) {
+      return
+    }
+
+    return tokensByErc20Address[contractAddress]
+  }
+
+  getCw20MetaByErc20Address(address: string): TokenMeta | undefined {
+    const { tokensByErc20Address, tokens } = this
+    const contractAddress =
+      address.toLowerCase() as keyof typeof tokensByErc20Address
+
+    if (!tokensByErc20Address[contractAddress]) {
+      return
+    }
+
+    const tokenMeta = tokensByErc20Address[contractAddress]
+
+    if (!tokenMeta) {
+      return
+    }
+
+    const tokenMetaSymbol = Object.keys(tokens).find(
+      (symbol: keyof typeof tokens) => {
+        const symbolsMatch =
+          symbol.toLowerCase() === tokenMeta.symbol.toLowerCase() ||
+          symbol.startsWith(tokenMeta.symbol) ||
+          tokenMeta.symbol.startsWith(symbol)
+
+        if (!symbolsMatch) {
+          return undefined
+        }
+
+        const tokenMetaFromSymbol = tokens[symbol]
+
+        return tokenMetaFromSymbol && tokenMetaFromSymbol.cw20address
+      },
+    )
+
+    if (!tokenMetaSymbol) {
+      return
+    }
+
+    return tokens[tokenMetaSymbol]
+  }
+
+  getErc20MetaByCw20Address(address: string): TokenMeta | undefined {
+    const { tokensByCw20Address, tokens } = this
+    const contractAddress =
+      address.toLowerCase() as keyof typeof tokensByCw20Address
+
+    if (!tokensByCw20Address[contractAddress]) {
+      return
+    }
+
+    const tokenMeta = tokensByCw20Address[contractAddress]
+
+    if (!tokenMeta) {
+      return
+    }
+
+    const tokenMetaSymbol = Object.keys(tokens).find(
+      (symbol: keyof typeof tokens) => {
+        const symbolsMatch =
+          symbol.toLowerCase() === tokenMeta.symbol.toLowerCase() ||
+          symbol.startsWith(tokenMeta.symbol) ||
+          tokenMeta.symbol.startsWith(symbol)
+
+        if (!symbolsMatch) {
+          return undefined
+        }
+
+        const tokenMetaFromSymbol = tokens[symbol]
+
+        return tokenMetaFromSymbol && tokenMetaFromSymbol.erc20address
+      },
+    )
+
+    if (!tokenMetaSymbol) {
+      return
+    }
+
+    return tokens[tokenMetaSymbol]
   }
 
   getMetaByName(name: string): TokenMeta | undefined {

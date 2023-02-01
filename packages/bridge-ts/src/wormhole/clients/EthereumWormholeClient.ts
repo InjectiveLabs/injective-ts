@@ -1,13 +1,11 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { getGrpcTransport, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
+import { Network } from '@injectivelabs/networks'
+import { getGrpcTransport } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
-  tryNativeToHexString,
   transferFromEth,
   parseSequenceFromLogEth,
   getEmitterAddressEth,
   getSignedVAAWithRetry,
-  getForeignAssetInjective,
   hexToUint8Array,
   approveEth,
   redeemOnEth,
@@ -15,7 +13,6 @@ import {
   uint8ArrayToHex,
   cosmos,
   ethers_contracts as EthersContracts,
-  getForeignAssetEth,
 } from '@injectivelabs/wormhole-sdk'
 import { BigNumber, sleep } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
@@ -38,12 +35,36 @@ export class EthereumWormholeClient extends WormholeClient {
     super({ network, wormholeRpcUrl })
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async getErc20TokenBalance({
     address,
     tokenAddress,
     provider,
   }: {
-    address: string /* in CW20 */
+    address: string
+    tokenAddress: string
+    provider: Provider
+  }) {
+    if (!provider) {
+      throw new GeneralException(new Error(`Please provide provider`))
+    }
+
+    const signer = provider.getSigner()
+    const tokenContract = EthersContracts.ERC20__factory.connect(
+      tokenAddress,
+      signer,
+    )
+
+    return (await tokenContract.balanceOf(address)).toString()
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getErc20TokenAllowance({
+    address,
+    tokenAddress,
+    provider,
+  }: {
+    address: string
     tokenAddress: string
     provider: Provider
   }) {
@@ -58,29 +79,18 @@ export class EthereumWormholeClient extends WormholeClient {
       WormholeSource.Ethereum,
     )
 
-    const originAssetHex = tryNativeToHexString(
-      tokenAddress,
-      WORMHOLE_CHAINS.injective,
-    )
-
-    const foreignAsset = await getForeignAssetEth(
-      associatedChainContractAddresses.token_bridge,
-      provider,
-      WORMHOLE_CHAINS.injective,
-      hexToUint8Array(originAssetHex),
-    )
-
-    if (!foreignAsset) {
-      throw new GeneralException(new Error(`Foreign Ethereum asset not found`))
-    }
-
     const signer = provider.getSigner()
     const tokenContract = EthersContracts.ERC20__factory.connect(
-      foreignAsset,
+      tokenAddress,
       signer,
     )
 
-    return (await tokenContract.balanceOf(address)).toString()
+    return (
+      await tokenContract.allowance(
+        address,
+        associatedChainContractAddresses.token_bridge,
+      )
+    ).toString()
   }
 
   async transferToInjective(
@@ -88,7 +98,6 @@ export class EthereumWormholeClient extends WormholeClient {
   ) {
     const { network, wormholeRpcUrl } = this
     const { amount, recipient, provider, tokenAddress } = args
-    const endpoints = getNetworkEndpoints(network)
 
     if (!wormholeRpcUrl) {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
@@ -107,39 +116,30 @@ export class EthereumWormholeClient extends WormholeClient {
     }
 
     const signer = provider.getSigner()
-    const { injectiveContractAddresses, associatedChainContractAddresses } =
-      getContractAddresses(network, WormholeSource.Ethereum)
+    const { associatedChainContractAddresses } = getContractAddresses(
+      network,
+      WormholeSource.Ethereum,
+    )
 
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
-
-    const originAssetHex = tryNativeToHexString(
+    const allowance = await this.getErc20TokenAllowance({
+      address: await signer.getAddress(),
       tokenAddress,
-      WORMHOLE_CHAINS.ethereum,
-    )
+      provider,
+    })
 
-    const foreignAsset = await getForeignAssetInjective(
-      injectiveContractAddresses.token_bridge,
-      // @ts-ignore
-      chainGrpcWasmApi,
-      WORMHOLE_CHAINS.ethereum,
-      hexToUint8Array(originAssetHex),
-    )
-
-    if (!foreignAsset) {
-      throw new GeneralException(new Error(`Foreign Injective asset not found`))
+    if (new BigNumber(allowance).lt(amount)) {
+      await approveEth(
+        associatedChainContractAddresses.token_bridge,
+        tokenAddress,
+        signer,
+        new BigNumber(2).pow(256).minus(1).toFixed(),
+      )
     }
-
-    await approveEth(
-      associatedChainContractAddresses.token_bridge,
-      tokenAddress,
-      signer,
-      new BigNumber(2).pow(256).minus(1).toFixed(),
-    )
 
     const transferReceipt = await transferFromEth(
       associatedChainContractAddresses.token_bridge,
       signer,
-      foreignAsset,
+      tokenAddress,
       amount,
       WORMHOLE_CHAINS.injective,
       hexToUint8Array(
@@ -172,8 +172,8 @@ export class EthereumWormholeClient extends WormholeClient {
     )
 
     const sequence = parseSequenceFromLogEth(
-      txResponse as ethers.ContractReceipt,
-      associatedChainContractAddresses.token_bridge,
+      txResponse,
+      associatedChainContractAddresses.core,
     )
     const emitterAddress = await getEmitterAddressEth(
       associatedChainContractAddresses.token_bridge,

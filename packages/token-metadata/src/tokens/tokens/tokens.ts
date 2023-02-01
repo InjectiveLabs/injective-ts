@@ -6,7 +6,7 @@ export default {
     logo: 'bitcoin.svg',
     symbol: 'BTC',
     decimals: 8,
-    address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+    erc20address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
     coinGeckoId: 'bitcoin',
   },
 
@@ -15,7 +15,7 @@ export default {
     logo: 'wbtc.svg',
     symbol: 'wBTC',
     decimals: 8,
-    address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+    erc20address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
     coinGeckoId: 'wrapped-bitcoin',
   },
 
@@ -24,7 +24,7 @@ export default {
     logo: 'wbtc.svg',
     symbol: 'wBTC',
     decimals: 8,
-    address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+    erc20address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
     coinGeckoId: 'wrapped-bitcoin',
   },
 
@@ -33,7 +33,7 @@ export default {
     logo: 'ethereum.svg',
     symbol: 'ETH',
     decimals: 18,
-    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    erc20address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
     coinGeckoId: 'ethereum',
   },
 
@@ -42,7 +42,7 @@ export default {
     logo: 'ethereum.svg',
     symbol: 'wETH',
     decimals: 18,
-    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    erc20address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
     coinGeckoId: 'ethereum',
   },
 
@@ -51,7 +51,7 @@ export default {
     logo: 'ethereum.svg',
     symbol: 'wETH',
     decimals: 18,
-    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    erc20address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
     coinGeckoId: 'ethereum',
   },
 
@@ -60,7 +60,7 @@ export default {
     logo: 'injective-v3.svg',
     symbol: 'INJ',
     decimals: 18,
-    address: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
+    erc20address: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
     coinGeckoId: 'injective-protocol',
   },
 
@@ -69,7 +69,7 @@ export default {
     logo: 'usdt.svg',
     symbol: 'USDT',
     decimals: 6,
-    address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    erc20address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
     coinGeckoId: 'tether',
   },
 
@@ -78,7 +78,7 @@ export default {
     logo: 'usdc.svg',
     symbol: 'USDC',
     decimals: 6,
-    address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    erc20address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     coinGeckoId: 'usd-coin',
   },
 
@@ -87,7 +87,7 @@ export default {
     logo: 'usdc.svg',
     symbol: 'USDC',
     decimals: 6,
-    address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
+    cw20address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
     coinGeckoId: 'usd-coin',
   },
 
@@ -96,7 +96,7 @@ export default {
     logo: 'graphToken.svg',
     symbol: 'GRT',
     decimals: 18,
-    address: '0xc944e90c64b2c07662a292be6244bdf05cda44a7',
+    erc20address: '0xc944e90c64b2c07662a292be6244bdf05cda44a7',
     coinGeckoId: 'the-graph',
   },
 
@@ -105,7 +105,7 @@ export default {
     logo: 'synthetix.svg',
     decimals: 18,
     symbol: 'SNX',
-    address: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+    erc20address: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
     coinGeckoId: 'havven',
   },
 
@@ -114,7 +114,7 @@ export default {
     logo: 'bnb.svg',
     decimals: 18,
     symbol: 'BNB',
-    address: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
+    erc20address: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
     coinGeckoId: 'binancecoin',
   },
 
@@ -123,7 +123,7 @@ export default {
     logo: 'AAVE.svg',
     symbol: 'AAVE',
     decimals: 18,
-    address: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+    erc20address: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
     coinGeckoId: 'aave',
   },
 
@@ -132,7 +132,7 @@ export default {
     logo: 'yfi.svg',
     symbol: 'YFI',
     decimals: 18,
-    address: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e',
+    erc20address: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e',
     coinGeckoId: 'yearn-finance',
   },
 
@@ -141,7 +141,7 @@ export default {
     logo: 'comp.svg',
     symbol: 'COMP',
     decimals: 18,
-    address: '0xc00e94cb662c3520282e6f5717214004a7f26888',
+    erc20address: '0xc00e94cb662c3520282e6f5717214004a7f26888',
     coinGeckoId: 'compound-coin',
   },
 
@@ -150,7 +150,7 @@ export default {
     logo: 'zrx.svg',
     symbol: 'ZRX',
     decimals: 18,
-    address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
+    erc20address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
     coinGeckoId: '0x',
   },
 
@@ -159,7 +159,7 @@ export default {
     logo: 'matic.svg',
     symbol: 'MATIC',
     decimals: 18,
-    address: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
+    erc20address: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
     coinGeckoId: 'matic-network',
   },
 
@@ -168,7 +168,7 @@ export default {
     logo: 'uni.svg',
     symbol: 'UNI',
     decimals: 18,
-    address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
+    erc20address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
     coinGeckoId: 'uniswap',
   },
 
@@ -177,7 +177,7 @@ export default {
     logo: 'dai.svg',
     symbol: 'DAI',
     decimals: 18,
-    address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    erc20address: '0x6b175474e89094c44da98b954eedeac495271d0f',
     coinGeckoId: 'dai',
   },
 
@@ -186,7 +186,7 @@ export default {
     logo: 'chainlink.svg',
     symbol: 'LINK',
     decimals: 18,
-    address: '0x514910771af9ca656af840dff83e8264ecf986ca',
+    erc20address: '0x514910771af9ca656af840dff83e8264ecf986ca',
     coinGeckoId: 'chainlink',
   },
 
@@ -195,7 +195,7 @@ export default {
     logo: 'sushi.svg',
     symbol: 'SUSHI',
     decimals: 18,
-    address: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
+    erc20address: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
     coinGeckoId: 'sushi',
   },
 
@@ -204,13 +204,13 @@ export default {
     logo: 'axs.png',
     symbol: 'AXS',
     decimals: 18,
-    address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
+    erc20address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
     coinGeckoId: 'axie-infinity',
   },
 
   /* 20 Oct */
   '1INCH': {
-    address: '0x111111111117dc0aa78b770fa6a738034120c302',
+    erc20address: '0x111111111117dc0aa78b770fa6a738034120c302',
     coinGeckoId: '1inch',
     name: '1inch',
     symbol: '1INCH',
@@ -219,7 +219,7 @@ export default {
   },
 
   BAT: {
-    address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+    erc20address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
     coinGeckoId: 'basic-attention-token',
     name: 'Basic Attention Token',
     symbol: 'BAT',
@@ -228,7 +228,7 @@ export default {
   },
 
   BUSD: {
-    address: '0x4fabb145d64652a948d72533023f6e7a623c7c53',
+    erc20address: '0x4fabb145d64652a948d72533023f6e7a623c7c53',
     coinGeckoId: 'binance-usd',
     name: 'Binance USD',
     symbol: 'BUSD',
@@ -237,7 +237,7 @@ export default {
   },
 
   CEL: {
-    address: '0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d',
+    erc20address: '0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d',
     coinGeckoId: 'celsius-degree-token',
     name: 'Celsius',
     symbol: 'CEL',
@@ -246,7 +246,7 @@ export default {
   },
 
   CELL: {
-    address: '0x26c8afbbfe1ebaca03c2bb082e69d0476bffe099',
+    erc20address: '0x26c8afbbfe1ebaca03c2bb082e69d0476bffe099',
     coinGeckoId: 'cellframe',
     name: 'Cellframe',
     symbol: 'CELL',
@@ -255,7 +255,7 @@ export default {
   },
 
   CHZ: {
-    address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
+    erc20address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
     coinGeckoId: 'chiliz',
     name: 'Chiliz',
     symbol: 'CHZ',
@@ -264,7 +264,7 @@ export default {
   },
 
   DEFI5: {
-    address: '0xfa6de2697d59e88ed7fc4dfe5a33dac43565ea41',
+    erc20address: '0xfa6de2697d59e88ed7fc4dfe5a33dac43565ea41',
     coinGeckoId: 'defi-top-5-tokens-index',
     name: 'DEFI Top 5 Tokens Index',
     symbol: 'DEFI5',
@@ -273,7 +273,7 @@ export default {
   },
 
   ENJ: {
-    address: '0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c',
+    erc20address: '0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c',
     coinGeckoId: 'enjincoin',
     name: 'Enjin Coin',
     symbol: 'ENJ',
@@ -282,7 +282,7 @@ export default {
   },
 
   EVAI: {
-    address: '0x50f09629d0afdf40398a3f317cc676ca9132055c',
+    erc20address: '0x50f09629d0afdf40398a3f317cc676ca9132055c',
     coinGeckoId: 'evai',
     name: 'Evai.io',
     symbol: 'EVAI',
@@ -291,7 +291,7 @@ export default {
   },
 
   FTM: {
-    address: '0x4e15361fd6b4bb609fa63c81a2be19d873717870',
+    erc20address: '0x4e15361fd6b4bb609fa63c81a2be19d873717870',
     coinGeckoId: 'fantom',
     name: 'Fantom',
     symbol: 'FTM',
@@ -300,7 +300,7 @@ export default {
   },
 
   HT: {
-    address: '0x6f259637dcd74c767781e37bc6133cd6a68aa161',
+    erc20address: '0x6f259637dcd74c767781e37bc6133cd6a68aa161',
     coinGeckoId: 'huobi-token',
     name: 'Huobi Token',
     symbol: 'HT',
@@ -309,7 +309,7 @@ export default {
   },
 
   NEXO: {
-    address: '0xb62132e35a6c13ee1ee0f84dc5d40bad8d815206',
+    erc20address: '0xb62132e35a6c13ee1ee0f84dc5d40bad8d815206',
     coinGeckoId: 'nexo',
     name: 'Nexo',
     symbol: 'NEXO',
@@ -318,7 +318,7 @@ export default {
   },
 
   NOIA: {
-    address: '0xa8c8cfb141a3bb59fea1e2ea6b79b5ecbcd7b6ca',
+    erc20address: '0xa8c8cfb141a3bb59fea1e2ea6b79b5ecbcd7b6ca',
     coinGeckoId: 'noia-network',
     name: 'Syntropy',
     symbol: 'NOIA',
@@ -327,7 +327,7 @@ export default {
   },
 
   OCEAN: {
-    address: '0x967da4048cd07ab37855c090aaf366e4ce1b9f48',
+    erc20address: '0x967da4048cd07ab37855c090aaf366e4ce1b9f48',
     coinGeckoId: 'ocean-protocol',
     name: 'Ocean Protocol',
     symbol: 'OCEAN',
@@ -336,7 +336,7 @@ export default {
   },
 
   PAXG: {
-    address: '0x45804880de22913dafe09f4980848ece6ecbaf78',
+    erc20address: '0x45804880de22913dafe09f4980848ece6ecbaf78',
     coinGeckoId: 'pax-gold',
     name: 'PAX Gold',
     symbol: 'PAXG',
@@ -345,7 +345,7 @@ export default {
   },
 
   POOL: {
-    address: '0x0cec1a9154ff802e7934fc916ed7ca50bde6844e',
+    erc20address: '0x0cec1a9154ff802e7934fc916ed7ca50bde6844e',
     coinGeckoId: 'pooltogether',
     name: 'PoolTogether',
     symbol: 'POOL',
@@ -354,7 +354,7 @@ export default {
   },
 
   RUNE: {
-    address: '0x3155BA85D5F96b2d030a4966AF206230e46849cb',
+    erc20address: '0x3155BA85D5F96b2d030a4966AF206230e46849cb',
     coinGeckoId: 'thorchain-erc20',
     name: 'THORChain (ERC20)',
     symbol: 'RUNE',
@@ -363,7 +363,7 @@ export default {
   },
 
   SHIB: {
-    address: '0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce',
+    erc20address: '0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce',
     coinGeckoId: 'shiba-inu',
     name: 'SHIBA INU',
     symbol: 'SHIB',
@@ -372,7 +372,7 @@ export default {
   },
 
   STARS: {
-    address: '0xc55c2175e90a46602fd42e931f62b3acc1a013ca',
+    erc20address: '0xc55c2175e90a46602fd42e931f62b3acc1a013ca',
     coinGeckoId: 'mogul-productions',
     name: 'Mogul Productions',
     symbol: 'STARS',
@@ -381,7 +381,7 @@ export default {
   },
 
   STT: {
-    address: '0xaC9Bb427953aC7FDDC562ADcA86CF42D988047Fd',
+    erc20address: '0xaC9Bb427953aC7FDDC562ADcA86CF42D988047Fd',
     coinGeckoId: 'scatter-cx',
     name: 'Scatter.cx',
     symbol: 'STT',
@@ -390,7 +390,7 @@ export default {
   },
 
   SWAP: {
-    address: '0xcc4304a31d09258b0029ea7fe63d032f52e44efe',
+    erc20address: '0xcc4304a31d09258b0029ea7fe63d032f52e44efe',
     coinGeckoId: 'trustswap',
     name: 'TrustSwap',
     symbol: 'SWAP',
@@ -399,7 +399,7 @@ export default {
   },
 
   UMA: {
-    address: '0x04fa0d235c4abf4bcf4787af4cf447de572ef828',
+    erc20address: '0x04fa0d235c4abf4bcf4787af4cf447de572ef828',
     coinGeckoId: 'uma',
     name: 'UMA',
     symbol: 'UMA',
@@ -408,7 +408,7 @@ export default {
   },
 
   UTK: {
-    address: '0xdc9ac3c20d1ed0b540df9b1fedc10039df13f99c',
+    erc20address: '0xdc9ac3c20d1ed0b540df9b1fedc10039df13f99c',
     coinGeckoId: 'utrust',
     name: 'Utrust',
     symbol: 'UTK',
@@ -418,7 +418,7 @@ export default {
 
   /* 25 Oct */
   ATOM: {
-    address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
+    erc20address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
     coinGeckoId: 'cosmos',
     name: 'Cosmos',
     symbol: 'ATOM',
@@ -427,7 +427,7 @@ export default {
   },
 
   UATOM: {
-    address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
+    erc20address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
     coinGeckoId: 'cosmos',
     name: 'Cosmos',
     symbol: 'ATOM',
@@ -436,7 +436,7 @@ export default {
   },
 
   UPHOTON: {
-    address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
+    erc20address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
     coinGeckoId: 'cosmos',
     name: 'Cosmos Testnet',
     symbol: 'UPHOTON',
@@ -445,7 +445,7 @@ export default {
   },
 
   LUNA: {
-    address: '0xd2877702675e6ceb975b4a1dff9fb7baf4c91ea9',
+    erc20address: '0xd2877702675e6ceb975b4a1dff9fb7baf4c91ea9',
     coinGeckoId: 'terra-luna',
     name: 'Terra',
     symbol: 'LUNA',
@@ -454,7 +454,7 @@ export default {
   },
 
   ULUNA: {
-    address: '0xd2877702675e6ceb975b4a1dff9fb7baf4c91ea9',
+    erc20address: '0xd2877702675e6ceb975b4a1dff9fb7baf4c91ea9',
     coinGeckoId: 'terra-luna',
     name: 'Terra',
     symbol: 'LUNA',
@@ -463,7 +463,7 @@ export default {
   },
 
   UST: {
-    address: '0xa47c8bf37f92aBed4A126BDA807A7b7498661acD',
+    erc20address: '0xa47c8bf37f92aBed4A126BDA807A7b7498661acD',
     coinGeckoId: 'terrausd',
     name: 'TerraUSD',
     symbol: 'UST',
@@ -472,7 +472,7 @@ export default {
   },
 
   UUSD: {
-    address: '0xa47c8bf37f92aBed4A126BDA807A7b7498661acD',
+    erc20address: '0xa47c8bf37f92aBed4A126BDA807A7b7498661acD',
     coinGeckoId: 'terrausd',
     name: 'TerraUSD',
     symbol: 'UST',
@@ -481,7 +481,7 @@ export default {
   },
 
   GF: {
-    address: '0xaaef88cea01475125522e117bfe45cf32044e238',
+    erc20address: '0xaaef88cea01475125522e117bfe45cf32044e238',
     coinGeckoId: 'guildfi',
     name: 'GuildFi',
     symbol: 'GF',
@@ -490,7 +490,7 @@ export default {
   },
 
   XBX: {
-    address: '0x080b12e80c9b45e97c23b6ad10a16b3e2a123949',
+    erc20address: '0x080b12e80c9b45e97c23b6ad10a16b3e2a123949',
     coinGeckoId: '',
     name: 'BurnX',
     symbol: 'XBX',
@@ -521,7 +521,7 @@ export default {
     logo: 'injective-v3.svg',
     symbol: 'TAB',
     decimals: 18,
-    address: '0x36B3D7ACe7201E28040eFf30e815290D7b37ffaD',
+    erc20address: '0x36B3D7ACe7201E28040eFf30e815290D7b37ffaD',
     coinGeckoId: 'injective-protocol',
   },
 
@@ -566,7 +566,7 @@ export default {
     logo: 'axelar.jpeg',
     symbol: 'AXL',
     decimals: 6,
-    address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
+    erc20address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
     coinGeckoId: '',
   },
 
@@ -575,7 +575,7 @@ export default {
     logo: 'axelar.jpeg',
     symbol: 'AXL',
     decimals: 6,
-    address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
+    erc20address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
     coinGeckoId: '',
   },
 
@@ -594,7 +594,7 @@ export default {
     logo: 'ape.png',
     symbol: 'APE',
     decimals: 18,
-    address: '0x4d224452801aced8b2f0aebe155379bb5d594381',
+    erc20address: '0x4d224452801aced8b2f0aebe155379bb5d594381',
     coinGeckoId: 'apecoin',
   },
 
@@ -675,7 +675,7 @@ export default {
     logo: 'dot.jpeg',
     symbol: 'DOT',
     decimals: 10,
-    address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
+    erc20address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     coinGeckoId: 'polkadot',
   },
 
@@ -684,7 +684,7 @@ export default {
     logo: 'dot.jpeg',
     symbol: 'DOT',
     decimals: 10,
-    address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
+    erc20address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     coinGeckoId: 'polkadot',
   },
 
@@ -747,7 +747,7 @@ export default {
     logo: 'solana.svg',
     symbol: 'SOL',
     decimals: 8,
-    address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
+    cw20address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
     coinGeckoId: 'solana',
   },
 
@@ -756,7 +756,7 @@ export default {
     logo: 'solana.svg',
     symbol: 'SOL',
     decimals: 8,
-    address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
+    cw20address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
     coinGeckoId: 'solana',
   },
 
@@ -765,7 +765,7 @@ export default {
     logo: 'solana.svg',
     symbol: 'SOL',
     decimals: 8,
-    address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
+    cw20address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
     coinGeckoId: 'solana',
   },
 
@@ -792,7 +792,7 @@ export default {
     logo: 'ethbtctrend.svg',
     symbol: 'ETHBTCTrend',
     decimals: 18,
-    address: '0x6b7f87279982d919Bbf85182DDeAB179B366D8f2',
+    erc20address: '0x6b7f87279982d919Bbf85182DDeAB179B366D8f2',
     coinGeckoId: '',
   },
 
@@ -801,7 +801,7 @@ export default {
     logo: 'steadyeth.svg',
     symbol: 'SteadyETH',
     decimals: 18,
-    address: '0x3F07A84eCdf494310D397d24c1C78B041D2fa622',
+    erc20address: '0x3F07A84eCdf494310D397d24c1C78B041D2fa622',
     coinGeckoId: '',
   },
 
@@ -810,7 +810,7 @@ export default {
     logo: 'steadybtc.svg',
     symbol: 'SteadyBTC',
     decimals: 18,
-    address: '0x4986fD36b6b16f49b43282Ee2e24C5cF90ed166d',
+    erc20address: '0x4986fD36b6b16f49b43282Ee2e24C5cF90ed166d',
     coinGeckoId: '',
   },
 
@@ -819,7 +819,7 @@ export default {
     logo: 'xpla.svg',
     symbol: 'XPLA',
     decimals: 8,
-    address: 'inj1j08452mqwadp8xu25kn9rleyl2gufgfjqjvewe',
+    cw20address: 'inj1j08452mqwadp8xu25kn9rleyl2gufgfjqjvewe',
     coinGeckoId: 'xpla',
   },
 
@@ -828,7 +828,7 @@ export default {
     logo: 'avax.webp',
     symbol: 'WAVAX',
     decimals: 8,
-    address: 'inj18a2u6az6dzw528rptepfg6n49ak6hdzkny4um6',
+    cw20address: 'inj18a2u6az6dzw528rptepfg6n49ak6hdzkny4um6',
     coinGeckoId: 'AVAX',
   },
 
@@ -846,7 +846,7 @@ export default {
     logo: 'usdc.svg',
     symbol: 'USDCet',
     decimals: 6,
-    address: 'inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk',
+    cw20address: 'inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk',
     coinGeckoId: 'usd-coin',
   },
 
@@ -855,7 +855,7 @@ export default {
     logo: 'usdc.svg',
     symbol: 'USDCso',
     decimals: 6,
-    address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
+    cw20address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
     coinGeckoId: 'usd-coin',
   },
 } as Record<string, TokenMeta>
