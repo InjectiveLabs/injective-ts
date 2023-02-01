@@ -230,13 +230,13 @@ export class EthereumWormholeClient extends WormholeClient {
     }
 
     const signer = provider.getSigner()
-    const { injectiveContractAddresses } = getContractAddresses(
+    const { associatedChainContractAddresses } = getContractAddresses(
       network,
       WormholeSource.Ethereum,
     )
 
     return getIsTransferCompletedEth(
-      injectiveContractAddresses.token_bridge,
+      associatedChainContractAddresses.token_bridge,
       signer,
       Buffer.from(signedVAA, 'base64'),
     )

@@ -33,7 +33,11 @@ import { TransactionSignatureAndResponse } from '@injectivelabs/wormhole-sdk/lib
 import { zeroPad } from 'ethers/lib/utils'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
-import { SolanaNativeSolTransferMsgArgs, SolanaTransferMsgArgs } from '../types'
+import {
+  SolanaNativeSolTransferMsgArgs,
+  SolanaTransferMsgArgs,
+  WormholeSource,
+} from '../types'
 import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
@@ -395,10 +399,13 @@ export class SolanaWormholeClient extends WormholeClient {
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
-    const { injectiveContractAddresses } = getContractAddresses(network)
+    const { associatedChainContractAddresses } = getContractAddresses(
+      network,
+      WormholeSource.Solana,
+    )
 
     return getIsTransferCompletedSolana(
-      injectiveContractAddresses.token_bridge,
+      associatedChainContractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
       connection,
     )

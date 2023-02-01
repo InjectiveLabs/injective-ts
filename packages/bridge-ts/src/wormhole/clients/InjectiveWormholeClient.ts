@@ -105,7 +105,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     } = args
 
     const associatedChain = getAssociatedChain(destination)
-    const recipient = getAssociatedChainRecipient(recipientArg)
+    const recipient = getAssociatedChainRecipient(recipientArg, destination)
 
     if (!args.tokenAddress) {
       throw new GeneralException(new Error(`Please provide tokenAddress`))
@@ -127,7 +127,10 @@ export class InjectiveWormholeClient extends WormholeClient {
       )
     }
 
-    const { injectiveContractAddresses } = getContractAddresses(network)
+    const { injectiveContractAddresses } = getContractAddresses(
+      network,
+      destination,
+    )
 
     const messages = await transferFromInjective(
       args.injectiveAddress,
