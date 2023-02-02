@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.495](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.494...@injectivelabs/sdk-ui-ts@1.0.495) (2023-02-02)
+
+
+### Bug Fixes
+
+* duplicate spot market slugs ([4d7df2a](https://github.com/InjectiveLabs/injective-ts/commit/4d7df2ac9f6cf4da9e7411d4512e1e291f0e3b66))
+
+
+
+
+
 ## [1.0.494](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.493...@injectivelabs/sdk-ui-ts@1.0.494) (2023-02-01)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
