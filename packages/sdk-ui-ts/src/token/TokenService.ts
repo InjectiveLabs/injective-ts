@@ -280,7 +280,7 @@ export class TokenService {
     const quoteToken = await this.getDenomToken(market.quoteDenom)
     const slug =
       baseToken && quoteToken
-        ? `${baseToken.symbol.toLocaleUpperCase()}-${quoteToken.symbol.toLocaleUpperCase()}`
+        ? `${baseToken.symbol.toLowerCase()}-${quoteToken.symbol.toLowerCase()}`
         : market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
 
     return {
