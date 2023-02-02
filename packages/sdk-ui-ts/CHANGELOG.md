@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.496](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.495...@injectivelabs/sdk-ui-ts@1.0.496) (2023-02-02)
+
+
+### Bug Fixes
+
+* spot market slugs ([5496d8c](https://github.com/InjectiveLabs/injective-ts/commit/5496d8c3daf7833995645480db09184f8b377095))
+
+
+
+
+
 ## [1.0.495](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.494...@injectivelabs/sdk-ui-ts@1.0.495) (2023-02-02)
 
 
