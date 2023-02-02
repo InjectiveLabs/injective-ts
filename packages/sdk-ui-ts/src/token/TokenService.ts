@@ -276,10 +276,12 @@ export class TokenService {
   async getSpotMarketWithToken(
     market: UiBaseSpotMarket,
   ): Promise<UiBaseSpotMarketWithToken> {
-    const slug = market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
-
     const baseToken = await this.getDenomToken(market.baseDenom)
     const quoteToken = await this.getDenomToken(market.quoteDenom)
+    const slug =
+      baseToken && quoteToken
+        ? `${baseToken.symbol.toLocaleUpperCase()}-${quoteToken.symbol.toLocaleUpperCase()}`
+        : market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
 
     return {
       ...market,
