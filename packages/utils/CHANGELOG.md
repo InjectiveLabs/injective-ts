@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.69...@injectivelabs/utils@1.0.70) (2023-02-03)
+
+
+### Features
+
+* helper awaitAll ([8c9bdf8](https://github.com/InjectiveLabs/injective-ts/commit/8c9bdf83203638abeabbde3ec0f8b29e1330cc9d))
+
+
+
+
+
 ## [1.0.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.68...@injectivelabs/utils@1.0.69) (2023-01-26)
 
 **Note:** Version bump only for package @injectivelabs/utils
