@@ -11,6 +11,12 @@ import BigNumberInWei from './classes/BigNumber/BigNumberInWei'
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))
 
+export const awaitAll = async <T, S>(
+  array: Array<T>,
+  callback: (item: T) => Promise<S>,
+  // eslint-disable-next-line no-return-await
+) => await Promise.all(array.map(async (item: T) => await callback(item)))
+
 export const isServerSide = () => typeof window === 'undefined'
 
 export const mapMultipleComposerResponseMessages = <T, R>(
