@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.125](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.124...@injectivelabs/token-metadata@1.0.125) (2023-02-04)
+
+
+### Features
+
+* chzet ([43faabc](https://github.com/InjectiveLabs/injective-ts/commit/43faabc1ee789794d9f1cd1a426518c3bbd64e15))
+
+
+
+
+
 ## [1.0.124](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.123...@injectivelabs/token-metadata@1.0.124) (2023-02-03)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
