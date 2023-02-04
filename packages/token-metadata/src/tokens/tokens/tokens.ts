@@ -254,15 +254,6 @@ export default {
     logo: 'https://static.alchemyapi.io/images/assets/8992.png',
   },
 
-  CHZ: {
-    erc20Address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
-    coinGeckoId: 'chiliz',
-    name: 'Chiliz',
-    symbol: 'CHZ',
-    decimals: 18,
-    logo: 'https://static.alchemyapi.io/images/assets/4066.png',
-  },
-
   DEFI5: {
     erc20Address: '0xfa6de2697d59e88ed7fc4dfe5a33dac43565ea41',
     coinGeckoId: 'defi-top-5-tokens-index',
@@ -857,5 +848,23 @@ export default {
     decimals: 6,
     cw20Address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
     coinGeckoId: 'usd-coin',
+  },
+
+  CHZ: {
+    name: 'Chiliz',
+    logo: 'chz.png',
+    symbol: 'CHZ',
+    decimals: 18,
+    erc20Address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
+    coinGeckoId: 'chiliz',
+  },
+
+  CHZet: {
+    name: 'ChiliZ',
+    logo: 'chz.png',
+    symbol: 'CHZet',
+    decimals: 8,
+    cw20Address: 'inj1q6kpxy6ar5lkxqudjvryarrrttmakwsvzkvcyh',
+    coinGeckoId: 'chiliz',
   },
 } as Record<string, TokenMeta>
