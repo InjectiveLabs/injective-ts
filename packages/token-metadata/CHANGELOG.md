@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.126](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.125...@injectivelabs/token-metadata@1.0.126) (2023-02-06)
+
+
+### Features
+
+* exception class name ([2e0bec4](https://github.com/InjectiveLabs/injective-ts/commit/2e0bec44c5b1c9f5ed5a97faa522a5dd90cb7084))
+
+
+
+
+
 ## [1.0.125](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.124...@injectivelabs/token-metadata@1.0.125) (2023-02-04)
 
 
