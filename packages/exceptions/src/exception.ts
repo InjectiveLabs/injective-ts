@@ -11,6 +11,12 @@ import { toPascalCase } from './utils'
 
 export abstract class ConcreteException extends Error implements Exception {
   /**
+   * The name of the error class as it the constructor.name might
+   * give a minified class name when we bundle using webpack
+   */
+  public static errorClass = ''
+
+  /**
    * The type of the Error
    */
   public type: ErrorType = ErrorType.Unspecified
@@ -76,7 +82,7 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public parseError(error: Error) {
-    this.setName(this.constructor.name)
+    this.setName(this.errorClass || this.constructor.name)
     this.setStack(error.stack || '')
     this.setMessage(error.message)
     this.errorMessage = error.message
@@ -149,7 +155,7 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public toCompactError(): Error {
-    const name = this.name || this.constructor.name || toPascalCase(this.type)
+    const name = this.name || toPascalCase(this.type)
 
     const error = new Error(
       `${this.message} | ${JSON.stringify({
@@ -163,7 +169,7 @@ export abstract class ConcreteException extends Error implements Exception {
       })}`,
     )
     error.stack = this.stack
-    error.name = this.name || this.constructor.name || toPascalCase(this.type)
+    error.name = this.name || toPascalCase(this.type)
 
     return error
   }
@@ -173,7 +179,7 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public toObject() {
-    const name = this.name || this.constructor.name || toPascalCase(this.type)
+    const name = this.name || toPascalCase(this.type)
 
     return {
       message: this.message,

@@ -2,6 +2,8 @@ import { ConcreteException } from '../exception'
 import { ErrorContext, ErrorType, HttpRequestMethod } from '../types'
 
 export class HttpRequestException extends ConcreteException {
+  public errorClass: string = 'HttpRequestException'
+
   public method: HttpRequestMethod = HttpRequestMethod.Get
 
   constructor(

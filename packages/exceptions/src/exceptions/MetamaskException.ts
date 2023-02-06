@@ -9,6 +9,8 @@ const removeMetamaskFromErrorString = (message: string): string =>
     .replaceAll('Metamask:', '')
 
 export class MetamaskException extends ConcreteException {
+  public errorClass: string = 'MetamaskException'
+
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
 
