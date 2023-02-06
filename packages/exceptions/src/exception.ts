@@ -26,6 +26,12 @@ export abstract class ConcreteException extends Error implements Exception {
   public name!: string
 
   /**
+   * The name of the error (the name of the instance of the Exception)
+   * Needed for reporting reasons, ex: bugsnag
+   */
+  public errorClass!: string
+
+  /**
    * Providing more context
    * (ex: endpoint on http request)
    */
@@ -110,6 +116,7 @@ export abstract class ConcreteException extends Error implements Exception {
   public setName(name: string) {
     super.name = name
     this.name = name
+    this.errorClass = name
   }
 
   public setMessage(message: string) {
@@ -142,9 +149,12 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public toCompactError(): Error {
+    const name = this.name || this.constructor.name || toPascalCase(this.type)
+
     const error = new Error(
       `${this.message} | ${JSON.stringify({
         message: this.message,
+        errorClass: name,
         code: this.code,
         type: this.type,
         context: this.context,
@@ -160,6 +170,20 @@ export abstract class ConcreteException extends Error implements Exception {
 
   public toJson(): string {
     return JSON.stringify({ error: this.message, stack: this.stack })
+  }
+
+  public toObject() {
+    const name = this.name || this.constructor.name || toPascalCase(this.type)
+
+    return {
+      message: this.message,
+      errorClass: name,
+      code: this.code,
+      type: this.type,
+      context: this.context,
+      contextModule: this.contextModule,
+      contextCode: this.contextCode,
+    }
   }
 
   public toString() {
