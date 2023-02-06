@@ -7,6 +7,7 @@ import {
   UnspecifiedErrorCode,
   ErrorContextCode,
 } from './types'
+import { toPascalCase } from './utils'
 
 export abstract class ConcreteException extends Error implements Exception {
   /**
@@ -152,7 +153,7 @@ export abstract class ConcreteException extends Error implements Exception {
       })}`,
     )
     error.stack = this.stack
-    error.name = this.name || ''
+    error.name = this.name || this.constructor.name || toPascalCase(this.type)
 
     return error
   }

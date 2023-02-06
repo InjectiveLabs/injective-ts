@@ -742,24 +742,6 @@ export default {
     coinGeckoId: 'solana',
   },
 
-  WSOL: {
-    name: 'Solana',
-    logo: 'solana.svg',
-    symbol: 'SOL',
-    decimals: 8,
-    cw20Address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
-    coinGeckoId: 'solana',
-  },
-
-  CW20SOL: {
-    name: 'Solana',
-    logo: 'solana.svg',
-    symbol: 'SOL',
-    decimals: 8,
-    cw20Address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
-    coinGeckoId: 'solana',
-  },
-
   SOMM: {
     name: 'Sommelier',
     logo: 'sommelier.png',
@@ -805,7 +787,7 @@ export default {
     coinGeckoId: '',
   },
 
-  CW20XPLA: {
+  XPLA: {
     name: 'XPLA',
     logo: 'xpla.svg',
     symbol: 'XPLA',
@@ -814,7 +796,7 @@ export default {
     coinGeckoId: 'xpla',
   },
 
-  CW20AVAX: {
+  AVAX: {
     name: 'AVAX',
     logo: 'avax.webp',
     symbol: 'WAVAX',
