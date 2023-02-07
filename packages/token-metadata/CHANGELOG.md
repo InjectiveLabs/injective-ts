@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.130](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.129...@injectivelabs/token-metadata@1.0.130) (2023-02-07)
+
+
+### Bug Fixes
+
+* native sol decimals ([baeec98](https://github.com/InjectiveLabs/injective-ts/commit/baeec98195963d313bb4543d44f5f8fcbbe495cb))
+
+
+
+
+
 ## [1.0.129](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.128...@injectivelabs/token-metadata@1.0.129) (2023-02-07)
 
 
