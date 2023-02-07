@@ -748,7 +748,7 @@ export default {
     logo: 'solana.svg',
     symbol: 'SOL',
     decimals: 9,
-    cw20Address: '',
+    cw20Address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
     coinGeckoId: 'solana',
   },
 
