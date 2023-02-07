@@ -13,7 +13,7 @@ export interface TokenMeta {
   symbol: string
   decimals: number
   // Decimals on the origin chain in case they are different
-  originDecimals?: number
+  nativeDecimals?: number
   erc20Address?: string
   cw20Address?: string
   coinGeckoId: string
