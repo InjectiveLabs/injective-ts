@@ -743,7 +743,7 @@ export default {
   },
 
   /** TODO: resolve properly on @injectivelabs/tokens-metadata */
-  nativeSOL: {
+  NATIVESOL: {
     name: 'Solana',
     logo: 'solana.svg',
     symbol: 'SOL',
