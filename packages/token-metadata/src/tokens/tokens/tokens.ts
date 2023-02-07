@@ -742,6 +742,16 @@ export default {
     coinGeckoId: 'solana',
   },
 
+  /** TODO: resolve properly on @injectivelabs/tokens-metadata */
+  nativeSOL: {
+    name: 'Solana',
+    logo: 'solana.svg',
+    symbol: 'SOL',
+    decimals: 9,
+    cw20Address: '',
+    coinGeckoId: 'solana',
+  },
+
   SOMM: {
     name: 'Sommelier',
     logo: 'sommelier.png',
