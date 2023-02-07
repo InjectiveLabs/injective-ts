@@ -738,16 +738,8 @@ export default {
     logo: 'solana.svg',
     symbol: 'SOL',
     decimals: 8,
+    nativeDecimals: 9,
     cw20Address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
-    coinGeckoId: 'solana',
-  },
-
-  /** TODO: resolve properly on @injectivelabs/tokens-metadata */
-  NATIVESOL: {
-    name: 'Solana',
-    logo: 'solana.svg',
-    symbol: 'SOL',
-    decimals: 9,
     coinGeckoId: 'solana',
   },
 
@@ -845,16 +837,9 @@ export default {
     name: 'Chiliz',
     logo: 'chz.png',
     symbol: 'CHZ',
-    decimals: 18,
-    erc20Address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
-    coinGeckoId: 'chiliz',
-  },
-
-  CHZet: {
-    name: 'ChiliZ',
-    logo: 'chz.png',
-    symbol: 'CHZet',
     decimals: 8,
+    originDecimals: 18,
+    erc20Address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
     cw20Address: 'inj1q6kpxy6ar5lkxqudjvryarrrttmakwsvzkvcyh',
     coinGeckoId: 'chiliz',
   },
