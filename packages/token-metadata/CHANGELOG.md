@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.131](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.130...@injectivelabs/token-metadata@1.0.131) (2023-02-07)
+
+
+### Bug Fixes
+
+* native sol symbol ([9f85010](https://github.com/InjectiveLabs/injective-ts/commit/9f85010e64dd6488502e64602d4da6cda142bbe0))
+
+
+
+
+
 ## [1.0.130](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.129...@injectivelabs/token-metadata@1.0.130) (2023-02-07)
 
 
