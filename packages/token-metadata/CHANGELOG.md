@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.132](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.131...@injectivelabs/token-metadata@1.0.132) (2023-02-07)
+
+
+### Bug Fixes
+
+* added origin decimals field ([13cb714](https://github.com/InjectiveLabs/injective-ts/commit/13cb7149737fe78cdf7ca288ba0e0d76b19624dc))
+* cw20 address for native sol ([1d622af](https://github.com/InjectiveLabs/injective-ts/commit/1d622af9cd8a4f8657f4de38e7d98481f5f2c676))
+
+
+
+
+
 ## [1.0.131](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.130...@injectivelabs/token-metadata@1.0.131) (2023-02-07)
 
 
