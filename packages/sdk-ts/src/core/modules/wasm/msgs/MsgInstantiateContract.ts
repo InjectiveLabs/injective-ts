@@ -1,6 +1,6 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgInstantiateContract as BaseMsgInstantiateContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
-import { toUtf8 } from '../../../../utils'
+import { fromUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
 import snakeCaseKeys from 'snakecase-keys'
 
@@ -58,7 +58,7 @@ export default class MsgInstantiateContract extends MsgBase<
 
     const message = new BaseMsgInstantiateContract()
 
-    message.setMsg(toUtf8(JSON.stringify(params.msg)))
+    message.setMsg(fromUtf8(JSON.stringify(params.msg)))
     message.setSender(params.sender)
     message.setAdmin(params.admin)
     message.setCodeId(params.codeId)

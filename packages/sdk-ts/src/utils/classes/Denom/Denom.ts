@@ -14,6 +14,9 @@ import {
   getTokenTypeFromDenom,
   tokenMetaToToken,
 } from './utils'
+import { DenomTrace } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/transfer_pb'
+import { fromUtf8 } from '../../utf8'
+import { sha256 } from '../../crypto'
 
 /**
  * @category Utility Classes
@@ -24,6 +27,8 @@ export class Denom {
   protected ibcApi: ChainGrpcIbcApi
 
   protected tokenMetaUtil: TokenMetaUtil
+
+  protected cachedDenomTraces: Record<string, DenomTrace.AsObject> = {}
 
   constructor(denom: string, network: Network = Network.Mainnet) {
     this.denom = denom
@@ -145,6 +150,18 @@ export class Denom {
 
   async fetchDenomTrace() {
     const { denom } = this
+
+    if (Object.keys(this.cachedDenomTraces).length === 0) {
+      await this.fetchAndCacheDenomTraces()
+    }
+
+    const hash = denom.replace('ibc/', '')
+    const cachedDenomTrace = this.cachedDenomTraces[hash]
+
+    if (cachedDenomTrace) {
+      return cachedDenomTrace
+    }
+
     const denomTrace = await this.ibcApi.fetchDenomTrace(
       denom.replace('ibc/', ''),
     )
@@ -222,5 +239,26 @@ export class Denom {
     }
 
     return this.getPeggyDenomTokenMeta()
+  }
+
+  private async fetchAndCacheDenomTraces() {
+    const denomTraces = await this.ibcApi.fetchDenomsTrace()
+    const denomHashes = denomTraces.map((trace) => {
+      return {
+        trace: trace,
+        hash: Buffer.from(
+          sha256(fromUtf8(`${trace.path}/${trace.baseDenom}`)),
+        ).toString('hex'),
+      }
+    })
+
+    this.cachedDenomTraces = denomHashes.reduce(
+      (denomTraces, denomTrace) => ({
+        ...denomTraces,
+        [denomTrace.hash.toUpperCase()]:
+          denomTrace.trace as DenomTrace.AsObject,
+      }),
+      {},
+    )
   }
 }

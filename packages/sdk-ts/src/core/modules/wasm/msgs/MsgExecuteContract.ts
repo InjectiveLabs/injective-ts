@@ -3,7 +3,7 @@ import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/cha
 import snakeCaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
-import { toUtf8 } from '../../../../utils/utf8'
+import { fromUtf8 } from '../../../../utils/utf8'
 import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgExecuteContract {
@@ -75,7 +75,7 @@ export default class MsgExecuteContract extends MsgBase<
     const message = new BaseMsgExecuteContract()
     const msg = this.getMsgObject()
 
-    message.setMsg(toUtf8(JSON.stringify(msg)))
+    message.setMsg(fromUtf8(JSON.stringify(msg)))
     message.setSender(params.sender)
     message.setContract(params.contractAddress)
 

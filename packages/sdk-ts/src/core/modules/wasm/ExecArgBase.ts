@@ -1,4 +1,4 @@
-import { toUtf8 } from '../../../utils'
+import { fromUtf8 } from '../../../utils'
 
 export type ExecDataRepresentation<Data> = {
   [key: string]: Data
@@ -23,10 +23,10 @@ export abstract class ExecArgBase<Params, DataRepresentation> {
   public abstract toExecData(): ExecDataRepresentation<DataRepresentation>
 
   public toJSON(): Uint8Array {
-    return toUtf8(JSON.stringify(this.params))
+    return fromUtf8(JSON.stringify(this.params))
   }
 
   public toExecJSON(): Uint8Array {
-    return toUtf8(JSON.stringify(this.toExecData()))
+    return fromUtf8(JSON.stringify(this.toExecData()))
   }
 }

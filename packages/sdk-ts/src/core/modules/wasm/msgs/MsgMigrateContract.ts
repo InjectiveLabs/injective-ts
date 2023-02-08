@@ -1,5 +1,5 @@
 import { MsgMigrateContract as BaseMsgMigrateContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
-import { toUtf8 } from '../../../../utils'
+import { fromUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
 import snakeCaseKeys from 'snakecase-keys'
 
@@ -52,7 +52,7 @@ export default class MsgMigrateContract extends MsgBase<
     message.setCodeId(params.codeId)
     message.setContract(params.contract)
     message.setSender(params.sender)
-    message.setMsg(toUtf8(JSON.stringify(params.msg)))
+    message.setMsg(fromUtf8(JSON.stringify(params.msg)))
 
     return message
   }

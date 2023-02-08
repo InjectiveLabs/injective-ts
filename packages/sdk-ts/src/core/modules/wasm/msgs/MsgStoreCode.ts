@@ -1,5 +1,5 @@
 import { MsgStoreCode as BaseMsgStoreCode } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
-import { toUtf8 } from '../../../../utils'
+import { fromUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
 import snakeCaseKeys from 'snakecase-keys'
 
@@ -51,7 +51,7 @@ export default class MsgStoreCode extends MsgBase<
     message.setSender(params.sender)
     message.setWasmByteCode(
       typeof params.wasmBytes === 'string'
-        ? toUtf8(params.wasmBytes)
+        ? fromUtf8(params.wasmBytes)
         : params.wasmBytes,
     )
 
