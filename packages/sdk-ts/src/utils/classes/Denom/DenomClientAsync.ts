@@ -4,7 +4,6 @@ import {
   TokenMeta,
   IbcToken,
   Token,
-  ibcTokens,
 } from '@injectivelabs/token-metadata'
 import { INJ_DENOM } from '@injectivelabs/utils'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
@@ -29,16 +28,6 @@ export class DenomClientAsync {
   protected ibcApi: ChainGrpcIbcApi
 
   constructor(network: Network = Network.Mainnet) {
-    this.cachedDenomTraces = Object.keys(ibcTokens).reduce(
-      (cachedDenomTraces, ibcTokenKey) => ({
-        ...cachedDenomTraces,
-        [ibcTokenKey.toString()]: ibcTokens[
-          ibcTokenKey as unknown as string as keyof typeof ibcTokens
-        ] as DenomTrace.AsObject,
-      }),
-      {},
-    )
-
     const endpoints = getNetworkEndpoints(network)
     this.tokenMetaUtil = TokenMetaUtilFactory.make(network)
     this.ibcApi = new ChainGrpcIbcApi(endpoints.grpc)
