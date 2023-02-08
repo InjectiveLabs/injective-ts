@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.398](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.397...@injectivelabs/sdk-ts@1.0.398) (2023-02-08)
+
+
+### Features
+
+* caching denom traces ([7b7f89e](https://github.com/InjectiveLabs/injective-ts/commit/7b7f89eb3e61efa22f28f707bd96038371d01c6b))
+
+
+
+
+
 ## [1.0.397](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.396...@injectivelabs/sdk-ts@1.0.397) (2023-02-07)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
