@@ -24,7 +24,6 @@ import {
   BankBalanceWithToken,
   ContractAccountBalanceWithToken,
   Cw20BalanceWithToken,
-  DenomTrace,
   IbcBankBalanceWithToken,
   SubaccountBalanceWithToken,
   UiBridgeTransaction,
@@ -32,6 +31,7 @@ import {
 } from '../types'
 import { TokenType } from '@injectivelabs/token-metadata'
 import { Token, IbcToken } from '@injectivelabs/token-metadata'
+import { awaitAll } from '@injectivelabs/utils'
 
 export class TokenService {
   public network: Network
@@ -40,22 +40,17 @@ export class TokenService {
 
   public denomClient: DenomClientAsync
 
-  protected cachedDenomTraces: Record<string, DenomTrace> = {}
-
   constructor({ chainId, network }: { chainId: ChainId; network: Network }) {
     this.network = network
     this.chainId = chainId
     this.denomClient = new DenomClientAsync(network)
   }
 
-  async getDenomToken(denom: string): Promise<Token> {
-    const { network } = this
-
+  async getDenomToken(denom: string): Promise<Token | undefined> {
     if (denom.startsWith('ibc/')) {
-      const denomTrace = await this.denomClient.getDenomToken(denom)
+      const denomTrace = await this.denomClient.fetchDenomTrace(denom)
       const tokenMeta = await this.denomClient.getTokenMetaDataBySymbol(
         denomTrace.baseDenom,
-        network,
       )
 
       return {
@@ -70,33 +65,27 @@ export class TokenService {
   }
 
   async getCoinsToken(supply: Coin[]): Promise<Token[]> {
-    const tokens = (await Promise.all(
-      supply.map((coin) => {
-        return this.getDenomToken(coin.denom)
-      }),
-    )) as Token[]
+    const tokens = await awaitAll(supply, (coin) =>
+      this.getDenomToken(coin.denom),
+    )
 
-    return tokens.filter((token) => token)
+    return tokens.filter((token) => token) as Token[]
   }
 
   async getSupplyWithToken(supply: Coin[]): Promise<Token[]> {
-    const tokens = (await Promise.all(
-      supply.map((coin) => {
-        return this.getDenomToken(coin.denom)
-      }),
-    )) as Token[]
+    const tokens = await awaitAll(supply, (coin) =>
+      this.getDenomToken(coin.denom),
+    )
 
-    return tokens.filter((token) => token)
+    return tokens.filter((token) => token) as Token[]
   }
 
   async getIbcSupplyWithToken(supply: Coin[]): Promise<Token[]> {
-    const tokens = (await Promise.all(
-      supply.map((coin) => {
-        return this.getDenomToken(coin.denom)
-      }),
-    )) as IbcToken[]
+    const tokens = await awaitAll(supply, (coin) =>
+      this.getDenomToken(coin.denom),
+    )
 
-    return tokens.filter((token) => token)
+    return tokens.filter((token) => token) as Token[]
   }
 
   async getBalancesWithToken(
@@ -107,32 +96,27 @@ export class TokenService {
     ibcBankBalancesWithToken: IbcBankBalanceWithToken[]
   }> {
     const bankBalancesWithToken = (
-      await Promise.all(
-        Object.keys(balances).map(async (denom) => ({
-          denom,
-          balance: balances[denom],
-          token: await this.getDenomToken(denom),
-        })),
-      )
+      await awaitAll(Object.keys(balances), async (denom) => ({
+        denom,
+        balance: balances[denom],
+        token: await this.getDenomToken(denom),
+      }))
     ).filter((balance) => balance.token !== undefined) as BankBalanceWithToken[]
 
     const ibcBankBalancesWithToken = (
-      await Promise.all(
-        Object.keys(ibcBalances).map(async (denom) => {
-          const { baseDenom, path } = await this.denomClient.fetchDenomTrace(
-            denom,
-          )
+      await awaitAll(Object.keys(ibcBalances), async (denom) => {
+        const { baseDenom, path } = await this.denomClient.fetchDenomTrace(
+          denom,
+        )
 
-          return {
-            denom,
-            baseDenom,
-            isIbc: true,
-            balance: ibcBalances[denom],
-            channelId: path.replace('transfer/', ''),
-            token: await this.getDenomToken(denom),
-          }
-        }),
-      )
+        return {
+          denom,
+          baseDenom,
+          balance: ibcBalances[denom],
+          channelId: path.replace('transfer/', ''),
+          token: await this.getDenomToken(denom),
+        }
+      })
     ).filter(
       (balance) => balance.token !== undefined,
     ) as IbcBankBalanceWithToken[]
@@ -146,35 +130,44 @@ export class TokenService {
   async getCW20BalancesWithToken(
     cw20Balances: ExplorerCW20BalanceWithToken[],
   ): Promise<Cw20BalanceWithToken[]> {
-    return await Promise.all(
-      cw20Balances.map(async (balance) => {
-        const token = await this.getDenomToken(balance.contractAddress)
+    const balancesWithToken = await awaitAll(cw20Balances, async (balance) => {
+      const token = await this.getDenomToken(balance.contractAddress)
 
-        return {
-          ...balance,
-          token: {
-            ...token,
-            type: TokenType.Cw20,
-          },
-          denom: token.symbol,
-          contractDetails: {
-            address: balance.contractAddress,
-          },
-        }
-      }),
-    )
+      if (!token) {
+        return
+      }
+
+      return {
+        ...balance,
+        token: {
+          ...token,
+          type: TokenType.Cw20,
+        },
+        denom: token.symbol,
+        contractDetails: {
+          address: balance.contractAddress,
+        },
+      }
+    })
+
+    return balancesWithToken.filter(
+      (balance) => balance,
+    ) as Cw20BalanceWithToken[]
   }
 
   async getCW20AccountsBalanceWithToken({
-    contractAccountsBalance,
     contractAddress,
+    contractAccountsBalance,
   }: {
-    contractAccountsBalance: ContractAccountBalance[]
     contractAddress: string
+    contractAccountsBalance: ContractAccountBalance[]
   }): Promise<ContractAccountBalanceWithToken[]> {
     const token = await this.getDenomToken(contractAddress)
+    const balances = contractAccountsBalance.map((balance) => {
+      if (!token) {
+        return
+      }
 
-    return contractAccountsBalance.map((balance) => {
       return {
         ...balance,
         token: {
@@ -183,6 +176,10 @@ export class TokenService {
         },
       }
     })
+
+    return balances.filter(
+      (balance) => balance,
+    ) as ContractAccountBalanceWithToken[]
   }
 
   async getSupplyWithLabel({
@@ -231,9 +228,7 @@ export class TokenService {
     balances: UiSubaccountBalance[],
   ): Promise<SubaccountBalanceWithToken[]> {
     return (
-      await Promise.all(
-        balances.map(this.getSubaccountBalanceWithToken.bind(this)),
-      )
+      await awaitAll(balances, this.getSubaccountBalanceWithToken.bind(this))
     ).filter(
       (balance) => balance.token !== undefined,
     ) as SubaccountBalanceWithToken[]
@@ -261,7 +256,7 @@ export class TokenService {
     markets: UiBaseSpotMarket[],
   ): Promise<UiBaseSpotMarketWithToken[]> {
     return (
-      await Promise.all(markets.map(this.getSpotMarketWithToken.bind(this)))
+      await awaitAll(markets, this.getSpotMarketWithToken.bind(this))
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
@@ -299,9 +294,7 @@ export class TokenService {
     Array<PerpetualMarketWithTokenAndSlug | ExpiryFuturesMarketWithTokenAndSlug>
   > {
     return (
-      await Promise.all(
-        markets.map(this.getDerivativeMarketWithToken.bind(this)),
-      )
+      await awaitAll(markets, this.getDerivativeMarketWithToken.bind(this))
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
@@ -318,7 +311,9 @@ export class TokenService {
       .replaceAll('/', '-')
       .replaceAll(' ', '-')
       .toLowerCase()
-    const [baseTokenSymbol] = market.ticker.replace(quoteToken.symbol, '')
+    const [baseTokenSymbol] = quoteToken
+      ? market.ticker.replace(quoteToken.symbol, '')
+      : market.ticker.replace('/', '')
     const baseToken = {
       denom: slug,
       logo: 'injective-v3.svg',
@@ -343,9 +338,7 @@ export class TokenService {
     markets: UiBaseBinaryOptionsMarket[],
   ): Promise<BinaryOptionsMarketWithTokenAndSlug[]> {
     return (
-      await Promise.all(
-        markets.map(this.getBinaryOptionsMarketWithToken.bind(this)),
-      )
+      await awaitAll(markets, this.getBinaryOptionsMarketWithToken.bind(this))
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
@@ -403,15 +396,12 @@ export class TokenService {
     transactions: UiBridgeTransaction[],
   ): Promise<UiBridgeTransactionWithToken[]> {
     return (
-      await Promise.all(
-        transactions.map(this.getBridgeTransactionWithToken.bind(this)),
+      await awaitAll(
+        transactions,
+        this.getBridgeTransactionWithToken.bind(this),
       )
     ).filter(
       (transaction) => transaction && transaction.token !== undefined,
     ) as UiBridgeTransactionWithToken[]
-  }
-
-  private async fetchDenomTraceFromCache(denom: string) {
-    return this.cachedDenomTraces[denom.replace('ibc/', '')]
   }
 }
