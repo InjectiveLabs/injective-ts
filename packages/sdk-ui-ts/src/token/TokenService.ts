@@ -1,9 +1,9 @@
 import { Network } from '@injectivelabs/networks'
 import { ChainId, Coin } from '@injectivelabs/ts-types'
 import {
+  DenomClientAsync,
   checkIsIbcDenomCanonical,
   ExplorerCW20BalanceWithToken,
-  Denom,
   tokenMetaToToken,
   ContractAccountBalance,
 } from '@injectivelabs/sdk-ts'
@@ -30,79 +30,43 @@ import {
   UiBridgeTransaction,
   UiBridgeTransactionWithToken,
 } from '../types'
-import { ibcTokens, TokenType } from '@injectivelabs/token-metadata'
+import { TokenType } from '@injectivelabs/token-metadata'
 import { Token, IbcToken } from '@injectivelabs/token-metadata'
-import { GeneralException } from '@injectivelabs/exceptions'
 
 export class TokenService {
   public network: Network
 
   public chainId: ChainId
 
+  public denomClient: DenomClientAsync
+
   protected cachedDenomTraces: Record<string, DenomTrace> = {}
 
   constructor({ chainId, network }: { chainId: ChainId; network: Network }) {
     this.network = network
     this.chainId = chainId
-    this.cachedDenomTraces = Object.keys(ibcTokens).reduce(
-      (cachedDenomTraces, ibcTokenKey) => ({
-        ...cachedDenomTraces,
-        [ibcTokenKey.toString()]: ibcTokens[
-          ibcTokenKey as unknown as string as keyof typeof ibcTokens
-        ] as DenomTrace,
-      }),
-      {},
-    )
+    this.denomClient = new DenomClientAsync(network)
   }
 
   async getDenomToken(denom: string): Promise<Token> {
     const { network } = this
 
     if (denom.startsWith('ibc/')) {
-      const denomTraceFromCache = await this.fetchDenomTraceFromCache(denom)
+      const denomTrace = await this.denomClient.getDenomToken(denom)
+      const tokenMeta = await this.denomClient.getTokenMetaDataBySymbol(
+        denomTrace.baseDenom,
+        network,
+      )
 
-      if (denomTraceFromCache) {
-        const tokenMeta = await new Denom(
-          denomTraceFromCache.baseDenom,
-          network,
-        ).getTokenMetaDataBySymbol()
-
-        return {
-          channelId: denomTraceFromCache.path.replace('transfer/', ''),
-          isCanonical: checkIsIbcDenomCanonical(denomTraceFromCache.path),
-          ...denomTraceFromCache,
-          ...tokenMetaToToken(tokenMeta, denom),
-        } as IbcToken
-      }
-
-      return (await new Denom(denom, network).getIbcDenomToken()) as IbcToken
+      return {
+        channelId: denomTrace.path.replace('transfer/', ''),
+        isCanonical: checkIsIbcDenomCanonical(denomTrace.path),
+        ...denomTrace,
+        ...tokenMetaToToken(tokenMeta, denom),
+      } as IbcToken
     }
 
-    return await new Denom(denom, network).getDenomToken()
-  }
-
-  async getDenomTrace(denom: string) {
-    const { network } = this
-
-    if (!denom.startsWith('ibc/')) {
-      throw new GeneralException(new Error(`${denom} is not an IBC denom`))
-    }
-
-    const denomTraceFromCache = await this.fetchDenomTraceFromCache(denom)
-
-    if (denomTraceFromCache) {
-      return denomTraceFromCache
-    }
-
-    const { baseDenom, path } = await new Denom(
-      denom,
-      network,
-    ).fetchDenomTrace()
-
-    return {
-      path,
-      baseDenom,
-    }
+    return await this.denomClient.getDenomToken(denom)
   }
 
   async getCoinsToken(supply: Coin[]): Promise<Token[]> {
@@ -155,7 +119,9 @@ export class TokenService {
     const ibcBankBalancesWithToken = (
       await Promise.all(
         Object.keys(ibcBalances).map(async (denom) => {
-          const { baseDenom, path } = await this.getDenomTrace(denom)
+          const { baseDenom, path } = await this.denomClient.fetchDenomTrace(
+            denom,
+          )
 
           return {
             denom,
