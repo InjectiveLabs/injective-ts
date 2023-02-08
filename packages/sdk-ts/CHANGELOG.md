@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.401](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.400...@injectivelabs/sdk-ts@1.0.401) (2023-02-08)
+
+
+### Features
+
+* baseDenom introduced ([7c8f895](https://github.com/InjectiveLabs/injective-ts/commit/7c8f89557ccf4b272b1235593ba1ad6934d23cb7))
+
+
+
+
+
 ## [1.0.400](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.399...@injectivelabs/sdk-ts@1.0.400) (2023-02-08)
 
 
