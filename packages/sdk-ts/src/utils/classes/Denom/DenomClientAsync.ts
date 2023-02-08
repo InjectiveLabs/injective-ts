@@ -28,9 +28,8 @@ export class DenomClientAsync {
   protected ibcApi: ChainGrpcIbcApi
 
   constructor(network: Network = Network.Mainnet) {
-    const endpoints = getNetworkEndpoints(network)
     this.tokenMetaUtil = TokenMetaUtilFactory.make(network)
-    this.ibcApi = new ChainGrpcIbcApi(endpoints.grpc)
+    this.ibcApi = new ChainGrpcIbcApi(getNetworkEndpoints(network).grpc)
   }
 
   getPeggyDenomToken(denom: string): Token {
@@ -96,9 +95,22 @@ export class DenomClientAsync {
     }
 
     try {
-      const tokenMeta = await this.getDenomTokenMeta(denom)
+      if (denom.startsWith('ibc/')) {
+        return this.getIbcDenomToken(denom)
+      }
 
-      return tokenMetaToToken(tokenMeta, denom) as Token
+      if (denom.startsWith('factory/')) {
+        return this.getFactoryDenomToken(denom)
+      }
+
+      if (denom.startsWith('peggy')) {
+        return this.getPeggyDenomToken(denom)
+      }
+
+      return tokenMetaToToken(
+        await this.getDenomTokenMeta(denom),
+        denom,
+      ) as Token
     } catch (e) {
       return
     }
@@ -141,36 +153,6 @@ export class DenomClientAsync {
     const { tokenMetaUtil } = this
 
     return tokenMetaUtil.getMetaByName(name)
-  }
-
-  async fetchDenomTrace(denom: string) {
-    const hash = denom.replace('ibc/', '')
-
-    if (Object.keys(this.cachedDenomTraces).length === 0) {
-      await this.fetchAndCacheDenomTraces()
-    }
-
-    const cachedDenomTrace = this.cachedDenomTraces[hash]
-
-    if (cachedDenomTrace) {
-      return cachedDenomTrace
-    }
-
-    const denomTrace = await this.ibcApi.fetchDenomTrace(hash)
-
-    if (!denomTrace) {
-      throw new GeneralException(
-        new Error(`Denom trace not found for ${denom}`),
-        {
-          type: ErrorType.NotFoundError,
-        },
-      )
-    }
-
-    return {
-      path: denomTrace.path,
-      baseDenom: denomTrace.baseDenom,
-    }
   }
 
   private getPeggyDenomTokenMeta(denom: string): TokenMeta | undefined {
@@ -221,7 +203,7 @@ export class DenomClientAsync {
     const { tokenMetaUtil } = this
 
     if (denom === INJ_DENOM) {
-      return tokenMetaUtil.getMetaBySymbol('INJ')
+      return tokenMetaUtil.getMetaBySymbol(INJ_DENOM.toUpperCase())
     }
 
     if (denom.startsWith('ibc/')) {
@@ -233,6 +215,36 @@ export class DenomClientAsync {
     }
 
     return this.getPeggyDenomTokenMeta(denom)
+  }
+
+  async fetchDenomTrace(denom: string) {
+    const hash = denom.replace('ibc/', '')
+
+    if (Object.keys(this.cachedDenomTraces).length === 0) {
+      await this.fetchAndCacheDenomTraces()
+    }
+
+    const cachedDenomTrace = this.cachedDenomTraces[hash]
+
+    if (cachedDenomTrace) {
+      return cachedDenomTrace
+    }
+
+    const denomTrace = await this.ibcApi.fetchDenomTrace(hash)
+
+    if (!denomTrace) {
+      throw new GeneralException(
+        new Error(`Denom trace not found for ${denom}`),
+        {
+          type: ErrorType.NotFoundError,
+        },
+      )
+    }
+
+    return {
+      path: denomTrace.path,
+      baseDenom: denomTrace.baseDenom,
+    }
   }
 
   private async fetchAndCacheDenomTraces() {

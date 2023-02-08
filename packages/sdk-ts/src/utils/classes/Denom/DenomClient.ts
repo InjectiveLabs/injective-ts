@@ -99,9 +99,19 @@ export class DenomClient {
     }
 
     try {
-      const tokenMeta = this.getDenomTokenMeta(denom)
+      if (denom.startsWith('ibc/')) {
+        return this.getIbcDenomToken(denom)
+      }
 
-      return tokenMetaToToken(tokenMeta, denom) as Token
+      if (denom.startsWith('factory/')) {
+        return this.getFactoryDenomToken(denom)
+      }
+
+      if (denom.startsWith('peggy')) {
+        return this.getPeggyDenomToken(denom)
+      }
+
+      return tokenMetaToToken(this.getDenomTokenMeta(denom), denom) as Token
     } catch (e) {
       return
     }

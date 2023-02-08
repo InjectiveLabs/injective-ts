@@ -12,11 +12,18 @@ export interface TokenMeta {
   logo: string
   symbol: string
   decimals: number
-  // Decimals on the origin chain in case they are different
-  nativeDecimals?: number
   erc20Address?: string
   cw20Address?: string
+  splAddress?: string
   coinGeckoId: string
+
+  // Decimals on the origin chain in case they are different
+  nativeDecimals?: number
+
+  /**
+   * Base Denom on the origin IBC chain
+   */
+  baseDenom?: string
 }
 
 export type BaseToken = TokenMeta & {

@@ -3,6 +3,7 @@ import {
   getMappedTokensByCw20Address,
 } from './tokens/helpers/mapByAddress'
 import { getMappedTokensByName } from './tokens/helpers/mapByName'
+import { getMappedTokensByBaseDenom } from './tokens/helpers/mapByBaseDenom'
 import { TokenMeta } from './types'
 
 export class TokenMetaUtil {
@@ -14,19 +15,26 @@ export class TokenMetaUtil {
 
   protected tokensByName: Record<string, TokenMeta>
 
+  protected tokensByBaseDenom: Record<string, TokenMeta>
+
   constructor(tokens: Record<string, TokenMeta>) {
     this.tokens = tokens
     this.tokensByErc20Address = getMappedTokensByErc20Address(tokens)
     this.tokensByCw20Address = getMappedTokensByCw20Address(tokens)
     this.tokensByName = getMappedTokensByName(tokens)
+    this.tokensByBaseDenom = getMappedTokensByBaseDenom(tokens)
   }
 
   getMetaBySymbol(symbol: string): TokenMeta | undefined {
-    const { tokens: tokensBySymbol } = this
+    const { tokens: tokensBySymbol, tokensByBaseDenom } = this
     const tokenSymbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
 
     if (!tokensBySymbol[tokenSymbol] && !tokensBySymbol[symbol]) {
-      return
+      if (!tokensByBaseDenom[tokenSymbol] || !tokensByBaseDenom[symbol]) {
+        return
+      }
+
+      return tokensByBaseDenom[tokenSymbol] || tokensByBaseDenom[symbol]
     }
 
     return tokensBySymbol[tokenSymbol] || tokensBySymbol[symbol]
