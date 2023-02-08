@@ -30,7 +30,7 @@ export class TokenMetaUtil {
     const tokenSymbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
 
     if (!tokensBySymbol[tokenSymbol] && !tokensBySymbol[symbol]) {
-      if (!tokensByBaseDenom[tokenSymbol] || !tokensByBaseDenom[symbol]) {
+      if (!tokensByBaseDenom[tokenSymbol] && !tokensByBaseDenom[symbol]) {
         return
       }
 
