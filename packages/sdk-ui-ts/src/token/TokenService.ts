@@ -61,6 +61,31 @@ export class TokenService {
     return this.toCoinsWithToken(supply)
   }
 
+  async toSupplyWithTokenAndLabel(supply: Coin[]): Promise<{
+    bankSupply: CoinWithLabel[]
+    ibcBankSupply: CoinWithLabel[]
+  }> {
+    const supplyWithToken = await this.toSupplyWithToken(supply)
+    const supplyWithLabel = supplyWithToken.map((token, index) => {
+      const coin = supply[index]
+
+      return {
+        ...coin,
+        code: coin.denom,
+        label: token ? token.symbol : coin.denom,
+      }
+    })
+
+    return {
+      bankSupply: supplyWithLabel.filter(
+        (supply) => !supply.denom.startsWith('ibc/'),
+      ),
+      ibcBankSupply: supplyWithLabel.filter(
+        (supply) => !supply.denom.startsWith('ibc/'),
+      ),
+    }
+  }
+
   async toBalancesWithToken(
     balances: BankBalances,
     ibcBalances: BankBalances,
@@ -158,35 +183,6 @@ export class TokenService {
     return balances.filter(
       (balance) => balance,
     ) as ContractAccountBalanceWithToken[]
-  }
-
-  async toSupplyWithLabel({
-    bankSupply,
-    ibcBankSupply,
-  }: {
-    bankSupply: Coin[]
-    ibcBankSupply: Coin[]
-  }): Promise<{
-    bankSupply: CoinWithLabel[]
-    ibcBankSupply: CoinWithLabel[]
-  }> {
-    const appendLabel = async (coin: Coin): Promise<CoinWithLabel> => {
-      const tokenMeta = await this.denomClient.getDenomToken(coin.denom)
-
-      return {
-        ...coin,
-        code: coin.denom,
-        label: tokenMeta ? tokenMeta.symbol : coin.denom,
-      }
-    }
-
-    const bankSupplyWithLabel = await awaitForAll(bankSupply, appendLabel)
-    const ibcBankSupplyWithLabel = await awaitForAll(ibcBankSupply, appendLabel)
-
-    return {
-      bankSupply: bankSupplyWithLabel,
-      ibcBankSupply: ibcBankSupplyWithLabel,
-    }
   }
 
   async toSubaccountBalanceWithToken(
