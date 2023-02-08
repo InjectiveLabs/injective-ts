@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/networks",
   "description": "Endpoints, networks, etc. Can be reused throughout Injective's projects.",
-  "version": "1.0.85",
+  "version": "1.0.86",
   "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -33,7 +33,7 @@
   "dependencies": {
     "@injectivelabs/exceptions": "^1.0.53",
     "@injectivelabs/ts-types": "^1.0.28",
-    "@injectivelabs/utils": "^1.0.73",
+    "@injectivelabs/utils": "^1.0.74",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },
