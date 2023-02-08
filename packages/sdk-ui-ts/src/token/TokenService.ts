@@ -30,7 +30,7 @@ import {
 } from '../types'
 import { TokenType } from '@injectivelabs/token-metadata'
 import { Token } from '@injectivelabs/token-metadata'
-import { awaitAll } from '@injectivelabs/utils'
+import { awaitForAll } from '@injectivelabs/utils'
 
 /**
  * With the TokenService class we can convert objects
@@ -50,7 +50,7 @@ export class TokenService {
   }
 
   async toCoinsWithToken(supply: Coin[]): Promise<Token[]> {
-    const tokens = await awaitAll(supply, (coin) =>
+    const tokens = await awaitForAll(supply, (coin) =>
       this.denomClient.getDenomToken(coin.denom),
     )
 
@@ -69,7 +69,7 @@ export class TokenService {
     ibcBankBalancesWithToken: IbcBankBalanceWithToken[]
   }> {
     const bankBalancesWithToken = (
-      await awaitAll(Object.keys(balances), async (denom) => ({
+      await awaitForAll(Object.keys(balances), async (denom) => ({
         denom,
         balance: balances[denom],
         token: await this.denomClient.getDenomToken(denom),
@@ -77,7 +77,7 @@ export class TokenService {
     ).filter((balance) => balance.token !== undefined) as BankBalanceWithToken[]
 
     const ibcBankBalancesWithToken = (
-      await awaitAll(Object.keys(ibcBalances), async (denom) => {
+      await awaitForAll(Object.keys(ibcBalances), async (denom) => {
         const { baseDenom, path } = await this.denomClient.fetchDenomTrace(
           denom,
         )
@@ -103,27 +103,30 @@ export class TokenService {
   async toCw20BalancesWithToken(
     cw20Balances: ExplorerCW20BalanceWithToken[],
   ): Promise<Cw20BalanceWithToken[]> {
-    const balancesWithToken = await awaitAll(cw20Balances, async (balance) => {
-      const token = await this.denomClient.getDenomToken(
-        balance.contractAddress,
-      )
+    const balancesWithToken = await awaitForAll(
+      cw20Balances,
+      async (balance) => {
+        const token = await this.denomClient.getDenomToken(
+          balance.contractAddress,
+        )
 
-      if (!token) {
-        return
-      }
+        if (!token) {
+          return
+        }
 
-      return {
-        ...balance,
-        token: {
-          ...token,
-          type: TokenType.Cw20,
-        },
-        denom: token.symbol,
-        contractDetails: {
-          address: balance.contractAddress,
-        },
-      }
-    })
+        return {
+          ...balance,
+          token: {
+            ...token,
+            type: TokenType.Cw20,
+          },
+          denom: token.symbol,
+          contractDetails: {
+            address: balance.contractAddress,
+          },
+        }
+      },
+    )
 
     return balancesWithToken.filter(
       (balance) => balance,
@@ -177,10 +180,8 @@ export class TokenService {
       }
     }
 
-    const bankSupplyWithLabel = await Promise.all(bankSupply.map(appendLabel))
-    const ibcBankSupplyWithLabel = await Promise.all(
-      ibcBankSupply.map(appendLabel),
-    )
+    const bankSupplyWithLabel = await awaitForAll(bankSupply, appendLabel)
+    const ibcBankSupplyWithLabel = await awaitForAll(ibcBankSupply, appendLabel)
 
     return {
       bankSupply: bankSupplyWithLabel,
@@ -203,7 +204,7 @@ export class TokenService {
     balances: UiSubaccountBalance[],
   ): Promise<SubaccountBalanceWithToken[]> {
     return (
-      await awaitAll(balances, this.toSubaccountBalanceWithToken.bind(this))
+      await awaitForAll(balances, this.toSubaccountBalanceWithToken.bind(this))
     ).filter(
       (balance) => balance.token !== undefined,
     ) as SubaccountBalanceWithToken[]
@@ -231,7 +232,7 @@ export class TokenService {
     markets: UiBaseSpotMarket[],
   ): Promise<UiBaseSpotMarketWithToken[]> {
     return (
-      await awaitAll(markets, this.toSpotMarketWithToken.bind(this))
+      await awaitForAll(markets, this.toSpotMarketWithToken.bind(this))
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
@@ -269,7 +270,7 @@ export class TokenService {
     Array<PerpetualMarketWithTokenAndSlug | ExpiryFuturesMarketWithTokenAndSlug>
   > {
     return (
-      await awaitAll(markets, this.toDerivativeMarketWithToken.bind(this))
+      await awaitForAll(markets, this.toDerivativeMarketWithToken.bind(this))
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
@@ -313,7 +314,7 @@ export class TokenService {
     markets: UiBaseBinaryOptionsMarket[],
   ): Promise<BinaryOptionsMarketWithTokenAndSlug[]> {
     return (
-      await awaitAll(markets, this.toBinaryOptionsMarketWithToken.bind(this))
+      await awaitForAll(markets, this.toBinaryOptionsMarketWithToken.bind(this))
     ).filter(
       (market) =>
         market.baseToken !== undefined && market.quoteToken !== undefined,
@@ -371,7 +372,10 @@ export class TokenService {
     transactions: UiBridgeTransaction[],
   ): Promise<UiBridgeTransactionWithToken[]> {
     return (
-      await awaitAll(transactions, this.toBridgeTransactionWithToken.bind(this))
+      await awaitForAll(
+        transactions,
+        this.toBridgeTransactionWithToken.bind(this),
+      )
     ).filter(
       (transaction) => transaction && transaction.token !== undefined,
     ) as UiBridgeTransactionWithToken[]

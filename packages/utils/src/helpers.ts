@@ -11,11 +11,32 @@ import BigNumberInWei from './classes/BigNumber/BigNumberInWei'
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))
 
+/**
+ * When we want to execute the promises in batch
+ */
 export const awaitAll = async <T, S>(
   array: Array<T>,
   callback: (item: T) => Promise<S>,
   // eslint-disable-next-line no-return-await
 ) => await Promise.all(array.map(async (item: T) => await callback(item)))
+
+/**
+ * When we want to execute the promises one by one
+ * and not all in batch as with await Promise.all()
+ */
+export const awaitForAll = async <T, S>(
+  array: Array<T>,
+  callback: (item: T) => Promise<S>,
+  // eslint-disable-next-line no-return-await
+) => {
+  const result = [] as S[]
+
+  for (let i = 0; i < array.length; i += 1) {
+    result.push(await callback(array[i]))
+  }
+
+  return result
+}
 
 export const isServerSide = () => typeof window === 'undefined'
 
