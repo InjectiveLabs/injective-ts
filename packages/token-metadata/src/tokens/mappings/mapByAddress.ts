@@ -22,23 +22,33 @@ export const getMappedTokensByCw20Address = (
   (Object.keys(tokens) as Array<keyof typeof tokens>)
     .filter((token) => !!tokens[token].erc20)
     .reduce((result, token) => {
-      if (!tokens[token].cw20) {
+      if (!tokens[token].cw20 && !tokens[token].cw20s) {
         return tokens
       }
 
-      const cw20 = tokens[token].cw20!
+      const tokenMeta = tokens[token]
 
-      const cw20s = Array.isArray(cw20) ? cw20 : [cw20]
-      const cw20Maps = cw20s.reduce(
-        (result, cw20) => ({
+      if (tokenMeta.cw20) {
+        return {
           ...result,
-          [cw20.address.toLowerCase()]: tokens[token],
-        }),
-        {} as Record<string, TokenMeta>,
-      )
-
-      return {
-        ...result,
-        ...cw20Maps,
+          [tokenMeta.cw20.address.toLowerCase()]: tokens[token],
+        }
       }
+
+      if (tokenMeta.cw20s) {
+        const cw20Maps = tokenMeta.cw20s.reduce(
+          (result, cw20) => ({
+            ...result,
+            [cw20.address.toLowerCase()]: tokens[token],
+          }),
+          {} as Record<string, TokenMeta>,
+        )
+
+        return {
+          ...result,
+          ...cw20Maps,
+        }
+      }
+
+      return result
     }, {}) as Record<string, TokenMeta>

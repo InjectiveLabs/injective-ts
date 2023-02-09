@@ -39,46 +39,48 @@ export const tokensBySymbolForTestnet = (
     }
   }
 
-  const c20TokenKey = token as keyof typeof testnetSymbolToCw20AddressMap
-  const cw20TestnetAddressFromMap = testnetSymbolToCw20AddressMap[c20TokenKey]
+  const cw20TokenKey = token as keyof typeof testnetSymbolToCw20AddressMap
+  const cw20TestnetAddressFromMap = testnetSymbolToCw20AddressMap[cw20TokenKey]
 
   if (cw20TestnetAddressFromMap) {
-    if (!tokenMeta.cw20) {
+    if (!tokenMeta.cw20 && !tokenMeta.cw20s) {
       return result
     }
 
-    const cw20 = tokenMeta.cw20!
-
-    if (!Array.isArray(cw20)) {
+    if (tokenMeta.cw20) {
       return {
         ...result,
         [token.toUpperCase()]: {
           ...tokenMeta,
           cw20: {
-            ...tokenMeta.erc20,
+            ...tokenMeta.cw20,
             address: cw20TestnetAddressFromMap,
           },
         },
       }
     }
 
-    const cw20s = Array.isArray(cw20) ? cw20 : [cw20]
-    const cw20Maps = cw20s.map((cw20) =>
-      cw20.symbol !== c20TokenKey
-        ? cw20
-        : {
-            ...cw20,
-            address: cw20TestnetAddressFromMap,
-          },
-    )
+    if (tokenMeta.cw20s) {
+      const cw20Maps = tokenMeta.cw20s.map((cw20) =>
+        cw20.symbol !== cw20TokenKey
+          ? cw20
+          : {
+              ...cw20,
+              address: cw20TestnetAddressFromMap,
+            },
+      )
 
-    return {
-      ...result,
-      [token.toUpperCase()]: {
-        ...tokenMeta,
-        cw20: cw20Maps,
-      },
+      return {
+        ...result,
+        [token.toUpperCase()]: {
+          ...tokenMeta,
+          cw20: cw20Maps,
+        },
+      }
     }
+
+    return result
   }
+
   return result
 }, {}) as Record<string, TokenMeta>

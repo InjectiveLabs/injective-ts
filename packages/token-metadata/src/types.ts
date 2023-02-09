@@ -8,7 +8,7 @@ export enum TokenType {
   InsuranceFund = 'insuranceFund',
 }
 
-export enum TokenSource {
+export enum Cw20TokenSource {
   Solana = 'solana',
   Cosmos = 'cosmos',
   Ethereum = 'ethereum',
@@ -42,9 +42,9 @@ export interface Cw20TokenMeta {
   tokenType: TokenType.Cw20
 }
 
-export interface Cw20TokenMetaMultiple extends Cw20TokenMeta {
+export interface Cw20TokenMetaWithSource extends Cw20TokenMeta {
   symbol: string
-  source: TokenSource
+  source: Cw20TokenSource
 }
 
 export interface TokenMeta {
@@ -57,7 +57,8 @@ export interface TokenMeta {
 
   ibc?: IbcTokenMeta
   spl?: SplTokenMeta
-  cw20?: Cw20TokenMeta | Cw20TokenMetaMultiple[]
+  cw20?: Cw20TokenMeta
+  cw20s?: Cw20TokenMetaWithSource[] // When there are multiple variations of the same CW20 token
   erc20?: Erc20TokenMeta
 }
 
@@ -86,7 +87,8 @@ export interface IbcToken extends BaseToken {
 }
 
 export interface Cw20Token extends BaseToken {
-  cw20?: Cw20TokenMeta | Cw20TokenMetaMultiple[]
+  cw20?: Cw20TokenMeta
+  cw20s?: Cw20TokenMetaWithSource[]
 }
 
 export interface SplToken extends BaseToken {

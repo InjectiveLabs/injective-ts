@@ -13,8 +13,8 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
         }
       }
 
-      if (tokenMeta.cw20 && Array.isArray(tokenMeta.cw20)) {
-        const cw20Maps = tokenMeta.cw20.reduce(
+      if (tokenMeta.cw20s) {
+        const cw20Maps = tokenMeta.cw20s.reduce(
           (result, cw20) => ({
             ...result,
             [cw20.symbol.toLowerCase()]: tokenMeta,

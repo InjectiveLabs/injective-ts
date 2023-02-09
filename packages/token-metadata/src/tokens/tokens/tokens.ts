@@ -1,4 +1,4 @@
-import { TokenMeta, TokenSource, TokenType } from '../../types'
+import { TokenMeta, Cw20TokenSource, TokenType } from '../../types'
 
 export default {
   BTC: {
@@ -99,18 +99,18 @@ export default {
       tokenType: TokenType.Erc20,
     },
 
-    cw20: [
+    cw20s: [
       {
         decimals: 6,
         symbol: 'USDCet',
-        source: TokenSource.EthereumWh,
+        source: Cw20TokenSource.EthereumWh,
         address: 'inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk',
         tokenType: TokenType.Cw20,
       },
       {
         decimals: 6,
         symbol: 'USDCso',
-        source: TokenSource.Solana,
+        source: Cw20TokenSource.Solana,
         address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
         tokenType: TokenType.Cw20,
       },
