@@ -1,4 +1,5 @@
 import { INJ_DENOM } from '@injectivelabs/utils'
+import { GeneralException } from 'packages/exceptions/dist'
 import { canonicalChannelIds } from './ibc'
 import { Token, TokenMeta, TokenType } from './types'
 
@@ -32,8 +33,12 @@ export class TokenInfo {
     this.meta = meta
   }
 
-  static fromMeta(denom: string, meta: TokenMeta) {
-    return new TokenInfo(denom, meta)
+  static fromMeta(meta: TokenMeta & { denom?: string }, denom?: string) {
+    if (!meta.denom && !denom) {
+      throw new GeneralException(new Error(`Please provide a ${denom}`))
+    }
+
+    return new TokenInfo((meta.denom || denom) as string, meta)
   }
 
   static fromToken(token: Token) {
