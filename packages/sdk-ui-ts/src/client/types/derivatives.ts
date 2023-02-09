@@ -14,16 +14,16 @@ import {
   ChronosDerivativeMarketSummary,
   AllChronosDerivativeMarketSummary,
 } from '@injectivelabs/sdk-ts/dist/client/indexer/types/derivatives-rest'
-import { Token } from '@injectivelabs/token-metadata'
-import { Change, MarketBase, MarketType } from './common'
+import { TokenInfo } from '@injectivelabs/token-metadata'
+import { Change, MarketType } from './common'
 
 export interface BaseDerivativeMarket
   extends Omit<BaseUiDerivativeMarket, 'quoteToken'> {}
 
 export interface DerivativeMarketWithTokenAndSlug extends BaseDerivativeMarket {
   slug: string
-  quoteToken: Token
-  baseToken: Token
+  quoteToken: TokenInfo
+  baseToken: TokenInfo
 }
 
 export interface BaseDerivativeMarketWithToken
@@ -34,7 +34,6 @@ export interface BaseDerivativeMarketWithToken
   quantityTensMultiplier: number
   type: MarketType
   subType: MarketType
-  marketBase?: MarketBase
   upcoming?: boolean
 }
 

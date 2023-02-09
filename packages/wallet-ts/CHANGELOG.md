@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.403](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.402...@injectivelabs/wallet-ts@1.0.403) (2023-02-09)
+
+
+### Features
+
+* new token metadata implementation ([a285b1a](https://github.com/InjectiveLabs/injective-ts/commit/a285b1aead2f7a7806169ac78fd22c5c2e4dc4c3))
+
+
+
+
+
 ## [1.0.402](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.401...@injectivelabs/wallet-ts@1.0.402) (2023-02-09)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

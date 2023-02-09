@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.406](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.405...@injectivelabs/sdk-ts@1.0.406) (2023-02-09)
+
+
+### Features
+
+* new token metadata implementation ([a285b1a](https://github.com/InjectiveLabs/injective-ts/commit/a285b1aead2f7a7806169ac78fd22c5c2e4dc4c3))
+
+
+
+
+
 ## [1.0.405](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.404...@injectivelabs/sdk-ts@1.0.405) (2023-02-09)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

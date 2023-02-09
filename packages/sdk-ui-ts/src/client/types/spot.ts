@@ -10,15 +10,15 @@ import {
   ChronosSpotMarketSummary,
   AllChronosSpotMarketSummary,
 } from '@injectivelabs/sdk-ts/dist/client/indexer/types/spot-rest'
-import { Token } from '@injectivelabs/token-metadata'
-import { Change, MarketBase, MarketType } from './common'
+import { TokenInfo } from '@injectivelabs/token-metadata'
+import { Change, MarketType } from './common'
 
 export interface UiBaseSpotMarket
   extends Omit<BaseUiSpotMarket, 'quoteToken' | 'baseToken'> {}
 
 export interface UiBaseSpotMarketWithToken extends UiBaseSpotMarket {
-  quoteToken: Token
-  baseToken: Token
+  quoteToken: TokenInfo
+  baseToken: TokenInfo
   slug: string
 }
 
@@ -29,7 +29,6 @@ export interface UiSpotMarketWithToken extends UiBaseSpotMarketWithToken {
   quantityTensMultiplier: number
   type: MarketType
   subType: MarketType
-  marketBase?: MarketBase
   upcoming?: boolean
 }
 

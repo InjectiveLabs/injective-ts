@@ -22,10 +22,6 @@ export enum MarketType {
   BinaryOptions = 'BinaryOptions',
 }
 
-export enum MarketBase {
-  Terra = 'terra',
-}
-
 export interface UiPriceLevel {
   price: string
   quantity: BigNumberInWei | string
