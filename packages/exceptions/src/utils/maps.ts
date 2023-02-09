@@ -79,11 +79,24 @@ export const mapFailedTransactionMessage = (
     return codespace[1]
   }
 
+  const getReason = (message: string): string | undefined => {
+    const reason = /\[reason:"(.*?)"/g
+
+    const codespace = reason.exec(message)
+
+    if (!codespace || codespace.length < 2) {
+      return
+    }
+
+    return codespace[1]
+  }
+
   const ABCICode = context && context.code ? context.code : getABCICode(message)
   const contextModule =
     context && context.contextModule
       ? context.contextModule
       : getContextModule(message)
+  const reason = getReason(message)
 
   if (
     !ABCICode ||
@@ -97,7 +110,9 @@ export const mapFailedTransactionMessage = (
     chainModuleCodeErrorMessagesMap[contextModule][ABCICode]
 
   if (!chainCodeErrorMessage) {
-    return mapFailedTransactionMessageFromString(message)
+    return reason
+      ? { message: reason, code: UnspecifiedErrorCode }
+      : mapFailedTransactionMessageFromString(message)
   }
 
   return {
