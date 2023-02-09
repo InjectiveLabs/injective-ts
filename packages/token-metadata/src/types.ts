@@ -18,6 +18,7 @@ export enum TokenSource {
 export interface IbcTokenMeta {
   hash: string
   path: string
+  channelId: string
   decimals: number
   isNative: boolean
   baseDenom: string
