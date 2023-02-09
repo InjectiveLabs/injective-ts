@@ -2,34 +2,31 @@ import { Network } from '@injectivelabs/networks'
 import { ChainId, Coin } from '@injectivelabs/ts-types'
 import {
   DenomClientAsync,
-  ExplorerCW20BalanceWithToken,
-  tokenMetaToToken,
   ContractAccountBalance,
+  ExplorerCW20BalanceWithToken,
 } from '@injectivelabs/sdk-ts'
 import {
   BankBalances,
-  UiBaseSpotMarket,
-  UiBaseSpotMarketWithToken,
-  UiSubaccountBalance,
   CoinWithLabel,
-  UiBaseBinaryOptionsMarket,
-  BinaryOptionsMarketWithTokenAndSlug,
+  UiBaseSpotMarket,
+  UiSubaccountBalance,
   UiBasePerpetualMarket,
+  UiBaseSpotMarketWithToken,
+  UiBaseBinaryOptionsMarket,
   UiBaseExpiryFuturesMarket,
   PerpetualMarketWithTokenAndSlug,
+  BinaryOptionsMarketWithTokenAndSlug,
   ExpiryFuturesMarketWithTokenAndSlug,
 } from '../client/types'
 import {
-  BankBalanceWithToken,
-  ContractAccountBalanceWithToken,
-  Cw20BalanceWithToken,
-  IbcBankBalanceWithToken,
-  SubaccountBalanceWithToken,
   UiBridgeTransaction,
+  BankBalanceWithToken,
+  Cw20BalanceWithToken,
+  SubaccountBalanceWithToken,
   UiBridgeTransactionWithToken,
+  ContractAccountBalanceWithToken,
 } from '../types'
-import { TokenType } from '@injectivelabs/token-metadata'
-import { Token } from '@injectivelabs/token-metadata'
+import { Token, TokenInfo } from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
 
 /**
@@ -49,15 +46,15 @@ export class TokenService {
     this.denomClient = new DenomClientAsync(network)
   }
 
-  async toCoinsWithToken(supply: Coin[]): Promise<Token[]> {
+  async toCoinsWithToken(supply: Coin[]): Promise<TokenInfo[]> {
     const tokens = await awaitForAll(supply, (coin) =>
       this.denomClient.getDenomToken(coin.denom),
     )
 
-    return tokens.filter((token) => token) as Token[]
+    return tokens.filter((token) => token) as TokenInfo[]
   }
 
-  async toSupplyWithToken(supply: Coin[]): Promise<Token[]> {
+  async toSupplyWithToken(supply: Coin[]): Promise<TokenInfo[]> {
     return this.toCoinsWithToken(supply)
   }
 
@@ -91,7 +88,7 @@ export class TokenService {
     ibcBalances: BankBalances,
   ): Promise<{
     bankBalancesWithToken: BankBalanceWithToken[]
-    ibcBankBalancesWithToken: IbcBankBalanceWithToken[]
+    ibcBankBalancesWithToken: BankBalanceWithToken[]
   }> {
     const bankBalancesWithToken = (
       await awaitForAll(Object.keys(balances), async (denom) => ({
@@ -103,21 +100,13 @@ export class TokenService {
 
     const ibcBankBalancesWithToken = (
       await awaitForAll(Object.keys(ibcBalances), async (denom) => {
-        const { baseDenom, path } = await this.denomClient.fetchDenomTrace(
-          denom,
-        )
-
         return {
           denom,
-          baseDenom,
           balance: ibcBalances[denom],
-          channelId: path.replace('transfer/', ''),
           token: await this.denomClient.getDenomToken(denom),
         }
       })
-    ).filter(
-      (balance) => balance.token !== undefined,
-    ) as IbcBankBalanceWithToken[]
+    ).filter((balance) => balance.token !== undefined) as BankBalanceWithToken[]
 
     return {
       bankBalancesWithToken,
@@ -141,10 +130,7 @@ export class TokenService {
 
         return {
           ...balance,
-          token: {
-            ...token,
-            type: TokenType.Cw20,
-          },
+          token,
           denom: token.symbol,
           contractDetails: {
             address: balance.contractAddress,
@@ -173,10 +159,7 @@ export class TokenService {
 
       return {
         ...balance,
-        token: {
-          ...token,
-          type: TokenType.Cw20,
-        },
+        token,
       }
     })
 
@@ -246,10 +229,7 @@ export class TokenService {
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
-    const baseToken = tokenMetaToToken(
-      await this.denomClient.getDenomToken(baseTokenSymbol),
-      baseTokenSymbol,
-    )
+    const baseToken = await this.denomClient.getDenomToken(baseTokenSymbol)
     const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
 
     return {
@@ -292,11 +272,9 @@ export class TokenService {
       icon: 'injective-v3.svg',
       symbol: baseTokenSymbol,
       name: baseTokenSymbol,
-      tokenType: TokenType.Erc20 /* Todo */,
       decimals: 18,
-      address: '',
       coinGeckoId: '',
-    }
+    } as Token
 
     return {
       ...market,
@@ -334,7 +312,7 @@ export class TokenService {
     ) {
       return {
         ...transaction,
-        token: (await this.denomClient.getDenomToken('INJ')) as Token,
+        token: (await this.denomClient.getDenomToken('INJ'))!,
       }
     }
 
@@ -345,22 +323,13 @@ export class TokenService {
     if (tokenFromDenomAsSymbol) {
       return {
         ...transaction,
-        token: tokenMetaToToken(
-          tokenFromDenomAsSymbol,
-          tokenFromDenomAsSymbol.erc20Address ||
-            tokenFromDenomAsSymbol.cw20Address ||
-            '',
-        ) as Token,
+        token: tokenFromDenomAsSymbol || {},
       }
     }
 
-    const tokenFromDenom = (await this.denomClient.getDenomToken(
-      transaction.denom,
-    )) as Token
-
     return {
       ...transaction,
-      token: tokenFromDenom,
+      token: (await this.denomClient.getDenomToken('INJ'))!,
     }
   }
 

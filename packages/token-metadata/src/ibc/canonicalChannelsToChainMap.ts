@@ -4,7 +4,7 @@
  * for Crescent -> Injective.
  * @deprecated - use  canonicalChannelsToChainMapFromInjective or canonicalChannelsToChainMapToInjective
  * */
-export default {
+const legacyCanonicalChannels = {
   'channel-1': { chainA: 'Injective', chainB: 'CosmosHub' },
   'channel-83': { chainA: 'Injective', chainB: 'Evmos' },
   'channel-8': { chainA: 'Injective', chainB: 'Osmosis' },
@@ -52,3 +52,5 @@ export const canonicalChannelsToChainMapToInjective = {
   'channel-90': { chainA: 'Crescent', chainB: 'Injective' },
   'channel-1': { chainA: 'Sommelier', chainB: 'Injective' },
 }
+
+export default legacyCanonicalChannels

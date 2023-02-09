@@ -66,11 +66,6 @@ export interface BankBalanceWithTokenAndBalanceWithUsdBalance
   balanceInUsd: string
 }
 
-export interface IbcBankBalanceWithToken extends BankBalanceWithToken {
-  baseDenom: string
-  channelId: string
-}
-
 export interface IbcBankBalanceWithTokenAndBalance
   extends BankBalanceWithTokenAndBalance {
   baseDenom: string

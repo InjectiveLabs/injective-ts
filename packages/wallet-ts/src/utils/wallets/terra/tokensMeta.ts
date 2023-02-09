@@ -1,4 +1,4 @@
-import { tokenMetaUtil, TokenMeta } from '@injectivelabs/token-metadata'
+import { tokenMetaUtils, TokenMeta } from '@injectivelabs/token-metadata'
 import { TerraChainId } from './types'
 
 export interface TokenMetaWithDenom extends TokenMeta {
@@ -8,11 +8,11 @@ export interface TokenMetaWithDenom extends TokenMeta {
 export const TerraTokensMeta = {
   [TerraChainId.Mainnet]: [
     {
-      ...tokenMetaUtil.getMetaBySymbol('LUNA'),
+      ...tokenMetaUtils.getMetaBySymbol('LUNA'),
       denom: 'uluna',
     },
     {
-      ...tokenMetaUtil.getMetaBySymbol('UST'),
+      ...tokenMetaUtils.getMetaBySymbol('UST'),
       denom: 'uusd',
     },
   ],

@@ -14,7 +14,7 @@ import {
   PEGGY_TESTNET_GRAPH_URL,
 } from '../constants'
 import { CosmosChainId, TestnetCosmosChainId } from '@injectivelabs/ts-types'
-import { tokenMetaUtil, TokenType } from '@injectivelabs/token-metadata'
+import { tokenMetaUtils, TokenType } from '@injectivelabs/token-metadata'
 import { Token } from '@injectivelabs/token-metadata'
 
 export const InProgressStates = [
@@ -164,18 +164,18 @@ export const tokenDenomsPerNetwork = [
 
 export const cosmosNativeDenomsFromChainId = {
   [CosmosChainId.Cosmoshub]: {
-    ...tokenMetaUtil.getMetaBySymbol('ATOM'),
+    ...tokenMetaUtils.getMetaBySymbol('ATOM'),
     tokenType: TokenType.Ibc,
     denom: 'uatom',
   },
   [CosmosChainId.Osmosis]: [
     {
-      ...tokenMetaUtil.getMetaBySymbol('OSMO'),
+      ...tokenMetaUtils.getMetaBySymbol('OSMO'),
       tokenType: TokenType.Ibc,
       denom: 'uosmo',
     },
     {
-      ...tokenMetaUtil.getMetaBySymbol('INJ'),
+      ...tokenMetaUtils.getMetaBySymbol('INJ'),
       tokenType: TokenType.Ibc,
       denom:
         'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
@@ -183,88 +183,88 @@ export const cosmosNativeDenomsFromChainId = {
   ],
   [CosmosChainId.Terra]: [
     {
-      ...tokenMetaUtil.getMetaBySymbol('LUNA'),
+      ...tokenMetaUtils.getMetaBySymbol('LUNA'),
       tokenType: TokenType.Ibc,
       denom: 'uluna',
     },
     {
-      ...tokenMetaUtil.getMetaBySymbol('UST'),
+      ...tokenMetaUtils.getMetaBySymbol('UST'),
       tokenType: TokenType.Ibc,
       denom: 'uusd',
     },
   ],
   [CosmosChainId.Injective]: {
-    ...tokenMetaUtil.getMetaBySymbol('INJ'),
+    ...tokenMetaUtils.getMetaBySymbol('INJ'),
     tokenType: TokenType.Ibc,
     denom: 'inj',
   },
   [CosmosChainId.Chihuahua]: {
-    ...tokenMetaUtil.getMetaBySymbol('HUAHUA'),
+    ...tokenMetaUtils.getMetaBySymbol('HUAHUA'),
     tokenType: TokenType.Ibc,
     denom: 'uhuahua',
   },
   [CosmosChainId.Juno]: {
-    ...tokenMetaUtil.getMetaBySymbol('JUNO'),
+    ...tokenMetaUtils.getMetaBySymbol('JUNO'),
     tokenType: TokenType.Ibc,
     denom: 'ujuno',
   },
   [CosmosChainId.Axelar]: [
     {
-      ...tokenMetaUtil.getMetaBySymbol('AXL'),
+      ...tokenMetaUtils.getMetaBySymbol('AXL'),
       tokenType: TokenType.Ibc,
       denom: 'uaxl',
     },
     {
-      ...tokenMetaUtil.getMetaBySymbol('DOT'),
+      ...tokenMetaUtils.getMetaBySymbol('DOT'),
       tokenType: TokenType.Ibc,
       denom: 'dot-planck',
     },
   ],
   [CosmosChainId.Evmos]: {
-    ...tokenMetaUtil.getMetaBySymbol('EVMOS'),
+    ...tokenMetaUtils.getMetaBySymbol('EVMOS'),
     tokenType: TokenType.Ibc,
     denom: 'aevmos',
   },
   [CosmosChainId.Persistence]: {
-    ...tokenMetaUtil.getMetaBySymbol('XPRT'),
+    ...tokenMetaUtils.getMetaBySymbol('XPRT'),
     tokenType: TokenType.Ibc,
     denom: 'uxprt',
   },
   [CosmosChainId.Secret]: {
-    ...tokenMetaUtil.getMetaBySymbol('SCRT'),
+    ...tokenMetaUtils.getMetaBySymbol('SCRT'),
     tokenType: TokenType.Ibc,
     denom: 'uscrt',
   },
   [CosmosChainId.Stride]: {
-    ...tokenMetaUtil.getMetaBySymbol('STRD'),
+    ...tokenMetaUtils.getMetaBySymbol('STRD'),
     tokenType: TokenType.Ibc,
     denom: 'ustrd',
   },
   [CosmosChainId.Crescent]: [
     {
-      ...tokenMetaUtil.getMetaBySymbol('CRE'),
+      ...tokenMetaUtils.getMetaBySymbol('CRE'),
       tokenType: TokenType.Ibc,
       denom: 'ucre',
     },
     {
-      ...tokenMetaUtil.getMetaBySymbol('INJ'),
+      ...tokenMetaUtils.getMetaBySymbol('INJ'),
       tokenType: TokenType.Ibc,
       denom:
         'ibc/5A76568E079A31FA12165E4559BA9F1E9D4C97F9C2060B538C84DCD503815E30',
     },
   ],
   [CosmosChainId.Sommelier]: {
-    ...tokenMetaUtil.getMetaBySymbol('SOMM'),
+    ...tokenMetaUtils.getMetaBySymbol('SOMM'),
     tokenType: TokenType.Ibc,
     denom: 'usomm',
   },
   [TestnetCosmosChainId.Cosmoshub]: {
-    ...tokenMetaUtil.getMetaBySymbol('UPHOTON'),
+    ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
     tokenType: TokenType.Ibc,
     denom: 'uphoton',
   },
   [TestnetCosmosChainId.Injective]: {
-    ...tokenMetaUtil.getMetaBySymbol('INJ'),
+    ...tokenMetaUtils.getMetaBySymbol('INJ'),
     tokenType: TokenType.Ibc,
     denom: 'inj',
   },

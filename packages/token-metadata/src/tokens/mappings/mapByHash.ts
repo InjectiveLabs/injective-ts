@@ -1,15 +1,15 @@
 import { TokenMeta } from '../../types'
 
-export const getMappedTokensByBaseDenom = (tokens: Record<string, TokenMeta>) =>
+export const getMappedTokensByHash = (tokens: Record<string, TokenMeta>) =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, token) => {
-      if (!tokens[token].baseDenom) {
+      if (!tokens[token].ibc) {
         return result
       }
 
       return {
         ...result,
-        [tokens[token].baseDenom!.toUpperCase()]: tokens[token],
+        [tokens[token].ibc!.hash.toUpperCase()]: tokens[token],
       }
     },
     {},

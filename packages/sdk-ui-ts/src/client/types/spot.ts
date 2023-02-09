@@ -1,9 +1,9 @@
 import {
-  SpotMarket as BaseUiSpotMarket,
   SpotTrade,
+  SpotOrderSide,
+  SpotMarket as BaseUiSpotMarket,
   SpotLimitOrder as UiSpotLimitOrder,
   SpotOrderHistory as UiSpotOrderHistory,
-  SpotOrderSide,
 } from '@injectivelabs/sdk-ts/dist/client/indexer/types/spot'
 import { Orderbook as UiSpotOrderbook } from '@injectivelabs/sdk-ts/dist/client/indexer/types/exchange'
 import {

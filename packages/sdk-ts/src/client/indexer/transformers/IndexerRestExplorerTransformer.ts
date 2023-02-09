@@ -244,10 +244,13 @@ export class IndexerRestExplorerTransformer {
         name,
         symbol,
         logo: marketing_info ? marketing_info.logo || '' : '',
-        cw20Address: balance.contract_address,
+        cw20: {
+          decimals,
+          address: balance.contract_address,
+          tokenType: TokenType.Cw20,
+        },
         coinGeckoId: name,
         denom: '',
-        tokenType: TokenType.Cw20,
       },
     }
   }

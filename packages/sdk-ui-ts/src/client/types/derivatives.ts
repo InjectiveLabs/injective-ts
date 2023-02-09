@@ -1,13 +1,13 @@
 import {
-  BaseDerivativeMarket as BaseUiDerivativeMarket,
+  DerivativeTrade,
+  DerivativeOrderSide,
+  Position as UiPosition,
   PerpetualMarket as BaseUiPerpetualMarket,
+  DerivativeLimitOrder as UiDerivativeLimitOrder,
+  BaseDerivativeMarket as BaseUiDerivativeMarket,
   ExpiryFuturesMarket as BaseUiExpiryFuturesMarket,
   BinaryOptionsMarket as BaseUiBinaryOptionsMarket,
-  DerivativeTrade,
-  Position as UiPosition,
-  DerivativeLimitOrder as UiDerivativeLimitOrder,
   DerivativeOrderHistory as UiDerivativeOrderHistory,
-  DerivativeOrderSide,
 } from '@injectivelabs/sdk-ts/dist/client/indexer/types/derivatives'
 import { Orderbook as UiDerivativeOrderbook } from '@injectivelabs/sdk-ts/dist/client/indexer/types/exchange'
 import {

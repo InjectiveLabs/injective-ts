@@ -32,8 +32,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@injectivelabs/exceptions": "^1.0.54",
     "@injectivelabs/networks": "^1.0.87",
     "@injectivelabs/ts-types": "^1.0.28",
+    "@injectivelabs/utils": "^1.0.75",
     "@types/lodash.values": "^4.3.6",
     "copyfiles": "^2.4.1",
     "jsonschema": "^1.4.0",

@@ -1,10 +1,49 @@
 export enum TokenType {
-  Native = 'native',
-  Erc20 = 'erc20',
   Ibc = 'ibc',
   Cw20 = 'cw20',
-  InsuranceFund = 'insuranceFund',
+  Spl = 'spl',
+  Erc20 = 'erc20',
+  Native = 'native',
   TokenFactory = 'tokenFactory',
+  InsuranceFund = 'insuranceFund',
+}
+
+export enum TokenSource {
+  Solana = 'solana',
+  Cosmos = 'cosmos',
+  Ethereum = 'ethereum',
+  EthereumWh = 'ethereum-wormhole',
+}
+
+export interface IbcTokenMeta {
+  hash: string
+  path: string
+  decimals: number
+  isNative: boolean
+  baseDenom: string
+}
+
+export interface SplTokenMeta {
+  address: string
+  decimals: number
+  isNative?: boolean
+}
+
+export interface Erc20TokenMeta {
+  address: string
+  decimals: number
+  isNative?: boolean
+}
+
+export interface Cw20TokenMeta {
+  address: string
+  decimals: number
+  tokenType: TokenType.Cw20
+}
+
+export interface Cw20TokenMetaMultiple extends Cw20TokenMeta {
+  symbol: string
+  source: TokenSource
 }
 
 export interface TokenMeta {
@@ -12,59 +51,56 @@ export interface TokenMeta {
   logo: string
   symbol: string
   decimals: number
-  erc20Address?: string
-  cw20Address?: string
-  splAddress?: string
   coinGeckoId: string
+  tokenType?: TokenType
 
-  // Decimals on the origin chain in case they are different
-  nativeDecimals?: number
-
-  /**
-   * Base Denom on the origin IBC chain
-   */
-  baseDenom?: string
+  ibc?: IbcTokenMeta
+  spl?: SplTokenMeta
+  cw20?: Cw20TokenMeta | Cw20TokenMetaMultiple[]
+  erc20?: Erc20TokenMeta
 }
 
 export type BaseToken = TokenMeta & {
   denom: string
-  tokenType: TokenType
 }
 
+// Insurance fund tokens, token factory tokens, etc
 export interface NativeToken extends TokenMeta {
   denom: string
+  tokenType:
+    | TokenType.Native
+    | TokenType.InsuranceFund
+    | TokenType.Native
+    | TokenType.TokenFactory
 }
 
 export interface Erc20Token extends BaseToken {
-  erc20Address: string
+  erc20: Erc20TokenMeta
+  tokenType: TokenType.Erc20
 }
 
 export interface IbcToken extends BaseToken {
-  baseDenom: string
-  channelId: string
-  isCanonical: boolean
+  ibc: IbcTokenMeta
+  tokenType: TokenType.Ibc
 }
 
 export interface Cw20Token extends BaseToken {
-  cw20Address: string
+  cw20?: Cw20TokenMeta | Cw20TokenMetaMultiple[]
 }
 
-export interface InsuranceFundToken extends BaseToken {
-  //
+export interface SplToken extends BaseToken {
+  spl: SplTokenMeta
+  tokenType: TokenType.Spl
 }
 
-export type Token = Erc20Token | IbcToken | Cw20Token | InsuranceFundToken
-
-export type TokenAddress = string
-export type TokenAssetData = string
-export type TokenSymbol = string
+export type Token = Erc20Token | IbcToken | Cw20Token | NativeToken | SplToken
 
 export interface GrpcTokenMeta {
   name: string
-  address: string
-  symbol: string
   logo: string
   icon?: string
+  symbol: string
+  address: string
   decimals: number
   updatedAt: number
 }
