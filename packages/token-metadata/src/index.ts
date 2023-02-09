@@ -5,6 +5,7 @@ import { TokenInfo } from './TokenInfo'
 
 export * from './ibc'
 export * from './types'
+export * from './utils'
 
 export const tokenMetaUtils = TokenMetaUtilsFactory.make()
 export const tokenInfoFactory = TokenInfoFactory.make()

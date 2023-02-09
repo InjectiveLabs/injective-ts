@@ -47,9 +47,9 @@ export class DenomClientAsync {
     }
 
     if (denom.startsWith('ibc')) {
-      const token = this.getIbcDenomToken(denom)
+      const token = await this.getIbcDenomToken(denom)
 
-      return token ? TokenInfo.formToken(token) : undefined
+      return token ? TokenInfo.fromToken(token) : undefined
     }
 
     return
