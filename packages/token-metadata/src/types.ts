@@ -86,6 +86,14 @@ export interface IbcToken extends BaseToken {
   tokenType: TokenType.Ibc
 }
 
+export interface Cw20TokenSingle extends BaseToken {
+  cw20: Cw20TokenMeta
+}
+
+export interface Cw20TokenMultiple extends BaseToken {
+  cw20s: Cw20TokenMetaWithSource[]
+}
+
 export interface Cw20Token extends BaseToken {
   cw20?: Cw20TokenMeta
   cw20s?: Cw20TokenMetaWithSource[]
@@ -96,7 +104,15 @@ export interface SplToken extends BaseToken {
   tokenType: TokenType.Spl
 }
 
-export type Token = Erc20Token | IbcToken | Cw20Token | NativeToken | SplToken
+export type Token =
+  | Erc20Token
+  | IbcToken
+  | Cw20Token
+  | Cw20TokenSingle
+  | Cw20TokenMultiple
+  | NativeToken
+  | SplToken
+
 export type TokenWithPrice = Token & { usdPrice: number }
 
 export interface GrpcTokenMeta {

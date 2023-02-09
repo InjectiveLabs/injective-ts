@@ -25,13 +25,11 @@ export class DenomClient {
   }
 
   getDenomTokenInfo(denom: string): TokenInfo | undefined {
-    return this.tokenInfoFactory.toToken(denom)
+    return this.tokenInfoFactory.toTokenInfo(denom)
   }
 
   getDenomToken(denom: string): Token | undefined {
-    const tokenInfo = this.getDenomTokenInfo(denom)
-
-    return tokenInfo ? tokenInfo.toToken() : undefined
+    return this.tokenInfoFactory.toToken(denom)
   }
 
   getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {

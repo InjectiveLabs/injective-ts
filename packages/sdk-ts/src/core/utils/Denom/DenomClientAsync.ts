@@ -17,6 +17,11 @@ import { ChainGrpcIbcApi } from '../../../client/chain/grpc/ChainGrpcIbcApi'
  * This client can be used to fetch token
  * denoms including API calls as well
  *
+ * Special Case:
+ * If IBC denom is not within the hardcoded
+ * IBC hashes we should query the denom traces API
+ * to find the token meta for the denom
+ *
  * @category Utility Classes
  */
 export class DenomClientAsync {
@@ -35,39 +40,33 @@ export class DenomClientAsync {
   }
 
   async getDenomTokenInfo(denom: string): Promise<TokenInfo | undefined> {
+    const token = this.tokenInfoFactory.toTokenInfo(denom)
+
+    if (token) {
+      return token
+    }
+
+    if (denom.startsWith('ibc')) {
+      const token = this.getIbcDenomToken(denom)
+
+      return token ? TokenInfo.formToken(token) : undefined
+    }
+
+    return
+  }
+
+  async getDenomToken(denom: string): Promise<Token | undefined> {
     const token = this.tokenInfoFactory.toToken(denom)
 
     if (token) {
       return token
     }
 
-    /**
-     * If IBC denom is not within the hardcoded
-     * IBC hashes we should query the denom traces API
-     * to find the token meta for the denom
-     */
     if (denom.startsWith('ibc')) {
-      const meta = await this.getIbcDenomTokenMeta(denom)
-
-      if (!meta) {
-        return
-      }
-
-      return TokenInfo.fromMeta(meta, denom)
+      return await this.getIbcDenomToken(denom)
     }
 
-    /**
-     * TODO: Handle CW20 addresses and fetch metadata from
-     * the CW20 contract address
-     */
-
     return
-  }
-
-  async getDenomToken(denom: string): Promise<Token | undefined> {
-    const tokenInfo = await this.getDenomTokenInfo(denom)
-
-    return tokenInfo ? tokenInfo.toToken() : undefined
   }
 
   getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
@@ -86,7 +85,7 @@ export class DenomClientAsync {
     return this.tokenMetaUtils.getCoinGeckoIdFromSymbol(denom)
   }
 
-  private async getIbcDenomTokenMeta(denom: string) {
+  private async getIbcDenomToken(denom: string) {
     const hash = denom.replace('ibc/', '')
 
     if (Object.keys(this.cachedDenomTraces).length === 0) {
@@ -96,7 +95,7 @@ export class DenomClientAsync {
     const cachedDenomTrace = this.cachedDenomTraces[hash]
 
     if (cachedDenomTrace) {
-      return this.tokenMetaUtils.getMetaBySymbol(cachedDenomTrace.baseDenom)
+      return this.tokenInfoFactory.toToken(cachedDenomTrace.baseDenom)
     }
 
     const denomTrace = await this.ibcApi.fetchDenomTrace(hash)
@@ -110,7 +109,7 @@ export class DenomClientAsync {
       )
     }
 
-    return this.tokenMetaUtils.getMetaBySymbol(denomTrace.baseDenom)
+    return this.tokenInfoFactory.toToken(denomTrace.baseDenom)
   }
 
   private async fetchAndCacheDenomTraces() {

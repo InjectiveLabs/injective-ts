@@ -9,7 +9,7 @@ import {
   tokensBySymbolForDevnet2,
   tokensBySymbolForTestnet,
 } from './tokens/network'
-import { TokenMeta } from './types'
+import { Token, TokenMeta } from './types'
 import tokensBySymbol from './tokens/tokens'
 
 export class TokenInfoFactory {
@@ -47,7 +47,7 @@ export class TokenInfoFactory {
     }
   }
 
-  toToken(denom: string): TokenInfo | undefined {
+  toTokenInfo(denom: string): TokenInfo | undefined {
     const isDenom =
       denom.startsWith('ibc/') ||
       denom.startsWith('peggy') ||
@@ -101,6 +101,12 @@ export class TokenInfoFactory {
     } catch (e) {
       return undefined
     }
+  }
+
+  toToken(denom: string): Token | undefined {
+    const tokenInfo = this.toTokenInfo(denom)
+
+    return tokenInfo ? tokenInfo.toToken() : undefined
   }
 
   getPeggyDenomTokenMeta(denom: string): TokenMeta | undefined {
