@@ -70,10 +70,6 @@ export class DenomClientAsync {
     return tokenInfo ? tokenInfo.toToken() : undefined
   }
 
-  getCoinGeckoId(denom: string): string {
-    return this.tokenMetaUtils.getCoinGeckoIdFromSymbol(denom)
-  }
-
   getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
     return this.tokenMetaUtils.getMetaBySymbol(symbol)
   }
@@ -84,6 +80,10 @@ export class DenomClientAsync {
 
   getTokenMetaDataByName(name: string): TokenMeta | undefined {
     return this.tokenMetaUtils.getMetaByName(name)
+  }
+
+  getCoinGeckoId(denom: string): string {
+    return this.tokenMetaUtils.getCoinGeckoIdFromSymbol(denom)
   }
 
   private async getIbcDenomTokenMeta(denom: string) {
