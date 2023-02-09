@@ -199,10 +199,7 @@ export class TokenService {
         ...market,
         slug,
         baseToken,
-        quoteToken: getCw20TokenSingle({
-          token: quoteToken,
-          denom: market.quoteDenom,
-        }),
+        quoteToken: getCw20TokenSingle(quoteToken),
       } as UiBaseSpotMarketWithToken
     }
 
@@ -211,10 +208,7 @@ export class TokenService {
         ...market,
         slug,
         quoteToken,
-        baseToken: getCw20TokenSingle({
-          token: baseToken,
-          denom: market.baseDenom,
-        }),
+        baseToken: getCw20TokenSingle(baseToken),
       } as UiBaseSpotMarketWithToken
     }
 
@@ -259,10 +253,7 @@ export class TokenService {
         ...market,
         slug,
         baseToken,
-        quoteToken: getCw20TokenSingle({
-          token: quoteToken,
-          denom: market.quoteDenom,
-        }),
+        quoteToken: getCw20TokenSingle(quoteToken),
       } as unknown as R
     }
 

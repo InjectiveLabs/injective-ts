@@ -1,37 +1,34 @@
-import { Cw20Token, Cw20TokenSingle, Cw20TokenSource } from './types'
+import { Token, Cw20TokenSingle, Cw20TokenSource } from './types'
 
 /**
  * This class can be used to get a token with
  * cw20 information when we have multiple
  * cw20 variations of the same token based on the address/denom
  */
-export const getCw20TokenSingle = ({
-  token,
-  denom,
-  source,
-}: {
-  token: Cw20Token
-  denom?: string
-  source?: Cw20TokenSource
-}): Cw20TokenSingle | undefined => {
-  if (!token.cw20 && !token.cw20s) {
+export const getCw20TokenSingle = (
+  token: Token,
+  source?: Cw20TokenSource,
+): Cw20TokenSingle | undefined => {
+  const { cw20, cw20s, denom } = token
+
+  if (!cw20 && !cw20s) {
     return
   }
 
-  if (token.cw20) {
+  if (cw20) {
     return {
       ...token,
-      cw20: token.cw20,
+      cw20,
     }
   }
 
-  if (token.cw20s) {
+  if (cw20s) {
     if (denom) {
       const [cw20Address] = denom.startsWith('inj')
         ? [denom]
         : denom.split('/').reverse()
 
-      const cw20 = token.cw20s.find(
+      const cw20 = cw20s.find(
         (cw20) => cw20.address.toLowerCase() === cw20Address.toLowerCase(),
       )
 
@@ -44,7 +41,7 @@ export const getCw20TokenSingle = ({
     }
 
     if (source) {
-      const cw20 = token.cw20s.find(
+      const cw20 = cw20s.find(
         (cw20) => cw20.source.toLowerCase() === source.toLowerCase(),
       )
 
