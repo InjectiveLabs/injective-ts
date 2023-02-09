@@ -95,6 +95,7 @@ export interface SplToken extends BaseToken {
 }
 
 export type Token = Erc20Token | IbcToken | Cw20Token | NativeToken | SplToken
+export type TokenWithPrice = Token & { usdPrice: number }
 
 export interface GrpcTokenMeta {
   name: string
