@@ -112,3 +112,53 @@ export const getTokenTypeFromDenom = (denom: string) => {
 
   return TokenType.Cw20
 }
+
+export const getTokenDecimals = (token: Token) => {
+  if (token.denom === INJ_DENOM) {
+    return token.decimals
+  }
+
+  if (token.denom.startsWith('inj')) {
+    return token.cw20?.decimals || token.decimals
+  }
+
+  if (token.denom.startsWith('factory/')) {
+    return token.decimals
+  }
+
+  if (token.denom.startsWith('peggy')) {
+    return token.erc20?.decimals || token.decimals
+  }
+
+  if (token.denom.startsWith('share')) {
+    return token.decimals
+  }
+
+  return token.decimals
+}
+
+export const getTokenAddress = (token: Token) => {
+  if (token.denom === INJ_DENOM) {
+    return token.erc20?.address
+  }
+
+  if (token.denom.startsWith('inj')) {
+    return token.cw20?.address
+  }
+
+  if (token.denom.startsWith('factory/')) {
+    const [, , address] = token.denom
+
+    return address
+  }
+
+  if (token.denom.startsWith('peggy')) {
+    return token.erc20?.address
+  }
+
+  if (token.denom.startsWith('share')) {
+    return ''
+  }
+
+  return ''
+}
