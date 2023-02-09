@@ -24,7 +24,7 @@ import {
   SubaccountBalanceWithToken,
   UiBridgeTransactionWithToken,
 } from '../types'
-import { Token } from '@injectivelabs/token-metadata'
+import { getCw20TokenSingle, Token } from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
 
 /**
@@ -191,6 +191,33 @@ export class TokenService {
         ? `${baseToken.symbol.toLowerCase()}-${quoteToken.symbol.toLowerCase()}`
         : market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
 
+    /**
+     * Edge cases when there are multiple CW20 variations of the same token
+     */
+    if (quoteToken && quoteToken.cw20s) {
+      return {
+        ...market,
+        slug,
+        baseToken,
+        quoteToken: getCw20TokenSingle({
+          token: quoteToken,
+          denom: market.quoteDenom,
+        }),
+      } as UiBaseSpotMarketWithToken
+    }
+
+    if (baseToken && baseToken.cw20s) {
+      return {
+        ...market,
+        slug,
+        quoteToken,
+        baseToken: getCw20TokenSingle({
+          token: baseToken,
+          denom: market.baseDenom,
+        }),
+      } as UiBaseSpotMarketWithToken
+    }
+
     return {
       ...market,
       slug,
@@ -223,6 +250,21 @@ export class TokenService {
     const [baseTokenSymbol] = slug.split('-')
     const baseToken = await this.denomClient.getDenomToken(baseTokenSymbol)
     const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
+
+    /**
+     * Edge case when there are multiple CW20 variations of the same token
+     */
+    if (quoteToken && quoteToken.cw20s) {
+      return {
+        ...market,
+        slug,
+        baseToken,
+        quoteToken: getCw20TokenSingle({
+          token: quoteToken,
+          denom: market.quoteDenom,
+        }),
+      } as unknown as R
+    }
 
     return {
       ...market,
