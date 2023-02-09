@@ -53,7 +53,7 @@ export class DenomClientAsync {
         return
       }
 
-      return TokenInfo.fromMeta(denom, meta)
+      return TokenInfo.fromMeta(meta, denom)
     }
 
     /**

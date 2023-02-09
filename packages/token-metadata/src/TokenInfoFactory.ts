@@ -59,19 +59,19 @@ export class TokenInfoFactory {
         const bySymbol = this.tokenMetaUtils.getMetaBySymbol(denom)
 
         if (bySymbol) {
-          return TokenInfo.fromMeta(denom, bySymbol)
+          return TokenInfo.fromMeta(bySymbol, denom)
         }
 
         const byAddress = this.tokenMetaUtils.getMetaByAddress(denom)
 
         if (byAddress) {
-          return TokenInfo.fromMeta(denom, byAddress)
+          return TokenInfo.fromMeta(byAddress, denom)
         }
 
         const byName = this.tokenMetaUtils.getMetaByName(denom)
 
         if (byName) {
-          return TokenInfo.fromMeta(denom, byName)
+          return TokenInfo.fromMeta(byName, denom)
         }
 
         return
@@ -80,24 +80,24 @@ export class TokenInfoFactory {
       if (denom.startsWith('ibc/')) {
         const meta = this.getIbcDenomTokenMeta(denom)
 
-        return meta ? TokenInfo.fromMeta(denom, meta) : undefined
+        return meta ? TokenInfo.fromMeta(meta, denom) : undefined
       }
 
       if (denom.startsWith('factory/')) {
         const meta = this.getFactoryDenomTokenMeta(denom)
 
-        return meta ? TokenInfo.fromMeta(denom, meta) : undefined
+        return meta ? TokenInfo.fromMeta(meta, denom) : undefined
       }
 
       if (denom.startsWith('peggy')) {
         const meta = this.getPeggyDenomTokenMeta(denom)
 
-        return meta ? TokenInfo.fromMeta(denom, meta) : undefined
+        return meta ? TokenInfo.fromMeta(meta, denom) : undefined
       }
 
       const meta = this.getCw20DenomTokenMeta(denom)
 
-      return meta ? TokenInfo.fromMeta(denom, meta) : undefined
+      return meta ? TokenInfo.fromMeta(meta, denom) : undefined
     } catch (e) {
       return undefined
     }

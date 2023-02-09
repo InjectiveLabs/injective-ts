@@ -1,5 +1,5 @@
 import { INJ_DENOM } from '@injectivelabs/utils'
-import { GeneralException } from 'packages/exceptions/dist'
+import { GeneralException } from '@injectivelabs/exceptions'
 import { canonicalChannelIds } from './ibc'
 import { Token, TokenMeta, TokenType } from './types'
 
