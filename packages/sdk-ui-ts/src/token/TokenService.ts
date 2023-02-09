@@ -24,7 +24,7 @@ import {
   SubaccountBalanceWithToken,
   UiBridgeTransactionWithToken,
 } from '../types'
-import { Token, TokenInfo } from '@injectivelabs/token-metadata'
+import { Token } from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
 
 /**
@@ -44,15 +44,15 @@ export class TokenService {
     this.denomClient = new DenomClientAsync(network)
   }
 
-  async toCoinsWithToken(supply: Coin[]): Promise<TokenInfo[]> {
+  async toCoinsWithToken(supply: Coin[]): Promise<Token[]> {
     const tokens = await awaitForAll(supply, (coin) =>
-      this.denomClient.getDenomTokenInfo(coin.denom),
+      this.denomClient.getDenomToken(coin.denom),
     )
 
-    return tokens.filter((token) => token) as TokenInfo[]
+    return tokens.filter((token) => token) as Token[]
   }
 
-  async toSupplyWithToken(supply: Coin[]): Promise<TokenInfo[]> {
+  async toSupplyWithToken(supply: Coin[]): Promise<Token[]> {
     return this.toCoinsWithToken(supply)
   }
 
@@ -92,7 +92,7 @@ export class TokenService {
       await awaitForAll(Object.keys(balances), async (denom) => ({
         denom,
         balance: balances[denom],
-        token: await this.denomClient.getDenomTokenInfo(denom),
+        token: await this.denomClient.getDenomToken(denom),
       }))
     ).filter((balance) => balance.token !== undefined) as BalanceWithToken[]
 
@@ -101,7 +101,7 @@ export class TokenService {
         return {
           denom,
           balance: ibcBalances[denom],
-          token: await this.denomClient.getDenomTokenInfo(denom),
+          token: await this.denomClient.getDenomToken(denom),
         }
       })
     ).filter((balance) => balance.token !== undefined) as BalanceWithToken[]
@@ -118,7 +118,7 @@ export class TokenService {
     const balancesWithToken = await awaitForAll(
       cw20Balances,
       async (balance) => {
-        const token = await this.denomClient.getDenomTokenInfo(
+        const token = await this.denomClient.getDenomToken(
           balance.contractAddress,
         )
 
@@ -144,7 +144,7 @@ export class TokenService {
     contractAddress: string
     contractAccountsBalance: ContractAccountBalance[]
   }): Promise<BalanceWithToken[]> {
-    const token = await this.denomClient.getDenomTokenInfo(contractAddress)
+    const token = await this.denomClient.getDenomToken(contractAddress)
     const balances = contractAccountsBalance.map((balance) => {
       if (!token) {
         return
@@ -164,9 +164,7 @@ export class TokenService {
     balance: UiSubaccountBalance,
   ): Promise<SubaccountBalanceWithToken> {
     return {
-      token: (await this.denomClient.getDenomTokenInfo(
-        balance.denom,
-      )) as TokenInfo,
+      token: (await this.denomClient.getDenomToken(balance.denom)) as Token,
       denom: balance.denom,
       availableBalance: balance.availableBalance,
       totalBalance: balance.totalBalance,
@@ -186,10 +184,8 @@ export class TokenService {
   async toSpotMarketWithToken(
     market: UiBaseSpotMarket,
   ): Promise<UiBaseSpotMarketWithToken> {
-    const baseToken = await this.denomClient.getDenomTokenInfo(market.baseDenom)
-    const quoteToken = await this.denomClient.getDenomTokenInfo(
-      market.quoteDenom,
-    )
+    const baseToken = await this.denomClient.getDenomToken(market.baseDenom)
+    const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
     const slug =
       baseToken && quoteToken
         ? `${baseToken.symbol.toLowerCase()}-${quoteToken.symbol.toLowerCase()}`
@@ -225,10 +221,8 @@ export class TokenService {
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
-    const baseToken = await this.denomClient.getDenomTokenInfo(baseTokenSymbol)
-    const quoteToken = await this.denomClient.getDenomTokenInfo(
-      market.quoteDenom,
-    )
+    const baseToken = await this.denomClient.getDenomToken(baseTokenSymbol)
+    const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
 
     return {
       ...market,
@@ -256,9 +250,7 @@ export class TokenService {
   async toBinaryOptionsMarketWithToken(
     market: UiBaseBinaryOptionsMarket,
   ): Promise<BinaryOptionsMarketWithTokenAndSlug> {
-    const quoteToken = await this.denomClient.getDenomTokenInfo(
-      market.quoteDenom,
-    )
+    const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
     const slug = market.ticker
       .replaceAll('/', '-')
       .replaceAll(' ', '-')
@@ -312,13 +304,13 @@ export class TokenService {
     ) {
       return {
         ...transaction,
-        token: (await this.denomClient.getDenomTokenInfo('INJ'))!,
+        token: (await this.denomClient.getDenomToken('INJ'))!,
       }
     }
 
-    const tokenFromDenomAsSymbol = (await this.denomClient.getDenomTokenInfo(
+    const tokenFromDenomAsSymbol = (await this.denomClient.getDenomToken(
       transaction.denom,
-    )) as TokenInfo
+    )) as Token
 
     if (tokenFromDenomAsSymbol) {
       return {
@@ -329,7 +321,7 @@ export class TokenService {
 
     return {
       ...transaction,
-      token: (await this.denomClient.getDenomTokenInfo('INJ'))!,
+      token: (await this.denomClient.getDenomToken('INJ'))!,
     }
   }
 

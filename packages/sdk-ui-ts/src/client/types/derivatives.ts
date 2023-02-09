@@ -14,7 +14,7 @@ import {
   ChronosDerivativeMarketSummary,
   AllChronosDerivativeMarketSummary,
 } from '@injectivelabs/sdk-ts/dist/client/indexer/types/derivatives-rest'
-import { TokenInfo } from '@injectivelabs/token-metadata'
+import { Token } from '@injectivelabs/token-metadata'
 import { Change, MarketType } from './common'
 
 export interface BaseDerivativeMarket
@@ -22,8 +22,8 @@ export interface BaseDerivativeMarket
 
 export interface DerivativeMarketWithTokenAndSlug extends BaseDerivativeMarket {
   slug: string
-  quoteToken: TokenInfo
-  baseToken: TokenInfo
+  quoteToken: Token
+  baseToken: Token
 }
 
 export interface BaseDerivativeMarketWithToken

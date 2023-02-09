@@ -51,8 +51,8 @@ export interface TokenMeta {
   logo: string
   symbol: string
   decimals: number
-  coinGeckoId: string
   tokenType?: TokenType
+  coinGeckoId: string
 
   ibc?: IbcTokenMeta
   spl?: SplTokenMeta

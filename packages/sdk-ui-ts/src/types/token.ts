@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { TokenInfo } from '@injectivelabs/token-metadata'
+import { Token } from '@injectivelabs/token-metadata'
 import { UiBridgeTransaction } from './bridge'
 
 export interface CoinPriceFromInjectiveService {
@@ -30,7 +30,7 @@ export interface CoinPriceFromInjectiveService {
 }
 
 export type BalanceWithToken = {
-  token: TokenInfo
+  token: Token
   denom: string
   balance: string
 }
@@ -55,7 +55,7 @@ export interface SubaccountBalanceWithToken {
   availableBalance: string
   totalBalance: string
   denom: string
-  token: TokenInfo
+  token: Token
 }
 
 export interface SubaccountBalanceWithTokenAndPrice
@@ -74,5 +74,5 @@ export interface DenomTrace {
 }
 
 export interface UiBridgeTransactionWithToken extends UiBridgeTransaction {
-  token: TokenInfo
+  token: Token
 }
