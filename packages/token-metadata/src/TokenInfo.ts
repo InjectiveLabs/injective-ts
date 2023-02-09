@@ -1,7 +1,6 @@
-import { INJ_DENOM } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { canonicalChannelIds } from './ibc'
-import { Token, TokenMeta, TokenType } from './types'
+import { IbcToken, Token, TokenMeta, TokenType } from './types'
+import { getTokenTypeFromDenom, isIbcTokenCanonical } from './utils'
 
 /**
  * Token info is a helper class which abstracts
@@ -51,6 +50,7 @@ export class TokenInfo {
     return {
       ...meta,
       denom,
+      tokenType: getTokenTypeFromDenom(denom),
     }
   }
 
@@ -224,45 +224,10 @@ export class TokenInfo {
   get tokenType(): TokenType {
     const { denom } = this
 
-    if (denom === INJ_DENOM) {
-      return TokenType.Native
-    }
-
-    if (denom.startsWith('inj')) {
-      return TokenType.Cw20
-    }
-
-    if (denom.startsWith('factory/')) {
-      return TokenType.TokenFactory
-    }
-
-    if (denom.startsWith('peggy')) {
-      return TokenType.Native
-    }
-
-    if (denom.startsWith('share')) {
-      return TokenType.InsuranceFund
-    }
-
-    return TokenType.Cw20
+    return getTokenTypeFromDenom(denom)
   }
 
   get isCanonical() {
-    const { denom, meta } = this
-
-    if (!denom.startsWith('ibc/') || !meta.ibc) {
-      return false
-    }
-
-    const pathParts = meta.ibc.path.replace('transfer/', '').split('/')
-
-    /** More than one channelId */
-    if (pathParts.length > 1) {
-      return false
-    }
-
-    const [channelId] = pathParts
-
-    return canonicalChannelIds.includes(channelId)
+    return isIbcTokenCanonical(this.toToken() as IbcToken)
   }
 }

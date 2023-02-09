@@ -250,6 +250,7 @@ export class IndexerRestExplorerTransformer {
           tokenType: TokenType.Cw20,
         },
         coinGeckoId: name,
+        tokenType: TokenType.Cw20,
         denom: '',
       },
     }

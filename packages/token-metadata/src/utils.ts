@@ -1,4 +1,12 @@
-import { Token, Cw20TokenSingle, Cw20TokenSource } from './types'
+import { INJ_DENOM } from '@injectivelabs/utils'
+import {
+  Token,
+  Cw20TokenSingle,
+  Cw20TokenSource,
+  TokenType,
+  IbcToken,
+} from './types'
+import { canonicalChannelIds } from './ibc'
 
 /**
  * This class can be used to get a token with
@@ -19,6 +27,7 @@ export const getCw20TokenSingle = (
     return {
       ...token,
       cw20,
+      tokenType: TokenType.Cw20,
     }
   }
 
@@ -36,6 +45,8 @@ export const getCw20TokenSingle = (
         ? {
             ...token,
             cw20,
+            symbol: cw20.symbol,
+            tokenType: TokenType.Cw20,
           }
         : undefined
     }
@@ -49,10 +60,55 @@ export const getCw20TokenSingle = (
         ? {
             ...token,
             cw20,
+            symbol: cw20.symbol,
+            tokenType: TokenType.Cw20,
           }
         : undefined
     }
   }
 
   return undefined
+}
+
+export const isIbcTokenCanonical = (token: IbcToken) => {
+  const { denom } = token
+
+  if (!denom.startsWith('ibc/') || !token.ibc) {
+    return false
+  }
+
+  const pathParts = token.ibc.path.replace('transfer/', '').split('/')
+
+  /** More than one channelId */
+  if (pathParts.length > 1) {
+    return false
+  }
+
+  const [channelId] = pathParts
+
+  return canonicalChannelIds.includes(channelId)
+}
+
+export const getTokenTypeFromDenom = (denom: string) => {
+  if (denom === INJ_DENOM) {
+    return TokenType.Native
+  }
+
+  if (denom.startsWith('inj')) {
+    return TokenType.Cw20
+  }
+
+  if (denom.startsWith('factory/')) {
+    return TokenType.TokenFactory
+  }
+
+  if (denom.startsWith('peggy')) {
+    return TokenType.Native
+  }
+
+  if (denom.startsWith('share')) {
+    return TokenType.InsuranceFund
+  }
+
+  return TokenType.Cw20
 }

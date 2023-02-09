@@ -24,7 +24,11 @@ import {
   SubaccountBalanceWithToken,
   UiBridgeTransactionWithToken,
 } from '../types'
-import { getCw20TokenSingle, Token } from '@injectivelabs/token-metadata'
+import {
+  getCw20TokenSingle,
+  Token,
+  TokenType,
+} from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
 
 /**
@@ -299,6 +303,7 @@ export class TokenService {
       name: baseTokenSymbol,
       decimals: 18,
       coinGeckoId: '',
+      tokenType: TokenType.Native,
     } as Token
 
     return {

@@ -69,39 +69,38 @@ export type BaseToken = TokenMeta & {
 // Insurance fund tokens, token factory tokens, etc
 export interface NativeToken extends TokenMeta {
   denom: string
-  tokenType:
-    | TokenType.Native
-    | TokenType.InsuranceFund
-    | TokenType.Native
-    | TokenType.TokenFactory
+  tokenType: TokenType
 }
 
 export interface Erc20Token extends BaseToken {
   erc20: Erc20TokenMeta
-  tokenType: TokenType.Erc20
+  tokenType: TokenType
 }
 
 export interface IbcToken extends BaseToken {
   ibc: IbcTokenMeta
-  tokenType: TokenType.Ibc
+  tokenType: TokenType
 }
 
 export interface Cw20TokenSingle extends BaseToken {
   cw20: Cw20TokenMeta
+  tokenType: TokenType
 }
 
 export interface Cw20TokenMultiple extends BaseToken {
   cw20s: Cw20TokenMetaWithSource[]
+  tokenType: TokenType
 }
 
 export interface Cw20Token extends BaseToken {
   cw20?: Cw20TokenMeta
   cw20s?: Cw20TokenMetaWithSource[]
+  tokenType: TokenType
 }
 
 export interface SplToken extends BaseToken {
   spl: SplTokenMeta
-  tokenType: TokenType.Spl
+  tokenType: TokenType
 }
 
 export type Token =
