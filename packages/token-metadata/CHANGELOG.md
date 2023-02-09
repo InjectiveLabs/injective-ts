@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.144](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.143...@injectivelabs/token-metadata@1.0.144) (2023-02-09)
+
+
+### Features
+
+* single cw20 entry ([f6ef98a](https://github.com/InjectiveLabs/injective-ts/commit/f6ef98ae6dae0c27c4dd9b7674575425781dc1b9))
+
+
+
+
+
 ## [1.0.143](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.142...@injectivelabs/token-metadata@1.0.143) (2023-02-09)
 
 
