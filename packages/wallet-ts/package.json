@@ -55,8 +55,6 @@
     "@metamask/detect-provider": "^2.0.0",
     "@metamask/eth-sig-util": "^4.0.0",
     "@solana/wallet-adapter-wallets": "^0.19.5",
-    "@terra-money/terra.js": "3.0.9",
-    "@terra-money/wallet-controller": "^3.9.4",
     "@toruslabs/torus-embed": "1.22.1",
     "@types/eth-sig-util": "^2.1.1",
     "@types/ethereumjs-util": "^6.1.0",
