@@ -46,6 +46,34 @@ export interface BalanceWithTokenWithErc20Balance extends BalanceWithToken {
   }
 }
 
+export interface BalanceWithTokenWithSplBalance extends BalanceWithToken {
+  spl: {
+    allowance: string
+    balance: string
+  }
+}
+
+export interface BalanceWithTokenWithIbcBalance extends BalanceWithToken {
+  ibc: {
+    balance: string
+  }
+}
+
+export interface BalanceWithTokenWithErc20BalanceWithPrice
+  extends BalanceWithTokenWithErc20Balance {
+  usdPrice: number
+}
+
+export interface BalanceWithTokenWithSplBalanceWithPrice
+  extends BalanceWithTokenWithSplBalance {
+  usdPrice: number
+}
+
+export interface BalanceWithTokenWithIbcBalanceWithPrice
+  extends BalanceWithTokenWithIbcBalance {
+  usdPrice: number
+}
+
 export interface BalanceWithTokenAndPriceWithUsdBalance
   extends BalanceWithTokenAndPrice {
   balanceInUsd: string
