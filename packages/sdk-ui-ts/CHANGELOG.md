@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.531](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.530...@injectivelabs/sdk-ui-ts@1.0.531) (2023-02-10)
+
+
+### Bug Fixes
+
+* token denom mapping ([3584927](https://github.com/InjectiveLabs/injective-ts/commit/3584927b97e40171fdae6a24f6aa528bc5a6eaae))
+
+
+
+
+
 ## [1.0.530](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.529...@injectivelabs/sdk-ui-ts@1.0.530) (2023-02-10)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
