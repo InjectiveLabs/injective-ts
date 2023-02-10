@@ -142,7 +142,7 @@ export class IndexerGrpcExplorerTransformer {
     response: StreamTxsResponse,
   ): IndexerStreamTransaction {
     return {
-      id: response.getId(),
+      id: response.getId !== undefined ? response.getId() : response.getHash(),
       blockNumber: response.getBlockNumber(),
       blockTimestamp: response.getBlockTimestamp(),
       hash: response.getHash(),
