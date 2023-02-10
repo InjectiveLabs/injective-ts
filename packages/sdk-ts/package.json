@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ts",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
-  "version": "1.0.417",
+  "version": "1.0.418",
   "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -45,7 +45,7 @@
     "@injectivelabs/indexer-api": "1.9.1",
     "@injectivelabs/networks": "^1.0.87",
     "@injectivelabs/ninja-api": "^1.0.11",
-    "@injectivelabs/token-metadata": "^1.0.150",
+    "@injectivelabs/token-metadata": "^1.0.151",
     "@injectivelabs/ts-types": "^1.0.28",
     "@injectivelabs/utils": "^1.0.75",
     "@metamask/eth-sig-util": "^4.0.0",
