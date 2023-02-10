@@ -20,10 +20,10 @@ export class TokenMetaUtils {
 
   constructor(tokens: Record<string, TokenMeta>) {
     this.tokens = getMappedTokensBySymbol(tokens)
-    this.tokensByErc20Address = getMappedTokensByErc20Address(tokens)
-    this.tokensByCw20Address = getMappedTokensByCw20Address(tokens)
-    this.tokensByHash = getMappedTokensByHash(tokens)
-    this.tokensByName = getMappedTokensByName(tokens)
+    this.tokensByErc20Address = getMappedTokensByErc20Address(this.tokens)
+    this.tokensByCw20Address = getMappedTokensByCw20Address(this.tokens)
+    this.tokensByHash = getMappedTokensByHash(this.tokens)
+    this.tokensByName = getMappedTokensByName(this.tokens)
   }
 
   /**

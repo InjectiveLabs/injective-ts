@@ -51,8 +51,14 @@ export class TokenInfoFactory {
     const isDenom =
       denom.startsWith('ibc/') ||
       denom.startsWith('peggy') ||
-      denom.startsWith('factory/') ||
-      denom.toLowerCase() === INJ_DENOM
+      denom.startsWith('factory/')
+
+    if (denom === INJ_DENOM) {
+      return TokenInfo.fromMeta(
+        this.tokenMetaUtils.getMetaBySymbol(denom)!,
+        denom,
+      )
+    }
 
     try {
       if (!isDenom) {
@@ -110,10 +116,6 @@ export class TokenInfoFactory {
   }
 
   getPeggyDenomTokenMeta(denom: string): TokenMeta | undefined {
-    if (denom.toLowerCase() === INJ_DENOM) {
-      return this.tokenMetaUtils.getMetaBySymbol(INJ_DENOM)
-    }
-
     const address = denom.startsWith('peggy')
       ? denom.replace('peggy', '')
       : denom
@@ -124,7 +126,7 @@ export class TokenInfoFactory {
       )
     }
 
-    if (address.length === 42) {
+    if (address.length !== 42) {
       throw new GeneralException(
         new Error(`The address ${address} is not a valid ERC20 address`),
       )

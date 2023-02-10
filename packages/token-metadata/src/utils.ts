@@ -98,12 +98,16 @@ export const getTokenTypeFromDenom = (denom: string) => {
     return TokenType.Cw20
   }
 
+  if (denom.startsWith('ibc')) {
+    return TokenType.Ibc
+  }
+
   if (denom.startsWith('factory/')) {
     return TokenType.TokenFactory
   }
 
   if (denom.startsWith('peggy')) {
-    return TokenType.Native
+    return TokenType.Erc20
   }
 
   if (denom.startsWith('share')) {

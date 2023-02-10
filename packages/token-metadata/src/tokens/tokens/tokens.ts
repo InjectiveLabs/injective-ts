@@ -1120,7 +1120,7 @@ export default {
   CHZ: {
     name: 'Chiliz',
     symbol: 'CHZ',
-    decimals: 8,
+    decimals: 18,
     logo: 'chz.png',
     coinGeckoId: 'chiliz',
 
