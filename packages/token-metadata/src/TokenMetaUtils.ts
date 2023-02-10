@@ -67,24 +67,24 @@ export class TokenMetaUtils {
       return
     }
 
-    const meta = tokensByCw20Address[contractAddress]
+    const tokenMeta = tokensByCw20Address[contractAddress]
 
-    if (meta.cw20) {
+    if (tokenMeta.cw20) {
       return {
-        ...meta,
+        ...tokenMeta,
         cw20s: [],
       }
     }
 
-    if (meta.cw20s) {
+    if (tokenMeta.cw20s) {
       return getCw20TokenSingle({
-        ...meta,
+        ...tokenMeta,
         denom: contractAddress,
         tokenType: TokenType.Cw20,
       }) as TokenMeta
     }
 
-    return meta
+    return tokenMeta
   }
 
   getMetaByErc20Address(address: string): TokenMeta | undefined {
@@ -107,7 +107,14 @@ export class TokenMetaUtils {
       return
     }
 
-    return tokensByHash[ibcHash] || tokensByHash[hash]
+    const tokenMeta = tokensByHash[ibcHash] || tokensByHash[hash]
+
+    return tokenMeta
+      ? {
+          ...tokenMeta,
+          tokenType: TokenType.Ibc,
+        }
+      : undefined
   }
 
   getMetaByName(name: string): TokenMeta | undefined {

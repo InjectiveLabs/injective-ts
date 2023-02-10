@@ -5,10 +5,10 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
     (result, token) => {
       const tokenMeta = tokens[token]
 
-      if (tokenMeta.ibc && tokenMeta.ibc.hash) {
+      if (tokenMeta.ibc && tokenMeta.ibc.baseDenom) {
         return {
           ...result,
-          [tokenMeta.ibc.hash.toUpperCase()]: tokenMeta,
+          [tokenMeta.ibc.baseDenom.toUpperCase()]: tokenMeta,
           [tokenMeta.symbol.toUpperCase()]: tokenMeta,
         }
       }

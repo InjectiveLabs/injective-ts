@@ -1,7 +1,7 @@
 import { Network } from '@injectivelabs/networks'
 import { ChainId, Coin } from '@injectivelabs/ts-types'
 import {
-  DenomClientAsync,
+  DenomClient,
   ContractAccountBalance,
   ExplorerCW20BalanceWithToken,
 } from '@injectivelabs/sdk-ts'
@@ -40,12 +40,12 @@ export class TokenService {
 
   public chainId: ChainId
 
-  public denomClient: DenomClientAsync
+  public denomClient: DenomClient
 
   constructor({ chainId, network }: { chainId: ChainId; network: Network }) {
     this.network = network
     this.chainId = chainId
-    this.denomClient = new DenomClientAsync(network)
+    this.denomClient = new DenomClient(network)
   }
 
   async toCoinsWithToken(supply: Coin[]): Promise<Token[]> {

@@ -8,68 +8,7 @@ import {
   TokenMeta,
 } from './types'
 import { canonicalChannelIds } from './ibc'
-
-/**
- * This function can be used to get a token with
- * cw20 information when we have multiple
- * cw20 variations of the same token based on the address/denom
- */
-export const getCw20TokenSingle = (
-  token: Token,
-  source?: Cw20TokenSource,
-): Cw20TokenSingle | undefined => {
-  const { cw20, cw20s, denom } = token
-
-  if (!cw20 && !cw20s) {
-    return
-  }
-
-  if (cw20) {
-    return {
-      ...token,
-      cw20,
-      tokenType: TokenType.Cw20,
-    }
-  }
-
-  if (cw20s) {
-    if (denom) {
-      const [cw20Address] = denom.startsWith('inj')
-        ? [denom]
-        : denom.split('/').reverse()
-
-      const cw20 = cw20s.find(
-        (cw20) => cw20.address.toLowerCase() === cw20Address.toLowerCase(),
-      )
-
-      return cw20
-        ? {
-            ...token,
-            cw20,
-            symbol: cw20.symbol,
-            tokenType: TokenType.Cw20,
-          }
-        : undefined
-    }
-
-    if (source) {
-      const cw20 = cw20s.find(
-        (cw20) => cw20.source.toLowerCase() === source.toLowerCase(),
-      )
-
-      return cw20
-        ? {
-            ...token,
-            cw20,
-            symbol: cw20.symbol,
-            tokenType: TokenType.Cw20,
-          }
-        : undefined
-    }
-  }
-
-  return undefined
-}
+import { ibcBaseDenoms } from './tokens/tokens'
 
 export const isIbcTokenCanonical = (token: IbcToken) => {
   const { denom } = token
@@ -168,11 +107,87 @@ export const getTokenAddress = (token: Token) => {
   return ''
 }
 
-export const getTokenFromMeta = (
-  meta: TokenMeta & { denom?: string },
-  denom?: string,
-) => ({
-  ...meta,
-  denom: meta.denom || denom || '',
-  tokenType: getTokenTypeFromDenom(meta.denom || denom || ''),
-})
+export const getTokenFromMeta = (meta: TokenMeta, denom?: string) => {
+  const isBaseIbcDenom =
+    ibcBaseDenoms.includes(denom || '') || meta.ibc?.baseDenom === denom
+
+  if (isBaseIbcDenom) {
+    return {
+      ...meta,
+      denom: denom || '',
+      tokenType: TokenType.Ibc,
+    }
+  }
+
+  return {
+    ...meta,
+    denom: denom || '',
+    tokenType: getTokenTypeFromDenom(denom || ''),
+  }
+}
+
+/**
+ * This function can be used to get a token with
+ * cw20 information when we have multiple
+ * cw20 variations of the same token based on the address/denom
+ */
+export const getCw20TokenSingle = (
+  token: Token | TokenMeta,
+  source?: Cw20TokenSource,
+): Cw20TokenSingle | undefined => {
+  const { cw20, cw20s } = token
+  const denom = (token as Token).denom || ''
+
+  if (!cw20 && !cw20s) {
+    return
+  }
+
+  if (cw20) {
+    return {
+      ...token,
+      cw20,
+      denom: cw20.address,
+      tokenType: getTokenTypeFromDenom(cw20.address),
+    }
+  }
+
+  if (cw20s) {
+    if (denom) {
+      const [cw20Address] = denom.startsWith('inj')
+        ? [denom]
+        : denom.split('/').reverse()
+
+      const cw20 = cw20s.find(
+        (cw20) => cw20.address.toLowerCase() === cw20Address.toLowerCase(),
+      )
+
+      return cw20
+        ? {
+            ...token,
+            cw20,
+            denom: cw20.address,
+            symbol: cw20.symbol,
+            tokenType: getTokenTypeFromDenom(cw20.address),
+          }
+        : undefined
+    }
+
+    if (source) {
+      const cw20 = cw20s.find(
+        (cw20) => cw20.source.toLowerCase() === source.toLowerCase(),
+      )
+
+      return cw20
+        ? {
+            ...token,
+            cw20,
+            denom: cw20.address,
+            symbol: cw20.symbol,
+            tokenType: getTokenTypeFromDenom(cw20.address),
+          }
+        : undefined
+    }
+  }
+
+  return undefined
+}

@@ -1,2 +1,2 @@
+export * from './DenomClientSync'
 export * from './DenomClient'
-export * from './DenomClientAsync'

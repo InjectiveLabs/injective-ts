@@ -2,4 +2,10 @@ import { TokenMeta } from '../../types'
 import cw20Tokens from './cw20-tokens'
 import tokens from './tokens'
 
-export default { ...tokens, ...cw20Tokens } as Record<string, TokenMeta>
+const allTokens = { ...tokens, ...cw20Tokens }
+
+export const ibcBaseDenoms = Object.keys(allTokens)
+  .filter((token) => allTokens[token].ibc)
+  .map((token) => allTokens[token].ibc!.baseDenom)
+
+export default allTokens as Record<string, TokenMeta>

@@ -9,7 +9,7 @@ import {
   tokensBySymbolForDevnet2,
   tokensBySymbolForTestnet,
 } from './tokens/network'
-import { Token, TokenMeta } from './types'
+import { Token, TokenMeta, TokenType } from './types'
 import tokensBySymbol from './tokens/tokens'
 import { getTokenFromMeta } from './utils'
 
@@ -153,6 +153,13 @@ export class TokenFactory {
       )
     }
 
-    return this.tokenMetaUtils.getMetaByAddress(address)
+    const tokenMeta = this.tokenMetaUtils.getMetaByAddress(address)
+
+    return tokenMeta
+      ? {
+          ...tokenMeta,
+          tokenType: TokenType.TokenFactory,
+        }
+      : undefined
   }
 }
