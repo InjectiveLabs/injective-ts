@@ -5,7 +5,8 @@ import {
 import { getMappedTokensByName } from './tokens/mappings/mapByName'
 import { getMappedTokensByHash } from './tokens/mappings/mapByHash'
 import { getMappedTokensBySymbol } from './tokens/mappings/mapBySymbol'
-import { TokenMeta } from './types'
+import { TokenMeta, TokenType } from './types'
+import { getCw20TokenSingle } from './utils'
 
 export class TokenMetaUtils {
   protected tokens: Record<string, TokenMeta>
@@ -49,6 +50,14 @@ export class TokenMetaUtils {
       : this.getMetaByCw20Address(address)
   }
 
+  /**
+   * If there are multiple cw20 variations
+   * of the token we find the one that corresponds
+   * to the contract address and set it on the cw20 field
+   *
+   * If there is only one cw20 version then we use that one
+   * as the default version
+   */
   getMetaByCw20Address(address: string): TokenMeta | undefined {
     const { tokensByCw20Address } = this
     const contractAddress =
@@ -58,7 +67,24 @@ export class TokenMetaUtils {
       return
     }
 
-    return tokensByCw20Address[contractAddress]
+    const meta = tokensByCw20Address[contractAddress]
+
+    if (meta.cw20) {
+      return {
+        ...meta,
+        cw20s: [],
+      }
+    }
+
+    if (meta.cw20s) {
+      return getCw20TokenSingle({
+        ...meta,
+        denom: contractAddress,
+        tokenType: TokenType.Cw20,
+      }) as TokenMeta
+    }
+
+    return meta
   }
 
   getMetaByErc20Address(address: string): TokenMeta | undefined {

@@ -5,11 +5,12 @@ import {
   Cw20TokenSource,
   TokenType,
   IbcToken,
+  TokenMeta,
 } from './types'
 import { canonicalChannelIds } from './ibc'
 
 /**
- * This class can be used to get a token with
+ * This function can be used to get a token with
  * cw20 information when we have multiple
  * cw20 variations of the same token based on the address/denom
  */
@@ -166,3 +167,12 @@ export const getTokenAddress = (token: Token) => {
 
   return ''
 }
+
+export const getTokenFromMeta = (
+  meta: TokenMeta & { denom?: string },
+  denom?: string,
+) => ({
+  ...meta,
+  denom: meta.denom || denom || '',
+  tokenType: getTokenTypeFromDenom(meta.denom || denom || ''),
+})

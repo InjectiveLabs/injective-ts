@@ -2,8 +2,8 @@ import {
   Token,
   TokenInfo,
   TokenMeta,
+  TokenFactory,
   TokenMetaUtils,
-  TokenInfoFactory,
   TokenMetaUtilsFactory,
 } from '@injectivelabs/token-metadata'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
@@ -27,20 +27,20 @@ import { ChainGrpcIbcApi } from '../../../client/chain/grpc/ChainGrpcIbcApi'
 export class DenomClientAsync {
   protected cachedDenomTraces: Record<string, DenomTrace.AsObject> = {}
 
-  protected tokenInfoFactory: TokenInfoFactory
+  protected tokenFactory: TokenFactory
 
   protected tokenMetaUtils: TokenMetaUtils
 
   protected ibcApi: ChainGrpcIbcApi
 
   constructor(network: Network = Network.Mainnet) {
-    this.tokenInfoFactory = TokenInfoFactory.make(network)
+    this.tokenFactory = TokenFactory.make(network)
     this.tokenMetaUtils = TokenMetaUtilsFactory.make(network)
     this.ibcApi = new ChainGrpcIbcApi(getNetworkEndpoints(network).grpc)
   }
 
   async getDenomTokenInfo(denom: string): Promise<TokenInfo | undefined> {
-    const token = this.tokenInfoFactory.toTokenInfo(denom)
+    const token = this.tokenFactory.toTokenInfo(denom)
 
     if (token) {
       return token
@@ -56,7 +56,7 @@ export class DenomClientAsync {
   }
 
   async getDenomToken(denom: string): Promise<Token | undefined> {
-    const token = this.tokenInfoFactory.toToken(denom)
+    const token = this.tokenFactory.toToken(denom)
 
     if (token) {
       return token
@@ -95,7 +95,7 @@ export class DenomClientAsync {
     const cachedDenomTrace = this.cachedDenomTraces[hash]
 
     if (cachedDenomTrace) {
-      return this.tokenInfoFactory.toToken(cachedDenomTrace.baseDenom)
+      return this.tokenFactory.toToken(cachedDenomTrace.baseDenom)
     }
 
     const denomTrace = await this.ibcApi.fetchDenomTrace(hash)
@@ -109,7 +109,7 @@ export class DenomClientAsync {
       )
     }
 
-    return this.tokenInfoFactory.toToken(denomTrace.baseDenom)
+    return this.tokenFactory.toToken(denomTrace.baseDenom)
   }
 
   private async fetchAndCacheDenomTraces() {

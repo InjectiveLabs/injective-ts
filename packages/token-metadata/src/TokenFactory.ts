@@ -11,50 +11,45 @@ import {
 } from './tokens/network'
 import { Token, TokenMeta } from './types'
 import tokensBySymbol from './tokens/tokens'
+import { getTokenFromMeta } from './utils'
 
-export class TokenInfoFactory {
+export class TokenFactory {
   public tokenMetaUtils: TokenMetaUtils
 
   constructor(tokenMetaUtils: TokenMetaUtils) {
     this.tokenMetaUtils = tokenMetaUtils
   }
 
-  static make(network: Network = Network.Mainnet): TokenInfoFactory {
+  static make(network: Network = Network.Mainnet): TokenFactory {
     switch (network) {
       case Network.Mainnet:
       case Network.MainnetK8s:
       case Network.MainnetLB:
       case Network.Local:
-        return new TokenInfoFactory(new TokenMetaUtils(tokensBySymbol))
+        return new TokenFactory(new TokenMetaUtils(tokensBySymbol))
       case Network.Devnet:
-        return new TokenInfoFactory(new TokenMetaUtils(tokensBySymbolForDevnet))
+        return new TokenFactory(new TokenMetaUtils(tokensBySymbolForDevnet))
       case Network.Devnet1:
-        return new TokenInfoFactory(
-          new TokenMetaUtils(tokensBySymbolForDevnet1),
-        )
+        return new TokenFactory(new TokenMetaUtils(tokensBySymbolForDevnet1))
       case Network.Devnet2:
-        return new TokenInfoFactory(
-          new TokenMetaUtils(tokensBySymbolForDevnet2),
-        )
+        return new TokenFactory(new TokenMetaUtils(tokensBySymbolForDevnet2))
       case Network.Testnet:
       case Network.TestnetOld:
       case Network.TestnetK8s:
-        return new TokenInfoFactory(
-          new TokenMetaUtils(tokensBySymbolForTestnet),
-        )
+        return new TokenFactory(new TokenMetaUtils(tokensBySymbolForTestnet))
       default:
-        return new TokenInfoFactory(new TokenMetaUtils(tokensBySymbol))
+        return new TokenFactory(new TokenMetaUtils(tokensBySymbol))
     }
   }
 
-  toTokenInfo(denom: string): TokenInfo | undefined {
+  toToken(denom: string): Token | undefined {
     const isDenom =
       denom.startsWith('ibc/') ||
       denom.startsWith('peggy') ||
       denom.startsWith('factory/')
 
     if (denom === INJ_DENOM) {
-      return TokenInfo.fromMeta(
+      return getTokenFromMeta(
         this.tokenMetaUtils.getMetaBySymbol(denom)!,
         denom,
       )
@@ -65,19 +60,19 @@ export class TokenInfoFactory {
         const bySymbol = this.tokenMetaUtils.getMetaBySymbol(denom)
 
         if (bySymbol) {
-          return TokenInfo.fromMeta(bySymbol, denom)
+          return getTokenFromMeta(bySymbol, denom)
         }
 
         const byAddress = this.tokenMetaUtils.getMetaByAddress(denom)
 
         if (byAddress) {
-          return TokenInfo.fromMeta(byAddress, denom)
+          return getTokenFromMeta(byAddress, denom)
         }
 
         const byName = this.tokenMetaUtils.getMetaByName(denom)
 
         if (byName) {
-          return TokenInfo.fromMeta(byName, denom)
+          return getTokenFromMeta(byName, denom)
         }
 
         return
@@ -86,33 +81,33 @@ export class TokenInfoFactory {
       if (denom.startsWith('ibc/')) {
         const meta = this.getIbcDenomTokenMeta(denom)
 
-        return meta ? TokenInfo.fromMeta(meta, denom) : undefined
+        return meta ? getTokenFromMeta(meta, denom) : undefined
       }
 
       if (denom.startsWith('factory/')) {
         const meta = this.getFactoryDenomTokenMeta(denom)
 
-        return meta ? TokenInfo.fromMeta(meta, denom) : undefined
+        return meta ? getTokenFromMeta(meta, denom) : undefined
       }
 
       if (denom.startsWith('peggy')) {
         const meta = this.getPeggyDenomTokenMeta(denom)
 
-        return meta ? TokenInfo.fromMeta(meta, denom) : undefined
+        return meta ? getTokenFromMeta(meta, denom) : undefined
       }
 
       const meta = this.getCw20DenomTokenMeta(denom)
 
-      return meta ? TokenInfo.fromMeta(meta, denom) : undefined
+      return meta ? getTokenFromMeta(meta, denom) : undefined
     } catch (e) {
       return undefined
     }
   }
 
-  toToken(denom: string): Token | undefined {
-    const tokenInfo = this.toTokenInfo(denom)
+  toTokenInfo(denom: string): TokenInfo | undefined {
+    const token = this.toToken(denom)
 
-    return tokenInfo ? tokenInfo.toToken() : undefined
+    return token ? TokenInfo.fromToken(token) : undefined
   }
 
   getPeggyDenomTokenMeta(denom: string): TokenMeta | undefined {

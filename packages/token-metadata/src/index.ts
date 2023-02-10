@@ -1,4 +1,4 @@
-import { TokenInfoFactory } from './TokenInfoFactory'
+import { TokenFactory } from './TokenFactory'
 import { TokenMetaUtils } from './TokenMetaUtils'
 import { TokenMetaUtilsFactory } from './TokenMetaUtilsFactory'
 import { TokenInfo } from './TokenInfo'
@@ -8,6 +8,6 @@ export * from './types'
 export * from './utils'
 
 export const tokenMetaUtils = TokenMetaUtilsFactory.make()
-export const tokenInfoFactory = TokenInfoFactory.make()
+export const tokenFactory = TokenFactory.make()
 
-export { TokenMetaUtils, TokenInfo, TokenInfoFactory, TokenMetaUtilsFactory }
+export { TokenMetaUtils, TokenInfo, TokenFactory, TokenMetaUtilsFactory }

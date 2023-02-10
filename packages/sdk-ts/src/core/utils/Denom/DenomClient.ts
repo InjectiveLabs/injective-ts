@@ -2,8 +2,8 @@ import {
   Token,
   TokenInfo,
   TokenMeta,
+  TokenFactory,
   TokenMetaUtils,
-  TokenInfoFactory,
   TokenMetaUtilsFactory,
 } from '@injectivelabs/token-metadata'
 import { Network } from '@injectivelabs/networks'
@@ -15,21 +15,21 @@ import { Network } from '@injectivelabs/networks'
  * @category Utility Classes
  */
 export class DenomClient {
-  protected tokenInfoFactory: TokenInfoFactory
+  protected tokenFactory: TokenFactory
 
   protected tokenMetaUtils: TokenMetaUtils
 
   constructor(network: Network = Network.Mainnet) {
-    this.tokenInfoFactory = TokenInfoFactory.make(network)
+    this.tokenFactory = TokenFactory.make(network)
     this.tokenMetaUtils = TokenMetaUtilsFactory.make(network)
   }
 
   getDenomTokenInfo(denom: string): TokenInfo | undefined {
-    return this.tokenInfoFactory.toTokenInfo(denom)
+    return this.tokenFactory.toTokenInfo(denom)
   }
 
   getDenomToken(denom: string): Token | undefined {
-    return this.tokenInfoFactory.toToken(denom)
+    return this.tokenFactory.toToken(denom)
   }
 
   getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {

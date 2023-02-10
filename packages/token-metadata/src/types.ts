@@ -93,8 +93,8 @@ export interface Cw20TokenMultiple extends BaseToken {
 }
 
 export interface Cw20Token extends BaseToken {
-  cw20?: Cw20TokenMeta
-  cw20s?: Cw20TokenMetaWithSource[]
+  cw20: Cw20TokenMeta
+  cw20s: Cw20TokenMetaWithSource[]
   tokenType: TokenType
 }
 
