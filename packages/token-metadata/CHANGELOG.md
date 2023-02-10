@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.150](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.149...@injectivelabs/token-metadata@1.0.150) (2023-02-10)
+
+
+### Bug Fixes
+
+* token metadata maps ([04b45ff](https://github.com/InjectiveLabs/injective-ts/commit/04b45ffa9351b8faa67fbee7a09b6aa4440c463d))
+
+
+
+
+
 ## [1.0.149](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.148...@injectivelabs/token-metadata@1.0.149) (2023-02-09)
 
 
