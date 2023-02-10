@@ -20,6 +20,7 @@ export interface IbcTokenMeta {
   path: string
   channelId: string
   decimals: number
+  symbol?: string
   isNative: boolean
   baseDenom: string
 }
@@ -27,12 +28,14 @@ export interface IbcTokenMeta {
 export interface SplTokenMeta {
   address: string
   decimals: number
+  symbol?: string
   isNative?: boolean
 }
 
 export interface Erc20TokenMeta {
   address: string
   decimals: number
+  symbol?: string
   isNative?: boolean
 }
 

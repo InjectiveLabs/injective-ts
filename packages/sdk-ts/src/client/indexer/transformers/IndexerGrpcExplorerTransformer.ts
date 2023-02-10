@@ -191,7 +191,7 @@ export class IndexerGrpcExplorerTransformer {
     const data = tx.getData()!
 
     return {
-      id: data.getId(),
+      id: data.getId !== undefined ? data.getId() : data.getHash(),
       blockNumber: data.getBlockNumber(),
       blockTimestamp: data.getBlockTimestamp(),
       hash: data.getHash(),
