@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.155](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.154...@injectivelabs/token-metadata@1.0.155) (2023-02-11)
+
+
+### Bug Fixes
+
+* atom base denom ([8ea7d2f](https://github.com/InjectiveLabs/injective-ts/commit/8ea7d2f3a41ce9046e070cd5078fd28090a7a37e))
+
+
+
+
+
 ## [1.0.154](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.153...@injectivelabs/token-metadata@1.0.154) (2023-02-11)
 
 
