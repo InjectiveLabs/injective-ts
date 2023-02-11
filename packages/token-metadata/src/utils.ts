@@ -1,33 +1,12 @@
 import { INJ_DENOM } from '@injectivelabs/utils'
 import {
   Token,
+  TokenMeta,
+  TokenType,
   Cw20TokenSingle,
   Cw20TokenSource,
-  TokenType,
-  IbcToken,
-  TokenMeta,
 } from './types'
-import { canonicalChannelIds } from './ibc'
 import { ibcBaseDenoms } from './tokens/tokens'
-
-export const isIbcTokenCanonical = (token: IbcToken) => {
-  const { denom } = token
-
-  if (!denom.startsWith('ibc/') || !token.ibc) {
-    return false
-  }
-
-  const pathParts = token.ibc.path.replace('transfer/', '').split('/')
-
-  /** More than one channelId */
-  if (pathParts.length > 1) {
-    return false
-  }
-
-  const [channelId] = pathParts
-
-  return canonicalChannelIds.includes(channelId)
-}
 
 export const getTokenTypeFromDenom = (denom: string) => {
   if (denom === INJ_DENOM) {

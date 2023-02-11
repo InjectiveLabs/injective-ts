@@ -1,3 +1,6 @@
+/**
+ * @deprecated - we now put the ibc information in the token metadata itself
+ */
 export default {
   '16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821': {
     path: 'transfer/channel-83',
