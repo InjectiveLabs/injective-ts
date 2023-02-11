@@ -67,4 +67,8 @@ export default {
     path: 'transfer/channel-93',
     baseDenom: 'usomm',
   },
+  c733f37cb50114afe8053c320df45d0aad8b94f556eb306ac2aba0b9963cdf0d: {
+    path: 'transfer/channel-99',
+    baseDenom: 'canto',
+  },
 }

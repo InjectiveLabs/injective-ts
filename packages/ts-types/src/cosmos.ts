@@ -26,6 +26,7 @@ export enum CosmosChainId {
   Stride = 'stride-1',
   Crescent = 'crescent-1',
   Sommelier = 'sommelier-3',
+  Canto = 'canto_7700-1',
 }
 
 export enum TestnetCosmosChainId {

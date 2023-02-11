@@ -7,6 +7,7 @@ import { CosmosTxResponse } from './cosmos'
 
 export enum BridgingNetwork {
   Axelar = 'axelar',
+  Canto = 'canto',
   Chihuahua = 'chihuahua',
   CosmosHub = 'cosmosHub',
   Ethereum = 'ethereum',
@@ -36,6 +37,7 @@ export const MintScanExplorerUrl = {
   [BridgingNetwork.Stride]: 'stride',
   [BridgingNetwork.Crescent]: 'crescent',
   [BridgingNetwork.Sommelier]: 'sommelier',
+  [BridgingNetwork.Canto]: '',
 } as Record<BridgingNetwork, string>
 
 export enum BridgeTransactionState {

@@ -40,6 +40,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Secret,
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
+  BridgingNetwork.Canto,
 ]
 
 export const LeapNetworks = [
@@ -50,6 +51,7 @@ export const LeapNetworks = [
   BridgingNetwork.Persistence,
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
+  BridgingNetwork.Canto,
 ]
 
 export const CosmostationNetworks = [
@@ -64,6 +66,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Stride,
   BridgingNetwork.Crescent,
   BridgingNetwork.Sommelier,
+  BridgingNetwork.Canto,
 ]
 
 export const CosmosNetworks = [
@@ -78,6 +81,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Secret,
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
+  BridgingNetwork.Canto,
 ]
 
 export const tokenSelectorDisabledNetworks = [
@@ -154,6 +158,11 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Sommelier,
     denoms: ['usomm'],
     symbols: ['somm'],
+  },
+  {
+    network: BridgingNetwork.Canto,
+    denoms: ['canto'],
+    symbols: ['canto'],
   },
   {
     network: BridgingNetwork.Solana,
@@ -262,6 +271,11 @@ export const cosmosNativeDenomsFromChainId = {
     ...tokenMetaUtils.getMetaBySymbol('SOMM'),
     tokenType: TokenType.Ibc,
     denom: 'usomm',
+  },
+  [CosmosChainId.Sommelier]: {
+    ...tokenMetaUtils.getMetaBySymbol('CANTO'),
+    tokenType: TokenType.Ibc,
+    denom: 'canto',
   },
   [TestnetCosmosChainId.Cosmoshub]: {
     ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
@@ -524,6 +538,10 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
 
   if (sender.startsWith('somm')) {
     return BridgingNetwork.Sommelier
+  }
+
+  if (sender.startsWith('canto')) {
+    return BridgingNetwork.Canto
   }
 
   if (sender.startsWith('0x')) {
