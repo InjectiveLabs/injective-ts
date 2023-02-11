@@ -649,7 +649,7 @@ export default {
     ibc: {
       decimals: 6,
       isNative: true,
-      baseDenom: 'uatom',
+      baseDenom: 'uphoton',
       path: 'transfer/channel-2',
       channelId: 'channel-2',
       hash: '48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
