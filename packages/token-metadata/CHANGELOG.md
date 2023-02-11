@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.154](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.153...@injectivelabs/token-metadata@1.0.154) (2023-02-11)
+
+
+### Features
+
+* ibc utils fns ([04eb096](https://github.com/InjectiveLabs/injective-ts/commit/04eb0966128500e3ee80ecab7a9560d0d94c221c))
+
+
+
+
+
 ## [1.0.153](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.152...@injectivelabs/token-metadata@1.0.153) (2023-02-10)
 
 
