@@ -24,6 +24,62 @@ export class TokenPrice {
     this.coinGeckoApi = new CoinGeckoApi(coinGeckoOptions)
   }
 
+  async fetchUsdTokensPrice(coinIds: string[]) {
+    if (coinIds.length === 0) {
+      return []
+    }
+
+    let prices: Record<string, number> = {}
+
+    const pricesFromCache = coinIds.reduce((prices, coinId) => {
+      try {
+        const priceFromCache = this.cache[coinId]
+
+        if (priceFromCache) {
+          return { ...prices, [coinId]: priceFromCache }
+        }
+
+        return prices
+      } catch (e) {
+        return prices
+      }
+    }, {} as Record<string, number>)
+
+    prices = { ...prices, ...pricesFromCache }
+
+    const coinIdsNotInCache = Object.keys(prices).filter(
+      (coinId) => !coinIds.includes(coinId),
+    )
+
+    if (coinIdsNotInCache.length === 0) {
+      return prices
+    }
+
+    const pricesFromInjectiveService =
+      await this.fetchUsdTokenPriceFromInjectiveServiceInChunks(
+        coinIdsNotInCache,
+      )
+
+    prices = { ...prices, ...pricesFromInjectiveService }
+
+    const coinIdsNotInCacheAndInjectiveService = Object.keys(prices).filter(
+      (coinId) => !coinIds.includes(coinId),
+    )
+
+    if (coinIdsNotInCacheAndInjectiveService.length === 0) {
+      return prices
+    }
+
+    const coinIdsWithoutPrice = Object.keys(
+      coinIdsNotInCacheAndInjectiveService,
+    ).reduce(
+      (prices, key) => ({ ...prices, [key]: 0 }),
+      {} as Record<string, number>,
+    )
+
+    return { ...prices, ...coinIdsWithoutPrice }
+  }
+
   async fetchUsdTokenPrice(coinId: string) {
     if (!coinId) {
       return 0
@@ -173,6 +229,48 @@ export class TokenPrice {
     }
 
     return undefined
+  }
+
+  private fetchUsdTokenPriceFromInjectiveServiceInChunks = async (
+    coinIds: string[],
+  ) => {
+    const CHUNK_SIZE = 15
+    let prices: Record<string, number> = {}
+
+    for (let i = 0; i < coinIds.length; i += CHUNK_SIZE) {
+      const chunkCoinIds = coinIds.slice(i, i + CHUNK_SIZE)
+
+      try {
+        const pricesResponse = (await this.restClient.get('coin/price', {
+          coinIds: chunkCoinIds,
+          currency: 'usd',
+        })) as {
+          data: {
+            data: CoinPriceFromInjectiveService[]
+          }
+        }
+
+        if (pricesResponse.data.data.length === 0) {
+          continue
+        }
+
+        const chunkResponse = pricesResponse.data.data.reduce(
+          (cache, coin) => ({
+            ...cache,
+            [coin.id]: new BigNumberInBase(coin.current_price).toNumber(),
+          }),
+          {} as Record<string, number>,
+        )
+
+        prices = { ...prices, ...chunkResponse }
+      } catch (e) {
+        //
+      }
+    }
+
+    this.cache = { ...this.cache, ...prices }
+
+    return prices
   }
 
   private async initCache(): Promise<void> {
