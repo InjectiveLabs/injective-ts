@@ -48,8 +48,6 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         `blocks/${blockHashHeight}`,
       )) as ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse>
 
-      console.log({ response })
-
       return IndexerRestExplorerTransformer.blockWithTxToBlockWithTx(
         response.data.data,
       )
