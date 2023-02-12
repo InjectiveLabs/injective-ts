@@ -26,7 +26,7 @@ export class TokenPrice {
 
   async fetchUsdTokensPrice(coinIds: string[]) {
     if (coinIds.length === 0) {
-      return []
+      return {}
     }
 
     let prices: Record<string, number> = {}
