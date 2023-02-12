@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.541](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.540...@injectivelabs/sdk-ui-ts@1.0.541) (2023-02-12)
+
+
+### Features
+
+* added a way to get multiple assets prices ([b731902](https://github.com/InjectiveLabs/injective-ts/commit/b7319029b665048495deaa11fa3190e614025e62))
+
+
+
+
+
 ## [1.0.540](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.539...@injectivelabs/sdk-ui-ts@1.0.540) (2023-02-12)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
