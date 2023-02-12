@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.425](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.424...@injectivelabs/sdk-ts@1.0.425) (2023-02-12)
+
+
+### Bug Fixes
+
+* params for rest indexer api ([c149563](https://github.com/InjectiveLabs/injective-ts/commit/c149563be1a17b91148f2f1d96673d5051d44c4e))
+
+
+
+
+
 ## [1.0.424](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.423...@injectivelabs/sdk-ts@1.0.424) (2023-02-11)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.156](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.155...@injectivelabs/token-metadata@1.0.156) (2023-02-12)
+
+
+### Bug Fixes
+
+* params for rest indexer api ([c149563](https://github.com/InjectiveLabs/injective-ts/commit/c149563be1a17b91148f2f1d96673d5051d44c4e))
+
+
+
+
+
 ## [1.0.155](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.154...@injectivelabs/token-metadata@1.0.155) (2023-02-11)
 
 
