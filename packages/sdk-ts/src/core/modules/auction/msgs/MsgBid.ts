@@ -1,6 +1,7 @@
 import { MsgBid as BaseMsgBid } from '@injectivelabs/chain-api/injective/auction/v1beta1/tx_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgBid {
   export interface Params {
@@ -12,24 +13,9 @@ export declare namespace MsgBid {
     }
   }
 
-  export interface DirectSign {
-    type: '/injective.auction.v1beta1.MsgBid'
-    message: BaseMsgBid
-  }
-
-  export interface Data extends BaseMsgBid.AsObject {
-    '@type': '/injective.auction.v1beta1.MsgBid'
-  }
-
-  export interface Amino extends BaseMsgBid.AsObject {
-    type: 'auction/MsgBid'
-  }
-
-  export interface Web3 extends BaseMsgBid.AsObject {
-    '@type': '/injective.auction.v1beta1.MsgBid'
-  }
-
   export type Proto = BaseMsgBid
+
+  export type Object = BaseMsgBid.AsObject
 }
 
 /**
@@ -37,16 +23,14 @@ export declare namespace MsgBid {
  */
 export default class MsgBid extends MsgBase<
   MsgBid.Params,
-  MsgBid.Data,
   MsgBid.Proto,
-  MsgBid.Amino,
-  MsgBid.DirectSign
+  MsgBid.Object
 > {
   static fromJSON(params: MsgBid.Params): MsgBid {
     return new MsgBid(params)
   }
 
-  public toProto(): MsgBid.Proto {
+  public toProto() {
     const { params } = this
 
     const amountCoin = new Coin()
@@ -61,7 +45,7 @@ export default class MsgBid extends MsgBase<
     return message
   }
 
-  public toData(): MsgBid.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -70,16 +54,19 @@ export default class MsgBid extends MsgBase<
     }
   }
 
-  public toAmino(): MsgBid.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'auction/MsgBid',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toDirectSign(): MsgBid.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {
@@ -88,13 +75,13 @@ export default class MsgBid extends MsgBase<
     }
   }
 
-  public toWeb3(): MsgBid.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.auction.v1beta1.MsgBid',
-      ...rest,
+      ...value,
     }
   }
 }

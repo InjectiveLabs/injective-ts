@@ -1,6 +1,7 @@
 import { MsgIncreasePositionMargin as BaseMsgIncreasePositionMargin } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgIncreasePositionMargin {
   export interface Params {
@@ -11,24 +12,9 @@ export declare namespace MsgIncreasePositionMargin {
     amount: string
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgIncreasePositionMargin'
-    message: BaseMsgIncreasePositionMargin
-  }
-
-  export interface Data extends BaseMsgIncreasePositionMargin.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin'
-  }
-
-  export interface Amino extends BaseMsgIncreasePositionMargin.AsObject {
-    type: 'exchange/MsgIncreasePositionMargin'
-  }
-
-  export interface Web3 extends BaseMsgIncreasePositionMargin.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin'
-  }
-
   export type Proto = BaseMsgIncreasePositionMargin
+
+  export type Object = BaseMsgIncreasePositionMargin.AsObject
 }
 
 const addMarginToPosition = (params: MsgIncreasePositionMargin.Params) => {
@@ -47,10 +33,8 @@ const addMarginToPosition = (params: MsgIncreasePositionMargin.Params) => {
  */
 export default class MsgIncreasePositionMargin extends MsgBase<
   MsgIncreasePositionMargin.Params,
-  MsgIncreasePositionMargin.Data,
   MsgIncreasePositionMargin.Proto,
-  MsgIncreasePositionMargin.Amino,
-  MsgIncreasePositionMargin.DirectSign
+  MsgIncreasePositionMargin.Object
 > {
   static fromJSON(
     params: MsgIncreasePositionMargin.Params,
@@ -58,7 +42,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
     return new MsgIncreasePositionMargin(params)
   }
 
-  public toProto(): MsgIncreasePositionMargin.Proto {
+  public toProto() {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -68,7 +52,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
     return addMarginToPosition(params)
   }
 
-  public toData(): MsgIncreasePositionMargin.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -77,27 +61,30 @@ export default class MsgIncreasePositionMargin extends MsgBase<
     }
   }
 
-  public toAmino(): MsgIncreasePositionMargin.Amino {
+  public toAmino() {
     const { params } = this
     const proto = addMarginToPosition(params)
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'exchange/MsgIncreasePositionMargin',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgIncreasePositionMargin.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin',
-      ...rest,
-    } as unknown as MsgIncreasePositionMargin.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgIncreasePositionMargin.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

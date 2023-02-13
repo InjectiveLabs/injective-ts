@@ -1,6 +1,6 @@
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgSend as BaseMsgSend } from '@injectivelabs/chain-api/cosmos/bank/v1beta1/tx_pb'
-import snakeCaseKeys from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgSend {
@@ -13,24 +13,9 @@ export declare namespace MsgSend {
     dstInjectiveAddress: string
   }
 
-  export interface DirectSign {
-    type: '/cosmos.bank.v1beta1.MsgSend'
-    message: BaseMsgSend
-  }
-
-  export interface Data extends BaseMsgSend.AsObject {
-    '@type': '/cosmos.bank.v1beta1.MsgSend'
-  }
-
-  export interface Amino extends BaseMsgSend.AsObject {
-    type: 'cosmos-sdk/MsgSend'
-  }
-
-  export interface Web3 extends BaseMsgSend.AsObject {
-    '@type': '/cosmos.bank.v1beta1.MsgSend'
-  }
-
   export type Proto = BaseMsgSend
+
+  export type Object = BaseMsgSend.AsObject
 }
 
 /**
@@ -38,16 +23,14 @@ export declare namespace MsgSend {
  */
 export default class MsgSend extends MsgBase<
   MsgSend.Params,
-  MsgSend.Data,
   MsgSend.Proto,
-  MsgSend.Amino,
-  MsgSend.DirectSign
+  MsgSend.Object
 > {
   static fromJSON(params: MsgSend.Params): MsgSend {
     return new MsgSend(params)
   }
 
-  public toProto(): MsgSend.Proto {
+  public toProto() {
     const { params } = this
 
     const amountToSend = new Coin()
@@ -62,7 +45,7 @@ export default class MsgSend extends MsgBase<
     return message
   }
 
-  public toData(): MsgSend.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -71,13 +54,13 @@ export default class MsgSend extends MsgBase<
     }
   }
 
-  public toAmino(): MsgSend.Amino {
+  public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakeCaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto.toObject()),
       amount: proto
         .getAmountList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
+        .map((amount) => snakecaseKeys(amount.toObject())),
     }
 
     // @ts-ignore
@@ -85,21 +68,21 @@ export default class MsgSend extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgSend',
-      ...message,
-    } as unknown as MsgSend.Amino
+      value: message,
+    }
   }
 
-  public toWeb3(): MsgSend.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.bank.v1beta1.MsgSend',
-      ...rest,
-    } as unknown as MsgSend.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgSend.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

@@ -1,6 +1,7 @@
 import { MsgVote as BaseMsgVote } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import { VoteOptionMap } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgVote {
   export interface Params {
@@ -9,24 +10,9 @@ export declare namespace MsgVote {
     voter: string
   }
 
-  export interface DirectSign {
-    type: '/cosmos.gov.v1beta1.MsgVote'
-    message: BaseMsgVote
-  }
-
-  export interface Data extends BaseMsgVote.AsObject {
-    '@type': '/cosmos.gov.v1beta1.MsgVote'
-  }
-
-  export interface Amino extends BaseMsgVote.AsObject {
-    type: 'cosmos-sdk/MsgVote'
-  }
-
-  export interface Web3 extends BaseMsgVote.AsObject {
-    '@type': '/cosmos.authz.v1beta1.MsgVote'
-  }
-
   export type Proto = BaseMsgVote
+
+  export type Object = BaseMsgVote.AsObject
 }
 
 /**
@@ -34,16 +20,14 @@ export declare namespace MsgVote {
  */
 export default class MsgVote extends MsgBase<
   MsgVote.Params,
-  MsgVote.Data,
   MsgVote.Proto,
-  MsgVote.Amino,
-  MsgVote.DirectSign
+  MsgVote.Object
 > {
   static fromJSON(params: MsgVote.Params): MsgVote {
     return new MsgVote(params)
   }
 
-  public toProto(): MsgVote.Proto {
+  public toProto() {
     const { params } = this
 
     const message = new BaseMsgVote()
@@ -54,7 +38,7 @@ export default class MsgVote extends MsgBase<
     return message
   }
 
-  public toData(): MsgVote.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -63,26 +47,29 @@ export default class MsgVote extends MsgBase<
     }
   }
 
-  public toAmino(): MsgVote.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'cosmos-sdk/MsgVote',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgVote.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgVote',
-      ...rest,
-    } as unknown as MsgVote.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgVote.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

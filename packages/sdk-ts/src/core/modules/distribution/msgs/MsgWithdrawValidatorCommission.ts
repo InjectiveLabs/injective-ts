@@ -1,29 +1,15 @@
 import { MsgWithdrawValidatorCommission as BaseMsgWithdrawValidatorCommission } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgWithdrawValidatorCommission {
   export interface Params {
     validatorAddress: string
   }
 
-  export interface DirectSign {
-    type: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission'
-    message: BaseMsgWithdrawValidatorCommission
-  }
-
-  export interface Data extends BaseMsgWithdrawValidatorCommission.AsObject {
-    '@type': '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission'
-  }
-
-  export interface Amino extends BaseMsgWithdrawValidatorCommission.AsObject {
-    type: 'cosmos-sdk/MsgWithdrawDelegationReward'
-  }
-
-  export interface Web3 extends BaseMsgWithdrawValidatorCommission.AsObject {
-    '@type': '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission'
-  }
-
   export type Proto = BaseMsgWithdrawValidatorCommission
+
+  export type Object = BaseMsgWithdrawValidatorCommission.AsObject
 }
 
 /**
@@ -31,10 +17,8 @@ export declare namespace MsgWithdrawValidatorCommission {
  */
 export default class MsgWithdrawValidatorCommission extends MsgBase<
   MsgWithdrawValidatorCommission.Params,
-  MsgWithdrawValidatorCommission.Data,
   MsgWithdrawValidatorCommission.Proto,
-  MsgWithdrawValidatorCommission.Amino,
-  MsgWithdrawValidatorCommission.DirectSign
+  MsgWithdrawValidatorCommission.Object
 > {
   static fromJSON(
     params: MsgWithdrawValidatorCommission.Params,
@@ -42,7 +26,7 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
     return new MsgWithdrawValidatorCommission(params)
   }
 
-  public toProto(): MsgWithdrawValidatorCommission.Proto {
+  public toProto() {
     const { params } = this
 
     const message = new BaseMsgWithdrawValidatorCommission()
@@ -51,7 +35,7 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
     return message
   }
 
-  public toData(): MsgWithdrawValidatorCommission.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -60,26 +44,29 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
     }
   }
 
-  public toAmino(): MsgWithdrawValidatorCommission.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'cosmos-sdk/MsgWithdrawDelegationReward',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgWithdrawValidatorCommission.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
-      ...rest,
+      ...value,
     }
   }
 
-  public toDirectSign(): MsgWithdrawValidatorCommission.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

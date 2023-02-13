@@ -2,6 +2,7 @@ import { MsgCreateInsuranceFund as BaseMsgCreateInsuranceFund } from '@injective
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { OracleTypeMap } from '@injectivelabs/chain-api/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgCreateInsuranceFund {
   export interface Params {
@@ -20,24 +21,9 @@ export declare namespace MsgCreateInsuranceFund {
     injectiveAddress: string
   }
 
-  export interface DirectSign {
-    type: '/injective.insurance.v1beta1.MsgCreateInsuranceFund'
-    message: BaseMsgCreateInsuranceFund
-  }
-
-  export interface Data extends BaseMsgCreateInsuranceFund.AsObject {
-    '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund'
-  }
-
-  export interface Amino extends BaseMsgCreateInsuranceFund.AsObject {
-    type: 'insurance/MsgCreateInsuranceFund'
-  }
-
-  export interface Web3 extends BaseMsgCreateInsuranceFund.AsObject {
-    '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund'
-  }
-
   export type Proto = BaseMsgCreateInsuranceFund
+
+  export type Object = BaseMsgCreateInsuranceFund.AsObject
 }
 
 /**
@@ -45,10 +31,8 @@ export declare namespace MsgCreateInsuranceFund {
  */
 export default class MsgCreateInsuranceFund extends MsgBase<
   MsgCreateInsuranceFund.Params,
-  MsgCreateInsuranceFund.Data,
   MsgCreateInsuranceFund.Proto,
-  MsgCreateInsuranceFund.Amino,
-  MsgCreateInsuranceFund.DirectSign
+  MsgCreateInsuranceFund.Object
 > {
   static fromJSON(
     params: MsgCreateInsuranceFund.Params,
@@ -56,7 +40,7 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     return new MsgCreateInsuranceFund(params)
   }
 
-  public toProto(): MsgCreateInsuranceFund.Proto {
+  public toProto() {
     const { params } = this
 
     const amountCoin = new Coin()
@@ -76,7 +60,7 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     return message
   }
 
-  public toData(): MsgCreateInsuranceFund.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -85,26 +69,29 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCreateInsuranceFund.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'insurance/MsgCreateInsuranceFund',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgCreateInsuranceFund.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund',
-      ...rest,
-    } as unknown as MsgCreateInsuranceFund.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCreateInsuranceFund.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

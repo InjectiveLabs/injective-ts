@@ -18,6 +18,7 @@ import { ExtensionOptionsWeb3Tx } from '@injectivelabs/chain-api/injective/types
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { makeSignDoc, StdFee } from '@cosmjs/amino'
 import { Msgs } from '../../msgs'
+import snakecaseKeys from 'snakecase-keys'
 
 export const getPublicKey = ({
   chainId,
@@ -205,7 +206,7 @@ export const createStdSignDoc = (args: {
 
     return {
       type,
-      value: rest,
+      value: snakecaseKeys(rest),
     }
   })
 

@@ -1,34 +1,19 @@
 import { MsgMigrateContract as BaseMsgMigrateContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
 import { fromUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
-import snakeCaseKeys from 'snakecase-keys'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgMigrateContract {
   export interface Params {
-    sender: string,
-    contract: string,
-    codeId: number,
-    msg: object,
-  }
-
-  export interface DirectSign {
-    type: '/cosmwasm.wasm.v1.MsgMigrateContract'
-    message: BaseMsgMigrateContract
-  }
-
-  export interface Data extends BaseMsgMigrateContract.AsObject {
-    '@type': '/cosmwasm.wasm.v1.MsgMigrateContract'
-  }
-
-  export interface Amino extends BaseMsgMigrateContract.AsObject {
-    type: 'wasm/MsgMigrateContract'
-  }
-
-  export interface Web3 extends BaseMsgMigrateContract.AsObject {
-    '@type': '/cosmwasm.wasm.v1.MsgMigrateContract'
+    sender: string
+    contract: string
+    codeId: number
+    msg: object
   }
 
   export type Proto = BaseMsgMigrateContract
+
+  export type Object = BaseMsgMigrateContract.AsObject
 }
 
 /**
@@ -36,16 +21,14 @@ export declare namespace MsgMigrateContract {
  */
 export default class MsgMigrateContract extends MsgBase<
   MsgMigrateContract.Params,
-  MsgMigrateContract.Data,
   MsgMigrateContract.Proto,
-  MsgMigrateContract.Amino,
-  MsgMigrateContract.DirectSign
+  MsgMigrateContract.Object
 > {
   static fromJSON(params: MsgMigrateContract.Params): MsgMigrateContract {
     return new MsgMigrateContract(params)
   }
 
-  public toProto(): MsgMigrateContract.Proto {
+  public toProto() {
     const { params } = this
 
     const message = new BaseMsgMigrateContract()
@@ -57,7 +40,7 @@ export default class MsgMigrateContract extends MsgBase<
     return message
   }
 
-  public toData(): MsgMigrateContract.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -66,32 +49,32 @@ export default class MsgMigrateContract extends MsgBase<
     }
   }
 
-  public toAmino(): MsgMigrateContract.Amino {
+  public toAmino() {
     const { params } = this
     const proto = this.toProto()
 
     const message = {
-      ...snakeCaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto.toObject()),
       msg: params.msg,
     }
 
     return {
-      type: 'wasm/MsgExecuteContract',
-      ...message,
-    } as unknown as MsgMigrateContract.Amino
+      type: 'wasm/MsgMigrateContract',
+      value: message as unknown as SnakeCaseKeys<MsgMigrateContract.Object>,
+    }
   }
 
-  public toWeb3(): MsgMigrateContract.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgMigrateContract',
-      ...rest,
-    } as unknown as MsgMigrateContract.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgMigrateContract.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

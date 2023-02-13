@@ -20,7 +20,7 @@ const protoParams = {
   sender: params.injectiveAddress,
   amount: params.amount,
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgDeposit.fromJSON(params)
 
 describe('MsgDeposit', () => {
@@ -45,7 +45,7 @@ describe('MsgDeposit', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -70,7 +70,7 @@ describe('MsgDeposit', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeAmino,
-      value: snakecaseKeys(protoParams),
+      value: protoParamsAmino,
     })
   })
 
@@ -79,7 +79,7 @@ describe('MsgDeposit', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

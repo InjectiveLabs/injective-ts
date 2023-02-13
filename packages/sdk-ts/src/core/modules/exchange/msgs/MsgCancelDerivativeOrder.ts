@@ -2,6 +2,7 @@ import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta
 import { MsgCancelDerivativeOrder as BaseMsgCancelDerivativeOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { OrderMask } from '../../../../types/exchange'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgCancelDerivativeOrder {
   export interface Params {
@@ -12,32 +13,15 @@ export declare namespace MsgCancelDerivativeOrder {
     orderMask?: OrderMaskMap[keyof OrderMaskMap]
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgCancelDerivativeOrder'
-    message: BaseMsgCancelDerivativeOrder
-  }
-
-  export interface Data extends BaseMsgCancelDerivativeOrder.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder'
-  }
-
-  export interface Amino extends BaseMsgCancelDerivativeOrder.AsObject {
-    type: 'exchange/MsgCancelDerivativeOrder'
-  }
-
-  export interface Web3 extends BaseMsgCancelDerivativeOrder.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder'
-  }
-
   export type Proto = BaseMsgCancelDerivativeOrder
+
+  export type Object = BaseMsgCancelDerivativeOrder.AsObject
 }
 
 export default class MsgCancelDerivativeOrder extends MsgBase<
   MsgCancelDerivativeOrder.Params,
-  MsgCancelDerivativeOrder.Data,
   MsgCancelDerivativeOrder.Proto,
-  MsgCancelDerivativeOrder.Amino,
-  MsgCancelDerivativeOrder.DirectSign
+  MsgCancelDerivativeOrder.Object
 > {
   static fromJSON(
     params: MsgCancelDerivativeOrder.Params,
@@ -45,7 +29,7 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
     return new MsgCancelDerivativeOrder(params)
   }
 
-  public toProto(): MsgCancelDerivativeOrder.Proto {
+  public toProto() {
     const { params } = this
 
     const message = new BaseMsgCancelDerivativeOrder()
@@ -60,7 +44,7 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
     return message
   }
 
-  public toData(): MsgCancelDerivativeOrder.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -69,26 +53,29 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCancelDerivativeOrder.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'exchange/MsgCancelDerivativeOrder',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgCancelDerivativeOrder.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder',
-      ...rest,
-    } as unknown as MsgCancelDerivativeOrder.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCancelDerivativeOrder.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

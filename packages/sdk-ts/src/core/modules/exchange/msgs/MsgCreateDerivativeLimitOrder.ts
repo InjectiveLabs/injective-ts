@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgCreateDerivativeLimitOrder {
   export interface Params {
@@ -20,23 +21,9 @@ export declare namespace MsgCreateDerivativeLimitOrder {
     quantity: string
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
-    message: BaseMsgCreateDerivativeLimitOrder
-  }
-
-  export interface Data extends BaseMsgCreateDerivativeLimitOrder.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
-  }
-
-  export interface Amino extends BaseMsgCreateDerivativeLimitOrder.AsObject {
-    type: 'exchange/MsgCreateDerivativeLimitOrder'
-  }
-
-  export interface Web3 extends BaseMsgCreateDerivativeLimitOrder.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
-  }
   export type Proto = BaseMsgCreateDerivativeLimitOrder
+
+  export type Object = BaseMsgCreateDerivativeLimitOrder.AsObject
 }
 
 const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
@@ -66,10 +53,8 @@ const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
  */
 export default class MsgCreateDerivativeLimitOrder extends MsgBase<
   MsgCreateDerivativeLimitOrder.Params,
-  MsgCreateDerivativeLimitOrder.Data,
   MsgCreateDerivativeLimitOrder.Proto,
-  MsgCreateDerivativeLimitOrder.Amino,
-  MsgCreateDerivativeLimitOrder.DirectSign
+  MsgCreateDerivativeLimitOrder.Object
 > {
   static fromJSON(
     params: MsgCreateDerivativeLimitOrder.Params,
@@ -77,7 +62,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
     return new MsgCreateDerivativeLimitOrder(params)
   }
 
-  public toProto(): MsgCreateDerivativeLimitOrder.Proto {
+  public toProto() {
     const { params: initialParams } = this
 
     const params = {
@@ -93,7 +78,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
     return createLimitOrder(params)
   }
 
-  public toData(): MsgCreateDerivativeLimitOrder.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -102,27 +87,31 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCreateDerivativeLimitOrder.Amino {
+  public toAmino() {
     const { params } = this
     const proto = createLimitOrder(params)
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'exchange/MsgCreateDerivativeLimitOrder',
-      ...proto.toObject(),
+      value:
+        message as unknown as SnakeCaseKeys<MsgCreateDerivativeLimitOrder.Object>,
     }
   }
 
-  public toWeb3(): MsgCreateDerivativeLimitOrder.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder',
-      ...rest,
-    } as unknown as MsgCreateDerivativeLimitOrder.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCreateDerivativeLimitOrder.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

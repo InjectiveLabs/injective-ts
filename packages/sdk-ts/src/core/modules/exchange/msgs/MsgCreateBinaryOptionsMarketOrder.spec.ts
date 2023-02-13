@@ -45,7 +45,7 @@ const formattedProtoParams = {
     },
   },
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgCreateBinaryOptionsMarketOrder.fromJSON(params)
 
 describe('MsgCreateBinaryOptionsMarketOrder', () => {
@@ -70,7 +70,7 @@ describe('MsgCreateBinaryOptionsMarketOrder', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -128,7 +128,7 @@ describe('MsgCreateBinaryOptionsMarketOrder', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

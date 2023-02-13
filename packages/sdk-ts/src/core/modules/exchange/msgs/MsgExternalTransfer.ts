@@ -1,6 +1,7 @@
 import { MsgExternalTransfer as BaseMsgExternalTransfer } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgExternalTransfer {
   export interface Params {
@@ -13,24 +14,9 @@ export declare namespace MsgExternalTransfer {
     }
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgExternalTransfer'
-    message: BaseMsgExternalTransfer
-  }
-
-  export interface Data extends BaseMsgExternalTransfer.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgExternalTransfer'
-  }
-
-  export interface Amino extends BaseMsgExternalTransfer.AsObject {
-    type: 'exchange/MsgExternalTransfer'
-  }
-
-  export interface Web3 extends BaseMsgExternalTransfer.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgExternalTransfer'
-  }
-
   export type Proto = BaseMsgExternalTransfer
+
+  export type Object = BaseMsgExternalTransfer.AsObject
 }
 
 /**
@@ -38,16 +24,14 @@ export declare namespace MsgExternalTransfer {
  */
 export default class MsgExternalTransfer extends MsgBase<
   MsgExternalTransfer.Params,
-  MsgExternalTransfer.Data,
   MsgExternalTransfer.Proto,
-  MsgExternalTransfer.Amino,
-  MsgExternalTransfer.DirectSign
+  MsgExternalTransfer.Object
 > {
   static fromJSON(params: MsgExternalTransfer.Params): MsgExternalTransfer {
     return new MsgExternalTransfer(params)
   }
 
-  public toProto(): MsgExternalTransfer.Proto {
+  public toProto() {
     const { params } = this
 
     const amountCoin = new Coin()
@@ -63,7 +47,7 @@ export default class MsgExternalTransfer extends MsgBase<
     return message
   }
 
-  public toData(): MsgExternalTransfer.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -72,26 +56,29 @@ export default class MsgExternalTransfer extends MsgBase<
     }
   }
 
-  public toAmino(): MsgExternalTransfer.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'exchange/MsgExternalTransfer',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgExternalTransfer.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgExternalTransfer',
-      ...rest,
-    } as unknown as MsgExternalTransfer.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgExternalTransfer.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

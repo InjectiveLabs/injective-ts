@@ -61,7 +61,7 @@ describe('MsgBatchCancelDerivativeOrders', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParamsAmino,
+      value: protoParamsAmino,
     })
   })
 
