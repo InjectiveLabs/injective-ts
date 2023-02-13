@@ -92,7 +92,9 @@ export default class CosmosWalletStrategy {
     return this.getStrategy().isChainIdSupported(chainId)
   }
 
-  public async sendTransaction(tx: DirectSignResponse): Promise<TxResponse> {
+  public async sendTransaction(
+    tx: TxRaw | DirectSignResponse,
+  ): Promise<TxResponse> {
     return this.getStrategy().sendTransaction(tx)
   }
 

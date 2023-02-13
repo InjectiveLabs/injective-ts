@@ -1,15 +1,15 @@
 /* eslint-disable class-methods-use-this */
 import { CosmosChainId } from '@injectivelabs/ts-types'
 import {
+  ErrorType,
   UnspecifiedErrorCode,
   CosmosWalletException,
   TransactionException,
-  ErrorType,
 } from '@injectivelabs/exceptions'
 import {
-  createCosmosSignDocFromTransaction,
-  createTxRawFromSigResponse,
   TxResponse,
+  createTxRawFromSigResponse,
+  createCosmosSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
@@ -66,10 +66,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     transaction: DirectSignResponse | TxRaw,
   ): Promise<TxResponse> {
     const { leapWallet } = this
-    const txRaw =
-      transaction instanceof TxRaw
-        ? transaction
-        : createTxRawFromSigResponse(transaction)
+    const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
       return await leapWallet.waitTxBroadcasted(

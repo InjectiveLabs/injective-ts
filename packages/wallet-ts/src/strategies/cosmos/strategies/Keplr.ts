@@ -1,16 +1,16 @@
 /* eslint-disable class-methods-use-this */
 import { CosmosChainId } from '@injectivelabs/ts-types'
 import {
-  createCosmosSignDocFromTransaction,
-  createTxRawFromSigResponse,
   TxResponse,
+  createTxRawFromSigResponse,
+  createCosmosSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
-  UnspecifiedErrorCode,
-  CosmosWalletException,
   ErrorType,
   TransactionException,
+  UnspecifiedErrorCode,
+  CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { AminoSignResponse, StdSignDoc } from '@cosmjs/launchpad'
@@ -68,10 +68,7 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
     transaction: DirectSignResponse | TxRaw,
   ): Promise<TxResponse> {
     const { keplrWallet } = this
-    const txRaw =
-      transaction instanceof TxRaw
-        ? transaction
-        : createTxRawFromSigResponse(transaction)
+    const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
       return await keplrWallet.waitTxBroadcasted(
@@ -115,6 +112,19 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
   }): Promise<AminoSignResponse> {
     const keplrWallet = this.getKeplrWallet()
     const signer = await keplrWallet.getOfflineAminoSigner()
+    const walletDeviceType = await this.getWalletDeviceType()
+
+    if (walletDeviceType !== WalletDeviceType.Hardware) {
+      throw new CosmosWalletException(
+        new Error(
+          'signAminoTransaction is only supported when using Keplr + Ledger',
+        ),
+        {
+          code: UnspecifiedErrorCode,
+          context: WalletAction.SignTransaction,
+        },
+      )
+    }
 
     try {
       return signer.signAmino(transaction.address, transaction.stdSignDoc)

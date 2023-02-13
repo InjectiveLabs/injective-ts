@@ -91,10 +91,7 @@ export default class Leap
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<TxResponse> {
     const { leapWallet } = this
-    const txRaw =
-      transaction instanceof TxRaw
-        ? transaction
-        : createTxRawFromSigResponse(transaction)
+    const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
       return await leapWallet.waitTxBroadcasted(
