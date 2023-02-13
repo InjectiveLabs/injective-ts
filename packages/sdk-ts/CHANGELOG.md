@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.429](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.428...@injectivelabs/sdk-ts@1.0.429) (2023-02-13)
+
+
+### Bug Fixes
+
+* types and conditions for keplr + ledger ([5bc4a9a](https://github.com/InjectiveLabs/injective-ts/commit/5bc4a9a93af98acf76ddf98d899adb6898e28b08))
+
+
+
+
+
 ## [1.0.428](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.427...@injectivelabs/sdk-ts@1.0.428) (2023-02-13)
 
 
