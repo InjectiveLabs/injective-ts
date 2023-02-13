@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.425](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.424...@injectivelabs/wallet-ts@1.0.425) (2023-02-13)
+
+
+### Features
+
+* added amino sign for Keplr ([a3fa523](https://github.com/InjectiveLabs/injective-ts/commit/a3fa523179151bceb701d0216499dc2c21480ed5))
+
+
+
+
+
 ## [1.0.424](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.423...@injectivelabs/wallet-ts@1.0.424) (2023-02-13)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

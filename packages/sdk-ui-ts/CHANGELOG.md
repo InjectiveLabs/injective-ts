@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.544](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.543...@injectivelabs/sdk-ui-ts@1.0.544) (2023-02-13)
+
+
+### Features
+
+* added amino sign for Keplr ([a3fa523](https://github.com/InjectiveLabs/injective-ts/commit/a3fa523179151bceb701d0216499dc2c21480ed5))
+
+
+
+
+
 ## [1.0.543](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.542...@injectivelabs/sdk-ui-ts@1.0.543) (2023-02-13)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

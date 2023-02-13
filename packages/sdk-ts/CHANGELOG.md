@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.428](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.427...@injectivelabs/sdk-ts@1.0.428) (2023-02-13)
+
+
+### Features
+
+* added amino sign for Keplr ([a3fa523](https://github.com/InjectiveLabs/injective-ts/commit/a3fa523179151bceb701d0216499dc2c21480ed5))
+
+
+
+
+
 ## [1.0.427](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.426...@injectivelabs/sdk-ts@1.0.427) (2023-02-13)
 
 
