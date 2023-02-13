@@ -109,9 +109,18 @@ export class DenomClient {
         : undefined
     }
 
-    const denomTrace = await this.ibcApi.fetchDenomTrace(hash)
+    try {
+      const denomTrace = await this.ibcApi.fetchDenomTrace(hash)
 
-    if (!denomTrace) {
+      const token = this.tokenFactory.toToken(denomTrace.baseDenom)
+
+      return token
+        ? {
+            ...token,
+            denom,
+          }
+        : undefined
+    } catch (e) {
       throw new GeneralException(
         new Error(`Denom trace not found for ${denom}`),
         {
@@ -119,15 +128,6 @@ export class DenomClient {
         },
       )
     }
-
-    const token = this.tokenFactory.toToken(denomTrace.baseDenom)
-
-    return token
-      ? {
-          ...token,
-          denom,
-        }
-      : undefined
   }
 
   private async fetchAndCacheDenomTraces() {

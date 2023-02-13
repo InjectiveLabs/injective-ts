@@ -32,7 +32,11 @@ export const awaitForAll = async <T, S>(
   const result = [] as S[]
 
   for (let i = 0; i < array.length; i += 1) {
-    result.push(await callback(array[i]))
+    try {
+      result.push(await callback(array[i]))
+    } catch (e: any) {
+      throw Error(e)
+    }
   }
 
   return result
