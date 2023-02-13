@@ -354,7 +354,10 @@ export const convertWormholeToUiBridgeTransaction = async ({
   network: Network
 }): Promise<UiBridgeTransaction> => {
   const isEthereumWhTransfer =
-    transaction.sender.startsWith('0x') || transaction.receiver.startsWith('0x')
+    transaction.sender.startsWith('0x') ||
+    (transaction.receiver.startsWith('0x') &&
+      (transaction.source === BridgingNetwork.EthereumWh ||
+        transaction.destination === BridgingNetwork.EthereumWh))
   const isDeposit = transaction.sender.startsWith('0x')
   const ethereumWhExplorerLink = isDeposit
     ? `${getEthereumExplorerUrl(network)}/tx/${transaction.txHash}`
