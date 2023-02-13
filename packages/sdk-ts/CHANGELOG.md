@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.431](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.430...@injectivelabs/sdk-ts@1.0.431) (2023-02-13)
+
+
+### Features
+
+* msgTransferExternal ([0ebaa6e](https://github.com/InjectiveLabs/injective-ts/commit/0ebaa6e33588f003628a5fa7ad73964b76d4b5e6))
+
+
+
+
+
 ## [1.0.430](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.429...@injectivelabs/sdk-ts@1.0.430) (2023-02-13)
 
 
