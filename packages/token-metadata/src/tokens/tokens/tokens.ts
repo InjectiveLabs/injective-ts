@@ -1151,7 +1151,7 @@ export default {
       baseDenom: 'canto',
       path: 'transfer/channel-99',
       channelId: 'channel-99',
-      hash: 'c733f37cb50114afe8053c320df45d0aad8b94f556eb306ac2aba0b9963cdf0d',
+      hash: 'C733F37CB50114AFE8053C320DF45D0AAD8B94F556EB306AC2ABA0B9963CDF0D',
       tokenType: TokenType.Ibc,
     },
   },
