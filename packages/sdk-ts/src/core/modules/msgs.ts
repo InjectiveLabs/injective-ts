@@ -26,6 +26,7 @@ import MsgWithdraw from './exchange/msgs/MsgWithdraw'
 import MsgGovDeposit from './gov/msgs/MsgDeposit'
 import MsgVote from './gov/msgs/MsgVote'
 import MsgTransfer from './ibc/msgs/MsgTransfer'
+import MsgTransferExternal from './ibc/msgs/MsgTransferExternal'
 import MsgCreateInsuranceFund from './insurance/msgs/MsgCreateInsuranceFund'
 import MsgRequestRedemption from './insurance/msgs/MsgRequestRedemption'
 import MsgUnderwrite from './insurance/msgs/MsgUnderwrite'
@@ -72,6 +73,7 @@ export type Msgs =
   | MsgSubmitProposal
   | MsgVote
   | MsgTransfer
+  | MsgTransferExternal
   | MsgCreateInsuranceFund
   | MsgRequestRedemption
   | MsgUnderwrite
