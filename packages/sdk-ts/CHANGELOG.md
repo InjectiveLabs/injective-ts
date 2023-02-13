@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.427](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.426...@injectivelabs/sdk-ts@1.0.427) (2023-02-13)
+
+
+### Bug Fixes
+
+* token meta not populated on devnet env ([11fead4](https://github.com/InjectiveLabs/injective-ts/commit/11fead46519b883cd676db027162189402d17d06))
+
+
+### Features
+
+* implement grpc oracle stream for prices by markets ([e24887f](https://github.com/InjectiveLabs/injective-ts/commit/e24887f01d6fe136fe55d831930c03c09ab86b6f))
+
+
+
+
+
 ## [1.0.426](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.425...@injectivelabs/sdk-ts@1.0.426) (2023-02-12)
 
 
