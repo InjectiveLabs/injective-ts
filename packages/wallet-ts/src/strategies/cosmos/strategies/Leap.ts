@@ -13,6 +13,8 @@ import {
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { StdSignDoc } from '@keplr-wallet/types'
+import { AminoSignResponse } from '@cosmjs/launchpad'
 import { LeapWallet } from '../../../utils/wallets/leap'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
@@ -103,6 +105,15 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
         context: WalletAction.SendTransaction,
       })
     }
+  }
+
+  async signAminoTransaction(_transaction: {
+    address: string
+    stdSignDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
+    throw new CosmosWalletException(
+      new Error('signAminoTransaction not supported on Leap'),
+    )
   }
 
   async getPubKey(): Promise<string> {

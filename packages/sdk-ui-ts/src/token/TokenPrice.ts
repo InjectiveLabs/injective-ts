@@ -47,8 +47,8 @@ export class TokenPrice {
 
     prices = { ...prices, ...pricesFromCache }
 
-    const coinIdsNotInCache = Object.keys(prices).filter(
-      (coinId) => !coinIds.includes(coinId),
+    const coinIdsNotInCache = coinIds.filter(
+      (coinId) => !Object.keys(prices).includes(coinId),
     )
 
     if (coinIdsNotInCache.length === 0) {
@@ -62,8 +62,8 @@ export class TokenPrice {
 
     prices = { ...prices, ...pricesFromInjectiveService }
 
-    const coinIdsNotInCacheAndInjectiveService = Object.keys(prices).filter(
-      (coinId) => !coinIds.includes(coinId),
+    const coinIdsNotInCacheAndInjectiveService = coinIds.filter(
+      (coinId) => !Object.keys(prices).includes(coinId),
     )
 
     if (coinIdsNotInCacheAndInjectiveService.length === 0) {
@@ -234,15 +234,19 @@ export class TokenPrice {
   private fetchUsdTokenPriceFromInjectiveServiceInChunks = async (
     coinIds: string[],
   ) => {
-    const CHUNK_SIZE = 15
+    const CHUNK_SIZE = 10
     let prices: Record<string, number> = {}
 
     for (let i = 0; i < coinIds.length; i += CHUNK_SIZE) {
-      const chunkCoinIds = coinIds.slice(i, i + CHUNK_SIZE)
+      const chunkCoinIds = coinIds.slice(i, i + CHUNK_SIZE).filter((c) => c)
+
+      if (chunkCoinIds.length === 0) {
+        continue
+      }
 
       try {
         const pricesResponse = (await this.restClient.get('coin/price', {
-          coinIds: chunkCoinIds,
+          coinIds: chunkCoinIds.join(','),
           currency: 'usd',
         })) as {
           data: {

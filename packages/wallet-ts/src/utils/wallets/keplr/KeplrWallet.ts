@@ -2,6 +2,7 @@
 import type {
   AminoSignResponse,
   Keplr,
+  OfflineAminoSigner,
   StdSignDoc,
   Window as KeplrWindow,
 } from '@keplr-wallet/types'
@@ -120,6 +121,21 @@ export class KeplrWallet {
 
     try {
       return keplr.getOfflineSigner(chainId) as unknown as OfflineDirectSigner
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        context: 'Keplr',
+      })
+    }
+  }
+
+  async getOfflineAminoSigner(): Promise<OfflineAminoSigner> {
+    const { chainId } = this
+    const keplr = await this.getKeplrWallet()
+
+    try {
+      return keplr.getOfflineSignerOnlyAmino(
+        chainId,
+      ) as unknown as OfflineAminoSigner
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         context: 'Keplr',
