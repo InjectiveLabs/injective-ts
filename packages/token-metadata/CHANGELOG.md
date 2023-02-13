@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.157](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.156...@injectivelabs/token-metadata@1.0.157) (2023-02-13)
+
+
+### Bug Fixes
+
+* token meta not populated on devnet env ([11fead4](https://github.com/InjectiveLabs/injective-ts/commit/11fead46519b883cd676db027162189402d17d06))
+
+
+
+
+
 ## [1.0.156](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.155...@injectivelabs/token-metadata@1.0.156) (2023-02-12)
 
 
