@@ -25,6 +25,7 @@ import { UserDeposit } from '@injectivelabs/sdk-ts/dist/client'
 import {
   getExplorerUrl,
   getCosmosExplorerUrl,
+  getSolanaExplorerUrl,
   getEthereumExplorerUrl,
   getTerraExplorerUrl,
   FailedStates,
@@ -358,13 +359,30 @@ export const convertWormholeToUiBridgeTransaction = async ({
     (transaction.receiver.startsWith('0x') &&
       (transaction.source === BridgingNetwork.EthereumWh ||
         transaction.destination === BridgingNetwork.EthereumWh))
-  const isDeposit = transaction.sender.startsWith('0x')
-  const ethereumWhExplorerLink = isDeposit
+  const isSolanaTransfer =
+    transaction.source === BridgingNetwork.Solana ||
+    transaction.destination === BridgingNetwork.Solana
+  const isEthereumDeposit =
+    transaction.sender.startsWith('0x') &&
+    transaction.source === BridgingNetwork.EthereumWh
+  const isSolanaDeposit = transaction.source === BridgingNetwork.Solana
+
+  const solanaWhExplorerLink = isSolanaDeposit
+    ? `${getSolanaExplorerUrl(network)}/tx/${transaction.txHash}`
+    : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
+
+  const ethereumWhExplorerLink = isEthereumDeposit
     ? `${getEthereumExplorerUrl(network)}/tx/${transaction.txHash}`
     : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
-  const explorerLink = isEthereumWhTransfer
-    ? ethereumWhExplorerLink
-    : transaction.explorerLink || ''
+
+  const whExplorerLink = isSolanaTransfer
+    ? solanaWhExplorerLink
+    : ethereumWhExplorerLink
+
+  const explorerLink =
+    isEthereumWhTransfer || isSolanaTransfer
+      ? whExplorerLink
+      : transaction.explorerLink || ''
 
   return {
     type: getBridgeTransactionType(transaction.source, transaction.destination),

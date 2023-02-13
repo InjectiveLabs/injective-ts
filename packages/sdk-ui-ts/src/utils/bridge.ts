@@ -428,6 +428,23 @@ export const getEthereumExplorerUrl = (network: Network): string => {
   }
 }
 
+export const getSolanaExplorerUrl = (network: Network): string => {
+  switch (network) {
+    case Network.Devnet:
+      return 'https://explorer.solana.com/?cluster=devnet'
+    case Network.Mainnet:
+      return 'https://explorer.solana.com/'
+    case Network.Public:
+      return 'https://explorer.solana.com/'
+    case Network.Local:
+      return 'https://explorer.solana.com/?cluster=devnet'
+    case Network.Testnet:
+      return 'https://explorer.solana.com/?cluster=testnet'
+    default:
+      return 'https://explorer.solana.com/'
+  }
+}
+
 export const getTerraExplorerUrl = (network: Network): string => {
   switch (network) {
     case Network.Devnet:
