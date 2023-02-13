@@ -35,7 +35,7 @@ export const awaitForAll = async <T, S>(
     try {
       result.push(await callback(array[i]))
     } catch (e: any) {
-      throw Error(e)
+      // throw Error(e)
     }
   }
 
