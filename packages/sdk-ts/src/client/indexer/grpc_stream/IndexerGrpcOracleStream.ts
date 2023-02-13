@@ -1,6 +1,8 @@
 import {
   StreamPricesRequest,
   StreamPricesResponse,
+  StreamPricesByMarketsRequest,
+  StreamPricesByMarketsResponse,
 } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb'
 import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb_service'
 import { StreamStatusResponse } from '../types'
@@ -10,6 +12,12 @@ import { getGrpcTransport } from '../../../utils/grpc'
 export type OraclePriceStreamCallback = (
   response: ReturnType<
     typeof IndexerOracleStreamTransformer.pricesStreamCallback
+  >,
+) => void
+
+export type OraclePricesByMarketsStreamCallback = (
+  response: ReturnType<
+    typeof IndexerOracleStreamTransformer.pricesByMarketsCallback
   >,
 ) => void
 
@@ -56,6 +64,40 @@ export class IndexerGrpcOracleStream {
 
     stream.on('data', (response: StreamPricesResponse) => {
       callback(IndexerOracleStreamTransformer.pricesStreamCallback(response))
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+  }
+
+  streamOraclePricesByMarkets({
+    marketIds,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketIds?: string[]
+    callback: OraclePricesByMarketsStreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamPricesByMarketsRequest()
+
+    if (marketIds) {
+      request.setMarketIdsList(marketIds)
+    }
+
+    const stream = this.client.streamPricesByMarkets(request)
+
+    stream.on('data', (response: StreamPricesByMarketsResponse) => {
+      callback(IndexerOracleStreamTransformer.pricesByMarketsCallback(response))
     })
 
     if (onEndCallback) {
