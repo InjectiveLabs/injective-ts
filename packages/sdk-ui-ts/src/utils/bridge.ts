@@ -14,8 +14,7 @@ import {
   PEGGY_TESTNET_GRAPH_URL,
 } from '../constants'
 import { CosmosChainId, TestnetCosmosChainId } from '@injectivelabs/ts-types'
-import { tokenMetaUtils, TokenType } from '@injectivelabs/token-metadata'
-import { Token } from '@injectivelabs/token-metadata'
+import { Token, tokenMetaUtils, TokenType } from '@injectivelabs/token-metadata'
 
 export const InProgressStates = [
   BridgeTransactionState.Confirming,
@@ -335,6 +334,15 @@ export const ibcHashToNativeInjPerNetwork = {
   [BridgingNetwork.Crescent]:
     'ibc/5A76568E079A31FA12165E4559BA9F1E9D4C97F9C2060B538C84DCD503815E30',
   [BridgingNetwork.Persistence]:
+    'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
+} as Partial<Record<BridgingNetwork, string>>
+
+export const ibcHashToNativeInjPerCosmosChain = {
+  [CosmosChainId.Osmosis]:
+    'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
+  [CosmosChainId.Crescent]:
+    'ibc/5A76568E079A31FA12165E4559BA9F1E9D4C97F9C2060B538C84DCD503815E30',
+  [CosmosChainId.Persistence]:
     'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
 } as Partial<Record<BridgingNetwork, string>>
 
