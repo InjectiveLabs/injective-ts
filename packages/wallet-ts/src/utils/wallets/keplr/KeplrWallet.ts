@@ -227,9 +227,7 @@ export class KeplrWallet {
     return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
   }
 
-  public async signAndBroadcastAminoUsingCosmjs(
-    messages: EncodeObject[],
-  ): Promise<any> {
+  public async signAndBroadcastAminoUsingCosmjs(messages: EncodeObject[]) {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
     const endpoints = await this.getChainEndpoints()
