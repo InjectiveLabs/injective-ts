@@ -344,7 +344,7 @@ export const ibcHashToNativeInjPerCosmosChain = {
     'ibc/5A76568E079A31FA12165E4559BA9F1E9D4C97F9C2060B538C84DCD503815E30',
   [CosmosChainId.Persistence]:
     'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
-} as Partial<Record<BridgingNetwork, string>>
+} as Partial<Record<CosmosChainId, string>>
 
 const sameTxHash = (txHashOne: string, txHashTwo: string) =>
   txHashOne &&
