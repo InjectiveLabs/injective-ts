@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.550](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.549...@injectivelabs/sdk-ui-ts@1.0.550) (2023-02-14)
+
+
+### Features
+
+* switched base denoms to denoms ([8f50d6f](https://github.com/InjectiveLabs/injective-ts/commit/8f50d6f459b5df9fa2c41b62bc1e8e3bd544fcba))
+
+
+
+
+
 ## [1.0.549](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.548...@injectivelabs/sdk-ui-ts@1.0.549) (2023-02-14)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
