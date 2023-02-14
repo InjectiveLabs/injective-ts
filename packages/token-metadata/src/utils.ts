@@ -46,7 +46,7 @@ export const getTokenDecimals = (token: Token) => {
   }
 
   if (token.denom.startsWith('factory/')) {
-    return token.decimals
+    return token.cw20?.decimals
   }
 
   if (token.denom.startsWith('peggy')) {
