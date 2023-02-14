@@ -245,6 +245,8 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcTransactionToTransactionFromDetail(tx: TxDetailData): Transaction {
+    const messages = JSON.parse(Buffer.from(tx.getMessages()).toString('utf8'))
+
     return {
       ...tx.toObject(),
       signatures: tx.getSignaturesList().map((signature) => ({
@@ -274,7 +276,7 @@ export class IndexerGrpcExplorerTransformer {
             {},
           ),
       })),
-      messages: [],
+      messages,
     }
   }
 
