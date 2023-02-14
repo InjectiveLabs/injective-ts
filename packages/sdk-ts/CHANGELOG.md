@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.433](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.432...@injectivelabs/sdk-ts@1.0.433) (2023-02-14)
+
+
+### Bug Fixes
+
+* account txs messages returned as empty array ([a7df3ae](https://github.com/InjectiveLabs/injective-ts/commit/a7df3ae9ebd620b4d3188bc1e9756c872b782ae9))
+
+
+
+
+
 ## [1.0.432](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.431...@injectivelabs/sdk-ts@1.0.432) (2023-02-14)
 
 
