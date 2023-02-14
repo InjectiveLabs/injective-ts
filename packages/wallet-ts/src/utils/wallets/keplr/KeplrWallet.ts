@@ -1,14 +1,14 @@
 /* eslint-disable class-methods-use-this */
 import type {
-  AminoSignResponse,
   Keplr,
-  OfflineAminoSigner,
   StdSignDoc,
+  AminoSignResponse,
+  OfflineAminoSigner,
   Window as KeplrWindow,
 } from '@keplr-wallet/types'
 import type { EncodeObject, OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
-import { SigningStargateClient } from '@cosmjs/stargate'
+import { SigningStargateClient, StdFee } from '@cosmjs/stargate'
 import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   ChainId,
@@ -17,8 +17,8 @@ import {
 } from '@injectivelabs/ts-types'
 import { TxRestApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
-  CosmosWalletException,
   ErrorType,
+  CosmosWalletException,
   TransactionException,
   UnspecifiedErrorCode,
   WalletErrorActionModule,
@@ -227,7 +227,10 @@ export class KeplrWallet {
     return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
   }
 
-  public async signAndBroadcastAminoUsingCosmjs(messages: EncodeObject[]) {
+  public async signAndBroadcastAminoUsingCosmjs(
+    messages: EncodeObject[],
+    stdFee: StdFee,
+  ) {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
     const endpoints = await this.getChainEndpoints()
@@ -242,7 +245,7 @@ export class KeplrWallet {
     const txResponse = await client.signAndBroadcast(
       account.address,
       messages,
-      'auto',
+      stdFee,
     )
 
     return txResponse
