@@ -34,6 +34,7 @@
     "@alch/alchemy-web3": "1.4.7",
     "@cosmjs/launchpad": "0.27.1",
     "@cosmjs/proto-signing": "0.29.4",
+    "@cosmjs/stargate": "^0.29.5",
     "@cosmostation/extension-client": "^0.1.11-alpha.0",
     "@ethereumjs/common": "^2.6.3",
     "@ethereumjs/tx": "^3.5.1",

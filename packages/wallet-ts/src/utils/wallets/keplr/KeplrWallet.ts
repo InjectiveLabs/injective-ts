@@ -6,8 +6,9 @@ import type {
   StdSignDoc,
   Window as KeplrWindow,
 } from '@keplr-wallet/types'
-import type { OfflineDirectSigner } from '@cosmjs/proto-signing'
+import type { EncodeObject, OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
+import { SigningStargateClient } from '@cosmjs/stargate'
 import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   ChainId,
@@ -34,7 +35,7 @@ export class KeplrWallet {
     this.chainId = chainId
   }
 
-  static async experimentalSuggestChainWithChainData(chainData: any) {
+  public static async experimentalSuggestChainWithChainData(chainData: any) {
     if (!$window || ($window && !$window.keplr)) {
       throw new CosmosWalletException(
         new Error('Please install Keplr extension'),
@@ -49,7 +50,7 @@ export class KeplrWallet {
     }
   }
 
-  async getKeplrWallet() {
+  public async getKeplrWallet() {
     const { chainId } = this
     const keplr = this.getKeplr()
 
@@ -62,7 +63,7 @@ export class KeplrWallet {
     }
   }
 
-  async experimentalSuggestChain() {
+  public async experimentalSuggestChain() {
     const { chainId } = this
     const keplr = this.getKeplr()
 
@@ -83,7 +84,7 @@ export class KeplrWallet {
     }
   }
 
-  async getAccounts() {
+  public async getAccounts() {
     const { chainId } = this
     const keplr = this.getKeplr()
 
@@ -96,7 +97,7 @@ export class KeplrWallet {
     }
   }
 
-  async getKey(): Promise<{
+  public async getKey(): Promise<{
     name: string
     algo: string
     isNanoLedger: boolean
@@ -115,7 +116,7 @@ export class KeplrWallet {
     }
   }
 
-  async getOfflineSigner(): Promise<OfflineDirectSigner> {
+  public async getOfflineSigner(): Promise<OfflineDirectSigner> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
 
@@ -128,7 +129,7 @@ export class KeplrWallet {
     }
   }
 
-  async getOfflineAminoSigner(): Promise<OfflineAminoSigner> {
+  public async getOfflineAminoSigner(): Promise<OfflineAminoSigner> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
 
@@ -151,7 +152,7 @@ export class KeplrWallet {
    * @param txRaw - raw transaction to broadcast
    * @returns tx hash
    */
-  async broadcastTx(txRaw: TxRaw): Promise<string> {
+  public async broadcastTx(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
 
@@ -189,7 +190,7 @@ export class KeplrWallet {
    * @param txRaw - raw transaction to broadcast
    * @returns tx hash
    */
-  async broadcastTxBlock(txRaw: TxRaw): Promise<string> {
+  public async broadcastTxBlock(txRaw: TxRaw): Promise<string> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
 
@@ -220,13 +221,36 @@ export class KeplrWallet {
     }
   }
 
-  async waitTxBroadcasted(txHash: string): Promise<TxResponse> {
+  public async waitTxBroadcasted(txHash: string): Promise<TxResponse> {
     const endpoints = await this.getChainEndpoints()
 
     return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
   }
 
-  async signEIP712CosmosTx({
+  public async signAndBroadcastAminoUsingCosmjs(
+    messages: EncodeObject[],
+  ): Promise<any> {
+    const { chainId } = this
+    const keplr = await this.getKeplrWallet()
+    const endpoints = await this.getChainEndpoints()
+
+    const offlineSigner = keplr.getOfflineSignerOnlyAmino(chainId)
+    const [account] = await offlineSigner.getAccounts()
+    const client = await SigningStargateClient.connectWithSigner(
+      endpoints.rpc,
+      offlineSigner,
+    )
+
+    const txResponse = await client.signAndBroadcast(
+      account.address,
+      messages,
+      'auto',
+    )
+
+    return txResponse
+  }
+
+  public async signEIP712CosmosTx({
     eip712,
     signDoc,
   }: {
@@ -252,7 +276,7 @@ export class KeplrWallet {
     }
   }
 
-  async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {
+  public async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {
     const { chainId } = this
 
     try {

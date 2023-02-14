@@ -16,9 +16,6 @@ import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { ExtensionOptionsWeb3Tx } from '@injectivelabs/chain-api/injective/types/v1beta1/tx_ext_pb'
 import { EthereumChainId } from '@injectivelabs/ts-types'
-import { makeSignDoc, StdFee } from '@cosmjs/amino'
-import { Msgs } from '../../msgs'
-import snakecaseKeys from 'snakecase-keys'
 
 export const getPublicKey = ({
   chainId,
@@ -190,34 +187,6 @@ export const createCosmosSignDocFromTransaction = (args: {
     accountNumber: args.accountNumber,
     chainId: args.chainId,
   })
-}
-
-export const createStdSignDoc = (args: {
-  memo?: string
-  msgs: Msgs | Msgs[]
-  fee: StdFee
-  chainId: string
-  accountNumber: number
-  sequence: number
-}) => {
-  const actualMsgs = Array.isArray(args.msgs) ? args.msgs : [args.msgs]
-  const aminoMsgs = actualMsgs.map((m) => {
-    const { type, ...rest } = m.toAmino()
-
-    return {
-      type,
-      value: snakecaseKeys(rest),
-    }
-  })
-
-  return makeSignDoc(
-    aminoMsgs,
-    args.fee,
-    args.chainId,
-    args.memo || '',
-    args.accountNumber,
-    args.sequence,
-  )
 }
 
 export const createTxRawEIP712 = (
