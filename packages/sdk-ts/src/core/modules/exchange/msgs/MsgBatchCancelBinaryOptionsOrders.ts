@@ -4,7 +4,7 @@ import {
   OrderData,
 } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { OrderMask } from '../../../../types/exchange'
-import snakeCaseKeys from 'snakecase-keys'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgBatchCancelBinaryOptionsOrders {
@@ -18,25 +18,9 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
     }[]
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders'
-    message: BaseMsgBatchCancelBinaryOptionsOrders
-  }
-
-  export interface Data extends BaseMsgBatchCancelBinaryOptionsOrders.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders'
-  }
-
-  export interface Amino
-    extends BaseMsgBatchCancelBinaryOptionsOrders.AsObject {
-    type: 'exchange/MsgBatchCancelBinaryOptionsOrders'
-  }
-
-  export interface Web3 extends BaseMsgBatchCancelBinaryOptionsOrders.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders'
-  }
-
   export type Proto = BaseMsgBatchCancelBinaryOptionsOrders
+
+  export type Object = BaseMsgBatchCancelBinaryOptionsOrders.AsObject
 }
 
 /**
@@ -44,10 +28,8 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
  */
 export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
   MsgBatchCancelBinaryOptionsOrders.Params,
-  MsgBatchCancelBinaryOptionsOrders.Data,
   MsgBatchCancelBinaryOptionsOrders.Proto,
-  MsgBatchCancelBinaryOptionsOrders.Amino,
-  MsgBatchCancelBinaryOptionsOrders.DirectSign
+  MsgBatchCancelBinaryOptionsOrders.Object
 > {
   static fromJSON(
     params: MsgBatchCancelBinaryOptionsOrders.Params,
@@ -55,7 +37,7 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
     return new MsgBatchCancelBinaryOptionsOrders(params)
   }
 
-  public toProto(): MsgBatchCancelBinaryOptionsOrders.Proto {
+  public toProto() {
     const { params } = this
 
     const orderDataList = params.orders.map((order) => {
@@ -77,7 +59,7 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
     return message
   }
 
-  public toData(): MsgBatchCancelBinaryOptionsOrders.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -86,32 +68,32 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
     }
   }
 
-  public toAmino(): MsgBatchCancelBinaryOptionsOrders.Amino {
+  public toAmino() {
     const proto = this.toProto()
-    const orderData = proto
-      .getDataList()
-      .map((orderData) => snakeCaseKeys(orderData.toObject()))
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'exchange/MsgBatchCancelBinaryOptionsOrders',
-      ...snakeCaseKeys({
-        sender: proto.getSender(),
-        data: [...orderData],
-      }),
-    } as unknown as MsgBatchCancelBinaryOptionsOrders.Amino
+      value: {
+        sender: message.sender,
+        data: message.data_list,
+      } as unknown as SnakeCaseKeys<MsgBatchCancelBinaryOptionsOrders.Object>,
+    }
   }
 
-  public toWeb3(): MsgBatchCancelBinaryOptionsOrders.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders',
-      ...rest,
-    } as unknown as MsgBatchCancelBinaryOptionsOrders.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgBatchCancelBinaryOptionsOrders.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

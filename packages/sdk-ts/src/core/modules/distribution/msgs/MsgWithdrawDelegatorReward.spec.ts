@@ -14,6 +14,7 @@ const protoParams = {
   delegatorAddress: params.delegatorAddress,
   validatorAddress: params.validatorAddress,
 }
+const aminoParams = snakecaseKeys(protoParams)
 
 const message = MsgWithdrawDelegatorReward.fromJSON(params)
 
@@ -39,7 +40,7 @@ describe('MsgWithdrawDelegatorReward', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParams,
+      value: aminoParams,
     })
   })
 
@@ -59,7 +60,7 @@ describe('MsgWithdrawDelegatorReward', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
-      value: snakecaseKeys(protoParams),
+      value: aminoParams,
     })
   })
 
@@ -68,7 +69,7 @@ describe('MsgWithdrawDelegatorReward', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...aminoParams,
     })
   })
 })

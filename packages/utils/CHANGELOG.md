@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.77...@injectivelabs/utils@1.0.78) (2023-02-15)
+
+
+### Bug Fixes
+
+* error parsing and token type ([c6650fb](https://github.com/InjectiveLabs/injective-ts/commit/c6650fb53dd03fdd87792a4ae4a5b92437b254ed))
+
+
+
+
+
+## [1.0.77](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.76...@injectivelabs/utils@1.0.77) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.75...@injectivelabs/utils@1.0.76) (2023-02-13)
+
+
+### Bug Fixes
+
+* token meta not populated on devnet env ([11fead4](https://github.com/InjectiveLabs/injective-ts/commit/11fead46519b883cd676db027162189402d17d06))
+
+
+
+
+
 ## [1.0.75](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.74...@injectivelabs/utils@1.0.75) (2023-02-09)
 
 **Note:** Version bump only for package @injectivelabs/utils

@@ -149,19 +149,23 @@ export class TokenService {
     contractAccountsBalance: ContractAccountBalance[]
   }): Promise<BalanceWithToken[]> {
     const token = await this.denomClient.getDenomToken(contractAddress)
-    const balances = contractAccountsBalance.map((balance) => {
-      if (!token) {
-        return
-      }
+    const defaultToken = {
+      name: contractAddress,
+      logo: '',
+      denom: contractAddress,
+      tokenType: TokenType.Cw20,
+    } as Token
 
+    // When token can't be fetched from the token-metadata, we use a default token.
+    const tokenOrDefaultToken = token || defaultToken
+
+    return contractAccountsBalance.map((balance) => {
       return {
         ...balance,
-        token,
-        denom: token.denom,
+        token: tokenOrDefaultToken,
+        denom: tokenOrDefaultToken.denom || contractAddress,
       }
     })
-
-    return balances.filter((balance) => balance) as BalanceWithToken[]
   }
 
   async toSubaccountBalanceWithToken(
@@ -202,8 +206,7 @@ export class TokenService {
       return {
         ...market,
         slug,
-        baseToken,
-        quoteToken: getCw20TokenSingle(quoteToken),
+        quoteToken: getCw20TokenSingle(quoteToken) || quoteToken,
       } as UiBaseSpotMarketWithToken
     }
 
@@ -212,7 +215,7 @@ export class TokenService {
         ...market,
         slug,
         quoteToken,
-        baseToken: getCw20TokenSingle(baseToken),
+        baseToken: getCw20TokenSingle(baseToken) || baseToken,
       } as UiBaseSpotMarketWithToken
     }
 
@@ -257,7 +260,7 @@ export class TokenService {
         ...market,
         slug,
         baseToken,
-        quoteToken: getCw20TokenSingle(quoteToken),
+        quoteToken: getCw20TokenSingle(quoteToken) || quoteToken,
       } as unknown as R
     }
 

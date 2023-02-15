@@ -19,10 +19,6 @@ export const tokensBySymbolForDevnet = (
   const tokenSymbol = token as keyof typeof devnetSymbolToAddressMap
   const testnetAddressFromMap = devnetSymbolToAddressMap[tokenSymbol]
 
-  if (!testnetAddressFromMap) {
-    return result
-  }
-
   if (!tokens[token].erc20) {
     return result
   }
@@ -32,8 +28,8 @@ export const tokensBySymbolForDevnet = (
     [token.toUpperCase()]: {
       ...tokens[token],
       erc20: {
+        ...(testnetAddressFromMap ? { address: testnetAddressFromMap } : {}),
         ...tokens[token].erc20,
-        address: testnetAddressFromMap,
       },
     },
   }
@@ -45,10 +41,6 @@ export const tokensBySymbolForDevnet1 = (
   const tokenSymbol = token as keyof typeof devnet1SymbolToAddressMap
   const testnetAddressFromMap = devnet1SymbolToAddressMap[tokenSymbol]
 
-  if (!testnetAddressFromMap) {
-    return result
-  }
-
   if (!tokens[token].erc20) {
     return result
   }
@@ -59,7 +51,7 @@ export const tokensBySymbolForDevnet1 = (
       ...tokens[token],
       erc20: {
         ...tokens[token].erc20,
-        address: testnetAddressFromMap,
+        ...(testnetAddressFromMap ? { address: testnetAddressFromMap } : {}),
       },
     },
   }
@@ -71,10 +63,6 @@ export const tokensBySymbolForDevnet2 = (
   const tokenSymbol = token as keyof typeof devnet2SymbolToAddressMap
   const testnetAddressFromMap = devnet2SymbolToAddressMap[tokenSymbol]
 
-  if (!testnetAddressFromMap) {
-    return result
-  }
-
   if (!tokens[token].erc20) {
     return result
   }
@@ -85,7 +73,7 @@ export const tokensBySymbolForDevnet2 = (
       ...tokens[token],
       erc20: {
         ...tokens[token].erc20,
-        address: testnetAddressFromMap,
+        ...(testnetAddressFromMap ? { address: testnetAddressFromMap } : {}),
       },
     },
   }

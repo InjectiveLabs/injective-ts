@@ -22,7 +22,7 @@ const protoParams = {
   delegatorAddress: params.injectiveAddress,
   amount: params.amount,
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgBeginRedelegate.fromJSON(params)
 
 describe('MsgBeginRedelegate', () => {
@@ -47,7 +47,7 @@ describe('MsgBeginRedelegate', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -73,7 +73,7 @@ describe('MsgBeginRedelegate', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeAmino,
-      value: snakecaseKeys(protoParams),
+      value: protoParamsAmino,
     })
   })
 
@@ -82,10 +82,7 @@ describe('MsgBeginRedelegate', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      validatorDstAddress: params.dstValidatorAddress,
-      validatorSrcAddress: params.srcValidatorAddress,
-      delegatorAddress: params.injectiveAddress,
-      amount: params.amount,
+      ...protoParamsAmino,
     })
   })
 })

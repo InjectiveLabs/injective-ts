@@ -1,5 +1,6 @@
 import { MsgWithdrawDelegatorReward as BaseMsgWithdrawDelegatorReward } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgWithdrawDelegatorReward {
   export interface Params {
@@ -7,24 +8,9 @@ export declare namespace MsgWithdrawDelegatorReward {
     validatorAddress: string
   }
 
-  export interface DirectSign {
-    type: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward'
-    message: BaseMsgWithdrawDelegatorReward
-  }
-
-  export interface Data extends BaseMsgWithdrawDelegatorReward.AsObject {
-    '@type': '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward'
-  }
-
-  export interface Amino extends BaseMsgWithdrawDelegatorReward.AsObject {
-    type: 'cosmos-sdk/MsgWithdrawDelegationReward'
-  }
-
-  export interface Web3 extends BaseMsgWithdrawDelegatorReward.AsObject {
-    '@type': '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward'
-  }
-
   export type Proto = BaseMsgWithdrawDelegatorReward
+
+  export type Object = BaseMsgWithdrawDelegatorReward.AsObject
 }
 
 /**
@@ -32,10 +18,8 @@ export declare namespace MsgWithdrawDelegatorReward {
  */
 export default class MsgWithdrawDelegatorReward extends MsgBase<
   MsgWithdrawDelegatorReward.Params,
-  MsgWithdrawDelegatorReward.Data,
   MsgWithdrawDelegatorReward.Proto,
-  MsgWithdrawDelegatorReward.Amino,
-  MsgWithdrawDelegatorReward.DirectSign
+  MsgWithdrawDelegatorReward.Object
 > {
   static fromJSON(
     params: MsgWithdrawDelegatorReward.Params,
@@ -43,7 +27,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
     return new MsgWithdrawDelegatorReward(params)
   }
 
-  public toProto(): MsgWithdrawDelegatorReward.Proto {
+  public toProto() {
     const { params } = this
 
     const message = new BaseMsgWithdrawDelegatorReward()
@@ -53,7 +37,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
     return message
   }
 
-  public toData(): MsgWithdrawDelegatorReward.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -62,26 +46,29 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
     }
   }
 
-  public toAmino(): MsgWithdrawDelegatorReward.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'cosmos-sdk/MsgWithdrawDelegationReward',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgWithdrawDelegatorReward.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
-      ...rest,
+      ...value,
     }
   }
 
-  public toDirectSign(): MsgWithdrawDelegatorReward.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

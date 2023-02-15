@@ -1,9 +1,9 @@
 import { MsgSubmitProposal as BaseMsgSubmitProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import snakeCaseKeys from 'snakecase-keys'
 import { SpotMarketLaunchProposal } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitProposalSpotMarketLaunch {
   export interface Params {
@@ -25,24 +25,9 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
     }
   }
 
-  export interface DirectSign {
-    type: '/cosmos.gov.v1beta1.MsgSubmitProposal'
-    message: BaseMsgSubmitProposal
-  }
-
-  export interface Data extends BaseMsgSubmitProposal.AsObject {
-    '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
-  }
-
-  export interface Amino extends BaseMsgSubmitProposal.AsObject {
-    type: 'cosmos-sdk/MsgSubmitProposal'
-  }
-
-  export interface Web3 extends BaseMsgSubmitProposal.AsObject {
-    '@type': '/cosmos.authz.v1beta1.MsgSubmitProposal'
-  }
-
   export type Proto = BaseMsgSubmitProposal
+
+  export type Object = BaseMsgSubmitProposal.AsObject
 }
 
 /**
@@ -50,10 +35,8 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
  */
 export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
   MsgSubmitProposalSpotMarketLaunch.Params,
-  MsgSubmitProposalSpotMarketLaunch.Data,
   MsgSubmitProposalSpotMarketLaunch.Proto,
-  MsgSubmitProposalSpotMarketLaunch.Amino,
-  MsgSubmitProposalSpotMarketLaunch.DirectSign
+  MsgSubmitProposalSpotMarketLaunch.Object
 > {
   static fromJSON(
     params: MsgSubmitProposalSpotMarketLaunch.Params,
@@ -83,7 +66,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     return message
   }
 
-  public toData(): MsgSubmitProposalSpotMarketLaunch.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -92,7 +75,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     }
   }
 
-  public toAmino(): MsgSubmitProposalSpotMarketLaunch.Amino {
+  public toAmino() {
     const { params } = this
     const proto = this.toProto()
     const content = this.getContent()
@@ -105,7 +88,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
       },
       initial_deposit: proto
         .getInitialDepositList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
+        .map((amount) => snakecaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {
@@ -118,11 +101,12 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitProposalSpotMarketLaunch.Amino
+      value:
+        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketLaunch.Object>,
+    }
   }
 
-  public toWeb3(): MsgSubmitProposalSpotMarketLaunch.Web3 {
+  public toWeb3() {
     const { params } = this
     const proto = this.toProto()
     const content = this.getContent()
@@ -135,7 +119,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
       },
       initial_deposit: proto
         .getInitialDepositList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
+        .map((amount) => snakecaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {
@@ -148,11 +132,11 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitProposalSpotMarketLaunch.Web3
+      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketLaunch.Object>),
+    }
   }
 
-  public toDirectSign(): MsgSubmitProposalSpotMarketLaunch.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

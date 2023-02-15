@@ -1,24 +1,24 @@
 import BaseRestConsumer from '../../BaseRestConsumer'
 import {
-  BlockFromExplorerApiResponse,
-  ContractExplorerApiResponse,
-  ContractTransactionExplorerApiResponse,
-  CW20BalanceExplorerApiResponse,
-  ExplorerApiResponse,
-  ExplorerApiResponseWithPagination,
-  ExplorerBlockWithTxs,
-  ExplorerTransaction,
-  ExplorerValidatorUptime,
   Paging,
+  ExplorerTransaction,
+  ExplorerApiResponse,
+  ExplorerBlockWithTxs,
+  ExplorerValidatorUptime,
+  ContractExplorerApiResponse,
+  BlockFromExplorerApiResponse,
+  CW20BalanceExplorerApiResponse,
+  ExplorerApiResponseWithPagination,
   TransactionFromExplorerApiResponse,
   ValidatorUptimeFromExplorerApiResponse,
+  ContractTransactionExplorerApiResponse,
   WasmCodeExplorerApiResponse,
 } from '../types/explorer-rest'
 import {
   Contract,
+  WasmCode,
   ContractTransaction,
   ExplorerCW20BalanceWithToken,
-  WasmCode,
 } from '../types/explorer'
 import {
   HttpRequestException,
@@ -124,16 +124,22 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   }
 
   async fetchTransactions(params?: {
-    from_number?: number
+    fromNumber?: number
     limit?: number
-    to_number?: number
+    before?: number
+    after?: number
+    toNumber?: number
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     try {
-      const { from_number, limit, to_number } = params || { limit: 12 }
+      const { fromNumber, before, after, limit, toNumber } = params || {
+        limit: 12,
+      }
       const response = (await this.get('txs', {
-        from_number,
         limit,
-        to_number,
+        after,
+        before,
+        from_number: fromNumber,
+        to_number: toNumber,
       })) as ExplorerApiResponseWithPagination<
         TransactionFromExplorerApiResponse[]
       >
@@ -164,19 +170,25 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   }: {
     account: string
     params?: {
-      from_number?: number
+      fromNumber?: number
       limit?: number
-      to_number?: number
+      before?: number
+      after?: number
+      toNumber?: number
       skip?: number
     }
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     try {
-      const { from_number, limit, skip, to_number } = params || { limit: 12 }
+      const { fromNumber, before, after, limit, skip, toNumber } = params || {
+        limit: 12,
+      }
       const response = (await this.get(`accountTxs/${account}`, {
-        from_number,
-        limit,
         skip,
-        to_number,
+        limit,
+        after,
+        before,
+        from_number: fromNumber,
+        to_number: toNumber,
       })) as ExplorerApiResponseWithPagination<
         TransactionFromExplorerApiResponse[]
       >
@@ -285,6 +297,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         response.data,
       )
     } catch (e: unknown) {
+      console.log(e)
+
       if (e instanceof HttpRequestException) {
         throw e
       }
@@ -297,8 +311,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   }
 
   async fetchContracts(params?: {
-    assets_only?: boolean
-    from_number?: number
+    assetsOnly?: boolean
+    fromNumber?: number
     limit?: number
     skip?: number
   }): Promise<{
@@ -306,12 +320,12 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     contracts: Contract[]
   }> {
     try {
-      const { assets_only, from_number, limit, skip } = params || { limit: 12 }
+      const { assetsOnly, fromNumber, limit, skip } = params || { limit: 12 }
       const response = (await this.get('/wasm/contracts', {
-        assets_only,
-        from_number,
-        limit,
         skip,
+        limit,
+        assets_only: assetsOnly,
+        from_number: fromNumber,
       })) as ExplorerApiResponseWithPagination<ContractExplorerApiResponse[]>
 
       const { paging, data } = response.data
@@ -340,19 +354,19 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   }: {
     contractAddress: string
     params?: {
-      from_number?: number
+      fromNumber?: number
       limit?: number
-      to_number?: number
+      toNumber?: number
       skip?: number
     }
   }): Promise<{ paging: Paging; transactions: ContractTransaction[] }> {
     try {
-      const { from_number, limit, skip, to_number } = params || { limit: 12 }
+      const { fromNumber, limit, skip, toNumber } = params || { limit: 12 }
       const response = (await this.get(`/contractTxs/${contractAddress}`, {
-        from_number,
-        limit,
         skip,
-        to_number,
+        limit,
+        to_number: toNumber,
+        from_number: fromNumber,
       })) as ExplorerApiResponseWithPagination<
         ContractTransactionExplorerApiResponse[]
       >
@@ -401,19 +415,19 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   }
 
   async fetchWasmCodes(params?: {
-    from_number?: number
+    fromNumber?: number
     limit?: number
-    to_number?: number
+    toNumber?: number
   }): Promise<{
     paging: Paging
     wasmCodes: WasmCode[]
   }> {
     try {
-      const { from_number, limit, to_number } = params || { limit: 12 }
+      const { fromNumber, limit, toNumber } = params || { limit: 12 }
       const response = (await this.get('/wasm/codes', {
-        from_number,
         limit,
-        to_number,
+        from_number: fromNumber,
+        to_number: toNumber,
       })) as ExplorerApiResponseWithPagination<WasmCodeExplorerApiResponse[]>
 
       const { paging, data } = response.data

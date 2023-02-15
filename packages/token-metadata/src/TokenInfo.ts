@@ -1,6 +1,7 @@
 import { GeneralException } from '@injectivelabs/exceptions'
+import { isIbcTokenCanonical } from './ibc'
 import { IbcToken, Token, TokenMeta, TokenType } from './types'
-import { getTokenTypeFromDenom, isIbcTokenCanonical } from './utils'
+import { getTokenTypeFromDenom } from './utils'
 
 /**
  * Token info is a helper class which abstracts

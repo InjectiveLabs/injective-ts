@@ -2,6 +2,7 @@ import { MsgInstantBinaryOptionsMarketLaunch as BaseMsgInstantBinaryOptionsMarke
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { OracleType } from '../../../../client'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgInstantBinaryOptionsMarketLaunch {
   export interface Params {
@@ -23,27 +24,9 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
     }
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch'
-    message: BaseMsgInstantBinaryOptionsMarketLaunch
-  }
-
-  export interface Data
-    extends BaseMsgInstantBinaryOptionsMarketLaunch.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch'
-  }
-
-  export interface Amino
-    extends BaseMsgInstantBinaryOptionsMarketLaunch.AsObject {
-    type: 'exchange/MsgInstantBinaryOptionsMarketLaunch'
-  }
-
-  export interface Web3
-    extends BaseMsgInstantBinaryOptionsMarketLaunch.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch'
-  }
-
   export type Proto = BaseMsgInstantBinaryOptionsMarketLaunch
+
+  export type Object = BaseMsgInstantBinaryOptionsMarketLaunch.AsObject
 }
 
 const createMessage = (params: MsgInstantBinaryOptionsMarketLaunch.Params) => {
@@ -72,10 +55,8 @@ const createMessage = (params: MsgInstantBinaryOptionsMarketLaunch.Params) => {
  */
 export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
   MsgInstantBinaryOptionsMarketLaunch.Params,
-  MsgInstantBinaryOptionsMarketLaunch.Data,
   MsgInstantBinaryOptionsMarketLaunch.Proto,
-  MsgInstantBinaryOptionsMarketLaunch.Amino,
-  MsgInstantBinaryOptionsMarketLaunch.DirectSign
+  MsgInstantBinaryOptionsMarketLaunch.Object
 > {
   static fromJSON(
     params: MsgInstantBinaryOptionsMarketLaunch.Params,
@@ -83,7 +64,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
     return new MsgInstantBinaryOptionsMarketLaunch(params)
   }
 
-  public toProto(): MsgInstantBinaryOptionsMarketLaunch.Proto {
+  public toProto() {
     const { params: initialParams } = this
     const message = new BaseMsgInstantBinaryOptionsMarketLaunch()
 
@@ -124,7 +105,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
     return createMessage(params)
   }
 
-  public toData(): MsgInstantBinaryOptionsMarketLaunch.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -134,28 +115,31 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
     }
   }
 
-  public toAmino(): MsgInstantBinaryOptionsMarketLaunch.Amino {
+  public toAmino() {
     const { params } = this
     const proto = createMessage(params)
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'exchange/MsgInstantBinaryOptionsMarketLaunch',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgInstantBinaryOptionsMarketLaunch.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type':
         '/injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch',
-      ...rest,
-    } as unknown as MsgInstantBinaryOptionsMarketLaunch.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgInstantBinaryOptionsMarketLaunch.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

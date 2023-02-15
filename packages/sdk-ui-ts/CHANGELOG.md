@@ -3,6 +3,233 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.559](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.558...@injectivelabs/sdk-ui-ts@1.0.559) (2023-02-15)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.558](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.557...@injectivelabs/sdk-ui-ts@1.0.558) (2023-02-15)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.557](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.556...@injectivelabs/sdk-ui-ts@1.0.557) (2023-02-15)
+
+
+### Bug Fixes
+
+* contract token decimals balances ([ed9c5ac](https://github.com/InjectiveLabs/injective-ts/commit/ed9c5ac45353d0a58218ca4f1c807ba6c4eecd6e))
+
+
+
+
+
+## [1.0.556](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.555...@injectivelabs/sdk-ui-ts@1.0.556) (2023-02-15)
+
+
+### Features
+
+* get token decimal and symbol based on denom ([0594183](https://github.com/InjectiveLabs/injective-ts/commit/0594183eb5be36dc9f18479b2bdc1123a6145be3))
+
+
+
+
+
+## [1.0.555](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.554...@injectivelabs/sdk-ui-ts@1.0.555) (2023-02-15)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.554](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.553...@injectivelabs/sdk-ui-ts@1.0.554) (2023-02-15)
+
+
+### Bug Fixes
+
+* minor CHZ ([65ef9cd](https://github.com/InjectiveLabs/injective-ts/commit/65ef9cd00f088c606a169fc14dcd68cd15348535))
+
+
+
+
+
+## [1.0.553](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.552...@injectivelabs/sdk-ui-ts@1.0.553) (2023-02-14)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.552](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.551...@injectivelabs/sdk-ui-ts@1.0.552) (2023-02-14)
+
+
+### Bug Fixes
+
+* minor map ([be70514](https://github.com/InjectiveLabs/injective-ts/commit/be70514ad035a83ce5e53ba6bdd26a1560bda1f0))
+
+
+
+
+
+## [1.0.551](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.550...@injectivelabs/sdk-ui-ts@1.0.551) (2023-02-14)
+
+
+### Bug Fixes
+
+* minor map ([6324005](https://github.com/InjectiveLabs/injective-ts/commit/6324005a5874e0d8ecad9984a294a8d53bf76e86))
+
+
+
+
+
+## [1.0.550](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.549...@injectivelabs/sdk-ui-ts@1.0.550) (2023-02-14)
+
+
+### Features
+
+* switched base denoms to denoms ([8f50d6f](https://github.com/InjectiveLabs/injective-ts/commit/8f50d6f459b5df9fa2c41b62bc1e8e3bd544fcba))
+
+
+
+
+
+## [1.0.549](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.548...@injectivelabs/sdk-ui-ts@1.0.549) (2023-02-14)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.548](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.547...@injectivelabs/sdk-ui-ts@1.0.548) (2023-02-14)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.547](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.546...@injectivelabs/sdk-ui-ts@1.0.547) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.546](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.545...@injectivelabs/sdk-ui-ts@1.0.546) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.545](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.544...@injectivelabs/sdk-ui-ts@1.0.545) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.544](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.543...@injectivelabs/sdk-ui-ts@1.0.544) (2023-02-13)
+
+
+### Features
+
+* added amino sign for Keplr ([a3fa523](https://github.com/InjectiveLabs/injective-ts/commit/a3fa523179151bceb701d0216499dc2c21480ed5))
+
+
+
+
+
+## [1.0.543](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.542...@injectivelabs/sdk-ui-ts@1.0.543) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.542](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.541...@injectivelabs/sdk-ui-ts@1.0.542) (2023-02-12)
+
+
+### Bug Fixes
+
+* minor ([ed71c43](https://github.com/InjectiveLabs/injective-ts/commit/ed71c43add6e60678b78a0aa8ab0d3a6e6af3968))
+
+
+
+
+
+## [1.0.541](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.540...@injectivelabs/sdk-ui-ts@1.0.541) (2023-02-12)
+
+
+### Features
+
+* added a way to get multiple assets prices ([b731902](https://github.com/InjectiveLabs/injective-ts/commit/b7319029b665048495deaa11fa3190e614025e62))
+
+
+
+
+
+## [1.0.540](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.539...@injectivelabs/sdk-ui-ts@1.0.540) (2023-02-12)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.539](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.538...@injectivelabs/sdk-ui-ts@1.0.539) (2023-02-12)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.538](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.537...@injectivelabs/sdk-ui-ts@1.0.538) (2023-02-11)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.537](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.536...@injectivelabs/sdk-ui-ts@1.0.537) (2023-02-11)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.536](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.535...@injectivelabs/sdk-ui-ts@1.0.536) (2023-02-10)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.535](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.534...@injectivelabs/sdk-ui-ts@1.0.535) (2023-02-10)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
 ## [1.0.534](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.533...@injectivelabs/sdk-ui-ts@1.0.534) (2023-02-10)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

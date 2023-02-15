@@ -16,7 +16,7 @@ const protoParams = {
   voter: params.voter,
   option: params.vote,
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgVote.fromJSON(params)
 
 describe('MsgVote', () => {
@@ -41,7 +41,7 @@ describe('MsgVote', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -63,7 +63,7 @@ describe('MsgVote', () => {
     expect(eip712).toStrictEqual({
       type: protoTypeAmino,
       value: snakecaseKeys({
-        ...protoParams,
+        ...protoParamsAmino,
         proposal_id: params.proposalId.toString(),
       }),
     })
@@ -74,7 +74,7 @@ describe('MsgVote', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

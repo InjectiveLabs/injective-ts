@@ -1,5 +1,5 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
-import { BigNumberInBase, HttpRestClient } from '@injectivelabs/utils'
+import { BigNumberInBase, HttpRestClient, sleep } from '@injectivelabs/utils'
 import { HttpRequestException } from '@injectivelabs/exceptions'
 import { ASSET_PRICE_SERVICE_URL } from '../constants'
 import { CoinPriceFromInjectiveService } from '../types/token'
@@ -22,6 +22,77 @@ export class TokenPrice {
   constructor(coinGeckoOptions: { baseUrl: string; apiKey: string }) {
     this.restClient = new HttpRestClient(ASSET_PRICE_SERVICE_URL)
     this.coinGeckoApi = new CoinGeckoApi(coinGeckoOptions)
+  }
+
+  async fetchUsdTokensPrice(coinIds: string[]) {
+    if (coinIds.length === 0) {
+      return {}
+    }
+
+    let prices: Record<string, number> = {}
+
+    const pricesFromCache = coinIds.reduce((prices, coinId) => {
+      try {
+        const priceFromCache = this.cache[coinId]
+
+        if (priceFromCache) {
+          return { ...prices, [coinId]: priceFromCache }
+        }
+
+        return prices
+      } catch (e) {
+        return prices
+      }
+    }, {} as Record<string, number>)
+
+    prices = { ...prices, ...pricesFromCache }
+
+    const coinIdsNotInCache = coinIds.filter(
+      (coinId) => !Object.keys(prices).includes(coinId),
+    )
+
+    if (coinIdsNotInCache.length === 0) {
+      return prices
+    }
+
+    const pricesFromInjectiveService =
+      await this.fetchUsdTokenPriceFromInjectiveServiceInChunks(
+        coinIdsNotInCache,
+      )
+
+    prices = { ...prices, ...pricesFromInjectiveService }
+
+    const coinIdsNotInCacheAndInjectiveService = coinIds.filter(
+      (coinId) => !Object.keys(prices).includes(coinId),
+    )
+
+    if (coinIdsNotInCacheAndInjectiveService.length === 0) {
+      return prices
+    }
+
+    const pricesFromCoinGecko =
+      await this.fetchUsdTokenPriceFromCoinGeckoInChunks(
+        coinIdsNotInCacheAndInjectiveService,
+      )
+
+    prices = { ...prices, ...pricesFromCoinGecko }
+
+    const coinIdsNotInCacheAndInjectiveServiceAndCoinGecko = coinIds.filter(
+      (coinId) => !Object.keys(prices).includes(coinId),
+    )
+
+    if (coinIdsNotInCacheAndInjectiveServiceAndCoinGecko.length === 0) {
+      return prices
+    }
+
+    const coinIdsWithoutPrice = Object.keys(
+      coinIdsNotInCacheAndInjectiveService,
+    ).reduce(
+      (prices, key) => ({ ...prices, [key]: 0 }),
+      {} as Record<string, number>,
+    )
+
+    return { ...prices, ...coinIdsWithoutPrice }
   }
 
   async fetchUsdTokenPrice(coinId: string) {
@@ -173,6 +244,71 @@ export class TokenPrice {
     }
 
     return undefined
+  }
+
+  private fetchUsdTokenPriceFromInjectiveServiceInChunks = async (
+    coinIds: string[],
+  ) => {
+    const CHUNK_SIZE = 10
+    let prices: Record<string, number> = {}
+
+    for (let i = 0; i < coinIds.length; i += CHUNK_SIZE) {
+      const chunkCoinIds = coinIds.slice(i, i + CHUNK_SIZE).filter((c) => c)
+
+      if (chunkCoinIds.length === 0) {
+        continue
+      }
+
+      try {
+        const pricesResponse = (await this.restClient.get('coin/price', {
+          coinIds: chunkCoinIds.join(','),
+          currency: 'usd',
+        })) as {
+          data: {
+            data: CoinPriceFromInjectiveService[]
+          }
+        }
+
+        if (pricesResponse.data.data.length === 0) {
+          continue
+        }
+
+        const chunkResponse = pricesResponse.data.data.reduce(
+          (cache, coin) => ({
+            ...cache,
+            [coin.id]: new BigNumberInBase(coin.current_price).toNumber(),
+          }),
+          {} as Record<string, number>,
+        )
+
+        prices = { ...prices, ...chunkResponse }
+      } catch (e) {
+        //
+      }
+    }
+
+    this.cache = { ...this.cache, ...prices }
+
+    return prices
+  }
+
+  private fetchUsdTokenPriceFromCoinGeckoInChunks = async (
+    coinIds: string[],
+  ) => {
+    let prices: Record<string, number> = {}
+
+    for (let i = 0; i < coinIds.length; i += 1) {
+      const price = await this.fetchUsdTokenPriceFromCoinGeckoNoThrow(
+        coinIds[i],
+      )
+
+      prices[coinIds[i]] = price
+      await sleep(500)
+    }
+
+    this.cache = { ...this.cache, ...prices }
+
+    return prices
   }
 
   private async initCache(): Promise<void> {

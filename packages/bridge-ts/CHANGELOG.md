@@ -3,6 +3,166 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.268](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.267...@injectivelabs/bridge-ts@1.0.268) (2023-02-15)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.267](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.266...@injectivelabs/bridge-ts@1.0.267) (2023-02-15)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.266](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.265...@injectivelabs/bridge-ts@1.0.266) (2023-02-15)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.265](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.264...@injectivelabs/bridge-ts@1.0.265) (2023-02-15)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.264](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.263...@injectivelabs/bridge-ts@1.0.264) (2023-02-15)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.263](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.262...@injectivelabs/bridge-ts@1.0.263) (2023-02-14)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.262](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.261...@injectivelabs/bridge-ts@1.0.262) (2023-02-14)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.261](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.260...@injectivelabs/bridge-ts@1.0.261) (2023-02-14)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.260](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.259...@injectivelabs/bridge-ts@1.0.260) (2023-02-14)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.259](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.258...@injectivelabs/bridge-ts@1.0.259) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.258](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.257...@injectivelabs/bridge-ts@1.0.258) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.257](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.256...@injectivelabs/bridge-ts@1.0.257) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.256](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.255...@injectivelabs/bridge-ts@1.0.256) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.255](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.254...@injectivelabs/bridge-ts@1.0.255) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.254](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.253...@injectivelabs/bridge-ts@1.0.254) (2023-02-12)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.253](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.252...@injectivelabs/bridge-ts@1.0.253) (2023-02-12)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.252](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.251...@injectivelabs/bridge-ts@1.0.252) (2023-02-11)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.251](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.250...@injectivelabs/bridge-ts@1.0.251) (2023-02-11)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.250](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.249...@injectivelabs/bridge-ts@1.0.250) (2023-02-10)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.0.249](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.248...@injectivelabs/bridge-ts@1.0.249) (2023-02-10)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
 ## [1.0.248](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.247...@injectivelabs/bridge-ts@1.0.248) (2023-02-10)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts

@@ -5,6 +5,7 @@ import {
   DEFAULT_BRIDGE_FEE_AMOUNT,
   DEFAULT_BRIDGE_FEE_DENOM,
 } from '@injectivelabs/utils'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgSendToEth {
   export interface Params {
@@ -20,24 +21,9 @@ export declare namespace MsgSendToEth {
     injectiveAddress: string
   }
 
-  export interface DirectSign {
-    type: '/injective.peggy.v1.MsgSendToEth'
-    message: BaseMsgSendToEth
-  }
-
-  export interface Data extends BaseMsgSendToEth.AsObject {
-    '@type': '/injective.peggy.v1.MsgSendToEth'
-  }
-
-  export interface Amino extends BaseMsgSendToEth.AsObject {
-    type: 'peggy/MsgSendToEth'
-  }
-
-  export interface Web3 extends BaseMsgSendToEth.AsObject {
-    '@type': '/injective.peggy.v1beta1.MsgSendToEth'
-  }
-
   export type Proto = BaseMsgSendToEth
+
+  export type Object = BaseMsgSendToEth.AsObject
 }
 
 /**
@@ -45,16 +31,14 @@ export declare namespace MsgSendToEth {
  */
 export default class MsgSendToEth extends MsgBase<
   MsgSendToEth.Params,
-  MsgSendToEth.Data,
   MsgSendToEth.Proto,
-  MsgSendToEth.Amino,
-  MsgSendToEth.DirectSign
+  MsgSendToEth.Object
 > {
   static fromJSON(params: MsgSendToEth.Params): MsgSendToEth {
     return new MsgSendToEth(params)
   }
 
-  public toProto(): MsgSendToEth.Proto {
+  public toProto() {
     const { params } = this
 
     const coinAmount = new Coin()
@@ -78,7 +62,7 @@ export default class MsgSendToEth extends MsgBase<
     return message
   }
 
-  public toData(): MsgSendToEth.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -87,26 +71,29 @@ export default class MsgSendToEth extends MsgBase<
     }
   }
 
-  public toAmino(): MsgSendToEth.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'peggy/MsgSendToEth',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgSendToEth.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.peggy.v1.MsgSendToEth',
-      ...rest,
-    } as unknown as MsgSendToEth.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgSendToEth.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

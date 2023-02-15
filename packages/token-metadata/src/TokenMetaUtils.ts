@@ -6,7 +6,6 @@ import { getMappedTokensByName } from './tokens/mappings/mapByName'
 import { getMappedTokensByHash } from './tokens/mappings/mapByHash'
 import { getMappedTokensBySymbol } from './tokens/mappings/mapBySymbol'
 import { TokenMeta, TokenType } from './types'
-import { getCw20TokenSingle } from './utils'
 
 export class TokenMetaUtils {
   protected tokens: Record<string, TokenMeta>
@@ -50,41 +49,27 @@ export class TokenMetaUtils {
       : this.getMetaByCw20Address(address)
   }
 
-  /**
-   * If there are multiple cw20 variations
-   * of the token we find the one that corresponds
-   * to the contract address and set it on the cw20 field
-   *
-   * If there is only one cw20 version then we use that one
-   * as the default version
-   */
   getMetaByCw20Address(address: string): TokenMeta | undefined {
     const { tokensByCw20Address } = this
     const contractAddress =
       address.toLowerCase() as keyof typeof tokensByCw20Address
 
-    if (!tokensByCw20Address[contractAddress]) {
+    if (
+      !tokensByCw20Address[contractAddress] ||
+      !tokensByCw20Address[address]
+    ) {
       return
     }
 
-    const tokenMeta = tokensByCw20Address[contractAddress]
-
-    if (tokenMeta.cw20) {
-      return {
-        ...tokenMeta,
-        cw20s: [],
-      }
-    }
-
-    if (tokenMeta.cw20s) {
-      return getCw20TokenSingle({
-        ...tokenMeta,
-        denom: contractAddress,
-        tokenType: TokenType.Cw20,
-      }) as TokenMeta
-    }
+    const tokenMeta =
+      tokensByCw20Address[contractAddress] || tokensByCw20Address[address]
 
     return tokenMeta
+      ? {
+          ...tokenMeta,
+          tokenType: TokenType.Cw20,
+        }
+      : undefined
   }
 
   getMetaByErc20Address(address: string): TokenMeta | undefined {
@@ -92,16 +77,29 @@ export class TokenMetaUtils {
     const contractAddress =
       address.toLowerCase() as keyof typeof tokensByErc20Address
 
-    if (!tokensByErc20Address[contractAddress]) {
+    if (
+      !tokensByErc20Address[contractAddress] &&
+      !tokensByErc20Address[address]
+    ) {
       return
     }
 
-    return tokensByErc20Address[contractAddress]
+    const tokenMeta =
+      tokensByErc20Address[contractAddress] || tokensByErc20Address[address]
+
+    return tokenMeta
+      ? {
+          ...tokenMeta,
+          tokenType: TokenType.Erc20,
+        }
+      : undefined
   }
 
   getMetaByHash(hash: string): TokenMeta | undefined {
     const { tokensByHash } = this
-    const ibcHash = hash.toUpperCase() as keyof typeof tokensByHash
+    const ibcHash = hash
+      .toUpperCase()
+      .replace('IBC/', '') as keyof typeof tokensByHash
 
     if (!tokensByHash[ibcHash] && !tokensByHash[hash]) {
       return

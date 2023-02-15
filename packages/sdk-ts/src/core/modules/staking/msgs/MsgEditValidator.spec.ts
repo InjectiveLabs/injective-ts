@@ -24,7 +24,7 @@ const protoParams = {
   validatorAddress: mockFactory.validatorAddress,
   minSelfDelegation: params.minSelfDelegation,
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgEditValidator.fromJSON(params)
 
 describe('MsgEditValidator', () => {
@@ -49,7 +49,7 @@ describe('MsgEditValidator', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -78,7 +78,7 @@ describe('MsgEditValidator', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeAmino,
-      value: snakecaseKeys(protoParams),
+      value: protoParamsAmino,
     })
   })
 
@@ -87,7 +87,7 @@ describe('MsgEditValidator', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

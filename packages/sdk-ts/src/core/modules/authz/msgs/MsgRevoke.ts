@@ -1,4 +1,5 @@
 import { MsgRevoke as BaseMsgRevoke } from '@injectivelabs/chain-api/cosmos/authz/v1beta1/tx_pb'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgRevoke {
@@ -8,24 +9,9 @@ export declare namespace MsgRevoke {
     granter: string
   }
 
-  export interface DirectSign {
-    type: '/cosmos.authz.v1beta1.MsgRevoke'
-    message: BaseMsgRevoke
-  }
-
-  export interface Data extends BaseMsgRevoke.AsObject {
-    '@type': '/cosmos.authz.v1beta1.MsgRevoke'
-  }
-
-  export interface Amino extends BaseMsgRevoke.AsObject {
-    type: 'cosmos-sdk/MsgRevoke'
-  }
-
-  export interface Web3 extends BaseMsgRevoke.AsObject {
-    '@type': '/cosmos.authz.v1beta1.MsgRevoke'
-  }
-
   export type Proto = BaseMsgRevoke
+
+  export type Object = BaseMsgRevoke.AsObject
 }
 
 /**
@@ -33,16 +19,14 @@ export declare namespace MsgRevoke {
  */
 export default class MsgRevoke extends MsgBase<
   MsgRevoke.Params,
-  MsgRevoke.Data,
   MsgRevoke.Proto,
-  MsgRevoke.Amino,
-  MsgRevoke.DirectSign
+  MsgRevoke.Object
 > {
   static fromJSON(params: MsgRevoke.Params): MsgRevoke {
     return new MsgRevoke(params)
   }
 
-  public toProto(): MsgRevoke.Proto {
+  public toProto() {
     const { params } = this
 
     const message = new BaseMsgRevoke()
@@ -53,7 +37,7 @@ export default class MsgRevoke extends MsgBase<
     return message
   }
 
-  public toData(): MsgRevoke.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -62,26 +46,29 @@ export default class MsgRevoke extends MsgBase<
     }
   }
 
-  public toAmino(): MsgRevoke.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'cosmos-sdk/MsgRevoke',
-      ...proto.toObject(),
+      value: message as unknown as SnakeCaseKeys<MsgRevoke.Object>,
     }
   }
 
-  public toWeb3(): MsgRevoke.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.authz.v1beta1.MsgRevoke',
-      ...rest,
+      ...value,
     }
   }
 
-  public toDirectSign(): MsgRevoke.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

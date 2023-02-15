@@ -44,7 +44,7 @@ const formattedProtoParams = {
     },
   },
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgCreateBinaryOptionsLimitOrder.fromJSON(params)
 
 describe('MsgCreateBinaryOptionsLimitOrder', () => {
@@ -69,7 +69,7 @@ describe('MsgCreateBinaryOptionsLimitOrder', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -127,7 +127,7 @@ describe('MsgCreateBinaryOptionsLimitOrder', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

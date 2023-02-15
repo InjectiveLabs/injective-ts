@@ -20,7 +20,7 @@ const protoParams = {
   destinationSubaccountId: params.dstSubaccountId,
   amount: params.amount,
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgIncreasePositionMargin.fromJSON(params)
 
 describe('MsgIncreasePositionMargin', () => {
@@ -49,7 +49,7 @@ describe('MsgIncreasePositionMargin', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -73,7 +73,7 @@ describe('MsgIncreasePositionMargin', () => {
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
       value: snakecaseKeys({
-        ...protoParams,
+        ...protoParamsAmino,
         amount: '1000.000000000000000000',
       }),
     })
@@ -84,7 +84,7 @@ describe('MsgIncreasePositionMargin', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

@@ -12,8 +12,8 @@ const getErrorMessage = (error: any, endpoint: string): string => {
     return `The request to ${endpoint} has failed.`
   }
 
-  return typeof error.response.data === 'string'
-    ? error.response.data
+  return error.response.data
+    ? error.response.data.message || error.response.data
     : error.response.statusText
 }
 

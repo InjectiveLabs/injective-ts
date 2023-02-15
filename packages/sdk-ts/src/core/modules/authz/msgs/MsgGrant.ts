@@ -6,6 +6,7 @@ import {
 import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb'
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 const genericAuthorizationType = '/cosmos.authz.v1beta1.GenericAuthorization'
 
@@ -19,24 +20,9 @@ export declare namespace MsgGrant {
     expiryInSeconds?: number
   }
 
-  export interface DirectSign {
-    type: '/cosmos.authz.v1beta1.MsgGrant'
-    message: BaseMsgGrant
-  }
-
-  export interface Data extends BaseMsgGrant.AsObject {
-    '@type': '/cosmos.authz.v1beta1.MsgGrant'
-  }
-
-  export interface Amino extends BaseMsgGrant.AsObject {
-    type: 'cosmos-sdk/MsgGrant'
-  }
-
-  export interface Web3 extends BaseMsgGrant.AsObject {
-    '@type': '/cosmos.authz.v1beta1.MsgGrant'
-  }
-
   export type Proto = BaseMsgGrant
+
+  export type Object = BaseMsgGrant.AsObject
 }
 
 /**
@@ -44,16 +30,14 @@ export declare namespace MsgGrant {
  */
 export default class MsgGrant extends MsgBase<
   MsgGrant.Params,
-  MsgGrant.Data,
   MsgGrant.Proto,
-  MsgGrant.Amino,
-  MsgGrant.DirectSign
+  MsgGrant.Object
 > {
   static fromJSON(params: MsgGrant.Params): MsgGrant {
     return new MsgGrant(params)
   }
 
-  public toProto(): MsgGrant.Proto {
+  public toProto() {
     const { params } = this
 
     const timestamp = this.getTimestamp()
@@ -78,7 +62,7 @@ export default class MsgGrant extends MsgBase<
     return message
   }
 
-  public toData(): MsgGrant.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -87,14 +71,14 @@ export default class MsgGrant extends MsgBase<
     }
   }
 
-  public toAmino(): MsgGrant.Amino {
+  public toAmino() {
     const { params } = this
 
     const proto = this.toProto()
     const timestamp = this.getTimestamp()
     const message = proto.toObject()
 
-    const messageWithAuthorizationType = {
+    const messageWithAuthorizationType = snakecaseKeys({
       ...message,
       grant: {
         ...message.grant,
@@ -104,15 +88,16 @@ export default class MsgGrant extends MsgBase<
         },
         expiration: timestamp.toDate(),
       },
-    }
+    })
 
     return {
       type: 'cosmos-sdk/MsgGrant',
-      ...messageWithAuthorizationType,
-    } as unknown as MsgGrant.Amino
+      value:
+        messageWithAuthorizationType as unknown as SnakeCaseKeys<MsgGrant.Object>,
+    }
   }
 
-  public toDirectSign(): MsgGrant.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {
@@ -121,13 +106,13 @@ export default class MsgGrant extends MsgBase<
     }
   }
 
-  public toWeb3(): MsgGrant.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.authz.v1beta1.MsgGrant',
-      ...rest,
+      ...value,
     }
   }
 

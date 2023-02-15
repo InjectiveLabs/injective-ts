@@ -1,5 +1,6 @@
 import { MsgReclaimLockedFunds as BaseMsgReclaimLockedFunds } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgReclaimLockedFunds {
   export interface Params {
@@ -8,24 +9,9 @@ export declare namespace MsgReclaimLockedFunds {
     signature: Uint8Array
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgReclaimLockedFunds'
-    message: BaseMsgReclaimLockedFunds
-  }
-
-  export interface Data extends BaseMsgReclaimLockedFunds.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgReclaimLockedFunds'
-  }
-
-  export interface Amino extends BaseMsgReclaimLockedFunds.AsObject {
-    type: 'exchange/MsgReclaimLockedFunds'
-  }
-
-  export interface Web3 extends BaseMsgReclaimLockedFunds.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgReclaimLockedFunds'
-  }
-
   export type Proto = BaseMsgReclaimLockedFunds
+
+  export type Object = BaseMsgReclaimLockedFunds.AsObject
 }
 
 /**
@@ -33,16 +19,14 @@ export declare namespace MsgReclaimLockedFunds {
  */
 export default class MsgReclaimLockedFunds extends MsgBase<
   MsgReclaimLockedFunds.Params,
-  MsgReclaimLockedFunds.Data,
   MsgReclaimLockedFunds.Proto,
-  MsgReclaimLockedFunds.Amino,
-  MsgReclaimLockedFunds.DirectSign
+  MsgReclaimLockedFunds.Object
 > {
   static fromJSON(params: MsgReclaimLockedFunds.Params): MsgReclaimLockedFunds {
     return new MsgReclaimLockedFunds(params)
   }
 
-  public toProto(): MsgReclaimLockedFunds.Proto {
+  public toProto() {
     const { params } = this
 
     const message = new BaseMsgReclaimLockedFunds()
@@ -53,7 +37,7 @@ export default class MsgReclaimLockedFunds extends MsgBase<
     return message
   }
 
-  public toData(): MsgReclaimLockedFunds.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -62,26 +46,29 @@ export default class MsgReclaimLockedFunds extends MsgBase<
     }
   }
 
-  public toAmino(): MsgReclaimLockedFunds.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'exchange/MsgReclaimLockedFunds',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgReclaimLockedFunds.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgReclaimLockedFunds',
-      ...rest,
-    } as unknown as MsgReclaimLockedFunds.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgReclaimLockedFunds.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

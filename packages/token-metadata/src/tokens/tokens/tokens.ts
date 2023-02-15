@@ -649,7 +649,7 @@ export default {
     ibc: {
       decimals: 6,
       isNative: true,
-      baseDenom: 'uatom',
+      baseDenom: 'uphoton',
       path: 'transfer/channel-2',
       channelId: 'channel-2',
       hash: '48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
@@ -922,6 +922,16 @@ export default {
       decimals: 10,
       address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
       tokenType: TokenType.Erc20,
+    },
+
+    ibc: {
+      decimals: 10,
+      isNative: false,
+      baseDenom: 'dot-planck',
+      path: 'transfer/channel-84',
+      channelId: 'channel-84',
+      hash: 'C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
+      tokenType: TokenType.Ibc,
     },
   },
 

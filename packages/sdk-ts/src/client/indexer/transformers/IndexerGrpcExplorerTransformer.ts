@@ -2,6 +2,7 @@ import {
   BlockInfo,
   GetTxByTxHashResponse as TxData,
   StreamTxsResponse,
+  TxDetailData,
 } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
 import {
   BankMsgSendTransaction,
@@ -50,8 +51,9 @@ export class IndexerGrpcExplorerTransformer {
     const pagination = response.getPaging()
 
     return {
-      // @ts-ignore
-      txs: IndexerGrpcExplorerTransformer.grpcTransactionsToTransactions(txs),
+      txs: IndexerGrpcExplorerTransformer.grpcTransactionsToTransactionsFromDetail(
+        txs,
+      ),
       pagination: grpcPagingToPaging(pagination),
     }
   }
@@ -189,9 +191,10 @@ export class IndexerGrpcExplorerTransformer {
 
   static grpcTransactionToTransaction(tx: TxData): Transaction {
     const data = tx.getData()!
+    const gasFee = data.getGasFee()
 
     return {
-      id: data.getId !== undefined ? data.getId() : data.getHash(),
+      id: data.getId(),
       blockNumber: data.getBlockNumber(),
       blockTimestamp: data.getBlockTimestamp(),
       hash: data.getHash(),
@@ -201,9 +204,14 @@ export class IndexerGrpcExplorerTransformer {
       gasUsed: data.getGasUsed(),
       codespace: data.getCodespace(),
       data: data.getData(),
-      gasFee: IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(
-        data.getGasFee()!,
-      ),
+      gasFee: gasFee
+        ? IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(data.getGasFee()!)
+        : {
+            gasLimit: 0,
+            payer: '',
+            granter: '',
+            amounts: [],
+          },
       txType: data.getTxType(),
       signatures: data.getSignaturesList().map((signature) => ({
         pubkey: signature.getPubkey(),
@@ -233,6 +241,50 @@ export class IndexerGrpcExplorerTransformer {
   ): Array<Transaction> {
     return txs.map((tx) =>
       IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(tx),
+    )
+  }
+
+  static grpcTransactionToTransactionFromDetail(tx: TxDetailData): Transaction {
+    const messages = JSON.parse(Buffer.from(tx.getMessages()).toString('utf8'))
+
+    return {
+      ...tx.toObject(),
+      signatures: tx.getSignaturesList().map((signature) => ({
+        pubkey: signature.getPubkey(),
+        address: signature.getAddress(),
+        sequence: signature.getSequence(),
+        signature: signature.getSignature(),
+      })),
+      gasFee: tx.getGasFee()
+        ? IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(tx.getGasFee()!)
+        : {
+            gasLimit: 0,
+            payer: '',
+            granter: '',
+            amounts: [],
+          },
+      events: tx.getEventsList().map((event) => ({
+        type: event.getType(),
+        attributes: event
+          .getAttributesMap()
+          .toObject()
+          .reduce(
+            (
+              attributes: Record<string, string>,
+              attribute: [string, string],
+            ) => ({ ...attributes, [attribute[0]]: attribute[1] }),
+            {},
+          ),
+      })),
+      messages,
+    }
+  }
+
+  static grpcTransactionsToTransactionsFromDetail(
+    txs: TxDetailData[],
+  ): Array<Transaction> {
+    return txs.map(
+      IndexerGrpcExplorerTransformer.grpcTransactionToTransactionFromDetail,
     )
   }
 

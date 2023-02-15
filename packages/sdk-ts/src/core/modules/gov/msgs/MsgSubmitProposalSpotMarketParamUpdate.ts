@@ -5,6 +5,7 @@ import { SpotMarketParamUpdateProposal } from '@injectivelabs/chain-api/injectiv
 import { Any } from 'google-protobuf/google/protobuf/any_pb'
 import { MarketStatusMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
   export interface Params {
@@ -26,24 +27,9 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
     }
   }
 
-  export interface DirectSign {
-    type: '/cosmos.gov.v1beta1.MsgSubmitProposal'
-    message: BaseMsgSubmitProposal
-  }
-
-  export interface Data extends BaseMsgSubmitProposal.AsObject {
-    '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
-  }
-
-  export interface Amino extends BaseMsgSubmitProposal.AsObject {
-    type: 'cosmos-sdk/MsgSubmitProposal'
-  }
-
-  export interface Web3 extends BaseMsgSubmitProposal.AsObject {
-    '@type': '/cosmos.authz.v1beta1.MsgSubmitProposal'
-  }
-
   export type Proto = BaseMsgSubmitProposal
+
+  export type Object = BaseMsgSubmitProposal.AsObject
 }
 
 /**
@@ -51,10 +37,8 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
  */
 export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   MsgSubmitProposalSpotMarketParamUpdate.Params,
-  MsgSubmitProposalSpotMarketParamUpdate.Data,
   MsgSubmitProposalSpotMarketParamUpdate.Proto,
-  MsgSubmitProposalSpotMarketParamUpdate.Amino,
-  MsgSubmitProposalSpotMarketParamUpdate.DirectSign
+  MsgSubmitProposalSpotMarketParamUpdate.Object
 > {
   static fromJSON(
     params: MsgSubmitProposalSpotMarketParamUpdate.Params,
@@ -62,7 +46,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     return new MsgSubmitProposalSpotMarketParamUpdate(params)
   }
 
-  public toProto(): MsgSubmitProposalSpotMarketParamUpdate.Proto {
+  public toProto() {
     const { params } = this
 
     const depositParams = new Coin()
@@ -85,7 +69,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     return message
   }
 
-  public toData(): MsgSubmitProposalSpotMarketParamUpdate.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -94,7 +78,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     }
   }
 
-  public toAmino(): MsgSubmitProposalSpotMarketParamUpdate.Amino {
+  public toAmino() {
     const { params } = this
     const proto = this.toProto()
     const content = this.getContent()
@@ -107,7 +91,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
       },
       initial_deposit: proto
         .getInitialDepositList()
-        .map((amount) => snakeCaseKeys(amount.toObject())),
+        .map((amount) => snakecaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {
@@ -120,11 +104,12 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitProposalSpotMarketParamUpdate.Amino
+      value:
+        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>,
+    }
   }
 
-  public toWeb3(): MsgSubmitProposalSpotMarketParamUpdate.Web3 {
+  public toWeb3() {
     const { params } = this
     const proto = this.toProto()
     const content = this.getContent()
@@ -151,11 +136,11 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitProposalSpotMarketParamUpdate.Web3
+      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>),
+    }
   }
 
-  public toDirectSign(): MsgSubmitProposalSpotMarketParamUpdate.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

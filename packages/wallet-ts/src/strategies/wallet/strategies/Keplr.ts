@@ -92,10 +92,7 @@ export default class Keplr
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<TxResponse> {
     const { keplrWallet } = this
-    const txRaw =
-      transaction instanceof TxRaw
-        ? transaction
-        : createTxRawFromSigResponse(transaction)
+    const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
       return await keplrWallet.waitTxBroadcasted(

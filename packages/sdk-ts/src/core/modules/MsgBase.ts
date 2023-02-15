@@ -1,4 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
+import { SnakeCaseKeys } from 'snakecase-keys'
 import {
   mapValuesToProperValueType,
   objectKeysToEip712Types,
@@ -11,10 +11,8 @@ import { prepareSignBytes } from './utils'
  */
 export abstract class MsgBase<
   Params,
-  DataRepresentation,
   ProtoRepresentation,
-  AminoRepresentation,
-  DirectSignRepresentation,
+  ObjectRepresentation extends Object,
 > {
   params: Params
 
@@ -22,15 +20,23 @@ export abstract class MsgBase<
     this.params = params
   }
 
-  public abstract toDirectSign(): DirectSignRepresentation
-
-  public abstract toData(): DataRepresentation
-
   public abstract toProto(): ProtoRepresentation
 
-  public abstract toAmino(): AminoRepresentation
+  public abstract toData(): ObjectRepresentation & {
+    '@type': string
+  }
 
-  public abstract toWeb3(): Omit<AminoRepresentation, 'type'> & {
+  public abstract toDirectSign(): {
+    type: string
+    message: ProtoRepresentation
+  }
+
+  public abstract toAmino(): {
+    type: string
+    value: SnakeCaseKeys<ObjectRepresentation>
+  }
+
+  public abstract toWeb3(): SnakeCaseKeys<ObjectRepresentation> & {
     '@type': string
   }
 
@@ -39,21 +45,20 @@ export abstract class MsgBase<
   }
 
   public toEip712Types(): Map<string, TypedDataField[]> {
-    const amino = this.toAmino() as { type: string }
+    const amino = this.toAmino()
 
     return objectKeysToEip712Types({
-      object: amino as Record<string, any>,
+      object: amino.value as Record<string, any>,
       messageType: amino.type,
     })
   }
 
   public toEip712(): {
     type: string
-    value: Omit<AminoRepresentation, 'type'>
+    value: Record<string, unknown /** TODO */>
   } {
     const amino = this.toAmino()
-    const { type, ...rest } = amino as { type: string } & Record<string, any>
-    const value = snakecaseKeys(rest) as Omit<AminoRepresentation, 'type'>
+    const { type, value } = amino
 
     return {
       type,

@@ -95,10 +95,7 @@ export default class Cosmostation
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<TxResponse> {
     const provider = await this.getProvider()
-    const txRaw =
-      transaction instanceof TxRaw
-        ? transaction
-        : createTxRawFromSigResponse(transaction)
+    const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
       const response = await provider.sendTransaction(

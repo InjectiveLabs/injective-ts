@@ -1,20 +1,21 @@
 /* eslint-disable class-methods-use-this */
 import { CosmosChainId } from '@injectivelabs/ts-types'
 import {
+  ErrorType,
+  TransactionException,
   UnspecifiedErrorCode,
   CosmosWalletException,
-  TransactionException,
-  ErrorType,
 } from '@injectivelabs/exceptions'
 import {
-  createCosmosSignDocFromTransaction,
-  createTxRawFromSigResponse,
   TxResponse,
+  createTxRawFromSigResponse,
+  createCosmosSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
+import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
@@ -94,10 +95,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
   ): Promise<TxResponse> {
     const { chainName } = this
     const provider = await this.getProvider()
-    const txRaw =
-      transaction instanceof TxRaw
-        ? transaction
-        : createTxRawFromSigResponse(transaction)
+    const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
       const response = await provider.sendTransaction(
@@ -168,6 +166,15 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
         context: WalletAction.SendTransaction,
       })
     }
+  }
+
+  async signAminoTransaction(_transaction: {
+    address: string
+    stdSignDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
+    throw new CosmosWalletException(
+      new Error('signAminoTransaction not supported on Cosmostation'),
+    )
   }
 
   async getPubKey(): Promise<string> {

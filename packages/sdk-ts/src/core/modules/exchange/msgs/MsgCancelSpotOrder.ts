@@ -2,6 +2,7 @@
 import { MsgCancelSpotOrder as BaseMsgCancelSpotOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 // import { OrderMask } from '../../../types/exchange'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgCancelSpotOrder {
   export interface Params {
@@ -12,24 +13,9 @@ export declare namespace MsgCancelSpotOrder {
     // orderMask?: OrderMaskMap[keyof OrderMaskMap]
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgCancelSpotOrder'
-    message: BaseMsgCancelSpotOrder
-  }
-
-  export interface Data extends BaseMsgCancelSpotOrder.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder'
-  }
-
-  export interface Amino extends BaseMsgCancelSpotOrder.AsObject {
-    type: 'exchange/MsgCancelSpotOrder'
-  }
-
-  export interface Web3 extends BaseMsgCancelSpotOrder.AsObject {
-    '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder'
-  }
-
   export type Proto = BaseMsgCancelSpotOrder
+
+  export type Object = BaseMsgCancelSpotOrder.AsObject
 }
 
 /**
@@ -37,16 +23,14 @@ export declare namespace MsgCancelSpotOrder {
  */
 export default class MsgCancelSpotOrder extends MsgBase<
   MsgCancelSpotOrder.Params,
-  MsgCancelSpotOrder.Data,
   MsgCancelSpotOrder.Proto,
-  MsgCancelSpotOrder.Amino,
-  MsgCancelSpotOrder.DirectSign
+  MsgCancelSpotOrder.Object
 > {
   static fromJSON(params: MsgCancelSpotOrder.Params): MsgCancelSpotOrder {
     return new MsgCancelSpotOrder(params)
   }
 
-  public toProto(): MsgCancelSpotOrder.Proto {
+  public toProto() {
     const { params } = this
 
     const message = new BaseMsgCancelSpotOrder()
@@ -63,7 +47,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
     return message
   }
 
-  public toData(): MsgCancelSpotOrder.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -72,26 +56,29 @@ export default class MsgCancelSpotOrder extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCancelSpotOrder.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto.toObject()),
+    }
 
     return {
       type: 'exchange/MsgCancelSpotOrder',
-      ...proto.toObject(),
+      value: message,
     }
   }
 
-  public toWeb3(): MsgCancelSpotOrder.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCancelSpotOrder',
-      ...rest,
-    } as unknown as MsgCancelSpotOrder.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCancelSpotOrder.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

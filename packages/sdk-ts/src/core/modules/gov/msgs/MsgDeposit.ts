@@ -13,24 +13,9 @@ export declare namespace MsgDeposit {
     depositor: string
   }
 
-  export interface DirectSign {
-    type: '/cosmos.gov.v1beta1.MsgDeposit'
-    message: BaseMsgDeposit
-  }
-
-  export interface Data extends BaseMsgDeposit.AsObject {
-    '@type': '/cosmos.gov.v1beta1.MsgDeposit'
-  }
-
-  export interface Amino extends BaseMsgDeposit.AsObject {
-    type: 'cosmos-sdk/MsgDeposit'
-  }
-
-  export interface Web3 extends BaseMsgDeposit.AsObject {
-    '@type': '/cosmos.authz.v1beta1.MsgDeposit'
-  }
-
   export type Proto = BaseMsgDeposit
+
+  export type Object = BaseMsgDeposit.AsObject
 }
 
 /**
@@ -38,16 +23,14 @@ export declare namespace MsgDeposit {
  */
 export default class MsgDeposit extends MsgBase<
   MsgDeposit.Params,
-  MsgDeposit.Data,
   MsgDeposit.Proto,
-  MsgDeposit.Amino,
-  MsgDeposit.DirectSign
+  MsgDeposit.Object
 > {
   static fromJSON(params: MsgDeposit.Params): MsgDeposit {
     return new MsgDeposit(params)
   }
 
-  public toProto(): MsgDeposit.Proto {
+  public toProto() {
     const { params } = this
 
     const deposit = new Coin()
@@ -62,7 +45,7 @@ export default class MsgDeposit extends MsgBase<
     return message
   }
 
-  public toData(): MsgDeposit.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -71,7 +54,7 @@ export default class MsgDeposit extends MsgBase<
     }
   }
 
-  public toAmino(): MsgDeposit.Amino {
+  public toAmino() {
     const proto = this.toProto()
     const message = {
       ...snakeCaseKeys(proto.toObject()),
@@ -85,21 +68,21 @@ export default class MsgDeposit extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgDeposit',
-      ...message,
-    } as unknown as MsgDeposit.Amino
+      value: message,
+    }
   }
 
-  public toWeb3(): MsgDeposit.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgDeposit',
-      ...rest,
-    } as unknown as MsgDeposit.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgDeposit.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {
