@@ -154,6 +154,9 @@ export class IndexerRestExplorerTransformer {
   ): Partial<ExplorerValidator>[] {
     return validators.map((validator) => {
       return {
+        id: validator.id,
+        moniker: validator.moniker,
+        consensusAddress: validator.consensus_address,
         operatorAddress: validator.operator_address,
         proposed: validator.proposed,
         signed: validator.signed,
