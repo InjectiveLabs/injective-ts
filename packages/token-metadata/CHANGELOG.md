@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.166](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.165...@injectivelabs/token-metadata@1.0.166) (2023-02-15)
+
+
+### Bug Fixes
+
+* missing canto channelId ([b3b7562](https://github.com/InjectiveLabs/injective-ts/commit/b3b75625e3218cf8245da42d7635b97a8fd332ac))
+
+
+
+
+
 ## [1.0.165](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.164...@injectivelabs/token-metadata@1.0.165) (2023-02-15)
 
 
