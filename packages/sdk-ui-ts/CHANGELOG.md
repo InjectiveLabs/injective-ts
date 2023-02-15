@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.561](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.560...@injectivelabs/sdk-ui-ts@1.0.561) (2023-02-15)
+
+
+### Bug Fixes
+
+* baseDenom for canto ([912736b](https://github.com/InjectiveLabs/injective-ts/commit/912736bc3bf6f32b6e797efc82123cb3f6e55849))
+
+
+
+
+
 ## [1.0.560](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.559...@injectivelabs/sdk-ui-ts@1.0.560) (2023-02-15)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
