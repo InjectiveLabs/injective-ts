@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.557](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.556...@injectivelabs/sdk-ui-ts@1.0.557) (2023-02-15)
+
+
+### Bug Fixes
+
+* contract token decimals balances ([ed9c5ac](https://github.com/InjectiveLabs/injective-ts/commit/ed9c5ac45353d0a58218ca4f1c807ba6c4eecd6e))
+
+
+
+
+
 ## [1.0.556](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.555...@injectivelabs/sdk-ui-ts@1.0.556) (2023-02-15)
 
 
