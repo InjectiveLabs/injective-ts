@@ -28,12 +28,12 @@ import { TxResponse } from '../types/tx'
 export class TxRestApi implements TxConcreteApi {
   public httpClient: HttpClient
 
-  constructor(endpoint: string) {
+  constructor(endpoint: string, options?: { timeout?: number }) {
     this.httpClient = new HttpClient(endpoint, {
       headers: {
         Accept: 'application/json',
       },
-      timeout: 15000,
+      timeout: options?.timeout || 15000,
     })
   }
 
