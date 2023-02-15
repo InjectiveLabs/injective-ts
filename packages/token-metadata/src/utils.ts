@@ -56,6 +56,14 @@ export const getTokenSymbol = (token: Token) => {
     return meta?.symbol || token.symbol
   }
 
+  if (token.denom.startsWith('peggy')) {
+    return token.erc20?.symbol || token.symbol
+  }
+
+  if (token.denom.startsWith('ibc')) {
+    return token.ibc?.symbol || token.symbol
+  }
+
   return token.symbol
 }
 
@@ -72,6 +80,10 @@ export const getTokenDecimals = (token: Token) => {
     const meta = getCw20Meta(token)
 
     return meta?.decimals || token.decimals
+  }
+
+  if (token.denom.startsWith('ibc')) {
+    return token.ibc?.decimals || token.decimals
   }
 
   if (token.denom.startsWith('peggy')) {
