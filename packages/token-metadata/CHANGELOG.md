@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.161](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.160...@injectivelabs/token-metadata@1.0.161) (2023-02-15)
+
+
+### Bug Fixes
+
+* update PR base on Bojan's comment ([f059f30](https://github.com/InjectiveLabs/injective-ts/commit/f059f304c0c79ff52ba7229d9d8ca2da37cba706))
+
+
+### Features
+
+* get token decimal and symbol based on denom ([0594183](https://github.com/InjectiveLabs/injective-ts/commit/0594183eb5be36dc9f18479b2bdc1123a6145be3))
+
+
+
+
+
 ## [1.0.160](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.159...@injectivelabs/token-metadata@1.0.160) (2023-02-15)
 
 
