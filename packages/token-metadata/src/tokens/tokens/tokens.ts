@@ -1147,4 +1147,22 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  CANTO: {
+    name: 'Canto',
+    symbol: 'CANTO',
+    decimals: 18,
+    logo: 'canto.webp',
+    coinGeckoId: 'canto',
+
+    ibc: {
+      decimals: 18,
+      isNative: true,
+      baseDenom: 'canto',
+      path: 'transfer/channel-99',
+      channelId: 'channel-99',
+      hash: 'C733F37CB50114AFE8053C320DF45D0AAD8B94F556EB306AC2ABA0B9963CDF0D',
+      tokenType: TokenType.Ibc,
+    },
+  },
 } as Record<string, TokenMeta>

@@ -6,7 +6,7 @@ export default {
     path: 'transfer/channel-83',
     baseDenom: 'aevmos',
   },
-  '0954e1c28eb7af5b72d24f3bc2b47bbb2fdf91bddfd57b74b99e133aed40972a': {
+  '0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A': {
     path: 'transfer/channel-88',
     baseDenom: 'uscrt',
   },
@@ -69,5 +69,9 @@ export default {
   '34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B': {
     path: 'transfer/channel-93',
     baseDenom: 'usomm',
+  },
+  C733F37CB50114AFE8053C320DF45D0AAD8B94F556EB306AC2ABA0B9963CDF0D: {
+    path: 'transfer/channel-99',
+    baseDenom: 'canto',
   },
 }
