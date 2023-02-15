@@ -145,7 +145,7 @@ export class TokenFactory {
   }
 
   getFactoryDenomTokenMeta(denom: string): TokenMeta | undefined {
-    const [, , address] = denom.split('/')
+    const [address] = denom.split('/').reverse()
 
     if (!address || !address.startsWith('inj')) {
       throw new GeneralException(

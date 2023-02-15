@@ -7,8 +7,10 @@ import {
   Cw20TokenSource,
   Cw20TokenMeta,
   Cw20TokenMetaWithSource,
+  IbcTokenMeta,
 } from './types'
 import { ibcBaseDenoms } from './tokens/tokens'
+import { getChannelIdFromPath } from './ibc'
 
 const getCw20Meta = (
   token: Token,
@@ -20,6 +22,25 @@ const getCw20Meta = (
 
   return cw20MetaFromCw20s || token.cw20 || undefined
 }
+
+export const getIbcTokenMetaFromDenomTrace = ({
+  hash,
+  path,
+  decimals,
+  baseDenom,
+}: {
+  decimals: number
+  hash: string
+  path: string
+  baseDenom: string
+}): IbcTokenMeta => ({
+  hash,
+  path,
+  baseDenom,
+  decimals,
+  channelId: getChannelIdFromPath(path),
+  isNative: !baseDenom.startsWith('ibc'),
+})
 
 export const getTokenTypeFromDenom = (denom: string) => {
   if (denom === INJ_DENOM) {
@@ -123,27 +144,6 @@ export const getTokenAddress = (token: Token) => {
   return ''
 }
 
-export const getTokenFromMeta = (meta: TokenMeta, denom?: string) => {
-  const isBaseIbcDenom =
-    ibcBaseDenoms.includes(denom || '') || meta.ibc?.baseDenom === denom
-
-  const tokenType = isBaseIbcDenom
-    ? TokenType.Ibc
-    : getTokenTypeFromDenom(denom || '')
-
-  const token = {
-    ...meta,
-    denom: denom || '',
-    tokenType,
-  }
-
-  return {
-    ...token,
-    decimals: getTokenDecimals(token),
-    symbol: getTokenSymbol(token),
-  }
-}
-
 /**
  * This function can be used to get a token with
  * cw20 information when we have multiple
@@ -208,4 +208,58 @@ export const getCw20TokenSingle = (
   }
 
   return undefined
+}
+
+export const getTokenFromMeta = (meta: TokenMeta, denom?: string): Token => {
+  const isBaseIbcDenom =
+    ibcBaseDenoms.includes(denom || '') || meta.ibc?.baseDenom === denom
+
+  const tokenType = isBaseIbcDenom
+    ? TokenType.Ibc
+    : getTokenTypeFromDenom(denom || '')
+
+  const token = {
+    ...meta,
+    tokenType,
+    denom: denom || '',
+  }
+
+  const tokenWithDecimalsAndSymbol = {
+    ...token,
+    decimals: getTokenDecimals(token),
+    symbol: getTokenSymbol(token),
+  }
+
+  if (![TokenType.TokenFactory, TokenType.Cw20].includes(tokenType)) {
+    return tokenWithDecimalsAndSymbol
+  }
+
+  /**
+   * If there are multiple cw20 variations
+   * of the token we find the one that corresponds
+   * to the contract address and set it on the cw20 field
+   *
+   * If there is only one cw20 version then we use that one
+   * as the default version
+   */
+  if (tokenWithDecimalsAndSymbol.cw20) {
+    return {
+      ...tokenWithDecimalsAndSymbol,
+      cw20s: [],
+    }
+  }
+
+  if (tokenWithDecimalsAndSymbol.cw20s) {
+    return {
+      ...tokenWithDecimalsAndSymbol,
+      ...getCw20TokenSingle({
+        ...tokenWithDecimalsAndSymbol,
+        denom,
+        tokenType: TokenType.Cw20,
+      }),
+      denom: tokenWithDecimalsAndSymbol.denom,
+    }
+  }
+
+  return tokenWithDecimalsAndSymbol
 }

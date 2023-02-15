@@ -23,6 +23,13 @@ export const isIbcTokenCanonical = (token: IbcToken) => {
   return canonicalChannelIds.includes(channelId)
 }
 
+export const getChannelIdFromPath = (path: string) => {
+  const pathParts = path.replace('transfer/', '').split('/')
+  const [channelId] = pathParts
+
+  return channelId
+}
+
 export const getIbcDestinationChain = ({
   channelPaths,
   channel,

@@ -71,7 +71,9 @@ export class TokenPrice {
     }
 
     const pricesFromCoinGecko =
-      await this.fetchUsdTokenPriceFromCoinGeckoInChunks(coinIdsNotInCache)
+      await this.fetchUsdTokenPriceFromCoinGeckoInChunks(
+        coinIdsNotInCacheAndInjectiveService,
+      )
 
     prices = { ...prices, ...pricesFromCoinGecko }
 

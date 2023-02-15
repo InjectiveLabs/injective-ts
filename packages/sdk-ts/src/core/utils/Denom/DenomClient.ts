@@ -5,6 +5,7 @@ import {
   TokenFactory,
   TokenMetaUtils,
   TokenMetaUtilsFactory,
+  getIbcTokenMetaFromDenomTrace,
 } from '@injectivelabs/token-metadata'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
 import { DenomTrace } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/transfer_pb'
@@ -101,12 +102,19 @@ export class DenomClient {
     if (cachedDenomTrace) {
       const token = this.tokenFactory.toToken(cachedDenomTrace.baseDenom)
 
-      return token
-        ? {
-            ...token,
-            denom,
-          }
-        : undefined
+      if (!token) {
+        return undefined
+      }
+
+      return {
+        ...token,
+        ibc: getIbcTokenMetaFromDenomTrace({
+          ...cachedDenomTrace,
+          decimals: token.decimals,
+          hash,
+        }),
+        denom,
+      }
     }
 
     try {
@@ -114,12 +122,19 @@ export class DenomClient {
 
       const token = this.tokenFactory.toToken(denomTrace.baseDenom)
 
-      return token
-        ? {
-            ...token,
-            denom,
-          }
-        : undefined
+      if (!token) {
+        return undefined
+      }
+
+      return {
+        ...token,
+        ibc: getIbcTokenMetaFromDenomTrace({
+          ...denomTrace,
+          decimals: token.decimals,
+          hash,
+        }),
+        denom,
+      }
     } catch (e) {
       throw new GeneralException(
         new Error(`Denom trace not found for ${denom}`),
