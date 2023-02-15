@@ -2,7 +2,7 @@ import {
   IBCTransferTx,
   PeggyDepositTx,
   PeggyWithdrawalTx,
-} from '@injectivelabs/sdk-ts/dist/client'
+} from '@injectivelabs/sdk-ts'
 import { CosmosTxResponse } from './cosmos'
 
 export enum BridgingNetwork {

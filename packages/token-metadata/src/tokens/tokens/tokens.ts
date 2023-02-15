@@ -1158,7 +1158,7 @@ export default {
     ibc: {
       decimals: 18,
       isNative: true,
-      baseDenom: 'canto',
+      baseDenom: 'acanto',
       path: 'transfer/channel-99',
       channelId: 'channel-99',
       hash: 'C733F37CB50114AFE8053C320DF45D0AAD8B94F556EB306AC2ABA0B9963CDF0D',
