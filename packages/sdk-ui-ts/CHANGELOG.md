@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.556](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.555...@injectivelabs/sdk-ui-ts@1.0.556) (2023-02-15)
+
+
+### Features
+
+* get token decimal and symbol based on denom ([0594183](https://github.com/InjectiveLabs/injective-ts/commit/0594183eb5be36dc9f18479b2bdc1123a6145be3))
+
+
+
+
+
 ## [1.0.555](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.554...@injectivelabs/sdk-ui-ts@1.0.555) (2023-02-15)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

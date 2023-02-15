@@ -206,8 +206,7 @@ export class TokenService {
       return {
         ...market,
         slug,
-        baseToken,
-        quoteToken: getCw20TokenSingle(quoteToken),
+        quoteToken: getCw20TokenSingle(quoteToken) || quoteToken,
       } as UiBaseSpotMarketWithToken
     }
 
@@ -216,7 +215,7 @@ export class TokenService {
         ...market,
         slug,
         quoteToken,
-        baseToken: getCw20TokenSingle(baseToken),
+        baseToken: getCw20TokenSingle(baseToken) || baseToken,
       } as UiBaseSpotMarketWithToken
     }
 
@@ -261,7 +260,7 @@ export class TokenService {
         ...market,
         slug,
         baseToken,
-        quoteToken: getCw20TokenSingle(quoteToken),
+        quoteToken: getCw20TokenSingle(quoteToken) || quoteToken,
       } as unknown as R
     }
 

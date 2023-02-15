@@ -5,8 +5,21 @@ import {
   TokenType,
   Cw20TokenSingle,
   Cw20TokenSource,
+  Cw20TokenMeta,
+  Cw20TokenMetaWithSource,
 } from './types'
 import { ibcBaseDenoms } from './tokens/tokens'
+
+const getCw20Meta = (
+  token: Token,
+): Cw20TokenMetaWithSource | Cw20TokenMeta | undefined => {
+  const denomToLowerCase = token.denom.toLowerCase()
+  const cw20MetaFromCw20s = token.cw20s?.find((meta) =>
+    denomToLowerCase.includes(meta.address.toLowerCase()),
+  )
+
+  return cw20MetaFromCw20s || token.cw20 || undefined
+}
 
 export const getTokenTypeFromDenom = (denom: string) => {
   if (denom === INJ_DENOM) {
@@ -36,6 +49,24 @@ export const getTokenTypeFromDenom = (denom: string) => {
   return TokenType.Cw20
 }
 
+export const getTokenSymbol = (token: Token) => {
+  if (token.denom.startsWith('factory/')) {
+    const meta = getCw20Meta(token) as Cw20TokenMetaWithSource
+
+    return meta?.symbol || token.symbol
+  }
+
+  if (token.denom.startsWith('peggy')) {
+    return token.erc20?.symbol || token.symbol
+  }
+
+  if (token.denom.startsWith('ibc')) {
+    return token.ibc?.symbol || token.symbol
+  }
+
+  return token.symbol
+}
+
 export const getTokenDecimals = (token: Token) => {
   if (token.denom === INJ_DENOM) {
     return token.decimals
@@ -46,7 +77,13 @@ export const getTokenDecimals = (token: Token) => {
   }
 
   if (token.denom.startsWith('factory/')) {
-    return token.cw20?.decimals
+    const meta = getCw20Meta(token)
+
+    return meta?.decimals || token.decimals
+  }
+
+  if (token.denom.startsWith('ibc')) {
+    return token.ibc?.decimals || token.decimals
   }
 
   if (token.denom.startsWith('peggy')) {
@@ -90,18 +127,20 @@ export const getTokenFromMeta = (meta: TokenMeta, denom?: string) => {
   const isBaseIbcDenom =
     ibcBaseDenoms.includes(denom || '') || meta.ibc?.baseDenom === denom
 
-  if (isBaseIbcDenom) {
-    return {
-      ...meta,
-      denom: denom || '',
-      tokenType: TokenType.Ibc,
-    }
+  const tokenType = isBaseIbcDenom
+    ? TokenType.Ibc
+    : getTokenTypeFromDenom(denom || '')
+
+  const token = {
+    ...meta,
+    denom: denom || '',
+    tokenType,
   }
 
   return {
-    ...meta,
-    denom: denom || '',
-    tokenType: getTokenTypeFromDenom(denom || ''),
+    ...token,
+    decimals: getTokenDecimals(token),
+    symbol: getTokenSymbol(token),
   }
 }
 
