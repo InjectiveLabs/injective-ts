@@ -1,5 +1,5 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
-import { BigNumberInBase, HttpRestClient } from '@injectivelabs/utils'
+import { BigNumberInBase, HttpRestClient, sleep } from '@injectivelabs/utils'
 import { HttpRequestException } from '@injectivelabs/exceptions'
 import { ASSET_PRICE_SERVICE_URL } from '../constants'
 import { CoinPriceFromInjectiveService } from '../types/token'
@@ -67,6 +67,19 @@ export class TokenPrice {
     )
 
     if (coinIdsNotInCacheAndInjectiveService.length === 0) {
+      return prices
+    }
+
+    const pricesFromCoinGecko =
+      await this.fetchUsdTokenPriceFromCoinGeckoInChunks(coinIdsNotInCache)
+
+    prices = { ...prices, ...pricesFromCoinGecko }
+
+    const coinIdsNotInCacheAndInjectiveServiceAndCoinGecko = coinIds.filter(
+      (coinId) => !Object.keys(prices).includes(coinId),
+    )
+
+    if (coinIdsNotInCacheAndInjectiveServiceAndCoinGecko.length === 0) {
       return prices
     }
 
@@ -270,6 +283,25 @@ export class TokenPrice {
       } catch (e) {
         //
       }
+    }
+
+    this.cache = { ...this.cache, ...prices }
+
+    return prices
+  }
+
+  private fetchUsdTokenPriceFromCoinGeckoInChunks = async (
+    coinIds: string[],
+  ) => {
+    let prices: Record<string, number> = {}
+
+    for (let i = 0; i < coinIds.length; i += 1) {
+      const price = await this.fetchUsdTokenPriceFromCoinGeckoNoThrow(
+        coinIds[i],
+      )
+
+      prices[coinIds[i]] = price
+      await sleep(500)
     }
 
     this.cache = { ...this.cache, ...prices }
