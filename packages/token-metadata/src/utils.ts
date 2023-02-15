@@ -226,6 +226,7 @@ export const getTokenFromMeta = (meta: TokenMeta, denom?: string): Token => {
 
   const tokenWithDecimalsAndSymbol = {
     ...token,
+    tokenType,
     decimals: getTokenDecimals(token),
     symbol: getTokenSymbol(token),
   }
@@ -257,6 +258,7 @@ export const getTokenFromMeta = (meta: TokenMeta, denom?: string): Token => {
         denom,
         tokenType: TokenType.Cw20,
       }),
+      tokenType,
       denom: tokenWithDecimalsAndSymbol.denom,
     }
   }
