@@ -14,7 +14,7 @@ import {
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountApi extends BaseConsumer {
+export class IndexerGrpcAccountPortfolioApi extends BaseConsumer {
   protected module: string = IndexerModule.Portfolio
 
   async fetchAccountPortfolio(address: string) {

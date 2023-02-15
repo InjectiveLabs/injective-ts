@@ -25,19 +25,31 @@ export class IndexerGrpcAccountPortfolioStream {
     })
   }
 
-  streamSubaccountBalance({
+  streamAccountPortfolio({
     subaccountId,
+    accountAddress,
+    type,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
-    subaccountId: string
+    accountAddress: string
+    subaccountId?: string
+    type?: string
     callback: AccountPortfolioStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
     const request = new StreamAccountPortfolioRequest()
-    request.setSubaccountId(subaccountId)
+    request.setAccountAddress(accountAddress)
+
+    if (subaccountId) {
+      request.setSubaccountId(subaccountId)
+    }
+
+    if (type) {
+      request.setType(type)
+    }
 
     const stream = this.client.streamAccountPortfolio(request)
 
