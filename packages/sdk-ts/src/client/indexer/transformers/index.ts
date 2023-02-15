@@ -1,4 +1,6 @@
+export * from './IndexerAccountPortfolioTransformer'
 export * from './IndexerAccountStreamTransformer'
+export * from './IndexerAccountPortfolioStreamTransformer'
 export * from './IndexerAuctionStreamTransformer'
 export * from './IndexerDerivativeStreamTransformer'
 export * from './IndexerExplorerStreamTransformer'
