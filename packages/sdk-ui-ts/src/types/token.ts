@@ -80,6 +80,11 @@ export interface BalanceWithTokenWithIbcBalanceWithPrice
   usdPrice: number
 }
 
+export interface BalanceWithTokenWithCw20BalanceWithPrice
+  extends BalanceWithTokenWithCw20Balance {
+  usdPrice: number
+}
+
 export interface BalanceWithTokenAndPriceWithUsdBalance
   extends BalanceWithTokenAndPrice {
   balanceInUsd: string
