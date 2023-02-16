@@ -40,21 +40,27 @@ export type BalanceWithTokenAndPrice = BalanceWithToken & {
 }
 
 export interface BalanceWithTokenWithErc20Balance extends BalanceWithToken {
-  erc20: {
+  erc20Balance: {
     allowance: string
     balance: string
   }
 }
 
 export interface BalanceWithTokenWithSplBalance extends BalanceWithToken {
-  spl: {
+  splBalance: {
     allowance: string
     balance: string
   }
 }
 
 export interface BalanceWithTokenWithIbcBalance extends BalanceWithToken {
-  ibc: {
+  ibcBalance: {
+    balance: string
+  }
+}
+
+export interface BalanceWithTokenWithCw20Balance extends BalanceWithToken {
+  cw20Balance: {
     balance: string
   }
 }
