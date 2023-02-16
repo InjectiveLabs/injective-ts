@@ -202,8 +202,13 @@ export class TokenService {
     /**
      * Edge cases when there are multiple CW20 variations of the same token
      */
-    quoteToken = getCw20TokenSingle(quoteToken as Token) || quoteToken
-    baseToken = getCw20TokenSingle(baseToken as Token) || baseToken
+    if (baseToken) {
+      baseToken = getCw20TokenSingle(baseToken as Token) || baseToken
+    }
+
+    if (quoteToken) {
+      quoteToken = getCw20TokenSingle(quoteToken) || quoteToken
+    }
 
     return {
       ...market,
@@ -241,8 +246,13 @@ export class TokenService {
     /**
      * Edge case when there are multiple CW20 variations of the same token
      */
-    quoteToken = getCw20TokenSingle(quoteToken as Token) || quoteToken
-    baseToken = getCw20TokenSingle(baseToken as Token) || baseToken
+    if (baseToken) {
+      baseToken = getCw20TokenSingle(baseToken as Token) || baseToken
+    }
+
+    if (quoteToken) {
+      quoteToken = getCw20TokenSingle(quoteToken) || quoteToken
+    }
 
     return {
       ...market,
