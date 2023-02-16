@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.565](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.564...@injectivelabs/sdk-ui-ts@1.0.565) (2023-02-16)
+
+
+### Bug Fixes
+
+* spot market cw20 meta not fetched properly ([9885d07](https://github.com/InjectiveLabs/injective-ts/commit/9885d07fc13a36d0ac7f37523da8b805703d287e))
+
+
+
+
+
 ## [1.0.564](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.563...@injectivelabs/sdk-ui-ts@1.0.564) (2023-02-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
