@@ -192,8 +192,8 @@ export class TokenService {
   async toSpotMarketWithToken(
     market: UiBaseSpotMarket,
   ): Promise<UiBaseSpotMarketWithToken> {
-    const baseToken = await this.denomClient.getDenomToken(market.baseDenom)
-    const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
+    let baseToken = await this.denomClient.getDenomToken(market.baseDenom)
+    let quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
     const slug =
       baseToken && quoteToken
         ? `${baseToken.symbol.toLowerCase()}-${quoteToken.symbol.toLowerCase()}`
@@ -202,22 +202,8 @@ export class TokenService {
     /**
      * Edge cases when there are multiple CW20 variations of the same token
      */
-    if (quoteToken && quoteToken.cw20s) {
-      return {
-        ...market,
-        slug,
-        quoteToken: getCw20TokenSingle(quoteToken) || quoteToken,
-      } as UiBaseSpotMarketWithToken
-    }
-
-    if (baseToken && baseToken.cw20s) {
-      return {
-        ...market,
-        slug,
-        quoteToken,
-        baseToken: getCw20TokenSingle(baseToken) || baseToken,
-      } as UiBaseSpotMarketWithToken
-    }
+    quoteToken = getCw20TokenSingle(quoteToken as Token) || quoteToken
+    baseToken = getCw20TokenSingle(baseToken as Token) || baseToken
 
     return {
       ...market,
@@ -249,20 +235,14 @@ export class TokenService {
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
-    const baseToken = await this.denomClient.getDenomToken(baseTokenSymbol)
-    const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
+    let baseToken = await this.denomClient.getDenomToken(baseTokenSymbol)
+    let quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
 
     /**
      * Edge case when there are multiple CW20 variations of the same token
      */
-    if (quoteToken && quoteToken.cw20s) {
-      return {
-        ...market,
-        slug,
-        baseToken,
-        quoteToken: getCw20TokenSingle(quoteToken) || quoteToken,
-      } as unknown as R
-    }
+    quoteToken = getCw20TokenSingle(quoteToken as Token) || quoteToken
+    baseToken = getCw20TokenSingle(baseToken as Token) || baseToken
 
     return {
       ...market,
