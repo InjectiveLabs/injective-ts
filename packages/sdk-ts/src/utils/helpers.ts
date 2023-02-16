@@ -144,3 +144,13 @@ export const sortObjectByKeys = <T>(obj: T): T => {
 
   return result as T
 }
+
+export const getErrorMessage = (error: any, endpoint: string): string => {
+  if (!error.response) {
+    return `The request to ${endpoint} has failed.`
+  }
+
+  return error.response.data
+    ? error.response.data.message || error.response.data
+    : error.response.statusText
+}

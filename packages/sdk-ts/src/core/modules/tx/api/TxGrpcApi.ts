@@ -155,7 +155,7 @@ export class TxGrpcApi implements TxConcreteApi {
     simulateRequest.setTxBytes(txRawClone.serializeBinary())
 
     try {
-      return new Promise(
+      return await new Promise(
         (resolve: (value: TxClientSimulateResponse) => void, reject) =>
           txService.simulate(simulateRequest, (error, response) => {
             if (error || !response) {
@@ -191,7 +191,7 @@ export class TxGrpcApi implements TxConcreteApi {
     broadcastTxRequest.setMode(mode)
 
     try {
-      return new Promise(
+      return await new Promise(
         (resolve: (value: TxClientBroadcastResponse) => void, reject) =>
           txService.broadcastTx(broadcastTxRequest, async (error, response) => {
             if (error || !response) {
@@ -231,7 +231,7 @@ export class TxGrpcApi implements TxConcreteApi {
     broadcastTxRequest.setMode(broadcastMode)
 
     try {
-      return new Promise(
+      return await new Promise(
         (resolve: (value: TxClientBroadcastResponse) => void, reject) =>
           txService.broadcastTx(broadcastTxRequest, (error, response) => {
             if (error || !response) {
