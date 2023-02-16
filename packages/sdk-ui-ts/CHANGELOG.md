@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.570](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.569...@injectivelabs/sdk-ui-ts@1.0.570) (2023-02-16)
+
+
+### Bug Fixes
+
+* cw20 types fix ([a054982](https://github.com/InjectiveLabs/injective-ts/commit/a0549827359af8f4e100c91ce2a0c6af4d839a28))
+
+
+
+
+
 ## [1.0.569](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.568...@injectivelabs/sdk-ui-ts@1.0.569) (2023-02-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
