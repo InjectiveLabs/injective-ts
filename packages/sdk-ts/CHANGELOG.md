@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.445](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.444...@injectivelabs/sdk-ts@1.0.445) (2023-02-16)
+
+
+### Bug Fixes
+
+* tx error parsin ([c281fec](https://github.com/InjectiveLabs/injective-ts/commit/c281fec94e5ebaecf6b1830228ae6bada5bbea4f))
+
+
+
+
+
 ## [1.0.444](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.443...@injectivelabs/sdk-ts@1.0.444) (2023-02-15)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
