@@ -25,6 +25,7 @@ import { UserDeposit } from '@injectivelabs/sdk-ts/dist/client'
 import {
   getExplorerUrl,
   getCosmosExplorerUrl,
+  getSolanaExplorerUrl,
   getEthereumExplorerUrl,
   getTerraExplorerUrl,
   FailedStates,
@@ -346,9 +347,43 @@ export const convertMoonbeamToUiBridgeTransaction = async (
   }
 }
 
-export const convertWormholeToUiBridgeTransaction = async (
-  transaction: WormholeTxResponse,
-): Promise<UiBridgeTransaction> => {
+export const convertWormholeToUiBridgeTransaction = async ({
+  transaction,
+  network,
+}: {
+  transaction: WormholeTxResponse
+  network: Network
+}): Promise<UiBridgeTransaction> => {
+  const isEthereumWhTransfer =
+    transaction.sender.startsWith('0x') ||
+    (transaction.receiver.startsWith('0x') &&
+      (transaction.source === BridgingNetwork.EthereumWh ||
+        transaction.destination === BridgingNetwork.EthereumWh))
+  const isSolanaTransfer =
+    transaction.source === BridgingNetwork.Solana ||
+    transaction.destination === BridgingNetwork.Solana
+  const isEthereumDeposit =
+    transaction.sender.startsWith('0x') &&
+    transaction.source === BridgingNetwork.EthereumWh
+  const isSolanaDeposit = transaction.source === BridgingNetwork.Solana
+
+  const solanaWhExplorerLink = isSolanaDeposit
+    ? `${getSolanaExplorerUrl(network)}/tx/${transaction.txHash}`
+    : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
+
+  const ethereumWhExplorerLink = isEthereumDeposit
+    ? `${getEthereumExplorerUrl(network)}/tx/${transaction.txHash}`
+    : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
+
+  const whExplorerLink = isSolanaTransfer
+    ? solanaWhExplorerLink
+    : ethereumWhExplorerLink
+
+  const explorerLink =
+    isEthereumWhTransfer || isSolanaTransfer
+      ? whExplorerLink
+      : transaction.explorerLink || ''
+
   return {
     type: getBridgeTransactionType(transaction.source, transaction.destination),
     denom: transaction.denom,
@@ -356,7 +391,7 @@ export const convertWormholeToUiBridgeTransaction = async (
     receiver: transaction.receiver,
     sender: transaction.sender,
     txHash: transaction.txHash,
-    explorerLink: transaction.explorerLink || '',
+    explorerLink,
     timestamp: new BigNumberInBase(
       Math.floor(new BigNumberInBase(Date.now()).div(1000).toNumber()),
     )
@@ -555,7 +590,10 @@ export class UiBridgeTransformer {
   }
 
   async convertWormholeToUiBridgeTransaction(transaction: WormholeTxResponse) {
-    return convertWormholeToUiBridgeTransaction(transaction)
+    return convertWormholeToUiBridgeTransaction({
+      transaction,
+      network: this.network,
+    })
   }
 
   async convertPeggyToUiBridgeTransaction(

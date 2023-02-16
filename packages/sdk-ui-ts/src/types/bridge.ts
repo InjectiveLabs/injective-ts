@@ -45,6 +45,7 @@ export enum BridgeTransactionState {
   Cancelled = 'Cancelled',
   Completed = 'Completed',
   Confirm = 'Confirming',
+  Redeemable = 'Redeemable',
   Confirming = 'Confirming',
   EthereumConfirming = 'EthereumConfirming',
   Failed = 'Failed',
