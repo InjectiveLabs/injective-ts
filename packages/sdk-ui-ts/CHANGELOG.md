@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.568](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.567...@injectivelabs/sdk-ui-ts@1.0.568) (2023-02-16)
+
+
+### Bug Fixes
+
+* baseToken and quoteToken wrong denom for market ([26f9970](https://github.com/InjectiveLabs/injective-ts/commit/26f99703cf9b481fa1de1742502059f0d6cc790e))
+
+
+
+
+
 ## [1.0.567](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.566...@injectivelabs/sdk-ui-ts@1.0.567) (2023-02-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
