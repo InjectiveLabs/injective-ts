@@ -24,11 +24,7 @@ import {
   SubaccountBalanceWithToken,
   UiBridgeTransactionWithToken,
 } from '../types'
-import {
-  getCw20TokenSingle,
-  Token,
-  TokenType,
-} from '@injectivelabs/token-metadata'
+import { Token, TokenType } from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
 
 /**
@@ -192,23 +188,12 @@ export class TokenService {
   async toSpotMarketWithToken(
     market: UiBaseSpotMarket,
   ): Promise<UiBaseSpotMarketWithToken> {
-    let baseToken = await this.denomClient.getDenomToken(market.baseDenom)
-    let quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
+    const baseToken = await this.denomClient.getDenomToken(market.baseDenom)
+    const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
     const slug =
       baseToken && quoteToken
         ? `${baseToken.symbol.toLowerCase()}-${quoteToken.symbol.toLowerCase()}`
         : market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
-
-    /**
-     * Edge cases when there are multiple CW20 variations of the same token
-     */
-    if (baseToken) {
-      baseToken = getCw20TokenSingle(baseToken as Token) || baseToken
-    }
-
-    if (quoteToken) {
-      quoteToken = getCw20TokenSingle(quoteToken) || quoteToken
-    }
 
     return {
       ...market,
@@ -240,19 +225,8 @@ export class TokenService {
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
-    let baseToken = await this.denomClient.getDenomToken(baseTokenSymbol)
-    let quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
-
-    /**
-     * Edge case when there are multiple CW20 variations of the same token
-     */
-    if (baseToken) {
-      baseToken = getCw20TokenSingle(baseToken as Token) || baseToken
-    }
-
-    if (quoteToken) {
-      quoteToken = getCw20TokenSingle(quoteToken) || quoteToken
-    }
+    const baseToken = await this.denomClient.getDenomToken(baseTokenSymbol)
+    const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
 
     return {
       ...market,
