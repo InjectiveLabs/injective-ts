@@ -50,6 +50,7 @@ export enum BridgeTransactionState {
   EthereumConfirming = 'EthereumConfirming',
   Failed = 'Failed',
   InjectiveConfirming = 'InjectiveConfirming',
+  RequestingVAA = 'RequestingVAA',
   Submitted = 'Submitted',
   FailedCancelled = 'failed-cancelled',
   InProgress = 'in-progress',
