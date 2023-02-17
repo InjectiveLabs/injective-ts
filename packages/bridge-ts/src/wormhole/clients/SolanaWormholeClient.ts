@@ -196,6 +196,24 @@ export class SolanaWormholeClient extends WormholeClient {
     }
   }
 
+  async getTxResponse(txHash: string) {
+    const { solanaHostUrl } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const txResponse = await getSolanaTransactionInfo(txHash, connection)
+
+    if (!txResponse) {
+      throw new Error('An error occurred while fetching the transaction info')
+    }
+
+    return txResponse
+  }
+
   async getSignedVAA(txResponse: TransactionResponse) {
     const { network, wormholeRpcUrl } = this
 

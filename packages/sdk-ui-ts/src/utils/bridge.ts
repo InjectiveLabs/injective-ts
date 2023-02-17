@@ -21,6 +21,8 @@ export const InProgressStates = [
   BridgeTransactionState.Submitted,
   BridgeTransactionState.InjectiveConfirming,
   BridgeTransactionState.EthereumConfirming,
+  BridgeTransactionState.RequestingVAA,
+  BridgeTransactionState.Redeemable,
 ]
 
 export const FailedStates = [
