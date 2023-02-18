@@ -18,7 +18,12 @@ export declare namespace MsgSubmitTextProposal {
 
   export type Proto = BaseMsgSubmitProposal
 
-  export type Object = BaseMsgSubmitProposal.AsObject
+  export type Object = Omit<BaseMsgSubmitProposal, 'content'> & {
+    content: {
+      type_url: string
+      value: any
+    }
+  }
 }
 
 /**
@@ -77,7 +82,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     const messageWithProposalType = snakecaseKeys({
       ...message,
       content: {
-        ...message.content,
+        value: message.content,
         type: proposalType,
       },
     })

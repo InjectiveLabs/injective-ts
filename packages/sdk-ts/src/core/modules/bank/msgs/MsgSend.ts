@@ -14,18 +14,12 @@ export declare namespace MsgSend {
   }
 
   export type Proto = BaseMsgSend
-
-  export type Object = BaseMsgSend.AsObject
 }
 
 /**
  * @category Messages
  */
-export default class MsgSend extends MsgBase<
-  MsgSend.Params,
-  MsgSend.Proto,
-  MsgSend.Object
-> {
+export default class MsgSend extends MsgBase<MsgSend.Params, MsgSend.Proto> {
   static fromJSON(params: MsgSend.Params): MsgSend {
     return new MsgSend(params)
   }

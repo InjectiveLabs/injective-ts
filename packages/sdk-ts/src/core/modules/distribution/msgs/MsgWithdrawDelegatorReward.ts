@@ -9,8 +9,6 @@ export declare namespace MsgWithdrawDelegatorReward {
   }
 
   export type Proto = BaseMsgWithdrawDelegatorReward
-
-  export type Object = BaseMsgWithdrawDelegatorReward.AsObject
 }
 
 /**
@@ -18,8 +16,7 @@ export declare namespace MsgWithdrawDelegatorReward {
  */
 export default class MsgWithdrawDelegatorReward extends MsgBase<
   MsgWithdrawDelegatorReward.Params,
-  MsgWithdrawDelegatorReward.Proto,
-  MsgWithdrawDelegatorReward.Object
+  MsgWithdrawDelegatorReward.Proto
 > {
   static fromJSON(
     params: MsgWithdrawDelegatorReward.Params,

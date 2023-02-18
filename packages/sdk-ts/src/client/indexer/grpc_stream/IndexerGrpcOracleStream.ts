@@ -2,8 +2,8 @@ import {
   InjectiveOracleRPCClientImpl,
   StreamPricesRequest,
   StreamPricesResponse,
-  // StreamPricesByMarketsRequest,
-  // StreamPricesByMarketsResponse,
+  StreamPricesByMarketsRequest,
+  StreamPricesByMarketsResponse,
 } from '@injectivelabs/indexer-proto-ts/injective_oracle_rpc'
 import { StreamStatusResponse } from '../types'
 import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer'
@@ -90,26 +90,30 @@ export class IndexerGrpcOracleStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
-    const request = new StreamPricesByMarketsRequest()
+    const request = StreamPricesByMarketsRequest.create()
 
     if (marketIds) {
       request.setMarketIdsList(marketIds)
     }
 
-    const stream = this.client.streamPricesByMarkets(request)
+    const stream = this.client.StreamPrices(request)
 
-    stream.on('data', (response: StreamPricesByMarketsResponse) => {
-      callback(IndexerOracleStreamTransformer.pricesByMarketsCallback(response))
+    return stream.subscribe({
+      next(response: StreamPricesResponse) {
+        callback(
+          IndexerOracleStreamTransformer.pricesByMarketsCallback(response),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
-
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
   }
 }

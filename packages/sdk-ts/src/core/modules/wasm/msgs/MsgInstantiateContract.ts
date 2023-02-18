@@ -18,8 +18,6 @@ export declare namespace MsgInstantiateContract {
   }
 
   export type Proto = BaseMsgInstantiateContract
-
-  export type Object = BaseMsgInstantiateContract.AsObject
 }
 
 /**
@@ -27,8 +25,7 @@ export declare namespace MsgInstantiateContract {
  */
 export default class MsgInstantiateContract extends MsgBase<
   MsgInstantiateContract.Params,
-  MsgInstantiateContract.Proto,
-  MsgInstantiateContract.Object
+  MsgInstantiateContract.Proto
 > {
   static fromJSON(
     params: MsgInstantiateContract.Params,

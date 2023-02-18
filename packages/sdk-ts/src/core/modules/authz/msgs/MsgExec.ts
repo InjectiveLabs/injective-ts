@@ -1,6 +1,6 @@
 import { MsgExec as BaseMsgExec } from '@injectivelabs/core-proto-ts/cosmos/authz/v1beta1/tx'
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 import { Msgs } from '../../msgs'
 
@@ -12,7 +12,9 @@ export declare namespace MsgExec {
 
   export type Proto = BaseMsgExec
 
-  export type Object = BaseMsgExec.AsObject
+  export type Object = Omit<BaseMsgExec, 'msgs'> & {
+    msgs: any
+  }
 }
 
 /**
@@ -65,7 +67,7 @@ export default class MsgExec extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgExec',
-      value: message as unknown as SnakeCaseKeys<MsgExec.Object>,
+      value: message as unknown as MsgExec.Object,
     }
   }
 

@@ -21,8 +21,6 @@ export declare namespace MsgCreateSpotMarketOrder {
   }
 
   export type Proto = BaseMsgCreateSpotMarketOrder
-
-  export type Object = BaseMsgCreateSpotMarketOrder.AsObject
 }
 
 const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
@@ -51,8 +49,7 @@ const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
  */
 export default class MsgCreateSpotMarketOrder extends MsgBase<
   MsgCreateSpotMarketOrder.Params,
-  MsgCreateSpotMarketOrder.Proto,
-  MsgCreateSpotMarketOrder.Object
+  MsgCreateSpotMarketOrder.Proto
 > {
   static fromJSON(
     params: MsgCreateSpotMarketOrder.Params,
@@ -92,8 +89,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
 
     return {
       type: 'exchange/MsgCreateSpotMarketOrder',
-      value:
-        message as unknown as SnakeCaseKeys<MsgCreateSpotMarketOrder.Object>,
+      value: message as unknown as SnakeCaseKeys<BaseMsgCreateSpotMarketOrder>,
     }
   }
 

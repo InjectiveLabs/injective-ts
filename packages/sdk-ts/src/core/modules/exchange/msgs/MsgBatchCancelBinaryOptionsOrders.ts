@@ -18,8 +18,6 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
   }
 
   export type Proto = BaseMsgBatchCancelBinaryOptionsOrders
-
-  export type Object = BaseMsgBatchCancelBinaryOptionsOrders.AsObject
 }
 
 /**
@@ -27,8 +25,7 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
  */
 export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
   MsgBatchCancelBinaryOptionsOrders.Params,
-  MsgBatchCancelBinaryOptionsOrders.Proto,
-  MsgBatchCancelBinaryOptionsOrders.Object
+  MsgBatchCancelBinaryOptionsOrders.Proto
 > {
   static fromJSON(
     params: MsgBatchCancelBinaryOptionsOrders.Params,
@@ -75,10 +72,8 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
 
     return {
       type: 'exchange/MsgBatchCancelBinaryOptionsOrders',
-      value: {
-        sender: message.sender,
-        data: message.data_list,
-      } as unknown as SnakeCaseKeys<MsgBatchCancelBinaryOptionsOrders.Object>,
+      value:
+        message as unknown as SnakeCaseKeys<BaseMsgBatchCancelBinaryOptionsOrders>,
     }
   }
 

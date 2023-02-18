@@ -13,14 +13,11 @@ export declare namespace MsgCancelDerivativeOrder {
   }
 
   export type Proto = BaseMsgCancelDerivativeOrder
-
-  export type Object = BaseMsgCancelDerivativeOrder.AsObject
 }
 
 export default class MsgCancelDerivativeOrder extends MsgBase<
   MsgCancelDerivativeOrder.Params,
-  MsgCancelDerivativeOrder.Proto,
-  MsgCancelDerivativeOrder.Object
+  MsgCancelDerivativeOrder.Proto
 > {
   static fromJSON(
     params: MsgCancelDerivativeOrder.Params,

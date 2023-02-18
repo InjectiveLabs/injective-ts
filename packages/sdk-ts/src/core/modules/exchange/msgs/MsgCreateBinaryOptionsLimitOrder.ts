@@ -22,8 +22,6 @@ export declare namespace MsgCreateBinaryOptionsLimitOrder {
   }
 
   export type Proto = BaseMsgCreateBinaryOptionsLimitOrder
-
-  export type Object = BaseMsgCreateBinaryOptionsLimitOrder.AsObject
 }
 
 const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
@@ -53,8 +51,7 @@ const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
  */
 export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
   MsgCreateBinaryOptionsLimitOrder.Params,
-  MsgCreateBinaryOptionsLimitOrder.Proto,
-  MsgCreateBinaryOptionsLimitOrder.Object
+  MsgCreateBinaryOptionsLimitOrder.Proto
 > {
   static fromJSON(
     params: MsgCreateBinaryOptionsLimitOrder.Params,
@@ -96,7 +93,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
     return {
       type: 'exchange/MsgCreateBinaryOptionsLimitOrder',
       value:
-        message as unknown as SnakeCaseKeys<MsgCreateBinaryOptionsLimitOrder.Object>,
+        message as unknown as SnakeCaseKeys<BaseMsgCreateBinaryOptionsLimitOrder>,
     }
   }
 

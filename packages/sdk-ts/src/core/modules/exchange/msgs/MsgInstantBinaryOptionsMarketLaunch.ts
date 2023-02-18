@@ -25,8 +25,6 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
   }
 
   export type Proto = BaseMsgInstantBinaryOptionsMarketLaunch
-
-  export type Object = BaseMsgInstantBinaryOptionsMarketLaunch.AsObject
 }
 
 const createMessage = (params: MsgInstantBinaryOptionsMarketLaunch.Params) => {
@@ -55,8 +53,7 @@ const createMessage = (params: MsgInstantBinaryOptionsMarketLaunch.Params) => {
  */
 export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
   MsgInstantBinaryOptionsMarketLaunch.Params,
-  MsgInstantBinaryOptionsMarketLaunch.Proto,
-  MsgInstantBinaryOptionsMarketLaunch.Object
+  MsgInstantBinaryOptionsMarketLaunch.Proto
 > {
   static fromJSON(
     params: MsgInstantBinaryOptionsMarketLaunch.Params,

@@ -14,8 +14,6 @@ export declare namespace MsgRequestRedemption {
   }
 
   export type Proto = BaseMsgRequestRedemption
-
-  export type Object = BaseMsgRequestRedemption.AsObject
 }
 
 /**
@@ -23,8 +21,7 @@ export declare namespace MsgRequestRedemption {
  */
 export default class MsgRequestRedemption extends MsgBase<
   MsgRequestRedemption.Params,
-  MsgRequestRedemption.Proto,
-  MsgRequestRedemption.Object
+  MsgRequestRedemption.Proto
 > {
   static fromJSON(params: MsgRequestRedemption.Params): MsgRequestRedemption {
     return new MsgRequestRedemption(params)

@@ -18,8 +18,6 @@ export declare namespace MsgEditValidator {
   }
 
   export type Proto = BaseMsgEditValidator
-
-  export type Object = BaseMsgEditValidator.AsObject
 }
 
 /**
@@ -27,8 +25,7 @@ export declare namespace MsgEditValidator {
  */
 export default class MsgEditValidator extends MsgBase<
   MsgEditValidator.Params,
-  MsgEditValidator.Proto,
-  MsgEditValidator.Object
+  MsgEditValidator.Proto
 > {
   static fromJSON(params: MsgEditValidator.Params): MsgEditValidator {
     return new MsgEditValidator(params)
@@ -95,7 +92,7 @@ export default class MsgEditValidator extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgEditValidator',
-      value: message as unknown as SnakeCaseKeys<MsgEditValidator.Object>,
+      value: message as unknown as SnakeCaseKeys<BaseMsgEditValidator>,
     }
   }
 

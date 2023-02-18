@@ -22,8 +22,6 @@ export declare namespace MsgSendToEth {
   }
 
   export type Proto = BaseMsgSendToEth
-
-  export type Object = BaseMsgSendToEth.AsObject
 }
 
 /**
@@ -31,8 +29,7 @@ export declare namespace MsgSendToEth {
  */
 export default class MsgSendToEth extends MsgBase<
   MsgSendToEth.Params,
-  MsgSendToEth.Proto,
-  MsgSendToEth.Object
+  MsgSendToEth.Proto
 > {
   static fromJSON(params: MsgSendToEth.Params): MsgSendToEth {
     return new MsgSendToEth(params)

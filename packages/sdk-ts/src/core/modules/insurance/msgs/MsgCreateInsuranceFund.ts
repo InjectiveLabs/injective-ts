@@ -22,8 +22,6 @@ export declare namespace MsgCreateInsuranceFund {
   }
 
   export type Proto = BaseMsgCreateInsuranceFund
-
-  export type Object = BaseMsgCreateInsuranceFund.AsObject
 }
 
 /**
@@ -31,8 +29,7 @@ export declare namespace MsgCreateInsuranceFund {
  */
 export default class MsgCreateInsuranceFund extends MsgBase<
   MsgCreateInsuranceFund.Params,
-  MsgCreateInsuranceFund.Proto,
-  MsgCreateInsuranceFund.Object
+  MsgCreateInsuranceFund.Proto
 > {
   static fromJSON(
     params: MsgCreateInsuranceFund.Params,

@@ -34,7 +34,12 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
 
   export type Proto = BaseMsgSubmitProposal
 
-  export type Object = BaseMsgSubmitProposal.AsObject
+  export type Object = Omit<BaseMsgSubmitProposal, 'content'> & {
+    content: {
+      type_url: string
+      value: any
+    }
+  }
 }
 
 /**
@@ -97,7 +102,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     const messageWithProposalType = snakecaseKeys({
       ...message,
       content: {
-        ...message.content,
+        value: message.content,
         type: proposalType,
       },
     })
@@ -119,14 +124,14 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     const messageWithProposalType = {
       ...value,
       content: {
-        ...value.content,
+        ...value.content.value,
         '@type': proposalType,
       },
     }
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalExpiryFuturesMarketLaunch.Object>),
+      ...messageWithProposalType,
     }
   }
 

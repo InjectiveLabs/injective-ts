@@ -63,8 +63,6 @@ export declare namespace MsgBatchUpdateOrders {
   }
 
   export type Proto = BaseMsgBatchUpdateOrders
-
-  export type Object = BaseMsgBatchUpdateOrders.AsObject
 }
 
 /**
@@ -72,8 +70,7 @@ export declare namespace MsgBatchUpdateOrders {
  */
 export default class MsgBatchUpdateOrders extends MsgBase<
   MsgBatchUpdateOrders.Params,
-  MsgBatchUpdateOrders.Proto,
-  MsgBatchUpdateOrders.Object
+  MsgBatchUpdateOrders.Proto
 > {
   static fromJSON(params: MsgBatchUpdateOrders.Params): MsgBatchUpdateOrders {
     return new MsgBatchUpdateOrders(params)
@@ -285,7 +282,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
 
     return {
       type: 'exchange/MsgBatchUpdateOrders',
-      value: message as unknown as SnakeCaseKeys<MsgBatchUpdateOrders.Object>,
+      value: message as unknown as SnakeCaseKeys<BaseMsgBatchUpdateOrders>,
     }
   }
 

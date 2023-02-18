@@ -11,8 +11,8 @@ import { prepareSignBytes } from './utils'
  */
 export abstract class MsgBase<
   Params,
-  ProtoRepresentation,
-  ObjectRepresentation extends Object,
+  ProtoRepresentation extends Object,
+  ObjectRepresentation extends Record<string, unknown> = {},
 > {
   params: Params
 
@@ -22,7 +22,7 @@ export abstract class MsgBase<
 
   public abstract toProto(): ProtoRepresentation
 
-  public abstract toData(): ObjectRepresentation & {
+  public abstract toData(): ProtoRepresentation & {
     '@type': string
   }
 
@@ -33,14 +33,16 @@ export abstract class MsgBase<
 
   public abstract toAmino(): {
     type: string
-    value: SnakeCaseKeys<ObjectRepresentation>
+    value: ObjectRepresentation | SnakeCaseKeys<ProtoRepresentation>
   }
 
   public abstract toBinary(): Uint8Array
 
-  public abstract toWeb3(): SnakeCaseKeys<ObjectRepresentation> & {
-    '@type': string
-  }
+  public abstract toWeb3():
+    | ObjectRepresentation
+    | (SnakeCaseKeys<ProtoRepresentation> & {
+        '@type': string
+      })
 
   public toJSON(): string {
     return JSON.stringify(prepareSignBytes(this.toData()))

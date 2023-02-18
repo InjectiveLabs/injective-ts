@@ -14,8 +14,6 @@ export declare namespace MsgUndelegate {
   }
 
   export type Proto = BaseMsgUndelegate
-
-  export type Object = BaseMsgUndelegate.AsObject
 }
 
 /**
@@ -23,8 +21,7 @@ export declare namespace MsgUndelegate {
  */
 export default class MsgUndelegate extends MsgBase<
   MsgUndelegate.Params,
-  MsgUndelegate.Proto,
-  MsgUndelegate.Object
+  MsgUndelegate.Proto
 > {
   static fromJSON(params: MsgUndelegate.Params): MsgUndelegate {
     return new MsgUndelegate(params)

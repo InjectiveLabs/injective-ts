@@ -2,7 +2,7 @@ import { MsgMultiExecute as BaseMsgMultiExecute } from '@injectivelabs/core-prot
 import { MsgBase } from '../../MsgBase'
 import { Msgs } from '../../msgs'
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgMultiExecute {
   export interface Params {
@@ -12,7 +12,7 @@ export declare namespace MsgMultiExecute {
 
   export type Proto = BaseMsgMultiExecute
 
-  export type Object = BaseMsgMultiExecute.AsObject
+  export type Object = Omit<BaseMsgMultiExecute, 'msgs'> & { msgs: any }
 }
 
 /**
@@ -62,7 +62,7 @@ export default class MsgMultiExecute extends MsgBase<
 
     return {
       type: 'exchange/MsgMultiExecute',
-      value: message as unknown as SnakeCaseKeys<MsgMultiExecute.Object>,
+      value: message as unknown as MsgMultiExecute.Object,
     }
   }
 

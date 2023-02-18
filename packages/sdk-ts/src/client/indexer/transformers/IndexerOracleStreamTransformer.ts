@@ -1,7 +1,7 @@
 import { StreamOperation } from '../../../types'
 import {
   StreamPricesResponse,
-  // StreamPricesByMarketsResponse,
+  StreamPricesByMarketsResponse,
 } from '@injectivelabs/indexer-proto-ts/injective_oracle_rpc'
 
 /**
@@ -17,8 +17,6 @@ export class IndexerOracleStreamTransformer {
   static pricesByMarketsCallback = (
     response: StreamPricesByMarketsResponse,
   ) => ({
-    price: response.getPrice(),
-    marketId: response.getMarketId(),
-    timestamp: response.getTimestamp(),
+    ...response,
   })
 }

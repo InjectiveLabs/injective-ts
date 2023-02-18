@@ -22,8 +22,6 @@ export declare namespace MsgCreateDerivativeMarketOrder {
   }
 
   export type Proto = BaseMsgCreateDerivativeMarketOrder
-
-  export type Object = BaseMsgCreateDerivativeMarketOrder.AsObject
 }
 
 const createMarketOrder = (params: MsgCreateDerivativeMarketOrder.Params) => {
@@ -53,8 +51,7 @@ const createMarketOrder = (params: MsgCreateDerivativeMarketOrder.Params) => {
  */
 export default class MsgCreateDerivativeMarketOrder extends MsgBase<
   MsgCreateDerivativeMarketOrder.Params,
-  MsgCreateDerivativeMarketOrder.Proto,
-  MsgCreateDerivativeMarketOrder.Object
+  MsgCreateDerivativeMarketOrder.Proto
 > {
   static fromJSON(
     params: MsgCreateDerivativeMarketOrder.Params,
@@ -96,7 +93,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
     return {
       type: 'exchange/MsgCreateDerivativeMarketOrder',
       value:
-        message as unknown as SnakeCaseKeys<MsgCreateDerivativeMarketOrder.Object>,
+        message as unknown as SnakeCaseKeys<BaseMsgCreateDerivativeMarketOrder>,
     }
   }
 

@@ -15,8 +15,6 @@ export declare namespace MsgBeginRedelegate {
   }
 
   export type Proto = BaseMsgBeginRedelegate
-
-  export type Object = BaseMsgBeginRedelegate.AsObject
 }
 
 /**
@@ -24,8 +22,7 @@ export declare namespace MsgBeginRedelegate {
  */
 export default class MsgBeginRedelegate extends MsgBase<
   MsgBeginRedelegate.Params,
-  MsgBeginRedelegate.Proto,
-  MsgBeginRedelegate.Object
+  MsgBeginRedelegate.Proto
 > {
   static fromJSON(params: MsgBeginRedelegate.Params): MsgBeginRedelegate {
     return new MsgBeginRedelegate(params)

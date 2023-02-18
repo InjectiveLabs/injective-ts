@@ -1,7 +1,7 @@
 import { MsgMigrateContract as BaseMsgMigrateContract } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
 import { fromUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgMigrateContract {
   export interface Params {
@@ -13,7 +13,9 @@ export declare namespace MsgMigrateContract {
 
   export type Proto = BaseMsgMigrateContract
 
-  export type Object = BaseMsgMigrateContract.AsObject
+  export type Object = Omit<BaseMsgMigrateContract, 'msg'> & {
+    msg: any
+  }
 }
 
 /**
@@ -60,7 +62,7 @@ export default class MsgMigrateContract extends MsgBase<
 
     return {
       type: 'wasm/MsgMigrateContract',
-      value: message as unknown as SnakeCaseKeys<MsgMigrateContract.Object>,
+      value: message as unknown as MsgMigrateContract.Object,
     }
   }
 

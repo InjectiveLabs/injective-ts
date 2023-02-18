@@ -14,8 +14,6 @@ export declare namespace MsgUnderwrite {
   }
 
   export type Proto = BaseMsgUnderwrite
-
-  export type Object = BaseMsgUnderwrite.AsObject
 }
 
 /**
@@ -23,8 +21,7 @@ export declare namespace MsgUnderwrite {
  */
 export default class MsgUnderwrite extends MsgBase<
   MsgUnderwrite.Params,
-  MsgUnderwrite.Proto,
-  MsgUnderwrite.Object
+  MsgUnderwrite.Proto
 > {
   static fromJSON(params: MsgUnderwrite.Params): MsgUnderwrite {
     return new MsgUnderwrite(params)

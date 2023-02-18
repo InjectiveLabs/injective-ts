@@ -10,8 +10,6 @@ export declare namespace MsgRevoke {
   }
 
   export type Proto = BaseMsgRevoke
-
-  export type Object = BaseMsgRevoke.AsObject
 }
 
 /**
@@ -19,8 +17,7 @@ export declare namespace MsgRevoke {
  */
 export default class MsgRevoke extends MsgBase<
   MsgRevoke.Params,
-  MsgRevoke.Proto,
-  MsgRevoke.Object
+  MsgRevoke.Proto
 > {
   static fromJSON(params: MsgRevoke.Params): MsgRevoke {
     return new MsgRevoke(params)
@@ -54,7 +51,7 @@ export default class MsgRevoke extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgRevoke',
-      value: message as unknown as SnakeCaseKeys<MsgRevoke.Object>,
+      value: message as unknown as SnakeCaseKeys<BaseMsgRevoke>,
     }
   }
 

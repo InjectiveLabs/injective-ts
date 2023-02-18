@@ -21,8 +21,6 @@ export declare namespace MsgCreateSpotLimitOrder {
   }
 
   export type Proto = BaseMsgCreateSpotLimitOrder
-
-  export type Object = BaseMsgCreateSpotLimitOrder.AsObject
 }
 
 const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
@@ -51,8 +49,7 @@ const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
  */
 export default class MsgCreateSpotLimitOrder extends MsgBase<
   MsgCreateSpotLimitOrder.Params,
-  MsgCreateSpotLimitOrder.Proto,
-  MsgCreateSpotLimitOrder.Object
+  MsgCreateSpotLimitOrder.Proto
 > {
   static fromJSON(
     params: MsgCreateSpotLimitOrder.Params,
@@ -93,8 +90,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
 
     return {
       type: 'exchange/MsgCreateSpotLimitOrder',
-      value:
-        message as unknown as SnakeCaseKeys<MsgCreateSpotLimitOrder.Object>,
+      value: message as unknown as SnakeCaseKeys<BaseMsgCreateSpotLimitOrder>,
     }
   }
 

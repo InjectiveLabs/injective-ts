@@ -23,8 +23,6 @@ export declare namespace MsgTransfer {
   }
 
   export type Proto = BaseMsgTransfer
-
-  export type Object = BaseMsgTransfer.AsObject
 }
 
 /**
@@ -32,8 +30,7 @@ export declare namespace MsgTransfer {
  */
 export default class MsgTransfer extends MsgBase<
   MsgTransfer.Params,
-  MsgTransfer.Proto,
-  MsgTransfer.Object
+  MsgTransfer.Proto
 > {
   static fromJSON(params: MsgTransfer.Params): MsgTransfer {
     return new MsgTransfer(params)
@@ -90,7 +87,7 @@ export default class MsgTransfer extends MsgBase<
       value: {
         ...message,
         memo: message.memo || '',
-      } as unknown as SnakeCaseKeys<MsgTransfer.Object>,
+      } as unknown as SnakeCaseKeys<BaseMsgTransfer>,
     }
   }
 

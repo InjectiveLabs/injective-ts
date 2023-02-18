@@ -10,8 +10,6 @@ export declare namespace MsgUpdateAdmin {
   }
 
   export type Proto = BaseMsgUpdateAdmin
-
-  export type Object = BaseMsgUpdateAdmin.AsObject
 }
 
 /**
@@ -19,8 +17,7 @@ export declare namespace MsgUpdateAdmin {
  */
 export default class MsgUpdateAdmin extends MsgBase<
   MsgUpdateAdmin.Params,
-  MsgUpdateAdmin.Proto,
-  MsgUpdateAdmin.Object
+  MsgUpdateAdmin.Proto
 > {
   static fromJSON(params: MsgUpdateAdmin.Params): MsgUpdateAdmin {
     return new MsgUpdateAdmin(params)
@@ -50,7 +47,7 @@ export default class MsgUpdateAdmin extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {

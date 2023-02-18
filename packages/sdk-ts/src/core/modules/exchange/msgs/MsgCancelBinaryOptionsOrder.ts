@@ -13,8 +13,6 @@ export declare namespace MsgCancelBinaryOptionsOrder {
   }
 
   export type Proto = BaseMsgCancelBinaryOptionsOrder
-
-  export type Object = BaseMsgCancelBinaryOptionsOrder.AsObject
 }
 
 /**
@@ -22,8 +20,7 @@ export declare namespace MsgCancelBinaryOptionsOrder {
  */
 export default class MsgCancelBinaryOptionsOrder extends MsgBase<
   MsgCancelBinaryOptionsOrder.Params,
-  MsgCancelBinaryOptionsOrder.Proto,
-  MsgCancelBinaryOptionsOrder.Object
+  MsgCancelBinaryOptionsOrder.Proto
 > {
   static fromJSON(
     params: MsgCancelBinaryOptionsOrder.Params,

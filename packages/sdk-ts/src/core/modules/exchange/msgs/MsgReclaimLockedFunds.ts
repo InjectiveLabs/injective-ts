@@ -10,8 +10,6 @@ export declare namespace MsgReclaimLockedFunds {
   }
 
   export type Proto = BaseMsgReclaimLockedFunds
-
-  export type Object = BaseMsgReclaimLockedFunds.AsObject
 }
 
 /**
@@ -19,8 +17,7 @@ export declare namespace MsgReclaimLockedFunds {
  */
 export default class MsgReclaimLockedFunds extends MsgBase<
   MsgReclaimLockedFunds.Params,
-  MsgReclaimLockedFunds.Proto,
-  MsgReclaimLockedFunds.Object
+  MsgReclaimLockedFunds.Proto
 > {
   static fromJSON(params: MsgReclaimLockedFunds.Params): MsgReclaimLockedFunds {
     return new MsgReclaimLockedFunds(params)
@@ -52,12 +49,16 @@ export default class MsgReclaimLockedFunds extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
       type: 'exchange/MsgReclaimLockedFunds',
-      value: message,
+      value: {
+        sender: message.sender,
+        locked_account_pub_key: message.locked_account_pub_key,
+        signature: message.signature,
+      },
     }
   }
 

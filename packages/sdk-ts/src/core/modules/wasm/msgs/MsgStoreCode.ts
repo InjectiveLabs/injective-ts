@@ -10,8 +10,6 @@ export declare namespace MsgStoreCode {
   }
 
   export type Proto = BaseMsgStoreCode
-
-  export type Object = BaseMsgStoreCode.AsObject
 }
 
 /**
@@ -19,8 +17,7 @@ export declare namespace MsgStoreCode {
  */
 export default class MsgStoreCode extends MsgBase<
   MsgStoreCode.Params,
-  MsgStoreCode.Proto,
-  MsgStoreCode.Object
+  MsgStoreCode.Proto
 > {
   static fromJSON(params: MsgStoreCode.Params): MsgStoreCode {
     return new MsgStoreCode(params)
@@ -52,7 +49,7 @@ export default class MsgStoreCode extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {

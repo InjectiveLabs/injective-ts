@@ -2,7 +2,7 @@ import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1bet
 import {
   MsgBatchCancelDerivativeOrders as BaseMsgBatchCancelDerivativeOrders,
   OrderData,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -18,8 +18,6 @@ export declare namespace MsgBatchCancelDerivativeOrders {
   }
 
   export type Proto = BaseMsgBatchCancelDerivativeOrders
-
-  export type Object = BaseMsgBatchCancelDerivativeOrders.AsObject
 }
 
 /**
@@ -27,8 +25,7 @@ export declare namespace MsgBatchCancelDerivativeOrders {
  */
 export default class MsgBatchCancelDerivativeOrders extends MsgBase<
   MsgBatchCancelDerivativeOrders.Params,
-  MsgBatchCancelDerivativeOrders.Proto,
-  MsgBatchCancelDerivativeOrders.Object
+  MsgBatchCancelDerivativeOrders.Proto
 > {
   static fromJSON(
     params: MsgBatchCancelDerivativeOrders.Params,
@@ -75,10 +72,8 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
 
     return {
       type: 'exchange/MsgBatchCancelDerivativeOrders',
-      value: {
-        sender: message.sender,
-        data: message.data_list,
-      } as unknown as SnakeCaseKeys<MsgBatchCancelDerivativeOrders.Object>,
+      value:
+        message as unknown as SnakeCaseKeys<BaseMsgBatchCancelDerivativeOrders>,
     }
   }
 

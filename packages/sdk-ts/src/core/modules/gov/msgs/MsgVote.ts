@@ -11,18 +11,12 @@ export declare namespace MsgVote {
   }
 
   export type Proto = BaseMsgVote
-
-  export type Object = BaseMsgVote.AsObject
 }
 
 /**
  * @category Messages
  */
-export default class MsgVote extends MsgBase<
-  MsgVote.Params,
-  MsgVote.Proto,
-  MsgVote.Object
-> {
+export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
   static fromJSON(params: MsgVote.Params): MsgVote {
     return new MsgVote(params)
   }

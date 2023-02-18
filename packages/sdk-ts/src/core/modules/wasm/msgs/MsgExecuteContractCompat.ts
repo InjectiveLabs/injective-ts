@@ -36,7 +36,9 @@ export declare namespace MsgExecuteContractCompat {
 
   export type Proto = BaseMsgExecuteContractCompat
 
-  export type Object = BaseMsgExecuteContractCompat.AsObject
+  export type Object = Omit<BaseMsgExecuteContractCompat, 'msg'> & {
+    msg: string
+  }
 }
 
 /**

@@ -8,8 +8,6 @@ export declare namespace MsgWithdrawValidatorCommission {
   }
 
   export type Proto = BaseMsgWithdrawValidatorCommission
-
-  export type Object = BaseMsgWithdrawValidatorCommission.AsObject
 }
 
 /**
@@ -17,8 +15,7 @@ export declare namespace MsgWithdrawValidatorCommission {
  */
 export default class MsgWithdrawValidatorCommission extends MsgBase<
   MsgWithdrawValidatorCommission.Params,
-  MsgWithdrawValidatorCommission.Proto,
-  MsgWithdrawValidatorCommission.Object
+  MsgWithdrawValidatorCommission.Proto
 > {
   static fromJSON(
     params: MsgWithdrawValidatorCommission.Params,

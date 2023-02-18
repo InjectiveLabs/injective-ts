@@ -6,7 +6,7 @@ import {
 import { Timestamp } from '@injectivelabs/core-proto-ts/google/protobuf/timestamp'
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 import { MsgBase } from '../../MsgBase'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 
 const genericAuthorizationType = '/cosmos.authz.v1beta1.GenericAuthorization'
 
@@ -22,17 +22,15 @@ export declare namespace MsgGrant {
 
   export type Proto = BaseMsgGrant
 
-  export type Object = BaseMsgGrant.AsObject
+  export type Object = Omit<BaseMsgGrant, 'msgs'> & {
+    msgs: any
+  }
 }
 
 /**
  * @category Messages
  */
-export default class MsgGrant extends MsgBase<
-  MsgGrant.Params,
-  MsgGrant.Proto,
-  MsgGrant.Object
-> {
+export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
   static fromJSON(params: MsgGrant.Params): MsgGrant {
     return new MsgGrant(params)
   }
@@ -92,8 +90,7 @@ export default class MsgGrant extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgGrant',
-      value:
-        messageWithAuthorizationType as unknown as SnakeCaseKeys<MsgGrant.Object>,
+      value: messageWithAuthorizationType as unknown as MsgGrant.Object,
     }
   }
 

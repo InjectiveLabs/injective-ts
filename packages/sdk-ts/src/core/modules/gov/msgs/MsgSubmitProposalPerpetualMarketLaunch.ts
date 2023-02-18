@@ -4,7 +4,7 @@ import { PerpetualMarketLaunchProposal } from '@injectivelabs/core-proto-ts/inje
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 import { OracleType } from '@injectivelabs/core-proto-ts/injective/oracle/v1beta1/oracle'
 import { MsgBase } from '../../MsgBase'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   export interface Params {
@@ -33,7 +33,12 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
 
   export type Proto = BaseMsgSubmitProposal
 
-  export type Object = BaseMsgSubmitProposal.AsObject
+  export type Object = Omit<BaseMsgSubmitProposal, 'content'> & {
+    content: {
+      type_url: string
+      value: any
+    }
+  }
 }
 
 /**
@@ -95,7 +100,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     const messageWithProposalType = {
       ...message,
       content: {
-        ...message.content,
+        value: message.content,
         type: proposalType,
       },
     }
@@ -103,7 +108,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
       value:
-        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>,
+        messageWithProposalType as unknown as MsgSubmitProposalPerpetualMarketLaunch.Object,
     }
   }
 
@@ -128,7 +133,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>),
+      ...(messageWithProposalType as unknown as MsgSubmitProposalPerpetualMarketLaunch.Object),
     }
   }
 

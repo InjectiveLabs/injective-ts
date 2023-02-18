@@ -28,7 +28,12 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
 
   export type Proto = BaseMsgSubmitProposal
 
-  export type Object = BaseMsgSubmitProposal.AsObject
+  export type Object = Omit<BaseMsgSubmitProposal, 'content'> & {
+    content: {
+      type_url: string
+      value: any
+    }
+  }
 }
 
 /**
@@ -90,8 +95,8 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const messageWithProposalType = snakecaseKeys({
       ...message,
       content: {
-        ...message.content,
-        type: proposalType,
+        value: message.content,
+        type_url: proposalType,
       },
     })
 

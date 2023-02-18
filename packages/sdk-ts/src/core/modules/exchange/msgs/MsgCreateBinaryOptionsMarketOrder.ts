@@ -22,8 +22,6 @@ export declare namespace MsgCreateBinaryOptionsMarketOrder {
   }
 
   export type Proto = BaseMsgCreateBinaryOptionsMarketOrder
-
-  export type Object = BaseMsgCreateBinaryOptionsMarketOrder.AsObject
 }
 
 const createMarketOrder = (
@@ -55,8 +53,7 @@ const createMarketOrder = (
  */
 export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
   MsgCreateBinaryOptionsMarketOrder.Params,
-  MsgCreateBinaryOptionsMarketOrder.Proto,
-  MsgCreateBinaryOptionsMarketOrder.Object
+  MsgCreateBinaryOptionsMarketOrder.Proto
 > {
   static fromJSON(
     params: MsgCreateBinaryOptionsMarketOrder.Params,
@@ -98,7 +95,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     return {
       type: 'exchange/MsgCreateBinaryOptionsMarketOrder',
       value:
-        message as unknown as SnakeCaseKeys<MsgCreateBinaryOptionsMarketOrder.Object>,
+        message as unknown as SnakeCaseKeys<BaseMsgCreateBinaryOptionsMarketOrder>,
     }
   }
 

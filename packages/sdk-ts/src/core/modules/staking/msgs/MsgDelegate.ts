@@ -14,8 +14,6 @@ export declare namespace MsgDelegate {
   }
 
   export type Proto = BaseMsgDelegate
-
-  export type Object = BaseMsgDelegate.AsObject
 }
 
 /**
@@ -23,8 +21,7 @@ export declare namespace MsgDelegate {
  */
 export default class MsgDelegate extends MsgBase<
   MsgDelegate.Params,
-  MsgDelegate.Proto,
-  MsgDelegate.Object
+  MsgDelegate.Proto
 > {
   static fromJSON(params: MsgDelegate.Params): MsgDelegate {
     return new MsgDelegate(params)

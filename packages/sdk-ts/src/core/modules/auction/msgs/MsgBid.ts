@@ -14,18 +14,12 @@ export declare namespace MsgBid {
   }
 
   export type Proto = BaseMsgBid
-
-  export type Object = BaseMsgBid.AsObject
 }
 
 /**
  * @category Messages
  */
-export default class MsgBid extends MsgBase<
-  MsgBid.Params,
-  MsgBid.Proto,
-  MsgBid.Object
-> {
+export default class MsgBid extends MsgBase<MsgBid.Params, MsgBid.Proto> {
   static fromJSON(params: MsgBid.Params): MsgBid {
     return new MsgBid(params)
   }

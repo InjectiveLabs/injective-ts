@@ -17,8 +17,6 @@ export declare namespace MsgInstantSpotMarketLaunch {
   }
 
   export type Proto = BaseMsgInstantSpotMarketLaunch
-
-  export type Object = BaseMsgInstantSpotMarketLaunch.AsObject
 }
 
 const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
@@ -39,8 +37,7 @@ const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
  */
 export default class MsgInstantSpotMarketLaunch extends MsgBase<
   MsgInstantSpotMarketLaunch.Params,
-  MsgInstantSpotMarketLaunch.Proto,
-  MsgInstantSpotMarketLaunch.Object
+  MsgInstantSpotMarketLaunch.Proto
 > {
   static fromJSON(
     params: MsgInstantSpotMarketLaunch.Params,

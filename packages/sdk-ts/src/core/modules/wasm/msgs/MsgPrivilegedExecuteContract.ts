@@ -12,8 +12,6 @@ export declare namespace MsgPrivilegedExecuteContract {
   }
 
   export type Proto = BaseMsgPrivilegedExecuteContract
-
-  export type Object = BaseMsgPrivilegedExecuteContract.AsObject
 }
 
 /**
@@ -21,8 +19,7 @@ export declare namespace MsgPrivilegedExecuteContract {
  */
 export default class MsgPrivilegedExecuteContract extends MsgBase<
   MsgPrivilegedExecuteContract.Params,
-  MsgPrivilegedExecuteContract.Proto,
-  MsgPrivilegedExecuteContract.Object
+  MsgPrivilegedExecuteContract.Proto
 > {
   static fromJSON(
     params: MsgPrivilegedExecuteContract.Params,
@@ -61,7 +58,7 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
     return {
       type: 'exchange/MsgPrivilegedExecuteContract',
       value:
-        message as unknown as SnakeCaseKeys<MsgPrivilegedExecuteContract.Object>,
+        message as unknown as SnakeCaseKeys<BaseMsgPrivilegedExecuteContract>,
     }
   }
 

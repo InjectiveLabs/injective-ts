@@ -11,8 +11,6 @@ export declare namespace MsgCancelSpotOrder {
   }
 
   export type Proto = BaseMsgCancelSpotOrder
-
-  export type Object = BaseMsgCancelSpotOrder.AsObject
 }
 
 /**
@@ -20,8 +18,7 @@ export declare namespace MsgCancelSpotOrder {
  */
 export default class MsgCancelSpotOrder extends MsgBase<
   MsgCancelSpotOrder.Params,
-  MsgCancelSpotOrder.Proto,
-  MsgCancelSpotOrder.Object
+  MsgCancelSpotOrder.Proto
 > {
   static fromJSON(params: MsgCancelSpotOrder.Params): MsgCancelSpotOrder {
     return new MsgCancelSpotOrder(params)

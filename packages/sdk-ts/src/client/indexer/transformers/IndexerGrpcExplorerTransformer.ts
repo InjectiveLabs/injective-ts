@@ -220,36 +220,30 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcTransactionToTransactionFromDetail(tx: TxDetailData): Transaction {
-    const messages = JSON.parse(Buffer.from(tx.getMessages()).toString('utf8'))
+    const messages = JSON.parse(Buffer.from(tx.messages).toString('utf8'))
 
     return {
-      ...tx.toObject(),
-      signatures: tx.getSignaturesList().map((signature) => ({
-        pubkey: signature.getPubkey(),
-        address: signature.getAddress(),
-        sequence: signature.getSequence(),
-        signature: signature.getSignature(),
+      ...tx,
+      gasWanted: parseInt(tx.gasWanted, 10),
+      gasUsed: parseInt(tx.gasUsed, 10),
+      blockNumber: parseInt(tx.blockNumber, 10),
+      signatures: tx.signatures.map((signature) => ({
+        pubkey: signature.pubkey,
+        address: signature.address,
+        sequence: parseInt(signature.sequence, 10),
+        signature: signature.signature,
       })),
-      gasFee: tx.getGasFee()
-        ? IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(tx.getGasFee()!)
+      gasFee: tx.gasFee
+        ? IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(tx.gasFee!)
         : {
             gasLimit: 0,
             payer: '',
             granter: '',
             amounts: [],
           },
-      events: tx.getEventsList().map((event) => ({
-        type: event.getType(),
-        attributes: event
-          .getAttributesMap()
-          .toObject()
-          .reduce(
-            (
-              attributes: Record<string, string>,
-              attribute: [string, string],
-            ) => ({ ...attributes, [attribute[0]]: attribute[1] }),
-            {},
-          ),
+      events: tx.events.map((event) => ({
+        type: event.type,
+        attributes: event.attributes,
       })),
       messages,
     }

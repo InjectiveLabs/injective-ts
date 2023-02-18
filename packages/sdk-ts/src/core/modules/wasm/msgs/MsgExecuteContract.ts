@@ -3,7 +3,7 @@ import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/cor
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import { GeneralException } from '@injectivelabs/exceptions'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 import { fromUtf8 } from '../../../../utils/utf8'
 
 export declare namespace MsgExecuteContract {
@@ -37,7 +37,9 @@ export declare namespace MsgExecuteContract {
 
   export type Proto = BaseMsgExecuteContract
 
-  export type Object = BaseMsgExecuteContract.AsObject
+  export type Object = Omit<BaseMsgExecuteContract, 'msg'> & {
+    msg: any
+  }
 }
 
 /**
@@ -101,7 +103,7 @@ export default class MsgExecuteContract extends MsgBase<
 
     return {
       type: 'wasm/MsgExecuteContract',
-      value: message as unknown as SnakeCaseKeys<MsgExecuteContract.Object>,
+      value: message as unknown as MsgExecuteContract.Object,
     }
   }
 

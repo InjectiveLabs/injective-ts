@@ -14,8 +14,6 @@ export declare namespace MsgWithdraw {
   }
 
   export type Proto = BaseMsgWithdraw
-
-  export type Object = BaseMsgWithdraw.AsObject
 }
 
 /**
@@ -23,8 +21,7 @@ export declare namespace MsgWithdraw {
  */
 export default class MsgWithdraw extends MsgBase<
   MsgWithdraw.Params,
-  MsgWithdraw.Proto,
-  MsgWithdraw.Object
+  MsgWithdraw.Proto
 > {
   static fromJSON(params: MsgWithdraw.Params): MsgWithdraw {
     return new MsgWithdraw(params)

@@ -15,8 +15,6 @@ export declare namespace MsgExternalTransfer {
   }
 
   export type Proto = BaseMsgExternalTransfer
-
-  export type Object = BaseMsgExternalTransfer.AsObject
 }
 
 /**
@@ -24,8 +22,7 @@ export declare namespace MsgExternalTransfer {
  */
 export default class MsgExternalTransfer extends MsgBase<
   MsgExternalTransfer.Params,
-  MsgExternalTransfer.Proto,
-  MsgExternalTransfer.Object
+  MsgExternalTransfer.Proto
 > {
   static fromJSON(params: MsgExternalTransfer.Params): MsgExternalTransfer {
     return new MsgExternalTransfer(params)

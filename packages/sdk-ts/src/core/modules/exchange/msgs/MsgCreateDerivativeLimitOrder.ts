@@ -22,8 +22,6 @@ export declare namespace MsgCreateDerivativeLimitOrder {
   }
 
   export type Proto = BaseMsgCreateDerivativeLimitOrder
-
-  export type Object = BaseMsgCreateDerivativeLimitOrder.AsObject
 }
 
 const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
@@ -53,8 +51,7 @@ const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
  */
 export default class MsgCreateDerivativeLimitOrder extends MsgBase<
   MsgCreateDerivativeLimitOrder.Params,
-  MsgCreateDerivativeLimitOrder.Proto,
-  MsgCreateDerivativeLimitOrder.Object
+  MsgCreateDerivativeLimitOrder.Proto
 > {
   static fromJSON(
     params: MsgCreateDerivativeLimitOrder.Params,
@@ -97,7 +94,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
     return {
       type: 'exchange/MsgCreateDerivativeLimitOrder',
       value:
-        message as unknown as SnakeCaseKeys<MsgCreateDerivativeLimitOrder.Object>,
+        message as unknown as SnakeCaseKeys<BaseMsgCreateDerivativeLimitOrder>,
     }
   }
 

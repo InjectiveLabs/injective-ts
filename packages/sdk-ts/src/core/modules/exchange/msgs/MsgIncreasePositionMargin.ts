@@ -13,8 +13,6 @@ export declare namespace MsgIncreasePositionMargin {
   }
 
   export type Proto = BaseMsgIncreasePositionMargin
-
-  export type Object = BaseMsgIncreasePositionMargin.AsObject
 }
 
 const createMessage = (params: MsgIncreasePositionMargin.Params) => {
@@ -34,8 +32,7 @@ const createMessage = (params: MsgIncreasePositionMargin.Params) => {
  */
 export default class MsgIncreasePositionMargin extends MsgBase<
   MsgIncreasePositionMargin.Params,
-  MsgIncreasePositionMargin.Proto,
-  MsgIncreasePositionMargin.Object
+  MsgIncreasePositionMargin.Proto
 > {
   static fromJSON(
     params: MsgIncreasePositionMargin.Params,

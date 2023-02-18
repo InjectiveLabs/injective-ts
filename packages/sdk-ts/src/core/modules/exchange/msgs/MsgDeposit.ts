@@ -14,8 +14,6 @@ export declare namespace MsgDeposit {
   }
 
   export type Proto = BaseMsgDeposit
-
-  export type Object = BaseMsgDeposit.AsObject
 }
 
 /**
@@ -23,8 +21,7 @@ export declare namespace MsgDeposit {
  */
 export default class MsgDeposit extends MsgBase<
   MsgDeposit.Params,
-  MsgDeposit.Proto,
-  MsgDeposit.Object
+  MsgDeposit.Proto
 > {
   static fromJSON(params: MsgDeposit.Params): MsgDeposit {
     return new MsgDeposit(params)
