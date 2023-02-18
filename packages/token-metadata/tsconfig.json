@@ -6,6 +6,12 @@
     },
     {
       "path": "../networks/tsconfig.json"
+    },
+    {
+      "path": "../utils/tsconfig.json"
+    },
+    {
+      "path": "../exceptions/tsconfig.json"
     }
   ]
 }

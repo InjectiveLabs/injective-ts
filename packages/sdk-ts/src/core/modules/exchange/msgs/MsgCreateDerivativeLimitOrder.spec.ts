@@ -43,7 +43,7 @@ const formattedProtoParams = {
     },
   },
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgCreateDerivativeLimitOrder.fromJSON(params)
 
 describe('MsgCreateDerivativeLimitOrder', () => {
@@ -67,7 +67,7 @@ describe('MsgCreateDerivativeLimitOrder', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -125,7 +125,7 @@ describe('MsgCreateDerivativeLimitOrder', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

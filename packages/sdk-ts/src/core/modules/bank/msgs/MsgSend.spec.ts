@@ -47,7 +47,7 @@ describe('MsgSend', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParamsAmino,
+      value: protoParamsAmino,
     })
   })
 

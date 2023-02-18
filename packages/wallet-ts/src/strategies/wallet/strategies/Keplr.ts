@@ -1,21 +1,21 @@
 /* eslint-disable class-methods-use-this */
 import {
-  AccountAddress,
   ChainId,
-  EthereumChainId,
   CosmosChainId,
+  AccountAddress,
+  EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
-  createCosmosSignDocFromTransaction,
-  getTxRawFromTxRawOrDirectSignResponse,
   TxResponse,
+  createTxRawFromSigResponse,
+  createCosmosSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
-  UnspecifiedErrorCode,
-  CosmosWalletException,
   ErrorType,
   TransactionException,
+  UnspecifiedErrorCode,
+  CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { KeplrWallet } from '../../../utils/wallets/keplr'
@@ -92,7 +92,7 @@ export default class Keplr
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<TxResponse> {
     const { keplrWallet } = this
-    const txRaw = getTxRawFromTxRawOrDirectSignResponse(transaction)
+    const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
       return await keplrWallet.waitTxBroadcasted(

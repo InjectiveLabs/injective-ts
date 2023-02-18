@@ -17,6 +17,7 @@ const protoParams = {
   orderHash: params.orderHash,
   subaccountId: params.subaccountId,
 }
+const protoParamsAmino = snakecaseKeys(protoParams)
 
 const message = MsgCancelSpotOrder.fromJSON(params)
 
@@ -41,7 +42,7 @@ describe('MsgCancelSpotOrder', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -63,7 +64,7 @@ describe('MsgCancelSpotOrder', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
-      value: snakecaseKeys(protoParams),
+      value: protoParamsAmino,
     })
   })
 
@@ -72,7 +73,7 @@ describe('MsgCancelSpotOrder', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

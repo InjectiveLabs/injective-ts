@@ -2,6 +2,8 @@ import { ConcreteException } from '../exception'
 import { ErrorContext, ErrorType } from '../types'
 
 export class CosmosWalletException extends ConcreteException {
+  public errorClass: string = 'CosmosWalletException'
+
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
 

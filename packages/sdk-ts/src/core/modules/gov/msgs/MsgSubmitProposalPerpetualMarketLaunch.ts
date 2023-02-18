@@ -4,6 +4,7 @@ import { PerpetualMarketLaunchProposal } from '@injectivelabs/core-proto-ts/inje
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 import { OracleType } from '@injectivelabs/core-proto-ts/injective/oracle/v1beta1/oracle'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   export interface Params {
@@ -30,24 +31,9 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
     }
   }
 
-  export interface DirectSign {
-    type: '/cosmos.gov.v1beta1.MsgSubmitProposal'
-    message: BaseMsgSubmitProposal
-  }
-
-  export interface Data extends BaseMsgSubmitProposal {
-    '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
-  }
-
-  export interface Amino extends BaseMsgSubmitProposal {
-    type: 'cosmos-sdk/MsgSubmitProposal'
-  }
-
-  export interface Web3 extends BaseMsgSubmitProposal {
-    '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
-  }
-
   export type Proto = BaseMsgSubmitProposal
+
+  export type Object = BaseMsgSubmitProposal.AsObject
 }
 
 /**
@@ -55,10 +41,8 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
  */
 export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
   MsgSubmitProposalPerpetualMarketLaunch.Params,
-  MsgSubmitProposalPerpetualMarketLaunch.Data,
   MsgSubmitProposalPerpetualMarketLaunch.Proto,
-  MsgSubmitProposalPerpetualMarketLaunch.Amino,
-  MsgSubmitProposalPerpetualMarketLaunch.DirectSign
+  MsgSubmitProposalPerpetualMarketLaunch.Object
 > {
   static fromJSON(
     params: MsgSubmitProposalPerpetualMarketLaunch.Params,
@@ -66,7 +50,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     return new MsgSubmitProposalPerpetualMarketLaunch(params)
   }
 
-  public toProto(): MsgSubmitProposalPerpetualMarketLaunch.Proto {
+  public toProto() {
     const { params } = this
 
     const depositParams = Coin.create()
@@ -89,7 +73,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     return BaseMsgSubmitProposal.fromPartial(message)
   }
 
-  public toData(): MsgSubmitProposalPerpetualMarketLaunch.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -98,7 +82,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     }
   }
 
-  public toAmino(): MsgSubmitProposalPerpetualMarketLaunch.Amino {
+  public toAmino() {
     const { params } = this
     const content = this.getContent()
     const proposalType = 'exchange/PerpetualMarketLaunchProposal'
@@ -118,11 +102,12 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitProposalPerpetualMarketLaunch.Amino
+      value:
+        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>,
+    }
   }
 
-  public toWeb3(): MsgSubmitProposalPerpetualMarketLaunch.Web3 {
+  public toWeb3() {
     const { params } = this
     const content = this.getContent()
     const proposalType =
@@ -133,21 +118,21 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
       proposer: params.proposer,
     }
 
-    const messageWithProposalType = {
+    const messageWithProposalType = snakecaseKeys({
       ...message,
       content: {
         ...message.content,
         '@type': proposalType,
       },
-    }
+    })
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitProposalPerpetualMarketLaunch.Web3
+      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>),
+    }
   }
 
-  public toDirectSign(): MsgSubmitProposalPerpetualMarketLaunch.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

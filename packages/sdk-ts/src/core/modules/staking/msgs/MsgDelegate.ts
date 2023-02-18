@@ -1,6 +1,7 @@
 import { MsgDelegate as BaseMsgDelegate } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/tx'
 import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgDelegate {
   export interface Params {
@@ -11,24 +12,10 @@ export declare namespace MsgDelegate {
     validatorAddress: string
     injectiveAddress: string
   }
-  export interface DirectSign {
-    type: '/cosmos.staking.v1beta1.MsgDelegate'
-    message: BaseMsgDelegate
-  }
-
-  export interface Data extends BaseMsgDelegate {
-    '@type': '/cosmos.staking.v1beta1.MsgDelegate'
-  }
-
-  export interface Amino extends BaseMsgDelegate {
-    type: 'cosmos-sdk/MsgDelegate'
-  }
-
-  export interface Web3 extends BaseMsgDelegate {
-    '@type': '/cosmos.authz.v1beta1.MsgDelegate'
-  }
 
   export type Proto = BaseMsgDelegate
+
+  export type Object = BaseMsgDelegate.AsObject
 }
 
 /**
@@ -36,16 +23,14 @@ export declare namespace MsgDelegate {
  */
 export default class MsgDelegate extends MsgBase<
   MsgDelegate.Params,
-  MsgDelegate.Data,
   MsgDelegate.Proto,
-  MsgDelegate.Amino,
-  MsgDelegate.DirectSign
+  MsgDelegate.Object
 > {
   static fromJSON(params: MsgDelegate.Params): MsgDelegate {
     return new MsgDelegate(params)
   }
 
-  public toProto(): MsgDelegate.Proto {
+  public toProto() {
     const { params } = this
 
     const coinAmount = Coin.create()
@@ -60,7 +45,7 @@ export default class MsgDelegate extends MsgBase<
     return BaseMsgDelegate.fromPartial(message)
   }
 
-  public toData(): MsgDelegate.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -69,26 +54,29 @@ export default class MsgDelegate extends MsgBase<
     }
   }
 
-  public toAmino(): MsgDelegate.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'cosmos-sdk/MsgDelegate',
-      ...proto,
+      value: message,
     }
   }
 
-  public toWeb3(): MsgDelegate.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgDelegate',
-      ...rest,
-    } as unknown as MsgDelegate.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgDelegate.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgCreateBinaryOptionsMarketOrder {
   export interface Params {
@@ -20,24 +21,9 @@ export declare namespace MsgCreateBinaryOptionsMarketOrder {
     quantity: string
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder'
-    message: BaseMsgCreateBinaryOptionsMarketOrder
-  }
-
-  export interface Data extends BaseMsgCreateBinaryOptionsMarketOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder'
-  }
-
-  export interface Amino extends BaseMsgCreateBinaryOptionsMarketOrder {
-    type: 'exchange/MsgCreateBinaryOptionsMarketOrder'
-  }
-
-  export interface Web3 extends BaseMsgCreateBinaryOptionsMarketOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder'
-  }
-
   export type Proto = BaseMsgCreateBinaryOptionsMarketOrder
+
+  export type Object = BaseMsgCreateBinaryOptionsMarketOrder.AsObject
 }
 
 const createMarketOrder = (
@@ -69,10 +55,8 @@ const createMarketOrder = (
  */
 export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
   MsgCreateBinaryOptionsMarketOrder.Params,
-  MsgCreateBinaryOptionsMarketOrder.Data,
   MsgCreateBinaryOptionsMarketOrder.Proto,
-  MsgCreateBinaryOptionsMarketOrder.Amino,
-  MsgCreateBinaryOptionsMarketOrder.DirectSign
+  MsgCreateBinaryOptionsMarketOrder.Object
 > {
   static fromJSON(
     params: MsgCreateBinaryOptionsMarketOrder.Params,
@@ -80,7 +64,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     return new MsgCreateBinaryOptionsMarketOrder(params)
   }
 
-  public toProto(): MsgCreateBinaryOptionsMarketOrder.Proto {
+  public toProto() {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -95,7 +79,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     return createMarketOrder(params)
   }
 
-  public toData(): MsgCreateBinaryOptionsMarketOrder.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -104,27 +88,31 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCreateBinaryOptionsMarketOrder.Amino {
+  public toAmino() {
     const { params } = this
     const proto = createMarketOrder(params)
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgCreateBinaryOptionsMarketOrder',
-      ...proto,
+      value:
+        message as unknown as SnakeCaseKeys<MsgCreateBinaryOptionsMarketOrder.Object>,
     }
   }
 
-  public toWeb3(): MsgCreateBinaryOptionsMarketOrder.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
-      ...rest,
-    } as unknown as MsgCreateBinaryOptionsMarketOrder.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCreateBinaryOptionsMarketOrder.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

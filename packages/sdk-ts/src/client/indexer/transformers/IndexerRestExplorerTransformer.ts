@@ -154,6 +154,9 @@ export class IndexerRestExplorerTransformer {
   ): Partial<ExplorerValidator>[] {
     return validators.map((validator) => {
       return {
+        id: validator.id,
+        moniker: validator.moniker,
+        consensusAddress: validator.consensus_address,
         operatorAddress: validator.operator_address,
         proposed: validator.proposed,
         signed: validator.signed,
@@ -244,10 +247,14 @@ export class IndexerRestExplorerTransformer {
         name,
         symbol,
         logo: marketing_info ? marketing_info.logo || '' : '',
-        address: balance.contract_address,
+        cw20: {
+          decimals,
+          address: balance.contract_address,
+          tokenType: TokenType.Cw20,
+        },
         coinGeckoId: name,
-        denom: '',
         tokenType: TokenType.Cw20,
+        denom: '',
       },
     }
   }

@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgCreateDerivativeMarketOrder {
   export interface Params {
@@ -20,24 +21,9 @@ export declare namespace MsgCreateDerivativeMarketOrder {
     quantity: string
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
-    message: BaseMsgCreateDerivativeMarketOrder
-  }
-
-  export interface Data extends BaseMsgCreateDerivativeMarketOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
-  }
-
-  export interface Amino extends BaseMsgCreateDerivativeMarketOrder {
-    type: 'exchange/MsgCreateDerivativeMarketOrder'
-  }
-
-  export interface Web3 extends BaseMsgCreateDerivativeMarketOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
-  }
-
   export type Proto = BaseMsgCreateDerivativeMarketOrder
+
+  export type Object = BaseMsgCreateDerivativeMarketOrder.AsObject
 }
 
 const createMarketOrder = (params: MsgCreateDerivativeMarketOrder.Params) => {
@@ -67,10 +53,8 @@ const createMarketOrder = (params: MsgCreateDerivativeMarketOrder.Params) => {
  */
 export default class MsgCreateDerivativeMarketOrder extends MsgBase<
   MsgCreateDerivativeMarketOrder.Params,
-  MsgCreateDerivativeMarketOrder.Data,
   MsgCreateDerivativeMarketOrder.Proto,
-  MsgCreateDerivativeMarketOrder.Amino,
-  MsgCreateDerivativeMarketOrder.DirectSign
+  MsgCreateDerivativeMarketOrder.Object
 > {
   static fromJSON(
     params: MsgCreateDerivativeMarketOrder.Params,
@@ -78,7 +62,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
     return new MsgCreateDerivativeMarketOrder(params)
   }
 
-  public toProto(): MsgCreateDerivativeMarketOrder.Proto {
+  public toProto() {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -93,7 +77,7 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
     return createMarketOrder(params)
   }
 
-  public toData(): MsgCreateDerivativeMarketOrder.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -102,27 +86,31 @@ export default class MsgCreateDerivativeMarketOrder extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCreateDerivativeMarketOrder.Amino {
+  public toAmino() {
     const { params } = this
     const proto = createMarketOrder(params)
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgCreateDerivativeMarketOrder',
-      ...proto,
+      value:
+        message as unknown as SnakeCaseKeys<MsgCreateDerivativeMarketOrder.Object>,
     }
   }
 
-  public toWeb3(): MsgCreateDerivativeMarketOrder.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder',
-      ...rest,
-    } as unknown as MsgCreateDerivativeMarketOrder.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCreateDerivativeMarketOrder.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

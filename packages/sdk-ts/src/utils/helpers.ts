@@ -109,3 +109,48 @@ export const snakeToPascal = (str: string): string => {
     )
     .join('/')
 }
+
+export const sortObjectByKeysWithReduce = <T>(obj: T): T => {
+  if (typeof obj !== 'object' || obj === null) return obj
+
+  if (Array.isArray(obj)) {
+    return obj.map((e) => sortObjectByKeysWithReduce(e)).sort() as T
+  }
+
+  return Object.keys(obj)
+    .sort()
+    .reduce((sorted, k) => {
+      const key = k as keyof typeof obj
+      sorted[key] = sortObjectByKeysWithReduce(obj[key])
+      return sorted
+    }, {} as T)
+}
+
+export const sortObjectByKeys = <T>(obj: T): T => {
+  if (typeof obj !== 'object' || obj === null) {
+    return obj
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(sortObjectByKeys) as T
+  }
+
+  const sortedKeys = Object.keys(obj).sort() as Array<keyof typeof obj>
+  const result = {} as Record<keyof typeof obj, any>
+
+  sortedKeys.forEach((key) => {
+    result[key] = sortObjectByKeys(obj[key])
+  })
+
+  return result as T
+}
+
+export const getErrorMessage = (error: any, endpoint: string): string => {
+  if (!error.response) {
+    return `The request to ${endpoint} has failed.`
+  }
+
+  return error.response.data
+    ? error.response.data.message || error.response.data
+    : error.response.statusText
+}

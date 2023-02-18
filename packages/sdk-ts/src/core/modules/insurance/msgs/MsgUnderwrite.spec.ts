@@ -19,7 +19,7 @@ const protoParams = {
   sender: params.injectiveAddress,
   deposit: params.amount,
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgUnderwrite.fromJSON(params)
 
 describe('MsgUnderwrite', () => {
@@ -43,7 +43,7 @@ describe('MsgUnderwrite', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -68,7 +68,7 @@ describe('MsgUnderwrite', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeAmino,
-      value: snakecaseKeys(protoParams),
+      value: protoParamsAmino,
     })
   })
 
@@ -77,7 +77,7 @@ describe('MsgUnderwrite', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

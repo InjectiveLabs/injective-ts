@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.75-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.74-alpha.0...@injectivelabs/token-utils@1.0.75-alpha.0) (2023-01-29)
+## [1.0.83](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.82...@injectivelabs/token-utils@1.0.83) (2023-02-15)
 
 **Note:** Version bump only for package @injectivelabs/token-utils
 
@@ -11,7 +11,71 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.74-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.73...@injectivelabs/token-utils@1.0.74-alpha.0) (2023-01-29)
+## [1.0.82](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.81...@injectivelabs/token-utils@1.0.82) (2023-02-15)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.81](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.80...@injectivelabs/token-utils@1.0.81) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.80](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.79...@injectivelabs/token-utils@1.0.80) (2023-02-13)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.78...@injectivelabs/token-utils@1.0.79) (2023-02-09)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.77...@injectivelabs/token-utils@1.0.78) (2023-02-08)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.77](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.76...@injectivelabs/token-utils@1.0.77) (2023-02-06)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.75...@injectivelabs/token-utils@1.0.76) (2023-02-06)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.75](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.74...@injectivelabs/token-utils@1.0.75) (2023-02-06)
+
+**Note:** Version bump only for package @injectivelabs/token-utils
+
+
+
+
+
+## [1.0.74](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.73...@injectivelabs/token-utils@1.0.74) (2023-02-03)
 
 **Note:** Version bump only for package @injectivelabs/token-utils
 

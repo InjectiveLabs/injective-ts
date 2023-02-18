@@ -1,9 +1,10 @@
 import {
-  SpotMarket as BaseUiSpotMarket,
   SpotTrade,
+  SpotOrderSide,
+  Orderbook as UiSpotOrderbook,
+  SpotMarket as BaseUiSpotMarket,
   SpotLimitOrder as UiSpotLimitOrder,
   SpotOrderHistory as UiSpotOrderHistory,
-  SpotOrderSide,
 } from '@injectivelabs/sdk-ts'
 import { Orderbook as UiSpotOrderbook } from '@injectivelabs/sdk-ts'
 import {
@@ -11,7 +12,7 @@ import {
   AllChronosSpotMarketSummary,
 } from '@injectivelabs/sdk-ts'
 import { Token } from '@injectivelabs/token-metadata'
-import { Change, MarketBase, MarketType } from './common'
+import { Change, MarketType } from './common'
 
 export interface UiBaseSpotMarket
   extends Omit<BaseUiSpotMarket, 'quoteToken' | 'baseToken'> {}
@@ -29,7 +30,6 @@ export interface UiSpotMarketWithToken extends UiBaseSpotMarketWithToken {
   quantityTensMultiplier: number
   type: MarketType
   subType: MarketType
-  marketBase?: MarketBase
   upcoming?: boolean
 }
 

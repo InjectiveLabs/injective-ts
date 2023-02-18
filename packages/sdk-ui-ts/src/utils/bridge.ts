@@ -14,14 +14,15 @@ import {
   PEGGY_TESTNET_GRAPH_URL,
 } from '../constants'
 import { CosmosChainId, TestnetCosmosChainId } from '@injectivelabs/ts-types'
-import { tokenMetaUtil, TokenType } from '@injectivelabs/token-metadata'
-import { Token } from '@injectivelabs/token-metadata'
+import { Token, tokenMetaUtils, TokenType } from '@injectivelabs/token-metadata'
 
 export const InProgressStates = [
   BridgeTransactionState.Confirming,
   BridgeTransactionState.Submitted,
   BridgeTransactionState.InjectiveConfirming,
   BridgeTransactionState.EthereumConfirming,
+  BridgeTransactionState.RequestingVAA,
+  BridgeTransactionState.Redeemable,
 ]
 
 export const FailedStates = [
@@ -31,6 +32,7 @@ export const FailedStates = [
 
 export const KeplrNetworks = [
   BridgingNetwork.CosmosHub,
+  BridgingNetwork.CosmosHubTestnet,
   BridgingNetwork.Chihuahua,
   BridgingNetwork.Osmosis,
   BridgingNetwork.Axelar,
@@ -40,6 +42,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Secret,
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
+  BridgingNetwork.Canto,
 ]
 
 export const LeapNetworks = [
@@ -50,6 +53,7 @@ export const LeapNetworks = [
   BridgingNetwork.Persistence,
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
+  BridgingNetwork.Canto,
 ]
 
 export const CosmostationNetworks = [
@@ -64,6 +68,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Stride,
   BridgingNetwork.Crescent,
   BridgingNetwork.Sommelier,
+  BridgingNetwork.Canto,
 ]
 
 export const CosmosNetworks = [
@@ -78,11 +83,13 @@ export const CosmosNetworks = [
   BridgingNetwork.Secret,
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
+  BridgingNetwork.Canto,
 ]
 
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Chihuahua,
   BridgingNetwork.CosmosHub,
+  BridgingNetwork.CosmosHubTestnet,
   BridgingNetwork.Juno,
   BridgingNetwork.Evmos,
   BridgingNetwork.Persistence,
@@ -91,43 +98,63 @@ export const tokenSelectorDisabledNetworks = [
 
 export const tokenDenomsPerNetwork = [
   {
+    network: BridgingNetwork.CosmosHub,
+    denoms: [
+      'ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
+    ],
+    symbols: ['atom'],
+  },
+  {
     network: BridgingNetwork.Osmosis,
-    denoms: ['uosmo', 'inj'],
-    symbols: ['osmo'],
+    denoms: [
+      'inj',
+      'ibc/92E0120F15D037353CFB73C14651FC8930ADC05B93100FD7754D3A689E53B333',
+    ],
+    symbols: ['osmo', 'inj'],
   },
   {
     network: BridgingNetwork.Chihuahua,
-    denoms: ['uhuahua'],
+    denoms: [
+      'ibc/E7807A46C0B7B44B350DA58F51F278881B863EC4DCA94635DAB39E52C30766CB',
+    ],
     symbols: ['huahua'],
   },
   {
     network: BridgingNetwork.Axelar,
-    denoms: ['uaxl', 'dot-planck'],
+    denoms: [
+      'dot-planck',
+      'ibc/B68C1D2682A8B69E20BB921E34C6A3A2B6D1E13E3E8C0092E373826F546DEE65',
+    ],
     symbols: ['axl', 'dot'],
   },
   {
     network: BridgingNetwork.Juno,
-    denoms: ['ujuno'],
+    denoms: [
+      'ibc/D50E26996253EBAA8C684B9CD653FE2F7665D7BDDCA3D48D5E1378CF6334F211',
+    ],
     symbols: ['juno'],
   },
   {
-    network: BridgingNetwork.CosmosHub,
-    denoms: ['uatom', 'uphoton'],
-    symbols: ['atom', 'uphoton'],
-  },
-  {
     network: BridgingNetwork.Terra,
-    denoms: ['uluna', 'uusd'],
+    denoms: [
+      'ibc/B8AF5D92165F35AB31F3FC7C7B444B9D240760FA5D406C49D24862BD0284E395',
+      'ibc/B448C0CA358B958301D328CCDC5D5AD642FC30A6D3AE106FF721DB315F3DDE5C',
+    ],
     symbols: ['luna', 'ust'],
   },
   {
     network: BridgingNetwork.Evmos,
-    denoms: ['uevmos'],
+    denoms: [
+      'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
+    ],
     symbols: ['evmos'],
   },
   {
     network: BridgingNetwork.Persistence,
-    denoms: ['uxprt', 'inj'],
+    denoms: [
+      'inj',
+      'ibc/B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB',
+    ],
     symbols: ['xprt'],
   },
   {
@@ -137,7 +164,9 @@ export const tokenDenomsPerNetwork = [
   },
   {
     network: BridgingNetwork.Secret,
-    denoms: ['uscrt'],
+    denoms: [
+      'ibc/0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A',
+    ],
     symbols: ['scrt'],
   },
   {
@@ -147,126 +176,174 @@ export const tokenDenomsPerNetwork = [
   },
   {
     network: BridgingNetwork.Crescent,
-    denoms: ['ucre', 'inj'],
+    denoms: [
+      'inj',
+      'ibc/3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6',
+    ],
     symbols: ['cre'],
   },
   {
     network: BridgingNetwork.Sommelier,
-    denoms: ['usomm'],
+    denoms: [
+      'ibc/34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B',
+    ],
     symbols: ['somm'],
+  },
+  {
+    network: BridgingNetwork.Canto,
+    denoms: [
+      'ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
+    ],
+    symbols: ['canto'],
+  },
+  {
+    network: BridgingNetwork.CosmosHubTestnet,
+    denoms: [
+      'ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
+    ],
+    symbols: ['uphoton'],
+  },
+  {
+    network: BridgingNetwork.Solana,
+    denoms: [],
+    symbols: ['SOL'],
   },
   {
     network: BridgingNetwork.EthereumWh,
     denoms: [],
-    symbols: ['USDCet'],
+    symbols: ['USDCet', 'CHZ'],
   },
 ] as NetworkConfig[]
 
 export const cosmosNativeDenomsFromChainId = {
   [CosmosChainId.Cosmoshub]: {
-    ...tokenMetaUtil.getMetaBySymbol('ATOM'),
+    ...tokenMetaUtils.getMetaBySymbol('ATOM'),
     tokenType: TokenType.Ibc,
-    denom: 'uatom',
+    denom:
+      'ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
   },
   [CosmosChainId.Osmosis]: [
     {
-      ...tokenMetaUtil.getMetaBySymbol('OSMO'),
-      tokenType: TokenType.Ibc,
-      denom: 'uosmo',
-    },
-    {
-      ...tokenMetaUtil.getMetaBySymbol('INJ'),
+      ...tokenMetaUtils.getMetaBySymbol('OSMO'),
       tokenType: TokenType.Ibc,
       denom:
-        'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
+        'ibc/92E0120F15D037353CFB73C14651FC8930ADC05B93100FD7754D3A689E53B333',
+    },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('INJ'),
+      tokenType: TokenType.Ibc,
+      denom: 'inj',
     },
   ],
   [CosmosChainId.Terra]: [
     {
-      ...tokenMetaUtil.getMetaBySymbol('LUNA'),
+      ...tokenMetaUtils.getMetaBySymbol('LUNA'),
       tokenType: TokenType.Ibc,
-      denom: 'uluna',
+      denom:
+        'ibc/B8AF5D92165F35AB31F3FC7C7B444B9D240760FA5D406C49D24862BD0284E395',
     },
     {
-      ...tokenMetaUtil.getMetaBySymbol('UST'),
+      ...tokenMetaUtils.getMetaBySymbol('UST'),
       tokenType: TokenType.Ibc,
-      denom: 'uusd',
+      denom:
+        'ibc/B448C0CA358B958301D328CCDC5D5AD642FC30A6D3AE106FF721DB315F3DDE5C',
     },
   ],
   [CosmosChainId.Injective]: {
-    ...tokenMetaUtil.getMetaBySymbol('INJ'),
+    ...tokenMetaUtils.getMetaBySymbol('INJ'),
     tokenType: TokenType.Ibc,
     denom: 'inj',
   },
   [CosmosChainId.Chihuahua]: {
-    ...tokenMetaUtil.getMetaBySymbol('HUAHUA'),
+    ...tokenMetaUtils.getMetaBySymbol('HUAHUA'),
     tokenType: TokenType.Ibc,
-    denom: 'uhuahua',
+    denom:
+      'ibc/E7807A46C0B7B44B350DA58F51F278881B863EC4DCA94635DAB39E52C30766CB',
   },
   [CosmosChainId.Juno]: {
-    ...tokenMetaUtil.getMetaBySymbol('JUNO'),
+    ...tokenMetaUtils.getMetaBySymbol('JUNO'),
     tokenType: TokenType.Ibc,
-    denom: 'ujuno',
+    denom:
+      'ibc/D50E26996253EBAA8C684B9CD653FE2F7665D7BDDCA3D48D5E1378CF6334F211',
   },
   [CosmosChainId.Axelar]: [
     {
-      ...tokenMetaUtil.getMetaBySymbol('AXL'),
+      ...tokenMetaUtils.getMetaBySymbol('AXL'),
       tokenType: TokenType.Ibc,
-      denom: 'uaxl',
+      denom:
+        'ibc/B68C1D2682A8B69E20BB921E34C6A3A2B6D1E13E3E8C0092E373826F546DEE65',
     },
     {
-      ...tokenMetaUtil.getMetaBySymbol('DOT'),
+      ...tokenMetaUtils.getMetaBySymbol('DOT'),
       tokenType: TokenType.Ibc,
       denom: 'dot-planck',
     },
   ],
   [CosmosChainId.Evmos]: {
-    ...tokenMetaUtil.getMetaBySymbol('EVMOS'),
+    ...tokenMetaUtils.getMetaBySymbol('EVMOS'),
     tokenType: TokenType.Ibc,
-    denom: 'aevmos',
+    denom:
+      'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
   },
   [CosmosChainId.Persistence]: {
-    ...tokenMetaUtil.getMetaBySymbol('XPRT'),
+    ...tokenMetaUtils.getMetaBySymbol('XPRT'),
     tokenType: TokenType.Ibc,
-    denom: 'uxprt',
+    denom:
+      'ibc/B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB',
   },
   [CosmosChainId.Secret]: {
-    ...tokenMetaUtil.getMetaBySymbol('SCRT'),
+    ...tokenMetaUtils.getMetaBySymbol('SCRT'),
     tokenType: TokenType.Ibc,
-    denom: 'uscrt',
+    denom:
+      'ibc/0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A',
   },
   [CosmosChainId.Stride]: {
-    ...tokenMetaUtil.getMetaBySymbol('STRD'),
+    ...tokenMetaUtils.getMetaBySymbol('STRD'),
     tokenType: TokenType.Ibc,
-    denom: 'ustrd',
+    denom:
+      'ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
   },
   [CosmosChainId.Crescent]: [
     {
-      ...tokenMetaUtil.getMetaBySymbol('CRE'),
-      tokenType: TokenType.Ibc,
-      denom: 'ucre',
-    },
-    {
-      ...tokenMetaUtil.getMetaBySymbol('INJ'),
+      ...tokenMetaUtils.getMetaBySymbol('CRE'),
       tokenType: TokenType.Ibc,
       denom:
-        'ibc/5A76568E079A31FA12165E4559BA9F1E9D4C97F9C2060B538C84DCD503815E30',
+        'ibc/3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6',
+    },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('INJ'),
+      tokenType: TokenType.Ibc,
+      denom: 'inj',
     },
   ],
   [CosmosChainId.Sommelier]: {
-    ...tokenMetaUtil.getMetaBySymbol('SOMM'),
+    ...tokenMetaUtils.getMetaBySymbol('SOMM'),
     tokenType: TokenType.Ibc,
-    denom: 'usomm',
+    denom:
+      'ibc/34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B',
+  },
+  [CosmosChainId.Canto]: {
+    ...tokenMetaUtils.getMetaBySymbol('CANTO'),
+    tokenType: TokenType.Ibc,
+    denom:
+      'ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
   },
   [TestnetCosmosChainId.Cosmoshub]: {
-    ...tokenMetaUtil.getMetaBySymbol('UPHOTON'),
+    ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
     tokenType: TokenType.Ibc,
-    denom: 'uphoton',
+    denom:
+      'ibc/48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
   },
   [TestnetCosmosChainId.Injective]: {
-    ...tokenMetaUtil.getMetaBySymbol('INJ'),
+    ...tokenMetaUtils.getMetaBySymbol('INJ'),
     tokenType: TokenType.Ibc,
     denom: 'inj',
+  },
+  [TestnetCosmosChainId.Cosmoshub]: {
+    ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
+    tokenType: TokenType.Ibc,
+    denom:
+      'ibc/48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
   },
 } as Record<string, Token | Token[]>
 
@@ -278,6 +355,15 @@ export const ibcHashToNativeInjPerNetwork = {
   [BridgingNetwork.Persistence]:
     'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
 } as Partial<Record<BridgingNetwork, string>>
+
+export const ibcHashToNativeInjPerCosmosChain = {
+  [CosmosChainId.Osmosis]:
+    'ibc/64BA6E31FE887D66C6F8F31C7B1A80C7CA179239677B4088BB55F5EA07DBE273',
+  [CosmosChainId.Crescent]:
+    'ibc/5A76568E079A31FA12165E4559BA9F1E9D4C97F9C2060B538C84DCD503815E30',
+  [CosmosChainId.Persistence]:
+    'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
+} as Partial<Record<CosmosChainId, string>>
 
 const sameTxHash = (txHashOne: string, txHashTwo: string) =>
   txHashOne &&
@@ -428,6 +514,23 @@ export const getEthereumExplorerUrl = (network: Network): string => {
   }
 }
 
+export const getSolanaExplorerUrl = (network: Network): string => {
+  switch (network) {
+    case Network.Devnet:
+      return 'https://explorer.solana.com/?cluster=devnet'
+    case Network.Mainnet:
+      return 'https://explorer.solana.com/'
+    case Network.Public:
+      return 'https://explorer.solana.com/'
+    case Network.Local:
+      return 'https://explorer.solana.com/?cluster=devnet'
+    case Network.Testnet:
+      return 'https://explorer.solana.com/?cluster=testnet'
+    default:
+      return 'https://explorer.solana.com/'
+  }
+}
+
 export const getTerraExplorerUrl = (network: Network): string => {
   switch (network) {
     case Network.Devnet:
@@ -521,6 +624,14 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
     return BridgingNetwork.Sommelier
   }
 
+  if (sender.startsWith('canto')) {
+    return BridgingNetwork.Canto
+  }
+
+  if (sender.startsWith('0x')) {
+    return BridgingNetwork.Ethereum
+  }
+
   return BridgingNetwork.CosmosHub
 }
 
@@ -536,6 +647,8 @@ export const getGasPriceForCosmosNetwork = (network: BridgingNetwork) => {
     case BridgingNetwork.Chihuahua:
       return 0.02
     case BridgingNetwork.CosmosHub:
+      return 0.04
+    case BridgingNetwork.CosmosHubTestnet:
       return 0.04
     case BridgingNetwork.Osmosis:
       return 0.04

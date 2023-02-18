@@ -1,6 +1,7 @@
 import { MsgUnderwrite as BaseMsgUnderwrite } from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/tx'
 import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgUnderwrite {
   export interface Params {
@@ -12,24 +13,9 @@ export declare namespace MsgUnderwrite {
     injectiveAddress: string
   }
 
-  export interface DirectSign {
-    type: '/injective.insurance.v1beta1.MsgUnderwrite'
-    message: BaseMsgUnderwrite
-  }
-
-  export interface Data extends BaseMsgUnderwrite {
-    '@type': '/injective.insurance.v1beta1.MsgUnderwrite'
-  }
-
-  export interface Amino extends BaseMsgUnderwrite {
-    type: 'insurance/MsgUnderwrite'
-  }
-
-  export interface Web3 extends BaseMsgUnderwrite {
-    '@type': '/injective.insurance.v1beta1.MsgUnderwrite'
-  }
-
   export type Proto = BaseMsgUnderwrite
+
+  export type Object = BaseMsgUnderwrite.AsObject
 }
 
 /**
@@ -37,16 +23,14 @@ export declare namespace MsgUnderwrite {
  */
 export default class MsgUnderwrite extends MsgBase<
   MsgUnderwrite.Params,
-  MsgUnderwrite.Data,
   MsgUnderwrite.Proto,
-  MsgUnderwrite.Amino,
-  MsgUnderwrite.DirectSign
+  MsgUnderwrite.Object
 > {
   static fromJSON(params: MsgUnderwrite.Params): MsgUnderwrite {
     return new MsgUnderwrite(params)
   }
 
-  public toProto(): MsgUnderwrite.Proto {
+  public toProto() {
     const { params } = this
 
     const amountCoin = Coin.create()
@@ -61,7 +45,7 @@ export default class MsgUnderwrite extends MsgBase<
     return message
   }
 
-  public toData(): MsgUnderwrite.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -70,26 +54,29 @@ export default class MsgUnderwrite extends MsgBase<
     }
   }
 
-  public toAmino(): MsgUnderwrite.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'insurance/MsgUnderwrite',
-      ...proto,
+      value: message,
     }
   }
 
-  public toWeb3(): MsgUnderwrite.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.insurance.v1beta1.MsgUnderwrite',
-      ...rest,
-    } as unknown as MsgUnderwrite.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgUnderwrite.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

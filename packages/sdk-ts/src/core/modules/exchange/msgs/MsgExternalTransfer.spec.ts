@@ -21,7 +21,7 @@ const protoParams = {
   sender: params.injectiveAddress,
   amount: params.amount,
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgExternalTransfer.fromJSON(params)
 
 describe('MsgExternalTransfer', () => {
@@ -45,7 +45,7 @@ describe('MsgExternalTransfer', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -71,7 +71,7 @@ describe('MsgExternalTransfer', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeAmino,
-      value: snakecaseKeys(protoParams),
+      value: protoParamsAmino,
     })
   })
 
@@ -80,7 +80,7 @@ describe('MsgExternalTransfer', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

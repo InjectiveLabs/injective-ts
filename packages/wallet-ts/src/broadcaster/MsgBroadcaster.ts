@@ -82,7 +82,7 @@ export class MsgBroadcaster {
     this.chainId = networkInfo.chainId
     this.ethereumChainId = networkInfo.ethereumChainId
     this.endpoints = endpoints
-    this.transactionApi = new IndexerGrpcTransactionApi(networkInfo.indexer)
+    this.transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
   }
 
   /**

@@ -1,6 +1,7 @@
 import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgCancelBinaryOptionsOrder as BaseMsgCancelBinaryOptionsOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgCancelBinaryOptionsOrder {
   export interface Params {
@@ -11,24 +12,9 @@ export declare namespace MsgCancelBinaryOptionsOrder {
     orderMask?: OrderMask
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
-    message: BaseMsgCancelBinaryOptionsOrder
-  }
-
-  export interface Data extends BaseMsgCancelBinaryOptionsOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
-  }
-
-  export interface Amino extends BaseMsgCancelBinaryOptionsOrder {
-    type: 'exchange/MsgCancelBinaryOptionsOrder'
-  }
-
-  export interface Web3 extends BaseMsgCancelBinaryOptionsOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
-  }
-
   export type Proto = BaseMsgCancelBinaryOptionsOrder
+
+  export type Object = BaseMsgCancelBinaryOptionsOrder.AsObject
 }
 
 /**
@@ -36,10 +22,8 @@ export declare namespace MsgCancelBinaryOptionsOrder {
  */
 export default class MsgCancelBinaryOptionsOrder extends MsgBase<
   MsgCancelBinaryOptionsOrder.Params,
-  MsgCancelBinaryOptionsOrder.Data,
   MsgCancelBinaryOptionsOrder.Proto,
-  MsgCancelBinaryOptionsOrder.Amino,
-  MsgCancelBinaryOptionsOrder.DirectSign
+  MsgCancelBinaryOptionsOrder.Object
 > {
   static fromJSON(
     params: MsgCancelBinaryOptionsOrder.Params,
@@ -47,7 +31,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     return new MsgCancelBinaryOptionsOrder(params)
   }
 
-  public toProto(): MsgCancelBinaryOptionsOrder.Proto {
+  public toProto() {
     const { params } = this
 
     const message = BaseMsgCancelBinaryOptionsOrder.create()
@@ -62,7 +46,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     return message
   }
 
-  public toData(): MsgCancelBinaryOptionsOrder.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -71,26 +55,29 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCancelBinaryOptionsOrder.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgCancelBinaryOptionsOrder',
-      ...proto,
+      value: message,
     }
   }
 
-  public toWeb3(): MsgCancelBinaryOptionsOrder.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder',
-      ...rest,
-    } as unknown as MsgCancelBinaryOptionsOrder.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCancelBinaryOptionsOrder.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

@@ -33,7 +33,11 @@ import { TransactionSignatureAndResponse } from '@injectivelabs/wormhole-sdk/lib
 import { zeroPad } from 'ethers/lib/utils'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
-import { SolanaNativeSolTransferMsgArgs, SolanaTransferMsgArgs } from '../types'
+import {
+  SolanaNativeSolTransferMsgArgs,
+  SolanaTransferMsgArgs,
+  WormholeSource,
+} from '../types'
 import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
@@ -192,6 +196,24 @@ export class SolanaWormholeClient extends WormholeClient {
     }
   }
 
+  async getTxResponse(txHash: string) {
+    const { solanaHostUrl } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const txResponse = await getSolanaTransactionInfo(txHash, connection)
+
+    if (!txResponse) {
+      throw new Error('An error occurred while fetching the transaction info')
+    }
+
+    return txResponse
+  }
+
   async getSignedVAA(txResponse: TransactionResponse) {
     const { network, wormholeRpcUrl } = this
 
@@ -221,13 +243,10 @@ export class SolanaWormholeClient extends WormholeClient {
     return Buffer.from(signedVAA).toString('base64')
   }
 
-  async redeem({
-    solanaPubKey,
-    signedVAA,
-  }: {
-    solanaPubKey: string
-    signedVAA: string /* in base 64 */
-  }): Promise<Transaction> {
+  async redeem(
+    solanaPubKey: string,
+    signedVAA: string /* in base 64 */,
+  ): Promise<Transaction> {
     const { network, solanaHostUrl } = this
 
     if (!solanaHostUrl) {
@@ -247,13 +266,10 @@ export class SolanaWormholeClient extends WormholeClient {
     )
   }
 
-  async redeemNativeSol({
-    solanaPubKey,
-    signedVAA,
-  }: {
-    solanaPubKey: string
-    signedVAA: string /* in base 64 */
-  }): Promise<Transaction> {
+  async redeemNativeSol(
+    solanaPubKey: string,
+    signedVAA: string /* in base 64 */,
+  ): Promise<Transaction> {
     const { network, solanaHostUrl } = this
 
     if (!solanaHostUrl) {
@@ -401,10 +417,13 @@ export class SolanaWormholeClient extends WormholeClient {
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
-    const { injectiveContractAddresses } = getContractAddresses(network)
+    const { associatedChainContractAddresses } = getContractAddresses(
+      network,
+      WormholeSource.Solana,
+    )
 
     return getIsTransferCompletedSolana(
-      injectiveContractAddresses.token_bridge,
+      associatedChainContractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
       connection,
     )

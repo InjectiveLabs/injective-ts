@@ -1,8 +1,12 @@
-export function toUtf8(str: string): Uint8Array {
+export function fromUtf8(str: Uint8Array | string): Uint8Array {
+  if (typeof str !== 'string') {
+    return str
+  }
+
   return new TextEncoder().encode(str)
 }
 
-export function fromUtf8(data: Uint8Array | string): string {
+export function toUtf8(data: Uint8Array | string): string {
   if (typeof data === 'string') {
     return data
   }

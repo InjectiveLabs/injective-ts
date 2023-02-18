@@ -2,8 +2,8 @@ import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1bet
 import {
   MsgBatchCancelSpotOrders as BaseMsgBatchCancelSpotOrders,
   OrderData,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
-import snakeCaseKeys from 'snakecase-keys'
+} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgBatchCancelSpotOrders {
@@ -17,24 +17,9 @@ export declare namespace MsgBatchCancelSpotOrders {
     }[]
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders'
-    message: BaseMsgBatchCancelSpotOrders
-  }
-
-  export interface Data extends BaseMsgBatchCancelSpotOrders {
-    '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders'
-  }
-
-  export interface Amino extends BaseMsgBatchCancelSpotOrders {
-    type: 'exchange/MsgBatchCancelSpotOrders'
-  }
-
-  export interface Web3 extends BaseMsgBatchCancelSpotOrders {
-    '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders'
-  }
-
   export type Proto = BaseMsgBatchCancelSpotOrders
+
+  export type Object = BaseMsgBatchCancelSpotOrders.AsObject
 }
 
 /**
@@ -42,10 +27,8 @@ export declare namespace MsgBatchCancelSpotOrders {
  */
 export default class MsgBatchCancelSpotOrders extends MsgBase<
   MsgBatchCancelSpotOrders.Params,
-  MsgBatchCancelSpotOrders.Data,
   MsgBatchCancelSpotOrders.Proto,
-  MsgBatchCancelSpotOrders.Amino,
-  MsgBatchCancelSpotOrders.DirectSign
+  MsgBatchCancelSpotOrders.Object
 > {
   static fromJSON(
     params: MsgBatchCancelSpotOrders.Params,
@@ -53,7 +36,7 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     return new MsgBatchCancelSpotOrders(params)
   }
 
-  public toProto(): MsgBatchCancelSpotOrders.Proto {
+  public toProto() {
     const { params } = this
 
     const orderDataList = params.orders.map((order) => {
@@ -75,7 +58,7 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     return BaseMsgBatchCancelSpotOrders.fromPartial(message)
   }
 
-  public toData(): MsgBatchCancelSpotOrders.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -84,29 +67,32 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     }
   }
 
-  public toAmino(): MsgBatchCancelSpotOrders.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgBatchCancelSpotOrders',
-      ...snakeCaseKeys({
-        sender: proto.sender,
-        data: [...proto.data],
-      }),
-    } as unknown as MsgBatchCancelSpotOrders.Amino
+      value: {
+        sender: message.sender,
+        data: message.data_list,
+      } as unknown as SnakeCaseKeys<MsgBatchCancelSpotOrders.Object>,
+    }
   }
 
-  public toWeb3(): MsgBatchCancelSpotOrders.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgBatchCancelSpotOrders',
-      ...rest,
-    } as unknown as MsgBatchCancelSpotOrders.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgBatchCancelSpotOrders.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

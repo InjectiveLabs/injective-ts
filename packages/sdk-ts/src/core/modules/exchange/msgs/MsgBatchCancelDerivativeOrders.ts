@@ -2,8 +2,8 @@ import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1bet
 import {
   MsgBatchCancelDerivativeOrders as BaseMsgBatchCancelDerivativeOrders,
   OrderData,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
-import snakeCaseKeys from 'snakecase-keys'
+} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
 export declare namespace MsgBatchCancelDerivativeOrders {
@@ -17,24 +17,9 @@ export declare namespace MsgBatchCancelDerivativeOrders {
     }[]
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
-    message: BaseMsgBatchCancelDerivativeOrders
-  }
-
-  export interface Data extends BaseMsgBatchCancelDerivativeOrders {
-    '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
-  }
-
-  export interface Amino extends BaseMsgBatchCancelDerivativeOrders {
-    type: 'exchange/MsgBatchCancelDerivativeOrders'
-  }
-
-  export interface Web3 extends BaseMsgBatchCancelDerivativeOrders {
-    '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
-  }
-
   export type Proto = BaseMsgBatchCancelDerivativeOrders
+
+  export type Object = BaseMsgBatchCancelDerivativeOrders.AsObject
 }
 
 /**
@@ -42,10 +27,8 @@ export declare namespace MsgBatchCancelDerivativeOrders {
  */
 export default class MsgBatchCancelDerivativeOrders extends MsgBase<
   MsgBatchCancelDerivativeOrders.Params,
-  MsgBatchCancelDerivativeOrders.Data,
   MsgBatchCancelDerivativeOrders.Proto,
-  MsgBatchCancelDerivativeOrders.Amino,
-  MsgBatchCancelDerivativeOrders.DirectSign
+  MsgBatchCancelDerivativeOrders.Object
 > {
   static fromJSON(
     params: MsgBatchCancelDerivativeOrders.Params,
@@ -53,7 +36,7 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
     return new MsgBatchCancelDerivativeOrders(params)
   }
 
-  public toProto(): MsgBatchCancelDerivativeOrders.Proto {
+  public toProto() {
     const { params } = this
 
     const orderDataList = params.orders.map((order) => {
@@ -75,7 +58,7 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
     return BaseMsgBatchCancelDerivativeOrders.fromPartial(message)
   }
 
-  public toData(): MsgBatchCancelDerivativeOrders.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -84,29 +67,32 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
     }
   }
 
-  public toAmino(): MsgBatchCancelDerivativeOrders.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgBatchCancelDerivativeOrders',
-      ...snakeCaseKeys({
-        sender: proto.sender,
-        data: [...proto.data],
-      }),
-    } as unknown as MsgBatchCancelDerivativeOrders.Amino
+      value: {
+        sender: message.sender,
+        data: message.data_list,
+      } as unknown as SnakeCaseKeys<MsgBatchCancelDerivativeOrders.Object>,
+    }
   }
 
-  public toWeb3(): MsgBatchCancelDerivativeOrders.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
-      ...rest,
-    } as unknown as MsgBatchCancelDerivativeOrders.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgBatchCancelDerivativeOrders.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

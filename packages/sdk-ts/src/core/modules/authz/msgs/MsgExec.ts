@@ -1,6 +1,6 @@
 import { MsgExec as BaseMsgExec } from '@injectivelabs/core-proto-ts/cosmos/authz/v1beta1/tx'
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
-
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 import { Msgs } from '../../msgs'
 
@@ -10,24 +10,9 @@ export declare namespace MsgExec {
     msgs: Msgs | Msgs[]
   }
 
-  export interface DirectSign {
-    type: '/cosmos.authz.v1beta1.MsgExec'
-    message: BaseMsgExec
-  }
-
-  export interface Data extends BaseMsgExec {
-    '@type': '/cosmos.authz.v1beta1.MsgExec'
-  }
-
-  export interface Amino extends BaseMsgExec {
-    type: 'cosmos-sdk/MsgExec'
-  }
-
-  export interface Web3 extends BaseMsgExec {
-    '@type': '/cosmos.authz.v1beta1.MsgExec'
-  }
-
   export type Proto = BaseMsgExec
+
+  export type Object = BaseMsgExec.AsObject
 }
 
 /**
@@ -35,16 +20,14 @@ export declare namespace MsgExec {
  */
 export default class MsgExec extends MsgBase<
   MsgExec.Params,
-  MsgExec.Data,
   MsgExec.Proto,
-  MsgExec.Amino,
-  MsgExec.DirectSign
+  MsgExec.Object
 > {
   static fromJSON(params: MsgExec.Params): MsgExec {
     return new MsgExec(params)
   }
 
-  public toProto(): MsgExec.Proto {
+  public toProto() {
     const { params } = this
 
     const message = BaseMsgExec.create()
@@ -64,7 +47,7 @@ export default class MsgExec extends MsgBase<
     return BaseMsgExec.fromPartial(message)
   }
 
-  public toData(): MsgExec.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -73,26 +56,30 @@ export default class MsgExec extends MsgBase<
     }
   }
 
-  public toAmino(): MsgExec.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+      msgs: proto.msgs,
+    }
 
     return {
       type: 'cosmos-sdk/MsgExec',
-      ...proto,
+      value: message as unknown as SnakeCaseKeys<MsgExec.Object>,
     }
   }
 
-  public toWeb3(): MsgExec.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.authz.v1beta1.MsgExec',
-      ...rest,
+      ...value,
     }
   }
 
-  public toDirectSign(): MsgExec.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

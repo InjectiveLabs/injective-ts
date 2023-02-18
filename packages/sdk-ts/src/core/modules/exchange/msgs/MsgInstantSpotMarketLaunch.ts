@@ -1,6 +1,7 @@
 import { MsgInstantSpotMarketLaunch as BaseMsgInstantSpotMarketLaunch } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgInstantSpotMarketLaunch {
   export interface Params {
@@ -15,24 +16,9 @@ export declare namespace MsgInstantSpotMarketLaunch {
     }
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
-    message: BaseMsgInstantSpotMarketLaunch
-  }
-
-  export interface Data extends BaseMsgInstantSpotMarketLaunch {
-    '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
-  }
-
-  export interface Amino extends BaseMsgInstantSpotMarketLaunch {
-    type: 'exchange/MsgInstantSpotMarketLaunch'
-  }
-
-  export interface Web3 extends BaseMsgInstantSpotMarketLaunch {
-    '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
-  }
-
   export type Proto = BaseMsgInstantSpotMarketLaunch
+
+  export type Object = BaseMsgInstantSpotMarketLaunch.AsObject
 }
 
 const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
@@ -53,10 +39,8 @@ const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
  */
 export default class MsgInstantSpotMarketLaunch extends MsgBase<
   MsgInstantSpotMarketLaunch.Params,
-  MsgInstantSpotMarketLaunch.Data,
   MsgInstantSpotMarketLaunch.Proto,
-  MsgInstantSpotMarketLaunch.Amino,
-  MsgInstantSpotMarketLaunch.DirectSign
+  MsgInstantSpotMarketLaunch.Object
 > {
   static fromJSON(
     params: MsgInstantSpotMarketLaunch.Params,
@@ -64,7 +48,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
     return new MsgInstantSpotMarketLaunch(params)
   }
 
-  public toProto(): MsgInstantSpotMarketLaunch.Proto {
+  public toProto() {
     const { params: initialParams } = this
 
     const params = {
@@ -83,7 +67,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
     return createMessage(params)
   }
 
-  public toData(): MsgInstantSpotMarketLaunch.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -92,27 +76,30 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
     }
   }
 
-  public toAmino(): MsgInstantSpotMarketLaunch.Amino {
+  public toAmino() {
     const { params } = this
     const proto = createMessage(params)
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgInstantSpotMarketLaunch',
-      ...proto,
+      value: message,
     }
   }
 
-  public toWeb3(): MsgInstantSpotMarketLaunch.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch',
-      ...rest,
-    } as unknown as MsgInstantSpotMarketLaunch.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgInstantSpotMarketLaunch.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

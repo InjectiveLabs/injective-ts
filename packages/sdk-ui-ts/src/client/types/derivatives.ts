@@ -1,21 +1,21 @@
 import {
-  BaseDerivativeMarket as BaseUiDerivativeMarket,
+  DerivativeTrade,
+  DerivativeOrderSide,
+  Position as UiPosition,
   PerpetualMarket as BaseUiPerpetualMarket,
+  DerivativeLimitOrder as UiDerivativeLimitOrder,
+  BaseDerivativeMarket as BaseUiDerivativeMarket,
   ExpiryFuturesMarket as BaseUiExpiryFuturesMarket,
   BinaryOptionsMarket as BaseUiBinaryOptionsMarket,
-  DerivativeTrade,
-  Position as UiPosition,
-  DerivativeLimitOrder as UiDerivativeLimitOrder,
+  Orderbook as UiDerivativeOrderbook,
   DerivativeOrderHistory as UiDerivativeOrderHistory,
-  DerivativeOrderSide,
 } from '@injectivelabs/sdk-ts'
-import { Orderbook as UiDerivativeOrderbook } from '@injectivelabs/sdk-ts'
 import {
   ChronosDerivativeMarketSummary,
   AllChronosDerivativeMarketSummary,
 } from '@injectivelabs/sdk-ts'
 import { Token } from '@injectivelabs/token-metadata'
-import { Change, MarketBase, MarketType } from './common'
+import { Change, MarketType } from './common'
 
 export interface BaseDerivativeMarket
   extends Omit<BaseUiDerivativeMarket, 'quoteToken'> {}
@@ -34,7 +34,6 @@ export interface BaseDerivativeMarketWithToken
   quantityTensMultiplier: number
   type: MarketType
   subType: MarketType
-  marketBase?: MarketBase
   upcoming?: boolean
 }
 

@@ -2,6 +2,7 @@ import { MsgMultiExecute as BaseMsgMultiExecute } from '@injectivelabs/core-prot
 import { MsgBase } from '../../MsgBase'
 import { Msgs } from '../../msgs'
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgMultiExecute {
   export interface Params {
@@ -9,24 +10,9 @@ export declare namespace MsgMultiExecute {
     injectiveAddress: string
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgMultiExecute'
-    message: BaseMsgMultiExecute
-  }
-
-  export interface Data extends BaseMsgMultiExecute {
-    '@type': '/injective.exchange.v1beta1.MsgMultiExecute'
-  }
-
-  export interface Amino extends BaseMsgMultiExecute {
-    type: 'exchange/MsgMultiExecute'
-  }
-
-  export interface Web3 extends BaseMsgMultiExecute {
-    '@type': '/injective.exchange.v1beta1.MsgMultiExecute'
-  }
-
   export type Proto = BaseMsgMultiExecute
+
+  export type Object = BaseMsgMultiExecute.AsObject
 }
 
 /**
@@ -34,16 +20,14 @@ export declare namespace MsgMultiExecute {
  */
 export default class MsgMultiExecute extends MsgBase<
   MsgMultiExecute.Params,
-  MsgMultiExecute.Data,
   MsgMultiExecute.Proto,
-  MsgMultiExecute.Amino,
-  MsgMultiExecute.DirectSign
+  MsgMultiExecute.Object
 > {
   static fromJSON(params: MsgMultiExecute.Params): MsgMultiExecute {
     return new MsgMultiExecute(params)
   }
 
-  public toProto(): MsgMultiExecute.Proto {
+  public toProto() {
     const { params } = this
 
     const messagesAny = params.msgs.map((m) => {
@@ -61,7 +45,7 @@ export default class MsgMultiExecute extends MsgBase<
     return BaseMsgMultiExecute.fromPartial(message)
   }
 
-  public toData(): MsgMultiExecute.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -70,25 +54,29 @@ export default class MsgMultiExecute extends MsgBase<
     }
   }
 
-  public toAmino(): MsgMultiExecute.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgMultiExecute',
-      ...proto,
-    } as unknown as MsgMultiExecute.Amino
+      value: message as unknown as SnakeCaseKeys<MsgMultiExecute.Object>,
+    }
   }
 
-  public toWeb3(): MsgMultiExecute.Web3 {
-    const proto = this.toProto()
+  public toWeb3() {
+    const amino = this.toAmino()
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgMultiExecute',
-      ...proto,
-    } as unknown as MsgMultiExecute.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgMultiExecute.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

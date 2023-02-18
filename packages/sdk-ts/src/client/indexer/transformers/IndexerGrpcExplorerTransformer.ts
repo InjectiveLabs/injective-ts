@@ -1,7 +1,8 @@
 import {
   BlockInfo,
-  GetTxByTxHashResponse as TxData,
+  TxDetailData,
   StreamTxsResponse,
+  GetTxByTxHashResponse as TxData,
 } from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
 import {
   BankMsgSendTransaction,
@@ -50,8 +51,8 @@ export class IndexerGrpcExplorerTransformer {
     const pagination = response.paging
 
     return {
-      txs: IndexerGrpcExplorerTransformer.grpcTransactionsToTransactions(
-        txs as unknown as GetTxByTxHashResponse[],
+      txs: IndexerGrpcExplorerTransformer.grpcTransactionsToTransactionsFromDetail(
+        txs,
       ),
       pagination: grpcPagingToPaging(pagination),
     }
@@ -215,6 +216,50 @@ export class IndexerGrpcExplorerTransformer {
   ): Array<Transaction> {
     return txs.map((tx) =>
       IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(tx),
+    )
+  }
+
+  static grpcTransactionToTransactionFromDetail(tx: TxDetailData): Transaction {
+    const messages = JSON.parse(Buffer.from(tx.getMessages()).toString('utf8'))
+
+    return {
+      ...tx.toObject(),
+      signatures: tx.getSignaturesList().map((signature) => ({
+        pubkey: signature.getPubkey(),
+        address: signature.getAddress(),
+        sequence: signature.getSequence(),
+        signature: signature.getSignature(),
+      })),
+      gasFee: tx.getGasFee()
+        ? IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(tx.getGasFee()!)
+        : {
+            gasLimit: 0,
+            payer: '',
+            granter: '',
+            amounts: [],
+          },
+      events: tx.getEventsList().map((event) => ({
+        type: event.getType(),
+        attributes: event
+          .getAttributesMap()
+          .toObject()
+          .reduce(
+            (
+              attributes: Record<string, string>,
+              attribute: [string, string],
+            ) => ({ ...attributes, [attribute[0]]: attribute[1] }),
+            {},
+          ),
+      })),
+      messages,
+    }
+  }
+
+  static grpcTransactionsToTransactionsFromDetail(
+    txs: TxDetailData[],
+  ): Array<Transaction> {
+    return txs.map(
+      IndexerGrpcExplorerTransformer.grpcTransactionToTransactionFromDetail,
     )
   }
 

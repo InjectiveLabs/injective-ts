@@ -1,8 +1,8 @@
 import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgInstantiateContract as BaseMsgInstantiateContract } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
-import { toUtf8 } from '../../../../utils'
+import { fromUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
-import snakeCaseKeys from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgInstantiateContract {
   export interface Params {
@@ -17,24 +17,9 @@ export declare namespace MsgInstantiateContract {
     }
   }
 
-  export interface DirectSign {
-    type: '/cosmwasm.wasm.v1.MsgInstantiateContract'
-    message: BaseMsgInstantiateContract
-  }
-
-  export interface Data extends BaseMsgInstantiateContract {
-    '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract'
-  }
-
-  export interface Amino extends BaseMsgInstantiateContract {
-    type: 'wasm/MsgInstantiateContract'
-  }
-
-  export interface Web3 extends BaseMsgInstantiateContract {
-    '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract'
-  }
-
   export type Proto = BaseMsgInstantiateContract
+
+  export type Object = BaseMsgInstantiateContract.AsObject
 }
 
 /**
@@ -42,10 +27,8 @@ export declare namespace MsgInstantiateContract {
  */
 export default class MsgInstantiateContract extends MsgBase<
   MsgInstantiateContract.Params,
-  MsgInstantiateContract.Data,
   MsgInstantiateContract.Proto,
-  MsgInstantiateContract.Amino,
-  MsgInstantiateContract.DirectSign
+  MsgInstantiateContract.Object
 > {
   static fromJSON(
     params: MsgInstantiateContract.Params,
@@ -53,12 +36,12 @@ export default class MsgInstantiateContract extends MsgBase<
     return new MsgInstantiateContract(params)
   }
 
-  public toProto(): MsgInstantiateContract.Proto {
+  public toProto() {
     const { params } = this
 
     const message = BaseMsgInstantiateContract.create()
 
-    message.msg = toUtf8(JSON.stringify(params.msg))
+    message.msg = fromUtf8(JSON.stringify(params.msg))
     message.sender = params.sender
     message.admin = params.admin
     message.codeId = params.codeId.toString()
@@ -76,7 +59,7 @@ export default class MsgInstantiateContract extends MsgBase<
     return BaseMsgInstantiateContract.fromPartial(message)
   }
 
-  public toData(): MsgInstantiateContract.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -85,31 +68,29 @@ export default class MsgInstantiateContract extends MsgBase<
     }
   }
 
-  public toAmino(): MsgInstantiateContract.Amino {
+  public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakeCaseKeys(proto),
+      ...snakecaseKeys(proto),
     }
-
-    const messageWithProperKeys = snakeCaseKeys(message)
 
     return {
       type: 'wasm/MsgInstantiateContract',
-      ...messageWithProperKeys,
-    } as unknown as MsgInstantiateContract.Amino
+      value: message,
+    }
   }
 
-  public toWeb3(): MsgInstantiateContract.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract',
-      ...rest,
-    } as unknown as MsgInstantiateContract.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgInstantiateContract.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

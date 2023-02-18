@@ -40,7 +40,7 @@ const formattedProtoParams = {
     },
   },
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgCreateSpotMarketOrder.fromJSON(params)
 
 describe('MsgCreateSpotMarketOrder', () => {
@@ -64,7 +64,7 @@ describe('MsgCreateSpotMarketOrder', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -120,7 +120,7 @@ describe('MsgCreateSpotMarketOrder', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

@@ -3,9 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.51-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.50...@injectivelabs/exceptions@1.0.51-alpha.0) (2023-01-29)
+## [1.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.54...@injectivelabs/exceptions@1.0.55) (2023-02-15)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.53...@injectivelabs/exceptions@1.0.54) (2023-02-09)
+
+
+### Bug Fixes
+
+* exception codes added ([f82a1fc](https://github.com/InjectiveLabs/injective-ts/commit/f82a1fcae5d5a9883dff4f15da4eff11e371769a))
+
+
+
+
+
+## [1.0.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.52...@injectivelabs/exceptions@1.0.53) (2023-02-06)
+
+
+### Features
+
+* exception names ([14592d3](https://github.com/InjectiveLabs/injective-ts/commit/14592d3b2877be893d67b4c401208d42ed29a778))
+
+
+
+
+
+## [1.0.52](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.51...@injectivelabs/exceptions@1.0.52) (2023-02-06)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.50...@injectivelabs/exceptions@1.0.51) (2023-02-06)
+
+
+### Features
+
+* exception class name ([2e0bec4](https://github.com/InjectiveLabs/injective-ts/commit/2e0bec44c5b1c9f5ed5a97faa522a5dd90cb7084))
 
 
 

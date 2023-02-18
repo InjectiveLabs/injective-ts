@@ -1,6 +1,7 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/test-utils'
 import MsgBid from './MsgBid'
+import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgBid['params'] = {
   round: 1,
@@ -18,6 +19,7 @@ const protoParams = {
   bidAmount: params.amount,
   round: params.round,
 }
+const aminoParams = snakecaseKeys(protoParams)
 
 const message = MsgBid.fromJSON(params)
 
@@ -42,7 +44,7 @@ describe('MsgBid', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParams,
+      value: aminoParams,
     })
   })
 
@@ -80,7 +82,7 @@ describe('MsgBid', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...aminoParams,
     })
   })
 })

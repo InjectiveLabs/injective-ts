@@ -1,7 +1,7 @@
 import { MsgStoreCode as BaseMsgStoreCode } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
-import { toUtf8 } from '../../../../utils'
+import { fromUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
-import snakeCaseKeys from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgStoreCode {
   export interface Params {
@@ -9,24 +9,9 @@ export declare namespace MsgStoreCode {
     wasmBytes: Uint8Array | string
   }
 
-  export interface DirectSign {
-    type: '/cosmwasm.wasm.v1.MsgStoreCode'
-    message: BaseMsgStoreCode
-  }
-
-  export interface Data extends BaseMsgStoreCode {
-    '@type': '/cosmwasm.wasm.v1.MsgStoreCode'
-  }
-
-  export interface Amino extends BaseMsgStoreCode {
-    type: 'wasm/MsgStoreCode'
-  }
-
-  export interface Web3 extends BaseMsgStoreCode {
-    '@type': '/cosmwasm.wasm.v1.MsgStoreCode'
-  }
-
   export type Proto = BaseMsgStoreCode
+
+  export type Object = BaseMsgStoreCode.AsObject
 }
 
 /**
@@ -34,16 +19,14 @@ export declare namespace MsgStoreCode {
  */
 export default class MsgStoreCode extends MsgBase<
   MsgStoreCode.Params,
-  MsgStoreCode.Data,
   MsgStoreCode.Proto,
-  MsgStoreCode.Amino,
-  MsgStoreCode.DirectSign
+  MsgStoreCode.Object
 > {
   static fromJSON(params: MsgStoreCode.Params): MsgStoreCode {
     return new MsgStoreCode(params)
   }
 
-  public toProto(): MsgStoreCode.Proto {
+  public toProto() {
     const { params } = this
 
     const message = BaseMsgStoreCode.create()
@@ -51,13 +34,13 @@ export default class MsgStoreCode extends MsgBase<
     message.sender = params.sender
     message.wasmByteCode =
       typeof params.wasmBytes === 'string'
-        ? toUtf8(params.wasmBytes)
+        ? fromUtf8(params.wasmBytes)
         : params.wasmBytes
 
     return BaseMsgStoreCode.fromPartial(message)
   }
 
-  public toData(): MsgStoreCode.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -66,31 +49,29 @@ export default class MsgStoreCode extends MsgBase<
     }
   }
 
-  public toAmino(): MsgStoreCode.Amino {
+  public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakeCaseKeys(proto),
+      ...snakecaseKeys(proto.toObject()),
     }
-
-    const messageWithProperKeys = snakeCaseKeys(message)
 
     return {
       type: 'wasm/MsgStoreCode',
-      ...messageWithProperKeys,
-    } as unknown as MsgStoreCode.Amino
+      value: { ...message },
+    }
   }
 
-  public toWeb3(): MsgStoreCode.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgStoreCode',
-      ...rest,
-    } as unknown as MsgStoreCode.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgStoreCode.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

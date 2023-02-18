@@ -1,5 +1,5 @@
 import { SupportedChains } from '../types/explorer'
-import { getCosmosExplorerUrl } from './bridge'
+import { getCosmosExplorerUrl, getSolanaExplorerUrl } from './bridge'
 import { BridgingNetwork } from '../types/bridge'
 import { getEthereumExplorerUrl, getNetworkFromAddress } from './bridge'
 import { Network } from '@injectivelabs/networks'
@@ -29,6 +29,12 @@ export const getBlockExplorerPathFromNetworkType = ({
 }) => {
   if (chain === SupportedChains.Injective) {
     return undefined
+  }
+
+  if (chain === SupportedChains.Solana) {
+    const solanaExplorerPath = getSolanaExplorerUrl(network)
+
+    return `${solanaExplorerPath}/address/${address}`
   }
 
   if (Object.values(BridgingNetwork).includes(chain as BridgingNetwork)) {

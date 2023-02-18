@@ -90,6 +90,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://tm.sommelier.injective.network',
         rest: 'https://lcd.sommelier.injective.network',
       }
+    case CosmosChainId.Canto:
+      return {
+        rpc: 'https://tm.canto.injective.network',
+        rest: 'https://lcd.canto.injective.network',
+      }
     case TestnetCosmosChainId.Cosmoshub:
       return {
         rpc: 'https://testnet.tm.cosmos.injective.dev',

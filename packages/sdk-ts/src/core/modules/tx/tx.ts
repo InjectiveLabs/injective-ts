@@ -174,13 +174,19 @@ export const createTransactionFromMsg = (
  * @returns TxRaw
  */
 export const createTxRawFromSigResponse = (
-  signatureResponse: DirectSignResponse,
+  response: TxRaw | DirectSignResponse,
 ) => {
+  if (response instanceof TxRaw) {
+    return response
+  }
+
+  const directSignResponse = response as DirectSignResponse
+
   const txRaw = TxRaw.create()
-  txRaw.authInfoBytes = signatureResponse.signed.authInfoBytes
-  txRaw.bodyBytes = signatureResponse.signed.bodyBytes
+  txRaw.authInfoBytes = directSignResponse.signed.authInfoBytes
+  txRaw.bodyBytes = directSignResponse.signed.bodyBytes
   txRaw.signatures = [
-    Buffer.from(signatureResponse.signature.signature, 'base64'),
+    Buffer.from(directSignResponse.signature.signature, 'base64'),
   ]
 
   return txRaw

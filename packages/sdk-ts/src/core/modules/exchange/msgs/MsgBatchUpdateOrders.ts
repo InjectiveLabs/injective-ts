@@ -10,6 +10,7 @@ import {
 } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgBatchUpdateOrders {
   export interface Params {
@@ -61,24 +62,9 @@ export declare namespace MsgBatchUpdateOrders {
     injectiveAddress: string
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
-    message: BaseMsgBatchUpdateOrders
-  }
-
-  export interface Data extends BaseMsgBatchUpdateOrders {
-    '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
-  }
-
-  export interface Amino extends BaseMsgBatchUpdateOrders {
-    type: 'exchange/MsgBatchUpdateOrders'
-  }
-
-  export interface Web3 extends BaseMsgBatchUpdateOrders {
-    '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders'
-  }
-
   export type Proto = BaseMsgBatchUpdateOrders
+
+  export type Object = BaseMsgBatchUpdateOrders.AsObject
 }
 
 /**
@@ -86,16 +72,14 @@ export declare namespace MsgBatchUpdateOrders {
  */
 export default class MsgBatchUpdateOrders extends MsgBase<
   MsgBatchUpdateOrders.Params,
-  MsgBatchUpdateOrders.Data,
   MsgBatchUpdateOrders.Proto,
-  MsgBatchUpdateOrders.Amino,
-  MsgBatchUpdateOrders.DirectSign
+  MsgBatchUpdateOrders.Object
 > {
   static fromJSON(params: MsgBatchUpdateOrders.Params): MsgBatchUpdateOrders {
     return new MsgBatchUpdateOrders(params)
   }
 
-  public toProto(): MsgBatchUpdateOrders.Proto {
+  public toProto() {
     const { params } = this
 
     const message = BaseMsgBatchUpdateOrders.create()
@@ -284,7 +268,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     return BaseMsgBatchUpdateOrders.fromPartial(message)
   }
 
-  public toData(): MsgBatchUpdateOrders.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -293,26 +277,29 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     }
   }
 
-  public toAmino(): MsgBatchUpdateOrders.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgBatchUpdateOrders',
-      ...proto,
+      value: message as unknown as SnakeCaseKeys<MsgBatchUpdateOrders.Object>,
     }
   }
 
-  public toWeb3(): MsgBatchUpdateOrders.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgBatchUpdateOrders',
-      ...rest,
-    } as unknown as MsgBatchUpdateOrders.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgBatchUpdateOrders.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

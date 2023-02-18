@@ -1,26 +1,27 @@
 import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import {
   HttpClient,
-  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
+  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import {
   BroadcastMode,
-  SimulationResponse,
-  TxInfo,
+  TxInfoResponse,
   TxResultResponse,
+  SimulationResponse,
 } from '../types/tx-rest-client'
 import { TxClient } from '../utils/classes/TxClient'
 import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx'
 import {
-  HttpRequestException,
   HttpRequestMethod,
+  HttpRequestException,
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { TxResponse } from '../types/tx'
+import { getErrorMessage } from '../../../../utils/helpers'
 
 /**
  * It is recommended to use TxRestClient instead of TxRestApi
@@ -28,12 +29,12 @@ import { TxResponse } from '../types/tx'
 export class TxRestApi implements TxConcreteApi {
   public httpClient: HttpClient
 
-  constructor(endpoint: string) {
+  constructor(endpoint: string, options?: { timeout?: number }) {
     this.httpClient = new HttpClient(endpoint, {
       headers: {
         Accept: 'application/json',
       },
-      timeout: 15000,
+      timeout: options?.timeout || 15000,
     })
   }
 
@@ -169,11 +170,11 @@ export class TxRestApi implements TxConcreteApi {
 
     try {
       const { tx_response: txResponse } = await this.broadcastTx<{
-        tx_response: TxInfo
+        tx_response: TxInfoResponse
       }>(tx, BroadcastMode.Sync)
 
       if (txResponse.code !== 0) {
-        throw new TransactionException(new Error(txResponse.rawLog), {
+        throw new TransactionException(new Error(txResponse.raw_log), {
           contextCode: txResponse.code,
           contextModule: txResponse.codespace,
         })
@@ -182,7 +183,8 @@ export class TxRestApi implements TxConcreteApi {
       return this.fetchTxPoll(txResponse.txhash, timeout)
     } catch (e) {
       if (e instanceof HttpRequestException) {
-        if ((e as any).code === StatusCodes.OK) {
+        if (e.code !== StatusCodes.OK) {
+          throw e
         }
       }
 
@@ -196,14 +198,14 @@ export class TxRestApi implements TxConcreteApi {
    */
   public async broadcastBlock(tx: TxRaw) {
     const response = await this.broadcastTx<{
-      tx_response: TxInfo
+      tx_response: TxInfoResponse
     }>(tx, BroadcastMode.Block)
 
     try {
       const { tx_response: txResponse } = response
 
       if (txResponse.code !== 0) {
-        throw new TransactionException(new Error(txResponse.rawLog), {
+        throw new TransactionException(new Error(txResponse.raw_log), {
           contextCode: txResponse.code,
           contextModule: txResponse.codespace,
         })
@@ -211,9 +213,9 @@ export class TxRestApi implements TxConcreteApi {
 
       return {
         txHash: txResponse.txhash,
-        rawLog: txResponse.rawLog,
-        gasWanted: parseInt(txResponse.gasWanted || '0', 10),
-        gasUsed: parseInt(txResponse.gasUsed || '0', 10),
+        rawLog: txResponse.raw_log,
+        gasWanted: parseInt(txResponse.gas_wanted || '0', 10),
+        gasUsed: parseInt(txResponse.gas_used || '0', 10),
         height: parseInt(txResponse.height || '0', 10),
         logs: txResponse.logs || [],
         code: txResponse.code,
@@ -288,13 +290,17 @@ export class TxRestApi implements TxConcreteApi {
       const error = e as Error | AxiosError
 
       if (axios.isAxiosError(error)) {
-        const message = error.response
-          ? typeof error.response.data === 'string'
-            ? error.response.data
-            : error.response.statusText
-          : `The request to ${endpoint} has failed.`
+        if (error.code === 'ECONNABORTED') {
+          throw new HttpRequestException(new Error(error.message), {
+            code: StatusCodes.REQUEST_TOO_LONG,
+            method: HttpRequestMethod.Get,
+          })
+        }
+
+        const message = getErrorMessage(error, endpoint)
 
         throw new HttpRequestException(new Error(message), {
+          context: endpoint,
           code: error.response
             ? error.response.status
             : StatusCodes.BAD_REQUEST,

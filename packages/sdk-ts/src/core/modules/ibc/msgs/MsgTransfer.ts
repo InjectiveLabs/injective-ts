@@ -2,6 +2,7 @@ import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgTransfer as BaseMsgTransfer } from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/tx'
 import { Height } from '@injectivelabs/core-proto-ts/ibc/core/client/v1/client'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgTransfer {
   export interface Params {
@@ -21,24 +22,9 @@ export declare namespace MsgTransfer {
     }
   }
 
-  export interface DirectSign {
-    type: '/ibc.applications.transfer.v1.MsgTransfer'
-    message: BaseMsgTransfer
-  }
-
-  export interface Data extends BaseMsgTransfer {
-    '@type': '/ibc.applications.transfer.v1.MsgTransfer'
-  }
-
-  export interface Amino extends BaseMsgTransfer {
-    type: 'cosmos-sdk/MsgTransfer'
-  }
-
-  export interface Web3 extends BaseMsgTransfer {
-    '@type': '/ibc.applications.transfer.v1.MsgTransfer'
-  }
-
   export type Proto = BaseMsgTransfer
+
+  export type Object = BaseMsgTransfer.AsObject
 }
 
 /**
@@ -46,16 +32,14 @@ export declare namespace MsgTransfer {
  */
 export default class MsgTransfer extends MsgBase<
   MsgTransfer.Params,
-  MsgTransfer.Data,
   MsgTransfer.Proto,
-  MsgTransfer.Amino,
-  MsgTransfer.DirectSign
+  MsgTransfer.Object
 > {
   static fromJSON(params: MsgTransfer.Params): MsgTransfer {
     return new MsgTransfer(params)
   }
 
-  public toProto(): MsgTransfer.Proto {
+  public toProto() {
     const { params } = this
 
     const token = Coin.create()
@@ -86,7 +70,7 @@ export default class MsgTransfer extends MsgBase<
     return BaseMsgTransfer.fromJSON(message)
   }
 
-  public toData(): MsgTransfer.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -95,28 +79,32 @@ export default class MsgTransfer extends MsgBase<
     }
   }
 
-  public toAmino(): MsgTransfer.Amino {
-    const { params } = this
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'cosmos-sdk/MsgTransfer',
-      ...proto,
-      memo: params.memo || '',
+      value: {
+        ...message,
+        memo: message.memo || '',
+      } as unknown as SnakeCaseKeys<MsgTransfer.Object>,
     }
   }
 
-  public toWeb3(): MsgTransfer.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/ibc.applications.transfer.v1.MsgTransfer',
-      ...rest,
-    } as unknown as MsgTransfer.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgTransfer.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

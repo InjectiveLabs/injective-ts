@@ -1,6 +1,7 @@
 import { MsgBeginRedelegate as BaseMsgBeginRedelegate } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/tx'
 import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgBeginRedelegate {
   export interface Params {
@@ -12,24 +13,10 @@ export declare namespace MsgBeginRedelegate {
     dstValidatorAddress: string
     injectiveAddress: string
   }
-  export interface DirectSign {
-    type: '/cosmos.staking.v1beta1.MsgBeginRedelegate'
-    message: BaseMsgBeginRedelegate
-  }
-
-  export interface Data extends BaseMsgBeginRedelegate {
-    '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate'
-  }
-
-  export interface Amino extends BaseMsgBeginRedelegate {
-    type: 'cosmos-sdk/MsgBeginRedelegate'
-  }
-
-  export interface Web3 extends BaseMsgBeginRedelegate {
-    '@type': '/cosmos.authz.v1beta1.MsgBeginRedelegate'
-  }
 
   export type Proto = BaseMsgBeginRedelegate
+
+  export type Object = BaseMsgBeginRedelegate.AsObject
 }
 
 /**
@@ -37,10 +24,8 @@ export declare namespace MsgBeginRedelegate {
  */
 export default class MsgBeginRedelegate extends MsgBase<
   MsgBeginRedelegate.Params,
-  MsgBeginRedelegate.Data,
   MsgBeginRedelegate.Proto,
-  MsgBeginRedelegate.Amino,
-  MsgBeginRedelegate.DirectSign
+  MsgBeginRedelegate.Object
 > {
   static fromJSON(params: MsgBeginRedelegate.Params): MsgBeginRedelegate {
     return new MsgBeginRedelegate(params)
@@ -62,7 +47,7 @@ export default class MsgBeginRedelegate extends MsgBase<
     return BaseMsgBeginRedelegate.fromPartial(message)
   }
 
-  public toData(): MsgBeginRedelegate.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -71,26 +56,29 @@ export default class MsgBeginRedelegate extends MsgBase<
     }
   }
 
-  public toAmino(): MsgBeginRedelegate.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'cosmos-sdk/MsgBeginRedelegate',
-      ...proto,
+      value: message,
     }
   }
 
-  public toWeb3(): MsgBeginRedelegate.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate',
-      ...rest,
-    } as unknown as MsgBeginRedelegate.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgBeginRedelegate.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

@@ -49,7 +49,7 @@ describe('MsgDeposit', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParamsAmino,
+      value: protoParamsAmino,
     })
   })
 

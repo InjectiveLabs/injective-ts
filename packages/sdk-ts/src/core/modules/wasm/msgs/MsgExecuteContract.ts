@@ -1,10 +1,10 @@
 import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
-import snakeCaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
-import { toUtf8 } from '../../../../utils/utf8'
 import { GeneralException } from '@injectivelabs/exceptions'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import { fromUtf8 } from '../../../../utils/utf8'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
@@ -35,24 +35,9 @@ export declare namespace MsgExecuteContract {
     msg?: object
   }
 
-  export interface DirectSign {
-    type: '/cosmwasm.wasm.v1.MsgExecuteContract'
-    message: BaseMsgExecuteContract
-  }
-
-  export interface Data extends BaseMsgExecuteContract {
-    '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
-  }
-
-  export interface Amino extends BaseMsgExecuteContract {
-    type: 'wasm/MsgExecuteContract'
-  }
-
-  export interface Web3 extends BaseMsgExecuteContract {
-    '@type': '/cosmwasm.wasm.v1.MsgExecuteContract'
-  }
-
   export type Proto = BaseMsgExecuteContract
+
+  export type Object = BaseMsgExecuteContract.AsObject
 }
 
 /**
@@ -60,22 +45,20 @@ export declare namespace MsgExecuteContract {
  */
 export default class MsgExecuteContract extends MsgBase<
   MsgExecuteContract.Params,
-  MsgExecuteContract.Data,
   MsgExecuteContract.Proto,
-  MsgExecuteContract.Amino,
-  MsgExecuteContract.DirectSign
+  MsgExecuteContract.Object
 > {
   static fromJSON(params: MsgExecuteContract.Params): MsgExecuteContract {
     return new MsgExecuteContract(params)
   }
 
-  public toProto(): MsgExecuteContract.Proto {
+  public toProto() {
     const { params } = this
 
     const message = BaseMsgExecuteContract.create()
     const msg = this.getMsgObject()
 
-    message.msg = toUtf8(JSON.stringify(msg))
+    message.msg = fromUtf8(JSON.stringify(msg))
     message.sender = params.sender
     message.contract = params.contractAddress
 
@@ -99,7 +82,7 @@ export default class MsgExecuteContract extends MsgBase<
     return BaseMsgExecuteContract.fromPartial(message)
   }
 
-  public toData(): MsgExecuteContract.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -108,31 +91,31 @@ export default class MsgExecuteContract extends MsgBase<
     }
   }
 
-  public toAmino(): MsgExecuteContract.Amino {
+  public toAmino() {
     const proto = this.toProto()
 
     const message = {
-      ...snakeCaseKeys(proto),
+      ...snakecaseKeys(proto),
       msg: this.getMsgObject(),
     }
 
     return {
       type: 'wasm/MsgExecuteContract',
-      ...message,
-    } as unknown as MsgExecuteContract.Amino
+      value: message as unknown as SnakeCaseKeys<MsgExecuteContract.Object>,
+    }
   }
 
-  public toWeb3(): MsgExecuteContract.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgExecuteContract',
-      ...rest,
-    } as unknown as MsgExecuteContract.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgExecuteContract.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

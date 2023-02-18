@@ -21,7 +21,7 @@ const protoTypeAmino = 'exchange/MsgInstantSpotMarketLaunch'
 const protoParams = {
   ...params.market,
 }
-
+const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgInstantSpotMarketLaunch.fromJSON(params)
 
 describe('MsgInstantSpotMarketLaunch', () => {
@@ -51,7 +51,7 @@ describe('MsgInstantSpotMarketLaunch', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      ...protoParams,
+      value: protoParamsAmino,
     })
   })
 
@@ -76,7 +76,7 @@ describe('MsgInstantSpotMarketLaunch', () => {
     expect(eip712).toStrictEqual({
       type: protoTypeAmino,
       value: snakecaseKeys({
-        ...protoParams,
+        ...protoParamsAmino,
         min_price_tick_size: '0.000000000000001000',
         min_quantity_tick_size: '1000000000000000.000000000000000000',
       }),
@@ -88,7 +88,7 @@ describe('MsgInstantSpotMarketLaunch', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...protoParamsAmino,
     })
   })
 })

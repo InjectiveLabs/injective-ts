@@ -4,6 +4,7 @@ import { ExpiryFuturesMarketLaunchProposal } from '@injectivelabs/core-proto-ts/
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 import { OracleType } from '@injectivelabs/core-proto-ts/injective/oracle/v1beta1/oracle'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
   export interface Params {
@@ -31,24 +32,9 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
     }
   }
 
-  export interface DirectSign {
-    type: '/cosmos.gov.v1beta1.MsgSubmitProposal'
-    message: BaseMsgSubmitProposal
-  }
-
-  export interface Data extends BaseMsgSubmitProposal {
-    '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
-  }
-
-  export interface Amino extends BaseMsgSubmitProposal {
-    type: 'cosmos-sdk/MsgSubmitProposal'
-  }
-
-  export interface Web3 extends BaseMsgSubmitProposal {
-    '@type': '/cosmos.authz.v1beta1.MsgSubmitProposal'
-  }
-
   export type Proto = BaseMsgSubmitProposal
+
+  export type Object = BaseMsgSubmitProposal.AsObject
 }
 
 /**
@@ -56,10 +42,8 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
  */
 export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
   MsgSubmitProposalExpiryFuturesMarketLaunch.Params,
-  MsgSubmitProposalExpiryFuturesMarketLaunch.Data,
   MsgSubmitProposalExpiryFuturesMarketLaunch.Proto,
-  MsgSubmitProposalExpiryFuturesMarketLaunch.Amino,
-  MsgSubmitProposalExpiryFuturesMarketLaunch.DirectSign
+  MsgSubmitProposalExpiryFuturesMarketLaunch.Object
 > {
   static fromJSON(
     params: MsgSubmitProposalExpiryFuturesMarketLaunch.Params,
@@ -67,7 +51,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     return new MsgSubmitProposalExpiryFuturesMarketLaunch(params)
   }
 
-  public toProto(): MsgSubmitProposalExpiryFuturesMarketLaunch.Proto {
+  public toProto() {
     const { params } = this
 
     const depositParams = Coin.create()
@@ -91,7 +75,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     return BaseMsgSubmitProposal.fromPartial(message)
   }
 
-  public toData(): MsgSubmitProposalExpiryFuturesMarketLaunch.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -100,7 +84,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     }
   }
 
-  public toAmino(): MsgSubmitProposalExpiryFuturesMarketLaunch.Amino {
+  public toAmino() {
     const { params } = this
     const content = this.getContent()
     const proposalType = 'exchange/ExpiryFuturesMarketLaunchProposal'
@@ -110,46 +94,43 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
       proposer: params.proposer,
     }
 
-    const messageWithProposalType = {
+    const messageWithProposalType = snakecaseKeys({
       ...message,
       content: {
         ...message.content,
         type: proposalType,
       },
-    }
+    })
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitProposalExpiryFuturesMarketLaunch.Amino
+      value:
+        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalExpiryFuturesMarketLaunch.Object>,
+    }
   }
 
-  public toWeb3(): MsgSubmitProposalExpiryFuturesMarketLaunch.Web3 {
-    const { params } = this
-    const content = this.getContent()
+  public toWeb3() {
+    const amino = this.toAmino()
+    const { value } = amino
+
     const proposalType =
       '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal'
 
-    const message = {
-      content,
-      proposer: params.proposer,
-    }
-
     const messageWithProposalType = {
-      ...message,
+      ...value,
       content: {
-        ...message.content,
+        ...value.content,
         '@type': proposalType,
       },
     }
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitProposalExpiryFuturesMarketLaunch.Web3
+      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalExpiryFuturesMarketLaunch.Object>),
+    }
   }
 
-  public toDirectSign(): MsgSubmitProposalExpiryFuturesMarketLaunch.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

@@ -12,13 +12,9 @@ import {
   transferFromInjective,
   parseSequenceFromLogInjective,
   getEmitterAddressInjective,
-  tryNativeToHexString,
-  getForeignAssetInjective,
-  hexToUint8Array,
   getIsTransferCompletedInjective,
 } from '@injectivelabs/wormhole-sdk'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
-import { NATIVE_MINT } from '@solana/spl-token'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { InjectiveTransferMsgArgs, WormholeSource } from '../types'
@@ -53,31 +49,15 @@ export class InjectiveWormholeClient extends WormholeClient {
 
   async getBridgedAssetBalance(
     injectiveAddress: string,
-    tokenAddress: string = NATIVE_MINT.toString(),
-    source = WormholeSource.Solana,
+    tokenAddress: string /* CW20 address on Injective */,
   ) {
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
 
-    const associatedChain = getAssociatedChain(source)
-    const { injectiveContractAddresses } = getContractAddresses(network)
-
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
-    const originAssetHex = tryNativeToHexString(tokenAddress, associatedChain)
-    const foreignAsset = await getForeignAssetInjective(
-      injectiveContractAddresses.token_bridge,
-      chainGrpcWasmApi,
-      associatedChain,
-      hexToUint8Array(originAssetHex),
-    )
-
-    if (!foreignAsset) {
-      throw new GeneralException(new Error(`Foreign asset not found`))
-    }
-
     const response = await chainGrpcWasmApi.fetchSmartContractState(
-      foreignAsset,
+      tokenAddress,
       Buffer.from(
         JSON.stringify({
           balance: {
@@ -92,7 +72,7 @@ export class InjectiveWormholeClient extends WormholeClient {
         Buffer.from(response.data, 'base64').toString('utf-8'),
       ) as { balance: string }
 
-      return { address: foreignAsset, balance: state.balance } as {
+      return { address: tokenAddress, balance: state.balance } as {
         address: string
         balance: string
       }
@@ -110,7 +90,10 @@ export class InjectiveWormholeClient extends WormholeClient {
        * could be redeeming from the token factory to CW20
        */
       additionalMsgs?: MsgExecuteContractCompat[]
-      source?: WormholeSource
+      /**
+       * The destination chain where we transfer to
+       */
+      destination?: WormholeSource
     },
   ) {
     const { network, wormholeRpcUrl, provider } = this
@@ -118,11 +101,11 @@ export class InjectiveWormholeClient extends WormholeClient {
       amount,
       recipient: recipientArg,
       additionalMsgs = [],
-      source = WormholeSource.Solana,
+      destination = WormholeSource.Solana,
     } = args
 
-    const associatedChain = getAssociatedChain(source)
-    const recipient = getAssociatedChainRecipient(recipientArg)
+    const associatedChain = getAssociatedChain(destination)
+    const recipient = getAssociatedChainRecipient(recipientArg, destination)
 
     if (!args.tokenAddress) {
       throw new GeneralException(new Error(`Please provide tokenAddress`))
@@ -144,7 +127,10 @@ export class InjectiveWormholeClient extends WormholeClient {
       )
     }
 
-    const { injectiveContractAddresses } = getContractAddresses(network)
+    const { injectiveContractAddresses } = getContractAddresses(
+      network,
+      destination,
+    )
 
     const messages = await transferFromInjective(
       args.injectiveAddress,
@@ -194,14 +180,10 @@ export class InjectiveWormholeClient extends WormholeClient {
     return Buffer.from(signedVAA).toString('base64')
   }
 
-  async redeem({
-    injectiveAddress,
-    signedVAA,
-  }: {
-    injectiveAddress: string
-    source?: WormholeSource
-    signedVAA: string /* in base 64 */
-  }): Promise<MsgExecuteContractCompat> {
+  async redeem(
+    injectiveAddress: string,
+    signedVAA: string /* in base 64 */,
+  ): Promise<MsgExecuteContractCompat> {
     const { network } = this
     const { injectiveContractAddresses } = getContractAddresses(network)
 
@@ -216,13 +198,10 @@ export class InjectiveWormholeClient extends WormholeClient {
     })
   }
 
-  async createWrapped({
-    injectiveAddress,
-    signedVAA,
-  }: {
-    injectiveAddress: string
-    signedVAA: string /* in base 64 */
-  }): Promise<MsgExecuteContractCompat> {
+  async createWrapped(
+    injectiveAddress: string,
+    signedVAA: string /* in base 64 */,
+  ): Promise<MsgExecuteContractCompat> {
     const { network } = this
     const { injectiveContractAddresses } = getContractAddresses(network)
 

@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
-import { Token, TokenMeta } from '@injectivelabs/token-metadata'
+import { Token } from '@injectivelabs/token-metadata'
 import { UiBridgeTransaction } from './bridge'
-import { ContractAccountBalance } from '@injectivelabs/sdk-ts'
 
 export interface CoinPriceFromInjectiveService {
   id: string
@@ -30,66 +29,65 @@ export interface CoinPriceFromInjectiveService {
   last_updated: Date
 }
 
-export type TokenWithBalance = Token & {
+export type BalanceWithToken = {
+  token: Token
+  denom: string
   balance: string
-  allowance: string
 }
 
-export type TokenWithUsdPrice = Token & {
+export type BalanceWithTokenAndPrice = BalanceWithToken & {
   usdPrice: number
 }
 
-export type TokenWithBalanceAndPrice = TokenWithBalance & {
-  usdPrice: number
-}
-
-export interface BankBalanceWithToken {
-  balance: string
-  denom: string
-  token: Token
-}
-
-export interface BankBalanceWithTokenAndBalance {
-  balance: string
-  denom: string
-  token: TokenWithBalance
-}
-
-export interface BankBalanceWithTokenAndBalanceInBase {
-  balance: string
-  denom: string
-  token: TokenWithBalance
-}
-
-export interface BankBalanceWithTokenAndBalanceWithUsdBalance
-  extends BankBalanceWithTokenAndBalance {
-  balanceInUsd: string
-}
-
-export interface IbcBankBalanceWithToken extends BankBalanceWithToken {
-  baseDenom: string
-  channelId: string
-}
-
-export interface IbcBankBalanceWithTokenAndBalance
-  extends BankBalanceWithTokenAndBalance {
-  baseDenom: string
-  channelId: string
-  token: TokenWithBalance
-}
-
-export interface Cw20BalanceWithToken {
-  balance: string
-  denom: string
-  token: Token
-  contractDetails: {
-    address: string
+export interface BalanceWithTokenWithErc20Balance extends BalanceWithToken {
+  erc20Balance: {
+    allowance: string
+    balance: string
   }
 }
 
-export interface ContractAccountBalanceWithToken
-  extends ContractAccountBalance {
-  token: Token
+export interface BalanceWithTokenWithSplBalance extends BalanceWithToken {
+  splBalance: {
+    allowance: string
+    balance: string
+  }
+}
+
+export interface BalanceWithTokenWithIbcBalance extends BalanceWithToken {
+  ibcBalance: {
+    balance: string
+  }
+}
+
+export interface BalanceWithTokenWithCw20Balance extends BalanceWithToken {
+  cw20Balance: {
+    balance: string
+  }
+}
+
+export interface BalanceWithTokenWithErc20BalanceWithPrice
+  extends BalanceWithTokenWithErc20Balance {
+  usdPrice: number
+}
+
+export interface BalanceWithTokenWithSplBalanceWithPrice
+  extends BalanceWithTokenWithSplBalance {
+  usdPrice: number
+}
+
+export interface BalanceWithTokenWithIbcBalanceWithPrice
+  extends BalanceWithTokenWithIbcBalance {
+  usdPrice: number
+}
+
+export interface BalanceWithTokenWithCw20BalanceWithPrice
+  extends BalanceWithTokenWithCw20Balance {
+  usdPrice: number
+}
+
+export interface BalanceWithTokenAndPriceWithUsdBalance
+  extends BalanceWithTokenAndPrice {
+  balanceInUsd: string
 }
 
 export interface SubaccountBalanceWithToken {
@@ -99,20 +97,13 @@ export interface SubaccountBalanceWithToken {
   token: Token
 }
 
-export interface SubaccountBalanceWithTokenAndUsdPrice {
-  availableBalance: string
-  totalBalance: string
-  denom: string
-  token: TokenWithUsdPrice
+export interface SubaccountBalanceWithTokenAndPrice
+  extends SubaccountBalanceWithToken {
+  usdPrice: number
 }
 
 export interface SubaccountBalanceWithTokenWithUsdBalance
-  extends SubaccountBalanceWithToken {
-  balanceInUsd: string
-}
-
-export interface SubaccountBalanceWithTokenAndUsdPriceAndUsdBalance
-  extends SubaccountBalanceWithTokenAndUsdPrice {
+  extends SubaccountBalanceWithTokenAndPrice {
   balanceInUsd: string
 }
 
@@ -123,8 +114,4 @@ export interface DenomTrace {
 
 export interface UiBridgeTransactionWithToken extends UiBridgeTransaction {
   token: Token
-}
-
-export interface TokenMetaWithUsdPrice extends TokenMeta {
-  usdPrice?: number
 }

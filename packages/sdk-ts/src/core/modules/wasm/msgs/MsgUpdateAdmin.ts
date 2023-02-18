@@ -1,6 +1,6 @@
 import { MsgUpdateAdmin as BaseMsgUpdateAdmin } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
 import { MsgBase } from '../../MsgBase'
-import snakeCaseKeys from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgUpdateAdmin {
   export interface Params {
@@ -9,24 +9,9 @@ export declare namespace MsgUpdateAdmin {
     contract: string
   }
 
-  export interface DirectSign {
-    type: '/cosmwasm.wasm.v1.MsgUpdateAdmin'
-    message: BaseMsgUpdateAdmin
-  }
-
-  export interface Data extends BaseMsgUpdateAdmin {
-    '@type': '/cosmwasm.wasm.v1.MsgUpdateAdmin'
-  }
-
-  export interface Amino extends BaseMsgUpdateAdmin {
-    type: 'wasm/MsgUpdateAdmin'
-  }
-
-  export interface Web3 extends BaseMsgUpdateAdmin {
-    '@type': '/cosmwasm.wasm.v1.MsgUpdateAdmin'
-  }
-
   export type Proto = BaseMsgUpdateAdmin
+
+  export type Object = BaseMsgUpdateAdmin.AsObject
 }
 
 /**
@@ -34,16 +19,14 @@ export declare namespace MsgUpdateAdmin {
  */
 export default class MsgUpdateAdmin extends MsgBase<
   MsgUpdateAdmin.Params,
-  MsgUpdateAdmin.Data,
   MsgUpdateAdmin.Proto,
-  MsgUpdateAdmin.Amino,
-  MsgUpdateAdmin.DirectSign
+  MsgUpdateAdmin.Object
 > {
   static fromJSON(params: MsgUpdateAdmin.Params): MsgUpdateAdmin {
     return new MsgUpdateAdmin(params)
   }
 
-  public toProto(): MsgUpdateAdmin.Proto {
+  public toProto() {
     const { params } = this
 
     const message = BaseMsgUpdateAdmin.create()
@@ -55,7 +38,7 @@ export default class MsgUpdateAdmin extends MsgBase<
     return BaseMsgUpdateAdmin.fromPartial(message)
   }
 
-  public toData(): MsgUpdateAdmin.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -64,31 +47,29 @@ export default class MsgUpdateAdmin extends MsgBase<
     }
   }
 
-  public toAmino(): MsgUpdateAdmin.Amino {
+  public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakeCaseKeys(proto),
+      ...snakecaseKeys(proto.toObject()),
     }
-
-    const messageWithProperKeys = snakeCaseKeys(message)
 
     return {
       type: 'wasm/MsgUpdateAdmin',
-      ...messageWithProperKeys,
-    } as unknown as MsgUpdateAdmin.Amino
+      value: { ...message },
+    }
   }
 
-  public toWeb3(): MsgUpdateAdmin.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgUpdateAdmin',
-      ...rest,
-    } as unknown as MsgUpdateAdmin.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgUpdateAdmin.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

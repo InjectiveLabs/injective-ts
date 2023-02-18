@@ -1,9 +1,9 @@
 /* eslint-disable class-methods-use-this */
 import {
-  AccountAddress,
   ChainId,
-  EthereumChainId,
   CosmosChainId,
+  AccountAddress,
+  EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
   UnspecifiedErrorCode,
@@ -12,9 +12,9 @@ import {
   ErrorType,
 } from '@injectivelabs/exceptions'
 import {
-  createCosmosSignDocFromTransaction,
-  getTxRawFromTxRawOrDirectSignResponse,
   TxResponse,
+  createTxRawFromSigResponse,
+  createCosmosSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
@@ -95,7 +95,7 @@ export default class Cosmostation
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<TxResponse> {
     const provider = await this.getProvider()
-    const txRaw = getTxRawFromTxRawOrDirectSignResponse(transaction)
+    const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
       const response = await provider.sendTransaction(

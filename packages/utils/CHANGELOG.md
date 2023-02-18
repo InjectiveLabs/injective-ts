@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.71-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.70-alpha.0...@injectivelabs/utils@1.0.71-alpha.0) (2023-01-29)
+## [1.0.79](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.78...@injectivelabs/utils@1.0.79) (2023-02-15)
 
 **Note:** Version bump only for package @injectivelabs/utils
 
@@ -11,9 +11,82 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.70-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.69...@injectivelabs/utils@1.0.70-alpha.0) (2023-01-29)
+## [1.0.78](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.77...@injectivelabs/utils@1.0.78) (2023-02-15)
+
+
+### Bug Fixes
+
+* error parsing and token type ([c6650fb](https://github.com/InjectiveLabs/injective-ts/commit/c6650fb53dd03fdd87792a4ae4a5b92437b254ed))
+
+
+
+
+
+## [1.0.77](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.76...@injectivelabs/utils@1.0.77) (2023-02-13)
 
 **Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.75...@injectivelabs/utils@1.0.76) (2023-02-13)
+
+
+### Bug Fixes
+
+* token meta not populated on devnet env ([11fead4](https://github.com/InjectiveLabs/injective-ts/commit/11fead46519b883cd676db027162189402d17d06))
+
+
+
+
+
+## [1.0.75](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.74...@injectivelabs/utils@1.0.75) (2023-02-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.74](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.73...@injectivelabs/utils@1.0.74) (2023-02-08)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.73](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.72...@injectivelabs/utils@1.0.73) (2023-02-06)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.72](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.71...@injectivelabs/utils@1.0.72) (2023-02-06)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.70...@injectivelabs/utils@1.0.71) (2023-02-06)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
+
+
+
+
+## [1.0.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.69...@injectivelabs/utils@1.0.70) (2023-02-03)
+
+
+### Features
+
+* helper awaitAll ([8c9bdf8](https://github.com/InjectiveLabs/injective-ts/commit/8c9bdf83203638abeabbde3ec0f8b29e1330cc9d))
 
 
 

@@ -59,7 +59,7 @@ describe('MsgBatchCancelSpotOrders', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParamsAmino,
+      value: protoParamsAmino,
     })
   })
 

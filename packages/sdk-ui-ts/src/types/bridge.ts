@@ -7,8 +7,10 @@ import { CosmosTxResponse } from './cosmos'
 
 export enum BridgingNetwork {
   Axelar = 'axelar',
+  Canto = 'canto',
   Chihuahua = 'chihuahua',
   CosmosHub = 'cosmosHub',
+  CosmosHubTestnet = 'cosmosHub-testnet',
   Ethereum = 'ethereum',
   EthereumWh = 'ethereumWh',
   Evmos = 'evmos',
@@ -36,16 +38,19 @@ export const MintScanExplorerUrl = {
   [BridgingNetwork.Stride]: 'stride',
   [BridgingNetwork.Crescent]: 'crescent',
   [BridgingNetwork.Sommelier]: 'sommelier',
+  [BridgingNetwork.Canto]: '',
 } as Record<BridgingNetwork, string>
 
 export enum BridgeTransactionState {
   Cancelled = 'Cancelled',
   Completed = 'Completed',
   Confirm = 'Confirming',
+  Redeemable = 'Redeemable',
   Confirming = 'Confirming',
   EthereumConfirming = 'EthereumConfirming',
   Failed = 'Failed',
   InjectiveConfirming = 'InjectiveConfirming',
+  RequestingVAA = 'RequestingVAA',
   Submitted = 'Submitted',
   FailedCancelled = 'failed-cancelled',
   InProgress = 'in-progress',

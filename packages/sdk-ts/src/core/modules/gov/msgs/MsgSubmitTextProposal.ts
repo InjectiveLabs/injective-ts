@@ -3,6 +3,7 @@ import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 import { TextProposal } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/gov'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitTextProposal {
   export interface Params {
@@ -15,24 +16,9 @@ export declare namespace MsgSubmitTextProposal {
     }
   }
 
-  export interface DirectSign {
-    type: '/cosmos.gov.v1beta1.MsgSubmitProposal'
-    message: BaseMsgSubmitProposal
-  }
-
-  export interface Data extends BaseMsgSubmitProposal {
-    '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal'
-  }
-
-  export interface Amino extends BaseMsgSubmitProposal {
-    type: 'cosmos-sdk/MsgSubmitProposal'
-  }
-
-  export interface Web3 extends BaseMsgSubmitProposal {
-    '@type': '/cosmos.authz.v1beta1.MsgSubmitProposal'
-  }
-
   export type Proto = BaseMsgSubmitProposal
+
+  export type Object = BaseMsgSubmitProposal.AsObject
 }
 
 /**
@@ -40,16 +26,14 @@ export declare namespace MsgSubmitTextProposal {
  */
 export default class MsgSubmitTextProposal extends MsgBase<
   MsgSubmitTextProposal.Params,
-  MsgSubmitTextProposal.Data,
   MsgSubmitTextProposal.Proto,
-  MsgSubmitTextProposal.Amino,
-  MsgSubmitTextProposal.DirectSign
+  MsgSubmitTextProposal.Object
 > {
   static fromJSON(params: MsgSubmitTextProposal.Params): MsgSubmitTextProposal {
     return new MsgSubmitTextProposal(params)
   }
 
-  public toProto(): MsgSubmitTextProposal.Proto {
+  public toProto() {
     const { params } = this
 
     const depositParams = Coin.create()
@@ -71,7 +55,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     return BaseMsgSubmitProposal.fromPartial(message)
   }
 
-  public toData(): MsgSubmitTextProposal.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -80,7 +64,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     }
   }
 
-  public toAmino(): MsgSubmitTextProposal.Amino {
+  public toAmino() {
     const { params } = this
     const content = this.getContent()
     const proposalType = 'cosmos-sdk/TextProposal'
@@ -90,21 +74,22 @@ export default class MsgSubmitTextProposal extends MsgBase<
       proposer: params.proposer,
     }
 
-    const messageWithProposalType = {
+    const messageWithProposalType = snakecaseKeys({
       ...message,
       content: {
         ...message.content,
         type: proposalType,
       },
-    }
+    })
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitTextProposal.Amino
+      value:
+        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitTextProposal.Object>,
+    }
   }
 
-  public toWeb3(): MsgSubmitTextProposal.Web3 {
+  public toWeb3() {
     const { params } = this
     const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
@@ -124,11 +109,11 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...messageWithProposalType,
-    } as unknown as MsgSubmitTextProposal.Web3
+      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitTextProposal.Object>),
+    }
   }
 
-  public toDirectSign(): MsgSubmitTextProposal.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

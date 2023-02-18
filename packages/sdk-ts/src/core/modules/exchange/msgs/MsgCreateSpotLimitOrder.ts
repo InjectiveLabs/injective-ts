@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgCreateSpotLimitOrder {
   export interface Params {
@@ -19,24 +20,9 @@ export declare namespace MsgCreateSpotLimitOrder {
     quantity: string
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder'
-    message: BaseMsgCreateSpotLimitOrder
-  }
-
-  export interface Data extends BaseMsgCreateSpotLimitOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder'
-  }
-
-  export interface Amino extends BaseMsgCreateSpotLimitOrder {
-    type: 'exchange/MsgCreateSpotLimitOrder'
-  }
-
-  export interface Web3 extends BaseMsgCreateSpotLimitOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder'
-  }
-
   export type Proto = BaseMsgCreateSpotLimitOrder
+
+  export type Object = BaseMsgCreateSpotLimitOrder.AsObject
 }
 
 const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
@@ -65,10 +51,8 @@ const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
  */
 export default class MsgCreateSpotLimitOrder extends MsgBase<
   MsgCreateSpotLimitOrder.Params,
-  MsgCreateSpotLimitOrder.Data,
   MsgCreateSpotLimitOrder.Proto,
-  MsgCreateSpotLimitOrder.Amino,
-  MsgCreateSpotLimitOrder.DirectSign
+  MsgCreateSpotLimitOrder.Object
 > {
   static fromJSON(
     params: MsgCreateSpotLimitOrder.Params,
@@ -76,7 +60,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     return new MsgCreateSpotLimitOrder(params)
   }
 
-  public toProto(): MsgCreateSpotLimitOrder.Proto {
+  public toProto() {
     const { params: initialParams } = this
 
     const params = {
@@ -91,7 +75,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     return createLimitOrder(params)
   }
 
-  public toData(): MsgCreateSpotLimitOrder.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -100,27 +84,31 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCreateSpotLimitOrder.Amino {
+  public toAmino() {
     const { params } = this
     const proto = createLimitOrder(params)
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgCreateSpotLimitOrder',
-      ...proto,
+      value:
+        message as unknown as SnakeCaseKeys<MsgCreateSpotLimitOrder.Object>,
     }
   }
 
-  public toWeb3(): MsgCreateSpotLimitOrder.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder',
-      ...rest,
-    } as unknown as MsgCreateSpotLimitOrder.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCreateSpotLimitOrder.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

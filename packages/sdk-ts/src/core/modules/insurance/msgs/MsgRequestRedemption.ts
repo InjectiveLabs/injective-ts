@@ -1,6 +1,7 @@
 import { MsgRequestRedemption as BaseMsgRequestRedemption } from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/tx'
 import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgRequestRedemption {
   export interface Params {
@@ -12,24 +13,9 @@ export declare namespace MsgRequestRedemption {
     injectiveAddress: string
   }
 
-  export interface DirectSign {
-    type: '/injective.insurance.v1beta1.MsgRequestRedemption'
-    message: BaseMsgRequestRedemption
-  }
-
-  export interface Data extends BaseMsgRequestRedemption {
-    '@type': '/injective.insurance.v1beta1.MsgRequestRedemption'
-  }
-
-  export interface Amino extends BaseMsgRequestRedemption {
-    type: 'insurance/MsgRequestRedemption'
-  }
-
-  export interface Web3 extends BaseMsgRequestRedemption {
-    '@type': '/injective.insurance.v1beta1.MsgRequestRedemption'
-  }
-
   export type Proto = BaseMsgRequestRedemption
+
+  export type Object = BaseMsgRequestRedemption.AsObject
 }
 
 /**
@@ -37,16 +23,14 @@ export declare namespace MsgRequestRedemption {
  */
 export default class MsgRequestRedemption extends MsgBase<
   MsgRequestRedemption.Params,
-  MsgRequestRedemption.Data,
   MsgRequestRedemption.Proto,
-  MsgRequestRedemption.Amino,
-  MsgRequestRedemption.DirectSign
+  MsgRequestRedemption.Object
 > {
   static fromJSON(params: MsgRequestRedemption.Params): MsgRequestRedemption {
     return new MsgRequestRedemption(params)
   }
 
-  public toProto(): MsgRequestRedemption.Proto {
+  public toProto() {
     const { params } = this
 
     const amountCoin = Coin.create()
@@ -61,7 +45,7 @@ export default class MsgRequestRedemption extends MsgBase<
     return BaseMsgRequestRedemption.fromJSON(message)
   }
 
-  public toData(): MsgRequestRedemption.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -70,26 +54,29 @@ export default class MsgRequestRedemption extends MsgBase<
     }
   }
 
-  public toAmino(): MsgRequestRedemption.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'insurance/MsgRequestRedemption',
-      ...proto,
+      value: message,
     }
   }
 
-  public toWeb3(): MsgRequestRedemption.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.insurance.v1beta1.MsgRequestRedemption',
-      ...rest,
-    } as unknown as MsgRequestRedemption.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgRequestRedemption.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

@@ -4,6 +4,10 @@ import { StatusCodes } from 'http-status-codes'
 export enum TransactionChainErrorModule {
   Auction = 'auction',
   CosmosSdk = 'sdk',
+  Staking = 'staking',
+  Bank = 'bank',
+  Distribution = 'distribution',
+  Gov = 'gov',
   Exchange = 'exchange',
   Insurance = 'insurance',
   Ocr = 'ocr',
@@ -513,6 +517,180 @@ export enum ChainWasmXErrorCodes {
   ErrInvalidCodeId = 7,
 }
 
+export enum ChainStakingErrorCodes {
+  // "empty validator address"
+  ErrEmptyValidatorAddr = 2,
+  // "validator does not exist"
+  ErrNoValidatorFound = 3,
+  // "validator already exist for this operator address; must use new validator operator address"
+  ErrValidatorOwnerExists = 4,
+  // "validator already exist for this pubkey; must use new validator pubkey"
+  ErrValidatorPubKeyExists = 5,
+  // "validator pubkey type is not supported"
+  ErrValidatorPubKeyTypeNotSupported = 6,
+  // "validator for this address is currently jailed"
+  ErrValidatorJailed = 7,
+  // "failed to remove validator"
+  ErrBadRemoveValidator = 8,
+  // "commission must be positive"
+  ErrCommissionNegative = 9,
+  // "commission cannot be more than 100%"
+  ErrCommissionHuge = 10,
+  // "commission cannot be more than the max rate"
+  ErrCommissionGTMaxRate = 11,
+  // "commission cannot be changed more than once in 24h"
+  ErrCommissionUpdateTime = 12,
+  // "commission change rate must be positive"
+  ErrCommissionChangeRateNegative = 13,
+  // "commission change rate cannot be more than the max rate"
+  ErrCommissionChangeRateGTMaxRate = 14,
+  // "commission cannot be changed more than max change rate"
+  ErrCommissionGTMaxChangeRate = 15,
+  // "validator's self delegation must be greater than their minimum self delegation"
+  ErrSelfDelegationBelowMinimum = 16,
+  // "minimum self delegation cannot be decrease"
+  ErrMinSelfDelegationDecreased = 17,
+  // "empty delegator address"
+  ErrEmptyDelegatorAddr = 18,
+  // "no delegation for (address, validator) tuple"
+  ErrNoDelegation = 19,
+  // "delegator does not exist with address"
+  ErrBadDelegatorAddr = 20,
+  // "delegator does not contain delegation"
+  ErrNoDelegatorForAddress = 21,
+  // "insufficient delegation shares"
+  ErrInsufficientShares = 22,
+  // "cannot delegate to an empty validator"
+  ErrDelegationValidatorEmpty = 23,
+  // "not enough delegation shares"
+  ErrNotEnoughDelegationShares = 24,
+  // "entry not mature"
+  ErrNotMature = 25,
+  // "no unbonding delegation found"
+  ErrNoUnbondingDelegation = 26,
+  // "too many unbonding delegation entries for (delegator, validator) tuple"
+  ErrMaxUnbondingDelegationEntries = 27,
+  // "no redelegation found"
+  ErrNoRedelegation = 28,
+  // "cannot redelegate to the same validator"
+  ErrSelfRedelegation = 29,
+  // "too few tokens to redelegate (truncates to zero tokens)"
+  ErrTinyRedelegationAmount = 30,
+  // "redelegation destination validator not found"
+  ErrBadRedelegationDst = 31,
+  // "redelegation to this validator already in progress; first redelegation to this validator must complete before next redelegation"
+  ErrTransitiveRedelegation = 32,
+  // "too many redelegation entries for (delegator, src-validator, dst-validator) tuple"
+  ErrMaxRedelegationEntries = 33,
+  // "cannot delegate to validators with invalid (zero) ex-rate"
+  ErrDelegatorShareExRateInvalid = 34,
+  // "both shares amount and shares percent provided"
+  ErrBothShareMsgsGiven = 35,
+  // "neither shares amount nor shares percent provided"
+  ErrNeitherShareMsgsGiven = 36,
+  // "invalid historical info"
+  ErrInvalidHistoricalInfo = 37,
+  // "no historical info found"
+  ErrNoHistoricalInfo = 38,
+  // "empty validator public key"
+  ErrEmptyValidatorPubKey = 39,
+  // "commission cannot be less than min rate"
+  ErrCommissionLTMinRate = 40,
+  // "unbonding operation not found"
+  ErrUnbondingNotFound = 41,
+  // "cannot un-hold unbonding operation that is not on hold"
+  ErrUnbondingOnHoldRefCountNegative = 42,
+}
+
+export enum ChainGovErrorCodes {
+  //  "unknown proposal"
+  ErrUnknownProposal = 2,
+  //  "inactive proposal"
+  ErrInactiveProposal = 3,
+  //  "proposal already active)
+  ErrAlreadyActiveProposal = 4,
+  //  "invalid proposal content"
+  ErrInvalidProposalContent = 5,
+  //  "invalid proposal type"
+  ErrInvalidProposalType = 6,
+  //  "invalid vote option"
+  ErrInvalidVote = 7,
+  //  "invalid genesis state"
+  ErrInvalidGenesis = 8,
+  //  "no handler exists for proosal type")
+  ErrNoProposalHandlerExists = 9,
+  //  "proposal message not recogized by router")
+  ErrUnroutableProposalMsg = 10,
+  //  "no messages proposed"
+  ErrNoProposalMsgs = 11,
+  //  "invalid proposal message"
+  ErrInvalidProposalMsg = 12,
+  //  "expected gov account as ony signer for proposal message")
+  ErrInvalidSigner = 13,
+  //  "signal message is invalid"
+  ErrInvalidSignalMsg = 14,
+  //  "metadata too long"
+  ErrMetadataTooLong = 15,
+  //  "minimum deposit is too smal")
+  ErrMinDepositTooSmall = 16,
+  //  "proposal is not found"
+  ErrProposalNotFound = 17,
+  //  "invalid proposer"
+  ErrInvalidProposer = 18,
+  //  "no deposits found"
+  ErrNoDeposits = 19,
+  //  "voting period already ende")
+  ErrVotingPeriodEnded = 20,
+  //  "invalid proposal"
+  ErrInvalidProposal = 21,
+}
+
+export enum ChainDistributionErrorCodes {
+  //  "delegator address is empty"
+  ErrEmptyDelegatorAddr = 2,
+  //  "withdraw address is empty"
+  ErrEmptyWithdrawAddr = 3,
+  //  "validator address is empty"
+  ErrEmptyValidatorAddr = 4,
+  //  "no delegation distribution info"
+  ErrEmptyDelegationDistInfo = 5,
+  //  "no validator distribution info"
+  ErrNoValidatorDistInfo = 6,
+  //  "no validator commission to withdraw"
+  ErrNoValidatorCommission = 7,
+  //  "set withdraw address disabled"
+  ErrSetWithdrawAddrDisabled = 8,
+  //  "community pool does not have sufficient coins to distribute"
+  ErrBadDistribution = 9,
+  //  "invalid community pool spend proposal amount"
+  ErrInvalidProposalAmount = 10,
+  //  "invalid community pool spend proposal recipient"
+  ErrEmptyProposalRecipient = 11,
+  //  "validator does not exist"
+  ErrNoValidatorExists = 12,
+  //  "delegation does not exist"
+  ErrNoDelegationExists = 13,
+}
+
+export enum ChainBankErrorCodes {
+  // "no inputs to send transaction"
+  ErrNoInputs = 2,
+  // "no outputs to send transaction"
+  ErrNoOutputs = 3,
+  // "sum inputs != sum outputs"
+  ErrInputOutputMismatch = 4,
+  // "send transactions are disabled"
+  ErrSendDisabled = 5,
+  // "client denom metadata not found"
+  ErrDenomMetadataNotFound = 6,
+  // "invalid key"
+  ErrInvalidKey = 7,
+  // "duplicate entry"
+  ErrDuplicateEntry = 8,
+  // "multiple senders not allowed"
+  ErrMultipleSenders = 9,
+}
+
 export type IndexerApiErrorCode = number
 
 export const UnspecifiedErrorCode = -1
@@ -529,4 +707,8 @@ export type ErrorContextCode =
   | ChainPeggyErrorCodes
   | ChainTokenFactoryErrorCodes
   | ChainWasmXErrorCodes
+  | ChainDistributionErrorCodes
+  | ChainBankErrorCodes
+  | ChainGovErrorCodes
+  | ChainStakingErrorCodes
   | typeof UnspecifiedErrorCode

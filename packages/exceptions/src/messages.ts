@@ -10,6 +10,10 @@ import {
   ChainTokenFactoryErrorCodes,
   ChainWasmXErrorCodes,
   TransactionChainErrorModule,
+  ChainStakingErrorCodes,
+  ChainGovErrorCodes,
+  ChainBankErrorCodes,
+  ChainDistributionErrorCodes,
 } from './types'
 
 const auctionErrorMap = {
@@ -397,6 +401,147 @@ const wamsxErrorMap = {
   [ChainWasmXErrorCodes.ErrInvalidCodeId]: 'invalid code id',
 }
 
+const stakingErrorMap = {
+  [ChainStakingErrorCodes.ErrEmptyValidatorAddr]: 'empty validator address',
+  [ChainStakingErrorCodes.ErrNoValidatorFound]: 'validator does not exist',
+  [ChainStakingErrorCodes.ErrValidatorOwnerExists]:
+    'validator already exist for this operator address; must use new validator operator address',
+  [ChainStakingErrorCodes.ErrValidatorPubKeyExists]:
+    'validator already exist for this pubkey; must use new validator pubkey',
+  [ChainStakingErrorCodes.ErrValidatorPubKeyTypeNotSupported]:
+    'validator pubkey type is not supported',
+  [ChainStakingErrorCodes.ErrValidatorJailed]:
+    'validator for this address is currently jailed',
+  [ChainStakingErrorCodes.ErrBadRemoveValidator]: 'failed to remove validator',
+  [ChainStakingErrorCodes.ErrCommissionNegative]: 'commission must be positive',
+  [ChainStakingErrorCodes.ErrCommissionHuge]:
+    'commission cannot be more than 100%',
+  [ChainStakingErrorCodes.ErrCommissionGTMaxRate]:
+    'commission cannot be more than the max rate',
+  [ChainStakingErrorCodes.ErrCommissionUpdateTime]:
+    'commission cannot be changed more than once in 24h',
+  [ChainStakingErrorCodes.ErrCommissionChangeRateNegative]:
+    'commission change rate must be positive',
+  [ChainStakingErrorCodes.ErrCommissionChangeRateGTMaxRate]:
+    'commission change rate cannot be more than the max rate',
+  [ChainStakingErrorCodes.ErrCommissionGTMaxChangeRate]:
+    'commission cannot be changed more than max change rate',
+  [ChainStakingErrorCodes.ErrSelfDelegationBelowMinimum]:
+    "validator's self delegation must be greater than their minimum self delegation",
+  [ChainStakingErrorCodes.ErrMinSelfDelegationDecreased]:
+    'minimum self delegation cannot be decrease',
+  [ChainStakingErrorCodes.ErrEmptyDelegatorAddr]: 'empty delegator address',
+  [ChainStakingErrorCodes.ErrNoDelegation]:
+    'no delegation for (address, validator) tuple',
+  [ChainStakingErrorCodes.ErrBadDelegatorAddr]:
+    'delegator does not exist with address',
+  [ChainStakingErrorCodes.ErrNoDelegatorForAddress]:
+    'delegator does not contain delegation',
+  [ChainStakingErrorCodes.ErrInsufficientShares]:
+    'insufficient delegation shares',
+  [ChainStakingErrorCodes.ErrDelegationValidatorEmpty]:
+    'cannot delegate to an empty validator',
+  [ChainStakingErrorCodes.ErrNotEnoughDelegationShares]:
+    'not enough delegation shares',
+  [ChainStakingErrorCodes.ErrNotMature]: 'entry not mature',
+  [ChainStakingErrorCodes.ErrNoUnbondingDelegation]:
+    'no unbonding delegation found',
+  [ChainStakingErrorCodes.ErrMaxUnbondingDelegationEntries]:
+    'too many unbonding delegation entries for (delegator, validator) tuple',
+  [ChainStakingErrorCodes.ErrNoRedelegation]: 'no redelegation found',
+  [ChainStakingErrorCodes.ErrSelfRedelegation]:
+    'cannot redelegate to the same validator',
+  [ChainStakingErrorCodes.ErrTinyRedelegationAmount]:
+    'too few tokens to redelegate (truncates to zero tokens)',
+  [ChainStakingErrorCodes.ErrBadRedelegationDst]:
+    'redelegation destination validator not found',
+  [ChainStakingErrorCodes.ErrTransitiveRedelegation]:
+    'redelegation to this validator already in progress; first redelegation to this validator must complete before next redelegation',
+  [ChainStakingErrorCodes.ErrMaxRedelegationEntries]:
+    'too many redelegation entries for (delegator, src-validator, dst-validator) tuple',
+  [ChainStakingErrorCodes.ErrDelegatorShareExRateInvalid]:
+    'cannot delegate to validators with invalid (zero) ex-rate',
+  [ChainStakingErrorCodes.ErrBothShareMsgsGiven]:
+    'both shares amount and shares percent provided',
+  [ChainStakingErrorCodes.ErrNeitherShareMsgsGiven]:
+    'neither shares amount nor shares percent provided',
+  [ChainStakingErrorCodes.ErrInvalidHistoricalInfo]: 'invalid historical info',
+  [ChainStakingErrorCodes.ErrNoHistoricalInfo]: 'no historical info found',
+  [ChainStakingErrorCodes.ErrEmptyValidatorPubKey]:
+    'empty validator public key',
+  [ChainStakingErrorCodes.ErrCommissionLTMinRate]:
+    'commission cannot be less than min rate',
+  [ChainStakingErrorCodes.ErrUnbondingNotFound]:
+    'unbonding operation not found',
+  [ChainStakingErrorCodes.ErrUnbondingOnHoldRefCountNegative]:
+    'cannot un-hold unbonding operation that is not on hold',
+}
+
+const govErrorMap = {
+  [ChainGovErrorCodes.ErrUnknownProposal]: 'unknown proposal',
+  [ChainGovErrorCodes.ErrInactiveProposal]: 'inactive proposal',
+  [ChainGovErrorCodes.ErrAlreadyActiveProposal]: 'proposal already active',
+  [ChainGovErrorCodes.ErrInvalidProposalContent]: 'invalid proposal content',
+  [ChainGovErrorCodes.ErrInvalidProposalType]: 'invalid proposal type',
+  [ChainGovErrorCodes.ErrInvalidVote]: 'invalid vote option',
+  [ChainGovErrorCodes.ErrInvalidGenesis]: 'invalid genesis state',
+  [ChainGovErrorCodes.ErrNoProposalHandlerExists]:
+    'no handler exists for proposal type',
+  [ChainGovErrorCodes.ErrUnroutableProposalMsg]:
+    'proposal message not recogized by router',
+  [ChainGovErrorCodes.ErrNoProposalMsgs]: 'no messages proposed',
+  [ChainGovErrorCodes.ErrInvalidProposalMsg]: 'invalid proposal message',
+  [ChainGovErrorCodes.ErrInvalidSigner]:
+    'expected gov account as only signer for proposal message',
+  [ChainGovErrorCodes.ErrInvalidSignalMsg]: 'signal message is invalid',
+  [ChainGovErrorCodes.ErrMetadataTooLong]: 'metadata too long',
+  [ChainGovErrorCodes.ErrMinDepositTooSmall]: 'minimum deposit is too small',
+  [ChainGovErrorCodes.ErrProposalNotFound]: 'proposal is not found',
+  [ChainGovErrorCodes.ErrInvalidProposer]: 'invalid proposer',
+  [ChainGovErrorCodes.ErrNoDeposits]: 'no deposits found',
+  [ChainGovErrorCodes.ErrVotingPeriodEnded]: 'voting period already ended',
+  [ChainGovErrorCodes.ErrInvalidProposal]: 'invalid proposal',
+}
+
+const bankErrorMap = {
+  [ChainBankErrorCodes.ErrNoInputs]: 'no inputs to send transaction',
+  [ChainBankErrorCodes.ErrNoOutputs]: 'no outputs to send transaction',
+  [ChainBankErrorCodes.ErrInputOutputMismatch]: 'sum inputs != sum outputs',
+  [ChainBankErrorCodes.ErrSendDisabled]: 'send transactions are disabled',
+  [ChainBankErrorCodes.ErrDenomMetadataNotFound]:
+    'client denom metadata not found',
+  [ChainBankErrorCodes.ErrInvalidKey]: 'invalid key',
+  [ChainBankErrorCodes.ErrDuplicateEntry]: 'duplicate entry',
+  [ChainBankErrorCodes.ErrMultipleSenders]: 'multiple senders not allowed',
+}
+
+const distributionErrorMap = {
+  [ChainDistributionErrorCodes.ErrEmptyDelegatorAddr]:
+    'delegator address is empty',
+  [ChainDistributionErrorCodes.ErrEmptyWithdrawAddr]:
+    'withdraw address is empty',
+  [ChainDistributionErrorCodes.ErrEmptyValidatorAddr]:
+    'validator address is empty',
+  [ChainDistributionErrorCodes.ErrEmptyDelegationDistInfo]:
+    'no delegation distribution info',
+  [ChainDistributionErrorCodes.ErrNoValidatorDistInfo]:
+    'no validator distribution info',
+  [ChainDistributionErrorCodes.ErrNoValidatorCommission]:
+    'no validator commission to withdraw',
+  [ChainDistributionErrorCodes.ErrSetWithdrawAddrDisabled]:
+    'set withdraw address disabled',
+  [ChainDistributionErrorCodes.ErrBadDistribution]:
+    'community pool does not have sufficient coins to distribute',
+  [ChainDistributionErrorCodes.ErrInvalidProposalAmount]:
+    'invalid community pool spend proposal amount',
+  [ChainDistributionErrorCodes.ErrEmptyProposalRecipient]:
+    'invalid community pool spend proposal recipient',
+  [ChainDistributionErrorCodes.ErrNoValidatorExists]:
+    'validator does not exist',
+  [ChainDistributionErrorCodes.ErrNoDelegationExists]:
+    'delegation does not exist',
+}
+
 export const chainModuleCodeErrorMessagesMap: Record<
   string,
   Record<number, string>
@@ -410,6 +555,10 @@ export const chainModuleCodeErrorMessagesMap: Record<
   [TransactionChainErrorModule.Peggy]: peggyErrorMap,
   [TransactionChainErrorModule.TokenFactory]: tokenFactoryErrorMap,
   [TransactionChainErrorModule.Wasmx]: wamsxErrorMap,
+  [TransactionChainErrorModule.Staking]: stakingErrorMap,
+  [TransactionChainErrorModule.Bank]: bankErrorMap,
+  [TransactionChainErrorModule.Gov]: govErrorMap,
+  [TransactionChainErrorModule.Distribution]: distributionErrorMap,
 }
 
 /**
@@ -1236,5 +1385,495 @@ export const chainErrorMessagesMap: Record<
     message: 'The argument is not valid',
     code: ChainExchangeModuleErrorCode.ErrInvalidArgument,
     module: TransactionChainErrorModule.Exchange,
+  },
+
+  'empty validator address': {
+    message: 'empty validator address',
+    code: ChainStakingErrorCodes.ErrEmptyValidatorAddr,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'validator does not exist': {
+    message: 'validator does not exist',
+    code: ChainStakingErrorCodes.ErrNoValidatorFound,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'validator already exist for this operator address; must use new validator operator address':
+    {
+      message:
+        'validator already exist for this operator address; must use new validator operator address',
+      code: ChainStakingErrorCodes.ErrValidatorOwnerExists,
+      module: TransactionChainErrorModule.Staking,
+    },
+
+  'validator already exist for this pubkey; must use new validator pubkey': {
+    message:
+      'validator already exist for this pubkey; must use new validator pubkey',
+    code: ChainStakingErrorCodes.ErrValidatorPubKeyExists,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'validator pubkey type is not supported': {
+    message: 'validator pubkey type is not supported',
+    code: ChainStakingErrorCodes.ErrValidatorPubKeyTypeNotSupported,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'validator for this address is currently jailed': {
+    message: 'validator for this address is currently jailed',
+    code: ChainStakingErrorCodes.ErrValidatorJailed,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'failed to remove validator': {
+    message: 'failed to remove validator',
+    code: ChainStakingErrorCodes.ErrBadRemoveValidator,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'commission must be positive': {
+    message: 'commission must be positive',
+    code: ChainStakingErrorCodes.ErrCommissionNegative,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'commission cannot be more than 100%': {
+    message: 'commission cannot be more than 100%',
+    code: ChainStakingErrorCodes.ErrCommissionHuge,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'commission cannot be more than the max rate': {
+    message: 'commission cannot be more than the max rate',
+    code: ChainStakingErrorCodes.ErrCommissionGTMaxRate,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'commission cannot be changed more than once in 24h': {
+    message: 'commission cannot be changed more than once in 24h',
+    code: ChainStakingErrorCodes.ErrCommissionUpdateTime,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'commission change rate must be positive': {
+    message: 'commission change rate must be positive',
+    code: ChainStakingErrorCodes.ErrCommissionChangeRateNegative,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'commission change rate cannot be more than the max rate': {
+    message: 'commission change rate cannot be more than the max rate',
+    code: ChainStakingErrorCodes.ErrCommissionChangeRateGTMaxRate,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'commission cannot be changed more than max change rate': {
+    message: 'commission cannot be changed more than max change rate',
+    code: ChainStakingErrorCodes.ErrCommissionGTMaxChangeRate,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  "validator's self delegation must be greater than their minimum self delegation":
+    {
+      message:
+        "validator's self delegation must be greater than their minimum self delegation",
+      code: ChainStakingErrorCodes.ErrSelfDelegationBelowMinimum,
+      module: TransactionChainErrorModule.Staking,
+    },
+
+  'minimum self delegation cannot be decrease': {
+    message: 'minimum self delegation cannot be decrease',
+    code: ChainStakingErrorCodes.ErrMinSelfDelegationDecreased,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'empty delegator address': {
+    message: 'empty delegator address',
+    code: ChainStakingErrorCodes.ErrEmptyDelegatorAddr,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'no delegation for (address, validator) tuple': {
+    message: 'no delegation for (address, validator) tuple',
+    code: ChainStakingErrorCodes.ErrNoDelegation,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'delegator does not exist with address': {
+    message: 'delegator does not exist with address',
+    code: ChainStakingErrorCodes.ErrBadDelegatorAddr,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'delegator does not contain delegation': {
+    message: 'delegator does not contain delegation',
+    code: ChainStakingErrorCodes.ErrNoDelegatorForAddress,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'insufficient delegation shares': {
+    message: 'insufficient delegation shares',
+    code: ChainStakingErrorCodes.ErrInsufficientShares,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'cannot delegate to an empty validator': {
+    message: 'cannot delegate to an empty validator',
+    code: ChainStakingErrorCodes.ErrDelegationValidatorEmpty,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'not enough delegation shares': {
+    message: 'not enough delegation shares',
+    code: ChainStakingErrorCodes.ErrNotEnoughDelegationShares,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'entry not mature': {
+    message: 'entry not mature',
+    code: ChainStakingErrorCodes.ErrNotMature,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'no unbonding delegation found': {
+    message: 'no unbonding delegation found',
+    code: ChainStakingErrorCodes.ErrNoUnbondingDelegation,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'too many unbonding delegation entries for (delegator, validator) tuple': {
+    message:
+      'too many unbonding delegation entries for (delegator, validator) tuple',
+    code: ChainStakingErrorCodes.ErrMaxUnbondingDelegationEntries,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'no redelegation found': {
+    message: 'no redelegation found',
+    code: ChainStakingErrorCodes.ErrNoRedelegation,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'cannot redelegate to the same validator': {
+    message: 'cannot redelegate to the same validator',
+    code: ChainStakingErrorCodes.ErrSelfRedelegation,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'too few tokens to redelegate (truncates to zero tokens)': {
+    message: 'too few tokens to redelegate (truncates to zero tokens)',
+    code: ChainStakingErrorCodes.ErrTinyRedelegationAmount,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'redelegation destination validator not found': {
+    message: 'redelegation destination validator not found',
+    code: ChainStakingErrorCodes.ErrBadRedelegationDst,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'redelegation to this validator already in progress; first redelegation to this validator must complete before next redelegation':
+    {
+      message:
+        'redelegation to this validator already in progress; first redelegation to this validator must complete before next redelegation',
+      code: ChainStakingErrorCodes.ErrTransitiveRedelegation,
+      module: TransactionChainErrorModule.Staking,
+    },
+
+  'too many redelegation entries for (delegator, src-validator, dst-validator) tuple':
+    {
+      message:
+        'too many redelegation entries for (delegator, src-validator, dst-validator) tuple',
+      code: ChainStakingErrorCodes.ErrMaxRedelegationEntries,
+      module: TransactionChainErrorModule.Staking,
+    },
+
+  'cannot delegate to validators with invalid (zero) ex-rate': {
+    message: 'cannot delegate to validators with invalid (zero) ex-rate',
+    code: ChainStakingErrorCodes.ErrDelegatorShareExRateInvalid,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'both shares amount and shares percent provided': {
+    message: 'both shares amount and shares percent provided',
+    code: ChainStakingErrorCodes.ErrBothShareMsgsGiven,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'neither shares amount nor shares percent provided': {
+    message: 'neither shares amount nor shares percent provided',
+    code: ChainStakingErrorCodes.ErrNeitherShareMsgsGiven,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'invalid historical info': {
+    message: 'invalid historical info',
+    code: ChainStakingErrorCodes.ErrInvalidHistoricalInfo,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'no historical info found': {
+    message: 'no historical info found',
+    code: ChainStakingErrorCodes.ErrNoHistoricalInfo,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'empty validator public key': {
+    message: 'empty validator public key',
+    code: ChainStakingErrorCodes.ErrEmptyValidatorPubKey,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'commission cannot be less than min rate': {
+    message: 'commission cannot be less than min rate',
+    code: ChainStakingErrorCodes.ErrCommissionLTMinRate,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'unbonding operation not found': {
+    message: 'unbonding operation not found',
+    code: ChainStakingErrorCodes.ErrUnbondingNotFound,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'cannot un-hold unbonding operation that is not on hold': {
+    message: 'cannot un-hold unbonding operation that is not on hold',
+    code: ChainStakingErrorCodes.ErrUnbondingOnHoldRefCountNegative,
+    module: TransactionChainErrorModule.Staking,
+  },
+
+  'delegator address is empty': {
+    message: 'delegator address is empty',
+    code: ChainDistributionErrorCodes.ErrEmptyDelegatorAddr,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'withdraw address is empty': {
+    message: 'withdraw address is empty',
+    code: ChainDistributionErrorCodes.ErrEmptyWithdrawAddr,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'validator address is empty': {
+    message: 'validator address is empty',
+    code: ChainDistributionErrorCodes.ErrEmptyValidatorAddr,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'no delegation distribution info': {
+    message: 'no delegation distribution info',
+    code: ChainDistributionErrorCodes.ErrEmptyDelegationDistInfo,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'no validator distribution info': {
+    message: 'no validator distribution info',
+    code: ChainDistributionErrorCodes.ErrNoValidatorDistInfo,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'no validator commission to withdraw': {
+    message: 'no validator commission to withdraw',
+    code: ChainDistributionErrorCodes.ErrNoValidatorCommission,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'set withdraw address disabled': {
+    message: 'set withdraw address disabled',
+    code: ChainDistributionErrorCodes.ErrSetWithdrawAddrDisabled,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'community pool does not have sufficient coins to distribute': {
+    message: 'community pool does not have sufficient coins distribute',
+    code: ChainDistributionErrorCodes.ErrBadDistribution,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'invalid community pool spend proposal amount': {
+    message: 'invalid community pool spend proposal amount',
+    code: ChainDistributionErrorCodes.ErrInvalidProposalAmount,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'invalid community pool spend proposal recipient': {
+    message: 'invalid community pool spend proposal recipient',
+    code: ChainDistributionErrorCodes.ErrEmptyProposalRecipient,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'delegation does not exist': {
+    message: 'delegation does not exist',
+    code: ChainDistributionErrorCodes.ErrNoDelegationExists,
+    module: TransactionChainErrorModule.Distribution,
+  },
+
+  'unknown proposal': {
+    message: 'unknown proposal',
+    code: ChainGovErrorCodes.ErrUnknownProposal,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'inactive proposal': {
+    message: 'inactive proposal',
+    code: ChainGovErrorCodes.ErrInactiveProposal,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'proposal already active': {
+    message: 'proposal already active',
+    code: ChainGovErrorCodes.ErrAlreadyActiveProposal,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'invalid proposal content': {
+    message: 'invalid proposal content',
+    code: ChainGovErrorCodes.ErrInvalidProposalContent,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'invalid proposal type': {
+    message: 'invalid proposal type',
+    code: ChainGovErrorCodes.ErrInvalidProposalType,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'invalid vote option': {
+    message: 'invalid vote option',
+    code: ChainGovErrorCodes.ErrInvalidVote,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'invalid genesis state': {
+    message: 'invalid genesis state',
+    code: ChainGovErrorCodes.ErrInvalidGenesis,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'no handler exists for proposal type': {
+    message: 'no handler exists for proposal type',
+    code: ChainGovErrorCodes.ErrNoProposalHandlerExists,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'proposal message not recogized by router': {
+    message: 'proposal message not recogized by router',
+    code: ChainGovErrorCodes.ErrUnroutableProposalMsg,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'no messages proposed': {
+    message: 'no messages proposed',
+    code: ChainGovErrorCodes.ErrNoProposalMsgs,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'invalid proposal message': {
+    message: 'invalid proposal message',
+    code: ChainGovErrorCodes.ErrInvalidProposalMsg,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'expected gov account as only signer for proposal message': {
+    message: 'expected gov account as only signer for proposal message',
+    code: ChainGovErrorCodes.ErrInvalidSigner,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'signal message is invalid': {
+    message: 'signal message is invalid',
+    code: ChainGovErrorCodes.ErrInvalidSignalMsg,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'metadata too long': {
+    message: 'metadata too long',
+    code: ChainGovErrorCodes.ErrMetadataTooLong,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'minimum deposit is too small': {
+    message: 'minimum deposit is too small',
+    code: ChainGovErrorCodes.ErrMinDepositTooSmall,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'proposal is not found': {
+    message: 'proposal is not found',
+    code: ChainGovErrorCodes.ErrProposalNotFound,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'invalid proposer': {
+    message: 'invalid proposer',
+    code: ChainGovErrorCodes.ErrInvalidProposer,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'no deposits found': {
+    message: 'no deposits found',
+    code: ChainGovErrorCodes.ErrNoDeposits,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'voting period already ended': {
+    message: 'voting period already ended',
+    code: ChainGovErrorCodes.ErrVotingPeriodEnded,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'invalid proposal': {
+    message: 'invalid proposal',
+    code: ChainGovErrorCodes.ErrInvalidProposal,
+    module: TransactionChainErrorModule.Gov,
+  },
+
+  'no inputs to send transaction': {
+    message: 'no inputs to send transaction',
+    code: ChainBankErrorCodes.ErrNoInputs,
+    module: TransactionChainErrorModule.Bank,
+  },
+
+  'no outputs to send transaction': {
+    message: 'no outputs to send transaction',
+    code: ChainBankErrorCodes.ErrNoOutputs,
+    module: TransactionChainErrorModule.Bank,
+  },
+
+  'sum inputs != sum outputs': {
+    message: 'sum inputs != sum outputs',
+    code: ChainBankErrorCodes.ErrInputOutputMismatch,
+    module: TransactionChainErrorModule.Bank,
+  },
+
+  'send transactions are disabled': {
+    message: 'send transactions are disabled',
+    code: ChainBankErrorCodes.ErrSendDisabled,
+    module: TransactionChainErrorModule.Bank,
+  },
+
+  'client denom metadata not found': {
+    message: 'client denom metadata not found',
+    code: ChainBankErrorCodes.ErrDenomMetadataNotFound,
+    module: TransactionChainErrorModule.Bank,
+  },
+
+  'invalid key': {
+    message: 'invalid key',
+    code: ChainBankErrorCodes.ErrInvalidKey,
+    module: TransactionChainErrorModule.Bank,
+  },
+
+  'duplicate entry': {
+    message: 'duplicate entry',
+    code: ChainBankErrorCodes.ErrDuplicateEntry,
+    module: TransactionChainErrorModule.Bank,
+  },
+
+  'multiple senders not allowed': {
+    message: 'multiple senders not allowed',
+    code: ChainBankErrorCodes.ErrMultipleSenders,
+    module: TransactionChainErrorModule.Bank,
   },
 }

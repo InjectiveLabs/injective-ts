@@ -1,7 +1,13 @@
-import { TokenMetaUtil } from './TokenMetaUtil'
-import { TokenMetaUtilFactory } from './TokenMetaUtilFactory'
+import { TokenFactory } from './TokenFactory'
+import { TokenMetaUtils } from './TokenMetaUtils'
+import { TokenMetaUtilsFactory } from './TokenMetaUtilsFactory'
+import { TokenInfo } from './TokenInfo'
 
 export * from './ibc'
 export * from './types'
-export const tokenMetaUtil = TokenMetaUtilFactory.make()
-export { TokenMetaUtil, TokenMetaUtilFactory }
+export * from './utils'
+
+export const tokenMetaUtils = TokenMetaUtilsFactory.make()
+export const tokenFactory = TokenFactory.make()
+
+export { TokenMetaUtils, TokenInfo, TokenFactory, TokenMetaUtilsFactory }

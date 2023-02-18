@@ -21,6 +21,8 @@ const isCommonLockedError = (error: string) => {
 }
 
 export class LedgerException extends ConcreteException {
+  public errorClass: string = 'LedgerException'
+
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
 

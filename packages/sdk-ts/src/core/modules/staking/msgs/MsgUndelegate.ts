@@ -1,6 +1,7 @@
 import { MsgUndelegate as BaseMsgUndelegate } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/tx'
 import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgUndelegate {
   export interface Params {
@@ -11,24 +12,10 @@ export declare namespace MsgUndelegate {
     validatorAddress: string
     injectiveAddress: string
   }
-  export interface DirectSign {
-    type: '/cosmos.staking.v1beta1.MsgUndelegate'
-    message: BaseMsgUndelegate
-  }
-
-  export interface Data extends BaseMsgUndelegate {
-    '@type': '/cosmos.staking.v1beta1.MsgUndelegate'
-  }
-
-  export interface Amino extends BaseMsgUndelegate {
-    type: 'cosmos-sdk/MsgUndelegate'
-  }
-
-  export interface Web3 extends BaseMsgUndelegate {
-    '@type': '/cosmos.authz.v1beta1.MsgUndelegate'
-  }
 
   export type Proto = BaseMsgUndelegate
+
+  export type Object = BaseMsgUndelegate.AsObject
 }
 
 /**
@@ -36,16 +23,14 @@ export declare namespace MsgUndelegate {
  */
 export default class MsgUndelegate extends MsgBase<
   MsgUndelegate.Params,
-  MsgUndelegate.Data,
   MsgUndelegate.Proto,
-  MsgUndelegate.Amino,
-  MsgUndelegate.DirectSign
+  MsgUndelegate.Object
 > {
   static fromJSON(params: MsgUndelegate.Params): MsgUndelegate {
     return new MsgUndelegate(params)
   }
 
-  public toProto(): MsgUndelegate.Proto {
+  public toProto() {
     const { params } = this
 
     const coinAmount = Coin.create()
@@ -60,7 +45,7 @@ export default class MsgUndelegate extends MsgBase<
     return BaseMsgUndelegate.fromPartial(message)
   }
 
-  public toData(): MsgUndelegate.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -69,26 +54,29 @@ export default class MsgUndelegate extends MsgBase<
     }
   }
 
-  public toAmino(): MsgUndelegate.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'cosmos-sdk/MsgUndelegate',
-      ...proto,
+      value: message,
     }
   }
 
-  public toWeb3(): MsgUndelegate.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgUndelegate',
-      ...rest,
-    } as unknown as MsgUndelegate.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgUndelegate.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

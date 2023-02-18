@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgCreateBinaryOptionsLimitOrder {
   export interface Params {
@@ -20,24 +21,9 @@ export declare namespace MsgCreateBinaryOptionsLimitOrder {
     quantity: string
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder'
-    message: BaseMsgCreateBinaryOptionsLimitOrder
-  }
-
-  export interface Data extends BaseMsgCreateBinaryOptionsLimitOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder'
-  }
-
-  export interface Amino extends BaseMsgCreateBinaryOptionsLimitOrder {
-    type: 'exchange/MsgCreateBinaryOptionsLimitOrder'
-  }
-
-  export interface Web3 extends BaseMsgCreateBinaryOptionsLimitOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder'
-  }
-
   export type Proto = BaseMsgCreateBinaryOptionsLimitOrder
+
+  export type Object = BaseMsgCreateBinaryOptionsLimitOrder.AsObject
 }
 
 const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
@@ -67,10 +53,8 @@ const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
  */
 export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
   MsgCreateBinaryOptionsLimitOrder.Params,
-  MsgCreateBinaryOptionsLimitOrder.Data,
   MsgCreateBinaryOptionsLimitOrder.Proto,
-  MsgCreateBinaryOptionsLimitOrder.Amino,
-  MsgCreateBinaryOptionsLimitOrder.DirectSign
+  MsgCreateBinaryOptionsLimitOrder.Object
 > {
   static fromJSON(
     params: MsgCreateBinaryOptionsLimitOrder.Params,
@@ -78,7 +62,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
     return new MsgCreateBinaryOptionsLimitOrder(params)
   }
 
-  public toProto(): MsgCreateBinaryOptionsLimitOrder.Proto {
+  public toProto() {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -93,7 +77,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
     return createLimitOrder(params)
   }
 
-  public toData(): MsgCreateBinaryOptionsLimitOrder.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -102,27 +86,31 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCreateBinaryOptionsLimitOrder.Amino {
+  public toAmino() {
     const { params } = this
     const proto = createLimitOrder(params)
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgCreateBinaryOptionsLimitOrder',
-      ...proto,
+      value:
+        message as unknown as SnakeCaseKeys<MsgCreateBinaryOptionsLimitOrder.Object>,
     }
   }
 
-  public toWeb3(): MsgCreateBinaryOptionsLimitOrder.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder',
-      ...rest,
-    } as unknown as MsgCreateBinaryOptionsLimitOrder.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCreateBinaryOptionsLimitOrder.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

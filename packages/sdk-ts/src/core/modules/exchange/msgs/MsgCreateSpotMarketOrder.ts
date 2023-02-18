@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgCreateSpotMarketOrder {
   export interface Params {
@@ -19,23 +20,9 @@ export declare namespace MsgCreateSpotMarketOrder {
     quantity: string
   }
 
-  export interface DirectSign {
-    type: '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder'
-    message: BaseMsgCreateSpotMarketOrder
-  }
-
-  export interface Data extends BaseMsgCreateSpotMarketOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder'
-  }
-  export interface Amino extends BaseMsgCreateSpotMarketOrder {
-    type: 'exchange/MsgCreateSpotMarketOrder'
-  }
-
-  export interface Web3 extends BaseMsgCreateSpotMarketOrder {
-    '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder'
-  }
-
   export type Proto = BaseMsgCreateSpotMarketOrder
+
+  export type Object = BaseMsgCreateSpotMarketOrder.AsObject
 }
 
 const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
@@ -64,10 +51,8 @@ const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
  */
 export default class MsgCreateSpotMarketOrder extends MsgBase<
   MsgCreateSpotMarketOrder.Params,
-  MsgCreateSpotMarketOrder.Data,
   MsgCreateSpotMarketOrder.Proto,
-  MsgCreateSpotMarketOrder.Amino,
-  MsgCreateSpotMarketOrder.DirectSign
+  MsgCreateSpotMarketOrder.Object
 > {
   static fromJSON(
     params: MsgCreateSpotMarketOrder.Params,
@@ -75,7 +60,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     return new MsgCreateSpotMarketOrder(params)
   }
 
-  public toProto(): MsgCreateSpotMarketOrder.Proto {
+  public toProto() {
     const { params: initialParams } = this
     const params = {
       ...initialParams,
@@ -89,7 +74,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     return createMarketOrder(params)
   }
 
-  public toData(): MsgCreateSpotMarketOrder.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -98,27 +83,31 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     }
   }
 
-  public toAmino(): MsgCreateSpotMarketOrder.Amino {
+  public toAmino() {
     const { params } = this
     const proto = createMarketOrder(params)
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'exchange/MsgCreateSpotMarketOrder',
-      ...proto,
+      value:
+        message as unknown as SnakeCaseKeys<MsgCreateSpotMarketOrder.Object>,
     }
   }
 
-  public toWeb3(): MsgCreateSpotMarketOrder.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder',
-      ...rest,
-    } as unknown as MsgCreateSpotMarketOrder.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgCreateSpotMarketOrder.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

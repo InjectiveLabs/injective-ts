@@ -1,5 +1,5 @@
 import { MsgExecuteContractCompat as BaseMsgExecuteContractCompat } from '@injectivelabs/core-proto-ts/injective/wasmx/v1/tx'
-import snakeCaseKeys from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import { GeneralException } from '@injectivelabs/exceptions'
@@ -34,24 +34,9 @@ export declare namespace MsgExecuteContractCompat {
     msg?: object
   }
 
-  export interface DirectSign {
-    type: '/injective.wasmx.v1.MsgExecuteContractCompat'
-    message: BaseMsgExecuteContractCompat
-  }
-
-  export interface Data extends BaseMsgExecuteContractCompat {
-    '@type': '/injective.wasmx.v1.MsgExecuteContractCompat'
-  }
-
-  export interface Amino extends BaseMsgExecuteContractCompat {
-    type: 'wasmx/MsgExecuteContractCompat'
-  }
-
-  export interface Web3 extends BaseMsgExecuteContractCompat {
-    '@type': '/injective.wasmx.v1.MsgExecuteContractCompat'
-  }
-
   export type Proto = BaseMsgExecuteContractCompat
+
+  export type Object = BaseMsgExecuteContractCompat.AsObject
 }
 
 /**
@@ -59,10 +44,8 @@ export declare namespace MsgExecuteContractCompat {
  */
 export default class MsgExecuteContractCompat extends MsgBase<
   MsgExecuteContractCompat.Params,
-  MsgExecuteContractCompat.Data,
   MsgExecuteContractCompat.Proto,
-  MsgExecuteContractCompat.Amino,
-  MsgExecuteContractCompat.DirectSign
+  MsgExecuteContractCompat.Object
 > {
   static fromJSON(
     params: MsgExecuteContractCompat.Params,
@@ -70,7 +53,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     return new MsgExecuteContractCompat(params)
   }
 
-  public toProto(): MsgExecuteContractCompat.Proto {
+  public toProto() {
     const { params } = this
 
     const message = BaseMsgExecuteContractCompat.create()
@@ -97,7 +80,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     return BaseMsgExecuteContractCompat.fromPartial(message)
   }
 
-  public toData(): MsgExecuteContractCompat.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -106,11 +89,10 @@ export default class MsgExecuteContractCompat extends MsgBase<
     }
   }
 
-  public toAmino(): MsgExecuteContractCompat.Amino {
+  public toAmino() {
     const proto = this.toProto()
-
     const message = {
-      ...snakeCaseKeys(proto),
+      ...snakecaseKeys(proto),
       msg: JSON.stringify(this.getMsgObject()),
     }
 
@@ -119,21 +101,21 @@ export default class MsgExecuteContractCompat extends MsgBase<
 
     return {
       type: 'wasmx/MsgExecuteContractCompat',
-      ...message,
-    } as unknown as MsgExecuteContractCompat.Amino
+      value: message,
+    }
   }
 
-  public toWeb3(): MsgExecuteContractCompat.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/injective.wasmx.v1.MsgExecuteContractCompat',
-      ...rest,
-    } as unknown as MsgExecuteContractCompat.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgExecuteContractCompat.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

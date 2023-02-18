@@ -1,18 +1,20 @@
 /* eslint-disable class-methods-use-this */
 import { CosmosChainId } from '@injectivelabs/ts-types'
 import {
+  ErrorType,
   UnspecifiedErrorCode,
   CosmosWalletException,
   TransactionException,
-  ErrorType,
 } from '@injectivelabs/exceptions'
 import {
-  createCosmosSignDocFromTransaction,
-  getTxRawFromTxRawOrDirectSignResponse,
   TxResponse,
+  createTxRawFromSigResponse,
+  createCosmosSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
+import { StdSignDoc } from '@keplr-wallet/types'
+import { AminoSignResponse } from '@cosmjs/launchpad'
 import { LeapWallet } from '../../../utils/wallets/leap'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
@@ -64,7 +66,7 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     transaction: DirectSignResponse | TxRaw,
   ): Promise<TxResponse> {
     const { leapWallet } = this
-    const txRaw = getTxRawFromTxRawOrDirectSignResponse(transaction)
+    const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
       return await leapWallet.waitTxBroadcasted(
@@ -100,6 +102,15 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
         context: WalletAction.SendTransaction,
       })
     }
+  }
+
+  async signAminoTransaction(_transaction: {
+    address: string
+    stdSignDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
+    throw new CosmosWalletException(
+      new Error('signAminoTransaction not supported on Leap'),
+    )
   }
 
   async getPubKey(): Promise<string> {

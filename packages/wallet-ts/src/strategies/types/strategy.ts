@@ -7,6 +7,7 @@ import {
 } from '@injectivelabs/ts-types'
 import { TxResponse } from '@injectivelabs/sdk-ts'
 import type Web3 from 'web3'
+import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 
 export type onAccountChangeCallback = (account: string) => void
@@ -57,6 +58,11 @@ export interface ConcreteCosmosWalletStrategy {
     accountNumber: number
     address: string
   }): Promise<DirectSignResponse>
+
+  signAminoTransaction(transaction: {
+    stdSignDoc: StdSignDoc
+    address: string
+  }): Promise<AminoSignResponse>
 }
 
 export interface CosmosWalletStrategyArguments {
@@ -76,7 +82,10 @@ export interface WalletStrategyArguments
 export interface ConcreteWalletStrategy
   extends Omit<
     ConcreteCosmosWalletStrategy,
-    'sendTransaction' | 'signTransaction' | 'isChainIdSupported'
+    | 'sendTransaction'
+    | 'signTransaction'
+    | 'isChainIdSupported'
+    | 'signAminoTransaction'
   > {
   /**
    * Sends Cosmos transaction. Returns a transaction hash

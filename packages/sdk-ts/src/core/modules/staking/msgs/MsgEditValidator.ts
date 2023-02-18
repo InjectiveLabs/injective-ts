@@ -1,6 +1,7 @@
 import { MsgEditValidator as BaseMsgEditValidator } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 import { Description } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/staking'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgEditValidator {
   export interface Params {
@@ -16,24 +17,9 @@ export declare namespace MsgEditValidator {
     minSelfDelegation?: string
   }
 
-  export interface DirectSign {
-    type: '/cosmos.staking.v1beta1.MsgEditValidator'
-    message: BaseMsgEditValidator
-  }
-
-  export interface Data extends BaseMsgEditValidator {
-    '@type': '/cosmos.staking.v1beta1.MsgEditValidator'
-  }
-
-  export interface Amino extends BaseMsgEditValidator {
-    type: 'cosmos-sdk/MsgEditValidator'
-  }
-
-  export interface Web3 extends BaseMsgEditValidator {
-    '@type': '/cosmos.authz.v1beta1.MsgEditValidator'
-  }
-
   export type Proto = BaseMsgEditValidator
+
+  export type Object = BaseMsgEditValidator.AsObject
 }
 
 /**
@@ -41,16 +27,14 @@ export declare namespace MsgEditValidator {
  */
 export default class MsgEditValidator extends MsgBase<
   MsgEditValidator.Params,
-  MsgEditValidator.Data,
   MsgEditValidator.Proto,
-  MsgEditValidator.Amino,
-  MsgEditValidator.DirectSign
+  MsgEditValidator.Object
 > {
   static fromJSON(params: MsgEditValidator.Params): MsgEditValidator {
     return new MsgEditValidator(params)
   }
 
-  public toProto(): MsgEditValidator.Proto {
+  public toProto() {
     const { params } = this
 
     const message = BaseMsgEditValidator.create()
@@ -94,7 +78,7 @@ export default class MsgEditValidator extends MsgBase<
     return BaseMsgEditValidator.fromPartial(message)
   }
 
-  public toData(): MsgEditValidator.Data {
+  public toData() {
     const proto = this.toProto()
 
     return {
@@ -103,26 +87,29 @@ export default class MsgEditValidator extends MsgBase<
     }
   }
 
-  public toAmino(): MsgEditValidator.Amino {
+  public toAmino() {
     const proto = this.toProto()
+    const message = {
+      ...snakecaseKeys(proto),
+    }
 
     return {
       type: 'cosmos-sdk/MsgEditValidator',
-      ...proto,
+      value: message as unknown as SnakeCaseKeys<MsgEditValidator.Object>,
     }
   }
 
-  public toWeb3(): MsgEditValidator.Web3 {
+  public toWeb3() {
     const amino = this.toAmino()
-    const { type, ...rest } = amino
+    const { value } = amino
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgEditValidator',
-      ...rest,
-    } as unknown as MsgEditValidator.Web3
+      ...value,
+    }
   }
 
-  public toDirectSign(): MsgEditValidator.DirectSign {
+  public toDirectSign() {
     const proto = this.toProto()
 
     return {

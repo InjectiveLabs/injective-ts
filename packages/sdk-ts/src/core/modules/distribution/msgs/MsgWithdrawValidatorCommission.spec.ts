@@ -11,6 +11,7 @@ const protoTypeShort = 'cosmos-sdk/MsgWithdrawDelegationReward'
 const protoParams = {
   validatorAddress: params.validatorAddress,
 }
+const aminoParams = snakecaseKeys(protoParams)
 
 const message = MsgWithdrawValidatorCommission.fromJSON(params)
 
@@ -35,7 +36,7 @@ describe('MsgWithdrawValidatorCommission', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      ...protoParams,
+      value: aminoParams,
     })
   })
 
@@ -52,7 +53,7 @@ describe('MsgWithdrawValidatorCommission', () => {
 
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
-      value: snakecaseKeys(protoParams),
+      value: aminoParams,
     })
   })
 
@@ -61,7 +62,7 @@ describe('MsgWithdrawValidatorCommission', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...aminoParams,
     })
   })
 })
