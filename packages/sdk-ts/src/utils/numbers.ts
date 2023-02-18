@@ -48,9 +48,9 @@ export const formatNumberToAllowableTensMultiplier = (
     return tensMul.toFixed(0, roundingMode)
   }
 
-  return new BigNumberInBase(valueToBn.div(tensMul).toFixed(0))
+  return new BigNumberInBase(valueToBn.div(tensMul).toFixed(0, roundingMode))
     .multipliedBy(tensMul)
-    .toFixed(0, roundingMode)
+    .toFixed(0)
 }
 
 export const formatAmountToAllowableAmount = (
