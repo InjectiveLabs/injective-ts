@@ -57,6 +57,7 @@
     "@metamask/eth-sig-util": "^4.0.0",
     "@solana/wallet-adapter-wallets": "^0.19.5",
     "@toruslabs/torus-embed": "1.22.1",
+    "@trezor/connect": "^9.0.6",
     "@types/eth-sig-util": "^2.1.1",
     "@types/ethereumjs-util": "^6.1.0",
     "@types/hdkey": "^2.0.1",
@@ -70,7 +71,6 @@
     "link-module-alias": "^1.2.0",
     "rxjs": "^7.5.5",
     "shx": "^0.3.3",
-    "trezor-connect": "^8.2.8",
     "web3": "^1.7.3",
     "web3-core": "^1.7.3"
   },

@@ -8,7 +8,7 @@ import {
 import { addHexPrefix } from 'ethereumjs-util'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import Common, { Chain, Hardfork } from '@ethereumjs/common'
-import TrezorConnect from 'trezor-connect'
+import TrezorConnect from '@trezor/connect'
 import {
   ErrorType,
   TrezorException,
