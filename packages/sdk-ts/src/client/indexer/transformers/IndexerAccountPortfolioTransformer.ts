@@ -2,9 +2,15 @@ import { AccountPortfolioResponse } from '@injectivelabs/indexer-api/injective_p
 import { Coin } from '@injectivelabs/ts-types'
 import { GrpcCoin } from '../../../types/index'
 import {
+  PositionV2,
+  GrpcPositionV2,
+  PositionsWithUPNL,
   AccountPortfolioV2,
-  GrpcPortfolioSubaccountBalanceV2,
+  SubaccountDepositV2,
+  GrpcPositionsWithUPNL,
+  GrpcSubaccountDepositV2,
   PortfolioSubaccountBalanceV2,
+  GrpcPortfolioSubaccountBalanceV2,
 } from '../types/accountPortfolio'
 
 export class IndexerGrpcAccountPortfolioTransformer {
@@ -14,6 +20,7 @@ export class IndexerGrpcAccountPortfolioTransformer {
     const portfolio = response.getPortfolio()!
     const bankBalancesList = portfolio?.getBankBalancesList() || []
     const subaccountList = portfolio?.getSubaccountsList() || []
+    // const positionsWithUpnlList = portfolio?.getPositionsWithUpnlList() || []
 
     return {
       accountAddress: portfolio.getAccountAddress(),
@@ -21,8 +28,12 @@ export class IndexerGrpcAccountPortfolioTransformer {
         IndexerGrpcAccountPortfolioTransformer.grpcCoinToCoin,
       ),
       subaccountsList: subaccountList.map(
-        IndexerGrpcAccountPortfolioTransformer.grpcSubaccountsListToSubaccountsList,
+        IndexerGrpcAccountPortfolioTransformer.grpcSubaccountBalanceToSubaccountBalance,
       ),
+      positionsWithUpnlList: [],
+      // positionsWithUpnlList: positionsWithUpnlList.map(
+      //   IndexerGrpcAccountPortfolioTransformer.grpcPositionWithUPNLToPositionWithUPNL,
+      // ),
     }
   }
 
@@ -33,20 +44,60 @@ export class IndexerGrpcAccountPortfolioTransformer {
     }
   }
 
-  static grpcSubaccountsListToSubaccountsList(
-    subaccountsList: GrpcPortfolioSubaccountBalanceV2,
-  ): PortfolioSubaccountBalanceV2 {
+  static grpcPositionWithUPNLToPositionWithUPNL(
+    positionsWithUPNL: GrpcPositionsWithUPNL,
+  ): PositionsWithUPNL {
+    const grpcPosition = positionsWithUPNL.getPosition()
+
     return {
-      subaccountId: subaccountsList.getSubaccountId(),
-      availableBalancesList: subaccountsList
-        .getAvailableBalancesList()
-        .map(IndexerGrpcAccountPortfolioTransformer.grpcCoinToCoin),
-      marginHoldList: subaccountsList
-        .getMarginHoldList()
-        .map(IndexerGrpcAccountPortfolioTransformer.grpcCoinToCoin),
-      unrealizedPnlList: subaccountsList
-        .getUnrealizedPnlList()
-        .map(IndexerGrpcAccountPortfolioTransformer.grpcCoinToCoin),
+      position: grpcPosition
+        ? IndexerGrpcAccountPortfolioTransformer.grpcPositionToGrpcPosition(
+            grpcPosition,
+          )
+        : undefined,
+      unrealizedPnl: positionsWithUPNL.getUnrealizedPnl(),
+    }
+  }
+
+  static grpcPositionToGrpcPosition(position: GrpcPositionV2): PositionV2 {
+    return {
+      ticker: position.getTicker(),
+      marketId: position.getMarketId(),
+      subaccountId: position.getSubaccountId(),
+      direction: position.getDirection(),
+      quantity: position.getQuantity(),
+      entryPrice: position.getEntryPrice(),
+      margin: position.getMargin(),
+      liquidationPrice: position.getLiquidationPrice(),
+      markPrice: position.getMarkPrice(),
+      aggregateReduceOnlyQuantity: position.getAggregateReduceOnlyQuantity(),
+      updatedAt: position.getUpdatedAt(),
+      createdAt: position.getCreatedAt(),
+    }
+  }
+
+  static grpcSubaccountDepositToSubaccountDeposit(
+    subaccountDeposit: GrpcSubaccountDepositV2,
+  ): SubaccountDepositV2 {
+    return {
+      totalBalance: subaccountDeposit.getTotalBalance(),
+      availableBalance: subaccountDeposit.getAvailableBalance(),
+    }
+  }
+
+  static grpcSubaccountBalanceToSubaccountBalance(
+    subaccountBalance: GrpcPortfolioSubaccountBalanceV2,
+  ): PortfolioSubaccountBalanceV2 {
+    const deposit = subaccountBalance.getDeposit()
+
+    return {
+      subaccountId: subaccountBalance.getSubaccountId(),
+      denom: subaccountBalance.getDenom(),
+      deposit: deposit
+        ? IndexerGrpcAccountPortfolioTransformer.grpcSubaccountDepositToSubaccountDeposit(
+            deposit,
+          )
+        : undefined,
     }
   }
 }

@@ -125,8 +125,8 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
       const response = await this.request<
         SubaccountBalanceRequest,
         SubaccountBalanceResponse,
-        typeof InjectiveAccountsRPC.SubaccountBalanceEndpoint
-      >(request, InjectiveAccountsRPC.SubaccountBalanceEndpoint)
+        typeof InjectiveAccountsRPC.SubaccountBalance
+      >(request, InjectiveAccountsRPC.SubaccountBalance)
 
       return IndexerGrpcAccountTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {

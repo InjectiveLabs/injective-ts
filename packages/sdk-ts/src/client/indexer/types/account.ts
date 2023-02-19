@@ -1,6 +1,6 @@
 import {
   SubaccountDeposit as GrpcSubaccountDeposit,
-  SubaccountBalance as GrpcSubaccountBalance,
+  SubaccountBalanceEntry as GrpcSubaccountBalance,
   SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
   AccountPortfolio as GrpcAccountPortfolio,
   SubaccountPortfolio as GrpcSubaccountPortfolio,

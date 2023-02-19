@@ -31,8 +31,8 @@ export class IndexerGrpcAuctionApi extends BaseConsumer {
       const response = await this.request<
         AuctionRequest,
         AuctionResponse,
-        typeof InjectiveAuctionRPC.AuctionEndpoint
-      >(request, InjectiveAuctionRPC.AuctionEndpoint)
+        typeof InjectiveAuctionRPC.Auction
+      >(request, InjectiveAuctionRPC.Auction)
 
       return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
     } catch (e: unknown) {

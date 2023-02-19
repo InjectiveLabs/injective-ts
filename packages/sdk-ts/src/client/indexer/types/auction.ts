@@ -1,5 +1,5 @@
 import {
-  Auction as GrpcAuction,
+  AuctionEntry as GrpcAuction,
   Bid as GrpcIndexerBid,
   StreamBidsResponse,
 } from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
