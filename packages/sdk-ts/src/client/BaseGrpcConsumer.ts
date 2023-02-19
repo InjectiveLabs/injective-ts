@@ -35,6 +35,14 @@ export default class BaseGrpcConsumer {
             return resolve(message as TResponse)
           }
 
+          if (
+            status === 2 &&
+            statusMessage ===
+              'Response closed without grpc-status (Headers only)'
+          ) {
+            return
+          }
+
           return reject(
             new GrpcUnaryRequestException(
               new Error(statusMessage || 'The request failed.'),
