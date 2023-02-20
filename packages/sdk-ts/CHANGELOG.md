@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.448-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.447...@injectivelabs/sdk-ts@1.0.448-alpha.0) (2023-02-20)
+
+
+### Features
+
+* integrate portfolio api ([4ba36ff](https://github.com/InjectiveLabs/injective-ts/commit/4ba36ffd01f62277f5d673495e5bd26ea26bde35))
+* setup indexer grpc account portfolio api and stream ([72d7d85](https://github.com/InjectiveLabs/injective-ts/commit/72d7d85e66e2932b60b3e6215d5cda11b036e6a5))
+
+
+
+
+
 ## [1.0.447](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.446...@injectivelabs/sdk-ts@1.0.447) (2023-02-18)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
