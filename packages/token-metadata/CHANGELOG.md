@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.168](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.168-alpha.0...@injectivelabs/token-metadata@1.0.168) (2023-02-20)
+
+
+### Features
+
+* new chz logo ([918c53d](https://github.com/InjectiveLabs/injective-ts/commit/918c53d35c56bf725ad2d646fbf6fc6b65846919))
+
+
+
+
+
 ## [1.0.168-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.167...@injectivelabs/token-metadata@1.0.168-alpha.0) (2023-02-20)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
