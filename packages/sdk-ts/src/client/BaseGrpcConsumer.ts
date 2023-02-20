@@ -35,15 +35,6 @@ export default class BaseGrpcConsumer {
             return resolve(message as TResponse)
           }
 
-          console.log(
-            JSON.stringify({
-              ...res,
-              r: request.toObject(),
-              s: service,
-              e: this.endpoint,
-            }),
-          )
-
           return reject(
             new GrpcUnaryRequestException(
               new Error(statusMessage || 'The request failed.'),
