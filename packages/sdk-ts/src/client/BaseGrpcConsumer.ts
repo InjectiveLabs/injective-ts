@@ -1,4 +1,4 @@
-import { grpc } from '@improbable-eng/grpc-web'
+import { grpc } from '@injectivelabs/grpc-web'
 import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
 import { isBrowser } from '../utils/helpers'
 import { getGrpcTransport } from '../utils/grpc'
@@ -34,6 +34,15 @@ export default class BaseGrpcConsumer {
           if (status === grpc.Code.OK && message) {
             return resolve(message as TResponse)
           }
+
+          console.log(
+            JSON.stringify({
+              ...res,
+              r: request.toObject(),
+              s: service,
+              e: this.endpoint,
+            }),
+          )
 
           return reject(
             new GrpcUnaryRequestException(

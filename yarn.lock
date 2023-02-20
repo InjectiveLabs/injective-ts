@@ -2101,9 +2101,16 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
+"@injectivelabs/grpc-web@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web/-/grpc-web-0.0.1.tgz#24c028f6db50e589e30505efd2077110c8b492ba"
+  integrity sha512-Pu5YgaZp+OvR5UWfqbrPdHer3+gDf+b5fQoY+t2VZx1IAVHX8bzbN9EreYTvTYtFeDpYRWM8P7app2u4EX5wTw==
+  dependencies:
+    browser-headers "^0.4.1"
+
 "@injectivelabs/indexer-api@1.10.0-rc.2.2":
   version "1.10.0-rc.2.2"
-  resolved "https://registry.npmjs.org/@injectivelabs/indexer-api/-/indexer-api-1.10.0-rc.2.2.tgz#21ec87b7a6316f013ec3ff7c9528c26e3030672a"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-api/-/indexer-api-1.10.0-rc.2.2.tgz#21ec87b7a6316f013ec3ff7c9528c26e3030672a"
   integrity sha512-adeUNmDDbpl+6UvuiKKeqqb4hcDgtQuepdXZ3dkODBaWixhCZCZtrcaE2uMKeT1DbhPSiQ65BIN8oXVgGWunMw==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
