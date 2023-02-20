@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.448-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.447-alpha.0...@injectivelabs/wallet-ts@1.0.448-alpha.0) (2023-02-20)
+
+
+### Bug Fixes
+
+* trezor connect ([d3336e9](https://github.com/InjectiveLabs/injective-ts/commit/d3336e95b860e6f5267774ec2e4374c91f4e1820))
+
+
+
+
+
+## [1.0.447-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.446...@injectivelabs/wallet-ts@1.0.447-alpha.0) (2023-02-20)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
 ## [1.0.446](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.445...@injectivelabs/wallet-ts@1.0.446) (2023-02-18)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

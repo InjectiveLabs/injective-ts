@@ -7,7 +7,7 @@ import {
 } from '../types/auction'
 import { Coin } from '@injectivelabs/ts-types'
 import {
-  AuctionResponse,
+  AuctionEndpointResponse,
   AuctionsResponse,
 } from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
 
@@ -15,7 +15,7 @@ import {
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcAuctionTransformer {
-  static auctionResponseToAuction(response: AuctionResponse): {
+  static auctionResponseToAuction(response: AuctionEndpointResponse): {
     auction: Auction
     bids: IndexerBid[]
   } {

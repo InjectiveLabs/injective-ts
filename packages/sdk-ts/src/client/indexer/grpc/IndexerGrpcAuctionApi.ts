@@ -1,8 +1,8 @@
 import {
-  AuctionRequest,
-  AuctionResponse,
   AuctionsRequest,
   AuctionsResponse,
+  AuctionEndpointRequest,
+  AuctionEndpointResponse,
 } from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
 import { InjectiveAuctionRPC } from '@injectivelabs/indexer-api/injective_auction_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
@@ -20,7 +20,7 @@ export class IndexerGrpcAuctionApi extends BaseConsumer {
   protected module: string = IndexerModule.Account
 
   async fetchAuction(round?: number) {
-    const request = new AuctionRequest()
+    const request = new AuctionEndpointRequest()
 
     // If round is provided, set it on the request, otherwise fetch latest round
     if (round) {
@@ -29,8 +29,8 @@ export class IndexerGrpcAuctionApi extends BaseConsumer {
 
     try {
       const response = await this.request<
-        AuctionRequest,
-        AuctionResponse,
+        AuctionEndpointRequest,
+        AuctionEndpointResponse,
         typeof InjectiveAuctionRPC.AuctionEndpoint
       >(request, InjectiveAuctionRPC.AuctionEndpoint)
 

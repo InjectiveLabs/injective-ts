@@ -1,7 +1,7 @@
 import {
-  Auction as GrpcAuction,
-  Bid as GrpcIndexerBid,
   StreamBidsResponse,
+  Bid as GrpcIndexerBid,
+  Auction as GrpcAuction,
 } from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
 import { Coin } from '@injectivelabs/ts-types'
 

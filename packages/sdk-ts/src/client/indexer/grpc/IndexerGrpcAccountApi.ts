@@ -1,20 +1,20 @@
 import {
-  OrderStatesRequest,
-  OrderStatesResponse,
-  PortfolioRequest,
-  PortfolioResponse,
   RewardsRequest,
   RewardsResponse,
-  SubaccountBalanceRequest,
-  SubaccountBalanceResponse,
-  SubaccountBalancesListRequest,
-  SubaccountBalancesListResponse,
-  SubaccountHistoryRequest,
-  SubaccountHistoryResponse,
-  SubaccountOrderSummaryRequest,
-  SubaccountOrderSummaryResponse,
+  PortfolioRequest,
+  PortfolioResponse,
+  OrderStatesRequest,
+  OrderStatesResponse,
   SubaccountsListRequest,
   SubaccountsListResponse,
+  SubaccountHistoryRequest,
+  SubaccountHistoryResponse,
+  SubaccountBalancesListRequest,
+  SubaccountOrderSummaryRequest,
+  SubaccountBalancesListResponse,
+  SubaccountOrderSummaryResponse,
+  SubaccountBalanceEndpointRequest,
+  SubaccountBalanceEndpointResponse,
 } from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
 import { InjectiveAccountsRPC } from '@injectivelabs/indexer-api/injective_accounts_rpc_pb_service'
 import BaseConsumer from '../../BaseGrpcConsumer'
@@ -116,15 +116,15 @@ export class IndexerGrpcAccountApi extends BaseConsumer {
   }
 
   async fetchSubaccountBalance(subaccountId: string, denom: string) {
-    const request = new SubaccountBalanceRequest()
+    const request = new SubaccountBalanceEndpointRequest()
 
     request.setSubaccountId(subaccountId)
     request.setDenom(denom)
 
     try {
       const response = await this.request<
-        SubaccountBalanceRequest,
-        SubaccountBalanceResponse,
+        SubaccountBalanceEndpointRequest,
+        SubaccountBalanceEndpointResponse,
         typeof InjectiveAccountsRPC.SubaccountBalanceEndpoint
       >(request, InjectiveAccountsRPC.SubaccountBalanceEndpoint)
 

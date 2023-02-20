@@ -1,4 +1,5 @@
 export { IndexerGrpcAccountApi } from './IndexerGrpcAccountApi'
+export { IndexerGrpcAccountPortfolioApi } from './IndexerGrpcPortfolioApi'
 export { IndexerGrpcAuctionApi } from './IndexerGrpcAuctionApi'
 export { IndexerGrpcExplorerApi } from './IndexerGrpcExplorerApi'
 export { IndexerGrpcNinjaApi } from './IndexerGrpcNinjaApi'

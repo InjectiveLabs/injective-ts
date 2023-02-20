@@ -1,4 +1,5 @@
 import { IndexerGrpcAccountStream } from './grpc_stream/IndexerGrpcAccountStream'
+import { IndexerGrpcAccountPortfolioStream } from './grpc_stream/IndexerGrpcAccountPortfolioStream'
 import { IndexerGrpcAuctionStream } from './grpc_stream/IndexerGrpcAuctionStream'
 import { IndexerGrpcDerivativesStream } from './grpc_stream/IndexerGrpcDerivativesStream'
 import { IndexerGrpcOracleStream } from './grpc_stream/IndexerGrpcOracleStream'
@@ -16,6 +17,8 @@ export class IndexerGrpcStreamClient {
 
   account: IndexerGrpcAccountStream
 
+  accountPortfolio: IndexerGrpcAccountPortfolioStream
+
   auction: IndexerGrpcAuctionStream
 
   oracle: IndexerGrpcOracleStream
@@ -23,11 +26,12 @@ export class IndexerGrpcStreamClient {
   explorer: IndexerGrpcExplorerStream
 
   constructor(endpoint: string) {
-    this.derivatives = new IndexerGrpcDerivativesStream(endpoint)
-    this.spot = new IndexerGrpcSpotStream(endpoint)
     this.account = new IndexerGrpcAccountStream(endpoint)
+    this.accountPortfolio = new IndexerGrpcAccountPortfolioStream(endpoint)
     this.auction = new IndexerGrpcAuctionStream(endpoint)
-    this.oracle = new IndexerGrpcOracleStream(endpoint)
+    this.derivatives = new IndexerGrpcDerivativesStream(endpoint)
     this.explorer = new IndexerGrpcExplorerStream(endpoint)
+    this.oracle = new IndexerGrpcOracleStream(endpoint)
+    this.spot = new IndexerGrpcSpotStream(endpoint)
   }
 }

@@ -14,10 +14,12 @@
   "scripts": {
     "build": "lerna run --parallel build",
     "build:docs": "yarn typedoc",
+    "lerna:publish:prepatch": "lerna publish prepatch",
     "lerna:publish": "lerna publish patch",
     "build:watch": "lerna run --parallel build:watch",
     "build:fresh": "yarn clean && yarn build",
     "build:publish": "yarn build:fresh && yarn lerna:publish",
+    "build:publish:prepatch": "yarn build:fresh && yarn lerna:publish:prepatch",
     "build:patch:publish": "yarn build:fresh && yarn patch && yarn lerna:publish",
     "patch": "lerna version patch",
     "clean": "lerna run --parallel clean && shx rm -rf .build-cache *.log coverage junit.xml",

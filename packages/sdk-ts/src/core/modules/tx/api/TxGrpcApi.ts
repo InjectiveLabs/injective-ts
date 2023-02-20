@@ -15,7 +15,7 @@ import {
   Result,
 } from '@injectivelabs/chain-api/cosmos/base/abci/v1beta1/abci_pb'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { grpc } from '@improbable-eng/grpc-web'
+import { grpc } from '@injectivelabs/grpc-web'
 import {
   TxClientBroadcastOptions,
   TxClientBroadcastResponse,
