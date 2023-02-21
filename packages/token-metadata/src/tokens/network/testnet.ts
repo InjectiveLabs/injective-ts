@@ -43,23 +43,6 @@ export const tokensBySymbolForTestnet = (
   const cw20TestnetAddressFromMap = testnetSymbolToCw20AddressMap[cw20TokenKey]
 
   if (cw20TestnetAddressFromMap) {
-    if (!tokenMeta.cw20 && !tokenMeta.cw20s) {
-      return result
-    }
-
-    if (tokenMeta.cw20) {
-      return {
-        ...result,
-        [token.toUpperCase()]: {
-          ...tokenMeta,
-          cw20: {
-            ...tokenMeta.cw20,
-            address: cw20TestnetAddressFromMap,
-          },
-        },
-      }
-    }
-
     if (tokenMeta.cw20s) {
       const cw20Maps = tokenMeta.cw20s.map((cw20) =>
         cw20.symbol !== cw20TokenKey

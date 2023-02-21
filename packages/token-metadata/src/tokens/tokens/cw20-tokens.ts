@@ -8,11 +8,13 @@ export default {
     decimals: 18,
     coinGeckoId: '',
 
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
+    cw20s: [
+      {
+        decimals: 18,
+        address: '',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
   vKIN: {
     name: 'Kinshiki',
@@ -21,11 +23,13 @@ export default {
     decimals: 18,
     coinGeckoId: '',
 
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
+    cw20s: [
+      {
+        decimals: 18,
+        address: '',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
   vTON: {
     name: 'Toneri',
@@ -34,11 +38,13 @@ export default {
     decimals: 18,
     coinGeckoId: '',
 
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
+    cw20s: [
+      {
+        decimals: 18,
+        address: '',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
   vNAR: {
     name: 'Naruto',
@@ -47,11 +53,13 @@ export default {
     decimals: 18,
     coinGeckoId: '',
 
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
+    cw20s: [
+      {
+        decimals: 18,
+        address: '',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
   vMAD: {
     name: 'Madara',
@@ -60,11 +68,13 @@ export default {
     decimals: 18,
     coinGeckoId: '',
 
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
+    cw20s: [
+      {
+        decimals: 18,
+        address: '',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
   vMIN: {
     name: 'Minato',
@@ -73,11 +83,13 @@ export default {
     decimals: 18,
     coinGeckoId: '',
 
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
+    cw20s: [
+      {
+        decimals: 18,
+        address: '',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
   vSPOT: {
     name: 'Spot Vault',
@@ -86,11 +98,13 @@ export default {
     decimals: 18,
     coinGeckoId: '',
 
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
+    cw20s: [
+      {
+        decimals: 18,
+        address: '',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
   vDERI: {
     name: 'Derivative Vault',
@@ -99,10 +113,12 @@ export default {
     decimals: 18,
     coinGeckoId: '',
 
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
+    cw20s: [
+      {
+        decimals: 18,
+        address: '',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
 } as Record<string, TokenMeta>

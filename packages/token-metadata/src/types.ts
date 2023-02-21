@@ -23,6 +23,7 @@ export interface IbcTokenMeta {
   symbol?: string
   isNative: boolean
   baseDenom: string
+  tokenType: TokenType.Ibc
 }
 
 export interface SplTokenMeta {
@@ -43,6 +44,8 @@ export interface Cw20TokenMeta {
   address: string
   decimals: number
   tokenType: TokenType.Cw20
+  symbol?: string
+  source?: Cw20TokenSource
 }
 
 export interface Cw20TokenMetaWithSource extends Cw20TokenMeta {
@@ -59,9 +62,9 @@ export interface TokenMeta {
   coinGeckoId: string
 
   ibc?: IbcTokenMeta
+  ibcs?: IbcTokenMeta[]
   spl?: SplTokenMeta
-  cw20?: Cw20TokenMeta
-  cw20s?: Cw20TokenMetaWithSource[] // When there are multiple variations of the same CW20 token
+  cw20s?: Cw20TokenMeta[]
   erc20?: Erc20TokenMeta
 }
 
@@ -85,19 +88,8 @@ export interface IbcToken extends BaseToken {
   tokenType: TokenType
 }
 
-export interface Cw20TokenSingle extends BaseToken {
-  cw20: Cw20TokenMeta
-  tokenType: TokenType
-}
-
-export interface Cw20TokenMultiple extends BaseToken {
-  cw20s: Cw20TokenMetaWithSource[]
-  tokenType: TokenType
-}
-
 export interface Cw20Token extends BaseToken {
-  cw20: Cw20TokenMeta
-  cw20s: Cw20TokenMetaWithSource[]
+  source?: Cw20TokenSource
   tokenType: TokenType
 }
 
@@ -106,14 +98,7 @@ export interface SplToken extends BaseToken {
   tokenType: TokenType
 }
 
-export type Token =
-  | Erc20Token
-  | IbcToken
-  | Cw20Token
-  | Cw20TokenSingle
-  | Cw20TokenMultiple
-  | NativeToken
-  | SplToken
+export type Token = Erc20Token | IbcToken | Cw20Token | NativeToken | SplToken
 
 export type TokenWithPrice = Token & { usdPrice: number }
 

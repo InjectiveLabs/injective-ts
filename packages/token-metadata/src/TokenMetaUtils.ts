@@ -97,6 +97,7 @@ export class TokenMetaUtils {
 
   getMetaByHash(hash: string): TokenMeta | undefined {
     const { tokensByHash } = this
+
     const ibcHash = hash
       .toUpperCase()
       .replace('IBC/', '') as keyof typeof tokensByHash

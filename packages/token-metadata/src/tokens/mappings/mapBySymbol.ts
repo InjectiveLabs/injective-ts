@@ -4,19 +4,18 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, token) => {
       const tokenMeta = tokens[token]
+      if (tokenMeta.ibcs) {
+        const ibcMaps = tokenMeta.ibcs.reduce(
+          (result, ibc20) => ({
+            ...result,
+            [ibc20.baseDenom.toUpperCase()]: tokenMeta,
+          }),
+          {} as Record<string, TokenMeta>,
+        )
 
-      if (tokenMeta.ibc && tokenMeta.ibc.baseDenom) {
         return {
           ...result,
-          [tokenMeta.ibc.baseDenom.toUpperCase()]: tokenMeta,
-          [tokenMeta.symbol.toUpperCase()]: tokenMeta,
-        }
-      }
-
-      if (tokenMeta.cw20 && tokenMeta.cw20.address) {
-        return {
-          ...result,
-          [tokenMeta.cw20.address.toUpperCase()]: tokenMeta,
+          ...ibcMaps,
           [tokenMeta.symbol.toUpperCase()]: tokenMeta,
         }
       }
@@ -30,13 +29,14 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
       }
 
       if (tokenMeta.cw20s) {
-        const cw20Maps = tokenMeta.cw20s.reduce(
-          (result, cw20) => ({
+        const cw20Maps = tokenMeta.cw20s.reduce((result, cw20) => {
+          const symbol = cw20.symbol || tokenMeta.symbol
+
+          return {
             ...result,
-            [cw20.symbol.toUpperCase()]: tokenMeta,
-          }),
-          {} as Record<string, TokenMeta>,
-        )
+            [symbol.toUpperCase()]: tokenMeta,
+          }
+        }, {} as Record<string, TokenMeta>)
 
         return {
           ...result,
