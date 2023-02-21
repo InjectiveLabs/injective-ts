@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.449](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.448...@injectivelabs/sdk-ts@1.0.449) (2023-02-21)
+
+
+### Bug Fixes
+
+* denom client grpc endpoints ([b5aab84](https://github.com/InjectiveLabs/injective-ts/commit/b5aab845a034458b6f312224fe7193767e4a6d5c))
+
+
+
+
+
 ## [1.0.448](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.448-alpha.0...@injectivelabs/sdk-ts@1.0.448) (2023-02-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
