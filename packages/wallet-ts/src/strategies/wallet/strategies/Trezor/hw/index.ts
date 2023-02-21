@@ -20,7 +20,7 @@ export default class TrezorTransport {
       }
     })
 
-    TrezorConnect.init({ manifest: TREZOR_CONNECT_MANIFEST })
+    TrezorConnect.init({ lazyLoad: true, manifest: TREZOR_CONNECT_MANIFEST })
   }
 
   async connect() {
