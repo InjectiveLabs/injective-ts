@@ -61,11 +61,12 @@ export interface TokenMeta {
   tokenType?: TokenType
   coinGeckoId: string
 
+  spl?: SplTokenMeta
+  erc20?: Erc20TokenMeta
   ibc?: IbcTokenMeta
   ibcs?: IbcTokenMeta[]
-  spl?: SplTokenMeta
+  cw20?: Cw20TokenMeta
   cw20s?: Cw20TokenMeta[]
-  erc20?: Erc20TokenMeta
 }
 
 export type BaseToken = TokenMeta & {
@@ -89,7 +90,7 @@ export interface IbcToken extends BaseToken {
 }
 
 export interface Cw20Token extends BaseToken {
-  source?: Cw20TokenSource
+  cw20?: Cw20TokenMeta
   tokenType: TokenType
 }
 

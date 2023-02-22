@@ -32,7 +32,7 @@ export const getMappedTokensByCw20Address = (
         const cw20Maps = (tokenMeta.cw20s as Cw20TokenMeta[]).reduce(
           (result, cw20) => ({
             ...result,
-            [cw20.address.toLowerCase()]: { ...tokens[token], ...cw20 },
+            [cw20.address.toLowerCase()]: { ...tokens[token], cw20 },
           }),
           {} as Record<string, TokenMeta>,
         )
