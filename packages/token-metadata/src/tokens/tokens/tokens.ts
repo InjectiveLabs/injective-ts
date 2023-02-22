@@ -1165,4 +1165,19 @@ export default {
       tokenType: TokenType.Ibc,
     },
   },
+
+  TINJ: {
+    name: 'Test INJ',
+    symbol: 'TINJ',
+    decimals: 18,
+    logo: 'injective-v3.svg',
+    coinGeckoId: 'injective-protocol',
+
+    // only testnet version
+    cw20: {
+      decimals: 8,
+      address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>

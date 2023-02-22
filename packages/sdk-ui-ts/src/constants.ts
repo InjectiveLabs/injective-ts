@@ -49,7 +49,7 @@ export const NUMBER_REGEX = new RegExp(/^-?(0|[1-9]\d*)?(\.\d+)?$/)
 export const PEGGY_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet'
 export const PEGGY_TESTNET_GRAPH_URL =
-  'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-kovan'
+  'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-goerli'
 export const PEGGY_DEVNET_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
 export const PEGGY_DEVNET1_GRAPH_URL =
