@@ -156,6 +156,11 @@ export class TxRestApi implements TxConcreteApi {
         },
       }
     } catch (e) {
+      if (axios.isAxiosError(e)) {
+        const error = e as AxiosError
+        throw new Error(error.response.data.message)
+      }
+
       throw new TransactionException(new Error((e as any).message))
     }
   }
