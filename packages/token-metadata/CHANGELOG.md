@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.172](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.171...@injectivelabs/token-metadata@1.0.172) (2023-02-23)
+
+
+### Bug Fixes
+
+* erc20 minor ([7a4bbde](https://github.com/InjectiveLabs/injective-ts/commit/7a4bbded6f992952ef5859d726a292ed0cdbcb74))
+
+
+
+
+
 ## [1.0.171](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.170...@injectivelabs/token-metadata@1.0.171) (2023-02-23)
 
 
