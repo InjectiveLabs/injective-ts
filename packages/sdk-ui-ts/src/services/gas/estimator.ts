@@ -1,4 +1,5 @@
-import { Network, Alchemy } from 'alchemy-sdk'
+import { Alchemy, Network } from 'alchemy-sdk'
+import { Network as InjNetwork } from '@injectivelabs/networks'
 import { HttpClient } from '@injectivelabs/utils'
 
 const HISTORICAL_BLOCKS = 20
@@ -30,13 +31,25 @@ const formatFeeHistory = (result: any) => {
   return blocks
 }
 
-export const fetchEstimatorGasPrice = async (alchemyRpcUrl: string) => {
+export const fetchEstimatorGasPrice = async (
+  alchemyRpcUrl: string,
+  network: InjNetwork = InjNetwork.Mainnet,
+) => {
+  const isMainnet = [
+    InjNetwork.Public,
+    InjNetwork.Staging,
+    InjNetwork.Mainnet,
+    InjNetwork.MainnetK8s,
+    InjNetwork.MainnetLB,
+  ].includes(network)
   const settings = {
     apiKey: alchemyRpcUrl,
-    network: Network.ETH_MAINNET,
+    network: isMainnet ? Network.ETH_MAINNET : Network.ETH_GOERLI,
   }
 
-  const url = `https://eth-mainnet.g.alchemy.com/v2`
+  const url = `https://eth-${
+    isMainnet ? 'mainnet' : 'goerli'
+  }.alchemyapi.io/v2/`
   const alchemy = new Alchemy(settings)
   const httpClient = new HttpClient(url)
 

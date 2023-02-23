@@ -43,11 +43,23 @@ export interface EtherchainResult {
   recommendedBaseFee: number
 }
 
-const fetchGasPriceFromAlchemy = async (key: string): Promise<string> => {
+const fetchGasPriceFromAlchemy = async (
+  key: string,
+  network: Network = Network.Mainnet,
+): Promise<string> => {
   try {
+    const isMainnet = [
+      Network.Public,
+      Network.Staging,
+      Network.Mainnet,
+      Network.MainnetK8s,
+      Network.MainnetLB,
+    ].includes(network)
     const settings = {
       apiKey: key,
-      network: AlchemyNetwork.ETH_MAINNET,
+      network: isMainnet
+        ? AlchemyNetwork.ETH_MAINNET
+        : AlchemyNetwork.ETH_GOERLI,
     }
     const alchemy = new Alchemy(settings)
     const response = await alchemy.core.getFeeData()
@@ -134,13 +146,9 @@ export const fetchGasPrice = async (
   network: Network,
   options?: { alchemyKey: string },
 ): Promise<string> => {
-  if (isTestnetOrDevnet(network)) {
-    return new BigNumberInWei(DEFAULT_GAS_PRICE).toFixed(0)
-  }
-
   if (options && options.alchemyKey) {
     try {
-      const gasPrice = await fetchEstimatorGasPrice(options.alchemyKey)
+      const gasPrice = await fetchEstimatorGasPrice(options.alchemyKey, network)
 
       if (gasPrice) {
         return gasPrice.fast.toString()
@@ -150,7 +158,10 @@ export const fetchGasPrice = async (
     }
 
     try {
-      const gasPrice = await fetchGasPriceFromAlchemy(options.alchemyKey)
+      const gasPrice = await fetchGasPriceFromAlchemy(
+        options.alchemyKey,
+        network,
+      )
 
       if (gasPrice) {
         return gasPrice.toString()
@@ -158,6 +169,10 @@ export const fetchGasPrice = async (
     } catch (e) {
       //
     }
+  }
+
+  if (isTestnetOrDevnet(network)) {
+    return new BigNumberInWei(DEFAULT_GAS_PRICE).toFixed(0)
   }
 
   try {
