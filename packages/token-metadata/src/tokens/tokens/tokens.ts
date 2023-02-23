@@ -1173,6 +1173,12 @@ export default {
     logo: 'injective-v3.svg',
     coinGeckoId: 'injective-protocol',
 
+    erc20: {
+      decimals: 18,
+      address: '0x1902e18fEB1234D00d880f1fACA5C8d74e8501E9',
+      tokenType: TokenType.Erc20,
+    },
+
     cw20: {
       decimals: 8,
       address: 'inj1m4g54lg2mhhm7a4h3ms5xlyecafhe4macgsuen',
