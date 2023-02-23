@@ -33,6 +33,10 @@ export class IndexerGrpcAccountPortfolioApi extends BaseConsumer {
         response,
       )
     } catch (e: unknown) {
+      if ((e as Error)?.message === 'account address not found') {
+        return undefined
+      }
+
       if (e instanceof GrpcUnaryRequestException) {
         throw e
       }
