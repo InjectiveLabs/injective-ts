@@ -2,7 +2,7 @@ import { TokenMeta } from '../../types'
 import tokens from '../tokens'
 
 export const testnetSymbolToErc20AddressMap = {
-  INJ: '0x85AbEac4F09762e28a49D7dA91260A46766F4F79',
+  INJ: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
   USDT: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
   APE: '0x44C21afAaF20c270EBbF5914Cfc3b5022173FEB7',
   USDC: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',

@@ -1166,17 +1166,16 @@ export default {
     },
   },
 
-  TINJ: {
-    name: 'Test INJ',
-    symbol: 'TINJ',
+  QAT: {
+    name: 'Test QAT',
+    symbol: 'QAT',
     decimals: 18,
     logo: 'injective-v3.svg',
     coinGeckoId: 'injective-protocol',
 
-    // only testnet version
     cw20: {
       decimals: 8,
-      address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
+      address: 'inj1m4g54lg2mhhm7a4h3ms5xlyecafhe4macgsuen',
       tokenType: TokenType.Cw20,
     },
   },
