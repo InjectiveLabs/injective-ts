@@ -1,21 +1,23 @@
 import {
+  StreamOrdersRequest,
+  StreamTradesRequest,
+  StreamOrdersResponse,
+  StreamTradesResponse,
+  StreamMarketsRequest,
+  StreamMarketsResponse,
   StreamOrderbookRequest,
   StreamOrderbookResponse,
   StreamOrderbookV2Request,
   StreamOrderbookV2Response,
-  StreamOrdersRequest,
-  StreamOrdersResponse,
-  StreamTradesRequest,
-  StreamTradesResponse,
-  StreamMarketsRequest,
-  StreamMarketsResponse,
   StreamOrdersHistoryRequest,
   StreamOrdersHistoryResponse,
+  StreamOrderbookUpdateRequest,
+  StreamOrderbookUpdateResponse,
 } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
 import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb_service'
 import {
-  TradeExecutionSide,
   TradeDirection,
+  TradeExecutionSide,
   TradeExecutionType,
 } from '../../../types'
 import { StreamStatusResponse } from '../types'
@@ -35,6 +37,12 @@ export type SpotOrderbookStreamCallback = (
 export type SpotOrderbookV2StreamCallback = (
   response: ReturnType<
     typeof IndexerSpotStreamTransformer.orderbookV2StreamCallback
+  >,
+) => void
+
+export type SpotOrderbookUpdateStreamCallback = (
+  response: ReturnType<
+    typeof IndexerSpotStreamTransformer.orderbookUpdateStreamCallback
   >,
 ) => void
 
@@ -339,6 +347,39 @@ export class IndexerGrpcSpotStream {
 
     stream.on('data', (response: StreamOrderbookV2Response) => {
       callback(IndexerSpotStreamTransformer.orderbookV2StreamCallback(response))
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+  }
+
+  streamSpotOrderbookUpdate({
+    marketIds,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketIds: string[]
+    callback: SpotOrderbookUpdateStreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamOrderbookUpdateRequest()
+    request.setMarketIdsList(marketIds)
+
+    const stream = this.client.streamOrderbookUpdate(request)
+
+    stream.on('data', (response: StreamOrderbookUpdateResponse) => {
+      callback(
+        IndexerSpotStreamTransformer.orderbookUpdateStreamCallback(response),
+      )
     })
 
     if (onEndCallback) {

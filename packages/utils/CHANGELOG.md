@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.81](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.80...@injectivelabs/utils@1.0.81) (2023-02-23)
+
+
+### Bug Fixes
+
+* not awaiting for error ([b97cc8a](https://github.com/InjectiveLabs/injective-ts/commit/b97cc8aeab0f8d779342746aaf2c6ad5c48df7bc))
+
+
+
+
+
 ## [1.0.80](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.80-alpha.0...@injectivelabs/utils@1.0.80) (2023-02-20)
 
 **Note:** Version bump only for package @injectivelabs/utils
