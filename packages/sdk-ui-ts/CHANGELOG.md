@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.584](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.583...@injectivelabs/sdk-ui-ts@1.0.584) (2023-02-23)
+
+
+### Features
+
+* gas estimator for testnet ([d1a5c72](https://github.com/InjectiveLabs/injective-ts/commit/d1a5c72be5a00ff24fba8e6454f0cb5103f81eaa))
+
+
+
+
+
 ## [1.0.583](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.582...@injectivelabs/sdk-ui-ts@1.0.583) (2023-02-23)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

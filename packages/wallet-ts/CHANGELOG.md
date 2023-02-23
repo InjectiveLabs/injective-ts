@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.461](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.460...@injectivelabs/wallet-ts@1.0.461) (2023-02-23)
+
+
+### Features
+
+* gas estimator for testnet ([d1a5c72](https://github.com/InjectiveLabs/injective-ts/commit/d1a5c72be5a00ff24fba8e6454f0cb5103f81eaa))
+
+
+
+
+
 ## [1.0.460](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.459...@injectivelabs/wallet-ts@1.0.460) (2023-02-23)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
