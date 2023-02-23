@@ -23,8 +23,8 @@ const getErrorMessage = (error: any, endpoint: string): string => {
 export default class HttpRestClient {
   protected client: HttpClient
 
-  constructor(endpoint: string) {
-    this.client = new HttpClient(endpoint)
+  constructor(endpoint: string, options: Record<string, any> = {}) {
+    this.client = new HttpClient(endpoint, options)
   }
 
   setConfig(config: AxiosRequestConfig): HttpRestClient {

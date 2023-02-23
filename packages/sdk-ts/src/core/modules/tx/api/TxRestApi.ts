@@ -250,7 +250,7 @@ export class TxRestApi implements TxConcreteApi {
     params: URLSearchParams | any = {},
   ): Promise<T> {
     try {
-      return this.httpClient
+      return await this.httpClient
         .post<URLSearchParams | any, { data: T }>(endpoint, params)
         .then((d) => d.data)
     } catch (e) {
@@ -283,7 +283,7 @@ export class TxRestApi implements TxConcreteApi {
     params: URLSearchParams | any = {},
   ): Promise<T> {
     try {
-      return this.httpClient
+      return await this.httpClient
         .get<URLSearchParams | any, { data: T }>(endpoint, params)
         .then((d) => d.data)
     } catch (e) {
