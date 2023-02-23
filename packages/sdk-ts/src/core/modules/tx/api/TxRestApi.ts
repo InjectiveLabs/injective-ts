@@ -245,39 +245,6 @@ export class TxRestApi implements TxConcreteApi {
     return response
   }
 
-  private async postRaw<T>(
-    endpoint: string,
-    params: URLSearchParams | any = {},
-  ): Promise<T> {
-    try {
-      return await this.httpClient
-        .post<URLSearchParams | any, { data: T }>(endpoint, params)
-        .then((d) => d.data)
-    } catch (e) {
-      const error = e as Error | AxiosError
-
-      if (axios.isAxiosError(error)) {
-        const message = error.response
-          ? typeof error.response.data === 'string'
-            ? error.response.data
-            : error.response.statusText
-          : `The request to ${endpoint} has failed.`
-
-        throw new HttpRequestException(new Error(message), {
-          code: error.response
-            ? error.response.status
-            : StatusCodes.BAD_REQUEST,
-          method: HttpRequestMethod.Post,
-        })
-      }
-
-      throw new HttpRequestException(new Error((error as any).message), {
-        code: UnspecifiedErrorCode,
-        contextModule: HttpRequestMethod.Post,
-      })
-    }
-  }
-
   private async getRaw<T>(
     endpoint: string,
     params: URLSearchParams | any = {},
@@ -311,6 +278,36 @@ export class TxRestApi implements TxConcreteApi {
       throw new HttpRequestException(new Error((error as any).message), {
         code: UnspecifiedErrorCode,
         contextModule: HttpRequestMethod.Get,
+      })
+    }
+  }
+
+  private async postRaw<T>(
+    endpoint: string,
+    params: URLSearchParams | any = {},
+  ): Promise<T> {
+    try {
+      return await this.httpClient
+        .post<URLSearchParams | any, { data: T }>(endpoint, params)
+        .then((d) => d.data)
+    } catch (e) {
+      const error = e as Error | AxiosError
+
+      if (axios.isAxiosError(error)) {
+        const message = getErrorMessage(error, endpoint)
+
+        throw new HttpRequestException(new Error(message), {
+          code: error.response
+            ? error.response.status
+            : StatusCodes.BAD_REQUEST,
+          context: endpoint,
+          contextModule: HttpRequestMethod.Post,
+        })
+      }
+
+      throw new HttpRequestException(new Error((error as any).message), {
+        code: UnspecifiedErrorCode,
+        contextModule: HttpRequestMethod.Post,
       })
     }
   }
