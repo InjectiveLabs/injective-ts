@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.455](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.454...@injectivelabs/sdk-ts@1.0.455) (2023-02-23)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.454](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.453...@injectivelabs/sdk-ts@1.0.454) (2023-02-23)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
 ## [1.0.453](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.452...@injectivelabs/sdk-ts@1.0.453) (2023-02-23)
 
 
