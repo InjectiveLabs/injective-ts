@@ -22,11 +22,14 @@ export const tokensBySymbolForTestnet = (
 
   const tokenMeta = tokens[token] as TokenMeta
 
-  if (testnetAddressFromMap) {
-    if (!tokenMeta.erc20) {
-      return result
+  if (!tokenMeta.erc20 && !tokenMeta.cw20 && !tokenMeta.cw20s) {
+    return {
+      ...result,
+      [token.toUpperCase()]: tokenMeta,
     }
+  }
 
+  if (testnetAddressFromMap) {
     return {
       ...result,
       [token.toUpperCase()]: {
@@ -43,10 +46,6 @@ export const tokensBySymbolForTestnet = (
   const cw20TestnetAddressFromMap = testnetSymbolToCw20AddressMap[cw20TokenKey]
 
   if (cw20TestnetAddressFromMap) {
-    if (!tokenMeta.cw20 && !tokenMeta.cw20s) {
-      return result
-    }
-
     if (tokenMeta.cw20) {
       return {
         ...result,
@@ -78,9 +77,10 @@ export const tokensBySymbolForTestnet = (
         },
       }
     }
-
-    return result
   }
 
-  return result
+  return {
+    ...result,
+    [token.toUpperCase()]: tokenMeta,
+  }
 }, {}) as Record<string, TokenMeta>

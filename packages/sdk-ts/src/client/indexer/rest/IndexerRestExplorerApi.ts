@@ -297,8 +297,6 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         response.data,
       )
     } catch (e: unknown) {
-      console.log(e)
-
       if (e instanceof HttpRequestException) {
         throw e
       }
