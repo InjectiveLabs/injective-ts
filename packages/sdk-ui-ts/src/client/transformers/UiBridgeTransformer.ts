@@ -264,8 +264,8 @@ export const convertPeggyDepositTxToUiBridgeTransaction = async ({
 
   return {
     type: getBridgeTransactionType(
-      BridgingNetwork.Injective,
       BridgingNetwork.Ethereum,
+      BridgingNetwork.Injective,
     ),
     amount: transaction.amount,
     denom: transaction.denom,
@@ -355,16 +355,12 @@ export const convertWormholeToUiBridgeTransaction = async ({
   network: Network
 }): Promise<UiBridgeTransaction> => {
   const isEthereumWhTransfer =
-    transaction.sender.startsWith('0x') ||
-    (transaction.receiver.startsWith('0x') &&
-      (transaction.source === BridgingNetwork.EthereumWh ||
-        transaction.destination === BridgingNetwork.EthereumWh))
+    transaction.source === BridgingNetwork.EthereumWh ||
+    transaction.destination === BridgingNetwork.EthereumWh
   const isSolanaTransfer =
     transaction.source === BridgingNetwork.Solana ||
     transaction.destination === BridgingNetwork.Solana
-  const isEthereumDeposit =
-    transaction.sender.startsWith('0x') &&
-    transaction.source === BridgingNetwork.EthereumWh
+  const isEthereumDeposit = transaction.source === BridgingNetwork.EthereumWh
   const isSolanaDeposit = transaction.source === BridgingNetwork.Solana
 
   const solanaWhExplorerLink = isSolanaDeposit

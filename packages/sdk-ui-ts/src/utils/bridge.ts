@@ -498,16 +498,16 @@ export const getCosmosExplorerUrl = (
 }
 
 export const getEthereumExplorerUrl = (network: Network): string => {
-  switch (network) {
-    case Network.Devnet:
-      return 'https://goerli.etherscan.io'
-    case Network.Mainnet:
+  switch (true) {
+    case network.startsWith(Network.Mainnet):
       return 'https://etherscan.io'
-    case Network.Public:
+    case [Network.Public, Network.Staging].includes(network):
       return 'https://etherscan.io'
-    case Network.Local:
+    case network.startsWith(Network.Devnet):
       return 'https://goerli.etherscan.io'
-    case Network.Testnet:
+    case network.startsWith(Network.Testnet):
+      return 'https://goerli.etherscan.io'
+    case [Network.Local].includes(network):
       return 'https://goerli.etherscan.io'
     default:
       return 'https://etherscan.io'
