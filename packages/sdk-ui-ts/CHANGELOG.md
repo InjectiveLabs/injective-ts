@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.585](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.584...@injectivelabs/sdk-ui-ts@1.0.585) (2023-02-24)
+
+
+### Bug Fixes
+
+* peggy deposits bridge txs ([78aa6fb](https://github.com/InjectiveLabs/injective-ts/commit/78aa6fb32d00270578b1f18074345e6eb78b847e))
+
+
+
+
+
 ## [1.0.584](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.583...@injectivelabs/sdk-ui-ts@1.0.584) (2023-02-23)
 
 
