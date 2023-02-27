@@ -1,4 +1,4 @@
-import { Network } from '@injectivelabs/networks'
+import { Network, NetworkEndpoints } from '@injectivelabs/networks'
 import { ChainId, Coin } from '@injectivelabs/ts-types'
 import {
   DenomClient,
@@ -38,10 +38,18 @@ export class TokenService {
 
   public denomClient: DenomClient
 
-  constructor({ chainId, network }: { chainId: ChainId; network: Network }) {
+  constructor({
+    chainId,
+    network,
+    endpoints,
+  }: {
+    chainId: ChainId
+    network: Network
+    endpoints?: NetworkEndpoints
+  }) {
     this.network = network
     this.chainId = chainId
-    this.denomClient = new DenomClient(network)
+    this.denomClient = new DenomClient(network, endpoints ? { endpoints } : {})
   }
 
   async toCoinsWithToken(supply: Coin[]): Promise<Token[]> {
