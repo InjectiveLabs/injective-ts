@@ -1185,4 +1185,18 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  PUGGO: {
+    name: 'Puggo',
+    symbol: 'PUG',
+    decimals: 18,
+    logo: 'puggo.jpeg',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 6,
+      address: '0xf9a06dE3F6639E6ee4F079095D5093644Ad85E8b',
+      tokenType: TokenType.Erc20,
+    },
+  },
 } as Record<string, TokenMeta>
