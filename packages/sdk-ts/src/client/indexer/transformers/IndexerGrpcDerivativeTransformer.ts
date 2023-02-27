@@ -361,6 +361,7 @@ export class IndexerGrpcDerivativeTransformer {
       oracleBase: market.getOracleBase(),
       oracleQuote: market.getOracleQuote(),
       oracleType: market.getOracleType(),
+      oracleScaleFactor: market.getOracleScaleFactor(),
       initialMarginRatio: market.getInitialMarginRatio(),
       maintenanceMarginRatio: market.getMaintenanceMarginRatio(),
       isPerpetual: market.getIsPerpetual(),
