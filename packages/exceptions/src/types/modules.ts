@@ -31,6 +31,7 @@ export enum IndexerErrorModule {
   Ninja = 'indexer-ninja',
   Meta = 'indexer-meta',
   Oracle = 'indexer-oracle',
+  Portfolio = 'indexer-portfolio',
   Spot = 'indexer-spot',
   Transaction = 'indexer-transaction',
   ChronosDerivative = 'indexer-chronos-derivative',

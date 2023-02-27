@@ -1207,4 +1207,38 @@ export default {
       },
     ],
   },
+
+  QAT: {
+    name: 'Test QAT',
+    symbol: 'QAT',
+    decimals: 18,
+    logo: 'injective-v3.svg',
+    coinGeckoId: 'injective-protocol',
+
+    erc20: {
+      decimals: 18,
+      address: '0x1902e18fEB1234D00d880f1fACA5C8d74e8501E9',
+      tokenType: TokenType.Erc20,
+    },
+
+    cw20: {
+      decimals: 8,
+      address: 'inj1m4g54lg2mhhm7a4h3ms5xlyecafhe4macgsuen',
+      tokenType: TokenType.Cw20,
+    },
+  },
+
+  PUGGO: {
+    name: 'Puggo',
+    symbol: 'PUG',
+    decimals: 18,
+    logo: 'puggo.jpeg',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 6,
+      address: '0xf9a06dE3F6639E6ee4F079095D5093644Ad85E8b',
+      tokenType: TokenType.Erc20,
+    },
+  },
 } as Record<string, TokenMeta>

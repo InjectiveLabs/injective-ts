@@ -1,9 +1,10 @@
 import {
-  StreamOrderbookResponse,
   StreamTradesResponse,
   StreamOrdersResponse,
-  StreamOrdersHistoryResponse,
+  StreamOrderbookResponse,
   StreamOrderbookV2Response,
+  StreamOrdersHistoryResponse,
+  StreamOrderbookUpdateResponse,
 } from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import { StreamOperation } from '../../../types'
 import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer'
@@ -80,6 +81,25 @@ export class IndexerSpotStreamTransformer {
       operation: response.operationType as StreamOperation,
       marketId: response.marketId,
       timestamp: response.timestamp,
+    }
+  }
+
+  static orderbookUpdateStreamCallback = (
+    response: StreamOrderbookUpdateResponse,
+  ) => {
+    const orderbook = response.getOrderbookLevelUpdates()
+
+    return {
+      orderbook: orderbook
+        ? IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
+            sequence: orderbook.getSequence(),
+            buys: orderbook.getBuysList(),
+            sells: orderbook.getSellsList(),
+          })
+        : undefined,
+      operation: response.getOperationType() as StreamOperation,
+      marketId: response.getMarketId(),
+      timestamp: response.getTimestamp(),
     }
   }
 }

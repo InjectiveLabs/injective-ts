@@ -16,7 +16,7 @@ export const getInjectiveAddress = (ethAddress: string): string => {
 /**
  * Get ethereum address from injective bech32 address
  *
- * @param ethAddress string
+ * @param injectiveAddress string
  * @returns string
  */
 export const getEthereumAddress = (injectiveAddress: string): string => {
@@ -27,6 +27,18 @@ export const getEthereumAddress = (injectiveAddress: string): string => {
   return `0x${Buffer.from(
     bech32.fromWords(bech32.decode(injectiveAddress).words),
   ).toString('hex')}`
+}
+
+/**
+ * Get default subaccount id from injective bech32 address
+ *
+ * @param injectiveAddress string
+ * @returns string
+ */
+export const getDefaultSubaccountId = (injectiveAddress: string): string => {
+  return `0x${Buffer.from(
+    bech32.fromWords(bech32.decode(injectiveAddress).words),
+  ).toString('hex')}${'0'.repeat(24)}`
 }
 
 /** @deprecated - use getEthereumAddress */

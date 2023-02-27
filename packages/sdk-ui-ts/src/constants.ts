@@ -27,7 +27,7 @@ export const NULL_BYTES: string = '0x'
 export const SECONDS_IN_A_DAY: BigNumber = new BigNumber(60 * 60 * 24)
 export const GWEI_IN_WEI: BigNumber = new BigNumber(1000000000)
 export const TX_DEFAULTS_GAS = 80_000_000
-export const DEFAULT_GAS_PRICE = new BigNumber(6).times(GWEI_IN_WEI)
+export const DEFAULT_GAS_PRICE = new BigNumber(120).times(GWEI_IN_WEI)
 export const DEFAULT_MAINNET_GAS_PRICE = new BigNumber(30).times(GWEI_IN_WEI)
 export const TIP_IN_GWEI: BigNumberInBase = new BigNumberInBase(2).times(
   GWEI_IN_WEI,
@@ -49,7 +49,7 @@ export const NUMBER_REGEX = new RegExp(/^-?(0|[1-9]\d*)?(\.\d+)?$/)
 export const PEGGY_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet'
 export const PEGGY_TESTNET_GRAPH_URL =
-  'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-kovan'
+  'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-goerli'
 export const PEGGY_DEVNET_GRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
 export const PEGGY_DEVNET1_GRAPH_URL =

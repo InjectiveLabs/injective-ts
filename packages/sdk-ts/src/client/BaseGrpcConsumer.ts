@@ -1,4 +1,4 @@
-import { grpc } from '@improbable-eng/grpc-web'
+import { grpc } from '@injectivelabs/grpc-web'
 import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
 import { isBrowser } from '../utils/helpers'
 import { getGrpcTransport } from '../utils/grpc'

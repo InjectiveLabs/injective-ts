@@ -3,6 +3,85 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.174](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.173...@injectivelabs/token-metadata@1.0.174) (2023-02-27)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.0.173](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.172...@injectivelabs/token-metadata@1.0.173) (2023-02-24)
+
+
+### Bug Fixes
+
+* testnet tokens ([1209081](https://github.com/InjectiveLabs/injective-ts/commit/12090815b2c39e165c8e673487b21d5734fb690f))
+
+
+
+
+
+## [1.0.172](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.171...@injectivelabs/token-metadata@1.0.172) (2023-02-23)
+
+
+### Bug Fixes
+
+* erc20 minor ([7a4bbde](https://github.com/InjectiveLabs/injective-ts/commit/7a4bbded6f992952ef5859d726a292ed0cdbcb74))
+
+
+
+
+
+## [1.0.171](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.170...@injectivelabs/token-metadata@1.0.171) (2023-02-23)
+
+
+### Bug Fixes
+
+* dummy testnet tokens ([2fb3b39](https://github.com/InjectiveLabs/injective-ts/commit/2fb3b3934b454ce3e81d5bd88ef322edb7700929))
+
+
+
+
+
+## [1.0.170](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.169...@injectivelabs/token-metadata@1.0.170) (2023-02-23)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.0.169](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.168...@injectivelabs/token-metadata@1.0.169) (2023-02-21)
+
+
+### Features
+
+* new chz logo (small) ([b76eca6](https://github.com/InjectiveLabs/injective-ts/commit/b76eca6d22578c6796e3be8f8569059224f40b4f))
+
+
+
+
+
+## [1.0.168](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.168-alpha.0...@injectivelabs/token-metadata@1.0.168) (2023-02-20)
+
+
+### Features
+
+* new chz logo ([918c53d](https://github.com/InjectiveLabs/injective-ts/commit/918c53d35c56bf725ad2d646fbf6fc6b65846919))
+
+
+
+
+
+## [1.0.168-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.167...@injectivelabs/token-metadata@1.0.168-alpha.0) (2023-02-20)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
 ## [1.0.167](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.166...@injectivelabs/token-metadata@1.0.167) (2023-02-16)
 
 

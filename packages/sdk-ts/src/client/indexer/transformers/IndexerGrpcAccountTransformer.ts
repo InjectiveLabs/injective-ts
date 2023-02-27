@@ -1,27 +1,27 @@
 import {
-  PortfolioResponse,
   RewardsResponse,
-  SubaccountBalanceResponse,
+  PortfolioResponse,
   SubaccountHistoryResponse,
   SubaccountBalancesListResponse,
+  SubaccountBalanceEndpointResponse,
 } from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { Coin } from '@injectivelabs/ts-types'
 import { grpcPagingToPaging } from '../../..//utils/pagination'
 import { GrpcCoin } from '../../../types/index'
 import {
-  GrpcSubaccountBalance,
-  GrpcSubaccountBalanceTransfer,
-  GrpcSubaccountDeposit,
-  GrpcAccountPortfolio,
-  GrpcSubaccountPortfolio,
   TransferType,
+  TradingReward,
+  AccountPortfolio,
   SubaccountBalance,
   SubaccountDeposit,
-  SubaccountTransfer,
-  AccountPortfolio,
-  SubaccountPortfolio,
-  TradingReward,
   GrpcTradingReward,
+  SubaccountTransfer,
+  SubaccountPortfolio,
+  GrpcAccountPortfolio,
+  GrpcSubaccountBalance,
+  GrpcSubaccountDeposit,
+  GrpcSubaccountPortfolio,
+  GrpcSubaccountBalanceTransfer,
 } from '../types/account'
 
 /**
@@ -95,7 +95,7 @@ export class IndexerGrpcAccountTransformer {
   }
 
   static balanceResponseToBalance(
-    response: SubaccountBalanceResponse,
+    response: SubaccountBalanceEndpointResponse,
   ): SubaccountBalance {
     return IndexerGrpcAccountTransformer.grpcBalanceToBalance(response.balance!)
   }

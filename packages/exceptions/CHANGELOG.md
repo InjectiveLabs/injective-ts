@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.56-alpha.0...@injectivelabs/exceptions@1.0.56) (2023-02-20)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.0.56-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.55...@injectivelabs/exceptions@1.0.56-alpha.0) (2023-02-20)
+
+
+### Features
+
+* setup indexer grpc account portfolio api and stream ([72d7d85](https://github.com/InjectiveLabs/injective-ts/commit/72d7d85e66e2932b60b3e6215d5cda11b036e6a5))
+
+
+
+
+
 ## [1.0.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.54...@injectivelabs/exceptions@1.0.55) (2023-02-15)
 
 **Note:** Version bump only for package @injectivelabs/exceptions

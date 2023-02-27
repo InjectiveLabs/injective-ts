@@ -1,13 +1,13 @@
 import {
-  InjectiveAccountsRPCClientImpl,
-  OrderStatesRequest,
-  PortfolioRequest,
   RewardsRequest,
-  SubaccountBalanceRequest,
-  SubaccountBalancesListRequest,
-  SubaccountHistoryRequest,
-  SubaccountOrderSummaryRequest,
+  PortfolioRequest,
+  OrderStatesRequest,
   SubaccountsListRequest,
+  SubaccountHistoryRequest,
+  SubaccountBalancesListRequest,
+  SubaccountOrderSummaryRequest,
+  InjectiveAccountsRPCClientImpl,
+  SubaccountBalanceEndpointRequest,
 } from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { PaginationOption } from '../../../types/pagination'
 import { IndexerGrpcAccountTransformer } from '../transformers'
@@ -114,13 +114,15 @@ export class IndexerGrpcAccountApi {
   }
 
   async fetchSubaccountBalance(subaccountId: string, denom: string) {
-    const request = SubaccountBalanceRequest.create()
+    const request = SubaccountBalanceEndpointRequest.create()
 
     request.subaccountId = subaccountId
     request.denom = denom
 
     try {
-      const response = await this.client.SubaccountBalanceEndpoint(request)
+      const response = await this.client.SubaccountBalanceEndpointRequest(
+        request,
+      )
 
       return IndexerGrpcAccountTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {

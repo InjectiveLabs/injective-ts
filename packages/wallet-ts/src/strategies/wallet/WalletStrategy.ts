@@ -20,13 +20,13 @@ import {
 } from '../types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
-import Cosmostation from './strategies/Cosmostation'
 import Trezor from './strategies/Trezor'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
 import WalletConnect from './strategies/WalletConnect'
-import CosmostationEth from './strategies/CosmostationEth'
+// import Cosmostation from './strategies/Cosmostation'
+// import CosmostationEth from './strategies/CosmostationEth'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet } from './utils'
 import { isCosmosWallet } from '../../utils/wallets/cosmos'
@@ -99,20 +99,18 @@ const createStrategy = ({
       return new Trezor(ethWalletArgs)
     case Wallet.Torus:
       return new Torus(ethWalletArgs)
-    case Wallet.CosmostationEth:
-      return new CosmostationEth(ethWalletArgs)
+    // case Wallet.CosmostationEth:
+    //   return new CosmostationEth(ethWalletArgs)
     case Wallet.WalletConnect:
       return new WalletConnect(ethWalletArgs)
     case Wallet.Keplr:
       return new Keplr({ ...args })
     case Wallet.Leap:
       return new Leap({ ...args })
-    case Wallet.Cosmostation:
-      return new Cosmostation({ ...args })
+    // case Wallet.Cosmostation:
+    //   return new Cosmostation({ ...args })
     default:
-      throw new GeneralException(
-        new Error(`The ${wallet} concrete wallet strategy is not supported`),
-      )
+      return undefined
   }
 }
 

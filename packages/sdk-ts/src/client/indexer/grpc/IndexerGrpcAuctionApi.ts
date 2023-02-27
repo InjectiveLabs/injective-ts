@@ -1,7 +1,7 @@
 import {
-  InjectiveAuctionRPCClientImpl,
-  AuctionRequest,
   AuctionsRequest,
+  AuctionEndpointRequest,
+  InjectiveAuctionRPCClientImpl,
 } from '@injectivelabs/indexer-proto-ts/injective_auction_rpc'
 import { IndexerGrpcAuctionTransformer } from '../transformers'
 import { IndexerModule } from '../types'
@@ -27,7 +27,7 @@ export class IndexerGrpcAuctionApi {
   }
 
   async fetchAuction(round?: number) {
-    const request = AuctionRequest.create()
+    const request = AuctionEndpointRequest.create()
 
     /**
      * If round is provided, set it on the request,
@@ -38,7 +38,7 @@ export class IndexerGrpcAuctionApi {
     }
 
     try {
-      const response = await this.client.AuctionEndpoint(request)
+      const response = await this.client.AuctionEndpointRequest(request)
 
       return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
     } catch (e: unknown) {

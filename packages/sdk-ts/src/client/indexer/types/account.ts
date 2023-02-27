@@ -1,10 +1,11 @@
 import {
+  Reward as GrpcTradingReward,
+  AccountPortfolio as GrpcAccountPortfolio,
   SubaccountDeposit as GrpcSubaccountDeposit,
   SubaccountBalance as GrpcSubaccountBalance,
-  SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
-  AccountPortfolio as GrpcAccountPortfolio,
   SubaccountPortfolio as GrpcSubaccountPortfolio,
   Reward as GrpcTradingReward,
+  SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
 } from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { Coin } from '@injectivelabs/ts-types'
 
@@ -63,9 +64,9 @@ export interface TradingReward {
 
 export {
   GrpcTradingReward,
+  GrpcAccountPortfolio,
   GrpcSubaccountDeposit,
   GrpcSubaccountBalance,
-  GrpcAccountPortfolio,
   GrpcSubaccountPortfolio,
   GrpcSubaccountBalanceTransfer,
 }

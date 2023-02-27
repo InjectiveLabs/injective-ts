@@ -5,6 +5,7 @@ import {
   StreamOrdersResponse,
   StreamOrdersHistoryResponse,
   StreamOrderbookV2Response,
+  StreamOrderbookUpdateResponse,
 } from '@injectivelabs/indexer-proto-ts/injective_derivative_exchange_rpc'
 import { StreamOperation } from '../../../types/index'
 import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer'
@@ -92,6 +93,25 @@ export class IndexerDerivativeStreamTransformer {
       operation: response.operationType as StreamOperation,
       marketId: response.marketId,
       timestamp: response.timestamp,
+    }
+  }
+
+  static orderbookUpdateStreamCallback = (
+    response: StreamOrderbookUpdateResponse,
+  ) => {
+    const orderbook = response.getOrderbookLevelUpdates()
+
+    return {
+      orderbook: orderbook
+        ? IndexerGrpcDerivativeTransformer.grpcOrderbookV2ToOrderbookV2({
+            sequence: orderbook.getSequence(),
+            buys: orderbook.getBuysList(),
+            sells: orderbook.getSellsList(),
+          })
+        : undefined,
+      operation: response.getOperationType() as StreamOperation,
+      marketId: response.getMarketId(),
+      timestamp: response.getTimestamp(),
     }
   }
 }

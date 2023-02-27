@@ -1,19 +1,21 @@
 import {
-  InjectiveDerivativeExchangeRPCClientImpl,
+  StreamOrdersRequest,
+  StreamTradesRequest,
+  StreamMarketRequest,
+  StreamOrdersResponse,
+  StreamTradesResponse,
+  StreamMarketResponse,
+  StreamPositionsRequest,
+  StreamPositionsResponse,
   StreamOrderbookRequest,
   StreamOrderbookResponse,
   StreamOrderbookV2Request,
   StreamOrderbookV2Response,
-  StreamOrdersRequest,
-  StreamOrdersResponse,
-  StreamTradesRequest,
-  StreamTradesResponse,
-  StreamPositionsRequest,
-  StreamPositionsResponse,
-  StreamMarketRequest,
-  StreamMarketResponse,
   StreamOrdersHistoryRequest,
   StreamOrdersHistoryResponse,
+  StreamOrderbookUpdateRequest,
+  StreamOrderbookUpdateResponse,
+  InjectiveDerivativeExchangeRPCClientImpl,
 } from '@injectivelabs/indexer-proto-ts/injective_derivative_exchange_rpc'
 import {
   TradeDirection,
@@ -35,6 +37,12 @@ export type DerivativeOrderbookStreamCallback = (
 export type DerivativeOrderbookV2StreamCallback = (
   response: ReturnType<
     typeof IndexerDerivativeStreamTransformer.orderbookV2StreamCallback
+  >,
+) => void
+
+export type DerivativeOrderbookUpdateStreamCallback = (
+  response: ReturnType<
+    typeof IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback
   >,
 ) => void
 
@@ -411,6 +419,41 @@ export class IndexerGrpcDerivativesStream {
     stream.on('data', (response: StreamOrderbookV2Response) => {
       callback(
         IndexerDerivativeStreamTransformer.orderbookV2StreamCallback(response),
+      )
+    })
+
+    if (onEndCallback) {
+      stream.on('end', onEndCallback)
+    }
+
+    if (onStatusCallback) {
+      stream.on('status', onStatusCallback)
+    }
+
+    return stream
+  }
+
+  streamDerivativeOrderbookUpdate({
+    marketIds,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketIds: string[]
+    callback: DerivativeOrderbookV2StreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }) {
+    const request = new StreamOrderbookUpdateRequest()
+    request.setMarketIdsList(marketIds)
+
+    const stream = this.client.streamOrderbookUpdate(request)
+
+    stream.on('data', (response: StreamOrderbookUpdateResponse) => {
+      callback(
+        IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback(
+          response,
+        ),
       )
     })
 

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/exceptions",
   "description": "List of exceptions that can be reused throughout Injective's projects.",
-  "version": "1.0.55",
+  "version": "1.0.56",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -38,7 +38,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@improbable-eng/grpc-web": "^0.15.0",
+    "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/ts-types": "^1.0.29",
     "http-status-codes": "^2.2.0",
     "link-module-alias": "^1.2.0",

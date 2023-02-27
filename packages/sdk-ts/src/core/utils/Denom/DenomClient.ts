@@ -11,7 +11,11 @@ import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
 import { DenomTrace } from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/transfer'
 import { fromUtf8 } from '../../../utils/utf8'
 import { sha256 } from '../../../utils/crypto'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import {
+  Network,
+  UrlEndpoints,
+  getNetworkEndpoints,
+} from '@injectivelabs/networks'
 import { ChainGrpcIbcApi } from '../../../client/chain/grpc/ChainGrpcIbcApi'
 
 /**
@@ -34,10 +38,17 @@ export class DenomClient {
 
   protected ibcApi: ChainGrpcIbcApi
 
-  constructor(network: Network = Network.Mainnet) {
+  constructor(
+    network: Network = Network.Mainnet,
+    options?: { endpoints?: UrlEndpoints },
+  ) {
     this.tokenFactory = TokenFactory.make(network)
     this.tokenMetaUtils = TokenMetaUtilsFactory.make(network)
-    this.ibcApi = new ChainGrpcIbcApi(getNetworkEndpoints(network).grpc)
+    this.ibcApi = new ChainGrpcIbcApi(
+      options && options.endpoints
+        ? options.endpoints.grpc
+        : getNetworkEndpoints(network).grpc,
+    )
   }
 
   async getDenomTokenInfo(denom: string): Promise<TokenInfo | undefined> {

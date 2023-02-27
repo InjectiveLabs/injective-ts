@@ -1,4 +1,4 @@
-import type { grpc } from '@improbable-eng/grpc-web'
+import type { grpc } from '@injectivelabs/grpc-web'
 import { StatusCodes } from 'http-status-codes'
 
 export enum TransactionChainErrorModule {

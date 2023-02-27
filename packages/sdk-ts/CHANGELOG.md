@@ -3,6 +3,134 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.460](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.459...@injectivelabs/sdk-ts@1.0.460) (2023-02-27)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.459](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.458...@injectivelabs/sdk-ts@1.0.459) (2023-02-27)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.458](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.457...@injectivelabs/sdk-ts@1.0.458) (2023-02-24)
+
+
+### Bug Fixes
+
+* testnet tokens ([1209081](https://github.com/InjectiveLabs/injective-ts/commit/12090815b2c39e165c8e673487b21d5734fb690f))
+
+
+
+
+
+## [1.0.457](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.456...@injectivelabs/sdk-ts@1.0.457) (2023-02-23)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.456](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.455...@injectivelabs/sdk-ts@1.0.456) (2023-02-23)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.455](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.454...@injectivelabs/sdk-ts@1.0.455) (2023-02-23)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.454](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.453...@injectivelabs/sdk-ts@1.0.454) (2023-02-23)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.453](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.452...@injectivelabs/sdk-ts@1.0.453) (2023-02-23)
+
+
+### Bug Fixes
+
+* minor ([8283050](https://github.com/InjectiveLabs/injective-ts/commit/82830500b133aa504c3a18143e459a34783fb291))
+
+
+
+
+
+## [1.0.452](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.451...@injectivelabs/sdk-ts@1.0.452) (2023-02-23)
+
+
+### Bug Fixes
+
+* not awaiting for error ([b97cc8a](https://github.com/InjectiveLabs/injective-ts/commit/b97cc8aeab0f8d779342746aaf2c6ad5c48df7bc))
+
+
+
+
+
+## [1.0.451](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.450...@injectivelabs/sdk-ts@1.0.451) (2023-02-22)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.450](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.449...@injectivelabs/sdk-ts@1.0.450) (2023-02-21)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.449](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.448...@injectivelabs/sdk-ts@1.0.449) (2023-02-21)
+
+
+### Bug Fixes
+
+* denom client grpc endpoints ([b5aab84](https://github.com/InjectiveLabs/injective-ts/commit/b5aab845a034458b6f312224fe7193767e4a6d5c))
+
+
+
+
+
+## [1.0.448](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.448-alpha.0...@injectivelabs/sdk-ts@1.0.448) (2023-02-20)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.448-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.447...@injectivelabs/sdk-ts@1.0.448-alpha.0) (2023-02-20)
+
+
+### Features
+
+* integrate portfolio api ([4ba36ff](https://github.com/InjectiveLabs/injective-ts/commit/4ba36ffd01f62277f5d673495e5bd26ea26bde35))
+* setup indexer grpc account portfolio api and stream ([72d7d85](https://github.com/InjectiveLabs/injective-ts/commit/72d7d85e66e2932b60b3e6215d5cda11b036e6a5))
+
+
+
+
+
 ## [1.0.447](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.446...@injectivelabs/sdk-ts@1.0.447) (2023-02-18)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
