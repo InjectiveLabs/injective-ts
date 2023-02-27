@@ -4,7 +4,7 @@ import {
   getDefaultSubaccountId,
 } from '../../src/utils'
 
-describe('utils helper functions', () => {
+describe('address helper functions', () => {
   it('getInjectiveAddress returns correct value', () => {
     const ethereumAddress = '0xaf79152ac5df276d9a8e1e2e22822f9713474902'
     const injectiveAddress = getInjectiveAddress(ethereumAddress)
