@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.175](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.174...@injectivelabs/token-metadata@1.0.175) (2023-02-28)
+
+
+### Bug Fixes
+
+* devnet token meta doesnt include cw20 tokens ([db05821](https://github.com/InjectiveLabs/injective-ts/commit/db0582160de762c14d1f1a572f3c527c6b3275c4))
+
+
+
+
+
 ## [1.0.174](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.173...@injectivelabs/token-metadata@1.0.174) (2023-02-27)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
