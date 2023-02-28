@@ -120,9 +120,7 @@ export class IndexerGrpcAccountApi {
     request.denom = denom
 
     try {
-      const response = await this.client.SubaccountBalanceEndpointRequest(
-        request,
-      )
+      const response = await this.client.SubaccountBalanceEndpoint(request)
 
       return IndexerGrpcAccountTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {

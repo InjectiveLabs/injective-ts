@@ -176,8 +176,8 @@ export const createTransactionFromMsg = (
 export const createTxRawFromSigResponse = (
   response: TxRaw | DirectSignResponse,
 ) => {
-  if (response instanceof TxRaw) {
-    return response
+  if ((response as DirectSignResponse).signed === undefined) {
+    return response as TxRaw
   }
 
   const directSignResponse = response as DirectSignResponse
@@ -295,9 +295,11 @@ export const createTransactionAndCosmosSignDocForAddressAndMsg = async (
 }
 
 export const getTxRawFromTxRawOrDirectSignResponse = (
-  txRaw: TxRaw | DirectSignResponse,
+  txRawOrDirectSignResponse: TxRaw | DirectSignResponse,
 ): TxRaw => {
-  return (txRaw as DirectSignResponse).signed === undefined
-    ? (txRaw as TxRaw)
-    : createTxRawFromSigResponse(txRaw as DirectSignResponse)
+  return (txRawOrDirectSignResponse as DirectSignResponse).signed === undefined
+    ? (txRawOrDirectSignResponse as TxRaw)
+    : createTxRawFromSigResponse(
+        txRawOrDirectSignResponse as DirectSignResponse,
+      )
 }

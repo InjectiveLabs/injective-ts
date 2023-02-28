@@ -1,12 +1,12 @@
 import {
+  SpotTrade as GrpcSpotTrade,
   SpotMarketInfo as GrpcSpotMarketInfo,
   SpotLimitOrder as GrpcSpotLimitOrder,
-  SpotTrade as GrpcSpotTrade,
   SpotOrderHistory as GrpcSpotOrderHistory,
 } from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import {
-  TradeExecutionType,
   TradeDirection,
+  TradeExecutionType,
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'

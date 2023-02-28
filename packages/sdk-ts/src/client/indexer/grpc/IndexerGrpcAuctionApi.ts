@@ -38,7 +38,7 @@ export class IndexerGrpcAuctionApi {
     }
 
     try {
-      const response = await this.client.AuctionEndpointRequest(request)
+      const response = await this.client.AuctionEndpoint(request)
 
       return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
     } catch (e: unknown) {

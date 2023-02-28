@@ -27,6 +27,7 @@ import { PaginationOption } from '../../../types/pagination'
 import { DerivativeOrderSide, DerivativeOrderState } from '../types/derivatives'
 import { IndexerDerivativeStreamTransformer } from '../transformers'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { Subscription } from 'rxjs'
 
 export type DerivativeOrderbookStreamCallback = (
   response: ReturnType<
@@ -94,14 +95,12 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativeOrderbookStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamOrderbookRequest.create()
 
     request.marketIds = marketIds
 
-    const stream = this.client.StreamOrderbook(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamOrderbook(request).subscribe({
       next(response: StreamOrderbookResponse) {
         callback(
           IndexerDerivativeStreamTransformer.orderbookStreamCallback(response),
@@ -118,6 +117,8 @@ export class IndexerGrpcDerivativesStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 
   streamDerivativeOrders({
@@ -134,7 +135,7 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativeOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamOrdersRequest.create()
 
     if (marketId) {
@@ -149,9 +150,7 @@ export class IndexerGrpcDerivativesStream {
       request.orderSide = orderSide
     }
 
-    const stream = this.client.StreamOrders(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamOrders(request).subscribe({
       next(response: StreamOrdersResponse) {
         callback(
           IndexerDerivativeStreamTransformer.ordersStreamCallback(response),
@@ -168,6 +167,8 @@ export class IndexerGrpcDerivativesStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 
   streamDerivativeOrderHistory({
@@ -190,7 +191,7 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativeOrderHistoryStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamOrdersHistoryRequest.create()
 
     if (subaccountId) {
@@ -217,9 +218,7 @@ export class IndexerGrpcDerivativesStream {
       request.executionTypes = executionTypes
     }
 
-    const stream = this.client.StreamOrdersHistory(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamOrdersHistory(request).subscribe({
       next(response: StreamOrdersHistoryResponse) {
         callback(
           IndexerDerivativeStreamTransformer.orderHistoryStreamCallback(
@@ -238,6 +237,8 @@ export class IndexerGrpcDerivativesStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 
   streamDerivativeTrades({
@@ -262,7 +263,7 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativeTradesStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamTradesRequest.create()
 
     if (marketIds) {
@@ -299,9 +300,7 @@ export class IndexerGrpcDerivativesStream {
       }
     }
 
-    const stream = this.client.StreamTrades(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamTrades(request).subscribe({
       next(response: StreamTradesResponse) {
         callback(
           IndexerDerivativeStreamTransformer.tradesStreamCallback(response),
@@ -318,6 +317,8 @@ export class IndexerGrpcDerivativesStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 
   streamDerivativePositions({
@@ -332,7 +333,7 @@ export class IndexerGrpcDerivativesStream {
     callback: PositionsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamPositionsRequest.create()
 
     if (marketId) {
@@ -343,9 +344,7 @@ export class IndexerGrpcDerivativesStream {
       request.subaccountId = subaccountId
     }
 
-    const stream = this.client.StreamPositions(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamPositions(request).subscribe({
       next(response: StreamPositionsResponse) {
         callback(
           IndexerDerivativeStreamTransformer.positionStreamCallback(response),
@@ -362,6 +361,8 @@ export class IndexerGrpcDerivativesStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 
   streamDerivativeMarket({
@@ -374,16 +375,14 @@ export class IndexerGrpcDerivativesStream {
     callback: MarketStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamMarketRequest.create()
 
     if (marketIds && marketIds.length) {
       request.marketIds = marketIds
     }
 
-    const stream = this.client.StreamMarket(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamMarket(request).subscribe({
       next(response: StreamMarketResponse) {
         callback(response)
       },
@@ -398,6 +397,8 @@ export class IndexerGrpcDerivativesStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 
   streamDerivativeOrderbookV2({
@@ -410,27 +411,31 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativeOrderbookV2StreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamOrderbookV2Request()
-    request.setMarketIdsList(marketIds)
+  }): Subscription {
+    const request = StreamOrderbookV2Request.create()
+    request.marketIds = marketIds
 
-    const stream = this.client.streamOrderbookV2(request)
-
-    stream.on('data', (response: StreamOrderbookV2Response) => {
-      callback(
-        IndexerDerivativeStreamTransformer.orderbookV2StreamCallback(response),
-      )
+    const subscription = this.client.StreamOrderbookV2(request).subscribe({
+      next(response: StreamOrderbookV2Response) {
+        callback(
+          IndexerDerivativeStreamTransformer.orderbookV2StreamCallback(
+            response,
+          ),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
   streamDerivativeOrderbookUpdate({
@@ -444,27 +449,30 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
-    const request = new StreamOrderbookUpdateRequest()
-    request.setMarketIdsList(marketIds)
+    const request = StreamOrderbookUpdateRequest.create()
 
-    const stream = this.client.streamOrderbookUpdate(request)
+    request.marketIds = marketIds
 
-    stream.on('data', (response: StreamOrderbookUpdateResponse) => {
-      callback(
-        IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback(
-          response,
-        ),
-      )
+    const subscription = this.client.StreamOrderbookUpdate(request).subscribe({
+      next(response: StreamOrderbookUpdateResponse) {
+        callback(
+          IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback(
+            response,
+          ),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 }

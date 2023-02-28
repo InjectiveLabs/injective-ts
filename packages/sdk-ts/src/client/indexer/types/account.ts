@@ -4,7 +4,6 @@ import {
   SubaccountDeposit as GrpcSubaccountDeposit,
   SubaccountBalance as GrpcSubaccountBalance,
   SubaccountPortfolio as GrpcSubaccountPortfolio,
-  Reward as GrpcTradingReward,
   SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
 } from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { Coin } from '@injectivelabs/ts-types'

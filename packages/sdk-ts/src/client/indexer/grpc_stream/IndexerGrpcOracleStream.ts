@@ -8,6 +8,7 @@ import {
 import { StreamStatusResponse } from '../types'
 import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { Subscription } from 'rxjs'
 
 export type OraclePriceStreamCallback = (
   response: ReturnType<
@@ -47,7 +48,7 @@ export class IndexerGrpcOracleStream {
     callback: OraclePriceStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamPricesRequest.create()
 
     if (baseSymbol) {
@@ -60,9 +61,7 @@ export class IndexerGrpcOracleStream {
 
     request.oracleType = oracleType
 
-    const stream = this.client.StreamPrices(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamPrices(request).subscribe({
       next(response: StreamPricesResponse) {
         callback(IndexerOracleStreamTransformer.pricesStreamCallback(response))
       },
@@ -77,6 +76,8 @@ export class IndexerGrpcOracleStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 
   streamOraclePricesByMarkets({
@@ -89,17 +90,15 @@ export class IndexerGrpcOracleStream {
     callback: OraclePricesByMarketsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamPricesByMarketsRequest.create()
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
-    const stream = this.client.StreamPrices(request)
-
-    return stream.subscribe({
-      next(response: StreamPricesResponse) {
+    const subscription = this.client.StreamPricesByMarkets(request).subscribe({
+      next(response: StreamPricesByMarketsResponse) {
         callback(
           IndexerOracleStreamTransformer.pricesByMarketsCallback(response),
         )
@@ -115,5 +114,7 @@ export class IndexerGrpcOracleStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 }

@@ -88,6 +88,7 @@ export const getStdFeeForToken = (
     decimals: number
   } = { denom: 'inj', decimals: 18 },
   gasPrice?: string,
+  gasLimit?: string,
 ) => {
   const gasPriceInBase =
     gasPrice || new BigNumberInWei(DEFAULT_GAS_PRICE).toBase()
@@ -99,10 +100,10 @@ export const getStdFeeForToken = (
     amount: [
       {
         denom: token.denom,
-        amount: gasPriceScaled.toString(),
+        amount: gasPriceScaled.times(DEFAULT_GAS_LIMIT).toFixed(),
       },
     ],
-    gas: DEFAULT_GAS_LIMIT.toString(),
+    gas: (gasLimit || DEFAULT_GAS_LIMIT).toString(),
   }
 }
 

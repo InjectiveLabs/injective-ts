@@ -244,12 +244,12 @@ export class IndexerGrpcDerivativeTransformer {
   static orderbookV2ResponseToOrderbookV2(
     response: DerivativeOrderbookV2Response,
   ) {
-    const orderbook = response.getOrderbook()!
+    const orderbook = response.orderbook!
 
     return IndexerGrpcDerivativeTransformer.grpcOrderbookV2ToOrderbookV2({
-      sequence: orderbook.getSequence(),
-      buys: orderbook?.getBuysList(),
-      sells: orderbook?.getSellsList(),
+      sequence: parseInt(orderbook.sequence, 10),
+      buys: orderbook?.buys,
+      sells: orderbook?.sells,
     })
   }
 
@@ -274,18 +274,18 @@ export class IndexerGrpcDerivativeTransformer {
   static orderbooksV2ResponseToOrderbooksV2(
     response: DerivativeOrderbooksV2Response,
   ) {
-    const orderbooks = response.getOrderbooksList()!
+    const orderbooks = response.orderbooks!
 
     return orderbooks.map((o) => {
-      const orderbook = o.getOrderbook()!
+      const orderbook = o.orderbook!
 
       return {
-        marketId: o.getMarketId(),
+        marketId: o.marketId,
         orderbook:
           IndexerGrpcDerivativeTransformer.grpcOrderbookV2ToOrderbookV2({
-            sequence: orderbook.getSequence(),
-            buys: orderbook.getBuysList(),
-            sells: orderbook.getSellsList(),
+            sequence: parseInt(orderbook.sequence, 10),
+            buys: orderbook.buys,
+            sells: orderbook.sells,
           }),
       }
     })

@@ -10,7 +10,7 @@ import {
   SubaccountTradesListRequest as SpotSubaccountTradesListRequest,
   OrderbooksRequest as SpotOrderbooksRequest,
   OrderbooksV2Request as SpotOrderbooksV2Request,
-  OrderbooksRequest as SpotOrderbookV2Request,
+  OrderbookV2Request as SpotOrderbookV2Request,
 } from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import {
   TradeExecutionSide,

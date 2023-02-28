@@ -28,7 +28,7 @@ const ordersWithOrderMask = params.orders.map((order) => ({
 
 const protoParams = {
   sender: params.injectiveAddress,
-  dataList: ordersWithOrderMask,
+  data: ordersWithOrderMask,
 }
 
 const protoParamsAmino = {

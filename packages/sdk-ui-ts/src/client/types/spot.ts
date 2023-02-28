@@ -6,7 +6,6 @@ import {
   SpotLimitOrder as UiSpotLimitOrder,
   SpotOrderHistory as UiSpotOrderHistory,
 } from '@injectivelabs/sdk-ts'
-import { Orderbook as UiSpotOrderbook } from '@injectivelabs/sdk-ts'
 import {
   ChronosSpotMarketSummary,
   AllChronosSpotMarketSummary,

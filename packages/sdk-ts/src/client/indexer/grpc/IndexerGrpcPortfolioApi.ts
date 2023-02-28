@@ -1,44 +1,51 @@
 import {
   AccountPortfolioRequest,
-  AccountPortfolioResponse,
-} from '@injectivelabs/indexer-api/injective_portfolio_rpc_pb'
-import { InjectivePortfolioRPC } from '@injectivelabs/indexer-api/injective_portfolio_rpc_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
+  InjectivePortfolioRPCClientImpl,
+} from '@injectivelabs/indexer-proto-ts/injective_portfolio_rpc'
 import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_portfolio_rpc'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountPortfolioApi extends BaseConsumer {
+export class IndexerGrpcAccountPortfolioApi {
   protected module: string = IndexerModule.Portfolio
 
-  async fetchAccountPortfolio(address: string) {
-    const request = new AccountPortfolioRequest()
+  protected client: InjectivePortfolioRPCClientImpl
 
-    request.setAccountAddress(address)
+  constructor(endpoint: string) {
+    this.client = new InjectivePortfolioRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
+
+  async fetchAccountPortfolio(address: string) {
+    const request = AccountPortfolioRequest.create()
+
+    request.accountAddress = address
 
     try {
-      const response = await this.request<
-        AccountPortfolioRequest,
-        AccountPortfolioResponse,
-        typeof InjectivePortfolioRPC.AccountPortfolio
-      >(request, InjectivePortfolioRPC.AccountPortfolio)
+      const response = await this.client.AccountPortfolio(request)
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio(
         response,
       )
     } catch (e: unknown) {
-      if ((e as Error)?.message === 'account address not found') {
+      if ((e as any).message === 'account address not found') {
         return undefined
       }
 
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

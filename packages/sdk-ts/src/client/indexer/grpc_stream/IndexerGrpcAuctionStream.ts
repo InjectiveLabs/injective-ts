@@ -4,9 +4,9 @@ import {
   StreamBidsResponse,
 } from '@injectivelabs/indexer-proto-ts/injective_auction_rpc'
 import { StreamStatusResponse } from '../types'
-
 import { IndexerAuctionStreamTransformer } from '../transformers'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { Subscription } from 'rxjs'
 
 export type BidsStreamCallback = (
   response: ReturnType<
@@ -34,12 +34,10 @@ export class IndexerGrpcAuctionStream {
     callback: BidsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamBidsRequest.create()
 
-    const stream = this.client.StreamBids(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamBids(request).subscribe({
       next(response: StreamBidsResponse) {
         callback(IndexerAuctionStreamTransformer.bidsStreamCallback(response))
       },
@@ -54,5 +52,7 @@ export class IndexerGrpcAuctionStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 }

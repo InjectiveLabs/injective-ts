@@ -15,13 +15,13 @@ const params: MsgDeposit['params'] = {
 const protoType = '/cosmos.gov.v1beta1.MsgDeposit'
 const protoTypeAmino = 'cosmos-sdk/MsgDeposit'
 const protoParams = {
-  proposalId: params.proposalId,
+  proposalId: params.proposalId.toString(),
   depositor: params.depositor,
-  amountList: [params.amount],
+  amount: [params.amount],
 }
 
 const protoParamsAmino = {
-  proposal_id: params.proposalId,
+  proposal_id: params.proposalId.toString(),
   depositor: params.depositor,
   amount: [params.amount],
 }

@@ -29,8 +29,6 @@
     "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "build:copy-files": "copyfiles -u 1 ./src/images/* ./dist/",
     "test": "jest",
-    "test:unit": "jest test/unit",
-    "test:integration": "jest test/unit",
     "test:watch": "jest --watch",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",

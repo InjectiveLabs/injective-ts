@@ -147,29 +147,29 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static orderbookV2ResponseToOrderbookV2(response: SpotOrderbookV2Response) {
-    const orderbook = response.getOrderbook()!
+    const orderbook = response.orderbook!
 
     return IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-      sequence: orderbook.getSequence(),
-      buys: orderbook?.getBuysList(),
-      sells: orderbook?.getSellsList(),
+      sequence: parseInt(orderbook.sequence, 10),
+      buys: orderbook?.buys,
+      sells: orderbook?.sells,
     })
   }
 
   static orderbooksV2ResponseToOrderbooksV2(
     response: SpotOrderbooksV2Response,
   ) {
-    const orderbooks = response.getOrderbooksList()!
+    const orderbooks = response.orderbooks!
 
     return orderbooks.map((o) => {
-      const orderbook = o.getOrderbook()!
+      const orderbook = o.orderbook!
 
       return {
-        marketId: o.getMarketId(),
+        marketId: o.marketId,
         orderbook: IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-          sequence: orderbook.getSequence(),
-          buys: orderbook.getBuysList(),
-          sells: orderbook.getSellsList(),
+          sequence: parseInt(orderbook.sequence, 10),
+          buys: orderbook.buys,
+          sells: orderbook.sells,
         }),
       }
     })

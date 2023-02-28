@@ -16,7 +16,7 @@ const protoTypeShort = 'cosmos-sdk/MsgSend'
 const protoParams = {
   toAddress: params.dstInjectiveAddress,
   fromAddress: params.srcInjectiveAddress,
-  amountList: [params.amount],
+  amount: [params.amount],
 }
 const protoParamsAmino = {
   to_address: params.dstInjectiveAddress,

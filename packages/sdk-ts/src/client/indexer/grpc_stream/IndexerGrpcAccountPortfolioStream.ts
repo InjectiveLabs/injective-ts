@@ -1,11 +1,12 @@
-import { InjectivePortfolioRPCClient } from '@injectivelabs/indexer-api/injective_portfolio_rpc_pb_service'
-import {
-  StreamAccountPortfolioRequest,
-  StreamAccountPortfolioResponse,
-} from '@injectivelabs/indexer-api/injective_portfolio_rpc_pb'
 import { StreamStatusResponse } from '../types'
 import { IndexerAccountPortfolioStreamTransformer } from '../transformers'
-import { getGrpcTransport } from '../../../utils/grpc'
+import {
+  InjectivePortfolioRPCClientImpl,
+  StreamAccountPortfolioRequest,
+  StreamAccountPortfolioResponse,
+} from '@injectivelabs/indexer-proto-ts/injective_portfolio_rpc'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { Subscription } from 'rxjs'
 
 export type AccountPortfolioStreamCallback = (
   response: ReturnType<
@@ -17,12 +18,12 @@ export type AccountPortfolioStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcAccountPortfolioStream {
-  protected client: InjectivePortfolioRPCClient
+  protected client: InjectivePortfolioRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectivePortfolioRPCClient(endpoint, {
-      transport: getGrpcTransport(),
-    })
+    this.client = new InjectivePortfolioRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
   }
 
   streamAccountPortfolio({
@@ -39,36 +40,38 @@ export class IndexerGrpcAccountPortfolioStream {
     callback: AccountPortfolioStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamAccountPortfolioRequest()
-    request.setAccountAddress(accountAddress)
+  }): Subscription {
+    const request = StreamAccountPortfolioRequest.create()
+    request.accountAddress = accountAddress
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (type) {
-      request.setType(type)
+      request.type = type
     }
 
-    const stream = this.client.streamAccountPortfolio(request)
-
-    stream.on('data', (response: StreamAccountPortfolioResponse) => {
-      callback(
-        IndexerAccountPortfolioStreamTransformer.accountPortfolioStreamCallback(
-          response,
-        ),
-      )
+    const subscription = this.client.StreamAccountPortfolio(request).subscribe({
+      next(response: StreamAccountPortfolioResponse) {
+        callback(
+          IndexerAccountPortfolioStreamTransformer.accountPortfolioStreamCallback(
+            response,
+          ),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 }

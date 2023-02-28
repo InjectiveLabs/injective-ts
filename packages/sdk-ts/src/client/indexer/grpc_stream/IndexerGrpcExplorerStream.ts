@@ -8,6 +8,7 @@ import {
 import { StreamStatusResponse } from '../types'
 import { ExplorerStreamTransformer } from '../transformers'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { Subscription } from 'rxjs'
 
 export type BlocksStreamCallback = (
   response: ReturnType<typeof ExplorerStreamTransformer.blocksStreamCallback>,
@@ -35,7 +36,7 @@ export class IndexerGrpcExplorerStream {
     )
   }
 
-  blocks({
+  streamBlocks({
     callback,
     onEndCallback,
     onStatusCallback,
@@ -43,12 +44,10 @@ export class IndexerGrpcExplorerStream {
     callback: BlocksStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamBlocksRequest.create()
 
-    const stream = this.client.StreamBlocks(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamBlocks(request).subscribe({
       next(response: StreamBlocksResponse) {
         callback(ExplorerStreamTransformer.blocksStreamCallback(response))
       },
@@ -63,9 +62,11 @@ export class IndexerGrpcExplorerStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 
-  blocksWithTxs({
+  streamBlocksWithTxs({
     callback,
     onEndCallback,
     onStatusCallback,
@@ -73,12 +74,10 @@ export class IndexerGrpcExplorerStream {
     callback: BlocksWithTxsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamBlocksRequest.create()
 
-    const stream = this.client.StreamBlocks(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamBlocks(request).subscribe({
       next(response: StreamBlocksResponse) {
         callback(
           ExplorerStreamTransformer.blocksWithTxsStreamCallback(response),
@@ -95,6 +94,8 @@ export class IndexerGrpcExplorerStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 
   streamTransactions({
@@ -105,12 +106,10 @@ export class IndexerGrpcExplorerStream {
     callback: TransactionsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
     const request = StreamTxsRequest.create()
 
-    const stream = this.client.StreamTxs(request)
-
-    return stream.subscribe({
+    const subscription = this.client.StreamTxs(request).subscribe({
       next(response: StreamTxsResponse) {
         callback(ExplorerStreamTransformer.transactionsStreamCallback(response))
       },
@@ -125,5 +124,7 @@ export class IndexerGrpcExplorerStream {
         }
       },
     })
+
+    return subscription as unknown as Subscription
   }
 }

@@ -17,7 +17,7 @@ const protoTypeAmino = 'auction/MsgBid'
 const protoParams = {
   sender: params.injectiveAddress,
   bidAmount: params.amount,
-  round: params.round,
+  round: params.round.toString(),
 }
 const aminoParams = snakecaseKeys(protoParams)
 

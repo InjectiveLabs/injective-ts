@@ -26,7 +26,7 @@ const protoParams = {
   ...params.fund,
   initialDeposit: params.deposit,
   sender: params.injectiveAddress,
-  expiry: -1,
+  expiry: '-1',
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgCreateInsuranceFund.fromJSON(params)

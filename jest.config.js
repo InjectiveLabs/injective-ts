@@ -84,10 +84,6 @@ module.exports = {
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
-  // moduleNameMapper: {
-  //   '^~/(.*)$': '<rootDir>/src/$1',
-  //   '^@injectivelabs/(.*)$': '<rootDir>/../$1/src'
-  // },
   moduleNameMapper: {
     ...pathsToModuleNameMapper(packagePaths),
     ...pathsToModuleNameMapper(directoryPaths, { prefix: '<rootDir>/' }),
@@ -180,14 +176,14 @@ module.exports = {
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
     '^.+\\.json$',
-    'node_modules/(?!(ethereum-cryptography|eth-crypto)/)',
+    'node_modules/(?!(@injectivelabs/core-proto-ts|@injectivelabs/indexer-proto-ts|ethereum-cryptography|eth-crypto)/)',
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run
-  verbose: false,
+  verbose: true,
 
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],

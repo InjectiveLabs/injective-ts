@@ -28,8 +28,6 @@
     "build:post": "shx cp ../../stub/package.json.stub dist/cjs/package.json && shx cp ../../stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
-    "test:unit": "jest test/unit",
-    "test:integration": "jest test/unit",
     "test:watch": "jest --watch",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",

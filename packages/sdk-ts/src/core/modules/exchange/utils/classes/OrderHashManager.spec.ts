@@ -1,5 +1,5 @@
 import { OrderType } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
-import { Network } from 'packages/networks/dist'
+import { Network } from '@injectivelabs/networks'
 import { Address } from '../../../../accounts/Address'
 import { OrderHashManager } from './OrderHashManager'
 

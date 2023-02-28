@@ -85,7 +85,7 @@ export class IndexerDerivativeStreamTransformer {
     return {
       orderbook: orderbook
         ? IndexerGrpcDerivativeTransformer.grpcOrderbookV2ToOrderbookV2({
-            sequence: orderbook.sequence,
+            sequence: parseInt(orderbook.sequence, 10),
             buys: orderbook.buys,
             sells: orderbook.sells,
           })
@@ -99,19 +99,19 @@ export class IndexerDerivativeStreamTransformer {
   static orderbookUpdateStreamCallback = (
     response: StreamOrderbookUpdateResponse,
   ) => {
-    const orderbook = response.getOrderbookLevelUpdates()
+    const orderbook = response.orderbookLevelUpdates
 
     return {
       orderbook: orderbook
         ? IndexerGrpcDerivativeTransformer.grpcOrderbookV2ToOrderbookV2({
-            sequence: orderbook.getSequence(),
-            buys: orderbook.getBuysList(),
-            sells: orderbook.getSellsList(),
+            sequence: parseInt(orderbook.sequence, 10),
+            buys: orderbook.buys,
+            sells: orderbook.sells,
           })
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      marketId: response.getMarketId(),
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      marketId: response.marketId,
+      timestamp: response.timestamp,
     }
   }
 }

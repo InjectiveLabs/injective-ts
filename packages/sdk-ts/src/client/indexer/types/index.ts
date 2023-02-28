@@ -1,7 +1,7 @@
 import { IndexerErrorModule } from '@injectivelabs/exceptions'
 
 export * from './account'
-export * from './accountPortfolio'
+export * from './account-portfolio'
 export * from './auction'
 export * from './derivatives-rest'
 export * from './derivatives'
