@@ -101,6 +101,7 @@ export interface PerpetualMarket extends BaseDerivativeMarket {
   isPerpetual: boolean
   oracleBase: string
   oracleQuote: string
+  oracleScaleFactor: number
   perpetualMarketInfo?: PerpetualMarketInfo
   perpetualMarketFunding?: PerpetualMarketFunding
 }
@@ -111,6 +112,7 @@ export interface ExpiryFuturesMarket extends BaseDerivativeMarket {
   isPerpetual: boolean
   oracleBase: string
   oracleQuote: string
+  oracleScaleFactor: number
   expiryFuturesMarketInfo?: ExpiryFuturesMarketInfo
 }
 
