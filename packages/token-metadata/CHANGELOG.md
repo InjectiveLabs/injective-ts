@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.177](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.175...@injectivelabs/token-metadata@1.0.177) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
 ## [1.0.175](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.174...@injectivelabs/token-metadata@1.0.175) (2023-03-01)
 
 
