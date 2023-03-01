@@ -16,64 +16,70 @@ export const testnetSymbolToCw20AddressMap = {
   },
 }
 
-export const tokensBySymbolForTestnet = (
-  Object.keys(tokens) as Array<keyof typeof tokens>
-).reduce((result, token) => {
-  const tokenMeta = tokens[token] as TokenMeta
+export const getTokensBySymbolForTestnet = () =>
+  (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
+    (result, token) => {
+      const tokenMeta = { ...tokens[token] } as TokenMeta
 
-  if (!tokenMeta.erc20 && !tokenMeta.cw20 && !tokenMeta.cw20s) {
-    return {
-      ...result,
-      [token.toUpperCase()]: tokenMeta,
-    }
-  }
-
-  const tokenSymbol = token as keyof typeof testnetSymbolToErc20AddressMap
-  const testnetAddressFromMap = testnetSymbolToErc20AddressMap[tokenSymbol]
-  const cw20TokenKey = token as keyof typeof testnetSymbolToCw20AddressMap
-  const cw20TestnetAddressFromMap = testnetSymbolToCw20AddressMap[cw20TokenKey]
-
-  if (!testnetAddressFromMap && !cw20TestnetAddressFromMap) {
-    return {
-      ...result,
-      [token.toUpperCase()]: tokenMeta,
-    }
-  }
-
-  const mappedTokenMeta = { ...tokenMeta }
-
-  if (testnetAddressFromMap && mappedTokenMeta.erc20) {
-    mappedTokenMeta.erc20.address = testnetAddressFromMap
-  }
-
-  if (cw20TestnetAddressFromMap) {
-    if (mappedTokenMeta.cw20 && typeof cw20TestnetAddressFromMap === 'string') {
-      mappedTokenMeta.cw20.address = cw20TestnetAddressFromMap
-    }
-
-    if (
-      mappedTokenMeta.cw20s &&
-      typeof cw20TestnetAddressFromMap !== 'string'
-    ) {
-      const cw20Maps = mappedTokenMeta.cw20s.map((cw20) => {
-        const symbol = cw20.symbol as keyof typeof cw20TestnetAddressFromMap
-
-        if (!cw20TestnetAddressFromMap[symbol]) {
-          return cw20
-        }
-
+      if (!tokenMeta.erc20 && !tokenMeta.cw20 && !tokenMeta.cw20s) {
         return {
-          ...cw20,
-          address: cw20TestnetAddressFromMap[symbol],
+          ...result,
+          [token.toUpperCase()]: tokenMeta,
         }
-      })
+      }
 
-      mappedTokenMeta.cw20s = cw20Maps
-    }
-  }
+      const tokenSymbol = token as keyof typeof testnetSymbolToErc20AddressMap
+      const testnetAddressFromMap = testnetSymbolToErc20AddressMap[tokenSymbol]
+      const cw20TokenKey = token as keyof typeof testnetSymbolToCw20AddressMap
+      const cw20TestnetAddressFromMap =
+        testnetSymbolToCw20AddressMap[cw20TokenKey]
 
-  return {
-    ...result,
-    [token.toUpperCase()]: mappedTokenMeta,
-  }
-}, {}) as Record<string, TokenMeta>
+      if (!testnetAddressFromMap && !cw20TestnetAddressFromMap) {
+        return {
+          ...result,
+          [token.toUpperCase()]: tokenMeta,
+        }
+      }
+
+      const mappedTokenMeta = { ...tokenMeta }
+
+      if (testnetAddressFromMap && mappedTokenMeta.erc20) {
+        mappedTokenMeta.erc20.address = testnetAddressFromMap
+      }
+
+      if (cw20TestnetAddressFromMap) {
+        if (
+          mappedTokenMeta.cw20 &&
+          typeof cw20TestnetAddressFromMap === 'string'
+        ) {
+          mappedTokenMeta.cw20.address = cw20TestnetAddressFromMap
+        }
+
+        if (
+          mappedTokenMeta.cw20s &&
+          typeof cw20TestnetAddressFromMap !== 'string'
+        ) {
+          const cw20Maps = mappedTokenMeta.cw20s.map((cw20) => {
+            const symbol = cw20.symbol as keyof typeof cw20TestnetAddressFromMap
+
+            if (!cw20TestnetAddressFromMap[symbol]) {
+              return cw20
+            }
+
+            return {
+              ...cw20,
+              address: cw20TestnetAddressFromMap[symbol],
+            }
+          })
+
+          mappedTokenMeta.cw20s = cw20Maps
+        }
+      }
+
+      return {
+        ...result,
+        [token.toUpperCase()]: mappedTokenMeta,
+      }
+    },
+    {},
+  ) as Record<string, TokenMeta>
