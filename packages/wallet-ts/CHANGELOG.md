@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.470](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.469...@injectivelabs/wallet-ts@1.0.470) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
 ## [1.0.469](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.468...@injectivelabs/wallet-ts@1.0.469) (2023-03-01)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
