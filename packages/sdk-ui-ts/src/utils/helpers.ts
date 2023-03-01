@@ -1,5 +1,6 @@
 import path from 'path'
 import { TokenType } from '@injectivelabs/token-metadata'
+import { validatorAddressToPathMap } from './mappings'
 
 export const getTokenLogoWithVendorPathPrefix = (image: string) => {
   if (image.includes('@injectivelabs')) {
@@ -30,4 +31,18 @@ export const getTokenLogoFromTokenType = (tokenType: TokenType) => {
     default:
       return getTokenLogoWithVendorPathPrefix('injective-black-fill.svg')
   }
+}
+
+export const getValidatorLogoWithVendorPathPrefix = (
+  validatorAddress: string,
+) => {
+  const validatorLogoPath = validatorAddressToPathMap[validatorAddress]
+
+  return path.join(
+    '/',
+    'vendor',
+    '@injectivelabs',
+    'sdk-ui-ts',
+    validatorLogoPath ? validatorLogoPath : 'injective.png',
+  )
 }
