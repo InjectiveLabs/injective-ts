@@ -159,6 +159,12 @@ export class SupernovaQueryTransformer {
         config.allowed_subscription_types,
       ),
       allowedRedemptionTypes: formatToString(config.allowed_redemption_types),
+      imbalanceAdjustmentExponent: formatToString(
+        config.imbalance_adjustment_exponent,
+      ),
+      rewardDiminishingFactor: formatToString(config.reward_diminishing_factor),
+      baseDecimals: formatToString(config.base_decimals),
+      quoteDecimals: formatToString(config.quote_decimals),
     }
   }
 
