@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.178](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.177...@injectivelabs/token-metadata@1.0.178) (2023-03-01)
+
+
+### Bug Fixes
+
+* testnet mapping for cw20 addresses ([beadf61](https://github.com/InjectiveLabs/injective-ts/commit/beadf61faa5dc6e806ee4cad603e0fdfa9d177b2))
+
+
+
+
+
 ## [1.0.177](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.175...@injectivelabs/token-metadata@1.0.177) (2023-03-01)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
