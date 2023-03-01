@@ -15,6 +15,7 @@ export enum TransactionChainErrorModule {
   Peggy = 'peggy',
   TokenFactory = 'tokenfactory',
   Wasmx = 'wasmx',
+  Wasm = 'wasm',
   Authz = 'authz',
 }
 
@@ -691,6 +692,49 @@ export enum ChainBankErrorCodes {
   ErrMultipleSenders = 9,
 }
 
+export enum ChainWasmErrorCodes {
+  // ErrCreateFailed error for wasm code that has already been uploaded or failed
+  ErrCreateFailed = 2,
+  // ErrAccountExists error for a contract account that already exists
+  ErrAccountExists = 3,
+  // ErrInstantiateFailed error for rust instantiate contract failure
+  ErrInstantiateFailed = 4,
+  // ErrExecuteFailed error for rust execution contract failure
+  ErrExecuteFailed = 5,
+  // ErrGasLimit error for out of gas
+  ErrGasLimit = 6,
+  // ErrInvalidGenesis error for invalid genesis file syntax
+  ErrInvalidGenesis = 7,
+  // ErrNotFound error for an entry not found in the store
+  ErrNotFound = 8,
+  // ErrQueryFailed error for rust smart query contract failure
+  ErrQueryFailed = 9,
+  // ErrInvalidMsg error when we cannot process the error returned from the contract
+  ErrInvalidMsg = 10,
+  // ErrMigrationFailed error for rust execution contract failure
+  ErrMigrationFailed = 11,
+  // ErrEmpty error for empty content
+  ErrEmpty = 12,
+  // ErrLimit error for content that exceeds a limit
+  ErrLimit = 13,
+  // ErrInvalid error for content that is invalid in this context
+  ErrInvalid = 14,
+  // ErrDuplicate error for content that exists
+  ErrDuplicate = 15,
+  // ErrMaxIBCChannels error for maximum number of ibc channels reached
+  ErrMaxIBCChannels = 16,
+  // ErrUnsupportedForContract error when a capability is used that is not supported for/ by this contract
+  ErrUnsupportedForContract = 17,
+  // ErrPinContractFailed error for pinning contract failures
+  ErrPinContractFailed = 18,
+  // ErrUnpinContractFailed error for unpinning contract failures
+  ErrUnpinContractFailed = 19,
+  // ErrUnknownMsg error by a message handler to show that it is not responsible for this message type
+  ErrUnknownMsg = 20,
+  // ErrInvalidEvent error if an attribute/event from the contract is invalid
+  ErrInvalidEvent = 21,
+}
+
 export type IndexerApiErrorCode = number
 
 export const UnspecifiedErrorCode = -1
@@ -711,4 +755,5 @@ export type ErrorContextCode =
   | ChainBankErrorCodes
   | ChainGovErrorCodes
   | ChainStakingErrorCodes
+  | ChainWasmErrorCodes
   | typeof UnspecifiedErrorCode

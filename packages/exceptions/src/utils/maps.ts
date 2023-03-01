@@ -92,31 +92,30 @@ export const mapFailedTransactionMessage = (
   }
 
   const ABCICode = context && context.code ? context.code : getABCICode(message)
-  const contextModule =
-    context && context.contextModule
-      ? context.contextModule
-      : getContextModule(message)
+  const contextModule = context?.contextModule || getContextModule(message)
   const reason = getReason(message)
 
-  if (
-    !ABCICode ||
-    !contextModule ||
-    !chainModuleCodeErrorMessagesMap[contextModule]
-  ) {
-    return mapFailedTransactionMessageFromString(message)
+  if (!ABCICode || !contextModule) {
+    const failedTxMap = mapFailedTransactionMessageFromString(message)
+
+    return {
+      ...failedTxMap,
+      message: reason || failedTxMap.message,
+    }
   }
 
-  const chainCodeErrorMessage =
-    chainModuleCodeErrorMessagesMap[contextModule][ABCICode]
+  const codespaceErrorMessages = chainModuleCodeErrorMessagesMap[contextModule]
 
-  if (!chainCodeErrorMessage) {
-    return reason
-      ? { message: reason, code: UnspecifiedErrorCode }
-      : mapFailedTransactionMessageFromString(message)
+  if (!codespaceErrorMessages) {
+    return {
+      message: reason || message,
+      code: ABCICode,
+      contextModule,
+    }
   }
 
   return {
-    message: chainCodeErrorMessage,
+    message: codespaceErrorMessages[ABCICode] || reason || message,
     code: ABCICode,
     contextModule,
   }
