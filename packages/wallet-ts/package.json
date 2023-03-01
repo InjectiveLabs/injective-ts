@@ -74,7 +74,7 @@
     "web3": "^1.7.3",
     "web3-core": "^1.7.3"
   },
-  "gitHead": "00176548701ceed002a45fd690bac43653b88d60",
+  "gitHead": "3364a2b1e58aba2387c509431cc1ae8ebf2c53d0",
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
