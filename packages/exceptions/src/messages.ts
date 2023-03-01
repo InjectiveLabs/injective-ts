@@ -14,6 +14,7 @@ import {
   ChainGovErrorCodes,
   ChainBankErrorCodes,
   ChainDistributionErrorCodes,
+  ChainWasmErrorCodes,
 } from './types'
 
 const auctionErrorMap = {
@@ -391,7 +392,7 @@ const tokenFactoryErrorMap = {
   [ChainTokenFactoryErrorCodes.ErrDenomDoesNotExist]: 'denom does not exist',
 }
 
-const wamsxErrorMap = {
+const wasmxErrorMap = {
   [ChainWasmXErrorCodes.ErrInvalidGasLimit]: 'invalid gas limit',
   [ChainWasmXErrorCodes.ErrInvalidGasPrice]: 'invalid gas price',
   [ChainWasmXErrorCodes.ErrInvalidContractAddress]: 'invalid contract address',
@@ -542,6 +543,31 @@ const distributionErrorMap = {
     'delegation does not exist',
 }
 
+const wasmErrorMap = {
+  [ChainWasmErrorCodes.ErrCreateFailed]: 'create wasm contract failed',
+  [ChainWasmErrorCodes.ErrAccountExists]: 'contract account already exists',
+  [ChainWasmErrorCodes.ErrInstantiateFailed]:
+    'instantiate wasm contract failed',
+  [ChainWasmErrorCodes.ErrExecuteFailed]: 'execute wasm contract failed',
+  [ChainWasmErrorCodes.ErrGasLimit]: 'insufficient gas',
+  [ChainWasmErrorCodes.ErrInvalidGenesis]: 'invalid genesis',
+  [ChainWasmErrorCodes.ErrNotFound]: 'not found',
+  [ChainWasmErrorCodes.ErrQueryFailed]: 'query wasm contract failed',
+  [ChainWasmErrorCodes.ErrInvalidMsg]: 'invalid CosmosMsg from the contract',
+  [ChainWasmErrorCodes.ErrMigrationFailed]: 'migrate wasm contract failed',
+  [ChainWasmErrorCodes.ErrEmpty]: 'empty',
+  [ChainWasmErrorCodes.ErrLimit]: 'exceeds limit',
+  [ChainWasmErrorCodes.ErrInvalid]: 'invalid',
+  [ChainWasmErrorCodes.ErrDuplicate]: 'duplicate',
+  [ChainWasmErrorCodes.ErrMaxIBCChannels]: 'max transfer channels',
+  [ChainWasmErrorCodes.ErrUnsupportedForContract]:
+    'unsupported for this contract',
+  [ChainWasmErrorCodes.ErrPinContractFailed]: 'pinning contract failed',
+  [ChainWasmErrorCodes.ErrUnpinContractFailed]: 'unpinning contract failed',
+  [ChainWasmErrorCodes.ErrUnknownMsg]: 'unknown message from the contract',
+  [ChainWasmErrorCodes.ErrInvalidEvent]: 'invalid event',
+}
+
 export const chainModuleCodeErrorMessagesMap: Record<
   string,
   Record<number, string>
@@ -554,7 +580,8 @@ export const chainModuleCodeErrorMessagesMap: Record<
   [TransactionChainErrorModule.Oracle]: oracleErrorMap,
   [TransactionChainErrorModule.Peggy]: peggyErrorMap,
   [TransactionChainErrorModule.TokenFactory]: tokenFactoryErrorMap,
-  [TransactionChainErrorModule.Wasmx]: wamsxErrorMap,
+  [TransactionChainErrorModule.Wasmx]: wasmxErrorMap,
+  [TransactionChainErrorModule.Wasm]: wasmErrorMap,
   [TransactionChainErrorModule.Staking]: stakingErrorMap,
   [TransactionChainErrorModule.Bank]: bankErrorMap,
   [TransactionChainErrorModule.Gov]: govErrorMap,
@@ -607,12 +634,6 @@ export const chainErrorMessagesMap: Record<
   unauthorized: {
     message: 'Unauthorized',
     code: ChainCosmosErrorCode.ErrUnauthorized,
-    module: TransactionChainErrorModule.CosmosSdk,
-  },
-
-  'unknown request': {
-    message: 'The request is not known',
-    code: ChainCosmosErrorCode.ErrUnknownRequest,
     module: TransactionChainErrorModule.CosmosSdk,
   },
 
@@ -1875,5 +1896,101 @@ export const chainErrorMessagesMap: Record<
     message: 'multiple senders not allowed',
     code: ChainBankErrorCodes.ErrMultipleSenders,
     module: TransactionChainErrorModule.Bank,
+  },
+
+  'create wasm contract failed': {
+    code: ChainWasmErrorCodes.ErrCreateFailed,
+    message: 'create wasm contract failed',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'contract account already exists': {
+    code: ChainWasmErrorCodes.ErrAccountExists,
+    message: 'contract account already exists',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'instantiate wasm contract failed': {
+    code: ChainWasmErrorCodes.ErrInstantiateFailed,
+    message: 'instantiate wasm contract failed',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'execute wasm contract failed': {
+    code: ChainWasmErrorCodes.ErrExecuteFailed,
+    message: 'execute wasm contract failed',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'insufficient gas': {
+    code: ChainWasmErrorCodes.ErrGasLimit,
+    message: 'insufficient gas',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'invalid genesis': {
+    code: ChainWasmErrorCodes.ErrInvalidGenesis,
+    message: 'invalid genesis',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'query wasm contract failed': {
+    code: ChainWasmErrorCodes.ErrQueryFailed,
+    message: 'query wasm contract failed',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'invalid CosmosMsg from the contract': {
+    code: ChainWasmErrorCodes.ErrInvalidMsg,
+    message: 'invalid CosmosMsg from the contract',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'migrate wasm contract failed': {
+    code: ChainWasmErrorCodes.ErrMigrationFailed,
+    message: 'migrate wasm contract failed',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  empty: {
+    code: ChainWasmErrorCodes.ErrEmpty,
+    message: 'empty',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'exceeds limit': {
+    code: ChainWasmErrorCodes.ErrLimit,
+    message: 'exceeds limit',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  invalid: {
+    code: ChainWasmErrorCodes.ErrInvalid,
+    message: 'invalid',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  duplicate: {
+    code: ChainWasmErrorCodes.ErrDuplicate,
+    message: 'duplicate',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'max transfer channels': {
+    code: ChainWasmErrorCodes.ErrMaxIBCChannels,
+    message: 'max transfer channels',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'unsupported for this contract': {
+    code: ChainWasmErrorCodes.ErrUnsupportedForContract,
+    message: 'unsupported for this contract',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'pinning contract failed': {
+    code: ChainWasmErrorCodes.ErrPinContractFailed,
+    message: 'pinning contract failed',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'unpinning contract failed': {
+    code: ChainWasmErrorCodes.ErrUnpinContractFailed,
+    message: 'unpinning contract failed',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'unknown message from the contract': {
+    code: ChainWasmErrorCodes.ErrUnknownMsg,
+    message: 'unknown message from the contract',
+    module: TransactionChainErrorModule.Wasm,
+  },
+  'invalid event': {
+    code: ChainWasmErrorCodes.ErrInvalidEvent,
+    message: 'invalid event',
+    module: TransactionChainErrorModule.Wasm,
   },
 }
