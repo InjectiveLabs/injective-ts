@@ -1194,11 +1194,12 @@ export default {
     coinGeckoId: '',
 
     erc20: {
-      decimals: 6,
+      decimals: 18,
       address: '0xf9a06dE3F6639E6ee4F079095D5093644Ad85E8b',
       tokenType: TokenType.Erc20,
     },
   },
+
   LDO: {
     name: 'Lido DAO Token',
     symbol: 'LDO',
