@@ -1190,7 +1190,7 @@ export default {
     name: 'Puggo',
     symbol: 'PUG',
     decimals: 18,
-    logo: 'puggo.jpeg',
+    logo: 'puggo.jpg',
     coinGeckoId: '',
 
     erc20: {
