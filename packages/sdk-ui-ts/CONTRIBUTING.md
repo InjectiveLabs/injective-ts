@@ -11,6 +11,12 @@ Please reference the following steps when adding a new validator icon.
 
 ### Adding a Bridge
 
+🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
+
+This guide is currently under work in progress.
+
+🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
+
 ### Adding a Wormhole Ethereum Bridge Token
 
 Please reference the following steps when adding a new validator icon.
