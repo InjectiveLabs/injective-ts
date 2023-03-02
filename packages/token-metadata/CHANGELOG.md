@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.182](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.181...@injectivelabs/token-metadata@1.0.182) (2023-03-02)
+
+
+### Bug Fixes
+
+* puggo image suffix ([2c6bffd](https://github.com/InjectiveLabs/injective-ts/commit/2c6bffdcf444d855e20ef45813b7328e3cb409fc))
+
+
+
+
+
 ## [1.0.181](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.179...@injectivelabs/token-metadata@1.0.181) (2023-03-01)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
