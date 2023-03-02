@@ -50,7 +50,7 @@ To get a sense of the packages and their functionality, we are going to list the
 
 ## 📜 Contribution
 
-**Contribution guides and practices will be available once there is a stable foundation of the whole package set within the `injective-ts` repo.**
+General contribution guidelines can be found on the [Contributing](CONTRIBUTING.md) page. There can be a package-specific contribution guides, please make sure you read them before you open a PR.
 
 ---
 
