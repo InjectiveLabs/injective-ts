@@ -26,7 +26,7 @@ export interface TokenMeta {
 
 Example:
 
-```
+```ts
 CHZ: {
   name: 'Chiliz',
   symbol: 'CHZ',
