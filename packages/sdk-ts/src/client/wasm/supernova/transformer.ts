@@ -1,17 +1,18 @@
 import { fromBase64 } from '../../../utils'
 import {
   WasmContractQueryResponse,
-  QueryContractMarketingInfoResponse,
-  QueryContractTokenInfoResponse,
-  QueryMastContractConfigResponse,
+  QueryVaultMarketIdResponse,
+  QueryLockedLpFundsResponse,
   QueryRegisteredVaultResponse,
   QueryVaultContractBaseConfig,
-  QueryVaultUserLpContractAllowanceResponse,
-  QueryVaultContractDerivativeConfigResponse,
-  QueryVaultContractSpotConfigResponse,
-  QueryVaultMarketIdResponse,
+  QueryContractTokenInfoResponse,
+  QueryMastContractConfigResponse,
   QueryVaultTotalLpSupplyResponse,
   QueryVaultUserLpBalanceResponse,
+  QueryContractMarketingInfoResponse,
+  QueryVaultContractSpotConfigResponse,
+  QueryVaultUserLpContractAllowanceResponse,
+  QueryVaultContractDerivativeConfigResponse,
 } from './types'
 
 /**
@@ -202,6 +203,14 @@ export class SupernovaQueryTransformer {
     const data = fromBase64(response.data) as QueryVaultUserLpBalanceResponse
 
     return { balance: data.balance }
+  }
+
+  static vaultUserLockedLpFundsResponseToVaultUserLockedLpFunds(
+    response: WasmContractQueryResponse,
+  ) {
+    const data = fromBase64(response.data) as QueryLockedLpFundsResponse
+
+    return { amount: data.amount, lockTime: data.lock_time }
   }
 
   static registeredVaultsResponseToRegisteredVaults(

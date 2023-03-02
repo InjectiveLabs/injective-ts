@@ -88,6 +88,11 @@ export interface QueryVaultUserLpBalanceResponse {
   balance: string
 }
 
+export interface QueryLockedLpFundsResponse {
+  amount: string
+  lock_time: string
+}
+
 export interface QueryRegisteredVaultResponse {
   registered_vaults: {
     master_subaccount_id: string

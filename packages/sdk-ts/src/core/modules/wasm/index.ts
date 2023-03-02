@@ -8,6 +8,7 @@ export { default as ExecArgRegisterVault } from './exec-args/ExecArgRegisterVaul
 export { default as ExecArgSubmitVaa } from './exec-args/ExecArgSubmitVaa'
 export { default as ExecArgUpdateDerivativeVaultConfig } from './exec-args/ExecArgUpdateDerivativeVaultConfig'
 export { default as ExecArgUpdateSpotVaultConfig } from './exec-args/ExecArgUpdateSpotVaultConfig'
+export { default as ExecArgRequestTimeLockedRedemption } from './exec-args/ExecArgRequestTimeLockedRedemption'
 
 export { default as MsgPrivilegedExecuteContract } from './msgs/MsgPrivilegedExecuteContract'
 export { default as MsgExecuteContract } from './msgs/MsgExecuteContract'
