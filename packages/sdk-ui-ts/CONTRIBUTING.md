@@ -1,7 +1,7 @@
 # 📜 Contributing
 
 
-### Validator Icons
+## Validator Icons
 
 Please reference the following steps when adding a new validator icon.
 
@@ -9,7 +9,7 @@ Please reference the following steps when adding a new validator icon.
 
 2. Add the operator/consensus address mappings to `validatorAddressToPathMap` in `utils/mappings.ts`. Note that you will have to add two items to the map. The first item will be in format: `<consensus address>:<file path>`. The second item will be in format: `<operator address>:<file path>`.
 
-### Adding a Bridge
+## Adding a Bridge
 
 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
@@ -17,7 +17,7 @@ This guide is currently under work in progress.
 
 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
-### Adding a Wormhole Ethereum Bridge Token
+## Adding a Wormhole Ethereum Bridge Token
 
 Please reference the following steps when adding a new validator icon.
 

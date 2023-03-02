@@ -1,6 +1,6 @@
 # 📜 Contributing
 
-### Token Metadata
+## Token Metadata
 
 Please reference the following steps when adding a new token metadata.
 
