@@ -1,4 +1,7 @@
-## 📜 Contribution
+# 📜 Contribution
+
+
+### Validator Icons
 
 Please reference the following steps when adding a new validator icon.
 
