@@ -249,7 +249,7 @@ export class TokenPrice {
   private fetchUsdTokenPriceFromInjectiveServiceInChunks = async (
     coinIds: string[],
   ) => {
-    const CHUNK_SIZE = 10
+    const CHUNK_SIZE = 50
     let prices: Record<string, number> = {}
 
     for (let i = 0; i < coinIds.length; i += CHUNK_SIZE) {
