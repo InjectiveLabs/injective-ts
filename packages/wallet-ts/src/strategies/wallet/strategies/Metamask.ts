@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { isServerSide, sleep } from '@injectivelabs/utils'
+import { sleep } from '@injectivelabs/utils'
 import {
   AccountAddress,
   ChainId,
@@ -13,7 +13,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { TxResponse } from '@injectivelabs/sdk-ts'
+import { TxResponse, isServerSide } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import {
   Eip1993ProviderWithMetamask,

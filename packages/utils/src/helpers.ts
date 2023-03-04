@@ -1,4 +1,3 @@
-import { ComposerResponse } from '@injectivelabs/ts-types'
 import BigNumber from 'bignumber.js'
 import {
   DEFAULT_STD_FEE,
@@ -42,45 +41,29 @@ export const awaitForAll = async <T, S>(
   return result
 }
 
-export const isServerSide = () => typeof window === 'undefined'
+export const splitArrayToChunks = <T>({
+  array,
+  chunkSize,
+  filter,
+}: {
+  array: Array<T>
+  chunkSize: number
+  filter?: (item: T) => boolean
+}) => {
+  const chunks = []
 
-export const mapMultipleComposerResponseMessages = <T, R>(
-  messages: ComposerResponse<T, R>[],
-) =>
-  messages.reduce(
-    (
-      messages: {
-        web3GatewayMessage: R[]
-        directBroadcastMessage: { type: string; message: T }[]
-      },
-      message,
-    ) => {
-      const web3GatewayMessage = Array.isArray(message.web3GatewayMessage)
-        ? message.web3GatewayMessage
-        : [message.web3GatewayMessage]
+  for (let i = 0; i < array.length; i += chunkSize) {
+    const chunk = array.slice(i, i + chunkSize)
 
-      const directBroadcastMessage = Array.isArray(
-        message.directBroadcastMessage,
-      )
-        ? message.directBroadcastMessage
-        : [message.directBroadcastMessage]
+    if (filter) {
+      chunks.push(chunk.filter(filter))
+    } else {
+      chunks.push(chunk)
+    }
+  }
 
-      return {
-        web3GatewayMessage: [
-          ...messages.web3GatewayMessage,
-          ...web3GatewayMessage,
-        ],
-        directBroadcastMessage: [
-          ...messages.directBroadcastMessage,
-          ...directBroadcastMessage,
-        ],
-      }
-    },
-    {
-      web3GatewayMessage: [] as R[],
-      directBroadcastMessage: [] as { type: string; message: T }[],
-    },
-  )
+  return chunks
+}
 
 export const getStdFeeForToken = (
   token: {
