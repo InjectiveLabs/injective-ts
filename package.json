@@ -24,6 +24,8 @@
     "patch": "lerna version patch",
     "clean": "lerna run --parallel clean && shx rm -rf .build-cache *.log coverage junit.xml",
     "test": "jest",
+    "test:sdk-ts:client": "jest ./packages/sdk-ts/src/client",
+    "test:sdk-ts:core": "jest ./packages/sdk-ts/src/core",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
     "coverage:unit": "yarn test:unit --coverage",

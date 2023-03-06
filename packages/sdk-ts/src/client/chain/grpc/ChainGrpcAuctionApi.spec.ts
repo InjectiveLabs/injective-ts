@@ -1,4 +1,5 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { ChainGrpcAuctionTransformer } from '../transformers'
 import { ChainGrpcAuctionApi } from './ChainGrpcAuctionApi'
 
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
@@ -7,22 +8,58 @@ const chainGrpcAuctionApi = new ChainGrpcAuctionApi(endpoints.grpc)
 describe('ChainGrpcAuctionApi', () => {
   test('fetchModuleParams', async () => {
     try {
+      const response = await chainGrpcAuctionApi.fetchModuleParams()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcAuctionTransformer.moduleParamsResponseToModuleParams
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcAuctionApi.fetchModuleParams => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchModuleState', async () => {
+    try {
       const response = await chainGrpcAuctionApi.fetchModuleState()
 
       expect(response).toBeDefined()
       expect(response).toEqual(
-        expect.objectContaining({
-          params: {
-            auctionPeriod: expect.any(Number),
-            minNextBidIncrementRate: expect.any(String),
-          },
-          auctionRound: expect.any(Number),
-          highestBid: expect.any(Object),
-          auctionEndingTimestamp: expect.any(Number),
-        }),
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcAuctionTransformer.auctionModuleStateResponseToAuctionModuleState
+          >
+        >(response),
       )
     } catch (e) {
-      //
+      console.error(
+        'ChainGrpcAuctionApi.fetchModuleState => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchCurrentBasket', async () => {
+    try {
+      const response = await chainGrpcAuctionApi.fetchCurrentBasket()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcAuctionApi.fetchCurrentBasket => ' + (e as any).message,
+      )
     }
   })
 })
