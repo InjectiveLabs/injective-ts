@@ -44,7 +44,7 @@
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/indexer-api": "1.10.0-rc.2.5",
     "@injectivelabs/networks": "^1.0.96",
-    "@injectivelabs/ninja-api": "^1.0.11",
+    "@injectivelabs/ninja-api": "1.0.12",
     "@injectivelabs/token-metadata": "^1.0.185",
     "@injectivelabs/ts-types": "^1.0.30",
     "@injectivelabs/utils": "^1.0.84",
