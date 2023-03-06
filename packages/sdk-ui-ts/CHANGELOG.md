@@ -3,6 +3,94 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.601](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.600...@injectivelabs/sdk-ui-ts@1.0.601) (2023-03-05)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.600](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.599...@injectivelabs/sdk-ui-ts@1.0.600) (2023-03-04)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.599](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.598...@injectivelabs/sdk-ui-ts@1.0.599) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.598](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.597...@injectivelabs/sdk-ui-ts@1.0.598) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.597](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.596...@injectivelabs/sdk-ui-ts@1.0.597) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.596](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.594...@injectivelabs/sdk-ui-ts@1.0.596) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.594](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.593...@injectivelabs/sdk-ui-ts@1.0.594) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.593](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.592...@injectivelabs/sdk-ui-ts@1.0.593) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.592](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.591...@injectivelabs/sdk-ui-ts@1.0.592) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.591](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.590...@injectivelabs/sdk-ui-ts@1.0.591) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.590](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.589...@injectivelabs/sdk-ui-ts@1.0.590) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
 ## [1.0.589](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.588...@injectivelabs/sdk-ui-ts@1.0.589) (2023-02-27)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts

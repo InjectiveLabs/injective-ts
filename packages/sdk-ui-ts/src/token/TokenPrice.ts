@@ -1,5 +1,11 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
-import { BigNumberInBase, HttpRestClient, sleep } from '@injectivelabs/utils'
+import {
+  awaitAll,
+  splitArrayToChunks,
+  BigNumberInBase,
+  HttpRestClient,
+  sleep,
+} from '@injectivelabs/utils'
 import { HttpRequestException } from '@injectivelabs/exceptions'
 import { ASSET_PRICE_SERVICE_URL } from '../constants'
 import { CoinPriceFromInjectiveService } from '../types/token'
@@ -249,19 +255,17 @@ export class TokenPrice {
   private fetchUsdTokenPriceFromInjectiveServiceInChunks = async (
     coinIds: string[],
   ) => {
-    const CHUNK_SIZE = 10
-    let prices: Record<string, number> = {}
+    const CHUNK_SIZE = 50
+    const chunks = splitArrayToChunks({
+      array: coinIds,
+      chunkSize: CHUNK_SIZE,
+      filter: (c) => !!c,
+    })
 
-    for (let i = 0; i < coinIds.length; i += CHUNK_SIZE) {
-      const chunkCoinIds = coinIds.slice(i, i + CHUNK_SIZE).filter((c) => c)
-
-      if (chunkCoinIds.length === 0) {
-        continue
-      }
-
+    const response = await awaitAll(chunks, async (chunk) => {
       try {
         const pricesResponse = (await this.restClient.get('coin/price', {
-          coinIds: chunkCoinIds.join(','),
+          coinIds: chunk.join(','),
           currency: 'usd',
         })) as {
           data: {
@@ -270,22 +274,24 @@ export class TokenPrice {
         }
 
         if (pricesResponse.data.data.length === 0) {
-          continue
+          return {}
         }
 
-        const chunkResponse = pricesResponse.data.data.reduce(
+        return pricesResponse.data.data.reduce(
           (cache, coin) => ({
             ...cache,
             [coin.id]: new BigNumberInBase(coin.current_price).toNumber(),
           }),
           {} as Record<string, number>,
         )
-
-        prices = { ...prices, ...chunkResponse }
       } catch (e) {
-        //
+        return {}
       }
-    }
+    })
+
+    const prices = response.reduce((prices, chunkResponse) => {
+      return { ...prices, ...chunkResponse }
+    }, {})
 
     this.cache = { ...this.cache, ...prices }
 
@@ -295,16 +301,40 @@ export class TokenPrice {
   private fetchUsdTokenPriceFromCoinGeckoInChunks = async (
     coinIds: string[],
   ) => {
-    let prices: Record<string, number> = {}
+    const CHUNK_SIZE = 5
+    const chunks = splitArrayToChunks({
+      array: coinIds,
+      chunkSize: CHUNK_SIZE,
+      filter: (c) => !!c,
+    })
 
-    for (let i = 0; i < coinIds.length; i += 1) {
-      const price = await this.fetchUsdTokenPriceFromCoinGeckoNoThrow(
-        coinIds[i],
-      )
+    /**
+     * We make chunks to ensure that we don't hit the
+     * rate limits on CoinGecko by querying multiple
+     * prices at the same time as we do multiple
+     * calls at the same time
+     */
+    const response = await Promise.all(
+      chunks.map(async (chunk, index) => {
+        for (let i = 0; i < chunk.length; i += 1) {
+          const price = await this.fetchUsdTokenPriceFromCoinGeckoNoThrow(
+            chunk[i],
+          )
 
-      prices[coinIds[i]] = price
-      await sleep(500)
-    }
+          return { [chunk[i]]: price } as Record<string, number>
+        }
+
+        if (index < chunks.length - 1) {
+          await sleep(500)
+        }
+
+        return {}
+      }),
+    )
+
+    const prices = response.reduce((prices, chunkResponse) => {
+      return { ...prices, ...chunkResponse }
+    }, {})
 
     this.cache = { ...this.cache, ...prices }
 

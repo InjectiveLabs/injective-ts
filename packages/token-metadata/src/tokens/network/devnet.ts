@@ -1,4 +1,4 @@
-import { TokenMeta } from '../../types'
+import { TokenMeta, Erc20TokenMeta } from '../../types'
 import tokens from '../tokens'
 
 export const devnetSymbolToAddressMap = {
@@ -6,75 +6,79 @@ export const devnetSymbolToAddressMap = {
 }
 
 export const devnet1SymbolToAddressMap = {
-  INJ: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
+  INJ: '0xBe8d71D26525440A03311cc7fa372262c5354A3c',
 }
 
 export const devnet2SymbolToAddressMap = {
-  INJ: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
+  INJ: '0xBe8d71D26525440A03311cc7fa372262c5354A3c',
 }
 
-export const tokensBySymbolForDevnet = (
-  Object.keys(tokens) as Array<keyof typeof tokens>
-).reduce((result, token) => {
-  const tokenSymbol = token as keyof typeof devnetSymbolToAddressMap
-  const testnetAddressFromMap = devnetSymbolToAddressMap[tokenSymbol]
+const formatTokenMeta = (
+  symbol: string,
+  erc20AddressFromMap?: string,
+): TokenMeta => {
+  const tokenMeta = tokens[symbol]
 
-  if (!tokens[token].erc20) {
-    return result
+  if (!tokens[symbol].erc20 || !erc20AddressFromMap) {
+    return tokenMeta
   }
 
   return {
-    ...result,
-    [token.toUpperCase()]: {
-      ...tokens[token],
-      erc20: {
-        ...(testnetAddressFromMap ? { address: testnetAddressFromMap } : {}),
-        ...tokens[token].erc20,
-      },
+    ...tokenMeta,
+    erc20: {
+      ...(tokens[symbol].erc20 as Erc20TokenMeta),
+      ...(erc20AddressFromMap ? { address: erc20AddressFromMap } : {}),
     },
   }
-}, {}) as Record<string, TokenMeta>
+}
 
-export const tokensBySymbolForDevnet1 = (
-  Object.keys(tokens) as Array<keyof typeof tokens>
-).reduce((result, token) => {
-  const tokenSymbol = token as keyof typeof devnet1SymbolToAddressMap
-  const testnetAddressFromMap = devnet1SymbolToAddressMap[tokenSymbol]
+export const getTokensBySymbolForDevnet = () =>
+  (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
+    (result, symbol) => {
+      const tokenSymbol = symbol as keyof typeof devnetSymbolToAddressMap
+      const erc20AddressFromMap = devnetSymbolToAddressMap[tokenSymbol]
 
-  if (!tokens[token].erc20) {
-    return result
-  }
-
-  return {
-    ...result,
-    [token.toUpperCase()]: {
-      ...tokens[token],
-      erc20: {
-        ...tokens[token].erc20,
-        ...(testnetAddressFromMap ? { address: testnetAddressFromMap } : {}),
-      },
+      return {
+        ...result,
+        [tokenSymbol.toUpperCase()]: formatTokenMeta(
+          symbol,
+          erc20AddressFromMap,
+        ),
+      }
     },
-  }
-}, {}) as Record<string, TokenMeta>
+    {},
+  ) as Record<string, TokenMeta>
 
-export const tokensBySymbolForDevnet2 = (
-  Object.keys(tokens) as Array<keyof typeof tokens>
-).reduce((result, token) => {
-  const tokenSymbol = token as keyof typeof devnet2SymbolToAddressMap
-  const testnetAddressFromMap = devnet2SymbolToAddressMap[tokenSymbol]
+export const getTokensBySymbolForDevnet1 = () =>
+  (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
+    (result, symbol) => {
+      const tokenSymbol = symbol as keyof typeof devnet1SymbolToAddressMap
+      const erc20AddressFromMap = devnet1SymbolToAddressMap[tokenSymbol]
 
-  if (!tokens[token].erc20) {
-    return result
-  }
-
-  return {
-    ...result,
-    [token.toUpperCase()]: {
-      ...tokens[token],
-      erc20: {
-        ...tokens[token].erc20,
-        ...(testnetAddressFromMap ? { address: testnetAddressFromMap } : {}),
-      },
+      return {
+        ...result,
+        [tokenSymbol.toUpperCase()]: formatTokenMeta(
+          symbol,
+          erc20AddressFromMap,
+        ),
+      }
     },
-  }
-}, {}) as Record<string, TokenMeta>
+    {},
+  ) as Record<string, TokenMeta>
+
+export const getTokensBySymbolForDevnet2 = () =>
+  (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
+    (result, symbol) => {
+      const tokenSymbol = symbol as keyof typeof devnet2SymbolToAddressMap
+      const erc20AddressFromMap = devnet2SymbolToAddressMap[tokenSymbol]
+
+      return {
+        ...result,
+        [tokenSymbol.toUpperCase()]: formatTokenMeta(
+          symbol,
+          erc20AddressFromMap,
+        ),
+      }
+    },
+    {},
+  ) as Record<string, TokenMeta>

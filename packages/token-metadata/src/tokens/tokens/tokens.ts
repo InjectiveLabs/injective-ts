@@ -1232,13 +1232,33 @@ export default {
     name: 'Puggo',
     symbol: 'PUG',
     decimals: 18,
-    logo: 'puggo.jpeg',
+    logo: 'puggo.jpg',
     coinGeckoId: '',
 
     erc20: {
-      decimals: 6,
+      decimals: 18,
       address: '0xf9a06dE3F6639E6ee4F079095D5093644Ad85E8b',
       tokenType: TokenType.Erc20,
+    },
+  },
+
+  LDO: {
+    name: 'Lido DAO Token',
+    symbol: 'LDO',
+    decimals: 18,
+    logo: 'lido-dao.webp',
+    coinGeckoId: 'lido-dao',
+
+    erc20: {
+      decimals: 18,
+      address: '0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32',
+      tokenType: TokenType.Erc20,
+    },
+
+    cw20: {
+      decimals: 8,
+      address: 'inj1me6t602jlndzxgv2d7ekcnkjuqdp7vfh4txpyy',
+      tokenType: TokenType.Cw20,
     },
   },
 } as Record<string, TokenMeta>

@@ -23,6 +23,10 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     defaultMidPriceVolatilityRatio: string
     allowedSubscriptionTypes: number
     allowedRedemptionTypes: number
+    imbalanceAdjustmentExponent: string
+    rewardDiminishingFactor: string
+    baseDecimals: number
+    quoteDecimals: number
   }
 
   export interface Data {
@@ -43,6 +47,10 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     default_mid_price_volatility_ratio: string
     allowed_subscription_types: number
     allowed_redemption_types: number
+    imbalance_adjustment_exponent: string
+    reward_diminishing_factor: string
+    base_decimals: number
+    quote_decimals: number
   }
 }
 
@@ -85,6 +93,10 @@ export default class ExecArgUpdateSpotVaultConfig extends ExecArgBase<
       default_mid_price_volatility_ratio: params.defaultMidPriceVolatilityRatio,
       allowed_subscription_types: params.allowedSubscriptionTypes,
       allowed_redemption_types: params.allowedRedemptionTypes,
+      imbalance_adjustment_exponent: params.imbalanceAdjustmentExponent,
+      reward_diminishing_factor: params.rewardDiminishingFactor,
+      base_decimals: params.baseDecimals,
+      quote_decimals: params.quoteDecimals,
     }
   }
 

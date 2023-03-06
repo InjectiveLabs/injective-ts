@@ -62,6 +62,10 @@ export interface QueryVaultContractSpotConfigResponse {
     target_base_weight: string
     allowed_subscription_types: string
     allowed_redemption_types: string
+    imbalance_adjustment_exponent: string
+    reward_diminishing_factor: string
+    base_decimals: string
+    quote_decimals: string
   }
 }
 
@@ -82,6 +86,11 @@ export interface QueryVaultTotalLpSupplyResponse {
 
 export interface QueryVaultUserLpBalanceResponse {
   balance: string
+}
+
+export interface QueryLockedLpFundsResponse {
+  amount: string
+  lock_time: string
 }
 
 export interface QueryRegisteredVaultResponse {

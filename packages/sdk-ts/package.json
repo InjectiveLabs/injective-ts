@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ts",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
-  "version": "1.0.460",
+  "version": "1.0.471",
   "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -45,14 +45,13 @@
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@improbable-eng/grpc-web-react-native-transport": "^0.15.0",
     "@injectivelabs/core-proto-ts": "^0.0.3",
-    "@injectivelabs/exceptions": "^1.0.56",
-    "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/indexer-proto-ts": "^0.0.2",
-    "@injectivelabs/networks": "^1.0.93",
+    "@injectivelabs/exceptions": "^1.0.59",
+    "@injectivelabs/networks": "^1.0.96",
     "@injectivelabs/ninja-api": "^1.0.11",
-    "@injectivelabs/token-metadata": "^1.0.174",
-    "@injectivelabs/ts-types": "^1.0.29",
-    "@injectivelabs/utils": "^1.0.81",
+    "@injectivelabs/token-metadata": "^1.0.185",
+    "@injectivelabs/ts-types": "^1.0.30",
+    "@injectivelabs/utils": "^1.0.84",
     "@metamask/eth-sig-util": "^4.0.0",
     "@types/google-protobuf": "^3.15.5",
     "axios": "^0.27.2",
@@ -73,7 +72,7 @@
     "shx": "^0.3.2",
     "snakecase-keys": "^5.4.1"
   },
-  "gitHead": "00176548701ceed002a45fd690bac43653b88d60",
+  "gitHead": "3364a2b1e58aba2387c509431cc1ae8ebf2c53d0",
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",

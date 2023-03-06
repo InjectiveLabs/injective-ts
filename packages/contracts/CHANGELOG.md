@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.114](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.113...@injectivelabs/contracts@1.0.114) (2023-03-05)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+
+
+
+
+## [1.0.113](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.112...@injectivelabs/contracts@1.0.113) (2023-03-01)
+
+
+### Bug Fixes
+
+* mapping to networks ([62bbc7b](https://github.com/InjectiveLabs/injective-ts/commit/62bbc7b6068bc67ccbf43d729661ad02e0b594ed))
+
+
+
+
+
+## [1.0.112](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.111...@injectivelabs/contracts@1.0.112) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+
+
+
+
+## [1.0.111](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.110...@injectivelabs/contracts@1.0.111) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+
+
+
+
 ## [1.0.110](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.109...@injectivelabs/contracts@1.0.110) (2023-02-23)
 
 **Note:** Version bump only for package @injectivelabs/contracts

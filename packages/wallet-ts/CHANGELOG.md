@@ -3,6 +3,86 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.475](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.474...@injectivelabs/wallet-ts@1.0.475) (2023-03-05)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.474](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.473...@injectivelabs/wallet-ts@1.0.474) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.473](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.472...@injectivelabs/wallet-ts@1.0.473) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.472](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.471...@injectivelabs/wallet-ts@1.0.472) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.471](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.469...@injectivelabs/wallet-ts@1.0.471) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.469](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.468...@injectivelabs/wallet-ts@1.0.469) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.468](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.467...@injectivelabs/wallet-ts@1.0.468) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.467](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.466...@injectivelabs/wallet-ts@1.0.467) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.466](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.465...@injectivelabs/wallet-ts@1.0.466) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
+## [1.0.465](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.464...@injectivelabs/wallet-ts@1.0.465) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+
+
+
+
 ## [1.0.464](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.463...@injectivelabs/wallet-ts@1.0.464) (2023-02-27)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
