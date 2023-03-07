@@ -4,7 +4,7 @@ import { IndexerGrpcOracleApi } from './IndexerGrpcOracleApi'
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const indexerGrpcOracleApi = new IndexerGrpcOracleApi(endpoints.indexer)
 
-describe.skip('IndexerGrpcOracleApi', () => {
+describe('IndexerGrpcOracleApi', () => {
   test('fetchOracleList', async () => {
     try {
       const response = await indexerGrpcOracleApi.fetchOracleList()

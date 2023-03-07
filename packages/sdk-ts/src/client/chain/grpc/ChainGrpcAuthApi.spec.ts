@@ -7,7 +7,7 @@ const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const chainGrpcAuthApi = new ChainGrpcAuthApi(endpoints.grpc)
 
-describe.skip('ChainGrpcAuthApi', () => {
+describe('ChainGrpcAuthApi', () => {
   test('fetchModuleParams', async () => {
     try {
       const response = await chainGrpcAuthApi.fetchModuleParams()

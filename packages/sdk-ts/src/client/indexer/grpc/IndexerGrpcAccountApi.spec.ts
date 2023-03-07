@@ -10,7 +10,7 @@ const subaccountId = getDefaultSubaccountId(injectiveAddress)
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const indexerGrpcAccountApi = new IndexerGrpcAccountApi(endpoints.indexer)
 
-describe.skip('IndexerGrpcAccountApi', () => {
+describe('IndexerGrpcAccountApi', () => {
   test('fetchPortfolio', async () => {
     try {
       const response = await indexerGrpcAccountApi.fetchPortfolio(

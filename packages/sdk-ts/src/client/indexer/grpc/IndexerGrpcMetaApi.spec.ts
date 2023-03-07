@@ -4,7 +4,7 @@ import { IndexerGrpcMetaApi } from './IndexerGrpcMetaApi'
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const indexerGrpcMetaApi = new IndexerGrpcMetaApi(endpoints.indexer)
 
-describe.skip('IndexerGrpcMetaApi', () => {
+describe('IndexerGrpcMetaApi', () => {
   test('fetchPing', async () => {
     try {
       const response = await indexerGrpcMetaApi.fetchPing()

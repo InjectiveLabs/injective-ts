@@ -35,7 +35,7 @@ const derivativeOrder = {
   orderType: OrderType.BUY.toString(),
 }
 
-describe.skip('OrderHashManager', () => {
+describe('OrderHashManager', () => {
   it('generates proper hash', async () => {
     const spotOrderHashes = await orderHashManager.getSpotOrderHashes([
       spotOrder,

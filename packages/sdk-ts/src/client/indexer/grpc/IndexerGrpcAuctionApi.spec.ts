@@ -5,7 +5,7 @@ import { IndexerGrpcAuctionApi } from './IndexerGrpcAuctionApi'
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const indexerGrpcAuctionApi = new IndexerGrpcAuctionApi(endpoints.indexer)
 
-describe.skip('IndexerGrpcAuctionApi', () => {
+describe('IndexerGrpcAuctionApi', () => {
   test('fetchAuction', async () => {
     try {
       const response = await indexerGrpcAuctionApi.fetchAuction(-1)
