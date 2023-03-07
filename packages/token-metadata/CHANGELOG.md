@@ -3,6 +3,117 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.188](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.187...@injectivelabs/token-metadata@1.0.188) (2023-03-07)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.0.187](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.186...@injectivelabs/token-metadata@1.0.187) (2023-03-07)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.0.186](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.185...@injectivelabs/token-metadata@1.0.186) (2023-03-06)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.0.185](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.184...@injectivelabs/token-metadata@1.0.185) (2023-03-05)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.0.184](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.183...@injectivelabs/token-metadata@1.0.184) (2023-03-02)
+
+
+### Bug Fixes
+
+* minor ([4f82685](https://github.com/InjectiveLabs/injective-ts/commit/4f82685a41d545134416b28aadad1717cb4731b3))
+
+
+
+
+
+## [1.0.183](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.182...@injectivelabs/token-metadata@1.0.183) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.0.182](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.181...@injectivelabs/token-metadata@1.0.182) (2023-03-02)
+
+
+### Bug Fixes
+
+* puggo image suffix ([2c6bffd](https://github.com/InjectiveLabs/injective-ts/commit/2c6bffdcf444d855e20ef45813b7328e3cb409fc))
+
+
+
+
+
+## [1.0.181](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.179...@injectivelabs/token-metadata@1.0.181) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.0.179](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.178...@injectivelabs/token-metadata@1.0.179) (2023-03-01)
+
+
+### Bug Fixes
+
+* mapping to networks ([62bbc7b](https://github.com/InjectiveLabs/injective-ts/commit/62bbc7b6068bc67ccbf43d729661ad02e0b594ed))
+
+
+
+
+
+## [1.0.178](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.177...@injectivelabs/token-metadata@1.0.178) (2023-03-01)
+
+
+### Bug Fixes
+
+* testnet mapping for cw20 addresses ([beadf61](https://github.com/InjectiveLabs/injective-ts/commit/beadf61faa5dc6e806ee4cad603e0fdfa9d177b2))
+
+
+
+
+
+## [1.0.177](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.175...@injectivelabs/token-metadata@1.0.177) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.0.175](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.174...@injectivelabs/token-metadata@1.0.175) (2023-03-01)
+
+
+### Bug Fixes
+
+* devnet token meta doesnt include cw20 tokens ([db05821](https://github.com/InjectiveLabs/injective-ts/commit/db0582160de762c14d1f1a572f3c527c6b3275c4))
+
+
+
+
+
 ## [1.0.174](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.173...@injectivelabs/token-metadata@1.0.174) (2023-02-27)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

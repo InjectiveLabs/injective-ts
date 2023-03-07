@@ -3,6 +3,137 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.477](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.476...@injectivelabs/sdk-ts@1.0.477) (2023-03-07)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.476](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.475...@injectivelabs/sdk-ts@1.0.476) (2023-03-07)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.475](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.474...@injectivelabs/sdk-ts@1.0.475) (2023-03-07)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.474](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.473...@injectivelabs/sdk-ts@1.0.474) (2023-03-06)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.473](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.472...@injectivelabs/sdk-ts@1.0.473) (2023-03-06)
+
+
+### Bug Fixes
+
+* minor ([af6fffe](https://github.com/InjectiveLabs/injective-ts/commit/af6fffe5cecec8b4405b09c27ce99ad75c6f8b3e))
+
+
+
+
+
+## [1.0.472](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.471...@injectivelabs/sdk-ts@1.0.472) (2023-03-06)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.471](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.470...@injectivelabs/sdk-ts@1.0.471) (2023-03-05)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.470](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.469...@injectivelabs/sdk-ts@1.0.470) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.469](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.468...@injectivelabs/sdk-ts@1.0.469) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.468](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.467...@injectivelabs/sdk-ts@1.0.468) (2023-03-02)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.467](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.465...@injectivelabs/sdk-ts@1.0.467) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.465](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.464...@injectivelabs/sdk-ts@1.0.465) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.464](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.463...@injectivelabs/sdk-ts@1.0.464) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.463](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.462...@injectivelabs/sdk-ts@1.0.463) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.462](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.461...@injectivelabs/sdk-ts@1.0.462) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.461](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.460...@injectivelabs/sdk-ts@1.0.461) (2023-03-01)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
 ## [1.0.460](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.459...@injectivelabs/sdk-ts@1.0.460) (2023-02-27)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

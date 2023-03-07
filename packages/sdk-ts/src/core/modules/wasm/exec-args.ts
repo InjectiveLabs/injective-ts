@@ -8,6 +8,7 @@ import ExecArgRegisterVault from './exec-args/ExecArgRegisterVault'
 import ExecArgSubmitVaa from './exec-args/ExecArgSubmitVaa'
 import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
 import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
+import ExecArgRequestTimeLockedRedemption from './exec-args/ExecArgRequestTimeLockedRedemption'
 
 import ExecPrivilegedArgRegisterVault from './exec-priv-args/ExecPrivilegedRegisterVault'
 import ExecPrivilegedArgVaultRedeem from './exec-priv-args/ExecPrivilegedArgVaultRedeem'
@@ -24,6 +25,7 @@ export type ExecArgs =
   | ExecArgSubmitVaa
   | ExecArgUpdateDerivativeVaultConfig
   | ExecArgUpdateSpotVaultConfig
+  | ExecArgRequestTimeLockedRedemption
 
 export type ExecPrivilegedArgs =
   | ExecPrivilegedArgRegisterVault

@@ -6,17 +6,21 @@ import {
 
 export declare namespace ExecPrivilegedArgVaultSubscribe {
   export interface Params {
+    origin: string
+    deadline?: number
+    marginRatio?: string
+    maxSlippage?: string
     vaultSubaccountId: string
     subscriberSubaccountId: string
-    marginRatio?: string
-    origin: string
     subscriptionType: Record<string, any>
   }
 
   export interface Data {
+    deadline?: number
+    max_slippage?: string
+    margin_ratio?: string
     vault_subaccount_id: string
     subscriber_subaccount_id: string
-    margin_ratio?: string
     subscription_type: Record<string, any>
   }
 }
@@ -38,10 +42,12 @@ export default class ExecPrivilegedArgVaultSubscribe extends ExecPrivilegedArgBa
     const { params } = this
 
     return {
+      deadline: params.deadline,
+      margin_ratio: params.marginRatio,
+      max_slippage: params.maxSlippage,
+      subscription_type: params.subscriptionType,
       vault_subaccount_id: params.vaultSubaccountId,
       subscriber_subaccount_id: params.subscriberSubaccountId,
-      margin_ratio: params.marginRatio,
-      subscription_type: params.subscriptionType,
     }
   }
 

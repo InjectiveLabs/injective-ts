@@ -1,17 +1,18 @@
 import { fromBase64 } from '../../../utils'
 import {
   WasmContractQueryResponse,
-  QueryContractMarketingInfoResponse,
-  QueryContractTokenInfoResponse,
-  QueryMastContractConfigResponse,
+  QueryVaultMarketIdResponse,
+  QueryLockedLpFundsResponse,
   QueryRegisteredVaultResponse,
   QueryVaultContractBaseConfig,
-  QueryVaultUserLpContractAllowanceResponse,
-  QueryVaultContractDerivativeConfigResponse,
-  QueryVaultContractSpotConfigResponse,
-  QueryVaultMarketIdResponse,
+  QueryContractTokenInfoResponse,
+  QueryMastContractConfigResponse,
   QueryVaultTotalLpSupplyResponse,
   QueryVaultUserLpBalanceResponse,
+  QueryContractMarketingInfoResponse,
+  QueryVaultContractSpotConfigResponse,
+  QueryVaultUserLpContractAllowanceResponse,
+  QueryVaultContractDerivativeConfigResponse,
 } from './types'
 
 /**
@@ -159,6 +160,12 @@ export class SupernovaQueryTransformer {
         config.allowed_subscription_types,
       ),
       allowedRedemptionTypes: formatToString(config.allowed_redemption_types),
+      imbalanceAdjustmentExponent: formatToString(
+        config.imbalance_adjustment_exponent,
+      ),
+      rewardDiminishingFactor: formatToString(config.reward_diminishing_factor),
+      baseDecimals: formatToString(config.base_decimals),
+      quoteDecimals: formatToString(config.quote_decimals),
     }
   }
 
@@ -196,6 +203,14 @@ export class SupernovaQueryTransformer {
     const data = fromBase64(response.data) as QueryVaultUserLpBalanceResponse
 
     return { balance: data.balance }
+  }
+
+  static vaultUserLockedLpFundsResponseToVaultUserLockedLpFunds(
+    response: WasmContractQueryResponse,
+  ) {
+    const data = fromBase64(response.data) as QueryLockedLpFundsResponse
+
+    return { amount: data.amount, lockTime: data.lock_time }
   }
 
   static registeredVaultsResponseToRegisteredVaults(

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use different types of wallets on Injective.",
-  "version": "1.0.464",
+  "version": "1.0.482",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
@@ -44,13 +44,13 @@
     "@ethereumjs/common": "^2.6.3",
     "@ethereumjs/tx": "^3.5.1",
     "@injectivelabs/core-proto-ts": "^0.0.3",
-    "@injectivelabs/contracts": "^1.0.110",
-    "@injectivelabs/exceptions": "^1.0.56",
-    "@injectivelabs/networks": "^1.0.93",
-    "@injectivelabs/sdk-ts": "^1.0.460",
-    "@injectivelabs/token-metadata": "^1.0.174",
-    "@injectivelabs/ts-types": "^1.0.29",
-    "@injectivelabs/utils": "^1.0.81",
+    "@injectivelabs/contracts": "^1.0.114",
+    "@injectivelabs/exceptions": "^1.0.59",
+    "@injectivelabs/networks": "^1.0.96",
+    "@injectivelabs/sdk-ts": "^1.0.477",
+    "@injectivelabs/token-metadata": "^1.0.188",
+    "@injectivelabs/ts-types": "^1.0.30",
+    "@injectivelabs/utils": "^1.0.84",
     "@keplr-wallet/cosmos": "^0.11.17",
     "@keplr-wallet/types": "^0.11.17",
     "@ledgerhq/hw-app-eth": "6.32.0",
@@ -79,7 +79,7 @@
     "web3": "^1.7.3",
     "web3-core": "^1.7.3"
   },
-  "gitHead": "00176548701ceed002a45fd690bac43653b88d60",
+  "gitHead": "3364a2b1e58aba2387c509431cc1ae8ebf2c53d0",
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",

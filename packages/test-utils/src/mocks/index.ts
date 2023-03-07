@@ -1,5 +1,5 @@
 const injectiveAddress = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku'
-const injectiveAddress2 = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqkk'
+const injectiveAddress2 = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku'
 const validatorAddress = 'injvaloper1lsuqpgm8kgwpq96ewyew26xnfwyn3lh3ncrkrk'
 const validatorAddress2 = 'injvaloper1g4d6dmvnpg7w7yugy6kplndp7jpfmf3krtschp'
 const spotMarketId =

@@ -36,7 +36,7 @@ const derivativeOrder = {
 }
 
 describe('OrderHashManager', () => {
-  it.only('generates proper hash', async () => {
+  it('generates proper hash', async () => {
     const spotOrderHashes = await orderHashManager.getSpotOrderHashes([
       spotOrder,
     ])

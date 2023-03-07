@@ -55,7 +55,7 @@ export class TokenMetaUtils {
       address.toLowerCase() as keyof typeof tokensByCw20Address
 
     if (
-      !tokensByCw20Address[contractAddress] ||
+      !tokensByCw20Address[contractAddress] &&
       !tokensByCw20Address[address]
     ) {
       return
