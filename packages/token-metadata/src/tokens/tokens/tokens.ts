@@ -1028,17 +1028,16 @@ export default {
     logo: 'astroport.png',
     coinGeckoId: 'astroport-fi',
 
-    ibcs: [
-      {
-        decimals: 6,
-        isNative: true,
-        baseDenom: 'ASTRO',
-        path: 'transfer/channel-13',
-        channelId: 'channel-13',
-        hash: 'E8AC6B792CDE60AB208CA060CA010A3881F682A7307F624347AB71B6A0B0BF89',
-        tokenType: TokenType.Ibc,
-      },
-    ],
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom:
+        'cw20:terra1nsuqsk6kh58ulczatwev87ttq2z6r3pusulg9r24mfj2fvtzd4uq3exn26',
+      path: 'transfer/channel-104',
+      channelId: 'channel-104',
+      hash: 'EBD5A24C554198EBAF44979C5B4D2C2D312E6EBAB71962C92F735499C7575839',
+      tokenType: TokenType.Ibc,
+    },
   },
 
   SOL: {

@@ -16,12 +16,29 @@ export const testnetSymbolToCw20AddressMap = {
   },
 }
 
+export const testnetSymbolToIBCMap = {
+  ASTRO: {
+    hash: 'E8AC6B792CDE60AB208CA060CA010A3881F682A7307F624347AB71B6A0B0BF89',
+    path: 'transfer/channel-13',
+    channelId: 'channel-13',
+    baseDenom: 'ASTRO',
+  },
+} as Record<
+  string,
+  { hash: string; path: string; channelId: string; baseDenom: string }
+>
+
 export const getTokensBySymbolForTestnet = () =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, token) => {
       const tokenMeta = { ...tokens[token] } as TokenMeta
 
-      if (!tokenMeta.erc20 && !tokenMeta.cw20 && !tokenMeta.cw20s) {
+      if (
+        !tokenMeta.erc20 &&
+        !tokenMeta.cw20 &&
+        !tokenMeta.cw20s &&
+        !tokenMeta.ibc
+      ) {
         return {
           ...result,
           [token.toUpperCase()]: tokenMeta,
@@ -33,8 +50,13 @@ export const getTokensBySymbolForTestnet = () =>
       const cw20TokenKey = token as keyof typeof testnetSymbolToCw20AddressMap
       const cw20TestnetAddressFromMap =
         testnetSymbolToCw20AddressMap[cw20TokenKey]
+      const ibcTestnetDetailsFromMap = testnetSymbolToIBCMap[token]
 
-      if (!testnetAddressFromMap && !cw20TestnetAddressFromMap) {
+      if (
+        !testnetAddressFromMap &&
+        !cw20TestnetAddressFromMap &&
+        !ibcTestnetDetailsFromMap
+      ) {
         return {
           ...result,
           [token.toUpperCase()]: tokenMeta,
@@ -42,6 +64,15 @@ export const getTokensBySymbolForTestnet = () =>
       }
 
       const mappedTokenMeta = { ...tokenMeta }
+
+      if (ibcTestnetDetailsFromMap && mappedTokenMeta.ibc) {
+        mappedTokenMeta.ibc = {
+          ...mappedTokenMeta.ibc,
+          hash: ibcTestnetDetailsFromMap.hash,
+          path: ibcTestnetDetailsFromMap.path,
+          channelId: ibcTestnetDetailsFromMap.channelId,
+        }
+      }
 
       if (testnetAddressFromMap && mappedTokenMeta.erc20) {
         mappedTokenMeta.erc20.address = testnetAddressFromMap

@@ -12,8 +12,8 @@ export const getEndpointsFromChainId = (
   switch (chainId) {
     case CosmosChainId.Injective:
       return {
-        rpc: 'https://tm.injective.network',
-        rest: 'https://lcd.injective.network',
+        rpc: 'https://k8s.mainnet.tm.injective.network',
+        rest: 'https://k8s.mainnet.lcd.injective.network',
       }
     case TestnetCosmosChainId.Injective:
       return {
@@ -32,48 +32,48 @@ export const getEndpointsFromChainId = (
       }
     case CosmosChainId.Osmosis:
       return {
-        rpc: 'https://tm.osmosis.injective.network',
-        rest: 'https://lcd.osmosis.injective.network',
+        rpc: 'https://rpc.cosmos.directory/osmosis',
+        rest: 'https://rest.cosmos.directory/osmosis',
       }
     case CosmosChainId.Juno:
       return {
-        rpc: 'https://tm.juno.injective.network',
-        rest: 'https://lcd.juno.injective.network',
+        rpc: 'https://rpc.cosmos.directory/juno',
+        rest: 'https://rest.cosmos.directory/juno',
       }
     case CosmosChainId.Terra:
       return {
-        rpc: 'https://tm.terra.injective.network',
-        rest: 'https://lcd.terra.injective.network',
+        rpc: 'https://rpc.cosmos.directory/terra',
+        rest: 'https://rest.cosmos.directory/terra',
       }
     case CosmosChainId.TerraUST:
       return {
-        rpc: 'https://tm.terra.injective.network',
-        rest: 'https://lcd.terra.injective.network',
+        rpc: 'https://rpc.cosmos.directory/terra',
+        rest: 'https://rest.cosmos.directory/terra',
       }
     case CosmosChainId.Axelar:
       return {
-        rpc: 'https://tm.axelar.injective.network',
-        rest: 'https://lcd.axelar.injective.network',
+        rpc: 'https://rpc.cosmos.directory/axelar',
+        rest: 'https://rest.cosmos.directory/axelar',
       }
     case CosmosChainId.Evmos:
       return {
-        rpc: 'https://tm.evmos.injective.network',
-        rest: 'https://lcd.evmos.injective.network',
+        rpc: 'https://rpc.cosmos.directory/evmos',
+        rest: 'https://rest.cosmos.directory/evmos',
       }
     case CosmosChainId.Persistence:
       return {
-        rpc: 'https://tm.persistence.injective.network',
-        rest: 'https://lcd.persistence.injective.network',
+        rpc: 'https://rpc.cosmos.directory/persistence',
+        rest: 'https://rest.cosmos.directory/persistence',
       }
     case CosmosChainId.Secret:
       return {
-        rpc: 'https://tm.secret.injective.network',
-        rest: 'https://lcd.secret.injective.network',
+        rpc: 'https://rpc.cosmos.directory/secretnetwork',
+        rest: 'https://rest.cosmos.directory/secretnetwork',
       }
     case CosmosChainId.Stride:
       return {
-        rpc: 'https://tm.stride.injective.network',
-        rest: 'https://lcd.stride.injective.network',
+        rpc: 'https://rpc.cosmos.directory/stride',
+        rest: 'https://rest.cosmos.directory/stride',
       }
     case CosmosChainId.Chihuahua:
       return {
@@ -82,18 +82,18 @@ export const getEndpointsFromChainId = (
       }
     case CosmosChainId.Crescent:
       return {
-        rpc: 'https://tm.crescent.injective.network',
-        rest: 'https://lcd.crescent.injective.network',
+        rpc: 'https://rpc.cosmos.directory/crescent',
+        rest: 'https://rest.cosmos.directory/crescent',
       }
     case CosmosChainId.Sommelier:
       return {
-        rpc: 'https://tm.sommelier.injective.network',
-        rest: 'https://lcd.sommelier.injective.network',
+        rpc: 'https://rpc.cosmos.directory/sommelier',
+        rest: 'https://rest.cosmos.directory/sommelier',
       }
     case CosmosChainId.Canto:
       return {
-        rpc: 'https://tm.canto.injective.network',
-        rest: 'https://lcd.canto.injective.network',
+        rpc: 'https://rpc.cosmos.directory/canto',
+        rest: 'https://rest.cosmos.directory/canto',
       }
     case TestnetCosmosChainId.Cosmoshub:
       return {
