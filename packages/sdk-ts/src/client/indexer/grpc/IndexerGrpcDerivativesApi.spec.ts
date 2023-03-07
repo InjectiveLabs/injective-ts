@@ -16,11 +16,11 @@ describe('IndexerGrpcDerivativeApi', () => {
   let markets: DerivativeMarket[]
 
   beforeAll(async () => {
-    return new Promise(async (resolve) => {
+    return new Promise<void>(async (resolve) => {
       markets = await indexerGrpcDerivativesApi.fetchMarkets()
       market = markets[0]
 
-      resolve(Promise.resolve)
+      return resolve()
     })
   })
 
