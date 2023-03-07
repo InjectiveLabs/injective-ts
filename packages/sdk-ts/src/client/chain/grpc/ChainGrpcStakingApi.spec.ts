@@ -2,16 +2,36 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcStakingApi } from './ChainGrpcStakingApi'
 import { mockFactory } from '@injectivelabs/test-utils'
 import { ChainGrpcStakingTransformer } from '../transformers'
+import { Delegation, Validator } from '../types'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const validatorAddress = mockFactory.validatorAddress
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
-const pagination = {
-  limit: 1,
-}
 
 describe('ChainGrpcStakingApi', () => {
+  let validator: Validator
+  let delegation: Delegation
+
+  beforeAll(async () => {
+    return new Promise<void>(async (resolve) => {
+      const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
+
+      const { validators } = await chainGrpcStakingApi.fetchValidators()
+
+      validator = validators[0]
+
+      const { delegations } =
+        await chainGrpcStakingApi.fetchValidatorDelegations({
+          validatorAddress: validator.operatorAddress,
+          pagination: { limit: 1 },
+        })
+
+      delegation = delegations[0]
+
+      return resolve()
+    })
+  })
+
   test('fetchModuleParams', async () => {
     try {
       const response = await chainGrpcStakingApi.fetchModuleParams()
@@ -50,7 +70,7 @@ describe('ChainGrpcStakingApi', () => {
     try {
       const response = await chainGrpcStakingApi.fetchValidators()
 
-      if (response.validators.length == 0) {
+      if (response.validators.length === 0) {
         console.warn('fetchValidators.arrayIsEmpty')
       }
 
@@ -72,7 +92,7 @@ describe('ChainGrpcStakingApi', () => {
   test('fetchValidator', async () => {
     try {
       const response = await chainGrpcStakingApi.fetchValidator(
-        validatorAddress,
+        validator.operatorAddress,
       )
 
       expect(response).toBeDefined()
@@ -91,16 +111,15 @@ describe('ChainGrpcStakingApi', () => {
   })
 
   test('fetchValidatorDelegations', async () => {
-    const pagination = {
-      limit: 1,
-    }
     try {
       const response = await chainGrpcStakingApi.fetchValidatorDelegations({
-        validatorAddress,
-        pagination,
+        validatorAddress: validator.operatorAddress,
+        pagination: {
+          limit: 1,
+        },
       })
 
-      if (response.delegations.length == 0) {
+      if (response.delegations.length === 0) {
         console.warn('fetchValidatorDelegations.arrayIsEmpty')
       }
 
@@ -121,17 +140,16 @@ describe('ChainGrpcStakingApi', () => {
   })
 
   test('fetchValidatorDelegationsNoThrow', async () => {
-    const pagination = {
-      limit: 1,
-    }
     try {
       const response =
         await chainGrpcStakingApi.fetchValidatorDelegationsNoThrow({
-          validatorAddress,
-          pagination,
+          validatorAddress: validator.operatorAddress,
+          pagination: {
+            limit: 1,
+          },
         })
 
-      if (response.delegations.length == 0) {
+      if (response.delegations.length === 0) {
         console.warn('fetchValidatorDelegationsNoThrow.arrayIsEmpty')
       }
 
@@ -152,16 +170,16 @@ describe('ChainGrpcStakingApi', () => {
   })
 
   test('fetchValidatorUnbondingDelegations', async () => {
-    const pagination = {
-      limit: 1,
-    }
     try {
       const response =
         await chainGrpcStakingApi.fetchValidatorUnbondingDelegations({
-          validatorAddress,
-          pagination,
+          validatorAddress: validator.operatorAddress,
+          pagination: {
+            limit: 1,
+          },
         })
-      if (response.unbondingDelegations.length == 0) {
+
+      if (response.unbondingDelegations.length === 0) {
         console.warn('fetchValidatorUnbondingDelegations.arrayIsEmpty')
       }
 
@@ -185,13 +203,16 @@ describe('ChainGrpcStakingApi', () => {
     try {
       const response =
         await chainGrpcStakingApi.fetchValidatorUnbondingDelegationsNoThrow({
-          validatorAddress,
-          pagination,
+          validatorAddress: validator.operatorAddress,
+          pagination: {
+            limit: 1,
+          },
         })
 
-      if (response.unbondingDelegations.length == 0) {
+      if (response.unbondingDelegations.length === 0) {
         console.warn('fetchValidatorUnbondingDelegationsNoThrow.arrayIsEmpty')
       }
+
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
@@ -207,12 +228,12 @@ describe('ChainGrpcStakingApi', () => {
       )
     }
   })
-  // TODO: Find an address which has Delegation
+
   test.skip('fetchDelegation', async () => {
     try {
       const response = await chainGrpcStakingApi.fetchDelegation({
-        injectiveAddress,
-        validatorAddress,
+        injectiveAddress: delegation.delegation.delegatorAddress,
+        validatorAddress: validator.operatorAddress,
       })
 
       expect(response).toBeDefined()
@@ -233,15 +254,14 @@ describe('ChainGrpcStakingApi', () => {
   test('fetchDelegations', async () => {
     try {
       const response = await chainGrpcStakingApi.fetchDelegations({
-        injectiveAddress,
-        pagination,
+        injectiveAddress: delegation.delegation.delegatorAddress,
+        pagination: {
+          limit: 1,
+        },
       })
 
-      if (response.delegations.length == 0) {
+      if (response.delegations.length === 0) {
         console.warn('fetchDelegations.arrayIsEmpty')
-      }
-      if (response.delegations.length == 0) {
-        console.log('fetchDelegations.delegationArrayIsEmpty')
       }
 
       expect(response).toBeDefined()
@@ -262,11 +282,13 @@ describe('ChainGrpcStakingApi', () => {
   test('fetchDelegationsNoThrow', async () => {
     try {
       const response = await chainGrpcStakingApi.fetchDelegationsNoThrow({
-        injectiveAddress,
-        pagination,
+        injectiveAddress: delegation.delegation.delegatorAddress,
+        pagination: {
+          limit: 1,
+        },
       })
 
-      if (response.delegations.length == 0) {
+      if (response.delegations.length === 0) {
         console.warn('fetchDelegationsNoThrow.arrayIsEmpty')
       }
 
@@ -288,11 +310,13 @@ describe('ChainGrpcStakingApi', () => {
   test('fetchDelegators', async () => {
     try {
       const response = await chainGrpcStakingApi.fetchDelegators({
-        validatorAddress,
-        pagination,
+        validatorAddress: validator.operatorAddress,
+        pagination: {
+          limit: 1,
+        },
       })
 
-      if (response.delegations.length == 0) {
+      if (response.delegations.length === 0) {
         console.warn('fetchDelegators.arrayIsEmpty')
       }
 
@@ -314,11 +338,13 @@ describe('ChainGrpcStakingApi', () => {
   test('fetchDelegatorsNoThrow', async () => {
     try {
       const response = await chainGrpcStakingApi.fetchDelegatorsNoThrow({
-        validatorAddress,
-        pagination,
+        validatorAddress: validator.operatorAddress,
+        pagination: {
+          limit: 1,
+        },
       })
 
-      if (response.delegations.length == 0) {
+      if (response.delegations.length === 0) {
         console.warn('fetchDelegatorsNoThrow.arrayIsEmpty')
       }
 
@@ -341,10 +367,12 @@ describe('ChainGrpcStakingApi', () => {
     try {
       const response = await chainGrpcStakingApi.fetchUnbondingDelegations({
         injectiveAddress,
-        pagination,
+        pagination: {
+          limit: 1,
+        },
       })
 
-      if (response.unbondingDelegations.length == 0) {
+      if (response.unbondingDelegations.length === 0) {
         console.warn('fetchUnbondingDelegations.arrayIsEmpty')
       }
 
@@ -369,10 +397,12 @@ describe('ChainGrpcStakingApi', () => {
       const response =
         await chainGrpcStakingApi.fetchUnbondingDelegationsNoThrow({
           injectiveAddress,
-          pagination,
+          pagination: {
+            limit: 1,
+          },
         })
 
-      if (response.unbondingDelegations.length == 0) {
+      if (response.unbondingDelegations.length === 0) {
         console.warn('fetchUnbondingDelegationsNoThrow.arrayIsEmpty')
       }
 
@@ -396,9 +426,12 @@ describe('ChainGrpcStakingApi', () => {
     try {
       const response = await chainGrpcStakingApi.fetchReDelegations({
         injectiveAddress,
-        pagination,
+        pagination: {
+          limit: 1,
+        },
       })
-      if (response.redelegations.length == 0) {
+
+      if (response.redelegations.length === 0) {
         console.warn('fetchReDelegations.arrayIsEmpty')
       }
 
@@ -421,10 +454,12 @@ describe('ChainGrpcStakingApi', () => {
     try {
       const response = await chainGrpcStakingApi.fetchReDelegationsNoThrow({
         injectiveAddress,
-        pagination,
+        pagination: {
+          limit: 1,
+        },
       })
 
-      if (response.redelegations.length == 0) {
+      if (response.redelegations.length === 0) {
         console.warn('fetchReDelegationsNoThrow.arrayIsEmpty')
       }
 

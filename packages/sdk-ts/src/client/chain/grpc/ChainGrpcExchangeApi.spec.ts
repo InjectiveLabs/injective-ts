@@ -8,9 +8,7 @@ import {
 } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/query'
 
 const injectiveAddress = mockFactory.injectiveAddress
-// const injectiveAddress2 = mockFactory.injectiveAddress2
 const subaccountId = mockFactory.subaccountId
-// const validatorAddress = mockFactory.validatorAddress
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const chainGrpcExchangeApi = new ChainGrpcExchangeApi(endpoints.grpc)
 
@@ -33,7 +31,8 @@ describe('ChainGrpcExchangeApi', () => {
       )
     }
   })
-  // Skipped because its Too BIG!
+
+  // skipped as the module state can be quite huge and it times out
   test.skip('fetchModuleState', async () => {
     try {
       const response = await chainGrpcExchangeApi.fetchModuleState()
@@ -115,9 +114,9 @@ describe('ChainGrpcExchangeApi', () => {
     try {
       const response = await chainGrpcExchangeApi.fetchTradeRewardPoints([
         injectiveAddress,
-        // injectiveAddress2,
       ])
-      if (response.length == 0) {
+
+      if (response.length === 0) {
         console.warn('fetchTradeRewardPoints.arrayIsEmpty')
       }
 
@@ -135,7 +134,8 @@ describe('ChainGrpcExchangeApi', () => {
       const response = await chainGrpcExchangeApi.fetchPendingTradeRewardPoints(
         [injectiveAddress],
       )
-      if (response.length == 0) {
+
+      if (response.length === 0) {
         console.warn('fetchPendingTradeRewardPoints.arrayIsEmpty')
       }
 
@@ -153,7 +153,7 @@ describe('ChainGrpcExchangeApi', () => {
     try {
       const response = await chainGrpcExchangeApi.fetchPositions()
 
-      if (response.length == 0) {
+      if (response.length === 0) {
         console.warn('fetchPositions.arrayIsEmpty')
       }
 

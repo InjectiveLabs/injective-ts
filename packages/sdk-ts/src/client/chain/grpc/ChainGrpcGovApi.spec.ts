@@ -34,7 +34,7 @@ describe('ChainGrpcGovApi', () => {
         status: ProposalStatus.PROPOSAL_STATUS_PASSED,
       })
 
-      if (response.proposals.length == 0) {
+      if (response.proposals.length === 0) {
         console.warn('fetchProposals.arrayIsEmpty')
       }
 
@@ -71,7 +71,8 @@ describe('ChainGrpcGovApi', () => {
       const response = await chainGrpcGovApi.fetchProposalDeposits({
         proposalId,
       })
-      if (response.deposits.length == 0) {
+
+      if (response.deposits.length === 0) {
         console.warn('fetchProposalDeposits.arrayIsEmpty')
       }
 
@@ -93,7 +94,8 @@ describe('ChainGrpcGovApi', () => {
       const response = await chainGrpcGovApi.fetchProposalVotes({
         proposalId,
       })
-      if (response.votes.length == 0) {
+
+      if (response.votes.length === 0) {
         console.warn('fetchProposalVotes.arrayIsEmpty')
       }
 

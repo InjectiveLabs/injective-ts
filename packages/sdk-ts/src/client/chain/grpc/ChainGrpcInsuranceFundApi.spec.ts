@@ -32,7 +32,8 @@ describe('ChainGrpcIbcApi', () => {
   test('fetchInsuranceFunds', async () => {
     try {
       const response = await chainGrpcIbcApi.fetchInsuranceFunds()
-      if (response.length == 0) {
+
+      if (response.length === 0) {
         console.warn('fetchInsuranceFunds.arrayIsEmpty')
       }
 

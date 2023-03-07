@@ -11,7 +11,7 @@ describe('ChainGrpcIbcApi', () => {
   test('fetchDenomsTrace', async () => {
     try {
       const response = await chainGrpcIbcApi.fetchDenomsTrace()
-      if (response.length == 0) {
+      if (response.length === 0) {
         console.warn('fetchDenomsTrace.arrayIsEmpty')
       }
 

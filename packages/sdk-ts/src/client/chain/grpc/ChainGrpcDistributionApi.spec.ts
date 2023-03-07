@@ -1,14 +1,36 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcDistributionApi } from './ChainGrpcDistributionApi'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { ChainGrpcStakingApi } from './ChainGrpcStakingApi'
 import { ChainGrpcDistributionTransformer } from '../transformers'
+import { Delegation, Validator } from '../types'
 
-const injectiveAddress = mockFactory.injectiveAddress
-const validatorAddress = mockFactory.validatorAddress
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const chainGrpcDistributionApi = new ChainGrpcDistributionApi(endpoints.grpc)
 
 describe('ChainGrpcDistributionApi', () => {
+  let validator: Validator
+  let delegation: Delegation
+
+  beforeAll(async () => {
+    return new Promise<void>(async (resolve) => {
+      const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
+
+      const { validators } = await chainGrpcStakingApi.fetchValidators()
+
+      validator = validators[0]
+
+      const { delegations } =
+        await chainGrpcStakingApi.fetchValidatorDelegations({
+          validatorAddress: validator.operatorAddress,
+          pagination: { limit: 1 },
+        })
+
+      delegation = delegations[0]
+
+      return resolve()
+    })
+  })
+
   test('fetchModuleParams', async () => {
     try {
       const response = await chainGrpcDistributionApi.fetchModuleParams()
@@ -27,15 +49,16 @@ describe('ChainGrpcDistributionApi', () => {
       )
     }
   })
-  // TODO: Find an address which has Delegation
-  test.skip('fetchDelegatorRewardsForValidator', async () => {
+
+  test('fetchDelegatorRewardsForValidator', async () => {
     try {
       const response =
         await chainGrpcDistributionApi.fetchDelegatorRewardsForValidator({
-          delegatorAddress: injectiveAddress,
-          validatorAddress,
+          delegatorAddress: delegation.delegation.delegatorAddress,
+          validatorAddress: validator.operatorAddress,
         })
-      if (response.length == 0) {
+
+      if (response.length === 0) {
         console.warn('fetchDelegatorRewardsForValidator.arrayIsEmpty')
       }
 
@@ -60,11 +83,12 @@ describe('ChainGrpcDistributionApi', () => {
       const response =
         await chainGrpcDistributionApi.fetchDelegatorRewardsForValidatorNoThrow(
           {
-            delegatorAddress: injectiveAddress,
-            validatorAddress,
+            delegatorAddress: delegation.delegation.delegatorAddress,
+            validatorAddress: validator.operatorAddress,
           },
         )
-      if (response.length == 0) {
+
+      if (response.length === 0) {
         console.warn('fetchDelegatorRewardsForValidatorNoThrow.arrayIsEmpty')
       }
 
@@ -87,9 +111,10 @@ describe('ChainGrpcDistributionApi', () => {
   test('fetchDelegatorRewards', async () => {
     try {
       const response = await chainGrpcDistributionApi.fetchDelegatorRewards(
-        injectiveAddress,
+        delegation.delegation.delegatorAddress,
       )
-      if (response.length == 0) {
+
+      if (response.length === 0) {
         console.warn('fetchDelegatorRewards.arrayIsEmpty')
       }
 
@@ -113,9 +138,10 @@ describe('ChainGrpcDistributionApi', () => {
     try {
       const response =
         await chainGrpcDistributionApi.fetchDelegatorRewardsNoThrow(
-          injectiveAddress,
+          delegation.delegation.delegatorAddress,
         )
-      if (response.length == 0) {
+
+      if (response.length === 0) {
         console.warn('fetchDelegatorRewardsNoThrow.arrayIsEmpty')
       }
 
