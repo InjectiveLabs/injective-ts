@@ -1,0 +1,446 @@
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { ChainGrpcStakingApi } from './ChainGrpcStakingApi'
+import { mockFactory } from '@injectivelabs/test-utils'
+import { ChainGrpcStakingTransformer } from '../transformers'
+
+const injectiveAddress = mockFactory.injectiveAddress
+const validatorAddress = mockFactory.validatorAddress
+const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
+const pagination = {
+  limit: 1,
+}
+
+describe('ChainGrpcStakingApi', () => {
+  test('fetchModuleParams', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchModuleParams()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.moduleParamsResponseToModuleParams
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchModuleParams => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchPool', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchPool()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<typeof ChainGrpcStakingTransformer.poolResponseToPool>
+        >(response),
+      )
+    } catch (e) {
+      console.error('ChainGrpcStakingApi.fetchPool => ' + (e as any).message)
+    }
+  })
+
+  test('fetchValidators', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchValidators()
+
+      if (response.validators.length == 0) {
+        console.warn('fetchValidators.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.validatorsResponseToValidators
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchValidators => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchValidator', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchValidator(
+        validatorAddress,
+      )
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.validatorResponseToValidator
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchValidator => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchValidatorDelegations', async () => {
+    const pagination = {
+      limit: 1,
+    }
+    try {
+      const response = await chainGrpcStakingApi.fetchValidatorDelegations({
+        validatorAddress,
+        pagination,
+      })
+
+      if (response.delegations.length == 0) {
+        console.warn('fetchValidatorDelegations.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.delegationsResponseToDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchValidatorDelegations => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchValidatorDelegationsNoThrow', async () => {
+    const pagination = {
+      limit: 1,
+    }
+    try {
+      const response =
+        await chainGrpcStakingApi.fetchValidatorDelegationsNoThrow({
+          validatorAddress,
+          pagination,
+        })
+
+      if (response.delegations.length == 0) {
+        console.warn('fetchValidatorDelegationsNoThrow.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.delegationsResponseToDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchValidatorDelegationsNoThrow => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchValidatorUnbondingDelegations', async () => {
+    const pagination = {
+      limit: 1,
+    }
+    try {
+      const response =
+        await chainGrpcStakingApi.fetchValidatorUnbondingDelegations({
+          validatorAddress,
+          pagination,
+        })
+      if (response.unbondingDelegations.length == 0) {
+        console.warn('fetchValidatorUnbondingDelegations.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchValidatorUnbondingDelegations => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchValidatorUnbondingDelegationsNoThrow', async () => {
+    try {
+      const response =
+        await chainGrpcStakingApi.fetchValidatorUnbondingDelegationsNoThrow({
+          validatorAddress,
+          pagination,
+        })
+
+      if (response.unbondingDelegations.length == 0) {
+        console.warn('fetchValidatorUnbondingDelegationsNoThrow.arrayIsEmpty')
+      }
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchValidatorUnbondingDelegationsNoThrow => ' +
+          (e as any).message,
+      )
+    }
+  })
+  // TODO: Find an address which has Delegation
+  test.skip('fetchDelegation', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchDelegation({
+        injectiveAddress,
+        validatorAddress,
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.delegationResponseToDelegation
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchDelegation => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchDelegations', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchDelegations({
+        injectiveAddress,
+        pagination,
+      })
+
+      if (response.delegations.length == 0) {
+        console.warn('fetchDelegations.arrayIsEmpty')
+      }
+      if (response.delegations.length == 0) {
+        console.log('fetchDelegations.delegationArrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.delegationsResponseToDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchDelegations => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchDelegationsNoThrow', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchDelegationsNoThrow({
+        injectiveAddress,
+        pagination,
+      })
+
+      if (response.delegations.length == 0) {
+        console.warn('fetchDelegationsNoThrow.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.delegationsResponseToDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchDelegationsNoThrow => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchDelegators', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchDelegators({
+        validatorAddress,
+        pagination,
+      })
+
+      if (response.delegations.length == 0) {
+        console.warn('fetchDelegators.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.delegationsResponseToDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchDelegators => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchDelegatorsNoThrow', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchDelegatorsNoThrow({
+        validatorAddress,
+        pagination,
+      })
+
+      if (response.delegations.length == 0) {
+        console.warn('fetchDelegatorsNoThrow.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.delegationsResponseToDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchDelegatorsNoThrow => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchUnbondingDelegations', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchUnbondingDelegations({
+        injectiveAddress,
+        pagination,
+      })
+
+      if (response.unbondingDelegations.length == 0) {
+        console.warn('fetchUnbondingDelegations.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchUnbondingDelegations => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchUnbondingDelegationsNoThrow', async () => {
+    try {
+      const response =
+        await chainGrpcStakingApi.fetchUnbondingDelegationsNoThrow({
+          injectiveAddress,
+          pagination,
+        })
+
+      if (response.unbondingDelegations.length == 0) {
+        console.warn('fetchUnbondingDelegationsNoThrow.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchUnbondingDelegationsNoThrow => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchReDelegations', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchReDelegations({
+        injectiveAddress,
+        pagination,
+      })
+      if (response.redelegations.length == 0) {
+        console.warn('fetchReDelegations.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchReDelegations => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchReDelegationsNoThrow', async () => {
+    try {
+      const response = await chainGrpcStakingApi.fetchReDelegationsNoThrow({
+        injectiveAddress,
+        pagination,
+      })
+
+      if (response.redelegations.length == 0) {
+        console.warn('fetchReDelegationsNoThrow.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcStakingApi.fetchReDelegationsNoThrow => ' +
+          (e as any).message,
+      )
+    }
+  })
+})
