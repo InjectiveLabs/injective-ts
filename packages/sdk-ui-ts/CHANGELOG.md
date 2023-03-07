@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.608](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.607...@injectivelabs/sdk-ui-ts@1.0.608) (2023-03-07)
+
+
+### Bug Fixes
+
+* toSupplyWithTokenAndLabel to use find instead of index ([e44a065](https://github.com/InjectiveLabs/injective-ts/commit/e44a0659d7e8df3ef09b1316a3891982e77b1ac9))
+
+
+
+
+
 ## [1.0.607](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.606...@injectivelabs/sdk-ui-ts@1.0.607) (2023-03-07)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
