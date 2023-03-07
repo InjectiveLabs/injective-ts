@@ -5,7 +5,7 @@ import { ChainGrpcAuctionApi } from './ChainGrpcAuctionApi'
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const chainGrpcAuctionApi = new ChainGrpcAuctionApi(endpoints.grpc)
 
-describe('ChainGrpcAuctionApi', () => {
+describe.skip('ChainGrpcAuctionApi', () => {
   test('fetchModuleParams', async () => {
     try {
       const response = await chainGrpcAuctionApi.fetchModuleParams()

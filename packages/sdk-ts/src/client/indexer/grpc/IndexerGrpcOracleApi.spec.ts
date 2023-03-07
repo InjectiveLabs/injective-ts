@@ -1,12 +1,64 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { mockFactory } from '@injectivelabs/test-utils'
-import { IndexerGrpcOracleTransformer } from '../transformers'
 import { IndexerGrpcOracleApi } from './IndexerGrpcOracleApi'
 
-const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const indexerGrpcOracleApi = new IndexerGrpcOracleApi(endpoints.indexer)
 
-describe('IndexerGrpcOracleApi', () => {
-  //
+describe.skip('IndexerGrpcOracleApi', () => {
+  test('fetchOracleList', async () => {
+    try {
+      const response = await indexerGrpcOracleApi.fetchOracleList()
+
+      if (response.length === 0) {
+        console.warn('fetchOracleList.oracleListIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<typeof response>(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcOracleApi.fetchOracleList => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchOraclePrice', async () => {
+    try {
+      const response = await indexerGrpcOracleApi.fetchOraclePrice({
+        baseSymbol: 'BTC',
+        quoteSymbol: 'USDT',
+        oracleType: 'BandIBC',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<typeof response>(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcOracleApi.fetchOraclePrice => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchOraclePriceNoThrow', async () => {
+    try {
+      const response = await indexerGrpcOracleApi.fetchOraclePriceNoThrow({
+        baseSymbol: 'BTC',
+        quoteSymbol: 'USDT',
+        oracleType: 'BandIBC',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<typeof response>(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcOracleApi.fetchOraclePriceNoThrow => ' + (e as any).message,
+      )
+    }
+  })
 })

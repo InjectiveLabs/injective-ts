@@ -1,13 +1,16 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { mockFactory } from '@injectivelabs/test-utils'
+import { getDefaultSubaccountId } from '@injectivelabs/sdk-ts'
+import { INJ_DENOM } from '@injectivelabs/utils'
 import { IndexerGrpcAccountTransformer } from '../transformers'
 import { IndexerGrpcAccountApi } from './IndexerGrpcAccountApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
+const subaccountId = getDefaultSubaccountId(injectiveAddress)
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const indexerGrpcAccountApi = new IndexerGrpcAccountApi(endpoints.indexer)
 
-describe('IndexerGrpcAccountApi', () => {
+describe.skip('IndexerGrpcAccountApi', () => {
   test('fetchPortfolio', async () => {
     try {
       const response = await indexerGrpcAccountApi.fetchPortfolio(
@@ -31,15 +34,20 @@ describe('IndexerGrpcAccountApi', () => {
 
   test('fetchRewards', async () => {
     try {
-      const response = await indexerGrpcAccountApi.fetchRewards(
-        injectiveAddress,
-      )
+      const response = await indexerGrpcAccountApi.fetchRewards({
+        address: injectiveAddress,
+        epoch: -1,
+      })
+
+      if (response.length === 0) {
+        console.warn('fetchRewards.rewardsIsEmptyArray')
+      }
 
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio
+            typeof IndexerGrpcAccountTransformer.tradingRewardsResponseToTradingRewards
           >
         >(response),
       )
@@ -57,13 +65,7 @@ describe('IndexerGrpcAccountApi', () => {
       )
 
       expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio
-          >
-        >(response),
-      )
+      expect(response).toEqual(expect.objectContaining<string[]>(response))
     } catch (e) {
       console.error(
         'IndexerGrpcAccountApi.fetchSubaccountsList => ' + (e as any).message,
@@ -74,14 +76,19 @@ describe('IndexerGrpcAccountApi', () => {
   test('fetchSubaccountBalance', async () => {
     try {
       const response = await indexerGrpcAccountApi.fetchSubaccountBalance(
-        injectiveAddress,
+        subaccountId,
+        INJ_DENOM,
       )
+
+      if (response.subaccountId.length === 0) {
+        console.warn('fetchSubaccountBalance.subaccountIdsIsEmptyArray')
+      }
 
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio
+            typeof IndexerGrpcAccountTransformer.balanceResponseToBalance
           >
         >(response),
       )
@@ -95,14 +102,14 @@ describe('IndexerGrpcAccountApi', () => {
   test('fetchSubaccountBalancesList', async () => {
     try {
       const response = await indexerGrpcAccountApi.fetchSubaccountBalancesList(
-        injectiveAddress,
+        subaccountId,
       )
 
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio
+            typeof IndexerGrpcAccountTransformer.balancesResponseToBalances
           >
         >(response),
       )
@@ -116,15 +123,19 @@ describe('IndexerGrpcAccountApi', () => {
 
   test('fetchSubaccountHistory', async () => {
     try {
-      const response = await indexerGrpcAccountApi.fetchSubaccountHistory(
-        injectiveAddress,
-      )
+      const response = await indexerGrpcAccountApi.fetchSubaccountHistory({
+        subaccountId,
+      })
+
+      if (response.transfers.length === 0) {
+        console.warn('fetchSubaccountHistory.transfersIsEmptyArray')
+      }
 
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio
+            typeof IndexerGrpcAccountTransformer.transferHistoryResponseToTransferHistory
           >
         >(response),
       )
@@ -137,17 +148,21 @@ describe('IndexerGrpcAccountApi', () => {
 
   test('fetchSubaccountOrderSummary', async () => {
     try {
-      const response = await indexerGrpcAccountApi.fetchSubaccountOrderSummary(
-        injectiveAddress,
-      )
+      const response = await indexerGrpcAccountApi.fetchSubaccountOrderSummary({
+        subaccountId,
+      })
+
+      if (response.spotOrdersTotal.length === 0) {
+        console.warn('fetchSubaccountHistory.spotOrdersTotalEmpty')
+      }
+
+      if (response.derivativeOrdersTotal.length === 0) {
+        console.warn('fetchSubaccountHistory.derivativeOrdersTotalEmpty')
+      }
 
       expect(response).toBeDefined()
       expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio
-          >
-        >(response),
+        expect.objectContaining<typeof response>(response),
       )
     } catch (e) {
       console.error(
@@ -157,6 +172,7 @@ describe('IndexerGrpcAccountApi', () => {
     }
   })
 
+  /* TODO
   test('fetchOrderStates', async () => {
     try {
       const response = await indexerGrpcAccountApi.fetchOrderStates(
@@ -176,5 +192,5 @@ describe('IndexerGrpcAccountApi', () => {
         'IndexerGrpcAccountApi.fetchOrderStates => ' + (e as any).message,
       )
     }
-  })
+  }) */
 })

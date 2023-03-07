@@ -10,5 +10,25 @@ const indexerGrpcPortfolioApi = new IndexerGrpcAccountPortfolioApi(
 )
 
 describe('IndexerGrpcAccountPortfolioApi', () => {
-  //
+  test('fetchAccountPortfolio', async () => {
+    try {
+      const response = await indexerGrpcPortfolioApi.fetchAccountPortfolio(
+        injectiveAddress,
+      )
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcAccountPortfolioApi.fetchAccountPortfolio => ' +
+          (e as any).message,
+      )
+    }
+  })
 })

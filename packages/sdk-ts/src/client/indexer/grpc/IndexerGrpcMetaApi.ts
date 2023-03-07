@@ -73,6 +73,8 @@ export class IndexerGrpcMetaApi {
   async fetchInfo() {
     const request = InfoRequest.create()
 
+    request.timestamp = Date.now().toString()
+
     try {
       const response = await this.client.Info(request)
 

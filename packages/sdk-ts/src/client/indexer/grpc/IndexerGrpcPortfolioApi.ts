@@ -25,10 +25,10 @@ export class IndexerGrpcAccountPortfolioApi {
     )
   }
 
-  async fetchAccountPortfolio(address: string) {
+  async fetchAccountPortfolio(subaccountId: string) {
     const request = AccountPortfolioRequest.create()
 
-    request.accountAddress = address
+    request.accountAddress = subaccountId
 
     try {
       const response = await this.client.AccountPortfolio(request)
