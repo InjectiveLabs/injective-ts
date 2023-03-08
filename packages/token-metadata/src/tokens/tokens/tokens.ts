@@ -1146,7 +1146,7 @@ export default {
     symbol: 'WAVAX',
     decimals: 8,
     logo: 'avax.webp',
-    coinGeckoId: 'AVAX',
+    coinGeckoId: 'avalanche-2',
 
     cw20s: [
       {
