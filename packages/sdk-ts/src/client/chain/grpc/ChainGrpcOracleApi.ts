@@ -28,7 +28,7 @@ export class ChainGrpcOracleApi {
     try {
       const response = await this.client.Params(request)
 
-      return response as OracleModuleParams
+      return response.params as OracleModuleParams
     } catch (e: unknown) {
       if (e instanceof GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
