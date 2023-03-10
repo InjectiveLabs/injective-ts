@@ -283,6 +283,14 @@ export const validatorAddressToPathMap = {
     'injvaloper1hz3svgdhmv67lsqlduu0tcnd3f75c0xrzcsgtk.webp',
   injvaloper1hz3svgdhmv67lsqlduu0tcnd3f75c0xrzcsgtk:
     'injvaloper1hz3svgdhmv67lsqlduu0tcnd3f75c0xrzcsgtk.webp',
+  injvalcons1qjjrwp3vgz0628kf3fxavjfef0gchkkh76f804:
+    'injvaloper1e84fr6cxgcflv3fc9ey6n8425au7zx6wsztrle.webp',
+  injvaloper1e84fr6cxgcflv3fc9ey6n8425au7zx6wsztrle:
+    'injvaloper1e84fr6cxgcflv3fc9ey6n8425au7zx6wsztrle.webp',
+  injvalcons1hcwkpfhct63wsukxq3hafwu4kuzuandfh7z4ym:
+    'injvaloper18lftv08vsplm39ht2xysp7wsauch03nwfqckxh.webp',
+  injvaloper18lftv08vsplm39ht2xysp7wsauch03nwfqckxh:
+    'injvaloper18lftv08vsplm39ht2xysp7wsauch03nwfqckxh.webp',
   injvalcons1598m7akaux9qz63k2akhaxzpfdu0n6cr49agyw:
     'injvaloper1vqz7mgm47xhx25xu5g9qagnz48naks6pk6fmg2.webp',
   injvaloper1vqz7mgm47xhx25xu5g9qagnz48naks6pk6fmg2:
