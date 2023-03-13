@@ -39,7 +39,7 @@
     "@injectivelabs/token-metadata": "^1.0.190-alpha.0",
     "@injectivelabs/token-utils": "^1.0.88",
     "@injectivelabs/ts-types": "^1.0.30",
-    "@injectivelabs/utils": "^1.0.84",
+    "@injectivelabs/utils": "^1.0.86-alpha.0",
     "alchemy-sdk": "^2.2.3",
     "copyfiles": "^2.4.1",
     "link-module-alias": "^1.2.0",
