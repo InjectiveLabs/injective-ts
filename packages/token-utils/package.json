@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/token-utils",
-  "version": "1.0.91-alpha.0",
+  "version": "1.0.92-alpha.0",
   "description": "Token Utils is a package for querying different data about tokens",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
