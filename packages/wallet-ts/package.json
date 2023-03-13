@@ -15,12 +15,6 @@
   "_moduleAliases": {
     "~wallet-ts": "dist"
   },
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js"
-    }
-  },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
     "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && yarn build:post && link-module-alias",

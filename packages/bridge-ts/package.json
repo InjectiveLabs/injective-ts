@@ -12,12 +12,6 @@
   "files": [
     "dist"
   ],
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js"
-    }
-  },
   "_moduleAliases": {
     "~bridge-ts": "dist"
   },
