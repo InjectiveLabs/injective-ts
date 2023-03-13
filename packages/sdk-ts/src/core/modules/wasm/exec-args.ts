@@ -1,33 +1,33 @@
-import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 import ExecArgCW20Send from './exec-args/ExecArgCW20Send'
+import ExecArgSubmitVaa from './exec-args/ExecArgSubmitVaa'
 import ExecArgCW20Transfer from './exec-args/ExecArgCW20Transfer'
 import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens'
-import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
-import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgRegisterVault from './exec-args/ExecArgRegisterVault'
-import ExecArgSubmitVaa from './exec-args/ExecArgSubmitVaa'
-import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
+import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
+import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
+import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
 import ExecArgRequestTimeLockedRedemption from './exec-args/ExecArgRequestTimeLockedRedemption'
+import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 
-import ExecPrivilegedArgRegisterVault from './exec-priv-args/ExecPrivilegedRegisterVault'
 import ExecPrivilegedArgVaultRedeem from './exec-priv-args/ExecPrivilegedArgVaultRedeem'
+import ExecPrivilegedArgRegisterVault from './exec-priv-args/ExecPrivilegedRegisterVault'
 import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgVaultSubscribe'
 
 export type ExecArgs =
-  | ExecArgCW20AdapterRedeemAndTransfer
   | ExecArgCW20Send
+  | ExecArgSubmitVaa
   | ExecArgCW20Transfer
   | ExecArgDepositTokens
-  | ExecArgIncreaseAllowance
-  | ExecArgInitiateTransfer
   | ExecArgRegisterVault
-  | ExecArgSubmitVaa
-  | ExecArgUpdateDerivativeVaultConfig
+  | ExecArgInitiateTransfer
+  | ExecArgIncreaseAllowance
   | ExecArgUpdateSpotVaultConfig
+  | ExecArgUpdateDerivativeVaultConfig
   | ExecArgRequestTimeLockedRedemption
+  | ExecArgCW20AdapterRedeemAndTransfer
 
 export type ExecPrivilegedArgs =
-  | ExecPrivilegedArgRegisterVault
   | ExecPrivilegedArgVaultRedeem
+  | ExecPrivilegedArgRegisterVault
   | ExecPrivilegedArgVaultSubscribe

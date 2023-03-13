@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.480-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.479-alpha.0...@injectivelabs/sdk-ts@1.0.480-alpha.0) (2023-03-08)
+## [1.0.480](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.479...@injectivelabs/sdk-ts@1.0.480) (2023-03-12)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
 
@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.479-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.478-alpha.0...@injectivelabs/sdk-ts@1.0.479-alpha.0) (2023-03-08)
+## [1.0.479](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.478...@injectivelabs/sdk-ts@1.0.479) (2023-03-12)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
 
@@ -19,19 +19,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.478-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.477...@injectivelabs/sdk-ts@1.0.478-alpha.0) (2023-03-08)
+## [1.0.478](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.477...@injectivelabs/sdk-ts@1.0.478) (2023-03-08)
 
-
-### Bug Fixes
-
-* grpc error handling ([40fb0fd](https://github.com/InjectiveLabs/injective-ts/commit/40fb0fde7a8cece703d2c7c223793b0afdaeb353))
-* minor tests ([0f9baf1](https://github.com/InjectiveLabs/injective-ts/commit/0f9baf1753525018ecf352f498e2cea99f43a3df))
-* types for createTransaction ([b08b76d](https://github.com/InjectiveLabs/injective-ts/commit/b08b76dc71a83822ddb101657ef69e5e6994085b))
-
-
-### Features
-
-* migrated to grpcWebImpl ([bbf4e37](https://github.com/InjectiveLabs/injective-ts/commit/bbf4e3715c20cd2948b77e3be4dac45123b29859))
+**Note:** Version bump only for package @injectivelabs/sdk-ts
 
 
 

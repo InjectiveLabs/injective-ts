@@ -557,7 +557,7 @@ export default {
     name: 'Scatter.cx',
     symbol: 'STT',
     decimals: 18,
-    logo: 'injective-v3.svg',
+    logo: 'scatter.webp',
     coinGeckoId: 'scatter-cx',
 
     erc20: {

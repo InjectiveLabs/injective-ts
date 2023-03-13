@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.610-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.609-alpha.0...@injectivelabs/sdk-ui-ts@1.0.610-alpha.0) (2023-03-08)
+## [1.0.612](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.611...@injectivelabs/sdk-ui-ts@1.0.612) (2023-03-13)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
 
@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.609-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.608-alpha.0...@injectivelabs/sdk-ui-ts@1.0.609-alpha.0) (2023-03-08)
+## [1.0.611](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.610...@injectivelabs/sdk-ui-ts@1.0.611) (2023-03-12)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
 
@@ -19,9 +19,28 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.608-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.607...@injectivelabs/sdk-ui-ts@1.0.608-alpha.0) (2023-03-08)
+## [1.0.610](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.609...@injectivelabs/sdk-ui-ts@1.0.610) (2023-03-12)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.609](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.608...@injectivelabs/sdk-ui-ts@1.0.609) (2023-03-08)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ui-ts
+
+
+
+
+
+## [1.0.608](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.0.607...@injectivelabs/sdk-ui-ts@1.0.608) (2023-03-07)
+
+
+### Bug Fixes
+
+* toSupplyWithTokenAndLabel to use find instead of index ([e44a065](https://github.com/InjectiveLabs/injective-ts/commit/e44a0659d7e8df3ef09b1316a3891982e77b1ac9))
 
 
 

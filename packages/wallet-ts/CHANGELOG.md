@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.485-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.484-alpha.0...@injectivelabs/wallet-ts@1.0.485-alpha.0) (2023-03-08)
+## [1.0.485](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.484...@injectivelabs/wallet-ts@1.0.485) (2023-03-12)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
 
@@ -12,6 +12,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 ## [1.0.484-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.483-alpha.0...@injectivelabs/wallet-ts@1.0.484-alpha.0) (2023-03-08)
+## [1.0.484](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.483...@injectivelabs/wallet-ts@1.0.484) (2023-03-12)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
 
@@ -19,12 +20,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.483-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.482...@injectivelabs/wallet-ts@1.0.483-alpha.0) (2023-03-08)
+## [1.0.483](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.482...@injectivelabs/wallet-ts@1.0.483) (2023-03-08)
 
-
-### Bug Fixes
-
-* types for createTransaction ([b08b76d](https://github.com/InjectiveLabs/injective-ts/commit/b08b76dc71a83822ddb101657ef69e5e6994085b))
+**Note:** Version bump only for package @injectivelabs/wallet-ts
 
 
 
