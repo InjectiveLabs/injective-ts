@@ -1,4 +1,4 @@
-import TrezorConnect from '@trezor/connect-web'
+import TrezorConnect from '@trezor/connect'
 import HDNode from 'hdkey'
 import { DEFAULT_BASE_DERIVATION_PATH } from '../../../constants'
 import AccountManager from './AccountManager'
@@ -14,12 +14,6 @@ export default class TrezorTransport {
   private hdKey: HDNode = new HDNode()
 
   constructor() {
-    TrezorConnect.on('DEVICE_EVENT', (event) => {
-      if (event && event.payload) {
-        //
-      }
-    })
-
     TrezorConnect.init({ lazyLoad: true, manifest: TREZOR_CONNECT_MANIFEST })
   }
 
