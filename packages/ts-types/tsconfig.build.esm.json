@@ -4,6 +4,8 @@
     "module": "esnext",
     "outDir": "./dist/esm",
     "rootDir": "./src",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "tsBuildInfoFile": "../../.build-cache/ts-types.esm.tsbuildinfo"
   }
 }
