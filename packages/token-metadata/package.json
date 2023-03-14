@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/token-metadata",
   "description": "ERC20 token metadata. Name, symbol, decimals, etc.",
-  "version": "1.0.203-alpha.0",
+  "version": "1.0.204-alpha.0",
   "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -31,10 +31,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.0.65-alpha.0",
-    "@injectivelabs/networks": "^1.0.103-alpha.0",
-    "@injectivelabs/ts-types": "^1.0.37-alpha.0",
-    "@injectivelabs/utils": "^1.0.93-alpha.0",
+    "@injectivelabs/exceptions": "^1.0.66-alpha.0",
+    "@injectivelabs/networks": "^1.0.104-alpha.0",
+    "@injectivelabs/ts-types": "^1.0.38-alpha.0",
+    "@injectivelabs/utils": "^1.0.94-alpha.0",
     "@types/lodash.values": "^4.3.6",
     "copyfiles": "^2.4.1",
     "jsonschema": "^1.4.0",
