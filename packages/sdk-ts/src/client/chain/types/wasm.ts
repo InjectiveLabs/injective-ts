@@ -40,7 +40,7 @@ export interface AbsoluteTxPosition {
 }
 
 export interface ContractCodeHistoryEntry {
-  operation: ContractCodeHistoryOperationType
+  operation: CosmwasmWasmV1Types.ContractCodeHistoryOperationType
   codeId: number
   updated?: AbsoluteTxPosition
   msg: Uint8Array | string
@@ -58,5 +58,5 @@ export type GrpcContractInfo = CosmwasmWasmV1Types.ContractInfo
 export type GrpcContractCodeHistoryEntry =
   CosmwasmWasmV1Types.ContractCodeHistoryEntry
 export type GrpcAbsoluteTxPosition = CosmwasmWasmV1Types.AbsoluteTxPosition
-export type ContractCodeHistoryOperationType =
+export const ContractCodeHistoryOperationType =
   CosmwasmWasmV1Types.ContractCodeHistoryOperationType

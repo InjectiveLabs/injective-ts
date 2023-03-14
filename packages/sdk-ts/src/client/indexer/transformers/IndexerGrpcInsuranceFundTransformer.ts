@@ -5,8 +5,8 @@ import {
   Redemption,
   RedemptionStatus,
 } from '../types/insurance-funds'
-import { OracleType } from '../../chain'
 import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
+import { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer
@@ -54,7 +54,9 @@ export class IndexerGrpcInsuranceFundTransformer {
       marketTicker: grpcInsuranceFund.marketTicker,
       oracleBase: grpcInsuranceFund.oracleBase,
       oracleQuote: grpcInsuranceFund.oracleQuote,
-      oracleType: parseInt(grpcInsuranceFund.oracleType) as OracleType,
+      oracleType: parseInt(
+        grpcInsuranceFund.oracleType,
+      ) as InjectiveOracleV1Beta1Oracle.OracleType,
       expiry: parseInt(grpcInsuranceFund.expiry, 10),
     }
   }

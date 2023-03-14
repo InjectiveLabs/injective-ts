@@ -25,4 +25,4 @@ export type GrpcInsuranceParams = InjectiveInsuranceV1Beta1Insurance.Params
 export type GrpcInsuranceFund = InjectiveInsuranceV1Beta1Insurance.InsuranceFund
 export type GrpcRedemptionSchedule =
   InjectiveInsuranceV1Beta1Insurance.RedemptionSchedule
-export type OracleType = InjectiveOracleV1Beta1Oracle.OracleType
+export const OracleType = InjectiveOracleV1Beta1Oracle.OracleType

@@ -91,8 +91,6 @@ export interface ExchangeModuleParams extends ExchangeParams {
   //
 }
 
-export type GrpcOrderType = GrpcOrderTypeMap
-
 export interface ChainPosition {
   islong: boolean
   quantity: string
@@ -109,8 +107,6 @@ export interface ChainDerivativePosition {
 
 export type GrpcOrderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo
 export type GrpcSpotMarket = InjectiveExchangeV1Beta1Exchange.SpotMarket
-export type GrpcMarketStatus = InjectiveExchangeV1Beta1Exchange.MarketStatus
-export type GrpcMarketStatusMap = InjectiveExchangeV1Beta1Exchange.MarketStatus
 export type GrpcSpotMarketOrder =
   InjectiveExchangeV1Beta1Exchange.SpotMarketOrder
 export type GrpcSpotOrder = InjectiveExchangeV1Beta1Exchange.SpotOrder
@@ -129,7 +125,6 @@ export type GrpcTradingRewardCampaignInfo =
   InjectiveExchangeV1Beta1Exchange.TradingRewardCampaignInfo
 export type GrpcCampaignRewardPool =
   InjectiveExchangeV1Beta1Exchange.CampaignRewardPool
-export type GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType
 export type GrpcChainPosition = InjectiveExchangeV1Beta1Exchange.Position
 export type GrpcChainDerivativePosition =
   InjectiveExchangeV1Beta1Genesis.DerivativePosition
@@ -137,3 +132,8 @@ export type GrpcFeeDiscountAccountInfo =
   InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoResponse
 export type GrpcTradeRewardCampaign =
   InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse
+
+export const GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType
+export const GrpcMarketStatus = InjectiveExchangeV1Beta1Exchange.MarketStatus
+export const GrpcMarketStatusMap = InjectiveExchangeV1Beta1Exchange.MarketStatus
+export const GrpcOrderType = InjectiveExchangeV1Beta1Exchange.OrderType

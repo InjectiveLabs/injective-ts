@@ -20,7 +20,7 @@ export interface Proposal {
   proposalId: number
   content: any
   type: string
-  status: ProposalStatus
+  status: CosmosGovV1Beta1Gov.ProposalStatus
   submitTime: number
   finalTallyResult: GrpcTallyResult | undefined
   totalDeposits: Coin[]
@@ -32,7 +32,7 @@ export interface Proposal {
 export type Vote = {
   proposalId: number
   voter: string
-  option: VoteOption
+  option: CosmosGovV1Beta1Gov.VoteOption
 }
 
 export type TallyResult = {
@@ -54,7 +54,7 @@ export type GrpcGovernanceVotingParams = CosmosGovV1Beta1Gov.VotingParams
 export type GrpcGovernanceDepositParams = CosmosGovV1Beta1Gov.DepositParams
 export type GrpcTallyResult = CosmosGovV1Beta1Gov.TallyResult
 export type GrpcVote = CosmosGovV1Beta1Gov.Vote
-export type VoteOption = CosmosGovV1Beta1Gov.VoteOption
-export type ProposalStatus = CosmosGovV1Beta1Gov.ProposalStatus
+export const VoteOption = CosmosGovV1Beta1Gov.VoteOption
+export const ProposalStatus = CosmosGovV1Beta1Gov.ProposalStatus
 
 export { ProposalStatus as GrpcProposalStatus }
