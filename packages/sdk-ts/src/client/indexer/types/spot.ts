@@ -91,7 +91,7 @@ export interface SpotTrade extends PriceLevel {
 }
 
 export interface SpotLimitOrderParams {
-  orderType: typeof GrpcOrderType
+  orderType: GrpcOrderType
   triggerPrice?: string
   feeRecipient: string
   price: string

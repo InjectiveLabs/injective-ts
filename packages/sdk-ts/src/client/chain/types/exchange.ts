@@ -133,7 +133,7 @@ export type GrpcFeeDiscountAccountInfo =
 export type GrpcTradeRewardCampaign =
   InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse
 
+export type GrpcOrderType = InjectiveExchangeV1Beta1Exchange.OrderType
 export const GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType
-export const GrpcMarketStatus = InjectiveExchangeV1Beta1Exchange.MarketStatus
+export type GrpcMarketStatus = InjectiveExchangeV1Beta1Exchange.MarketStatus
 export const GrpcMarketStatusMap = InjectiveExchangeV1Beta1Exchange.MarketStatus
-export const GrpcOrderType = InjectiveExchangeV1Beta1Exchange.OrderType

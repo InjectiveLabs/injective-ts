@@ -54,7 +54,10 @@ export type GrpcGovernanceVotingParams = CosmosGovV1Beta1Gov.VotingParams
 export type GrpcGovernanceDepositParams = CosmosGovV1Beta1Gov.DepositParams
 export type GrpcTallyResult = CosmosGovV1Beta1Gov.TallyResult
 export type GrpcVote = CosmosGovV1Beta1Gov.Vote
-export const VoteOption = CosmosGovV1Beta1Gov.VoteOption
-export const ProposalStatus = CosmosGovV1Beta1Gov.ProposalStatus
+
+export type VoteOption = CosmosGovV1Beta1Gov.VoteOption
+export type ProposalStatus = CosmosGovV1Beta1Gov.ProposalStatus
+export const VoteOptionMap = CosmosGovV1Beta1Gov.VoteOption
+export const ProposalStatusMap = CosmosGovV1Beta1Gov.ProposalStatus
 
 export { ProposalStatus as GrpcProposalStatus }

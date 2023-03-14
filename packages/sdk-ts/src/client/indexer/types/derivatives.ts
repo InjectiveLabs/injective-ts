@@ -189,7 +189,7 @@ export interface DerivativeTrade extends PositionDelta {
 }
 
 export interface DerivativeLimitOrderParams {
-  orderType: typeof GrpcOrderType
+  orderType: GrpcOrderType
   triggerPrice?: string
   feeRecipient: string
   price: string

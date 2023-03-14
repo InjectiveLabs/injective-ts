@@ -18,4 +18,5 @@ export enum TradeDirection {
   Short = 'short',
 }
 
-export const OrderMask = InjectiveExchangeV1Beta1Exchange.OrderMask
+export type OrderMask = InjectiveExchangeV1Beta1Exchange.OrderMask
+export const OrderMaskMap = InjectiveExchangeV1Beta1Exchange.OrderMask

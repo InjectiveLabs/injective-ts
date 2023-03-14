@@ -58,5 +58,8 @@ export type GrpcContractInfo = CosmwasmWasmV1Types.ContractInfo
 export type GrpcContractCodeHistoryEntry =
   CosmwasmWasmV1Types.ContractCodeHistoryEntry
 export type GrpcAbsoluteTxPosition = CosmwasmWasmV1Types.AbsoluteTxPosition
-export const ContractCodeHistoryOperationType =
+
+export type ContractCodeHistoryOperationType =
+  CosmwasmWasmV1Types.ContractCodeHistoryOperationType
+export const ContractCodeHistoryOperationTypeMap =
   CosmwasmWasmV1Types.ContractCodeHistoryOperationType
