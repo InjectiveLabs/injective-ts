@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.93-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.92-alpha.0...@injectivelabs/utils@1.0.93-alpha.0) (2023-03-14)
+
+
+### Bug Fixes
+
+* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+
+
+
+
+
 ## [1.0.92-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.0.91-alpha.0...@injectivelabs/utils@1.0.92-alpha.0) (2023-03-14)
 
 **Note:** Version bump only for package @injectivelabs/utils
