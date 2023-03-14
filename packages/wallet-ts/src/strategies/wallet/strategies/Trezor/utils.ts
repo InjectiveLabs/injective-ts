@@ -1,9 +1,5 @@
-/* eslint-disable camelcase */
-
 import { TrezorException } from '@injectivelabs/exceptions'
-
-// eslint-disable-next-line import/no-unresolved
-const sigUtil = require('@metamask/eth-sig-util')
+import sigUtil from '@metamask/eth-sig-util'
 
 // Sanitization is used for T1 as eth-sig-util does not support BigInt
 // @ts-ignore
@@ -37,7 +33,9 @@ function sanitizeData(data) {
  * @param {boolean} metamask_v4_compat - Set to `true` for compatibility with Metamask's signTypedData_v4 function.
  * @returns {{domain_separator_hash: string, message_hash?: string} & T} The hashes.
  */
-export const transformTypedData = <T>(
+export const transformTypedData = <
+  T extends sigUtil.TypedMessage<sigUtil.MessageTypes>,
+>(
   data: T,
   metamask_v4_compat: boolean = true,
 ): { domain_separator_hash: string; message_hash?: string } & T => {
@@ -63,7 +61,7 @@ export const transformTypedData = <T>(
 
   if (primaryType !== 'EIP712Domain') {
     messageHash = sigUtil.TypedDataUtils.hashStruct(
-      primaryType,
+      primaryType as string,
       sanitizeData(message),
       types,
       version,
@@ -72,7 +70,7 @@ export const transformTypedData = <T>(
 
   return {
     domain_separator_hash: domainSeparatorHash,
-    message_hash: messageHash,
+    message_hash: messageHash as string,
     ...data,
   }
 }

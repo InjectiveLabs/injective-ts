@@ -6,6 +6,8 @@
     "rootDir": "./src",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "moduleResolution": "Node",
     "tsBuildInfoFile": "../../.build-cache/wallet-ts.esm.tsbuildinfo"
   },
   "references": [
