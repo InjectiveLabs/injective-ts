@@ -1,19 +1,13 @@
 import { InsuranceFund, InsuranceModuleParams } from '../types/insurance'
-import {
-  QueryInsuranceParamsResponse,
-  QueryInsuranceFundResponse,
-  QueryEstimatedRedemptionsResponse,
-  QueryInsuranceFundsResponse,
-  QueryPendingRedemptionsResponse,
-} from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/query'
 import { GrpcInsuranceFund } from '../types/insurance'
+import { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcInsuranceFundTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryInsuranceParamsResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryInsuranceParamsResponse,
   ): InsuranceModuleParams {
     const params = response.params!
 
@@ -47,7 +41,7 @@ export class ChainGrpcInsuranceFundTransformer {
   }
 
   static insuranceFundResponseToInsuranceFund(
-    response: QueryInsuranceFundResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryInsuranceFundResponse,
   ) {
     return ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(
       response.fund!,
@@ -55,7 +49,7 @@ export class ChainGrpcInsuranceFundTransformer {
   }
 
   static insuranceFundsResponseToInsuranceFunds(
-    response: QueryInsuranceFundsResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryInsuranceFundsResponse,
   ) {
     return response.funds.map((fund) =>
       ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(fund),
@@ -63,7 +57,7 @@ export class ChainGrpcInsuranceFundTransformer {
   }
 
   static redemptionsResponseToRedemptions(
-    response: QueryEstimatedRedemptionsResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryEstimatedRedemptionsResponse,
   ) {
     return response.amount.map((amount) => {
       return {
@@ -74,7 +68,7 @@ export class ChainGrpcInsuranceFundTransformer {
   }
 
   static estimatedRedemptionsResponseToEstimatedRedemptions(
-    response: QueryPendingRedemptionsResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryPendingRedemptionsResponse,
   ) {
     return response.amount.map((amount) => {
       return {

@@ -6,6 +6,7 @@ import {
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
+  TxRaw,
   TxResponse,
   createTxRawFromSigResponse,
   createCosmosSignDocFromTransaction,
@@ -17,7 +18,6 @@ import {
   UnspecifiedErrorCode,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { KeplrWallet } from '../../../utils/wallets/keplr'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'

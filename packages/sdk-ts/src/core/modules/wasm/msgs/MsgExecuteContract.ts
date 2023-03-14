@@ -1,10 +1,12 @@
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
-import { MsgExecuteContract as BaseMsgExecuteContract } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
 import { fromUtf8 } from '../../../../utils/utf8'
+import {
+  CosmosBaseV1Beta1Coin,
+  CosmwasmWasmV1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
@@ -35,9 +37,9 @@ export declare namespace MsgExecuteContract {
     msg?: object
   }
 
-  export type Proto = BaseMsgExecuteContract
+  export type Proto = CosmwasmWasmV1Tx.MsgExecuteContract
 
-  export type Object = Omit<BaseMsgExecuteContract, 'msg'> & {
+  export type Object = Omit<CosmwasmWasmV1Tx.MsgExecuteContract, 'msg'> & {
     msg: any
   }
 }
@@ -57,7 +59,7 @@ export default class MsgExecuteContract extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgExecuteContract.create()
+    const message = CosmwasmWasmV1Tx.MsgExecuteContract.create()
     const msg = this.getMsgObject()
 
     message.msg = fromUtf8(JSON.stringify(msg))
@@ -70,7 +72,7 @@ export default class MsgExecuteContract extends MsgBase<
         : [params.funds]
 
       const funds = fundsToArray.map((coin) => {
-        const funds = Coin.create()
+        const funds = CosmosBaseV1Beta1Coin.Coin.create()
 
         funds.amount = coin.amount
         funds.denom = coin.denom
@@ -81,7 +83,7 @@ export default class MsgExecuteContract extends MsgBase<
       message.funds = funds
     }
 
-    return BaseMsgExecuteContract.fromPartial(message)
+    return CosmwasmWasmV1Tx.MsgExecuteContract.fromPartial(message)
   }
 
   public toData() {
@@ -127,7 +129,7 @@ export default class MsgExecuteContract extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgExecuteContract.encode(this.toProto()).finish()
+    return CosmwasmWasmV1Tx.MsgExecuteContract.encode(this.toProto()).finish()
   }
 
   private getMsgObject() {

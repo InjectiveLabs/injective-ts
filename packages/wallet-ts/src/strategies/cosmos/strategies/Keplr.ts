@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { CosmosChainId } from '@injectivelabs/ts-types'
 import {
+  TxRaw,
   TxResponse,
   createTxRawFromSigResponse,
   createCosmosSignDocFromTransaction,
@@ -12,7 +13,6 @@ import {
   UnspecifiedErrorCode,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { AminoSignResponse, StdSignDoc } from '@cosmjs/launchpad'
 import { KeplrWallet } from '../../../utils/wallets/keplr'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'

@@ -1,6 +1,6 @@
-import { MsgRevoke as BaseMsgRevoke } from '@injectivelabs/core-proto-ts/cosmos/authz/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import { CosmosAuthzV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgRevoke {
   export interface Params {
@@ -9,7 +9,7 @@ export declare namespace MsgRevoke {
     granter: string
   }
 
-  export type Proto = BaseMsgRevoke
+  export type Proto = CosmosAuthzV1Beta1Tx.MsgRevoke
 }
 
 /**
@@ -26,12 +26,12 @@ export default class MsgRevoke extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgRevoke.create()
+    const message = CosmosAuthzV1Beta1Tx.MsgRevoke.create()
     message.grantee = params.grantee
     message.granter = params.granter
     message.msgTypeUrl = params.messageType
 
-    return BaseMsgRevoke.fromPartial(message)
+    return CosmosAuthzV1Beta1Tx.MsgRevoke.fromPartial(message)
   }
 
   public toData() {
@@ -51,7 +51,8 @@ export default class MsgRevoke extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgRevoke',
-      value: message as unknown as SnakeCaseKeys<BaseMsgRevoke>,
+      value:
+        message as unknown as SnakeCaseKeys<CosmosAuthzV1Beta1Tx.MsgRevoke>,
     }
   }
 
@@ -75,6 +76,6 @@ export default class MsgRevoke extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgRevoke.encode(this.toProto()).finish()
+    return CosmosAuthzV1Beta1Tx.MsgRevoke.encode(this.toProto()).finish()
   }
 }

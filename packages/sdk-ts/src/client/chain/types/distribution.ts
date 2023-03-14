@@ -1,7 +1,4 @@
-import {
-  DelegationDelegatorReward as GrpcDelegationDelegatorReward,
-  Params as GrpcDistributionParams,
-} from '@injectivelabs/core-proto-ts/cosmos/distribution/v1beta1/distribution'
+import { CosmosDistributionV1Beta1Distribution } from '@injectivelabs/core-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
 export interface DistributionModuleParams {
@@ -16,4 +13,7 @@ export interface ValidatorRewards {
   validatorAddress: string
 }
 
-export { GrpcDelegationDelegatorReward, GrpcDistributionParams }
+export type GrpcDelegationDelegatorReward =
+  CosmosDistributionV1Beta1Distribution.DelegationDelegatorReward
+export type GrpcDistributionParams =
+  CosmosDistributionV1Beta1Distribution.Params

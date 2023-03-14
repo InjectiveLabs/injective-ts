@@ -7,12 +7,12 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
+  TxRaw,
   TxResponse,
   createTxRawFromSigResponse,
   createCosmosSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { StdSignDoc } from '@keplr-wallet/types'
 import { AminoSignResponse } from '@cosmjs/launchpad'
 import { LeapWallet } from '../../../utils/wallets/leap'

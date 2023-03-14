@@ -1,14 +1,4 @@
-import {
-  Proposal as GrpcProposal,
-  Deposit as GrpcProposalDeposit,
-  TallyParams as GrpcGovernanceTallyParams,
-  VotingParams as GrpcGovernanceVotingParams,
-  DepositParams as GrpcGovernanceDepositParams,
-  TallyResult as GrpcTallyResult,
-  Vote as GrpcVote,
-  VoteOption,
-  ProposalStatus,
-} from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/gov'
+import { CosmosGovV1Beta1Gov } from '@injectivelabs/core-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
 export interface GovModuleStateParams {
@@ -57,15 +47,14 @@ export type ProposalDeposit = {
   amounts: Coin[]
 }
 
-export {
-  VoteOption,
-  GrpcProposal,
-  GrpcProposalDeposit,
-  GrpcGovernanceTallyParams,
-  GrpcGovernanceVotingParams,
-  GrpcGovernanceDepositParams,
-  GrpcTallyResult,
-  GrpcVote,
-  ProposalStatus,
-  ProposalStatus as GrpcProposalStatus,
-}
+export type GrpcProposal = CosmosGovV1Beta1Gov.Proposal
+export type GrpcProposalDeposit = CosmosGovV1Beta1Gov.Deposit
+export type GrpcGovernanceTallyParams = CosmosGovV1Beta1Gov.TallyParams
+export type GrpcGovernanceVotingParams = CosmosGovV1Beta1Gov.VotingParams
+export type GrpcGovernanceDepositParams = CosmosGovV1Beta1Gov.DepositParams
+export type GrpcTallyResult = CosmosGovV1Beta1Gov.TallyResult
+export type GrpcVote = CosmosGovV1Beta1Gov.Vote
+export type VoteOption = CosmosGovV1Beta1Gov.VoteOption
+export type ProposalStatus = CosmosGovV1Beta1Gov.ProposalStatus
+
+export { ProposalStatus as GrpcProposalStatus }

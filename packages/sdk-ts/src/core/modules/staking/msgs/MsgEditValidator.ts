@@ -1,7 +1,9 @@
-import { MsgEditValidator as BaseMsgEditValidator } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
-import { Description } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/staking'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  CosmosStakingV1Beta1Tx,
+  CosmosStakingV1Beta1Staking,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgEditValidator {
   export interface Params {
@@ -17,7 +19,7 @@ export declare namespace MsgEditValidator {
     minSelfDelegation?: string
   }
 
-  export type Proto = BaseMsgEditValidator
+  export type Proto = CosmosStakingV1Beta1Tx.MsgEditValidator
 }
 
 /**
@@ -34,7 +36,7 @@ export default class MsgEditValidator extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgEditValidator.create()
+    const message = CosmosStakingV1Beta1Tx.MsgEditValidator.create()
 
     if (params.commissionRate) {
       message.commissionRate = params.commissionRate
@@ -45,7 +47,7 @@ export default class MsgEditValidator extends MsgBase<
     }
 
     if (params.description) {
-      const description = Description.create()
+      const description = CosmosStakingV1Beta1Staking.Description.create()
 
       if (params.description.moniker) {
         description.moniker = params.description.moniker
@@ -72,7 +74,7 @@ export default class MsgEditValidator extends MsgBase<
 
     message.validatorAddress = params.validatorAddress
 
-    return BaseMsgEditValidator.fromPartial(message)
+    return CosmosStakingV1Beta1Tx.MsgEditValidator.fromPartial(message)
   }
 
   public toData() {
@@ -92,7 +94,8 @@ export default class MsgEditValidator extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgEditValidator',
-      value: message as unknown as SnakeCaseKeys<BaseMsgEditValidator>,
+      value:
+        message as unknown as SnakeCaseKeys<CosmosStakingV1Beta1Tx.MsgEditValidator>,
     }
   }
 
@@ -116,6 +119,8 @@ export default class MsgEditValidator extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgEditValidator.encode(this.toProto()).finish()
+    return CosmosStakingV1Beta1Tx.MsgEditValidator.encode(
+      this.toProto(),
+    ).finish()
   }
 }

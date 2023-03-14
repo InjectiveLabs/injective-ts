@@ -1,12 +1,8 @@
-import {
-  InjectiveAccountsRPCClientImpl,
-  StreamSubaccountBalanceRequest,
-  StreamSubaccountBalanceResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { StreamStatusResponse } from '../types'
 import { IndexerAccountStreamTransformer } from '../transformers'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
+import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
 export type BalanceStreamCallback = (
   response: ReturnType<
@@ -18,10 +14,10 @@ export type BalanceStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcAccountStream {
-  protected client: InjectiveAccountsRPCClientImpl
+  protected client: InjectiveAccountRpc.InjectiveAccountsRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveAccountsRPCClientImpl(
+    this.client = new InjectiveAccountRpc.InjectiveAccountsRPCClientImpl(
       getGrpcIndexerWebImpl(endpoint),
     )
   }
@@ -37,13 +33,13 @@ export class IndexerGrpcAccountStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamSubaccountBalanceRequest.create()
+    const request = InjectiveAccountRpc.StreamSubaccountBalanceRequest.create()
     request.subaccountId = subaccountId
 
     const subscription = this.client
       .StreamSubaccountBalance(request)
       .subscribe({
-        next(response: StreamSubaccountBalanceResponse) {
+        next(response: InjectiveAccountRpc.StreamSubaccountBalanceResponse) {
           callback(
             IndexerAccountStreamTransformer.balanceStreamCallback(response),
           )

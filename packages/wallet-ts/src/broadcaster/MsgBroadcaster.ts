@@ -1,22 +1,22 @@
 import {
-  BaseAccount,
-  ChainRestAuthApi,
-  ChainRestTendermintApi,
-  createTransaction,
-  createTransactionWithSigners,
-  createTxRawEIP712,
-  createTxRawFromSigResponse,
-  createWeb3Extension,
-  getEip712TypedData,
-  hexToBase64,
+  TxGrpcApi,
+  TxRestApi,
   hexToBuff,
-  IndexerGrpcTransactionApi,
   PublicKey,
   SIGN_AMINO,
-  TxGrpcApi,
   TxResponse,
+  hexToBase64,
+  BaseAccount,
+  ChainRestAuthApi,
+  createTxRawEIP712,
+  createTransaction,
+  getEip712TypedData,
+  createWeb3Extension,
+  ChainRestTendermintApi,
+  createTransactionWithSigners,
+  createTxRawFromSigResponse,
+  IndexerGrpcTransactionApi,
   getGasPriceBasedOnMessage,
-  TxRestApi,
   recoverTypedSignaturePubKey,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -30,7 +30,6 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import {
   getNetworkEndpoints,
   getNetworkInfo,
@@ -49,6 +48,7 @@ import {
 import { isCosmosWallet } from '../utils/wallets/cosmos'
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**
  * This class is used to broadcast transactions
@@ -644,10 +644,10 @@ export class MsgBroadcaster {
     txRaw,
     txClient,
   }: {
-    txRaw: TxRaw
+    txRaw: CosmosTxV1Beta1Tx.TxRaw
     txClient: TxGrpcApi | TxRestApi
   }) {
-    const txRawWithSignature = TxRaw.fromPartial({ ...txRaw })
+    const txRawWithSignature = CosmosTxV1Beta1Tx.TxRaw.fromPartial({ ...txRaw })
     txRawWithSignature.signatures = [new Uint8Array(0)]
 
     try {

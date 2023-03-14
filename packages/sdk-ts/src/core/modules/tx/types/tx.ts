@@ -1,14 +1,13 @@
-import { BroadcastMode } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/service'
-import {
-  SignDoc,
-  TxRaw,
-} from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { Msgs } from '../../msgs'
 import { StdFee } from '@cosmjs/amino'
-import { SignMode } from '@injectivelabs/core-proto-ts/cosmos/tx/signing/v1beta1/signing'
+import {
+  CosmosTxV1Beta1Tx,
+  CosmosTxV1Beta1Service,
+  CosmosTxSigningV1Beta1Signing,
+} from '@injectivelabs/core-proto-ts'
 
 export interface TxClientBroadcastOptions {
-  mode: BroadcastMode
+  mode: CosmosTxV1Beta1Service.BroadcastMode
   timeout: number
 }
 
@@ -41,13 +40,15 @@ export interface TxClientSimulateResponse {
 
 export interface TxConcreteApi {
   broadcast(
-    txRaw: TxRaw,
+    txRaw: CosmosTxV1Beta1Tx.TxRaw,
     options?: TxClientBroadcastOptions,
   ): Promise<TxClientBroadcastResponse>
-  broadcastBlock(txRaw: TxRaw): Promise<TxClientBroadcastResponse>
+  broadcastBlock(
+    txRaw: CosmosTxV1Beta1Tx.TxRaw,
+  ): Promise<TxClientBroadcastResponse>
   fetchTx(txHash: string): Promise<TxClientBroadcastResponse | undefined>
   fetchTxPoll(txHash: string): Promise<TxClientBroadcastResponse | undefined>
-  simulate(txRaw: TxRaw): Promise<TxClientSimulateResponse>
+  simulate(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<TxClientSimulateResponse>
 }
 
 export enum TxClientMode {
@@ -73,7 +74,7 @@ export interface CreateTransactionWithSignersArgs {
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
   message: Msgs | Msgs[] // the message that should be packed into the transaction
   signers: SignerDetails | SignerDetails[] // the signers of the transaction
-  signMode?: SignMode
+  signMode?: CosmosTxSigningV1Beta1Signing.SignMode
   timeoutHeight?: number // the height at which the transaction should be considered invalid
 }
 
@@ -86,14 +87,14 @@ export interface CreateTransactionArgs {
   pubKey: string // the pubKey of the signer of the transaction in base64
   sequence: number // the sequence (nonce) of the signer of the transaction
   accountNumber: number // the account number of the signer of the transaction
-  signMode?: SignMode
+  signMode?: CosmosTxSigningV1Beta1Signing.SignMode
   timeoutHeight?: number // the height at which the transaction should be considered invalid
 }
 
 /** @type {CreateTransactionResult} */
 export interface CreateTransactionResult {
-  txRaw: TxRaw // the Tx raw that was created
-  signDoc: SignDoc // the SignDoc that was created - used for signing of the transaction
+  txRaw: CosmosTxV1Beta1Tx.TxRaw // the Tx raw that was created
+  signDoc: CosmosTxV1Beta1Tx.SignDoc // the SignDoc that was created - used for signing of the transaction
   bodyBytes: Uint8Array // the body bytes of the transaction
   signers: SignerDetails | SignerDetails[] // the signers of the transaction
   signer: SignerDetails // the signer of the transaction

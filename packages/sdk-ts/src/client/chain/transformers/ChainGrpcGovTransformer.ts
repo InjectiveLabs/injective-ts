@@ -1,11 +1,3 @@
-import {
-  QueryParamsResponse as QueryGovernanceParamsResponse,
-  QueryProposalsResponse,
-  QueryProposalResponse,
-  QueryDepositsResponse,
-  QueryTallyResultResponse,
-  QueryVotesResponse,
-} from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/query'
 import { uint8ArrayToString } from '../../../utils'
 import {
   GovModuleStateParams,
@@ -22,13 +14,14 @@ import {
 import { Pagination } from '../../../types/index'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { cosmosSdkDecToBigNumber } from '../../../utils'
+import { CosmosGovV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcGovTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryGovernanceParamsResponse,
+    response: CosmosGovV1Beta1Query.QueryParamsResponse,
   ): GovModuleStateParams {
     const depositParams = response.depositParams!
     const votingParams = response.votingParams!
@@ -93,13 +86,17 @@ export class ChainGrpcGovTransformer {
     }
   }
 
-  static proposalResponseToProposal(response: QueryProposalResponse): Proposal {
+  static proposalResponseToProposal(
+    response: CosmosGovV1Beta1Query.QueryProposalResponse,
+  ): Proposal {
     const proposal = response.proposal!
 
     return ChainGrpcGovTransformer.grpcProposalToProposal(proposal)
   }
 
-  static proposalsResponseToProposals(response: QueryProposalsResponse): {
+  static proposalsResponseToProposals(
+    response: CosmosGovV1Beta1Query.QueryProposalsResponse,
+  ): {
     proposals: Proposal[]
     pagination: Pagination
   } {
@@ -114,7 +111,9 @@ export class ChainGrpcGovTransformer {
     }
   }
 
-  static depositsResponseToDeposits(response: QueryDepositsResponse): {
+  static depositsResponseToDeposits(
+    response: CosmosGovV1Beta1Query.QueryDepositsResponse,
+  ): {
     deposits: ProposalDeposit[]
     pagination: Pagination
   } {
@@ -135,7 +134,9 @@ export class ChainGrpcGovTransformer {
     }
   }
 
-  static votesResponseToVotes(response: QueryVotesResponse): {
+  static votesResponseToVotes(
+    response: CosmosGovV1Beta1Query.QueryVotesResponse,
+  ): {
     votes: Vote[]
     pagination: Pagination
   } {
@@ -158,7 +159,7 @@ export class ChainGrpcGovTransformer {
   }
 
   static tallyResultResponseToTallyResult(
-    response: QueryTallyResultResponse,
+    response: CosmosGovV1Beta1Query.QueryTallyResultResponse,
   ): TallyResult {
     const result = response.tally
 

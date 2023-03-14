@@ -1,10 +1,4 @@
-import {
-  QueryClientImpl,
-  QueryAuctionParamsRequest,
-  QueryModuleStateRequest,
-  QueryCurrentAuctionBasketRequest,
-} from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/query'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { InjectiveAuctionV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
@@ -19,14 +13,17 @@ import { ChainModule } from '../types'
 export class ChainGrpcAuctionApi {
   protected module: string = ChainModule.Auction
 
-  protected client: QueryClientImpl
+  protected client: InjectiveAuctionV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new InjectiveAuctionV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchModuleParams() {
-    const request = QueryAuctionParamsRequest.create()
+    const request =
+      InjectiveAuctionV1Beta1Query.QueryAuctionParamsRequest.create()
 
     try {
       const response = await this.client.AuctionParams(request)
@@ -35,7 +32,7 @@ export class ChainGrpcAuctionApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -50,7 +47,8 @@ export class ChainGrpcAuctionApi {
   }
 
   async fetchModuleState() {
-    const request = QueryModuleStateRequest.create()
+    const request =
+      InjectiveAuctionV1Beta1Query.QueryModuleStateRequest.create()
 
     try {
       const response = await this.client.AuctionModuleState(request)
@@ -59,7 +57,7 @@ export class ChainGrpcAuctionApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -74,7 +72,8 @@ export class ChainGrpcAuctionApi {
   }
 
   async fetchCurrentBasket() {
-    const request = QueryCurrentAuctionBasketRequest.create()
+    const request =
+      InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketRequest.create()
 
     try {
       const response = await this.client.CurrentAuctionBasket(request)
@@ -83,7 +82,7 @@ export class ChainGrpcAuctionApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

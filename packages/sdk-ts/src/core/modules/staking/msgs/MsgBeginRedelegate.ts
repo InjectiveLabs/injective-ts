@@ -1,7 +1,9 @@
-import { MsgBeginRedelegate as BaseMsgBeginRedelegate } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  CosmosStakingV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgBeginRedelegate {
   export interface Params {
@@ -14,7 +16,7 @@ export declare namespace MsgBeginRedelegate {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgBeginRedelegate
+  export type Proto = CosmosStakingV1Beta1Tx.MsgBeginRedelegate
 }
 
 /**
@@ -31,17 +33,17 @@ export default class MsgBeginRedelegate extends MsgBase<
   public toProto(): MsgBeginRedelegate.Proto {
     const { params } = this
 
-    const coinAmount = Coin.create()
+    const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
     coinAmount.denom = params.amount.denom
     coinAmount.amount = params.amount.amount
 
-    const message = BaseMsgBeginRedelegate.create()
+    const message = CosmosStakingV1Beta1Tx.MsgBeginRedelegate.create()
     message.amount = coinAmount
     message.delegatorAddress = params.injectiveAddress
     message.validatorSrcAddress = params.srcValidatorAddress
     message.validatorDstAddress = params.dstValidatorAddress
 
-    return BaseMsgBeginRedelegate.fromPartial(message)
+    return CosmosStakingV1Beta1Tx.MsgBeginRedelegate.fromPartial(message)
   }
 
   public toData() {
@@ -85,6 +87,8 @@ export default class MsgBeginRedelegate extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgBeginRedelegate.encode(this.toProto()).finish()
+    return CosmosStakingV1Beta1Tx.MsgBeginRedelegate.encode(
+      this.toProto(),
+    ).finish()
   }
 }

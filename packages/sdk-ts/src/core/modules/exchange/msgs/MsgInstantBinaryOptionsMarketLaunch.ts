@@ -1,8 +1,10 @@
-import { MsgInstantBinaryOptionsMarketLaunch as BaseMsgInstantBinaryOptionsMarketLaunch } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
-import { OracleType } from '../../../../client'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveOracleV1Beta1Oracle,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgInstantBinaryOptionsMarketLaunch {
   export interface Params {
@@ -13,7 +15,7 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
       oracleSymbol: string
       oracleProvider: string
       oracleScaleFactor: number
-      oracleType: OracleType
+      oracleType: InjectiveOracleV1Beta1Oracle.OracleType
       quoteDenom: string
       makerFeeRate: string
       takerFeeRate: string
@@ -24,11 +26,13 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
     }
   }
 
-  export type Proto = BaseMsgInstantBinaryOptionsMarketLaunch
+  export type Proto =
+    InjectiveExchangeV1Beta1Tx.MsgInstantBinaryOptionsMarketLaunch
 }
 
 const createMessage = (params: MsgInstantBinaryOptionsMarketLaunch.Params) => {
-  const message = BaseMsgInstantBinaryOptionsMarketLaunch.create()
+  const message =
+    InjectiveExchangeV1Beta1Tx.MsgInstantBinaryOptionsMarketLaunch.create()
 
   message.sender = params.proposer
   message.ticker = params.market.ticker
@@ -45,7 +49,9 @@ const createMessage = (params: MsgInstantBinaryOptionsMarketLaunch.Params) => {
   message.minPriceTickSize = params.market.minPriceTickSize
   message.minQuantityTickSize = params.market.minQuantityTickSize
 
-  return BaseMsgInstantBinaryOptionsMarketLaunch.fromPartial(message)
+  return InjectiveExchangeV1Beta1Tx.MsgInstantBinaryOptionsMarketLaunch.fromPartial(
+    message,
+  )
 }
 
 /**
@@ -130,7 +136,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgInstantBinaryOptionsMarketLaunch.encode(
+    return InjectiveExchangeV1Beta1Tx.MsgInstantBinaryOptionsMarketLaunch.encode(
       this.toProto(),
     ).finish()
   }

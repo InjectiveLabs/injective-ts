@@ -1,7 +1,5 @@
 import { BECH32_PUBKEY_ACC_PREFIX } from '../../utils'
 import { bech32 } from 'bech32'
-import { PubKey } from '@injectivelabs/core-proto-ts/injective/crypto/v1beta1/ethsecp256k1/keys'
-import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 import { toBuffer } from 'ethereumjs-util'
 import secp256k1 from 'secp256k1'
 import { Address } from './Address'
@@ -10,6 +8,10 @@ import {
   util as EthCryptoUtil,
 } from 'eth-crypto'
 import { keccak256 } from 'js-sha3'
+import {
+  GoogleProtobufAny,
+  InjectiveCryptoV1Beta1Ethsecp256k1Keys,
+} from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Crypto Utility Classes
@@ -73,7 +75,7 @@ export class PublicKey {
   }
 
   public toProto() {
-    const proto = PubKey.create()
+    const proto = InjectiveCryptoV1Beta1Ethsecp256k1Keys.PubKey.create()
     proto.key = this.key
 
     return proto
@@ -82,9 +84,11 @@ export class PublicKey {
   public toAny() {
     const proto = this.toProto()
 
-    const message = Any.create()
+    const message = GoogleProtobufAny.Any.create()
     message.typeUrl = this.type
-    message.value = Buffer.from(PubKey.encode(proto).finish())
+    message.value = Buffer.from(
+      InjectiveCryptoV1Beta1Ethsecp256k1Keys.PubKey.encode(proto).finish(),
+    )
 
     return message
   }

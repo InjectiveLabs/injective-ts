@@ -1,5 +1,7 @@
-import { MsgWithdraw as BaseMsgWithdraw } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveExchangeV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
 
@@ -13,7 +15,7 @@ export declare namespace MsgWithdraw {
     }
   }
 
-  export type Proto = BaseMsgWithdraw
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgWithdraw
 }
 
 /**
@@ -30,16 +32,16 @@ export default class MsgWithdraw extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = Coin.create()
+    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
     amountCoin.amount = params.amount.amount
     amountCoin.denom = params.amount.denom
 
-    const message = BaseMsgWithdraw.create()
+    const message = InjectiveExchangeV1Beta1Tx.MsgWithdraw.create()
     message.sender = params.injectiveAddress
     message.subaccountId = params.subaccountId
     message.amount = amountCoin
 
-    return BaseMsgWithdraw.fromPartial(message)
+    return InjectiveExchangeV1Beta1Tx.MsgWithdraw.fromPartial(message)
   }
 
   public toData() {
@@ -83,6 +85,8 @@ export default class MsgWithdraw extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgWithdraw.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgWithdraw.encode(
+      this.toProto(),
+    ).finish()
   }
 }

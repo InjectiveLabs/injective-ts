@@ -1,19 +1,11 @@
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
-import {
-  QueryClientImpl,
-  QueryInsuranceParamsRequest,
-  QueryInsuranceFundRequest,
-  QueryEstimatedRedemptionsRequest,
-  QueryInsuranceFundsRequest,
-  QueryPendingRedemptionsRequest,
-} from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/query'
 import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer'
 import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -21,14 +13,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcInsuranceFundApi {
   protected module: string = ChainModule.InsuranceFund
 
-  protected client: QueryClientImpl
+  protected client: InjectiveInsuranceV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new InjectiveInsuranceV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchModuleParams() {
-    const request = QueryInsuranceParamsRequest.create()
+    const request =
+      InjectiveInsuranceV1Beta1Query.QueryInsuranceParamsRequest.create()
 
     try {
       const response = await this.client.InsuranceParams(request)
@@ -37,7 +32,7 @@ export class ChainGrpcInsuranceFundApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -52,7 +47,8 @@ export class ChainGrpcInsuranceFundApi {
   }
 
   async fetchInsuranceFunds() {
-    const request = QueryInsuranceFundsRequest.create()
+    const request =
+      InjectiveInsuranceV1Beta1Query.QueryInsuranceFundsRequest.create()
 
     try {
       const response = await this.client.InsuranceFunds(request)
@@ -61,7 +57,7 @@ export class ChainGrpcInsuranceFundApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -76,7 +72,8 @@ export class ChainGrpcInsuranceFundApi {
   }
 
   async fetchInsuranceFund(marketId: string) {
-    const request = QueryInsuranceFundRequest.create()
+    const request =
+      InjectiveInsuranceV1Beta1Query.QueryInsuranceFundRequest.create()
 
     request.marketId = marketId
 
@@ -87,7 +84,7 @@ export class ChainGrpcInsuranceFundApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -108,7 +105,8 @@ export class ChainGrpcInsuranceFundApi {
     marketId: string
     address: string
   }) {
-    const request = QueryEstimatedRedemptionsRequest.create()
+    const request =
+      InjectiveInsuranceV1Beta1Query.QueryEstimatedRedemptionsRequest.create()
 
     request.marketId = marketId
     request.address = address
@@ -120,7 +118,7 @@ export class ChainGrpcInsuranceFundApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -141,7 +139,8 @@ export class ChainGrpcInsuranceFundApi {
     marketId: string
     address: string
   }) {
-    const request = QueryPendingRedemptionsRequest.create()
+    const request =
+      InjectiveInsuranceV1Beta1Query.QueryPendingRedemptionsRequest.create()
 
     request.marketId = marketId
     request.address = address
@@ -153,7 +152,7 @@ export class ChainGrpcInsuranceFundApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

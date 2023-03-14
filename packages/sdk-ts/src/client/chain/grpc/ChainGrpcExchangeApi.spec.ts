@@ -2,10 +2,7 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcExchangeApi } from './ChainGrpcExchangeApi'
 import { mockFactory } from '@injectivelabs/test-utils'
 import { ChainGrpcExchangeTransformer } from '../transformers'
-import {
-  QueryModuleStateResponse,
-  QuerySubaccountTradeNonceResponse,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/query'
+import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const subaccountId = mockFactory.subaccountId
@@ -39,7 +36,9 @@ describe('ChainGrpcExchangeApi', () => {
 
       expect(response).toBeDefined()
       expect(response).toEqual(
-        expect.objectContaining<QueryModuleStateResponse['state']>(response),
+        expect.objectContaining<
+          InjectiveExchangeV1Beta1Query.QueryModuleStateResponse['state']
+        >(response),
       )
     } catch (e) {
       console.error(
@@ -180,7 +179,9 @@ describe('ChainGrpcExchangeApi', () => {
 
       expect(response).toBeDefined()
       expect(response).toEqual(
-        expect.objectContaining<QuerySubaccountTradeNonceResponse>(response),
+        expect.objectContaining<InjectiveExchangeV1Beta1Query.QuerySubaccountTradeNonceResponse>(
+          response,
+        ),
       )
     } catch (e) {
       console.error(

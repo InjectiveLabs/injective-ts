@@ -1,8 +1,8 @@
-import { MsgExecuteContractCompat as BaseMsgExecuteContractCompat } from '@injectivelabs/core-proto-ts/injective/wasmx/v1/tx'
 import snakecaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import { GeneralException } from '@injectivelabs/exceptions'
+import { InjectiveWasmxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgExecuteContractCompat {
   export interface Params {
@@ -34,9 +34,12 @@ export declare namespace MsgExecuteContractCompat {
     msg?: object
   }
 
-  export type Proto = BaseMsgExecuteContractCompat
+  export type Proto = InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat
 
-  export type Object = Omit<BaseMsgExecuteContractCompat, 'msg'> & {
+  export type Object = Omit<
+    InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat,
+    'msg'
+  > & {
     msg: string
   }
 }
@@ -58,7 +61,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgExecuteContractCompat.create()
+    const message = InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.create()
     const msg = this.getMsgObject()
 
     message.msg = JSON.stringify(msg)
@@ -79,7 +82,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
       message.funds = '0'
     }
 
-    return BaseMsgExecuteContractCompat.fromPartial(message)
+    return InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.fromPartial(message)
   }
 
   public toData() {
@@ -127,7 +130,9 @@ export default class MsgExecuteContractCompat extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgExecuteContractCompat.encode(this.toProto()).finish()
+    return InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.encode(
+      this.toProto(),
+    ).finish()
   }
 
   private getMsgObject() {

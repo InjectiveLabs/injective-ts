@@ -1,7 +1,9 @@
-import { MsgBid as BaseMsgBid } from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveAuctionV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgBid {
   export interface Params {
@@ -13,7 +15,7 @@ export declare namespace MsgBid {
     }
   }
 
-  export type Proto = BaseMsgBid
+  export type Proto = InjectiveAuctionV1Beta1Tx.MsgBid
 }
 
 /**
@@ -27,16 +29,16 @@ export default class MsgBid extends MsgBase<MsgBid.Params, MsgBid.Proto> {
   public toProto() {
     const { params } = this
 
-    const amountCoin = Coin.create()
+    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
     amountCoin.amount = params.amount.amount
     amountCoin.denom = params.amount.denom
 
-    const message = BaseMsgBid.create()
+    const message = InjectiveAuctionV1Beta1Tx.MsgBid.create()
     message.sender = params.injectiveAddress
     message.round = params.round.toString()
     message.bidAmount = amountCoin
 
-    return BaseMsgBid.fromPartial(message)
+    return InjectiveAuctionV1Beta1Tx.MsgBid.fromPartial(message)
   }
 
   public toData() {
@@ -80,6 +82,6 @@ export default class MsgBid extends MsgBase<MsgBid.Params, MsgBid.Proto> {
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgBid.encode(this.toProto()).finish()
+    return InjectiveAuctionV1Beta1Tx.MsgBid.encode(this.toProto()).finish()
   }
 }

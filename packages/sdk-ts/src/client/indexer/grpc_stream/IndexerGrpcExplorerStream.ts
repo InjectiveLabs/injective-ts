@@ -1,14 +1,8 @@
-import {
-  InjectiveExplorerRPCClientImpl,
-  StreamBlocksRequest,
-  StreamBlocksResponse,
-  StreamTxsRequest,
-  StreamTxsResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
 import { StreamStatusResponse } from '../types'
 import { ExplorerStreamTransformer } from '../transformers'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 export type BlocksStreamCallback = (
   response: ReturnType<typeof ExplorerStreamTransformer.blocksStreamCallback>,
@@ -28,10 +22,10 @@ export type TransactionsStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcExplorerStream {
-  protected client: InjectiveExplorerRPCClientImpl
+  protected client: InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveExplorerRPCClientImpl(
+    this.client = new InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl(
       getGrpcIndexerWebImpl(endpoint),
     )
   }
@@ -45,10 +39,10 @@ export class IndexerGrpcExplorerStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamBlocksRequest.create()
+    const request = InjectiveExplorerRpc.StreamBlocksRequest.create()
 
     const subscription = this.client.StreamBlocks(request).subscribe({
-      next(response: StreamBlocksResponse) {
+      next(response: InjectiveExplorerRpc.StreamBlocksResponse) {
         callback(ExplorerStreamTransformer.blocksStreamCallback(response))
       },
       error(err) {
@@ -75,10 +69,10 @@ export class IndexerGrpcExplorerStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamBlocksRequest.create()
+    const request = InjectiveExplorerRpc.StreamBlocksRequest.create()
 
     const subscription = this.client.StreamBlocks(request).subscribe({
-      next(response: StreamBlocksResponse) {
+      next(response: InjectiveExplorerRpc.StreamBlocksResponse) {
         callback(
           ExplorerStreamTransformer.blocksWithTxsStreamCallback(response),
         )
@@ -107,10 +101,10 @@ export class IndexerGrpcExplorerStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamTxsRequest.create()
+    const request = InjectiveExplorerRpc.StreamTxsRequest.create()
 
     const subscription = this.client.StreamTxs(request).subscribe({
-      next(response: StreamTxsResponse) {
+      next(response: InjectiveExplorerRpc.StreamTxsResponse) {
         callback(ExplorerStreamTransformer.transactionsStreamCallback(response))
       },
       error(err) {

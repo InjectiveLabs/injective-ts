@@ -1,4 +1,3 @@
-import { AccountPortfolioResponse } from '@injectivelabs/indexer-proto-ts/injective_portfolio_rpc'
 import { Coin } from '@injectivelabs/ts-types'
 import { GrpcCoin } from '../../../types/index'
 import {
@@ -8,10 +7,11 @@ import {
   PortfolioSubaccountBalanceV2,
   GrpcPortfolioSubaccountBalanceV2,
 } from '../types/account-portfolio'
+import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 
 export class IndexerGrpcAccountPortfolioTransformer {
   static accountPortfolioResponseToAccountPortfolio(
-    response: AccountPortfolioResponse,
+    response: InjectivePortfolioRpc.AccountPortfolioResponse,
   ): AccountPortfolioV2 | undefined {
     const portfolio = response.portfolio!
     const bankBalancesList = portfolio?.bankBalances || []

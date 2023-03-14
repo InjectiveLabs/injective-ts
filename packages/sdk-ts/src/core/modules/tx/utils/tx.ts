@@ -1,21 +1,14 @@
-import { PubKey } from '@injectivelabs/core-proto-ts/cosmos/crypto/secp256k1/keys'
-import { PubKey as CosmosPubKey } from '@injectivelabs/core-proto-ts/cosmos/crypto/secp256k1/keys'
 import { createAny, createAnyMessage } from './helpers'
-import {
-  TxBody,
-  SignDoc,
-  SignerInfo,
-  AuthInfo,
-  ModeInfo,
-  Fee,
-  TxRaw,
-} from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
-import { SignMode } from '@injectivelabs/core-proto-ts/cosmos/tx/signing/v1beta1/signing'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
-import { ExtensionOptionsWeb3Tx } from '@injectivelabs/core-proto-ts/injective/types/v1beta1/tx_ext'
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Msgs } from '../../msgs'
+import {
+  CosmosBaseV1Beta1Coin,
+  CosmosCryptoSecp256k1Keys,
+  CosmosTxSigningV1Beta1Signing,
+  CosmosTxV1Beta1Tx,
+  InjectiveTypesV1TxExt,
+} from '@injectivelabs/core-proto-ts'
 
 export const getPublicKey = ({
   chainId,
@@ -29,16 +22,16 @@ export const getPublicKey = ({
   let baseProto
 
   if (chainId.startsWith('injective')) {
-    proto = PubKey.create()
-    baseProto = PubKey
+    proto = CosmosCryptoSecp256k1Keys.PubKey.create()
+    baseProto = CosmosCryptoSecp256k1Keys.PubKey
     path = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
   } else if (chainId.startsWith('evmos')) {
-    proto = PubKey.create()
-    baseProto = PubKey
+    proto = CosmosCryptoSecp256k1Keys.PubKey.create()
+    baseProto = CosmosCryptoSecp256k1Keys.PubKey
     path = '/ethermint.crypto.v1.ethsecp256k1.PubKey'
   } else {
-    proto = CosmosPubKey.create()
-    baseProto = CosmosPubKey
+    proto = CosmosCryptoSecp256k1Keys.PubKey.create()
+    baseProto = CosmosCryptoSecp256k1Keys.PubKey
     path = '/cosmos.crypto.secp256k1.PubKey'
   }
 
@@ -58,7 +51,7 @@ export const createBody = ({
 }) => {
   const messages = Array.isArray(message) ? message : [message]
 
-  const txBody = TxBody.create()
+  const txBody = CosmosTxV1Beta1Tx.TxBody.create()
 
   txBody.messages = messages.map((message) =>
     createAnyMessage({
@@ -85,11 +78,11 @@ export const createFee = ({
   payer?: string
   gasLimit: number
 }) => {
-  const feeAmount = Coin.create()
+  const feeAmount = CosmosBaseV1Beta1Coin.Coin.create()
   feeAmount.amount = fee.amount
   feeAmount.denom = fee.denom
 
-  const feeProto = Fee.create()
+  const feeProto = CosmosTxV1Beta1Tx.Fee.create()
   feeProto.gasLimit = gasLimit.toString()
   feeProto.amount = [feeAmount]
 
@@ -107,7 +100,7 @@ export const createSigners = ({
 }: {
   chainId: string
   signers: { pubKey: string; sequence: number }[]
-  mode: SignMode
+  mode: CosmosTxSigningV1Beta1Signing.SignMode
 }) => {
   return signers.map((s) =>
     createSignerInfo({
@@ -128,17 +121,17 @@ export const createSignerInfo = ({
   chainId: string
   publicKey: string
   sequence: number
-  mode: SignMode
+  mode: CosmosTxSigningV1Beta1Signing.SignMode
 }) => {
   const pubKey = getPublicKey({ chainId, key: publicKey })
 
-  const single = ModeInfo.create().single!
+  const single = CosmosTxV1Beta1Tx.ModeInfo.create().single!
   single.mode = mode
 
-  const modeInfo = ModeInfo.create()
+  const modeInfo = CosmosTxV1Beta1Tx.ModeInfo.create()
   modeInfo.single = single
 
-  const signerInfo = SignerInfo.create()
+  const signerInfo = CosmosTxV1Beta1Tx.SignerInfo.create()
   signerInfo.publicKey = pubKey
   signerInfo.sequence = sequence.toString()
   signerInfo.modeInfo = modeInfo
@@ -150,10 +143,10 @@ export const createAuthInfo = ({
   signerInfo,
   fee,
 }: {
-  signerInfo: SignerInfo[]
-  fee: Fee
+  signerInfo: CosmosTxV1Beta1Tx.SignerInfo[]
+  fee: CosmosTxV1Beta1Tx.Fee
 }) => {
-  const authInfo = AuthInfo.create()
+  const authInfo = CosmosTxV1Beta1Tx.AuthInfo.create()
   authInfo.signerInfos = signerInfo
   authInfo.fee = fee
 
@@ -171,7 +164,7 @@ export const createSigDoc = ({
   chainId: string
   accountNumber: number
 }) => {
-  const signDoc = SignDoc.create()
+  const signDoc = CosmosTxV1Beta1Tx.SignDoc.create()
 
   signDoc.accountNumber = accountNumber.toString()
   signDoc.chainId = chainId
@@ -182,7 +175,7 @@ export const createSigDoc = ({
 }
 
 export const createCosmosSignDocFromTransaction = (args: {
-  txRaw: TxRaw
+  txRaw: CosmosTxV1Beta1Tx.TxRaw
   chainId: string
   accountNumber: number
 }) => {
@@ -195,18 +188,18 @@ export const createCosmosSignDocFromTransaction = (args: {
 }
 
 export const createTxRawEIP712 = (
-  txRaw: TxRaw,
-  extension: ExtensionOptionsWeb3Tx,
+  txRaw: CosmosTxV1Beta1Tx.TxRaw,
+  extension: InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx,
 ) => {
-  const body = TxBody.decode(txRaw.bodyBytes)
+  const body = CosmosTxV1Beta1Tx.TxBody.decode(txRaw.bodyBytes)
   const extensionAny = createAny(
-    ExtensionOptionsWeb3Tx.encode(extension).finish(),
+    InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx.encode(extension).finish(),
     '/injective.types.v1beta1.ExtensionOptionsWeb3Tx',
   )
 
   body.extensionOptions = [extensionAny]
 
-  txRaw.bodyBytes = TxBody.encode(body).finish()
+  txRaw.bodyBytes = CosmosTxV1Beta1Tx.TxBody.encode(body).finish()
 
   return txRaw
 }
@@ -220,7 +213,7 @@ export const createWeb3Extension = ({
   feePayer?: string
   feePayerSig?: Uint8Array
 }) => {
-  const web3Extension = ExtensionOptionsWeb3Tx.create()
+  const web3Extension = InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx.create()
   web3Extension.typedDataChainID = ethereumChainId.toString()
 
   if (feePayer) {
@@ -235,10 +228,14 @@ export const createWeb3Extension = ({
 }
 
 export const getTransactionPartsFromTxRaw = (
-  txRaw: TxRaw,
-): { authInfo: AuthInfo; body: TxBody; signatures: Uint8Array[] } => {
-  const authInfo = AuthInfo.decode(txRaw.authInfoBytes)
-  const body = TxBody.decode(txRaw.bodyBytes)
+  txRaw: CosmosTxV1Beta1Tx.TxRaw,
+): {
+  authInfo: CosmosTxV1Beta1Tx.AuthInfo
+  body: CosmosTxV1Beta1Tx.TxBody
+  signatures: Uint8Array[]
+} => {
+  const authInfo = CosmosTxV1Beta1Tx.AuthInfo.decode(txRaw.authInfoBytes)
+  const body = CosmosTxV1Beta1Tx.TxBody.decode(txRaw.bodyBytes)
 
   return {
     body,

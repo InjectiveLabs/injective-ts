@@ -1,16 +1,3 @@
-import {
-  QueryClientImpl,
-  QueryDelegatorDelegationsRequest,
-  QueryDelegatorUnbondingDelegationsRequest,
-  QueryValidatorDelegationsRequest,
-  QueryRedelegationsRequest,
-  QueryPoolRequest,
-  QueryValidatorsRequest,
-  QueryDelegationRequest,
-  QueryValidatorRequest,
-  QueryParamsRequest as QueryStakingParamsRequest,
-  QueryValidatorUnbondingDelegationsRequest,
-} from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/query'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
@@ -20,7 +7,7 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -28,14 +15,16 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcStakingApi {
   protected module: string = ChainModule.Staking
 
-  protected client: QueryClientImpl
+  protected client: CosmosStakingV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new CosmosStakingV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchModuleParams() {
-    const request = QueryStakingParamsRequest.create()
+    const request = CosmosStakingV1Beta1Query.QueryParamsRequest.create()
 
     try {
       const response = await this.client.Params(request)
@@ -44,7 +33,7 @@ export class ChainGrpcStakingApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -59,14 +48,14 @@ export class ChainGrpcStakingApi {
   }
 
   async fetchPool() {
-    const request = QueryPoolRequest.create()
+    const request = CosmosStakingV1Beta1Query.QueryPoolRequest.create()
 
     try {
       const response = await this.client.Pool(request)
 
       return ChainGrpcStakingTransformer.poolResponseToPool(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -81,7 +70,7 @@ export class ChainGrpcStakingApi {
   }
 
   async fetchValidators() {
-    const request = QueryValidatorsRequest.create()
+    const request = CosmosStakingV1Beta1Query.QueryValidatorsRequest.create()
 
     try {
       const response = await this.client.Validators(request)
@@ -90,7 +79,7 @@ export class ChainGrpcStakingApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -105,7 +94,7 @@ export class ChainGrpcStakingApi {
   }
 
   async fetchValidator(address: string) {
-    const request = QueryValidatorRequest.create()
+    const request = CosmosStakingV1Beta1Query.QueryValidatorRequest.create()
 
     request.validatorAddr = address
 
@@ -114,7 +103,7 @@ export class ChainGrpcStakingApi {
 
       return ChainGrpcStakingTransformer.validatorResponseToValidator(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -135,7 +124,8 @@ export class ChainGrpcStakingApi {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryValidatorDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryValidatorDelegationsRequest.create()
 
     request.validatorAddr = validatorAddress
 
@@ -152,7 +142,7 @@ export class ChainGrpcStakingApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -173,7 +163,8 @@ export class ChainGrpcStakingApi {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryValidatorDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryValidatorDelegationsRequest.create()
 
     request.validatorAddr = validatorAddress
 
@@ -194,7 +185,7 @@ export class ChainGrpcStakingApi {
         return { delegations: [], pagination: { total: 0, next: '' } }
       }
 
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -215,7 +206,8 @@ export class ChainGrpcStakingApi {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryValidatorUnbondingDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryValidatorUnbondingDelegationsRequest.create()
 
     request.validatorAddr = validatorAddress
 
@@ -232,7 +224,7 @@ export class ChainGrpcStakingApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -253,7 +245,8 @@ export class ChainGrpcStakingApi {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryValidatorUnbondingDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryValidatorUnbondingDelegationsRequest.create()
 
     request.validatorAddr = validatorAddress
 
@@ -274,7 +267,7 @@ export class ChainGrpcStakingApi {
         return { unbondingDelegations: [], pagination: { total: 0, next: '' } }
       }
 
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -295,7 +288,7 @@ export class ChainGrpcStakingApi {
     injectiveAddress: string
     validatorAddress: string
   }) {
-    const request = QueryDelegationRequest.create()
+    const request = CosmosStakingV1Beta1Query.QueryDelegationRequest.create()
 
     request.delegatorAddr = injectiveAddress
     request.validatorAddr = validatorAddress
@@ -307,7 +300,7 @@ export class ChainGrpcStakingApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -328,7 +321,8 @@ export class ChainGrpcStakingApi {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryDelegatorDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryDelegatorDelegationsRequest.create()
 
     request.delegatorAddr = injectiveAddress
 
@@ -345,7 +339,7 @@ export class ChainGrpcStakingApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -366,7 +360,8 @@ export class ChainGrpcStakingApi {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryDelegatorDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryDelegatorDelegationsRequest.create()
 
     request.delegatorAddr = injectiveAddress
 
@@ -387,7 +382,7 @@ export class ChainGrpcStakingApi {
         return { delegations: [], pagination: { total: 0, next: '' } }
       }
 
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -408,7 +403,8 @@ export class ChainGrpcStakingApi {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryValidatorDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryValidatorDelegationsRequest.create()
 
     request.validatorAddr = validatorAddress
 
@@ -425,7 +421,7 @@ export class ChainGrpcStakingApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -446,7 +442,8 @@ export class ChainGrpcStakingApi {
     validatorAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryValidatorDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryValidatorDelegationsRequest.create()
 
     request.validatorAddr = validatorAddress
 
@@ -467,7 +464,7 @@ export class ChainGrpcStakingApi {
         return { delegations: [], pagination: { total: 0, next: '' } }
       }
 
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -488,7 +485,8 @@ export class ChainGrpcStakingApi {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryDelegatorUnbondingDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsRequest.create()
 
     request.delegatorAddr = injectiveAddress
 
@@ -505,7 +503,7 @@ export class ChainGrpcStakingApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -526,7 +524,8 @@ export class ChainGrpcStakingApi {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryDelegatorUnbondingDelegationsRequest.create()
+    const request =
+      CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsRequest.create()
 
     request.delegatorAddr = injectiveAddress
 
@@ -547,7 +546,7 @@ export class ChainGrpcStakingApi {
         return { unbondingDelegations: [], pagination: { total: 0, next: '' } }
       }
 
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -568,7 +567,7 @@ export class ChainGrpcStakingApi {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryRedelegationsRequest.create()
+    const request = CosmosStakingV1Beta1Query.QueryRedelegationsRequest.create()
 
     request.delegatorAddr = injectiveAddress
 
@@ -585,7 +584,7 @@ export class ChainGrpcStakingApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -606,7 +605,7 @@ export class ChainGrpcStakingApi {
     injectiveAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryRedelegationsRequest.create()
+    const request = CosmosStakingV1Beta1Query.QueryRedelegationsRequest.create()
 
     request.delegatorAddr = injectiveAddress
 
@@ -627,7 +626,7 @@ export class ChainGrpcStakingApi {
         return { redelegations: [], pagination: { total: 0, next: '' } }
       }
 
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

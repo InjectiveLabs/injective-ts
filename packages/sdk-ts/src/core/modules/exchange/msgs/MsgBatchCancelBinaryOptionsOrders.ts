@@ -1,10 +1,9 @@
-import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
-import {
-  MsgBatchCancelBinaryOptionsOrders as BaseMsgBatchCancelBinaryOptionsOrders,
-  OrderData,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
+import {
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgBatchCancelBinaryOptionsOrders {
   export interface Params {
@@ -13,11 +12,12 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
       marketId: string
       subaccountId: string
       orderHash: string
-      orderMask?: OrderMask
+      orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
     }[]
   }
 
-  export type Proto = BaseMsgBatchCancelBinaryOptionsOrders
+  export type Proto =
+    InjectiveExchangeV1Beta1Tx.MsgBatchCancelBinaryOptionsOrders
 }
 
 /**
@@ -37,22 +37,25 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
     const { params } = this
 
     const orderDataList = params.orders.map((order) => {
-      const orderData = OrderData.create()
+      const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
       orderData.marketId = order.marketId
       orderData.orderHash = order.orderHash
       orderData.subaccountId = order.subaccountId
 
       // TODO: Send order.orderMask instead when chain handles order mask properly.
-      orderData.orderMask = OrderMask.ANY
+      orderData.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
 
       return orderData
     })
 
-    const message = BaseMsgBatchCancelBinaryOptionsOrders.create()
+    const message =
+      InjectiveExchangeV1Beta1Tx.MsgBatchCancelBinaryOptionsOrders.create()
     message.sender = params.injectiveAddress
     message.data = orderDataList.map((o) => o)
 
-    return BaseMsgBatchCancelBinaryOptionsOrders.fromPartial(message)
+    return InjectiveExchangeV1Beta1Tx.MsgBatchCancelBinaryOptionsOrders.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -73,7 +76,7 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
     return {
       type: 'exchange/MsgBatchCancelBinaryOptionsOrders',
       value:
-        message as unknown as SnakeCaseKeys<BaseMsgBatchCancelBinaryOptionsOrders>,
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgBatchCancelBinaryOptionsOrders>,
     }
   }
 
@@ -97,6 +100,8 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgBatchCancelBinaryOptionsOrders.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgBatchCancelBinaryOptionsOrders.encode(
+      this.toProto(),
+    ).finish()
   }
 }

@@ -1,7 +1,7 @@
 import { grpc } from '@improbable-eng/grpc-web'
 import { isBrowser } from '../utils/helpers'
 import { getGrpcTransport } from '../utils/grpc'
-import { GrpcWebImpl } from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
+import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
 if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
@@ -10,7 +10,7 @@ if (!isBrowser()) {
 /**
  * @hidden
  */
-export default class BaseIndexerGrpcWebConsumer extends GrpcWebImpl {
+export default class BaseIndexerGrpcWebConsumer extends InjectiveAccountRpc.GrpcWebImpl {
   protected module: string = ''
 
   constructor(endpoint: string) {

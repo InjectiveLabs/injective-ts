@@ -1,5 +1,7 @@
-import { MsgExternalTransfer as BaseMsgExternalTransfer } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveExchangeV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
 
@@ -14,7 +16,7 @@ export declare namespace MsgExternalTransfer {
     }
   }
 
-  export type Proto = BaseMsgExternalTransfer
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgExternalTransfer
 }
 
 /**
@@ -31,17 +33,17 @@ export default class MsgExternalTransfer extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = Coin.create()
+    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
     amountCoin.amount = params.amount.amount
     amountCoin.denom = params.amount.denom
 
-    const message = BaseMsgExternalTransfer.create()
+    const message = InjectiveExchangeV1Beta1Tx.MsgExternalTransfer.create()
     message.sender = params.injectiveAddress
     message.sourceSubaccountId = params.srcSubaccountId
     message.destinationSubaccountId = params.dstSubaccountId
     message.amount = amountCoin
 
-    return BaseMsgExternalTransfer.fromPartial(message)
+    return InjectiveExchangeV1Beta1Tx.MsgExternalTransfer.fromPartial(message)
   }
 
   public toData() {
@@ -85,6 +87,8 @@ export default class MsgExternalTransfer extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgExternalTransfer.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgExternalTransfer.encode(
+      this.toProto(),
+    ).finish()
   }
 }

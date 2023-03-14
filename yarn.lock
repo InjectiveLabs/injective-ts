@@ -2193,10 +2193,10 @@
     web3 "^1.7.2"
     web3-utils "^1.7.2"
 
-"@injectivelabs/core-proto-ts@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.6.tgz#fd3b28361bdf73321916144f51c30a71fc2e4b60"
-  integrity sha512-k1FJpd5ZWHrKj9wSeT9zGYm/n4O2Y6ib6jwPgudjyqxiaAR2TW6+vnoOgbow+tSlc+2OV2F1XcMKNVsMiPVNQA==
+"@injectivelabs/core-proto-ts@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.11.tgz#043ac0a0ce802b485b9d695b12209d1b36727093"
+  integrity sha512-gYMzkoZ0olXLbEhSQVarUCMR6VAHytvENDv2Psjl9EjO5Pg93vTGLViS4E4vA5fezRfdF/x0Uic31w+ogp66jA==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -2240,10 +2240,10 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
-"@injectivelabs/indexer-proto-ts@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-0.0.6.tgz#c4ff8cdef2e67748f4c9f6473a6a4e04df398be0"
-  integrity sha512-yc0G1vS5pxmyJ750+H1OahsyAfcQ/8LOMkdIJ8SWxxnjFMAaqAMgxidT9MHa2RWOqYg1quilF8ZBhk/JKdaGAw==
+"@injectivelabs/indexer-proto-ts@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-0.0.9.tgz#c65411e0069817d3a8533e91e6b9b7426be71565"
+  integrity sha512-ZFTUKlHAY2WYnB9RPPf11nq7SNm7wcKFTmFTavTiHV8UvNEni7dCR3Un6U5Mo1qD0xHEsfoCDMdqGcIguliPMA==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"

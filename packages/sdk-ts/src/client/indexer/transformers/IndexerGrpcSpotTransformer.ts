@@ -24,19 +24,8 @@ import {
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange'
-import {
-  MarketsResponse as SpotMarketsResponse,
-  MarketResponse as SpotMarketResponse,
-  OrderbookResponse as SpotOrderbookResponse,
-  OrderbookV2Response as SpotOrderbookV2Response,
-  OrdersResponse as SpotOrdersResponse,
-  OrdersHistoryResponse as SpotOrdersHistoryResponse,
-  TradesResponse as SpotTradesResponse,
-  OrderbooksResponse as SpotOrderbooksResponse,
-  OrderbooksV2Response as SpotOrderbooksV2Response,
-  SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import { grpcPagingToPaging } from '../../../utils/pagination'
+import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 const zeroPriceLevel = () => ({
   price: '0',
@@ -66,19 +55,25 @@ export class IndexerGrpcSpotTransformer {
     }
   }
 
-  static marketResponseToMarket(response: SpotMarketResponse) {
+  static marketResponseToMarket(
+    response: InjectiveSpotExchangeRpc.MarketResponse,
+  ) {
     const market = response.market!
 
     return IndexerGrpcSpotTransformer.grpcMarketToMarket(market)
   }
 
-  static marketsResponseToMarkets(response: SpotMarketsResponse) {
+  static marketsResponseToMarkets(
+    response: InjectiveSpotExchangeRpc.MarketsResponse,
+  ) {
     const markets = response.markets
 
     return IndexerGrpcSpotTransformer.grpcMarketsToMarkets(markets)
   }
 
-  static ordersResponseToOrders(response: SpotOrdersResponse) {
+  static ordersResponseToOrders(
+    response: InjectiveSpotExchangeRpc.OrdersResponse,
+  ) {
     const orders = response.orders
     const pagination = response.paging
 
@@ -89,7 +84,7 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static orderHistoryResponseToOrderHistory(
-    response: SpotOrdersHistoryResponse,
+    response: InjectiveSpotExchangeRpc.OrdersHistoryResponse,
   ) {
     const orderHistory = response.orders
     const pagination = response.paging
@@ -103,7 +98,9 @@ export class IndexerGrpcSpotTransformer {
     }
   }
 
-  static tradesResponseToTrades(response: SpotTradesResponse) {
+  static tradesResponseToTrades(
+    response: InjectiveSpotExchangeRpc.TradesResponse,
+  ) {
     const trades = response.trades
     const pagination = response.paging
 
@@ -114,14 +111,16 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static subaccountTradesListResponseToTradesList(
-    response: SpotSubaccountTradesListResponse,
+    response: InjectiveSpotExchangeRpc.SubaccountTradesListResponse,
   ) {
     const tradesList = response.trades
 
     return IndexerGrpcSpotTransformer.grpcTradesToTrades(tradesList)
   }
 
-  static orderbookResponseToOrderbook(response: SpotOrderbookResponse) {
+  static orderbookResponseToOrderbook(
+    response: InjectiveSpotExchangeRpc.OrderbookResponse,
+  ) {
     const orderbook = response.orderbook!
 
     return IndexerGrpcSpotTransformer.grpcOrderbookToOrderbook({
@@ -130,7 +129,9 @@ export class IndexerGrpcSpotTransformer {
     })
   }
 
-  static orderbooksResponseToOrderbooks(response: SpotOrderbooksResponse) {
+  static orderbooksResponseToOrderbooks(
+    response: InjectiveSpotExchangeRpc.OrderbooksResponse,
+  ) {
     const orderbooks = response.orderbooks!
 
     return orderbooks.map((o) => {
@@ -146,7 +147,9 @@ export class IndexerGrpcSpotTransformer {
     })
   }
 
-  static orderbookV2ResponseToOrderbookV2(response: SpotOrderbookV2Response) {
+  static orderbookV2ResponseToOrderbookV2(
+    response: InjectiveSpotExchangeRpc.OrderbookV2Response,
+  ) {
     const orderbook = response.orderbook!
 
     return IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
@@ -157,7 +160,7 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static orderbooksV2ResponseToOrderbooksV2(
-    response: SpotOrderbooksV2Response,
+    response: InjectiveSpotExchangeRpc.OrderbooksV2Response,
   ) {
     const orderbooks = response.orderbooks!
 

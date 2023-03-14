@@ -1,21 +1,19 @@
 import {
-  QueryCurrentAuctionBasketResponse,
-  QueryModuleStateResponse,
-  QueryAuctionParamsResponse,
-} from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/query'
-import { GenesisState } from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/genesis'
-import {
   AuctionModuleState,
   CurrentBasket,
   AuctionModuleStateParams,
 } from '../types/auction'
+import {
+  InjectiveAuctionV1Beta1Genesis,
+  InjectiveAuctionV1Beta1Query,
+} from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcAuctionTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryAuctionParamsResponse,
+    response: InjectiveAuctionV1Beta1Query.QueryAuctionParamsResponse,
   ): AuctionModuleStateParams {
     const params = response.params!
 
@@ -26,7 +24,7 @@ export class ChainGrpcAuctionTransformer {
   }
 
   static currentBasketResponseToCurrentBasket(
-    response: QueryCurrentAuctionBasketResponse,
+    response: InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketResponse,
   ): CurrentBasket {
     return {
       amountList: response.amount.map((coin) => ({
@@ -41,9 +39,9 @@ export class ChainGrpcAuctionTransformer {
   }
 
   static auctionModuleStateResponseToAuctionModuleState(
-    response: QueryModuleStateResponse,
+    response: InjectiveAuctionV1Beta1Query.QueryModuleStateResponse,
   ): AuctionModuleState {
-    const state = response.state as GenesisState
+    const state = response.state as InjectiveAuctionV1Beta1Genesis.GenesisState
     const bid = state.highestBid
     const params = state.params!
 

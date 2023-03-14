@@ -1,9 +1,11 @@
 import { Any } from 'cosmjs-types/google/protobuf/any'
 import { Account } from '@cosmjs/stargate'
-import { EthAccount } from '@injectivelabs/core-proto-ts/injective/types/v1beta1/account'
+import { InjectiveTypesV1Beta1Account } from '@injectivelabs/core-proto-ts'
 
 export const accountParser = (ethAccount: Any): Account => {
-  const account = EthAccount.decode(ethAccount.value as Uint8Array)
+  const account = InjectiveTypesV1Beta1Account.EthAccount.decode(
+    ethAccount.value as Uint8Array,
+  )
   const baseAccount = account.baseAccount!
   const pubKey = baseAccount.pubKey
 

@@ -1,21 +1,18 @@
-import {
-  QueryAccountResponse,
-  QueryAccountsResponse,
-  // QueryAccountsResponse,
-  // QueryAccountResponse,
-  QueryParamsResponse,
-} from '@injectivelabs/core-proto-ts/cosmos/auth/v1beta1/query'
-import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { uint8ArrayToString } from '../../../utils'
-import { Account, AuthModuleParams, EthAccount } from '../types/auth'
+import { Account, AuthModuleParams } from '../types/auth'
+import {
+  CosmosAuthV1Beta1Query,
+  GoogleProtobufAny,
+  InjectiveTypesV1Beta1Account,
+} from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcAuthTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryParamsResponse,
+    response: CosmosAuthV1Beta1Query.QueryParamsResponse,
   ): AuthModuleParams {
     const params = response.params!
 
@@ -28,8 +25,10 @@ export class ChainGrpcAuthTransformer {
     }
   }
 
-  static grpcAccountToAccount(ethAccount: Any): Account {
-    const account = EthAccount.decode(ethAccount.value)
+  static grpcAccountToAccount(ethAccount: GoogleProtobufAny.Any): Account {
+    const account = InjectiveTypesV1Beta1Account.EthAccount.decode(
+      ethAccount.value,
+    )
     const baseAccount = account.baseAccount!
     const pubKey = baseAccount.pubKey
 
@@ -49,11 +48,15 @@ export class ChainGrpcAuthTransformer {
     }
   }
 
-  static accountResponseToAccount(response: QueryAccountResponse): Account {
+  static accountResponseToAccount(
+    response: CosmosAuthV1Beta1Query.QueryAccountResponse,
+  ): Account {
     return ChainGrpcAuthTransformer.grpcAccountToAccount(response.account!)
   }
 
-  static accountsResponseToAccounts(response: QueryAccountsResponse) {
+  static accountsResponseToAccounts(
+    response: CosmosAuthV1Beta1Query.QueryAccountsResponse,
+  ) {
     return {
       pagination: grpcPaginationToPagination(response.pagination!),
       accounts: response.accounts.map(

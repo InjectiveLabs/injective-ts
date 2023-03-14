@@ -1,4 +1,3 @@
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import {
   HttpClient,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
@@ -22,6 +21,7 @@ import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { TxResponse } from '../types/tx'
 import { getErrorMessage } from '../../../../utils/helpers'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**
  * It is recommended to use TxRestClient instead of TxRestApi
@@ -129,8 +129,8 @@ export class TxRestApi implements TxConcreteApi {
     )
   }
 
-  public async simulate(txRaw: TxRaw) {
-    const txRawClone = TxRaw.fromPartial({ ...txRaw })
+  public async simulate(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
+    const txRawClone = CosmosTxV1Beta1Tx.TxRaw.fromPartial({ ...txRaw })
 
     if (txRawClone.signatures.length === 0) {
       txRawClone.signatures = [new Uint8Array(0)]
@@ -161,7 +161,7 @@ export class TxRestApi implements TxConcreteApi {
   }
 
   public async broadcast(
-    tx: TxRaw,
+    tx: CosmosTxV1Beta1Tx.TxRaw,
     options?: TxClientBroadcastOptions,
   ): Promise<TxResponse> {
     const { timeout } = options || {
@@ -196,7 +196,7 @@ export class TxRestApi implements TxConcreteApi {
    * Broadcast the transaction using the "block" mode, waiting for its inclusion in the blockchain.
    * @param tx transaction to broadcast
    */
-  public async broadcastBlock(tx: TxRaw) {
+  public async broadcastBlock(tx: CosmosTxV1Beta1Tx.TxRaw) {
     const response = await this.broadcastTx<{
       tx_response: TxInfoResponse
     }>(tx, BroadcastMode.Block)
@@ -234,7 +234,7 @@ export class TxRestApi implements TxConcreteApi {
   }
 
   private async broadcastTx<T>(
-    txRaw: TxRaw,
+    txRaw: CosmosTxV1Beta1Tx.TxRaw,
     mode: BroadcastMode = BroadcastMode.Sync,
   ): Promise<T> {
     const response = await this.postRaw<T>('cosmos/tx/v1beta1/txs', {

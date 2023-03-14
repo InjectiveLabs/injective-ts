@@ -1,20 +1,14 @@
-import {
-  StreamOrderbookResponse,
-  StreamTradesResponse,
-  StreamPositionsResponse,
-  StreamOrdersResponse,
-  StreamOrdersHistoryResponse,
-  StreamOrderbookV2Response,
-  StreamOrderbookUpdateResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_derivative_exchange_rpc'
 import { StreamOperation } from '../../../types/index'
 import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer'
+import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerDerivativeStreamTransformer {
-  static orderbookStreamCallback = (response: StreamOrderbookResponse) => {
+  static orderbookStreamCallback = (
+    response: InjectiveDerivativeExchangeRpc.StreamOrderbookResponse,
+  ) => {
     const orderbook = response.orderbook
 
     return {
@@ -30,7 +24,9 @@ export class IndexerDerivativeStreamTransformer {
     }
   }
 
-  static tradesStreamCallback = (response: StreamTradesResponse) => {
+  static tradesStreamCallback = (
+    response: InjectiveDerivativeExchangeRpc.StreamTradesResponse,
+  ) => {
     const trade = response.trade
 
     return {
@@ -42,7 +38,9 @@ export class IndexerDerivativeStreamTransformer {
     }
   }
 
-  static positionStreamCallback = (response: StreamPositionsResponse) => {
+  static positionStreamCallback = (
+    response: InjectiveDerivativeExchangeRpc.StreamPositionsResponse,
+  ) => {
     const position = response.position
 
     return {
@@ -53,7 +51,9 @@ export class IndexerDerivativeStreamTransformer {
     }
   }
 
-  static ordersStreamCallback = (response: StreamOrdersResponse) => {
+  static ordersStreamCallback = (
+    response: InjectiveDerivativeExchangeRpc.StreamOrdersResponse,
+  ) => {
     const order = response.order
 
     return {
@@ -66,7 +66,7 @@ export class IndexerDerivativeStreamTransformer {
   }
 
   static orderHistoryStreamCallback = (
-    response: StreamOrdersHistoryResponse,
+    response: InjectiveDerivativeExchangeRpc.StreamOrdersHistoryResponse,
   ) => {
     const order = response.order
 
@@ -79,7 +79,9 @@ export class IndexerDerivativeStreamTransformer {
     }
   }
 
-  static orderbookV2StreamCallback = (response: StreamOrderbookV2Response) => {
+  static orderbookV2StreamCallback = (
+    response: InjectiveDerivativeExchangeRpc.StreamOrderbookV2Response,
+  ) => {
     const orderbook = response.orderbook
 
     return {
@@ -97,7 +99,7 @@ export class IndexerDerivativeStreamTransformer {
   }
 
   static orderbookUpdateStreamCallback = (
-    response: StreamOrderbookUpdateResponse,
+    response: InjectiveDerivativeExchangeRpc.StreamOrderbookUpdateResponse,
   ) => {
     const orderbook = response.orderbookLevelUpdates
 

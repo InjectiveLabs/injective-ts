@@ -1,6 +1,6 @@
-import { MsgCancelSpotOrder as BaseMsgCancelSpotOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCancelSpotOrder {
   export interface Params {
@@ -10,7 +10,7 @@ export declare namespace MsgCancelSpotOrder {
     orderHash: string
   }
 
-  export type Proto = BaseMsgCancelSpotOrder
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder
 }
 
 /**
@@ -27,7 +27,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgCancelSpotOrder.create()
+    const message = InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder.create()
     message.sender = params.injectiveAddress
     message.marketId = params.marketId
     message.orderHash = params.orderHash
@@ -35,7 +35,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
 
     // TODO: message.setOrderMask does not exist yet, enable this once it does.
 
-    return BaseMsgCancelSpotOrder.fromPartial(message)
+    return InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder.fromPartial(message)
   }
 
   public toData() {
@@ -79,6 +79,8 @@ export default class MsgCancelSpotOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgCancelSpotOrder.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

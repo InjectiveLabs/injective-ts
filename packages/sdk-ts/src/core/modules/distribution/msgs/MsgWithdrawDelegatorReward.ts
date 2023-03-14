@@ -1,6 +1,6 @@
-import { MsgWithdrawDelegatorReward as BaseMsgWithdrawDelegatorReward } from '@injectivelabs/core-proto-ts/cosmos/distribution/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import { CosmosDistributionV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgWithdrawDelegatorReward {
   export interface Params {
@@ -8,7 +8,7 @@ export declare namespace MsgWithdrawDelegatorReward {
     validatorAddress: string
   }
 
-  export type Proto = BaseMsgWithdrawDelegatorReward
+  export type Proto = CosmosDistributionV1Beta1Tx.MsgWithdrawDelegatorReward
 }
 
 /**
@@ -27,11 +27,14 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgWithdrawDelegatorReward.create()
+    const message =
+      CosmosDistributionV1Beta1Tx.MsgWithdrawDelegatorReward.create()
     message.delegatorAddress = params.delegatorAddress
     message.validatorAddress = params.validatorAddress
 
-    return BaseMsgWithdrawDelegatorReward.fromPartial(message)
+    return CosmosDistributionV1Beta1Tx.MsgWithdrawDelegatorReward.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -75,6 +78,8 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgWithdrawDelegatorReward.encode(this.toProto()).finish()
+    return CosmosDistributionV1Beta1Tx.MsgWithdrawDelegatorReward.encode(
+      this.toProto(),
+    ).finish()
   }
 }

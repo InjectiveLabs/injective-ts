@@ -1,25 +1,8 @@
 import {
-  SpotMarket as GrpcSpotMarket,
-  MarketStatus as GrpcMarketStatus,
-  MarketStatus as GrpcMarketStatusMap,
-  SpotMarketOrder as GrpcSpotMarketOrder,
-  SpotOrder as GrpcSpotOrder,
-  Params as GrpcExchangeParams,
-  FeeDiscountTierInfo as GrpcFeeDiscountTierInfo,
-  FeeDiscountTierTTL as GrpcFeeDiscountTierTTL,
-  FeeDiscountSchedule as GrpcFeeDiscountSchedule,
-  PointsMultiplier as GrpcPointsMultiplier,
-  TradingRewardCampaignBoostInfo as GrpcTradingRewardCampaignBoostInfo,
-  TradingRewardCampaignInfo as GrpcTradingRewardCampaignInfo,
-  CampaignRewardPool as GrpcCampaignRewardPool,
-  OrderType as GrpcOrderTypeMap,
-  Position as GrpcChainPosition,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
-import { DerivativePosition as GrpcChainDerivativePosition } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/genesis'
-import {
-  QueryFeeDiscountAccountInfoResponse as GrpcFeeDiscountAccountInfo,
-  QueryTradeRewardCampaignResponse as GrpcTradeRewardCampaign,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/query'
+  InjectiveExchangeV1Beta1Exchange,
+  InjectiveExchangeV1Beta1Query,
+  InjectiveExchangeV1Beta1Genesis,
+} from '@injectivelabs/core-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
 export interface DepositProposalParams {
@@ -124,22 +107,33 @@ export interface ChainDerivativePosition {
   position?: ChainPosition
 }
 
-export {
-  GrpcFeeDiscountSchedule,
-  GrpcFeeDiscountTierInfo,
-  GrpcFeeDiscountTierTTL,
-  GrpcTradeRewardCampaign,
-  GrpcFeeDiscountAccountInfo,
-  GrpcTradingRewardCampaignInfo,
-  GrpcTradingRewardCampaignBoostInfo,
-  GrpcPointsMultiplier,
-  GrpcCampaignRewardPool,
-  GrpcSpotMarket,
-  GrpcChainPosition,
-  GrpcMarketStatus,
-  GrpcChainDerivativePosition,
-  GrpcMarketStatusMap,
-  GrpcSpotMarketOrder,
-  GrpcSpotOrder,
-  GrpcExchangeParams,
-}
+export type GrpcOrderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo
+export type GrpcSpotMarket = InjectiveExchangeV1Beta1Exchange.SpotMarket
+export type GrpcMarketStatus = InjectiveExchangeV1Beta1Exchange.MarketStatus
+export type GrpcMarketStatusMap = InjectiveExchangeV1Beta1Exchange.MarketStatus
+export type GrpcSpotMarketOrder =
+  InjectiveExchangeV1Beta1Exchange.SpotMarketOrder
+export type GrpcSpotOrder = InjectiveExchangeV1Beta1Exchange.SpotOrder
+export type GrpcExchangeParams = InjectiveExchangeV1Beta1Exchange.Params
+export type GrpcFeeDiscountTierInfo =
+  InjectiveExchangeV1Beta1Exchange.FeeDiscountTierInfo
+export type GrpcFeeDiscountTierTTL =
+  InjectiveExchangeV1Beta1Exchange.FeeDiscountTierTTL
+export type GrpcFeeDiscountSchedule =
+  InjectiveExchangeV1Beta1Exchange.FeeDiscountSchedule
+export type GrpcPointsMultiplier =
+  InjectiveExchangeV1Beta1Exchange.PointsMultiplier
+export type GrpcTradingRewardCampaignBoostInfo =
+  InjectiveExchangeV1Beta1Exchange.TradingRewardCampaignBoostInfo
+export type GrpcTradingRewardCampaignInfo =
+  InjectiveExchangeV1Beta1Exchange.TradingRewardCampaignInfo
+export type GrpcCampaignRewardPool =
+  InjectiveExchangeV1Beta1Exchange.CampaignRewardPool
+export type GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType
+export type GrpcChainPosition = InjectiveExchangeV1Beta1Exchange.Position
+export type GrpcChainDerivativePosition =
+  InjectiveExchangeV1Beta1Genesis.DerivativePosition
+export type GrpcFeeDiscountAccountInfo =
+  InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoResponse
+export type GrpcTradeRewardCampaign =
+  InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse

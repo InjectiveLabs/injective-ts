@@ -1,16 +1,10 @@
-import {
-  DerivativeOrder,
-  OrderInfo,
-  OrderType,
-  SpotOrder,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
-import {
-  MsgBatchUpdateOrders as BaseMsgBatchUpdateOrders,
-  OrderData,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgBatchUpdateOrders {
   export interface Params {
@@ -34,7 +28,7 @@ export declare namespace MsgBatchUpdateOrders {
       orderHash: string
     }[]
     spotOrdersToCreate?: {
-      orderType: OrderType
+      orderType: InjectiveExchangeV1Beta1Exchange.OrderType
       triggerPrice?: string
       marketId: string
       feeRecipient: string
@@ -42,7 +36,7 @@ export declare namespace MsgBatchUpdateOrders {
       quantity: string
     }[]
     derivativeOrdersToCreate?: {
-      orderType: OrderType
+      orderType: InjectiveExchangeV1Beta1Exchange.OrderType
       triggerPrice?: string
       feeRecipient: string
       marketId: string
@@ -51,7 +45,7 @@ export declare namespace MsgBatchUpdateOrders {
       quantity: string
     }[]
     binaryOptionsOrdersToCreate?: {
-      orderType: OrderType
+      orderType: InjectiveExchangeV1Beta1Exchange.OrderType
       triggerPrice?: string
       feeRecipient: string
       marketId: string
@@ -62,7 +56,7 @@ export declare namespace MsgBatchUpdateOrders {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgBatchUpdateOrders
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders
 }
 
 /**
@@ -79,7 +73,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgBatchUpdateOrders.create()
+    const message = InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders.create()
     message.sender = params.injectiveAddress
 
     if (
@@ -111,7 +105,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     if (params.spotOrdersToCancel && params.spotOrdersToCancel.length > 0) {
       const orderData = params.spotOrdersToCancel.map(
         ({ marketId, subaccountId, orderHash }) => {
-          const orderData = OrderData.create()
+          const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
           orderData.orderHash = orderHash
@@ -129,7 +123,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     ) {
       const orderData = params.derivativeOrdersToCancel.map(
         ({ marketId, subaccountId, orderHash }) => {
-          const orderData = OrderData.create()
+          const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
           orderData.orderHash = orderHash
@@ -146,7 +140,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     ) {
       const orderData = params.binaryOptionsOrdersToCancel.map(
         ({ marketId, subaccountId, orderHash }) => {
-          const orderData = OrderData.create()
+          const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
           orderData.orderHash = orderHash
@@ -160,7 +154,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
 
     if (params.spotOrdersToCreate && params.spotOrdersToCreate.length > 0) {
       const orderData = params.spotOrdersToCreate.map((args) => {
-        const orderInfo = OrderInfo.create()
+        const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
         const paramsFromArgs = {
           ...args,
           price: amountToCosmosSdkDecAmount(args.price).toFixed(),
@@ -175,7 +169,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         orderInfo.price = paramsFromArgs.price
         orderInfo.quantity = paramsFromArgs.quantity
 
-        const order = SpotOrder.create()
+        const order = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
         order.marketId = paramsFromArgs.marketId
         order.orderType = paramsFromArgs.orderType
         order.orderInfo = orderInfo
@@ -205,13 +199,13 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
         }
 
-        const orderInfo = OrderInfo.create()
+        const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
         orderInfo.subaccountId = params.subaccountId
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
         orderInfo.quantity = paramsFromArgs.quantity
 
-        const order = DerivativeOrder.create()
+        const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
         order.marketId = paramsFromArgs.marketId
         order.orderType = paramsFromArgs.orderType
         order.orderInfo = orderInfo
@@ -240,13 +234,13 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           ).toFixed(),
           quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
         }
-        const orderInfo = OrderInfo.create()
+        const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
         orderInfo.subaccountId = params.subaccountId
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
         orderInfo.quantity = paramsFromArgs.quantity
 
-        const order = DerivativeOrder.create()
+        const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
         order.marketId = paramsFromArgs.marketId
         order.orderType = paramsFromArgs.orderType
         order.orderInfo = orderInfo
@@ -262,7 +256,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       message.derivativeOrdersToCreate = orderData
     }
 
-    return BaseMsgBatchUpdateOrders.fromPartial(message)
+    return InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders.fromPartial(message)
   }
 
   public toData() {
@@ -282,7 +276,8 @@ export default class MsgBatchUpdateOrders extends MsgBase<
 
     return {
       type: 'exchange/MsgBatchUpdateOrders',
-      value: message as unknown as SnakeCaseKeys<BaseMsgBatchUpdateOrders>,
+      value:
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders>,
     }
   }
 
@@ -306,6 +301,8 @@ export default class MsgBatchUpdateOrders extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgBatchUpdateOrders.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders.encode(
+      this.toProto(),
+    ).finish()
   }
 }

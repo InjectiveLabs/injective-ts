@@ -1,6 +1,6 @@
-import { MsgUpdateAdmin as BaseMsgUpdateAdmin } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgUpdateAdmin {
   export interface Params {
@@ -9,7 +9,7 @@ export declare namespace MsgUpdateAdmin {
     contract: string
   }
 
-  export type Proto = BaseMsgUpdateAdmin
+  export type Proto = CosmwasmWasmV1Tx.MsgUpdateAdmin
 }
 
 /**
@@ -26,13 +26,13 @@ export default class MsgUpdateAdmin extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgUpdateAdmin.create()
+    const message = CosmwasmWasmV1Tx.MsgUpdateAdmin.create()
 
     message.sender = params.sender
     message.newAdmin = params.newAdmin
     message.contract = params.contract
 
-    return BaseMsgUpdateAdmin.fromPartial(message)
+    return CosmwasmWasmV1Tx.MsgUpdateAdmin.fromPartial(message)
   }
 
   public toData() {
@@ -76,6 +76,6 @@ export default class MsgUpdateAdmin extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgUpdateAdmin.encode(this.toProto()).finish()
+    return CosmwasmWasmV1Tx.MsgUpdateAdmin.encode(this.toProto()).finish()
   }
 }

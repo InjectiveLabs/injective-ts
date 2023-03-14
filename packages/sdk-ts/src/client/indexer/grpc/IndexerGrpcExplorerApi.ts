@@ -1,17 +1,3 @@
-import {
-  InjectiveExplorerRPCClientImpl,
-  GetTxByTxHashRequest,
-  GetAccountTxsRequest,
-  GetValidatorRequest,
-  GetValidatorUptimeRequest,
-  GetPeggyDepositTxsRequest,
-  GetPeggyWithdrawalTxsRequest,
-  GetIBCTransferTxsRequest,
-  GetBlockRequest,
-  GetBlocksRequest,
-  GetTxsRequest,
-  GrpcWebError,
-} from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
 import { IndexerGrpcExplorerTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
@@ -19,6 +5,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
@@ -26,16 +13,16 @@ import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 export class IndexerGrpcExplorerApi {
   protected module: string = IndexerModule.Explorer
 
-  protected client: InjectiveExplorerRPCClientImpl
+  protected client: InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveExplorerRPCClientImpl(
+    this.client = new InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl(
       getGrpcIndexerWebImpl(endpoint),
     )
   }
 
   async fetchTxByHash(hash: string) {
-    const request = GetTxByTxHashRequest.create()
+    const request = InjectiveExplorerRpc.GetTxByTxHashRequest.create()
 
     request.hash = hash
 
@@ -44,7 +31,7 @@ export class IndexerGrpcExplorerApi {
 
       return IndexerGrpcExplorerTransformer.getTxByTxHashResponseToTx(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -67,7 +54,7 @@ export class IndexerGrpcExplorerApi {
     limit?: number
     type?: string
   }) {
-    const request = GetAccountTxsRequest.create()
+    const request = InjectiveExplorerRpc.GetAccountTxsRequest.create()
     request.address = address
 
     if (limit) {
@@ -85,7 +72,7 @@ export class IndexerGrpcExplorerApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -100,7 +87,7 @@ export class IndexerGrpcExplorerApi {
   }
 
   async fetchValidator(validatorAddress: string) {
-    const request = GetValidatorRequest.create()
+    const request = InjectiveExplorerRpc.GetValidatorRequest.create()
 
     request.address = validatorAddress
 
@@ -111,7 +98,7 @@ export class IndexerGrpcExplorerApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -126,7 +113,7 @@ export class IndexerGrpcExplorerApi {
   }
 
   async fetchValidatorUptime(validatorAddress: string) {
-    const request = GetValidatorUptimeRequest.create()
+    const request = InjectiveExplorerRpc.GetValidatorUptimeRequest.create()
 
     request.address = validatorAddress
 
@@ -137,7 +124,7 @@ export class IndexerGrpcExplorerApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -162,7 +149,7 @@ export class IndexerGrpcExplorerApi {
     limit?: number
     skip?: number
   }) {
-    const request = GetPeggyDepositTxsRequest.create()
+    const request = InjectiveExplorerRpc.GetPeggyDepositTxsRequest.create()
 
     if (sender) {
       request.sender = sender
@@ -187,7 +174,7 @@ export class IndexerGrpcExplorerApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -212,7 +199,7 @@ export class IndexerGrpcExplorerApi {
     limit?: number
     skip?: number
   }) {
-    const request = GetPeggyWithdrawalTxsRequest.create()
+    const request = InjectiveExplorerRpc.GetPeggyWithdrawalTxsRequest.create()
 
     if (sender) {
       request.sender = sender
@@ -237,7 +224,7 @@ export class IndexerGrpcExplorerApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -260,7 +247,7 @@ export class IndexerGrpcExplorerApi {
     after?: number
     limit?: number
   }) {
-    const request = GetBlocksRequest.create()
+    const request = InjectiveExplorerRpc.GetBlocksRequest.create()
 
     if (before) {
       request.before = before.toString()
@@ -279,7 +266,7 @@ export class IndexerGrpcExplorerApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -294,7 +281,7 @@ export class IndexerGrpcExplorerApi {
   }
 
   async fetchBlock(id: string) {
-    const request = GetBlockRequest.create()
+    const request = InjectiveExplorerRpc.GetBlockRequest.create()
 
     request.id = id
 
@@ -303,7 +290,7 @@ export class IndexerGrpcExplorerApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -332,7 +319,7 @@ export class IndexerGrpcExplorerApi {
     type?: string
     module?: string
   }) {
-    const request = GetTxsRequest.create()
+    const request = InjectiveExplorerRpc.GetTxsRequest.create()
 
     if (before) {
       request.before = before.toString()
@@ -363,7 +350,7 @@ export class IndexerGrpcExplorerApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -396,7 +383,7 @@ export class IndexerGrpcExplorerApi {
     limit?: number
     skip?: number
   }) {
-    const request = GetIBCTransferTxsRequest.create()
+    const request = InjectiveExplorerRpc.GetIBCTransferTxsRequest.create()
 
     if (sender) {
       request.sender = sender
@@ -437,7 +424,7 @@ export class IndexerGrpcExplorerApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

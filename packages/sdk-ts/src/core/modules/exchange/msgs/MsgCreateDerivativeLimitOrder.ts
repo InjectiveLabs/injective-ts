@@ -1,19 +1,17 @@
-import { MsgCreateDerivativeLimitOrder as BaseMsgCreateDerivativeLimitOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
-import {
-  DerivativeOrder,
-  OrderInfo,
-  OrderType,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateDerivativeLimitOrder {
   export interface Params {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderType
+    orderType: InjectiveExchangeV1Beta1Exchange.OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
@@ -21,17 +19,18 @@ export declare namespace MsgCreateDerivativeLimitOrder {
     quantity: string
   }
 
-  export type Proto = BaseMsgCreateDerivativeLimitOrder
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCreateDerivativeLimitOrder
 }
 
 const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
-  const orderInfo = OrderInfo.create()
+  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
   orderInfo.subaccountId = params.subaccountId
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
   orderInfo.quantity = params.quantity
 
-  const derivativeOrder = DerivativeOrder.create()
+  const derivativeOrder =
+    InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
   derivativeOrder.marketId = params.marketId
   derivativeOrder.orderType = params.orderType
   derivativeOrder.orderInfo = orderInfo
@@ -39,7 +38,8 @@ const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
 
   derivativeOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = BaseMsgCreateDerivativeLimitOrder.create()
+  const message =
+    InjectiveExchangeV1Beta1Tx.MsgCreateDerivativeLimitOrder.create()
   message.sender = params.injectiveAddress
   message.order = derivativeOrder
 
@@ -94,7 +94,7 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
     return {
       type: 'exchange/MsgCreateDerivativeLimitOrder',
       value:
-        message as unknown as SnakeCaseKeys<BaseMsgCreateDerivativeLimitOrder>,
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgCreateDerivativeLimitOrder>,
     }
   }
 
@@ -118,6 +118,8 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgCreateDerivativeLimitOrder.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgCreateDerivativeLimitOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

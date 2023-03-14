@@ -1,47 +1,45 @@
-import { MsgCreateSpotLimitOrder as BaseMsgCreateSpotLimitOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
-import {
-  SpotOrder,
-  OrderInfo,
-  OrderType,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Exchange,
+  InjectiveExchangeV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateSpotLimitOrder {
   export interface Params {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderType
+    orderType: InjectiveExchangeV1Beta1Exchange.OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
     quantity: string
   }
 
-  export type Proto = BaseMsgCreateSpotLimitOrder
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder
 }
 
 const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
-  const orderInfo = OrderInfo.create()
+  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
   orderInfo.subaccountId = params.subaccountId
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
   orderInfo.quantity = params.quantity
 
-  const spotOrder = SpotOrder.create()
+  const spotOrder = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
   spotOrder.marketId = params.marketId
   spotOrder.orderType = params.orderType
   spotOrder.orderInfo = orderInfo
 
   spotOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = BaseMsgCreateSpotLimitOrder.create()
+  const message = InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder.create()
   message.sender = params.injectiveAddress
   message.order = spotOrder
 
-  return BaseMsgCreateSpotLimitOrder.fromPartial(message)
+  return InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder.fromPartial(message)
 }
 
 /**
@@ -90,7 +88,8 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
 
     return {
       type: 'exchange/MsgCreateSpotLimitOrder',
-      value: message as unknown as SnakeCaseKeys<BaseMsgCreateSpotLimitOrder>,
+      value:
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder>,
     }
   }
 
@@ -114,6 +113,8 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgCreateSpotLimitOrder.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

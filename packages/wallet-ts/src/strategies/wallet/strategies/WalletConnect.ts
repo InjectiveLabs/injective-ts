@@ -14,9 +14,8 @@ import {
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3 from 'web3'
 import { provider, TransactionConfig } from 'web3-core'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxResponse } from '@injectivelabs/sdk-ts'
+import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,

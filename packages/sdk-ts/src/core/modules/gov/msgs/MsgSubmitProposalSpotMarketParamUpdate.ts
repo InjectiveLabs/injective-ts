@@ -1,8 +1,10 @@
-import { MsgSubmitProposal as BaseMsgSubmitProposal } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
-import { SpotMarketParamUpdateProposal } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
-import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
-import { MarketStatus } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
+import {
+  GoogleProtobufAny,
+  CosmosGovV1Beta1Tx,
+  CosmosBaseV1Beta1Coin,
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
@@ -17,7 +19,7 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
       relayerFeeShareRate: string
       minPriceTickSize: string
       minQuantityTickSize: string
-      status: MarketStatus
+      status: InjectiveExchangeV1Beta1Exchange.MarketStatus
     }
     proposer: string
     deposit: {
@@ -26,9 +28,9 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
     }
   }
 
-  export type Proto = BaseMsgSubmitProposal
+  export type Proto = CosmosGovV1Beta1Tx.MsgSubmitProposal
 
-  export type Object = Omit<BaseMsgSubmitProposal, 'content'> & {
+  export type Object = Omit<CosmosGovV1Beta1Tx.MsgSubmitProposal, 'content'> & {
     content: {
       type_url: string
       value: any
@@ -53,7 +55,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const depositParams = Coin.create()
+    const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
@@ -61,16 +63,19 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const proposalType =
       '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
 
-    const contentAny = Any.create()
-    contentAny.value = SpotMarketParamUpdateProposal.encode(content).finish()
+    const contentAny = GoogleProtobufAny.Any.create()
+    contentAny.value =
+      InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.encode(
+        content,
+      ).finish()
     contentAny.typeUrl = proposalType
 
-    const message = BaseMsgSubmitProposal.create()
+    const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
     message.content = contentAny
     message.proposer = params.proposer
     message.initialDeposit = [depositParams]
 
-    return BaseMsgSubmitProposal.fromPartial(message)
+    return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
   }
 
   public toData() {
@@ -142,13 +147,14 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgSubmitProposal.encode(this.toProto()).finish()
+    return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
   }
 
   private getContent() {
     const { params } = this
 
-    const content = SpotMarketParamUpdateProposal.create()
+    const content =
+      InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.create()
     content.title = params.market.title
     content.description = params.market.description
     content.makerFeeRate = params.market.makerFeeRate
@@ -159,6 +165,8 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     content.minPriceTickSize = params.market.minPriceTickSize
     content.minQuantityTickSize = params.market.minQuantityTickSize
 
-    return SpotMarketParamUpdateProposal.fromPartial(content)
+    return InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.fromPartial(
+      content,
+    )
   }
 }

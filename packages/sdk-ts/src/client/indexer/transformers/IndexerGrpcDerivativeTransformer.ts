@@ -40,26 +40,8 @@ import {
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange'
-import {
-  FundingPaymentsResponse,
-  FundingRatesResponse,
-  MarketsResponse as DerivativeMarketsResponse,
-  MarketResponse as DerivativeMarketResponse,
-  OrderbookResponse as DerivativeOrderbookResponse,
-  OrdersResponse as DerivativeOrdersResponse,
-  OrdersHistoryResponse as DerivativeOrdersHistoryResponse,
-  TradesResponse as DerivativeTradesResponse,
-  PositionsResponse as DerivativePositionsResponse,
-  OrderbooksResponse as DerivativeOrderbooksResponse,
-  OrderbooksV2Response as DerivativeOrderbooksV2Response,
-  OrderbookV2Response as DerivativeOrderbookV2Response,
-  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_derivative_exchange_rpc'
-import {
-  BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
-  BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_derivative_exchange_rpc'
 import { grpcPagingToPaging } from '../../../utils/pagination'
+import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -138,19 +120,25 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
-  static marketResponseToMarket(response: DerivativeMarketResponse) {
+  static marketResponseToMarket(
+    response: InjectiveDerivativeExchangeRpc.MarketResponse,
+  ) {
     const market = response.market!
 
     return IndexerGrpcDerivativeTransformer.grpcMarketToMarket(market)
   }
 
-  static marketsResponseToMarkets(response: DerivativeMarketsResponse) {
+  static marketsResponseToMarkets(
+    response: InjectiveDerivativeExchangeRpc.MarketsResponse,
+  ) {
     const markets = response.markets
 
     return IndexerGrpcDerivativeTransformer.grpcMarketsToMarkets(markets)
   }
 
-  static ordersResponseToOrders(response: DerivativeOrdersResponse) {
+  static ordersResponseToOrders(
+    response: InjectiveDerivativeExchangeRpc.OrdersResponse,
+  ) {
     const orders = response.orders
     const pagination = response.paging
 
@@ -161,7 +149,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static orderHistoryResponseToOrderHistory(
-    response: DerivativeOrdersHistoryResponse,
+    response: InjectiveDerivativeExchangeRpc.OrdersHistoryResponse,
   ) {
     const orderHistory = response.orders
     const pagination = response.paging
@@ -175,7 +163,9 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
-  static positionsResponseToPositions(response: DerivativePositionsResponse) {
+  static positionsResponseToPositions(
+    response: InjectiveDerivativeExchangeRpc.PositionsResponse,
+  ) {
     const positions = response.positions
     const pagination = response.paging
 
@@ -186,7 +176,9 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
-  static tradesResponseToTrades(response: DerivativeTradesResponse) {
+  static tradesResponseToTrades(
+    response: InjectiveDerivativeExchangeRpc.TradesResponse,
+  ) {
     const trades = response.trades
     const pagination = response.paging
 
@@ -197,7 +189,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static subaccountTradesListResponseToSubaccountTradesList(
-    response: DerivativeSubaccountTradesListResponse,
+    response: InjectiveDerivativeExchangeRpc.SubaccountTradesListResponse,
   ) {
     const tradesList = response.trades
 
@@ -205,7 +197,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static fundingPaymentsResponseToFundingPayments(
-    response: FundingPaymentsResponse,
+    response: InjectiveDerivativeExchangeRpc.FundingPaymentsResponse,
   ) {
     const fundingPayments = response.payments
     const pagination = response.paging
@@ -219,7 +211,9 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
-  static fundingRatesResponseToFundingRates(response: FundingRatesResponse) {
+  static fundingRatesResponseToFundingRates(
+    response: InjectiveDerivativeExchangeRpc.FundingRatesResponse,
+  ) {
     const fundingRates = response.fundingRates
     const pagination = response.paging
 
@@ -232,7 +226,9 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
-  static orderbookResponseToOrderbook(response: DerivativeOrderbookResponse) {
+  static orderbookResponseToOrderbook(
+    response: InjectiveDerivativeExchangeRpc.OrderbookResponse,
+  ) {
     const orderbook = response.orderbook!
 
     return IndexerGrpcDerivativeTransformer.grpcOrderbookToOrderbook({
@@ -242,7 +238,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static orderbookV2ResponseToOrderbookV2(
-    response: DerivativeOrderbookV2Response,
+    response: InjectiveDerivativeExchangeRpc.OrderbookV2Response,
   ) {
     const orderbook = response.orderbook!
 
@@ -254,7 +250,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static orderbooksResponseToOrderbooks(
-    response: DerivativeOrderbooksResponse,
+    response: InjectiveDerivativeExchangeRpc.OrderbooksResponse,
   ) {
     const orderbooks = response.orderbooks!
 
@@ -272,7 +268,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static orderbooksV2ResponseToOrderbooksV2(
-    response: DerivativeOrderbooksV2Response,
+    response: InjectiveDerivativeExchangeRpc.OrderbooksV2Response,
   ) {
     const orderbooks = response.orderbooks!
 
@@ -292,7 +288,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static binaryOptionsMarketResponseToBinaryOptionsMarket(
-    response: BinaryOptionsMarketResponse,
+    response: InjectiveDerivativeExchangeRpc.BinaryOptionsMarketResponse,
   ) {
     const market = response.market!
 
@@ -302,7 +298,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
-    response: BinaryOptionsMarketsResponse,
+    response: InjectiveDerivativeExchangeRpc.BinaryOptionsMarketsResponse,
   ) {
     const markets = response.markets
     const pagination = response.paging
@@ -317,7 +313,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static binaryOptionsMarketsResponseToBinaryOptionsMarkets(
-    response: BinaryOptionsMarketsResponse,
+    response: InjectiveDerivativeExchangeRpc.BinaryOptionsMarketsResponse,
   ) {
     const markets = response.markets
 

@@ -1,7 +1,9 @@
-import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
-import { MsgCancelBinaryOptionsOrder as BaseMsgCancelBinaryOptionsOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCancelBinaryOptionsOrder {
   export interface Params {
@@ -9,10 +11,10 @@ export declare namespace MsgCancelBinaryOptionsOrder {
     subaccountId: string
     injectiveAddress: string
     orderHash: string
-    orderMask?: OrderMask
+    orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
   }
 
-  export type Proto = BaseMsgCancelBinaryOptionsOrder
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder
 }
 
 /**
@@ -31,14 +33,15 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgCancelBinaryOptionsOrder.create()
+    const message =
+      InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder.create()
     message.sender = params.injectiveAddress
     message.marketId = params.marketId
     message.orderHash = params.orderHash
     message.subaccountId = params.subaccountId
 
     // TODO: Send order.orderMask instead when chain handles order mask properly.
-    message.orderMask = OrderMask.ANY
+    message.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
 
     return message
   }
@@ -84,6 +87,8 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgCancelBinaryOptionsOrder.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

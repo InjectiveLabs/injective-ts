@@ -1,8 +1,3 @@
-import {
-  InjectiveOracleRPCClientImpl,
-  OracleListRequest,
-  PriceRequest,
-} from '@injectivelabs/indexer-proto-ts/injective_oracle_rpc'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer'
 import { IndexerModule } from '../types'
 import {
@@ -10,7 +5,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
+import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
@@ -18,23 +13,23 @@ import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer
 export class IndexerGrpcOracleApi {
   protected module: string = IndexerModule.Oracle
 
-  protected client: InjectiveOracleRPCClientImpl
+  protected client: InjectiveOracleRpc.InjectiveOracleRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveOracleRPCClientImpl(
+    this.client = new InjectiveOracleRpc.InjectiveOracleRPCClientImpl(
       getGrpcIndexerWebImpl(endpoint),
     )
   }
 
   async fetchOracleList() {
-    const request = OracleListRequest.create()
+    const request = InjectiveOracleRpc.OracleListRequest.create()
 
     try {
       const response = await this.client.OracleList(request)
 
       return IndexerGrpcOracleTransformer.oraclesResponseToOracles(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -59,7 +54,7 @@ export class IndexerGrpcOracleApi {
     oracleType: string
     oracleScaleFactor?: number
   }) {
-    const request = PriceRequest.create()
+    const request = InjectiveOracleRpc.PriceRequest.create()
 
     request.baseSymbol = baseSymbol
     request.quoteSymbol = quoteSymbol
@@ -74,7 +69,7 @@ export class IndexerGrpcOracleApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -99,7 +94,7 @@ export class IndexerGrpcOracleApi {
     oracleType: string
     oracleScaleFactor?: number
   }) {
-    const request = PriceRequest.create()
+    const request = InjectiveOracleRpc.PriceRequest.create()
 
     request.baseSymbol = baseSymbol
     request.quoteSymbol = quoteSymbol
@@ -120,7 +115,7 @@ export class IndexerGrpcOracleApi {
         }
       }
 
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

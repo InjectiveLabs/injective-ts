@@ -24,7 +24,7 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
+import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
@@ -60,7 +60,7 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
         .getVaultList()
         .map(IndexerGrpcNinjaTransformer.grpcVaultToVault)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -113,7 +113,7 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
           IndexerGrpcNinjaTransformer.grpcPaginationToPagination(pagination),
       }
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -159,7 +159,7 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
         .getPricesList()
         .map(IndexerGrpcNinjaTransformer.grpcPriceSnapShotToPriceSnapShot)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -205,7 +205,7 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
         .getPricesList()
         .map(IndexerGrpcNinjaTransformer.grpcPriceSnapShotToPriceSnapShot)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -257,7 +257,7 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
         .getSubscriptionsList()
         .map(IndexerGrpcNinjaTransformer.grpcSubscriptionToSubscription)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -303,7 +303,7 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
         .getHoldersList()
         .map(IndexerGrpcNinjaTransformer.grpcHoldersToHolders)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -331,7 +331,7 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
 
       return IndexerGrpcNinjaTransformer.grpcPortfolioToPortfolio(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -357,7 +357,7 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
 
       return IndexerGrpcNinjaTransformer.grpcLeaderboardToLeaderboard(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
