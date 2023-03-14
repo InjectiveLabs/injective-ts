@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.496-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.495-alpha.0...@injectivelabs/wallet-ts@1.0.496-alpha.0) (2023-03-14)
+
+
+### Bug Fixes
+
+* esm import ([b38da09](https://github.com/InjectiveLabs/injective-ts/commit/b38da097107b1e8821c4cface25d23898df8aa49))
+
+
+
+
+
 ## [1.0.495-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.494-alpha.0...@injectivelabs/wallet-ts@1.0.495-alpha.0) (2023-03-14)
 
 
