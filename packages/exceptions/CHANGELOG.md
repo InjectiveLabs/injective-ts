@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.68-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.67...@injectivelabs/exceptions@1.0.68-alpha.0) (2023-03-15)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
 ## [1.0.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.0.67-alpha.0...@injectivelabs/exceptions@1.0.67) (2023-03-15)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
