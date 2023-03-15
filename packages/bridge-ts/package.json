@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/bridge-ts",
   "description": "Bridge utilities and abstractions in TypeScript to be used in Injective products",
-  "version": "1.0.400-alpha.0",
+  "version": "1.0.401-alpha.0",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"

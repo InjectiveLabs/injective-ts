@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/utils",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.0.200-alpha.0",
+  "version": "1.0.201-alpha.0",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
