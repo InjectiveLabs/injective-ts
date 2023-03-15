@@ -1226,7 +1226,7 @@ export default {
     symbol: 'USDCfr',
     decimals: 6,
     logo: 'usdc.svg',
-    coinGeckoId: 'usdc-coin',
+    coinGeckoId: 'usd-coin',
 
     erc20: {
       decimals: 6,
