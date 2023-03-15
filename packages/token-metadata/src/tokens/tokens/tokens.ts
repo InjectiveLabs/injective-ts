@@ -1260,4 +1260,18 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  USDCfr: {
+    name: 'USDC Frontrunner',
+    symbol: 'USDCfr',
+    decimals: 6,
+    logo: 'usdc.svg',
+    coinGeckoId: 'usd-coin',
+
+    erc20: {
+      decimals: 6,
+      address: '0xf9152067989BDc8783fF586624124C05A529A5D1',
+      tokenType: TokenType.Erc20,
+    },
+  },
 } as Record<string, TokenMeta>

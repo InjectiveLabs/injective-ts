@@ -24,7 +24,11 @@ import {
   SubaccountBalanceWithToken,
   UiBridgeTransactionWithToken,
 } from '../types'
-import { Token, TokenType } from '@injectivelabs/token-metadata'
+import {
+  Token,
+  TokenType,
+  getUnknownToken,
+} from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
 
 /**
@@ -317,7 +321,10 @@ export class TokenService {
       return {} as UiBridgeTransactionWithToken
     }
 
-    // Edge case for transferring INJ from IBC chains to Injective chain [osmosis]
+    /**
+     * Transferring native INJ from IBC chain
+     * to Injective (ex: Osmosis -> Injective)
+     */
     if (
       transaction.denom.startsWith('transfer') &&
       transaction.denom.endsWith('inj')
@@ -341,8 +348,8 @@ export class TokenService {
 
     return {
       ...transaction,
-      token: (await this.denomClient.getDenomToken('INJ'))!,
-    }
+      token: getUnknownToken(transaction.denom),
+    } as UiBridgeTransactionWithToken
   }
 
   async toBridgeTransactionsWithToken(

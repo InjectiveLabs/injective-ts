@@ -15,6 +15,7 @@ import {
 } from '../constants'
 import { CosmosChainId, TestnetCosmosChainId } from '@injectivelabs/ts-types'
 import { Token, tokenMetaUtils, TokenType } from '@injectivelabs/token-metadata'
+import { TokenMetadataResponse } from 'alchemy-sdk'
 
 export const InProgressStates = [
   BridgeTransactionState.Confirming,
@@ -698,4 +699,31 @@ export const getGasPriceForChainId = (chainId: CosmosChainId) => {
     default:
       return 0.01
   }
+}
+
+export const formatWeb3Token = ({
+  transaction,
+  tokenFromWeb3,
+}: {
+  transaction: UiBridgeTransaction
+  tokenFromWeb3: TokenMetadataResponse
+}) => {
+  const decimals = tokenFromWeb3.decimals || 18
+  const token = {
+    decimals,
+    denom: `peggy${transaction.denom}`,
+    name: tokenFromWeb3.name || '',
+    logo: tokenFromWeb3.logo || '',
+    symbol: tokenFromWeb3.symbol || '',
+    tokenType: TokenType.Erc20,
+    coinGeckoId: '',
+
+    erc20: {
+      decimals,
+      address: transaction.denom,
+      tokenType: TokenType.Erc20,
+    },
+  }
+
+  return token
 }
