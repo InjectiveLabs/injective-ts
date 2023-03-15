@@ -265,3 +265,14 @@ export const getTokenFromMeta = (meta: TokenMeta, denom?: string): Token => {
 
   return tokenWithDecimalsAndSymbol
 }
+
+export const getUnknownToken = (denom: string): Token => {
+  return {
+    name: denom,
+    symbol: denom,
+    decimals: 18,
+    logo: 'unknown.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.Unknown,
+  } as Token
+}

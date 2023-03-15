@@ -23,12 +23,13 @@ import {
   UiBridgeTransaction,
   SubaccountBalanceWithToken,
   UiBridgeTransactionWithToken,
-  BridgingNetwork,
 } from '../types'
-import { formatWeb3Token } from '../utils/bridge'
-import { Token, TokenType } from '@injectivelabs/token-metadata'
+import {
+  Token,
+  TokenType,
+  getUnknownToken,
+} from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
-import { Web3Client } from '../services/web3/Web3Client'
 
 /**
  * With the TokenService class we can convert objects
@@ -41,26 +42,18 @@ export class TokenService {
 
   public denomClient: DenomClient
 
-  public web3Client: Web3Client
-
   constructor({
     chainId,
     network,
     endpoints,
-    rpc,
   }: {
     chainId: ChainId
     network: Network
     endpoints?: NetworkEndpoints
-    rpc?: string
   }) {
     this.network = network
     this.chainId = chainId
     this.denomClient = new DenomClient(network, endpoints ? { endpoints } : {})
-    this.web3Client = new Web3Client({
-      network,
-      rpc: rpc ? rpc : '',
-    })
   }
 
   async toCoinsWithToken(supply: Coin[]): Promise<Token[]> {
@@ -328,7 +321,10 @@ export class TokenService {
       return {} as UiBridgeTransactionWithToken
     }
 
-    // Edge case for transferring INJ from IBC chains to Injective chain [osmosis]
+    /**
+     * Transferring native INJ from IBC chain
+     * to Injective (ex: Osmosis -> Injective)
+     */
     if (
       transaction.denom.startsWith('transfer') &&
       transaction.denom.endsWith('inj')
@@ -350,29 +346,10 @@ export class TokenService {
       }
     }
 
-    // Edge case for getting token metadata for custom erc20 tokens not in the token-metadata
-    const [sender, receiver] = transaction.type.split('-')
-
-    if (
-      !tokenFromDenomAsSymbol &&
-      [sender, receiver].includes(BridgingNetwork.Ethereum)
-    ) {
-      const tokenFromWeb3 = await this.web3Client.fetchTokenMetaData(
-        transaction.denom,
-      )
-
-      const web3Token = formatWeb3Token({ transaction, tokenFromWeb3 })
-
-      return {
-        ...transaction,
-        token: web3Token,
-      }
-    }
-
     return {
       ...transaction,
-      token: (await this.denomClient.getDenomToken('INJ'))!,
-    }
+      token: getUnknownToken(transaction.denom),
+    } as UiBridgeTransactionWithToken
   }
 
   async toBridgeTransactionsWithToken(

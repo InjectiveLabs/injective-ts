@@ -6,6 +6,7 @@ export enum TokenType {
   Native = 'native',
   TokenFactory = 'tokenFactory',
   InsuranceFund = 'insuranceFund',
+  Unknown = 'unknown',
 }
 
 export enum Cw20TokenSource {
