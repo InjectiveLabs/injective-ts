@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.192](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.191...@injectivelabs/token-metadata@1.0.192) (2023-03-15)
+
+
+### Bug Fixes
+
+* coingeckoId for usdcfr ([21e1f87](https://github.com/InjectiveLabs/injective-ts/commit/21e1f8726df85eb17c9a60aa148d7aa9fda05214))
+
+
+
+
+
 ## [1.0.191](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.190...@injectivelabs/token-metadata@1.0.191) (2023-03-15)
 
 
