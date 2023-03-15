@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.193-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.192...@injectivelabs/token-metadata@1.0.193-alpha.0) (2023-03-15)
+
+
+### Bug Fixes
+
+*  update PR base on Bojan's review ([30e9b71](https://github.com/InjectiveLabs/injective-ts/commit/30e9b717591a0b928cbef7d27773a37444446666))
+* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+* minor ([73364ee](https://github.com/InjectiveLabs/injective-ts/commit/73364ee05c55fc2c4508f2c221ab07c35247a5df))
+* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
+* minor ([b1a0687](https://github.com/InjectiveLabs/injective-ts/commit/b1a06876411a1c01310cc32666c16923fc66dc14))
+
+
+
+
+
 ## [1.0.192](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.191...@injectivelabs/token-metadata@1.0.192) (2023-03-15)
 
 
