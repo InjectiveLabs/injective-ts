@@ -192,7 +192,6 @@ export const getTokenFromMeta = (meta: TokenMeta, denom: string): Token => {
   /**
    * Filter the correct cw20 meta based on denom
    */
-
   const cw20meta = getCw20Meta({
     ...meta,
     denom,
