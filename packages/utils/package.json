@@ -30,8 +30,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.0.68-alpha.0",
-    "@injectivelabs/ts-types": "^1.0.40-alpha.0",
+    "@injectivelabs/exceptions": "^1.0.201-alpha.0",
+    "@injectivelabs/ts-types": "^1.0.101-alpha.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
     "http-status-codes": "^2.2.0",

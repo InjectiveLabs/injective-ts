@@ -2179,20 +2179,6 @@
     "@improbable-eng/grpc-web" "^0.13.0"
     google-protobuf "^3.13.0"
 
-"@injectivelabs/contracts@^1.0.114":
-  version "1.0.114"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/contracts/-/contracts-1.0.114.tgz#50a08e5715a265ea445f90de7d3ecdf41533bf01"
-  integrity sha512-chSXU0h+gwJTMXo/O9UECdXegTYJAKJxDXqPIJICs/36RV/lddo1VJPy6SA4yLouXigm5t3mbg7AqPVnHfuXrQ==
-  dependencies:
-    "@injectivelabs/exceptions" "^1.0.59"
-    "@injectivelabs/networks" "^1.0.96"
-    "@injectivelabs/ts-types" "^1.0.30"
-    "@injectivelabs/utils" "^1.0.84"
-    link-module-alias "^1.2.0"
-    shx "^0.3.3"
-    web3 "^1.7.2"
-    web3-utils "^1.7.2"
-
 "@injectivelabs/core-proto-ts@^0.0.11":
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.11.tgz#043ac0a0ce802b485b9d695b12209d1b36727093"
@@ -2315,16 +2301,6 @@
     link-module-alias "^1.2.0"
     lodash "^4.17.21"
     lodash.values "^4.3.0"
-    shx "^0.3.2"
-
-"@injectivelabs/token-utils@^1.0.88":
-  version "1.0.88"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/token-utils/-/token-utils-1.0.88.tgz#0e8bc4773e998c27b66b33b65a5e92ec0f6db931"
-  integrity sha512-6eBJPFqSy5v+RyKWJNf9ii/0L1glJjtY4csm7cLilz9H1u5zGNDcTVrQigPATbjnDPzet4wsCx8K4XlNKRe4zA==
-  dependencies:
-    "@injectivelabs/exceptions" "^1.0.59"
-    "@injectivelabs/utils" "^1.0.84"
-    link-module-alias "^1.2.0"
     shx "^0.3.2"
 
 "@injectivelabs/ts-types@^1.0.30":
