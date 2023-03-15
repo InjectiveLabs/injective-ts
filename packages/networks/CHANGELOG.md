@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.104-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.103-alpha.0...@injectivelabs/networks@1.0.104-alpha.0) (2023-03-14)
+
+
+### Bug Fixes
+
+* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
+
+
+
+
+
+## [1.0.103-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.102-alpha.0...@injectivelabs/networks@1.0.103-alpha.0) (2023-03-14)
+
+
+### Bug Fixes
+
+* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+
+
+
+
+
+## [1.0.102-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.101-alpha.0...@injectivelabs/networks@1.0.102-alpha.0) (2023-03-14)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
+## [1.0.101-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.98-alpha.0...@injectivelabs/networks@1.0.101-alpha.0) (2023-03-13)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
+## [1.0.98-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.97-alpha.0...@injectivelabs/networks@1.0.98-alpha.0) (2023-03-13)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
+## [1.0.97-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.96...@injectivelabs/networks@1.0.97-alpha.0) (2023-03-08)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
 ## [1.0.96](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.0.95...@injectivelabs/networks@1.0.96) (2023-03-05)
 
 **Note:** Version bump only for package @injectivelabs/networks

@@ -1,7 +1,9 @@
-import { MsgUnderwrite as BaseMsgUnderwrite } from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveInsuranceV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgUnderwrite {
   export interface Params {
@@ -13,7 +15,7 @@ export declare namespace MsgUnderwrite {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgUnderwrite
+  export type Proto = InjectiveInsuranceV1Beta1Tx.MsgUnderwrite
 }
 
 /**
@@ -30,11 +32,11 @@ export default class MsgUnderwrite extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = Coin.create()
+    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
     amountCoin.amount = params.amount.amount
     amountCoin.denom = params.amount.denom
 
-    const message = BaseMsgUnderwrite.create()
+    const message = InjectiveInsuranceV1Beta1Tx.MsgUnderwrite.create()
     message.deposit = amountCoin
     message.marketId = params.marketId
     message.sender = params.injectiveAddress
@@ -83,6 +85,8 @@ export default class MsgUnderwrite extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgUnderwrite.encode(this.toProto()).finish()
+    return InjectiveInsuranceV1Beta1Tx.MsgUnderwrite.encode(
+      this.toProto(),
+    ).finish()
   }
 }

@@ -1,5 +1,7 @@
-import { MsgDeposit as BaseMsgDeposit } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
+import {
+  CosmosBaseV1Beta1Coin,
+  CosmosGovV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 import snakeCaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 
@@ -13,7 +15,7 @@ export declare namespace MsgDeposit {
     depositor: string
   }
 
-  export type Proto = BaseMsgDeposit
+  export type Proto = CosmosGovV1Beta1Tx.MsgDeposit
 }
 
 /**
@@ -30,16 +32,16 @@ export default class MsgDeposit extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const deposit = Coin.create()
+    const deposit = CosmosBaseV1Beta1Coin.Coin.create()
     deposit.amount = params.amount.amount
     deposit.denom = params.amount.denom
 
-    const message = BaseMsgDeposit.create()
+    const message = CosmosGovV1Beta1Tx.MsgDeposit.create()
     message.depositor = params.depositor
     message.proposalId = params.proposalId.toString()
     message.amount = [deposit]
 
-    return BaseMsgDeposit.fromPartial(message)
+    return CosmosGovV1Beta1Tx.MsgDeposit.fromPartial(message)
   }
 
   public toData() {
@@ -83,6 +85,6 @@ export default class MsgDeposit extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgDeposit.encode(this.toProto()).finish()
+    return CosmosGovV1Beta1Tx.MsgDeposit.encode(this.toProto()).finish()
   }
 }

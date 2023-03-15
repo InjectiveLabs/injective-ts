@@ -7,8 +7,7 @@ import {
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
-import { TxResponse } from '@injectivelabs/sdk-ts'
+import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import Metamask from './strategies/Metamask'
 import {
   ConcreteWalletStrategy,

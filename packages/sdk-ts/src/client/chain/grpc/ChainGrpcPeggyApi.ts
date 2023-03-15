@@ -1,7 +1,3 @@
-import {
-  QueryClientImpl,
-  QueryParamsRequest as QueryPeggyParamsRequest,
-} from '@injectivelabs/core-proto-ts/injective/peggy/v1/query'
 import { ChainGrpcPeggyTransformer } from '../transformers'
 import { ChainModule } from '../types'
 import {
@@ -9,7 +5,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { InjectivePeggyV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -17,14 +13,16 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcPeggyApi {
   protected module: string = ChainModule.Peggy
 
-  protected client: QueryClientImpl
+  protected client: InjectivePeggyV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new InjectivePeggyV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchModuleParams() {
-    const request = QueryPeggyParamsRequest.create()
+    const request = InjectivePeggyV1Beta1Query.QueryParamsRequest.create()
 
     try {
       const response = await this.client.Params(request)
@@ -33,7 +31,7 @@ export class ChainGrpcPeggyApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectivePeggyV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

@@ -1,10 +1,4 @@
 import keccak256 from 'keccak256'
-import {
-  AuthInfo,
-  SignDoc,
-  TxBody,
-  TxRaw,
-} from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import {
   createAuthInfo,
@@ -26,6 +20,7 @@ import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../../client'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**
  * @typedef {Object} CreateTransactionWithSignersArgs
@@ -78,8 +73,8 @@ export const createTransactionWithSigners = ({
     fee: feeMessage,
   })
 
-  const bodyBytes = TxBody.encode(body).finish()
-  const authInfoBytes = AuthInfo.encode(authInfo).finish()
+  const bodyBytes = CosmosTxV1Beta1Tx.TxBody.encode(body).finish()
+  const authInfoBytes = CosmosTxV1Beta1Tx.AuthInfo.encode(authInfo).finish()
 
   const signDoc = createSigDoc({
     chainId,
@@ -88,12 +83,12 @@ export const createTransactionWithSigners = ({
     accountNumber: signer.accountNumber,
   })
 
-  const signDocBytes = SignDoc.encode(signDoc).finish()
+  const signDocBytes = CosmosTxV1Beta1Tx.SignDoc.encode(signDoc).finish()
 
   const toSignBytes = Buffer.from(signDocBytes)
   const toSignHash = keccak256(Buffer.from(signDocBytes))
 
-  const txRaw = TxRaw.create()
+  const txRaw = CosmosTxV1Beta1Tx.TxRaw.create()
   txRaw.authInfoBytes = authInfoBytes
   txRaw.bodyBytes = bodyBytes
 
@@ -174,15 +169,15 @@ export const createTransactionFromMsg = (
  * @returns TxRaw
  */
 export const createTxRawFromSigResponse = (
-  response: TxRaw | DirectSignResponse,
+  response: CosmosTxV1Beta1Tx.TxRaw | DirectSignResponse,
 ) => {
   if ((response as DirectSignResponse).signed === undefined) {
-    return response as TxRaw
+    return response as CosmosTxV1Beta1Tx.TxRaw
   }
 
   const directSignResponse = response as DirectSignResponse
 
-  const txRaw = TxRaw.create()
+  const txRaw = CosmosTxV1Beta1Tx.TxRaw.create()
   txRaw.authInfoBytes = directSignResponse.signed.authInfoBytes
   txRaw.bodyBytes = directSignResponse.signed.bodyBytes
   txRaw.signatures = [
@@ -295,10 +290,10 @@ export const createTransactionAndCosmosSignDocForAddressAndMsg = async (
 }
 
 export const getTxRawFromTxRawOrDirectSignResponse = (
-  txRawOrDirectSignResponse: TxRaw | DirectSignResponse,
-): TxRaw => {
+  txRawOrDirectSignResponse: CosmosTxV1Beta1Tx.TxRaw | DirectSignResponse,
+): CosmosTxV1Beta1Tx.TxRaw => {
   return (txRawOrDirectSignResponse as DirectSignResponse).signed === undefined
-    ? (txRawOrDirectSignResponse as TxRaw)
+    ? (txRawOrDirectSignResponse as CosmosTxV1Beta1Tx.TxRaw)
     : createTxRawFromSigResponse(
         txRawOrDirectSignResponse as DirectSignResponse,
       )

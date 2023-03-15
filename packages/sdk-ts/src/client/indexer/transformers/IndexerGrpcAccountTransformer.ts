@@ -1,10 +1,3 @@
-import {
-  RewardsResponse,
-  PortfolioResponse,
-  SubaccountHistoryResponse,
-  SubaccountBalancesListResponse,
-  SubaccountBalanceEndpointResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { Coin } from '@injectivelabs/ts-types'
 import { grpcPagingToPaging } from '../../..//utils/pagination'
 import { GrpcCoin } from '../../../types/index'
@@ -23,13 +16,14 @@ import {
   GrpcSubaccountPortfolio,
   GrpcSubaccountBalanceTransfer,
 } from '../types/account'
+import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcAccountTransformer {
   static accountPortfolioResponseToAccountPortfolio(
-    response: PortfolioResponse,
+    response: InjectiveAccountRpc.PortfolioResponse,
   ): AccountPortfolio {
     const portfolio = response.portfolio!
     const subaccounts = portfolio.subaccounts || []
@@ -87,7 +81,7 @@ export class IndexerGrpcAccountTransformer {
   }
 
   static balancesResponseToBalances(
-    response: SubaccountBalancesListResponse,
+    response: InjectiveAccountRpc.SubaccountBalancesListResponse,
   ): SubaccountBalance[] {
     return response.balances.map((b) =>
       IndexerGrpcAccountTransformer.grpcBalanceToBalance(b),
@@ -95,7 +89,7 @@ export class IndexerGrpcAccountTransformer {
   }
 
   static balanceResponseToBalance(
-    response: SubaccountBalanceEndpointResponse,
+    response: InjectiveAccountRpc.SubaccountBalanceEndpointResponse,
   ): SubaccountBalance {
     return IndexerGrpcAccountTransformer.grpcBalanceToBalance(response.balance!)
   }
@@ -142,7 +136,7 @@ export class IndexerGrpcAccountTransformer {
   }
 
   static tradingRewardsResponseToTradingRewards(
-    response: RewardsResponse,
+    response: InjectiveAccountRpc.RewardsResponse,
   ): TradingReward[] {
     const rewards = response.rewards
 
@@ -173,7 +167,7 @@ export class IndexerGrpcAccountTransformer {
   }
 
   static transferHistoryResponseToTransferHistory(
-    response: SubaccountHistoryResponse,
+    response: InjectiveAccountRpc.SubaccountHistoryResponse,
   ) {
     const transfers = response.transfers
     const pagination = response.paging

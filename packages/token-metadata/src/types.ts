@@ -90,7 +90,7 @@ export interface IbcToken extends BaseToken {
 }
 
 export interface Cw20Token extends BaseToken {
-  cw20?: Cw20TokenMeta
+  cw20: Cw20TokenMeta
   tokenType: TokenType
 }
 

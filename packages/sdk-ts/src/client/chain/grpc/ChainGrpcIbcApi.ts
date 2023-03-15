@@ -1,15 +1,10 @@
-import {
-  QueryClientImpl,
-  QueryDenomTraceRequest,
-  QueryDenomTracesRequest,
-} from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/query'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { IbcApplicationsTransferV1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -17,14 +12,17 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcIbcApi {
   protected module: string = ChainModule.Ibc
 
-  protected client: QueryClientImpl
+  protected client: IbcApplicationsTransferV1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new IbcApplicationsTransferV1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchDenomTrace(hash: string) {
-    const request = QueryDenomTraceRequest.create()
+    const request =
+      IbcApplicationsTransferV1Query.QueryDenomTraceRequest.create()
 
     request.hash = hash
 
@@ -33,7 +31,7 @@ export class ChainGrpcIbcApi {
 
       return response.denomTrace!
     } catch (e: any) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -48,14 +46,15 @@ export class ChainGrpcIbcApi {
   }
 
   async fetchDenomsTrace() {
-    const request = QueryDenomTracesRequest.create()
+    const request =
+      IbcApplicationsTransferV1Query.QueryDenomTracesRequest.create()
 
     try {
       const response = await this.client.DenomTraces(request)
 
       return response.denomTraces
     } catch (e: any) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

@@ -1,7 +1,9 @@
-import { MsgSubmitProposal as BaseMsgSubmitProposal } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
-import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
-import { TextProposal } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/gov'
+import {
+  GoogleProtobufAny,
+  CosmosGovV1Beta1Tx,
+  CosmosGovV1Beta1Gov,
+  CosmosBaseV1Beta1Coin,
+} from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
@@ -16,9 +18,9 @@ export declare namespace MsgSubmitTextProposal {
     }
   }
 
-  export type Proto = BaseMsgSubmitProposal
+  export type Proto = CosmosGovV1Beta1Tx.MsgSubmitProposal
 
-  export type Object = Omit<BaseMsgSubmitProposal, 'content'> & {
+  export type Object = Omit<CosmosGovV1Beta1Tx.MsgSubmitProposal, 'content'> & {
     content: {
       type_url: string
       value: any
@@ -41,23 +43,23 @@ export default class MsgSubmitTextProposal extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const depositParams = Coin.create()
+    const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
     const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
 
-    const contentAny = Any.create()
-    contentAny.value = TextProposal.encode(content).finish()
+    const contentAny = GoogleProtobufAny.Any.create()
+    contentAny.value = CosmosGovV1Beta1Gov.TextProposal.encode(content).finish()
     contentAny.typeUrl = proposalType
 
-    const message = BaseMsgSubmitProposal.create()
+    const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
     message.content = contentAny
     message.proposer = params.proposer
     message.initialDeposit = [depositParams]
 
-    return BaseMsgSubmitProposal.fromPartial(message)
+    return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
   }
 
   public toData() {
@@ -128,16 +130,16 @@ export default class MsgSubmitTextProposal extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgSubmitProposal.encode(this.toProto()).finish()
+    return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
   }
 
   private getContent() {
     const { params } = this
 
-    const content = TextProposal.create()
+    const content = CosmosGovV1Beta1Gov.TextProposal.create()
     content.title = params.title
     content.description = params.description
 
-    return TextProposal.fromPartial(content)
+    return CosmosGovV1Beta1Gov.TextProposal.fromPartial(content)
   }
 }

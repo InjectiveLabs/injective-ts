@@ -1,11 +1,8 @@
-import {
-  Params as GrpcAuctionParams,
-  Bid as GrpcBid,
-  EventBid as GrpcEventBid,
-  EventAuctionResult as GrpcEventAuctionResult,
-} from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/auction'
 import { Coin } from '@injectivelabs/ts-types'
-import { QueryCurrentAuctionBasketResponse as GrpcQueryCurrentAuctionBasketResponse } from '@injectivelabs/core-proto-ts/injective/auction/v1beta1/query'
+import {
+  InjectiveAuctionV1Beta1Auction,
+  InjectiveAuctionV1Beta1Query,
+} from '@injectivelabs/core-proto-ts'
 
 export interface GrpcCurrentBasket
   extends GrpcQueryCurrentAuctionBasketResponse {
@@ -42,4 +39,10 @@ export interface AuctionModuleState {
   auctionEndingTimestamp: number
 }
 
-export { GrpcBid, GrpcEventAuctionResult, GrpcEventBid, GrpcAuctionParams }
+export type GrpcQueryCurrentAuctionBasketResponse =
+  InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketResponse
+export type GrpcAuctionParams = InjectiveAuctionV1Beta1Auction.Params
+export type GrpcBid = InjectiveAuctionV1Beta1Auction.Bid
+export type GrpcEventBid = InjectiveAuctionV1Beta1Auction.EventBid
+export type GrpcEventAuctionResult =
+  InjectiveAuctionV1Beta1Auction.EventAuctionResult

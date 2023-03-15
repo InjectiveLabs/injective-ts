@@ -1,10 +1,12 @@
-import { MsgSubmitProposal as BaseMsgSubmitProposal } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
-import { ExpiryFuturesMarketLaunchProposal } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
-import { Any } from '@injectivelabs/core-proto-ts/google/protobuf/any'
-import { OracleType } from '@injectivelabs/core-proto-ts/injective/oracle/v1beta1/oracle'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  GoogleProtobufAny,
+  CosmosGovV1Beta1Tx,
+  CosmosBaseV1Beta1Coin,
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveOracleV1Beta1Oracle,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
   export interface Params {
@@ -17,7 +19,7 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
       oracleQuote: string
       expiry: number
       oracleScaleFactor: number
-      oracleType: OracleType
+      oracleType: InjectiveOracleV1Beta1Oracle.OracleType
       initialMarginRatio: string
       maintenanceMarginRatio: string
       makerFeeRate: string
@@ -32,9 +34,9 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
     }
   }
 
-  export type Proto = BaseMsgSubmitProposal
+  export type Proto = CosmosGovV1Beta1Tx.MsgSubmitProposal
 
-  export type Object = Omit<BaseMsgSubmitProposal, 'content'> & {
+  export type Object = Omit<CosmosGovV1Beta1Tx.MsgSubmitProposal, 'content'> & {
     content: {
       type_url: string
       value: any
@@ -59,7 +61,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const depositParams = Coin.create()
+    const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
@@ -67,17 +69,19 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     const proposalType =
       '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal'
 
-    const contentAny = Any.create()
+    const contentAny = GoogleProtobufAny.Any.create()
     contentAny.value =
-      ExpiryFuturesMarketLaunchProposal.encode(content).finish()
+      InjectiveExchangeV1Beta1Tx.ExpiryFuturesMarketLaunchProposal.encode(
+        content,
+      ).finish()
     contentAny.typeUrl = proposalType
 
-    const message = BaseMsgSubmitProposal.create()
+    const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
     message.content = contentAny
     message.proposer = params.proposer
     message.initialDeposit = [depositParams]
 
-    return BaseMsgSubmitProposal.fromPartial(message)
+    return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
   }
 
   public toData() {
@@ -145,13 +149,14 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgSubmitProposal.encode(this.toProto()).finish()
+    return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
   }
 
   private getContent() {
     const { params } = this
 
-    const content = ExpiryFuturesMarketLaunchProposal.create()
+    const content =
+      InjectiveExchangeV1Beta1Tx.ExpiryFuturesMarketLaunchProposal.create()
     content.title = params.market.title
     content.description = params.market.description
     content.quoteDenom = params.market.quoteDenom
@@ -168,6 +173,8 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     content.minPriceTickSize = params.market.minPriceTickSize
     content.minQuantityTickSize = params.market.minQuantityTickSize
 
-    return ExpiryFuturesMarketLaunchProposal.fromPartial(content)
+    return InjectiveExchangeV1Beta1Tx.ExpiryFuturesMarketLaunchProposal.fromPartial(
+      content,
+    )
   }
 }

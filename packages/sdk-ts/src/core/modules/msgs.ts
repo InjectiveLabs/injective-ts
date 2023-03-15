@@ -18,7 +18,6 @@ import MsgCreateBinaryOptionsMarketOrder from './exchange/msgs/MsgCreateBinaryOp
 import MsgCreateSpotLimitOrder from './exchange/msgs/MsgCreateSpotLimitOrder'
 import MsgCreateSpotMarketOrder from './exchange/msgs/MsgCreateSpotMarketOrder'
 import MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders'
-import MsgMultiExecute from './exchange/msgs/MsgMultiExecute'
 import MsgDeposit from './exchange/msgs/MsgDeposit'
 import MsgIncreasePositionMargin from './exchange/msgs/MsgIncreasePositionMargin'
 import MsgInstantSpotMarketLaunch from './exchange/msgs/MsgInstantSpotMarketLaunch'
@@ -89,7 +88,6 @@ export type Msgs =
   | MsgCreateBinaryOptionsMarketOrder
   | MsgCancelBinaryOptionsOrder
   | MsgBatchCancelBinaryOptionsOrders
-  | MsgMultiExecute
   | MsgWithdrawValidatorCommission
   | MsgEditValidator
   | MsgReclaimLockedFunds
@@ -118,7 +116,6 @@ export type ExchangeMsgs =
   | MsgCreateBinaryOptionsMarketOrder
   | MsgCancelBinaryOptionsOrder
   | MsgBatchCancelBinaryOptionsOrders
-  | MsgMultiExecute
   | MsgReclaimLockedFunds
   | MsgExternalTransfer
   | MsgStoreCode

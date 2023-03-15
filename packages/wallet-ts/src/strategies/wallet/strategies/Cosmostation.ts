@@ -19,10 +19,10 @@ import {
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 const INJECTIVE_CHAIN_NAME = 'injective'
 
@@ -91,7 +91,7 @@ export default class Cosmostation
   }
 
   async sendTransaction(
-    transaction: DirectSignResponse | TxRaw,
+    transaction: DirectSignResponse | CosmosTxV1Beta1Tx.TxRaw,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<TxResponse> {
     const provider = await this.getProvider()
@@ -100,7 +100,7 @@ export default class Cosmostation
     try {
       const response = await provider.sendTransaction(
         INJECTIVE_CHAIN_NAME,
-        TxRaw.encode(txRaw).finish(),
+        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
         SEND_TRANSACTION_MODE.ASYNC,
       )
 
@@ -129,14 +129,18 @@ export default class Cosmostation
 
   /** @deprecated * */
   async signTransaction(
-    transaction: { txRaw: TxRaw; chainId: string; accountNumber: number },
+    transaction: {
+      txRaw: CosmosTxV1Beta1Tx.TxRaw
+      chainId: string
+      accountNumber: number
+    },
     address: AccountAddress,
   ) {
     return this.signCosmosTransaction({ ...transaction, address })
   }
 
   async signCosmosTransaction(transaction: {
-    txRaw: TxRaw
+    txRaw: CosmosTxV1Beta1Tx.TxRaw
     chainId: string
     address: string
     accountNumber: number

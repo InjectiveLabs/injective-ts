@@ -1,8 +1,8 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcIbcApi } from './ChainGrpcIbcApi'
-import { DenomTrace } from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/transfer'
 import { sha256 } from '../../../utils/crypto'
 import { fromUtf8 } from '../../../utils/utf8'
+import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const chainGrpcIbcApi = new ChainGrpcIbcApi(endpoints.grpc)
@@ -11,12 +11,16 @@ describe('ChainGrpcIbcApi', () => {
   test('fetchDenomsTrace', async () => {
     try {
       const response = await chainGrpcIbcApi.fetchDenomsTrace()
-      if (response.length == 0) {
+      if (response.length === 0) {
         console.warn('fetchDenomsTrace.arrayIsEmpty')
       }
 
       expect(response).toBeDefined()
-      expect(response).toEqual(expect.objectContaining<DenomTrace[]>(response))
+      expect(response).toEqual(
+        expect.objectContaining<IbcApplicationsTransferV1Transfer.DenomTrace[]>(
+          response,
+        ),
+      )
     } catch (e) {
       console.error('chainGrpcIbcApi.fetchDenomsTrace => ' + (e as any).message)
     }
@@ -31,7 +35,11 @@ describe('ChainGrpcIbcApi', () => {
       const response = await chainGrpcIbcApi.fetchDenomTrace(ibcHash)
 
       expect(response).toBeDefined()
-      expect(response).toEqual(expect.objectContaining<DenomTrace>(response))
+      expect(response).toEqual(
+        expect.objectContaining<IbcApplicationsTransferV1Transfer.DenomTrace>(
+          response,
+        ),
+      )
     } catch (e) {
       console.error('chainGrpcIbcApi.fetchDenomTrace => ' + (e as any).message)
     }

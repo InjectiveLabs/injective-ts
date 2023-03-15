@@ -1,18 +1,4 @@
 import {
-  InjectiveSpotExchangeRPCClientImpl,
-  MarketsRequest as SpotMarketsRequest,
-  MarketRequest as SpotMarketRequest,
-  OrderbookRequest as SpotOrderbookRequest,
-  OrdersRequest as SpotOrdersRequest,
-  OrdersHistoryRequest as SpotOrdersHistoryRequest,
-  TradesRequest as SpotTradesRequest,
-  SubaccountOrdersListRequest as SpotSubaccountOrdersListRequest,
-  SubaccountTradesListRequest as SpotSubaccountTradesListRequest,
-  OrderbooksRequest as SpotOrderbooksRequest,
-  OrderbooksV2Request as SpotOrderbooksV2Request,
-  OrderbookV2Request as SpotOrderbookV2Request,
-} from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
-import {
   TradeExecutionSide,
   TradeDirection,
   TradeExecutionType,
@@ -26,7 +12,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
+import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
@@ -34,12 +20,13 @@ import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer
 export class IndexerGrpcSpotApi {
   protected module: string = IndexerModule.Spot
 
-  protected client: InjectiveSpotExchangeRPCClientImpl
+  protected client: InjectiveSpotExchangeRpc.InjectiveSpotExchangeRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveSpotExchangeRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
-    )
+    this.client =
+      new InjectiveSpotExchangeRpc.InjectiveSpotExchangeRPCClientImpl(
+        getGrpcIndexerWebImpl(endpoint),
+      )
   }
 
   async fetchMarkets(params?: {
@@ -48,7 +35,7 @@ export class IndexerGrpcSpotApi {
     quoteDenom?: string
   }) {
     const { baseDenom, marketStatus, quoteDenom } = params || {}
-    const request = SpotMarketsRequest.create()
+    const request = InjectiveSpotExchangeRpc.MarketsRequest.create()
 
     if (baseDenom) {
       request.baseDenom = baseDenom
@@ -67,7 +54,7 @@ export class IndexerGrpcSpotApi {
 
       return IndexerGrpcSpotTransformer.marketsResponseToMarkets(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -82,7 +69,7 @@ export class IndexerGrpcSpotApi {
   }
 
   async fetchMarket(marketId: string) {
-    const request = SpotMarketRequest.create()
+    const request = InjectiveSpotExchangeRpc.MarketRequest.create()
 
     request.marketId = marketId
 
@@ -91,7 +78,7 @@ export class IndexerGrpcSpotApi {
 
       return IndexerGrpcSpotTransformer.marketResponseToMarket(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -106,7 +93,7 @@ export class IndexerGrpcSpotApi {
   }
 
   async fetchOrderbook(marketId: string) {
-    const request = SpotOrderbookRequest.create()
+    const request = InjectiveSpotExchangeRpc.OrderbookRequest.create()
 
     request.marketId = marketId
 
@@ -115,7 +102,7 @@ export class IndexerGrpcSpotApi {
 
       return IndexerGrpcSpotTransformer.orderbookResponseToOrderbook(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -139,7 +126,7 @@ export class IndexerGrpcSpotApi {
   }) {
     const { marketId, marketIds, subaccountId, orderSide, pagination } =
       params || {}
-    const request = SpotOrdersRequest.create()
+    const request = InjectiveSpotExchangeRpc.OrdersRequest.create()
 
     if (marketId) {
       request.marketId = marketId
@@ -182,7 +169,7 @@ export class IndexerGrpcSpotApi {
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -218,7 +205,7 @@ export class IndexerGrpcSpotApi {
       pagination,
     } = params || {}
 
-    const request = SpotOrdersHistoryRequest.create()
+    const request = InjectiveSpotExchangeRpc.OrdersHistoryRequest.create()
 
     if (subaccountId) {
       request.subaccountId = subaccountId
@@ -275,7 +262,7 @@ export class IndexerGrpcSpotApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -312,7 +299,7 @@ export class IndexerGrpcSpotApi {
       marketIds,
     } = params || {}
 
-    const request = SpotTradesRequest.create()
+    const request = InjectiveSpotExchangeRpc.TradesRequest.create()
 
     if (marketId) {
       request.marketId = marketId
@@ -367,7 +354,7 @@ export class IndexerGrpcSpotApi {
 
       return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -387,7 +374,8 @@ export class IndexerGrpcSpotApi {
     pagination?: PaginationOption
   }) {
     const { subaccountId, marketId, pagination } = params || {}
-    const request = SpotSubaccountOrdersListRequest.create()
+    const request =
+      InjectiveSpotExchangeRpc.SubaccountOrdersListRequest.create()
 
     if (subaccountId) {
       request.subaccountId = subaccountId
@@ -412,7 +400,7 @@ export class IndexerGrpcSpotApi {
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -435,7 +423,8 @@ export class IndexerGrpcSpotApi {
   }) {
     const { subaccountId, marketId, direction, executionType, pagination } =
       params || {}
-    const request = SpotSubaccountTradesListRequest.create()
+    const request =
+      InjectiveSpotExchangeRpc.SubaccountTradesListRequest.create()
 
     if (subaccountId) {
       request.subaccountId = subaccountId
@@ -470,7 +459,7 @@ export class IndexerGrpcSpotApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -485,7 +474,7 @@ export class IndexerGrpcSpotApi {
   }
 
   async fetchOrderbooks(marketIds: string[]) {
-    const request = SpotOrderbooksRequest.create()
+    const request = InjectiveSpotExchangeRpc.OrderbooksRequest.create()
 
     if (marketIds.length > 0) {
       request.marketIds = marketIds
@@ -496,7 +485,7 @@ export class IndexerGrpcSpotApi {
 
       return IndexerGrpcSpotTransformer.orderbooksResponseToOrderbooks(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -511,7 +500,7 @@ export class IndexerGrpcSpotApi {
   }
 
   async fetchOrderbooksV2(marketIds: string[]) {
-    const request = SpotOrderbooksV2Request.create()
+    const request = InjectiveSpotExchangeRpc.OrderbooksV2Request.create()
 
     if (marketIds.length > 0) {
       request.marketIds = marketIds
@@ -536,7 +525,7 @@ export class IndexerGrpcSpotApi {
   }
 
   async fetchOrderbookV2(marketId: string) {
-    const request = SpotOrderbookV2Request.create()
+    const request = InjectiveSpotExchangeRpc.OrderbookV2Request.create()
 
     request.marketId = marketId
 

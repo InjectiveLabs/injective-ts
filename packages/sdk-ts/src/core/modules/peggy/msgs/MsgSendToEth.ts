@@ -1,11 +1,13 @@
-import { MsgSendToEth as BaseMsgSendToEth } from '@injectivelabs/core-proto-ts/injective/peggy/v1/msgs'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 import {
   DEFAULT_BRIDGE_FEE_AMOUNT,
   DEFAULT_BRIDGE_FEE_DENOM,
 } from '@injectivelabs/utils'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectivePeggyV1Beta1Msgs,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgSendToEth {
   export interface Params {
@@ -21,7 +23,7 @@ export declare namespace MsgSendToEth {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgSendToEth
+  export type Proto = InjectivePeggyV1Beta1Msgs.MsgSendToEth
 }
 
 /**
@@ -38,11 +40,11 @@ export default class MsgSendToEth extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const coinAmount = Coin.create()
+    const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
     coinAmount.denom = params.amount.denom
     coinAmount.amount = params.amount.amount
 
-    const bridgeFee = Coin.create()
+    const bridgeFee = CosmosBaseV1Beta1Coin.Coin.create()
     bridgeFee.denom = params.bridgeFee
       ? params.bridgeFee.denom
       : DEFAULT_BRIDGE_FEE_DENOM
@@ -51,13 +53,13 @@ export default class MsgSendToEth extends MsgBase<
       ? params.bridgeFee.amount
       : DEFAULT_BRIDGE_FEE_AMOUNT
 
-    const message = BaseMsgSendToEth.create()
+    const message = InjectivePeggyV1Beta1Msgs.MsgSendToEth.create()
     message.amount = coinAmount
     message.sender = params.injectiveAddress
     message.ethDest = params.address
     message.bridgeFee = bridgeFee
 
-    return BaseMsgSendToEth.fromPartial(message)
+    return InjectivePeggyV1Beta1Msgs.MsgSendToEth.fromPartial(message)
   }
 
   public toData() {
@@ -101,6 +103,8 @@ export default class MsgSendToEth extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgSendToEth.encode(this.toProto()).finish()
+    return InjectivePeggyV1Beta1Msgs.MsgSendToEth.encode(
+      this.toProto(),
+    ).finish()
   }
 }

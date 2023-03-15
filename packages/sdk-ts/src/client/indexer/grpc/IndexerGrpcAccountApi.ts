@@ -1,14 +1,3 @@
-import {
-  RewardsRequest,
-  PortfolioRequest,
-  OrderStatesRequest,
-  SubaccountsListRequest,
-  SubaccountHistoryRequest,
-  SubaccountBalancesListRequest,
-  SubaccountOrderSummaryRequest,
-  InjectiveAccountsRPCClientImpl,
-  SubaccountBalanceEndpointRequest,
-} from '@injectivelabs/indexer-proto-ts/injective_accounts_rpc'
 import { PaginationOption } from '../../../types/pagination'
 import { IndexerGrpcAccountTransformer } from '../transformers'
 import { IndexerModule } from '../types'
@@ -17,7 +6,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
+import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
@@ -25,16 +14,16 @@ import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer
 export class IndexerGrpcAccountApi {
   protected module: string = IndexerModule.Account
 
-  protected client: InjectiveAccountsRPCClientImpl
+  protected client: InjectiveAccountRpc.InjectiveAccountsRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveAccountsRPCClientImpl(
+    this.client = new InjectiveAccountRpc.InjectiveAccountsRPCClientImpl(
       getGrpcIndexerWebImpl(endpoint),
     )
   }
 
   async fetchPortfolio(address: string) {
-    const request = PortfolioRequest.create()
+    const request = InjectiveAccountRpc.PortfolioRequest.create()
 
     request.accountAddress = address
 
@@ -45,7 +34,7 @@ export class IndexerGrpcAccountApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -60,7 +49,7 @@ export class IndexerGrpcAccountApi {
   }
 
   async fetchRewards({ address, epoch }: { address: string; epoch: number }) {
-    const request = RewardsRequest.create()
+    const request = InjectiveAccountRpc.RewardsRequest.create()
 
     request.accountAddress = address
 
@@ -75,7 +64,7 @@ export class IndexerGrpcAccountApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -90,7 +79,7 @@ export class IndexerGrpcAccountApi {
   }
 
   async fetchSubaccountsList(address: string) {
-    const request = SubaccountsListRequest.create()
+    const request = InjectiveAccountRpc.SubaccountsListRequest.create()
 
     request.accountAddress = address
 
@@ -99,7 +88,7 @@ export class IndexerGrpcAccountApi {
 
       return response.subaccounts
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -114,7 +103,8 @@ export class IndexerGrpcAccountApi {
   }
 
   async fetchSubaccountBalance(subaccountId: string, denom: string) {
-    const request = SubaccountBalanceEndpointRequest.create()
+    const request =
+      InjectiveAccountRpc.SubaccountBalanceEndpointRequest.create()
 
     request.subaccountId = subaccountId
     request.denom = denom
@@ -124,7 +114,7 @@ export class IndexerGrpcAccountApi {
 
       return IndexerGrpcAccountTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -139,7 +129,7 @@ export class IndexerGrpcAccountApi {
   }
 
   async fetchSubaccountBalancesList(subaccountId: string) {
-    const request = SubaccountBalancesListRequest.create()
+    const request = InjectiveAccountRpc.SubaccountBalancesListRequest.create()
 
     request.subaccountId = subaccountId
 
@@ -148,7 +138,7 @@ export class IndexerGrpcAccountApi {
 
       return IndexerGrpcAccountTransformer.balancesResponseToBalances(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -173,7 +163,7 @@ export class IndexerGrpcAccountApi {
     transferTypes?: string[]
     pagination?: PaginationOption
   }) {
-    const request = SubaccountHistoryRequest.create()
+    const request = InjectiveAccountRpc.SubaccountHistoryRequest.create()
 
     request.subaccountId = subaccountId
 
@@ -206,7 +196,7 @@ export class IndexerGrpcAccountApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -229,7 +219,7 @@ export class IndexerGrpcAccountApi {
     marketId?: string
     orderDirection?: string
   }) {
-    const request = SubaccountOrderSummaryRequest.create()
+    const request = InjectiveAccountRpc.SubaccountOrderSummaryRequest.create()
 
     request.subaccountId = subaccountId
 
@@ -246,7 +236,7 @@ export class IndexerGrpcAccountApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -265,7 +255,7 @@ export class IndexerGrpcAccountApi {
     derivativeOrderHashes?: string[]
   }) {
     const { spotOrderHashes = [], derivativeOrderHashes = [] } = params || {}
-    const request = OrderStatesRequest.create()
+    const request = InjectiveAccountRpc.OrderStatesRequest.create()
 
     request.spotOrderHashes = spotOrderHashes
     request.derivativeOrderHashes = derivativeOrderHashes
@@ -275,7 +265,7 @@ export class IndexerGrpcAccountApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

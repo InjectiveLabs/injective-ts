@@ -1,11 +1,4 @@
 import {
-  QueryAllContractStateResponse,
-  QueryCodeResponse,
-  QueryCodesResponse,
-  QueryContractHistoryResponse,
-  QueryContractsByCodeResponse,
-} from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/query'
-import {
   ContractAccountBalance,
   ContractAccountsBalanceWithPagination,
   ContractCodeHistoryEntry,
@@ -17,13 +10,14 @@ import {
 } from '../types/wasm'
 import { fromUtf8 } from '../../../utils'
 import { grpcPaginationToPagination } from './../../../utils/pagination'
+import { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcWasmTransformer {
   static allContractStateResponseToContractAccountsBalanceWithPagination(
-    response: QueryAllContractStateResponse,
+    response: CosmwasmWasmV1Query.QueryAllContractStateResponse,
   ): ContractAccountsBalanceWithPagination {
     const contractAccountsBalance = response.models
       .map((model) => {
@@ -98,7 +92,7 @@ export class ChainGrpcWasmTransformer {
   }
 
   static contactHistoryResponseToContractHistory(
-    response: QueryContractHistoryResponse,
+    response: CosmwasmWasmV1Query.QueryContractHistoryResponse,
   ) {
     return {
       entriesList: response.entries.map(
@@ -108,7 +102,9 @@ export class ChainGrpcWasmTransformer {
     }
   }
 
-  static contractCodesResponseToContractCodes(response: QueryCodesResponse) {
+  static contractCodesResponseToContractCodes(
+    response: CosmwasmWasmV1Query.QueryCodesResponse,
+  ) {
     return {
       codeInfosList: response.codeInfos.map(
         ChainGrpcWasmTransformer.grpcCodeInfoResponseToCodeInfoResponse,
@@ -117,7 +113,9 @@ export class ChainGrpcWasmTransformer {
     }
   }
 
-  static contractCodeResponseToContractCode(response: QueryCodeResponse) {
+  static contractCodeResponseToContractCode(
+    response: CosmwasmWasmV1Query.QueryCodeResponse,
+  ) {
     return {
       codeInfo: ChainGrpcWasmTransformer.grpcCodeInfoResponseToCodeInfoResponse(
         response.codeInfo!,
@@ -127,7 +125,7 @@ export class ChainGrpcWasmTransformer {
   }
 
   static contractByCodeResponseToContractByCode(
-    response: QueryContractsByCodeResponse,
+    response: CosmwasmWasmV1Query.QueryContractsByCodeResponse,
   ) {
     return {
       contractsList: response.contracts,

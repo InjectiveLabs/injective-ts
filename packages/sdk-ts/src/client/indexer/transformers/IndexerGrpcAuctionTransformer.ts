@@ -1,3 +1,4 @@
+import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 import { GrpcCoin } from '../../../types/index'
 import {
   GrpcIndexerBid,
@@ -6,16 +7,14 @@ import {
   Auction,
 } from '../types/auction'
 import { Coin } from '@injectivelabs/ts-types'
-import {
-  AuctionEndpointResponse,
-  AuctionsResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_auction_rpc'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcAuctionTransformer {
-  static auctionResponseToAuction(response: AuctionEndpointResponse): {
+  static auctionResponseToAuction(
+    response: InjectiveAuctionRpc.AuctionEndpointResponse,
+  ): {
     auction: Auction
     bids: IndexerBid[]
   } {
@@ -27,7 +26,9 @@ export class IndexerGrpcAuctionTransformer {
     }
   }
 
-  static auctionsResponseToAuctions(response: AuctionsResponse): Auction[] {
+  static auctionsResponseToAuctions(
+    response: InjectiveAuctionRpc.AuctionsResponse,
+  ): Auction[] {
     return response.auctions.map((a) =>
       IndexerGrpcAuctionTransformer.grpcAuctionToAuction(a),
     )

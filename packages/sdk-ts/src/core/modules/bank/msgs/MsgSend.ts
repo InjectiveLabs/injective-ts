@@ -1,7 +1,9 @@
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
-import { MsgSend as BaseMsgSend } from '@injectivelabs/core-proto-ts/cosmos/bank/v1beta1/tx'
 import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
+import {
+  CosmosBankV1Beta1Tx,
+  CosmosBaseV1Beta1Coin,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgSend {
   export interface Params {
@@ -13,7 +15,7 @@ export declare namespace MsgSend {
     dstInjectiveAddress: string
   }
 
-  export type Proto = BaseMsgSend
+  export type Proto = CosmosBankV1Beta1Tx.MsgSend
 }
 
 /**
@@ -27,16 +29,16 @@ export default class MsgSend extends MsgBase<MsgSend.Params, MsgSend.Proto> {
   public toProto() {
     const { params } = this
 
-    const amountToSend = Coin.create()
+    const amountToSend = CosmosBaseV1Beta1Coin.Coin.create()
     amountToSend.amount = params.amount.amount
     amountToSend.denom = params.amount.denom
 
-    const message = BaseMsgSend.create()
+    const message = CosmosBankV1Beta1Tx.MsgSend.create()
     message.fromAddress = params.srcInjectiveAddress
     message.toAddress = params.dstInjectiveAddress
     message.amount = [amountToSend]
 
-    return BaseMsgSend.fromPartial(message)
+    return CosmosBankV1Beta1Tx.MsgSend.fromPartial(message)
   }
 
   public toData() {
@@ -80,6 +82,6 @@ export default class MsgSend extends MsgBase<MsgSend.Params, MsgSend.Proto> {
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgSend.encode(this.toProto()).finish()
+    return CosmosBankV1Beta1Tx.MsgSend.encode(this.toProto()).finish()
   }
 }

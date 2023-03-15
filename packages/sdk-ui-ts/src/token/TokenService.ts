@@ -69,22 +69,29 @@ export class TokenService {
     ibcBankSupply: CoinWithLabel[]
   }> {
     const supplyWithToken = await this.toSupplyWithToken(supply)
-    const supplyWithLabel = supplyWithToken.map((token, index) => {
-      const coin = supply[index]
 
-      return {
-        ...coin,
-        code: coin.denom,
-        label: token ? token.symbol : coin.denom,
-      }
-    })
+    const supplyWithLabel = supplyWithToken
+      .map((token) => {
+        const coin = supply.find(({ denom }) => denom === token.denom)
+
+        if (!coin) {
+          return
+        }
+
+        return {
+          ...coin,
+          code: coin.denom,
+          label: token ? token.symbol : coin.denom,
+        }
+      })
+      .filter((coinWithLabel) => coinWithLabel) as CoinWithLabel[]
 
     return {
       bankSupply: supplyWithLabel.filter(
-        (supply) => !supply.denom.startsWith('ibc/'),
+        (supply) => supply && supply.denom && !supply.denom.startsWith('ibc/'),
       ),
       ibcBankSupply: supplyWithLabel.filter(
-        (supply) => !supply.denom.startsWith('ibc/'),
+        (supply) => supply && supply.denom && !supply.denom.startsWith('ibc/'),
       ),
     }
   }

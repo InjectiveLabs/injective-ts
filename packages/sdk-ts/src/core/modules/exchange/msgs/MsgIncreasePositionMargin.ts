@@ -1,4 +1,4 @@
-import { MsgIncreasePositionMargin as BaseMsgIncreasePositionMargin } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
+import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
@@ -12,11 +12,11 @@ export declare namespace MsgIncreasePositionMargin {
     amount: string
   }
 
-  export type Proto = BaseMsgIncreasePositionMargin
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin
 }
 
 const createMessage = (params: MsgIncreasePositionMargin.Params) => {
-  const message = BaseMsgIncreasePositionMargin.create()
+  const message = InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.create()
 
   message.sender = params.injectiveAddress
   message.amount = params.amount
@@ -24,7 +24,9 @@ const createMessage = (params: MsgIncreasePositionMargin.Params) => {
   message.sourceSubaccountId = params.srcSubaccountId
   message.destinationSubaccountId = params.dstSubaccountId
 
-  return BaseMsgIncreasePositionMargin.fromPartial(message)
+  return InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.fromPartial(
+    message,
+  )
 }
 
 /**
@@ -92,6 +94,8 @@ export default class MsgIncreasePositionMargin extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgIncreasePositionMargin.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.encode(
+      this.toProto(),
+    ).finish()
   }
 }

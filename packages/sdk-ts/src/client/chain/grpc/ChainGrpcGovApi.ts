@@ -1,13 +1,3 @@
-import {
-  QueryClientImpl,
-  QueryParamsRequest as QueryGovernanceParamsRequest,
-  QueryProposalRequest,
-  QueryProposalsRequest,
-  QueryDepositsRequest,
-  QueryTallyResultRequest,
-  QueryVotesRequest,
-} from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/query'
-import { ProposalStatus } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/gov'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer'
@@ -17,7 +7,10 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import {
+  CosmosGovV1Beta1Query,
+  CosmosGovV1Beta1Gov,
+} from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -25,16 +18,18 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcGovApi {
   protected module: string = ChainModule.Gov
 
-  protected client: QueryClientImpl
+  protected client: CosmosGovV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new CosmosGovV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchModuleParams() {
     const paramTypes = ['voting', 'deposit', 'tallying']
     const requests = paramTypes.map((type) => {
-      const request = QueryGovernanceParamsRequest.create()
+      const request = CosmosGovV1Beta1Query.QueryParamsRequest.create()
       request.paramsType = type
 
       return request
@@ -52,7 +47,7 @@ export class ChainGrpcGovApi {
         depositParams: depositParams.depositParams!,
       })
     } catch (e: any) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -70,10 +65,10 @@ export class ChainGrpcGovApi {
     status,
     pagination,
   }: {
-    status: ProposalStatus
+    status: CosmosGovV1Beta1Gov.ProposalStatus
     pagination?: PaginationOption
   }) {
-    const request = QueryProposalsRequest.create()
+    const request = CosmosGovV1Beta1Query.QueryProposalsRequest.create()
 
     request.proposalStatus = status
 
@@ -88,7 +83,7 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
     } catch (e: any) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -103,7 +98,7 @@ export class ChainGrpcGovApi {
   }
 
   async fetchProposal(proposalId: number) {
-    const request = QueryProposalRequest.create()
+    const request = CosmosGovV1Beta1Query.QueryProposalRequest.create()
 
     request.proposalId = proposalId.toString()
 
@@ -112,7 +107,7 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.proposalResponseToProposal(response)
     } catch (e: any) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -133,7 +128,7 @@ export class ChainGrpcGovApi {
     proposalId: number
     pagination?: PaginationOption
   }) {
-    const request = QueryDepositsRequest.create()
+    const request = CosmosGovV1Beta1Query.QueryDepositsRequest.create()
 
     request.proposalId = proposalId.toString()
 
@@ -148,7 +143,7 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
     } catch (e: any) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -169,7 +164,7 @@ export class ChainGrpcGovApi {
     proposalId: number
     pagination?: PaginationOption
   }) {
-    const request = QueryVotesRequest.create()
+    const request = CosmosGovV1Beta1Query.QueryVotesRequest.create()
 
     request.proposalId = proposalId.toString()
 
@@ -183,7 +178,7 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.votesResponseToVotes(response)
     } catch (e: any) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -198,7 +193,7 @@ export class ChainGrpcGovApi {
   }
 
   async fetchProposalTally(proposalId: number) {
-    const request = QueryTallyResultRequest.create()
+    const request = CosmosGovV1Beta1Query.QueryTallyResultRequest.create()
 
     request.proposalId = proposalId.toString()
     try {
@@ -206,7 +201,7 @@ export class ChainGrpcGovApi {
 
       return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
     } catch (e: any) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

@@ -1,8 +1,3 @@
-import {
-  InjectiveInsuranceRPCClientImpl,
-  FundsRequest,
-  RedemptionsRequest,
-} from '@injectivelabs/indexer-proto-ts/injective_insurance_rpc'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
@@ -10,7 +5,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
+import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
@@ -18,10 +13,10 @@ import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_explorer
 export class IndexerGrpcInsuranceFundApi {
   protected module: string = IndexerModule.InsuranceFund
 
-  protected client: InjectiveInsuranceRPCClientImpl
+  protected client: InjectiveInsuranceRpc.InjectiveInsuranceRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveInsuranceRPCClientImpl(
+    this.client = new InjectiveInsuranceRpc.InjectiveInsuranceRPCClientImpl(
       getGrpcIndexerWebImpl(endpoint),
     )
   }
@@ -35,7 +30,7 @@ export class IndexerGrpcInsuranceFundApi {
     denom?: string
     status?: string
   }) {
-    const request = RedemptionsRequest.create()
+    const request = InjectiveInsuranceRpc.RedemptionsRequest.create()
 
     request.redeemer = address
 
@@ -54,7 +49,7 @@ export class IndexerGrpcInsuranceFundApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -69,7 +64,7 @@ export class IndexerGrpcInsuranceFundApi {
   }
 
   async fetchInsuranceFunds() {
-    const request = FundsRequest.create()
+    const request = InjectiveInsuranceRpc.FundsRequest.create()
 
     try {
       const response = await this.client.Funds(request)
@@ -78,7 +73,7 @@ export class IndexerGrpcInsuranceFundApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

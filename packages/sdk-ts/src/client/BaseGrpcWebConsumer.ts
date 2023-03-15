@@ -1,7 +1,7 @@
 import { grpc } from '@improbable-eng/grpc-web'
 import { isBrowser } from '../utils/helpers'
 import { getGrpcTransport } from '../utils/grpc'
-import { GrpcWebImpl } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { TendermintAbciTypes } from '@injectivelabs/core-proto-ts'
 
 if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
@@ -10,7 +10,7 @@ if (!isBrowser()) {
 /**
  * @hidden
  */
-export default class BaseGrpcWebConsumer extends GrpcWebImpl {
+export default class BaseGrpcWebConsumer extends TendermintAbciTypes.GrpcWebImpl {
   protected module: string = ''
 
   constructor(endpoint: string) {

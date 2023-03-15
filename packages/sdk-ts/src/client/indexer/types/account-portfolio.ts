@@ -1,8 +1,4 @@
-import {
-  Portfolio as GrpcAccountPortfolioV2,
-  SubaccountDeposit as GrpcSubaccountDepositV2,
-  SubaccountBalanceV2 as GrpcPortfolioSubaccountBalanceV2,
-} from '@injectivelabs/indexer-proto-ts/injective_portfolio_rpc'
+import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
 export interface SubaccountDepositV2 {
@@ -40,13 +36,9 @@ export interface AccountPortfolioV2 {
   accountAddress: string
   bankBalancesList: Coin[]
   subaccountsList: PortfolioSubaccountBalanceV2[]
-  // positionsWithUpnlList: PositionsWithUPNL[]
 }
 
-export {
-  // GrpcPositionV2,
-  GrpcAccountPortfolioV2,
-  GrpcSubaccountDepositV2,
-  // GrpcPositionsWithUPNL,
-  GrpcPortfolioSubaccountBalanceV2,
-}
+export type GrpcAccountPortfolioV2 = InjectivePortfolioRpc.Portfolio
+export type GrpcSubaccountDepositV2 = InjectivePortfolioRpc.SubaccountDeposit
+export type GrpcPortfolioSubaccountBalanceV2 =
+  InjectivePortfolioRpc.SubaccountBalanceV2

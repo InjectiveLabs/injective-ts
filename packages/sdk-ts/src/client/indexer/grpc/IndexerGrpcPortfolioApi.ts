@@ -1,7 +1,3 @@
-import {
-  AccountPortfolioRequest,
-  InjectivePortfolioRPCClientImpl,
-} from '@injectivelabs/indexer-proto-ts/injective_portfolio_rpc'
 import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
@@ -9,7 +5,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_portfolio_rpc'
+import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
@@ -17,16 +13,16 @@ import { GrpcWebError } from '@injectivelabs/indexer-proto-ts/injective_portfoli
 export class IndexerGrpcAccountPortfolioApi {
   protected module: string = IndexerModule.Portfolio
 
-  protected client: InjectivePortfolioRPCClientImpl
+  protected client: InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectivePortfolioRPCClientImpl(
+    this.client = new InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl(
       getGrpcIndexerWebImpl(endpoint),
     )
   }
 
   async fetchAccountPortfolio(subaccountId: string) {
-    const request = AccountPortfolioRequest.create()
+    const request = InjectivePortfolioRpc.AccountPortfolioRequest.create()
 
     request.accountAddress = subaccountId
 
@@ -41,7 +37,7 @@ export class IndexerGrpcAccountPortfolioApi {
         return undefined
       }
 
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

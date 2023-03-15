@@ -1,19 +1,11 @@
-import { ServiceClientImpl } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/service'
 import {
-  BroadcastTxRequest,
-  BroadcastMode,
-  SimulateRequest,
-  GetTxRequest,
-} from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/service'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
-import {
+  TxConcreteApi,
   TxClientBroadcastOptions,
   TxClientBroadcastResponse,
-  TxConcreteApi,
 } from '../types/tx'
 import {
-  GrpcUnaryRequestException,
   TransactionException,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
@@ -21,20 +13,25 @@ import {
 } from '@injectivelabs/utils'
 import { TxResponse } from '../types/tx'
 import { getGrpcWebImpl } from '../../../../client/BaseGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import {
+  CosmosTxV1Beta1Service,
+  CosmosTxV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export class TxGrpcApi implements TxConcreteApi {
-  public txService: ServiceClientImpl
+  public txService: CosmosTxV1Beta1Service.ServiceClientImpl
 
   public endpoint: string
 
   constructor(endpoint: string) {
     this.endpoint = endpoint
-    this.txService = new ServiceClientImpl(getGrpcWebImpl(endpoint))
+    this.txService = new CosmosTxV1Beta1Service.ServiceClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   public async fetchTx(hash: string): Promise<TxResponse> {
-    const request = GetTxRequest.create()
+    const request = CosmosTxV1Beta1Service.GetTxRequest.create()
 
     request.hash = hash
 
@@ -74,7 +71,7 @@ export class TxGrpcApi implements TxConcreteApi {
       }
 
       // Failed to query the transaction on the chain
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosTxV1Beta1Service.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
         })
@@ -126,17 +123,18 @@ export class TxGrpcApi implements TxConcreteApi {
     )
   }
 
-  public async simulate(txRaw: TxRaw) {
+  public async simulate(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
     const { txService } = this
 
-    const txRawClone = TxRaw.fromPartial({ ...txRaw })
-    const simulateRequest = SimulateRequest.create()
+    const txRawClone = CosmosTxV1Beta1Tx.TxRaw.fromPartial({ ...txRaw })
+    const simulateRequest = CosmosTxV1Beta1Service.SimulateRequest.create()
 
     if (txRawClone.signatures.length === 0) {
       txRawClone.signatures = [new Uint8Array(0)]
     }
 
-    simulateRequest.txBytes = TxRaw.encode(txRawClone).finish()
+    simulateRequest.txBytes =
+      CosmosTxV1Beta1Tx.TxRaw.encode(txRawClone).finish()
 
     try {
       const response = await txService.Simulate(simulateRequest)
@@ -165,17 +163,18 @@ export class TxGrpcApi implements TxConcreteApi {
   }
 
   public async broadcast(
-    txRaw: TxRaw,
+    txRaw: CosmosTxV1Beta1Tx.TxRaw,
     options?: TxClientBroadcastOptions,
   ): Promise<TxResponse> {
     const { txService } = this
     const { mode, timeout } = options || {
-      mode: BroadcastMode.BROADCAST_MODE_SYNC,
+      mode: CosmosTxV1Beta1Service.BroadcastMode.BROADCAST_MODE_SYNC,
       timeout: DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
     }
 
-    const broadcastTxRequest = BroadcastTxRequest.create()
-    broadcastTxRequest.txBytes = TxRaw.encode(txRaw).finish()
+    const broadcastTxRequest =
+      CosmosTxV1Beta1Service.BroadcastTxRequest.create()
+    broadcastTxRequest.txBytes = CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish()
     broadcastTxRequest.mode = mode
 
     try {
@@ -202,13 +201,15 @@ export class TxGrpcApi implements TxConcreteApi {
   }
 
   public async broadcastBlock(
-    txRaw: TxRaw,
-    broadcastMode: BroadcastMode = BroadcastMode.BROADCAST_MODE_BLOCK,
+    txRaw: CosmosTxV1Beta1Tx.TxRaw,
+    broadcastMode: CosmosTxV1Beta1Service.BroadcastMode = CosmosTxV1Beta1Service
+      .BroadcastMode.BROADCAST_MODE_BLOCK,
   ) {
     const { txService } = this
 
-    const broadcastTxRequest = BroadcastTxRequest.create()
-    broadcastTxRequest.txBytes = TxRaw.encode(txRaw).finish()
+    const broadcastTxRequest =
+      CosmosTxV1Beta1Service.BroadcastTxRequest.create()
+    broadcastTxRequest.txBytes = CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish()
     broadcastTxRequest.mode = broadcastMode
 
     try {

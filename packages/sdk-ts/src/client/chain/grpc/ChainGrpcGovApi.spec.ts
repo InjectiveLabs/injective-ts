@@ -2,7 +2,8 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcGovApi } from './ChainGrpcGovApi'
 // import { mockFactory } from '@injectivelabs/test-utils'
 import { ChainGrpcGovTransformer } from '../transformers'
-import { ProposalStatus } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/gov'
+import { CosmosGovV1Beta1Gov } from '@injectivelabs/core-proto-ts'
+
 
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const chainGrpcGovApi = new ChainGrpcGovApi(endpoints.grpc)
@@ -31,10 +32,10 @@ describe('ChainGrpcGovApi', () => {
   test('fetchProposals', async () => {
     try {
       const response = await chainGrpcGovApi.fetchProposals({
-        status: ProposalStatus.PROPOSAL_STATUS_PASSED,
+        status: CosmosGovV1Beta1Gov.ProposalStatus.PROPOSAL_STATUS_PASSED,
       })
 
-      if (response.proposals.length == 0) {
+      if (response.proposals.length === 0) {
         console.warn('fetchProposals.arrayIsEmpty')
       }
 
@@ -71,7 +72,8 @@ describe('ChainGrpcGovApi', () => {
       const response = await chainGrpcGovApi.fetchProposalDeposits({
         proposalId,
       })
-      if (response.deposits.length == 0) {
+
+      if (response.deposits.length === 0) {
         console.warn('fetchProposalDeposits.arrayIsEmpty')
       }
 
@@ -93,7 +95,8 @@ describe('ChainGrpcGovApi', () => {
       const response = await chainGrpcGovApi.fetchProposalVotes({
         proposalId,
       })
-      if (response.votes.length == 0) {
+
+      if (response.votes.length === 0) {
         console.warn('fetchProposalVotes.arrayIsEmpty')
       }
 

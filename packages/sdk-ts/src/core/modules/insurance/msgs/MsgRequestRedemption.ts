@@ -1,7 +1,9 @@
-import { MsgRequestRedemption as BaseMsgRequestRedemption } from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveInsuranceV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgRequestRedemption {
   export interface Params {
@@ -13,7 +15,7 @@ export declare namespace MsgRequestRedemption {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgRequestRedemption
+  export type Proto = InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption
 }
 
 /**
@@ -30,16 +32,16 @@ export default class MsgRequestRedemption extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = Coin.create()
+    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
     amountCoin.amount = params.amount.amount
     amountCoin.denom = params.amount.denom
 
-    const message = BaseMsgRequestRedemption.create()
+    const message = InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.create()
     message.amount = amountCoin
     message.marketId = params.marketId
     message.sender = params.injectiveAddress
 
-    return BaseMsgRequestRedemption.fromJSON(message)
+    return InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.fromJSON(message)
   }
 
   public toData() {
@@ -83,6 +85,8 @@ export default class MsgRequestRedemption extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgRequestRedemption.encode(this.toProto()).finish()
+    return InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.encode(
+      this.toProto(),
+    ).finish()
   }
 }

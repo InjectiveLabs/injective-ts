@@ -1,10 +1,4 @@
 import {
-  BlockInfo,
-  TxDetailData,
-  StreamTxsResponse,
-  GetTxByTxHashResponse as TxData,
-} from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
-import {
   BankMsgSendTransaction,
   Block,
   BlockWithTxs,
@@ -27,26 +21,22 @@ import {
   GrpcPeggyWithdrawalTx,
   IndexerStreamTransaction,
 } from '../types/explorer'
-import {
-  GetTxByTxHashResponse,
-  GetAccountTxsResponse,
-  GetValidatorResponse,
-  GetValidatorUptimeResponse,
-  GetPeggyDepositTxsResponse,
-  GetPeggyWithdrawalTxsResponse,
-  GetIBCTransferTxsResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
 import { grpcPagingToPaging } from '../../../utils'
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcExplorerTransformer {
-  static getTxByTxHashResponseToTx(tx: GetTxByTxHashResponse): Transaction {
+  static getTxByTxHashResponseToTx(
+    tx: InjectiveExplorerRpc.GetTxByTxHashResponse,
+  ): Transaction {
     return IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(tx)
   }
 
-  static getAccountTxsResponseToAccountTxs(response: GetAccountTxsResponse) {
+  static getAccountTxsResponseToAccountTxs(
+    response: InjectiveExplorerRpc.GetAccountTxsResponse,
+  ) {
     const txs = response.data
     const pagination = response.paging
 
@@ -59,7 +49,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static getValidatorUptimeResponseToValidatorUptime(
-    response: GetValidatorUptimeResponse,
+    response: InjectiveExplorerRpc.GetValidatorUptimeResponse,
   ) {
     const data = response.data
 
@@ -71,7 +61,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static getPeggyDepositTxsResponseToPeggyDepositTxs(
-    response: GetPeggyDepositTxsResponse,
+    response: InjectiveExplorerRpc.GetPeggyDepositTxsResponse,
   ) {
     return response.field.map((field) =>
       IndexerGrpcExplorerTransformer.grpcPeggyDepositTx(field),
@@ -79,7 +69,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
-    response: GetPeggyWithdrawalTxsResponse,
+    response: InjectiveExplorerRpc.GetPeggyWithdrawalTxsResponse,
   ) {
     return response.field.map((field) =>
       IndexerGrpcExplorerTransformer.grpcPeggyWithdrawalTx(field),
@@ -87,7 +77,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static getIBCTransferTxsResponseToIBCTransferTxs(
-    response: GetIBCTransferTxsResponse,
+    response: InjectiveExplorerRpc.GetIBCTransferTxsResponse,
   ) {
     return response.field.map((field) =>
       IndexerGrpcExplorerTransformer.grpcIBCTransferTxToIBCTransferTx(field),
@@ -95,7 +85,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static validatorResponseToValidator(
-    validator: GetValidatorResponse,
+    validator: InjectiveExplorerRpc.GetValidatorResponse,
   ): ExplorerValidator {
     const data = validator.data!
 
@@ -133,7 +123,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static streamTxResponseToTxs(
-    response: StreamTxsResponse,
+    response: InjectiveExplorerRpc.StreamTxsResponse,
   ): IndexerStreamTransaction {
     return {
       id: response.id,
@@ -163,7 +153,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcTransactionToBankMsgSendTransaction(
-    tx: TxData,
+    tx: InjectiveExplorerRpc.GetTxByTxHashResponse,
   ): BankMsgSendTransaction {
     const data = tx.data!
     const [message] = JSON.parse(
@@ -181,7 +171,9 @@ export class IndexerGrpcExplorerTransformer {
     }
   }
 
-  static grpcTransactionToTransaction(tx: TxData): Transaction {
+  static grpcTransactionToTransaction(
+    tx: InjectiveExplorerRpc.GetTxByTxHashResponse,
+  ): Transaction {
     const data = tx.data!
 
     return {
@@ -212,14 +204,16 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcTransactionsToTransactions(
-    txs: Array<TxData>,
+    txs: Array<InjectiveExplorerRpc.GetTxByTxHashResponse>,
   ): Array<Transaction> {
     return txs.map((tx) =>
       IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(tx),
     )
   }
 
-  static grpcTransactionToTransactionFromDetail(tx: TxDetailData): Transaction {
+  static grpcTransactionToTransactionFromDetail(
+    tx: InjectiveExplorerRpc.TxDetailData,
+  ): Transaction {
     const messages = JSON.parse(Buffer.from(tx.messages).toString('utf8'))
 
     return {
@@ -250,14 +244,14 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcTransactionsToTransactionsFromDetail(
-    txs: TxDetailData[],
+    txs: InjectiveExplorerRpc.TxDetailData[],
   ): Array<Transaction> {
     return txs.map(
       IndexerGrpcExplorerTransformer.grpcTransactionToTransactionFromDetail,
     )
   }
 
-  static grpcBlockToBlock(block: BlockInfo): Block {
+  static grpcBlockToBlock(block: InjectiveExplorerRpc.BlockInfo): Block {
     return {
       height: parseInt(block.height, 10),
       proposer: block.proposer,
@@ -270,7 +264,9 @@ export class IndexerGrpcExplorerTransformer {
     }
   }
 
-  static grpcBlockToBlockWithTxs(block: BlockInfo): BlockWithTxs {
+  static grpcBlockToBlockWithTxs(
+    block: InjectiveExplorerRpc.BlockInfo,
+  ): BlockWithTxs {
     return {
       height: parseInt(block.height, 10),
       proposer: block.proposer,
@@ -283,14 +279,16 @@ export class IndexerGrpcExplorerTransformer {
     }
   }
 
-  static grpcBlocksToBlocks(blocks: Array<BlockInfo>): Array<Block> {
+  static grpcBlocksToBlocks(
+    blocks: Array<InjectiveExplorerRpc.BlockInfo>,
+  ): Array<Block> {
     return blocks.map((block) =>
       IndexerGrpcExplorerTransformer.grpcBlockToBlock(block),
     )
   }
 
   static grpcBlocksToBlocksWithTxs(
-    blocks: Array<BlockInfo>,
+    blocks: Array<InjectiveExplorerRpc.BlockInfo>,
   ): Array<BlockWithTxs> {
     return blocks.map((block) =>
       IndexerGrpcExplorerTransformer.grpcBlockToBlockWithTxs(block),

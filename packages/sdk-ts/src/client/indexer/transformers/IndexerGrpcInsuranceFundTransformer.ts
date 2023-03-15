@@ -5,17 +5,16 @@ import {
   Redemption,
   RedemptionStatus,
 } from '../types/insurance-funds'
-import {
-  FundsResponse,
-  RedemptionsResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_insurance_rpc'
-import { OracleType } from '../../chain'
+import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
+import { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcInsuranceFundTransformer {
-  static insuranceFundsResponseToInsuranceFunds(response: FundsResponse) {
+  static insuranceFundsResponseToInsuranceFunds(
+    response: InjectiveInsuranceRpc.FundsResponse,
+  ) {
     const insuranceFunds = response.funds
 
     return IndexerGrpcInsuranceFundTransformer.grpcInsuranceFundsToInsuranceFunds(
@@ -23,7 +22,9 @@ export class IndexerGrpcInsuranceFundTransformer {
     )
   }
 
-  static redemptionsResponseToRedemptions(response: RedemptionsResponse) {
+  static redemptionsResponseToRedemptions(
+    response: InjectiveInsuranceRpc.RedemptionsResponse,
+  ) {
     const redemptions = response.redemptionSchedules
 
     return IndexerGrpcInsuranceFundTransformer.grpcRedemptionsToRedemptions(
@@ -53,7 +54,9 @@ export class IndexerGrpcInsuranceFundTransformer {
       marketTicker: grpcInsuranceFund.marketTicker,
       oracleBase: grpcInsuranceFund.oracleBase,
       oracleQuote: grpcInsuranceFund.oracleQuote,
-      oracleType: parseInt(grpcInsuranceFund.oracleType) as OracleType,
+      oracleType: parseInt(
+        grpcInsuranceFund.oracleType,
+      ) as InjectiveOracleV1Beta1Oracle.OracleType,
       expiry: parseInt(grpcInsuranceFund.expiry, 10),
     }
   }

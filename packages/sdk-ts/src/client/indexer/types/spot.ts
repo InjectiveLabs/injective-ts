@@ -1,10 +1,4 @@
 import {
-  SpotTrade as GrpcSpotTrade,
-  SpotMarketInfo as GrpcSpotMarketInfo,
-  SpotLimitOrder as GrpcSpotLimitOrder,
-  SpotOrderHistory as GrpcSpotOrderHistory,
-} from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
-import {
   TradeDirection,
   TradeExecutionType,
   TradeExecutionSide,
@@ -12,6 +6,7 @@ import {
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { PriceLevel } from './exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
+import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 export enum SpotOrderSide {
   Unspecified = 'unspecified',
@@ -113,9 +108,7 @@ export interface BatchSpotOrderCancelParams {
   marketId: string
 }
 
-export {
-  GrpcSpotMarketInfo,
-  GrpcSpotLimitOrder,
-  GrpcSpotOrderHistory,
-  GrpcSpotTrade,
-}
+export type GrpcSpotTrade = InjectiveSpotExchangeRpc.SpotTrade
+export type GrpcSpotMarketInfo = InjectiveSpotExchangeRpc.SpotMarketInfo
+export type GrpcSpotLimitOrder = InjectiveSpotExchangeRpc.SpotLimitOrder
+export type GrpcSpotOrderHistory = InjectiveSpotExchangeRpc.SpotOrderHistory

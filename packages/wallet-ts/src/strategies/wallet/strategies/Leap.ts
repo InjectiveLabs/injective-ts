@@ -12,12 +12,12 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
+  TxRaw,
   TxResponse,
   createTxRawFromSigResponse,
   createCosmosSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { LeapWallet } from '../../../utils/wallets/leap'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'

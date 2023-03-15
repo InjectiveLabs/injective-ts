@@ -13,14 +13,14 @@ describe('IndexerGrpcExplorerApi', () => {
   let validator: Partial<ExplorerValidator>
 
   beforeAll(async () => {
-    return new Promise(async (resolve) => {
+    return new Promise<void>(async (resolve) => {
       const validators = await new IndexerRestExplorerApi(
         `${endpoints.indexer}/api/explorer/v1`,
       ).fetchValidators()
 
       validator = validators[0]
 
-      resolve(Promise.resolve)
+      return resolve()
     })
   })
 

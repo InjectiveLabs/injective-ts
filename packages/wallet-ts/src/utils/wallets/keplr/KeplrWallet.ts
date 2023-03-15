@@ -8,7 +8,6 @@ import type {
 } from '@keplr-wallet/types'
 import type { EncodeObject, OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
-import { TxRaw } from '@injectivelabs/core-proto-ts/cosmos/tx/v1beta1/tx'
 import { SigningStargateClient, StdFee } from '@cosmjs/stargate'
 import {
   ChainId,
@@ -25,6 +24,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as KeplrWindow
 
@@ -152,14 +152,14 @@ export class KeplrWallet {
    * @param txRaw - raw transaction to broadcast
    * @returns tx hash
    */
-  public async broadcastTx(txRaw: TxRaw): Promise<string> {
+  public async broadcastTx(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<string> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
 
     try {
       const result = await keplr.sendTx(
         chainId,
-        TxRaw.encode(txRaw).finish(),
+        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
         BroadcastMode.Sync,
       )
 
@@ -190,14 +190,16 @@ export class KeplrWallet {
    * @param txRaw - raw transaction to broadcast
    * @returns tx hash
    */
-  public async broadcastTxBlock(txRaw: TxRaw): Promise<string> {
+  public async broadcastTxBlock(
+    txRaw: CosmosTxV1Beta1Tx.TxRaw,
+  ): Promise<string> {
     const { chainId } = this
     const keplr = await this.getKeplrWallet()
 
     try {
       const result = await keplr.sendTx(
         chainId,
-        TxRaw.encode(txRaw).finish(),
+        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
         BroadcastMode.Block,
       )
 

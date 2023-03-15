@@ -1,13 +1,8 @@
 import { GrpcCoin, Pagination } from '../../../types/index'
 import { Coin } from '@injectivelabs/ts-types'
-import {
-  QueryAllBalancesResponse,
-  QueryBalanceResponse,
-  QueryTotalSupplyResponse,
-  QueryParamsResponse as QueryBankParamsResponse,
-} from '@injectivelabs/core-proto-ts/cosmos/bank/v1beta1/query'
 import { BankModuleParams, TotalSupply } from '../types'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
+import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
@@ -25,7 +20,7 @@ export class ChainGrpcBankTransformer {
   }
 
   static moduleParamsResponseToModuleParams(
-    response: QueryBankParamsResponse,
+    response: CosmosBankV1Beta1Query.QueryParamsResponse,
   ): BankModuleParams {
     const params = response.params!
 
@@ -35,7 +30,9 @@ export class ChainGrpcBankTransformer {
     }
   }
 
-  static totalSupplyResponseToTotalSupply(response: QueryTotalSupplyResponse): {
+  static totalSupplyResponseToTotalSupply(
+    response: CosmosBankV1Beta1Query.QueryTotalSupplyResponse,
+  ): {
     supply: TotalSupply
     pagination: Pagination
   } {
@@ -48,11 +45,15 @@ export class ChainGrpcBankTransformer {
     }
   }
 
-  static balanceResponseToBalance(response: QueryBalanceResponse): Coin {
+  static balanceResponseToBalance(
+    response: CosmosBankV1Beta1Query.QueryBalanceResponse,
+  ): Coin {
     return ChainGrpcBankTransformer.grpcCoinToCoin(response.balance!)
   }
 
-  static balancesResponseToBalances(response: QueryAllBalancesResponse): {
+  static balancesResponseToBalances(
+    response: CosmosBankV1Beta1Query.QueryAllBalancesResponse,
+  ): {
     balances: Coin[]
     pagination: Pagination
   } {

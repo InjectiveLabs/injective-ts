@@ -1,15 +1,5 @@
 import { BigNumberInWei } from '@injectivelabs/utils'
 import {
-  QueryDelegatorDelegationsResponse,
-  QueryDelegatorUnbondingDelegationsResponse,
-  QueryRedelegationsResponse,
-  QueryValidatorsResponse,
-  QueryDelegationResponse,
-  QueryValidatorResponse,
-  QueryParamsResponse as QueryStakingParamsResponse,
-  QueryPoolResponse,
-} from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/query'
-import {
   GrpcValidator,
   GrpcValidatorCommission,
   GrpcValidatorDescription,
@@ -26,13 +16,14 @@ import {
 import { cosmosSdkDecToBigNumber, DUST_AMOUNT } from '../../../utils'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { Pagination } from '../../../types/index'
+import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcStakingTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryStakingParamsResponse,
+    response: CosmosStakingV1Beta1Query.QueryParamsResponse,
   ): StakingModuleParams {
     const params = response.params!
 
@@ -46,14 +37,16 @@ export class ChainGrpcStakingTransformer {
   }
 
   static validatorResponseToValidator(
-    response: QueryValidatorResponse,
+    response: CosmosStakingV1Beta1Query.QueryValidatorResponse,
   ): Validator {
     return ChainGrpcStakingTransformer.grpcValidatorToValidator(
       response.validator!,
     )
   }
 
-  static validatorsResponseToValidators(response: QueryValidatorsResponse): {
+  static validatorsResponseToValidators(
+    response: CosmosStakingV1Beta1Query.QueryValidatorsResponse,
+  ): {
     validators: Validator[]
     pagination: Pagination
   } {
@@ -68,7 +61,7 @@ export class ChainGrpcStakingTransformer {
   }
 
   static delegationResponseToDelegation(
-    response: QueryDelegationResponse,
+    response: CosmosStakingV1Beta1Query.QueryDelegationResponse,
   ): Delegation {
     const grpcDelegation = response.delegationResponse!
     const delegation = grpcDelegation.delegation
@@ -90,7 +83,7 @@ export class ChainGrpcStakingTransformer {
   }
 
   static delegationsResponseToDelegations(
-    response: QueryDelegatorDelegationsResponse,
+    response: CosmosStakingV1Beta1Query.QueryDelegatorDelegationsResponse,
   ): { delegations: Delegation[]; pagination: Pagination } {
     const grpcDelegations = response.delegationResponses
 
@@ -124,7 +117,7 @@ export class ChainGrpcStakingTransformer {
   }
 
   static unBondingDelegationsResponseToUnBondingDelegations(
-    response: QueryDelegatorUnbondingDelegationsResponse,
+    response: CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsResponse,
   ): {
     unbondingDelegations: UnBondingDelegation[]
     pagination: Pagination
@@ -161,7 +154,7 @@ export class ChainGrpcStakingTransformer {
   }
 
   static reDelegationsResponseToReDelegations(
-    response: QueryRedelegationsResponse,
+    response: CosmosStakingV1Beta1Query.QueryRedelegationsResponse,
   ): { redelegations: ReDelegation[]; pagination: Pagination } {
     const grpcReDelegations = response.redelegationResponses
 
@@ -232,7 +225,9 @@ export class ChainGrpcStakingTransformer {
     }
   }
 
-  static poolResponseToPool(response: QueryPoolResponse): Pool {
+  static poolResponseToPool(
+    response: CosmosStakingV1Beta1Query.QueryPoolResponse,
+  ): Pool {
     const pool = response.pool
 
     if (!pool) {

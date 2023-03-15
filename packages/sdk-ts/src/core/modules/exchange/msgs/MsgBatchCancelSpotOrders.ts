@@ -1,10 +1,9 @@
-import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
-import {
-  MsgBatchCancelSpotOrders as BaseMsgBatchCancelSpotOrders,
-  OrderData,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
+import {
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgBatchCancelSpotOrders {
   export interface Params {
@@ -13,11 +12,11 @@ export declare namespace MsgBatchCancelSpotOrders {
       marketId: string
       subaccountId: string
       orderHash: string
-      orderMask?: OrderMask
+      orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
     }[]
   }
 
-  export type Proto = BaseMsgBatchCancelSpotOrders
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgBatchCancelSpotOrders
 }
 
 /**
@@ -37,22 +36,24 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     const { params } = this
 
     const orderDataList = params.orders.map((order) => {
-      const orderData = OrderData.create()
+      const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
       orderData.marketId = order.marketId
       orderData.orderHash = order.orderHash
       orderData.subaccountId = order.subaccountId
 
       // TODO: Send order.orderMask instead when chain handles order mask properly.
-      orderData.orderMask = OrderMask.ANY
+      orderData.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
 
       return orderData
     })
 
-    const message = BaseMsgBatchCancelSpotOrders.create()
+    const message = InjectiveExchangeV1Beta1Tx.MsgBatchCancelSpotOrders.create()
     message.sender = params.injectiveAddress
     message.data = orderDataList.map((o) => o)
 
-    return BaseMsgBatchCancelSpotOrders.fromPartial(message)
+    return InjectiveExchangeV1Beta1Tx.MsgBatchCancelSpotOrders.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -72,7 +73,8 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
 
     return {
       type: 'exchange/MsgBatchCancelSpotOrders',
-      value: message as unknown as SnakeCaseKeys<BaseMsgBatchCancelSpotOrders>,
+      value:
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgBatchCancelSpotOrders>,
     }
   }
 
@@ -96,6 +98,8 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgBatchCancelSpotOrders.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgBatchCancelSpotOrders.encode(
+      this.toProto(),
+    ).finish()
   }
 }

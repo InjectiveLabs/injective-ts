@@ -1,13 +1,13 @@
-import { MsgWithdrawValidatorCommission as BaseMsgWithdrawValidatorCommission } from '@injectivelabs/core-proto-ts/cosmos/distribution/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import { CosmosDistributionV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgWithdrawValidatorCommission {
   export interface Params {
     validatorAddress: string
   }
 
-  export type Proto = BaseMsgWithdrawValidatorCommission
+  export type Proto = CosmosDistributionV1Beta1Tx.MsgWithdrawValidatorCommission
 }
 
 /**
@@ -26,7 +26,8 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgWithdrawValidatorCommission.create()
+    const message =
+      CosmosDistributionV1Beta1Tx.MsgWithdrawValidatorCommission.create()
     message.validatorAddress = params.validatorAddress
 
     return message
@@ -73,6 +74,8 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgWithdrawValidatorCommission.encode(this.toProto()).finish()
+    return CosmosDistributionV1Beta1Tx.MsgWithdrawValidatorCommission.encode(
+      this.toProto(),
+    ).finish()
   }
 }

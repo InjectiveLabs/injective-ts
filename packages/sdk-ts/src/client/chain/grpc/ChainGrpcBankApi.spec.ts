@@ -1,8 +1,8 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcBankApi } from './ChainGrpcBankApi'
 import { mockFactory } from '@injectivelabs/test-utils'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { ChainGrpcBankTransformer } from '../transformers'
+import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
@@ -36,7 +36,9 @@ describe('ChainGrpcBankApi', () => {
       })
 
       expect(response).toBeDefined()
-      expect(response).toEqual(expect.objectContaining<Coin>(response))
+      expect(response).toEqual(
+        expect.objectContaining<CosmosBaseV1Beta1Coin.Coin>(response),
+      )
     } catch (e) {
       console.error(
         'ChainGrpcBankApi.fetchModuleState => ' + (e as any).message,

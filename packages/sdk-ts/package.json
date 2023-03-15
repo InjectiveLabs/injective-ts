@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ts",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
-  "version": "1.0.471",
+  "version": "1.0.497-alpha.0",
   "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
@@ -14,12 +14,6 @@
   ],
   "_moduleAliases": {
     "~sdk-ts": "dist"
-  },
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js"
-    }
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
@@ -44,20 +38,20 @@
     "@ethersproject/bytes": "^5.7.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@improbable-eng/grpc-web-react-native-transport": "^0.15.0",
-    "@injectivelabs/core-proto-ts": "^0.0.3",
-    "@injectivelabs/indexer-proto-ts": "^0.0.2",
-    "@injectivelabs/exceptions": "^1.0.59",
-    "@injectivelabs/networks": "^1.0.96",
-    "@injectivelabs/ninja-api": "^1.0.11",
-    "@injectivelabs/token-metadata": "^1.0.185",
-    "@injectivelabs/ts-types": "^1.0.30",
-    "@injectivelabs/utils": "^1.0.84",
+    "@injectivelabs/core-proto-ts": "^0.0.11",
+    "@injectivelabs/exceptions": "^1.0.66-alpha.0",
+    "@injectivelabs/indexer-proto-ts": "^0.0.9",
+    "@injectivelabs/networks": "^1.0.104-alpha.0",
+    "@injectivelabs/ninja-api": "1.0.12",
+    "@injectivelabs/token-metadata": "^1.0.190-alpha.0",
+    "@injectivelabs/ts-types": "^1.0.30-alpha.0",
+    "@injectivelabs/utils": "^1.0.94-alpha.0",
     "@metamask/eth-sig-util": "^4.0.0",
     "@types/google-protobuf": "^3.15.5",
     "axios": "^0.27.2",
     "bech32": "^2.0.0",
     "bip39": "^3.0.4",
-    "eth-crypto": "^2.3.0",
+    "eth-crypto": "^2.6.0",
     "ethereumjs-abi": "^0.6.8",
     "ethereumjs-util": "^7.1.4",
     "ethers": "^5.6.4",

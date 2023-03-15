@@ -1,7 +1,9 @@
-import { MsgUndelegate as BaseMsgUndelegate } from '@injectivelabs/core-proto-ts/cosmos/staking/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  CosmosStakingV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgUndelegate {
   export interface Params {
@@ -13,7 +15,7 @@ export declare namespace MsgUndelegate {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgUndelegate
+  export type Proto = CosmosStakingV1Beta1Tx.MsgUndelegate
 }
 
 /**
@@ -30,16 +32,16 @@ export default class MsgUndelegate extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const coinAmount = Coin.create()
+    const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
     coinAmount.denom = params.amount.denom
     coinAmount.amount = params.amount.amount
 
-    const message = BaseMsgUndelegate.create()
+    const message = CosmosStakingV1Beta1Tx.MsgUndelegate.create()
     message.amount = coinAmount
     message.delegatorAddress = params.injectiveAddress
     message.validatorAddress = params.validatorAddress
 
-    return BaseMsgUndelegate.fromPartial(message)
+    return CosmosStakingV1Beta1Tx.MsgUndelegate.fromPartial(message)
   }
 
   public toData() {
@@ -83,6 +85,6 @@ export default class MsgUndelegate extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgUndelegate.encode(this.toProto()).finish()
+    return CosmosStakingV1Beta1Tx.MsgUndelegate.encode(this.toProto()).finish()
   }
 }

@@ -1,14 +1,3 @@
-import {
-  QueryClientImpl,
-  QueryAllContractStateRequest,
-  QueryContractInfoRequest,
-  QueryContractHistoryRequest,
-  QuerySmartContractStateRequest,
-  QueryCodeRequest,
-  QueryCodesRequest,
-  QueryContractsByCodeRequest,
-  QueryRawContractStateRequest,
-} from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/query'
 import { ChainGrpcWasmTransformer } from '../transformers'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
@@ -18,7 +7,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -26,10 +15,12 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcWasmApi {
   protected module: string = ChainModule.Wasm
 
-  protected client: QueryClientImpl
+  protected client: CosmwasmWasmV1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new CosmwasmWasmV1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchContractAccountsBalance({
@@ -39,7 +30,7 @@ export class ChainGrpcWasmApi {
     contractAddress: string
     pagination?: PaginationOption
   }) {
-    const request = QueryAllContractStateRequest.create()
+    const request = CosmwasmWasmV1Query.QueryAllContractStateRequest.create()
 
     request.address = contractAddress
 
@@ -56,7 +47,7 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -71,7 +62,7 @@ export class ChainGrpcWasmApi {
   }
 
   async fetchContractInfo(contractAddress: string) {
-    const request = QueryContractInfoRequest.create()
+    const request = CosmwasmWasmV1Query.QueryContractInfoRequest.create()
 
     request.address = contractAddress
 
@@ -88,7 +79,7 @@ export class ChainGrpcWasmApi {
         contractInfo,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -103,7 +94,7 @@ export class ChainGrpcWasmApi {
   }
 
   async fetchContractHistory(contractAddress: string) {
-    const request = QueryContractHistoryRequest.create()
+    const request = CosmwasmWasmV1Query.QueryContractHistoryRequest.create()
 
     request.address = contractAddress
 
@@ -114,7 +105,7 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -129,7 +120,7 @@ export class ChainGrpcWasmApi {
   }
 
   async fetchSmartContractState(contractAddress: string, query?: string) {
-    const request = QuerySmartContractStateRequest.create()
+    const request = CosmwasmWasmV1Query.QuerySmartContractStateRequest.create()
 
     request.address = contractAddress
 
@@ -142,7 +133,7 @@ export class ChainGrpcWasmApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -157,7 +148,7 @@ export class ChainGrpcWasmApi {
   }
 
   async fetchRawContractState(contractAddress: string, query?: string) {
-    const request = QueryRawContractStateRequest.create()
+    const request = CosmwasmWasmV1Query.QueryRawContractStateRequest.create()
 
     request.address = contractAddress
 
@@ -170,7 +161,7 @@ export class ChainGrpcWasmApi {
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -185,7 +176,7 @@ export class ChainGrpcWasmApi {
   }
 
   async fetchContractCodes(pagination?: PaginationOption) {
-    const request = QueryCodesRequest.create()
+    const request = CosmwasmWasmV1Query.QueryCodesRequest.create()
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
@@ -200,7 +191,7 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -215,7 +206,7 @@ export class ChainGrpcWasmApi {
   }
 
   async fetchContractCode(codeId: number) {
-    const request = QueryCodeRequest.create()
+    const request = CosmwasmWasmV1Query.QueryCodeRequest.create()
 
     request.codeId = codeId.toString()
 
@@ -226,7 +217,7 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -244,7 +235,7 @@ export class ChainGrpcWasmApi {
     codeId: number,
     pagination?: PaginationOption,
   ) {
-    const request = QueryContractsByCodeRequest.create()
+    const request = CosmwasmWasmV1Query.QueryContractsByCodeRequest.create()
 
     request.codeId = codeId.toString()
 
@@ -261,7 +252,7 @@ export class ChainGrpcWasmApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

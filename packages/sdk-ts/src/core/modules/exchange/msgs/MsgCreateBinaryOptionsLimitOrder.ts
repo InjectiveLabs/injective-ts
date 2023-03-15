@@ -1,19 +1,17 @@
-import { MsgCreateBinaryOptionsLimitOrder as BaseMsgCreateBinaryOptionsLimitOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
-import {
-  OrderInfo,
-  OrderType,
-  DerivativeOrder,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateBinaryOptionsLimitOrder {
   export interface Params {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderType
+    orderType: InjectiveExchangeV1Beta1Exchange.OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
@@ -21,17 +19,19 @@ export declare namespace MsgCreateBinaryOptionsLimitOrder {
     quantity: string
   }
 
-  export type Proto = BaseMsgCreateBinaryOptionsLimitOrder
+  export type Proto =
+    InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsLimitOrder
 }
 
 const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
-  const orderInfo = OrderInfo.create()
+  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
   orderInfo.subaccountId = params.subaccountId
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
   orderInfo.quantity = params.quantity
 
-  const derivativeOrder = DerivativeOrder.create()
+  const derivativeOrder =
+    InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
   derivativeOrder.marketId = params.marketId
   derivativeOrder.orderType = params.orderType
   derivativeOrder.orderInfo = orderInfo
@@ -39,11 +39,14 @@ const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
 
   derivativeOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = BaseMsgCreateBinaryOptionsLimitOrder.create()
+  const message =
+    InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsLimitOrder.create()
   message.sender = params.injectiveAddress
   message.order = derivativeOrder
 
-  return BaseMsgCreateBinaryOptionsLimitOrder.fromPartial(message)
+  return InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsLimitOrder.fromPartial(
+    message,
+  )
 }
 
 /**
@@ -93,7 +96,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
     return {
       type: 'exchange/MsgCreateBinaryOptionsLimitOrder',
       value:
-        message as unknown as SnakeCaseKeys<BaseMsgCreateBinaryOptionsLimitOrder>,
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsLimitOrder>,
     }
   }
 
@@ -117,6 +120,8 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgCreateBinaryOptionsLimitOrder.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsLimitOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

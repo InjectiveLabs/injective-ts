@@ -1,9 +1,3 @@
-import {
-  QueryClientImpl,
-  QueryInflationRequest,
-  QueryParamsRequest as QueryMintParamsRequest,
-  QueryAnnualProvisionsRequest,
-} from '@injectivelabs/core-proto-ts/cosmos/mint/v1beta1/query'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils'
 import { BigNumberInBase } from '@injectivelabs/utils'
@@ -13,7 +7,7 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -21,14 +15,16 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcMintApi {
   protected module: string = ChainModule.Mint
 
-  protected client: QueryClientImpl
+  protected client: CosmosMintV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new CosmosMintV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchModuleParams() {
-    const request = QueryMintParamsRequest.create()
+    const request = CosmosMintV1Beta1Query.QueryParamsRequest.create()
 
     try {
       const response = await this.client.Params(request)
@@ -37,7 +33,7 @@ export class ChainGrpcMintApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -52,7 +48,7 @@ export class ChainGrpcMintApi {
   }
 
   async fetchInflation() {
-    const request = QueryInflationRequest.create()
+    const request = CosmosMintV1Beta1Query.QueryInflationRequest.create()
 
     try {
       const response = await this.client.Inflation(request)
@@ -63,7 +59,7 @@ export class ChainGrpcMintApi {
         ).toFixed(),
       }
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -78,7 +74,7 @@ export class ChainGrpcMintApi {
   }
 
   async fetchAnnualProvisions() {
-    const request = QueryAnnualProvisionsRequest.create()
+    const request = CosmosMintV1Beta1Query.QueryAnnualProvisionsRequest.create()
 
     try {
       const response = await this.client.AnnualProvisions(request)
@@ -89,7 +85,7 @@ export class ChainGrpcMintApi {
         ).toFixed(),
       }
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

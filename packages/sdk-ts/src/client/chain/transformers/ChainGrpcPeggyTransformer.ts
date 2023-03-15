@@ -1,12 +1,12 @@
-import { QueryParamsResponse } from '@injectivelabs/core-proto-ts/injective/peggy/v1/query'
 import { PeggyModuleParams } from '../types/peggy'
+import { InjectivePeggyV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcPeggyTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryParamsResponse,
+    response: InjectivePeggyV1Beta1Query.QueryParamsResponse,
   ): PeggyModuleParams {
     const params = response.params!
     const valsetReward = params.valsetReward

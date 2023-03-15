@@ -13,6 +13,7 @@ import { getChannelIdFromPath } from './ibc'
 
 export const getCw20Meta = (token: Token): Cw20TokenMeta | undefined => {
   const denomToLowerCase = token.denom.toLowerCase()
+
   return token.cw20s?.find((meta) =>
     denomToLowerCase.includes(meta.address.toLowerCase()),
   )

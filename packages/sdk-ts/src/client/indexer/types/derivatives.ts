@@ -1,24 +1,11 @@
 import {
-  FundingRate as GrpcFundingRate,
-  PositionDelta as GrpcPositionDelta,
-  FundingPayment as GrpcFundingPayment,
-  DerivativeTrade as GrpcDerivativeTrade,
-  DerivativePosition as GrpcDerivativePosition,
-  PerpetualMarketInfo as GrpcPerpetualMarketInfo,
-  DerivativeMarketInfo as GrpcDerivativeMarketInfo,
-  DerivativeLimitOrder as GrpcDerivativeLimitOrder,
-  PerpetualMarketFunding as GrpcPerpetualMarketFunding,
-  ExpiryFuturesMarketInfo as GrpcExpiryFuturesMarketInfo,
-  BinaryOptionsMarketInfo as GrpcBinaryOptionsMarketInfo,
-  DerivativeOrderHistory as GrpcDerivativeOrderHistory,
-} from '@injectivelabs/indexer-proto-ts/injective_derivative_exchange_rpc'
-import {
   TradeExecutionType,
   TradeDirection,
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
+import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 export enum DerivativeOrderSide {
   Unspecified = 'unspecified',
@@ -233,17 +220,23 @@ export interface FundingRate {
   timestamp: number
 }
 
-export {
-  GrpcDerivativePosition,
-  GrpcFundingPayment,
-  GrpcFundingRate,
-  GrpcDerivativeMarketInfo,
-  GrpcDerivativeLimitOrder,
-  GrpcPerpetualMarketInfo,
-  GrpcPerpetualMarketFunding,
-  GrpcExpiryFuturesMarketInfo,
-  GrpcDerivativeTrade,
-  GrpcPositionDelta,
-  GrpcBinaryOptionsMarketInfo,
-  GrpcDerivativeOrderHistory,
-}
+export type GrpcFundingRate = InjectiveDerivativeExchangeRpc.FundingRate
+export type GrpcPositionDelta = InjectiveDerivativeExchangeRpc.PositionDelta
+export type GrpcFundingPayment = InjectiveDerivativeExchangeRpc.FundingPayment
+export type GrpcDerivativeTrade = InjectiveDerivativeExchangeRpc.DerivativeTrade
+export type GrpcDerivativePosition =
+  InjectiveDerivativeExchangeRpc.DerivativePosition
+export type GrpcPerpetualMarketInfo =
+  InjectiveDerivativeExchangeRpc.PerpetualMarketInfo
+export type GrpcDerivativeMarketInfo =
+  InjectiveDerivativeExchangeRpc.DerivativeMarketInfo
+export type GrpcDerivativeLimitOrder =
+  InjectiveDerivativeExchangeRpc.DerivativeLimitOrder
+export type GrpcPerpetualMarketFunding =
+  InjectiveDerivativeExchangeRpc.PerpetualMarketFunding
+export type GrpcExpiryFuturesMarketInfo =
+  InjectiveDerivativeExchangeRpc.ExpiryFuturesMarketInfo
+export type GrpcBinaryOptionsMarketInfo =
+  InjectiveDerivativeExchangeRpc.BinaryOptionsMarketInfo
+export type GrpcDerivativeOrderHistory =
+  InjectiveDerivativeExchangeRpc.DerivativeOrderHistory

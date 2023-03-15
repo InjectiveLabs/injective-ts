@@ -1,15 +1,10 @@
-import {
-  QueryClientImpl,
-  QueryModuleStateRequest,
-  QueryWasmxParamsRequest,
-} from '@injectivelabs/core-proto-ts/injective/wasmx/v1/query'
 import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { InjectiveWasmxV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -17,21 +12,23 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcWasmXApi {
   protected module: string = ChainModule.WasmX
 
-  protected client: QueryClientImpl
+  protected client: InjectiveWasmxV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new InjectiveWasmxV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchModuleParams() {
-    const request = QueryWasmxParamsRequest.create()
+    const request = InjectiveWasmxV1Beta1Query.QueryWasmxParamsRequest.create()
 
     try {
       const response = await this.client.WasmxParams(request)
 
       return response
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveWasmxV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -45,14 +42,14 @@ export class ChainGrpcWasmXApi {
   }
 
   async fetchModuleState() {
-    const request = QueryModuleStateRequest.create()
+    const request = InjectiveWasmxV1Beta1Query.QueryModuleStateRequest.create()
 
     try {
       const response = await this.client.WasmxModuleState(request)
 
       return response.state /* TODO */
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveWasmxV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

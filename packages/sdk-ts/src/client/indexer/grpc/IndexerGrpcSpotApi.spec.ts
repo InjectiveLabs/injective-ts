@@ -14,11 +14,11 @@ describe('IndexerGrpcSpotApi', () => {
   let markets: SpotMarket[]
 
   beforeAll(async () => {
-    return new Promise(async (resolve) => {
+    return new Promise<void>(async (resolve) => {
       markets = await indexerGrpcSpotApi.fetchMarkets()
       market = markets[0]
 
-      resolve(Promise.resolve)
+      return resolve()
     })
   })
 

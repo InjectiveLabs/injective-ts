@@ -1,19 +1,15 @@
-import {
-  QueryParamsResponse,
-  QueryDelegationRewardsResponse,
-  QueryDelegationTotalRewardsResponse,
-} from '@injectivelabs/core-proto-ts/cosmos/distribution/v1beta1/query'
 import { cosmosSdkDecToBigNumber } from '../../../utils'
 import { Coin } from '@injectivelabs/ts-types'
 import { DistributionModuleParams } from '../types/distribution'
 import { ValidatorRewards } from '../types/distribution'
+import { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcDistributionTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryParamsResponse,
+    response: CosmosDistributionV1Beta1Query.QueryParamsResponse,
   ): DistributionModuleParams {
     const params = response.params!
 
@@ -26,7 +22,7 @@ export class ChainGrpcDistributionTransformer {
   }
 
   static delegationRewardResponseToReward(
-    response: QueryDelegationRewardsResponse,
+    response: CosmosDistributionV1Beta1Query.QueryDelegationRewardsResponse,
   ): Coin[] {
     const grpcRewards = response.rewards
 
@@ -39,7 +35,7 @@ export class ChainGrpcDistributionTransformer {
   }
 
   static totalDelegationRewardResponseToTotalReward(
-    response: QueryDelegationTotalRewardsResponse,
+    response: CosmosDistributionV1Beta1Query.QueryDelegationTotalRewardsResponse,
   ): ValidatorRewards[] {
     const grpcRewards = response.rewards
 

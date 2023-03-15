@@ -1,15 +1,7 @@
 import { Token } from '@injectivelabs/token-metadata'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import {
-  IBCTransferTx as GrpcIBCTransferTx,
-  PeggyDepositTx as GrpcPeggyDepositTx,
-  PeggyWithdrawalTx as GrpcPeggyWithdrawalTx,
-  GasFee as GrpcGasFee,
-  ValidatorUptime as GrpcValidatorUptime,
-  ValidatorDescription as GrpcIndexerValidatorDescription,
-  SlashingEvent as GrpcValidatorSlashingEvent,
-} from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
 import { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface IBCTransferTx {
   sender: string
@@ -276,10 +268,11 @@ export interface WasmCode {
   proposalId?: number
 }
 
-export { GrpcIBCTransferTx, GrpcPeggyDepositTx, GrpcPeggyWithdrawalTx }
-export {
-  GrpcGasFee,
-  GrpcValidatorSlashingEvent,
-  GrpcIndexerValidatorDescription,
-  GrpcValidatorUptime,
-}
+export type GrpcIBCTransferTx = InjectiveExplorerRpc.IBCTransferTx
+export type GrpcPeggyDepositTx = InjectiveExplorerRpc.PeggyDepositTx
+export type GrpcPeggyWithdrawalTx = InjectiveExplorerRpc.PeggyWithdrawalTx
+export type GrpcGasFee = InjectiveExplorerRpc.GasFee
+export type GrpcValidatorUptime = InjectiveExplorerRpc.ValidatorUptime
+export type GrpcIndexerValidatorDescription =
+  InjectiveExplorerRpc.ValidatorDescription
+export type GrpcValidatorSlashingEvent = InjectiveExplorerRpc.SlashingEvent

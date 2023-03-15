@@ -1,10 +1,3 @@
-import {
-  QueryClientImpl,
-  QueryAllBalancesRequest,
-  QueryBalanceRequest,
-  QueryTotalSupplyRequest,
-  QueryParamsRequest as QueryBankParamsRequest,
-} from '@injectivelabs/core-proto-ts/cosmos/bank/v1beta1/query'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
@@ -14,7 +7,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { ChainModule } from '../types'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -22,14 +15,16 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcBankApi {
   protected module: string = ChainModule.Bank
 
-  protected client: QueryClientImpl
+  protected client: CosmosBankV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new CosmosBankV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchModuleParams() {
-    const request = QueryBankParamsRequest.create()
+    const request = CosmosBankV1Beta1Query.QueryParamsRequest.create()
 
     try {
       const response = await this.client.Params(request)
@@ -38,7 +33,7 @@ export class ChainGrpcBankApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -59,7 +54,7 @@ export class ChainGrpcBankApi {
     accountAddress: string
     denom: string
   }) {
-    const request = QueryBalanceRequest.create()
+    const request = CosmosBankV1Beta1Query.QueryBalanceRequest.create()
 
     request.address = accountAddress
     request.denom = denom
@@ -69,7 +64,7 @@ export class ChainGrpcBankApi {
 
       return ChainGrpcBankTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -84,7 +79,7 @@ export class ChainGrpcBankApi {
   }
 
   async fetchBalances(address: string) {
-    const request = QueryAllBalancesRequest.create()
+    const request = CosmosBankV1Beta1Query.QueryAllBalancesRequest.create()
 
     request.address = address
 
@@ -93,7 +88,7 @@ export class ChainGrpcBankApi {
 
       return ChainGrpcBankTransformer.balancesResponseToBalances(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,
@@ -108,7 +103,7 @@ export class ChainGrpcBankApi {
   }
 
   async fetchTotalSupply(pagination?: PaginationOption) {
-    const request = QueryTotalSupplyRequest.create()
+    const request = CosmosBankV1Beta1Query.QueryTotalSupplyRequest.create()
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
@@ -120,7 +115,7 @@ export class ChainGrpcBankApi {
 
       return ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

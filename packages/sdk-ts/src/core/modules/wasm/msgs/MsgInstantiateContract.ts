@@ -1,8 +1,10 @@
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
-import { MsgInstantiateContract as BaseMsgInstantiateContract } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
 import { fromUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmwasmWasmV1Tx,
+  CosmosBaseV1Beta1Coin,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgInstantiateContract {
   export interface Params {
@@ -17,7 +19,7 @@ export declare namespace MsgInstantiateContract {
     }
   }
 
-  export type Proto = BaseMsgInstantiateContract
+  export type Proto = CosmwasmWasmV1Tx.MsgInstantiateContract
 }
 
 /**
@@ -36,7 +38,7 @@ export default class MsgInstantiateContract extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgInstantiateContract.create()
+    const message = CosmwasmWasmV1Tx.MsgInstantiateContract.create()
 
     message.msg = fromUtf8(JSON.stringify(params.msg))
     message.sender = params.sender
@@ -45,7 +47,7 @@ export default class MsgInstantiateContract extends MsgBase<
     message.label = params.label
 
     if (params.amount) {
-      const funds = Coin.create()
+      const funds = CosmosBaseV1Beta1Coin.Coin.create()
 
       funds.amount = params.amount.amount
       funds.denom = params.amount.denom
@@ -53,7 +55,7 @@ export default class MsgInstantiateContract extends MsgBase<
       message.funds = [funds]
     }
 
-    return BaseMsgInstantiateContract.fromPartial(message)
+    return CosmwasmWasmV1Tx.MsgInstantiateContract.fromPartial(message)
   }
 
   public toData() {
@@ -97,6 +99,8 @@ export default class MsgInstantiateContract extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgInstantiateContract.encode(this.toProto()).finish()
+    return CosmwasmWasmV1Tx.MsgInstantiateContract.encode(
+      this.toProto(),
+    ).finish()
   }
 }

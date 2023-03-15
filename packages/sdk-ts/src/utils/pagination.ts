@@ -1,13 +1,13 @@
-import { PageRequest } from '@injectivelabs/core-proto-ts/cosmos/base/query/v1beta1/pagination'
 import { ExchangePagination, PaginationOption } from '../types/pagination'
 import { Pagination, PagePagination } from '../types/pagination'
-import { PageResponse } from '@injectivelabs/core-proto-ts/cosmos/base/query/v1beta1/pagination'
-import { Paging } from '@injectivelabs/indexer-proto-ts/injective_explorer_rpc'
+import { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,
-): PageRequest | undefined => {
-  const paginationForRequest = PageRequest.create()
+): CosmosBaseQueryV1Beta1Pagination.PageRequest | undefined => {
+  const paginationForRequest =
+    CosmosBaseQueryV1Beta1Pagination.PageRequest.create()
 
   if (!pagination) {
     return
@@ -95,7 +95,7 @@ export const pageResponseToPagination = ({
 }
 
 export const grpcPaginationToPagination = (
-  pagination: PageResponse | undefined,
+  pagination: CosmosBaseQueryV1Beta1Pagination.PageResponse | undefined,
 ): Pagination => {
   return {
     total: pagination
@@ -106,7 +106,7 @@ export const grpcPaginationToPagination = (
 }
 
 export const grpcPagingToPaging = (
-  pagination: Paging | undefined,
+  pagination: InjectiveExplorerRpc.Paging | undefined,
 ): ExchangePagination => {
   if (!pagination) {
     return {

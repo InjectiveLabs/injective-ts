@@ -1,7 +1,9 @@
-import { OrderMask } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
-import { MsgCancelDerivativeOrder as BaseMsgCancelDerivativeOrder } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Exchange,
+  InjectiveExchangeV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCancelDerivativeOrder {
   export interface Params {
@@ -9,10 +11,10 @@ export declare namespace MsgCancelDerivativeOrder {
     subaccountId: string
     injectiveAddress: string
     orderHash: string
-    orderMask?: OrderMask
+    orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
   }
 
-  export type Proto = BaseMsgCancelDerivativeOrder
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCancelDerivativeOrder
 }
 
 export default class MsgCancelDerivativeOrder extends MsgBase<
@@ -28,16 +30,18 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgCancelDerivativeOrder.create()
+    const message = InjectiveExchangeV1Beta1Tx.MsgCancelDerivativeOrder.create()
     message.sender = params.injectiveAddress
     message.marketId = params.marketId
     message.orderHash = params.orderHash
     message.subaccountId = params.subaccountId
 
     // TODO: Send order.orderMask instead when chain handles order mask properly.
-    message.orderMask = OrderMask.ANY
+    message.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
 
-    return BaseMsgCancelDerivativeOrder.fromPartial(message)
+    return InjectiveExchangeV1Beta1Tx.MsgCancelDerivativeOrder.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -81,6 +85,8 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgCancelDerivativeOrder.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgCancelDerivativeOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

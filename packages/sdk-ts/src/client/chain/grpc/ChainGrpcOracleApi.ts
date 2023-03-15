@@ -1,14 +1,10 @@
-import {
-  QueryClientImpl,
-  QueryParamsRequest as QueryOracleParamsRequest,
-} from '@injectivelabs/core-proto-ts/injective/oracle/v1beta1/query'
 import { ChainModule, OracleModuleParams } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
-import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types'
+import { InjectiveOracleV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
@@ -16,21 +12,23 @@ import { GrpcWebError } from '@injectivelabs/core-proto-ts/tendermint/abci/types
 export class ChainGrpcOracleApi {
   protected module: string = ChainModule.Oracle
 
-  protected client: QueryClientImpl
+  protected client: InjectiveOracleV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
-    this.client = new QueryClientImpl(getGrpcWebImpl(endpoint))
+    this.client = new InjectiveOracleV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   async fetchModuleParams() {
-    const request = QueryOracleParamsRequest.create()
+    const request = InjectiveOracleV1Beta1Query.QueryParamsRequest.create()
 
     try {
       const response = await this.client.Params(request)
 
-      return response as OracleModuleParams
+      return response.params as OracleModuleParams
     } catch (e: unknown) {
-      if (e instanceof GrpcWebError) {
+      if (e instanceof InjectiveOracleV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           contextModule: this.module,

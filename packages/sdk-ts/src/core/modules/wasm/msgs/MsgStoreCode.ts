@@ -1,7 +1,7 @@
-import { MsgStoreCode as BaseMsgStoreCode } from '@injectivelabs/core-proto-ts/cosmwasm/wasm/v1/tx'
 import { fromUtf8 } from '../../../../utils'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgStoreCode {
   export interface Params {
@@ -9,7 +9,7 @@ export declare namespace MsgStoreCode {
     wasmBytes: Uint8Array | string
   }
 
-  export type Proto = BaseMsgStoreCode
+  export type Proto = CosmwasmWasmV1Tx.MsgStoreCode
 }
 
 /**
@@ -26,7 +26,7 @@ export default class MsgStoreCode extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgStoreCode.create()
+    const message = CosmwasmWasmV1Tx.MsgStoreCode.create()
 
     message.sender = params.sender
     message.wasmByteCode =
@@ -34,7 +34,7 @@ export default class MsgStoreCode extends MsgBase<
         ? fromUtf8(params.wasmBytes)
         : params.wasmBytes
 
-    return BaseMsgStoreCode.fromPartial(message)
+    return CosmwasmWasmV1Tx.MsgStoreCode.fromPartial(message)
   }
 
   public toData() {
@@ -78,6 +78,6 @@ export default class MsgStoreCode extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgStoreCode.encode(this.toProto()).finish()
+    return CosmwasmWasmV1Tx.MsgStoreCode.encode(this.toProto()).finish()
   }
 }

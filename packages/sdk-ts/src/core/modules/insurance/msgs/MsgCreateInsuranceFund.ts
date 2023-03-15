@@ -1,8 +1,10 @@
-import { MsgCreateInsuranceFund as BaseMsgCreateInsuranceFund } from '@injectivelabs/core-proto-ts/injective/insurance/v1beta1/tx'
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
-import { OracleType } from '@injectivelabs/core-proto-ts/injective/oracle/v1beta1/oracle'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveInsuranceV1Beta1Tx,
+  InjectiveOracleV1Beta1Oracle,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateInsuranceFund {
   export interface Params {
@@ -11,7 +13,7 @@ export declare namespace MsgCreateInsuranceFund {
       quoteDenom: string
       oracleBase: string
       oracleQuote: string
-      oracleType: OracleType
+      oracleType: InjectiveOracleV1Beta1Oracle.OracleType
       expiry?: number
     }
     deposit: {
@@ -21,7 +23,7 @@ export declare namespace MsgCreateInsuranceFund {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgCreateInsuranceFund
+  export type Proto = InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund
 }
 
 /**
@@ -40,11 +42,11 @@ export default class MsgCreateInsuranceFund extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = Coin.create()
+    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
     amountCoin.amount = params.deposit.amount
     amountCoin.denom = params.deposit.denom
 
-    const message = BaseMsgCreateInsuranceFund.create()
+    const message = InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.create()
     message.ticker = params.fund.ticker
     message.quoteDenom = params.fund.quoteDenom
     message.oracleBase = params.fund.oracleBase
@@ -54,7 +56,9 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     message.initialDeposit = amountCoin
     message.expiry = (params.fund.expiry ? params.fund.expiry : -1).toString()
 
-    return BaseMsgCreateInsuranceFund.fromPartial(message)
+    return InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -98,6 +102,8 @@ export default class MsgCreateInsuranceFund extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgCreateInsuranceFund.encode(this.toProto()).finish()
+    return InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.encode(
+      this.toProto(),
+    ).finish()
   }
 }

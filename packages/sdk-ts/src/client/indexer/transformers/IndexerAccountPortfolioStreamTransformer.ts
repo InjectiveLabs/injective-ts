@@ -1,11 +1,11 @@
-import { StreamAccountPortfolioResponse } from '@injectivelabs/indexer-proto-ts/injective_portfolio_rpc'
+import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerAccountPortfolioStreamTransformer {
   static accountPortfolioStreamCallback = (
-    response: StreamAccountPortfolioResponse,
+    response: InjectivePortfolioRpc.StreamAccountPortfolioResponse,
   ) => {
     return {
       type: response.type,

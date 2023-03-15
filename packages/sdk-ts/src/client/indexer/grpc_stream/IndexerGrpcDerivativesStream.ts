@@ -1,23 +1,4 @@
 import {
-  StreamOrdersRequest,
-  StreamTradesRequest,
-  StreamMarketRequest,
-  StreamOrdersResponse,
-  StreamTradesResponse,
-  StreamMarketResponse,
-  StreamPositionsRequest,
-  StreamPositionsResponse,
-  StreamOrderbookRequest,
-  StreamOrderbookResponse,
-  StreamOrderbookV2Request,
-  StreamOrderbookV2Response,
-  StreamOrdersHistoryRequest,
-  StreamOrdersHistoryResponse,
-  StreamOrderbookUpdateRequest,
-  StreamOrderbookUpdateResponse,
-  InjectiveDerivativeExchangeRPCClientImpl,
-} from '@injectivelabs/indexer-proto-ts/injective_derivative_exchange_rpc'
-import {
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
@@ -28,6 +9,7 @@ import { DerivativeOrderSide, DerivativeOrderState } from '../types/derivatives'
 import { IndexerDerivativeStreamTransformer } from '../transformers'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
+import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 export type DerivativeOrderbookStreamCallback = (
   response: ReturnType<
@@ -71,18 +53,21 @@ export type PositionsStreamCallback = (
   >,
 ) => void
 
-export type MarketStreamCallback = (response: StreamMarketResponse) => void
+export type MarketStreamCallback = (
+  response: InjectiveDerivativeExchangeRpc.StreamMarketResponse,
+) => void
 
 /**
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcDerivativesStream {
-  protected client: InjectiveDerivativeExchangeRPCClientImpl
+  protected client: InjectiveDerivativeExchangeRpc.InjectiveDerivativeExchangeRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveDerivativeExchangeRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
-    )
+    this.client =
+      new InjectiveDerivativeExchangeRpc.InjectiveDerivativeExchangeRPCClientImpl(
+        getGrpcIndexerWebImpl(endpoint),
+      )
   }
 
   streamDerivativeOrderbook({
@@ -96,12 +81,13 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamOrderbookRequest.create()
+    const request =
+      InjectiveDerivativeExchangeRpc.StreamOrderbookRequest.create()
 
     request.marketIds = marketIds
 
     const subscription = this.client.StreamOrderbook(request).subscribe({
-      next(response: StreamOrderbookResponse) {
+      next(response: InjectiveDerivativeExchangeRpc.StreamOrderbookResponse) {
         callback(
           IndexerDerivativeStreamTransformer.orderbookStreamCallback(response),
         )
@@ -136,7 +122,7 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamOrdersRequest.create()
+    const request = InjectiveDerivativeExchangeRpc.StreamOrdersRequest.create()
 
     if (marketId) {
       request.marketId = marketId
@@ -151,7 +137,7 @@ export class IndexerGrpcDerivativesStream {
     }
 
     const subscription = this.client.StreamOrders(request).subscribe({
-      next(response: StreamOrdersResponse) {
+      next(response: InjectiveDerivativeExchangeRpc.StreamOrdersResponse) {
         callback(
           IndexerDerivativeStreamTransformer.ordersStreamCallback(response),
         )
@@ -192,7 +178,8 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamOrdersHistoryRequest.create()
+    const request =
+      InjectiveDerivativeExchangeRpc.StreamOrdersHistoryRequest.create()
 
     if (subaccountId) {
       request.subaccountId = subaccountId
@@ -219,7 +206,9 @@ export class IndexerGrpcDerivativesStream {
     }
 
     const subscription = this.client.StreamOrdersHistory(request).subscribe({
-      next(response: StreamOrdersHistoryResponse) {
+      next(
+        response: InjectiveDerivativeExchangeRpc.StreamOrdersHistoryResponse,
+      ) {
         callback(
           IndexerDerivativeStreamTransformer.orderHistoryStreamCallback(
             response,
@@ -264,7 +253,7 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamTradesRequest.create()
+    const request = InjectiveDerivativeExchangeRpc.StreamTradesRequest.create()
 
     if (marketIds) {
       request.marketIds = marketIds
@@ -301,7 +290,7 @@ export class IndexerGrpcDerivativesStream {
     }
 
     const subscription = this.client.StreamTrades(request).subscribe({
-      next(response: StreamTradesResponse) {
+      next(response: InjectiveDerivativeExchangeRpc.StreamTradesResponse) {
         callback(
           IndexerDerivativeStreamTransformer.tradesStreamCallback(response),
         )
@@ -334,7 +323,8 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamPositionsRequest.create()
+    const request =
+      InjectiveDerivativeExchangeRpc.StreamPositionsRequest.create()
 
     if (marketId) {
       request.marketId = marketId
@@ -345,7 +335,7 @@ export class IndexerGrpcDerivativesStream {
     }
 
     const subscription = this.client.StreamPositions(request).subscribe({
-      next(response: StreamPositionsResponse) {
+      next(response: InjectiveDerivativeExchangeRpc.StreamPositionsResponse) {
         callback(
           IndexerDerivativeStreamTransformer.positionStreamCallback(response),
         )
@@ -376,14 +366,14 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamMarketRequest.create()
+    const request = InjectiveDerivativeExchangeRpc.StreamMarketRequest.create()
 
     if (marketIds && marketIds.length) {
       request.marketIds = marketIds
     }
 
     const subscription = this.client.StreamMarket(request).subscribe({
-      next(response: StreamMarketResponse) {
+      next(response: InjectiveDerivativeExchangeRpc.StreamMarketResponse) {
         callback(response)
       },
       error(err) {
@@ -412,11 +402,12 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamOrderbookV2Request.create()
+    const request =
+      InjectiveDerivativeExchangeRpc.StreamOrderbookV2Request.create()
     request.marketIds = marketIds
 
     const subscription = this.client.StreamOrderbookV2(request).subscribe({
-      next(response: StreamOrderbookV2Response) {
+      next(response: InjectiveDerivativeExchangeRpc.StreamOrderbookV2Response) {
         callback(
           IndexerDerivativeStreamTransformer.orderbookV2StreamCallback(
             response,
@@ -449,12 +440,15 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }) {
-    const request = StreamOrderbookUpdateRequest.create()
+    const request =
+      InjectiveDerivativeExchangeRpc.StreamOrderbookUpdateRequest.create()
 
     request.marketIds = marketIds
 
     const subscription = this.client.StreamOrderbookUpdate(request).subscribe({
-      next(response: StreamOrderbookUpdateResponse) {
+      next(
+        response: InjectiveDerivativeExchangeRpc.StreamOrderbookUpdateResponse,
+      ) {
         callback(
           IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback(
             response,

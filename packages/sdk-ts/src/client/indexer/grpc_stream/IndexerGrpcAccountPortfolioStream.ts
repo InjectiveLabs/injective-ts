@@ -1,12 +1,8 @@
 import { StreamStatusResponse } from '../types'
 import { IndexerAccountPortfolioStreamTransformer } from '../transformers'
-import {
-  InjectivePortfolioRPCClientImpl,
-  StreamAccountPortfolioRequest,
-  StreamAccountPortfolioResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_portfolio_rpc'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
+import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 
 export type AccountPortfolioStreamCallback = (
   response: ReturnType<
@@ -18,10 +14,10 @@ export type AccountPortfolioStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcAccountPortfolioStream {
-  protected client: InjectivePortfolioRPCClientImpl
+  protected client: InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectivePortfolioRPCClientImpl(
+    this.client = new InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl(
       getGrpcIndexerWebImpl(endpoint),
     )
   }
@@ -41,7 +37,7 @@ export class IndexerGrpcAccountPortfolioStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamAccountPortfolioRequest.create()
+    const request = InjectivePortfolioRpc.StreamAccountPortfolioRequest.create()
     request.accountAddress = accountAddress
 
     if (subaccountId) {
@@ -53,7 +49,7 @@ export class IndexerGrpcAccountPortfolioStream {
     }
 
     const subscription = this.client.StreamAccountPortfolio(request).subscribe({
-      next(response: StreamAccountPortfolioResponse) {
+      next(response: InjectivePortfolioRpc.StreamAccountPortfolioResponse) {
         callback(
           IndexerAccountPortfolioStreamTransformer.accountPortfolioStreamCallback(
             response,

@@ -1,7 +1,7 @@
-import { MsgPrivilegedExecuteContract as BaseMsgPrivilegedExecuteContract } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/tx'
 import { ExecPrivilegedArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgPrivilegedExecuteContract {
   export interface Params {
@@ -11,7 +11,7 @@ export declare namespace MsgPrivilegedExecuteContract {
     data: ExecPrivilegedArgs
   }
 
-  export type Proto = BaseMsgPrivilegedExecuteContract
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract
 }
 
 /**
@@ -30,14 +30,17 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
   public toProto(): MsgPrivilegedExecuteContract.Proto {
     const { params } = this
 
-    const message = BaseMsgPrivilegedExecuteContract.create()
+    const message =
+      InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract.create()
 
     message.sender = params.sender
     message.funds = params.funds
     message.contractAddress = params.contractAddress
     message.data = params.data.toExecJSON()
 
-    return BaseMsgPrivilegedExecuteContract.fromPartial(message)
+    return InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -58,7 +61,7 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
     return {
       type: 'exchange/MsgPrivilegedExecuteContract',
       value:
-        message as unknown as SnakeCaseKeys<BaseMsgPrivilegedExecuteContract>,
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract>,
     }
   }
 
@@ -82,6 +85,8 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgPrivilegedExecuteContract.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract.encode(
+      this.toProto(),
+    ).finish()
   }
 }

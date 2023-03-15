@@ -1,14 +1,8 @@
-import {
-  InjectiveOracleRPCClientImpl,
-  StreamPricesRequest,
-  StreamPricesResponse,
-  StreamPricesByMarketsRequest,
-  StreamPricesByMarketsResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_oracle_rpc'
 import { StreamStatusResponse } from '../types'
 import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
+import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 
 export type OraclePriceStreamCallback = (
   response: ReturnType<
@@ -26,10 +20,10 @@ export type OraclePricesByMarketsStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcOracleStream {
-  protected client: InjectiveOracleRPCClientImpl
+  protected client: InjectiveOracleRpc.InjectiveOracleRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveOracleRPCClientImpl(
+    this.client = new InjectiveOracleRpc.InjectiveOracleRPCClientImpl(
       getGrpcIndexerWebImpl(endpoint),
     )
   }
@@ -49,7 +43,7 @@ export class IndexerGrpcOracleStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamPricesRequest.create()
+    const request = InjectiveOracleRpc.StreamPricesRequest.create()
 
     if (baseSymbol) {
       request.baseSymbol = baseSymbol
@@ -62,7 +56,7 @@ export class IndexerGrpcOracleStream {
     request.oracleType = oracleType
 
     const subscription = this.client.StreamPrices(request).subscribe({
-      next(response: StreamPricesResponse) {
+      next(response: InjectiveOracleRpc.StreamPricesResponse) {
         callback(IndexerOracleStreamTransformer.pricesStreamCallback(response))
       },
       error(err) {
@@ -91,14 +85,14 @@ export class IndexerGrpcOracleStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = StreamPricesByMarketsRequest.create()
+    const request = InjectiveOracleRpc.StreamPricesByMarketsRequest.create()
 
     if (marketIds) {
       request.marketIds = marketIds
     }
 
     const subscription = this.client.StreamPricesByMarkets(request).subscribe({
-      next(response: StreamPricesByMarketsResponse) {
+      next(response: InjectiveOracleRpc.StreamPricesByMarketsResponse) {
         callback(
           IndexerOracleStreamTransformer.pricesByMarketsCallback(response),
         )

@@ -8,7 +8,6 @@ import {
   getIbcTokenMetaFromDenomTrace,
 } from '@injectivelabs/token-metadata'
 import { GeneralException, ErrorType } from '@injectivelabs/exceptions'
-import { DenomTrace } from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/transfer'
 import { fromUtf8 } from '../../../utils/utf8'
 import { sha256 } from '../../../utils/crypto'
 import {
@@ -17,6 +16,7 @@ import {
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import { ChainGrpcIbcApi } from '../../../client/chain/grpc/ChainGrpcIbcApi'
+import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 
 /**
  * This client can be used to fetch token
@@ -30,7 +30,10 @@ import { ChainGrpcIbcApi } from '../../../client/chain/grpc/ChainGrpcIbcApi'
  * @category Utility Classes
  */
 export class DenomClient {
-  protected cachedDenomTraces: Record<string, DenomTrace> = {}
+  protected cachedDenomTraces: Record<
+    string,
+    IbcApplicationsTransferV1Transfer.DenomTrace
+  > = {}
 
   protected tokenFactory: TokenFactory
 
@@ -170,7 +173,8 @@ export class DenomClient {
     this.cachedDenomTraces = denomHashes.reduce(
       (denomTraces, denomTrace) => ({
         ...denomTraces,
-        [denomTrace.hash.toUpperCase()]: denomTrace.trace as DenomTrace,
+        [denomTrace.hash.toUpperCase()]:
+          denomTrace.trace as IbcApplicationsTransferV1Transfer.DenomTrace,
       }),
       {},
     )

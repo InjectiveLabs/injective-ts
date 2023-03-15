@@ -1,7 +1,7 @@
-import { OrderType } from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/exchange'
 import { Network } from '@injectivelabs/networks'
 import { Address } from '../../../../accounts/Address'
 import { OrderHashManager } from './OrderHashManager'
+import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
 
 const address = Address.fromBech32('inj1cml96vmptgw99syqrrz8az79xer2pcgp0a885r')
 const orderHashManager = new OrderHashManager({
@@ -20,7 +20,7 @@ const spotOrder = {
   },
   marketId:
     '0x6afc76766d011522634481b5987c405ce34357c504537eb5feabb3d32d34d15b',
-  orderType: OrderType.BUY.toString(),
+  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY.toString(),
 }
 const derivativeOrder = {
   orderInfo: {
@@ -32,7 +32,7 @@ const derivativeOrder = {
   margin: '1',
   marketId:
     '0x6afc76766d011522634481b5987c405ce34357c504537eb5feabb3d32d34d15b',
-  orderType: OrderType.BUY.toString(),
+  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY.toString(),
 }
 
 describe.skip('OrderHashManager', () => {

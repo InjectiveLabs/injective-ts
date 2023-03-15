@@ -275,4 +275,24 @@ export const validatorAddressToPathMap = {
     'injvaloper1tly62qxj2t8wz2zw4d7p37jcysvgasqa0zjtlk.webp',
   injvaloper1tly62qxj2t8wz2zw4d7p37jcysvgasqa0zjtlk:
     'injvaloper1tly62qxj2t8wz2zw4d7p37jcysvgasqa0zjtlk.webp',
+  injvalcons1p44qwx5ru3sfga2txh37gt3h0qxps47ntnrsuf:
+    'injvaloper1n2q9ke92yjyc3uf6084d9jssuu9urj608cc2hp.webp',
+  injvaloper1n2q9ke92yjyc3uf6084d9jssuu9urj608cc2hp:
+    'injvaloper1n2q9ke92yjyc3uf6084d9jssuu9urj608cc2hp.webp',
+  injvalcons145v7xgzhh9e3k49ty2vfa548mtmjnfwps9er4r:
+    'injvaloper1hz3svgdhmv67lsqlduu0tcnd3f75c0xrzcsgtk.webp',
+  injvaloper1hz3svgdhmv67lsqlduu0tcnd3f75c0xrzcsgtk:
+    'injvaloper1hz3svgdhmv67lsqlduu0tcnd3f75c0xrzcsgtk.webp',
+  injvalcons1qjjrwp3vgz0628kf3fxavjfef0gchkkh76f804:
+    'injvaloper1e84fr6cxgcflv3fc9ey6n8425au7zx6wsztrle.webp',
+  injvaloper1e84fr6cxgcflv3fc9ey6n8425au7zx6wsztrle:
+    'injvaloper1e84fr6cxgcflv3fc9ey6n8425au7zx6wsztrle.webp',
+  injvalcons1hcwkpfhct63wsukxq3hafwu4kuzuandfh7z4ym:
+    'injvaloper18lftv08vsplm39ht2xysp7wsauch03nwfqckxh.webp',
+  injvaloper18lftv08vsplm39ht2xysp7wsauch03nwfqckxh:
+    'injvaloper18lftv08vsplm39ht2xysp7wsauch03nwfqckxh.webp',
+  injvalcons1598m7akaux9qz63k2akhaxzpfdu0n6cr49agyw:
+    'injvaloper1vqz7mgm47xhx25xu5g9qagnz48naks6pk6fmg2.webp',
+  injvaloper1vqz7mgm47xhx25xu5g9qagnz48naks6pk6fmg2:
+    'injvaloper1vqz7mgm47xhx25xu5g9qagnz48naks6pk6fmg2.webp'
 } as Record<string, string>

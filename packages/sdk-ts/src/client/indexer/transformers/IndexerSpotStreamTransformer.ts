@@ -1,19 +1,14 @@
-import {
-  StreamTradesResponse,
-  StreamOrdersResponse,
-  StreamOrderbookResponse,
-  StreamOrderbookV2Response,
-  StreamOrdersHistoryResponse,
-  StreamOrderbookUpdateResponse,
-} from '@injectivelabs/indexer-proto-ts/injective_spot_exchange_rpc'
 import { StreamOperation } from '../../../types'
 import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer'
+import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerSpotStreamTransformer {
-  static orderbookStreamCallback = (response: StreamOrderbookResponse) => {
+  static orderbookStreamCallback = (
+    response: InjectiveSpotExchangeRpc.StreamOrderbookResponse,
+  ) => {
     const orderbook = response.orderbook
 
     return {
@@ -29,7 +24,9 @@ export class IndexerSpotStreamTransformer {
     }
   }
 
-  static tradesStreamCallback = (response: StreamTradesResponse) => {
+  static tradesStreamCallback = (
+    response: InjectiveSpotExchangeRpc.StreamTradesResponse,
+  ) => {
     const trade = response.trade
 
     return {
@@ -41,7 +38,9 @@ export class IndexerSpotStreamTransformer {
     }
   }
 
-  static ordersStreamCallback = (response: StreamOrdersResponse) => {
+  static ordersStreamCallback = (
+    response: InjectiveSpotExchangeRpc.StreamOrdersResponse,
+  ) => {
     const order = response.order
 
     return {
@@ -54,7 +53,7 @@ export class IndexerSpotStreamTransformer {
   }
 
   static orderHistoryStreamCallback = (
-    response: StreamOrdersHistoryResponse,
+    response: InjectiveSpotExchangeRpc.StreamOrdersHistoryResponse,
   ) => {
     const order = response.order
 
@@ -67,7 +66,9 @@ export class IndexerSpotStreamTransformer {
     }
   }
 
-  static orderbookV2StreamCallback = (response: StreamOrderbookV2Response) => {
+  static orderbookV2StreamCallback = (
+    response: InjectiveSpotExchangeRpc.StreamOrderbookV2Response,
+  ) => {
     const orderbook = response.orderbook
 
     return {
@@ -85,7 +86,7 @@ export class IndexerSpotStreamTransformer {
   }
 
   static orderbookUpdateStreamCallback = (
-    response: StreamOrderbookUpdateResponse,
+    response: InjectiveSpotExchangeRpc.StreamOrderbookUpdateResponse,
   ) => {
     const orderbook = response.orderbookLevelUpdates
 

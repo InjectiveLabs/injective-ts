@@ -1,8 +1,10 @@
-import { Coin } from '@injectivelabs/core-proto-ts/cosmos/base/v1beta1/coin'
-import { MsgTransfer as BaseMsgTransfer } from '@injectivelabs/core-proto-ts/ibc/applications/transfer/v1/tx'
-import { Height } from '@injectivelabs/core-proto-ts/ibc/core/client/v1/client'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  IbcApplicationsTransferV1Tx,
+  IbcCoreClientV1Client,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgTransfer {
   export interface Params {
@@ -22,7 +24,7 @@ export declare namespace MsgTransfer {
     }
   }
 
-  export type Proto = BaseMsgTransfer
+  export type Proto = IbcApplicationsTransferV1Tx.MsgTransfer
 }
 
 /**
@@ -39,11 +41,11 @@ export default class MsgTransfer extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const token = Coin.create()
+    const token = CosmosBaseV1Beta1Coin.Coin.create()
     token.denom = params.amount.denom
     token.amount = params.amount.amount
 
-    const message = BaseMsgTransfer.create()
+    const message = IbcApplicationsTransferV1Tx.MsgTransfer.create()
     message.receiver = params.receiver
     message.sender = params.sender
     message.sourceChannel = params.channelId
@@ -51,7 +53,7 @@ export default class MsgTransfer extends MsgBase<
     message.token = token
 
     if (params.height) {
-      const timeoutHeight = Height.create()
+      const timeoutHeight = IbcCoreClientV1Client.Height.create()
       timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
       timeoutHeight.revisionNumber = params.height.revisionNumber.toString()
 
@@ -64,7 +66,7 @@ export default class MsgTransfer extends MsgBase<
 
     message.memo = params.memo || ''
 
-    return BaseMsgTransfer.fromJSON(message)
+    return IbcApplicationsTransferV1Tx.MsgTransfer.fromJSON(message)
   }
 
   public toData() {
@@ -87,7 +89,7 @@ export default class MsgTransfer extends MsgBase<
       value: {
         ...message,
         memo: message.memo || '',
-      } as unknown as SnakeCaseKeys<BaseMsgTransfer>,
+      } as unknown as SnakeCaseKeys<IbcApplicationsTransferV1Tx.MsgTransfer>,
     }
   }
 
@@ -111,6 +113,8 @@ export default class MsgTransfer extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgTransfer.encode(this.toProto()).finish()
+    return IbcApplicationsTransferV1Tx.MsgTransfer.encode(
+      this.toProto(),
+    ).finish()
   }
 }

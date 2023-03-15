@@ -1,3 +1,4 @@
+import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   FeeDiscountSchedule,
   FeeDiscountTierInfo,
@@ -19,20 +20,13 @@ import {
   ChainPosition,
   ChainDerivativePosition,
 } from '../types/exchange'
-import {
-  QueryFeeDiscountAccountInfoResponse,
-  QueryTradeRewardCampaignResponse,
-  QueryFeeDiscountScheduleResponse,
-  QueryExchangeParamsResponse,
-  QueryPositionsResponse,
-} from '@injectivelabs/core-proto-ts/injective/exchange/v1beta1/query'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcExchangeTransformer {
   static moduleParamsResponseToParams(
-    response: QueryExchangeParamsResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryExchangeParamsResponse,
   ): ExchangeModuleParams {
     const params = response.params!
     const spotMarketInstantListingFee = params.spotMarketInstantListingFee
@@ -74,7 +68,7 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static feeDiscountScheduleResponseToFeeDiscountSchedule(
-    response: QueryFeeDiscountScheduleResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryFeeDiscountScheduleResponse,
   ): FeeDiscountSchedule {
     const schedule = response.feeDiscountSchedule!
 
@@ -92,7 +86,7 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static tradingRewardsCampaignResponseToTradingRewardsCampaign(
-    response: QueryTradeRewardCampaignResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse,
   ): TradeRewardCampaign {
     return {
       tradingRewardCampaignInfo:
@@ -113,7 +107,7 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
-    response: QueryFeeDiscountAccountInfoResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoResponse,
   ): FeeDiscountAccountInfo {
     return {
       tierLevel: parseInt(response.tierLevel, 10),
@@ -222,7 +216,7 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static positionsResponseToPositions(
-    response: QueryPositionsResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryPositionsResponse,
   ): ChainDerivativePosition[] {
     return response.state.map((position) => {
       return {

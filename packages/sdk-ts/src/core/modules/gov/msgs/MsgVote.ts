@@ -1,16 +1,18 @@
-import { MsgVote as BaseMsgVote } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/tx'
-import { VoteOption } from '@injectivelabs/core-proto-ts/cosmos/gov/v1beta1/gov'
+import {
+  CosmosGovV1Beta1Tx,
+  CosmosGovV1Beta1Gov,
+} from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgVote {
   export interface Params {
     proposalId: number
-    vote: VoteOption
+    vote: CosmosGovV1Beta1Gov.VoteOption
     voter: string
   }
 
-  export type Proto = BaseMsgVote
+  export type Proto = CosmosGovV1Beta1Tx.MsgVote
 }
 
 /**
@@ -24,7 +26,7 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
   public toProto() {
     const { params } = this
 
-    const message = BaseMsgVote.create()
+    const message = CosmosGovV1Beta1Tx.MsgVote.create()
     message.option = params.vote
     message.proposalId = params.proposalId.toString()
     message.voter = params.voter
@@ -73,6 +75,6 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
   }
 
   public toBinary(): Uint8Array {
-    return BaseMsgVote.encode(this.toProto()).finish()
+    return CosmosGovV1Beta1Tx.MsgVote.encode(this.toProto()).finish()
   }
 }
