@@ -3,24 +3,25 @@ import {
   Token,
   TokenMeta,
   TokenType,
-  NativeToken,
-  IbcTokenMeta,
-  Cw20TokenMeta,
+  Cw20TokenSingle,
   Cw20TokenSource,
+  Cw20TokenMeta,
+  Cw20TokenMetaWithSource,
+  IbcTokenMeta,
 } from './types'
 import { ibcBaseDenoms } from './tokens/tokens'
 import { getChannelIdFromPath } from './ibc'
 
-export const getCw20Meta = (token: Token): Cw20TokenMeta | undefined => {
+const getCw20Meta = (
+  token: Token,
+): Cw20TokenMetaWithSource | Cw20TokenMeta | undefined => {
   const denomToLowerCase = token.denom.toLowerCase()
-
-  return token.cw20s?.find((meta) =>
+  const cw20MetaFromCw20s = token.cw20s?.find((meta) =>
     denomToLowerCase.includes(meta.address.toLowerCase()),
   )
-}
 
-export const getIbcMeta = (token: Token): IbcTokenMeta | undefined =>
-  token.ibcs?.find((meta) => token.denom.includes(meta.hash))
+  return cw20MetaFromCw20s || token.cw20 || undefined
+}
 
 export const getIbcTokenMetaFromDenomTrace = ({
   hash,
@@ -39,7 +40,6 @@ export const getIbcTokenMetaFromDenomTrace = ({
   decimals,
   channelId: getChannelIdFromPath(path),
   isNative: !baseDenom.startsWith('ibc'),
-  tokenType: TokenType.Ibc,
 })
 
 export const getTokenTypeFromDenom = (denom: string) => {
@@ -71,12 +71,8 @@ export const getTokenTypeFromDenom = (denom: string) => {
 }
 
 export const getTokenSymbol = (token: Token) => {
-  if (token.denom === INJ_DENOM) {
-    return token.symbol
-  }
-
-  if (token.denom.startsWith('inj') || token.denom.startsWith('factory/')) {
-    const meta = getCw20Meta(token) as Cw20TokenMeta
+  if (token.denom.startsWith('factory/')) {
+    const meta = getCw20Meta(token) as Cw20TokenMetaWithSource
 
     return meta?.symbol || token.symbol
   }
@@ -86,9 +82,7 @@ export const getTokenSymbol = (token: Token) => {
   }
 
   if (token.denom.startsWith('ibc')) {
-    const meta = getIbcMeta(token)
-
-    return meta?.symbol || token.symbol
+    return token.ibc?.symbol || token.symbol
   }
 
   return token.symbol
@@ -99,16 +93,18 @@ export const getTokenDecimals = (token: Token) => {
     return token.decimals
   }
 
-  if (token.denom.startsWith('inj') || token.denom.startsWith('factory/')) {
+  if (token.denom.startsWith('inj')) {
+    return token.cw20?.decimals || token.decimals
+  }
+
+  if (token.denom.startsWith('factory/')) {
     const meta = getCw20Meta(token)
 
     return meta?.decimals || token.decimals
   }
 
   if (token.denom.startsWith('ibc')) {
-    const meta = getIbcMeta(token)
-
-    return meta?.decimals || token.decimals
+    return token.ibc?.decimals || token.decimals
   }
 
   if (token.denom.startsWith('peggy')) {
@@ -127,10 +123,14 @@ export const getTokenAddress = (token: Token) => {
     return token.erc20?.address
   }
 
-  if (token.denom.startsWith('inj') || token.denom.startsWith('factory/')) {
-    const meta = getCw20Meta(token)
+  if (token.denom.startsWith('inj')) {
+    return token.cw20?.address
+  }
 
-    return meta?.address || ''
+  if (token.denom.startsWith('factory/')) {
+    const [, , address] = token.denom
+
+    return address
   }
 
   if (token.denom.startsWith('peggy')) {
@@ -145,38 +145,83 @@ export const getTokenAddress = (token: Token) => {
 }
 
 /**
- * This function can be used to get the cw20 token meta filter by source
+ * This function can be used to get a token with
+ * cw20 information when we have multiple
+ * cw20 variations of the same token based on the address/denom
  */
-export const getCw20TokenBySource = (
-  token: Token,
-  source: Cw20TokenSource,
-): NativeToken | undefined => {
-  const { denom } = token
+export const getCw20TokenSingle = (
+  token: Token | TokenMeta,
+  source?: Cw20TokenSource,
+): Cw20TokenSingle | undefined => {
+  const { cw20, cw20s } = token
+  const denom = (token as Token).denom || ''
 
-  const cw20TokenBySource = token.cw20s?.find((meta) => meta.source === source)
-
-  if (!cw20TokenBySource) {
+  if (!cw20 && !cw20s) {
     return
   }
 
-  return {
-    ...token,
-    ...cw20TokenBySource,
-    denom,
+  if (cw20) {
+    return {
+      ...token,
+      cw20,
+      denom: cw20.address,
+      tokenType: getTokenTypeFromDenom(cw20.address),
+    }
   }
+
+  if (cw20s) {
+    if (denom) {
+      const [cw20Address] = denom.startsWith('inj')
+        ? [denom]
+        : denom.split('/').reverse()
+
+      const cw20 = cw20s.find(
+        (cw20) => cw20.address.toLowerCase() === cw20Address.toLowerCase(),
+      )
+
+      return cw20
+        ? {
+            ...token,
+            cw20,
+            denom: cw20.address,
+            symbol: cw20.symbol,
+            tokenType: getTokenTypeFromDenom(cw20.address),
+          }
+        : undefined
+    }
+
+    if (source) {
+      const cw20 = cw20s.find(
+        (cw20) => cw20.source.toLowerCase() === source.toLowerCase(),
+      )
+
+      return cw20
+        ? {
+            ...token,
+            cw20,
+            denom: cw20.address,
+            symbol: cw20.symbol,
+            tokenType: getTokenTypeFromDenom(cw20.address),
+          }
+        : undefined
+    }
+  }
+
+  return undefined
 }
 
-export const getTokenFromMeta = (meta: TokenMeta, denom: string): Token => {
-  const isBaseIbcDenom = ibcBaseDenoms.includes(denom)
+export const getTokenFromMeta = (meta: TokenMeta, denom?: string): Token => {
+  const isBaseIbcDenom =
+    ibcBaseDenoms.includes(denom || '') || meta.ibc?.baseDenom === denom
 
   const tokenType = isBaseIbcDenom
     ? TokenType.Ibc
-    : getTokenTypeFromDenom(denom)
+    : getTokenTypeFromDenom(denom || '')
 
   const token = {
     ...meta,
-    denom,
     tokenType,
+    denom: denom || '',
   }
 
   const tokenWithDecimalsAndSymbol = {
@@ -191,22 +236,30 @@ export const getTokenFromMeta = (meta: TokenMeta, denom: string): Token => {
   }
 
   /**
-   * Filter the correct cw20 meta based on denom
+   * If there are multiple cw20 variations
+   * of the token we find the one that corresponds
+   * to the contract address and set it on the cw20 field
+   *
+   * If there is only one cw20 version then we use that one
+   * as the default version
    */
-  const cw20meta = getCw20Meta({
-    ...meta,
-    denom,
-    cw20s: meta.cw20s,
-    tokenType: TokenType.Cw20,
-  })
-
-  if (cw20meta) {
+  if (tokenWithDecimalsAndSymbol.cw20) {
     return {
-      ...meta,
-      ...cw20meta,
-      denom,
-      cw20s: meta.cw20s,
-      tokenType: TokenType.Cw20,
+      ...tokenWithDecimalsAndSymbol,
+      cw20s: [],
+    }
+  }
+
+  if (tokenWithDecimalsAndSymbol.cw20s) {
+    return {
+      ...tokenWithDecimalsAndSymbol,
+      ...getCw20TokenSingle({
+        ...tokenWithDecimalsAndSymbol,
+        denom,
+        tokenType: TokenType.Cw20,
+      }),
+      tokenType,
+      denom: tokenWithDecimalsAndSymbol.denom,
     }
   }
 

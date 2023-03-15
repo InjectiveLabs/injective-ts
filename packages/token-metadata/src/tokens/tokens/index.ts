@@ -5,15 +5,9 @@ import tokens from './tokens'
 
 const allTokens = { ...tokens, ...cw20Tokens }
 
-export const ibcBaseDenoms = Object.values(allTokens)
-  .filter((token) => token.ibcs)
-  .reduce(
-    (baseDenoms, ibcTokenMeta) => [
-      ...baseDenoms,
-      ...(ibcTokenMeta.ibcs || []).map(({ baseDenom }) => baseDenom),
-    ],
-    [] as string[],
-  )
+export const ibcBaseDenoms = Object.keys(allTokens)
+  .filter((token) => allTokens[token].ibc)
+  .map((token) => allTokens[token].ibc!.baseDenom)
 
 export default allTokens as Record<string, TokenMeta>
 

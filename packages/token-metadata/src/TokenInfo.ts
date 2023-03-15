@@ -1,7 +1,7 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import { isIbcTokenCanonical } from './ibc'
-import { NativeToken, IbcToken, Token, TokenMeta, TokenType } from './types'
-import { getCw20Meta, getTokenTypeFromDenom } from './utils'
+import { IbcToken, Token, TokenMeta, TokenType } from './types'
+import { getTokenTypeFromDenom } from './utils'
 
 /**
  * Token info is a helper class which abstracts
@@ -28,12 +28,9 @@ export class TokenInfo {
 
   public meta: TokenMeta
 
-  public token: NativeToken
-
   private constructor(denom: string, meta: TokenMeta) {
     this.denom = denom
     this.meta = meta
-    this.token = { ...meta, denom, tokenType: getTokenTypeFromDenom(denom) }
   }
 
   static fromMeta(meta: TokenMeta & { denom?: string }, denom?: string) {
@@ -69,9 +66,23 @@ export class TokenInfo {
     const { meta, denom } = this
 
     if (denom.startsWith('inj') || denom.startsWith('factory/')) {
-      const cwMeta = getCw20Meta(this.token)
+      const [address] = denom.startsWith('inj')
+        ? [denom]
+        : denom.split('/').reverse()
 
-      return cwMeta ? cwMeta.symbol : meta.symbol
+      if (!meta.cw20) {
+        return meta.symbol
+      }
+
+      if (!Array.isArray(meta.cw20)) {
+        return meta.symbol
+      }
+
+      const actualMeta = meta.cw20.find(
+        (m) => m.address.toLowerCase() === address.toLowerCase(),
+      )
+
+      return actualMeta ? actualMeta.symbol : meta.symbol
     }
 
     return meta.symbol
@@ -113,9 +124,23 @@ export class TokenInfo {
       return meta.decimals
     }
 
-    const cwMeta = getCw20Meta(this.token)
+    const [address] = denom.startsWith('inj')
+      ? [denom]
+      : denom.split('/').reverse()
 
-    return cwMeta ? cwMeta.decimals : meta.decimals
+    if (!meta.cw20) {
+      return meta.decimals
+    }
+
+    if (!Array.isArray(meta.cw20)) {
+      return meta.cw20.decimals
+    }
+
+    const actualMeta = meta.cw20.find(
+      (m) => m.address.toLowerCase() === address.toLowerCase(),
+    )
+
+    return actualMeta ? actualMeta.decimals : meta.decimals
   }
 
   get erc20Decimals() {
@@ -133,9 +158,23 @@ export class TokenInfo {
     const { denom, meta } = this
 
     if (denom.startsWith('inj') || denom.startsWith('factory/')) {
-      const cwMeta = getCw20Meta(this.token)
+      const [address] = denom.startsWith('inj')
+        ? [denom]
+        : denom.split('/').reverse()
 
-      return cwMeta ? cwMeta.decimals : meta.decimals
+      if (!meta.cw20) {
+        return meta.decimals
+      }
+
+      if (!Array.isArray(meta.cw20)) {
+        return meta.cw20.decimals
+      }
+
+      const actualMeta = meta.cw20.find(
+        (m) => m.address.toLowerCase() === address.toLowerCase(),
+      )
+
+      return actualMeta ? actualMeta.decimals : meta.decimals
     }
 
     if (denom.startsWith('peggy')) {
@@ -147,11 +186,11 @@ export class TokenInfo {
     }
 
     if (denom.startsWith('ibc')) {
-      const actualMeta = meta.ibcs?.find(
-        (m) => denom.includes(m.hash) || denom.includes(m.baseDenom),
-      )
+      if (!meta.ibc) {
+        return meta.decimals
+      }
 
-      return actualMeta ? actualMeta.decimals : meta.decimals
+      return meta.ibc.decimals
     }
 
     return meta.decimals
