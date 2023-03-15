@@ -207,12 +207,15 @@ export class TxGrpcApi implements TxConcreteApi {
               })
             }
 
-            const result = await this.fetchTxPoll(
-              txResponse.getTxhash(),
-              timeout,
-            )
-
-            return resolve(result)
+            try {
+              const result = await this.fetchTxPoll(
+                txResponse.getTxhash(),
+                timeout,
+              )
+              return resolve(result)
+            } catch (error) {
+              return reject(error)
+            }
           }),
       )
     } catch (e: unknown) {
