@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/bridge-ts",
   "description": "Bridge utilities and abstractions in TypeScript to be used in Injective products",
-  "version": "1.0.402-alpha.0",
+  "version": "1.0.403-alpha.0",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
@@ -34,7 +34,7 @@
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@injectivelabs/exceptions": "^1.0.202-alpha.0",
     "@injectivelabs/networks": "^1.0.202-alpha.0",
-    "@injectivelabs/sdk-ts": "^1.0.502-alpha.0",
+    "@injectivelabs/sdk-ts": "^1.0.503-alpha.0",
     "@injectivelabs/ts-types": "^1.0.101-alpha.0",
     "@injectivelabs/utils": "^1.0.202-alpha.0",
     "@injectivelabs/wormhole-sdk": "^0.9.10",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.503-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.502-alpha.0...@injectivelabs/sdk-ts@1.0.503-alpha.0) (2023-03-16)
+
+
+### Bug Fixes
+
+* sign mode ([5597703](https://github.com/InjectiveLabs/injective-ts/commit/55977038b418fea25578a985a6cf791a5155be83))
+
+
+
+
+
 ## [1.0.502-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.501-alpha.0...@injectivelabs/sdk-ts@1.0.502-alpha.0) (2023-03-15)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
