@@ -158,7 +158,7 @@ export class LeapWallet {
 
       throw new CosmosWalletException(new Error((e as any).message), {
         context: 'broadcast-tx',
-        contextModule: 'Keplr',
+        contextModule: 'Leap',
       })
     }
   }
@@ -207,7 +207,7 @@ export class LeapWallet {
       )
     }
 
-    if (!$window.keplr) {
+    if (!$window.leap) {
       throw new CosmosWalletException(
         new Error('Please install Leap extension'),
         {

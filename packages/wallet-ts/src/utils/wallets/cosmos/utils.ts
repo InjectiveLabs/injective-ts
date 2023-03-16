@@ -1,4 +1,6 @@
 import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
+import { Cosmos } from '@cosmostation/extension-client'
+import type { Keplr } from '@keplr-wallet/types'
 import { Wallet } from '../../../types/enums'
 
 /**
@@ -25,3 +27,22 @@ export const makeTimeoutTimestampInNs = (
 
 export const isCosmosWallet = (wallet: Wallet): boolean =>
   [Wallet.Cosmostation, Wallet.Leap, Wallet.Keplr].includes(wallet)
+
+export const isCosmosWalletInstalled = (wallet: Wallet) => {
+  const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
+    leap?: Keplr
+    keplr?: Keplr
+    cosmostation?: Cosmos
+  }
+
+  switch (wallet) {
+    case Wallet.Keplr:
+      return $window.keplr !== undefined
+    case Wallet.Cosmostation:
+      return $window.cosmostation !== undefined
+    case Wallet.Leap:
+      return $window.leap !== undefined
+    default:
+      return false
+  }
+}
