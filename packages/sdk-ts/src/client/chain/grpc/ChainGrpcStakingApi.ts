@@ -85,8 +85,14 @@ export class ChainGrpcStakingApi extends BaseConsumer {
     }
   }
 
-  async fetchValidators() {
+  async fetchValidators(pagination?: PaginationOption) {
     const request = new QueryValidatorsRequest()
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.setPagination(paginationForRequest)
+    }
 
     try {
       const response = await this.request<
