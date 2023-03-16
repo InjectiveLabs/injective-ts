@@ -4,6 +4,7 @@ import {
 } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/service_pb_service'
 import {
   BroadcastTxRequest,
+  BroadcastTxResponse,
   BroadcastMode,
   SimulateRequest,
   BroadcastModeMap,
@@ -191,37 +192,31 @@ export class TxGrpcApi implements TxConcreteApi {
     broadcastTxRequest.setMode(mode)
 
     try {
-      return await new Promise(
-        (resolve: (value: TxClientBroadcastResponse) => void, reject) =>
+      const response = await new Promise(
+        (resolve: (value: BroadcastTxResponse) => void, reject) =>
           txService.broadcastTx(broadcastTxRequest, async (error, response) => {
             if (error || !response) {
               return reject(error)
             }
 
-            const txResponse = response.getTxResponse()!
-
-            if (txResponse.getCode() !== 0) {
-              reject(
-                new TransactionException(new Error(txResponse.getRawLog()), {
-                  contextCode: txResponse.getCode(),
-                  contextModule: txResponse.getCodespace(),
-                }),
-              )
-            }
-
-            try {
-              const result = await this.fetchTxPoll(
-                txResponse.getTxhash(),
-                timeout,
-              )
-
-              return resolve(result)
-            } catch (error) {
-              return reject(error)
-            }
+            return resolve(response)
           }),
       )
+
+      const txResponse = response.getTxResponse()!
+
+      if (txResponse.getCode() !== 0) {
+        throw new TransactionException(new Error(txResponse.getRawLog()), {
+          contextCode: txResponse.getCode(),
+          contextModule: txResponse.getCodespace(),
+        })
+      }
+      return await this.fetchTxPoll(txResponse.getTxhash(), timeout)
     } catch (e: unknown) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
       throw new TransactionException(new Error((e as any).message))
     }
   }
