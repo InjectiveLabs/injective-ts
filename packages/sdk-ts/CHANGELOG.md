@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.489](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.488...@injectivelabs/sdk-ts@1.0.489) (2023-03-16)
+
+
+### Bug Fixes
+
+* txGrpcApi exception handling ([a5b077a](https://github.com/InjectiveLabs/injective-ts/commit/a5b077a044fa2acf051483bded9486159be5a95b))
+
+
+
+
+
 ## [1.0.488](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.487...@injectivelabs/sdk-ts@1.0.488) (2023-03-16)
 
 
