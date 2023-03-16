@@ -200,11 +200,13 @@ export class TxGrpcApi implements TxConcreteApi {
 
             const txResponse = response.getTxResponse()!
 
-            if (txResponse.getCode() === 0) {
-              return resolve({
-                ...txResponse.toObject(),
-                txHash: txResponse.getTxhash(),
-              })
+            if (txResponse.getCode() !== 0) {
+              reject(
+                new TransactionException(new Error(txResponse.getRawLog()), {
+                  contextCode: txResponse.getCode(),
+                  contextModule: txResponse.getCodespace(),
+                }),
+              )
             }
 
             try {
@@ -212,6 +214,7 @@ export class TxGrpcApi implements TxConcreteApi {
                 txResponse.getTxhash(),
                 timeout,
               )
+
               return resolve(result)
             } catch (error) {
               return reject(error)
