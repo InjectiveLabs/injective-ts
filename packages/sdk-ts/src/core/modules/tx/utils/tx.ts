@@ -125,7 +125,7 @@ export const createSignerInfo = ({
 }) => {
   const pubKey = getPublicKey({ chainId, key: publicKey })
 
-  const single = CosmosTxV1Beta1Tx.ModeInfo.create().single!
+  const single = CosmosTxV1Beta1Tx.ModeInfo_Single.create()
   single.mode = mode
 
   const modeInfo = CosmosTxV1Beta1Tx.ModeInfo.create()
