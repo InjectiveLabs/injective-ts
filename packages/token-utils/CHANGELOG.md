@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.10.0-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.202-alpha.0...@injectivelabs/token-utils@1.10.0-alpha.0) (2023-03-17)
+## [1.0.91](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.90...@injectivelabs/token-utils@1.0.91) (2023-03-15)
 
 **Note:** Version bump only for package @injectivelabs/token-utils
 
@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.202-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.201-alpha.0...@injectivelabs/token-utils@1.0.202-alpha.0) (2023-03-15)
+## [1.0.90](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.89...@injectivelabs/token-utils@1.0.90) (2023-03-15)
 
 **Note:** Version bump only for package @injectivelabs/token-utils
 
@@ -19,85 +19,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.201-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.97-alpha.0...@injectivelabs/token-utils@1.0.201-alpha.0) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/token-utils
-
-
-
-
-
-## [1.0.97-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.96...@injectivelabs/token-utils@1.0.97-alpha.0) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/token-utils
-
-
-
-
-
-## [1.0.96](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.96-alpha.0...@injectivelabs/token-utils@1.0.96) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/token-utils
-
-
-
-
-
-## [1.0.96-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.95-alpha.0...@injectivelabs/token-utils@1.0.96-alpha.0) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/token-utils
-
-
-
-
-
-## [1.0.95-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.94-alpha.0...@injectivelabs/token-utils@1.0.95-alpha.0) (2023-03-14)
-
-
-### Bug Fixes
-
-* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
-
-
-
-
-
-## [1.0.94-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.93-alpha.0...@injectivelabs/token-utils@1.0.94-alpha.0) (2023-03-14)
-
-
-### Bug Fixes
-
-* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
-
-
-
-
-
-## [1.0.93-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.92-alpha.0...@injectivelabs/token-utils@1.0.93-alpha.0) (2023-03-14)
-
-**Note:** Version bump only for package @injectivelabs/token-utils
-
-
-
-
-
-## [1.0.92-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.90-alpha.0...@injectivelabs/token-utils@1.0.92-alpha.0) (2023-03-13)
-
-**Note:** Version bump only for package @injectivelabs/token-utils
-
-
-
-
-
-## [1.0.90-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.89-alpha.0...@injectivelabs/token-utils@1.0.90-alpha.0) (2023-03-13)
-
-**Note:** Version bump only for package @injectivelabs/token-utils
-
-
-
-
-
-## [1.0.89-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.88...@injectivelabs/token-utils@1.0.89-alpha.0) (2023-03-08)
+## [1.0.89](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.0.88...@injectivelabs/token-utils@1.0.89) (2023-03-15)
 
 **Note:** Version bump only for package @injectivelabs/token-utils
 

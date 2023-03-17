@@ -69,8 +69,14 @@ export class ChainGrpcStakingApi {
     }
   }
 
-  async fetchValidators() {
+  async fetchValidators(pagination?: PaginationOption) {
     const request = CosmosStakingV1Beta1Query.QueryValidatorsRequest.create()
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.pagination = paginationForRequest
+    }
 
     try {
       const response = await this.client.Validators(request)

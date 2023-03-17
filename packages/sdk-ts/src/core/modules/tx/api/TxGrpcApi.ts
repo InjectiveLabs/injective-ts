@@ -182,20 +182,21 @@ export class TxGrpcApi implements TxConcreteApi {
 
       const txResponse = response.txResponse!
 
-      if (txResponse.code === 0) {
-        return {
-          ...txResponse,
-          height: parseInt(txResponse.height, 10),
-          gasWanted: parseInt(txResponse.gasWanted, 10),
-          gasUsed: parseInt(txResponse.gasUsed, 10),
-          txHash: txResponse.txhash,
-        }
+      if (txResponse.code !== 0) {
+        throw new TransactionException(new Error(txResponse.rawLog), {
+          contextCode: txResponse.code,
+          contextModule: txResponse.codespace,
+        })
       }
 
       const result = await this.fetchTxPoll(txResponse.txhash, timeout)
 
       return result
     } catch (e: unknown) {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
       throw new TransactionException(new Error((e as any).message))
     }
   }

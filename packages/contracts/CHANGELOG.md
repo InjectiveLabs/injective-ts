@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.10.0-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.202-alpha.0...@injectivelabs/contracts@1.10.0-alpha.0) (2023-03-17)
+## [1.0.117](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.116...@injectivelabs/contracts@1.0.117) (2023-03-15)
 
 **Note:** Version bump only for package @injectivelabs/contracts
 
@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.202-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.201-alpha.0...@injectivelabs/contracts@1.0.202-alpha.0) (2023-03-15)
+## [1.0.116](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.115...@injectivelabs/contracts@1.0.116) (2023-03-15)
 
 **Note:** Version bump only for package @injectivelabs/contracts
 
@@ -19,85 +19,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.201-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.126-alpha.0...@injectivelabs/contracts@1.0.201-alpha.0) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/contracts
-
-
-
-
-
-## [1.0.126-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.125...@injectivelabs/contracts@1.0.126-alpha.0) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/contracts
-
-
-
-
-
-## [1.0.125](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.125-alpha.0...@injectivelabs/contracts@1.0.125) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/contracts
-
-
-
-
-
-## [1.0.125-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.124-alpha.0...@injectivelabs/contracts@1.0.125-alpha.0) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/contracts
-
-
-
-
-
-## [1.0.124-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.123-alpha.0...@injectivelabs/contracts@1.0.124-alpha.0) (2023-03-14)
-
-
-### Bug Fixes
-
-* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
-
-
-
-
-
-## [1.0.123-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.122-alpha.0...@injectivelabs/contracts@1.0.123-alpha.0) (2023-03-14)
-
-
-### Bug Fixes
-
-* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
-
-
-
-
-
-## [1.0.122-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.121-alpha.0...@injectivelabs/contracts@1.0.122-alpha.0) (2023-03-14)
-
-**Note:** Version bump only for package @injectivelabs/contracts
-
-
-
-
-
-## [1.0.121-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.116-alpha.0...@injectivelabs/contracts@1.0.121-alpha.0) (2023-03-13)
-
-**Note:** Version bump only for package @injectivelabs/contracts
-
-
-
-
-
-## [1.0.116-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.115-alpha.0...@injectivelabs/contracts@1.0.116-alpha.0) (2023-03-13)
-
-**Note:** Version bump only for package @injectivelabs/contracts
-
-
-
-
-
-## [1.0.115-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.114...@injectivelabs/contracts@1.0.115-alpha.0) (2023-03-08)
+## [1.0.115](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.0.114...@injectivelabs/contracts@1.0.115) (2023-03-15)
 
 **Note:** Version bump only for package @injectivelabs/contracts
 

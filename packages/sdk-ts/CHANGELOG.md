@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.10.0-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.503-alpha.0...@injectivelabs/sdk-ts@1.10.0-alpha.0) (2023-03-17)
+## [1.0.490](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.489...@injectivelabs/sdk-ts@1.0.490) (2023-03-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
 
@@ -11,64 +11,47 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [1.0.503-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.502-alpha.0...@injectivelabs/sdk-ts@1.0.503-alpha.0) (2023-03-16)
+## [1.0.489](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.488...@injectivelabs/sdk-ts@1.0.489) (2023-03-16)
 
 
 ### Bug Fixes
 
-* sign mode ([5597703](https://github.com/InjectiveLabs/injective-ts/commit/55977038b418fea25578a985a6cf791a5155be83))
+* txGrpcApi exception handling ([a5b077a](https://github.com/InjectiveLabs/injective-ts/commit/a5b077a044fa2acf051483bded9486159be5a95b))
 
 
 
 
 
-## [1.0.502-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.501-alpha.0...@injectivelabs/sdk-ts@1.0.502-alpha.0) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/sdk-ts
-
-
-
-
-
-## [1.0.501-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.486-alpha.0...@injectivelabs/sdk-ts@1.0.501-alpha.0) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/sdk-ts
-
-
-
-
-
-## [1.0.486-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.485...@injectivelabs/sdk-ts@1.0.486-alpha.0) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/sdk-ts
-
-
-
-
-
-## [1.0.485](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.485-alpha.0...@injectivelabs/sdk-ts@1.0.485) (2023-03-15)
-
-**Note:** Version bump only for package @injectivelabs/sdk-ts
-
-
-
-
-
-## [1.0.485-alpha.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.484...@injectivelabs/sdk-ts@1.0.485-alpha.0) (2023-03-15)
+## [1.0.488](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.487...@injectivelabs/sdk-ts@1.0.488) (2023-03-16)
 
 
 ### Bug Fixes
 
-* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
-* grpc error handling ([40fb0fd](https://github.com/InjectiveLabs/injective-ts/commit/40fb0fde7a8cece703d2c7c223793b0afdaeb353))
-* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
-* minor tests ([0f9baf1](https://github.com/InjectiveLabs/injective-ts/commit/0f9baf1753525018ecf352f498e2cea99f43a3df))
-* types for createTransaction ([b08b76d](https://github.com/InjectiveLabs/injective-ts/commit/b08b76dc71a83822ddb101657ef69e5e6994085b))
+* grpc broadcast sync tx ([8fdc8de](https://github.com/InjectiveLabs/injective-ts/commit/8fdc8de4c0aacec037b5b17a885a7d780059498b))
 
 
-### Features
 
-* migrated to grpcWebImpl ([bbf4e37](https://github.com/InjectiveLabs/injective-ts/commit/bbf4e3715c20cd2948b77e3be4dac45123b29859))
+
+
+## [1.0.487](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.486...@injectivelabs/sdk-ts@1.0.487) (2023-03-15)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.486](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.484...@injectivelabs/sdk-ts@1.0.486) (2023-03-15)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.0.485](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.484...@injectivelabs/sdk-ts@1.0.485) (2023-03-15)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
 
 
 
