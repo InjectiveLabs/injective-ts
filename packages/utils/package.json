@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/utils",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.10.0",
+  "version": "1.10.0-alpha.0",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
@@ -30,8 +30,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.0.202-alpha.0",
-    "@injectivelabs/ts-types": "^1.0.101-alpha.0",
+    "@injectivelabs/exceptions": "^1.10.0-alpha.0",
+    "@injectivelabs/ts-types": "^1.10.0-alpha.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
     "http-status-codes": "^2.2.0",
