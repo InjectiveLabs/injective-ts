@@ -23,7 +23,7 @@ import Trezor from './strategies/Trezor'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
-import WalletConnect from './strategies/WalletConnect'
+// import WalletConnect from './strategies/WalletConnect'
 // import Cosmostation from './strategies/Cosmostation'
 // import CosmostationEth from './strategies/CosmostationEth'
 import { Wallet, WalletDeviceType } from '../../types/enums'
@@ -100,8 +100,8 @@ const createStrategy = ({
       return new Torus(ethWalletArgs)
     // case Wallet.CosmostationEth:
     //   return new CosmostationEth(ethWalletArgs)
-    case Wallet.WalletConnect:
-      return new WalletConnect(ethWalletArgs)
+    // case Wallet.WalletConnect:
+    //      return new WalletConnect(ethWalletArgs)
     case Wallet.Keplr:
       return new Keplr({ ...args })
     case Wallet.Leap:
