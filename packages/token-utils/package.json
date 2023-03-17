@@ -1,14 +1,13 @@
 {
   "name": "@injectivelabs/token-utils",
-  "version": "1.0.202-alpha.0",
+  "version": "1.10.0",
   "description": "Token Utils is a package for querying different data about tokens",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "license": "Apache-2.0",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
   },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
