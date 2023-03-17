@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.491](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.490...@injectivelabs/sdk-ts@1.0.491) (2023-03-17)
+
+
+### Features
+
+* add msg multi send ([6a494aa](https://github.com/InjectiveLabs/injective-ts/commit/6a494aa9e989134f61b9c6bd7959f314d8acc72f))
+
+
+
+
+
 ## [1.0.490](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.489...@injectivelabs/sdk-ts@1.0.490) (2023-03-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
