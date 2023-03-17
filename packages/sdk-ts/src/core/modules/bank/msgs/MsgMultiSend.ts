@@ -1,4 +1,3 @@
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 import {
@@ -11,11 +10,11 @@ export declare namespace MsgMultiSend {
   export interface Params {
     inputs: {
       address: string
-      coins: Coin.AsObject[]
+      coins: CosmosBaseV1Beta1Coin.Coin[]
     }[]
     outputs: {
       address: string
-      coins: Coin.AsObject[]
+      coins: CosmosBaseV1Beta1Coin.Coin[]
     }[]
   }
 
