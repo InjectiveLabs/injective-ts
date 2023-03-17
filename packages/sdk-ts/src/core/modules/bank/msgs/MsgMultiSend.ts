@@ -75,7 +75,7 @@ export default class MsgMultiSend extends MsgBase<
 
     const message = new BaseMsgMultiSend()
     message.setInputsList(inputs)
-    message.setInputsList(outputs)
+    message.setOutputsList(outputs)
 
     return message
   }
