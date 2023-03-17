@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0-alpha.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.0...@injectivelabs/sdk-ts@1.10.0-alpha.1) (2023-03-17)
+
+
+### Bug Fixes
+
+* grpc broadcast sync tx ([8fdc8de](https://github.com/InjectiveLabs/injective-ts/commit/8fdc8de4c0aacec037b5b17a885a7d780059498b))
+* txGrpcApi exception handling ([a5b077a](https://github.com/InjectiveLabs/injective-ts/commit/a5b077a044fa2acf051483bded9486159be5a95b))
+
+
+
+
+
 ## [1.0.490](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.489...@injectivelabs/sdk-ts@1.0.490) (2023-03-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
