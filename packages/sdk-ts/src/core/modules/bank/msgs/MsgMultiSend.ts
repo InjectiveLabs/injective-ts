@@ -9,14 +9,12 @@ export declare namespace MsgMultiSend {
   export interface Params {
     inputs: {
       address: string
-      coins: Coin[]
+      coins: Coin.AsObject[]
     }[]
     outputs: {
       address: string
-      coins: Coin[]
+      coins: Coin.AsObject[]
     }[]
-    srcInjectiveAddress: string
-    dstInjectiveAddress: string
   }
 
   export type Proto = BaseMsgMultiSend
@@ -43,7 +41,16 @@ export default class MsgMultiSend extends MsgBase<
       const input = new Input()
 
       input.setAddress(i.address)
-      input.setCoinsList(i.coins)
+      input.setCoinsList(
+        i.coins.map((c) => {
+          const coin = new Coin()
+
+          coin.setAmount(c.amount)
+          coin.setDenom(c.denom)
+
+          return coin
+        }),
+      )
 
       return input
     })
@@ -52,7 +59,16 @@ export default class MsgMultiSend extends MsgBase<
       const output = new Output()
 
       output.setAddress(o.address)
-      output.setCoinsList(o.coins)
+      output.setCoinsList(
+        o.coins.map((c) => {
+          const coin = new Coin()
+
+          coin.setAmount(c.amount)
+          coin.setDenom(c.denom)
+
+          return coin
+        }),
+      )
 
       return output
     })
