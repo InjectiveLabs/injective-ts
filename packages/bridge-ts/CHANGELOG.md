@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0-alpha.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.322...@injectivelabs/bridge-ts@1.10.0-alpha.2) (2023-03-17)
+
+
+### Bug Fixes
+
+* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
+
+
+
+
+
 ## [1.0.322](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.321...@injectivelabs/bridge-ts@1.0.322) (2023-03-17)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
