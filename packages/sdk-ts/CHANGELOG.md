@@ -3,13 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.10.0-alpha.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.0...@injectivelabs/sdk-ts@1.10.0-alpha.1) (2023-03-17)
+## [1.0.493](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.492...@injectivelabs/sdk-ts@1.0.493) (2023-03-17)
 
 
 ### Bug Fixes
 
-* grpc broadcast sync tx ([8fdc8de](https://github.com/InjectiveLabs/injective-ts/commit/8fdc8de4c0aacec037b5b17a885a7d780059498b))
-* txGrpcApi exception handling ([a5b077a](https://github.com/InjectiveLabs/injective-ts/commit/a5b077a044fa2acf051483bded9486159be5a95b))
+* minor ([5c6fef7](https://github.com/InjectiveLabs/injective-ts/commit/5c6fef719b7836f04612449dca4849b002f7a1df))
+
+
+
+
+
+## [1.0.492](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.491...@injectivelabs/sdk-ts@1.0.492) (2023-03-17)
+
+
+### Bug Fixes
+
+* redundant params ([47ca9f2](https://github.com/InjectiveLabs/injective-ts/commit/47ca9f2f34ec9b2902511176c7c91df6560a1c24))
+
+
+
+
+
+## [1.0.491](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.490...@injectivelabs/sdk-ts@1.0.491) (2023-03-17)
+
+
+### Features
+
+* add msg multi send ([6a494aa](https://github.com/InjectiveLabs/injective-ts/commit/6a494aa9e989134f61b9c6bd7959f314d8acc72f))
 
 
 
