@@ -16,6 +16,9 @@
     },
     {
       "path": "../networks/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../utils/tsconfig.build.esm.json"
     }
   ]
 }

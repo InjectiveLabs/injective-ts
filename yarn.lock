@@ -4903,11 +4903,6 @@
   dependencies:
     ethereumjs-util "*"
 
-"@types/google-protobuf@^3.15.5":
-  version "3.15.6"
-  resolved "https://registry.npmjs.org/@types/google-protobuf/-/google-protobuf-3.15.6.tgz#674a69493ef2c849b95eafe69167ea59079eb504"
-  integrity sha512-pYVNNJ+winC4aek+lZp93sIKxnXt5qMkuKmaqS3WGuTq0Bw1ZDYNBgzG5kkdtwcv+GmYJGo3yEg6z2cKKAiEdw==
-
 "@types/graceful-fs@^4.1.3":
   version "4.1.5"
   resolved "https://registry.npmjs.org/@types/graceful-fs/-/graceful-fs-4.1.5.tgz#21ffba0d98da4350db64891f92a9e5db3cdb4e15"
@@ -7680,6 +7675,14 @@ cosmjs-types@^0.5.2:
   version "0.5.2"
   resolved "https://registry.npmjs.org/cosmjs-types/-/cosmjs-types-0.5.2.tgz#2d42b354946f330dfb5c90a87fdc2a36f97b965d"
   integrity sha512-zxCtIJj8v3Di7s39uN4LNcN3HIE1z0B9Z0SPE8ZNQR0oSzsuSe1ACgxoFkvhkS7WBasCAFcglS11G2hyfd5tPg==
+  dependencies:
+    long "^4.0.0"
+    protobufjs "~6.11.2"
+
+cosmjs-types@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/cosmjs-types/-/cosmjs-types-0.7.1.tgz#7ad355f63206fb829b565ed3463791d33b10c3d7"
+  integrity sha512-qP89SGwi6YpvMTrM9CPzTfZ0JPNlXzgimqMLsa/ZjzW+L6MC8TCr6XmoWtFOT6GSfefvJLwFWq7YCtL456Bdzg==
   dependencies:
     long "^4.0.0"
     protobufjs "~6.11.2"
@@ -11436,7 +11439,7 @@ js-sha256@^0.9.0:
 
 js-sha3@0.8.0, js-sha3@^0.8.0:
   version "0.8.0"
-  resolved "https://registry.npmjs.org/js-sha3/-/js-sha3-0.8.0.tgz#b9b7a5da73afad7dedd0f8c463954cbde6818840"
+  resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.8.0.tgz#b9b7a5da73afad7dedd0f8c463954cbde6818840"
   integrity sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==
 
 js-sha3@^0.5.7:
@@ -14796,9 +14799,9 @@ rxjs@6, rxjs@^6.6.0, rxjs@^6.6.3:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^7.4.0, rxjs@^7.5.1, rxjs@^7.5.5, rxjs@^7.5.6:
+rxjs@^7.4.0, rxjs@^7.5.1, rxjs@^7.5.5, rxjs@^7.5.6, rxjs@^7.8.0:
   version "7.8.0"
-  resolved "https://registry.npmjs.org/rxjs/-/rxjs-7.8.0.tgz#90a938862a82888ff4c7359811a595e14e1e09a4"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.0.tgz#90a938862a82888ff4c7359811a595e14e1e09a4"
   integrity sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==
   dependencies:
     tslib "^2.1.0"

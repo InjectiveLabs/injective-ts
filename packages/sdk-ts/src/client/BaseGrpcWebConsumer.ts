@@ -1,4 +1,4 @@
-import { grpc } from '@improbable-eng/grpc-web'
+import { grpc } from '@injectivelabs/grpc-web'
 import { isBrowser } from '../utils/helpers'
 import { getGrpcTransport } from '../utils/grpc'
 import { TendermintAbciTypes } from '@injectivelabs/core-proto-ts'

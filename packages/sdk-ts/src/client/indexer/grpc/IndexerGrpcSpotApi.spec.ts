@@ -1,5 +1,5 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { getDefaultSubaccountId } from '@injectivelabs/sdk-ts'
+import { getDefaultSubaccountId } from '../../../utils/address'
 import { mockFactory } from '@injectivelabs/test-utils'
 import { IndexerGrpcSpotTransformer } from '../transformers'
 import { SpotMarket } from '../types'
