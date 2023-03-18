@@ -2199,16 +2199,16 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
-"@injectivelabs/wormhole-sdk@^1.10.0-alpha.6":
-  version "1.10.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/wormhole-sdk/-/wormhole-sdk-1.10.0-alpha.6.tgz#bad3e34b84c2556c946309c9ccb864ec6d1acd05"
-  integrity sha512-kVvSRmA/KxVeFoE+5Xr6wTU2bH4JDuhQY1p72VVPJxmYhRqJIb4NOMx3utvApZJN9pcaXlst+v+LyrUvUo9SfQ==
+"@injectivelabs/wormhole-sdk@^1.10.0-alpha.7":
+  version "1.10.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/wormhole-sdk/-/wormhole-sdk-1.10.0-alpha.7.tgz#b2ba59c4606a8a694af0c8a6bd222940988ede60"
+  integrity sha512-bZc3E5lwK7noDjKUxoFw+FAR+vPDUKAcSrKH+m+y264XwRnMG6KGtk2gJ+HsDrQfoXjYQ6lvu3G23TuYvUbZhA==
   dependencies:
     "@certusone/wormhole-sdk-proto-web" "0.0.6"
     "@certusone/wormhole-sdk-wasm" "^0.0.1"
     "@coral-xyz/borsh" "0.2.6"
     "@injectivelabs/networks" "^1.10.0-alpha.3"
-    "@injectivelabs/sdk-ts" "^1.10.0-alpha.6"
+    "@injectivelabs/sdk-ts" "^1.10.0-alpha.7"
     "@injectivelabs/utils" "^1.10.0-alpha.3"
     "@project-serum/anchor" "0.25.0"
     "@solana/spl-token" "0.3.5"
@@ -2217,6 +2217,7 @@
     bech32 "^2.0.0"
     binary-parser "^2.2.1"
     bs58 "^4.0.1"
+    buffer "^6.0.3"
     elliptic "^6.5.4"
     js-base64 "^3.6.1"
 
