@@ -37,7 +37,7 @@
     "@injectivelabs/sdk-ts": "^1.10.0-alpha.5",
     "@injectivelabs/ts-types": "^1.10.0-alpha.1",
     "@injectivelabs/utils": "^1.10.0-alpha.3",
-    "@injectivelabs/wormhole-sdk": "^1.10.0-alpha.0",
+    "@injectivelabs/wormhole-sdk": "^1.10.0-alpha.1",
     "@solana/spl-token": "^0.3.6",
     "@solana/wallet-adapter-base": "^0.9.18",
     "@solana/web3.js": "^1.66.2",
