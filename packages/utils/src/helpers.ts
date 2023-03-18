@@ -6,6 +6,7 @@ import {
 } from './constants'
 import BigNumberInBase from './classes/BigNumber/BigNumberInBase'
 import BigNumberInWei from './classes/BigNumber/BigNumberInWei'
+import { Awaited } from './types'
 
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))
