@@ -2199,20 +2199,20 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
-"@injectivelabs/wormhole-sdk@^1.10.0-alpha.4":
-  version "1.10.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/wormhole-sdk/-/wormhole-sdk-1.10.0-alpha.4.tgz#4156a6a1bb0cc774331a0293de0f12c267333228"
-  integrity sha512-Sd1Y2xEdIs3ghZqGUgqx+MgceDrPB8AMKrtdoTxpPzqr2NCHoVVHdBkznvWQzWlasgu3T0xYD3HOFQOZFo+xaw==
+"@injectivelabs/wormhole-sdk@^1.10.0-alpha.6":
+  version "1.10.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/wormhole-sdk/-/wormhole-sdk-1.10.0-alpha.6.tgz#bad3e34b84c2556c946309c9ccb864ec6d1acd05"
+  integrity sha512-kVvSRmA/KxVeFoE+5Xr6wTU2bH4JDuhQY1p72VVPJxmYhRqJIb4NOMx3utvApZJN9pcaXlst+v+LyrUvUo9SfQ==
   dependencies:
     "@certusone/wormhole-sdk-proto-web" "0.0.6"
     "@certusone/wormhole-sdk-wasm" "^0.0.1"
     "@coral-xyz/borsh" "0.2.6"
     "@injectivelabs/networks" "^1.10.0-alpha.3"
-    "@injectivelabs/sdk-ts" "^1.10.0-alpha.4"
+    "@injectivelabs/sdk-ts" "^1.10.0-alpha.6"
     "@injectivelabs/utils" "^1.10.0-alpha.3"
     "@project-serum/anchor" "0.25.0"
-    "@solana/spl-token" "^0.3.5"
-    "@solana/web3.js" "^1.66.2"
+    "@solana/spl-token" "0.3.5"
+    "@solana/web3.js" "1.66.2"
     axios "^0.24.0"
     bech32 "^2.0.0"
     binary-parser "^2.2.1"
@@ -3919,10 +3919,10 @@
   dependencies:
     buffer "~6.0.3"
 
-"@solana/spl-token@^0.3.5":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.3.7.tgz#6f027f9ad8e841f792c32e50920d9d2e714fc8da"
-  integrity sha512-bKGxWTtIw6VDdCBngjtsGlKGLSmiu/8ghSt/IOYJV24BsymRbgq7r12GToeetpxmPaZYLddKwAz7+EwprLfkfg==
+"@solana/spl-token@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.3.5.tgz#cabf9f92d755589420b46e457b9b10a879e755aa"
+  integrity sha512-0bGC6n415lGjKu02gkLOIpP1wzndSP0SHwN9PefJ+wKAhmfU1rl3AV1Pa41uap2kzSCD6F9642ngNO8KXPvh/g==
   dependencies:
     "@solana/buffer-layout" "^4.0.0"
     "@solana/buffer-layout-utils" "^0.2.0"
@@ -4330,6 +4330,27 @@
   integrity sha512-5Z9gdn+SItrURBJYDS1vFp9PVqJ08RclNCH4BUJNM/KJIQ8T1uon7PADWnYvy43Q4uEqk7eUuKi25dlPp2NvBg==
   dependencies:
     "@solana/wallet-adapter-base" "^0.9.20"
+
+"@solana/web3.js@1.66.2":
+  version "1.66.2"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.66.2.tgz#80b43c5868b846124fe3ebac7d3943930c3fa60c"
+  integrity sha512-RyaHMR2jGmaesnYP045VLeBGfR/gAW3cvZHzMFGg7bkO+WOYOYp1nEllf0/la4U4qsYGKCsO9eEevR5fhHiVHg==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@noble/ed25519" "^1.7.0"
+    "@noble/hashes" "^1.1.2"
+    "@noble/secp256k1" "^1.6.3"
+    "@solana/buffer-layout" "^4.0.0"
+    bigint-buffer "^1.1.5"
+    bn.js "^5.0.0"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    buffer "6.0.1"
+    fast-stable-stringify "^1.0.0"
+    jayson "^3.4.4"
+    node-fetch "2"
+    rpc-websockets "^7.5.0"
+    superstruct "^0.14.2"
 
 "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.44.3", "@solana/web3.js@^1.66.2":
   version "1.73.0"
