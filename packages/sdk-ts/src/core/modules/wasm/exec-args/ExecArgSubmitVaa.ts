@@ -3,7 +3,7 @@ import {
   ExecArgBase,
   ExecDataRepresentation,
 } from '../ExecArgBase'
-import { binaryToBase64 } from './../../../../utils'
+import { binaryToBase64 } from './../../../../utils/utf8'
 
 export declare namespace ExecArgSubmitVaa {
   export interface Params {

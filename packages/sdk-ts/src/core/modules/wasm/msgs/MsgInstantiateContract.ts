@@ -1,4 +1,4 @@
-import { fromUtf8 } from '../../../../utils'
+import { fromUtf8 } from '../../../../utils/utf8'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
 import {

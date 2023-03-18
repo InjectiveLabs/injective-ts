@@ -1,6 +1,6 @@
 import { Token } from '@injectivelabs/token-metadata'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
+import type { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface IBCTransferTx {

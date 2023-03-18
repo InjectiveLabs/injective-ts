@@ -3,7 +3,7 @@ import {
   DEFAULT_EXCHANGE_LIMIT,
   DEFAULT_GAS_LIMIT,
 } from '@injectivelabs/utils'
-import { Msgs } from '../core'
+import { Msgs } from '../core/modules/msgs'
 
 export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
   const messages = Array.isArray(msgs) ? msgs : [msgs]

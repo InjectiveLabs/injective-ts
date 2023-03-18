@@ -15,12 +15,13 @@ import {
 } from './types'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { BaseAccount, Msgs } from '../..'
+import { Msgs } from '../msgs'
 import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../../client'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { BaseAccount } from '../../accounts'
 
 /**
  * @typedef {Object} CreateTransactionWithSignersArgs

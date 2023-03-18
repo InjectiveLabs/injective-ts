@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
-import { Msgs } from '../../msgs'
+import type { Msgs } from '../../msgs'
 import {
   CosmosAuthzV1Beta1Tx,
   GoogleProtobufAny,

@@ -1,6 +1,6 @@
 import { BaseAccount, PrivateKey } from '../../../accounts'
-import { Msgs } from '../../..'
-import { createTransaction } from '..'
+import { Msgs } from '../../msgs'
+import { createTransaction } from '../tx'
 import { TxGrpcApi } from '../api/TxGrpcApi'
 import {
   ChainRestAuthApi,

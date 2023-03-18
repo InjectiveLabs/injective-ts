@@ -1,4 +1,4 @@
-import { fromUtf8 } from '../../../utils'
+import { fromUtf8 } from '../../../utils/utf8'
 
 export type ExecDataRepresentation<Data> = {
   [key: string]: Data

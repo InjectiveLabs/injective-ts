@@ -2,8 +2,8 @@ import { SnakeCaseKeys } from 'snakecase-keys'
 import {
   mapValuesToProperValueType,
   objectKeysToEip712Types,
-  TypedDataField,
-} from './tx/eip712'
+} from './tx/eip712/maps'
+import { TypedDataField } from './tx/eip712/types'
 import { prepareSignBytes } from './utils'
 
 /**
