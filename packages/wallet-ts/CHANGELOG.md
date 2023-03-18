@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0-alpha.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.0-alpha.6...@injectivelabs/wallet-ts@1.10.0-alpha.7) (2023-03-18)
+
+
+### Bug Fixes
+
+* minor ([aa83920](https://github.com/InjectiveLabs/injective-ts/commit/aa839202286c892b619500757bbe81c206b66157))
+
+
+
+
+
 # [1.10.0-alpha.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.0-alpha.5...@injectivelabs/wallet-ts@1.10.0-alpha.6) (2023-03-18)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
