@@ -1,10 +1,10 @@
-import { DirectSignResponse } from '@cosmjs/proto-signing'
+import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   ChainId,
   CosmosChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import type { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import type Web3 from 'web3'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
 import { Wallet, WalletDeviceType } from '../../types/enums'

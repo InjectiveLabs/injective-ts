@@ -1,1 +1,1 @@
-export * from './utils'
+export * as UtilsWallets from './utils'
