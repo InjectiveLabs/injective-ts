@@ -2199,10 +2199,10 @@
     "@improbable-eng/grpc-web" "^0.14.0"
     google-protobuf "^3.14.0"
 
-"@injectivelabs/wormhole-sdk@^1.10.0-alpha.3":
-  version "1.10.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/wormhole-sdk/-/wormhole-sdk-1.10.0-alpha.3.tgz#3a64b4ba9c8da0778668c6bf6b42f4ab3b83a86d"
-  integrity sha512-rmX8NrgqMY40wbHCPHlUz3lcqrkMuLc5i4POAufFBv70u3Q64C2ch1fm5eOmECFN5bkHgjz7A8B74w3jWBsMaA==
+"@injectivelabs/wormhole-sdk@^1.10.0-alpha.4":
+  version "1.10.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/wormhole-sdk/-/wormhole-sdk-1.10.0-alpha.4.tgz#4156a6a1bb0cc774331a0293de0f12c267333228"
+  integrity sha512-Sd1Y2xEdIs3ghZqGUgqx+MgceDrPB8AMKrtdoTxpPzqr2NCHoVVHdBkznvWQzWlasgu3T0xYD3HOFQOZFo+xaw==
   dependencies:
     "@certusone/wormhole-sdk-proto-web" "0.0.6"
     "@certusone/wormhole-sdk-wasm" "^0.0.1"
