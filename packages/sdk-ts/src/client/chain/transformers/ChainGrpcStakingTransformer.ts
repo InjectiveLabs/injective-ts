@@ -136,7 +136,7 @@ export class ChainGrpcStakingTransformer {
             ? grpcUnBondingDelegation.validatorAddress
             : '',
           creationHeight: parseInt(entry.creationHeight, 10),
-          completionTime: entry.completionTime!.getSeconds(),
+          completionTime: Math.floor(entry.completionTime!.getTime() / 1000),
           initialBalance: new BigNumberInWei(entry.initialBalance).toFixed(),
           balance: new BigNumberInWei(entry.balance).toFixed(),
         }))
@@ -173,7 +173,10 @@ export class ChainGrpcStakingTransformer {
               {
                 delegation: {
                   completionTime: entry.redelegationEntry
-                    ? entry.redelegationEntry.completionTime!.getSeconds()
+                    ? Math.floor(
+                        entry.redelegationEntry.completionTime!.getTime() /
+                          1000,
+                      )
                     : 0,
                   delegatorAddress: grpcRedelegation.delegatorAddress || '',
                   sourceValidatorAddress:
@@ -272,10 +275,7 @@ export class ChainGrpcStakingTransformer {
           commissionRates ? commissionRates.maxChangeRate : '0',
         ).toFixed(),
       },
-
-      updateTime: commission
-        ? new Date(commission.updateTime!.getSeconds())
-        : new Date(),
+      updateTime: commission ? commission.updateTime! : new Date(),
     }
   }
 

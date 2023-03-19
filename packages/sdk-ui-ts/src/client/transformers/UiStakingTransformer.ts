@@ -7,7 +7,7 @@ export class UiStakingTransformer {
       return {
         jailed: validator.jailed,
         status: validator.status,
-        unbondingTime: validator.unbondingTime.getSeconds(),
+        unbondingTime: Math.floor(validator.unbondingTime.getTime() / 1000),
         delegatorShares: validator.delegatorShares,
         tokens: validator.tokens,
         unbondingHeight: validator.unbondingHeight,

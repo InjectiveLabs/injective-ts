@@ -188,17 +188,17 @@ export class ChainGrpcGovTransformer {
         value: content.value,
       },
       type: content.typeUrl,
-      submitTime: proposal.submitTime!.getSeconds(),
+      submitTime: Math.floor(proposal.submitTime!.getTime() / 1000),
       status: proposal.status,
       finalTallyResult:
         ChainGrpcGovTransformer.grpcTallyResultToTallyResult(finalTallyResult),
-      depositEndTime: proposal.depositEndTime!.getSeconds(),
+      depositEndTime: Math.floor(proposal.depositEndTime!.getTime() / 1000),
       totalDeposits: proposal.totalDeposit.map((coin) => ({
         denom: coin.denom,
         amount: cosmosSdkDecToBigNumber(coin.amount).toFixed(),
       })),
-      votingStartTime: proposal.votingStartTime!.getSeconds(),
-      votingEndTime: proposal.votingEndTime!.getSeconds(),
+      votingStartTime: Math.floor(proposal.votingStartTime!.getTime() / 1000),
+      votingEndTime: Math.floor(proposal.votingEndTime!.getTime() / 1000),
     }
   }
 }
