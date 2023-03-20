@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0-alpha.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.0-alpha.9...@injectivelabs/wallet-ts@1.10.0-alpha.10) (2023-03-20)
+
+
+### Bug Fixes
+
+* keplr packages bump ([649beaa](https://github.com/InjectiveLabs/injective-ts/commit/649beaaf2c229a4b201c0d6a7a1f8548fa16ada1))
+
+
+
+
+
 # [1.10.0-alpha.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.0-alpha.8...@injectivelabs/wallet-ts@1.10.0-alpha.9) (2023-03-19)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
