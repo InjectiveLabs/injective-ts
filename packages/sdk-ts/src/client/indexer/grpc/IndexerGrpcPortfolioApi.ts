@@ -34,8 +34,13 @@ export class IndexerGrpcAccountPortfolioApi extends BaseConsumer {
         address,
       )
     } catch (e: unknown) {
-      if ((e as Error)?.message === 'account address not found') {
-        return undefined
+      if ((e as any)?.message === 'account address not found') {
+        return {
+          accountAddress: address || '',
+          bankBalancesList: [],
+          subaccountsList: [],
+          positionsWithUpnlList: [],
+        }
       }
 
       if (e instanceof GrpcUnaryRequestException) {
