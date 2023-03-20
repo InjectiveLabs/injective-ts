@@ -298,6 +298,8 @@ export const validatorAddressToPathMap = {
     injvalcons1dflwep4n9kmekqvtuu66ef3m5hj06u56kr2q8c:
     'injvaloper17y9pmvrwcmytrvsurduj7ts0s8unzr55a6ffa3.webp',
   injvaloper17y9pmvrwcmytrvsurduj7ts0s8unzr55a6ffa3:
-    'injvaloper17y9pmvrwcmytrvsurduj7ts0s8unzr55a6ffa3.webp'
+    'injvaloper17y9pmvrwcmytrvsurduj7ts0s8unzr55a6ffa3.webp',
+  injvaloper10er2rpmfux7dwyrqfgre90e4dqmsj5n06twg4l:
+    'injvaloper10er2rpmfux7dwyrqfgre90e4dqmsj5n06twg4l.webp'
 
 } as Record<string, string>
