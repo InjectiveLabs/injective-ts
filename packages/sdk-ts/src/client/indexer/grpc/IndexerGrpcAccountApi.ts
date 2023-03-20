@@ -32,6 +32,9 @@ import {
 export class IndexerGrpcAccountApi extends BaseConsumer {
   protected module: string = IndexerModule.Account
 
+  /**
+   * @deprecated - use IndexerGrpcAccountPortfoliooApi.fetchPortfolio instead
+   */
   async fetchPortfolio(address: string) {
     const request = new PortfolioRequest()
 

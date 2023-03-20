@@ -2,12 +2,12 @@ import { AccountPortfolioResponse } from '@injectivelabs/indexer-api/injective_p
 import { Coin } from '@injectivelabs/ts-types'
 import { GrpcCoin } from '../../../types/index'
 import {
-  // PositionV2,
-  // GrpcPositionV2,
-  // PositionsWithUPNL,
+  PositionV2,
+  GrpcPositionV2,
+  PositionsWithUPNL,
   AccountPortfolioV2,
   SubaccountDepositV2,
-  // GrpcPositionsWithUPNL,
+  GrpcPositionsWithUPNL,
   GrpcSubaccountDepositV2,
   PortfolioSubaccountBalanceV2,
   GrpcPortfolioSubaccountBalanceV2,
@@ -16,10 +16,22 @@ import {
 export class IndexerGrpcAccountPortfolioTransformer {
   static accountPortfolioResponseToAccountPortfolio(
     response: AccountPortfolioResponse,
-  ): AccountPortfolioV2 | undefined {
-    const portfolio = response.getPortfolio()!
+    address?: string,
+  ): AccountPortfolioV2 {
+    const portfolio = response.getPortfolio()
+
+    if (!portfolio) {
+      return {
+        accountAddress: address || '',
+        bankBalancesList: [],
+        subaccountsList: [],
+        positionsWithUpnlList: [],
+      }
+    }
+
     const bankBalancesList = portfolio?.getBankBalancesList() || []
     const subaccountList = portfolio?.getSubaccountsList() || []
+    const positionsWithUpnlList = portfolio?.getPositionsWithUpnlList() || []
 
     return {
       accountAddress: portfolio.getAccountAddress(),
@@ -28,6 +40,9 @@ export class IndexerGrpcAccountPortfolioTransformer {
       ),
       subaccountsList: subaccountList.map(
         IndexerGrpcAccountPortfolioTransformer.grpcSubaccountBalanceToSubaccountBalance,
+      ),
+      positionsWithUpnlList: positionsWithUpnlList.map(
+        IndexerGrpcAccountPortfolioTransformer.grpcPositionWithUPNLToPositionWithUPNL,
       ),
     }
   }
@@ -39,37 +54,37 @@ export class IndexerGrpcAccountPortfolioTransformer {
     }
   }
 
-  // static grpcPositionWithUPNLToPositionWithUPNL(
-  //   positionsWithUPNL: GrpcPositionsWithUPNL,
-  // ): PositionsWithUPNL {
-  //   const grpcPosition = positionsWithUPNL.getPosition()
+  static grpcPositionWithUPNLToPositionWithUPNL(
+    positionsWithUPNL: GrpcPositionsWithUPNL,
+  ): PositionsWithUPNL {
+    const grpcPosition = positionsWithUPNL.getPosition()
 
-  //   return {
-  //     position: grpcPosition
-  //       ? IndexerGrpcAccountPortfolioTransformer.grpcPositionToGrpcPosition(
-  //           grpcPosition,
-  //         )
-  //       : undefined,
-  //     unrealizedPnl: positionsWithUPNL.getUnrealizedPnl(),
-  //   }
-  // }
+    return {
+      position: grpcPosition
+        ? IndexerGrpcAccountPortfolioTransformer.grpcPositionToGrpcPosition(
+            grpcPosition,
+          )
+        : undefined,
+      unrealizedPnl: positionsWithUPNL.getUnrealizedPnl(),
+    }
+  }
 
-  // static grpcPositionToGrpcPosition(position: GrpcPositionV2): PositionV2 {
-  //   return {
-  //     ticker: position.getTicker(),
-  //     marketId: position.getMarketId(),
-  //     subaccountId: position.getSubaccountId(),
-  //     direction: position.getDirection(),
-  //     quantity: position.getQuantity(),
-  //     entryPrice: position.getEntryPrice(),
-  //     margin: position.getMargin(),
-  //     liquidationPrice: position.getLiquidationPrice(),
-  //     markPrice: position.getMarkPrice(),
-  //     aggregateReduceOnlyQuantity: position.getAggregateReduceOnlyQuantity(),
-  //     updatedAt: position.getUpdatedAt(),
-  //     createdAt: position.getCreatedAt(),
-  //   }
-  // }
+  static grpcPositionToGrpcPosition(position: GrpcPositionV2): PositionV2 {
+    return {
+      ticker: position.getTicker(),
+      marketId: position.getMarketId(),
+      subaccountId: position.getSubaccountId(),
+      direction: position.getDirection(),
+      quantity: position.getQuantity(),
+      entryPrice: position.getEntryPrice(),
+      margin: position.getMargin(),
+      liquidationPrice: position.getLiquidationPrice(),
+      markPrice: position.getMarkPrice(),
+      aggregateReduceOnlyQuantity: position.getAggregateReduceOnlyQuantity(),
+      updatedAt: position.getUpdatedAt(),
+      createdAt: position.getCreatedAt(),
+    }
+  }
 
   static grpcSubaccountDepositToSubaccountDeposit(
     subaccountDeposit: GrpcSubaccountDepositV2,

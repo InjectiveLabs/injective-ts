@@ -26,8 +26,13 @@ import {
 
 /**
  * @category Indexer Grpc Transformer
+ *
  */
 export class IndexerGrpcAccountTransformer {
+  /**
+   *
+   * @deprecated - use IndexerGrpcAccountPortfolioApi.accountPortfolioResponseToAccountPortfolio
+   */
   static accountPortfolioResponseToAccountPortfolio(
     response: PortfolioResponse,
   ): AccountPortfolio {

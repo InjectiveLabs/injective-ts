@@ -31,6 +31,7 @@ export class IndexerGrpcAccountPortfolioApi extends BaseConsumer {
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio(
         response,
+        address,
       )
     } catch (e: unknown) {
       if ((e as Error)?.message === 'account address not found') {
