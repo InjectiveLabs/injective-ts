@@ -18,9 +18,7 @@ export class Address {
   }
 
   compare(address: Address): boolean {
-    return (
-      this.bech32Address.toLowerCase() === address.bech32Address.toLowerCase()
-    )
+    return this.bech32Address === address.bech32Address
   }
 
   get address(): string {

@@ -54,8 +54,7 @@ export class Web3Client {
         .filter((tokenBalance: any) => tokenBalance.tokenBalance)
         .find(
           (tokenBalance: { contractAddress: string }) =>
-            tokenBalance.contractAddress.toLowerCase() ===
-            tokenContractAddress.toLowerCase(),
+            tokenBalance.contractAddress === tokenContractAddress,
         )
 
       const balance = tokenBalance ? tokenBalance.tokenBalance || 0 : 0

@@ -78,9 +78,7 @@ export class TokenInfo {
         return meta.symbol
       }
 
-      const actualMeta = meta.cw20.find(
-        (m) => m.address.toLowerCase() === address.toLowerCase(),
-      )
+      const actualMeta = meta.cw20.find((m) => m.address === address)
 
       return actualMeta ? actualMeta.symbol : meta.symbol
     }
@@ -136,9 +134,7 @@ export class TokenInfo {
       return meta.cw20.decimals
     }
 
-    const actualMeta = meta.cw20.find(
-      (m) => m.address.toLowerCase() === address.toLowerCase(),
-    )
+    const actualMeta = meta.cw20.find((m) => m.address === address)
 
     return actualMeta ? actualMeta.decimals : meta.decimals
   }
@@ -170,9 +166,7 @@ export class TokenInfo {
         return meta.cw20.decimals
       }
 
-      const actualMeta = meta.cw20.find(
-        (m) => m.address.toLowerCase() === address.toLowerCase(),
-      )
+      const actualMeta = meta.cw20.find((m) => m.address === address)
 
       return actualMeta ? actualMeta.decimals : meta.decimals
     }
