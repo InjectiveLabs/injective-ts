@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0-alpha.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.324...@injectivelabs/bridge-ts@1.10.0-alpha.17) (2023-03-21)
+
+
+### Bug Fixes
+
+* circular deps updated wormhole sdk ([f8db6d1](https://github.com/InjectiveLabs/injective-ts/commit/f8db6d142430d0ec75a6b878d415277185083bcf))
+* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
+
+
+
+
+
 ## [1.0.324](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.0.323...@injectivelabs/bridge-ts@1.0.324) (2023-03-20)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
