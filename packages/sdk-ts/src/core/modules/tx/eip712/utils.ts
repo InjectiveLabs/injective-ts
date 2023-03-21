@@ -76,9 +76,9 @@ export const getEip712Fee = (
 
   return {
     fee: {
+      feePayer: feePayer,
       gas,
       amount,
-      feePayer: feePayer,
     },
   }
 }
@@ -98,7 +98,7 @@ export const getTypesIncludingFeePayer = ({
     return types
   }
 
-  types.types['Fee'].push({ name: 'feePayer', type: 'string' })
+  types.types['Fee'].unshift({ name: 'feePayer', type: 'string' })
 
   return types
 }

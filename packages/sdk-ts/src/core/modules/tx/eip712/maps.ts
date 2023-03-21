@@ -24,7 +24,7 @@ export const objectKeysToEip712Types = ({
   for (const property in snakecaseKeys(object)) {
     const propertyValue = snakecaseKeys(object)[property]
 
-    if (property === '@type' || property === 'type') {
+    if (property === '@type') {
       continue
     }
 
@@ -91,6 +91,8 @@ export const objectKeysToEip712Types = ({
             new Error('Array with elements of unknown type found'),
           )
         }
+      } else if (propertyValue instanceof Date) {
+        types.push({ name: property, type: 'string' })
       } else {
         const propertyType = getObjectEip712PropertyType({
           property: snakeToPascal(property),
@@ -221,6 +223,12 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
     }
 
     if (typeof value === 'object') {
+      if (value instanceof Date) {
+        return {
+          ...result,
+          [key]: value.toJSON().split('.')[0] +  "Z",
+        }
+      }
       if (Array.isArray(value)) {
         return {
           ...result,
