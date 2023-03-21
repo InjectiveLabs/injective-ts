@@ -36,9 +36,12 @@ export interface AccountPortfolioV2 {
   accountAddress: string
   bankBalancesList: Coin[]
   subaccountsList: PortfolioSubaccountBalanceV2[]
+  positionsWithUpnlList: PositionsWithUPNL[]
 }
 
+export type GrpcPositionV2 = InjectivePortfolioRpc.DerivativePosition
 export type GrpcAccountPortfolioV2 = InjectivePortfolioRpc.Portfolio
 export type GrpcSubaccountDepositV2 = InjectivePortfolioRpc.SubaccountDeposit
+export type GrpcPositionsWithUPNL = InjectivePortfolioRpc.PositionsWithUPNL
 export type GrpcPortfolioSubaccountBalanceV2 =
   InjectivePortfolioRpc.SubaccountBalanceV2

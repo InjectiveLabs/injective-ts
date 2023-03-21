@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.10.0-alpha.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.8...@injectivelabs/sdk-ts@1.10.0-alpha.9) (2023-03-19)
+## [1.0.495](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.494...@injectivelabs/sdk-ts@1.0.495) (2023-03-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
 
@@ -11,77 +11,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-# [1.10.0-alpha.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.7...@injectivelabs/sdk-ts@1.10.0-alpha.8) (2023-03-18)
-
-
-### Bug Fixes
-
-* minor ([aa83920](https://github.com/InjectiveLabs/injective-ts/commit/aa839202286c892b619500757bbe81c206b66157))
-
-
-
-
-
-# [1.10.0-alpha.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.6...@injectivelabs/sdk-ts@1.10.0-alpha.7) (2023-03-18)
+## [1.0.494](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.493...@injectivelabs/sdk-ts@1.0.494) (2023-03-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
-
-
-
-
-
-# [1.10.0-alpha.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.5...@injectivelabs/sdk-ts@1.10.0-alpha.6) (2023-03-18)
-
-
-### Bug Fixes
-
-* circular deps ([fc41599](https://github.com/InjectiveLabs/injective-ts/commit/fc415999e4494085d86924736f4dae6d77b2487a))
-
-
-
-
-
-# [1.10.0-alpha.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.4...@injectivelabs/sdk-ts@1.10.0-alpha.5) (2023-03-18)
-
-**Note:** Version bump only for package @injectivelabs/sdk-ts
-
-
-
-
-
-# [1.10.0-alpha.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.3...@injectivelabs/sdk-ts@1.10.0-alpha.4) (2023-03-18)
-
-**Note:** Version bump only for package @injectivelabs/sdk-ts
-
-
-
-
-
-# [1.10.0-alpha.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.2...@injectivelabs/sdk-ts@1.10.0-alpha.3) (2023-03-18)
-
-**Note:** Version bump only for package @injectivelabs/sdk-ts
-
-
-
-
-
-# [1.10.0-alpha.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.493...@injectivelabs/sdk-ts@1.10.0-alpha.2) (2023-03-17)
-
-
-### Bug Fixes
-
-* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
-* grpc error handling ([40fb0fd](https://github.com/InjectiveLabs/injective-ts/commit/40fb0fde7a8cece703d2c7c223793b0afdaeb353))
-* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
-* minor tests ([0f9baf1](https://github.com/InjectiveLabs/injective-ts/commit/0f9baf1753525018ecf352f498e2cea99f43a3df))
-* sign mode ([5597703](https://github.com/InjectiveLabs/injective-ts/commit/55977038b418fea25578a985a6cf791a5155be83))
-* types for createTransaction ([b08b76d](https://github.com/InjectiveLabs/injective-ts/commit/b08b76dc71a83822ddb101657ef69e5e6994085b))
-
-
-### Features
-
-* migrated to grpcWebImpl ([bbf4e37](https://github.com/InjectiveLabs/injective-ts/commit/bbf4e3715c20cd2948b77e3be4dac45123b29859))
-* msgmultisend ([77adf6f](https://github.com/InjectiveLabs/injective-ts/commit/77adf6ff9437f23fd73c2c75fd74299978c22ddd))
 
 
 

@@ -20,8 +20,13 @@ import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer
+ *
  */
 export class IndexerGrpcAccountTransformer {
+  /**
+   *
+   * @deprecated - use IndexerGrpcAccountPortfolioApi.accountPortfolioResponseToAccountPortfolio
+   */
   static accountPortfolioResponseToAccountPortfolio(
     response: InjectiveAccountRpc.PortfolioResponse,
   ): AccountPortfolio {

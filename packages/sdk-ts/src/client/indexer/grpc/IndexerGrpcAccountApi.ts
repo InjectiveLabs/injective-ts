@@ -22,6 +22,9 @@ export class IndexerGrpcAccountApi {
     )
   }
 
+  /**
+   * @deprecated - use IndexerGrpcAccountPortfoliooApi.fetchPortfolio instead
+   */
   async fetchPortfolio(address: string) {
     const request = InjectiveAccountRpc.PortfolioRequest.create()
 

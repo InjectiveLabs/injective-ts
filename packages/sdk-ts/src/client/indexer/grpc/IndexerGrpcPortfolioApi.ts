@@ -21,20 +21,26 @@ export class IndexerGrpcAccountPortfolioApi {
     )
   }
 
-  async fetchAccountPortfolio(subaccountId: string) {
+  async fetchAccountPortfolio(address: string) {
     const request = InjectivePortfolioRpc.AccountPortfolioRequest.create()
 
-    request.accountAddress = subaccountId
+    request.accountAddress = address
 
     try {
       const response = await this.client.AccountPortfolio(request)
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio(
         response,
+        address,
       )
     } catch (e: unknown) {
-      if ((e as any).message === 'account address not found') {
-        return undefined
+      if ((e as any)?.message === 'account address not found') {
+        return {
+          accountAddress: address || '',
+          bankBalancesList: [],
+          subaccountsList: [],
+          positionsWithUpnlList: [],
+        }
       }
 
       if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
