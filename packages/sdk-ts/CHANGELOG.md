@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.496](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.495...@injectivelabs/sdk-ts@1.0.496) (2023-03-21)
+
+
+### Features
+
+* checksum address calc ([3b1946e](https://github.com/InjectiveLabs/injective-ts/commit/3b1946e2ebdf09c075a1a53fb4d3c1ba7b851bd2))
+
+
+
+
+
 ## [1.0.495](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.494...@injectivelabs/sdk-ts@1.0.495) (2023-03-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
