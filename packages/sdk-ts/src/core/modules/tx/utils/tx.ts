@@ -1,3 +1,4 @@
+import { Any } from 'google-protobuf/google/protobuf/any_pb'
 import { PubKey } from '@injectivelabs/chain-api/cosmos/crypto/secp256k1/keys_pb'
 import { PubKey as CosmosPubKey } from '@injectivelabs/chain-api/cosmos/crypto/secp256k1/keys_pb'
 import { createAny, createAnyMessage } from './helpers'
@@ -22,11 +23,14 @@ export const getPublicKey = ({
   key,
 }: {
   chainId: string
-  key: string
+  key: string | Any
 }) => {
+  if (key instanceof Any) {
+    return key
+  }
+
   let proto
   let path
-
   if (chainId.startsWith('injective')) {
     proto = new PubKey()
     path = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
@@ -102,7 +106,7 @@ export const createSigners = ({
   signers,
 }: {
   chainId: string
-  signers: { pubKey: string; sequence: number }[]
+  signers: { pubKey: string | Any; sequence: number }[]
   mode: SignModeMap[keyof SignModeMap]
 }) => {
   return signers.map((s) =>
@@ -122,7 +126,7 @@ export const createSignerInfo = ({
   mode,
 }: {
   chainId: string
-  publicKey: string
+  publicKey: string | Any
   sequence: number
   mode: SignModeMap[keyof SignModeMap]
 }) => {
