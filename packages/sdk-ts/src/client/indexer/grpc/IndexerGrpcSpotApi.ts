@@ -4,7 +4,7 @@ import {
   TradeExecutionType,
 } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
-import { SpotOrderSide, SpotOrderState } from '../types/spot'
+import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { IndexerGrpcSpotTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
@@ -120,7 +120,7 @@ export class IndexerGrpcSpotApi {
     marketId?: string
     marketIds?: string[]
     subaccountId?: string
-    orderSide?: SpotOrderSide
+    orderSide?: OrderSide
     isConditional?: boolean
     pagination?: PaginationOption
   }) {
@@ -187,11 +187,11 @@ export class IndexerGrpcSpotApi {
     subaccountId?: string
     marketId?: string
     marketIds?: string[]
-    orderTypes?: SpotOrderSide[]
+    orderTypes?: OrderSide[]
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
     isConditional?: boolean
-    state?: SpotOrderState
+    state?: OrderState
     pagination?: PaginationOption
   }) {
     const {

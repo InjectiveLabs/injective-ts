@@ -135,5 +135,7 @@ export type GrpcTradeRewardCampaign =
 
 export type GrpcOrderType = InjectiveExchangeV1Beta1Exchange.OrderType
 export const GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType
+export type OrderType = InjectiveExchangeV1Beta1Exchange.OrderType
+export const OrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType
 export type GrpcMarketStatus = InjectiveExchangeV1Beta1Exchange.MarketStatus
 export const GrpcMarketStatusMap = InjectiveExchangeV1Beta1Exchange.MarketStatus

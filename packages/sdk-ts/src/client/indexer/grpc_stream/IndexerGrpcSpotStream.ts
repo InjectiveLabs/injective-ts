@@ -5,7 +5,7 @@ import {
 } from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { PaginationOption } from '../../../types/pagination'
-import { SpotOrderSide, SpotOrderState } from '../types/spot'
+import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { IndexerSpotStreamTransformer } from '../transformers'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
@@ -108,7 +108,7 @@ export class IndexerGrpcSpotStream {
   }: {
     marketId?: string
     subaccountId?: string
-    orderSide?: SpotOrderSide
+    orderSide?: OrderSide
     callback: SpotOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
@@ -159,10 +159,10 @@ export class IndexerGrpcSpotStream {
   }: {
     marketId?: string
     subaccountId?: string
-    orderTypes?: SpotOrderSide[]
+    orderTypes?: OrderSide[]
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
-    state?: SpotOrderState
+    state?: OrderState
     callback: SpotOrderHistoryStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void

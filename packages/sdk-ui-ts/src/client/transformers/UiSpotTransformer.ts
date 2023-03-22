@@ -9,10 +9,10 @@ import {
   UiSpotMarketWithToken,
   UiSpotMarketSummary,
 } from '../types/spot'
-import { spotOrderTypeToGrpcOrderType } from '../../utils/spot'
+import { orderSideToOrderType } from '../../utils/exchange'
 
 export class UiSpotTransformer {
-  static spotOrderTypeToGrpcOrderType = spotOrderTypeToGrpcOrderType
+  static orderSideToOrderType = orderSideToOrderType
 
   static spotMarketToUiSpotMarket(
     market: UiBaseSpotMarketWithToken,

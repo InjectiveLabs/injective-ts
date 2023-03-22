@@ -6,7 +6,7 @@ import {
 import { PaginationOption } from '../../../types/pagination'
 import { IndexerGrpcDerivativeTransformer } from '../transformers'
 import { IndexerModule } from '../types'
-import { DerivativeOrderSide, DerivativeOrderState } from '../types/derivatives'
+import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
@@ -194,7 +194,7 @@ export class IndexerGrpcDerivativesApi {
   async fetchOrders(params?: {
     marketId?: string
     marketIds?: string[]
-    orderSide?: DerivativeOrderSide
+    orderSide?: OrderSide
     isConditional?: boolean
     subaccountId?: string
     pagination?: PaginationOption
@@ -267,11 +267,11 @@ export class IndexerGrpcDerivativesApi {
     subaccountId?: string
     marketId?: string
     marketIds?: string[]
-    orderTypes?: DerivativeOrderSide[]
+    orderTypes?: OrderSide[]
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
     isConditional?: boolean
-    state?: DerivativeOrderState
+    state?: OrderState
     pagination?: PaginationOption
   }) {
     const {

@@ -1,12 +1,12 @@
 import {
+  OrderSide,
+  OrderState,
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
 } from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
 import {
-  DerivativeOrderSide,
-  DerivativeOrderState,
   GrpcDerivativeMarketInfo,
   GrpcDerivativeLimitOrder,
   GrpcDerivativeTrade,
@@ -33,10 +33,10 @@ import {
   DerivativeOrderHistory,
 } from '../types/derivatives'
 import {
-  GrpcPriceLevel,
   Orderbook,
   PriceLevel,
   GrpcTokenMeta,
+  GrpcPriceLevel,
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange'
@@ -465,7 +465,7 @@ export class IndexerGrpcDerivativeTransformer {
   ): DerivativeLimitOrder {
     return {
       orderHash: order.orderHash,
-      orderSide: order.orderSide as DerivativeOrderSide,
+      orderSide: order.orderSide as OrderSide,
       marketId: order.marketId,
       subaccountId: order.subaccountId,
       isReduceOnly: order.isReduceOnly,
@@ -475,7 +475,7 @@ export class IndexerGrpcDerivativeTransformer {
       unfilledQuantity: order.unfilledQuantity,
       triggerPrice: order.triggerPrice,
       feeRecipient: order.feeRecipient,
-      state: order.state as DerivativeOrderState,
+      state: order.state as OrderState,
       createdAt: parseInt(order.createdAt, 10),
       updatedAt: parseInt(order.updatedAt, 10),
       orderNumber: parseInt(order.orderNumber, 10),

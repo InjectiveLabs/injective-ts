@@ -1,6 +1,5 @@
 import {
   DerivativeTrade,
-  DerivativeOrderSide,
   Position as UiPosition,
   PerpetualMarket as BaseUiPerpetualMarket,
   DerivativeLimitOrder as UiDerivativeLimitOrder,
@@ -90,25 +89,12 @@ export interface UiDerivativeMarketAndSummary {
   summary: UiDerivativeMarketSummary
 }
 
-export enum DerivativeOrderMap {
-  UNSPECIFIED = 0,
-  BUY = 1,
-  SELL = 2,
-  STOP_BUY = 3,
-  STOP_SELL = 4,
-  TAKE_BUY = 5,
-  TAKE_SELL = 6,
-  BUY_PO = 7,
-  SELL_PO = 8,
-}
-
 export {
   UiPosition,
+  UiDerivativeOrderbook,
+  BaseUiDerivativeMarket,
   UiDerivativeLimitOrder,
   UiDerivativeOrderHistory,
-  DerivativeOrderSide,
-  BaseUiDerivativeMarket,
   ChronosDerivativeMarketSummary,
   AllChronosDerivativeMarketSummary,
-  UiDerivativeOrderbook,
 }

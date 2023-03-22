@@ -1,4 +1,6 @@
 import {
+  OrderSide,
+  OrderState,
   TradeDirection,
   TradeExecutionType,
   TradeExecutionSide,
@@ -7,28 +9,6 @@ import { GrpcOrderType } from '../../chain/types/exchange'
 import { PriceLevel } from './exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-
-export enum SpotOrderSide {
-  Unspecified = 'unspecified',
-  Buy = 'buy',
-  Sell = 'sell',
-  StopBuy = 'stop_buy',
-  StopSell = 'stop_sell',
-  TakeBuy = 'take_buy',
-  TakeSell = 'take_sell',
-  BuyPO = 'buy_po',
-  SellPO = 'sell_po',
-}
-
-export enum SpotOrderState {
-  Unfilled = 'unfilled',
-  Booked = 'booked',
-  PartialFilled = 'partial_filled',
-  PartiallyFilled = 'partially_filled',
-  Filled = 'filled',
-  Canceled = 'canceled',
-  Triggered = 'triggered',
-}
 
 export interface SpotMarket {
   marketId: string
@@ -47,11 +27,11 @@ export interface SpotMarket {
 
 export interface SpotLimitOrder {
   orderHash: string
-  orderSide: SpotOrderSide
+  orderSide: OrderSide
   marketId: string
   subaccountId: string
   price: string
-  state: SpotOrderState
+  state: OrderState
   quantity: string
   unfilledQuantity: string
   triggerPrice: string

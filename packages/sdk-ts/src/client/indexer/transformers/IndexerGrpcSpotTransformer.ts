@@ -1,26 +1,26 @@
 import {
+  OrderSide,
+  OrderState,
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
 } from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
 import {
-  SpotOrderSide,
-  SpotOrderState,
+  SpotTrade,
+  SpotMarket,
+  GrpcSpotTrade,
+  SpotLimitOrder,
+  SpotOrderHistory,
   GrpcSpotMarketInfo,
   GrpcSpotLimitOrder,
-  SpotOrderHistory,
   GrpcSpotOrderHistory,
-  GrpcSpotTrade,
-  SpotMarket,
-  SpotLimitOrder,
-  SpotTrade,
 } from '../types/spot'
 import {
-  GrpcPriceLevel,
   Orderbook,
   PriceLevel,
   GrpcTokenMeta,
+  GrpcPriceLevel,
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange'
@@ -253,11 +253,11 @@ export class IndexerGrpcSpotTransformer {
   static grpcOrderToOrder(order: GrpcSpotLimitOrder): SpotLimitOrder {
     return {
       orderHash: order.orderHash,
-      orderSide: order.orderSide as SpotOrderSide,
+      orderSide: order.orderSide as OrderSide,
       marketId: order.marketId,
       subaccountId: order.subaccountId,
       price: order.price,
-      state: order.state as SpotOrderState,
+      state: order.state as OrderState,
       quantity: order.quantity,
       unfilledQuantity: order.unfilledQuantity,
       triggerPrice: order.triggerPrice,

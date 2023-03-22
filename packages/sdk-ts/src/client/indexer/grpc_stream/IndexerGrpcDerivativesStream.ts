@@ -5,7 +5,7 @@ import {
 } from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { PaginationOption } from '../../../types/pagination'
-import { DerivativeOrderSide, DerivativeOrderState } from '../types/derivatives'
+import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { IndexerDerivativeStreamTransformer } from '../transformers'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
@@ -117,7 +117,7 @@ export class IndexerGrpcDerivativesStream {
   }: {
     marketId?: string
     subaccountId?: string
-    orderSide?: DerivativeOrderSide
+    orderSide?: OrderSide
     callback: DerivativeOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
@@ -170,10 +170,10 @@ export class IndexerGrpcDerivativesStream {
   }: {
     marketId?: string
     subaccountId?: string
-    orderTypes?: DerivativeOrderSide[]
+    orderTypes?: OrderSide[]
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
-    state?: DerivativeOrderState
+    state?: OrderState
     callback: DerivativeOrderHistoryStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void

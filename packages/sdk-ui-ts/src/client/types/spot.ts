@@ -1,6 +1,5 @@
 import {
   SpotTrade,
-  SpotOrderSide,
   Orderbook as UiSpotOrderbook,
   SpotMarket as BaseUiSpotMarket,
   SpotLimitOrder as UiSpotLimitOrder,
@@ -47,24 +46,11 @@ export interface UiSpotMarketAndSummary {
   summary: UiSpotMarketSummary
 }
 
-export enum SpotOrderMap {
-  UNSPECIFIED = 0,
-  BUY = 1,
-  SELL = 2,
-  STOP_BUY = 3,
-  STOP_SELL = 4,
-  TAKE_BUY = 5,
-  TAKE_SELL = 6,
-  BUY_PO = 7,
-  SELL_PO = 8,
-}
-
 export {
+  UiSpotOrderbook,
+  BaseUiSpotMarket,
   UiSpotLimitOrder,
   UiSpotOrderHistory,
-  SpotOrderSide,
-  BaseUiSpotMarket,
   ChronosSpotMarketSummary,
   AllChronosSpotMarketSummary,
-  UiSpotOrderbook,
 }
