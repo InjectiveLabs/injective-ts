@@ -78,19 +78,15 @@ module.exports = {
   // globals: {},
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  moduleDirectories: ['<rootDir>', 'node_modules', 'src'],
+  moduleDirectories: ['node_modules', '<rootDir>/src'],
 
   // An array of file extensions your modules use
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
-  // moduleNameMapper: {
-  //   '^~/(.*)$': '<rootDir>/src/$1',
-  //   '^@injectivelabs/(.*)$': '<rootDir>/../$1/src'
-  // },
   moduleNameMapper: {
-    ...pathsToModuleNameMapper(packagePaths),
-    ...pathsToModuleNameMapper(directoryPaths, { prefix: '<rootDir>/' }),
+    ...pathsToModuleNameMapper(packagePaths, { prefix: '<rootDir>/' }),
+    ...pathsToModuleNameMapper(directoryPaths),
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -178,10 +174,7 @@ module.exports = {
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: [
-    '^.+\\.json$',
-    'node_modules/(?!(ethereum-cryptography|eth-crypto)/)',
-  ],
+  transformIgnorePatterns: ['^.+\\.json$', 'node_modules/(?!(eth-crypto)/)'],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
