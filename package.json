@@ -23,6 +23,7 @@
     "build:patch:publish": "yarn build:fresh && yarn patch && yarn lerna:publish",
     "patch": "lerna version patch",
     "clean-up": "lerna run --parallel clean && shx rm -rf .build-cache *.log coverage junit.xml",
+    "bootstrap": "yarn clean-up && lerna bootstrap",
     "test": "jest",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "test:unit": "jest packages/*/test/unit",
