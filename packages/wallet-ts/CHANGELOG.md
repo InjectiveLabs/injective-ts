@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0-alpha.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.504...@injectivelabs/wallet-ts@1.10.0-alpha.15) (2023-03-22)
+
+
+### Bug Fixes
+
+* esm import ([b38da09](https://github.com/InjectiveLabs/injective-ts/commit/b38da097107b1e8821c4cface25d23898df8aa49))
+* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+* keplr packages bump ([649beaa](https://github.com/InjectiveLabs/injective-ts/commit/649beaaf2c229a4b201c0d6a7a1f8548fa16ada1))
+* minor ([aa83920](https://github.com/InjectiveLabs/injective-ts/commit/aa839202286c892b619500757bbe81c206b66157))
+* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
+* types for createTransaction ([b08b76d](https://github.com/InjectiveLabs/injective-ts/commit/b08b76dc71a83822ddb101657ef69e5e6994085b))
+
+
+
+
+
 ## [1.0.504](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.0.503...@injectivelabs/wallet-ts@1.0.504) (2023-03-22)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
