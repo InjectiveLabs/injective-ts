@@ -83,8 +83,8 @@ export default class MsgGrant extends MsgBase<
       grant: {
         ...message.grant,
         authorization: {
-          msg: params.messageType,
-          '@type': genericAuthorizationType,
+          'type': 'cosmos-sdk/GenericAuthorization',
+          value: { msg: params.messageType },
         },
         expiration: timestamp.toDate(),
       },
