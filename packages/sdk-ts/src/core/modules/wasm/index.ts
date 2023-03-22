@@ -5,9 +5,11 @@ export { default as ExecArgDepositTokens } from './exec-args/ExecArgDepositToken
 export { default as ExecArgRegisterVault } from './exec-args/ExecArgRegisterVault'
 export { default as ExecArgInitiateTransfer } from './exec-args/ExecArgInitiateTransfer'
 export { default as ExecArgIncreaseAllowance } from './exec-args/ExecArgIncreaseAllowance'
+export { default as ExecArgUpdateAMMVaultConfig } from './exec-args/ExecArgUpdateAMMVaultConfig'
 export { default as ExecArgUpdateSpotVaultConfig } from './exec-args/ExecArgUpdateSpotVaultConfig'
 export { default as ExecArgUpdateDerivativeVaultConfig } from './exec-args/ExecArgUpdateDerivativeVaultConfig'
 export { default as ExecArgRequestTimeLockedRedemption } from './exec-args/ExecArgRequestTimeLockedRedemption'
+export { default as ExecArgExecuteUnlockedRedemption } from './exec-args/ExecArgExecuteUnlockedRedemption'
 export { default as ExecArgCW20AdapterRedeemAndTransfer } from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 
 export { default as MsgStoreCode } from './msgs/MsgStoreCode'

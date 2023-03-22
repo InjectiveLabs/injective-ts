@@ -1,27 +1,17 @@
-import {
-  Vault as GrpcNinjaVault,
-  Profits as GrpcNinjaProfits,
-  SubaccountBalance as GrpcNinjaSubaccountBalance,
-  DenomBalance as GrpcNinjaDenomBalance,
-  Pagination as GrpcNinjaPagination,
-  PriceSnapshot as GrpcNinjaPriceSnapshot,
-  Subscription as GrpcNinjaSubscription,
-  Holders as GrpcNinjaHolders,
-  LeaderboardEntry as GrpcNinjaLeaderboardEntry,
-} from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
+import { NinjaApi } from '@injectivelabs/ninja-proto-ts'
 
 export interface NinjaHolders {
   holderAddress: string
   vaultAddress: string
   amount: string
-  updatedAt: number
+  updatedAt: string
   lpAmountPercentage: number
-  redemptionLockTime: number
+  redemptionLockTime: string
 }
 
 export interface NinjaPriceSnapshot {
   price: number
-  updatedAt: number
+  updatedAt: string
 }
 
 export interface NinjaProfits {
@@ -47,26 +37,27 @@ export interface NinjaSubaccountBalance {
 
 export interface NinjaVault {
   contractAddress: string
-  codeId: number
+  codeId: string
   vaultName: string
   marketId: string
   currentTvl: number
   profits?: NinjaProfits
-  updatedAt: number
+  updatedAt: string
   vaultType: string
   lpTokenPrice: number
   subaccountInfo?: NinjaSubaccountBalance
   masterContractAddress: string
   totalLpAmount: string
-  redemptionLockTimeDuration: number
+  redemptionLockTimeDuration: string
+  redemptionUnlockTimeExpiration: string
 }
 
 export interface NinjaSubscription {
   vaultInfo?: NinjaVault
   lpAmount: string
-  lpAmountPercentage: number
   holderAddress: string
-  redemptionLockTime: number
+  lpAmountPercentage: number
+  redemptionLockTime: string
   lockedAmount: string
 }
 
@@ -88,18 +79,16 @@ export interface NinjaLeaderboardEntry {
 
 export interface NinjaLeaderboard {
   entriesList: NinjaLeaderboardEntry[]
-  snapshotBlock: number
-  updatedAt: number
+  snapshotBlock: string
+  updatedAt: string
 }
 
-export {
-  GrpcNinjaVault,
-  GrpcNinjaProfits,
-  GrpcNinjaSubaccountBalance,
-  GrpcNinjaDenomBalance,
-  GrpcNinjaPagination,
-  GrpcNinjaPriceSnapshot,
-  GrpcNinjaSubscription,
-  GrpcNinjaHolders,
-  GrpcNinjaLeaderboardEntry,
-}
+export type GrpcNinjaVault = NinjaApi.Vault
+export type GrpcNinjaProfits = NinjaApi.Profits
+export type GrpcNinjaSubaccountBalance = NinjaApi.SubaccountBalance
+export type GrpcNinjaDenomBalance = NinjaApi.DenomBalance
+export type GrpcNinjaPagination = NinjaApi.Pagination
+export type GrpcNinjaPriceSnapshot = NinjaApi.PriceSnapshot
+export type GrpcNinjaSubscription = NinjaApi.Subscription
+export type GrpcNinjaHolders = NinjaApi.Holders
+export type GrpcNinjaLeaderboardEntry = NinjaApi.LeaderboardEntry

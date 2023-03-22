@@ -26,8 +26,12 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     defaultMidPriceVolatilityRatio: string
     minVolatilityRatio: string
     lastValidMarkPrice: string
-    allowedSubscriptionTypes: number
     allowedRedemptionTypes: number
+    positionPnlPenalty: string
+    redemptionLockTime: number
+    redemptionUnlockTimeExpiration: number
+    masterAddress: string
+    owner: string
   }
 
   export interface Data {
@@ -51,8 +55,12 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     default_mid_price_volatility_ratio: string
     min_volatility_ratio: string
     last_valid_mark_price: string
-    allowed_subscription_types: number
     allowed_redemption_types: number
+    position_pnl_penalty: string
+    redemption_lock_time: number
+    redemption_unlock_time_expiration: number
+    master_address: string
+    owner: string
   }
 }
 
@@ -100,8 +108,12 @@ export default class ExecArgUpdateDerivativeVaultConfig extends ExecArgBase<
       default_mid_price_volatility_ratio: params.defaultMidPriceVolatilityRatio,
       min_volatility_ratio: params.minVolatilityRatio,
       last_valid_mark_price: params.lastValidMarkPrice,
-      allowed_subscription_types: params.allowedSubscriptionTypes,
       allowed_redemption_types: params.allowedRedemptionTypes,
+      position_pnl_penalty: params.positionPnlPenalty,
+      redemption_lock_time: params.redemptionLockTime,
+      redemption_unlock_time_expiration: params.redemptionUnlockTimeExpiration,
+      master_address: params.masterAddress,
+      owner: params.owner,
     }
   }
 
