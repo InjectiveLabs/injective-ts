@@ -6,6 +6,9 @@ import { ChainGrpcExchangeApi } from '../../../../../client/chain/grpc/ChainGrpc
 import { domainHash, messageHash } from '../../../../../utils/crypto'
 import { cosmosSdkDecToBigNumber } from '../../../../../utils/numbers'
 import keccak256 from 'keccak256'
+import { OrderType } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
+import MsgCreateSpotLimitOrder from '../../msgs/MsgCreateSpotLimitOrder'
+import MsgCreateDerivativeLimitOrder from '../../msgs/MsgCreateDerivativeLimitOrder'
 
 interface OrderInfo {
   subaccountId: string
@@ -17,7 +20,7 @@ interface OrderInfo {
 interface SpotOrder {
   marketId: string
   orderInfo: OrderInfo
-  orderType: string
+  orderType: number
   triggerPrice?: string
 }
 
@@ -130,6 +133,33 @@ const EIP712Types = {
   OrderInfo: OrderInfoType,
 }
 
+const orderTypeToChainOrderType = (orderType: number) => {
+  switch (orderType) {
+    case OrderType.BUY:
+      return '\u0001'
+    case OrderType.SELL:
+      return '\u0002'
+    case OrderType.STOP_BUY:
+      return '\u0003'
+    case OrderType.STOP_SELL:
+      return '\u0004'
+    case OrderType.TAKE_BUY:
+      return '\u0005'
+    case OrderType.TAKE_SELL:
+      return '\u0006'
+    case OrderType.BUY_PO:
+      return '\u0007'
+    case OrderType.SELL_PO:
+      return '\u0008'
+    case OrderType.BUY_ATOMIC:
+      return '\u0009'
+    case OrderType.SELL_ATOMIC:
+      return '\u000A'
+    default:
+      return '\u0001'
+  }
+}
+
 const getEip712ForSpotOrder = (spotOrder: SpotOrder, nonce: number) => {
   return {
     primaryType: spotOrderPrimaryType,
@@ -146,10 +176,10 @@ const getEip712ForSpotOrder = (spotOrder: SpotOrder, nonce: number) => {
         ).toFixed(),
       },
       Salt: nonce.toString(),
-      OrderType: `0x${new BigNumber(spotOrder.orderType).toString(16)}`,
+      OrderType: orderTypeToChainOrderType(spotOrder.orderType),
       TriggerPrice: spotOrder.triggerPrice
-        ? cosmosSdkDecToBigNumber(spotOrder.triggerPrice)
-        : '',
+        ? cosmosSdkDecToBigNumber(spotOrder.triggerPrice).toFixed()
+        : '0.000000000000000000',
     },
   }
 }
@@ -175,10 +205,10 @@ const getEip712ForDerivativeOrder = (
         ).toFixed(),
       },
       Margin: cosmosSdkDecToBigNumber(derivativeOrder.margin).toFixed(),
-      OrderType: `0x${new BigNumber(derivativeOrder.orderType).toString(16)}`,
+      OrderType: orderTypeToChainOrderType(derivativeOrder.orderType),
       TriggerPrice: derivativeOrder.triggerPrice
-        ? cosmosSdkDecToBigNumber(derivativeOrder.triggerPrice)
-        : '',
+        ? cosmosSdkDecToBigNumber(derivativeOrder.triggerPrice).toFixed()
+        : '0.000000000000000000',
       Salt: nonce.toString(),
     },
   }
@@ -190,6 +220,8 @@ export class OrderHashManager {
   public address: string
 
   public network: Network
+
+  public nonce: number = 0
 
   constructor({
     network,
@@ -205,6 +237,18 @@ export class OrderHashManager {
     this.subaccountIndex = subaccountIndex
   }
 
+  public incrementNonce() {
+    this.nonce += 1
+  }
+
+  public setNonce(nonce: number) {
+    this.nonce = nonce
+  }
+
+  /**
+   * Keep in mind that the order params have to be transformed
+   * in proper format that's supported on the chain
+   */
   async getOrderHashes({
     spotOrders = [],
     derivativeOrders = [],
@@ -218,13 +262,17 @@ export class OrderHashManager {
       )
     }
 
-    const { nonce } = await this.getSubaccountNonce()
+    await this.initSubaccountNonce()
 
     const spotOrderHashes = spotOrders.map((order) => {
-      return this.hashTypedData(getEip712ForSpotOrder(order, nonce))
+      return this.incrementNonceAndReturn(
+        this.hashTypedData(getEip712ForSpotOrder(order, this.nonce)),
+      )
     })
     const derivativeOrderHashes = derivativeOrders.map((order) => {
-      return this.hashTypedData(getEip712ForDerivativeOrder(order, nonce))
+      return this.incrementNonceAndReturn(
+        this.hashTypedData(getEip712ForDerivativeOrder(order, this.nonce)),
+      )
     })
 
     return {
@@ -233,31 +281,130 @@ export class OrderHashManager {
     }
   }
 
+  /**
+   * Keep in mind that the order params have to be transformed
+   * in proper format that's supported on the chain
+   */
   async getDerivativeOrderHashes(orders: DerivativeOrder[]): Promise<string[]> {
     if (orders.length === 0) {
       throw new GeneralException(new Error('Please provide orders'))
     }
 
-    const { nonce } = await this.getSubaccountNonce()
+    await this.initSubaccountNonce()
 
     return orders.map((order) => {
-      return this.hashTypedData(getEip712ForDerivativeOrder(order, nonce))
+      return this.incrementNonceAndReturn(
+        this.hashTypedData(getEip712ForDerivativeOrder(order, this.nonce)),
+      )
     })
   }
 
+  /**
+   * Keep in mind that the order params have to be transformed
+   * in proper format that's supported on the chain
+   */
   async getSpotOrderHashes(orders: SpotOrder[]): Promise<string[]> {
     if (orders.length === 0) {
       throw new GeneralException(new Error('Please provide orders'))
     }
 
-    const { nonce } = await this.getSubaccountNonce()
+    await this.initSubaccountNonce()
 
     return orders.map((order) => {
-      return this.hashTypedData(getEip712ForSpotOrder(order, nonce))
+      return this.incrementNonceAndReturn(
+        this.hashTypedData(getEip712ForSpotOrder(order, this.nonce)),
+      )
     })
   }
 
-  private getSubaccountNonce() {
+  async getSpotOrderHashFromMsg(msg: MsgCreateSpotLimitOrder): Promise<string> {
+    await this.initSubaccountNonce()
+
+    const proto = msg.toProto()
+    const order = proto.getOrder()
+
+    if (!order) {
+      throw new GeneralException(
+        new Error('The MsgCreateSpotLimitOrder is not complete'),
+      )
+    }
+
+    const orderInfo = order.getOrderInfo()
+
+    if (!orderInfo) {
+      throw new GeneralException(
+        new Error('The MsgCreateSpotLimitOrder is not complete'),
+      )
+    }
+
+    return this.incrementNonceAndReturn(
+      this.hashTypedData(
+        getEip712ForSpotOrder(
+          {
+            marketId: order.getMarketId(),
+            orderInfo: {
+              subaccountId: orderInfo.getSubaccountId(),
+              feeRecipient: orderInfo.getFeeRecipient(),
+              price: orderInfo.getPrice(),
+              quantity: orderInfo.getQuantity(),
+            },
+            orderType: order.getOrderType(),
+            triggerPrice: order.getTriggerPrice(),
+          },
+          this.nonce,
+        ),
+      ),
+    )
+  }
+
+  async getDerivativeOrderHashFromMsg(
+    msg: MsgCreateDerivativeLimitOrder,
+  ): Promise<string> {
+    await this.initSubaccountNonce()
+
+    const proto = msg.toProto()
+    const order = proto.getOrder()
+
+    if (!order) {
+      throw new GeneralException(
+        new Error('The MsgCreateDerivativeLimitOrder is not complete'),
+      )
+    }
+
+    const orderInfo = order.getOrderInfo()
+
+    if (!orderInfo) {
+      throw new GeneralException(
+        new Error('The MsgCreateDerivativeLimitOrder is not complete'),
+      )
+    }
+
+    return this.incrementNonceAndReturn(
+      this.hashTypedData(
+        getEip712ForDerivativeOrder(
+          {
+            marketId: order.getMarketId(),
+            orderInfo: {
+              subaccountId: orderInfo.getSubaccountId(),
+              feeRecipient: orderInfo.getFeeRecipient(),
+              price: orderInfo.getPrice(),
+              quantity: orderInfo.getQuantity(),
+            },
+            margin: order.getMargin(),
+            orderType: order.getOrderType(),
+            triggerPrice: order.getTriggerPrice(),
+          },
+          this.nonce,
+        ),
+      ),
+    )
+  }
+
+  private async initSubaccountNonce() {
+    if (this.nonce) {
+      return
+    }
+
     const { network, subaccountIndex, address } = this
 
     const endpoints = getNetworkEndpoints(network)
@@ -265,7 +412,11 @@ export class OrderHashManager {
     const subaccountId =
       Address.fromBech32(address).getSubaccountId(subaccountIndex)
 
-    return chainGrpcExchangeApi.fetchSubaccountTradeNonce(subaccountId)
+    const { nonce } = await chainGrpcExchangeApi.fetchSubaccountTradeNonce(
+      subaccountId,
+    )
+
+    this.nonce = nonce
   }
 
   private hashTypedData(eip712: any) {
@@ -281,5 +432,11 @@ export class OrderHashManager {
     } catch (e) {
       return ''
     }
+  }
+
+  private incrementNonceAndReturn<T>(result: T): T {
+    this.incrementNonce()
+
+    return result
   }
 }

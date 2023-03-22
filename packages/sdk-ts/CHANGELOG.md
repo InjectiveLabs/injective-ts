@@ -3,27 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.10.0-alpha.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.0-alpha.11...@injectivelabs/sdk-ts@1.10.0-alpha.12) (2023-03-21)
-
-**Note:** Version bump only for package @injectivelabs/sdk-ts
-
-
-
-
-
-# [1.10.0-alpha.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.496...@injectivelabs/sdk-ts@1.10.0-alpha.11) (2023-03-21)
+## [1.0.497](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.496...@injectivelabs/sdk-ts@1.0.497) (2023-03-22)
 
 
 ### Bug Fixes
 
-* circular deps ([fc41599](https://github.com/InjectiveLabs/injective-ts/commit/fc415999e4494085d86924736f4dae6d77b2487a))
-* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
-* grpc error handling ([40fb0fd](https://github.com/InjectiveLabs/injective-ts/commit/40fb0fde7a8cece703d2c7c223793b0afdaeb353))
-* minor ([aa83920](https://github.com/InjectiveLabs/injective-ts/commit/aa839202286c892b619500757bbe81c206b66157))
-* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
-* minor tests ([0f9baf1](https://github.com/InjectiveLabs/injective-ts/commit/0f9baf1753525018ecf352f498e2cea99f43a3df))
-* sign mode ([5597703](https://github.com/InjectiveLabs/injective-ts/commit/55977038b418fea25578a985a6cf791a5155be83))
-* types for createTransaction ([b08b76d](https://github.com/InjectiveLabs/injective-ts/commit/b08b76dc71a83822ddb101657ef69e5e6994085b))
+* order hash manager ([f29c236](https://github.com/InjectiveLabs/injective-ts/commit/f29c236bfd4bd1b82bc34d523c6ea92f82cae0fc))
+
+
+
+
+
+## [1.0.496](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.0.495...@injectivelabs/sdk-ts@1.0.496) (2023-03-21)
 
 
 ### Features
