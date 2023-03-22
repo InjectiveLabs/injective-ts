@@ -1,3 +1,4 @@
+import { Any } from 'google-protobuf/google/protobuf/any_pb'
 import { BroadcastModeMap } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/service_pb'
 import {
   SignDoc,
@@ -60,7 +61,7 @@ export type MsgArg = {
 }
 
 export interface SignerDetails {
-  pubKey: string // the pubKey of the signer of the transaction in base64
+  pubKey: string | Any // the pubKey of the signer of the transaction in base64 or protobuf Any
   sequence: number // the sequence (nonce) of the signer of the transaction
   accountNumber: number // the account number of the signer of the transaction
 }
