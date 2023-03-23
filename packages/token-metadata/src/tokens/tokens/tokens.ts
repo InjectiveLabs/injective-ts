@@ -1237,7 +1237,7 @@ export default {
     name: 'Arbitrum',
     symbol: 'ARB',
     decimals: 18,
-    logo: 'arb.svg',
+    logo: 'arb.png',
     coinGeckoId: 'arbitrum',
 
     erc20: {
