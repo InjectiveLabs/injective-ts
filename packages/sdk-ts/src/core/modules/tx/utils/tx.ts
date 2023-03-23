@@ -7,6 +7,7 @@ import {
   CosmosCryptoSecp256k1Keys,
   CosmosTxSigningV1Beta1Signing,
   CosmosTxV1Beta1Tx,
+  GoogleProtobufAny,
   InjectiveTypesV1TxExt,
 } from '@injectivelabs/core-proto-ts'
 
@@ -15,8 +16,12 @@ export const getPublicKey = ({
   key,
 }: {
   chainId: string
-  key: string
+  key: string | GoogleProtobufAny.Any
 }) => {
+  if (typeof key !== 'string') {
+    return key
+  }
+
   let proto
   let path
   let baseProto
@@ -99,7 +104,7 @@ export const createSigners = ({
   signers,
 }: {
   chainId: string
-  signers: { pubKey: string; sequence: number }[]
+  signers: { pubKey: string | GoogleProtobufAny.Any; sequence: number }[]
   mode: CosmosTxSigningV1Beta1Signing.SignMode
 }) => {
   return signers.map((s) =>
@@ -119,7 +124,7 @@ export const createSignerInfo = ({
   mode,
 }: {
   chainId: string
-  publicKey: string
+  publicKey: string | GoogleProtobufAny.Any
   sequence: number
   mode: CosmosTxSigningV1Beta1Signing.SignMode
 }) => {

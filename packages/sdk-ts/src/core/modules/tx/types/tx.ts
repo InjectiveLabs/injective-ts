@@ -4,6 +4,7 @@ import {
   CosmosTxV1Beta1Tx,
   CosmosTxV1Beta1Service,
   CosmosTxSigningV1Beta1Signing,
+  GoogleProtobufAny,
 } from '@injectivelabs/core-proto-ts'
 
 export interface TxClientBroadcastOptions {
@@ -62,7 +63,7 @@ export type MsgArg = {
 }
 
 export interface SignerDetails {
-  pubKey: string // the pubKey of the signer of the transaction in base64
+  pubKey: string | GoogleProtobufAny.Any // the pubKey of the signer of the transaction in base64 or protobuf Any
   sequence: number // the sequence (nonce) of the signer of the transaction
   accountNumber: number // the account number of the signer of the transaction
 }
