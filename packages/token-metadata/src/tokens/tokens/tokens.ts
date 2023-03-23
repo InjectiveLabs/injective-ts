@@ -1232,4 +1232,24 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  ARB: {
+    name: 'Arbitrum',
+    symbol: 'ARB',
+    decimals: 18,
+    logo: 'arb.svg',
+    coinGeckoId: 'arbitrum',
+
+    erc20: {
+      decimals: 18,
+      address: '0x912ce59144191c1204e64559fe8253a0e49e6548',
+      tokenType: TokenType.Erc20,
+    },
+
+    cw20: {
+      decimals: 8,
+      address: 'inj1d5vz0uzwlpfvgwrwulxg6syy82axa58y4fuszd',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>
