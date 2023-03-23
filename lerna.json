@@ -6,7 +6,7 @@
   "useWorkspaces": true,
   "command": {
     "version": {
-      "message": "chore(release): ESM version"
+      "message": "chore(release): publish"
     },
     "publish": {
       "conventionalCommits": true
