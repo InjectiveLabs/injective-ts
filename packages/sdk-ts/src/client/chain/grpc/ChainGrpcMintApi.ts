@@ -1,13 +1,4 @@
-import { Query as MintQuery } from '@injectivelabs/chain-api/cosmos/mint/v1beta1/query_pb_service'
-import {
-  QueryInflationRequest,
-  QueryParamsRequest as QueryMintParamsRequest,
-  QueryParamsResponse as QueryMintParamsResponse,
-  QueryInflationResponse,
-  QueryAnnualProvisionsRequest,
-  QueryAnnualProvisionsResponse,
-} from '@injectivelabs/chain-api/cosmos/mint/v1beta1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer'
@@ -16,29 +7,37 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcMintApi extends BaseConsumer {
+export class ChainGrpcMintApi {
   protected module: string = ChainModule.Mint
 
+  protected client: CosmosMintV1Beta1Query.QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new CosmosMintV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
+  }
+
   async fetchModuleParams() {
-    const request = new QueryMintParamsRequest()
+    const request = CosmosMintV1Beta1Query.QueryParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryMintParamsRequest,
-        QueryMintParamsResponse,
-        typeof MintQuery.Params
-      >(request, MintQuery.Params)
+      const response = await this.client.Params(request)
 
       return ChainGrpcMintTransformer.moduleParamsResponseToModuleParams(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -49,23 +48,22 @@ export class ChainGrpcMintApi extends BaseConsumer {
   }
 
   async fetchInflation() {
-    const request = new QueryInflationRequest()
+    const request = CosmosMintV1Beta1Query.QueryInflationRequest.create()
 
     try {
-      const response = await this.request<
-        QueryInflationRequest,
-        QueryInflationResponse,
-        typeof MintQuery.Inflation
-      >(request, MintQuery.Inflation)
+      const response = await this.client.Inflation(request)
 
       return {
         inflation: cosmosSdkDecToBigNumber(
-          new BigNumberInBase(uint8ArrayToString(response.getInflation())),
+          new BigNumberInBase(uint8ArrayToString(response.inflation)),
         ).toFixed(),
       }
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -76,25 +74,22 @@ export class ChainGrpcMintApi extends BaseConsumer {
   }
 
   async fetchAnnualProvisions() {
-    const request = new QueryAnnualProvisionsRequest()
+    const request = CosmosMintV1Beta1Query.QueryAnnualProvisionsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryAnnualProvisionsRequest,
-        QueryAnnualProvisionsResponse,
-        typeof MintQuery.AnnualProvisions
-      >(request, MintQuery.AnnualProvisions)
+      const response = await this.client.AnnualProvisions(request)
 
       return {
         annualProvisions: cosmosSdkDecToBigNumber(
-          new BigNumberInBase(
-            uint8ArrayToString(response.getAnnualProvisions()),
-          ),
+          new BigNumberInBase(uint8ArrayToString(response.annualProvisions)),
         ).toFixed(),
       }
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

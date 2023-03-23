@@ -1,38 +1,41 @@
-import { Query as IBCQuery } from '@injectivelabs/chain-api/ibc/applications/transfer/v1/query_pb_service'
-import {
-  QueryDenomTraceRequest,
-  QueryDenomTraceResponse,
-  QueryDenomTracesRequest,
-  QueryDenomTracesResponse,
-} from '@injectivelabs/chain-api/ibc/applications/transfer/v1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { IbcApplicationsTransferV1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcIbcApi extends BaseConsumer {
+export class ChainGrpcIbcApi {
   protected module: string = ChainModule.Ibc
 
+  protected client: IbcApplicationsTransferV1Query.QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new IbcApplicationsTransferV1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
+  }
+
   async fetchDenomTrace(hash: string) {
-    const request = new QueryDenomTraceRequest()
-    request.setHash(hash)
+    const request =
+      IbcApplicationsTransferV1Query.QueryDenomTraceRequest.create()
+
+    request.hash = hash
 
     try {
-      const response = await this.request<
-        QueryDenomTraceRequest,
-        QueryDenomTraceResponse,
-        typeof IBCQuery.DenomTrace
-      >(request, IBCQuery.DenomTrace)
+      const response = await this.client.DenomTrace(request)
 
-      return response.getDenomTrace()!.toObject()
+      return response.denomTrace!
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -43,19 +46,19 @@ export class ChainGrpcIbcApi extends BaseConsumer {
   }
 
   async fetchDenomsTrace() {
-    const request = new QueryDenomTracesRequest()
+    const request =
+      IbcApplicationsTransferV1Query.QueryDenomTracesRequest.create()
 
     try {
-      const response = await this.request<
-        QueryDenomTracesRequest,
-        QueryDenomTracesResponse,
-        typeof IBCQuery.DenomTraces
-      >(request, IBCQuery.DenomTraces)
+      const response = await this.client.DenomTraces(request)
 
-      return response.getDenomTracesList().map((trace) => trace.toObject())
+      return response.denomTraces
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

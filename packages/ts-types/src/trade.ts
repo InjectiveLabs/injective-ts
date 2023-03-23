@@ -18,9 +18,26 @@ export enum TradeDirection {
 }
 
 export enum OrderState {
+  Unfilled = 'unfilled',
   Booked = 'booked',
+  PartialFilled = 'partial_filled',
   PartiallyFilled = 'partially_filled',
   Filled = 'filled',
   Canceled = 'canceled',
-  Triggered = 'triggered'
+  Triggered = 'triggered',
+}
+
+export enum OrderSide {
+  Unspecified = 'unspecified',
+  Buy = 'buy',
+  Sell = 'sell',
+  StopBuy = 'stop_buy',
+  StopSell = 'stop_sell',
+  TakeBuy = 'take_buy',
+  TakeSell = 'take_sell',
+  BuyPO = 'buy_po',
+  SellPO = 'sell_po',
+  BuyAtomic = 'buy_atomic',
+  SellAtomic = 'sell_atomic',
+  Unrecognized = 'unrecognized',
 }

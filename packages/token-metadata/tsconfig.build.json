@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./dist",
+    "outDir": "./dist/cjs",
     "tsBuildInfoFile": "../../.build-cache/token-metadata.tsbuildinfo"
   },
   "include": [
@@ -13,9 +13,6 @@
     "./src/**/*.test.ts"
   ],
   "references": [
-    {
-      "path": "../ts-types/tsconfig.build.json"
-    },
     {
       "path": "../networks/tsconfig.build.json"
     },

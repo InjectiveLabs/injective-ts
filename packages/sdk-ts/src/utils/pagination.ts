@@ -1,36 +1,36 @@
-import { PageRequest } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
 import { ExchangePagination, PaginationOption } from '../types/pagination'
 import { Pagination, PagePagination } from '../types/pagination'
-import { PageResponse } from '@injectivelabs/chain-api/cosmos/base/query/v1beta1/pagination_pb'
-import { Paging } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
+import { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,
-): PageRequest | undefined => {
-  const paginationForRequest = new PageRequest()
+): CosmosBaseQueryV1Beta1Pagination.PageRequest | undefined => {
+  const paginationForRequest =
+    CosmosBaseQueryV1Beta1Pagination.PageRequest.create()
 
   if (!pagination) {
     return
   }
 
   if (pagination.key) {
-    paginationForRequest.setKey(pagination.key)
+    paginationForRequest.key = Buffer.from(pagination.key, 'base64')
   }
 
   if (pagination.limit !== undefined) {
-    paginationForRequest.setLimit(pagination.limit)
+    paginationForRequest.limit = pagination.limit.toString()
   }
 
   if (pagination.offset !== undefined) {
-    paginationForRequest.setOffset(pagination.offset)
+    paginationForRequest.offset = pagination.offset.toString()
   }
 
   if (pagination.reverse !== undefined) {
-    paginationForRequest.setReverse(pagination.reverse)
+    paginationForRequest.reverse = pagination.reverse
   }
 
   if (pagination.countTotal !== undefined) {
-    paginationForRequest.setCountTotal(pagination.countTotal)
+    paginationForRequest.countTotal = pagination.countTotal
   }
 
   return paginationForRequest
@@ -95,20 +95,18 @@ export const pageResponseToPagination = ({
 }
 
 export const grpcPaginationToPagination = (
-  pagination: PageResponse | undefined,
+  pagination: CosmosBaseQueryV1Beta1Pagination.PageResponse | undefined,
 ): Pagination => {
   return {
     total: pagination
-      ? parseInt(paginationUint8ArrayToString(pagination.getTotal()), 10)
+      ? parseInt(paginationUint8ArrayToString(pagination.total), 10)
       : 0,
-    next: pagination
-      ? paginationUint8ArrayToString(pagination.getNextKey_asB64())
-      : '',
+    next: pagination ? paginationUint8ArrayToString(pagination.nextKey) : '',
   }
 }
 
 export const grpcPagingToPaging = (
-  pagination: Paging | undefined,
+  pagination: InjectiveExplorerRpc.Paging | undefined,
 ): ExchangePagination => {
   if (!pagination) {
     return {
@@ -119,8 +117,9 @@ export const grpcPagingToPaging = (
   }
 
   return {
-    ...pagination.toObject(),
-    to: pagination.getTo() || 0,
-    from: pagination.getFrom() || 0,
+    ...pagination,
+    to: parseInt(pagination.to.toString() || '0', 10),
+    from: parseInt(pagination.from.toString() || '0', 10),
+    total: parseInt(pagination.total || '0', 10),
   }
 }

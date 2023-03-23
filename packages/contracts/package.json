@@ -1,10 +1,10 @@
 {
   "name": "@injectivelabs/contracts",
   "description": "Contracts wrapper that can be reused throughout Injective's projects.",
-  "version": "1.0.117",
+  "version": "1.10.0-alpha.4",
   "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
@@ -17,12 +17,11 @@
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
-    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build:post": "shx cp ../../stub/package.json.stub dist/cjs/package.json && shx cp ../../stub/package.esm.json.stub dist/esm/package.json",
+    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
-    "test:unit": "jest test/unit",
-    "test:integration": "jest test/unit",
     "test:watch": "jest --watch",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
@@ -31,10 +30,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.0.62",
-    "@injectivelabs/networks": "^1.0.99",
-    "@injectivelabs/ts-types": "^1.0.33",
-    "@injectivelabs/utils": "^1.0.87",
+    "@injectivelabs/exceptions": "^1.10.0-alpha.2",
+    "@injectivelabs/networks": "^1.10.0-alpha.4",
+    "@injectivelabs/ts-types": "^1.10.0-alpha.2",
+    "@injectivelabs/utils": "^1.10.0-alpha.4",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.3",
     "web3": "^1.7.2",

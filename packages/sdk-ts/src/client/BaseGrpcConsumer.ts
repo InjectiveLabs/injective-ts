@@ -6,7 +6,6 @@ import { getGrpcTransport } from '../utils/grpc'
 if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
 }
-
 /**
  * @hidden
  */

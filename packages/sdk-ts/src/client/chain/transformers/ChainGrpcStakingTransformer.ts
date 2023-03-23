@@ -1,15 +1,5 @@
 import { BigNumberInWei } from '@injectivelabs/utils'
 import {
-  QueryDelegatorDelegationsResponse,
-  QueryDelegatorUnbondingDelegationsResponse,
-  QueryRedelegationsResponse,
-  QueryValidatorsResponse,
-  QueryDelegationResponse,
-  QueryValidatorResponse,
-  QueryParamsResponse as QueryStakingParamsResponse,
-  QueryPoolResponse,
-} from '@injectivelabs/chain-api/cosmos/staking/v1beta1/query_pb'
-import {
   GrpcValidator,
   GrpcValidatorCommission,
   GrpcValidatorDescription,
@@ -26,98 +16,93 @@ import {
 import { cosmosSdkDecToBigNumber, DUST_AMOUNT } from '../../../utils'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { Pagination } from '../../../types/index'
+import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcStakingTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryStakingParamsResponse,
+    response: CosmosStakingV1Beta1Query.QueryParamsResponse,
   ): StakingModuleParams {
-    const params = response.getParams()!
+    const params = response.params!
 
     return {
-      unbondingTime: params.getUnbondingTime()!.getSeconds(),
-      maxValidators: params.getMaxValidators(),
-      maxEntries: params.getMaxEntries(),
-      historicalEntries: params.getHistoricalEntries(),
-      bondDenom: params.getBondDenom(),
+      unbondingTime: parseInt(params.unbondingTime!.seconds, 10),
+      maxValidators: params.maxValidators,
+      maxEntries: params.maxEntries,
+      historicalEntries: params.historicalEntries,
+      bondDenom: params.bondDenom,
     }
   }
 
   static validatorResponseToValidator(
-    response: QueryValidatorResponse,
+    response: CosmosStakingV1Beta1Query.QueryValidatorResponse,
   ): Validator {
     return ChainGrpcStakingTransformer.grpcValidatorToValidator(
-      response.getValidator()!,
+      response.validator!,
     )
   }
 
-  static validatorsResponseToValidators(response: QueryValidatorsResponse): {
+  static validatorsResponseToValidators(
+    response: CosmosStakingV1Beta1Query.QueryValidatorsResponse,
+  ): {
     validators: Validator[]
     pagination: Pagination
   } {
-    const validators = response
-      .getValidatorsList()
-      .map((validator) =>
-        ChainGrpcStakingTransformer.grpcValidatorToValidator(validator),
-      )
+    const validators = response.validators.map((validator) =>
+      ChainGrpcStakingTransformer.grpcValidatorToValidator(validator),
+    )
 
     return {
       validators,
-      pagination: grpcPaginationToPagination(response.getPagination()!),
+      pagination: grpcPaginationToPagination(response.pagination!),
     }
   }
 
   static delegationResponseToDelegation(
-    response: QueryDelegationResponse,
+    response: CosmosStakingV1Beta1Query.QueryDelegationResponse,
   ): Delegation {
-    const grpcDelegation = response.getDelegationResponse()!
-    const delegation = grpcDelegation.getDelegation()
-    const balance = grpcDelegation.getBalance()
+    const grpcDelegation = response.delegationResponse!
+    const delegation = grpcDelegation.delegation
+    const balance = grpcDelegation.balance
 
     return {
       delegation: {
-        delegatorAddress: delegation ? delegation.getDelegatorAddress() : '',
-        validatorAddress: delegation ? delegation.getValidatorAddress() : '',
+        delegatorAddress: delegation ? delegation.delegatorAddress : '',
+        validatorAddress: delegation ? delegation.validatorAddress : '',
         shares: cosmosSdkDecToBigNumber(
-          delegation ? delegation.getShares() : 0,
+          delegation ? delegation.shares : 0,
         ).toFixed(),
       },
       balance: {
-        denom: balance ? balance.getDenom() : '',
-        amount: new BigNumberInWei(balance ? balance.getAmount() : 0).toFixed(),
+        denom: balance ? balance.denom : '',
+        amount: new BigNumberInWei(balance ? balance.amount : 0).toFixed(),
       },
     }
   }
 
   static delegationsResponseToDelegations(
-    response: QueryDelegatorDelegationsResponse,
+    response: CosmosStakingV1Beta1Query.QueryDelegatorDelegationsResponse,
   ): { delegations: Delegation[]; pagination: Pagination } {
-    const grpcDelegations = response.getDelegationResponsesList()
+    const grpcDelegations = response.delegationResponses
 
     const delegations = grpcDelegations
       .map((grpcDelegator) => {
-        const delegation = grpcDelegator.getDelegation()
-        const balance = grpcDelegator.getBalance()
+        const delegation = grpcDelegator.delegation
+        const balance = grpcDelegator.balance
 
         return {
           delegation: {
-            delegatorAddress: delegation
-              ? delegation.getDelegatorAddress()
-              : '',
-            validatorAddress: delegation
-              ? delegation.getValidatorAddress()
-              : '',
+            delegatorAddress: delegation ? delegation.delegatorAddress : '',
+            validatorAddress: delegation ? delegation.validatorAddress : '',
             shares: cosmosSdkDecToBigNumber(
-              delegation ? delegation.getShares() : 0,
+              delegation ? delegation.shares : 0,
             ).toFixed(),
           },
           balance: {
-            denom: balance ? balance.getDenom() : '',
-            amount: new BigNumberInWei(
-              balance ? balance.getAmount() : 0,
-            ).toFixed(),
+            denom: balance ? balance.denom : '',
+            amount: new BigNumberInWei(balance ? balance.amount : 0).toFixed(),
           },
         }
       })
@@ -127,34 +112,33 @@ export class ChainGrpcStakingTransformer {
 
     return {
       delegations,
-      pagination: grpcPaginationToPagination(response.getPagination()),
+      pagination: grpcPaginationToPagination(response.pagination),
     }
   }
 
   static unBondingDelegationsResponseToUnBondingDelegations(
-    response: QueryDelegatorUnbondingDelegationsResponse,
+    response: CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsResponse,
   ): {
     unbondingDelegations: UnBondingDelegation[]
     pagination: Pagination
   } {
-    const grpcUnbondingDelegations = response.getUnbondingResponsesList()
+    const grpcUnbondingDelegations = response.unbondingResponses
 
     const unbondingDelegations = grpcUnbondingDelegations
       .reduce((unbondingDelegations, grpcUnBondingDelegation) => {
-        const entries = grpcUnBondingDelegation.getEntriesList()
+        const entries = grpcUnBondingDelegation.entries
+
         const mappedEntries = entries.map((entry) => ({
           delegatorAddress: grpcUnBondingDelegation
-            ? grpcUnBondingDelegation.getDelegatorAddress()
+            ? grpcUnBondingDelegation.delegatorAddress
             : '',
           validatorAddress: grpcUnBondingDelegation
-            ? grpcUnBondingDelegation.getValidatorAddress()
+            ? grpcUnBondingDelegation.validatorAddress
             : '',
-          creationHeight: entry.getCreationHeight(),
-          completionTime: entry.getCompletionTime()!.getSeconds(),
-          initialBalance: new BigNumberInWei(
-            entry.getInitialBalance(),
-          ).toFixed(),
-          balance: new BigNumberInWei(entry.getBalance()).toFixed(),
+          creationHeight: parseInt(entry.creationHeight, 10),
+          completionTime: Math.floor(entry.completionTime!.getTime() / 1000),
+          initialBalance: new BigNumberInWei(entry.initialBalance).toFixed(),
+          balance: new BigNumberInWei(entry.balance).toFixed(),
         }))
 
         return [...unbondingDelegations, ...mappedEntries]
@@ -165,44 +149,47 @@ export class ChainGrpcStakingTransformer {
 
     return {
       unbondingDelegations,
-      pagination: grpcPaginationToPagination(response.getPagination()),
+      pagination: grpcPaginationToPagination(response.pagination),
     }
   }
 
   static reDelegationsResponseToReDelegations(
-    response: QueryRedelegationsResponse,
+    response: CosmosStakingV1Beta1Query.QueryRedelegationsResponse,
   ): { redelegations: ReDelegation[]; pagination: Pagination } {
-    const grpcReDelegations = response.getRedelegationResponsesList()
+    const grpcReDelegations = response.redelegationResponses
 
     const redelegations = grpcReDelegations
-      .reduce((uiReDelegator, grpcReDelegation) => {
-        const grpcRedelegation = grpcReDelegation.getRedelegation()!
-        const entries = grpcReDelegation.getEntriesList()
+      .reduce((uiReDelegator, grpcReDelegationCurrent) => {
+        const grpcRedelegation = grpcReDelegationCurrent.redelegation!
 
-        if (!grpcReDelegation) {
+        if (!grpcRedelegation) {
           return uiReDelegator
         }
 
-        const uiRedelegations = entries.reduce((acc, redelegation) => {
-          const entry = redelegation.getRedelegationEntry()
-
-          return [
-            ...acc,
-            {
-              delegation: {
-                completionTime: entry
-                  ? entry.getCompletionTime()!.getSeconds()
-                  : 0,
-                delegatorAddress: grpcRedelegation.getDelegatorAddress() || '',
-                sourceValidatorAddress:
-                  grpcRedelegation.getValidatorSrcAddress() || '',
-                destinationValidatorAddress:
-                  grpcRedelegation?.getValidatorDstAddress() || '',
+        const uiRedelegations = grpcReDelegationCurrent.entries.reduce(
+          (acc, entry) => {
+            return [
+              ...acc,
+              {
+                delegation: {
+                  completionTime: entry.redelegationEntry
+                    ? Math.floor(
+                        entry.redelegationEntry.completionTime!.getTime() /
+                          1000,
+                      )
+                    : 0,
+                  delegatorAddress: grpcRedelegation.delegatorAddress || '',
+                  sourceValidatorAddress:
+                    grpcRedelegation.validatorSrcAddress || '',
+                  destinationValidatorAddress:
+                    grpcRedelegation?.validatorDstAddress || '',
+                },
+                balance: new BigNumberInWei(entry.balance).toFixed(),
               },
-              balance: new BigNumberInWei(redelegation.getBalance()).toFixed(),
-            },
-          ]
-        }, [] as ReDelegation[])
+            ]
+          },
+          [] as ReDelegation[],
+        )
 
         return [...uiReDelegator, ...uiRedelegations]
       }, [] as ReDelegation[])
@@ -212,37 +199,39 @@ export class ChainGrpcStakingTransformer {
 
     return {
       redelegations,
-      pagination: grpcPaginationToPagination(response.getPagination()),
+      pagination: grpcPaginationToPagination(response.pagination),
     }
   }
 
   static grpcValidatorToValidator(validator: GrpcValidator): Validator {
     return {
-      operatorAddress: validator.getOperatorAddress(),
-      jailed: validator.getJailed(),
+      operatorAddress: validator.operatorAddress,
+      jailed: validator.jailed,
       status: ChainGrpcStakingTransformer.grpcValidatorStatusToStatus(
-        validator.getStatus(),
+        validator.status,
       ),
-      tokens: cosmosSdkDecToBigNumber(validator.getTokens()).toFixed(),
+      tokens: cosmosSdkDecToBigNumber(validator.tokens).toFixed(),
       delegatorShares: cosmosSdkDecToBigNumber(
-        validator.getDelegatorShares(),
+        validator.delegatorShares,
       ).toFixed(),
       description:
         ChainGrpcStakingTransformer.grpcValidatorDescriptionToDescription(
-          validator.getDescription(),
+          validator.description,
         ),
-      unbondingHeight: validator.getUnbondingHeight(),
-      unbondingTime: validator.getUnbondingTime(),
+      unbondingHeight: parseInt(validator.unbondingHeight, 10),
+      unbondingTime: validator.unbondingTime,
       commission:
         ChainGrpcStakingTransformer.grpcValidatorCommissionToCommission(
-          validator.getCommission(),
+          validator.commission,
         ),
-      minSelfDelegation: validator.getMinSelfDelegation(),
+      minSelfDelegation: validator.minSelfDelegation,
     }
   }
 
-  static poolResponseToPool(response: QueryPoolResponse): Pool {
-    const pool = response.getPool()
+  static poolResponseToPool(
+    response: CosmosStakingV1Beta1Query.QueryPoolResponse,
+  ): Pool {
+    const pool = response.pool
 
     if (!pool) {
       return {
@@ -252,10 +241,8 @@ export class ChainGrpcStakingTransformer {
     }
 
     return {
-      notBondedTokens: cosmosSdkDecToBigNumber(
-        pool.getNotBondedTokens(),
-      ).toFixed(),
-      bondedTokens: cosmosSdkDecToBigNumber(pool.getBondedTokens()).toFixed(),
+      notBondedTokens: cosmosSdkDecToBigNumber(pool.notBondedTokens).toFixed(),
+      bondedTokens: cosmosSdkDecToBigNumber(pool.bondedTokens).toFixed(),
     }
   }
 
@@ -263,35 +250,32 @@ export class ChainGrpcStakingTransformer {
     description?: GrpcValidatorDescription,
   ): ValidatorDescription {
     return {
-      moniker: description ? description.getMoniker() : '',
-      identity: description ? description.getIdentity() : '',
-      website: description ? description.getWebsite() : '',
-      securityContact: description ? description.getSecurityContact() : '',
-      details: description ? description.getDetails() : '',
+      moniker: description ? description.moniker : '',
+      identity: description ? description.identity : '',
+      website: description ? description.website : '',
+      securityContact: description ? description.securityContact : '',
+      details: description ? description.details : '',
     }
   }
 
   static grpcValidatorCommissionToCommission(
     commission?: GrpcValidatorCommission,
   ): ValidatorCommission {
-    const commissionRates = commission ? commission.getCommissionRates() : null
+    const commissionRates = commission ? commission.commissionRates : null
 
     return {
       commissionRates: {
         rate: cosmosSdkDecToBigNumber(
-          commissionRates ? commissionRates.getRate() : '0',
+          commissionRates ? commissionRates.rate : '0',
         ).toFixed(),
         maxRate: cosmosSdkDecToBigNumber(
-          commissionRates ? commissionRates.getMaxRate() : '0',
+          commissionRates ? commissionRates.maxRate : '0',
         ).toFixed(),
         maxChangeRate: cosmosSdkDecToBigNumber(
-          commissionRates ? commissionRates.getMaxChangeRate() : '0',
+          commissionRates ? commissionRates.maxChangeRate : '0',
         ).toFixed(),
       },
-
-      updateTime: commission
-        ? new Date(commission.getUpdateTime()!.getSeconds())
-        : new Date(),
+      updateTime: commission ? commission.updateTime! : new Date(),
     }
   }
 

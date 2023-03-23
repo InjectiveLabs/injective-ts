@@ -1,24 +1,21 @@
+import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 import { StreamOperation } from '../../../types'
-import {
-  StreamPricesResponse,
-  StreamPricesByMarketsResponse,
-} from '@injectivelabs/indexer-api/injective_oracle_rpc_pb'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerOracleStreamTransformer {
-  static pricesStreamCallback = (response: StreamPricesResponse) => ({
-    price: response.getPrice(),
+  static pricesStreamCallback = (
+    response: InjectiveOracleRpc.StreamPricesResponse,
+  ) => ({
+    price: response.price,
     operation: StreamOperation.Update as StreamOperation,
-    timestamp: response.getTimestamp(),
+    timestamp: parseInt(response.timestamp, 10),
   })
 
   static pricesByMarketsCallback = (
-    response: StreamPricesByMarketsResponse,
+    response: InjectiveOracleRpc.StreamPricesByMarketsResponse,
   ) => ({
-    price: response.getPrice(),
-    marketId: response.getMarketId(),
-    timestamp: response.getTimestamp(),
+    ...response,
   })
 }

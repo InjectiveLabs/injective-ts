@@ -8,7 +8,6 @@ import {
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
-import Web3 from 'web3'
 import { GAS_LIMIT_MULTIPLIER, INJ_DENOM, TIP_IN_GWEI } from '../../constants'
 import { getTransactionOptions, peggyDenomToContractAddress } from './utils'
 
@@ -21,7 +20,7 @@ export class Web3Composer {
 
   private ethereumChainId: EthereumChainId
 
-  private web3: Web3
+  private web3: ReturnType<typeof createAlchemyWeb3>
 
   constructor({
     ethereumChainId,

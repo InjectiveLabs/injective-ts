@@ -1,23 +1,23 @@
 /* eslint-disable class-methods-use-this */
 import {
-  AccountAddress,
   ChainId,
-  EthereumChainId,
   CosmosChainId,
+  AccountAddress,
+  EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
+  ErrorType,
   UnspecifiedErrorCode,
   CosmosWalletException,
   TransactionException,
-  ErrorType,
 } from '@injectivelabs/exceptions'
 import {
-  createCosmosSignDocFromTransaction,
-  createTxRawFromSigResponse,
+  TxRaw,
   TxResponse,
+  createTxRawFromSigResponse,
+  createCosmosSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import { LeapWallet } from '../../../utils/wallets/leap'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'

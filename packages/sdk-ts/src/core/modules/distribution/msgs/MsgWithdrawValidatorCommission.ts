@@ -1,15 +1,13 @@
-import { MsgWithdrawValidatorCommission as BaseMsgWithdrawValidatorCommission } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import { CosmosDistributionV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgWithdrawValidatorCommission {
   export interface Params {
     validatorAddress: string
   }
 
-  export type Proto = BaseMsgWithdrawValidatorCommission
-
-  export type Object = BaseMsgWithdrawValidatorCommission.AsObject
+  export type Proto = CosmosDistributionV1Beta1Tx.MsgWithdrawValidatorCommission
 }
 
 /**
@@ -17,8 +15,7 @@ export declare namespace MsgWithdrawValidatorCommission {
  */
 export default class MsgWithdrawValidatorCommission extends MsgBase<
   MsgWithdrawValidatorCommission.Params,
-  MsgWithdrawValidatorCommission.Proto,
-  MsgWithdrawValidatorCommission.Object
+  MsgWithdrawValidatorCommission.Proto
 > {
   static fromJSON(
     params: MsgWithdrawValidatorCommission.Params,
@@ -29,8 +26,9 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgWithdrawValidatorCommission()
-    message.setValidatorAddress(params.validatorAddress)
+    const message =
+      CosmosDistributionV1Beta1Tx.MsgWithdrawValidatorCommission.create()
+    message.validatorAddress = params.validatorAddress
 
     return message
   }
@@ -40,14 +38,14 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
 
     return {
       '@type': '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -73,5 +71,11 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
       type: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmosDistributionV1Beta1Tx.MsgWithdrawValidatorCommission.encode(
+      this.toProto(),
+    ).finish()
   }
 }

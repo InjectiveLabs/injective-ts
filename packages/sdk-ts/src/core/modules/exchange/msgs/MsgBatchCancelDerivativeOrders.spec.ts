@@ -1,4 +1,3 @@
-import { MsgBatchCancelDerivativeOrders as BaseMsgBatchCancelDerivativeOrders } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgBatchCancelDerivativeOrders from './MsgBatchCancelDerivativeOrders'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -29,7 +28,7 @@ const ordersWithOrderMask = params.orders.map((order) => ({
 
 const protoParams = {
   sender: params.injectiveAddress,
-  dataList: ordersWithOrderMask,
+  data: ordersWithOrderMask,
 }
 
 const protoParamsAmino = {
@@ -43,8 +42,7 @@ describe('MsgBatchCancelDerivativeOrders', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgBatchCancelDerivativeOrders).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

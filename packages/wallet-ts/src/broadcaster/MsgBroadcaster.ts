@@ -1,24 +1,24 @@
 import {
-  BaseAccount,
-  ChainRestAuthApi,
-  ChainRestTendermintApi,
-  createTransaction,
-  createTransactionWithSigners,
-  createTxRawEIP712,
-  createTxRawFromSigResponse,
-  createWeb3Extension,
-  getEip712TypedData,
-  hexToBase64,
+  TxGrpcApi,
+  TxRestApi,
   hexToBuff,
-  IndexerGrpcTransactionApi,
   PublicKey,
   SIGN_AMINO,
-  TxGrpcApi,
   TxResponse,
+  hexToBase64,
+  BaseAccount,
+  ChainRestAuthApi,
+  createTxRawEIP712,
+  createTransaction,
+  getEip712TypedData,
+  createWeb3Extension,
+  ChainRestTendermintApi,
+  createTransactionWithSigners,
+  createTxRawFromSigResponse,
+  IndexerGrpcTransactionApi,
   getGasPriceBasedOnMessage,
-  TxRestApi,
+  recoverTypedSignaturePubKey,
 } from '@injectivelabs/sdk-ts'
-import { recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts/dist/utils/transaction'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   BigNumberInBase,
@@ -30,7 +30,6 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   getNetworkEndpoints,
   getNetworkInfo,
@@ -49,6 +48,7 @@ import {
 import { isCosmosWallet } from '../utils/wallets/cosmos'
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**
  * This class is used to broadcast transactions
@@ -224,7 +224,7 @@ export class MsgBroadcaster {
     /** Preparing the transaction for client broadcasting */
     const txApi = new TxGrpcApi(endpoints.grpc)
     const { txRaw } = createTransaction({
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       memo: tx.memo,
       signMode: SIGN_AMINO,
       fee: getStdFee(gas),
@@ -249,7 +249,7 @@ export class MsgBroadcaster {
     }
 
     /** Append Signatures */
-    txRawEip712.setSignaturesList([signatureBuff])
+    txRawEip712.signatures = [signatureBuff]
 
     /** Broadcast the transaction */
     const response = await txApi.broadcast(txRawEip712)
@@ -294,7 +294,7 @@ export class MsgBroadcaster {
     })
 
     const signature = await walletStrategy.signEip712TypedData(
-      txResponse.getData(),
+      txResponse.data,
       tx.ethereumAddress,
     )
 
@@ -307,6 +307,8 @@ export class MsgBroadcaster {
 
     return {
       ...response,
+      data: Buffer.from(response.data).toString(),
+      height: parseInt(response.height, 10),
       gasUsed: 0 /** not available from the API */,
       gasWanted: 0 /** not available from the API */,
     } as TxResponse
@@ -361,7 +363,7 @@ export class MsgBroadcaster {
     const { txRaw } = createTransactionWithSigners({
       chainId,
       memo: tx.memo,
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
       signers: {
         pubKey,
@@ -477,7 +479,7 @@ export class MsgBroadcaster {
      */
     const { txRaw } = createTransaction({
       pubKey,
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       memo: aminoSignResponse.signed.memo,
       signMode: SIGN_AMINO,
       fee: aminoSignResponse.signed.fee,
@@ -510,7 +512,7 @@ export class MsgBroadcaster {
       aminoSignResponse.signature.signature,
       'base64',
     )
-    txRawEip712.setSignaturesList([signatureBuff])
+    txRawEip712.signatures = [signatureBuff]
 
     /** Broadcast the transaction */
     const response = await txApi.broadcast(txRawEip712)
@@ -578,7 +580,7 @@ export class MsgBroadcaster {
     const { txRaw } = createTransactionWithSigners({
       chainId,
       memo: tx.memo,
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
       signers: [
         {
@@ -642,11 +644,11 @@ export class MsgBroadcaster {
     txRaw,
     txClient,
   }: {
-    txRaw: TxRaw
+    txRaw: CosmosTxV1Beta1Tx.TxRaw
     txClient: TxGrpcApi | TxRestApi
   }) {
-    const txRawWithSignature = txRaw.clone()
-    txRawWithSignature.setSignaturesList([new Uint8Array(0)])
+    const txRawWithSignature = CosmosTxV1Beta1Tx.TxRaw.fromPartial({ ...txRaw })
+    txRawWithSignature.signatures = [new Uint8Array(0)]
 
     try {
       return await txClient.simulate(txRawWithSignature)

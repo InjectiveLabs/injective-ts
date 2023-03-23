@@ -1,7 +1,9 @@
-import { MsgBid as BaseMsgBid } from '@injectivelabs/chain-api/injective/auction/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveAuctionV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgBid {
   export interface Params {
@@ -13,19 +15,13 @@ export declare namespace MsgBid {
     }
   }
 
-  export type Proto = BaseMsgBid
-
-  export type Object = BaseMsgBid.AsObject
+  export type Proto = InjectiveAuctionV1Beta1Tx.MsgBid
 }
 
 /**
  * @category Messages
  */
-export default class MsgBid extends MsgBase<
-  MsgBid.Params,
-  MsgBid.Proto,
-  MsgBid.Object
-> {
+export default class MsgBid extends MsgBase<MsgBid.Params, MsgBid.Proto> {
   static fromJSON(params: MsgBid.Params): MsgBid {
     return new MsgBid(params)
   }
@@ -33,16 +29,16 @@ export default class MsgBid extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = new Coin()
-    amountCoin.setAmount(params.amount.amount)
-    amountCoin.setDenom(params.amount.denom)
+    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
+    amountCoin.amount = params.amount.amount
+    amountCoin.denom = params.amount.denom
 
-    const message = new BaseMsgBid()
-    message.setSender(params.injectiveAddress)
-    message.setRound(params.round)
-    message.setBidAmount(amountCoin)
+    const message = InjectiveAuctionV1Beta1Tx.MsgBid.create()
+    message.sender = params.injectiveAddress
+    message.round = params.round.toString()
+    message.bidAmount = amountCoin
 
-    return message
+    return InjectiveAuctionV1Beta1Tx.MsgBid.fromPartial(message)
   }
 
   public toData() {
@@ -50,14 +46,14 @@ export default class MsgBid extends MsgBase<
 
     return {
       '@type': '/injective.auction.v1beta1.MsgBid',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -83,5 +79,9 @@ export default class MsgBid extends MsgBase<
       '@type': '/injective.auction.v1beta1.MsgBid',
       ...value,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveAuctionV1Beta1Tx.MsgBid.encode(this.toProto()).finish()
   }
 }

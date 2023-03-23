@@ -1,8 +1,8 @@
-import { Params as GrpcPeggyParams } from '@injectivelabs/chain-api/injective/peggy/v1/genesis_pb'
+import { InjectivePeggyV1Beta1Genesis } from '@injectivelabs/core-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
-export interface PeggyModuleParams extends GrpcPeggyParams.AsObject {
-  valsetReward?: Coin
-}
+export type GrpcPeggyParams = InjectivePeggyV1Beta1Genesis.Params
 
-export { GrpcPeggyParams }
+export interface PeggyModuleParams extends GrpcPeggyParams {
+  valsetReward: Coin
+}

@@ -1,6 +1,7 @@
-import { Params as GrpcMintParams } from '@injectivelabs/chain-api/cosmos/mint/v1beta1/mint_pb'
+import { CosmosMintV1Beta1Mint } from '@injectivelabs/core-proto-ts'
 
-export interface MinModuleParams extends GrpcMintParams.AsObject {
+export type GrpcMintParams = CosmosMintV1Beta1Mint.Params
+
+export interface MinModuleParams extends GrpcMintParams {
   //
 }
-export { GrpcMintParams }

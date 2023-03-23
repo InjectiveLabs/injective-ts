@@ -3,6 +3,73 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0-alpha.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.0-alpha.7...@injectivelabs/token-metadata@1.10.0-alpha.8) (2023-03-22)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+# [1.10.0-alpha.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.0-alpha.6...@injectivelabs/token-metadata@1.10.0-alpha.7) (2023-03-22)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+# [1.10.0-alpha.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.0-alpha.5...@injectivelabs/token-metadata@1.10.0-alpha.6) (2023-03-21)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+# [1.10.0-alpha.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.0-alpha.4...@injectivelabs/token-metadata@1.10.0-alpha.5) (2023-03-18)
+
+
+### Bug Fixes
+
+* avax coingeckoId ([b766b5a](https://github.com/InjectiveLabs/injective-ts/commit/b766b5ab066dfe52cad052f80841b6136a10d5e3))
+
+
+
+
+
+# [1.10.0-alpha.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.0-alpha.3...@injectivelabs/token-metadata@1.10.0-alpha.4) (2023-03-18)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+# [1.10.0-alpha.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.0-alpha.2...@injectivelabs/token-metadata@1.10.0-alpha.3) (2023-03-18)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+# [1.10.0-alpha.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.0-alpha.1...@injectivelabs/token-metadata@1.10.0-alpha.2) (2023-03-18)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+# [1.10.0-alpha.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.0-alpha.0...@injectivelabs/token-metadata@1.10.0-alpha.1) (2023-03-17)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
 ## [1.0.195](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.0.194...@injectivelabs/token-metadata@1.0.195) (2023-03-15)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

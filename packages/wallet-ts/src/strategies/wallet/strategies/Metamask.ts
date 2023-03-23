@@ -12,8 +12,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { TxResponse, isServerSide } from '@injectivelabs/sdk-ts'
+import { TxRaw, TxResponse, isServerSide } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import {
   Eip1993ProviderWithMetamask,

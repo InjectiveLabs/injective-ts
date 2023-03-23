@@ -1,39 +1,14 @@
 import {
-  SpotMarketInfo as GrpcSpotMarketInfo,
-  SpotLimitOrder as GrpcSpotLimitOrder,
-  SpotTrade as GrpcSpotTrade,
-  SpotOrderHistory as GrpcSpotOrderHistory,
-} from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
-import {
-  TradeExecutionType,
+  OrderSide,
+  OrderState,
   TradeDirection,
+  TradeExecutionType,
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { PriceLevel } from './exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
-
-export enum SpotOrderSide {
-  Unspecified = 'unspecified',
-  Buy = 'buy',
-  Sell = 'sell',
-  StopBuy = 'stop_buy',
-  StopSell = 'stop_sell',
-  TakeBuy = 'take_buy',
-  TakeSell = 'take_sell',
-  BuyPO = 'buy_po',
-  SellPO = 'sell_po',
-}
-
-export enum SpotOrderState {
-  Unfilled = 'unfilled',
-  Booked = 'booked',
-  PartialFilled = 'partial_filled',
-  PartiallyFilled = 'partially_filled',
-  Filled = 'filled',
-  Canceled = 'canceled',
-  Triggered = 'triggered',
-}
+import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface SpotMarket {
   marketId: string
@@ -52,11 +27,11 @@ export interface SpotMarket {
 
 export interface SpotLimitOrder {
   orderHash: string
-  orderSide: SpotOrderSide
+  orderSide: OrderSide
   marketId: string
   subaccountId: string
   price: string
-  state: SpotOrderState
+  state: OrderState
   quantity: string
   unfilledQuantity: string
   triggerPrice: string
@@ -113,9 +88,7 @@ export interface BatchSpotOrderCancelParams {
   marketId: string
 }
 
-export {
-  GrpcSpotMarketInfo,
-  GrpcSpotLimitOrder,
-  GrpcSpotOrderHistory,
-  GrpcSpotTrade,
-}
+export type GrpcSpotTrade = InjectiveSpotExchangeRpc.SpotTrade
+export type GrpcSpotMarketInfo = InjectiveSpotExchangeRpc.SpotMarketInfo
+export type GrpcSpotLimitOrder = InjectiveSpotExchangeRpc.SpotLimitOrder
+export type GrpcSpotOrderHistory = InjectiveSpotExchangeRpc.SpotOrderHistory

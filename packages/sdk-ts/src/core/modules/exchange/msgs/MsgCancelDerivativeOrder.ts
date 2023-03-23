@@ -1,8 +1,9 @@
-import { OrderMaskMap } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
-import { MsgCancelDerivativeOrder as BaseMsgCancelDerivativeOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import { OrderMask } from '../../../../types/exchange'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Exchange,
+  InjectiveExchangeV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCancelDerivativeOrder {
   export interface Params {
@@ -10,18 +11,15 @@ export declare namespace MsgCancelDerivativeOrder {
     subaccountId: string
     injectiveAddress: string
     orderHash: string
-    orderMask?: OrderMaskMap[keyof OrderMaskMap]
+    orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
   }
 
-  export type Proto = BaseMsgCancelDerivativeOrder
-
-  export type Object = BaseMsgCancelDerivativeOrder.AsObject
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCancelDerivativeOrder
 }
 
 export default class MsgCancelDerivativeOrder extends MsgBase<
   MsgCancelDerivativeOrder.Params,
-  MsgCancelDerivativeOrder.Proto,
-  MsgCancelDerivativeOrder.Object
+  MsgCancelDerivativeOrder.Proto
 > {
   static fromJSON(
     params: MsgCancelDerivativeOrder.Params,
@@ -32,16 +30,18 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgCancelDerivativeOrder()
-    message.setSender(params.injectiveAddress)
-    message.setMarketId(params.marketId)
-    message.setOrderHash(params.orderHash)
-    message.setSubaccountId(params.subaccountId)
+    const message = InjectiveExchangeV1Beta1Tx.MsgCancelDerivativeOrder.create()
+    message.sender = params.injectiveAddress
+    message.marketId = params.marketId
+    message.orderHash = params.orderHash
+    message.subaccountId = params.subaccountId
 
     // TODO: Send order.orderMask instead when chain handles order mask properly.
-    message.setOrderMask(OrderMask.Any)
+    message.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
 
-    return message
+    return InjectiveExchangeV1Beta1Tx.MsgCancelDerivativeOrder.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -49,14 +49,14 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCancelDerivativeOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -82,5 +82,11 @@ export default class MsgCancelDerivativeOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCancelDerivativeOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveExchangeV1Beta1Tx.MsgCancelDerivativeOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

@@ -1,4 +1,3 @@
-import { MsgExternalTransfer as BaseMsgExternalTransfer } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgExternalTransfer from './MsgExternalTransfer'
 import { mockFactory } from '@injectivelabs/test-utils'
@@ -29,8 +28,7 @@ describe('MsgExternalTransfer', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgExternalTransfer).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

@@ -12,7 +12,7 @@ export const getMappedTokensByErc20Address = (
 
       return {
         ...result,
-        [tokens[token].erc20!.address.toLowerCase()]: tokens[token],
+        [tokens[token].erc20!.address]: tokens[token],
       }
     }, {}) as Record<string, TokenMeta>
 
@@ -31,7 +31,7 @@ export const getMappedTokensByCw20Address = (
       if (tokenMeta.cw20) {
         return {
           ...result,
-          [tokenMeta.cw20.address.toLowerCase()]: tokens[token],
+          [tokenMeta.cw20.address]: tokens[token],
         }
       }
 
@@ -39,7 +39,7 @@ export const getMappedTokensByCw20Address = (
         const cw20Maps = tokenMeta.cw20s.reduce(
           (result, cw20) => ({
             ...result,
-            [cw20.address.toLowerCase()]: tokens[token],
+            [cw20.address]: tokens[token],
           }),
           {} as Record<string, TokenMeta>,
         )

@@ -1,41 +1,40 @@
-import { Query as AuthQuery } from '@injectivelabs/chain-api/cosmos/auth/v1beta1/query_pb_service'
-import {
-  QueryAccountRequest,
-  QueryAccountsRequest,
-  QueryAccountsResponse,
-  QueryAccountResponse,
-  QueryParamsRequest,
-  QueryParamsResponse,
-} from '@injectivelabs/chain-api/cosmos/auth/v1beta1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
+import { CosmosAuthV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
 import { ChainModule } from '../types'
 import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcAuthApi extends BaseConsumer {
-  protected module: string = ChainModule.Auction
+export class ChainGrpcAuthApi {
+  protected module: string = ChainModule.Auth
+
+  protected client: CosmosAuthV1Beta1Query.QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new CosmosAuthV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
+  }
 
   async fetchModuleParams() {
-    const request = new QueryParamsRequest()
+    const request = CosmosAuthV1Beta1Query.QueryParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryParamsRequest,
-        QueryParamsResponse,
-        typeof AuthQuery.Params
-      >(request, AuthQuery.Params)
+      const response = await this.client.Params(request)
 
       return ChainGrpcAuthTransformer.moduleParamsResponseToModuleParams(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)
@@ -43,21 +42,20 @@ export class ChainGrpcAuthApi extends BaseConsumer {
   }
 
   async fetchAccount(address: string) {
-    const request = new QueryAccountRequest()
+    const request = CosmosAuthV1Beta1Query.QueryAccountRequest.create()
 
-    request.setAddress(address)
+    request.address = address
 
     try {
-      const response = await this.request<
-        QueryAccountRequest,
-        QueryAccountResponse,
-        typeof AuthQuery.Account
-      >(request, AuthQuery.Account)
+      const response = await this.client.Account(request)
 
       return ChainGrpcAuthTransformer.accountResponseToAccount(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)
@@ -65,24 +63,23 @@ export class ChainGrpcAuthApi extends BaseConsumer {
   }
 
   async fetchAccounts(pagination?: PaginationOption) {
-    const request = new QueryAccountsRequest()
+    const request = CosmosAuthV1Beta1Query.QueryAccountsRequest.create()
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
     if (paginationForRequest) {
-      request.setPagination(paginationForRequest)
+      request.pagination = paginationForRequest
     }
 
     try {
-      const response = await this.request<
-        QueryAccountsRequest,
-        QueryAccountsResponse,
-        typeof AuthQuery.Accounts
-      >(request, AuthQuery.Accounts)
+      const response = await this.client.Accounts(request)
 
       return ChainGrpcAuthTransformer.accountsResponseToAccounts(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)

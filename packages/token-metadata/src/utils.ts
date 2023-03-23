@@ -15,9 +15,9 @@ import { getChannelIdFromPath } from './ibc'
 const getCw20Meta = (
   token: Token,
 ): Cw20TokenMetaWithSource | Cw20TokenMeta | undefined => {
-  const denomToLowerCase = token.denom.toLowerCase()
+  const denomToLowerCase = token.denom
   const cw20MetaFromCw20s = token.cw20s?.find((meta) =>
-    denomToLowerCase.includes(meta.address.toLowerCase()),
+    denomToLowerCase.includes(meta.address),
   )
 
   return cw20MetaFromCw20s || token.cw20 || undefined
@@ -175,9 +175,7 @@ export const getCw20TokenSingle = (
         ? [denom]
         : denom.split('/').reverse()
 
-      const cw20 = cw20s.find(
-        (cw20) => cw20.address.toLowerCase() === cw20Address.toLowerCase(),
-      )
+      const cw20 = cw20s.find((cw20) => cw20.address === cw20Address)
 
       return cw20
         ? {
@@ -191,9 +189,7 @@ export const getCw20TokenSingle = (
     }
 
     if (source) {
-      const cw20 = cw20s.find(
-        (cw20) => cw20.source.toLowerCase() === source.toLowerCase(),
-      )
+      const cw20 = cw20s.find((cw20) => cw20.source === source)
 
       return cw20
         ? {

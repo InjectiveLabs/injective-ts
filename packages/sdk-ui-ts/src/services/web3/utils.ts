@@ -12,4 +12,4 @@ export const getTransactionOptions = (
 })
 
 export const peggyDenomToContractAddress = (denom: string): string =>
-  denom.toLowerCase().replace('peggy', '')
+  denom.replace('peggy', '')

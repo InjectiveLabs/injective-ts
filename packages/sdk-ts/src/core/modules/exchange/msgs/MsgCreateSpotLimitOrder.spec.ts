@@ -1,4 +1,3 @@
-import { MsgCreateSpotLimitOrder as BaseMsgCreateSpotLimitOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateSpotLimitOrder from './MsgCreateSpotLimitOrder'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -48,8 +47,7 @@ describe('MsgCreateSpotLimitOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgCreateSpotLimitOrder).toBe(true)
-    expect(proto.toObject()).toStrictEqual(formattedProtoParams)
+    expect(proto).toStrictEqual(formattedProtoParams)
   })
 
   it('generates proper data', () => {

@@ -1,49 +1,47 @@
-import { MsgCreateSpotMarketOrder as BaseMsgCreateSpotMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import {
-  SpotOrder,
-  OrderInfo,
-  OrderTypeMap,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Exchange,
+  InjectiveExchangeV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateSpotMarketOrder {
   export interface Params {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderTypeMap[keyof OrderTypeMap]
+    orderType: InjectiveExchangeV1Beta1Exchange.OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
     quantity: string
   }
 
-  export type Proto = BaseMsgCreateSpotMarketOrder
-
-  export type Object = BaseMsgCreateSpotMarketOrder.AsObject
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder
 }
 
 const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
-  const orderInfo = new OrderInfo()
-  orderInfo.setSubaccountId(params.subaccountId)
-  orderInfo.setFeeRecipient(params.feeRecipient)
-  orderInfo.setPrice(params.price)
-  orderInfo.setQuantity(params.quantity)
+  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+  orderInfo.subaccountId = params.subaccountId
+  orderInfo.feeRecipient = params.feeRecipient
+  orderInfo.price = params.price
+  orderInfo.quantity = params.quantity
 
-  const spotOrder = new SpotOrder()
-  spotOrder.setMarketId(params.marketId)
-  spotOrder.setOrderType(params.orderType)
-  spotOrder.setOrderInfo(orderInfo)
+  const spotOrder = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
+  spotOrder.marketId = params.marketId
+  spotOrder.orderType = params.orderType
+  spotOrder.orderInfo = orderInfo
 
-  spotOrder.setTriggerPrice(params.triggerPrice || '0')
+  spotOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = new BaseMsgCreateSpotMarketOrder()
-  message.setSender(params.injectiveAddress)
-  message.setOrder(spotOrder)
+  const message = InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder.create()
+  message.sender = params.injectiveAddress
+  message.order = spotOrder
 
-  return message
+  return InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder.fromPartial(
+    message,
+  )
 }
 
 /**
@@ -51,8 +49,7 @@ const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
  */
 export default class MsgCreateSpotMarketOrder extends MsgBase<
   MsgCreateSpotMarketOrder.Params,
-  MsgCreateSpotMarketOrder.Proto,
-  MsgCreateSpotMarketOrder.Object
+  MsgCreateSpotMarketOrder.Proto
 > {
   static fromJSON(
     params: MsgCreateSpotMarketOrder.Params,
@@ -79,7 +76,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -87,13 +84,13 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     const { params } = this
     const proto = createMarketOrder(params)
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
       type: 'exchange/MsgCreateSpotMarketOrder',
       value:
-        message as unknown as SnakeCaseKeys<MsgCreateSpotMarketOrder.Object>,
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder>,
     }
   }
 
@@ -114,5 +111,11 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCreateSpotMarketOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

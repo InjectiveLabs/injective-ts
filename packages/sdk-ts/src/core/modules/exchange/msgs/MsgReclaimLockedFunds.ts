@@ -1,4 +1,4 @@
-import { MsgReclaimLockedFunds as BaseMsgReclaimLockedFunds } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
 
@@ -9,9 +9,7 @@ export declare namespace MsgReclaimLockedFunds {
     signature: Uint8Array
   }
 
-  export type Proto = BaseMsgReclaimLockedFunds
-
-  export type Object = BaseMsgReclaimLockedFunds.AsObject
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds
 }
 
 /**
@@ -19,8 +17,7 @@ export declare namespace MsgReclaimLockedFunds {
  */
 export default class MsgReclaimLockedFunds extends MsgBase<
   MsgReclaimLockedFunds.Params,
-  MsgReclaimLockedFunds.Proto,
-  MsgReclaimLockedFunds.Object
+  MsgReclaimLockedFunds.Proto
 > {
   static fromJSON(params: MsgReclaimLockedFunds.Params): MsgReclaimLockedFunds {
     return new MsgReclaimLockedFunds(params)
@@ -29,12 +26,15 @@ export default class MsgReclaimLockedFunds extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgReclaimLockedFunds()
-    message.setSender(params.sender)
-    message.setLockedaccountpubkey(params.lockedAccountPubKey)
-    message.setSignature(params.signature)
+    const message = InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds.create()
+    message.sender = params.sender
+    message.lockedAccountPubKey = Buffer.from(
+      params.lockedAccountPubKey,
+      'base64',
+    )
+    message.signature = params.signature
 
-    return message
+    return InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds.fromPartial(message)
   }
 
   public toData() {
@@ -42,19 +42,23 @@ export default class MsgReclaimLockedFunds extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgReclaimLockedFunds',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
       type: 'exchange/MsgReclaimLockedFunds',
-      value: message,
+      value: {
+        sender: message.sender,
+        locked_account_pub_key: message.locked_account_pub_key,
+        signature: message.signature,
+      },
     }
   }
 
@@ -75,5 +79,11 @@ export default class MsgReclaimLockedFunds extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgReclaimLockedFunds',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds.encode(
+      this.toProto(),
+    ).finish()
   }
 }

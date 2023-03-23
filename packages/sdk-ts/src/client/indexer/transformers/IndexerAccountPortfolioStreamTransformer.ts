@@ -1,15 +1,17 @@
-import { StreamAccountPortfolioResponse } from '@injectivelabs/indexer-api/injective_portfolio_rpc_pb'
+import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerAccountPortfolioStreamTransformer {
-  static accountPortfolioStreamCallback = (response: StreamAccountPortfolioResponse) => {
+  static accountPortfolioStreamCallback = (
+    response: InjectivePortfolioRpc.StreamAccountPortfolioResponse,
+  ) => {
     return {
-      type: response.getType(),
-      denom: response.getDenom(),
-      amount: response.getAmount(),
-      subaccountId: response.getSubaccountId(),
+      type: response.type,
+      denom: response.denom,
+      amount: response.amount,
+      subaccountId: response.subaccountId,
     }
   }
 }

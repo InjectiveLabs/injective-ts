@@ -1,32 +1,19 @@
 import {
-  StreamOrdersRequest,
-  StreamTradesRequest,
-  StreamOrdersResponse,
-  StreamTradesResponse,
-  StreamMarketsRequest,
-  StreamMarketsResponse,
-  StreamOrderbookRequest,
-  StreamOrderbookResponse,
-  StreamOrderbookV2Request,
-  StreamOrderbookV2Response,
-  StreamOrdersHistoryRequest,
-  StreamOrdersHistoryResponse,
-  StreamOrderbookUpdateRequest,
-  StreamOrderbookUpdateResponse,
-} from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
-import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb_service'
-import {
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
 } from '../../../types'
 import { StreamStatusResponse } from '../types'
 import { PaginationOption } from '../../../types/pagination'
-import { SpotOrderSide, SpotOrderState } from '../types/spot'
+import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { IndexerSpotStreamTransformer } from '../transformers'
-import { getGrpcTransport } from '../../../utils/grpc'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { Subscription } from 'rxjs'
+import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
-export type MarketsStreamCallback = (response: StreamMarketsResponse) => void
+export type MarketsStreamCallback = (
+  response: InjectiveSpotExchangeRpc.StreamMarketsResponse,
+) => void
 
 export type SpotOrderbookStreamCallback = (
   response: ReturnType<
@@ -68,12 +55,13 @@ export type SpotTradesStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcSpotStream {
-  protected client: InjectiveSpotExchangeRPCClient
+  protected client: InjectiveSpotExchangeRpc.InjectiveSpotExchangeRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveSpotExchangeRPCClient(endpoint, {
-      transport: getGrpcTransport(),
-    })
+    this.client =
+      new InjectiveSpotExchangeRpc.InjectiveSpotExchangeRPCClientImpl(
+        getGrpcIndexerWebImpl(endpoint),
+      )
   }
 
   streamSpotOrderbook({
@@ -86,25 +74,28 @@ export class IndexerGrpcSpotStream {
     callback: SpotOrderbookStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamOrderbookRequest()
-    request.setMarketIdsList(marketIds)
+  }): Subscription {
+    const request = InjectiveSpotExchangeRpc.StreamOrderbookRequest.create()
 
-    const stream = this.client.streamOrderbook(request)
+    request.marketIds = marketIds
 
-    stream.on('data', (response: StreamOrderbookResponse) => {
-      callback(IndexerSpotStreamTransformer.orderbookStreamCallback(response))
+    const subscription = this.client.StreamOrderbook(request).subscribe({
+      next(response: InjectiveSpotExchangeRpc.StreamOrderbookResponse) {
+        callback(IndexerSpotStreamTransformer.orderbookStreamCallback(response))
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
   streamSpotOrders({
@@ -117,40 +108,42 @@ export class IndexerGrpcSpotStream {
   }: {
     marketId?: string
     subaccountId?: string
-    orderSide?: SpotOrderSide
+    orderSide?: OrderSide
     callback: SpotOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamOrdersRequest()
+  }): Subscription {
+    const request = InjectiveSpotExchangeRpc.StreamOrdersRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (orderSide) {
-      request.setOrderSide(orderSide)
+      request.orderSide = orderSide
     }
 
-    const stream = this.client.streamOrders(request)
-
-    stream.on('data', (response: StreamOrdersResponse) => {
-      callback(IndexerSpotStreamTransformer.ordersStreamCallback(response))
+    const subscription = this.client.StreamOrders(request).subscribe({
+      next(response: InjectiveSpotExchangeRpc.StreamOrdersResponse) {
+        callback(IndexerSpotStreamTransformer.ordersStreamCallback(response))
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
   streamSpotOrderHistory({
@@ -166,57 +159,59 @@ export class IndexerGrpcSpotStream {
   }: {
     marketId?: string
     subaccountId?: string
-    orderTypes?: SpotOrderSide[]
+    orderTypes?: OrderSide[]
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
-    state?: SpotOrderState
+    state?: OrderState
     callback: SpotOrderHistoryStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamOrdersHistoryRequest()
+  }): Subscription {
+    const request = InjectiveSpotExchangeRpc.StreamOrdersHistoryRequest.create()
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (orderTypes) {
-      request.setOrderTypesList(orderTypes)
+      request.orderTypes = orderTypes
     }
 
     if (direction) {
-      request.setDirection(direction)
+      request.direction = direction
     }
 
     if (state) {
-      request.setState(state)
+      request.state = state
     }
 
     if (executionTypes) {
-      request.setExecutionTypesList(executionTypes)
+      request.executionTypes = executionTypes
     }
 
-    const stream = this.client.streamOrdersHistory(request)
-
-    stream.on('data', (response: StreamOrdersHistoryResponse) => {
-      callback(
-        IndexerSpotStreamTransformer.orderHistoryStreamCallback(response),
-      )
+    const subscription = this.client.StreamOrdersHistory(request).subscribe({
+      next(response: InjectiveSpotExchangeRpc.StreamOrdersHistoryResponse) {
+        callback(
+          IndexerSpotStreamTransformer.orderHistoryStreamCallback(response),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
   streamSpotTrades({
@@ -241,58 +236,60 @@ export class IndexerGrpcSpotStream {
     callback: SpotTradesStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamTradesRequest()
+  }): Subscription {
+    const request = InjectiveSpotExchangeRpc.StreamTradesRequest.create()
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (subaccountIds) {
-      request.setSubaccountIdsList(subaccountIds)
+      request.subaccountIds = subaccountIds
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (executionSide) {
-      request.setExecutionSide(executionSide)
+      request.executionSide = executionSide
     }
 
     if (direction) {
-      request.setDirection(direction)
+      request.direction = direction
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
     }
 
-    const stream = this.client.streamTrades(request)
-
-    stream.on('data', (response: StreamTradesResponse) => {
-      callback(IndexerSpotStreamTransformer.tradesStreamCallback(response))
+    const subscription = this.client.StreamTrades(request).subscribe({
+      next(response: InjectiveSpotExchangeRpc.StreamTradesResponse) {
+        callback(IndexerSpotStreamTransformer.tradesStreamCallback(response))
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
   streamSpotMarket({
@@ -305,28 +302,30 @@ export class IndexerGrpcSpotStream {
     callback: MarketsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamMarketsRequest()
+  }): Subscription {
+    const request = InjectiveSpotExchangeRpc.StreamMarketsRequest.create()
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
-    const stream = this.client.streamMarkets(request)
-
-    stream.on('data', (response: StreamMarketsResponse) => {
-      callback(response)
+    const subscription = this.client.StreamMarkets(request).subscribe({
+      next(response: InjectiveSpotExchangeRpc.StreamMarketsResponse) {
+        callback(response)
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
   streamSpotOrderbookV2({
@@ -339,25 +338,30 @@ export class IndexerGrpcSpotStream {
     callback: SpotOrderbookV2StreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamOrderbookV2Request()
-    request.setMarketIdsList(marketIds)
+  }): Subscription {
+    const request = InjectiveSpotExchangeRpc.StreamOrderbookV2Request.create()
 
-    const stream = this.client.streamOrderbookV2(request)
+    request.marketIds = marketIds
 
-    stream.on('data', (response: StreamOrderbookV2Response) => {
-      callback(IndexerSpotStreamTransformer.orderbookV2StreamCallback(response))
+    const subscription = this.client.StreamOrderbookV2(request).subscribe({
+      next(response: InjectiveSpotExchangeRpc.StreamOrderbookV2Response) {
+        callback(
+          IndexerSpotStreamTransformer.orderbookV2StreamCallback(response),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
   streamSpotOrderbookUpdate({
@@ -370,26 +374,30 @@ export class IndexerGrpcSpotStream {
     callback: SpotOrderbookUpdateStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamOrderbookUpdateRequest()
-    request.setMarketIdsList(marketIds)
+  }): Subscription {
+    const request =
+      InjectiveSpotExchangeRpc.StreamOrderbookUpdateRequest.create()
 
-    const stream = this.client.streamOrderbookUpdate(request)
+    request.marketIds = marketIds
 
-    stream.on('data', (response: StreamOrderbookUpdateResponse) => {
-      callback(
-        IndexerSpotStreamTransformer.orderbookUpdateStreamCallback(response),
-      )
+    const subscription = this.client.StreamOrderbookUpdate(request).subscribe({
+      next(response: InjectiveSpotExchangeRpc.StreamOrderbookUpdateResponse) {
+        callback(
+          IndexerSpotStreamTransformer.orderbookUpdateStreamCallback(response),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 }

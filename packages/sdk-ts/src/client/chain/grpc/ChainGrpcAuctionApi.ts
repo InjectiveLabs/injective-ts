@@ -1,42 +1,42 @@
-import { Query as AuctionQuery } from '@injectivelabs/chain-api/injective/auction/v1beta1//query_pb_service'
-import {
-  QueryAuctionParamsRequest,
-  QueryAuctionParamsResponse,
-  QueryModuleStateRequest,
-  QueryModuleStateResponse,
-  QueryCurrentAuctionBasketRequest,
-  QueryCurrentAuctionBasketResponse,
-} from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
+import { InjectiveAuctionV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseConsumer from '../../BaseGrpcConsumer'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { ChainGrpcAuctionTransformer } from '../transformers'
 import { ChainModule } from '../types'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcAuctionApi extends BaseConsumer {
+export class ChainGrpcAuctionApi {
   protected module: string = ChainModule.Auction
 
+  protected client: InjectiveAuctionV1Beta1Query.QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new InjectiveAuctionV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
+  }
+
   async fetchModuleParams() {
-    const request = new QueryAuctionParamsResponse()
+    const request =
+      InjectiveAuctionV1Beta1Query.QueryAuctionParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryAuctionParamsRequest,
-        QueryAuctionParamsResponse,
-        typeof AuctionQuery.AuctionParams
-      >(request, AuctionQuery.AuctionParams)
+      const response = await this.client.AuctionParams(request)
 
       return ChainGrpcAuctionTransformer.moduleParamsResponseToModuleParams(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -47,21 +47,21 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
   }
 
   async fetchModuleState() {
-    const request = new QueryModuleStateRequest()
+    const request =
+      InjectiveAuctionV1Beta1Query.QueryModuleStateRequest.create()
 
     try {
-      const response = await this.request<
-        QueryModuleStateRequest,
-        QueryModuleStateResponse,
-        typeof AuctionQuery.AuctionModuleState
-      >(request, AuctionQuery.AuctionModuleState)
+      const response = await this.client.AuctionModuleState(request)
 
       return ChainGrpcAuctionTransformer.auctionModuleStateResponseToAuctionModuleState(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -72,21 +72,21 @@ export class ChainGrpcAuctionApi extends BaseConsumer {
   }
 
   async fetchCurrentBasket() {
-    const request = new QueryCurrentAuctionBasketRequest()
+    const request =
+      InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketRequest.create()
 
     try {
-      const response = await this.request<
-        QueryCurrentAuctionBasketRequest,
-        QueryCurrentAuctionBasketResponse,
-        typeof AuctionQuery.CurrentAuctionBasket
-      >(request, AuctionQuery.CurrentAuctionBasket)
+      const response = await this.client.CurrentAuctionBasket(request)
 
       return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

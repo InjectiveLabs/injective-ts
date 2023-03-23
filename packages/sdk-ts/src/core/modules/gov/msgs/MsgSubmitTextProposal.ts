@@ -1,7 +1,9 @@
-import { MsgSubmitProposal as BaseMsgSubmitProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { Any } from 'google-protobuf/google/protobuf/any_pb'
-import { TextProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
+import {
+  GoogleProtobufAny,
+  CosmosGovV1Beta1Tx,
+  CosmosGovV1Beta1Gov,
+  CosmosBaseV1Beta1Coin,
+} from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
@@ -16,9 +18,14 @@ export declare namespace MsgSubmitTextProposal {
     }
   }
 
-  export type Proto = BaseMsgSubmitProposal
+  export type Proto = CosmosGovV1Beta1Tx.MsgSubmitProposal
 
-  export type Object = BaseMsgSubmitProposal.AsObject
+  export type Object = Omit<CosmosGovV1Beta1Tx.MsgSubmitProposal, 'content'> & {
+    content: {
+      type_url: string
+      value: any
+    }
+  }
 }
 
 /**
@@ -36,23 +43,23 @@ export default class MsgSubmitTextProposal extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const depositParams = new Coin()
-    depositParams.setDenom(params.deposit.denom)
-    depositParams.setAmount(params.deposit.amount)
+    const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
+    depositParams.denom = params.deposit.denom
+    depositParams.amount = params.deposit.amount
 
     const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
 
-    const contentAny = new Any()
-    contentAny.setValue(content.serializeBinary())
-    contentAny.setTypeUrl(proposalType)
+    const contentAny = GoogleProtobufAny.Any.create()
+    contentAny.value = CosmosGovV1Beta1Gov.TextProposal.encode(content).finish()
+    contentAny.typeUrl = proposalType
 
-    const message = new BaseMsgSubmitProposal()
-    message.setContent(contentAny)
-    message.setProposer(params.proposer)
-    message.setInitialDepositList([depositParams])
+    const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
+    message.content = contentAny
+    message.proposer = params.proposer
+    message.initialDeposit = [depositParams]
 
-    return message
+    return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
   }
 
   public toData() {
@@ -60,33 +67,27 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const { params } = this
-    const proto = this.toProto()
     const content = this.getContent()
     const proposalType = 'cosmos-sdk/TextProposal'
 
     const message = {
+      content,
       proposer: params.proposer,
-      content: {
-        ...content.toObject(),
-      },
-      initial_deposit: proto
-        .getInitialDepositList()
-        .map((amount) => snakecaseKeys(amount.toObject())),
     }
 
-    const messageWithProposalType = {
+    const messageWithProposalType = snakecaseKeys({
       ...message,
       content: {
-        ...message.content,
+        value: message.content,
         type: proposalType,
       },
-    }
+    })
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
@@ -97,18 +98,12 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
   public toWeb3() {
     const { params } = this
-    const proto = this.toProto()
     const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
 
     const message = {
+      content,
       proposer: params.proposer,
-      content: {
-        ...content.toObject(),
-      },
-      initial_deposit: proto
-        .getInitialDepositList()
-        .map((amount) => snakecaseKeys(amount.toObject())),
     }
 
     const messageWithProposalType = {
@@ -134,13 +129,17 @@ export default class MsgSubmitTextProposal extends MsgBase<
     }
   }
 
+  public toBinary(): Uint8Array {
+    return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
+  }
+
   private getContent() {
     const { params } = this
 
-    const content = new TextProposal()
-    content.setTitle(params.title)
-    content.setDescription(params.description)
+    const content = CosmosGovV1Beta1Gov.TextProposal.create()
+    content.title = params.title
+    content.description = params.description
 
-    return content
+    return CosmosGovV1Beta1Gov.TextProposal.fromPartial(content)
   }
 }

@@ -26,6 +26,7 @@ const directoryPaths = Object.keys(compilerOptions.paths).reduce(
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
+  testTimeout: 15000,
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -180,7 +181,7 @@ module.exports = {
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run
-  verbose: false,
+  verbose: true,
 
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],

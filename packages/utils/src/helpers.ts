@@ -6,6 +6,7 @@ import {
 } from './constants'
 import BigNumberInBase from './classes/BigNumber/BigNumberInBase'
 import BigNumberInWei from './classes/BigNumber/BigNumberInWei'
+import { Awaited } from './types'
 
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))
@@ -16,8 +17,8 @@ export const sleep = (timeout: number): Promise<void> =>
 export const awaitAll = async <T, S>(
   array: Array<T>,
   callback: (item: T) => Promise<S>,
-  // eslint-disable-next-line no-return-await
-) => await Promise.all(array.map(async (item: T) => await callback(item)))
+): Promise<Awaited<S>[]> =>
+  await Promise.all(array.map(async (item: T) => await callback(item)))
 
 /**
  * When we want to execute the promises one by one
@@ -26,15 +27,14 @@ export const awaitAll = async <T, S>(
 export const awaitForAll = async <T, S>(
   array: Array<T>,
   callback: (item: T) => Promise<S>,
-  // eslint-disable-next-line no-return-await
-) => {
+): Promise<S[]> => {
   const result = [] as S[]
 
   for (let i = 0; i < array.length; i += 1) {
     try {
       result.push(await callback(array[i]))
     } catch (e: any) {
-      // throw Error(e)
+      //
     }
   }
 
@@ -71,6 +71,7 @@ export const getStdFeeForToken = (
     decimals: number
   } = { denom: 'inj', decimals: 18 },
   gasPrice?: string,
+  gasLimit?: string,
 ) => {
   const gasPriceInBase =
     gasPrice || new BigNumberInWei(DEFAULT_GAS_PRICE).toBase()
@@ -82,10 +83,10 @@ export const getStdFeeForToken = (
     amount: [
       {
         denom: token.denom,
-        amount: gasPriceScaled.toString(),
+        amount: gasPriceScaled.times(DEFAULT_GAS_LIMIT).toFixed(),
       },
     ],
-    gas: DEFAULT_GAS_LIMIT.toString(),
+    gas: (gasLimit || DEFAULT_GAS_LIMIT).toString(),
   }
 }
 

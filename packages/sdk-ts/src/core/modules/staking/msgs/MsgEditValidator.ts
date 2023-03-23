@@ -1,7 +1,9 @@
-import { MsgEditValidator as BaseMsgEditValidator } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase'
-import { Description } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/staking_pb'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  CosmosStakingV1Beta1Tx,
+  CosmosStakingV1Beta1Staking,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgEditValidator {
   export interface Params {
@@ -17,9 +19,7 @@ export declare namespace MsgEditValidator {
     minSelfDelegation?: string
   }
 
-  export type Proto = BaseMsgEditValidator
-
-  export type Object = BaseMsgEditValidator.AsObject
+  export type Proto = CosmosStakingV1Beta1Tx.MsgEditValidator
 }
 
 /**
@@ -27,8 +27,7 @@ export declare namespace MsgEditValidator {
  */
 export default class MsgEditValidator extends MsgBase<
   MsgEditValidator.Params,
-  MsgEditValidator.Proto,
-  MsgEditValidator.Object
+  MsgEditValidator.Proto
 > {
   static fromJSON(params: MsgEditValidator.Params): MsgEditValidator {
     return new MsgEditValidator(params)
@@ -37,45 +36,45 @@ export default class MsgEditValidator extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgEditValidator()
+    const message = CosmosStakingV1Beta1Tx.MsgEditValidator.create()
 
     if (params.commissionRate) {
-      message.setCommissionRate(params.commissionRate)
+      message.commissionRate = params.commissionRate
     }
 
     if (params.minSelfDelegation) {
-      message.setMinSelfDelegation(params.minSelfDelegation)
+      message.minSelfDelegation = params.minSelfDelegation
     }
 
     if (params.description) {
-      const description = new Description()
+      const description = CosmosStakingV1Beta1Staking.Description.create()
 
       if (params.description.moniker) {
-        description.setMoniker(params.description.moniker)
+        description.moniker = params.description.moniker
       }
 
       if (params.description.identity) {
-        description.setIdentity(params.description.identity)
+        description.identity = params.description.identity
       }
 
       if (params.description.website) {
-        description.setWebsite(params.description.website)
+        description.website = params.description.website
       }
 
       if (params.description.securityContact) {
-        description.setSecurityContact(params.description.securityContact)
+        description.securityContact = params.description.securityContact
       }
 
       if (params.description.details) {
-        description.setDetails(params.description.details)
+        description.details = params.description.details
       }
 
-      message.setDescription(description)
+      message.description = description
     }
 
-    message.setValidatorAddress(params.validatorAddress)
+    message.validatorAddress = params.validatorAddress
 
-    return message
+    return CosmosStakingV1Beta1Tx.MsgEditValidator.fromPartial(message)
   }
 
   public toData() {
@@ -83,19 +82,20 @@ export default class MsgEditValidator extends MsgBase<
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgEditValidator',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
       type: 'cosmos-sdk/MsgEditValidator',
-      value: message as unknown as SnakeCaseKeys<MsgEditValidator.Object>,
+      value:
+        message as unknown as SnakeCaseKeys<CosmosStakingV1Beta1Tx.MsgEditValidator>,
     }
   }
 
@@ -116,5 +116,11 @@ export default class MsgEditValidator extends MsgBase<
       type: '/cosmos.staking.v1beta1.MsgEditValidator',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmosStakingV1Beta1Tx.MsgEditValidator.encode(
+      this.toProto(),
+    ).finish()
   }
 }

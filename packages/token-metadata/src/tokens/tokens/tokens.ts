@@ -10,7 +10,7 @@ export default {
 
     erc20: {
       decimals: 8,
-      address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+      address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
       tokenType: TokenType.Erc20,
     },
   },
@@ -24,7 +24,7 @@ export default {
 
     erc20: {
       decimals: 8,
-      address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+      address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
       tokenType: TokenType.Erc20,
     },
   },
@@ -39,7 +39,7 @@ export default {
     erc20: {
       decimals: 18,
       isNative: true,
-      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       tokenType: TokenType.Erc20,
     },
   },
@@ -53,7 +53,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       tokenType: TokenType.Erc20,
     },
   },
@@ -67,7 +67,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xe28b3b32b6c345a34ff64674606124dd5aceca30',
+      address: '0xe28b3B32B6c345A34Ff64674606124Dd5Aceca30',
       tokenType: TokenType.Erc20,
     },
   },
@@ -81,7 +81,7 @@ export default {
 
     erc20: {
       decimals: 6,
-      address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+      address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
       tokenType: TokenType.Erc20,
     },
   },
@@ -96,7 +96,7 @@ export default {
     erc20: {
       decimals: 6,
       symbol: 'USDC',
-      address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+      address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       tokenType: TokenType.Erc20,
     },
 
@@ -127,7 +127,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xc944e90c64b2c07662a292be6244bdf05cda44a7',
+      address: '0xc944E90C64B2c07662A292be6244BDf05Cda44a7',
       tokenType: TokenType.Erc20,
     },
   },
@@ -141,7 +141,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+      address: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
       tokenType: TokenType.Erc20,
     },
   },
@@ -155,7 +155,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
+      address: '0xB8c77482e45F1F44dE1745F52C74426C631bDD52',
       tokenType: TokenType.Erc20,
     },
   },
@@ -169,7 +169,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+      address: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',
       tokenType: TokenType.Erc20,
     },
   },
@@ -183,7 +183,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e',
+      address: '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e',
       tokenType: TokenType.Erc20,
     },
   },
@@ -197,7 +197,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xc00e94cb662c3520282e6f5717214004a7f26888',
+      address: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
       tokenType: TokenType.Erc20,
     },
   },
@@ -211,7 +211,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
+      address: '0xE41d2489571d322189246DaFA5ebDe1F4699F498',
       tokenType: TokenType.Erc20,
     },
   },
@@ -225,7 +225,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
+      address: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
       tokenType: TokenType.Erc20,
     },
   },
@@ -239,7 +239,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
+      address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
       tokenType: TokenType.Erc20,
     },
   },
@@ -253,7 +253,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+      address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
       tokenType: TokenType.Erc20,
     },
   },
@@ -267,7 +267,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x514910771af9ca656af840dff83e8264ecf986ca',
+      address: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
       tokenType: TokenType.Erc20,
     },
   },
@@ -281,7 +281,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
+      address: '0x6B3595068778DD592e39A122f4f5a5cF09C90fE2',
       tokenType: TokenType.Erc20,
     },
   },
@@ -295,12 +295,11 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xbb0e17ef65f82ab018d8edd776e8dd940327b28b',
+      address: '0xBB0E17EF65F82Ab018d8EDd776e8DD940327B28b',
       tokenType: TokenType.Erc20,
     },
   },
 
-  /* 20 Oct */
   '1INCH': {
     name: '1inch',
     symbol: '1INCH',
@@ -310,7 +309,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x111111111117dc0aa78b770fa6a738034120c302',
+      address: '0x111111111117dC0aa78b770fA6A738034120C302',
       tokenType: TokenType.Erc20,
     },
   },
@@ -324,7 +323,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+      address: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
       tokenType: TokenType.Erc20,
     },
   },
@@ -338,7 +337,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x4fabb145d64652a948d72533023f6e7a623c7c53',
+      address: '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
       tokenType: TokenType.Erc20,
     },
   },
@@ -352,7 +351,7 @@ export default {
 
     erc20: {
       decimals: 4,
-      address: '0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d',
+      address: '0xaaAEBE6Fe48E54f431b0C390CfaF0b017d09D42d',
       tokenType: TokenType.Erc20,
     },
   },
@@ -366,7 +365,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x26c8afbbfe1ebaca03c2bb082e69d0476bffe099',
+      address: '0x26c8AFBBFE1EBaca03C2bB082E69D0476Bffe099',
       tokenType: TokenType.Erc20,
     },
   },
@@ -380,7 +379,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xfa6de2697d59e88ed7fc4dfe5a33dac43565ea41',
+      address: '0xfa6de2697D59E88Ed7Fc4dFE5A33daC43565ea41',
       tokenType: TokenType.Erc20,
     },
   },
@@ -394,7 +393,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c',
+      address: '0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c',
       tokenType: TokenType.Erc20,
     },
   },
@@ -408,7 +407,7 @@ export default {
 
     erc20: {
       decimals: 8,
-      address: '0x50f09629d0afdf40398a3f317cc676ca9132055c',
+      address: '0x50f09629d0afDF40398a3F317cc676cA9132055c',
       tokenType: TokenType.Erc20,
     },
   },
@@ -422,7 +421,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x4e15361fd6b4bb609fa63c81a2be19d873717870',
+      address: '0x4E15361FD6b4BB609Fa63C81A2be19d873717870',
       tokenType: TokenType.Erc20,
     },
   },
@@ -436,7 +435,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x6f259637dcd74c767781e37bc6133cd6a68aa161',
+      address: '0x6f259637dcD74C767781E37Bc6133cd6A68aa161',
       tokenType: TokenType.Erc20,
     },
   },
@@ -450,7 +449,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xb62132e35a6c13ee1ee0f84dc5d40bad8d815206',
+      address: '0xB62132e35a6c13ee1EE0f84dC5d40bad8d815206',
       tokenType: TokenType.Erc20,
     },
   },
@@ -464,7 +463,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xa8c8cfb141a3bb59fea1e2ea6b79b5ecbcd7b6ca',
+      address: '0xa8c8CfB141A3bB59FEA1E2ea6B79b5ECBCD7b6ca',
       tokenType: TokenType.Erc20,
     },
   },
@@ -478,7 +477,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x967da4048cd07ab37855c090aaf366e4ce1b9f48',
+      address: '0x967da4048cD07aB37855c090aAF366e4ce1b9F48',
       tokenType: TokenType.Erc20,
     },
   },
@@ -492,7 +491,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x45804880de22913dafe09f4980848ece6ecbaf78',
+      address: '0x45804880De22913dAFE09f4980848ECE6EcbAf78',
       tokenType: TokenType.Erc20,
     },
   },
@@ -506,7 +505,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x0cec1a9154ff802e7934fc916ed7ca50bde6844e',
+      address: '0x0cEC1A9154Ff802e7934Fc916Ed7Ca50bDE6844e',
       tokenType: TokenType.Erc20,
     },
   },
@@ -534,7 +533,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce',
+      address: '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE',
       tokenType: TokenType.Erc20,
     },
   },
@@ -548,7 +547,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xc55c2175e90a46602fd42e931f62b3acc1a013ca',
+      address: '0xc55c2175E90A46602fD42e931f62B3Acc1A013Ca',
       tokenType: TokenType.Erc20,
     },
   },
@@ -571,12 +570,12 @@ export default {
     name: 'TrustSwap',
     symbol: 'SWAP',
     decimals: 18,
-    logo: 'https://static.alchemyapi.io/images/assets/5829.png',
+    logo: 'trustswap.png',
     coinGeckoId: 'trustswap',
 
     erc20: {
       decimals: 18,
-      address: '0xcc4304a31d09258b0029ea7fe63d032f52e44efe',
+      address: '0xaC9Bb427953aC7FDDC562ADcA86CF42D988047Fd',
       tokenType: TokenType.Erc20,
     },
   },
@@ -590,7 +589,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x04fa0d235c4abf4bcf4787af4cf447de572ef828',
+      address: '0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828',
       tokenType: TokenType.Erc20,
     },
   },
@@ -604,7 +603,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xdc9ac3c20d1ed0b540df9b1fedc10039df13f99c',
+      address: '0xdc9Ac3C20D1ed0B540dF9b1feDC10039Df13F99c',
       tokenType: TokenType.Erc20,
     },
   },
@@ -628,7 +627,7 @@ export default {
       baseDenom: 'uatom',
       path: 'transfer/channel-1',
       channelId: 'channel-1',
-      hash: '624ba9dd171915a2b9ea70f69638b2cea179959850c1a586f6c485498f29edd4',
+      hash: '624BA9DD171915A2B9EA70F69638B2CEA179959850C1A586F6C485498F29EDD4',
       tokenType: TokenType.Ibc,
     },
   },
@@ -666,7 +665,7 @@ export default {
 
     erc20: {
       decimals: 6,
-      address: '0xd2877702675e6ceb975b4a1dff9fb7baf4c91ea9',
+      address: '0xd2877702675e6cEb975b4A1dFf9fb7BAF4C91ea9',
       tokenType: TokenType.Erc20,
     },
 
@@ -729,7 +728,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x080b12e80c9b45e97c23b6ad10a16b3e2a123949',
+      address: '0x080B12E80C9b45e97C23b6ad10a16B3e2a123949',
       tokenType: TokenType.Erc20,
     },
   },
@@ -834,7 +833,6 @@ export default {
     coinGeckoId: '',
   },
 
-  /** 18.03.2022 */
   APE: {
     name: 'Ape Coin',
     symbol: 'APE',
@@ -844,7 +842,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x4d224452801aced8b2f0aebe155379bb5d594381',
+      address: '0x4d224452801ACEd8B2F0aebE155379bb5D594381',
       tokenType: TokenType.Erc20,
     },
   },
@@ -1112,7 +1110,7 @@ export default {
     symbol: 'WAVAX',
     decimals: 8,
     logo: 'avax.webp',
-    coinGeckoId: 'AVAX',
+    coinGeckoId: 'avalanche-2',
 
     cw20: {
       decimals: 8,
@@ -1138,7 +1136,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
+      address: '0x3506424F91fD33084466F402d5D97f05F8e3b4AF',
       tokenType: TokenType.Erc20,
     },
 

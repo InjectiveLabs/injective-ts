@@ -1,12 +1,8 @@
-import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-api/injective_auction_rpc_pb_service'
-import {
-  StreamBidsRequest,
-  StreamBidsResponse,
-} from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
 import { StreamStatusResponse } from '../types'
-
 import { IndexerAuctionStreamTransformer } from '../transformers'
-import { getGrpcTransport } from '../../../utils/grpc'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { Subscription } from 'rxjs'
+import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 
 export type BidsStreamCallback = (
   response: ReturnType<
@@ -18,12 +14,12 @@ export type BidsStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcAuctionStream {
-  protected client: InjectiveAuctionRPCClient
+  protected client: InjectiveAuctionRpc.InjectiveAuctionRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveAuctionRPCClient(endpoint, {
-      transport: getGrpcTransport(),
-    })
+    this.client = new InjectiveAuctionRpc.InjectiveAuctionRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
   }
 
   streamBids({
@@ -34,23 +30,25 @@ export class IndexerGrpcAuctionStream {
     callback: BidsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamBidsRequest()
+  }): Subscription {
+    const request = InjectiveAuctionRpc.StreamBidsRequest.create()
 
-    const stream = this.client.streamBids(request)
-
-    stream.on('data', (response: StreamBidsResponse) => {
-      callback(IndexerAuctionStreamTransformer.bidsStreamCallback(response))
+    const subscription = this.client.StreamBids(request).subscribe({
+      next(response: InjectiveAuctionRpc.StreamBidsResponse) {
+        callback(IndexerAuctionStreamTransformer.bidsStreamCallback(response))
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 }

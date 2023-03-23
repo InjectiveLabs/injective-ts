@@ -1,15 +1,14 @@
 import {
   SpotTrade,
-  SpotOrderSide,
+  Orderbook as UiSpotOrderbook,
   SpotMarket as BaseUiSpotMarket,
   SpotLimitOrder as UiSpotLimitOrder,
   SpotOrderHistory as UiSpotOrderHistory,
-} from '@injectivelabs/sdk-ts/dist/client/indexer/types/spot'
-import { Orderbook as UiSpotOrderbook } from '@injectivelabs/sdk-ts/dist/client/indexer/types/exchange'
+} from '@injectivelabs/sdk-ts'
 import {
   ChronosSpotMarketSummary,
   AllChronosSpotMarketSummary,
-} from '@injectivelabs/sdk-ts/dist/client/indexer/types/spot-rest'
+} from '@injectivelabs/sdk-ts'
 import { Token } from '@injectivelabs/token-metadata'
 import { Change, MarketType } from './common'
 
@@ -47,24 +46,11 @@ export interface UiSpotMarketAndSummary {
   summary: UiSpotMarketSummary
 }
 
-export enum SpotOrderMap {
-  UNSPECIFIED = 0,
-  BUY = 1,
-  SELL = 2,
-  STOP_BUY = 3,
-  STOP_SELL = 4,
-  TAKE_BUY = 5,
-  TAKE_SELL = 6,
-  BUY_PO = 7,
-  SELL_PO = 8,
-}
-
 export {
+  UiSpotOrderbook,
+  BaseUiSpotMarket,
   UiSpotLimitOrder,
   UiSpotOrderHistory,
-  SpotOrderSide,
-  BaseUiSpotMarket,
   ChronosSpotMarketSummary,
   AllChronosSpotMarketSummary,
-  UiSpotOrderbook,
 }

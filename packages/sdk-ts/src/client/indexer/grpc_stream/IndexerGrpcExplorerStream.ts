@@ -1,13 +1,8 @@
-import { InjectiveExplorerRPCClient } from '@injectivelabs/indexer-api/injective_explorer_rpc_pb_service'
-import {
-  StreamBlocksRequest,
-  StreamBlocksResponse,
-  StreamTxsRequest,
-  StreamTxsResponse,
-} from '@injectivelabs/indexer-api/injective_explorer_rpc_pb'
 import { StreamStatusResponse } from '../types'
 import { ExplorerStreamTransformer } from '../transformers'
-import { getGrpcTransport } from '../../../utils/grpc'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { Subscription } from 'rxjs'
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 export type BlocksStreamCallback = (
   response: ReturnType<typeof ExplorerStreamTransformer.blocksStreamCallback>,
@@ -27,15 +22,15 @@ export type TransactionsStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcExplorerStream {
-  protected client: InjectiveExplorerRPCClient
+  protected client: InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveExplorerRPCClient(endpoint, {
-      transport: getGrpcTransport(),
-    })
+    this.client = new InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
   }
 
-  blocks({
+  streamBlocks({
     callback,
     onEndCallback,
     onStatusCallback,
@@ -43,27 +38,29 @@ export class IndexerGrpcExplorerStream {
     callback: BlocksStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamBlocksRequest()
+  }): Subscription {
+    const request = InjectiveExplorerRpc.StreamBlocksRequest.create()
 
-    const stream = this.client.streamBlocks(request)
-
-    stream.on('data', (response: StreamBlocksResponse) => {
-      callback(ExplorerStreamTransformer.blocksStreamCallback(response))
+    const subscription = this.client.StreamBlocks(request).subscribe({
+      next(response: InjectiveExplorerRpc.StreamBlocksResponse) {
+        callback(ExplorerStreamTransformer.blocksStreamCallback(response))
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
-  blocksWithTxs({
+  streamBlocksWithTxs({
     callback,
     onEndCallback,
     onStatusCallback,
@@ -71,24 +68,28 @@ export class IndexerGrpcExplorerStream {
     callback: BlocksWithTxsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamBlocksRequest()
+  }): Subscription {
+    const request = InjectiveExplorerRpc.StreamBlocksRequest.create()
 
-    const stream = this.client.streamBlocks(request)
-
-    stream.on('data', (response: StreamBlocksResponse) => {
-      callback(ExplorerStreamTransformer.blocksWithTxsStreamCallback(response))
+    const subscription = this.client.StreamBlocks(request).subscribe({
+      next(response: InjectiveExplorerRpc.StreamBlocksResponse) {
+        callback(
+          ExplorerStreamTransformer.blocksWithTxsStreamCallback(response),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
   streamTransactions({
@@ -99,22 +100,25 @@ export class IndexerGrpcExplorerStream {
     callback: TransactionsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamTxsRequest()
-    const stream = this.client.streamTxs(request)
+  }): Subscription {
+    const request = InjectiveExplorerRpc.StreamTxsRequest.create()
 
-    stream.on('data', (response: StreamTxsResponse) => {
-      callback(ExplorerStreamTransformer.transactionsStreamCallback(response))
+    const subscription = this.client.StreamTxs(request).subscribe({
+      next(response: InjectiveExplorerRpc.StreamTxsResponse) {
+        callback(ExplorerStreamTransformer.transactionsStreamCallback(response))
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 }

@@ -1,3 +1,4 @@
+import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   FeeDiscountSchedule,
   FeeDiscountTierInfo,
@@ -19,112 +20,104 @@ import {
   ChainPosition,
   ChainDerivativePosition,
 } from '../types/exchange'
-import {
-  QueryFeeDiscountAccountInfoResponse,
-  QueryTradeRewardCampaignResponse,
-  QueryFeeDiscountScheduleResponse,
-  QueryExchangeParamsResponse,
-  QueryPositionsResponse,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcExchangeTransformer {
   static moduleParamsResponseToParams(
-    response: QueryExchangeParamsResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryExchangeParamsResponse,
   ): ExchangeModuleParams {
-    const params = response.getParams()!
-    const spotMarketInstantListingFee = params.getSpotMarketInstantListingFee()
+    const params = response.params!
+    const spotMarketInstantListingFee = params.spotMarketInstantListingFee
     const derivativeMarketInstantListingFee =
-      params.getDerivativeMarketInstantListingFee()
+      params.derivativeMarketInstantListingFee
 
     return {
       spotMarketInstantListingFee: spotMarketInstantListingFee
         ? {
-            amount: spotMarketInstantListingFee.getAmount(),
-            denom: spotMarketInstantListingFee.getDenom(),
+            amount: spotMarketInstantListingFee.amount,
+            denom: spotMarketInstantListingFee.denom,
           }
         : undefined,
       derivativeMarketInstantListingFee: derivativeMarketInstantListingFee
         ? {
-            amount: derivativeMarketInstantListingFee.getAmount(),
-            denom: derivativeMarketInstantListingFee.getDenom(),
+            amount: derivativeMarketInstantListingFee.amount,
+            denom: derivativeMarketInstantListingFee.denom,
           }
         : undefined,
-      defaultSpotMakerFeeRate: params.getDefaultSpotMakerFeeRate(),
-      defaultSpotTakerFeeRate: params.getDefaultSpotTakerFeeRate(),
-      defaultDerivativeMakerFeeRate: params.getDefaultDerivativeMakerFeeRate(),
-      defaultDerivativeTakerFeeRate: params.getDefaultDerivativeTakerFeeRate(),
-      defaultInitialMarginRatio: params.getDefaultInitialMarginRatio(),
-      defaultMaintenanceMarginRatio: params.getDefaultMaintenanceMarginRatio(),
-      defaultFundingInterval: params.getDefaultFundingInterval(),
-      fundingMultiple: params.getFundingMultiple(),
-      relayerFeeShareRate: params.getRelayerFeeShareRate(),
-      defaultHourlyFundingRateCap: params.getDefaultHourlyFundingRateCap(),
-      defaultHourlyInterestRate: params.getDefaultHourlyInterestRate(),
-      maxDerivativeOrderSideCount: params.getMaxDerivativeOrderSideCount(),
+      defaultSpotMakerFeeRate: params.defaultSpotMakerFeeRate,
+      defaultSpotTakerFeeRate: params.defaultSpotTakerFeeRate,
+      defaultDerivativeMakerFeeRate: params.defaultDerivativeMakerFeeRate,
+      defaultDerivativeTakerFeeRate: params.defaultDerivativeTakerFeeRate,
+      defaultInitialMarginRatio: params.defaultInitialMarginRatio,
+      defaultMaintenanceMarginRatio: params.defaultMaintenanceMarginRatio,
+      defaultFundingInterval: parseInt(params.defaultFundingInterval, 10),
+      fundingMultiple: parseInt(params.fundingMultiple, 10),
+      relayerFeeShareRate: params.relayerFeeShareRate,
+      defaultHourlyFundingRateCap: params.defaultHourlyFundingRateCap,
+      defaultHourlyInterestRate: params.defaultHourlyInterestRate,
+      maxDerivativeOrderSideCount: params.maxDerivativeOrderSideCount,
       injRewardStakedRequirementThreshold:
-        params.getInjRewardStakedRequirementThreshold(),
-      tradingRewardsVestingDuration: params.getTradingRewardsVestingDuration(),
+        params.injRewardStakedRequirementThreshold,
+      tradingRewardsVestingDuration: parseInt(
+        params.tradingRewardsVestingDuration,
+        10,
+      ),
     }
   }
 
   static feeDiscountScheduleResponseToFeeDiscountSchedule(
-    response: QueryFeeDiscountScheduleResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryFeeDiscountScheduleResponse,
   ): FeeDiscountSchedule {
-    const schedule = response.getFeeDiscountSchedule()!
+    const schedule = response.feeDiscountSchedule!
 
     return {
-      bucketCount: schedule.getBucketCount(),
-      bucketDuration: schedule.getBucketDuration(),
-      quoteDenomsList: schedule.getQuoteDenomsList(),
-      tierInfosList: schedule
-        .getTierInfosList()
+      bucketCount: parseInt(schedule.bucketCount, 10),
+      bucketDuration: parseInt(schedule.bucketDuration, 10),
+      quoteDenomsList: schedule.quoteDenoms,
+      tierInfosList: schedule.tierInfos
         .map(
           ChainGrpcExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo,
         )
         .filter((info) => info) as FeeDiscountTierInfo[],
-      disqualifiedMarketIdsList: schedule.getDisqualifiedMarketIdsList(),
+      disqualifiedMarketIdsList: schedule.disqualifiedMarketIds,
     }
   }
 
   static tradingRewardsCampaignResponseToTradingRewardsCampaign(
-    response: QueryTradeRewardCampaignResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse,
   ): TradeRewardCampaign {
     return {
       tradingRewardCampaignInfo:
         ChainGrpcExchangeTransformer.grpcTradingRewardCampaignInfoToTradingRewardCampaignInfo(
-          response.getTradingRewardCampaignInfo(),
+          response.tradingRewardCampaignInfo,
         ),
-      tradingRewardPoolCampaignScheduleList: response
-        .getTradingRewardPoolCampaignScheduleList()
-        .map(
+      tradingRewardPoolCampaignScheduleList:
+        response.tradingRewardPoolCampaignSchedule.map(
           ChainGrpcExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool,
         ),
-      pendingTradingRewardPoolCampaignScheduleList: response
-        .getPendingTradingRewardPoolCampaignScheduleList()
-        .map(
+      pendingTradingRewardPoolCampaignScheduleList:
+        response.pendingTradingRewardPoolCampaignSchedule.map(
           ChainGrpcExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool,
         ),
-      totalTradeRewardPoints: response.getTotalTradeRewardPoints(),
-      pendingTotalTradeRewardPointsList:
-        response.getPendingTotalTradeRewardPointsList(),
+      totalTradeRewardPoints: response.totalTradeRewardPoints,
+      pendingTotalTradeRewardPointsList: response.pendingTotalTradeRewardPoints,
     }
   }
 
   static feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
-    response: QueryFeeDiscountAccountInfoResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoResponse,
   ): FeeDiscountAccountInfo {
     return {
-      tierLevel: response.getTierLevel(),
+      tierLevel: parseInt(response.tierLevel, 10),
       accountInfo:
         ChainGrpcExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo(
-          response.getAccountInfo(),
+          response.accountInfo,
         ),
       accountTtl:
         ChainGrpcExchangeTransformer.grpcFeeDiscountTierTTLToFeeDiscountTierTTL(
-          response.getAccountTtl()!,
+          response.accountTtl!,
         ),
     }
   }
@@ -137,13 +130,10 @@ export class ChainGrpcExchangeTransformer {
     }
 
     return {
-      makerDiscountRate: info.getMakerDiscountRate(),
-      takerDiscountRate: info.getTakerDiscountRate(),
-      stakedAmount: info.getStakedAmount(),
-      feePaidAmount:
-        // @ts-ignore
-        info.getFeePaidAmount !== undefined ? info.getFeePaidAmount() : '0',
-      volume: info.getVolume !== undefined ? info.getVolume() : '0',
+      makerDiscountRate: info.makerDiscountRate,
+      takerDiscountRate: info.takerDiscountRate,
+      stakedAmount: info.stakedAmount,
+      volume: info.volume == undefined ? info.volume : '0',
     }
   }
 
@@ -155,8 +145,8 @@ export class ChainGrpcExchangeTransformer {
     }
 
     return {
-      tier: info.getTier(),
-      ttlTimestamp: info.getTtlTimestamp(),
+      tier: parseInt(info.tier, 10),
+      ttlTimestamp: parseInt(info.ttlTimestamp, 10),
     }
   }
 
@@ -164,8 +154,8 @@ export class ChainGrpcExchangeTransformer {
     point: GrpcPointsMultiplier,
   ): PointsMultiplier {
     return {
-      makerPointsMultiplier: point.getMakerPointsMultiplier(),
-      takerPointsMultiplier: point.getTakerPointsMultiplier(),
+      makerPointsMultiplier: point.makerPointsMultiplier,
+      takerPointsMultiplier: point.takerPointsMultiplier,
     }
   }
 
@@ -177,18 +167,14 @@ export class ChainGrpcExchangeTransformer {
     }
 
     return {
-      boostedSpotMarketIdsList: info.getBoostedSpotMarketIdsList(),
-      boostedDerivativeMarketIdsList: info.getBoostedDerivativeMarketIdsList(),
-      spotMarketMultipliersList: info
-        .getSpotMarketMultipliersList()
-        .map(
-          ChainGrpcExchangeTransformer.grpcPointsMultiplierToPointsMultiplier,
-        ),
-      derivativeMarketMultipliersList: info
-        .getDerivativeMarketMultipliersList()
-        .map(
-          ChainGrpcExchangeTransformer.grpcPointsMultiplierToPointsMultiplier,
-        ),
+      boostedSpotMarketIdsList: info.boostedSpotMarketIds,
+      boostedDerivativeMarketIdsList: info.boostedDerivativeMarketIds,
+      spotMarketMultipliersList: info.spotMarketMultipliers.map(
+        ChainGrpcExchangeTransformer.grpcPointsMultiplierToPointsMultiplier,
+      ),
+      derivativeMarketMultipliersList: info.derivativeMarketMultipliers.map(
+        ChainGrpcExchangeTransformer.grpcPointsMultiplierToPointsMultiplier,
+      ),
     }
   }
 
@@ -200,13 +186,13 @@ export class ChainGrpcExchangeTransformer {
     }
 
     return {
-      campaignDurationSeconds: info.getCampaignDurationSeconds(),
-      quoteDenomsList: info.getQuoteDenomsList(),
+      campaignDurationSeconds: parseInt(info.campaignDurationSeconds, 10),
+      quoteDenomsList: info.quoteDenoms,
       tradingRewardBoostInfo:
         ChainGrpcExchangeTransformer.grpcTradingRewardCampaignBoostInfoToTradingRewardCampaignBoostInfo(
-          info.getTradingRewardBoostInfo()!,
+          info.tradingRewardBoostInfo!,
         ),
-      disqualifiedMarketIdsList: info.getDisqualifiedMarketIdsList(),
+      disqualifiedMarketIdsList: info.disqualifiedMarketIds,
     }
   }
 
@@ -214,26 +200,30 @@ export class ChainGrpcExchangeTransformer {
     pool: GrpcCampaignRewardPool,
   ): CampaignRewardPool {
     return {
-      startTimestamp: pool.getStartTimestamp(),
-      maxCampaignRewardsList: pool
-        .getMaxCampaignRewardsList()
-        .map((coin) => ({ amount: coin.getAmount(), denom: coin.getDenom() })),
+      startTimestamp: parseInt(pool.startTimestamp, 10),
+      maxCampaignRewardsList: pool.maxCampaignRewards.map((coin) => ({
+        amount: coin.amount,
+        denom: coin.denom,
+      })),
     }
   }
 
   static grpcPositionToPosition(position: GrpcChainPosition): ChainPosition {
-    return position.toObject()
+    return {
+      islong: position.isLong,
+      ...position,
+    }
   }
 
   static positionsResponseToPositions(
-    response: QueryPositionsResponse,
+    response: InjectiveExchangeV1Beta1Query.QueryPositionsResponse,
   ): ChainDerivativePosition[] {
-    return response.getStateList().map((position) => {
+    return response.state.map((position) => {
       return {
-        subaccountId: position.getSubaccountId(),
-        marketId: position.getMarketId(),
+        subaccountId: position.subaccountId,
+        marketId: position.marketId,
         position: ChainGrpcExchangeTransformer.grpcPositionToPosition(
-          position.getPosition()!,
+          position.position!,
         ),
       }
     })

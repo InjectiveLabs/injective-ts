@@ -1,6 +1,6 @@
-import { MsgUpdateAdmin as BaseMsgUpdateAdmin } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgUpdateAdmin {
   export interface Params {
@@ -9,9 +9,7 @@ export declare namespace MsgUpdateAdmin {
     contract: string
   }
 
-  export type Proto = BaseMsgUpdateAdmin
-
-  export type Object = BaseMsgUpdateAdmin.AsObject
+  export type Proto = CosmwasmWasmV1Tx.MsgUpdateAdmin
 }
 
 /**
@@ -19,8 +17,7 @@ export declare namespace MsgUpdateAdmin {
  */
 export default class MsgUpdateAdmin extends MsgBase<
   MsgUpdateAdmin.Params,
-  MsgUpdateAdmin.Proto,
-  MsgUpdateAdmin.Object
+  MsgUpdateAdmin.Proto
 > {
   static fromJSON(params: MsgUpdateAdmin.Params): MsgUpdateAdmin {
     return new MsgUpdateAdmin(params)
@@ -29,13 +26,13 @@ export default class MsgUpdateAdmin extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgUpdateAdmin()
+    const message = CosmwasmWasmV1Tx.MsgUpdateAdmin.create()
 
-    message.setSender(params.sender)
-    message.setNewAdmin(params.newAdmin)
-    message.setContract(params.contract)
+    message.sender = params.sender
+    message.newAdmin = params.newAdmin
+    message.contract = params.contract
 
-    return message
+    return CosmwasmWasmV1Tx.MsgUpdateAdmin.fromPartial(message)
   }
 
   public toData() {
@@ -43,14 +40,14 @@ export default class MsgUpdateAdmin extends MsgBase<
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgUpdateAdmin',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -76,5 +73,9 @@ export default class MsgUpdateAdmin extends MsgBase<
       type: '/cosmwasm.wasm.v1.MsgUpdateAdmin',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmwasmWasmV1Tx.MsgUpdateAdmin.encode(this.toProto()).finish()
   }
 }

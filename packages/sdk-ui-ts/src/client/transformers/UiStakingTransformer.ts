@@ -1,4 +1,4 @@
-import { Validator } from '@injectivelabs/sdk-ts/dist/client/chain/types/staking'
+import { Validator } from '@injectivelabs/sdk-ts'
 import { UiValidator } from '../types/staking'
 
 export class UiStakingTransformer {
@@ -7,7 +7,7 @@ export class UiStakingTransformer {
       return {
         jailed: validator.jailed,
         status: validator.status,
-        unbondingTime: validator.unbondingTime.getSeconds(),
+        unbondingTime: Math.floor(validator.unbondingTime.getTime() / 1000),
         delegatorShares: validator.delegatorShares,
         tokens: validator.tokens,
         unbondingHeight: validator.unbondingHeight,

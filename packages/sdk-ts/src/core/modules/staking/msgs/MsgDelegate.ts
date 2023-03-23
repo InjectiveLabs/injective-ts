@@ -1,7 +1,9 @@
-import { MsgDelegate as BaseMsgDelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  CosmosStakingV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgDelegate {
   export interface Params {
@@ -13,9 +15,7 @@ export declare namespace MsgDelegate {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgDelegate
-
-  export type Object = BaseMsgDelegate.AsObject
+  export type Proto = CosmosStakingV1Beta1Tx.MsgDelegate
 }
 
 /**
@@ -23,8 +23,7 @@ export declare namespace MsgDelegate {
  */
 export default class MsgDelegate extends MsgBase<
   MsgDelegate.Params,
-  MsgDelegate.Proto,
-  MsgDelegate.Object
+  MsgDelegate.Proto
 > {
   static fromJSON(params: MsgDelegate.Params): MsgDelegate {
     return new MsgDelegate(params)
@@ -33,16 +32,16 @@ export default class MsgDelegate extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const coinAmount = new Coin()
-    coinAmount.setDenom(params.amount.denom)
-    coinAmount.setAmount(params.amount.amount)
+    const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
+    coinAmount.denom = params.amount.denom
+    coinAmount.amount = params.amount.amount
 
-    const message = new BaseMsgDelegate()
-    message.setAmount(coinAmount)
-    message.setDelegatorAddress(params.injectiveAddress)
-    message.setValidatorAddress(params.validatorAddress)
+    const message = CosmosStakingV1Beta1Tx.MsgDelegate.create()
+    message.amount = coinAmount
+    message.delegatorAddress = params.injectiveAddress
+    message.validatorAddress = params.validatorAddress
 
-    return message
+    return CosmosStakingV1Beta1Tx.MsgDelegate.fromPartial(message)
   }
 
   public toData() {
@@ -50,14 +49,14 @@ export default class MsgDelegate extends MsgBase<
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgDelegate',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -83,5 +82,9 @@ export default class MsgDelegate extends MsgBase<
       type: '/cosmos.staking.v1beta1.MsgDelegate',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmosStakingV1Beta1Tx.MsgDelegate.encode(this.toProto()).finish()
   }
 }

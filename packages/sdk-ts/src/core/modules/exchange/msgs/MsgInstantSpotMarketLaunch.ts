@@ -1,4 +1,4 @@
-import { MsgInstantSpotMarketLaunch as BaseMsgInstantSpotMarketLaunch } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
@@ -16,22 +16,22 @@ export declare namespace MsgInstantSpotMarketLaunch {
     }
   }
 
-  export type Proto = BaseMsgInstantSpotMarketLaunch
-
-  export type Object = BaseMsgInstantSpotMarketLaunch.AsObject
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch
 }
 
 const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
-  const message = new BaseMsgInstantSpotMarketLaunch()
+  const message = InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch.create()
 
-  message.setSender(params.proposer)
-  message.setQuoteDenom(params.market.quoteDenom)
-  message.setTicker(params.market.ticker)
-  message.setBaseDenom(params.market.baseDenom)
-  message.setMinPriceTickSize(params.market.minPriceTickSize)
-  message.setMinQuantityTickSize(params.market.minQuantityTickSize)
+  message.sender = params.proposer
+  message.quoteDenom = params.market.quoteDenom
+  message.ticker = params.market.ticker
+  message.baseDenom = params.market.baseDenom
+  message.minPriceTickSize = params.market.minPriceTickSize
+  message.minQuantityTickSize = params.market.minQuantityTickSize
 
-  return message
+  return InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch.fromPartial(
+    message,
+  )
 }
 
 /**
@@ -39,8 +39,7 @@ const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
  */
 export default class MsgInstantSpotMarketLaunch extends MsgBase<
   MsgInstantSpotMarketLaunch.Params,
-  MsgInstantSpotMarketLaunch.Proto,
-  MsgInstantSpotMarketLaunch.Object
+  MsgInstantSpotMarketLaunch.Proto
 > {
   static fromJSON(
     params: MsgInstantSpotMarketLaunch.Params,
@@ -72,7 +71,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -80,7 +79,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
     const { params } = this
     const proto = createMessage(params)
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -106,5 +105,11 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch.encode(
+      this.toProto(),
+    ).finish()
   }
 }

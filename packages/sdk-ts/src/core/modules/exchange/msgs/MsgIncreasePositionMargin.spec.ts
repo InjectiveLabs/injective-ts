@@ -1,4 +1,3 @@
-import { MsgIncreasePositionMargin as BaseMsgIncreasePositionMargin } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgIncreasePositionMargin from './MsgIncreasePositionMargin'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -27,8 +26,7 @@ describe('MsgIncreasePositionMargin', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgIncreasePositionMargin).toBe(true)
-    expect(proto.toObject()).toStrictEqual({
+    expect(proto).toStrictEqual({
       ...protoParams,
       amount: '1000000000000000000000',
     })

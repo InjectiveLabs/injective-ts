@@ -67,10 +67,10 @@ export class InjectiveWormholeClient extends WormholeClient {
       ).toString('base64'),
     )
 
-    if (typeof response.data === 'string') {
-      const state = JSON.parse(
-        Buffer.from(response.data, 'base64').toString('utf-8'),
-      ) as { balance: string }
+    if (response.data) {
+      const state = JSON.parse(Buffer.from(response.data).toString()) as {
+        balance: string
+      }
 
       return { address: tokenAddress, balance: state.balance } as {
         address: string
@@ -225,7 +225,6 @@ export class InjectiveWormholeClient extends WormholeClient {
     return getIsTransferCompletedInjective(
       injectiveContractAddresses.token_bridge,
       Buffer.from(signedVAA, 'base64'),
-      // @ts-ignore
       new ChainGrpcWasmApi(endpoints.grpc),
     )
   }

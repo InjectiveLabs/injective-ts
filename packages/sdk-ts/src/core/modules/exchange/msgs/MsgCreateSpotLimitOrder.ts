@@ -1,49 +1,45 @@
-import { MsgCreateSpotLimitOrder as BaseMsgCreateSpotLimitOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import {
-  SpotOrder,
-  OrderInfo,
-  OrderTypeMap,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Exchange,
+  InjectiveExchangeV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateSpotLimitOrder {
   export interface Params {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderTypeMap[keyof OrderTypeMap]
+    orderType: InjectiveExchangeV1Beta1Exchange.OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
     quantity: string
   }
 
-  export type Proto = BaseMsgCreateSpotLimitOrder
-
-  export type Object = BaseMsgCreateSpotLimitOrder.AsObject
+  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder
 }
 
 const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
-  const orderInfo = new OrderInfo()
-  orderInfo.setSubaccountId(params.subaccountId)
-  orderInfo.setFeeRecipient(params.feeRecipient)
-  orderInfo.setPrice(params.price)
-  orderInfo.setQuantity(params.quantity)
+  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+  orderInfo.subaccountId = params.subaccountId
+  orderInfo.feeRecipient = params.feeRecipient
+  orderInfo.price = params.price
+  orderInfo.quantity = params.quantity
 
-  const spotOrder = new SpotOrder()
-  spotOrder.setMarketId(params.marketId)
-  spotOrder.setOrderType(params.orderType)
-  spotOrder.setOrderInfo(orderInfo)
+  const spotOrder = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
+  spotOrder.marketId = params.marketId
+  spotOrder.orderType = params.orderType
+  spotOrder.orderInfo = orderInfo
 
-  spotOrder.setTriggerPrice(params.triggerPrice || '0')
+  spotOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = new BaseMsgCreateSpotLimitOrder()
-  message.setSender(params.injectiveAddress)
-  message.setOrder(spotOrder)
+  const message = InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder.create()
+  message.sender = params.injectiveAddress
+  message.order = spotOrder
 
-  return message
+  return InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder.fromPartial(message)
 }
 
 /**
@@ -51,8 +47,7 @@ const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
  */
 export default class MsgCreateSpotLimitOrder extends MsgBase<
   MsgCreateSpotLimitOrder.Params,
-  MsgCreateSpotLimitOrder.Proto,
-  MsgCreateSpotLimitOrder.Object
+  MsgCreateSpotLimitOrder.Proto
 > {
   static fromJSON(
     params: MsgCreateSpotLimitOrder.Params,
@@ -80,7 +75,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -88,13 +83,13 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     const { params } = this
     const proto = createLimitOrder(params)
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
       type: 'exchange/MsgCreateSpotLimitOrder',
       value:
-        message as unknown as SnakeCaseKeys<MsgCreateSpotLimitOrder.Object>,
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder>,
     }
   }
 
@@ -115,5 +110,11 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCreateSpotLimitOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

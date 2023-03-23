@@ -1,3 +1,4 @@
+import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 import { GrpcCoin } from '../../../types/index'
 import {
   GrpcIndexerBid,
@@ -6,60 +7,58 @@ import {
   Auction,
 } from '../types/auction'
 import { Coin } from '@injectivelabs/ts-types'
-import {
-  AuctionEndpointResponse,
-  AuctionsResponse,
-} from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcAuctionTransformer {
-  static auctionResponseToAuction(response: AuctionEndpointResponse): {
+  static auctionResponseToAuction(
+    response: InjectiveAuctionRpc.AuctionEndpointResponse,
+  ): {
     auction: Auction
     bids: IndexerBid[]
   } {
     return {
       auction: IndexerGrpcAuctionTransformer.grpcAuctionToAuction(
-        response.getAuction()!,
+        response.auction!,
       ),
-      bids: response
-        .getBidsList()
-        .map(IndexerGrpcAuctionTransformer.grpcBidToBid),
+      bids: response.bids.map(IndexerGrpcAuctionTransformer.grpcBidToBid),
     }
   }
 
-  static auctionsResponseToAuctions(response: AuctionsResponse): Auction[] {
-    return response
-      .getAuctionsList()
-      .map((a) => IndexerGrpcAuctionTransformer.grpcAuctionToAuction(a))
+  static auctionsResponseToAuctions(
+    response: InjectiveAuctionRpc.AuctionsResponse,
+  ): Auction[] {
+    return response.auctions.map((a) =>
+      IndexerGrpcAuctionTransformer.grpcAuctionToAuction(a),
+    )
   }
 
   static grpcBidToBid(grpcBid: GrpcIndexerBid): IndexerBid {
     return {
-      bidder: grpcBid.getBidder(),
-      bidAmount: grpcBid.getAmount(),
-      bidTimestamp: grpcBid.getTimestamp(),
+      bidder: grpcBid.bidder,
+      bidAmount: grpcBid.amount,
+      bidTimestamp: parseInt(grpcBid.timestamp, 10),
     }
   }
 
   static grpcCoinToCoin(grpcCoin: GrpcCoin): Coin {
     return {
-      denom: grpcCoin.getDenom(),
-      amount: grpcCoin.getAmount(),
+      denom: grpcCoin.denom,
+      amount: grpcCoin.amount,
     }
   }
 
   static grpcAuctionToAuction(grpcAuction: GrpcAuction): Auction {
     return {
-      winner: grpcAuction.getWinner(),
-      basketList: grpcAuction
-        .getBasketList()
-        .map(IndexerGrpcAuctionTransformer.grpcCoinToCoin),
-      winningBidAmount: grpcAuction.getWinningBidAmount(),
-      round: grpcAuction.getRound(),
-      endTimestamp: grpcAuction.getEndTimestamp(),
-      updatedAt: grpcAuction.getUpdatedAt(),
+      winner: grpcAuction.winner,
+      basketList: grpcAuction.basket.map(
+        IndexerGrpcAuctionTransformer.grpcCoinToCoin,
+      ),
+      winningBidAmount: grpcAuction.winningBidAmount,
+      round: parseInt(grpcAuction.round, 10),
+      endTimestamp: parseInt(grpcAuction.endTimestamp, 10),
+      updatedAt: parseInt(grpcAuction.updatedAt, 10),
     }
   }
 }

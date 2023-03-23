@@ -1,9 +1,10 @@
-import { MsgExec as BaseMsgExec } from '@injectivelabs/chain-api/cosmos/authz/v1beta1/tx_pb'
-import { Any } from 'google-protobuf/google/protobuf/any_pb'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
-
+import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
-import { Msgs } from '../../msgs'
+import type { Msgs } from '../../msgs'
+import {
+  CosmosAuthzV1Beta1Tx,
+  GoogleProtobufAny,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgExec {
   export interface Params {
@@ -11,9 +12,11 @@ export declare namespace MsgExec {
     msgs: Msgs | Msgs[]
   }
 
-  export type Proto = BaseMsgExec
+  export type Proto = CosmosAuthzV1Beta1Tx.MsgExec
 
-  export type Object = BaseMsgExec.AsObject
+  export type Object = Omit<CosmosAuthzV1Beta1Tx.MsgExec, 'msgs'> & {
+    msgs: any
+  }
 }
 
 /**
@@ -31,21 +34,21 @@ export default class MsgExec extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgExec()
-    message.setGrantee(params.grantee)
+    const message = CosmosAuthzV1Beta1Tx.MsgExec.create()
+    message.grantee = params.grantee
 
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
     const actualMsgs = msgs.map((msg) => {
-      const msgValue = new Any()
-      msgValue.setTypeUrl(msg.toData()['@type'])
-      msgValue.setValue(msg.toProto().serializeBinary())
+      const msgValue = GoogleProtobufAny.Any.create()
+      msgValue.typeUrl = msg.toData()['@type']
+      msgValue.value = msg.toBinary()
 
       return msgValue
     })
 
-    message.setMsgsList(actualMsgs)
+    message.msgs = actualMsgs
 
-    return message
+    return CosmosAuthzV1Beta1Tx.MsgExec.fromPartial(message)
   }
 
   public toData() {
@@ -53,20 +56,20 @@ export default class MsgExec extends MsgBase<
 
     return {
       '@type': '/cosmos.authz.v1beta1.MsgExec',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
-      msgs: proto.getMsgsList(),
+      ...snakecaseKeys(proto),
+      msgs: proto.msgs,
     }
 
     return {
       type: 'cosmos-sdk/MsgExec',
-      value: message as unknown as SnakeCaseKeys<MsgExec.Object>,
+      value: message as unknown as MsgExec.Object,
     }
   }
 
@@ -87,5 +90,9 @@ export default class MsgExec extends MsgBase<
       type: '/cosmos.authz.v1beta1.MsgExec',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmosAuthzV1Beta1Tx.MsgExec.encode(this.toProto()).finish()
   }
 }

@@ -1,16 +1,18 @@
-import { Fee, ModeInfo } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { PublicKey } from '@injectivelabs/chain-api/tendermint/crypto/keys_pb'
+import {
+  CosmosTxV1Beta1Tx,
+  TendermintCryptoKeys,
+} from '@injectivelabs/core-proto-ts'
 
 /* eslint-disable camelcase */
 export interface RestSignerInfo {
-  public_key: PublicKey | null
-  mode_info: ModeInfo
+  public_key: TendermintCryptoKeys.PublicKey | null
+  mode_info: CosmosTxV1Beta1Tx.ModeInfo
   sequence: string
 }
 
 export interface RestAuthInfo {
   signer_infos: RestSignerInfo[]
-  fee: Fee
+  fee: CosmosTxV1Beta1Tx.Fee
 }
 
 export interface RestTxBody {

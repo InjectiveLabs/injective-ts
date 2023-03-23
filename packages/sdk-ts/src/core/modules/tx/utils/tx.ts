@@ -1,51 +1,48 @@
-import { Any } from 'google-protobuf/google/protobuf/any_pb'
-import { PubKey } from '@injectivelabs/chain-api/cosmos/crypto/secp256k1/keys_pb'
-import { PubKey as CosmosPubKey } from '@injectivelabs/chain-api/cosmos/crypto/secp256k1/keys_pb'
 import { createAny, createAnyMessage } from './helpers'
-import { MsgArg } from '../types'
-import {
-  TxBody,
-  SignDoc,
-  SignerInfo,
-  AuthInfo,
-  ModeInfo,
-  Fee,
-  TxRaw,
-} from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { SignModeMap } from '@injectivelabs/chain-api/cosmos/tx/signing/v1beta1/signing_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
-import { ExtensionOptionsWeb3Tx } from '@injectivelabs/chain-api/injective/types/v1beta1/tx_ext_pb'
 import { EthereumChainId } from '@injectivelabs/ts-types'
+import { Msgs } from '../../msgs'
+import {
+  CosmosBaseV1Beta1Coin,
+  CosmosCryptoSecp256k1Keys,
+  CosmosTxSigningV1Beta1Signing,
+  CosmosTxV1Beta1Tx,
+  GoogleProtobufAny,
+  InjectiveTypesV1TxExt,
+} from '@injectivelabs/core-proto-ts'
 
 export const getPublicKey = ({
   chainId,
   key,
 }: {
   chainId: string
-  key: string | Any
+  key: string | GoogleProtobufAny.Any
 }) => {
-  if (key instanceof Any) {
+  if (typeof key !== 'string') {
     return key
   }
 
   let proto
   let path
+  let baseProto
 
   if (chainId.startsWith('injective')) {
-    proto = new PubKey()
+    proto = CosmosCryptoSecp256k1Keys.PubKey.create()
+    baseProto = CosmosCryptoSecp256k1Keys.PubKey
     path = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
   } else if (chainId.startsWith('evmos')) {
-    proto = new PubKey()
+    proto = CosmosCryptoSecp256k1Keys.PubKey.create()
+    baseProto = CosmosCryptoSecp256k1Keys.PubKey
     path = '/ethermint.crypto.v1.ethsecp256k1.PubKey'
   } else {
-    proto = new CosmosPubKey()
+    proto = CosmosCryptoSecp256k1Keys.PubKey.create()
+    baseProto = CosmosCryptoSecp256k1Keys.PubKey
     path = '/cosmos.crypto.secp256k1.PubKey'
   }
 
-  proto.setKey(Buffer.from(key, 'base64'))
+  proto.key = Buffer.from(key, 'base64')
 
-  return createAny(proto.serializeBinary(), path)
+  return createAny(baseProto.encode(proto).finish(), path)
 }
 
 export const createBody = ({
@@ -53,25 +50,25 @@ export const createBody = ({
   memo = '',
   timeoutHeight,
 }: {
-  message: MsgArg | MsgArg[]
+  message: Msgs | Msgs[]
   memo?: string
   timeoutHeight?: number
 }) => {
   const messages = Array.isArray(message) ? message : [message]
 
-  const txBody = new TxBody()
-  txBody.setMessagesList(
-    messages.map((message) =>
-      createAnyMessage({
-        value: message.message,
-        type: message.type,
-      }),
-    ),
+  const txBody = CosmosTxV1Beta1Tx.TxBody.create()
+
+  txBody.messages = messages.map((message) =>
+    createAnyMessage({
+      value: message.toBinary(),
+      type: message.toDirectSign().type,
+    }),
   )
-  txBody.setMemo(memo)
+
+  txBody.memo = memo
 
   if (timeoutHeight) {
-    txBody.setTimeoutHeight(timeoutHeight)
+    txBody.timeoutHeight = timeoutHeight.toString()
   }
 
   return txBody
@@ -86,16 +83,16 @@ export const createFee = ({
   payer?: string
   gasLimit: number
 }) => {
-  const feeAmount = new Coin()
-  feeAmount.setAmount(fee.amount)
-  feeAmount.setDenom(fee.denom)
+  const feeAmount = CosmosBaseV1Beta1Coin.Coin.create()
+  feeAmount.amount = fee.amount
+  feeAmount.denom = fee.denom
 
-  const feeProto = new Fee()
-  feeProto.setGasLimit(gasLimit)
-  feeProto.setAmountList([feeAmount])
+  const feeProto = CosmosTxV1Beta1Tx.Fee.create()
+  feeProto.gasLimit = gasLimit.toString()
+  feeProto.amount = [feeAmount]
 
   if (payer) {
-    feeProto.setPayer(payer)
+    feeProto.payer = payer
   }
 
   return feeProto
@@ -107,8 +104,8 @@ export const createSigners = ({
   signers,
 }: {
   chainId: string
-  signers: { pubKey: string | Any; sequence: number }[]
-  mode: SignModeMap[keyof SignModeMap]
+  signers: { pubKey: string | GoogleProtobufAny.Any; sequence: number }[]
+  mode: CosmosTxSigningV1Beta1Signing.SignMode
 }) => {
   return signers.map((s) =>
     createSignerInfo({
@@ -127,22 +124,22 @@ export const createSignerInfo = ({
   mode,
 }: {
   chainId: string
-  publicKey: string | Any
+  publicKey: string | GoogleProtobufAny.Any
   sequence: number
-  mode: SignModeMap[keyof SignModeMap]
+  mode: CosmosTxSigningV1Beta1Signing.SignMode
 }) => {
   const pubKey = getPublicKey({ chainId, key: publicKey })
 
-  const single = new ModeInfo.Single()
-  single.setMode(mode)
+  const single = CosmosTxV1Beta1Tx.ModeInfo_Single.create()
+  single.mode = mode
 
-  const modeInfo = new ModeInfo()
-  modeInfo.setSingle(single)
+  const modeInfo = CosmosTxV1Beta1Tx.ModeInfo.create()
+  modeInfo.single = single
 
-  const signerInfo = new SignerInfo()
-  signerInfo.setPublicKey(pubKey)
-  signerInfo.setSequence(sequence)
-  signerInfo.setModeInfo(modeInfo)
+  const signerInfo = CosmosTxV1Beta1Tx.SignerInfo.create()
+  signerInfo.publicKey = pubKey
+  signerInfo.sequence = sequence.toString()
+  signerInfo.modeInfo = modeInfo
 
   return signerInfo
 }
@@ -151,12 +148,12 @@ export const createAuthInfo = ({
   signerInfo,
   fee,
 }: {
-  signerInfo: SignerInfo[]
-  fee: Fee
+  signerInfo: CosmosTxV1Beta1Tx.SignerInfo[]
+  fee: CosmosTxV1Beta1Tx.Fee
 }) => {
-  const authInfo = new AuthInfo()
-  authInfo.setSignerInfosList(signerInfo)
-  authInfo.setFee(fee)
+  const authInfo = CosmosTxV1Beta1Tx.AuthInfo.create()
+  authInfo.signerInfos = signerInfo
+  authInfo.fee = fee
 
   return authInfo
 }
@@ -172,40 +169,42 @@ export const createSigDoc = ({
   chainId: string
   accountNumber: number
 }) => {
-  const signDoc = new SignDoc()
-  signDoc.setAccountNumber(accountNumber)
-  signDoc.setChainId(chainId)
-  signDoc.setBodyBytes(bodyBytes)
-  signDoc.setAuthInfoBytes(authInfoBytes)
+  const signDoc = CosmosTxV1Beta1Tx.SignDoc.create()
+
+  signDoc.accountNumber = accountNumber.toString()
+  signDoc.chainId = chainId
+  signDoc.bodyBytes = bodyBytes
+  signDoc.authInfoBytes = authInfoBytes
 
   return signDoc
 }
 
 export const createCosmosSignDocFromTransaction = (args: {
-  txRaw: TxRaw
+  txRaw: CosmosTxV1Beta1Tx.TxRaw
   chainId: string
   accountNumber: number
 }) => {
   return CosmosSignDoc.fromPartial({
-    bodyBytes: args.txRaw.getBodyBytes_asU8(),
-    authInfoBytes: args.txRaw.getAuthInfoBytes_asU8(),
+    bodyBytes: args.txRaw.bodyBytes,
+    authInfoBytes: args.txRaw.authInfoBytes,
     accountNumber: args.accountNumber,
     chainId: args.chainId,
   })
 }
 
 export const createTxRawEIP712 = (
-  txRaw: TxRaw,
-  extension: ExtensionOptionsWeb3Tx,
+  txRaw: CosmosTxV1Beta1Tx.TxRaw,
+  extension: InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx,
 ) => {
-  const body = TxBody.deserializeBinary(txRaw.getBodyBytes_asU8())
+  const body = CosmosTxV1Beta1Tx.TxBody.decode(txRaw.bodyBytes)
   const extensionAny = createAny(
-    extension.serializeBinary(),
+    InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx.encode(extension).finish(),
     '/injective.types.v1beta1.ExtensionOptionsWeb3Tx',
   )
-  body.addExtensionOptions(extensionAny)
 
-  txRaw.setBodyBytes(body.serializeBinary())
+  body.extensionOptions = [extensionAny]
+
+  txRaw.bodyBytes = CosmosTxV1Beta1Tx.TxBody.encode(body).finish()
 
   return txRaw
 }
@@ -219,29 +218,33 @@ export const createWeb3Extension = ({
   feePayer?: string
   feePayerSig?: Uint8Array
 }) => {
-  const web3Extension = new ExtensionOptionsWeb3Tx()
-  web3Extension.setTypeddatachainid(ethereumChainId)
+  const web3Extension = InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx.create()
+  web3Extension.typedDataChainID = ethereumChainId.toString()
 
   if (feePayer) {
-    web3Extension.setFeepayer(feePayer)
+    web3Extension.feePayer = feePayer
   }
 
   if (feePayerSig) {
-    web3Extension.setFeepayersig(feePayerSig)
+    web3Extension.feePayerSig = feePayerSig
   }
 
   return web3Extension
 }
 
 export const getTransactionPartsFromTxRaw = (
-  txRaw: TxRaw,
-): { authInfo: AuthInfo; body: TxBody; signatures: Uint8Array[] } => {
-  const authInfo = AuthInfo.deserializeBinary(txRaw.getAuthInfoBytes_asU8())
-  const body = TxBody.deserializeBinary(txRaw.getBodyBytes_asU8())
+  txRaw: CosmosTxV1Beta1Tx.TxRaw,
+): {
+  authInfo: CosmosTxV1Beta1Tx.AuthInfo
+  body: CosmosTxV1Beta1Tx.TxBody
+  signatures: Uint8Array[]
+} => {
+  const authInfo = CosmosTxV1Beta1Tx.AuthInfo.decode(txRaw.authInfoBytes)
+  const body = CosmosTxV1Beta1Tx.TxBody.decode(txRaw.bodyBytes)
 
   return {
     body,
     authInfo,
-    signatures: txRaw.getSignaturesList_asU8(),
+    signatures: txRaw.signatures,
   }
 }

@@ -1,83 +1,57 @@
 import {
-  FundingPaymentsRequest,
-  FundingPaymentsResponse,
-  FundingRatesRequest,
-  FundingRatesResponse,
-  MarketsRequest as DerivativeMarketsRequest,
-  MarketsResponse as DerivativeMarketsResponse,
-  BinaryOptionsMarketsRequest as BinaryOptionsMarketsRequest,
-  BinaryOptionsMarketsResponse as BinaryOptionsMarketsResponse,
-  MarketRequest as DerivativeMarketRequest,
-  MarketResponse as DerivativeMarketResponse,
-  BinaryOptionsMarketRequest as BinaryOptionsMarketRequest,
-  BinaryOptionsMarketResponse as BinaryOptionsMarketResponse,
-  OrderbookRequest as DerivativeOrderbookRequest,
-  OrderbookResponse as DerivativeOrderbookResponse,
-  OrderbookV2Request as DerivativeOrderbookV2Request,
-  OrderbookV2Response as DerivativeOrderbookV2Response,
-  OrderbooksV2Request as DerivativeOrderbooksV2Request,
-  OrderbooksV2Response as DerivativeOrderbooksV2Response,
-  OrdersRequest as DerivativeOrdersRequest,
-  OrdersResponse as DerivativeOrdersResponse,
-  OrdersHistoryRequest as DerivativeOrdersHistoryRequest,
-  OrdersHistoryResponse as DerivativeOrdersHistoryResponse,
-  TradesRequest as DerivativeTradesRequest,
-  TradesResponse as DerivativeTradesResponse,
-  PositionsRequest as DerivativePositionsRequest,
-  PositionsResponse as DerivativePositionsResponse,
-  SubaccountOrdersListRequest as DerivativeSubaccountOrdersListRequest,
-  SubaccountOrdersListResponse as DerivativeSubaccountOrdersListResponse,
-  SubaccountTradesListRequest as DerivativeSubaccountTradesListRequest,
-  SubaccountTradesListResponse as DerivativeSubaccountTradesListResponse,
-  OrderbooksRequest as DerivativeOrderbooksRequest,
-  OrderbooksResponse as DerivativeOrderbooksResponse,
-} from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
-import { InjectiveDerivativeExchangeRPC } from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb_service'
-import {
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
 } from '../../../types/exchange'
 import { PaginationOption } from '../../../types/pagination'
-import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcDerivativeTransformer } from '../transformers'
 import { IndexerModule } from '../types'
-import { DerivativeOrderSide, DerivativeOrderState } from '../types/derivatives'
+import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcDerivativesApi extends BaseConsumer {
+export class IndexerGrpcDerivativesApi {
   protected module: string = IndexerModule.Derivatives
+
+  protected client: InjectiveDerivativeExchangeRpc.InjectiveDerivativeExchangeRPCClientImpl
+
+  constructor(endpoint: string) {
+    this.client =
+      new InjectiveDerivativeExchangeRpc.InjectiveDerivativeExchangeRPCClientImpl(
+        getGrpcIndexerWebImpl(endpoint),
+      )
+  }
 
   async fetchMarkets(params?: { marketStatus?: string; quoteDenom?: string }) {
     const { marketStatus, quoteDenom } = params || {}
 
-    const request = new DerivativeMarketsRequest()
+    const request = InjectiveDerivativeExchangeRpc.MarketsRequest.create()
 
     if (marketStatus) {
-      request.setMarketStatus(marketStatus)
+      request.marketStatus = marketStatus
     }
 
     if (quoteDenom) {
-      request.setQuoteDenom(quoteDenom)
+      request.quoteDenom = quoteDenom
     }
 
     try {
-      const response = await this.request<
-        DerivativeMarketsRequest,
-        DerivativeMarketsResponse,
-        typeof InjectiveDerivativeExchangeRPC.Markets
-      >(request, InjectiveDerivativeExchangeRPC.Markets)
+      const response = await this.client.Markets(request)
 
       return IndexerGrpcDerivativeTransformer.marketsResponseToMarkets(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -88,21 +62,20 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }
 
   async fetchMarket(marketId: string) {
-    const request = new DerivativeMarketRequest()
+    const request = InjectiveDerivativeExchangeRpc.MarketRequest.create()
 
-    request.setMarketId(marketId)
+    request.marketId = marketId
 
     try {
-      const response = await this.request<
-        DerivativeMarketRequest,
-        DerivativeMarketResponse,
-        typeof InjectiveDerivativeExchangeRPC.Market
-      >(request, InjectiveDerivativeExchangeRPC.Market)
+      const response = await this.client.Market(request)
 
       return IndexerGrpcDerivativeTransformer.marketResponseToMarket(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -119,32 +92,29 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }) {
     const { marketStatus, quoteDenom, pagination } = params || {}
 
-    const request = new BinaryOptionsMarketsRequest()
+    const request =
+      InjectiveDerivativeExchangeRpc.BinaryOptionsMarketsRequest.create()
 
     if (marketStatus) {
-      request.setMarketStatus(marketStatus)
+      request.marketStatus = marketStatus
     }
 
     if (quoteDenom) {
-      request.setQuoteDenom(quoteDenom)
+      request.quoteDenom = quoteDenom
     }
 
     if (pagination) {
-      if (pagination.skip !== undefined && request.setSkip !== undefined) {
-        request.setSkip(pagination.skip)
+      if (pagination.skip !== undefined) {
+        request.skip = pagination.skip.toString()
       }
 
-      if (pagination.limit !== undefined && request.setLimit !== undefined) {
-        request.setLimit(pagination.limit)
+      if (pagination.limit !== undefined) {
+        request.limit = pagination.limit
       }
     }
 
     try {
-      const response = await this.request<
-        BinaryOptionsMarketsRequest,
-        BinaryOptionsMarketsResponse,
-        typeof InjectiveDerivativeExchangeRPC.BinaryOptionsMarkets
-      >(request, InjectiveDerivativeExchangeRPC.BinaryOptionsMarkets)
+      const response = await this.client.BinaryOptionsMarkets(request)
 
       return pagination
         ? IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
@@ -154,8 +124,11 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
             response,
           )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -166,23 +139,23 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }
 
   async fetchBinaryOptionsMarket(marketId: string) {
-    const request = new BinaryOptionsMarketRequest()
+    const request =
+      InjectiveDerivativeExchangeRpc.BinaryOptionsMarketRequest.create()
 
-    request.setMarketId(marketId)
+    request.marketId = marketId
 
     try {
-      const response = await this.request<
-        BinaryOptionsMarketRequest,
-        BinaryOptionsMarketResponse,
-        typeof InjectiveDerivativeExchangeRPC.BinaryOptionsMarket
-      >(request, InjectiveDerivativeExchangeRPC.BinaryOptionsMarket)
+      const response = await this.client.BinaryOptionsMarket(request)
 
       return IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseToBinaryOptionsMarket(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -193,23 +166,22 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }
 
   async fetchOrderbook(marketId: string) {
-    const request = new DerivativeOrderbookRequest()
+    const request = InjectiveDerivativeExchangeRpc.OrderbookRequest.create()
 
-    request.setMarketId(marketId)
+    request.marketId = marketId
 
     try {
-      const response = await this.request<
-        DerivativeOrderbookRequest,
-        DerivativeOrderbookResponse,
-        typeof InjectiveDerivativeExchangeRPC.Orderbook
-      >(request, InjectiveDerivativeExchangeRPC.Orderbook)
+      const response = await this.client.Orderbook(request)
 
       return IndexerGrpcDerivativeTransformer.orderbookResponseToOrderbook(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -222,7 +194,7 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   async fetchOrders(params?: {
     marketId?: string
     marketIds?: string[]
-    orderSide?: DerivativeOrderSide
+    orderSide?: OrderSide
     isConditional?: boolean
     subaccountId?: string
     pagination?: PaginationOption
@@ -236,53 +208,52 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       pagination,
     } = params || {}
 
-    const request = new DerivativeOrdersRequest()
+    const request = InjectiveDerivativeExchangeRpc.OrdersRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (orderSide) {
-      request.setOrderSide(orderSide)
+      request.orderSide = orderSide
     }
 
     if (isConditional !== undefined) {
-      request.setIsConditional(isConditional ? 'true' : 'false')
+      request.isConditional = isConditional ? 'true' : 'false'
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
 
       if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
+        request.endTime = pagination.endTime.toString()
       }
     }
 
     try {
-      const response = await this.request<
-        DerivativeOrdersRequest,
-        DerivativeOrdersResponse,
-        typeof InjectiveDerivativeExchangeRPC.Orders
-      >(request, InjectiveDerivativeExchangeRPC.Orders)
+      const response = await this.client.Orders(request)
 
       return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -296,11 +267,11 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     subaccountId?: string
     marketId?: string
     marketIds?: string[]
-    orderTypes?: DerivativeOrderSide[]
+    orderTypes?: OrderSide[]
     executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
     isConditional?: boolean
-    state?: DerivativeOrderState
+    state?: OrderState
     pagination?: PaginationOption
   }) {
     const {
@@ -315,67 +286,66 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       pagination,
     } = params || {}
 
-    const request = new DerivativeOrdersHistoryRequest()
+    const request = InjectiveDerivativeExchangeRpc.OrdersHistoryRequest.create()
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      // request.marketIds = marketIds
     }
 
     if (orderTypes) {
-      request.setOrderTypesList(orderTypes)
+      request.orderTypes = orderTypes
     }
 
     if (executionTypes) {
-      request.setExecutionTypesList(executionTypes)
+      request.executionTypes = executionTypes
     }
 
     if (direction) {
-      request.setDirection(direction)
+      request.direction = direction
     }
 
     if (isConditional !== undefined) {
-      request.setIsConditional(isConditional ? 'true' : 'false')
+      request.isConditional = isConditional ? 'true' : 'false'
     }
 
     if (state) {
-      request.setState(state)
+      request.state = state
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
 
       if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
+        request.endTime = pagination.endTime.toString()
       }
     }
 
     try {
-      const response = await this.request<
-        DerivativeOrdersHistoryRequest,
-        DerivativeOrdersHistoryResponse,
-        typeof InjectiveDerivativeExchangeRPC.OrdersHistory
-      >(request, InjectiveDerivativeExchangeRPC.OrdersHistory)
+      const response = await this.client.OrdersHistory(request)
 
       return IndexerGrpcDerivativeTransformer.orderHistoryResponseToOrderHistory(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -395,51 +365,50 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     const { marketId, marketIds, subaccountId, direction, pagination } =
       params || {}
 
-    const request = new DerivativePositionsRequest()
+    const request = InjectiveDerivativeExchangeRpc.PositionsRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
     if (direction) {
-      request.setDirection(direction)
+      request.direction = direction
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
 
       if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
+        request.endTime = pagination.endTime.toString()
       }
     }
 
     try {
-      const response = await this.request<
-        DerivativePositionsRequest,
-        DerivativePositionsResponse,
-        typeof InjectiveDerivativeExchangeRPC.Positions
-      >(request, InjectiveDerivativeExchangeRPC.Positions)
+      const response = await this.client.Positions(request)
 
       return IndexerGrpcDerivativeTransformer.positionsResponseToPositions(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -472,71 +441,64 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
       marketIds,
     } = params || {}
 
-    const request = new DerivativeTradesRequest()
+    const request = InjectiveDerivativeExchangeRpc.TradesRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
-    }
-
-    if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketId = marketId
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
-    } else {
-      request.setMarketIdsList([])
+      request.marketIds = marketIds
     }
 
     if (executionTypes) {
-      request.setExecutionTypesList(executionTypes)
+      request.executionTypes = executionTypes
     }
 
     if (executionSide) {
-      request.setExecutionSide(executionSide)
+      request.executionSide = executionSide
     }
 
     if (direction) {
-      request.setDirection(direction)
+      request.direction = direction
     }
 
     if (startTime) {
-      request.setStartTime(startTime)
+      request.startTime = startTime.toString()
     }
 
     if (endTime) {
-      request.setEndTime(endTime)
+      request.endTime = endTime.toString()
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
 
       if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
+        request.endTime = pagination.endTime.toString()
       }
     }
 
     try {
-      const response = await this.request<
-        DerivativeTradesRequest,
-        DerivativeTradesResponse,
-        typeof InjectiveDerivativeExchangeRPC.Trades
-      >(request, InjectiveDerivativeExchangeRPC.Trades)
+      const response = await this.client.Trades(request)
 
       return IndexerGrpcDerivativeTransformer.tradesResponseToTrades(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -554,47 +516,47 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }) {
     const { marketId, marketIds, subaccountId, pagination } = params || {}
 
-    const request = new FundingPaymentsRequest()
+    const request =
+      InjectiveDerivativeExchangeRpc.FundingPaymentsRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
 
       if (pagination.endTime !== undefined) {
-        request.setEndTime(pagination.endTime)
+        request.endTime = pagination.endTime.toString()
       }
     }
 
     try {
-      const response = await this.request<
-        FundingPaymentsRequest,
-        FundingPaymentsResponse,
-        typeof InjectiveDerivativeExchangeRPC.FundingPayments
-      >(request, InjectiveDerivativeExchangeRPC.FundingPayments)
+      const response = await this.client.FundingPayments(request)
 
       return IndexerGrpcDerivativeTransformer.fundingPaymentsResponseToFundingPayments(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -610,35 +572,34 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }) {
     const { marketId, pagination } = params || {}
 
-    const request = new FundingRatesRequest()
+    const request = InjectiveDerivativeExchangeRpc.FundingRatesRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
     }
 
     try {
-      const response = await this.request<
-        FundingRatesRequest,
-        FundingRatesResponse,
-        typeof InjectiveDerivativeExchangeRPC.FundingRates
-      >(request, InjectiveDerivativeExchangeRPC.FundingRates)
+      const response = await this.client.FundingRates(request)
 
       return IndexerGrpcDerivativeTransformer.fundingRatesResponseToFundingRates(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -655,37 +616,37 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }) {
     const { marketId, subaccountId, pagination } = params || {}
 
-    const request = new DerivativeSubaccountOrdersListRequest()
+    const request =
+      InjectiveDerivativeExchangeRpc.SubaccountOrdersListRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
     }
 
     try {
-      const response = await this.request<
-        DerivativeSubaccountOrdersListRequest,
-        DerivativeSubaccountOrdersListResponse,
-        typeof InjectiveDerivativeExchangeRPC.SubaccountOrdersList
-      >(request, InjectiveDerivativeExchangeRPC.SubaccountOrdersList)
+      const response = await this.client.SubaccountOrdersList(request)
 
       return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -705,47 +666,47 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
     const { marketId, subaccountId, direction, executionType, pagination } =
       params || {}
 
-    const request = new DerivativeSubaccountTradesListRequest()
+    const request =
+      InjectiveDerivativeExchangeRpc.SubaccountTradesListRequest.create()
 
     if (marketId) {
-      request.setMarketId(marketId)
+      request.marketId = marketId
     }
 
     if (subaccountId) {
-      request.setSubaccountId(subaccountId)
+      request.subaccountId = subaccountId
     }
 
     if (direction) {
-      request.setDirection(direction)
+      request.direction = direction
     }
 
     if (executionType) {
-      request.setExecutionType(executionType)
+      request.executionType = executionType
     }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.setSkip(pagination.skip)
+        request.skip = pagination.skip.toString()
       }
 
       if (pagination.limit !== undefined) {
-        request.setLimit(pagination.limit)
+        request.limit = pagination.limit
       }
     }
 
     try {
-      const response = await this.request<
-        DerivativeSubaccountTradesListRequest,
-        DerivativeSubaccountTradesListResponse,
-        typeof InjectiveDerivativeExchangeRPC.SubaccountTradesList
-      >(request, InjectiveDerivativeExchangeRPC.SubaccountTradesList)
+      const response = await this.client.SubaccountTradesList(request)
 
       return IndexerGrpcDerivativeTransformer.subaccountTradesListResponseToSubaccountTradesList(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -756,25 +717,24 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }
 
   async fetchOrderbooks(marketIds: string[]) {
-    const request = new DerivativeOrderbooksRequest()
+    const request = InjectiveDerivativeExchangeRpc.OrderbooksRequest.create()
 
     if (marketIds.length > 0) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
     try {
-      const response = await this.request<
-        DerivativeOrderbooksRequest,
-        DerivativeOrderbooksResponse,
-        typeof InjectiveDerivativeExchangeRPC.Orderbooks
-      >(request, InjectiveDerivativeExchangeRPC.Orderbooks)
+      const response = await this.client.Orderbooks(request)
 
       return IndexerGrpcDerivativeTransformer.orderbooksResponseToOrderbooks(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -785,18 +745,14 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }
 
   async fetchOrderbooksV2(marketIds: string[]) {
-    const request = new DerivativeOrderbooksV2Request()
+    const request = InjectiveDerivativeExchangeRpc.OrderbooksV2Request.create()
 
     if (marketIds.length > 0) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
     try {
-      const response = await this.request<
-        DerivativeOrderbooksV2Request,
-        DerivativeOrderbooksV2Response,
-        typeof InjectiveDerivativeExchangeRPC.OrderbooksV2
-      >(request, InjectiveDerivativeExchangeRPC.OrderbooksV2)
+      const response = await this.client.OrderbooksV2(request)
 
       return IndexerGrpcDerivativeTransformer.orderbooksV2ResponseToOrderbooksV2(
         response,
@@ -814,16 +770,12 @@ export class IndexerGrpcDerivativesApi extends BaseConsumer {
   }
 
   async fetchOrderbookV2(marketId: string) {
-    const request = new DerivativeOrderbookV2Request()
+    const request = InjectiveDerivativeExchangeRpc.OrderbookV2Request.create()
 
-    request.setMarketId(marketId)
+    request.marketId = marketId
 
     try {
-      const response = await this.request<
-        DerivativeOrderbookV2Request,
-        DerivativeOrderbookV2Response,
-        typeof InjectiveDerivativeExchangeRPC.OrderbookV2
-      >(request, InjectiveDerivativeExchangeRPC.OrderbookV2)
+      const response = await this.client.OrderbookV2(request)
 
       return IndexerGrpcDerivativeTransformer.orderbookV2ResponseToOrderbookV2(
         response,

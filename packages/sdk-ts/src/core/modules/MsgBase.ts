@@ -2,8 +2,8 @@ import { SnakeCaseKeys } from 'snakecase-keys'
 import {
   mapValuesToProperValueType,
   objectKeysToEip712Types,
-  TypedDataField,
-} from './tx/eip712'
+} from './tx/eip712/maps'
+import { TypedDataField } from './tx/eip712/types'
 import { prepareSignBytes } from './utils'
 
 /**
@@ -11,8 +11,8 @@ import { prepareSignBytes } from './utils'
  */
 export abstract class MsgBase<
   Params,
-  ProtoRepresentation,
-  ObjectRepresentation extends Object,
+  ProtoRepresentation extends Object,
+  ObjectRepresentation extends Record<string, unknown> = {},
 > {
   params: Params
 
@@ -22,7 +22,7 @@ export abstract class MsgBase<
 
   public abstract toProto(): ProtoRepresentation
 
-  public abstract toData(): ObjectRepresentation & {
+  public abstract toData(): ProtoRepresentation & {
     '@type': string
   }
 
@@ -33,17 +33,24 @@ export abstract class MsgBase<
 
   public abstract toAmino(): {
     type: string
-    value: SnakeCaseKeys<ObjectRepresentation>
+    value: ObjectRepresentation | SnakeCaseKeys<ProtoRepresentation>
   }
 
-  public abstract toWeb3(): SnakeCaseKeys<ObjectRepresentation> & {
-    '@type': string
-  }
+  public abstract toBinary(): Uint8Array
+
+  public abstract toWeb3():
+    | ObjectRepresentation
+    | (SnakeCaseKeys<ProtoRepresentation> & {
+        '@type': string
+      })
 
   public toJSON(): string {
     return JSON.stringify(prepareSignBytes(this.toData()))
   }
 
+  /**
+   * Returns the types of the message for EIP712
+   */
   public toEip712Types(): Map<string, TypedDataField[]> {
     const amino = this.toAmino()
 
@@ -53,6 +60,9 @@ export abstract class MsgBase<
     })
   }
 
+  /**
+   * Returns the values of the message for EIP712
+   */
   public toEip712(): {
     type: string
     value: Record<string, unknown /** TODO */>

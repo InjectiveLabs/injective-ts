@@ -1,21 +1,23 @@
 import { Any } from 'cosmjs-types/google/protobuf/any'
 import { Account } from '@cosmjs/stargate'
-import { EthAccount } from '@injectivelabs/chain-api/injective/types/v1beta1/account_pb'
+import { InjectiveTypesV1Beta1Account } from '@injectivelabs/core-proto-ts'
 
 export const accountParser = (ethAccount: Any): Account => {
-  const account = EthAccount.deserializeBinary(ethAccount.value as Uint8Array)
-  const baseAccount = account.getBaseAccount()!
-  const pubKey = baseAccount.getPubKey()
+  const account = InjectiveTypesV1Beta1Account.EthAccount.decode(
+    ethAccount.value as Uint8Array,
+  )
+  const baseAccount = account.baseAccount!
+  const pubKey = baseAccount.pubKey
 
   return {
-    address: baseAccount.getAddress(),
+    address: baseAccount.address,
     pubkey: pubKey
       ? {
           type: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
-          value: pubKey.getValue_asB64(),
+          value: Buffer.from(pubKey.value).toString('base64'),
         }
       : null,
-    accountNumber: baseAccount.getAccountNumber(),
-    sequence: baseAccount.getSequence(),
+    accountNumber: parseInt(baseAccount.accountNumber, 10),
+    sequence: parseInt(baseAccount.sequence, 10),
   }
 }

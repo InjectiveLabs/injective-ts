@@ -1,14 +1,14 @@
 {
   "name": "@injectivelabs/bridge-ts",
   "description": "Bridge utilities and abstractions in TypeScript to be used in Injective products",
-  "version": "1.0.327",
+  "version": "1.10.0-alpha.21",
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
   },
   "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
@@ -17,12 +17,11 @@
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && link-module-alias",
-    "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
+    "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build:post": "shx cp ../../stub/package.json.stub dist/cjs/package.json && shx cp ../../stub/package.esm.json.stub dist/esm/package.json",
+    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
-    "test:unit": "jest test/unit",
-    "test:integration": "jest test/unit",
     "test:watch": "jest --watch",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
@@ -33,22 +32,18 @@
   "dependencies": {
     "@axelar-network/axelarjs-sdk": "^0.11.7",
     "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
-    "@injectivelabs/exceptions": "^1.0.62",
-    "@injectivelabs/networks": "^1.0.99",
-    "@injectivelabs/sdk-ts": "^1.0.498",
-    "@injectivelabs/ts-types": "^1.0.33",
-    "@injectivelabs/utils": "^1.0.87",
-    "@injectivelabs/wormhole-sdk": "^0.9.10",
+    "@injectivelabs/exceptions": "^1.10.0-alpha.2",
+    "@injectivelabs/networks": "^1.10.0-alpha.4",
+    "@injectivelabs/sdk-ts": "^1.10.0-alpha.14",
+    "@injectivelabs/ts-types": "^1.10.0-alpha.2",
+    "@injectivelabs/utils": "^1.10.0-alpha.4",
+    "@injectivelabs/wormhole-sdk": "^1.10.0-alpha.8",
     "@solana/spl-token": "^0.3.6",
     "@solana/wallet-adapter-base": "^0.9.18",
     "@solana/web3.js": "^1.66.2",
-    "axios": "^0.21.1",
-    "bignumber.js": "^9.0.1",
     "ethers": "^5.7.2",
     "link-module-alias": "^1.2.0",
-    "shx": "^0.3.2",
-    "snakecase-keys": "^5.1.2",
-    "store2": "^2.12.0"
+    "shx": "^0.3.2"
   },
   "gitHead": "3364a2b1e58aba2387c509431cc1ae8ebf2c53d0"
 }

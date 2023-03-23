@@ -7,6 +7,14 @@ import {
 
 const $BigNumber = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN })
 
+export const isNumber = (number: string | number) => {
+  if (typeof number === 'number') {
+    return true
+  }
+
+  return !isNaN(parseFloat(number))
+}
+
 export const formatNumberToAllowableDecimals = (
   value: string | number,
   allowableDecimals: number,

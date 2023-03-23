@@ -1,7 +1,9 @@
-import { MsgRequestRedemption as BaseMsgRequestRedemption } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveInsuranceV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgRequestRedemption {
   export interface Params {
@@ -13,9 +15,7 @@ export declare namespace MsgRequestRedemption {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgRequestRedemption
-
-  export type Object = BaseMsgRequestRedemption.AsObject
+  export type Proto = InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption
 }
 
 /**
@@ -23,8 +23,7 @@ export declare namespace MsgRequestRedemption {
  */
 export default class MsgRequestRedemption extends MsgBase<
   MsgRequestRedemption.Params,
-  MsgRequestRedemption.Proto,
-  MsgRequestRedemption.Object
+  MsgRequestRedemption.Proto
 > {
   static fromJSON(params: MsgRequestRedemption.Params): MsgRequestRedemption {
     return new MsgRequestRedemption(params)
@@ -33,16 +32,16 @@ export default class MsgRequestRedemption extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = new Coin()
-    amountCoin.setAmount(params.amount.amount)
-    amountCoin.setDenom(params.amount.denom)
+    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
+    amountCoin.amount = params.amount.amount
+    amountCoin.denom = params.amount.denom
 
-    const message = new BaseMsgRequestRedemption()
-    message.setAmount(amountCoin)
-    message.setMarketId(params.marketId)
-    message.setSender(params.injectiveAddress)
+    const message = InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.create()
+    message.amount = amountCoin
+    message.marketId = params.marketId
+    message.sender = params.injectiveAddress
 
-    return message
+    return InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.fromJSON(message)
   }
 
   public toData() {
@@ -50,14 +49,14 @@ export default class MsgRequestRedemption extends MsgBase<
 
     return {
       '@type': '/injective.insurance.v1beta1.MsgRequestRedemption',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -83,5 +82,11 @@ export default class MsgRequestRedemption extends MsgBase<
       type: '/injective.insurance.v1beta1.MsgRequestRedemption',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.encode(
+      this.toProto(),
+    ).finish()
   }
 }

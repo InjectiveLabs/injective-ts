@@ -13,10 +13,10 @@ import {
   UiExpiryFuturesMarketWithToken,
   UiBinaryOptionsMarketWithToken,
 } from '../types/derivatives'
-import { derivativeOrderTypeToGrpcOrderType } from '../../utils/derivatives'
+import { orderSideToOrderType } from '../../utils/exchange'
 
 export class UiDerivativeTransformer {
-  static derivativeOrderTypeToGrpcOrderType = derivativeOrderTypeToGrpcOrderType
+  static orderSideToOrderType = orderSideToOrderType
 
   static derivativeMarketToUiDerivativeMarket<
     T extends

@@ -1,33 +1,33 @@
-import {
-  AccountPortfolioRequest,
-  AccountPortfolioResponse,
-} from '@injectivelabs/indexer-api/injective_portfolio_rpc_pb'
-import { InjectivePortfolioRPC } from '@injectivelabs/indexer-api/injective_portfolio_rpc_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountPortfolioApi extends BaseConsumer {
+export class IndexerGrpcAccountPortfolioApi {
   protected module: string = IndexerModule.Portfolio
 
-  async fetchAccountPortfolio(address: string) {
-    const request = new AccountPortfolioRequest()
+  protected client: InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl
 
-    request.setAccountAddress(address)
+  constructor(endpoint: string) {
+    this.client = new InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
+
+  async fetchAccountPortfolio(address: string) {
+    const request = InjectivePortfolioRpc.AccountPortfolioRequest.create()
+
+    request.accountAddress = address
 
     try {
-      const response = await this.request<
-        AccountPortfolioRequest,
-        AccountPortfolioResponse,
-        typeof InjectivePortfolioRPC.AccountPortfolio
-      >(request, InjectivePortfolioRPC.AccountPortfolio)
+      const response = await this.client.AccountPortfolio(request)
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio(
         response,
@@ -43,8 +43,11 @@ export class IndexerGrpcAccountPortfolioApi extends BaseConsumer {
         }
       }
 
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

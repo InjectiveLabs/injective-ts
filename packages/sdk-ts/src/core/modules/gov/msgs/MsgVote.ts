@@ -1,28 +1,24 @@
-import { MsgVote as BaseMsgVote } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
-import { VoteOptionMap } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
+import {
+  CosmosGovV1Beta1Tx,
+  CosmosGovV1Beta1Gov,
+} from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgVote {
   export interface Params {
     proposalId: number
-    vote: VoteOptionMap[keyof VoteOptionMap]
+    vote: CosmosGovV1Beta1Gov.VoteOption
     voter: string
   }
 
-  export type Proto = BaseMsgVote
-
-  export type Object = BaseMsgVote.AsObject
+  export type Proto = CosmosGovV1Beta1Tx.MsgVote
 }
 
 /**
  * @category Messages
  */
-export default class MsgVote extends MsgBase<
-  MsgVote.Params,
-  MsgVote.Proto,
-  MsgVote.Object
-> {
+export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
   static fromJSON(params: MsgVote.Params): MsgVote {
     return new MsgVote(params)
   }
@@ -30,10 +26,10 @@ export default class MsgVote extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgVote()
-    message.setOption(params.vote)
-    message.setProposalId(params.proposalId)
-    message.setVoter(params.voter)
+    const message = CosmosGovV1Beta1Tx.MsgVote.create()
+    message.option = params.vote
+    message.proposalId = params.proposalId.toString()
+    message.voter = params.voter
 
     return message
   }
@@ -43,14 +39,14 @@ export default class MsgVote extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgVote',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -76,5 +72,9 @@ export default class MsgVote extends MsgBase<
       type: '/cosmos.gov.v1beta1.MsgVote',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmosGovV1Beta1Tx.MsgVote.encode(this.toProto()).finish()
   }
 }

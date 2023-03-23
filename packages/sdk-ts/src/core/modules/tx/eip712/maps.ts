@@ -1,6 +1,7 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
-import { numberToCosmosSdkDecString, snakeToPascal } from '../../../../utils'
+import { snakeToPascal } from '../../../../utils/helpers'
+import { isNumber, numberToCosmosSdkDecString } from '../../../../utils/numbers'
 import { TypedDataField } from './types'
 
 const msgExecuteContractType = 'wasm/MsgExecuteContract'
@@ -18,6 +19,16 @@ export const objectKeysToEip712Types = ({
   messageType?: string
   primaryType?: string
 }) => {
+  const numberFieldsWithStringValue = [
+    'order_mask',
+    'order_type',
+    'oracle_type',
+    'round',
+    'oracle_scale_factor',
+    'expiry',
+    'option',
+    'proposal_id',
+  ]
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
 
@@ -32,7 +43,11 @@ export const objectKeysToEip712Types = ({
 
     if (type === 'boolean') {
       types.push({ name: property, type: 'bool' })
-    } else if (type === 'number' || type === 'bigint') {
+    } else if (
+      type === 'number' ||
+      type === 'bigint' ||
+      numberFieldsWithStringValue.includes(property)
+    ) {
       types.push({
         name: property,
         type: numberTypeToReflectionNumberType(property),
@@ -244,7 +259,7 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
       }
     }
 
-    if (typeof value === 'number') {
+    if (isNumber(value as string | number)) {
       if (numberToStringKeys.includes(key)) {
         return {
           ...result,

@@ -1,4 +1,3 @@
-import { MsgEditValidator as BaseMsgEditValidator } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import MsgEditValidator from './MsgEditValidator'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -31,8 +30,7 @@ describe('MsgEditValidator', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgEditValidator).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

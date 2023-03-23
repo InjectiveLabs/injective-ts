@@ -1,46 +1,13 @@
 import {
-  DerivativeMarketInfo as GrpcDerivativeMarketInfo,
-  DerivativeLimitOrder as GrpcDerivativeLimitOrder,
-  DerivativeTrade as GrpcDerivativeTrade,
-  DerivativePosition as GrpcDerivativePosition,
-  PositionDelta as GrpcPositionDelta,
-  PerpetualMarketInfo as GrpcPerpetualMarketInfo,
-  PerpetualMarketFunding as GrpcPerpetualMarketFunding,
-  ExpiryFuturesMarketInfo as GrpcExpiryFuturesMarketInfo,
-  FundingPayment as GrpcFundingPayment,
-  FundingRate as GrpcFundingRate,
-  BinaryOptionsMarketInfo as GrpcBinaryOptionsMarketInfo,
-  DerivativeOrderHistory as GrpcDerivativeOrderHistory,
-} from '@injectivelabs/indexer-api/injective_derivative_exchange_rpc_pb'
-import {
-  TradeExecutionType,
+  OrderState,
+  OrderSide,
   TradeDirection,
+  TradeExecutionType,
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
-
-export enum DerivativeOrderSide {
-  Unspecified = 'unspecified',
-  Buy = 'buy',
-  Sell = 'sell',
-  StopBuy = 'stop_buy',
-  StopSell = 'stop_sell',
-  TakeBuy = 'take_buy',
-  TakeSell = 'take_sell',
-  BuyPO = 'buy_po',
-  SellPO = 'sell_po',
-}
-
-export enum DerivativeOrderState {
-  Unfilled = 'unfilled',
-  Booked = 'booked',
-  PartialFilled = 'partial_filled',
-  PartiallyFilled = 'partially_filled',
-  Filled = 'filled',
-  Canceled = 'canceled',
-  Triggered = 'triggered',
-}
+import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface PositionDelta {
   tradeDirection: TradeDirection
@@ -143,7 +110,7 @@ export type DerivativeMarketWithoutBinaryOptions =
 
 export interface DerivativeLimitOrder {
   orderHash: string
-  orderSide: DerivativeOrderSide
+  orderSide: OrderSide
   marketId: string
   subaccountId: string
   isReduceOnly: boolean
@@ -153,7 +120,7 @@ export interface DerivativeLimitOrder {
   unfilledQuantity: string
   triggerPrice: string
   feeRecipient: string
-  state: DerivativeOrderState
+  state: OrderState
   createdAt: number
   updatedAt: number
   orderNumber: number
@@ -233,17 +200,23 @@ export interface FundingRate {
   timestamp: number
 }
 
-export {
-  GrpcDerivativePosition,
-  GrpcFundingPayment,
-  GrpcFundingRate,
-  GrpcDerivativeMarketInfo,
-  GrpcDerivativeLimitOrder,
-  GrpcPerpetualMarketInfo,
-  GrpcPerpetualMarketFunding,
-  GrpcExpiryFuturesMarketInfo,
-  GrpcDerivativeTrade,
-  GrpcPositionDelta,
-  GrpcBinaryOptionsMarketInfo,
-  GrpcDerivativeOrderHistory,
-}
+export type GrpcFundingRate = InjectiveDerivativeExchangeRpc.FundingRate
+export type GrpcPositionDelta = InjectiveDerivativeExchangeRpc.PositionDelta
+export type GrpcFundingPayment = InjectiveDerivativeExchangeRpc.FundingPayment
+export type GrpcDerivativeTrade = InjectiveDerivativeExchangeRpc.DerivativeTrade
+export type GrpcDerivativePosition =
+  InjectiveDerivativeExchangeRpc.DerivativePosition
+export type GrpcPerpetualMarketInfo =
+  InjectiveDerivativeExchangeRpc.PerpetualMarketInfo
+export type GrpcDerivativeMarketInfo =
+  InjectiveDerivativeExchangeRpc.DerivativeMarketInfo
+export type GrpcDerivativeLimitOrder =
+  InjectiveDerivativeExchangeRpc.DerivativeLimitOrder
+export type GrpcPerpetualMarketFunding =
+  InjectiveDerivativeExchangeRpc.PerpetualMarketFunding
+export type GrpcExpiryFuturesMarketInfo =
+  InjectiveDerivativeExchangeRpc.ExpiryFuturesMarketInfo
+export type GrpcBinaryOptionsMarketInfo =
+  InjectiveDerivativeExchangeRpc.BinaryOptionsMarketInfo
+export type GrpcDerivativeOrderHistory =
+  InjectiveDerivativeExchangeRpc.DerivativeOrderHistory

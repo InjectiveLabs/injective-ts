@@ -1,43 +1,42 @@
-import {
-  QueryDelegationRewardsRequest,
-  QueryDelegationRewardsResponse,
-  QueryDelegationTotalRewardsRequest,
-  QueryDelegationTotalRewardsResponse,
-  QueryParamsRequest as QueryDistributionParamsRequest,
-  QueryParamsResponse as QueryDistributionParamsResponse,
-} from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb'
-import { Query as DistributionQuery } from '@injectivelabs/chain-api/cosmos/distribution/v1beta1/query_pb_service'
 import { Coin } from '@injectivelabs/ts-types'
-import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcDistributionTransformer } from '../transformers'
 import { ValidatorRewards, ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
+import { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcDistributionApi extends BaseConsumer {
+export class ChainGrpcDistributionApi {
   protected module: string = ChainModule.Distribution
 
+  protected client: CosmosDistributionV1Beta1Query.QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new CosmosDistributionV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
+  }
+
   async fetchModuleParams() {
-    const request = new QueryDistributionParamsRequest()
+    const request = CosmosDistributionV1Beta1Query.QueryParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryDistributionParamsRequest,
-        QueryDistributionParamsResponse,
-        typeof DistributionQuery.Params
-      >(request, DistributionQuery.Params)
+      const response = await this.client.Params(request)
 
       return ChainGrpcDistributionTransformer.moduleParamsResponseToModuleParams(
         response,
       )
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -54,23 +53,24 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
     delegatorAddress: string
     validatorAddress: string
   }) {
-    const request = new QueryDelegationRewardsRequest()
-    request.setValidatorAddress(validatorAddress)
-    request.setDelegatorAddress(delegatorAddress)
+    const request =
+      CosmosDistributionV1Beta1Query.QueryDelegationRewardsRequest.create()
+
+    request.validatorAddress = validatorAddress
+    request.delegatorAddress = delegatorAddress
 
     try {
-      const response = await this.request<
-        QueryDelegationRewardsRequest,
-        QueryDelegationRewardsResponse,
-        typeof DistributionQuery.DelegationRewards
-      >(request, DistributionQuery.DelegationRewards)
+      const response = await this.client.DelegationRewards(request)
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
       )
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)
@@ -84,16 +84,14 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
     delegatorAddress: string
     validatorAddress: string
   }) {
-    const request = new QueryDelegationRewardsRequest()
-    request.setValidatorAddress(validatorAddress)
-    request.setDelegatorAddress(delegatorAddress)
+    const request =
+      CosmosDistributionV1Beta1Query.QueryDelegationRewardsRequest.create()
+
+    request.validatorAddress = validatorAddress
+    request.delegatorAddress = delegatorAddress
 
     try {
-      const response = await this.request<
-        QueryDelegationRewardsRequest,
-        QueryDelegationRewardsResponse,
-        typeof DistributionQuery.DelegationRewards
-      >(request, DistributionQuery.DelegationRewards)
+      const response = await this.client.DelegationRewards(request)
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
@@ -103,8 +101,11 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         return [] as Coin[]
       }
 
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)
@@ -112,22 +113,23 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
   }
 
   async fetchDelegatorRewards(injectiveAddress: string) {
-    const request = new QueryDelegationTotalRewardsRequest()
-    request.setDelegatorAddress(injectiveAddress)
+    const request =
+      CosmosDistributionV1Beta1Query.QueryDelegationTotalRewardsRequest.create()
+
+    request.delegatorAddress = injectiveAddress
 
     try {
-      const response = await this.request<
-        QueryDelegationTotalRewardsRequest,
-        QueryDelegationTotalRewardsResponse,
-        typeof DistributionQuery.DelegationTotalRewards
-      >(request, DistributionQuery.DelegationTotalRewards)
+      const response = await this.client.DelegationTotalRewards(request)
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,
       )
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)
@@ -135,15 +137,13 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
   }
 
   async fetchDelegatorRewardsNoThrow(injectiveAddress: string) {
-    const request = new QueryDelegationTotalRewardsRequest()
-    request.setDelegatorAddress(injectiveAddress)
+    const request =
+      CosmosDistributionV1Beta1Query.QueryDelegationTotalRewardsRequest.create()
+
+    request.delegatorAddress = injectiveAddress
 
     try {
-      const response = await this.request<
-        QueryDelegationTotalRewardsRequest,
-        QueryDelegationTotalRewardsResponse,
-        typeof DistributionQuery.DelegationTotalRewards
-      >(request, DistributionQuery.DelegationTotalRewards)
+      const response = await this.client.DelegationTotalRewards(request)
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,
@@ -153,8 +153,11 @@ export class ChainGrpcDistributionApi extends BaseConsumer {
         return [] as ValidatorRewards[]
       }
 
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error)

@@ -1,11 +1,4 @@
 import {
-  QueryAllContractStateResponse,
-  QueryCodeResponse,
-  QueryCodesResponse,
-  QueryContractHistoryResponse,
-  QueryContractsByCodeResponse,
-} from '@injectivelabs/chain-api/cosmwasm/wasm/v1/query_pb'
-import {
   ContractAccountBalance,
   ContractAccountsBalanceWithPagination,
   ContractCodeHistoryEntry,
@@ -17,23 +10,23 @@ import {
 } from '../types/wasm'
 import { fromUtf8 } from '../../../utils'
 import { grpcPaginationToPagination } from './../../../utils/pagination'
+import { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcWasmTransformer {
   static allContractStateResponseToContractAccountsBalanceWithPagination(
-    response: QueryAllContractStateResponse,
+    response: CosmwasmWasmV1Query.QueryAllContractStateResponse,
   ): ContractAccountsBalanceWithPagination {
-    const contractAccountsBalance = response
-      .getModelsList()
+    const contractAccountsBalance = response.models
       .map((model) => {
         return {
-          account: Buffer.from(model.getKey_asB64(), 'base64')
+          account: Buffer.from(model.key)
             .toString('utf-8')
             .split('balance')
             .pop(),
-          balance: Buffer.from(model.getValue_asB64(), 'base64')
+          balance: Buffer.from(model.key)
             .toString('utf-8')
             .replace(/['"]+/g, ''),
         }
@@ -44,45 +37,47 @@ export class ChainGrpcWasmTransformer {
 
     return {
       contractAccountsBalance,
-      pagination: grpcPaginationToPagination(response.getPagination()),
+      pagination: grpcPaginationToPagination(response.pagination),
     }
   }
 
   static contactInfoResponseToContractInfo(
     contractInfo: grpcContractInfo,
   ): ContractInfo {
-    const absoluteTxPosition = contractInfo.getCreated()
+    const absoluteTxPosition = contractInfo.created
 
     return {
-      codeId: contractInfo.getCodeId(),
-      creator: contractInfo.getCreator(),
-      admin: contractInfo.getAdmin(),
-      label: contractInfo.getLabel(),
+      codeId: parseInt(contractInfo.codeId, 10),
+      creator: contractInfo.creator,
+      admin: contractInfo.admin,
+      label: contractInfo.label,
       created: {
-        blockHeight: absoluteTxPosition
-          ? absoluteTxPosition.getBlockHeight()
-          : 0,
-        txIndex: absoluteTxPosition ? absoluteTxPosition.getTxIndex() : 0,
+        blockHeight: parseInt(
+          absoluteTxPosition ? absoluteTxPosition.blockHeight : '0',
+        ),
+        txIndex: parseInt(
+          absoluteTxPosition ? absoluteTxPosition.txIndex : '0',
+        ),
       },
-      ibcPortId: contractInfo.getIbcPortId(),
+      ibcPortId: contractInfo.ibcPortId,
     }
   }
 
   static grpcContractCodeHistoryEntryToContractCodeHistoryEntry(
     entry: GrpcContractCodeHistoryEntry,
   ): ContractCodeHistoryEntry {
-    const updated = entry.getUpdated()
+    const updated = entry.updated
 
     return {
-      operation: entry.getOperation(),
-      codeId: entry.getCodeId(),
+      operation: entry.operation,
+      codeId: parseInt(entry.codeId, 10),
       updated: updated
         ? {
-            blockHeight: updated.getBlockHeight(),
-            txIndex: updated.getTxIndex(),
+            blockHeight: parseInt(updated.blockHeight, 10),
+            txIndex: parseInt(updated.txIndex, 10),
           }
         : undefined,
-      msg: fromUtf8(entry.getMsg_asU8()),
+      msg: fromUtf8(entry.msg),
     }
   }
 
@@ -90,49 +85,51 @@ export class ChainGrpcWasmTransformer {
     info: GrpcCodeInfoResponse,
   ): CodeInfoResponse {
     return {
-      codeId: info.getCodeId(),
-      creator: info.getCreator(),
-      dataHash: info.getDataHash(),
+      codeId: parseInt(info.codeId, 10),
+      creator: info.creator,
+      dataHash: info.dataHash,
     }
   }
 
   static contactHistoryResponseToContractHistory(
-    response: QueryContractHistoryResponse,
+    response: CosmwasmWasmV1Query.QueryContractHistoryResponse,
   ) {
     return {
-      entriesList: response
-        .getEntriesList()
-        .map(
-          ChainGrpcWasmTransformer.grpcContractCodeHistoryEntryToContractCodeHistoryEntry,
-        ),
-      pagination: grpcPaginationToPagination(response.getPagination()),
+      entriesList: response.entries.map(
+        ChainGrpcWasmTransformer.grpcContractCodeHistoryEntryToContractCodeHistoryEntry,
+      ),
+      pagination: grpcPaginationToPagination(response.pagination),
     }
   }
 
-  static contractCodesResponseToContractCodes(response: QueryCodesResponse) {
+  static contractCodesResponseToContractCodes(
+    response: CosmwasmWasmV1Query.QueryCodesResponse,
+  ) {
     return {
-      codeInfosList: response
-        .getCodeInfosList()
-        .map(ChainGrpcWasmTransformer.grpcCodeInfoResponseToCodeInfoResponse),
-      pagination: grpcPaginationToPagination(response.getPagination()),
+      codeInfosList: response.codeInfos.map(
+        ChainGrpcWasmTransformer.grpcCodeInfoResponseToCodeInfoResponse,
+      ),
+      pagination: grpcPaginationToPagination(response.pagination),
     }
   }
 
-  static contractCodeResponseToContractCode(response: QueryCodeResponse) {
+  static contractCodeResponseToContractCode(
+    response: CosmwasmWasmV1Query.QueryCodeResponse,
+  ) {
     return {
       codeInfo: ChainGrpcWasmTransformer.grpcCodeInfoResponseToCodeInfoResponse(
-        response.getCodeInfo()!,
+        response.codeInfo!,
       ),
-      data: response.getData(),
+      data: response.data,
     }
   }
 
   static contractByCodeResponseToContractByCode(
-    response: QueryContractsByCodeResponse,
+    response: CosmwasmWasmV1Query.QueryContractsByCodeResponse,
   ) {
     return {
-      contractsList: response.getContractsList(),
-      pagination: grpcPaginationToPagination(response.getPagination()),
+      contractsList: response.contracts,
+      pagination: grpcPaginationToPagination(response.pagination),
     }
   }
 }

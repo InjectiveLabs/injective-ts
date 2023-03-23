@@ -1,7 +1,7 @@
-import { MsgStoreCode as BaseMsgStoreCode } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
-import { fromUtf8 } from '../../../../utils'
+import { fromUtf8 } from '../../../../utils/utf8'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgStoreCode {
   export interface Params {
@@ -9,9 +9,7 @@ export declare namespace MsgStoreCode {
     wasmBytes: Uint8Array | string
   }
 
-  export type Proto = BaseMsgStoreCode
-
-  export type Object = BaseMsgStoreCode.AsObject
+  export type Proto = CosmwasmWasmV1Tx.MsgStoreCode
 }
 
 /**
@@ -19,8 +17,7 @@ export declare namespace MsgStoreCode {
  */
 export default class MsgStoreCode extends MsgBase<
   MsgStoreCode.Params,
-  MsgStoreCode.Proto,
-  MsgStoreCode.Object
+  MsgStoreCode.Proto
 > {
   static fromJSON(params: MsgStoreCode.Params): MsgStoreCode {
     return new MsgStoreCode(params)
@@ -29,16 +26,15 @@ export default class MsgStoreCode extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgStoreCode()
+    const message = CosmwasmWasmV1Tx.MsgStoreCode.create()
 
-    message.setSender(params.sender)
-    message.setWasmByteCode(
+    message.sender = params.sender
+    message.wasmByteCode =
       typeof params.wasmBytes === 'string'
         ? fromUtf8(params.wasmBytes)
-        : params.wasmBytes,
-    )
+        : params.wasmBytes
 
-    return message
+    return CosmwasmWasmV1Tx.MsgStoreCode.fromPartial(message)
   }
 
   public toData() {
@@ -46,14 +42,14 @@ export default class MsgStoreCode extends MsgBase<
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgStoreCode',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -79,5 +75,9 @@ export default class MsgStoreCode extends MsgBase<
       type: '/cosmwasm.wasm.v1.MsgStoreCode',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmwasmWasmV1Tx.MsgStoreCode.encode(this.toProto()).finish()
   }
 }

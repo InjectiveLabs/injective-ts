@@ -6,9 +6,9 @@ import { ChainGrpcExchangeApi } from '../../../../../client/chain/grpc/ChainGrpc
 import { domainHash, messageHash } from '../../../../../utils/crypto'
 import { cosmosSdkDecToBigNumber } from '../../../../../utils/numbers'
 import keccak256 from 'keccak256'
-import { OrderType } from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import MsgCreateSpotLimitOrder from '../../msgs/MsgCreateSpotLimitOrder'
 import MsgCreateDerivativeLimitOrder from '../../msgs/MsgCreateDerivativeLimitOrder'
+import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
 
 interface OrderInfo {
   subaccountId: string
@@ -135,25 +135,25 @@ const EIP712Types = {
 
 const orderTypeToChainOrderType = (orderType: number) => {
   switch (orderType) {
-    case OrderType.BUY:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.BUY:
       return '\u0001'
-    case OrderType.SELL:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.SELL:
       return '\u0002'
-    case OrderType.STOP_BUY:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.STOP_BUY:
       return '\u0003'
-    case OrderType.STOP_SELL:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.STOP_SELL:
       return '\u0004'
-    case OrderType.TAKE_BUY:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.TAKE_BUY:
       return '\u0005'
-    case OrderType.TAKE_SELL:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.TAKE_SELL:
       return '\u0006'
-    case OrderType.BUY_PO:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.BUY_PO:
       return '\u0007'
-    case OrderType.SELL_PO:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.SELL_PO:
       return '\u0008'
-    case OrderType.BUY_ATOMIC:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.BUY_ATOMIC:
       return '\u0009'
-    case OrderType.SELL_ATOMIC:
+    case InjectiveExchangeV1Beta1Exchange.OrderType.SELL_ATOMIC:
       return '\u000A'
     default:
       return '\u0001'
@@ -321,7 +321,7 @@ export class OrderHashManager {
     await this.initSubaccountNonce()
 
     const proto = msg.toProto()
-    const order = proto.getOrder()
+    const order = proto.order
 
     if (!order) {
       throw new GeneralException(
@@ -329,7 +329,7 @@ export class OrderHashManager {
       )
     }
 
-    const orderInfo = order.getOrderInfo()
+    const orderInfo = order.orderInfo
 
     if (!orderInfo) {
       throw new GeneralException(
@@ -341,15 +341,15 @@ export class OrderHashManager {
       this.hashTypedData(
         getEip712ForSpotOrder(
           {
-            marketId: order.getMarketId(),
+            marketId: order.marketId,
             orderInfo: {
-              subaccountId: orderInfo.getSubaccountId(),
-              feeRecipient: orderInfo.getFeeRecipient(),
-              price: orderInfo.getPrice(),
-              quantity: orderInfo.getQuantity(),
+              subaccountId: orderInfo.subaccountId,
+              feeRecipient: orderInfo.feeRecipient,
+              price: orderInfo.price,
+              quantity: orderInfo.quantity,
             },
-            orderType: order.getOrderType(),
-            triggerPrice: order.getTriggerPrice(),
+            orderType: order.orderType,
+            triggerPrice: order.triggerPrice,
           },
           this.nonce,
         ),
@@ -363,7 +363,7 @@ export class OrderHashManager {
     await this.initSubaccountNonce()
 
     const proto = msg.toProto()
-    const order = proto.getOrder()
+    const order = proto.order
 
     if (!order) {
       throw new GeneralException(
@@ -371,7 +371,7 @@ export class OrderHashManager {
       )
     }
 
-    const orderInfo = order.getOrderInfo()
+    const orderInfo = order.orderInfo
 
     if (!orderInfo) {
       throw new GeneralException(
@@ -383,16 +383,16 @@ export class OrderHashManager {
       this.hashTypedData(
         getEip712ForDerivativeOrder(
           {
-            marketId: order.getMarketId(),
+            marketId: order.marketId,
             orderInfo: {
-              subaccountId: orderInfo.getSubaccountId(),
-              feeRecipient: orderInfo.getFeeRecipient(),
-              price: orderInfo.getPrice(),
-              quantity: orderInfo.getQuantity(),
+              subaccountId: orderInfo.subaccountId,
+              feeRecipient: orderInfo.feeRecipient,
+              price: orderInfo.price,
+              quantity: orderInfo.quantity,
             },
-            margin: order.getMargin(),
-            orderType: order.getOrderType(),
-            triggerPrice: order.getTriggerPrice(),
+            margin: order.margin,
+            orderType: order.orderType,
+            triggerPrice: order.triggerPrice,
           },
           this.nonce,
         ),

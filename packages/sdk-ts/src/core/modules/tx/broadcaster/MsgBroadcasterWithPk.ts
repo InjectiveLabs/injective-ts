@@ -1,6 +1,6 @@
 import { BaseAccount, PrivateKey } from '../../../accounts'
-import { Msgs } from '../../..'
-import { createTransaction } from '..'
+import { Msgs } from '../../msgs'
+import { createTransaction } from '../tx'
 import { TxGrpcApi } from '../api/TxGrpcApi'
 import {
   ChainRestAuthApi,
@@ -123,7 +123,7 @@ export class MsgBroadcasterWithPk {
     const { signBytes, txRaw } = createTransaction({
       memo: '',
       fee: getStdFee(gas),
-      message: msgs.map((m) => m.toDirectSign()),
+      message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,
@@ -135,7 +135,7 @@ export class MsgBroadcasterWithPk {
     const signature = await privateKey.sign(Buffer.from(signBytes))
 
     /** Append Signatures */
-    txRaw.setSignaturesList([signature])
+    txRaw.signatures = [signature]
 
     /** Broadcast transaction */
     const txApi = new TxGrpcApi(endpoints.grpc)
@@ -190,7 +190,7 @@ export class MsgBroadcasterWithPk {
     const { txRaw } = createTransaction({
       memo: '',
       fee: DEFAULT_STD_FEE,
-      message: (tx.msgs as Msgs[]).map((m) => m.toDirectSign()),
+      message: tx.msgs as Msgs[],
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,
@@ -199,7 +199,7 @@ export class MsgBroadcasterWithPk {
     })
 
     /** Append Blank Signatures */
-    txRaw.setSignaturesList([new Uint8Array(0)])
+    txRaw.signatures = [new Uint8Array(0)]
 
     /** Simulate transaction */
     const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(

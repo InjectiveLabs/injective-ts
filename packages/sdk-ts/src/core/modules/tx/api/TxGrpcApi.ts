@@ -1,69 +1,44 @@
 import {
-  ServiceClient,
-  Service,
-} from '@injectivelabs/chain-api/cosmos/tx/v1beta1/service_pb_service'
-import {
-  BroadcastTxRequest,
-  BroadcastTxResponse,
-  BroadcastMode,
-  SimulateRequest,
-  BroadcastModeMap,
-  GetTxRequest,
-  GetTxResponse,
-} from '@injectivelabs/chain-api/cosmos/tx/v1beta1/service_pb'
-import {
-  GasInfo,
-  Result,
-} from '@injectivelabs/chain-api/cosmos/base/abci/v1beta1/abci_pb'
-import { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
-import { grpc } from '@injectivelabs/grpc-web'
-import {
+  TxConcreteApi,
   TxClientBroadcastOptions,
   TxClientBroadcastResponse,
-  TxClientSimulateResponse,
-  TxConcreteApi,
 } from '../types/tx'
 import {
-  GrpcUnaryRequestException,
   TransactionException,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { getGrpcTransport } from '../../../../utils/grpc'
-import { isBrowser } from '../../../../utils/helpers'
 import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
 import { TxResponse } from '../types/tx'
-
-if (!isBrowser()) {
-  grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
-}
+import { getGrpcWebImpl } from '../../../../client/BaseGrpcWebConsumer'
+import {
+  CosmosTxV1Beta1Service,
+  CosmosTxV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export class TxGrpcApi implements TxConcreteApi {
-  public txService: ServiceClient
+  public txService: CosmosTxV1Beta1Service.ServiceClientImpl
 
   public endpoint: string
 
   constructor(endpoint: string) {
     this.endpoint = endpoint
-    this.txService = new ServiceClient(endpoint, {
-      transport: getGrpcTransport(),
-    })
+    this.txService = new CosmosTxV1Beta1Service.ServiceClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
   }
 
   public async fetchTx(hash: string): Promise<TxResponse> {
-    const request = new GetTxRequest()
+    const request = CosmosTxV1Beta1Service.GetTxRequest.create()
 
-    request.setHash(hash)
+    request.hash = hash
 
     try {
-      const response = await this.request<
-        GetTxRequest,
-        GetTxResponse,
-        typeof Service.GetTx
-      >(request, Service.GetTx)
+      const response = await this.txService.GetTx(request)
 
-      const txResponse = response.getTxResponse()
+      const txResponse = response.txResponse
 
       if (!txResponse) {
         throw new GrpcUnaryRequestException(
@@ -75,16 +50,19 @@ export class TxGrpcApi implements TxConcreteApi {
         )
       }
 
-      if (txResponse.getCode() !== 0) {
-        throw new TransactionException(new Error(txResponse.getRawLog()), {
-          contextCode: txResponse.getCode(),
-          contextModule: txResponse.getCodespace(),
+      if (txResponse.code !== 0) {
+        throw new TransactionException(new Error(txResponse.rawLog), {
+          contextCode: txResponse.code,
+          contextModule: txResponse.codespace,
         })
       }
 
       return {
-        ...txResponse.toObject(),
-        txHash: txResponse.getTxhash(),
+        ...txResponse,
+        height: parseInt(txResponse.height, 10),
+        gasWanted: parseInt(txResponse.gasWanted, 10),
+        gasUsed: parseInt(txResponse.gasUsed, 10),
+        txHash: txResponse.txhash,
       }
     } catch (e: unknown) {
       // Transaction has failed on the chain
@@ -93,8 +71,10 @@ export class TxGrpcApi implements TxConcreteApi {
       }
 
       // Failed to query the transaction on the chain
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof CosmosTxV1Beta1Service.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+        })
       }
 
       // The response itself failed
@@ -143,75 +123,75 @@ export class TxGrpcApi implements TxConcreteApi {
     )
   }
 
-  public async simulate(txRaw: TxRaw) {
+  public async simulate(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
     const { txService } = this
 
-    const txRawClone = txRaw.clone()
-    const simulateRequest = new SimulateRequest()
+    const txRawClone = CosmosTxV1Beta1Tx.TxRaw.fromPartial({ ...txRaw })
+    const simulateRequest = CosmosTxV1Beta1Service.SimulateRequest.create()
 
-    if (txRawClone.getSignaturesList().length === 0) {
-      txRawClone.setSignaturesList([new Uint8Array(0)])
+    if (txRawClone.signatures.length === 0) {
+      txRawClone.signatures = [new Uint8Array(0)]
     }
 
-    simulateRequest.setTxBytes(txRawClone.serializeBinary())
+    simulateRequest.txBytes =
+      CosmosTxV1Beta1Tx.TxRaw.encode(txRawClone).finish()
 
     try {
-      return await new Promise(
-        (resolve: (value: TxClientSimulateResponse) => void, reject) =>
-          txService.simulate(simulateRequest, (error, response) => {
-            if (error || !response) {
-              return reject(error)
-            }
+      const response = await txService.Simulate(simulateRequest)
 
-            const result = response.getResult()
-            const gasInfo = response.getGasInfo()
+      const result = {
+        ...response.result,
+        data: response.result ? response.result.data : '',
+        log: response.result ? response.result.log : '',
+        eventsList: response.result ? response.result.events : [],
+      }
+      const gasInfo = {
+        ...response.gasInfo,
+        gasWanted: response.gasInfo
+          ? parseInt(response.gasInfo.gasWanted, 10)
+          : 0,
+        gasUsed: response.gasInfo ? parseInt(response.gasInfo.gasUsed, 10) : 0,
+      }
 
-            return resolve({
-              result: result ? result.toObject() : ({} as Result.AsObject),
-              gasInfo: gasInfo ? gasInfo.toObject() : ({} as GasInfo.AsObject),
-            })
-          }),
-      )
+      return {
+        result: result,
+        gasInfo: gasInfo,
+      }
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message))
     }
   }
 
   public async broadcast(
-    txRaw: TxRaw,
+    txRaw: CosmosTxV1Beta1Tx.TxRaw,
     options?: TxClientBroadcastOptions,
   ): Promise<TxResponse> {
     const { txService } = this
     const { mode, timeout } = options || {
-      mode: BroadcastMode.BROADCAST_MODE_SYNC,
+      mode: CosmosTxV1Beta1Service.BroadcastMode.BROADCAST_MODE_SYNC,
       timeout: DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
     }
 
-    const broadcastTxRequest = new BroadcastTxRequest()
-    broadcastTxRequest.setTxBytes(txRaw.serializeBinary())
-    broadcastTxRequest.setMode(mode)
+    const broadcastTxRequest =
+      CosmosTxV1Beta1Service.BroadcastTxRequest.create()
+    broadcastTxRequest.txBytes = CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish()
+    broadcastTxRequest.mode = mode
 
     try {
-      const response = await new Promise(
-        (resolve: (value: BroadcastTxResponse) => void, reject) =>
-          txService.broadcastTx(broadcastTxRequest, async (error, response) => {
-            if (error || !response) {
-              return reject(error)
-            }
+      const response = await txService.BroadcastTx(broadcastTxRequest)
 
-            return resolve(response)
-          }),
-      )
+      const txResponse = response.txResponse!
 
-      const txResponse = response.getTxResponse()!
-
-      if (txResponse.getCode() !== 0) {
-        throw new TransactionException(new Error(txResponse.getRawLog()), {
-          contextCode: txResponse.getCode(),
-          contextModule: txResponse.getCodespace(),
+      if (txResponse.code !== 0) {
+        throw new TransactionException(new Error(txResponse.rawLog), {
+          contextCode: txResponse.code,
+          contextModule: txResponse.codespace,
         })
       }
-      return await this.fetchTxPoll(txResponse.getTxhash(), timeout)
+
+      const result = await this.fetchTxPoll(txResponse.txhash, timeout)
+
+      return result
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
         throw e
@@ -222,48 +202,42 @@ export class TxGrpcApi implements TxConcreteApi {
   }
 
   public async broadcastBlock(
-    txRaw: TxRaw,
-    broadcastMode: BroadcastModeMap[keyof BroadcastModeMap] = BroadcastMode.BROADCAST_MODE_BLOCK,
+    txRaw: CosmosTxV1Beta1Tx.TxRaw,
+    broadcastMode: CosmosTxV1Beta1Service.BroadcastMode = CosmosTxV1Beta1Service
+      .BroadcastMode.BROADCAST_MODE_BLOCK,
   ) {
     const { txService } = this
 
-    const broadcastTxRequest = new BroadcastTxRequest()
-    broadcastTxRequest.setTxBytes(txRaw.serializeBinary())
-    broadcastTxRequest.setMode(broadcastMode)
+    const broadcastTxRequest =
+      CosmosTxV1Beta1Service.BroadcastTxRequest.create()
+    broadcastTxRequest.txBytes = CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish()
+    broadcastTxRequest.mode = broadcastMode
 
     try {
-      return await new Promise(
-        (resolve: (value: TxClientBroadcastResponse) => void, reject) =>
-          txService.broadcastTx(broadcastTxRequest, (error, response) => {
-            if (error || !response) {
-              return reject(error)
-            }
+      const response = await txService.BroadcastTx(broadcastTxRequest)
 
-            const txResponse = response.getTxResponse()
+      const txResponse = response.txResponse
 
-            if (!txResponse) {
-              return reject(
-                new Error('There was an issue broadcasting the transaction'),
-              )
-            }
+      if (!txResponse) {
+        throw new Error('There was an issue broadcasting the transaction')
+      }
 
-            const result: TxClientBroadcastResponse = {
-              ...txResponse.toObject(),
-              txHash: txResponse.getTxhash(),
-            }
+      const result: TxClientBroadcastResponse = {
+        ...txResponse,
+        height: parseInt(txResponse.height, 10),
+        gasWanted: parseInt(txResponse.gasWanted, 10),
+        gasUsed: parseInt(txResponse.gasUsed, 10),
+        txHash: txResponse.txhash,
+      }
 
-            if (result.code !== 0) {
-              return reject(
-                new TransactionException(new Error(result.rawLog), {
-                  contextCode: result.code,
-                  contextModule: result.codespace,
-                }),
-              )
-            }
+      if (result.code !== 0) {
+        throw new TransactionException(new Error(result.rawLog), {
+          contextCode: result.code,
+          contextModule: result.codespace,
+        })
+      }
 
-            return resolve(result as TxClientBroadcastResponse)
-          }),
-      )
+      return result as TxClientBroadcastResponse
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
         throw e
@@ -271,27 +245,5 @@ export class TxGrpcApi implements TxConcreteApi {
 
       throw new TransactionException(new Error((e as any).message))
     }
-  }
-
-  private request<
-    TRequest extends grpc.ProtobufMessage,
-    TResponse extends grpc.ProtobufMessage,
-    S extends grpc.UnaryMethodDefinition<TRequest, TResponse>,
-  >(request: TRequest, service: S): Promise<TResponse> {
-    return new Promise((resolve, reject) => {
-      grpc.unary(service, {
-        request,
-        host: this.endpoint,
-        onEnd: (res) => {
-          const { statusMessage, status, message } = res
-
-          if (status === grpc.Code.OK && message) {
-            resolve(message as TResponse)
-          }
-
-          reject(new Error(statusMessage))
-        },
-      })
-    })
   }
 }

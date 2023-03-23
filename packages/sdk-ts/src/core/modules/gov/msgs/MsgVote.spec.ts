@@ -1,4 +1,3 @@
-import { MsgVote as BaseMsgVote } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/tx_pb'
 import MsgVote from './MsgVote'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -12,7 +11,7 @@ const params: MsgVote['params'] = {
 const protoType = '/cosmos.gov.v1beta1.MsgVote'
 const protoTypeAmino = 'cosmos-sdk/MsgVote'
 const protoParams = {
-  proposalId: params.proposalId,
+  proposalId: params.proposalId.toString(),
   voter: params.voter,
   option: params.vote,
 }
@@ -23,8 +22,7 @@ describe('MsgVote', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgVote).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

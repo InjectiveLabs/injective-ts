@@ -1,9 +1,11 @@
-import { OracleListResponse } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb'
 import { GrpcOracle, Oracle } from '../types/oracle'
+import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 
 export class IndexerGrpcOracleTransformer {
-  static oraclesResponseToOracles(response: OracleListResponse): Oracle[] {
-    const oracles = response.getOraclesList()
+  static oraclesResponseToOracles(
+    response: InjectiveOracleRpc.OracleListResponse,
+  ): Oracle[] {
+    const oracles = response.oracles
 
     return oracles.map((o) =>
       IndexerGrpcOracleTransformer.grpcOracleToOracle(o),
@@ -11,6 +13,6 @@ export class IndexerGrpcOracleTransformer {
   }
 
   static grpcOracleToOracle(grpcOracle: GrpcOracle): Oracle {
-    return grpcOracle.toObject()
+    return grpcOracle
   }
 }

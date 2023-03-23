@@ -1,40 +1,40 @@
-import { QueryParamsResponse } from '@injectivelabs/chain-api/injective/peggy/v1/query_pb'
 import { PeggyModuleParams } from '../types/peggy'
+import { InjectivePeggyV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcPeggyTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryParamsResponse,
+    response: InjectivePeggyV1Beta1Query.QueryParamsResponse,
   ): PeggyModuleParams {
-    const params = response.getParams()!
-    const valsetReward = params.getValsetReward()
+    const params = response.params!
+    const valsetReward = params.valsetReward
 
     return {
-      peggyId: params.getPeggyId(),
-      contractSourceHash: params.getContractSourceHash(),
-      bridgeEthereumAddress: params.getBridgeEthereumAddress(),
-      bridgeChainId: params.getBridgeChainId(),
-      signedValsetsWindow: params.getSignedValsetsWindow(),
-      signedBatchesWindow: params.getSignedBatchesWindow(),
-      signedClaimsWindow: params.getSignedClaimsWindow(),
-      targetBatchTimeout: params.getTargetBatchTimeout(),
-      averageBlockTime: params.getAverageBlockTime(),
-      averageEthereumBlockTime: params.getAverageEthereumBlockTime(),
-      slashFractionValset: params.getSlashFractionValset(),
-      slashFractionBatch: params.getSlashFractionBatch(),
-      slashFractionClaim: params.getSlashFractionClaim(),
-      slashFractionConflictingClaim: params.getSlashFractionConflictingClaim(),
-      unbondSlashingValsetsWindow: params.getUnbondSlashingValsetsWindow(),
-      slashFractionBadEthSignature: params.getSlashFractionBadEthSignature(),
-      cosmosCoinDenom: params.getCosmosCoinDenom(),
-      cosmosCoinErc20Contract: params.getCosmosCoinErc20Contract(),
-      claimSlashingEnabled: params.getClaimSlashingEnabled(),
-      bridgeContractStartHeight: params.getBridgeContractStartHeight(),
+      peggyId: params.peggyId,
+      contractSourceHash: params.contractSourceHash,
+      bridgeEthereumAddress: params.bridgeEthereumAddress,
+      bridgeChainId: params.bridgeChainId,
+      signedValsetsWindow: params.signedValsetsWindow,
+      signedBatchesWindow: params.signedBatchesWindow,
+      signedClaimsWindow: params.signedClaimsWindow,
+      targetBatchTimeout: params.targetBatchTimeout,
+      averageBlockTime: params.averageBlockTime,
+      averageEthereumBlockTime: params.averageEthereumBlockTime,
+      slashFractionValset: params.slashFractionValset,
+      slashFractionBatch: params.slashFractionBatch,
+      slashFractionClaim: params.slashFractionClaim,
+      slashFractionConflictingClaim: params.slashFractionConflictingClaim,
+      unbondSlashingValsetsWindow: params.unbondSlashingValsetsWindow,
+      slashFractionBadEthSignature: params.slashFractionBadEthSignature,
+      cosmosCoinDenom: params.cosmosCoinDenom,
+      cosmosCoinErc20Contract: params.cosmosCoinErc20Contract,
+      claimSlashingEnabled: params.claimSlashingEnabled,
+      bridgeContractStartHeight: params.bridgeContractStartHeight,
       valsetReward: {
-        denom: valsetReward!.getDenom(),
-        amount: valsetReward!.getAmount(),
+        denom: valsetReward!.denom,
+        amount: valsetReward!.amount,
       },
     }
   }

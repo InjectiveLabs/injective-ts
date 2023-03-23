@@ -1,23 +1,23 @@
 import Keplr from './Keplr'
 import Leap from './Leap'
-import Cosmostation from './Cosmostation'
+// import Cosmostation from './Cosmostation'
 import Trezor from './Trezor'
 import Metamask from './Metamask'
 import LedgerLive from './Ledger/LedgerLive'
 import LedgerLegacy from './Ledger/LedgerLegacy'
 import Torus from './Torus'
-import WalletConnect from './WalletConnect'
-import CosmostationEth from './CosmostationEth'
+// import WalletConnect from './WalletConnect'
+// import CosmostationEth from './CosmostationEth'
 
 export {
-  Keplr,
-  CosmostationEth,
+  Torus,
   Leap,
-  Cosmostation,
+  Keplr,
   Trezor,
   Metamask,
   LedgerLive,
   LedgerLegacy,
-  Torus,
-  WalletConnect,
+  // Cosmostation,
+  // CosmostationEth,
+  // WalletConnect,
 }

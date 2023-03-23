@@ -1,4 +1,3 @@
-import { MsgCreateDerivativeMarketOrder as BaseMsgCreateDerivativeMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateDerivativeMarketOrder from './MsgCreateDerivativeMarketOrder'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -51,8 +50,7 @@ describe('MsgCreateDerivativeMarketOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgCreateDerivativeMarketOrder).toBe(true)
-    expect(proto.toObject()).toStrictEqual(formattedProtoParams)
+    expect(proto).toStrictEqual(formattedProtoParams)
   })
 
   it('generates proper data', () => {

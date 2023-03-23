@@ -1,13 +1,4 @@
-import {
-  Proposal as GrpcProposal,
-  Deposit as GrpcProposalDeposit,
-  TallyParams as GrpcGovernanceTallyParams,
-  VotingParams as GrpcGovernanceVotingParams,
-  DepositParams as GrpcGovernanceDepositParams,
-  TallyResult as GrpcTallyResult,
-  Vote as GrpcVote,
-  ProposalStatusMap as GrpcProposalStatus,
-} from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
+import { CosmosGovV1Beta1Gov } from '@injectivelabs/core-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
 export interface GovModuleStateParams {
@@ -25,30 +16,13 @@ export interface GovModuleStateParams {
   }
 }
 
-export enum ProposalStatus {
-  PROPOSAL_STATUS_UNSPECIFIED = 0,
-  PROPOSAL_STATUS_DEPOSIT_PERIOD = 1,
-  PROPOSAL_STATUS_VOTING_PERIOD = 2,
-  PROPOSAL_STATUS_PASSED = 3,
-  PROPOSAL_STATUS_REJECTED = 4,
-  PROPOSAL_STATUS_FAILED = 5,
-}
-
-export enum VoteOption {
-  VOTE_OPTION_UNSPECIFIED = 0,
-  VOTE_OPTION_YES = 1,
-  VOTE_OPTION_ABSTAIN = 2,
-  VOTE_OPTION_NO = 3,
-  VOTE_OPTION_NO_WITH_VETO = 4,
-}
-
 export interface Proposal {
   proposalId: number
   content: any
   type: string
-  status: ProposalStatus
+  status: CosmosGovV1Beta1Gov.ProposalStatus
   submitTime: number
-  finalTallyResult: GrpcTallyResult.AsObject | undefined
+  finalTallyResult: GrpcTallyResult | undefined
   totalDeposits: Coin[]
   votingStartTime: number
   votingEndTime: number
@@ -58,7 +32,7 @@ export interface Proposal {
 export type Vote = {
   proposalId: number
   voter: string
-  option: VoteOption
+  option: CosmosGovV1Beta1Gov.VoteOption
 }
 
 export type TallyResult = {
@@ -73,13 +47,17 @@ export type ProposalDeposit = {
   amounts: Coin[]
 }
 
-export {
-  GrpcProposal,
-  GrpcProposalDeposit,
-  GrpcGovernanceTallyParams,
-  GrpcGovernanceVotingParams,
-  GrpcGovernanceDepositParams,
-  GrpcTallyResult,
-  GrpcVote,
-  GrpcProposalStatus,
-}
+export type GrpcProposal = CosmosGovV1Beta1Gov.Proposal
+export type GrpcProposalDeposit = CosmosGovV1Beta1Gov.Deposit
+export type GrpcGovernanceTallyParams = CosmosGovV1Beta1Gov.TallyParams
+export type GrpcGovernanceVotingParams = CosmosGovV1Beta1Gov.VotingParams
+export type GrpcGovernanceDepositParams = CosmosGovV1Beta1Gov.DepositParams
+export type GrpcTallyResult = CosmosGovV1Beta1Gov.TallyResult
+export type GrpcVote = CosmosGovV1Beta1Gov.Vote
+
+export type VoteOption = CosmosGovV1Beta1Gov.VoteOption
+export type ProposalStatus = CosmosGovV1Beta1Gov.ProposalStatus
+export const VoteOptionMap = CosmosGovV1Beta1Gov.VoteOption
+export const ProposalStatusMap = CosmosGovV1Beta1Gov.ProposalStatus
+
+export { ProposalStatus as GrpcProposalStatus }

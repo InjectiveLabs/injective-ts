@@ -11,13 +11,7 @@
       "path": "../networks/tsconfig.json"
     },
     {
-      "path": "../contracts/tsconfig.json"
-    },
-    {
       "path": "../utils/tsconfig.json"
-    },
-    {
-      "path": "../token-metadata/tsconfig.json"
     },
     {
       "path": "../sdk-ts/tsconfig.json"

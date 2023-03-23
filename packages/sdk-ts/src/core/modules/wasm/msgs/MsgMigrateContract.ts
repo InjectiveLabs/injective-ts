@@ -1,7 +1,7 @@
-import { MsgMigrateContract as BaseMsgMigrateContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
-import { fromUtf8 } from '../../../../utils'
+import { fromUtf8 } from '../../../../utils/utf8'
 import { MsgBase } from '../../MsgBase'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
+import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgMigrateContract {
   export interface Params {
@@ -11,9 +11,11 @@ export declare namespace MsgMigrateContract {
     msg: object
   }
 
-  export type Proto = BaseMsgMigrateContract
+  export type Proto = CosmwasmWasmV1Tx.MsgMigrateContract
 
-  export type Object = BaseMsgMigrateContract.AsObject
+  export type Object = Omit<CosmwasmWasmV1Tx.MsgMigrateContract, 'msg'> & {
+    msg: any
+  }
 }
 
 /**
@@ -31,13 +33,13 @@ export default class MsgMigrateContract extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgMigrateContract()
-    message.setCodeId(params.codeId)
-    message.setContract(params.contract)
-    message.setSender(params.sender)
-    message.setMsg(fromUtf8(JSON.stringify(params.msg)))
+    const message = CosmwasmWasmV1Tx.MsgMigrateContract.create()
+    message.codeId = params.codeId.toString()
+    message.contract = params.contract
+    message.sender = params.sender
+    message.msg = fromUtf8(JSON.stringify(params.msg))
 
-    return message
+    return CosmwasmWasmV1Tx.MsgMigrateContract.fromPartial(message)
   }
 
   public toData() {
@@ -45,7 +47,7 @@ export default class MsgMigrateContract extends MsgBase<
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgMigrateContract',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -54,13 +56,13 @@ export default class MsgMigrateContract extends MsgBase<
     const proto = this.toProto()
 
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
       msg: params.msg,
     }
 
     return {
       type: 'wasm/MsgMigrateContract',
-      value: message as unknown as SnakeCaseKeys<MsgMigrateContract.Object>,
+      value: message as unknown as MsgMigrateContract.Object,
     }
   }
 
@@ -81,5 +83,9 @@ export default class MsgMigrateContract extends MsgBase<
       type: '/cosmwasm.wasm.v1.MsgMigrateContract',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmwasmWasmV1Tx.MsgMigrateContract.encode(this.toProto()).finish()
   }
 }

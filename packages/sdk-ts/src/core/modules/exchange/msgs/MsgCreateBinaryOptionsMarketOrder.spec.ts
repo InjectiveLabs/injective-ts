@@ -1,4 +1,3 @@
-import { MsgCreateBinaryOptionsMarketOrder as BaseMsgCreateBinaryOptionsMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import MsgCreateBinaryOptionsMarketOrder from './MsgCreateBinaryOptionsMarketOrder'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
@@ -52,8 +51,7 @@ describe('MsgCreateBinaryOptionsMarketOrder', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgCreateBinaryOptionsMarketOrder).toBe(true)
-    expect(proto.toObject()).toStrictEqual(formattedProtoParams)
+    expect(proto).toStrictEqual(formattedProtoParams)
   })
 
   it('generates proper data', () => {

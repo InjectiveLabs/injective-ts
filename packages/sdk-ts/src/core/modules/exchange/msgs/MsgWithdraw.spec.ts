@@ -1,4 +1,3 @@
-import { MsgWithdraw as BaseMsgWithdraw } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgWithdraw from './MsgWithdraw'
 import { mockFactory } from '@injectivelabs/test-utils'
@@ -27,8 +26,7 @@ describe('MsgWithdraw', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgWithdraw).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {

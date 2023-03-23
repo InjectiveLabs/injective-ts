@@ -1,26 +1,10 @@
 import {
-  Params as GrpcInsuranceParams,
-  InsuranceFund as GrpcInsuranceFund,
-  RedemptionSchedule as GrpcRedemptionSchedule,
-} from '@injectivelabs/chain-api/injective/insurance/v1beta1/insurance_pb'
+  InjectiveInsuranceV1Beta1Insurance,
+  InjectiveOracleV1Beta1Oracle,
+} from '@injectivelabs/core-proto-ts'
 
 export interface InsuranceModuleParams {
   defaultRedemptionNoticePeriodDuration: number
-}
-
-export enum OracleType {
-  UNSPECIFIED = 0,
-  BAND = 1,
-  PRICEFEED = 2,
-  COINBASE = 3,
-  CHAINLINK = 4,
-  RAZOR = 5,
-  DIA = 6,
-  API3 = 7,
-  UMA = 8,
-  PYTH = 9,
-  BANDIBC = 10,
-  PROVIDER = 11,
 }
 
 export interface InsuranceFund {
@@ -33,8 +17,14 @@ export interface InsuranceFund {
   marketTicker: string
   oracleBase: string
   oracleQuote: string
-  oracleType: OracleType
+  oracleType: InjectiveOracleV1Beta1Oracle.OracleType
   expiry: number
 }
 
-export { GrpcInsuranceParams, GrpcRedemptionSchedule, GrpcInsuranceFund }
+export type GrpcInsuranceParams = InjectiveInsuranceV1Beta1Insurance.Params
+export type GrpcInsuranceFund = InjectiveInsuranceV1Beta1Insurance.InsuranceFund
+export type GrpcRedemptionSchedule =
+  InjectiveInsuranceV1Beta1Insurance.RedemptionSchedule
+
+export type OracleType = InjectiveOracleV1Beta1Oracle.OracleType
+export const OracleTypeMap = InjectiveOracleV1Beta1Oracle.OracleType

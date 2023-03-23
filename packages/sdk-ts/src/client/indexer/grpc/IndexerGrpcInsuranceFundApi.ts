@@ -1,23 +1,25 @@
-import {
-  FundsRequest,
-  FundsResponse,
-  RedemptionsRequest,
-  RedemptionsResponse,
-} from '@injectivelabs/indexer-api/injective_insurance_rpc_pb'
-import { InjectiveInsuranceRPC } from '@injectivelabs/indexer-api/injective_insurance_rpc_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcInsuranceFundApi extends BaseConsumer {
+export class IndexerGrpcInsuranceFundApi {
   protected module: string = IndexerModule.InsuranceFund
+
+  protected client: InjectiveInsuranceRpc.InjectiveInsuranceRPCClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new InjectiveInsuranceRpc.InjectiveInsuranceRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
 
   async fetchRedemptions({
     denom,
@@ -28,31 +30,30 @@ export class IndexerGrpcInsuranceFundApi extends BaseConsumer {
     denom?: string
     status?: string
   }) {
-    const request = new RedemptionsRequest()
+    const request = InjectiveInsuranceRpc.RedemptionsRequest.create()
 
-    request.setRedeemer(address)
+    request.redeemer = address
 
     if (denom) {
-      request.setRedemptionDenom(denom)
+      request.redemptionDenom = denom
     }
 
     if (status) {
-      request.setStatus(status)
+      request.status = status
     }
 
     try {
-      const response = await this.request<
-        RedemptionsRequest,
-        RedemptionsResponse,
-        typeof InjectiveInsuranceRPC.Redemptions
-      >(request, InjectiveInsuranceRPC.Redemptions)
+      const response = await this.client.Redemptions(request)
 
       return IndexerGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -63,21 +64,20 @@ export class IndexerGrpcInsuranceFundApi extends BaseConsumer {
   }
 
   async fetchInsuranceFunds() {
-    const request = new FundsRequest()
+    const request = InjectiveInsuranceRpc.FundsRequest.create()
 
     try {
-      const response = await this.request<
-        FundsRequest,
-        FundsResponse,
-        typeof InjectiveInsuranceRPC.Funds
-      >(request, InjectiveInsuranceRPC.Funds)
+      const response = await this.client.Funds(request)
 
       return IndexerGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

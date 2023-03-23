@@ -1,67 +1,66 @@
 import {
-  QueryCurrentAuctionBasketResponse,
-  QueryModuleStateResponse,
-  QueryAuctionParamsResponse,
-} from '@injectivelabs/chain-api/injective/auction/v1beta1/query_pb'
-import { GenesisState } from '@injectivelabs/chain-api/injective/auction/v1beta1/genesis_pb'
-import {
   AuctionModuleState,
   CurrentBasket,
   AuctionModuleStateParams,
 } from '../types/auction'
+import {
+  InjectiveAuctionV1Beta1Genesis,
+  InjectiveAuctionV1Beta1Query,
+} from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcAuctionTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryAuctionParamsResponse,
+    response: InjectiveAuctionV1Beta1Query.QueryAuctionParamsResponse,
   ): AuctionModuleStateParams {
-    const params = response.getParams()
+    const params = response.params!
 
     return {
-      auctionPeriod: params?.getAuctionPeriod() || 0,
-      minNextBidIncrementRate: params?.getMinNextBidIncrementRate() || '0',
+      auctionPeriod: parseInt(params?.auctionPeriod || '0', 10),
+      minNextBidIncrementRate: params?.minNextBidIncrementRate || '0',
     }
   }
 
   static currentBasketResponseToCurrentBasket(
-    response: QueryCurrentAuctionBasketResponse,
+    response: InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketResponse,
   ): CurrentBasket {
     return {
-      amountList: response
-        .getAmountList()
-        .map((coin) => ({ amount: coin.getAmount(), denom: coin.getDenom() })),
-      auctionRound: response.getAuctionround(),
-      auctionClosingTime: response.getAuctionclosingtime(),
-      highestBidder: response.getHighestbidder(),
-      highestBidAmount: response.getHighestbidamount(),
+      amountList: response.amount.map((coin) => ({
+        amount: coin.amount,
+        denom: coin.denom,
+      })),
+      auctionRound: parseInt(response.auctionRound, 10),
+      auctionClosingTime: parseInt(response.auctionClosingTime, 10),
+      highestBidder: response.highestBidAmount,
+      highestBidAmount: response.highestBidAmount,
     }
   }
 
   static auctionModuleStateResponseToAuctionModuleState(
-    response: QueryModuleStateResponse,
+    response: InjectiveAuctionV1Beta1Query.QueryModuleStateResponse,
   ): AuctionModuleState {
-    const state = response.getState() as GenesisState
-    const bid = state.getHighestBid()
-    const params = state.getParams()!
+    const state = response.state as InjectiveAuctionV1Beta1Genesis.GenesisState
+    const bid = state.highestBid
+    const params = state.params!
 
     return {
       params: {
-        auctionPeriod: params.getAuctionPeriod(),
-        minNextBidIncrementRate: params.getMinNextBidIncrementRate(),
+        auctionPeriod: parseInt(params.auctionPeriod, 10),
+        minNextBidIncrementRate: params.minNextBidIncrementRate,
       },
-      auctionRound: state.getAuctionRound(),
+      auctionRound: parseInt(state.auctionRound, 10),
       highestBid: bid
         ? {
-            bidder: bid.getBidder(),
-            amount: bid.getAmount(),
+            bidder: bid.bidder,
+            amount: bid.amount,
           }
         : {
             amount: '',
             bidder: '',
           },
-      auctionEndingTimestamp: state.getAuctionEndingTimestamp(),
+      auctionEndingTimestamp: parseInt(state.auctionEndingTimestamp, 10),
     }
   }
 }

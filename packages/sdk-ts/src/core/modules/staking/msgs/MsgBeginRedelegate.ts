@@ -1,7 +1,9 @@
-import { MsgBeginRedelegate as BaseMsgBeginRedelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  CosmosStakingV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgBeginRedelegate {
   export interface Params {
@@ -14,9 +16,7 @@ export declare namespace MsgBeginRedelegate {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgBeginRedelegate
-
-  export type Object = BaseMsgBeginRedelegate.AsObject
+  export type Proto = CosmosStakingV1Beta1Tx.MsgBeginRedelegate
 }
 
 /**
@@ -24,8 +24,7 @@ export declare namespace MsgBeginRedelegate {
  */
 export default class MsgBeginRedelegate extends MsgBase<
   MsgBeginRedelegate.Params,
-  MsgBeginRedelegate.Proto,
-  MsgBeginRedelegate.Object
+  MsgBeginRedelegate.Proto
 > {
   static fromJSON(params: MsgBeginRedelegate.Params): MsgBeginRedelegate {
     return new MsgBeginRedelegate(params)
@@ -34,17 +33,17 @@ export default class MsgBeginRedelegate extends MsgBase<
   public toProto(): MsgBeginRedelegate.Proto {
     const { params } = this
 
-    const coinAmount = new Coin()
-    coinAmount.setDenom(params.amount.denom)
-    coinAmount.setAmount(params.amount.amount)
+    const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
+    coinAmount.denom = params.amount.denom
+    coinAmount.amount = params.amount.amount
 
-    const message = new BaseMsgBeginRedelegate()
-    message.setAmount(coinAmount)
-    message.setDelegatorAddress(params.injectiveAddress)
-    message.setValidatorSrcAddress(params.srcValidatorAddress)
-    message.setValidatorDstAddress(params.dstValidatorAddress)
+    const message = CosmosStakingV1Beta1Tx.MsgBeginRedelegate.create()
+    message.amount = coinAmount
+    message.delegatorAddress = params.injectiveAddress
+    message.validatorSrcAddress = params.srcValidatorAddress
+    message.validatorDstAddress = params.dstValidatorAddress
 
-    return message
+    return CosmosStakingV1Beta1Tx.MsgBeginRedelegate.fromPartial(message)
   }
 
   public toData() {
@@ -52,14 +51,14 @@ export default class MsgBeginRedelegate extends MsgBase<
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgBeginRedelegate',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -85,5 +84,11 @@ export default class MsgBeginRedelegate extends MsgBase<
       type: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmosStakingV1Beta1Tx.MsgBeginRedelegate.encode(
+      this.toProto(),
+    ).finish()
   }
 }

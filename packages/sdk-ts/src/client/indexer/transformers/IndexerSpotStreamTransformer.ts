@@ -1,105 +1,106 @@
-import {
-  StreamTradesResponse,
-  StreamOrdersResponse,
-  StreamOrderbookResponse,
-  StreamOrderbookV2Response,
-  StreamOrdersHistoryResponse,
-  StreamOrderbookUpdateResponse,
-} from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
 import { StreamOperation } from '../../../types'
 import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer'
+import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerSpotStreamTransformer {
-  static orderbookStreamCallback = (response: StreamOrderbookResponse) => {
-    const orderbook = response.getOrderbook()
+  static orderbookStreamCallback = (
+    response: InjectiveSpotExchangeRpc.StreamOrderbookResponse,
+  ) => {
+    const orderbook = response.orderbook
 
     return {
       orderbook: orderbook
         ? IndexerGrpcSpotTransformer.grpcOrderbookToOrderbook({
-            buys: orderbook.getBuysList(),
-            sells: orderbook.getSellsList(),
+            buys: orderbook.buys,
+            sells: orderbook.sells,
           })
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      marketId: response.getMarketId(),
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      marketId: response.marketId,
+      timestamp: response.timestamp,
     }
   }
 
-  static tradesStreamCallback = (response: StreamTradesResponse) => {
-    const trade = response.getTrade()
+  static tradesStreamCallback = (
+    response: InjectiveSpotExchangeRpc.StreamTradesResponse,
+  ) => {
+    const trade = response.trade
 
     return {
       trade: trade
         ? IndexerGrpcSpotTransformer.grpcTradeToTrade(trade)
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      timestamp: response.timestamp,
     }
   }
 
-  static ordersStreamCallback = (response: StreamOrdersResponse) => {
-    const order = response.getOrder()
+  static ordersStreamCallback = (
+    response: InjectiveSpotExchangeRpc.StreamOrdersResponse,
+  ) => {
+    const order = response.order
 
     return {
       order: order
         ? IndexerGrpcSpotTransformer.grpcOrderToOrder(order)
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      timestamp: response.timestamp,
     }
   }
 
   static orderHistoryStreamCallback = (
-    response: StreamOrdersHistoryResponse,
+    response: InjectiveSpotExchangeRpc.StreamOrdersHistoryResponse,
   ) => {
-    const order = response.getOrder()
+    const order = response.order
 
     return {
       order: order
         ? IndexerGrpcSpotTransformer.grpcOrderHistoryToOrderHistory(order)
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      timestamp: response.timestamp,
     }
   }
 
-  static orderbookV2StreamCallback = (response: StreamOrderbookV2Response) => {
-    const orderbook = response.getOrderbook()
+  static orderbookV2StreamCallback = (
+    response: InjectiveSpotExchangeRpc.StreamOrderbookV2Response,
+  ) => {
+    const orderbook = response.orderbook
 
     return {
       orderbook: orderbook
         ? IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-            sequence: orderbook.getSequence(),
-            buys: orderbook.getBuysList(),
-            sells: orderbook.getSellsList(),
+            sequence: parseInt(orderbook.sequence, 10),
+            buys: orderbook.buys,
+            sells: orderbook.sells,
           })
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      marketId: response.getMarketId(),
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      marketId: response.marketId,
+      timestamp: response.timestamp,
     }
   }
 
   static orderbookUpdateStreamCallback = (
-    response: StreamOrderbookUpdateResponse,
+    response: InjectiveSpotExchangeRpc.StreamOrderbookUpdateResponse,
   ) => {
-    const orderbook = response.getOrderbookLevelUpdates()
+    const orderbook = response.orderbookLevelUpdates
 
     return {
       orderbook: orderbook
         ? IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-            sequence: orderbook.getSequence(),
-            buys: orderbook.getBuysList(),
-            sells: orderbook.getSellsList(),
+            sequence: parseInt(orderbook.sequence, 10),
+            buys: orderbook.buys,
+            sells: orderbook.sells,
           })
         : undefined,
-      operation: response.getOperationType() as StreamOperation,
-      marketId: response.getMarketId(),
-      timestamp: response.getTimestamp(),
+      operation: response.operationType as StreamOperation,
+      marketId: response.marketId,
+      timestamp: response.timestamp,
     }
   }
 }

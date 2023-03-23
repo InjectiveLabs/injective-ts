@@ -1,4 +1,3 @@
-import { MsgCreateInsuranceFund as BaseMsgCreateInsuranceFund } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgCreateInsuranceFund from './MsgCreateInsuranceFund'
 import { mockFactory } from '@injectivelabs/test-utils'
@@ -27,7 +26,7 @@ const protoParams = {
   ...params.fund,
   initialDeposit: params.deposit,
   sender: params.injectiveAddress,
-  expiry: -1,
+  expiry: '-1',
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgCreateInsuranceFund.fromJSON(params)
@@ -36,8 +35,7 @@ describe('MsgCreateInsuranceFund', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgCreateInsuranceFund).toBe(true)
-    expect(proto.toObject()).toStrictEqual({
+    expect(proto).toStrictEqual({
       ...protoParams,
     })
   })

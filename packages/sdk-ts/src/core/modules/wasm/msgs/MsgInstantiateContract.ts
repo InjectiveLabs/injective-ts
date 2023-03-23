@@ -1,8 +1,10 @@
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { MsgInstantiateContract as BaseMsgInstantiateContract } from '@injectivelabs/chain-api/cosmwasm/wasm/v1/tx_pb'
-import { fromUtf8 } from '../../../../utils'
+import { fromUtf8 } from '../../../../utils/utf8'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmwasmWasmV1Tx,
+  CosmosBaseV1Beta1Coin,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgInstantiateContract {
   export interface Params {
@@ -17,9 +19,7 @@ export declare namespace MsgInstantiateContract {
     }
   }
 
-  export type Proto = BaseMsgInstantiateContract
-
-  export type Object = BaseMsgInstantiateContract.AsObject
+  export type Proto = CosmwasmWasmV1Tx.MsgInstantiateContract
 }
 
 /**
@@ -27,8 +27,7 @@ export declare namespace MsgInstantiateContract {
  */
 export default class MsgInstantiateContract extends MsgBase<
   MsgInstantiateContract.Params,
-  MsgInstantiateContract.Proto,
-  MsgInstantiateContract.Object
+  MsgInstantiateContract.Proto
 > {
   static fromJSON(
     params: MsgInstantiateContract.Params,
@@ -39,24 +38,24 @@ export default class MsgInstantiateContract extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgInstantiateContract()
+    const message = CosmwasmWasmV1Tx.MsgInstantiateContract.create()
 
-    message.setMsg(fromUtf8(JSON.stringify(params.msg)))
-    message.setSender(params.sender)
-    message.setAdmin(params.admin)
-    message.setCodeId(params.codeId)
-    message.setLabel(params.label)
+    message.msg = fromUtf8(JSON.stringify(params.msg))
+    message.sender = params.sender
+    message.admin = params.admin
+    message.codeId = params.codeId.toString()
+    message.label = params.label
 
     if (params.amount) {
-      const funds = new Coin()
+      const funds = CosmosBaseV1Beta1Coin.Coin.create()
 
-      funds.setAmount(params.amount.amount)
-      funds.setDenom(params.amount.denom)
+      funds.amount = params.amount.amount
+      funds.denom = params.amount.denom
 
-      message.setFundsList([funds])
+      message.funds = [funds]
     }
 
-    return message
+    return CosmwasmWasmV1Tx.MsgInstantiateContract.fromPartial(message)
   }
 
   public toData() {
@@ -64,18 +63,15 @@ export default class MsgInstantiateContract extends MsgBase<
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
-
-    // @ts-ignore
-    delete message.funds_list
 
     return {
       type: 'wasm/MsgInstantiateContract',
@@ -100,5 +96,11 @@ export default class MsgInstantiateContract extends MsgBase<
       type: '/cosmwasm.wasm.v1.MsgInstantiateContract',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return CosmwasmWasmV1Tx.MsgInstantiateContract.encode(
+      this.toProto(),
+    ).finish()
   }
 }

@@ -1,13 +1,8 @@
-import {
-  StreamPricesRequest,
-  StreamPricesResponse,
-  StreamPricesByMarketsRequest,
-  StreamPricesByMarketsResponse,
-} from '@injectivelabs/indexer-api/injective_oracle_rpc_pb'
-import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-api/injective_oracle_rpc_pb_service'
 import { StreamStatusResponse } from '../types'
 import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer'
-import { getGrpcTransport } from '../../../utils/grpc'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { Subscription } from 'rxjs'
+import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 
 export type OraclePriceStreamCallback = (
   response: ReturnType<
@@ -25,12 +20,12 @@ export type OraclePricesByMarketsStreamCallback = (
  * @category Indexer Grpc Stream
  */
 export class IndexerGrpcOracleStream {
-  protected client: InjectiveOracleRPCClient
+  protected client: InjectiveOracleRpc.InjectiveOracleRPCClientImpl
 
   constructor(endpoint: string) {
-    this.client = new InjectiveOracleRPCClient(endpoint, {
-      transport: getGrpcTransport(),
-    })
+    this.client = new InjectiveOracleRpc.InjectiveOracleRPCClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
   }
 
   streamOraclePrices({
@@ -47,34 +42,36 @@ export class IndexerGrpcOracleStream {
     callback: OraclePriceStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamPricesRequest()
+  }): Subscription {
+    const request = InjectiveOracleRpc.StreamPricesRequest.create()
 
     if (baseSymbol) {
-      request.setBaseSymbol(baseSymbol)
+      request.baseSymbol = baseSymbol
     }
 
     if (quoteSymbol) {
-      request.setQuoteSymbol(quoteSymbol)
+      request.quoteSymbol = quoteSymbol
     }
 
-    request.setOracleType(oracleType)
+    request.oracleType = oracleType
 
-    const stream = this.client.streamPrices(request)
-
-    stream.on('data', (response: StreamPricesResponse) => {
-      callback(IndexerOracleStreamTransformer.pricesStreamCallback(response))
+    const subscription = this.client.StreamPrices(request).subscribe({
+      next(response: InjectiveOracleRpc.StreamPricesResponse) {
+        callback(IndexerOracleStreamTransformer.pricesStreamCallback(response))
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 
   streamOraclePricesByMarkets({
@@ -87,27 +84,31 @@ export class IndexerGrpcOracleStream {
     callback: OraclePricesByMarketsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
-    const request = new StreamPricesByMarketsRequest()
+  }): Subscription {
+    const request = InjectiveOracleRpc.StreamPricesByMarketsRequest.create()
 
     if (marketIds) {
-      request.setMarketIdsList(marketIds)
+      request.marketIds = marketIds
     }
 
-    const stream = this.client.streamPricesByMarkets(request)
-
-    stream.on('data', (response: StreamPricesByMarketsResponse) => {
-      callback(IndexerOracleStreamTransformer.pricesByMarketsCallback(response))
+    const subscription = this.client.StreamPricesByMarkets(request).subscribe({
+      next(response: InjectiveOracleRpc.StreamPricesByMarketsResponse) {
+        callback(
+          IndexerOracleStreamTransformer.pricesByMarketsCallback(response),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
     })
 
-    if (onEndCallback) {
-      stream.on('end', onEndCallback)
-    }
-
-    if (onStatusCallback) {
-      stream.on('status', onStatusCallback)
-    }
-
-    return stream
+    return subscription as unknown as Subscription
   }
 }

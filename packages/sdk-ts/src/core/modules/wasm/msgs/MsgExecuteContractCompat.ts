@@ -1,8 +1,8 @@
-import { MsgExecuteContractCompat as BaseMsgExecuteContractCompat } from '@injectivelabs/chain-api/injective/wasmx/v1/tx_pb'
+import snakecaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args'
 import { MsgBase } from '../../MsgBase'
 import { GeneralException } from '@injectivelabs/exceptions'
-import snakecaseKeys from 'snakecase-keys'
+import { InjectiveWasmxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgExecuteContractCompat {
   export interface Params {
@@ -34,9 +34,14 @@ export declare namespace MsgExecuteContractCompat {
     msg?: object
   }
 
-  export type Proto = BaseMsgExecuteContractCompat
+  export type Proto = InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat
 
-  export type Object = BaseMsgExecuteContractCompat.AsObject
+  export type Object = Omit<
+    InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat,
+    'msg'
+  > & {
+    msg: string
+  }
 }
 
 /**
@@ -56,12 +61,12 @@ export default class MsgExecuteContractCompat extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = new BaseMsgExecuteContractCompat()
+    const message = InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.create()
     const msg = this.getMsgObject()
 
-    message.setMsg(JSON.stringify(msg))
-    message.setSender(params.sender)
-    message.setContract(params.contractAddress)
+    message.msg = JSON.stringify(msg)
+    message.sender = params.sender
+    message.contract = params.contractAddress
 
     if (params.funds) {
       const fundsToArray = Array.isArray(params.funds)
@@ -72,12 +77,12 @@ export default class MsgExecuteContractCompat extends MsgBase<
         return `${coin.amount}${coin.denom}`
       })
 
-      message.setFunds(funds.join(','))
+      message.funds = funds.join(',')
     } else {
-      message.setFunds('0')
+      message.funds = '0'
     }
 
-    return message
+    return InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.fromPartial(message)
   }
 
   public toData() {
@@ -85,14 +90,14 @@ export default class MsgExecuteContractCompat extends MsgBase<
 
     return {
       '@type': '/injective.wasmx.v1.MsgExecuteContractCompat',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
       msg: JSON.stringify(this.getMsgObject()),
     }
 
@@ -122,6 +127,12 @@ export default class MsgExecuteContractCompat extends MsgBase<
       type: '/injective.wasmx.v1.MsgExecuteContractCompat',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.encode(
+      this.toProto(),
+    ).finish()
   }
 
   private getMsgObject() {

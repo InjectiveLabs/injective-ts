@@ -1,35 +1,38 @@
-import { Query as OracleQuery } from '@injectivelabs/chain-api/injective/oracle/v1beta1/query_pb_service'
-import {
-  QueryParamsRequest as QueryOracleParamsRequest,
-  QueryParamsResponse as QueryOracleParamsResponse,
-} from '@injectivelabs/chain-api/injective/oracle/v1beta1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainModule, OracleModuleParams } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
+import { InjectiveOracleV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcOracleApi extends BaseConsumer {
+export class ChainGrpcOracleApi {
   protected module: string = ChainModule.Oracle
 
+  protected client: InjectiveOracleV1Beta1Query.QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new InjectiveOracleV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
+  }
+
   async fetchModuleParams() {
-    const request = new QueryOracleParamsRequest()
+    const request = InjectiveOracleV1Beta1Query.QueryParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryOracleParamsRequest,
-        QueryOracleParamsResponse,
-        typeof OracleQuery.Params
-      >(request, OracleQuery.Params)
+      const response = await this.client.Params(request)
 
-      return response.toObject() as OracleModuleParams
+      return response.params as OracleModuleParams
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveOracleV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

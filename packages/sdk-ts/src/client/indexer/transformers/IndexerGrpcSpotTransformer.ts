@@ -1,42 +1,31 @@
 import {
+  OrderSide,
+  OrderState,
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
 } from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
 import {
-  SpotOrderSide,
-  SpotOrderState,
+  SpotTrade,
+  SpotMarket,
+  GrpcSpotTrade,
+  SpotLimitOrder,
+  SpotOrderHistory,
   GrpcSpotMarketInfo,
   GrpcSpotLimitOrder,
-  SpotOrderHistory,
   GrpcSpotOrderHistory,
-  GrpcSpotTrade,
-  SpotMarket,
-  SpotLimitOrder,
-  SpotTrade,
 } from '../types/spot'
 import {
-  GrpcPriceLevel,
   Orderbook,
   PriceLevel,
   GrpcTokenMeta,
+  GrpcPriceLevel,
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange'
-import {
-  MarketsResponse as SpotMarketsResponse,
-  MarketResponse as SpotMarketResponse,
-  OrderbookResponse as SpotOrderbookResponse,
-  OrderbookV2Response as SpotOrderbookV2Response,
-  OrdersResponse as SpotOrdersResponse,
-  OrdersHistoryResponse as SpotOrdersHistoryResponse,
-  TradesResponse as SpotTradesResponse,
-  OrderbooksResponse as SpotOrderbooksResponse,
-  OrderbooksV2Response as SpotOrderbooksV2Response,
-  SubaccountTradesListResponse as SpotSubaccountTradesListResponse,
-} from '@injectivelabs/indexer-api/injective_spot_exchange_rpc_pb'
 import { grpcPagingToPaging } from '../../../utils/pagination'
+import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 const zeroPriceLevel = () => ({
   price: '0',
@@ -56,31 +45,37 @@ export class IndexerGrpcSpotTransformer {
     }
 
     return {
-      name: tokenMeta.getName(),
-      address: tokenMeta.getAddress(),
-      symbol: tokenMeta.getSymbol(),
-      logo: tokenMeta.getLogo(),
-      decimals: tokenMeta.getDecimals(),
-      updatedAt: tokenMeta.getUpdatedAt(),
+      name: tokenMeta.name,
+      address: tokenMeta.address,
+      symbol: tokenMeta.symbol,
+      logo: tokenMeta.logo,
+      decimals: tokenMeta.decimals,
+      updatedAt: tokenMeta.updatedAt,
       coinGeckoId: '',
     }
   }
 
-  static marketResponseToMarket(response: SpotMarketResponse) {
-    const market = response.getMarket()!
+  static marketResponseToMarket(
+    response: InjectiveSpotExchangeRpc.MarketResponse,
+  ) {
+    const market = response.market!
 
     return IndexerGrpcSpotTransformer.grpcMarketToMarket(market)
   }
 
-  static marketsResponseToMarkets(response: SpotMarketsResponse) {
-    const markets = response.getMarketsList()
+  static marketsResponseToMarkets(
+    response: InjectiveSpotExchangeRpc.MarketsResponse,
+  ) {
+    const markets = response.markets
 
     return IndexerGrpcSpotTransformer.grpcMarketsToMarkets(markets)
   }
 
-  static ordersResponseToOrders(response: SpotOrdersResponse) {
-    const orders = response.getOrdersList()
-    const pagination = response.getPaging()
+  static ordersResponseToOrders(
+    response: InjectiveSpotExchangeRpc.OrdersResponse,
+  ) {
+    const orders = response.orders
+    const pagination = response.paging
 
     return {
       orders: IndexerGrpcSpotTransformer.grpcOrdersToOrders(orders),
@@ -89,10 +84,10 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static orderHistoryResponseToOrderHistory(
-    response: SpotOrdersHistoryResponse,
+    response: InjectiveSpotExchangeRpc.OrdersHistoryResponse,
   ) {
-    const orderHistory = response.getOrdersList()
-    const pagination = response.getPaging()
+    const orderHistory = response.orders
+    const pagination = response.paging
 
     return {
       orderHistory:
@@ -103,9 +98,11 @@ export class IndexerGrpcSpotTransformer {
     }
   }
 
-  static tradesResponseToTrades(response: SpotTradesResponse) {
-    const trades = response.getTradesList()
-    const pagination = response.getPaging()
+  static tradesResponseToTrades(
+    response: InjectiveSpotExchangeRpc.TradesResponse,
+  ) {
+    const trades = response.trades
+    const pagination = response.paging
 
     return {
       trades: IndexerGrpcSpotTransformer.grpcTradesToTrades(trades),
@@ -114,62 +111,68 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static subaccountTradesListResponseToTradesList(
-    response: SpotSubaccountTradesListResponse,
+    response: InjectiveSpotExchangeRpc.SubaccountTradesListResponse,
   ) {
-    const tradesList = response.getTradesList()
+    const tradesList = response.trades
 
     return IndexerGrpcSpotTransformer.grpcTradesToTrades(tradesList)
   }
 
-  static orderbookResponseToOrderbook(response: SpotOrderbookResponse) {
-    const orderbook = response.getOrderbook()!
+  static orderbookResponseToOrderbook(
+    response: InjectiveSpotExchangeRpc.OrderbookResponse,
+  ) {
+    const orderbook = response.orderbook!
 
     return IndexerGrpcSpotTransformer.grpcOrderbookToOrderbook({
-      buys: orderbook?.getBuysList(),
-      sells: orderbook?.getSellsList(),
+      buys: orderbook?.buys,
+      sells: orderbook?.sells,
     })
   }
 
-  static orderbooksResponseToOrderbooks(response: SpotOrderbooksResponse) {
-    const orderbooks = response.getOrderbooksList()!
+  static orderbooksResponseToOrderbooks(
+    response: InjectiveSpotExchangeRpc.OrderbooksResponse,
+  ) {
+    const orderbooks = response.orderbooks!
 
     return orderbooks.map((o) => {
-      const orderbook = o.getOrderbook()!
+      const orderbook = o.orderbook!
 
       return {
-        marketId: o.getMarketId(),
+        marketId: o.marketId,
         orderbook: IndexerGrpcSpotTransformer.grpcOrderbookToOrderbook({
-          buys: orderbook.getBuysList(),
-          sells: orderbook.getSellsList(),
+          buys: orderbook.buys,
+          sells: orderbook.sells,
         }),
       }
     })
   }
 
-  static orderbookV2ResponseToOrderbookV2(response: SpotOrderbookV2Response) {
-    const orderbook = response.getOrderbook()!
+  static orderbookV2ResponseToOrderbookV2(
+    response: InjectiveSpotExchangeRpc.OrderbookV2Response,
+  ) {
+    const orderbook = response.orderbook!
 
     return IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-      sequence: orderbook.getSequence(),
-      buys: orderbook?.getBuysList(),
-      sells: orderbook?.getSellsList(),
+      sequence: parseInt(orderbook.sequence, 10),
+      buys: orderbook?.buys,
+      sells: orderbook?.sells,
     })
   }
 
   static orderbooksV2ResponseToOrderbooksV2(
-    response: SpotOrderbooksV2Response,
+    response: InjectiveSpotExchangeRpc.OrderbooksV2Response,
   ) {
-    const orderbooks = response.getOrderbooksList()!
+    const orderbooks = response.orderbooks!
 
     return orderbooks.map((o) => {
-      const orderbook = o.getOrderbook()!
+      const orderbook = o.orderbook!
 
       return {
-        marketId: o.getMarketId(),
+        marketId: o.marketId,
         orderbook: IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-          sequence: orderbook.getSequence(),
-          buys: orderbook.getBuysList(),
-          sells: orderbook.getSellsList(),
+          sequence: parseInt(orderbook.sequence, 10),
+          buys: orderbook.buys,
+          sells: orderbook.sells,
         }),
       }
     })
@@ -177,24 +180,22 @@ export class IndexerGrpcSpotTransformer {
 
   static grpcMarketToMarket(market: GrpcSpotMarketInfo): SpotMarket {
     return {
-      marketId: market.getMarketId(),
-      marketStatus: market.getMarketStatus(),
-      ticker: market.getTicker(),
-      baseDenom: market.getBaseDenom(),
-      quoteDenom: market.getQuoteDenom(),
+      marketId: market.marketId,
+      marketStatus: market.marketStatus,
+      ticker: market.ticker,
+      baseDenom: market.baseDenom,
+      quoteDenom: market.quoteDenom,
       quoteToken: IndexerGrpcSpotTransformer.grpcTokenMetaToTokenMeta(
-        market.getQuoteTokenMeta(),
+        market.quoteTokenMeta,
       ),
       baseToken: IndexerGrpcSpotTransformer.grpcTokenMetaToTokenMeta(
-        market.getBaseTokenMeta(),
+        market.baseTokenMeta,
       ),
-      makerFeeRate: market.getMakerFeeRate(),
-      takerFeeRate: market.getTakerFeeRate(),
-      serviceProviderFee: market.getServiceProviderFee(),
-      minPriceTickSize: new BigNumber(market.getMinPriceTickSize()).toNumber(),
-      minQuantityTickSize: new BigNumber(
-        market.getMinQuantityTickSize(),
-      ).toNumber(),
+      makerFeeRate: market.makerFeeRate,
+      takerFeeRate: market.takerFeeRate,
+      serviceProviderFee: market.serviceProviderFee,
+      minPriceTickSize: new BigNumber(market.minPriceTickSize).toNumber(),
+      minQuantityTickSize: new BigNumber(market.minQuantityTickSize).toNumber(),
     }
   }
 
@@ -206,9 +207,9 @@ export class IndexerGrpcSpotTransformer {
 
   static grpcPriceLevelToPriceLevel(priceLevel: GrpcPriceLevel): PriceLevel {
     return {
-      price: priceLevel.getPrice(),
-      quantity: priceLevel.getQuantity(),
-      timestamp: priceLevel.getTimestamp(),
+      price: priceLevel.price,
+      quantity: priceLevel.quantity,
+      timestamp: parseInt(priceLevel.timestamp, 10),
     }
   }
 
@@ -251,18 +252,18 @@ export class IndexerGrpcSpotTransformer {
 
   static grpcOrderToOrder(order: GrpcSpotLimitOrder): SpotLimitOrder {
     return {
-      orderHash: order.getOrderHash(),
-      orderSide: order.getOrderSide() as SpotOrderSide,
-      marketId: order.getMarketId(),
-      subaccountId: order.getSubaccountId(),
-      price: order.getPrice(),
-      state: order.getState() as SpotOrderState,
-      quantity: order.getQuantity(),
-      unfilledQuantity: order.getUnfilledQuantity(),
-      triggerPrice: order.getTriggerPrice(),
-      feeRecipient: order.getFeeRecipient(),
-      createdAt: order.getCreatedAt(),
-      updatedAt: order.getUpdatedAt(),
+      orderHash: order.orderHash,
+      orderSide: order.orderSide as OrderSide,
+      marketId: order.marketId,
+      subaccountId: order.subaccountId,
+      price: order.price,
+      state: order.state as OrderState,
+      quantity: order.quantity,
+      unfilledQuantity: order.unfilledQuantity,
+      triggerPrice: order.triggerPrice,
+      feeRecipient: order.feeRecipient,
+      createdAt: parseInt(order.createdAt, 10),
+      updatedAt: parseInt(order.updatedAt, 10),
     }
   }
 
@@ -276,20 +277,20 @@ export class IndexerGrpcSpotTransformer {
     orderHistory: GrpcSpotOrderHistory,
   ): SpotOrderHistory {
     return {
-      orderHash: orderHistory.getOrderHash(),
-      marketId: orderHistory.getMarketId(),
-      active: orderHistory.getIsActive(),
-      subaccountId: orderHistory.getSubaccountId(),
-      executionType: orderHistory.getExecutionType(),
-      orderType: orderHistory.getOrderType(),
-      price: orderHistory.getPrice(),
-      triggerPrice: orderHistory.getTriggerPrice(),
-      quantity: orderHistory.getQuantity(),
-      filledQuantity: orderHistory.getFilledQuantity(),
-      state: orderHistory.getState(),
-      createdAt: orderHistory.getCreatedAt(),
-      updatedAt: orderHistory.getUpdatedAt(),
-      direction: orderHistory.getDirection(),
+      orderHash: orderHistory.orderHash,
+      marketId: orderHistory.marketId,
+      active: orderHistory.isActive,
+      subaccountId: orderHistory.subaccountId,
+      executionType: orderHistory.executionType,
+      orderType: orderHistory.orderType,
+      price: orderHistory.price,
+      triggerPrice: orderHistory.triggerPrice,
+      quantity: orderHistory.quantity,
+      filledQuantity: orderHistory.filledQuantity,
+      state: orderHistory.state,
+      createdAt: parseInt(orderHistory.createdAt, 10),
+      updatedAt: parseInt(orderHistory.updatedAt, 10),
+      direction: orderHistory.direction,
     }
   }
 
@@ -302,22 +303,22 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static grpcTradeToTrade(trade: GrpcSpotTrade): SpotTrade {
-    const price = trade.getPrice()
+    const price = trade.price
     const mappedPrice = price
       ? IndexerGrpcSpotTransformer.grpcPriceLevelToPriceLevel(price)
       : zeroPriceLevel()
 
     return {
-      orderHash: trade.getOrderHash(),
-      subaccountId: trade.getSubaccountId(),
-      marketId: trade.getMarketId(),
-      tradeId: trade.getTradeId(),
-      executedAt: trade.getExecutedAt(),
-      feeRecipient: trade.getFeeRecipient(),
-      tradeExecutionType: trade.getTradeExecutionType() as TradeExecutionType,
-      executionSide: trade.getExecutionSide() as TradeExecutionSide,
-      tradeDirection: trade.getTradeDirection() as TradeDirection,
-      fee: trade.getFee(),
+      orderHash: trade.orderHash,
+      subaccountId: trade.subaccountId,
+      marketId: trade.marketId,
+      tradeId: trade.tradeId,
+      executedAt: parseInt(trade.executedAt, 10),
+      feeRecipient: trade.feeRecipient,
+      tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,
+      executionSide: trade.executionSide as TradeExecutionSide,
+      tradeDirection: trade.tradeDirection as TradeDirection,
+      fee: trade.fee,
       ...mappedPrice,
     }
   }

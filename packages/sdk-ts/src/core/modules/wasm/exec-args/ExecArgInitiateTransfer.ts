@@ -4,7 +4,7 @@ import {
   ExecDataRepresentation,
 } from '../ExecArgBase'
 import { ChainId } from '@injectivelabs/ts-types'
-import { binaryToBase64 } from './../../../../utils'
+import { binaryToBase64 } from './../../../../utils/utf8'
 
 export declare namespace ExecArgInitiateTransfer {
   export interface Params {

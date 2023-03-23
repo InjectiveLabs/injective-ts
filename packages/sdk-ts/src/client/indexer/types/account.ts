@@ -1,11 +1,4 @@
-import {
-  Reward as GrpcTradingReward,
-  AccountPortfolio as GrpcAccountPortfolio,
-  SubaccountDeposit as GrpcSubaccountDeposit,
-  SubaccountBalance as GrpcSubaccountBalance,
-  SubaccountPortfolio as GrpcSubaccountPortfolio,
-  SubaccountBalanceTransfer as GrpcSubaccountBalanceTransfer,
-} from '@injectivelabs/indexer-api/injective_accounts_rpc_pb'
+import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
 export enum TransferType {
@@ -61,11 +54,10 @@ export interface TradingReward {
   distributedAt: number
 }
 
-export {
-  GrpcTradingReward,
-  GrpcAccountPortfolio,
-  GrpcSubaccountDeposit,
-  GrpcSubaccountBalance,
-  GrpcSubaccountPortfolio,
-  GrpcSubaccountBalanceTransfer,
-}
+export type GrpcTradingReward = InjectiveAccountRpc.Reward
+export type GrpcAccountPortfolio = InjectiveAccountRpc.AccountPortfolio
+export type GrpcSubaccountDeposit = InjectiveAccountRpc.SubaccountDeposit
+export type GrpcSubaccountBalance = InjectiveAccountRpc.SubaccountBalance
+export type GrpcSubaccountPortfolio = InjectiveAccountRpc.SubaccountPortfolio
+export type GrpcSubaccountBalanceTransfer =
+  InjectiveAccountRpc.SubaccountBalanceTransfer

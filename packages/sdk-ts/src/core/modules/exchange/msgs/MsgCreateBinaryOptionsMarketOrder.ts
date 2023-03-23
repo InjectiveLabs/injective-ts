@@ -1,19 +1,17 @@
-import { MsgCreateBinaryOptionsMarketOrder as BaseMsgCreateBinaryOptionsMarketOrder } from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
-import {
-  DerivativeOrder,
-  OrderInfo,
-  OrderTypeMap,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateBinaryOptionsMarketOrder {
   export interface Params {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: OrderTypeMap[keyof OrderTypeMap]
+    orderType: InjectiveExchangeV1Beta1Exchange.OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
@@ -21,33 +19,36 @@ export declare namespace MsgCreateBinaryOptionsMarketOrder {
     quantity: string
   }
 
-  export type Proto = BaseMsgCreateBinaryOptionsMarketOrder
-
-  export type Object = BaseMsgCreateBinaryOptionsMarketOrder.AsObject
+  export type Proto =
+    InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsMarketOrder
 }
 
 const createMarketOrder = (
   params: MsgCreateBinaryOptionsMarketOrder.Params,
 ) => {
-  const orderInfo = new OrderInfo()
-  orderInfo.setSubaccountId(params.subaccountId)
-  orderInfo.setFeeRecipient(params.feeRecipient)
-  orderInfo.setPrice(params.price)
-  orderInfo.setQuantity(params.quantity)
+  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+  orderInfo.subaccountId = params.subaccountId
+  orderInfo.feeRecipient = params.feeRecipient
+  orderInfo.price = params.price
+  orderInfo.quantity = params.quantity
 
-  const derivativeOrder = new DerivativeOrder()
-  derivativeOrder.setMarketId(params.marketId)
-  derivativeOrder.setOrderType(params.orderType)
-  derivativeOrder.setOrderInfo(orderInfo)
-  derivativeOrder.setMargin(params.margin)
+  const derivativeOrder =
+    InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
+  derivativeOrder.marketId = params.marketId
+  derivativeOrder.orderType = params.orderType
+  derivativeOrder.orderInfo = orderInfo
+  derivativeOrder.margin = params.margin
 
-  derivativeOrder.setTriggerPrice(params.triggerPrice || '0')
+  derivativeOrder.triggerPrice = params.triggerPrice || '0'
 
-  const message = new BaseMsgCreateBinaryOptionsMarketOrder()
-  message.setSender(params.injectiveAddress)
-  message.setOrder(derivativeOrder)
+  const message =
+    InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsMarketOrder.create()
+  message.sender = params.injectiveAddress
+  message.order = derivativeOrder
 
-  return message
+  return InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsMarketOrder.fromPartial(
+    message,
+  )
 }
 
 /**
@@ -55,8 +56,7 @@ const createMarketOrder = (
  */
 export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
   MsgCreateBinaryOptionsMarketOrder.Params,
-  MsgCreateBinaryOptionsMarketOrder.Proto,
-  MsgCreateBinaryOptionsMarketOrder.Object
+  MsgCreateBinaryOptionsMarketOrder.Proto
 > {
   static fromJSON(
     params: MsgCreateBinaryOptionsMarketOrder.Params,
@@ -84,7 +84,7 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
@@ -92,13 +92,13 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     const { params } = this
     const proto = createMarketOrder(params)
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
       type: 'exchange/MsgCreateBinaryOptionsMarketOrder',
       value:
-        message as unknown as SnakeCaseKeys<MsgCreateBinaryOptionsMarketOrder.Object>,
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsMarketOrder>,
     }
   }
 
@@ -119,5 +119,11 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
       type: '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsMarketOrder.encode(
+      this.toProto(),
+    ).finish()
   }
 }

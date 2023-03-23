@@ -1,8 +1,10 @@
-import { MsgCreateInsuranceFund as BaseMsgCreateInsuranceFund } from '@injectivelabs/chain-api/injective/insurance/v1beta1/tx_pb'
-import { Coin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
-import { OracleTypeMap } from '@injectivelabs/chain-api/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveInsuranceV1Beta1Tx,
+  InjectiveOracleV1Beta1Oracle,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateInsuranceFund {
   export interface Params {
@@ -11,7 +13,7 @@ export declare namespace MsgCreateInsuranceFund {
       quoteDenom: string
       oracleBase: string
       oracleQuote: string
-      oracleType: OracleTypeMap[keyof OracleTypeMap]
+      oracleType: InjectiveOracleV1Beta1Oracle.OracleType
       expiry?: number
     }
     deposit: {
@@ -21,9 +23,7 @@ export declare namespace MsgCreateInsuranceFund {
     injectiveAddress: string
   }
 
-  export type Proto = BaseMsgCreateInsuranceFund
-
-  export type Object = BaseMsgCreateInsuranceFund.AsObject
+  export type Proto = InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund
 }
 
 /**
@@ -31,8 +31,7 @@ export declare namespace MsgCreateInsuranceFund {
  */
 export default class MsgCreateInsuranceFund extends MsgBase<
   MsgCreateInsuranceFund.Params,
-  MsgCreateInsuranceFund.Proto,
-  MsgCreateInsuranceFund.Object
+  MsgCreateInsuranceFund.Proto
 > {
   static fromJSON(
     params: MsgCreateInsuranceFund.Params,
@@ -43,21 +42,23 @@ export default class MsgCreateInsuranceFund extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = new Coin()
-    amountCoin.setAmount(params.deposit.amount)
-    amountCoin.setDenom(params.deposit.denom)
+    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
+    amountCoin.amount = params.deposit.amount
+    amountCoin.denom = params.deposit.denom
 
-    const message = new BaseMsgCreateInsuranceFund()
-    message.setTicker(params.fund.ticker)
-    message.setQuoteDenom(params.fund.quoteDenom)
-    message.setOracleBase(params.fund.oracleBase)
-    message.setOracleQuote(params.fund.oracleQuote)
-    message.setOracleType(params.fund.oracleType)
-    message.setSender(params.injectiveAddress)
-    message.setInitialDeposit(amountCoin)
-    message.setExpiry(params.fund.expiry ? params.fund.expiry : -1)
+    const message = InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.create()
+    message.ticker = params.fund.ticker
+    message.quoteDenom = params.fund.quoteDenom
+    message.oracleBase = params.fund.oracleBase
+    message.oracleQuote = params.fund.oracleQuote
+    message.oracleType = params.fund.oracleType
+    message.sender = params.injectiveAddress
+    message.initialDeposit = amountCoin
+    message.expiry = (params.fund.expiry ? params.fund.expiry : -1).toString()
 
-    return message
+    return InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -65,14 +66,14 @@ export default class MsgCreateInsuranceFund extends MsgBase<
 
     return {
       '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund',
-      ...proto.toObject(),
+      ...proto,
     }
   }
 
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto.toObject()),
+      ...snakecaseKeys(proto),
     }
 
     return {
@@ -98,5 +99,11 @@ export default class MsgCreateInsuranceFund extends MsgBase<
       type: '/injective.insurance.v1beta1.MsgCreateInsuranceFund',
       message: proto,
     }
+  }
+
+  public toBinary(): Uint8Array {
+    return InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.encode(
+      this.toProto(),
+    ).finish()
   }
 }

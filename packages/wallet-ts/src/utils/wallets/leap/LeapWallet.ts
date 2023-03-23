@@ -2,7 +2,6 @@
 import type { Keplr as Leap } from '@keplr-wallet/types'
 import type { OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
-import type { TxRaw } from '@injectivelabs/chain-api/cosmos/tx/v1beta1/tx_pb'
 import {
   ChainId,
   CosmosChainId,
@@ -10,13 +9,14 @@ import {
 } from '@injectivelabs/ts-types'
 import { TxRestApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
-  CosmosWalletException,
   ErrorType,
+  CosmosWalletException,
   TransactionException,
   UnspecifiedErrorCode,
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
   leap?: Leap
@@ -94,14 +94,14 @@ export class LeapWallet {
    * @param txRaw - raw transaction to broadcast
    * @returns tx hash
    */
-  async broadcastTx(txRaw: TxRaw): Promise<string> {
+  async broadcastTx(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<string> {
     const { chainId } = this
     const leap = await this.getLeapWallet()
 
     try {
       const result = await leap.sendTx(
         chainId,
-        txRaw.serializeBinary(),
+        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
         BroadcastMode.Sync,
       )
 
@@ -132,14 +132,14 @@ export class LeapWallet {
    * @param txRaw - raw transaction to broadcast
    * @returns tx hash
    */
-  async broadcastTxBlock(txRaw: TxRaw): Promise<string> {
+  async broadcastTxBlock(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<string> {
     const { chainId } = this
     const leap = await this.getLeapWallet()
 
     try {
       const result = await leap.sendTx(
         chainId,
-        txRaw.serializeBinary(),
+        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
         BroadcastMode.Block,
       )
 

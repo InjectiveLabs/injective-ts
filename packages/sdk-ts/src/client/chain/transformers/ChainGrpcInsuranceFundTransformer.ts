@@ -1,25 +1,21 @@
 import { InsuranceFund, InsuranceModuleParams } from '../types/insurance'
-import {
-  QueryInsuranceParamsResponse,
-  QueryInsuranceFundResponse,
-  QueryEstimatedRedemptionsResponse,
-  QueryInsuranceFundsResponse,
-  QueryPendingRedemptionsResponse,
-} from '@injectivelabs/chain-api/injective/insurance/v1beta1/query_pb'
 import { GrpcInsuranceFund } from '../types/insurance'
+import { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcInsuranceFundTransformer {
   static moduleParamsResponseToModuleParams(
-    response: QueryInsuranceParamsResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryInsuranceParamsResponse,
   ): InsuranceModuleParams {
-    const params = response.getParams()!
+    const params = response.params!
 
     return {
-      defaultRedemptionNoticePeriodDuration:
-        params.getDefaultRedemptionNoticePeriodDuration()?.getSeconds() || 0,
+      defaultRedemptionNoticePeriodDuration: parseInt(
+        params.defaultRedemptionNoticePeriodDuration?.seconds || '0',
+        10,
+      ),
     }
   }
 
@@ -27,60 +23,57 @@ export class ChainGrpcInsuranceFundTransformer {
     grpcFund: GrpcInsuranceFund,
   ): InsuranceFund {
     return {
-      depositDenom: grpcFund.getDepositDenom(),
-      insurancePoolTokenDenom: grpcFund.getInsurancePoolTokenDenom(),
-      redemptionNoticePeriodDuration: grpcFund
-        .getRedemptionNoticePeriodDuration()
-        ?.getSeconds(),
-      balance: grpcFund.getBalance(),
-      totalShare: grpcFund.getTotalShare(),
-      marketId: grpcFund.getMarketId(),
-      marketTicker: grpcFund.getMarketTicker(),
-      oracleBase: grpcFund.getOracleBase(),
-      oracleQuote: grpcFund.getOracleQuote(),
-      oracleType: grpcFund.getOracleType(),
-      expiry: grpcFund.getExpiry(),
+      depositDenom: grpcFund.depositDenom,
+      insurancePoolTokenDenom: grpcFund.insurancePoolTokenDenom,
+      redemptionNoticePeriodDuration: parseInt(
+        grpcFund.redemptionNoticePeriodDuration?.seconds || '0',
+        10,
+      ),
+      balance: grpcFund.balance,
+      totalShare: grpcFund.totalShare,
+      marketId: grpcFund.marketId,
+      marketTicker: grpcFund.marketTicker,
+      oracleBase: grpcFund.oracleBase,
+      oracleQuote: grpcFund.oracleQuote,
+      oracleType: grpcFund.oracleType,
+      expiry: parseInt(grpcFund.expiry, 10),
     }
   }
 
   static insuranceFundResponseToInsuranceFund(
-    response: QueryInsuranceFundResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryInsuranceFundResponse,
   ) {
     return ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(
-      response.getFund()!,
+      response.fund!,
     )
   }
 
   static insuranceFundsResponseToInsuranceFunds(
-    response: QueryInsuranceFundsResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryInsuranceFundsResponse,
   ) {
-    return response
-      .getFundsList()
-      .map((fund) =>
-        ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(
-          fund,
-        ),
-      )
+    return response.funds.map((fund) =>
+      ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(fund),
+    )
   }
 
   static redemptionsResponseToRedemptions(
-    response: QueryEstimatedRedemptionsResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryEstimatedRedemptionsResponse,
   ) {
-    return response.getAmountList().map((amount) => {
+    return response.amount.map((amount) => {
       return {
-        amount: amount.getAmount(),
-        denom: amount.getDenom(),
+        amount: amount.amount,
+        denom: amount.denom,
       }
     })
   }
 
   static estimatedRedemptionsResponseToEstimatedRedemptions(
-    response: QueryPendingRedemptionsResponse,
+    response: InjectiveInsuranceV1Beta1Query.QueryPendingRedemptionsResponse,
   ) {
-    return response.getAmountList().map((amount) => {
+    return response.amount.map((amount) => {
       return {
-        amount: amount.getAmount(),
-        denom: amount.getDenom(),
+        amount: amount.amount,
+        denom: amount.denom,
       }
     })
   }

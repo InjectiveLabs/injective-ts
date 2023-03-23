@@ -1,8 +1,4 @@
-import {
-  StreamBidsResponse,
-  Bid as GrpcIndexerBid,
-  Auction as GrpcAuction,
-} from '@injectivelabs/indexer-api/injective_auction_rpc_pb'
+import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
 export interface IndexerBid {
@@ -20,4 +16,6 @@ export interface Auction {
   updatedAt: number
 }
 
-export { GrpcAuction, GrpcIndexerBid, StreamBidsResponse }
+export type GrpcIndexerBid = InjectiveAuctionRpc.Bid
+export type GrpcAuction = InjectiveAuctionRpc.Auction
+export type StreamBidsResponse = InjectiveAuctionRpc.StreamBidsResponse

@@ -1,50 +1,42 @@
-import { Query as ExchangeQuery } from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb_service'
-import {
-  QueryExchangeParamsRequest,
-  QueryFeeDiscountScheduleRequest,
-  QueryTradeRewardCampaignRequest,
-  QuerySubaccountTradeNonceRequest,
-  QuerySubaccountTradeNonceResponse,
-  QueryFeeDiscountAccountInfoRequest,
-  QueryTradeRewardPointsRequest,
-  QueryModuleStateRequest,
-  QueryModuleStateResponse,
-  QueryPositionsRequest,
-  QueryPositionsResponse,
-  QueryTradeRewardPointsResponse,
-  QueryFeeDiscountAccountInfoResponse,
-  QueryTradeRewardCampaignResponse,
-  QueryFeeDiscountScheduleResponse,
-  QueryExchangeParamsResponse,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/query_pb'
-import BaseConsumer from '../../BaseGrpcConsumer'
 import { ChainGrpcExchangeTransformer } from '../transformers'
 import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
+import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
+
+InjectiveExchangeV1Beta1Query
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcExchangeApi extends BaseConsumer {
+export class ChainGrpcExchangeApi {
   protected module: string = ChainModule.Exchange
 
+  protected client: InjectiveExchangeV1Beta1Query.QueryClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new InjectiveExchangeV1Beta1Query.QueryClientImpl(
+      getGrpcWebImpl(endpoint),
+    )
+  }
+
   async fetchModuleParams() {
-    const request = new QueryExchangeParamsRequest()
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryExchangeParamsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryExchangeParamsRequest,
-        QueryExchangeParamsResponse,
-        typeof ExchangeQuery.QueryExchangeParams
-      >(request, ExchangeQuery.QueryExchangeParams)
+      const response = await this.client.QueryExchangeParams(request)
 
       return ChainGrpcExchangeTransformer.moduleParamsResponseToParams(response)
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -55,19 +47,19 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
   }
 
   async fetchModuleState() {
-    const request = new QueryModuleStateRequest()
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryModuleStateRequest.create()
 
     try {
-      const response = await this.request<
-        QueryModuleStateRequest,
-        QueryModuleStateResponse,
-        typeof ExchangeQuery.ExchangeModuleState
-      >(request, ExchangeQuery.ExchangeModuleState)
+      const response = await this.client.ExchangeModuleState(request)
 
-      return response.getState()!.toObject() /* TODO */
+      return response.state!
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -78,21 +70,21 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
   }
 
   async fetchFeeDiscountSchedule() {
-    const request = new QueryFeeDiscountScheduleRequest()
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryFeeDiscountScheduleRequest.create()
 
     try {
-      const response = await this.request<
-        QueryFeeDiscountScheduleRequest,
-        QueryFeeDiscountScheduleResponse,
-        typeof ExchangeQuery.FeeDiscountSchedule
-      >(request, ExchangeQuery.FeeDiscountSchedule)
+      const response = await this.client.FeeDiscountSchedule(request)
 
       return ChainGrpcExchangeTransformer.feeDiscountScheduleResponseToFeeDiscountSchedule(
         response,
       )
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -103,22 +95,23 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
   }
 
   async fetchFeeDiscountAccountInfo(injectiveAddress: string) {
-    const request = new QueryFeeDiscountAccountInfoRequest()
-    request.setAccount(injectiveAddress)
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoRequest.create()
+
+    request.account = injectiveAddress
 
     try {
-      const response = await this.request<
-        QueryFeeDiscountAccountInfoRequest,
-        QueryFeeDiscountAccountInfoResponse,
-        typeof ExchangeQuery.FeeDiscountAccountInfo
-      >(request, ExchangeQuery.FeeDiscountAccountInfo)
+      const response = await this.client.FeeDiscountAccountInfo(request)
 
       return ChainGrpcExchangeTransformer.feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
         response,
       )
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -129,21 +122,21 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
   }
 
   async fetchTradingRewardsCampaign() {
-    const request = new QueryTradeRewardCampaignRequest()
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignRequest.create()
 
     try {
-      const response = await this.request<
-        QueryTradeRewardCampaignRequest,
-        QueryTradeRewardCampaignResponse,
-        typeof ExchangeQuery.TradeRewardCampaign
-      >(request, ExchangeQuery.TradeRewardCampaign)
+      const response = await this.client.TradeRewardCampaign(request)
 
       return ChainGrpcExchangeTransformer.tradingRewardsCampaignResponseToTradingRewardsCampaign(
         response,
       )
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -154,20 +147,21 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
   }
 
   async fetchTradeRewardPoints(injectiveAddresses: string[]) {
-    const request = new QueryTradeRewardPointsRequest()
-    request.setAccountsList(injectiveAddresses)
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryTradeRewardPointsRequest.create()
+
+    request.accounts = injectiveAddresses
 
     try {
-      const response = await this.request<
-        QueryTradeRewardPointsRequest,
-        QueryTradeRewardPointsResponse,
-        typeof ExchangeQuery.TradeRewardPoints
-      >(request, ExchangeQuery.TradeRewardPoints)
+      const response = await this.client.TradeRewardPoints(request)
 
-      return response.getAccountTradeRewardPointsList()
+      return response.accountTradeRewardPoints
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -181,25 +175,25 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
     injectiveAddresses: string[],
     timestamp?: number,
   ) {
-    const request = new QueryTradeRewardPointsRequest()
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryTradeRewardPointsRequest.create()
 
-    request.setAccountsList(injectiveAddresses)
+    request.accounts = injectiveAddresses
 
     if (timestamp) {
-      request.setPendingPoolTimestamp(timestamp)
+      request.pendingPoolTimestamp = timestamp.toString()
     }
 
     try {
-      const response = await this.request<
-        QueryTradeRewardPointsRequest,
-        QueryTradeRewardPointsResponse,
-        typeof ExchangeQuery.PendingTradeRewardPoints
-      >(request, ExchangeQuery.PendingTradeRewardPoints)
+      const response = await this.client.PendingTradeRewardPoints(request)
 
-      return response.getAccountTradeRewardPointsList()
+      return response.accountTradeRewardPoints
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -210,19 +204,18 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
   }
 
   async fetchPositions() {
-    const request = new QueryPositionsRequest()
+    const request = InjectiveExchangeV1Beta1Query.QueryPositionsRequest.create()
 
     try {
-      const response = await this.request<
-        QueryPositionsRequest,
-        QueryPositionsResponse,
-        typeof ExchangeQuery.Positions
-      >(request, ExchangeQuery.Positions)
+      const response = await this.client.Positions(request)
 
       return ChainGrpcExchangeTransformer.positionsResponseToPositions(response)
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
@@ -233,21 +226,21 @@ export class ChainGrpcExchangeApi extends BaseConsumer {
   }
 
   async fetchSubaccountTradeNonce(subaccountId: string) {
-    const request = new QuerySubaccountTradeNonceRequest()
+    const request =
+      InjectiveExchangeV1Beta1Query.QuerySubaccountTradeNonceRequest.create()
 
-    request.setSubaccountId(subaccountId)
+    request.subaccountId = subaccountId
 
     try {
-      const response = await this.request<
-        QuerySubaccountTradeNonceRequest,
-        QuerySubaccountTradeNonceResponse,
-        typeof ExchangeQuery.SubaccountTradeNonce
-      >(request, ExchangeQuery.SubaccountTradeNonce)
+      const response = await this.client.SubaccountTradeNonce(request)
 
-      return response.toObject()
+      return response
     } catch (e: any) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {

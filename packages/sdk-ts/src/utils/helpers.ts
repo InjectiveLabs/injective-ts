@@ -1,4 +1,4 @@
-import { Coin as GrpcCoin } from '@injectivelabs/chain-api/cosmos/base/v1beta1/coin_pb'
+import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
 export const isServerSide = () => typeof window === 'undefined'
@@ -67,9 +67,9 @@ export const protoObjectToJson = (
   return objectToJson(object, { replacer, indentation })
 }
 
-export const grpcCoinToUiCoin = (coin: GrpcCoin): Coin => ({
-  amount: coin.getAmount(),
-  denom: coin.getDenom(),
+export const grpcCoinToUiCoin = (coin: CosmosBaseV1Beta1Coin.Coin): Coin => ({
+  amount: coin.amount,
+  denom: coin.denom,
 })
 
 export const uint8ArrayToString = (

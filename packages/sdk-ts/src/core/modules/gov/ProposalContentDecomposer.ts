@@ -1,96 +1,103 @@
 import {
-  GrantBandOraclePrivilegeProposal,
-  RevokeBandOraclePrivilegeProposal,
-  GrantPriceFeederPrivilegeProposal,
-  RevokePriceFeederPrivilegeProposal,
-  AuthorizeBandOracleRequestProposal,
-  EnableBandIBCProposal,
-} from '@injectivelabs/chain-api/injective/oracle/v1beta1/proposal_pb'
-import { TextProposal } from '@injectivelabs/chain-api/cosmos/gov/v1beta1/gov_pb'
-import { SoftwareUpgradeProposal } from '@injectivelabs/chain-api/cosmos/upgrade/v1beta1/upgrade_pb'
-import { ParameterChangeProposal } from '@injectivelabs/chain-api/cosmos/params/v1beta1/params_pb'
-import {
-  DerivativeMarketParamUpdateProposal,
-  ExchangeEnableProposal,
-  ExpiryFuturesMarketLaunchProposal,
-  FeeDiscountProposal,
-  PerpetualMarketLaunchProposal,
-  SpotMarketLaunchProposal,
-  SpotMarketParamUpdateProposal,
-  TradingRewardCampaignLaunchProposal,
-  TradingRewardCampaignUpdateProposal,
-} from '@injectivelabs/chain-api/injective/exchange/v1beta1/tx_pb'
+  CosmosGovV1Beta1Gov,
+  CosmosParamsV1Beta1Params,
+  CosmosUpgradeV1Beta1Upgrade,
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveOracleV1Beta1Proposal,
+} from '@injectivelabs/core-proto-ts'
 
 export class ProposalDecomposer {
   static grantBandOraclePrivilegeProposal(content: Uint8Array) {
-    return GrantBandOraclePrivilegeProposal.deserializeBinary(content)
+    return InjectiveOracleV1Beta1Proposal.GrantBandOraclePrivilegeProposal.decode(
+      content,
+    )
   }
 
   static removeBandOraclePrivilegeProposal(content: Uint8Array) {
-    return RevokeBandOraclePrivilegeProposal.deserializeBinary(content)
+    return InjectiveOracleV1Beta1Proposal.RevokeBandOraclePrivilegeProposal.decode(
+      content,
+    )
   }
 
   static grantPriceFeederPrivilegeProposal(content: Uint8Array) {
-    return GrantPriceFeederPrivilegeProposal.deserializeBinary(content)
+    return InjectiveOracleV1Beta1Proposal.GrantPriceFeederPrivilegeProposal.decode(
+      content,
+    )
   }
 
   static removePriceFeederPrivilegeProposal(content: Uint8Array) {
-    return RevokePriceFeederPrivilegeProposal.deserializeBinary(content)
+    return InjectiveOracleV1Beta1Proposal.RevokePriceFeederPrivilegeProposal.decode(
+      content,
+    )
   }
 
   static textProposal(content: Uint8Array) {
-    return TextProposal.deserializeBinary(content)
+    return CosmosGovV1Beta1Gov.TextProposal.decode(content)
   }
 
   static SoftwareUpgrade(content: Uint8Array) {
-    return SoftwareUpgradeProposal.deserializeBinary(content)
+    return CosmosUpgradeV1Beta1Upgrade.SoftwareUpgradeProposal.decode(content)
   }
 
   static spotMarketLaunch(content: Uint8Array) {
-    return SpotMarketLaunchProposal.deserializeBinary(content)
+    return InjectiveExchangeV1Beta1Tx.SpotMarketLaunchProposal.decode(content)
   }
 
   static exchangeEnableProposal(content: Uint8Array) {
-    return ExchangeEnableProposal.deserializeBinary(content)
+    return InjectiveExchangeV1Beta1Tx.ExchangeEnableProposal.decode(content)
   }
 
   static spotMarketUpdate(content: Uint8Array) {
-    return SpotMarketParamUpdateProposal.deserializeBinary(content)
+    return InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.decode(
+      content,
+    )
   }
 
   static perpetualMarketLaunch(content: Uint8Array) {
-    return PerpetualMarketLaunchProposal.deserializeBinary(content)
+    return InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.decode(
+      content,
+    )
   }
 
   static expiryFuturesMarketLaunch(content: Uint8Array) {
-    return ExpiryFuturesMarketLaunchProposal.deserializeBinary(content)
+    return InjectiveExchangeV1Beta1Tx.ExpiryFuturesMarketLaunchProposal.decode(
+      content,
+    )
   }
 
   static derivativeMarketUpdate(content: Uint8Array) {
-    return DerivativeMarketParamUpdateProposal.deserializeBinary(content)
+    return InjectiveExchangeV1Beta1Tx.DerivativeMarketParamUpdateProposal.decode(
+      content,
+    )
   }
 
   static FeeDiscount(content: Uint8Array) {
-    return FeeDiscountProposal.deserializeBinary(content)
+    return InjectiveExchangeV1Beta1Tx.FeeDiscountProposal.decode(content)
   }
 
   static TradingRewardCampaignLaunch(content: Uint8Array) {
-    return TradingRewardCampaignLaunchProposal.deserializeBinary(content)
+    return InjectiveExchangeV1Beta1Tx.TradingRewardCampaignLaunchProposal.decode(
+      content,
+    )
   }
 
   static TradingRewardCampaignUpdate(content: Uint8Array) {
-    return TradingRewardCampaignUpdateProposal.deserializeBinary(content)
+    return InjectiveExchangeV1Beta1Tx.TradingRewardCampaignUpdateProposal.decode(
+      content,
+    )
   }
 
   static parametersChange(content: Uint8Array) {
-    return ParameterChangeProposal.deserializeBinary(content)
+    return CosmosParamsV1Beta1Params.ParameterChangeProposal.decode(content)
   }
 
   static EnableBandIBC(content: Uint8Array) {
-    return EnableBandIBCProposal.deserializeBinary(content)
+    return InjectiveOracleV1Beta1Proposal.EnableBandIBCProposal.decode(content)
   }
 
   static AuthorizeBandOracleRequest(content: Uint8Array) {
-    return AuthorizeBandOracleRequestProposal.deserializeBinary(content)
+    return InjectiveOracleV1Beta1Proposal.AuthorizeBandOracleRequestProposal.decode(
+      content,
+    )
   }
 }

@@ -1,4 +1,3 @@
-import { AccountPortfolioResponse } from '@injectivelabs/indexer-api/injective_portfolio_rpc_pb'
 import { Coin } from '@injectivelabs/ts-types'
 import { GrpcCoin } from '../../../types/index'
 import {
@@ -11,14 +10,18 @@ import {
   GrpcSubaccountDepositV2,
   PortfolioSubaccountBalanceV2,
   GrpcPortfolioSubaccountBalanceV2,
-} from '../types/accountPortfolio'
+} from '../types/account-portfolio'
+import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 
 export class IndexerGrpcAccountPortfolioTransformer {
   static accountPortfolioResponseToAccountPortfolio(
-    response: AccountPortfolioResponse,
-    address?: string,
+    response: InjectivePortfolioRpc.AccountPortfolioResponse,
+    address: string,
   ): AccountPortfolioV2 {
-    const portfolio = response.getPortfolio()
+    const portfolio = response.portfolio!
+    const bankBalancesList = portfolio?.bankBalances || []
+    const subaccountList = portfolio?.subaccounts || []
+    const positionsWithUpnlList = portfolio?.positionsWithUpnl || []
 
     if (!portfolio) {
       return {
@@ -29,12 +32,8 @@ export class IndexerGrpcAccountPortfolioTransformer {
       }
     }
 
-    const bankBalancesList = portfolio?.getBankBalancesList() || []
-    const subaccountList = portfolio?.getSubaccountsList() || []
-    const positionsWithUpnlList = portfolio?.getPositionsWithUpnlList() || []
-
     return {
-      accountAddress: portfolio.getAccountAddress(),
+      accountAddress: portfolio.accountAddress,
       bankBalancesList: bankBalancesList.map(
         IndexerGrpcAccountPortfolioTransformer.grpcCoinToCoin,
       ),
@@ -49,15 +48,15 @@ export class IndexerGrpcAccountPortfolioTransformer {
 
   static grpcCoinToCoin(coin: GrpcCoin): Coin {
     return {
-      amount: coin.getAmount(),
-      denom: coin.getDenom(),
+      amount: coin.amount,
+      denom: coin.denom,
     }
   }
 
   static grpcPositionWithUPNLToPositionWithUPNL(
     positionsWithUPNL: GrpcPositionsWithUPNL,
   ): PositionsWithUPNL {
-    const grpcPosition = positionsWithUPNL.getPosition()
+    const grpcPosition = positionsWithUPNL.position
 
     return {
       position: grpcPosition
@@ -65,24 +64,24 @@ export class IndexerGrpcAccountPortfolioTransformer {
             grpcPosition,
           )
         : undefined,
-      unrealizedPnl: positionsWithUPNL.getUnrealizedPnl(),
+      unrealizedPnl: positionsWithUPNL.unrealizedPnl,
     }
   }
 
   static grpcPositionToGrpcPosition(position: GrpcPositionV2): PositionV2 {
     return {
-      ticker: position.getTicker(),
-      marketId: position.getMarketId(),
-      subaccountId: position.getSubaccountId(),
-      direction: position.getDirection(),
-      quantity: position.getQuantity(),
-      entryPrice: position.getEntryPrice(),
-      margin: position.getMargin(),
-      liquidationPrice: position.getLiquidationPrice(),
-      markPrice: position.getMarkPrice(),
-      aggregateReduceOnlyQuantity: position.getAggregateReduceOnlyQuantity(),
-      updatedAt: position.getUpdatedAt(),
-      createdAt: position.getCreatedAt(),
+      ticker: position.ticker,
+      marketId: position.marketId,
+      subaccountId: position.subaccountId,
+      direction: position.direction,
+      quantity: position.quantity,
+      entryPrice: position.entryPrice,
+      margin: position.margin,
+      liquidationPrice: position.liquidationPrice,
+      markPrice: position.markPrice,
+      aggregateReduceOnlyQuantity: position.aggregateReduceOnlyQuantity,
+      updatedAt: parseInt(position.updatedAt, 10),
+      createdAt: parseInt(position.createdAt, 10),
     }
   }
 
@@ -90,19 +89,19 @@ export class IndexerGrpcAccountPortfolioTransformer {
     subaccountDeposit: GrpcSubaccountDepositV2,
   ): SubaccountDepositV2 {
     return {
-      totalBalance: subaccountDeposit.getTotalBalance(),
-      availableBalance: subaccountDeposit.getAvailableBalance(),
+      totalBalance: subaccountDeposit.totalBalance,
+      availableBalance: subaccountDeposit.availableBalance,
     }
   }
 
   static grpcSubaccountBalanceToSubaccountBalance(
     subaccountBalance: GrpcPortfolioSubaccountBalanceV2,
   ): PortfolioSubaccountBalanceV2 {
-    const deposit = subaccountBalance.getDeposit()
+    const deposit = subaccountBalance.deposit
 
     return {
-      subaccountId: subaccountBalance.getSubaccountId(),
-      denom: subaccountBalance.getDenom(),
+      subaccountId: subaccountBalance.subaccountId,
+      denom: subaccountBalance.denom,
       deposit: deposit
         ? IndexerGrpcAccountPortfolioTransformer.grpcSubaccountDepositToSubaccountDeposit(
             deposit,

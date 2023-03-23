@@ -1,4 +1,3 @@
-import { MsgBeginRedelegate as BaseMsgBeginRedelegate } from '@injectivelabs/chain-api/cosmos/staking/v1beta1/tx_pb'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgBeginRedelegate from './MsgBeginRedelegate'
 import { mockFactory } from '@injectivelabs/test-utils'
@@ -29,8 +28,7 @@ describe('MsgBeginRedelegate', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto instanceof BaseMsgBeginRedelegate).toBe(true)
-    expect(proto.toObject()).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {
