@@ -43,7 +43,7 @@ const protoParamsAmino = snakecaseKeys({
 })
 const message = MsgGrant.fromJSON(params)
 
-describe.skip('MsgCreateInsuranceFund', () => {
+describe.skip('MsgGrant', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 

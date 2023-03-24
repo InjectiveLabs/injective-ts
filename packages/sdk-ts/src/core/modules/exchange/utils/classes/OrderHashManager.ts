@@ -289,9 +289,6 @@ export class OrderHashManager {
     await this.initSubaccountNonce()
 
     return orders.map((order) => {
-      console.log(
-        JSON.stringify(getEip712ForDerivativeOrder(order, this.nonce)),
-      )
       return this.incrementNonceAndReturn(
         this.hashTypedData(getEip712ForDerivativeOrder(order, this.nonce)),
       )
@@ -319,8 +316,8 @@ export class OrderHashManager {
   async getSpotOrderHashFromMsg(msg: MsgCreateSpotLimitOrder): Promise<string> {
     await this.initSubaccountNonce()
 
-    const proto = msg.toProto()
-    const order = proto.order
+    const proto = msg.toAmino()
+    const order = proto.value.order
 
     if (!order) {
       throw new GeneralException(
@@ -328,7 +325,7 @@ export class OrderHashManager {
       )
     }
 
-    const orderInfo = order.orderInfo
+    const orderInfo = order.order_info
 
     if (!orderInfo) {
       throw new GeneralException(
@@ -340,15 +337,15 @@ export class OrderHashManager {
       this.hashTypedData(
         getEip712ForSpotOrder(
           {
-            marketId: order.marketId,
+            marketId: order.market_id,
             orderInfo: {
-              subaccountId: orderInfo.subaccountId,
-              feeRecipient: orderInfo.feeRecipient,
+              subaccountId: orderInfo.subaccount_id,
+              feeRecipient: orderInfo.fee_recipient,
               price: orderInfo.price,
               quantity: orderInfo.quantity,
             },
-            orderType: order.orderType,
-            triggerPrice: order.triggerPrice,
+            orderType: order.order_type,
+            triggerPrice: order.trigger_price,
           },
           this.nonce,
         ),
@@ -361,8 +358,8 @@ export class OrderHashManager {
   ): Promise<string> {
     await this.initSubaccountNonce()
 
-    const proto = msg.toProto()
-    const order = proto.order
+    const proto = msg.toAmino()
+    const order = proto.value.order
 
     if (!order) {
       throw new GeneralException(
@@ -370,7 +367,7 @@ export class OrderHashManager {
       )
     }
 
-    const orderInfo = order.orderInfo
+    const orderInfo = order.order_info
 
     if (!orderInfo) {
       throw new GeneralException(
@@ -382,16 +379,16 @@ export class OrderHashManager {
       this.hashTypedData(
         getEip712ForDerivativeOrder(
           {
-            marketId: order.marketId,
+            marketId: order.market_id,
             orderInfo: {
-              subaccountId: orderInfo.subaccountId,
-              feeRecipient: orderInfo.feeRecipient,
+              subaccountId: orderInfo.subaccount_id,
+              feeRecipient: orderInfo.fee_recipient,
               price: orderInfo.price,
               quantity: orderInfo.quantity,
             },
             margin: order.margin,
-            orderType: order.orderType,
-            triggerPrice: order.triggerPrice,
+            orderType: order.order_type,
+            triggerPrice: order.trigger_price,
           },
           this.nonce,
         ),
