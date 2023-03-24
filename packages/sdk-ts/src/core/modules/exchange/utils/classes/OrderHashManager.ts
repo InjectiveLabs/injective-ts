@@ -4,7 +4,7 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import { Address } from '../../../../accounts/Address'
 import { ChainGrpcExchangeApi } from '../../../../../client/chain/grpc/ChainGrpcExchangeApi'
 import { domainHash, messageHash } from '../../../../../utils/crypto'
-import { cosmosSdkDecToBigNumber } from '../../../../../utils/numbers'
+import { numberToCosmosSdkDecString } from '../../../../../utils/numbers'
 import keccak256 from 'keccak256'
 import MsgCreateSpotLimitOrder from '../../msgs/MsgCreateSpotLimitOrder'
 import MsgCreateDerivativeLimitOrder from '../../msgs/MsgCreateDerivativeLimitOrder'
@@ -170,15 +170,13 @@ const getEip712ForSpotOrder = (spotOrder: SpotOrder, nonce: number) => {
       OrderInfo: {
         SubaccountId: spotOrder.orderInfo.subaccountId,
         FeeRecipient: spotOrder.orderInfo.feeRecipient,
-        Price: cosmosSdkDecToBigNumber(spotOrder.orderInfo.price).toFixed(),
-        Quantity: cosmosSdkDecToBigNumber(
-          spotOrder.orderInfo.quantity,
-        ).toFixed(),
+        Price: numberToCosmosSdkDecString(spotOrder.orderInfo.price),
+        Quantity: numberToCosmosSdkDecString(spotOrder.orderInfo.quantity),
       },
       Salt: nonce.toString(),
       OrderType: orderTypeToChainOrderType(spotOrder.orderType),
       TriggerPrice: spotOrder.triggerPrice
-        ? cosmosSdkDecToBigNumber(spotOrder.triggerPrice).toFixed()
+        ? numberToCosmosSdkDecString(spotOrder.triggerPrice)
         : '0.000000000000000000',
     },
   }
@@ -188,6 +186,7 @@ const getEip712ForDerivativeOrder = (
   derivativeOrder: DerivativeOrder,
   nonce: number,
 ) => {
+  console.log(derivativeOrder)
   return {
     primaryType: derivativeOrderPrimaryType,
     types: EIP712Types,
@@ -197,17 +196,15 @@ const getEip712ForDerivativeOrder = (
       OrderInfo: {
         SubaccountId: derivativeOrder.orderInfo.subaccountId,
         FeeRecipient: derivativeOrder.orderInfo.feeRecipient,
-        Price: cosmosSdkDecToBigNumber(
-          derivativeOrder.orderInfo.price,
-        ).toFixed(),
-        Quantity: cosmosSdkDecToBigNumber(
+        Price: numberToCosmosSdkDecString(derivativeOrder.orderInfo.price),
+        Quantity: numberToCosmosSdkDecString(
           derivativeOrder.orderInfo.quantity,
-        ).toFixed(),
+        ),
       },
-      Margin: cosmosSdkDecToBigNumber(derivativeOrder.margin).toFixed(),
+      Margin: numberToCosmosSdkDecString(derivativeOrder.margin),
       OrderType: orderTypeToChainOrderType(derivativeOrder.orderType),
       TriggerPrice: derivativeOrder.triggerPrice
-        ? cosmosSdkDecToBigNumber(derivativeOrder.triggerPrice).toFixed()
+        ? numberToCosmosSdkDecString(derivativeOrder.triggerPrice)
         : '0.000000000000000000',
       Salt: nonce.toString(),
     },
@@ -293,6 +290,9 @@ export class OrderHashManager {
     await this.initSubaccountNonce()
 
     return orders.map((order) => {
+      console.log(
+        JSON.stringify(getEip712ForDerivativeOrder(order, this.nonce)),
+      )
       return this.incrementNonceAndReturn(
         this.hashTypedData(getEip712ForDerivativeOrder(order, this.nonce)),
       )

@@ -2,6 +2,14 @@ import { Network } from '@injectivelabs/networks'
 import { Address } from '../../../../accounts/Address'
 import { OrderHashManager } from './OrderHashManager'
 import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
+import {
+  derivativeMarginToChainMargin,
+  derivativePriceToChainPrice,
+  spotPriceToChainPrice,
+  spotQuantityToChainQuantity,
+  derivativeQuantityToChainQuantity,
+} from '@injectivelabs/sdk-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
 
 const address = Address.fromBech32('inj1hkhdaj2a2clmq5jq6mspsggqs32vynpk228q3r')
 const orderHashManager = new OrderHashManager({
@@ -15,8 +23,15 @@ const spotOrder = {
   orderInfo: {
     subaccountId:
       '0x2968698c6b9ed6d44b667a0b1f312a3b5d94ded7000000000000000000000000',
-    price: '1.524',
-    quantity: '0.01',
+    price: spotPriceToChainPrice({
+      value: '1.524',
+      baseDecimals: 18,
+      quoteDecimals: 6,
+    }).toFixed(),
+    quantity: spotQuantityToChainQuantity({
+      value: '0.01',
+      baseDecimals: 18,
+    }).toFixed(),
     feeRecipient: address.bech32Address,
   },
   marketId:
@@ -27,17 +42,23 @@ const spotOrder = {
 const derivativeOrder = {
   orderInfo: {
     subaccountId: subaccountId,
-    price: '10500',
-    quantity: '0.01',
+    price: derivativePriceToChainPrice({
+      value: '27000',
+      quoteDecimals: 6,
+    }).toFixed(),
+    quantity: derivativeQuantityToChainQuantity({ value: '0.0001' }).toFixed(),
     feeRecipient: address.bech32Address,
   },
-  margin: '105',
+  margin: derivativeMarginToChainMargin({
+    value: new BigNumberInBase(27000).times(0.0001).div(1),
+    quoteDecimals: 6,
+  }).toFixed(),
   marketId:
     '0x6afc76766d011522634481b5987c405ce34357c504537eb5feabb3d32d34d15b',
   orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
 }
 
-describe.skip('OrderHashManager', () => {
+describe('OrderHashManager', () => {
   it('generates proper hash', async () => {
     orderHashManager.setNonce(78)
 
@@ -48,10 +69,10 @@ describe.skip('OrderHashManager', () => {
       await orderHashManager.getDerivativeOrderHashes([derivativeOrder])
 
     expect(spotOrderHashes).toStrictEqual([
-      '0xd9bf0dcb2b135aa27c46b52031029676894e41993cc076508ca826a38e887db4',
+      '0x04941ef76e09c8b84affb6c1887eafe8f3a44258ccb575eddc3d28f5213cb874',
     ])
     expect(derivativeOrderHashes).toStrictEqual([
-      '0xb4f264cbf4df1aa27a1686d812f771d6d3b2ffdc3504eca8f7b16e99d8e7fb1a',
+      '0x2451ae7e630322f00c365f2b354fa597d479d804da1fafd82ecbc54cd7964781',
     ])
   })
 })
