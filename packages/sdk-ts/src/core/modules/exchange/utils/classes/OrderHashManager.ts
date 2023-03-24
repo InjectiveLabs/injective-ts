@@ -186,7 +186,6 @@ const getEip712ForDerivativeOrder = (
   derivativeOrder: DerivativeOrder,
   nonce: number,
 ) => {
-  console.log(derivativeOrder)
   return {
     primaryType: derivativeOrderPrimaryType,
     types: EIP712Types,

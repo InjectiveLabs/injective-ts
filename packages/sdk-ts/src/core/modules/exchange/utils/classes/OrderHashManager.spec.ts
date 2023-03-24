@@ -10,6 +10,8 @@ import {
   derivativeQuantityToChainQuantity,
 } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
+import MsgCreateDerivativeLimitOrder from '../../../exchange/msgs/MsgCreateDerivativeLimitOrder'
+import MsgCreateSpotLimitOrder from '../../../exchange/msgs/MsgCreateSpotLimitOrder'
 
 const address = Address.fromBech32('inj1hkhdaj2a2clmq5jq6mspsggqs32vynpk228q3r')
 const orderHashManager = new OrderHashManager({
@@ -58,6 +60,43 @@ const derivativeOrder = {
   orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
 }
 
+const derivativeMsg = MsgCreateDerivativeLimitOrder.fromJSON({
+  subaccountId: subaccountId,
+  injectiveAddress: address.bech32Address,
+  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
+  price: derivativePriceToChainPrice({
+    value: '27000',
+    quoteDecimals: 6,
+  }).toFixed(),
+  triggerPrice: '0',
+  quantity: derivativeQuantityToChainQuantity({ value: 0.0001 }).toFixed(),
+  margin: derivativeMarginToChainMargin({
+    value: new BigNumberInBase(27000).times(0.0001).div(1),
+    quoteDecimals: 6,
+  }).toFixed(),
+  marketId:
+    '0x6afc76766d011522634481b5987c405ce34357c504537eb5feabb3d32d34d15b',
+  feeRecipient: address.bech32Address,
+})
+
+const spotMsg = MsgCreateSpotLimitOrder.fromJSON({
+  subaccountId: subaccountId,
+  injectiveAddress: address.bech32Address,
+  marketId:
+    '0x6afc76766d011522634481b5987c405ce34357c504537eb5feabb3d32d34d15b',
+  feeRecipient: address.bech32Address,
+  price: spotPriceToChainPrice({
+    value: '1.524',
+    baseDecimals: 18,
+    quoteDecimals: 6,
+  }).toFixed(),
+  quantity: spotQuantityToChainQuantity({
+    value: '0.01',
+    baseDecimals: 18,
+  }).toFixed(),
+  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
+})
+
 describe('OrderHashManager', () => {
   it('generates proper hash', async () => {
     orderHashManager.setNonce(78)
@@ -67,6 +106,22 @@ describe('OrderHashManager', () => {
     ])
     const derivativeOrderHashes =
       await orderHashManager.getDerivativeOrderHashes([derivativeOrder])
+
+    expect(spotOrderHashes).toStrictEqual([
+      '0x04941ef76e09c8b84affb6c1887eafe8f3a44258ccb575eddc3d28f5213cb874',
+    ])
+    expect(derivativeOrderHashes).toStrictEqual([
+      '0x2451ae7e630322f00c365f2b354fa597d479d804da1fafd82ecbc54cd7964781',
+    ])
+  })
+
+  it('generates proper hash from msg', async () => {
+    orderHashManager.setNonce(78)
+
+    const spotOrderHashes =
+      await orderHashManager.getDerivativeOrderHashFromMsg(spotMsg)
+    const derivativeOrderHashes =
+      await orderHashManager.getDerivativeOrderHashFromMsg(derivativeMsg)
 
     expect(spotOrderHashes).toStrictEqual([
       '0x04941ef76e09c8b84affb6c1887eafe8f3a44258ccb575eddc3d28f5213cb874',
