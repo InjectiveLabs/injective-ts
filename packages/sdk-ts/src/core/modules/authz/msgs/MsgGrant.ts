@@ -51,7 +51,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     )
 
     const grant = CosmosAuthzV1Beta1Authz.Grant.create()
-    grant.expiration = new Date(timestamp.seconds)
+    grant.expiration = new Date(Number(timestamp.seconds) * 1000)
     grant.authorization = authorization
 
     const message = CosmosAuthzV1Beta1Tx.MsgGrant.create()
@@ -86,7 +86,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
           'type': 'cosmos-sdk/GenericAuthorization',
           value: { msg: params.messageType },
         },
-        expiration: timestamp.seconds,
+        expiration: new Date(Number(timestamp.seconds) * 1000),
       },
     })
 
