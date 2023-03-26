@@ -1,27 +1,29 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import {
   isBrowser,
-  MsgExecuteContractCompat,
-  ChainGrpcWasmApi,
   TxResponse,
+  ChainGrpcWasmApi,
+  MsgExecuteContractCompat,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
-  tryNativeToUint8Array,
   getSignedVAAWithRetry,
-  transferFromInjective,
-  parseSequenceFromLogInjective,
-  getEmitterAddressInjective,
-  getIsTransferCompletedInjective,
+  tryNativeToUint8Array,
 } from '@injectivelabs/wormhole-sdk'
+import {
+  transferFromInjective,
+  getEmitterAddressInjective,
+  parseSequenceFromLogInjective,
+  getIsTransferCompletedInjective,
+} from '../injective'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { InjectiveTransferMsgArgs, WormholeSource } from '../types'
 import {
   getAssociatedChain,
-  getAssociatedChainRecipient,
   getContractAddresses,
+  getAssociatedChainRecipient,
 } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 

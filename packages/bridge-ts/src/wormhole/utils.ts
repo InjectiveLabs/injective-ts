@@ -2,12 +2,14 @@ import { Network } from '@injectivelabs/networks'
 import { Connection, PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
+  WormholeAribtrumContractAddresses,
   WormholeContractAddresses,
   WormholeEthereumContractAddresses,
   WormholeSolanaContractAddresses,
   WormholeSource,
 } from './types'
 import {
+  WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK,
   WORMHOLE_CHAINS,
   WORMHOLE_CONTRACT_BY_NETWORK,
   WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
@@ -124,6 +126,49 @@ export const getSolanaContractAddresses = (network: Network) => {
   }
 }
 
+export const getArbitrumContractAddresses = (network: Network) => {
+  const associatedChainContractAddresses = (
+    WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK as {
+      [key: string]: WormholeAribtrumContractAddresses
+    }
+  )[network] as WormholeAribtrumContractAddresses
+
+  const injectiveContractAddresses = (
+    WORMHOLE_CONTRACT_BY_NETWORK as {
+      [key: string]: WormholeContractAddresses
+    }
+  )[network] as WormholeContractAddresses
+
+  if (!injectiveContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Aribtrum not found`),
+    )
+  }
+
+  if (!injectiveContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Aribtrum not found`),
+    )
+  }
+
+  return {
+    injectiveContractAddresses,
+    associatedChainContractAddresses,
+  }
+}
+
 export const getContractAddresses = (
   network: Network,
   source: WormholeSource = WormholeSource.Solana,
@@ -133,6 +178,8 @@ export const getContractAddresses = (
       return getSolanaContractAddresses(network)
     case WormholeSource.Ethereum:
       return getEthereumContractAddresses(network)
+    case WormholeSource.Aribtrum:
+      return getArbitrumContractAddresses(network)
     default:
       return getSolanaContractAddresses(network)
   }
@@ -146,6 +193,8 @@ export const getAssociatedChain = (
       return WORMHOLE_CHAINS.solana
     case WormholeSource.Ethereum:
       return WORMHOLE_CHAINS.ethereum
+    case WormholeSource.Aribtrum:
+      return WORMHOLE_CHAINS.arbitrum
     default:
       return WORMHOLE_CHAINS.solana
   }
@@ -159,6 +208,8 @@ export const getAssociatedChainRecipient = (
     case WormholeSource.Solana:
       return new SolanaPublicKey(recipient).toString()
     case WormholeSource.Ethereum:
+      return recipient /* Hex Ethereum Address */
+    case WormholeSource.Aribtrum:
       return recipient /* Hex Ethereum Address */
     default:
       return new SolanaPublicKey(recipient).toString()

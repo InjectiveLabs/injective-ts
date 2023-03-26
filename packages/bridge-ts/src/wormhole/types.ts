@@ -34,11 +34,14 @@ export interface InjectiveTransferMsgArgs extends TransferMsgArgs {
 
 export type WormholeContractAddresses = typeof CONTRACTS.TESTNET.injective
 export type WormholeSolanaContractAddresses = typeof CONTRACTS.TESTNET.solana
+export type WormholeAribtrumContractAddresses =
+  typeof CONTRACTS.TESTNET.arbitrum
 export type WormholeEthereumContractAddresses =
   typeof CONTRACTS.TESTNET.ethereum
 
 export enum WormholeSource {
   Ethereum = 'ethereum',
+  Aribtrum = 'arbitrum',
   Solana = 'solana',
 }
 

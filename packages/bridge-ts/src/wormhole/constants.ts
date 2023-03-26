@@ -46,6 +46,21 @@ export const WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK = {
   [Network.Local]: CONTRACTS.TESTNET.ethereum,
 }
 
+export const WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK = {
+  [Network.Mainnet]: CONTRACTS.MAINNET.arbitrum,
+  [Network.MainnetK8s]: CONTRACTS.MAINNET.arbitrum,
+  [Network.MainnetLB]: CONTRACTS.MAINNET.arbitrum,
+  [Network.Public]: CONTRACTS.MAINNET.arbitrum,
+  [Network.Staging]: CONTRACTS.MAINNET.arbitrum,
+  [Network.Testnet]: CONTRACTS.TESTNET.arbitrum,
+  [Network.TestnetK8s]: CONTRACTS.TESTNET.arbitrum,
+  [Network.TestnetOld]: CONTRACTS.TESTNET.arbitrum,
+  [Network.Devnet]: CONTRACTS.TESTNET.arbitrum,
+  [Network.Devnet1]: CONTRACTS.TESTNET.arbitrum,
+  [Network.Devnet2]: CONTRACTS.TESTNET.solana,
+  [Network.Local]: CONTRACTS.TESTNET.arbitrum,
+}
+
 export const WORMHOLE_CHAINS = CHAINS
 
 export const WORMHOLE_CONTRACTS = CONTRACTS

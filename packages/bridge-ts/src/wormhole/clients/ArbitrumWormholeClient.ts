@@ -24,7 +24,7 @@ import { WormholeClient } from '../WormholeClient'
 
 type Provider = ethers.providers.Web3Provider | undefined
 
-export class EthereumWormholeClient extends WormholeClient {
+export class ArbitrumWormholeClient extends WormholeClient {
   constructor({
     network,
     wormholeRpcUrl,
@@ -80,7 +80,7 @@ export class EthereumWormholeClient extends WormholeClient {
 
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      WormholeSource.Aribtrum,
     )
 
     const signer = provider.getSigner()
@@ -122,7 +122,7 @@ export class EthereumWormholeClient extends WormholeClient {
     const signer = provider.getSigner()
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      WormholeSource.Aribtrum,
     )
 
     const allowance = await this.getErc20TokenAllowance({
@@ -172,7 +172,7 @@ export class EthereumWormholeClient extends WormholeClient {
 
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      WormholeSource.Aribtrum,
     )
 
     const sequence = parseSequenceFromLogEth(
@@ -209,7 +209,7 @@ export class EthereumWormholeClient extends WormholeClient {
     const signer = provider.getSigner()
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      WormholeSource.Aribtrum,
     )
 
     return redeemOnEth(
@@ -232,7 +232,7 @@ export class EthereumWormholeClient extends WormholeClient {
     const signer = provider.getSigner()
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      WormholeSource.Aribtrum,
     )
 
     return getIsTransferCompletedEth(

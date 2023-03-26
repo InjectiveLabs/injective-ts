@@ -2,29 +2,31 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { getGrpcTransport, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
-  tryNativeToHexString,
+  cosmos,
+  redeemOnSolana,
+  hexToUint8Array,
+  uint8ArrayToHex,
+  transferNativeSol,
   transferFromSolana,
+  tryNativeToHexString,
   parseSequenceFromLogSolana,
   getEmitterAddressSolana,
   getSignedVAAWithRetry,
-  getForeignAssetInjective,
-  hexToUint8Array,
-  transferNativeSol,
   postVaaSolanaWithRetry,
-  redeemOnSolana,
-  getOriginalAssetInjective,
   redeemAndUnwrapOnSolana,
   getIsTransferCompletedSolana,
-  uint8ArrayToHex,
-  cosmos,
 } from '@injectivelabs/wormhole-sdk'
 import {
-  createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddress,
+  createAssociatedTokenAccountInstruction,
 } from '@solana/spl-token'
 import {
-  Connection,
+  getForeignAssetInjective,
+  getOriginalAssetInjective,
+} from '../injective'
+import {
   PublicKey,
+  Connection,
   Transaction,
   TransactionResponse,
 } from '@solana/web3.js'
@@ -34,9 +36,9 @@ import { zeroPad } from 'ethers/lib/utils'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import {
-  SolanaNativeSolTransferMsgArgs,
-  SolanaTransferMsgArgs,
   WormholeSource,
+  SolanaTransferMsgArgs,
+  SolanaNativeSolTransferMsgArgs,
 } from '../types'
 import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { WormholeClient } from '../WormholeClient'
