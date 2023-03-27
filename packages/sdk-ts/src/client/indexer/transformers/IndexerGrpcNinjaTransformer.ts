@@ -1,185 +1,194 @@
 import {
-  GrpcNinjaDenomBalance,
-  GrpcNinjaHolders,
-  GrpcNinjaLeaderboardEntry,
-  GrpcNinjaPagination,
-  GrpcNinjaPriceSnapshot,
-  GrpcNinjaProfits,
-  GrpcNinjaSubaccountBalance,
-  GrpcNinjaSubscription,
-  GrpcNinjaVault,
   NinjaDenomBalance,
   NinjaHolders,
   NinjaLeaderboard,
-  NinjaLeaderboardEntry,
   NinjaPortfolio,
+  NinjaPagination,
   NinjaPriceSnapshot,
   NinjaProfits,
   NinjaSubaccountBalance,
   NinjaSubscription,
   NinjaVault,
 } from '../types/ninja'
-import {
-  LeaderboardResponse,
-  PortfolioResponse,
-} from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
+import { NinjaApi } from '@injectivelabs/ninja-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcNinjaTransformer {
-  static grpcPaginationToPagination(grpcPagination?: GrpcNinjaPagination) {
-    if (!grpcPagination) {
-      return {
-        total: 0,
-      }
-    }
-
-    return {
-      total: grpcPagination.getTotal(),
-    }
-  }
-
-  static grpcDenomBalanceToDenomBalance(
-    grpcDenomBalance: GrpcNinjaDenomBalance,
-  ): NinjaDenomBalance {
-    return {
-      denom: grpcDenomBalance.getDenom(),
-      totalBalance: grpcDenomBalance.getTotalBalance(),
-    }
-  }
-
-  static grpcProfitsToProfits(
-    grpcProfits?: GrpcNinjaProfits,
-  ): NinjaProfits | undefined {
-    if (!grpcProfits) {
+  static ninjaPaginationToPagination(
+    pagination?: NinjaApi.Pagination,
+  ): NinjaPagination | undefined {
+    if (!pagination) {
       return undefined
     }
 
     return {
-      allTimeChange: grpcProfits.getAllTimeChange(),
-      threeMonthsChange: grpcProfits.getThreeMonthsChange(),
-      oneMonthChange: grpcProfits.getOneMonthChange(),
-      oneDayChange: grpcProfits.getOneDayChange(),
-      oneWeekChange: grpcProfits.getOneWeekChange(),
-      oneYearChange: grpcProfits.getOneYearChange(),
-      threeYearsChange: grpcProfits.getThreeYearsChange(),
-      sixMonthsChange: grpcProfits.getSixMonthsChange(),
+      total: pagination.total,
     }
   }
 
-  static grpcVaultSubaccountInfoToVaultSubaccountInfo(
-    grpcSubaccountInfo?: GrpcNinjaSubaccountBalance,
+  static ninjaDenomBalanceToDenomBalance(
+    denomBalance: NinjaApi.DenomBalance,
+  ): NinjaDenomBalance {
+    return {
+      denom: denomBalance.denom,
+      totalBalance: denomBalance.totalBalance,
+    }
+  }
+
+  static profitsResponseToProfits(
+    ninjaProfits?: NinjaApi.Profits,
+  ): NinjaProfits | undefined {
+    if (!ninjaProfits) {
+      return undefined
+    }
+
+    return {
+      allTimeChange: ninjaProfits.allTimeChange,
+      threeMonthsChange: ninjaProfits.threeMonthsChange,
+      oneMonthChange: ninjaProfits.oneMonthChange,
+      oneDayChange: ninjaProfits.oneDayChange,
+      oneWeekChange: ninjaProfits.oneWeekChange,
+      oneYearChange: ninjaProfits.oneYearChange,
+      threeYearsChange: ninjaProfits.threeYearsChange,
+      sixMonthsChange: ninjaProfits.sixMonthsChange,
+    }
+  }
+
+  static ninjaSubaccountInfoToSubaccountInfo(
+    ninjaSubaccountInfo?: NinjaApi.SubaccountBalance,
   ): NinjaSubaccountBalance | undefined {
-    if (!grpcSubaccountInfo) {
+    if (!ninjaSubaccountInfo) {
       return
     }
 
     return {
-      subaccountId: grpcSubaccountInfo.getSubaccountId(),
-      balancesList: grpcSubaccountInfo
-        .getBalancesList()
-        .map(IndexerGrpcNinjaTransformer.grpcDenomBalanceToDenomBalance),
-    }
-  }
-
-  static grpcVaultToVault(grpcVault?: GrpcNinjaVault): NinjaVault | undefined {
-    if (!grpcVault) {
-      return
-    }
-
-    return {
-      contractAddress: grpcVault.getContractAddress(),
-      codeId: grpcVault.getCodeId(),
-      vaultName: grpcVault.getVaultName(),
-      marketId: grpcVault.getMarketId(),
-      currentTvl: grpcVault.getCurrentTvl(),
-      profits: IndexerGrpcNinjaTransformer.grpcProfitsToProfits(
-        grpcVault.getProfits(),
+      subaccountId: ninjaSubaccountInfo.subaccountId,
+      balancesList: ninjaSubaccountInfo.balances.map(
+        IndexerGrpcNinjaTransformer.ninjaDenomBalanceToDenomBalance,
       ),
-      updatedAt: grpcVault.getUpdatedAt(),
-      vaultType: grpcVault.getVaultType(),
-      lpTokenPrice: grpcVault.getLpTokenPrice(),
-      subaccountInfo:
-        IndexerGrpcNinjaTransformer.grpcVaultSubaccountInfoToVaultSubaccountInfo(
-          grpcVault.getSubaccountInfo(),
-        ),
-      masterContractAddress: grpcVault.getMasterContractAddress(),
-      totalLpAmount: grpcVault.getTotalLpAmount(),
-      redemptionLockTimeDuration: grpcVault.getRedemptionLockTimeDuration(),
     }
   }
 
-  static grpcPriceSnapShotToPriceSnapShot(
-    grpcPriceSnapshot: GrpcNinjaPriceSnapshot,
+  static ninjaVaultToVault(vault: NinjaApi.Vault): NinjaVault {
+    return {
+      contractAddress: vault.contractAddress,
+      codeId: vault.codeId,
+      vaultName: vault.vaultName,
+      marketId: vault.marketId,
+      currentTvl: vault.currentTvl,
+      profits: IndexerGrpcNinjaTransformer.profitsResponseToProfits(
+        vault.profits,
+      ),
+      updatedAt: vault.updatedAt,
+      vaultType: vault.vaultType,
+      lpTokenPrice: vault.lpTokenPrice,
+      subaccountInfo:
+        IndexerGrpcNinjaTransformer.ninjaSubaccountInfoToSubaccountInfo(
+          vault.subaccountInfo,
+        ),
+      masterContractAddress: vault.masterContractAddress,
+      totalLpAmount: vault.totalLpAmount,
+      redemptionLockTimeDuration: vault.redemptionLockTimeDuration,
+      redemptionUnlockTimeExpiration: vault.redemptionUnlockTimeExpiration,
+    }
+  }
+
+  static ninjaPriceSnapshotToPriceSnapshot(
+    snapshot: NinjaApi.PriceSnapshot,
   ): NinjaPriceSnapshot {
     return {
-      price: grpcPriceSnapshot.getPrice(),
-      updatedAt: grpcPriceSnapshot.getUpdatedAt(),
+      price: snapshot.price,
+      updatedAt: snapshot.updatedAt,
     }
   }
 
-  static grpcSubscriptionToSubscription(
-    grpcSubscription: GrpcNinjaSubscription,
-  ): NinjaSubscription {
+  static vaultResponseToVault(response: NinjaApi.GetVaultResponse): NinjaVault {
+    const [vault] = response.vault
+
+    return IndexerGrpcNinjaTransformer.ninjaVaultToVault(vault)
+  }
+
+  static vaultsResponseToVaults(response: NinjaApi.GetVaultsResponse): {
+    vaults: NinjaVault[]
+    pagination?: NinjaPagination
+  } {
     return {
-      vaultInfo: IndexerGrpcNinjaTransformer.grpcVaultToVault(
-        grpcSubscription.getVaultInfo(),
+      vaults: response.vaults.map(
+        IndexerGrpcNinjaTransformer.ninjaVaultToVault,
       ),
-      lpAmount: grpcSubscription.getLpAmount(),
-      lpAmountPercentage: grpcSubscription.getLpAmountPercentage(),
-      holderAddress: grpcSubscription.getHolderAddress(),
-      redemptionLockTime: grpcSubscription.getRedemptionLockTime(),
-      lockedAmount: grpcSubscription.getLockedAmount(),
+      pagination: IndexerGrpcNinjaTransformer.ninjaPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 
-  static grpcHoldersToHolders(grpcHolders: GrpcNinjaHolders): NinjaHolders {
-    return {
-      holderAddress: grpcHolders.getHolderAddress(),
-      vaultAddress: grpcHolders.getVaultAddress(),
-      amount: grpcHolders.getAmount(),
-      updatedAt: grpcHolders.getUpdatedAt(),
-      lpAmountPercentage: grpcHolders.getLpAmountPercentage(),
-      redemptionLockTime: grpcHolders.getRedemptionLockTime(),
-    }
+  static LPTokenPriceChartResponseToLPTokenPriceChart(
+    response: NinjaApi.LPTokenPriceChartResponse,
+  ): NinjaPriceSnapshot[] {
+    return response.prices.map(
+      IndexerGrpcNinjaTransformer.ninjaPriceSnapshotToPriceSnapshot,
+    )
   }
 
-  static grpcPortfolioToPortfolio(
-    grpcPortfolioResponse: PortfolioResponse,
+  static VaultsByHolderAddressResponseToVaultsByHolderAddress(
+    response: NinjaApi.VaultsByHolderAddressResponse,
+  ): NinjaSubscription[] {
+    return response.subscriptions.map((subscription) => {
+      const vaultInfo = subscription.vaultInfo
+        ? IndexerGrpcNinjaTransformer.ninjaVaultToVault(subscription.vaultInfo)
+        : undefined
+
+      return {
+        vaultInfo,
+        lpAmount: subscription.lpAmount,
+        lpAmountPercentage: subscription.lpAmountPercentage,
+        holderAddress: subscription.holderAddress,
+        redemptionLockTime: subscription.holderAddress,
+        lockedAmount: subscription.lockedAmount,
+      }
+    })
+  }
+
+  static LPHoldersResponseToLPHolders(
+    response: NinjaApi.LPHoldersResponse,
+  ): NinjaHolders[] {
+    return response.holders.map((holder) => ({
+      holderAddress: holder.holderAddress,
+      vaultAddress: holder.vaultAddress,
+      amount: holder.amount,
+      updatedAt: holder.updatedAt,
+      lpAmountPercentage: holder.lpAmountPercentage,
+      redemptionLockTime: holder.redemptionLockTime,
+    }))
+  }
+
+  static PortfolioResponseToPortfolio(
+    response: NinjaApi.PortfolioResponse,
   ): NinjaPortfolio {
     return {
-      totalValue: grpcPortfolioResponse.getTotalValue(),
-      pnl: grpcPortfolioResponse.getPnl(),
-      totalValueChartList: grpcPortfolioResponse
-        .getTotalValueChartList()
-        .map(IndexerGrpcNinjaTransformer.grpcPriceSnapShotToPriceSnapShot),
-      pnlChartList: grpcPortfolioResponse
-        .getPnlChartList()
-        .map(IndexerGrpcNinjaTransformer.grpcPriceSnapShotToPriceSnapShot),
+      totalValue: response.totalValue,
+      pnl: response.pnl,
+      totalValueChartList: response.totalValueChart.map(
+        IndexerGrpcNinjaTransformer.ninjaPriceSnapshotToPriceSnapshot,
+      ),
+      pnlChartList: response.pnlChart.map(
+        IndexerGrpcNinjaTransformer.ninjaPriceSnapshotToPriceSnapshot,
+      ),
     }
   }
 
-  static grpcLeaderboardEntryToLeaderboardEntry(
-    grpcNinjaLeaderboardEntry: GrpcNinjaLeaderboardEntry,
-  ): NinjaLeaderboardEntry {
-    return {
-      address: grpcNinjaLeaderboardEntry.getAddress(),
-      pnl: grpcNinjaLeaderboardEntry.getPnl(),
-    }
-  }
-
-  static grpcLeaderboardToLeaderboard(
-    grpcLeaderboardResponse: LeaderboardResponse,
+  static LeaderboardResponseToLeaderboard(
+    response: NinjaApi.LeaderboardResponse,
   ): NinjaLeaderboard {
     return {
-      entriesList: grpcLeaderboardResponse
-        .getEntriesList()
-        .map(
-          IndexerGrpcNinjaTransformer.grpcLeaderboardEntryToLeaderboardEntry,
-        ),
-      snapshotBlock: grpcLeaderboardResponse.getSnapshotBlock(),
-      updatedAt: grpcLeaderboardResponse.getUpdatedAt(),
+      entriesList: response.entries.map((entry) => ({
+        address: entry.address,
+        pnl: entry.pnl,
+      })),
+      snapshotBlock: response.snapshotBlock,
+      updatedAt: response.updatedAt,
     }
   }
 }

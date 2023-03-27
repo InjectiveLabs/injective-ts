@@ -1,23 +1,3 @@
-import {
-  GetVaultsRequest,
-  GetVaultsResponse,
-  GetVaultRequest,
-  GetVaultResponse,
-  LPTokenPriceChartRequest,
-  LPTokenPriceChartResponse,
-  TVLChartRequest,
-  TVLChartResponse,
-  VaultsByHolderAddressRequest,
-  VaultsByHolderAddressResponse,
-  LPHoldersRequest,
-  LPHoldersResponse,
-  PortfolioRequest,
-  PortfolioResponse,
-  LeaderboardRequest,
-  LeaderboardResponse,
-} from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb'
-import { NinjaAPI } from '@injectivelabs/ninja-api/goadesign_goagen_ninja_api_pb_service'
-import BaseConsumer from '../../BaseGrpcConsumer'
 import { IndexerGrpcNinjaTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
@@ -25,12 +5,22 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
+import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { NinjaApi } from '@injectivelabs/ninja-proto-ts'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcNinjaApi extends BaseConsumer {
+export class IndexerGrpcNinjaApi {
   protected module: string = IndexerModule.Ninja
+
+  protected client: NinjaApi.NinjaAPIClientImpl
+
+  constructor(endpoint: string) {
+    this.client = new NinjaApi.NinjaAPIClientImpl(
+      getGrpcIndexerWebImpl(endpoint),
+    )
+  }
 
   async fetchVault({
     contractAddress,
@@ -39,26 +29,20 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
     contractAddress?: string
     slug?: string
   }) {
-    const request = new GetVaultRequest()
+    const request = NinjaApi.GetVaultRequest.create()
 
     if (contractAddress) {
-      request.setContractAddress(contractAddress)
+      request.contractAddress = contractAddress
     }
 
     if (slug) {
-      request.setSlug(slug)
+      request.slug = slug
     }
 
     try {
-      const response = await this.request<
-        GetVaultRequest,
-        GetVaultResponse,
-        typeof NinjaAPI.GetVault
-      >(request, NinjaAPI.GetVault)
+      const response = await this.client.GetVault(request)
 
-      return response
-        .getVaultList()
-        .map(IndexerGrpcNinjaTransformer.grpcVaultToVault)
+      return IndexerGrpcNinjaTransformer.vaultResponseToVault(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -81,37 +65,26 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
   }: {
     pageSize?: number
     pageIndex?: number
-    codeId?: number
+    codeId?: string
   }) {
-    const request = new GetVaultsRequest()
+    const request = NinjaApi.GetVaultsRequest.create()
 
     if (pageSize) {
-      request.setPageSize(pageSize)
+      request.pageSize = pageSize
     }
 
     if (pageIndex) {
-      request.setPageIndex(pageIndex)
+      request.pageIndex = pageIndex
     }
 
     if (codeId) {
-      request.setCodeId(codeId)
+      request.codeId = codeId
     }
 
     try {
-      const response = await this.request<
-        GetVaultsRequest,
-        GetVaultsResponse,
-        typeof NinjaAPI.GetVaults
-      >(request, NinjaAPI.GetVaults)
+      const response = await this.client.GetVaults(request)
 
-      const vaultsList = response.getVaultsList()
-      const pagination = response.getPagination()
-
-      return {
-        vaults: vaultsList.map(IndexerGrpcNinjaTransformer.grpcVaultToVault),
-        pagination:
-          IndexerGrpcNinjaTransformer.grpcPaginationToPagination(pagination),
-      }
+      return IndexerGrpcNinjaTransformer.vaultsResponseToVaults(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -133,31 +106,27 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
     to,
   }: {
     vaultAddress: string
-    from?: number
-    to?: number
+    from?: string
+    to?: string
   }) {
-    const request = new LPTokenPriceChartRequest()
+    const request = NinjaApi.LPTokenPriceChartRequest.create()
 
-    request.setVaultAddress(vaultAddress)
+    request.vaultAddress = vaultAddress
 
     if (from) {
-      request.setFromTime(from)
+      request.fromTime = from
     }
 
     if (to) {
-      request.setToTime(to)
+      request.toTime = to
     }
 
     try {
-      const response = await this.request<
-        LPTokenPriceChartRequest,
-        LPTokenPriceChartResponse,
-        typeof NinjaAPI.LPTokenPriceChart
-      >(request, NinjaAPI.LPTokenPriceChart)
+      const response = await this.client.LPTokenPriceChart(request)
 
-      return response
-        .getPricesList()
-        .map(IndexerGrpcNinjaTransformer.grpcPriceSnapShotToPriceSnapShot)
+      return IndexerGrpcNinjaTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -179,31 +148,27 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
     to,
   }: {
     vaultAddress: string
-    from?: number
-    to?: number
+    from?: string
+    to?: string
   }) {
-    const request = new TVLChartRequest()
+    const request = NinjaApi.TVLChartRequest.create()
 
-    request.setVaultAddress(vaultAddress)
+    request.vaultAddress = vaultAddress
 
     if (from) {
-      request.setFromTime(from)
+      request.fromTime = from
     }
 
     if (to) {
-      request.setToTime(to)
+      request.toTime = to
     }
 
     try {
-      const response = await this.request<
-        TVLChartRequest,
-        TVLChartResponse,
-        typeof NinjaAPI.TVLChart
-      >(request, NinjaAPI.TVLChart)
+      const response = await this.client.TVLChart(request)
 
-      return response
-        .getPricesList()
-        .map(IndexerGrpcNinjaTransformer.grpcPriceSnapShotToPriceSnapShot)
+      return IndexerGrpcNinjaTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -230,32 +195,28 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
     holderAddress: string
     vaultAddress?: string
   }) {
-    const request = new VaultsByHolderAddressRequest()
+    const request = NinjaApi.VaultsByHolderAddressRequest.create()
 
-    request.setHolderAddress(holderAddress)
+    request.holderAddress = holderAddress
 
     if (vaultAddress) {
-      request.setVaultAddress(vaultAddress)
+      request.vaultAddress = vaultAddress
     }
 
     if (pageSize) {
-      request.setPageSize(pageSize)
+      request.pageSize = pageSize
     }
 
     if (pageIndex) {
-      request.setPageIndex(pageIndex)
+      request.pageIndex = pageIndex
     }
 
     try {
-      const response = await this.request<
-        VaultsByHolderAddressRequest,
-        VaultsByHolderAddressResponse,
-        typeof NinjaAPI.VaultsByHolderAddress
-      >(request, NinjaAPI.VaultsByHolderAddress)
+      const response = await this.client.VaultsByHolderAddress(request)
 
-      return response
-        .getSubscriptionsList()
-        .map(IndexerGrpcNinjaTransformer.grpcSubscriptionToSubscription)
+      return IndexerGrpcNinjaTransformer.VaultsByHolderAddressResponseToVaultsByHolderAddress(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -280,28 +241,22 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
     pageIndex?: number
     vaultAddress: string
   }) {
-    const request = new LPHoldersRequest()
+    const request = NinjaApi.LPHoldersRequest.create()
 
-    request.setVaultAddress(vaultAddress)
+    request.vaultAddress = vaultAddress
 
     if (pageSize) {
-      request.setPageSize(pageSize)
+      request.pageSize = pageSize
     }
 
     if (pageIndex) {
-      request.setPageIndex(pageIndex)
+      request.pageIndex = pageIndex
     }
 
     try {
-      const response = await this.request<
-        LPHoldersRequest,
-        LPHoldersResponse,
-        typeof NinjaAPI.LPHolders
-      >(request, NinjaAPI.LPHolders)
+      const response = await this.client.LPHolders(request)
 
-      return response
-        .getHoldersList()
-        .map(IndexerGrpcNinjaTransformer.grpcHoldersToHolders)
+      return IndexerGrpcNinjaTransformer.LPHoldersResponseToLPHolders(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -318,18 +273,14 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
   }
 
   async fetchHolderPortfolio(holderAddress: string) {
-    const request = new PortfolioRequest()
+    const request = NinjaApi.PortfolioRequest.create()
 
-    request.setHolderAddress(holderAddress)
+    request.holderAddress = holderAddress
 
     try {
-      const response = await this.request<
-        PortfolioRequest,
-        PortfolioResponse,
-        typeof NinjaAPI.Portfolio
-      >(request, NinjaAPI.Portfolio)
+      const response = await this.client.Portfolio(request)
 
-      return IndexerGrpcNinjaTransformer.grpcPortfolioToPortfolio(response)
+      return IndexerGrpcNinjaTransformer.PortfolioResponseToPortfolio(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -346,16 +297,14 @@ export class IndexerGrpcNinjaApi extends BaseConsumer {
   }
 
   async fetchLeaderboard() {
-    const request = new LeaderboardRequest()
+    const request = NinjaApi.LeaderboardRequest.create()
 
     try {
-      const response = await this.request<
-        LeaderboardRequest,
-        LeaderboardResponse,
-        typeof NinjaAPI.Leaderboard
-      >(request, NinjaAPI.Leaderboard)
+      const response = await this.client.Leaderboard(request)
 
-      return IndexerGrpcNinjaTransformer.grpcLeaderboardToLeaderboard(response)
+      return IndexerGrpcNinjaTransformer.LeaderboardResponseToLeaderboard(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {

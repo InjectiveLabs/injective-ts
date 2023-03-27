@@ -23,7 +23,13 @@ export interface QueryVaultContractBaseConfig {
   market_id: string
   subaccount_id: string
   fee_recipient: string
+  master_address: string
   order_density: string
+  redemption_lock_time: string
+  redemption_unlock_time_expiration: string
+}
+
+export interface QueryVaultContractMarketMaking {
   reservation_price_sensitivity_ratio: string
   reservation_spread_sensitivity_ratio: string
   max_active_capital_utilization_ratio: string
@@ -35,13 +41,12 @@ export interface QueryVaultContractBaseConfig {
   min_trade_volatility_sample_size: string
   default_mid_price_volatility_ratio: string
   min_volatility_ratio: string
-  master_address: string
-  redemption_lock_time: string
 }
 
 export interface QueryVaultContractDerivativeConfigResponse {
   config: {
-    base_config: QueryVaultContractBaseConfig
+    base: QueryVaultContractBaseConfig
+    market_making: QueryVaultContractMarketMaking
     leverage: string
     min_proximity_to_liquidation: string
     post_reduction_perc_of_max_position: string
@@ -49,23 +54,34 @@ export interface QueryVaultContractDerivativeConfigResponse {
     min_oracle_volatility_sample_size: string
     emergency_oracle_volatility_sample_size: string
     last_valid_mark_price: string
-    allowed_subscription_types: string
     allowed_redemption_types: string
+    position_pnl_penalty: string
   }
 }
 
 export interface QueryVaultContractSpotConfigResponse {
   config: {
-    base_config: QueryVaultContractBaseConfig
+    base: QueryVaultContractBaseConfig
+    market_making: QueryVaultContractMarketMaking
     oracle_type: string
     fair_price_tail_deviation_ratio: string
     target_base_weight: string
-    allowed_subscription_types: string
     allowed_redemption_types: string
     imbalance_adjustment_exponent: string
     reward_diminishing_factor: string
     base_decimals: string
     quote_decimals: string
+    base_oracle_symbol: string
+    quote_oracle_symbol: string
+  }
+}
+
+export interface QueryVaultContractAMMConfigResponse {
+  config: {
+    base: QueryVaultContractBaseConfig
+    max_invariant_sensitivity: string
+    base_decimals: number
+    quote_decimals: number
   }
 }
 
@@ -108,5 +124,66 @@ export interface QueryRegisteredVaultResponse {
 }
 
 export interface WasmContractQueryResponse {
-  data: string
+  data: Uint8Array
+}
+
+export type VaultBaseConfig = {
+  owner: string
+  marketId: string
+  subaccountId: string
+  feeRecipient: string
+  masterAddress: string
+  orderDensity: number
+  redemptionLockTime: number
+  redemptionUnlockTimeExpiration: number
+}
+
+export type VaultMarketMakingConfig = {
+  reservationPriceSensitivityRatio: string
+  reservationSpreadSensitivityRatio: string
+  maxActiveCapitalUtilizationRatio: string
+  headChangeToleranceRatio: string
+  minHeadToTailDeviationRatio: string
+  signedMinHeadToFairPriceDeviationRatio: string
+  signedMinHeadToTobDeviationRatio: string
+  tradeVolatilityGroupSec: number
+  minTradeVolatilitySampleSize: number
+  defaultMidPriceVolatilityRatio: string
+  minVolatilityRatio: string
+}
+
+export type VaultAMMConfig = {
+  base: VaultBaseConfig
+  maxInvariantSensitivity: string
+  baseDecimals: number
+  quoteDecimals: number
+}
+
+export type VaultDerivativeConfig = {
+  base: VaultBaseConfig
+  marketMaking: VaultMarketMakingConfig
+  leverage: string
+  minProximityToLiquidation: string
+  postReductionPercOfMaxPosition: string
+  oracleVolatilityGroupSec: number
+  minOracleVolatilitySampleSize: number
+  emergencyOracleVolatilitySampleSize: number
+  lastValidMarkPrice: string
+  allowedRedemptionTypes: number
+  positionPnlPenalty: string
+}
+
+export type VaultSpotConfig = {
+  base: VaultBaseConfig
+  marketMaking: VaultMarketMakingConfig
+  oracleType: number
+  fairPriceTailDeviationRatio: string
+  targetBaseWeight: string
+  allowedRedemptionTypes: number
+  imbalanceAdjustmentExponent: string
+  rewardDiminishingFactor: string
+  baseDecimals: number
+  quoteDecimals: number
+  baseOracleSymbol: string
+  quoteOracleSymbol: string
 }

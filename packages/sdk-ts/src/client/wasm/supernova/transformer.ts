@@ -1,14 +1,21 @@
-import { fromBase64 } from '../../../utils'
+import { toUtf8 } from '../../../utils'
 import {
+  VaultAMMConfig,
+  VaultBaseConfig,
+  VaultSpotConfig,
+  VaultDerivativeConfig,
+  VaultMarketMakingConfig,
   WasmContractQueryResponse,
   QueryVaultMarketIdResponse,
   QueryLockedLpFundsResponse,
   QueryRegisteredVaultResponse,
   QueryVaultContractBaseConfig,
+  QueryVaultContractMarketMaking,
   QueryContractTokenInfoResponse,
   QueryMastContractConfigResponse,
   QueryVaultTotalLpSupplyResponse,
   QueryVaultUserLpBalanceResponse,
+  QueryVaultContractAMMConfigResponse,
   QueryContractMarketingInfoResponse,
   QueryVaultContractSpotConfigResponse,
   QueryVaultUserLpContractAllowanceResponse,
@@ -25,7 +32,9 @@ export class SupernovaQueryTransformer {
   static contractMarketingInfoResponseToContractMarketingInfo(
     response: WasmContractQueryResponse,
   ) {
-    const data = fromBase64(response.data) as QueryContractMarketingInfoResponse
+    const data = JSON.parse(
+      toUtf8(response.data),
+    ) as QueryContractMarketingInfoResponse
 
     return {
       project: data.project,
@@ -38,7 +47,9 @@ export class SupernovaQueryTransformer {
   static contractTokenInfoResponseToContractTokenInfo(
     response: WasmContractQueryResponse,
   ) {
-    const data = fromBase64(response.data) as QueryContractTokenInfoResponse
+    const data = JSON.parse(
+      toUtf8(response.data),
+    ) as QueryContractTokenInfoResponse
 
     return {
       name: data.name,
@@ -51,7 +62,9 @@ export class SupernovaQueryTransformer {
   static masterContractConfigResponseToMasterContractConfig(
     response: WasmContractQueryResponse,
   ) {
-    const data = fromBase64(response.data) as QueryMastContractConfigResponse
+    const data = JSON.parse(
+      toUtf8(response.data),
+    ) as QueryMastContractConfigResponse
 
     return {
       distributionContract: data.distribution_contract,
@@ -62,13 +75,25 @@ export class SupernovaQueryTransformer {
 
   static vaultContractBaseConfigResponseToBaseConfig(
     config: QueryVaultContractBaseConfig,
-  ) {
+  ): VaultBaseConfig {
     return {
       owner: formatToString(config.owner),
       marketId: formatToString(config.market_id),
       subaccountId: formatToString(config.subaccount_id),
       feeRecipient: formatToString(config.fee_recipient),
-      orderDensity: formatToString(config.order_density),
+      masterAddress: formatToString(config.master_address),
+      orderDensity: Number(config.order_density),
+      redemptionLockTime: Number(config.redemption_lock_time),
+      redemptionUnlockTimeExpiration: Number(
+        config.redemption_unlock_time_expiration,
+      ),
+    }
+  }
+
+  static vaultContractMarketMakingResponseToMarketMaking(
+    config: QueryVaultContractMarketMaking,
+  ): VaultMarketMakingConfig {
+    return {
       reservationPriceSensitivityRatio: formatToString(
         config.reservation_price_sensitivity_ratio,
       ),
@@ -90,32 +115,49 @@ export class SupernovaQueryTransformer {
       signedMinHeadToTobDeviationRatio: formatToString(
         config.signed_min_head_to_tob_deviation_ratio,
       ),
-      tradeVolatilityGroupSec: formatToString(
-        config.trade_volatility_group_sec,
+      tradeVolatilityGroupSec: Number(config.trade_volatility_group_sec),
+      minTradeVolatilitySampleSize: Number(
+        config.min_trade_volatility_sample_size,
       ),
       defaultMidPriceVolatilityRatio: formatToString(
         config.default_mid_price_volatility_ratio,
       ),
-      minTradeVolatilitySampleSize: formatToString(
-        config.min_trade_volatility_sample_size,
-      ),
       minVolatilityRatio: formatToString(config.min_volatility_ratio),
-      masterAddress: formatToString(config.master_address),
-      redemptionLockTime: formatToString(config.redemption_lock_time),
+    }
+  }
+
+  static vaultContractConfigResponseToAMMVaultConfig(
+    response: WasmContractQueryResponse,
+  ): VaultAMMConfig {
+    const { config } = JSON.parse(
+      toUtf8(response.data),
+    ) as QueryVaultContractAMMConfigResponse
+
+    return {
+      base: SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
+        config.base,
+      ),
+      maxInvariantSensitivity: formatToString(config.max_invariant_sensitivity),
+      baseDecimals: Number(config.base_decimals),
+      quoteDecimals: Number(config.quote_decimals),
     }
   }
 
   static vaultContractConfigResponseToDerivativeVaultConfig(
     response: WasmContractQueryResponse,
-  ) {
-    const { config } = fromBase64(
-      response.data,
+  ): VaultDerivativeConfig {
+    const { config } = JSON.parse(
+      toUtf8(response.data),
     ) as QueryVaultContractDerivativeConfigResponse
 
     return {
-      ...SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
-        config.base_config,
+      base: SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
+        config.base,
       ),
+      marketMaking:
+        SupernovaQueryTransformer.vaultContractMarketMakingResponseToMarketMaking(
+          config.market_making,
+        ),
       leverage: formatToString(config.leverage),
       minProximityToLiquidation: formatToString(
         config.min_proximity_to_liquidation,
@@ -123,57 +165,56 @@ export class SupernovaQueryTransformer {
       postReductionPercOfMaxPosition: formatToString(
         config.post_reduction_perc_of_max_position,
       ),
-      oracleVolatilityGroupSec: formatToString(
-        config.oracle_volatility_group_sec,
-      ),
-      minOracleVolatilitySampleSize: formatToString(
+      oracleVolatilityGroupSec: Number(config.oracle_volatility_group_sec),
+      minOracleVolatilitySampleSize: Number(
         config.min_oracle_volatility_sample_size,
       ),
-      emergencyOracleVolatilitySampleSize: formatToString(
+      emergencyOracleVolatilitySampleSize: Number(
         config.emergency_oracle_volatility_sample_size,
       ),
       lastValidMarkPrice: formatToString(config.last_valid_mark_price),
-      allowedSubscriptionTypes: formatToString(
-        config.allowed_subscription_types,
-      ),
-      allowedRedemptionTypes: formatToString(config.allowed_redemption_types),
+      allowedRedemptionTypes: Number(config.allowed_redemption_types),
+      positionPnlPenalty: formatToString(config.position_pnl_penalty),
     }
   }
 
   static vaultContractConfigResponseToSpotVaultContractConfig(
     response: WasmContractQueryResponse,
-  ) {
-    const { config } = fromBase64(
-      response.data,
+  ): VaultSpotConfig {
+    const { config } = JSON.parse(
+      toUtf8(response.data),
     ) as QueryVaultContractSpotConfigResponse
 
     return {
-      ...SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
-        config.base_config,
+      base: SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
+        config.base,
       ),
-      oracleType: formatToString(config.oracle_type),
+      marketMaking:
+        SupernovaQueryTransformer.vaultContractMarketMakingResponseToMarketMaking(
+          config.market_making,
+        ),
+      oracleType: Number(config.oracle_type),
       fairPriceTailDeviationRatio: formatToString(
         config.fair_price_tail_deviation_ratio,
       ),
       targetBaseWeight: formatToString(config.target_base_weight),
-      allowedSubscriptionTypes: formatToString(
-        config.allowed_subscription_types,
-      ),
-      allowedRedemptionTypes: formatToString(config.allowed_redemption_types),
+      allowedRedemptionTypes: Number(config.allowed_redemption_types),
       imbalanceAdjustmentExponent: formatToString(
         config.imbalance_adjustment_exponent,
       ),
       rewardDiminishingFactor: formatToString(config.reward_diminishing_factor),
-      baseDecimals: formatToString(config.base_decimals),
-      quoteDecimals: formatToString(config.quote_decimals),
+      baseDecimals: Number(config.base_decimals),
+      quoteDecimals: Number(config.quote_decimals),
+      baseOracleSymbol: formatToString(config.base_oracle_symbol),
+      quoteOracleSymbol: formatToString(config.quote_oracle_symbol),
     }
   }
 
   static vaultUserLpAllowanceResponseToVaultUserLpAllowance(
     response: WasmContractQueryResponse,
   ) {
-    const data = fromBase64(
-      response.data,
+    const data = JSON.parse(
+      toUtf8(response.data),
     ) as QueryVaultUserLpContractAllowanceResponse
 
     return {
@@ -184,7 +225,7 @@ export class SupernovaQueryTransformer {
   static vaultMarketIdResponseToVaultMarketId(
     response: WasmContractQueryResponse,
   ) {
-    const data = fromBase64(response.data) as QueryVaultMarketIdResponse
+    const data = JSON.parse(toUtf8(response.data)) as QueryVaultMarketIdResponse
 
     return { marketId: data.market_id }
   }
@@ -192,7 +233,9 @@ export class SupernovaQueryTransformer {
   static vaultTotalLpSupplyResponseToVaultTotalLpSupply(
     response: WasmContractQueryResponse,
   ) {
-    const data = fromBase64(response.data) as QueryVaultTotalLpSupplyResponse
+    const data = JSON.parse(
+      toUtf8(response.data),
+    ) as QueryVaultTotalLpSupplyResponse
 
     return { totalSupply: data.total_supply }
   }
@@ -200,7 +243,9 @@ export class SupernovaQueryTransformer {
   static vaultUserLpBalanceResponseToVaultUserLpBalance(
     response: WasmContractQueryResponse,
   ) {
-    const data = fromBase64(response.data) as QueryVaultUserLpBalanceResponse
+    const data = JSON.parse(
+      toUtf8(response.data),
+    ) as QueryVaultUserLpBalanceResponse
 
     return { balance: data.balance }
   }
@@ -208,7 +253,7 @@ export class SupernovaQueryTransformer {
   static vaultUserLockedLpFundsResponseToVaultUserLockedLpFunds(
     response: WasmContractQueryResponse,
   ) {
-    const data = fromBase64(response.data) as QueryLockedLpFundsResponse
+    const data = JSON.parse(toUtf8(response.data)) as QueryLockedLpFundsResponse
 
     return { amount: data.amount, lockTime: data.lock_time }
   }
@@ -216,7 +261,9 @@ export class SupernovaQueryTransformer {
   static registeredVaultsResponseToRegisteredVaults(
     response: WasmContractQueryResponse,
   ) {
-    const data = fromBase64(response.data) as QueryRegisteredVaultResponse
+    const data = JSON.parse(
+      toUtf8(response.data),
+    ) as QueryRegisteredVaultResponse
 
     return data.registered_vaults.map((payload) => ({
       isDerivative: payload.vault.derivative !== undefined,
