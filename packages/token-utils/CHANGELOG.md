@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.10.0...@injectivelabs/token-utils@1.10.1) (2023-03-27)
+
+
+### Bug Fixes
+
+* timeout for coingecko ([a0a16c5](https://github.com/InjectiveLabs/injective-ts/commit/a0a16c5ca40d452cf50f9d6b2569df7810112054))
+
+
+
+
+
 # [1.10.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-utils@1.10.0-alpha.4...@injectivelabs/token-utils@1.10.0) (2023-03-23)
 
 **Note:** Version bump only for package @injectivelabs/token-utils
