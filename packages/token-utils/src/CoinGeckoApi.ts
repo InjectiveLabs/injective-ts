@@ -22,7 +22,7 @@ export default class CoinGeckoApi {
     }
 
     this.apiKey = apiKey
-    this.httpClient = new HttpRestClient(baseUrl).setConfig({
+    this.httpClient = new HttpRestClient(baseUrl, { timeout: 1500 }).setConfig({
       headers,
     })
   }
