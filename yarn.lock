@@ -2136,15 +2136,15 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/grpc-web-node-http-transport@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.0.1.tgz#0b053453289bf1ac8699e7d7aa1b5167e5298a86"
-  integrity sha512-mQBIvAviGPEATO9+NfzQ7VXy/2lMO5D4R9Fa7t4uGXrpu11/l0TQYxBg3nJuArfr6dukfcNN10xjw5nAmguhDg==
+"@injectivelabs/grpc-web-node-http-transport@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.0.2.tgz#87c9bbd4db1f70cf18d6a55b54b2cf17d3cf30c0"
+  integrity sha512-rpyhXLiGY/UMs6v6YmgWHJHiO9l0AgDyVNv+jcutNVt4tQrmNvnpvz2wCAGOFtq5LuX/E9ChtTVpk3gWGqXcGA==
 
-"@injectivelabs/grpc-web-react-native-transport@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web-react-native-transport/-/grpc-web-react-native-transport-0.0.1.tgz#1b3cfc67b9f24bb60e6585db2325bacbcec9341a"
-  integrity sha512-0f8X/gvA9dyxH/+JYeC3TQ4DUjAzi3b1sHartkudOuy83ct+rYVA7CFlfC/p1VxDZQX5k0tfh5mL6OmAowk+eA==
+"@injectivelabs/grpc-web-react-native-transport@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web-react-native-transport/-/grpc-web-react-native-transport-0.0.2.tgz#07601b76bf1f165c7a9b97ee42d0d42b9e2b76fa"
+  integrity sha512-mk+aukQXnYNgPsPnu3KBi+FD0ZHQpazIlaBZ2jNZG7QAVmxTWtv3R66Zoq99Wx2dnE946NsZBYAoa0K5oSjnow==
 
 "@injectivelabs/grpc-web@^0.0.1":
   version "0.0.1"
