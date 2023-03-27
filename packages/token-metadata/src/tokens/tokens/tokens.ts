@@ -1252,4 +1252,12 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  EUR: {
+    name: 'Euro',
+    symbol: 'EUR',
+    decimals: 6,
+    logo: 'euro.svg',
+    coinGeckoId: '',
+  },
 } as Record<string, TokenMeta>
