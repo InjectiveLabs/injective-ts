@@ -7,38 +7,39 @@ import {
   CosmosTxResponse,
   KeplrWalletEvents,
   KeplrWalletResponse,
-  KeplrWalletSendPacketAttribute,
   TerraWalletResponse,
+  KeplrWalletSendPacketAttribute,
 } from '../../types/cosmos'
 import {
   IBCTransferTx,
   PeggyDepositTx,
-  PeggyWithdrawalTx,
-  BridgeTransactionState,
-  PeggyTxResponse,
-  UiBridgeTransaction,
   BridgingNetwork,
+  PeggyTxResponse,
+  PeggyWithdrawalTx,
   MoonbeamTxResponse,
   WormholeTxResponse,
+  UiBridgeTransaction,
+  BridgeTransactionState,
 } from './../../types/bridge'
 import { UserDeposit } from '@injectivelabs/sdk-ts'
 import {
+  FailedStates,
   getExplorerUrl,
+  getTerraExplorerUrl,
   getCosmosExplorerUrl,
   getSolanaExplorerUrl,
+  getNetworkFromAddress,
   getEthereumExplorerUrl,
-  getTerraExplorerUrl,
-  FailedStates,
+  getArbitrumExplorerUrl,
+  txNotPartOfPeggoDeposit,
+  getBridgeTransactionType,
+  getCachedIBCTransactionState,
+  txNotPartOfInjectivePeggyTxs,
+  ibcTxNotPartOfInjectiveIbcTxs,
   findEthereumTransactionByNonce,
   findEthereumTransactionByTxHash,
   findEthereumTransactionByTxHashes,
   findIBCTransactionByTimeoutTimestamp,
-  txNotPartOfInjectivePeggyTxs,
-  getCachedIBCTransactionState,
-  ibcTxNotPartOfInjectiveIbcTxs,
-  txNotPartOfPeggoDeposit,
-  getNetworkFromAddress,
-  getBridgeTransactionType,
 } from './../../utils/bridge'
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
 import { UiBridgeTransactionWithToken } from '../../types'
@@ -354,6 +355,9 @@ export const convertWormholeToUiBridgeTransaction = async ({
   transaction: WormholeTxResponse
   network: Network
 }): Promise<UiBridgeTransaction> => {
+  const isArbitrumTransfer =
+    transaction.source === BridgingNetwork.Arbitrum ||
+    transaction.destination === BridgingNetwork.Arbitrum
   const isEthereumWhTransfer =
     transaction.source === BridgingNetwork.EthereumWh ||
     transaction.destination === BridgingNetwork.EthereumWh
@@ -362,6 +366,7 @@ export const convertWormholeToUiBridgeTransaction = async ({
     transaction.destination === BridgingNetwork.Solana
   const isEthereumDeposit = transaction.source === BridgingNetwork.EthereumWh
   const isSolanaDeposit = transaction.source === BridgingNetwork.Solana
+  const isArbitrumDeposit = transaction.source === BridgingNetwork.Arbitrum
 
   const solanaWhExplorerLink = isSolanaDeposit
     ? `${getSolanaExplorerUrl(network)}/tx/${transaction.txHash}`
@@ -371,12 +376,18 @@ export const convertWormholeToUiBridgeTransaction = async ({
     ? `${getEthereumExplorerUrl(network)}/tx/${transaction.txHash}`
     : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
 
+  const arbitrumExplorerLink = isArbitrumDeposit
+    ? `${getArbitrumExplorerUrl(network)}/tx/${transaction.txHash}`
+    : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
+
   const whExplorerLink = isSolanaTransfer
     ? solanaWhExplorerLink
+    : isArbitrumTransfer
+    ? arbitrumExplorerLink
     : ethereumWhExplorerLink
 
   const explorerLink =
-    isEthereumWhTransfer || isSolanaTransfer
+    isEthereumWhTransfer || isSolanaTransfer || isArbitrumTransfer
       ? whExplorerLink
       : transaction.explorerLink || ''
 

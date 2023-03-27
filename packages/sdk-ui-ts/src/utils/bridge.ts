@@ -88,13 +88,14 @@ export const CosmosNetworks = [
 ]
 
 export const tokenSelectorDisabledNetworks = [
-  BridgingNetwork.Chihuahua,
-  BridgingNetwork.CosmosHub,
-  BridgingNetwork.CosmosHubTestnet,
   BridgingNetwork.Juno,
   BridgingNetwork.Evmos,
-  BridgingNetwork.Persistence,
   BridgingNetwork.Moonbeam,
+  BridgingNetwork.Chihuahua,
+  BridgingNetwork.CosmosHub,
+  BridgingNetwork.Persistence,
+  BridgingNetwork.CosmosHubTestnet,
+  BridgingNetwork.Arbitrum,
 ]
 
 export const tokenDenomsPerNetwork = [
@@ -213,6 +214,11 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.EthereumWh,
     denoms: [],
     symbols: ['USDCet', 'CHZ', 'LDO'],
+  },
+  {
+    network: BridgingNetwork.Arbitrum,
+    denoms: [],
+    symbols: ['ARB'],
   },
 ] as NetworkConfig[]
 
@@ -512,6 +518,23 @@ export const getEthereumExplorerUrl = (network: Network): string => {
       return 'https://goerli.etherscan.io'
     default:
       return 'https://etherscan.io'
+  }
+}
+
+export const getArbitrumExplorerUrl = (network: Network): string => {
+  switch (true) {
+    case network.startsWith(Network.Mainnet):
+      return 'https://arbiscan.io'
+    case [Network.Public, Network.Staging].includes(network):
+      return 'https://arbiscan.io'
+    case network.startsWith(Network.Devnet):
+      return 'https://goerli.arbiscan.io'
+    case network.startsWith(Network.Testnet):
+      return 'https://goerli.arbiscan.io'
+    case [Network.Local].includes(network):
+      return 'https://goerli.arbiscan.io'
+    default:
+      return 'https://arbiscan.io'
   }
 }
 

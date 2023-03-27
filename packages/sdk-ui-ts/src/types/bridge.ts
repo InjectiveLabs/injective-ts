@@ -25,6 +25,7 @@ export enum BridgingNetwork {
   Crescent = 'crescent',
   Solana = 'solana',
   Sommelier = 'sommelier',
+  Arbitrum = 'arbitrum',
 }
 
 export const MintScanExplorerUrl = {
