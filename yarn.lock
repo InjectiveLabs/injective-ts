@@ -2163,10 +2163,10 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/ninja-proto-ts@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/@injectivelabs/ninja-proto-ts/-/ninja-proto-ts-1.0.0.tgz#15125cf7568014275bc5125b0961345cf2804e4d"
-  integrity sha512-i98tDPQYFqzRTDFL2NMo0XMMs+0WJ8mfHqRreMcvii30fsHwmJM+iOrONHqBXk0k1/bpeTa3UgMmWTRzSR+m4g==
+"@injectivelabs/ninja-proto-ts@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/ninja-proto-ts/-/ninja-proto-ts-1.0.1.tgz#bd4dc720fc3023759495b1240f24ac28f37ccc0c"
+  integrity sha512-ZHyVp/yPQcl7QdHxRU49G5xFVDXJwBtMvu7BW//nUVDrTWxBy2zS1AUYpL37nvKpTG9AtB1EqMYKLPXD2sdLsg==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
