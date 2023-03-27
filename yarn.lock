@@ -2119,16 +2119,6 @@
   resolved "https://registry.npmjs.org/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
-"@improbable-eng/grpc-web-node-http-transport@^0.15.0":
-  version "0.15.0"
-  resolved "https://registry.npmjs.org/@improbable-eng/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.15.0.tgz#5a064472ef43489cbd075a91fb831c2abeb09d68"
-  integrity sha512-HLgJfVolGGpjc9DWPhmMmXJx8YGzkek7jcCFO1YYkSOoO81MWRZentPOd/JiKiZuU08wtc4BG+WNuGzsQB5jZA==
-
-"@improbable-eng/grpc-web-react-native-transport@^0.15.0":
-  version "0.15.0"
-  resolved "https://registry.npmjs.org/@improbable-eng/grpc-web-react-native-transport/-/grpc-web-react-native-transport-0.15.0.tgz#f630b9022f6ba2bb0258b0b040cca746084c8bc6"
-  integrity sha512-Xk+abATz3eacJ0gA5sRYpyMCA+z/37ht4u6AsbtfcE3SXLYIPbTQ2iLQYyELAoyUWgAyEQxZ3iTs6OpR4z06FQ==
-
 "@improbable-eng/grpc-web@^0.15.0":
   version "0.15.0"
   resolved "https://registry.npmjs.org/@improbable-eng/grpc-web/-/grpc-web-0.15.0.tgz#3e47e9fdd90381a74abd4b7d26e67422a2a04bef"
@@ -2145,6 +2135,16 @@
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
+
+"@injectivelabs/grpc-web-node-http-transport@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.0.1.tgz#0b053453289bf1ac8699e7d7aa1b5167e5298a86"
+  integrity sha512-mQBIvAviGPEATO9+NfzQ7VXy/2lMO5D4R9Fa7t4uGXrpu11/l0TQYxBg3nJuArfr6dukfcNN10xjw5nAmguhDg==
+
+"@injectivelabs/grpc-web-react-native-transport@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web-react-native-transport/-/grpc-web-react-native-transport-0.0.1.tgz#1b3cfc67b9f24bb60e6585db2325bacbcec9341a"
+  integrity sha512-0f8X/gvA9dyxH/+JYeC3TQ4DUjAzi3b1sHartkudOuy83ct+rYVA7CFlfC/p1VxDZQX5k0tfh5mL6OmAowk+eA==
 
 "@injectivelabs/grpc-web@^0.0.1":
   version "0.0.1"

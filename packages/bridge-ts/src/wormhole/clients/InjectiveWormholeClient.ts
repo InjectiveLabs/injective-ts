@@ -1,7 +1,7 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import {
-  isBrowser,
   TxResponse,
+  getGrpcTransport,
   ChainGrpcWasmApi,
   MsgExecuteContractCompat,
 } from '@injectivelabs/sdk-ts'
@@ -16,7 +16,6 @@ import {
   parseSequenceFromLogInjective,
   getIsTransferCompletedInjective,
 } from '../injective'
-import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { InjectiveTransferMsgArgs, WormholeSource } from '../types'
@@ -175,7 +174,7 @@ export class InjectiveWormholeClient extends WormholeClient {
       emitterAddress,
       sequence,
       {
-        transport: isBrowser() ? undefined : NodeHttpTransport(),
+        transport: getGrpcTransport(),
       },
     )
 
