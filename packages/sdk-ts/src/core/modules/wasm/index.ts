@@ -8,8 +8,6 @@ export { default as ExecArgIncreaseAllowance } from './exec-args/ExecArgIncrease
 export { default as ExecArgUpdateAMMVaultConfig } from './exec-args/ExecArgUpdateAMMVaultConfig'
 export { default as ExecArgUpdateSpotVaultConfig } from './exec-args/ExecArgUpdateSpotVaultConfig'
 export { default as ExecArgUpdateDerivativeVaultConfig } from './exec-args/ExecArgUpdateDerivativeVaultConfig'
-export { default as ExecArgRequestTimeLockedRedemption } from './exec-args/ExecArgRequestTimeLockedRedemption'
-export { default as ExecArgExecuteUnlockedRedemption } from './exec-args/ExecArgExecuteUnlockedRedemption'
 export { default as ExecArgCW20AdapterRedeemAndTransfer } from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 
 export { default as MsgStoreCode } from './msgs/MsgStoreCode'

@@ -7,14 +7,12 @@ import {
 export declare namespace ExecPrivilegedArgVaultSubscribe {
   export interface Params {
     origin: string
-    deadline: string
     slippage?: Record<string, any>
     vaultSubaccountId: string
     subscriberSubaccountId: string
   }
 
   export interface Data {
-    deadline: string
     slippage?: Record<string, any>
     vault_subaccount_id: string
     subscriber_subaccount_id: string
@@ -38,7 +36,6 @@ export default class ExecPrivilegedArgVaultSubscribe extends ExecPrivilegedArgBa
     const { params } = this
 
     return {
-      deadline: params.deadline,
       slippage: params.slippage,
       vault_subaccount_id: params.vaultSubaccountId,
       subscriber_subaccount_id: params.subscriberSubaccountId,

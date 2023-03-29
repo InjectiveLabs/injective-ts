@@ -79,6 +79,7 @@ export interface QueryVaultContractSpotConfigResponse {
 export interface QueryVaultContractAMMConfigResponse {
   config: {
     base: QueryVaultContractBaseConfig
+    price_tick_size: string
     max_invariant_sensitivity: string
     base_decimals: number
     quote_decimals: number
@@ -134,8 +135,6 @@ export type VaultBaseConfig = {
   feeRecipient: string
   masterAddress: string
   orderDensity: number
-  redemptionLockTime: number
-  redemptionUnlockTimeExpiration: number
 }
 
 export type VaultMarketMakingConfig = {
@@ -155,6 +154,7 @@ export type VaultMarketMakingConfig = {
 export type VaultAMMConfig = {
   base: VaultBaseConfig
   maxInvariantSensitivity: string
+  priceTickSize: string
   baseDecimals: number
   quoteDecimals: number
 }

@@ -83,10 +83,6 @@ export class SupernovaQueryTransformer {
       feeRecipient: formatToString(config.fee_recipient),
       masterAddress: formatToString(config.master_address),
       orderDensity: Number(config.order_density),
-      redemptionLockTime: Number(config.redemption_lock_time),
-      redemptionUnlockTimeExpiration: Number(
-        config.redemption_unlock_time_expiration,
-      ),
     }
   }
 
@@ -137,6 +133,7 @@ export class SupernovaQueryTransformer {
       base: SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
         config.base,
       ),
+      priceTickSize: formatToString(config.price_tick_size),
       maxInvariantSensitivity: formatToString(config.max_invariant_sensitivity),
       baseDecimals: Number(config.base_decimals),
       quoteDecimals: Number(config.quote_decimals),
