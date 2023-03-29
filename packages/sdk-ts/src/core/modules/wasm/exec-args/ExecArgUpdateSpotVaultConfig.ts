@@ -29,8 +29,6 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     quoteDecimals: number
     baseOracleSymbol: string
     quoteOracleSymbol: string
-    redemptionLockTime: number
-    redemptionUnlockTimeExpiration: number
     masterAddress: string
     owner: string
   }
@@ -59,8 +57,6 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     quote_decimals: number
     base_oracle_symbol: string
     quote_oracle_symbol: string
-    redemption_lock_time: number
-    redemption_unlock_time_expiration: number
     master_address: string
     owner: string
   }
@@ -111,8 +107,6 @@ export default class ExecArgUpdateSpotVaultConfig extends ExecArgBase<
       quote_decimals: params.quoteDecimals,
       base_oracle_symbol: params.baseOracleSymbol,
       quote_oracle_symbol: params.quoteOracleSymbol,
-      redemption_lock_time: params.redemptionLockTime,
-      redemption_unlock_time_expiration: params.redemptionUnlockTimeExpiration,
       master_address: params.masterAddress,
       owner: params.owner,
     }

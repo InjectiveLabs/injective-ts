@@ -13,8 +13,6 @@ export declare namespace ExecArgUpdateAMMVaultConfig {
     maxInvariantSensitivity: string
     baseDecimals: number
     quoteDecimals: number
-    redemptionLockTime: number
-    redemptionUnlockTimeExpiration: number
   }
 
   export interface Data {
@@ -25,8 +23,6 @@ export declare namespace ExecArgUpdateAMMVaultConfig {
     max_invariant_sensitivity: string
     base_decimals: number
     quote_decimals: number
-    redemption_lock_time: number
-    redemption_unlock_time_expiration: number
   }
 }
 
@@ -54,8 +50,6 @@ export default class ExecArgUpdateAMMVaultConfig extends ExecArgBase<
       max_invariant_sensitivity: params.maxInvariantSensitivity,
       base_decimals: params.baseDecimals,
       quote_decimals: params.quoteDecimals,
-      redemption_lock_time: params.redemptionLockTime,
-      redemption_unlock_time_expiration: params.redemptionUnlockTimeExpiration,
     }
   }
 

@@ -28,8 +28,6 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     lastValidMarkPrice: string
     allowedRedemptionTypes: number
     positionPnlPenalty: string
-    redemptionLockTime: number
-    redemptionUnlockTimeExpiration: number
     masterAddress: string
     owner: string
   }
@@ -57,8 +55,6 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     last_valid_mark_price: string
     allowed_redemption_types: number
     position_pnl_penalty: string
-    redemption_lock_time: number
-    redemption_unlock_time_expiration: number
     master_address: string
     owner: string
   }
@@ -110,8 +106,6 @@ export default class ExecArgUpdateDerivativeVaultConfig extends ExecArgBase<
       last_valid_mark_price: params.lastValidMarkPrice,
       allowed_redemption_types: params.allowedRedemptionTypes,
       position_pnl_penalty: params.positionPnlPenalty,
-      redemption_lock_time: params.redemptionLockTime,
-      redemption_unlock_time_expiration: params.redemptionUnlockTimeExpiration,
       master_address: params.masterAddress,
       owner: params.owner,
     }
