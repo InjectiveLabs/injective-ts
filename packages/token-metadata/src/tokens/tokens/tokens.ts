@@ -1257,7 +1257,7 @@ export default {
     name: 'Euro',
     symbol: 'EUR',
     decimals: 6,
-    logo: 'euro.svg',
+    logo: 'eur.svg',
     coinGeckoId: '',
   },
 
@@ -1265,7 +1265,7 @@ export default {
     name: 'British Pound',
     symbol: 'GBP',
     decimals: 6,
-    logo: 'gpb.png',
+    logo: 'gpb.svg',
     coinGeckoId: '',
   },
 
