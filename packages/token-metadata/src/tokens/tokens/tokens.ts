@@ -1260,4 +1260,20 @@ export default {
     logo: 'euro.svg',
     coinGeckoId: '',
   },
+
+  GBP: {
+    name: 'British Pound',
+    symbol: 'GBP',
+    decimals: 6,
+    logo: 'gpb.png',
+    coinGeckoId: '',
+  },
+
+  JPY: {
+    name: 'Japanese Yen',
+    symbol: 'JPY',
+    decimals: 6,
+    logo: 'jpy.svg',
+    coinGeckoId: '',
+  },
 } as Record<string, TokenMeta>
