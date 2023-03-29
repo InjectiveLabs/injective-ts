@@ -7,19 +7,17 @@ import {
 export declare namespace ExecPrivilegedArgVaultRedeem {
   export interface Params {
     origin: string
-    deadline?: string
-    maxSlippage?: string
     redemptionRatio?: string
     vaultSubaccountId: string
     redeemerSubaccountId: string
+    slippage?: Record<string, any>
     redemptionType: Record<string, any>
   }
 
   export interface Data {
-    deadline?: string
-    max_slippage?: string
     redemption_ratio?: string
     vault_subaccount_id: string
+    slippage?: Record<string, any>
     redeemer_subaccount_id: string
     redemption_type: Record<string, any>
   }
@@ -42,8 +40,7 @@ export default class ExecPrivilegedArgVaultRedeem extends ExecPrivilegedArgBase<
     const { params } = this
 
     return {
-      deadline: params.deadline,
-      max_slippage: params.maxSlippage,
+      slippage: params.slippage,
       redemption_type: params.redemptionType,
       redemption_ratio: params.redemptionRatio,
       vault_subaccount_id: params.vaultSubaccountId,

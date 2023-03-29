@@ -7,9 +7,7 @@ import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgUpdateAMMVaultConfig from './exec-args/ExecArgUpdateAMMVaultConfig'
 import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
-import ExecArgExecuteUnlockedRedemption from './exec-args/ExecArgExecuteUnlockedRedemption'
 import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
-import ExecArgRequestTimeLockedRedemption from './exec-args/ExecArgRequestTimeLockedRedemption'
 import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 
 import ExecPrivilegedArgVaultRedeem from './exec-priv-args/ExecPrivilegedArgVaultRedeem'
@@ -26,9 +24,7 @@ export type ExecArgs =
   | ExecArgIncreaseAllowance
   | ExecArgUpdateAMMVaultConfig
   | ExecArgUpdateSpotVaultConfig
-  | ExecArgExecuteUnlockedRedemption
   | ExecArgUpdateDerivativeVaultConfig
-  | ExecArgRequestTimeLockedRedemption
   | ExecArgCW20AdapterRedeemAndTransfer
 
 export type ExecPrivilegedArgs =
