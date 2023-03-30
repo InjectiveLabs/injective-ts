@@ -1276,4 +1276,24 @@ export default {
     logo: 'jpy.svg',
     coinGeckoId: '',
   },
+
+  BRZ: {
+    name: 'Brazilian Digital Token',
+    symbol: 'BRZ',
+    decimals: 4,
+    logo: 'brz.png',
+    coinGeckoId: 'brz',
+
+    erc20: {
+      decimals: 4,
+      address: '0x420412e765bfa6d85aaac94b4f7b708c89be2e2b',
+      tokenType: TokenType.Erc20,
+    },
+
+    cw20: {
+      decimals: 4,
+      address: 'inj14jesa4q248mfxztfc9zgpswkpa4wx249mya9kk',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>

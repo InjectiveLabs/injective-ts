@@ -213,7 +213,7 @@ export const tokenDenomsPerNetwork = [
   {
     network: BridgingNetwork.EthereumWh,
     denoms: [],
-    symbols: ['USDCet', 'CHZ', 'LDO'],
+    symbols: ['USDCet', 'CHZ', 'LDO', 'BRZ'],
   },
   {
     network: BridgingNetwork.Arbitrum,
