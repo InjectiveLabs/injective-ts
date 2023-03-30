@@ -11,7 +11,7 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
 
   if (messageType.includes('MsgPrivilegedExecuteContract')) {
     return new BigNumberInBase(DEFAULT_GAS_LIMIT)
-      .times(1.2)
+      .times(2)
       .times(messages.length)
       .decimalPlaces(0)
       .toNumber()
