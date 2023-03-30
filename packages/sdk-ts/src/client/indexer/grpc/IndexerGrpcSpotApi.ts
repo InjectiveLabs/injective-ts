@@ -277,26 +277,30 @@ export class IndexerGrpcSpotApi {
   }
 
   async fetchTrades(params?: {
-    marketId?: string
-    pagination?: PaginationOption
-    subaccountId?: string
-    executionTypes?: TradeExecutionType[]
-    executionSide?: TradeExecutionSide
-    startTime?: number
     endTime?: number
-    direction?: TradeDirection
+    tradeId?: string
+    marketId?: string
+    startTime?: number
     marketIds?: string[]
+    subaccountId?: string
+    accountAddress?: string
+    direction?: TradeDirection
+    pagination?: PaginationOption
+    executionSide?: TradeExecutionSide
+    executionTypes?: TradeExecutionType[]
   }) {
     const {
-      marketId,
-      pagination,
-      subaccountId,
-      executionTypes,
-      executionSide,
-      startTime,
       endTime,
+      tradeId,
+      marketId,
+      startTime,
       direction,
       marketIds,
+      pagination,
+      subaccountId,
+      executionSide,
+      executionTypes,
+      accountAddress,
     } = params || {}
 
     const request = InjectiveSpotExchangeRpc.TradesRequest.create()
@@ -313,6 +317,14 @@ export class IndexerGrpcSpotApi {
 
     if (subaccountId) {
       request.subaccountId = subaccountId
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
+    }
+
+    if (tradeId) {
+      request.tradeId = tradeId
     }
 
     if (executionTypes) {
