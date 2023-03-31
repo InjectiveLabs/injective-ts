@@ -182,7 +182,7 @@ export const tokenDenomsPerNetwork = [
       'inj',
       'ibc/3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6',
     ],
-    symbols: ['cre'],
+    symbols: ['cre', 'inj'],
   },
   {
     network: BridgingNetwork.Sommelier,

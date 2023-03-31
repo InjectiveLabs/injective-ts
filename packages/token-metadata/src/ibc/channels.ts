@@ -9,7 +9,7 @@ export enum CanonicalChannelToDestinationChannel {
   SecretNetwork = 'channel-88',
   Juno = 'channel-78',
   Stride = 'channel-89',
-  Crescent = 'channel-23',
+  Crescent = 'channel-90',
   Sommelier = 'channel-93',
 }
 
