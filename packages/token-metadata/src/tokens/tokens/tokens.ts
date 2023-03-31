@@ -1296,4 +1296,18 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  ASTR: {
+    name: 'Astar',
+    symbol: 'ASTR',
+    decimals: 4,
+    logo: 'astar.png',
+    coinGeckoId: 'astar',
+
+    cw20: {
+      decimals: 18,
+      address: 'inj1mhmln627samtkuwe459ylq763r4n7n69gxxc9x',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>
