@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.10.22...@injectivelabs/sdk-ui-ts@1.10.23) (2023-03-31)
+
+
+### Bug Fixes
+
+* update Crescent destination channel ([94e7ef6](https://github.com/InjectiveLabs/injective-ts/commit/94e7ef6a2877e4b0f524373b9911e4e11208ed01))
+
+
+
+
+
 ## [1.10.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.10.21...@injectivelabs/sdk-ui-ts@1.10.22) (2023-03-31)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
