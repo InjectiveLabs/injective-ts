@@ -931,6 +931,12 @@ export default {
       hash: '624BA9DD171915A2B9EA70F69638B2CEA179959850C1A586F6C485498F29EDD4',
       tokenType: TokenType.Ibc,
     },
+
+    cw20: {
+      decimals: 10,
+      address: 'inj1spzwwtr2luljr300ng2gu52zg7wn7j44m92mdf',
+      tokenType: TokenType.Cw20,
+    },
   },
 
   'DOT-PLANCK': {
@@ -1300,7 +1306,7 @@ export default {
   ASTR: {
     name: 'Astar',
     symbol: 'ASTR',
-    decimals: 4,
+    decimals: 18,
     logo: 'astar.png',
     coinGeckoId: 'astar',
 
