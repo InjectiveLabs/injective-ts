@@ -83,6 +83,7 @@ export class SupernovaQueryTransformer {
       feeRecipient: formatToString(config.fee_recipient),
       masterAddress: formatToString(config.master_address),
       orderDensity: Number(config.order_density),
+      notionalValueCap: formatToString(config.notional_value_cap),
     }
   }
 
@@ -172,6 +173,7 @@ export class SupernovaQueryTransformer {
       lastValidMarkPrice: formatToString(config.last_valid_mark_price),
       allowedRedemptionTypes: Number(config.allowed_redemption_types),
       positionPnlPenalty: formatToString(config.position_pnl_penalty),
+      quoteDecimals: Number(config.quote_decimals),
     }
   }
 

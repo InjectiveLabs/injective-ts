@@ -30,6 +30,8 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     positionPnlPenalty: string
     masterAddress: string
     owner: string
+    quoteDecimals: number
+    notionalValueCap: string
   }
 
   export interface Data {
@@ -57,6 +59,8 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     position_pnl_penalty: string
     master_address: string
     owner: string
+    quote_decimals: number
+    notional_value_cap: string
   }
 }
 
@@ -108,6 +112,8 @@ export default class ExecArgUpdateDerivativeVaultConfig extends ExecArgBase<
       position_pnl_penalty: params.positionPnlPenalty,
       master_address: params.masterAddress,
       owner: params.owner,
+      quote_decimals: params.quoteDecimals,
+      notional_value_cap: params.notionalValueCap,
     }
   }
 

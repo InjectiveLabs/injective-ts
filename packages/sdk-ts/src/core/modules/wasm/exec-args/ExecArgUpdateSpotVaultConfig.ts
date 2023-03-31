@@ -31,6 +31,7 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     quoteOracleSymbol: string
     masterAddress: string
     owner: string
+    notionalValueCap: string
   }
 
   export interface Data {
@@ -59,6 +60,7 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     quote_oracle_symbol: string
     master_address: string
     owner: string
+    notional_value_cap: string
   }
 }
 
@@ -109,6 +111,7 @@ export default class ExecArgUpdateSpotVaultConfig extends ExecArgBase<
       quote_oracle_symbol: params.quoteOracleSymbol,
       master_address: params.masterAddress,
       owner: params.owner,
+      notional_value_cap: params.notionalValueCap,
     }
   }
 

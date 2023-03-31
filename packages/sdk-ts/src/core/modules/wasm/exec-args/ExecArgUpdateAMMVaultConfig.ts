@@ -13,6 +13,7 @@ export declare namespace ExecArgUpdateAMMVaultConfig {
     maxInvariantSensitivity: string
     baseDecimals: number
     quoteDecimals: number
+    notionalValueCap: string
   }
 
   export interface Data {
@@ -23,6 +24,7 @@ export declare namespace ExecArgUpdateAMMVaultConfig {
     max_invariant_sensitivity: string
     base_decimals: number
     quote_decimals: number
+    notional_value_cap: string
   }
 }
 
@@ -50,6 +52,7 @@ export default class ExecArgUpdateAMMVaultConfig extends ExecArgBase<
       max_invariant_sensitivity: params.maxInvariantSensitivity,
       base_decimals: params.baseDecimals,
       quote_decimals: params.quoteDecimals,
+      notional_value_cap: params.notionalValueCap,
     }
   }
 
