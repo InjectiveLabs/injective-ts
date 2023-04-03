@@ -312,5 +312,7 @@ export const validatorAddressToPathMap = {
     injvaloper175x4lvxpwmmwt5m76yqz0ace8dwkjyjjj7sxdj:
     'injvaloper175x4lvxpwmmwt5m76yqz0ace8dwkjyjjj7sxdj.webp',
     injvalcons1n5yluh6k9zqv74jw35r5s5zy808xpzfqp2wm7g:
+    'injvaloper1n5yluh6k9zqv74jw35r5s5zy808xpzfq4ea8jf.webp',
+    injvaloper1n5yluh6k9zqv74jw35r5s5zy808xpzfq4ea8jf:
     'injvaloper1n5yluh6k9zqv74jw35r5s5zy808xpzfq4ea8jf.webp'
 } as Record<string, string>
