@@ -28,7 +28,7 @@ import {
 
 const formatToString = (value?: string | number) =>
   value ? value.toString() : ''
-export class SupernovaQueryTransformer {
+export class MitoQueryTransformer {
   static contractMarketingInfoResponseToContractMarketingInfo(
     response: WasmContractQueryResponse,
   ) {
@@ -131,7 +131,7 @@ export class SupernovaQueryTransformer {
     ) as QueryVaultContractAMMConfigResponse
 
     return {
-      base: SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
+      base: MitoQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
         config.base,
       ),
       priceTickSize: formatToString(config.price_tick_size),
@@ -149,11 +149,11 @@ export class SupernovaQueryTransformer {
     ) as QueryVaultContractDerivativeConfigResponse
 
     return {
-      base: SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
+      base: MitoQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
         config.base,
       ),
       marketMaking:
-        SupernovaQueryTransformer.vaultContractMarketMakingResponseToMarketMaking(
+        MitoQueryTransformer.vaultContractMarketMakingResponseToMarketMaking(
           config.market_making,
         ),
       leverage: formatToString(config.leverage),
@@ -185,11 +185,11 @@ export class SupernovaQueryTransformer {
     ) as QueryVaultContractSpotConfigResponse
 
     return {
-      base: SupernovaQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
+      base: MitoQueryTransformer.vaultContractBaseConfigResponseToBaseConfig(
         config.base,
       ),
       marketMaking:
-        SupernovaQueryTransformer.vaultContractMarketMakingResponseToMarketMaking(
+        MitoQueryTransformer.vaultContractMarketMakingResponseToMarketMaking(
           config.market_making,
         ),
       oracleType: Number(config.oracle_type),
