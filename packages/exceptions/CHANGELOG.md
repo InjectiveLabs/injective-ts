@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.10.0...@injectivelabs/exceptions@1.10.1) (2023-04-03)
+
+
+### Features
+
+* update supernova folder structure ([a220ecd](https://github.com/InjectiveLabs/injective-ts/commit/a220ecd97f94819ce839ac03facfa1a3c98f5b51))
+
+
+
+
+
 # [1.10.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.10.0-alpha.2...@injectivelabs/exceptions@1.10.0) (2023-03-23)
 
 **Note:** Version bump only for package @injectivelabs/exceptions

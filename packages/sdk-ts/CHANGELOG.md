@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.22...@injectivelabs/sdk-ts@1.10.23) (2023-04-03)
+
+
+### Features
+
+* update supernova folder structure ([a220ecd](https://github.com/InjectiveLabs/injective-ts/commit/a220ecd97f94819ce839ac03facfa1a3c98f5b51))
+
+
+
+
+
 ## [1.10.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.21...@injectivelabs/sdk-ts@1.10.22) (2023-04-03)
 
 
