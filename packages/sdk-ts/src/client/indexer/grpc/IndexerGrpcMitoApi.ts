@@ -1,4 +1,4 @@
-import { IndexerGrpcNinjaTransformer } from '../transformers'
+import { IndexerGrpcMitoTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
@@ -6,20 +6,18 @@ import {
 } from '@injectivelabs/exceptions'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
-import { NinjaApi } from '@injectivelabs/ninja-proto-ts'
+import { MitoApi } from '@injectivelabs/mito-proto-ts'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcNinjaApi {
-  protected module: string = IndexerModule.Ninja
+export class IndexerGrpcMitoApi {
+  protected module: string = IndexerModule.Mito
 
-  protected client: NinjaApi.NinjaAPIClientImpl
+  protected client: MitoApi.MitoAPIClientImpl
 
   constructor(endpoint: string) {
-    this.client = new NinjaApi.NinjaAPIClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
-    )
+    this.client = new MitoApi.MitoAPIClientImpl(getGrpcIndexerWebImpl(endpoint))
   }
 
   async fetchVault({
@@ -29,7 +27,7 @@ export class IndexerGrpcNinjaApi {
     contractAddress?: string
     slug?: string
   }) {
-    const request = NinjaApi.GetVaultRequest.create()
+    const request = MitoApi.GetVaultRequest.create()
 
     if (contractAddress) {
       request.contractAddress = contractAddress
@@ -42,7 +40,7 @@ export class IndexerGrpcNinjaApi {
     try {
       const response = await this.client.GetVault(request)
 
-      return IndexerGrpcNinjaTransformer.vaultResponseToVault(response)
+      return IndexerGrpcMitoTransformer.vaultResponseToVault(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -67,7 +65,7 @@ export class IndexerGrpcNinjaApi {
     pageIndex?: number
     codeId?: string
   }) {
-    const request = NinjaApi.GetVaultsRequest.create()
+    const request = MitoApi.GetVaultsRequest.create()
 
     if (pageSize) {
       request.pageSize = pageSize
@@ -84,7 +82,7 @@ export class IndexerGrpcNinjaApi {
     try {
       const response = await this.client.GetVaults(request)
 
-      return IndexerGrpcNinjaTransformer.vaultsResponseToVaults(response)
+      return IndexerGrpcMitoTransformer.vaultsResponseToVaults(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -109,7 +107,7 @@ export class IndexerGrpcNinjaApi {
     from?: string
     to?: string
   }) {
-    const request = NinjaApi.LPTokenPriceChartRequest.create()
+    const request = MitoApi.LPTokenPriceChartRequest.create()
 
     request.vaultAddress = vaultAddress
 
@@ -124,7 +122,7 @@ export class IndexerGrpcNinjaApi {
     try {
       const response = await this.client.LPTokenPriceChart(request)
 
-      return IndexerGrpcNinjaTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
+      return IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
         response,
       )
     } catch (e: unknown) {
@@ -151,7 +149,7 @@ export class IndexerGrpcNinjaApi {
     from?: string
     to?: string
   }) {
-    const request = NinjaApi.TVLChartRequest.create()
+    const request = MitoApi.TVLChartRequest.create()
 
     request.vaultAddress = vaultAddress
 
@@ -166,7 +164,7 @@ export class IndexerGrpcNinjaApi {
     try {
       const response = await this.client.TVLChart(request)
 
-      return IndexerGrpcNinjaTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
+      return IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
         response,
       )
     } catch (e: unknown) {
@@ -195,7 +193,7 @@ export class IndexerGrpcNinjaApi {
     holderAddress: string
     vaultAddress?: string
   }) {
-    const request = NinjaApi.VaultsByHolderAddressRequest.create()
+    const request = MitoApi.VaultsByHolderAddressRequest.create()
 
     request.holderAddress = holderAddress
 
@@ -214,7 +212,7 @@ export class IndexerGrpcNinjaApi {
     try {
       const response = await this.client.VaultsByHolderAddress(request)
 
-      return IndexerGrpcNinjaTransformer.VaultsByHolderAddressResponseToVaultsByHolderAddress(
+      return IndexerGrpcMitoTransformer.VaultsByHolderAddressResponseToVaultsByHolderAddress(
         response,
       )
     } catch (e: unknown) {
@@ -241,7 +239,7 @@ export class IndexerGrpcNinjaApi {
     pageIndex?: number
     vaultAddress: string
   }) {
-    const request = NinjaApi.LPHoldersRequest.create()
+    const request = MitoApi.LPHoldersRequest.create()
 
     request.vaultAddress = vaultAddress
 
@@ -256,7 +254,7 @@ export class IndexerGrpcNinjaApi {
     try {
       const response = await this.client.LPHolders(request)
 
-      return IndexerGrpcNinjaTransformer.LPHoldersResponseToLPHolders(response)
+      return IndexerGrpcMitoTransformer.LPHoldersResponseToLPHolders(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -273,14 +271,14 @@ export class IndexerGrpcNinjaApi {
   }
 
   async fetchHolderPortfolio(holderAddress: string) {
-    const request = NinjaApi.PortfolioRequest.create()
+    const request = MitoApi.PortfolioRequest.create()
 
     request.holderAddress = holderAddress
 
     try {
       const response = await this.client.Portfolio(request)
 
-      return IndexerGrpcNinjaTransformer.PortfolioResponseToPortfolio(response)
+      return IndexerGrpcMitoTransformer.PortfolioResponseToPortfolio(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -297,12 +295,12 @@ export class IndexerGrpcNinjaApi {
   }
 
   async fetchLeaderboard() {
-    const request = NinjaApi.LeaderboardRequest.create()
+    const request = MitoApi.LeaderboardRequest.create()
 
     try {
       const response = await this.client.Leaderboard(request)
 
-      return IndexerGrpcNinjaTransformer.LeaderboardResponseToLeaderboard(
+      return IndexerGrpcMitoTransformer.LeaderboardResponseToLeaderboard(
         response,
       )
     } catch (e: unknown) {

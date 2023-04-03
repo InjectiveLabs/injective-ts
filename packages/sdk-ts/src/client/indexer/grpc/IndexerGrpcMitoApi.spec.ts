@@ -1,34 +1,34 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { mockFactory } from '@injectivelabs/test-utils'
-import { IndexerGrpcNinjaTransformer } from '../transformers'
-import { IndexerGrpcNinjaApi } from './IndexerGrpcNinjaApi'
+import { IndexerGrpcMitoTransformer } from '../transformers'
+import { IndexerGrpcMitoApi } from './IndexerGrpcMitoApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const vaultAddress = 'inj1zwv6feuzhy6a9wekh96cd57lsarmqlwxvdl4nk'
 const endpoints = getNetworkEndpoints(Network.Devnet)
-const indexerGrpcNinjaApi = new IndexerGrpcNinjaApi(endpoints.indexer)
+const indexerGrpcMitoApi = new IndexerGrpcMitoApi(endpoints.indexer)
 
-describe('IndexerGrpcNinjaApi', () => {
+describe('IndexerGrpcMitoApi', () => {
   test('fetchVault', async () => {
     try {
-      const response = await indexerGrpcNinjaApi.fetchVault({
+      const response = await indexerGrpcMitoApi.fetchVault({
         contractAddress: vaultAddress,
       })
 
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
-          ReturnType<typeof IndexerGrpcNinjaTransformer.vaultResponseToVault>
+          ReturnType<typeof IndexerGrpcMitoTransformer.vaultResponseToVault>
         >(response),
       )
     } catch (e) {
-      console.error('IndexerGrpcNinjaApi.fetchVault => ' + (e as any).message)
+      console.error('IndexerGrpcMitoApi.fetchVault => ' + (e as any).message)
     }
   })
 
   test('fetchVaults', async () => {
     try {
-      const response = await indexerGrpcNinjaApi.fetchVaults({})
+      const response = await indexerGrpcMitoApi.fetchVaults({})
 
       if (response.vaults.length === 0) {
         console.warn('fetchVaults.responseIsEmptyArray')
@@ -37,19 +37,19 @@ describe('IndexerGrpcNinjaApi', () => {
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
-          ReturnType<typeof IndexerGrpcNinjaTransformer.vaultsResponseToVaults>
+          ReturnType<typeof IndexerGrpcMitoTransformer.vaultsResponseToVaults>
         >(response),
       )
     } catch (e) {
       console.error(
-        'IndexerGrpcNinjaApi.fetchVaults vaults => ' + (e as any).message,
+        'IndexerGrpcMitoApi.fetchVaults vaults => ' + (e as any).message,
       )
     }
   })
 
   test('fetchLpTokenPriceChart', async () => {
     try {
-      const response = await indexerGrpcNinjaApi.fetchLpTokenPriceChart({
+      const response = await indexerGrpcMitoApi.fetchLpTokenPriceChart({
         vaultAddress,
       })
 
@@ -61,20 +61,20 @@ describe('IndexerGrpcNinjaApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcNinjaTransformer.LPTokenPriceChartResponseToLPTokenPriceChart
+            typeof IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'IndexerGrpcNinjaApi.fetchLpTokenPriceChart => ' + (e as any).message,
+        'IndexerGrpcMitoApi.fetchLpTokenPriceChart => ' + (e as any).message,
       )
     }
   })
 
   test('fetchTVLChartRequest', async () => {
     try {
-      const response = await indexerGrpcNinjaApi.fetchTVLChartRequest({
+      const response = await indexerGrpcMitoApi.fetchTVLChartRequest({
         vaultAddress,
       })
 
@@ -86,20 +86,20 @@ describe('IndexerGrpcNinjaApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcNinjaTransformer.LPTokenPriceChartResponseToLPTokenPriceChart
+            typeof IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'IndexerGrpcNinjaApi.fetchTVLChartRequest => ' + (e as any).message,
+        'IndexerGrpcMitoApi.fetchTVLChartRequest => ' + (e as any).message,
       )
     }
   })
 
   test('fetchVaultsByHolderAddress', async () => {
     try {
-      const response = await indexerGrpcNinjaApi.fetchVaultsByHolderAddress({
+      const response = await indexerGrpcMitoApi.fetchVaultsByHolderAddress({
         vaultAddress,
         holderAddress: injectiveAddress,
       })
@@ -112,13 +112,13 @@ describe('IndexerGrpcNinjaApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcNinjaTransformer.VaultsByHolderAddressResponseToVaultsByHolderAddress
+            typeof IndexerGrpcMitoTransformer.VaultsByHolderAddressResponseToVaultsByHolderAddress
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'IndexerGrpcNinjaApi.fetchVaultsByHolderAddress => ' +
+        'IndexerGrpcMitoApi.fetchVaultsByHolderAddress => ' +
           (e as any).message,
       )
     }
@@ -126,7 +126,7 @@ describe('IndexerGrpcNinjaApi', () => {
 
   test('fetchLPHolders', async () => {
     try {
-      const response = await indexerGrpcNinjaApi.fetchLPHolders({
+      const response = await indexerGrpcMitoApi.fetchLPHolders({
         vaultAddress,
       })
 
@@ -138,20 +138,20 @@ describe('IndexerGrpcNinjaApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcNinjaTransformer.LPHoldersResponseToLPHolders
+            typeof IndexerGrpcMitoTransformer.LPHoldersResponseToLPHolders
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'IndexerGrpcNinjaApi.fetchLPHolders => ' + (e as any).message,
+        'IndexerGrpcMitoApi.fetchLPHolders => ' + (e as any).message,
       )
     }
   })
 
   test('fetchHolderPortfolio', async () => {
     try {
-      const response = await indexerGrpcNinjaApi.fetchHolderPortfolio(
+      const response = await indexerGrpcMitoApi.fetchHolderPortfolio(
         injectiveAddress,
       )
 
@@ -163,20 +163,20 @@ describe('IndexerGrpcNinjaApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcNinjaTransformer.PortfolioResponseToPortfolio
+            typeof IndexerGrpcMitoTransformer.PortfolioResponseToPortfolio
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'IndexerGrpcNinjaApi.fetchHolderPortfolio => ' + (e as any).message,
+        'IndexerGrpcMitoApi.fetchHolderPortfolio => ' + (e as any).message,
       )
     }
   })
 
   test('fetchLeaderboard', async () => {
     try {
-      const response = await indexerGrpcNinjaApi.fetchLeaderboard()
+      const response = await indexerGrpcMitoApi.fetchLeaderboard()
 
       if (!response) {
         console.warn('fetchLeaderboard.leaderBoardNotFound')
@@ -186,13 +186,13 @@ describe('IndexerGrpcNinjaApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcNinjaTransformer.LeaderboardResponseToLeaderboard
+            typeof IndexerGrpcMitoTransformer.LeaderboardResponseToLeaderboard
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'IndexerGrpcNinjaApi.fetchLeaderboard => ' + (e as any).message,
+        'IndexerGrpcMitoApi.fetchLeaderboard => ' + (e as any).message,
       )
     }
   })
