@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.20...@injectivelabs/sdk-ts@1.10.21) (2023-04-03)
+
+
+### Bug Fixes
+
+* nonce on orderhash manager ([a269718](https://github.com/InjectiveLabs/injective-ts/commit/a269718a647c53e93612b283fcc720d8e2462dde))
+
+
+
+
+
 ## [1.10.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.19...@injectivelabs/sdk-ts@1.10.20) (2023-04-03)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
