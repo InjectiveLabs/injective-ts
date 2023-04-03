@@ -109,4 +109,7 @@ export const channelIbcDenomToBaseDenomMap = {
   [CanonicalChannelToDestinationChannel.Persistence]: {
     inj: 'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
   },
+  [CanonicalChannelToDestinationChannel.Stride]: {
+    inj: 'ibc/A7454562FF29FE068F42F9DE4805ABEF54F599D1720B345D6518D9B5C64EA6D2',
+  },
 }

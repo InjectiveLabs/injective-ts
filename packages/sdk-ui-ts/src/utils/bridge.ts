@@ -173,8 +173,11 @@ export const tokenDenomsPerNetwork = [
   },
   {
     network: BridgingNetwork.Stride,
-    denoms: ['ustrd'],
-    symbols: ['strd'],
+    denoms: [
+      'inj',
+      'ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
+    ],
+    symbols: ['strd', 'inj'],
   },
   {
     network: BridgingNetwork.Crescent,
@@ -304,12 +307,19 @@ export const cosmosNativeDenomsFromChainId = {
     denom:
       'ibc/0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A',
   },
-  [CosmosChainId.Stride]: {
-    ...tokenMetaUtils.getMetaBySymbol('STRD'),
-    tokenType: TokenType.Ibc,
-    denom:
-      'ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
-  },
+  [CosmosChainId.Stride]: [
+    {
+      ...tokenMetaUtils.getMetaBySymbol('STRD'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
+    },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('INJ'),
+      tokenType: TokenType.Ibc,
+      denom: 'inj',
+    },
+  ],
   [CosmosChainId.Crescent]: [
     {
       ...tokenMetaUtils.getMetaBySymbol('CRE'),
@@ -361,6 +371,8 @@ export const ibcHashToNativeInjPerNetwork = {
     'ibc/5A76568E079A31FA12165E4559BA9F1E9D4C97F9C2060B538C84DCD503815E30',
   [BridgingNetwork.Persistence]:
     'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
+  [BridgingNetwork.Stride]:
+    'ibc/A7454562FF29FE068F42F9DE4805ABEF54F599D1720B345D6518D9B5C64EA6D2',
 } as Partial<Record<BridgingNetwork, string>>
 
 export const ibcHashToNativeInjPerCosmosChain = {
@@ -370,6 +382,8 @@ export const ibcHashToNativeInjPerCosmosChain = {
     'ibc/5A76568E079A31FA12165E4559BA9F1E9D4C97F9C2060B538C84DCD503815E30',
   [CosmosChainId.Persistence]:
     'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
+  [CosmosChainId.Stride]:
+    'ibc/A7454562FF29FE068F42F9DE4805ABEF54F599D1720B345D6518D9B5C64EA6D2',
 } as Partial<Record<CosmosChainId, string>>
 
 const sameTxHash = (txHashOne: string, txHashTwo: string) =>
