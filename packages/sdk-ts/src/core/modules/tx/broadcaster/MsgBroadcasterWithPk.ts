@@ -7,10 +7,10 @@ import {
   ChainRestTendermintApi,
 } from '../../../../client/chain/rest'
 import {
-  BigNumberInBase,
   getStdFee,
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_STD_FEE,
+  BigNumberInBase,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -19,9 +19,9 @@ import {
 } from '../utils/helpers'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import {
-  getNetworkEndpoints,
-  getNetworkInfo,
   Network,
+  getNetworkInfo,
+  getNetworkEndpoints,
   NetworkEndpoints,
 } from '@injectivelabs/networks'
 import { getGasPriceBasedOnMessage } from '../../../../utils/msgs'
@@ -121,7 +121,7 @@ export class MsgBroadcasterWithPk {
 
     /** Prepare the Transaction * */
     const { signBytes, txRaw } = createTransaction({
-      memo: '',
+      memo: tx.memo || '',
       fee: getStdFee(gas),
       message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
@@ -188,7 +188,7 @@ export class MsgBroadcasterWithPk {
 
     /** Prepare the Transaction * */
     const { txRaw } = createTransaction({
-      memo: '',
+      memo: tx.memo || '',
       fee: DEFAULT_STD_FEE,
       message: tx.msgs as Msgs[],
       timeoutHeight: timeoutHeight.toNumber(),
