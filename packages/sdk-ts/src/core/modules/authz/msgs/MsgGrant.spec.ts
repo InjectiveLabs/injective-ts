@@ -19,9 +19,11 @@ const protoParams = {
   grant: {
     authorization: {
       typeUrl: '/cosmos.authz.v1beta1.GenericAuthorization',
-      value: Uint8Array.from(Buffer.from('ChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5k', "base64")),
+      value: Uint8Array.from(
+        Buffer.from('ChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5k', 'base64'),
+      ),
     },
-    expiration: new Date(params.expiration! * 1000)
+    expiration: new Date(params.expiration! * 1000),
   },
 }
 

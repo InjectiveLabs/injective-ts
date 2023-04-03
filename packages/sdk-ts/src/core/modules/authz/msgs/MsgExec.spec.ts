@@ -3,22 +3,20 @@ import { mockFactory } from '@injectivelabs/test-utils'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { MsgSend } from '../../bank'
 
-
-
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
 const params = {
   grantee: injectiveAddress,
   msgs: [
-    MsgSend.fromJSON ({
+    MsgSend.fromJSON({
       dstInjectiveAddress: injectiveAddress,
       srcInjectiveAddress: injectiveAddress2,
       amount: {
         amount: new BigNumberInBase(1).toFixed(),
         denom: 'inj',
-      }
-    })
-  ]
+      },
+    }),
+  ],
 }
 
 const protoType = '/cosmos.authz.v1beta1.MsgExec'
@@ -27,9 +25,9 @@ const protoParams = {
   grantee: params.grantee,
   msgs: [
     {
-      typeUrl: "/cosmos.bank.v1beta1.MsgSend",
-      value: params.msgs[0].toBinary()
-    }
+      typeUrl: '/cosmos.bank.v1beta1.MsgSend',
+      value: params.msgs[0].toBinary(),
+    },
   ],
 }
 

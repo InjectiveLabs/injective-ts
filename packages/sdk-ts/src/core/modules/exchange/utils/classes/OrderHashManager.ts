@@ -398,7 +398,7 @@ export class OrderHashManager {
 
   private async initSubaccountNonce() {
     if (this.nonce) {
-      return
+      return this.incrementNonce()
     }
 
     const { network, subaccountIndex, address } = this
@@ -412,7 +412,7 @@ export class OrderHashManager {
       subaccountId,
     )
 
-    this.nonce = nonce
+    this.nonce = nonce + 1
   }
 
   private hashTypedData(eip712: any) {

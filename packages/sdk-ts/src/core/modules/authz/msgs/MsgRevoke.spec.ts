@@ -7,7 +7,7 @@ const { injectiveAddress, injectiveAddress2 } = mockFactory
 const params: MsgRevoke['params'] = {
   grantee: injectiveAddress,
   granter: injectiveAddress2,
-  messageType: '/cosmos.bank.v1beta1.MsgSend'
+  messageType: '/cosmos.bank.v1beta1.MsgSend',
 }
 
 const protoType = '/cosmos.authz.v1beta1.MsgRevoke'
@@ -15,13 +15,13 @@ const protoTypeShort = 'cosmos-sdk/MsgRevoke'
 const protoParams = {
   grantee: params.grantee,
   granter: params.granter,
-  msgTypeUrl: "/cosmos.bank.v1beta1.MsgSend"
+  msgTypeUrl: '/cosmos.bank.v1beta1.MsgSend',
 }
 
 const protoParamsAmino = snakecaseKeys({
   grantee: params.grantee,
   granter: params.granter,
-  msgTypeUrl: "/cosmos.bank.v1beta1.MsgSend"
+  msgTypeUrl: '/cosmos.bank.v1beta1.MsgSend',
 })
 const message = MsgRevoke.fromJSON(params)
 
@@ -59,7 +59,7 @@ describe('MsgRevoke', () => {
       MsgValue: [
         { name: 'granter', type: 'string' },
         { name: 'grantee', type: 'string' },
-        { name: 'msg_type_url', type: 'string' }
+        { name: 'msg_type_url', type: 'string' },
       ],
     })
   })
@@ -70,7 +70,7 @@ describe('MsgRevoke', () => {
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
       value: snakecaseKeys({
-        ...protoParamsAmino
+        ...protoParamsAmino,
       }),
     })
   })
