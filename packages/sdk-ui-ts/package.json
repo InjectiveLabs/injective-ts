@@ -31,7 +31,6 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@alch/alchemy-web3": "1.4.7",
     "@injectivelabs/contracts": "^1.10.2-alpha.0",
     "@injectivelabs/exceptions": "^1.10.2-alpha.0",
     "@injectivelabs/networks": "^1.10.2-alpha.0",

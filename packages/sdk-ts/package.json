@@ -72,5 +72,9 @@
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
     "displayName": "sdk-ts API documentation"
+  },
+  "resolutions": {
+    "libsodium": "file:./../../etc/noop",
+    "libsodium-wrappers": "file:./../../etc/noop"
   }
 }
