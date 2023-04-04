@@ -1,4 +1,7 @@
-import { ChainGrpcWasmApi, MsgExecuteContract } from '@injectivelabs/sdk-ts'
+import {
+  ChainGrpcWasmApi,
+  MsgExecuteContractCompat,
+} from '@injectivelabs/sdk-ts'
 import { parseSmartContractStateResponse } from './utils'
 import {
   ChainId,
@@ -46,8 +49,8 @@ export async function submitVAAOnInjective(
   tokenBridgeAddress: string,
   walletAddress: string,
   signedVAA: Uint8Array,
-): Promise<MsgExecuteContract> {
-  return MsgExecuteContract.fromJSON({
+): Promise<MsgExecuteContractCompat> {
+  return MsgExecuteContractCompat.fromJSON({
     contractAddress: tokenBridgeAddress,
     sender: walletAddress,
     exec: {
@@ -118,7 +121,7 @@ export async function transferFromInjective(
 
   return isNativeAsset
     ? [
-        MsgExecuteContract.fromJSON({
+        MsgExecuteContractCompat.fromJSON({
           contractAddress: tokenBridgeAddress,
           sender: walletAddress,
           exec: {
@@ -127,7 +130,7 @@ export async function transferFromInjective(
           },
           funds: { denom: tokenAddress, amount },
         }),
-        MsgExecuteContract.fromJSON({
+        MsgExecuteContractCompat.fromJSON({
           contractAddress: tokenBridgeAddress,
           sender: walletAddress,
           exec: {
@@ -139,7 +142,7 @@ export async function transferFromInjective(
         }),
       ]
     : [
-        MsgExecuteContract.fromJSON({
+        MsgExecuteContractCompat.fromJSON({
           contractAddress: tokenAddress,
           sender: walletAddress,
           exec: {
@@ -153,7 +156,7 @@ export async function transferFromInjective(
             action: 'increase_allowance',
           },
         }),
-        MsgExecuteContract.fromJSON({
+        MsgExecuteContractCompat.fromJSON({
           contractAddress: tokenBridgeAddress,
           sender: walletAddress,
           exec: {

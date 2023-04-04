@@ -1,4 +1,4 @@
-import { MsgExecuteContract } from '@injectivelabs/sdk-ts'
+import { MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'
 import { isNativeDenomInjective } from '@injectivelabs/wormhole-sdk'
 
 /**
@@ -14,11 +14,11 @@ export async function attestFromInjective(
   tokenBridgeAddress: string,
   walletAddress: string,
   asset: string,
-): Promise<MsgExecuteContract> {
+): Promise<MsgExecuteContractCompat> {
   const nonce = Math.round(Math.random() * 100000)
   const isNativeAsset = isNativeDenomInjective(asset)
 
-  return MsgExecuteContract.fromJSON({
+  return MsgExecuteContractCompat.fromJSON({
     contractAddress: tokenBridgeAddress,
     sender: walletAddress,
     exec: {

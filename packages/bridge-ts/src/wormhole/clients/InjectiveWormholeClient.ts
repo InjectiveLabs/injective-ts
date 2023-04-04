@@ -100,8 +100,8 @@ export class InjectiveWormholeClient extends WormholeClient {
     const { network, wormholeRpcUrl, provider } = this
     const {
       amount,
-      recipient: recipientArg,
       additionalMsgs = [],
+      recipient: recipientArg,
       destination = WormholeSource.Solana,
     } = args
 
