@@ -1,5 +1,3 @@
-import { AbiItem } from 'web3-utils'
-
 const abi = [
   {
     anonymous: false,
@@ -671,6 +669,6 @@ const abi = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-] as AbiItem[]
+]
 
 export default abi

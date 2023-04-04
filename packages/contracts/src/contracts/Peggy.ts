@@ -3,7 +3,6 @@ import {
   EthereumChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
-import Web3 from 'web3'
 import { UnspecifiedErrorCode, Web3Exception } from '@injectivelabs/exceptions'
 import { getTransactionOptionsAsNonPayableTx } from '../utils'
 import abi from './abi/peggy'
@@ -16,16 +15,16 @@ export class PeggyContract extends BaseContract<any> {
   constructor({
     ethereumChainId,
     address,
-    web3,
+    provider,
   }: {
     ethereumChainId: EthereumChainId
-    web3: Web3
+    provider: any
     address: string
   }) {
     super({
-      abi,
+      abi: JSON.stringify(abi),
       ethereumChainId,
-      web3,
+      provider,
       address,
     })
   }

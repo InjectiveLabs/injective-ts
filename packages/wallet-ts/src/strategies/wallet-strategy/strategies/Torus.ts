@@ -6,47 +6,92 @@ import {
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
-  WalletException,
   ErrorType,
   MetamaskException,
   UnspecifiedErrorCode,
+  WalletException,
 } from '@injectivelabs/exceptions'
+import TorusWallet from '@toruslabs/torus-embed'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw, TxResponse, isServerSide } from '@injectivelabs/sdk-ts'
+import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
-import {
-  Eip1993ProviderWithMetamask,
-  WindowWithEip1193Provider,
-} from '../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
-const $window = (isServerSide()
-  ? {}
-  : window) as unknown as WindowWithEip1193Provider
+export const getNetworkFromChainId = (
+  chainId: EthereumChainId,
+): { host: string; networkName: string } => {
+  if (chainId === EthereumChainId.Goerli) {
+    return {
+      host: 'goerli',
+      networkName: 'Goerli Test Network',
+    }
+  }
 
-export default class Metamask
+  if (chainId === EthereumChainId.Kovan) {
+    return {
+      host: 'kovan',
+      networkName: 'Kovan Test Network',
+    }
+  }
+
+  return {
+    host: 'mainnet',
+    networkName: 'Main Ethereum Network',
+  }
+}
+
+export default class Torus
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  private ethereum: Eip1993ProviderWithMetamask
+  private torus: TorusWallet
+
+  private connected = false
 
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
-    this.ethereum = $window.ethereum
+    this.torus = new TorusWallet()
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async connect(): Promise<void> {
+    const { connected, torus, ethereumChainId } = this
+
+    if (connected) {
+      return
+    }
+
+    if (!ethereumChainId) {
+      throw new WalletException(new Error('Please provide Ethereum chainId'))
+    }
+
+    await torus.init({
+      buildEnv: 'production',
+      network: {
+        chainId: ethereumChainId,
+        ...getNetworkFromChainId(ethereumChainId),
+      },
+      showTorusButton: false,
+    })
+
+    await this.torus.login()
+
+    this.connected = true
+  }
+
   async getAddresses(): Promise<string[]> {
-    const ethereum = this.getEthereum()
+    await this.connect()
 
     try {
-      return await ethereum.request({
+      const accounts = await this.torus.ethereum.request<string[]>({
         method: 'eth_requestAccounts',
       })
+
+      return accounts && accounts.length > 0 ? (accounts as string[]) : []
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -58,6 +103,8 @@ export default class Metamask
 
   // eslint-disable-next-line class-methods-use-this
   async confirm(address: AccountAddress): Promise<string> {
+    await this.connect()
+
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -69,13 +116,15 @@ export default class Metamask
     transaction: unknown,
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    await this.connect()
 
     try {
-      return await ethereum.request({
+      const response = await this.torus.ethereum.request<string>({
         method: 'eth_sendTransaction',
         params: [transaction],
       })
+
+      return response || ''
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -92,7 +141,7 @@ export default class Metamask
   ): Promise<TxResponse> {
     throw new MetamaskException(
       new Error(
-        'sendTransaction is not supported. Metamask only supports sending transaction to Ethereum',
+        'sendTransaction is not supported. Torus only supports sending transaction to Ethereum',
       ),
       {
         code: UnspecifiedErrorCode,
@@ -114,13 +163,15 @@ export default class Metamask
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    await this.connect()
 
     try {
-      return await ethereum.request({
+      const response = await this.torus.ethereum.request<string>({
         method: 'eth_signTypedData_v4',
         params: [address, eip712json],
       })
+
+      return response || ''
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -147,25 +198,15 @@ export default class Metamask
     )
   }
 
-  async getNetworkId(): Promise<string> {
-    const ethereum = this.getEthereum()
-
-    try {
-      return ethereum.request({ method: 'net_version' })
-    } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetNetworkId,
-      })
-    }
-  }
-
   async getChainId(): Promise<string> {
-    const ethereum = this.getEthereum()
+    await this.connect()
 
     try {
-      return ethereum.request({ method: 'eth_chainId' })
+      const response = await this.torus.ethereum.request<string>({
+        method: 'eth_chainId',
+      })
+
+      return response || ''
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -176,11 +217,11 @@ export default class Metamask
   }
 
   async getEthereumTransactionReceipt(txHash: string): Promise<string> {
-    const ethereum = this.getEthereum()
+    await this.connect()
 
     const interval = 1000
     const transactionReceiptRetry = async () => {
-      const receipt = await ethereum.request({
+      const receipt = await this.torus.ethereum.request<string>({
         method: 'eth_getTransactionReceipt',
         params: [txHash],
       })
@@ -190,7 +231,7 @@ export default class Metamask
         await transactionReceiptRetry()
       }
 
-      return receipt
+      return receipt as string
     }
 
     try {
@@ -211,64 +252,23 @@ export default class Metamask
     )
   }
 
-  onChainIdChanged(callback: () => void): void {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      return
-    }
-
-    ethereum.on('chainChanged', callback)
+  onChainIdChanged(_callback: () => void): void {
+    //
   }
 
-  onAccountChange(callback: (account: AccountAddress) => void): void {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      return
-    }
-
-    ethereum.on('accountsChanged', callback)
+  onAccountChange(_callback: (account: AccountAddress) => void): void {
+    //
   }
 
   cancelOnChainIdChange(): void {
-    const { ethereum } = this
-
-    if (ethereum) {
-      // ethereum.removeListener('chainChanged', handler)
-    }
+    //
   }
 
   cancelOnAccountChange(): void {
-    const { ethereum } = this
-
-    if (ethereum) {
-      // ethereum.removeListener('chainChanged', handler)
-    }
+    //
   }
 
   cancelAllEvents(): void {
-    const { ethereum } = this
-
-    if (ethereum) {
-      ethereum.removeAllListeners()
-    }
-  }
-
-  private getEthereum(): Eip1993ProviderWithMetamask {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      throw new MetamaskException(
-        new Error('Please install the Metamask wallet extension.'),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletNotInstalledError,
-          contextModule: WalletAction.GetAccounts,
-        },
-      )
-    }
-
-    return ethereum
+    //
   }
 }

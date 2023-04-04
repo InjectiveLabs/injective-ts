@@ -20,6 +20,7 @@ import { TIP_IN_GWEI } from '../../../../utils/constants'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
+  WalletStrategyEthereumOptions,
 } from '../../../types'
 import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types'
 import BaseConcreteStrategy from '../Base'
@@ -31,6 +32,7 @@ import {
 import LedgerHW from './hw'
 import { domainHash, messageHash } from './utils'
 import { WalletAction, WalletDeviceType } from '../../../../types/enums'
+import { getKeyFromRpcUrl } from '../../../../utils/alchemy'
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
@@ -54,6 +56,8 @@ export default class LedgerBase
 
   private ledger: LedgerHW
 
+  private ethereumOptions: WalletStrategyEthereumOptions
+
   constructor(
     args: EthereumWalletStrategyArgs & {
       derivationPathType: LedgerDerivationPathType
@@ -64,6 +68,7 @@ export default class LedgerBase
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
     this.derivationPathType = args.derivationPathType
     this.ledger = new LedgerHW()
+    this.ethereumOptions = args.ethereumOptions
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -110,11 +115,12 @@ export default class LedgerBase
     )
 
     try {
-      const txReceipt = await this.getWeb3().eth.sendSignedTransaction(
+      const alchemy = await this.getAlchemy()
+      const txReceipt = await alchemy.core.sendTransaction(
         addHexPrefix(signedTransaction.serialize().toString('hex')),
       )
 
-      return txReceipt.transactionHash
+      return txReceipt.hash
     } catch (e: unknown) {
       throw new LedgerException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -193,12 +199,11 @@ export default class LedgerBase
     )
   }
 
-  async getNetworkId(): Promise<string> {
-    return (await this.getWeb3().eth.net.getId()).toString()
-  }
-
   async getChainId(): Promise<string> {
-    return (await this.getWeb3().eth.getChainId()).toString()
+    const alchemy = await this.getAlchemy()
+    const alchemyProvider = await alchemy.config.getProvider()
+
+    return alchemyProvider.network.chainId.toString()
   }
 
   async getEthereumTransactionReceipt(txHash: string): Promise<string> {
@@ -216,8 +221,9 @@ export default class LedgerBase
     txData: any,
     options: { address: string; ethereumChainId: EthereumChainId },
   ) {
+    const alchemy = await this.getAlchemy()
     const chainId = parseInt(options.ethereumChainId.toString(), 10)
-    const nonce = await this.getWeb3().eth.getTransactionCount(options.address)
+    const nonce = await alchemy.core.getTransactionCount(options.address)
 
     const common = new Common({
       chain: getNetworkFromChainId(chainId),
@@ -299,5 +305,18 @@ export default class LedgerBase
     return (await accountManager.getWalletForAddress(
       address,
     )) as LedgerWalletInfo
+  }
+
+  private async getAlchemy() {
+    const { rpcUrl, ethereumChainId } = this.ethereumOptions
+    const { Alchemy, Network } = await import('alchemy-sdk')
+
+    return new Alchemy({
+      apiKey: getKeyFromRpcUrl(rpcUrl),
+      network:
+        ethereumChainId === EthereumChainId.Mainnet
+          ? Network.ETH_MAINNET
+          : Network.ETH_GOERLI,
+    })
   }
 }

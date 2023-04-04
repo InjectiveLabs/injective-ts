@@ -5,7 +5,6 @@ import {
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import type { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
-import type Web3 from 'web3'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 
@@ -21,7 +20,6 @@ export interface WalletStrategyEthereumOptions {
 export interface EthereumWalletStrategyArgs {
   chainId: ChainId
   ethereumOptions: WalletStrategyEthereumOptions
-  web3: Web3
 }
 
 export interface ConcreteCosmosWalletStrategy {
@@ -140,8 +138,6 @@ export interface ConcreteWalletStrategy
    */
   signEip712TypedData(eip712TypedData: string, address: string): Promise<string>
 
-  getNetworkId(): Promise<string>
-
   getChainId(): Promise<string>
 
   getEthereumTransactionReceipt(txHash: string): void
@@ -157,6 +153,4 @@ export interface ConcreteWalletStrategy
   cancelAllEvents?(): void
 
   disconnect?(): Promise<void>
-
-  getWeb3(): Web3
 }

@@ -153,16 +153,6 @@ export default class Leap
     )
   }
 
-  async getNetworkId(): Promise<string> {
-    throw new CosmosWalletException(
-      new Error('getNetworkId is not supported on Leap'),
-      {
-        code: UnspecifiedErrorCode,
-        context: WalletAction.GetNetworkId,
-      },
-    )
-  }
-
   async getChainId(): Promise<string> {
     throw new CosmosWalletException(
       new Error('getChainId is not supported on Leap'),

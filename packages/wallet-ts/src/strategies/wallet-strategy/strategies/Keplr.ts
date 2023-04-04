@@ -154,16 +154,6 @@ export default class Keplr
     )
   }
 
-  async getNetworkId(): Promise<string> {
-    throw new CosmosWalletException(
-      new Error('getNetworkId is not supported on Keplr'),
-      {
-        code: UnspecifiedErrorCode,
-        context: WalletAction.GetNetworkId,
-      },
-    )
-  }
-
   async getChainId(): Promise<string> {
     throw new CosmosWalletException(
       new Error('getChainId is not supported on Keplr'),

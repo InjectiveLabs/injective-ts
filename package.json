@@ -88,5 +88,10 @@
     "typedoc": "^0.22.1",
     "typedoc-monorepo-link-types": "^0.0.4",
     "typescript": "^4.4.3"
+  },
+  "resolutions": {
+    "libsodium": "file:./etc/noop",
+    "libsodium-wrappers": "file:./etc/noop",
+    "@ledgerhq/cryptoassets": "file:./etc/noop"
   }
 }

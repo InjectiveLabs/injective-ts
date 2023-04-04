@@ -4,7 +4,6 @@ import {
   TransactionOptions,
 } from '@injectivelabs/ts-types'
 import { UnspecifiedErrorCode, Web3Exception } from '@injectivelabs/exceptions'
-import type Web3 from 'web3'
 import abi from './abi/injective'
 import { Contract, ContractFunctionObj, ContractTxFunctionObj } from '../types'
 import { getTransactionOptionsAsNonPayableTx } from '../utils'
@@ -15,18 +14,18 @@ export class Erc20Contract extends BaseContract<any> {
 
   constructor({
     ethereumChainId,
-    web3,
     address,
+    provider,
   }: {
     ethereumChainId: EthereumChainId
-    web3: Web3
     address: string
+    provider: any
   }) {
     super({
-      abi,
+      abi: JSON.stringify(abi),
       ethereumChainId,
       address,
-      web3,
+      provider,
     })
   }
 

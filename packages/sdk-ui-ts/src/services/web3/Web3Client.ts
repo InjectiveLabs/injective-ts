@@ -1,10 +1,10 @@
-import { Network } from '@injectivelabs/networks'
+import { Network, isTestnetOrDevnet } from '@injectivelabs/networks'
 import { BigNumberInWei } from '@injectivelabs/utils'
 import { getContractAddressesForNetworkOrThrow } from '@injectivelabs/contracts'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { peggyDenomToContractAddress } from './utils'
 import { INJ_DENOM } from '../../constants'
+import { getKeyFromRpcUrl } from '../../utils/alchemy'
 
 /**
  * Preparing and broadcasting
@@ -13,10 +13,10 @@ import { INJ_DENOM } from '../../constants'
 export class Web3Client {
   private network: Network
 
-  private web3: ReturnType<typeof createAlchemyWeb3>
+  private rpc: string
 
   constructor({ rpc, network }: { rpc: string; network: Network }) {
-    this.web3 = createAlchemyWeb3(rpc as string)
+    this.rpc = rpc
     this.network = network
   }
 
@@ -27,7 +27,7 @@ export class Web3Client {
     address: string
     contractAddress: string
   }): Promise<{ balance: string; allowance: string }> {
-    const { web3, network } = this
+    const { network } = this
 
     if (
       !contractAddress.startsWith('peggy') &&
@@ -41,12 +41,14 @@ export class Web3Client {
     }
 
     try {
+      const alchemy = await this.getAlchemy()
+      const ethersProvider = await alchemy.config.getProvider()
       const tokenAddress = peggyDenomToContractAddress(contractAddress)
       const contractAddresses = getContractAddressesForNetworkOrThrow(network)
       const tokenContractAddress =
         tokenAddress === INJ_DENOM ? contractAddresses.injective : tokenAddress
 
-      const tokenBalances = await web3.alchemy.getTokenBalances(address, [
+      const tokenBalances = await alchemy.core.getTokenBalances(address, [
         tokenContractAddress,
       ])
 
@@ -58,11 +60,16 @@ export class Web3Client {
         )
 
       const balance = tokenBalance ? tokenBalance.tokenBalance || 0 : 0
-      const allowance = await web3.alchemy.getTokenAllowance({
-        owner: address,
-        spender: contractAddresses.peggy,
-        contract: tokenContractAddress,
-      })
+      const { result: allowance } = await ethersProvider.send(
+        'alchemy_getTokenAllowance',
+        [
+          {
+            owner: address,
+            spender: contractAddresses.peggy,
+            contract: tokenContractAddress,
+          },
+        ],
+      )
 
       return {
         balance: new BigNumberInWei(balance || 0).toFixed(),
@@ -77,12 +84,24 @@ export class Web3Client {
   }
 
   async fetchTokenMetaData(address: string) {
-    const { web3 } = this
+    const alchemy = await this.getAlchemy()
 
     try {
-      return await web3.alchemy.getTokenMetadata(address)
+      return await alchemy.core.getTokenMetadata(address)
     } catch (e: unknown) {
       throw new Web3Exception(new Error((e as any).message))
     }
+  }
+
+  private async getAlchemy() {
+    const { rpc, network } = this
+    const { Alchemy, Network } = await import('alchemy-sdk')
+
+    return new Alchemy({
+      apiKey: getKeyFromRpcUrl(rpc),
+      network: !isTestnetOrDevnet(network)
+        ? Network.ETH_MAINNET
+        : Network.ETH_GOERLI,
+    })
   }
 }

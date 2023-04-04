@@ -7,9 +7,9 @@ import {
   PeggyOldContract,
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
-import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { GAS_LIMIT_MULTIPLIER, INJ_DENOM, TIP_IN_GWEI } from '../../constants'
 import { getTransactionOptions, peggyDenomToContractAddress } from './utils'
+import { getKeyFromRpcUrl } from '../../utils/alchemy'
 
 /**
  * Preparing and broadcasting
@@ -20,7 +20,7 @@ export class Web3Composer {
 
   private ethereumChainId: EthereumChainId
 
-  private web3: ReturnType<typeof createAlchemyWeb3>
+  private rpc: string
 
   constructor({
     ethereumChainId,
@@ -31,7 +31,7 @@ export class Web3Composer {
     ethereumChainId: EthereumChainId
     network: Network
   }) {
-    this.web3 = createAlchemyWeb3(rpc)
+    this.rpc = rpc
     this.ethereumChainId = ethereumChainId
     this.network = network
   }
@@ -47,11 +47,13 @@ export class Web3Composer {
     gasPrice: string
     tokenAddress: string
   }) {
-    const { ethereumChainId, network, web3 } = this
+    const { ethereumChainId, network } = this
+    const alchemy = await this.getAlchemy()
+    const ethersProvider = await alchemy.config.getProvider()
 
     const erc20Contract = new Erc20Contract({
-      web3,
       ethereumChainId,
+      provider: ethersProvider,
       address: tokenAddress,
     })
 
@@ -99,7 +101,9 @@ export class Web3Composer {
     destinationAddress: string
     gasPrice: string // BigNumberInWei
   }) {
-    const { web3, network, ethereumChainId } = this
+    const { network, ethereumChainId } = this
+    const alchemy = await this.getAlchemy()
+    const ethersProvider = await alchemy.config.getProvider()
 
     const contractAddresses = getContractAddressesForNetworkOrThrow(network)
     const contractAddress =
@@ -109,9 +113,9 @@ export class Web3Composer {
     const peggyContractAddress = contractAddresses.peggy
 
     const contract = new PeggyOldContract({
-      address: peggyContractAddress,
       ethereumChainId,
-      web3: web3 as any,
+      address: peggyContractAddress,
+      provider: ethersProvider,
     })
 
     const depositForContractFunction = contract.sendToCosmos({
@@ -160,7 +164,9 @@ export class Web3Composer {
     gasPrice: string // BigNumberInWei,
     data?: string
   }) {
-    const { network, web3, ethereumChainId } = this
+    const { network, ethereumChainId } = this
+    const alchemy = await this.getAlchemy()
+    const ethersProvider = await alchemy.config.getProvider()
 
     const contractAddresses = getContractAddressesForNetworkOrThrow(network)
     const contractAddress =
@@ -170,8 +176,8 @@ export class Web3Composer {
     const peggyContractAddress = contractAddresses.peggy
 
     const contract = new PeggyContract({
-      web3,
       ethereumChainId,
+      provider: ethersProvider,
       address: peggyContractAddress,
     })
 
@@ -206,5 +212,18 @@ export class Web3Composer {
       maxPriorityFeePerGas: TIP_IN_GWEI.toString(16),
       data: abiEncodedData,
     }
+  }
+
+  private async getAlchemy() {
+    const { rpc, ethereumChainId } = this
+    const { Alchemy, Network } = await import('alchemy-sdk')
+
+    return new Alchemy({
+      apiKey: getKeyFromRpcUrl(rpc),
+      network:
+        ethereumChainId === EthereumChainId.Mainnet
+          ? Network.ETH_MAINNET
+          : Network.ETH_GOERLI,
+    })
   }
 }

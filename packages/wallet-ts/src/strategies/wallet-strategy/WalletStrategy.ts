@@ -1,10 +1,8 @@
-import Web3 from 'web3'
 import {
   AccountAddress,
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
@@ -23,9 +21,6 @@ import Trezor from './strategies/Trezor'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
-// import WalletConnect from './strategies/WalletConnect'
-// import Cosmostation from './strategies/Cosmostation'
-// import CosmostationEth from './strategies/CosmostationEth'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet } from './utils'
 import { isCosmosWallet } from '../../utils/wallets/cosmos'
@@ -59,13 +54,11 @@ const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
 }
 
 const createStrategy = ({
-  wallet,
   args,
-  web3,
+  wallet,
 }: {
-  wallet: Wallet
   args: WalletStrategyArguments
-  web3?: Web3
+  wallet: Wallet
 }): ConcreteWalletStrategy | undefined => {
   const disabledWallets = args.disabledWallets || []
 
@@ -77,12 +70,11 @@ const createStrategy = ({
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
    */
-  if (isEthWallet(wallet) && !web3) {
+  if (isEthWallet(wallet) && ethereumWalletsDisabled(args)) {
     return undefined
   }
 
   const ethWalletArgs = {
-    web3: web3 as Web3,
     chainId: args.chainId,
     ethereumOptions: args.ethereumOptions as WalletStrategyEthereumOptions,
   } as EthereumWalletStrategyArgs
@@ -98,54 +90,22 @@ const createStrategy = ({
       return new Trezor(ethWalletArgs)
     case Wallet.Torus:
       return new Torus(ethWalletArgs)
-    // case Wallet.CosmostationEth:
-    //   return new CosmostationEth(ethWalletArgs)
-    // case Wallet.WalletConnect:
-    //      return new WalletConnect(ethWalletArgs)
     case Wallet.Keplr:
       return new Keplr({ ...args })
     case Wallet.Leap:
       return new Leap({ ...args })
-    // case Wallet.Cosmostation:
-    //   return new Cosmostation({ ...args })
     default:
       return undefined
   }
 }
 
-const createWeb3 = (args: WalletStrategyArguments): Web3 => {
-  const { ethereumOptions } = args
-
-  if (!ethereumOptions) {
-    throw new WalletException(new Error('Please provide Ethereum chainId'))
-  }
-
-  const { wsRpcUrl, rpcUrl, ethereumChainId } = ethereumOptions
-
-  if (!ethereumChainId) {
-    throw new WalletException(new Error('Please provide Ethereum chainId'))
-  }
-
-  if (!wsRpcUrl && !rpcUrl) {
-    throw new WalletException(
-      new Error('Please provide Ethereum RPC endpoints'),
-    )
-  }
-
-  const alchemyUrl = (wsRpcUrl as string) || (rpcUrl as string)
-
-  return createAlchemyWeb3(alchemyUrl) as unknown as Web3
-}
-
 const createStrategies = (
   args: WalletStrategyArguments,
 ): Record<Wallet, ConcreteWalletStrategy | undefined> => {
-  const web3 = ethereumWalletsDisabled(args) ? undefined : createWeb3(args)
-
   return Object.values(Wallet).reduce(
     (strategies, wallet) => ({
       ...strategies,
-      [wallet]: createStrategy({ wallet, args, web3 }),
+      [wallet]: createStrategy({ wallet, args }),
     }),
     {} as Record<Wallet, ConcreteWalletStrategy | undefined>,
   )
@@ -193,10 +153,6 @@ export default class WalletStrategy {
 
   public getChainId(): Promise<string> {
     return this.getStrategy().getChainId()
-  }
-
-  public getNetworkId(): Promise<string> {
-    return this.getStrategy().getNetworkId()
   }
 
   public async getEthereumTransactionReceipt(txHash: string): Promise<void> {
@@ -270,10 +226,6 @@ export default class WalletStrategy {
     }
 
     return this.getStrategy().signCosmosTransaction(transaction)
-  }
-
-  public getWeb3(): Web3 {
-    return this.getStrategy().getWeb3()
   }
 
   public onAccountChange(callback: onAccountChangeCallback): void {

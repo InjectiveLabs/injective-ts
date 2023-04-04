@@ -219,16 +219,6 @@ export default class Cosmostation
     )
   }
 
-  async getNetworkId(): Promise<string> {
-    throw new CosmosWalletException(
-      new Error('getNetworkId is not supported on Cosmostation'),
-      {
-        code: UnspecifiedErrorCode,
-        context: WalletAction.GetNetworkId,
-      },
-    )
-  }
-
   async getChainId(): Promise<string> {
     throw new CosmosWalletException(
       new Error('getChainId is not supported on Cosmostation'),
