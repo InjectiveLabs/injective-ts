@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.10.28...@injectivelabs/bridge-ts@1.10.29) (2023-04-04)
+
+
+### Bug Fixes
+
+* msg execute contract compat ([e15d04e](https://github.com/InjectiveLabs/injective-ts/commit/e15d04e9b9ec98c027b4e0b8cb4cc40b4ee398fd))
+
+
+
+
+
 ## [1.10.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.10.27...@injectivelabs/bridge-ts@1.10.28) (2023-04-04)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
