@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.10.33...@injectivelabs/sdk-ui-ts@1.10.34) (2023-04-04)
+
+
+### Bug Fixes
+
+* revert dynamic import for alchemy-sdk ([7de3e80](https://github.com/InjectiveLabs/injective-ts/commit/7de3e8008d53784b678e4ef01e357550808ee573))
+
+
+
+
+
 ## [1.10.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.10.32...@injectivelabs/sdk-ui-ts@1.10.33) (2023-04-04)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
