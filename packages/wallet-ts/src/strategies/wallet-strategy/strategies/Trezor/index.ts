@@ -5,7 +5,7 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import type { Alchemy } from 'alchemy-sdk'
+import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import { addHexPrefix } from 'ethereumjs-util'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
@@ -355,14 +355,13 @@ export default class Trezor
     }
 
     const { rpcUrl, ethereumChainId } = this.ethereumOptions
-    const { Alchemy, Network } = await import('alchemy-sdk')
 
     this.alchemy = new Alchemy({
       apiKey: getKeyFromRpcUrl(rpcUrl),
       network:
         ethereumChainId === EthereumChainId.Mainnet
-          ? Network.ETH_MAINNET
-          : Network.ETH_GOERLI,
+          ? AlchemyNetwork.ETH_MAINNET
+          : AlchemyNetwork.ETH_GOERLI,
     })
 
     return this.alchemy
