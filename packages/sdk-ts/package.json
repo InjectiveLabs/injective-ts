@@ -61,8 +61,6 @@
     "js-sha3": "^0.8.0",
     "jscrypto": "^1.0.3",
     "keccak256": "^1.0.6",
-    "libsodium": "^0.7.11",
-    "libsodium-wrappers": "^0.7.11",
     "link-module-alias": "^1.2.0",
     "rxjs": "^7.8.0",
     "secp256k1": "^4.0.3",
@@ -76,7 +74,7 @@
     "displayName": "sdk-ts API documentation"
   },
   "resolutions": {
-    "libsodium": "file:./etc/noop",
-    "libsodium-wrappers": "file:./etc/noop"
+    "libsodium": "npm:@bangjelkoski/noop",
+    "libsodium-wrappers": "npm:@bangjelkoski/noop"
   }
 }
