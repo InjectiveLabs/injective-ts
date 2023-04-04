@@ -1316,4 +1316,12 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  XAU: {
+    name: 'Gold',
+    symbol: 'XAU',
+    decimals: 6,
+    logo: 'gold.svg',
+    coinGeckoId: '',
+  },
 } as Record<string, TokenMeta>
