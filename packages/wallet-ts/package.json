@@ -74,8 +74,8 @@
     "displayName": "wallet-ts API Documentation"
   },
   "resolutions": {
-    "libsodium": "npm:@bangjelkoski/noop",
-    "libsodium-wrappers": "npm:@bangjelkoski/noop",
-    "@ledgerhq/cryptoassets": "npm:@bangjelkoski/noop"
+    "**/libsodium": "npm:@bangjelkoski/noop",
+    "**/libsodium-wrappers": "npm:@bangjelkoski/noop",
+    "**/@ledgerhq/cryptoassets": "npm:@bangjelkoski/noop"
   }
 }

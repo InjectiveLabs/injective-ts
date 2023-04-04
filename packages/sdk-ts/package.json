@@ -74,7 +74,7 @@
     "displayName": "sdk-ts API documentation"
   },
   "resolutions": {
-    "libsodium": "npm:@bangjelkoski/noop",
-    "libsodium-wrappers": "npm:@bangjelkoski/noop"
+    "**/libsodium": "npm:@bangjelkoski/noop",
+    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   }
 }
