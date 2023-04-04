@@ -5,6 +5,7 @@ import { Web3Exception } from '@injectivelabs/exceptions'
 import { peggyDenomToContractAddress } from './utils'
 import { INJ_DENOM } from '../../constants'
 import { getKeyFromRpcUrl } from '../../utils/alchemy'
+import type { Alchemy } from 'alchemy-sdk'
 
 /**
  * Preparing and broadcasting
@@ -14,6 +15,8 @@ export class Web3Client {
   private network: Network
 
   private rpc: string
+
+  private alchemy: Alchemy | undefined
 
   constructor({ rpc, network }: { rpc: string; network: Network }) {
     this.rpc = rpc
@@ -94,14 +97,20 @@ export class Web3Client {
   }
 
   private async getAlchemy() {
+    if (this.alchemy) {
+      return this.alchemy
+    }
+
     const { rpc, network } = this
     const { Alchemy, Network } = await import('alchemy-sdk')
 
-    return new Alchemy({
+    this.alchemy = new Alchemy({
       apiKey: getKeyFromRpcUrl(rpc),
       network: !isTestnetOrDevnet(network)
         ? Network.ETH_MAINNET
         : Network.ETH_GOERLI,
     })
+
+    return this.alchemy
   }
 }

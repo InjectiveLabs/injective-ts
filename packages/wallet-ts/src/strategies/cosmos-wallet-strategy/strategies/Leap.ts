@@ -18,6 +18,7 @@ import { AminoSignResponse } from '@cosmjs/launchpad'
 import { LeapWallet } from '../../../utils/wallets/leap'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
+import Long from 'long'
 
 export default class Leap implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -91,7 +92,10 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      return signer.signDirect(transaction.address, signDoc)
+      return signer.signDirect(transaction.address, {
+        ...signDoc,
+        accountNumber: new Long(parseInt(signDoc.accountNumber), 10),
+      })
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
         throw e

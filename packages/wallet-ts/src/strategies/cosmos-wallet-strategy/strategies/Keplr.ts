@@ -17,6 +17,7 @@ import { AminoSignResponse, StdSignDoc } from '@cosmjs/launchpad'
 import { KeplrWallet } from '../../../utils/wallets/keplr'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import Long from 'long'
 
 export default class Keplr implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -97,7 +98,10 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
     const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      return signer.signDirect(transaction.address, signDoc)
+      return signer.signDirect(transaction.address, {
+        ...signDoc,
+        accountNumber: new Long(parseInt(signDoc.accountNumber), 10),
+      })
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

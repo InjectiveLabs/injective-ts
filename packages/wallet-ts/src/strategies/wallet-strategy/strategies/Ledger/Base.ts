@@ -4,8 +4,9 @@ import {
   ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
+import type { Alchemy } from 'alchemy-sdk'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
-import Common, { Chain, Hardfork } from '@ethereumjs/common'
+import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import {
   ErrorType,
@@ -39,7 +40,7 @@ const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   }
 
   if (chainId === EthereumChainId.Kovan) {
-    return Chain.Kovan
+    return Chain.Goerli
   }
 
   return Chain.Mainnet
@@ -56,6 +57,8 @@ export default class LedgerBase
   private ledger: LedgerHW
 
   private ethereumOptions: WalletStrategyEthereumOptions
+
+  private alchemy: Alchemy | undefined
 
   constructor(
     args: EthereumWalletStrategyArgs & {
@@ -310,15 +313,21 @@ export default class LedgerBase
   }
 
   private async getAlchemy() {
+    if (this.alchemy) {
+      return this.alchemy
+    }
+
     const { rpcUrl, ethereumChainId } = this.ethereumOptions
     const { Alchemy, Network } = await import('alchemy-sdk')
 
-    return new Alchemy({
+    this.alchemy = new Alchemy({
       apiKey: getKeyFromRpcUrl(rpcUrl),
       network:
         ethereumChainId === EthereumChainId.Mainnet
           ? Network.ETH_MAINNET
           : Network.ETH_GOERLI,
     })
+
+    return this.alchemy
   }
 }

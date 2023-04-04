@@ -10,6 +10,7 @@ import {
 import { GAS_LIMIT_MULTIPLIER, INJ_DENOM, TIP_IN_GWEI } from '../../constants'
 import { getTransactionOptions, peggyDenomToContractAddress } from './utils'
 import { getKeyFromRpcUrl } from '../../utils/alchemy'
+import type { Alchemy } from 'alchemy-sdk'
 
 /**
  * Preparing and broadcasting
@@ -21,6 +22,8 @@ export class Web3Composer {
   private ethereumChainId: EthereumChainId
 
   private rpc: string
+
+  private alchemy: Alchemy | undefined
 
   constructor({
     ethereumChainId,
@@ -215,15 +218,21 @@ export class Web3Composer {
   }
 
   private async getAlchemy() {
+    if (this.alchemy) {
+      return this.alchemy
+    }
+
     const { rpc, ethereumChainId } = this
     const { Alchemy, Network } = await import('alchemy-sdk')
 
-    return new Alchemy({
+    this.alchemy = new Alchemy({
       apiKey: getKeyFromRpcUrl(rpc),
       network:
         ethereumChainId === EthereumChainId.Mainnet
           ? Network.ETH_MAINNET
           : Network.ETH_GOERLI,
     })
+
+    return this.alchemy
   }
 }

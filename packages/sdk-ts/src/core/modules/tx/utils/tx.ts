@@ -1,14 +1,13 @@
 import { createAny, createAnyMessage } from './helpers'
-import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Msgs } from '../../msgs'
 import {
+  GoogleProtobufAny,
+  CosmosTxV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
+  InjectiveTypesV1TxExt,
   CosmosCryptoSecp256k1Keys,
   CosmosTxSigningV1Beta1Signing,
-  CosmosTxV1Beta1Tx,
-  GoogleProtobufAny,
-  InjectiveTypesV1TxExt,
 } from '@injectivelabs/core-proto-ts'
 
 export const getPublicKey = ({
@@ -184,10 +183,10 @@ export const createCosmosSignDocFromTransaction = (args: {
   chainId: string
   accountNumber: number
 }) => {
-  return CosmosSignDoc.fromPartial({
+  return CosmosTxV1Beta1Tx.SignDoc.fromPartial({
     bodyBytes: args.txRaw.bodyBytes,
     authInfoBytes: args.txRaw.authInfoBytes,
-    accountNumber: args.accountNumber,
+    accountNumber: args.accountNumber.toString(),
     chainId: args.chainId,
   })
 }

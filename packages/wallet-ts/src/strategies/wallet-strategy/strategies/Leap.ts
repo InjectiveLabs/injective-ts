@@ -22,6 +22,7 @@ import { LeapWallet } from '../../../utils/wallets/leap'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import Long from 'long'
 
 export default class Leap
   extends BaseConcreteStrategy
@@ -131,7 +132,10 @@ export default class Leap
     const signDoc = createCosmosSignDocFromTransaction(transaction)
 
     try {
-      return await signer.signDirect(transaction.address, signDoc)
+      return await signer.signDirect(transaction.address, {
+        ...signDoc,
+        accountNumber: new Long(parseInt(signDoc.accountNumber), 10),
+      })
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

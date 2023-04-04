@@ -39,7 +39,7 @@
     "@injectivelabs/token-utils": "^1.10.5-alpha.0",
     "@injectivelabs/ts-types": "^1.10.1-alpha.0",
     "@injectivelabs/utils": "^1.10.2-alpha.0",
-    "alchemy-sdk": "^2.2.3",
+    "alchemy-sdk": "^2.6.3",
     "copyfiles": "^2.4.1",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"

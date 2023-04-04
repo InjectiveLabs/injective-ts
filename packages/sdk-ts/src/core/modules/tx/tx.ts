@@ -16,7 +16,6 @@ import {
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { Msgs } from '../msgs'
-import { SignDoc as CosmosSignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../../client'
@@ -254,10 +253,10 @@ export const createTransactionAndCosmosSignDoc = (
 
   return {
     ...result,
-    cosmosSignDoc: CosmosSignDoc.fromPartial({
+    cosmosSignDoc: CosmosTxV1Beta1Tx.SignDoc.fromPartial({
       bodyBytes: result.bodyBytes,
       authInfoBytes: result.authInfoBytes,
-      accountNumber: signer.accountNumber,
+      accountNumber: signer.accountNumber.toString(),
       chainId: args.chainId,
     }),
   }
@@ -281,10 +280,10 @@ export const createTransactionAndCosmosSignDocForAddressAndMsg = async (
 
   return {
     ...result,
-    cosmosSignDoc: CosmosSignDoc.fromPartial({
+    cosmosSignDoc: CosmosTxV1Beta1Tx.SignDoc.fromPartial({
       bodyBytes: result.bodyBytes,
       authInfoBytes: result.authInfoBytes,
-      accountNumber: signer.accountNumber,
+      accountNumber: signer.accountNumber.toString(),
       chainId: params.chainId,
     }),
   }

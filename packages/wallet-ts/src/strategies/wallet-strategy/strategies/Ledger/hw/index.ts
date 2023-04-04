@@ -1,7 +1,5 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
-// @ts-ignore
-import TransportU2F from '@ledgerhq/hw-transport-u2f'
 import type EthereumApp from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
 import { LedgerException } from '@injectivelabs/exceptions'
@@ -43,7 +41,7 @@ export default class LedgerTransport {
       throw new LedgerException(new Error((e as any).message))
     }
 
-    return TransportU2F.create()
+    return TransportWebUSB.request()
   }
 
   async getInstance(): Promise<EthereumApp> {
