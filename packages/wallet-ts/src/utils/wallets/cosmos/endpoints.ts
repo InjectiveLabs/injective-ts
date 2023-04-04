@@ -27,8 +27,8 @@ export const getEndpointsFromChainId = (
       }
     case CosmosChainId.Cosmoshub:
       return {
-        rpc: 'https://tm.cosmos.injective.network',
-        rest: 'https://lcd.cosmos.injective.network',
+        rpc: 'https://rpc.cosmos.directory/cosmoshub',
+        rest: 'https://rest.cosmos.directory/cosmoshub',
       }
     case CosmosChainId.Osmosis:
       return {

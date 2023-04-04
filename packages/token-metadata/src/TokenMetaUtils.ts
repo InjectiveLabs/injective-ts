@@ -81,6 +81,19 @@ export class TokenMetaUtils {
       !tokensByErc20Address[contractAddress] &&
       !tokensByErc20Address[address]
     ) {
+      const checksumAddress = Object.keys(tokensByErc20Address).find(
+        (checksumAddress) =>
+          checksumAddress.toLowerCase() === address ||
+          checksumAddress.toLowerCase() === contractAddress,
+      )
+
+      if (checksumAddress) {
+        return {
+          ...tokensByErc20Address[checksumAddress],
+          tokenType: TokenType.Erc20,
+        }
+      }
+
       return
     }
 

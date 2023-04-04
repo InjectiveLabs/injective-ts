@@ -37,12 +37,7 @@ export const endpointsStaging: NetworkEndpoints = {
 }
 
 export const endpointsPublic: NetworkEndpoints = {
-  indexer: 'https://public.api.injective.network',
-  grpc: 'https://public.grpc.injective.network',
-  rpc: 'https://tm.injective.network',
-  rest: 'https://public.lcd.injective.network',
-  chronos: 'https://public.api.injective.network',
-  explorer: 'https://public.api.injective.network',
+  ...endpointsStaging,
 }
 
 export const endpointsTestnetK8s: NetworkEndpoints = {

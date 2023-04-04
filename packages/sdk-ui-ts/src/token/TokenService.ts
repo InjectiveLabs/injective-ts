@@ -342,7 +342,7 @@ export class TokenService {
     if (tokenFromDenomAsSymbol) {
       return {
         ...transaction,
-        token: tokenFromDenomAsSymbol || {},
+        token: tokenFromDenomAsSymbol,
       }
     }
 
