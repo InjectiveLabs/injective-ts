@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.11...@injectivelabs/token-metadata@1.10.12) (2023-04-04)
+
+
+### Bug Fixes
+
+* checksum addresss ([7ef9e14](https://github.com/InjectiveLabs/injective-ts/commit/7ef9e14c05eaab9d9d2d1e54622566eb83b1b8d7))
+
+
+
+
+
 ## [1.10.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.11-alpha.0...@injectivelabs/token-metadata@1.10.11) (2023-04-04)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
