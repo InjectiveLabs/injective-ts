@@ -55,7 +55,7 @@
     "cosmjs-types": "^0.7.1",
     "eth-crypto": "^2.6.0",
     "ethereumjs-util": "^7.1.4",
-    "ethers": "^5.6.4",
+    "ethers": "^5.7.2",
     "google-protobuf": "^3.21.0",
     "graphql": "^16.3.0",
     "http-status-codes": "^2.2.0",

@@ -35,7 +35,7 @@
     "@injectivelabs/networks": "^1.10.2",
     "@injectivelabs/ts-types": "^1.10.1",
     "@injectivelabs/utils": "^1.10.2",
-    "ethers": "^6.2.3",
+    "ethers": "^5.7.2",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.3"
   },
