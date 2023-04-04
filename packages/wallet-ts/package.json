@@ -72,5 +72,10 @@
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
     "displayName": "wallet-ts API Documentation"
+  },
+  "resolutions": {
+    "libsodium": "file:./../../etc/noop",
+    "libsodium-wrappers": "file:./../../etc/noop",
+    "@ledgerhq/cryptoassets": "file:./../../etc/noop"
   }
 }
