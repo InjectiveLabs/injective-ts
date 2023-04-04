@@ -67,13 +67,14 @@
     "shx": "^0.3.2",
     "snakecase-keys": "^5.4.1"
   },
-  "gitHead": "3364a2b1e58aba2387c509431cc1ae8ebf2c53d0",
+  "gitHead": "2fe0e112129fc0047696849a235ce04f9a5cbec7",
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
     "displayName": "sdk-ts API documentation"
   },
   "resolutions": {
+    "@ethereumjs/tx": "^4.1.1",
     "**/libsodium": "npm:@bangjelkoski/noop",
     "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   }

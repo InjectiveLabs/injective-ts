@@ -90,6 +90,7 @@
     "typescript": "^4.4.3"
   },
   "resolutions": {
+    "@ethereumjs/tx": "^4.1.1",
     "**/libsodium": "npm:@bangjelkoski/noop",
     "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   }
