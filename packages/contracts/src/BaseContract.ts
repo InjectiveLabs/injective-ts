@@ -1,5 +1,5 @@
 import { EthereumChainId } from '@injectivelabs/ts-types'
-import ethers from 'ethers'
+import { ethers } from 'ethers'
 
 export default class BaseContract<T extends any> {
   public readonly abi: any
@@ -14,9 +14,9 @@ export default class BaseContract<T extends any> {
     provider,
   }: {
     abi: any
-    ethereumChainId?: EthereumChainId
-    address: string
     provider: any
+    address: string
+    ethereumChainId?: EthereumChainId
   }) {
     this.abi = abi
     this.address = address
