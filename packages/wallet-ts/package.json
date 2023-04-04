@@ -75,7 +75,6 @@
   },
   "resolutions": {
     "**/libsodium": "npm:@bangjelkoski/noop",
-    "**/libsodium-wrappers": "npm:@bangjelkoski/noop",
-    "**/@ledgerhq/cryptoassets": "npm:@bangjelkoski/noop"
+    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   }
 }

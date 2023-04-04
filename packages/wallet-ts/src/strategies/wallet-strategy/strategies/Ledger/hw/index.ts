@@ -2,7 +2,7 @@ import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 // @ts-ignore
 import TransportU2F from '@ledgerhq/hw-transport-u2f'
-import EthereumApp from '@ledgerhq/hw-app-eth'
+import type EthereumApp from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
 import { LedgerException } from '@injectivelabs/exceptions'
 import AccountManager from './AccountManager'
@@ -49,7 +49,9 @@ export default class LedgerTransport {
   async getInstance(): Promise<EthereumApp> {
     if (!this.ledger) {
       const transport = await LedgerTransport.getTransport()
-      this.ledger = new EthereumApp(transport)
+      const EthereumApp = await import('@ledgerhq/hw-app-eth')
+
+      this.ledger = new EthereumApp.default(transport)
 
       transport.on('disconnect', () => {
         this.ledger = null

@@ -5,7 +5,6 @@ import {
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
-import ledgerService from '@ledgerhq/hw-app-eth/lib/services/ledger'
 import Common, { Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import {
@@ -251,7 +250,10 @@ export default class LedgerBase
     try {
       const ledger = await this.ledger.getInstance()
       const { derivationPath } = await this.getWalletForAddress(options.address)
-      const resolution = await ledgerService.resolveTransaction(
+      const ledgerService = await import(
+        '@ledgerhq/hw-app-eth/lib/services/ledger'
+      )
+      const resolution = await ledgerService.default.resolveTransaction(
         encodedMessageHex,
         {},
         {},
