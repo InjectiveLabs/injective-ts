@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.27-alpha.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.27-alpha.5...@injectivelabs/wallet-ts@1.10.27-alpha.6) (2023-04-04)
+
+
+### Bug Fixes
+
+* dynamic import for ledger eth app ([63d08bb](https://github.com/InjectiveLabs/injective-ts/commit/63d08bb696967567a2744bced7aacc13eb16d6e6))
+
+
+
+
+
 ## [1.10.27-alpha.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.27-alpha.4...@injectivelabs/wallet-ts@1.10.27-alpha.5) (2023-04-04)
 
 
