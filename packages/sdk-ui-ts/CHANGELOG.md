@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.10.35...@injectivelabs/sdk-ui-ts@1.10.36) (2023-04-05)
+
+
+### Bug Fixes
+
+* wallet issues ([a67b6fb](https://github.com/InjectiveLabs/injective-ts/commit/a67b6fb15666c2b2e9f4745b522dfc493981f918))
+
+
+
+
+
 ## [1.10.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.10.34...@injectivelabs/sdk-ui-ts@1.10.35) (2023-04-04)
 
 
