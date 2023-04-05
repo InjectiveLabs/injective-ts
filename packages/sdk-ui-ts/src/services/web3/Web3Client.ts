@@ -63,16 +63,13 @@ export class Web3Client {
         )
 
       const balance = tokenBalance ? tokenBalance.tokenBalance || 0 : 0
-      const { result: allowance } = await ethersProvider.send(
-        'alchemy_getTokenAllowance',
-        [
-          {
-            owner: address,
-            spender: contractAddresses.peggy,
-            contract: tokenContractAddress,
-          },
-        ],
-      )
+      const allowance = await ethersProvider.send('alchemy_getTokenAllowance', [
+        {
+          owner: address,
+          spender: contractAddresses.peggy,
+          contract: tokenContractAddress,
+        },
+      ])
 
       return {
         balance: new BigNumberInWei(balance || 0).toFixed(),
