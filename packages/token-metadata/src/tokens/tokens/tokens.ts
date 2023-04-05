@@ -1324,4 +1324,24 @@ export default {
     logo: 'gold.svg',
     coinGeckoId: '',
   },
+
+  ALPHA: {
+    name: 'Alpha Coin',
+    symbol: 'ALPHA',
+    decimals: 6,
+    logo: 'alpha.png',
+    coinGeckoId: 'alphacoin',
+
+    erc20: {
+      decimals: 6,
+      address: '0x138c2f1123cf3f82e4596d097c118eac6684940b',
+      tokenType: TokenType.Erc20,
+    },
+
+    cw20: {
+      decimals: 6,
+      address: 'inj1zwnsemwrpve3wrrg0njj89w6mt5rmj9ydkc46u',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>
