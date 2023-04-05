@@ -4,7 +4,8 @@ import {
   TxRaw,
   TxResponse,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromTransaction,
+  createCosmosSignDocFromSignDoc,
+  createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -17,7 +18,6 @@ import { AminoSignResponse, StdSignDoc } from '@cosmjs/launchpad'
 import { KeplrWallet } from '../../../utils/wallets/keplr'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
-import Long from 'long'
 
 export default class Keplr implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -95,13 +95,13 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
   }) {
     const keplrWallet = this.getKeplrWallet()
     const signer = await keplrWallet.getOfflineSigner()
-    const signDoc = createCosmosSignDocFromTransaction(transaction)
+    const signDoc = createSignDocFromTransaction(transaction)
 
     try {
-      return signer.signDirect(transaction.address, {
-        ...signDoc,
-        accountNumber: new Long(parseInt(signDoc.accountNumber), 10),
-      })
+      return signer.signDirect(
+        transaction.address,
+        createCosmosSignDocFromSignDoc(signDoc),
+      )
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

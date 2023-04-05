@@ -9,6 +9,7 @@ import {
   CosmosCryptoSecp256k1Keys,
   CosmosTxSigningV1Beta1Signing,
 } from '@injectivelabs/core-proto-ts'
+import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 
 export const getPublicKey = ({
   chainId,
@@ -157,7 +158,7 @@ export const createAuthInfo = ({
   return authInfo
 }
 
-export const createSigDoc = ({
+export const createSignDoc = ({
   bodyBytes,
   authInfoBytes,
   chainId,
@@ -178,7 +179,7 @@ export const createSigDoc = ({
   return signDoc
 }
 
-export const createCosmosSignDocFromTransaction = (args: {
+export const createSignDocFromTransaction = (args: {
   txRaw: CosmosTxV1Beta1Tx.TxRaw
   chainId: string
   accountNumber: number
@@ -188,6 +189,17 @@ export const createCosmosSignDocFromTransaction = (args: {
     authInfoBytes: args.txRaw.authInfoBytes,
     accountNumber: args.accountNumber.toString(),
     chainId: args.chainId,
+  })
+}
+
+export const createCosmosSignDocFromSignDoc = (
+  signDoc: CosmosTxV1Beta1Tx.SignDoc,
+): SignDoc => {
+  return SignDoc.fromPartial({
+    bodyBytes: signDoc.bodyBytes,
+    authInfoBytes: signDoc.authInfoBytes,
+    accountNumber: signDoc.accountNumber,
+    chainId: signDoc.chainId,
   })
 }
 

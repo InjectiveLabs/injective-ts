@@ -3,8 +3,11 @@ import {
   EthereumChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
-import { UnspecifiedErrorCode, Web3Exception } from '@injectivelabs/exceptions'
-import { getTransactionOptionsAsNonPayableTx } from '../utils'
+import {
+  Web3Exception,
+  GeneralException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import abi from './abi/peggy'
 import { Contract, ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'
@@ -30,19 +33,19 @@ export class PeggyContract extends BaseContract<any> {
   }
 
   sendToInjective({
-    contractAddress,
-    address,
-    amount,
     data = '',
+    amount,
+    address,
+    contractAddress,
     transactionOptions,
   }: {
-    contractAddress: string
-    address: AccountAddress
-    amount: string
     data?: any
+    amount: string
+    address: AccountAddress
+    contractAddress: string
     transactionOptions: TransactionOptions
   }): ContractTxFunctionObj<string> {
-    const { contract } = this
+    const { contract, ethersInterface } = this
 
     return {
       callAsync() {
@@ -56,33 +59,39 @@ export class PeggyContract extends BaseContract<any> {
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods
-          .sendToInjective(contractAddress, address, amount, data)
-          .encodeABI()
+        return ethersInterface.encodeFunctionData('sendToInjective', [
+          contractAddress,
+          address,
+          amount,
+          data,
+        ])
       },
 
       async sendTransactionAsync(): Promise<string> {
-        const { transactionHash } = await contract.methods
-          .sendToInjective(contractAddress, address, amount, data)
-          .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
-
-        return transactionHash
+        throw new GeneralException(new Error('Not implemented'))
       },
 
       async estimateGasAsync(): Promise<number> {
-        return contract.methods
-          .sendToInjective(contractAddress, address, amount, data)
-          .estimateGas(transactionOptions)
+        const response = await contract.estimateGas.sendToInjective(
+          contractAddress,
+          address,
+          amount,
+          data,
+          {
+            from: transactionOptions.from,
+          },
+        )
+
+        return parseInt(response.toString(), 10)
       },
     }
   }
 
   deployERC20({
-    denom,
     name,
+    denom,
     symbol,
     decimals = 18,
-    transactionOptions,
   }: {
     denom: string
     name: string
@@ -90,7 +99,7 @@ export class PeggyContract extends BaseContract<any> {
     decimals?: number
     transactionOptions: TransactionOptions
   }): ContractTxFunctionObj<string> {
-    const { contract } = this
+    const { contract, ethersInterface } = this
 
     return {
       callAsync() {
@@ -104,23 +113,27 @@ export class PeggyContract extends BaseContract<any> {
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods
-          .deployERC20(denom, name, symbol, decimals)
-          .encodeABI()
+        return ethersInterface.encodeFunctionData('deployERC20', [
+          denom,
+          name,
+          symbol,
+          decimals,
+        ])
       },
 
       async sendTransactionAsync(): Promise<string> {
-        const { transactionHash } = await contract.methods
-          .deployERC20(denom, name, symbol, decimals)
-          .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
-
-        return transactionHash
+        throw new GeneralException(new Error('Not implemented'))
       },
 
       async estimateGasAsync(): Promise<number> {
-        return contract.methods
-          .deployERC20(denom, name, symbol, decimals)
-          .estimateGas(transactionOptions)
+        const response = await contract.estimateGas.deployERC20(
+          denom,
+          name,
+          symbol,
+          decimals,
+        )
+
+        return parseInt(response.toString(), 10)
       },
     }
   }

@@ -8,6 +8,8 @@ export default class BaseContract<T extends any> {
 
   protected readonly contract: T
 
+  protected readonly ethersInterface: any
+
   constructor({
     abi,
     address,
@@ -21,5 +23,6 @@ export default class BaseContract<T extends any> {
     this.abi = abi
     this.address = address
     this.contract = new ethers.Contract(address, abi, provider) as unknown as T
+    this.ethersInterface = new ethers.utils.Interface(abi) as any
   }
 }

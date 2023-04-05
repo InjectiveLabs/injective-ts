@@ -4,7 +4,6 @@ import { BigNumberInWei } from '@injectivelabs/utils'
 import {
   Erc20Contract,
   PeggyContract,
-  PeggyOldContract,
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
 import { GAS_LIMIT_MULTIPLIER, INJ_DENOM, TIP_IN_GWEI } from '../../constants'
@@ -78,67 +77,6 @@ export class Web3Composer {
     return {
       from: address,
       to: tokenAddress,
-      gas: new BigNumberInWei(gas.times(GAS_LIMIT_MULTIPLIER).toFixed(0))
-        .decimalPlaces(0)
-        .toNumber()
-        .toString(16),
-      maxFeePerGas: new BigNumberInWei(gasPrice)
-        .decimalPlaces(0)
-        .toNumber()
-        .toString(16),
-      maxPriorityFeePerGas: TIP_IN_GWEI.toString(16),
-      data,
-    }
-  }
-
-  async getPeggyTransferTxOld({
-    address,
-    amount,
-    denom,
-    destinationAddress,
-    gasPrice,
-  }: {
-    address: string
-    amount: string // BigNumberInWei
-    denom: string
-    destinationAddress: string
-    gasPrice: string // BigNumberInWei
-  }) {
-    const { network, ethereumChainId } = this
-    const alchemy = await this.getAlchemy()
-    const ethersProvider = await alchemy.config.getProvider()
-
-    const contractAddresses = getContractAddressesForNetworkOrThrow(network)
-    const contractAddress =
-      denom === INJ_DENOM
-        ? contractAddresses.injective
-        : peggyDenomToContractAddress(denom)
-    const peggyContractAddress = contractAddresses.peggy
-
-    const contract = new PeggyOldContract({
-      ethereumChainId,
-      address: peggyContractAddress,
-      provider: ethersProvider,
-    })
-
-    const depositForContractFunction = contract.sendToCosmos({
-      contractAddress,
-      amount: new BigNumberInWei(amount).toFixed(),
-      address: `0x${'0'.repeat(24)}${destinationAddress.slice(2)}`,
-      transactionOptions: getTransactionOptions({
-        gasPrice: '0',
-        from: address,
-      }),
-    })
-
-    const data = depositForContractFunction.getABIEncodedTransactionData()
-    const gas = new BigNumberInWei(
-      await depositForContractFunction.estimateGasAsync(),
-    )
-
-    return {
-      from: address,
-      to: peggyContractAddress,
       gas: new BigNumberInWei(gas.times(GAS_LIMIT_MULTIPLIER).toFixed(0))
         .decimalPlaces(0)
         .toNumber()

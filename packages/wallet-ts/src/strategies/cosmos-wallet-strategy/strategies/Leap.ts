@@ -10,7 +10,8 @@ import {
   TxRaw,
   TxResponse,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromTransaction,
+  createCosmosSignDocFromSignDoc,
+  createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { StdSignDoc } from '@keplr-wallet/types'
@@ -18,7 +19,6 @@ import { AminoSignResponse } from '@cosmjs/launchpad'
 import { LeapWallet } from '../../../utils/wallets/leap'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
-import Long from 'long'
 
 export default class Leap implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -89,13 +89,13 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
   }) {
     const leapWallet = this.getLeapWallet()
     const signer = await leapWallet.getOfflineSigner()
-    const signDoc = createCosmosSignDocFromTransaction(transaction)
+    const signDoc = createSignDocFromTransaction(transaction)
 
     try {
-      return signer.signDirect(transaction.address, {
-        ...signDoc,
-        accountNumber: new Long(parseInt(signDoc.accountNumber), 10),
-      })
+      return signer.signDirect(
+        transaction.address,
+        createCosmosSignDocFromSignDoc(signDoc),
+      )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
         throw e

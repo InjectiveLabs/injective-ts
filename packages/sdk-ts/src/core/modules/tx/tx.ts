@@ -4,7 +4,7 @@ import {
   createAuthInfo,
   createBody,
   createFee,
-  createSigDoc,
+  createSignDoc,
   createSigners,
   SIGN_DIRECT,
 } from './utils'
@@ -76,7 +76,7 @@ export const createTransactionWithSigners = ({
   const bodyBytes = CosmosTxV1Beta1Tx.TxBody.encode(body).finish()
   const authInfoBytes = CosmosTxV1Beta1Tx.AuthInfo.encode(authInfo).finish()
 
-  const signDoc = createSigDoc({
+  const signDoc = createSignDoc({
     chainId,
     bodyBytes: bodyBytes,
     authInfoBytes: authInfoBytes,

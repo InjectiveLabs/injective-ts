@@ -3,10 +3,13 @@ import {
   EthereumChainId,
   TransactionOptions,
 } from '@injectivelabs/ts-types'
-import { UnspecifiedErrorCode, Web3Exception } from '@injectivelabs/exceptions'
+import {
+  GeneralException,
+  UnspecifiedErrorCode,
+  Web3Exception,
+} from '@injectivelabs/exceptions'
 import abi from './abi/injective'
 import { Contract, ContractFunctionObj, ContractTxFunctionObj } from '../types'
-import { getTransactionOptionsAsNonPayableTx } from '../utils'
 import BaseContract from '../BaseContract'
 
 export class Erc20Contract extends BaseContract<any> {
@@ -30,15 +33,15 @@ export class Erc20Contract extends BaseContract<any> {
   }
 
   getBalanceOf(address: AccountAddress): ContractFunctionObj<string> {
-    const { contract } = this
+    const { contract, ethersInterface } = this
 
     return {
       async callAsync() {
-        return contract.methods.balanceOf(address).call()
+        return contract.methods.balanceOf(address)
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods.balanceOf(address).encodeABI()
+        return ethersInterface.encodeFunctionData('balanceOf', [address])
       },
     }
   }
@@ -47,29 +50,32 @@ export class Erc20Contract extends BaseContract<any> {
     address: AccountAddress,
     contractAddress: string,
   ): ContractFunctionObj<string> {
-    const { contract } = this
+    const { contract, ethersInterface } = this
 
     return {
       async callAsync() {
-        return contract.methods.allowance(address, contractAddress).call()
+        return contract.methods.allowance(address, contractAddress)
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods.allowance(address, contractAddress).encodeABI()
+        return ethersInterface.encodeFunctionData('allowance', [
+          address,
+          contractAddress,
+        ])
       },
     }
   }
 
   setAllowanceOf({
-    contractAddress,
     amount,
+    contractAddress,
     transactionOptions,
   }: {
-    contractAddress: string
     amount: string
+    contractAddress: string
     transactionOptions: TransactionOptions
   }): ContractTxFunctionObj<string> {
-    const { contract } = this
+    const { contract, ethersInterface } = this
 
     return {
       callAsync() {
@@ -83,35 +89,39 @@ export class Erc20Contract extends BaseContract<any> {
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods.approve(contractAddress, amount).encodeABI()
+        return ethersInterface.encodeFunctionData('approve', [
+          contractAddress,
+          amount,
+        ])
       },
 
       async sendTransactionAsync(): Promise<string> {
-        const { transactionHash } = await contract.methods
-          .approve(contractAddress, amount)
-          .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
-
-        return transactionHash
+        throw new GeneralException(new Error('Not implemented'))
       },
 
       async estimateGasAsync(): Promise<number> {
-        return contract.methods
-          .approve(contractAddress, amount)
-          .estimateGas(transactionOptions)
+        const response = await contract.estimateGas.approve(
+          contractAddress,
+          amount,
+          {
+            from: transactionOptions.from,
+          },
+        )
+
+        return parseInt(response.toString(), 10)
       },
     }
   }
 
   transfer({
-    recipient,
     amount,
-    transactionOptions,
+    recipient,
   }: {
     recipient: string
     amount: string
     transactionOptions: TransactionOptions
   }): ContractTxFunctionObj<string> {
-    const { contract } = this
+    const { contract, ethersInterface } = this
 
     return {
       callAsync() {
@@ -125,63 +135,62 @@ export class Erc20Contract extends BaseContract<any> {
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods.transfer(recipient, amount).encodeABI()
+        return ethersInterface.encodeFunctionData('transfer', [
+          recipient,
+          amount,
+        ])
       },
 
       async sendTransactionAsync(): Promise<string> {
-        const { transactionHash } = await contract.methods
-          .transfer(recipient, amount)
-          .send(getTransactionOptionsAsNonPayableTx(transactionOptions))
-
-        return transactionHash
+        throw new GeneralException(new Error('Not implemented'))
       },
 
       async estimateGasAsync(): Promise<number> {
-        return contract.methods
-          .transfer(recipient, amount)
-          .estimateGas(transactionOptions)
+        const response = await contract.estimateGas.transfer(recipient, amount)
+
+        return parseInt(response.toString(), 10)
       },
     }
   }
 
   getName(): ContractFunctionObj<string> {
-    const { contract } = this
+    const { contract, ethersInterface } = this
 
     return {
       async callAsync() {
-        return contract.methods.name().call()
+        return contract.name()
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods.name().encodeABI()
+        return ethersInterface.encodeFunctionData('name', [])
       },
     }
   }
 
   getDecimals(): ContractFunctionObj<string> {
-    const { contract } = this
+    const { contract, ethersInterface } = this
 
     return {
       async callAsync() {
-        return contract.methods.decimals().call()
+        return contract.decimals()
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods.decimals().encodeABI()
+        return ethersInterface.encodeFunctionData('decimals', [])
       },
     }
   }
 
   getSymbol(): ContractFunctionObj<string> {
-    const { contract } = this
+    const { contract, ethersInterface } = this
 
     return {
       async callAsync() {
-        return contract.methods.symbol().call()
+        return contract.symbol()
       },
 
       getABIEncodedTransactionData(): string {
-        return contract.methods.symbol().encodeABI()
+        return ethersInterface.encodeFunctionData('symbol', [])
       },
     }
   }

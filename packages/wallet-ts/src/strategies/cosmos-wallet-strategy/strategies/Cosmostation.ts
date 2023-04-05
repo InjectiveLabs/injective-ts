@@ -9,7 +9,7 @@ import {
 import {
   TxResponse,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromTransaction,
+  createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
@@ -134,7 +134,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
   }) {
     const { chainName, chainId } = this
     const provider = await this.getProvider()
-    const signDoc = createCosmosSignDocFromTransaction(transaction)
+    const signDoc = createSignDocFromTransaction(transaction)
 
     try {
       /* Sign the transaction */

@@ -6,15 +6,15 @@ import {
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
+  ErrorType,
   UnspecifiedErrorCode,
   CosmosWalletException,
   TransactionException,
-  ErrorType,
 } from '@injectivelabs/exceptions'
 import {
   TxResponse,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromTransaction,
+  createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
@@ -147,7 +147,7 @@ export default class Cosmostation
   }) {
     const { chainId } = this
     const provider = await this.getProvider()
-    const signDoc = createCosmosSignDocFromTransaction(transaction)
+    const signDoc = createSignDocFromTransaction(transaction)
 
     try {
       /* Sign the transaction */
