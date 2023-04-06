@@ -16,13 +16,13 @@ export interface MitoPriceSnapshot {
 
 export interface MitoProfits {
   allTimeChange: number
-  threeMonthsChange: number
-  oneMonthChange: number
-  oneDayChange: number
-  oneWeekChange: number
-  oneYearChange: number
-  threeYearsChange: number
-  sixMonthsChange: number
+  threeMonthsChange?: number
+  oneMonthChange?: number
+  oneDayChange?: number
+  oneWeekChange?: number
+  oneYearChange?: number
+  threeYearsChange?: number
+  sixMonthsChange?: number
 }
 
 export interface MitoDenomBalance {
