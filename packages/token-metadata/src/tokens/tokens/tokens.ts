@@ -27,6 +27,16 @@ export default {
       address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
       tokenType: TokenType.Erc20,
     },
+
+    cw20s: [
+      {
+        decimals: 8,
+        symbol: 'wBTC',
+        source: Cw20TokenSource.Cosmos,
+        address: 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
 
   ETH: {
