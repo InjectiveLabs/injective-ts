@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.10.7...@injectivelabs/contracts@1.10.8) (2023-04-07)
+
+
+### Bug Fixes
+
+* default gas limit ([9243800](https://github.com/InjectiveLabs/injective-ts/commit/92438002d7c678db49d52d3215f285a499b54bfd))
+
+
+
+
+
 ## [1.10.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.10.6...@injectivelabs/contracts@1.10.7) (2023-04-05)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.36...@injectivelabs/wallet-ts@1.10.37) (2023-04-07)
+
+
+### Bug Fixes
+
+* default gas limit ([9243800](https://github.com/InjectiveLabs/injective-ts/commit/92438002d7c678db49d52d3215f285a499b54bfd))
+
+
+
+
+
 ## [1.10.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.35...@injectivelabs/wallet-ts@1.10.36) (2023-04-07)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
