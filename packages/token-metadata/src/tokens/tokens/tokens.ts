@@ -30,7 +30,7 @@ export default {
 
     cw20s: [
       {
-        decimals: 8,
+        decimals: 18,
         symbol: 'wBTC',
         source: Cw20TokenSource.Cosmos,
         address: 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku',
