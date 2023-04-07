@@ -11,6 +11,7 @@ import {
 import abi from './abi/injective'
 import { Contract, ContractFunctionObj, ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'
+import { ALLOWANCE_DEFAULT_GAS_LIMIT } from '../utils'
 
 export class Erc20Contract extends BaseContract<any> {
   static contractName = 'Erc20'
@@ -100,15 +101,20 @@ export class Erc20Contract extends BaseContract<any> {
       },
 
       async estimateGasAsync(): Promise<number> {
-        const response = await contract.estimateGas.approve(
-          contractAddress,
-          amount,
-          {
-            from: transactionOptions.from,
-          },
-        )
+        try {
+          const response = await contract.estimateGas.approve(
+            contractAddress,
+            amount,
+            {
+              value: 0,
+              from: transactionOptions.from,
+            },
+          )
 
-        return parseInt(response.toString(), 10)
+          return parseInt(response.toString(), 10)
+        } catch (e) {
+          return ALLOWANCE_DEFAULT_GAS_LIMIT
+        }
       },
     }
   }

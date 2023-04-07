@@ -10,3 +10,6 @@ export const getTransactionOptionsAsNonPayableTx = (
     ? transactionOptions.gasPrice.toString()
     : 0,
 })
+
+export const ALLOWANCE_DEFAULT_GAS_LIMIT = 45000
+export const PEGGY_TRANSFER_DEFAULT_GAS_LIMIT = 100000

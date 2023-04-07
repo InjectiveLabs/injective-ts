@@ -11,6 +11,7 @@ import {
 import abi from './abi/peggy'
 import { Contract, ContractTxFunctionObj } from '../types'
 import BaseContract from '../BaseContract'
+import { PEGGY_TRANSFER_DEFAULT_GAS_LIMIT } from './../utils'
 
 export class PeggyContract extends BaseContract<any> {
   static contractName = 'Peggy'
@@ -72,17 +73,22 @@ export class PeggyContract extends BaseContract<any> {
       },
 
       async estimateGasAsync(): Promise<number> {
-        const response = await contract.estimateGas.sendToInjective(
-          contractAddress,
-          address,
-          amount,
-          data,
-          {
-            from: transactionOptions.from,
-          },
-        )
+        try {
+          const response = await contract.estimateGas.sendToInjective(
+            contractAddress,
+            address,
+            amount,
+            data,
+            {
+              value: 0,
+              from: transactionOptions.from,
+            },
+          )
 
-        return parseInt(response.toString(), 10)
+          return parseInt(response.toString(), 10)
+        } catch (e) {
+          return PEGGY_TRANSFER_DEFAULT_GAS_LIMIT
+        }
       },
     }
   }

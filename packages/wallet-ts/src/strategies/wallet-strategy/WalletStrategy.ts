@@ -9,10 +9,10 @@ import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import Metamask from './strategies/Metamask'
 import {
   ConcreteWalletStrategy,
-  EthereumWalletStrategyArgs,
   onAccountChangeCallback,
   onChainIdChangeCallback,
   WalletStrategyArguments,
+  EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
 } from '../types'
 import Keplr from './strategies/Keplr'
