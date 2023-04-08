@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.33...@injectivelabs/sdk-ts@1.10.34) (2023-04-08)
+
+
+### Bug Fixes
+
+* trading volume ([2b3da1a](https://github.com/InjectiveLabs/injective-ts/commit/2b3da1a0a2603447d1fc1da3ed0399ebdc0f14e6))
+
+
+
+
+
 ## [1.10.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.32...@injectivelabs/sdk-ts@1.10.33) (2023-04-07)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
