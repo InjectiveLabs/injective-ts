@@ -133,7 +133,7 @@ export class ChainGrpcExchangeTransformer {
       makerDiscountRate: info.makerDiscountRate,
       takerDiscountRate: info.takerDiscountRate,
       stakedAmount: info.stakedAmount,
-      volume: info.volume == undefined ? info.volume : '0',
+      volume: info.volume == undefined ? '0' : info.volume,
     }
   }
 
