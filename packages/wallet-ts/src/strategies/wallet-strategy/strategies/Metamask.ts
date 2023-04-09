@@ -10,9 +10,15 @@ import {
   ErrorType,
   MetamaskException,
   UnspecifiedErrorCode,
+  TransactionException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw, TxResponse, isServerSide } from '@injectivelabs/sdk-ts'
+import {
+  TxGrpcApi,
+  TxRaw,
+  TxResponse,
+  isServerSide,
+} from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import {
   Eip1993ProviderWithMetamask,
@@ -85,21 +91,36 @@ export default class Metamask
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async sendTransaction(
-    _transaction: unknown,
-    _options: { address: AccountAddress; chainId: ChainId },
+    transaction: TxRaw,
+    options: {
+      address: AccountAddress
+      chainId: ChainId
+      sentryEndpoint: string
+    },
   ): Promise<TxResponse> {
-    throw new MetamaskException(
-      new Error(
-        'sendTransaction is not supported. Metamask only supports sending transaction to Ethereum',
-      ),
-      {
+    const { sentryEndpoint } = options
+
+    if (!sentryEndpoint) {
+      throw new WalletException(
+        new Error(
+          'You have to pass sentryEndpoint within the options for using Ethereum native wallets',
+        ),
+      )
+    }
+
+    const txApi = new TxGrpcApi(sentryEndpoint)
+    const response = await txApi.broadcast(transaction)
+
+    if (response.code !== 0) {
+      throw new TransactionException(new Error(response.rawLog), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
-      },
-    )
+        contextCode: response.code,
+        contextModule: response.codespace,
+      })
+    }
+
+    return response
   }
 
   /** @deprecated */
@@ -147,7 +168,7 @@ export default class Metamask
     )
   }
 
-  async getChainId(): Promise<string> {
+  async getEthereumChainId(): Promise<string> {
     const ethereum = this.getEthereum()
 
     try {

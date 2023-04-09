@@ -9,12 +9,14 @@ import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import {
   ErrorType,
+  GeneralException,
   LedgerException,
+  TransactionException,
   UnspecifiedErrorCode,
   WalletException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi, TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import { TIP_IN_GWEI } from '../../../../utils/constants'
 import {
   ConcreteWalletStrategy,
@@ -132,21 +134,36 @@ export default class LedgerBase
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async sendTransaction(
-    _transaction: unknown,
-    _options: { address: AccountAddress; chainId: ChainId },
+    transaction: TxRaw,
+    options: {
+      address: AccountAddress
+      chainId: ChainId
+      sentryEndpoint: string
+    },
   ): Promise<TxResponse> {
-    throw new LedgerException(
-      new Error(
-        'sendTransaction is not supported. Ledger only supports sending transaction to Ethereum',
-      ),
-      {
+    const { sentryEndpoint } = options
+
+    if (!sentryEndpoint) {
+      throw new WalletException(
+        new Error(
+          'You have to pass sentryEndpoint within the options for using Ethereum native wallets',
+        ),
+      )
+    }
+
+    const txApi = new TxGrpcApi(sentryEndpoint)
+    const response = await txApi.broadcast(transaction)
+
+    if (response.code !== 0) {
+      throw new TransactionException(new Error(response.rawLog), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
-      },
-    )
+        contextCode: response.code,
+        contextModule: response.codespace,
+      })
+    }
+
+    return response
   }
 
   /** @deprecated */
@@ -201,7 +218,7 @@ export default class LedgerBase
     )
   }
 
-  async getChainId(): Promise<string> {
+  async getEthereumChainId(): Promise<string> {
     const alchemy = await this.getAlchemy()
     const alchemyProvider = await alchemy.config.getProvider()
 
@@ -318,6 +335,12 @@ export default class LedgerBase
     }
 
     const { rpcUrl, ethereumChainId } = this.ethereumOptions
+
+    if (!rpcUrl) {
+      throw new GeneralException(
+        new Error('Please pass rpcUrl within the ethereumOptions'),
+      )
+    }
 
     this.alchemy = new Alchemy({
       apiKey: getKeyFromRpcUrl(rpcUrl),

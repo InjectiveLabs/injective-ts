@@ -251,18 +251,11 @@ export class MsgBroadcaster {
     /** Append Signatures */
     txRawEip712.signatures = [signatureBuff]
 
-    /** Broadcast the transaction */
-    const response = await txApi.broadcast(txRawEip712)
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return walletStrategy.sendTransaction(txRawEip712, {
+      chainId,
+      address: tx.injectiveAddress,
+      sentryEndpoint: endpoints.grpc,
+    })
   }
 
   /**
