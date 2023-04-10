@@ -1354,4 +1354,24 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  WMATIC: {
+    name: 'Wrapped Matic',
+    symbol: 'WMATIC',
+    decimals: 18,
+    logo: 'wmatic.webp',
+    coinGeckoId: 'wmatic',
+
+    erc20: {
+      decimals: 18,
+      address: '0x7c9f4C87d911613Fe9ca58b579f737911AAD2D43',
+      tokenType: TokenType.Erc20,
+    },
+
+    cw20: {
+      decimals: 8,
+      address: 'inj1dxv423h8ygzgxmxnvrf33ws3k94aedfdevxd8h',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>
