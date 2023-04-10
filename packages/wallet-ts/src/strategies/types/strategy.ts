@@ -13,8 +13,7 @@ export type onChainIdChangeCallback = () => void
 
 export interface WalletStrategyEthereumOptions {
   ethereumChainId: EthereumChainId
-  rpcUrl: string
-  wsRpcUrl: string
+  rpcUrl?: string
 }
 
 export interface EthereumWalletStrategyArgs {
@@ -91,7 +90,7 @@ export interface ConcreteWalletStrategy
    */
   sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    options: { address: string; chainId: ChainId },
+    options: { address: string; chainId: ChainId; sentryEndpoint?: string },
   ): Promise<TxResponse>
 
   /**
@@ -138,7 +137,7 @@ export interface ConcreteWalletStrategy
    */
   signEip712TypedData(eip712TypedData: string, address: string): Promise<string>
 
-  getChainId(): Promise<string>
+  getEthereumChainId(): Promise<string>
 
   getEthereumTransactionReceipt(txHash: string): void
 

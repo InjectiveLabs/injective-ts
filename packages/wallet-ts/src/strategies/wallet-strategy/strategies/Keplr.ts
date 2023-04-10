@@ -158,9 +158,9 @@ export default class Keplr
     )
   }
 
-  async getChainId(): Promise<string> {
+  async getEthereumChainId(): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getChainId is not supported on Keplr'),
+      new Error('getEthereumChainId is not supported on Keplr'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetChainId,

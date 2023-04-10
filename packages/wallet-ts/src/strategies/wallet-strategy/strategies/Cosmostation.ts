@@ -219,9 +219,9 @@ export default class Cosmostation
     )
   }
 
-  async getChainId(): Promise<string> {
+  async getEthereumChainId(): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getChainId is not supported on Cosmostation'),
+      new Error('getEthereumChainId is not supported on Cosmostation'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetChainId,

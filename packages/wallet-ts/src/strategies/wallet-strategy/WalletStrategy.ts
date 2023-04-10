@@ -41,13 +41,13 @@ const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
     return true
   }
 
-  const { wsRpcUrl, rpcUrl, ethereumChainId } = ethereumOptions
+  const { rpcUrl, ethereumChainId } = ethereumOptions
 
   if (!ethereumChainId) {
     return true
   }
 
-  if (!wsRpcUrl && !rpcUrl) {
+  if (!rpcUrl) {
     return true
   }
 
@@ -154,8 +154,8 @@ export default class WalletStrategy {
     return this.getStrategy().getPubKey()
   }
 
-  public getChainId(): Promise<string> {
-    return this.getStrategy().getChainId()
+  public getEthereumChainId(): Promise<string> {
+    return this.getStrategy().getEthereumChainId()
   }
 
   public async getEthereumTransactionReceipt(txHash: string): Promise<void> {
@@ -178,7 +178,11 @@ export default class WalletStrategy {
 
   public async sendTransaction(
     tx: DirectSignResponse | TxRaw,
-    options: { address: AccountAddress; chainId: ChainId },
+    options: {
+      address: AccountAddress
+      chainId: ChainId
+      sentryEndpoint?: string
+    },
   ): Promise<TxResponse> {
     return this.getStrategy().sendTransaction(tx, options)
   }

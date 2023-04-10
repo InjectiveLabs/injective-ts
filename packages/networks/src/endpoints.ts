@@ -50,21 +50,21 @@ export const endpointsTestnetK8s: NetworkEndpoints = {
 }
 
 export const endpointsTestnet: NetworkEndpoints = {
-  indexer: 'https://testnet.api.injective.network',
-  grpc: 'https://testnet.grpc.injective.network',
+  indexer: 'https://testnet.exchange.grpc-web.injective.network',
+  grpc: 'https://testnet.chain.grpc-web.injective.network',
   rpc: 'https://testnet.tm.injective.network',
   rest: 'https://testnet.lcd.injective.network',
-  chronos: 'https://testnet.api.injective.network',
-  explorer: 'https://testnet.api.injective.network',
+  chronos: 'https://testnet.exchange.grpc-web.injective.network',
+  explorer: 'https://testnet.exchange.grpc-web.injective.network',
 }
 
 export const endpointsTestnetOld: NetworkEndpoints = {
-  indexer: 'https://testnet.api.injective.dev',
-  grpc: 'https://testnet.grpc.injective.dev',
+  indexer: 'https://testnet.exchange.grpc-web.injective.dev',
+  grpc: 'https://testnet.chain.grpc-web.injective.dev',
   rpc: 'https://testnet.tm.injective.dev',
   rest: 'https://testnet.lcd.injective.dev',
-  chronos: 'https://testnet.api.injective.dev',
-  explorer: 'https://testnet.api.injective.dev',
+  chronos: 'https://testnet.exchange.grpc-web.injective.dev',
+  explorer: 'https://testnet.exchange.grpc-web.injective.dev',
 }
 
 export const endpointsDevnet: NetworkEndpoints = {
