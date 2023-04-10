@@ -1359,7 +1359,7 @@ export default {
     name: 'Wrapped Matic',
     symbol: 'WMATIC',
     decimals: 18,
-    logo: 'wmatic.webp',
+    logo: 'matic.webp',
     coinGeckoId: 'wmatic',
 
     erc20: {
