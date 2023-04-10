@@ -1,10 +1,10 @@
 import { TokenMeta, TokenType } from '../../types'
 
 export default {
-  vMOMO: {
-    name: 'Momoshiki',
-    logo: 'momoshiki.svg',
-    symbol: 'vMOMO',
+  vARI: {
+    name: 'Aries',
+    logo: 'aries.svg',
+    symbol: 'vARI',
     decimals: 18,
     coinGeckoId: '',
 
@@ -14,10 +14,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vKIN: {
-    name: 'Kinshiki',
-    logo: 'kinshiki.svg',
-    symbol: 'vKIN',
+  vTAU: {
+    name: 'Taurus',
+    logo: 'taurus.svg',
+    symbol: 'vTAU',
     decimals: 18,
     coinGeckoId: '',
 
@@ -27,10 +27,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vTON: {
-    name: 'Toneri',
-    logo: 'toneri.svg',
-    symbol: 'vTON',
+  vGEM: {
+    name: 'Gemini',
+    logo: 'gemini.svg',
+    symbol: 'vGEM',
     decimals: 18,
     coinGeckoId: '',
 
@@ -40,10 +40,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vNAR: {
-    name: 'Naruto',
-    logo: 'naruto.svg',
-    symbol: 'vNAR',
+  vCAN: {
+    name: 'Cancer',
+    logo: 'cancer.svg',
+    symbol: 'vCAN',
     decimals: 18,
     coinGeckoId: '',
 
@@ -53,10 +53,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vMAD: {
-    name: 'Madara',
-    logo: 'madara.svg',
-    symbol: 'vMAD',
+  vLEO: {
+    name: 'Leo',
+    logo: 'leo.svg',
+    symbol: 'vLEO',
     decimals: 18,
     coinGeckoId: '',
 
@@ -66,10 +66,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vMIN: {
-    name: 'Minato',
-    logo: 'minato.svg',
-    symbol: 'vMAD',
+  vVIR: {
+    name: 'Virgo',
+    logo: 'virgo.svg',
+    symbol: 'vVIR',
     decimals: 18,
     coinGeckoId: '',
 
@@ -79,10 +79,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vSPOT: {
-    name: 'Spot Vault',
-    logo: 'minato.svg',
-    symbol: 'vSPOT',
+  vLIB: {
+    name: 'Libra',
+    logo: 'libra.svg',
+    symbol: 'vLIB',
     decimals: 18,
     coinGeckoId: '',
 
@@ -92,10 +92,62 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vDERI: {
-    name: 'Derivative Vault',
-    logo: 'minato.svg',
-    symbol: 'vDERI',
+  vSCOR: {
+    name: 'Scorpio',
+    logo: 'scorpio.svg',
+    symbol: 'vSCOR',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: '',
+      tokenType: TokenType.Cw20,
+    },
+  },
+  vSAG: {
+    name: 'Sagittarius',
+    logo: 'sagittarius.svg',
+    symbol: 'vSAG',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: '',
+      tokenType: TokenType.Cw20,
+    },
+  },
+  vCAP: {
+    name: 'Capricorn',
+    logo: 'capricorn.svg',
+    symbol: 'vCAP',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: '',
+      tokenType: TokenType.Cw20,
+    },
+  },
+  vAQUA: {
+    name: 'Aquarius',
+    logo: 'aquarius.svg',
+    symbol: 'vAQUA',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: '',
+      tokenType: TokenType.Cw20,
+    },
+  },
+  vPIS: {
+    name: 'Pisces',
+    logo: 'pisces.svg',
+    symbol: 'vPIS',
     decimals: 18,
     coinGeckoId: '',
 
