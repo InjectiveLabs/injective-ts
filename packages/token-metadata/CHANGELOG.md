@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.19...@injectivelabs/token-metadata@1.10.20) (2023-04-11)
+
+
+### Bug Fixes
+
+* cw20 logo typo ([c7ff0e5](https://github.com/InjectiveLabs/injective-ts/commit/c7ff0e5ee8593a2fbd977792ed07afd78912c7b6))
+
+
+
+
+
 ## [1.10.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.18...@injectivelabs/token-metadata@1.10.19) (2023-04-10)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
