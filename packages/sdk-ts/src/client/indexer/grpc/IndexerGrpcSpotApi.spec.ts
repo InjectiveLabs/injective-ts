@@ -52,33 +52,6 @@ describe('IndexerGrpcSpotApi', () => {
     }
   })
 
-  test('fetchOrderbook', async () => {
-    try {
-      const response = await indexerGrpcSpotApi.fetchOrderbook(market.marketId)
-
-      if (response.buys.length === 0) {
-        console.warn('fetchOrderbook.buysIsEmptyArray')
-      }
-
-      if (response.sells.length === 0) {
-        console.warn('fetchOrderbook.sellsIsEmptyArray')
-      }
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof IndexerGrpcSpotTransformer.orderbookResponseToOrderbook
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'IndexerGrpcSpotApi.fetchOrderbook => ' + (e as any).message,
-      )
-    }
-  })
-
   test('fetchOrders', async () => {
     try {
       const response = await indexerGrpcSpotApi.fetchOrders({
