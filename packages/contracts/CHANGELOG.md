@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.10.9...@injectivelabs/contracts@1.10.10) (2023-04-12)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+
+
+
+
 ## [1.10.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.10.8...@injectivelabs/contracts@1.10.9) (2023-04-10)
 
 **Note:** Version bump only for package @injectivelabs/contracts
