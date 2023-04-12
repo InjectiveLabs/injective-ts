@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.10.49...@injectivelabs/sdk-ui-ts@1.10.50) (2023-04-12)
+
+
+### Bug Fixes
+
+* getBlockExplorerPathFromNetworkType for ethereum address ([accdae9](https://github.com/InjectiveLabs/injective-ts/commit/accdae9f81caa9a32fb383f226535936d456b607))
+
+
+
+
+
 ## [1.10.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.10.48...@injectivelabs/sdk-ui-ts@1.10.49) (2023-04-11)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
