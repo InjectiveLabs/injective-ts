@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.41...@injectivelabs/sdk-ts@1.10.42) (2023-04-12)
+
+
+### Features
+
+* updated docs ([7c38c6d](https://github.com/InjectiveLabs/injective-ts/commit/7c38c6def49ee6064e14cd6acefa783013219e2c))
+
+
+### Reverts
+
+* Revert "chore: update sdk-ts with latest indexer protos" ([fcb9d33](https://github.com/InjectiveLabs/injective-ts/commit/fcb9d33cc66211df368b25fc71b5c0627ee2d4eb))
+
+
+
+
+
 ## [1.10.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.40...@injectivelabs/sdk-ts@1.10.41) (2023-04-12)
 
 
