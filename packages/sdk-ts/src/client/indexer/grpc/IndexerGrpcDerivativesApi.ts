@@ -420,26 +420,30 @@ export class IndexerGrpcDerivativesApi {
   }
 
   async fetchTrades(params?: {
-    marketId?: string
-    direction?: TradeDirection
-    subaccountId?: string
-    startTime?: number
     endTime?: number
-    executionTypes?: TradeExecutionType[]
-    executionSide?: TradeExecutionSide
-    pagination?: PaginationOption
+    tradeId?: string
+    marketId?: string
+    startTime?: number
     marketIds?: string[]
+    subaccountId?: string
+    accountAddress?: string
+    direction?: TradeDirection
+    pagination?: PaginationOption
+    executionSide?: TradeExecutionSide
+    executionTypes?: TradeExecutionType[]
   }) {
     const {
-      marketId,
-      subaccountId,
-      startTime,
       endTime,
+      tradeId,
+      marketId,
+      startTime,
       direction,
-      pagination,
-      executionTypes,
-      executionSide,
       marketIds,
+      pagination,
+      subaccountId,
+      executionSide,
+      executionTypes,
+      accountAddress,
     } = params || {}
 
     const request = InjectiveDerivativeExchangeRpc.TradesRequest.create()
@@ -450,6 +454,14 @@ export class IndexerGrpcDerivativesApi {
 
     if (subaccountId) {
       request.subaccountId = subaccountId
+    }
+
+    if (tradeId) {
+      request.tradeId = tradeId
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
     }
 
     if (marketIds) {

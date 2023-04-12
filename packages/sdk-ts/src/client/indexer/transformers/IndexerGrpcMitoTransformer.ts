@@ -90,6 +90,7 @@ export class IndexerGrpcMitoTransformer {
         ),
       masterContractAddress: vault.masterContractAddress,
       totalLpAmount: vault.totalLpAmount,
+      notionalValueCap: vault.notionalValueCap,
     }
   }
 

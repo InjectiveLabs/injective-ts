@@ -27,6 +27,7 @@ import {
 import { IndexerRestExplorerTransformer } from '../transformers'
 import { Block, ExplorerValidator } from '../types/explorer'
 import { IndexerModule } from '../types'
+import { MsgStatus, MsgType } from '@injectivelabs/ts-types'
 
 const explorerEndpointSuffix = 'api/explorer/v1'
 
@@ -129,17 +130,39 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     before?: number
     after?: number
     toNumber?: number
+    skip?: number
+    startTime?: number
+    endTime?: number
+    status?: MsgStatus
+    type?: MsgType[]
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     try {
-      const { fromNumber, before, after, limit, toNumber } = params || {
+      const {
+        fromNumber,
+        before,
+        after,
+        limit,
+        toNumber,
+        endTime,
+        skip,
+        startTime,
+        status,
+        type,
+      } = params || {
         limit: 12,
       }
+
       const response = (await this.get('txs', {
         limit,
         after,
         before,
         from_number: fromNumber,
         to_number: toNumber,
+        skip,
+        status,
+        type: type ? type.join(',') : undefined,
+        end_time: endTime,
+        start_time: startTime,
       })) as ExplorerApiResponseWithPagination<
         TransactionFromExplorerApiResponse[]
       >
@@ -176,10 +199,25 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       after?: number
       toNumber?: number
       skip?: number
+      startTime?: number
+      endTime?: number
+      status?: MsgStatus
+      type?: MsgType[]
     }
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     try {
-      const { fromNumber, before, after, limit, skip, toNumber } = params || {
+      const {
+        fromNumber,
+        before,
+        after,
+        limit,
+        skip,
+        toNumber,
+        endTime,
+        startTime,
+        status,
+        type,
+      } = params || {
         limit: 12,
       }
       const response = (await this.get(`accountTxs/${account}`, {
@@ -189,6 +227,10 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         before,
         from_number: fromNumber,
         to_number: toNumber,
+        status,
+        type: type ? type.join(',') : undefined,
+        end_time: endTime,
+        start_time: startTime,
       })) as ExplorerApiResponseWithPagination<
         TransactionFromExplorerApiResponse[]
       >

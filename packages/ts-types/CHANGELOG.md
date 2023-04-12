@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.10.1...@injectivelabs/ts-types@1.10.2) (2023-04-12)
+
+
+### Features
+
+* tx filters ([1b48cd8](https://github.com/InjectiveLabs/injective-ts/commit/1b48cd81bffe85ee8556826274d9eb92eb67fb1d))
+
+
+
+
+
 ## [1.10.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.10.1-alpha.0...@injectivelabs/ts-types@1.10.1) (2023-04-04)
 
 **Note:** Version bump only for package @injectivelabs/ts-types
