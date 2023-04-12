@@ -34,7 +34,7 @@ export interface MitoSubaccountBalance {
   subaccountId: string
   balancesList: MitoDenomBalance[]
 }
-
+ 
 export interface MitoVault {
   contractAddress: string
   codeId: string
@@ -48,6 +48,7 @@ export interface MitoVault {
   subaccountInfo?: MitoSubaccountBalance
   masterContractAddress: string
   totalLpAmount: string
+  notionalValueCap: string
 }
 
 export interface MitoSubscription {
