@@ -92,6 +92,30 @@ export class IndexerGrpcSpotApi {
     }
   }
 
+  async fetchOrderbook(marketId: string) {
+    const request = InjectiveSpotExchangeRpc.OrderbookRequest.create()
+
+    request.marketId = marketId
+
+    try {
+      const response = await this.client.Orderbook(request)
+
+      return IndexerGrpcSpotTransformer.orderbookResponseToOrderbook(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchOrders(params?: {
     marketId?: string
     marketIds?: string[]
@@ -460,6 +484,33 @@ export class IndexerGrpcSpotApi {
       })
     }
   }
+
+  async fetchOrderbooks(marketIds: string[]) {
+    const request = InjectiveSpotExchangeRpc.OrderbooksRequest.create()
+
+    if (marketIds.length > 0) {
+      request.marketIds = marketIds
+    }
+
+    try {
+      const response = await this.client.Orderbooks(request)
+
+      return IndexerGrpcSpotTransformer.orderbooksResponseToOrderbooks(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchOrderbooksV2(marketIds: string[]) {
     const request = InjectiveSpotExchangeRpc.OrderbooksV2Request.create()
 

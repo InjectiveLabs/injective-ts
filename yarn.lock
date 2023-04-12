@@ -2129,10 +2129,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/indexer-proto-ts@1.10.8-rc.3":
-  version "1.10.8-rc.3"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.10.8-rc.3.tgz#c9faddfb194c8f8ccafa2fd87744b33c69c6777c"
-  integrity sha512-Sa9vR3YkOaP0shvprA6Kw/a7kxgrozi06Lv9TV687Kumw9gMxrAF4fy3oxwC9iUtRY0OLVgaALh4xNH0mGz4Fw==
+"@injectivelabs/indexer-proto-ts@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-0.0.9.tgz#c65411e0069817d3a8533e91e6b9b7426be71565"
+  integrity sha512-ZFTUKlHAY2WYnB9RPPf11nq7SNm7wcKFTmFTavTiHV8UvNEni7dCR3Un6U5Mo1qD0xHEsfoCDMdqGcIguliPMA==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"

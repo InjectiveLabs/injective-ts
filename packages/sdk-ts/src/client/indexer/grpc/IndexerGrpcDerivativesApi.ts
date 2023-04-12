@@ -165,6 +165,32 @@ export class IndexerGrpcDerivativesApi {
     }
   }
 
+  async fetchOrderbook(marketId: string) {
+    const request = InjectiveDerivativeExchangeRpc.OrderbookRequest.create()
+
+    request.marketId = marketId
+
+    try {
+      const response = await this.client.Orderbook(request)
+
+      return IndexerGrpcDerivativeTransformer.orderbookResponseToOrderbook(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchOrders(params?: {
     marketId?: string
     marketIds?: string[]
@@ -685,6 +711,34 @@ export class IndexerGrpcDerivativesApi {
       const response = await this.client.SubaccountTradesList(request)
 
       return IndexerGrpcDerivativeTransformer.subaccountTradesListResponseToSubaccountTradesList(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchOrderbooks(marketIds: string[]) {
+    const request = InjectiveDerivativeExchangeRpc.OrderbooksRequest.create()
+
+    if (marketIds.length > 0) {
+      request.marketIds = marketIds
+    }
+
+    try {
+      const response = await this.client.Orderbooks(request)
+
+      return IndexerGrpcDerivativeTransformer.orderbooksResponseToOrderbooks(
         response,
       )
     } catch (e: unknown) {

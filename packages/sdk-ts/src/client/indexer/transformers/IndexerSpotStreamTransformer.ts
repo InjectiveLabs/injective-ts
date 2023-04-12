@@ -6,6 +6,24 @@ import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
  * @category Indexer Stream Transformer
  */
 export class IndexerSpotStreamTransformer {
+  static orderbookStreamCallback = (
+    response: InjectiveSpotExchangeRpc.StreamOrderbookResponse,
+  ) => {
+    const orderbook = response.orderbook
+
+    return {
+      orderbook: orderbook
+        ? IndexerGrpcSpotTransformer.grpcOrderbookToOrderbook({
+            buys: orderbook.buys,
+            sells: orderbook.sells,
+          })
+        : undefined,
+      operation: response.operationType as StreamOperation,
+      marketId: response.marketId,
+      timestamp: response.timestamp,
+    }
+  }
+
   static tradesStreamCallback = (
     response: InjectiveSpotExchangeRpc.StreamTradesResponse,
   ) => {

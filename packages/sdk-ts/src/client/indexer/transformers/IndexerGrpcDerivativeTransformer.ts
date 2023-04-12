@@ -226,6 +226,17 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
+  static orderbookResponseToOrderbook(
+    response: InjectiveDerivativeExchangeRpc.OrderbookResponse,
+  ) {
+    const orderbook = response.orderbook!
+
+    return IndexerGrpcDerivativeTransformer.grpcOrderbookToOrderbook({
+      buys: orderbook?.buys,
+      sells: orderbook?.sells,
+    })
+  }
+
   static orderbookV2ResponseToOrderbookV2(
     response: InjectiveDerivativeExchangeRpc.OrderbookV2Response,
   ) {
@@ -235,6 +246,24 @@ export class IndexerGrpcDerivativeTransformer {
       sequence: parseInt(orderbook.sequence, 10),
       buys: orderbook?.buys,
       sells: orderbook?.sells,
+    })
+  }
+
+  static orderbooksResponseToOrderbooks(
+    response: InjectiveDerivativeExchangeRpc.OrderbooksResponse,
+  ) {
+    const orderbooks = response.orderbooks!
+
+    return orderbooks.map((o) => {
+      const orderbook = o.orderbook!
+
+      return {
+        marketId: o.marketId,
+        orderbook: IndexerGrpcDerivativeTransformer.grpcOrderbookToOrderbook({
+          buys: orderbook.buys,
+          sells: orderbook.sells,
+        }),
+      }
     })
   }
 

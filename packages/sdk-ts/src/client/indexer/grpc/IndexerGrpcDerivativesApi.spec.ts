@@ -64,6 +64,35 @@ describe('IndexerGrpcDerivativeApi', () => {
     }
   })
 
+  test('fetchOrderbook', async () => {
+    try {
+      const response = await indexerGrpcDerivativesApi.fetchOrderbook(
+        market.marketId,
+      )
+
+      if (response.buys.length === 0) {
+        console.warn('fetchOrderbook.buysIsEmptyArray')
+      }
+
+      if (response.sells.length === 0) {
+        console.warn('fetchOrderbook.sellsIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcDerivativeTransformer.orderbookResponseToOrderbook
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcDerivativesApi.fetchOrderbook => ' + (e as any).message,
+      )
+    }
+  })
+
   test('fetchOrders', async () => {
     try {
       const response = await indexerGrpcDerivativesApi.fetchOrders({

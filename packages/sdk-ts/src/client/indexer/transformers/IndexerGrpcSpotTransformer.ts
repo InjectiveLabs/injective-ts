@@ -118,6 +118,35 @@ export class IndexerGrpcSpotTransformer {
     return IndexerGrpcSpotTransformer.grpcTradesToTrades(tradesList)
   }
 
+  static orderbookResponseToOrderbook(
+    response: InjectiveSpotExchangeRpc.OrderbookResponse,
+  ) {
+    const orderbook = response.orderbook!
+
+    return IndexerGrpcSpotTransformer.grpcOrderbookToOrderbook({
+      buys: orderbook?.buys,
+      sells: orderbook?.sells,
+    })
+  }
+
+  static orderbooksResponseToOrderbooks(
+    response: InjectiveSpotExchangeRpc.OrderbooksResponse,
+  ) {
+    const orderbooks = response.orderbooks!
+
+    return orderbooks.map((o) => {
+      const orderbook = o.orderbook!
+
+      return {
+        marketId: o.marketId,
+        orderbook: IndexerGrpcSpotTransformer.grpcOrderbookToOrderbook({
+          buys: orderbook.buys,
+          sells: orderbook.sells,
+        }),
+      }
+    })
+  }
+
   static orderbookV2ResponseToOrderbookV2(
     response: InjectiveSpotExchangeRpc.OrderbookV2Response,
   ) {
