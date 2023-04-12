@@ -35,15 +35,15 @@ export const getBlockExplorerPathFromNetworkType = ({
     return `${getSolanaExplorerUrl(network)}/address/${address}`
   }
 
+  if (chain === SupportedChains.Ethereum) {
+    return `${getEthereumExplorerUrl(network)}/address/${address}`
+  }
+
   if (Object.values(BridgingNetwork).includes(chain as BridgingNetwork)) {
     return `${getCosmosExplorerUrl(
       chain as BridgingNetwork,
       network,
     )}/account/${address}`
-  }
-
-  if (chain === SupportedChains.Ethereum) {
-    return `${getEthereumExplorerUrl(network)}/address/${address}`
   }
 
   return undefined
