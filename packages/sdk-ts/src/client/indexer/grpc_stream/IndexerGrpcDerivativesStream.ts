@@ -11,12 +11,6 @@ import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
-export type DerivativeOrderbookStreamCallback = (
-  response: ReturnType<
-    typeof IndexerDerivativeStreamTransformer.orderbookStreamCallback
-  >,
-) => void
-
 export type DerivativeOrderbookV2StreamCallback = (
   response: ReturnType<
     typeof IndexerDerivativeStreamTransformer.orderbookV2StreamCallback
@@ -68,43 +62,6 @@ export class IndexerGrpcDerivativesStream {
       new InjectiveDerivativeExchangeRpc.InjectiveDerivativeExchangeRPCClientImpl(
         getGrpcIndexerWebImpl(endpoint),
       )
-  }
-
-  streamDerivativeOrderbook({
-    marketIds,
-    callback,
-    onEndCallback,
-    onStatusCallback,
-  }: {
-    marketIds: string[]
-    callback: DerivativeOrderbookStreamCallback
-    onEndCallback?: (status?: StreamStatusResponse) => void
-    onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
-    const request =
-      InjectiveDerivativeExchangeRpc.StreamOrderbookRequest.create()
-
-    request.marketIds = marketIds
-
-    const subscription = this.client.StreamOrderbook(request).subscribe({
-      next(response: InjectiveDerivativeExchangeRpc.StreamOrderbookResponse) {
-        callback(
-          IndexerDerivativeStreamTransformer.orderbookStreamCallback(response),
-        )
-      },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
   }
 
   streamDerivativeOrders({

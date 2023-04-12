@@ -92,30 +92,6 @@ export class IndexerGrpcSpotApi {
     }
   }
 
-  async fetchOrderbook(marketId: string) {
-    const request = InjectiveSpotExchangeRpc.OrderbookRequest.create()
-
-    request.marketId = marketId
-
-    try {
-      const response = await this.client.Orderbook(request)
-
-      return IndexerGrpcSpotTransformer.orderbookResponseToOrderbook(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        contextModule: this.module,
-      })
-    }
-  }
-
   async fetchOrders(params?: {
     marketId?: string
     marketIds?: string[]
@@ -277,26 +253,30 @@ export class IndexerGrpcSpotApi {
   }
 
   async fetchTrades(params?: {
-    marketId?: string
-    pagination?: PaginationOption
-    subaccountId?: string
-    executionTypes?: TradeExecutionType[]
-    executionSide?: TradeExecutionSide
-    startTime?: number
     endTime?: number
-    direction?: TradeDirection
+    tradeId?: string
+    marketId?: string
+    startTime?: number
     marketIds?: string[]
+    subaccountId?: string
+    accountAddress?: string
+    direction?: TradeDirection
+    pagination?: PaginationOption
+    executionSide?: TradeExecutionSide
+    executionTypes?: TradeExecutionType[]
   }) {
     const {
-      marketId,
-      pagination,
-      subaccountId,
-      executionTypes,
-      executionSide,
-      startTime,
       endTime,
+      tradeId,
+      marketId,
+      startTime,
       direction,
       marketIds,
+      pagination,
+      subaccountId,
+      executionSide,
+      executionTypes,
+      accountAddress,
     } = params || {}
 
     const request = InjectiveSpotExchangeRpc.TradesRequest.create()
@@ -313,6 +293,14 @@ export class IndexerGrpcSpotApi {
 
     if (subaccountId) {
       request.subaccountId = subaccountId
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
+    }
+
+    if (tradeId) {
+      request.tradeId = tradeId
     }
 
     if (executionTypes) {
@@ -472,33 +460,6 @@ export class IndexerGrpcSpotApi {
       })
     }
   }
-
-  async fetchOrderbooks(marketIds: string[]) {
-    const request = InjectiveSpotExchangeRpc.OrderbooksRequest.create()
-
-    if (marketIds.length > 0) {
-      request.marketIds = marketIds
-    }
-
-    try {
-      const response = await this.client.Orderbooks(request)
-
-      return IndexerGrpcSpotTransformer.orderbooksResponseToOrderbooks(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        contextModule: this.module,
-      })
-    }
-  }
-
   async fetchOrderbooksV2(marketIds: string[]) {
     const request = InjectiveSpotExchangeRpc.OrderbooksV2Request.create()
 
