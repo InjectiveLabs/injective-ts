@@ -92,6 +92,7 @@ export class IndexerGrpcSpotApi {
     }
   }
 
+  /** @deprecated - use fetchOrderbookV2 */
   async fetchOrderbook(marketId: string) {
     const request = InjectiveSpotExchangeRpc.OrderbookRequest.create()
 
@@ -473,6 +474,7 @@ export class IndexerGrpcSpotApi {
     }
   }
 
+  /** @deprecated - use fetchOrderbooksV2 */
   async fetchOrderbooks(marketIds: string[]) {
     const request = InjectiveSpotExchangeRpc.OrderbooksRequest.create()
 

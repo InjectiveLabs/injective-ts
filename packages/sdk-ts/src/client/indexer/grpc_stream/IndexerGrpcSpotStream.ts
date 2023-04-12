@@ -64,6 +64,7 @@ export class IndexerGrpcSpotStream {
       )
   }
 
+  /** @deprecated - use streamSpotOrderbookV2 */
   streamSpotOrderbook({
     marketIds,
     callback,

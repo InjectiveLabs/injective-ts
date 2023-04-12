@@ -70,6 +70,7 @@ export class IndexerGrpcDerivativesStream {
       )
   }
 
+  /** @deprecated - use streamDerivativeOrderbookV2 */
   streamDerivativeOrderbook({
     marketIds,
     callback,

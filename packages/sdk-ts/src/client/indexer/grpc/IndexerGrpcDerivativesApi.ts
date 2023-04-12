@@ -165,6 +165,7 @@ export class IndexerGrpcDerivativesApi {
     }
   }
 
+  /** @deprecated - use fetchOrderbookV2 */
   async fetchOrderbook(marketId: string) {
     const request = InjectiveDerivativeExchangeRpc.OrderbookRequest.create()
 
@@ -716,6 +717,7 @@ export class IndexerGrpcDerivativesApi {
     }
   }
 
+  /** @deprecated - use fetchOrderbooksV2 */
   async fetchOrderbooks(marketIds: string[]) {
     const request = InjectiveDerivativeExchangeRpc.OrderbooksRequest.create()
 
