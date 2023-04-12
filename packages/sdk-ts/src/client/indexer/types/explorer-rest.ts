@@ -35,6 +35,18 @@ export interface ExplorerApiResponseWithPagination<T> {
   }
 }
 
+export interface EventLogEvent {
+  type: string
+  attributes: Array<{
+    key: string
+    value: string
+  }>
+}
+
+export interface EventLog {
+  events: EventLogEvent[]
+}
+
 export interface TransactionFromExplorerApiResponse {
   id: string
   block_number: number
@@ -64,6 +76,7 @@ export interface TransactionFromExplorerApiResponse {
   }
   events: Array<any>
   codespace: string
+  logs: EventLog[]
   messages: Array<{ value: any; type: string }>
   error_log?: string
 }
@@ -101,6 +114,7 @@ export interface ExplorerTransaction extends Omit<BaseTransaction, 'messages'> {
   messages: Message[]
   parsedMessages?: Message[]
   errorLog?: string
+  logs?: EventLog[]
 }
 
 export interface ExplorerBlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
