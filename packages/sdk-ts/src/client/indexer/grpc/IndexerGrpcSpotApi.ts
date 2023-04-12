@@ -8,8 +8,9 @@ import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { IndexerGrpcSpotTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
-  GrpcUnaryRequestException,
+  GeneralException,
   UnspecifiedErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
@@ -93,28 +94,8 @@ export class IndexerGrpcSpotApi {
   }
 
   /** @deprecated - use fetchOrderbookV2 */
-  async fetchOrderbook(marketId: string) {
-    const request = InjectiveSpotExchangeRpc.OrderbookRequest.create()
-
-    request.marketId = marketId
-
-    try {
-      const response = await this.client.Orderbook(request)
-
-      return IndexerGrpcSpotTransformer.orderbookResponseToOrderbook(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        contextModule: this.module,
-      })
-    }
+  async fetchOrderbook(_marketId: string) {
+    throw new GeneralException(new Error('deprecated - use fetchOrderbookV2'))
   }
 
   async fetchOrders(params?: {
@@ -487,30 +468,8 @@ export class IndexerGrpcSpotApi {
   }
 
   /** @deprecated - use fetchOrderbooksV2 */
-  async fetchOrderbooks(marketIds: string[]) {
-    const request = InjectiveSpotExchangeRpc.OrderbooksRequest.create()
-
-    if (marketIds.length > 0) {
-      request.marketIds = marketIds
-    }
-
-    try {
-      const response = await this.client.Orderbooks(request)
-
-      return IndexerGrpcSpotTransformer.orderbooksResponseToOrderbooks(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        contextModule: this.module,
-      })
-    }
+  async fetchOrderbooks(_marketIds: string[]) {
+    throw new GeneralException(new Error('deprecated - use fetchOrderbooksV2'))
   }
 
   async fetchOrderbooksV2(marketIds: string[]) {

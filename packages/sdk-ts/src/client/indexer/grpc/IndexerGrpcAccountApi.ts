@@ -2,8 +2,9 @@ import { PaginationOption } from '../../../types/pagination'
 import { IndexerGrpcAccountTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
-  GrpcUnaryRequestException,
+  GeneralException,
   UnspecifiedErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
@@ -23,32 +24,14 @@ export class IndexerGrpcAccountApi {
   }
 
   /**
-   * @deprecated - use IndexerGrpcAccountPortfoliooApi.fetchPortfolio instead
+   * @deprecated - use IndexerGrpcAccountPortfolioApi.fetchPortfolio instead
    */
-  async fetchPortfolio(address: string) {
-    const request = InjectiveAccountRpc.PortfolioRequest.create()
-
-    request.accountAddress = address
-
-    try {
-      const response = await this.client.Portfolio(request)
-
-      return IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAccountRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        contextModule: this.module,
-      })
-    }
+  async fetchPortfolio(_address: string) {
+    throw new GeneralException(
+      new Error(
+        'deprecated - use IndexerGrpcAccountPortfolioApi.fetchPortfolio',
+      ),
+    )
   }
 
   async fetchRewards({ address, epoch }: { address: string; epoch: number }) {

@@ -10,15 +10,10 @@ import { IndexerSpotStreamTransformer } from '../transformers'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export type MarketsStreamCallback = (
   response: InjectiveSpotExchangeRpc.StreamMarketsResponse,
-) => void
-
-export type SpotOrderbookStreamCallback = (
-  response: ReturnType<
-    typeof IndexerSpotStreamTransformer.orderbookStreamCallback
-  >,
 ) => void
 
 export type SpotOrderbookV2StreamCallback = (
@@ -65,38 +60,15 @@ export class IndexerGrpcSpotStream {
   }
 
   /** @deprecated - use streamSpotOrderbookV2 */
-  streamSpotOrderbook({
-    marketIds,
-    callback,
-    onEndCallback,
-    onStatusCallback,
-  }: {
+  streamSpotOrderbook(_args: {
     marketIds: string[]
-    callback: SpotOrderbookStreamCallback
+    callback: any
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveSpotExchangeRpc.StreamOrderbookRequest.create()
-
-    request.marketIds = marketIds
-
-    const subscription = this.client.StreamOrderbook(request).subscribe({
-      next(response: InjectiveSpotExchangeRpc.StreamOrderbookResponse) {
-        callback(IndexerSpotStreamTransformer.orderbookStreamCallback(response))
-      },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+    throw new GeneralException(
+      new Error('deprecated - use streamDerivativeOrderbookV2'),
+    )
   }
 
   streamSpotOrders({
