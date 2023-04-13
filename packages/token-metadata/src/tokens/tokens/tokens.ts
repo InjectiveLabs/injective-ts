@@ -1317,7 +1317,7 @@ export default {
     name: 'Astar',
     symbol: 'ASTR',
     decimals: 18,
-    logo: 'astar.png',
+    logo: 'astar.svg',
     coinGeckoId: 'astar',
 
     cw20: {
