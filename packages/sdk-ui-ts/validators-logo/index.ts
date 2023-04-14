@@ -1,32 +1,68 @@
 import { Validator, ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { HttpRestClient } from '@injectivelabs/utils'
-import { HttpRequestException } from '@injectivelabs/exceptions'
 import path from 'path'
 import fs from 'fs'
+// @ts-ignore
+import validatorToAddressMapFromKeybase from './mappings.json'
+import { validatorAddressToPathMap } from '../src/utils/mappings'
 
 export interface ValidatorMap {
-  [operator_address: string]: string
+  [validatorAddress: string]: string
 }
 
 const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
-const keybaseApi = new HttpRestClient('https://keybase.io/')
+const keybaseApi = new HttpRestClient('https://keybase.io/_/api/1.0/')
 
-const KEYBASE_SUFFIX = '_/api/1.0/user/lookup.json?fields=pictures&key_suffix='
+const KEYBASE_SUFFIX = 'user/lookup.json?fields=pictures&key_suffix='
+
+const existingValidatorToAddressMapFromKeybase =
+  { ...JSON.parse(JSON.stringify(validatorToAddressMapFromKeybase)) } || {}
+
+/* cli flags */
+const [, , flag] = process.argv
+const cliValidatorAddress = flag && flag.includes('inj') ? flag : undefined
+const shouldUpdateAllImages = flag && flag.includes('update:all')
+const removeImages = flag && flag.includes('remove:images')
 
 /* create validator to identity map */
 const fetchValidators = async () => {
   const { validators } = await chainGrpcStakingApi.fetchValidators()
 
-  return validators.reduce((acc: ValidatorMap, validator: Validator) => {
-    acc[validator.operatorAddress] = validator.description.identity
-    return acc
-  }, {})
+  /* if validator is already in the map, don't include it by default because that would require redownloading all images */
+  const filteredValidators = !shouldUpdateAllImages
+    ? validators.filter(
+        ({ operatorAddress: validatorAddress }) =>
+          !Object.keys(existingValidatorToAddressMapFromKeybase).includes(
+            validatorAddress,
+          ),
+      )
+    : validators
+
+  if (filteredValidators.length === 0) {
+    return
+  }
+
+  return filteredValidators.reduce(
+    (acc: ValidatorMap, validator: Validator) => {
+      const {
+        operatorAddress: validatorAddress,
+        description: { identity },
+      } = validator
+
+      if (!identity) {
+        return { ...acc }
+      }
+
+      return { ...acc, [validatorAddress]: identity }
+    },
+    {} as ValidatorMap,
+  )
 }
 
 /* fetch url where validator image is stored */
-const fetchLogoUrl = async (identity: string) => {
+const fetchLogoUrl = async (identity: string): Promise<string | undefined> => {
   try {
     const response = (await keybaseApi.get(`${KEYBASE_SUFFIX}${identity}`)) as {
       data: any
@@ -34,11 +70,8 @@ const fetchLogoUrl = async (identity: string) => {
 
     return response.data?.them?.[0]?.pictures.primary.url
   } catch (e: unknown) {
-    if (e instanceof HttpRequestException) {
-      throw e
-    }
-
-    throw new HttpRequestException(new Error((e as any).message))
+    return
+    console.log(e)
   }
 }
 
@@ -46,13 +79,21 @@ const fetchLogoUrl = async (identity: string) => {
 const getLogoPathsMap = async () => {
   const validators = await fetchValidators()
 
+  if (!validators) {
+    return
+  }
+
   return Object.entries(validators).reduce(
-    async (acc: any, [validatorAddress, identifier]) => {
+    async (acc: Promise<ValidatorMap>, [validatorAddress, identifier]) => {
       const logoUrl = await fetchLogoUrl(identifier as string)
 
-      return { ...(await acc), [validatorAddress]: logoUrl ? logoUrl : '' }
+      if (!logoUrl) {
+        return { ...(await acc) } as ValidatorMap
+      }
+
+      return { ...(await acc), [validatorAddress]: logoUrl }
     },
-    {},
+    {} as Promise<ValidatorMap>,
   )
 }
 
@@ -71,29 +112,56 @@ const downloadImages = async (imageOrigin: string, imageFolderPath: string) => {
 
   stream.on('finish', () => {
     stream.close()
-    console.log('Image downloaded')
   })
 }
 
 /* download images to validators-logo/images folder */
 const queryAndMoveValidatorImages = async () => {
-  const logoPaths = (await getLogoPathsMap()) as Record<string, string>
+  const validatorToLogoPathMap = (await getLogoPathsMap()) as Record<
+    string,
+    string
+  >
 
-  Object.entries(logoPaths).forEach(async ([validatorAddress, imagePath]) => {
-    if (!imagePath) {
-      return
+  if (
+    !validatorToLogoPathMap ||
+    Object.keys(validatorToLogoPathMap).length === 0
+  ) {
+    return
+  }
+  console.log('replacing images')
+  Object.entries(validatorToLogoPathMap).forEach(
+    async ([validatorAddress, imagePath]) => {
+      fs.readFile(imagePath, () => {
+        const fileType = imagePath.split('.').pop()
+        const validatorFile = `${validatorAddress}.${fileType}`
+
+        const outputPath = path.resolve(
+          process.cwd() + `/./validators-logo/images/${validatorFile}`,
+        )
+        console.log('download images')
+        downloadImages(imagePath, outputPath)
+      })
+    },
+  )
+}
+
+const removeDeprecatedValidatorImages = () => {
+  const imagesFolderPath = path.resolve(
+    process.cwd() + `/./validators-logo/images/`,
+  )
+
+  const defaultImage = 'injective.webp'
+
+  fs.readdirSync(imagesFolderPath).forEach((fileName) => {
+    if (
+      !Object.values(existingValidatorToAddressMapFromKeybase).includes(
+        fileName,
+      ) &&
+      !Object.values(validatorAddressToPathMap).includes(fileName) &&
+      fileName !== defaultImage
+    ) {
+      fs.unlinkSync(`${imagesFolderPath}/${fileName}`)
     }
-
-    fs.readFile(imagePath, () => {
-      const fileType = imagePath.split('.').pop()
-      const validatorFile = `${validatorAddress}.${fileType}`
-
-      const outputPath = path.resolve(
-        process.cwd() + `/./validators-logo/images/${validatorFile}`,
-      )
-
-      downloadImages(imagePath, outputPath)
-    })
   })
 }
 
@@ -101,34 +169,88 @@ const queryAndMoveValidatorImages = async () => {
 const getValidatorNameToImageMap = async () => {
   const logoPaths = (await getLogoPathsMap()) as Record<string, string>
 
+  if (!logoPaths || Object.keys(logoPaths).length === 0) {
+    return
+  }
+
   return Object.entries(logoPaths).reduce(
     (acc, [validatorAddress, imagePath]) => {
-      if (!imagePath) {
-        return { ...acc, [validatorAddress]: '' }
-      }
-
       const fileType = imagePath.split('.').pop()
       const validatorFile = `${validatorAddress}.${fileType}`
 
       return { ...acc, [validatorAddress]: validatorFile }
     },
     {},
-  )
+  ) as Record<string, string>
 }
 
 /* create map of validator address to image file name to be stored as json */
-async function createValidatorMapFile() {
-  const map = await getValidatorNameToImageMap()
+function createValidatorMapJsonFile(
+  validatorNameToImageMap: Record<string, string>,
+) {
+  if (!validatorNameToImageMap) {
+    return
+  }
+
   const outputPath = path.resolve(
     `${process.cwd()}/validators-logo/mappings.json`,
   )
 
-  fs.writeFileSync(outputPath, JSON.stringify(map))
+  fs.writeFileSync(
+    outputPath,
+    JSON.stringify(
+      {
+        ...existingValidatorToAddressMapFromKeybase,
+        ...validatorNameToImageMap,
+      },
+      null,
+      2,
+    ),
+  )
+}
+
+/* update a single validator on json map and it's image */
+async function handleSpecifiedValidatorUpdate() {
+  if (!cliValidatorAddress) {
+    return
+  }
+
+  const validator = await chainGrpcStakingApi.fetchValidator(
+    cliValidatorAddress,
+  )
+  const logoUrl = await fetchLogoUrl(validator.description.identity)
+
+  if (!logoUrl) {
+    return
+  }
+
+  const fileType = logoUrl.split('.').pop()
+  const validatorFile = `${cliValidatorAddress}.${fileType}`
+  const outputPath = path.resolve(
+    process.cwd() + `/./validators-logo/images/${validatorFile}`,
+  )
+
+  downloadImages(logoUrl, outputPath)
+  createValidatorMapJsonFile({ [cliValidatorAddress]: validatorFile })
 }
 
 async function handleValidatorLogos() {
-  await createValidatorMapFile()
-  await queryAndMoveValidatorImages()
+  if (cliValidatorAddress) {
+    return handleSpecifiedValidatorUpdate()
+  }
+
+  const validatorNameToImageMap = await getValidatorNameToImageMap()
+
+  if (!validatorNameToImageMap) {
+    return
+  }
+
+  createValidatorMapJsonFile(validatorNameToImageMap)
+  queryAndMoveValidatorImages()
 }
 
-handleValidatorLogos()
+if (removeImages) {
+  removeDeprecatedValidatorImages()
+} else {
+  handleValidatorLogos()
+}
