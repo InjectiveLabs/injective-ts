@@ -1258,7 +1258,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0x912ce59144191c1204e64559fe8253a0e49e6548',
+      address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
       tokenType: TokenType.Erc20,
     },
 
@@ -1302,7 +1302,7 @@ export default {
 
     erc20: {
       decimals: 4,
-      address: '0x420412e765bfa6d85aaac94b4f7b708c89be2e2b',
+      address: '0x420412E765BFa6d85aaaC94b4f7b708C89be2e2B',
       tokenType: TokenType.Erc20,
     },
 
@@ -1338,18 +1338,18 @@ export default {
   ALPHA: {
     name: 'Alpha Coin',
     symbol: 'ALPHA',
-    decimals: 6,
+    decimals: 18,
     logo: 'alpha.png',
     coinGeckoId: 'alphacoin',
 
     erc20: {
-      decimals: 6,
-      address: '0x138c2f1123cf3f82e4596d097c118eac6684940b',
+      decimals: 18,
+      address: '0x138C2F1123cF3f82E4596d097c118eAc6684940B',
       tokenType: TokenType.Erc20,
     },
 
     cw20: {
-      decimals: 6,
+      decimals: 8,
       address: 'inj1zwnsemwrpve3wrrg0njj89w6mt5rmj9ydkc46u',
       tokenType: TokenType.Cw20,
     },
