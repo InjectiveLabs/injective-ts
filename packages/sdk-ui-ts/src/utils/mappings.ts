@@ -295,7 +295,7 @@ export const validatorAddressToPathMap = {
     'injvaloper1vqz7mgm47xhx25xu5g9qagnz48naks6pk6fmg2.webp',
   injvaloper1vqz7mgm47xhx25xu5g9qagnz48naks6pk6fmg2:
     'injvaloper1vqz7mgm47xhx25xu5g9qagnz48naks6pk6fmg2.webp',
-    injvalcons1dflwep4n9kmekqvtuu66ef3m5hj06u56kr2q8c:
+  injvalcons1dflwep4n9kmekqvtuu66ef3m5hj06u56kr2q8c:
     'injvaloper17y9pmvrwcmytrvsurduj7ts0s8unzr55a6ffa3.webp',
   injvaloper17y9pmvrwcmytrvsurduj7ts0s8unzr55a6ffa3:
     'injvaloper17y9pmvrwcmytrvsurduj7ts0s8unzr55a6ffa3.webp',
@@ -303,20 +303,20 @@ export const validatorAddressToPathMap = {
     'injvaloper1n6z54tf5rezqurq7vn4xy6gfj9u7m5axen0ycc.webp',
   injvaloper1n6z54tf5rezqurq7vn4xy6gfj9u7m5axen0ycc:
     'injvaloper1n6z54tf5rezqurq7vn4xy6gfj9u7m5axen0ycc.webp',
-    injvalcons1m0xku293exk0dvfljkangv4cjt28yyqct85pkq:
+  injvalcons1m0xku293exk0dvfljkangv4cjt28yyqct85pkq:
     'injvaloper10er2rpmfux7dwyrqfgre90e4dqmsj5n06twg4l.webp',
-    injvaloper10er2rpmfux7dwyrqfgre90e4dqmsj5n06twg4l:
+  injvaloper10er2rpmfux7dwyrqfgre90e4dqmsj5n06twg4l:
     'injvaloper10er2rpmfux7dwyrqfgre90e4dqmsj5n06twg4l.webp',
-    injvalcons1m8shfyz7cu7w0umgwgmhk59nmatzlvu7g56t6a:
+  injvalcons1m8shfyz7cu7w0umgwgmhk59nmatzlvu7g56t6a:
     'injvaloper175x4lvxpwmmwt5m76yqz0ace8dwkjyjjj7sxdj.webp',
-    injvaloper175x4lvxpwmmwt5m76yqz0ace8dwkjyjjj7sxdj:
+  injvaloper175x4lvxpwmmwt5m76yqz0ace8dwkjyjjj7sxdj:
     'injvaloper175x4lvxpwmmwt5m76yqz0ace8dwkjyjjj7sxdj.webp',
-    injvalcons1n5yluh6k9zqv74jw35r5s5zy808xpzfqp2wm7g:
+  injvalcons1n5yluh6k9zqv74jw35r5s5zy808xpzfqp2wm7g:
     'injvaloper1n5yluh6k9zqv74jw35r5s5zy808xpzfq4ea8jf.webp',
-    injvaloper1n5yluh6k9zqv74jw35r5s5zy808xpzfq4ea8jf:
+  injvaloper1n5yluh6k9zqv74jw35r5s5zy808xpzfq4ea8jf:
     'injvaloper1n5yluh6k9zqv74jw35r5s5zy808xpzfq4ea8jf.webp',
   injvalcons1d3tqsnsulge3v2xgavw6d7r9jgj902t4mv9u5l:
     'injvaloper19a77dzm2lrxt2gehqca3nyzq077kq7qsgvmrp4.webp',
   injvaloper19a77dzm2lrxt2gehqca3nyzq077kq7qsgvmrp4:
-    'injvaloper19a77dzm2lrxt2gehqca3nyzq077kq7qsgvmrp4.webp'
+    'injvaloper19a77dzm2lrxt2gehqca3nyzq077kq7qsgvmrp4.webp',
 } as Record<string, string>

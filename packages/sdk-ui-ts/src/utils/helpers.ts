@@ -1,6 +1,8 @@
 import path from 'path'
 import { TokenType } from '@injectivelabs/token-metadata'
 import { validatorAddressToPathMap } from './mappings'
+// @ts-ignore
+import validatorToAddressMapFromKeybase from '../../validators-logo/mapping.json'
 
 export const getTokenLogoWithVendorPathPrefix = (image: string) => {
   if (image.includes('@injectivelabs')) {
@@ -36,7 +38,13 @@ export const getTokenLogoFromTokenType = (tokenType: TokenType) => {
 export const getValidatorLogoWithVendorPathPrefix = (
   validatorAddress: string,
 ) => {
-  const validatorLogoPath = validatorAddressToPathMap[validatorAddress]
+  const validatorToAddressFromKeybaseMap = JSON.parse(
+    JSON.stringify(validatorToAddressMapFromKeybase),
+  )
+
+  const validatorLogoPath = validatorToAddressFromKeybaseMap[validatorAddress]
+    ? validatorToAddressFromKeybaseMap[validatorAddress]
+    : validatorAddressToPathMap[validatorAddress]
 
   return path.join(
     '/',
