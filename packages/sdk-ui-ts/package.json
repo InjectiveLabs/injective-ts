@@ -17,7 +17,8 @@
     "~sdk-ui-ts": "dist"
   },
   "scripts": {
-    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "postinstall": "link-module-alias",
+    "prepublish": "shx mkdir -p dist",
     "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && yarn build:post && link-module-alias && yarn copy-files",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
