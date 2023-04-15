@@ -31,9 +31,8 @@
     "coverage:show": "live-server coverage",
     "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js",
-    "validators-logo": "ts-node-dev --ignore-watch=validators-logo validators-logo && ts-node-dev validators-logo remove:images",
-    "validators-logo:update-individual": "ts-node-dev --ignore-watch=validators-logo validators-logo",
-    "validators-logo:update-all": "ts-node-dev --ignore-watch=validators-logo validators-logo update:all && ts-node-dev validators-logo remove:images "
+    "validators-logo": "ts-node-dev --ignore-watch=validators-logo validators-logo",
+    "validators-logo:update-all": "ts-node-dev --ignore-watch=validators-logo validators-logo --update:all "
   },
   "dependencies": {
     "@injectivelabs/contracts": "^1.10.13",
