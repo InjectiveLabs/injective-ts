@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.23...@injectivelabs/token-metadata@1.10.24) (2023-04-14)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+
+
+
+
+## [1.10.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.22...@injectivelabs/token-metadata@1.10.23) (2023-04-13)
+
+
+### Bug Fixes
+
+* astar image file type ([f05a59c](https://github.com/InjectiveLabs/injective-ts/commit/f05a59cbe2578fa6b12277f2dfa67dfd8266f817))
+
+
+
+
+
 ## [1.10.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.10.21...@injectivelabs/token-metadata@1.10.22) (2023-04-12)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
