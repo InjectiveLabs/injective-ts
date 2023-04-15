@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@1.10.1...@injectivelabs/test-utils@1.10.2) (2023-04-15)
+
+
+### Bug Fixes
+
+* script minor ([adb7c76](https://github.com/InjectiveLabs/injective-ts/commit/adb7c764ad00a0cfa38223cecf9b221873cd31b8))
+
+
+
+
+
 ## [1.10.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@1.10.1-alpha.0...@injectivelabs/test-utils@1.10.1) (2023-04-04)
 
 **Note:** Version bump only for package @injectivelabs/test-utils
