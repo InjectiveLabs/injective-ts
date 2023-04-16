@@ -2102,10 +2102,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/core-proto-ts@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.11.tgz#043ac0a0ce802b485b9d695b12209d1b36727093"
-  integrity sha512-gYMzkoZ0olXLbEhSQVarUCMR6VAHytvENDv2Psjl9EjO5Pg93vTGLViS4E4vA5fezRfdF/x0Uic31w+ogp66jA==
+"@injectivelabs/core-proto-ts@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.12.tgz#77dd5e774ed2591f6f41156db33a281a3522c588"
+  integrity sha512-axdL+KWuv4aORIdYqJQy5k9H+bPsi5Y4KWNcYPxrFQ0FAu+sjpvm5PmbIzBSgv/hnIB2cHcLuKvE3BtEa3vJ/w==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -2129,20 +2129,20 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/indexer-proto-ts@1.10.8-rc.3":
-  version "1.10.8-rc.3"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.10.8-rc.3.tgz#c9faddfb194c8f8ccafa2fd87744b33c69c6777c"
-  integrity sha512-Sa9vR3YkOaP0shvprA6Kw/a7kxgrozi06Lv9TV687Kumw9gMxrAF4fy3oxwC9iUtRY0OLVgaALh4xNH0mGz4Fw==
+"@injectivelabs/indexer-proto-ts@1.10.8-rc.4":
+  version "1.10.8-rc.4"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.10.8-rc.4.tgz#ab8424cd713bb5a69ab130b64bf0b3f9f9089946"
+  integrity sha512-IwbepTfsHHAv3Z36As6yH/+HIplOEpUu6SFHBCVgdSIaQ8GuvTib4HETiVnV4mjYqoyVgWs+zLSAfih46rdMJQ==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/mito-proto-ts@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/mito-proto-ts/-/mito-proto-ts-1.0.3.tgz#5104b2587baeaeed45526cb93e747606ac3cd2b8"
-  integrity sha512-3dkM4uCVGvvG4RC1eWN5pLEJu3m5YHB6oayOOsgXMAbQG6CxNQTyRV0secdHRdrJ403n2WJv9MPe8Lkzo8ryhA==
+"@injectivelabs/mito-proto-ts@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/mito-proto-ts/-/mito-proto-ts-1.0.4.tgz#788146b5b0194fb5df91b903fa982a70427194a5"
+  integrity sha512-8raVmZnaXVbpikMTmnc+OtViBPzgyx2ilezUTZFCNcQzZM01lbJlpd0NbF6K5tG76eJ3Wjwj+YpAdRPNuayZ4A==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -13519,15 +13519,7 @@ shiki@^0.10.1:
     vscode-oniguruma "^1.6.1"
     vscode-textmate "5.2.0"
 
-shx@^0.3.2, shx@^0.3.3:
-  version "0.3.4"
-  resolved "https://registry.npmjs.org/shx/-/shx-0.3.4.tgz#74289230b4b663979167f94e1935901406e40f02"
-  integrity sha512-N6A9MLVqjxZYcVn8hLmtneQWIJtp8IKzMP4eMnx+nqkvXoqinUPCbUFLp2UcWTEIUONhlk0ewxr/jaVGlc+J+g==
-  dependencies:
-    minimist "^1.2.3"
-    shelljs "^0.8.5"
-
-shx@^0.3.4:
+shx@^0.3.2, shx@^0.3.3, shx@^0.3.4:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/shx/-/shx-0.3.4.tgz#74289230b4b663979167f94e1935901406e40f02"
   integrity sha512-N6A9MLVqjxZYcVn8hLmtneQWIJtp8IKzMP4eMnx+nqkvXoqinUPCbUFLp2UcWTEIUONhlk0ewxr/jaVGlc+J+g==

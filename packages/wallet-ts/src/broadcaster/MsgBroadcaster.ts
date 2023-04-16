@@ -48,7 +48,7 @@ import {
 import { isCosmosWallet } from '../utils/wallets/cosmos'
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
 /**
  * This class is used to broadcast transactions

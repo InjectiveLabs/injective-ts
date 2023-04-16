@@ -38,7 +38,6 @@
     "@cosmostation/extension-client": "^0.1.15",
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/core-proto-ts": "^0.0.11",
     "@injectivelabs/exceptions": "^1.10.5",
     "@injectivelabs/networks": "^1.10.7",
     "@injectivelabs/sdk-ts": "^1.10.46",
@@ -55,10 +54,6 @@
     "@solana/wallet-adapter-wallets": "^0.19.5",
     "@toruslabs/torus-embed": "^1.39.0",
     "@trezor/connect-web": "^9.0.6",
-    "@types/eth-sig-util": "^2.1.1",
-    "@types/ethereumjs-util": "^6.1.0",
-    "@types/hdkey": "^2.0.1",
-    "@types/ledgerhq__hw-transport-webusb": "^4.70.1",
     "alchemy-sdk": "^2.6.3",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
@@ -68,6 +63,12 @@
     "link-module-alias": "^1.2.0",
     "long": "^5.2.1",
     "shx": "^0.3.3"
+  },
+  "devDependencies": {
+    "@types/eth-sig-util": "^2.1.1",
+    "@types/ethereumjs-util": "^6.1.0",
+    "@types/hdkey": "^2.0.1",
+    "@types/ledgerhq__hw-transport-webusb": "^4.70.1"
   },
   "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
   "typedoc": {

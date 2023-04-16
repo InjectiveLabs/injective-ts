@@ -17,7 +17,7 @@ import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
 const getChainNameFromChainId = (chainId: CosmosChainId) => {
   const [chainName] = chainId.split('-')

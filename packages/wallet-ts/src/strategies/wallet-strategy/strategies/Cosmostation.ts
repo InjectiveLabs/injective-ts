@@ -22,7 +22,7 @@ import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
 const INJECTIVE_CHAIN_NAME = 'injective'
 

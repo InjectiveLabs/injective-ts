@@ -24,7 +24,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as KeplrWindow
 
