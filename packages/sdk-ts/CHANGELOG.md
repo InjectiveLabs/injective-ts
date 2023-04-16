@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.47](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.46...@injectivelabs/sdk-ts@1.10.47) (2023-04-16)
+
+
+### Bug Fixes
+
+* updated core mito indexer proto-ts ([622c66f](https://github.com/InjectiveLabs/injective-ts/commit/622c66f6e1b4860372718cde91973f663acf84eb))
+
+
+
+
+
 ## [1.10.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.45...@injectivelabs/sdk-ts@1.10.46) (2023-04-15)
 
 

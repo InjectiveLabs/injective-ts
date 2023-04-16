@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.51](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.50...@injectivelabs/wallet-ts@1.10.51) (2023-04-16)
+
+
+### Bug Fixes
+
+* updated core mito indexer proto-ts ([622c66f](https://github.com/InjectiveLabs/injective-ts/commit/622c66f6e1b4860372718cde91973f663acf84eb))
+
+
+
+
+
 ## [1.10.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.10.49...@injectivelabs/wallet-ts@1.10.50) (2023-04-15)
 
 
