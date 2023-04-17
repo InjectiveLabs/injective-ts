@@ -42,6 +42,7 @@ import MsgExec from './wasm/msgs/MsgPrivilegedExecuteContract'
 import MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract'
 import MsgStoreCode from './wasm/msgs/MsgStoreCode'
 import MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds'
+import MsgRewardsOptOut from './exchange/msgs/MsgRewardsOptOut'
 import MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer'
 import { MsgSubmitProposal } from './gov'
 
@@ -95,6 +96,7 @@ export type Msgs =
   | MsgReclaimLockedFunds
   | MsgExternalTransfer
   | MsgStoreCode
+  | MsgRewardsOptOut
 
 /**
  * @category Messages
@@ -121,3 +123,4 @@ export type ExchangeMsgs =
   | MsgReclaimLockedFunds
   | MsgExternalTransfer
   | MsgStoreCode
+  | MsgRewardsOptOut

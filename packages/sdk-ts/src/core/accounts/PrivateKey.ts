@@ -78,13 +78,13 @@ export class PrivateKey {
   }
 
   /**
-   * Return a hex representation of signing key.
+   * Return the private key in hex
    * @returns {string}
-   */
-  toHex(): string {
-    return this.wallet.address.startsWith('0x')
-      ? this.wallet.address
-      : `0x${this.wallet.address}`
+   **/
+  toPrivateKeyHex(): string {
+    return this.wallet.privateKey.startsWith('0x')
+      ? this.wallet.privateKey
+      : `0x${this.wallet.privateKey}`
   }
 
   /**
@@ -96,6 +96,16 @@ export class PrivateKey {
   }
 
   /**
+   * Return a hex representation of signing key.
+   * @returns {string}
+   */
+  toHex(): string {
+    return this.wallet.address.startsWith('0x')
+      ? this.wallet.address
+      : `0x${this.wallet.address}`
+  }
+
+  /**
    * Return the Address associated with this private key.
    * @returns {Address}
    **/
@@ -104,7 +114,7 @@ export class PrivateKey {
   }
 
   /**
-   * Return the Injective address associated with this private key.
+   * Return the Bech32 address associated with this private key.
    * @returns {string}
    **/
   toBech32(): string {
