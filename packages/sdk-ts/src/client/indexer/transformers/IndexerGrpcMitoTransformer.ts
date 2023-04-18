@@ -1,21 +1,31 @@
+import { Coin } from '@injectivelabs/ts-types'
+import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import {
-  MitoDenomBalance,
+  MitoVault,
   MitoHolders,
-  MitoLeaderboard,
+  MitoProfits,
+  MitoTransfer,
   MitoPortfolio,
   MitoPagination,
-  MitoPriceSnapshot,
-  MitoProfits,
-  MitoSubaccountBalance,
+  MitoLeaderboard,
+  MitoDenomBalance,
   MitoSubscription,
-  MitoVault,
+  MitoPriceSnapshot,
+  MitoSubaccountBalance,
 } from '../types/mito'
-import { MitoApi } from '@injectivelabs/mito-proto-ts'
+import { GrpcCoin } from '../../../types/index'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcMitoTransformer {
+  static grpcCoinToCoin(coin: GrpcCoin): Coin {
+    return {
+      denom: coin.denom,
+      amount: coin.amount,
+    }
+  }
+
   static mitoPaginationToPagination(
     pagination?: MitoApi.Pagination,
   ): MitoPagination | undefined {
@@ -184,6 +194,36 @@ export class IndexerGrpcMitoTransformer {
       })),
       snapshotBlock: response.snapshotBlock,
       updatedAt: response.updatedAt,
+    }
+  }
+
+  static mitoTransferHistoryToTransferHistory(
+    response: MitoApi.Transfer,
+  ): MitoTransfer {
+    return {
+      lpAmount: response.lpAmount,
+      coins: response.coins.map(IndexerGrpcMitoTransformer.grpcCoinToCoin),
+      usdValue: response.usdValue,
+      isDeposit: response.isDeposit,
+      executedAt: parseInt(response.executedAt, 10),
+      account: response.account,
+      vault: response.vault,
+      txHash: response.txHash,
+      tidByVault: response.tidByVault,
+      tidByAccount: response.tidByAccount,
+    }
+  }
+
+  static TransferHistoryResponseToTransfer(
+    response: MitoApi.TransfersHistoryResponse,
+  ) {
+    return {
+      transfers: response.transfers.map(
+        IndexerGrpcMitoTransformer.mitoTransferHistoryToTransferHistory,
+      ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 }

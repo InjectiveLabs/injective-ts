@@ -1,3 +1,4 @@
+import { Coin } from '@injectivelabs/ts-types'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
 
 export interface MitoHolders {
@@ -34,7 +35,7 @@ export interface MitoSubaccountBalance {
   subaccountId: string
   balancesList: MitoDenomBalance[]
 }
- 
+
 export interface MitoVault {
   contractAddress: string
   codeId: string
@@ -78,6 +79,19 @@ export interface MitoLeaderboard {
   entriesList: MitoLeaderboardEntry[]
   snapshotBlock: string
   updatedAt: string
+}
+
+export interface MitoTransfer {
+  lpAmount: string
+  coins: Coin[]
+  usdValue: string
+  isDeposit: boolean
+  executedAt: number
+  account: string
+  vault: string
+  txHash: string
+  tidByVault: number
+  tidByAccount: number
 }
 
 export type GrpcMitoVault = MitoApi.Vault

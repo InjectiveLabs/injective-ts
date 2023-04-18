@@ -196,4 +196,28 @@ describe('IndexerGrpcMitoApi', () => {
       )
     }
   })
+
+  test('fetchTransferHistory', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchTransferHistory({})
+
+      if (response.transfers.length === 0) {
+        console.warn('fetchTransferHistory.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.TransferHistoryResponseToTransfer
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchTransferHistory vaults => ' +
+          (e as any).message,
+      )
+    }
+  })
 })

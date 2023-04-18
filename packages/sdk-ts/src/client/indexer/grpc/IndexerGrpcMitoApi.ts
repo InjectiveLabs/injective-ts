@@ -317,4 +317,60 @@ export class IndexerGrpcMitoApi {
       })
     }
   }
+
+  async fetchTransferHistory({
+    vault,
+    account,
+    pageSize,
+    toNumber,
+    fromNumber,
+  }: {
+    vault?: string
+    account?: string
+    pageSize?: number
+    toNumber?: number
+    fromNumber?: number
+  }) {
+    const request = MitoApi.TransfersHistoryRequest.create()
+
+    if (vault) {
+      request.vault = vault
+    }
+
+    if (account) {
+      request.account = account
+    }
+
+    if (pageSize) {
+      request.pageSize = pageSize
+    }
+
+    if (toNumber) {
+      request.toNumber = toNumber
+    }
+
+    if (fromNumber) {
+      request.fromNumber = fromNumber
+    }
+
+    try {
+      const response = await this.client.TransfersHistory(request)
+
+      return IndexerGrpcMitoTransformer.TransferHistoryResponseToTransfer(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
 }
