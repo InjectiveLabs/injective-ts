@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.10.5...@injectivelabs/utils@1.10.6) (2023-04-18)
+
+
+### Bug Fixes
+
+* build script ([6e8c15f](https://github.com/InjectiveLabs/injective-ts/commit/6e8c15f5d0c0d61e15766abb6217f3fa34cdf791))
+
+
+
+
+
 ## [1.10.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.10.4...@injectivelabs/utils@1.10.5) (2023-04-15)
 
 
