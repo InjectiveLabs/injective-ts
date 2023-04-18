@@ -267,7 +267,7 @@ export const getUnknownToken = (denom: string): Token => {
     name: denom,
     symbol: denom,
     decimals: 18,
-    logo: 'unknown.svg',
+    logo: 'untracked.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
   } as Token
