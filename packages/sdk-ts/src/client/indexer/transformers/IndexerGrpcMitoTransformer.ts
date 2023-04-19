@@ -3,7 +3,7 @@ import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import {
   MitoVault,
   MitoHolders,
-  MitoProfits,
+  MitoChanges,
   MitoTransfer,
   MitoPortfolio,
   MitoPagination,
@@ -47,22 +47,22 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static profitsResponseToProfits(
-    mitoProfits?: MitoApi.Profits,
-  ): MitoProfits | undefined {
-    if (!mitoProfits) {
+  static changesResponseToChanges(
+    changes?: MitoApi.Changes,
+  ): MitoChanges | undefined {
+    if (!changes) {
       return undefined
     }
 
     return {
-      allTimeChange: mitoProfits.allTimeChange,
-      threeMonthsChange: mitoProfits.threeMonthsChange,
-      oneMonthChange: mitoProfits.oneMonthChange,
-      oneDayChange: mitoProfits.oneDayChange,
-      oneWeekChange: mitoProfits.oneWeekChange,
-      oneYearChange: mitoProfits.oneYearChange,
-      threeYearsChange: mitoProfits.threeYearsChange,
-      sixMonthsChange: mitoProfits.sixMonthsChange,
+      allTimeChange: changes.allTimeChange,
+      threeMonthsChange: changes.threeMonthsChange,
+      oneMonthChange: changes.oneMonthChange,
+      oneDayChange: changes.oneDayChange,
+      oneWeekChange: changes.oneWeekChange,
+      oneYearChange: changes.oneYearChange,
+      threeYearsChange: changes.threeYearsChange,
+      sixMonthsChange: changes.sixMonthsChange,
     }
   }
 
@@ -88,7 +88,7 @@ export class IndexerGrpcMitoTransformer {
       vaultName: vault.vaultName,
       marketId: vault.marketId,
       currentTvl: vault.currentTvl,
-      profits: IndexerGrpcMitoTransformer.profitsResponseToProfits(
+      profits: IndexerGrpcMitoTransformer.changesResponseToChanges(
         vault.profits,
       ),
       updatedAt: vault.updatedAt,
@@ -101,6 +101,9 @@ export class IndexerGrpcMitoTransformer {
       masterContractAddress: vault.masterContractAddress,
       totalLpAmount: vault.totalLpAmount,
       notionalValueCap: vault.notionalValueCap,
+      tvlChanges: IndexerGrpcMitoTransformer.changesResponseToChanges(
+        vault.tvlChanges,
+      ),
     }
   }
 
@@ -194,6 +197,7 @@ export class IndexerGrpcMitoTransformer {
       })),
       snapshotBlock: response.snapshotBlock,
       updatedAt: response.updatedAt,
+      epochId: response.epochId,
     }
   }
 

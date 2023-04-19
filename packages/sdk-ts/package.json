@@ -43,7 +43,7 @@
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
     "@injectivelabs/grpc-web-react-native-transport": "^0.0.2",
     "@injectivelabs/indexer-proto-ts": "1.10.8-rc.4",
-    "@injectivelabs/mito-proto-ts": "1.0.7",
+    "@injectivelabs/mito-proto-ts": "1.0.8",
     "@injectivelabs/networks": "^1.10.8",
     "@injectivelabs/test-utils": "^1.10.3",
     "@injectivelabs/token-metadata": "^1.10.26",

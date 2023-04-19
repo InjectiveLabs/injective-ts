@@ -483,6 +483,10 @@ export const getExplorerUrl = (network: Network): string => {
   switch (network) {
     case Network.Devnet:
       return 'https://devnet.explorer.injective.dev'
+    case Network.Devnet1:
+      return 'https://devnet-1.explorer.injective.dev'
+    case Network.Devnet2:
+      return 'https://devnet-2.explorer.injective.dev'
     case Network.Mainnet:
       return 'https://explorer.injective.network'
     case Network.Public:
@@ -490,6 +494,8 @@ export const getExplorerUrl = (network: Network): string => {
     case Network.Local:
       return 'https://devnet.explorer.injective.dev'
     case Network.Testnet:
+      return 'https://testnet.explorer.injective.dev'
+    case Network.TestnetK8s:
       return 'https://testnet.explorer.injective.dev'
     default:
       return 'https://explorer.injective.network'

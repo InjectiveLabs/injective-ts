@@ -294,8 +294,12 @@ export class IndexerGrpcMitoApi {
     }
   }
 
-  async fetchLeaderboard() {
+  async fetchLeaderboard(historicalEpochId?: number) {
     const request = MitoApi.LeaderboardRequest.create()
+
+    if (historicalEpochId) {
+      request.historicalEpochId = historicalEpochId
+    }
 
     try {
       const response = await this.client.Leaderboard(request)

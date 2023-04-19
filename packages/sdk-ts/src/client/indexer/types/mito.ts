@@ -15,7 +15,7 @@ export interface MitoPriceSnapshot {
   updatedAt: string
 }
 
-export interface MitoProfits {
+export interface MitoChanges {
   allTimeChange: number
   threeMonthsChange?: number
   oneMonthChange?: number
@@ -42,7 +42,8 @@ export interface MitoVault {
   vaultName: string
   marketId: string
   currentTvl: number
-  profits?: MitoProfits
+  profits?: MitoChanges
+  tvlChanges?: MitoChanges
   updatedAt: string
   vaultType: string
   lpTokenPrice: number
@@ -79,6 +80,7 @@ export interface MitoLeaderboard {
   entriesList: MitoLeaderboardEntry[]
   snapshotBlock: string
   updatedAt: string
+  epochId: number
 }
 
 export interface MitoTransfer {
@@ -95,7 +97,7 @@ export interface MitoTransfer {
 }
 
 export type GrpcMitoVault = MitoApi.Vault
-export type GrpcMitoProfits = MitoApi.Profits
+export type GrpcMitoChanges = MitoApi.Changes
 export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance
 export type GrpcMitoDenomBalance = MitoApi.DenomBalance
 export type GrpcMitoPagination = MitoApi.Pagination
