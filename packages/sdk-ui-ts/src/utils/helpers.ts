@@ -2,7 +2,7 @@ import path from 'path'
 import { TokenType } from '@injectivelabs/token-metadata'
 import { validatorAddressToPathMap } from './mappings'
 // @ts-ignore
-import validatorToAddressMapFromKeybase from '../../validators-logo/mapping.json'
+import validatorToAddressMapFromKeybase from '../validators-logo/mappings.json'
 
 export const getTokenLogoWithVendorPathPrefix = (image: string) => {
   if (image.includes('@injectivelabs')) {

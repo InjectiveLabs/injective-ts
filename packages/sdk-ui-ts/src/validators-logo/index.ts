@@ -152,7 +152,7 @@ const queryAndMoveValidatorImages = async () => {
       const fileType = imageLogoPath.split('.').pop()
       const validatorFileName = `${validatorAddress}.${fileType}`
       const outputPath = path.resolve(
-        process.cwd() + `/./validators-logo/images/${validatorFileName}`,
+        process.cwd() + `/src/validators-logo/images/${validatorFileName}`,
       )
 
       downloadImages(imageLogoPath, outputPath)
@@ -190,7 +190,7 @@ function createValidatorMapJsonFile(validatorNameToImageMap: ValidatorMap) {
   }
 
   const outputPath = path.resolve(
-    `${process.cwd()}/validators-logo/mappings.json`,
+    `${process.cwd()}/src/validators-logo/mappings.json`,
   )
 
   fs.writeFileSync(
@@ -224,7 +224,7 @@ async function handleSpecifiedValidatorUpdate() {
   const fileType = logoUrl.split('.').pop()
   const validatorFile = `${cliValidatorAddress}.${fileType}`
   const outputPath = path.resolve(
-    process.cwd() + `/./validators-logo/images/${validatorFile}`,
+    process.cwd() + `/src/validators-logo/images/${validatorFile}`,
   )
 
   downloadImages(logoUrl, outputPath)

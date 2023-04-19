@@ -5,13 +5,8 @@
     "outDir": "./dist/cjs",
     "tsBuildInfoFile": "../../.build-cache/sdk-ui-ts.tsbuildinfo"
   },
-  "include": [
-    "./src/**/*.ts",
-  ],
-  "exclude": [
-    "./src/**/*.spec.ts",
-    "./src/**/*.test.ts"
-  ],
+  "include": ["./src/**/*.ts", "./src/**/*.json'"],
+  "exclude": ["./src/**/*.spec.ts", "./src/**/*.test.ts"],
   "references": [
     {
       "path": "../ts-types/tsconfig.build.json"
@@ -39,6 +34,6 @@
     },
     {
       "path": "../sdk-ts/tsconfig.build.json"
-    },
-  ],
+    }
+  ]
 }
