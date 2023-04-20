@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.53...@injectivelabs/sdk-ts@1.10.54) (2023-04-20)
+
+
+### Features
+
+* gas limit from simulation ([6305f0d](https://github.com/InjectiveLabs/injective-ts/commit/6305f0d62da57ae3539cd203ac8314a796679073))
+
+
+
+
+
 ## [1.10.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.52...@injectivelabs/sdk-ts@1.10.53) (2023-04-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
