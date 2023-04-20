@@ -272,3 +272,15 @@ export const getUnknownToken = (denom: string): Token => {
     tokenType: TokenType.Unknown,
   } as Token
 }
+
+export const getUntrackedToken = (denom: string): Token => {
+  return {
+    denom,
+    name: denom,
+    symbol: 'UNTRACKED',
+    decimals: 0,
+    logo: 'untracked.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.Unknown,
+  } as Token
+}
