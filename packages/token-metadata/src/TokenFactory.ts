@@ -156,7 +156,7 @@ export class TokenFactory {
   getFactoryDenomTokenMeta(denom: string): TokenMeta | undefined {
     const [address] = denom.split('/').reverse()
 
-    if (!address || !address.startsWith('inj')) {
+    if (!address) {
       throw new GeneralException(
         new Error(`The address ${address} is not a valid CW20 address`),
       )

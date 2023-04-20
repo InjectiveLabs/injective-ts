@@ -1,4 +1,5 @@
 import { TokenMeta } from '../../types'
+import testnetCw20Tokens from './testnet-cw20-tokens'
 import cw20Tokens from './cw20-tokens'
 import ibcTokens from './ibc'
 import tokens from './tokens'
@@ -11,4 +12,4 @@ export const ibcBaseDenoms = Object.keys(allTokens)
 
 export default allTokens as Record<string, TokenMeta>
 
-export { ibcTokens }
+export { ibcTokens, testnetCw20Tokens }
