@@ -1,8 +1,8 @@
 import { IndexerGrpcMitoTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
 import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
@@ -294,11 +294,11 @@ export class IndexerGrpcMitoApi {
     }
   }
 
-  async fetchLeaderboard(historicalEpochId?: number) {
+  async fetchLeaderboard(epochId?: number) {
     const request = MitoApi.LeaderboardRequest.create()
 
-    if (historicalEpochId) {
-      request.historicalEpochId = historicalEpochId
+    if (epochId) {
+      request.epochId = epochId
     }
 
     try {
@@ -361,6 +361,50 @@ export class IndexerGrpcMitoApi {
       const response = await this.client.TransfersHistory(request)
 
       return IndexerGrpcMitoTransformer.TransferHistoryResponseToTransfer(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchLeaderboardEpochs({
+    pageSize,
+    toEpochId,
+    fromEpochId,
+  }: {
+    pageSize?: number
+    toEpochId?: number
+    fromEpochId?: number
+  }) {
+    const request = MitoApi.LeaderboardEpochsRequest.create()
+
+    if (pageSize) {
+      request.pageSize = pageSize
+    }
+
+    if (toEpochId) {
+      request.toEpochId = toEpochId
+    }
+
+    if (fromEpochId) {
+      request.fromEpochId = fromEpochId
+    }
+
+    try {
+      const response = await this.client.LeaderboardEpochs(request)
+
+      return IndexerGrpcMitoTransformer.LeaderboardEpochsResponseToLeaderboardEpochs(
         response,
       )
     } catch (e: unknown) {

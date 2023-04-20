@@ -5,14 +5,14 @@ export interface MitoHolders {
   holderAddress: string
   vaultAddress: string
   amount: string
-  updatedAt: string
+  updatedAt: number
   lpAmountPercentage: number
   redemptionLockTime: string
 }
 
 export interface MitoPriceSnapshot {
   price: number
-  updatedAt: string
+  updatedAt: number
 }
 
 export interface MitoChanges {
@@ -44,7 +44,7 @@ export interface MitoVault {
   currentTvl: number
   profits?: MitoChanges
   tvlChanges?: MitoChanges
-  updatedAt: string
+  updatedAt: number
   vaultType: string
   lpTokenPrice: number
   subaccountInfo?: MitoSubaccountBalance
@@ -79,8 +79,15 @@ export interface MitoLeaderboardEntry {
 export interface MitoLeaderboard {
   entriesList: MitoLeaderboardEntry[]
   snapshotBlock: string
-  updatedAt: string
+  updatedAt: number
   epochId: number
+}
+
+export interface MitoLeaderboardEpoch {
+  epochId: number
+  startAt: number
+  endAt: number
+  isLive: boolean
 }
 
 export interface MitoTransfer {
@@ -98,10 +105,11 @@ export interface MitoTransfer {
 
 export type GrpcMitoVault = MitoApi.Vault
 export type GrpcMitoChanges = MitoApi.Changes
-export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance
-export type GrpcMitoDenomBalance = MitoApi.DenomBalance
-export type GrpcMitoPagination = MitoApi.Pagination
-export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
-export type GrpcMitoSubscription = MitoApi.Subscription
 export type GrpcMitoHolders = MitoApi.Holders
+export type GrpcMitoPagination = MitoApi.Pagination
+export type GrpcMitoDenomBalance = MitoApi.DenomBalance
+export type GrpcMitoSubscription = MitoApi.Subscription
+export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
 export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
+export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch
+export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance

@@ -12,6 +12,7 @@ import {
   MitoSubscription,
   MitoPriceSnapshot,
   MitoSubaccountBalance,
+  MitoLeaderboardEpoch,
 } from '../types/mito'
 import { GrpcCoin } from '../../../types/index'
 
@@ -91,7 +92,7 @@ export class IndexerGrpcMitoTransformer {
       profits: IndexerGrpcMitoTransformer.changesResponseToChanges(
         vault.profits,
       ),
-      updatedAt: vault.updatedAt,
+      updatedAt: parseInt(vault.updatedAt, 10),
       vaultType: vault.vaultType,
       lpTokenPrice: vault.lpTokenPrice,
       subaccountInfo:
@@ -112,7 +113,7 @@ export class IndexerGrpcMitoTransformer {
   ): MitoPriceSnapshot {
     return {
       price: snapshot.price,
-      updatedAt: snapshot.updatedAt,
+      updatedAt: parseInt(snapshot.updatedAt, 10),
     }
   }
 
@@ -166,55 +167,55 @@ export class IndexerGrpcMitoTransformer {
       holderAddress: holder.holderAddress,
       vaultAddress: holder.vaultAddress,
       amount: holder.amount,
-      updatedAt: holder.updatedAt,
+      updatedAt: parseInt(holder.updatedAt, 10),
       lpAmountPercentage: holder.lpAmountPercentage,
       redemptionLockTime: holder.redemptionLockTime,
     }))
   }
 
   static PortfolioResponseToPortfolio(
-    response: MitoApi.PortfolioResponse,
+    portfolio: MitoApi.PortfolioResponse,
   ): MitoPortfolio {
     return {
-      totalValue: response.totalValue,
-      pnl: response.pnl,
-      totalValueChartList: response.totalValueChart.map(
+      totalValue: portfolio.totalValue,
+      pnl: portfolio.pnl,
+      totalValueChartList: portfolio.totalValueChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
       ),
-      pnlChartList: response.pnlChart.map(
+      pnlChartList: portfolio.pnlChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
       ),
     }
   }
 
   static LeaderboardResponseToLeaderboard(
-    response: MitoApi.LeaderboardResponse,
+    leaderboard: MitoApi.LeaderboardResponse,
   ): MitoLeaderboard {
     return {
-      entriesList: response.entries.map((entry) => ({
+      entriesList: leaderboard.entries.map((entry) => ({
         address: entry.address,
         pnl: entry.pnl,
       })),
-      snapshotBlock: response.snapshotBlock,
-      updatedAt: response.updatedAt,
-      epochId: response.epochId,
+      snapshotBlock: leaderboard.snapshotBlock,
+      updatedAt: parseInt(leaderboard.updatedAt, 10),
+      epochId: leaderboard.epochId,
     }
   }
 
   static mitoTransferHistoryToTransferHistory(
-    response: MitoApi.Transfer,
+    transfer: MitoApi.Transfer,
   ): MitoTransfer {
     return {
-      lpAmount: response.lpAmount,
-      coins: response.coins.map(IndexerGrpcMitoTransformer.grpcCoinToCoin),
-      usdValue: response.usdValue,
-      isDeposit: response.isDeposit,
-      executedAt: parseInt(response.executedAt, 10),
-      account: response.account,
-      vault: response.vault,
-      txHash: response.txHash,
-      tidByVault: response.tidByVault,
-      tidByAccount: response.tidByAccount,
+      lpAmount: transfer.lpAmount,
+      coins: transfer.coins.map(IndexerGrpcMitoTransformer.grpcCoinToCoin),
+      usdValue: transfer.usdValue,
+      isDeposit: transfer.isDeposit,
+      executedAt: parseInt(transfer.executedAt, 10),
+      account: transfer.account,
+      vault: transfer.vault,
+      txHash: transfer.txHash,
+      tidByVault: transfer.tidByVault,
+      tidByAccount: transfer.tidByAccount,
     }
   }
 
@@ -224,6 +225,30 @@ export class IndexerGrpcMitoTransformer {
     return {
       transfers: response.transfers.map(
         IndexerGrpcMitoTransformer.mitoTransferHistoryToTransferHistory,
+      ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
+  }
+
+  static mitoLeaderboardEpochToLeaderboardEpoch(
+    leaderboardEpoch: MitoApi.LeaderboardEpoch,
+  ): MitoLeaderboardEpoch {
+    return {
+      epochId: leaderboardEpoch.epochId,
+      startAt: parseInt(leaderboardEpoch.startAt, 10),
+      endAt: parseInt(leaderboardEpoch.endAt, 10),
+      isLive: leaderboardEpoch.isLive,
+    }
+  }
+
+  static LeaderboardEpochsResponseToLeaderboardEpochs(
+    response: MitoApi.LeaderboardEpochsResponse,
+  ) {
+    return {
+      epochs: response.epochs.map(
+        IndexerGrpcMitoTransformer.mitoLeaderboardEpochToLeaderboardEpoch,
       ),
       pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
         response.pagination,
