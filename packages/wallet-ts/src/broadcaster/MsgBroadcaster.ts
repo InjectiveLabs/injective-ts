@@ -1,6 +1,5 @@
 import {
   TxGrpcApi,
-  TxRestApi,
   hexToBuff,
   PublicKey,
   SIGN_AMINO,
@@ -18,6 +17,8 @@ import {
   IndexerGrpcTransactionApi,
   getGasPriceBasedOnMessage,
   recoverTypedSignaturePubKey,
+  CreateTransactionArgs,
+  CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -48,7 +49,6 @@ import {
 import { isCosmosWallet } from '../utils/wallets/cosmos'
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
 /**
  * This class is used to broadcast transactions
@@ -222,8 +222,7 @@ export class MsgBroadcaster {
     const publicKeyBase64 = hexToBase64(publicKeyHex)
 
     /** Preparing the transaction for client broadcasting */
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const { txRaw } = createTransaction({
+    const { txRaw } = await this.getTxWithStdFee({
       message: msgs,
       memo: tx.memo,
       signMode: SIGN_AMINO,
@@ -239,14 +238,6 @@ export class MsgBroadcaster {
       ethereumChainId,
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
-
-    /* Simulate Transaction */
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate({
-        txRaw,
-        txClient: txApi,
-      })
-    }
 
     /** Append Signatures */
     txRawEip712.signatures = [signatureBuff]
@@ -353,7 +344,7 @@ export class MsgBroadcaster {
     const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
-    const { txRaw } = createTransactionWithSigners({
+    const { txRaw } = await this.getTxWithSignersAndStdFee({
       chainId,
       memo: tx.memo,
       message: msgs,
@@ -365,14 +356,6 @@ export class MsgBroadcaster {
       },
       fee: getStdFee(gas),
     })
-
-    /* Simulate Transaction */
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate({
-        txRaw,
-        txClient: new TxGrpcApi(endpoints.grpc),
-      })
-    }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
@@ -470,7 +453,7 @@ export class MsgBroadcaster {
      * get as a response in case the user changed the fee/memo
      * on the Keplr popup
      */
-    const { txRaw } = createTransaction({
+    const { txRaw } = await this.getTxWithStdFee({
       pubKey,
       message: msgs,
       memo: aminoSignResponse.signed.memo,
@@ -491,14 +474,6 @@ export class MsgBroadcaster {
       ethereumChainId,
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
-
-    /* Simulate Transaction */
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate({
-        txRaw,
-        txClient: txApi,
-      })
-    }
 
     /** Append Signatures */
     const signatureBuff = Buffer.from(
@@ -570,7 +545,7 @@ export class MsgBroadcaster {
     const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
-    const { txRaw } = createTransactionWithSigners({
+    const { txRaw } = await this.getTxWithSignersAndStdFee({
       chainId,
       memo: tx.memo,
       message: msgs,
@@ -593,14 +568,6 @@ export class MsgBroadcaster {
       },
     })
 
-    /* Simulate Transaction */
-    if (options.simulateTx) {
-      await MsgBroadcaster.simulate({
-        txRaw,
-        txClient: new TxGrpcApi(endpoints.grpc),
-      })
-    }
-
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
       chainId,
@@ -618,6 +585,9 @@ export class MsgBroadcaster {
     return response
   }
 
+  /**
+   * Fetch the fee payer's pub key from the web3 gateway
+   */
   private async fetchFeePayerPubKey(existingFeePayerPubKey?: string) {
     if (existingFeePayerPubKey) {
       return existingFeePayerPubKey
@@ -633,24 +603,97 @@ export class MsgBroadcaster {
     return response.feePayerPubKey.key
   }
 
-  private static async simulate({
-    txRaw,
-    txClient,
-  }: {
-    txRaw: CosmosTxV1Beta1Tx.TxRaw
-    txClient: TxGrpcApi | TxRestApi
-  }) {
-    const txRawWithSignature = CosmosTxV1Beta1Tx.TxRaw.fromPartial({ ...txRaw })
-    txRawWithSignature.signatures = [new Uint8Array(0)]
+  /**
+   * In case we don't want to simulate the transaction
+   * we get the gas limit based on the message type.
+   *
+   * If we want to simulate the transaction we set the
+   * gas limit based on the simulation and add a small multiplier
+   * to be safe (factor of 1.1)
+   */
+  private async getTxWithStdFee(args: CreateTransactionArgs) {
+    const { options } = this
+    const { simulateTx } = options
 
-    try {
-      return await txClient.simulate(txRawWithSignature)
-    } catch (e) {
-      if (e instanceof TransactionException) {
-        throw e
-      }
-
-      throw new TransactionException(new Error((e as any).message))
+    if (!simulateTx) {
+      return createTransaction(args)
     }
+
+    const result = await this.simulateTxRaw(args)
+
+    if (!result.gasInfo?.gasUsed) {
+      return createTransaction(args)
+    }
+
+    const stdGasFee = getStdFee(
+      new BigNumberInBase(result.gasInfo.gasUsed).times(1.1).toFixed(),
+    )
+
+    return createTransaction({ ...args, fee: stdGasFee })
+  }
+
+  /**
+   * In case we don't want to simulate the transaction
+   * we get the gas limit based on the message type.
+   *
+   * If we want to simulate the transaction we set the
+   * gas limit based on the simulation and add a small multiplier
+   * to be safe (factor of 1.1)
+   */
+  private async getTxWithSignersAndStdFee(
+    args: CreateTransactionWithSignersArgs,
+  ) {
+    const { options } = this
+    const { simulateTx } = options
+
+    if (!simulateTx) {
+      return createTransactionWithSigners(args)
+    }
+
+    const result = await this.simulateTxRawWithSigners(args)
+
+    if (!result.gasInfo?.gasUsed) {
+      return createTransactionWithSigners(args)
+    }
+
+    const stdGasFee = getStdFee(
+      new BigNumberInBase(result.gasInfo.gasUsed).times(1.1).toFixed(),
+    )
+
+    return createTransactionWithSigners({ ...args, fee: stdGasFee })
+  }
+
+  /**
+   * Create TxRaw and simulate it
+   */
+  private async simulateTxRaw(args: CreateTransactionArgs) {
+    const { endpoints } = this
+    const { txRaw } = createTransaction(args)
+
+    txRaw.signatures = [new Uint8Array(0)]
+
+    const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(
+      txRaw,
+    )
+
+    return simulationResponse
+  }
+
+  /**
+   * Create TxRaw and simulate it
+   */
+  private async simulateTxRawWithSigners(
+    args: CreateTransactionWithSignersArgs,
+  ) {
+    const { endpoints } = this
+    const { txRaw } = createTransactionWithSigners(args)
+
+    txRaw.signatures = [new Uint8Array(0)]
+
+    const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(
+      txRaw,
+    )
+
+    return simulationResponse
   }
 }

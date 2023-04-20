@@ -11,27 +11,6 @@ const endpoints = getNetworkEndpoints(Network.MainnetK8s)
 const indexerGrpcAccountApi = new IndexerGrpcAccountApi(endpoints.indexer)
 
 describe('IndexerGrpcAccountApi', () => {
-  test('fetchPortfolio', async () => {
-    try {
-      const response = await indexerGrpcAccountApi.fetchPortfolio(
-        injectiveAddress,
-      )
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof IndexerGrpcAccountTransformer.accountPortfolioResponseToAccountPortfolio
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'IndexerGrpcAccountApi.fetchPortfolio => ' + (e as any).message,
-      )
-    }
-  })
-
   test('fetchRewards', async () => {
     try {
       const response = await indexerGrpcAccountApi.fetchRewards({

@@ -25,6 +25,7 @@ import {
   NetworkEndpoints,
 } from '@injectivelabs/networks'
 import { getGasPriceBasedOnMessage } from '../../../../utils/msgs'
+import { CreateTransactionArgs } from '../types'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
@@ -50,6 +51,7 @@ interface MsgBroadcasterOptionsWithPk {
   }
   privateKey: string | PrivateKey /* hex or PrivateKey class */
   ethereumChainId?: EthereumChainId
+  simulateTx?: boolean
 }
 
 /**
@@ -67,10 +69,13 @@ export class MsgBroadcasterWithPk {
 
   public privateKey: PrivateKey
 
+  public simulateTx: boolean = false
+
   constructor(options: MsgBroadcasterOptionsWithPk) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints = getNetworkEndpoints(options.network)
 
+    this.simulateTx = options.simulateTx || false
     this.chainId = networkInfo.chainId
     this.endpoints = { ...endpoints, ...(endpoints || {}) }
     this.privateKey =
@@ -120,10 +125,10 @@ export class MsgBroadcasterWithPk {
     ).toString()
 
     /** Prepare the Transaction * */
-    const { signBytes, txRaw } = createTransaction({
+    const { signBytes, txRaw } = await this.getTxWithStdFee({
       memo: tx.memo || '',
-      fee: getStdFee(gas),
       message: msgs,
+      fee: getStdFee(gas),
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,
@@ -138,8 +143,7 @@ export class MsgBroadcasterWithPk {
     txRaw.signatures = [signature]
 
     /** Broadcast transaction */
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const txResponse = await txApi.broadcast(txRaw)
+    const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
 
     if (txResponse.code !== 0) {
       throw new GeneralException(
@@ -202,6 +206,50 @@ export class MsgBroadcasterWithPk {
     txRaw.signatures = [new Uint8Array(0)]
 
     /** Simulate transaction */
+    const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(
+      txRaw,
+    )
+
+    return simulationResponse
+  }
+
+  /**
+   * In case we don't want to simulate the transaction
+   * we get the gas limit based on the message type.
+   *
+   * If we want to simulate the transaction we set the
+   * gas limit based on the simulation and add a small multiplier
+   * to be safe (factor of 1.1)
+   */
+  private async getTxWithStdFee(args: CreateTransactionArgs) {
+    const { simulateTx } = this
+
+    if (!simulateTx) {
+      return createTransaction(args)
+    }
+
+    const result = await this.simulateTxRaw(args)
+
+    if (!result.gasInfo?.gasUsed) {
+      return createTransaction(args)
+    }
+
+    const stdGasFee = getStdFee(
+      new BigNumberInBase(result.gasInfo.gasUsed).times(1.1).toFixed(),
+    )
+
+    return createTransaction({ ...args, fee: stdGasFee })
+  }
+
+  /**
+   * Create TxRaw and simulate it
+   */
+  private async simulateTxRaw(args: CreateTransactionArgs) {
+    const { endpoints } = this
+    const { txRaw } = createTransaction(args)
+
+    txRaw.signatures = [new Uint8Array(0)]
+
     const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(
       txRaw,
     )

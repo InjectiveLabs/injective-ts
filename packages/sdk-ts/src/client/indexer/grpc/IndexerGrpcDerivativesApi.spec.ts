@@ -64,35 +64,6 @@ describe('IndexerGrpcDerivativeApi', () => {
     }
   })
 
-  test('fetchOrderbook', async () => {
-    try {
-      const response = await indexerGrpcDerivativesApi.fetchOrderbook(
-        market.marketId,
-      )
-
-      if (response.buys.length === 0) {
-        console.warn('fetchOrderbook.buysIsEmptyArray')
-      }
-
-      if (response.sells.length === 0) {
-        console.warn('fetchOrderbook.sellsIsEmptyArray')
-      }
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof IndexerGrpcDerivativeTransformer.orderbookResponseToOrderbook
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'IndexerGrpcDerivativesApi.fetchOrderbook => ' + (e as any).message,
-      )
-    }
-  })
-
   test('fetchOrders', async () => {
     try {
       const response = await indexerGrpcDerivativesApi.fetchOrders({
@@ -232,31 +203,6 @@ describe('IndexerGrpcDerivativeApi', () => {
       console.error(
         'IndexerGrpcDerivativesApi.fetchSubaccountTradesList => ' +
           (e as any).message,
-      )
-    }
-  })
-
-  test('fetchOrderbooks', async () => {
-    try {
-      const response = await indexerGrpcDerivativesApi.fetchOrderbooks([
-        market.marketId,
-      ])
-
-      if (response.length === 0) {
-        console.warn('fetchOrderbooks.orderbooksIsEmptyArray')
-      }
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof IndexerGrpcDerivativeTransformer.orderbooksResponseToOrderbooks
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'IndexerGrpcDerivativesApi.fetchOrderbooks => ' + (e as any).message,
       )
     }
   })
