@@ -1,10 +1,4 @@
 import { BigNumberInWei, BigNumberInBase } from '@injectivelabs/utils'
-import { Coin } from '@injectivelabs/ts-types'
-
-export interface CoinWithLabel extends Coin {
-  code: string
-  label: string
-}
 
 export enum Change {
   New = 'new',
