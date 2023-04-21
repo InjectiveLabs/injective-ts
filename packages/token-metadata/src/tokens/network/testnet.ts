@@ -1,5 +1,5 @@
 import { TokenMeta } from '../../types'
-import tokens from '../tokens'
+import tokens, { testnetCw20Tokens } from '../tokens'
 
 export const testnetSymbolToErc20AddressMap = {
   INJ: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
@@ -31,7 +31,15 @@ export const testnetSymbolToIBCMap = {
 export const getTokensBySymbolForTestnet = () =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, token) => {
+      const tokenSymbolToUpperCase = token.toUpperCase()
       const tokenMeta = { ...tokens[token] } as TokenMeta
+
+      if (testnetCw20Tokens[tokenSymbolToUpperCase]) {
+        tokenMeta.cw20s = [
+          ...(tokenMeta.cw20s || []),
+          testnetCw20Tokens[tokenSymbolToUpperCase],
+        ]
+      }
 
       if (
         !tokenMeta.erc20 &&
@@ -41,7 +49,7 @@ export const getTokensBySymbolForTestnet = () =>
       ) {
         return {
           ...result,
-          [token.toUpperCase()]: tokenMeta,
+          [tokenSymbolToUpperCase]: tokenMeta,
         }
       }
 
@@ -59,7 +67,7 @@ export const getTokensBySymbolForTestnet = () =>
       ) {
         return {
           ...result,
-          [token.toUpperCase()]: tokenMeta,
+          [tokenSymbolToUpperCase]: tokenMeta,
         }
       }
 
@@ -109,7 +117,7 @@ export const getTokensBySymbolForTestnet = () =>
 
       return {
         ...result,
-        [token.toUpperCase()]: mappedTokenMeta,
+        [tokenSymbolToUpperCase]: mappedTokenMeta,
       }
     },
     {},
