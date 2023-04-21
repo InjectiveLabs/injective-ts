@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.56](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.55...@injectivelabs/sdk-ts@1.10.56) (2023-04-21)
+
+
+### Features
+
+* get injective address from subaccount ([203c223](https://github.com/InjectiveLabs/injective-ts/commit/203c2235fbde30eda4f6f853394112cc7c83fe66))
+
+
+
+
+
 ## [1.10.55](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.54...@injectivelabs/sdk-ts@1.10.55) (2023-04-20)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
