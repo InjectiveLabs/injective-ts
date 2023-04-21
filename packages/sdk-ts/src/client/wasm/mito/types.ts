@@ -67,8 +67,6 @@ export interface QueryVaultContractSpotConfigResponse {
     fair_price_tail_deviation_ratio: string
     target_base_weight: string
     allowed_redemption_types: number
-    imbalance_adjustment_exponent: string
-    reward_diminishing_factor: string
     base_decimals: number
     quote_decimals: number
     base_oracle_symbol: string
@@ -182,8 +180,6 @@ export type VaultSpotConfig = {
   fairPriceTailDeviationRatio: string
   targetBaseWeight: string
   allowedRedemptionTypes: number
-  imbalanceAdjustmentExponent: string
-  rewardDiminishingFactor: string
   baseDecimals: number
   quoteDecimals: number
   baseOracleSymbol: string

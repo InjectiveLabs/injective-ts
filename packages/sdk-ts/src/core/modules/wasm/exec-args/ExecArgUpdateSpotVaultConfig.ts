@@ -23,8 +23,6 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     defaultMidPriceVolatilityRatio: string
     oracleType: number
     allowedRedemptionTypes: number
-    imbalanceAdjustmentExponent: string
-    rewardDiminishingFactor: string
     baseDecimals: number
     quoteDecimals: number
     baseOracleSymbol: string
@@ -52,8 +50,6 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     default_mid_price_volatility_ratio: string
     oracle_type: number
     allowed_redemption_types: number
-    imbalance_adjustment_exponent: string
-    reward_diminishing_factor: string
     base_decimals: number
     quote_decimals: number
     base_oracle_symbol: string
@@ -103,8 +99,6 @@ export default class ExecArgUpdateSpotVaultConfig extends ExecArgBase<
       default_mid_price_volatility_ratio: params.defaultMidPriceVolatilityRatio,
       oracle_type: params.oracleType,
       allowed_redemption_types: params.allowedRedemptionTypes,
-      imbalance_adjustment_exponent: params.imbalanceAdjustmentExponent,
-      reward_diminishing_factor: params.rewardDiminishingFactor,
       base_decimals: params.baseDecimals,
       quote_decimals: params.quoteDecimals,
       base_oracle_symbol: params.baseOracleSymbol,

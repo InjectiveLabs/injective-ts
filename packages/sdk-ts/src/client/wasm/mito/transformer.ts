@@ -198,10 +198,6 @@ export class MitoQueryTransformer {
       ),
       targetBaseWeight: formatToString(config.target_base_weight),
       allowedRedemptionTypes: Number(config.allowed_redemption_types),
-      imbalanceAdjustmentExponent: formatToString(
-        config.imbalance_adjustment_exponent,
-      ),
-      rewardDiminishingFactor: formatToString(config.reward_diminishing_factor),
       baseDecimals: Number(config.base_decimals),
       quoteDecimals: Number(config.quote_decimals),
       baseOracleSymbol: formatToString(config.base_oracle_symbol),
