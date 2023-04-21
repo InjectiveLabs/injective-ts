@@ -31,6 +31,20 @@ export const getEthereumAddress = (injectiveAddress: string): string => {
 }
 
 /**
+ * Get ethereum address from injective bech32 address
+ *
+ * @param injectiveAddress string
+ * @returns string
+ */
+export const getInjectiveAddressFromSubaccountId = (
+  subaccountId: string,
+): string => {
+  const ethAddress = subaccountId.slice(0, 42)
+
+  return getInjectiveAddress(ethAddress)
+}
+
+/**
  * Get default subaccount id from injective bech32 address
  *
  * @param injectiveAddress string
@@ -40,6 +54,21 @@ export const getDefaultSubaccountId = (injectiveAddress: string): string => {
   return `0x${Buffer.from(
     bech32.fromWords(bech32.decode(injectiveAddress).words),
   ).toString('hex')}${'0'.repeat(24)}`
+}
+
+/**
+ * Get subaccount id from injective bech32 address and an index (defaults to 0)
+ * @param injectiveAddress string
+ * @param nonce number
+ * @returns string
+ */
+export const getSubaccountId = (
+  injectiveAddress: string,
+  nonce = 0,
+): string => {
+  return `0x${Buffer.from(
+    bech32.fromWords(bech32.decode(injectiveAddress).words),
+  ).toString('hex')}${'0'.repeat(23)}${nonce}`
 }
 
 /** @deprecated - use getEthereumAddress */
