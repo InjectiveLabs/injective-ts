@@ -274,7 +274,7 @@ export class MsgBroadcaster {
       address: tx.ethereumAddress,
       chainId: ethereumChainId,
       gasLimit: getGasPriceBasedOnMessage(msgs),
-      estimateGas: false,
+      estimateGas: options.simulateTx || false,
     })
 
     const signature = await walletStrategy.signEip712TypedData(
