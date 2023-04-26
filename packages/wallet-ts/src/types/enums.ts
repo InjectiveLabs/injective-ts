@@ -11,6 +11,7 @@ export enum Wallet {
   Leap = 'leap',
   Cosmostation = 'cosmostation',
   CosmostationEth = 'cosmostation-eth',
+  Welldone = 'welldone',
 }
 
 export enum WalletDeviceType {

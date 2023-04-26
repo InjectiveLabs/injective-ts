@@ -22,6 +22,7 @@ import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
 import Cosmostation from './strategies/Cosmostation'
+import Welldone from './strategies/Welldone'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet } from './utils'
 import { isCosmosWallet } from '../../utils/wallets/cosmos'
@@ -97,6 +98,8 @@ const createStrategy = ({
       return new Cosmostation({ ...args })
     case Wallet.Leap:
       return new Leap({ ...args })
+    case Wallet.Welldone:
+      return new Welldone({ ...args })
     default:
       return undefined
   }
