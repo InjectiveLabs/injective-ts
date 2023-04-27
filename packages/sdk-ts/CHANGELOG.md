@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.63...@injectivelabs/sdk-ts@1.10.64) (2023-04-27)
+
+
+### Bug Fixes
+
+* value decrypt from contract ([83312ac](https://github.com/InjectiveLabs/injective-ts/commit/83312acd37b7e4786b1ac36689eaa4f7c1cc6b44))
+
+
+
+
+
 ## [1.10.63](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.62...@injectivelabs/sdk-ts@1.10.63) (2023-04-27)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
