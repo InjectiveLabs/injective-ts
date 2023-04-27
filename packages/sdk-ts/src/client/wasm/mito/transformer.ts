@@ -193,8 +193,8 @@ export class MitoQueryTransformer {
           config.market_making,
         ),
       oracleType: Number(config.oracle_type),
-      fairPriceTailDeviationRatio: formatToString(
-        config.fair_price_tail_deviation_ratio,
+      reservationPriceTailDeviationRatio: formatToString(
+        config.reservation_price_tail_deviation_ratio,
       ),
       targetBaseWeight: formatToString(config.target_base_weight),
       allowedRedemptionTypes: Number(config.allowed_redemption_types),

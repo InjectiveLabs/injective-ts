@@ -12,7 +12,7 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     reservationSpreadSensitivityRatio: string
     maxActiveCapitalUtilizationRatio: string
     headChangeToleranceRatio: string
-    fairPriceTailDeviationRatio: string
+    reservationPriceTailDeviationRatio: string
     minHeadToTailDeviationRatio: string
     minVolatilityRatio: string
     signedMinHeadToFairPriceDeviationRatio: string
@@ -39,7 +39,7 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     reservation_spread_sensitivity_ratio: string
     max_active_capital_utilization_ratio: string
     head_change_tolerance_ratio: string
-    fair_price_tail_deviation_ratio: string
+    reservation_price_tail_deviation_ratio: string
     min_head_to_tail_deviation_ratio: string
     min_volatility_ratio: string
     signed_min_head_to_fair_price_deviation_ratio: string
@@ -86,7 +86,8 @@ export default class ExecArgUpdateSpotVaultConfig extends ExecArgBase<
       max_active_capital_utilization_ratio:
         params.maxActiveCapitalUtilizationRatio,
       head_change_tolerance_ratio: params.headChangeToleranceRatio,
-      fair_price_tail_deviation_ratio: params.fairPriceTailDeviationRatio,
+      reservation_price_tail_deviation_ratio:
+        params.reservationPriceTailDeviationRatio,
       min_head_to_tail_deviation_ratio: params.minHeadToTailDeviationRatio,
       min_volatility_ratio: params.minVolatilityRatio,
       signed_min_head_to_fair_price_deviation_ratio:
