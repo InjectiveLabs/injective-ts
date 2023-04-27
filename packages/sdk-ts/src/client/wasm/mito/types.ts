@@ -64,7 +64,7 @@ export interface QueryVaultContractSpotConfigResponse {
     base: QueryVaultContractBaseConfig
     market_making: QueryVaultContractMarketMaking
     oracle_type: number
-    fair_price_tail_deviation_ratio: string
+    reservation_price_tail_deviation_ratio: string
     target_base_weight: string
     allowed_redemption_types: number
     base_decimals: number
@@ -177,7 +177,7 @@ export type VaultSpotConfig = {
   base: VaultBaseConfig
   marketMaking: VaultMarketMakingConfig
   oracleType: number
-  fairPriceTailDeviationRatio: string
+  reservationPriceTailDeviationRatio: string
   targetBaseWeight: string
   allowedRedemptionTypes: number
   baseDecimals: number
