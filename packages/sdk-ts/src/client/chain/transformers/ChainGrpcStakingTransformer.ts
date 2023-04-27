@@ -29,6 +29,7 @@ export class ChainGrpcStakingTransformer {
 
     return {
       unbondingTime: parseInt(params.unbondingTime!.seconds, 10),
+      minCommissionRate: params.minCommissionRate,
       maxValidators: params.maxValidators,
       maxEntries: params.maxEntries,
       historicalEntries: params.historicalEntries,

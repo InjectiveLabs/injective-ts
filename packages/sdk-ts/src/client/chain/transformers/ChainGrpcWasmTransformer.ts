@@ -26,13 +26,13 @@ export class ChainGrpcWasmTransformer {
             .toString('utf-8')
             .split('balance')
             .pop(),
-          balance: Buffer.from(model.key)
+          balance: Buffer.from(model.value)
             .toString('utf-8')
             .replace(/['"]+/g, ''),
         }
       })
-      .filter(({ account }) => {
-        return account && account.startsWith('inj')
+      .filter(({ account, balance }) => {
+        return account && account.startsWith('inj') && balance
       }) as ContractAccountBalance[]
 
     return {
