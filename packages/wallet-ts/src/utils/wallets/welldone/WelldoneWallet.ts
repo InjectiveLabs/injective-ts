@@ -47,18 +47,10 @@ export class WelldoneWallet {
   }
 
   public async broadcastTx(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<string> {
-    const welldone = await this.getWelldone()
     try {
-      const serializedTx = Buffer.from(
-        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-      ).toString('base64')
-
-      const hash = await welldone.request('injective', {
-        method: 'dapp:sendSignedTransaction',
-        params: [`0x${serializedTx}`],
-      })
-
-      return hash
+      const endpoints = await this.getChainEndpoints()
+      const { txHash } = await new TxRestApi(endpoints.rest).broadcast(txRaw)
+      return txHash
     } catch (e) {
       throw new CosmosWalletException(new Error((e as any).message), {
         context: 'WELLDONE',
@@ -89,10 +81,10 @@ export class WelldoneWallet {
         signed: signDoc,
         signature: {
           pub_key: encodeSecp256k1Pubkey(
-            Buffer.from(response.publicKey.replace('0x', ''), 'hex'),
+            Buffer.from(response[0].publicKey.replace('0x', ''), 'hex'),
           ),
           signature: Buffer.from(
-            response.signature.replace('0x', ''),
+            response[0].signature.replace('0x', ''),
             'hex',
           ).toString('base64'),
         },
@@ -117,7 +109,7 @@ export class WelldoneWallet {
       return getEndpointsFromChainId(chainId)
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
-        context: 'Keplr',
+        context: 'WELLDONE',
         contextModule: 'get-chain-endpoints',
       })
     }
