@@ -10,6 +10,7 @@ export declare namespace ExecArgUpdateAMMVaultConfig {
     marketId: string
     masterAddress: string
     orderDensity: number
+    priceTickSize: string
     maxInvariantSensitivity: string
     baseDecimals: number
     quoteDecimals: number
@@ -21,6 +22,7 @@ export declare namespace ExecArgUpdateAMMVaultConfig {
     market_id: string
     master_address: string
     order_density: number
+    price_tick_size: string
     max_invariant_sensitivity: string
     base_decimals: number
     quote_decimals: number
@@ -49,6 +51,7 @@ export default class ExecArgUpdateAMMVaultConfig extends ExecArgBase<
       market_id: params.marketId,
       master_address: params.masterAddress,
       order_density: params.orderDensity,
+      price_tick_size: params.priceTickSize,
       max_invariant_sensitivity: params.maxInvariantSensitivity,
       base_decimals: params.baseDecimals,
       quote_decimals: params.quoteDecimals,
