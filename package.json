@@ -12,12 +12,12 @@
     ]
   },
   "scripts": {
-    "postinstall": "node bootstrapEnv",
-    "build": "node bootstrapEnv && lerna run --parallel build",
+    "postinstall": "node etc/bootstrapEnv",
+    "build": "node etc/bootstrapEnv && lerna run --parallel build",
     "build:docs": "yarn typedoc",
     "lerna:publish:prerelease": "lerna publish --conventional-commits --conventional-prerelease",
     "lerna:publish": "lerna publish patch",
-    "build:watch": "node bootstrapEnv && lerna run --parallel build:watch",
+    "build:watch": "node etc/bootstrapEnv && lerna run --parallel build:watch",
     "build:fresh": "yarn clean-up && yarn build",
     "build:publish": "yarn build:fresh && yarn lerna:publish",
     "build:publish:prerelease": "yarn build:fresh && yarn lerna:publish:prerelease",
