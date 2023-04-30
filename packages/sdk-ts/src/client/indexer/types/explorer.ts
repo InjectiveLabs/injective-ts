@@ -1,6 +1,6 @@
 import { Token } from '@injectivelabs/token-metadata'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import type { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
+import type { CosmWasmChecksum, CosmWasmPermission, EventLog } from './explorer-rest'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface IBCTransferTx {
@@ -120,7 +120,8 @@ export interface Transaction {
   }>
   codespace: string
   messages?: Array<TxMessage>
-  errorLog?: string
+  errorLog?: string,
+  logs?: EventLog[]
 }
 
 export interface IndexerStreamTransaction {

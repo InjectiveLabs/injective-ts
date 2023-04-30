@@ -200,6 +200,7 @@ export class IndexerGrpcExplorerTransformer {
         attributes: event.attributes,
       })),
       messages: JSON.parse(Buffer.from(data.messages).toString() as string),
+      logs: JSON.parse(Buffer.from(data.logs).toString() as string),
     }
   }
 
@@ -240,6 +241,7 @@ export class IndexerGrpcExplorerTransformer {
         attributes: event.attributes,
       })),
       messages,
+      logs: JSON.parse(Buffer.from(tx.logs).toString() as string),
     }
   }
 

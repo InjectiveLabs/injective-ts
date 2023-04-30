@@ -23,7 +23,7 @@ export class ExplorerStreamTransformer {
   static transactionsStreamCallback = (
     response: InjectiveExplorerRpc.StreamTxsResponse,
   ) => ({
-    block: IndexerGrpcExplorerTransformer.streamTxResponseToTxs(response),
+    tx: IndexerGrpcExplorerTransformer.streamTxResponseToTxs(response),
     operation: StreamOperation.Insert,
   })
 }
