@@ -1,5 +1,7 @@
 # 🌟 Injective Protocol - Bridge TS
 
+Bridge related utilities.
+
 _Building decentralized finance UIs through TypeScript_
 
 ---

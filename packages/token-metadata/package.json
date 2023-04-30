@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/token-metadata",
   "description": "ERC20 token metadata. Name, symbol, decimals, etc.",
-  "version": "1.10.35",
+  "version": "1.10.41",
   "sideEffects": "false",
   "license": "Apache-2.0",
   "author": {
@@ -18,7 +18,6 @@
   },
   "scripts": {
     "postinstall": "link-module-alias",
-    "prepublish": "shx mkdir -p dist",
     "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && yarn build:post && yarn build:copy-files && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && yarn build:copy-files && link-module-alias",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
@@ -33,10 +32,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.10.6",
-    "@injectivelabs/networks": "^1.10.8",
-    "@injectivelabs/ts-types": "^1.10.5",
-    "@injectivelabs/utils": "^1.10.6",
+    "@injectivelabs/exceptions": "^1.10.11",
+    "@injectivelabs/networks": "^1.10.11",
+    "@injectivelabs/ts-types": "^1.10.11",
+    "@injectivelabs/utils": "^1.10.11",
     "@types/lodash.values": "^4.3.6",
     "copyfiles": "^2.4.1",
     "jsonschema": "^1.4.0",

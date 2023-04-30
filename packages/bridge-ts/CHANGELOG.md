@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.10.66...@injectivelabs/bridge-ts@1.10.71) (2023-04-30)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.10.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.10.66-beta.2...@injectivelabs/bridge-ts@1.10.66) (2023-04-30)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.10.66-beta.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.10.66-beta.1...@injectivelabs/bridge-ts@1.10.66-beta.2) (2023-04-30)
+
+
+### Bug Fixes
+
+* parsing smart contract state ([322cbff](https://github.com/InjectiveLabs/injective-ts/commit/322cbff967006f05794cc4928a488b852567b825))
+
+
+
+
+
+## [1.10.66-beta.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.10.66-beta.0...@injectivelabs/bridge-ts@1.10.66-beta.1) (2023-04-28)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
+## [1.10.66-beta.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.10.65...@injectivelabs/bridge-ts@1.10.66-beta.0) (2023-04-28)
+
+**Note:** Version bump only for package @injectivelabs/bridge-ts
+
+
+
+
+
 ## [1.10.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.10.64...@injectivelabs/bridge-ts@1.10.65) (2023-04-27)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
