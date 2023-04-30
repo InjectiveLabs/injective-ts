@@ -37,6 +37,6 @@ export const updateMetamaskNetwork = async (chainId: EthereumChainId) => {
       params: [{ chainId: `0x${chainIDToHex}` }],
     })
   } catch (e) {
-    throw new WalletException(new Error('Please install Metamask Extension'))
+    throw new WalletException(new Error('Please update your Metamask network'))
   }
 }
