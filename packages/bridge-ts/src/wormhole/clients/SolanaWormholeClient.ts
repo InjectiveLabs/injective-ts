@@ -338,7 +338,6 @@ export class SolanaWormholeClient extends WormholeClient {
     const solanaPublicKey = new PublicKey(provider.publicKey || '')
     const originalAsset = await getOriginalAssetInjective(
       tokenAddress,
-      // @ts-ignore
       chainGrpcWasmApi,
     )
     const solanaMintKey = new PublicKey(originalAsset.assetAddress)
@@ -346,6 +345,7 @@ export class SolanaWormholeClient extends WormholeClient {
       solanaMintKey,
       solanaPublicKey,
     )
+
     // create the associated token account if it doesn't exist
     const associatedAddressInfo = await connection.getAccountInfo(recipient)
 
