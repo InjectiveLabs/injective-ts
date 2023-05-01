@@ -7,6 +7,7 @@ interface RequestParams {
 
 export interface WalletProvider {
   request: (chainId: string, args: RequestParams) => Promise<any>
+  networks: any
 }
 
 declare global {
