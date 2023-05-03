@@ -4,8 +4,6 @@ const https = require('node:https')
 function getSlackAPI() {
   const apiValue = process.argv.find((arg) => arg.startsWith('--api='))
 
-  console.log(process.argv)
-
   if (!apiValue) {
     return
   }
