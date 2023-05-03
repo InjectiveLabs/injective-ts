@@ -1,15 +1,15 @@
-name: Publish stable
+name: Publish canary branch
 
 on:
   push:
-    branches:
+    branches-ignore:
       - master
+      - dev
 
 jobs:
-  publish:
-    if: false
+  publish-canary:
     runs-on: ubuntu-latest
-
+    if: contains(github.ref_name, 'canary')
     steps:
       - name: 'Checkout' # Download code from the repository
         uses: actions/checkout@v2 # Public action
@@ -39,18 +39,10 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor}}@users.noreply.github.com"
 
-          npx lerna version --conventional-commits --conventional-graduate --force-git-tag --yes
-          npx lerna publish from-git --force-git-tag --dist-tag latest --yes --summary-file
+          npx lerna version --conventional-commits --conventional-prerelease --preid dev --force-git-tag --yes
+          npx lerna publish from-git --force-git-tag --dist-tag dev --yes --summary-file
 
       - name: 'Broadcast published versions on Slack'
         run: node etc/slack --api=$SLACK_API
         env:
           SLACK_API: ${{ secrets.SLACK_API }}
-
-      - name: Merge master -> dev
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          from_branch: master
-          target_branch: dev
-          github_token: ${{ secrets.GH_TOKEN }}
