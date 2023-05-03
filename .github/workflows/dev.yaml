@@ -6,7 +6,6 @@ on:
       - dev
 
 jobs:
-  if: false
   publish:
     runs-on: ubuntu-latest
 
@@ -40,4 +39,9 @@ jobs:
           git config user.email "${{ github.actor}}@users.noreply.github.com"
 
           npx lerna version --conventional-commits --conventional-prerelease --preid beta --force-git-tag --yes
-          npx lerna publish from-git --dist-tag next --yes --no-verify-access
+          npx lerna publish from-git --force-git-tag --dist-tag next --yes --summary-file
+
+      - name: 'Broadcast published versions on Slack'
+        run: node etc/slack --api=$SLACK_API
+        env:
+          SLACK_API: ${{ secrets.SLACK_API }}
