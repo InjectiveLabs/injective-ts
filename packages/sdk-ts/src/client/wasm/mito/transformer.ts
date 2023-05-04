@@ -120,6 +120,7 @@ export class MitoQueryTransformer {
         config.default_mid_price_volatility_ratio,
       ),
       minVolatilityRatio: formatToString(config.min_volatility_ratio),
+      oracleStaleTime: Number(config.oracle_stale_time),
     }
   }
 
@@ -193,9 +194,6 @@ export class MitoQueryTransformer {
           config.market_making,
         ),
       oracleType: Number(config.oracle_type),
-      reservationPriceTailDeviationRatio: formatToString(
-        config.reservation_price_tail_deviation_ratio,
-      ),
       targetBaseWeight: formatToString(config.target_base_weight),
       allowedRedemptionTypes: Number(config.allowed_redemption_types),
       baseDecimals: Number(config.base_decimals),

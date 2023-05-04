@@ -32,6 +32,7 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     owner: string
     quoteDecimals: number
     notionalValueCap: string
+    oracleStaleTime: number
   }
 
   export interface Data {
@@ -61,6 +62,7 @@ export declare namespace ExecArgUpdateDerivativeVaultConfig {
     owner: string
     quote_decimals: number
     notional_value_cap: string
+    oracle_stale_time: number
   }
 }
 
@@ -114,6 +116,7 @@ export default class ExecArgUpdateDerivativeVaultConfig extends ExecArgBase<
       owner: params.owner,
       quote_decimals: params.quoteDecimals,
       notional_value_cap: params.notionalValueCap,
+      oracle_stale_time: params.oracleStaleTime,
     }
   }
 
