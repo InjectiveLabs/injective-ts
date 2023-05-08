@@ -811,6 +811,24 @@ export default {
     },
   },
 
+  WHALE: {
+    name: 'White Whale',
+    symbol: 'WHALE',
+    decimals: 6,
+    logo: 'whale.svg',
+    coinGeckoId: 'white-whale',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'uwhale',
+      path: 'transfer/channel-102',
+      channelId: 'channel-102',
+      hash: 'D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
   AXL: {
     name: 'Axelar',
     logo: 'axelar.jpeg',
@@ -980,7 +998,6 @@ export default {
       tokenType: TokenType.Ibc,
     },
   },
-
   CRE: {
     name: 'Crescent',
     symbol: 'CRE',
