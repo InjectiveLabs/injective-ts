@@ -27,6 +27,7 @@ export class StargateClient extends CosmjsStargateClient {
       if (/rpc error: code = NotFound/i.test(error.toString())) {
         return null
       }
+
       throw error
     }
   }
