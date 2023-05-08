@@ -1374,4 +1374,48 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+  
+  PEPE: {
+    name: 'Pepe',
+    symbol: 'PEPE',
+    decimals: 18,
+    logo: 'ethereum.svg',
+    coinGeckoId: 'pepe',
+
+    erc20: {
+      decimals: 18,
+      address: '0x6982508145454ce325ddbe47a25d4ec3d2311933',
+      tokenType: TokenType.Erc20,
+    },
+  },
+  
+  WASSIE: {
+    name: 'WASSIE',
+    symbol: 'WASSIE',
+    decimals: 18,
+    logo: 'ethereum.svg',
+    coinGeckoId: 'wassie',
+
+    erc20: {
+      decimals: 18,
+      address: '0x2c95d751da37a5c1d9c5a7fd465c1d50f3d96160',
+      tokenType: TokenType.Erc20,
+    },
+  },
+    
+  RIBBIT: {
+    name: 'Ribbit Meme',
+    symbol: 'RIBBIT',
+    decimals: 18,
+    logo: 'ethereum.svg',
+    coinGeckoId: 'ribbit-meme',
+
+    erc20: {
+      decimals: 18,
+      address: '0xb794Ad95317f75c44090f64955954C3849315fFe',
+      tokenType: TokenType.Erc20,
+    },
+  },
+  
+
 } as Record<string, TokenMeta>
