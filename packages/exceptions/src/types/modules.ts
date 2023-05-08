@@ -39,6 +39,10 @@ export enum IndexerErrorModule {
   ChronosMarkets = 'indexer-chronos-markets',
 }
 
+export enum DmmErrorModule {
+  Dmm = 'dmm',
+}
+
 export enum WalletErrorActionModule {
   SignTransaction = 'sign-transaction',
   SignEthereumTransaction = 'sign-ethereum-transaction',
