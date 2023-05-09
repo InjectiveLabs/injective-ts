@@ -2112,10 +2112,10 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/dmm-proto-ts@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/dmm-proto-ts/-/dmm-proto-ts-1.0.3.tgz#f32dc6af6cfe939998ae82cf1667eb8168aaa939"
-  integrity sha512-k0XTwJC4DTK3RkUSOWh0oV+QeqiMdVNevuLX928C7xpU0VbSQ8MHDIBH7G34ms7JbP0sXYALRJkakHp7msq0aA==
+"@injectivelabs/dmm-proto-ts@1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/dmm-proto-ts/-/dmm-proto-ts-1.0.8.tgz#02cea01e92ca0d39794b020d936ca3544a469d78"
+  integrity sha512-1KVDU2Dfy/edWzNQfkS7+cXr/SGD8JiUsEquMTlD64s66HZkleOySiQDYeFQqXMN0JetNKHCF8PPqIFks36RqQ==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"

@@ -21,7 +21,9 @@ export type EpochScore = InjectiveDmmRpc.EpochScore
 
 export type EpochScoresHistory = InjectiveDmmRpc.GetEpochScoresHistoryResponse
 
-export type TotalScoresResponse = InjectiveDmmRpc.GetTotalScoresHistoryResponse
+export type TotalScores = InjectiveDmmRpc.GetTotalScoresHistoryResponse
+
+export type TotalScore = InjectiveDmmRpc.TotalScore
 
 export type TotalScoresHistory = InjectiveDmmRpc.GetTotalScoresHistoryResponse
 
@@ -29,8 +31,10 @@ export type LiquiditySnapshots = InjectiveDmmRpc.GetLiquiditySnapshotsResponse
 
 export type LiquidityScoreSnapshot = InjectiveDmmRpc.LiquidityScoreSnapshot
 
-export type EpochScoresWithPagination =
-  | EpochScores
-  | EpochScoresHistory
-  | TotalScoresResponse
-  | TotalScoresHistory
+export type RewardsDistribution = InjectiveDmmRpc.GetRewardsDistributionResponse
+
+export type RewardDistribution = InjectiveDmmRpc.RewardDistribution
+
+export type AccountVolume = InjectiveDmmRpc.AccountVolume
+
+export type RewardsEligibility = InjectiveDmmRpc.GetRewardsEligibilityResponse

@@ -73,7 +73,7 @@ export class DmmGrpcApi {
     page?: InjectiveDmmRpc.Pagination
   }) {
     const request = InjectiveDmmRpc.GetEligibleAddressesRequest.create()
-
+    InjectiveDmmRpc.GetRewardsDistributionRequest
     request.epochId = epochId
 
     if (page) {
@@ -260,6 +260,109 @@ export class DmmGrpcApi {
 
     try {
       return await this.client.GetLiquiditySnapshots(request)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchRewardsDistribution({
+    epochId,
+    height,
+    page,
+  }: {
+    epochId: string
+    height?: string
+    page?: InjectiveDmmRpc.Pagination
+  }) {
+    const request = InjectiveDmmRpc.GetRewardsDistributionRequest.create()
+
+    request.epochId = epochId
+
+    if (height) {
+      request.height = height
+    }
+
+    if (page) {
+      request.page = page
+    }
+
+    try {
+      return await this.client.GetRewardsDistribution(request)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchAccountVolumes({
+    epochId,
+    accountAddress,
+  }: {
+    epochId: string
+    accountAddress: string
+  }) {
+    const request = InjectiveDmmRpc.GetAccountVolumesRequest.create()
+
+    request.epochId = epochId
+    request.accountAddress = accountAddress
+
+    try {
+      const { volumes } = await this.client.GetAccountVolumes(request)
+
+      return volumes
+    } catch (e: unknown) {
+      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchRewardsEligibility({
+    epochId,
+    accountAddress,
+  }: {
+    epochId?: string
+    accountAddress?: string
+  }) {
+    const request = InjectiveDmmRpc.GetRewardsEligibilityRequest.create()
+
+    if (epochId) {
+      request.epochId = epochId
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
+    }
+
+    try {
+      return await this.client.GetRewardsEligibility(request)
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
