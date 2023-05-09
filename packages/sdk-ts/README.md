@@ -41,21 +41,9 @@ yarn add @injectivelabs/sdk-ts
 
 ## 📖 Documentation
 
-There are two pieces of the `sdk-ts` - **querying a data source** and **making transactions**.
+- Read more and find example usages on our [Querying Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/02Querying)
+- Read more and find example usages on our [Transactions Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/03Transactions)
 
-### Querying a data source
-
-Read more and find example usages on our [Querying Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/02Querying)
-
-### Making Transactions
-
-Read more and find example usages on our [Transactions Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/03Transactions)
-
----
-
-## 📜 Contribution
-
-**Contribution guides and practices will be available once there is a stable foundation of the whole package set within the `injective-ts` repo.**
 
 ---
 

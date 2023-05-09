@@ -1,5 +1,7 @@
 # 🌟 Injective Protocol - Contracts
 
+A package used for Peggy/ERC20 contract abstraction classes. Unrelated to Cosmwasm contracts on Injective.
+
 ---
 
 ## 📚 Installation
@@ -7,16 +9,6 @@
 ```bash
 yarn add @injectivelabs/contracts
 ```
-
----
-
-## 📖 Documentation
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
-
-This documentation is currently under work in progress.
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
 ---
 

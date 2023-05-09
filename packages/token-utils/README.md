@@ -1,6 +1,6 @@
 # 🌟 Injective Protocol - Token Utils
 
-_Token Utils is a package for querying different data about tokens_
+Token Utils is a package for querying different data about tokens
 
 ---
 
@@ -9,16 +9,6 @@ _Token Utils is a package for querying different data about tokens_
 ```bash
 yarn add @injectivelabs/token-utils
 ```
-
----
-
-## 📖 Documentation
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
-
-This documentation is currently under work in progress.
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
 ---
 

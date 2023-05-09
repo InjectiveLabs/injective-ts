@@ -1,9 +1,6 @@
 # 🌟 Injective's TypeScript Monorepo
 
 [![Wiki](https://img.shields.io/static/v1?label=Wiki&message=Documentation&color=blue)](https://github.com/InjectiveLabs/injective-ts/wiki)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/alerts/)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/InjectiveLabs/injective-ts.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/InjectiveLabs/injective-ts/context:javascript)
-
 
 _Access Limitless DeFi Markets with Zero Barriers._
 

@@ -2,7 +2,7 @@
 
 ## Token Metadata
 
-Please reference the following steps when adding a new token metadata.
+Please reference the following steps when adding a new token metadata. **Ensure that the PR you make is done on the `dev` branch**
 
 1. Add the token information to the `src/tokens/tokens/tokens.ts` array in the following `TokenMeta` interface:
 

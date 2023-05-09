@@ -4,7 +4,7 @@
 [![npm-version](https://img.shields.io/npm/v/@injectivelabs/sdk-ui-ts.svg)](https://www.npmjs.com/package/@injectivelabs/sdk-ui-ts)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Building decentralized finance UIs through TypeScript_
+This package is mostly having some utility functions and maps which developers can use to build UIs.
 
 ---
 
@@ -13,12 +13,6 @@ _Building decentralized finance UIs through TypeScript_
 ```bash
 yarn add @injectivelabs/sdk-ui-ts
 ```
-
----
-
-## 📖 Documentation
-
-This package is mostly having some utility functions and maps that help build UIs.
 
 ---
 

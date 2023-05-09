@@ -1,5 +1,7 @@
 # 🌟 Injective Protocol - Utils
 
+Simple and lightweight utilities (functions and classes) for developers to use.
+
 ---
 
 ## 📚 Installation
