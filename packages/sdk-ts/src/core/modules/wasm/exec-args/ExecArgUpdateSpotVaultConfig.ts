@@ -12,7 +12,6 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     reservationSpreadSensitivityRatio: string
     maxActiveCapitalUtilizationRatio: string
     headChangeToleranceRatio: string
-    reservationPriceTailDeviationRatio: string
     minHeadToTailDeviationRatio: string
     minVolatilityRatio: string
     signedMinHeadToFairPriceDeviationRatio: string
@@ -30,6 +29,7 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     masterAddress: string
     owner: string
     notionalValueCap: string
+    oracleStaleTime: number
   }
 
   export interface Data {
@@ -39,7 +39,6 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     reservation_spread_sensitivity_ratio: string
     max_active_capital_utilization_ratio: string
     head_change_tolerance_ratio: string
-    reservation_price_tail_deviation_ratio: string
     min_head_to_tail_deviation_ratio: string
     min_volatility_ratio: string
     signed_min_head_to_fair_price_deviation_ratio: string
@@ -57,6 +56,7 @@ export declare namespace ExecArgUpdateSpotVaultConfig {
     master_address: string
     owner: string
     notional_value_cap: string
+    oracle_stale_time: number
   }
 }
 
@@ -86,8 +86,6 @@ export default class ExecArgUpdateSpotVaultConfig extends ExecArgBase<
       max_active_capital_utilization_ratio:
         params.maxActiveCapitalUtilizationRatio,
       head_change_tolerance_ratio: params.headChangeToleranceRatio,
-      reservation_price_tail_deviation_ratio:
-        params.reservationPriceTailDeviationRatio,
       min_head_to_tail_deviation_ratio: params.minHeadToTailDeviationRatio,
       min_volatility_ratio: params.minVolatilityRatio,
       signed_min_head_to_fair_price_deviation_ratio:
@@ -107,6 +105,7 @@ export default class ExecArgUpdateSpotVaultConfig extends ExecArgBase<
       master_address: params.masterAddress,
       owner: params.owner,
       notional_value_cap: params.notionalValueCap,
+      oracle_stale_time: params.oracleStaleTime,
     }
   }
 

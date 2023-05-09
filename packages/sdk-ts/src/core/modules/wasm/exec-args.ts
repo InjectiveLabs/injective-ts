@@ -11,7 +11,6 @@ import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivat
 import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 
 import ExecPrivilegedArgVaultRedeem from './exec-priv-args/ExecPrivilegedArgVaultRedeem'
-import ExecPrivilegedArgRegisterVault from './exec-priv-args/ExecPrivilegedRegisterVault'
 import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgVaultSubscribe'
 
 export type ExecArgs =
@@ -29,5 +28,4 @@ export type ExecArgs =
 
 export type ExecPrivilegedArgs =
   | ExecPrivilegedArgVaultRedeem
-  | ExecPrivilegedArgRegisterVault
   | ExecPrivilegedArgVaultSubscribe

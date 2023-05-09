@@ -7,19 +7,19 @@ import {
 export declare namespace ExecPrivilegedArgVaultRedeem {
   export interface Params {
     origin: string
+    redemptionType: string
     redemptionRatio?: string
     vaultSubaccountId: string
-    redeemerSubaccountId: string
+    traderSubaccountId: string
     slippage?: Record<string, any>
-    redemptionType: Record<string, any>
   }
 
   export interface Data {
-    redemption_ratio?: string
     vault_subaccount_id: string
-    slippage?: Record<string, any>
-    redeemer_subaccount_id: string
-    redemption_type: Record<string, any>
+    trader_subaccount_id: string
+    msg: {
+      redeem: Record<string, any>
+    }
   }
 }
 
@@ -40,11 +40,15 @@ export default class ExecPrivilegedArgVaultRedeem extends ExecPrivilegedArgBase<
     const { params } = this
 
     return {
-      slippage: params.slippage,
-      redemption_type: params.redemptionType,
-      redemption_ratio: params.redemptionRatio,
       vault_subaccount_id: params.vaultSubaccountId,
-      redeemer_subaccount_id: params.redeemerSubaccountId,
+      trader_subaccount_id: params.traderSubaccountId,
+      msg: {
+        redeem: {
+          slippage: params.slippage,
+          redemption_type: params.redemptionType,
+          redemption_ratio: params.redemptionRatio,
+        },
+      },
     }
   }
 
@@ -54,7 +58,6 @@ export default class ExecPrivilegedArgVaultRedeem extends ExecPrivilegedArgBase<
     return dataToExecData(this.toData(), {
       origin: params.origin,
       name: 'VaultRedeem',
-      action: 'Redeem',
     })
   }
 }

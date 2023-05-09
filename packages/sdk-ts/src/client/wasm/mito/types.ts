@@ -40,6 +40,7 @@ export interface QueryVaultContractMarketMaking {
   min_trade_volatility_sample_size: number
   default_mid_price_volatility_ratio: string
   min_volatility_ratio: string
+  oracle_stale_time: number
 }
 
 export interface QueryVaultContractDerivativeConfigResponse {
@@ -148,6 +149,7 @@ export type VaultMarketMakingConfig = {
   minTradeVolatilitySampleSize: number
   defaultMidPriceVolatilityRatio: string
   minVolatilityRatio: string
+  oracleStaleTime: number
 }
 
 export type VaultAMMConfig = {
@@ -177,7 +179,6 @@ export type VaultSpotConfig = {
   base: VaultBaseConfig
   marketMaking: VaultMarketMakingConfig
   oracleType: number
-  reservationPriceTailDeviationRatio: string
   targetBaseWeight: string
   allowedRedemptionTypes: number
   baseDecimals: number
