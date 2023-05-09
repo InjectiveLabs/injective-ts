@@ -40,6 +40,15 @@ export const endpointsPublic: NetworkEndpoints = {
   ...endpointsStaging,
 }
 
+export const endpointsInternal: NetworkEndpoints = {
+  indexer: 'https://products.exchange.grpc-web.injective.network',
+  grpc: 'https://products.chain.grpc-web.injective.network',
+  rpc: 'https://products.tm.injective.network',
+  rest: 'https://products.lcd.injective.network',
+  chronos: 'https://products.exchange.grpc-web.injective.network',
+  explorer: 'https://products.exchange.grpc-web.injective.network',
+}
+
 export const endpointsTestnetK8s: NetworkEndpoints = {
   indexer: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   grpc: 'https://k8s.testnet.chain.grpc-web.injective.network',

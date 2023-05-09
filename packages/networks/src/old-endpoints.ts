@@ -35,6 +35,13 @@ export const oldEndpointsPublic: OldNetworkEndpoints = {
   sentryHttpApi: 'https://public.lcd.injective.network',
 }
 
+export const oldEndpointsInternal: OldNetworkEndpoints = {
+  indexerApi: 'https://products.exchange.grpc-web.injective.network',
+  sentryGrpcApi: 'https://products.chain.grpc-web.injective.network',
+  tendermintApi: 'https://products.tm.injective.network',
+  sentryHttpApi: 'https://products.lcd.injective.network',
+}
+
 export const oldEndpointsTestnetK8s: OldNetworkEndpoints = {
   indexerApi: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   sentryGrpcApi: 'https://k8s.testnet.chain.grpc-web.injective.network',

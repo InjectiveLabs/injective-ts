@@ -17,6 +17,7 @@ import {
   oldEndpointsStaging,
   oldEndpointsDevnet1,
   oldEndpointsDevnet2,
+  oldEndpointsInternal,
 } from './old-endpoints'
 import {
   endpointsMainnet,
@@ -31,6 +32,7 @@ import {
   endpointsStaging,
   endpointsDevnet1,
   endpointsDevnet2,
+  endpointsInternal,
 } from './endpoints'
 import {
   ChainInfo,
@@ -48,6 +50,7 @@ export const oldNetworkEndpoints: Record<Network, OldNetworkEndpoints> = {
   [Network.Staging]: oldEndpointsStaging,
   [Network.Mainnet]: oldEndpointsMainnet,
   [Network.Public]: oldEndpointsPublic,
+  [Network.Internal]: oldEndpointsInternal,
   [Network.Devnet]: oldEndpointsDevnet,
   [Network.Devnet1]: oldEndpointsDevnet1,
   [Network.Devnet2]: oldEndpointsDevnet2,
@@ -63,6 +66,7 @@ export const networkEndpoints: Record<Network, NetworkEndpoints> = {
   [Network.Staging]: endpointsStaging,
   [Network.Mainnet]: endpointsMainnet,
   [Network.Public]: endpointsPublic,
+  [Network.Internal]: endpointsInternal,
   [Network.Devnet]: endpointsDevnet,
   [Network.Devnet1]: endpointsDevnet1,
   [Network.Devnet2]: endpointsDevnet2,
@@ -78,6 +82,7 @@ export const chainInfos: Record<Network, ChainInfo> = {
   [Network.Staging]: mainnetChainInfo,
   [Network.Mainnet]: mainnetChainInfo,
   [Network.Public]: mainnetChainInfo,
+  [Network.Internal]: mainnetChainInfo,
   [Network.Devnet]: devnetChainInfo,
   [Network.Devnet1]: devnetChainInfo,
   [Network.Devnet2]: devnetChainInfo,
@@ -116,6 +121,16 @@ export const getNetworkInfo = (
   ...oldNetworkEndpoints[network],
   ...networkEndpoints[network],
 })
+
+export const isMainnet = (network: Network) =>
+  [
+    Network.Public,
+    Network.Staging,
+    Network.Mainnet,
+    Network.MainnetK8s,
+    Network.Internal,
+    Network.MainnetLB,
+  ].includes(network)
 
 export const isDevnet = (network: Network) =>
   [Network.Devnet, Network.Devnet1, Network.Devnet2, Network.Local].includes(
