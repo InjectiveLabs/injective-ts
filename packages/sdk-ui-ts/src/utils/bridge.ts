@@ -361,12 +361,6 @@ export const cosmosNativeDenomsFromChainId = {
     tokenType: TokenType.Ibc,
     denom: 'inj',
   },
-  [TestnetCosmosChainId.Cosmoshub]: {
-    ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
-    tokenType: TokenType.Ibc,
-    denom:
-      'ibc/48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
-  },
 } as Record<string, Token | Token[]>
 
 export const ibcHashToNativeInjPerNetwork = {
