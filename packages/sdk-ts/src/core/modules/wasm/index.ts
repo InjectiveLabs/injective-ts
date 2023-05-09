@@ -19,7 +19,6 @@ export { default as MsgExecuteContractCompat } from './msgs/MsgExecuteContractCo
 export { default as MsgPrivilegedExecuteContract } from './msgs/MsgPrivilegedExecuteContract'
 
 export { default as ExecPrivilegedArgVaultRedeem } from './exec-priv-args/ExecPrivilegedArgVaultRedeem'
-export { default as ExecPrivilegedArgRegisterVault } from './exec-priv-args/ExecPrivilegedRegisterVault'
 export { default as ExecPrivilegedArgVaultSubscribe } from './exec-priv-args/ExecPrivilegedArgVaultSubscribe'
 
 export * from './exec-args'

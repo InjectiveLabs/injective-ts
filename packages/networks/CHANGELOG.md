@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.13-beta.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.10.13-beta.0...@injectivelabs/networks@1.10.13-beta.1) (2023-05-09)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
 ## [1.10.13-beta.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.10.12...@injectivelabs/networks@1.10.13-beta.0) (2023-05-05)
 
 **Note:** Version bump only for package @injectivelabs/networks
