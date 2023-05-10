@@ -1391,12 +1391,12 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  
+
   PEPE: {
     name: 'Pepe',
     symbol: 'PEPE',
     decimals: 18,
-    logo: 'ethereum.svg',
+    logo: 'pepe.jpeg',
     coinGeckoId: 'pepe',
 
     erc20: {
@@ -1405,12 +1405,12 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
-  
+
   WASSIE: {
     name: 'WASSIE',
     symbol: 'WASSIE',
     decimals: 18,
-    logo: 'ethereum.svg',
+    logo: 'wassie.jpeg',
     coinGeckoId: 'wassie',
 
     erc20: {
@@ -1419,12 +1419,12 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
-    
+
   RIBBIT: {
     name: 'Ribbit Meme',
     symbol: 'RIBBIT',
     decimals: 18,
-    logo: 'ethereum.svg',
+    logo: 'ribbit.jpeg',
     coinGeckoId: 'ribbit-meme',
 
     erc20: {
@@ -1433,6 +1433,18 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
-  
 
+  LAMBO: {
+    name: 'Lambo',
+    symbol: 'LAMBO',
+    decimals: 18,
+    logo: 'lambo.jpeg',
+    coinGeckoId: 'lambo-0fcbf0f7-1a8f-470d-ba09-797d5e95d836',
+
+    erc20: {
+      decimals: 18,
+      address: '0x3d2b66BC4f9D6388BD2d97B95b565BE1686aEfB3',
+      tokenType: TokenType.Erc20,
+    },
+  },
 } as Record<string, TokenMeta>
