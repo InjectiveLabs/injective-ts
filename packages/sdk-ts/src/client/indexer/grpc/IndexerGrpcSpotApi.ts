@@ -198,7 +198,7 @@ export class IndexerGrpcSpotApi {
     }
 
     if (marketIds) {
-      // request.marketIds = marketIds
+      request.marketIds = marketIds
     }
 
     if (orderTypes) {
@@ -293,8 +293,6 @@ export class IndexerGrpcSpotApi {
 
     if (marketIds) {
       request.marketIds = marketIds
-    } else {
-      request.marketIds = []
     }
 
     if (subaccountId) {

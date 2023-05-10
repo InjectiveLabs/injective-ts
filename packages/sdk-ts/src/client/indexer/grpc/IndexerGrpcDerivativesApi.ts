@@ -277,7 +277,7 @@ export class IndexerGrpcDerivativesApi {
     }
 
     if (marketIds) {
-      // request.marketIds = marketIds
+      request.marketIds = marketIds
     }
 
     if (orderTypes) {
