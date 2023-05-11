@@ -260,6 +260,7 @@ export class TxRestApi implements TxConcreteApi {
         if (error.code === 'ECONNABORTED') {
           throw new HttpRequestException(new Error(error.message), {
             code: StatusCodes.REQUEST_TOO_LONG,
+            context: endpoint,
             method: HttpRequestMethod.Get,
           })
         }
@@ -276,6 +277,7 @@ export class TxRestApi implements TxConcreteApi {
       }
 
       throw new HttpRequestException(new Error((error as any).message), {
+        context: endpoint,
         code: UnspecifiedErrorCode,
         contextModule: HttpRequestMethod.Get,
       })
@@ -307,6 +309,7 @@ export class TxRestApi implements TxConcreteApi {
 
       throw new HttpRequestException(new Error((error as any).message), {
         code: UnspecifiedErrorCode,
+        context: endpoint,
         contextModule: HttpRequestMethod.Post,
       })
     }

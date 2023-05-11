@@ -19,9 +19,11 @@ export class ChainRestBankApi extends BaseRestConsumer {
    * @param address address of account to look up
    */
   public async fetchBalances(address: string): Promise<BalancesResponse> {
+    const endpoint = `cosmos/bank/v1beta1/balances/${address}`
+
     try {
       const response = (await this.get(
-        `cosmos/bank/v1beta1/balances/${address}`,
+        endpoint,
       )) as RestApiResponse<BalancesResponse>
 
       return response.data
@@ -32,6 +34,7 @@ export class ChainRestBankApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Bank,
       })
     }
@@ -46,9 +49,11 @@ export class ChainRestBankApi extends BaseRestConsumer {
     address: string,
     denom: string,
   ): Promise<DenomBalance> {
+    const endpoint = `cosmos/bank/v1beta1/balances/${address}`
+
     try {
       const response = (await this.get(
-        `cosmos/bank/v1beta1/balances/${address}`,
+        endpoint,
       )) as RestApiResponse<BalancesResponse>
 
       const balance = response.data.balances.find(
@@ -77,6 +82,7 @@ export class ChainRestBankApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Bank,
       })
     }

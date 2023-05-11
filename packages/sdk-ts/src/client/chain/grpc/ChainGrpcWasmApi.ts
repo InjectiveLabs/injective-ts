@@ -50,12 +50,14 @@ export class ChainGrpcWasmApi {
       if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AllContractState',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AllContractState',
         contextModule: this.module,
       })
     }
@@ -82,12 +84,14 @@ export class ChainGrpcWasmApi {
       if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ContractInfo',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ContractInfo',
         contextModule: this.module,
       })
     }
@@ -108,12 +112,14 @@ export class ChainGrpcWasmApi {
       if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ContractHistory',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ContractHistory',
         contextModule: this.module,
       })
     }
@@ -136,12 +142,14 @@ export class ChainGrpcWasmApi {
       if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SmartContractState',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SmartContractState',
         contextModule: this.module,
       })
     }
@@ -164,12 +172,14 @@ export class ChainGrpcWasmApi {
       if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'RawContractState',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'RawContractState',
         contextModule: this.module,
       })
     }
@@ -194,12 +204,14 @@ export class ChainGrpcWasmApi {
       if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Codes',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Codes',
         contextModule: this.module,
       })
     }
@@ -220,12 +232,14 @@ export class ChainGrpcWasmApi {
       if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Code',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Code',
         contextModule: this.module,
       })
     }
@@ -255,12 +269,14 @@ export class ChainGrpcWasmApi {
       if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ContractsByCode',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ContractsByCode',
         contextModule: this.module,
       })
     }

@@ -46,12 +46,14 @@ export class IndexerGrpcAccountPortfolioApi {
       if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AccountPortfolio',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AccountPortfolio',
         contextModule: this.module,
       })
     }

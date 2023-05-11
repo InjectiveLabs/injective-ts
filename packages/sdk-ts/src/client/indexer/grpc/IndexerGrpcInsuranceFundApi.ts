@@ -52,12 +52,14 @@ export class IndexerGrpcInsuranceFundApi {
       if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Redemptions',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Redemptions',
         contextModule: this.module,
       })
     }
@@ -76,12 +78,14 @@ export class IndexerGrpcInsuranceFundApi {
       if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Funds',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Funds',
         contextModule: this.module,
       })
     }

@@ -34,12 +34,14 @@ export class ChainGrpcPeggyApi {
       if (e instanceof InjectivePeggyV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Params',
         contextModule: this.module,
       })
     }

@@ -5,8 +5,10 @@ import {
 import BaseRestConsumer from '../../BaseRestConsumer'
 import {
   HttpRequestException,
+  HttpRequestMethod,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { IndexerModule } from '../types'
 
 /**
  * @category Indexer Chronos API
@@ -29,7 +31,9 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        contextModule: 'GET',
+        context: `${this.endpoint}/${path}?marketId=${marketId}`,
+        method: HttpRequestMethod.Get,
+        contextModule: IndexerModule.ChronosDerivative,
       })
     }
   }
@@ -50,7 +54,9 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        contextModule: 'GET',
+        context: `${this.endpoint}/${path}`,
+        method: HttpRequestMethod.Get,
+        contextModule: IndexerModule.ChronosDerivative,
       })
     }
   }

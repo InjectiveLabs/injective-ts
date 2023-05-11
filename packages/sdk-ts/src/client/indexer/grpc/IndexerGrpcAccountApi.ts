@@ -53,12 +53,14 @@ export class IndexerGrpcAccountApi {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Rewards',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Rewards',
         contextModule: this.module,
       })
     }
@@ -77,12 +79,14 @@ export class IndexerGrpcAccountApi {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountsList',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountsList',
         contextModule: this.module,
       })
     }
@@ -103,12 +107,14 @@ export class IndexerGrpcAccountApi {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountBalanceEndpoint',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountBalanceEndpoint',
         contextModule: this.module,
       })
     }
@@ -127,12 +133,14 @@ export class IndexerGrpcAccountApi {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountBalancesList',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountBalancesList',
         contextModule: this.module,
       })
     }
@@ -185,12 +193,14 @@ export class IndexerGrpcAccountApi {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountHistory',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountHistory',
         contextModule: this.module,
       })
     }
@@ -225,12 +235,14 @@ export class IndexerGrpcAccountApi {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountOrderSummary',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountOrderSummary',
         contextModule: this.module,
       })
     }
@@ -254,12 +266,14 @@ export class IndexerGrpcAccountApi {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'OrderStates',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'OrderStates',
         contextModule: this.module,
       })
     }

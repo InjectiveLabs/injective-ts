@@ -35,12 +35,14 @@ export class ChainGrpcAuctionApi {
       if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AuctionParams',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AuctionParams',
         contextModule: this.module,
       })
     }
@@ -60,12 +62,14 @@ export class ChainGrpcAuctionApi {
       if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AuctionModuleState',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AuctionModuleState',
         contextModule: this.module,
       })
     }
@@ -85,12 +89,14 @@ export class ChainGrpcAuctionApi {
       if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'CurrentAuctionBasket',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'CurrentAuctionBasket',
         contextModule: this.module,
       })
     }

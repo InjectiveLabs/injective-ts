@@ -58,12 +58,14 @@ export class IndexerGrpcSpotApi {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Markets',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Markets',
         contextModule: this.module,
       })
     }
@@ -82,12 +84,14 @@ export class IndexerGrpcSpotApi {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Market',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Market',
         contextModule: this.module,
       })
     }
@@ -154,12 +158,14 @@ export class IndexerGrpcSpotApi {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Orders',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Orders',
         contextModule: this.module,
       })
     }
@@ -247,12 +253,14 @@ export class IndexerGrpcSpotApi {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'OrdersHistory',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'OrdersHistory',
         contextModule: this.module,
       })
     }
@@ -349,12 +357,14 @@ export class IndexerGrpcSpotApi {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Trades',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Trades',
         contextModule: this.module,
       })
     }
@@ -395,12 +405,14 @@ export class IndexerGrpcSpotApi {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountOrdersList',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountOrdersList',
         contextModule: this.module,
       })
     }
@@ -454,12 +466,14 @@ export class IndexerGrpcSpotApi {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountTradesList',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountTradesList',
         contextModule: this.module,
       })
     }
@@ -484,12 +498,17 @@ export class IndexerGrpcSpotApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'OrderbooksV2',
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'OrderbooksV2',
         contextModule: this.module,
       })
     }
@@ -507,12 +526,17 @@ export class IndexerGrpcSpotApi {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw e
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'OrderbookV2',
+          contextModule: this.module,
+        })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: '',
         contextModule: this.module,
       })
     }

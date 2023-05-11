@@ -35,12 +35,14 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Params',
         contextModule: this.module,
       })
     }
@@ -69,11 +71,16 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegationRewards',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DelegationRewards',
+        contextModule: this.module,
+      })
     }
   }
 
@@ -104,11 +111,16 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegationRewards',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DelegationRewards',
+        contextModule: this.module,
+      })
     }
   }
 
@@ -128,11 +140,16 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegationTotalRewards',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DelegationTotalRewards',
+        contextModule: this.module,
+      })
     }
   }
 
@@ -156,11 +173,16 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegationTotalRewards',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DelegationTotalRewards',
+        contextModule: this.module,
+      })
     }
   }
 }

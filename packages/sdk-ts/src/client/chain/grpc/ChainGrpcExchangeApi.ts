@@ -35,12 +35,14 @@ export class ChainGrpcExchangeApi {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'QueryExchangeParams',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'QueryExchangeParams',
         contextModule: ChainModule.Exchange,
       })
     }
@@ -58,12 +60,14 @@ export class ChainGrpcExchangeApi {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ExchangeModuleState',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ExchangeModuleState',
         contextModule: ChainModule.Exchange,
       })
     }
@@ -83,12 +87,15 @@ export class ChainGrpcExchangeApi {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'FeeDiscountSchedule',
+
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'FeeDiscountSchedule',
         contextModule: ChainModule.Exchange,
       })
     }
@@ -110,12 +117,14 @@ export class ChainGrpcExchangeApi {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'FeeDiscountAccountInfo',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'FeeDiscountAccountInfo',
         contextModule: ChainModule.Exchange,
       })
     }
@@ -135,12 +144,14 @@ export class ChainGrpcExchangeApi {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'TradeRewardCampaign',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'TradeRewardCampaign',
         contextModule: ChainModule.Exchange,
       })
     }
@@ -160,12 +171,14 @@ export class ChainGrpcExchangeApi {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'TradeRewardPoints',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'TradeRewardPoints',
         contextModule: ChainModule.Exchange,
       })
     }
@@ -192,12 +205,14 @@ export class ChainGrpcExchangeApi {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'PendingTradeRewardPoints',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'PendingTradeRewardPoints',
         contextModule: ChainModule.Exchange,
       })
     }
@@ -214,12 +229,14 @@ export class ChainGrpcExchangeApi {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Positions',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Positions',
         contextModule: ChainModule.Exchange,
       })
     }
@@ -239,12 +256,14 @@ export class ChainGrpcExchangeApi {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountTradeNonce',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountTradeNonce',
         contextModule: ChainModule.Exchange,
       })
     }

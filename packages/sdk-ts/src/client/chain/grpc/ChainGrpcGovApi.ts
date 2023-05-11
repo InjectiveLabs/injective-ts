@@ -50,12 +50,14 @@ export class ChainGrpcGovApi {
       if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Params',
         contextModule: this.module,
       })
     }
@@ -86,12 +88,14 @@ export class ChainGrpcGovApi {
       if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Proposals',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Proposals',
         contextModule: this.module,
       })
     }
@@ -110,12 +114,14 @@ export class ChainGrpcGovApi {
       if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Proposal',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Proposal',
         contextModule: this.module,
       })
     }
@@ -146,12 +152,14 @@ export class ChainGrpcGovApi {
       if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Deposits',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Deposits',
         contextModule: this.module,
       })
     }
@@ -181,12 +189,14 @@ export class ChainGrpcGovApi {
       if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Votes',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Votes',
         contextModule: this.module,
       })
     }
@@ -204,12 +214,14 @@ export class ChainGrpcGovApi {
       if (e instanceof CosmosGovV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'TallyResult',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'TallyResult',
         contextModule: this.module,
       })
     }

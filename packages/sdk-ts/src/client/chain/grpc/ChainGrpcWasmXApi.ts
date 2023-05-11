@@ -31,11 +31,14 @@ export class ChainGrpcWasmXApi {
       if (e instanceof InjectiveWasmxV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'WasmxParams',
           contextModule: this.module,
         })
       }
+
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'WasmxParams',
         contextModule: this.module,
       })
     }
@@ -52,11 +55,14 @@ export class ChainGrpcWasmXApi {
       if (e instanceof InjectiveWasmxV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'WasmxModuleState',
           contextModule: this.module,
         })
       }
+
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'WasmxModuleState',
         contextModule: this.module,
       })
     }

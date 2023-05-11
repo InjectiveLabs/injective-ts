@@ -36,12 +36,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Params',
         contextModule: this.module,
       })
     }
@@ -58,12 +60,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Pool',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Pool',
         contextModule: this.module,
       })
     }
@@ -88,12 +92,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Validators',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Validators',
         contextModule: this.module,
       })
     }
@@ -112,12 +118,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Validator',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Validator',
         contextModule: this.module,
       })
     }
@@ -151,12 +159,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorDelegations',
         contextModule: this.module,
       })
     }
@@ -194,12 +204,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorDelegations',
         contextModule: this.module,
       })
     }
@@ -233,12 +245,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorUnbondingDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorUnbondingDelegations',
         contextModule: this.module,
       })
     }
@@ -276,12 +290,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorUnbondingDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorUnbondingDelegations',
         contextModule: this.module,
       })
     }
@@ -309,12 +325,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Delegation',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Delegation',
         contextModule: this.module,
       })
     }
@@ -348,12 +366,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Delegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Delegations',
         contextModule: this.module,
       })
     }
@@ -391,12 +411,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Delegation',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Delegation',
         contextModule: this.module,
       })
     }
@@ -430,12 +452,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorDelegations',
         contextModule: this.module,
       })
     }
@@ -473,12 +497,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorDelegations',
         contextModule: this.module,
       })
     }
@@ -512,12 +538,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegatorUnbondingDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'DelegatorUnbondingDelegations',
         contextModule: this.module,
       })
     }
@@ -555,12 +583,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegatorUnbondingDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'DelegatorUnbondingDelegations',
         contextModule: this.module,
       })
     }
@@ -593,12 +623,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Redelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Redelegations',
         contextModule: this.module,
       })
     }
@@ -635,12 +667,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Redelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Redelegations',
         contextModule: this.module,
       })
     }

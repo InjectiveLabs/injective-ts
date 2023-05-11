@@ -45,12 +45,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetVault',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetVault',
         contextModule: this.module,
       })
     }
@@ -87,12 +89,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetVaults',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetVaults',
         contextModule: this.module,
       })
     }
@@ -129,12 +133,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'LPTokenPriceChart',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'LPTokenPriceChart',
         contextModule: this.module,
       })
     }
@@ -171,12 +177,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'TVLChart',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'TVLChart',
         contextModule: this.module,
       })
     }
@@ -219,12 +227,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'VaultsByHolderAddress',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'VaultsByHolderAddress',
         contextModule: this.module,
       })
     }
@@ -259,12 +269,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'LPHolders',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'LPHolders',
         contextModule: this.module,
       })
     }
@@ -283,12 +295,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Portfolio',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Portfolio',
         contextModule: this.module,
       })
     }
@@ -311,12 +325,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Leaderboard',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Leaderboard',
         contextModule: this.module,
       })
     }
@@ -367,12 +383,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'TransfersHistory',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'TransfersHistory',
         contextModule: this.module,
       })
     }
@@ -411,12 +429,14 @@ export class IndexerGrpcMitoApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'LeaderboardEpochs',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'LeaderboardEpochs',
         contextModule: this.module,
       })
     }

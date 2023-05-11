@@ -35,12 +35,14 @@ export class ChainGrpcInsuranceFundApi {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'InsuranceParams',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'InsuranceParams',
         contextModule: this.module,
       })
     }
@@ -60,12 +62,14 @@ export class ChainGrpcInsuranceFundApi {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'InsuranceFunds',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'InsuranceFunds',
         contextModule: this.module,
       })
     }
@@ -87,12 +91,14 @@ export class ChainGrpcInsuranceFundApi {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'InsuranceFund',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'InsuranceFund',
         contextModule: this.module,
       })
     }
@@ -121,12 +127,14 @@ export class ChainGrpcInsuranceFundApi {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'EstimatedRedemptions',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'EstimatedRedemptions',
         contextModule: this.module,
       })
     }
@@ -155,12 +163,14 @@ export class ChainGrpcInsuranceFundApi {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'PendingRedemptions',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'PendingRedemptions',
         contextModule: this.module,
       })
     }

@@ -20,9 +20,11 @@ export class ChainRestAuthApi extends BaseRestConsumer {
    * @param address address of account to look up
    */
   public async fetchAccount(address: string): Promise<AccountResponse> {
+    const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
+
     try {
       const response = (await this.get(
-        `cosmos/auth/v1beta1/accounts/${address}`,
+        endpoint,
       )) as RestApiResponse<AccountResponse>
 
       return response.data
@@ -33,6 +35,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Auth,
       })
     }
@@ -46,12 +49,14 @@ export class ChainRestAuthApi extends BaseRestConsumer {
   public async fetchCosmosAccount(
     address: string,
   ): Promise<BaseAccountRestResponse> {
+    const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
+
     try {
       const isInjectiveAddress =
         address.startsWith('inj') || address.startsWith('evmos')
-      const response = (await this.get(
-        `cosmos/auth/v1beta1/accounts/${address}`,
-      )) as RestApiResponse<AccountResponse | CosmosAccountRestResponse>
+      const response = (await this.get(endpoint)) as RestApiResponse<
+        AccountResponse | CosmosAccountRestResponse
+      >
 
       const baseAccount = isInjectiveAddress
         ? (response.data as AccountResponse).account.base_account
@@ -65,6 +70,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Auth,
       })
     }

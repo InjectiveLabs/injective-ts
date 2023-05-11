@@ -32,12 +32,14 @@ export class IndexerGrpcOracleApi {
       if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'OracleList',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'OracleList',
         contextModule: this.module,
       })
     }
@@ -72,12 +74,14 @@ export class IndexerGrpcOracleApi {
       if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Price',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Price',
         contextModule: this.module,
       })
     }
@@ -118,12 +122,14 @@ export class IndexerGrpcOracleApi {
       if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Price',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Price',
         contextModule: this.module,
       })
     }

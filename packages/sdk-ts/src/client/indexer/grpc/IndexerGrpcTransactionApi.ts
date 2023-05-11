@@ -93,12 +93,16 @@ export class IndexerGrpcTransactionApi {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
+          context: 'PrepareTx',
+          contextModule: 'Web3Gateway',
           type: e.type,
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'PrepareTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
@@ -162,11 +166,15 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
+          context: 'CosmosPrepareTx',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'CosmosPrepareTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
@@ -238,11 +246,15 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
+          context: 'PrepareTx',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'PrepareTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
@@ -298,11 +310,15 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
+          context: 'BroadcastTx',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'BroadcastTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
@@ -345,11 +361,15 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
+          context: 'BroadcastTx',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'BroadcastTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
@@ -366,11 +386,15 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
+          context: 'FeePayer',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'FeePayer',
+        contextModule: 'Web3Gateway',
       })
     }
   }

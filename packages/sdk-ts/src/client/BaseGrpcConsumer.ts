@@ -39,7 +39,7 @@ export default class BaseGrpcConsumer {
               new Error(statusMessage || 'The request failed.'),
               {
                 code: status,
-                context: this.endpoint,
+                context: `${this.endpoint}?service=${service.methodName}`,
                 contextModule: this.module,
               },
             ),

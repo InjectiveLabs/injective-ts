@@ -3,7 +3,10 @@ import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
 import { ChainModule } from '../types'
-import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
+import {
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 
 /**
@@ -33,11 +36,16 @@ export class ChainGrpcAuthApi {
       if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Params',
+        contextModule: this.module,
+      })
     }
   }
 
@@ -54,11 +62,16 @@ export class ChainGrpcAuthApi {
       if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Account',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Account',
+        contextModule: this.module,
+      })
     }
   }
 
@@ -78,11 +91,16 @@ export class ChainGrpcAuthApi {
       if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Accounts',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Accounts',
+        contextModule: this.module,
+      })
     }
   }
 }

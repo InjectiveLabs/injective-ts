@@ -44,6 +44,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   }
 
   async fetchBlock(blockHashHeight: string): Promise<ExplorerBlockWithTxs> {
+    const endpoint = `blocks/${blockHashHeight}`
+
     try {
       const response = (await this.get(
         `blocks/${blockHashHeight}`,
@@ -59,6 +61,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -88,6 +91,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -119,6 +123,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -136,6 +141,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     status?: MsgStatus
     type?: MsgType[]
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
+    const endpoint = 'txs'
+
     try {
       const {
         fromNumber,
@@ -152,7 +159,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         limit: 12,
       }
 
-      const response = (await this.get('txs', {
+      const response = (await this.get(endpoint, {
         limit,
         after,
         before,
@@ -182,6 +189,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -205,6 +213,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       type?: MsgType[]
     }
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
+    const endpoint = `accountTxs/${account}`
+
     try {
       const {
         fromNumber,
@@ -220,7 +230,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       } = params || {
         limit: 12,
       }
-      const response = (await this.get(`accountTxs/${account}`, {
+      const response = (await this.get(endpoint, {
         skip,
         limit,
         after,
@@ -249,15 +259,18 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
   }
 
   async fetchTransaction(hash: string): Promise<ExplorerTransaction> {
+    const endpoint = `txs/${hash}`
+
     try {
       const response = (await this.get(
-        `txs/${hash}`,
+        endpoint,
       )) as ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse>
 
       return IndexerRestExplorerTransformer.transactionToTransaction(
@@ -276,9 +289,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   }
 
   async fetchValidators(): Promise<Partial<ExplorerValidator>[]> {
+    const endpoint = 'validators'
+
     try {
       const response = (await this.get(
-        `validators`,
+        endpoint,
       )) as ExplorerApiResponseWithPagination<any[]>
 
       if (!response.data || !response.data.data) {
@@ -295,6 +310,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -303,9 +319,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   async fetchValidatorUptime(
     validatorConsensusAddress: string,
   ): Promise<ExplorerValidatorUptime[]> {
+    const endpoint = `validator_uptime/${validatorConsensusAddress}`
+
     try {
       const response = (await this.get(
-        `validator_uptime/${validatorConsensusAddress}`,
+        endpoint,
       )) as ExplorerApiResponseWithPagination<
         ValidatorUptimeFromExplorerApiResponse[]
       >
@@ -324,15 +342,18 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
   }
 
   async fetchContract(contractAddress: string): Promise<Contract> {
+    const endpoint = `/wasm/contracts/${contractAddress}`
+
     try {
       const response = (await this.get(
-        `/wasm/contracts/${contractAddress}`,
+        endpoint,
       )) as ExplorerApiResponse<ContractExplorerApiResponse>
 
       return IndexerRestExplorerTransformer.contractToExplorerContract(
@@ -345,6 +366,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -359,9 +381,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     paging: Paging
     contracts: Contract[]
   }> {
+    const endpoint = `/wasm/contracts`
+
     try {
       const { assetsOnly, fromNumber, limit, skip } = params || { limit: 12 }
-      const response = (await this.get('/wasm/contracts', {
+      const response = (await this.get(endpoint, {
         skip,
         limit,
         assets_only: assetsOnly,
@@ -383,6 +407,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -400,9 +425,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       skip?: number
     }
   }): Promise<{ paging: Paging; transactions: ContractTransaction[] }> {
+    const endpoint = `/contractTxs/${contractAddress}`
+
     try {
       const { fromNumber, limit, skip, toNumber } = params || { limit: 12 }
-      const response = (await this.get(`/contractTxs/${contractAddress}`, {
+      const response = (await this.get(endpoint, {
         skip,
         limit,
         to_number: toNumber,
@@ -428,15 +455,18 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
   }
 
   async fetchWasmCode(codeId: number): Promise<WasmCode> {
+    const endpoint = `/wasm/codes/${codeId}`
+
     try {
       const response = (await this.get(
-        `/wasm/codes/${codeId}`,
+        endpoint,
       )) as ExplorerApiResponse<WasmCodeExplorerApiResponse>
 
       return IndexerRestExplorerTransformer.wasmCodeToExplorerWasmCode(
@@ -449,6 +479,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -462,9 +493,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     paging: Paging
     wasmCodes: WasmCode[]
   }> {
+    const endpoint = `/wasm/codes`
+
     try {
       const { fromNumber, limit, toNumber } = params || { limit: 12 }
-      const response = (await this.get('/wasm/codes', {
+      const response = (await this.get(endpoint, {
         limit,
         from_number: fromNumber,
         to_number: toNumber,
@@ -485,6 +518,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -493,10 +527,12 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   async fetchCW20Balances(
     address: string,
   ): Promise<ExplorerCW20BalanceWithToken[]> {
+    const endpoint = `/wasm/${address}/cw20-balance`
+
     try {
-      const response = (await this.get(
-        `/wasm/${address}/cw20-balance`,
-      )) as ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
+      const response = (await this.get(endpoint)) as ExplorerApiResponse<
+        CW20BalanceExplorerApiResponse[]
+      >
 
       if (response.data.length === 0) {
         return []
@@ -512,6 +548,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }
@@ -520,10 +557,12 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   async fetchCW20BalancesNoThrow(
     address: string,
   ): Promise<ExplorerCW20BalanceWithToken[]> {
+    const endpoint = `/wasm/${address}/cw20-balance`
+
     try {
-      const response = (await this.get(
-        `/wasm/${address}/cw20-balance`,
-      )) as ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
+      const response = (await this.get(endpoint)) as ExplorerApiResponse<
+        CW20BalanceExplorerApiResponse[]
+      >
 
       if (response.data.length === 0) {
         return []
@@ -545,6 +584,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
       })
     }

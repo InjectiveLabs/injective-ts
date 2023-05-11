@@ -31,12 +31,14 @@ export class IndexerGrpcMetaApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Ping',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Ping',
         contextModule: this.module,
       })
     }
@@ -53,12 +55,14 @@ export class IndexerGrpcMetaApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Version',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Version',
         contextModule: this.module,
       })
     }
@@ -77,12 +81,14 @@ export class IndexerGrpcMetaApi {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Info',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Info',
         contextModule: this.module,
       })
     }

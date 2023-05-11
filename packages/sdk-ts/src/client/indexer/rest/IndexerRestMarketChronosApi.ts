@@ -1,5 +1,6 @@
 import {
   HttpRequestException,
+  HttpRequestMethod,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import BaseRestConsumer from '../../BaseRestConsumer'
@@ -44,6 +45,8 @@ export class IndexerRestMarketChronosApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${pathWithParams}`,
+        method: HttpRequestMethod.Get,
         contextModule: IndexerModule.ChronosMarkets,
       })
     }

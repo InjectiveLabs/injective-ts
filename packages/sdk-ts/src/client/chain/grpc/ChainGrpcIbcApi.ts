@@ -34,12 +34,14 @@ export class ChainGrpcIbcApi {
       if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DenomTrace',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'DenomTrace',
         contextModule: this.module,
       })
     }
@@ -57,12 +59,14 @@ export class ChainGrpcIbcApi {
       if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DenomTraces',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'DenomTraces',
         contextModule: this.module,
       })
     }

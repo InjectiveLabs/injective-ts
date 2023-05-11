@@ -36,12 +36,14 @@ export class ChainGrpcMintApi {
       if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Params',
         contextModule: this.module,
       })
     }
@@ -62,12 +64,14 @@ export class ChainGrpcMintApi {
       if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Inflation',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Inflation',
         contextModule: this.module,
       })
     }
@@ -88,12 +92,14 @@ export class ChainGrpcMintApi {
       if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AnnualProvisions',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AnnualProvisions',
         contextModule: this.module,
       })
     }

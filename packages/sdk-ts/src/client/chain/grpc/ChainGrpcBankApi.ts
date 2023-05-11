@@ -36,12 +36,14 @@ export class ChainGrpcBankApi {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Params',
         contextModule: this.module,
       })
     }
@@ -67,12 +69,14 @@ export class ChainGrpcBankApi {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Balance',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Balance',
         contextModule: this.module,
       })
     }
@@ -91,12 +95,14 @@ export class ChainGrpcBankApi {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AllBalances',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AllBalances',
         contextModule: this.module,
       })
     }
@@ -118,12 +124,14 @@ export class ChainGrpcBankApi {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'TotalSupply',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'TotalSupply',
         contextModule: this.module,
       })
     }

@@ -40,12 +40,14 @@ export class IndexerGrpcAuctionApi {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AuctionEndpoint',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AuctionEndpoint',
         contextModule: this.module,
       })
     }
@@ -62,12 +64,14 @@ export class IndexerGrpcAuctionApi {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Auctions',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Auctions',
         contextModule: this.module,
       })
     }
