@@ -1,5 +1,6 @@
 import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
 import { getGrpcDmmWebImpl } from '../../BaseGrpcDmmWebConsumer'
+import { DmmGrpcTransformer } from './transformers'
 import {
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
@@ -23,9 +24,9 @@ export class DmmGrpcApi {
     }
 
     try {
-      const { epochs } = await this.client.GetEpochs(request)
+      const response = await this.client.GetEpochs(request)
 
-      return epochs
+      return DmmGrpcTransformer.epochsResponseToEpochs(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -47,9 +48,9 @@ export class DmmGrpcApi {
     request.epochId = epochId.toString()
 
     try {
-      const { rewards } = await this.client.GetMarketRewards(request)
+      const response = await this.client.GetMarketRewards(request)
 
-      return rewards
+      return DmmGrpcTransformer.marketRewardsResponseToMarketRewards(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -81,7 +82,11 @@ export class DmmGrpcApi {
     }
 
     try {
-      return await this.client.GetEligibleAddresses(request)
+      const response = await this.client.GetEligibleAddresses(request)
+
+      return DmmGrpcTransformer.eligibleAddressesResponseToEligibleAddresses(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -113,7 +118,9 @@ export class DmmGrpcApi {
     }
 
     try {
-      return await this.client.GetEpochScores(request)
+      const response = await this.client.GetEpochScores(request)
+
+      return DmmGrpcTransformer.epochScoresResponseToEpochScores(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -148,7 +155,11 @@ export class DmmGrpcApi {
     }
 
     try {
-      return await this.client.GetEpochScoresHistory(request)
+      const response = await this.client.GetEpochScoresHistory(request)
+
+      return DmmGrpcTransformer.epochScoresHistoryResponseToEpochScoresHistory(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -183,7 +194,9 @@ export class DmmGrpcApi {
     }
 
     try {
-      return await this.client.GetTotalScores(request)
+      const response = await this.client.GetTotalScores(request)
+
+      return DmmGrpcTransformer.totalScoresResponseToTotalScores(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -221,7 +234,11 @@ export class DmmGrpcApi {
     }
 
     try {
-      return await this.client.GetTotalScoresHistory(request)
+      const response = await this.client.GetTotalScoresHistory(request)
+
+      return DmmGrpcTransformer.totalScoresHistoryResponseToTotalScoresHistory(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -259,7 +276,11 @@ export class DmmGrpcApi {
     }
 
     try {
-      return await this.client.GetLiquiditySnapshots(request)
+      const response = await this.client.GetLiquiditySnapshots(request)
+
+      return DmmGrpcTransformer.liquiditySnapshotsResponseToLiquiditySnapshots(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -297,7 +318,11 @@ export class DmmGrpcApi {
     }
 
     try {
-      return await this.client.GetRewardsDistribution(request)
+      const response = await this.client.GetRewardsDistribution(request)
+
+      return DmmGrpcTransformer.rewardsDistributionResponseToRewardsDistribution(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -326,9 +351,9 @@ export class DmmGrpcApi {
     request.accountAddress = accountAddress
 
     try {
-      const { volumes } = await this.client.GetAccountVolumes(request)
+      const response = await this.client.GetAccountVolumes(request)
 
-      return volumes
+      return DmmGrpcTransformer.accountVolumesResponseToAccountVolumes(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -362,7 +387,11 @@ export class DmmGrpcApi {
     }
 
     try {
-      return await this.client.GetRewardsEligibility(request)
+      const response = await this.client.GetRewardsEligibility(request)
+
+      return DmmGrpcTransformer.rewardsEligibilityResponseToRewardsEligibility(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
