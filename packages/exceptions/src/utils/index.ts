@@ -10,7 +10,7 @@ export const toPascalCase = (str: string): string =>
     .replace(new RegExp(/\w/), (s) => s.toUpperCase())
 
 export const formatNotificationDescription = (description: string) => {
-  const DESCRIPTION_CHARACTER_LIMIT = 60
+  const DESCRIPTION_CHARACTER_LIMIT = 50
 
   if (description.length <= DESCRIPTION_CHARACTER_LIMIT) {
     return {
