@@ -3,7 +3,6 @@ import BaseRestConsumer from '../../BaseRestConsumer'
 import {
   HttpRequestException,
   HttpRequestMethod,
-  IndexerErrorModule,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 

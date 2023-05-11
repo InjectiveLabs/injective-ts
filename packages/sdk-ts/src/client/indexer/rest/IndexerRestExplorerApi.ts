@@ -71,9 +71,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     before?: number
     limit?: number
   }): Promise<{ paging: Paging; blocks: Block[] }> {
+    const endpoint = 'blocks'
+
     try {
       const { before, limit } = params || { limit: 12 }
-      const response = (await this.get('blocks', {
+      const response = (await this.get(endpoint, {
         before,
         limit,
       })) as ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
@@ -101,9 +103,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     before?: number
     limit?: number
   }): Promise<{ paging: Paging; blocks: ExplorerBlockWithTxs[] }> {
+    const endpoint = 'blocks'
+
     try {
       const { before, limit } = params || { limit: 12 }
-      const response = (await this.get('blocks', {
+      const response = (await this.get(endpoint, {
         before,
         limit,
       })) as ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
