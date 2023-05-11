@@ -31,12 +31,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetEpochs',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetEpochs',
         contextModule: this.module,
       })
     }
@@ -55,12 +57,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetMarketRewards',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetMarketRewards',
         contextModule: this.module,
       })
     }
@@ -91,12 +95,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetEligibleAddresses',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetEligibleAddresses',
         contextModule: this.module,
       })
     }
@@ -125,12 +131,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetEpochScores',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetEpochScores',
         contextModule: this.module,
       })
     }
@@ -164,12 +172,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetEpochScoresHistory',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetEpochScoresHistory',
         contextModule: this.module,
       })
     }
@@ -201,12 +211,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetTotalScores',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetTotalScores',
         contextModule: this.module,
       })
     }
@@ -243,12 +255,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetTotalScoresHistory',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetTotalScoresHistory',
         contextModule: this.module,
       })
     }
@@ -285,12 +299,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetLiquiditySnapshots',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetLiquiditySnapshots',
         contextModule: this.module,
       })
     }
@@ -327,12 +343,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetRewardsDistribution',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetRewardsDistribution',
         contextModule: this.module,
       })
     }
@@ -358,12 +376,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetAccountVolumes',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetAccountVolumes',
         contextModule: this.module,
       })
     }
@@ -396,12 +416,14 @@ export class DmmGrpcApi {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'GetRewardsEligibility',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'GetRewardsEligibility',
         contextModule: this.module,
       })
     }
