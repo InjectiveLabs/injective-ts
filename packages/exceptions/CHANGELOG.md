@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.13-beta.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.10.13-beta.5...@injectivelabs/exceptions@1.10.13-beta.6) (2023-05-11)
+
+### Bug Fixes
+
+- char limit ([713d43a](https://github.com/InjectiveLabs/injective-ts/commit/713d43aaa5ba8c915b5cfb5ef016569577a86b48))
+
 ## [1.10.13-beta.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.10.13-beta.4...@injectivelabs/exceptions@1.10.13-beta.5) (2023-05-11)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
