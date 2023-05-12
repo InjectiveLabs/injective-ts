@@ -30,6 +30,7 @@ export enum IndexerErrorModule {
   InsuranceFund = 'indexer-insurance-fund',
   Meta = 'indexer-meta',
   Mito = 'indexer-mito',
+  Dmm = 'dmm',
   Oracle = 'indexer-oracle',
   Portfolio = 'indexer-portfolio',
   Spot = 'indexer-spot',
@@ -37,10 +38,6 @@ export enum IndexerErrorModule {
   ChronosDerivative = 'indexer-chronos-derivative',
   ChronosSpot = 'indexer-chronos-spot',
   ChronosMarkets = 'indexer-chronos-markets',
-}
-
-export enum DmmErrorModule {
-  Dmm = 'dmm',
 }
 
 export enum WalletErrorActionModule {

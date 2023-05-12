@@ -4,11 +4,11 @@ import { DmmGrpcTransformer } from './transformers'
 import {
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
-  DmmErrorModule,
+  IndexerErrorModule,
 } from '@injectivelabs/exceptions'
 
 export class DmmGrpcApi {
-  protected module: string = DmmErrorModule.Dmm
+  protected module: string = IndexerErrorModule.Dmm
   protected client: InjectiveDmmRpc.InjectiveDmmV2RPCClientImpl
   constructor(endpoint: string) {
     this.client = new InjectiveDmmRpc.InjectiveDmmV2RPCClientImpl(

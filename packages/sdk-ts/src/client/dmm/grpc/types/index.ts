@@ -1,7 +1,4 @@
-import { DmmErrorModule } from '@injectivelabs/exceptions'
 import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
-
-export const DmmModule = { ...DmmErrorModule }
 
 export interface DmmPagination {
   from?: number
