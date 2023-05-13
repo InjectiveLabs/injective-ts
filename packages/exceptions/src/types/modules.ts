@@ -30,6 +30,7 @@ export enum IndexerErrorModule {
   InsuranceFund = 'indexer-insurance-fund',
   Meta = 'indexer-meta',
   Mito = 'indexer-mito',
+  Dmm = 'dmm',
   Oracle = 'indexer-oracle',
   Portfolio = 'indexer-portfolio',
   Spot = 'indexer-spot',
