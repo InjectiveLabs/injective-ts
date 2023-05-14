@@ -10,15 +10,17 @@ import { ASSET_PRICE_SERVICE_URL } from '../constants'
 import { CoinPriceFromInjectiveService } from '../types/token'
 
 export class TokenPrice {
-  private coinGeckoApi: CoinGeckoApi
+  private coinGeckoApi: CoinGeckoApi | undefined
 
   private restClient: HttpRestClient
 
   private cache: Record<string, number> = {} // coinGeckoId -> priceInUsd
 
-  constructor(coinGeckoOptions: { baseUrl: string; apiKey: string }) {
+  constructor(coinGeckoOptions?: { baseUrl: string; apiKey: string }) {
     this.restClient = new HttpRestClient(ASSET_PRICE_SERVICE_URL)
-    this.coinGeckoApi = new CoinGeckoApi(coinGeckoOptions)
+    this.coinGeckoApi = coinGeckoOptions
+      ? new CoinGeckoApi(coinGeckoOptions)
+      : undefined
   }
 
   async fetchUsdTokensPrice(coinIds: string[]) {
@@ -184,6 +186,10 @@ export class TokenPrice {
       return 0
     }
 
+    if (!this.coinGeckoApi) {
+      return 0
+    }
+
     try {
       const currentPrice = await this.coinGeckoApi.fetchUsdPrice(coinId)
 
@@ -207,6 +213,10 @@ export class TokenPrice {
 
   async fetchUsdTokenPriceFromCoinGeckoNoThrow(coinId: string) {
     if (!coinId) {
+      return 0
+    }
+
+    if (!this.coinGeckoApi) {
       return 0
     }
 
