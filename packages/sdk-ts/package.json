@@ -37,7 +37,7 @@
     "@cosmjs/stargate": "^0.30.1",
     "@ethersproject/bytes": "^5.7.0",
     "@injectivelabs/core-proto-ts": "^0.0.14",
-    "@injectivelabs/dmm-proto-ts": "1.0.15",
+    "@injectivelabs/dmm-proto-ts": "1.0.16",
     "@injectivelabs/exceptions": "^1.10.13-beta.8",
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
