@@ -12,7 +12,9 @@ export { default as ExecArgIncreaseAllowance } from './exec-args/ExecArgIncrease
 export { default as ExecArgUpdateAMMVaultConfig } from './exec-args/ExecArgUpdateAMMVaultConfig'
 export { default as ExecArgUpdateSpotVaultConfig } from './exec-args/ExecArgUpdateSpotVaultConfig'
 export { default as ExecArgUpdateDerivativeVaultConfig } from './exec-args/ExecArgUpdateDerivativeVaultConfig'
+export { default as ExecArgUpdateStakingContractConfig } from './exec-args/ExecArgUpdateStakingContractConfig'
 export { default as ExecArgCW20AdapterRedeemAndTransfer } from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
+export { default as ExecArgUpdateAllocatorContractConfig } from './exec-args/ExecArgUpdateAllocatorContractConfig'
 
 export { default as MsgStoreCode } from './msgs/MsgStoreCode'
 export { default as MsgUpdateAdmin } from './msgs/MsgUpdateAdmin'
