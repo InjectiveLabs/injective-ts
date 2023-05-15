@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-beta.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.13...@injectivelabs/token-metadata@1.11.0-beta.14) (2023-05-15)
+
+### Bug Fixes
+
+- symbols missmatch ([9d85fbf](https://github.com/InjectiveLabs/injective-ts/commit/9d85fbfd9197b42f3efc04f9911e85a4b38b5404))
+
 # [1.11.0-beta.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.12...@injectivelabs/token-metadata@1.11.0-beta.13) (2023-05-15)
 
 ### Bug Fixes
