@@ -134,7 +134,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.LPTokenPriceChart(request),
       )
 
-      return IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
+      return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
         response,
       )
     } catch (e: unknown) {
@@ -180,7 +180,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.TVLChart(request),
       )
 
-      return IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
+      return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
         response,
       )
     } catch (e: unknown) {
@@ -232,7 +232,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         () => this.client.VaultsByHolderAddress(request),
       )
 
-      return IndexerGrpcMitoTransformer.VaultsByHolderAddressResponseToVaultsByHolderAddress(
+      return IndexerGrpcMitoTransformer.vaultsByHolderAddressResponseToVaultsByHolderAddress(
         response,
       )
     } catch (e: unknown) {
@@ -278,7 +278,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.LPHolders(request),
       )
 
-      return IndexerGrpcMitoTransformer.LPHoldersResponseToLPHolders(response)
+      return IndexerGrpcMitoTransformer.lpHoldersResponseToLPHolders(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -306,7 +306,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.Portfolio(request),
       )
 
-      return IndexerGrpcMitoTransformer.PortfolioResponseToPortfolio(response)
+      return IndexerGrpcMitoTransformer.portfolioResponseToPortfolio(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -336,7 +336,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.Leaderboard(request),
       )
 
-      return IndexerGrpcMitoTransformer.LeaderboardResponseToLeaderboard(
+      return IndexerGrpcMitoTransformer.leaderboardResponseToLeaderboard(
         response,
       )
     } catch (e: unknown) {
@@ -396,7 +396,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.TransfersHistory(request),
       )
 
-      return IndexerGrpcMitoTransformer.TransferHistoryResponseToTransfer(
+      return IndexerGrpcMitoTransformer.transferHistoryResponseToTransfer(
         response,
       )
     } catch (e: unknown) {
@@ -444,7 +444,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.LeaderboardEpochs(request),
       )
 
-      return IndexerGrpcMitoTransformer.LeaderboardEpochsResponseToLeaderboardEpochs(
+      return IndexerGrpcMitoTransformer.leaderboardEpochsResponseToLeaderboardEpochs(
         response,
       )
     } catch (e: unknown) {
@@ -459,6 +459,116 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'LeaderboardEpochs',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchStakingPools(staker?: string) {
+    const request = MitoApi.GetStakingPoolsRequest.create()
+
+    if (staker) {
+      request.staker = staker
+    }
+
+    try {
+      const response = await this.retry<MitoApi.GetStakingPoolsResponse>(() =>
+        this.client.GetStakingPools(request),
+      )
+
+      return IndexerGrpcMitoTransformer.stakingPoolsResponseToStakingPools(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetStakingPools',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetStakingPools',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchStakingHistory({
+    staker,
+    toNumber,
+    fromNumber,
+  }: {
+    staker?: string
+    toNumber?: number
+    fromNumber?: number
+  } = {}) {
+    const request = MitoApi.StakingHistoryRequest.create()
+
+    if (staker) {
+      request.staker = staker
+    }
+
+    if (fromNumber) {
+      request.fromNumber = fromNumber
+    }
+
+    if (toNumber) {
+      request.toNumber = toNumber
+    }
+
+    try {
+      const response = await this.retry<MitoApi.StakingHistoryResponse>(() =>
+        this.client.StakingHistory(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoStakingHistoryResponseTpStakingHistory(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'StakingHistory',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'StakingHistory',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchStakingRewardsByAccount({ staker }: { staker: string }) {
+    const request = MitoApi.StakingRewardByAccountRequest.create()
+
+    request.staker = staker
+
+    try {
+      const response = await this.retry<MitoApi.StakingRewardByAccountResponse>(
+        () => this.client.StakingRewardByAccount(request),
+      )
+
+      return IndexerGrpcMitoTransformer.stakingRewardByAccountResponseToStakingRewardByAccount(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'StakingHistory',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'StakingHistory',
         contextModule: this.module,
       })
     }

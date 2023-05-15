@@ -12,7 +12,9 @@ import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgUpdateAMMVaultConfig from './exec-args/ExecArgUpdateAMMVaultConfig'
 import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
 import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
+import ExecArgUpdateStakingContractConfig from './exec-args/ExecArgUpdateStakingContractConfig'
 import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
+import ExecArgUpdateAllocatorContractConfig from './exec-args/ExecArgUpdateAllocatorContractConfig'
 
 import ExecPrivilegedArgVaultRedeem from './exec-priv-args/ExecPrivilegedArgVaultRedeem'
 import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgVaultSubscribe'
@@ -32,7 +34,9 @@ export type ExecArgs =
   | ExecArgUpdateAMMVaultConfig
   | ExecArgUpdateSpotVaultConfig
   | ExecArgUpdateDerivativeVaultConfig
+  | ExecArgUpdateStakingContractConfig
   | ExecArgCW20AdapterRedeemAndTransfer
+  | ExecArgUpdateAllocatorContractConfig
 
 export type ExecPrivilegedArgs =
   | ExecPrivilegedArgVaultRedeem

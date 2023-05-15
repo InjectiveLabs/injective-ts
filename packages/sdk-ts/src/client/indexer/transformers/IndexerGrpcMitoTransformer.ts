@@ -101,10 +101,13 @@ export class IndexerGrpcMitoTransformer {
         ),
       masterContractAddress: vault.masterContractAddress,
       totalLpAmount: vault.totalLpAmount,
+      slug: vault.slug,
+      createdAt: parseInt(vault.createdAt, 10),
       notionalValueCap: vault.notionalValueCap,
       tvlChanges: IndexerGrpcMitoTransformer.changesResponseToChanges(
         vault.tvlChanges,
       ),
+      apy: vault.apy,
     }
   }
 
@@ -117,63 +120,7 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static vaultResponseToVault(response: MitoApi.GetVaultResponse): MitoVault {
-    const [vault] = response.vault
-
-    return IndexerGrpcMitoTransformer.mitoVaultToVault(vault)
-  }
-
-  static vaultsResponseToVaults(response: MitoApi.GetVaultsResponse): {
-    vaults: MitoVault[]
-    pagination?: MitoPagination
-  } {
-    return {
-      vaults: response.vaults.map(IndexerGrpcMitoTransformer.mitoVaultToVault),
-      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
-        response.pagination,
-      ),
-    }
-  }
-
-  static LPTokenPriceChartResponseToLPTokenPriceChart(
-    response: MitoApi.LPTokenPriceChartResponse,
-  ): MitoPriceSnapshot[] {
-    return response.prices.map(
-      IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
-    )
-  }
-
-  static VaultsByHolderAddressResponseToVaultsByHolderAddress(
-    response: MitoApi.VaultsByHolderAddressResponse,
-  ): MitoSubscription[] {
-    return response.subscriptions.map((subscription) => {
-      const vaultInfo = subscription.vaultInfo
-        ? IndexerGrpcMitoTransformer.mitoVaultToVault(subscription.vaultInfo)
-        : undefined
-
-      return {
-        vaultInfo,
-        lpAmount: subscription.lpAmount,
-        lpAmountPercentage: subscription.lpAmountPercentage,
-        holderAddress: subscription.holderAddress,
-      }
-    })
-  }
-
-  static LPHoldersResponseToLPHolders(
-    response: MitoApi.LPHoldersResponse,
-  ): MitoHolders[] {
-    return response.holders.map((holder) => ({
-      holderAddress: holder.holderAddress,
-      vaultAddress: holder.vaultAddress,
-      amount: holder.amount,
-      updatedAt: parseInt(holder.updatedAt, 10),
-      lpAmountPercentage: holder.lpAmountPercentage,
-      redemptionLockTime: holder.redemptionLockTime,
-    }))
-  }
-
-  static PortfolioResponseToPortfolio(
+  static portfolioResponseToPortfolio(
     portfolio: MitoApi.PortfolioResponse,
   ): MitoPortfolio {
     return {
@@ -188,7 +135,7 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static LeaderboardResponseToLeaderboard(
+  static leaderboardResponseToLeaderboard(
     leaderboard: MitoApi.LeaderboardResponse,
   ): MitoLeaderboard {
     return {
@@ -219,7 +166,138 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static TransferHistoryResponseToTransfer(
+  static mitoLeaderboardEpochToLeaderboardEpoch(
+    leaderboardEpoch: MitoApi.LeaderboardEpoch,
+  ): MitoLeaderboardEpoch {
+    return {
+      epochId: leaderboardEpoch.epochId,
+      startAt: parseInt(leaderboardEpoch.startAt, 10),
+      endAt: parseInt(leaderboardEpoch.endAt, 10),
+      isLive: leaderboardEpoch.isLive,
+    }
+  }
+
+  static mitoStakingRewardToStakingReward(
+    stakingReward: MitoApi.StakingReward,
+  ) {
+    return {
+      vaultName: stakingReward.vaultName,
+      vaultAddress: stakingReward.vaultAddress,
+      stakedAmount: stakingReward.stakedAmount
+        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(stakingReward.stakedAmount)
+        : undefined,
+      apr: stakingReward.apr,
+      claimableRewards: stakingReward.claimableRewards.map(
+        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+      ),
+      lockTimestamp: parseInt(stakingReward.lockTimestamp, 10),
+      lockedAmount: stakingReward.lockedAmount
+        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(stakingReward.lockedAmount)
+        : undefined,
+    }
+  }
+
+  static mitoGaugeToGauge(gauge: MitoApi.Gauge) {
+    return {
+      id: gauge.id,
+      owner: gauge.owner,
+      startTimestamp: parseInt(gauge.startTimestamp, 10),
+      endTimestamp: parseInt(gauge.endTimestamp, 10),
+      rewardTokens: gauge.rewardTokens.map(
+        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+      ),
+      lastDistribution: gauge.lastDistribution,
+    }
+  }
+
+  static mitoStakingPoolToStakingPool(stakingPool: MitoApi.StakingPool) {
+    return {
+      vaultName: stakingPool.vaultName,
+      vaultAddress: stakingPool.vaultAddress,
+      stakeDenom: stakingPool.stakeDenom,
+      gauges: stakingPool.gauges.map(
+        IndexerGrpcMitoTransformer.mitoGaugeToGauge,
+      ),
+      apy: stakingPool.apy,
+      totalLiquidity: stakingPool.totalLiquidity,
+      stakingAddress: stakingPool.stakingAddress,
+    }
+  }
+
+  static mitoStakingActivityTpStakingActivity(
+    stakingActivity: MitoApi.StakingActivity,
+  ) {
+    return {
+      stakeAmount: stakingActivity.stakeAmount
+        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(stakingActivity.stakeAmount)
+        : undefined,
+      vaultAddress: stakingActivity.vaultAddress,
+      action: stakingActivity.action,
+      txHash: stakingActivity.txHash,
+      rewardedTokens: stakingActivity.rewardedTokens.map(
+        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+      ),
+      timestamp: parseInt(stakingActivity.timestamp, 10),
+    }
+  }
+
+  static vaultResponseToVault(response: MitoApi.GetVaultResponse): MitoVault {
+    const [vault] = response.vault
+
+    return IndexerGrpcMitoTransformer.mitoVaultToVault(vault)
+  }
+
+  static vaultsResponseToVaults(response: MitoApi.GetVaultsResponse): {
+    vaults: MitoVault[]
+    pagination?: MitoPagination
+  } {
+    return {
+      vaults: response.vaults.map(IndexerGrpcMitoTransformer.mitoVaultToVault),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
+  }
+
+  static lpTokenPriceChartResponseToLPTokenPriceChart(
+    response: MitoApi.LPTokenPriceChartResponse,
+  ): MitoPriceSnapshot[] {
+    return response.prices.map(
+      IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
+    )
+  }
+
+  static vaultsByHolderAddressResponseToVaultsByHolderAddress(
+    response: MitoApi.VaultsByHolderAddressResponse,
+  ): MitoSubscription[] {
+    return response.subscriptions.map((subscription) => {
+      const vaultInfo = subscription.vaultInfo
+        ? IndexerGrpcMitoTransformer.mitoVaultToVault(subscription.vaultInfo)
+        : undefined
+
+      return {
+        vaultInfo,
+        lpAmount: subscription.lpAmount,
+        lpAmountPercentage: subscription.lpAmountPercentage,
+        holderAddress: subscription.holderAddress,
+      }
+    })
+  }
+
+  static lpHoldersResponseToLPHolders(
+    response: MitoApi.LPHoldersResponse,
+  ): MitoHolders[] {
+    return response.holders.map((holder) => ({
+      holderAddress: holder.holderAddress,
+      vaultAddress: holder.vaultAddress,
+      amount: holder.amount,
+      updatedAt: parseInt(holder.updatedAt, 10),
+      lpAmountPercentage: holder.lpAmountPercentage,
+      redemptionLockTime: holder.redemptionLockTime,
+    }))
+  }
+
+  static transferHistoryResponseToTransfer(
     response: MitoApi.TransfersHistoryResponse,
   ) {
     return {
@@ -232,23 +310,51 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoLeaderboardEpochToLeaderboardEpoch(
-    leaderboardEpoch: MitoApi.LeaderboardEpoch,
-  ): MitoLeaderboardEpoch {
-    return {
-      epochId: leaderboardEpoch.epochId,
-      startAt: parseInt(leaderboardEpoch.startAt, 10),
-      endAt: parseInt(leaderboardEpoch.endAt, 10),
-      isLive: leaderboardEpoch.isLive,
-    }
-  }
-
-  static LeaderboardEpochsResponseToLeaderboardEpochs(
+  static leaderboardEpochsResponseToLeaderboardEpochs(
     response: MitoApi.LeaderboardEpochsResponse,
   ) {
     return {
       epochs: response.epochs.map(
         IndexerGrpcMitoTransformer.mitoLeaderboardEpochToLeaderboardEpoch,
+      ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
+  }
+
+  static stakingPoolsResponseToStakingPools(
+    response: MitoApi.GetStakingPoolsResponse,
+  ) {
+    return {
+      pools: response.pools.map(
+        IndexerGrpcMitoTransformer.mitoStakingPoolToStakingPool,
+      ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
+  }
+
+  static stakingRewardByAccountResponseToStakingRewardByAccount(
+    response: MitoApi.StakingRewardByAccountResponse,
+  ) {
+    return {
+      rewards: response.rewards.map(
+        IndexerGrpcMitoTransformer.mitoStakingRewardToStakingReward,
+      ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
+  }
+
+  static mitoStakingHistoryResponseTpStakingHistory(
+    response: MitoApi.StakingHistoryResponse,
+  ) {
+    return {
+      activities: response.activities.map(
+        IndexerGrpcMitoTransformer.mitoStakingActivityTpStakingActivity,
       ),
       pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
         response.pagination,
