@@ -1394,7 +1394,7 @@ export default {
 
   '1000PEPE': {
     name: 'Pepe',
-    symbol: '1000PEPE',
+    symbol: 'PEPE',
     decimals: 18,
     logo: 'pepe.jpeg',
     coinGeckoId: 'pepe',

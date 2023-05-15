@@ -4,12 +4,13 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, token) => {
       const tokenMeta = tokens[token]
+      const symbol = tokenMeta.symbol === token ? tokenMeta.symbol : token
 
       if (tokenMeta.ibc && tokenMeta.ibc.baseDenom) {
         return {
           ...result,
           [tokenMeta.ibc.baseDenom.toUpperCase()]: tokenMeta,
-          [tokenMeta.symbol.toUpperCase()]: tokenMeta,
+          [symbol.toUpperCase()]: tokenMeta,
         }
       }
 
@@ -17,7 +18,7 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
         return {
           ...result,
           [tokenMeta.cw20.address.toUpperCase()]: tokenMeta,
-          [tokenMeta.symbol.toUpperCase()]: tokenMeta,
+          [symbol.toUpperCase()]: tokenMeta,
         }
       }
 
@@ -25,7 +26,7 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
         return {
           ...result,
           [tokenMeta.spl.address.toUpperCase()]: tokenMeta,
-          [tokenMeta.symbol.toUpperCase()]: tokenMeta,
+          [symbol.toUpperCase()]: tokenMeta,
         }
       }
 
@@ -41,13 +42,13 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
         return {
           ...result,
           ...cw20Maps,
-          [tokenMeta.symbol.toUpperCase()]: tokenMeta,
+          [symbol.toUpperCase()]: tokenMeta,
         }
       }
 
       return {
         ...result,
-        [tokenMeta.symbol.toUpperCase()]: tokenMeta,
+        [symbol.toUpperCase()]: tokenMeta,
       }
     },
     {},
