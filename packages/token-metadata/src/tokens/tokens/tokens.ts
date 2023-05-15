@@ -1392,6 +1392,20 @@ export default {
     },
   },
 
+  '1000PEPE': {
+    name: 'Pepe',
+    symbol: 'PEPE',
+    decimals: 18,
+    logo: 'pepe.jpeg',
+    coinGeckoId: 'pepe',
+
+    erc20: {
+      decimals: 18,
+      address: '0x6982508145454ce325ddbe47a25d4ec3d2311933',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
   PEPE: {
     name: 'Pepe',
     symbol: 'PEPE',
