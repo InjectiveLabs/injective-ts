@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/bridge-ts",
   "description": "Bridge utilities and abstractions in TypeScript to be used in Injective products",
-  "version": "1.10.73-beta.15",
+  "version": "1.10.73-beta.16",
   "sideEffects": false,
   "author": {
     "name": "Bojan Angjelkoski",
@@ -34,7 +34,7 @@
     "@axelar-network/axelarjs-sdk": "^0.11.7",
     "@injectivelabs/exceptions": "^1.10.13-beta.8",
     "@injectivelabs/networks": "^1.10.13-beta.8",
-    "@injectivelabs/sdk-ts": "^1.10.73-beta.15",
+    "@injectivelabs/sdk-ts": "^1.10.73-beta.16",
     "@injectivelabs/ts-types": "^1.10.13-beta.3",
     "@injectivelabs/utils": "^1.10.13-beta.8",
     "@injectivelabs/wormhole-sdk": "^1.10.0",
