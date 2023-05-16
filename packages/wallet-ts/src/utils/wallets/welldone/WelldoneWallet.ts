@@ -52,15 +52,15 @@ export class WelldoneWallet {
   public async broadcastTx(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<string> {
     const welldone = await this.getWelldoneWallet()
     try {
-      const { txhash } = await welldone.request(this.chainName, {
-        method: 'dapp:sendSignedTransaction',
-        params: [
-          `0x${Buffer.from(
-            CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-          ).toString('hex')}`,
-        ],
-      })
-      return txhash
+        const {hash} = await welldone.request(this.chainName, {
+          method: 'dapp:sendSignedTransaction',
+          params: [
+            `0x${Buffer.from(
+              CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
+            ).toString('hex')}`,
+          ],
+        })
+        return hash
     } catch (e) {
       throw new CosmosWalletException(new Error((e as any).message), {
         context: 'WELLDONE',
@@ -75,11 +75,25 @@ export class WelldoneWallet {
     return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
   }
 
+  private changePubKeyType (authInfoBytes: Uint8Array) {
+    const authInfo = CosmosTxV1Beta1Tx.AuthInfo.decode(authInfoBytes)
+    authInfo.signerInfos.forEach((signerInfo) => {
+      if (signerInfo.publicKey) {
+        signerInfo.publicKey.typeUrl = '/cosmos.crypto.secp256k1.PubKey'
+      }
+    })
+
+    return CosmosTxV1Beta1Tx.AuthInfo.encode(authInfo).finish()
+  }
+
   public async signTransaction(
     signDoc: Omit<CosmosTxV1Beta1Tx.SignDoc, 'accountNumber'> & {
       accountNumber: Long
     },
   ): Promise<DirectSignResponse> {
+    const authInfoBytes = this.changePubKeyType(signDoc.authInfoBytes)
+    signDoc.authInfoBytes = authInfoBytes
+
     const welldone = await this.getWelldoneWallet()
     try {
       const signBytes = makeSignBytes(signDoc)
@@ -137,19 +151,10 @@ export class WelldoneWallet {
   private async checkNetwork() {
     const welldone = this.getWelldone()
     try {
-      if (this.chainName !== 'injective') {
-        const { node_info } = await welldone.request(this.chainName, {
-          method: 'status',
-        })
-        if (node_info.network === this.chainId) return true
-      } else {
-        const { injective } = await welldone.networks
-        const network =
-          injective.chain === 'injective' ? ChainId.Mainnet : ChainId.Testnet
-        if (network === this.chainId) {
-          return true
-        }
-      }
+      const { node_info } = await welldone.request(this.chainName, {
+        method: 'status',
+      })
+      if (node_info.network === this.chainId) return true
     } catch (e) {
       throw new CosmosWalletException(new Error((e as any).message), {
         context: 'WELLDONE',
