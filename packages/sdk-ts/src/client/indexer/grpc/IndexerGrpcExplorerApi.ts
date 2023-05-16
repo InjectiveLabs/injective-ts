@@ -1,23 +1,25 @@
-import { IndexerGrpcExplorerTransformer } from '../transformers'
-import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { IndexerModule } from '../types'
+import { IndexerGrpcExplorerTransformer } from '../transformers'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcExplorerApi {
+export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Explorer
 
   protected client: InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -68,7 +70,10 @@ export class IndexerGrpcExplorerApi {
     }
 
     try {
-      const response = await this.client.GetAccountTxs(request)
+      const response =
+        await this.retry<InjectiveExplorerRpc.GetAccountTxsResponse>(() =>
+          this.client.GetAccountTxs(request),
+        )
 
       return IndexerGrpcExplorerTransformer.getAccountTxsResponseToAccountTxs(
         response,
@@ -96,7 +101,10 @@ export class IndexerGrpcExplorerApi {
     request.address = validatorAddress
 
     try {
-      const response = await this.client.GetValidator(request)
+      const response =
+        await this.retry<InjectiveExplorerRpc.GetValidatorResponse>(() =>
+          this.client.GetValidator(request),
+        )
 
       return IndexerGrpcExplorerTransformer.validatorResponseToValidator(
         response,
@@ -124,7 +132,10 @@ export class IndexerGrpcExplorerApi {
     request.address = validatorAddress
 
     try {
-      const response = await this.client.GetValidatorUptime(request)
+      const response =
+        await this.retry<InjectiveExplorerRpc.GetValidatorUptimeResponse>(() =>
+          this.client.GetValidatorUptime(request),
+        )
 
       return IndexerGrpcExplorerTransformer.getValidatorUptimeResponseToValidatorUptime(
         response,
@@ -176,7 +187,10 @@ export class IndexerGrpcExplorerApi {
     }
 
     try {
-      const response = await this.client.GetPeggyDepositTxs(request)
+      const response =
+        await this.retry<InjectiveExplorerRpc.GetPeggyDepositTxsResponse>(() =>
+          this.client.GetPeggyDepositTxs(request),
+        )
 
       return IndexerGrpcExplorerTransformer.getPeggyDepositTxsResponseToPeggyDepositTxs(
         response,
@@ -228,7 +242,10 @@ export class IndexerGrpcExplorerApi {
     }
 
     try {
-      const response = await this.client.GetPeggyWithdrawalTxs(request)
+      const response =
+        await this.retry<InjectiveExplorerRpc.GetPeggyWithdrawalTxsResponse>(
+          () => this.client.GetPeggyWithdrawalTxs(request),
+        )
 
       return IndexerGrpcExplorerTransformer.getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
         response,
@@ -274,7 +291,9 @@ export class IndexerGrpcExplorerApi {
     }
 
     try {
-      const response = await this.client.GetBlocks(request)
+      const response = await this.retry<InjectiveExplorerRpc.GetBlocksResponse>(
+        () => this.client.GetBlocks(request),
+      )
 
       return response
     } catch (e: unknown) {
@@ -300,7 +319,9 @@ export class IndexerGrpcExplorerApi {
     request.id = id
 
     try {
-      const response = await this.client.GetBlock(request)
+      const response = await this.retry<InjectiveExplorerRpc.GetBlockResponse>(
+        () => this.client.GetBlock(request),
+      )
 
       return response
     } catch (e: unknown) {
@@ -362,7 +383,9 @@ export class IndexerGrpcExplorerApi {
     }
 
     try {
-      const response = await this.client.GetTxs(request)
+      const response = await this.retry<InjectiveExplorerRpc.GetTxsResponse>(
+        () => this.client.GetTxs(request),
+      )
 
       return response
     } catch (e: unknown) {
@@ -436,7 +459,10 @@ export class IndexerGrpcExplorerApi {
     }
 
     try {
-      const response = await this.client.GetIBCTransferTxs(request)
+      const response =
+        await this.retry<InjectiveExplorerRpc.GetIBCTransferTxsResponse>(() =>
+          this.client.GetIBCTransferTxs(request),
+        )
 
       return IndexerGrpcExplorerTransformer.getIBCTransferTxsResponseToIBCTransferTxs(
         response,

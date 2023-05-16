@@ -18,10 +18,12 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
     const path = `market_summary`
 
     try {
-      const { data } = (await this.get(path, {
-        marketId,
-        resolution: '24h',
-      })) as ChronosSpotMarketSummaryResponse
+      const { data } = await this.retry<ChronosSpotMarketSummaryResponse>(() =>
+        this.get(path, {
+          marketId,
+          resolution: '24h',
+        }),
+      )
 
       return data
     } catch (e: unknown) {
@@ -42,9 +44,11 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
     const path = `market_summary_all`
 
     try {
-      const { data } = (await this.get(path, {
-        resolution: '24h',
-      })) as AllSpotMarketSummaryResponse
+      const { data } = await this.retry<AllSpotMarketSummaryResponse>(() =>
+        this.get(path, {
+          resolution: '24h',
+        }),
+      )
 
       return data
     } catch (e: unknown) {

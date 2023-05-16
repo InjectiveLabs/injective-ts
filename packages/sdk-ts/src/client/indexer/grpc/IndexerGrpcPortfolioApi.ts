@@ -1,23 +1,25 @@
-import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
-import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { IndexerModule } from '../types'
+import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountPortfolioApi {
+export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Portfolio
 
   protected client: InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -27,7 +29,10 @@ export class IndexerGrpcAccountPortfolioApi {
     request.accountAddress = address
 
     try {
-      const response = await this.client.AccountPortfolio(request)
+      const response =
+        await this.retry<InjectivePortfolioRpc.AccountPortfolioResponse>(() =>
+          this.client.AccountPortfolio(request),
+        )
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio(
         response,

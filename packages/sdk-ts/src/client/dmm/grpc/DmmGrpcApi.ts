@@ -1,18 +1,21 @@
-import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
-import { getGrpcDmmWebImpl } from '../../BaseGrpcDmmWebConsumer'
-import { DmmGrpcTransformer } from './transformers'
 import {
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
   IndexerErrorModule,
 } from '@injectivelabs/exceptions'
+import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { DmmGrpcTransformer } from './transformers'
 
-export class DmmGrpcApi {
+export class DmmGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.Dmm
   protected client: InjectiveDmmRpc.InjectiveDmmV2RPCClientImpl
+
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectiveDmmRpc.InjectiveDmmV2RPCClientImpl(
-      getGrpcDmmWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -24,7 +27,9 @@ export class DmmGrpcApi {
     }
 
     try {
-      const response = await this.client.GetEpochs(request)
+      const response = await this.retry<InjectiveDmmRpc.GetEpochsResponse>(() =>
+        this.client.GetEpochs(request),
+      )
 
       return DmmGrpcTransformer.epochsResponseToEpochs(response)
     } catch (e: unknown) {
@@ -50,7 +55,10 @@ export class DmmGrpcApi {
     request.epochId = epochId.toString()
 
     try {
-      const response = await this.client.GetMarketRewards(request)
+      const response =
+        await this.retry<InjectiveDmmRpc.GetMarketRewardsResponse>(() =>
+          this.client.GetMarketRewards(request),
+        )
 
       return DmmGrpcTransformer.marketRewardsResponseToMarketRewards(response)
     } catch (e: unknown) {
@@ -86,7 +94,10 @@ export class DmmGrpcApi {
     }
 
     try {
-      const response = await this.client.GetEligibleAddresses(request)
+      const response =
+        await this.retry<InjectiveDmmRpc.GetEligibleAddressesResponse>(() =>
+          this.client.GetEligibleAddresses(request),
+        )
 
       return DmmGrpcTransformer.eligibleAddressesResponseToEligibleAddresses(
         response,
@@ -124,7 +135,9 @@ export class DmmGrpcApi {
     }
 
     try {
-      const response = await this.client.GetEpochScores(request)
+      const response = await this.retry<InjectiveDmmRpc.GetEpochScoresResponse>(
+        () => this.client.GetEpochScores(request),
+      )
 
       return DmmGrpcTransformer.epochScoresResponseToEpochScores(response)
     } catch (e: unknown) {
@@ -163,7 +176,10 @@ export class DmmGrpcApi {
     }
 
     try {
-      const response = await this.client.GetEpochScoresHistory(request)
+      const response =
+        await this.retry<InjectiveDmmRpc.GetEpochScoresHistoryResponse>(() =>
+          this.client.GetEpochScoresHistory(request),
+        )
 
       return DmmGrpcTransformer.epochScoresHistoryResponseToEpochScoresHistory(
         response,
@@ -204,7 +220,9 @@ export class DmmGrpcApi {
     }
 
     try {
-      const response = await this.client.GetTotalScores(request)
+      const response = await this.retry<InjectiveDmmRpc.GetTotalScoresResponse>(
+        () => this.client.GetTotalScores(request),
+      )
 
       return DmmGrpcTransformer.totalScoresResponseToTotalScores(response)
     } catch (e: unknown) {
@@ -246,7 +264,10 @@ export class DmmGrpcApi {
     }
 
     try {
-      const response = await this.client.GetTotalScoresHistory(request)
+      const response =
+        await this.retry<InjectiveDmmRpc.GetTotalScoresHistoryResponse>(() =>
+          this.client.GetTotalScoresHistory(request),
+        )
 
       return DmmGrpcTransformer.totalScoresHistoryResponseToTotalScoresHistory(
         response,
@@ -290,7 +311,10 @@ export class DmmGrpcApi {
     }
 
     try {
-      const response = await this.client.GetLiquiditySnapshots(request)
+      const response =
+        await this.retry<InjectiveDmmRpc.GetLiquiditySnapshotsResponse>(() =>
+          this.client.GetLiquiditySnapshots(request),
+        )
 
       return DmmGrpcTransformer.liquiditySnapshotsResponseToLiquiditySnapshots(
         response,
@@ -334,7 +358,10 @@ export class DmmGrpcApi {
     }
 
     try {
-      const response = await this.client.GetRewardsDistribution(request)
+      const response =
+        await this.retry<InjectiveDmmRpc.GetRewardsDistributionResponse>(() =>
+          this.client.GetRewardsDistribution(request),
+        )
 
       return DmmGrpcTransformer.rewardsDistributionResponseToRewardsDistribution(
         response,
@@ -369,7 +396,10 @@ export class DmmGrpcApi {
     request.accountAddress = accountAddress
 
     try {
-      const response = await this.client.GetAccountVolumes(request)
+      const response =
+        await this.retry<InjectiveDmmRpc.GetAccountVolumesResponse>(() =>
+          this.client.GetAccountVolumes(request),
+        )
 
       return DmmGrpcTransformer.accountVolumesResponseToAccountVolumes(response)
     } catch (e: unknown) {
@@ -407,7 +437,10 @@ export class DmmGrpcApi {
     }
 
     try {
-      const response = await this.client.GetRewardsEligibility(request)
+      const response =
+        await this.retry<InjectiveDmmRpc.GetRewardsEligibilityResponse>(() =>
+          this.client.GetRewardsEligibility(request),
+        )
 
       return DmmGrpcTransformer.rewardsEligibilityResponseToRewardsEligibility(
         response,

@@ -1,32 +1,33 @@
 import {
-  TradeExecutionSide,
-  TradeDirection,
-  TradeExecutionType,
-} from '../../../types/exchange'
-import { PaginationOption } from '../../../types/pagination'
-import { OrderSide, OrderState } from '@injectivelabs/ts-types'
-import { IndexerGrpcSpotTransformer } from '../transformers'
-import { IndexerModule } from '../types'
-import {
   GeneralException,
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import {
+  TradeExecutionSide,
+  TradeDirection,
+  TradeExecutionType,
+} from '../../../types/exchange'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { IndexerModule } from '../types'
+import { PaginationOption } from '../../../types/pagination'
+import { IndexerGrpcSpotTransformer } from '../transformers'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcSpotApi {
+export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Spot
 
   protected client: InjectiveSpotExchangeRpc.InjectiveSpotExchangeRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
     this.client =
       new InjectiveSpotExchangeRpc.InjectiveSpotExchangeRPCClientImpl(
-        getGrpcIndexerWebImpl(endpoint),
+        this.getGrpcWebImpl(endpoint),
       )
   }
 
@@ -51,7 +52,10 @@ export class IndexerGrpcSpotApi {
     }
 
     try {
-      const response = await this.client.Markets(request)
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.MarketsResponse>(() =>
+          this.client.Markets(request),
+        )
 
       return IndexerGrpcSpotTransformer.marketsResponseToMarkets(response)
     } catch (e: unknown) {
@@ -77,7 +81,10 @@ export class IndexerGrpcSpotApi {
     request.marketId = marketId
 
     try {
-      const response = await this.client.Market(request)
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.MarketResponse>(() =>
+          this.client.Market(request),
+        )
 
       return IndexerGrpcSpotTransformer.marketResponseToMarket(response)
     } catch (e: unknown) {
@@ -151,7 +158,10 @@ export class IndexerGrpcSpotApi {
     }
 
     try {
-      const response = await this.client.Orders(request)
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.OrdersResponse>(() =>
+          this.client.Orders(request),
+        )
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
@@ -244,7 +254,10 @@ export class IndexerGrpcSpotApi {
     }
 
     try {
-      const response = await this.client.OrdersHistory(request)
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.OrdersHistoryResponse>(() =>
+          this.client.OrdersHistory(request),
+        )
 
       return IndexerGrpcSpotTransformer.orderHistoryResponseToOrderHistory(
         response,
@@ -350,7 +363,10 @@ export class IndexerGrpcSpotApi {
     }
 
     try {
-      const response = await this.client.Trades(request)
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.TradesResponse>(() =>
+          this.client.Trades(request),
+        )
 
       return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
     } catch (e: unknown) {
@@ -398,7 +414,10 @@ export class IndexerGrpcSpotApi {
     }
 
     try {
-      const response = await this.client.SubaccountOrdersList(request)
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.SubaccountOrdersListResponse>(
+          () => this.client.SubaccountOrdersList(request),
+        )
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
@@ -457,7 +476,10 @@ export class IndexerGrpcSpotApi {
     }
 
     try {
-      const response = await this.client.SubaccountTradesList(request)
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.SubaccountTradesListResponse>(
+          () => this.client.SubaccountTradesList(request),
+        )
 
       return IndexerGrpcSpotTransformer.subaccountTradesListResponseToTradesList(
         response,
@@ -492,7 +514,10 @@ export class IndexerGrpcSpotApi {
     }
 
     try {
-      const response = await this.client.OrderbooksV2(request)
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.OrderbooksV2Response>(() =>
+          this.client.OrderbooksV2(request),
+        )
 
       return IndexerGrpcSpotTransformer.orderbooksV2ResponseToOrderbooksV2(
         response,
@@ -520,7 +545,10 @@ export class IndexerGrpcSpotApi {
     request.marketId = marketId
 
     try {
-      const response = await this.client.OrderbookV2(request)
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.OrderbookV2Response>(() =>
+          this.client.OrderbookV2(request),
+        )
 
       return IndexerGrpcSpotTransformer.orderbookV2ResponseToOrderbookV2(
         response,

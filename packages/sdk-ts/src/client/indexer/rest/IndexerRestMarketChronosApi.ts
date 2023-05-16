@@ -33,9 +33,9 @@ export class IndexerRestMarketChronosApi extends BaseRestConsumer {
     const pathWithParams = `${path}?${stringifiedParams}`
 
     try {
-      const { data } = (await this.get(
-        pathWithParams,
-      )) as ChronosMarketHistoryResponse
+      const { data } = await this.retry<ChronosMarketHistoryResponse>(() =>
+        this.get(pathWithParams),
+      )
 
       return data
     } catch (e: unknown) {

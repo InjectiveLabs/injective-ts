@@ -18,10 +18,13 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
     const path = `market_summary`
 
     try {
-      const { data } = (await this.get(path, {
-        marketId,
-        resolution: '24h',
-      })) as ChronosDerivativeMarketSummaryResponse
+      const { data } = await this.retry<ChronosDerivativeMarketSummaryResponse>(
+        () =>
+          this.get(path, {
+            marketId,
+            resolution: '24h',
+          }),
+      )
 
       return data
     } catch (e: unknown) {
@@ -42,9 +45,12 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
     const path = `market_summary_all`
 
     try {
-      const { data } = (await this.get(path, {
-        resolution: '24h',
-      })) as AllDerivativeMarketSummaryResponse
+      const { data } = await this.retry<AllDerivativeMarketSummaryResponse>(
+        () =>
+          this.get(path, {
+            resolution: '24h',
+          }),
+      )
 
       return data
     } catch (e: unknown) {

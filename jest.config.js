@@ -26,7 +26,7 @@ const directoryPaths = Object.keys(compilerOptions.paths).reduce(
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
-  testTimeout: 15000,
+  testTimeout: 30000,
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 

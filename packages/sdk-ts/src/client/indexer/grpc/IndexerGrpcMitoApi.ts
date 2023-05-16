@@ -1,23 +1,25 @@
-import { IndexerGrpcMitoTransformer } from '../transformers'
-import { IndexerModule } from '../types'
 import {
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
+import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { IndexerModule } from '../types'
+import { IndexerGrpcMitoTransformer } from '../transformers'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcMitoApi {
+export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Mito
 
   protected client: MitoApi.MitoAPIClientImpl
 
   constructor(endpoint: string) {
-    this.client = new MitoApi.MitoAPIClientImpl(getGrpcIndexerWebImpl(endpoint))
+    super(endpoint)
+
+    this.client = new MitoApi.MitoAPIClientImpl(this.getGrpcWebImpl(endpoint))
   }
 
   async fetchVault({
@@ -38,7 +40,9 @@ export class IndexerGrpcMitoApi {
     }
 
     try {
-      const response = await this.client.GetVault(request)
+      const response = await this.retry<MitoApi.GetVaultResponse>(() =>
+        this.client.GetVault(request),
+      )
 
       return IndexerGrpcMitoTransformer.vaultResponseToVault(response)
     } catch (e: unknown) {
@@ -82,7 +86,9 @@ export class IndexerGrpcMitoApi {
     }
 
     try {
-      const response = await this.client.GetVaults(request)
+      const response = await this.retry<MitoApi.GetVaultsResponse>(() =>
+        this.client.GetVaults(request),
+      )
 
       return IndexerGrpcMitoTransformer.vaultsResponseToVaults(response)
     } catch (e: unknown) {
@@ -124,7 +130,9 @@ export class IndexerGrpcMitoApi {
     }
 
     try {
-      const response = await this.client.LPTokenPriceChart(request)
+      const response = await this.retry<MitoApi.LPTokenPriceChartResponse>(() =>
+        this.client.LPTokenPriceChart(request),
+      )
 
       return IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
         response,
@@ -168,7 +176,9 @@ export class IndexerGrpcMitoApi {
     }
 
     try {
-      const response = await this.client.TVLChart(request)
+      const response = await this.retry<MitoApi.TVLChartResponse>(() =>
+        this.client.TVLChart(request),
+      )
 
       return IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
         response,
@@ -218,7 +228,9 @@ export class IndexerGrpcMitoApi {
     }
 
     try {
-      const response = await this.client.VaultsByHolderAddress(request)
+      const response = await this.retry<MitoApi.VaultsByHolderAddressResponse>(
+        () => this.client.VaultsByHolderAddress(request),
+      )
 
       return IndexerGrpcMitoTransformer.VaultsByHolderAddressResponseToVaultsByHolderAddress(
         response,
@@ -262,7 +274,9 @@ export class IndexerGrpcMitoApi {
     }
 
     try {
-      const response = await this.client.LPHolders(request)
+      const response = await this.retry<MitoApi.LPHoldersResponse>(() =>
+        this.client.LPHolders(request),
+      )
 
       return IndexerGrpcMitoTransformer.LPHoldersResponseToLPHolders(response)
     } catch (e: unknown) {
@@ -288,7 +302,9 @@ export class IndexerGrpcMitoApi {
     request.holderAddress = holderAddress
 
     try {
-      const response = await this.client.Portfolio(request)
+      const response = await this.retry<MitoApi.PortfolioResponse>(() =>
+        this.client.Portfolio(request),
+      )
 
       return IndexerGrpcMitoTransformer.PortfolioResponseToPortfolio(response)
     } catch (e: unknown) {
@@ -316,7 +332,9 @@ export class IndexerGrpcMitoApi {
     }
 
     try {
-      const response = await this.client.Leaderboard(request)
+      const response = await this.retry<MitoApi.LeaderboardResponse>(() =>
+        this.client.Leaderboard(request),
+      )
 
       return IndexerGrpcMitoTransformer.LeaderboardResponseToLeaderboard(
         response,
@@ -374,7 +392,9 @@ export class IndexerGrpcMitoApi {
     }
 
     try {
-      const response = await this.client.TransfersHistory(request)
+      const response = await this.retry<MitoApi.TransfersHistoryResponse>(() =>
+        this.client.TransfersHistory(request),
+      )
 
       return IndexerGrpcMitoTransformer.TransferHistoryResponseToTransfer(
         response,
@@ -420,7 +440,9 @@ export class IndexerGrpcMitoApi {
     }
 
     try {
-      const response = await this.client.LeaderboardEpochs(request)
+      const response = await this.retry<MitoApi.LeaderboardEpochsResponse>(() =>
+        this.client.LeaderboardEpochs(request),
+      )
 
       return IndexerGrpcMitoTransformer.LeaderboardEpochsResponseToLeaderboardEpochs(
         response,

@@ -1,28 +1,30 @@
-import { PaginationOption } from '../../../types/pagination'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
-import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer'
-import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import {
   CosmosGovV1Beta1Query,
   CosmosGovV1Beta1Gov,
 } from '@injectivelabs/core-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { ChainModule } from '../types'
+import { PaginationOption } from '../../../types/pagination'
+import { paginationRequestFromPagination } from '../../../utils/pagination'
+import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcGovApi {
+export class ChainGrpcGovApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Gov
 
   protected client: CosmosGovV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new CosmosGovV1Beta1Query.QueryClientImpl(
-      getGrpcWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -81,7 +83,10 @@ export class ChainGrpcGovApi {
     }
 
     try {
-      const response = await this.client.Proposals(request)
+      const response =
+        await this.retry<CosmosGovV1Beta1Query.QueryProposalsResponse>(() =>
+          this.client.Proposals(request),
+        )
 
       return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
     } catch (e: any) {
@@ -107,7 +112,10 @@ export class ChainGrpcGovApi {
     request.proposalId = proposalId.toString()
 
     try {
-      const response = await this.client.Proposal(request)
+      const response =
+        await this.retry<CosmosGovV1Beta1Query.QueryProposalResponse>(() =>
+          this.client.Proposal(request),
+        )
 
       return ChainGrpcGovTransformer.proposalResponseToProposal(response)
     } catch (e: any) {
@@ -145,7 +153,10 @@ export class ChainGrpcGovApi {
     }
 
     try {
-      const response = await this.client.Deposits(request)
+      const response =
+        await this.retry<CosmosGovV1Beta1Query.QueryDepositsResponse>(() =>
+          this.client.Deposits(request),
+        )
 
       return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
     } catch (e: any) {
@@ -182,7 +193,10 @@ export class ChainGrpcGovApi {
       request.pagination = paginationForRequest
     }
     try {
-      const response = await this.client.Votes(request)
+      const response =
+        await this.retry<CosmosGovV1Beta1Query.QueryVotesResponse>(() =>
+          this.client.Votes(request),
+        )
 
       return ChainGrpcGovTransformer.votesResponseToVotes(response)
     } catch (e: any) {
@@ -207,7 +221,10 @@ export class ChainGrpcGovApi {
 
     request.proposalId = proposalId.toString()
     try {
-      const response = await this.client.TallyResult(request)
+      const response =
+        await this.retry<CosmosGovV1Beta1Query.QueryTallyResultResponse>(() =>
+          this.client.TallyResult(request),
+        )
 
       return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
     } catch (e: any) {
