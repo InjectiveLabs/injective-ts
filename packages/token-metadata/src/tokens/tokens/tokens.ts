@@ -637,7 +637,7 @@ export default {
       baseDenom: 'uatom',
       path: 'transfer/channel-1',
       channelId: 'channel-1',
-      hash: '624BA9DD171915A2B9EA70F69638B2CEA179959850C1A586F6C485498F29EDD4',
+      hash: 'C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
       tokenType: TokenType.Ibc,
     },
   },
