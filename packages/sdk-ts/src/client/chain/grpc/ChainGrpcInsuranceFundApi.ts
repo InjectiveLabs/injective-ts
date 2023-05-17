@@ -1,23 +1,25 @@
-import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
-import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer'
-import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { ChainModule } from '../types'
+import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcInsuranceFundApi {
+export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.InsuranceFund
 
   protected client: InjectiveInsuranceV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectiveInsuranceV1Beta1Query.QueryClientImpl(
-      getGrpcWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -26,7 +28,10 @@ export class ChainGrpcInsuranceFundApi {
       InjectiveInsuranceV1Beta1Query.QueryInsuranceParamsRequest.create()
 
     try {
-      const response = await this.client.InsuranceParams(request)
+      const response =
+        await this.retry<InjectiveInsuranceV1Beta1Query.QueryInsuranceParamsResponse>(
+          () => this.client.InsuranceParams(request),
+        )
 
       return ChainGrpcInsuranceFundTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -53,7 +58,10 @@ export class ChainGrpcInsuranceFundApi {
       InjectiveInsuranceV1Beta1Query.QueryInsuranceFundsRequest.create()
 
     try {
-      const response = await this.client.InsuranceFunds(request)
+      const response =
+        await this.retry<InjectiveInsuranceV1Beta1Query.QueryInsuranceFundsResponse>(
+          () => this.client.InsuranceFunds(request),
+        )
 
       return ChainGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
         response,
@@ -82,7 +90,10 @@ export class ChainGrpcInsuranceFundApi {
     request.marketId = marketId
 
     try {
-      const response = await this.client.InsuranceFund(request)
+      const response =
+        await this.retry<InjectiveInsuranceV1Beta1Query.QueryInsuranceFundResponse>(
+          () => this.client.InsuranceFund(request),
+        )
 
       return ChainGrpcInsuranceFundTransformer.insuranceFundResponseToInsuranceFund(
         response,
@@ -118,7 +129,10 @@ export class ChainGrpcInsuranceFundApi {
     request.address = address
 
     try {
-      const response = await this.client.EstimatedRedemptions(request)
+      const response =
+        await this.retry<InjectiveInsuranceV1Beta1Query.QueryEstimatedRedemptionsResponse>(
+          () => this.client.EstimatedRedemptions(request),
+        )
 
       return ChainGrpcInsuranceFundTransformer.estimatedRedemptionsResponseToEstimatedRedemptions(
         response,
@@ -154,7 +168,10 @@ export class ChainGrpcInsuranceFundApi {
     request.address = address
 
     try {
-      const response = await this.client.PendingRedemptions(request)
+      const response =
+        await this.retry<InjectiveInsuranceV1Beta1Query.QueryPendingRedemptionsResponse>(
+          () => this.client.PendingRedemptions(request),
+        )
 
       return ChainGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
         response,

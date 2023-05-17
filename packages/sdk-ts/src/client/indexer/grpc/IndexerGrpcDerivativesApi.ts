@@ -1,32 +1,34 @@
 import {
-  TradeDirection,
-  TradeExecutionSide,
-  TradeExecutionType,
-} from '../../../types/exchange'
-import { PaginationOption } from '../../../types/pagination'
-import { IndexerGrpcDerivativeTransformer } from '../transformers'
-import { IndexerModule } from '../types'
-import { OrderSide, OrderState } from '@injectivelabs/ts-types'
-import {
   GeneralException,
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import {
+  TradeDirection,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '../../../types/exchange'
+import { IndexerModule } from '../types'
+import { PaginationOption } from '../../../types/pagination'
+import { IndexerGrpcDerivativeTransformer } from '../transformers'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcDerivativesApi {
+export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Derivatives
 
   protected client: InjectiveDerivativeExchangeRpc.InjectiveDerivativeExchangeRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client =
       new InjectiveDerivativeExchangeRpc.InjectiveDerivativeExchangeRPCClientImpl(
-        getGrpcIndexerWebImpl(endpoint),
+        this.getGrpcWebImpl(endpoint),
       )
   }
 
@@ -44,7 +46,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.Markets(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.MarketsResponse>(() =>
+          this.client.Markets(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.marketsResponseToMarkets(response)
     } catch (e: unknown) {
@@ -70,7 +75,10 @@ export class IndexerGrpcDerivativesApi {
     request.marketId = marketId
 
     try {
-      const response = await this.client.Market(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.MarketResponse>(() =>
+          this.client.Market(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.marketResponseToMarket(response)
     } catch (e: unknown) {
@@ -119,7 +127,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.BinaryOptionsMarkets(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.BinaryOptionsMarketsResponse>(
+          () => this.client.BinaryOptionsMarkets(request),
+        )
 
       return pagination
         ? IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
@@ -152,7 +163,10 @@ export class IndexerGrpcDerivativesApi {
     request.marketId = marketId
 
     try {
-      const response = await this.client.BinaryOptionsMarket(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.BinaryOptionsMarketResponse>(
+          () => this.client.BinaryOptionsMarket(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseToBinaryOptionsMarket(
         response,
@@ -233,7 +247,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.Orders(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.OrdersResponse>(() =>
+          this.client.Orders(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
@@ -325,7 +342,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.OrdersHistory(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.OrdersHistoryResponse>(
+          () => this.client.OrdersHistory(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.orderHistoryResponseToOrderHistory(
         response,
@@ -390,7 +410,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.Positions(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.PositionsResponse>(() =>
+          this.client.Positions(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.positionsResponseToPositions(
         response,
@@ -496,7 +519,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.Trades(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.TradesResponse>(() =>
+          this.client.Trades(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.tradesResponseToTrades(response)
     } catch (e: unknown) {
@@ -554,7 +580,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.FundingPayments(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.FundingPaymentsResponse>(
+          () => this.client.FundingPayments(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.fundingPaymentsResponseToFundingPayments(
         response,
@@ -599,7 +628,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.FundingRates(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.FundingRatesResponse>(
+          () => this.client.FundingRates(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.fundingRatesResponseToFundingRates(
         response,
@@ -650,7 +682,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.SubaccountOrdersList(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.SubaccountOrdersListResponse>(
+          () => this.client.SubaccountOrdersList(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
     } catch (e: unknown) {
@@ -710,7 +745,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.SubaccountTradesList(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.SubaccountTradesListResponse>(
+          () => this.client.SubaccountTradesList(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.subaccountTradesListResponseToSubaccountTradesList(
         response,
@@ -745,7 +783,10 @@ export class IndexerGrpcDerivativesApi {
     }
 
     try {
-      const response = await this.client.OrderbooksV2(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.OrderbooksV2Response>(
+          () => this.client.OrderbooksV2(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.orderbooksV2ResponseToOrderbooksV2(
         response,
@@ -773,7 +814,10 @@ export class IndexerGrpcDerivativesApi {
     request.marketId = marketId
 
     try {
-      const response = await this.client.OrderbookV2(request)
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.OrderbookV2Response>(
+          () => this.client.OrderbookV2(request),
+        )
 
       return IndexerGrpcDerivativeTransformer.orderbookV2ResponseToOrderbookV2(
         response,

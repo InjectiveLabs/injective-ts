@@ -1,25 +1,27 @@
-import { ChainGrpcWasmTransformer } from '../transformers'
-import { PaginationOption } from '../../../types/pagination'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
-import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
 import { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { ChainModule } from '../types'
+import { ChainGrpcWasmTransformer } from '../transformers'
+import { PaginationOption } from '../../../types/pagination'
+import { paginationRequestFromPagination } from '../../../utils/pagination'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcWasmApi {
+export class ChainGrpcWasmApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Wasm
 
   protected client: CosmwasmWasmV1Query.QueryClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new CosmwasmWasmV1Query.QueryClientImpl(
-      getGrpcWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -41,7 +43,10 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.client.AllContractState(request)
+      const response =
+        await this.retry<CosmwasmWasmV1Query.QueryAllContractStateResponse>(
+          () => this.client.AllContractState(request),
+        )
 
       return ChainGrpcWasmTransformer.allContractStateResponseToContractAccountsBalanceWithPagination(
         response,
@@ -69,7 +74,10 @@ export class ChainGrpcWasmApi {
     request.address = contractAddress
 
     try {
-      const response = await this.client.ContractInfo(request)
+      const response =
+        await this.retry<CosmwasmWasmV1Query.QueryContractInfoResponse>(() =>
+          this.client.ContractInfo(request),
+        )
 
       const contractInfo = response.contractInfo
 
@@ -103,7 +111,10 @@ export class ChainGrpcWasmApi {
     request.address = contractAddress
 
     try {
-      const response = await this.client.ContractHistory(request)
+      const response =
+        await this.retry<CosmwasmWasmV1Query.QueryContractHistoryResponse>(() =>
+          this.client.ContractHistory(request),
+        )
 
       return ChainGrpcWasmTransformer.contactHistoryResponseToContractHistory(
         response,
@@ -135,7 +146,10 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.client.SmartContractState(request)
+      const response =
+        await this.retry<CosmwasmWasmV1Query.QuerySmartContractStateResponse>(
+          () => this.client.SmartContractState(request),
+        )
 
       return response
     } catch (e: unknown) {
@@ -165,7 +179,10 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.client.RawContractState(request)
+      const response =
+        await this.retry<CosmwasmWasmV1Query.QueryRawContractStateResponse>(
+          () => this.client.RawContractState(request),
+        )
 
       return response
     } catch (e: unknown) {
@@ -195,7 +212,9 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.client.Codes(request)
+      const response = await this.retry<CosmwasmWasmV1Query.QueryCodesResponse>(
+        () => this.client.Codes(request),
+      )
 
       return ChainGrpcWasmTransformer.contractCodesResponseToContractCodes(
         response,
@@ -223,7 +242,9 @@ export class ChainGrpcWasmApi {
     request.codeId = codeId.toString()
 
     try {
-      const response = await this.client.Code(request)
+      const response = await this.retry<CosmwasmWasmV1Query.QueryCodeResponse>(
+        () => this.client.Code(request),
+      )
 
       return ChainGrpcWasmTransformer.contractCodeResponseToContractCode(
         response,
@@ -260,7 +281,10 @@ export class ChainGrpcWasmApi {
     }
 
     try {
-      const response = await this.client.ContractsByCode(request)
+      const response =
+        await this.retry<CosmwasmWasmV1Query.QueryContractsByCodeResponse>(() =>
+          this.client.ContractsByCode(request),
+        )
 
       return ChainGrpcWasmTransformer.contractByCodeResponseToContractByCode(
         response,

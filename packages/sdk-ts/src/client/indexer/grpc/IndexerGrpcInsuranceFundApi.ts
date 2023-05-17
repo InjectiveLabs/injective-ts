@@ -1,23 +1,25 @@
-import { IndexerGrpcInsuranceFundTransformer } from '../transformers'
-import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { IndexerGrpcInsuranceFundTransformer } from '../transformers'
+import { IndexerModule } from '../types'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcInsuranceFundApi {
+export class IndexerGrpcInsuranceFundApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.InsuranceFund
 
   protected client: InjectiveInsuranceRpc.InjectiveInsuranceRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectiveInsuranceRpc.InjectiveInsuranceRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -43,7 +45,10 @@ export class IndexerGrpcInsuranceFundApi {
     }
 
     try {
-      const response = await this.client.Redemptions(request)
+      const response =
+        await this.retry<InjectiveInsuranceRpc.RedemptionsResponse>(() =>
+          this.client.Redemptions(request),
+        )
 
       return IndexerGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
         response,
@@ -69,7 +74,9 @@ export class IndexerGrpcInsuranceFundApi {
     const request = InjectiveInsuranceRpc.FundsRequest.create()
 
     try {
-      const response = await this.client.Funds(request)
+      const response = await this.retry<InjectiveInsuranceRpc.FundsResponse>(
+        () => this.client.Funds(request),
+      )
 
       return IndexerGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
         response,

@@ -17,9 +17,9 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
     const endpoint = `cosmos/base/tendermint/v1beta1/blocks/latest`
 
     try {
-      const response = (await this.get(
-        endpoint,
-      )) as RestApiResponse<BlockLatestRestResponse>
+      const response = await this.retry<
+        RestApiResponse<BlockLatestRestResponse>
+      >(() => this.get(endpoint))
 
       return response.data.block
     } catch (e) {
@@ -42,9 +42,9 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
     const endpoint = `cosmos/base/tendermint/v1beta1/node_info`
 
     try {
-      const response = (await this.get(
-        endpoint,
-      )) as RestApiResponse<NodeInfoRestResponse>
+      const response = await this.retry<RestApiResponse<NodeInfoRestResponse>>(
+        () => this.get(endpoint),
+      )
 
       return {
         nodeInfo: response.data.default_node_info,

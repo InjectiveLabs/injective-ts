@@ -1,51 +1,45 @@
 import { grpc } from '@injectivelabs/grpc-web'
-import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
 import { isBrowser } from '../utils/helpers'
 import { getGrpcTransport } from '../utils/grpc'
+import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
 if (!isBrowser()) {
   grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
 }
-/**
- * @hidden
- */
-export default class BaseGrpcConsumer {
+
+export default class BaseGrpcConsumer extends InjectiveAccountRpc.GrpcWebImpl {
   protected module: string = ''
 
-  protected endpoint: string
-
   constructor(endpoint: string) {
-    this.endpoint = endpoint
+    super(endpoint, { transport: getGrpcTransport() })
   }
 
-  protected request<
-    TRequest extends grpc.ProtobufMessage,
-    TResponse extends grpc.ProtobufMessage,
-    S extends grpc.UnaryMethodDefinition<TRequest, TResponse>,
-  >(request: TRequest, service: S): Promise<TResponse> {
-    return new Promise((resolve, reject) => {
-      grpc.unary(service, {
-        request,
-        host: this.endpoint,
-        onEnd: (res) => {
-          const { statusMessage, status, message } = res
+  public getGrpcWebImpl(endpoint: string) {
+    return new BaseGrpcConsumer(endpoint)
+  }
 
-          if (status === grpc.Code.OK && message) {
-            return resolve(message as TResponse)
-          }
+  protected retry<TResponse>(
+    grpcCall: Function,
+    retries: number = 3,
+    delay: number = 1000,
+  ): Promise<TResponse> {
+    const retryGrpcCall = async (attempt = 1): Promise<any> => {
+      try {
+        return await grpcCall()
+      } catch (e: any) {
+        if (attempt >= retries) {
+          throw e
+        }
 
-          return reject(
-            new GrpcUnaryRequestException(
-              new Error(statusMessage || 'The request failed.'),
-              {
-                code: status,
-                context: `${this.endpoint}?service=${service.methodName}`,
-                contextModule: this.module,
-              },
-            ),
-          )
-        },
-      })
-    })
+        return new Promise((resolve) =>
+          setTimeout(
+            () => resolve(retryGrpcCall(attempt + 1)),
+            delay * attempt,
+          ),
+        )
+      }
+    }
+
+    return retryGrpcCall()
   }
 }
