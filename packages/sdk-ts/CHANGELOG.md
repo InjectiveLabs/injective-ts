@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-beta.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.73-beta.17...@injectivelabs/sdk-ts@1.11.0-beta.0) (2023-05-17)
+
+### Features
+
+- implement retries on grpc and rest query calls ([d8c4486](https://github.com/InjectiveLabs/injective-ts/commit/d8c4486722c52a669b17ffe8875855e543f573e8))
+
 ## [1.10.73-beta.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.10.73-beta.16...@injectivelabs/sdk-ts@1.10.73-beta.17) (2023-05-16)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
