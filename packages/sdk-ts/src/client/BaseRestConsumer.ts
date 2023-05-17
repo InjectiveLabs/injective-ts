@@ -1,4 +1,6 @@
 import { HttpRestClient } from '@injectivelabs/utils'
+import { HttpRequestException } from '@injectivelabs/exceptions'
+import { StatusCodes } from 'http-status-codes'
 
 /**
  * @hidden
@@ -13,6 +15,12 @@ export default class BaseRestConsumer extends HttpRestClient {
       try {
         return (await httpCall()) as TResponse
       } catch (e: any) {
+        if (e instanceof HttpRequestException) {
+          if (e.code === StatusCodes.REQUEST_TOO_LONG) {
+            throw e
+          }
+        }
+
         if (attempt >= retries) {
           throw e
         }
