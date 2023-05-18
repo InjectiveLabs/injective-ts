@@ -32,15 +32,18 @@ export class WelldoneWallet {
 
   async getAccounts(): Promise<{ address: string; pubKey: string }> {
     const welldone = await this.getWelldoneWallet()
+
     try {
       const accounts = await welldone.request(this.chainName, {
         method: 'dapp:accounts',
       })
+
       if (Object.keys(accounts).length === 0) {
         throw new Error(
           `Please make the ${this.chainName} account in the WELLDONE wallet`,
         )
       }
+
       return accounts[this.chainName]
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
@@ -51,16 +54,18 @@ export class WelldoneWallet {
 
   public async broadcastTx(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<string> {
     const welldone = await this.getWelldoneWallet()
+
     try {
-        const {hash} = await welldone.request(this.chainName, {
-          method: 'dapp:sendSignedTransaction',
-          params: [
-            `0x${Buffer.from(
-              CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-            ).toString('hex')}`,
-          ],
-        })
-        return hash
+      const { hash } = await welldone.request(this.chainName, {
+        method: 'dapp:sendSignedTransaction',
+        params: [
+          `0x${Buffer.from(
+            CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
+          ).toString('hex')}`,
+        ],
+      })
+
+      return hash
     } catch (e) {
       throw new CosmosWalletException(new Error((e as any).message), {
         context: 'WELLDONE',
@@ -75,8 +80,9 @@ export class WelldoneWallet {
     return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
   }
 
-  private changePubKeyType (authInfoBytes: Uint8Array) {
+  private changePubKeyType(authInfoBytes: Uint8Array) {
     const authInfo = CosmosTxV1Beta1Tx.AuthInfo.decode(authInfoBytes)
+
     authInfo.signerInfos.forEach((signerInfo) => {
       if (signerInfo.publicKey) {
         signerInfo.publicKey.typeUrl = '/cosmos.crypto.secp256k1.PubKey'
@@ -95,12 +101,14 @@ export class WelldoneWallet {
     signDoc.authInfoBytes = authInfoBytes
 
     const welldone = await this.getWelldoneWallet()
+
     try {
       const signBytes = makeSignBytes(signDoc)
       const response = await welldone.request(this.chainName, {
         method: 'dapp:signTransaction',
         params: [`0x${Buffer.from(signBytes).toString('hex')}`],
       })
+
       return {
         signed: signDoc,
         signature: {
@@ -123,6 +131,7 @@ export class WelldoneWallet {
 
   public async getKey() {
     const account = await this.getAccounts()
+
     return account.pubKey
   }
 
@@ -142,34 +151,37 @@ export class WelldoneWallet {
   // WELLDONE Wallet only supports injective, cosmos, juno netoworks.
   public async checkChainIdSupport() {
     const { chainId } = this
-    if (chainId.includes('cosmoshub') || chainId.includes('juno')) {
-      return true
-    }
-    return false
+
+    return ['injective', 'cosmoshub', 'juno'].some((cosmosChainId) =>
+      chainId.includes(cosmosChainId),
+    )
   }
 
   private async checkNetwork() {
     const welldone = this.getWelldone()
+
     try {
       const { node_info } = await welldone.request(this.chainName, {
         method: 'status',
       })
-      if (node_info.network === this.chainId) return true
+
+      return node_info.network === this.chainId
     } catch (e) {
       throw new CosmosWalletException(new Error((e as any).message), {
         context: 'WELLDONE',
         contextModule: 'check-network',
       })
     }
-    return false
   }
 
   public async getWelldoneWallet() {
     const { chainId } = this
     const welldone = this.getWelldone()
+
     if (!(await this.checkNetwork())) {
       throw new Error(`Change the WELLDONE Wallet Network to ${chainId}`)
     }
+
     return welldone
   }
 

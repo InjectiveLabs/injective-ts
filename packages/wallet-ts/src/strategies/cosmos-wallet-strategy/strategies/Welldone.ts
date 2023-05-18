@@ -37,6 +37,7 @@ export default class Welldone implements ConcreteCosmosWalletStrategy {
     const welldoneWallet = chainId
       ? new WelldoneWallet(chainId)
       : this.getWelldoneWallet()
+
     return welldoneWallet.checkChainIdSupport()
   }
 
@@ -45,6 +46,7 @@ export default class Welldone implements ConcreteCosmosWalletStrategy {
 
     try {
       const accounts = await welldoneWallet.getAccounts()
+
       return [accounts.address]
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
@@ -81,10 +83,12 @@ export default class Welldone implements ConcreteCosmosWalletStrategy {
   }): Promise<DirectSignResponse> {
     const welldoneWallet = this.getWelldoneWallet()
     const signDoc = createSignDocFromTransaction(transaction)
+
     try {
       const result = await welldoneWallet.signTransaction(
         createCosmosSignDocFromSignDoc(signDoc),
       )
+
       return result
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
