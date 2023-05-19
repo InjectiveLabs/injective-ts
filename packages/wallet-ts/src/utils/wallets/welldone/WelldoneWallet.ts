@@ -4,9 +4,13 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxResponse, TxRestApi, CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
+import {
+  TxResponse,
+  TxRestApi,
+  CosmosTxV1Beta1Tx,
+  getPublicKey,
+} from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignBytes } from '@cosmjs/proto-signing'
-import { encodeSecp256k1Pubkey } from '@cosmjs/amino'
 import {
   ErrorType,
   UnspecifiedErrorCode,
@@ -108,13 +112,15 @@ export class WelldoneWallet {
         method: 'dapp:signTransaction',
         params: [`0x${Buffer.from(signBytes).toString('hex')}`],
       })
+      const pubKey = getPublicKey({
+        chainId: this.chainId,
+        key: Buffer.from(response[0].publicKey.replace('0x', ''), 'hex').toString('base64'),
+      })
 
       return {
         signed: signDoc,
         signature: {
-          pub_key: encodeSecp256k1Pubkey(
-            Buffer.from(response[0].publicKey.replace('0x', ''), 'hex'),
-          ),
+          pub_key: pubKey as any,
           signature: Buffer.from(
             response[0].signature.replace('0x', ''),
             'hex',
