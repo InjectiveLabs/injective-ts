@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use and interact with different types of wallets on Injective.",
-  "version": "1.10.83-beta.20",
+  "version": "1.10.83-beta.21",
   "sideEffects": false,
   "author": {
     "name": "Bojan Angjelkoski",
@@ -39,7 +39,7 @@
     "@ethereumjs/tx": "^4.1.1",
     "@injectivelabs/exceptions": "^1.10.13-beta.8",
     "@injectivelabs/networks": "^1.10.13-beta.8",
-    "@injectivelabs/sdk-ts": "^1.11.0-beta.2",
+    "@injectivelabs/sdk-ts": "^1.11.0-beta.3",
     "@injectivelabs/ts-types": "^1.10.13-beta.3",
     "@injectivelabs/utils": "^1.10.13-beta.8",
     "@keplr-wallet/cosmos": "^0.11.58",
