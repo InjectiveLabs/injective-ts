@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-dev.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.11.0-beta.2...@injectivelabs/sdk-ts@1.11.0-dev.0) (2023-05-20)
+
+### Features
+
+- add typing support for staking messages ([a6b0294](https://github.com/InjectiveLabs/injective-ts/commit/a6b02949cf2feb69b38f28c66c6cd742e429db63))
+
 # [1.11.0-beta.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.11.0-beta.1...@injectivelabs/sdk-ts@1.11.0-beta.2) (2023-05-18)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
