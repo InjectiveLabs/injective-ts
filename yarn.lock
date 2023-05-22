@@ -2228,10 +2228,10 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/mito-proto-ts@1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/mito-proto-ts/-/mito-proto-ts-1.0.15.tgz#7640b42c6df80578857885362686d5ab589816cd"
-  integrity sha512-2EQzOaggEtYEke49ko9tGj+3xu40bK513lqhM6DEK2fzkwq0l0p3x6LT3q+xLcxOoC/VXS7PZUg6NcczXI/FnQ==
+"@injectivelabs/mito-proto-ts@1.0.16":
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/mito-proto-ts/-/mito-proto-ts-1.0.16.tgz#52a6c78826ad45800296a8781b74b4b7cb52ced5"
+  integrity sha512-V5ZQDHtu4ys778uhxmquPSK8h31Z3Cpk8yUOHMMraFdxIez2tQJf5dgtUCji2SsJ7HxlefLXrY+0pz3C0i0O0A==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"

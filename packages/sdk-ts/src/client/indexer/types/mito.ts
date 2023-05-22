@@ -120,9 +120,10 @@ export interface MitoStakingPool {
   vaultAddress: string
   stakeDenom: string
   gauges: MitoGauge[]
-  apy: number
+  apr: number
   totalLiquidity: number
   stakingAddress: string
+  aprBreakDown: Record<string, number>
 }
 
 export interface MitoStakingReward {
