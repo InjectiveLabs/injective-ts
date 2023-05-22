@@ -167,12 +167,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     request.vaultAddress = vaultAddress
 
-    if (from) {
-      request.fromTime = from
-    }
-
     if (to) {
       request.toTime = to
+    }
+
+    if (from) {
+      request.fromTime = from
     }
 
     try {
