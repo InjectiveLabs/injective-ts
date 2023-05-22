@@ -218,9 +218,10 @@ export class IndexerGrpcMitoTransformer {
       gauges: stakingPool.gauges.map(
         IndexerGrpcMitoTransformer.mitoGaugeToGauge,
       ),
-      apy: stakingPool.apy,
+      apr: stakingPool.apr,
       totalLiquidity: stakingPool.totalLiquidity,
       stakingAddress: stakingPool.stakingAddress,
+      aprBreakdown: stakingPool.aprBreakdown,
     }
   }
 
