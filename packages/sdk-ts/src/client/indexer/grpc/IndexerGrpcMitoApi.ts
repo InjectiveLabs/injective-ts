@@ -31,12 +31,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }) {
     const request = MitoApi.GetVaultRequest.create()
 
-    if (contractAddress) {
-      request.contractAddress = contractAddress
-    }
-
     if (slug) {
       request.slug = slug
+    }
+
+    if (contractAddress) {
+      request.contractAddress = contractAddress
     }
 
     try {
