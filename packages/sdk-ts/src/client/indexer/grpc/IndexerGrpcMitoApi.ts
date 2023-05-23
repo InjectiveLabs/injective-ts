@@ -499,13 +499,19 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   async fetchStakingHistory({
     staker,
     toNumber,
+    pageSize,
     fromNumber,
   }: {
     staker?: string
+    pageSize?: number
     toNumber?: number
     fromNumber?: number
   } = {}) {
     const request = MitoApi.StakingHistoryRequest.create()
+
+    if (pageSize) {
+      request.pageSize = pageSize
+    }
 
     if (staker) {
       request.staker = staker

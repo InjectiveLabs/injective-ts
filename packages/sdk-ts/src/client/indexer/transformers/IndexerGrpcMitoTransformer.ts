@@ -239,6 +239,8 @@ export class IndexerGrpcMitoTransformer {
         IndexerGrpcMitoTransformer.grpcCoinToCoin,
       ),
       timestamp: parseInt(stakingActivity.timestamp, 10),
+      staker: stakingActivity.staker,
+      numberByAccount: stakingActivity.numberByAccount,
     }
   }
 

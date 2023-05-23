@@ -136,13 +136,15 @@ export interface MitoStakingReward {
   lockedAmount: Coin | undefined
 }
 
-export interface MitoStakingActivities {
+export interface MitoStakingActivity {
   stakeAmount: Coin | undefined
   vaultAddress: string
   action: string
   txHash: string
   rewardedTokens: Coin[]
   timestamp: number
+  staker: string
+  numberByAccount: number
 }
 
 export type GrpcMitoVault = MitoApi.Vault
