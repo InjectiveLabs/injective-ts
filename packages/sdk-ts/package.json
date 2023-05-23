@@ -1,7 +1,11 @@
 {
   "name": "@injectivelabs/sdk-ts",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
+<<<<<<< HEAD
   "version": "1.11.0-beta.15",
+=======
+  "version": "1.11.0-dev.2",
+>>>>>>> 9a67565f (chore(release): publish)
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
