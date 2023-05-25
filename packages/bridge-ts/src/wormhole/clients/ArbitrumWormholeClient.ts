@@ -13,7 +13,7 @@ import {
   parseSequenceFromLogEth,
   getIsTransferCompletedEth,
   ethers_contracts as EthersContracts,
-} from '@injectivelabs/wormhole-sdk'
+} from '@certusone/wormhole-sdk'
 import { BigNumber, sleep } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
 import { zeroPad } from 'ethers/lib/utils'

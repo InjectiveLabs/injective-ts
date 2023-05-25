@@ -1,4 +1,4 @@
-import { CONTRACTS } from '@injectivelabs/wormhole-sdk'
+import { CONTRACTS } from '@certusone/wormhole-sdk'
 import { ChainId } from '@injectivelabs/ts-types'
 import { PublicKey } from '@solana/web3.js'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
@@ -32,17 +32,25 @@ export interface InjectiveTransferMsgArgs extends TransferMsgArgs {
   chainId: string
 }
 
-export type WormholeContractAddresses = typeof CONTRACTS.TESTNET.injective
-export type WormholeSolanaContractAddresses = typeof CONTRACTS.TESTNET.solana
+export type WormholeContractAddresses = typeof CONTRACTS.MAINNET.injective
+export type WormholeSolanaContractAddresses = typeof CONTRACTS.MAINNET.solana
 export type WormholeAribtrumContractAddresses =
-  typeof CONTRACTS.TESTNET.arbitrum
+  typeof CONTRACTS.MAINNET.arbitrum
 export type WormholeEthereumContractAddresses =
-  typeof CONTRACTS.TESTNET.ethereum
+  typeof CONTRACTS.MAINNET.ethereum
+export type WormholePolygonContractAddresses = typeof CONTRACTS.MAINNET.polygon
+export type WormholeSuiContractAddresses = typeof CONTRACTS.MAINNET.sui
+export type WormholeKlaytnContractAddresses = typeof CONTRACTS.MAINNET.klaytn
+export type WormholeAptosContractAddresses = typeof CONTRACTS.MAINNET.aptos
 
 export enum WormholeSource {
   Ethereum = 'ethereum',
   Aribtrum = 'arbitrum',
   Solana = 'solana',
+  Polygon = 'polygon',
+  Sui = 'sui',
+  Klaytn = 'klaytn',
+  Aptos = 'aptos',
 }
 
 export { BaseMessageSignerWalletAdapter }

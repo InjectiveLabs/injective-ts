@@ -1,5 +1,5 @@
 import { MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'
-import { isNativeDenomInjective } from '@injectivelabs/wormhole-sdk'
+import { isNativeDenomInjective } from '@certusone/wormhole-sdk'
 
 /**
  * Creates attestation message

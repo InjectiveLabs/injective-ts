@@ -9,7 +9,7 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import {
   getSignedVAAWithRetry,
   tryNativeToUint8Array,
-} from '@injectivelabs/wormhole-sdk'
+} from '@certusone/wormhole-sdk'
 import {
   transferFromInjective,
   getEmitterAddressInjective,
