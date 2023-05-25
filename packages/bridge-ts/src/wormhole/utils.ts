@@ -2,26 +2,26 @@ import { Network } from '@injectivelabs/networks'
 import { Connection, PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
-  WormholeAptosContractAddresses,
-  WormholeAribtrumContractAddresses,
-  WormholeContractAddresses,
-  WormholeEthereumContractAddresses,
-  WormholeKlaytnContractAddresses,
-  WormholePolygonContractAddresses,
-  WormholeSolanaContractAddresses,
   WormholeSource,
+  WormholeContractAddresses,
   WormholeSuiContractAddresses,
+  WormholeAptosContractAddresses,
+  WormholeKlaytnContractAddresses,
+  WormholeSolanaContractAddresses,
+  WormholeAribtrumContractAddresses,
+  WormholeEthereumContractAddresses,
+  WormholePolygonContractAddresses,
 } from './types'
 import {
-  WORMHOLE_APTOS_CONTRACT_BY_NETWORK,
-  WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK,
   WORMHOLE_CHAINS,
   WORMHOLE_CONTRACT_BY_NETWORK,
-  WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
+  WORMHOLE_SUI_CONTRACT_BY_NETWORK,
+  WORMHOLE_APTOS_CONTRACT_BY_NETWORK,
+  WORMHOLE_SOLANA_CONTRACT_BY_NETWORK,
   WORMHOLE_KLAYTN_CONTRACT_BY_NETWORK,
   WORMHOLE_POLYGON_CONTRACT_BY_NETWORK,
-  WORMHOLE_SOLANA_CONTRACT_BY_NETWORK,
-  WORMHOLE_SUI_CONTRACT_BY_NETWORK,
+  WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK,
+  WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
 } from './constants'
 
 export const getSolanaTransactionInfo = async (
@@ -406,7 +406,15 @@ export const getAssociatedChainRecipient = (
     case WormholeSource.Ethereum:
       return recipient /* Hex Ethereum Address */
     case WormholeSource.Aribtrum:
-      return recipient /* Hex Ethereum Address */
+      return recipient /* Hex Address */
+    case WormholeSource.Polygon:
+      return recipient /* Hex Address */
+    case WormholeSource.Klaytn:
+      return recipient /* Hex Address */
+    case WormholeSource.Aptos:
+      throw Error('Aptos not yet implemented')
+    case WormholeSource.Sui:
+      throw Error('Sui not yet implemented')
     default:
       return new SolanaPublicKey(recipient).toString()
   }

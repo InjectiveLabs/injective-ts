@@ -24,8 +24,8 @@ import { WormholeClient } from '../WormholeClient'
 
 type Provider = ethers.providers.Web3Provider | undefined
 
-export class ArbitrumWormholeClient extends WormholeClient {
-  static NATIVE_CHAIN_ID = 42161
+export class PolygonWormholeClient extends WormholeClient {
+  static NATIVE_CHAIN_ID = 137
 
   constructor({
     network,
@@ -48,6 +48,7 @@ export class ArbitrumWormholeClient extends WormholeClient {
     provider: Provider
   }) {
     const signer = await this.getProviderAndChainIdCheck(provider)
+
     const tokenContract = EthersContracts.ERC20__factory.connect(
       tokenAddress,
       signer,
@@ -76,7 +77,7 @@ export class ArbitrumWormholeClient extends WormholeClient {
 
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Aribtrum,
+      WormholeSource.Polygon,
     )
 
     const tokenContract = EthersContracts.ERC20__factory.connect(
@@ -114,7 +115,7 @@ export class ArbitrumWormholeClient extends WormholeClient {
 
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Aribtrum,
+      WormholeSource.Polygon,
     )
 
     const allowance = await this.getEvmTokenAllowance({
@@ -164,7 +165,7 @@ export class ArbitrumWormholeClient extends WormholeClient {
 
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Aribtrum,
+      WormholeSource.Polygon,
     )
 
     const sequence = parseSequenceFromLogEth(
@@ -197,7 +198,7 @@ export class ArbitrumWormholeClient extends WormholeClient {
     const signer = await this.getProviderAndChainIdCheck(provider)
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Aribtrum,
+      WormholeSource.Polygon,
     )
 
     return redeemOnEth(
@@ -212,11 +213,11 @@ export class ArbitrumWormholeClient extends WormholeClient {
     provider: Provider,
   ) {
     const { network } = this
-
     const signer = await this.getProviderAndChainIdCheck(provider)
+
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Aribtrum,
+      WormholeSource.Polygon,
     )
 
     return getIsTransferCompletedEth(
@@ -252,7 +253,7 @@ export class ArbitrumWormholeClient extends WormholeClient {
     const signer = provider.getSigner()
     const chainId = await signer.getChainId()
 
-    if (chainId !== ArbitrumWormholeClient.NATIVE_CHAIN_ID) {
+    if (chainId !== PolygonWormholeClient.NATIVE_CHAIN_ID) {
       throw new GeneralException(
         new Error('Please switch to the Polygon Network'),
       )

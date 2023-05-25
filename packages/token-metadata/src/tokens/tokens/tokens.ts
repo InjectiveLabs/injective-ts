@@ -1379,10 +1379,11 @@ export default {
     logo: 'matic.webp',
     coinGeckoId: 'wmatic',
 
-    erc20: {
+    evm: {
       decimals: 18,
-      address: '0x7c9f4C87d911613Fe9ca58b579f737911AAD2D43',
-      tokenType: TokenType.Erc20,
+      isNative: true,
+      address: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+      tokenType: TokenType.Evm,
     },
 
     cw20: {
