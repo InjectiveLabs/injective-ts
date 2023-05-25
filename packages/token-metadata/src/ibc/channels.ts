@@ -11,6 +11,7 @@ export enum CanonicalChannelToDestinationChannel {
   Stride = 'channel-89',
   Crescent = 'channel-90',
   Sommelier = 'channel-93',
+  Migaloo = 'channel-102',
 }
 
 /**
@@ -55,6 +56,7 @@ export const canonicalChannelsToChainMapFromInjective = {
   'channel-13': { chainA: 'Injective', chainB: '' },
   'channel-93': { chainA: 'Injective', chainB: 'Sommelier' },
   'channel-99': { chainA: 'Injective', chainB: 'Canto' },
+  'channel-102': { chainA: 'Injective', chainB: 'Migaloo' },
   'channel-104': { chainA: 'Injective', chainB: 'Terra2' },
   'channel-105': { chainA: 'Injective', chainB: 'Terra2' },
 }
@@ -73,6 +75,7 @@ export const canonicalChannelsToChainMapToInjective = {
   'channel-8': { chainA: 'Canto', chainB: 'Injective' },
   'channel-91': { chainA: 'Terra2', chainB: 'Injective' },
   'channel-92': { chainA: 'Terra2', chainB: 'Injective' },
+  'channel-3': { chainA: 'Migaloo', chainB: 'Injective' },
 }
 
 export default legacyCanonicalChannels
@@ -95,6 +98,7 @@ export const canonicalChannelIds = [
   'channel-90',
   'channel-93',
   'channel-99',
+  'channel-102',
   'channel-104',
   'channel-105',
 ]
@@ -112,4 +116,10 @@ export const channelIbcDenomToBaseDenomMap = {
   [CanonicalChannelToDestinationChannel.Stride]: {
     inj: 'ibc/A7454562FF29FE068F42F9DE4805ABEF54F599D1720B345D6518D9B5C64EA6D2',
   },
+  [CanonicalChannelToDestinationChannel.Migaloo]: {
+    inj: 'ibc/1C2D8505A29823310B4484E4C63CFDCB08C0D3B57537A615A45F4E5D42CDC789',
+  },
+
+
+
 }
