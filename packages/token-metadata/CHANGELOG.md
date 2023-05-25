@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-beta.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.17...@injectivelabs/token-metadata@1.11.0-beta.18) (2023-05-25)
+
+### Features
+
+- **channels:** Add Migaloo IBC channel details to all non-deprecated items in channels.ts ([5e06aa6](https://github.com/InjectiveLabs/injective-ts/commit/5e06aa6d46e0d5d447e2938d5e596165796a9b19))
+
 # [1.11.0-beta.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.16...@injectivelabs/token-metadata@1.11.0-beta.17) (2023-05-20)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
