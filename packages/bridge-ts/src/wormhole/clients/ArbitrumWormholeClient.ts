@@ -37,7 +37,6 @@ export class ArbitrumWormholeClient extends WormholeClient {
     super({ network, wormholeRpcUrl })
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getEvmTokenBalanceNoThrow({
     address,
     tokenAddress,
@@ -60,7 +59,6 @@ export class ArbitrumWormholeClient extends WormholeClient {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getEvmTokenAllowance({
     address,
     tokenAddress,

@@ -38,7 +38,7 @@ import { WORMHOLE_CHAINS } from '../constants'
 import {
   WormholeSource,
   SolanaTransferMsgArgs,
-  SolanaNativeSolTransferMsgArgs,
+  SolanaNativeTransferMsgArgs,
 } from '../types'
 import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { WormholeClient } from '../WormholeClient'
@@ -66,8 +66,8 @@ export class SolanaWormholeClient extends WormholeClient {
     return connection.getBalance(new PublicKey(address))
   }
 
-  async transferNativeSolToInjective(
-    args: SolanaNativeSolTransferMsgArgs & {
+  async transferNativeToInjective(
+    args: SolanaNativeTransferMsgArgs & {
       provider: BaseMessageSignerWalletAdapter
     },
   ) {
@@ -268,7 +268,7 @@ export class SolanaWormholeClient extends WormholeClient {
     )
   }
 
-  async redeemNativeSol(
+  async redeemNative(
     solanaPubKey: string,
     signedVAA: string /* in base 64 */,
   ): Promise<Transaction> {

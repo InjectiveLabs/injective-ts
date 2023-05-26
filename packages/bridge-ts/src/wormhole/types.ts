@@ -17,13 +17,18 @@ export interface SolanaTransferMsgArgs extends TransferMsgArgs {
   signerPubKey?: PublicKey
 }
 
-export interface SolanaNativeSolTransferMsgArgs
+export interface SolanaNativeTransferMsgArgs
   extends Omit<SolanaTransferMsgArgs, 'tokenAddress'> {
-  signerPubKey?: PublicKey
+  //
 }
 
 export interface EthereumTransferMsgArgs extends TransferMsgArgs {
   tokenAddress: string
+}
+
+export interface EthereumNativeTransferMsgArgs
+  extends Omit<EthereumTransferMsgArgs, 'tokenAddress'> {
+  //
 }
 
 export interface InjectiveTransferMsgArgs extends TransferMsgArgs {

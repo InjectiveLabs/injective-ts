@@ -13,13 +13,19 @@ import {
   parseSequenceFromLogEth,
   getIsTransferCompletedEth,
   ethers_contracts as EthersContracts,
+  redeemOnEthNative,
+  transferFromEthNative,
 } from '@certusone/wormhole-sdk'
 import { BigNumber, sleep } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
 import { zeroPad } from 'ethers/lib/utils'
 import { WORMHOLE_CHAINS } from '../constants'
-import { EthereumTransferMsgArgs, WormholeSource } from '../types'
-import { getContractAddresses } from '../utils'
+import {
+  EthereumNativeTransferMsgArgs,
+  EthereumTransferMsgArgs,
+  WormholeSource,
+} from '../types'
+import { getContractAddresses, getEvmNativeAddress } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
 type Provider = ethers.providers.Web3Provider | undefined
@@ -37,7 +43,6 @@ export class PolygonWormholeClient extends WormholeClient {
     super({ network, wormholeRpcUrl })
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getEvmTokenBalanceNoThrow({
     address,
     tokenAddress,
@@ -61,7 +66,6 @@ export class PolygonWormholeClient extends WormholeClient {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getEvmTokenAllowance({
     address,
     tokenAddress,
@@ -156,6 +160,68 @@ export class PolygonWormholeClient extends WormholeClient {
     }
   }
 
+  async transferNativeToInjective(
+    args: EthereumNativeTransferMsgArgs & { provider: Provider },
+  ) {
+    const { network, wormholeRpcUrl } = this
+    const { amount, recipient, provider } = args
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    if (!recipient) {
+      throw new GeneralException(new Error(`Please provide recipient`))
+    }
+
+    const signer = await this.getProviderAndChainIdCheck(provider)
+
+    const nativeTokenAddress = getEvmNativeAddress(
+      network,
+      WormholeSource.Polygon,
+    )
+    const { associatedChainContractAddresses } = getContractAddresses(
+      network,
+      WormholeSource.Polygon,
+    )
+
+    const allowance = await this.getEvmTokenAllowance({
+      address: await signer.getAddress(),
+      tokenAddress: nativeTokenAddress,
+      provider,
+    })
+
+    if (new BigNumber(allowance).lt(amount)) {
+      await approveEth(
+        associatedChainContractAddresses.token_bridge,
+        nativeTokenAddress,
+        signer,
+        new BigNumber(2).pow(256).minus(1).toFixed(),
+      )
+    }
+
+    const transferReceipt = await transferFromEthNative(
+      associatedChainContractAddresses.token_bridge,
+      signer,
+      amount,
+      WORMHOLE_CHAINS.injective,
+      hexToUint8Array(
+        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
+      ),
+    )
+
+    if (!transferReceipt) {
+      throw new Error('An error occurred while fetching the transaction info')
+    }
+
+    return {
+      txHash: transferReceipt.transactionHash,
+      ...transferReceipt,
+    } as ethers.ContractReceipt & {
+      txHash: string
+    }
+  }
+
   async getSignedVAA(txResponse: ethers.ContractReceipt) {
     const { network, wormholeRpcUrl } = this
 
@@ -202,6 +268,25 @@ export class PolygonWormholeClient extends WormholeClient {
     )
 
     return redeemOnEth(
+      associatedChainContractAddresses.token_bridge,
+      signer,
+      Buffer.from(signedVAA, 'base64'),
+    )
+  }
+
+  async redeemNative(
+    signedVAA: string /* in base 64 */,
+    provider: Provider,
+  ): Promise<ethers.ContractReceipt> {
+    const { network } = this
+
+    const signer = await this.getProviderAndChainIdCheck(provider)
+    const { associatedChainContractAddresses } = getContractAddresses(
+      network,
+      WormholeSource.Polygon,
+    )
+
+    return redeemOnEthNative(
       associatedChainContractAddresses.token_bridge,
       signer,
       Buffer.from(signedVAA, 'base64'),
