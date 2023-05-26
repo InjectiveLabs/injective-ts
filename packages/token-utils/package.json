@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/token-utils",
-  "version": "1.11.0-beta.0",
+  "version": "1.11.0-beta.1",
   "description": "Token Utils is a package for querying different data about tokens",
   "sideEffects": false,
   "author": {
