@@ -15,6 +15,10 @@ export enum Cw20TokenSource {
   Cosmos = 'cosmos',
   Ethereum = 'ethereum',
   EthereumWh = 'ethereum-wormhole',
+  Polygon = 'polygon',
+  Klaytn = 'klaytn',
+  Arbitrum = 'arbitrum',
+  Sui = 'sui',
 }
 
 export interface IbcTokenMeta {

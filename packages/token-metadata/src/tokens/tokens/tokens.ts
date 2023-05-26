@@ -1389,6 +1389,7 @@ export default {
     cw20: {
       decimals: 8,
       address: 'inj1dxv423h8ygzgxmxnvrf33ws3k94aedfdevxd8h',
+      source: Cw20TokenSource.Polygon,
       tokenType: TokenType.Cw20,
     },
   },
