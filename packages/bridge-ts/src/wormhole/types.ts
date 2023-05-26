@@ -34,7 +34,6 @@ export interface EvmNativeTransferMsgArgs
 export interface InjectiveTransferMsgArgs extends TransferMsgArgs {
   injectiveAddress: string
   tokenAddress: string
-  chainId: string
 }
 
 export type WormholeContractAddresses = typeof CONTRACTS.MAINNET.injective
