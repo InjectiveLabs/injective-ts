@@ -92,6 +92,13 @@ export const CosmosNetworks = [
   BridgingNetwork.Canto,
 ]
 
+export const EvmWormholeNetworks = [
+  BridgingNetwork.EthereumWh,
+  BridgingNetwork.Polygon,
+  BridgingNetwork.Arbitrum,
+  BridgingNetwork.Klaytn,
+]
+
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Juno,
   BridgingNetwork.Evmos,
