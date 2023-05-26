@@ -44,7 +44,6 @@ export class InjectiveWormholeClient extends WormholeClient {
     provider?: MsgBroadcaster
   }) {
     super({ network, wormholeRpcUrl })
-
     this.provider = provider
   }
 
