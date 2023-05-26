@@ -26,6 +26,9 @@ export enum BridgingNetwork {
   Solana = 'solana',
   Sommelier = 'sommelier',
   Arbitrum = 'arbitrum',
+  Polygon = 'polygon',
+  Klaytn = 'klaytn',
+  Sui = 'sui',
 }
 
 export const MintScanExplorerUrl = {

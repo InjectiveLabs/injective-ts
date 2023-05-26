@@ -101,6 +101,9 @@ export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Persistence,
   BridgingNetwork.CosmosHubTestnet,
   BridgingNetwork.Arbitrum,
+  BridgingNetwork.Polygon,
+  BridgingNetwork.Sui,
+  BridgingNetwork.Klaytn,
 ]
 
 export const tokenDenomsPerNetwork = [
@@ -529,6 +532,18 @@ export const getArbitrumExplorerUrl = (network: Network): string => {
   }
 
   return 'https://arbiscan.io'
+}
+
+export const getPolygonExplorerUrl = (network: Network): string => {
+  if (isDevnet(network)) {
+    return 'https://mumbai.polygonscan.com'
+  }
+
+  if (isTestnet(network)) {
+    return 'https://mumbai.polygonscan.com'
+  }
+
+  return 'https://polygonscan.com'
 }
 
 export const getSolanaExplorerUrl = (network: Network): string => {
