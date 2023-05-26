@@ -238,6 +238,11 @@ export const tokenDenomsPerNetwork = [
     denoms: [],
     symbols: ['ARB'],
   },
+  {
+    network: BridgingNetwork.Polygon,
+    denoms: [],
+    symbols: ['WMATIC'],
+  },
 ] as NetworkConfig[]
 
 export const cosmosNativeDenomsFromChainId = {
