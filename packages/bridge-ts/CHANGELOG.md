@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-beta.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.11.0-beta.9...@injectivelabs/bridge-ts@1.11.0-beta.10) (2023-05-26)
+
+### Bug Fixes
+
+- evm provider ([1101a9e](https://github.com/InjectiveLabs/injective-ts/commit/1101a9ec4b8288caae43ec09b8584461ce7f7e4d))
+
 # [1.11.0-beta.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.11.0-beta.8...@injectivelabs/bridge-ts@1.11.0-beta.9) (2023-05-26)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
