@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-beta.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.18...@injectivelabs/token-metadata@1.11.0-beta.19) (2023-05-26)
+
+### Features
+
+- evm token support ([3e26dc4](https://github.com/InjectiveLabs/injective-ts/commit/3e26dc4e1e18f3f38dc01cce9bcb1a738a12c8b7))
+
 # [1.11.0-beta.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.17...@injectivelabs/token-metadata@1.11.0-beta.18) (2023-05-25)
 
 ### Features
