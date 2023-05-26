@@ -39,7 +39,7 @@
     "@ethereumjs/tx": "^4.1.1",
     "@injectivelabs/exceptions": "^1.10.13-beta.8",
     "@injectivelabs/networks": "^1.10.13-beta.8",
-    "@injectivelabs/sdk-ts": "^1.11.0-beta.5",
+    "@injectivelabs/sdk-ts": "^1.11.0-beta.6",
     "@injectivelabs/ts-types": "^1.10.13-beta.3",
     "@injectivelabs/utils": "^1.10.13-beta.8",
     "@keplr-wallet/cosmos": "^0.11.58",
