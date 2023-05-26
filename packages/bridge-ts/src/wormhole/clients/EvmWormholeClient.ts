@@ -43,7 +43,6 @@ export class EvmWormholeClient extends WormholeClient {
     wormholeRpcUrl?: string
   }) {
     super({ network, wormholeRpcUrl })
-
     this.wormholeSource = wormholeSource
   }
 
@@ -53,7 +52,7 @@ export class EvmWormholeClient extends WormholeClient {
     switch (wormholeSource) {
       case WormholeSource.Ethereum:
         return WORMHOLE_CHAINS.ethereum
-      case WormholeSource.Aribtrum:
+      case WormholeSource.Arbitrum:
         return WORMHOLE_CHAINS.arbitrum
       case WormholeSource.Polygon:
         return WORMHOLE_CHAINS.polygon
@@ -68,7 +67,7 @@ export class EvmWormholeClient extends WormholeClient {
     switch (wormholeSource) {
       case WormholeSource.Ethereum:
         return 1
-      case WormholeSource.Aribtrum:
+      case WormholeSource.Arbitrum:
         return 42161
       case WormholeSource.Polygon:
         return 137

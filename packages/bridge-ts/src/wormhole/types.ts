@@ -39,7 +39,7 @@ export interface InjectiveTransferMsgArgs extends TransferMsgArgs {
 
 export type WormholeContractAddresses = typeof CONTRACTS.MAINNET.injective
 export type WormholeSolanaContractAddresses = typeof CONTRACTS.MAINNET.solana
-export type WormholeAribtrumContractAddresses =
+export type WormholeArbitrumContractAddresses =
   typeof CONTRACTS.MAINNET.arbitrum
 export type WormholeEthereumContractAddresses =
   typeof CONTRACTS.MAINNET.ethereum
@@ -50,7 +50,7 @@ export type WormholeAptosContractAddresses = typeof CONTRACTS.MAINNET.aptos
 
 export enum WormholeSource {
   Ethereum = 'ethereum',
-  Aribtrum = 'arbitrum',
+  Arbitrum = 'arbitrum',
   Solana = 'solana',
   Polygon = 'polygon',
   Sui = 'sui',

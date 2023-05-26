@@ -8,7 +8,7 @@ import {
   WormholeAptosContractAddresses,
   WormholeKlaytnContractAddresses,
   WormholeSolanaContractAddresses,
-  WormholeAribtrumContractAddresses,
+  WormholeArbitrumContractAddresses,
   WormholeEthereumContractAddresses,
   WormholePolygonContractAddresses,
 } from './types'
@@ -130,7 +130,7 @@ export const getArbitrumContractAddresses = (network: Network) => {
   const associatedChainContractAddresses =
     WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK(
       network,
-    ) as WormholeAribtrumContractAddresses
+    ) as WormholeArbitrumContractAddresses
   const injectiveContractAddresses = WORMHOLE_CONTRACT_BY_NETWORK(
     network,
   ) as WormholeContractAddresses
@@ -143,7 +143,7 @@ export const getArbitrumContractAddresses = (network: Network) => {
 
   if (!associatedChainContractAddresses) {
     throw new GeneralException(
-      new Error(`Contracts for ${network} on Aribtrum not found`),
+      new Error(`Contracts for ${network} on Arbitrum not found`),
     )
   }
 
@@ -155,7 +155,7 @@ export const getArbitrumContractAddresses = (network: Network) => {
 
   if (!associatedChainContractAddresses.token_bridge) {
     throw new GeneralException(
-      new Error(`Token Bridge Address for ${network} on Aribtrum not found`),
+      new Error(`Token Bridge Address for ${network} on Arbitrum not found`),
     )
   }
 
@@ -326,7 +326,7 @@ export const getContractAddresses = (
       return getSolanaContractAddresses(network)
     case WormholeSource.Ethereum:
       return getEthereumContractAddresses(network)
-    case WormholeSource.Aribtrum:
+    case WormholeSource.Arbitrum:
       return getArbitrumContractAddresses(network)
     case WormholeSource.Sui:
       return getSuiContractAddresses(network)
@@ -349,7 +349,7 @@ export const getAssociatedChain = (
       return WORMHOLE_CHAINS.solana
     case WormholeSource.Ethereum:
       return WORMHOLE_CHAINS.ethereum
-    case WormholeSource.Aribtrum:
+    case WormholeSource.Arbitrum:
       return WORMHOLE_CHAINS.arbitrum
     case WormholeSource.Sui:
       return WORMHOLE_CHAINS.sui
@@ -373,7 +373,7 @@ export const getAssociatedChainRecipient = (
       return new SolanaPublicKey(recipient).toString()
     case WormholeSource.Ethereum:
       return recipient /* Hex Ethereum Address */
-    case WormholeSource.Aribtrum:
+    case WormholeSource.Arbitrum:
       return recipient /* Hex Address */
     case WormholeSource.Polygon:
       return recipient /* Hex Address */
