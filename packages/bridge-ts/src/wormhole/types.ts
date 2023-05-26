@@ -22,12 +22,12 @@ export interface SolanaNativeTransferMsgArgs
   //
 }
 
-export interface EthereumTransferMsgArgs extends TransferMsgArgs {
+export interface EvmTransferMsgArgs extends TransferMsgArgs {
   tokenAddress: string
 }
 
-export interface EthereumNativeTransferMsgArgs
-  extends Omit<EthereumTransferMsgArgs, 'tokenAddress'> {
+export interface EvmNativeTransferMsgArgs
+  extends Omit<EvmTransferMsgArgs, 'tokenAddress'> {
   //
 }
 

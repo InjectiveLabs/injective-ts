@@ -13,30 +13,71 @@ import {
   parseSequenceFromLogEth,
   getIsTransferCompletedEth,
   ethers_contracts as EthersContracts,
+  ChainId,
+  transferFromEthNative,
 } from '@certusone/wormhole-sdk'
 import { BigNumber, sleep } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
 import { zeroPad } from 'ethers/lib/utils'
 import { WORMHOLE_CHAINS } from '../constants'
-import { EthereumTransferMsgArgs, WormholeSource } from '../types'
-import { getContractAddresses } from '../utils'
+import {
+  WormholeSource,
+  EvmTransferMsgArgs,
+  EvmNativeTransferMsgArgs,
+} from '../types'
+import { getContractAddresses, getEvmNativeAddress } from '../utils'
 import { WormholeClient } from '../WormholeClient'
 
 type Provider = ethers.providers.Web3Provider | undefined
 
-export class EthereumWormholeClient extends WormholeClient {
+export class EvmWormholeClient extends WormholeClient {
+  public wormholeSource: WormholeSource = WormholeSource.Ethereum
+
   constructor({
     network,
     wormholeRpcUrl,
+    wormholeSource,
   }: {
     network: Network
+    wormholeSource: WormholeSource
     wormholeRpcUrl?: string
   }) {
     super({ network, wormholeRpcUrl })
+
+    this.wormholeSource = wormholeSource
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async getErc20TokenBalanceNoThrow({
+  get wormholeChainId(): ChainId {
+    const { wormholeSource } = this
+
+    switch (wormholeSource) {
+      case WormholeSource.Ethereum:
+        return WORMHOLE_CHAINS.ethereum
+      case WormholeSource.Aribtrum:
+        return WORMHOLE_CHAINS.arbitrum
+      case WormholeSource.Polygon:
+        return WORMHOLE_CHAINS.polygon
+      default:
+        return WORMHOLE_CHAINS.arbitrum
+    }
+  }
+
+  get evmChainId(): number {
+    const { wormholeSource } = this
+
+    switch (wormholeSource) {
+      case WormholeSource.Ethereum:
+        return 1
+      case WormholeSource.Aribtrum:
+        return 42161
+      case WormholeSource.Polygon:
+        return 137
+      default:
+        return 1
+    }
+  }
+
+  async getEvmTokenBalanceNoThrow({
     address,
     tokenAddress,
     provider,
@@ -49,7 +90,7 @@ export class EthereumWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide provider`))
     }
 
-    const signer = provider.getSigner()
+    const signer = await this.getProviderAndChainIdCheck(provider)
     const tokenContract = EthersContracts.ERC20__factory.connect(
       tokenAddress,
       signer,
@@ -62,8 +103,7 @@ export class EthereumWormholeClient extends WormholeClient {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async getErc20TokenAllowance({
+  async getEvmTokenAllowance({
     address,
     tokenAddress,
     provider,
@@ -72,7 +112,7 @@ export class EthereumWormholeClient extends WormholeClient {
     tokenAddress: string
     provider: Provider
   }) {
-    const { network } = this
+    const { network, wormholeSource } = this
 
     if (!provider) {
       throw new GeneralException(new Error(`Please provide provider`))
@@ -80,10 +120,10 @@ export class EthereumWormholeClient extends WormholeClient {
 
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      wormholeSource,
     )
 
-    const signer = provider.getSigner()
+    const signer = await this.getProviderAndChainIdCheck(provider)
     const tokenContract = EthersContracts.ERC20__factory.connect(
       tokenAddress,
       signer,
@@ -97,10 +137,8 @@ export class EthereumWormholeClient extends WormholeClient {
     ).toString()
   }
 
-  async transferToInjective(
-    args: EthereumTransferMsgArgs & { provider: Provider },
-  ) {
-    const { network, wormholeRpcUrl } = this
+  async transferToInjective(args: EvmTransferMsgArgs & { provider: Provider }) {
+    const { network, wormholeRpcUrl, wormholeSource } = this
     const { amount, recipient, provider, tokenAddress } = args
 
     if (!wormholeRpcUrl) {
@@ -115,17 +153,13 @@ export class EthereumWormholeClient extends WormholeClient {
       throw new GeneralException(new Error(`Please provide recipient`))
     }
 
-    if (!provider) {
-      throw new GeneralException(new Error(`Please provide provider`))
-    }
-
-    const signer = provider.getSigner()
+    const signer = await this.getProviderAndChainIdCheck(provider)
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      wormholeSource,
     )
 
-    const allowance = await this.getErc20TokenAllowance({
+    const allowance = await this.getEvmTokenAllowance({
       address: await signer.getAddress(),
       tokenAddress,
       provider,
@@ -163,8 +197,67 @@ export class EthereumWormholeClient extends WormholeClient {
     }
   }
 
+  async transferNativeToInjective(
+    args: EvmNativeTransferMsgArgs & { provider: Provider },
+  ) {
+    const { network, wormholeRpcUrl, wormholeSource } = this
+    const { amount, recipient, provider } = args
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    if (!recipient) {
+      throw new GeneralException(new Error(`Please provide recipient`))
+    }
+
+    const signer = await this.getProviderAndChainIdCheck(provider)
+
+    const nativeTokenAddress = getEvmNativeAddress(network, wormholeSource)
+    const { associatedChainContractAddresses } = getContractAddresses(
+      network,
+      wormholeSource,
+    )
+
+    const allowance = await this.getEvmTokenAllowance({
+      address: await signer.getAddress(),
+      tokenAddress: nativeTokenAddress,
+      provider,
+    })
+
+    if (new BigNumber(allowance).lt(amount)) {
+      await approveEth(
+        associatedChainContractAddresses.token_bridge,
+        nativeTokenAddress,
+        signer,
+        new BigNumber(2).pow(256).minus(1).toFixed(),
+      )
+    }
+
+    const transferReceipt = await transferFromEthNative(
+      associatedChainContractAddresses.token_bridge,
+      signer,
+      amount,
+      WORMHOLE_CHAINS.injective,
+      hexToUint8Array(
+        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
+      ),
+    )
+
+    if (!transferReceipt) {
+      throw new Error('An error occurred while fetching the transaction info')
+    }
+
+    return {
+      txHash: transferReceipt.transactionHash,
+      ...transferReceipt,
+    } as ethers.ContractReceipt & {
+      txHash: string
+    }
+  }
+
   async getSignedVAA(txResponse: ethers.ContractReceipt) {
-    const { network, wormholeRpcUrl } = this
+    const { network, wormholeSource, wormholeRpcUrl, wormholeChainId } = this
 
     if (!wormholeRpcUrl) {
       throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
@@ -172,7 +265,7 @@ export class EthereumWormholeClient extends WormholeClient {
 
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      wormholeSource,
     )
 
     const sequence = parseSequenceFromLogEth(
@@ -185,7 +278,7 @@ export class EthereumWormholeClient extends WormholeClient {
 
     const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
       [wormholeRpcUrl],
-      WORMHOLE_CHAINS.ethereum,
+      wormholeChainId,
       emitterAddress,
       sequence,
       {
@@ -200,16 +293,12 @@ export class EthereumWormholeClient extends WormholeClient {
     signedVAA: string /* in base 64 */,
     provider: Provider,
   ): Promise<ethers.ContractReceipt> {
-    const { network } = this
+    const { network, wormholeSource } = this
 
-    if (!provider) {
-      throw new GeneralException(new Error(`Please provide provider`))
-    }
-
-    const signer = provider.getSigner()
+    const signer = await this.getProviderAndChainIdCheck(provider)
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      wormholeSource,
     )
 
     return redeemOnEth(
@@ -223,16 +312,12 @@ export class EthereumWormholeClient extends WormholeClient {
     signedVAA: string /* in base 64 */,
     provider: Provider,
   ) {
-    const { network } = this
+    const { network, wormholeSource } = this
 
-    if (!provider) {
-      throw new GeneralException(new Error(`Please provide provider`))
-    }
-
-    const signer = provider.getSigner()
+    const signer = await this.getProviderAndChainIdCheck(provider)
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
-      WormholeSource.Ethereum,
+      wormholeSource,
     )
 
     return getIsTransferCompletedEth(
@@ -258,5 +343,22 @@ export class EthereumWormholeClient extends WormholeClient {
     }
 
     return false
+  }
+
+  private async getProviderAndChainIdCheck(provider: Provider) {
+    if (!provider) {
+      throw new GeneralException(new Error(`Please provide provider`))
+    }
+
+    const signer = provider.getSigner()
+    const chainId = await signer.getChainId()
+
+    if (chainId !== this.evmChainId) {
+      throw new GeneralException(
+        new Error(`Please switch to the ${this.evmChainId} Network`),
+      )
+    }
+
+    return signer
   }
 }

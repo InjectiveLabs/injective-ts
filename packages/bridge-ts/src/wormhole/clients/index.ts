@@ -1,5 +1,3 @@
-export * from './EthereumWormholeClient'
-export * from './ArbitrumWormholeClient'
+export * from './EvmWormholeClient'
 export * from './SolanaWormholeClient'
-export * from './PolygonWormholeClient'
 export * from './InjectiveWormholeClient'
