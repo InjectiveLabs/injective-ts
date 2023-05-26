@@ -1,12 +1,10 @@
 import { CONTRACTS } from '@certusone/wormhole-sdk'
-import { ChainId } from '@injectivelabs/ts-types'
 import { PublicKey } from '@solana/web3.js'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 
 export interface TransferMsgArgs {
   amount: string
   recipient: string
-  recipientChainId: ChainId | number | string
   relayerFee?: string
   payload?: Uint8Array | null
 }
