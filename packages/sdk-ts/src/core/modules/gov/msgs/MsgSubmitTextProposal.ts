@@ -1,3 +1,4 @@
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -5,7 +6,6 @@ import {
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitTextProposal {
   export interface Params {
@@ -73,19 +73,18 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const content = this.getContent()
-    const proposalType = 'cosmos-sdk/TextProposal'
-
-    const message = {
-      content,
-      proposer: params.proposer,
-    }
 
     const messageWithProposalType = snakecaseKeys({
-      ...message,
+      proposer: params.proposer,
+      initialDeposit: [
+        {
+          denom: params.deposit.denom,
+          amount: params.deposit.amount,
+        },
+      ],
       content: {
-        value: message.content,
-        type: proposalType,
+        type_url: 'cosmos-sdk/TextProposal',
+        value: this.getContent(),
       },
     })
 
@@ -98,19 +97,18 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
   public toWeb3() {
     const { params } = this
-    const content = this.getContent()
-    const proposalType = '/cosmos.gov.v1beta1.TextProposal'
-
-    const message = {
-      content,
-      proposer: params.proposer,
-    }
 
     const messageWithProposalType = {
-      ...message,
+      proposer: params.proposer,
+      initialDeposit: [
+        {
+          denom: params.deposit.denom,
+          amount: params.deposit.amount,
+        },
+      ],
       content: {
-        ...message.content,
-        '@type': proposalType,
+        '@type': '/cosmos.gov.v1beta1.TextProposal',
+        ...this.getContent(),
       },
     }
 

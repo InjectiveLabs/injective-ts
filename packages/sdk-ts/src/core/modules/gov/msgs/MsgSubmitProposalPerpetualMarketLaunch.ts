@@ -1,3 +1,4 @@
+import snakecaseKeys from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -6,7 +7,7 @@ import {
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
-import snakecaseKeys from 'snakecase-keys'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   export interface Params {
@@ -43,6 +44,32 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   }
 }
 
+const createPerpetualMarketLaunch = (
+  params: MsgSubmitProposalPerpetualMarketLaunch.Params,
+) => {
+  const content =
+    InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.create()
+
+  content.title = params.market.title
+  content.description = params.market.description
+  content.quoteDenom = params.market.quoteDenom
+  content.ticker = params.market.ticker
+  content.initialMarginRatio = params.market.initialMarginRatio
+  content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
+  content.makerFeeRate = params.market.makerFeeRate
+  content.takerFeeRate = params.market.takerFeeRate
+  content.oracleBase = params.market.oracleBase
+  content.oracleQuote = params.market.oracleQuote
+  content.oracleScaleFactor = params.market.oracleScaleFactor
+  content.oracleType = params.market.oracleType
+  content.minPriceTickSize = params.market.minPriceTickSize
+  content.minQuantityTickSize = params.market.minQuantityTickSize
+
+  return InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.fromPartial(
+    content,
+  )
+}
+
 /**
  * @category Messages
  */
@@ -64,16 +91,35 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
-    const content = this.getContent()
-    const proposalType =
-      '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal'
+    const content = createPerpetualMarketLaunch({
+      ...params,
+      market: {
+        ...params.market,
+        initialMarginRatio: amountToCosmosSdkDecAmount(
+          params.market.initialMarginRatio,
+        ).toFixed(),
+        maintenanceMarginRatio: amountToCosmosSdkDecAmount(
+          params.market.maintenanceMarginRatio,
+        ).toFixed(),
+        makerFeeRate: amountToCosmosSdkDecAmount(
+          params.market.makerFeeRate,
+        ).toFixed(),
+        takerFeeRate: amountToCosmosSdkDecAmount(
+          params.market.takerFeeRate,
+        ).toFixed(),
+        minQuantityTickSize: amountToCosmosSdkDecAmount(
+          params.market.minQuantityTickSize,
+        ).toFixed(),
+      },
+    })
 
     const contentAny = GoogleProtobufAny.Any.create()
     contentAny.value =
       InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.encode(
         content,
       ).finish()
-    contentAny.typeUrl = proposalType
+    contentAny.typeUrl =
+      '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal'
 
     const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
     message.content = contentAny
@@ -94,19 +140,18 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const content = this.getContent()
-    const proposalType = 'exchange/PerpetualMarketLaunchProposal'
-
-    const message = {
-      content,
-      proposer: params.proposer,
-    }
 
     const messageWithProposalType = {
-      ...message,
+      proposer: params.proposer,
+      initialDeposit: [
+        {
+          denom: params.deposit.denom,
+          amount: params.deposit.amount,
+        },
+      ],
       content: {
-        value: message.content,
-        type: proposalType,
+        type_url: 'exchange/PerpetualMarketLaunchProposal',
+        value: this.getContent(),
       },
     }
 
@@ -119,20 +164,18 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
 
   public toWeb3() {
     const { params } = this
-    const content = this.getContent()
-    const proposalType =
-      '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal'
-
-    const message = {
-      content,
-      proposer: params.proposer,
-    }
 
     const messageWithProposalType = snakecaseKeys({
-      ...message,
+      proposer: params.proposer,
+      initialDeposit: [
+        {
+          denom: params.deposit.denom,
+          amount: params.deposit.amount,
+        },
+      ],
       content: {
-        ...message.content,
-        '@type': proposalType,
+        '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
+        ...this.getContent(),
       },
     })
 
@@ -158,25 +201,6 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
   private getContent() {
     const { params } = this
 
-    const content =
-      InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.create()
-    content.title = params.market.title
-    content.description = params.market.description
-    content.quoteDenom = params.market.quoteDenom
-    content.ticker = params.market.ticker
-    content.initialMarginRatio = params.market.initialMarginRatio
-    content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
-    content.makerFeeRate = params.market.makerFeeRate
-    content.takerFeeRate = params.market.takerFeeRate
-    content.oracleBase = params.market.oracleBase
-    content.oracleQuote = params.market.oracleQuote
-    content.oracleScaleFactor = params.market.oracleScaleFactor
-    content.oracleType = params.market.oracleType
-    content.minPriceTickSize = params.market.minPriceTickSize
-    content.minQuantityTickSize = params.market.minQuantityTickSize
-
-    return InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.fromPartial(
-      content,
-    )
+    return createPerpetualMarketLaunch(params)
   }
 }
