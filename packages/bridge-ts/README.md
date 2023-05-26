@@ -1,6 +1,6 @@
 # 🌟 Injective Protocol - Bridge TS
 
-Bridge related utilities.
+Bridge related utilities and functions
 
 ---
 
