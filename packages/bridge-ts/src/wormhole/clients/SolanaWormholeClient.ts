@@ -64,9 +64,13 @@ export class SolanaWormholeClient
   }
 
   async getAddress() {
-    const provider = await this.getProvider()
+    try {
+      const provider = await this.getProvider()
 
-    return provider.publicKey?.toString() || ''
+      return provider.publicKey?.toString() || ''
+    } catch (e) {
+      return ''
+    }
   }
 
   async getBalance(address: string | PublicKey, tokenAddress?: string) {

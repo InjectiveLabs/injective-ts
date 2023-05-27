@@ -6,6 +6,7 @@ import {
   MsgExecuteContractCompat,
   ChainGrpcBankApi,
   IndexerRestExplorerApi,
+  getInjectiveAddress,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -29,7 +30,7 @@ import {
 import { BaseWormholeClient } from '../WormholeClient'
 
 interface MsgBroadcaster {
-  getAddress: () => Promise<string>
+  walletStrategy: { getAddresses: () => Promise<string[]> }
   broadcast: (params: any) => Promise<TxResponse>
   broadcastOld: (params: any) => Promise<TxResponse>
 }
@@ -54,7 +55,15 @@ export class InjectiveWormholeClient
   }
 
   async getAddress() {
-    return (await this.provider?.getAddress()) || ''
+    const walletStrategy = this.provider?.walletStrategy
+
+    if (!walletStrategy) {
+      return ''
+    }
+
+    const [address] = await walletStrategy.getAddresses()
+
+    return address.startsWith('0x') ? getInjectiveAddress(address) : address
   }
 
   async getBalance(
