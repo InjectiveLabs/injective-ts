@@ -63,6 +63,12 @@ export class SolanaWormholeClient
     this.provider = provider
   }
 
+  async getAddress() {
+    const provider = await this.getProvider()
+
+    return provider.publicKey?.toString() || ''
+  }
+
   async getBalance(address: string | PublicKey, tokenAddress?: string) {
     if (tokenAddress) {
       throw new GeneralException(new Error(`SPL tokens not supported yet`))
@@ -205,11 +211,9 @@ export class SolanaWormholeClient
   async postVAAWithRetry({
     solanaPubKey,
     signedVAA,
-    provider,
   }: {
     solanaPubKey: string
     signedVAA: string /* in base 64 */
-    provider: BaseMessageSignerWalletAdapter
   }): Promise<TransactionSignatureAndResponse[]> {
     const { network, solanaHostUrl } = this
     const MAX_VAA_UPLOAD_RETRIES_SOLANA = 5
@@ -218,6 +222,7 @@ export class SolanaWormholeClient
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
+    const provider = await this.getProvider()
     const { associatedChainContractAddresses } = getContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
@@ -232,10 +237,7 @@ export class SolanaWormholeClient
     )
   }
 
-  async createAssociatedTokenAddress(
-    tokenAddress: string,
-    provider: BaseMessageSignerWalletAdapter,
-  ) {
+  async createAssociatedTokenAddress(tokenAddress: string) {
     const { solanaHostUrl, network } = this
     const endpoints = getNetworkEndpoints(network)
 
@@ -243,6 +245,7 @@ export class SolanaWormholeClient
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
+    const provider = await this.getProvider()
     const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
@@ -293,16 +296,14 @@ export class SolanaWormholeClient
     return recipient.toString()
   }
 
-  async signSendAndConfirmTransaction(
-    transaction: Transaction,
-    provider: BaseMessageSignerWalletAdapter,
-  ) {
+  async signSendAndConfirmTransaction(transaction: Transaction) {
     const { solanaHostUrl } = this
 
     if (!solanaHostUrl) {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
+    const provider = await this.getProvider()
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
     const signed = await provider.signTransaction(transaction)
@@ -322,9 +323,11 @@ export class SolanaWormholeClient
   }
 
   private async transferToken(args: TransferMsgArgs) {
-    const { network, solanaHostUrl, wormholeRpcUrl, provider } = this
+    const { network, solanaHostUrl, wormholeRpcUrl } = this
     const { amount, recipient, signer } = args
     const endpoints = getNetworkEndpoints(network)
+
+    const provider = await this.getProvider()
     const pubKey = provider.publicKey || new PublicKey(signer || '')
 
     if (!solanaHostUrl) {
@@ -400,8 +403,10 @@ export class SolanaWormholeClient
   }
 
   private async transferNative(args: TransferMsgArgs) {
-    const { network, solanaHostUrl, wormholeRpcUrl, provider } = this
+    const { network, solanaHostUrl, wormholeRpcUrl } = this
     const { amount, recipient, signer } = args
+
+    const provider = await this.getProvider()
     const pubKey = provider.publicKey || new PublicKey(signer || '')
 
     if (!solanaHostUrl) {
@@ -444,6 +449,26 @@ export class SolanaWormholeClient
 
     return { txHash: transactionId, ...txResponse } as TransactionResponse & {
       txHash: string
+    }
+  }
+
+  private async getProvider(): Promise<
+    BaseMessageSignerWalletAdapter<'Phantom'>
+  > {
+    try {
+      return await new Promise((resolve, reject) => {
+        this.provider
+          .connect()
+          .then(() => {
+            resolve(
+              this
+                .provider as unknown as BaseMessageSignerWalletAdapter<'Phantom'>,
+            )
+          })
+          .catch(reject)
+      })
+    } catch (e) {
+      throw new GeneralException(new Error(e as any))
     }
   }
 }

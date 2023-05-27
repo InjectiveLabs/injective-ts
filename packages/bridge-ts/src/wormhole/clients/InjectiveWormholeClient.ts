@@ -29,6 +29,7 @@ import {
 import { BaseWormholeClient } from '../WormholeClient'
 
 interface MsgBroadcaster {
+  getAddress: () => Promise<string>
   broadcast: (params: any) => Promise<TxResponse>
   broadcastOld: (params: any) => Promise<TxResponse>
 }
@@ -50,6 +51,10 @@ export class InjectiveWormholeClient
   }) {
     super({ network, wormholeRpcUrl })
     this.provider = provider
+  }
+
+  async getAddress() {
+    return (await this.provider?.getAddress()) || ''
   }
 
   async getBalance(

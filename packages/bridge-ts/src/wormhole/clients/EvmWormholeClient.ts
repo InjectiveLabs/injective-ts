@@ -86,6 +86,12 @@ export class EvmWormholeClient
     }
   }
 
+  async getAddress() {
+    const signer = await this.getProviderAndChainIdCheck()
+
+    return signer.getAddress()
+  }
+
   async getBalance(address: string, tokenAddress?: string) {
     const signer = await this.getProviderAndChainIdCheck()
 

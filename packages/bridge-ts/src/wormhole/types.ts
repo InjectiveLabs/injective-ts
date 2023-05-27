@@ -43,6 +43,7 @@ export interface WormholeClient<
     | TransactionResponse,
   R extends Transaction | MsgExecuteContractCompat | ethers.ContractReceipt,
 > {
+  getAddress: () => Promise<string>
   getBalance: (address: string, tokenAddress?: string) => Promise<string>
   transfer: (args: TransferMsgArgs) => Promise<T>
   getSignedVAA: (tx: T) => Promise<string /* base 64 */>
