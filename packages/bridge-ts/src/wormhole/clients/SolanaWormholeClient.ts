@@ -78,7 +78,6 @@ export class SolanaWormholeClient
 
       return balance
     } catch (e) {
-      console
       return '0'
     }
   }

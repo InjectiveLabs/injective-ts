@@ -87,17 +87,20 @@ export class EvmWormholeClient
   }
 
   async getBalance(address: string, tokenAddress?: string) {
-    if (!tokenAddress) {
-      throw new GeneralException(new Error(`Native token not supported yet`))
-    }
-
     const signer = await this.getProviderAndChainIdCheck()
-    const tokenContract = EthersContracts.ERC20__factory.connect(
-      tokenAddress,
-      signer,
-    )
 
     try {
+      if (!tokenAddress) {
+        const balance = await signer.provider.getBalance(address)
+
+        return balance.toNumber().toString()
+      }
+
+      const tokenContract = EthersContracts.ERC20__factory.connect(
+        tokenAddress,
+        signer,
+      )
+
       return (await tokenContract.balanceOf(address)).toString()
     } catch (e) {
       return '0'
