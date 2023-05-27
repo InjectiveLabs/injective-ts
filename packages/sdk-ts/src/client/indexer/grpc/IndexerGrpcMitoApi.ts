@@ -63,18 +63,18 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchVaults({
-    pageSize,
-    pageIndex,
+    limit,
     codeId,
+    pageIndex,
   }: {
-    pageSize?: number
-    pageIndex?: number
+    limit?: number
     codeId?: string
+    pageIndex?: number
   }) {
     const request = MitoApi.GetVaultsRequest.create()
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (pageIndex) {
@@ -109,13 +109,13 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchLpTokenPriceChart({
-    vaultAddress,
-    from,
     to,
+    from,
+    vaultAddress,
   }: {
-    vaultAddress: string
-    from?: string
     to?: string
+    from?: string
+    vaultAddress: string
   }) {
     const request = MitoApi.LPTokenPriceChartRequest.create()
 
@@ -155,13 +155,13 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchTVLChartRequest({
-    vaultAddress,
-    from,
     to,
+    from,
+    vaultAddress,
   }: {
-    vaultAddress: string
-    from?: string
     to?: string
+    from?: string
+    vaultAddress: string
   }) {
     const request = MitoApi.TVLChartRequest.create()
 
@@ -201,12 +201,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchVaultsByHolderAddress({
-    pageSize,
+    limit,
     pageIndex,
     holderAddress,
     vaultAddress,
   }: {
-    pageSize?: number
+    limit?: number
     pageIndex?: number
     holderAddress: string
     vaultAddress?: string
@@ -219,8 +219,8 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.vaultAddress = vaultAddress
     }
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (pageIndex) {
@@ -253,11 +253,11 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchLPHolders({
-    pageSize,
+    limit,
     pageIndex,
     vaultAddress,
   }: {
-    pageSize?: number
+    limit?: number
     pageIndex?: number
     vaultAddress: string
   }) {
@@ -265,8 +265,8 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     request.vaultAddress = vaultAddress
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (pageIndex) {
@@ -359,13 +359,13 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   async fetchTransferHistory({
     vault,
     account,
-    pageSize,
+    limit,
     toNumber,
     fromNumber,
   }: {
     vault?: string
     account?: string
-    pageSize?: number
+    limit?: number
     toNumber?: number
     fromNumber?: number
   }) {
@@ -379,8 +379,8 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.account = account
     }
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (toNumber) {
@@ -417,18 +417,18 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchLeaderboardEpochs({
-    pageSize,
+    limit,
     toEpochId,
     fromEpochId,
   }: {
-    pageSize?: number
+    limit?: number
     toEpochId?: number
     fromEpochId?: number
   }) {
     const request = MitoApi.LeaderboardEpochsRequest.create()
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (toEpochId) {
@@ -499,18 +499,18 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   async fetchStakingHistory({
     staker,
     toNumber,
-    pageSize,
+    limit,
     fromNumber,
   }: {
     staker?: string
-    pageSize?: number
+    limit?: number
     toNumber?: number
     fromNumber?: number
   } = {}) {
     const request = MitoApi.StakingHistoryRequest.create()
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (staker) {
