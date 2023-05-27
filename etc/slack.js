@@ -1,6 +1,29 @@
 const fs = require('fs')
 const https = require('node:https')
 
+function getActor() {
+  const actorValue = process.argv.find((arg) => arg.startsWith('--actor'))
+
+  return actorValue.split('=').pop()
+}
+
+function getPublishedMessage() {
+  const actor = getActor()
+  const commitMessageIndex = process.argv.findIndex((arg) =>
+    arg.startsWith('--commit-message'),
+  )
+
+  if (commitMessageIndex === -1) {
+    return `Published packages: ${actor}`
+  }
+
+  return `${process.argv
+    .slice(commitMessageIndex)
+    .join(' ')
+    .split('=')
+    .pop()} (${actor})`
+}
+
 function getSlackAPI() {
   const apiValue = process.argv.find((arg) => arg.startsWith('--api='))
 
@@ -35,7 +58,7 @@ function sendSlackMessage(webhookURL, publishedItems) {
             elements: [
               {
                 type: 'text',
-                text: 'Published packages:',
+                text: getPublishedMessage(),
                 style: {
                   bold: true,
                 },
