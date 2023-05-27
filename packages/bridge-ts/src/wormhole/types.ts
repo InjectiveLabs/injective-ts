@@ -1,37 +1,16 @@
 import { CONTRACTS } from '@certusone/wormhole-sdk'
-import { PublicKey } from '@solana/web3.js'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
+import { ethers } from 'ethers'
+import { TxResponse, MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'
+import { TransactionResponse, Transaction } from '@solana/web3.js'
 
 export interface TransferMsgArgs {
   amount: string
+  signer?: string
+  tokenAddress?: string
   recipient: string
   relayerFee?: string
   payload?: Uint8Array | null
-}
-
-/* The recipient is the Injective Address that receives the assets */
-export interface SolanaTransferMsgArgs extends TransferMsgArgs {
-  tokenAddress: string
-  signerPubKey?: PublicKey
-}
-
-export interface SolanaNativeTransferMsgArgs
-  extends Omit<SolanaTransferMsgArgs, 'tokenAddress'> {
-  //
-}
-
-export interface EvmTransferMsgArgs extends TransferMsgArgs {
-  tokenAddress: string
-}
-
-export interface EvmNativeTransferMsgArgs
-  extends Omit<EvmTransferMsgArgs, 'tokenAddress'> {
-  //
-}
-
-export interface InjectiveTransferMsgArgs extends TransferMsgArgs {
-  injectiveAddress: string
-  tokenAddress: string
 }
 
 export type WormholeContractAddresses = typeof CONTRACTS.MAINNET.injective
@@ -53,6 +32,32 @@ export enum WormholeSource {
   Sui = 'sui',
   Klaytn = 'klaytn',
   Aptos = 'aptos',
+}
+
+export interface WormholeClient<
+  T extends
+    | (ethers.ContractReceipt & {
+        txHash: string
+      })
+    | TxResponse
+    | TransactionResponse,
+  R extends Transaction | MsgExecuteContractCompat | ethers.ContractReceipt,
+> {
+  getBalance: (address: string, tokenAddress?: string) => Promise<string>
+  transfer: (args: TransferMsgArgs) => Promise<T>
+  getSignedVAA: (tx: T) => Promise<string /* base 64 */>
+  getTxResponse: (txHash: string) => Promise<T>
+  getIsTransferCompleted: (
+    signedVAA: string /* in base 64 */,
+  ) => Promise<boolean>
+  getIsTransferCompletedRetry: (
+    signedVAA: string /* in base 64 */,
+  ) => Promise<boolean>
+  redeem: (
+    recipient: string,
+    signedVAA: string /* base64 */,
+    isNative?: boolean,
+  ) => Promise<R>
 }
 
 export { BaseMessageSignerWalletAdapter }

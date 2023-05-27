@@ -4,6 +4,8 @@ import {
   getGrpcTransport,
   ChainGrpcWasmApi,
   MsgExecuteContractCompat,
+  ChainGrpcBankApi,
+  IndexerRestExplorerApi,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -16,22 +18,25 @@ import {
   parseSequenceFromLogInjective,
   getIsTransferCompletedInjective,
 } from '../injective'
-import { sleep } from '@injectivelabs/utils'
+import { INJ_DENOM, sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
-import { InjectiveTransferMsgArgs, WormholeSource } from '../types'
+import { TransferMsgArgs, WormholeClient, WormholeSource } from '../types'
 import {
   getAssociatedChain,
   getContractAddresses,
   getAssociatedChainRecipient,
 } from '../utils'
-import { WormholeClient } from '../WormholeClient'
+import { BaseWormholeClient } from '../WormholeClient'
 
 interface MsgBroadcaster {
   broadcast: (params: any) => Promise<TxResponse>
   broadcastOld: (params: any) => Promise<TxResponse>
 }
 
-export class InjectiveWormholeClient extends WormholeClient {
+export class InjectiveWormholeClient
+  extends BaseWormholeClient
+  implements WormholeClient<TxResponse, MsgExecuteContractCompat>
+{
   public provider?: MsgBroadcaster
 
   constructor({
@@ -47,44 +52,27 @@ export class InjectiveWormholeClient extends WormholeClient {
     this.provider = provider
   }
 
-  async getBridgedAssetBalance(
-    injectiveAddress: string,
-    tokenAddress: string /* CW20 address on Injective */,
+  async getBalance(
+    address: string,
+    tokenAddress?: string /* CW20 address on Injective */,
   ) {
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
 
-    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
+    const chainGrpcBankApi = new ChainGrpcBankApi(endpoints.grpc)
+    const { balances } = await chainGrpcBankApi.fetchBalances(address)
 
-    const response = await chainGrpcWasmApi.fetchSmartContractState(
-      tokenAddress,
-      Buffer.from(
-        JSON.stringify({
-          balance: {
-            address: injectiveAddress,
-          },
-        }),
-      ).toString('base64'),
+    const balance = balances.find((balance) =>
+      tokenAddress
+        ? balance.denom.includes(tokenAddress)
+        : balance.denom === INJ_DENOM,
     )
 
-    if (response.data) {
-      const state = JSON.parse(Buffer.from(response.data).toString()) as {
-        balance: string
-      }
-
-      return { address: tokenAddress, balance: state.balance } as {
-        address: string
-        balance: string
-      }
-    }
-
-    throw new GeneralException(
-      new Error(`Could not get the balance from the token bridge contract`),
-    )
+    return balance?.amount || '0'
   }
 
-  async transferFromInjective(
-    args: InjectiveTransferMsgArgs & {
+  async transfer(
+    args: TransferMsgArgs & {
       /**
        * Additional messages that we run before the bridge, an example
        * could be redeeming from the token factory to CW20
@@ -99,6 +87,7 @@ export class InjectiveWormholeClient extends WormholeClient {
     const { network, wormholeRpcUrl, provider } = this
     const {
       amount,
+      signer,
       additionalMsgs = [],
       recipient: recipientArg,
       destination = WormholeSource.Solana,
@@ -127,13 +116,17 @@ export class InjectiveWormholeClient extends WormholeClient {
       )
     }
 
+    if (!signer) {
+      throw new GeneralException(new Error(`Please provide signer`))
+    }
+
     const { injectiveContractAddresses } = getContractAddresses(
       network,
       destination,
     )
 
     const messages = await transferFromInjective(
-      args.injectiveAddress,
+      signer,
       injectiveContractAddresses.token_bridge,
       args.tokenAddress,
       amount,
@@ -143,7 +136,7 @@ export class InjectiveWormholeClient extends WormholeClient {
 
     const txResponse = (await provider.broadcastOld({
       msgs: [...additionalMsgs, ...messages],
-      injectiveAddress: args.injectiveAddress,
+      injectiveAddress: signer,
     })) as TxResponse
 
     if (!txResponse) {
@@ -151,6 +144,26 @@ export class InjectiveWormholeClient extends WormholeClient {
     }
 
     return txResponse
+  }
+
+  async getTxResponse(txHash: string) {
+    const { network } = this
+    const endpoints = getNetworkEndpoints(network)
+
+    const indexerRestExplorerApi = new IndexerRestExplorerApi(endpoints.rest)
+    const txResponse = await indexerRestExplorerApi.fetchTransaction(txHash)
+
+    if (!txResponse) {
+      throw new Error('An error occurred while fetching the transaction info')
+    }
+
+    return {
+      ...txResponse,
+      txHash: txResponse.hash,
+      height: txResponse.blockNumber,
+      rawLog: txResponse.data,
+      timestamp: txResponse.blockTimestamp,
+    } as TxResponse
   }
 
   async getSignedVAA(txResponse: TxResponse) {
@@ -178,6 +191,34 @@ export class InjectiveWormholeClient extends WormholeClient {
     )
 
     return Buffer.from(signedVAA).toString('base64')
+  }
+
+  async getIsTransferCompleted(signedVAA: string /* in base 64 */) {
+    const { network } = this
+    const endpoints = getNetworkEndpoints(network)
+
+    const { injectiveContractAddresses } = getContractAddresses(network)
+
+    return getIsTransferCompletedInjective(
+      injectiveContractAddresses.token_bridge,
+      Buffer.from(signedVAA, 'base64'),
+      new ChainGrpcWasmApi(endpoints.grpc),
+    )
+  }
+
+  async getIsTransferCompletedRetry(signedVAA: string /* in base 64 */) {
+    const RETRIES = 2
+    const TIMEOUT_BETWEEN_RETRIES = 2000
+
+    for (let i = 0; i < RETRIES; i += 1) {
+      if (await this.getIsTransferCompleted(signedVAA)) {
+        return true
+      }
+
+      await sleep(TIMEOUT_BETWEEN_RETRIES)
+    }
+
+    return false
   }
 
   async redeem(
@@ -216,31 +257,39 @@ export class InjectiveWormholeClient extends WormholeClient {
     })
   }
 
-  async getIsTransferCompleted(signedVAA: string /* in base 64 */) {
+  async getBridgedAssetBalance(
+    injectiveAddress: string,
+    tokenAddress: string /* CW20 address on Injective */,
+  ) {
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
 
-    const { injectiveContractAddresses } = getContractAddresses(network)
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
-    return getIsTransferCompletedInjective(
-      injectiveContractAddresses.token_bridge,
-      Buffer.from(signedVAA, 'base64'),
-      new ChainGrpcWasmApi(endpoints.grpc),
+    const response = await chainGrpcWasmApi.fetchSmartContractState(
+      tokenAddress,
+      Buffer.from(
+        JSON.stringify({
+          balance: {
+            address: injectiveAddress,
+          },
+        }),
+      ).toString('base64'),
     )
-  }
 
-  async getIsTransferCompletedRetry(signedVAA: string /* in base 64 */) {
-    const RETRIES = 2
-    const TIMEOUT_BETWEEN_RETRIES = 2000
-
-    for (let i = 0; i < RETRIES; i += 1) {
-      if (await this.getIsTransferCompleted(signedVAA)) {
-        return true
+    if (response.data) {
+      const state = JSON.parse(Buffer.from(response.data).toString()) as {
+        balance: string
       }
 
-      await sleep(TIMEOUT_BETWEEN_RETRIES)
+      return { address: tokenAddress, balance: state.balance } as {
+        address: string
+        balance: string
+      }
     }
 
-    return false
+    throw new GeneralException(
+      new Error(`Could not get the balance from the token bridge contract`),
+    )
   }
 }
