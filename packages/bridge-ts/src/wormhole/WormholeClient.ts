@@ -1,6 +1,6 @@
 import { Network } from '@injectivelabs/networks'
 
-export class WormholeClient {
+export class BaseWormholeClient {
   public network: Network
 
   public wormholeRpcUrl?: string

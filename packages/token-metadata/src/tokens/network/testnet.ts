@@ -9,6 +9,10 @@ export const testnetSymbolToErc20AddressMap = {
   wETH: '0xdB309Bb079EB419C18fe7D568c61cD2FdB65D9aF',
 }
 
+export const testnetSymbolToEvmAddressMap = {
+  WMATIC: '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
+}
+
 export const testnetSymbolToCw20AddressMap = {
   SOL: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
   USDC: {
@@ -43,6 +47,7 @@ export const getTokensBySymbolForTestnet = () =>
 
       if (
         !tokenMeta.erc20 &&
+        !tokenMeta.evm &&
         !tokenMeta.cw20 &&
         !tokenMeta.cw20s &&
         !tokenMeta.ibc
@@ -55,6 +60,8 @@ export const getTokensBySymbolForTestnet = () =>
 
       const tokenSymbol = token as keyof typeof testnetSymbolToErc20AddressMap
       const testnetAddressFromMap = testnetSymbolToErc20AddressMap[tokenSymbol]
+      const evmTokenKey = token as keyof typeof testnetSymbolToEvmAddressMap
+      const testnetEvmAddressFromMap = testnetSymbolToEvmAddressMap[evmTokenKey]
       const cw20TokenKey = token as keyof typeof testnetSymbolToCw20AddressMap
       const cw20TestnetAddressFromMap =
         testnetSymbolToCw20AddressMap[cw20TokenKey]
@@ -84,6 +91,10 @@ export const getTokensBySymbolForTestnet = () =>
 
       if (testnetAddressFromMap && mappedTokenMeta.erc20) {
         mappedTokenMeta.erc20.address = testnetAddressFromMap
+      }
+
+      if (testnetEvmAddressFromMap && mappedTokenMeta.evm) {
+        mappedTokenMeta.evm.address = testnetEvmAddressFromMap
       }
 
       if (cw20TestnetAddressFromMap) {

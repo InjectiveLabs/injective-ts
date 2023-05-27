@@ -88,9 +88,11 @@ export class TokenMetaUtils {
       )
 
       if (checksumAddress) {
+        const tokenMeta = tokensByErc20Address[checksumAddress]
+
         return {
-          ...tokensByErc20Address[checksumAddress],
-          tokenType: TokenType.Erc20,
+          ...tokenMeta,
+          tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
         }
       }
 
@@ -103,7 +105,7 @@ export class TokenMetaUtils {
     return tokenMeta
       ? {
           ...tokenMeta,
-          tokenType: TokenType.Erc20,
+          tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
         }
       : undefined
   }

@@ -92,6 +92,13 @@ export const CosmosNetworks = [
   BridgingNetwork.Canto,
 ]
 
+export const EvmWormholeNetworks = [
+  BridgingNetwork.EthereumWh,
+  BridgingNetwork.Polygon,
+  BridgingNetwork.Arbitrum,
+  BridgingNetwork.Klaytn,
+]
+
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Juno,
   BridgingNetwork.Evmos,
@@ -101,6 +108,9 @@ export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Persistence,
   BridgingNetwork.CosmosHubTestnet,
   BridgingNetwork.Arbitrum,
+  BridgingNetwork.Polygon,
+  BridgingNetwork.Sui,
+  BridgingNetwork.Klaytn,
 ]
 
 export const tokenDenomsPerNetwork = [
@@ -227,6 +237,11 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Arbitrum,
     denoms: [],
     symbols: ['ARB'],
+  },
+  {
+    network: BridgingNetwork.Polygon,
+    denoms: [],
+    symbols: ['WMATIC'],
   },
 ] as NetworkConfig[]
 
@@ -529,6 +544,18 @@ export const getArbitrumExplorerUrl = (network: Network): string => {
   }
 
   return 'https://arbiscan.io'
+}
+
+export const getPolygonExplorerUrl = (network: Network): string => {
+  if (isDevnet(network)) {
+    return 'https://mumbai.polygonscan.com'
+  }
+
+  if (isTestnet(network)) {
+    return 'https://mumbai.polygonscan.com'
+  }
+
+  return 'https://polygonscan.com'
 }
 
 export const getSolanaExplorerUrl = (network: Network): string => {

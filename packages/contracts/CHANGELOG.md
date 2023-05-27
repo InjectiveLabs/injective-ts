@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-beta.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.11.0-beta.7...@injectivelabs/contracts@1.11.0-beta.8) (2023-05-26)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+# [1.11.0-beta.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.11.0-beta.6...@injectivelabs/contracts@1.11.0-beta.7) (2023-05-26)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+# [1.11.0-beta.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.11.0-beta.5...@injectivelabs/contracts@1.11.0-beta.6) (2023-05-26)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+# [1.11.0-beta.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.11.0-beta.4...@injectivelabs/contracts@1.11.0-beta.5) (2023-05-26)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+# [1.11.0-beta.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.11.0-beta.3...@injectivelabs/contracts@1.11.0-beta.4) (2023-05-26)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+# [1.11.0-beta.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.11.0-beta.2...@injectivelabs/contracts@1.11.0-beta.3) (2023-05-26)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+# [1.11.0-beta.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.11.0-beta.1...@injectivelabs/contracts@1.11.0-beta.2) (2023-05-26)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
+# [1.11.0-beta.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.10.23-beta.8...@injectivelabs/contracts@1.11.0-beta.1) (2023-05-26)
+
+**Note:** Version bump only for package @injectivelabs/contracts
+
 ## [1.10.23-beta.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/contracts@1.10.23-beta.7...@injectivelabs/contracts@1.10.23-beta.8) (2023-05-13)
 
 **Note:** Version bump only for package @injectivelabs/contracts

@@ -10,7 +10,7 @@ import {
   WormholeWrappedInfo,
   isNativeCosmWasmDenom,
   tryNativeToHexString,
-} from '@injectivelabs/wormhole-sdk'
+} from '@certusone/wormhole-sdk'
 import { fromUint8Array } from 'js-base64'
 
 /**
