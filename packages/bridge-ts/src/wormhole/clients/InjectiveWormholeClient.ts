@@ -30,7 +30,7 @@ import {
 import { BaseWormholeClient } from '../WormholeClient'
 
 interface MsgBroadcaster {
-  walletStrategy: { getAddresses: () => Promise<string[]> }
+  provider: { walletStrategy: { getAddresses: () => Promise<string[]> } }
   broadcast: (params: any) => Promise<TxResponse>
   broadcastOld: (params: any) => Promise<TxResponse>
 }
