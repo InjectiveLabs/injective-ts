@@ -35,7 +35,7 @@
     "@certusone/wormhole-sdk": "^0.9.18",
     "@injectivelabs/exceptions": "^1.10.13-beta.8",
     "@injectivelabs/networks": "^1.10.13-beta.8",
-    "@injectivelabs/sdk-ts": "^1.11.0-beta.15",
+    "@injectivelabs/sdk-ts": "^1.11.0-dev.3",
     "@injectivelabs/ts-types": "^1.10.13-beta.3",
     "@injectivelabs/utils": "^1.10.13-beta.8",
     "@solana/spl-token": "^0.3.6",
