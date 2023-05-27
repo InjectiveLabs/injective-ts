@@ -30,7 +30,7 @@ import {
 import { BaseWormholeClient } from '../WormholeClient'
 
 interface MsgBroadcaster {
-  provider: { walletStrategy: { getAddresses: () => Promise<string[]> } }
+  getAddresses: () => Promise<string[]>
   broadcast: (params: any) => Promise<TxResponse>
   broadcastOld: (params: any) => Promise<TxResponse>
 }
@@ -55,13 +55,13 @@ export class InjectiveWormholeClient
   }
 
   async getAddress() {
-    const walletStrategy = this.provider?.walletStrategy
+    const { provider } = this
 
-    if (!walletStrategy) {
+    if (!provider) {
       return ''
     }
 
-    const [address] = await walletStrategy.getAddresses()
+    const [address] = await provider?.getAddresses()
 
     return address.startsWith('0x') ? getInjectiveAddress(address) : address
   }
