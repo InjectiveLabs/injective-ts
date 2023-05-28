@@ -42,7 +42,7 @@ export default {
   },
   'MITO-ETH-P-LP': {
     name: 'Mito ETH Perp Market Making',
-    logo: 'cancer.svg',
+    logo: 'mito-eth-p-lp.svg',
     symbol: 'MITO-ETH-P-LP',
     decimals: 18,
     coinGeckoId: '',

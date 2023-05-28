@@ -31,12 +31,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }) {
     const request = MitoApi.GetVaultRequest.create()
 
-    if (contractAddress) {
-      request.contractAddress = contractAddress
-    }
-
     if (slug) {
       request.slug = slug
+    }
+
+    if (contractAddress) {
+      request.contractAddress = contractAddress
     }
 
     try {
@@ -63,18 +63,18 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchVaults({
-    pageSize,
-    pageIndex,
+    limit,
     codeId,
+    pageIndex,
   }: {
-    pageSize?: number
-    pageIndex?: number
+    limit?: number
     codeId?: string
+    pageIndex?: number
   }) {
     const request = MitoApi.GetVaultsRequest.create()
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (pageIndex) {
@@ -109,13 +109,13 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchLpTokenPriceChart({
-    vaultAddress,
-    from,
     to,
+    from,
+    vaultAddress,
   }: {
-    vaultAddress: string
-    from?: string
     to?: string
+    from?: string
+    vaultAddress: string
   }) {
     const request = MitoApi.LPTokenPriceChartRequest.create()
 
@@ -134,7 +134,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.LPTokenPriceChart(request),
       )
 
-      return IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
+      return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
         response,
       )
     } catch (e: unknown) {
@@ -155,24 +155,24 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchTVLChartRequest({
-    vaultAddress,
-    from,
     to,
+    from,
+    vaultAddress,
   }: {
-    vaultAddress: string
-    from?: string
     to?: string
+    from?: string
+    vaultAddress: string
   }) {
     const request = MitoApi.TVLChartRequest.create()
 
     request.vaultAddress = vaultAddress
 
-    if (from) {
-      request.fromTime = from
-    }
-
     if (to) {
       request.toTime = to
+    }
+
+    if (from) {
+      request.fromTime = from
     }
 
     try {
@@ -180,7 +180,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.TVLChart(request),
       )
 
-      return IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart(
+      return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
         response,
       )
     } catch (e: unknown) {
@@ -201,12 +201,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchVaultsByHolderAddress({
-    pageSize,
+    limit,
     pageIndex,
     holderAddress,
     vaultAddress,
   }: {
-    pageSize?: number
+    limit?: number
     pageIndex?: number
     holderAddress: string
     vaultAddress?: string
@@ -219,8 +219,8 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.vaultAddress = vaultAddress
     }
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (pageIndex) {
@@ -232,7 +232,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         () => this.client.VaultsByHolderAddress(request),
       )
 
-      return IndexerGrpcMitoTransformer.VaultsByHolderAddressResponseToVaultsByHolderAddress(
+      return IndexerGrpcMitoTransformer.vaultsByHolderAddressResponseToVaultsByHolderAddress(
         response,
       )
     } catch (e: unknown) {
@@ -253,11 +253,11 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchLPHolders({
-    pageSize,
+    limit,
     pageIndex,
     vaultAddress,
   }: {
-    pageSize?: number
+    limit?: number
     pageIndex?: number
     vaultAddress: string
   }) {
@@ -265,8 +265,8 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     request.vaultAddress = vaultAddress
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (pageIndex) {
@@ -278,7 +278,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.LPHolders(request),
       )
 
-      return IndexerGrpcMitoTransformer.LPHoldersResponseToLPHolders(response)
+      return IndexerGrpcMitoTransformer.lpHoldersResponseToLPHolders(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -306,7 +306,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.Portfolio(request),
       )
 
-      return IndexerGrpcMitoTransformer.PortfolioResponseToPortfolio(response)
+      return IndexerGrpcMitoTransformer.portfolioResponseToPortfolio(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -336,7 +336,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.Leaderboard(request),
       )
 
-      return IndexerGrpcMitoTransformer.LeaderboardResponseToLeaderboard(
+      return IndexerGrpcMitoTransformer.leaderboardResponseToLeaderboard(
         response,
       )
     } catch (e: unknown) {
@@ -359,13 +359,13 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   async fetchTransferHistory({
     vault,
     account,
-    pageSize,
+    limit,
     toNumber,
     fromNumber,
   }: {
     vault?: string
     account?: string
-    pageSize?: number
+    limit?: number
     toNumber?: number
     fromNumber?: number
   }) {
@@ -379,8 +379,8 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.account = account
     }
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (toNumber) {
@@ -396,7 +396,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.TransfersHistory(request),
       )
 
-      return IndexerGrpcMitoTransformer.TransferHistoryResponseToTransfer(
+      return IndexerGrpcMitoTransformer.transferHistoryResponseToTransfer(
         response,
       )
     } catch (e: unknown) {
@@ -417,18 +417,18 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchLeaderboardEpochs({
-    pageSize,
+    limit,
     toEpochId,
     fromEpochId,
   }: {
-    pageSize?: number
+    limit?: number
     toEpochId?: number
     fromEpochId?: number
   }) {
     const request = MitoApi.LeaderboardEpochsRequest.create()
 
-    if (pageSize) {
-      request.pageSize = pageSize
+    if (limit) {
+      request.limit = limit
     }
 
     if (toEpochId) {
@@ -444,7 +444,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
         this.client.LeaderboardEpochs(request),
       )
 
-      return IndexerGrpcMitoTransformer.LeaderboardEpochsResponseToLeaderboardEpochs(
+      return IndexerGrpcMitoTransformer.leaderboardEpochsResponseToLeaderboardEpochs(
         response,
       )
     } catch (e: unknown) {
@@ -459,6 +459,122 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'LeaderboardEpochs',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchStakingPools(staker?: string) {
+    const request = MitoApi.GetStakingPoolsRequest.create()
+
+    if (staker) {
+      request.staker = staker
+    }
+
+    try {
+      const response = await this.retry<MitoApi.GetStakingPoolsResponse>(() =>
+        this.client.GetStakingPools(request),
+      )
+
+      return IndexerGrpcMitoTransformer.stakingPoolsResponseToStakingPools(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetStakingPools',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetStakingPools',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchStakingHistory({
+    staker,
+    toNumber,
+    limit,
+    fromNumber,
+  }: {
+    staker?: string
+    limit?: number
+    toNumber?: number
+    fromNumber?: number
+  } = {}) {
+    const request = MitoApi.StakingHistoryRequest.create()
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    if (staker) {
+      request.staker = staker
+    }
+
+    if (fromNumber) {
+      request.fromNumber = fromNumber
+    }
+
+    if (toNumber) {
+      request.toNumber = toNumber
+    }
+
+    try {
+      const response = await this.retry<MitoApi.StakingHistoryResponse>(() =>
+        this.client.StakingHistory(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoStakingHistoryResponseTpStakingHistory(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'StakingHistory',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'StakingHistory',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchStakingRewardsByAccount({ staker }: { staker: string }) {
+    const request = MitoApi.StakingRewardByAccountRequest.create()
+
+    request.staker = staker
+
+    try {
+      const response = await this.retry<MitoApi.StakingRewardByAccountResponse>(
+        () => this.client.StakingRewardByAccount(request),
+      )
+
+      return IndexerGrpcMitoTransformer.stakingRewardByAccountResponseToStakingRewardByAccount(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'StakingHistory',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'StakingHistory',
         contextModule: this.module,
       })
     }
