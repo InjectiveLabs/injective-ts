@@ -517,12 +517,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.staker = staker
     }
 
-    if (fromNumber) {
-      request.fromNumber = fromNumber
-    }
-
     if (toNumber) {
       request.toNumber = toNumber
+    }
+
+    if (fromNumber) {
+      request.fromNumber = fromNumber
     }
 
     try {
