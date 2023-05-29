@@ -27,119 +27,120 @@ export const overrideCw20s = (
   return cw20sList
 }
 
-export default {
-  wBTC: {
-    ...tokens.wBTC,
-    cw20s: overrideCw20s(
-      {
-        decimals: 8,
-        symbol: 'wBTC',
-        source: Cw20TokenSource.Cosmos,
-        address: 'wbtc',
-        tokenType: TokenType.Cw20,
+export const testnetTokens = () =>
+  ({
+    wBTC: {
+      ...tokens.wBTC,
+      cw20s: overrideCw20s(
+        {
+          decimals: 8,
+          symbol: 'wBTC',
+          source: Cw20TokenSource.Cosmos,
+          address: 'wbtc',
+          tokenType: TokenType.Cw20,
+        },
+        tokens.wBTC.cw20s,
+      ),
+    },
+
+    ATOM: {
+      ...tokens.ATOM,
+      cw20s: overrideCw20s(
+        {
+          decimals: 8,
+          symbol: 'WETH',
+          source: Cw20TokenSource.Cosmos,
+          address: 'weth',
+          tokenType: TokenType.Cw20,
+        },
+        tokens.ATOM.cw20s,
+      ),
+    },
+
+    INJ: {
+      ...tokens.INJ,
+      erc20: {
+        ...tokens.INJ.erc20,
+        address: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
       },
-      tokens.wBTC.cw20s,
-    ),
-  },
+    },
 
-  ATOM: {
-    ...tokens.ATOM,
-    cw20s: overrideCw20s(
-      {
-        decimals: 8,
-        symbol: 'WETH',
-        source: Cw20TokenSource.Cosmos,
-        address: 'weth',
-        tokenType: TokenType.Cw20,
+    USDT: {
+      ...tokens.USDT,
+      erc20: {
+        ...tokens.USDT.erc20,
+        address: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
       },
-      tokens.ATOM.cw20s,
-    ),
-  },
-
-  INJ: {
-    ...tokens.INJ,
-    erc20: {
-      ...tokens.INJ.erc20,
-      address: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
     },
-  },
 
-  USDT: {
-    ...tokens.USDT,
-    erc20: {
-      ...tokens.USDT.erc20,
-      address: '0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
-    },
-  },
-
-  APE: {
-    ...tokens.APE,
-    erc20: {
-      ...tokens.APE.erc20,
-      address: '0x44C21afAaF20c270EBbF5914Cfc3b5022173FEB7',
-    },
-  },
-
-  wETH: {
-    ...tokens.wETH,
-    erc20: {
-      ...tokens.wETH.erc20,
-      address: '0xdB309Bb079EB419C18fe7D568c61cD2FdB65D9aF',
-    },
-    cw20s: overrideCw20s(
-      {
-        decimals: 8,
-        symbol: 'ATOM',
-        source: Cw20TokenSource.Cosmos,
-        address: 'atom',
-        tokenType: TokenType.Cw20,
+    APE: {
+      ...tokens.APE,
+      erc20: {
+        ...tokens.APE.erc20,
+        address: '0x44C21afAaF20c270EBbF5914Cfc3b5022173FEB7',
       },
-      tokens.wETH.cw20s,
-    ),
-  },
-
-  ASTRO: {
-    ...tokens.ASTRO,
-    ibc: {
-      ...tokens.ASTRO.ibc,
-      hash: 'E8AC6B792CDE60AB208CA060CA010A3881F682A7307F624347AB71B6A0B0BF89',
-      path: 'transfer/channel-13',
-      channelId: 'channel-13',
-      baseDenom: 'ASTRO',
     },
-  },
 
-  SOL: {
-    ...tokens.SOL,
-    cw20: {
-      ...tokens.SOL.cw20,
-      address: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
-    },
-  },
-
-  USDC: {
-    ...tokens.USDC,
-    erc20: {
-      ...tokens.USDC.erc20,
-      address: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
-    },
-    cw20s: overrideCw20s(
-      {
-        decimals: 6,
-        symbol: 'USDCet',
-        source: Cw20TokenSource.EthereumWh,
-        address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
-        tokenType: TokenType.Cw20,
+    wETH: {
+      ...tokens.wETH,
+      erc20: {
+        ...tokens.wETH.erc20,
+        address: '0xdB309Bb079EB419C18fe7D568c61cD2FdB65D9aF',
       },
-      tokens.USDC.cw20s,
-    ),
-  },
-
-  MATIC: {
-    ...tokens.MATIC,
-    evm: {
-      ...tokens.MATIC.evm,
-      address: '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
+      cw20s: overrideCw20s(
+        {
+          decimals: 8,
+          symbol: 'ATOM',
+          source: Cw20TokenSource.Cosmos,
+          address: 'atom',
+          tokenType: TokenType.Cw20,
+        },
+        tokens.wETH.cw20s,
+      ),
     },
-  },
-} as Record<string, TokenMeta>
+
+    ASTRO: {
+      ...tokens.ASTRO,
+      ibc: {
+        ...tokens.ASTRO.ibc,
+        hash: 'E8AC6B792CDE60AB208CA060CA010A3881F682A7307F624347AB71B6A0B0BF89',
+        path: 'transfer/channel-13',
+        channelId: 'channel-13',
+        baseDenom: 'ASTRO',
+      },
+    },
+
+    SOL: {
+      ...tokens.SOL,
+      cw20: {
+        ...tokens.SOL.cw20,
+        address: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
+      },
+    },
+
+    USDC: {
+      ...tokens.USDC,
+      erc20: {
+        ...tokens.USDC.erc20,
+        address: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
+      },
+      cw20s: overrideCw20s(
+        {
+          decimals: 6,
+          symbol: 'USDCet',
+          source: Cw20TokenSource.EthereumWh,
+          address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
+          tokenType: TokenType.Cw20,
+        },
+        tokens.USDC.cw20s,
+      ),
+    },
+
+    MATIC: {
+      ...tokens.MATIC,
+      evm: {
+        ...tokens.MATIC.evm,
+        address: '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
+      },
+    },
+  } as Record<string, TokenMeta>)

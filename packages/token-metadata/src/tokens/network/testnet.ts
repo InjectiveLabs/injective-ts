@@ -5,7 +5,7 @@ export const getTokensBySymbolForTestnet = () =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, symbol) => {
       const tokenSymbolToUpperCase = symbol.toUpperCase()
-      const tokenMeta = testnetTokens[symbol] || tokens[symbol]
+      const tokenMeta = testnetTokens()[symbol] || tokens[symbol]
 
       return {
         ...result,

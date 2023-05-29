@@ -1,6 +1,6 @@
 import { TokenMeta } from '../../types'
-import devnetTokens from './devnet-tokens'
-import testnetTokens from './testnet-tokens'
+import { devnetTokens } from './devnet-tokens'
+import { testnetTokens } from './testnet-tokens'
 import cw20Tokens from './cw20-tokens'
 import ibcTokens from './ibc'
 import tokens from './tokens'
