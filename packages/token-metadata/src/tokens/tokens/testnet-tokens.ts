@@ -28,7 +28,7 @@ export const overrideCw20s = (
 }
 
 export default {
-  WBTC: {
+  wBTC: {
     ...tokens.wBTC,
     cw20s: overrideCw20s(
       {

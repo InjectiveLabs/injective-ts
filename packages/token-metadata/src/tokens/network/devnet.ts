@@ -5,10 +5,7 @@ export const getTokensBySymbolForDevnet = () =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, symbol) => {
       const tokenSymbolToUpperCase = symbol.toUpperCase()
-      const tokenMeta =
-        devnetTokens[tokenSymbolToUpperCase] || tokens[tokenSymbolToUpperCase]
-
-      console.log({ tokenMeta })
+      const tokenMeta = devnetTokens[symbol] || tokens[symbol]
 
       return {
         ...result,
@@ -22,8 +19,7 @@ export const getTokensBySymbolForDevnet1 = () =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, symbol) => {
       const tokenSymbolToUpperCase = symbol.toUpperCase()
-      const tokenMeta =
-        devnetTokens[tokenSymbolToUpperCase] || tokens[tokenSymbolToUpperCase]
+      const tokenMeta = devnetTokens[symbol] || tokens[symbol]
 
       return {
         ...result,
@@ -37,8 +33,7 @@ export const getTokensBySymbolForDevnet2 = () =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, symbol) => {
       const tokenSymbolToUpperCase = symbol.toUpperCase()
-      const tokenMeta =
-        devnetTokens[tokenSymbolToUpperCase] || tokens[tokenSymbolToUpperCase]
+      const tokenMeta = devnetTokens[symbol] || tokens[symbol]
 
       return {
         ...result,
