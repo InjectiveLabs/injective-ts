@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-beta.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.11.0-beta.21...@injectivelabs/bridge-ts@1.11.0-beta.21) (2023-05-29)
+
+### Bug Fixes
+
+- minor ([62f0c9a](https://github.com/InjectiveLabs/injective-ts/commit/62f0c9a428ad94d593e3866180fe2060ceccbd21))
+
 # [1.11.0-beta.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.11.0-beta.21...@injectivelabs/bridge-ts@1.11.0-beta.20) (2023-05-28)
 
 ### Bug Fixes
