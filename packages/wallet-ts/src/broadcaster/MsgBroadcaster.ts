@@ -524,7 +524,9 @@ export class MsgBroadcaster {
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
     )
-    const feePayerPublicKey = PublicKey.fromBase64(feePayerPubKey)
+    const feePayerPublicKey = feePayerPubKey.startsWith('0x')
+      ? PublicKey.fromHex(feePayerPubKey)
+      : PublicKey.fromBase64(feePayerPubKey)
     const feePayer = feePayerPublicKey.toAddress().address
 
     /** Account Details * */
