@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-beta.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.34...@injectivelabs/token-metadata@1.11.0-beta.35) (2023-05-29)
+
+### Features
+
+- evm wormhole strategy ([8241c1b](https://github.com/InjectiveLabs/injective-ts/commit/8241c1b143aa96fd6f961b3e4c75e0888c2c7998))
+
 # [1.11.0-beta.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.33...@injectivelabs/token-metadata@1.11.0-beta.34) (2023-05-29)
 
 ### Bug Fixes
