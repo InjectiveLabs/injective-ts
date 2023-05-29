@@ -637,7 +637,7 @@ export default {
       baseDenom: 'uatom',
       path: 'transfer/channel-1',
       channelId: 'channel-1',
-      hash: '624BA9DD171915A2B9EA70F69638B2CEA179959850C1A586F6C485498F29EDD4',
+      hash: 'C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
       tokenType: TokenType.Ibc,
     },
   },
@@ -811,6 +811,24 @@ export default {
     },
   },
 
+  WHALE: {
+    name: 'White Whale',
+    symbol: 'WHALE',
+    decimals: 6,
+    logo: 'whale.svg',
+    coinGeckoId: 'white-whale',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'uwhale',
+      path: 'transfer/channel-102',
+      channelId: 'channel-102',
+      hash: 'D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
   AXL: {
     name: 'Axelar',
     logo: 'axelar.jpeg',
@@ -980,7 +998,6 @@ export default {
       tokenType: TokenType.Ibc,
     },
   },
-
   CRE: {
     name: 'Crescent',
     symbol: 'CRE',
@@ -1256,6 +1273,13 @@ export default {
     logo: 'arb.png',
     coinGeckoId: 'arbitrum',
 
+    evm: {
+      decimals: 18,
+      isNative: true,
+      address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
+      tokenType: TokenType.Erc20,
+    },
+
     erc20: {
       decimals: 18,
       address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
@@ -1265,6 +1289,7 @@ export default {
     cw20: {
       decimals: 8,
       address: 'inj1d5vz0uzwlpfvgwrwulxg6syy82axa58y4fuszd',
+      source: Cw20TokenSource.Arbitrum,
       tokenType: TokenType.Cw20,
     },
   },
@@ -1362,16 +1387,102 @@ export default {
     logo: 'matic.webp',
     coinGeckoId: 'wmatic',
 
-    erc20: {
+    evm: {
       decimals: 18,
-      address: '0x7c9f4C87d911613Fe9ca58b579f737911AAD2D43',
-      tokenType: TokenType.Erc20,
+      isNative: true,
+      address: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+      tokenType: TokenType.Evm,
     },
 
     cw20: {
       decimals: 8,
       address: 'inj1dxv423h8ygzgxmxnvrf33ws3k94aedfdevxd8h',
+      source: Cw20TokenSource.Polygon,
       tokenType: TokenType.Cw20,
+    },
+  },
+
+  '1MPEPE': {
+    name: 'Pepe',
+    symbol: 'MPEPE',
+    decimals: 18,
+    logo: 'pepe.jpeg',
+    coinGeckoId: 'pepe',
+
+    erc20: {
+      decimals: 18,
+      address: '0x6982508145454ce325ddbe47a25d4ec3d2311933',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  '1000PEPE': {
+    name: 'Pepe',
+    symbol: 'KPEPE',
+    decimals: 18,
+    logo: 'pepe.jpeg',
+    coinGeckoId: 'pepe',
+
+    erc20: {
+      decimals: 18,
+      address: '0x6982508145454ce325ddbe47a25d4ec3d2311933',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  PEPE: {
+    name: 'Pepe',
+    symbol: 'PEPE',
+    decimals: 18,
+    logo: 'pepe.jpeg',
+    coinGeckoId: 'pepe',
+
+    erc20: {
+      decimals: 18,
+      address: '0x6982508145454ce325ddbe47a25d4ec3d2311933',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  WASSIE: {
+    name: 'WASSIE',
+    symbol: 'WASSIE',
+    decimals: 18,
+    logo: 'wassie.jpeg',
+    coinGeckoId: 'wassie',
+
+    erc20: {
+      decimals: 18,
+      address: '0x2c95d751da37a5c1d9c5a7fd465c1d50f3d96160',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  RIBBIT: {
+    name: 'Ribbit Meme',
+    symbol: 'RIBBIT',
+    decimals: 18,
+    logo: 'ribbit.jpeg',
+    coinGeckoId: 'ribbit-meme',
+
+    erc20: {
+      decimals: 18,
+      address: '0xb794Ad95317f75c44090f64955954C3849315fFe',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  LAMBO: {
+    name: 'Lambo',
+    symbol: 'LAMBO',
+    decimals: 18,
+    logo: 'lambo.jpeg',
+    coinGeckoId: 'lambo-0fcbf0f7-1a8f-470d-ba09-797d5e95d836',
+
+    erc20: {
+      decimals: 18,
+      address: '0x3d2b66BC4f9D6388BD2d97B95b565BE1686aEfB3',
+      tokenType: TokenType.Erc20,
     },
   },
 } as Record<string, TokenMeta>

@@ -1,6 +1,6 @@
 import { ConcreteException } from '../exception'
 import { ErrorContext, ErrorType } from '../types'
-import { mapFailedTransactionMessage } from '../utils/maps'
+import { mapFailedTransactionMessage, parseErrorMessage } from '../utils/maps'
 
 export class TransactionException extends ConcreteException {
   public errorClass: string = 'TransactionException'
@@ -22,6 +22,7 @@ export class TransactionException extends ConcreteException {
 
     this.setMessage(parsedMessage)
     this.setContextCode(code)
+    this.setOriginalMessage(parseErrorMessage(message))
 
     if (parsedContextModule) {
       this.setContextModule(parsedContextModule)

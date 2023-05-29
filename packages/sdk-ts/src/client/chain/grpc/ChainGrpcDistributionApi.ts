@@ -1,24 +1,26 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { ChainGrpcDistributionTransformer } from '../transformers'
-import { ValidatorRewards, ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
+import { Coin } from '@injectivelabs/ts-types'
 import { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { ValidatorRewards, ChainModule } from '../types'
+import { ChainGrpcDistributionTransformer } from '../transformers'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcDistributionApi {
+export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Distribution
 
   protected client: CosmosDistributionV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new CosmosDistributionV1Beta1Query.QueryClientImpl(
-      getGrpcWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -26,7 +28,10 @@ export class ChainGrpcDistributionApi {
     const request = CosmosDistributionV1Beta1Query.QueryParamsRequest.create()
 
     try {
-      const response = await this.client.Params(request)
+      const response =
+        await this.retry<CosmosDistributionV1Beta1Query.QueryParamsResponse>(
+          () => this.client.Params(request),
+        )
 
       return ChainGrpcDistributionTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -35,12 +40,14 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Params',
         contextModule: this.module,
       })
     }
@@ -60,7 +67,10 @@ export class ChainGrpcDistributionApi {
     request.delegatorAddress = delegatorAddress
 
     try {
-      const response = await this.client.DelegationRewards(request)
+      const response =
+        await this.retry<CosmosDistributionV1Beta1Query.QueryDelegationRewardsResponse>(
+          () => this.client.DelegationRewards(request),
+        )
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
@@ -69,11 +79,16 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegationRewards',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DelegationRewards',
+        contextModule: this.module,
+      })
     }
   }
 
@@ -91,7 +106,10 @@ export class ChainGrpcDistributionApi {
     request.delegatorAddress = delegatorAddress
 
     try {
-      const response = await this.client.DelegationRewards(request)
+      const response =
+        await this.retry<CosmosDistributionV1Beta1Query.QueryDelegationRewardsResponse>(
+          () => this.client.DelegationRewards(request),
+        )
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
@@ -104,11 +122,16 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegationRewards',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DelegationRewards',
+        contextModule: this.module,
+      })
     }
   }
 
@@ -119,7 +142,10 @@ export class ChainGrpcDistributionApi {
     request.delegatorAddress = injectiveAddress
 
     try {
-      const response = await this.client.DelegationTotalRewards(request)
+      const response =
+        await this.retry<CosmosDistributionV1Beta1Query.QueryDelegationTotalRewardsResponse>(
+          () => this.client.DelegationTotalRewards(request),
+        )
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,
@@ -128,11 +154,16 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegationTotalRewards',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DelegationTotalRewards',
+        contextModule: this.module,
+      })
     }
   }
 
@@ -143,7 +174,10 @@ export class ChainGrpcDistributionApi {
     request.delegatorAddress = injectiveAddress
 
     try {
-      const response = await this.client.DelegationTotalRewards(request)
+      const response =
+        await this.retry<CosmosDistributionV1Beta1Query.QueryDelegationTotalRewardsResponse>(
+          () => this.client.DelegationTotalRewards(request),
+        )
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,
@@ -156,11 +190,16 @@ export class ChainGrpcDistributionApi {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegationTotalRewards',
           contextModule: this.module,
         })
       }
 
-      throw new GrpcUnaryRequestException(e as Error)
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DelegationTotalRewards',
+        contextModule: this.module,
+      })
     }
   }
 }

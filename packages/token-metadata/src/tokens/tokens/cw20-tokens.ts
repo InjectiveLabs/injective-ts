@@ -1,10 +1,10 @@
 import { TokenMeta, TokenType } from '../../types'
 
 export default {
-  vARI: {
-    name: 'Aries',
-    logo: 'aries.svg',
-    symbol: 'vARI',
+  'MITO-INJ-S-LP': {
+    name: 'Mito INJ Spot Market Making',
+    logo: 'mito-inj-s-lp.svg',
+    symbol: 'MITO-INJ-S-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -14,10 +14,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vTAU: {
-    name: 'Taurus',
-    logo: 'taurus.svg',
-    symbol: 'vTAU',
+  'MITO-INJ-P-LP': {
+    name: 'Mito INJ Perp Market Making',
+    logo: 'mito-inj-p-lp.svg',
+    symbol: 'MITO-INJ-P-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -27,10 +27,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vGEM: {
-    name: 'Gemini',
-    logo: 'gemini.svg',
-    symbol: 'vGEM',
+  'MITO-WETH-S-LP': {
+    name: 'Mito WETH Spot Market Making',
+    logo: 'mito-weth-s-lp.svg',
+    symbol: 'MITO-WETH-S-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -40,10 +40,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vCAN: {
-    name: 'Cancer',
-    logo: 'cancer.svg',
-    symbol: 'vCAN',
+  'MITO-ETH-P-LP': {
+    name: 'Mito ETH Perp Market Making',
+    logo: 'mito-eth-p-lp.svg',
+    symbol: 'MITO-ETH-P-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -53,10 +53,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vLEO: {
-    name: 'Leo',
-    logo: 'leo.svg',
-    symbol: 'vLEO',
+  'MITO-ATOM-S-LP': {
+    name: 'Mito ATOM Spot Market Making',
+    logo: 'mito-atom-s-lp.svg',
+    symbol: 'MITO-ATOM-S-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -66,10 +66,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vVIR: {
-    name: 'Virgo',
-    logo: 'virgo.svg',
-    symbol: 'vVIR',
+  'MITO-ATOM-P-LP': {
+    name: 'Mito ATOM Perp Market Making',
+    logo: 'mito-atom-p-lp.svg',
+    symbol: 'MITO-ATOM-P-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -79,75 +79,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vLIB: {
-    name: 'Libra',
-    logo: 'libra.svg',
-    symbol: 'vLIB',
-    decimals: 18,
-    coinGeckoId: '',
-
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
-  },
-  vSCOR: {
-    name: 'Scorpio',
-    logo: 'scorpio.svg',
-    symbol: 'vSCOR',
-    decimals: 18,
-    coinGeckoId: '',
-
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
-  },
-  vSAG: {
-    name: 'Sagittarius',
-    logo: 'sagittarius.svg',
-    symbol: 'vSAG',
-    decimals: 18,
-    coinGeckoId: '',
-
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
-  },
-  vCAP: {
-    name: 'Capricorn',
-    logo: 'capricorn.svg',
-    symbol: 'vCAP',
-    decimals: 18,
-    coinGeckoId: '',
-
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
-  },
-  vAQUA: {
-    name: 'Aquarius',
-    logo: 'aquarius.svg',
-    symbol: 'vAQUA',
-    decimals: 18,
-    coinGeckoId: '',
-
-    cw20: {
-      decimals: 18,
-      address: '',
-      tokenType: TokenType.Cw20,
-    },
-  },
-  vPIS: {
-    name: 'Pisces',
-    logo: 'pisces.svg',
-    symbol: 'vPIS',
+  'MITO-USDC-S-LP': {
+    name: 'Mito USDC Spot Market Making',
+    logo: 'mito-usdc-s-lp.svg',
+    symbol: 'MITO-USDC-S-LP',
     decimals: 18,
     coinGeckoId: '',
 

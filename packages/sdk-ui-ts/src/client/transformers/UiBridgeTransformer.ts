@@ -40,6 +40,7 @@ import {
   findEthereumTransactionByTxHash,
   findEthereumTransactionByTxHashes,
   findIBCTransactionByTimeoutTimestamp,
+  getPolygonExplorerUrl,
 } from './../../utils/bridge'
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
 import { UiBridgeTransactionWithToken } from '../../types'
@@ -364,9 +365,13 @@ export const convertWormholeToUiBridgeTransaction = async ({
   const isSolanaTransfer =
     transaction.source === BridgingNetwork.Solana ||
     transaction.destination === BridgingNetwork.Solana
+  const isPolygonTransfer =
+    transaction.source === BridgingNetwork.Polygon ||
+    transaction.destination === BridgingNetwork.Polygon
   const isEthereumDeposit = transaction.source === BridgingNetwork.EthereumWh
   const isSolanaDeposit = transaction.source === BridgingNetwork.Solana
   const isArbitrumDeposit = transaction.source === BridgingNetwork.Arbitrum
+  const isPolygonDeposit = transaction.source === BridgingNetwork.Polygon
 
   const solanaWhExplorerLink = isSolanaDeposit
     ? `${getSolanaExplorerUrl(network)}/tx/${transaction.txHash}`
@@ -380,16 +385,31 @@ export const convertWormholeToUiBridgeTransaction = async ({
     ? `${getArbitrumExplorerUrl(network)}/tx/${transaction.txHash}`
     : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
 
-  const whExplorerLink = isSolanaTransfer
-    ? solanaWhExplorerLink
-    : isArbitrumTransfer
-    ? arbitrumExplorerLink
-    : ethereumWhExplorerLink
+  const polygonExplorerLink = isPolygonDeposit
+    ? `${getPolygonExplorerUrl(network)}/tx/${transaction.txHash}`
+    : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
 
-  const explorerLink =
-    isEthereumWhTransfer || isSolanaTransfer || isArbitrumTransfer
-      ? whExplorerLink
-      : transaction.explorerLink || ''
+  const getWhExplorerLink = () => {
+    if (isSolanaTransfer) {
+      return solanaWhExplorerLink
+    }
+
+    if (isArbitrumTransfer) {
+      return arbitrumExplorerLink
+    }
+
+    if (isPolygonTransfer) {
+      return polygonExplorerLink
+    }
+
+    if (isEthereumWhTransfer) {
+      return ethereumWhExplorerLink
+    }
+
+    return transaction.explorerLink || ''
+  }
+
+  const explorerLink = getWhExplorerLink()
 
   return {
     type: getBridgeTransactionType(transaction.source, transaction.destination),

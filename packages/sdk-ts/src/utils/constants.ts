@@ -21,6 +21,7 @@ export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.MainnetK8s]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Public]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Staging]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
+  [Network.Internal]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Testnet]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.TestnetK8s]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.TestnetOld]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',

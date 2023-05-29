@@ -23,8 +23,11 @@ const getErrorMessage = (error: any, endpoint: string): string => {
 export default class HttpRestClient {
   protected client: HttpClient
 
+  protected endpoint: string
+
   constructor(endpoint: string, options: Record<string, any> = {}) {
     this.client = new HttpClient(endpoint, options)
+    this.endpoint = endpoint
   }
 
   setConfig(config: AxiosRequestConfig): HttpRestClient {
@@ -46,6 +49,7 @@ export default class HttpRestClient {
         if (error.code === 'ECONNABORTED') {
           throw new HttpRequestException(new Error(error.message), {
             code: StatusCodes.REQUEST_TOO_LONG,
+            context: endpoint,
             method: HttpRequestMethod.Get,
           })
         }

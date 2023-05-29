@@ -4,7 +4,7 @@ import {
   BigNumberInWei,
   BigNumberInBase,
 } from '@injectivelabs/utils'
-import { Network, isTestnetOrDevnet } from '@injectivelabs/networks'
+import { Network, isTestnetOrDevnet, isMainnet } from '@injectivelabs/networks'
 import {
   GWEI_IN_WEI,
   DEFAULT_GAS_PRICE,
@@ -48,16 +48,9 @@ const fetchGasPriceFromAlchemy = async (
   network: Network = Network.Mainnet,
 ): Promise<string> => {
   try {
-    const isMainnet = [
-      Network.Public,
-      Network.Staging,
-      Network.Mainnet,
-      Network.MainnetK8s,
-      Network.MainnetLB,
-    ].includes(network)
     const settings = {
       apiKey: key,
-      network: isMainnet
+      network: isMainnet(network)
         ? AlchemyNetwork.ETH_MAINNET
         : AlchemyNetwork.ETH_GOERLI,
     }

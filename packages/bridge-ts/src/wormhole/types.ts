@@ -1,48 +1,73 @@
-import { CONTRACTS } from '@injectivelabs/wormhole-sdk'
-import { ChainId } from '@injectivelabs/ts-types'
-import { PublicKey } from '@solana/web3.js'
+import { CONTRACTS } from '@certusone/wormhole-sdk'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
+import { ethers } from 'ethers'
+import { TxResponse, MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'
+import { TransactionResponse, Transaction } from '@solana/web3.js'
 
 export interface TransferMsgArgs {
   amount: string
+  signer?: string
+  tokenAddress?: string
   recipient: string
-  recipientChainId: ChainId | number | string
   relayerFee?: string
   payload?: Uint8Array | null
 }
 
-/* The recipient is the Injective Address that receives the assets */
-export interface SolanaTransferMsgArgs extends TransferMsgArgs {
-  tokenAddress: string
-  signerPubKey?: PublicKey
-}
-
-export interface SolanaNativeSolTransferMsgArgs
-  extends Omit<SolanaTransferMsgArgs, 'tokenAddress'> {
-  signerPubKey?: PublicKey
-}
-
-export interface EthereumTransferMsgArgs extends TransferMsgArgs {
-  tokenAddress: string
-}
-
-export interface InjectiveTransferMsgArgs extends TransferMsgArgs {
-  injectiveAddress: string
-  tokenAddress: string
-  chainId: string
-}
-
-export type WormholeContractAddresses = typeof CONTRACTS.TESTNET.injective
-export type WormholeSolanaContractAddresses = typeof CONTRACTS.TESTNET.solana
-export type WormholeAribtrumContractAddresses =
-  typeof CONTRACTS.TESTNET.arbitrum
+export type WormholeContractAddresses = typeof CONTRACTS.MAINNET.injective
+export type WormholeSolanaContractAddresses = typeof CONTRACTS.MAINNET.solana
+export type WormholeArbitrumContractAddresses =
+  typeof CONTRACTS.MAINNET.arbitrum
 export type WormholeEthereumContractAddresses =
-  typeof CONTRACTS.TESTNET.ethereum
+  typeof CONTRACTS.MAINNET.ethereum
+export type WormholePolygonContractAddresses = typeof CONTRACTS.MAINNET.polygon
+export type WormholeSuiContractAddresses = typeof CONTRACTS.MAINNET.sui
+export type WormholeKlaytnContractAddresses = typeof CONTRACTS.MAINNET.klaytn
+export type WormholeAptosContractAddresses = typeof CONTRACTS.MAINNET.aptos
 
 export enum WormholeSource {
   Ethereum = 'ethereum',
-  Aribtrum = 'arbitrum',
+  Arbitrum = 'arbitrum',
   Solana = 'solana',
+  Polygon = 'polygon',
+  Sui = 'sui',
+  Klaytn = 'klaytn',
+  Aptos = 'aptos',
+}
+
+export interface WormholeClient<
+  T extends
+    | (ethers.ContractReceipt & {
+        txHash: string
+      })
+    | TxResponse
+    | TransactionResponse,
+  R extends Transaction | MsgExecuteContractCompat | ethers.ContractReceipt,
+> {
+  getAddress: () => Promise<string>
+  getBalance: (address: string, tokenAddress?: string) => Promise<string>
+  transfer: (args: TransferMsgArgs) => Promise<T>
+  getSignedVAA: (tx: T) => Promise<string /* base 64 */>
+  getTxResponse: (txHash: string) => Promise<T>
+  getIsTransferCompleted: (
+    signedVAA: string /* in base 64 */,
+  ) => Promise<boolean>
+  getIsTransferCompletedRetry: (
+    signedVAA: string /* in base 64 */,
+  ) => Promise<boolean>
+  redeem: ({
+    signedVAA,
+    recipient,
+  }: {
+    signedVAA: string /* base64 */
+    recipient: string
+  }) => Promise<R>
+  redeemNative: ({
+    signedVAA,
+    recipient,
+  }: {
+    signedVAA: string /* base64 */
+    recipient: string
+  }) => Promise<R>
 }
 
 export { BaseMessageSignerWalletAdapter }

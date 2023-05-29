@@ -1,25 +1,27 @@
-import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
-import { PaginationOption } from '../../../types/pagination'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
-import { ChainGrpcBankTransformer } from '../transformers'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { ChainModule } from '../types'
 import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { ChainModule } from '../types'
+import { ChainGrpcBankTransformer } from '../transformers'
+import { PaginationOption } from '../../../types/pagination'
+import { paginationRequestFromPagination } from '../../../utils/pagination'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcBankApi {
+export class ChainGrpcBankApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Bank
 
   protected client: CosmosBankV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new CosmosBankV1Beta1Query.QueryClientImpl(
-      getGrpcWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -27,7 +29,10 @@ export class ChainGrpcBankApi {
     const request = CosmosBankV1Beta1Query.QueryParamsRequest.create()
 
     try {
-      const response = await this.client.Params(request)
+      const response =
+        await this.retry<CosmosBankV1Beta1Query.QueryParamsResponse>(() =>
+          this.client.Params(request),
+        )
 
       return ChainGrpcBankTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -36,12 +41,14 @@ export class ChainGrpcBankApi {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Params',
         contextModule: this.module,
       })
     }
@@ -60,19 +67,24 @@ export class ChainGrpcBankApi {
     request.denom = denom
 
     try {
-      const response = await this.client.Balance(request)
+      const response =
+        await this.retry<CosmosBankV1Beta1Query.QueryBalanceResponse>(() =>
+          this.client.Balance(request),
+        )
 
       return ChainGrpcBankTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Balance',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Balance',
         contextModule: this.module,
       })
     }
@@ -84,19 +96,24 @@ export class ChainGrpcBankApi {
     request.address = address
 
     try {
-      const response = await this.client.AllBalances(request)
+      const response =
+        await this.retry<CosmosBankV1Beta1Query.QueryAllBalancesResponse>(() =>
+          this.client.AllBalances(request),
+        )
 
       return ChainGrpcBankTransformer.balancesResponseToBalances(response)
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AllBalances',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AllBalances',
         contextModule: this.module,
       })
     }
@@ -111,19 +128,24 @@ export class ChainGrpcBankApi {
     }
 
     try {
-      const response = await this.client.TotalSupply(request)
+      const response =
+        await this.retry<CosmosBankV1Beta1Query.QueryTotalSupplyResponse>(() =>
+          this.client.TotalSupply(request),
+        )
 
       return ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply(response)
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'TotalSupply',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'TotalSupply',
         contextModule: this.module,
       })
     }

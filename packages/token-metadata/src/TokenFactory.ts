@@ -1,4 +1,4 @@
-import { Network } from '@injectivelabs/networks'
+import { Network, isTestnet } from '@injectivelabs/networks'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { INJ_DENOM } from '@injectivelabs/utils'
 import { TokenInfo } from './TokenInfo'
@@ -21,34 +21,23 @@ export class TokenFactory {
   }
 
   static make(network: Network = Network.Mainnet): TokenFactory {
-    switch (network) {
-      case Network.Staging:
-      case Network.Mainnet:
-      case Network.MainnetK8s:
-      case Network.MainnetLB:
-      case Network.Local:
-        return new TokenFactory(new TokenMetaUtils(tokensBySymbol))
-      case Network.Devnet:
-        return new TokenFactory(
-          new TokenMetaUtils(getTokensBySymbolForDevnet()),
-        )
-      case Network.Devnet1:
-        return new TokenFactory(
-          new TokenMetaUtils(getTokensBySymbolForDevnet1()),
-        )
-      case Network.Devnet2:
-        return new TokenFactory(
-          new TokenMetaUtils(getTokensBySymbolForDevnet2()),
-        )
-      case Network.Testnet:
-      case Network.TestnetOld:
-      case Network.TestnetK8s:
-        return new TokenFactory(
-          new TokenMetaUtils(getTokensBySymbolForTestnet()),
-        )
-      default:
-        return new TokenFactory(new TokenMetaUtils(tokensBySymbol))
+    if (isTestnet(network)) {
+      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForTestnet()))
     }
+
+    if (network === Network.Devnet) {
+      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForDevnet()))
+    }
+
+    if (network === Network.Devnet1) {
+      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForDevnet1()))
+    }
+
+    if (network === Network.Devnet2) {
+      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForDevnet2()))
+    }
+
+    return new TokenFactory(new TokenMetaUtils(tokensBySymbol))
   }
 
   toToken(denom: string): Token | undefined {

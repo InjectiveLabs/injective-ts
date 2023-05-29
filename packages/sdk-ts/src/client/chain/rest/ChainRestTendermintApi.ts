@@ -14,10 +14,12 @@ import {
  */
 export class ChainRestTendermintApi extends BaseRestConsumer {
   async fetchLatestBlock(): Promise<BlockLatestRestResponse['block']> {
+    const endpoint = `cosmos/base/tendermint/v1beta1/blocks/latest`
+
     try {
-      const response = (await this.get(
-        `cosmos/base/tendermint/v1beta1/blocks/latest`,
-      )) as RestApiResponse<BlockLatestRestResponse>
+      const response = await this.retry<
+        RestApiResponse<BlockLatestRestResponse>
+      >(() => this.get(endpoint))
 
       return response.data.block
     } catch (e) {
@@ -27,6 +29,7 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Tendermint,
       })
     }
@@ -36,10 +39,12 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
     nodeInfo: NodeInfoRestResponse['default_node_info']
     applicationVersion: NodeInfoRestResponse['application_version']
   }> {
+    const endpoint = `cosmos/base/tendermint/v1beta1/node_info`
+
     try {
-      const response = (await this.get(
-        `cosmos/base/tendermint/v1beta1/node_info`,
-      )) as RestApiResponse<NodeInfoRestResponse>
+      const response = await this.retry<RestApiResponse<NodeInfoRestResponse>>(
+        () => this.get(endpoint),
+      )
 
       return {
         nodeInfo: response.data.default_node_info,
@@ -52,6 +57,7 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Tendermint,
       })
     }

@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  if: false
   publish:
+    if: true
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,7 @@ jobs:
       - name: 'Use NodeJS 16' # Setup node using version 14
         uses: actions/setup-node@v2 # Public action
         with:
-          node-version: '16.15.1'
+          node-version: '16.18.1'
 
       - name: Build dependencies
         run: |
@@ -40,4 +40,19 @@ jobs:
           git config user.email "${{ github.actor}}@users.noreply.github.com"
 
           npx lerna version --conventional-commits --conventional-graduate --force-git-tag --yes
-          npx lerna publish from-git --dist-tag next --yes --no-verify-access
+          npx lerna publish from-git --force-git-tag --dist-tag latest --yes --summary-file
+
+      - name: 'Broadcast published versions on Slack'
+        run: node etc/slack --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
+        env:
+          GIT_ACTOR: ${{ github.actor }}
+          SLACK_API: ${{ secrets.SLACK_API }}
+          GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+
+      - name: Merge master -> dev
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: master
+          target_branch: dev
+          github_token: ${{ secrets.GH_TOKEN }}

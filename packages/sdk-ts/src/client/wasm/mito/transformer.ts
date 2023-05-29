@@ -5,9 +5,11 @@ import {
   VaultSpotConfig,
   VaultDerivativeConfig,
   VaultMarketMakingConfig,
+  QueryStakingConfigResponse,
   WasmContractQueryResponse,
   QueryVaultMarketIdResponse,
   QueryLockedLpFundsResponse,
+  QueryAllocatorConfigResponse,
   QueryRegisteredVaultResponse,
   QueryVaultContractBaseConfig,
   QueryVaultContractMarketMaking,
@@ -120,6 +122,7 @@ export class MitoQueryTransformer {
         config.default_mid_price_volatility_ratio,
       ),
       minVolatilityRatio: formatToString(config.min_volatility_ratio),
+      oracleStaleTime: Number(config.oracle_stale_time),
     }
   }
 
@@ -193,9 +196,6 @@ export class MitoQueryTransformer {
           config.market_making,
         ),
       oracleType: Number(config.oracle_type),
-      reservationPriceTailDeviationRatio: formatToString(
-        config.reservation_price_tail_deviation_ratio,
-      ),
       targetBaseWeight: formatToString(config.target_base_weight),
       allowedRedemptionTypes: Number(config.allowed_redemption_types),
       baseDecimals: Number(config.base_decimals),
@@ -266,5 +266,43 @@ export class MitoQueryTransformer {
       vaultAddress:
         payload.vault.derivative?.address || payload.vault.spot?.address,
     }))
+  }
+
+  static allocatorConfigResponseToAllocatorConfig(
+    response: WasmContractQueryResponse,
+  ) {
+    const data = JSON.parse(
+      toUtf8(response.data),
+    ) as QueryAllocatorConfigResponse
+
+    return {
+      owner: formatToString(data.owner),
+      stakingContractAddress: formatToString(data.staking_contract_address),
+      maxRewardDenomsPerGauge: data.max_reward_denoms_per_gauge
+        ? Number(data.max_reward_denoms_per_gauge)
+        : undefined,
+      minGaugeDurationInSeconds: data.min_gauge_duration_in_seconds
+        ? Number(data.min_gauge_duration_in_seconds)
+        : undefined,
+      maxActiveGaugesPerLpToken: data.max_active_gauges_per_lp_token
+        ? Number(data.max_active_gauges_per_lp_token)
+        : undefined,
+      gaugeAllocationFeeDenom: formatToString(data.gauge_allocation_fee?.denom),
+      gaugeAllocationFeeAmount: formatToString(
+        data.gauge_allocation_fee?.amount,
+      ),
+    }
+  }
+
+  static stakingConfigResponseToAllocatorConfig(
+    response: WasmContractQueryResponse,
+  ) {
+    const data = JSON.parse(toUtf8(response.data)) as QueryStakingConfigResponse
+
+    return {
+      owner: formatToString(data.owner),
+      lockupPeriod: Number(data.lockup_period || 0),
+      allocatorContractAddress: formatToString(data.allocator_contract_address),
+    }
   }
 }

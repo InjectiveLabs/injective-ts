@@ -1,25 +1,27 @@
-import { PaginationOption } from '../../../types/pagination'
-import { IndexerGrpcAccountTransformer } from '../transformers'
-import { IndexerModule } from '../types'
 import {
   GeneralException,
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import { IndexerModule } from '../types'
+import { PaginationOption } from '../../../types/pagination'
+import { IndexerGrpcAccountTransformer } from '../transformers'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountApi {
+export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Account
 
   protected client: InjectiveAccountRpc.InjectiveAccountsRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectiveAccountRpc.InjectiveAccountsRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -44,7 +46,9 @@ export class IndexerGrpcAccountApi {
     }
 
     try {
-      const response = await this.client.Rewards(request)
+      const response = await this.retry<InjectiveAccountRpc.RewardsResponse>(
+        () => this.client.Rewards(request),
+      )
 
       return IndexerGrpcAccountTransformer.tradingRewardsResponseToTradingRewards(
         response,
@@ -53,12 +57,14 @@ export class IndexerGrpcAccountApi {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Rewards',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Rewards',
         contextModule: this.module,
       })
     }
@@ -70,19 +76,24 @@ export class IndexerGrpcAccountApi {
     request.accountAddress = address
 
     try {
-      const response = await this.client.SubaccountsList(request)
+      const response =
+        await this.retry<InjectiveAccountRpc.SubaccountsListResponse>(() =>
+          this.client.SubaccountsList(request),
+        )
 
       return response.subaccounts
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountsList',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountsList',
         contextModule: this.module,
       })
     }
@@ -96,19 +107,24 @@ export class IndexerGrpcAccountApi {
     request.denom = denom
 
     try {
-      const response = await this.client.SubaccountBalanceEndpoint(request)
+      const response =
+        await this.retry<InjectiveAccountRpc.SubaccountBalanceEndpointResponse>(
+          () => this.client.SubaccountBalanceEndpoint(request),
+        )
 
       return IndexerGrpcAccountTransformer.balanceResponseToBalance(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountBalanceEndpoint',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountBalanceEndpoint',
         contextModule: this.module,
       })
     }
@@ -120,19 +136,24 @@ export class IndexerGrpcAccountApi {
     request.subaccountId = subaccountId
 
     try {
-      const response = await this.client.SubaccountBalancesList(request)
+      const response =
+        await this.retry<InjectiveAccountRpc.SubaccountBalancesListResponse>(
+          () => this.client.SubaccountBalancesList(request),
+        )
 
       return IndexerGrpcAccountTransformer.balancesResponseToBalances(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountBalancesList',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountBalancesList',
         contextModule: this.module,
       })
     }
@@ -176,7 +197,10 @@ export class IndexerGrpcAccountApi {
     }
 
     try {
-      const response = await this.client.SubaccountHistory(request)
+      const response =
+        await this.retry<InjectiveAccountRpc.SubaccountHistoryResponse>(() =>
+          this.client.SubaccountHistory(request),
+        )
 
       return IndexerGrpcAccountTransformer.transferHistoryResponseToTransferHistory(
         response,
@@ -185,12 +209,14 @@ export class IndexerGrpcAccountApi {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountHistory',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountHistory',
         contextModule: this.module,
       })
     }
@@ -218,19 +244,24 @@ export class IndexerGrpcAccountApi {
     }
 
     try {
-      const response = await this.client.SubaccountOrderSummary(request)
+      const response =
+        await this.retry<InjectiveAccountRpc.SubaccountOrderSummaryResponse>(
+          () => this.client.SubaccountOrderSummary(request),
+        )
 
       return response
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'SubaccountOrderSummary',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'SubaccountOrderSummary',
         contextModule: this.module,
       })
     }
@@ -247,19 +278,24 @@ export class IndexerGrpcAccountApi {
     request.derivativeOrderHashes = derivativeOrderHashes
 
     try {
-      const response = await this.client.OrderStates(request)
+      const response =
+        await this.retry<InjectiveAccountRpc.OrderStatesResponse>(() =>
+          this.client.OrderStates(request),
+        )
 
       return response
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'OrderStates',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'OrderStates',
         contextModule: this.module,
       })
     }

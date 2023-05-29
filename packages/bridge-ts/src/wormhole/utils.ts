@@ -2,18 +2,27 @@ import { Network } from '@injectivelabs/networks'
 import { Connection, PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
-  WormholeAribtrumContractAddresses,
-  WormholeContractAddresses,
-  WormholeEthereumContractAddresses,
-  WormholeSolanaContractAddresses,
   WormholeSource,
+  WormholeContractAddresses,
+  WormholeSuiContractAddresses,
+  WormholeAptosContractAddresses,
+  WormholeKlaytnContractAddresses,
+  WormholeSolanaContractAddresses,
+  WormholeArbitrumContractAddresses,
+  WormholeEthereumContractAddresses,
+  WormholePolygonContractAddresses,
 } from './types'
 import {
-  WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK,
   WORMHOLE_CHAINS,
   WORMHOLE_CONTRACT_BY_NETWORK,
-  WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
+  WORMHOLE_SUI_CONTRACT_BY_NETWORK,
+  WORMHOLE_APTOS_CONTRACT_BY_NETWORK,
   WORMHOLE_SOLANA_CONTRACT_BY_NETWORK,
+  WORMHOLE_KLAYTN_CONTRACT_BY_NETWORK,
+  WORMHOLE_POLYGON_CONTRACT_BY_NETWORK,
+  WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK,
+  WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
+  WORMHOLE_NATIVE_WRAPPED_ADDRESS,
 } from './constants'
 
 export const getSolanaTransactionInfo = async (
@@ -41,17 +50,13 @@ export const getSolanaTransactionInfo = async (
 }
 
 export const getEthereumContractAddresses = (network: Network) => {
-  const associatedChainContractAddresses = (
-    WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK as {
-      [key: string]: WormholeEthereumContractAddresses
-    }
-  )[network] as WormholeEthereumContractAddresses
-
-  const injectiveContractAddresses = (
-    WORMHOLE_CONTRACT_BY_NETWORK as {
-      [key: string]: WormholeContractAddresses
-    }
-  )[network] as WormholeContractAddresses
+  const associatedChainContractAddresses =
+    WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK(
+      network,
+    ) as WormholeEthereumContractAddresses
+  const injectiveContractAddresses = WORMHOLE_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeContractAddresses
 
   if (!injectiveContractAddresses) {
     throw new GeneralException(
@@ -84,17 +89,12 @@ export const getEthereumContractAddresses = (network: Network) => {
 }
 
 export const getSolanaContractAddresses = (network: Network) => {
-  const associatedChainContractAddresses = (
-    WORMHOLE_SOLANA_CONTRACT_BY_NETWORK as {
-      [key: string]: WormholeSolanaContractAddresses
-    }
-  )[network] as WormholeSolanaContractAddresses
-
-  const injectiveContractAddresses = (
-    WORMHOLE_CONTRACT_BY_NETWORK as {
-      [key: string]: WormholeContractAddresses
-    }
-  )[network] as WormholeContractAddresses
+  const associatedChainContractAddresses = WORMHOLE_SOLANA_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeSolanaContractAddresses
+  const injectiveContractAddresses = WORMHOLE_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeContractAddresses
 
   if (!injectiveContractAddresses) {
     throw new GeneralException(
@@ -127,17 +127,13 @@ export const getSolanaContractAddresses = (network: Network) => {
 }
 
 export const getArbitrumContractAddresses = (network: Network) => {
-  const associatedChainContractAddresses = (
-    WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK as {
-      [key: string]: WormholeAribtrumContractAddresses
-    }
-  )[network] as WormholeAribtrumContractAddresses
-
-  const injectiveContractAddresses = (
-    WORMHOLE_CONTRACT_BY_NETWORK as {
-      [key: string]: WormholeContractAddresses
-    }
-  )[network] as WormholeContractAddresses
+  const associatedChainContractAddresses =
+    WORMHOLE_ARBITRUM_CONTRACT_BY_NETWORK(
+      network,
+    ) as WormholeArbitrumContractAddresses
+  const injectiveContractAddresses = WORMHOLE_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeContractAddresses
 
   if (!injectiveContractAddresses) {
     throw new GeneralException(
@@ -147,7 +143,7 @@ export const getArbitrumContractAddresses = (network: Network) => {
 
   if (!associatedChainContractAddresses) {
     throw new GeneralException(
-      new Error(`Contracts for ${network} on Aribtrum not found`),
+      new Error(`Contracts for ${network} on Arbitrum not found`),
     )
   }
 
@@ -159,7 +155,159 @@ export const getArbitrumContractAddresses = (network: Network) => {
 
   if (!associatedChainContractAddresses.token_bridge) {
     throw new GeneralException(
-      new Error(`Token Bridge Address for ${network} on Aribtrum not found`),
+      new Error(`Token Bridge Address for ${network} on Arbitrum not found`),
+    )
+  }
+
+  return {
+    injectiveContractAddresses,
+    associatedChainContractAddresses,
+  }
+}
+
+export const getPolygonContractAddresses = (network: Network) => {
+  const associatedChainContractAddresses = WORMHOLE_POLYGON_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholePolygonContractAddresses
+  const injectiveContractAddresses = WORMHOLE_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeContractAddresses
+
+  if (!injectiveContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Polygon not found`),
+    )
+  }
+
+  if (!injectiveContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Polygon not found`),
+    )
+  }
+
+  return {
+    injectiveContractAddresses,
+    associatedChainContractAddresses,
+  }
+}
+
+export const getSuiContractAddresses = (network: Network) => {
+  const associatedChainContractAddresses = WORMHOLE_SUI_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeSuiContractAddresses
+  const injectiveContractAddresses = WORMHOLE_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeContractAddresses
+
+  if (!injectiveContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Sui not found`),
+    )
+  }
+
+  if (!injectiveContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Sui not found`),
+    )
+  }
+
+  return {
+    injectiveContractAddresses,
+    associatedChainContractAddresses,
+  }
+}
+
+export const getKlaytnContractAddresses = (network: Network) => {
+  const associatedChainContractAddresses = WORMHOLE_KLAYTN_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeKlaytnContractAddresses
+  const injectiveContractAddresses = WORMHOLE_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeContractAddresses
+
+  if (!injectiveContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Klaytn not found`),
+    )
+  }
+
+  if (!injectiveContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Klaytn not found`),
+    )
+  }
+
+  return {
+    injectiveContractAddresses,
+    associatedChainContractAddresses,
+  }
+}
+
+export const getAptosContractAddresses = (network: Network) => {
+  const associatedChainContractAddresses = WORMHOLE_APTOS_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeAptosContractAddresses
+  const injectiveContractAddresses = WORMHOLE_CONTRACT_BY_NETWORK(
+    network,
+  ) as WormholeContractAddresses
+
+  if (!injectiveContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses) {
+    throw new GeneralException(
+      new Error(`Contracts for ${network} on Aptos not found`),
+    )
+  }
+
+  if (!injectiveContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Injective not found`),
+    )
+  }
+
+  if (!associatedChainContractAddresses.token_bridge) {
+    throw new GeneralException(
+      new Error(`Token Bridge Address for ${network} on Aptos not found`),
     )
   }
 
@@ -178,8 +326,16 @@ export const getContractAddresses = (
       return getSolanaContractAddresses(network)
     case WormholeSource.Ethereum:
       return getEthereumContractAddresses(network)
-    case WormholeSource.Aribtrum:
+    case WormholeSource.Arbitrum:
       return getArbitrumContractAddresses(network)
+    case WormholeSource.Sui:
+      return getSuiContractAddresses(network)
+    case WormholeSource.Polygon:
+      return getPolygonContractAddresses(network)
+    case WormholeSource.Klaytn:
+      return getKlaytnContractAddresses(network)
+    case WormholeSource.Aptos:
+      return getAptosContractAddresses(network)
     default:
       return getSolanaContractAddresses(network)
   }
@@ -193,8 +349,16 @@ export const getAssociatedChain = (
       return WORMHOLE_CHAINS.solana
     case WormholeSource.Ethereum:
       return WORMHOLE_CHAINS.ethereum
-    case WormholeSource.Aribtrum:
+    case WormholeSource.Arbitrum:
       return WORMHOLE_CHAINS.arbitrum
+    case WormholeSource.Sui:
+      return WORMHOLE_CHAINS.sui
+    case WormholeSource.Polygon:
+      return WORMHOLE_CHAINS.polygon
+    case WormholeSource.Klaytn:
+      return WORMHOLE_CHAINS.klaytn
+    case WormholeSource.Aptos:
+      return WORMHOLE_CHAINS.aptos
     default:
       return WORMHOLE_CHAINS.solana
   }
@@ -209,9 +373,55 @@ export const getAssociatedChainRecipient = (
       return new SolanaPublicKey(recipient).toString()
     case WormholeSource.Ethereum:
       return recipient /* Hex Ethereum Address */
-    case WormholeSource.Aribtrum:
-      return recipient /* Hex Ethereum Address */
+    case WormholeSource.Arbitrum:
+      return recipient /* Hex Address */
+    case WormholeSource.Polygon:
+      return recipient /* Hex Address */
+    case WormholeSource.Klaytn:
+      return recipient /* Hex Address */
+    case WormholeSource.Aptos:
+      throw Error('Aptos not yet implemented')
+    case WormholeSource.Sui:
+      throw Error('Sui not yet implemented')
     default:
       return new SolanaPublicKey(recipient).toString()
+  }
+}
+
+export const getEvmNativeAddress = (
+  network: Network,
+  source: WormholeSource = WormholeSource.Ethereum,
+) => {
+  const addresses = WORMHOLE_NATIVE_WRAPPED_ADDRESS(network)
+
+  if (source === WormholeSource.Ethereum) {
+    if (!addresses.ethereum) {
+      throw new Error(`Ethereum native address for ${network} not found`)
+    }
+
+    return addresses.ethereum
+  }
+
+  if (source === WormholeSource.Polygon) {
+    if (!addresses.polygon) {
+      throw new Error(`Polygon native address for ${network} not found`)
+    }
+
+    return addresses.polygon
+  }
+
+  throw new Error(`Native address for ${network} and ${source} not found`)
+}
+
+export const getEvmChainName = (chainId: number) => {
+  switch (chainId) {
+    case 1:
+      return 'Ethereum'
+    case 42161:
+      return 'Arbitrum'
+    case 137:
+      return 'Polygon'
+    default:
+      return 'Ethereum'
   }
 }

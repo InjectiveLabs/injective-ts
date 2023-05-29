@@ -4,16 +4,27 @@ export const getMappedTokensByErc20Address = (
   tokens: Record<string, TokenMeta>,
 ) =>
   (Object.keys(tokens) as Array<keyof typeof tokens>)
-    .filter((token) => !!tokens[token].erc20)
+    .filter((token) => !!(tokens[token].erc20 || tokens[token].evm))
     .reduce((result, token) => {
-      if (!tokens[token].erc20) {
+      if (!tokens[token].erc20 && !tokens[token].evm) {
         return result
       }
 
-      return {
-        ...result,
-        [tokens[token].erc20!.address]: tokens[token],
+      if (tokens[token].erc20) {
+        return {
+          ...result,
+          [tokens[token].erc20!.address]: tokens[token],
+        }
       }
+
+      if (tokens[token].evm) {
+        return {
+          ...result,
+          [tokens[token].evm!.address]: tokens[token],
+        }
+      }
+
+      return result
     }, {}) as Record<string, TokenMeta>
 
 export const getMappedTokensByCw20Address = (

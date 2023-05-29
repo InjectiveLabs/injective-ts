@@ -1,5 +1,7 @@
 # 🌟 Injective Protocol - Exceptions
 
+Providing rich errors and converting some vague error messages thrown from Injective to a human readable format.
+
 ---
 
 ## 📚 Installation
@@ -7,16 +9,6 @@
 ```bash
 yarn add @injectivelabs/exceptions
 ```
-
----
-
-## 📖 Documentation
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
-
-This documentation is currently under work in progress.
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
 ---
 

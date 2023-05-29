@@ -1,5 +1,7 @@
 # 🌟 Injective Protocol - TypeScript Types
 
+Enums, interfaces and some types in TypeScript for Injective related functionalities.
+
 ---
 
 ## 📚 Installation
@@ -7,16 +9,6 @@
 ```bash
 yarn add @injectivelabs/ts-types
 ```
-
----
-
-## 📖 Documentation
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
-
-This documentation is currently under work in progress.
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
 ---
 

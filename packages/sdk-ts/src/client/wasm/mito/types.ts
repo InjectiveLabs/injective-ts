@@ -40,6 +40,7 @@ export interface QueryVaultContractMarketMaking {
   min_trade_volatility_sample_size: number
   default_mid_price_volatility_ratio: string
   min_volatility_ratio: string
+  oracle_stale_time: number
 }
 
 export interface QueryVaultContractDerivativeConfigResponse {
@@ -148,6 +149,7 @@ export type VaultMarketMakingConfig = {
   minTradeVolatilitySampleSize: number
   defaultMidPriceVolatilityRatio: string
   minVolatilityRatio: string
+  oracleStaleTime: number
 }
 
 export type VaultAMMConfig = {
@@ -177,11 +179,44 @@ export type VaultSpotConfig = {
   base: VaultBaseConfig
   marketMaking: VaultMarketMakingConfig
   oracleType: number
-  reservationPriceTailDeviationRatio: string
   targetBaseWeight: string
   allowedRedemptionTypes: number
   baseDecimals: number
   quoteDecimals: number
   baseOracleSymbol: string
   quoteOracleSymbol: string
+}
+
+export type QueryStakingConfigResponse = {
+  owner?: string
+  lockup_period?: number
+  allocator_contract_address?: string
+}
+
+export type QueryAllocatorConfigResponse = {
+  owner?: string
+  staking_contract_address?: string
+  max_reward_denoms_per_gauge?: number
+  min_gauge_duration_in_seconds?: number
+  max_active_gauges_per_lp_token?: number
+  gauge_allocation_fee?: {
+    denom: string
+    amount: string
+  }
+}
+
+export type StakingConfig = {
+  owner?: string
+  lockupPeriod?: number
+  allocatorContractAddress?: string
+}
+
+export type AllocatorConfig = {
+  owner?: string
+  stakingContractAddress?: string
+  maxRewardDenomsPerGauge?: number
+  minGaugeDurationInSeconds?: number
+  maxActiveGaugesPerLpToken?: number
+  gaugeAllocationFeeDenom?: string
+  gaugeAllocationFeeAmount?: string
 }

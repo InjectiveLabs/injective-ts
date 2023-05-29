@@ -1,5 +1,7 @@
 # 🌟 Injective Protocol - Token Metadata
 
+A package that allows developers to attach token metadata information to denoms.
+
 ---
 
 ## 📚 Installation
@@ -12,11 +14,7 @@ yarn add @injectivelabs/token-metadata
 
 ## 📖 Documentation
 
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
-
-This documentation is currently under work in progress.
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
+Read more and find example usages on our [TokenMetadata Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/09TokenMetadata)
 
 ---
 

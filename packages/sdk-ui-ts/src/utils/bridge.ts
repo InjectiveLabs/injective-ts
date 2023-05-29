@@ -4,7 +4,12 @@ import {
   BridgingNetwork,
 } from './../types/bridge'
 import { convertTimestampToMilliseconds } from '@injectivelabs/utils'
-import { isTestnet, Network } from '@injectivelabs/networks'
+import {
+  isTestnet,
+  isMainnet,
+  Network,
+  isDevnet,
+} from '@injectivelabs/networks'
 import { UiBridgeTransaction, MintScanExplorerUrl } from './../types/bridge'
 import {
   PEGGY_GRAPH_URL,
@@ -87,6 +92,13 @@ export const CosmosNetworks = [
   BridgingNetwork.Canto,
 ]
 
+export const EvmWormholeNetworks = [
+  BridgingNetwork.EthereumWh,
+  BridgingNetwork.Polygon,
+  BridgingNetwork.Arbitrum,
+  BridgingNetwork.Klaytn,
+]
+
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Juno,
   BridgingNetwork.Evmos,
@@ -96,6 +108,9 @@ export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Persistence,
   BridgingNetwork.CosmosHubTestnet,
   BridgingNetwork.Arbitrum,
+  BridgingNetwork.Polygon,
+  BridgingNetwork.Sui,
+  BridgingNetwork.Klaytn,
 ]
 
 export const tokenDenomsPerNetwork = [
@@ -222,6 +237,11 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Arbitrum,
     denoms: [],
     symbols: ['ARB'],
+  },
+  {
+    network: BridgingNetwork.Polygon,
+    denoms: [],
+    symbols: ['WMATIC'],
   },
 ] as NetworkConfig[]
 
@@ -356,12 +376,6 @@ export const cosmosNativeDenomsFromChainId = {
     tokenType: TokenType.Ibc,
     denom: 'inj',
   },
-  [TestnetCosmosChainId.Cosmoshub]: {
-    ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
-    tokenType: TokenType.Ibc,
-    denom:
-      'ibc/48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
-  },
 } as Record<string, Token | Token[]>
 
 export const ibcHashToNativeInjPerNetwork = {
@@ -480,26 +494,15 @@ export const txNotPartOfInjectivePeggyTxs =
     ) === undefined
 
 export const getExplorerUrl = (network: Network): string => {
-  switch (network) {
-    case Network.Devnet:
-      return 'https://devnet.explorer.injective.dev'
-    case Network.Devnet1:
-      return 'https://devnet-1.explorer.injective.dev'
-    case Network.Devnet2:
-      return 'https://devnet-2.explorer.injective.dev'
-    case Network.Mainnet:
-      return 'https://explorer.injective.network'
-    case Network.Public:
-      return 'https://explorer.injective.network'
-    case Network.Local:
-      return 'https://devnet.explorer.injective.dev'
-    case Network.Testnet:
-      return 'https://testnet.explorer.injective.dev'
-    case Network.TestnetK8s:
-      return 'https://testnet.explorer.injective.dev'
-    default:
-      return 'https://explorer.injective.network'
+  if (isDevnet(network)) {
+    return 'https://devnet.explorer.injective.dev'
   }
+
+  if (isTestnet(network)) {
+    return 'https://testnet.explorer.injective.network'
+  }
+
+  return 'https://explorer.injective.network'
 }
 
 export const getCosmosExplorerUrl = (
@@ -508,99 +511,79 @@ export const getCosmosExplorerUrl = (
 ): string => {
   const mintScanNetworkUrl = MintScanExplorerUrl[bridgingNetwork]
 
-  switch (network) {
-    case Network.Devnet:
-      return `https://dev.mintscan.io/${mintScanNetworkUrl}-testnet`
-    case Network.Mainnet:
-      return `https://www.mintscan.io/${mintScanNetworkUrl}`
-    case Network.Public:
-      return `https://www.mintscan.io/${mintScanNetworkUrl}`
-    case Network.Local:
-      return `https://dev.mintscan.io/${mintScanNetworkUrl}-testnet`
-    case Network.Testnet:
-      return `https://testnet.mintscan.io/${mintScanNetworkUrl}-testnet`
-    default:
-      return `https://www.mintscan.io/${mintScanNetworkUrl}`
+  if (isDevnet(network)) {
+    return `https://dev.mintscan.io/${mintScanNetworkUrl}-testnet`
   }
+
+  if (isTestnet(network)) {
+    return `https://testnet.mintscan.io/${mintScanNetworkUrl}-testnet`
+  }
+
+  return `https://www.mintscan.io/${mintScanNetworkUrl}`
 }
 
 export const getEthereumExplorerUrl = (network: Network): string => {
-  switch (true) {
-    case network.startsWith(Network.Mainnet):
-      return 'https://etherscan.io'
-    case [Network.Public, Network.Staging].includes(network):
-      return 'https://etherscan.io'
-    case network.startsWith(Network.Devnet):
-      return 'https://goerli.etherscan.io'
-    case network.startsWith(Network.Testnet):
-      return 'https://goerli.etherscan.io'
-    case [Network.Local].includes(network):
-      return 'https://goerli.etherscan.io'
-    default:
-      return 'https://etherscan.io'
+  if (isDevnet(network)) {
+    return 'https://goerli.etherscan.io'
   }
+
+  if (isTestnet(network)) {
+    return 'https://goerli.etherscan.io'
+  }
+
+  return 'https://etherscan.io'
 }
 
 export const getArbitrumExplorerUrl = (network: Network): string => {
-  switch (true) {
-    case network.startsWith(Network.Mainnet):
-      return 'https://arbiscan.io'
-    case [Network.Public, Network.Staging].includes(network):
-      return 'https://arbiscan.io'
-    case network.startsWith(Network.Devnet):
-      return 'https://goerli.arbiscan.io'
-    case network.startsWith(Network.Testnet):
-      return 'https://goerli.arbiscan.io'
-    case [Network.Local].includes(network):
-      return 'https://goerli.arbiscan.io'
-    default:
-      return 'https://arbiscan.io'
+  if (isDevnet(network)) {
+    return 'https://goerli.arbiscan.io'
   }
+
+  if (isTestnet(network)) {
+    return 'https://goerli.arbiscan.io'
+  }
+
+  return 'https://arbiscan.io'
+}
+
+export const getPolygonExplorerUrl = (network: Network): string => {
+  if (isDevnet(network)) {
+    return 'https://mumbai.polygonscan.com'
+  }
+
+  if (isTestnet(network)) {
+    return 'https://mumbai.polygonscan.com'
+  }
+
+  return 'https://polygonscan.com'
 }
 
 export const getSolanaExplorerUrl = (network: Network): string => {
-  switch (network) {
-    case Network.Devnet:
-      return 'https://explorer.solana.com/?cluster=devnet'
-    case Network.Mainnet:
-      return 'https://explorer.solana.com/'
-    case Network.Public:
-      return 'https://explorer.solana.com/'
-    case Network.Local:
-      return 'https://explorer.solana.com/?cluster=devnet'
-    case Network.Testnet:
-      return 'https://explorer.solana.com/?cluster=testnet'
-    default:
-      return 'https://explorer.solana.com/'
+  if (isDevnet(network)) {
+    return 'https://explorer.solana.com/?cluster=devnet'
   }
+
+  if (isTestnet(network)) {
+    return 'https://explorer.solana.com/?cluster=testnet'
+  }
+
+  return 'https://explorer.solana.com/'
 }
 
 export const getTerraExplorerUrl = (network: Network): string => {
-  switch (network) {
-    case Network.Devnet:
-      return 'https://finder.terra.money/localterra'
-    case Network.Mainnet:
-      return 'https://finder.terra.money/mainnet'
-    case Network.Public:
-      return 'https://finder.terra.money/mainnet'
-    case Network.Local:
-      return 'https://finder.terra.money/localterra'
-    case Network.Testnet:
-      return 'https://finder.terra.money/testnet/'
-    default:
-      return 'https://finder.terra.money/mainnet'
+  if (isDevnet(network)) {
+    return 'https://finder.terra.money/localterra'
   }
+
+  if (isTestnet(network)) {
+    return 'https://finder.terra.money/testnet/'
+  }
+
+  return 'https://finder.terra.money/mainnet'
 }
 
 export const getPeggoGraphQlEndpoint = (network: Network): string => {
-  if (
-    [
-      Network.Mainnet,
-      Network.MainnetK8s,
-      Network.Public,
-      Network.Staging,
-    ].includes(network)
-  ) {
+  if (isMainnet(network)) {
     return PEGGY_GRAPH_URL
   }
 

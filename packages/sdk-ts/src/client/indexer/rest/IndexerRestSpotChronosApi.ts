@@ -1,5 +1,6 @@
 import {
   HttpRequestException,
+  HttpRequestMethod,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import {
@@ -17,10 +18,12 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
     const path = `market_summary`
 
     try {
-      const { data } = (await this.get(path, {
-        marketId,
-        resolution: '24h',
-      })) as ChronosSpotMarketSummaryResponse
+      const { data } = await this.retry<ChronosSpotMarketSummaryResponse>(() =>
+        this.get(path, {
+          marketId,
+          resolution: '24h',
+        }),
+      )
 
       return data
     } catch (e: unknown) {
@@ -30,6 +33,8 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${path}?marketId=${marketId}`,
+        method: HttpRequestMethod.Get,
         contextModule: IndexerModule.ChronosSpot,
       })
     }
@@ -39,9 +44,11 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
     const path = `market_summary_all`
 
     try {
-      const { data } = (await this.get(path, {
-        resolution: '24h',
-      })) as AllSpotMarketSummaryResponse
+      const { data } = await this.retry<AllSpotMarketSummaryResponse>(() =>
+        this.get(path, {
+          resolution: '24h',
+        }),
+      )
 
       return data
     } catch (e: unknown) {
@@ -51,6 +58,8 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${path}`,
+        method: HttpRequestMethod.Get,
         contextModule: IndexerModule.ChronosSpot,
       })
     }
