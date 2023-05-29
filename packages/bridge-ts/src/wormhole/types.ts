@@ -54,11 +54,20 @@ export interface WormholeClient<
   getIsTransferCompletedRetry: (
     signedVAA: string /* in base 64 */,
   ) => Promise<boolean>
-  redeem: (
-    recipient: string,
-    signedVAA: string /* base64 */,
-    isNative?: boolean,
-  ) => Promise<R>
+  redeem: ({
+    signedVAA,
+    recipient,
+  }: {
+    signedVAA: string /* base64 */
+    recipient: string
+  }) => Promise<R>
+  redeemNative: ({
+    signedVAA,
+    recipient,
+  }: {
+    signedVAA: string /* base64 */
+    recipient: string
+  }) => Promise<R>
 }
 
 export { BaseMessageSignerWalletAdapter }

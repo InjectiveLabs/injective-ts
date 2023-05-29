@@ -412,3 +412,16 @@ export const getEvmNativeAddress = (
 
   throw new Error(`Native address for ${network} and ${source} not found`)
 }
+
+export const getEvmChainName = (chainId: number) => {
+  switch (chainId) {
+    case 1:
+      return 'Ethereum'
+    case 42161:
+      return 'Arbitrum'
+    case 137:
+      return 'Polygon'
+    default:
+      return 'Ethereum'
+  }
+}

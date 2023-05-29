@@ -10,6 +10,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
+  getSignedVAA,
   getSignedVAAWithRetry,
   tryNativeToUint8Array,
 } from '@certusone/wormhole-sdk'
@@ -29,17 +30,27 @@ import {
 } from '../utils'
 import { BaseWormholeClient } from '../WormholeClient'
 
-interface MsgBroadcaster {
+const TIMEOUT_BETWEEN_RETRIES = 5000
+
+interface WalletStrategy {
   getAddresses: () => Promise<string[]>
+}
+
+interface MsgBroadcaster {
   broadcast: (params: any) => Promise<TxResponse>
   broadcastOld: (params: any) => Promise<TxResponse>
+}
+
+interface Provider {
+  msgBroadcaster: MsgBroadcaster
+  walletStrategy: WalletStrategy
 }
 
 export class InjectiveWormholeClient
   extends BaseWormholeClient
   implements WormholeClient<TxResponse, MsgExecuteContractCompat>
 {
-  public provider?: MsgBroadcaster
+  public provider: Provider
 
   constructor({
     network,
@@ -47,8 +58,8 @@ export class InjectiveWormholeClient
     provider,
   }: {
     network: Network
+    provider: Provider
     wormholeRpcUrl?: string
-    provider?: MsgBroadcaster
   }) {
     super({ network, wormholeRpcUrl })
     this.provider = provider
@@ -57,11 +68,7 @@ export class InjectiveWormholeClient
   async getAddress() {
     const { provider } = this
 
-    if (!provider) {
-      return ''
-    }
-
-    const [address] = await provider?.getAddresses()
+    const [address] = await provider.walletStrategy.getAddresses()
 
     return address.startsWith('0x') ? getInjectiveAddress(address) : address
   }
@@ -148,7 +155,7 @@ export class InjectiveWormholeClient
       tryNativeToUint8Array(recipient, associatedChain),
     )
 
-    const txResponse = (await provider.broadcastOld({
+    const txResponse = (await provider.msgBroadcaster.broadcastOld({
       msgs: [...additionalMsgs, ...messages],
       injectiveAddress: signer,
     })) as TxResponse
@@ -202,6 +209,34 @@ export class InjectiveWormholeClient
       {
         transport: getGrpcTransport(),
       },
+      TIMEOUT_BETWEEN_RETRIES,
+    )
+
+    return Buffer.from(signedVAA).toString('base64')
+  }
+
+  async getSignedVAANoRetry(txResponse: TxResponse) {
+    const { network, wormholeRpcUrl } = this
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    const { injectiveContractAddresses } = getContractAddresses(network)
+
+    const sequence = parseSequenceFromLogInjective(txResponse)
+    const emitterAddress = await getEmitterAddressInjective(
+      injectiveContractAddresses.token_bridge,
+    )
+
+    const { vaaBytes: signedVAA } = await getSignedVAA(
+      wormholeRpcUrl,
+      WORMHOLE_CHAINS.injective,
+      emitterAddress,
+      sequence,
+      {
+        transport: getGrpcTransport(),
+      },
     )
 
     return Buffer.from(signedVAA).toString('base64')
@@ -222,7 +257,6 @@ export class InjectiveWormholeClient
 
   async getIsTransferCompletedRetry(signedVAA: string /* in base 64 */) {
     const RETRIES = 2
-    const TIMEOUT_BETWEEN_RETRIES = 2000
 
     for (let i = 0; i < RETRIES; i += 1) {
       if (await this.getIsTransferCompleted(signedVAA)) {
@@ -235,22 +269,32 @@ export class InjectiveWormholeClient
     return false
   }
 
-  async redeem(
-    injectiveAddress: string,
-    signedVAA: string /* in base 64 */,
-  ): Promise<MsgExecuteContractCompat> {
+  async redeem({
+    signedVAA,
+    recipient,
+  }: {
+    signedVAA: string /* in base 64 */
+    recipient: string
+  }): Promise<MsgExecuteContractCompat> {
     const { network } = this
     const { injectiveContractAddresses } = getContractAddresses(network)
 
     return MsgExecuteContractCompat.fromJSON({
       contractAddress: injectiveContractAddresses.token_bridge,
-      sender: injectiveAddress,
+      sender: recipient,
       msg: {
         submit_vaa: {
           data: signedVAA,
         },
       },
     })
+  }
+
+  async redeemNative(args: {
+    signedVAA: string /* in base 64 */
+    recipient: string
+  }): Promise<MsgExecuteContractCompat> {
+    return this.redeem(args)
   }
 
   async createWrapped(

@@ -1273,6 +1273,13 @@ export default {
     logo: 'arb.png',
     coinGeckoId: 'arbitrum',
 
+    evm: {
+      decimals: 18,
+      isNative: true,
+      address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
+      tokenType: TokenType.Erc20,
+    },
+
     erc20: {
       decimals: 18,
       address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
@@ -1282,6 +1289,7 @@ export default {
     cw20: {
       decimals: 8,
       address: 'inj1d5vz0uzwlpfvgwrwulxg6syy82axa58y4fuszd',
+      source: Cw20TokenSource.Arbitrum,
       tokenType: TokenType.Cw20,
     },
   },

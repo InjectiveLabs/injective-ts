@@ -6,9 +6,11 @@ import {
   ChainId,
   approveEth,
   redeemOnEth,
+  getSignedVAA,
   transferFromEth,
   hexToUint8Array,
   uint8ArrayToHex,
+  redeemOnEthNative,
   getEmitterAddressEth,
   getSignedVAAWithRetry,
   transferFromEthNative,
@@ -19,12 +21,14 @@ import {
 import { BigNumber, sleep } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
 import { zeroPad } from 'ethers/lib/utils'
-import { WORMHOLE_CHAINS } from '../constants'
+import { WORMHOLE_CHAINS, WORMHOLE_NATIVE_WRAPPED_ADDRESS } from '../constants'
 import { WormholeSource, WormholeClient, TransferMsgArgs } from '../types'
-import { getContractAddresses, getEvmNativeAddress } from '../utils'
+import { getEvmChainName, getContractAddresses } from '../utils'
 import { BaseWormholeClient } from '../WormholeClient'
 
-type Provider = () =>
+const TIMEOUT_BETWEEN_RETRIES = 5000
+
+export type Provider = () =>
   | Promise<ethers.providers.Web3Provider>
   | ethers.providers.Web3Provider
 
@@ -67,7 +71,7 @@ export class EvmWormholeClient
       case WormholeSource.Polygon:
         return WORMHOLE_CHAINS.polygon
       default:
-        return WORMHOLE_CHAINS.arbitrum
+        return WORMHOLE_CHAINS.ethereum
     }
   }
 
@@ -97,9 +101,11 @@ export class EvmWormholeClient
 
     try {
       if (!tokenAddress) {
-        const balance = await signer.provider.getBalance(address)
+        return (await signer.provider.getBalance(address)).toString()
+      }
 
-        return balance.toNumber().toString()
+      if (isNativeTokenAddress(tokenAddress)) {
+        return (await signer.provider.getBalance(address)).toString()
       }
 
       const tokenContract = EthersContracts.ERC20__factory.connect(
@@ -114,7 +120,7 @@ export class EvmWormholeClient
   }
 
   async transfer(args: TransferMsgArgs) {
-    return args.tokenAddress
+    return args.tokenAddress && !isNativeTokenAddress(args.tokenAddress)
       ? this.transferToken(args)
       : this.transferNative(args)
   }
@@ -161,6 +167,40 @@ export class EvmWormholeClient
       {
         transport: getGrpcTransport(),
       },
+      TIMEOUT_BETWEEN_RETRIES,
+    )
+
+    return Buffer.from(signedVAA).toString('base64')
+  }
+
+  async getSignedVAANoRetry(txResponse: ethers.ContractReceipt) {
+    const { network, wormholeSource, wormholeRpcUrl, wormholeChainId } = this
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    const { associatedChainContractAddresses } = getContractAddresses(
+      network,
+      wormholeSource,
+    )
+
+    const sequence = parseSequenceFromLogEth(
+      txResponse,
+      associatedChainContractAddresses.core,
+    )
+    const emitterAddress = await getEmitterAddressEth(
+      associatedChainContractAddresses.token_bridge,
+    )
+
+    const { vaaBytes: signedVAA } = await getSignedVAA(
+      wormholeRpcUrl,
+      wormholeChainId,
+      emitterAddress,
+      sequence,
+      {
+        transport: getGrpcTransport(),
+      },
     )
 
     return Buffer.from(signedVAA).toString('base64')
@@ -184,7 +224,6 @@ export class EvmWormholeClient
 
   async getIsTransferCompletedRetry(signedVAA: string /* in base 64 */) {
     const RETRIES = 2
-    const TIMEOUT_BETWEEN_RETRIES = 2000
 
     for (let i = 0; i < RETRIES; i += 1) {
       if (await this.getIsTransferCompleted(signedVAA)) {
@@ -197,9 +236,12 @@ export class EvmWormholeClient
     return false
   }
 
-  async redeem(
-    signedVAA: string /* in base 64 */,
-  ): Promise<ethers.ContractReceipt> {
+  async redeem({
+    signedVAA,
+  }: {
+    signedVAA: string /* in base 64 */
+    recipient?: string
+  }): Promise<ethers.ContractReceipt> {
     const { network, wormholeSource } = this
 
     const signer = await this.getProviderAndChainIdCheck()
@@ -209,6 +251,27 @@ export class EvmWormholeClient
     )
 
     return redeemOnEth(
+      associatedChainContractAddresses.token_bridge,
+      signer,
+      Buffer.from(signedVAA, 'base64'),
+    )
+  }
+
+  async redeemNative({
+    signedVAA,
+  }: {
+    signedVAA: string /* in base 64 */
+    recipient?: string
+  }): Promise<ethers.ContractReceipt> {
+    const { network, wormholeSource } = this
+
+    const signer = await this.getProviderAndChainIdCheck()
+    const { associatedChainContractAddresses } = getContractAddresses(
+      network,
+      wormholeSource,
+    )
+
+    return redeemOnEthNative(
       associatedChainContractAddresses.token_bridge,
       signer,
       Buffer.from(signedVAA, 'base64'),
@@ -241,27 +304,6 @@ export class EvmWormholeClient
         associatedChainContractAddresses.token_bridge,
       )
     ).toString()
-  }
-
-  private async getProviderAndChainIdCheck() {
-    const { provider } = this
-
-    if (!provider) {
-      throw new GeneralException(new Error(`Please provide provider`))
-    }
-
-    const actualProvider =
-      provider instanceof Function ? await provider() : provider
-    const signer = actualProvider.getSigner()
-    const chainId = await signer.getChainId()
-
-    if (chainId !== this.evmChainId) {
-      throw new GeneralException(
-        new Error(`Please switch to the ${this.evmChainId} Network`),
-      )
-    }
-
-    return signer
   }
 
   private async transferToken(args: TransferMsgArgs) {
@@ -337,25 +379,10 @@ export class EvmWormholeClient
 
     const signer = await this.getProviderAndChainIdCheck()
 
-    const nativeTokenAddress = getEvmNativeAddress(network, wormholeSource)
     const { associatedChainContractAddresses } = getContractAddresses(
       network,
       wormholeSource,
     )
-
-    const allowance = await this.getTokenAllowance({
-      address: await signer.getAddress(),
-      tokenAddress: nativeTokenAddress,
-    })
-
-    if (new BigNumber(allowance).lt(amount)) {
-      await approveEth(
-        associatedChainContractAddresses.token_bridge,
-        nativeTokenAddress,
-        signer,
-        new BigNumber(2).pow(256).minus(1).toFixed(),
-      )
-    }
 
     const transferReceipt = await transferFromEthNative(
       associatedChainContractAddresses.token_bridge,
@@ -378,4 +405,66 @@ export class EvmWormholeClient
       txHash: string
     }
   }
+
+  private async getProviderAndChainIdCheck() {
+    const { provider } = this
+
+    if (!provider) {
+      throw new GeneralException(new Error(`Please provide provider`))
+    }
+
+    const actualProvider =
+      provider instanceof Function ? await provider() : provider
+    const signer = actualProvider.getSigner()
+    const chainId = await signer.getChainId()
+
+    /**
+     * Trigger network change on Metamask and re-fetch the
+     * provider again so it has the updated chainId
+     */
+    if (chainId !== this.evmChainId) {
+      const chainIdToHex = this.evmChainId.toString(16)
+
+      try {
+        await ((window as any).ethereum as any).request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: `0x${chainIdToHex}` }],
+        })
+
+        const actualProvider =
+          provider instanceof Function ? await provider() : provider
+        const signer = actualProvider.getSigner()
+
+        return signer
+      } catch (e) {
+        throw new GeneralException(
+          new Error(
+            `Please switch to the ${getEvmChainName(
+              this.evmChainId,
+            )} Network on Metamask`,
+          ),
+        )
+      }
+    }
+
+    return signer
+  }
+}
+
+export const isNativeTokenAddress = (tokenAddress?: string) => {
+  const wrappedNativeWrappedTokensMap = {
+    ...WORMHOLE_NATIVE_WRAPPED_ADDRESS(Network.Mainnet),
+    ...WORMHOLE_NATIVE_WRAPPED_ADDRESS(Network.Testnet),
+    ...WORMHOLE_NATIVE_WRAPPED_ADDRESS(Network.Devnet),
+  }
+  const wrappedTokenAddresses = Object.values(wrappedNativeWrappedTokensMap)
+
+  return tokenAddress && wrappedTokenAddresses.includes(tokenAddress)
+}
+
+/** in seconds */
+export const EVM_NETWORK_BLOCK_TIME = {
+  [WormholeSource.Ethereum]: 12,
+  [WormholeSource.Polygon]: 2,
+  [WormholeSource.Arbitrum]: 15,
 }

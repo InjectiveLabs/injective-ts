@@ -3,6 +3,7 @@ import { getGrpcTransport, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
   cosmos,
+  getSignedVAA,
   redeemOnSolana,
   hexToUint8Array,
   uint8ArrayToHex,
@@ -38,6 +39,9 @@ import { WORMHOLE_CHAINS } from '../constants'
 import { TransferMsgArgs, WormholeClient, WormholeSource } from '../types'
 import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { BaseWormholeClient } from '../WormholeClient'
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
+
+const TIMEOUT_BETWEEN_RETRIES = 5000
 
 export class SolanaWormholeClient
   extends BaseWormholeClient
@@ -45,7 +49,7 @@ export class SolanaWormholeClient
 {
   public solanaHostUrl: string
 
-  public provider: BaseMessageSignerWalletAdapter
+  public provider: PhantomWalletAdapter
 
   constructor({
     network,
@@ -54,7 +58,7 @@ export class SolanaWormholeClient
     wormholeRpcUrl,
   }: {
     network: Network
-    provider: BaseMessageSignerWalletAdapter
+    provider: PhantomWalletAdapter
     solanaHostUrl: string
     wormholeRpcUrl?: string
   }) {
@@ -139,6 +143,36 @@ export class SolanaWormholeClient
       {
         transport: getGrpcTransport(),
       },
+      TIMEOUT_BETWEEN_RETRIES,
+    )
+
+    return Buffer.from(signedVAA).toString('base64')
+  }
+
+  async getSignedVAANoRetry(txResponse: TransactionResponse) {
+    const { network, wormholeRpcUrl } = this
+
+    if (!wormholeRpcUrl) {
+      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    }
+
+    const { associatedChainContractAddresses } = getContractAddresses(network)
+
+    const sequence = parseSequenceFromLogSolana(
+      txResponse as TransactionResponse,
+    )
+    const emitterAddress = await getEmitterAddressSolana(
+      associatedChainContractAddresses.token_bridge,
+    )
+
+    const { vaaBytes: signedVAA } = await getSignedVAA(
+      wormholeRpcUrl,
+      WORMHOLE_CHAINS.solana,
+      emitterAddress,
+      sequence,
+      {
+        transport: getGrpcTransport(),
+      },
     )
 
     return Buffer.from(signedVAA).toString('base64')
@@ -180,11 +214,13 @@ export class SolanaWormholeClient
     return false
   }
 
-  async redeem(
-    solanaPubKey: string,
-    signedVAA: string /* in base 64 */,
-    isNative?: boolean,
-  ) {
+  async redeem({
+    signedVAA,
+    recipient,
+  }: {
+    recipient: string
+    signedVAA: string /* in base 64 */
+  }) {
     const { network, solanaHostUrl } = this
 
     if (!solanaHostUrl) {
@@ -195,21 +231,39 @@ export class SolanaWormholeClient
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
-    return isNative
-      ? redeemAndUnwrapOnSolana(
-          connection,
-          associatedChainContractAddresses.core,
-          associatedChainContractAddresses.token_bridge,
-          new PublicKey(solanaPubKey),
-          Buffer.from(signedVAA, 'base64'),
-        )
-      : redeemOnSolana(
-          connection,
-          associatedChainContractAddresses.core,
-          associatedChainContractAddresses.token_bridge,
-          new PublicKey(solanaPubKey),
-          Buffer.from(signedVAA, 'base64'),
-        )
+    return redeemOnSolana(
+      connection,
+      associatedChainContractAddresses.core,
+      associatedChainContractAddresses.token_bridge,
+      new PublicKey(recipient),
+      Buffer.from(signedVAA, 'base64'),
+    )
+  }
+
+  async redeemNative({
+    signedVAA,
+    recipient,
+  }: {
+    recipient: string
+    signedVAA: string /* in base 64 */
+  }) {
+    const { network, solanaHostUrl } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const { associatedChainContractAddresses } = getContractAddresses(network)
+
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    return redeemAndUnwrapOnSolana(
+      connection,
+      associatedChainContractAddresses.core,
+      associatedChainContractAddresses.token_bridge,
+      new PublicKey(recipient),
+      Buffer.from(signedVAA, 'base64'),
+    )
   }
 
   async postVAAWithRetry({
