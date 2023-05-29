@@ -43,14 +43,17 @@ export interface MitoVault {
   marketId: string
   currentTvl: number
   profits?: MitoChanges
-  tvlChanges?: MitoChanges
   updatedAt: number
   vaultType: string
   lpTokenPrice: number
   subaccountInfo?: MitoSubaccountBalance
   masterContractAddress: string
   totalLpAmount: string
+  slug: string
+  createdAt: number
   notionalValueCap: string
+  tvlChanges?: MitoChanges
+  apy: number
 }
 
 export interface MitoSubscription {
@@ -103,6 +106,47 @@ export interface MitoTransfer {
   tidByAccount: number
 }
 
+export interface MitoGauge {
+  id: string
+  owner: string
+  startTimestamp: number
+  endTimestamp: number
+  rewardTokens: Coin[]
+  lastDistribution: number
+}
+
+export interface MitoStakingPool {
+  vaultName: string
+  vaultAddress: string
+  stakeDenom: string
+  gauges: MitoGauge[]
+  apr: number
+  totalLiquidity: number
+  stakingAddress: string
+  aprBreakDown: Record<string, number>
+}
+
+export interface MitoStakingReward {
+  vaultName: string
+  vaultAddress: string
+  stakedAmount: Coin | undefined
+  apr: number
+  claimableRewards: Coin[]
+  lockTimestamp: number
+  lockedAmount: Coin | undefined
+}
+
+export interface MitoStakingActivity {
+  stakeAmount: Coin | undefined
+  vaultAddress: string
+  action: string
+  txHash: string
+  rewardedTokens: Coin[]
+  timestamp: number
+  staker: string
+  numberByAccount: number
+}
+
 export type GrpcMitoVault = MitoApi.Vault
 export type GrpcMitoChanges = MitoApi.Changes
 export type GrpcMitoHolders = MitoApi.Holders
@@ -113,3 +157,7 @@ export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
 export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
 export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch
 export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance
+export type GrpcMitoStakingGauge = MitoApi.Gauge
+export type GrpcMitoStakingPool = MitoApi.StakingPool
+export type GrpcMitoStakingStakingReward = MitoApi.StakingReward
+export type GrpcMitoStakingStakingActivity = MitoApi.StakingActivity

@@ -186,3 +186,37 @@ export type VaultSpotConfig = {
   baseOracleSymbol: string
   quoteOracleSymbol: string
 }
+
+export type QueryStakingConfigResponse = {
+  owner?: string
+  lockup_period?: number
+  allocator_contract_address?: string
+}
+
+export type QueryAllocatorConfigResponse = {
+  owner?: string
+  staking_contract_address?: string
+  max_reward_denoms_per_gauge?: number
+  min_gauge_duration_in_seconds?: number
+  max_active_gauges_per_lp_token?: number
+  gauge_allocation_fee?: {
+    denom: string
+    amount: string
+  }
+}
+
+export type StakingConfig = {
+  owner?: string
+  lockupPeriod?: number
+  allocatorContractAddress?: string
+}
+
+export type AllocatorConfig = {
+  owner?: string
+  stakingContractAddress?: string
+  maxRewardDenomsPerGauge?: number
+  minGaugeDurationInSeconds?: number
+  maxActiveGaugesPerLpToken?: number
+  gaugeAllocationFeeDenom?: string
+  gaugeAllocationFeeAmount?: string
+}

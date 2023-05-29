@@ -5,8 +5,8 @@ export declare namespace QueryContractConfigArg {
   export interface Params {}
 }
 
-export class QueryContractConfig extends BaseWasmQuery<QueryContractConfigArg.Params> {
+export class QueryContractBaseConfig extends BaseWasmQuery<QueryContractConfigArg.Params> {
   toPayload() {
-    return toBase64({ config: {} })
+    return toBase64({ base: { config: {} } })
   }
 }
