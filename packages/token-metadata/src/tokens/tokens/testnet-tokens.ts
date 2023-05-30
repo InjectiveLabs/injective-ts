@@ -31,21 +31,25 @@ export const testnetTokens = () =>
   ({
     wBTC: {
       ...tokens.wBTC,
-      cw20s: overrideCw20s(
-        {
-          decimals: 8,
-          symbol: 'wBTC',
-          source: Cw20TokenSource.Cosmos,
-          address: 'wbtc',
-          tokenType: TokenType.Cw20,
-        },
-        tokens.wBTC.cw20s,
-      ),
+      cw20s: [
+        ...(tokens.wBTC.cw20s || []),
+        overrideCw20s(
+          {
+            decimals: 8,
+            symbol: 'wBTC',
+            source: Cw20TokenSource.Cosmos,
+            address: 'wbtc',
+            tokenType: TokenType.Cw20,
+          },
+          tokens.wBTC.cw20s,
+        ),
+      ],
     },
 
     ATOM: {
       ...tokens.ATOM,
-      cw20s: overrideCw20s(
+      cw20s: [
+        ...(tokens.ATOM.cw20s || []),
         {
           decimals: 8,
           symbol: 'WETH',
@@ -53,8 +57,7 @@ export const testnetTokens = () =>
           address: 'weth',
           tokenType: TokenType.Cw20,
         },
-        tokens.ATOM.cw20s,
-      ),
+      ],
     },
 
     INJ: {
@@ -87,7 +90,8 @@ export const testnetTokens = () =>
         ...tokens.wETH.erc20,
         address: '0xdB309Bb079EB419C18fe7D568c61cD2FdB65D9aF',
       },
-      cw20s: overrideCw20s(
+      cw20s: [
+        ...(tokens.wETH.cw20s || []),
         {
           decimals: 8,
           symbol: 'ATOM',
@@ -95,8 +99,7 @@ export const testnetTokens = () =>
           address: 'atom',
           tokenType: TokenType.Cw20,
         },
-        tokens.wETH.cw20s,
-      ),
+      ],
     },
 
     ASTRO: {
@@ -124,16 +127,25 @@ export const testnetTokens = () =>
         ...tokens.USDC.erc20,
         address: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
       },
-      cw20s: overrideCw20s(
+      cw20s: [
+        ...overrideCw20s(
+          {
+            decimals: 6,
+            symbol: 'USDCet',
+            source: Cw20TokenSource.EthereumWh,
+            address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
+            tokenType: TokenType.Cw20,
+          },
+          tokens.USDC.cw20s,
+        ),
         {
           decimals: 6,
           symbol: 'USDCet',
           source: Cw20TokenSource.EthereumWh,
-          address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
+          address: 'usdc',
           tokenType: TokenType.Cw20,
         },
-        tokens.USDC.cw20s,
-      ),
+      ],
     },
 
     MATIC: {
