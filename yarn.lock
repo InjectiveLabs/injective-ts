@@ -2253,7 +2253,7 @@
     snakecase-keys "^5.1.2"
     store2 "^2.12.0"
 
-"@injectivelabs/token-metadata@^1.11.0":
+"@injectivelabs/token-metadata@^1.11.0", "@injectivelabs/token-metadata@^1.11.0-beta.1":
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/@injectivelabs/token-metadata/-/token-metadata-1.11.0.tgz#a26c589a72c0735d4d852e69f7b6ee33c2189e90"
   integrity sha512-RzwJvnjDX8IwXYTvZDCMQcGxkN/0ZfXUEYTVMB0WMU0bRH7cV7WJ6Z9UDOijAehrJHu/fByDz2DuEOcktbwoIw==
