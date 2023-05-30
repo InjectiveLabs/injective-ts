@@ -18,7 +18,7 @@ import {
   getIsTransferCompletedEth,
   ethers_contracts as EthersContracts,
   CHAIN_ID_POLYGON,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import { BigNumber, sleep } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
 import { zeroPad } from 'ethers/lib/utils'

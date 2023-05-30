@@ -13,7 +13,7 @@ import {
   getSignedVAA,
   getSignedVAAWithRetry,
   tryNativeToUint8Array,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import {
   transferFromInjective,
   getEmitterAddressInjective,

@@ -1,4 +1,4 @@
-import { CONTRACTS } from '@certusone/wormhole-sdk'
+import { CONTRACTS } from '@injectivelabs/wormhole-sdk'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { ethers } from 'ethers'
 import { TxResponse, MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'

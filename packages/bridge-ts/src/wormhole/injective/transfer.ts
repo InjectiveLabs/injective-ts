@@ -8,7 +8,7 @@ import {
   ChainName,
   coalesceChainId,
   isNativeDenomInjective,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import { fromUint8Array } from 'js-base64'
 
 /**

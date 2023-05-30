@@ -16,7 +16,7 @@ import {
   postVaaSolanaWithRetry,
   redeemAndUnwrapOnSolana,
   getIsTransferCompletedSolana,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import {
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
@@ -32,7 +32,7 @@ import {
   TransactionResponse,
 } from '@solana/web3.js'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
-import { TransactionSignatureAndResponse } from '@certusone/wormhole-sdk/lib/cjs/solana'
+import { TransactionSignatureAndResponse } from '@injectivelabs/wormhole-sdk/lib/cjs/solana'
 import { zeroPad } from 'ethers/lib/utils'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'

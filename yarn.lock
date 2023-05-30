@@ -1097,18 +1097,18 @@
     eventemitter3 "^4.0.7"
     uuid "^8.3.2"
 
-"@certusone/wormhole-sdk-proto-web@0.0.6":
+"@injectivelabs/wormhole-sdk-proto-web@0.0.6":
   version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@certusone/wormhole-sdk-proto-web/-/wormhole-sdk-proto-web-0.0.6.tgz#cd26f724b39e565cde5573e20f0a29e659d146d3"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/wormhole-sdk-proto-web/-/wormhole-sdk-proto-web-0.0.6.tgz#cd26f724b39e565cde5573e20f0a29e659d146d3"
   integrity sha512-LTyjsrWryefx5WmkoBP6FQ2EjLxhMExAGxLkloHUhufVQZdrbGh0htBBUviP+HaDSJBCMPMtulNFwkBJV6muqQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.15.0"
     protobufjs "^7.0.0"
     rxjs "^7.5.6"
 
-"@certusone/wormhole-sdk-wasm@^0.0.1":
+"@injectivelabs/wormhole-sdk-wasm@^0.0.1":
   version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@certusone/wormhole-sdk-wasm/-/wormhole-sdk-wasm-0.0.1.tgz#05f0c05acba3df5bd025eaa9c7a3d55e017a771f"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/wormhole-sdk-wasm/-/wormhole-sdk-wasm-0.0.1.tgz#05f0c05acba3df5bd025eaa9c7a3d55e017a771f"
   integrity sha512-LdIwLhOyr4pPs2jqYubqC7d4UkqYBX0EG/ppspQlW3qlVE0LZRMrH6oVzzLMyHtV0Rw7O9sIKzORW/T3mrJv2w==
   dependencies:
     "@types/long" "^4.0.2"
@@ -2298,8 +2298,8 @@
   resolved "https://registry.yarnpkg.com/@injectivelabs/wormhole-sdk/-/wormhole-sdk-1.11.0.tgz#f36f02afe2f8c656e532da80a47fa2834b52c3ce"
   integrity sha512-hrrioTx283O6yOmz3EFaKEbaOyTXR1MEgs/kZIZsAl4PE5HvMDnBbIqMOKghpN7Zr0FPsNL7DATlewZ/DnAJbg==
   dependencies:
-    "@certusone/wormhole-sdk-proto-web" "0.0.6"
-    "@certusone/wormhole-sdk-wasm" "^0.0.1"
+    "@injectivelabs/wormhole-sdk-proto-web" "0.0.6"
+    "@injectivelabs/wormhole-sdk-wasm" "^0.0.1"
     "@coral-xyz/borsh" "0.2.6"
     "@injectivelabs/networks" "^1.11.0"
     "@injectivelabs/sdk-ts" "^1.11.0"
