@@ -1,8 +1,8 @@
-# Querying Indexer: Ninja
+# Ninja
 
 Example code snippets to query the indexer for the ninja vault module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get a vault based off it's contract address, such as the vault's tvl or profits
 

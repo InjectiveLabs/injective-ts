@@ -1,8 +1,8 @@
-# Streaming Indexer: Explorer
+# Explorer
 
 Example code snippets to stream from the indexer for explorer module related data.
 
-#### Using gRPC Stream
+### Using gRPC Stream
 
 * stream blocks
 

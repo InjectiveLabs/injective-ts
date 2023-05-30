@@ -6,7 +6,7 @@ The module enables Cosmos SDK-based blockchain to support an advanced Proof-of-S
 
 Let's explore (and provide examples) the Messages that the Staking module exports and we can use to interact with the Injective chain.
 
-#### MsgBeginRedelegate
+### MsgBeginRedelegate
 
 This Message is used to Redelegate staked INJ from one validator to another.
 
@@ -48,7 +48,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash);
 ```
 
-#### MsgDelegate
+### MsgDelegate
 
 This Message is used to Delegate INJ to a validator.
 
@@ -84,7 +84,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash);
 ```
 
-#### MsgDelegate
+### MsgDelegate
 
 This Message is used to Delegate INJ to a validator.
 

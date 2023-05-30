@@ -6,7 +6,7 @@ This module provides insurance funds for derivative markets in the exchange modu
 
 Let's explore (and provide examples) the Messages that the Insurance module exports and we can use to interact with the Injective chain.
 
-#### MsgCreateInsuranceFund
+### MsgCreateInsuranceFund
 
 This Message is used to create an Insurance Fund
 
@@ -51,7 +51,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash);
 ```
 
-#### MsgRequestRedemption
+### MsgRequestRedemption
 
 This Message is used to request redemption.
 
@@ -91,7 +91,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash);
 ```
 
-#### MsgUnderwrite
+### MsgUnderwrite
 
 This Message is used to underwrite to an insurance fund.
 

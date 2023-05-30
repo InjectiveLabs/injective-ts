@@ -1,8 +1,8 @@
-# Querying Indexer: Derivatives
+# Derivatives
 
 Example code snippets to query the indexer for derivative module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * fetch markets
 
@@ -333,7 +333,7 @@ const orderbook = await indexerGrpcDerivativesApi.fetchOrderbookV2(marketId)
 console.log(orderbook)
 ```
 
-#### Using HTTP REST
+### Using HTTP REST
 
 * get market summary, such as a history of prices and 24 hr volume
 

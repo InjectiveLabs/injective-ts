@@ -1,8 +1,8 @@
-# Streaming Indexer: Portfolio
+# Portfolio
 
 Example code snippets to stream from the indexer for portfolio module related data.
 
-#### Using gRPC Stream
+### Using gRPC Stream
 
 * stream an account's portfolio
 

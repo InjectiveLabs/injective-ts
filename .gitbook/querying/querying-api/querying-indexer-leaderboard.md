@@ -1,8 +1,8 @@
-# Querying Indexer: Leaderboard
+# Leaderboard
 
 Example code snippets to query the indexer for leaderboard module related data.
 
-#### Using HTTP REST
+### Using HTTP REST
 
 * get the leaderboard
 

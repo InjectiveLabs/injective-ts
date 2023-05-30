@@ -1,8 +1,8 @@
-# Querying Indexer: Transaction
+# Transaction
 
 Example code snippets to query the indexer for transaction module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get a response for preparing a tx
 

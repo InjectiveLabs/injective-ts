@@ -1,8 +1,8 @@
-# Querying Indexer: Oracle
+# Oracle
 
 Example code snippets to query the indexer for oracle module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get a list of oracles
 

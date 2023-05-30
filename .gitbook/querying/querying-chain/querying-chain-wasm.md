@@ -2,7 +2,7 @@
 
 Example code snippets to query the wasm module on chain
 
-#### Using gRPC
+### Using gRPC
 
 * Get a contacts' account balance Note that pagination parameters can be passed to obtain additional accounts.
 

@@ -8,7 +8,7 @@ The exchange protocol enables traders to create and trade on arbitrary spot and 
 
 Let's explore (and provide examples) the Messages that the Exchange module exports and we can use to interact with the Injective chain.
 
-#### MsgDeposit
+### MsgDeposit
 
 This Message is used to send coins from the Bank module to a wallet's subaccount
 
@@ -48,7 +48,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgWithdraw
+### MsgWithdraw
 
 This Message is used to send coins from the wallet's subaccount back to the users Bank funds
 
@@ -88,7 +88,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgCreateSpotLimitOrder
+### MsgCreateSpotLimitOrder
 
 This Message is used to create a spot limit order
 
@@ -156,7 +156,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgCreateSpotMarketOrder
+### MsgCreateSpotMarketOrder
 
 This Message is used to create a spot market order
 
@@ -223,7 +223,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgCreateDerivativeLimitOrder
+### MsgCreateDerivativeLimitOrder
 
 This Message is used to create a derivative limit order
 
@@ -295,7 +295,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgCreateDerivativeMarketOrder
+### MsgCreateDerivativeMarketOrder
 
 This Message is used to create a derivative market order
 
@@ -372,7 +372,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgBatchUpdateOrders
+### MsgBatchUpdateOrders
 
 This Message is used to batch update orders on the chain
 
@@ -479,7 +479,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgBatchCancelSpotOrders
+### MsgBatchCancelSpotOrders
 
 This Message is used to batch cancel spot orders on the chain
 
@@ -529,7 +529,7 @@ console.log(txHash)
 
 This Message is used to batch cancel spot orders on the chain
 
-#### MsgBatchCancelDerivativeOrders
+### MsgBatchCancelDerivativeOrders
 
 ```ts
 import { MsgBatchCancelDerivativeOrders, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
@@ -575,7 +575,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgRewardsOptOut
+### MsgRewardsOptOut
 
 This Message is used to opt out of the Trade & Earn program.
 
