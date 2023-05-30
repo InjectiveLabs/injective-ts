@@ -1,4 +1,4 @@
-# Querying Indexer: Transaction
+# Transaction
 
 Example code snippets to query the indexer for transaction module related data.
 

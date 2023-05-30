@@ -1,4 +1,4 @@
-# Streaming Indexer: Portfolio
+# Portfolio
 
 Example code snippets to stream from the indexer for portfolio module related data.
 

@@ -1,4 +1,4 @@
-# Querying Indexer: Spot
+# Spot
 
 Example code snippets to query the indexer for spot market module related data.
 

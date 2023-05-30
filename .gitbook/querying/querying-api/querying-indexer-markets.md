@@ -1,4 +1,4 @@
-# Querying Indexer: Markets
+# Markets
 
 Example code snippets to query the indexer for all markets data
 

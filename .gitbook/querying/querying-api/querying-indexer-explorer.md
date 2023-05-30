@@ -1,4 +1,4 @@
-# Querying Indexer: Explorer
+# Explorer
 
 Example code snippets to query the indexer for explorer module related data.
 

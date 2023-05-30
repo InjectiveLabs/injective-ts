@@ -1,4 +1,4 @@
-# Querying Indexer: Account
+# Account
 
 Example code snippets to query the indexer for subaccount related data.
 

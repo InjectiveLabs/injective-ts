@@ -1,4 +1,4 @@
-# Querying Indexer: Auction
+# Auction
 
 Example code snippets to query the indexer for auction module related data.
 

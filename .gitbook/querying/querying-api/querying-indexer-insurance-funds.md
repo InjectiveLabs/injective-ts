@@ -1,4 +1,4 @@
-# Querying Indexer: Insurance Funds
+# Insurance Funds
 
 Example code snippets to query the indexer for insurance fund module related data.
 

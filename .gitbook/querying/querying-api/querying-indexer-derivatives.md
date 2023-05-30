@@ -1,4 +1,4 @@
-# Querying Indexer: Derivatives
+# Derivatives
 
 Example code snippets to query the indexer for derivative module related data.
 

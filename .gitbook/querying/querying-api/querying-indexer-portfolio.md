@@ -1,4 +1,4 @@
-# Querying Indexer: Portfolio
+# Portfolio
 
 Example code snippets to query the indexer for portfolio module related data.
 

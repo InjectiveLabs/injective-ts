@@ -1,4 +1,4 @@
-# Querying Indexer: Leaderboard
+# Leaderboard
 
 Example code snippets to query the indexer for leaderboard module related data.
 

@@ -1,4 +1,4 @@
-# Streaming Indexer: Oracle
+# Oracle
 
 Example code snippets to query the indexer for oracle module related data.
 

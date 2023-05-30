@@ -1,4 +1,4 @@
-# Streaming Indexer: Account
+# Account
 
 Example code snippets to stream from the indexer for subaccount related data.
 
