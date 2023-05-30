@@ -2,7 +2,7 @@
 
 Example code snippets to query the indexer for all markets data
 
-#### Using HTTP REST
+### Using HTTP REST
 
 * get the marketsHistory resolution: MARKETS\_HISTORY\_CHART\_ONE\_HOUR, countback: MARKETS\_HISTORY\_CHART\_SEVEN\_DAYS
 

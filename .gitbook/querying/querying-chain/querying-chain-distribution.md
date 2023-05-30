@@ -2,7 +2,7 @@
 
 Example code snippets to query data related to delegating to validators from the chain.
 
-#### Using gRPC
+### Using gRPC
 
 * Get parameters such as the base and bonus proposer reward
 

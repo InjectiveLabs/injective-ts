@@ -26,7 +26,7 @@ Lets have a look at the methods that `WalletStrategy` strategy exposes and what 
 * `signEthereumTransaction` signs an Ethereum Web3 transaction using the connected wallet strategy,
 * `getEthereumTransactionReceipt` get the transaction receipt for Ethereum native transactions for the wallet strategy,
 
-#### Arguments
+### Arguments
 
 The arguments passed to the WalletStrategy have the following interface:
 
@@ -37,7 +37,7 @@ export interface WalletStrategyEthereumOptions {
 }
 
 export interface EthereumWalletStrategyArgs {
-  chainId: ChainId // the Injective chain id 
+  chainId: ChainId // the Injective chain id
   ethereumOptions?: WalletStrategyEthereumOptions // optional, needed only if you are using Ethereum native wallets
   disabledWallets?: Wallet[] // optional, needed if you wanna disable some wallets for being instantiated
   wallet?: Wallet // optional, the initial wallet selected (defaults to Metamask if `ethereumOptions` are passed and Keplr if they are not)
@@ -46,7 +46,7 @@ export interface EthereumWalletStrategyArgs {
 
 _Note:_ When we wanna use the `sendTransaction` on Ethereum native wallets alongside the other options (chainId and address) we also need to pass a gRPC endpoint to a sentry to broadcast the transaction. This is needed because from Ethereum native wallets we don't have access to a `broadcastTx` method like we have on Keplr or Leap to broadcast the transaction using the wallet's abstraction so we have to broadcast it on the client side directly to the chain.
 
-#### Example usage
+### Example usage
 
 ```ts
 import { WalletStrategy } from '@injectivelabs/wallet-ts'

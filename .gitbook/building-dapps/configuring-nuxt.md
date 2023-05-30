@@ -4,11 +4,11 @@
 
 The preferred choice of UI framework to build decentralized applications on top of Injective at @InjectiveLabs is Nuxt3. We are going to help you configure Nuxt3 + the Vite builder with the `@injectivelabs` packages and some polyfills since you'll need them to interact with Crypto wallets.
 
-#### 1. Installing Nuxt 3
+### 1. Installing Nuxt 3
 
 Follow the Getting Started guide at [Nuxt3 Docs](https://nuxt.com/docs/getting-started/installation) and setup your application.
 
-#### 2. Installing @injectivelabs packages
+### 2. Installing @injectivelabs packages
 
 You can install the @injectivelabs packages using yarn.
 
@@ -21,7 +21,7 @@ $ yarn add @injectivelabs/wallet-ts
 
 These are the most commonly used packages from the `injective-ts` monorepo.
 
-#### 3. Configuring Nuxt and adding polyfills
+### 3. Configuring Nuxt and adding polyfills
 
 First, add the needed polyfill packages
 
@@ -50,7 +50,7 @@ export default defineNuxtPlugin(() => {
 })
 ```
 
-#### 4. Using a state management
+### 4. Using a state management
 
 If you are going to use `pinia` as state management, add it to your packages:
 
@@ -58,7 +58,7 @@ If you are going to use `pinia` as state management, add it to your packages:
 $ yarn add pinia @pinia/nuxt
 ```
 
-#### 5. Using `vueuse`
+### 5. Using `vueuse`
 
 We recommend adding `@vueuse/nuxt` as a dependency as it offers a lot of utility functions out of the box.
 
@@ -86,7 +86,7 @@ Then, we need to configure the `tsconfig.json` if you are using TypeScript (reco
 }
 ```
 
-#### 6. nuxt.config.ts / packages.json
+### 6. nuxt.config.ts / packages.json
 
 Before we boot our application, we need to set everything up in the `nuxt.config.ts`, the main configuration point for every Nuxt 3 application. Let's see a reference `nuxt.config.ts` and explain every line using comments so its easier for developers to understand.
 
@@ -97,35 +97,35 @@ import { nodePolyfills } from "@bangjelkoski/vite-plugin-node-polyfills";
 export default defineNuxtConfig({
   ssr: false, // whether to pre-render your application
   modules: [ // nuxtjs modules
-    "@pinia/nuxt", 
-    "@vueuse/nuxt", 
+    "@pinia/nuxt",
+    "@vueuse/nuxt",
   ],
 
   typescript: {
     typeCheck: "build", // we recommend build so you do typescript checks only on build type
   },
- 
+
   imports: { // automatic imports of store definitions (if you use pinia)
     dirs: ["store/**"],
   },
 
-  pinia: { // import pinia definitions 
+  pinia: { // import pinia definitions
     autoImports: ["defineStore"],
   },
 
   plugins: [{ // import the buffer plugin we've made
-    src: "./plugins/buffer.client.ts", 
-    ssr: false 
+    src: "./plugins/buffer.client.ts",
+    ssr: false
   }],
 
   // We generate only sitemaps for the client side as we don't need a server
-  // Note: there is a problem with sitemaps for Vite + Nuxt3 
+  // Note: there is a problem with sitemaps for Vite + Nuxt3
   // as usually is that it takes to much time/memory to generate
   // sitemaps and the build process can fail
-  // on Github Actions/Netlify/Vercel/etc so we have to use another 
+  // on Github Actions/Netlify/Vercel/etc so we have to use another
   // strategy like generating them locally and them pushing them to services like
   // busgnag
-  sourcemap: { 
+  sourcemap: {
     server: false,
     client: true,
   },
@@ -142,7 +142,7 @@ export default defineNuxtConfig({
       ],
 
     build: {
-      sourcemap: false, // we don't generate 
+      sourcemap: false, // we don't generate
 
       // default rollup options
       rollupOptions: {
@@ -155,7 +155,7 @@ export default defineNuxtConfig({
       },
     },
 
-    // needed for some Vite related issue for the 
+    // needed for some Vite related issue for the
     // @bangjelkoski/vite-plugin-node-polyfills plugin
     optimizeDeps: {
       exclude: ["fsevents"],
@@ -174,6 +174,6 @@ There is one optimization that you can to decrease the bundle size - add these r
 }
 ```
 
-#### 7. Booting our app
+### 7. Booting our app
 
 Finally, you can start your app locally using `yarn dev` or generate static pages using `yarn generate` which you can deploy to any static page hosting like Netlify, Vercel, etc.

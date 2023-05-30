@@ -2,7 +2,7 @@
 
 Example code snippets to query the indexer for spot market module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get markets
 
@@ -212,7 +212,7 @@ const orderbook = await indexerGrpcSpotApi.fetchOrderbookV2(marketId)
 console.log(orderbook)
 ```
 
-#### Using HTTP REST
+### Using HTTP REST
 
 * get market summary, such as a history of prices and 24 hr volume
 

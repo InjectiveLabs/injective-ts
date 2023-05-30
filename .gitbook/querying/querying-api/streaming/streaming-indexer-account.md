@@ -2,7 +2,7 @@
 
 Example code snippets to stream from the indexer for subaccount related data.
 
-#### Using gRPC stream
+### Using gRPC stream
 
 * Stream a subaccount balance
 

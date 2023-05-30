@@ -2,7 +2,7 @@
 
 Example code snippets to query the indexer for derivative module related data.
 
-#### Using gRPC Stream
+### Using gRPC Stream
 
 * stream the derivatives orderbook
 

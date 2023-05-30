@@ -2,7 +2,7 @@
 
 Example code snippets to query the auth module on the chain.
 
-#### Using gRPC
+### Using gRPC
 
 * Get parameters such as max memo characters or tsx signature limit
 
@@ -49,7 +49,7 @@ const accounts = await chainGrpcAuthApi.fetchAccounts(/* optional pagination par
 console.log(accounts)
 ```
 
-#### Using HTTP REST
+### Using HTTP REST
 
 * Get account details associated with an injective address such as the account's address, sequence, or pub\_key
 

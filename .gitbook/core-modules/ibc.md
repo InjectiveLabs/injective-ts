@@ -1,6 +1,6 @@
 # IBC
 
-#### MsgTransfer
+### MsgTransfer
 
 This message is used to send coins from the sender's Bank module on Injective to the receiver's Bank module on another Cosmos chain through IBC, which is Cosmos's Inter-Blockchain Communication Protocol. Note that Injective only supports mainnet transfers across IBC for most networks.
 

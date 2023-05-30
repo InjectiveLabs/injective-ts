@@ -2,7 +2,7 @@
 
 Example code snippets to query the mint module on the chain.
 
-#### Using gRPC
+### Using gRPC
 
 * Get parameters related to the mint module
 

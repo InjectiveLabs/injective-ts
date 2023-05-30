@@ -2,7 +2,7 @@
 
 Example code snippets to query the indexer for insurance fund module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get redemptions for an injective address
 

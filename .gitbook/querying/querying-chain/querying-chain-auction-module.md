@@ -2,7 +2,7 @@
 
 Example code snippets to query the auction module on the chain.
 
-#### Using gRPC
+### Using gRPC
 
 * Fetch module params such as the auction period
 

@@ -4,7 +4,7 @@ The `authz` module is an implementation of a Cosmos SDK module, per ADR 30, that
 
 ### Messages
 
-#### MsgGrant
+### MsgGrant
 
 An authorization grant is created using the MsgGrant message. If there is already a grant for the (granter, grantee, Authorization) triple, then the new grant will overwrite the previous one. To update or extend an existing grant, a new grant with the same (granter, grantee, Authorization) triple should be created.
 
@@ -56,7 +56,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgExec
+### MsgExec
 
 When a grantee wants to execute a transaction on behalf of a granter, they must send MsgExec. In this example, we'll do a MsgSend to transfer assets from the granter's account address to another account address.
 
@@ -95,7 +95,7 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash)
 ```
 
-#### MsgRevoke
+### MsgRevoke
 
 A grant can be removed with the MsgRevoke message.
 

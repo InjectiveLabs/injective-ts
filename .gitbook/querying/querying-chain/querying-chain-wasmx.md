@@ -2,7 +2,7 @@
 
 Example code snippets to query the wasmX module on chain
 
-#### Using gRPC
+### Using gRPC
 
 * Get parameters related to the wasmX module
 

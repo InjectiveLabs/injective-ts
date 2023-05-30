@@ -2,7 +2,7 @@
 
 Example code snippets to query the indexer for auction module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get an auction based off the round
 

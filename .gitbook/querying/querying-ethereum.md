@@ -4,7 +4,7 @@
 
 Example code snippets to query data from Ethereum.
 
-#### Using GraphQL
+### Using GraphQL
 
 * Get the user's deposits on ethereum chain
 

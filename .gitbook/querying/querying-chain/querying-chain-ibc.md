@@ -2,7 +2,7 @@
 
 Example code snippets to query the chain for IBC related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get the denom trace from the IBC hash
 

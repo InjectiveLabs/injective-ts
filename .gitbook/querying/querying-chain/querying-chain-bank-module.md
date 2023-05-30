@@ -2,7 +2,7 @@
 
 Example code snippets to query the chain for bank module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get bank module params
 
@@ -72,7 +72,7 @@ const totalSupply = await chainGrpcBankApi.fetchTotalSupply(
 console.log(totalSupply)
 ```
 
-#### Using HTTP REST
+### Using HTTP REST
 
 * Fetching address's balances
 

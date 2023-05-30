@@ -8,7 +8,7 @@ In addition, the bank module tracks and provides query support for the total sup
 
 Let's explore (and provide examples) the Messages that the Bank module exports and we can use to interact with the Injective chain.
 
-#### MsgSend
+### MsgSend
 
 This Message is used to send coins from one address to another.
 

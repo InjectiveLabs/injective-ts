@@ -41,7 +41,7 @@ The implementation itself consists of a few steps, namely:
 
 We are going deep dive into each step and elaborate on the actions we need to take to get the transaction signed and broadcasted to the chain.
 
-#### Preparing the transaction (for signing)
+### Preparing the transaction (for signing)
 
 As we’ve said above, the transaction needs to be signed using the Ethereum app on Ledger. This means that the user has to be prompted to switch (or open) the Ethereum app on Ledger once they reach the signing stage.
 
@@ -55,8 +55,8 @@ So, let’s see a quick code snippet of the usage of these methods and how we ca
 
 ```ts
 import { MsgSend, DEFAULT_STD_FEE } from '@injectivelabs/sdk-ts'
-import { 
-   getEip712TypedData, 
+import {
+   getEip712TypedData,
    Eip712ConvertTxArgs,
    Eip712ConvertFeeArgs
 } from '@injectivelabs/sdk-ts/dist/core/eip712'
@@ -94,7 +94,7 @@ const eip712TypedData = getEip712Tx({
 return eip712TypedData;
 ```
 
-#### Preparing the signing process on Ledger
+### Preparing the signing process on Ledger
 
 Now that we have the `eip712TypedData` we need to sign it using Ledger. First, we need to get the Ledger’s transport depending on the support that the user has on the browser and use the `@ledgerhq/hw-app-eth` to make a Ledger instance with the transport that’ll use the Ethereum app on the Ledger device for executing the user’s actions (confirming transactions). After we get the `eip712TypedData` from Step 1, we can use the `signEIP712HashedMessage` on the `EthereumApp` to sign this typedData and return the signature.
 
@@ -132,12 +132,12 @@ const signature = combined.startsWith('0x') ? combined : `0x${combined}`
 return signature;
 ```
 
-#### Preparing the transaction to be broadcasted
+### Preparing the transaction to be broadcasted
 
 Now that we have the signature, we can prepare the transaction using the default cosmos approach.
 
 ```ts
-import { 
+import {
   ChainRestAuthApi,
   ChainRestTendermintApi,
   BaseAccount,
@@ -194,7 +194,7 @@ txRawEip712.signatures = [signatureBuff]
 return txRawEip712
 ```
 
-#### Broadcasting the transaction
+### Broadcasting the transaction
 
 Now that we have the transaction packed into `TxRaw` we can broadcast it to the node using the default cosmos approach.
 
@@ -203,7 +203,7 @@ Now that we have the transaction packed into `TxRaw` we can broadcast it to the 
 Let’s see an example codebase containing all of the steps above
 
 ```ts
-import { 
+import {
   ChainRestAuthApi,
   ChainRestTendermintApi,
   BaseAccount,
@@ -216,8 +216,8 @@ import {
 import { TypedDataUtils } from 'eth-sig-util'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import EthereumApp from '@ledgerhq/hw-app-eth'
-import { 
-   getEip712TypedData, 
+import {
+   getEip712TypedData,
    Eip712ConvertTxArgs,
    Eip712ConvertFeeArgs
 } from '@injectivelabs/sdk-ts/dist/core/eip712'
@@ -239,8 +239,8 @@ const signTransaction = async (eip712TypedData: any) => {
   const transport = /* Get the transport from Ledger */
   const ledger = new EthereumApp(transport)
   const derivationPath = /* Get the derivation path for the address */
-    
-  /* eip712TypedData from Step 1 */ 
+
+  /* eip712TypedData from Step 1 */
   const result = await ledger.signEIP712HashedMessage(
     derivationPath,
     bufferToHex(domainHash(eip712TypedData)),
@@ -248,7 +248,7 @@ const signTransaction = async (eip712TypedData: any) => {
   )
   const combined = `${result.r}${result.s}${result.v.toString(16)}`
   const signature = combined.startsWith('0x') ? combined : `0x${combined}`
-    
+
   return signature;
 }
 

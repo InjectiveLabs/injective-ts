@@ -2,7 +2,7 @@
 
 Example code snippets to stream from the indexer for spot market module related data.
 
-#### Using gRPC Stream
+### Using gRPC Stream
 
 * stream the spot orderbook
 
