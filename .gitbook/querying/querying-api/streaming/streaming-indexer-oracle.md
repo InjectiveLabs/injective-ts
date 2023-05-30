@@ -1,8 +1,8 @@
-# Streaming Indexer: Oracle
+# Oracle
 
 Example code snippets to query the indexer for oracle module related data.
 
-#### Using gRPC Stream
+### Using gRPC Stream
 
 * stream oracle prices
 

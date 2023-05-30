@@ -1,8 +1,8 @@
-# Querying Indexer: Account
+# Account
 
 Example code snippets to query the indexer for subaccount related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get the user's portfolio details, such as their available balance, unrealized Pnl, or their portfolio value.
 

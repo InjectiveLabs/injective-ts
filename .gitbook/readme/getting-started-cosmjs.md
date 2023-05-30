@@ -4,7 +4,7 @@ Injective is not natively supported on the `@cosmjs` packages. It's highly recom
 
 If you are familiar with the `@cosmjs` packages we are exporting similar interfaces/classes that work exactly the same as the classes on `@cosmjs` but have support for Injective as well.
 
-#### Usage using Keplr
+### Usage using Keplr
 
 Here is an example on how to use the `@injectivelabs` alternatives from the `@cosmjs` packages with Keplr:
 
@@ -64,7 +64,7 @@ import { assertIsBroadcastTxSuccess } from '@cosmjs/stargate'
 })()
 ```
 
-#### Usage in a CLI/Node environment
+### Usage in a CLI/Node environment
 
 Here is an example on how to use the `@injectivelabs` alternatives from the `@cosmjs` packages in a node or CLI environment:
 
@@ -100,7 +100,7 @@ import { getStdFee } from "@injectivelabs/utils";
     denom: "inj",
     amount: "1000000000",
   };
-  
+
   const txResponse = await client.sendTokens(
     account.address,
     recipient,

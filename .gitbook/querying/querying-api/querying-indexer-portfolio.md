@@ -1,8 +1,8 @@
-# Querying Indexer: Portfolio
+# Portfolio
 
 Example code snippets to query the indexer for portfolio module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get a portfolio based off injective address, such as bank balances and subaccount balances
 

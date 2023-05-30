@@ -2,7 +2,7 @@
 
 Example code snippets to query data related to the insurance fund on chain.
 
-#### Using gRPC
+### Using gRPC
 
 * Get the default redemption notice period duration
 

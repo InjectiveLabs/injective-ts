@@ -2,7 +2,7 @@
 
 Example code snippets to query the chain via the oracle api.
 
-#### Using gRPC
+### Using gRPC
 
 * Get parameters related to the oracle
 

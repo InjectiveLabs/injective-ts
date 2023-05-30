@@ -54,7 +54,7 @@ There are few edge cases that we have to consider while using the `TokenFactory`
 * If you are trying to query token metadata for a denom that doesn't exist in the [list of tokens](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/token-metadata/src/tokens/tokens/tokens.ts) the `TokenFactory` will return undefined. If this is the case, you should follow our [CONTRIBUTION guide](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/token-metadata/CONTRIBUTING.md) to add the token metadata information in the package.
 * **IMPORTANT** `TokenFactory` does not have the logic to query a denom trace for an IBC denom. Instead, we have a list of pre-defined IBC hashes which we use to get metadata from. We'll explore how to have this possibility as well below.
 
-#### DenomClient
+### DenomClient
 
 As part of the `@injectivelabs/sdk-ts` package we have an abstraction class [DenomClient](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/sdk-ts/src/core/utils/Denom/DenomClient.ts) which uses the `TokenFactory` class under the hood and has a caching mechanism for IBC hashes. With it, you can ensure that you get all of the `Token` information for the denoms used within your application.
 
@@ -71,10 +71,10 @@ const denomClient = new DenomClient(network)  // you can omit the network argume
 const denom = 'peggy0x...'
 
 /**
- * We have to use await here in case the IBC denom hash is not 
- * in the list of hardcoded IBC hashes so we fetch all of the 
+ * We have to use await here in case the IBC denom hash is not
+ * in the list of hardcoded IBC hashes so we fetch all of the
  * denom traces from the chain and cache them in the local instance of the
- * DenomClient class so we can access them easily 
+ * DenomClient class so we can access them easily
  */
 const token = await denomClient.getDenomToken(denom)
 

@@ -8,7 +8,7 @@ For every proposal you create, we require you to deposit at least 1 INJ. This is
 
 Let's explore (and provide examples) the messages that the Governance module exports and we can use to interact with the Injective chain. For example, you can use these messages to propose new spot, perpetual, or futures markets.
 
-#### MsgGovDeposit
+### MsgGovDeposit
 
 This message can be used to deposit towards an existing proposal.
 
@@ -48,7 +48,7 @@ const txHash = await new MsgBroadcasterWithPk({
 });
 ```
 
-#### MsgVote
+### MsgVote
 
 After the proposal is properly funded, voting can commence. You can vote "Yes", "No", "Abstain", or "No with Veto".
 
@@ -83,7 +83,7 @@ const txHash = await new MsgBroadcasterWithPk({
 });
 ```
 
-#### MsgSubmitTextProposal
+### MsgSubmitTextProposal
 
 Propose any action on Injective. TextProposal defines a standard text proposal whose changes need to be manually updated in case of approval.
 
@@ -122,7 +122,7 @@ const txHash = await new MsgBroadcasterWithPk({
 });
 ```
 
-#### MsgSubmitProposalSpotMarketLaunch
+### MsgSubmitProposalSpotMarketLaunch
 
 This message allows you to propose a new spot market. Ensure that the ticker is accurate and provide the base asset denom followed by the quote asset denom. Base denom refers to the asset you would like to trade and quote denom refers to the asset by which your base asset is denominated. For instance, in the INJ/USDT market you would buy or sell INJ using USDT.
 
@@ -203,7 +203,7 @@ const txHash = await new MsgBroadcasterWithPk({
 });
 ```
 
-#### MsgSubmitProposalPerpetualMarketLaunch
+### MsgSubmitProposalPerpetualMarketLaunch
 
 This message allows you to propose a new perpetual market. perpetual futures contracts, or perps, are derivative futures contracts that allow users to buy or sell the value of an underlying base asset without actually owning it. This is the message you can use to create a perp market for a specified token pair.
 
@@ -279,7 +279,7 @@ const txHash = await new MsgBroadcasterWithPk({
 });
 ```
 
-#### MsgSubmitProposalExpiryFuturesMarketLaunch
+### MsgSubmitProposalExpiryFuturesMarketLaunch
 
 An expiry futures contract is an agreement between two counterparties to buy and sell a specific amount of an underlying base asset at a specific future price, which is set to expire at a specified date in the future. This is the message you can use to create a futures market for a specified token pair.
 
@@ -356,7 +356,7 @@ const txHash = await new MsgBroadcasterWithPk({
 });
 ```
 
-#### MsgSubmitProposalSpotMarketParamUpdate
+### MsgSubmitProposalSpotMarketParamUpdate
 
 This message can be used to update the params of a spot market.
 

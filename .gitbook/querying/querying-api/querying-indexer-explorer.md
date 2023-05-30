@@ -1,8 +1,8 @@
-# Querying Indexer: Explorer
+# Explorer
 
 Example code snippets to query the indexer for explorer module related data.
 
-#### Using gRPC
+### Using gRPC
 
 * Get a tx by hash
 
@@ -208,7 +208,7 @@ const ibcTransactions = await indexerGrpcExplorerApi.fetchIBCTransferTxs({
 console.log(ibcTransactions)
 ```
 
-#### Using HTTP REST
+### Using HTTP REST
 
 * get a block and details
 

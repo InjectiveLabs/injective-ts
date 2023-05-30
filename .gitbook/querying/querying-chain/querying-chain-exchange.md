@@ -2,7 +2,7 @@
 
 Example code snippets to query the exchange module on the chain.
 
-#### Using gRPC
+### Using gRPC
 
 * Get parameters such as the default spot and derivatives fees/trading rewards
 

@@ -2,7 +2,7 @@
 
 Example code snippets to query the chain's staking module
 
-#### Using gRPC
+### Using gRPC
 
 * Get parameters related to the staking module such as the unbonding time or bond denom
 

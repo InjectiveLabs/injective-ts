@@ -1,21 +1,21 @@
-# Streaming Indexer: Derivatives
+# Spot
 
-Example code snippets to query the indexer for derivative module related data.
+Example code snippets to stream from the indexer for spot market module related data.
 
-#### Using gRPC Stream
+### Using gRPC Stream
 
-* stream the derivatives orderbook
+* stream the spot orderbook
 
 ```ts
-import { IndexerGrpcDerivativesStream } from '@injectivelabs/sdk-ts'
+import { IndexerGrpcSpotStream } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
 const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesStream = new IndexerGrpcDerivativesStream(endpoints.indexer)
+const indexerGrpcSpotStream = new IndexerGrpcSpotStream(endpoints.indexer)
 
 const marketIds = ['0x...']
 
-const streamFn = indexerGrpcDerivativesStream.streamDerivativeOrderbookV2.bind(indexerGrpcDerivativesStream)
+const streamFn = indexerGrpcSpotStream.streamSpotOrderbookV2.bind(indexerGrpcSpotStream)
 
 const callback = (orderbooks) => {
   console.log(orderbooks)
@@ -29,21 +29,21 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-* stream derivative orders
+* stream spot orders
 
 ```ts
-import { IndexerGrpcDerivativesStream } from '@injectivelabs/sdk-ts'
+import { IndexerGrpcSpotsStream } from '@injectivelabs/sdk-ts'
 import { OrderSide } from '@injectivelabs/ts-types'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
 const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesStream = new IndexerGrpcDerivativesStream(endpoints.indexer)
+const indexerGrpcSpotStream = new IndexerGrpcSpotsStream(endpoints.indexer)
 
 const marketId = '0x...'
 const subaccountId = '0x...' /* optional param */
 const orderSide = OrderSide.Buy /* optional param */
 
-const streamFn = indexerGrpcDerivativesStream.streamDerivativeOrders.bind(indexerGrpcDerivativesStream)
+const streamFn = indexerGrpcSpotStream.streamSpotOrders.bind(indexerGrpcSpotStream)
 
 const callback = (orders) => {
   console.log(orders)
@@ -59,19 +59,19 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-* stream derivative order history
+* stream spot order history
 
 ```ts
 import {
   TradeDirection,
   TradeExecutionType,
-  IndexerGrpcDerivativesStream
+  IndexerGrpcSpotStream
 } from '@injectivelabs/sdk-ts'
 import { OrderSide } from '@injectivelabs/ts-types'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
 const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesStream = new IndexerGrpcDerivativesStream(endpoints.indexer)
+const indexerGrpcSpotStream = new IndexerGrpcSpotStream(endpoints.indexer)
 
 const marketId = '0x...' /* optional param */
 const subaccountId = '0x...' /* optional param */
@@ -79,7 +79,7 @@ const orderTypes = [OrderSide.Buy] /* optional param */
 const executionTypes = [TradeExecutionType.Market] /* optional param */
 const direction = TradeDirection.Buy /* optional param*/
 
-const streamFn = indexerGrpcDerivativesStream.streamDerivativeOrderHistory.bind(indexerGrpcDerivativesStream)
+const streamFn = indexerGrpcSpotStream.streamSpotOrderHistory.bind(indexerGrpcSpotStream)
 
 const callback = (orderHistory) => {
   console.log(orderHistory)
@@ -97,25 +97,25 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-* stream derivative trades
+* stream spot trades
 
 ```ts
 import {
   PaginationOption,
   TradeDirection,
-  IndexerGrpcDerivativesStream
+  IndexerGrpcSpotStream
 } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
 const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesStream = new IndexerGrpcDerivativesStream(endpoints.indexer)
+const indexerGrpcSpotStream = new IndexerGrpcSpotStream(endpoints.indexer)
 
 const marketIds = ['0x...'] /* optional param */
 const subaccountId = '0x...' /* optional param */
 const direction = TradeDirection.Buy /* optional param */
 const pagination = {...} as PaginationOption /* optional param */
 
-const streamFn = indexerGrpcDerivativesStream.streamDerivativeTrades.bind(indexerGrpcDerivativesStream)
+const streamFn = indexerGrpcSpotStream.streamSpotTrades.bind(indexerGrpcSpotStream)
 
 const callback = (trades) => {
   console.log(trades)
@@ -133,49 +133,20 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-* stream derivative positions
-
-```ts
-import {
-  IndexerGrpcDerivativesStream
-} from '@injectivelabs/sdk-ts'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesStream = new IndexerGrpcDerivativesStream(endpoints.indexer)
-
-const marketId = '0x...' /* optional param */
-const subaccountId = '0x...' /* optional param */
-
-const streamFn = indexerGrpcDerivativesStream.streamDerivativePositions.bind(indexerGrpcDerivativesStream)
-
-const callback = (positions) => {
-  console.log(positions)
-}
-
-const streamFnArgs = {
-  marketId,
-  subaccountId,
-  callback
-}
-
-streamFn(streamFnArgs)
-```
-
 * stream markets
 
 ```ts
 import {
-  IndexerGrpcDerivativesStream
+  IndexerGrpcSpotStream
 } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
 const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesStream = new IndexerGrpcDerivativesStream(endpoints.indexer)
+const indexerGrpcSpotStream = new IndexerGrpcSpotStream(endpoints.indexer)
 
 const marketIds = ['0x...'] /* optional param */
 
-const streamFn = indexerGrpcDerivativesStream.streamDerivativeMarket.bind(indexerGrpcDerivativesStream)
+const streamFn = indexerGrpcSpotStream.streamSpotMarket.bind(indexerGrpcSpotStream)
 
 const callback = (markets) => {
   console.log(markets)
@@ -193,16 +164,16 @@ streamFn(streamFnArgs)
 
 ```ts
 import {
-  IndexerGrpcDerivativesStream
+  IndexerGrpcSpotStream
 } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
 const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesStream = new IndexerGrpcDerivativesStream(endpoints.indexer)
+const indexerGrpcSpotStream = new IndexerGrpcSpotStream(endpoints.indexer)
 
 const marketIds = ['0x...']
 
-const streamFn = indexerGrpcDerivativesStream.streamDerivativeOrderbookUpdate.bind(indexerGrpcDerivativesStream)
+const streamFn = indexerGrpcSpotStream.streamDerivativeOrderbookUpdate.bind(indexerGrpcSpotStream)
 
 const callback = (orderbookUpdates) => {
   console.log(orderbookUpdates)

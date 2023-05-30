@@ -2,7 +2,7 @@
 
 Example code snippets to query the governance module on the chain.
 
-#### Using gRPC
+### Using gRPC
 
 * Get parameters such as the voting period, max depositing period, or tallying details
 
