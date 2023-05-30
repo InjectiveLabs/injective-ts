@@ -14,7 +14,7 @@ export const getEthersProviderFromMetamask = async () => {
       throw new WalletException(new Error('Please install Metamask Extension'))
     }
 
-    return new ethers.providers.Web3Provider(provider)
+    return new ethers.providers.Web3Provider(provider, 'any')
   } catch (e) {
     throw new WalletException(new Error('Please install Metamask Extension'))
   }

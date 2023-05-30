@@ -171,7 +171,7 @@ export class InjectiveWormholeClient
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
 
-    const indexerRestExplorerApi = new IndexerRestExplorerApi(endpoints.rest)
+    const indexerRestExplorerApi = new IndexerRestExplorerApi(endpoints.indexer)
     const txResponse = await indexerRestExplorerApi.fetchTransaction(txHash)
 
     if (!txResponse) {
@@ -182,7 +182,7 @@ export class InjectiveWormholeClient
       ...txResponse,
       txHash: txResponse.hash,
       height: txResponse.blockNumber,
-      rawLog: txResponse.data,
+      rawLog: JSON.stringify(txResponse.logs || []),
       timestamp: txResponse.blockTimestamp,
     } as TxResponse
   }

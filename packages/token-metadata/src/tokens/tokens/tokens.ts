@@ -1275,7 +1275,6 @@ export default {
 
     evm: {
       decimals: 18,
-      isNative: true,
       address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
       tokenType: TokenType.Erc20,
     },
