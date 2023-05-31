@@ -228,7 +228,7 @@ export default {
 
   MATIC: {
     name: 'Polygon',
-    logo: 'matic.svg',
+    logo: 'polygon.png',
     symbol: 'MATIC',
     decimals: 18,
     coinGeckoId: 'matic-network',
@@ -1383,7 +1383,7 @@ export default {
     name: 'Wrapped Matic',
     symbol: 'WMATIC',
     decimals: 18,
-    logo: 'matic.webp',
+    logo: 'polygon.png',
     coinGeckoId: 'wmatic',
 
     evm: {
