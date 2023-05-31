@@ -2,11 +2,12 @@
 
 * [Getting Started](README.md)
   * [Technical Concepts](readme/technical-concepts.md)
+  * [Application Concepts](readme/technical-concepts-1.md)
   * [CosmJs Support](readme/getting-started-cosmjs.md)
 * [Wallet](wallet/README.md)
   * [Accounts](wallet/wallet-accounts.md)
-  * [Wallet Connections](wallet/wallet-connections.md)
   * [Wallet Strategy](wallet/wallet-wallet-strategy.md)
+  * [Wallet Connections](wallet/wallet-connections.md)
 * [Querying](querying/README.md)
   * [Indexer](querying/querying-api/README.md)
     * [Account](querying/querying-api/querying-indexer-account.md)
