@@ -123,7 +123,7 @@ export interface MitoStakingPool {
   apr: number
   totalLiquidity: number
   stakingAddress: string
-  aprBreakDown: Record<string, number>
+  aprBreakdown: Record<string, number>
 }
 
 export interface MitoStakingReward {
