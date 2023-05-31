@@ -18,10 +18,10 @@ For the 2 main data sources, there are abstraction classes that developers can u
 
 ### Topics
 
-| Topic                                                                        | Description                         |
-| ---------------------------------------------------------------------------- | ----------------------------------- |
-| [Querying the Chain](querying-chain/)                                        | Querying data from the chain        |
-| [Querying the Indexer API](querying-api/)                                    | Querying data from the Indexer API  |
-| [Steaming from the Indexer API](querying-api/streaming-indexer-portfolio.md) | Streaming data from the Indexer API |
-| [Querying Ethereum from the Graph](querying-ethereum.md)                     | Querying Ethereum via GraphQL       |
-| [CosmWasm Query Payloads](querying-chain/querying-chain-cosmwasm.md)         | Get payloads for CosmWasm queries   |
+| Topic                                                                | Description                         |
+| -------------------------------------------------------------------- | ----------------------------------- |
+| [Querying the Chain](querying-chain/)                                | Querying data from the chain        |
+| [Querying the Indexer API](querying-api/)                            | Querying data from the Indexer API  |
+| [Steaming from the Indexer API](broken-reference)                    | Streaming data from the Indexer API |
+| [Querying Ethereum from the Graph](querying-ethereum.md)             | Querying Ethereum via GraphQL       |
+| [CosmWasm Query Payloads](querying-chain/querying-chain-cosmwasm.md) | Get payloads for CosmWasm queries   |

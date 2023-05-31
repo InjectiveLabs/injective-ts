@@ -19,8 +19,8 @@ Within this section we are going to explore configuring different UI frameworks 
 
 ### Dapps
 
-| Topic                                      | Description                                              |
-| ------------------------------------------ | -------------------------------------------------------- |
-| [DEX](dex.md)                              | Building a decentralized exchange on top of Injective    |
-| [Bridge](bridge.md)                        | Building a simple bridge between Injective and Ethereum  |
-| [Simple Smart Contract](smart-contract.md) | Building a simple smart contract app on top of Injective |
+| Topic                                                     | Description                                              |
+| --------------------------------------------------------- | -------------------------------------------------------- |
+| [DEX](dapps-examples/dex.md)                              | Building a decentralized exchange on top of Injective    |
+| [Bridge](dapps-examples/bridge.md)                        | Building a simple bridge between Injective and Ethereum  |
+| [Simple Smart Contract](dapps-examples/smart-contract.md) | Building a simple smart contract app on top of Injective |
