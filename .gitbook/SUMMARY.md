@@ -1,7 +1,8 @@
 # Table of contents
 
 * [Getting Started](README.md)
-  * [Getting Started - Cosmjs](readme/getting-started-cosmjs.md)
+  * [Technical Concepts](readme/technical-concepts.md)
+  * [CosmJs Support](readme/getting-started-cosmjs.md)
 * [Wallet](wallet/README.md)
   * [Accounts](wallet/wallet-accounts.md)
   * [Wallet Connections](wallet/wallet-connections.md)
