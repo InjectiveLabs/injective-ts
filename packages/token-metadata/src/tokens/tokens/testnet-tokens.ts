@@ -33,7 +33,7 @@ export const testnetTokens = () =>
       ...tokens.wBTC,
       cw20s: [
         ...(tokens.wBTC.cw20s || []),
-        overrideCw20s(
+        ...overrideCw20s(
           {
             decimals: 8,
             symbol: 'wBTC',
