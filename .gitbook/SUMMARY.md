@@ -2,7 +2,7 @@
 
 * [Getting Started](README.md)
   * [Technical Concepts](readme/technical-concepts.md)
-  * [Application Concepts](readme/technical-concepts-1.md)
+  * [Application Concepts](readme/application-concepts.md)
   * [CosmJs Support](readme/getting-started-cosmjs.md)
 * [Wallet](wallet/README.md)
   * [Accounts](wallet/wallet-accounts.md)
