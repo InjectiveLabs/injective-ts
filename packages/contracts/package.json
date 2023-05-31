@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/contracts",
   "description": "Contracts wrapper that can be reused throughout Injective's projects.",
-  "version": "1.12.0-beta.0",
+  "version": "1.12.0-beta.1",
   "sideEffects": false,
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

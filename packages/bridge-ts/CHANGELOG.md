@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.12.0-beta.0...@injectivelabs/bridge-ts@1.12.0-beta.1) (2023-05-31)
+
+### Bug Fixes
+
+- versions ([b7770bf](https://github.com/InjectiveLabs/injective-ts/commit/b7770bf382619115063ecdee2a9bd39b520e70de))
+
 ### Features
 
 - evm wormhole ([8656087](https://github.com/InjectiveLabs/injective-ts/commit/865608799c0e2823d77e99d14ac72b7233e991e9))
