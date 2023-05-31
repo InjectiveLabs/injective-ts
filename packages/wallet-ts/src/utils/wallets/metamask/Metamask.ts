@@ -30,12 +30,21 @@ export const updateMetamaskNetwork = async (chainId: EthereumChainId) => {
       throw new WalletException(new Error('Please install Metamask Extension'))
     }
 
-    const chainIDToHex = chainId.toString(16)
+    const chainIdToHex = chainId.toString(16)
 
-    return await provider.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: `0x${chainIDToHex}` }],
-    })
+    return await Promise.race([
+      provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: `0x${chainIdToHex}` }],
+      }),
+      new Promise<void>((resolve) =>
+        provider.on('change', ({ chain }: any) => {
+          if (chain?.id === chainIdToHex) {
+            resolve()
+          }
+        }),
+      ),
+    ])
   } catch (e) {
     throw new WalletException(new Error('Please update your Metamask network'))
   }
