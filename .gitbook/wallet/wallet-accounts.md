@@ -13,14 +13,14 @@ const injectiveAddress = 'inj1...'
 const ethereumAddress = '0x..'
 
 console.log('Injective address from Ethereum address => ', getInjectiveAddress(ethereumAddress))
-console.log('Ethereum address from Injective address => ', getEthereumAddress(ethereumAddress))
+console.log('Ethereum address from Injective address => ', getEthereumAddress(injectiveAddress))
 ```
 
 ### Deriving wallets
 
 **Using Injective utility classes**
 
-* Example code snippet on how to derive Injective Account from a private key and/or a mnemonic phase:
+* Example code snippet on how to derive Injective Account from a private key and/or a mnemonic phrase:
 
 ```ts
 import { PrivateKey } from '@injectivelabs/sdk-ts'
@@ -59,7 +59,7 @@ console.log(publicKey.toBase64())
 
 **Without using Injective utility classes**
 
-* Example code snippet on how to derive Injective Account from a private key and/or a mnemonic phase:
+* Example code snippet on how to derive Injective Account from a private key and/or a mnemonic phrase:
 
 ```ts
 import { Wallet } from 'ethers'
