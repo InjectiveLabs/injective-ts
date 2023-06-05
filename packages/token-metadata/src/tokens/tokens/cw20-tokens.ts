@@ -1,10 +1,10 @@
 import { TokenMeta, TokenType } from '../../types'
 
 export default {
-  'MITO-INJ-S-LP': {
-    name: 'Mito INJ Spot Market Making',
-    logo: 'mito-inj-s-lp.svg',
-    symbol: 'MITO-INJ-S-LP',
+  'INJ-MASTER': {
+    name: 'INJ Master',
+    logo: 'mito-inj-master-lp.svg',
+    symbol: 'INJ-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -14,10 +14,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  'MITO-INJ-P-LP': {
-    name: 'Mito INJ Perp Market Making',
-    logo: 'mito-inj-p-lp.svg',
-    symbol: 'MITO-INJ-P-LP',
+  'INJ-BOOST': {
+    name: 'INJ Boost',
+    logo: 'mito-inj-boost-lp.svg',
+    symbol: 'INJ-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -27,10 +27,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  'MITO-WETH-S-LP': {
-    name: 'Mito WETH Spot Market Making',
-    logo: 'mito-weth-s-lp.svg',
-    symbol: 'MITO-WETH-S-LP',
+  'WETH-MASTER': {
+    name: 'WETH Master',
+    logo: 'mito-weth-master-lp.svg',
+    symbol: 'WETH-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -40,10 +40,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  'MITO-ETH-P-LP': {
-    name: 'Mito ETH Perp Market Making',
-    logo: 'mito-eth-p-lp.svg',
-    symbol: 'MITO-ETH-P-LP',
+  'ETH-BOOST': {
+    name: 'ETH Boost',
+    logo: 'mito-eth-boost-lp.svg',
+    symbol: 'ETH-boost-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -53,10 +53,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  'MITO-ATOM-S-LP': {
-    name: 'Mito ATOM Spot Market Making',
-    logo: 'mito-atom-s-lp.svg',
-    symbol: 'MITO-ATOM-S-LP',
+  'ATOM-MASTER': {
+    name: 'ATOM Master',
+    logo: 'mito-atom-master-lp.svg',
+    symbol: 'ATOM-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -66,10 +66,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  'MITO-ATOM-P-LP': {
-    name: 'Mito ATOM Perp Market Making',
-    logo: 'mito-atom-p-lp.svg',
-    symbol: 'MITO-ATOM-P-LP',
+  'ATOM-BOOST': {
+    name: 'ATOM Boost',
+    logo: 'mito-atom-boost-lp.svg',
+    symbol: 'ATOM-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -79,10 +79,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  'MITO-USDC-S-LP': {
-    name: 'Mito USDC Spot Market Making',
-    logo: 'mito-usdc-s-lp.svg',
-    symbol: 'MITO-USDC-S-LP',
+  'USDC-MASTER': {
+    name: 'USDC Master',
+    logo: 'mito-usdc-master-lp.svg',
+    symbol: 'USDC-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
