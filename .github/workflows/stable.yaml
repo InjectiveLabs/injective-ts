@@ -23,8 +23,9 @@ jobs:
 
       - name: Build dependencies
         run: |
+          node etc/bootstrapEnv
           yarn install
-          lerna bootstrap
+          npx lerna bootstrap
           yarn build
 
       - name: 'Setup npm'
@@ -39,8 +40,8 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor}}@users.noreply.github.com"
 
-          lerna version --conventional-commits --conventional-graduate --force-git-tag --yes
-          lerna publish from-git --force-git-tag --dist-tag latest --yes --summary-file
+          npx lerna version --conventional-commits --conventional-graduate --force-git-tag --yes
+          npx lerna publish from-git --force-git-tag --dist-tag latest --yes --summary-file
 
       - name: 'Broadcast published versions on Slack'
         run: node etc/slack --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE

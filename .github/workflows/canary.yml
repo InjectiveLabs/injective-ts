@@ -23,6 +23,7 @@ jobs:
 
       - name: Build dependencies
         run: |
+          node etc/bootstrapEnv
           yarn install
           lerna bootstrap
           yarn build
