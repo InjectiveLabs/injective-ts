@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.12.0-beta.10...@injectivelabs/bridge-ts@1.12.0-beta.11) (2023-06-08)
+
+### Features
+
+- wormhole redeem flow ([5509b49](https://github.com/InjectiveLabs/injective-ts/commit/5509b4978dc7d8e8c5e34b4e8c03c07f4dc34afb))
+
 # [1.12.0-beta.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/bridge-ts@1.12.0-beta.9...@injectivelabs/bridge-ts@1.12.0-beta.10) (2023-06-05)
 
 **Note:** Version bump only for package @injectivelabs/bridge-ts
