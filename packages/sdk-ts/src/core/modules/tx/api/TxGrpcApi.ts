@@ -6,6 +6,7 @@ import {
 import {
   TransactionException,
   GrpcUnaryRequestException,
+  GeneralException,
 } from '@injectivelabs/exceptions'
 import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
@@ -219,7 +220,9 @@ export class TxGrpcApi implements TxConcreteApi {
       const txResponse = response.txResponse
 
       if (!txResponse) {
-        throw new Error('There was an issue broadcasting the transaction')
+        throw new GeneralException(
+          new Error('There was an issue broadcasting the transaction'),
+        )
       }
 
       const result: TxClientBroadcastResponse = {

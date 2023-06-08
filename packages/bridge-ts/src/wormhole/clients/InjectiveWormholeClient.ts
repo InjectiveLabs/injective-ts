@@ -10,6 +10,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
+  ChainId,
   getSignedVAA,
   getSignedVAAWithRetry,
   tryNativeToUint8Array,
@@ -19,6 +20,7 @@ import {
   getEmitterAddressInjective,
   parseSequenceFromLogInjective,
   getIsTransferCompletedInjective,
+  getForeignAssetInjective,
 } from '../injective'
 import { INJ_DENOM, sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
@@ -170,21 +172,29 @@ export class InjectiveWormholeClient
   async getTxResponse(txHash: string) {
     const { network } = this
     const endpoints = getNetworkEndpoints(network)
-
     const indexerRestExplorerApi = new IndexerRestExplorerApi(endpoints.indexer)
-    const txResponse = await indexerRestExplorerApi.fetchTransaction(txHash)
 
-    if (!txResponse) {
-      throw new Error('An error occurred while fetching the transaction info')
+    try {
+      const txResponse = await indexerRestExplorerApi.fetchTransaction(txHash)
+
+      if (!txResponse) {
+        throw new GeneralException(
+          new Error('An error occurred while fetching the transaction info'),
+        )
+      }
+
+      return {
+        ...txResponse,
+        txHash: txResponse.hash,
+        height: txResponse.blockNumber,
+        rawLog: JSON.stringify(txResponse.logs || []),
+        timestamp: txResponse.blockTimestamp,
+      } as TxResponse
+    } catch (e) {
+      throw new GeneralException(
+        new Error('An error occurred while fetching the transaction info'),
+      )
     }
-
-    return {
-      ...txResponse,
-      txHash: txResponse.hash,
-      height: txResponse.blockNumber,
-      rawLog: JSON.stringify(txResponse.logs || []),
-      timestamp: txResponse.blockTimestamp,
-    } as TxResponse
   }
 
   async getSignedVAA(txResponse: TxResponse) {
@@ -201,18 +211,26 @@ export class InjectiveWormholeClient
       injectiveContractAddresses.token_bridge,
     )
 
-    const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-      [wormholeRpcUrl],
-      WORMHOLE_CHAINS.injective,
-      emitterAddress,
-      sequence,
-      {
-        transport: getGrpcTransport(),
-      },
-      TIMEOUT_BETWEEN_RETRIES,
-    )
+    try {
+      const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
+        [wormholeRpcUrl],
+        WORMHOLE_CHAINS.injective,
+        emitterAddress,
+        sequence,
+        {
+          transport: getGrpcTransport(),
+        },
+        TIMEOUT_BETWEEN_RETRIES,
+      )
 
-    return Buffer.from(signedVAA).toString('base64')
+      return Buffer.from(signedVAA).toString('base64')
+    } catch (e) {
+      throw new GeneralException(
+        new Error(
+          `Could not get the signed VAA. Is the transaction confirmed?`,
+        ),
+      )
+    }
   }
 
   async getSignedVAANoRetry(txResponse: TxResponse) {
@@ -229,17 +247,25 @@ export class InjectiveWormholeClient
       injectiveContractAddresses.token_bridge,
     )
 
-    const { vaaBytes: signedVAA } = await getSignedVAA(
-      wormholeRpcUrl,
-      WORMHOLE_CHAINS.injective,
-      emitterAddress,
-      sequence,
-      {
-        transport: getGrpcTransport(),
-      },
-    )
+    try {
+      const { vaaBytes: signedVAA } = await getSignedVAA(
+        wormholeRpcUrl,
+        WORMHOLE_CHAINS.injective,
+        emitterAddress,
+        sequence,
+        {
+          transport: getGrpcTransport(),
+        },
+      )
 
-    return Buffer.from(signedVAA).toString('base64')
+      return Buffer.from(signedVAA).toString('base64')
+    } catch (e) {
+      throw new GeneralException(
+        new Error(
+          `Could not get the signed VAA. Is the transaction confirmed?`,
+        ),
+      )
+    }
   }
 
   async getIsTransferCompleted(signedVAA: string /* in base 64 */) {
@@ -267,6 +293,27 @@ export class InjectiveWormholeClient
     }
 
     return false
+  }
+
+  async getForeignAsset(originChain: ChainId, originAddress: string) {
+    const { network } = this
+    const endpoints = getNetworkEndpoints(network)
+
+    const { injectiveContractAddresses } = getContractAddresses(network)
+    const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
+
+    const originAssetBinary = tryNativeToUint8Array(
+      originAddress,
+      originChain as ChainId,
+    )
+    const targetAsset = await getForeignAssetInjective(
+      injectiveContractAddresses.token_bridge,
+      chainGrpcWasmApi,
+      originChain as ChainId,
+      originAssetBinary,
+    )
+
+    return targetAsset || ''
   }
 
   async redeem({

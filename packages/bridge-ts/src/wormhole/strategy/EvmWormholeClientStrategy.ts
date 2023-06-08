@@ -1,13 +1,13 @@
 import { Network } from '@injectivelabs/networks'
-import {
-  EvmWormholeClient,
-  Provider,
-} from '../wormhole/clients/EvmWormholeClient'
-import { TransferMsgArgs, WormholeClient, WormholeSource } from '../wormhole'
+import { EvmWormholeClient, Provider } from '../clients/EvmWormholeClient'
+import { TransferMsgArgs, WormholeClient, WormholeSource } from '..'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ethers } from 'ethers'
+import { BaseWormholeClient } from '../WormholeClient'
+import { ChainId } from '@injectivelabs/wormhole-sdk'
 
 export class EvmWormholeClientStrategy
+  extends BaseWormholeClient
   implements
     WormholeClient<
       ethers.ContractReceipt & { txHash: string },
@@ -24,6 +24,8 @@ export class EvmWormholeClientStrategy
     provider: Provider
     wormholeSource?: WormholeSource
   }) {
+    super(args)
+
     this.wormholeSource = args.wormholeSource || WormholeSource.Ethereum
     this.strategies = {
       [WormholeSource.Ethereum]: new EvmWormholeClient({
@@ -101,5 +103,13 @@ export class EvmWormholeClientStrategy
     recipient?: string
   }): Promise<ethers.ContractReceipt> {
     return this.strategy.redeemNative(args)
+  }
+
+  parseSignedVAA(signedVAA: string /* base64 */) {
+    return this.strategy.parseSignedVAA(signedVAA)
+  }
+
+  async getForeignAsset(originChain: ChainId, originAddress: string) {
+    return await this.strategy.getForeignAsset(originChain, originAddress)
   }
 }

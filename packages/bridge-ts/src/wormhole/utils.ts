@@ -29,8 +29,8 @@ export const getSolanaTransactionInfo = async (
   transactionId: string,
   connection: Connection,
 ) => {
-  const POLL_INTERVAL = 1000
-  const timeout = 300000
+  const POLL_INTERVAL = 5000
+  const timeout = 30000
 
   for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
     try {
@@ -39,9 +39,7 @@ export const getSolanaTransactionInfo = async (
       if (txResponse) {
         return txResponse
       }
-    } catch (error: any) {
-      //
-    }
+    } catch (error: any) {}
 
     await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
   }
@@ -396,7 +394,9 @@ export const getEvmNativeAddress = (
 
   if (source === WormholeSource.Ethereum) {
     if (!addresses.ethereum) {
-      throw new Error(`Ethereum native address for ${network} not found`)
+      throw new GeneralException(
+        new Error(`Ethereum native address for ${network} not found`),
+      )
     }
 
     return addresses.ethereum
@@ -404,13 +404,17 @@ export const getEvmNativeAddress = (
 
   if (source === WormholeSource.Polygon) {
     if (!addresses.polygon) {
-      throw new Error(`Polygon native address for ${network} not found`)
+      throw new GeneralException(
+        new Error(`Polygon native address for ${network} not found`),
+      )
     }
 
     return addresses.polygon
   }
 
-  throw new Error(`Native address for ${network} and ${source} not found`)
+  throw new GeneralException(
+    new Error(`Native address for ${network} and ${source} not found`),
+  )
 }
 
 export const getEvmChainName = (chainId: number) => {

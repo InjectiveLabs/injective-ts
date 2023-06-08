@@ -16,6 +16,9 @@ import {
   postVaaSolanaWithRetry,
   redeemAndUnwrapOnSolana,
   getIsTransferCompletedSolana,
+  tryNativeToUint8Array,
+  ChainId,
+  getForeignAssetSolana,
 } from '@injectivelabs/wormhole-sdk'
 import {
   getAssociatedTokenAddress,
@@ -109,14 +112,26 @@ export class SolanaWormholeClient
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    const connection = new Connection(solanaHostUrl, 'confirmed')
-    const txResponse = await getSolanaTransactionInfo(txHash, connection)
+    try {
+      const connection = new Connection(solanaHostUrl, 'confirmed')
+      const txResponse = await connection.getTransaction(txHash)
 
-    if (!txResponse) {
-      throw new Error('An error occurred while fetching the transaction info')
+      if (!txResponse) {
+        throw new GeneralException(
+          new Error('An error occurred while fetching the transaction info'),
+        )
+      }
+
+      if (txResponse.meta?.err) {
+        throw new GeneralException(new Error(txResponse.meta?.err.toString()))
+      }
+
+      return txResponse
+    } catch (e) {
+      throw new GeneralException(
+        new Error('An error occurred while fetching the transaction info'),
+      )
     }
-
-    return txResponse
   }
 
   async getSignedVAA(txResponse: TransactionResponse) {
@@ -135,18 +150,26 @@ export class SolanaWormholeClient
       associatedChainContractAddresses.token_bridge,
     )
 
-    const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-      [wormholeRpcUrl],
-      WORMHOLE_CHAINS.solana,
-      emitterAddress,
-      sequence,
-      {
-        transport: getGrpcTransport(),
-      },
-      TIMEOUT_BETWEEN_RETRIES,
-    )
+    try {
+      const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
+        [wormholeRpcUrl],
+        WORMHOLE_CHAINS.solana,
+        emitterAddress,
+        sequence,
+        {
+          transport: getGrpcTransport(),
+        },
+        TIMEOUT_BETWEEN_RETRIES,
+      )
 
-    return Buffer.from(signedVAA).toString('base64')
+      return Buffer.from(signedVAA).toString('base64')
+    } catch (e) {
+      throw new GeneralException(
+        new Error(
+          `Could not get the signed VAA. Is the transaction confirmed?`,
+        ),
+      )
+    }
   }
 
   async getSignedVAANoRetry(txResponse: TransactionResponse) {
@@ -165,17 +188,25 @@ export class SolanaWormholeClient
       associatedChainContractAddresses.token_bridge,
     )
 
-    const { vaaBytes: signedVAA } = await getSignedVAA(
-      wormholeRpcUrl,
-      WORMHOLE_CHAINS.solana,
-      emitterAddress,
-      sequence,
-      {
-        transport: getGrpcTransport(),
-      },
-    )
+    try {
+      const { vaaBytes: signedVAA } = await getSignedVAA(
+        wormholeRpcUrl,
+        WORMHOLE_CHAINS.solana,
+        emitterAddress,
+        sequence,
+        {
+          transport: getGrpcTransport(),
+        },
+      )
 
-    return Buffer.from(signedVAA).toString('base64')
+      return Buffer.from(signedVAA).toString('base64')
+    } catch (e) {
+      throw new GeneralException(
+        new Error(
+          `Could not get the signed VAA. Is the transaction confirmed?`,
+        ),
+      )
+    }
   }
 
   async getIsTransferCompleted(signedVAA: string /* in base 64 */) {
@@ -266,6 +297,26 @@ export class SolanaWormholeClient
     )
   }
 
+  async getForeignAsset(originChain: ChainId, originAddress: string) {
+    const { network, solanaHostUrl } = this
+
+    const { associatedChainContractAddresses } = getContractAddresses(network)
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const originAssetBinary = tryNativeToUint8Array(
+      originAddress,
+      originChain as ChainId,
+    )
+    const targetAsset = await getForeignAssetSolana(
+      connection,
+      associatedChainContractAddresses.token_bridge,
+      originChain as ChainId,
+      originAssetBinary,
+    )
+
+    return targetAsset || ''
+  }
+
   async postVAAWithRetry({
     solanaPubKey,
     signedVAA,
@@ -347,7 +398,9 @@ export class SolanaWormholeClient
       )
 
       if (!txResponse) {
-        throw new Error('An error occurred while fetching the transaction info')
+        throw new GeneralException(
+          new Error('An error occurred while fetching the transaction info'),
+        )
       }
     }
 
@@ -372,7 +425,9 @@ export class SolanaWormholeClient
     const txResponse = await getSolanaTransactionInfo(transactionId, connection)
 
     if (!txResponse) {
-      throw new Error('An error occurred while fetching the transaction info')
+      throw new GeneralException(
+        new Error('An error occurred while fetching the transaction info'),
+      )
     }
 
     return { txHash: transactionId, ...txResponse } as TransactionResponse & {
@@ -452,7 +507,9 @@ export class SolanaWormholeClient
     const txResponse = await getSolanaTransactionInfo(transactionId, connection)
 
     if (!txResponse) {
-      throw new Error('An error occurred while fetching the transaction info')
+      throw new GeneralException(
+        new Error('An error occurred while fetching the transaction info'),
+      )
     }
 
     return { txHash: transactionId, ...txResponse } as TransactionResponse & {
@@ -502,7 +559,9 @@ export class SolanaWormholeClient
     const txResponse = await getSolanaTransactionInfo(transactionId, connection)
 
     if (!txResponse) {
-      throw new Error('An error occurred while fetching the transaction info')
+      throw new GeneralException(
+        new Error('An error occurred while fetching the transaction info'),
+      )
     }
 
     return { txHash: transactionId, ...txResponse } as TransactionResponse & {
