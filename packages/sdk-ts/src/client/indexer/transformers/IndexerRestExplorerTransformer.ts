@@ -96,10 +96,12 @@ export class IndexerRestExplorerTransformer {
       txType: transaction.tx_type,
       data: transaction.data,
       events: transaction.events || [],
-      messages: (transaction.messages || []).map((message) => ({
-        type: message.type,
-        message: message.value,
-      })),
+      messages: (transaction.messages || [])
+        .filter((m) => m)
+        .map((message) => ({
+          type: message.type,
+          message: message.value,
+        })),
       logs: transaction.logs,
       errorLog: transaction.error_log,
     }
@@ -142,10 +144,12 @@ export class IndexerRestExplorerTransformer {
   ): ExplorerTransaction {
     return {
       ...transaction,
-      messages: (transaction.messages || []).map((message) => ({
-        type: (message as any).type,
-        message: message.value,
-      })),
+      messages: (transaction.messages || [])
+        .filter((m) => m)
+        .map((message) => ({
+          type: (message as any).type,
+          message: message.value,
+        })),
       memo: transaction.memo || '',
     }
   }

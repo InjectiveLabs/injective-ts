@@ -171,6 +171,7 @@ export abstract class ConcreteException extends Error implements Exception {
         context: this.context,
         contextModule: this.contextModule,
         contextCode: this.contextCode,
+        stack: (this.stack || '').split('\n').map((line) => line.trim()),
       })}`,
     )
     error.stack = this.stack
@@ -195,6 +196,7 @@ export abstract class ConcreteException extends Error implements Exception {
       context: this.context,
       contextModule: this.contextModule,
       contextCode: this.contextCode,
+      stack: (this.stack || '').split('\n').map((line) => line.trim()),
     }
   }
 
