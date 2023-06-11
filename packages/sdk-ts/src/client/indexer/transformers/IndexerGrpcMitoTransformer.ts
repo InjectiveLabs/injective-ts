@@ -225,7 +225,7 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoStakingActivityTpStakingActivity(
+  static mitoStakingActivityToStakingActivity(
     stakingActivity: MitoApi.StakingActivity,
   ) {
     return {
@@ -241,6 +241,19 @@ export class IndexerGrpcMitoTransformer {
       timestamp: parseInt(stakingActivity.timestamp, 10),
       staker: stakingActivity.staker,
       numberByAccount: stakingActivity.numberByAccount,
+    }
+  }
+
+  static mitoSubscriptionToSubscription(subscription: MitoApi.Subscription) {
+    const vaultInfo = subscription.vaultInfo
+      ? IndexerGrpcMitoTransformer.mitoVaultToVault(subscription.vaultInfo)
+      : undefined
+
+    return {
+      vaultInfo,
+      lpAmount: subscription.lpAmount,
+      lpAmountPercentage: subscription.lpAmountPercentage,
+      holderAddress: subscription.holderAddress,
     }
   }
 
@@ -273,18 +286,9 @@ export class IndexerGrpcMitoTransformer {
   static vaultsByHolderAddressResponseToVaultsByHolderAddress(
     response: MitoApi.VaultsByHolderAddressResponse,
   ): MitoSubscription[] {
-    return response.subscriptions.map((subscription) => {
-      const vaultInfo = subscription.vaultInfo
-        ? IndexerGrpcMitoTransformer.mitoVaultToVault(subscription.vaultInfo)
-        : undefined
-
-      return {
-        vaultInfo,
-        lpAmount: subscription.lpAmount,
-        lpAmountPercentage: subscription.lpAmountPercentage,
-        holderAddress: subscription.holderAddress,
-      }
-    })
+    return response.subscriptions.map(
+      IndexerGrpcMitoTransformer.mitoSubscriptionToSubscription,
+    )
   }
 
   static lpHoldersResponseToLPHolders(
@@ -357,7 +361,7 @@ export class IndexerGrpcMitoTransformer {
   ) {
     return {
       activities: response.activities.map(
-        IndexerGrpcMitoTransformer.mitoStakingActivityTpStakingActivity,
+        IndexerGrpcMitoTransformer.mitoStakingActivityToStakingActivity,
       ),
       pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
         response.pagination,

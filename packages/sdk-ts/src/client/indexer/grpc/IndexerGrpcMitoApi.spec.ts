@@ -61,7 +61,7 @@ describe('IndexerGrpcMitoApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart
+            typeof IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart
           >
         >(response),
       )
@@ -86,7 +86,7 @@ describe('IndexerGrpcMitoApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMitoTransformer.LPTokenPriceChartResponseToLPTokenPriceChart
+            typeof IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart
           >
         >(response),
       )
@@ -112,7 +112,7 @@ describe('IndexerGrpcMitoApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMitoTransformer.VaultsByHolderAddressResponseToVaultsByHolderAddress
+            typeof IndexerGrpcMitoTransformer.vaultsByHolderAddressResponseToVaultsByHolderAddress
           >
         >(response),
       )
@@ -138,7 +138,7 @@ describe('IndexerGrpcMitoApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMitoTransformer.LPHoldersResponseToLPHolders
+            typeof IndexerGrpcMitoTransformer.lpHoldersResponseToLPHolders
           >
         >(response),
       )
@@ -163,7 +163,7 @@ describe('IndexerGrpcMitoApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMitoTransformer.PortfolioResponseToPortfolio
+            typeof IndexerGrpcMitoTransformer.portfolioResponseToPortfolio
           >
         >(response),
       )
@@ -186,7 +186,7 @@ describe('IndexerGrpcMitoApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMitoTransformer.LeaderboardResponseToLeaderboard
+            typeof IndexerGrpcMitoTransformer.leaderboardResponseToLeaderboard
           >
         >(response),
       )
@@ -209,7 +209,7 @@ describe('IndexerGrpcMitoApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMitoTransformer.TransferHistoryResponseToTransfer
+            typeof IndexerGrpcMitoTransformer.transferHistoryResponseToTransfer
           >
         >(response),
       )
@@ -233,7 +233,7 @@ describe('IndexerGrpcMitoApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMitoTransformer.LeaderboardEpochsResponseToLeaderboardEpochs
+            typeof IndexerGrpcMitoTransformer.leaderboardEpochsResponseToLeaderboardEpochs
           >
         >(response),
       )

@@ -464,8 +464,16 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchStakingPools(staker?: string) {
+  async fetchStakingPools({
+    staker,
+    stakingContractAddress,
+  }: {
+    staker?: string
+    stakingContractAddress: string
+  }) {
     const request = MitoApi.GetStakingPoolsRequest.create()
+
+    request.stakingContractAddress = stakingContractAddress
 
     if (staker) {
       request.staker = staker
@@ -550,10 +558,17 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchStakingRewardsByAccount({ staker }: { staker: string }) {
+  async fetchStakingRewardsByAccount({
+    staker,
+    stakingContractAddress,
+  }: {
+    staker: string
+    stakingContractAddress: string
+  }) {
     const request = MitoApi.StakingRewardByAccountRequest.create()
 
     request.staker = staker
+    request.stakingContractAddress = stakingContractAddress
 
     try {
       const response = await this.retry<MitoApi.StakingRewardByAccountResponse>(
