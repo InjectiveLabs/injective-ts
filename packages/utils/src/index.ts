@@ -1,4 +1,4 @@
-export * from './classes/index'
+export * from './classes'
 export * from './helpers'
 export * from './formatters'
 export * from './time'

@@ -12,7 +12,7 @@ import {
   GrpcGovernanceVotingParams,
   GrpcGovernanceDepositParams,
 } from '../types/gov'
-import { Pagination } from '../../../types/index'
+import { Pagination } from '../../../types'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { cosmosSdkDecToBigNumber } from '../../../utils'
 import { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'

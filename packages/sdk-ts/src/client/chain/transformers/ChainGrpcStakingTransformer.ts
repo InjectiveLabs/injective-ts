@@ -15,7 +15,7 @@ import {
 } from '../types/staking'
 import { cosmosSdkDecToBigNumber, DUST_AMOUNT } from '../../../utils'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
-import { Pagination } from '../../../types/index'
+import { Pagination } from '../../../types'
 import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**

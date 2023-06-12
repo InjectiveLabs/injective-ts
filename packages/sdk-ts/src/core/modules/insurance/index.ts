@@ -1,3 +1,5 @@
-export { default as MsgCreateInsuranceFund } from './msgs/MsgCreateInsuranceFund'
-export { default as MsgRequestRedemption } from './msgs/MsgRequestRedemption'
-export { default as MsgUnderwrite } from './msgs/MsgUnderwrite'
+import MsgUnderwrite from './msgs/MsgUnderwrite'
+import MsgRequestRedemption from './msgs/MsgRequestRedemption'
+import MsgCreateInsuranceFund from './msgs/MsgCreateInsuranceFund'
+
+export { MsgUnderwrite, MsgRequestRedemption, MsgCreateInsuranceFund }

@@ -33,6 +33,7 @@ import MsgSendToEth from './peggy/msgs/MsgSendToEth'
 import MsgDelegate from './staking/msgs/MsgDelegate'
 import MsgUndelegate from './staking/msgs/MsgUndelegate'
 import MsgEditValidator from './staking/msgs/MsgEditValidator'
+import MsgCreateValidator from './staking/msgs/MsgCreateValidator'
 import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
 import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
 import MsgExecuteContractCompat from './wasm/msgs/MsgExecuteContractCompat'
@@ -97,6 +98,7 @@ export type Msgs =
   | MsgExternalTransfer
   | MsgStoreCode
   | MsgRewardsOptOut
+  | MsgCreateValidator
 
 /**
  * @category Messages

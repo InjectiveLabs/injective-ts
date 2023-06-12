@@ -14,7 +14,7 @@ import {
   MitoSubaccountBalance,
   MitoLeaderboardEpoch,
 } from '../types/mito'
-import { GrpcCoin } from '../../../types/index'
+import { GrpcCoin } from '../../../types'
 
 /**
  * @category Indexer Grpc Transformer

@@ -1,4 +1,4 @@
-import { GrpcCoin, Pagination } from '../../../types/index'
+import { GrpcCoin, Pagination } from '../../../types'
 import { Coin } from '@injectivelabs/ts-types'
 import { BankModuleParams, TotalSupply } from '../types'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
