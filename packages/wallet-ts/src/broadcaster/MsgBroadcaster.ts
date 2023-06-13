@@ -681,7 +681,9 @@ export class MsgBroadcaster {
     const { endpoints } = this
     const { txRaw } = createTransactionWithSigners(args)
 
-    txRaw.signatures = [new Uint8Array(0)]
+    txRaw.signatures = Array(
+      Array.isArray(args.signers) ? args.signers.length : 1,
+    ).fill(new Uint8Array(0))
 
     const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(
       txRaw,
