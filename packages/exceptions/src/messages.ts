@@ -643,6 +643,13 @@ export const chainErrorMessagesMap: Record<
     module: TransactionChainErrorModule.CosmosSdk,
   },
 
+  'cosmos account not exists': {
+    message:
+      'You need to create your address on Injective by transferring funds',
+    code: ChainCosmosErrorCode.ErrInsufficientFee,
+    module: TransactionChainErrorModule.CosmosSdk,
+  },
+
   'invalid pubkey': {
     message: 'The public key is not valid',
     code: ChainCosmosErrorCode.ErrInvalidPubKey,
