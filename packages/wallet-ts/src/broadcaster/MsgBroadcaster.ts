@@ -525,9 +525,7 @@ export class MsgBroadcaster {
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
     )
-    const feePayerPublicKey = feePayerPubKey.startsWith('0x')
-      ? PublicKey.fromHex(feePayerPubKey)
-      : PublicKey.fromBase64(feePayerPubKey)
+    const feePayerPublicKey = PublicKey.fromBase64(feePayerPubKey)
     const feePayer = feePayerPublicKey.toAddress().address
 
     /** Account Details * */
@@ -601,6 +599,8 @@ export class MsgBroadcaster {
 
   /**
    * Fetch the fee payer's pub key from the web3 gateway
+   *
+   * Returns a base64 version of it
    */
   private async fetchFeePayerPubKey(existingFeePayerPubKey?: string) {
     if (existingFeePayerPubKey) {
@@ -612,6 +612,13 @@ export class MsgBroadcaster {
 
     if (!response.feePayerPubKey) {
       throw new GeneralException(new Error('Please provide a feePayerPubKey'))
+    }
+
+    if (
+      response.feePayerPubKey.key.startsWith('0x') ||
+      response.feePayerPubKey.key.length === 66
+    ) {
+      return Buffer.from(response.feePayerPubKey.key, 'hex').toString('base64')
     }
 
     return response.feePayerPubKey.key
