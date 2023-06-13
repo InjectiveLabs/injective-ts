@@ -640,21 +640,33 @@ export class MsgBroadcaster {
     const { simulateTx } = options
 
     if (!simulateTx) {
-      return { ...createTransactionWithSigners(args), stdFee: getStdFee(gas) }
+      return {
+        ...createTransactionWithSigners(args),
+        stdFee: { ...getStdFee(gas), payer: args.fee?.payer },
+      }
     }
 
     const result = await this.simulateTxWithSigners(args)
 
     if (!result.gasInfo?.gasUsed) {
-      return { ...createTransactionWithSigners(args), stdFee: getStdFee(gas) }
+      return {
+        ...createTransactionWithSigners(args),
+        stdFee: { ...getStdFee(gas), payer: args.fee?.payer },
+      }
     }
 
-    const stdGasFee = getStdFee(
-      new BigNumberInBase(result.gasInfo.gasUsed).times(1.2).toFixed(),
-    )
+    const stdGasFee = {
+      ...getStdFee(
+        new BigNumberInBase(result.gasInfo.gasUsed).times(1.2).toFixed(),
+      ),
+      payer: args.fee?.payer,
+    }
 
     return {
-      ...createTransactionWithSigners({ ...args, fee: stdGasFee }),
+      ...createTransactionWithSigners({
+        ...args,
+        fee: { ...stdGasFee, payer: args.fee?.payer },
+      }),
       stdFee: stdGasFee,
     }
   }
