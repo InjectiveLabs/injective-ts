@@ -105,8 +105,8 @@ export class MitoQueryTransformer {
       headChangeToleranceRatio: formatToString(
         config.head_change_tolerance_ratio,
       ),
-      minHeadToTailDeviationRatio: formatToString(
-        config.min_head_to_tail_deviation_ratio,
+      headToTailDeviationRatio: formatToString(
+        config.head_to_tail_deviation_ratio,
       ),
       signedMinHeadToFairPriceDeviationRatio: formatToString(
         config.signed_min_head_to_fair_price_deviation_ratio,
@@ -114,13 +114,17 @@ export class MitoQueryTransformer {
       signedMinHeadToTobDeviationRatio: formatToString(
         config.signed_min_head_to_tob_deviation_ratio,
       ),
-      tradeVolatilityGroupSec: Number(config.trade_volatility_group_sec),
-      minTradeVolatilitySampleSize: Number(
-        config.min_trade_volatility_sample_size,
-      ),
       defaultMidPriceVolatilityRatio: formatToString(
         config.default_mid_price_volatility_ratio,
       ),
+      minOracleVolatilitySampleSize: Number(
+        config.min_oracle_volatility_sample_size,
+      ),
+      oracleVolatilityMaxAge: Number(config.oracle_volatility_max_age),
+      emergencyOracleVolatilitySampleSize: Number(
+        config.emergency_oracle_volatility_sample_size,
+      ),
+      lastValidMarkPrice: formatToString(config.last_valid_mark_price),
       minVolatilityRatio: formatToString(config.min_volatility_ratio),
       oracleStaleTime: Number(config.oracle_stale_time),
     }
@@ -163,20 +167,8 @@ export class MitoQueryTransformer {
       minProximityToLiquidation: formatToString(
         config.min_proximity_to_liquidation,
       ),
-      postReductionPercOfMaxPosition: formatToString(
-        config.post_reduction_perc_of_max_position,
-      ),
-      oracleVolatilityGroupSec: Number(config.oracle_volatility_group_sec),
-      minOracleVolatilitySampleSize: Number(
-        config.min_oracle_volatility_sample_size,
-      ),
-      emergencyOracleVolatilitySampleSize: Number(
-        config.emergency_oracle_volatility_sample_size,
-      ),
-      lastValidMarkPrice: formatToString(config.last_valid_mark_price),
       allowedRedemptionTypes: Number(config.allowed_redemption_types),
       positionPnlPenalty: formatToString(config.position_pnl_penalty),
-      quoteDecimals: Number(config.quote_decimals),
     }
   }
 

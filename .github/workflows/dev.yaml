@@ -25,7 +25,6 @@ jobs:
         run: |
           node etc/bootstrapEnv
           yarn install
-          lerna bootstrap
           yarn build
 
       - name: 'Setup npm'
