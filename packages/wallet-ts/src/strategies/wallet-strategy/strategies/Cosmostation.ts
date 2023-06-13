@@ -101,7 +101,7 @@ export default class Cosmostation
       const response = await provider.sendTransaction(
         INJECTIVE_CHAIN_NAME,
         CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-        SEND_TRANSACTION_MODE.ASYNC,
+        SEND_TRANSACTION_MODE.SYNC,
       )
 
       return {

@@ -223,10 +223,13 @@ export class KeplrWallet {
     }
   }
 
-  public async waitTxBroadcasted(txHash: string): Promise<TxResponse> {
-    const endpoints = await this.getChainEndpoints()
+  public async waitTxBroadcasted(
+    txHash: string,
+    endpoint?: string,
+  ): Promise<TxResponse> {
+    const restEndpoint = endpoint || (await this.getChainEndpoints()).rest
 
-    return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
+    return new TxRestApi(restEndpoint).fetchTxPoll(txHash)
   }
 
   public async signAndBroadcastAminoUsingCosmjs(

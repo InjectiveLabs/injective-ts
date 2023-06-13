@@ -90,7 +90,11 @@ export default class Keplr
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    _options: { address: AccountAddress; chainId: ChainId },
+    options: {
+      address: AccountAddress
+      chainId: ChainId
+      endpoints?: { rest: string }
+    },
   ): Promise<TxResponse> {
     const { keplrWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
@@ -98,6 +102,7 @@ export default class Keplr
     try {
       return await keplrWallet.waitTxBroadcasted(
         await keplrWallet.broadcastTx(txRaw),
+        options.endpoints?.rest,
       )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {

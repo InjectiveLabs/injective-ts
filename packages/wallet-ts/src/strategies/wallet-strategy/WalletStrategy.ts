@@ -181,7 +181,11 @@ export default class WalletStrategy {
     options: {
       address: AccountAddress
       chainId: ChainId
-      sentryEndpoint?: string
+      endpoints?: {
+        rest: string
+        grpc: string
+        tm?: string
+      }
     },
   ): Promise<TxResponse> {
     return this.getStrategy().sendTransaction(tx, options)

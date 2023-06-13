@@ -96,20 +96,24 @@ export default class Metamask
     options: {
       address: AccountAddress
       chainId: ChainId
-      sentryEndpoint: string
+      endpoints?: {
+        rest: string
+        grpc: string
+        tm?: string
+      }
     },
   ): Promise<TxResponse> {
-    const { sentryEndpoint } = options
+    const { endpoints } = options
 
-    if (!sentryEndpoint) {
+    if (!endpoints) {
       throw new WalletException(
         new Error(
-          'You have to pass sentryEndpoint within the options for using Ethereum native wallets',
+          'You have to pass endpoints within the options for using Ethereum native wallets',
         ),
       )
     }
 
-    const txApi = new TxGrpcApi(sentryEndpoint)
+    const txApi = new TxGrpcApi(endpoints.grpc)
     const response = await txApi.broadcast(transaction)
 
     if (response.code !== 0) {

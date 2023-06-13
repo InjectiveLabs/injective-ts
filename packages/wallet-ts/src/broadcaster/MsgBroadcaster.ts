@@ -250,8 +250,8 @@ export class MsgBroadcaster {
 
     return walletStrategy.sendTransaction(txRawEip712, {
       chainId,
+      endpoints,
       address: tx.injectiveAddress,
-      sentryEndpoint: endpoints.grpc,
     })
   }
 
@@ -372,6 +372,7 @@ export class MsgBroadcaster {
 
     return walletStrategy.sendTransaction(directSignResponse, {
       chainId,
+      endpoints,
       address: tx.injectiveAddress,
     })
   }

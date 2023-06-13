@@ -163,10 +163,13 @@ export class LeapWallet {
     }
   }
 
-  async waitTxBroadcasted(txHash: string): Promise<TxResponse> {
-    const endpoints = await this.getChainEndpoints()
+  async waitTxBroadcasted(
+    txHash: string,
+    endpoint?: string,
+  ): Promise<TxResponse> {
+    const restEndpoint = endpoint || (await this.getChainEndpoints()).rest
 
-    return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
+    return new TxRestApi(restEndpoint).fetchTxPoll(txHash)
   }
 
   async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {

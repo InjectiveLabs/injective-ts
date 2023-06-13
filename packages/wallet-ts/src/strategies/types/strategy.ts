@@ -90,7 +90,15 @@ export interface ConcreteWalletStrategy
    */
   sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    options: { address: string; chainId: ChainId; sentryEndpoint?: string },
+    options: {
+      address: string
+      chainId: ChainId
+      endpoints?: {
+        rest: string
+        grpc: string
+        tm?: string
+      }
+    },
   ): Promise<TxResponse>
 
   /**

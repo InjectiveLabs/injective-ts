@@ -89,7 +89,11 @@ export default class Leap
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    _options: { address: AccountAddress; chainId: ChainId },
+    options: {
+      address: AccountAddress
+      chainId: ChainId
+      endpoints?: { rest: string }
+    },
   ): Promise<TxResponse> {
     const { leapWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
@@ -97,6 +101,7 @@ export default class Leap
     try {
       return await leapWallet.waitTxBroadcasted(
         await leapWallet.broadcastTx(txRaw),
+        options.endpoints?.rest,
       )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
