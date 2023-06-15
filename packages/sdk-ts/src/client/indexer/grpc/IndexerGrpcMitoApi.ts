@@ -73,16 +73,16 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }) {
     const request = MitoApi.GetVaultsRequest.create()
 
+    if (codeId) {
+      request.codeId = codeId
+    }
+
     if (limit) {
       request.limit = limit
     }
 
     if (pageIndex) {
       request.pageIndex = pageIndex
-    }
-
-    if (codeId) {
-      request.codeId = codeId
     }
 
     try {
