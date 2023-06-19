@@ -25,7 +25,8 @@ import {
   NetworkEndpoints,
 } from '@injectivelabs/networks'
 import { getGasPriceBasedOnMessage } from '../../../../utils/msgs'
-import { CreateTransactionArgs } from '../types'
+import { CreateTransactionArgs, TxResponse } from '../types'
+import { IndexerGrpcTransactionApi } from '../../../../client'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
@@ -67,6 +68,8 @@ export class MsgBroadcasterWithPk {
 
   public chainId: ChainId
 
+  public ethereumChainId?: EthereumChainId
+
   public privateKey: PrivateKey
 
   public simulateTx: boolean = false
@@ -77,6 +80,8 @@ export class MsgBroadcasterWithPk {
 
     this.simulateTx = options.simulateTx || false
     this.chainId = networkInfo.chainId
+    this.ethereumChainId =
+      options.ethereumChainId || networkInfo.ethereumChainId
     this.endpoints = { ...endpoints, ...(endpoints || {}) }
     this.privateKey =
       options.privateKey instanceof PrivateKey
@@ -154,6 +159,61 @@ export class MsgBroadcasterWithPk {
     }
 
     return txResponse
+  }
+
+  /**
+   * Broadcasting the transaction with fee delegation services
+   *
+   * @param tx
+   * @returns {string} transaction hash
+   */
+  async broadcastWithFeeDelegation(transaction: MsgBroadcasterTxOptions) {
+    const { simulateTx, privateKey, ethereumChainId, endpoints } = this
+    const msgs = Array.isArray(transaction.msgs)
+      ? transaction.msgs
+      : [transaction.msgs]
+
+    const tx = {
+      ...transaction,
+      msgs: msgs,
+      ethereumAddress: getEthereumSignerAddress(transaction.injectiveAddress),
+      injectiveAddress: getInjectiveSignerAddress(transaction.injectiveAddress),
+    } as MsgBroadcasterTxOptions & { ethereumAddress: string }
+
+    const web3Msgs = msgs.map((msg) => msg.toWeb3())
+
+    if (!ethereumChainId) {
+      throw new GeneralException(new Error('Please provide ethereumChainId'))
+    }
+
+    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+    const txResponse = await transactionApi.prepareTxRequest({
+      memo: tx.memo,
+      message: web3Msgs,
+      address: tx.ethereumAddress,
+      chainId: ethereumChainId,
+      gasLimit: getGasPriceBasedOnMessage(msgs),
+      estimateGas: simulateTx || false,
+    })
+
+    const signature = await privateKey.signTypedData(
+      JSON.parse(txResponse.data),
+    )
+
+    const response = await transactionApi.broadcastTxRequest({
+      txResponse,
+      message: web3Msgs,
+      chainId: ethereumChainId,
+      signature: `0x${Buffer.from(signature).toString('hex')}`,
+    })
+
+    return {
+      ...response,
+      data: Buffer.from(response.data).toString(),
+      height: parseInt(response.height, 10),
+      gasUsed: 0 /** not available from the API */,
+      gasWanted: 0 /** not available from the API */,
+    } as TxResponse
   }
 
   /**

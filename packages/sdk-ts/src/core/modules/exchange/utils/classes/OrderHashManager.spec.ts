@@ -114,7 +114,7 @@ const derivativeMsg = MsgCreateDerivativeLimitOrder.fromJSON({
   feeRecipient: address.bech32Address,
 })
 
-describe.skip('OrderHashManager', () => {
+describe('OrderHashManager', () => {
   it('generates proper hash', async () => {
     orderHashManager.setNonce(78)
 

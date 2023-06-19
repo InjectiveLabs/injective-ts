@@ -5,6 +5,7 @@ import snakecaseKeys from 'snakecase-keys'
 export declare namespace MsgVote {
   export interface Params {
     proposalId: number
+    metadata: string
     vote: CosmosGovV1Gov.VoteOption
     voter: string
   }
@@ -26,6 +27,7 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
     const message = CosmosGovV1Tx.MsgVote.create()
     message.option = params.vote
     message.proposalId = params.proposalId.toString()
+    message.metadata = params.metadata
     message.voter = params.voter
     message.metadata = params.proposalId.toString()
 
