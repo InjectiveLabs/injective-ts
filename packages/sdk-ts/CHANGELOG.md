@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.20...@injectivelabs/sdk-ts@1.12.0-beta.21) (2023-06-19)
+
+### Features
+
+- sc search ([778ee05](https://github.com/InjectiveLabs/injective-ts/commit/778ee05b762ee476bf57500d4c582dd4a42a69d0))
+
 # [1.12.0-beta.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.19...@injectivelabs/sdk-ts@1.12.0-beta.20) (2023-06-19)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
