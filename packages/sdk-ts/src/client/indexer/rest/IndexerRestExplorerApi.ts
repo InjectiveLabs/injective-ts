@@ -397,6 +397,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     fromNumber?: number
     limit?: number
     skip?: number
+    label?: string
   }): Promise<{
     paging: Paging
     contracts: Contract[]
@@ -404,7 +405,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `/wasm/contracts`
 
     try {
-      const { assetsOnly, fromNumber, limit, skip } = params || { limit: 12 }
+      const { assetsOnly, fromNumber, limit, skip, label } = params || {
+        limit: 12,
+      }
 
       const response = await this.retry<
         ExplorerApiResponseWithPagination<ContractExplorerApiResponse[]>
@@ -414,9 +417,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           limit,
           assets_only: assetsOnly,
           from_number: fromNumber,
+          label,
         }),
       )
-
       const { paging, data } = response.data
 
       return {
