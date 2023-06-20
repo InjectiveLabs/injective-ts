@@ -1,3 +1,4 @@
+import ExecArgSwap from './exec-args/ExecArgSwap'
 import ExecArgStake from './exec-args/ExecArgStake'
 import ExecArgUnStake from './exec-args/ExecArgUnstake'
 import ExecArgCW20Send from './exec-args/ExecArgCW20Send'
@@ -30,6 +31,7 @@ import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgV
 export * from './exec-args'
 
 export {
+  ExecArgSwap,
   ExecArgStake,
   ExecArgUnStake,
   ExecArgCW20Send,

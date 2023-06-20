@@ -1,4 +1,5 @@
 import { toUtf8 } from '../../../utils'
+import { WasmContractQueryResponse } from '../types'
 import {
   VaultAMMConfig,
   VaultBaseConfig,
@@ -6,7 +7,6 @@ import {
   VaultDerivativeConfig,
   VaultMarketMakingConfig,
   QueryStakingConfigResponse,
-  WasmContractQueryResponse,
   QueryVaultMarketIdResponse,
   QueryLockedLpFundsResponse,
   QueryAllocatorConfigResponse,

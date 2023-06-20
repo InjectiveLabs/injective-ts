@@ -118,10 +118,6 @@ export interface QueryRegisteredVaultResponse {
   }[]
 }
 
-export interface WasmContractQueryResponse {
-  data: Uint8Array
-}
-
 export type VaultBaseConfig = {
   owner: string
   marketId: string

@@ -1,3 +1,4 @@
+import ExecArgConvert from './exec-args/ExecArgSwap'
 import ExecArgStake from './exec-args/ExecArgStake'
 import ExecArgUnStake from './exec-args/ExecArgUnstake'
 import ExecArgClaimStake from './exec-args/ExecArgClaimStake'
@@ -20,6 +21,7 @@ import ExecPrivilegedArgVaultRedeem from './exec-priv-args/ExecPrivilegedArgVaul
 import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgVaultSubscribe'
 
 export type ExecArgs =
+  | ExecArgConvert
   | ExecArgStake
   | ExecArgUnStake
   | ExecArgCW20Send
