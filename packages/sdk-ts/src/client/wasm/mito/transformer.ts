@@ -1,5 +1,5 @@
 import { toUtf8 } from '../../../utils'
-import { WasmContractQueryResponse } from '../common/types'
+import { WasmContractQueryResponse } from '../types'
 import {
   VaultAMMConfig,
   VaultBaseConfig,

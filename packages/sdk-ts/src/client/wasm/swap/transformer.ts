@@ -1,5 +1,5 @@
 import { QueryRouteResponse, QueryExecutionQuantityResponse } from './types'
-import { WasmContractQueryResponse } from '../common/types'
+import { WasmContractQueryResponse } from '../types'
 import { toUtf8 } from '../../../utils'
 
 export class SwapQueryTransformer {
