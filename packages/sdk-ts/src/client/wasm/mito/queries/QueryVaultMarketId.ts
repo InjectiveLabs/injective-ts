@@ -1,4 +1,4 @@
-import { BaseWasmQuery } from './BaseWasmQuery'
+import { BaseWasmQuery } from '../../common/BaseWasmQuery'
 import { toBase64 } from '../../../../utils'
 
 export declare namespace QueryVaultMarketIdArg {
