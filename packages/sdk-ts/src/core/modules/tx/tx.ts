@@ -59,6 +59,7 @@ export const createTransactionWithSigners = ({
   const feeMessage = createFee({
     fee: fee.amount[0],
     payer: fee.payer,
+    granter: fee.granter,
     gasLimit: parseInt(fee.gas, 10),
   })
 

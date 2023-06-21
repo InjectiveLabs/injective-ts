@@ -22,8 +22,8 @@ import {
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
-  BigNumberInBase,
   getStdFee,
+  BigNumberInBase,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
@@ -197,12 +197,12 @@ export class MsgBroadcaster {
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
-    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
       tx: {
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
@@ -228,7 +228,7 @@ export class MsgBroadcaster {
       message: msgs,
       memo: tx.memo,
       signMode: SIGN_AMINO,
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
       pubKey: publicKeyBase64,
       sequence: baseAccount.sequence,
       timeoutHeight: timeoutHeight.toNumber(),
@@ -347,7 +347,7 @@ export class MsgBroadcaster {
     )
 
     const pubKey = await walletStrategy.getPubKey()
-    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
     const { txRaw } = await this.getTxWithSignersAndStdFee({
@@ -360,7 +360,7 @@ export class MsgBroadcaster {
         accountNumber: accountDetails.accountNumber,
         sequence: accountDetails.sequence,
       },
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
     })
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
@@ -430,12 +430,12 @@ export class MsgBroadcaster {
     )
 
     const pubKey = await walletStrategy.getPubKey()
-    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
       tx: {
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
@@ -452,6 +452,7 @@ export class MsgBroadcaster {
         ...baseAccount,
         msgs,
         chainId,
+        gas: gas || tx.gas?.gas?.toString(),
         timeoutHeight: timeoutHeight.toFixed(),
       }),
     })
@@ -554,7 +555,7 @@ export class MsgBroadcaster {
     )
 
     const pubKey = await walletStrategy.getPubKey()
-    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
     const { txRaw } = await this.getTxWithSignersAndStdFee({
@@ -574,10 +575,7 @@ export class MsgBroadcaster {
           sequence: feePayerAccountDetails.sequence,
         },
       ],
-      fee: {
-        ...getStdFee(gas),
-        payer: feePayer,
-      },
+      fee: getStdFee({ ...tx.gas, gas }),
     })
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
@@ -642,7 +640,7 @@ export class MsgBroadcaster {
     if (!simulateTx) {
       return {
         ...createTransactionWithSigners(args),
-        stdFee: { ...getStdFee(gas), payer: args.fee?.payer },
+        stdFee: getStdFee({ ...args.fee, gas }),
       }
     }
 
@@ -651,21 +649,21 @@ export class MsgBroadcaster {
     if (!result.gasInfo?.gasUsed) {
       return {
         ...createTransactionWithSigners(args),
-        stdFee: { ...getStdFee(gas), payer: args.fee?.payer },
+        stdFee: getStdFee({ ...args.fee, gas }),
       }
     }
 
     const stdGasFee = {
-      ...getStdFee(
-        new BigNumberInBase(result.gasInfo.gasUsed).times(1.2).toFixed(),
-      ),
-      payer: args.fee?.payer,
+      ...getStdFee({
+        ...args.fee,
+        gas: new BigNumberInBase(result.gasInfo.gasUsed).times(1.2).toFixed(),
+      }),
     }
 
     return {
       ...createTransactionWithSigners({
         ...args,
-        fee: { ...stdGasFee, payer: args.fee?.payer },
+        fee: stdGasFee,
       }),
       stdFee: stdGasFee,
     }

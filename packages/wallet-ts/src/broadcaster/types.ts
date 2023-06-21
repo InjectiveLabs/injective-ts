@@ -9,9 +9,12 @@ export interface MsgBroadcasterTxOptions {
   ethereumAddress?: string
   injectiveAddress?: string
   msgs: Msgs | Msgs[]
-  feePrice?: string
-  feeDenom?: string
-  gasLimit?: number
+  gas?: {
+    gasPrice?: string
+    gas?: number /** gas limit */
+    feePayer?: string
+    granter?: string
+  }
 }
 
 export interface MsgBroadcasterTxOptionsWithAddresses

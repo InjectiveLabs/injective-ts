@@ -33,9 +33,12 @@ interface MsgBroadcasterTxOptions {
   injectiveAddress: string
   ethereumAddress?: string
   memo?: string
-  feePrice?: string
-  feeDenom?: string
-  gasLimit?: number
+  gas?: {
+    gasPrice?: string
+    gas?: number /** gas limit */
+    feePayer?: string
+    granter?: string
+  }
 }
 
 interface MsgBroadcasterOptionsWithPk {
@@ -126,14 +129,14 @@ export class MsgBroadcasterWithPk {
     )
 
     const gas = (
-      transaction.gasLimit || getGasPriceBasedOnMessage(msgs)
+      transaction.gas?.gas || getGasPriceBasedOnMessage(msgs)
     ).toString()
 
     /** Prepare the Transaction * */
     const { signBytes, txRaw } = await this.getTxWithStdFee({
       memo: tx.memo || '',
       message: msgs,
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,
@@ -294,9 +297,9 @@ export class MsgBroadcasterWithPk {
       return createTransaction(args)
     }
 
-    const stdGasFee = getStdFee(
-      new BigNumberInBase(result.gasInfo.gasUsed).times(1.1).toFixed(),
-    )
+    const stdGasFee = getStdFee({
+      gas: new BigNumberInBase(result.gasInfo.gasUsed).times(1.1).toFixed(),
+    })
 
     return createTransaction({ ...args, fee: stdGasFee })
   }

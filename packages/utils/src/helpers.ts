@@ -90,17 +90,26 @@ export const getStdFeeForToken = (
   }
 }
 
-export const getStdFee = (
-  gas: string = DEFAULT_GAS_LIMIT.toString(),
+export const getStdFee = ({
+  gas = DEFAULT_GAS_LIMIT.toString(),
   gasPrice = DEFAULT_GAS_PRICE,
-) => ({
+  feePayer,
+  granter,
+}: {
+  gas?: string | number
+  gasPrice?: string | number
+  feePayer?: string
+  granter?: string
+}) => ({
   amount: [
     {
       denom: 'inj',
       amount: new BigNumber(gas).times(gasPrice).toString(),
     },
   ],
-  gas,
+  gas: gas.toString(),
+  feePayer,
+  granter,
 })
 
 export const getDefaultStdFee = () => DEFAULT_STD_FEE
