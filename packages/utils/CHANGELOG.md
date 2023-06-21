@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.12.0-beta.9...@injectivelabs/utils@1.12.0-beta.10) (2023-06-21)
+
+### Features
+
+- added granter and fee payer to std fee ([904b973](https://github.com/InjectiveLabs/injective-ts/commit/904b97336f391552e016e7789599b2e243554688))
+
 # [1.12.0-beta.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.12.0-beta.8...@injectivelabs/utils@1.12.0-beta.9) (2023-06-13)
 
 **Note:** Version bump only for package @injectivelabs/utils

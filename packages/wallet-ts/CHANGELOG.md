@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.23...@injectivelabs/wallet-ts@1.12.0-beta.24) (2023-06-21)
+
+### Features
+
+- added granter and fee payer to std fee ([904b973](https://github.com/InjectiveLabs/injective-ts/commit/904b97336f391552e016e7789599b2e243554688))
+
 # [1.12.0-beta.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.22...@injectivelabs/wallet-ts@1.12.0-beta.23) (2023-06-20)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
