@@ -298,6 +298,7 @@ export class MsgBroadcasterWithPk {
     }
 
     const stdGasFee = getStdFee({
+      ...args.fee,
       gas: new BigNumberInBase(result.gasInfo.gasUsed).times(1.1).toFixed(),
     })
 
