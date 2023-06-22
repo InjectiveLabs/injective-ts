@@ -51,10 +51,10 @@ export const testnetTokens = () =>
       cw20s: [
         ...(tokens.ATOM.cw20s || []),
         {
-          decimals: 8,
-          symbol: 'WETH',
+          decimals: 6,
+          symbol: 'ATOM',
           source: Cw20TokenSource.Cosmos,
-          address: 'weth',
+          address: 'atom',
           tokenType: TokenType.Cw20,
         },
       ],
@@ -94,9 +94,9 @@ export const testnetTokens = () =>
         ...(tokens.wETH.cw20s || []),
         {
           decimals: 8,
-          symbol: 'ATOM',
-          source: Cw20TokenSource.Cosmos,
-          address: 'atom',
+          symbol: 'wETH',
+          source: Cw20TokenSource.EthereumWh,
+          address: 'weth',
           tokenType: TokenType.Cw20,
         },
       ],
