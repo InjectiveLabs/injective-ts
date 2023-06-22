@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.14...@injectivelabs/token-metadata@1.12.0-beta.15) (2023-06-22)
+
+### Bug Fixes
+
+- atom and weth testnet token metadata ([3b4c97c](https://github.com/InjectiveLabs/injective-ts/commit/3b4c97c96809f266b3945a6a5ba7de60a39faa91))
+
 # [1.12.0-beta.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.13...@injectivelabs/token-metadata@1.12.0-beta.14) (2023-06-21)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
