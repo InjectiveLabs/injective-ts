@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.15...@injectivelabs/token-metadata@1.12.0-beta.16) (2023-06-26)
+
+### Bug Fixes
+
+- testnet atom token decimal ([220833b](https://github.com/InjectiveLabs/injective-ts/commit/220833b6a0281bb93553f2eb425fbcdf4d26f56d))
+
 # [1.12.0-beta.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.14...@injectivelabs/token-metadata@1.12.0-beta.15) (2023-06-22)
 
 ### Bug Fixes
