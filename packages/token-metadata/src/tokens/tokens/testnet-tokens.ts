@@ -51,7 +51,7 @@ export const testnetTokens = () =>
       cw20s: [
         ...(tokens.ATOM.cw20s || []),
         {
-          decimals: 6,
+          decimals: 8,
           symbol: 'ATOM',
           source: Cw20TokenSource.Cosmos,
           address: 'atom',
