@@ -4,7 +4,7 @@ export interface QueryRouteResponse {
   target_denom: string
 }
 
-export interface QueryExecutionQuantityResponse {
-  fees: { amount: string; denom: string }[]
-  target_quantity: string
+export interface QueryQuantityAndFeesResponse {
+  expected_fees: { amount: string; denom: string }[]
+  result_quantity: string
 }

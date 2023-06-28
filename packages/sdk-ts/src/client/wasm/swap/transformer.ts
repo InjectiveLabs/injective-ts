@@ -1,4 +1,4 @@
-import { QueryRouteResponse, QueryExecutionQuantityResponse } from './types'
+import { QueryRouteResponse, QueryQuantityAndFeesResponse } from './types'
 import { WasmContractQueryResponse } from '../types'
 import { toUtf8 } from '../../../utils'
 
@@ -27,16 +27,16 @@ export class SwapQueryTransformer {
     }))
   }
 
-  static contractExecutionQuantityResponseToContractExecutionQuantity(
+  static contractQuantityResponseToContractQuantity(
     response: WasmContractQueryResponse,
   ) {
     const data = JSON.parse(
       toUtf8(response.data),
-    ) as QueryExecutionQuantityResponse
+    ) as QueryQuantityAndFeesResponse
 
     return {
-      fees: data.fees,
-      targetQuantity: data.target_quantity,
+      expectedFees: data.expected_fees,
+      resultQuantity: data.result_quantity,
     }
   }
 }

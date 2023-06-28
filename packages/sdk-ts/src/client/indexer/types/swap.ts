@@ -6,7 +6,7 @@ export interface Route {
   targetDenom: string
 }
 
-export interface ExecutionQuantity {
-  fees: Coin[]
-  targetQuantity: string
+export interface QuantityAndFees {
+  expectedFees: Coin[]
+  resultQuantity: string
 }

@@ -1,3 +1,4 @@
 export { QueryAllRoutes } from './QueryAllRoutes'
-export { QueryExecutionQuantity } from './QueryExecutionQuantity'
+export { QueryOutputQuantity } from './QueryOutputQuantity'
+export { QueryInputQuantity } from './QueryInputQuantity'
 export { QueryRoute } from './QueryRoute'
