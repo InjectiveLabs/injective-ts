@@ -1,4 +1,3 @@
-import ExecArgSwap from './exec-args/ExecArgSwap'
 import ExecArgStake from './exec-args/ExecArgStake'
 import ExecArgUnStake from './exec-args/ExecArgUnstake'
 import ExecArgCW20Send from './exec-args/ExecArgCW20Send'
@@ -6,8 +5,10 @@ import ExecArgSubmitVaa from './exec-args/ExecArgSubmitVaa'
 import ExecArgClaimStake from './exec-args/ExecArgClaimStake'
 import ExecArgClaimRewards from './exec-args/ExecArgClaimRewards'
 import ExecArgCW20Transfer from './exec-args/ExecArgCW20Transfer'
+import ExecArgSwapMinOutput from './exec-args/ExecArgSwapMinOutput'
 import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens'
 import ExecArgRegisterVault from './exec-args/ExecArgRegisterVault'
+import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgUpdateAMMVaultConfig from './exec-args/ExecArgUpdateAMMVaultConfig'
@@ -31,7 +32,6 @@ import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgV
 export * from './exec-args'
 
 export {
-  ExecArgSwap,
   ExecArgStake,
   ExecArgUnStake,
   ExecArgCW20Send,
@@ -39,8 +39,10 @@ export {
   ExecArgClaimStake,
   ExecArgClaimRewards,
   ExecArgCW20Transfer,
+  ExecArgSwapMinOutput,
   ExecArgDepositTokens,
   ExecArgRegisterVault,
+  ExecArgSwapExactOutput,
   ExecArgInitiateTransfer,
   ExecArgIncreaseAllowance,
   ExecArgUpdateAMMVaultConfig,
