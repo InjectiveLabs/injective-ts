@@ -119,7 +119,4 @@ export const channelIbcDenomToBaseDenomMap = {
   [CanonicalChannelToDestinationChannel.Migaloo]: {
     inj: 'ibc/1C2D8505A29823310B4484E4C63CFDCB08C0D3B57537A615A45F4E5D42CDC789',
   },
-
-
-
 }

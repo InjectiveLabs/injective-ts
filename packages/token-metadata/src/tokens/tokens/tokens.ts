@@ -1484,4 +1484,22 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  STINJ: {
+    name: 'Stride Staked Injective',
+    symbol: 'STINJ',
+    decimals: 18,
+    logo: 'stinj.png',
+    coinGeckoId: 'stride-staked-injective',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'stinj',
+      path: 'transfer/channel-89',
+      channelId: 'channel-89',
+      hash: 'AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
+      tokenType: TokenType.Ibc,
+    },
+  },
 } as Record<string, TokenMeta>
