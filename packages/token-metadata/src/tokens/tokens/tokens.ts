@@ -562,6 +562,20 @@ export default {
     },
   },
 
+  STINJ: {
+    name: 'Stride Staked Injective',
+    symbol: 'STINJ',
+    decimals: 18,
+    logo: 'stinj.png',
+    coinGeckoId: 'stride-staked-injective',
+
+    cw20: {
+      decimals: 8,
+      address: 'inj10fd06xl4q6jp9qlhemvm6ymmm83ppj2g8rzquw',
+      tokenType: TokenType.Cw20,
+    },
+  },
+
   STT: {
     name: 'Scatter.cx',
     symbol: 'STT',
