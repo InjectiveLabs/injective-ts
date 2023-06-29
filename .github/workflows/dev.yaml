@@ -22,12 +22,12 @@ jobs:
           node-version: '16.18.1'
 
       - name: 'Setup lerna@6.6.1'
-        run: yarn global add lerna@6.6.1
+        run: yarn global add lerna@6.6.1 --ignore-engines
 
       - name: Build dependencies
         run: |
           node etc/bootstrapEnv
-          yarn install
+          yarn install --ignore-engines
           yarn build
 
       - name: 'Setup npm'
