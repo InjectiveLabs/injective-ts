@@ -14,6 +14,8 @@ import {
   ValidatorUptimeFromExplorerApiResponse,
   ContractTransactionExplorerApiResponse,
   WasmCodeExplorerApiResponse,
+  BankTransfer,
+  BankTransferFromExplorerApiResponse,
 } from '../types/explorer-rest'
 import {
   Contract,
@@ -616,6 +618,57 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         return []
       }
 
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
+        contextModule: IndexerModule.Explorer,
+      })
+    }
+  }
+
+  async fetchCommunitySpendPool(params: {
+    limit?: number
+    skip?: number
+    startTime?: number
+    endTime?: number
+    address?: string
+    sender?: string
+    recipients?: string
+  }): Promise<{ paging: Paging; data: BankTransfer[] }> {
+    const endpoint = `/bank/transfers`
+
+    const { endTime, limit, skip, startTime, address, recipients, sender } =
+      params || { limit: 10 }
+
+    try {
+      const response = await this.retry<
+        ExplorerApiResponseWithPagination<BankTransferFromExplorerApiResponse[]>
+      >(() =>
+        this.get(endpoint, {
+          is_community_pool_related: true,
+          limit,
+          skip,
+          start_time: startTime,
+          end_time: endTime,
+          address,
+          recipients,
+          sender,
+        }),
+      )
+
+      const { data, paging } = response.data
+
+      return {
+        paging,
+        data: IndexerRestExplorerTransformer.bankTransfersToBankTransfers(
+          data || [],
+        ),
+      }
+    } catch (e: unknown) {
       if (e instanceof HttpRequestException) {
         throw e
       }

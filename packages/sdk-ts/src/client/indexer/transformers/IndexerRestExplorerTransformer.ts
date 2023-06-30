@@ -2,6 +2,8 @@ import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
 import { Block, ExplorerValidator } from '../types/explorer'
 import { TokenType } from '@injectivelabs/token-metadata'
 import {
+  BankTransfer,
+  BankTransferFromExplorerApiResponse,
   BaseTransaction,
   BlockFromExplorerApiResponse,
   ContractExplorerApiResponse,
@@ -262,5 +264,25 @@ export class IndexerRestExplorerTransformer {
         denom: '',
       },
     }
+  }
+
+  static bankTransferToBankTransfer(
+    transfer: BankTransferFromExplorerApiResponse,
+  ): BankTransfer {
+    return {
+      sender: transfer.sender,
+      recipient: transfer.recipient,
+      amounts: transfer.amounts,
+      blockNumber: transfer.block_number,
+      blockTimestamp: new Date(transfer.block_timestamp).getTime(),
+    }
+  }
+
+  static bankTransfersToBankTransfers(
+    transfers: BankTransferFromExplorerApiResponse[],
+  ): BankTransfer[] {
+    return transfers.map(
+      IndexerRestExplorerTransformer.bankTransferToBankTransfer,
+    )
   }
 }
