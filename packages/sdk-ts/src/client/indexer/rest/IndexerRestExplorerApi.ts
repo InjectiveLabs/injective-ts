@@ -636,12 +636,12 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     startTime?: number
     endTime?: number
     address?: string
-    sender?: string
+    senders?: string
     recipients?: string
   }): Promise<{ paging: Paging; data: BankTransfer[] }> {
     const endpoint = `/bank/transfers`
 
-    const { endTime, limit, skip, startTime, address, recipients, sender } =
+    const { endTime, limit, skip, startTime, address, recipients, senders } =
       params || { limit: 10 }
 
     try {
@@ -656,7 +656,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           end_time: endTime,
           address,
           recipients,
-          sender,
+          senders,
         }),
       )
 
