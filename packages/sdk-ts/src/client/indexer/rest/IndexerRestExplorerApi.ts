@@ -630,12 +630,13 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchCommunitySpendPool(params: {
+  async fetchBankTransfers(params: {
     limit?: number
     skip?: number
     startTime?: number
     endTime?: number
     address?: string
+    isCommunitySpendPool?: boolean
     senders?: string
     recipients?: string
   }): Promise<{ paging: Paging; data: BankTransfer[] }> {
@@ -649,14 +650,14 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         ExplorerApiResponseWithPagination<BankTransferFromExplorerApiResponse[]>
       >(() =>
         this.get(endpoint, {
-          is_community_pool_related: true,
-          limit,
           skip,
-          start_time: startTime,
-          end_time: endTime,
+          limit,
+          senders,
           address,
           recipients,
-          senders,
+          end_time: endTime,
+          start_time: startTime,
+          is_community_pool_related: params.isCommunitySpendPool,
         }),
       )
 
