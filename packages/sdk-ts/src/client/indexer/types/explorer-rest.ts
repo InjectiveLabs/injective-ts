@@ -225,19 +225,3 @@ export interface CW20BalanceExplorerApiResponse {
 }
 
 export { BaseTransaction }
-
-export interface BankTransferFromExplorerApiResponse {
-  sender: string
-  recipient: string
-  amounts: { denom: string; amount: string }[]
-  block_number: number
-  block_timestamp: string
-}
-
-export interface BankTransfer {
-  sender: string
-  recipient: string
-  amounts: { denom: string; amount: string }[]
-  blockNumber: number
-  blockTimestamp: number
-}

@@ -2,8 +2,6 @@ import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
 import { Block, ExplorerValidator } from '../types/explorer'
 import { TokenType } from '@injectivelabs/token-metadata'
 import {
-  BankTransfer,
-  BankTransferFromExplorerApiResponse,
   BaseTransaction,
   BlockFromExplorerApiResponse,
   ContractExplorerApiResponse,
@@ -18,10 +16,12 @@ import {
 } from '../types/explorer-rest'
 import {
   Contract,
-  ContractTransaction,
-  CW20Message,
-  ExplorerCW20BalanceWithToken,
   WasmCode,
+  CW20Message,
+  BankTransfer,
+  ContractTransaction,
+  ExplorerCW20BalanceWithToken,
+  BankTransferFromExplorerApiResponse,
 } from '../types/explorer'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)

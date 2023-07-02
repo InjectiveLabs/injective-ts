@@ -14,14 +14,14 @@ import {
   ValidatorUptimeFromExplorerApiResponse,
   ContractTransactionExplorerApiResponse,
   WasmCodeExplorerApiResponse,
-  BankTransfer,
-  BankTransferFromExplorerApiResponse,
 } from '../types/explorer-rest'
 import {
   Contract,
   WasmCode,
+  BankTransfer,
   ContractTransaction,
   ExplorerCW20BalanceWithToken,
+  BankTransferFromExplorerApiResponse,
 } from '../types/explorer'
 import {
   HttpRequestException,

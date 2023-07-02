@@ -2,6 +2,7 @@ import { Token } from '@injectivelabs/token-metadata'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import type { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import { Coin } from '@injectivelabs/ts-types'
 
 export interface IBCTransferTx {
   sender: string
@@ -266,6 +267,22 @@ export interface WasmCode {
   checksum?: CosmWasmChecksum
   permission?: CosmWasmPermission
   proposalId?: number
+}
+
+export interface BankTransferFromExplorerApiResponse {
+  sender: string
+  recipient: string
+  amounts: Coin[]
+  block_number: number
+  block_timestamp: string
+}
+
+export interface BankTransfer {
+  sender: string
+  recipient: string
+  amounts: Coin[]
+  blockNumber: number
+  blockTimestamp: number
 }
 
 export type GrpcIBCTransferTx = InjectiveExplorerRpc.IBCTransferTx
