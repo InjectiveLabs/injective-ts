@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.29...@injectivelabs/sdk-ts@1.12.0-beta.30) (2023-07-02)
+
+### Features
+
+- community spend pool ([d08a04b](https://github.com/InjectiveLabs/injective-ts/commit/d08a04b1dc3610371d4f2c8c65a07b3b59f36e58))
+
 # [1.12.0-beta.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.28...@injectivelabs/sdk-ts@1.12.0-beta.29) (2023-06-29)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
