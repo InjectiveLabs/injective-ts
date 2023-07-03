@@ -239,6 +239,12 @@ export default class WalletStrategy {
     return this.getStrategy().signCosmosTransaction(transaction)
   }
 
+  public async signArbitrary(signer: string, data: string | Uint8Array): Promise<string | void> {
+    if (this.getStrategy().signArbitrary) {
+      return this.getStrategy().signArbitrary!(signer, data)
+    }
+  }
+
   public onAccountChange(callback: onAccountChangeCallback): void {
     if (this.getStrategy().onAccountChange) {
       return this.getStrategy().onAccountChange!(callback)

@@ -247,6 +247,37 @@ export default class Trezor
     )
   }
 
+  async signArbitrary(signer: AccountAddress, data: string | Uint8Array): Promise<string> {
+    try {
+      await this.trezor.connect()
+      const { derivationPath } = await this.getWalletForAddress(signer)
+
+      if (data instanceof Uint8Array) {
+        const decoder = new TextDecoder('utf-8')
+        data = decoder.decode(data)
+      }
+
+      const response = await TrezorConnect.ethereumSignMessage({
+        path: derivationPath,
+        message: data,
+      })
+
+      if (!response.success) {
+        throw new Error(
+          (response.payload && response.payload.error) || 'Unknown error',
+        )
+      }
+
+      return response.payload.signature
+    } catch (e: unknown) {
+      throw new TrezorException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
+    }
+  }
+
   async getEthereumChainId(): Promise<string> {
     const alchemy = await this.getAlchemy()
     const alchemyProvider = await alchemy.config.getProvider()

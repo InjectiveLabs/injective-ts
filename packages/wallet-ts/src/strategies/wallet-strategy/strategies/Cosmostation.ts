@@ -219,6 +219,30 @@ export default class Cosmostation
     )
   }
 
+  async signArbitrary(signer: string, data: string | Uint8Array): Promise<string> {
+    try {
+      const provider = await this.getProvider()
+
+      if (data instanceof Uint8Array) {
+        const decoder = new TextDecoder('utf-8')
+        data = decoder.decode(data)
+      }
+
+      const signature = await provider.signMessage(
+        INJECTIVE_CHAIN_NAME,
+        signer,
+        data as string,
+      )
+
+      return signature.signature
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SignArbitrary,
+      })
+    }
+  }
+
   async getEthereumChainId(): Promise<string> {
     throw new CosmosWalletException(
       new Error('getEthereumChainId is not supported on Cosmostation'),
