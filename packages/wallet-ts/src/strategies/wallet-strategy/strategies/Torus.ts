@@ -14,7 +14,7 @@ import {
 } from '@injectivelabs/exceptions'
 import TorusWallet from '@toruslabs/torus-embed'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxGrpcApi, TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
@@ -201,19 +201,20 @@ export default class Torus
     }
   }
 
-  async signArbitrary(signer: AccountAddress, data: string | Uint8Array): Promise<string> {
+  async signArbitrary(
+    signer: AccountAddress,
+    data: string | Uint8Array,
+  ): Promise<string> {
     await this.connect()
 
     try {
       const signature = await this.torus.ethereum.request<string>({
         method: 'personal_sign',
-        params: [data, signer],
+        params: [toUtf8(data), signer],
       })
 
       if (!signature) {
-        throw new WalletException(
-          new Error('No signature returned'),
-        )
+        throw new WalletException(new Error('No signature returned'))
       }
 
       return signature

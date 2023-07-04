@@ -19,7 +19,7 @@ import {
   WalletException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxGrpcApi, TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
 import { TIP_IN_GWEI } from '../../../../utils/constants'
 import {
   ConcreteWalletStrategy,
@@ -247,19 +247,17 @@ export default class Trezor
     )
   }
 
-  async signArbitrary(signer: AccountAddress, data: string | Uint8Array): Promise<string> {
+  async signArbitrary(
+    signer: AccountAddress,
+    data: string | Uint8Array,
+  ): Promise<string> {
     try {
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(signer)
 
-      if (data instanceof Uint8Array) {
-        const decoder = new TextDecoder('utf-8')
-        data = decoder.decode(data)
-      }
-
       const response = await TrezorConnect.ethereumSignMessage({
         path: derivationPath,
-        message: data,
+        message: toUtf8(data),
       })
 
       if (!response.success) {

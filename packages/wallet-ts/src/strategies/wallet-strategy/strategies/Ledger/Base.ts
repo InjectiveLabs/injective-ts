@@ -16,7 +16,7 @@ import {
   WalletException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxGrpcApi, TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
 import { TIP_IN_GWEI } from '../../../../utils/constants'
 import {
   ConcreteWalletStrategy,
@@ -222,19 +222,17 @@ export default class LedgerBase
     )
   }
 
-  async signArbitrary(signer: AccountAddress, data: string | Uint8Array): Promise<string> {
+  async signArbitrary(
+    signer: AccountAddress,
+    data: string | Uint8Array,
+  ): Promise<string> {
     try {
       const { derivationPath } = await this.getWalletForAddress(signer)
-
-      if (data instanceof Uint8Array) {
-        const decoder = new TextDecoder('utf-8')
-        data = decoder.decode(data)
-      }
 
       const ledger = await this.ledger.getInstance()
       const result = await ledger.signPersonalMessage(
         derivationPath,
-        bufferToHex(Buffer.from(data, 'utf8'))
+        bufferToHex(Buffer.from(toUtf8(data), 'utf8')),
       )
 
       const combined = `${result.r}${result.s}${result.v.toString(16)}`

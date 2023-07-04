@@ -15,6 +15,7 @@ import {
   TxResponse,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
+  toUtf8,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
@@ -219,19 +220,17 @@ export default class Cosmostation
     )
   }
 
-  async signArbitrary(signer: string, data: string | Uint8Array): Promise<string> {
+  async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string> {
     try {
       const provider = await this.getProvider()
-
-      if (data instanceof Uint8Array) {
-        const decoder = new TextDecoder('utf-8')
-        data = decoder.decode(data)
-      }
 
       const signature = await provider.signMessage(
         INJECTIVE_CHAIN_NAME,
         signer,
-        data as string,
+        toUtf8(data),
       )
 
       return signature.signature

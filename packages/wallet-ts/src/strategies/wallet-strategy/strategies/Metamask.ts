@@ -18,6 +18,7 @@ import {
   TxRaw,
   TxResponse,
   isServerSide,
+  toUtf8,
 } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import {
@@ -172,13 +173,16 @@ export default class Metamask
     )
   }
 
-  async signArbitrary(signer: AccountAddress, data: string | Uint8Array): Promise<string> {
+  async signArbitrary(
+    signer: AccountAddress,
+    data: string | Uint8Array,
+  ): Promise<string> {
     const ethereum = this.getEthereum()
 
     try {
       const signature = await ethereum.request({
         method: 'personal_sign',
-        params: [data, signer],
+        params: [toUtf8(data), signer],
       })
 
       return signature

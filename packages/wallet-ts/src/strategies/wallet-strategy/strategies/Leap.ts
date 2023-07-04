@@ -149,11 +149,14 @@ export default class Leap
     }
   }
 
-  async signArbitrary(signer: string, data: string | Uint8Array): Promise<string> {
-    try {
-      const leapWallet = this.getLeapWallet()
-      const leap = await leapWallet.getLeapWallet()
+  async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    const leapWallet = this.getLeapWallet()
+    const leap = await leapWallet.getLeapWallet()
 
+    try {
       const signature = await leap.signArbitrary(this.chainId, signer, data)
 
       return signature.signature

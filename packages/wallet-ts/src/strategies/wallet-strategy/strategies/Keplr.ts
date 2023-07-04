@@ -163,11 +163,14 @@ export default class Keplr
     )
   }
 
-  async signArbitrary(signer: string, data: string | Uint8Array): Promise<string> {
-    try {
-      const keplrWallet = this.getKeplrWallet()
-      const keplr = await keplrWallet.getKeplrWallet()
+  async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    const keplrWallet = this.getKeplrWallet()
+    const keplr = await keplrWallet.getKeplrWallet()
 
+    try {
       const signature = await keplr.signArbitrary(this.chainId, signer, data)
 
       return signature.signature
