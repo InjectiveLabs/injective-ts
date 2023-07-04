@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.31...@injectivelabs/wallet-ts@1.12.0-beta.32) (2023-07-04)
+
+### Bug Fixes
+
+- fee payer for web3 gateway ([9a2f425](https://github.com/InjectiveLabs/injective-ts/commit/9a2f42558e11ea55da0d55a5e72cbd32e2eb0d5c))
+
 # [1.12.0-beta.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.30...@injectivelabs/wallet-ts@1.12.0-beta.31) (2023-07-02)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

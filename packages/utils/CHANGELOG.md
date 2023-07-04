@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.12.0-beta.10...@injectivelabs/utils@1.12.0-beta.11) (2023-07-04)
+
+### Bug Fixes
+
+- fee payer for web3 gateway ([9a2f425](https://github.com/InjectiveLabs/injective-ts/commit/9a2f42558e11ea55da0d55a5e72cbd32e2eb0d5c))
+
 # [1.12.0-beta.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.12.0-beta.9...@injectivelabs/utils@1.12.0-beta.10) (2023-06-21)
 
 ### Features
