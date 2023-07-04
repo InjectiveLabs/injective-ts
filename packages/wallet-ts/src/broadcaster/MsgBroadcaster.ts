@@ -575,7 +575,7 @@ export class MsgBroadcaster {
           sequence: feePayerAccountDetails.sequence,
         },
       ],
-      fee: getStdFee({ ...tx.gas, gas }),
+      fee: getStdFee({ ...tx.gas, gas, payer: feePayer }),
     })
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
@@ -632,7 +632,6 @@ export class MsgBroadcaster {
    */
   private async getTxWithSignersAndStdFee(
     args: CreateTransactionWithSignersArgs,
-    gas?: string,
   ) {
     const { options } = this
     const { simulateTx } = options
@@ -640,7 +639,7 @@ export class MsgBroadcaster {
     if (!simulateTx) {
       return {
         ...createTransactionWithSigners(args),
-        stdFee: getStdFee({ ...args.fee, gas }),
+        stdFee: getStdFee({ ...args.fee }),
       }
     }
 
@@ -649,7 +648,7 @@ export class MsgBroadcaster {
     if (!result.gasInfo?.gasUsed) {
       return {
         ...createTransactionWithSigners(args),
-        stdFee: getStdFee({ ...args.fee, gas }),
+        stdFee: getStdFee({ ...args.fee }),
       }
     }
 

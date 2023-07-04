@@ -93,13 +93,15 @@ export const getStdFeeForToken = (
 export const getStdFee = ({
   gas = DEFAULT_GAS_LIMIT.toString(),
   gasPrice = DEFAULT_GAS_PRICE,
-  feePayer,
+  payer,
   granter,
+  feePayer,
 }: {
   gas?: string | number
+  payer?: string
+  granter?: string
   gasPrice?: string | number
   feePayer?: string
-  granter?: string
 }) => ({
   amount: [
     {
@@ -108,8 +110,9 @@ export const getStdFee = ({
     },
   ],
   gas: gas.toString(),
-  feePayer,
+  payer /** for Web3Gateway fee delegation */,
   granter,
+  feePayer,
 })
 
 export const getDefaultStdFee = () => DEFAULT_STD_FEE
