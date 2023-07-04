@@ -163,6 +163,22 @@ export default class Keplr
     )
   }
 
+  async signArbitrary(signer: string, data: string | Uint8Array): Promise<string> {
+    try {
+      const keplrWallet = this.getKeplrWallet()
+      const keplr = await keplrWallet.getKeplrWallet()
+
+      const signature = await keplr.signArbitrary(this.chainId, signer, data)
+
+      return signature.signature
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SignArbitrary,
+      })
+    }
+  }
+
   async getEthereumChainId(): Promise<string> {
     throw new CosmosWalletException(
       new Error('getEthereumChainId is not supported on Keplr'),

@@ -45,6 +45,7 @@ export enum WalletErrorActionModule {
   SignEthereumTransaction = 'sign-ethereum-transaction',
   SendTransaction = 'send-transaction',
   SendEthereumTransaction = 'send-ethereum-transaction',
+  SignArbitrary = 'sign-arbitrary',
   GetAccounts = 'get-accounts',
   GetNetworkId = 'get-network-id',
   GetChainId = 'get-chain-id',

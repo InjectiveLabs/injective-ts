@@ -145,6 +145,8 @@ export interface ConcreteWalletStrategy
    */
   signEip712TypedData(eip712TypedData: string, address: string): Promise<string>
 
+  signArbitrary(signer: string, data: string | Uint8Array): Promise<string>
+
   getEthereumChainId(): Promise<string>
 
   getEthereumTransactionReceipt(txHash: string): void

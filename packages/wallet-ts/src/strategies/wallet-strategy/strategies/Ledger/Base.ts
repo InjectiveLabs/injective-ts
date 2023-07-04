@@ -222,6 +222,33 @@ export default class LedgerBase
     )
   }
 
+  async signArbitrary(signer: AccountAddress, data: string | Uint8Array): Promise<string> {
+    try {
+      const { derivationPath } = await this.getWalletForAddress(signer)
+
+      if (data instanceof Uint8Array) {
+        const decoder = new TextDecoder('utf-8')
+        data = decoder.decode(data)
+      }
+
+      const ledger = await this.ledger.getInstance()
+      const result = await ledger.signPersonalMessage(
+        derivationPath,
+        bufferToHex(Buffer.from(data, 'utf8'))
+      )
+
+      const combined = `${result.r}${result.s}${result.v.toString(16)}`
+
+      return combined.startsWith('0x') ? combined : `0x${combined}`
+    } catch (e: unknown) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
+    }
+  }
+
   async getEthereumChainId(): Promise<string> {
     const alchemy = await this.getAlchemy()
     const alchemyProvider = await alchemy.config.getProvider()

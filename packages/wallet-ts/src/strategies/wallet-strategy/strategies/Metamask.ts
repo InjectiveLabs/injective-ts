@@ -172,6 +172,25 @@ export default class Metamask
     )
   }
 
+  async signArbitrary(signer: AccountAddress, data: string | Uint8Array): Promise<string> {
+    const ethereum = this.getEthereum()
+
+    try {
+      const signature = await ethereum.request({
+        method: 'personal_sign',
+        params: [data, signer],
+      })
+
+      return signature
+    } catch (e: unknown) {
+      throw new MetamaskException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignArbitrary,
+      })
+    }
+  }
+
   async getEthereumChainId(): Promise<string> {
     const ethereum = this.getEthereum()
 

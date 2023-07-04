@@ -149,6 +149,22 @@ export default class Leap
     }
   }
 
+  async signArbitrary(signer: string, data: string | Uint8Array): Promise<string> {
+    try {
+      const leapWallet = this.getLeapWallet()
+      const leap = await leapWallet.getLeapWallet()
+
+      const signature = await leap.signArbitrary(this.chainId, signer, data)
+
+      return signature.signature
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SignArbitrary,
+      })
+    }
+  }
+
   async signEip712TypedData(
     _eip712TypedData: string,
     _address: AccountAddress,

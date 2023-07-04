@@ -201,6 +201,31 @@ export default class Torus
     }
   }
 
+  async signArbitrary(signer: AccountAddress, data: string | Uint8Array): Promise<string> {
+    await this.connect()
+
+    try {
+      const signature = await this.torus.ethereum.request<string>({
+        method: 'personal_sign',
+        params: [data, signer],
+      })
+
+      if (!signature) {
+        throw new WalletException(
+          new Error('No signature returned'),
+        )
+      }
+
+      return signature
+    } catch (e: unknown) {
+      throw new WalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignArbitrary,
+      })
+    }
+  }
+
   // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
