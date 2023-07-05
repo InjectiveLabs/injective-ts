@@ -334,4 +334,30 @@ export class KeplrWallet {
 
     return $window.keplr!
   }
+
+  public disableGasCheck() {
+    const keplr = this.getKeplr()
+
+    // Temporary disable tx gas check for fee delegation purposes
+    keplr.defaultOptions = {
+      ...keplr.defaultOptions,
+      sign: {
+        ...keplr.defaultOptions.sign,
+        disableBalanceCheck: true,
+      },
+    }
+  }
+
+  public enableGasCheck() {
+    const keplr = this.getKeplr()
+
+    // Temporary disable tx gas check for fee delegation purposes
+    keplr.defaultOptions = {
+      ...keplr.defaultOptions,
+      sign: {
+        ...keplr.defaultOptions.sign,
+        disableBalanceCheck: false,
+      },
+    }
+  }
 }

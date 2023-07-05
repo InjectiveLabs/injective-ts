@@ -578,6 +578,11 @@ export class MsgBroadcaster {
       fee: getStdFee({ ...tx.gas, gas, payer: feePayer }),
     })
 
+    // Temporary remove tx gas check because Keplr doesn't recognize feePayer
+    if (walletStrategy.wallet === Wallet.Keplr) {
+      new KeplrWallet(chainId).disableGasCheck()
+    }
+
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
       chainId,
@@ -591,6 +596,11 @@ export class MsgBroadcaster {
       signature: directSignResponse.signature.signature,
       pubKey: directSignResponse.signature.pub_key,
     })
+
+    // Re-enable tx gas check removed above
+    if (walletStrategy.wallet === Wallet.Keplr) {
+      new KeplrWallet(chainId).enableGasCheck()
+    }
 
     return response
   }
