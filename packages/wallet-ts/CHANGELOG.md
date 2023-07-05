@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.33...@injectivelabs/wallet-ts@1.12.0-beta.34) (2023-07-05)
+
+### Bug Fixes
+
+- disable gas check for fee delegation ([698020b](https://github.com/InjectiveLabs/injective-ts/commit/698020bbeca5894be07cee058fc6d68f25a2e0a1))
+
 # [1.12.0-beta.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.32...@injectivelabs/wallet-ts@1.12.0-beta.33) (2023-07-04)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
