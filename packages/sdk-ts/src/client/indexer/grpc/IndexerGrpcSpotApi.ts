@@ -569,4 +569,59 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchAtomicSwapHistory(params: {
+    address: string
+    contractAddress: string
+    pagination?: PaginationOption
+  }) {
+    const { address, contractAddress, pagination } = params || {}
+    const request = InjectiveSpotExchangeRpc.AtomicSwapHistoryRequest.create()
+
+    request.address = address
+    request.contractAddress = contractAddress
+
+    if (pagination) {
+      if (pagination.fromNumber !== undefined) {
+        request.fromNumber = pagination.fromNumber
+      }
+
+      if (pagination.toNumber !== undefined) {
+        request.toNumber = pagination.toNumber
+      }
+
+      if (pagination.skip !== undefined) {
+        request.skip = pagination.skip
+      }
+
+      if (pagination.limit !== undefined) {
+        request.limit = pagination.limit
+      }
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveSpotExchangeRpc.AtomicSwapHistoryResponse>(
+          () => this.client.AtomicSwapHistory(request),
+        )
+
+      return IndexerGrpcSpotTransformer.grpcAtomicSwapHistoryListToAtomicSwapHistoryList(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'AtomicSwapHistory',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AtomicSwapHistory',
+        contextModule: this.module,
+      })
+    }
+  }
 }
