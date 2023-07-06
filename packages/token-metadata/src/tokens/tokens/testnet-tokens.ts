@@ -140,8 +140,8 @@ export const testnetTokens = () =>
         ),
         {
           decimals: 6,
-          symbol: 'USDCet',
-          source: Cw20TokenSource.EthereumWh,
+          symbol: 'USDC',
+          source: Cw20TokenSource.Cosmos,
           address: 'usdc',
           tokenType: TokenType.Cw20,
         },
