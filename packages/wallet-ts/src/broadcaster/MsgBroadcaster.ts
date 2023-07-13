@@ -204,6 +204,7 @@ export class MsgBroadcaster {
       msgs,
       fee: getStdFee({ ...tx.gas, gas }),
       tx: {
+        memo: tx.memo,
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
         timeoutHeight: timeoutHeight.toFixed(),
@@ -437,6 +438,7 @@ export class MsgBroadcaster {
       msgs,
       fee: getStdFee({ ...tx.gas, gas }),
       tx: {
+        memo: tx.memo,
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
         timeoutHeight: timeoutHeight.toFixed(),

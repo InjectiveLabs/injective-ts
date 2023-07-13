@@ -28,6 +28,7 @@
     "test": "jest",
     "test:sdk-ts:client": "jest ./packages/sdk-ts/src/client",
     "test:sdk-ts:core": "jest ./packages/sdk-ts/src/core",
+    "test:bridge-ts": "jest ./packages/bridge-ts/src",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
     "coverage:unit": "yarn test:unit --coverage",
