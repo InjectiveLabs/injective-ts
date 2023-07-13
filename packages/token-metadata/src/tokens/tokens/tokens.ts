@@ -1493,7 +1493,7 @@ export default {
     coinGeckoId: 'stride-staked-injective',
 
     ibc: {
-      decimals: 6,
+      decimals: 18,
       isNative: true,
       baseDenom: 'stinj',
       path: 'transfer/channel-89',
