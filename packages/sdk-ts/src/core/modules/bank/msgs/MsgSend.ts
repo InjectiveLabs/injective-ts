@@ -7,10 +7,15 @@ import {
 
 export declare namespace MsgSend {
   export interface Params {
-    amount: {
-      denom: string
-      amount: string
-    }
+    amount:
+      | {
+          denom: string
+          amount: string
+        }
+      | {
+          denom: string
+          amount: string
+        }[]
     srcInjectiveAddress: string
     dstInjectiveAddress: string
   }
@@ -29,14 +34,21 @@ export default class MsgSend extends MsgBase<MsgSend.Params, MsgSend.Proto> {
   public toProto() {
     const { params } = this
 
-    const amountToSend = CosmosBaseV1Beta1Coin.Coin.create()
-    amountToSend.amount = params.amount.amount
-    amountToSend.denom = params.amount.denom
+    const amounts = Array.isArray(params.amount)
+      ? params.amount
+      : [params.amount]
+    const amountsToSend = amounts.map((amount) => {
+      const amountToSend = CosmosBaseV1Beta1Coin.Coin.create()
+      amountToSend.amount = amount.amount
+      amountToSend.denom = amount.denom
+
+      return amountToSend
+    })
 
     const message = CosmosBankV1Beta1Tx.MsgSend.create()
     message.fromAddress = params.srcInjectiveAddress
     message.toAddress = params.dstInjectiveAddress
-    message.amount = [amountToSend]
+    message.amount = amountsToSend
 
     return CosmosBankV1Beta1Tx.MsgSend.fromPartial(message)
   }
