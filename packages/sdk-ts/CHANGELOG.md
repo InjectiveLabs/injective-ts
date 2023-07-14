@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.34...@injectivelabs/sdk-ts@1.12.0-beta.35) (2023-07-14)
+
+### Features
+
+- allow multiple amounts on Msgsend ([3294e7d](https://github.com/InjectiveLabs/injective-ts/commit/3294e7dc7422636c4dc1c47075d7c667256b6a36))
+
 # [1.12.0-beta.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.33...@injectivelabs/sdk-ts@1.12.0-beta.34) (2023-07-06)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
