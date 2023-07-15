@@ -241,7 +241,7 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
       if (value instanceof Date) {
         return {
           ...result,
-          [key]: value.toJSON().split('.')[0] +  "Z",
+          [key]: value.toJSON().split('.')[0] + 'Z',
         }
       }
       if (Array.isArray(value)) {
@@ -578,8 +578,12 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'cosmos-sdk/MsgSubmitProposal'
     case 'cosmos.gov.v1beta1.MsgDeposit':
       return 'cosmos-sdk/MsgDeposit'
+    case 'cosmos.gov.v1.MsgDeposit':
+      return 'cosmos-sdk/v1/MsgDeposit'
     case 'cosmos.gov.v1beta1.MsgVote':
       return 'cosmos-sdk/MsgVote'
+    case 'cosmos.gov.v1.MsgVote':
+      return 'cosmos-sdk/v1/MsgVote'
     case 'cosmos.gov.v1beta1.MsgVoteWeighted':
       return 'cosmos-sdk/MsgVoteWeighted'
 

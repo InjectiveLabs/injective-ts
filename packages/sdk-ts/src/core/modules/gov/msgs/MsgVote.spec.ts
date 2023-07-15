@@ -10,7 +10,7 @@ const params: MsgVote['params'] = {
 }
 
 const protoType = '/cosmos.gov.v1.MsgVote'
-const protoTypeAmino = 'cosmos-sdk/MsgVote'
+const protoTypeAmino = 'cosmos-sdk/v1/MsgVote'
 const protoParams = {
   proposalId: params.proposalId.toString(),
   voter: params.voter,

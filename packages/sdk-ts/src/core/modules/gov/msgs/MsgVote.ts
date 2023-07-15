@@ -50,7 +50,7 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
     }
 
     return {
-      type: 'cosmos-sdk/MsgVote',
+      type: 'cosmos-sdk/v1/MsgVote',
       value: message,
     }
   }
