@@ -1502,4 +1502,13 @@ export default {
       tokenType: TokenType.Ibc,
     },
   },
+
+  XRP: {
+    name: 'Ripple',
+    symbol: 'XRP',
+    decimals: 18,
+    address: '0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe',
+    logo: 'xrp.png',
+    coinGeckoId: 'ripple',
+  },
 } as Record<string, TokenMeta>
