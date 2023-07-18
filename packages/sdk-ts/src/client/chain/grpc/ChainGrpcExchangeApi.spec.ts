@@ -190,4 +190,26 @@ describe('ChainGrpcExchangeApi', () => {
       )
     }
   })
+
+  test('fetchIsOptedOutOfRewards', async () => {
+    try {
+      const response = await chainGrpcExchangeApi.fetchIsOptedOutOfRewards(
+        injectiveAddress,
+      )
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcExchangeTransformer.isOptedOutOfRewardsResponseToIsOptedOutOfRewards
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcExchangeApi.fetchIsOptedOutOfRewards => ' +
+          (e as any).message,
+      )
+    }
+  })
 })

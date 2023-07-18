@@ -297,4 +297,36 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchIsOptedOutOfRewards(account: string) {
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryIsOptedOutOfRewardsRequest.create()
+
+    request.account = account
+
+    try {
+      const response =
+        await this.retry<InjectiveExchangeV1Beta1Query.QueryIsOptedOutOfRewardsResponse>(
+          () => this.client.IsOptedOutOfRewards(request),
+        )
+
+      return ChainGrpcExchangeTransformer.isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
+        response,
+      )
+    } catch (e: any) {
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'IsOptedOutOfRewards',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'IsOptedOutOfRewards',
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
 }

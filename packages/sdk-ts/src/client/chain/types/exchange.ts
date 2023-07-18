@@ -68,6 +68,10 @@ export interface TradeRewardCampaign {
   pendingTotalTradeRewardPointsList: string[]
 }
 
+export interface IsOptedOutOfRewards {
+  isOptedOut: boolean
+}
+
 export interface ExchangeParams {
   spotMarketInstantListingFee?: Coin
   derivativeMarketInstantListingFee?: Coin

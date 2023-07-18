@@ -1,5 +1,6 @@
 import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
+  IsOptedOutOfRewards,
   FeeDiscountSchedule,
   FeeDiscountTierInfo,
   PointsMultiplier,
@@ -227,5 +228,13 @@ export class ChainGrpcExchangeTransformer {
         ),
       }
     })
+  }
+
+  static isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
+    response: InjectiveExchangeV1Beta1Query.QueryIsOptedOutOfRewardsResponse,
+  ): IsOptedOutOfRewards {
+    return {
+      isOptedOut: response.isOptedOut,
+    }
   }
 }
