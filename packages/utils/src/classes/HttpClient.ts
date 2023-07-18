@@ -36,6 +36,10 @@ export default class HttpClient {
     return this.client.post(endpoint, data, this.config)
   }
 
+  put<T, P>(endpoint: string, data: T = {} as T): Promise<P> {
+    return this.client.put(endpoint, data, this.config)
+  }
+
   delete<T, P>(endpoint: string, params: T = {} as T): Promise<P> {
     return this.client.delete(endpoint, { params, ...this.config })
   }
