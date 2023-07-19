@@ -9,16 +9,16 @@ import {
 export declare namespace ExecPrivilegedArgVaultSubscribe {
   export interface Params {
     origin: string
-    slippage?: Record<string, any>
     vaultSubaccountId: string
     traderSubaccountId: string
+    args: Record<string, any>
   }
 
   export interface Data {
     vault_subaccount_id: string
     trader_subaccount_id: string
     msg: {
-      subscribe?: Record<string, any>
+      subscribe: Record<string, any>
     }
   }
 }
@@ -43,9 +43,7 @@ export default class ExecPrivilegedArgVaultSubscribe extends ExecPrivilegedArgBa
       vault_subaccount_id: params.vaultSubaccountId,
       trader_subaccount_id: params.traderSubaccountId,
       msg: {
-        subscribe: {
-          slippage: params.slippage,
-        },
+        subscribe: params.args,
       },
     }
   }

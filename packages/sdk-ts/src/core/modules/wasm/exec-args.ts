@@ -20,6 +20,8 @@ import ExecArgUpdateAllocatorContractConfig from './exec-args/ExecArgUpdateAlloc
 
 import ExecPrivilegedArgVaultRedeem from './exec-priv-args/ExecPrivilegedArgVaultRedeem'
 import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgVaultSubscribe'
+import ExecPrivilegedArgOffChainVaultRedeem from './exec-priv-args/ExecPrivilegedArgOffChainVaultRedeem'
+import ExecPrivilegedArgOffChainVaultSubscribe from './exec-priv-args/ExecPrivilegedArgOffChainVaultSubscribe'
 
 export type ExecArgs =
   | ExecArgStake
@@ -45,3 +47,5 @@ export type ExecArgs =
 export type ExecPrivilegedArgs =
   | ExecPrivilegedArgVaultRedeem
   | ExecPrivilegedArgVaultSubscribe
+  | ExecPrivilegedArgOffChainVaultRedeem
+  | ExecPrivilegedArgOffChainVaultSubscribe

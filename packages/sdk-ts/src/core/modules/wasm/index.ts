@@ -28,6 +28,8 @@ import MsgPrivilegedExecuteContract from './msgs/MsgPrivilegedExecuteContract'
 
 import ExecPrivilegedArgVaultRedeem from './exec-priv-args/ExecPrivilegedArgVaultRedeem'
 import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgVaultSubscribe'
+import ExecPrivilegedArgOffChainVaultRedeem from './exec-priv-args/ExecPrivilegedArgOffChainVaultRedeem'
+import ExecPrivilegedArgOffChainVaultSubscribe from './exec-priv-args/ExecPrivilegedArgOffChainVaultSubscribe'
 
 export * from './exec-args'
 
@@ -62,4 +64,6 @@ export {
   //
   ExecPrivilegedArgVaultRedeem,
   ExecPrivilegedArgVaultSubscribe,
+  ExecPrivilegedArgOffChainVaultRedeem,
+  ExecPrivilegedArgOffChainVaultSubscribe,
 }
