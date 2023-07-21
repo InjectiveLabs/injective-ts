@@ -4,20 +4,20 @@ import {
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import {
+  sha256,
   Metadata,
+  fromUtf8,
   DenomClient,
   InsuranceFund,
   ChainGrpcBankApi,
   ChainGrpcWasmApi,
   ChainGrpcInsuranceFundApi,
   ChainGrpcIbcApi,
-  fromUtf8,
-  sha256,
 } from '@injectivelabs/sdk-ts'
 import { Web3Client } from '../services/web3/Web3Client'
 import {
-  getIbcTokenMetaFromDenomTrace,
   TokenInfo,
+  getIbcTokenMetaFromDenomTrace,
   type Token,
 } from '@injectivelabs/token-metadata'
 import { getTokenFromAlchemyTokenMetaResponse } from '../utils/alchemy'
@@ -28,7 +28,7 @@ import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 
 export class DenomClientAsync {
-  private web3Client: Web3Client
+  private web3Client: Web3Client | undefined
 
   private endpoints: NetworkEndpoints
 
@@ -53,11 +53,13 @@ export class DenomClientAsync {
 
   constructor(
     network: Network = Network.Mainnet,
-    options: { endpoints?: NetworkEndpoints; alchemyRpcUrl: string },
+    options: { endpoints?: NetworkEndpoints; alchemyRpcUrl?: string },
   ) {
     this.endpoints = options.endpoints || getNetworkEndpoints(network)
     this.denomClient = new DenomClient(network)
-    this.web3Client = new Web3Client({ network, rpc: options.alchemyRpcUrl })
+    this.web3Client = options.alchemyRpcUrl
+      ? new Web3Client({ network, rpc: options.alchemyRpcUrl })
+      : undefined
     this.chainIbcApi = new ChainGrpcIbcApi(this.endpoints.grpc)
     this.chainWasmApi = new ChainGrpcWasmApi(this.endpoints.grpc)
     this.chainBankApi = new ChainGrpcBankApi(this.endpoints.grpc)
@@ -73,7 +75,7 @@ export class DenomClientAsync {
 
     const isErc20 = denom.startsWith('peggy') || denom.startsWith('0x')
 
-    if (isErc20) {
+    if (isErc20 && this.web3Client) {
       const contractAddress = denom.startsWith('peggy')
         ? denom.replace('peggy', '')
         : denom
