@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.43...@injectivelabs/sdk-ui-ts@1.12.0-beta.44) (2023-07-21)
+
+### Features
+
+- denom async client ([72127aa](https://github.com/InjectiveLabs/injective-ts/commit/72127aa9c357e22d121c8357fb9a13471ae31744))
+
 # [1.12.0-beta.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.42...@injectivelabs/sdk-ui-ts@1.12.0-beta.43) (2023-07-19)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
