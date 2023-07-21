@@ -13,6 +13,8 @@ import { Network } from '@injectivelabs/networks'
  * denoms in a fully sync way (without API calls)
  *
  * @category Utility Classes
+ *
+ * @deprecated use DenomClient instead (they are the same)
  */
 export class DenomClientSync {
   protected tokenFactory: TokenFactory

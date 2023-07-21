@@ -10,13 +10,22 @@ import {
   ChainGrpcBankApi,
   ChainGrpcWasmApi,
   ChainGrpcInsuranceFundApi,
+  ChainGrpcIbcApi,
+  fromUtf8,
+  sha256,
 } from '@injectivelabs/sdk-ts'
 import { Web3Client } from '../services/web3/Web3Client'
-import type { Token } from '@injectivelabs/token-metadata'
+import {
+  getIbcTokenMetaFromDenomTrace,
+  TokenInfo,
+  type Token,
+} from '@injectivelabs/token-metadata'
 import { getTokenFromAlchemyTokenMetaResponse } from '../utils/alchemy'
 import { getTokenFromContractStateResponse } from '../utils/cw20'
 import { getTokenFromDenomsMetadata } from '../utils/factory'
 import { getTokenFromInsuranceFund } from '../utils'
+import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
+import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 
 export class DenomClientAsync {
   private web3Client: Web3Client
@@ -35,16 +44,24 @@ export class DenomClientAsync {
 
   private insuranceFunds: InsuranceFund[] = []
 
+  private chainIbcApi: ChainGrpcIbcApi
+
+  private cachedDenomTraces: Record<
+    string,
+    IbcApplicationsTransferV1Transfer.DenomTrace
+  > = {}
+
   constructor(
     network: Network = Network.Mainnet,
     options: { endpoints?: NetworkEndpoints; alchemyRpcUrl: string },
   ) {
     this.endpoints = options.endpoints || getNetworkEndpoints(network)
+    this.denomClient = new DenomClient(network)
+    this.web3Client = new Web3Client({ network, rpc: options.alchemyRpcUrl })
+    this.chainIbcApi = new ChainGrpcIbcApi(this.endpoints.grpc)
     this.chainWasmApi = new ChainGrpcWasmApi(this.endpoints.grpc)
     this.chainBankApi = new ChainGrpcBankApi(this.endpoints.grpc)
     this.chainInsuranceApi = new ChainGrpcInsuranceFundApi(this.endpoints.grpc)
-    this.denomClient = new DenomClient(network, options)
-    this.web3Client = new Web3Client({ network, rpc: options.alchemyRpcUrl })
   }
 
   async getDenomToken(denom: string): Promise<Token | undefined> {
@@ -116,7 +133,27 @@ export class DenomClientAsync {
       }
     }
 
+    const isIbcDenom = denom.startsWith('ibc')
+
+    if (isIbcDenom) {
+      const token = await this.getIbcDenomToken(denom)
+
+      return token ? TokenInfo.fromToken(token) : undefined
+    }
+
     return undefined
+  }
+
+  async getDenomTokenThrow(denom: string): Promise<Token> {
+    const token = await this.getDenomToken(denom)
+
+    if (!token) {
+      throw new GeneralException(new Error(`Token not found for ${denom}`), {
+        type: ErrorType.NotFoundError,
+      })
+    }
+
+    return token
   }
 
   private async getFactoryDenomMetadata(
@@ -147,5 +184,85 @@ export class DenomClientAsync {
     this.insuranceFunds = insuranceFunds
 
     return insuranceFunds.find((fund) => fund.insurancePoolTokenDenom === denom)
+  }
+
+  /**
+   * Find token based on the hash and the base denom
+   * from the denom trace of the particular hash
+   */
+  private async getIbcDenomToken(denom: string) {
+    const hash = denom.replace('ibc/', '')
+
+    if (Object.keys(this.cachedDenomTraces).length === 0) {
+      await this.fetchAndCacheDenomTraces()
+    }
+
+    const cachedDenomTrace = this.cachedDenomTraces[hash]
+
+    if (cachedDenomTrace) {
+      const token = this.denomClient.getDenomToken(cachedDenomTrace.baseDenom)
+
+      if (!token) {
+        return undefined
+      }
+
+      return {
+        ...token,
+        ibc: getIbcTokenMetaFromDenomTrace({
+          ...cachedDenomTrace,
+          decimals: token.decimals,
+          hash,
+        }),
+        denom,
+      }
+    }
+
+    try {
+      const denomTrace = await this.chainIbcApi.fetchDenomTrace(hash)
+
+      const token = this.denomClient.getDenomToken(denomTrace.baseDenom)
+
+      if (!token) {
+        return undefined
+      }
+
+      return {
+        ...token,
+        ibc: getIbcTokenMetaFromDenomTrace({
+          ...denomTrace,
+          decimals: token.decimals,
+          hash,
+        }),
+        denom,
+      }
+    } catch (e) {
+      throw new GeneralException(
+        new Error(`Denom trace not found for ${denom}`),
+        {
+          type: ErrorType.NotFoundError,
+        },
+      )
+    }
+  }
+
+  private async fetchAndCacheDenomTraces() {
+    const denomTraces = await this.chainIbcApi.fetchDenomsTrace()
+    const denomHashes = denomTraces.map((trace) => {
+      return {
+        trace: trace,
+        hash: Buffer.from(
+          sha256(fromUtf8(`${trace.path}/${trace.baseDenom}`)),
+        ).toString('hex'),
+      }
+    })
+
+    this.cachedDenomTraces = denomHashes.reduce(
+      (denomTraces, denomTrace) => ({
+        ...denomTraces,
+        [denomTrace.hash.toUpperCase()]:
+          denomTrace.trace as IbcApplicationsTransferV1Transfer.DenomTrace,
+      }),
+      {},
+    )
   }
 }
