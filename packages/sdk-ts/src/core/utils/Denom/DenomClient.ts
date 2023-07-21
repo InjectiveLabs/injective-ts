@@ -12,7 +12,7 @@ import { fromUtf8 } from '../../../utils/utf8'
 import { sha256 } from '../../../utils/crypto'
 import {
   Network,
-  UrlEndpoints,
+  NetworkEndpoints,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import { ChainGrpcIbcApi } from '../../../client/chain/grpc/ChainGrpcIbcApi'
@@ -43,7 +43,7 @@ export class DenomClient {
 
   constructor(
     network: Network = Network.Mainnet,
-    options?: { endpoints?: UrlEndpoints },
+    options?: { endpoints?: NetworkEndpoints },
   ) {
     this.tokenFactory = TokenFactory.make(network)
     this.tokenMetaUtils = TokenMetaUtilsFactory.make(network)
@@ -104,7 +104,7 @@ export class DenomClient {
    * Find token based on the hash and the base denom
    * from the denom trace of the particular hash
    */
-  private async getIbcDenomToken(denom: string) {
+  protected async getIbcDenomToken(denom: string) {
     const hash = denom.replace('ibc/', '')
 
     if (Object.keys(this.cachedDenomTraces).length === 0) {
@@ -159,7 +159,7 @@ export class DenomClient {
     }
   }
 
-  private async fetchAndCacheDenomTraces() {
+  protected async fetchAndCacheDenomTraces() {
     const denomTraces = await this.ibcApi.fetchDenomsTrace()
     const denomHashes = denomTraces.map((trace) => {
       return {
