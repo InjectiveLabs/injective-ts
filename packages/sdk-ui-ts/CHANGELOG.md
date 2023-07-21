@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.45...@injectivelabs/sdk-ui-ts@1.12.0-beta.46) (2023-07-21)
+
+### Bug Fixes
+
+- token service import ([856ac12](https://github.com/InjectiveLabs/injective-ts/commit/856ac12c0426409e11999d8d9500bdd4f19b6634))
+
+### Features
+
+- denomClientAsync ([8628f46](https://github.com/InjectiveLabs/injective-ts/commit/8628f46ea30a50d1a69899f5f791612fe3cd2f38))
+
 # [1.12.0-beta.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.44...@injectivelabs/sdk-ui-ts@1.12.0-beta.45) (2023-07-21)
 
 ### Features
