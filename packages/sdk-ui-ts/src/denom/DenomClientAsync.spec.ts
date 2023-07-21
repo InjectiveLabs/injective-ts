@@ -26,4 +26,22 @@ describe('DenomClientAsync', () => {
 
     expect(token).toBeDefined()
   })
+
+  test('works for custom factory denom', async () => {
+    const token = await denomClient.getDenomToken(
+      'factory/inj1zaem9jqplp08hkkd5vcl6vmvala9qury79vfj4/point',
+    )
+
+    console.log(token)
+
+    expect(token).toBeDefined()
+  })
+
+  test('works for insurance funds denom', async () => {
+    const token = await denomClient.getDenomToken('share1')
+
+    console.log(token)
+
+    expect(token).toBeDefined()
+  })
 })

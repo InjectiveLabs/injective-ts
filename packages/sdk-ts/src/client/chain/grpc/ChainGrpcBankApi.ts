@@ -150,4 +150,38 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchDenomsMetadata(pagination?: PaginationOption) {
+    const request = CosmosBankV1Beta1Query.QueryDenomsMetadataRequest.create()
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.pagination = paginationForRequest
+    }
+
+    try {
+      const response =
+        await this.retry<CosmosBankV1Beta1Query.QueryDenomsMetadataResponse>(
+          () => this.client.DenomsMetadata(request),
+        )
+
+      return ChainGrpcBankTransformer.denomsMetadataResponseToDenomsMetadata(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'DenomsMetadata',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DenomsMetadata',
+        contextModule: this.module,
+      })
+    }
+  }
 }
