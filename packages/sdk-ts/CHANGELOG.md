@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.42...@injectivelabs/sdk-ts@1.12.0-beta.43) (2023-07-21)
+
+### Features
+
+- added support for insurance funds and custom token factory denoms ([1c82a82](https://github.com/InjectiveLabs/injective-ts/commit/1c82a824c1c1876aeb88c34088e9c95e15f4d8c0))
+
 # [1.12.0-beta.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.41...@injectivelabs/sdk-ts@1.12.0-beta.42) (2023-07-21)
 
 ### Features
