@@ -85,7 +85,7 @@ export class MsgBroadcasterWithPk {
     this.chainId = networkInfo.chainId
     this.ethereumChainId =
       options.ethereumChainId || networkInfo.ethereumChainId
-    this.endpoints = { ...endpoints, ...(endpoints || {}) }
+    this.endpoints = { ...endpoints, ...(options.endpoints || {}) }
     this.privateKey =
       options.privateKey instanceof PrivateKey
         ? options.privateKey
