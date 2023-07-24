@@ -19,6 +19,7 @@ import {
   TokenInfo,
   getIbcTokenMetaFromDenomTrace,
   type Token,
+  TokenMeta,
 } from '@injectivelabs/token-metadata'
 import { getTokenFromAlchemyTokenMetaResponse } from '../utils/alchemy'
 import { getTokenFromContractStateResponse } from '../utils/cw20'
@@ -28,11 +29,11 @@ import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 
 export class DenomClientAsync {
+  private denomClient: DenomClient
+
   private web3Client: Web3Client | undefined
 
   private endpoints: NetworkEndpoints
-
-  private denomClient: DenomClient
 
   private chainWasmApi: ChainGrpcWasmApi
 
@@ -156,6 +157,26 @@ export class DenomClientAsync {
     }
 
     return token
+  }
+
+  getDenomTokenInfo(denom: string): TokenInfo | undefined {
+    return this.denomClient.getDenomTokenInfo(denom)
+  }
+
+  getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
+    return this.denomClient.getTokenMetaDataBySymbol(symbol)
+  }
+
+  getTokenMetaDataByAddress(address: string): TokenMeta | undefined {
+    return this.denomClient.getTokenMetaDataByAddress(address)
+  }
+
+  getTokenMetaDataByName(name: string): TokenMeta | undefined {
+    return this.denomClient.getTokenMetaDataByName(name)
+  }
+
+  getCoinGeckoId(denom: string): string {
+    return this.denomClient.getCoinGeckoId(denom)
   }
 
   private async getFactoryDenomMetadata(
