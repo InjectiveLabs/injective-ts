@@ -28,7 +28,7 @@ import {
   getUnknownToken,
 } from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
-import { DenomClientAsync } from '../denom'
+import { DenomClientAsync } from '../denom/DenomClientAsync'
 
 /**
  * With the TokenService class we can convert objects
@@ -45,14 +45,19 @@ export class TokenService {
     chainId,
     network,
     endpoints,
+    alchemyRpcUrl,
   }: {
     chainId: ChainId
     network: Network
     endpoints?: NetworkEndpoints
+    alchemyRpcUrl?: string
   }) {
     this.network = network
     this.chainId = chainId
-    this.denomClient = new DenomClientAsync(network, { endpoints })
+    this.denomClient = new DenomClientAsync(network, {
+      endpoints,
+      alchemyRpcUrl,
+    })
   }
 
   async toCoinsWithToken(supply: Coin[]): Promise<Token[]> {
