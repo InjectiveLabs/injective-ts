@@ -301,6 +301,7 @@ export class IndexerGrpcMitoTransformer {
       updatedAt: parseInt(holder.updatedAt, 10),
       lpAmountPercentage: holder.lpAmountPercentage,
       redemptionLockTime: holder.redemptionLockTime,
+      stakedAmount: holder.stakedAmount,
     }))
   }
 
