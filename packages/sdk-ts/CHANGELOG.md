@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.46](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.45...@injectivelabs/sdk-ts@1.12.0-beta.46) (2023-07-26)
+
+### Bug Fixes
+
+- broadcasting sync mode on web3gw ([3075246](https://github.com/InjectiveLabs/injective-ts/commit/3075246a17d58bd51594f1882112630f35601ac9))
+
 # [1.12.0-beta.45](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.44...@injectivelabs/sdk-ts@1.12.0-beta.45) (2023-07-22)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
