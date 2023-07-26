@@ -256,14 +256,17 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     limit,
     pageIndex,
     vaultAddress,
+    stakingContractAddress,
   }: {
     limit?: number
     pageIndex?: number
     vaultAddress: string
+    stakingContractAddress: string
   }) {
     const request = MitoApi.LPHoldersRequest.create()
 
     request.vaultAddress = vaultAddress
+    request.stakingContractAddress = stakingContractAddress
 
     if (limit) {
       request.limit = limit

@@ -8,6 +8,7 @@ export interface MitoHolders {
   updatedAt: number
   lpAmountPercentage: number
   redemptionLockTime: string
+  stakedAmount: string
 }
 
 export interface MitoPriceSnapshot {

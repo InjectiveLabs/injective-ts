@@ -127,12 +127,14 @@ export class IndexerGrpcMitoStream {
   streamVaultHolderSubscriptions({
     holderAddress,
     vaultAddress,
+    stakingContractAddress,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
     holderAddress: string
     vaultAddress?: string
+    stakingContractAddress?: string
     callback: VaultHolderSubscriptionStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
@@ -142,6 +144,10 @@ export class IndexerGrpcMitoStream {
 
     if (vaultAddress) {
       request.vaultAddress = vaultAddress
+    }
+
+    if (stakingContractAddress) {
+      request.stakingContractAddress = stakingContractAddress
     }
 
     const subscription = this.client
