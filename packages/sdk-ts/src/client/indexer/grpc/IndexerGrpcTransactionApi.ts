@@ -259,6 +259,12 @@ export class IndexerGrpcTransactionApi {
     }
   }
 
+  /**
+   * Keep in mind that the transaction is just added
+   * to the mempool, we need to query the transaction hash
+   * if we want to ensure that the transaction is included
+   * in the block
+   */
   async broadcastTxRequest({
     signature,
     chainId,
@@ -281,7 +287,7 @@ export class IndexerGrpcTransactionApi {
     parsedTypedData.message.msgs = null
 
     const broadcastTxRequest = InjectiveExchangeRpc.BroadcastTxRequest.create()
-    broadcastTxRequest.mode = 'block'
+    broadcastTxRequest.mode = 'sync'
     broadcastTxRequest.chainId = chainId.toString()
     broadcastTxRequest.pubKey = cosmosPubKey
     broadcastTxRequest.signature = signature
@@ -323,6 +329,12 @@ export class IndexerGrpcTransactionApi {
     }
   }
 
+  /**
+   * Keep in mind that the transaction is just added
+   * to the mempool, we need to query the transaction hash
+   * if we want to ensure that the transaction is included
+   * in the block
+   */
   async broadcastCosmosTxRequest({
     address,
     signature,

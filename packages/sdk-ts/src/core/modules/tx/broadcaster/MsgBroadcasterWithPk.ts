@@ -25,7 +25,7 @@ import {
   NetworkEndpoints,
 } from '@injectivelabs/networks'
 import { getGasPriceBasedOnMessage } from '../../../../utils/msgs'
-import { CreateTransactionArgs, TxResponse } from '../types'
+import { CreateTransactionArgs } from '../types'
 import { IndexerGrpcTransactionApi } from '../../../../client'
 
 interface MsgBroadcasterTxOptions {
@@ -210,13 +210,7 @@ export class MsgBroadcasterWithPk {
       signature: `0x${Buffer.from(signature).toString('hex')}`,
     })
 
-    return {
-      ...response,
-      data: Buffer.from(response.data).toString(),
-      height: parseInt(response.height, 10),
-      gasUsed: 0 /** not available from the API */,
-      gasWanted: 0 /** not available from the API */,
-    } as TxResponse
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**

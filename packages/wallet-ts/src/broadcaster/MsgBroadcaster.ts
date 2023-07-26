@@ -3,7 +3,6 @@ import {
   hexToBuff,
   PublicKey,
   SIGN_AMINO,
-  TxResponse,
   hexToBase64,
   BaseAccount,
   ChainRestAuthApi,
@@ -32,8 +31,8 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import {
-  getNetworkEndpoints,
   getNetworkInfo,
+  getNetworkEndpoints,
   NetworkEndpoints,
 } from '@injectivelabs/networks'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
@@ -66,13 +65,6 @@ export class MsgBroadcaster {
 
   public ethereumChainId?: EthereumChainId
 
-  /**
-   * Used to interact with the Web3Gateway service
-   * to provide feeDelegation support for executing
-   * transactions
-   */
-  public transactionApi: IndexerGrpcTransactionApi
-
   constructor(options: MsgBroadcasterOptions) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints =
@@ -82,7 +74,6 @@ export class MsgBroadcaster {
     this.chainId = networkInfo.chainId
     this.ethereumChainId = networkInfo.ethereumChainId
     this.endpoints = endpoints
-    this.transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
   }
 
   /**
@@ -266,7 +257,7 @@ export class MsgBroadcaster {
   private async broadcastWeb3WithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, ethereumChainId, transactionApi } = this
+    const { options, ethereumChainId, endpoints } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
@@ -275,6 +266,7 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
+    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
     const txResponse = await transactionApi.prepareTxRequest({
       memo: tx.memo,
       message: web3Msgs,
@@ -296,13 +288,7 @@ export class MsgBroadcaster {
       chainId: ethereumChainId,
     })
 
-    return {
-      ...response,
-      data: Buffer.from(response.data).toString(),
-      height: parseInt(response.height, 10),
-      gasUsed: 0 /** not available from the API */,
-      gasWanted: 0 /** not available from the API */,
-    } as TxResponse
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**
@@ -521,7 +507,7 @@ export class MsgBroadcaster {
   private async broadcastCosmosWithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, chainId, endpoints, transactionApi } = this
+    const { options, chainId, endpoints } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -592,6 +578,7 @@ export class MsgBroadcaster {
       accountNumber: accountDetails.accountNumber,
     })) as DirectSignResponse
 
+    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
     const response = await transactionApi.broadcastCosmosTxRequest({
       address: tx.injectiveAddress,
       txRaw: createTxRawFromSigResponse(directSignResponse),
@@ -604,7 +591,7 @@ export class MsgBroadcaster {
       new KeplrWallet(chainId).enableGasCheck()
     }
 
-    return response
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**
@@ -617,7 +604,9 @@ export class MsgBroadcaster {
       return existingFeePayerPubKey
     }
 
-    const { transactionApi } = this
+    const { endpoints } = this
+
+    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
     const response = await transactionApi.fetchFeePayer()
 
     if (!response.feePayerPubKey) {
