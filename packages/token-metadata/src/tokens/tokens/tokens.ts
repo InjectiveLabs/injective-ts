@@ -1511,4 +1511,13 @@ export default {
     logo: 'xrp.png',
     coinGeckoId: 'ripple',
   },
+
+  FRCOIN: {
+    name: 'Frontrunner Coin',
+    symbol: 'FRCoin',
+    decimals: 6,
+    logo: 'frcoin.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
