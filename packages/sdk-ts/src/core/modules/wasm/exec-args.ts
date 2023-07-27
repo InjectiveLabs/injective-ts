@@ -13,6 +13,8 @@ import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgUpdateAMMVaultConfig from './exec-args/ExecArgUpdateAMMVaultConfig'
 import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
+
+import ExecArgUpdateOffChainVaultConfig from './exec-args/ExecArgUpdateOffChainVaultConfig'
 import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
 import ExecArgUpdateStakingContractConfig from './exec-args/ExecArgUpdateStakingContractConfig'
 import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
@@ -39,6 +41,7 @@ export type ExecArgs =
   | ExecArgIncreaseAllowance
   | ExecArgUpdateAMMVaultConfig
   | ExecArgUpdateSpotVaultConfig
+  | ExecArgUpdateOffChainVaultConfig
   | ExecArgUpdateDerivativeVaultConfig
   | ExecArgUpdateStakingContractConfig
   | ExecArgCW20AdapterRedeemAndTransfer

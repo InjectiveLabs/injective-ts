@@ -118,6 +118,33 @@ export interface QueryRegisteredVaultResponse {
   }[]
 }
 
+export interface QueryOffChainVaultSpotResponse {
+  Spot: {
+    oracle_type: number
+    base_oracle_symbol: string
+    quote_oracle_symbol: string
+    base_decimals: number
+    quote_decimals: number
+  }
+}
+export interface QueryOffChainVaultDerivativeResponse {
+  Derivative: {
+    position_pnl_penalty: string
+    allowed_derivative_redemption_types: number
+  }
+}
+
+export interface QueryOffChainVaultResponse {
+  admin: string
+  market_id: string
+  vault_subaccount_id: string
+  oracle_stale_time: string
+  notional_value_cap: string
+  vault_type:
+    | QueryOffChainVaultSpotResponse
+    | QueryOffChainVaultDerivativeResponse
+}
+
 export type VaultBaseConfig = {
   owner: string
   marketId: string
@@ -172,6 +199,29 @@ export type VaultSpotConfig = {
   quoteDecimals: number
   baseOracleSymbol: string
   quoteOracleSymbol: string
+}
+
+export type OffChainVaultBaseConfig = {
+  admin: string
+  marketId: string
+  vaultSubaccountId: string
+  oracleStaleTime: number
+  notionalValueCap: string
+}
+
+export type OffChainVaultSpotConfig = {
+  base: OffChainVaultBaseConfig
+  oracleType: number
+  baseOracleSymbol: string
+  quoteOracleSymbol: string
+  baseDecimals: number
+  quoteDecimals: number
+}
+
+export type OffChainVaultDerivativeConfig = {
+  base: OffChainVaultBaseConfig
+  positionPnlPenalty: string
+  allowedDerivativeRedemptionTypes: number
 }
 
 export type QueryStakingConfigResponse = {

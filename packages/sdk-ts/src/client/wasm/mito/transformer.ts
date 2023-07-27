@@ -6,19 +6,24 @@ import {
   VaultSpotConfig,
   VaultDerivativeConfig,
   VaultMarketMakingConfig,
+  OffChainVaultSpotConfig,
+  OffChainVaultDerivativeConfig,
+  QueryOffChainVaultResponse,
   QueryStakingConfigResponse,
   QueryVaultMarketIdResponse,
   QueryLockedLpFundsResponse,
   QueryAllocatorConfigResponse,
   QueryRegisteredVaultResponse,
   QueryVaultContractBaseConfig,
+  QueryOffChainVaultSpotResponse,
   QueryVaultContractMarketMaking,
   QueryContractTokenInfoResponse,
   QueryMastContractConfigResponse,
   QueryVaultTotalLpSupplyResponse,
   QueryVaultUserLpBalanceResponse,
-  QueryVaultContractAMMConfigResponse,
   QueryContractMarketingInfoResponse,
+  QueryVaultContractAMMConfigResponse,
+  QueryOffChainVaultDerivativeResponse,
   QueryVaultContractSpotConfigResponse,
   QueryVaultUserLpContractAllowanceResponse,
   QueryVaultContractDerivativeConfigResponse,
@@ -194,6 +199,46 @@ export class MitoQueryTransformer {
       quoteDecimals: Number(config.quote_decimals),
       baseOracleSymbol: formatToString(config.base_oracle_symbol),
       quoteOracleSymbol: formatToString(config.quote_oracle_symbol),
+    }
+  }
+
+  static offChainVaultContractConfigResponseToOffChainVaultConfig(
+    response: WasmContractQueryResponse,
+  ): OffChainVaultSpotConfig | OffChainVaultDerivativeConfig {
+    const data = JSON.parse(toUtf8(response.data)) as QueryOffChainVaultResponse
+
+    const isDerivativeVault =
+      (data.vault_type as QueryOffChainVaultDerivativeResponse).Derivative !==
+      undefined
+    const derivativeConfig = (
+      data.vault_type as QueryOffChainVaultDerivativeResponse
+    ).Derivative
+    const spotConfig = (data.vault_type as QueryOffChainVaultSpotResponse).Spot
+
+    return {
+      base: {
+        admin: formatToString(data.admin),
+        marketId: formatToString(data.market_id),
+        vaultSubaccountId: formatToString(data.vault_subaccount_id),
+        oracleStaleTime: Number(data.oracle_stale_time),
+        notionalValueCap: formatToString(data.notional_value_cap),
+      },
+      ...(isDerivativeVault
+        ? {
+            positionPnlPenalty: formatToString(
+              derivativeConfig.position_pnl_penalty,
+            ),
+            allowedDerivativeRedemptionTypes: Number(
+              derivativeConfig.allowed_derivative_redemption_types,
+            ),
+          }
+        : {
+            oracleType: Number(spotConfig.oracle_type),
+            baseOracleSymbol: formatToString(spotConfig.base_oracle_symbol),
+            quoteOracleSymbol: formatToString(spotConfig.quote_oracle_symbol),
+            baseDecimals: Number(spotConfig.base_decimals),
+            quoteDecimals: Number(spotConfig.quote_decimals),
+          }),
     }
   }
 
