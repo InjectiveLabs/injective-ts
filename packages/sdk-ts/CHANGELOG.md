@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.50](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.49...@injectivelabs/sdk-ts@1.12.0-beta.50) (2023-07-27)
+
+### Features
+
+- add fetch multiple denoms token meta ([a73872b](https://github.com/InjectiveLabs/injective-ts/commit/a73872ba58fc139e8ff4e1e01b97ae523610a6d4))
+
 # [1.12.0-beta.49](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.48...@injectivelabs/sdk-ts@1.12.0-beta.49) (2023-07-27)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

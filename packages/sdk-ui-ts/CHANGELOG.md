@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.54](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.53...@injectivelabs/sdk-ui-ts@1.12.0-beta.54) (2023-07-27)
+
+### Bug Fixes
+
+- improt path ([bdc1c2d](https://github.com/InjectiveLabs/injective-ts/commit/bdc1c2d20895830c5b413cc6f399dda40e9d0b07))
+
+### Features
+
+- add fetch multiple denoms token meta ([a73872b](https://github.com/InjectiveLabs/injective-ts/commit/a73872ba58fc139e8ff4e1e01b97ae523610a6d4))
+
 # [1.12.0-beta.53](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.52...@injectivelabs/sdk-ui-ts@1.12.0-beta.53) (2023-07-27)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
