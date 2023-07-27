@@ -27,7 +27,7 @@ import { getTokenFromDenomsMetadata } from '../utils/factory'
 import { getTokenFromInsuranceFund } from '../utils'
 import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
-import { awaitForAll } from 'packages/utils/dist/cjs'
+import { awaitForAll } from '@injectivelabs/utils'
 
 export class DenomClientAsync {
   private denomClient: DenomClient
