@@ -34,6 +34,14 @@ export class DenomClientSync {
     return this.tokenFactory.toToken(denom)
   }
 
+  getDenomsToken(denoms: string[]): Array<Token | undefined> {
+    return denoms.map((denom) => this.getDenomToken(denom))
+  }
+
+  getDenomsTokenInfo(denoms: string[]): Array<TokenInfo | undefined> {
+    return denoms.map((denom) => this.getDenomTokenInfo(denom))
+  }
+
   getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
     return this.tokenMetaUtils.getMetaBySymbol(symbol)
   }

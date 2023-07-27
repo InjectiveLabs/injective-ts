@@ -27,6 +27,7 @@ import { getTokenFromDenomsMetadata } from '../utils/factory'
 import { getTokenFromInsuranceFund } from '../utils'
 import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
+import { awaitForAll } from 'packages/utils/dist/cjs'
 
 export class DenomClientAsync {
   private denomClient: DenomClient
@@ -58,13 +59,13 @@ export class DenomClientAsync {
   ) {
     this.endpoints = options.endpoints || getNetworkEndpoints(network)
     this.denomClient = new DenomClient(network)
-    this.web3Client = options.alchemyRpcUrl
-      ? new Web3Client({ network, rpc: options.alchemyRpcUrl })
-      : undefined
     this.chainIbcApi = new ChainGrpcIbcApi(this.endpoints.grpc)
     this.chainWasmApi = new ChainGrpcWasmApi(this.endpoints.grpc)
     this.chainBankApi = new ChainGrpcBankApi(this.endpoints.grpc)
     this.chainInsuranceApi = new ChainGrpcInsuranceFundApi(this.endpoints.grpc)
+    this.web3Client = options.alchemyRpcUrl
+      ? new Web3Client({ network, rpc: options.alchemyRpcUrl })
+      : undefined
   }
 
   async getDenomToken(denom: string): Promise<Token | undefined> {
@@ -157,6 +158,10 @@ export class DenomClientAsync {
     }
 
     return token
+  }
+
+  async getDenomsToken(denoms: string[]): Promise<Array<Token | undefined>> {
+    return awaitForAll(denoms, (denom) => this.getDenomToken(denom))
   }
 
   getDenomTokenInfo(denom: string): TokenInfo | undefined {
