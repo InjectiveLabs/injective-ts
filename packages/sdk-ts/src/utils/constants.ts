@@ -31,4 +31,20 @@ export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
 }
 
+export const CW20_SWAP_CONTRACT_BY_NETWORK = {
+  [Network.Mainnet]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.MainnetLB]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.MainnetK8s]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.Public]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.Staging]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.Internal]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.Testnet]: 'inj14d7h5j6ddq6pqppl65z24w7xrtmpcrqjxj8d43',
+  [Network.TestnetK8s]: 'inj14d7h5j6ddq6pqppl65z24w7xrtmpcrqjxj8d43',
+  [Network.TestnetOld]: 'inj14d7h5j6ddq6pqppl65z24w7xrtmpcrqjxj8d43',
+  [Network.Devnet]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
+  [Network.Devnet1]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
+  [Network.Devnet2]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
+  [Network.Local]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
+}
+
 export { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM }
