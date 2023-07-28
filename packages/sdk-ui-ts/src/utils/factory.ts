@@ -1,5 +1,9 @@
 import { Metadata } from '@injectivelabs/sdk-ts'
-import { TokenType, type Token } from '@injectivelabs/token-metadata'
+import {
+  TokenType,
+  TokenVerification,
+  type Token,
+} from '@injectivelabs/token-metadata'
 
 export const getTokenFromDenomsMetadata = (
   denom: string,
@@ -9,11 +13,12 @@ export const getTokenFromDenomsMetadata = (
 
   return {
     denom,
-    name: response.name || 'Unknown',
+    name: response.name || response.symbol || denom,
     symbol: response.symbol || response.name || 'Unknown',
-    decimals: denomUnit.exponent || 18,
-    logo: 'injective-v3.svg',
+    decimals: denomUnit.exponent || 0,
+    logo: 'unknown.svg',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+    tokenVerification: TokenVerification.Internal,
   } as Token
 }

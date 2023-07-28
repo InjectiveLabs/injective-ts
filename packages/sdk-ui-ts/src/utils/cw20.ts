@@ -1,5 +1,9 @@
 import { ContractStateWithPagination } from '@injectivelabs/sdk-ts'
-import { TokenType, type Token } from '@injectivelabs/token-metadata'
+import {
+  TokenType,
+  TokenVerification,
+  type Token,
+} from '@injectivelabs/token-metadata'
 
 export const getTokenFromContractStateResponse = (
   denom: string,
@@ -15,9 +19,10 @@ export const getTokenFromContractStateResponse = (
     name: tokenInfo.name || contractInfo.label || 'Unknown',
     symbol: tokenInfo.symbol || tokenInfo.name || 'Unknown',
     decimals: tokenInfo.decimals || 18,
-    logo: 'untracked.svg',
+    logo: 'unknown.svg',
     coinGeckoId: '',
     tokenType: TokenType.Cw20,
+    tokenVerification: TokenVerification.Internal,
 
     cw20: {
       decimals: tokenInfo.decimals || 18,

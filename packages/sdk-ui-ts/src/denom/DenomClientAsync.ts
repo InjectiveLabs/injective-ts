@@ -19,6 +19,7 @@ import type { Token } from '@injectivelabs/token-metadata'
 import {
   TokenInfo,
   TokenMeta,
+  getUnknownTokenWithSymbol,
   getIbcTokenMetaFromDenomTrace,
 } from '@injectivelabs/token-metadata'
 import { getTokenFromAlchemyTokenMetaResponse } from '../utils/alchemy'
@@ -69,10 +70,21 @@ export class DenomClientAsync {
   }
 
   /**
-   * Used to get tracked tokens only (those in the token-metadata package)
+   * Used to get tracked tokens only
+   * (those in the token-metadata package)
    */
   getDenomTokenStatic(denom: string): Token | undefined {
     return this.denomClient.getDenomToken(denom)
+  }
+
+  /**
+   * Used to get tracked tokens only
+   * (those in the token-metadata package)
+   */
+  getDenomTokenStaticOrUnknown(denom: string): Token {
+    const token = this.denomClient.getDenomToken(denom)
+
+    return token || getUnknownTokenWithSymbol(denom)
   }
 
   /**

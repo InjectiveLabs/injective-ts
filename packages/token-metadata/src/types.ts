@@ -7,8 +7,14 @@ export enum TokenType {
   Native = 'native',
   TokenFactory = 'tokenFactory',
   InsuranceFund = 'insuranceFund',
-  Untracked = 'untracked',
-  Unverified = 'unverified',
+  Unknown = 'unknown',
+}
+
+export enum TokenVerification {
+  Verified = 'verified' /** verified on token-metadata package */,
+  Internal = 'internal' /** verified from on-chain data */,
+  External = 'external' /** verified on external source */,
+  Untracked = 'untracked' /** unverified on any source */,
 }
 
 export enum Cw20TokenSource {
@@ -70,6 +76,7 @@ export interface TokenMeta {
   symbol: string
   decimals: number
   tokenType?: TokenType
+  tokenVerification?: TokenVerification
   coinGeckoId: string
 
   ibc?: IbcTokenMeta

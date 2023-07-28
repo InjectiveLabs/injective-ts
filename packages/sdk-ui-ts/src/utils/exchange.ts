@@ -4,7 +4,11 @@ import {
   GrpcOrderTypeMap,
 } from '@injectivelabs/sdk-ts'
 import { OrderSide } from '@injectivelabs/ts-types'
-import { TokenType, type Token } from '@injectivelabs/token-metadata'
+import {
+  TokenType,
+  TokenVerification,
+  type Token,
+} from '@injectivelabs/token-metadata'
 
 export const orderSideToOrderType = (orderType: OrderSide): GrpcOrderType => {
   switch (orderType) {
@@ -40,14 +44,14 @@ export const orderSideToOrderType = (orderType: OrderSide): GrpcOrderType => {
 export const getTokenFromInsuranceFund = (
   denom: string,
   response: InsuranceFund,
-): Token => {
-  return {
+): Token =>
+  ({
     denom,
-    name: (response.marketTicker || 'Unknown') + 'Insurance Fund',
-    symbol: denom || 'Unknown',
+    name: (response.marketTicker || denom) + ' Insurance Fund',
+    symbol: denom,
     decimals: 18,
     logo: 'injective-v3.svg',
     coinGeckoId: '',
     tokenType: TokenType.InsuranceFund,
-  } as Token
-}
+    tokenVerification: TokenVerification.Verified,
+  } as Token)

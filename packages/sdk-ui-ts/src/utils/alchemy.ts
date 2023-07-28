@@ -1,5 +1,5 @@
 import type { Token } from '@injectivelabs/token-metadata'
-import { TokenType } from '@injectivelabs/token-metadata'
+import { TokenType, TokenVerification } from '@injectivelabs/token-metadata'
 import { TokenMetadataResponse } from 'alchemy-sdk'
 
 export const getKeyFromRpcUrl = (rpcUrl: string) => {
@@ -24,6 +24,7 @@ export const getTokenFromAlchemyTokenMetaResponse = (
     logo: response.logo || 'untracked.svg',
     coinGeckoId: '',
     tokenType: TokenType.Erc20,
+    tokenVerification: TokenVerification.External,
 
     erc20: {
       decimals: response.decimals || 18,
