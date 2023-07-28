@@ -68,6 +68,17 @@ export class DenomClientAsync {
       : undefined
   }
 
+  /**
+   * Used to get tracked tokens only (those in the token-metadata package)
+   */
+  getDenomTokenStatic(denom: string): Token | undefined {
+    return this.denomClient.getDenomToken(denom)
+  }
+
+  /**
+   * Used to get all tokens even if they are not tracked on the token-metadata package
+   * ERC20, CW20, IBC, etc
+   */
   async getDenomToken(denom: string): Promise<Token | undefined> {
     const token = await this.denomClient.getDenomToken(denom)
 

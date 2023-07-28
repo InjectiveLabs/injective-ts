@@ -262,18 +262,18 @@ export const getTokenFromMeta = (meta: TokenMeta, denom?: string): Token => {
   return tokenWithDecimalsAndSymbol
 }
 
-export const getUnknownToken = (denom: string): Token => {
+export const getUntrackedToken = (denom: string): Token => {
   return {
     name: denom,
     symbol: denom,
     decimals: 18,
     logo: 'untracked.svg',
     coinGeckoId: '',
-    tokenType: TokenType.Unknown,
+    tokenType: TokenType.Untracked,
   } as Token
 }
 
-export const getUntrackedToken = (denom: string): Token => {
+export const getUntrackedTokenWithSymbol = (denom: string): Token => {
   return {
     denom,
     name: denom,
@@ -281,6 +281,6 @@ export const getUntrackedToken = (denom: string): Token => {
     decimals: 0,
     logo: 'untracked.svg',
     coinGeckoId: '',
-    tokenType: TokenType.Unknown,
+    tokenType: TokenType.Untracked,
   } as Token
 }
