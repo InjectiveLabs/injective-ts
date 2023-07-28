@@ -15,11 +15,11 @@ import {
   ChainGrpcIbcApi,
 } from '@injectivelabs/sdk-ts'
 import { Web3Client } from '../services/web3/Web3Client'
+import type { Token } from '@injectivelabs/token-metadata'
 import {
   TokenInfo,
-  getIbcTokenMetaFromDenomTrace,
-  type Token,
   TokenMeta,
+  getIbcTokenMetaFromDenomTrace,
 } from '@injectivelabs/token-metadata'
 import { getTokenFromAlchemyTokenMetaResponse } from '../utils/alchemy'
 import { getTokenFromContractStateResponse } from '../utils/cw20'
@@ -151,9 +151,7 @@ export class DenomClientAsync {
     const isIbcDenom = denom.startsWith('ibc')
 
     if (isIbcDenom) {
-      const token = await this.getIbcDenomToken(denom)
-
-      return token ? TokenInfo.fromToken(token) : undefined
+      return await this.getIbcDenomToken(denom)
     }
 
     return undefined
@@ -229,7 +227,7 @@ export class DenomClientAsync {
    * Find token based on the hash and the base denom
    * from the denom trace of the particular hash
    */
-  private async getIbcDenomToken(denom: string) {
+  private async getIbcDenomToken(denom: string): Promise<Token | undefined> {
     const hash = denom.replace('ibc/', '')
 
     if (Object.keys(this.cachedDenomTraces).length === 0) {

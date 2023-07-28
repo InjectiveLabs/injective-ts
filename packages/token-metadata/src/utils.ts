@@ -264,6 +264,7 @@ export const getTokenFromMeta = (meta: TokenMeta, denom?: string): Token => {
 
 export const getUntrackedToken = (denom: string): Token => {
   return {
+    denom,
     name: denom,
     symbol: denom,
     decimals: 18,
