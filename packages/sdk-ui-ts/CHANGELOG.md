@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.57...@injectivelabs/sdk-ui-ts@1.12.0-beta.58) (2023-07-28)
+
+### Bug Fixes
+
+- tokenInfo returned for ibc denoms ([451bd6c](https://github.com/InjectiveLabs/injective-ts/commit/451bd6c97332a800f9a30b01973c0a1a0c44ecc6))
+
 # [1.12.0-beta.57](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.56...@injectivelabs/sdk-ui-ts@1.12.0-beta.57) (2023-07-28)
 
 ### Bug Fixes
