@@ -14,7 +14,7 @@ export enum TokenVerification {
   Verified = 'verified' /** verified on token-metadata package */,
   Internal = 'internal' /** verified from on-chain data */,
   External = 'external' /** verified on external source */,
-  Untracked = 'untracked' /** unverified on any source */,
+  Unverified = 'unverified' /** unverified on any source */,
 }
 
 export enum Cw20TokenSource {

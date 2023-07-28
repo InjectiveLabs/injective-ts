@@ -272,7 +272,7 @@ export const getUnknownToken = (denom: string): Token => {
     logo: 'untracked.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
-    tokenVerification: TokenVerification.Untracked,
+    tokenVerification: TokenVerification.Unverified,
   } as Token
 }
 
@@ -285,6 +285,6 @@ export const getUnknownTokenWithSymbol = (denom: string): Token => {
     logo: 'untracked.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
-    tokenVerification: TokenVerification.Untracked,
+    tokenVerification: TokenVerification.Unverified,
   } as Token
 }
