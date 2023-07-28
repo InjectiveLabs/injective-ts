@@ -25,7 +25,7 @@ import {
 import {
   Token,
   TokenType,
-  getUnknownToken,
+  getUntrackedToken,
 } from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
 import { DenomClientAsync } from '../denom/DenomClientAsync'
@@ -320,7 +320,7 @@ export class TokenService {
 
     return {
       ...transaction,
-      token: getUnknownToken(transaction.denom),
+      token: getUntrackedToken(transaction.denom),
     } as UiBridgeTransactionWithToken
   }
 
