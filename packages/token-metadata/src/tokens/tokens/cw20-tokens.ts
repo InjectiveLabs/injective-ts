@@ -27,6 +27,19 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+  'XAU-BOOST': {
+    name: 'XAU Boost',
+    logo: 'mito-xau-boost-lp.svg',
+    symbol: 'XAU-BOOST-LP',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: '',
+      tokenType: TokenType.Cw20,
+    },
+  },
   'WETH-MASTER': {
     name: 'WETH Master',
     logo: 'mito-weth-master-lp.svg',
