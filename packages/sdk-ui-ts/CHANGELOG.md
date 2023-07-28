@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.58...@injectivelabs/sdk-ui-ts@1.12.0-beta.59) (2023-07-28)
+
+### Features
+
+- token verification intro ([0967a5a](https://github.com/InjectiveLabs/injective-ts/commit/0967a5abc1ecd2a44d5e36e5009805ba8edd6c17))
+
 # [1.12.0-beta.58](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.57...@injectivelabs/sdk-ui-ts@1.12.0-beta.58) (2023-07-28)
 
 ### Bug Fixes

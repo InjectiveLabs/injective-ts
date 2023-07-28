@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.29...@injectivelabs/token-metadata@1.12.0-beta.30) (2023-07-28)
+
+### Features
+
+- token verification intro ([0967a5a](https://github.com/InjectiveLabs/injective-ts/commit/0967a5abc1ecd2a44d5e36e5009805ba8edd6c17))
+
 # [1.12.0-beta.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.28...@injectivelabs/token-metadata@1.12.0-beta.29) (2023-07-28)
 
 ### Bug Fixes
