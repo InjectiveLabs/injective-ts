@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.31...@injectivelabs/token-metadata@1.12.0-beta.32) (2023-07-31)
+
+### Features
+
+- erc20 new assets ([ed9ce7e](https://github.com/InjectiveLabs/injective-ts/commit/ed9ce7ea27f62c4d27fbf08291a58d2077ad3b57))
+
 # [1.12.0-beta.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.30...@injectivelabs/token-metadata@1.12.0-beta.31) (2023-07-28)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
