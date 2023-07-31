@@ -30,6 +30,8 @@ import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 import { awaitForAll } from '@injectivelabs/utils'
 
+const IGNORED_DENOMS = ['peggy0xB855dBC314C39BFa2583567E02a40CBB246CF82B']
+
 export class DenomClientAsync {
   private denomClient: DenomClient
 
@@ -96,6 +98,10 @@ export class DenomClientAsync {
 
     if (token) {
       return token
+    }
+
+    if (IGNORED_DENOMS) {
+      return getUnknownTokenWithSymbol(denom)
     }
 
     const isErc20 = denom.startsWith('peggy') || denom.startsWith('0x')

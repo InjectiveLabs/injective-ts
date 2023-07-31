@@ -585,7 +585,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xaC9Bb427953aC7FDDC562ADcA86CF42D988047Fd',
+      address: '0xcc4304a31d09258b0029ea7fe63d032f52e44efe',
       tokenType: TokenType.Erc20,
     },
   },
@@ -1071,6 +1071,12 @@ export default {
     logo: 'sommelier.png',
     coinGeckoId: 'sommelier',
 
+    erc20: {
+      decimals: 6,
+      address: '0xa670d7237398238DE01267472C6f13e5B8010FD1',
+      tokenType: TokenType.Erc20,
+    },
+
     ibc: {
       decimals: 6,
       isNative: true,
@@ -1519,5 +1525,145 @@ export default {
     logo: 'frcoin.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+  },
+
+  RAI: {
+    name: 'Rai Reflex Index',
+    symbol: 'RAI',
+    decimals: 18,
+    logo: 'rai.png',
+    coinGeckoId: 'rai',
+
+    erc20: {
+      decimals: 18,
+      address: '0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  BTSG: {
+    name: 'Rai Reflex Index',
+    symbol: 'BitSong',
+    decimals: 18,
+    logo: 'btsg.png',
+    coinGeckoId: 'bitsong',
+
+    erc20: {
+      decimals: 18,
+      address: '0x05079687D35b93538cbd59fe5596380cae9054A9',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  CVR: {
+    name: 'CoverCompared',
+    symbol: 'CVR',
+    decimals: 18,
+    logo: 'cvr.png',
+    coinGeckoId: 'covercompared',
+
+    erc20: {
+      decimals: 18,
+      address: '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  QNT: {
+    name: 'Quant',
+    symbol: 'QNT',
+    decimals: 18,
+    logo: 'qnt.png',
+    coinGeckoId: 'quant-network',
+
+    erc20: {
+      decimals: 18,
+      address: '0x4a220e6096b25eadb88358cb44068a3248254675',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  WSTETH: {
+    name: 'Lido wstETH',
+    symbol: 'WSTETH',
+    decimals: 18,
+    logo: 'wsteth.png',
+    coinGeckoId: 'wrapped-steth',
+
+    erc20: {
+      decimals: 18,
+      address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  DYDX: {
+    name: 'dYdX',
+    symbol: 'dYdX',
+    decimals: 18,
+    logo: 'dydx.png',
+    coinGeckoId: 'dydx',
+
+    erc20: {
+      decimals: 18,
+      address: '0x92d6c1e31e14520e676a687f0a93788b716beff5',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  XAC: {
+    name: 'General Attention Currency',
+    symbol: 'XAC',
+    decimals: 8,
+    logo: 'xac.png',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 8,
+      address: '0xDe4C5a791913838027a2185709E98c5C6027EA63',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  STETH: {
+    name: 'Lido Staked ETH',
+    symbol: 'stETH',
+    decimals: 18,
+    logo: 'steth.png',
+    coinGeckoId: 'staked-ether',
+
+    erc20: {
+      decimals: 18,
+      address: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  LYM: {
+    name: 'Lympo',
+    symbol: 'LYM',
+    decimals: 18,
+    logo: 'lympo.png',
+    coinGeckoId: 'lympo',
+
+    erc20: {
+      decimals: 18,
+      address: '0xc690f7c7fcffa6a82b79fab7508c466fefdfc8c5',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  OMI: {
+    name: 'ECOMI',
+    symbol: 'OMI',
+    decimals: 18,
+    logo: 'ecomi.png',
+    coinGeckoId: 'ecomi',
+
+    erc20: {
+      decimals: 18,
+      address: '0xed35af169af46a02ee13b9d79eb57d6d68c1749e',
+      tokenType: TokenType.Erc20,
+    },
   },
 } as Record<string, TokenMeta>
