@@ -77,6 +77,4 @@ export const CW20_ALLOCATOR_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj1nu9wf9dw384attnpu0pwfet5fajn05w2xp99u3',
 }
 
-export const CW20_MITO_MASTER_CONTRACT_CODE_ID = 1573
-
 export { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM }
