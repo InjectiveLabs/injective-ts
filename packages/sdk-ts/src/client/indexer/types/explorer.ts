@@ -205,6 +205,7 @@ export interface ExplorerValidator {
   timestamp: string
   uptimesList: ValidatorUptime[]
   slashingEventsList: ValidatorSlashingEvent[]
+  imageUrl: string
 }
 
 export interface CW20Message {
