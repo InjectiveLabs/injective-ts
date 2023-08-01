@@ -169,6 +169,7 @@ export class IndexerRestExplorerTransformer {
         signed: validator.signed,
         missed: validator.missed,
         uptimePercentage: validator.uptime_percentage,
+        imageUrl: validator.imageURL,
       }
     })
   }
