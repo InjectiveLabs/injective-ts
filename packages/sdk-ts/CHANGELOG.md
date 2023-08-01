@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.60](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.59...@injectivelabs/sdk-ts@1.12.0-beta.60) (2023-08-01)
+
+### Features
+
+- add image url to validator ([1f5d893](https://github.com/InjectiveLabs/injective-ts/commit/1f5d893a8ddb726efe390de45c85ae76d102fa53))
+
 # [1.12.0-beta.59](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.58...@injectivelabs/sdk-ts@1.12.0-beta.59) (2023-08-01)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
