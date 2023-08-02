@@ -100,7 +100,7 @@ export class DenomClientAsync {
       return token
     }
 
-    if (IGNORED_DENOMS) {
+    if (IGNORED_DENOMS.includes(denom)) {
       return getUnknownTokenWithSymbol(denom)
     }
 
