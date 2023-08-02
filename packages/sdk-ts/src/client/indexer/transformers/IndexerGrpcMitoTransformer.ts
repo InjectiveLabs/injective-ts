@@ -4,6 +4,7 @@ import {
   MitoVault,
   MitoHolders,
   MitoChanges,
+  MitoMission,
   MitoTransfer,
   MitoPortfolio,
   MitoPagination,
@@ -11,8 +12,10 @@ import {
   MitoDenomBalance,
   MitoSubscription,
   MitoPriceSnapshot,
-  MitoSubaccountBalance,
   MitoLeaderboardEpoch,
+  MitoSubaccountBalance,
+  MitoMissionLeaderboard,
+  MitoMissionLeaderboardEntry,
 } from '../types/mito'
 import { GrpcCoin } from '../../../types'
 
@@ -257,6 +260,37 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
+  static mitoLpHolderToLPHolder(holder: MitoApi.Holders): MitoHolders {
+    return {
+      holderAddress: holder.holderAddress,
+      vaultAddress: holder.vaultAddress,
+      amount: holder.amount,
+      updatedAt: parseInt(holder.updatedAt, 10),
+      lpAmountPercentage: holder.lpAmountPercentage,
+      redemptionLockTime: holder.redemptionLockTime,
+      stakedAmount: holder.stakedAmount,
+    }
+  }
+
+  static mitoMissionToMission(mission: MitoApi.Mission): MitoMission {
+    return {
+      id: mission.id,
+      points: mission.points,
+      completed: mission.completed,
+      accruedPoints: mission.accruedPoints,
+      updatedAt: parseInt(mission.updatedAt, 10),
+    }
+  }
+
+  static mitoMissionLeaderboardEntryToMissionLeaderboardEntry(
+    entry: MitoApi.MissionLeaderboardEntry,
+  ): MitoMissionLeaderboardEntry {
+    return {
+      address: entry.address,
+      accruedPoints: entry.accruedPoints,
+    }
+  }
+
   static vaultResponseToVault(response: MitoApi.GetVaultResponse): MitoVault {
     const [vault] = response.vault
 
@@ -294,15 +328,9 @@ export class IndexerGrpcMitoTransformer {
   static lpHoldersResponseToLPHolders(
     response: MitoApi.LPHoldersResponse,
   ): MitoHolders[] {
-    return response.holders.map((holder) => ({
-      holderAddress: holder.holderAddress,
-      vaultAddress: holder.vaultAddress,
-      amount: holder.amount,
-      updatedAt: parseInt(holder.updatedAt, 10),
-      lpAmountPercentage: holder.lpAmountPercentage,
-      redemptionLockTime: holder.redemptionLockTime,
-      stakedAmount: holder.stakedAmount,
-    }))
+    return response.holders.map(
+      IndexerGrpcMitoTransformer.mitoLpHolderToLPHolder,
+    )
   }
 
   static transferHistoryResponseToTransfer(
@@ -367,6 +395,21 @@ export class IndexerGrpcMitoTransformer {
       pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
         response.pagination,
       ),
+    }
+  }
+
+  static mitoMissionsResponseMissions(response: MitoApi.MissionsResponse) {
+    return response.data.map(IndexerGrpcMitoTransformer.mitoMissionToMission)
+  }
+
+  static mitoMissionLeaderboardResponseToMissionLeaderboard(
+    response: MitoApi.MissionLeaderboardResponse,
+  ): MitoMissionLeaderboard {
+    return {
+      entries: response.data.map(
+        IndexerGrpcMitoTransformer.mitoMissionLeaderboardEntryToMissionLeaderboardEntry,
+      ),
+      updatedAt: parseInt(response.updatedAt, 10),
     }
   }
 }

@@ -148,17 +148,37 @@ export interface MitoStakingActivity {
   numberByAccount: number
 }
 
+export interface MitoMission {
+  id: string
+  points: string
+  completed: boolean
+  accruedPoints: string
+  updatedAt: number
+}
+
+export interface MitoMissionLeaderboardEntry {
+  address: string
+  accruedPoints: string
+}
+
+export interface MitoMissionLeaderboard {
+  entries: MitoMissionLeaderboardEntry[]
+  updatedAt: number
+}
+
 export type GrpcMitoVault = MitoApi.Vault
+export type GrpcMitoMission = MitoApi.Mission
 export type GrpcMitoChanges = MitoApi.Changes
 export type GrpcMitoHolders = MitoApi.Holders
+export type GrpcMitoStakingGauge = MitoApi.Gauge
 export type GrpcMitoPagination = MitoApi.Pagination
+export type GrpcMitoStakingPool = MitoApi.StakingPool
 export type GrpcMitoDenomBalance = MitoApi.DenomBalance
 export type GrpcMitoSubscription = MitoApi.Subscription
 export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
 export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
 export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch
-export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance
-export type GrpcMitoStakingGauge = MitoApi.Gauge
-export type GrpcMitoStakingPool = MitoApi.StakingPool
 export type GrpcMitoStakingStakingReward = MitoApi.StakingReward
+export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance
 export type GrpcMitoStakingStakingActivity = MitoApi.StakingActivity
+export type GrpcMitoMissionLeaderboardEntry = MitoApi.MissionLeaderboardEntry
