@@ -585,14 +585,70 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'StakingHistory',
+          context: 'StakingReward',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'StakingHistory',
+        context: 'StakingReward',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchMissions({ accountAddress }: { accountAddress: string }) {
+    const request = MitoApi.MissionsRequest.create()
+
+    request.accountAddress = accountAddress
+
+    try {
+      const response = await this.retry<MitoApi.MissionsResponse>(() =>
+        this.client.Missions(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoMissionsResponseMissions(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Missions',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Missions',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchMissionLeaderboard() {
+    const request = MitoApi.MissionLeaderboardRequest.create()
+
+    try {
+      const response = await this.retry<MitoApi.MissionLeaderboardResponse>(
+        () => this.client.MissionLeaderboard(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoMissionLeaderboardResponseToMissionLeaderboard(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'MissionLeaderboard',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'MissionLeaderboard',
         contextModule: this.module,
       })
     }

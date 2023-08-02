@@ -244,4 +244,77 @@ describe('IndexerGrpcMitoApi', () => {
       )
     }
   })
+
+  test('fetchLeaderboardEpochs', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchLeaderboardEpochs({})
+
+      if (response.epochs.length === 0) {
+        console.warn('fetchLeaderboardEpochs.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.leaderboardEpochsResponseToLeaderboardEpochs
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchLeaderboardEpochs vaults => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchMissions', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchMissions({
+        accountAddress: injectiveAddress,
+      })
+
+      if (response.length === 0) {
+        console.warn('fetchMissions.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.mitoMissionsResponseMissions
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchMissions missions => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchMissionLeaderboard', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchMissionLeaderboard()
+
+      if (response.data.length === 0) {
+        console.warn('fetchMissionLeaderboard.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.mitoMissionLeaderboardResponseToMissionLeaderboard
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchMissionLeaderboard missionLeaderboard => ' +
+          (e as any).message,
+      )
+    }
+  })
 })
