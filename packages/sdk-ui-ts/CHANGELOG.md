@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.67](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.66...@injectivelabs/sdk-ui-ts@1.12.0-beta.67) (2023-08-02)
+
+### Bug Fixes
+
+- not includes denom ([9dcec26](https://github.com/InjectiveLabs/injective-ts/commit/9dcec26842da3db97a3011f92818b73638960977))
+
 # [1.12.0-beta.66](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.65...@injectivelabs/sdk-ui-ts@1.12.0-beta.66) (2023-08-02)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
