@@ -154,6 +154,8 @@ export interface MitoMission {
   completed: boolean
   accruedPoints: string
   updatedAt: number
+  progress: number
+  expected: number
 }
 
 export interface MitoMissionLeaderboardEntry {

@@ -276,6 +276,8 @@ export class IndexerGrpcMitoTransformer {
     return {
       id: mission.id,
       points: mission.points,
+      progress: mission.progress,
+      expected: mission.expected,
       completed: mission.completed,
       accruedPoints: mission.accruedPoints,
       updatedAt: parseInt(mission.updatedAt, 10),
