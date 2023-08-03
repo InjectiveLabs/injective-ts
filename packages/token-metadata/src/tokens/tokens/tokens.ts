@@ -1527,6 +1527,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  DEMO: {
+    name: 'Demo Coin',
+    symbol: 'DEMO',
+    decimals: 6,
+    logo: 'injective-v3.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   RAI: {
     name: 'Rai Reflex Index',
     symbol: 'RAI',
