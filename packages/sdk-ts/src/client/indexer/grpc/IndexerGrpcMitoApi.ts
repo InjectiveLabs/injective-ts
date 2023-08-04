@@ -657,4 +657,231 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchIDO({
+    contractAddress,
+    accountAddress,
+  }: {
+    contractAddress: string
+    accountAddress?: string
+  }) {
+    const request = MitoApi.GetIDORequest.create()
+
+    request.contractAddress = contractAddress
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
+    }
+
+    try {
+      const response = await this.retry<MitoApi.GetIDOResponse>(() =>
+        this.client.GetIDO(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoIDOResponseToIDO(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetIDO',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetIdo',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchIDOs({
+    status,
+    limit,
+    toNumber,
+    accountAddress,
+  }: {
+    status?: string
+    limit?: number
+    toNumber?: number
+    accountAddress?: string
+  } = {}) {
+    const request = MitoApi.ListIDOsRequest.create()
+
+    if (status) {
+      request.status = status
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    if (toNumber) {
+      request.toNumber = toNumber
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
+    }
+
+    try {
+      const response = await this.retry<MitoApi.ListIDOsResponse>(() =>
+        this.client.ListIDOs(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoListIDOsResponseToIDOs(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'ListIDOs',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'ListIDOs',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchIDOSubscribers({
+    contractAddress,
+    limit,
+    skip,
+  }: {
+    contractAddress: string
+    limit?: number
+    skip?: number
+  }) {
+    const request = MitoApi.GetIDOSubscribersRequest.create()
+
+    request.contractAddress = contractAddress
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    if (skip) {
+      request.skip = skip
+    }
+
+    try {
+      const response = await this.retry<MitoApi.GetIDOSubscribersResponse>(() =>
+        this.client.GetIDOSubscribers(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoIDOSubscribersResponseToIDOSubscribers(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetIDOSubscribers',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetIDOSubscribers',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchIDOSubscription({
+    contractAddress,
+    accountAddress,
+  }: {
+    contractAddress: string
+    accountAddress: string
+  }) {
+    const request = MitoApi.GetIDOSubscriptionRequest.create()
+
+    request.accountAddress = accountAddress
+    request.contractAddress = contractAddress
+
+    try {
+      const response = await this.retry<MitoApi.GetIDOSubscriptionResponse>(
+        () => this.client.GetIDOSubscription(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoIDOSubscriptionResponseToIDOSubscription(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetIDOSubscription',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetIDOSubscription',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchIDOActivities({
+    contractAddress,
+    accountAddress,
+    limit,
+    toNumber,
+  }: {
+    contractAddress?: string
+    accountAddress?: string
+    limit?: number
+    toNumber?: string
+  } = {}) {
+    const request = MitoApi.GetIDOActivitiesRequest.create()
+
+    if (contractAddress) {
+      request.contractAddress = contractAddress
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    if (toNumber) {
+      request.toNumber = toNumber
+    }
+
+    try {
+      const response = await this.retry<MitoApi.GetIDOActivitiesResponse>(() =>
+        this.client.GetIDOActivities(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoIDOActivitiesResponseToIDOActivities(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetIDOActivities',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetIDOActivities',
+        contextModule: this.module,
+      })
+    }
+  }
 }

@@ -169,19 +169,91 @@ export interface MitoMissionLeaderboard {
   rank?: string
 }
 
+export interface MitoTokenInfo {
+  denom: string
+  supply: string
+  symbol: string
+  decimal: number
+  logoUrl: string
+}
+
+export interface MitoIDOProgress {
+  status: string
+  timestamp: number
+}
+
+export interface MitoStakeToSubscription {
+  baseAmount: string
+  quoteAmount: string
+}
+
+export interface MitoIDO {
+  startTime: number
+  endTime: number
+  owner: string
+  status: string
+  tokenInfo?: MitoTokenInfo
+  expectedRaiseFund?: Coin
+  capPerAddress: string
+  contractAddress: string
+  subscribedAmount: string
+  tokenPrice: number
+  swappedAmount: string
+  isAccountWhiteListed: boolean
+  name: string
+  amount: string
+  progress: MitoIDOProgress[]
+  quoteDenom: string
+  stakeToSubscription: MitoStakeToSubscription[]
+}
+
+export interface MitoIDOSubscriber {
+  address: string
+  subscribedCoin?: Coin
+  lastSubscribeTime: number
+  estimateTokenReceived?: Coin
+  estimateLpAmount: string
+}
+
+export interface MitoIDOSubscriptionActivity {
+  address: string
+  subscribedCoin?: Coin
+  usdValue: number
+  timestamp: number
+  txHash: string
+}
+
+export interface MitoIDOSubscription {
+  maxSubscriptionCoin?: Coin
+  committedAmount: string
+  price: number
+  claimableCoins: Coin[]
+  rewardClaimed: boolean
+  tokenInfo?: MitoTokenInfo
+  quoteDenom: string
+  updatedAt: number
+  stakedAmount: string
+}
+
+export type GrpcMitoIDO = MitoApi.IDO
 export type GrpcMitoVault = MitoApi.Vault
 export type GrpcMitoMission = MitoApi.Mission
 export type GrpcMitoChanges = MitoApi.Changes
 export type GrpcMitoHolders = MitoApi.Holders
 export type GrpcMitoStakingGauge = MitoApi.Gauge
+export type GrpcMitoTokenInfo = MitoApi.TokenInfo
 export type GrpcMitoPagination = MitoApi.Pagination
+export type GrpcMitoIDOProgress = MitoApi.IDOProgress
 export type GrpcMitoStakingPool = MitoApi.StakingPool
 export type GrpcMitoDenomBalance = MitoApi.DenomBalance
 export type GrpcMitoSubscription = MitoApi.Subscription
 export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
+export type GrpcMitoIDOSubscriber = MitoApi.IDOSubscriber
+export type GrpcMitoIDOSubscription = MitoApi.IDOSubscription
 export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
 export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch
 export type GrpcMitoStakingStakingReward = MitoApi.StakingReward
 export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance
 export type GrpcMitoStakingStakingActivity = MitoApi.StakingActivity
 export type GrpcMitoMissionLeaderboardEntry = MitoApi.MissionLeaderboardEntry
+export type GrpcMitoIDOSubscriptionActivity = MitoApi.IDOSubscriptionActivity
