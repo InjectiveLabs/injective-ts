@@ -8,6 +8,7 @@ import ExecArgCW20Transfer from './exec-args/ExecArgCW20Transfer'
 import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens'
 import ExecArgRegisterVault from './exec-args/ExecArgRegisterVault'
 import ExecArgSwapMinOutput from './exec-args/ExecArgSwapMinOutput'
+import ExecArgCreateStrategy from './exec-args/ExecArgCreateStrategy'
 import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
@@ -36,6 +37,7 @@ export type ExecArgs =
   | ExecArgSwapMinOutput
   | ExecArgDepositTokens
   | ExecArgRegisterVault
+  | ExecArgCreateStrategy
   | ExecArgSwapExactOutput
   | ExecArgInitiateTransfer
   | ExecArgIncreaseAllowance
