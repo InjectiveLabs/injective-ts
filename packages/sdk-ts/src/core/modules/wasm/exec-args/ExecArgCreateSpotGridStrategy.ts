@@ -4,7 +4,7 @@ import {
   ExecDataRepresentation,
 } from '../ExecArgBase'
 
-export declare namespace ExecArgCreateStrategy {
+export declare namespace ExecArgCreateSpotGridStrategy {
   export interface Params {
     subaccountId: string
     lowerBound: string
@@ -29,15 +29,17 @@ export declare namespace ExecArgCreateStrategy {
 /**
  * @category Contract Exec Arguments
  */
-export default class ExecArgCreateStrategy extends ExecArgBase<
-  ExecArgCreateStrategy.Params,
-  ExecArgCreateStrategy.Data
+export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
+  ExecArgCreateSpotGridStrategy.Params,
+  ExecArgCreateSpotGridStrategy.Data
 > {
-  static fromJSON(params: ExecArgCreateStrategy.Params): ExecArgCreateStrategy {
-    return new ExecArgCreateStrategy(params)
+  static fromJSON(
+    params: ExecArgCreateSpotGridStrategy.Params,
+  ): ExecArgCreateSpotGridStrategy {
+    return new ExecArgCreateSpotGridStrategy(params)
   }
 
-  toData(): ExecArgCreateStrategy.Data {
+  toData(): ExecArgCreateSpotGridStrategy.Data {
     const { params } = this
 
     return {
@@ -51,7 +53,7 @@ export default class ExecArgCreateStrategy extends ExecArgBase<
     }
   }
 
-  toExecData(): ExecDataRepresentation<ExecArgCreateStrategy.Data> {
+  toExecData(): ExecDataRepresentation<ExecArgCreateSpotGridStrategy.Data> {
     return dataToExecData('create_strategy', this.toData())
   }
 }

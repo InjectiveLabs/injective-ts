@@ -8,12 +8,12 @@ import ExecArgCW20Transfer from './exec-args/ExecArgCW20Transfer'
 import ExecArgSwapMinOutput from './exec-args/ExecArgSwapMinOutput'
 import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens'
 import ExecArgRegisterVault from './exec-args/ExecArgRegisterVault'
-import ExecArgCreateStrategy from './exec-args/ExecArgCreateStrategy'
 import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgUpdateAMMVaultConfig from './exec-args/ExecArgUpdateAMMVaultConfig'
 import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
+import ExecArgCreateSpotGridStrategy from './exec-args/ExecArgCreateSpotGridStrategy'
 import ExecArgUpdateOffChainVaultConfig from './exec-args/ExecArgUpdateOffChainVaultConfig'
 import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
 import ExecArgUpdateStakingContractConfig from './exec-args/ExecArgUpdateStakingContractConfig'
@@ -46,12 +46,12 @@ export {
   ExecArgSwapMinOutput,
   ExecArgDepositTokens,
   ExecArgRegisterVault,
-  ExecArgCreateStrategy,
   ExecArgSwapExactOutput,
   ExecArgInitiateTransfer,
   ExecArgIncreaseAllowance,
   ExecArgUpdateAMMVaultConfig,
   ExecArgUpdateSpotVaultConfig,
+  ExecArgCreateSpotGridStrategy,
   ExecArgUpdateOffChainVaultConfig,
   ExecArgUpdateDerivativeVaultConfig,
   ExecArgUpdateStakingContractConfig,
