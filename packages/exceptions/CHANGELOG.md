@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.12.0-beta.10...@injectivelabs/exceptions@1.12.0-beta.11) (2023-08-06)
+
+### Features
+
+- initial grid strategies list impl ([955ac92](https://github.com/InjectiveLabs/injective-ts/commit/955ac923e52be707fda327b4bd99060a4ea6401d))
+
 # [1.12.0-beta.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.12.0-beta.9...@injectivelabs/exceptions@1.12.0-beta.10) (2023-07-04)
 
 **Note:** Version bump only for package @injectivelabs/exceptions

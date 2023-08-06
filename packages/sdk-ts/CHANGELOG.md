@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.65](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.64...@injectivelabs/sdk-ts@1.12.0-beta.65) (2023-08-06)
+
+### Features
+
+- initial grid strategies list impl ([955ac92](https://github.com/InjectiveLabs/injective-ts/commit/955ac923e52be707fda327b4bd99060a4ea6401d))
+
 # [1.12.0-beta.64](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.63...@injectivelabs/sdk-ts@1.12.0-beta.64) (2023-08-03)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
