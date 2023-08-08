@@ -22,8 +22,14 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchGridStrategies() {
-    const request = InjectiveTradingRpc.ListTradingStrategiesRequest.create()
+  async fetchGridStrategies(params: {
+    accountAddress?: string
+    subaccountId?: string
+    state?: string
+    marketId?: string
+  }) {
+    const request =
+      InjectiveTradingRpc.ListTradingStrategiesRequest.create(params)
 
     try {
       const response =

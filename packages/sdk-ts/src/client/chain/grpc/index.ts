@@ -1,5 +1,6 @@
 export { ChainGrpcAuctionApi } from './ChainGrpcAuctionApi'
 export { ChainGrpcAuthApi } from './ChainGrpcAuthApi'
+export { ChainGrpcAuthZApi } from './ChainGrpcAuthzApi'
 export { ChainGrpcBankApi } from './ChainGrpcBankApi'
 export { ChainGrpcDistributionApi } from './ChainGrpcDistributionApi'
 export { ChainGrpcExchangeApi } from './ChainGrpcExchangeApi'
