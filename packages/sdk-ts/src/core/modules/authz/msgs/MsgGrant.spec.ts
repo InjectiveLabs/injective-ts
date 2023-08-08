@@ -40,6 +40,17 @@ const protoParamsAmino = snakecaseKeys({
     expiration: new Date(params.expiration! * 1000),
   },
 })
+const protoParamsWeb3 = {
+  grantee: params.grantee,
+  granter: params.granter,
+  grant: {
+    authorization: {
+      '@type': '/cosmos.authz.v1beta1.GenericAuthorization',
+      msg: params.messageType,
+    },
+    expiration: new Date(params.expiration! * 1000),
+  },
+}
 const message = MsgGrant.fromJSON(params)
 
 describe('MsgGrant', () => {
@@ -111,7 +122,7 @@ describe('MsgGrant', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...protoParamsAmino,
+      ...protoParamsWeb3,
     })
   })
 })
