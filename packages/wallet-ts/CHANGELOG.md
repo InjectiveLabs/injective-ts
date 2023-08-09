@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.69...@injectivelabs/wallet-ts@1.12.0-beta.70) (2023-08-09)
+
+### Features
+
+- added trust wallet ([47bae16](https://github.com/InjectiveLabs/injective-ts/commit/47bae16f3a49f075a5733d5170c315c2f411bef3))
+
 # [1.12.0-beta.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.68...@injectivelabs/wallet-ts@1.12.0-beta.69) (2023-08-08)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

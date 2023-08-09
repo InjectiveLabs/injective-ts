@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.12.0-beta.11...@injectivelabs/exceptions@1.12.0-beta.12) (2023-08-09)
+
+### Bug Fixes
+
+- export ([c3491fa](https://github.com/InjectiveLabs/injective-ts/commit/c3491fa4f400eadd59a232535dd11993ce4a82f4))
+
+### Features
+
+- added trust wallet ([47bae16](https://github.com/InjectiveLabs/injective-ts/commit/47bae16f3a49f075a5733d5170c315c2f411bef3))
+
 # [1.12.0-beta.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.12.0-beta.10...@injectivelabs/exceptions@1.12.0-beta.11) (2023-08-06)
 
 ### Features

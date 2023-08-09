@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.12.0-beta.15...@injectivelabs/utils@1.12.0-beta.16) (2023-08-09)
+
+**Note:** Version bump only for package @injectivelabs/utils
+
 # [1.12.0-beta.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/utils@1.12.0-beta.14...@injectivelabs/utils@1.12.0-beta.15) (2023-08-06)
 
 **Note:** Version bump only for package @injectivelabs/utils
