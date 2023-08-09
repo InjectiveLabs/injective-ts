@@ -2,9 +2,10 @@ import { Wallet } from '../../types/enums'
 
 export const isEthWallet = (wallet: Wallet): boolean =>
   [
-    Wallet.Metamask,
+    Wallet.Trezor,
     Wallet.Torus,
     Wallet.Ledger,
-    Wallet.Trezor,
+    Wallet.Metamask,
+    Wallet.TrustWallet,
     Wallet.CosmostationEth,
   ].includes(wallet)
