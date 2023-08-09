@@ -46,15 +46,21 @@ function getTrustWalletFromWindow() {
   }
 
   const injectedProviderExist =
-    typeof window !== 'undefined' && typeof $window.ethereum !== 'undefined'
+    typeof window !== 'undefined' &&
+    (typeof $window.ethereum !== 'undefined' ||
+      typeof $window.trustWallet !== 'undefined')
 
   // No injected providers exist.
   if (!injectedProviderExist) {
     return null
   }
 
-  // Trust Wallet was injected into $window.ethereum.
+  if ($window.trustWallet) {
+    return $window.trustWallet
+  }
+
   if (isTrustWallet($window.ethereum)) {
+    // Trust Wallet was injected into $window.ethereum.
     return $window.ethereum
   }
 
@@ -62,6 +68,5 @@ function getTrustWalletFromWindow() {
     return $window.providers.find(isTrustWallet) ?? null
   }
 
-  // @ts-ignore
-  return window['trustwallet'] ?? null
+  return null
 }

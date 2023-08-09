@@ -48,7 +48,6 @@ function getMetamaskFromWindow() {
     return null
   }
 
-  // Metamask Wallet was injected into $window.ethereum.
   if (isMetamask($window.ethereum)) {
     return $window.ethereum
   }
@@ -57,6 +56,5 @@ function getMetamaskFromWindow() {
     return $window.providers.find(isMetamask) ?? null
   }
 
-  // @ts-ignore
-  return window['ethereum'] ?? null
+  return null
 }
