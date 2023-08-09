@@ -278,7 +278,7 @@ export default class TrustWallet
       return $window.ethereum
     }
 
-    const provider = $window.providers.find((provider) => provider.isMetaMask)
+    const provider = $window.providers.find((provider) => provider.isTrust)
 
     if (!provider) {
       throw new TrustWalletException(

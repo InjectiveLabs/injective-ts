@@ -20,10 +20,13 @@ import {
   TxResponse,
   isServerSide,
 } from '@injectivelabs/sdk-ts'
-import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
-import { BrowserEip1993Provider, WindowWithEip1193Provider } from '../types'
-import BaseConcreteStrategy from './Base'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import {
+  ConcreteWalletStrategy,
+  EthereumWalletStrategyArgs,
+} from '../../../types'
+import { BrowserEip1993Provider, WindowWithEip1193Provider } from '../../types'
+import BaseConcreteStrategy from '../Base'
+import { WalletAction, WalletDeviceType } from '../../../../types/enums'
 
 const $window = (isServerSide()
   ? {}
@@ -42,7 +45,7 @@ export default class Metamask
   }
 
   async getAddresses(): Promise<string[]> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       return await ethereum.request({
@@ -70,7 +73,7 @@ export default class Metamask
     transaction: unknown,
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       return await ethereum.request({
@@ -134,7 +137,7 @@ export default class Metamask
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       return await ethereum.request({
@@ -171,7 +174,7 @@ export default class Metamask
     signer: AccountAddress,
     data: string | Uint8Array,
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       const signature = await ethereum.request({
@@ -190,7 +193,7 @@ export default class Metamask
   }
 
   async getEthereumChainId(): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       return ethereum.request({ method: 'eth_chainId' })
@@ -204,7 +207,7 @@ export default class Metamask
   }
 
   async getEthereumTransactionReceipt(txHash: string): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     const interval = 1000
     const transactionReceiptRetry = async () => {
@@ -239,51 +242,27 @@ export default class Metamask
     )
   }
 
-  onChainIdChanged(callback: () => void): void {
-    const ethereum = this.getEthereum()
-
-    if (!ethereum) {
-      return
-    }
-
-    ethereum.on('chainChanged', callback)
+  onChainIdChanged(_callback: () => void): void {
+    //
   }
 
-  onAccountChange(callback: (account: AccountAddress) => void): void {
-    const ethereum = this.getEthereum()
-
-    if (!ethereum) {
-      return
-    }
-
-    ethereum.on('accountsChanged', callback)
+  onAccountChange(_callback: (account: AccountAddress) => void): void {
+    //
   }
 
   cancelOnChainIdChange(): void {
-    const ethereum = this.getEthereum()
-
-    if (ethereum) {
-      // ethereum.removeListener('chainChanged', handler)
-    }
+    //
   }
 
   cancelOnAccountChange(): void {
-    const ethereum = this.getEthereum()
-
-    if (ethereum) {
-      // ethereum.removeListener('chainChanged', handler)
-    }
+    //
   }
 
   cancelAllEvents(): void {
-    const ethereum = this.getEthereum()
-
-    if (ethereum) {
-      ethereum.removeAllListeners()
-    }
+    //
   }
 
-  private getEthereum(): BrowserEip1993Provider {
+  private async getEthereum(): Promise<BrowserEip1993Provider> {
     if (!$window.ethereum && !$window.providers.length) {
       throw new MetamaskException(
         new Error('Please install the Metamask wallet extension.'),
