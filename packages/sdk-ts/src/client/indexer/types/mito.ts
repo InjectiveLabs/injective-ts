@@ -166,6 +166,7 @@ export interface MitoMissionLeaderboardEntry {
 export interface MitoMissionLeaderboard {
   entries: MitoMissionLeaderboardEntry[]
   updatedAt: number
+  rank?: string
 }
 
 export type GrpcMitoVault = MitoApi.Vault
