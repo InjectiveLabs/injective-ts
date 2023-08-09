@@ -5,9 +5,7 @@ const $window = (isServerSide()
   ? {}
   : window) as unknown as WindowWithEip1193Provider
 
-export async function getMetamaskInjectedProvider(
-  { timeout } = { timeout: 3000 },
-) {
+export async function getMetamaskProvider({ timeout } = { timeout: 3000 }) {
   const provider = getMetamaskFromWindow()
 
   if (provider) {
