@@ -13,24 +13,15 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import {
-  TxRaw,
-  toUtf8,
-  TxGrpcApi,
-  TxResponse,
-  isServerSide,
-} from '@injectivelabs/sdk-ts'
+import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
 } from '../../../types'
-import { BrowserEip1993Provider, WindowWithEip1193Provider } from '../../types'
+import { BrowserEip1993Provider } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import { WalletAction, WalletDeviceType } from '../../../../types/enums'
-
-const $window = (isServerSide()
-  ? {}
-  : window) as unknown as WindowWithEip1193Provider
+import { getMetamaskProvider } from './utils'
 
 export default class Metamask
   extends BaseConcreteStrategy
@@ -263,22 +254,7 @@ export default class Metamask
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {
-    if (!$window.ethereum && !$window.providers.length) {
-      throw new MetamaskException(
-        new Error('Please install the Metamask wallet extension.'),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletNotInstalledError,
-          contextModule: WalletAction.GetAccounts,
-        },
-      )
-    }
-
-    if ($window.ethereum.isMetaMask) {
-      return $window.ethereum
-    }
-
-    const provider = $window.providers.find((provider) => provider.isMetaMask)
+    const provider = await getMetamaskProvider()
 
     if (!provider) {
       throw new MetamaskException(

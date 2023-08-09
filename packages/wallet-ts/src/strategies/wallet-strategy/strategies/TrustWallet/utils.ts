@@ -12,7 +12,9 @@ export async function getTrustWalletProvider({ timeout } = { timeout: 3000 }) {
     return provider
   }
 
-  return listenForTrustWalletInitialized({ timeout })
+  return listenForTrustWalletInitialized({
+    timeout,
+  }) as Promise<BrowserEip1993Provider>
 }
 
 async function listenForTrustWalletInitialized(

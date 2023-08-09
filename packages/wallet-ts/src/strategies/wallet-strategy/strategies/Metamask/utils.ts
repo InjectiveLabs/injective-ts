@@ -12,7 +12,9 @@ export async function getMetamaskProvider({ timeout } = { timeout: 3000 }) {
     return provider
   }
 
-  return listenForMetamaskInitialized({ timeout })
+  return listenForMetamaskInitialized({
+    timeout,
+  }) as Promise<BrowserEip1993Provider>
 }
 
 async function listenForMetamaskInitialized({ timeout } = { timeout: 3000 }) {
