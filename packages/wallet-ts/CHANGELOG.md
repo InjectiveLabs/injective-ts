@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.77](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.76...@injectivelabs/wallet-ts@1.12.0-beta.77) (2023-08-10)
+
+### Bug Fixes
+
+- mapping of grantAuthorization ([58d1310](https://github.com/InjectiveLabs/injective-ts/commit/58d1310895c2a6abdd19fc9a8e651708d570ff55))
+
 # [1.12.0-beta.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.75...@injectivelabs/wallet-ts@1.12.0-beta.76) (2023-08-10)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

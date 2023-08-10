@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.69...@injectivelabs/sdk-ts@1.12.0-beta.70) (2023-08-10)
+
+### Bug Fixes
+
+- mapping of grantAuthorization ([58d1310](https://github.com/InjectiveLabs/injective-ts/commit/58d1310895c2a6abdd19fc9a8e651708d570ff55))
+- msgGrant web3 ([9e0eb14](https://github.com/InjectiveLabs/injective-ts/commit/9e0eb14be27d89b67e8d18520956e04d3d68cd92))
+- type export ([70995ef](https://github.com/InjectiveLabs/injective-ts/commit/70995ef0a64e921674b91a0cfd16b679c7d5b327))
+
+### Features
+
+- authz types and more methods ([6e6a1d8](https://github.com/InjectiveLabs/injective-ts/commit/6e6a1d8420a19866256c895107d67e4e1099c77b))
+- create spot grid strategy ([a57c40b](https://github.com/InjectiveLabs/injective-ts/commit/a57c40bb58071539545fc2dae45f5f50e0fb2499))
+- indexerTradingApi - autzh api - create strategy ([ec2e1a4](https://github.com/InjectiveLabs/injective-ts/commit/ec2e1a4649cbacb1b2f25d4b0b73e9d3f6d74f8a))
+
 # [1.12.0-beta.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.68...@injectivelabs/sdk-ts@1.12.0-beta.69) (2023-08-10)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
