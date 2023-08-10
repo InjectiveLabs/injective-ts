@@ -1,13 +1,16 @@
 import Eip1993Provider from 'eip1193-provider'
 import HDNode from 'hdkey'
 
-export interface Eip1993ProviderWithMetamask extends Eip1993Provider {
+export interface BrowserEip1993Provider extends Eip1993Provider {
   removeAllListeners(): void
   isMetaMask: boolean
+  isTrust: boolean
 }
 
 export interface WindowWithEip1193Provider extends Window {
-  ethereum: Eip1993ProviderWithMetamask
+  ethereum: BrowserEip1993Provider
+  providers: BrowserEip1993Provider[]
+  trustWallet?: BrowserEip1993Provider
 }
 
 export interface WindowWithLedgerSupport extends Window {

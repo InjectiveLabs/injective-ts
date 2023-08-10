@@ -7,6 +7,7 @@ import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import Metamask from './strategies/Metamask'
+import TrustWallet from './strategies/TrustWallet'
 import {
   ConcreteWalletStrategy,
   onAccountChangeCallback,
@@ -83,6 +84,8 @@ const createStrategy = ({
   switch (wallet) {
     case Wallet.Metamask:
       return new Metamask(ethWalletArgs)
+    case Wallet.TrustWallet:
+      return new TrustWallet(ethWalletArgs)
     case Wallet.Ledger:
       return new LedgerLive(ethWalletArgs)
     case Wallet.LedgerLegacy:
@@ -239,7 +242,10 @@ export default class WalletStrategy {
     return this.getStrategy().signCosmosTransaction(transaction)
   }
 
-  public async signArbitrary(signer: string, data: string | Uint8Array): Promise<string | void> {
+  public async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string | void> {
     if (this.getStrategy().signArbitrary) {
       return this.getStrategy().signArbitrary!(signer, data)
     }

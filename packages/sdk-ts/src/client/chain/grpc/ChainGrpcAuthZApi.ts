@@ -25,18 +25,8 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchGrants({
-    pagination,
-    params,
-  }: {
-    pagination?: PaginationOption
-    params: {
-      granter: string
-      grantee: string
-      msgTypeUrl?: string
-    }
-  }) {
-    const request = CosmosAuthzV1Beta1Query.QueryGrantsRequest.create(params)
+  async fetchGrants(pagination?: PaginationOption) {
+    const request = CosmosAuthzV1Beta1Query.QueryGrantsRequest.create()
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 

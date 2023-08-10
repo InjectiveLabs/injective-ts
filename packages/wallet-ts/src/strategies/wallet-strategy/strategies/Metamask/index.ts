@@ -1,46 +1,34 @@
 /* eslint-disable class-methods-use-this */
 import { sleep } from '@injectivelabs/utils'
 import {
-  AccountAddress,
   ChainId,
+  AccountAddress,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
-  WalletException,
   ErrorType,
+  WalletException,
   MetamaskException,
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
-  TxGrpcApi,
-  TxRaw,
-  TxResponse,
-  isServerSide,
-  toUtf8,
-} from '@injectivelabs/sdk-ts'
-import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
-import {
-  Eip1993ProviderWithMetamask,
-  WindowWithEip1193Provider,
-} from '../types'
-import BaseConcreteStrategy from './Base'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
-
-const $window = (isServerSide()
-  ? {}
-  : window) as unknown as WindowWithEip1193Provider
+  ConcreteWalletStrategy,
+  EthereumWalletStrategyArgs,
+} from '../../../types'
+import { BrowserEip1993Provider } from '../../types'
+import BaseConcreteStrategy from '../Base'
+import { WalletAction, WalletDeviceType } from '../../../../types/enums'
+import { getMetamaskProvider } from './utils'
 
 export default class Metamask
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  private ethereum: Eip1993ProviderWithMetamask
-
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
-    this.ethereum = $window.ethereum
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -48,7 +36,7 @@ export default class Metamask
   }
 
   async getAddresses(): Promise<string[]> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       return await ethereum.request({
@@ -76,7 +64,7 @@ export default class Metamask
     transaction: unknown,
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       return await ethereum.request({
@@ -140,7 +128,7 @@ export default class Metamask
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       return await ethereum.request({
@@ -177,7 +165,7 @@ export default class Metamask
     signer: AccountAddress,
     data: string | Uint8Array,
   ): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       const signature = await ethereum.request({
@@ -196,7 +184,7 @@ export default class Metamask
   }
 
   async getEthereumChainId(): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     try {
       return ethereum.request({ method: 'eth_chainId' })
@@ -210,7 +198,7 @@ export default class Metamask
   }
 
   async getEthereumTransactionReceipt(txHash: string): Promise<string> {
-    const ethereum = this.getEthereum()
+    const ethereum = await this.getEthereum()
 
     const interval = 1000
     const transactionReceiptRetry = async () => {
@@ -245,54 +233,30 @@ export default class Metamask
     )
   }
 
-  onChainIdChanged(callback: () => void): void {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      return
-    }
-
-    ethereum.on('chainChanged', callback)
+  onChainIdChanged(_callback: () => void): void {
+    //
   }
 
-  onAccountChange(callback: (account: AccountAddress) => void): void {
-    const { ethereum } = this
-
-    if (!ethereum) {
-      return
-    }
-
-    ethereum.on('accountsChanged', callback)
+  onAccountChange(_callback: (account: AccountAddress) => void): void {
+    //
   }
 
   cancelOnChainIdChange(): void {
-    const { ethereum } = this
-
-    if (ethereum) {
-      // ethereum.removeListener('chainChanged', handler)
-    }
+    //
   }
 
   cancelOnAccountChange(): void {
-    const { ethereum } = this
-
-    if (ethereum) {
-      // ethereum.removeListener('chainChanged', handler)
-    }
+    //
   }
 
   cancelAllEvents(): void {
-    const { ethereum } = this
-
-    if (ethereum) {
-      ethereum.removeAllListeners()
-    }
+    //
   }
 
-  private getEthereum(): Eip1993ProviderWithMetamask {
-    const { ethereum } = this
+  private async getEthereum(): Promise<BrowserEip1993Provider> {
+    const provider = await getMetamaskProvider()
 
-    if (!ethereum) {
+    if (!provider) {
       throw new MetamaskException(
         new Error('Please install the Metamask wallet extension.'),
         {
@@ -303,6 +267,6 @@ export default class Metamask
       )
     }
 
-    return ethereum
+    return provider
   }
 }

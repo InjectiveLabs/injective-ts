@@ -626,8 +626,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchMissionLeaderboard() {
+  async fetchMissionLeaderboard(userAddress?: string) {
     const request = MitoApi.MissionLeaderboardRequest.create()
+
+    if (userAddress) {
+      request.userAddress = userAddress
+    }
 
     try {
       const response = await this.retry<MitoApi.MissionLeaderboardResponse>(

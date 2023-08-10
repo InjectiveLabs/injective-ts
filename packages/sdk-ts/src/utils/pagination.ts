@@ -55,11 +55,15 @@ export const generatePagination = (
 }
 
 export const paginationUint8ArrayToString = (key: any) => {
+  if (!key) {
+    return ''
+  }
+
   if (key.constructor !== Uint8Array) {
     return key as string
   }
 
-  return new TextDecoder().decode(key)
+  return Buffer.from(key).toString('base64')
 }
 
 export const pageResponseToPagination = ({
