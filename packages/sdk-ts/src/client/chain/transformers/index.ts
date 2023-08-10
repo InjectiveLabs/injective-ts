@@ -1,4 +1,6 @@
 export * from './ChainGrpcAuctionTransformer'
+export * from './ChainGrpcAuthTransformer'
+export * from './ChainGrpcAuthZTransformer'
 export * from './ChainGrpcBankTransformer'
 export * from './ChainGrpcDistributionTransformer'
 export * from './ChainGrpcExchangeTransformer'
