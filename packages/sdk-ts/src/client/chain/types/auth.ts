@@ -13,7 +13,7 @@ export interface PubKey {
   typeUrl: string
 }
 
-export interface BaseAccount {
+export interface AuthBaseAccount {
   address: string
   pubKey?: PubKey
   accountNumber: number
@@ -22,7 +22,7 @@ export interface BaseAccount {
 
 export interface Account {
   codeHash: string
-  baseAccount: BaseAccount
+  baseAccount: AuthBaseAccount
 }
 
 export type EthAccount = InjectiveTypesV1Beta1Account.EthAccount
