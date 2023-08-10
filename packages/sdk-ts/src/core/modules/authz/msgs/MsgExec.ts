@@ -35,9 +35,13 @@ export default class MsgExec extends MsgBase<
     const { params } = this
 
     const message = CosmosAuthzV1Beta1Tx.MsgExec.create()
-    message.grantee = params.grantee
+
+    if (params.grantee) {
+      message.grantee = params.grantee
+    }
 
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
+
     const actualMsgs = msgs.map((msg) => {
       const msgValue = GoogleProtobufAny.Any.create()
       msgValue.typeUrl = msg.toData()['@type']
