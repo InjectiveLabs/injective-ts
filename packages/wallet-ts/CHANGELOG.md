@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.76](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.75...@injectivelabs/wallet-ts@1.12.0-beta.76) (2023-08-10)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+# [1.12.0-beta.75](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.74...@injectivelabs/wallet-ts@1.12.0-beta.75) (2023-08-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+# [1.12.0-beta.74](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.73...@injectivelabs/wallet-ts@1.12.0-beta.74) (2023-08-09)
+
+### Bug Fixes
+
+- provider init for trust and metamask ([ed11db1](https://github.com/InjectiveLabs/injective-ts/commit/ed11db151df8bf71dbf01058410256e6eb5b2379))
+
+# [1.12.0-beta.73](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.72...@injectivelabs/wallet-ts@1.12.0-beta.73) (2023-08-09)
+
+### Bug Fixes
+
+- import path on window object ([28463b0](https://github.com/InjectiveLabs/injective-ts/commit/28463b0f55beb6a5e1706e33e63afdd24911fefd))
+
+# [1.12.0-beta.72](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.71...@injectivelabs/wallet-ts@1.12.0-beta.72) (2023-08-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+# [1.12.0-beta.71](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.70...@injectivelabs/wallet-ts@1.12.0-beta.71) (2023-08-09)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
+# [1.12.0-beta.70](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.69...@injectivelabs/wallet-ts@1.12.0-beta.70) (2023-08-09)
+
+### Features
+
+- added trust wallet ([47bae16](https://github.com/InjectiveLabs/injective-ts/commit/47bae16f3a49f075a5733d5170c315c2f411bef3))
+
+# [1.12.0-beta.69](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.68...@injectivelabs/wallet-ts@1.12.0-beta.69) (2023-08-08)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ts
+
 # [1.12.0-beta.68](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.67...@injectivelabs/wallet-ts@1.12.0-beta.68) (2023-08-06)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts

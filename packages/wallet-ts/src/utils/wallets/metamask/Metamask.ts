@@ -1,14 +1,12 @@
 import { ethers } from 'ethers'
-import detectEthereumProvider from '@metamask/detect-provider'
 import { WalletException } from '@injectivelabs/exceptions'
 import { EthereumChainId } from '@injectivelabs/ts-types'
-import { Eip1993ProviderWithMetamask } from '../../../strategies/wallet-strategy/types'
+import { BrowserEip1993Provider } from '../../../strategies/wallet-strategy/types'
+import { getMetamaskProvider } from '../../../strategies/wallet-strategy/strategies/Metamask/utils'
 
 export const getEthersProviderFromMetamask = async () => {
   try {
-    const provider = await detectEthereumProvider({
-      mustBeMetaMask: true,
-    })
+    const provider = (await getMetamaskProvider()) as BrowserEip1993Provider
 
     if (!provider) {
       throw new WalletException(new Error('Please install Metamask Extension'))
@@ -22,9 +20,7 @@ export const getEthersProviderFromMetamask = async () => {
 
 export const updateMetamaskNetwork = async (chainId: EthereumChainId) => {
   try {
-    const provider = (await detectEthereumProvider({
-      mustBeMetaMask: true,
-    })) as Eip1993ProviderWithMetamask
+    const provider = (await getMetamaskProvider()) as BrowserEip1993Provider
 
     if (!provider) {
       throw new WalletException(new Error('Please install Metamask Extension'))

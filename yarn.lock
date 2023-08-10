@@ -2166,10 +2166,10 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/mito-proto-ts@1.0.28":
-  version "1.0.28"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/mito-proto-ts/-/mito-proto-ts-1.0.28.tgz#32e55773dee01c6d5ec728666ae05b9bbf4139c7"
-  integrity sha512-zehX9H7wJZoFNyXeJsCi0Y+cFuhNt5YbAmA7Lj4GmRH/OIRxNvrscI4V5/N/T6BkWd4M/6ZK8ADPCNfkIGtY9Q==
+"@injectivelabs/mito-proto-ts@1.0.32":
+  version "1.0.32"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/mito-proto-ts/-/mito-proto-ts-1.0.32.tgz#cc7e7a568e7414bd02b49603919ce8490cf934b8"
+  integrity sha512-g6yFFpPDGnw7E2cY22cexyAV0cNw0uaU2Xf43JXCvSVklA8ibq+DsCJ89fOXt19Juje+0rrWDmkmFLFXGIhVlA==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -2869,11 +2869,6 @@
     write-file-atomic "4.0.1"
     write-pkg "4.0.0"
     yargs "16.2.0"
-
-"@metamask/detect-provider@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@metamask/detect-provider/-/detect-provider-2.0.0.tgz#4bc2795e5e6f7d8b84b2e845058d2f222c99917d"
-  integrity sha512-sFpN+TX13E9fdBDh9lvQeZdJn4qYoRb/6QF2oZZK/Pn559IhCFacPMU1rMuqyXoFQF3JSJfii2l98B87QDPeCQ==
 
 "@metamask/eth-sig-util@^4.0.0":
   version "4.0.1"

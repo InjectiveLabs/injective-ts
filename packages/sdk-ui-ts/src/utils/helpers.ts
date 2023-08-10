@@ -51,6 +51,6 @@ export const getValidatorLogoWithVendorPathPrefix = (
     'vendor',
     '@injectivelabs',
     'sdk-ui-ts',
-    validatorLogoPath ? validatorLogoPath : 'injective.webp',
+    validatorLogoPath ? validatorLogoPath : 'untracked.png',
   )
 }
