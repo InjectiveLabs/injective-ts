@@ -10,6 +10,7 @@ export enum AccessTypeCode {
   AccessTypeNobody = 1,
   AccessTypeOnlyAddress = 2,
   AccessTypeEverybody = 3,
+  AccessTypeAnyOfAddresses = 4,
 }
 
 export enum AccessType {
@@ -17,6 +18,7 @@ export enum AccessType {
   AccessTypeNobody = 'Nobody',
   AccessTypeOnlyAddress = 'Only Address',
   AccessTypeEverybody = 'Everybody',
+  AccessTypeAnyOfAddresses = 'Any of Addresses',
 }
 
 export interface Paging {
