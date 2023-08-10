@@ -35,28 +35,21 @@ async function listenForMetamaskInitialized({ timeout } = { timeout: 3000 }) {
 }
 
 function getMetamaskFromWindow() {
-  const isMetamask = (ethereum: BrowserEip1993Provider) => {
-    // Identify if Metamask Wallet injected provider is present.
-    const metamask = !!ethereum.isMetaMask
-
-    return metamask
-  }
-
   const injectedProviderExist =
     typeof window !== 'undefined' && typeof $window.ethereum !== 'undefined'
 
   // No injected providers exist.
   if (!injectedProviderExist) {
-    return null
+    return
   }
 
-  if (isMetamask($window.ethereum)) {
+  if ($window.ethereum.isMetaMask) {
     return $window.ethereum
   }
 
   if ($window.providers) {
-    return $window.providers.find(isMetamask) ?? null
+    return $window.providers.find((p) => p.isMetaMask)
   }
 
-  return null
+  return
 }
