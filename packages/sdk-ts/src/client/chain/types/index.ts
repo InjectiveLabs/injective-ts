@@ -1,5 +1,7 @@
 import { ChainErrorModule } from '@injectivelabs/exceptions'
 
+export * from './auth'
+export * from './authZ'
 export * from './auction'
 export * from './auth-rest'
 export * from './bank-rest'
