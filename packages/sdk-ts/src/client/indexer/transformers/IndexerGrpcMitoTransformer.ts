@@ -412,6 +412,7 @@ export class IndexerGrpcMitoTransformer {
         IndexerGrpcMitoTransformer.mitoMissionLeaderboardEntryToMissionLeaderboardEntry,
       ),
       updatedAt: parseInt(response.updatedAt, 10),
+      rank: response.userRank,
     }
   }
 }
