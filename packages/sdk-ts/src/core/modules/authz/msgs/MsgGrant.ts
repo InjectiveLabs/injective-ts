@@ -83,7 +83,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
       grant: {
         ...message.grant,
         authorization: {
-          'type': 'cosmos-sdk/GenericAuthorization',
+          type: 'cosmos-sdk/GenericAuthorization',
           value: { msg: params.messageType },
         },
         expiration: new Date(Number(timestamp.seconds) * 1000),
@@ -106,12 +106,25 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
   }
 
   public toWeb3() {
+    const { params } = this
     const amino = this.toAmino()
-    const { value } = amino
+    const timestamp = this.getTimestamp()
+
+    const messageWithAuthorizationType = {
+      granter: amino.value.granter,
+      grantee: amino.value.grantee,
+      grant: {
+        authorization: {
+          '@type': '/cosmos.authz.v1beta1.GenericAuthorization',
+          msg: params.messageType,
+        },
+        expiration: new Date(Number(timestamp.seconds) * 1000),
+      },
+    }
 
     return {
       '@type': '/cosmos.authz.v1beta1.MsgGrant',
-      ...value,
+      ...messageWithAuthorizationType,
     }
   }
 

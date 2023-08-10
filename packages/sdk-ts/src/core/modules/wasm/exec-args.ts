@@ -13,6 +13,7 @@ import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgUpdateAMMVaultConfig from './exec-args/ExecArgUpdateAMMVaultConfig'
 import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
+import ExecArgCreateSpotGridStrategy from './exec-args/ExecArgCreateSpotGridStrategy'
 
 import ExecArgUpdateOffChainVaultConfig from './exec-args/ExecArgUpdateOffChainVaultConfig'
 import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
@@ -36,6 +37,7 @@ export type ExecArgs =
   | ExecArgSwapMinOutput
   | ExecArgDepositTokens
   | ExecArgRegisterVault
+  | ExecArgCreateSpotGridStrategy
   | ExecArgSwapExactOutput
   | ExecArgInitiateTransfer
   | ExecArgIncreaseAllowance

@@ -40,13 +40,6 @@ async function listenForTrustWalletInitialized(
 }
 
 function getTrustWalletFromWindow() {
-  const isTrustWallet = (ethereum: BrowserEip1993Provider) => {
-    // Identify if Trust Wallet injected provider is present.
-    const trustWallet = !!ethereum.isTrust
-
-    return trustWallet
-  }
-
   const injectedProviderExist =
     typeof window !== 'undefined' &&
     (typeof $window.ethereum !== 'undefined' ||
@@ -54,21 +47,20 @@ function getTrustWalletFromWindow() {
 
   // No injected providers exist.
   if (!injectedProviderExist) {
-    return null
+    return
   }
 
   if ($window.trustWallet) {
     return $window.trustWallet
   }
 
-  if (isTrustWallet($window.ethereum)) {
-    // Trust Wallet was injected into $window.ethereum.
+  if ($window.ethereum.isTrust) {
     return $window.ethereum
   }
 
   if ($window.providers) {
-    return $window.providers.find(isTrustWallet) ?? null
+    return $window.providers.find((p) => p.isTrust)
   }
 
-  return null
+  return
 }
