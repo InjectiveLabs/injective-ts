@@ -6,6 +6,7 @@ import {
   hexToBase64,
   BaseAccount,
   ChainRestAuthApi,
+  CosmosTxV1Beta1Tx,
   createTxRawEIP712,
   createTransaction,
   getEip712TypedData,
@@ -16,7 +17,6 @@ import {
   IndexerGrpcTransactionApi,
   getGasPriceBasedOnMessage,
   recoverTypedSignaturePubKey,
-  CosmosTxV1Beta1Tx,
   CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -466,7 +466,6 @@ export class MsgBroadcaster {
     })
 
     /** Preparing the transaction for client broadcasting */
-    const txApi = new TxGrpcApi(endpoints.grpc)
     const web3Extension = createWeb3Extension({
       ethereumChainId,
     })
@@ -484,7 +483,7 @@ export class MsgBroadcaster {
     txRawEip712.signatures = [signatureBuff]
 
     /** Broadcast the transaction */
-    const response = await txApi.broadcast(txRawEip712)
+    const response = await new TxGrpcApi(endpoints.grpc).broadcast(txRawEip712)
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {

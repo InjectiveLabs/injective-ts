@@ -44,7 +44,7 @@ export default class MsgExec extends MsgBase<
 
     const actualMsgs = msgs.map((msg) => {
       const msgValue = GoogleProtobufAny.Any.create()
-      msgValue.typeUrl = msg.toData()['@type']
+      msgValue.typeUrl = msg.toDirectSign().type
       msgValue.value = msg.toBinary()
 
       return msgValue
@@ -78,12 +78,14 @@ export default class MsgExec extends MsgBase<
   }
 
   public toWeb3() {
-    const amino = this.toAmino()
-    const { value } = amino
+    const { params } = this
+
+    const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
 
     return {
       '@type': '/cosmos.authz.v1beta1.MsgExec',
-      ...value,
+      grantee: params.grantee,
+      msgs: msgs.map((msg: any) => msg.toWeb3()),
     }
   }
 

@@ -16,7 +16,7 @@ export enum TransactionChainErrorModule {
   TokenFactory = 'tokenfactory',
   Wasmx = 'wasmx',
   Wasm = 'wasm',
-  Authz = 'authz',
+  AuthZ = 'authz',
 }
 
 export enum ChainCosmosErrorCode {
@@ -296,6 +296,25 @@ export enum ChainAuctionErrorCodes {
   ErrBidInvalid = 1,
   // invalid bid round
   ErrBidRound = 2,
+}
+
+export enum ChainAuthZErrorCodes {
+  // ErrNoAuthorizationFound error if there is no authorization found given a grant key
+  ErrNoAuthorizationFound = 2,
+  // ErrInvalidExpirationTime error if the set expiration time is in the past
+  ErrInvalidExpirationTime = 3,
+  // ErrUnknownAuthorizationType error for unknown authorization type
+  ErrUnknownAuthorizationType = 4,
+  // ErrNoGrantKeyFound error if the requested grant key does not exist
+  ErrNoGrantKeyFound = 5,
+  // ErrAuthorizationExpired error if the authorization has expired
+  ErrAuthorizationExpired = 6,
+  // ErrGranteeIsGranter error if the grantee and the granter are the same
+  ErrGranteeIsGranter = 7,
+  // ErrAuthorizationNumOfSigners error if an authorization message does not have only one signer
+  ErrAuthorizationNumOfSigners = 9,
+  // ErrNegativeMaxTokens error if the max tokens is negative
+  ErrNegativeMaxTokens = 12,
 }
 
 export enum ChainInsuranceErrorCodes {
@@ -743,6 +762,7 @@ export type ErrorCode = StatusCodes | typeof UnspecifiedErrorCode | grpc.Code
 
 export type ErrorContextCode =
   | ChainAuctionErrorCodes
+  | ChainAuthZErrorCodes
   | ChainCosmosErrorCode
   | ChainExchangeModuleErrorCode
   | ChainInsuranceErrorCodes
