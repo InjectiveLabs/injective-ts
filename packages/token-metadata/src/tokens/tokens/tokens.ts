@@ -1675,4 +1675,14 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  POINT: {
+    name: 'Reward Point Token',
+    symbol: 'POINT',
+    decimals: 0,
+    logo: 'point.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
 } as Record<string, TokenMeta>
