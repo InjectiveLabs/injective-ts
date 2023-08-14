@@ -11,6 +11,7 @@ import ExecArgRegisterVault from './exec-args/ExecArgRegisterVault'
 import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
+import ExecArgRemoveGridStrategy from './exec-args/ExecArgRemoveGridStrategy'
 import ExecArgUpdateAMMVaultConfig from './exec-args/ExecArgUpdateAMMVaultConfig'
 import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
 import ExecArgCreateSpotGridStrategy from './exec-args/ExecArgCreateSpotGridStrategy'
@@ -49,6 +50,7 @@ export {
   ExecArgSwapExactOutput,
   ExecArgInitiateTransfer,
   ExecArgIncreaseAllowance,
+  ExecArgRemoveGridStrategy,
   ExecArgUpdateAMMVaultConfig,
   ExecArgUpdateSpotVaultConfig,
   ExecArgCreateSpotGridStrategy,
