@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.74](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.73...@injectivelabs/sdk-ts@1.12.0-beta.74) (2023-08-14)
+
+### Features
+
+- remove gst strategy ([0c11071](https://github.com/InjectiveLabs/injective-ts/commit/0c110718956701080e4adb84ebb1f3d24b8f5b06))
+
 # [1.12.0-beta.73](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.12.0-beta.72...@injectivelabs/sdk-ts@1.12.0-beta.73) (2023-08-11)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
