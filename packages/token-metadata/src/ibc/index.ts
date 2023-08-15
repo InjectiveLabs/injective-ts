@@ -1,7 +1,7 @@
 export {
   default as canonicalChannelsToChainMap,
   canonicalChannelsToChainMapFromInjective,
-  canonicalChannelsToChainMapToInjective,
+  canonicalChannelsToChainList,
   canonicalChannelIds,
 } from './channels'
 

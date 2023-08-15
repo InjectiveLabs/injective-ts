@@ -1199,7 +1199,7 @@ export default {
       baseDenom: 'acanto',
       path: 'transfer/channel-99',
       channelId: 'channel-99',
-      hash: 'C733F37CB50114AFE8053C320DF45D0AAD8B94F556EB306AC2ABA0B9963CDF0D',
+      hash: 'D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
       tokenType: TokenType.Ibc,
     },
   },
@@ -1685,4 +1685,29 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  KAVA: {
+    name: 'KAVA',
+    symbol: 'KAVA',
+    decimals: 6,
+    logo: 'kava.webp',
+    coinGeckoId: 'kava',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'ukava',
+      path: 'transfer/channel-143',
+      channelId: 'channel-143',
+      hash: '57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
+  SEI: {
+    name: 'SEI',
+    symbol: 'SEI',
+    decimals: 6,
+    logo: 'sei.webp',
+    coinGeckoId: 'sei-network',
+  },
 } as Record<string, TokenMeta>

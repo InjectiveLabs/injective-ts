@@ -1,7 +1,4 @@
-import {
-  canonicalChannelIds,
-  canonicalChannelsToChainMapFromInjective,
-} from './channels'
+import { canonicalChannelIds, canonicalChannelsToChainList } from './channels'
 import { IbcToken, Token, TokenType } from '../types'
 
 export const isIbcTokenCanonical = (token: IbcToken) => {
@@ -30,6 +27,9 @@ export const getChannelIdFromPath = (path: string) => {
   return channelId
 }
 
+export const canonicalChannelsToChainListFromInjective =
+  canonicalChannelsToChainList.filter((item) => item.chainA === 'Injective')
+
 export const getIbcDestinationChain = ({
   channelPaths,
   channel,
@@ -45,11 +45,13 @@ export const getIbcDestinationChain = ({
     return ''
   }
 
-  const canonicalChannel =
-    channel as keyof typeof canonicalChannelsToChainMapFromInjective
+  const foundChannelFromInjective =
+    canonicalChannelsToChainListFromInjective.find(
+      (item) => item.channelId === channel,
+    )
 
-  if (canonicalChannelsToChainMapFromInjective[canonicalChannel]) {
-    return canonicalChannelsToChainMapFromInjective[canonicalChannel].chainB
+  if (foundChannelFromInjective) {
+    return foundChannelFromInjective.chainB
   }
 
   if (index === channelPaths.length - 1) {
@@ -61,15 +63,15 @@ export const getIbcDestinationChain = ({
 
 export const formatNonCanonicalIbcTokenName = (token: IbcToken): string => {
   const formattedDenomTrace = token.ibc.channelId.replaceAll('transfer/', '')
-
   const channelToLastChain = formattedDenomTrace.split('/').shift()
 
-  const lastChain = canonicalChannelsToChainMapFromInjective[
-    channelToLastChain as keyof typeof canonicalChannelsToChainMapFromInjective
-  ]
-    ? canonicalChannelsToChainMapFromInjective[
-        channelToLastChain as keyof typeof canonicalChannelsToChainMapFromInjective
-      ].chainB
+  const foundChannelFromInjective =
+    canonicalChannelsToChainListFromInjective.find(
+      (item) => item.channelId === channelToLastChain,
+    )
+
+  const lastChain = foundChannelFromInjective
+    ? foundChannelFromInjective.chainB
     : 'Unknown'
 
   return `${token.ibc.baseDenom.toUpperCase()}-${lastChain.toLowerCase()}-${channelToLastChain}`
