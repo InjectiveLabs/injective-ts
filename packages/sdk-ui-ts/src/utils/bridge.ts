@@ -47,7 +47,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Secret,
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
-  BridgingNetwork.Canto,
+  BridgingNetwork.Kava,
 ]
 
 export const LeapNetworks = [
@@ -59,6 +59,7 @@ export const LeapNetworks = [
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
+  BridgingNetwork.Kava,
 ]
 
 export const CosmostationNetworks = [
@@ -74,6 +75,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Crescent,
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
+  BridgingNetwork.Kava,
 ]
 
 export const CosmosNetworks = [
@@ -89,6 +91,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
+  BridgingNetwork.Kava,
 ]
 
 export const EvmWormholeNetworks = [
@@ -214,6 +217,13 @@ export const tokenDenomsPerNetwork = [
       'ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
     ],
     symbols: ['canto'],
+  },
+  {
+    network: BridgingNetwork.Kava,
+    denoms: [
+      'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
+    ],
+    symbols: ['kava'],
   },
   {
     network: BridgingNetwork.CosmosHubTestnet,
@@ -364,6 +374,14 @@ export const cosmosNativeDenomsFromChainId = {
     denom:
       'ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
   },
+  [CosmosChainId.Kava]: [
+    {
+      ...tokenMetaUtils.getMetaBySymbol('KAVA'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
+    },
+  ],
   [TestnetCosmosChainId.Cosmoshub]: {
     ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
     tokenType: TokenType.Ibc,
@@ -561,6 +579,10 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
     return BridgingNetwork.Canto
   }
 
+  if (sender.startsWith('kava')) {
+    return BridgingNetwork.Kava
+  }
+
   if (sender.startsWith('0x')) {
     return BridgingNetwork.Ethereum
   }
@@ -625,6 +647,8 @@ export const getGasPriceForChainId = (chainId: CosmosChainId) => {
     case CosmosChainId.Axelar:
       return 0.01
     case CosmosChainId.Juno:
+      return 0.01
+    case CosmosChainId.Kava:
       return 0.01
     case CosmosChainId.Injective:
       return 0.01

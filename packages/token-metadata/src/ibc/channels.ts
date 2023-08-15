@@ -12,6 +12,7 @@ export enum CanonicalChannelToDestinationChannel {
   Crescent = 'channel-90',
   Sommelier = 'channel-93',
   Migaloo = 'channel-102',
+  Kava = 'channel-143',
 }
 
 /**
@@ -59,24 +60,26 @@ export const canonicalChannelsToChainMapFromInjective = {
   'channel-102': { chainA: 'Injective', chainB: 'Migaloo' },
   'channel-104': { chainA: 'Injective', chainB: 'Terra2' },
   'channel-105': { chainA: 'Injective', chainB: 'Terra2' },
+  'channel-143': { chainA: 'Injective', chainB: 'Kava' },
 }
 
-export const canonicalChannelsToChainMapToInjective = {
-  'channel-220': { chainA: 'CosmosHub', chainB: 'Injective' },
-  'channel-122': { chainA: 'Osmosis', chainB: 'Injective' },
-  'channel-17': { chainA: 'Terra', chainB: 'Injective' },
-  'channel-41': { chainA: 'Persistence', chainB: 'Injective' },
-  'channel-12': { chainA: 'Chihuahua', chainB: 'Injective' },
-  'channel-23': { chainA: 'Secret Network', chainB: 'Injective' },
-  'channel-59': { chainA: 'Juno', chainB: 'Injective' },
-  'channel-6': { chainA: 'Stride', chainB: 'Injective' },
-  'channel-90': { chainA: 'Crescent', chainB: 'Injective' },
-  'channel-1': { chainA: 'Sommelier', chainB: 'Injective' },
-  'channel-8': { chainA: 'Canto', chainB: 'Injective' },
-  'channel-91': { chainA: 'Terra2', chainB: 'Injective' },
-  'channel-92': { chainA: 'Terra2', chainB: 'Injective' },
-  'channel-3': { chainA: 'Migaloo', chainB: 'Injective' },
-}
+export const canonicalChannelsToChainMapToInjective = [
+  { channelId: 'channel-220', chainA: 'CosmosHub', chainB: 'Injective' },
+  { channelId: 'channel-122', chainA: 'Osmosis', chainB: 'Injective' },
+  { channelId: 'channel-17', chainA: 'Terra', chainB: 'Injective' },
+  { channelId: 'channel-41', chainA: 'Persistence', chainB: 'Injective' },
+  { channelId: 'channel-12', chainA: 'Chihuahua', chainB: 'Injective' },
+  { channelId: 'channel-23', chainA: 'Secret Network', chainB: 'Injective' },
+  { channelId: 'channel-59', chainA: 'Juno', chainB: 'Injective' },
+  { channelId: 'channel-6', chainA: 'Stride', chainB: 'Injective' },
+  { channelId: 'channel-90', chainA: 'Crescent', chainB: 'Injective' },
+  { channelId: 'channel-1', chainA: 'Sommelier', chainB: 'Injective' },
+  { channelId: 'channel-8', chainA: 'Canto', chainB: 'Injective' },
+  { channelId: 'channel-91', chainA: 'Terra2', chainB: 'Injective' },
+  { channelId: 'channel-92', chainA: 'Terra2', chainB: 'Injective' },
+  { channelId: 'channel-3', chainA: 'Migaloo', chainB: 'Injective' },
+  { channelId: 'channel-122', chainA: 'Kava', chainB: 'Injective' },
+]
 
 export default legacyCanonicalChannels
 
@@ -101,6 +104,7 @@ export const canonicalChannelIds = [
   'channel-102',
   'channel-104',
   'channel-105',
+  'channel-143',
 ]
 
 export const channelIbcDenomToBaseDenomMap = {
