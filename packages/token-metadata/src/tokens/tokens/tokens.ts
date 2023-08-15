@@ -1691,6 +1691,7 @@ export default {
     decimals: 6,
     logo: 'kava.webp',
     coinGeckoId: 'kava',
+
     ibc: {
       decimals: 6,
       isNative: true,

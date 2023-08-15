@@ -42,6 +42,12 @@ const legacyCanonicalChannels = {
   'channel-6': { chainA: 'Stride', chainB: 'Injective' },
 }
 
+/**
+ * We can't use this approach because the channels can overlap between chains
+ * For example for Secret -> Injective we have channel-23 and we have the same
+ * for Osmosis -> Injective.
+ * @deprecated - use  canonicalChannelsToChainList
+ * */
 export const canonicalChannelsToChainMapFromInjective = {
   'channel-1': { chainA: 'Injective', chainB: 'CosmosHub' },
   'channel-83': { chainA: 'Injective', chainB: 'Evmos' },
@@ -63,7 +69,7 @@ export const canonicalChannelsToChainMapFromInjective = {
   'channel-143': { chainA: 'Injective', chainB: 'Kava' },
 }
 
-export const canonicalChannelsToChainMapToInjective = [
+export const canonicalChannelsToChainList = [
   { channelId: 'channel-220', chainA: 'CosmosHub', chainB: 'Injective' },
   { channelId: 'channel-122', chainA: 'Osmosis', chainB: 'Injective' },
   { channelId: 'channel-17', chainA: 'Terra', chainB: 'Injective' },
@@ -79,6 +85,24 @@ export const canonicalChannelsToChainMapToInjective = [
   { channelId: 'channel-92', chainA: 'Terra2', chainB: 'Injective' },
   { channelId: 'channel-3', chainA: 'Migaloo', chainB: 'Injective' },
   { channelId: 'channel-122', chainA: 'Kava', chainB: 'Injective' },
+  { channelId: 'channel-1', chainA: 'Injective', chainB: 'CosmosHub' },
+  { channelId: 'channel-83', chainA: 'Injective', chainB: 'Evmos' },
+  { channelId: 'channel-8', chainA: 'Injective', chainB: 'Osmosis' },
+  { channelId: 'channel-4', chainA: 'Injective', chainB: 'Terra' },
+  { channelId: 'channel-84', chainA: 'Injective', chainB: 'Axelar' },
+  { channelId: 'channel-82', chainA: 'Injective', chainB: 'Persistence' },
+  { channelId: 'channel-76', chainA: 'Injective', chainB: 'Chihuahua' },
+  { channelId: 'channel-88', chainA: 'Injective', chainB: 'Secret Network' },
+  { channelId: 'channel-78', chainA: 'Injective', chainB: 'Juno' },
+  { channelId: 'channel-89', chainA: 'Injective', chainB: 'Stride' },
+  { channelId: 'channel-23', chainA: 'Injective', chainB: 'Crescent' },
+  { channelId: 'channel-13', chainA: 'Injective', chainB: '' },
+  { channelId: 'channel-93', chainA: 'Injective', chainB: 'Sommelier' },
+  { channelId: 'channel-99', chainA: 'Injective', chainB: 'Canto' },
+  { channelId: 'channel-102', chainA: 'Injective', chainB: 'Migaloo' },
+  { channelId: 'channel-104', chainA: 'Injective', chainB: 'Terra2' },
+  { channelId: 'channel-105', chainA: 'Injective', chainB: 'Terra2' },
+  { channelId: 'channel-143', chainA: 'Injective', chainB: 'Kava' },
 ]
 
 export default legacyCanonicalChannels
