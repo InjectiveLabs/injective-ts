@@ -1701,4 +1701,12 @@ export default {
       tokenType: TokenType.Ibc,
     },
   },
+
+  SEI: {
+    name: 'SEI',
+    symbol: 'SEI',
+    decimals: 6,
+    logo: 'sei.webp',
+    coinGeckoId: 'sei-network',
+  },
 } as Record<string, TokenMeta>
