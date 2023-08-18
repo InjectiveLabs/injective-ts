@@ -153,6 +153,8 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
       return 'int32'
     case 'oracle_type':
       return 'int32'
+    case 'exponent':
+        return 'uint32'
     case 'round':
       return 'uint64'
     case 'oracle_scale_factor':
@@ -209,6 +211,8 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
     'wasmx/MsgExecuteContractCompat': ['funds'],
   }
 
+  const nullableStrings = ["uri_hash"];
+
   return Object.keys(object).reduce((result, key) => {
     const value = object[key]
 
@@ -234,6 +238,13 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
         }
       }
 
+      if (nullableStrings.includes(key)) {
+        return {
+          ...result,
+          [key]: value,
+        }
+      }
+
       return result
     }
 
@@ -247,9 +258,8 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
       if (Array.isArray(value)) {
         return {
           ...result,
-          [key]: value.map((item) =>
-            mapValuesToProperValueType(item as Record<string, unknown>),
-          ),
+          [key]: value.every(i => typeof i === "string") ?
+            value : value.map((item) => mapValuesToProperValueType(item as Record<string, unknown>)),
         }
       }
 
@@ -541,6 +551,15 @@ export const protoTypeToAminoType = (type: string): string => {
     case 'injective.wasmx.v1beta1.BatchContractRegistrationRequestProposal':
       return 'wasmx/BatchContractRegistrationRequestProposal'
 
+    // Token factory
+    case 'injective.tokenfactory.v1beta1.MsgCreateDenom':
+      return 'injective/tokenfactory/create-denom'
+    case 'injective.tokenfactory.v1beta1.MsgMint':
+      return 'injective/tokenfactory/mint'
+    case 'injective.tokenfactory.v1beta1.MsgBurn':
+      return 'injective/tokenfactory/burn'
+    case 'injective.tokenfactory.v1beta1.MsgSetDenomMetadata':
+      return 'injective/tokenfactory/set-denom-metadata'
     // Auth
     case 'cosmos.auth.v1beta1.MsgUpdateParams':
       return 'cosmos-sdk/x/auth/MsgUpdateParams'
