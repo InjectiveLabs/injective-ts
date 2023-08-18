@@ -1710,4 +1710,26 @@ export default {
     logo: 'sei.webp',
     coinGeckoId: 'sei-network',
   },
+
+  VATRENI: {
+    name: 'Vatreni Token',
+    symbol: 'VATRENI',
+    decimals: 18,
+    logo: 'vatreni.jpeg',
+    coinGeckoId: 'croatian-ff-fan-token',
+
+    evm: {
+      decimals: 18,
+      isNative: true,
+      address: '0xD60DebA014459F07BBcC077a5B817f31DaFD5229',
+      tokenType: TokenType.Evm,
+    },
+
+    cw20: {
+      decimals: 8,
+      address: 'inj1tn457ed2gg5vj2cur5khjjw63w73y3xhyhtaay',
+      source: Cw20TokenSource.Polygon,
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>
