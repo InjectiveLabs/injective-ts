@@ -10,8 +10,8 @@ const params: MsgCreateDenom['params'] = {
 const protoType = '/injective.tokenfactory.v1beta1.MsgCreateDenom'
 const protoTypeAmino = 'injective/tokenfactory/create-denom'
 const protoParams = {
-    sender: params.sender,
-    subdenom: params.subdenom,
+  sender: params.sender,
+  subdenom: params.subdenom,
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)
@@ -48,7 +48,7 @@ describe('MsgCreateDenom', () => {
     expect(Object.fromEntries(eip712Types)).toStrictEqual({
       MsgValue: [
         { name: 'sender', type: 'string' },
-        { name: 'subdenom', type: 'string' }
+        { name: 'subdenom', type: 'string' },
       ],
     })
   })

@@ -18,23 +18,18 @@ export default class MsgCreateDenom extends MsgBase<
   MsgCreateDenom.Params,
   MsgCreateDenom.Proto
 > {
-  static fromJSON(
-    params: MsgCreateDenom.Params,
-  ): MsgCreateDenom {
+  static fromJSON(params: MsgCreateDenom.Params): MsgCreateDenom {
     return new MsgCreateDenom(params)
   }
 
   public toProto() {
     const { params } = this
 
-    const message =
-        InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.create()
+    const message = InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.create()
     message.sender = params.sender
     message.subdenom = params.subdenom
 
-    return InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.fromPartial(
-      message,
-    )
+    return InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.fromPartial(message)
   }
 
   public toData() {
@@ -54,7 +49,7 @@ export default class MsgCreateDenom extends MsgBase<
 
     return {
       type: 'injective/tokenfactory/create-denom',
-      value: message
+      value: message,
     }
   }
 

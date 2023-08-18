@@ -14,8 +14,8 @@ const params: MsgBurn['params'] = {
 const protoType = '/injective.tokenfactory.v1beta1.MsgBurn'
 const protoTypeAmino = 'injective/tokenfactory/burn'
 const protoParams = {
-    sender: params.sender,
-    amount: params.amount,
+  sender: params.sender,
+  amount: params.amount,
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)
@@ -56,7 +56,7 @@ describe('MsgBurn', () => {
       ],
       MsgValue: [
         { name: 'sender', type: 'string' },
-        { name: 'amount', type: 'TypeAmount' }
+        { name: 'amount', type: 'TypeAmount' },
       ],
     })
   })

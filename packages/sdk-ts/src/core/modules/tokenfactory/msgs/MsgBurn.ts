@@ -17,27 +17,19 @@ export declare namespace MsgBurn {
 /**
  * @category Messages
  */
-export default class MsgBurn extends MsgBase<
-  MsgBurn.Params,
-  MsgBurn.Proto
-> {
-  static fromJSON(
-    params: MsgBurn.Params,
-  ): MsgBurn {
+export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
+  static fromJSON(params: MsgBurn.Params): MsgBurn {
     return new MsgBurn(params)
   }
 
   public toProto() {
     const { params } = this
 
-    const message =
-        InjectiveTokenFactoryV1Beta1Tx.MsgBurn.create()
+    const message = InjectiveTokenFactoryV1Beta1Tx.MsgBurn.create()
     message.sender = params.sender
     message.amount = params.amount
 
-    return InjectiveTokenFactoryV1Beta1Tx.MsgBurn.fromPartial(
-      message,
-    )
+    return InjectiveTokenFactoryV1Beta1Tx.MsgBurn.fromPartial(message)
   }
 
   public toData() {

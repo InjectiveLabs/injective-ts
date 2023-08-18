@@ -19,17 +19,14 @@ export default class MsgSetDenomMetadata extends MsgBase<
   MsgSetDenomMetadata.Params,
   MsgSetDenomMetadata.Proto
 > {
-  static fromJSON(
-    params: MsgSetDenomMetadata.Params,
-  ): MsgSetDenomMetadata {
+  static fromJSON(params: MsgSetDenomMetadata.Params): MsgSetDenomMetadata {
     return new MsgSetDenomMetadata(params)
   }
 
   public toProto() {
     const { params } = this
 
-    const message =
-        InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata.create()
+    const message = InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata.create()
     message.sender = params.sender
     message.metadata = params.metadata
 

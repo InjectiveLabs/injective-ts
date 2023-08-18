@@ -19,24 +19,19 @@ export default class MsgChangeAdmin extends MsgBase<
   MsgChangeAdmin.Params,
   MsgChangeAdmin.Proto
 > {
-  static fromJSON(
-    params: MsgChangeAdmin.Params,
-  ): MsgChangeAdmin {
+  static fromJSON(params: MsgChangeAdmin.Params): MsgChangeAdmin {
     return new MsgChangeAdmin(params)
   }
 
   public toProto() {
     const { params } = this
 
-    const message =
-        InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin.create()
+    const message = InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin.create()
     message.sender = params.sender
     message.denom = params.denom
     message.newAdmin = params.newAdmin
 
-    return InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin.fromPartial(
-      message,
-    )
+    return InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin.fromPartial(message)
   }
 
   public toData() {

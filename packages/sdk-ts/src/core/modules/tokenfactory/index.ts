@@ -4,10 +4,4 @@ import MsgCreateDenom from './msgs/MsgCreateDenom'
 import MsgMint from './msgs/MsgMint'
 import MsgSetDenomMetadata from './msgs/MsgSetDenomMetadata'
 
-export {
-  MsgBurn,
-  MsgChangeAdmin,
-  MsgCreateDenom,
-  MsgMint,
-  MsgSetDenomMetadata,
-}
+export { MsgMint, MsgBurn, MsgChangeAdmin, MsgCreateDenom, MsgSetDenomMetadata }

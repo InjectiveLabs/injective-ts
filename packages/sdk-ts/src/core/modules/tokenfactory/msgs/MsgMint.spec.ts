@@ -14,8 +14,8 @@ const params: MsgMint['params'] = {
 const protoType = '/injective.tokenfactory.v1beta1.MsgMint'
 const protoTypeAmino = 'injective/tokenfactory/mint'
 const protoParams = {
-    sender: params.sender,
-    amount: params.amount,
+  sender: params.sender,
+  amount: params.amount,
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)
@@ -56,7 +56,7 @@ describe('MsgMint', () => {
       ],
       MsgValue: [
         { name: 'sender', type: 'string' },
-        { name: 'amount', type: 'TypeAmount' }
+        { name: 'amount', type: 'TypeAmount' },
       ],
     })
   })

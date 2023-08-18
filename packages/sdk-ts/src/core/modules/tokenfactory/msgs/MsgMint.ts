@@ -17,27 +17,19 @@ export declare namespace MsgMint {
 /**
  * @category Messages
  */
-export default class MsgMint extends MsgBase<
-  MsgMint.Params,
-  MsgMint.Proto
-> {
-  static fromJSON(
-    params: MsgMint.Params,
-  ): MsgMint {
+export default class MsgMint extends MsgBase<MsgMint.Params, MsgMint.Proto> {
+  static fromJSON(params: MsgMint.Params): MsgMint {
     return new MsgMint(params)
   }
 
   public toProto() {
     const { params } = this
 
-    const message =
-        InjectiveTokenFactoryV1Beta1Tx.MsgMint.create()
+    const message = InjectiveTokenFactoryV1Beta1Tx.MsgMint.create()
     message.sender = params.sender
     message.amount = params.amount
 
-    return InjectiveTokenFactoryV1Beta1Tx.MsgMint.fromPartial(
-      message,
-    )
+    return InjectiveTokenFactoryV1Beta1Tx.MsgMint.fromPartial(message)
   }
 
   public toData() {

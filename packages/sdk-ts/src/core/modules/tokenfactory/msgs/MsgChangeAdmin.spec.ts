@@ -5,15 +5,15 @@ import snakecaseKeys from 'snakecase-keys'
 const params: MsgChangeAdmin['params'] = {
   sender: mockFactory.injectiveAddress,
   denom: 'inj',
-  newAdmin: mockFactory.injectiveAddress2
+  newAdmin: mockFactory.injectiveAddress2,
 }
 
 const protoType = '/injective.tokenfactory.v1beta1.MsgChangeAdmin'
 const protoTypeAmino = 'injective/tokenfactory/change-admin'
 const protoParams = {
-    sender: params.sender,
-    denom: params.denom,
-    newAdmin: params.newAdmin
+  sender: params.sender,
+  denom: params.denom,
+  newAdmin: params.newAdmin,
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)
@@ -51,7 +51,7 @@ describe('MsgChangeAdmin', () => {
       MsgValue: [
         { name: 'sender', type: 'string' },
         { name: 'denom', type: 'string' },
-        { name: 'new_admin', type: 'string' }
+        { name: 'new_admin', type: 'string' },
       ],
     })
   })

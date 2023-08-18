@@ -5,28 +5,28 @@ import snakecaseKeys from 'snakecase-keys'
 const params: MsgSetDenomMetadata['params'] = {
   sender: mockFactory.injectiveAddress,
   metadata: {
-    symbol: "TEST",
+    symbol: 'TEST',
     display: 'factory/test',
-    name: "Test",
-    description: "test description",
-    uri: "https://injective.com",
-    uriHash: "",
-    base: "factory/test",
+    name: 'Test',
+    description: 'test description',
+    uri: 'https://injective.com',
+    uriHash: '',
+    base: 'factory/test',
     denomUnits: [
       {
-        denom: "factory/test",
+        denom: 'factory/test',
         exponent: 1,
-        aliases: ["uinj"]
-      }
-    ]
-  }
+        aliases: ['uinj'],
+      },
+    ],
+  },
 }
 
 const protoType = '/injective.tokenfactory.v1beta1.MsgSetDenomMetadata'
 const protoTypeAmino = 'injective/tokenfactory/set-denom-metadata'
 const protoParams = {
-    sender: params.sender,
-    metadata: params.metadata,
+  sender: params.sender,
+  metadata: params.metadata,
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)
@@ -69,16 +69,16 @@ describe('MsgSetDenomMetadata', () => {
         { name: 'name', type: 'string' },
         { name: 'symbol', type: 'string' },
         { name: 'uri', type: 'string' },
-        { name: 'uri_hash', type: 'string' }
+        { name: 'uri_hash', type: 'string' },
       ],
       TypeMetadataDenomUnits: [
         { name: 'denom', type: 'string' },
         { name: 'exponent', type: 'uint32' },
-        { name: 'aliases', type: 'string[]' }
+        { name: 'aliases', type: 'string[]' },
       ],
       MsgValue: [
         { name: 'sender', type: 'string' },
-        { name: 'metadata', type: 'TypeMetadata' }
+        { name: 'metadata', type: 'TypeMetadata' },
       ],
     })
   })
