@@ -22,4 +22,3 @@
 | [WasmX](querying-chain-wasmx.md)                    | Query data from the wasmX module               |
 | [Tendermint](querying-chain-tendermint.md)          | Query data related to the tendermint api       |
 
-***

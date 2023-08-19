@@ -2,7 +2,7 @@
 
 Within this section, we are going to explore the core modules of the Injective chain and provide examples of how to make and broadcast transactions for each of the Messages defined on-chain.
 
-***
+
 
 ### Topics
 

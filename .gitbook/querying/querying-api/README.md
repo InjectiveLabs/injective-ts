@@ -13,7 +13,7 @@
 | [Leaderboard](querying-indexer-leaderboard.md)                               | Query data related to the leaderboard module     |
 | [Insurance Fund](querying-indexer-insurance-funds.md)                        | Query data from the insurance fund module        |
 | [Markets](querying-indexer-markets.md)                                       | Query data for both spot and derivatives markets |
-| [Mito](http://localhost:5000/o/LzWvewxXUBLXQT4cTrrj/s/oaFrsrN8wb4tubFuz44J/) | Query data from the ninja vaults module          |
+| [Mito](http://127.0.0.1:5000/o/LzWvewxXUBLXQT4cTrrj/s/oaFrsrN8wb4tubFuz44J/) | Query data from the ninja vaults module          |
 | [Oracle](querying-indexer-oracle.md)                                         | Query data related to the oracle                 |
 | [Portfolio](querying-indexer-portfolio.md)                                   | Query data related to the portfolio module       |
 | [Spot](querying-indexer-spot.md)                                             | Query data from the spot module                  |
