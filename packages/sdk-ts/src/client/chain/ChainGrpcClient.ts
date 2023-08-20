@@ -10,6 +10,7 @@ import { ChainGrpcMintApi } from './grpc/ChainGrpcMintApi'
 import { ChainGrpcOracleApi } from './grpc/ChainGrpcOracleApi'
 import { ChainGrpcPeggyApi } from './grpc/ChainGrpcPeggyApi'
 import { ChainGrpcStakingApi } from './grpc/ChainGrpcStakingApi'
+import { ChainGrpcTokenFactoryApi } from './grpc/ChainGrpcTokenFactoryApi'
 import { ChainGrpcWasmApi } from './grpc/ChainGrpcWasmApi'
 import { ChainGrpcWasmXApi } from './grpc/ChainGrpcWasmXApi'
 
@@ -42,6 +43,8 @@ export class ChainGrpcClient {
 
   staking: ChainGrpcStakingApi
 
+  tokenfactory: ChainGrpcTokenFactoryApi
+
   wasm: ChainGrpcWasmApi
 
   wasmX: ChainGrpcWasmXApi
@@ -59,6 +62,7 @@ export class ChainGrpcClient {
     this.oracle = new ChainGrpcOracleApi(endpoint)
     this.peggy = new ChainGrpcPeggyApi(endpoint)
     this.staking = new ChainGrpcStakingApi(endpoint)
+    this.tokenfactory = new ChainGrpcTokenFactoryApi(endpoint)
     this.wasm = new ChainGrpcWasmApi(endpoint)
     this.wasmX = new ChainGrpcWasmXApi(endpoint)
   }
