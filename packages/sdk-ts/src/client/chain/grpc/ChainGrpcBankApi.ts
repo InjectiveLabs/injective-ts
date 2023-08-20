@@ -151,6 +151,34 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     }
   }
 
+  async fetchSupplyOf(denom: string) {
+    const request = CosmosBankV1Beta1Query.QuerySupplyOfRequest.create()
+    request.denom = denom
+
+    try {
+      const response =
+        await this.retry<CosmosBankV1Beta1Query.QuerySupplyOfResponse>(() =>
+          this.client.SupplyOf(request),
+        )
+
+      return ChainGrpcBankTransformer.grpcCoinToCoin(response.amount!)
+    } catch (e: unknown) {
+      if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'fetchSupplyOf',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'fetchSupplyOf',
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchDenomsMetadata(pagination?: PaginationOption) {
     const request = CosmosBankV1Beta1Query.QueryDenomsMetadataRequest.create()
     const paginationForRequest = paginationRequestFromPagination(pagination)
@@ -180,6 +208,34 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'DenomsMetadata',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchDenomMetadata(denom: string) {
+    const request = CosmosBankV1Beta1Query.QueryDenomMetadataRequest.create()
+    request.denom = denom
+
+    try {
+      const response =
+        await this.retry<CosmosBankV1Beta1Query.QueryDenomMetadataResponse>(
+          () => this.client.DenomMetadata(request),
+        )
+
+      return ChainGrpcBankTransformer.metadataToMetadata(response.metadata!)
+    } catch (e: unknown) {
+      if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'DenomMetadata',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DenomMetadata',
         contextModule: this.module,
       })
     }
