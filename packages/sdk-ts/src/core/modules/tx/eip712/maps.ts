@@ -154,7 +154,7 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
     case 'oracle_type':
       return 'int32'
     case 'exponent':
-        return 'uint32'
+      return 'uint32'
     case 'round':
       return 'uint64'
     case 'oracle_scale_factor':
@@ -211,7 +211,7 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
     'wasmx/MsgExecuteContractCompat': ['funds'],
   }
 
-  const nullableStrings = ["uri_hash"];
+  const nullableStrings = ['uri', 'uri_hash']
 
   return Object.keys(object).reduce((result, key) => {
     const value = object[key]
@@ -258,8 +258,11 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
       if (Array.isArray(value)) {
         return {
           ...result,
-          [key]: value.every(i => typeof i === "string") ?
-            value : value.map((item) => mapValuesToProperValueType(item as Record<string, unknown>)),
+          [key]: value.every((i) => typeof i === 'string')
+            ? value
+            : value.map((item) =>
+                mapValuesToProperValueType(item as Record<string, unknown>),
+              ),
         }
       }
 
