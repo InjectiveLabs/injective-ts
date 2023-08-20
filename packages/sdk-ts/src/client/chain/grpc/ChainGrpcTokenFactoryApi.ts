@@ -8,7 +8,7 @@ import { ChainModule } from '../types'
 import { ChainGrpcTokenFactoryTransformer } from '..'
 
 /**
- * @category Chain Grpc API
+ * @category TokenFactory Grpc API
  */
 export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.WasmX
@@ -26,6 +26,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
   async fetchDenomsFromCreator(creator: string) {
     const request =
       InjectiveTokenFactoryV1Beta1Query.QueryDenomsFromCreatorRequest.create()
+
     request.creator = creator
 
     try {
@@ -57,6 +58,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
   async fetchDenomAuthorityMetadata(creator: string, subDenom: string) {
     const request =
       InjectiveTokenFactoryV1Beta1Query.QueryDenomAuthorityMetadataRequest.create()
+
     request.creator = creator
     request.subDenom = subDenom
 

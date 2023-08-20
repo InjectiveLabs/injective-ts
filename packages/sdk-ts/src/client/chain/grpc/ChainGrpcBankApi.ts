@@ -153,6 +153,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
 
   async fetchSupplyOf(denom: string) {
     const request = CosmosBankV1Beta1Query.QuerySupplyOfRequest.create()
+
     request.denom = denom
 
     try {
@@ -215,6 +216,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
 
   async fetchDenomMetadata(denom: string) {
     const request = CosmosBankV1Beta1Query.QueryDenomMetadataRequest.create()
+
     request.denom = denom
 
     try {
