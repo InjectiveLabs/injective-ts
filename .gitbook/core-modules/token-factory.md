@@ -144,23 +144,25 @@ const denomUnitsIfTokenHas0Decimals = [
 ]
 const denomUnitsIfTokenHas6Decimals = [
   {
-    denom: `factory/${injectiveAddress}/u${subdenom}`, /** notice the u */
+    denom: denom, /** we use the whole denom here */
     exponent: 0,
     aliases: [`micro${subdenom}`]
   },
   {
-    denom: denom,
-    exponent: 6, /** if you want your token to have 6 decimals */
+    denom: subdenom,
+    exponent: 6, /** we use the subdenom only here (if you want your token to have 6 decimals) */
     aliases: [subdenom]
   },
 ]
+const displayIfTokenHas6Decimals = subdenom
+const displayIfTokenHas0Decimals = 
 
 const msg = MsgSetDenomMetadata.fromJSON({
   sender: injectiveAddress,
   metadata: {
     base: denom, /** the base denom */
     description: '', /** description of your token */
-    display: '', /** the displayed name of your token on UIs */,
+    display: subdenom, /** the display alias of your token on UIs (it's the denom of the unit with highest decimals) */,
     name: '', /** the name of your token */,
     symbol: '' /** the symbol of your token */,
     uri: '' /** the logo of your token, should be hosted on IPFS and should be a small webp image */
