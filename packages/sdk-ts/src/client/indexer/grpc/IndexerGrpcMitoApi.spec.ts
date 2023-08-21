@@ -298,7 +298,7 @@ describe('IndexerGrpcMitoApi', () => {
     try {
       const response = await indexerGrpcMitoApi.fetchMissionLeaderboard()
 
-      if (response.data.length === 0) {
+      if (response.entries.length === 0) {
         console.warn('fetchMissionLeaderboard.responseIsEmptyArray')
       }
 
@@ -314,6 +314,122 @@ describe('IndexerGrpcMitoApi', () => {
       console.error(
         'IndexerGrpcMitoApi.fetchMissionLeaderboard missionLeaderboard => ' +
           (e as any).message,
+      )
+    }
+  })
+
+  test('fetchIDO', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchIDO({
+        contractAddress: vaultAddress,
+      })
+
+      if (!response.ido) {
+        console.warn('fetchIDO.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<typeof IndexerGrpcMitoTransformer.mitoIDOResponseToIDO>
+        >(response),
+      )
+    } catch (e) {
+      console.error('IndexerGrpcMitoApi.fetchIDO => ' + (e as any).message)
+    }
+  })
+
+  test('fetchIDOs', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchIDOs()
+
+      if (response.idos.length === 0) {
+        console.warn('fetchIDOs.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.mitoListIDOsResponseToIDOs
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error('IndexerGrpcMitoApi.fetchIDOs => ' + (e as any).message)
+    }
+  })
+
+  test('fetchIDOSubscribers', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchIDOSubscribers({
+        contractAddress: vaultAddress,
+      })
+
+      if (response.subscribers.length === 0) {
+        console.warn('fetchIDOSubscribers.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.mitoIDOSubscribersResponseToIDOSubscribers
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchIDOSubscribers => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchIDOSubscription', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchIDOSubscription({
+        contractAddress: vaultAddress,
+        accountAddress: injectiveAddress,
+      })
+
+      if (!response.subscription) {
+        console.warn('fetchIDOSubscription.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.mitoIDOSubscriptionResponseToIDOSubscription
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchIDOSubscription => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchIDOActivities', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchIDOActivities()
+
+      if (response.activities.length === 0) {
+        console.warn('fetchIDOActivities.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.mitoIDOActivitiesResponseToIDOActivities
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchIDOActivities => ' + (e as any).message,
       )
     }
   })
