@@ -1732,4 +1732,12 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  NBLA: {
+    name: 'Nebula',
+    symbol: 'NBLA',
+    decimals: 6,
+    logo: 'nebula.png',
+    coinGeckoId: '',
+  },
 } as Record<string, TokenMeta>
