@@ -183,8 +183,8 @@ export interface MitoIDOProgress {
 }
 
 export interface MitoStakeToSubscription {
-  baseAmount: string
-  quoteAmount: string
+  stakedAmount: string
+  subscribableAmount: string
 }
 
 export interface MitoIDO {

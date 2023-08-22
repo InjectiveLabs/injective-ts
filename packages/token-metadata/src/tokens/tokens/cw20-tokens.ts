@@ -105,4 +105,17 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+  'PROJ-MASTER': {
+    name: 'PROJ Master',
+    logo: 'mito-proj-master-lp.svg',
+    symbol: 'PROJ-MASTER-LP',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: '',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>

@@ -323,8 +323,8 @@ export class IndexerGrpcMitoTransformer {
     data: MitoApi.ArrayOfString,
   ): MitoStakeToSubscription {
     return {
-      baseAmount: data.field[0],
-      quoteAmount: data.field[1],
+      stakedAmount: data.field[0],
+      subscribableAmount: data.field[1],
     }
   }
 
