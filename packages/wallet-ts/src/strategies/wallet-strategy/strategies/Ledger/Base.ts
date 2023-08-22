@@ -232,7 +232,7 @@ export default class LedgerBase
       const ledger = await this.ledger.getInstance()
       const result = await ledger.signPersonalMessage(
         derivationPath,
-        bufferToHex(Buffer.from(toUtf8(data), 'utf8')),
+        Buffer.from(toUtf8(data), 'utf8').toString('hex'),
       )
 
       const combined = `${result.r}${result.s}${result.v.toString(16)}`
