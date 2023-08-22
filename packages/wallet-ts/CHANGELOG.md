@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.90](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.89...@injectivelabs/wallet-ts@1.12.0-beta.90) (2023-08-22)
+
+### Bug Fixes
+
+- ledger sign arbitrary ([36dbb55](https://github.com/InjectiveLabs/injective-ts/commit/36dbb5523fde17984db75063a466fd03005f965d))
+
 # [1.12.0-beta.89](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ts@1.12.0-beta.88...@injectivelabs/wallet-ts@1.12.0-beta.89) (2023-08-22)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ts
