@@ -16,7 +16,7 @@ export const getTokenFromDenomsMetadata = (
     name: response.name || response.symbol || denom,
     symbol: response.symbol || response.name || 'Unknown',
     decimals: denomUnit.exponent || 0,
-    logo: 'unknown.svg',
+    logo: response.uri || 'unknown.svg',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
     tokenVerification: TokenVerification.Internal,

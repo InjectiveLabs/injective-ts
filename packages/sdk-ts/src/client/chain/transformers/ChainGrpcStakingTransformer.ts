@@ -13,7 +13,7 @@ import {
   Pool,
   StakingModuleParams,
 } from '../types/staking'
-import { cosmosSdkDecToBigNumber, DUST_AMOUNT } from '../../../utils'
+import { cosmosSdkDecToBigNumber } from '../../../utils'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { Pagination } from '../../../types'
 import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
@@ -88,28 +88,24 @@ export class ChainGrpcStakingTransformer {
   ): { delegations: Delegation[]; pagination: Pagination } {
     const grpcDelegations = response.delegationResponses
 
-    const delegations = grpcDelegations
-      .map((grpcDelegator) => {
-        const delegation = grpcDelegator.delegation
-        const balance = grpcDelegator.balance
+    const delegations = grpcDelegations.map((grpcDelegator) => {
+      const delegation = grpcDelegator.delegation
+      const balance = grpcDelegator.balance
 
-        return {
-          delegation: {
-            delegatorAddress: delegation ? delegation.delegatorAddress : '',
-            validatorAddress: delegation ? delegation.validatorAddress : '',
-            shares: cosmosSdkDecToBigNumber(
-              delegation ? delegation.shares : 0,
-            ).toFixed(),
-          },
-          balance: {
-            denom: balance ? balance.denom : '',
-            amount: new BigNumberInWei(balance ? balance.amount : 0).toFixed(),
-          },
-        }
-      })
-      .filter((delegation) =>
-        new BigNumberInWei(delegation.balance.amount).toBase().gte(DUST_AMOUNT),
-      )
+      return {
+        delegation: {
+          delegatorAddress: delegation ? delegation.delegatorAddress : '',
+          validatorAddress: delegation ? delegation.validatorAddress : '',
+          shares: cosmosSdkDecToBigNumber(
+            delegation ? delegation.shares : 0,
+          ).toFixed(),
+        },
+        balance: {
+          denom: balance ? balance.denom : '',
+          amount: new BigNumberInWei(balance ? balance.amount : 0).toFixed(),
+        },
+      }
+    })
 
     return {
       delegations,
@@ -125,8 +121,8 @@ export class ChainGrpcStakingTransformer {
   } {
     const grpcUnbondingDelegations = response.unbondingResponses
 
-    const unbondingDelegations = grpcUnbondingDelegations
-      .reduce((unbondingDelegations, grpcUnBondingDelegation) => {
+    const unbondingDelegations = grpcUnbondingDelegations.reduce(
+      (unbondingDelegations, grpcUnBondingDelegation) => {
         const entries = grpcUnBondingDelegation.entries
 
         const mappedEntries = entries.map((entry) => ({
@@ -143,10 +139,9 @@ export class ChainGrpcStakingTransformer {
         }))
 
         return [...unbondingDelegations, ...mappedEntries]
-      }, [] as UnBondingDelegation[])
-      .filter((delegation) =>
-        new BigNumberInWei(delegation.balance).toBase().gte(DUST_AMOUNT),
-      )
+      },
+      [] as UnBondingDelegation[],
+    )
 
     return {
       unbondingDelegations,
@@ -159,8 +154,8 @@ export class ChainGrpcStakingTransformer {
   ): { redelegations: ReDelegation[]; pagination: Pagination } {
     const grpcReDelegations = response.redelegationResponses
 
-    const redelegations = grpcReDelegations
-      .reduce((uiReDelegator, grpcReDelegationCurrent) => {
+    const redelegations = grpcReDelegations.reduce(
+      (uiReDelegator, grpcReDelegationCurrent) => {
         const grpcRedelegation = grpcReDelegationCurrent.redelegation!
 
         if (!grpcRedelegation) {
@@ -193,10 +188,9 @@ export class ChainGrpcStakingTransformer {
         )
 
         return [...uiReDelegator, ...uiRedelegations]
-      }, [] as ReDelegation[])
-      .filter((delegation) =>
-        new BigNumberInWei(delegation.balance).toBase().gte(DUST_AMOUNT),
-      )
+      },
+      [] as ReDelegation[],
+    )
 
     return {
       redelegations,
