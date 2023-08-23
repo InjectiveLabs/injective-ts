@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-beta.90](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.89...@injectivelabs/sdk-ui-ts@1.12.0-beta.90) (2023-08-23)
+
+### Features
+
+- add logo for our validator ([45e1a56](https://github.com/InjectiveLabs/injective-ts/commit/45e1a561053ed37a2c21e122fa7c46e98f07f94c))
+
 # [1.12.0-beta.89](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ui-ts@1.12.0-beta.88...@injectivelabs/sdk-ui-ts@1.12.0-beta.89) (2023-08-22)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ui-ts
