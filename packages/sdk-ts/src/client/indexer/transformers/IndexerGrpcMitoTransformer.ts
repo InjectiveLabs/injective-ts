@@ -329,8 +329,6 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoIDOToIDO(IDO: MitoApi.IDO): MitoIDO {
-    console.log(IDO.stakeToSubscription)
-
     return {
       name: IDO.name,
       owner: IDO.owner,

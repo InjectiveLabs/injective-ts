@@ -118,4 +118,30 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+  'GBP-MASTER': {
+    name: 'GBP Master',
+    logo: 'mito-gbp-master-lp.svg',
+    symbol: 'GBP-MASTER-LP',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: '',
+      tokenType: TokenType.Cw20,
+    },
+  },
+  'EUR-MASTER': {
+    name: 'EUR Master',
+    logo: 'mito-eur-master-lp.svg',
+    symbol: 'EUR-MASTER-LP',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: '',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>
