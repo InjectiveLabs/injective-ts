@@ -12,13 +12,13 @@ export const getEndpointsFromChainId = (
   switch (chainId) {
     case CosmosChainId.Injective:
       return {
-        rpc: 'https://k8s.mainnet.tm.injective.network',
-        rest: 'https://k8s.mainnet.lcd.injective.network',
+        rpc: 'https://tm.injective.network',
+        rest: 'https://lcd.injective.network',
       }
     case TestnetCosmosChainId.Injective:
       return {
-        rpc: 'https://k8s.testnet.tm.injective.network',
-        rest: 'https://k8s.testnet.lcd.injective.network',
+        rpc: 'https://testnet.tm.injective.network',
+        rest: 'https://testnet.lcd.injective.network',
       }
     case DevnetCosmosChainId.Injective:
       return {
