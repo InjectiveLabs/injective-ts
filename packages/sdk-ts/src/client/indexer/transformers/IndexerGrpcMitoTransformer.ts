@@ -333,24 +333,26 @@ export class IndexerGrpcMitoTransformer {
       name: IDO.name,
       owner: IDO.owner,
       status: IDO.status,
-      amount: IDO.amount,
       tokenPrice: IDO.tokenPrice,
       quoteDenom: IDO.quoteDenom,
       capPerAddress: IDO.capPerAddress,
-      swappedAmount: IDO.swappedAmount,
       contractAddress: IDO.contractAddress,
       subscribedAmount: IDO.subscribedAmount,
+      targetAmountInUsd: IDO.targetAmountInUsd,
+      projectTokenAmount: IDO.projectTokenAmount,
       isAccountWhiteListed: IDO.isAccountWhiteListed,
+      targetAmountInQuoteDenom: IDO.targetAmountInQuoteDenom,
       endTime: parseInt(IDO.endTime, 10),
       startTime: parseInt(IDO.startTime, 10),
+      secondBeforeStartToSetQuotePrice: parseInt(
+        IDO.secondBeforeStartToSetQuotePrice,
+        10,
+      ),
       progress: IDO.progress.map(
         IndexerGrpcMitoTransformer.mitoIDOProgressToIDOProgress,
       ),
       tokenInfo: IDO.tokenInfo
         ? IndexerGrpcMitoTransformer.grpcTokenInfoToTokenInfo(IDO.tokenInfo)
-        : undefined,
-      expectedRaiseFund: IDO.expectedRaiseFund
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(IDO.expectedRaiseFund)
         : undefined,
       stakeToSubscription: IDO.stakeToSubscription.map(
         IndexerGrpcMitoTransformer.mitoStakedToSubscriptionToStakedToSubscription,

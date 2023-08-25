@@ -193,15 +193,16 @@ export interface MitoIDO {
   owner: string
   status: string
   tokenInfo?: MitoTokenInfo
-  expectedRaiseFund?: Coin
   capPerAddress: string
   contractAddress: string
   subscribedAmount: string
+  projectTokenAmount: string
+  targetAmountInQuoteDenom: string
+  secondBeforeStartToSetQuotePrice: number
+  targetAmountInUsd: string
   tokenPrice: number
-  swappedAmount: string
   isAccountWhiteListed: boolean
   name: string
-  amount: string
   progress: MitoIDOProgress[]
   quoteDenom: string
   stakeToSubscription: MitoStakeToSubscription[]
