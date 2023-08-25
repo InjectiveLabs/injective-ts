@@ -16,6 +16,7 @@ export * from './swap'
 export * from './oracle'
 export * from './spot-rest'
 export * from './spot'
+export * from './trading'
 
 export interface StreamStatusResponse {
   details: string
