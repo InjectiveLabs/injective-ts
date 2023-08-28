@@ -213,7 +213,8 @@ export interface MitoIDOSubscriber {
   subscribedCoin?: Coin
   lastSubscribeTime: number
   estimateTokenReceived?: Coin
-  estimateLpAmount: string
+  estimateLpAmount?: Coin | undefined
+  estimateRefundAmount?: Coin | undefined
 }
 
 export interface MitoIDOSubscriptionActivity {

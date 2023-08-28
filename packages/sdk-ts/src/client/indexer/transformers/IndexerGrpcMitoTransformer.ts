@@ -365,11 +365,20 @@ export class IndexerGrpcMitoTransformer {
   ): MitoIDOSubscriber {
     return {
       address: IDOSubscriber.address,
-      estimateLpAmount: IDOSubscriber.estimateLpAmount,
       lastSubscribeTime: parseInt(IDOSubscriber.lastSubscribeTime, 10),
       subscribedCoin: IDOSubscriber.subscribedCoin
         ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
             IDOSubscriber.subscribedCoin,
+          )
+        : undefined,
+      estimateLpAmount: IDOSubscriber.estimateLpAmount
+        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
+            IDOSubscriber.estimateLpAmount,
+          )
+        : undefined,
+      estimateRefundAmount: IDOSubscriber.estimateRefundAmount
+        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
+            IDOSubscriber.estimateRefundAmount,
           )
         : undefined,
       estimateTokenReceived: IDOSubscriber.estimateTokenReceived
