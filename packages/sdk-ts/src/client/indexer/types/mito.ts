@@ -234,6 +234,7 @@ export interface MitoIDOSubscription {
   quoteDenom: string
   updatedAt: number
   stakedAmount: string
+  claimTxHash?: string
 }
 
 export type GrpcMitoIDO = MitoApi.IDO

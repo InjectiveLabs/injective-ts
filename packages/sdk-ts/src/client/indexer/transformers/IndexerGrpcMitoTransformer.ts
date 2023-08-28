@@ -393,6 +393,7 @@ export class IndexerGrpcMitoTransformer {
       claimableCoins: subscription.claimableCoins.map(
         IndexerGrpcMitoTransformer.grpcCoinToCoin,
       ),
+      claimTxHash: subscription.claimTxHash,
       maxSubscriptionCoin: subscription.maxSubscriptionCoin
         ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
             subscription.maxSubscriptionCoin,
