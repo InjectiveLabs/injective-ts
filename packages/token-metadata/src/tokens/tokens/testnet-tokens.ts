@@ -155,4 +155,17 @@ export const testnetTokens = () =>
         address: '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
       },
     },
+
+    MITOTEST1: {
+      ...tokens.MITOTEST1,
+      cw20s: [
+        {
+          decimals: 18,
+          symbol: 'MT1',
+          source: Cw20TokenSource.EthereumWh,
+          address: 'mitotest1',
+          tokenType: TokenType.Cw20,
+        },
+      ],
+    },
   } as Record<string, TokenMeta>)

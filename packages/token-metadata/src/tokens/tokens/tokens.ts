@@ -1024,6 +1024,14 @@ export default {
     coinGeckoId: '',
   },
 
+  MITOTEST1: {
+    name: 'MT1',
+    symbol: 'MT1',
+    decimals: 18,
+    logo: 'projx.png',
+    coinGeckoId: '',
+  },
+
   ASTRO: {
     name: 'ASTRO',
     symbol: 'ASTRO',
