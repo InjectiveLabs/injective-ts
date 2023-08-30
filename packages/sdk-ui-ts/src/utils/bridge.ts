@@ -193,8 +193,9 @@ export const tokenDenomsPerNetwork = [
     denoms: [
       'inj',
       'ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
+      'ibc/AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
     ],
-    symbols: ['strd', 'inj'],
+    symbols: ['strd', 'inj', 'stinj'],
   },
   {
     network: BridgingNetwork.Crescent,
@@ -347,6 +348,12 @@ export const cosmosNativeDenomsFromChainId = {
       ...tokenMetaUtils.getMetaBySymbol('INJ'),
       tokenType: TokenType.Ibc,
       denom: 'inj',
+    },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('STINJ'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
     },
   ],
   [CosmosChainId.Crescent]: [
