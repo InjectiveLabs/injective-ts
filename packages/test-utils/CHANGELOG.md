@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@1.12.0-beta.1...@injectivelabs/test-utils@1.12.0) (2023-08-31)
+
+**Note:** Version bump only for package @injectivelabs/test-utils
+
+
+
+
+
 # [1.12.0-beta.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/test-utils@1.11.2-beta.0...@injectivelabs/test-utils@1.12.0-beta.1) (2023-05-31)
 
 ### Bug Fixes
