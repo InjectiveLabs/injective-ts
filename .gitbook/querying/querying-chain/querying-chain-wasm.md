@@ -72,7 +72,7 @@ const query = '...'
 
 const contractState = await chainGrpcWasmApi.fetchSmartContractState({
   contractAddress,
-  query /* optional string query */,
+  query /* optional string query - HAS to be in base64 */,
 })
 
 console.log(contractState)
@@ -92,7 +92,7 @@ const query = '...'
 
 const rawContractState = await chainGrpcWasmApi.fetchRawContractState({
   contractAddress,
-  query /* optional string query */,
+  query /* optional string query - HAS to be in base64 */,
 })
 
 console.log(rawContractState)
