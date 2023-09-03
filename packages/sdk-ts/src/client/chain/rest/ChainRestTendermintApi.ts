@@ -13,13 +13,15 @@ import {
  * @category Chain Rest API
  */
 export class ChainRestTendermintApi extends BaseRestConsumer {
-  async fetchLatestBlock(): Promise<BlockLatestRestResponse['block']> {
+  async fetchLatestBlock(
+    params: Record<string, any> = {},
+  ): Promise<BlockLatestRestResponse['block']> {
     const endpoint = `cosmos/base/tendermint/v1beta1/blocks/latest`
 
     try {
       const response = await this.retry<
         RestApiResponse<BlockLatestRestResponse>
-      >(() => this.get(endpoint))
+      >(() => this.get(endpoint, params))
 
       return response.data.block
     } catch (e) {
@@ -35,7 +37,7 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
     }
   }
 
-  async fetchNodeInfo(): Promise<{
+  async fetchNodeInfo(params: Record<string, any> = {}): Promise<{
     nodeInfo: NodeInfoRestResponse['default_node_info']
     applicationVersion: NodeInfoRestResponse['application_version']
   }> {
@@ -43,7 +45,7 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
 
     try {
       const response = await this.retry<RestApiResponse<NodeInfoRestResponse>>(
-        () => this.get(endpoint),
+        () => this.get(endpoint, params),
       )
 
       return {

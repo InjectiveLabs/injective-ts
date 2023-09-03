@@ -4,67 +4,79 @@ Example code snippets to stream from the indexer for explorer module related dat
 
 ### Using gRPC Stream
 
-* stream blocks
+- stream blocks
 
 ```ts
 import { IndexerGrpcExplorerStream } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcExplorerStream = new IndexerGrpcExplorerStream(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcExplorerStream = new IndexerGrpcExplorerStream(
+  endpoints.indexer,
+)
 
-const streamFn = indexerGrpcExplorerStream.blocks.bind(indexerGrpcExplorerStream)
+const streamFn = indexerGrpcExplorerStream.blocks.bind(
+  indexerGrpcExplorerStream,
+)
 
 const callback = (blocks) => {
   console.log(blocks)
 }
 
 const streamFnArgs = {
-  callback
+  callback,
 }
 
 streamFn(streamFnArgs)
 ```
 
-* stream blocks with transactions
+- stream blocks with transactions
 
 ```ts
 import { IndexerGrpcExplorerStream } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcExplorerStream = new IndexerGrpcExplorerStream(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcExplorerStream = new IndexerGrpcExplorerStream(
+  endpoints.indexer,
+)
 
-const streamFn = indexerGrpcExplorerStream.blocksWithTxs.bind(indexerGrpcExplorerStream)
+const streamFn = indexerGrpcExplorerStream.blocksWithTxs.bind(
+  indexerGrpcExplorerStream,
+)
 
 const callback = (blocksWithTransactions) => {
   console.log(blocksWithTransactions)
 }
 
 const streamFnArgs = {
-  callback
+  callback,
 }
 
 streamFn(streamFnArgs)
 ```
 
-* stream transactions
+- stream transactions
 
 ```ts
 import { IndexerGrpcExplorerStream } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcExplorerStream = new IndexerGrpcExplorerStream(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcExplorerStream = new IndexerGrpcExplorerStream(
+  endpoints.indexer,
+)
 
-const streamFn = indexerGrpcExplorerStream.streamTransactions.bind(indexerGrpcExplorerStream)
+const streamFn = indexerGrpcExplorerStream.streamTransactions.bind(
+  indexerGrpcExplorerStream,
+)
 
 const callback = (transactions) => {
   console.log(transactions)
 }
 
 const streamFnArgs = {
-  callback
+  callback,
 }
 
 streamFn(streamFnArgs)

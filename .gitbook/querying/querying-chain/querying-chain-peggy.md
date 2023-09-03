@@ -4,13 +4,13 @@ Example code snippets to query the chain via the peggy api.
 
 ### Using gRPC
 
-* Get parameters related to peggy
+- Get parameters related to peggy
 
 ```ts
 import { ChainGrpcPeggyApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcPeggyApi = new ChainGrpcPeggyApi(endpoints.grpc)
 
 const moduleParams = await chainGrpcPeggyApi.fetchModuleParams()

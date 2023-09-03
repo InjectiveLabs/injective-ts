@@ -32,6 +32,7 @@ export type NetworkEndpoints = {
   grpc: string // Sentry gRPC
   rest: string // LCD
   rpc?: string // Tendermint
+  cache?: string // Cache Service
 }
 
 export type UrlEndpoints = NetworkEndpoints /** Deprecated */

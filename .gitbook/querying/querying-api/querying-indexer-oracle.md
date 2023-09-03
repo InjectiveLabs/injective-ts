@@ -4,13 +4,13 @@ Example code snippets to query the indexer for oracle module related data.
 
 ### Using gRPC
 
-* Get a list of oracles
+- Get a list of oracles
 
 ```ts
 import { IndexerGrpcOracleApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcOracleApi = new IndexerGrpcOracleApi(endpoints.indexer)
 
 const oracleList = await indexerGrpcOracleApi.fetchOracleList()
@@ -18,13 +18,13 @@ const oracleList = await indexerGrpcOracleApi.fetchOracleList()
 console.log(oracleList)
 ```
 
-* Get price from oracle
+- Get price from oracle
 
 ```ts
 import { IndexerGrpcOracleApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcOracleApi = new IndexerGrpcOracleApi(endpoints.indexer)
 
 const baseSymbol = 'INJ'
@@ -34,7 +34,7 @@ const oracleType = 'bandibc' // primary oracle we use
 const oraclePrice = await indexerGrpcOracleApi.fetchOraclePriceNoThrow({
   baseSymbol,
   quoteSymbol,
-  oracleType
+  oracleType,
 })
 
 console.log(oraclePrice)

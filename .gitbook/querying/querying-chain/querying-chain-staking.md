@@ -4,13 +4,13 @@ Example code snippets to query the chain's staking module
 
 ### Using gRPC
 
-* Get parameters related to the staking module such as the unbonding time or bond denom
+- Get parameters related to the staking module such as the unbonding time or bond denom
 
 ```ts
 import { ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const moduleParams = await chainGrpcStakingApi.fetchModuleParams()
@@ -18,13 +18,13 @@ const moduleParams = await chainGrpcStakingApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-* Get the unbonded and bonded tokens for a pool
+- Get the unbonded and bonded tokens for a pool
 
 ```ts
 import { ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const pool = await chainGrpcStakingApi.fetchPool()
@@ -32,13 +32,13 @@ const pool = await chainGrpcStakingApi.fetchPool()
 console.log(pool)
 ```
 
-* Get the list of validators and associated metadata
+- Get the list of validators and associated metadata
 
 ```ts
 import { ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const validators = await chainGrpcStakingApi.fetchValidators()
@@ -46,13 +46,13 @@ const validators = await chainGrpcStakingApi.fetchValidators()
 console.log(validators)
 ```
 
-* Get the validator and associated metadata from a validator address
+- Get the validator and associated metadata from a validator address
 
 ```ts
 import { ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const validatorAddress = 'injvaloper...'
@@ -62,13 +62,13 @@ const validator = await chainGrpcStakingApi.fetchValidator(validatorAddress)
 console.log(validator)
 ```
 
-* Get the delegations associated with a validator
+- Get the delegations associated with a validator
 
 ```ts
 import { PaginationOption, ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const validatorAddress = 'injvaloper...'
@@ -82,13 +82,13 @@ const delegations = await chainGrpcStakingApi.fetchValidatorDelegationsNoThrow({
 console.log(delegations)
 ```
 
-* Get the unbonding delegations associated with a validator
+- Get the unbonding delegations associated with a validator
 
 ```ts
 import { PaginationOption, ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const validatorAddress = 'injvaloper...'
@@ -102,13 +102,13 @@ const unbondingDelegations = await chainGrpcStakingApi.fetchValidatorUnbondingDe
 console.log(unbondingDelegations)
 ```
 
-* Get the delegations associated with an injective address for a specific validator
+- Get the delegations associated with an injective address for a specific validator
 
 ```ts
 import { ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const injectiveAddress = 'inj...'
@@ -122,13 +122,13 @@ const delegation = await chainGrpcStakingApi.fetchDelegation({
 console.log(delegation)
 ```
 
-* Get all delegations for an injective address
+- Get all delegations for an injective address
 
 ```ts
 import { PaginationOption, ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const injectiveAddress = 'inj...'
@@ -142,13 +142,13 @@ const delegations = await chainGrpcStakingApi.fetchDelegationsNoThrow({
 console.log(delegations)
 ```
 
-* Get all delegators for a validator
+- Get all delegators for a validator
 
 ```ts
 import { PaginationOption, ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const validatorAddress = 'injvaloper...'
@@ -162,13 +162,13 @@ const delegators = await chainGrpcStakingApi.fetchDelegatorsNoThrow({
 console.log(delegators)
 ```
 
-* Get all the unbonding delegations for an injective address
+- Get all the unbonding delegations for an injective address
 
 ```ts
 import { PaginationOption, ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const injectiveAddress = 'inj...'
@@ -182,13 +182,13 @@ const unbondingDelegations = await chainGrpcStakingApi.fetchUnbondingDelegations
 console.log(unbondingDelegations)
 ```
 
-* Get all the redelegations for an injective address
+- Get all the redelegations for an injective address
 
 ```ts
 import { PaginationOption, ChainGrpcStakingApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 const injectiveAddress = 'inj...'

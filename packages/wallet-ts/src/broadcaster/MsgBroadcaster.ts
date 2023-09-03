@@ -399,7 +399,10 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    const keplrWallet = new KeplrWallet(chainId)
+    const keplrWallet = new KeplrWallet(chainId, {
+      rest: endpoints.rest,
+      rpc: endpoints.rpc,
+    })
     /** Account Details * */
     const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(

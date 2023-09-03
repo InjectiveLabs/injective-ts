@@ -68,7 +68,7 @@ export interface CosmosWalletStrategyArguments {
 }
 
 export interface WalletStrategyArguments
-  extends Omit<CosmosWalletStrategyArguments, 'endpoints' | 'chainId'> {
+  extends Omit<CosmosWalletStrategyArguments, 'chainId'> {
   chainId: ChainId
   ethereumOptions?: WalletStrategyEthereumOptions
   disabledWallets?: Wallet[]

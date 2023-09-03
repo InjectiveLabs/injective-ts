@@ -30,10 +30,13 @@ export default class Leap
 {
   private leapWallet: LeapWallet
 
-  constructor(args: { chainId: ChainId }) {
+  constructor(args: {
+    chainId: ChainId
+    endpoints?: { rest: string; rpc: string }
+  }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.leapWallet = new LeapWallet(args.chainId)
+    this.leapWallet = new LeapWallet(args.chainId, args.endpoints)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {

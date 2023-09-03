@@ -6,11 +6,11 @@ In this example we will implement the connection and interact with an example Sm
 
 The series will include:
 
-* Setting up the API clients and environment,
-* Connecting to the Chain and the Indexer API,
-* Connect to a user wallet and get their address,
-* Querying the smart contract ( in this case fetching the current count of the smart contract ),
-* Modifying the state of the contract ( in this case incrementing the count by 1, or setting it to a speciffic value),
+- Setting up the API clients and environment,
+- Connecting to the Chain and the Indexer API,
+- Connect to a user wallet and get their address,
+- Querying the smart contract ( in this case fetching the current count of the smart contract ),
+- Modifying the state of the contract ( in this case incrementing the count by 1, or setting it to a speciffic value),
 
 ### Setup
 
@@ -26,13 +26,13 @@ Example:
 
 ```js
 //filename: services.ts
-import { ChainGrpcWasmApi } from "@injectivelabs/sdk-ts";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
+import { ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
-export const NETWORK = Network.TestnetK8s;
-export const ENDPOINTS = getNetworkEndpoints(NETWORK);
+export const NETWORK = Network.Testnet
+export const ENDPOINTS = getNetworkEndpoints(NETWORK)
 
-export const chainGrpcWasmApi = new ChainGrpcWasmApi(ENDPOINTS.grpc);
+export const chainGrpcWasmApi = new ChainGrpcWasmApi(ENDPOINTS.grpc)
 ```
 
 Then, we also need to setup a wallet connection to allow the user to connect to our DEX and start signing transactions. To make this happen we are going to use our `@injectivelabs/wallet-ts` package which allows users to connect with a various of different wallet providers and use them to sign transactions on Injective.
@@ -43,8 +43,8 @@ To start, you have to make an instance of the WalletStrategy class which gives y
 
 ```ts
 // filename: wallet.ts
-import { WalletStrategy } from "@injectivelabs/wallet-ts";
-import { Web3Exception } from "@injectivelabs/exceptions";
+import { WalletStrategy } from '@injectivelabs/wallet-ts'
+import { Web3Exception } from '@injectivelabs/exceptions'
 
 // These imports are from .env
 import {
@@ -53,7 +53,7 @@ import {
   IS_TESTNET,
   alchemyRpcEndpoint,
   alchemyWsRpcEndpoint,
-} from "/constants";
+} from '/constants'
 
 export const walletStrategy = new WalletStrategy({
   chainId: CHAIN_ID,
@@ -62,7 +62,7 @@ export const walletStrategy = new WalletStrategy({
     wsRpcUrl: alchemyWsRpcEndpoint,
     rpcUrl: alchemyRpcEndpoint,
   },
-});
+})
 ```
 
 If we don't want to use Ethereum native wallets, just omit the `ethereumOptions` within the `WalletStrategy` constructor.
@@ -70,13 +70,13 @@ If we don't want to use Ethereum native wallets, just omit the `ethereumOptions`
 Finally, to do the whole transaction flow (prepare + sign + broadcast) on Injective we are going to use the MsgBroadcaster class.
 
 ```js
-import { Network } from "@injectivelabs/networks";
-export const NETWORK = Network.TestnetK8s;
+import { Network } from '@injectivelabs/networks'
+export const NETWORK = Network.Testnet
 
 export const msgBroadcastClient = new MsgBroadcaster({
   walletStrategy,
   network: NETWORK,
-});
+})
 ```
 
 ### Connect to the user's wallet
@@ -91,55 +91,55 @@ import {
   WalletException,
   UnspecifiedErrorCode,
   ErrorType,
-} from "@injectivelabs/exceptions";
-import { Wallet } from "@injectivelabs/wallet-ts";
-import { walletStrategy } from "./Wallet.ts";
+} from '@injectivelabs/exceptions'
+import { Wallet } from '@injectivelabs/wallet-ts'
+import { walletStrategy } from './Wallet.ts'
 
 export const getAddresses = async (wallet: Wallet): Promise<string[]> => {
-  walletStrategy.setWallet(wallet);
+  walletStrategy.setWallet(wallet)
 
-  const addresses = await walletStrategy.getAddresses();
+  const addresses = await walletStrategy.getAddresses()
 
   if (addresses.length === 0) {
     throw new WalletException(
-      new Error("There are no addresses linked in this wallet."),
+      new Error('There are no addresses linked in this wallet.'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-      }
-    );
+      },
+    )
   }
 
   if (!addresses.every((address) => !!address)) {
     throw new WalletException(
-      new Error("There are no addresses linked in this wallet."),
+      new Error('There are no addresses linked in this wallet.'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-      }
-    );
+      },
+    )
   }
 
   // If we are using Ethereum native wallets the 'addresses' are the hex addresses
   // If we are using Cosmos native wallets the 'addresses' are bech32 injective addresses,
-  return addresses;
-};
+  return addresses
+}
 ```
 
 ### Querying
 
-After the initial setup is done, let's see how to query the smart contract to get the current count using the chainGrpcWasmApi service we created earlier, and calling get\_count on the Smart Contract.
+After the initial setup is done, let's see how to query the smart contract to get the current count using the chainGrpcWasmApi service we created earlier, and calling get_count on the Smart Contract.
 
 ```ts
 function getCount() {
   const response = (await chainGrpcWasmApi.fetchSmartContractState(
     COUNTER_CONTRACT_ADDRESS, // The address of the contract
-    toBase64({ get_count: {} }) // We need to convert our query to Base64
-  )) as { data: string };
+    toBase64({ get_count: {} }), // We need to convert our query to Base64
+  )) as { data: string }
 
-  const { count } = fromBase64(response.data) as { count: number }; // we need to convert the response from Base64
+  const { count } = fromBase64(response.data) as { count: number } // we need to convert the response from Base64
 
-  return count; // return the current counter value.
+  return count // return the current counter value.
 }
 ```
 
@@ -151,8 +151,8 @@ Next we will modify the `count` state. We can do that by sending messages to the
 
 The Smart Contract we use for this example has 2 methods for altering the state:
 
-* `increment`
-* `reset`
+- `increment`
+- `reset`
 
 `increment` increment the count by 1, and `reset` sets the count to a given value. Note that `reset` can only be called if you are the creator of the smart contract.
 
@@ -169,16 +169,16 @@ const msg = MsgExecuteContractCompat.fromJSON({
   msg: {
     increment: {}, // we pass an empty object if the method doesnt have parameters
   },
-});
+})
 
 // Signing and broadcasting the message
 
 const response = await msgBroadcastClient.broadcast({
   msgs: msg, // we can pass multiple messages here using an array. ex: [msg1,msg2]
   injectiveAddress: injectiveAddress,
-});
+})
 
-console.log(response);
+console.log(response)
 ```
 
 Now, lets see an example of how to se the counter to a specific value. Note that in this Smart Contract the count can be set to specific value only by the creator of the Smart Contract.
@@ -194,16 +194,16 @@ const msg = MsgExecuteContractCompat.fromJSON({
       count: parseInt(number, 10), // we are parseing the number variable here because usualy it comes from an input which always gives a string, and we need to pass a number instead.
     },
   },
-});
+})
 
 // Signing and broadcasting the message
 
 const response = await msgBroadcastClient.broadcast({
   msgs: msg,
   injectiveAddress: injectiveAddress,
-});
+})
 
-console.log(response);
+console.log(response)
 ```
 
 ### Full example
@@ -225,7 +225,7 @@ import {
   alchemyWsRpcEndpoint,
 } from "/constants";
 
-const NETWORK = Network.TestnetK8s;
+const NETWORK = Network.Testnet;
 const ENDPOINTS = getNetworkEndpoints(NETWORK);
 
 const chainGrpcWasmApi = new ChainGrpcWasmApi(ENDPOINTS.grpc);

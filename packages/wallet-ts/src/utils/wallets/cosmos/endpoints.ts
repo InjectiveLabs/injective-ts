@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/ts-types'
 import { GeneralException } from '@injectivelabs/exceptions'
 
+/** @deprecated - pass endpoints directly to the methods */
 export const getEndpointsFromChainId = (
   chainId: TestnetCosmosChainId | CosmosChainId | ChainId | DevnetCosmosChainId,
 ): { rpc: string; rest: string } => {

@@ -30,10 +30,13 @@ export default class Keplr
 {
   private keplrWallet: KeplrWallet
 
-  constructor(args: { chainId: ChainId }) {
+  constructor(args: {
+    chainId: ChainId
+    endpoints?: { rest: string; rpc: string }
+  }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.keplrWallet = new KeplrWallet(args.chainId)
+    this.keplrWallet = new KeplrWallet(args.chainId, args.endpoints)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {

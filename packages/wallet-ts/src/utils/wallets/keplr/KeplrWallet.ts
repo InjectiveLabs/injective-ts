@@ -21,6 +21,7 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
   WalletErrorActionModule,
+  GeneralException,
 } from '@injectivelabs/exceptions'
 import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
@@ -31,8 +32,14 @@ const $window = (typeof window !== 'undefined' ? window : {}) as KeplrWindow
 export class KeplrWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
+  private endpoints: { rest: string; rpc?: string }
+
+  constructor(
+    chainId: CosmosChainId | TestnetCosmosChainId | ChainId,
+    endpoints?: { rest: string; rpc?: string },
+  ) {
     this.chainId = chainId
+    this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
   public static async experimentalSuggestChainWithChainData(chainData: any) {
@@ -227,18 +234,19 @@ export class KeplrWallet {
     txHash: string,
     endpoint?: string,
   ): Promise<TxResponse> {
-    const restEndpoint = endpoint || (await this.getChainEndpoints()).rest
-
-    return new TxRestApi(restEndpoint).fetchTxPoll(txHash)
+    return new TxRestApi(endpoint || this.endpoints.rest).fetchTxPoll(txHash)
   }
 
   public async signAndBroadcastAminoUsingCosmjs(
     messages: EncodeObject[],
     stdFee: StdFee,
   ) {
-    const { chainId } = this
+    const { chainId, endpoints } = this
     const keplr = await this.getKeplrWallet()
-    const endpoints = await this.getChainEndpoints()
+
+    if (!endpoints.rpc) {
+      throw new GeneralException(new Error(`Please provide rpc endpoint`))
+    }
 
     const offlineSigner = keplr.getOfflineSignerOnlyAmino(chainId)
     const [account] = await offlineSigner.getAccounts()
@@ -278,19 +286,6 @@ export class KeplrWallet {
       throw new CosmosWalletException(new Error((e as any).message), {
         context: 'Keplr',
         contextModule: 'sign-eip712-cosmos-tx',
-      })
-    }
-  }
-
-  public async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {
-    const { chainId } = this
-
-    try {
-      return getEndpointsFromChainId(chainId)
-    } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
-        context: 'Keplr',
-        contextModule: 'get-chain-endpoints',
       })
     }
   }

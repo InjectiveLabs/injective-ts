@@ -4,18 +4,22 @@ Example code snippets to stream from the indexer for portfolio module related da
 
 ### Using gRPC Stream
 
-* stream an account's portfolio
+- stream an account's portfolio
 
 ```ts
 import { IndexerGrpcAccountPortfolioStream } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcAccountPortfolioStream = new IndexerGrpcAccountPortfolioStream(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcAccountPortfolioStream = new IndexerGrpcAccountPortfolioStream(
+  endpoints.indexer,
+)
 
 const accountAddress = 'inj...'
 
-const streamFn = indexerGrpcAccountPortfolioStream.streamAccountPortfolio.bind(indexerGrpcAccountPortfolioStream)
+const streamFn = indexerGrpcAccountPortfolioStream.streamAccountPortfolio.bind(
+  indexerGrpcAccountPortfolioStream,
+)
 
 const callback = (portfolioResults) => {
   console.log(portfolioResults)
@@ -23,7 +27,7 @@ const callback = (portfolioResults) => {
 
 const streamFnArgs = {
   accountAddress,
-  callback
+  callback,
 }
 
 streamFn(streamFnArgs)

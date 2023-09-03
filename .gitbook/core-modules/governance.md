@@ -17,7 +17,6 @@ import {
   MsgGovDeposit
   MsgBroadcasterWithPk,
 } from "@injectivelabs/sdk-ts";
-import { getEndpointsFromChainId } from "@injectivelabs/wallet-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 import { ChainId } from "@injectivelabs/ts-types";
@@ -57,7 +56,6 @@ import {
   MsgVote,
   MsgBroadcasterWithPk
 } from "@injectivelabs/sdk-ts";
-import { getEndpointsFromChainId } from "@injectivelabs/wallet-ts";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 import { ChainId } from "@injectivelabs/ts-types";
 import { VoteOption } from '@injectivelabs/sdk-ts';
@@ -92,7 +90,6 @@ import {
   MsgSubmitTextProposal,
   MsgBroadcasterWithPk
 } from "@injectivelabs/sdk-ts";
-import { getEndpointsFromChainId } from "@injectivelabs/wallet-ts";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 import { ChainId } from "@injectivelabs/ts-types";
 import { BigNumberInBase } from "@injectivelabs/utils";
@@ -132,7 +129,6 @@ import {
   MsgBroadcasterWithPk,
   MsgSubmitProposalSpotMarketLaunch
 } from "@injectivelabs/sdk-ts";
-import { getEndpointsFromChainId } from "@injectivelabs/wallet-ts";
 import { BigNumberInBase, BigNumberInWei } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 import { ChainId } from "@injectivelabs/ts-types";
@@ -213,7 +209,6 @@ import {
   MsgBroadcasterWithPk,
   MsgSubmitProposalPerpetualMarketLaunch
 } from "@injectivelabs/sdk-ts";
-import { getEndpointsFromChainId } from "@injectivelabs/wallet-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 import { ChainId } from "@injectivelabs/ts-types";
@@ -289,7 +284,6 @@ import {
   MsgBroadcasterWithPk,
   MsgSubmitProposalExpiryFuturesMarketLaunch
 } from "@injectivelabs/sdk-ts";
-import { getEndpointsFromChainId } from "@injectivelabs/wallet-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 import { ChainId } from "@injectivelabs/ts-types";
@@ -365,7 +359,6 @@ import {
   MsgBroadcasterWithPk,
   MsgSubmitProposalSpotMarketParamUpdate
 } from "@injectivelabs/sdk-ts";
-import { getEndpointsFromChainId } from "@injectivelabs/wallet-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 import { ChainId } from "@injectivelabs/ts-types";
