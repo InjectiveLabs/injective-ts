@@ -1753,7 +1753,7 @@ export default {
     name: 'Wrapped Klaytn',
     symbol: 'WKLAY',
     decimals: 8,
-    logo: 'klay.webp',
+    logo: 'klaytn.webp',
     coinGeckoId: 'klay-token',
 
     cw20: {
