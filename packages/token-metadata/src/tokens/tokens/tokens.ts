@@ -1748,4 +1748,18 @@ export default {
     logo: 'nebula.png',
     coinGeckoId: '',
   },
+
+  WKLAY: {
+    name: 'Wrapped Klaytn',
+    symbol: 'WKLAY',
+    decimals: 8,
+    logo: 'klay.webp',
+    coinGeckoId: 'klay-token',
+
+    cw20: {
+      decimals: 8,
+      address: 'inj14cl67lprqkt3pncjav070gavaxslc0tzpc56f4',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>
