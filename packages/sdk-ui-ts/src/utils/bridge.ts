@@ -103,7 +103,6 @@ export const EvmWormholeNetworks = [
 
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Juno,
-  BridgingNetwork.Evmos,
   BridgingNetwork.Moonbeam,
   BridgingNetwork.Chihuahua,
   BridgingNetwork.CosmosHub,
@@ -165,8 +164,9 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Evmos,
     denoms: [
       'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
+      'ibc/F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
     ],
-    symbols: ['evmos'],
+    symbols: ['evmos', 'neok'],
   },
   {
     network: BridgingNetwork.Persistence,
@@ -319,12 +319,20 @@ export const cosmosNativeDenomsFromChainId = {
       denom: 'dot-planck',
     },
   ],
-  [CosmosChainId.Evmos]: {
-    ...tokenMetaUtils.getMetaBySymbol('EVMOS'),
-    tokenType: TokenType.Ibc,
-    denom:
-      'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
-  },
+  [CosmosChainId.Evmos]: [
+    {
+      ...tokenMetaUtils.getMetaBySymbol('EVMOS'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
+    },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('NEOK'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
+    },
+  ],
   [CosmosChainId.Persistence]: {
     ...tokenMetaUtils.getMetaBySymbol('XPRT'),
     tokenType: TokenType.Ibc,

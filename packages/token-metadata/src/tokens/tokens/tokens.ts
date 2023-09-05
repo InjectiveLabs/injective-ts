@@ -1762,4 +1762,22 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  NEOK: {
+    name: 'NEOKingdom DAO',
+    symbol: 'NEOK',
+    decimals: 18,
+    logo: 'neok.svg',
+    coinGeckoId: '',
+
+    ibc: {
+      decimals: 18,
+      isNative: true,
+      baseDenom: 'erc20/0x655ecB57432CC1370f65e5dc2309588b71b473A9',
+      path: 'transfer/channel-83',
+      channelId: 'channel-83',
+      hash: 'F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
+      tokenType: TokenType.Ibc,
+    },
+  },
 } as Record<string, TokenMeta>
