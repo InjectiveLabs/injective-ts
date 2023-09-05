@@ -50,6 +50,15 @@ export const endpointsInternal: NetworkEndpoints = {
   explorer: 'https://products.exchange.grpc-web.injective.network',
 }
 
+export const endpointsTestnetSentry: NetworkEndpoints = {
+  indexer: 'https://testnet.sentry.exchange.grpc-web.injective.network',
+  grpc: 'https://testnet.sentry.chain.grpc-web.injective.network',
+  rpc: 'https://testnet.sentry.tm.injective.network',
+  rest: 'https://testnet.sentry.lcd.injective.network',
+  chronos: 'https://testnet.sentry.exchange.grpc-web.injective.network',
+  explorer: 'https://testnet.sentry.exchange.grpc-web.injective.network',
+}
+
 export const endpointsTestnetK8s: NetworkEndpoints = {
   indexer: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   grpc: 'https://k8s.testnet.chain.grpc-web.injective.network',
