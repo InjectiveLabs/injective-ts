@@ -13,16 +13,17 @@ export declare namespace ExecArgCreateSpotGridStrategy {
     slippage?: string
     stopLoss?: string
     takeProfit?: string
+    shouldExitWithQuoteOnly?: boolean
   }
 
   export interface Data {
     subaccount_id: string
-    lower_bound: string
-    upper_bound: string
+    bounds: [string, string]
     levels: number
     slippage?: string
     stop_loss?: string
     take_profit?: string
+    should_exit_with_quote_only: boolean
   }
 }
 
@@ -45,11 +46,11 @@ export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
     return {
       subaccount_id: params.subaccountId,
       levels: params.levels,
-      lower_bound: params.lowerBound,
-      upper_bound: params.upperBound,
+      bounds: [params.lowerBound, params.upperBound],
       slippage: params.slippage,
       stop_loss: params.stopLoss,
       take_profit: params.takeProfit,
+      should_exit_with_quote_only: !!params.shouldExitWithQuoteOnly,
     }
   }
 
