@@ -231,7 +231,7 @@ export const convertIBCTransferTxToUiBridgeTransaction = async ({
 }): Promise<UiBridgeTransaction> => {
   const txHash = transaction.txHashesList[0]
   const denom = transaction.denom.includes('transfer/channel')
-    ? (transaction.denom.split('/').pop() as string)
+    ? (transaction.denom.split('/').slice(2).join('/') as string)
     : transaction.denom
   const bridgingNetwork = getNetworkFromAddress(transaction.receiver)
 
