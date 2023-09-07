@@ -60,7 +60,7 @@ export default class MsgDeposit extends MsgBase<
     }
 
     return {
-      type: 'cosmos-sdk/v1/MsgDeposit',
+      type: 'cosmos-sdk/MsgDeposit',
       value: message,
     }
   }
