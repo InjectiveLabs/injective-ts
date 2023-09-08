@@ -7,6 +7,7 @@ export const INJECTIVE_DENOM = 'inj'
 
 export const DEFAULT_FEE_DENOM = 'inj'
 export const DEFAULT_GAS_LIMIT = 400000
+export const DEFAULT_IBC_GAS_LIMIT = 300000
 export const DEFAULT_GAS_PRICE = 500000000
 export const DEFAULT_EXCHANGE_LIMIT = 200000
 
