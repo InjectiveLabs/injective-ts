@@ -48,6 +48,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
   BridgingNetwork.Kava,
+  BridgingNetwork.Oraichain,
 ]
 
 export const LeapNetworks = [
@@ -92,6 +93,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
   BridgingNetwork.Kava,
+  BridgingNetwork.Oraichain,
 ]
 
 export const EvmWormholeNetworks = [
@@ -223,8 +225,16 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Kava,
     denoms: [
       'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
+      'ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
     ],
-    symbols: ['kava'],
+    symbols: ['kava', 'usdtkv'],
+  },
+  {
+    network: BridgingNetwork.Oraichain,
+    denoms: [
+      'ibc/C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
+    ],
+    symbols: ['orai'],
   },
   {
     network: BridgingNetwork.CosmosHubTestnet,
@@ -396,6 +406,20 @@ export const cosmosNativeDenomsFromChainId = {
       denom:
         'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
     },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('USDTkv'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
+    },
+  ],
+  [CosmosChainId.Oraichain]: [
+    {
+      ...tokenMetaUtils.getMetaBySymbol('ORAI'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
+    },
   ],
   [TestnetCosmosChainId.Cosmoshub]: {
     ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
@@ -448,6 +472,10 @@ export const getCosmosExplorerUrl = (
   bridgingNetwork: BridgingNetwork = BridgingNetwork.CosmosHub,
   network: Network,
 ): string => {
+  if (bridgingNetwork === BridgingNetwork.Oraichain) {
+    return 'https://scan.orai.io/'
+  }
+
   const mintScanNetworkUrl = MintScanExplorerUrl[bridgingNetwork]
 
   if (isDevnet(network)) {
@@ -596,6 +624,10 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
 
   if (sender.startsWith('kava')) {
     return BridgingNetwork.Kava
+  }
+
+  if (sender.startsWith('orai')) {
+    return BridgingNetwork.Oraichain
   }
 
   if (sender.startsWith('0x')) {

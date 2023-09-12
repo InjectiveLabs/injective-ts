@@ -13,6 +13,7 @@ export enum CanonicalChannelToDestinationChannel {
   Sommelier = 'channel-93',
   Migaloo = 'channel-102',
   Kava = 'channel-143',
+  Oraichain = 'channel-147',
 }
 
 /**
@@ -43,11 +44,8 @@ const legacyCanonicalChannels = {
 }
 
 /**
- * We can't use this approach because the channels can overlap between chains
- * For example for Secret -> Injective we have channel-23 and we have the same
- * for Osmosis -> Injective.
  * @deprecated - use  canonicalChannelsToChainList
- * */
+ **/
 export const canonicalChannelsToChainMapFromInjective = {
   'channel-1': { chainA: 'Injective', chainB: 'CosmosHub' },
   'channel-83': { chainA: 'Injective', chainB: 'Evmos' },
@@ -85,6 +83,7 @@ export const canonicalChannelsToChainList = [
   { channelId: 'channel-92', chainA: 'Terra2', chainB: 'Injective' },
   { channelId: 'channel-3', chainA: 'Migaloo', chainB: 'Injective' },
   { channelId: 'channel-122', chainA: 'Kava', chainB: 'Injective' },
+  { channelId: 'channel-146', chainA: 'Oraichain', chainB: 'Injective' },
   { channelId: 'channel-1', chainA: 'Injective', chainB: 'CosmosHub' },
   { channelId: 'channel-83', chainA: 'Injective', chainB: 'Evmos' },
   { channelId: 'channel-8', chainA: 'Injective', chainB: 'Osmosis' },
@@ -103,6 +102,7 @@ export const canonicalChannelsToChainList = [
   { channelId: 'channel-104', chainA: 'Injective', chainB: 'Terra2' },
   { channelId: 'channel-105', chainA: 'Injective', chainB: 'Terra2' },
   { channelId: 'channel-143', chainA: 'Injective', chainB: 'Kava' },
+  { channelId: 'channel-147', chainA: 'Injective', chainB: 'Oraichain' },
 ]
 
 export default legacyCanonicalChannels
@@ -129,6 +129,7 @@ export const canonicalChannelIds = [
   'channel-104',
   'channel-105',
   'channel-143',
+  'channel-147',
 ]
 
 export const channelIbcDenomToBaseDenomMap = {

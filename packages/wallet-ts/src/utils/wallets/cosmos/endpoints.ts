@@ -101,6 +101,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://rpc.cosmos.directory/kava',
         rest: 'https://rest.cosmos.directory/kava',
       }
+    case CosmosChainId.Oraichain:
+      return {
+        rpc: 'https://rpc.cosmos.directory/oraichain',
+        rest: 'https://rest.cosmos.directory/oraichain',
+      }
     case TestnetCosmosChainId.Cosmoshub:
       return {
         rpc: 'https://testnet.tm.cosmos.injective.dev',

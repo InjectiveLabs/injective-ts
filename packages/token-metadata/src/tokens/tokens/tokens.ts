@@ -1711,6 +1711,24 @@ export default {
     },
   },
 
+  USDTkv: {
+    name: 'USDT',
+    symbol: 'USDTkv',
+    decimals: 6,
+    logo: 'usdt.svg',
+    coinGeckoId: 'tether',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'erc20/tether/usdt',
+      path: 'transfer/channel-143',
+      channelId: 'channel-143',
+      hash: '4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
   SEI: {
     name: 'SEI',
     symbol: 'SEI',
@@ -1777,6 +1795,24 @@ export default {
       path: 'transfer/channel-83',
       channelId: 'channel-83',
       hash: 'F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
+  ORAI: {
+    name: 'Oraichain',
+    symbol: 'ORAI',
+    decimals: 6,
+    logo: 'orai.webp',
+    coinGeckoId: 'oraichain-token',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'orai',
+      path: 'transfer/channel-147',
+      channelId: 'channel-147',
+      hash: 'C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
       tokenType: TokenType.Ibc,
     },
   },

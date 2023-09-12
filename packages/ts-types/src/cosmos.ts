@@ -20,6 +20,7 @@ export enum CosmosChainId {
   Sommelier = 'sommelier-3',
   Canto = 'canto_7700-1',
   Kava = 'kava_2222-10',
+  Oraichain = 'Oraichain',
 }
 
 export enum TestnetCosmosChainId {

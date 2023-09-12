@@ -30,6 +30,7 @@ export enum BridgingNetwork {
   Klaytn = 'klaytn',
   Sui = 'sui',
   Kava = 'kava',
+  Oraichain = 'oraichain',
 }
 
 export const MintScanExplorerUrl = {
