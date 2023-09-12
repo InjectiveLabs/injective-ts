@@ -701,11 +701,13 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     limit,
     toNumber,
     accountAddress,
+    ownerAddress,
   }: {
     status?: string
     limit?: number
     toNumber?: number
     accountAddress?: string
+    ownerAddress?: string
   } = {}) {
     const request = MitoApi.ListIDOsRequest.create()
 
@@ -723,6 +725,10 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     if (accountAddress) {
       request.accountAddress = accountAddress
+    }
+
+    if (ownerAddress) {
+      request.ownerAddress = ownerAddress
     }
 
     try {
