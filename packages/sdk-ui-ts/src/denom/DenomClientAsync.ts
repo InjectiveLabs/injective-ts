@@ -218,7 +218,7 @@ export class DenomClientAsync {
       return this.metadatas.find((metadata) => metadata.base === denom)
     }
 
-    const { metadatas } = await this.chainBankApi.fetchDenomsMetadata()
+    const { metadatas } = await this.chainBankApi.fetchDenomsMetadata({ limit: 1000 })
 
     this.metadatas = metadatas
 
@@ -319,5 +319,11 @@ export class DenomClientAsync {
       }),
       {},
     )
+  }
+
+  public async preloadMetadata() {
+    await this.getFactoryDenomMetadata('')
+    await this.getInsuranceFund('')
+    await this.fetchAndCacheDenomTraces()
   }
 }

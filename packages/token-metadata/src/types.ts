@@ -133,6 +133,11 @@ export interface SplToken extends BaseToken {
   tokenType: TokenType
 }
 
+export interface FactoryToken extends BaseToken {
+  display: string
+  description: string
+}
+
 export type Token =
   | Erc20Token
   | EvmToken
@@ -142,6 +147,7 @@ export type Token =
   | Cw20TokenMultiple
   | NativeToken
   | SplToken
+  | FactoryToken
 
 export type TokenWithPrice = Token & { usdPrice: number }
 
