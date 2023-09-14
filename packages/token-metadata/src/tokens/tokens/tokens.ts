@@ -1712,7 +1712,7 @@ export default {
   },
 
   USDTkv: {
-    name: 'USDT',
+    name: 'Tether',
     symbol: 'USDTkv',
     decimals: 6,
     logo: 'usdt.svg',
