@@ -170,6 +170,73 @@ export const experimentalChainsConfig = {
     coinType: 60,
     features: ['ibc-transfer', 'ibc-go', 'eth-address-gen', 'eth-key-sign'],
   },
+  [CosmosChainId.Oraichain]: {
+    ...getEndpointsFromChainId(CosmosChainId.Oraichain),
+    chainId: 'Oraichain',
+    chainName: 'Oraichain',
+    stakeCurrency: {
+      coinDenom: 'ORAI',
+      coinMinimalDenom: 'orai',
+      coinDecimals: 6,
+      coinGeckoId: 'oraichain-token',
+      coinImageUrl:
+        'https://s2.coinmarketcap.com/static/img/coins/64x64/7533.png',
+    },
+    bip44: {
+      coinType: 118,
+    },
+    bech32Config: {
+      bech32PrefixAccAddr: 'orai',
+      bech32PrefixAccPub: 'oraipub',
+      bech32PrefixValAddr: 'oraivaloper',
+      bech32PrefixValPub: 'oraivaloperpub',
+      bech32PrefixConsAddr: 'oraivalcons',
+      bech32PrefixConsPub: 'oraivalconspub',
+    },
+    currencies: [
+      {
+        coinDenom: 'ORAI',
+        coinMinimalDenom: 'orai',
+        coinDecimals: 6,
+        coinGeckoId: 'oraichain-token',
+        coinImageUrl:
+          'https://s2.coinmarketcap.com/static/img/coins/64x64/7533.png',
+      },
+      {
+        coinDenom: 'AIRI',
+        coinMinimalDenom:
+          'cw20:orai10ldgzued6zjp0mkqwsv2mux3ml50l97c74x8sg:aiRight Token',
+        coinDecimals: 6,
+        coinGeckoId: 'airight',
+        coinImageUrl:
+          'https://s2.coinmarketcap.com/static/img/coins/64x64/11563.png',
+      },
+    ],
+    feeCurrencies: [
+      {
+        coinDenom: 'ORAI',
+        coinMinimalDenom: 'orai',
+        coinDecimals: 6,
+        coinGeckoId: 'oraichain-token',
+        coinImageUrl:
+          'https://s2.coinmarketcap.com/static/img/coins/64x64/7533.png',
+        gasPriceStep: {
+          low: 0.003,
+          average: 0.005,
+          high: 0.007,
+        },
+      },
+    ],
+    walletUrlForStaking: 'https://scan.orai.io/validators',
+    features: [
+      'stargate',
+      'no-legacy-stdTx',
+      'ibc-transfer',
+      'cosmwasm',
+      'wasmd_0.24+',
+    ],
+    beta: true,
+  },
 } as Record<string, any>
 
 export const getExperimentalChainConfigBasedOnChainId = (
