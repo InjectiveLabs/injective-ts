@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.2-beta.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.10...@injectivelabs/token-metadata@1.12.2-beta.11) (2023-09-14)
+
+### Bug Fixes
+
+- add tokenType to FactoryToken type ([c1024fd](https://github.com/InjectiveLabs/injective-ts/commit/c1024fdb4d7902c948b9c221e3ff188dae8a8cf0))
+
 ## [1.12.2-beta.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.9...@injectivelabs/token-metadata@1.12.2-beta.10) (2023-09-14)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata
