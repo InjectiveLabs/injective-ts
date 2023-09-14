@@ -1019,7 +1019,7 @@ export default {
   PROJ: {
     name: 'PROJ',
     logo: 'projx.png',
-    symbol: 'Proj',
+    symbol: 'PROJ',
     decimals: 6,
     coinGeckoId: '',
   },
