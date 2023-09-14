@@ -136,6 +136,7 @@ export interface SplToken extends BaseToken {
 export interface FactoryToken extends BaseToken {
   display: string
   description: string
+  tokenType: TokenType
 }
 
 export type Token =
