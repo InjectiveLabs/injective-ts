@@ -1,5 +1,6 @@
-import { Network } from '@injectivelabs/networks'
-import { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM } from '@injectivelabs/utils'
+import {Network} from '@injectivelabs/networks'
+import {DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM} from '@injectivelabs/utils'
+import {ChainId} from "@injectivelabs/ts-types";
 
 export const BECH32_PUBKEY_ACC_PREFIX = 'injpub'
 export const BECH32_PUBKEY_VAL_PREFIX = 'injvaloperpub'
@@ -83,4 +84,14 @@ export const CW20_ALLOCATOR_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj1nu9wf9dw384attnpu0pwfet5fajn05w2xp99u3',
 }
 
-export { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM }
+export {DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM}
+
+
+export const INJ_NAME_REGISTRY_CONTRACT_BY_CHAINID = {
+  [ChainId.Testnet]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
+  [ChainId.Mainnet]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275'
+}
+export const INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_CHAINID = {
+  [ChainId.Testnet]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
+  [ChainId.Mainnet]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu'
+}

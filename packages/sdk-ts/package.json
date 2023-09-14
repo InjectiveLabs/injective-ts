@@ -35,6 +35,8 @@
     "@cosmjs/amino": "^0.30.1",
     "@cosmjs/proto-signing": "^0.30.1",
     "@cosmjs/stargate": "^0.30.1",
+    "@ensdomains/ens-validation": "^0.1.0",
+    "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/bytes": "^5.7.0",
     "@injectivelabs/core-proto-ts": "^0.0.18",
     "@injectivelabs/dmm-proto-ts": "1.0.16",
@@ -64,6 +66,7 @@
     "jscrypto": "^1.0.3",
     "keccak256": "^1.0.6",
     "link-module-alias": "^1.2.0",
+    "lodash.toarray": "^4.4.0",
     "rxjs": "^7.8.0",
     "secp256k1": "^4.0.3",
     "shx": "^0.3.2",
@@ -79,5 +82,8 @@
     "@ethereumjs/tx": "^4.1.1",
     "**/libsodium": "npm:@bangjelkoski/noop",
     "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
+  },
+  "devDependencies": {
+    "@types/lodash.toarray": "^4.4.7"
   }
 }
