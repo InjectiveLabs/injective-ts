@@ -1803,7 +1803,7 @@ export default {
     name: 'Oraichain',
     symbol: 'ORAI',
     decimals: 6,
-    logo: 'orai.webp',
+    logo: 'orai.svg',
     coinGeckoId: 'oraichain-token',
 
     ibc: {
