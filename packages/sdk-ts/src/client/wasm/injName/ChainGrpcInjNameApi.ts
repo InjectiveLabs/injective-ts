@@ -1,31 +1,42 @@
-import {ChainId} from "@injectivelabs/ts-types";
-import {ChainGrpcWasmApi} from './ChainGrpcWasmApi'
+import { ChainId } from '@injectivelabs/ts-types'
+import { ChainGrpcWasmApi } from '../../chain'
 import {
-  binaryToBase64, nameToNode, toBase64, fromBase64,
+  binaryToBase64,
+  nameToNode,
+  toBase64,
+  fromBase64,
   INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_CHAINID,
-  INJ_NAME_REGISTRY_CONTRACT_BY_CHAINID, normalizeName
-} from "../../../utils";
+  INJ_NAME_REGISTRY_CONTRACT_BY_CHAINID,
+  normalizeName,
+} from '../../../utils'
 
 export class ChainGrpcInjNameApi {
   protected client: ChainGrpcWasmApi
+
   protected chainId: ChainId
+
   private registryAddr: string
+
   private reverseResolverAddr: string
 
   constructor(endpoint: string, chainId: ChainId.Mainnet | ChainId.Testnet) {
     this.client = new ChainGrpcWasmApi(endpoint)
     this.chainId = chainId
     this.registryAddr = INJ_NAME_REGISTRY_CONTRACT_BY_CHAINID[chainId]
-    this.reverseResolverAddr = INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_CHAINID[chainId]
+    this.reverseResolverAddr =
+      INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_CHAINID[chainId]
   }
 
   private async fetchResolverAddress(node: number[]) {
     const msg = toBase64({
       resolver: {
-        node
-      }
+        node,
+      },
     })
-    const res = await this.client.fetchSmartContractState(this.registryAddr, msg)
+    const res = await this.client.fetchSmartContractState(
+      this.registryAddr,
+      msg,
+    )
     const data = fromBase64(binaryToBase64(res.data))
     return data.resolver as string | null
   }
@@ -43,8 +54,8 @@ export class ChainGrpcInjNameApi {
     if (!resolverAddr) return null
     const msg = toBase64({
       address: {
-        node
-      }
+        node,
+      },
     })
     const res = await this.client.fetchSmartContractState(resolverAddr, msg)
     const data = fromBase64(binaryToBase64(res.data))
@@ -55,10 +66,13 @@ export class ChainGrpcInjNameApi {
     if (!address) return null
     const msg = toBase64({
       name: {
-        address: address.toLowerCase()
-      }
+        address: address.toLowerCase(),
+      },
     })
-    const res = await this.client.fetchSmartContractState(this.reverseResolverAddr, msg)
+    const res = await this.client.fetchSmartContractState(
+      this.reverseResolverAddr,
+      msg,
+    )
     const data = fromBase64(binaryToBase64(res.data))
     if (data.name) {
       const addr = await this.fetchInjAddress(data.name)
