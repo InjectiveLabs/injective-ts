@@ -1,6 +1,5 @@
-import {Network} from '@injectivelabs/networks'
-import {DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM} from '@injectivelabs/utils'
-import {ChainId} from "@injectivelabs/ts-types";
+import { Network } from '@injectivelabs/networks'
+import { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM } from '@injectivelabs/utils'
 
 export const BECH32_PUBKEY_ACC_PREFIX = 'injpub'
 export const BECH32_PUBKEY_VAL_PREFIX = 'injvaloperpub'
@@ -84,14 +83,38 @@ export const CW20_ALLOCATOR_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj1nu9wf9dw384attnpu0pwfet5fajn05w2xp99u3',
 }
 
-export {DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM}
-
-
-export const INJ_NAME_REGISTRY_CONTRACT_BY_CHAINID = {
-  [ChainId.Testnet]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
-  [ChainId.Mainnet]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275'
+export const INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK = {
+  [Network.Mainnet]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
+  [Network.MainnetLB]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
+  [Network.MainnetK8s]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
+  [Network.Public]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
+  [Network.Staging]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
+  [Network.Internal]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
+  [Network.Testnet]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
+  [Network.TestnetK8s]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
+  [Network.TestnetSentry]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
+  [Network.TestnetOld]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
+  [Network.Devnet]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
+  [Network.Devnet1]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
+  [Network.Devnet2]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
+  [Network.Local]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
 }
-export const INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_CHAINID = {
-  [ChainId.Testnet]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
-  [ChainId.Mainnet]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu'
+
+export const INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK = {
+  [Network.Mainnet]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
+  [Network.MainnetLB]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
+  [Network.MainnetK8s]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
+  [Network.Public]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
+  [Network.Staging]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
+  [Network.Internal]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
+  [Network.Testnet]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
+  [Network.TestnetK8s]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
+  [Network.TestnetSentry]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
+  [Network.TestnetOld]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
+  [Network.Devnet]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
+  [Network.Devnet1]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
+  [Network.Devnet2]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
+  [Network.Local]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
 }
+
+export { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM }

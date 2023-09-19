@@ -1,1 +1,0 @@
-export { ChainGrpcInjNameApi } from './ChainGrpcInjNameApi'

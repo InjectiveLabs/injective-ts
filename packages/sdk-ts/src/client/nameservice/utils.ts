@@ -1,13 +1,11 @@
-// @ts-ignore
 import ensNameHash from '@ensdomains/eth-ens-namehash'
-// @ts-ignore
 import { validate } from '@ensdomains/ens-validation'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 import { keccak_256 as keccak256 } from 'js-sha3'
-import toArray from 'lodash.toarray'
 
 const nameHash = (inputName: string) => {
   let node = ''
+
   for (let i = 0; i < 32; i += 1) {
     node += '00'
   }
@@ -16,8 +14,9 @@ const nameHash = (inputName: string) => {
     const labels = inputName.split('.')
 
     for (let i = labels.length - 1; i >= 0; i -= 1) {
-      const normalisedLabel = ensNameHash.normalize(labels[i])
-      const labelSha = keccak256(normalisedLabel)
+      const normalizedLabel = ensNameHash.normalize(labels[i])
+      const labelSha = keccak256(normalizedLabel)
+
       node = keccak256(Buffer.from(node + labelSha, 'hex'))
     }
   }
@@ -33,27 +32,35 @@ const nameToNode = (name: string) => {
   return Array.from(Buffer.from(hash.slice(2), 'hex'))
 }
 
-const checkNameLength = (label: string) => {
-  const len = toArray(label).length
-  return !(len < 3 || len > 512)
+const validateNameLength = (label: string) => {
+  if (typeof label !== 'string') {
+    return 0
+  }
+
+  return !(label.length < 3 || label.length > 512)
 }
 
-const checkName = (name: string) => {
+const validateName = (name: string) => {
   if (!name) {
     return false
   }
-  if (!checkNameLength(name)) {
+
+  if (!validateNameLength(name)) {
     return false
   }
+
   const blackList =
     // eslint-disable-next-line no-control-regex,no-misleading-character-class
     /[\u0000-\u002c\u002e-\u002f\u003a-\u005e\u0060\u007b-\u007f\u200b\u200c\u200d\ufeff]/g
+
   if (blackList.test(name)) {
     return false
   }
+
   if (!validate(name)) {
     return false
   }
+
   return true
 }
 
@@ -64,8 +71,10 @@ const normalizeName = (name: string) => {
       type: ErrorType.ValidationError,
     })
   }
+
   const labelArr = name.split('.')
   const emptyLabel = labelArr.find((i) => i.length < 1)
+
   if (emptyLabel !== undefined) {
     throw new GeneralException(new Error('Domain cannot have empty labels'), {
       context: 'Params',
@@ -74,6 +83,7 @@ const normalizeName = (name: string) => {
   }
 
   let normalizedArray: string[]
+
   try {
     normalizedArray = labelArr.map((e) => ensNameHash.normalize(e))
   } catch (e) {
@@ -84,17 +94,20 @@ const normalizeName = (name: string) => {
   }
 
   const normalizedDomain = normalizedArray.join('.')
+
   let label = normalizedDomain
+
   if (normalizedArray.length > 1) {
     label = normalizedArray.slice(0, normalizedArray.length - 1).join('.')
   }
 
-  if (!checkName(label)) {
+  if (!validateName(label)) {
     throw new GeneralException(new Error('Invalid Domain'), {
       context: 'Params',
       type: ErrorType.ValidationError,
     })
   }
+
   return normalizedDomain
 }
 

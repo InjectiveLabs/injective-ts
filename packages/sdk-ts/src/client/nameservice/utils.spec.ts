@@ -1,4 +1,4 @@
-import { nameToNode, normalizeName } from './name'
+import { nameToNode, normalizeName } from './utils'
 
 describe('inj name utils', () => {
   it('name to node', () => {
