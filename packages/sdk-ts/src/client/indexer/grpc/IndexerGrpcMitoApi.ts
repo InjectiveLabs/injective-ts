@@ -890,4 +890,50 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchIDOWhitelist({
+    skip,
+    limit,
+    idoAddress,
+  }: {
+    skip?: number
+    limit?: number
+    idoAddress: string
+  }) {
+    const request = MitoApi.GetWhitelistRequest.create()
+
+    request.idoAddress = idoAddress
+
+    if (skip) {
+      request.skip = skip
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response = await this.retry<MitoApi.GetWhitelistResponse>(() =>
+        this.client.GetWhitelist(request),
+      )
+
+      return IndexerGrpcMitoTransformer.mitoWhitelistAccountResponseToWhitelistAccount(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetWhitelist',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetWhitelist',
+        contextModule: this.module,
+      })
+    }
+  }
 }

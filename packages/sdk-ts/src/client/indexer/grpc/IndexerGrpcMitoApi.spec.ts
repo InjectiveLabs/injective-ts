@@ -5,6 +5,7 @@ import { IndexerGrpcMitoApi } from './IndexerGrpcMitoApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const vaultAddress = 'inj1zwv6feuzhy6a9wekh96cd57lsarmqlwxvdl4nk'
+const idoAddress = 'inj1zwv6feuzhy6a9wekh96cd57lsarmqlwxvdl4nk'
 const endpoints = getNetworkEndpoints(Network.Devnet)
 const indexerGrpcMitoApi = new IndexerGrpcMitoApi(endpoints.indexer)
 
@@ -430,6 +431,31 @@ describe('IndexerGrpcMitoApi', () => {
     } catch (e) {
       console.error(
         'IndexerGrpcMitoApi.fetchIDOActivities => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchIDOWhitelist', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchIDOWhitelist({
+        idoAddress,
+      })
+
+      if (response.accounts.length === 0) {
+        console.warn('fetchIDOWhitelist.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.mitoWhitelistAccountResponseToWhitelistAccount
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchIDOWhitelist => ' + (e as any).message,
       )
     }
   })

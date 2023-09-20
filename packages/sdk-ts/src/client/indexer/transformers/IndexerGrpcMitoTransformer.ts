@@ -17,6 +17,7 @@ import {
   MitoIDOSubscriber,
   MitoPriceSnapshot,
   MitoIDOSubscription,
+  MitoWhitelistAccount,
   MitoLeaderboardEpoch,
   MitoSubaccountBalance,
   MitoMissionLeaderboard,
@@ -335,6 +336,7 @@ export class IndexerGrpcMitoTransformer {
       status: IDO.status,
       tokenPrice: IDO.tokenPrice,
       quoteDenom: IDO.quoteDenom,
+      useWhitelist: IDO.useWhitelist,
       capPerAddress: IDO.capPerAddress,
       contractAddress: IDO.contractAddress,
       subscribedAmount: IDO.subscribedAmount,
@@ -429,6 +431,15 @@ export class IndexerGrpcMitoTransformer {
             IDOSubscriptionActivity.subscribedCoin,
           )
         : undefined,
+    }
+  }
+
+  static mitoWhitelistAccountToWhitelistAccount(
+    account: MitoApi.WhitelistAccount,
+  ): MitoWhitelistAccount {
+    return {
+      accountAddress: account.accountAddress,
+      updatedAt: parseInt(account.updatedAt, 10),
     }
   }
 
@@ -609,6 +620,20 @@ export class IndexerGrpcMitoTransformer {
     return {
       activities: response.activities.map(
         IndexerGrpcMitoTransformer.mitoIDOSubscriptionActivityToIDOSubscriptionActivity,
+      ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
+  }
+
+  static mitoWhitelistAccountResponseToWhitelistAccount(
+    response: MitoApi.GetWhitelistResponse,
+  ) {
+    return {
+      idoAddress: response.idoAddress,
+      accounts: response.accounts.map(
+        IndexerGrpcMitoTransformer.mitoWhitelistAccountToWhitelistAccount,
       ),
       pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
         response.pagination,

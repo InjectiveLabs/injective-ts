@@ -49,40 +49,6 @@ export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
 }
 
-export const CW20_STAKING_CONTRACT_BY_NETWORK = {
-  [Network.Mainnet]: '',
-  [Network.MainnetLB]: '',
-  [Network.MainnetK8s]: '',
-  [Network.Public]: '',
-  [Network.Staging]: '',
-  [Network.Internal]: 'inj1pxzykc8qry3ytxwxr3ua72tn6e4wvusj40yy2w',
-  [Network.Testnet]: 'inj1pxzykc8qry3ytxwxr3ua72tn6e4wvusj40yy2w',
-  [Network.TestnetK8s]: 'inj1pxzykc8qry3ytxwxr3ua72tn6e4wvusj40yy2w',
-  [Network.TestnetOld]: 'inj1pxzykc8qry3ytxwxr3ua72tn6e4wvusj40yy2w',
-  [Network.TestnetSentry]: 'inj1pxzykc8qry3ytxwxr3ua72tn6e4wvusj40yy2w',
-  [Network.Devnet]: 'inj15r735cjk9m6ujxtqn9zgxtdhd2lfzslde6c0s5',
-  [Network.Devnet1]: 'inj15r735cjk9m6ujxtqn9zgxtdhd2lfzslde6c0s5',
-  [Network.Devnet2]: 'inj15r735cjk9m6ujxtqn9zgxtdhd2lfzslde6c0s5',
-  [Network.Local]: 'inj15r735cjk9m6ujxtqn9zgxtdhd2lfzslde6c0s5',
-}
-
-export const CW20_ALLOCATOR_CONTRACT_BY_NETWORK = {
-  [Network.Mainnet]: '',
-  [Network.MainnetLB]: '',
-  [Network.MainnetK8s]: '',
-  [Network.Public]: '',
-  [Network.Staging]: '',
-  [Network.Internal]: 'inj1qsft9ptmywulv5hjzufl77j784sr9hf5yj6fwx',
-  [Network.Testnet]: 'inj1qsft9ptmywulv5hjzufl77j784sr9hf5yj6fwx',
-  [Network.TestnetK8s]: 'inj1qsft9ptmywulv5hjzufl77j784sr9hf5yj6fwx',
-  [Network.TestnetSentry]: 'inj1qsft9ptmywulv5hjzufl77j784sr9hf5yj6fwx',
-  [Network.TestnetOld]: 'inj1qsft9ptmywulv5hjzufl77j784sr9hf5yj6fwx',
-  [Network.Devnet]: 'inj1nu9wf9dw384attnpu0pwfet5fajn05w2xp99u3',
-  [Network.Devnet1]: 'inj1nu9wf9dw384attnpu0pwfet5fajn05w2xp99u3',
-  [Network.Devnet2]: 'inj1nu9wf9dw384attnpu0pwfet5fajn05w2xp99u3',
-  [Network.Local]: 'inj1nu9wf9dw384attnpu0pwfet5fajn05w2xp99u3',
-}
-
 export const INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
   [Network.MainnetLB]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',

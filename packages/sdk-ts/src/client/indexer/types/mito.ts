@@ -206,6 +206,7 @@ export interface MitoIDO {
   progress: MitoIDOProgress[]
   quoteDenom: string
   stakeToSubscription: MitoStakeToSubscription[]
+  useWhitelist: boolean
 }
 
 export interface MitoIDOSubscriber {
@@ -238,6 +239,11 @@ export interface MitoIDOSubscription {
   claimTxHash?: string
 }
 
+export interface MitoWhitelistAccount {
+  accountAddress: string
+  updatedAt: number
+}
+
 export type GrpcMitoIDO = MitoApi.IDO
 export type GrpcMitoVault = MitoApi.Vault
 export type GrpcMitoMission = MitoApi.Mission
@@ -257,6 +263,7 @@ export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
 export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch
 export type GrpcMitoStakingStakingReward = MitoApi.StakingReward
 export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance
+export type GrpcMitoWhitelistAccount = MitoApi.WhitelistAccount
 export type GrpcMitoStakingStakingActivity = MitoApi.StakingActivity
 export type GrpcMitoMissionLeaderboardEntry = MitoApi.MissionLeaderboardEntry
 export type GrpcMitoIDOSubscriptionActivity = MitoApi.IDOSubscriptionActivity
