@@ -3,7 +3,7 @@ import { toBase64 } from '../../../../utils'
 
 export declare namespace QueryInjectiveAddress {
   export interface Params {
-    node: number
+    node: number[]
   }
 }
 

@@ -3,7 +3,7 @@ import { toBase64 } from '../../../../utils'
 
 export declare namespace QueryResolverAddress {
   export interface Params {
-    node: number
+    node: number[]
   }
 }
 
