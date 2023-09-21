@@ -144,4 +144,17 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+  'STINJ-BOOST': {
+    name: 'stINJ Boost',
+    logo: 'mito-stInj-boost-lp.svg',
+    symbol: 'stINJ-BOOST-LP',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: '',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>
