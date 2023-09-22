@@ -127,3 +127,45 @@ export const grpcPagingToPaging = (
     total: parseInt(pagination.total || '0', 10),
   }
 }
+
+export const fetchAllWithPagination = async <
+  T extends
+    | { pagination: PaginationOption | undefined }
+    | PaginationOption
+    | undefined,
+  Q extends { pagination: Pagination },
+>(
+  args: T,
+  method: (args: T) => Promise<Q>,
+): Promise<Q> => {
+  let result = [] as Array<unknown>
+  let response = await method(args)
+
+  if (!args) {
+    return response
+  }
+
+  const paginationOption = (
+    args as { pagination: PaginationOption | undefined }
+  ).pagination
+
+  if (!paginationOption) {
+    return response
+  }
+
+  const keys = Object.keys(response)
+  const valueKey = keys.find(
+    (key) => key !== 'pagination',
+  ) as keyof typeof response
+
+  while (response.pagination.next) {
+    result.push(response[valueKey])
+
+    response = await method({
+      ...args,
+      pagination: { ...paginationOption, key: response.pagination.next },
+    })
+  }
+
+  return { [valueKey]: result, pagination: response.pagination } as Q
+}

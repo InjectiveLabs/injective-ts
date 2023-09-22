@@ -5,6 +5,7 @@ import { IndexerGrpcMitoApi } from './IndexerGrpcMitoApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const vaultAddress = 'inj1zwv6feuzhy6a9wekh96cd57lsarmqlwxvdl4nk'
+const stakingContractAddress = 'inj1pxzykc8qry3ytxwxr3ua72tn6e4wvusj40yy2w'
 const idoAddress = 'inj1zwv6feuzhy6a9wekh96cd57lsarmqlwxvdl4nk'
 const endpoints = getNetworkEndpoints(Network.Devnet)
 const indexerGrpcMitoApi = new IndexerGrpcMitoApi(endpoints.indexer)
@@ -129,6 +130,7 @@ describe('IndexerGrpcMitoApi', () => {
     try {
       const response = await indexerGrpcMitoApi.fetchLPHolders({
         vaultAddress,
+        stakingContractAddress,
       })
 
       if (response.length === 0) {

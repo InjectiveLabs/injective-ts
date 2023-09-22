@@ -79,6 +79,7 @@ describe('ChainGrpcBankApi', () => {
       )
     }
   })
+
   test('fetchSupplyOf', async () => {
     try {
       const response = await chainGrpcBankApi.fetchSupplyOf('inj')
@@ -91,6 +92,25 @@ describe('ChainGrpcBankApi', () => {
       )
     } catch (e) {
       console.error('ChainGrpcBankApi.fetchSupplyOf => ' + (e as any).message)
+    }
+  })
+
+  test('fetchAllTotalSupply', async () => {
+    try {
+      const response = await chainGrpcBankApi.fetchAllTotalSupply()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcBankApi.fetchTotalSupply => ' + (e as any).message,
+      )
     }
   })
 })

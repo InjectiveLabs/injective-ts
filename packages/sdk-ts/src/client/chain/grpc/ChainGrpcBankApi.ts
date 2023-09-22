@@ -7,7 +7,12 @@ import BaseGrpcConsumer from '../../BaseGrpcConsumer'
 import { ChainModule } from '../types'
 import { ChainGrpcBankTransformer } from '../transformers'
 import { PaginationOption } from '../../../types/pagination'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
+import {
+  fetchAllWithPagination,
+  paginationRequestFromPagination,
+} from '../../../utils/pagination'
+
+const MAX_LIMIT_FOR_SUPPLY = 10000
 
 /**
  * @category Chain Grpc API
@@ -149,6 +154,13 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
         contextModule: this.module,
       })
     }
+  }
+
+  /** a way to ensure all total supply is fully fetched */
+  async fetchAllTotalSupply(
+    pagination: PaginationOption = { limit: MAX_LIMIT_FOR_SUPPLY },
+  ) {
+    return fetchAllWithPagination(pagination, this.fetchTotalSupply)
   }
 
   async fetchSupplyOf(denom: string) {
