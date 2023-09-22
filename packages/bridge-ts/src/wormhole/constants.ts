@@ -1,5 +1,5 @@
 import { Network, isDevnet, isTestnet } from '@injectivelabs/networks'
-import { CHAINS, CONTRACTS } from '@certusone/wormhole-sdk'
+import { CHAINS, CONTRACTS } from '@injectivelabs/wormhole-sdk'
 import { WormholeSource } from './types'
 
 export const WORMHOLE_CONTRACT_BY_NETWORK = (network: Network) => {

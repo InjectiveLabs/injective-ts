@@ -6,19 +6,20 @@ import {
 } from '@injectivelabs/ts-types'
 import { GeneralException } from '@injectivelabs/exceptions'
 
+/** @deprecated - pass endpoints directly to the methods */
 export const getEndpointsFromChainId = (
   chainId: TestnetCosmosChainId | CosmosChainId | ChainId | DevnetCosmosChainId,
 ): { rpc: string; rest: string } => {
   switch (chainId) {
     case CosmosChainId.Injective:
       return {
-        rpc: 'https://k8s.mainnet.tm.injective.network',
-        rest: 'https://k8s.mainnet.lcd.injective.network',
+        rpc: 'https://tm.injective.network',
+        rest: 'https://lcd.injective.network',
       }
     case TestnetCosmosChainId.Injective:
       return {
-        rpc: 'https://k8s.testnet.tm.injective.network',
-        rest: 'https://k8s.testnet.lcd.injective.network',
+        rpc: 'https://testnet.tm.injective.network',
+        rest: 'https://testnet.lcd.injective.network',
       }
     case DevnetCosmosChainId.Injective:
       return {
@@ -94,6 +95,16 @@ export const getEndpointsFromChainId = (
       return {
         rpc: 'https://rpc.cosmos.directory/canto',
         rest: 'https://rest.cosmos.directory/canto',
+      }
+    case CosmosChainId.Kava:
+      return {
+        rpc: 'https://rpc.cosmos.directory/kava',
+        rest: 'https://rest.cosmos.directory/kava',
+      }
+    case CosmosChainId.Oraichain:
+      return {
+        rpc: 'https://rpc.cosmos.directory/oraichain',
+        rest: 'https://rest.cosmos.directory/oraichain',
       }
     case TestnetCosmosChainId.Cosmoshub:
       return {

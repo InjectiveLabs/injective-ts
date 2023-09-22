@@ -8,15 +8,15 @@ The Injective Peggy bridge consists of three main components:
 2. Peggo Orchestrator
 3. Peggy Module on the Injective Chain
 
-#### Peggy Contract
+### Peggy Contract
 
 The function of the Peggy contract is to facilitate efficient, bidirectional cross-chain transfers of ERC-20 tokens from Ethereum to the Injective Chain. Unlike other token bridge setups, the Injective Peggy bridge is a decentralized, non-custodial bridge operated solely by the validators on Injective. The bridge is secured by the proof of stake security of the Injective Chain, as deposits and withdrawals are processed in accordance with attestations made by at least two-thirds of the validators based on consensus staking power.
 
-#### Peggo Orchestrator
+### Peggo Orchestrator
 
 The orchestrator is an off-chain relayer that every Injective Chain validator operates which serves the function of transmitting ERC-20 token transfer data from Ethereum to the Injective Chain.
 
-#### Peggy Module
+### Peggy Module
 
 On a basic level, the Peggy module mints new tokens on the Injective Chain upon an ERC-20 deposit from Ethereum and burns tokens upon withdrawing a token from the Injective Chain back to Ethereum. The Peggy module also manages the economic incentives to ensure that validators act honestly and efficiently, through a variety of mechanisms including slashing penalties, native token rewards, and withdrawal fees.
 
@@ -67,13 +67,13 @@ Here is an example implementation that prepares the transaction, uses a privateK
 
 ```ts
 import { getNetworkInfo, Network } from "@injectivelabs/networks";
-import { 
+import {
   TxClient,
-  PrivateKey, 
-  TxRestClient, 
-  MsgSendToEth, 
-  DEFAULT_STD_FEE, 
-  ChainRestAuthApi, 
+  PrivateKey,
+  TxRestClient,
+  MsgSendToEth,
+  DEFAULT_STD_FEE,
+  ChainRestAuthApi,
   createTransaction } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 

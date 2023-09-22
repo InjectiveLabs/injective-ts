@@ -1,4 +1,4 @@
-import { StreamOperation } from '../../../types/index'
+import { StreamOperation } from '../../../types'
 import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 

@@ -19,12 +19,15 @@ export class ChainRestAuthApi extends BaseRestConsumer {
    *
    * @param address address of account to look up
    */
-  public async fetchAccount(address: string): Promise<AccountResponse> {
+  public async fetchAccount(
+    address: string,
+    params: Record<string, any> = {},
+  ): Promise<AccountResponse> {
     const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
 
     try {
       const response = await this.retry<RestApiResponse<AccountResponse>>(() =>
-        this.get(endpoint),
+        this.get(endpoint, params),
       )
 
       return response.data
@@ -48,6 +51,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
    */
   public async fetchCosmosAccount(
     address: string,
+    params: Record<string, any> = {},
   ): Promise<BaseAccountRestResponse> {
     const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
 
@@ -57,7 +61,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
 
       const response = await this.retry<
         RestApiResponse<AccountResponse | CosmosAccountRestResponse>
-      >(() => this.get(endpoint))
+      >(() => this.get(endpoint, params))
 
       const baseAccount = isInjectiveAddress
         ? (response.data as AccountResponse).account.base_account

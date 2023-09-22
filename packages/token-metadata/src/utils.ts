@@ -3,11 +3,12 @@ import {
   Token,
   TokenMeta,
   TokenType,
+  IbcTokenMeta,
+  Cw20TokenMeta,
   Cw20TokenSingle,
   Cw20TokenSource,
-  Cw20TokenMeta,
+  TokenVerification,
   Cw20TokenMetaWithSource,
-  IbcTokenMeta,
 } from './types'
 import { ibcBaseDenoms } from './tokens/tokens'
 import { getChannelIdFromPath } from './ibc'
@@ -264,16 +265,18 @@ export const getTokenFromMeta = (meta: TokenMeta, denom?: string): Token => {
 
 export const getUnknownToken = (denom: string): Token => {
   return {
+    denom,
     name: denom,
     symbol: denom,
     decimals: 18,
     logo: 'untracked.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
+    tokenVerification: TokenVerification.Unverified,
   } as Token
 }
 
-export const getUntrackedToken = (denom: string): Token => {
+export const getUnknownTokenWithSymbol = (denom: string): Token => {
   return {
     denom,
     name: denom,
@@ -282,5 +285,6 @@ export const getUntrackedToken = (denom: string): Token => {
     logo: 'untracked.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
+    tokenVerification: TokenVerification.Unverified,
   } as Token
 }

@@ -29,7 +29,7 @@ Besides Message(s), every transaction has context. These details include `fees`,
 
 Every transaction we want to broadcast to Injective has the same flow. The flow consists of three steps: preparing, signing and broadcasting the transaction.
 
-***
+
 
 ### Topics
 
@@ -41,6 +41,6 @@ Every transaction we want to broadcast to Injective has the same flow. The flow 
 | [Web3Gateway Microservice](web3-gateway.md)         | A microservice for supporting fee Delegation               |
 | [Msg Broadcaster](msgbroadcaster.md)                | Abstraction for broadcasting messages                      |
 
-***
+
 
 **The messages that are available (and examples) can be found in Core Modules section of the Wiki.**

@@ -1,8 +1,9 @@
-import { GrpcCoin, Pagination } from '../../../types/index'
+import { GrpcCoin, Pagination } from '../../../types'
 import { Coin } from '@injectivelabs/ts-types'
-import { BankModuleParams, TotalSupply } from '../types'
+import { BankModuleParams, Metadata, TotalSupply } from '../types'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { CosmosBankV1Beta1Bank } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
@@ -13,6 +14,12 @@ export class ChainGrpcBankTransformer {
       denom: coin.denom,
       amount: coin.amount,
     }
+  }
+
+  static metadataToMetadata(
+    metadata: CosmosBankV1Beta1Bank.Metadata,
+  ): Metadata {
+    return metadata
   }
 
   static grpcCoinsToCoins(coins: GrpcCoin[]): Coin[] {
@@ -41,6 +48,21 @@ export class ChainGrpcBankTransformer {
 
     return {
       supply: balances.map(ChainGrpcBankTransformer.grpcCoinToCoin),
+      pagination: grpcPaginationToPagination(pagination),
+    }
+  }
+
+  static denomsMetadataResponseToDenomsMetadata(
+    response: CosmosBankV1Beta1Query.QueryDenomsMetadataResponse,
+  ): {
+    metadatas: Metadata[]
+    pagination: Pagination
+  } {
+    const metadatas = response.metadatas
+    const pagination = response.pagination
+
+    return {
+      metadatas: metadatas.map(ChainGrpcBankTransformer.metadataToMetadata),
       pagination: grpcPaginationToPagination(pagination),
     }
   }

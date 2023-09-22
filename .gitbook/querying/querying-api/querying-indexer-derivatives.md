@@ -1,31 +1,35 @@
-# Querying Indexer: Derivatives
+# Derivatives
 
 Example code snippets to query the indexer for derivative module related data.
 
-#### Using gRPC
+### Using gRPC
 
-* fetch markets
+- fetch markets
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(
+  endpoints.indexer,
+)
 
 const markets = await indexerGrpcDerivativesApi.fetchMarkets()
 
 console.log(markets)
 ```
 
-* fetch market based on a market id
+- fetch market based on a market id
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(
+  endpoints.indexer,
+)
 
 const marketId = '0x...'
 
@@ -34,45 +38,52 @@ const market = await indexerGrpcDerivativesApi.fetchMarket(marketId)
 console.log(market)
 ```
 
-* fetch binary options markets
+- fetch binary options markets
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(
+  endpoints.indexer,
+)
 
-
-const binaryOptionsMarket = await indexerGrpcDerivativesApi.fetchBinaryOptionsMarkets()
+const binaryOptionsMarket =
+  await indexerGrpcDerivativesApi.fetchBinaryOptionsMarkets()
 
 console.log(binaryOptionsMarket)
 ```
 
-* fetch binary options market based on market id
+- fetch binary options market based on market id
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(
+  endpoints.indexer,
+)
 
 const marketId = '0x...'
 
-const binaryOptionsMarket = await indexerGrpcDerivativesApi.fetchBinaryOptionsMarket(marketId)
+const binaryOptionsMarket =
+  await indexerGrpcDerivativesApi.fetchBinaryOptionsMarket(marketId)
 
 console.log(binaryOptionsMarket)
 ```
 
-* fetch a market's orderbook based on market id
+- fetch a market's orderbook based on market id
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(
+  endpoints.indexer,
+)
 
 const marketId = '0x...'
 
@@ -81,14 +92,14 @@ const orderbook = await indexerGrpcDerivativesApi.fetchOrderbook(marketId)
 console.log(orderbook)
 ```
 
-* fetch a market's orders
+- fetch a market's orders
 
 ```ts
 import { PaginationOption, IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
 import { OrderSide } from '@injectivelabs/ts-types'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
 
 const marketId = '0x...' /* optional param */
@@ -106,7 +117,7 @@ const orders = await indexerGrpcDerivativesApi.fetchOrders({
 console.log(orders)
 ```
 
-* fetch a market's order history
+- fetch a market's order history
 
 ```ts
 import {
@@ -118,7 +129,7 @@ import {
 import { OrderSide } from '@injectivelabs/ts-types'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
 
 const marketIds = ['0x...'] /* optional param */
@@ -140,7 +151,7 @@ const orderHistory = await indexerGrpcDerivativesApi.fetchOrderHistory({
 console.log(orderHistory)
 ```
 
-* fetch a market's positions
+- fetch a market's positions
 
 ```ts
 import {
@@ -150,7 +161,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
 
 const marketIds = ['0x...'] /* optional param */
@@ -168,7 +179,7 @@ const positions = await indexerGrpcDerivativesApi.fetchPositions({
 console.log(positions)
 ```
 
-* fetch a market's trades
+- fetch a market's trades
 
 ```ts
 import {
@@ -179,7 +190,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
 
 const marketId = '0x...' /* optional param */
@@ -199,7 +210,7 @@ const trades = await indexerGrpcDerivativesApi.fetchTrades({
 console.log(trades)
 ```
 
-* get funding payments for a market
+- get funding payments for a market
 
 ```ts
 import {
@@ -208,7 +219,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
 
 const marketIds = ['0x...'] /* optional param */
@@ -222,7 +233,7 @@ const fundingPayments = await indexerGrpcDerivativesApi.fetchFundingPayments({
 console.log(fundingPayments)
 ```
 
-* get funding rates for a market
+- get funding rates for a market
 
 ```ts
 import {
@@ -231,7 +242,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
 
 const marketId = '0x...' /* optional param */
@@ -245,7 +256,7 @@ const fundingRates = await indexerGrpcDerivativesApi.fetchFundingRates({
 console.log(fundingRates)
 ```
 
-* get a list of subaccount orders
+- get a list of subaccount orders
 
 ```ts
 import {
@@ -254,7 +265,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
 
 const marketId = '0x...' /* optional param */
@@ -270,7 +281,7 @@ const subaccountOrders = await indexerGrpcDerivativesApi.fetchSubaccountOrdersLi
 console.log(subaccountOrders)
 ```
 
-* get a list of subaccount trades
+- get a list of subaccount trades
 
 ```ts
 import {
@@ -281,7 +292,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
 
 const marketId = '0x...' /* optional param */
@@ -301,14 +312,16 @@ const subaccountTrades = await indexerGrpcDerivativesApi.fetchSubaccountTradesLi
 console.log(subaccountTrades)
 ```
 
-* get orderbooks for multiple markets
+- get orderbooks for multiple markets
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(
+  endpoints.indexer,
+)
 
 const marketIds = ['0x...']
 
@@ -317,14 +330,16 @@ const orderbooks = await indexerGrpcDerivativesApi.fetchOrderbooksV2(marketIds)
 console.log(orderbooks)
 ```
 
-* get orderbook for a market
+- get orderbook for a market
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(
+  endpoints.indexer,
+)
 
 const marketId = '0x...'
 
@@ -333,34 +348,41 @@ const orderbook = await indexerGrpcDerivativesApi.fetchOrderbookV2(marketId)
 console.log(orderbook)
 ```
 
-#### Using HTTP REST
+### Using HTTP REST
 
-* get market summary, such as a history of prices and 24 hr volume
+- get market summary, such as a history of prices and 24 hr volume
 
 ```ts
 import { IndexerRestDerivativesChronosApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerRestDerivativesChronosApi = new IndexerRestDerivativesChronosApi(`${endpoints.chronos}/api/chronos/v1/derivative`)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerRestDerivativesChronosApi = new IndexerRestDerivativesChronosApi(
+  `${endpoints.chronos}/api/chronos/v1/derivative`,
+)
 
 const marketId = '0x...'
 
-const marketSummary = await indexerRestDerivativesChronosApi.fetchMarketSummary(marketId)
+const marketSummary = await indexerRestDerivativesChronosApi.fetchMarketSummary(
+  marketId,
+)
 
 console.log(marketSummary)
 ```
 
-* get all markets' summaries, such as a history of prices and 24 hr volume
+- get all markets' summaries, such as a history of prices and 24 hr volume
 
 ```ts
 import { IndexerRestDerivativesChronosApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerRestDerivativesChronosApi = new IndexerRestDerivativesChronosApi(`${endpoints.chronos}/api/chronos/v1/derivative`)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerRestDerivativesChronosApi = new IndexerRestDerivativesChronosApi(
+  `${endpoints.chronos}/api/chronos/v1/derivative`,
+)
 
-const marketSummaries = await indexerRestDerivativesChronosApi.fetchMarketsSummary(marketId)
+const marketSummaries =
+  await indexerRestDerivativesChronosApi.fetchMarketsSummary(marketId)
 
 console.log(marketSummaries)
 ```

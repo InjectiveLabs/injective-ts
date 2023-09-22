@@ -25,8 +25,14 @@ const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
 export class LeapWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
+  private endpoints: { rest: string; rpc?: string }
+
+  constructor(
+    chainId: CosmosChainId | TestnetCosmosChainId | ChainId,
+    endpoints?: { rest: string; rpc?: string },
+  ) {
     this.chainId = chainId
+    this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
   async getLeapWallet() {
@@ -163,22 +169,11 @@ export class LeapWallet {
     }
   }
 
-  async waitTxBroadcasted(txHash: string): Promise<TxResponse> {
-    const endpoints = await this.getChainEndpoints()
-
-    return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
-  }
-
-  async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {
-    const { chainId } = this
-
-    try {
-      return getEndpointsFromChainId(chainId)
-    } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
-        contextModule: 'Leap',
-      })
-    }
+  async waitTxBroadcasted(
+    txHash: string,
+    endpoint?: string,
+  ): Promise<TxResponse> {
+    return new TxRestApi(endpoint || this.endpoints.rest).fetchTxPoll(txHash)
   }
 
   public checkChainIdSupport = async () => {

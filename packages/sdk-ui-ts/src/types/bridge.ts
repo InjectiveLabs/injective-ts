@@ -29,6 +29,8 @@ export enum BridgingNetwork {
   Polygon = 'polygon',
   Klaytn = 'klaytn',
   Sui = 'sui',
+  Kava = 'kava',
+  Oraichain = 'oraichain',
 }
 
 export const MintScanExplorerUrl = {
@@ -42,7 +44,8 @@ export const MintScanExplorerUrl = {
   [BridgingNetwork.Stride]: 'stride',
   [BridgingNetwork.Crescent]: 'crescent',
   [BridgingNetwork.Sommelier]: 'sommelier',
-  [BridgingNetwork.Canto]: '',
+  [BridgingNetwork.Canto]: 'canto',
+  [BridgingNetwork.Kava]: 'kava',
 } as Record<BridgingNetwork, string>
 
 export enum BridgeTransactionState {

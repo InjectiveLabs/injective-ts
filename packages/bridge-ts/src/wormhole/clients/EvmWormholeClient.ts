@@ -17,7 +17,10 @@ import {
   parseSequenceFromLogEth,
   getIsTransferCompletedEth,
   ethers_contracts as EthersContracts,
-} from '@certusone/wormhole-sdk'
+  CHAIN_ID_POLYGON,
+  getForeignAssetEth,
+  tryNativeToUint8Array,
+} from '@injectivelabs/wormhole-sdk'
 import { BigNumber, sleep } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
 import { zeroPad } from 'ethers/lib/utils'
@@ -43,6 +46,8 @@ export class EvmWormholeClient
   public wormholeSource: WormholeSource = WormholeSource.Ethereum
 
   public provider: Provider
+
+  private singletonProvider: ethers.providers.Web3Provider | undefined
 
   constructor({
     network,
@@ -127,16 +132,24 @@ export class EvmWormholeClient
 
   async getTxResponse(txHash: string) {
     const signer = await this.getProviderAndChainIdCheck()
-    const txResponse = await signer.provider.getTransactionReceipt(txHash)
+    try {
+      const txResponse = await signer.provider.getTransactionReceipt(txHash)
 
-    if (!txResponse) {
-      throw new Error('An error occurred while fetching the transaction info')
+      if (!txResponse) {
+        throw new GeneralException(
+          new Error('An error occurred while fetching the transaction info'),
+        )
+      }
+
+      return {
+        ...txResponse,
+        txHash: txResponse.transactionHash,
+      } as ethers.ContractReceipt & { txHash: string }
+    } catch (e) {
+      throw new GeneralException(
+        new Error('An error occurred while fetching the transaction info'),
+      )
     }
-
-    return {
-      ...txResponse,
-      txHash: txResponse.transactionHash,
-    } as ethers.ContractReceipt & { txHash: string }
   }
 
   async getSignedVAA(txResponse: ethers.ContractReceipt) {
@@ -159,18 +172,26 @@ export class EvmWormholeClient
       associatedChainContractAddresses.token_bridge,
     )
 
-    const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-      [wormholeRpcUrl],
-      wormholeChainId,
-      emitterAddress,
-      sequence,
-      {
-        transport: getGrpcTransport(),
-      },
-      TIMEOUT_BETWEEN_RETRIES,
-    )
+    try {
+      const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
+        [wormholeRpcUrl],
+        wormholeChainId,
+        emitterAddress,
+        sequence,
+        {
+          transport: getGrpcTransport(),
+        },
+        TIMEOUT_BETWEEN_RETRIES,
+      )
 
-    return Buffer.from(signedVAA).toString('base64')
+      return Buffer.from(signedVAA).toString('base64')
+    } catch (e) {
+      throw new GeneralException(
+        new Error(
+          `Could not get the signed VAA. Is the transaction confirmed?`,
+        ),
+      )
+    }
   }
 
   async getSignedVAANoRetry(txResponse: ethers.ContractReceipt) {
@@ -193,17 +214,25 @@ export class EvmWormholeClient
       associatedChainContractAddresses.token_bridge,
     )
 
-    const { vaaBytes: signedVAA } = await getSignedVAA(
-      wormholeRpcUrl,
-      wormholeChainId,
-      emitterAddress,
-      sequence,
-      {
-        transport: getGrpcTransport(),
-      },
-    )
+    try {
+      const { vaaBytes: signedVAA } = await getSignedVAA(
+        wormholeRpcUrl,
+        wormholeChainId,
+        emitterAddress,
+        sequence,
+        {
+          transport: getGrpcTransport(),
+        },
+      )
 
-    return Buffer.from(signedVAA).toString('base64')
+      return Buffer.from(signedVAA).toString('base64')
+    } catch (e) {
+      throw new GeneralException(
+        new Error(
+          `Could not get the signed VAA. Is the transaction confirmed?`,
+        ),
+      )
+    }
   }
 
   async getIsTransferCompleted(signedVAA: string /* in base 64 */) {
@@ -242,7 +271,7 @@ export class EvmWormholeClient
     signedVAA: string /* in base 64 */
     recipient?: string
   }): Promise<ethers.ContractReceipt> {
-    const { network, wormholeSource } = this
+    const { network, wormholeSource, wormholeChainId } = this
 
     const signer = await this.getProviderAndChainIdCheck()
     const { associatedChainContractAddresses } = getContractAddresses(
@@ -254,6 +283,12 @@ export class EvmWormholeClient
       associatedChainContractAddresses.token_bridge,
       signer,
       Buffer.from(signedVAA, 'base64'),
+      {
+        ...(wormholeChainId === CHAIN_ID_POLYGON && {
+          gasLimit: '300000',
+          type: 0,
+        }),
+      },
     )
   }
 
@@ -263,7 +298,7 @@ export class EvmWormholeClient
     signedVAA: string /* in base 64 */
     recipient?: string
   }): Promise<ethers.ContractReceipt> {
-    const { network, wormholeSource } = this
+    const { network, wormholeSource, wormholeChainId } = this
 
     const signer = await this.getProviderAndChainIdCheck()
     const { associatedChainContractAddresses } = getContractAddresses(
@@ -275,7 +310,36 @@ export class EvmWormholeClient
       associatedChainContractAddresses.token_bridge,
       signer,
       Buffer.from(signedVAA, 'base64'),
+      {
+        ...(wormholeChainId === CHAIN_ID_POLYGON && {
+          gasLimit: '300000',
+          type: 0,
+        }),
+      },
     )
+  }
+
+  async getForeignAsset(originChain: ChainId, originAddress: string) {
+    const { network, wormholeSource } = this
+
+    const signer = await this.getProviderAndChainIdCheck()
+    const { associatedChainContractAddresses } = getContractAddresses(
+      network,
+      wormholeSource,
+    )
+
+    const originAssetBinary = tryNativeToUint8Array(
+      originAddress,
+      originChain as ChainId,
+    )
+    const targetAsset = await getForeignAssetEth(
+      associatedChainContractAddresses.token_bridge,
+      signer,
+      originChain as ChainId,
+      originAssetBinary,
+    )
+
+    return targetAsset || ''
   }
 
   async getTokenAllowance({
@@ -354,7 +418,9 @@ export class EvmWormholeClient
     )
 
     if (!transferReceipt) {
-      throw new Error('An error occurred while fetching the transaction info')
+      throw new GeneralException(
+        new Error('An error occurred while fetching the transaction info'),
+      )
     }
 
     return {
@@ -395,7 +461,9 @@ export class EvmWormholeClient
     )
 
     if (!transferReceipt) {
-      throw new Error('An error occurred while fetching the transaction info')
+      throw new GeneralException(
+        new Error('An error occurred while fetching the transaction info'),
+      )
     }
 
     return {
@@ -406,16 +474,22 @@ export class EvmWormholeClient
     }
   }
 
-  private async getProviderAndChainIdCheck() {
+  private async getProvider() {
     const { provider } = this
 
-    if (!provider) {
-      throw new GeneralException(new Error(`Please provide provider`))
+    if (this.singletonProvider) {
+      return this.singletonProvider
     }
 
-    const actualProvider =
+    this.singletonProvider =
       provider instanceof Function ? await provider() : provider
-    const signer = actualProvider.getSigner()
+
+    return this.singletonProvider
+  }
+
+  private async getProviderAndChainIdCheck() {
+    const provider = await this.getProvider()
+    const signer = provider.getSigner()
     const chainId = await signer.getChainId()
 
     /**
@@ -426,14 +500,25 @@ export class EvmWormholeClient
       const chainIdToHex = this.evmChainId.toString(16)
 
       try {
-        await ((window as any).ethereum as any).request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: `0x${chainIdToHex}` }],
-        })
+        const metamaskProvider = (window as any).ethereum as any
 
-        const actualProvider =
-          provider instanceof Function ? await provider() : provider
-        const signer = actualProvider.getSigner()
+        // Set up a race between `wallet_switchEthereumChain` & the `chainChanged` event
+        // to ensure the chain has been switched. This is because there could be a case
+        // where a wallet may not resolve the `wallet_switchEthereumChain` method, or
+        // resolves slower than `chainChanged`.
+        await Promise.race([
+          metamaskProvider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: `0x${chainIdToHex}` }],
+          }),
+          new Promise<void>((resolve) =>
+            metamaskProvider.on('change', ({ chain }: any) => {
+              if (chain?.id === chainIdToHex) {
+                resolve()
+              }
+            }),
+          ),
+        ])
 
         return signer
       } catch (e) {

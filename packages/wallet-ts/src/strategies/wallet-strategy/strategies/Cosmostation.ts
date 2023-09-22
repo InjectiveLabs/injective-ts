@@ -15,6 +15,7 @@ import {
   TxResponse,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
+  toUtf8,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
@@ -101,7 +102,7 @@ export default class Cosmostation
       const response = await provider.sendTransaction(
         INJECTIVE_CHAIN_NAME,
         CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-        SEND_TRANSACTION_MODE.ASYNC,
+        SEND_TRANSACTION_MODE.SYNC,
       )
 
       return {
@@ -217,6 +218,28 @@ export default class Cosmostation
         context: WalletAction.SendTransaction,
       },
     )
+  }
+
+  async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    try {
+      const provider = await this.getProvider()
+
+      const signature = await provider.signMessage(
+        INJECTIVE_CHAIN_NAME,
+        signer,
+        toUtf8(data),
+      )
+
+      return signature.signature
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SignArbitrary,
+      })
+    }
   }
 
   async getEthereumChainId(): Promise<string> {

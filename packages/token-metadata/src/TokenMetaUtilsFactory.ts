@@ -6,7 +6,7 @@ import {
   getTokensBySymbolForDevnet2,
   getTokensBySymbolForTestnet,
 } from './tokens/network'
-import tokensBySymbol from './tokens/tokens/index'
+import tokensBySymbol from './tokens/tokens'
 
 export class TokenMetaUtilsFactory {
   static make(network: Network = Network.Mainnet): TokenMetaUtils {

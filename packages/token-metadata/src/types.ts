@@ -10,6 +10,13 @@ export enum TokenType {
   Unknown = 'unknown',
 }
 
+export enum TokenVerification {
+  Verified = 'verified' /** verified on token-metadata package */,
+  Internal = 'internal' /** verified from on-chain data */,
+  External = 'external' /** verified on external source */,
+  Unverified = 'unverified' /** unverified on any source */,
+}
+
 export enum Cw20TokenSource {
   Solana = 'solana',
   Cosmos = 'cosmos',
@@ -69,6 +76,7 @@ export interface TokenMeta {
   symbol: string
   decimals: number
   tokenType?: TokenType
+  tokenVerification?: TokenVerification
   coinGeckoId: string
 
   ibc?: IbcTokenMeta
@@ -125,6 +133,12 @@ export interface SplToken extends BaseToken {
   tokenType: TokenType
 }
 
+export interface FactoryToken extends BaseToken {
+  display: string
+  description: string
+  tokenType: TokenType
+}
+
 export type Token =
   | Erc20Token
   | EvmToken
@@ -134,6 +148,7 @@ export type Token =
   | Cw20TokenMultiple
   | NativeToken
   | SplToken
+  | FactoryToken
 
 export type TokenWithPrice = Token & { usdPrice: number }
 

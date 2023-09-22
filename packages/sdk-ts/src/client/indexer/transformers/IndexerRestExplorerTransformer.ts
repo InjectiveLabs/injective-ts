@@ -16,10 +16,12 @@ import {
 } from '../types/explorer-rest'
 import {
   Contract,
-  ContractTransaction,
-  CW20Message,
-  ExplorerCW20BalanceWithToken,
   WasmCode,
+  CW20Message,
+  BankTransfer,
+  ContractTransaction,
+  ExplorerCW20BalanceWithToken,
+  BankTransferFromExplorerApiResponse,
 } from '../types/explorer'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
@@ -96,10 +98,12 @@ export class IndexerRestExplorerTransformer {
       txType: transaction.tx_type,
       data: transaction.data,
       events: transaction.events || [],
-      messages: (transaction.messages || []).map((message) => ({
-        type: message.type,
-        message: message.value,
-      })),
+      messages: (transaction.messages || [])
+        .filter((m) => m)
+        .map((message) => ({
+          type: message.type,
+          message: message.value,
+        })),
       logs: transaction.logs,
       errorLog: transaction.error_log,
     }
@@ -142,10 +146,12 @@ export class IndexerRestExplorerTransformer {
   ): ExplorerTransaction {
     return {
       ...transaction,
-      messages: (transaction.messages || []).map((message) => ({
-        type: (message as any).type,
-        message: message.value,
-      })),
+      messages: (transaction.messages || [])
+        .filter((m) => m)
+        .map((message) => ({
+          type: (message as any).type,
+          message: message.value,
+        })),
       memo: transaction.memo || '',
     }
   }
@@ -163,6 +169,7 @@ export class IndexerRestExplorerTransformer {
         signed: validator.signed,
         missed: validator.missed,
         uptimePercentage: validator.uptime_percentage,
+        imageUrl: validator.imageURL,
       }
     })
   }
@@ -258,5 +265,25 @@ export class IndexerRestExplorerTransformer {
         denom: '',
       },
     }
+  }
+
+  static bankTransferToBankTransfer(
+    transfer: BankTransferFromExplorerApiResponse,
+  ): BankTransfer {
+    return {
+      sender: transfer.sender,
+      recipient: transfer.recipient,
+      amounts: transfer.amounts,
+      blockNumber: transfer.block_number,
+      blockTimestamp: new Date(transfer.block_timestamp).getTime(),
+    }
+  }
+
+  static bankTransfersToBankTransfers(
+    transfers: BankTransferFromExplorerApiResponse[],
+  ): BankTransfer[] {
+    return transfers.map(
+      IndexerRestExplorerTransformer.bankTransferToBankTransfer,
+    )
   }
 }

@@ -1,8 +1,20 @@
-export { default as LocalStorage } from './LocalStorage'
-export { default as BigNumberInBase } from './BigNumber/BigNumberInBase'
-export { default as BigNumberInWei } from './BigNumber/BigNumberInWei'
-export { default as BigNumber } from './BigNumber/BigNumber'
-export { default as HttpClient } from './HttpClient'
-export { default as HttpRestClient } from './HttpRestClient'
-export { default as StreamManager } from './StreamManager'
-export { default as Status, StatusType } from './Status'
+import LocalStorage from './LocalStorage'
+import BigNumberInBase from './BigNumber/BigNumberInBase'
+import BigNumberInWei from './BigNumber/BigNumberInWei'
+import BigNumber from './BigNumber/BigNumber'
+import HttpClient from './HttpClient'
+import HttpRestClient from './HttpRestClient'
+import StreamManager from './StreamManager'
+import Status, { StatusType } from './Status'
+
+export {
+  Status,
+  StatusType,
+  LocalStorage,
+  BigNumberInBase,
+  BigNumberInWei,
+  BigNumber,
+  HttpClient,
+  HttpRestClient,
+  StreamManager,
+}

@@ -89,8 +89,8 @@ export enum MsgType {
   MsgValsetUpdatedClaim = 'injective.peggy.v1.MsgValsetUpdatedClaim',
   MsgWithdrawClaim = 'injective.peggy.v1.MsgWithdrawClaim',
   MsgBurn = 'injective.tokenfactory.v1beta1.MsgBurn',
-  MsgCreateDenom = 'injective.tokenfactory.v1beta1.MsgCreateDenom',
   MsgMint = 'injective.tokenfactory.v1beta1.MsgMint',
+  MsgCreateDenom = 'injective.tokenfactory.v1beta1.MsgCreateDenom',
   MsgExecuteContractCompat = 'injective.wasmx.v1.MsgExecuteContractCompat',
 }
 

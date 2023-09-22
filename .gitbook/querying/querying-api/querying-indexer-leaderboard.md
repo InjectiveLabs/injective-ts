@@ -1,21 +1,23 @@
-# Querying Indexer: Leaderboard
+# Leaderboard
 
 Example code snippets to query the indexer for leaderboard module related data.
 
-#### Using HTTP REST
+### Using HTTP REST
 
-* get the leaderboard
+- get the leaderboard
 
 ```ts
 import { IndexerRestLeaderboardChronosApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcExplorerApi = new IndexerRestLeaderboardChronosApi(`${endpoints.chronos}/api/chronos/v1/leaderboard`)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcExplorerApi = new IndexerRestLeaderboardChronosApi(
+  `${endpoints.chronos}/api/chronos/v1/leaderboard`,
+)
 
 const SelectList = {
   Day: '1d',
-  Week: '7d'
+  Week: '7d',
 }
 
 const resolution = SelectList.Day

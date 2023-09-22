@@ -21,6 +21,7 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
   WalletErrorActionModule,
+  GeneralException,
 } from '@injectivelabs/exceptions'
 import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
@@ -31,8 +32,14 @@ const $window = (typeof window !== 'undefined' ? window : {}) as KeplrWindow
 export class KeplrWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
+  private endpoints: { rest: string; rpc?: string }
+
+  constructor(
+    chainId: CosmosChainId | TestnetCosmosChainId | ChainId,
+    endpoints?: { rest: string; rpc?: string },
+  ) {
     this.chainId = chainId
+    this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
   public static async experimentalSuggestChainWithChainData(chainData: any) {
@@ -223,19 +230,23 @@ export class KeplrWallet {
     }
   }
 
-  public async waitTxBroadcasted(txHash: string): Promise<TxResponse> {
-    const endpoints = await this.getChainEndpoints()
-
-    return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
+  public async waitTxBroadcasted(
+    txHash: string,
+    endpoint?: string,
+  ): Promise<TxResponse> {
+    return new TxRestApi(endpoint || this.endpoints.rest).fetchTxPoll(txHash)
   }
 
   public async signAndBroadcastAminoUsingCosmjs(
     messages: EncodeObject[],
     stdFee: StdFee,
   ) {
-    const { chainId } = this
+    const { chainId, endpoints } = this
     const keplr = await this.getKeplrWallet()
-    const endpoints = await this.getChainEndpoints()
+
+    if (!endpoints.rpc) {
+      throw new GeneralException(new Error(`Please provide rpc endpoint`))
+    }
 
     const offlineSigner = keplr.getOfflineSignerOnlyAmino(chainId)
     const [account] = await offlineSigner.getAccounts()
@@ -279,19 +290,6 @@ export class KeplrWallet {
     }
   }
 
-  public async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {
-    const { chainId } = this
-
-    try {
-      return getEndpointsFromChainId(chainId)
-    } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
-        context: 'Keplr',
-        contextModule: 'get-chain-endpoints',
-      })
-    }
-  }
-
   public async checkChainIdSupport() {
     const { chainId } = this
     const keplr = this.getKeplr()
@@ -330,5 +328,31 @@ export class KeplrWallet {
     }
 
     return $window.keplr!
+  }
+
+  public disableGasCheck() {
+    const keplr = this.getKeplr()
+
+    // Temporary disable tx gas check for fee delegation purposes
+    keplr.defaultOptions = {
+      ...keplr.defaultOptions,
+      sign: {
+        ...keplr.defaultOptions.sign,
+        disableBalanceCheck: true,
+      },
+    }
+  }
+
+  public enableGasCheck() {
+    const keplr = this.getKeplr()
+
+    // Temporary disable tx gas check for fee delegation purposes
+    keplr.defaultOptions = {
+      ...keplr.defaultOptions,
+      sign: {
+        ...keplr.defaultOptions.sign,
+        disableBalanceCheck: false,
+      },
+    }
   }
 }

@@ -3,6 +3,276 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.2-beta.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.12...@injectivelabs/token-metadata@1.12.2-beta.13) (2023-09-21)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.11...@injectivelabs/token-metadata@1.12.2-beta.12) (2023-09-18)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.10...@injectivelabs/token-metadata@1.12.2-beta.11) (2023-09-14)
+
+### Bug Fixes
+
+- add tokenType to FactoryToken type ([c1024fd](https://github.com/InjectiveLabs/injective-ts/commit/c1024fdb4d7902c948b9c221e3ff188dae8a8cf0))
+
+## [1.12.2-beta.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.9...@injectivelabs/token-metadata@1.12.2-beta.10) (2023-09-14)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.8...@injectivelabs/token-metadata@1.12.2-beta.9) (2023-09-14)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.7...@injectivelabs/token-metadata@1.12.2-beta.8) (2023-09-13)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.6...@injectivelabs/token-metadata@1.12.2-beta.7) (2023-09-12)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.5...@injectivelabs/token-metadata@1.12.2-beta.6) (2023-09-08)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.4...@injectivelabs/token-metadata@1.12.2-beta.5) (2023-09-05)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.3...@injectivelabs/token-metadata@1.12.2-beta.4) (2023-09-05)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.2...@injectivelabs/token-metadata@1.12.2-beta.3) (2023-09-04)
+
+### Bug Fixes
+
+- image path ([5dc35cc](https://github.com/InjectiveLabs/injective-ts/commit/5dc35cca50c33b9249fcb190d7bc1c8e1f210988))
+
+## [1.12.2-beta.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.1...@injectivelabs/token-metadata@1.12.2-beta.2) (2023-09-04)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.2-beta.0...@injectivelabs/token-metadata@1.12.2-beta.1) (2023-09-04)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.2-beta.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.1...@injectivelabs/token-metadata@1.12.2-beta.0) (2023-09-03)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+## [1.12.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0...@injectivelabs/token-metadata@1.12.1) (2023-08-31)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.44...@injectivelabs/token-metadata@1.12.0) (2023-08-31)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.44](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.43...@injectivelabs/token-metadata@1.12.0-beta.44) (2023-08-30)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.43](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.42...@injectivelabs/token-metadata@1.12.0-beta.43) (2023-08-25)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.41...@injectivelabs/token-metadata@1.12.0-beta.42) (2023-08-24)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.40...@injectivelabs/token-metadata@1.12.0-beta.41) (2023-08-22)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.40](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.39...@injectivelabs/token-metadata@1.12.0-beta.40) (2023-08-21)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.39](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.38...@injectivelabs/token-metadata@1.12.0-beta.39) (2023-08-18)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.38](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.37...@injectivelabs/token-metadata@1.12.0-beta.38) (2023-08-15)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.37](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.36...@injectivelabs/token-metadata@1.12.0-beta.37) (2023-08-15)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.36](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.35...@injectivelabs/token-metadata@1.12.0-beta.36) (2023-08-11)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.35](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.34...@injectivelabs/token-metadata@1.12.0-beta.35) (2023-08-09)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.34](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.33...@injectivelabs/token-metadata@1.12.0-beta.34) (2023-08-06)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.32...@injectivelabs/token-metadata@1.12.0-beta.33) (2023-08-03)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.31...@injectivelabs/token-metadata@1.12.0-beta.32) (2023-07-31)
+
+### Features
+
+- erc20 new assets ([ed9ce7e](https://github.com/InjectiveLabs/injective-ts/commit/ed9ce7ea27f62c4d27fbf08291a58d2077ad3b57))
+
+# [1.12.0-beta.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.30...@injectivelabs/token-metadata@1.12.0-beta.31) (2023-07-28)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.29...@injectivelabs/token-metadata@1.12.0-beta.30) (2023-07-28)
+
+### Features
+
+- token verification intro ([0967a5a](https://github.com/InjectiveLabs/injective-ts/commit/0967a5abc1ecd2a44d5e36e5009805ba8edd6c17))
+
+# [1.12.0-beta.29](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.28...@injectivelabs/token-metadata@1.12.0-beta.29) (2023-07-28)
+
+### Bug Fixes
+
+- tokenInfo returned for ibc denoms ([451bd6c](https://github.com/InjectiveLabs/injective-ts/commit/451bd6c97332a800f9a30b01973c0a1a0c44ecc6))
+
+# [1.12.0-beta.28](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.27...@injectivelabs/token-metadata@1.12.0-beta.28) (2023-07-28)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.27](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.26...@injectivelabs/token-metadata@1.12.0-beta.27) (2023-07-28)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.26](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.25...@injectivelabs/token-metadata@1.12.0-beta.26) (2023-07-26)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.25](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.24...@injectivelabs/token-metadata@1.12.0-beta.25) (2023-07-18)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.24](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.23...@injectivelabs/token-metadata@1.12.0-beta.24) (2023-07-18)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.23](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.22...@injectivelabs/token-metadata@1.12.0-beta.23) (2023-07-17)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.21...@injectivelabs/token-metadata@1.12.0-beta.22) (2023-07-15)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.20...@injectivelabs/token-metadata@1.12.0-beta.21) (2023-07-14)
+
+### Bug Fixes
+
+- stinj decimals ([fe2a559](https://github.com/InjectiveLabs/injective-ts/commit/fe2a559e80f37b9a51d8b40c88876368945899d8))
+
+# [1.12.0-beta.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.19...@injectivelabs/token-metadata@1.12.0-beta.20) (2023-07-06)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.18...@injectivelabs/token-metadata@1.12.0-beta.19) (2023-07-04)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.17...@injectivelabs/token-metadata@1.12.0-beta.18) (2023-07-04)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.16...@injectivelabs/token-metadata@1.12.0-beta.17) (2023-06-29)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.15...@injectivelabs/token-metadata@1.12.0-beta.16) (2023-06-26)
+
+### Bug Fixes
+
+- testnet atom token decimal ([220833b](https://github.com/InjectiveLabs/injective-ts/commit/220833b6a0281bb93553f2eb425fbcdf4d26f56d))
+
+# [1.12.0-beta.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.14...@injectivelabs/token-metadata@1.12.0-beta.15) (2023-06-22)
+
+### Bug Fixes
+
+- atom and weth testnet token metadata ([3b4c97c](https://github.com/InjectiveLabs/injective-ts/commit/3b4c97c96809f266b3945a6a5ba7de60a39faa91))
+
+# [1.12.0-beta.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.13...@injectivelabs/token-metadata@1.12.0-beta.14) (2023-06-21)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.12...@injectivelabs/token-metadata@1.12.0-beta.13) (2023-06-15)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.11...@injectivelabs/token-metadata@1.12.0-beta.12) (2023-06-13)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.11](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.10...@injectivelabs/token-metadata@1.12.0-beta.11) (2023-06-13)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.9...@injectivelabs/token-metadata@1.12.0-beta.10) (2023-06-13)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.8...@injectivelabs/token-metadata@1.12.0-beta.9) (2023-06-13)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.7...@injectivelabs/token-metadata@1.12.0-beta.8) (2023-06-13)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.6...@injectivelabs/token-metadata@1.12.0-beta.7) (2023-06-12)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.5...@injectivelabs/token-metadata@1.12.0-beta.6) (2023-06-11)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.5](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.4...@injectivelabs/token-metadata@1.12.0-beta.5) (2023-06-05)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.4](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.3...@injectivelabs/token-metadata@1.12.0-beta.4) (2023-05-31)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.2...@injectivelabs/token-metadata@1.12.0-beta.3) (2023-05-31)
+
+### Bug Fixes
+
+- testnet token overriding ([e706739](https://github.com/InjectiveLabs/injective-ts/commit/e706739eb02c5e338ec975862ceb6fcac27a2910))
+
+# [1.12.0-beta.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.1...@injectivelabs/token-metadata@1.12.0-beta.2) (2023-05-31)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
+# [1.12.0-beta.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.12.0-beta.0...@injectivelabs/token-metadata@1.12.0-beta.1) (2023-05-31)
+
+### Bug Fixes
+
+- versions ([b7770bf](https://github.com/InjectiveLabs/injective-ts/commit/b7770bf382619115063ecdee2a9bd39b520e70de))
+
+# [1.12.0-beta.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.1-beta.0...@injectivelabs/token-metadata@1.12.0-beta.0) (2023-05-30)
+
+### Features
+
+- evm wormhole ([8656087](https://github.com/InjectiveLabs/injective-ts/commit/865608799c0e2823d77e99d14ac72b7233e991e9))
+
+## [1.11.1-beta.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.35...@injectivelabs/token-metadata@1.11.1-beta.0) (2023-05-29)
+
+**Note:** Version bump only for package @injectivelabs/token-metadata
+
 # [1.11.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/token-metadata@1.11.0-beta.35...@injectivelabs/token-metadata@1.11.0) (2023-05-29)
 
 **Note:** Version bump only for package @injectivelabs/token-metadata

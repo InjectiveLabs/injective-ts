@@ -30,10 +30,13 @@ export default class Keplr
 {
   private keplrWallet: KeplrWallet
 
-  constructor(args: { chainId: ChainId }) {
+  constructor(args: {
+    chainId: ChainId
+    endpoints?: { rest: string; rpc: string }
+  }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.keplrWallet = new KeplrWallet(args.chainId)
+    this.keplrWallet = new KeplrWallet(args.chainId, args.endpoints)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -90,7 +93,11 @@ export default class Keplr
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    _options: { address: AccountAddress; chainId: ChainId },
+    options: {
+      address: AccountAddress
+      chainId: ChainId
+      endpoints?: { rest: string }
+    },
   ): Promise<TxResponse> {
     const { keplrWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
@@ -98,6 +105,7 @@ export default class Keplr
     try {
       return await keplrWallet.waitTxBroadcasted(
         await keplrWallet.broadcastTx(txRaw),
+        options.endpoints?.rest,
       )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
@@ -156,6 +164,25 @@ export default class Keplr
         context: WalletAction.SendTransaction,
       },
     )
+  }
+
+  async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    const keplrWallet = this.getKeplrWallet()
+    const keplr = await keplrWallet.getKeplrWallet()
+
+    try {
+      const signature = await keplr.signArbitrary(this.chainId, signer, data)
+
+      return signature.signature
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SignArbitrary,
+      })
+    }
   }
 
   async getEthereumChainId(): Promise<string> {

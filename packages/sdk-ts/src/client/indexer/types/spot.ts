@@ -9,6 +9,7 @@ import { GrpcOrderType } from '../../chain/types/exchange'
 import { PriceLevel } from './exchange'
 import { TokenMeta } from '@injectivelabs/token-metadata'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import { Coin } from '@injectivelabs//ts-types'
 
 export interface SpotMarket {
   marketId: string
@@ -88,7 +89,21 @@ export interface BatchSpotOrderCancelParams {
   marketId: string
 }
 
+export interface AtomicSwap {
+  sender: string
+  route: string
+  sourceCoin: Coin | undefined
+  destinationCoin: Coin | undefined
+  fees: Coin[]
+  contractAddress: string
+  indexBySender: number
+  indexBySenderContract: number
+  txHash: string
+  executedAt: number
+}
+
 export type GrpcSpotTrade = InjectiveSpotExchangeRpc.SpotTrade
 export type GrpcSpotMarketInfo = InjectiveSpotExchangeRpc.SpotMarketInfo
 export type GrpcSpotLimitOrder = InjectiveSpotExchangeRpc.SpotLimitOrder
 export type GrpcSpotOrderHistory = InjectiveSpotExchangeRpc.SpotOrderHistory
+export type GrpcAtomicSwap = InjectiveSpotExchangeRpc.AtomicSwap

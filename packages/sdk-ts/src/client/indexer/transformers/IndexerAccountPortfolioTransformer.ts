@@ -1,5 +1,5 @@
 import { Coin } from '@injectivelabs/ts-types'
-import { GrpcCoin } from '../../../types/index'
+import { GrpcCoin } from '../../../types'
 import {
   PositionV2,
   GrpcPositionV2,

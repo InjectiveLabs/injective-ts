@@ -10,7 +10,7 @@ Alongside fee delegation support, Web3Gateway allows developers to convert Messa
 
 ### Fee Delegation
 
-As said before, fee delegation allows users to interact with Injective (submit transactions) without having to pay for gas. As a part of the _Transaction Lifecycle_ of every Cosmos-SDK powered chain, we have _AnteHandler_s, which, among other things perform signature verification, gas calculation and fee deduction.
+As said before, fee delegation allows users to interact with Injective (submit transactions) without having to pay for gas. As a part of the _Transaction Lifecycle_ of every Cosmos-SDK powered chain, we have \_AnteHandler\_s, which, among other things perform signature verification, gas calculation and fee deduction.
 
 There are couple of things that we need to know:
 
@@ -29,17 +29,17 @@ This microservice exposes an API containing two core methods:
 * `PrepareTx`
 * `BroadcastTx`
 
-#### PrepareTx
+### PrepareTx
 
 The `PrepareTx` method accepts a Message(s) including context for the transaction the user wants to execute (`chainId`, `signerAddress`, `timeoutHeight`, etc), and returns an EIP712 typed data of the particular message which includes the `feePayer` and its signature within the EIP712 typed data. We can use this EIP712 typed data to sign it using any Ethereum native wallet and get the signature for the user that wants to interact with Injective.
 
 The EIP712 typed data is generated from the proto definition of the Message we pass to the `PrepareTx` method.
 
-#### BroadcastTx
+### BroadcastTx
 
 The `BroadcastTx` method is responsible for broadcasting the transaction to the node. Alongside the full response of the `PrepareTx` API call, we pass in the signature of the EIP712 typed data. Then, the `BroadcastTx` packs the Message into a native Cosmos transaction, prepares the transaction (including its context) and broadcasts it to Injective. As a result, the transaction hash is being returned to the user.
 
-***
+
 
 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 

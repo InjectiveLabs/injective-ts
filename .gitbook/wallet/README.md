@@ -4,7 +4,7 @@ Injective defines its own custom `Account` type that uses Ethereum's ECDSA secp2
 
 Injective is built on top of the CosmosSDK. This means that (with some modifications, since Cosmos uses different curve for keys) users can also use Cosmos native wallets to interact with Injective.
 
-***
+
 
 ### Topics
 

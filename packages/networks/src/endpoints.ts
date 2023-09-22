@@ -7,6 +7,7 @@ export const endpointsMainnetK8s: NetworkEndpoints = {
   rest: 'https://k8s.mainnet.lcd.injective.network',
   chronos: 'https://k8s.mainnet.chronos.grpc-web.injective.network',
   explorer: 'https://k8s.mainnet.explorer.grpc-web.injective.network',
+  cache: 'https://k8s.testnet.gateway.grpc-web.injective.network/',
 }
 
 export const endpointsMainnetLB: NetworkEndpoints = {
@@ -49,6 +50,15 @@ export const endpointsInternal: NetworkEndpoints = {
   explorer: 'https://products.exchange.grpc-web.injective.network',
 }
 
+export const endpointsTestnetSentry: NetworkEndpoints = {
+  indexer: 'https://testnet.sentry.exchange.grpc-web.injective.network',
+  grpc: 'https://testnet.sentry.chain.grpc-web.injective.network',
+  rpc: 'https://testnet.sentry.tm.injective.network',
+  rest: 'https://testnet.sentry.lcd.injective.network',
+  chronos: 'https://testnet.sentry.exchange.grpc-web.injective.network',
+  explorer: 'https://testnet.sentry.exchange.grpc-web.injective.network',
+}
+
 export const endpointsTestnetK8s: NetworkEndpoints = {
   indexer: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   grpc: 'https://k8s.testnet.chain.grpc-web.injective.network',
@@ -56,6 +66,7 @@ export const endpointsTestnetK8s: NetworkEndpoints = {
   rest: 'https://k8s.testnet.lcd.injective.network',
   chronos: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   explorer: 'https://k8s.testnet.explorer.grpc-web.injective.network',
+  cache: 'https://k8s.testnet.gateway.grpc-web.injective.network/',
 }
 
 export const endpointsTestnet: NetworkEndpoints = {

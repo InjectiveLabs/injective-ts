@@ -68,6 +68,49 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     }
   }
 
+  async fetchContractState({
+    contractAddress,
+    pagination,
+  }: {
+    contractAddress: string
+    pagination?: PaginationOption
+  }) {
+    const request = CosmwasmWasmV1Query.QueryAllContractStateRequest.create()
+
+    request.address = contractAddress
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.pagination = paginationForRequest
+    }
+
+    try {
+      const response =
+        await this.retry<CosmwasmWasmV1Query.QueryAllContractStateResponse>(
+          () => this.client.AllContractState(request),
+        )
+
+      return ChainGrpcWasmTransformer.allContractStateResponseToContractState(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'AllContractState',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AllContractState',
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchContractInfo(contractAddress: string) {
     const request = CosmwasmWasmV1Query.QueryContractInfoRequest.create()
 

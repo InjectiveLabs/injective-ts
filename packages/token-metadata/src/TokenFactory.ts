@@ -151,7 +151,20 @@ export class TokenFactory {
       )
     }
 
-    const tokenMeta = this.tokenMetaUtils.getMetaByAddress(address)
+    if (address.startsWith('inj')) {
+      const tokenMeta = this.tokenMetaUtils.getMetaByAddress(address)
+
+      return tokenMeta
+        ? {
+            ...tokenMeta,
+            tokenType: TokenType.TokenFactory,
+          }
+        : undefined
+    }
+
+    const tokenMeta =
+      this.tokenMetaUtils.getMetaBySymbol(address) ||
+      this.tokenMetaUtils.getMetaByName(address)
 
     return tokenMeta
       ? {

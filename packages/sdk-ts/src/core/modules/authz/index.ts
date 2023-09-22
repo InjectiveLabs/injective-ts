@@ -1,3 +1,6 @@
-export { default as MsgGrant } from './msgs/MsgGrant'
-export { default as MsgRevoke } from './msgs/MsgRevoke'
-export { default as MsgAuthzExec } from './msgs/MsgExec'
+import MsgGrant from './msgs/MsgGrant'
+import MsgRevoke from './msgs/MsgRevoke'
+import MsgAuthzExec from './msgs/MsgExec'
+
+export { MsgGrant, MsgRevoke, MsgAuthzExec }
+export * from './utils'

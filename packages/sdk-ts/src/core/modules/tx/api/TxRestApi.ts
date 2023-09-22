@@ -24,7 +24,7 @@ import { getErrorMessage } from '../../../../utils/helpers'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**
- * It is recommended to use TxRestClient instead of TxRestApi
+ * It is recommended to use TxGrpcClient instead of TxRestApi
  */
 export class TxRestApi implements TxConcreteApi {
   public httpClient: HttpClient

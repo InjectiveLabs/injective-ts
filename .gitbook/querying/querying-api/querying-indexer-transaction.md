@@ -1,17 +1,17 @@
-# Querying Indexer: Transaction
+# Transaction
 
 Example code snippets to query the indexer for transaction module related data.
 
-#### Using gRPC
+### Using gRPC
 
-* Get a response for preparing a tx
+- Get a response for preparing a tx
 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { EthereumChainId } from '@injectivelabs/ts-types'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
 
 const address = '0x...' // ethereum address
@@ -29,13 +29,13 @@ const prepareTxResponse = await indexerGrpcTransactionApi.prepareTxRequest({
 console.log(prepareTxResponse)
 ```
 
-* Get a response for preparing a cosmos tx
+- Get a response for preparing a cosmos tx
 
 ```ts
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
 
 const address = 'inj...'
@@ -49,14 +49,14 @@ const prepareCosmosTxResponse = await indexerGrpcTransactionApi.prepareCosmosTxR
 console.log(prepareCosmosTxResponse)
 ```
 
-* get a response for preparing a tsx on Injective exchange module
+- get a response for preparing a tsx on Injective exchange module
 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { EthereumChainId } from '@injectivelabs/ts-types'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
 
 const address = '0x...' /* ethereum address */
@@ -74,7 +74,7 @@ const prepareTxResponse = await indexerGrpcTransactionApi.prepareExchangeTxReque
 console.log(prepareTxResponse)
 ```
 
-* get a response for broadcasting a tsx from desktop while using an ethereum wallet extension. Use `MsgBroadcasterWithPk` to broadcast a tsx for node app, which can be found in `@injectivelabs/sdk-ts`. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a tsx
+- get a response for broadcasting a tsx from desktop while using an ethereum wallet extension. Use `MsgBroadcasterWithPk` to broadcast a tsx for node app, which can be found in `@injectivelabs/sdk-ts`. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a tsx
 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -83,7 +83,7 @@ import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { WalletStrategy } from '@injectivelabs/wallet-ts'
 import { CosmosWalletStrategy, Wallet } from '@injectivelabs/wallet-ts'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
 
 const chainId = ChainId.Testnet // The Injective Chain chainId
@@ -126,14 +126,14 @@ const broadcastTxResponse = await indexerGrpcTransactionApi.broadcastTxRequest({
 console.log(broadcastTxResponse)
 ```
 
-* get a response for broadcasting a cosmos tsx. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a cosmos tsx
+- get a response for broadcasting a cosmos tsx. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a cosmos tsx
 
 ```ts
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { TxRaw } from '@injectivelabs/chain-api'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
 
 const address = 'inj...' // ethereum address
@@ -154,14 +154,16 @@ const broadcastCosmosTxResponse = await indexerGrpcTransactionApi.broadcastCosmo
 console.log(broadcastCosmosTxResponse)
 ```
 
-* get the fee payer
+- get the fee payer
 
 ```ts
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
-const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+const endpoints = getNetworkEndpoints(Network.Testnet)
+const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(
+  endpoints.indexer,
+)
 
 const feePayer = await indexerGrpcTransactionApi.fetchFeePayer()
 

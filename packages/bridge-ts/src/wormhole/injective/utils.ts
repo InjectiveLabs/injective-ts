@@ -23,7 +23,7 @@ export const parseSmartContractStateResponse: any = (
 export function parseSequenceFromLogInjective(info: any): string {
   let sequence = ''
 
-  const jsonLog = JSON.parse(info.rawLog)
+  const jsonLog = info.logs || JSON.parse(info.rawLog)
 
   jsonLog.map((row: any) => {
     row.events.map((event: any) => {

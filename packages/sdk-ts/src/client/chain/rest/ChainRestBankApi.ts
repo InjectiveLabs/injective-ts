@@ -18,12 +18,15 @@ export class ChainRestBankApi extends BaseRestConsumer {
    *
    * @param address address of account to look up
    */
-  public async fetchBalances(address: string): Promise<BalancesResponse> {
+  public async fetchBalances(
+    address: string,
+    params: Record<string, any> = {},
+  ): Promise<BalancesResponse> {
     const endpoint = `cosmos/bank/v1beta1/balances/${address}`
 
     try {
       const response = await this.retry<RestApiResponse<BalancesResponse>>(() =>
-        this.get(endpoint),
+        this.get(endpoint, params),
       )
 
       return response.data
@@ -48,12 +51,13 @@ export class ChainRestBankApi extends BaseRestConsumer {
   public async fetchBalance(
     address: string,
     denom: string,
+    params: Record<string, any> = {},
   ): Promise<DenomBalance> {
     const endpoint = `cosmos/bank/v1beta1/balances/${address}`
 
     try {
       const response = await this.retry<RestApiResponse<BalancesResponse>>(() =>
-        this.get(endpoint),
+        this.get(endpoint, params),
       )
 
       const balance = response.data.balances.find(

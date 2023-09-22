@@ -68,7 +68,7 @@ export interface CosmosWalletStrategyArguments {
 }
 
 export interface WalletStrategyArguments
-  extends Omit<CosmosWalletStrategyArguments, 'endpoints' | 'chainId'> {
+  extends Omit<CosmosWalletStrategyArguments, 'chainId'> {
   chainId: ChainId
   ethereumOptions?: WalletStrategyEthereumOptions
   disabledWallets?: Wallet[]
@@ -90,7 +90,15 @@ export interface ConcreteWalletStrategy
    */
   sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    options: { address: string; chainId: ChainId; sentryEndpoint?: string },
+    options: {
+      address: string
+      chainId: ChainId
+      endpoints?: {
+        rest: string
+        grpc: string
+        tm?: string
+      }
+    },
   ): Promise<TxResponse>
 
   /**
@@ -136,6 +144,8 @@ export interface ConcreteWalletStrategy
    * @param address - ethereum address
    */
   signEip712TypedData(eip712TypedData: string, address: string): Promise<string>
+
+  signArbitrary(signer: string, data: string | Uint8Array): Promise<string>
 
   getEthereumChainId(): Promise<string>
 

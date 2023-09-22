@@ -77,10 +77,12 @@ export const createBody = ({
 export const createFee = ({
   fee,
   payer,
+  granter,
   gasLimit,
 }: {
   fee: { amount: string; denom: string }
   payer?: string
+  granter?: string
   gasLimit: number
 }) => {
   const feeAmount = CosmosBaseV1Beta1Coin.Coin.create()
@@ -93,6 +95,10 @@ export const createFee = ({
 
   if (payer) {
     feeProto.payer = payer
+  }
+
+  if (granter) {
+    feeProto.granter = granter
   }
 
   return feeProto

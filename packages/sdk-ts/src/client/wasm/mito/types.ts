@@ -33,13 +33,15 @@ export interface QueryVaultContractMarketMaking {
   reservation_spread_sensitivity_ratio: string
   max_active_capital_utilization_ratio: string
   head_change_tolerance_ratio: string
-  min_head_to_tail_deviation_ratio: string
+  head_to_tail_deviation_ratio: string
   signed_min_head_to_fair_price_deviation_ratio: string
   signed_min_head_to_tob_deviation_ratio: string
-  trade_volatility_group_sec: number
-  min_trade_volatility_sample_size: number
   default_mid_price_volatility_ratio: string
   min_volatility_ratio: string
+  min_oracle_volatility_sample_size: number
+  oracle_volatility_max_age: number
+  emergency_oracle_volatility_sample_size: number
+  last_valid_mark_price: string
   oracle_stale_time: number
 }
 
@@ -49,14 +51,8 @@ export interface QueryVaultContractDerivativeConfigResponse {
     market_making: QueryVaultContractMarketMaking
     leverage: string
     min_proximity_to_liquidation: string
-    post_reduction_perc_of_max_position: string
-    oracle_volatility_group_sec: number
-    min_oracle_volatility_sample_size: number
-    emergency_oracle_volatility_sample_size: number
-    last_valid_mark_price: string
     allowed_redemption_types: number
     position_pnl_penalty: string
-    quote_decimals: number
   }
 }
 
@@ -65,7 +61,6 @@ export interface QueryVaultContractSpotConfigResponse {
     base: QueryVaultContractBaseConfig
     market_making: QueryVaultContractMarketMaking
     oracle_type: number
-    reservation_price_tail_deviation_ratio: string
     target_base_weight: string
     allowed_redemption_types: number
     base_decimals: number
@@ -123,8 +118,31 @@ export interface QueryRegisteredVaultResponse {
   }[]
 }
 
-export interface WasmContractQueryResponse {
-  data: Uint8Array
+export interface QueryOffChainVaultSpotResponse {
+  Spot: {
+    oracle_type: number
+    base_oracle_symbol: string
+    quote_oracle_symbol: string
+    base_decimals: number
+    quote_decimals: number
+  }
+}
+export interface QueryOffChainVaultDerivativeResponse {
+  Derivative: {
+    position_pnl_penalty: string
+    allowed_derivative_redemption_types: number
+  }
+}
+
+export interface QueryOffChainVaultResponse {
+  admin: string
+  market_id: string
+  vault_subaccount_id: string
+  oracle_stale_time: string
+  notional_value_cap: string
+  vault_type:
+    | QueryOffChainVaultSpotResponse
+    | QueryOffChainVaultDerivativeResponse
 }
 
 export type VaultBaseConfig = {
@@ -142,13 +160,15 @@ export type VaultMarketMakingConfig = {
   reservationSpreadSensitivityRatio: string
   maxActiveCapitalUtilizationRatio: string
   headChangeToleranceRatio: string
-  minHeadToTailDeviationRatio: string
+  headToTailDeviationRatio: string
   signedMinHeadToFairPriceDeviationRatio: string
   signedMinHeadToTobDeviationRatio: string
-  tradeVolatilityGroupSec: number
-  minTradeVolatilitySampleSize: number
   defaultMidPriceVolatilityRatio: string
   minVolatilityRatio: string
+  minOracleVolatilitySampleSize: number
+  oracleVolatilityMaxAge: number
+  emergencyOracleVolatilitySampleSize: number
+  lastValidMarkPrice: string
   oracleStaleTime: number
 }
 
@@ -165,14 +185,8 @@ export type VaultDerivativeConfig = {
   marketMaking: VaultMarketMakingConfig
   leverage: string
   minProximityToLiquidation: string
-  postReductionPercOfMaxPosition: string
-  oracleVolatilityGroupSec: number
-  minOracleVolatilitySampleSize: number
-  emergencyOracleVolatilitySampleSize: number
-  lastValidMarkPrice: string
   allowedRedemptionTypes: number
   positionPnlPenalty: string
-  quoteDecimals: number
 }
 
 export type VaultSpotConfig = {
@@ -185,6 +199,29 @@ export type VaultSpotConfig = {
   quoteDecimals: number
   baseOracleSymbol: string
   quoteOracleSymbol: string
+}
+
+export type OffChainVaultBaseConfig = {
+  admin: string
+  marketId: string
+  vaultSubaccountId: string
+  oracleStaleTime: number
+  notionalValueCap: string
+}
+
+export type OffChainVaultSpotConfig = {
+  base: OffChainVaultBaseConfig
+  oracleType: number
+  baseOracleSymbol: string
+  quoteOracleSymbol: string
+  baseDecimals: number
+  quoteDecimals: number
+}
+
+export type OffChainVaultDerivativeConfig = {
+  base: OffChainVaultBaseConfig
+  positionPnlPenalty: string
+  allowedDerivativeRedemptionTypes: number
 }
 
 export type QueryStakingConfigResponse = {

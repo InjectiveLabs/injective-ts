@@ -1,4 +1,4 @@
-import { CONTRACTS } from '@certusone/wormhole-sdk'
+import { CONTRACTS, ChainId } from '@injectivelabs/wormhole-sdk'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { ethers } from 'ethers'
 import { TxResponse, MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'
@@ -68,6 +68,10 @@ export interface WormholeClient<
     signedVAA: string /* base64 */
     recipient: string
   }) => Promise<R>
+  getForeignAsset: (
+    originChain: ChainId,
+    originAsset: string,
+  ) => Promise<string>
 }
 
 export { BaseMessageSignerWalletAdapter }

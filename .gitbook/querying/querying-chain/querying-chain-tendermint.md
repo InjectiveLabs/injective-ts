@@ -2,15 +2,15 @@
 
 Example code snippets to query for chain node related data.
 
-#### Using HTTP REST
+### Using HTTP REST
 
-* get latest block info
+- get latest block info
 
 ```ts
 import { ChainRestTendermintApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
 
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
@@ -18,13 +18,13 @@ const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 console.log(latestBlock)
 ```
 
-* get chain node info
+- get chain node info
 
 ```ts
 import { ChainRestTendermintApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
 
 const nodeInfo = await chainRestTendermintApi.fetchNodeInfo()

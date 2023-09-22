@@ -1,4 +1,5 @@
 import {
+  CosmosGovV1Tx,
   CosmosGovV1Beta1Gov,
   CosmosParamsV1Beta1Params,
   CosmosUpgradeV1Beta1Upgrade,
@@ -7,6 +8,10 @@ import {
 } from '@injectivelabs/core-proto-ts'
 
 export class ProposalDecomposer {
+  static getMsgExecLegacyContent(content: Uint8Array) {
+    return CosmosGovV1Tx.MsgExecLegacyContent.decode(content)
+  }
+
   static grantBandOraclePrivilegeProposal(content: Uint8Array) {
     return InjectiveOracleV1Beta1Proposal.GrantBandOraclePrivilegeProposal.decode(
       content,

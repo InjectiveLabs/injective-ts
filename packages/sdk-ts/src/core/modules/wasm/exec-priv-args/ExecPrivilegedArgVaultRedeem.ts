@@ -7,11 +7,9 @@ import {
 export declare namespace ExecPrivilegedArgVaultRedeem {
   export interface Params {
     origin: string
-    redemptionType: string
-    redemptionRatio?: string
     vaultSubaccountId: string
     traderSubaccountId: string
-    slippage?: Record<string, any>
+    args: Record<string, any>
   }
 
   export interface Data {
@@ -43,11 +41,7 @@ export default class ExecPrivilegedArgVaultRedeem extends ExecPrivilegedArgBase<
       vault_subaccount_id: params.vaultSubaccountId,
       trader_subaccount_id: params.traderSubaccountId,
       msg: {
-        redeem: {
-          slippage: params.slippage,
-          redemption_type: params.redemptionType,
-          redemption_ratio: params.redemptionRatio,
-        },
+        redeem: params.args,
       },
     }
   }

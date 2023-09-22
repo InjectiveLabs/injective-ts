@@ -1,7 +1,6 @@
 import { Network, NetworkEndpoints } from '@injectivelabs/networks'
 import { ChainId, Coin } from '@injectivelabs/ts-types'
 import {
-  DenomClient,
   ContractAccountBalance,
   ExplorerCW20BalanceWithToken,
 } from '@injectivelabs/sdk-ts'
@@ -26,9 +25,10 @@ import {
 import {
   Token,
   TokenType,
-  getUnknownToken,
+  getUnknownTokenWithSymbol,
 } from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
+import { DenomClientAsync } from '../denom/DenomClientAsync'
 
 /**
  * With the TokenService class we can convert objects
@@ -39,20 +39,25 @@ export class TokenService {
 
   public chainId: ChainId
 
-  public denomClient: DenomClient
+  public denomClient: DenomClientAsync
 
   constructor({
     chainId,
     network,
     endpoints,
+    alchemyRpcUrl,
   }: {
     chainId: ChainId
     network: Network
     endpoints?: NetworkEndpoints
+    alchemyRpcUrl?: string
   }) {
     this.network = network
     this.chainId = chainId
-    this.denomClient = new DenomClient(network, endpoints ? { endpoints } : {})
+    this.denomClient = new DenomClientAsync(network, {
+      endpoints,
+      alchemyRpcUrl,
+    })
   }
 
   async toCoinsWithToken(supply: Coin[]): Promise<Token[]> {
@@ -315,7 +320,7 @@ export class TokenService {
 
     return {
       ...transaction,
-      token: getUnknownToken(transaction.denom),
+      token: getUnknownTokenWithSymbol(transaction.denom),
     } as UiBridgeTransactionWithToken
   }
 

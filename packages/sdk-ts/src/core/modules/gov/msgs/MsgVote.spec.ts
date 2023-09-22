@@ -4,15 +4,17 @@ import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgVote['params'] = {
   proposalId: 1,
+  metadata: '1',
   voter: mockFactory.injectiveAddress,
   vote: 3,
 }
 
-const protoType = '/cosmos.gov.v1beta1.MsgVote'
-const protoTypeAmino = 'cosmos-sdk/MsgVote'
+const protoType = '/cosmos.gov.v1.MsgVote'
+const protoTypeAmino = 'cosmos-sdk/v1/MsgVote'
 const protoParams = {
   proposalId: params.proposalId.toString(),
   voter: params.voter,
+  metadata: params.metadata,
   option: params.vote,
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
@@ -51,6 +53,7 @@ describe('MsgVote', () => {
         { name: 'proposal_id', type: 'uint64' },
         { name: 'voter', type: 'string' },
         { name: 'option', type: 'int32' },
+        { name: 'metadata', type: 'string' },
       ],
     })
   })

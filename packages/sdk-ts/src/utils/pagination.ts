@@ -55,11 +55,15 @@ export const generatePagination = (
 }
 
 export const paginationUint8ArrayToString = (key: any) => {
+  if (!key) {
+    return ''
+  }
+
   if (key.constructor !== Uint8Array) {
     return key as string
   }
 
-  return new TextDecoder().decode(key)
+  return Buffer.from(key).toString('base64')
 }
 
 export const pageResponseToPagination = ({
@@ -122,4 +126,46 @@ export const grpcPagingToPaging = (
     from: parseInt(pagination.from.toString() || '0', 10),
     total: parseInt(pagination.total || '0', 10),
   }
+}
+
+export const fetchAllWithPagination = async <
+  T extends
+    | { pagination: PaginationOption | undefined }
+    | PaginationOption
+    | undefined,
+  Q extends { pagination: Pagination },
+>(
+  args: T,
+  method: (args: T) => Promise<Q>,
+): Promise<Q> => {
+  let result = [] as Array<unknown>
+  let response = await method(args)
+
+  if (!args) {
+    return response
+  }
+
+  const paginationOption = (
+    args as { pagination: PaginationOption | undefined }
+  ).pagination
+
+  if (!paginationOption) {
+    return response
+  }
+
+  const keys = Object.keys(response)
+  const valueKey = keys.find(
+    (key) => key !== 'pagination',
+  ) as keyof typeof response
+
+  while (response.pagination.next) {
+    result.push(response[valueKey])
+
+    response = await method({
+      ...args,
+      pagination: { ...paginationOption, key: response.pagination.next },
+    })
+  }
+
+  return { [valueKey]: result, pagination: response.pagination } as Q
 }

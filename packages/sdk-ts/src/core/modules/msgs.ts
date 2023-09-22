@@ -33,6 +33,7 @@ import MsgSendToEth from './peggy/msgs/MsgSendToEth'
 import MsgDelegate from './staking/msgs/MsgDelegate'
 import MsgUndelegate from './staking/msgs/MsgUndelegate'
 import MsgEditValidator from './staking/msgs/MsgEditValidator'
+import MsgCreateValidator from './staking/msgs/MsgCreateValidator'
 import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
 import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
 import MsgExecuteContractCompat from './wasm/msgs/MsgExecuteContractCompat'
@@ -43,6 +44,11 @@ import MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract'
 import MsgStoreCode from './wasm/msgs/MsgStoreCode'
 import MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds'
 import MsgRewardsOptOut from './exchange/msgs/MsgRewardsOptOut'
+import MsgBurn from './tokenfactory/msgs/MsgBurn'
+import MsgChangeAdmin from './tokenfactory/msgs/MsgChangeAdmin'
+import MsgCreateDenom from './tokenfactory/msgs/MsgCreateDenom'
+import MsgMint from './tokenfactory/msgs/MsgMint'
+import MsgSetDenomMetadata from './tokenfactory/msgs/MsgSetDenomMetadata'
 import MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer'
 import { MsgSubmitProposal } from './gov'
 
@@ -97,6 +103,12 @@ export type Msgs =
   | MsgExternalTransfer
   | MsgStoreCode
   | MsgRewardsOptOut
+  | MsgCreateValidator
+  | MsgMint
+  | MsgBurn
+  | MsgChangeAdmin
+  | MsgCreateDenom
+  | MsgSetDenomMetadata
 
 /**
  * @category Messages

@@ -3,14 +3,6 @@ export interface Coin {
   amount: string
 }
 
-export enum StreamOperation {
-  Insert = 'insert',
-  Delete = 'delete',
-  Replace = 'replace',
-  Update = 'update',
-  Invalidate = 'invalidate',
-}
-
 export enum CosmosChainId {
   Injective = 'injective-1',
   Cosmoshub = 'cosmoshub-4',
@@ -27,6 +19,8 @@ export enum CosmosChainId {
   Crescent = 'crescent-1',
   Sommelier = 'sommelier-3',
   Canto = 'canto_7700-1',
+  Kava = 'kava_2222-10',
+  Oraichain = 'Oraichain',
 }
 
 export enum TestnetCosmosChainId {
@@ -37,4 +31,5 @@ export enum TestnetCosmosChainId {
 export enum DevnetCosmosChainId {
   Injective = 'injective-777',
   Injective1 = 'injective-777',
+  Injective2 = 'injective-777',
 }

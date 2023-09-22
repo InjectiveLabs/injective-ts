@@ -16,7 +16,7 @@ import {
   WalletException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxGrpcApi, TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
 import { TIP_IN_GWEI } from '../../../../utils/constants'
 import {
   ConcreteWalletStrategy,
@@ -139,20 +139,24 @@ export default class LedgerBase
     options: {
       address: AccountAddress
       chainId: ChainId
-      sentryEndpoint: string
+      endpoints?: {
+        rest: string
+        grpc: string
+        tm?: string
+      }
     },
   ): Promise<TxResponse> {
-    const { sentryEndpoint } = options
+    const { endpoints } = options
 
-    if (!sentryEndpoint) {
+    if (!endpoints) {
       throw new WalletException(
         new Error(
-          'You have to pass sentryEndpoint within the options for using Ethereum native wallets',
+          'You have to pass endpoints.grpc within the options for using Ethereum native wallets',
         ),
       )
     }
 
-    const txApi = new TxGrpcApi(sentryEndpoint)
+    const txApi = new TxGrpcApi(endpoints.grpc)
     const response = await txApi.broadcast(transaction)
 
     if (response.code !== 0) {
@@ -216,6 +220,31 @@ export default class LedgerBase
         contextModule: WalletAction.SendTransaction,
       },
     )
+  }
+
+  async signArbitrary(
+    signer: AccountAddress,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    try {
+      const { derivationPath } = await this.getWalletForAddress(signer)
+
+      const ledger = await this.ledger.getInstance()
+      const result = await ledger.signPersonalMessage(
+        derivationPath,
+        Buffer.from(toUtf8(data), 'utf8').toString('hex'),
+      )
+
+      const combined = `${result.r}${result.s}${result.v.toString(16)}`
+
+      return combined.startsWith('0x') ? combined : `0x${combined}`
+    } catch (e: unknown) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
+    }
   }
 
   async getEthereumChainId(): Promise<string> {

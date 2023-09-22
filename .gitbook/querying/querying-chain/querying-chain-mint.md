@@ -2,15 +2,15 @@
 
 Example code snippets to query the mint module on the chain.
 
-#### Using gRPC
+### Using gRPC
 
-* Get parameters related to the mint module
+- Get parameters related to the mint module
 
 ```ts
 import { ChainGrpcMintApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcMintApi = new ChainGrpcMintApi(endpoints.grpc)
 
 const moduleParams = await chainGrpcMintApi.fetchModuleParams()
@@ -18,13 +18,13 @@ const moduleParams = await chainGrpcMintApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-* Get the inflation
+- Get the inflation
 
 ```ts
 import { ChainGrpcMintApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcMintApi = new ChainGrpcMintApi(endpoints.grpc)
 
 const inflation = await chainGrpcMintApi.fetchInflation()
@@ -32,13 +32,13 @@ const inflation = await chainGrpcMintApi.fetchInflation()
 console.log(inflation)
 ```
 
-* Get the annual provisions
+- Get the annual provisions
 
 ```ts
 import { ChainGrpcMintApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
-const endpoints = getNetworkEndpoints(Network.TestnetK8s)
+const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcMintApi = new ChainGrpcMintApi(endpoints.grpc)
 
 const annualProvisions = await chainGrpcMintApi.fetchAnnualProvisions()

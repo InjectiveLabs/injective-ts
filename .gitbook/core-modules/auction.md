@@ -2,7 +2,7 @@
 
 The `auction` module is heart of the `buy-back-and-burn` on chain mechanism, where 60% of the weekly trading fees are colleted and auctioned off to the highest INJ bidder where the submitted INJ of the highest bidder are burned in the process.
 
-#### MsgBid
+### MsgBid
 
 This message is used to submit a bid on the [auction](https://hub.injective.network/auction/) held weekly to allow members to use INJ to bid for the basket of trading fees (60%) collected by Injective that week.
 

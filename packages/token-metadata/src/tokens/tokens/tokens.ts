@@ -228,7 +228,7 @@ export default {
 
   MATIC: {
     name: 'Polygon',
-    logo: 'matic.svg',
+    logo: 'polygon.png',
     symbol: 'MATIC',
     decimals: 18,
     coinGeckoId: 'matic-network',
@@ -585,7 +585,7 @@ export default {
 
     erc20: {
       decimals: 18,
-      address: '0xaC9Bb427953aC7FDDC562ADcA86CF42D988047Fd',
+      address: '0xcc4304a31d09258b0029ea7fe63d032f52e44efe',
       tokenType: TokenType.Erc20,
     },
   },
@@ -1019,8 +1019,16 @@ export default {
   PROJ: {
     name: 'PROJ',
     logo: 'projx.png',
-    symbol: 'Proj',
+    symbol: 'PROJ',
     decimals: 6,
+    coinGeckoId: '',
+  },
+
+  MITOTEST1: {
+    name: 'MT1',
+    symbol: 'MT1',
+    decimals: 18,
+    logo: 'projx.png',
     coinGeckoId: '',
   },
 
@@ -1070,6 +1078,12 @@ export default {
     decimals: 6,
     logo: 'sommelier.png',
     coinGeckoId: 'sommelier',
+
+    erc20: {
+      decimals: 6,
+      address: '0xa670d7237398238DE01267472C6f13e5B8010FD1',
+      tokenType: TokenType.Erc20,
+    },
 
     ibc: {
       decimals: 6,
@@ -1193,7 +1207,7 @@ export default {
       baseDenom: 'acanto',
       path: 'transfer/channel-99',
       channelId: 'channel-99',
-      hash: 'C733F37CB50114AFE8053C320DF45D0AAD8B94F556EB306AC2ABA0B9963CDF0D',
+      hash: 'D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
       tokenType: TokenType.Ibc,
     },
   },
@@ -1275,7 +1289,6 @@ export default {
 
     evm: {
       decimals: 18,
-      isNative: true,
       address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
       tokenType: TokenType.Erc20,
     },
@@ -1384,7 +1397,7 @@ export default {
     name: 'Wrapped Matic',
     symbol: 'WMATIC',
     decimals: 18,
-    logo: 'matic.webp',
+    logo: 'polygon.png',
     coinGeckoId: 'wmatic',
 
     evm: {
@@ -1483,6 +1496,324 @@ export default {
       decimals: 18,
       address: '0x3d2b66BC4f9D6388BD2d97B95b565BE1686aEfB3',
       tokenType: TokenType.Erc20,
+    },
+  },
+
+  STINJ: {
+    name: 'Stride Staked Injective',
+    symbol: 'STINJ',
+    decimals: 18,
+    logo: 'stinj.png',
+    coinGeckoId: 'stride-staked-injective',
+
+    ibc: {
+      decimals: 18,
+      isNative: true,
+      baseDenom: 'stinj',
+      path: 'transfer/channel-89',
+      channelId: 'channel-89',
+      hash: 'AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
+  XRP: {
+    name: 'Ripple',
+    symbol: 'XRP',
+    decimals: 18,
+    address: '0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe',
+    logo: 'xrp.png',
+    coinGeckoId: 'ripple',
+  },
+
+  FRCOIN: {
+    name: 'Frontrunner Coin',
+    symbol: 'FRCoin',
+    decimals: 6,
+    logo: 'frcoin.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  DEMO: {
+    name: 'Demo Coin',
+    symbol: 'DEMO',
+    decimals: 6,
+    logo: 'injective-v3.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  RAI: {
+    name: 'Rai Reflex Index',
+    symbol: 'RAI',
+    decimals: 18,
+    logo: 'rai.png',
+    coinGeckoId: 'rai',
+
+    erc20: {
+      decimals: 18,
+      address: '0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  BTSG: {
+    name: 'Rai Reflex Index',
+    symbol: 'BitSong',
+    decimals: 18,
+    logo: 'btsg.png',
+    coinGeckoId: 'bitsong',
+
+    erc20: {
+      decimals: 18,
+      address: '0x05079687D35b93538cbd59fe5596380cae9054A9',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  CVR: {
+    name: 'CoverCompared',
+    symbol: 'CVR',
+    decimals: 18,
+    logo: 'cvr.png',
+    coinGeckoId: 'covercompared',
+
+    erc20: {
+      decimals: 18,
+      address: '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  QNT: {
+    name: 'Quant',
+    symbol: 'QNT',
+    decimals: 18,
+    logo: 'qnt.png',
+    coinGeckoId: 'quant-network',
+
+    erc20: {
+      decimals: 18,
+      address: '0x4a220e6096b25eadb88358cb44068a3248254675',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  WSTETH: {
+    name: 'Lido wstETH',
+    symbol: 'WSTETH',
+    decimals: 18,
+    logo: 'wsteth.png',
+    coinGeckoId: 'wrapped-steth',
+
+    erc20: {
+      decimals: 18,
+      address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  DYDX: {
+    name: 'dYdX',
+    symbol: 'dYdX',
+    decimals: 18,
+    logo: 'dydx.png',
+    coinGeckoId: 'dydx',
+
+    erc20: {
+      decimals: 18,
+      address: '0x92d6c1e31e14520e676a687f0a93788b716beff5',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  XAC: {
+    name: 'General Attention Currency',
+    symbol: 'XAC',
+    decimals: 8,
+    logo: 'xac.png',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 8,
+      address: '0xDe4C5a791913838027a2185709E98c5C6027EA63',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  STETH: {
+    name: 'Lido Staked ETH',
+    symbol: 'stETH',
+    decimals: 18,
+    logo: 'steth.png',
+    coinGeckoId: 'staked-ether',
+
+    erc20: {
+      decimals: 18,
+      address: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  LYM: {
+    name: 'Lympo',
+    symbol: 'LYM',
+    decimals: 18,
+    logo: 'lympo.png',
+    coinGeckoId: 'lympo',
+
+    erc20: {
+      decimals: 18,
+      address: '0xc690f7c7fcffa6a82b79fab7508c466fefdfc8c5',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  OMI: {
+    name: 'ECOMI',
+    symbol: 'OMI',
+    decimals: 18,
+    logo: 'ecomi.png',
+    coinGeckoId: 'ecomi',
+
+    erc20: {
+      decimals: 18,
+      address: '0xed35af169af46a02ee13b9d79eb57d6d68c1749e',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  POINT: {
+    name: 'Reward Point Token',
+    symbol: 'POINT',
+    decimals: 0,
+    logo: 'point.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  KAVA: {
+    name: 'KAVA',
+    symbol: 'KAVA',
+    decimals: 6,
+    logo: 'kava.webp',
+    coinGeckoId: 'kava',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'ukava',
+      path: 'transfer/channel-143',
+      channelId: 'channel-143',
+      hash: '57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
+  USDTkv: {
+    name: 'Tether',
+    symbol: 'USDTkv',
+    decimals: 6,
+    logo: 'usdt.svg',
+    coinGeckoId: 'tether',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'erc20/tether/usdt',
+      path: 'transfer/channel-143',
+      channelId: 'channel-143',
+      hash: '4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
+  SEI: {
+    name: 'SEI',
+    symbol: 'SEI',
+    decimals: 6,
+    logo: 'sei.webp',
+    coinGeckoId: 'sei-network',
+  },
+
+  VATRENI: {
+    name: 'Vatreni Token',
+    symbol: 'VATRENI',
+    decimals: 18,
+    logo: 'vatreni.jpeg',
+    coinGeckoId: 'croatian-ff-fan-token',
+
+    evm: {
+      decimals: 18,
+      isNative: true,
+      address: '0xD60DebA014459F07BBcC077a5B817f31DaFD5229',
+      tokenType: TokenType.Evm,
+    },
+
+    cw20: {
+      decimals: 8,
+      address: 'inj1tn457ed2gg5vj2cur5khjjw63w73y3xhyhtaay',
+      source: Cw20TokenSource.Polygon,
+      tokenType: TokenType.Cw20,
+    },
+  },
+
+  NBLA: {
+    name: 'Nebula',
+    symbol: 'NBLA',
+    decimals: 6,
+    logo: 'nebula.png',
+    coinGeckoId: '',
+  },
+
+  WKLAY: {
+    name: 'Wrapped Klaytn',
+    symbol: 'WKLAY',
+    decimals: 8,
+    logo: 'klaytn.webp',
+    coinGeckoId: 'klay-token',
+
+    cw20: {
+      decimals: 8,
+      address: 'inj14cl67lprqkt3pncjav070gavaxslc0tzpc56f4',
+      tokenType: TokenType.Cw20,
+    },
+  },
+
+  NEOK: {
+    name: 'NEOKingdom DAO',
+    symbol: 'NEOK',
+    decimals: 18,
+    logo: 'neok.svg',
+    coinGeckoId: '',
+
+    ibc: {
+      decimals: 18,
+      isNative: true,
+      baseDenom: 'erc20/0x655ecB57432CC1370f65e5dc2309588b71b473A9',
+      path: 'transfer/channel-83',
+      channelId: 'channel-83',
+      hash: 'F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
+  ORAI: {
+    name: 'Oraichain',
+    symbol: 'ORAI',
+    decimals: 6,
+    logo: 'orai.svg',
+    coinGeckoId: 'oraichain-token',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'orai',
+      path: 'transfer/channel-147',
+      channelId: 'channel-147',
+      hash: 'C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
+      tokenType: TokenType.Ibc,
     },
   },
 } as Record<string, TokenMeta>

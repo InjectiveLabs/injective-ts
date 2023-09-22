@@ -4,12 +4,12 @@ Within these short series we are going to showcase how easy it is to build a DEX
 
 The series will include:
 
-* Setting up the API clients and environment,
-* Connecting to the Chain and the Indexer API,
-* Connect to a user wallet and get their address,
-* Fetching Spot and Derivative markets and their orderbooks,
-* Placing market orders on both spot and a derivative market,
-* View all positions for an Injective address.
+- Setting up the API clients and environment,
+- Connecting to the Chain and the Indexer API,
+- Connect to a user wallet and get their address,
+- Fetching Spot and Derivative markets and their orderbooks,
+- Placing market orders on both spot and a derivative market,
+- View all positions for an Injective address.
 
 ### Setup
 
@@ -30,15 +30,21 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
 // Getting the pre-defined endpoints for the Testnet environment
 // (using TestnetK8s here because we want to use the Kubernetes infra)
-export const NETWORK = Network.TestnetK8s
+export const NETWORK = Network.Testnet
 export const ENDPOINTS = getNetworkEndpoints(NETWORK)
 
 export const chainBankApi = new ChainGrpcBankApi(ENDPOINTS.grpc)
 export const indexerSpotApi = new IndexerGrpcSpotApi(ENDPOINTS.indexer)
-export const indexerDerivativesApi = new IndexerGrpcDerivativesApi(ENDPOINTS.indexer)
+export const indexerDerivativesApi = new IndexerGrpcDerivativesApi(
+  ENDPOINTS.indexer,
+)
 
-export const indexerSpotStream = new IndexerGrpcDerivativeStream(ENDPOINTS.indexer)
-export const indexerDerivativeStream = new IndexerGrpcDerivativeStream(ENDPOINTS.indexer)
+export const indexerSpotStream = new IndexerGrpcDerivativeStream(
+  ENDPOINTS.indexer,
+)
+export const indexerDerivativeStream = new IndexerGrpcDerivativeStream(
+  ENDPOINTS.indexer,
+)
 ```
 
 Then, we also need to setup a wallet connection to allow the user to connect to our DEX and start signing transactions. To make this happen we are going to use our `@injectivelabs/wallet-ts` package which allows users to connect with a various of different wallet providers and use them to sign transactions on Injective.
@@ -86,7 +92,11 @@ Note: We can switch between the "active" wallet within the `WalletStrategy` usin
 
 ```ts
 // filename: WalletConnection.ts
-import { WalletException, UnspecifiedErrorCode, ErrorType } from '@injectivelabs/exceptions'
+import {
+  WalletException,
+  UnspecifiedErrorCode,
+  ErrorType,
+} from '@injectivelabs/exceptions'
 import { Wallet } from '@injectivelabs/wallet-ts'
 import { walletStrategy } from './Wallet.ts'
 
@@ -100,8 +110,8 @@ export const getAddresses = async (wallet: Wallet): Promise<string[]> => {
       new Error('There are no addresses linked in this wallet.'),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError
-      }
+        type: ErrorType.WalletError,
+      },
     )
   }
 
@@ -110,8 +120,8 @@ export const getAddresses = async (wallet: Wallet): Promise<string[]> => {
       new Error('There are no addresses linked in this wallet.'),
       {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError
-      }
+        type: ErrorType.WalletError,
+      },
     )
   }
 
@@ -128,7 +138,7 @@ After the initial setup is done, let's see how to query (and stream) markets fro
 ```ts
 // filename: Query.ts
 import  { getDefaultSubaccountId, OrderbookWithSequence } from '@injectivelabs/sdk-ts'
-import { 
+import {
   chainBankApi,
   indexerSpotApi,
   indexerSpotStream,
@@ -155,7 +165,7 @@ export const fetchBankBalances = async (injectiveAddress: string) => {
 }
 
 export const streamDerivativeMarketOrderbook = async (
-  marketId: string, 
+  marketId: string,
   ) => {
   const streamOrderbookUpdates = indexerDerivativesStream.streamDerivativeOrderbookUpdate.bind(indexerDerivativesStream)
   const callback = (orderbookUpdate) => {
@@ -169,7 +179,7 @@ export const streamDerivativeMarketOrderbook = async (
 }
 
 export const streamSpotMarketOrderbook = async (
-  marketId: string, 
+  marketId: string,
   ) => {
   const streamOrderbookUpdates = indexerSpotsStream.streamSpotOrderbookUpdate.bind(indexerSpotsStream)
   const callback = (orderbookUpdate) => {
@@ -196,12 +206,12 @@ Finally, let's make some transactions. For this example, we are going to:
 ```ts
 // filename: Transactions.ts
 import { BigNumberInWei } from '@injectivelabs/utils'
-import { 
-  MsgSend, 
+import {
+  MsgSend,
   MsgCreateSpotLimitOrder,
-  spotPriceToChainPriceToFixed, 
+  spotPriceToChainPriceToFixed,
   MsgCreateDerivativeMarketOrder,
-  spotQuantityToChainQuantityToFixed 
+  spotQuantityToChainQuantityToFixed
 } from '@injectivelabs/sdk-ts'
 
 // used to send assets from one address to another
@@ -289,7 +299,7 @@ export const makeMsgCreateDerivativeMarketOrder = ({
       tensMultiplier: market.priceTensMultiplier,
       quoteDecimals: market.quoteDecimals
     }),
-    quantity: derivativeQuantityToChainQuantityToFixed({ 
+    quantity: derivativeQuantityToChainQuantityToFixed({
       value: order.quantity,
       tensMultiplier: market.quantityTensMultiplier,
     }),

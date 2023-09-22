@@ -3,7 +3,6 @@ import {
   BridgeTransactionState,
   BridgingNetwork,
 } from './../types/bridge'
-import { convertTimestampToMilliseconds } from '@injectivelabs/utils'
 import {
   isTestnet,
   isMainnet,
@@ -48,7 +47,8 @@ export const KeplrNetworks = [
   BridgingNetwork.Secret,
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
-  BridgingNetwork.Canto,
+  BridgingNetwork.Kava,
+  BridgingNetwork.Oraichain,
 ]
 
 export const LeapNetworks = [
@@ -60,6 +60,7 @@ export const LeapNetworks = [
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
+  BridgingNetwork.Kava,
 ]
 
 export const CosmostationNetworks = [
@@ -75,6 +76,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Crescent,
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
+  BridgingNetwork.Kava,
 ]
 
 export const CosmosNetworks = [
@@ -90,6 +92,8 @@ export const CosmosNetworks = [
   BridgingNetwork.Stride,
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
+  BridgingNetwork.Kava,
+  BridgingNetwork.Oraichain,
 ]
 
 export const EvmWormholeNetworks = [
@@ -101,7 +105,6 @@ export const EvmWormholeNetworks = [
 
 export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Juno,
-  BridgingNetwork.Evmos,
   BridgingNetwork.Moonbeam,
   BridgingNetwork.Chihuahua,
   BridgingNetwork.CosmosHub,
@@ -163,8 +166,9 @@ export const tokenDenomsPerNetwork = [
     network: BridgingNetwork.Evmos,
     denoms: [
       'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
+      'ibc/F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
     ],
-    symbols: ['evmos'],
+    symbols: ['evmos', 'neok'],
   },
   {
     network: BridgingNetwork.Persistence,
@@ -191,8 +195,9 @@ export const tokenDenomsPerNetwork = [
     denoms: [
       'inj',
       'ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
+      'ibc/AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
     ],
-    symbols: ['strd', 'inj'],
+    symbols: ['strd', 'inj', 'stinj'],
   },
   {
     network: BridgingNetwork.Crescent,
@@ -215,6 +220,21 @@ export const tokenDenomsPerNetwork = [
       'ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
     ],
     symbols: ['canto'],
+  },
+  {
+    network: BridgingNetwork.Kava,
+    denoms: [
+      'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
+      'ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
+    ],
+    symbols: ['kava', 'usdtkv'],
+  },
+  {
+    network: BridgingNetwork.Oraichain,
+    denoms: [
+      'ibc/C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
+    ],
+    symbols: ['orai'],
   },
   {
     network: BridgingNetwork.CosmosHubTestnet,
@@ -309,12 +329,20 @@ export const cosmosNativeDenomsFromChainId = {
       denom: 'dot-planck',
     },
   ],
-  [CosmosChainId.Evmos]: {
-    ...tokenMetaUtils.getMetaBySymbol('EVMOS'),
-    tokenType: TokenType.Ibc,
-    denom:
-      'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
-  },
+  [CosmosChainId.Evmos]: [
+    {
+      ...tokenMetaUtils.getMetaBySymbol('EVMOS'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
+    },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('NEOK'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
+    },
+  ],
   [CosmosChainId.Persistence]: {
     ...tokenMetaUtils.getMetaBySymbol('XPRT'),
     tokenType: TokenType.Ibc,
@@ -338,6 +366,12 @@ export const cosmosNativeDenomsFromChainId = {
       ...tokenMetaUtils.getMetaBySymbol('INJ'),
       tokenType: TokenType.Ibc,
       denom: 'inj',
+    },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('STINJ'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
     },
   ],
   [CosmosChainId.Crescent]: [
@@ -365,6 +399,28 @@ export const cosmosNativeDenomsFromChainId = {
     denom:
       'ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
   },
+  [CosmosChainId.Kava]: [
+    {
+      ...tokenMetaUtils.getMetaBySymbol('KAVA'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
+    },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('USDTkv'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
+    },
+  ],
+  [CosmosChainId.Oraichain]: [
+    {
+      ...tokenMetaUtils.getMetaBySymbol('ORAI'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
+    },
+  ],
   [TestnetCosmosChainId.Cosmoshub]: {
     ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
     tokenType: TokenType.Ibc,
@@ -400,99 +456,6 @@ export const ibcHashToNativeInjPerCosmosChain = {
     'ibc/A7454562FF29FE068F42F9DE4805ABEF54F599D1720B345D6518D9B5C64EA6D2',
 } as Partial<Record<CosmosChainId, string>>
 
-const sameTxHash = (txHashOne: string, txHashTwo: string) =>
-  txHashOne &&
-  txHashTwo &&
-  txHashOne.replace('0x', '').toLowerCase() ===
-    txHashTwo.replace('0x', '').toLowerCase()
-
-export const getCachedIBCTransactionState = (
-  transaction: UiBridgeTransaction,
-): BridgeTransactionState => {
-  if (
-    transaction.timeoutTimestamp &&
-    transaction.state === BridgeTransactionState.Submitted
-  ) {
-    const now = Date.now()
-    const bufferTime = 60 * 1000 // hardcode to 1 minute
-    const timeoutTimestampWithBuffer =
-      convertTimestampToMilliseconds(
-        parseInt(transaction.timeoutTimestamp, 10),
-      ) + bufferTime
-
-    if (now >= timeoutTimestampWithBuffer) {
-      return BridgeTransactionState.Failed
-    }
-
-    return BridgeTransactionState.Submitted
-  }
-
-  return transaction.state as BridgeTransactionState
-}
-
-export const findEthereumTransactionByNonce = (
-  transaction: UiBridgeTransaction,
-  comparingTransaction: UiBridgeTransaction,
-) =>
-  transaction.nonce &&
-  comparingTransaction.nonce &&
-  transaction.nonce === comparingTransaction.nonce
-
-export const findEthereumTransactionByTxHash = (
-  transaction: UiBridgeTransaction,
-  comparingTransaction: UiBridgeTransaction,
-) =>
-  transaction.txHash &&
-  comparingTransaction.txHash &&
-  sameTxHash(transaction.txHash, comparingTransaction.txHash)
-
-export const findEthereumTransactionByTxHashes = (
-  transaction: UiBridgeTransaction,
-  comparingTransaction: UiBridgeTransaction,
-) =>
-  transaction.txHashes &&
-  transaction.txHashes.find((hash: string) =>
-    sameTxHash(hash, comparingTransaction.txHash),
-  ) !== undefined
-
-export const findIBCTransactionByTimeoutTimestamp = (
-  transaction: UiBridgeTransaction,
-  comparingTransaction: UiBridgeTransaction,
-) =>
-  transaction.sender === comparingTransaction.sender &&
-  transaction.receiver === comparingTransaction.receiver &&
-  transaction.timeoutTimestamp &&
-  comparingTransaction.timeoutTimestamp &&
-  convertTimestampToMilliseconds(transaction.timeoutTimestamp) ===
-    convertTimestampToMilliseconds(comparingTransaction.timeoutTimestamp)
-
-export const ibcTxNotPartOfInjectiveIbcTxs =
-  (injectiveIbcTransactions: UiBridgeTransaction[]) =>
-  (transaction: UiBridgeTransaction) =>
-    injectiveIbcTransactions.find((injectiveIbcTransaction) =>
-      findIBCTransactionByTimeoutTimestamp(
-        injectiveIbcTransaction,
-        transaction,
-      ),
-    ) === undefined
-
-export const txNotPartOfPeggoDeposit =
-  (peggoDepositTxs: UiBridgeTransaction[]) =>
-  (transaction: UiBridgeTransaction) =>
-    peggoDepositTxs.find((peggoDepositTx) =>
-      findEthereumTransactionByTxHash(peggoDepositTx, transaction),
-    ) === undefined
-
-export const txNotPartOfInjectivePeggyTxs =
-  (injectivePeggyTransactions: UiBridgeTransaction[]) =>
-  (transaction: UiBridgeTransaction) =>
-    injectivePeggyTransactions.find(
-      (injectiveTransaction) =>
-        findEthereumTransactionByNonce(injectiveTransaction, transaction) ||
-        findEthereumTransactionByTxHashes(injectiveTransaction, transaction) ||
-        findEthereumTransactionByTxHash(injectiveTransaction, transaction),
-    ) === undefined
-
 export const getExplorerUrl = (network: Network): string => {
   if (isDevnet(network)) {
     return 'https://devnet.explorer.injective.dev'
@@ -509,6 +472,10 @@ export const getCosmosExplorerUrl = (
   bridgingNetwork: BridgingNetwork = BridgingNetwork.CosmosHub,
   network: Network,
 ): string => {
+  if (bridgingNetwork === BridgingNetwork.Oraichain) {
+    return 'https://scan.orai.io/'
+  }
+
   const mintScanNetworkUrl = MintScanExplorerUrl[bridgingNetwork]
 
   if (isDevnet(network)) {
@@ -655,6 +622,14 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
     return BridgingNetwork.Canto
   }
 
+  if (sender.startsWith('kava')) {
+    return BridgingNetwork.Kava
+  }
+
+  if (sender.startsWith('orai')) {
+    return BridgingNetwork.Oraichain
+  }
+
   if (sender.startsWith('0x')) {
     return BridgingNetwork.Ethereum
   }
@@ -719,6 +694,8 @@ export const getGasPriceForChainId = (chainId: CosmosChainId) => {
     case CosmosChainId.Axelar:
       return 0.01
     case CosmosChainId.Juno:
+      return 0.01
+    case CosmosChainId.Kava:
       return 0.01
     case CosmosChainId.Injective:
       return 0.01

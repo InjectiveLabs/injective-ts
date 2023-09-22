@@ -3,10 +3,10 @@ import {
   hexToBuff,
   PublicKey,
   SIGN_AMINO,
-  TxResponse,
   hexToBase64,
   BaseAccount,
   ChainRestAuthApi,
+  CosmosTxV1Beta1Tx,
   createTxRawEIP712,
   createTransaction,
   getEip712TypedData,
@@ -17,13 +17,12 @@ import {
   IndexerGrpcTransactionApi,
   getGasPriceBasedOnMessage,
   recoverTypedSignaturePubKey,
-  CosmosTxV1Beta1Tx,
   CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
-  BigNumberInBase,
   getStdFee,
+  BigNumberInBase,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
@@ -32,8 +31,8 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import {
-  getNetworkEndpoints,
   getNetworkInfo,
+  getNetworkEndpoints,
   NetworkEndpoints,
 } from '@injectivelabs/networks'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
@@ -66,13 +65,6 @@ export class MsgBroadcaster {
 
   public ethereumChainId?: EthereumChainId
 
-  /**
-   * Used to interact with the Web3Gateway service
-   * to provide feeDelegation support for executing
-   * transactions
-   */
-  public transactionApi: IndexerGrpcTransactionApi
-
   constructor(options: MsgBroadcasterOptions) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints =
@@ -82,7 +74,6 @@ export class MsgBroadcaster {
     this.chainId = networkInfo.chainId
     this.ethereumChainId = networkInfo.ethereumChainId
     this.endpoints = endpoints
-    this.transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
   }
 
   /**
@@ -197,13 +188,14 @@ export class MsgBroadcaster {
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
-    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
       tx: {
+        memo: tx.memo,
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
         timeoutHeight: timeoutHeight.toFixed(),
@@ -228,7 +220,7 @@ export class MsgBroadcaster {
       message: msgs,
       memo: tx.memo,
       signMode: SIGN_AMINO,
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
       pubKey: publicKeyBase64,
       sequence: baseAccount.sequence,
       timeoutHeight: timeoutHeight.toNumber(),
@@ -250,8 +242,8 @@ export class MsgBroadcaster {
 
     return walletStrategy.sendTransaction(txRawEip712, {
       chainId,
+      endpoints,
       address: tx.injectiveAddress,
-      sentryEndpoint: endpoints.grpc,
     })
   }
 
@@ -265,7 +257,7 @@ export class MsgBroadcaster {
   private async broadcastWeb3WithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, ethereumChainId, transactionApi } = this
+    const { options, ethereumChainId, endpoints } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
@@ -274,6 +266,7 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
+    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
     const txResponse = await transactionApi.prepareTxRequest({
       memo: tx.memo,
       message: web3Msgs,
@@ -295,13 +288,7 @@ export class MsgBroadcaster {
       chainId: ethereumChainId,
     })
 
-    return {
-      ...response,
-      data: Buffer.from(response.data).toString(),
-      height: parseInt(response.height, 10),
-      gasUsed: 0 /** not available from the API */,
-      gasWanted: 0 /** not available from the API */,
-    } as TxResponse
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**
@@ -347,7 +334,7 @@ export class MsgBroadcaster {
     )
 
     const pubKey = await walletStrategy.getPubKey()
-    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
     const { txRaw } = await this.getTxWithSignersAndStdFee({
@@ -360,7 +347,7 @@ export class MsgBroadcaster {
         accountNumber: accountDetails.accountNumber,
         sequence: accountDetails.sequence,
       },
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
     })
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
@@ -372,6 +359,7 @@ export class MsgBroadcaster {
 
     return walletStrategy.sendTransaction(directSignResponse, {
       chainId,
+      endpoints,
       address: tx.injectiveAddress,
     })
   }
@@ -411,7 +399,10 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    const keplrWallet = new KeplrWallet(chainId)
+    const keplrWallet = new KeplrWallet(chainId, {
+      rest: endpoints.rest,
+      rpc: endpoints.rpc,
+    })
     /** Account Details * */
     const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
@@ -429,13 +420,14 @@ export class MsgBroadcaster {
     )
 
     const pubKey = await walletStrategy.getPubKey()
-    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
       tx: {
+        memo: tx.memo,
         accountNumber: accountDetails.accountNumber.toString(),
         sequence: accountDetails.sequence.toString(),
         timeoutHeight: timeoutHeight.toFixed(),
@@ -451,6 +443,7 @@ export class MsgBroadcaster {
         ...baseAccount,
         msgs,
         chainId,
+        gas: gas || tx.gas?.gas?.toString(),
         timeoutHeight: timeoutHeight.toFixed(),
       }),
     })
@@ -476,7 +469,6 @@ export class MsgBroadcaster {
     })
 
     /** Preparing the transaction for client broadcasting */
-    const txApi = new TxGrpcApi(endpoints.grpc)
     const web3Extension = createWeb3Extension({
       ethereumChainId,
     })
@@ -494,7 +486,7 @@ export class MsgBroadcaster {
     txRawEip712.signatures = [signatureBuff]
 
     /** Broadcast the transaction */
-    const response = await txApi.broadcast(txRawEip712)
+    const response = await new TxGrpcApi(endpoints.grpc).broadcast(txRawEip712)
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
@@ -517,7 +509,7 @@ export class MsgBroadcaster {
   private async broadcastCosmosWithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, chainId, endpoints, transactionApi } = this
+    const { options, chainId, endpoints } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -553,7 +545,7 @@ export class MsgBroadcaster {
     )
 
     const pubKey = await walletStrategy.getPubKey()
-    const gas = (tx.gasLimit || getGasPriceBasedOnMessage(msgs)).toString()
+    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
     const { txRaw } = await this.getTxWithSignersAndStdFee({
@@ -573,11 +565,13 @@ export class MsgBroadcaster {
           sequence: feePayerAccountDetails.sequence,
         },
       ],
-      fee: {
-        ...getStdFee(gas),
-        payer: feePayer,
-      },
+      fee: getStdFee({ ...tx.gas, gas, payer: feePayer }),
     })
+
+    // Temporary remove tx gas check because Keplr doesn't recognize feePayer
+    if (walletStrategy.wallet === Wallet.Keplr) {
+      new KeplrWallet(chainId).disableGasCheck()
+    }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
@@ -586,6 +580,7 @@ export class MsgBroadcaster {
       accountNumber: accountDetails.accountNumber,
     })) as DirectSignResponse
 
+    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
     const response = await transactionApi.broadcastCosmosTxRequest({
       address: tx.injectiveAddress,
       txRaw: createTxRawFromSigResponse(directSignResponse),
@@ -593,22 +588,38 @@ export class MsgBroadcaster {
       pubKey: directSignResponse.signature.pub_key,
     })
 
-    return response
+    // Re-enable tx gas check removed above
+    if (walletStrategy.wallet === Wallet.Keplr) {
+      new KeplrWallet(chainId).enableGasCheck()
+    }
+
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**
    * Fetch the fee payer's pub key from the web3 gateway
+   *
+   * Returns a base64 version of it
    */
   private async fetchFeePayerPubKey(existingFeePayerPubKey?: string) {
     if (existingFeePayerPubKey) {
       return existingFeePayerPubKey
     }
 
-    const { transactionApi } = this
+    const { endpoints } = this
+
+    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
     const response = await transactionApi.fetchFeePayer()
 
     if (!response.feePayerPubKey) {
       throw new GeneralException(new Error('Please provide a feePayerPubKey'))
+    }
+
+    if (
+      response.feePayerPubKey.key.startsWith('0x') ||
+      response.feePayerPubKey.key.length === 66
+    ) {
+      return Buffer.from(response.feePayerPubKey.key, 'hex').toString('base64')
     }
 
     return response.feePayerPubKey.key
@@ -624,27 +635,38 @@ export class MsgBroadcaster {
    */
   private async getTxWithSignersAndStdFee(
     args: CreateTransactionWithSignersArgs,
-    gas?: string,
   ) {
     const { options } = this
     const { simulateTx } = options
 
     if (!simulateTx) {
-      return { ...createTransactionWithSigners(args), stdFee: getStdFee(gas) }
+      return {
+        ...createTransactionWithSigners(args),
+        stdFee: getStdFee({ ...args.fee }),
+      }
     }
 
     const result = await this.simulateTxWithSigners(args)
 
     if (!result.gasInfo?.gasUsed) {
-      return { ...createTransactionWithSigners(args), stdFee: getStdFee(gas) }
+      return {
+        ...createTransactionWithSigners(args),
+        stdFee: getStdFee({ ...args.fee }),
+      }
     }
 
-    const stdGasFee = getStdFee(
-      new BigNumberInBase(result.gasInfo.gasUsed).times(1.2).toFixed(),
-    )
+    const stdGasFee = {
+      ...getStdFee({
+        ...args.fee,
+        gas: new BigNumberInBase(result.gasInfo.gasUsed).times(1.2).toFixed(),
+      }),
+    }
 
     return {
-      ...createTransactionWithSigners({ ...args, fee: stdGasFee }),
+      ...createTransactionWithSigners({
+        ...args,
+        fee: stdGasFee,
+      }),
       stdFee: stdGasFee,
     }
   }
@@ -671,7 +693,9 @@ export class MsgBroadcaster {
     const { endpoints } = this
     const { txRaw } = createTransactionWithSigners(args)
 
-    txRaw.signatures = [new Uint8Array(0)]
+    txRaw.signatures = Array(
+      Array.isArray(args.signers) ? args.signers.length : 1,
+    ).fill(new Uint8Array(0))
 
     const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(
       txRaw,

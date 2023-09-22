@@ -1,5 +1,5 @@
-export { default as MsgVote } from './msgs/MsgVote'
-export { default as MsgGovDeposit } from './msgs/MsgDeposit'
+import MsgVote from './msgs/MsgVote'
+import MsgGovDeposit from './msgs/MsgDeposit'
 import MsgSubmitProposalExpiryFuturesMarketLaunch from './msgs/MsgSubmitProposalExpiryFuturesMarketLaunch'
 import MsgSubmitProposalPerpetualMarketLaunch from './msgs/MsgSubmitProposalPerpetualMarketLaunch'
 import MsgSubmitProposalSpotMarketLaunch from './msgs/MsgSubmitProposalSpotMarketLaunch'
@@ -22,3 +22,5 @@ export {
 }
 
 export * from './ProposalContentDecomposer'
+
+export { MsgVote, MsgGovDeposit }

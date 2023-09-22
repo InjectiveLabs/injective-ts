@@ -18,8 +18,10 @@ import {
 import {
   Contract,
   WasmCode,
+  BankTransfer,
   ContractTransaction,
   ExplorerCW20BalanceWithToken,
+  BankTransferFromExplorerApiResponse,
 } from '../types/explorer'
 import {
   HttpRequestException,
@@ -397,6 +399,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     fromNumber?: number
     limit?: number
     skip?: number
+    label?: string
   }): Promise<{
     paging: Paging
     contracts: Contract[]
@@ -404,7 +407,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `/wasm/contracts`
 
     try {
-      const { assetsOnly, fromNumber, limit, skip } = params || { limit: 12 }
+      const { assetsOnly, fromNumber, limit, skip, label } = params || {
+        limit: 12,
+      }
 
       const response = await this.retry<
         ExplorerApiResponseWithPagination<ContractExplorerApiResponse[]>
@@ -414,9 +419,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           limit,
           assets_only: assetsOnly,
           from_number: fromNumber,
+          label,
         }),
       )
-
       const { paging, data } = response.data
 
       return {
@@ -613,6 +618,58 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         return []
       }
 
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
+        contextModule: IndexerModule.Explorer,
+      })
+    }
+  }
+
+  async fetchBankTransfers(params: {
+    limit?: number
+    skip?: number
+    startTime?: number
+    endTime?: number
+    address?: string
+    isCommunitySpendPool?: boolean
+    senders?: string
+    recipients?: string
+  }): Promise<{ paging: Paging; data: BankTransfer[] }> {
+    const endpoint = `/bank/transfers`
+
+    const { endTime, limit, skip, startTime, address, recipients, senders } =
+      params || { limit: 10 }
+
+    try {
+      const response = await this.retry<
+        ExplorerApiResponseWithPagination<BankTransferFromExplorerApiResponse[]>
+      >(() =>
+        this.get(endpoint, {
+          skip,
+          limit,
+          senders,
+          address,
+          recipients,
+          end_time: endTime,
+          start_time: startTime,
+          is_community_pool_related: params.isCommunitySpendPool,
+        }),
+      )
+
+      const { data, paging } = response.data
+
+      return {
+        paging,
+        data: IndexerRestExplorerTransformer.bankTransfersToBankTransfers(
+          data || [],
+        ),
+      }
+    } catch (e: unknown) {
       if (e instanceof HttpRequestException) {
         throw e
       }

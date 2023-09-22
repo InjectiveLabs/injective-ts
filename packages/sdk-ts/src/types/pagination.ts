@@ -4,8 +4,10 @@ export interface PaginationOption {
   skip?: number
   limit?: number
   reverse?: boolean
-  countTotal?: boolean,
+  countTotal?: boolean
   endTime?: number
+  fromNumber?: number
+  toNumber?: number
 }
 
 export interface PagePagination {

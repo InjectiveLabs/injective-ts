@@ -26,15 +26,19 @@ import {
 } from '@injectivelabs/networks'
 import { getGasPriceBasedOnMessage } from '../../../../utils/msgs'
 import { CreateTransactionArgs } from '../types'
+import { IndexerGrpcTransactionApi } from '../../../../client'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
   injectiveAddress: string
   ethereumAddress?: string
   memo?: string
-  feePrice?: string
-  feeDenom?: string
-  gasLimit?: number
+  gas?: {
+    gasPrice?: string
+    gas?: number /** gas limit */
+    feePayer?: string
+    granter?: string
+  }
 }
 
 interface MsgBroadcasterOptionsWithPk {
@@ -67,6 +71,8 @@ export class MsgBroadcasterWithPk {
 
   public chainId: ChainId
 
+  public ethereumChainId?: EthereumChainId
+
   public privateKey: PrivateKey
 
   public simulateTx: boolean = false
@@ -77,7 +83,9 @@ export class MsgBroadcasterWithPk {
 
     this.simulateTx = options.simulateTx || false
     this.chainId = networkInfo.chainId
-    this.endpoints = { ...endpoints, ...(endpoints || {}) }
+    this.ethereumChainId =
+      options.ethereumChainId || networkInfo.ethereumChainId
+    this.endpoints = { ...endpoints, ...(options.endpoints || {}) }
     this.privateKey =
       options.privateKey instanceof PrivateKey
         ? options.privateKey
@@ -121,14 +129,14 @@ export class MsgBroadcasterWithPk {
     )
 
     const gas = (
-      transaction.gasLimit || getGasPriceBasedOnMessage(msgs)
+      transaction.gas?.gas || getGasPriceBasedOnMessage(msgs)
     ).toString()
 
     /** Prepare the Transaction * */
     const { signBytes, txRaw } = await this.getTxWithStdFee({
       memo: tx.memo || '',
       message: msgs,
-      fee: getStdFee(gas),
+      fee: getStdFee({ ...tx.gas, gas }),
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
       sequence: accountDetails.sequence,
@@ -154,6 +162,55 @@ export class MsgBroadcasterWithPk {
     }
 
     return txResponse
+  }
+
+  /**
+   * Broadcasting the transaction with fee delegation services
+   *
+   * @param tx
+   * @returns {string} transaction hash
+   */
+  async broadcastWithFeeDelegation(transaction: MsgBroadcasterTxOptions) {
+    const { simulateTx, privateKey, ethereumChainId, endpoints } = this
+    const msgs = Array.isArray(transaction.msgs)
+      ? transaction.msgs
+      : [transaction.msgs]
+
+    const tx = {
+      ...transaction,
+      msgs: msgs,
+      ethereumAddress: getEthereumSignerAddress(transaction.injectiveAddress),
+      injectiveAddress: getInjectiveSignerAddress(transaction.injectiveAddress),
+    } as MsgBroadcasterTxOptions & { ethereumAddress: string }
+
+    const web3Msgs = msgs.map((msg) => msg.toWeb3())
+
+    if (!ethereumChainId) {
+      throw new GeneralException(new Error('Please provide ethereumChainId'))
+    }
+
+    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+    const txResponse = await transactionApi.prepareTxRequest({
+      memo: tx.memo,
+      message: web3Msgs,
+      address: tx.ethereumAddress,
+      chainId: ethereumChainId,
+      gasLimit: getGasPriceBasedOnMessage(msgs),
+      estimateGas: simulateTx || false,
+    })
+
+    const signature = await privateKey.signTypedData(
+      JSON.parse(txResponse.data),
+    )
+
+    const response = await transactionApi.broadcastTxRequest({
+      txResponse,
+      message: web3Msgs,
+      chainId: ethereumChainId,
+      signature: `0x${Buffer.from(signature).toString('hex')}`,
+    })
+
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**
@@ -234,9 +291,10 @@ export class MsgBroadcasterWithPk {
       return createTransaction(args)
     }
 
-    const stdGasFee = getStdFee(
-      new BigNumberInBase(result.gasInfo.gasUsed).times(1.1).toFixed(),
-    )
+    const stdGasFee = getStdFee({
+      ...args.fee,
+      gas: new BigNumberInBase(result.gasInfo.gasUsed).times(1.1).toFixed(),
+    })
 
     return createTransaction({ ...args, fee: stdGasFee })
   }

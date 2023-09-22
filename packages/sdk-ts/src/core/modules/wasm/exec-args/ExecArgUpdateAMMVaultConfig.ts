@@ -6,26 +6,18 @@ import {
 
 export declare namespace ExecArgUpdateAMMVaultConfig {
   export interface Params {
-    owner: string
     marketId: string
-    masterAddress: string
     orderDensity: number
-    priceTickSize: string
     maxInvariantSensitivity: string
-    baseDecimals: number
-    quoteDecimals: number
+    priceTickSize: string
     notionalValueCap: string
   }
 
   export interface Data {
-    owner: string
     market_id: string
-    master_address: string
     order_density: number
-    price_tick_size: string
     max_invariant_sensitivity: string
-    base_decimals: number
-    quote_decimals: number
+    price_tick_size: string
     notional_value_cap: string
   }
 }
@@ -47,14 +39,10 @@ export default class ExecArgUpdateAMMVaultConfig extends ExecArgBase<
     const { params } = this
 
     return {
-      owner: params.owner,
       market_id: params.marketId,
-      master_address: params.masterAddress,
       order_density: params.orderDensity,
-      price_tick_size: params.priceTickSize,
       max_invariant_sensitivity: params.maxInvariantSensitivity,
-      base_decimals: params.baseDecimals,
-      quote_decimals: params.quoteDecimals,
+      price_tick_size: params.priceTickSize,
       notional_value_cap: params.notionalValueCap,
     }
   }

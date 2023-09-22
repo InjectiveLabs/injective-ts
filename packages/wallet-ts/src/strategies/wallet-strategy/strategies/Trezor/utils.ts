@@ -1,5 +1,10 @@
 import { TrezorException } from '@injectivelabs/exceptions'
-import sigUtil from '@metamask/eth-sig-util'
+import {
+  TypedMessage,
+  MessageTypes,
+  TypedDataUtils,
+  SignTypedDataVersion,
+} from '@metamask/eth-sig-util'
 
 // Sanitization is used for T1 as eth-sig-util does not support BigInt
 // @ts-ignore
@@ -28,14 +33,12 @@ function sanitizeData(data) {
  * The Trezor Model 1 does not currently support constructing the hash on the device,
  * so this function pre-computes them.
  *
- * @template {sigUtil.TypedMessage} T
+ * @template {TypedMessage} T
  * @param {T} data - The EIP-712 Typed Data object.
  * @param {boolean} metamask_v4_compat - Set to `true` for compatibility with Metamask's signTypedData_v4 function.
  * @returns {{domain_separator_hash: string, message_hash?: string} & T} The hashes.
  */
-export const transformTypedData = <
-  T extends sigUtil.TypedMessage<sigUtil.MessageTypes>,
->(
+export const transformTypedData = <T extends TypedMessage<MessageTypes>>(
   data: T,
   metamask_v4_compat: boolean = true,
 ): { domain_separator_hash: string; message_hash?: string } & T => {
@@ -45,12 +48,12 @@ export const transformTypedData = <
     )
   }
 
-  const version = sigUtil.SignTypedDataVersion.V4
+  const version = SignTypedDataVersion.V4
 
   const { types, primaryType, domain, message } =
-    sigUtil.TypedDataUtils.sanitizeData(data)
+    TypedDataUtils.sanitizeData(data)
 
-  const domainSeparatorHash = sigUtil.TypedDataUtils.hashStruct(
+  const domainSeparatorHash = TypedDataUtils.hashStruct(
     'EIP712Domain',
     sanitizeData(domain),
     types,
@@ -60,7 +63,7 @@ export const transformTypedData = <
   let messageHash = null
 
   if (primaryType !== 'EIP712Domain') {
-    messageHash = sigUtil.TypedDataUtils.hashStruct(
+    messageHash = TypedDataUtils.hashStruct(
       primaryType as string,
       sanitizeData(message),
       types,

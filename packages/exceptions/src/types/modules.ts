@@ -7,6 +7,7 @@ export enum ContractErrorModule {
 export enum ChainErrorModule {
   Auction = 'chain-auction',
   Auth = 'chain-auth',
+  Authz = 'chain-authz',
   Bank = 'chain-bank',
   Distribution = 'chain-distribution',
   Exchange = 'chain-exchange',
@@ -35,6 +36,7 @@ export enum IndexerErrorModule {
   Portfolio = 'indexer-portfolio',
   Spot = 'indexer-spot',
   Transaction = 'indexer-transaction',
+  Trading = 'indexer-trading',
   ChronosDerivative = 'indexer-chronos-derivative',
   ChronosSpot = 'indexer-chronos-spot',
   ChronosMarkets = 'indexer-chronos-markets',
@@ -45,6 +47,7 @@ export enum WalletErrorActionModule {
   SignEthereumTransaction = 'sign-ethereum-transaction',
   SendTransaction = 'send-transaction',
   SendEthereumTransaction = 'send-ethereum-transaction',
+  SignArbitrary = 'sign-arbitrary',
   GetAccounts = 'get-accounts',
   GetNetworkId = 'get-network-id',
   GetChainId = 'get-chain-id',
