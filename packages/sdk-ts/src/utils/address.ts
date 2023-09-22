@@ -100,3 +100,6 @@ export const getChecksumAddress = (ethAddress: string) => {
 
   return checksumAddress
 }
+
+export const isCw20ContractAddress = (address: string) =>
+  address.length === 42 && address.startsWith('inj')

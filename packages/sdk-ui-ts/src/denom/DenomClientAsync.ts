@@ -9,10 +9,11 @@ import {
   fromUtf8,
   DenomClient,
   InsuranceFund,
+  ChainGrpcIbcApi,
   ChainGrpcBankApi,
   ChainGrpcWasmApi,
+  isCw20ContractAddress,
   ChainGrpcInsuranceFundApi,
-  ChainGrpcIbcApi,
 } from '@injectivelabs/sdk-ts'
 import { Web3Client } from '../services/web3/Web3Client'
 import type { Token } from '@injectivelabs/token-metadata'
@@ -116,9 +117,7 @@ export class DenomClientAsync {
       return getTokenFromAlchemyTokenMetaResponse(denom, response)
     }
 
-    const isCW20 = denom.startsWith('inj')
-
-    if (isCW20) {
+    if (isCw20ContractAddress(denom)) {
       const contractAddress = denom
 
       const response = await this.chainWasmApi.fetchContractState({
@@ -137,7 +136,7 @@ export class DenomClientAsync {
       const tokenFactoryAddress = denom.split('/')[2]
 
       // CW20 contract (ex: from Wormhole)
-      if (tokenFactoryAddress.startsWith('inj')) {
+      if (isCw20ContractAddress(tokenFactoryAddress)) {
         const response = await this.chainWasmApi.fetchContractState({
           contractAddress: tokenFactoryAddress,
           pagination: {
@@ -218,7 +217,9 @@ export class DenomClientAsync {
       return this.metadatas.find((metadata) => metadata.base === denom)
     }
 
-    const { metadatas } = await this.chainBankApi.fetchDenomsMetadata({ limit: 1000 })
+    const { metadatas } = await this.chainBankApi.fetchDenomsMetadata({
+      limit: 1000,
+    })
 
     this.metadatas = metadatas
 
