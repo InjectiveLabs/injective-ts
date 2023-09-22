@@ -9,17 +9,14 @@ You can use our `InjNameService` [abstraction](../../packages/sdk-ui-ts/src/serv
 <pre class="language-typescript"><code class="lang-typescript">import { getNetworkEndpoints, Network } from '@injectivelabs/network'
 import { InjNameService } from '@injectivelabs/sdk-ui-ts'
 
-(async (){
-    const injNameService = new InjNameService(Network.Testnet)
-
-<strong>    const name = 'ninja.inj'
+const injNameService = new InjNameService(Network.Testnet)
+<strong>const name = 'ninja.inj'
 </strong>
-    // Fetch the address for the particular name
-    const address = await injNameService.fetchInjAddress(name) 
+// Fetch the address for the particular name
+const addressForName = await injNameService.fetchInjAddress(name) 
 
-    // Fetch the name for the particular address
-    const nameFromAddress = await injNameService.fetchInjName(address)
-})()
+// Fetch the name for the particular address
+const nameFromAddress = await injNameService.fetchInjName(addressForName)
 </code></pre>
 
 ## Raw Smart Contract Querying
