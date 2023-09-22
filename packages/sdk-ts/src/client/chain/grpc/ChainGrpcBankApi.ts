@@ -160,7 +160,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
   async fetchAllTotalSupply(
     pagination: PaginationOption = { limit: MAX_LIMIT_FOR_SUPPLY },
   ) {
-    return fetchAllWithPagination(pagination, this.fetchTotalSupply)
+    return fetchAllWithPagination(pagination, this.fetchTotalSupply.bind(this))
   }
 
   async fetchSupplyOf(denom: string) {
