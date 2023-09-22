@@ -151,7 +151,7 @@ export class TokenFactory {
       )
     }
 
-    if (address.startsWith('inj')) {
+    if (address.startsWith('inj') && address.length === 42) {
       const tokenMeta = this.tokenMetaUtils.getMetaByAddress(address)
 
       return tokenMeta
