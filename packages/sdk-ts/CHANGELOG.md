@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0-beta.3](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.13.0-beta.2...@injectivelabs/sdk-ts@1.13.0-beta.3) (2023-09-22)
+
+### Features
+
+- implemented a way to fetch grpc all records from pagination ([5b2f888](https://github.com/InjectiveLabs/injective-ts/commit/5b2f888424ab21c8db825a8c5ebcdf8775794fbc))
+
 # [1.13.0-beta.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.13.0-beta.1...@injectivelabs/sdk-ts@1.13.0-beta.2) (2023-09-21)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts
