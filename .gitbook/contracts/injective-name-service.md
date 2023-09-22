@@ -8,7 +8,7 @@ Example code snippets to resolve .inj domain name.
 
 ### Domain Resolution
 
-- Get resolver address
+* Get resolver address
 
 ```ts
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
@@ -41,7 +41,7 @@ const resolverAddress = InjNameServiceQueryTransformer.resolverAddressResponseTo
 console.log(resolverAddress)
 ```
 
-- Get address for .inj domain name.
+* Get address for .inj domain name.
 
 ```ts
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
@@ -83,7 +83,7 @@ console.log(injectiveAddress)
 
 ### Reverse Resolution
 
-- Get primary name for injective address.
+* Get primary name for injective address.
 
 ```ts
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
