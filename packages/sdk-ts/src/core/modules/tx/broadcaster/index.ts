@@ -1,2 +1,2 @@
 export * from './MsgBroadcasterWithPk'
-export * from './MsgBroadcasterWithPkAndLocalSequence'
+export * from './MsgBroadcasterLocal'

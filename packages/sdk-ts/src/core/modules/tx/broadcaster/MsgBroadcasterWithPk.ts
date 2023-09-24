@@ -35,7 +35,7 @@ interface MsgBroadcasterTxOptions {
   }
 }
 
-interface MsgBroadcasterOptionsWithPk {
+interface MsgBroadcasterWithPkOptions {
   network: Network
 
   /**
@@ -71,7 +71,7 @@ export class MsgBroadcasterWithPk {
 
   public simulateTx: boolean = false
 
-  constructor(options: MsgBroadcasterOptionsWithPk) {
+  constructor(options: MsgBroadcasterWithPkOptions) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints = getNetworkEndpoints(options.network)
 

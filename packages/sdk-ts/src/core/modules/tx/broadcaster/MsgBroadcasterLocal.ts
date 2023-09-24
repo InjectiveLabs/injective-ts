@@ -35,7 +35,7 @@ interface MsgBroadcasterTxOptions {
   }
 }
 
-interface MsgBroadcasterOptionsWithPk {
+interface MsgBroadcasterLocalOptions {
   network: Network
 
   /**
@@ -60,7 +60,7 @@ interface MsgBroadcasterOptionsWithPk {
  *
  * Mainly used for working in a Node Environment
  */
-export class MsgBroadcasterWithPkAndLocalSequence {
+export class MsgBroadcasterLocal {
   public endpoints: NetworkEndpoints
 
   public chainId: ChainId
@@ -75,7 +75,7 @@ export class MsgBroadcasterWithPkAndLocalSequence {
 
   public txCount: number = 0
 
-  constructor(options: MsgBroadcasterOptionsWithPk) {
+  constructor(options: MsgBroadcasterLocalOptions) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints = getNetworkEndpoints(options.network)
 
