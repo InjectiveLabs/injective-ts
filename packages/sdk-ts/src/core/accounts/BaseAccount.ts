@@ -79,14 +79,16 @@ export class BaseAccount extends Address {
 
   public incrementSequence() {
     this.sequence += 1
+
+    return this
   }
 
   public toAccountDetails(): AccountDetails {
     return {
-      address: this.bech32Address,
       pubKey: this.pubKey,
-      accountNumber: this.accountNumber,
       sequence: this.sequence,
+      address: this.bech32Address,
+      accountNumber: this.accountNumber,
     }
   }
 }

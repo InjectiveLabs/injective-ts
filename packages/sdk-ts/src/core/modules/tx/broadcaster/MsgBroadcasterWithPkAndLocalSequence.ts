@@ -60,7 +60,7 @@ interface MsgBroadcasterOptionsWithPk {
  *
  * Mainly used for working in a Node Environment
  */
-export class MsgBroadcasterWithPk {
+export class MsgBroadcasterWithPkAndLocalSequence {
   public endpoints: NetworkEndpoints
 
   public chainId: ChainId
@@ -70,6 +70,10 @@ export class MsgBroadcasterWithPk {
   public privateKey: PrivateKey
 
   public simulateTx: boolean = false
+
+  public baseAccount: BaseAccount | undefined = undefined
+
+  public txCount: number = 0
 
   constructor(options: MsgBroadcasterOptionsWithPk) {
     const networkInfo = getNetworkInfo(options.network)
@@ -93,24 +97,19 @@ export class MsgBroadcasterWithPk {
    * @returns {string} transaction hash
    */
   async broadcast(transaction: MsgBroadcasterTxOptions) {
-    const { chainId, privateKey, endpoints } = this
+    const { chainId, privateKey, endpoints, txCount } = this
     const msgs = Array.isArray(transaction.msgs)
       ? transaction.msgs
       : [transaction.msgs]
 
     const tx = {
       ...transaction,
-      msgs: msgs,
+      msgs,
     } as MsgBroadcasterTxOptions
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
-    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
-    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      privateKey.toBech32(),
-    )
-    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
-    const accountDetails = baseAccount.toAccountDetails()
+    const accountDetails = await this.getAccountDetails()
 
     /** Block Details */
     const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
@@ -131,7 +130,7 @@ export class MsgBroadcasterWithPk {
       fee: getStdFee({ ...tx.gas, gas }),
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
-      sequence: accountDetails.sequence,
+      sequence: accountDetails.sequence + txCount,
       accountNumber: accountDetails.accountNumber,
       chainId: chainId,
     })
@@ -153,6 +152,8 @@ export class MsgBroadcasterWithPk {
       )
     }
 
+    this.incrementTxCount()
+
     return txResponse
   }
 
@@ -170,7 +171,7 @@ export class MsgBroadcasterWithPk {
 
     const tx = {
       ...transaction,
-      msgs: msgs,
+      msgs,
     } as MsgBroadcasterTxOptions & { ethereumAddress: string }
 
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
@@ -210,22 +211,19 @@ export class MsgBroadcasterWithPk {
    * @returns {string} transaction hash
    */
   async simulate(transaction: MsgBroadcasterTxOptions) {
-    const { privateKey, endpoints, chainId } = this
+    const { privateKey, endpoints, chainId, txCount } = this
+    const msgs = Array.isArray(transaction.msgs)
+      ? transaction.msgs
+      : [transaction.msgs]
+
     const tx = {
       ...transaction,
-      msgs: Array.isArray(transaction.msgs)
-        ? transaction.msgs
-        : [transaction.msgs],
+      msgs,
     } as MsgBroadcasterTxOptions
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
-    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
-    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      privateKey.toBech32(),
-    )
-    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
-    const accountDetails = baseAccount.toAccountDetails()
+    const accountDetails = await this.getAccountDetails()
 
     /** Block Details */
     const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
@@ -242,7 +240,7 @@ export class MsgBroadcasterWithPk {
       message: tx.msgs as Msgs[],
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
-      sequence: accountDetails.sequence,
+      sequence: accountDetails.sequence + txCount,
       accountNumber: accountDetails.accountNumber,
       chainId: chainId,
     })
@@ -301,5 +299,24 @@ export class MsgBroadcasterWithPk {
     )
 
     return simulationResponse
+  }
+
+  private async getAccountDetails() {
+    if (this.baseAccount) {
+      return this.baseAccount.toAccountDetails()
+    }
+
+    const chainRestAuthApi = new ChainRestAuthApi(this.endpoints.rest)
+    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
+      this.privateKey.toBech32(),
+    )
+
+    this.baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
+
+    return this.baseAccount.toAccountDetails()
+  }
+
+  private async incrementTxCount() {
+    this.txCount += 1
   }
 }
