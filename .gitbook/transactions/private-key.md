@@ -225,8 +225,7 @@ You can use the `MsgBroadcasterWithPk` class from the `@injectivelabs/sdk-ts` pa
 ```ts
 import { MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { ChainId } from '@injectivelabs/ts-types'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -242,11 +241,9 @@ const msg = MsgSend.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 })
 
 console.log(txHash)

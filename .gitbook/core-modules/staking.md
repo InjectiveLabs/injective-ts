@@ -16,8 +16,7 @@ import {
   MsgBroadcasterWithPk
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
@@ -38,11 +37,9 @@ const msg = MsgBeginRedelegate.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
@@ -55,8 +52,7 @@ This Message is used to Delegate INJ to a validator.
 ```ts
 import { MsgDelegate, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
@@ -74,11 +70,9 @@ const msg = MsgDelegate.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
@@ -91,8 +85,7 @@ This Message is used to Delegate INJ to a validator.
 ```ts
 import { MsgUndelegate, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
@@ -110,11 +103,9 @@ const msg = MsgUndelegate.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);

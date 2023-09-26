@@ -13,10 +13,7 @@ import {
   MsgBroadcasterWithPk,
   MsgWithdrawDelegatorReward,
 } from "@injectivelabs/sdk-ts";
-import { ChainId } from "@injectivelabs/ts-types";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
-
-const endpointsForNetwork = getNetworkEndpoints(Network.Mainnet);
+import {  Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const validatorAddress = "inj1...";
@@ -32,11 +29,9 @@ const privateKey = "0x...";
 /* broadcast transaction */
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
@@ -51,10 +46,7 @@ import {
   MsgBroadcasterWithPk,
   MsgWithdrawValidatorCommission,
 } from "@injectivelabs/sdk-ts";
-import { ChainId } from "@injectivelabs/ts-types";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
-
-const endpointsForNetwork = getNetworkEndpoints(Network.Mainnet);
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const validatorAddress = "inj1...";
@@ -69,11 +61,9 @@ const privateKey = "0x...";
 /* broadcast transaction */
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
