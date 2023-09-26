@@ -28,7 +28,9 @@ const nameToNode = (name: string) => {
   if (!name) {
     return []
   }
+
   const hash = nameHash(name)
+
   return Array.from(Buffer.from(hash.slice(2), 'hex'))
 }
 
