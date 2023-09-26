@@ -1020,7 +1020,7 @@ export default {
     name: 'PROJ',
     logo: 'projx.png',
     symbol: 'PROJ',
-    decimals: 6,
+    decimals: 18,
     coinGeckoId: '',
   },
 
