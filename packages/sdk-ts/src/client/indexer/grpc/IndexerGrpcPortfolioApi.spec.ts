@@ -4,7 +4,7 @@ import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
 import { IndexerGrpcAccountPortfolioApi } from './IndexerGrpcPortfolioApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcPortfolioApi = new IndexerGrpcAccountPortfolioApi(
   endpoints.indexer,
 )

@@ -4,7 +4,7 @@ import { ChainGrpcGovApi } from './ChainGrpcGovApi'
 import { ChainGrpcGovTransformer } from '../transformers'
 import { CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
 
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcGovApi = new ChainGrpcGovApi(endpoints.grpc)
 const proposalId = 1
 

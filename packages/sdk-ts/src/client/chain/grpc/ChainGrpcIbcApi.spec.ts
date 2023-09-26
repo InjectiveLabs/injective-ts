@@ -4,7 +4,7 @@ import { sha256 } from '../../../utils/crypto'
 import { fromUtf8 } from '../../../utils/utf8'
 import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcIbcApi = new ChainGrpcIbcApi(endpoints.grpc)
 
 describe('ChainGrpcIbcApi', () => {

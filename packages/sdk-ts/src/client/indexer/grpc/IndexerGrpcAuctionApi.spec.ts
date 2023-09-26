@@ -2,7 +2,7 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { IndexerGrpcAuctionTransformer } from '../transformers'
 import { IndexerGrpcAuctionApi } from './IndexerGrpcAuctionApi'
 
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcAuctionApi = new IndexerGrpcAuctionApi(endpoints.indexer)
 
 describe('IndexerGrpcAuctionApi', () => {

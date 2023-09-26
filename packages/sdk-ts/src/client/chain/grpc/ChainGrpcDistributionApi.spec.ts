@@ -4,7 +4,7 @@ import { ChainGrpcStakingApi } from './ChainGrpcStakingApi'
 import { ChainGrpcDistributionTransformer } from '../transformers'
 import { Delegation, Validator } from '../types'
 
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcDistributionApi = new ChainGrpcDistributionApi(endpoints.grpc)
 
 describe('ChainGrpcDistributionApi', () => {
