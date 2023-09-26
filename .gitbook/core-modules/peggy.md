@@ -10,7 +10,7 @@ Note that a $10 USD bridge fee will be charged for this transaction to cover for
 
 ```ts
 import {
-  DenomClient,
+  DenomClientAsync,
   MsgSendToEth,
   MsgBroadcasterWithPk,
 } from "@injectivelabs/sdk-ts";
@@ -27,7 +27,7 @@ const tokenService = new TokenService({
 
 const ETH_BRIDGE_FEE_IN_USD = 10;
 const endpointsForNetwork = getNetworkEndpoints(Network.Mainnet);
-const denomClient = new DenomClient(Network.Mainnet, {
+const denomClient = new DenomClientAsync(Network.Mainnet, {
   endpoints: endpointsForNetwork,
 });
 
@@ -39,13 +39,15 @@ const injectiveAddress = "inj1...";
 const destinationAddress = "0x..."; // ethereum address
 const tokenDenom = `peggy${tokenMeta.erc20.address}`;
 
-if (!tokenDenom) {
+if (!tokenMeta) {
   return;
 }
 
-const tokenUsdPrice = tokenService.fetchUsdTokenPrice(tokenDenom.coinGeckoId);
+const tokenUsdPrice = tokenService.fetchUsdTokenPrice(tokenMeta
+.coinGeckoId);
 const amountToFixed = new BigNumberInBase(amount)
-  .toWei(tokenDenom.decimals)
+  .toWei(tokenMeta
+.decimals)
   .toFixed();
 const bridgeFeeInToken = new BigNumberInBase(ETH_BRIDGE_FEE_IN_USD)
   .dividedBy(tokenUsdPrice)
@@ -66,10 +68,8 @@ const msg = MsgSendToEth.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 ```

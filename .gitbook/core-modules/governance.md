@@ -18,8 +18,7 @@ import {
   MsgBroadcasterWithPk,
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
-import { ChainId } from "@injectivelabs/ts-types";
+import { Network } from "@injectivelabs/networks";
 
 const INJ_DENOM = 'inj'
 const amount = new BigNumberInBase(1).toWei().toFixed()
@@ -39,11 +38,9 @@ const message = MsgGovDeposit.fromJSON({
 /* broadcast transaction */
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: message,
-  injectiveAddress,
+  msgs: message
 });
 ```
 
@@ -56,8 +53,7 @@ import {
   MsgVote,
   MsgBroadcasterWithPk
 } from "@injectivelabs/sdk-ts";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
-import { ChainId } from "@injectivelabs/ts-types";
+import { Network } from "@injectivelabs/networks";
 import { VoteOption } from '@injectivelabs/sdk-ts';
 
 const injectiveAddress = "inj...";
@@ -73,11 +69,9 @@ const message = MsgVote.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: message,
-  injectiveAddress,
+  msgs: message
 });
 ```
 
@@ -90,8 +84,7 @@ import {
   MsgSubmitTextProposal,
   MsgBroadcasterWithPk
 } from "@injectivelabs/sdk-ts";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
-import { ChainId } from "@injectivelabs/ts-types";
+import { Network } from "@injectivelabs/networks";
 import { BigNumberInBase } from "@injectivelabs/utils";
 
 const injectiveAddress = "inj...";
@@ -111,11 +104,9 @@ const message = MsgSubmitTextProposal.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: message,
-  injectiveAddress,
+  msgs: message
 });
 ```
 
@@ -125,13 +116,12 @@ This message allows you to propose a new spot market. Ensure that the ticker is 
 
 ```ts
 import {
-  DenomClient,
+  DenomClientAsync,
   MsgBroadcasterWithPk,
   MsgSubmitProposalSpotMarketLaunch
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase, BigNumberInWei } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
-import { ChainId } from "@injectivelabs/ts-types";
 
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
@@ -150,7 +140,8 @@ const market = {
   minQuantityTickSize: '0.001'
 }
 
-const denomClient = new DenomClient(
+const denomClient = new DenomClientAsync
+(
   NETWORK.Testnet,
   { endpoints: getNetworkEndpoints(Network.Testnet) }
 )
@@ -191,11 +182,9 @@ const message = MsgSubmitProposalSpotMarketLaunch.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: message,
-  injectiveAddress
+  msgs: message
 });
 ```
 
@@ -205,13 +194,12 @@ This message allows you to propose a new perpetual market. perpetual futures con
 
 ```ts
 import {
-  DenomClient,
+  DenomClientAsync,
   MsgBroadcasterWithPk,
   MsgSubmitProposalPerpetualMarketLaunch
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
-import { ChainId } from "@injectivelabs/ts-types";
 
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
@@ -235,7 +223,7 @@ const market = {
   minQuantityTickSize: '0.01'
 }
 
-const denomClient = new DenomClient(
+const denomClient = new DenomClientAsync(
   NETWORK.Testnet,
   { endpoints: getNetworkEndpoints(Network.Testnet) }
 )
@@ -266,11 +254,9 @@ const message = MsgSubmitProposalPerpetualMarketLaunch.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: message,
-  injectiveAddress
+  msgs: message
 });
 ```
 
@@ -280,13 +266,12 @@ An expiry futures contract is an agreement between two counterparties to buy and
 
 ```ts
 import {
-  DenomClient,
+  DenomClientAsync,
   MsgBroadcasterWithPk,
   MsgSubmitProposalExpiryFuturesMarketLaunch
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
-import { ChainId } from "@injectivelabs/ts-types";
 
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
@@ -311,7 +296,7 @@ const market = {
   minQuantityTickSize: '0.01'
 }
 
-const denomClient = new DenomClient(
+const denomClient = new DenomClientAsync(
   NETWORK.Testnet,
   { endpoints: getNetworkEndpoints(Network.Testnet) }
 )
@@ -342,11 +327,9 @@ const message = MsgSubmitProposalExpiryFuturesMarketLaunch.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: message,
-  injectiveAddress
+  msgs: message
 });
 ```
 
@@ -360,8 +343,7 @@ import {
   MsgSubmitProposalSpotMarketParamUpdate
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
-import { ChainId } from "@injectivelabs/ts-types";
+import {  Network } from "@injectivelabs/networks";
 import { MarketStatusMap } from '@injectivelabs/chain-api';
 
 const injectiveAddress = "inj...";
@@ -392,10 +374,8 @@ const message = MsgSubmitProposalSpotMarketParamUpdate.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: message,
-  injectiveAddress
+  msgs: message
 });
 ```

@@ -26,7 +26,7 @@ describe('MsgBroadcasterWithPk', () => {
       network,
       privateKey,
       simulateTx: true,
-    }).broadcast({ msgs: message, injectiveAddress })
+    }).broadcast({ msgs: message })
 
     expect(response.txHash).toBeDefined()
   }, 60000)
@@ -53,7 +53,7 @@ describe('MsgBroadcasterWithPk', () => {
       privateKey,
       simulateTx: true,
       ethereumChainId: EthereumChainId.Goerli,
-    }).broadcastWithFeeDelegation({ msgs: message, injectiveAddress })
+    }).broadcastWithFeeDelegation({ msgs: message })
 
     expect(response.txHash).toBeDefined()
   }, 60000)

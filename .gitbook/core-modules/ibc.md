@@ -105,11 +105,9 @@ const privateKey = '0x...'
 /* broadcast transaction */
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 })
 
 console.log(txHash)

@@ -11,8 +11,7 @@ import {
   MsgExecuteContract,
   MsgBroadcasterWithPk,
 } from "@injectivelabs/sdk-ts";
-import { ChainId } from "@injectivelabs/ts-types";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const recipientAddress = "inj2...";
@@ -32,11 +31,9 @@ const msg = MsgExecuteContract.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
@@ -54,8 +51,7 @@ import {
   MsgBroadcasterWithPk,
 } from "@injectivelabs/sdk-ts";
 import { INJ_DENOM } from "@injectivelabs/sdk-ui-ts";
-import { ChainId } from "@injectivelabs/ts-types";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const contractAddress = "cw...";
@@ -76,11 +72,9 @@ const msg = MsgExecuteContract.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
@@ -119,8 +113,7 @@ import {
   MsgExecuteContractCompact,
 } from "@injectivelabs/sdk-ts";
 import { INJ_DENOM } from "@injectivelabs/sdk-ui-ts";
-import { ChainId } from "@injectivelabs/ts-types";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const contractAddress = "cw...";
@@ -141,11 +134,9 @@ const msg = MsgExecuteContractCompact.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);

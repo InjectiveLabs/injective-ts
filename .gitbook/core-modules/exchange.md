@@ -15,7 +15,7 @@ This Message is used to send coins from the Bank module to a wallet's subaccount
 ```ts
 import { MsgDeposit, MsgBroadcasterWithPk, getEthereumAddress } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -33,16 +33,14 @@ const subaccountId = ethereumAddress + suffix
 const msg = MsgDeposit.fromJSON({
   amount,
   subaccountId,
-  injectiveAddress,
+  injectiveAddress
 });
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 })
 
 console.log(txHash)
@@ -55,7 +53,7 @@ This Message is used to send coins from the wallet's subaccount back to the user
 ```ts
 import { MsgWithdraw, MsgBroadcasterWithPk, getEthereumAddress } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -73,16 +71,14 @@ const subaccountId = ethereumAddress + suffix
 const msg = MsgWithdraw.fromJSON({
   amount,
   subaccountId,
-  injectiveAddress,
+  injectiveAddress
 });
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 })
 
 console.log(txHash)
@@ -100,7 +96,7 @@ import {
   getDerivativeMarketTensMultiplier
 } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase, spotPriceToChainPriceToFixed, spotQuantityToChainQuantityToFixed } from '@injectivelabs/utils'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -141,16 +137,14 @@ const msg = MsgCreateSpotLimitOrder.fromJSON({
     baseDecimals: market.baseDecimals
   }),
   marketId: market.marketId,
-  feeRecipient: feeRecipient,
+  feeRecipient: feeRecipient
 })
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 })
 
 console.log(txHash)
@@ -168,7 +162,7 @@ import {
   getDerivativeMarketTensMultiplier
 } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase, spotPriceToChainPriceToFixed, spotQuantityToChainQuantityToFixed } from '@injectivelabs/utils'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -213,11 +207,9 @@ const msg = MsgCreateSpotMarketOrder.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 })
 
 console.log(txHash)
@@ -240,7 +232,7 @@ import {
   derivativeQuantityToChainQuantityToFixed,
   derivativeMarginToChainMarginToFixed
 } from '@injectivelabs/utils'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -285,11 +277,9 @@ const msg = MsgCreateDerivativeLimitOrder.fromJSON(
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 })
 
 console.log(txHash)
@@ -312,7 +302,7 @@ import {
   derivativeQuantityToChainQuantityToFixed,
   derivativeMarginToChainMarginToFixed
 } from '@injectivelabs/utils'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -362,11 +352,9 @@ const msg = MsgCreateDerivativeMarketOrder.fromJSON(
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 })
 
 console.log(txHash)
@@ -389,7 +377,7 @@ import {
   derivativeQuantityToChainQuantityToFixed,
   derivativeMarginToChainMarginToFixed
 } from '@injectivelabs/utils'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -469,11 +457,9 @@ const msg = MsgBatchUpdateOrders.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 })
 
 console.log(txHash)
@@ -485,7 +471,7 @@ This Message is used to batch cancel spot orders on the chain
 
 ```ts
 import { MsgBatchCancelSpotOrders, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -517,11 +503,9 @@ const messages = orders.map((order) =>
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: messages,
-  injectiveAddress,
+  msgs: messages
 })
 
 console.log(txHash)
@@ -533,7 +517,7 @@ This Message is used to batch cancel spot orders on the chain
 
 ```ts
 import { MsgBatchCancelDerivativeOrders, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -565,11 +549,9 @@ const messages = orders.map((order) =>
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: messages,
-  injectiveAddress,
+  msgs: messages
 })
 
 console.log(txHash)
@@ -584,7 +566,7 @@ import {
   MsgRewardsOptOut,
   MsgBroadcasterWithPk,
 } from '@injectivelabs/sdk-ts'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj...'
@@ -594,11 +576,68 @@ const msg = MsgRewardsOptOut.fromJSON(
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
+  msgs: msg
+})
+
+console.log(txHash)
+```
+
+### MsgExternalTransfer
+
+This message is used to transfer balance from one subaccount to another subaccount.
+
+Note:
+- You cannot transfer from your default subaccountId since that balance is now associated with your Injective address in the bank module. Therefore, in order for `MsgExternalTransfer` to work, you will need to transfer from a non-default subaccountId.
+
+How to find the subaccountId that you will be transferring from:
+- you can query your existing subaccountIds via the [account portfolio api](../querying/querying-api/querying-indexer-portfolio.md).
+
+How to use funds that are currently associated with your Injective Address in bank module:
+- If you have existing non-default subaccounts, you'll want to do a [MsgDeposit](./exchange.md#MsgDeposit) to one of your existing non-default subaccountIds and use that subaccountId as the `srcSubaccountId` below.
+- If you don't have existing non-default subaccounts, you can do a [MsgDeposit](./exchange.md#MsgDeposit) to a new default subaccountId, which would be done via importing `getSubaccountId` from `sdk-ts` and setting the `subaccountId` field in [MsgDeposit](./exchange.md#MsgDeposit) to `getSubaccountId(injectiveAddress, 1)`.
+
+```ts
+import {
+  DenomClient,
+  MsgExternalTransfer,
+  MsgBroadcasterWithPk,
+} from '@injectivelabs/sdk-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { Network } from '@injectivelabs/networks'
+
+const denomClient = new DenomClient(Network.Testnet)
+
+const injectiveAddress = 'inj...'
+const srcSubaccountId = '0x...'
+const dstSubaccountId = `0x...`
+const INJ_TOKEN_SYMBOL = 'INJ'
+const tokenMeta = denomClient.getTokenMetaDataBySymbol(INJ_TOKEN_SYMBOL)
+const tokenDenom = `inj`
+
+/* format amount to add to the burn auction pool */
+const amount = {
+  denom: tokenDenom,
+  amount: new BigNumberInBase(1).toWei(tokenMeta.decimals).toFixed(),
+}
+
+/* create message in proto format */
+const msg = MsgExternalTransfer.fromJSON({
+  amount,
+  dstSubaccountId,
+  srcSubaccountId,
   injectiveAddress,
+})
+
+const privateKey = '0x...'
+
+/* broadcast transaction */
+const txHash = await new MsgBroadcasterWithPk({
+  network: Network.Testnet,
+  privateKey,
+}).broadcast({
+  msgs: msg
 })
 
 console.log(txHash)
