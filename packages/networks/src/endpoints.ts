@@ -1,5 +1,15 @@
 import { NetworkEndpoints } from './types'
 
+export const endpointsMainnetSentry: NetworkEndpoints = {
+  indexer: 'https://sentry.exchange.grpc-web.injective.network/',
+  grpc: 'https://sentry.chain.grpc-web.injective.network/',
+  rpc: 'https://sentry.tm.injective.network/',
+  rest: 'https://sentry.lcd.injective.network/',
+  chronos: 'https://sentry.exchange.grpc-web.injective.network/',
+  explorer: 'https://sentry.exchange.grpc-web.injective.network/',
+  cache: 'https://sentry.exchange.grpc-web.injective.network/'
+}
+
 export const endpointsMainnetK8s: NetworkEndpoints = {
   indexer: 'https://k8s.mainnet.exchange.grpc-web.injective.network',
   grpc: 'https://k8s.mainnet.chain.grpc-web.injective.network',

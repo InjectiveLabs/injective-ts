@@ -5,7 +5,7 @@ import { ChainGrpcBankTransformer } from '../transformers'
 import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcBankApi = new ChainGrpcBankApi(endpoints.grpc)
 
 describe('ChainGrpcBankApi', () => {

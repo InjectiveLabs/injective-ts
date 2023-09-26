@@ -2,7 +2,7 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcTokenFactoryApi } from './ChainGrpcTokenFactoryApi'
 import { ChainGrpcTokenFactoryTransformer } from '../transformers'
 
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcTokenFactoryApi = new ChainGrpcTokenFactoryApi(endpoints.grpc)
 
 describe('ChainTokenFactoryApi.spec', () => {

@@ -6,7 +6,7 @@ import { SpotMarket } from '../types'
 import { IndexerGrpcSpotApi } from './IndexerGrpcSpotApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcSpotApi = new IndexerGrpcSpotApi(endpoints.indexer)
 
 describe('IndexerGrpcSpotApi', () => {

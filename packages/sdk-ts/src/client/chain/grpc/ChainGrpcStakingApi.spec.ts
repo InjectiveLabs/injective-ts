@@ -5,7 +5,7 @@ import { ChainGrpcStakingTransformer } from '../transformers'
 import { Delegation, Validator } from '../types'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 
 describe('ChainGrpcStakingApi', () => {

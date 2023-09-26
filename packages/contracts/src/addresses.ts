@@ -56,6 +56,10 @@ export const contractAddressesByNetwork: ContractAddressesForNetwork = {
     peggy: '0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3',
     injective: '0xe28b3B32B6c345A34Ff64674606124Dd5Aceca30',
   },
+  [Network.MainnetSentry]: {
+    peggy: '0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3',
+    injective: '0xe28b3B32B6c345A34Ff64674606124Dd5Aceca30',
+  },
   [Network.Public]: {
     peggy: '0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3',
     injective: '0xe28b3B32B6c345A34Ff64674606124Dd5Aceca30',

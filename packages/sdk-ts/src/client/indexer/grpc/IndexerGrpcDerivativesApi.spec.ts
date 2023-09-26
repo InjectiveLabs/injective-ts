@@ -6,7 +6,7 @@ import { DerivativeMarket } from '../types'
 import { IndexerGrpcDerivativesApi } from './IndexerGrpcDerivativesApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcDerivativesApi = new IndexerGrpcDerivativesApi(
   endpoints.indexer,
 )

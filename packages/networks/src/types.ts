@@ -4,6 +4,7 @@ export enum Network {
   MainnetK8s = 'mainnetK8s',
   MainnetLB = 'mainnetLB',
   Mainnet = 'mainnet',
+  MainnetSentry = 'mainnetSentry',
   Staging = 'staging',
   Public = 'public',
   Internal = 'internal', // @deprecated
