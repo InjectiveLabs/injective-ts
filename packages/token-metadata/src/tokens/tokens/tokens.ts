@@ -1365,6 +1365,14 @@ export default {
     },
   },
 
+  GOLD: {
+    name: 'GOLD',
+    symbol: 'GOLD',
+    decimals: 18,
+    logo: 'unknown.svg',
+    coinGeckoId: '',
+  },
+
   XAU: {
     name: 'Gold',
     symbol: 'XAU',
@@ -1815,5 +1823,21 @@ export default {
       hash: 'C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
       tokenType: TokenType.Ibc,
     },
+  },
+
+  EVINDEX: {
+    name: 'EVIINDEX',
+    symbol: 'EVIINDEX',
+    decimals: 18,
+    logo: 'unknown.svg',
+    coinGeckoId: '',
+  },
+
+  TRUCPI: {
+    name: 'TRUCPI',
+    symbol: 'TRUCPI',
+    decimals: 18,
+    logo: 'unknown.svg',
+    coinGeckoId: '',
   },
 } as Record<string, TokenMeta>
