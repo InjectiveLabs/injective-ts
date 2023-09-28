@@ -168,31 +168,4 @@ export const testnetTokens = () =>
         },
       ],
     },
-
-    EVINDEX: {
-      name: 'EVIINDEX',
-      symbol: 'EVIINDEX',
-      decimals: 18,
-      logo: 'unknown.svg',
-      coinGeckoId: '',
-      tokenType: TokenType.TokenFactory,
-    },
-
-    TRUCPI: {
-      name: 'TRUCPI',
-      symbol: 'TRUCPI',
-      decimals: 18,
-      logo: 'unknown.svg',
-      coinGeckoId: '',
-      tokenType: TokenType.TokenFactory,
-    },
-
-    GOLD: {
-      name: 'GOLD',
-      symbol: 'GOLD',
-      decimals: 18,
-      logo: 'unknown.svg',
-      coinGeckoId: '',
-      tokenType: TokenType.TokenFactory,
-    },
   } as Record<string, TokenMeta>)
