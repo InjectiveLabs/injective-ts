@@ -1816,4 +1816,28 @@ export default {
       tokenType: TokenType.Ibc,
     },
   },
+
+  GOLD: {
+    name: 'GOLD',
+    symbol: 'GOLD',
+    decimals: 18,
+    logo: 'gold.svg',
+    coinGeckoId: '',
+  },
+
+  EVINDEX: {
+    name: 'EVIINDEX',
+    symbol: 'EVIINDEX',
+    decimals: 18,
+    logo: 'truEVINDEX.svg',
+    coinGeckoId: '',
+  },
+
+  TRUCPI: {
+    name: 'TRUCPI',
+    symbol: 'TRUCPI',
+    decimals: 18,
+    logo: 'truflation.svg',
+    coinGeckoId: '',
+  },
 } as Record<string, TokenMeta>
