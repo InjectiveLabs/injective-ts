@@ -629,6 +629,12 @@ export const protoTypeToAminoType = (type: string): string => {
     case 'ibc.applications.transfer.v1.MsgTransfer':
       return 'cosmos-sdk/MsgTransfer'
 
+    // feegrant
+    case 'cosmos.feegrant.v1beta1.MsgGrantAllowance':
+      return 'cosmos-sdk/MsgGrantAllowance'
+    case 'cosmos.feegrant.v1beta1.MsgRevokeAllowance':
+      return 'cosmos-sdk/MsgRevokeAllowance'
+
     default:
       throw new GeneralException(new Error('Unknown message type: ' + type))
   }
