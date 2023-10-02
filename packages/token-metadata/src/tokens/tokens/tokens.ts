@@ -1840,4 +1840,12 @@ export default {
     logo: 'truflation.svg',
     coinGeckoId: '',
   },
+
+  TIA: {
+    name: 'Celestia',
+    symbol: 'TIA',
+    decimals: 6,
+    logo: 'tia.webp',
+    coinGeckoId: '',
+  },
 } as Record<string, TokenMeta>
