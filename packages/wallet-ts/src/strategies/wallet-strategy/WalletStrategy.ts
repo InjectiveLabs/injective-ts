@@ -42,13 +42,9 @@ const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
     return true
   }
 
-  const { rpcUrl, ethereumChainId } = ethereumOptions
+  const { ethereumChainId } = ethereumOptions
 
   if (!ethereumChainId) {
-    return true
-  }
-
-  if (!rpcUrl) {
     return true
   }
 
