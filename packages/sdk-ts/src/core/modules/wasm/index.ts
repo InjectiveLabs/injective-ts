@@ -1,25 +1,14 @@
-import ExecArgGeneric from './exec-args/ExecArgGeneric'
-import ExecArgUnStake from './exec-args/ExecArgUnstake'
 import ExecArgCW20Send from './exec-args/ExecArgCW20Send'
 import ExecArgSubmitVaa from './exec-args/ExecArgSubmitVaa'
-import ExecArgClaimStake from './exec-args/ExecArgClaimStake'
-import ExecArgClaimRewards from './exec-args/ExecArgClaimRewards'
 import ExecArgCW20Transfer from './exec-args/ExecArgCW20Transfer'
 import ExecArgSwapMinOutput from './exec-args/ExecArgSwapMinOutput'
 import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens'
-import ExecArgRegisterVault from './exec-args/ExecArgRegisterVault'
 import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgRemoveGridStrategy from './exec-args/ExecArgRemoveGridStrategy'
-import ExecArgUpdateAMMVaultConfig from './exec-args/ExecArgUpdateAMMVaultConfig'
-import ExecArgUpdateSpotVaultConfig from './exec-args/ExecArgUpdateSpotVaultConfig'
 import ExecArgCreateSpotGridStrategy from './exec-args/ExecArgCreateSpotGridStrategy'
-import ExecArgUpdateOffChainVaultConfig from './exec-args/ExecArgUpdateOffChainVaultConfig'
-import ExecArgUpdateDerivativeVaultConfig from './exec-args/ExecArgUpdateDerivativeVaultConfig'
-import ExecArgUpdateStakingContractConfig from './exec-args/ExecArgUpdateStakingContractConfig'
 import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
-import ExecArgUpdateAllocatorContractConfig from './exec-args/ExecArgUpdateAllocatorContractConfig'
 
 import MsgStoreCode from './msgs/MsgStoreCode'
 import MsgUpdateAdmin from './msgs/MsgUpdateAdmin'
@@ -37,28 +26,17 @@ import ExecPrivilegedArgOffChainVaultSubscribe from './exec-priv-args/ExecPrivil
 export * from './exec-args'
 
 export {
-  ExecArgGeneric,
-  ExecArgUnStake,
   ExecArgCW20Send,
   ExecArgSubmitVaa,
-  ExecArgClaimStake,
-  ExecArgClaimRewards,
   ExecArgCW20Transfer,
   ExecArgSwapMinOutput,
   ExecArgDepositTokens,
-  ExecArgRegisterVault,
   ExecArgSwapExactOutput,
   ExecArgInitiateTransfer,
   ExecArgIncreaseAllowance,
   ExecArgRemoveGridStrategy,
-  ExecArgUpdateAMMVaultConfig,
-  ExecArgUpdateSpotVaultConfig,
   ExecArgCreateSpotGridStrategy,
-  ExecArgUpdateOffChainVaultConfig,
-  ExecArgUpdateDerivativeVaultConfig,
-  ExecArgUpdateStakingContractConfig,
   ExecArgCW20AdapterRedeemAndTransfer,
-  ExecArgUpdateAllocatorContractConfig,
   //
   MsgStoreCode,
   MsgUpdateAdmin,
