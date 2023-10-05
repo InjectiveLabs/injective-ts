@@ -150,6 +150,7 @@ export class MitoQueryTransformer {
       maxInvariantSensitivity: formatToString(config.max_invariant_sensitivity),
       baseDecimals: Number(config.base_decimals),
       quoteDecimals: Number(config.quote_decimals),
+      feeBps: Number(config.fee_bps),
     }
   }
 

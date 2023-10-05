@@ -77,6 +77,7 @@ export interface QueryVaultContractAMMConfigResponse {
     max_invariant_sensitivity: string
     base_decimals: number
     quote_decimals: number
+    fee_bps: number
   }
 }
 
@@ -178,6 +179,7 @@ export type VaultAMMConfig = {
   maxInvariantSensitivity: string
   baseDecimals: number
   quoteDecimals: number
+  feeBps: number
 }
 
 export type VaultDerivativeConfig = {
