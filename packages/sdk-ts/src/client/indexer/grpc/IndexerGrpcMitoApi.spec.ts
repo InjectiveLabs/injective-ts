@@ -154,9 +154,10 @@ describe('IndexerGrpcMitoApi', () => {
 
   test('fetchHolderPortfolio', async () => {
     try {
-      const response = await indexerGrpcMitoApi.fetchHolderPortfolio(
-        injectiveAddress,
-      )
+      const response = await indexerGrpcMitoApi.fetchHolderPortfolio({
+        stakingContractAddress,
+        holderAddress: injectiveAddress,
+      })
 
       if (!response) {
         console.warn('fetchHolderPortfolio.portfolioNotFound')

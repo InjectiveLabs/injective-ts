@@ -153,6 +153,7 @@ export class IndexerGrpcMitoTransformer {
       pnlChartList: portfolio.pnlChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
       ),
+      updatedAt: parseInt(portfolio.pnlUpdatedAt, 10),
     }
   }
 

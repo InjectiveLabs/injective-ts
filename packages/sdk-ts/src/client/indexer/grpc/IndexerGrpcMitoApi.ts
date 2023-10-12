@@ -299,10 +299,17 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchHolderPortfolio(holderAddress: string) {
+  async fetchHolderPortfolio({
+    holderAddress,
+    stakingContractAddress,
+  }: {
+    holderAddress: string
+    stakingContractAddress: string
+  }) {
     const request = MitoApi.PortfolioRequest.create()
 
     request.holderAddress = holderAddress
+    request.stakingContractAddress = stakingContractAddress
 
     try {
       const response = await this.retry<MitoApi.PortfolioResponse>(() =>

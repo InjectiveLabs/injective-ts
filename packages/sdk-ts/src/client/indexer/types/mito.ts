@@ -73,6 +73,7 @@ export interface MitoPortfolio {
   pnl: number
   totalValueChartList: MitoPriceSnapshot[]
   pnlChartList: MitoPriceSnapshot[]
+  updatedAt: number
 }
 
 export interface MitoLeaderboardEntry {
