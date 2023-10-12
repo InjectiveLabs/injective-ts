@@ -831,7 +831,7 @@ export default {
 
   AXL: {
     name: 'Axelar',
-    logo: 'axelar.jpeg',
+    logo: 'axelar.svg',
     symbol: 'AXL',
     decimals: 6,
     coinGeckoId: 'axelar',
