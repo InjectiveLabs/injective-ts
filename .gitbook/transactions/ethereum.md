@@ -9,7 +9,7 @@ First of, we need to prepare the transaction for signing. To use Ethereum native
 Using our custom abstraction for the Messages which allows the developer to get EIP712 TypedData straight from the proto file of the particular message.
 
 ```ts
-import { 
+import {
   MsgSend,
   ChainRestAuthApi,
   ChainRestTendermintApi,
@@ -17,22 +17,24 @@ import {
   DEFAULT_STD_FEE,
   getEip712TypedData,
 } from '@injectivelabs/sdk-ts'
-import { DEFAULT_STD_FEE, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import {
+  DEFAULT_STD_FEE,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+} from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1'
 const chainId = 'injective-1' /* ChainId.Mainnet */
-const restEndpoint = 'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
+const restEndpoint =
+  'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const amount = {
   amount: new BigNumberInBase(0.01).toWei().toFixed(),
-  denom: "inj",
-};
+  denom: 'inj',
+}
 
 /** Account Details **/
-const chainRestAuthApi = new ChainRestAuthApi(
-  restEndpoint,
-)
+const chainRestAuthApi = new ChainRestAuthApi(restEndpoint)
 const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
   injectiveAddress,
 )
@@ -40,9 +42,7 @@ const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
 const accountDetails = baseAccount.toAccountDetails()
 
 /** Block Details */
-const chainRestTendermintApi = new ChainRestTendermintApi(
-  restEndpoint,
-)
+const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint)
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
 const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -54,7 +54,7 @@ const msg = MsgSend.fromJSON({
   amount,
   srcInjectiveAddress: injectiveAddress,
   dstInjectiveAddress: injectiveAddress,
-});
+})
 
 /** EIP712 for signing on Ethereum wallets */
 const eip712TypedData = getEip712TypedData({
@@ -77,14 +77,14 @@ Once we have prepared the EIP712 typed data, we proceed to signing.
 /** Use your preferred approach to sign EIP712 TypedData, example with Metamask */
 const signature = await window.ethereum.request({
   method: 'eth_signTypedData_v4',
-  params: [ethereumAddress, JSON.stringify(eip712TypedData /* from previous step */)],
+  params: [
+    ethereumAddress,
+    JSON.stringify(eip712TypedData /* from previous step */),
+  ],
 })
 
 /** Get Public Key of the signer */
-const publicKeyHex = recoverTypedSignaturePubKey(
-  eip712TypedData,
-  signature,
-)
+const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature)
 const publicKeyBase64 = hexToBase64(publicKeyHex)
 ```
 
@@ -97,7 +97,11 @@ Once we have the signature ready, we need to broadcast the transaction to the In
 ```ts
 import { ChainId } from '@injectivelabs/ts-types'
 import { createTransaction, TxRestClient } from '@injectivelabs/sdk-ts'
-import { SIGN_AMINO, Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import {
+  SIGN_AMINO,
+  Network,
+  getNetworkEndpoints,
+} from '@injectivelabs/networks'
 
 const { txRaw } = createTransaction({
   message: msgs,
@@ -119,19 +123,20 @@ const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 txRawEip712.signatures = [signatureBuff /* From previous step */]
 
 /** Broadcast the Transaction */
-const restEndpoint = 'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
+const restEndpoint =
+  'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const txRestClient = new TxRestClient(restEndpoint)
 
 const txHash = await txRestClient.broadcast(txRawEip712)
 
-/** 
- * Once we get the txHash, because we use the Sync mode we 
- * are not sure that the transaction is included in the block, 
- * it can happen that it's still in the mempool so we need to query 
+/**
+ * Once we get the txHash, because we use the Sync mode we
+ * are not sure that the transaction is included in the block,
+ * it can happen that it's still in the mempool so we need to query
  * the chain to see when the transaction will be included
  */
 
- /** This will poll querying the transaction and await for it's inclusion in the block */
+/** This will poll querying the transaction and await for it's inclusion in the block */
 const response = await txRestClient.fetchTxPoll(txHash)
 ```
 
@@ -140,7 +145,7 @@ const response = await txRestClient.fetchTxPoll(txHash)
 Let's have a look at the whole flow (using Metamask as a signing wallet)
 
 ```ts
-import { 
+import {
   MsgSend,
   ChainRestAuthApi,
   ChainRestTendermintApi,
@@ -148,22 +153,24 @@ import {
   DEFAULT_STD_FEE,
   getEip712TypedData,
 } from '@injectivelabs/sdk-ts'
-import { DEFAULT_STD_FEE, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import {
+  DEFAULT_STD_FEE,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+} from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1'
 const chainId = 'injective-1' /* ChainId.Mainnet */
-const restEndpoint = 'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
+const restEndpoint =
+  'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const amount = {
   amount: new BigNumberInBase(0.01).toWei().toFixed(),
-  denom: "inj",
-};
+  denom: 'inj',
+}
 
 /** Account Details **/
-const chainRestAuthApi = new ChainRestAuthApi(
-  restEndpoint,
-)
+const chainRestAuthApi = new ChainRestAuthApi(restEndpoint)
 const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
   injectiveAddress,
 )
@@ -171,9 +178,7 @@ const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
 const accountDetails = baseAccount.toAccountDetails()
 
 /** Block Details */
-const chainRestTendermintApi = new ChainRestTendermintApi(
-  restEndpoint,
-)
+const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint)
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
 const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -185,7 +190,7 @@ const msg = MsgSend.fromJSON({
   amount,
   srcInjectiveAddress: injectiveAddress,
   dstInjectiveAddress: injectiveAddress,
-});
+})
 
 /** EIP712 for signing on Ethereum wallets */
 const eip712TypedData = getEip712TypedData({
@@ -206,10 +211,7 @@ const signature = await window.ethereum.request({
 })
 
 /** Get Public Key of the signer */
-const publicKeyHex = recoverTypedSignaturePubKey(
-  eip712TypedData,
-  signature,
-)
+const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature)
 const publicKeyBase64 = hexToBase64(publicKeyHex)
 
 const { txRaw } = createTransaction({
@@ -240,8 +242,4 @@ const response = await txRestClient.fetchTxPoll(txHash)
 
 ### Example with WalletStrategy (Prepare + Sign + Broadcast)
 
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
-
-This part is currently under work in progress.
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
+Example can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/862e7c30d96120947b056abffbd01b4f378984a1/packages/wallet-ts/src/broadcaster/MsgBroadcaster.ts#L166-L248).

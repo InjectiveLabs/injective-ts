@@ -61,6 +61,7 @@
 * [Core Modules](core-modules/README.md)
   * [Auction](core-modules/auction.md)
   * [AuthZ](core-modules/authz.md)
+  - [Feegrant](core-modules/feegrant.md)
   * [Bank](core-modules/bank.md)
   * [Distribution](core-modules/distribution.md)
   * [Exchange](core-modules/exchange.md)
@@ -84,3 +85,4 @@
     * [Smart Contract](building-dapps/smart-contract.md)
     * [DEX](building-dapps/dex.md)
     * [Bridge](building-dapps/bridge.md)
+* [Calculations](calculations/README.md)

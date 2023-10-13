@@ -30,6 +30,8 @@ import { getTokenFromInsuranceFund } from '../utils'
 import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 import { awaitForAll } from '@injectivelabs/utils'
+// @ts-ignore
+import ibcTokenMetadata from '../services/ibc/ibcTokenMetadata.json'
 
 const IGNORED_DENOMS = ['peggy0xB855dBC314C39BFa2583567E02a40CBB246CF82B']
 
@@ -56,6 +58,8 @@ export class DenomClientAsync {
     string,
     IbcApplicationsTransferV1Transfer.DenomTrace
   > = {}
+
+  private cachedIbcTokens: Token[] = []
 
   constructor(
     network: Network = Network.Mainnet,
@@ -253,10 +257,19 @@ export class DenomClientAsync {
       await this.fetchAndCacheDenomTraces()
     }
 
+    if (this.cachedIbcTokens.length === 0) {
+      await this.fetchAndCacheIbcTokens()
+    }
+
     const cachedDenomTrace = this.cachedDenomTraces[hash]
+    const cachedIbcToken = this.cachedIbcTokens.find(
+      (token) => token?.denom === denom,
+    )
 
     if (cachedDenomTrace) {
-      const token = this.denomClient.getDenomToken(cachedDenomTrace.baseDenom)
+      const token =
+        this.denomClient.getDenomToken(cachedDenomTrace.baseDenom) ||
+        cachedIbcToken
 
       if (!token) {
         return undefined
@@ -276,7 +289,8 @@ export class DenomClientAsync {
     try {
       const denomTrace = await this.chainIbcApi.fetchDenomTrace(hash)
 
-      const token = this.denomClient.getDenomToken(denomTrace.baseDenom)
+      const token =
+        this.denomClient.getDenomToken(denomTrace.baseDenom) || cachedIbcToken
 
       if (!token) {
         return undefined
@@ -322,9 +336,18 @@ export class DenomClientAsync {
     )
   }
 
+  private async fetchAndCacheIbcTokens() {
+    if (ibcTokenMetadata?.length === 0) {
+      return
+    }
+
+    this.cachedIbcTokens = ibcTokenMetadata as Token[]
+  }
+
   public async preloadMetadata() {
     await this.getFactoryDenomMetadata('')
     await this.getInsuranceFund('')
     await this.fetchAndCacheDenomTraces()
+    await this.fetchAndCacheIbcTokens()
   }
 }
