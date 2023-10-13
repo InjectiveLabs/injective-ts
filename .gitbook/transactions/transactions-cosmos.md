@@ -108,7 +108,7 @@ Once we have the signature ready, we need to broadcast the transaction to the In
 
 ```ts
 import { ChainId } from '@injectivelabs/ts-types'
-import { getTxRawFromTxRawOrDirectSignResponse, TxRestClient } from '@injectivelabs/sdk-ts'
+import { CosmosTxV1Beta1Tx, getTxRawFromTxRawOrDirectSignResponse, TxRestClient } from '@injectivelabs/sdk-ts'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
 /**
@@ -136,7 +136,7 @@ const broadcastTx = async (chainId, txRaw) => {
   const keplr = await getKeplr(ChainId.Mainnet)
   const result = await keplr.sendTx(
     chainId,
-    txRaw.serializeBinary(),
+    CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
     BroadcastMode.Sync,
   )
 
