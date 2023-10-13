@@ -10,6 +10,7 @@ Within this section, we are going to explore the core modules of the Injective c
 | ------------------------------- | ------------------------------------------------ |
 | [Auction](auction.md)           | Use for the buy-back-and-burn on chain mechanism |
 | [AuthZ](authz.md)               | Used for granting account priveledges            |
+| [Feegrant](feegrant.md)         | Used for granting fee allowance priveledges      |
 | [Bank](bank.md)                 | Used for managing users assets (funds)           |
 | [Exchange](exchange.md)         | Used for the exchange primitives                 |
 | [Distribution](distribution.md) | Used for on-chain distribution/minting           |

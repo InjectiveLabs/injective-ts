@@ -4,6 +4,8 @@ import MsgRevoke from './authz/msgs/MsgRevoke'
 import MsgAuthzExec from './authz/msgs/MsgExec'
 import MsgSend from './bank/msgs/MsgSend'
 import MsgMultiSend from './bank/msgs/MsgMultiSend'
+import MsgGrantAllowance from './feegrant/msgs/MsgGrantAllowance'
+import MsgRevokeAllowance from './feegrant/msgs/MsgRevokeAllowance'
 import MsgWithdrawDelegatorReward from './distribution/msgs/MsgWithdrawDelegatorReward'
 import MsgWithdrawValidatorCommission from './distribution/msgs/MsgWithdrawValidatorCommission'
 import MsgBatchCancelDerivativeOrders from './exchange/msgs/MsgBatchCancelDerivativeOrders'
@@ -109,6 +111,8 @@ export type Msgs =
   | MsgChangeAdmin
   | MsgCreateDenom
   | MsgSetDenomMetadata
+  | MsgGrantAllowance
+  | MsgRevokeAllowance
 
 /**
  * @category Messages

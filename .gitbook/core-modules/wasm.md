@@ -82,7 +82,9 @@ console.log(txHash);
 
 ### MsgExecuteContractCompact
 
-There are some compatibility issue parsing the funds array in the previous example with EIP712, hence we introduced MsgExecuteContractCompact which converts the funds into a string
+There are some compatibility issue parsing the funds array in the previous example with EIP712.
+Since MsgExecuteContract can't be converted to EIP712 and then signed by ethereum wallets, we introduced MsgExecuteContractCompact which converts the funds into a string and therefore allows for EIP712 transformation.
+Note that the MsgExecuteContract and MsgExecuteContractCompat underlying messages are the same. MsgExecuteContractCompat will just format for EIP712 compatibility.
 
 An array of funds:
 
