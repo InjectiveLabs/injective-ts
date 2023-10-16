@@ -61,7 +61,7 @@
 * [Core Modules](core-modules/README.md)
   * [Auction](core-modules/auction.md)
   * [AuthZ](core-modules/authz.md)
-  - [Feegrant](core-modules/feegrant.md)
+  * [Feegrant](core-modules/feegrant.md)
   * [Bank](core-modules/bank.md)
   * [Distribution](core-modules/distribution.md)
   * [Exchange](core-modules/exchange.md)
