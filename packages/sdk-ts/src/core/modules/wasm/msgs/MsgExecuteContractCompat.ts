@@ -18,20 +18,38 @@ export declare namespace MsgExecuteContractCompat {
         }[]
     sender: string
     contractAddress: string
+
     /* Used to provide type safety for execution messages */
     execArgs?: ExecArgs
 
-    /* Pass any arbitrary message object to execute */
+    /*
+     * Pass any arbitrary message object to execute
+     * example:
+        exec: {
+          action: "transfer",
+          msg: {
+            recipient: recipientAddress,
+            amount: 100000,
+          },
+        },
+     */
     exec?: {
-      msg: object
+      msg: Record<string, any>
       action: string
     }
+
     /**
      * Same as exec but you don't pass
      * the action as a separate property
      * but as a whole object
+     * example:
+        msg: {
+          reset: {
+            count: 10
+          },
+        },
      */
-    msg?: object
+    msg?: Record<string, any>
   }
 
   export type Proto = InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat
