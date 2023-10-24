@@ -6,6 +6,7 @@ import {
   EvmChain,
 } from '@axelar-network/axelarjs-sdk'
 import { providers, Contract } from 'ethers'
+import { GeneralException } from '@injectivelabs/exceptions'
 import { BigNumberInWei } from '@injectivelabs/utils'
 import {
   ErrorType,
@@ -140,7 +141,14 @@ export class AxelarClient {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  public async getEthereumAddress(): Promise<string> {
+    const { signer } = await this.getAxelarGateway()
+
+    await this.validateNetwork()
+
+    return await signer.getAddress()
+  }
+
   private async validateNetwork() {
     const provider = (window as any).ethereum
 
@@ -159,13 +167,27 @@ export class AxelarClient {
     const network = await web3Provider.getNetwork()
 
     if (network.chainId !== MOONBEAM_MAINNET_CHAIN_ID) {
-      throw new MetamaskException(
-        new Error('Please switch to the Moonbeam network in Metamask'),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-        },
-      )
+      const chainIdToHex = MOONBEAM_MAINNET_CHAIN_ID.toString(16)
+
+      try {
+        await Promise.race([
+          web3Provider.provider.request!({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: `0x${chainIdToHex}` }],
+          }),
+          new Promise<void>((resolve) =>
+            web3Provider.on('change', ({ chain }: any) => {
+              if (chain?.id === chainIdToHex) {
+                resolve()
+              }
+            }),
+          ),
+        ])
+      } catch (e) {
+        throw new GeneralException(
+          new Error(`Please switch to the Moonbeam Network on Metamask`),
+        )
+      }
     }
   }
 }
