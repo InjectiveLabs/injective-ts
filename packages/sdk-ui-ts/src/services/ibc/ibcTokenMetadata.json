@@ -7,7 +7,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "INJ",
+      "baseDenom": "INJ",
+      "isNative": false
+    }
   },
   {
     "name": "Stride",
@@ -17,7 +26,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "STRD",
+      "baseDenom": "STRD",
+      "isNative": false
+    }
   },
   {
     "name": "stATOM",
@@ -27,7 +45,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A8F39212ED30B6A8C2AC736665835720D3D7BE4A1D18D68566525EC25ECF1C9B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stATOM",
+      "baseDenom": "stATOM",
+      "isNative": false
+    }
   },
   {
     "name": "stSTARS",
@@ -37,7 +64,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "DD0F92D576A9A60487F17685A987AB6EDB359E661D281ED31F3AE560650ECFCB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stSTARS",
+      "baseDenom": "stSTARS",
+      "isNative": false
+    }
   },
   {
     "name": "stOSMO",
@@ -47,7 +83,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "6D821F3CFAE78E9EBD872FAEC61C400C0D9B72E77FA14614CF1B775A528854FD",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stOSMO",
+      "baseDenom": "stOSMO",
+      "isNative": false
+    }
   },
   {
     "name": "stJUNO",
@@ -57,7 +102,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "580E52A2C2DB126EE2160D1BDBBA33B5839D53B5E59D04D4FF438AE9BB7BFAAB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stJUNO",
+      "baseDenom": "stJUNO",
+      "isNative": false
+    }
   },
   {
     "name": "stLUNA",
@@ -67,7 +121,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E98796F283A8B56A221011C2EDF7079BB62D1EA3EEF3E7CF4C679E91C6D97D08",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stLUNA",
+      "baseDenom": "stLUNA",
+      "isNative": false
+    }
   },
   {
     "name": "stEVMOS",
@@ -77,7 +140,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "75F64E20A70C5059F8EA792F1C47260DC7C6CBAC69DBA60E151AD5416E93C34C",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "stEVMOS",
+      "baseDenom": "stEVMOS",
+      "isNative": false
+    }
   },
   {
     "name": "stINJ",
@@ -87,7 +159,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "stINJ",
+      "baseDenom": "stINJ",
+      "isNative": false
+    }
   },
   {
     "name": "stUMEE",
@@ -97,7 +178,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "FC8E98DF998AE88129183094E49383F94B3E5F1844C939D380AF18061FEF41EB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stUMEE",
+      "baseDenom": "stUMEE",
+      "isNative": false
+    }
   },
   {
     "name": "Osmosis",
@@ -107,7 +197,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "92E0120F15D037353CFB73C14651FC8930ADC05B93100FD7754D3A689E53B333",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "OSMO",
+      "baseDenom": "OSMO",
+      "isNative": false
+    }
   },
   {
     "name": "Ion",
@@ -117,7 +216,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "1B2D7E4261A7E2130E8E3506058E3081D3154998413F0DB2F82B04035B3FE676",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ION",
+      "baseDenom": "ION",
+      "isNative": false
+    }
   },
   {
     "name": "IBCX",
@@ -127,7 +235,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "491C92BEEAFE513BABA355275C7AE3AC47AA7FD57285AC1D910CE874D2DC7CA0",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "IBCX",
+      "baseDenom": "IBCX",
+      "isNative": false
+    }
   },
   {
     "name": "Evmos",
@@ -137,7 +254,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "EVMOS",
+      "baseDenom": "EVMOS",
+      "isNative": false
+    }
   },
   {
     "name": "Kuji",
@@ -147,7 +273,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "KUJI",
+      "baseDenom": "KUJI",
+      "isNative": false
+    }
   },
   {
     "name": "USK",
@@ -157,7 +292,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "45D5C97124CFD8AD9CD88AB98815455A7DEDBD932BA725107AD1BE71B85EAF21",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USK",
+      "baseDenom": "USK",
+      "isNative": false
+    }
   },
   {
     "name": "ampKUJI",
@@ -167,7 +311,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C5FA29CE50D543E193DBC6D3D944ACB3A660C96C340F800CFA4BFCF876F9DD74",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampKUJI",
+      "baseDenom": "ampKUJI",
+      "isNative": false
+    }
   },
   {
     "name": "MNTA",
@@ -177,7 +330,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E517983388553858495A0E716406CF2FD4FE9BCE1EC3C9A71742282448674F10",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "MNTA",
+      "baseDenom": "MNTA",
+      "isNative": false
+    }
   },
   {
     "name": "WINK",
@@ -187,7 +349,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "495694322A85155314DBA1238FDCA84F989E3A3B5A30D5D81FF7865D6445C7E5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WINK",
+      "baseDenom": "WINK",
+      "isNative": false
+    }
   },
   {
     "name": "Axelar",
@@ -197,7 +368,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B68C1D2682A8B69E20BB921E34C6A3A2B6D1E13E3E8C0092E373826F546DEE65",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "AXL",
+      "baseDenom": "AXL",
+      "isNative": false
+    }
   },
   {
     "name": "USD Coin",
@@ -207,7 +387,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "7E1AF94AD246BE522892751046F0C959B768642E5671CC3742264068D49553C0",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false
+    }
   },
   {
     "name": "Frax",
@@ -217,7 +406,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3E5504815B2D69DCC32B1FF54CDAC28D7DA2C445BD29C496A83732DC1D52DB90",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "FRAX",
+      "baseDenom": "FRAX",
+      "isNative": false
+    }
   },
   {
     "name": "Dai Stablecoin",
@@ -227,7 +425,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "265ABC4B9F767AF45CAC6FB76E930548D835EDA3E94BC56B70582A55A73D8C90",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "DAI",
+      "baseDenom": "DAI",
+      "isNative": false
+    }
   },
   {
     "name": "Tether USD",
@@ -237,7 +444,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "90C6F06139D663CFD7949223D257C5B5D241E72ED61EBD12FFDDA6F068715E47",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDT",
+      "baseDenom": "USDT",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped Ether",
@@ -247,7 +463,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "65A6973F7A4013335AE5FFE623FE019A78A1FEEE9B8982985099978837D764A7",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "WETH",
+      "baseDenom": "WETH",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped Bitcoin",
@@ -257,7 +482,16 @@
     "decimals": 8,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "4C8A332AE4FDE42709649B5F9A2A336192158C4465DF74B4513F5AD0C583EA6F",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "WBTC",
+      "baseDenom": "WBTC",
+      "isNative": false
+    }
   },
   {
     "name": "Aave",
@@ -267,7 +501,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "49265FCAA6CC20B59652C0B45B2283A260BB19FC183DE95C29CCA8E01F8B004C",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "AAVE",
+      "baseDenom": "AAVE",
+      "isNative": false
+    }
   },
   {
     "name": "ApeCoin",
@@ -277,7 +520,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "8A13F5DA968B4D526E9DC5AE20B584FE62462E80AF06B9D0EA0B0DB35ABBBF27",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "APE",
+      "baseDenom": "APE",
+      "isNative": false
+    }
   },
   {
     "name": "Axie Infinity Shard",
@@ -287,7 +539,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "EB519ECF709F0DB6BA1359F91BA2DDC5A07FB9869E1768D377EFEF9DF33DC4AB",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "AXS",
+      "baseDenom": "AXS",
+      "isNative": false
+    }
   },
   {
     "name": "Chainlink",
@@ -297,7 +558,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "AC447F1D6EDAF817589C5FECECB6CD3B9E9EFFD33C7E16FE8820009F92A2F585",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "LINK",
+      "baseDenom": "LINK",
+      "isNative": false
+    }
   },
   {
     "name": "Maker",
@@ -307,7 +577,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E8C65EFAB7804152191B8311F61877A36779277E316883D8812D3CBEFC79AE4F",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "MKR",
+      "baseDenom": "MKR",
+      "isNative": false
+    }
   },
   {
     "name": "Rai Reflex Index",
@@ -317,7 +596,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "27817BAE3958FFB2BFBD8F4F6165153DFD230779994A7C42A91E0E45E8201768",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "RAI",
+      "baseDenom": "RAI",
+      "isNative": false
+    }
   },
   {
     "name": "Shiba Inu",
@@ -327,7 +615,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E68343A4DEF4AFBE7C5A9004D4C11888EE755A7B43B3F1AFA52F2C34C07990D5",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "SHIB",
+      "baseDenom": "SHIB",
+      "isNative": false
+    }
   },
   {
     "name": "Lido Staked Ether",
@@ -337,7 +634,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "FB1B967C690FEA7E9AD7CF76AE2255169D4EA2937D6694B2C0E61A370F76D9FB",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "stETH",
+      "baseDenom": "stETH",
+      "isNative": false
+    }
   },
   {
     "name": "Uniswap",
@@ -347,7 +653,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3E3A8A403AE81114F4341962A6D73162D586C9DF4CE3BE7C7B459108430675F7",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "UNI",
+      "baseDenom": "UNI",
+      "isNative": false
+    }
   },
   {
     "name": "Chain",
@@ -357,7 +672,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "79D01DE88DFFC0610003439D38200E77A3D2A1CCCBE4B1958D685026ABB01814",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "XCN",
+      "baseDenom": "XCN",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped Polkadot",
@@ -367,7 +691,16 @@
     "decimals": 10,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "624BA9DD171915A2B9EA70F69638B2CEA179959850C1A586F6C485498F29EDD4",
+      "path": "",
+      "channelId": "",
+      "decimals": 10,
+      "symbol": "DOT",
+      "baseDenom": "DOT",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped Moonbeam",
@@ -377,7 +710,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "8FF72FB47F07B4AFA8649500A168683BEFCB9EE164BD331FA597D26224D51055",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "WGLMR",
+      "baseDenom": "WGLMR",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped Matic",
@@ -387,7 +729,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "7E23647941230DA0AB4ED10F599647D9BE34E1C991D0DA032B5A1522941EBA73",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "WMATIC",
+      "baseDenom": "WMATIC",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped BNB",
@@ -397,7 +748,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B877B8EF095028B807370AB5C7790CA0C328777C9FF09AA7F5436BA7FAE4A86F",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "WBNB",
+      "baseDenom": "WBNB",
+      "isNative": false
+    }
   },
   {
     "name": "Binance USD",
@@ -407,7 +767,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A62F794AAEC56B6828541224D91DA3E21423AB0DC4D21ECB05E4588A07BD934C",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "BUSD",
+      "baseDenom": "BUSD",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped AVAX",
@@ -417,7 +786,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A4FF8E161D2835BA06A7522684E874EFC91004AD0CD14E038F37940562158D73",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "WAVAX",
+      "baseDenom": "WAVAX",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped FTM",
@@ -427,7 +805,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "31E8DDA49D53535F358B29CFCBED1B9224DAAFE82788C0477930DCDE231DA878",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "WFTM",
+      "baseDenom": "WFTM",
+      "isNative": false
+    }
   },
   {
     "name": "USD Coin from Polygon",
@@ -437,7 +824,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "2E93E8914CA07B73A794657DA76170A016057D1C6B0DC42D969918D4F22D95A3",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false
+    }
   },
   {
     "name": "USD Coin from Avalanche",
@@ -447,7 +843,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "705E7E25F94467E363B2EB324A5A6FF4C683A4A6D20AAD2AEEABA2D9EB1B897F",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped FIL from Filecoin",
@@ -457,7 +862,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "9D1889339AEC850B1D719CCF19BD813955C086BE1ED323ED68318A273922E40D",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "axlFIL",
+      "baseDenom": "axlFIL",
+      "isNative": false
+    }
   },
   {
     "name": "Arbitrum",
@@ -467,7 +881,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F28C5C931D2673B7A2F06FC74934F7BDC0D2906D2AF40D582ED27D1E5C48D475",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "ARB",
+      "baseDenom": "ARB",
+      "isNative": false
+    }
   },
   {
     "name": "Pepe",
@@ -477,7 +900,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "9144D78830C5ABD7B7D9E219EA7600E3A0E0AD5FC50C007668160595E94789AB",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "PEPE",
+      "baseDenom": "PEPE",
+      "isNative": false
+    }
   },
   {
     "name": "Coinbase Wrapped Staked ETH",
@@ -487,7 +919,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "545E97C6EFB2633645720DEBCA78B2BE6F5382C4693EA7DEB2D4C456371EA4F0",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "cbETH",
+      "baseDenom": "cbETH",
+      "isNative": false
+    }
   },
   {
     "name": "Rocket Pool Ether",
@@ -497,7 +938,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "8906BF683A89D1ABE075A49EFA35A3128D7E9D809775B8E9D5AEEAA55D2889DD",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "rETH",
+      "baseDenom": "rETH",
+      "isNative": false
+    }
   },
   {
     "name": "Staked Frax Ether",
@@ -507,7 +957,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E918585C09958BD328DD9E7215E4726623E7A9A94342FEA5BE126A2AAF920730",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "sfrxETH",
+      "baseDenom": "sfrxETH",
+      "isNative": false
+    }
   },
   {
     "name": "Wrapped Lido Staked Ether",
@@ -517,7 +976,16 @@
     "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "1E0FC59FB8495BF927B10E9D515661494B1BBEDAA15D80E52FE2BADA64656D16",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "wstETH",
+      "baseDenom": "wstETH",
+      "isNative": false
+    }
   },
   {
     "name": "Cosmos Hub Atom",
@@ -527,7 +995,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ATOM",
+      "baseDenom": "ATOM",
+      "isNative": false
+    }
   },
   {
     "name": "Persistence",
@@ -537,7 +1014,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "XPRT",
+      "baseDenom": "XPRT",
+      "isNative": false
+    }
   },
   {
     "name": "PSTAKE staked ATOM",
@@ -547,7 +1033,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B8E30AECB0FB5BA1B02747BE003E55934A9E42488495412C7E9934FBEC06B201",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stkATOM",
+      "baseDenom": "stkATOM",
+      "isNative": false
+    }
   },
   {
     "name": "Whale",
@@ -557,7 +1052,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WHALE",
+      "baseDenom": "WHALE",
+      "isNative": false
+    }
   },
   {
     "name": "ampWHALE",
@@ -567,7 +1071,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "168C3904C45C6FE3539AE85A8892DF87371D00EA7942515AFC50AA43C4BB0A32",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampWHALE",
+      "baseDenom": "ampWHALE",
+      "isNative": false
+    }
   },
   {
     "name": "boneWHALE",
@@ -577,7 +1090,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "ECB0AA28D6001EF985047558C410B65581FC85BD92D4E3CFCCA0D3D964C67CC2",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "bWHALE",
+      "baseDenom": "bWHALE",
+      "isNative": false
+    }
   },
   {
     "name": "FABLE",
@@ -587,7 +1109,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "5FE5E50EA0DF6D68C29EDFB7992EB81CD40B6780C33834A8AB3712FB148E1313",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FABLE",
+      "baseDenom": "FABLE",
+      "isNative": false
+    }
   },
   {
     "name": "Somm",
@@ -597,7 +1128,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SOMM",
+      "baseDenom": "SOMM",
+      "isNative": false
+    }
   },
   {
     "name": "Crescent",
@@ -607,7 +1147,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "CRE",
+      "baseDenom": "CRE",
+      "isNative": false
+    }
   },
   {
     "name": "Bonded Crescent",
@@ -617,7 +1166,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D9E839DE6F40C036592B6CEDB73841EE9A18987BC099DD112762A46AFE72159B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "bCRE",
+      "baseDenom": "bCRE",
+      "isNative": false
+    }
   },
   {
     "name": "Secret Network",
@@ -627,7 +1185,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SCRT",
+      "baseDenom": "SCRT",
+      "isNative": false
+    }
   },
   {
     "name": "Astroport",
@@ -637,7 +1204,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "EBD5A24C554198EBAF44979C5B4D2C2D312E6EBAB71962C92F735499C7575839",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ASTRO",
+      "baseDenom": "ASTRO",
+      "isNative": false
+    }
   },
   {
     "name": "ERIS Amplified LUNA",
@@ -647,7 +1223,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "751CCECAF75D686B1DC8708BE62F8C7411B211750E6009C6AC4C93881F0543E8",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampLUNA",
+      "baseDenom": "ampLUNA",
+      "isNative": false
+    }
   },
   {
     "name": "Lion DAO",
@@ -657,7 +1242,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E6CFB0AC1D339A8CBA3353DF0D7E080B4B14D026D1C90F63F666C223B04D548C",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ROAR",
+      "baseDenom": "ROAR",
+      "isNative": false
+    }
   },
   {
     "name": "boneLuna",
@@ -667,7 +1261,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C9D55B62C9D9CA84DD94DC019009B840DDFD861BF2F33F7CF2A8A74933797680",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "bLUNA",
+      "baseDenom": "bLUNA",
+      "isNative": false
+    }
   },
   {
     "name": "Lion Cub DAO",
@@ -677,7 +1280,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "5CB35B165F689DD57F836C6C5ED3AB268493AA5A810740446C4F2141664714F4",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "CUB",
+      "baseDenom": "CUB",
+      "isNative": false
+    }
   },
   {
     "name": "sayve",
@@ -687,7 +1299,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "DF2B99CF1FEA6B292E79617BD6F7EF735C0B47CEF09D7104E270956E96C38B12",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SAYVE",
+      "baseDenom": "SAYVE",
+      "isNative": false
+    }
   },
   {
     "name": "stCMDX",
@@ -697,7 +1318,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0CAB2CA45981598C95B6BE18252AEFE1E9E1691D8B4C661997AD7B836FD904D6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stCMDX",
+      "baseDenom": "stCMDX",
+      "isNative": false
+    }
   },
   {
     "name": "stIBCX Core <Product of ION DAO>",
@@ -707,7 +1337,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0A6B424A8207047D9FD499F59177BABD8DB08BBC2316B29B702A403BFB414419",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stIBCX",
+      "baseDenom": "stIBCX",
+      "isNative": false
+    }
   },
   {
     "name": "BLUE CUB DAO",
@@ -717,7 +1356,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B692197280D4E62F8D9F8E5C0B697DC4C2C680ED6DE8FFF0368E0552C9215607",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BLUE",
+      "baseDenom": "BLUE",
+      "isNative": false
+    }
   },
   {
     "name": "ERIS Amplified OSMO",
@@ -727,7 +1375,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "012D069D557C4DD59A670AA17E809CB7A790D778E364D0BC0A3248105DA6432D",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampOSMO",
+      "baseDenom": "ampOSMO",
+      "isNative": false
+    }
   },
   {
     "name": "ASH",
@@ -737,7 +1394,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "EED40547772504DF629EFEC08892E689CD14498B1C0AD766CD5075BBBEE3D808",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ASH",
+      "baseDenom": "ASH",
+      "isNative": false
+    }
   },
   {
     "name": "RAC",
@@ -747,7 +1413,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0F3A724673F682CF7812D0ED1A0C41D344C09E94C939E79D12712DC7C0676E80",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "RAC",
+      "baseDenom": "RAC",
+      "isNative": false
+    }
   },
   {
     "name": "Kava",
@@ -757,7 +1432,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "KAVA",
+      "baseDenom": "KAVA",
+      "isNative": false
+    }
   },
   {
     "name": "Hard",
@@ -767,7 +1451,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D6C28E07F7343360AC41E15DDD44D79701DDCA2E0C2C41279739C8D4AE5264BC",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "HARD",
+      "baseDenom": "HARD",
+      "isNative": false
+    }
   },
   {
     "name": "Swap",
@@ -777,7 +1470,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "70CF1A54E23EA4E480DEDA9E12082D3FD5684C3483CBDCE190C5C807227688C5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SWP",
+      "baseDenom": "SWP",
+      "isNative": false
+    }
   },
   {
     "name": "USDX",
@@ -787,7 +1489,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C78F65E1648A3DFE0BAEB6C4CDA69CC2A75437F1793C0E6386DFDA26393790AE",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDX",
+      "baseDenom": "USDX",
+      "isNative": false
+    }
   },
   {
     "name": "Tether USD",
@@ -797,7 +1508,16 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "58D95D27C82FAC8D0F9F00C3F6097FD70DD6276423768EA95DBFAA2AF8DAE9A2",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDT",
+      "baseDenom": "USDT",
+      "isNative": false
+    }
   },
   {
     "name": "Tether USD",
@@ -807,6 +1527,15 @@
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
-    "tokenVerification": "external"
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDT",
+      "baseDenom": "USDT",
+      "isNative": false
+    }
   }
 ]
