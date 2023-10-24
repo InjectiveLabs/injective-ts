@@ -93,7 +93,7 @@ import {
   MsgCreateSpotLimitOrder,
   MsgBroadcasterWithPk,
   getEthereumAddress,
-  getDerivativeMarketTensMultiplier
+  getSpotMarketTensMultiplier
 } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase, spotPriceToChainPriceToFixed, spotQuantityToChainQuantityToFixed } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
@@ -107,8 +107,8 @@ const market = {
   quoteDecimals: 6,
   minPriceTickSize: '', /* fetched from the chain */
   minQuantityTickSize: '', /* fetched from the chain */
-  priceTensMultiplier: '', /** can be fetched from getDerivativeMarketTensMultiplier */
-  quantityTensMultiplier: '', /** can be fetched from getDerivativeMarketTensMultiplier */
+  priceTensMultiplier: '', /** can be fetched from getSpotMarketTensMultiplier */
+  quantityTensMultiplier: '', /** can be fetched from getSpotMarketTensMultiplier */
 }
 
 const order = {
@@ -159,7 +159,7 @@ import {
   MsgCreateSpotMarketOrder,
   MsgBroadcasterWithPk,
   getEthereumAddress,
-  getDerivativeMarketTensMultiplier
+  getSpotMarketTensMultiplier
 } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase, spotPriceToChainPriceToFixed, spotQuantityToChainQuantityToFixed } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
@@ -173,8 +173,8 @@ const market = {
   quoteDecimals: 6,
   minPriceTickSize: '', /* fetched from the chain */
   minQuantityTickSize: '', /* fetched from the chain */
-  priceTensMultiplier: '', /** can be fetched from getDerivativeMarketTensMultiplier */
-  quantityTensMultiplier: '', /** can be fetched from getDerivativeMarketTensMultiplier */
+  priceTensMultiplier: '', /** can be fetched from getSpotMarketTensMultiplier */
+  quantityTensMultiplier: '', /** can be fetched from getSpotMarketTensMultiplier */
 }
 const order = {
   price: 10,
@@ -475,18 +475,15 @@ import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
-const orders = [
-  {
+const orders = [{
   marketId: '0x...',
   subaccountId: '0x...',
   orderHash: '0x...'
-  },
-  {
+ },{
   marketId: '0x...',
   subaccountId: '0x...',
   orderHash: '0x...'
-  }
-]
+}]
 
 const messages = orders.map((order) =>
   MsgBatchCancelSpotOrders.fromJSON({
@@ -521,18 +518,15 @@ import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
-const orders = [
-  {
+const orders = [{
   marketId: '0x...',
   subaccountId: '0x...',
   orderHash: '0x...'
-  },
-  {
+  },{
   marketId: '0x...',
   subaccountId: '0x...',
   orderHash: '0x...'
-  }
-]
+}]
 
 const messages = orders.map((order) =>
   MsgBatchCancelDerivativeOrders.fromJSON({
@@ -589,14 +583,17 @@ console.log(txHash)
 This message is used to transfer balance from one subaccount to another subaccount.
 
 Note:
-- You cannot transfer from your default subaccountId since that balance is now associated with your Injective address in the bank module. Therefore, in order for `MsgExternalTransfer` to work, you will need to transfer from a non-default subaccountId.
+
+* You cannot transfer from your default subaccountId since that balance is now associated with your Injective address in the bank module. Therefore, in order for `MsgExternalTransfer` to work, you will need to transfer from a non-default subaccountId.
 
 How to find the subaccountId that you will be transferring from:
-- you can query your existing subaccountIds via the [account portfolio api](../querying/querying-api/querying-indexer-portfolio.md).
+
+* you can query your existing subaccountIds via the [account portfolio api](../querying/querying-api/querying-indexer-portfolio.md).
 
 How to use funds that are currently associated with your Injective Address in bank module:
-- If you have existing non-default subaccounts, you'll want to do a [MsgDeposit](./exchange.md#MsgDeposit) to one of your existing non-default subaccountIds and use that subaccountId as the `srcSubaccountId` below.
-- If you don't have existing non-default subaccounts, you can do a [MsgDeposit](./exchange.md#MsgDeposit) to a new default subaccountId, which would be done via importing `getSubaccountId` from `sdk-ts` and setting the `subaccountId` field in [MsgDeposit](./exchange.md#MsgDeposit) to `getSubaccountId(injectiveAddress, 1)`.
+
+* If you have existing non-default subaccounts, you'll want to do a [MsgDeposit](exchange.md#MsgDeposit) to one of your existing non-default subaccountIds and use that subaccountId as the `srcSubaccountId` below.
+* If you don't have existing non-default subaccounts, you can do a [MsgDeposit](exchange.md#MsgDeposit) to a new default subaccountId, which would be done via importing `getSubaccountId` from `sdk-ts` and setting the `subaccountId` field in [MsgDeposit](exchange.md#MsgDeposit) to `getSubaccountId(injectiveAddress, 1)`.
 
 ```ts
 import {
