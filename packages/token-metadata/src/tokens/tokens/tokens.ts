@@ -118,6 +118,7 @@ export default {
         address: 'inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk',
         tokenType: TokenType.Cw20,
       },
+
       {
         decimals: 6,
         symbol: 'USDCso',
@@ -126,6 +127,16 @@ export default {
         tokenType: TokenType.Cw20,
       },
     ],
+
+    ibc: {
+      decimals: 6,
+      symbol: 'USDCnb',
+      baseDenom: 'uusdc',
+      isNative: true,
+      channelId: 'channel-148',
+      path: 'transfer/channel-148',
+      hash: '2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
+    },
   },
 
   GRT: {
