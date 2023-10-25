@@ -127,6 +127,14 @@ export default {
         tokenType: TokenType.Cw20,
       },
     ],
+  },
+
+  USDCnb: {
+    symbol: 'USDCnb',
+    name: 'USD Coin',
+    decimals: 6,
+    logo: 'usdc.svg',
+    coinGeckoId: 'usd-coin',
 
     ibc: {
       decimals: 6,
