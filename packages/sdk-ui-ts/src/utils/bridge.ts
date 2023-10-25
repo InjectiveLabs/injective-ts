@@ -62,6 +62,7 @@ export const LeapNetworks = [
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
   BridgingNetwork.Kava,
+  BridgingNetwork.Noble,
 ]
 
 export const CosmostationNetworks = [
@@ -78,6 +79,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
   BridgingNetwork.Kava,
+  BridgingNetwork.Noble,
 ]
 
 export const CosmosNetworks = [
@@ -95,6 +97,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Canto,
   BridgingNetwork.Kava,
   BridgingNetwork.Oraichain,
+  BridgingNetwork.Noble,
 ]
 
 export const EvmWormholeNetworks = [
@@ -267,7 +270,9 @@ export const tokenDenomsPerNetwork = [
 
   {
     network: BridgingNetwork.Noble,
-    denoms: ['uusdc'],
+    denoms: [
+      'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
+    ],
     symbols: ['USDCnb'],
   },
 ] as NetworkConfig[]
@@ -439,11 +444,11 @@ export const cosmosNativeDenomsFromChainId = {
     tokenType: TokenType.Ibc,
     denom: 'inj',
   },
-
   [CosmosChainId.Noble]: {
     ...tokenMetaUtils.getMetaBySymbol('USDCnb'),
     tokenType: TokenType.Ibc,
-    denom: 'USDTnb',
+    denom:
+      'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
   },
 } as Record<string, Token | Token[]>
 
@@ -648,7 +653,7 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
   }
 
   if (sender.startsWith('noble')) {
-    return BridgingNetwork.Secret
+    return BridgingNetwork.Noble
   }
 
   return BridgingNetwork.CosmosHub
