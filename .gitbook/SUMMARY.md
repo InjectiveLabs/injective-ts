@@ -3,7 +3,7 @@
 * [Getting Started](README.md)
   * [Technical Concepts](readme/technical-concepts.md)
   * [Application Concepts](readme/application-concepts.md)
-  * [Token Metadata](readme/token-metadata/README.md)
+  * [Assets (Token Metadata)](readme/token-metadata/README.md)
     * [Creating Tokens](readme/token-metadata/creating-tokens.md)
     * [Denom Client](readme/token-metadata/denom-client.md)
   * [Networks](readme/networks.md)
