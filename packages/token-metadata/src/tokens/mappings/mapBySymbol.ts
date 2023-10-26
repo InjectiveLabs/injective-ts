@@ -16,6 +16,9 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
           ...(symbolDiffs && {
             [symbolKey.toUpperCase()]: tokenMeta,
           }),
+          ...(tokenMeta.ibc.symbol && {
+            [tokenMeta.ibc.symbol.toUpperCase()]: tokenMeta,
+          }),
         }
       }
 

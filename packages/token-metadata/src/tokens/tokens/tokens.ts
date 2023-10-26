@@ -94,6 +94,17 @@ export default {
       address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
       tokenType: TokenType.Erc20,
     },
+
+    ibc: {
+      decimals: 6,
+      symbol: 'USDTkv',
+      isNative: true,
+      baseDenom: 'erc20/tether/usdt',
+      path: 'transfer/channel-143',
+      channelId: 'channel-143',
+      hash: '4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
+      tokenType: TokenType.Ibc,
+    },
   },
 
   USDC: {
@@ -127,14 +138,6 @@ export default {
         tokenType: TokenType.Cw20,
       },
     ],
-  },
-
-  USDCnb: {
-    symbol: 'USDCnb',
-    name: 'USD Coin',
-    decimals: 6,
-    logo: 'usdc.svg',
-    coinGeckoId: 'usd-coin',
 
     ibc: {
       decimals: 6,
@@ -144,6 +147,7 @@ export default {
       channelId: 'channel-148',
       path: 'transfer/channel-148',
       hash: '2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
+      tokenType: TokenType.Ibc,
     },
   },
 
@@ -1726,24 +1730,6 @@ export default {
       path: 'transfer/channel-143',
       channelId: 'channel-143',
       hash: '57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
-      tokenType: TokenType.Ibc,
-    },
-  },
-
-  USDTkv: {
-    name: 'Tether',
-    symbol: 'USDTkv',
-    decimals: 6,
-    logo: 'usdt.svg',
-    coinGeckoId: 'tether',
-
-    ibc: {
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'erc20/tether/usdt',
-      path: 'transfer/channel-143',
-      channelId: 'channel-143',
-      hash: '4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
       tokenType: TokenType.Ibc,
     },
   },

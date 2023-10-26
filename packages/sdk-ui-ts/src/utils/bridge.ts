@@ -273,11 +273,11 @@ export const tokenDenomsPerNetwork = [
     denoms: [
       'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
     ],
-    symbols: ['USDCnb'],
+    symbols: ['usdcnb'],
   },
 ] as NetworkConfig[]
 
-export const cosmosNativeDenomsFromChainId = {
+export const cosmosChainTokenMetaMap = {
   [CosmosChainId.Cosmoshub]: {
     ...tokenMetaUtils.getMetaBySymbol('ATOM'),
     tokenType: TokenType.Ibc,
