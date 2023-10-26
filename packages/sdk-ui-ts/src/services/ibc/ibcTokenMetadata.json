@@ -342,6 +342,44 @@
     }
   },
   {
+    "name": "USDC",
+    "denom": "ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png",
+    "symbol": "USDC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Frienzies",
+    "denom": "ibc/CDD7374B312BEF9723AAEBDE622206490E112CE2B5F49275683CCCD86C7D4BCE",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/noble/images/frnz.png",
+    "symbol": "FRNZ",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "CDD7374B312BEF9723AAEBDE622206490E112CE2B5F49275683CCCD86C7D4BCE",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FRNZ",
+      "baseDenom": "FRNZ",
+      "isNative": false
+    }
+  },
+  {
     "name": "Axelar",
     "denom": "ibc/B68C1D2682A8B69E20BB921E34C6A3A2B6D1E13E3E8C0092E373826F546DEE65",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/axl.png",

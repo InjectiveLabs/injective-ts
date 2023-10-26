@@ -106,7 +106,7 @@ describe('IndexerGrpcMitoApi', () => {
         holderAddress: injectiveAddress,
       })
 
-      if (response.length === 0) {
+      if (response.subscriptions.length === 0) {
         console.warn('fetchVaultsByHolderAddress.responseIsEmptyArray')
       }
 
@@ -133,7 +133,7 @@ describe('IndexerGrpcMitoApi', () => {
         stakingContractAddress,
       })
 
-      if (response.length === 0) {
+      if (response.holders.length === 0) {
         console.warn('fetchLPHolders.responseIsEmptyArray')
       }
 
