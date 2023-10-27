@@ -17,7 +17,6 @@ export declare namespace MsgCreateBinaryOptionsMarketOrder {
     price: string
     margin: string
     quantity: string
-    cid?: string
   }
 
   export type Proto =
@@ -32,7 +31,6 @@ const createMarketOrder = (
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
   orderInfo.quantity = params.quantity
-  orderInfo.cid = params.cid || ''
 
   const derivativeOrder =
     InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
