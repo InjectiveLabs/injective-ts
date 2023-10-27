@@ -1,7 +1,7 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { IndexerGrpcOracleApi } from './IndexerGrpcOracleApi'
 
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcOracleApi = new IndexerGrpcOracleApi(endpoints.indexer)
 
 describe('IndexerGrpcOracleApi', () => {

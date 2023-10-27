@@ -1,14 +1,31 @@
 # Injective Name Service
 
-Within this section we are going to have a look how to query the Injective name service contracts.
+Within this section, we will look at how to query the Injective name service contracts.
 
-## Querying
+## Abstraction Service
+
+You can use our `InjNameService` [abstraction](../../packages/sdk-ui-ts/src/services/nameservice/InjNameService.ts) to query the smart contracts with a single method call. Below this example, you can also find the raw implementation on how to query the smart contracts in case you need more flexibility.&#x20;
+
+<pre class="language-typescript"><code class="lang-typescript">import { getNetworkEndpoints, Network } from '@injectivelabs/network'
+import { InjNameService } from '@injectivelabs/sdk-ui-ts'
+
+const injNameService = new InjNameService(Network.Testnet)
+<strong>const name = 'ninja.inj'
+</strong>
+// Fetch the address for the particular name
+const addressForName = await injNameService.fetchInjAddress(name) 
+
+// Fetch the name for the particular address
+const nameFromAddress = await injNameService.fetchInjName(addressForName)
+</code></pre>
+
+## Raw Smart Contract Querying
 
 Example code snippets to resolve .inj domain name.
 
 ### Domain Resolution
 
-- Get resolver address
+* Get resolver address
 
 ```ts
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
@@ -41,7 +58,7 @@ const resolverAddress = InjNameServiceQueryTransformer.resolverAddressResponseTo
 console.log(resolverAddress)
 ```
 
-- Get address for .inj domain name.
+* Get address for .inj domain name.
 
 ```ts
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
@@ -83,7 +100,7 @@ console.log(injectiveAddress)
 
 ### Reverse Resolution
 
-- Get primary name for injective address.
+* Get primary name for injective address.
 
 ```ts
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'

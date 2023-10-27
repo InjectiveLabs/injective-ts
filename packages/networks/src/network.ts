@@ -18,6 +18,7 @@ import {
   endpointsTestnetK8s,
   endpointsTestnetOld,
   endpointsMainnetK8s,
+  endpointsMainnetSentry,
   endpointsTestnetSentry,
 } from './endpoints'
 import { Network, ChainInfo, NetworkEndpoints } from './types'
@@ -25,6 +26,7 @@ import { Network, ChainInfo, NetworkEndpoints } from './types'
 export const networkEndpoints: Record<Network, NetworkEndpoints> = {
   [Network.MainnetLB]: endpointsMainnetLB,
   [Network.MainnetK8s]: endpointsMainnetK8s,
+  [Network.MainnetSentry]: endpointsMainnetSentry,
   [Network.Staging]: endpointsStaging,
   [Network.Mainnet]: endpointsMainnet,
   [Network.Public]: endpointsPublic,
@@ -42,6 +44,7 @@ export const networkEndpoints: Record<Network, NetworkEndpoints> = {
 export const chainInfos: Record<Network, ChainInfo> = {
   [Network.MainnetLB]: mainnetChainInfo,
   [Network.MainnetK8s]: mainnetChainInfo,
+  [Network.MainnetSentry]: mainnetChainInfo,
   [Network.Staging]: mainnetChainInfo,
   [Network.Mainnet]: mainnetChainInfo,
   [Network.Public]: mainnetChainInfo,
@@ -83,6 +86,7 @@ export const isMainnet = (network: Network) =>
     Network.Staging,
     Network.Mainnet,
     Network.MainnetK8s,
+    Network.MainnetSentry,
     Network.Internal,
     Network.MainnetLB,
   ].includes(network)

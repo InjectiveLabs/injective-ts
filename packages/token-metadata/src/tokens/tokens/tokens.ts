@@ -94,6 +94,17 @@ export default {
       address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
       tokenType: TokenType.Erc20,
     },
+
+    ibc: {
+      decimals: 6,
+      symbol: 'USDTkv',
+      isNative: true,
+      baseDenom: 'erc20/tether/usdt',
+      path: 'transfer/channel-143',
+      channelId: 'channel-143',
+      hash: '4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
+      tokenType: TokenType.Ibc,
+    },
   },
 
   USDC: {
@@ -118,6 +129,7 @@ export default {
         address: 'inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk',
         tokenType: TokenType.Cw20,
       },
+
       {
         decimals: 6,
         symbol: 'USDCso',
@@ -126,6 +138,17 @@ export default {
         tokenType: TokenType.Cw20,
       },
     ],
+
+    ibc: {
+      decimals: 6,
+      symbol: 'USDCnb',
+      baseDenom: 'uusdc',
+      isNative: true,
+      channelId: 'channel-148',
+      path: 'transfer/channel-148',
+      hash: '2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
+      tokenType: TokenType.Ibc,
+    },
   },
 
   GRT: {
@@ -831,7 +854,7 @@ export default {
 
   AXL: {
     name: 'Axelar',
-    logo: 'axelar.jpeg',
+    logo: 'axelar.svg',
     symbol: 'AXL',
     decimals: 6,
     coinGeckoId: 'axelar',
@@ -1020,7 +1043,7 @@ export default {
     name: 'PROJ',
     logo: 'projx.png',
     symbol: 'PROJ',
-    decimals: 6,
+    decimals: 18,
     coinGeckoId: '',
   },
 
@@ -1711,24 +1734,6 @@ export default {
     },
   },
 
-  USDTkv: {
-    name: 'Tether',
-    symbol: 'USDTkv',
-    decimals: 6,
-    logo: 'usdt.svg',
-    coinGeckoId: 'tether',
-
-    ibc: {
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'erc20/tether/usdt',
-      path: 'transfer/channel-143',
-      channelId: 'channel-143',
-      hash: '4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
-      tokenType: TokenType.Ibc,
-    },
-  },
-
   SEI: {
     name: 'SEI',
     symbol: 'SEI',
@@ -1815,5 +1820,37 @@ export default {
       hash: 'C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
       tokenType: TokenType.Ibc,
     },
+  },
+
+  GOLD: {
+    name: 'GOLD',
+    symbol: 'GOLD',
+    decimals: 18,
+    logo: 'gold.svg',
+    coinGeckoId: '',
+  },
+
+  EVINDEX: {
+    name: 'EVIINDEX',
+    symbol: 'EVIINDEX',
+    decimals: 18,
+    logo: 'truEVINDEX.svg',
+    coinGeckoId: '',
+  },
+
+  TRUCPI: {
+    name: 'TRUCPI',
+    symbol: 'TRUCPI',
+    decimals: 18,
+    logo: 'truflation.svg',
+    coinGeckoId: '',
+  },
+
+  TIA: {
+    name: 'Celestia',
+    symbol: 'TIA',
+    decimals: 6,
+    logo: 'tia.webp',
+    coinGeckoId: '',
   },
 } as Record<string, TokenMeta>

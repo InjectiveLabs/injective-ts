@@ -6,7 +6,7 @@ import { ExplorerValidator } from '../types'
 import { IndexerGrpcExplorerApi } from './IndexerGrpcExplorerApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcExplorerApi = new IndexerGrpcExplorerApi(endpoints.indexer)
 
 describe('IndexerGrpcExplorerApi', () => {

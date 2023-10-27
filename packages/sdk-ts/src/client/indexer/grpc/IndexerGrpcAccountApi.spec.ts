@@ -7,7 +7,7 @@ import { IndexerGrpcAccountApi } from './IndexerGrpcAccountApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const subaccountId = getDefaultSubaccountId(injectiveAddress)
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcAccountApi = new IndexerGrpcAccountApi(endpoints.indexer)
 
 describe('IndexerGrpcAccountApi', () => {

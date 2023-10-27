@@ -201,13 +201,13 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchVaultsByHolderAddress({
+    skip,
     limit,
-    pageIndex,
     holderAddress,
     vaultAddress,
   }: {
+    skip?: number
     limit?: number
-    pageIndex?: number
     holderAddress: string
     vaultAddress?: string
   }) {
@@ -219,12 +219,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.vaultAddress = vaultAddress
     }
 
-    if (limit) {
-      request.limit = limit
+    if (skip) {
+      request.skip = skip
     }
 
-    if (pageIndex) {
-      request.pageIndex = pageIndex
+    if (limit) {
+      request.limit = limit
     }
 
     try {
@@ -253,13 +253,13 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchLPHolders({
+    skip,
     limit,
-    pageIndex,
     vaultAddress,
     stakingContractAddress,
   }: {
+    skip?: number
     limit?: number
-    pageIndex?: number
     vaultAddress: string
     stakingContractAddress: string
   }) {
@@ -268,12 +268,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     request.vaultAddress = vaultAddress
     request.stakingContractAddress = stakingContractAddress
 
-    if (limit) {
-      request.limit = limit
+    if (skip) {
+      request.skip = skip
     }
 
-    if (pageIndex) {
-      request.pageIndex = pageIndex
+    if (limit) {
+      request.limit = limit
     }
 
     try {
@@ -299,10 +299,17 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchHolderPortfolio(holderAddress: string) {
+  async fetchHolderPortfolio({
+    holderAddress,
+    stakingContractAddress,
+  }: {
+    holderAddress: string
+    stakingContractAddress: string
+  }) {
     const request = MitoApi.PortfolioRequest.create()
 
     request.holderAddress = holderAddress
+    request.stakingContractAddress = stakingContractAddress
 
     try {
       const response = await this.retry<MitoApi.PortfolioResponse>(() =>

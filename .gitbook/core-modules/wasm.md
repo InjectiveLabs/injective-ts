@@ -11,8 +11,7 @@ import {
   MsgExecuteContract,
   MsgBroadcasterWithPk,
 } from "@injectivelabs/sdk-ts";
-import { ChainId } from "@injectivelabs/ts-types";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const recipientAddress = "inj2...";
@@ -32,11 +31,9 @@ const msg = MsgExecuteContract.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
@@ -44,9 +41,9 @@ console.log(txHash);
 
 ### MsgExecuteContract (funds example)
 
-In some scenario, depending on the smart contract's function we have to transfer tokens to the smart contract, following cosmwasm convention we use the funds field to transfer tokens to the smart contract from the user's bank module.
+In some scenarios, depending on the smart contract's function we have to transfer tokens to the smart contract, following cosmwasm convention, we use the funds field to transfer tokens to the smart contract from the user's bank module.
 
-Below is an example of how we can send the MsgExecuteContract using an `test` contract function.
+Below is an example of how we can send the `MsgExecuteContract` using an `test` contract function.
 
 ```ts
 import {
@@ -54,8 +51,7 @@ import {
   MsgBroadcasterWithPk,
 } from "@injectivelabs/sdk-ts";
 import { INJ_DENOM } from "@injectivelabs/sdk-ui-ts";
-import { ChainId } from "@injectivelabs/ts-types";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const contractAddress = "cw...";
@@ -76,11 +72,9 @@ const msg = MsgExecuteContract.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
@@ -88,30 +82,11 @@ console.log(txHash);
 
 ### MsgExecuteContractCompact
 
-There are some compatibility issue parsing the funds array in the previous example with EIP712, hence we introduced MsgExecuteContractCompact which converts the funds into a string
+There are some compatibility issues parsing the `funds` array and `msgs` object in the previous example with EIP712. Since `MsgExecuteContract` can't be properly converted to EIP712 and then signed by Ethereum wallets, we introduced `MsgExecuteContractCompact` which is fully compatible with EIP712.&#x20;
 
-An array of funds:
+_**Note:**_ _`MsgExecuteContract` and `MsgExecuteContractCompat` underlying messages are the same. `MsgExecuteContractCompat` is just EIP712 compatible._
 
-```ts
-const funds = [
-  {
-    denom: denom1,
-    amount: new BigNumberInBase(1).toWei().toFixed(),
-  },
-  {
-    denom: denom2,
-    amount: new BigNumberInBase(1).toWei().toFixed(),
-  },
-];
-```
-
-will be presented as a string like this:
-
-```ts
-const funds = "100000000000000000 denom1, 100000000000000000 denom2";
-```
-
-Below is an example of how we can send the MsgExecuteContractCompact using an `test` contract function.
+Below is an example of how we can send the `MsgExecuteContractCompact` using an `test` contract function.
 
 ```ts
 import {
@@ -119,8 +94,7 @@ import {
   MsgExecuteContractCompact,
 } from "@injectivelabs/sdk-ts";
 import { INJ_DENOM } from "@injectivelabs/sdk-ui-ts";
-import { ChainId } from "@injectivelabs/ts-types";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const contractAddress = "cw...";
@@ -141,11 +115,9 @@ const msg = MsgExecuteContractCompact.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);

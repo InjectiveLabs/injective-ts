@@ -25,6 +25,11 @@ jobs:
       - name: 'Setup lerna@6.6.1'
         run: yarn global add lerna@6.6.1  --ignore-engines
 
+      - name: Set up Git user
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
       - name: Build dependencies
         run: |
           node etc/bootstrapEnv
@@ -36,14 +41,15 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: 'Commit ibcTokenMetadata.json if changed'
+        run: |
+          git diff --exit-code -- packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json || (git add packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json && git commit -m "Automatically update ibcTokenMetadata.json")
+
       - name: Version and publish
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor}}@users.noreply.github.com"
-
-          lerna version --conventional-commits --conventional-graduate --force-git-tag --yes
+          lerna version patch --conventional-commits --conventional-graduate --force-git-tag --yes
           lerna publish from-git --force-git-tag --dist-tag latest --yes --summary-file
 
       - name: 'Broadcast published versions on Slack'

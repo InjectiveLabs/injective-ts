@@ -10,31 +10,35 @@ At this point you **can't** use some online abstractions that provide a quick wa
 
 To resolve this, we have provided functions which can prepare the `txRaw` transaction within out `@injectivelabs/sdk-ts` package. `txRaw` is the transaction interface used in Cosmos that contains details about the transaction and the signer itself.
 
+Getting a private key from cosmos wallets is usually done by taking the current key for the chainId and accessing the pubKey from there (ex: `const key = await window.keplr.getKey(chainId)` => `const pubKey = key.publicKey`).
+
 ```ts
-import { 
+import {
   MsgSend,
-  ChainRestAuthApi,
-  ChainRestTendermintApi,
   BaseAccount,
   DEFAULT_STD_FEE,
+  ChainRestAuthApi,
   createTransaction,
+  ChainRestTendermintApi,
 } from '@injectivelabs/sdk-ts'
-import { DEFAULT_STD_FEE, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import {
+  DEFAULT_STD_FEE,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+} from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1'
 const chainId = 'injective-1' /* ChainId.Mainnet */
-const restEndpoint = 'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
+const restEndpoint =
+  'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const amount = {
   amount: new BigNumberInBase(0.01).toWei().toFixed(),
-  denom: "inj",
-};
+  denom: 'inj',
+}
 
 /** Account Details **/
-const chainRestAuthApi = new ChainRestAuthApi(
-  restEndpoint,
-)
+const chainRestAuthApi = new ChainRestAuthApi(restEndpoint)
 const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
   injectiveAddress,
 )
@@ -42,9 +46,7 @@ const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
 const accountDetails = baseAccount.toAccountDetails()
 
 /** Block Details */
-const chainRestTendermintApi = new ChainRestTendermintApi(
-  restEndpoint,
-)
+const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint)
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
 const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -56,7 +58,7 @@ const msg = MsgSend.fromJSON({
   amount,
   srcInjectiveAddress: injectiveAddress,
   dstInjectiveAddress: injectiveAddress,
-});
+})
 
 /** Get the PubKey of the Signer from the Wallet/Private Key */
 const pubKey = await getPubKey()
@@ -82,7 +84,7 @@ import { ChainId } from '@injectivelabs/ts-types'
 
 const getKeplr = async (chainId) => {
   await window.keplr.enable(chainId);
-    
+
   const offlineSigner = window.keplr.getOfflineSigner(chainId);
   const accounts = await offlineSigner.getAccounts();
   const key = await window.keplr.getKey(chainId);
@@ -106,22 +108,22 @@ Once we have the signature ready, we need to broadcast the transaction to the In
 
 ```ts
 import { ChainId } from '@injectivelabs/ts-types'
-import { getTxRawFromTxRawOrDirectSignResponse, TxRestClient } from '@injectivelabs/sdk-ts'
+import { CosmosTxV1Beta1Tx, getTxRawFromTxRawOrDirectSignResponse, TxRestClient } from '@injectivelabs/sdk-ts'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
-/** 
- * IMPORTANT NOTE: 
- * If we use Keplr/Leap wallets 
- * after signing the transaction we get a `directSignResponse`, 
+/**
+ * IMPORTANT NOTE:
+ * If we use Keplr/Leap wallets
+ * after signing the transaction we get a `directSignResponse`,
  * and instead of adding the signature to the `txRaw` we create
- * using the `createTransaction` function we need to append the 
- * signature from the `directSignResponse` to the transaction that 
- * got actually signed (i.e `directSignResponse.signed`) and 
+ * using the `createTransaction` function we need to append the
+ * signature from the `directSignResponse` to the transaction that
+ * got actually signed (i.e `directSignResponse.signed`) and
  * the reason why is that the user can make some changes on the original
- * transaction (i.e change gas limit or gas prices) and the transaction 
+ * transaction (i.e change gas limit or gas prices) and the transaction
  * that get's signed and the one that gets broadcasted are not the same.
  */
-const directSignResponse = /* From the second step above */ 
+const directSignResponse = /* From the second step above */
 const txRaw = getTxRawFromTxRawOrDirectSignResponse(directSignResponse)
 
 const broadcastTx = async (chainId, txRaw) => {
@@ -134,7 +136,7 @@ const broadcastTx = async (chainId, txRaw) => {
   const keplr = await getKeplr(ChainId.Mainnet)
   const result = await keplr.sendTx(
     chainId,
-    txRaw.serializeBinary(),
+    CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
     BroadcastMode.Sync,
   )
 
@@ -150,10 +152,10 @@ const broadcastTx = async (chainId, txRaw) => {
 
 const txHash = await broadcastTx(ChainId.Mainnet, txRaw)
 
-/** 
- * Once we get the txHash, because we use the Sync mode we 
- * are not sure that the transaction is included in the block, 
- * it can happen that it's still in the mempool so we need to query 
+/**
+ * Once we get the txHash, because we use the Sync mode we
+ * are not sure that the transaction is included in the block,
+ * it can happen that it's still in the mempool so we need to query
  * the chain to see when the transaction will be included
  */
 const restEndpoint = 'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
@@ -168,24 +170,28 @@ const response = await txRestClient.fetchTxPoll(txHash)
 Let's have a look at the whole flow (using Keplr as a signing wallet)
 
 ```ts
-import { 
+import {
   MsgSend,
-  ChainRestAuthApi,
-  ChainRestTendermintApi,
   BaseAccount,
   DEFAULT_STD_FEE,
+  ChainRestAuthApi,
   createTransaction,
+  CosmosTxV1Beta1Tx,
+  ChainRestTendermintApi,
 } from '@injectivelabs/sdk-ts'
-import { DEFAULT_STD_FEE, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import {
+  DEFAULT_STD_FEE,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+} from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
 const getKeplr = async (chainId) => {
-  await window.keplr.enable(chainId);
-    
-  const offlineSigner = window.keplr.getOfflineSigner(chainId);
-  const accounts = await offlineSigner.getAccounts();
-  const key = await window.keplr.getKey(chainId);
+  await window.keplr.enable(chainId)
+
+  const offlineSigner = window.keplr.getOfflineSigner(chainId)
+  const accounts = await offlineSigner.getAccounts()
+  const key = await window.keplr.getKey(chainId)
 
   return { offlineSigner, accounts, key }
 }
@@ -194,7 +200,7 @@ const broadcastTx = async (chainId, txRaw) => {
   const keplr = await getKeplr(ChainId.Mainnet)
   const result = await keplr.sendTx(
     chainId,
-    txRaw.serializeBinary(),
+    CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
     BroadcastMode.Sync,
   )
 
@@ -210,16 +216,15 @@ const broadcastTx = async (chainId, txRaw) => {
 
 const injectiveAddress = 'inj1'
 const chainId = 'injective-1' /* ChainId.Mainnet */
-const restEndpoint = 'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
+const restEndpoint =
+  'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const amount = {
   amount: new BigNumberInBase(0.01).toWei().toFixed(),
-  denom: "inj",
-};
+  denom: 'inj',
+}
 
 /** Account Details **/
-const chainRestAuthApi = new ChainRestAuthApi(
-  restEndpoint,
-)
+const chainRestAuthApi = new ChainRestAuthApi(restEndpoint)
 const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
   injectiveAddress,
 )
@@ -227,9 +232,7 @@ const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
 const accountDetails = baseAccount.toAccountDetails()
 
 /** Block Details */
-const chainRestTendermintApi = new ChainRestTendermintApi(
-  restEndpoint,
-)
+const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint)
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
 const timeoutHeight = new BigNumberInBase(latestHeight).plus(
@@ -241,7 +244,7 @@ const msg = MsgSend.fromJSON({
   amount,
   srcInjectiveAddress: injectiveAddress,
   dstInjectiveAddress: injectiveAddress,
-});
+})
 
 /** Get the PubKey of the Signer from the Wallet/Private Key */
 const pubKey = await getPubKey()
@@ -257,7 +260,10 @@ const { txRaw, signDoc } = createTransaction({
   accountNumber: baseAccount.accountNumber,
 })
 
-const directSignResponse = await offlineSigner.signDirect(injectiveAddress, signDoc)
+const directSignResponse = await offlineSigner.signDirect(
+  injectiveAddress,
+  signDoc,
+)
 const txRaw = getTxRawFromTxRawOrDirectSignResponse(directSignResponse)
 const txHash = await broadcastTx(ChainId.Mainnet, txRaw)
 const response = await new TxRestClient(restEndpoint).fetchTxPoll(txHash)
@@ -265,8 +271,4 @@ const response = await new TxRestClient(restEndpoint).fetchTxPoll(txHash)
 
 ### Example with WalletStrategy (Prepare + Sign + Broadcast)
 
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
-
-This part is currently under work in progress.
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
+Example can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/862e7c30d96120947b056abffbd01b4f378984a1/packages/wallet-ts/src/broadcaster/MsgBroadcaster.ts#L301-L365).

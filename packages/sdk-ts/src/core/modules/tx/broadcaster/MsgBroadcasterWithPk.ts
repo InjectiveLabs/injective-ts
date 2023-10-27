@@ -13,10 +13,6 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
-import {
-  getEthereumSignerAddress,
-  getInjectiveSignerAddress,
-} from '../utils/helpers'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   Network,
@@ -30,8 +26,6 @@ import { IndexerGrpcTransactionApi } from '../../../../client'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
-  injectiveAddress: string
-  ethereumAddress?: string
   memo?: string
   gas?: {
     gasPrice?: string
@@ -41,7 +35,7 @@ interface MsgBroadcasterTxOptions {
   }
 }
 
-interface MsgBroadcasterOptionsWithPk {
+interface MsgBroadcasterWithPkOptions {
   network: Network
 
   /**
@@ -77,7 +71,7 @@ export class MsgBroadcasterWithPk {
 
   public simulateTx: boolean = false
 
-  constructor(options: MsgBroadcasterOptionsWithPk) {
+  constructor(options: MsgBroadcasterWithPkOptions) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints = getNetworkEndpoints(options.network)
 
@@ -107,15 +101,13 @@ export class MsgBroadcasterWithPk {
     const tx = {
       ...transaction,
       msgs: msgs,
-      ethereumAddress: getEthereumSignerAddress(transaction.injectiveAddress),
-      injectiveAddress: getInjectiveSignerAddress(transaction.injectiveAddress),
     } as MsgBroadcasterTxOptions
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
     const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      tx.injectiveAddress,
+      privateKey.toBech32(),
     )
     const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
     const accountDetails = baseAccount.toAccountDetails()
@@ -179,8 +171,6 @@ export class MsgBroadcasterWithPk {
     const tx = {
       ...transaction,
       msgs: msgs,
-      ethereumAddress: getEthereumSignerAddress(transaction.injectiveAddress),
-      injectiveAddress: getInjectiveSignerAddress(transaction.injectiveAddress),
     } as MsgBroadcasterTxOptions & { ethereumAddress: string }
 
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
@@ -226,15 +216,13 @@ export class MsgBroadcasterWithPk {
       msgs: Array.isArray(transaction.msgs)
         ? transaction.msgs
         : [transaction.msgs],
-      ethereumAddress: getEthereumSignerAddress(transaction.injectiveAddress),
-      injectiveAddress: getInjectiveSignerAddress(transaction.injectiveAddress),
     } as MsgBroadcasterTxOptions
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
     const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      tx.injectiveAddress,
+      privateKey.toBech32(),
     )
     const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
     const accountDetails = baseAccount.toAccountDetails()

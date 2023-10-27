@@ -4,7 +4,7 @@ import { IndexerGrpcInsuranceFundTransformer } from '../transformers'
 import { IndexerGrpcInsuranceFundApi } from './IndexerGrpcInsuranceFundApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcInsuranceFundApi = new IndexerGrpcInsuranceFundApi(
   endpoints.indexer,
 )

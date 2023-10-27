@@ -8,35 +8,18 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
       const symbol = tokenMeta.symbol.toUpperCase()
       const symbolDiffs = symbol !== symbolKey
 
+      let ibcResults = {}
+      let cw20Results = {}
+      let splResults = {}
+      let evmResults = {}
+      let erc20Results = {}
+      let cw20sResults = {}
+
       if (tokenMeta.ibc && tokenMeta.ibc.baseDenom) {
-        return {
-          ...result,
+        ibcResults = {
           [tokenMeta.ibc.baseDenom.toUpperCase()]: tokenMeta,
-          [symbol.toUpperCase()]: tokenMeta,
-          ...(symbolDiffs && {
-            [symbolKey.toUpperCase()]: tokenMeta,
-          }),
-        }
-      }
-
-      if (tokenMeta.cw20 && tokenMeta.cw20.address) {
-        return {
-          ...result,
-          [tokenMeta.cw20.address.toUpperCase()]: tokenMeta,
-          [symbol.toUpperCase()]: tokenMeta,
-          ...(symbolDiffs && {
-            [symbolKey.toUpperCase()]: tokenMeta,
-          }),
-        }
-      }
-
-      if (tokenMeta.spl && tokenMeta.spl.address) {
-        return {
-          ...result,
-          [tokenMeta.spl.address.toUpperCase()]: tokenMeta,
-          [symbol.toUpperCase()]: tokenMeta,
-          ...(symbolDiffs && {
-            [symbolKey.toUpperCase()]: tokenMeta,
+          ...(tokenMeta.ibc.symbol && {
+            [tokenMeta.ibc.symbol.toUpperCase()]: tokenMeta,
           }),
         }
       }
@@ -50,18 +33,32 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
           {} as Record<string, TokenMeta>,
         )
 
-        return {
-          ...result,
+        cw20sResults = {
           ...cw20Maps,
           [symbol.toUpperCase()]: tokenMeta,
-          ...(symbolDiffs && {
-            [symbolKey.toUpperCase()]: tokenMeta,
-          }),
+        }
+      }
+
+      if (tokenMeta.evm && tokenMeta.evm.symbol) {
+        evmResults = {
+          [tokenMeta.evm.symbol.toUpperCase()]: tokenMeta,
+        }
+      }
+
+      if (tokenMeta.erc20 && tokenMeta.erc20.symbol) {
+        erc20Results = {
+          [tokenMeta.erc20.symbol.toUpperCase()]: tokenMeta,
         }
       }
 
       return {
         ...result,
+        ...splResults,
+        ...evmResults,
+        ...ibcResults,
+        ...cw20Results,
+        ...cw20sResults,
+        ...erc20Results,
         [symbol.toUpperCase()]: tokenMeta,
         ...(symbolDiffs && {
           [symbolKey.toUpperCase()]: tokenMeta,

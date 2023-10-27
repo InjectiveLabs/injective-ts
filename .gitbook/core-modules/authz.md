@@ -31,7 +31,7 @@ Per [cosmos sdk docs](https://docs.cosmos.network/main/modules/authz), "Authoriz
 
 ```ts
 import { MsgGrant, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKeyOfGranter = '0x...'
 const grantee = 'inj...'
@@ -46,11 +46,9 @@ const msg = MsgGrant.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey: privateKeyOfGranter,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress: granter,
+  msgs: msg
 })
 
 console.log(txHash)
@@ -63,7 +61,7 @@ When a grantee wants to execute a transaction on behalf of a granter, they must 
 ```ts
 import { MsgExec, MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKeyOfGrantee = '0x...'
 const grantee = 'inj...'
@@ -85,11 +83,9 @@ const msg = MsgExec.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey: privateKeyOfGrantee,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress: grantee,
+  msgs: msg
 })
 
 console.log(txHash)
@@ -101,7 +97,7 @@ A grant can be removed with the MsgRevoke message.
 
 ```ts
 import { MsgRevoke, MsgBroadcasterWithPk, getEthereumAddress } from '@injectivelabs/sdk-ts'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 
 const privateKeyOfGranter = '0x...'
 const grantee = 'inj...'
@@ -116,11 +112,9 @@ const msg = MsgRevoke.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey: privateKeyOfGranter,
-  network: Network.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet)
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress: granter,
+  msgs: msg
 })
 
 console.log(txHash)

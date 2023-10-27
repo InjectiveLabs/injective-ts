@@ -6,7 +6,7 @@ import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const subaccountId = mockFactory.subaccountId
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcExchangeApi = new ChainGrpcExchangeApi(endpoints.grpc)
 
 describe('ChainGrpcExchangeApi', () => {

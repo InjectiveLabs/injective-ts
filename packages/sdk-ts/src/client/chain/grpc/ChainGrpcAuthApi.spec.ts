@@ -4,7 +4,7 @@ import { mockFactory } from '@injectivelabs/test-utils'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcAuthApi = new ChainGrpcAuthApi(endpoints.grpc)
 
 describe('ChainGrpcAuthApi', () => {

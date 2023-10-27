@@ -17,8 +17,7 @@ import {
   MsgCreateDenom,
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
@@ -31,11 +30,9 @@ const msg = MsgCreateDenom.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
@@ -50,8 +47,7 @@ import {
   MsgMint,
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
@@ -68,11 +64,9 @@ const msg = MsgMint.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
   msgs: msg,
-  injectiveAddress,
 });
 
 console.log(txHash);
@@ -87,8 +81,7 @@ import {
   MsgBurn,
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
@@ -105,11 +98,9 @@ const msg = MsgBurn.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);
@@ -125,8 +116,7 @@ import {
   MsgSetDenomMetadata,
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
@@ -169,11 +159,9 @@ const msg = MsgSetDenomMetadata.fromJSON({
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Testnet,
-  endpoints: getNetworkEndpoints(Network.Testnet),
+  network: Network.Testnet
 }).broadcast({
-  msgs: msg,
-  injectiveAddress,
+  msgs: msg
 });
 
 console.log(txHash);

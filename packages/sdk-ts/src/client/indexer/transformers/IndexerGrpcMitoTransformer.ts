@@ -153,6 +153,7 @@ export class IndexerGrpcMitoTransformer {
       pnlChartList: portfolio.pnlChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
       ),
+      updatedAt: parseInt(portfolio.pnlUpdatedAt, 10),
     }
   }
 
@@ -265,7 +266,9 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoSubscriptionToSubscription(subscription: MitoApi.Subscription) {
+  static mitoSubscriptionToSubscription(
+    subscription: MitoApi.Subscription,
+  ): MitoSubscription {
     const vaultInfo = subscription.vaultInfo
       ? IndexerGrpcMitoTransformer.mitoVaultToVault(subscription.vaultInfo)
       : undefined
@@ -471,18 +474,26 @@ export class IndexerGrpcMitoTransformer {
 
   static vaultsByHolderAddressResponseToVaultsByHolderAddress(
     response: MitoApi.VaultsByHolderAddressResponse,
-  ): MitoSubscription[] {
-    return response.subscriptions.map(
-      IndexerGrpcMitoTransformer.mitoSubscriptionToSubscription,
-    )
+  ) {
+    return {
+      subscriptions: response.subscriptions.map(
+        IndexerGrpcMitoTransformer.mitoSubscriptionToSubscription,
+      ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
   }
 
-  static lpHoldersResponseToLPHolders(
-    response: MitoApi.LPHoldersResponse,
-  ): MitoHolders[] {
-    return response.holders.map(
-      IndexerGrpcMitoTransformer.mitoLpHolderToLPHolder,
-    )
+  static lpHoldersResponseToLPHolders(response: MitoApi.LPHoldersResponse) {
+    return {
+      holders: response.holders.map(
+        IndexerGrpcMitoTransformer.mitoLpHolderToLPHolder,
+      ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
   }
 
   static transferHistoryResponseToTransfer(

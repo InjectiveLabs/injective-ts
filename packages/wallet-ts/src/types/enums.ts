@@ -9,6 +9,7 @@ export enum Wallet {
   Metamask = 'metamask',
   TrustWallet = 'trust-wallet',
   Cosmostation = 'cosmostation',
+  LedgerCosmos = 'ledger-cosmos',
   LedgerLegacy = 'ledger-legacy',
   WalletConnect = 'wallet-connect',
   CosmostationEth = 'cosmostation-eth',

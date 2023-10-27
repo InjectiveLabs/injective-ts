@@ -9,10 +9,11 @@ import {
   fromUtf8,
   DenomClient,
   InsuranceFund,
+  ChainGrpcIbcApi,
   ChainGrpcBankApi,
   ChainGrpcWasmApi,
+  isCw20ContractAddress,
   ChainGrpcInsuranceFundApi,
-  ChainGrpcIbcApi,
 } from '@injectivelabs/sdk-ts'
 import { Web3Client } from '../services/web3/Web3Client'
 import type { Token } from '@injectivelabs/token-metadata'
@@ -29,6 +30,8 @@ import { getTokenFromInsuranceFund } from '../utils'
 import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 import { awaitForAll } from '@injectivelabs/utils'
+// @ts-ignore
+import ibcTokenMetadata from '../services/ibc/ibcTokenMetadata.json'
 
 const IGNORED_DENOMS = ['peggy0xB855dBC314C39BFa2583567E02a40CBB246CF82B']
 
@@ -55,6 +58,8 @@ export class DenomClientAsync {
     string,
     IbcApplicationsTransferV1Transfer.DenomTrace
   > = {}
+
+  private cachedIbcTokens: Token[] = []
 
   constructor(
     network: Network = Network.Mainnet,
@@ -116,9 +121,7 @@ export class DenomClientAsync {
       return getTokenFromAlchemyTokenMetaResponse(denom, response)
     }
 
-    const isCW20 = denom.startsWith('inj')
-
-    if (isCW20) {
+    if (isCw20ContractAddress(denom)) {
       const contractAddress = denom
 
       const response = await this.chainWasmApi.fetchContractState({
@@ -137,7 +140,7 @@ export class DenomClientAsync {
       const tokenFactoryAddress = denom.split('/')[2]
 
       // CW20 contract (ex: from Wormhole)
-      if (tokenFactoryAddress.startsWith('inj')) {
+      if (isCw20ContractAddress(tokenFactoryAddress)) {
         const response = await this.chainWasmApi.fetchContractState({
           contractAddress: tokenFactoryAddress,
           pagination: {
@@ -218,7 +221,9 @@ export class DenomClientAsync {
       return this.metadatas.find((metadata) => metadata.base === denom)
     }
 
-    const { metadatas } = await this.chainBankApi.fetchDenomsMetadata({ limit: 1000 })
+    const { metadatas } = await this.chainBankApi.fetchDenomsMetadata({
+      limit: 1000,
+    })
 
     this.metadatas = metadatas
 
@@ -252,10 +257,19 @@ export class DenomClientAsync {
       await this.fetchAndCacheDenomTraces()
     }
 
+    if (this.cachedIbcTokens.length === 0) {
+      await this.fetchAndCacheIbcTokens()
+    }
+
     const cachedDenomTrace = this.cachedDenomTraces[hash]
+    const cachedIbcToken = this.cachedIbcTokens.find(
+      (token) => token?.denom === denom,
+    )
 
     if (cachedDenomTrace) {
-      const token = this.denomClient.getDenomToken(cachedDenomTrace.baseDenom)
+      const token =
+        this.denomClient.getDenomToken(cachedDenomTrace.baseDenom) ||
+        cachedIbcToken
 
       if (!token) {
         return undefined
@@ -275,7 +289,8 @@ export class DenomClientAsync {
     try {
       const denomTrace = await this.chainIbcApi.fetchDenomTrace(hash)
 
-      const token = this.denomClient.getDenomToken(denomTrace.baseDenom)
+      const token =
+        this.denomClient.getDenomToken(denomTrace.baseDenom) || cachedIbcToken
 
       if (!token) {
         return undefined
@@ -321,9 +336,18 @@ export class DenomClientAsync {
     )
   }
 
+  private async fetchAndCacheIbcTokens() {
+    if (ibcTokenMetadata?.length === 0) {
+      return
+    }
+
+    this.cachedIbcTokens = ibcTokenMetadata as Token[]
+  }
+
   public async preloadMetadata() {
     await this.getFactoryDenomMetadata('')
     await this.getInsuranceFund('')
     await this.fetchAndCacheDenomTraces()
+    await this.fetchAndCacheIbcTokens()
   }
 }

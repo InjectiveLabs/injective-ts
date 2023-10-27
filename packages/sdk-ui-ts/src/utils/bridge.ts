@@ -49,6 +49,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Sommelier,
   BridgingNetwork.Kava,
   BridgingNetwork.Oraichain,
+  BridgingNetwork.Noble,
 ]
 
 export const LeapNetworks = [
@@ -61,6 +62,7 @@ export const LeapNetworks = [
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
   BridgingNetwork.Kava,
+  BridgingNetwork.Noble,
 ]
 
 export const CosmostationNetworks = [
@@ -77,6 +79,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Sommelier,
   BridgingNetwork.Canto,
   BridgingNetwork.Kava,
+  BridgingNetwork.Noble,
 ]
 
 export const CosmosNetworks = [
@@ -94,6 +97,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Canto,
   BridgingNetwork.Kava,
   BridgingNetwork.Oraichain,
+  BridgingNetwork.Noble,
 ]
 
 export const EvmWormholeNetworks = [
@@ -263,9 +267,17 @@ export const tokenDenomsPerNetwork = [
     denoms: [],
     symbols: ['WMATIC'],
   },
+
+  {
+    network: BridgingNetwork.Noble,
+    denoms: [
+      'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
+    ],
+    symbols: ['usdcnb'],
+  },
 ] as NetworkConfig[]
 
-export const cosmosNativeDenomsFromChainId = {
+export const cosmosChainTokenMetaMap = {
   [CosmosChainId.Cosmoshub]: {
     ...tokenMetaUtils.getMetaBySymbol('ATOM'),
     tokenType: TokenType.Ibc,
@@ -431,6 +443,12 @@ export const cosmosNativeDenomsFromChainId = {
     ...tokenMetaUtils.getMetaBySymbol('INJ'),
     tokenType: TokenType.Ibc,
     denom: 'inj',
+  },
+  [CosmosChainId.Noble]: {
+    ...tokenMetaUtils.getMetaBySymbol('USDCnb'),
+    tokenType: TokenType.Ibc,
+    denom:
+      'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
   },
 } as Record<string, Token | Token[]>
 
@@ -632,6 +650,10 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
 
   if (sender.startsWith('0x')) {
     return BridgingNetwork.Ethereum
+  }
+
+  if (sender.startsWith('noble')) {
+    return BridgingNetwork.Noble
   }
 
   return BridgingNetwork.CosmosHub

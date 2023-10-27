@@ -17,9 +17,9 @@ import {
   MsgTransfer,
 } from '@injectivelabs/sdk-ts'
 import {
-  cosmosNativeDenomsFromChainId,
   TokenService,
   UiBankTransformer,
+  cosmosChainTokenMetaMap,
 } from '@injectivelabs/sdk-ui-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { ChainId, CosmosChainId } from '@injectivelabs/ts-types'
@@ -46,7 +46,7 @@ const ibcSupplyWithToken = (await tokenService.getIbcSupplyWithToken(
 
 /* get metadata for canonical denoms available for transfer between chains */
 const cosmosHubBaseDenom = 'uatom'
-const tokenMeta = cosmosNativeDenomsFromChainId[destinationChainId]
+const tokenMeta = cosmosChainTokenMetaMap[destinationChainId]
 const atomToken = (
   Array.isArray(tokenMeta)
     ? tokenMeta.find((token) => token.denom === cosmosHubBaseDenom)
@@ -105,11 +105,9 @@ const privateKey = '0x...'
 /* broadcast transaction */
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  chainId: ChainId.Mainnet,
-  endpoints: endpointsForNetwork,
+  network: Network.Mainnet,
 }).broadcast({
   msgs: msg,
-  injectiveAddress,
 })
 
 console.log(txHash)

@@ -4,7 +4,7 @@ import { ChainGrpcInsuranceFundTransformer } from '../transformers'
 import { mockFactory } from '@injectivelabs/test-utils'
 import { IndexerGrpcDerivativesApi } from '../../indexer'
 
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcIbcApi = new ChainGrpcInsuranceFundApi(endpoints.grpc)
 const injectiveAddress = mockFactory.injectiveAddress
 const derivativeMarketId = mockFactory.derivativeMarketId

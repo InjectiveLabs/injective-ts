@@ -48,7 +48,7 @@ export const getTokenTypeFromDenom = (denom: string) => {
     return TokenType.Native
   }
 
-  if (denom.startsWith('inj')) {
+  if (isCw20ContractAddress(denom)) {
     return TokenType.Cw20
   }
 
@@ -94,7 +94,7 @@ export const getTokenDecimals = (token: Token) => {
     return token.decimals
   }
 
-  if (token.denom.startsWith('inj')) {
+  if (isCw20ContractAddress(token.denom)) {
     return token.cw20?.decimals || token.decimals
   }
 
@@ -288,3 +288,6 @@ export const getUnknownTokenWithSymbol = (denom: string): Token => {
     tokenVerification: TokenVerification.Unverified,
   } as Token
 }
+
+export const isCw20ContractAddress = (address: string) =>
+  address.length === 42 && address.startsWith('inj')

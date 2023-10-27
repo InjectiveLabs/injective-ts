@@ -11,7 +11,7 @@ import {
 } from './tokens/network'
 import { Token, TokenMeta, TokenType } from './types'
 import tokensBySymbol from './tokens/tokens'
-import { getTokenFromMeta } from './utils'
+import { getTokenFromMeta, isCw20ContractAddress } from './utils'
 
 export class TokenFactory {
   public tokenMetaUtils: TokenMetaUtils
@@ -129,7 +129,7 @@ export class TokenFactory {
   }
 
   getCw20DenomTokenMeta(address: string): TokenMeta | undefined {
-    if (!address.startsWith('inj')) {
+    if (!isCw20ContractAddress(address)) {
       throw new GeneralException(
         new Error(`The address ${address} is not a valid CW20 address`),
       )
@@ -151,7 +151,7 @@ export class TokenFactory {
       )
     }
 
-    if (address.startsWith('inj')) {
+    if (isCw20ContractAddress(address)) {
       const tokenMeta = this.tokenMetaUtils.getMetaByAddress(address)
 
       return tokenMeta
