@@ -16,16 +16,19 @@ export declare namespace MsgBatchUpdateOrders {
       marketId: string
       subaccountId: string
       orderHash: string
+      cid?: string
     }[]
     derivativeOrdersToCancel?: {
       marketId: string
       subaccountId: string
       orderHash: string
+      cid?: string
     }[]
     binaryOptionsOrdersToCancel?: {
       marketId: string
       subaccountId: string
       orderHash: string
+      cid?: string
     }[]
     spotOrdersToCreate?: {
       orderType: InjectiveExchangeV1Beta1Exchange.OrderType
@@ -34,6 +37,7 @@ export declare namespace MsgBatchUpdateOrders {
       feeRecipient: string
       price: string
       quantity: string
+      cid?: string
     }[]
     derivativeOrdersToCreate?: {
       orderType: InjectiveExchangeV1Beta1Exchange.OrderType
@@ -43,6 +47,7 @@ export declare namespace MsgBatchUpdateOrders {
       price: string
       margin: string
       quantity: string
+      cid?: string
     }[]
     binaryOptionsOrdersToCreate?: {
       orderType: InjectiveExchangeV1Beta1Exchange.OrderType
@@ -52,6 +57,7 @@ export declare namespace MsgBatchUpdateOrders {
       price: string
       margin: string
       quantity: string
+      cid?: string
     }[]
     injectiveAddress: string
   }
@@ -104,11 +110,12 @@ export default class MsgBatchUpdateOrders extends MsgBase<
 
     if (params.spotOrdersToCancel && params.spotOrdersToCancel.length > 0) {
       const orderData = params.spotOrdersToCancel.map(
-        ({ marketId, subaccountId, orderHash }) => {
+        ({ marketId, subaccountId, orderHash, cid }) => {
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
           orderData.orderHash = orderHash
+          orderData.cid = cid || ''
 
           return orderData
         },
@@ -122,11 +129,12 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       params.derivativeOrdersToCancel.length > 0
     ) {
       const orderData = params.derivativeOrdersToCancel.map(
-        ({ marketId, subaccountId, orderHash }) => {
+        ({ marketId, subaccountId, orderHash, cid }) => {
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
           orderData.orderHash = orderHash
+          orderData.cid = cid || ''
 
           return orderData
         },
@@ -139,11 +147,12 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       params.binaryOptionsOrdersToCancel.length > 0
     ) {
       const orderData = params.binaryOptionsOrdersToCancel.map(
-        ({ marketId, subaccountId, orderHash }) => {
+        ({ marketId, subaccountId, orderHash, cid }) => {
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
           orderData.orderHash = orderHash
+          orderData.cid = cid || ''
 
           return orderData
         },
@@ -168,6 +177,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
         orderInfo.quantity = paramsFromArgs.quantity
+        orderInfo.cid = paramsFromArgs.cid || ''
 
         const order = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
         order.marketId = paramsFromArgs.marketId
@@ -204,6 +214,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
         orderInfo.quantity = paramsFromArgs.quantity
+        orderInfo.cid = paramsFromArgs.cid || ''
 
         const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
         order.marketId = paramsFromArgs.marketId
@@ -239,6 +250,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
         orderInfo.quantity = paramsFromArgs.quantity
+        orderInfo.cid = paramsFromArgs.cid || ''
 
         const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
         order.marketId = paramsFromArgs.marketId

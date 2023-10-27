@@ -2129,10 +2129,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/core-proto-ts@^0.0.18":
-  version "0.0.18"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.18.tgz#aa60ffde2b52cbbf80a18ba77833ecad605d8fd6"
-  integrity sha512-WSZS7SQ+I/m8jdc7fhzkMTUhA7i5nVTeKbN6QGqKmOwQ/F+PqM75vDHD9Y9NbLPx9P+m7hyUzSHz4zmajth5jw==
+"@injectivelabs/core-proto-ts@^0.0.19":
+  version "0.0.19"
+  resolved "https://registry.npmjs.org/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.19.tgz#566ea05761e328502647ad9bd32258fa404a430b"
+  integrity sha512-WV5fBPiGC8Fdx/ga5B+wagqf5B++eGdGCt9HbHnhQkoqRamel01INChJIKwsJrMGsJd5TyHSq0NRnp+N+IIjZA==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
