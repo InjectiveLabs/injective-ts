@@ -41,8 +41,8 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
       const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
       orderData.marketId = order.marketId
       orderData.orderHash = order.orderHash
-      orderData.subaccountId = order.subaccountId
       orderData.cid = order.cid || ''
+      orderData.subaccountId = order.subaccountId
 
       // TODO: Send order.orderMask instead when chain handles order mask properly.
       orderData.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
