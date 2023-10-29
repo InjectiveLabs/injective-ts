@@ -40,6 +40,7 @@ export enum IndexerErrorModule {
   ChronosDerivative = 'indexer-chronos-derivative',
   ChronosSpot = 'indexer-chronos-spot',
   ChronosMarkets = 'indexer-chronos-markets',
+  Campaign = 'indexer-campaign',
 }
 
 export enum WalletErrorActionModule {
