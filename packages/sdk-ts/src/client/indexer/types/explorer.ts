@@ -257,6 +257,18 @@ export interface ContractTransaction {
   time: number
 }
 
+export interface ContractTransactionWithMessages extends ContractTransaction {
+  messages: Array<{
+    type: string
+    value: {
+      sender: string
+      contract: string
+      msg: Record<string, any>
+      funds: string
+    }
+  }>
+}
+
 export interface WasmCode {
   id: number
   txHash: string

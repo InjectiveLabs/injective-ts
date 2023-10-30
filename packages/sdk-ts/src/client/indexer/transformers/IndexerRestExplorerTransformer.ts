@@ -1,5 +1,9 @@
 import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
-import { Block, ExplorerValidator } from '../types/explorer'
+import {
+  Block,
+  ContractTransactionWithMessages,
+  ExplorerValidator,
+} from '../types/explorer'
 import { TokenType } from '@injectivelabs/token-metadata'
 import {
   BaseTransaction,
@@ -38,11 +42,13 @@ const getContractTransactionAmount = (
     return ZERO_IN_BASE
   }
 
-  if (!msg.transfer) {
+  const msgObj = typeof msg === 'string' ? JSON.parse(msg) : msg
+
+  if (!msgObj.transfer) {
     return ZERO_IN_BASE
   }
 
-  return new BigNumberInWei(msg.transfer.amount).toBase()
+  return new BigNumberInWei(msgObj.transfer.amount).toBase()
 }
 
 const parseCW20Message = (jsonObject: string): CW20Message | undefined => {
@@ -217,6 +223,34 @@ export class IndexerRestExplorerTransformer {
         ? new BigNumberInWei(transaction.gas_fee.amount[0].amount).toBase()
         : ZERO_IN_BASE,
       amount: getContractTransactionAmount(transaction),
+    }
+  }
+
+  static contractTransactionToExplorerContractTransactionWithMessages(
+    transaction: ContractTransactionExplorerApiResponse,
+  ): ContractTransactionWithMessages {
+    return {
+      txHash: transaction.hash,
+      code: transaction.code,
+      height: transaction.block_number,
+      time: transaction.block_unix_timestamp,
+      type: transaction.messages[0].type,
+      fee: transaction.gas_fee.amount
+        ? new BigNumberInWei(transaction.gas_fee.amount[0].amount).toBase()
+        : ZERO_IN_BASE,
+      amount: getContractTransactionAmount(transaction),
+      messages: (transaction.messages || []).map((message) => {
+        return {
+          type: message.type,
+          value: {
+            ...message.value,
+            msg:
+              typeof message.value.msg === 'string'
+                ? (JSON.parse(message.value.msg) as Record<string, any>)
+                : message.value.msg,
+          },
+        }
+      }),
     }
   }
 

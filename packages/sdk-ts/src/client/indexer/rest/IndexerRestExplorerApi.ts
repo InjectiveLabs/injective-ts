@@ -496,6 +496,59 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
+  async fetchContractTransactionsWithMessages({
+    contractAddress,
+    params,
+  }: {
+    contractAddress: string
+    params?: {
+      fromNumber?: number
+      limit?: number
+      toNumber?: number
+      skip?: number
+    }
+  }): Promise<{ paging: Paging; transactions: ContractTransaction[] }> {
+    const endpoint = `/contractTxs/${contractAddress}`
+
+    try {
+      const { fromNumber, limit, skip, toNumber } = params || { limit: 12 }
+
+      const response = await this.retry<
+        ExplorerApiResponseWithPagination<
+          ContractTransactionExplorerApiResponse[]
+        >
+      >(() =>
+        this.get(endpoint, {
+          skip,
+          limit,
+          to_number: toNumber,
+          from_number: fromNumber,
+        }),
+      )
+
+      const { paging, data } = response.data
+
+      return {
+        paging,
+        transactions: data
+          ? data.map(
+              IndexerRestExplorerTransformer.contractTransactionToExplorerContractTransaction,
+            )
+          : [],
+      }
+    } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
+        contextModule: IndexerModule.Explorer,
+      })
+    }
+  }
+
   async fetchWasmCode(codeId: number): Promise<WasmCode> {
     const endpoint = `/wasm/codes/${codeId}`
 

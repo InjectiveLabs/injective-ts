@@ -195,11 +195,10 @@ export interface ContractTransactionExplorerApiResponse {
     {
       type: string
       value: {
-        msg: {
-          transfer: {
-            amount: number
-          }
-        }
+        sender: string
+        contract: string
+        msg: Record<string, any>
+        funds: string
       }
     },
   ]
