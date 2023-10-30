@@ -22,6 +22,7 @@ import {
   ContractTransaction,
   ExplorerCW20BalanceWithToken,
   BankTransferFromExplorerApiResponse,
+  ContractTransactionWithMessages,
 } from '../types/explorer'
 import {
   HttpRequestException,
@@ -507,7 +508,10 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       toNumber?: number
       skip?: number
     }
-  }): Promise<{ paging: Paging; transactions: ContractTransaction[] }> {
+  }): Promise<{
+    paging: Paging
+    transactions: ContractTransactionWithMessages[]
+  }> {
     const endpoint = `/contractTxs/${contractAddress}`
 
     try {
@@ -532,7 +536,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         paging,
         transactions: data
           ? data.map(
-              IndexerRestExplorerTransformer.contractTransactionToExplorerContractTransaction,
+              IndexerRestExplorerTransformer.contractTransactionToExplorerContractTransactionWithMessages,
             )
           : [],
       }
