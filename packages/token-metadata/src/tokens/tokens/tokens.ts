@@ -1862,4 +1862,18 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  USDY: {
+    name: 'Ondo US Dollar Yield',
+    symbol: 'USDY',
+    decimals: 18,
+    logo: 'ondo.webp',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 18,
+      address: '0x96F6eF951840721AdBF46Ac996b59E0235CB985C',
+      tokenType: TokenType.Erc20,
+    },
+  },
 } as Record<string, TokenMeta>
