@@ -1853,4 +1853,19 @@ export default {
     logo: 'tia.webp',
     coinGeckoId: '',
   },
+
+  TAILS: {
+    name: 'Talis',
+    symbol: 'TALIS',
+    decimals: 6,
+    logo: 'tails.svg',
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 6,
+      address: 'Talis-3',
+      source: Cw20TokenSource.Cosmos,
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMeta>
