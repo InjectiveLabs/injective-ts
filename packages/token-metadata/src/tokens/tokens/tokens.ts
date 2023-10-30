@@ -1854,18 +1854,12 @@ export default {
     coinGeckoId: '',
   },
 
-  TAILS: {
+  TALIS: {
     name: 'Talis',
     symbol: 'TALIS',
     decimals: 6,
-    logo: 'tails.svg',
+    logo: 'talis.webp',
     coinGeckoId: '',
-
-    cw20: {
-      decimals: 6,
-      address: 'Talis-3',
-      source: Cw20TokenSource.Cosmos,
-      tokenType: TokenType.Cw20,
-    },
+    tokenType: TokenType.TokenFactory,
   },
 } as Record<string, TokenMeta>
