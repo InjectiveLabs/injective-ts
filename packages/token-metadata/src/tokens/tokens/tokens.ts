@@ -1867,7 +1867,7 @@ export default {
     name: 'Ondo US Dollar Yield',
     symbol: 'USDY',
     decimals: 18,
-    logo: 'ondo.webp',
+    logo: 'usdy.webp',
     coinGeckoId: '',
 
     erc20: {
