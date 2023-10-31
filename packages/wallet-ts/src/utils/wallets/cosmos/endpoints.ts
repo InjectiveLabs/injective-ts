@@ -118,8 +118,8 @@ export const getEndpointsFromChainId = (
       }
     case CosmosChainId.Celestia:
       return {
-        rpc: 'http://65.108.128.139:26657',
-        rest: 'http://93.115.25.15:1320',
+        rpc: 'https://rpc.cosmos.directory/celestia',
+        rest: 'https://rest.cosmos.directory/celestia',
       }
     default:
       throw new GeneralException(
