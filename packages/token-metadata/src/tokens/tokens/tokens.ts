@@ -1852,6 +1852,7 @@ export default {
     decimals: 6,
     logo: 'tia.webp',
     coinGeckoId: '',
+
     ibc: {
       decimals: 6,
       isNative: true,
