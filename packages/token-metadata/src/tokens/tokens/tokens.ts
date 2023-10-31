@@ -1851,7 +1851,7 @@ export default {
     symbol: 'TIA',
     decimals: 6,
     logo: 'tia.webp',
-    coinGeckoId: '',
+    coinGeckoId: 'celestia',
 
     ibc: {
       decimals: 6,
