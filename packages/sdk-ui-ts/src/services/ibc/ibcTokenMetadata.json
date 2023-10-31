@@ -931,82 +931,6 @@
     }
   },
   {
-    "name": "Coinbase Wrapped Staked ETH",
-    "denom": "ibc/545E97C6EFB2633645720DEBCA78B2BE6F5382C4693EA7DEB2D4C456371EA4F0",
-    "logo": "untracked.svg",
-    "symbol": "cbETH",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "545E97C6EFB2633645720DEBCA78B2BE6F5382C4693EA7DEB2D4C456371EA4F0",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "cbETH",
-      "baseDenom": "cbETH",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Rocket Pool Ether",
-    "denom": "ibc/8906BF683A89D1ABE075A49EFA35A3128D7E9D809775B8E9D5AEEAA55D2889DD",
-    "logo": "untracked.svg",
-    "symbol": "rETH",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "8906BF683A89D1ABE075A49EFA35A3128D7E9D809775B8E9D5AEEAA55D2889DD",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "rETH",
-      "baseDenom": "rETH",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Staked Frax Ether",
-    "denom": "ibc/E918585C09958BD328DD9E7215E4726623E7A9A94342FEA5BE126A2AAF920730",
-    "logo": "untracked.svg",
-    "symbol": "sfrxETH",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "E918585C09958BD328DD9E7215E4726623E7A9A94342FEA5BE126A2AAF920730",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "sfrxETH",
-      "baseDenom": "sfrxETH",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Wrapped Lido Staked Ether",
-    "denom": "ibc/1E0FC59FB8495BF927B10E9D515661494B1BBEDAA15D80E52FE2BADA64656D16",
-    "logo": "untracked.svg",
-    "symbol": "wstETH",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "1E0FC59FB8495BF927B10E9D515661494B1BBEDAA15D80E52FE2BADA64656D16",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "wstETH",
-      "baseDenom": "wstETH",
-      "isNative": false
-    }
-  },
-  {
     "name": "Cosmos Hub Atom",
     "denom": "ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png",
@@ -1254,9 +1178,85 @@
     }
   },
   {
+    "name": "Coinbase Wrapped Staked ETH",
+    "denom": "ibc/545E97C6EFB2633645720DEBCA78B2BE6F5382C4693EA7DEB2D4C456371EA4F0",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/cbeth.png",
+    "symbol": "cbETH",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "545E97C6EFB2633645720DEBCA78B2BE6F5382C4693EA7DEB2D4C456371EA4F0",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "cbETH",
+      "baseDenom": "cbETH",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Rocket Pool Ether",
+    "denom": "ibc/8906BF683A89D1ABE075A49EFA35A3128D7E9D809775B8E9D5AEEAA55D2889DD",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/reth.png",
+    "symbol": "rETH",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "8906BF683A89D1ABE075A49EFA35A3128D7E9D809775B8E9D5AEEAA55D2889DD",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "rETH",
+      "baseDenom": "rETH",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Staked Frax Ether",
+    "denom": "ibc/E918585C09958BD328DD9E7215E4726623E7A9A94342FEA5BE126A2AAF920730",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/sfrxeth.svg",
+    "symbol": "sfrxETH",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E918585C09958BD328DD9E7215E4726623E7A9A94342FEA5BE126A2AAF920730",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "sfrxETH",
+      "baseDenom": "sfrxETH",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Wrapped Lido Staked Ether",
+    "denom": "ibc/1E0FC59FB8495BF927B10E9D515661494B1BBEDAA15D80E52FE2BADA64656D16",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/wsteth.svg",
+    "symbol": "wstETH",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "1E0FC59FB8495BF927B10E9D515661494B1BBEDAA15D80E52FE2BADA64656D16",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "wstETH",
+      "baseDenom": "wstETH",
+      "isNative": false
+    }
+  },
+  {
     "name": "Real Yield Eth",
     "denom": "ibc/6B7E243C586784E1BE150B71F541A3880F0409E994365AF31FF63A2764B72556",
-    "logo": "untracked.svg",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/yieldeth.png",
     "symbol": "YieldETH",
     "decimals": 18,
     "coinGeckoId": "",
@@ -1269,6 +1269,120 @@
       "decimals": 18,
       "symbol": "YieldETH",
       "baseDenom": "YieldETH",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Celestia",
+    "denom": "ibc/F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png",
+    "symbol": "TIA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TIA",
+      "baseDenom": "TIA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Luna",
+    "denom": "ibc/0DDC992F19041FC1D499CCA1486721479EBAA7270604E15EDDFABA89D1E772E5",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/luna.png",
+    "symbol": "LUNA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0DDC992F19041FC1D499CCA1486721479EBAA7270604E15EDDFABA89D1E772E5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "LUNA",
+      "baseDenom": "LUNA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ERIS Alliance Staked ampWHALE",
+    "denom": "ibc/DF3225D7381562B58AA8BE107A87260DDDC7FA08E4B0898E3D795392CF844BBE",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/ampwhalet.svg",
+    "symbol": "ampWHALEt",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "DF3225D7381562B58AA8BE107A87260DDDC7FA08E4B0898E3D795392CF844BBE",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampWHALEt",
+      "baseDenom": "ampWHALEt",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ERIS Alliance Staked boneWHALE",
+    "denom": "ibc/F993B2C44A70D8B97B09581F12CF1A68A38DF8BBCFBA9F82016984138C718A57",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/bonewhalet.svg",
+    "symbol": "boneWHALEt",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F993B2C44A70D8B97B09581F12CF1A68A38DF8BBCFBA9F82016984138C718A57",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "boneWHALEt",
+      "baseDenom": "boneWHALEt",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ERIS Amplified ROAR",
+    "denom": "ibc/7BE54594EAE77464217B9BB5171035946ED23DB309B030B5708E15C9455BB557",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/amproar.png",
+    "symbol": "ampROAR",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "7BE54594EAE77464217B9BB5171035946ED23DB309B030B5708E15C9455BB557",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampROAR",
+      "baseDenom": "ampROAR",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ERIS Amplified MNTA",
+    "denom": "ibc/A87178EAA371050DDFD80F78630AE622B176C7634160EE515C27CE62FCC8A0CC",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/ampmnta.png",
+    "symbol": "ampMNTA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A87178EAA371050DDFD80F78630AE622B176C7634160EE515C27CE62FCC8A0CC",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampMNTA",
+      "baseDenom": "ampMNTA",
       "isNative": false
     }
   },
