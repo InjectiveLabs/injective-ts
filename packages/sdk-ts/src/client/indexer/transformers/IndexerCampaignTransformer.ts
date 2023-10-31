@@ -38,7 +38,7 @@ export class IndexerCampaignTransformer {
       campaign: response.campaign
         ? IndexerCampaignTransformer.GrpcCampaignToCampaign(response.campaign)
         : undefined,
-      uses: response.users.map(
+      users: response.users.map(
         IndexerCampaignTransformer.GrpcCampaignUserToCampaignUser,
       ),
       paging: grpcPagingToPaging(response.paging),
