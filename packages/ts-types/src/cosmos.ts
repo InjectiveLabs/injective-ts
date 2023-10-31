@@ -22,6 +22,7 @@ export enum CosmosChainId {
   Kava = 'kava_2222-10',
   Oraichain = 'Oraichain',
   Noble = 'noble-1',
+  Celestia = 'celestia',
 }
 
 export enum TestnetCosmosChainId {

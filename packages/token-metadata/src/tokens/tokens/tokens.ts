@@ -1852,6 +1852,15 @@ export default {
     decimals: 6,
     logo: 'tia.webp',
     coinGeckoId: '',
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'utia',
+      path: 'transfer/channel-152',
+      channelId: 'channel-152',
+      hash: 'F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
+      tokenType: TokenType.Ibc,
+    },
   },
 
   TALIS: {

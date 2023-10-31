@@ -50,6 +50,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Kava,
   BridgingNetwork.Oraichain,
   BridgingNetwork.Noble,
+  BridgingNetwork.Celestia,
 ]
 
 export const LeapNetworks = [
@@ -63,6 +64,7 @@ export const LeapNetworks = [
   BridgingNetwork.Canto,
   BridgingNetwork.Kava,
   BridgingNetwork.Noble,
+  BridgingNetwork.Celestia,
 ]
 
 export const CosmostationNetworks = [
@@ -80,6 +82,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Canto,
   BridgingNetwork.Kava,
   BridgingNetwork.Noble,
+  BridgingNetwork.Celestia,
 ]
 
 export const CosmosNetworks = [
@@ -98,6 +101,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Kava,
   BridgingNetwork.Oraichain,
   BridgingNetwork.Noble,
+  BridgingNetwork.Celestia,
 ]
 
 export const EvmWormholeNetworks = [
@@ -275,6 +279,13 @@ export const tokenDenomsPerNetwork = [
     ],
     symbols: ['usdcnb'],
   },
+  {
+    network: BridgingNetwork.Celestia,
+    denoms: [
+      'ibc/F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
+    ],
+    symbols: ['utia'],
+  },
 ] as NetworkConfig[]
 
 export const cosmosChainTokenMetaMap = {
@@ -449,6 +460,12 @@ export const cosmosChainTokenMetaMap = {
     tokenType: TokenType.Ibc,
     denom:
       'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
+  },
+  [CosmosChainId.Celestia]: {
+    ...tokenMetaUtils.getMetaBySymbol('TIA'),
+    tokenType: TokenType.Ibc,
+    denom:
+      'ibc/F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
   },
 } as Record<string, Token | Token[]>
 
@@ -654,6 +671,10 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
 
   if (sender.startsWith('noble')) {
     return BridgingNetwork.Noble
+  }
+
+  if (sender.startsWith('celestia')) {
+    return BridgingNetwork.Celestia
   }
 
   return BridgingNetwork.CosmosHub

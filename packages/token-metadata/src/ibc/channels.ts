@@ -15,6 +15,7 @@ export enum CanonicalChannelToDestinationChannel {
   Kava = 'channel-143',
   Oraichain = 'channel-147',
   Noble = 'channel-148',
+  Celestia = 'channel-152',
 }
 
 /**
@@ -86,6 +87,7 @@ export const canonicalChannelsToChainList = [
   { channelId: 'channel-122', chainA: 'Kava', chainB: 'Injective' },
   { channelId: 'channel-146', chainA: 'Oraichain', chainB: 'Injective' },
   { channelId: 'channel-31', chainA: 'Noble', chainB: 'Injective' },
+  { channelId: 'channel-1', chainA: 'Celestia', chainB: 'Injective' },
   { channelId: 'channel-1', chainA: 'Injective', chainB: 'CosmosHub' },
   { channelId: 'channel-83', chainA: 'Injective', chainB: 'Evmos' },
   { channelId: 'channel-8', chainA: 'Injective', chainB: 'Osmosis' },
@@ -106,6 +108,7 @@ export const canonicalChannelsToChainList = [
   { channelId: 'channel-143', chainA: 'Injective', chainB: 'Kava' },
   { channelId: 'channel-147', chainA: 'Injective', chainB: 'Oraichain' },
   { channelId: 'channel-148', chainA: 'Injective', chainB: 'Noble' },
+  { channelId: 'channel-152', chainA: 'Injective', chainB: 'Celestia' },
 ]
 
 export default legacyCanonicalChannels
@@ -134,6 +137,7 @@ export const canonicalChannelIds = [
   'channel-143',
   'channel-147',
   'channel-148',
+  'channel-152',
 ]
 
 export const channelIbcDenomToBaseDenomMap = {
