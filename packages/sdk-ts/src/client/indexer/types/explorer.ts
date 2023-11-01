@@ -255,6 +255,10 @@ export interface ContractTransaction {
   fee: BigNumberInBase
   height: number
   time: number
+  data: string
+  memo: string
+  tx_number: number
+  error_log: string
 }
 
 export interface ContractTransactionWithMessages extends ContractTransaction {

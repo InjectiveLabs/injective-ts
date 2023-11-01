@@ -216,6 +216,10 @@ export class IndexerRestExplorerTransformer {
     return {
       txHash: transaction.hash,
       code: transaction.code,
+      data: transaction.data,
+      memo: transaction.memo,
+      tx_number: transaction.tx_number,
+      error_log: transaction.error_log,
       height: transaction.block_number,
       time: transaction.block_unix_timestamp,
       type: transaction.messages[0].type,
@@ -230,15 +234,9 @@ export class IndexerRestExplorerTransformer {
     transaction: ContractTransactionExplorerApiResponse,
   ): ContractTransactionWithMessages {
     return {
-      txHash: transaction.hash,
-      code: transaction.code,
-      height: transaction.block_number,
-      time: transaction.block_unix_timestamp,
-      type: transaction.messages[0].type,
-      fee: transaction.gas_fee.amount
-        ? new BigNumberInWei(transaction.gas_fee.amount[0].amount).toBase()
-        : ZERO_IN_BASE,
-      amount: getContractTransactionAmount(transaction),
+      ...IndexerRestExplorerTransformer.contractTransactionToExplorerContractTransaction(
+        transaction,
+      ),
       messages: (transaction.messages || []).map((message) => {
         return {
           type: message.type,
