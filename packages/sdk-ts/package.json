@@ -56,7 +56,7 @@
     "bech32": "^2.0.0",
     "bip39": "^3.0.4",
     "cosmjs-types": "^0.7.1",
-    "eth-crypto": "^2.6.0",
+    "@bangjelkoski/eth-crypto": "^2.6.0",
     "ethereumjs-util": "^7.1.4",
     "ethers": "^5.7.2",
     "google-protobuf": "^3.21.0",

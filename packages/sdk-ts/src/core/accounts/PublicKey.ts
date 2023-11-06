@@ -6,7 +6,7 @@ import { Address } from './Address'
 import {
   publicKey as EthCryptoPublicKey,
   util as EthCryptoUtil,
-} from 'eth-crypto'
+} from '@bangjelkoski/eth-crypto'
 import { keccak256 } from 'js-sha3'
 import {
   GoogleProtobufAny,
