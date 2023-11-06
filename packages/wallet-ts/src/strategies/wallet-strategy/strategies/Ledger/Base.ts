@@ -9,11 +9,11 @@ import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import {
   ErrorType,
-  GeneralException,
+  WalletException,
   LedgerException,
+  GeneralException,
   TransactionException,
   UnspecifiedErrorCode,
-  WalletException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
