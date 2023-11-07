@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.2](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.2-beta.1...@injectivelabs/exceptions@1.14.2) (2023-11-07)
+
+
+### Reverts
+
+* faulty version ([6e25b3f](https://github.com/InjectiveLabs/injective-ts/commit/6e25b3f156d964666db8bc7885df653166aac523))
+
+
+
+
+
 ## [1.14.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.1-beta.7...@injectivelabs/exceptions@1.14.1) (2023-10-27)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
