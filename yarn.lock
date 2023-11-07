@@ -39,7 +39,7 @@
   resolved "https://registry.npmjs.org/@axelar-network/axelar-cgp-solidity/-/axelar-cgp-solidity-4.3.1.tgz#49877b2599083fdd4bda92d3eb0ccdfcfeff3785"
   integrity sha512-efJsTvoGITUPr50PQc8fCwzT9JOJMnchW+WnXAivXaEm/mw2bcEAYX6dCcZn4j6tgFTAVZnYqrABItQwDaStag==
 
-"@axelar-network/axelarjs-sdk@^0.11.7":
+"@axelar-network/axelarjs-sdk@0.11.8":
   version "0.11.8"
   resolved "https://registry.npmjs.org/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.11.8.tgz#870312ad5edcb81f0ffebe9fe143e14028b1ea53"
   integrity sha512-KVORyvO0i8dH7I0BmmNumopDls/f0fgsCVKRUAvR+izcPGHOG/8u4RDkUOeBHaPWBRSJUHIXdeQSm7MIYvpwUw==
