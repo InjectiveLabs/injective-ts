@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.8",
-    "@bangjelkoski/eth-crypto": "^2.6.1",
+    "eth-crypto": "^2.6.0",
     "@cosmjs/amino": "^0.30.1",
     "@cosmjs/proto-signing": "^0.30.1",
     "@cosmjs/stargate": "^0.30.1",
