@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/token-metadata",
   "description": "Denom token metadata. name, symbol, decimals, etc.",
-  "version": "1.14.2-beta.11",
+  "version": "1.14.2-beta.12",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
