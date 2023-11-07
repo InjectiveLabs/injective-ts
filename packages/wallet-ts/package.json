@@ -49,7 +49,7 @@
     "@ledgerhq/hw-transport-webhid": "6.27.19",
     "@ledgerhq/hw-transport-webusb": "6.27.19",
     "@metamask/eth-sig-util": "^4.0.0",
-    "@solana/wallet-adapter-wallets": "^0.19.5",
+    "@solana/wallet-adapter-wallets": "^0.19.23",
     "@toruslabs/torus-embed": "^1.39.0",
     "@trezor/connect-web": "^9.0.6",
     "alchemy-sdk": "^2.6.3",
