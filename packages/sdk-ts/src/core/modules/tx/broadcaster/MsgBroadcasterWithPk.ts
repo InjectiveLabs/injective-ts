@@ -24,8 +24,9 @@ import { getGasPriceBasedOnMessage } from '../../../../utils/msgs'
 import { CreateTransactionArgs } from '../types'
 import { IndexerGrpcTransactionApi } from '../../../../client'
 import { AccountDetails } from '../../../../types/auth'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
-enum RetriesType {
+export enum RetriesType {
   Sequence = 'sequence',
 }
 
@@ -55,6 +56,7 @@ interface MsgBroadcasterWithPkOptions {
   privateKey: string | PrivateKey /* hex or PrivateKey class */
   ethereumChainId?: EthereumChainId
   simulateTx?: boolean
+  loggingEnabled?: boolean
   retries?: Record<RetriesType, boolean>
 }
 
@@ -77,6 +79,8 @@ export class MsgBroadcasterWithPk {
 
   public simulateTx: boolean = false
 
+  public loggingEnabled: boolean = false
+
   public retries: Record<RetriesType, boolean> = {
     [RetriesType.Sequence]: false,
   }
@@ -86,6 +90,7 @@ export class MsgBroadcasterWithPk {
     const endpoints = getNetworkEndpoints(options.network)
 
     this.simulateTx = options.simulateTx || false
+    this.loggingEnabled = options.loggingEnabled || false
     this.retries = options.retries || {
       [RetriesType.Sequence]: false,
     }
@@ -106,21 +111,9 @@ export class MsgBroadcasterWithPk {
    * @returns {string} transaction hash
    */
   async broadcast(transaction: MsgBroadcasterTxOptions) {
-    const { endpoints } = this
     const { txRaw } = await this.prepareTxForBroadcast(transaction)
 
-    /** Broadcast transaction */
-    const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
-
-    if (txResponse.code !== 0) {
-      throw new GeneralException(
-        new Error(
-          `Transaction failed to be broadcasted - ${txResponse.rawLog}`,
-        ),
-      )
-    }
-
-    return txResponse
+    return await this.broadcastTxRaw(txRaw)
   }
 
   /**
@@ -130,47 +123,32 @@ export class MsgBroadcasterWithPk {
    * @returns {string} transaction hash
    */
   async broadcastWithRetry(transaction: MsgBroadcasterTxOptions) {
-    const { endpoints, retries } = this
+    const { retries } = this
     const { txRaw, accountDetails } = await this.prepareTxForBroadcast(
       transaction,
     )
 
-    /** Broadcast transaction */
-    const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
+    try {
+      const txResponse = await this.broadcastTxRaw(txRaw)
 
-    if (txResponse.code !== 0) {
-      /** No retires are setup for the transaction, throw and error */
-      if (!retries.sequence) {
-        throw new GeneralException(
-          new Error(
-            `Transaction failed to be broadcasted - ${txResponse.rawLog}`,
-          ),
-        )
-      }
+      return txResponse
+    } catch (e: unknown) {
+      if (e instanceof GeneralException) {
+        /** If the transaction fails because of sequence error, retry with higher sequence number */
+        if (e.message.includes('sequence') && retries.sequence) {
+          const { txRaw } = await this.prepareTxForBroadcast(transaction, {
+            ...accountDetails,
+            sequence: accountDetails.sequence + 1,
+          })
 
-      /** Retry with a sequence number higher than the previous one */
-      if (retries.sequence) {
-        const { txRaw } = await this.prepareTxForBroadcast(transaction, {
-          ...accountDetails,
-          sequence: accountDetails.sequence + 1,
-        })
+          const txResponse = await this.broadcastTxRaw(txRaw)
 
-        /** Broadcast transaction */
-        const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
-
-        if (txResponse.code !== 0) {
-          throw new GeneralException(
-            new Error(
-              `Transaction failed to be broadcasted - ${txResponse.rawLog}`,
-            ),
-          )
+          return txResponse
         }
-
-        return txResponse
       }
-    }
 
-    return txResponse
+      throw e
+    }
   }
 
   /**
@@ -383,5 +361,24 @@ export class MsgBroadcasterWithPk {
     )
     const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
     return baseAccount.toAccountDetails()
+  }
+
+  private async broadcastTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
+    const { loggingEnabled, endpoints } = this
+    const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
+
+    if (txResponse.code !== 0) {
+      if (loggingEnabled) {
+        console.log(JSON.stringify(txResponse))
+      }
+
+      throw new GeneralException(
+        new Error(
+          `Transaction failed to be broadcasted - ${txResponse.rawLog} - ${txResponse.txHash}`,
+        ),
+      )
+    }
+
+    return txResponse
   }
 }
