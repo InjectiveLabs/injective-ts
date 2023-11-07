@@ -1,6 +1,6 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
-import type EthereumApp from '@ledgerhq/hw-app-eth'
+import EthereumApp from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
 import {
   ErrorType,
@@ -49,8 +49,6 @@ export default class LedgerTransport {
   }
 
   async getInstance(): Promise<EthereumApp> {
-    const EthereumApp = await import('@ledgerhq/hw-app-eth')
-
     if (this.ledger) {
       return this.ledger
     }
@@ -58,7 +56,7 @@ export default class LedgerTransport {
     try {
       const transport = await LedgerTransport.getTransport()
 
-      this.ledger = new EthereumApp.default(transport)
+      this.ledger = new EthereumApp(transport)
 
       transport.on('disconnect', () => {
         this.ledger = null

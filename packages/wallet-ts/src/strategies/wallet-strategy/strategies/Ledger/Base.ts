@@ -35,6 +35,7 @@ import { domainHash, messageHash } from './utils'
 import { WalletAction, WalletDeviceType } from '../../../../types/enums'
 import { getKeyFromRpcUrl } from '../../../../utils/alchemy'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import { ledgerService } from '@ledgerhq/hw-app-eth'
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
@@ -299,10 +300,7 @@ export default class LedgerBase
     try {
       const ledger = await this.ledger.getInstance()
       const { derivationPath } = await this.getWalletForAddress(options.address)
-      const ledgerService = await import(
-        '@ledgerhq/hw-app-eth/lib/services/ledger'
-      )
-      const resolution = await ledgerService.default.resolveTransaction(
+      const resolution = await ledgerService.resolveTransaction(
         encodedMessageHex,
         {},
         {},
