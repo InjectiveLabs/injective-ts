@@ -49,18 +49,21 @@ export default class LedgerTransport {
   }
 
   async getInstance(): Promise<EthereumApp> {
+    const EthereumApp = await import('@ledgerhq/hw-app-eth')
+
+    if (this.ledger) {
+      return this.ledger
+    }
+
     try {
-      if (!this.ledger) {
-        const transport = await LedgerTransport.getTransport()
-        const EthereumApp = await import('@ledgerhq/hw-app-eth')
+      const transport = await LedgerTransport.getTransport()
 
-        this.ledger = new EthereumApp.default(transport)
+      this.ledger = new EthereumApp.default(transport)
 
-        transport.on('disconnect', () => {
-          this.ledger = null
-          this.accountManager = null
-        })
-      }
+      transport.on('disconnect', () => {
+        this.ledger = null
+        this.accountManager = null
+      })
 
       return this.ledger
     } catch (e) {

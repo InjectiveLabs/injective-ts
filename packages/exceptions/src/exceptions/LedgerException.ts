@@ -6,6 +6,9 @@ const isCommonLockedError = (error: string) => {
     'Ledger device: Incorrect length',
     'Ledger device: INS_NOT_SUPPORTED',
     'Ledger device: CLA_NOT_SUPPORTED',
+    'CLA_NOT_SUPPORTED',
+    'CLA',
+    'Locked',
     'Failed to open the device',
     'Failed to open the device',
     'Ledger Device is busy',
@@ -39,18 +42,6 @@ export class LedgerException extends ConcreteException {
     }
 
     if (message.includes('No device selected.')) {
-      this.setMessage(
-        'Please make sure your Ledger device is connected, unlocked and your Ethereum app is open',
-      )
-    }
-
-    if (message.includes('locked')) {
-      this.setMessage(
-        'Please make sure your Ledger device is connected, unlocked and your Ethereum app is open',
-      )
-    }
-
-    if (message.includes('CLA')) {
       this.setMessage(
         'Please make sure your Ledger device is connected, unlocked and your Ethereum app is open',
       )
