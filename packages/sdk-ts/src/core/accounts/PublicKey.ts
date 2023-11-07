@@ -1,12 +1,8 @@
-import { BECH32_PUBKEY_ACC_PREFIX } from '../../utils'
+import { BECH32_PUBKEY_ACC_PREFIX, decompressPubKey } from '../../utils'
 import { bech32 } from 'bech32'
 import { toBuffer } from 'ethereumjs-util'
 import secp256k1 from 'secp256k1'
 import { Address } from './Address'
-import {
-  publicKey as EthCryptoPublicKey,
-  util as EthCryptoUtil,
-} from 'eth-crypto'
 import { keccak256 } from 'js-sha3'
 import {
   GoogleProtobufAny,
@@ -63,9 +59,15 @@ export class PublicKey {
 
   public toAddress(): Address {
     const publicKeyHex = this.toHex()
-    const decompressedPublicKey = EthCryptoPublicKey.decompress(publicKeyHex)
+    const decompressedPublicKey = decompressPubKey(publicKeyHex)
     const addressBuffer = Buffer.from(
-      keccak256(toBuffer(EthCryptoUtil.addLeading0x(decompressedPublicKey))),
+      keccak256(
+        toBuffer(
+          decompressedPublicKey.startsWith('0x')
+            ? decompressedPublicKey
+            : '0x' + decompressedPublicKey,
+        ),
+      ),
       'hex',
     ).subarray(-20)
 

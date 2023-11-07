@@ -183,6 +183,10 @@ export interface ContractTransactionExplorerApiResponse {
   hash: string
   code: number
   block_number: number
+  data: string
+  memo: string
+  tx_number: number
+  error_log: string
   block_unix_timestamp: number
   gas_fee: {
     amount: [
@@ -195,11 +199,10 @@ export interface ContractTransactionExplorerApiResponse {
     {
       type: string
       value: {
-        msg: {
-          transfer: {
-            amount: number
-          }
-        }
+        sender: string
+        contract: string
+        msg: Record<string, any>
+        funds: string
       }
     },
   ]

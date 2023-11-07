@@ -9,7 +9,9 @@ export const getTokenFromDenomsMetadata = (
   denom: string,
   response: Metadata,
 ): FactoryToken => {
-  const [denomUnit] = response.denomUnits.reverse()
+  const [denomUnit] = [...response.denomUnits].sort(
+    (u1, u2) => u2.exponent - u1.exponent,
+  )
 
   return {
     denom,

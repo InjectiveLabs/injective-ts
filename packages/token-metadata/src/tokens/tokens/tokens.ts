@@ -1851,6 +1851,39 @@ export default {
     symbol: 'TIA',
     decimals: 6,
     logo: 'tia.webp',
+    coinGeckoId: 'celestia',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'utia',
+      path: 'transfer/channel-152',
+      channelId: 'channel-152',
+      hash: 'F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
+  TALIS: {
+    name: 'Talis',
+    symbol: 'TALIS',
+    decimals: 6,
+    logo: 'talis.webp',
     coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  USDY: {
+    name: 'Ondo US Dollar Yield',
+    symbol: 'USDY',
+    decimals: 18,
+    logo: 'usdy.webp',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 18,
+      address: '0x96F6eF951840721AdBF46Ac996b59E0235CB985C',
+      tokenType: TokenType.Erc20,
+    },
   },
 } as Record<string, TokenMeta>

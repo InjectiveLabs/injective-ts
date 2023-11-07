@@ -513,6 +513,24 @@ export class MsgBroadcaster {
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
+    /**
+     * We can only use this method when Keplr is connected
+     * with ledger
+     */
+    if (walletStrategy.getWallet() === Wallet.Keplr) {
+      const walletDeviceType = await walletStrategy.getWalletDeviceType()
+      const isLedgerConnectedOnKeplr =
+        walletDeviceType === WalletDeviceType.Hardware
+
+      if (isLedgerConnectedOnKeplr) {
+        throw new GeneralException(
+          new Error(
+            'Keplr + Ledger is not available with fee delegation. Connect with Ledger directly.',
+          ),
+        )
+      }
+    }
+
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
     )

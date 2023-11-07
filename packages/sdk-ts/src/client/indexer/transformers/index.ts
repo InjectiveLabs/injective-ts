@@ -1,5 +1,6 @@
 export * from './IndexerGrpcMitoTransformer'
 export * from './IndexerGrpcSpotTransformer'
+export * from './IndexerCampaignTransformer'
 export * from './IndexerGrpcOracleTransformer'
 export * from './IndexerSpotStreamTransformer'
 export * from './IndexerGrpcAccountTransformer'

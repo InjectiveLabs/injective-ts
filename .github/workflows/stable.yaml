@@ -23,7 +23,7 @@ jobs:
           node-version: '16.18.1'
 
       - name: 'Setup lerna@6.6.1'
-        run: yarn global add lerna@6.6.1  --ignore-engines
+        run: yarn global add lerna@6.6.1 --ignore-engines
 
       - name: Set up Git user
         run: |
@@ -33,7 +33,7 @@ jobs:
       - name: Build dependencies
         run: |
           node etc/bootstrapEnv
-          yarn install  --ignore-engines
+          yarn install --ignore-engines
           yarn build
 
       - name: 'Setup npm'
