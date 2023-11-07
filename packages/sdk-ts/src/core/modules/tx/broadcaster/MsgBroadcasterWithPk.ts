@@ -23,6 +23,11 @@ import {
 import { getGasPriceBasedOnMessage } from '../../../../utils/msgs'
 import { CreateTransactionArgs } from '../types'
 import { IndexerGrpcTransactionApi } from '../../../../client'
+import { AccountDetails } from '../../../../types/auth'
+
+enum RetriesType {
+  Sequence = 'sequence',
+}
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
@@ -50,6 +55,7 @@ interface MsgBroadcasterWithPkOptions {
   privateKey: string | PrivateKey /* hex or PrivateKey class */
   ethereumChainId?: EthereumChainId
   simulateTx?: boolean
+  retries?: Record<RetriesType, boolean>
 }
 
 /**
@@ -71,11 +77,18 @@ export class MsgBroadcasterWithPk {
 
   public simulateTx: boolean = false
 
+  public retries: Record<RetriesType, boolean> = {
+    [RetriesType.Sequence]: false,
+  }
+
   constructor(options: MsgBroadcasterWithPkOptions) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints = getNetworkEndpoints(options.network)
 
     this.simulateTx = options.simulateTx || false
+    this.retries = options.retries || {
+      [RetriesType.Sequence]: false,
+    }
     this.chainId = networkInfo.chainId
     this.ethereumChainId =
       options.ethereumChainId || networkInfo.ethereumChainId
@@ -93,54 +106,8 @@ export class MsgBroadcasterWithPk {
    * @returns {string} transaction hash
    */
   async broadcast(transaction: MsgBroadcasterTxOptions) {
-    const { chainId, privateKey, endpoints } = this
-    const msgs = Array.isArray(transaction.msgs)
-      ? transaction.msgs
-      : [transaction.msgs]
-
-    const tx = {
-      ...transaction,
-      msgs: msgs,
-    } as MsgBroadcasterTxOptions
-
-    /** Account Details * */
-    const publicKey = privateKey.toPublicKey()
-    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
-    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      privateKey.toBech32(),
-    )
-    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
-    const accountDetails = baseAccount.toAccountDetails()
-
-    /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
-    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
-    const latestHeight = latestBlock.header.height
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-    )
-
-    const gas = (
-      transaction.gas?.gas || getGasPriceBasedOnMessage(msgs)
-    ).toString()
-
-    /** Prepare the Transaction * */
-    const { signBytes, txRaw } = await this.getTxWithStdFee({
-      memo: tx.memo || '',
-      message: msgs,
-      fee: getStdFee({ ...tx.gas, gas }),
-      timeoutHeight: timeoutHeight.toNumber(),
-      pubKey: publicKey.toBase64(),
-      sequence: accountDetails.sequence,
-      accountNumber: accountDetails.accountNumber,
-      chainId: chainId,
-    })
-
-    /** Sign transaction */
-    const signature = await privateKey.sign(Buffer.from(signBytes))
-
-    /** Append Signatures */
-    txRaw.signatures = [signature]
+    const { endpoints } = this
+    const { txRaw } = await this.prepareTxForBroadcast(transaction)
 
     /** Broadcast transaction */
     const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
@@ -151,6 +118,56 @@ export class MsgBroadcasterWithPk {
           `Transaction failed to be broadcasted - ${txResponse.rawLog}`,
         ),
       )
+    }
+
+    return txResponse
+  }
+
+  /**
+   * Broadcasting the transaction using the client
+   *
+   * @param tx
+   * @returns {string} transaction hash
+   */
+  async broadcastWithRetry(transaction: MsgBroadcasterTxOptions) {
+    const { endpoints, retries } = this
+    const { txRaw, accountDetails } = await this.prepareTxForBroadcast(
+      transaction,
+    )
+
+    /** Broadcast transaction */
+    const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
+
+    if (txResponse.code !== 0) {
+      /** No retires are setup for the transaction, throw and error */
+      if (!retries.sequence) {
+        throw new GeneralException(
+          new Error(
+            `Transaction failed to be broadcasted - ${txResponse.rawLog}`,
+          ),
+        )
+      }
+
+      /** Retry with a sequence number higher than the previous one */
+      if (retries.sequence) {
+        const { txRaw } = await this.prepareTxForBroadcast(transaction, {
+          ...accountDetails,
+          sequence: accountDetails.sequence + 1,
+        })
+
+        /** Broadcast transaction */
+        const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
+
+        if (txResponse.code !== 0) {
+          throw new GeneralException(
+            new Error(
+              `Transaction failed to be broadcasted - ${txResponse.rawLog}`,
+            ),
+          )
+        }
+
+        return txResponse
+      }
     }
 
     return txResponse
@@ -301,5 +318,70 @@ export class MsgBroadcasterWithPk {
     )
 
     return simulationResponse
+  }
+
+  private async prepareTxForBroadcast(
+    transaction: MsgBroadcasterTxOptions,
+    accountDetails?: AccountDetails,
+  ) {
+    const { chainId, privateKey, endpoints } = this
+    const msgs = Array.isArray(transaction.msgs)
+      ? transaction.msgs
+      : [transaction.msgs]
+
+    const tx = {
+      ...transaction,
+      msgs: msgs,
+    } as MsgBroadcasterTxOptions
+
+    /** Account Details * */
+    const publicKey = privateKey.toPublicKey()
+    const actualAccountDetails = await this.getAccountDetails(accountDetails)
+
+    /** Block Details */
+    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
+    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
+    const latestHeight = latestBlock.header.height
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+    )
+
+    const gas = (
+      transaction.gas?.gas || getGasPriceBasedOnMessage(msgs)
+    ).toString()
+
+    /** Prepare the Transaction * */
+    const { signBytes, txRaw } = await this.getTxWithStdFee({
+      memo: tx.memo || '',
+      message: msgs,
+      fee: getStdFee({ ...tx.gas, gas }),
+      timeoutHeight: timeoutHeight.toNumber(),
+      pubKey: publicKey.toBase64(),
+      sequence: actualAccountDetails.sequence,
+      accountNumber: actualAccountDetails.accountNumber,
+      chainId: chainId,
+    })
+
+    /** Sign transaction */
+    const signature = await privateKey.sign(Buffer.from(signBytes))
+
+    /** Append Signatures */
+    txRaw.signatures = [signature]
+
+    return { txRaw, accountDetails: actualAccountDetails }
+  }
+
+  private async getAccountDetails(accountDetails?: AccountDetails) {
+    if (accountDetails) {
+      return accountDetails
+    }
+
+    const { privateKey, endpoints } = this
+    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
+    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
+      privateKey.toBech32(),
+    )
+    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
+    return baseAccount.toAccountDetails()
   }
 }
