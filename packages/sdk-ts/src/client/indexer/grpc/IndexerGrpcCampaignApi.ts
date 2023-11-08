@@ -79,4 +79,143 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchGuilds({
+    skip,
+    limit,
+    sortBy,
+    campaignContract,
+  }: {
+    skip?: string
+    limit?: number
+    sortBy: string
+    campaignContract: string
+  }) {
+    const request = InjectiveCampaignRpc.ListGuildsRequest.create()
+
+    request.sortBy = sortBy
+    request.campaignContract = campaignContract
+
+    if (skip) {
+      request.skip = skip
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveCampaignRpc.ListGuildsResponse>(() =>
+          this.client.ListGuilds(request),
+        )
+
+      return IndexerCampaignTransformer.GuildsResponseToGuilds(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'FetchGuilds',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'FetchGuilds',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchGuildMember({
+    address,
+    campaignContract,
+  }: {
+    address: string
+    campaignContract: string
+  }) {
+    const request = InjectiveCampaignRpc.GetGuildMemberRequest.create()
+
+    request.address = address
+    request.campaignContract = campaignContract
+
+    try {
+      const response =
+        await this.retry<InjectiveCampaignRpc.GetGuildMemberResponse>(() =>
+          this.client.GetGuildMember(request),
+        )
+
+      return IndexerCampaignTransformer.GuildMemberResponseToGuildMember(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'FetchGuildMember',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'FetchGuildMember',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchGuildMembers({
+    skip,
+    limit,
+    guildId,
+    campaignContract,
+    includeGuildInfo,
+  }: {
+    skip?: string
+    limit?: number
+    guildId: string
+    campaignContract: string
+    includeGuildInfo: boolean
+  }) {
+    const request = InjectiveCampaignRpc.ListGuildMembersRequest.create()
+
+    request.guildId = guildId
+    request.campaignContract = campaignContract
+    request.includeGuildInfo = includeGuildInfo
+
+    if (skip) {
+      request.skip = skip
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveCampaignRpc.ListGuildMembersResponse>(() =>
+          this.client.ListGuildMembers(request),
+        )
+
+      return IndexerCampaignTransformer.GuildMembersResponseToGuildMembers(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'FetchGuildMembers',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'FetchGuildMembers',
+        contextModule: this.module,
+      })
+    }
+  }
 }
