@@ -18,6 +18,7 @@ import {
 } from '../types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
+import Ninji from './strategies/Ninji'
 import Trezor from './strategies/Trezor'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
@@ -96,6 +97,8 @@ const createStrategy = ({
       return new Cosmostation({ ...args })
     case Wallet.Leap:
       return new Leap({ ...args })
+    case Wallet.Ninji:
+      return new Ninji({ ...args })
     default:
       return undefined
   }

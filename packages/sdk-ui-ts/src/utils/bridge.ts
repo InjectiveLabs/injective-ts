@@ -445,8 +445,9 @@ export const cosmosChainTokenMetaMap = {
     },
   ],
   [TestnetCosmosChainId.Cosmoshub]: {
-    ...tokenMetaUtils.getMetaBySymbol('UPHOTON'),
+    ...tokenMetaUtils.getMetaBySymbol('ATOM'),
     tokenType: TokenType.Ibc,
+    // TODO: change when IBC connection established
     denom:
       'ibc/48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
   },

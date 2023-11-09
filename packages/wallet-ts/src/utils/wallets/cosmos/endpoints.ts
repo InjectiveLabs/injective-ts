@@ -108,8 +108,8 @@ export const getEndpointsFromChainId = (
       }
     case TestnetCosmosChainId.Cosmoshub:
       return {
-        rpc: 'https://testnet.tm.cosmos.injective.dev',
-        rest: 'https://testnet.lcd.cosmos.injective.dev',
+        rpc: 'https://rpc.sentry-01.theta-testnet.polypore.xyz',
+        rest: 'https://rest.sentry-01.theta-testnet.polypore.xyz',
       }
     case CosmosChainId.Noble:
       return {

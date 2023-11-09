@@ -3,6 +3,7 @@ import { WalletErrorActionModule } from '@injectivelabs/exceptions'
 export enum Wallet {
   Leap = 'leap',
   Keplr = 'keplr',
+  Ninji = 'ninji',
   Torus = 'torus',
   Ledger = 'ledger',
   Trezor = 'trezor',

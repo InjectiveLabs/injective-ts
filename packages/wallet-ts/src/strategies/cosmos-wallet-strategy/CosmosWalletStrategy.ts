@@ -7,13 +7,19 @@ import { Wallet, WalletDeviceType } from '../../types/enums'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
 import Cosmostation from './strategies/Cosmostation'
+import Ninji from './strategies/Ninji'
 import {
   ConcreteCosmosWalletStrategy,
   CosmosWalletStrategyArguments,
 } from '../types/strategy'
 import { isCosmosWallet } from '../../utils/wallets/cosmos/utils'
 
-export const cosmosWallets = [Wallet.Keplr, Wallet.Leap, Wallet.Cosmostation]
+export const cosmosWallets = [
+  Wallet.Keplr,
+  Wallet.Leap,
+  Wallet.Cosmostation,
+  Wallet.Ninji,
+]
 
 const createWallet = ({
   wallet,
@@ -29,6 +35,8 @@ const createWallet = ({
       return new Leap({ ...args })
     case Wallet.Cosmostation:
       return new Cosmostation({ ...args })
+    case Wallet.Ninji:
+      return new Ninji({ ...args })
     default:
       throw new GeneralException(
         new Error(`The ${wallet} concrete wallet strategy is not supported`),
