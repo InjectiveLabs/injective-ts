@@ -16,9 +16,6 @@ import {
   GrpcEpochScore,
   EpochScore,
   TotalScoresHistory,
-  LiquidityScoreSnapshot,
-  LiquiditySnapshots,
-  GrpcLiquidityScoreSnapshot,
   GrpcRewardDistribution,
   RewardsDistribution,
   RewardDistribution,
@@ -208,38 +205,6 @@ export class DmmGrpcTransformer {
     }
   }
 
-  static liquiditySnapshotsResponseToLiquiditySnapshots(
-    response: InjectiveDmmRpc.GetLiquiditySnapshotsResponse,
-  ): LiquiditySnapshots {
-    const snapshots = response.snapshots
-
-    return {
-      next: response.next,
-      snapshots: snapshots.map(
-        DmmGrpcTransformer.grpcLiquiditySnapshotsToLiquiditySnapshots,
-      ),
-    }
-  }
-
-  static grpcLiquiditySnapshotsToLiquiditySnapshots(
-    snapshot: GrpcLiquidityScoreSnapshot,
-  ): LiquidityScoreSnapshot {
-    return {
-      epochId: snapshot.epochId,
-      marketId: snapshot.marketId,
-      accountAddress: snapshot.accountAddress,
-      height: snapshot.height,
-      blockTime: snapshot.blockTime,
-      bid: snapshot.bid,
-      ask: snapshot.ask,
-      depth: snapshot.depth,
-      liquidityScore: snapshot.liquidityScore,
-      uptimeScore: snapshot.uptimeScore,
-      createdAt: snapshot.createdAt,
-      updatedAt: snapshot.updatedAt,
-    }
-  }
-
   static rewardsDistributionResponseToRewardsDistribution(
     response: InjectiveDmmRpc.GetRewardsDistributionResponse,
   ): RewardsDistribution {
@@ -299,6 +264,7 @@ export class DmmGrpcTransformer {
       dailyVolumePercentage: reward.dailyVolumePercentage,
       dailyMakerVolumePercentage: reward.dailyMakerVolumePercentage,
       dailyTakerVolumePercentage: reward.dailyTakerVolumePercentage,
+      dailyQualified: reward.dailyQualified,
       createdAt: reward.createdAt,
       updatedAt: reward.updatedAt,
     }

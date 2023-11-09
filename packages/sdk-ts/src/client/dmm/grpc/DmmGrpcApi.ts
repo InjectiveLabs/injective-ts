@@ -289,53 +289,6 @@ export class DmmGrpcApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchLiquiditySnapshots({
-    epochId,
-    marketId,
-    accountAddress,
-    page,
-  }: {
-    epochId: string
-    marketId: string
-    accountAddress: string
-    page?: InjectiveDmmRpc.Pagination
-  }) {
-    const request = InjectiveDmmRpc.GetLiquiditySnapshotsRequest.create()
-
-    request.epochId = epochId
-    request.marketId = marketId
-    request.accountAddress = accountAddress
-
-    if (page) {
-      request.page = page
-    }
-
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetLiquiditySnapshotsResponse>(() =>
-          this.client.GetLiquiditySnapshots(request),
-        )
-
-      return DmmGrpcTransformer.liquiditySnapshotsResponseToLiquiditySnapshots(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'GetLiquiditySnapshots',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetLiquiditySnapshots',
-        contextModule: this.module,
-      })
-    }
-  }
-
   async fetchRewardsDistribution({
     epochId,
     height,

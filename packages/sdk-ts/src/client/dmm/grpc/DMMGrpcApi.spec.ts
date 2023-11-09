@@ -137,29 +137,6 @@ describe('DmmGrpcApi', () => {
     }
   })
 
-  test('fetchLiquiditySnapshots', async () => {
-    try {
-      const response = await dmmGrpcApi.fetchLiquiditySnapshots({
-        epochId,
-        marketId,
-        accountAddress,
-      })
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof DmmGrpcTransformer.liquiditySnapshotsResponseToLiquiditySnapshots
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'DmmGrpcApi.fetchLiquiditySnapshots => ' + (e as any).message,
-      )
-    }
-  })
-
   test('fetchRewardsDistribution', async () => {
     try {
       const response = await dmmGrpcApi.fetchRewardsDistribution({

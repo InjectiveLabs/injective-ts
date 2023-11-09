@@ -39,7 +39,7 @@
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/bytes": "^5.7.0",
     "@injectivelabs/core-proto-ts": "^0.0.18",
-    "@injectivelabs/dmm-proto-ts": "1.0.16",
+    "@injectivelabs/dmm-proto-ts": "1.0.19",
     "@injectivelabs/exceptions": "^1.14.3-beta.0",
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
