@@ -213,6 +213,6 @@ export class NinjiWallet {
       )
     }
 
-    return $window.ninji!
+    return $window.ninji! as Ninji
   }
 }
