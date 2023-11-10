@@ -105,7 +105,7 @@ export class IndexerCampaignTransformer {
   ) {
     return {
       guilds: response.guilds.map(IndexerCampaignTransformer.GrpcGuildToGuild),
-      paging: grpcPagingToPaging(response.pagination),
+      paging: grpcPagingToPaging(response.paging),
       updatedAt: parseInt(response.updatedAt, 10),
       summary: response.campaignSummary
         ? IndexerCampaignTransformer.GrpcGuildCampaignSummaryToGuildCampaignSummary(
@@ -132,7 +132,7 @@ export class IndexerCampaignTransformer {
       members: response.members.map(
         IndexerCampaignTransformer.GrpcGuildMemberToGuildMember,
       ),
-      paging: grpcPagingToPaging(response.pagination),
+      paging: grpcPagingToPaging(response.paging),
       guildInfo: response.guildInfo
         ? IndexerCampaignTransformer.GrpcGuildToGuild(response.guildInfo)
         : undefined,

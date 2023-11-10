@@ -86,7 +86,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     sortBy,
     campaignContract,
   }: {
-    skip?: string
+    skip?: number
     limit?: number
     sortBy: string
     campaignContract: string
@@ -173,7 +173,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     campaignContract,
     includeGuildInfo,
   }: {
-    skip?: string
+    skip?: number
     limit?: number
     guildId: string
     campaignContract: string
