@@ -2204,6 +2204,25 @@
     }
   },
   {
+    "name": "OSMO Squared",
+    "denom": "ibc/AFCDF4348DBDF92BCF631B1D38628F75683F45A8A0DCE304FC9AAD4F31609916",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqosmo.svg",
+    "symbol": "sqOSMO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "AFCDF4348DBDF92BCF631B1D38628F75683F45A8A0DCE304FC9AAD4F31609916",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "sqOSMO",
+      "baseDenom": "sqOSMO",
+      "isNative": false
+    }
+  },
+  {
     "name": "ATOM",
     "denom": "ibc/8D311D92BCD4E87F145DEB9DDA339416DEF7E13571D92A3521CAB0BF62760FBE",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png",
@@ -2295,6 +2314,101 @@
       "decimals": 6,
       "symbol": "GEM",
       "baseDenom": "GEM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "qcKUJI",
+    "denom": "ibc/B7C8418ABE8CF56B42A37215F6A715097FDD82AC322FE560CA589833FEE8C50D",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/qckuji.svg",
+    "symbol": "qcKUJI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B7C8418ABE8CF56B42A37215F6A715097FDD82AC322FE560CA589833FEE8C50D",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "qcKUJI",
+      "baseDenom": "qcKUJI",
+      "isNative": false
+    }
+  },
+  {
+    "name": "qcMNTA",
+    "denom": "ibc/F770E830BC7E2992BC0DBECAC789432995B64BD6714C36EA092D877E28AA9493",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/qcmnta.svg",
+    "symbol": "qcMNTA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F770E830BC7E2992BC0DBECAC789432995B64BD6714C36EA092D877E28AA9493",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "qcMNTA",
+      "baseDenom": "qcMNTA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Fuzion",
+    "denom": "ibc/FE87E1E1BB401EC35CD02A57FE5DEF872FA309C018172C4E7DA07F194EAC6F19",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/fuzion.png",
+    "symbol": "FUZN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "FE87E1E1BB401EC35CD02A57FE5DEF872FA309C018172C4E7DA07F194EAC6F19",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FUZN",
+      "baseDenom": "FUZN",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Fuzion Receipt",
+    "denom": "ibc/F5FFC37BBF4B24F94D920BC7DAFCCE5B9403B2DB33DF759B8CED76EA8A6E3E24",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/fuzionr.png",
+    "symbol": "rFUZN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F5FFC37BBF4B24F94D920BC7DAFCCE5B9403B2DB33DF759B8CED76EA8A6E3E24",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "rFUZN",
+      "baseDenom": "rFUZN",
+      "isNative": false
+    }
+  },
+  {
+    "name": "NSTK",
+    "denom": "ibc/35366063B530778DC37A16AAED4DDC14C0DCA161FBF55B5B69F5171FEE19BF93",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/nstk.svg",
+    "symbol": "NSTK",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "35366063B530778DC37A16AAED4DDC14C0DCA161FBF55B5B69F5171FEE19BF93",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "NSTK",
+      "baseDenom": "NSTK",
       "isNative": false
     }
   }

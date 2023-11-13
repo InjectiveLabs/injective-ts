@@ -52,6 +52,7 @@ export class IndexerCampaignTransformer {
       updatedAt: parseInt(guild.updatedAt, 10),
       name: guild.name,
       isActive: guild.isActive,
+      masterBalance: guild.masterBalance,
     }
   }
 
