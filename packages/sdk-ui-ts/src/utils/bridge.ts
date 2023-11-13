@@ -51,6 +51,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Oraichain,
   BridgingNetwork.Noble,
   BridgingNetwork.Celestia,
+  BridgingNetwork.Migaloo,
 ]
 
 export const LeapNetworks = [
@@ -65,6 +66,7 @@ export const LeapNetworks = [
   BridgingNetwork.Kava,
   BridgingNetwork.Noble,
   BridgingNetwork.Celestia,
+  BridgingNetwork.Migaloo,
 ]
 
 export const CosmostationNetworks = [
@@ -83,6 +85,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Kava,
   BridgingNetwork.Noble,
   BridgingNetwork.Celestia,
+  BridgingNetwork.Migaloo,
 ]
 
 export const CosmosNetworks = [
@@ -102,6 +105,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Oraichain,
   BridgingNetwork.Noble,
   BridgingNetwork.Celestia,
+  BridgingNetwork.Migaloo,
 ]
 
 export const EvmWormholeNetworks = [
@@ -122,6 +126,7 @@ export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Polygon,
   BridgingNetwork.Sui,
   BridgingNetwork.Klaytn,
+  BridgingNetwork.Migaloo,
 ]
 
 export const tokenDenomsPerNetwork = [
@@ -285,6 +290,14 @@ export const tokenDenomsPerNetwork = [
       'ibc/F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
     ],
     symbols: ['utia'],
+  },
+  {
+    network: BridgingNetwork.Migaloo,
+    denoms: [
+      'inj',
+      'ibc/D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445',
+    ],
+    symbols: ['inj', 'uwhale'],
   },
 ] as NetworkConfig[]
 
@@ -468,6 +481,19 @@ export const cosmosChainTokenMetaMap = {
     denom:
       'ibc/F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
   },
+  [CosmosChainId.Migaloo]: [
+    {
+      ...tokenMetaUtils.getMetaBySymbol('WHALE'),
+      tokenType: TokenType.Ibc,
+      denom:
+        'ibc/D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445',
+    },
+    {
+      ...tokenMetaUtils.getMetaBySymbol('INJ'),
+      tokenType: TokenType.Ibc,
+      denom: 'inj',
+    },
+  ],
 } as Record<string, Token | Token[]>
 
 export const ibcHashToNativeInjPerNetwork = {
@@ -479,6 +505,8 @@ export const ibcHashToNativeInjPerNetwork = {
     'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
   [BridgingNetwork.Stride]:
     'ibc/A7454562FF29FE068F42F9DE4805ABEF54F599D1720B345D6518D9B5C64EA6D2',
+  [BridgingNetwork.Migaloo]:
+    'ibc/1C2D8505A29823310B4484E4C63CFDCB08C0D3B57537A615A45F4E5D42CDC789',
 } as Partial<Record<BridgingNetwork, string>>
 
 export const ibcHashToNativeInjPerCosmosChain = {
@@ -490,6 +518,8 @@ export const ibcHashToNativeInjPerCosmosChain = {
     'ibc/D64E84758BCA42602C27E9ED2DB8F4EFDAE6A1E311CF404B516D45FEDF319D73',
   [CosmosChainId.Stride]:
     'ibc/A7454562FF29FE068F42F9DE4805ABEF54F599D1720B345D6518D9B5C64EA6D2',
+  [BridgingNetwork.Migaloo]:
+    'ibc/1C2D8505A29823310B4484E4C63CFDCB08C0D3B57537A615A45F4E5D42CDC789',
 } as Partial<Record<CosmosChainId, string>>
 
 export const getExplorerUrl = (network: Network): string => {
@@ -510,6 +540,10 @@ export const getCosmosExplorerUrl = (
 ): string => {
   if (bridgingNetwork === BridgingNetwork.Oraichain) {
     return 'https://scan.orai.io/'
+  }
+
+  if (bridgingNetwork === BridgingNetwork.Migaloo) {
+    return 'https://migaloo.explorers.guru/'
   }
 
   const mintScanNetworkUrl = MintScanExplorerUrl[bridgingNetwork]
@@ -676,6 +710,10 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
 
   if (sender.startsWith('celestia')) {
     return BridgingNetwork.Celestia
+  }
+
+  if (sender.startsWith('migaloo')) {
+    return BridgingNetwork.Migaloo
   }
 
   return BridgingNetwork.CosmosHub
