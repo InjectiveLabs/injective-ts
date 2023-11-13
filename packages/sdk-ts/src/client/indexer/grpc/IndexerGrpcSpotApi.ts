@@ -155,6 +155,10 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
       if (pagination.endTime !== undefined) {
         request.endTime = pagination.endTime.toString()
       }
+
+      if (pagination.startTime !== undefined) {
+        request.startTime = pagination.startTime.toString()
+      }
     }
 
     try {
@@ -250,6 +254,10 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
 
       if (pagination.endTime !== undefined) {
         request.endTime = pagination.endTime.toString()
+      }
+
+      if (pagination.startTime !== undefined) {
+        request.startTime = pagination.startTime.toString()
       }
     }
 
@@ -359,6 +367,10 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
 
       if (pagination.endTime !== undefined) {
         request.endTime = pagination.endTime.toString()
+      }
+
+      if (pagination.startTime !== undefined) {
+        request.startTime = pagination.startTime.toString()
       }
     }
 

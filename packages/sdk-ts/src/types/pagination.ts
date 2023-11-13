@@ -6,6 +6,7 @@ export interface PaginationOption {
   reverse?: boolean
   countTotal?: boolean
   endTime?: number
+  startTime?: number
   fromNumber?: number
   toNumber?: number
 }
