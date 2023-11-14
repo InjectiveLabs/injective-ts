@@ -2411,5 +2411,43 @@
       "baseDenom": "NSTK",
       "isNative": false
     }
+  },
+  {
+    "name": "BTC Squared",
+    "denom": "ibc/81C212661A115B9799C71173DD131B5077B14A3FBD26A8A9A0C669F76F434E23",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqbtc.svg",
+    "symbol": "sqBTC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "81C212661A115B9799C71173DD131B5077B14A3FBD26A8A9A0C669F76F434E23",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "sqBTC",
+      "baseDenom": "sqBTC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ATOM Squared",
+    "denom": "ibc/C63E6285FA0EE014B89671A7A633E1CE7F62310312843B9AC7248910619143C6",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqatom.svg",
+    "symbol": "sqATOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C63E6285FA0EE014B89671A7A633E1CE7F62310312843B9AC7248910619143C6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "sqATOM",
+      "baseDenom": "sqATOM",
+      "isNative": false
+    }
   }
 ]
