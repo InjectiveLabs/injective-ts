@@ -57,8 +57,16 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
   async getAddresses(): Promise<string[]> {
     const { chainName } = this
     const cosmostationWallet = await this.getCosmostationWallet()
+    const cosmostationWalletUtil = new CosmostationWallet(this.chainId)
 
     try {
+      if (!(await cosmostationWalletUtil.checkChainIdSupport())) {
+        throw new CosmosWalletException(
+          new Error(`The ${this.chainId} is not supported on Cosmostation.`),
+          { type: ErrorType.WalletError },
+        )
+      }
+
       const accounts = await cosmostationWallet.requestAccount(chainName)
 
       return [accounts.address]

@@ -29,7 +29,9 @@ export class CosmostationWallet {
     try {
       const supportedChainIds = await provider.getSupportedChainIds()
 
-      return !!supportedChainIds.official.find((chainId) => chainId === chainId)
+      return !!supportedChainIds.official.find(
+        (chainId) => chainId === actualChainId,
+      )
     } catch (e) {
       throw new CosmosWalletException(
         new Error(
