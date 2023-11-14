@@ -35,6 +35,10 @@ export class NinjiWallet {
     this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
+  static async isChainIdSupported(chainId: CosmosChainId): Promise<boolean> {
+    return new NinjiWallet(chainId).checkChainIdSupport()
+  }
+
   async getNinjiWallet() {
     const { chainId } = this
     const ninji = this.getNinji()
@@ -176,17 +180,21 @@ export class NinjiWallet {
     return new TxRestApi(endpoint || this.endpoints.rest).fetchTxPoll(txHash)
   }
 
-  public checkChainIdSupport = async () => {
+  public async checkChainIdSupport() {
     const { chainId } = this
     const ninji = this.getNinji()
+    const chainName = chainId.split('-')
 
     try {
-      await ninji.getKey(chainId)
-
-      // Chain exists already on Ninji
-      return true
+      return !!(await ninji.getKey(chainId))
     } catch (e) {
-      return false
+      throw new CosmosWalletException(
+        new Error(
+          `Leap doesn't support ${
+            chainName[0] || chainId
+          } network. Please use another Cosmos wallet`,
+        ),
+      )
     }
   }
 

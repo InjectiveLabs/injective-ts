@@ -34,12 +34,6 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  async isChainIdSupported(chainId?: CosmosChainId): Promise<boolean> {
-    const leapWallet = chainId ? new LeapWallet(chainId) : this.getLeapWallet()
-
-    return leapWallet.checkChainIdSupport()
-  }
-
   async getAddresses(): Promise<string[]> {
     const { chainId } = this
     const leapWallet = this.getLeapWallet()

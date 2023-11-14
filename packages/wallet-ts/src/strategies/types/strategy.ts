@@ -46,8 +46,6 @@ export interface ConcreteCosmosWalletStrategy {
    */
   sendTransaction(transaction: DirectSignResponse | TxRaw): Promise<TxResponse>
 
-  isChainIdSupported(chainId?: CosmosChainId): Promise<boolean>
-
   signTransaction(transaction: {
     txRaw: TxRaw
     chainId: string

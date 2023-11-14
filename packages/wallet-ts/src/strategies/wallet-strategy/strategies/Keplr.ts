@@ -53,7 +53,7 @@ export default class Keplr
 
     try {
       if (!(await keplrWallet.checkChainIdSupport())) {
-        await keplrWallet.experimentalSuggestChain()
+        await keplrWallet.chainNotSupported()
       }
 
       const accounts = await keplrWallet.getAccounts()

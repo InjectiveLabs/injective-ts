@@ -23,7 +23,6 @@ import {
   WalletErrorActionModule,
   GeneralException,
 } from '@injectivelabs/exceptions'
-import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
@@ -42,19 +41,8 @@ export class KeplrWallet {
     this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
-  public static async experimentalSuggestChainWithChainData(chainData: any) {
-    if (!$window || ($window && !$window.keplr)) {
-      throw new CosmosWalletException(
-        new Error('Please install Keplr extension'),
-        { code: UnspecifiedErrorCode, type: ErrorType.WalletNotInstalledError },
-      )
-    }
-
-    try {
-      await $window.keplr!.experimentalSuggestChain(chainData)
-    } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message))
-    }
+  static async isChainIdSupported(chainId: CosmosChainId): Promise<boolean> {
+    return new KeplrWallet(chainId).checkChainIdSupport()
   }
 
   public async getKeplrWallet() {
@@ -70,25 +58,17 @@ export class KeplrWallet {
     }
   }
 
-  public async experimentalSuggestChain() {
+  public async chainNotSupported() {
     const { chainId } = this
-    const keplr = this.getKeplr()
+    const chainName = chainId.split('-')
 
-    const chainData = getExperimentalChainConfigBasedOnChainId(chainId)
-
-    if (!chainData) {
-      throw new CosmosWalletException(
-        new Error(
-          `Keplr doesn't support ${chainId} chainId. Please use another wallet`,
-        ),
-      )
-    }
-
-    try {
-      await keplr.experimentalSuggestChain(chainData)
-    } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message))
-    }
+    throw new CosmosWalletException(
+      new Error(
+        `Keplr doesn't support ${
+          chainName[0] || chainId
+        } network. Please use another Cosmos wallet`,
+      ),
+    )
   }
 
   public async getAccounts() {
@@ -293,14 +273,18 @@ export class KeplrWallet {
   public async checkChainIdSupport() {
     const { chainId } = this
     const keplr = this.getKeplr()
+    const chainName = chainId.split('-')
 
     try {
-      await keplr.getKey(chainId)
-
-      // Chain exists already on Keplr
-      return true
+      return !!(await keplr.getKey(chainId))
     } catch (e) {
-      return false
+      throw new CosmosWalletException(
+        new Error(
+          `Keplr doesn't support ${
+            chainName[0] || chainId
+          } network. Please use another Cosmos wallet`,
+        ),
+      )
     }
   }
 

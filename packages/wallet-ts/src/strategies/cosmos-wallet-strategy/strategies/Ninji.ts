@@ -34,14 +34,6 @@ export default class Ninji implements ConcreteCosmosWalletStrategy {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  async isChainIdSupported(chainId?: CosmosChainId): Promise<boolean> {
-    const ninjiWallet = chainId
-      ? new NinjiWallet(chainId)
-      : this.getNinjiWallet()
-
-    return ninjiWallet.checkChainIdSupport()
-  }
-
   async getAddresses(): Promise<string[]> {
     const { chainId } = this
     const ninjiWallet = this.getNinjiWallet()

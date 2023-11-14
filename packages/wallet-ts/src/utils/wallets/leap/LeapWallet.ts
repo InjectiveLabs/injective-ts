@@ -35,6 +35,10 @@ export class LeapWallet {
     this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
+  static async isChainIdSupported(chainId: CosmosChainId): Promise<boolean> {
+    return new LeapWallet(chainId).checkChainIdSupport()
+  }
+
   async getLeapWallet() {
     const { chainId } = this
     const leap = this.getLeap()
@@ -176,17 +180,21 @@ export class LeapWallet {
     return new TxRestApi(endpoint || this.endpoints.rest).fetchTxPoll(txHash)
   }
 
-  public checkChainIdSupport = async () => {
+  public async checkChainIdSupport() {
     const { chainId } = this
     const leap = this.getLeap()
+    const chainName = chainId.split('-')
 
     try {
-      await leap.getKey(chainId)
-
-      // Chain exists already on Leap
-      return true
+      return !!(await leap.getKey(chainId))
     } catch (e) {
-      return false
+      throw new CosmosWalletException(
+        new Error(
+          `Leap doesn't support ${
+            chainName[0] || chainId
+          } network. Please use another Cosmos wallet`,
+        ),
+      )
     }
   }
 
