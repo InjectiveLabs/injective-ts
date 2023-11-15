@@ -40,6 +40,12 @@ export interface ConcreteCosmosWalletStrategy {
   getPubKey(): Promise<string>
 
   /**
+   * Perform validations and checks
+   * for the wallet (if the chain is supported, etc)
+   */
+  enable(): Promise<void>
+
+  /**
    * Sends Cosmos transaction. Returns a transaction hash
    * @param transaction should implement TransactionConfig
    * @param options

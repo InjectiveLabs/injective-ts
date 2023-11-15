@@ -54,19 +54,15 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable() {
+    await new CosmostationWallet(this.chainId).checkChainIdSupport()
+  }
+
   async getAddresses(): Promise<string[]> {
     const { chainName } = this
     const cosmostationWallet = await this.getCosmostationWallet()
-    const cosmostationWalletUtil = new CosmostationWallet(this.chainId)
 
     try {
-      if (!(await cosmostationWalletUtil.checkChainIdSupport())) {
-        throw new CosmosWalletException(
-          new Error(`The ${this.chainId} is not supported on Cosmostation.`),
-          { type: ErrorType.WalletError },
-        )
-      }
-
       const accounts = await cosmostationWallet.requestAccount(chainName)
 
       return [accounts.address]
@@ -79,6 +75,10 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
             context: WalletAction.GetAccounts,
           },
         )
+      }
+
+      if (e instanceof CosmosWalletException) {
+        throw e
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {

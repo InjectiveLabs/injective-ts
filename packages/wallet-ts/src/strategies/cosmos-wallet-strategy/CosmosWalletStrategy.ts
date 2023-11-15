@@ -91,6 +91,10 @@ export default class CosmosWalletStrategy {
     return this.getStrategy().getPubKey()
   }
 
+  public enable(): Promise<void> {
+    return this.getStrategy().enable()
+  }
+
   public getAddresses(): Promise<AccountAddress[]> {
     return this.getStrategy().getAddresses()
   }

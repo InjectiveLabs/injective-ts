@@ -79,6 +79,10 @@ export default class LedgerBase
     return Promise.resolve(WalletDeviceType.Hardware)
   }
 
+  async enable(): Promise<void> {
+    //
+  }
+
   public async getAddresses(): Promise<string[]> {
     const { baseDerivationPath, derivationPathType } = this
 

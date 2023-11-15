@@ -43,6 +43,10 @@ export default class Cosmostation
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<void> {
+    //
+  }
+
   async getAddresses(): Promise<string[]> {
     const cosmostationWallet = await this.getCosmostationWallet()
 

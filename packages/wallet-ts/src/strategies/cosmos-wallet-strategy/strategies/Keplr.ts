@@ -38,6 +38,10 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
       : Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable() {
+    await this.getKeplrWallet().checkChainIdSupport()
+  }
+
   async getAddresses(): Promise<string[]> {
     const keplrWallet = this.getKeplrWallet()
 
@@ -46,6 +50,10 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
 
       return accounts.map((account) => account.address)
     } catch (e: unknown) {
+      if (e instanceof CosmosWalletException) {
+        throw e
+      }
+
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetAccounts,

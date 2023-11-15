@@ -34,22 +34,24 @@ export default class Ninji implements ConcreteCosmosWalletStrategy {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable() {
+    await this.getNinjiWallet().checkChainIdSupport()
+  }
+
   async getAddresses(): Promise<string[]> {
-    const { chainId } = this
     const ninjiWallet = this.getNinjiWallet()
 
     try {
-      if (!(await ninjiWallet.checkChainIdSupport())) {
-        throw new CosmosWalletException(
-          new Error(`The ${chainId} is not supported on Ninji.`),
-          { type: ErrorType.WalletError },
-        )
-      }
+      await ninjiWallet.checkChainIdSupport()
 
       const accounts = await ninjiWallet.getAccounts()
 
       return accounts.map((account) => account.address)
     } catch (e: unknown) {
+      if (e instanceof CosmosWalletException) {
+        throw e
+      }
+
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetAccounts,

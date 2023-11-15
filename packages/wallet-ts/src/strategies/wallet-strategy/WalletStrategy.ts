@@ -156,6 +156,10 @@ export default class WalletStrategy {
     return this.getStrategy().getPubKey()
   }
 
+  public enable(): Promise<void> {
+    return this.getStrategy().enable()
+  }
+
   public getEthereumChainId(): Promise<string> {
     return this.getStrategy().getEthereumChainId()
   }

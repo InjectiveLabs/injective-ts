@@ -35,6 +35,10 @@ export default class TrustWallet
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<void> {
+    //
+  }
+
   async getAddresses(): Promise<string[]> {
     const ethereum = await this.getEthereum()
 

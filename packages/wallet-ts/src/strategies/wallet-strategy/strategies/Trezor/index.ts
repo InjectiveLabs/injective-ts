@@ -81,6 +81,10 @@ export default class Trezor
     return Promise.resolve(WalletDeviceType.Hardware)
   }
 
+  async enable(): Promise<void> {
+    //
+  }
+
   public async getAddresses(): Promise<string[]> {
     try {
       await this.trezor.connect()

@@ -59,6 +59,10 @@ export default class Torus
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<void> {
+    //
+  }
+
   async connect(): Promise<void> {
     const { connected, torus, ethereumChainId } = this
 

@@ -48,6 +48,10 @@ export default class Keplr
       : Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<void> {
+    //
+  }
+
   async getAddresses(): Promise<string[]> {
     const keplrWallet = this.getKeplrWallet()
 

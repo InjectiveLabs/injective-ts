@@ -43,6 +43,10 @@ export default class Leap
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<void> {
+    //
+  }
+
   async getAddresses(): Promise<string[]> {
     const { chainId } = this
     const leapWallet = this.getLeapWallet()
