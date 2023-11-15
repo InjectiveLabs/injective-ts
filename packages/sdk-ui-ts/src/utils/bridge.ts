@@ -52,6 +52,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Noble,
   BridgingNetwork.Celestia,
   BridgingNetwork.Migaloo,
+  BridgingNetwork.Kujira,
 ]
 
 export const LeapNetworks = [
@@ -67,6 +68,7 @@ export const LeapNetworks = [
   BridgingNetwork.Noble,
   BridgingNetwork.Celestia,
   BridgingNetwork.Migaloo,
+  BridgingNetwork.Kujira,
 ]
 
 export const CosmostationNetworks = [
@@ -106,6 +108,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Noble,
   BridgingNetwork.Celestia,
   BridgingNetwork.Migaloo,
+  BridgingNetwork.Kujira,
 ]
 
 export const EvmWormholeNetworks = [
@@ -299,6 +302,13 @@ export const tokenDenomsPerNetwork = [
     ],
     symbols: ['inj', 'uwhale'],
   },
+  {
+    network: BridgingNetwork.Kujira,
+    denoms: [
+      'ibc/9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204',
+    ],
+    symbols: ['ukuji'],
+  },
 ] as NetworkConfig[]
 
 export const cosmosChainTokenMetaMap = {
@@ -489,6 +499,12 @@ export const cosmosChainTokenMetaMap = {
         'ibc/D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445',
     },
   ],
+  [CosmosChainId.Kujira]: {
+    ...tokenMetaUtils.getMetaBySymbol('KUJI'),
+    tokenType: TokenType.Ibc,
+    denom:
+      'ibc/9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204',
+  },
 } as Record<string, Token | Token[]>
 
 export const ibcHashToNativeInjPerNetwork = {
@@ -709,6 +725,10 @@ export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
 
   if (sender.startsWith('migaloo')) {
     return BridgingNetwork.Migaloo
+  }
+
+  if (sender.startsWith('kujira')) {
+    return BridgingNetwork.Kujira
   }
 
   return BridgingNetwork.CosmosHub

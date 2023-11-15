@@ -126,6 +126,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://rpc.cosmos.directory/migaloo',
         rest: 'https://rest.cosmos.directory/migaloo',
       }
+    case CosmosChainId.Kujira:
+      return {
+        rpc: 'https://rpc.cosmos.directory/kujira',
+        rest: 'https://rest.cosmos.directory/kujira',
+      }
     default:
       throw new GeneralException(
         new Error(`Endpoints for ${chainId} not found`),

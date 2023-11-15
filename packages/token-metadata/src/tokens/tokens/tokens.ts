@@ -1886,4 +1886,22 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  KUJI: {
+    name: 'Kujira',
+    symbol: 'KUJI',
+    decimals: 6,
+    logo: 'kuji.webp',
+    coinGeckoId: 'kujira',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'ukuji',
+      path: 'transfer/channel-98',
+      channelId: 'channel-98',
+      hash: '9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204',
+      tokenType: TokenType.Ibc,
+    },
+  },
 } as Record<string, TokenMeta>
