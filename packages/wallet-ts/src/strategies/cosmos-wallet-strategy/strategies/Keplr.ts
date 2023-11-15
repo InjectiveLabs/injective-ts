@@ -40,6 +40,8 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
 
   async enable() {
     await this.getKeplrWallet().checkChainIdSupport()
+
+    return Promise.resolve()
   }
 
   async getAddresses(): Promise<string[]> {

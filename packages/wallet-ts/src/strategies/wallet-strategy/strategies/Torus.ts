@@ -60,7 +60,7 @@ export default class Torus
   }
 
   async enable(): Promise<void> {
-    //
+    return Promise.resolve()
   }
 
   async connect(): Promise<void> {

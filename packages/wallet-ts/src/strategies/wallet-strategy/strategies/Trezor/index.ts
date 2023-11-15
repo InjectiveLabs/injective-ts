@@ -82,7 +82,7 @@ export default class Trezor
   }
 
   async enable(): Promise<void> {
-    //
+    return Promise.resolve()
   }
 
   public async getAddresses(): Promise<string[]> {

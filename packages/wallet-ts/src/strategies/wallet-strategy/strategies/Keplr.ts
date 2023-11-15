@@ -49,7 +49,7 @@ export default class Keplr
   }
 
   async enable(): Promise<void> {
-    //
+    return Promise.resolve()
   }
 
   async getAddresses(): Promise<string[]> {

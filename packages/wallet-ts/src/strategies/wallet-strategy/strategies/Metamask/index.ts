@@ -36,7 +36,7 @@ export default class Metamask
   }
 
   async enable(): Promise<void> {
-    //
+    return Promise.resolve()
   }
 
   async getAddresses(): Promise<string[]> {

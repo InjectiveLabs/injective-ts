@@ -36,6 +36,8 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
 
   async enable() {
     await this.getLeapWallet().checkChainIdSupport()
+
+    return Promise.resolve()
   }
 
   async getAddresses(): Promise<string[]> {

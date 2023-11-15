@@ -44,7 +44,7 @@ export default class Leap
   }
 
   async enable(): Promise<void> {
-    //
+    return Promise.resolve()
   }
 
   async getAddresses(): Promise<string[]> {
