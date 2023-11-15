@@ -49,17 +49,15 @@ export default class Keplr
   }
 
   async enable(): Promise<boolean> {
-    return Promise.resolve(true)
+    const keplrWallet = this.getKeplrWallet()
+
+    return await keplrWallet.checkChainIdSupport()
   }
 
   async getAddresses(): Promise<string[]> {
     const keplrWallet = this.getKeplrWallet()
 
     try {
-      if (!(await keplrWallet.checkChainIdSupport())) {
-        await keplrWallet.chainNotSupported()
-      }
-
       const accounts = await keplrWallet.getAccounts()
 
       return accounts.map((account) => account.address)

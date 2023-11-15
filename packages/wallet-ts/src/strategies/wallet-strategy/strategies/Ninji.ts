@@ -44,21 +44,15 @@ export default class Ninji
   }
 
   async enable(): Promise<boolean> {
-    return Promise.resolve(true)
+    const ninjiWallet = this.getNinjiWallet()
+
+    return await ninjiWallet.checkChainIdSupport()
   }
 
   async getAddresses(): Promise<string[]> {
-    const { chainId } = this
     const ninjiWallet = this.getNinjiWallet()
 
     try {
-      if (!(await ninjiWallet.checkChainIdSupport())) {
-        throw new CosmosWalletException(
-          new Error(`The ${chainId} is not supported on Ninji.`),
-          { type: ErrorType.WalletError },
-        )
-      }
-
       const accounts = await ninjiWallet.getAccounts()
 
       return accounts.map((account) => account.address)

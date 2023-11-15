@@ -42,8 +42,6 @@ export default class Ninji implements ConcreteCosmosWalletStrategy {
     const ninjiWallet = this.getNinjiWallet()
 
     try {
-      await ninjiWallet.checkChainIdSupport()
-
       const accounts = await ninjiWallet.getAccounts()
 
       return accounts.map((account) => account.address)

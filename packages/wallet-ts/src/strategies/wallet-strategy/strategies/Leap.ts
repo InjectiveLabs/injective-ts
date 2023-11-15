@@ -44,21 +44,15 @@ export default class Leap
   }
 
   async enable(): Promise<boolean> {
-    return Promise.resolve(true)
+    const leapWallet = this.getLeapWallet()
+
+    return await leapWallet.checkChainIdSupport()
   }
 
   async getAddresses(): Promise<string[]> {
-    const { chainId } = this
     const leapWallet = this.getLeapWallet()
 
     try {
-      if (!(await leapWallet.checkChainIdSupport())) {
-        throw new CosmosWalletException(
-          new Error(`The ${chainId} is not supported on Leap.`),
-          { type: ErrorType.WalletError },
-        )
-      }
-
       const accounts = await leapWallet.getAccounts()
 
       return accounts.map((account) => account.address)

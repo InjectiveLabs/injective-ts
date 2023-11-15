@@ -160,6 +160,12 @@ export default class WalletStrategy {
     return this.getStrategy().enable()
   }
 
+  public async enableAndGetAddresses(): Promise<AccountAddress[]> {
+    await this.getStrategy().enable()
+
+    return this.getStrategy().getAddresses()
+  }
+
   public getEthereumChainId(): Promise<string> {
     return this.getStrategy().getEthereumChainId()
   }
