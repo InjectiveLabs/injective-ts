@@ -4,6 +4,9 @@
   "version": "1.14.3-beta.12",
   "sideEffects": false,
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=16.0.0 <17.0.0"
+  },
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"

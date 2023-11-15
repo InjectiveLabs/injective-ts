@@ -1,12 +1,12 @@
 # 🌟 Injective's TypeScript Monorepo
 
-[![Wiki](https://img.shields.io/static/v1?label=Wiki&message=Documentation&color=blue)](https://github.com/InjectiveLabs/injective-ts/wiki)
+[![Documentation](https://img.shields.io/static/v1?label=Documentation&message=Documentation&color=blue)](https://docs.ts.injective.network/)
 
 _Access Limitless DeFi Markets with Zero Barriers._
 
 `injective-ts` is a TypeScript monorepo that contains packages which can be used to interact with Injective from a Node.js or browser environments and which provide simple abstractions over core data structures, serialization, key management, and API request generation, etc. The packages can be found in the `packages` folder and each package is a `npm` module that is published on the `npm` registry.
 
-Learn more on our [Wiki](https://github.com/InjectiveLabs/injective-ts/wiki)
+Learn more on our [Docs](https://docs.ts.injective.network/)
 
 ---
 
