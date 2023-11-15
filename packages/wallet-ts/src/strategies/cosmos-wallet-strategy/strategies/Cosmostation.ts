@@ -55,9 +55,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
   }
 
   async enable() {
-    await new CosmostationWallet(this.chainId).checkChainIdSupport()
-
-    return Promise.resolve()
+    return await CosmostationWallet.isChainIdSupported(this.chainId)
   }
 
   async getAddresses(): Promise<string[]> {

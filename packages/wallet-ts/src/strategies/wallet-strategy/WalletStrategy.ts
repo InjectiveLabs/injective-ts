@@ -156,7 +156,7 @@ export default class WalletStrategy {
     return this.getStrategy().getPubKey()
   }
 
-  public enable(): Promise<void> {
+  public enable(): Promise<boolean> {
     return this.getStrategy().enable()
   }
 

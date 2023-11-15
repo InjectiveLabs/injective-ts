@@ -79,8 +79,8 @@ export default class LedgerBase
     return Promise.resolve(WalletDeviceType.Hardware)
   }
 
-  async enable(): Promise<void> {
-    return Promise.resolve()
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
   }
 
   public async getAddresses(): Promise<string[]> {

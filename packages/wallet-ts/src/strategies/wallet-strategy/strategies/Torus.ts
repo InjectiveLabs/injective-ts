@@ -59,8 +59,8 @@ export default class Torus
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  async enable(): Promise<void> {
-    return Promise.resolve()
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
   }
 
   async connect(): Promise<void> {

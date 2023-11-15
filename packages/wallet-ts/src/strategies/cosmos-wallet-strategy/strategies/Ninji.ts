@@ -35,9 +35,7 @@ export default class Ninji implements ConcreteCosmosWalletStrategy {
   }
 
   async enable() {
-    await this.getNinjiWallet().checkChainIdSupport()
-
-    return Promise.resolve()
+    return await NinjiWallet.isChainIdSupported(this.chainId)
   }
 
   async getAddresses(): Promise<string[]> {

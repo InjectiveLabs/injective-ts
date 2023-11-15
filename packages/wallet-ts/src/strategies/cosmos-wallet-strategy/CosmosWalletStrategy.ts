@@ -91,12 +91,18 @@ export default class CosmosWalletStrategy {
     return this.getStrategy().getPubKey()
   }
 
-  public enable(): Promise<void> {
+  public enable(): Promise<boolean> {
     return this.getStrategy().enable()
   }
 
   public getAddresses(): Promise<AccountAddress[]> {
     return this.getStrategy().getAddresses()
+  }
+
+  public async enableAndGetAddresses(): Promise<AccountAddress[]> {
+    await this.getStrategy().enable()
+
+    return await this.getStrategy().getAddresses()
   }
 
   public async sendTransaction(

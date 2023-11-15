@@ -43,7 +43,7 @@ export interface ConcreteCosmosWalletStrategy {
    * Perform validations and checks
    * for the wallet (if the chain is supported, etc)
    */
-  enable(): Promise<void>
+  enable(): Promise<boolean>
 
   /**
    * Sends Cosmos transaction. Returns a transaction hash
