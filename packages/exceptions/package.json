@@ -4,6 +4,9 @@
   "version": "1.14.3-beta.1",
   "sideEffects": false,
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=16.0.0 <17.0.0"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "author": {

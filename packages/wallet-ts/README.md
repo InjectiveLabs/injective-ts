@@ -18,7 +18,7 @@ yarn add @injectivelabs/wallet-ts
 
 ## 📖 Documentation
 
-Read more and find example usages on our [WalletStrategy Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/01WalletStrategy)
+Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)
 
 ---
 
@@ -49,7 +49,6 @@ Originally released by Injective Labs Inc. under: <br />
 Apache License <br />
 Version 2.0, January 2004 <br />
 http://www.apache.org/licenses/
-
 
 <p>&nbsp;</p>
 <div align="center">

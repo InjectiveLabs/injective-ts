@@ -18,7 +18,7 @@ yarn add @injectivelabs/networks
 
 ## 📖 Documentation
 
-Read more and find example usages on our [Networks Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/06Networks)
+Read more and find example usages on our [Networks Docs](https://docs.ts.injective.network/readme/networks)
 
 ---
 
@@ -43,7 +43,6 @@ Originally released by Injective Labs Inc. under: <br />
 Apache License <br />
 Version 2.0, January 2004 <br />
 http://www.apache.org/licenses/
-
 
 <p>&nbsp;</p>
 <div align="center">
