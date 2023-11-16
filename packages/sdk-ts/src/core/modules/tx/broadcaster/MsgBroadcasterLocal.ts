@@ -50,8 +50,8 @@ interface MsgBroadcasterLocalOptions {
   privateKey: string | PrivateKey /* hex or PrivateKey class */
   ethereumChainId?: EthereumChainId
   simulateTx?: boolean
-  increaseSequenceLocally?: boolean
   gasBufferCoefficient?: number
+  increaseSequenceLocally?: boolean
 }
 
 /**
