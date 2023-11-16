@@ -51,6 +51,7 @@ interface MsgBroadcasterLocalOptions {
   ethereumChainId?: EthereumChainId
   simulateTx?: boolean
   increaseSequenceLocally?: boolean
+  gasBufferCoefficient?: number
 }
 
 /**
@@ -76,6 +77,8 @@ export class MsgBroadcasterLocal {
 
   public baseAccount: BaseAccount | undefined = undefined
 
+  public gasBufferCoefficient = 1.1
+
   public txCount: number = 0
 
   constructor(options: MsgBroadcasterLocalOptions) {
@@ -85,6 +88,7 @@ export class MsgBroadcasterLocal {
     this.simulateTx = options.simulateTx || false
     this.increaseSequenceLocally = options.increaseSequenceLocally || false
     this.chainId = networkInfo.chainId
+    this.gasBufferCoefficient = options.gasBufferCoefficient || 1.1
     this.ethereumChainId =
       options.ethereumChainId || networkInfo.ethereumChainId
     this.endpoints = { ...endpoints, ...(options.endpoints || {}) }
@@ -266,10 +270,10 @@ export class MsgBroadcasterLocal {
    *
    * If we want to simulate the transaction we set the
    * gas limit based on the simulation and add a small multiplier
-   * to be safe (factor of 1.1)
+   * to be safe (factor of 1.1 (or user specified))
    */
   private async getTxWithStdFee(args: CreateTransactionArgs) {
-    const { simulateTx } = this
+    const { simulateTx, gasBufferCoefficient } = this
 
     if (!simulateTx) {
       return createTransaction(args)
@@ -283,7 +287,9 @@ export class MsgBroadcasterLocal {
 
     const stdGasFee = getStdFee({
       ...args.fee,
-      gas: new BigNumberInBase(result.gasInfo.gasUsed).times(1.1).toFixed(),
+      gas: new BigNumberInBase(result.gasInfo.gasUsed)
+        .times(gasBufferCoefficient)
+        .toFixed(),
     })
 
     return createTransaction({ ...args, fee: stdGasFee })
