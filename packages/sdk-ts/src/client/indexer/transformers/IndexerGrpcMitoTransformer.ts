@@ -391,6 +391,7 @@ export class IndexerGrpcMitoTransformer {
             IDOSubscriber.estimateTokenReceived,
           )
         : undefined,
+      createdAt: parseInt(IDOSubscriber.createdAt, 10),
     }
   }
 

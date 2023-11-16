@@ -762,13 +762,15 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchIDOSubscribers({
-    contractAddress,
-    limit,
     skip,
+    limit,
+    sortBy,
+    contractAddress,
   }: {
-    contractAddress: string
-    limit?: number
     skip?: number
+    limit?: number
+    sortBy?: string
+    contractAddress: string
   }) {
     const request = MitoApi.GetIDOSubscribersRequest.create()
 
@@ -780,6 +782,10 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     if (skip) {
       request.skip = skip
+    }
+
+    if (sortBy) {
+      request.sortBy = sortBy
     }
 
     try {
