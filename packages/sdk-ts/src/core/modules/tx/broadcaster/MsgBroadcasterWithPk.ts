@@ -26,10 +26,6 @@ import { IndexerGrpcTransactionApi } from '../../../../client'
 import { AccountDetails } from '../../../../types/auth'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
-export enum RetriesType {
-  Sequence = 'sequence',
-}
-
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
   memo?: string
@@ -57,7 +53,6 @@ interface MsgBroadcasterWithPkOptions {
   ethereumChainId?: EthereumChainId
   simulateTx?: boolean
   loggingEnabled?: boolean
-  retries?: Record<RetriesType, boolean>
 }
 
 /**
@@ -81,19 +76,12 @@ export class MsgBroadcasterWithPk {
 
   public loggingEnabled: boolean = false
 
-  public retries: Record<RetriesType, boolean> = {
-    [RetriesType.Sequence]: false,
-  }
-
   constructor(options: MsgBroadcasterWithPkOptions) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints = getNetworkEndpoints(options.network)
 
     this.simulateTx = options.simulateTx || false
     this.loggingEnabled = options.loggingEnabled || false
-    this.retries = options.retries || {
-      [RetriesType.Sequence]: false,
-    }
     this.chainId = networkInfo.chainId
     this.ethereumChainId =
       options.ethereumChainId || networkInfo.ethereumChainId
@@ -114,41 +102,6 @@ export class MsgBroadcasterWithPk {
     const { txRaw } = await this.prepareTxForBroadcast(transaction)
 
     return await this.broadcastTxRaw(txRaw)
-  }
-
-  /**
-   * Broadcasting the transaction using the client
-   *
-   * @param tx
-   * @returns {string} transaction hash
-   */
-  async broadcastWithRetry(transaction: MsgBroadcasterTxOptions) {
-    const { retries } = this
-    const { txRaw, accountDetails } = await this.prepareTxForBroadcast(
-      transaction,
-    )
-
-    try {
-      const txResponse = await this.broadcastTxRaw(txRaw)
-
-      return txResponse
-    } catch (e: unknown) {
-      if (e instanceof GeneralException) {
-        /** If the transaction fails because of sequence error, retry with higher sequence number */
-        if (e.message.includes('sequence') && retries.sequence) {
-          const { txRaw } = await this.prepareTxForBroadcast(transaction, {
-            ...accountDetails,
-            sequence: accountDetails.sequence + 1,
-          })
-
-          const txResponse = await this.broadcastTxRaw(txRaw)
-
-          return txResponse
-        }
-      }
-
-      throw e
-    }
   }
 
   /**

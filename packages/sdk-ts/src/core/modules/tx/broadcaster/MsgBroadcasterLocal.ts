@@ -50,6 +50,7 @@ interface MsgBroadcasterLocalOptions {
   privateKey: string | PrivateKey /* hex or PrivateKey class */
   ethereumChainId?: EthereumChainId
   simulateTx?: boolean
+  increaseSequenceLocally?: boolean
 }
 
 /**
@@ -71,6 +72,8 @@ export class MsgBroadcasterLocal {
 
   public simulateTx: boolean = false
 
+  public increaseSequenceLocally: boolean = false
+
   public baseAccount: BaseAccount | undefined = undefined
 
   public txCount: number = 0
@@ -80,6 +83,7 @@ export class MsgBroadcasterLocal {
     const endpoints = getNetworkEndpoints(options.network)
 
     this.simulateTx = options.simulateTx || false
+    this.increaseSequenceLocally = options.increaseSequenceLocally || false
     this.chainId = networkInfo.chainId
     this.ethereumChainId =
       options.ethereumChainId || networkInfo.ethereumChainId
@@ -302,7 +306,7 @@ export class MsgBroadcasterLocal {
   }
 
   private async getAccountDetails() {
-    if (this.baseAccount) {
+    if (this.baseAccount && this.increaseSequenceLocally) {
       return this.baseAccount.toAccountDetails()
     }
 
@@ -317,6 +321,8 @@ export class MsgBroadcasterLocal {
   }
 
   private async incrementTxCount() {
-    this.txCount += 1
+    if (this.increaseSequenceLocally) {
+      this.txCount += 1
+    }
   }
 }
