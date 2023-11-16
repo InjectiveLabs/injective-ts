@@ -51,7 +51,6 @@ interface MsgBroadcasterLocalOptions {
   ethereumChainId?: EthereumChainId
   simulateTx?: boolean
   gasBufferCoefficient?: number
-  increaseSequenceLocally?: boolean
 }
 
 /**
@@ -73,8 +72,6 @@ export class MsgBroadcasterLocal {
 
   public simulateTx: boolean = false
 
-  public increaseSequenceLocally: boolean = false
-
   public baseAccount: BaseAccount | undefined = undefined
 
   public gasBufferCoefficient = 1.1
@@ -86,7 +83,6 @@ export class MsgBroadcasterLocal {
     const endpoints = getNetworkEndpoints(options.network)
 
     this.simulateTx = options.simulateTx || false
-    this.increaseSequenceLocally = options.increaseSequenceLocally || false
     this.chainId = networkInfo.chainId
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.1
     this.ethereumChainId =
@@ -312,7 +308,7 @@ export class MsgBroadcasterLocal {
   }
 
   private async getAccountDetails() {
-    if (this.baseAccount && this.increaseSequenceLocally) {
+    if (this.baseAccount) {
       return this.baseAccount.toAccountDetails()
     }
 
@@ -327,8 +323,6 @@ export class MsgBroadcasterLocal {
   }
 
   private async incrementTxCount() {
-    if (this.increaseSequenceLocally) {
-      this.txCount += 1
-    }
+    this.txCount += 1
   }
 }
