@@ -1041,8 +1041,16 @@ export default {
 
   PROJ: {
     name: 'PROJ',
-    logo: 'projx.png',
+    logo: 'proj.png',
     symbol: 'PROJ',
+    decimals: 18,
+    coinGeckoId: '',
+  },
+
+  PROJX: {
+    name: 'PROJX',
+    logo: 'projx.svg',
+    symbol: 'PROJX',
     decimals: 18,
     coinGeckoId: '',
   },
