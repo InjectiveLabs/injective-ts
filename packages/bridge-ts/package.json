@@ -34,7 +34,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@axelar-network/axelarjs-sdk": "0.11.8",
+    "@axelar-network/axelarjs-sdk": "0.13.6",
     "@injectivelabs/exceptions": "^1.14.3-beta.3",
     "@injectivelabs/networks": "^1.14.3-beta.3",
     "@injectivelabs/sdk-ts": "^1.14.3-beta.18",

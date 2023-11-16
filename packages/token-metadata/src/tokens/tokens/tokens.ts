@@ -149,6 +149,14 @@ export default {
       hash: '2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
       tokenType: TokenType.Ibc,
     },
+
+    spl: {
+      decimals: 6,
+      symbol: 'USDCso',
+      isNative: false,
+      address: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenType: TokenType.Spl,
+    },
   },
 
   GRT: {

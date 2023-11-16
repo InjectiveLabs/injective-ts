@@ -81,22 +81,9 @@ export class SolanaWormholeClient
   }
 
   async getBalance(address: string | PublicKey, tokenAddress?: string) {
-    if (tokenAddress) {
-      throw new GeneralException(new Error(`SPL tokens not supported yet`))
-    }
-
-    try {
-      const { solanaHostUrl } = this
-      const connection = new Connection(solanaHostUrl || '')
-
-      const balance = (
-        await connection.getBalance(new PublicKey(address))
-      ).toString()
-
-      return balance
-    } catch (e) {
-      return '0'
-    }
+    return tokenAddress
+      ? this.getSplTokenBalance(address, tokenAddress)
+      : this.getNativeTokenBalance(address)
   }
 
   async transfer(args: TransferMsgArgs) {
@@ -432,6 +419,49 @@ export class SolanaWormholeClient
 
     return { txHash: transactionId, ...txResponse } as TransactionResponse & {
       txHash: string
+    }
+  }
+
+  private async getNativeTokenBalance(address: string | PublicKey) {
+    const { solanaHostUrl } = this
+    const connection = new Connection(solanaHostUrl || '')
+
+    try {
+      const balance = (
+        await connection.getBalance(new PublicKey(address))
+      ).toString()
+
+      return balance
+    } catch (e) {
+      return '0'
+    }
+  }
+
+  private async getSplTokenBalance(
+    address: string | PublicKey,
+    tokenAddress: string,
+  ) {
+    const { solanaHostUrl } = this
+    const connection = new Connection(solanaHostUrl || '')
+
+    try {
+      const tokenAddressPubKey = new PublicKey(tokenAddress)
+      const tokenAccount = await connection.getTokenAccountsByOwner(
+        new PublicKey(address),
+        { mint: tokenAddressPubKey },
+      )
+
+      if (!tokenAccount || (tokenAccount && tokenAccount.value.length === 0)) {
+        return '0'
+      }
+
+      const balance = (
+        await connection.getTokenAccountBalance(tokenAccount.value[0].pubkey)
+      ).value.amount
+
+      return balance
+    } catch (e) {
+      return '0'
     }
   }
 

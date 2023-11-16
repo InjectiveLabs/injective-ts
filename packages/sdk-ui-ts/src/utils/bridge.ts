@@ -262,7 +262,7 @@ export const tokenDenomsPerNetwork = [
   {
     network: BridgingNetwork.Solana,
     denoms: [],
-    symbols: ['SOL'],
+    symbols: ['SOL', 'USDCso'],
   },
   {
     network: BridgingNetwork.EthereumWh,

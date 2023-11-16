@@ -171,12 +171,8 @@ export const getCw20TokenSingle = (
   }
 
   if (cw20s) {
-    if (denom) {
-      const [cw20Address] = denom.startsWith('inj')
-        ? [denom]
-        : denom.split('/').reverse()
-
-      const cw20 = cw20s.find((cw20) => cw20.address === cw20Address)
+    if (source) {
+      const cw20 = cw20s.find((cw20) => cw20.source === source)
 
       return cw20
         ? {
@@ -189,8 +185,12 @@ export const getCw20TokenSingle = (
         : undefined
     }
 
-    if (source) {
-      const cw20 = cw20s.find((cw20) => cw20.source === source)
+    if (denom) {
+      const [cw20Address] = denom.startsWith('inj')
+        ? [denom]
+        : denom.split('/').reverse()
+
+      const cw20 = cw20s.find((cw20) => cw20.address === cw20Address)
 
       return cw20
         ? {
