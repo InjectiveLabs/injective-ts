@@ -1925,7 +1925,7 @@ export default {
     name: 'USDC Maple',
     symbol: 'USDC-MPL',
     decimals: 6,
-    logo: 'usdc-mpl.jpg',
+    logo: 'usdc-mpl.jpeg',
     coinGeckoId: '',
 
     erc20: {
