@@ -1920,4 +1920,18 @@ export default {
       tokenType: TokenType.Ibc,
     },
   },
+
+  'USDC-MPL': {
+    name: 'USDC Maple',
+    symbol: 'USDC-MPL',
+    decimals: 6,
+    logo: 'usdc-mpl.jpg',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 6,
+      address: '0xf875aef00C4E21E9Ab4A335eB36A1175Ab00424A',
+      tokenType: TokenType.Erc20,
+    },
+  },
 } as Record<string, TokenMeta>
