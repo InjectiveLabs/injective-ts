@@ -289,6 +289,15 @@ export enum ChainExchangeModuleErrorCode {
   ErrFeatureDisabled = 92,
   // Order has too much margin
   ErrTooMuchOrderMargin = 93,
+  // Order has too much margin
+  ErrBadSubaccountNonce = 94,
+  ErrInsufficientFunds = 95,
+  // Exchange is in post-only mode
+  ErrPostOnlyMode = 96,
+  // client order id already exists
+  ErrClientOrderIdAlreadyExists = 97,
+  // client order id is invalid. Max length is 36 chars
+  ErrInvalidCid = 98,
 }
 
 export enum ChainAuctionErrorCodes {

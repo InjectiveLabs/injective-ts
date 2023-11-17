@@ -278,6 +278,13 @@ const exchangeErrorMap = {
     'The current feature has been disabled',
   [ChainExchangeModuleErrorCode.ErrTooMuchOrderMargin]:
     'Order has too much margin',
+  [ChainExchangeModuleErrorCode.ErrBadSubaccountNonce]:
+    'Subaccount nonce is invalid',
+  [ChainExchangeModuleErrorCode.ErrInsufficientFunds]: 'Insufficient funds',
+  [ChainExchangeModuleErrorCode.ErrPostOnlyMode]:
+    'Client order id already exists',
+  [ChainExchangeModuleErrorCode.ErrInvalidCid]:
+    'Client order id is invalid. Max length is 36 chars',
 }
 
 const insuranceErrorMap = {
@@ -572,7 +579,7 @@ const wasmErrorMap = {
   [ChainWasmErrorCodes.ErrAccountExists]: 'contract account already exists',
   [ChainWasmErrorCodes.ErrInstantiateFailed]:
     'instantiate wasm contract failed',
-  [ChainWasmErrorCodes.ErrExecuteFailed]: 'execute wasm contract failed',
+  [ChainWasmErrorCodes.ErrExecuteFailed]: 'Contract execution failed',
   [ChainWasmErrorCodes.ErrGasLimit]: 'insufficient gas',
   [ChainWasmErrorCodes.ErrInvalidGenesis]: 'invalid genesis',
   [ChainWasmErrorCodes.ErrNotFound]: 'not found',
@@ -1941,7 +1948,7 @@ export const chainErrorMessagesMap: Record<
   },
   'execute wasm contract failed': {
     code: ChainWasmErrorCodes.ErrExecuteFailed,
-    message: 'execute wasm contract failed',
+    message: 'Contract execution failed',
     module: TransactionChainErrorModule.Wasm,
   },
   'insufficient gas': {

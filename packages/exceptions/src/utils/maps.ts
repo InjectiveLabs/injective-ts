@@ -128,5 +128,9 @@ export const mapMetamaskMessage = (message: string): string => {
     return 'The request has been rejected'
   }
 
+  if (parsedMessage.toLowerCase().includes('user denied'.toLowerCase())) {
+    return 'The request has been rejected'
+  }
+
   return parsedMessage
 }
