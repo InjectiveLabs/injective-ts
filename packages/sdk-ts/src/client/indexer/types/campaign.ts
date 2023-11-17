@@ -34,8 +34,8 @@ export interface Guild {
   updatedAt: number
   name: string
   isActive: boolean
-  masterBalance: string
   description: string
+  masterBalance: string
 }
 
 export interface GuildMember {
