@@ -2449,5 +2449,43 @@
       "baseDenom": "sqATOM",
       "isNative": false
     }
+  },
+  {
+    "name": "LOCAL",
+    "denom": "ibc/FECCDCFA89278B117C76A11A946A7991A68E5DD12DED6EB938ADC1B1286AC591",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/local.png",
+    "symbol": "LOCAL",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "FECCDCFA89278B117C76A11A946A7991A68E5DD12DED6EB938ADC1B1286AC591",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "LOCAL",
+      "baseDenom": "LOCAL",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Umee",
+    "denom": "ibc/2FF3DC3A0265B9A220750E75E75E5D44ED2F716B8AC4EDC378A596CC958ABF6B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.png",
+    "symbol": "UMEE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "2FF3DC3A0265B9A220750E75E75E5D44ED2F716B8AC4EDC378A596CC958ABF6B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "UMEE",
+      "baseDenom": "UMEE",
+      "isNative": false
+    }
   }
 ]
