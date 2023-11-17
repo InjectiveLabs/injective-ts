@@ -53,6 +53,7 @@ export class IndexerCampaignTransformer {
       name: guild.name,
       isActive: guild.isActive,
       masterBalance: guild.masterBalance,
+      description: guild.description,
     }
   }
 

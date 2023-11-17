@@ -35,6 +35,7 @@ export interface Guild {
   name: string
   isActive: boolean
   masterBalance: string
+  description: string
 }
 
 export interface GuildMember {
