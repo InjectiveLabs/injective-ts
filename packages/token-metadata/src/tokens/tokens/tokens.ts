@@ -1934,4 +1934,20 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  PYTH: {
+    name: 'Pyth Network',
+    symbol: 'PYTH',
+    decimals: 6,
+    logo: 'pyth.svg',
+    coinGeckoId: 'pyth-network',
+
+    spl: {
+      decimals: 6,
+      symbol: 'PYTH',
+      isNative: false,
+      address: 'HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3',
+      tokenType: TokenType.Spl,
+    },
+  },
 } as Record<string, TokenMeta>
