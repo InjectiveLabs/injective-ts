@@ -3,9 +3,6 @@
   "version": "1.14.3",
   "description": "Token Utils is a package for querying different data about tokens",
   "sideEffects": false,
-  "engines": {
-    "node": ">=16.0.0 <17.0.0"
-  },
   "author": {
     "name": "Bojan Angjelkoski",
     "email": "bojan@injectivelabs.org"
