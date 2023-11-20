@@ -1,8 +1,9 @@
 # Getting Started
 
-**Supported Node Version:**
+**Stable Package Version**
 
-![Node Version](http://img.shields.io/badge/node-16.x-brightgreen.svg)
+![Stable Package (all) versions](https://img.shields.io/npm/v/%40injectivelabs/sdk-ts/latest?label=%40injectivelabs%2Fsdk-ts)
+![Supported Node Version](http://img.shields.io/badge/node-16.x-brightgreen.svg)
 
 **Latest Package Versions:**
 
