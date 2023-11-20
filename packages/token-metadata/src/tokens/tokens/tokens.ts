@@ -1949,5 +1949,15 @@ export default {
       address: 'HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3',
       tokenType: TokenType.Spl,
     },
+
+    cw20s: [
+      {
+        decimals: 6,
+        symbol: 'PYTH',
+        source: Cw20TokenSource.Solana,
+        address: 'inj1tjcf9497fwmrnk22jfu5hsdq82qshga54ajvzy',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
 } as Record<string, TokenMeta>
