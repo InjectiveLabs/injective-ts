@@ -147,13 +147,13 @@ export class IndexerGrpcMitoTransformer {
     return {
       pnl: portfolio.pnl,
       totalValue: portfolio.totalValue,
+      updatedAt: parseInt(portfolio.pnlUpdatedAt, 10),
       totalValueChartList: portfolio.totalValueChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
       ),
       pnlChartList: portfolio.pnlChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
       ),
-      updatedAt: parseInt(portfolio.pnlUpdatedAt, 10),
     }
   }
 
