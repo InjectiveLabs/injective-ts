@@ -337,6 +337,7 @@ export class IndexerGrpcMitoTransformer {
       name: IDO.name,
       owner: IDO.owner,
       status: IDO.status,
+      marketId: IDO.marketId,
       tokenPrice: IDO.tokenPrice,
       quoteDenom: IDO.quoteDenom,
       useWhitelist: IDO.useWhitelist,
@@ -406,6 +407,9 @@ export class IndexerGrpcMitoTransformer {
       committedAmount: subscription.committedAmount,
       updatedAt: parseInt(subscription.updatedAt, 10),
       claimableCoins: subscription.claimableCoins.map(
+        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+      ),
+      ownerClaimableCoins: subscription.ownerClaimableCoins.map(
         IndexerGrpcMitoTransformer.grpcCoinToCoin,
       ),
       claimTxHash: subscription.claimTxHash,

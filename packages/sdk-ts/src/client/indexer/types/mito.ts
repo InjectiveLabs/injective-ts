@@ -208,6 +208,7 @@ export interface MitoIDO {
   quoteDenom: string
   stakeToSubscription: MitoStakeToSubscription[]
   useWhitelist: boolean
+  marketId: string
 }
 
 export interface MitoIDOSubscriber {
@@ -239,6 +240,7 @@ export interface MitoIDOSubscription {
   updatedAt: number
   stakedAmount: string
   claimTxHash?: string
+  ownerClaimableCoins: Coin[]
 }
 
 export interface MitoWhitelistAccount {

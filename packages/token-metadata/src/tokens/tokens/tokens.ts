@@ -1894,7 +1894,7 @@ export default {
     symbol: 'USDY',
     decimals: 18,
     logo: 'usdy.webp',
-    coinGeckoId: '',
+    coinGeckoId: 'ondo-us-dollar-yield',
 
     erc20: {
       decimals: 18,
