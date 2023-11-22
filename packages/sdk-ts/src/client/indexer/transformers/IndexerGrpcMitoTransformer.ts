@@ -401,6 +401,7 @@ export class IndexerGrpcMitoTransformer {
   ): MitoIDOSubscription {
     return {
       price: subscription.price,
+      marketId: subscription.marketId,
       quoteDenom: subscription.quoteDenom,
       stakedAmount: subscription.stakedAmount,
       rewardClaimed: subscription.rewardClaimed,

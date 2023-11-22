@@ -241,6 +241,7 @@ export interface MitoIDOSubscription {
   stakedAmount: string
   claimTxHash?: string
   ownerClaimableCoins: Coin[]
+  marketId: string
 }
 
 export interface MitoWhitelistAccount {
