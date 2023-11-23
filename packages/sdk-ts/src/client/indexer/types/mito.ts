@@ -209,6 +209,7 @@ export interface MitoIDO {
   stakeToSubscription: MitoStakeToSubscription[]
   useWhitelist: boolean
   marketId: string
+  vaultAddress: string
 }
 
 export interface MitoIDOSubscriber {

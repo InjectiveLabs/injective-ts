@@ -341,6 +341,7 @@ export class IndexerGrpcMitoTransformer {
       tokenPrice: IDO.tokenPrice,
       quoteDenom: IDO.quoteDenom,
       useWhitelist: IDO.useWhitelist,
+      vaultAddress: IDO.vaultAddress,
       capPerAddress: IDO.capPerAddress,
       contractAddress: IDO.contractAddress,
       subscribedAmount: IDO.subscribedAmount,
@@ -604,6 +605,8 @@ export class IndexerGrpcMitoTransformer {
     response: MitoApi.GetIDOSubscribersResponse,
   ) {
     return {
+      marketId: response.marketId,
+      quoteDenom: response.quoteDenom,
       subscribers: response.subscribers.map(
         IndexerGrpcMitoTransformer.mitoIDOSubscriberToIDOSubscriber,
       ),
@@ -615,7 +618,6 @@ export class IndexerGrpcMitoTransformer {
             response.tokenInfo,
           )
         : undefined,
-      quoteDenom: response.quoteDenom,
     }
   }
 
