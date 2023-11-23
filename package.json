@@ -30,6 +30,7 @@
     "test:sdk-ts:core": "jest ./packages/sdk-ts/src/core",
     "test:bridge-ts": "jest ./packages/bridge-ts/src",
     "test:sdk-ui-ts": "jest ./packages/sdk-ui-ts/src",
+    "test:token-metadata": "jest ./packages/token-metadata/test",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
     "coverage:unit": "yarn test:unit --coverage",

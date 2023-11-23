@@ -5,7 +5,7 @@ export default {
     name: 'Bitcoin',
     symbol: 'BTC',
     decimals: 8,
-    logo: 'bitcoin.svg',
+    logo: 'bitcoin.png',
     coinGeckoId: 'bitcoin',
 
     erc20: {
@@ -19,7 +19,7 @@ export default {
     name: 'Wrapped Bitcoin',
     symbol: 'wBTC',
     decimals: 8,
-    logo: 'wbtc.svg',
+    logo: 'wbtc.png',
     coinGeckoId: 'wrapped-bitcoin',
 
     erc20: {
@@ -43,7 +43,7 @@ export default {
     name: 'Ethereum',
     symbol: 'ETH',
     decimals: 18,
-    logo: 'ethereum.svg',
+    logo: 'ethereum.png',
     coinGeckoId: 'ethereum',
 
     erc20: {
@@ -58,7 +58,7 @@ export default {
     name: 'Wrapped Ethereum',
     symbol: 'wETH',
     decimals: 18,
-    logo: 'ethereum.svg',
+    logo: 'ethereum.png',
     coinGeckoId: 'ethereum',
 
     erc20: {
@@ -72,7 +72,7 @@ export default {
     name: 'Injective',
     symbol: 'INJ',
     decimals: 18,
-    logo: 'injective-v3.svg',
+    logo: 'injective-v3.png',
     coinGeckoId: 'injective-protocol',
 
     erc20: {
@@ -86,7 +86,7 @@ export default {
     name: 'Tether',
     symbol: 'USDT',
     decimals: 6,
-    logo: 'usdt.svg',
+    logo: 'usdt.png',
     coinGeckoId: 'tether',
 
     erc20: {
@@ -111,7 +111,7 @@ export default {
     symbol: 'USDC',
     name: 'USD Coin',
     decimals: 6,
-    logo: 'usdc.svg',
+    logo: 'usdc.png',
     coinGeckoId: 'usd-coin',
 
     erc20: {
@@ -163,7 +163,7 @@ export default {
     name: 'Graph Token',
     symbol: 'GRT',
     decimals: 18,
-    logo: 'graphToken.svg',
+    logo: 'graphToken.png',
     coinGeckoId: 'the-graph',
 
     erc20: {
@@ -177,7 +177,7 @@ export default {
     name: 'Synthetix Network Token',
     symbol: 'SNX',
     decimals: 18,
-    logo: 'synthetix.svg',
+    logo: 'synthetix.png',
     coinGeckoId: 'havven',
 
     erc20: {
@@ -191,7 +191,7 @@ export default {
     name: 'Binance Coin',
     symbol: 'BNB',
     decimals: 18,
-    logo: 'bnb.svg',
+    logo: 'bnb.png',
     coinGeckoId: 'binancecoin',
 
     erc20: {
@@ -205,7 +205,7 @@ export default {
     name: 'Aave',
     symbol: 'AAVE',
     decimals: 18,
-    logo: 'AAVE.svg',
+    logo: 'AAVE.png',
     coinGeckoId: 'aave',
 
     erc20: {
@@ -218,7 +218,7 @@ export default {
   YFI: {
     name: 'yearn.finance',
     symbol: 'YFI',
-    logo: 'yfi.svg',
+    logo: 'yfi.png',
     decimals: 18,
     coinGeckoId: 'yearn-finance',
 
@@ -233,7 +233,7 @@ export default {
     name: 'Compound',
     symbol: 'COMP',
     decimals: 18,
-    logo: 'comp.svg',
+    logo: 'comp.png',
     coinGeckoId: 'compound-coin',
 
     erc20: {
@@ -247,7 +247,7 @@ export default {
     name: '0x',
     symbol: 'ZRX',
     decimals: 18,
-    logo: 'zrx.svg',
+    logo: 'zrx.png',
     coinGeckoId: '0x',
 
     erc20: {
@@ -274,7 +274,7 @@ export default {
   UNI: {
     name: 'Uniswap',
     symbol: 'UNI',
-    logo: 'uni.svg',
+    logo: 'uni.png',
     decimals: 18,
     coinGeckoId: 'uniswap',
 
@@ -289,7 +289,7 @@ export default {
     name: 'Dai',
     symbol: 'DAI',
     decimals: 18,
-    logo: 'dai.svg',
+    logo: 'dai.png',
     coinGeckoId: 'dai',
 
     erc20: {
@@ -303,7 +303,7 @@ export default {
     name: 'Chainlink',
     symbol: 'LINK',
     decimals: 18,
-    logo: 'chainlink.svg',
+    logo: 'chainlink.png',
     coinGeckoId: 'chainlink',
 
     erc20: {
@@ -317,7 +317,7 @@ export default {
     name: 'SushiSwap',
     symbol: 'SUSHI',
     decimals: 18,
-    logo: 'sushi.svg',
+    logo: 'sushi.png',
     coinGeckoId: 'sushi',
 
     erc20: {
@@ -653,7 +653,7 @@ export default {
     name: 'Cosmos',
     symbol: 'ATOM',
     decimals: 6,
-    logo: 'atom.svg',
+    logo: 'atom.png',
     coinGeckoId: 'cosmos',
 
     erc20: {
@@ -677,7 +677,7 @@ export default {
     name: 'Cosmos Testnet',
     symbol: 'UPHOTON',
     decimals: 6,
-    logo: 'atom.svg',
+    logo: 'atom.png',
     coinGeckoId: 'cosmos',
 
     erc20: {
@@ -794,7 +794,7 @@ export default {
 
   TAB: {
     name: 'Injective',
-    logo: 'injective-v3.svg',
+    logo: 'injective-v3.png',
     symbol: 'TAB',
     decimals: 18,
     coinGeckoId: 'injective-protocol',
@@ -846,7 +846,7 @@ export default {
     name: 'White Whale',
     symbol: 'WHALE',
     decimals: 6,
-    logo: 'whale.svg',
+    logo: 'whale.png',
     coinGeckoId: 'white-whale',
 
     ibc: {
@@ -862,7 +862,7 @@ export default {
 
   AXL: {
     name: 'Axelar',
-    logo: 'axelar.svg',
+    logo: 'axelar.png',
     symbol: 'AXL',
     decimals: 6,
     coinGeckoId: 'axelar',
@@ -887,7 +887,7 @@ export default {
   BAYC: {
     name: 'Bored Ape Yacht Club',
     symbol: 'BAYC',
-    logo: 'bayc.svg',
+    logo: 'bayc.png',
     decimals: 18,
     coinGeckoId: '',
   },
@@ -928,7 +928,7 @@ export default {
     name: 'Persistence',
     symbol: 'XPRT',
     decimals: 6,
-    logo: 'xprt.svg',
+    logo: 'xprt.png',
     coinGeckoId: 'persistence',
 
     ibc: {
@@ -946,7 +946,7 @@ export default {
     name: 'Evmos',
     symbol: 'EVMOS',
     decimals: 18,
-    logo: 'evmos.svg',
+    logo: 'evmos.png',
     coinGeckoId: 'evmos',
 
     ibc: {
@@ -1057,7 +1057,7 @@ export default {
 
   PROJX: {
     name: 'PROJX',
-    logo: 'projx.svg',
+    logo: 'projx.png',
     symbol: 'PROJX',
     decimals: 18,
     coinGeckoId: '',
@@ -1094,7 +1094,7 @@ export default {
     name: 'Solana',
     symbol: 'SOL',
     decimals: 8,
-    logo: 'solana.svg',
+    logo: 'solana.png',
     coinGeckoId: 'solana',
 
     spl: {
@@ -1139,7 +1139,7 @@ export default {
     name: 'ETHBTC Trend',
     symbol: 'ETHBTCTrend',
     decimals: 18,
-    logo: 'ethbtctrend.svg',
+    logo: 'ethbtctrend.png',
     coinGeckoId: '',
 
     erc20: {
@@ -1153,7 +1153,7 @@ export default {
     name: 'SteadyETH',
     symbol: 'SteadyETH',
     decimals: 18,
-    logo: 'steadyeth.svg',
+    logo: 'steadyeth.png',
     coinGeckoId: '',
 
     erc20: {
@@ -1167,7 +1167,7 @@ export default {
     name: 'SteadyBTC',
     symbol: 'SteadyBTC',
     decimals: 18,
-    logo: 'steadybtc.svg',
+    logo: 'steadybtc.png',
     coinGeckoId: '',
 
     erc20: {
@@ -1181,7 +1181,7 @@ export default {
     name: 'XPLA',
     symbol: 'XPLA',
     decimals: 8,
-    logo: 'xpla.svg',
+    logo: 'xpla.png',
     coinGeckoId: 'xpla',
 
     cw20: {
@@ -1255,7 +1255,7 @@ export default {
     name: 'Test QAT',
     symbol: 'QAT',
     decimals: 18,
-    logo: 'injective-v3.svg',
+    logo: 'injective-v3.png',
     coinGeckoId: 'injective-protocol',
 
     erc20: {
@@ -1309,7 +1309,7 @@ export default {
     name: 'USDC Frontrunner',
     symbol: 'USDCfr',
     decimals: 6,
-    logo: 'usdc.svg',
+    logo: 'usdc.png',
     coinGeckoId: 'usd-coin',
 
     erc20: {
@@ -1350,7 +1350,7 @@ export default {
     name: 'Euro',
     symbol: 'EUR',
     decimals: 6,
-    logo: 'eur.svg',
+    logo: 'eur.png',
     coinGeckoId: '',
   },
 
@@ -1358,7 +1358,7 @@ export default {
     name: 'British Pound',
     symbol: 'GBP',
     decimals: 6,
-    logo: 'gpb.svg',
+    logo: 'gpb.png',
     coinGeckoId: '',
   },
 
@@ -1366,7 +1366,7 @@ export default {
     name: 'Japanese Yen',
     symbol: 'JPY',
     decimals: 6,
-    logo: 'jpy.svg',
+    logo: 'jpy.png',
     coinGeckoId: '',
   },
 
@@ -1394,7 +1394,7 @@ export default {
     name: 'Astar',
     symbol: 'ASTR',
     decimals: 18,
-    logo: 'astar.svg',
+    logo: 'astar.png',
     coinGeckoId: 'astar',
 
     cw20: {
@@ -1408,7 +1408,7 @@ export default {
     name: 'Gold',
     symbol: 'XAU',
     decimals: 6,
-    logo: 'gold.svg',
+    logo: 'gold.png',
     coinGeckoId: '',
   },
 
@@ -1578,7 +1578,7 @@ export default {
     name: 'Demo Coin',
     symbol: 'DEMO',
     decimals: 6,
-    logo: 'injective-v3.svg',
+    logo: 'injective-v3.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
@@ -1713,7 +1713,7 @@ export default {
     name: 'ECOMI',
     symbol: 'OMI',
     decimals: 18,
-    logo: 'ecomi.png',
+    logo: 'omi.png',
     coinGeckoId: 'ecomi',
 
     erc20: {
@@ -1727,7 +1727,7 @@ export default {
     name: 'Reward Point Token',
     symbol: 'POINT',
     decimals: 0,
-    logo: 'point.svg',
+    logo: 'point.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
@@ -1806,7 +1806,7 @@ export default {
     name: 'NEOKingdom DAO',
     symbol: 'NEOK',
     decimals: 18,
-    logo: 'neok.svg',
+    logo: 'neok.png',
     coinGeckoId: '',
 
     ibc: {
@@ -1824,7 +1824,7 @@ export default {
     name: 'Oraichain',
     symbol: 'ORAI',
     decimals: 6,
-    logo: 'orai.svg',
+    logo: 'orai.png',
     coinGeckoId: 'oraichain-token',
 
     ibc: {
@@ -1842,7 +1842,7 @@ export default {
     name: 'GOLD',
     symbol: 'GOLD',
     decimals: 18,
-    logo: 'gold.svg',
+    logo: 'gold.png',
     coinGeckoId: '',
   },
 
@@ -1850,7 +1850,7 @@ export default {
     name: 'EVIINDEX',
     symbol: 'EVIINDEX',
     decimals: 18,
-    logo: 'truEVINDEX.svg',
+    logo: 'truEVINDEX.png',
     coinGeckoId: '',
   },
 
@@ -1858,7 +1858,7 @@ export default {
     name: 'TRUCPI',
     symbol: 'TRUCPI',
     decimals: 18,
-    logo: 'truflation.svg',
+    logo: 'truflation.png',
     coinGeckoId: '',
   },
 
@@ -1939,7 +1939,7 @@ export default {
     name: 'Pyth Network',
     symbol: 'PYTH',
     decimals: 6,
-    logo: 'pyth.svg',
+    logo: 'pyth.png',
     coinGeckoId: 'pyth-network',
 
     spl: {
