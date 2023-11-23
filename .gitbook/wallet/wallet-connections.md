@@ -70,4 +70,4 @@ Keplr is an Cosmos native wallet and can be used to connect and interact with yo
 
 * **Sign transactions using Keplr**
 
-An example of how to prepare + sign + broadcast a transaction on Injective using Keplr can be found [here](../transactions/transactions-cosmos.md).
+An example of how to prepare + sign + broadcast a transaction on Injective using Keplr can be found [here](../transactions/transactions-cosmos/).

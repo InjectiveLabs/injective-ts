@@ -60,18 +60,21 @@ console.log(txHash);
 If you would like to grow the burn auction's pool size, you can directly send funds to the Auction subaccount.
 
 Notes:
-  -  You will need to send funds to the pool's subaccount `0x1111111111111111111111111111111111111111111111111111111111111111`.
-  -  Be aware that any funds you send will be reflected in the next auction, not the current one.
-  - You cannot transfer from your default subaccountId since that balance is now associated with your Injective address in the bank module. Therefore, in order for `MsgExternalTransfer` to work, you will need to transfer from a non-default subaccountId.
 
- How to find the subaccountId that you will be transferring from:
-   - you can query your existing subaccountIds via the [account portfolio api](../querying/querying-api/querying-indexer-portfolio.md).
+* You will need to send funds to the pool's subaccount `0x1111111111111111111111111111111111111111111111111111111111111111`.
+* Be aware that any funds you send will be reflected in the next auction, not the current one.
+* You cannot transfer from your default subaccountId since that balance is now associated with your Injective address in the bank module. Therefore, in order for `MsgExternalTransfer` to work, you will need to transfer from a non-default subaccountId.
+
+How to find the subaccountId that you will be transferring from:
+
+* you can query your existing subaccountIds via the [account portfolio api](../querying/querying-api/querying-indexer-portfolio.md).
 
 How to use funds that are currently associated with your Injective Address in bank module:
-   - If you have existing non-default subaccounts, you'll want to do a [MsgDeposit](./exchange.md#MsgDeposit) to one of your existing non-default subaccountIds and use that subaccountId as the `srcSubaccountId` below.
-  - If you don't have existing non-default subaccounts, you can do a [MsgDeposit](./exchange.md#MsgDeposit) to a new default subaccountId, which would be done via importing `getSubaccountId` from `sdk-ts` and setting the `subaccountId` field in [MsgDeposit](./exchange.md#MsgDeposit) to `getSubaccountId(injectiveAddress, 1)`.
 
-For more info, check out the [burn auction pool docs](https://docs.injective.network/develop/tech-concepts/auction_pool/).
+* If you have existing non-default subaccounts, you'll want to do a [MsgDeposit](broken-reference) to one of your existing non-default subaccountIds and use that subaccountId as the `srcSubaccountId` below.
+* If you don't have existing non-default subaccounts, you can do a [MsgDeposit](broken-reference) to a new default subaccountId, which would be done via importing `getSubaccountId` from `sdk-ts` and setting the `subaccountId` field in [MsgDeposit](broken-reference) to `getSubaccountId(injectiveAddress, 1)`.
+
+For more info, check out the [burn auction pool docs](https://docs.injective.network/develop/tech-concepts/auction\_pool/).
 
 ```ts
 import {
