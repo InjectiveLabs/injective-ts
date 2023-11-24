@@ -61,7 +61,7 @@ describe('MsgCancelUnbondingDelegation', () => {
         { name: 'delegator_address', type: 'string' },
         { name: 'validator_address', type: 'string' },
         { name: 'amount', type: 'TypeAmount' },
-        { name: 'creation_height', type: 'string' },
+        { name: 'creation_height', type: 'int64' },
       ],
     })
   })
