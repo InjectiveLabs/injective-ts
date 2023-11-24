@@ -32,6 +32,7 @@ export enum MsgType {
   MsgDelegate = 'cosmos.staking.v1beta1.MsgDelegate',
   MsgEditValidator = 'cosmos.staking.v1beta1.MsgEditValidator',
   MsgUndelegate = 'cosmos.staking.v1beta1.MsgUndelegate',
+  MsgCancelUnbondingDelegation = 'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation',
   MsgExecuteContract = 'cosmwasm.wasm.v1.MsgExecuteContract',
   MsgInstantiateContract = 'cosmwasm.wasm.v1.MsgInstantiateContract',
   MsgInstantiateContract2 = 'cosmwasm.wasm.v1.MsgInstantiateContract2',
