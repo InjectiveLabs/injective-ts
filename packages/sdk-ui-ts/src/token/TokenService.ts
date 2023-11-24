@@ -255,8 +255,8 @@ export class TokenService {
       : market.ticker.replace('/', '')
     const baseToken = {
       denom: slug,
-      logo: 'injective-v3.svg',
-      icon: 'injective-v3.svg',
+      logo: 'injective-v3.png',
+      icon: 'injective-v3.png',
       symbol: baseTokenSymbol,
       name: baseTokenSymbol,
       decimals: 18,

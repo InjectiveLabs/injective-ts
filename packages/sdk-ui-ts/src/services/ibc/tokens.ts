@@ -28,7 +28,7 @@ function ibcTokenMetadataToToken(
     return {
       name: token.name || 'Unknown',
       denom: token.contractAddr || '',
-      logo: token.imageUrl || 'untracked.svg',
+      logo: token.imageUrl || 'untracked.png',
       symbol: token.symbol || 'Unknown',
       decimals: token.decimals || 18,
       coinGeckoId: '',

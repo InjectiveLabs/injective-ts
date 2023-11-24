@@ -3,7 +3,7 @@ import { TokenMeta, TokenType } from '../../types'
 export default {
   'INJ-MASTER': {
     name: 'INJ Master',
-    logo: 'mito-inj-master-lp.svg',
+    logo: 'mito-inj-master-lp.png',
     symbol: 'INJ-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -16,7 +16,7 @@ export default {
   },
   'INJ-BOOST': {
     name: 'INJ Boost',
-    logo: 'mito-inj-boost-lp.svg',
+    logo: 'mito-inj-boost-lp.png',
     symbol: 'INJ-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -29,7 +29,7 @@ export default {
   },
   'XAU-BOOST': {
     name: 'XAU Boost',
-    logo: 'mito-xau-boost-lp.svg',
+    logo: 'mito-xau-boost-lp.png',
     symbol: 'XAU-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -42,7 +42,7 @@ export default {
   },
   'WETH-MASTER': {
     name: 'WETH Master',
-    logo: 'mito-weth-master-lp.svg',
+    logo: 'mito-weth-master-lp.png',
     symbol: 'WETH-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -55,7 +55,7 @@ export default {
   },
   'ETH-BOOST': {
     name: 'ETH Boost',
-    logo: 'mito-eth-boost-lp.svg',
+    logo: 'mito-eth-boost-lp.png',
     symbol: 'ETH-boost-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -68,7 +68,7 @@ export default {
   },
   'ATOM-MASTER': {
     name: 'ATOM Master',
-    logo: 'mito-atom-master-lp.svg',
+    logo: 'mito-atom-master-lp.png',
     symbol: 'ATOM-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -81,7 +81,7 @@ export default {
   },
   'ATOM-BOOST': {
     name: 'ATOM Boost',
-    logo: 'mito-atom-boost-lp.svg',
+    logo: 'mito-atom-boost-lp.png',
     symbol: 'ATOM-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -94,7 +94,7 @@ export default {
   },
   'USDC-MASTER': {
     name: 'USDC Master',
-    logo: 'mito-usdc-master-lp.svg',
+    logo: 'mito-usdc-master-lp.png',
     symbol: 'USDC-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -107,7 +107,7 @@ export default {
   },
   'PROJ-MASTER': {
     name: 'PROJ Master',
-    logo: 'mito-proj-master-lp.svg',
+    logo: 'mito-proj-master-lp.png',
     symbol: 'PROJ-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -120,7 +120,7 @@ export default {
   },
   'GBP-MASTER': {
     name: 'GBP Master',
-    logo: 'mito-gbp-master-lp.svg',
+    logo: 'mito-gbp-master-lp.png',
     symbol: 'GBP-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -133,7 +133,7 @@ export default {
   },
   'EUR-MASTER': {
     name: 'EUR Master',
-    logo: 'mito-eur-master-lp.svg',
+    logo: 'mito-eur-master-lp.png',
     symbol: 'EUR-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
@@ -146,7 +146,7 @@ export default {
   },
   'STINJ-BOOST': {
     name: 'stINJ Boost',
-    logo: 'mito-stInj-boost-lp.svg',
+    logo: 'mito-stInj-boost-lp.png',
     symbol: 'stINJ-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',

@@ -19,7 +19,7 @@ export const getTokenFromContractStateResponse = (
     name: tokenInfo.name || contractInfo.label || 'Unknown',
     symbol: tokenInfo.symbol || tokenInfo.name || 'Unknown',
     decimals: tokenInfo.decimals || 18,
-    logo: 'unknown.svg',
+    logo: 'unknown.png',
     coinGeckoId: '',
     tokenType: TokenType.Cw20,
     tokenVerification: TokenVerification.Internal,

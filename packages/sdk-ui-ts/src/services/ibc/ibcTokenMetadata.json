@@ -1807,7 +1807,7 @@
   {
     "name": "USDT",
     "denom": "ibc/24E5D0825D3D71BF00C4A01CD8CA8F2D27B1DD32B7446CF633534AEA25379271",
-    "logo": "untracked.svg",
+    "logo": "untracked.png",
     "symbol": "USDT",
     "decimals": 6,
     "coinGeckoId": "",
@@ -1826,7 +1826,7 @@
   {
     "name": "WBTC",
     "denom": "ibc/64431EE79F3216B8F7773A630549ADA852EA8E4B545D22BD35B0BF56FD5D5201",
-    "logo": "untracked.svg",
+    "logo": "untracked.png",
     "symbol": "WBTC",
     "decimals": 6,
     "coinGeckoId": "",

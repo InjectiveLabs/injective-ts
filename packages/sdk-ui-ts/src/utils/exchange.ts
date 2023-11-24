@@ -50,7 +50,7 @@ export const getTokenFromInsuranceFund = (
     name: (response.marketTicker || denom) + ' Insurance Fund',
     symbol: denom,
     decimals: 18,
-    logo: 'injective-v3.svg',
+    logo: 'injective-v3.png',
     coinGeckoId: '',
     tokenType: TokenType.InsuranceFund,
     tokenVerification: TokenVerification.Verified,

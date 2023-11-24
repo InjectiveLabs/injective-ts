@@ -23,15 +23,15 @@ export const getTokenLogoWithVendorPathPrefix = (image: string) => {
 export const getTokenLogoFromTokenType = (tokenType: TokenType) => {
   switch (true) {
     case tokenType === TokenType.InsuranceFund:
-      return getTokenLogoWithVendorPathPrefix('insurance-fund.svg')
+      return getTokenLogoWithVendorPathPrefix('insurance-fund.png')
     case tokenType === TokenType.Native:
-      return getTokenLogoWithVendorPathPrefix('injective-black-fill.svg')
+      return getTokenLogoWithVendorPathPrefix('injective-black-fill.png')
     case tokenType === TokenType.Cw20:
-      return getTokenLogoWithVendorPathPrefix('cw20.svg')
+      return getTokenLogoWithVendorPathPrefix('cw20.png')
     case tokenType === TokenType.Ibc:
-      return getTokenLogoWithVendorPathPrefix('ibc.svg')
+      return getTokenLogoWithVendorPathPrefix('ibc.png')
     default:
-      return getTokenLogoWithVendorPathPrefix('injective-black-fill.svg')
+      return getTokenLogoWithVendorPathPrefix('injective-black-fill.png')
   }
 }
 
