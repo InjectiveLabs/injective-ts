@@ -59,6 +59,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     type?: string
   }) {
     const request = InjectiveExplorerRpc.GetAccountTxsRequest.create()
+
     request.address = address
 
     if (limit) {

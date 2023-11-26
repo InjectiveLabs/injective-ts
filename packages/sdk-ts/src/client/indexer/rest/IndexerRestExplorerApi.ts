@@ -162,16 +162,16 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
     try {
       const {
-        fromNumber,
-        before,
+        type,
+        skip,
         after,
         limit,
-        toNumber,
-        endTime,
-        skip,
-        startTime,
+        before,
         status,
-        type,
+        endTime,
+        toNumber,
+        startTime,
+        fromNumber,
       } = params || {
         limit: 12,
       }
@@ -180,16 +180,16 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse[]>
       >(() =>
         this.get(endpoint, {
+          skip,
           limit,
           after,
           before,
-          from_number: fromNumber,
-          to_number: toNumber,
-          skip,
           status,
-          type: type ? type.join(',') : undefined,
           end_time: endTime,
+          to_number: toNumber,
           start_time: startTime,
+          from_number: fromNumber,
+          type: type ? type.join(',') : undefined,
         }),
       )
 
@@ -220,32 +220,34 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   }: {
     account: string
     params?: {
-      fromNumber?: number
-      limit?: number
-      before?: number
-      after?: number
-      toNumber?: number
       skip?: number
-      startTime?: number
-      endTime?: number
-      status?: MsgStatus
+      limit?: number
+      after?: number
+      before?: number
       type?: MsgType[]
+      status?: MsgStatus
+      endTime?: number
+      toNumber?: number
+      fromNumber?: number
+      startTime?: number
+      groupDepositClaims?: boolean
     }
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     const endpoint = `accountTxs/${account}`
 
     try {
       const {
-        fromNumber,
-        before,
-        after,
-        limit,
-        skip,
-        toNumber,
-        endTime,
-        startTime,
-        status,
         type,
+        skip,
+        limit,
+        after,
+        before,
+        status,
+        endTime,
+        toNumber,
+        startTime,
+        fromNumber,
+        groupDepositClaims,
       } = params || {
         limit: 12,
       }
@@ -258,12 +260,13 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           limit,
           after,
           before,
-          from_number: fromNumber,
-          to_number: toNumber,
           status,
-          type: type ? type.join(',') : undefined,
           end_time: endTime,
+          to_number: toNumber,
           start_time: startTime,
+          from_number: fromNumber,
+          type: type ? type.join(',') : undefined,
+          group_deposit_claims: groupDepositClaims,
         }),
       )
 
@@ -418,9 +421,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         this.get(endpoint, {
           skip,
           limit,
+          label,
           assets_only: assetsOnly,
           from_number: fromNumber,
-          label,
         }),
       )
       const { paging, data } = response.data
