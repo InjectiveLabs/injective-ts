@@ -1960,4 +1960,13 @@ export default {
       },
     ],
   },
+
+  TIX: {
+    name: 'Timeworx.io',
+    symbol: 'TIX',
+    decimals: 6,
+    logo: 'tix.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
