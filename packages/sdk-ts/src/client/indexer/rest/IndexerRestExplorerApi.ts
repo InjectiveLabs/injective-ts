@@ -230,7 +230,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       toNumber?: number
       fromNumber?: number
       startTime?: number
-      groupDepositClaims?: boolean
+      withClaimId?: boolean
     }
   }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
     const endpoint = `accountTxs/${account}`
@@ -247,7 +247,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         toNumber,
         startTime,
         fromNumber,
-        groupDepositClaims,
+        withClaimId,
       } = params || {
         limit: 12,
       }
@@ -266,7 +266,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           start_time: startTime,
           from_number: fromNumber,
           type: type ? type.join(',') : undefined,
-          group_deposit_claims: groupDepositClaims,
+          with_claim_id: withClaimId,
         }),
       )
 

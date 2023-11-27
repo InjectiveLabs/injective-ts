@@ -112,6 +112,7 @@ export class IndexerRestExplorerTransformer {
         })),
       logs: transaction.logs,
       errorLog: transaction.error_log,
+      claimIds: transaction.claim_id || []
     }
   }
 

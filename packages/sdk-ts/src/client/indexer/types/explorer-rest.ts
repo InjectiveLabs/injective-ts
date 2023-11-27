@@ -81,6 +81,7 @@ export interface TransactionFromExplorerApiResponse {
   logs: EventLog[]
   messages: Array<{ value: any; type: string }>
   error_log?: string
+  claim_id?: number[]
 }
 
 export interface BlockFromExplorerApiResponse {
@@ -117,6 +118,7 @@ export interface ExplorerTransaction extends Omit<BaseTransaction, 'messages'> {
   parsedMessages?: Message[]
   errorLog?: string
   logs?: EventLog[]
+  claimIds?: number[]
 }
 
 export interface ExplorerBlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
