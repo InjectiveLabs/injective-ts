@@ -32,13 +32,21 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
       )
   }
 
-  async fetchMarkets(params?: { marketStatus?: string; quoteDenom?: string }) {
-    const { marketStatus, quoteDenom } = params || {}
+  async fetchMarkets(params?: {
+    quoteDenom?: string
+    marketStatus?: string
+    marketStatuses?: string[]
+  }) {
+    const { marketStatus, quoteDenom, marketStatuses } = params || {}
 
     const request = InjectiveDerivativeExchangeRpc.MarketsRequest.create()
 
     if (marketStatus) {
       request.marketStatus = marketStatus
+    }
+
+    if (marketStatuses) {
+      request.marketStatuses = marketStatuses
     }
 
     if (quoteDenom) {

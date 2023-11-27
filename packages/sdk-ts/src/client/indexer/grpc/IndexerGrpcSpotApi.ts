@@ -35,8 +35,9 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     baseDenom?: string
     marketStatus?: string
     quoteDenom?: string
+    marketStatuses?: string[]
   }) {
-    const { baseDenom, marketStatus, quoteDenom } = params || {}
+    const { baseDenom, marketStatus, quoteDenom, marketStatuses } = params || {}
     const request = InjectiveSpotExchangeRpc.MarketsRequest.create()
 
     if (baseDenom) {
@@ -45,6 +46,10 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
 
     if (marketStatus) {
       request.marketStatus = marketStatus
+    }
+
+    if (marketStatuses) {
+      request.marketStatuses = marketStatuses
     }
 
     if (quoteDenom) {
