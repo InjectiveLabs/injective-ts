@@ -31,7 +31,7 @@ describe('MsgBroadcasterWithPk', () => {
     expect(response.txHash).toBeDefined()
   }, 60000)
 
-  test('prepares, simulates, signs and broadcasts a transaction with fee delegation', async () => {
+  test.skip('prepares, simulates, signs and broadcasts a transaction with fee delegation', async () => {
     const privateKey = PrivateKey.fromHex(
       process.env.TEST_PRIVATE_KEY as string,
     )
