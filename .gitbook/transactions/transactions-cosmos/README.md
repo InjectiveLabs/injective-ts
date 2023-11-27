@@ -186,6 +186,12 @@ import {
 import { ChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
+const getPublicKeyFromKeplr = async (chainId) => {
+  const key = await window.keplr.getKey(chainId); 
+  
+  return Buffer.from(key.pubKey).toString('base64')
+}
+
 const getKeplr = async (chainId) => {
   await window.keplr.enable(chainId)
 
@@ -247,7 +253,7 @@ const msg = MsgSend.fromJSON({
 })
 
 /** Get the PubKey of the Signer from the Wallet/Private Key */
-const pubKey = await getPubKey()
+const pubKey = await getPublicKeyFromKeplr()
 
 /** Prepare the Transaction **/
 const { txRaw, signDoc } = createTransaction({
