@@ -46,6 +46,8 @@ export interface GuildMember {
   tvlScore: string
   volumeScore: string
   totalTvl: string
+  volumeScorePercentage: number
+  tvlScorePercentage: number
 }
 
 export interface GuildCampaignSummary {

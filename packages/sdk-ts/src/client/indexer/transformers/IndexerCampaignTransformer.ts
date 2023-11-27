@@ -68,6 +68,8 @@ export class IndexerCampaignTransformer {
       tvlScore: member.tvlScore,
       volumeScore: member.volumeScore,
       totalTvl: member.totalTvl,
+      volumeScorePercentage: member.volumeScorePercentage,
+      tvlScorePercentage: member.tvlScorePercentage,
     }
   }
 
