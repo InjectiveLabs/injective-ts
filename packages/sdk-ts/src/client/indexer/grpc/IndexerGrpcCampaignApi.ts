@@ -169,12 +169,14 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
   async fetchGuildMembers({
     skip,
     limit,
+    sortBy,
     guildId,
     campaignContract,
     includeGuildInfo,
   }: {
     skip?: number
     limit?: number
+    sortBy?: string
     guildId: string
     campaignContract: string
     includeGuildInfo: boolean
@@ -184,6 +186,10 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     request.guildId = guildId
     request.campaignContract = campaignContract
     request.includeGuildInfo = includeGuildInfo
+
+    if (sortBy) {
+      request.sortBy = sortBy
+    }
 
     if (skip) {
       request.skip = skip
