@@ -108,7 +108,12 @@ Once we have the signature ready, we need to broadcast the transaction to the In
 
 ```ts
 import { ChainId } from '@injectivelabs/ts-types'
-import { CosmosTxV1Beta1Tx, getTxRawFromTxRawOrDirectSignResponse, TxRestClient } from '@injectivelabs/sdk-ts'
+import {
+  BroadcastModeKeplr,
+  CosmosTxV1Beta1Tx,
+  getTxRawFromTxRawOrDirectSignResponse,
+  TxRestClient
+} from '@injectivelabs/sdk-ts'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
 /**
@@ -137,7 +142,7 @@ const broadcastTx = async (chainId, txRaw) => {
   const result = await keplr.sendTx(
     chainId,
     CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-    BroadcastMode.Sync,
+    BroadcastModeKeplr.Sync,
   )
 
   if (!result || result.length === 0) {
@@ -177,6 +182,7 @@ import {
   ChainRestAuthApi,
   createTransaction,
   CosmosTxV1Beta1Tx,
+  BroadcastModeKeplr,
   ChainRestTendermintApi,
 } from '@injectivelabs/sdk-ts'
 import {
@@ -185,12 +191,6 @@ import {
 } from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
-
-const getPublicKeyFromKeplr = async (chainId) => {
-  const key = await window.keplr.getKey(chainId); 
-  
-  return Buffer.from(key.pubKey).toString('base64')
-}
 
 const getKeplr = async (chainId) => {
   await window.keplr.enable(chainId)
@@ -207,7 +207,7 @@ const broadcastTx = async (chainId, txRaw) => {
   const result = await keplr.sendTx(
     chainId,
     CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-    BroadcastMode.Sync,
+    BroadcastModeKeplr.Sync,
   )
 
   if (!result || result.length === 0) {
@@ -220,8 +220,10 @@ const broadcastTx = async (chainId, txRaw) => {
   return Buffer.from(result).toString('hex')
 }
 
-const injectiveAddress = 'inj1'
 const chainId = 'injective-1' /* ChainId.Mainnet */
+const { key } = await getKeplr(chainId)
+const pubKey = Buffer.from(key.pubKey).toString('base64')
+const injectiveAddress = key.bech32Address
 const restEndpoint =
   'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const amount = {
@@ -251,9 +253,6 @@ const msg = MsgSend.fromJSON({
   srcInjectiveAddress: injectiveAddress,
   dstInjectiveAddress: injectiveAddress,
 })
-
-/** Get the PubKey of the Signer from the Wallet/Private Key */
-const pubKey = await getPublicKeyFromKeplr()
 
 /** Prepare the Transaction **/
 const { txRaw, signDoc } = createTransaction({

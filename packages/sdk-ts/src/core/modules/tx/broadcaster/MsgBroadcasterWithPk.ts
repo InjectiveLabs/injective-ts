@@ -75,8 +75,6 @@ export class MsgBroadcasterWithPk {
 
   public simulateTx: boolean = false
 
-  public loggingEnabled: boolean = false
-
   public gasBufferCoefficient: number = 1.1
 
   constructor(options: MsgBroadcasterWithPkOptions) {
@@ -85,7 +83,6 @@ export class MsgBroadcasterWithPk {
 
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.1
     this.simulateTx = options.simulateTx || false
-    this.loggingEnabled = options.loggingEnabled || false
     this.chainId = networkInfo.chainId
     this.ethereumChainId =
       options.ethereumChainId || networkInfo.ethereumChainId
@@ -324,14 +321,10 @@ export class MsgBroadcasterWithPk {
   }
 
   private async broadcastTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
-    const { loggingEnabled, endpoints } = this
+    const { endpoints } = this
     const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
 
     if (txResponse.code !== 0) {
-      if (loggingEnabled) {
-        console.log(JSON.stringify(txResponse))
-      }
-
       throw new GeneralException(
         new Error(
           `Transaction failed to be broadcasted - ${txResponse.rawLog} - ${txResponse.txHash}`,
