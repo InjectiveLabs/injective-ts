@@ -69,6 +69,12 @@ export enum BroadcastMode {
   Block = 'BROADCAST_MODE_BLOCK',
 }
 
+export enum BroadcastModeKeplr {
+  Sync = 'sync',
+  Async = 'async',
+  Block = 'block',
+}
+
 export interface TxResultResponse {
   tx: RestTx
   tx_response: TxInfoResponse
