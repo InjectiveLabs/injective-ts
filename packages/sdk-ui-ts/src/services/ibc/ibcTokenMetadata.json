@@ -2487,5 +2487,24 @@
       "baseDenom": "UMEE",
       "isNative": false
     }
+  },
+  {
+    "name": "Nois",
+    "denom": "ibc/DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/nois/images/nois.png",
+    "symbol": "NOIS",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "NOIS",
+      "baseDenom": "NOIS",
+      "isNative": false
+    }
   }
 ]
