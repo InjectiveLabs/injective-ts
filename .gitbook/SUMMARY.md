@@ -87,3 +87,5 @@
     * [DEX](building-dapps/dex.md)
     * [Bridge](building-dapps/bridge.md)
 * [Calculations](calculations/README.md)
+  * [Min Price Tick Size](calculations/min-price-tick-size.md)
+  * [Min Quantity Tick Size](calculations/min-quantity-tick-size.md)
