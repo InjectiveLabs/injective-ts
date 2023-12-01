@@ -80,15 +80,28 @@ export const mapFailedTransactionMessage = (
   }
 
   const getReason = (message: string): string | undefined => {
-    const reason = /\[reason:"(.*?)"/g
+    const ReasonPattern = /\[reason:"(.*?)"/g
 
-    const codespace = reason.exec(message)
+    const codespace = ReasonPattern.exec(message)
 
     if (!codespace || codespace.length < 2) {
       return
     }
 
-    return codespace[1]
+    const reason = codespace[1]
+
+    if (reason === 'execute wasm contract failed') {
+      const SubReasonPattern = /(.*?)Generic error:(.*?): execute wasm/g
+      const subReason = SubReasonPattern.exec(message)
+
+      if (!subReason) {
+        return reason
+      }
+
+      return subReason[2] || reason
+    }
+
+    return reason
   }
 
   const ABCICode = context && context.code ? context.code : getABCICode(message)
@@ -130,6 +143,10 @@ export const mapMetamaskMessage = (message: string): string => {
 
   if (parsedMessage.toLowerCase().includes('user denied'.toLowerCase())) {
     return 'The request has been rejected'
+  }
+
+  if (parsedMessage.toLowerCase().includes('provided chain'.toLowerCase())) {
+    return 'Your Metamask selected network is incorrect'
   }
 
   return parsedMessage
