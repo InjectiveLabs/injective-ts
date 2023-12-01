@@ -85,7 +85,7 @@ export default class Trezor
     return Promise.resolve(true)
   }
 
-  async disconnect() {
+  public async disconnect() {
     ;(await this.trezor.getAccountManager()).reset()
   }
 
