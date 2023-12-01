@@ -8,6 +8,7 @@ import { ChainModule } from '../types'
 import { ChainGrpcWasmTransformer } from '../transformers'
 import { PaginationOption } from '../../../types/pagination'
 import { paginationRequestFromPagination } from '../../../utils/pagination'
+import { toBase64 } from '../../../utils/utf8'
 
 /**
  * @category Chain Grpc API
@@ -179,13 +180,19 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchSmartContractState(contractAddress: string, query?: string) {
+  async fetchSmartContractState(
+    contractAddress: string,
+    query?: string | Record<string, any>,
+  ) {
     const request = CosmwasmWasmV1Query.QuerySmartContractStateRequest.create()
 
     request.address = contractAddress
 
     if (query) {
-      request.queryData = Buffer.from(query, 'base64')
+      request.queryData = Buffer.from(
+        typeof query === 'string' ? query : toBase64(query),
+        'base64',
+      )
     }
 
     try {
