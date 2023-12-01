@@ -131,6 +131,7 @@ export default class WalletStrategy {
   }
 
   public setWallet(wallet: Wallet) {
+    this.disconnect()
     this.wallet = wallet
   }
 
@@ -176,16 +177,6 @@ export default class WalletStrategy {
 
   public async confirm(address: AccountAddress): Promise<string> {
     return this.getStrategy().confirm(address)
-  }
-
-  public async disconnectWallet() {
-    const strategy = this.getStrategy()
-
-    if (strategy.disconnect !== undefined) {
-      await strategy.disconnect()
-    }
-
-    this.wallet = Wallet.Metamask
   }
 
   public async sendTransaction(
@@ -287,6 +278,14 @@ export default class WalletStrategy {
   public cancelOnAccountChange(): void {
     if (this.getStrategy().cancelOnAccountChange) {
       return this.getStrategy().cancelOnAccountChange!()
+    }
+  }
+
+  public disconnect() {
+    const strategy = this.getStrategy()
+
+    if (strategy.disconnect !== undefined) {
+      strategy.disconnect()
     }
   }
 }

@@ -83,6 +83,10 @@ export default class LedgerBase
     return Promise.resolve(true)
   }
 
+  public async disconnect() {
+    ;(await this.ledger.getAccountManager()).reset()
+  }
+
   public async getAddresses(): Promise<string[]> {
     const { baseDerivationPath, derivationPathType } = this
 

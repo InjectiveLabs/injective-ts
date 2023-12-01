@@ -165,5 +165,5 @@ export interface ConcreteWalletStrategy
 
   cancelAllEvents?(): void
 
-  disconnect?(): Promise<void>
+  disconnect?(): Promise<void> | void
 }

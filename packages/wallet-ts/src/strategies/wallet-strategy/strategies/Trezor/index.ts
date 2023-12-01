@@ -85,6 +85,10 @@ export default class Trezor
     return Promise.resolve(true)
   }
 
+  async disconnect() {
+    ;(await this.trezor.getAccountManager()).reset()
+  }
+
   public async getAddresses(): Promise<string[]> {
     try {
       await this.trezor.connect()
