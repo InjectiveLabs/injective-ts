@@ -1053,6 +1053,20 @@ export default {
     },
   },
 
+  zen: {
+    name: 'ZEN',
+    logo: 'zen.svg',
+    symbol: 'ZEN',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: 'uzen',
+      tokenType: TokenType.Cw20,
+    },
+  },
+
   PROJ: {
     name: 'PROJ',
     logo: 'proj.png',
