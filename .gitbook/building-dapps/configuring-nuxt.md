@@ -30,7 +30,8 @@ $ yarn add @bangjelkoski/node-stdlib-browser
 $ yarn add -D @bangjelkoski/vite-plugin-node-polyfills
 ```
 
-Make sure you are using the `vue-tsc@^1.2.0`, `nuxt@^3.3.3`, `typescript@^4.9.5` versions.
+Make sure you are using the `vue-tsc@1.8.8
+`, `nuxt@^3.8.1`, `typescript@^5.0.4` versions.
 
 **Buffer**
 
@@ -55,7 +56,7 @@ export default defineNuxtPlugin(() => {
 If you are going to use `pinia` as state management, add it to your packages:
 
 ```bash
-$ yarn add pinia @pinia/nuxt
+$ yarn add @pinia/nuxt@^0.4.9
 ```
 
 ### 5. Using `vueuse`
@@ -93,6 +94,7 @@ Before we boot our application, we need to set everything up in the `nuxt.config
 ```ts
 // filename - nuxt.config.ts
 import { nodePolyfills } from "@bangjelkoski/vite-plugin-node-polyfills";
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineNuxtConfig({
   ssr: false, // whether to pre-render your application
@@ -137,7 +139,8 @@ export default defineNuxtConfig({
       "process.env.DEBUG": JSON.stringify(process.env.DEBUG),
     },
 
-    plugins: [ // setting up node + crypto polyfils
+    plugins: [ // setting up node + crypto polyfils + vite TS path resolution
+      tsconfigPaths(),
       nodePolyfills({ protocolImports: false })
       ],
 
