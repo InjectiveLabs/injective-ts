@@ -1073,6 +1073,12 @@ export default {
     symbol: 'PROJ',
     decimals: 18,
     coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: 'proj',
+      tokenType: TokenType.Cw20,
+    },
   },
 
   PROJX: {
@@ -1081,6 +1087,12 @@ export default {
     symbol: 'PROJX',
     decimals: 18,
     coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: 'projx',
+      tokenType: TokenType.Cw20,
+    },
   },
 
   MITOTEST1: {
