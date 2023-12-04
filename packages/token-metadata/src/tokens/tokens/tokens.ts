@@ -66,6 +66,12 @@ export default {
       address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       tokenType: TokenType.Erc20,
     },
+
+    cw20: {
+      decimals: 8,
+      address: 'inj1plsk58sxqjw9828aqzeskmc8xy9eu5kppw3jg4',
+      tokenType: TokenType.Cw20,
+    },
   },
 
   INJ: {
