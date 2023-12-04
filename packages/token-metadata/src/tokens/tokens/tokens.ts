@@ -1053,7 +1053,7 @@ export default {
     },
   },
 
-  zen: {
+  ZEN: {
     name: 'ZEN',
     logo: 'zen.svg',
     symbol: 'ZEN',
