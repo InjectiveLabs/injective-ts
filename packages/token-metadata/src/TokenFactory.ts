@@ -151,20 +151,13 @@ export class TokenFactory {
       )
     }
 
-    if (isCw20ContractAddress(ownerAddress)) {
-      const tokenMeta = this.tokenMetaUtils.getMetaByAddress(address)
-
-      return tokenMeta
-        ? {
-            ...tokenMeta,
-            tokenType: TokenType.TokenFactory,
-          }
-        : undefined
-    }
-
-    const tokenMeta =
+    let tokenMeta =
       this.tokenMetaUtils.getMetaBySymbol(address) ||
       this.tokenMetaUtils.getMetaByName(address)
+
+    if (isCw20ContractAddress(ownerAddress)) {
+      tokenMeta = this.tokenMetaUtils.getMetaByAddress(address) || tokenMeta
+    }
 
     return tokenMeta
       ? {
