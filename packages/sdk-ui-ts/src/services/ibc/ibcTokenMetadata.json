@@ -2506,5 +2506,43 @@
       "baseDenom": "NOIS",
       "isNative": false
     }
+  },
+  {
+    "name": "Levana",
+    "denom": "ibc/4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/levana.png",
+    "symbol": "LVN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "LVN",
+      "baseDenom": "LVN",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Fuzion Yield",
+    "denom": "ibc/71C297610507CCB7D42E49EA49AF2ECBBE2D4A83D139C4A441EB7A2693C0464A",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/fuziony.svg",
+    "symbol": "yFUZN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "71C297610507CCB7D42E49EA49AF2ECBBE2D4A83D139C4A441EB7A2693C0464A",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "yFUZN",
+      "baseDenom": "yFUZN",
+      "isNative": false
+    }
   }
 ]
