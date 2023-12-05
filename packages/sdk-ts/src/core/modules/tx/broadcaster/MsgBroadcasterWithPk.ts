@@ -1,11 +1,11 @@
-import { BaseAccount, PrivateKey } from '../../../accounts'
+import { PrivateKey } from '../../../accounts'
 import { Msgs } from '../../msgs'
 import { createTransaction } from '../tx'
 import { TxGrpcApi } from '../api/TxGrpcApi'
 import {
-  ChainRestAuthApi,
-  ChainRestTendermintApi,
-} from '../../../../client/chain/rest'
+  ChainGrpcAuthApi,
+  ChainGrpcTendermintApi,
+} from '../../../../client/chain/grpc'
 import {
   getStdFee,
   DEFAULT_STD_FEE,
@@ -169,17 +169,16 @@ export class MsgBroadcasterWithPk {
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
-    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
-    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      privateKey.toBech32(),
-    )
-    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
-    const accountDetails = baseAccount.toAccountDetails()
+    const accountDetails = await new ChainGrpcAuthApi(
+      endpoints.grpc,
+    ).fetchAccount(publicKey.toBech32())
+    const { baseAccount } = accountDetails
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
-    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
-    const latestHeight = latestBlock.header.height
+    const latestBlock = await new ChainGrpcTendermintApi(
+      endpoints.grpc,
+    ).fetchLatestBlock()
+    const latestHeight = latestBlock!.header!.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
@@ -191,8 +190,8 @@ export class MsgBroadcasterWithPk {
       message: tx.msgs as Msgs[],
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
-      sequence: accountDetails.sequence,
-      accountNumber: accountDetails.accountNumber,
+      sequence: baseAccount.sequence,
+      accountNumber: baseAccount.accountNumber,
       chainId: chainId,
     })
 
@@ -273,9 +272,10 @@ export class MsgBroadcasterWithPk {
     const actualAccountDetails = await this.getAccountDetails(accountDetails)
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
-    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
-    const latestHeight = latestBlock.header.height
+    const latestBlock = await new ChainGrpcTendermintApi(
+      endpoints.grpc,
+    ).fetchLatestBlock()
+    const latestHeight = latestBlock!.header!.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
@@ -311,13 +311,11 @@ export class MsgBroadcasterWithPk {
     }
 
     const { privateKey, endpoints } = this
-    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
-    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      privateKey.toBech32(),
-    )
-    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
+    const accountDetailsResponse = await new ChainGrpcAuthApi(
+      endpoints.grpc,
+    ).fetchAccount(privateKey.toBech32())
 
-    return baseAccount.toAccountDetails()
+    return accountDetailsResponse.baseAccount
   }
 
   private async broadcastTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {

@@ -1,5 +1,5 @@
 import { MsgStatus, MsgType } from '@injectivelabs/ts-types'
-import BaseRestConsumer from '../../BaseRestConsumer'
+import BaseRestConsumer from '../../base/BaseRestConsumer'
 import {
   Paging,
   ExplorerTransaction,

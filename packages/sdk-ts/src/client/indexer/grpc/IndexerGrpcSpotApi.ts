@@ -10,7 +10,7 @@ import {
   TradeDirection,
   TradeExecutionType,
 } from '../../../types/exchange'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
 import { IndexerModule } from '../types'
 import { PaginationOption } from '../../../types/pagination'
 import { IndexerGrpcSpotTransformer } from '../transformers'

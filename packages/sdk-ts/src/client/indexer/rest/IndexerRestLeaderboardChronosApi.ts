@@ -1,5 +1,5 @@
 import { ChronosLeaderboardResponse } from '../types/leaderboard-rest'
-import BaseRestConsumer from '../../BaseRestConsumer'
+import BaseRestConsumer from '../../base/BaseRestConsumer'
 import {
   HttpRequestException,
   HttpRequestMethod,

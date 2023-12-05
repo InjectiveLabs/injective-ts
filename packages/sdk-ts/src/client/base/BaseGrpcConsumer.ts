@@ -1,17 +1,13 @@
-import { grpc } from '@injectivelabs/grpc-web'
-import { isBrowser } from '../utils/helpers'
-import { getGrpcTransport } from '../utils/grpc'
-import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
+import { getGrpcTransport } from '../../utils/grpc'
+import { GrpcWebImpl } from './GrpcWebImpl'
 
-if (!isBrowser()) {
-  grpc.setDefaultTransport(getGrpcTransport() as grpc.TransportFactory)
-}
-
-export default class BaseGrpcConsumer extends InjectiveAccountRpc.GrpcWebImpl {
+export default class BaseGrpcConsumer extends GrpcWebImpl {
   protected module: string = ''
 
   constructor(endpoint: string) {
-    super(endpoint, { transport: getGrpcTransport() })
+    super(endpoint, {
+      transport: getGrpcTransport(),
+    })
   }
 
   public getGrpcWebImpl(endpoint: string) {

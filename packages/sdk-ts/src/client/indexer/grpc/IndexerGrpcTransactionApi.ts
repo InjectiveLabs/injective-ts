@@ -12,7 +12,7 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
 import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   CosmosBaseV1Beta1Coin,

@@ -3,7 +3,7 @@ import {
   HttpRequestMethod,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../BaseRestConsumer'
+import BaseRestConsumer from '../../base/BaseRestConsumer'
 import { IndexerModule } from '../types'
 import { ChronosMarketHistoryResponse } from '../types/markets-history-rest'
 

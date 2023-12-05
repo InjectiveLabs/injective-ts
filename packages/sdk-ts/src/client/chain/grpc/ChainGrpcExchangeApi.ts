@@ -3,7 +3,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 import { ChainModule } from '../types'
 import { ChainGrpcExchangeTransformer } from '../transformers'
 

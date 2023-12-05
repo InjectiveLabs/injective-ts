@@ -13,7 +13,7 @@ import {
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
 import { TxResponse } from '../types/tx'
-import { getGrpcWebImpl } from '../../../../client/BaseGrpcWebConsumer'
+import BaseGrpcWebConsumer from '../../../../client/base/BaseGrpcWebConsumer'
 import {
   CosmosTxV1Beta1Service,
   CosmosTxV1Beta1Tx,
@@ -27,7 +27,7 @@ export class TxGrpcApi implements TxConcreteApi {
   constructor(endpoint: string) {
     this.endpoint = endpoint
     this.txService = new CosmosTxV1Beta1Service.ServiceClientImpl(
-      getGrpcWebImpl(endpoint),
+      BaseGrpcWebConsumer.getGrpcWebImpl(endpoint),
     )
   }
 

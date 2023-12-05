@@ -3,7 +3,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 import { ChainModule } from '../types'
 import { ChainGrpcBankTransformer } from '../transformers'
 import { PaginationOption } from '../../../types/pagination'

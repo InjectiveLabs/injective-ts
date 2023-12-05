@@ -93,7 +93,7 @@ export default class Leap
     options: {
       address: AccountAddress
       chainId: ChainId
-      endpoints?: { rest: string }
+      endpoints?: { grpc: string }
     },
   ): Promise<TxResponse> {
     const { leapWallet } = this
@@ -102,7 +102,7 @@ export default class Leap
     try {
       return await leapWallet.waitTxBroadcasted(
         await leapWallet.broadcastTx(txRaw),
-        options.endpoints?.rest,
+        options.endpoints?.grpc,
       )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {

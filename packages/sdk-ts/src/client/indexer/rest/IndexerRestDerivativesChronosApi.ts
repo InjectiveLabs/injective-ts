@@ -2,7 +2,7 @@ import {
   ChronosDerivativeMarketSummaryResponse,
   AllDerivativeMarketSummaryResponse,
 } from '../types/derivatives-rest'
-import BaseRestConsumer from '../../BaseRestConsumer'
+import BaseRestConsumer from '../../base/BaseRestConsumer'
 import {
   HttpRequestException,
   HttpRequestMethod,

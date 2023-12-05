@@ -7,7 +7,7 @@ import {
   ChronosSpotMarketSummaryResponse,
   AllSpotMarketSummaryResponse,
 } from '../types/spot-rest'
-import BaseRestConsumer from '../../BaseRestConsumer'
+import BaseRestConsumer from '../../base/BaseRestConsumer'
 import { IndexerModule } from '../types'
 
 /**

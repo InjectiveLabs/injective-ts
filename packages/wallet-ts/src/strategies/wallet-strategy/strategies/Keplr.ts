@@ -98,7 +98,7 @@ export default class Keplr
     options: {
       address: AccountAddress
       chainId: ChainId
-      endpoints?: { rest: string }
+      endpoints?: { grpc: string }
     },
   ): Promise<TxResponse> {
     const { keplrWallet } = this
@@ -107,7 +107,7 @@ export default class Keplr
     try {
       return await keplrWallet.waitTxBroadcasted(
         await keplrWallet.broadcastTx(txRaw),
-        options.endpoints?.rest,
+        options.endpoints?.grpc,
       )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {

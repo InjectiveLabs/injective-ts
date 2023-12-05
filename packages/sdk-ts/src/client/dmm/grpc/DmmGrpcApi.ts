@@ -4,11 +4,12 @@ import {
   IndexerErrorModule,
 } from '@injectivelabs/exceptions'
 import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 import { DmmGrpcTransformer } from './transformers'
 
 export class DmmGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.Dmm
+
   protected client: InjectiveDmmRpc.InjectiveDmmV2RPCClientImpl
 
   constructor(endpoint: string) {

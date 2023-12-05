@@ -5,7 +5,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
 import {
   TradeDirection,
   TradeExecutionSide,

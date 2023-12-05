@@ -93,7 +93,7 @@ export default class Ninji
     options: {
       address: AccountAddress
       chainId: ChainId
-      endpoints?: { rest: string }
+      endpoints?: { grpc: string }
     },
   ): Promise<TxResponse> {
     const { ninjiWallet } = this
@@ -102,7 +102,7 @@ export default class Ninji
     try {
       return await ninjiWallet.waitTxBroadcasted(
         await ninjiWallet.broadcastTx(txRaw),
-        options.endpoints?.rest,
+        options.endpoints?.grpc,
       )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {

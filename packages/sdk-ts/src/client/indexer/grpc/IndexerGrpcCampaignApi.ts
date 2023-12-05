@@ -4,7 +4,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
 import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
 import { IndexerCampaignTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 

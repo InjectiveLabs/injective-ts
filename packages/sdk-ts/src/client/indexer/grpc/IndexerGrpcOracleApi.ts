@@ -3,7 +3,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
 import { IndexerModule } from '../types'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer'
 
