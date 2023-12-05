@@ -1053,12 +1053,32 @@ export default {
     },
   },
 
+  ZEN: {
+    name: 'ZEN',
+    logo: 'zen.svg',
+    symbol: 'ZEN',
+    decimals: 18,
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: 'uzen',
+      tokenType: TokenType.Cw20,
+    },
+  },
+
   PROJ: {
     name: 'PROJ',
     logo: 'proj.png',
     symbol: 'PROJ',
     decimals: 18,
     coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: 'proj',
+      tokenType: TokenType.Cw20,
+    },
   },
 
   PROJX: {
@@ -1067,6 +1087,12 @@ export default {
     symbol: 'PROJX',
     decimals: 18,
     coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: 'projx',
+      tokenType: TokenType.Cw20,
+    },
   },
 
   MITOTEST1: {

@@ -143,7 +143,7 @@ export class TokenFactory {
   }
 
   getFactoryDenomTokenMeta(denom: string): TokenMeta | undefined {
-    const [address] = denom.split('/').reverse()
+    const [address, ownerAddress] = denom.split('/').reverse()
 
     if (!address) {
       throw new GeneralException(
@@ -151,20 +151,13 @@ export class TokenFactory {
       )
     }
 
-    if (isCw20ContractAddress(address)) {
-      const tokenMeta = this.tokenMetaUtils.getMetaByAddress(address)
-
-      return tokenMeta
-        ? {
-            ...tokenMeta,
-            tokenType: TokenType.TokenFactory,
-          }
-        : undefined
-    }
-
-    const tokenMeta =
+    let tokenMeta =
       this.tokenMetaUtils.getMetaBySymbol(address) ||
       this.tokenMetaUtils.getMetaByName(address)
+
+    if (isCw20ContractAddress(ownerAddress)) {
+      tokenMeta = this.tokenMetaUtils.getMetaByAddress(address) || tokenMeta
+    }
 
     return tokenMeta
       ? {
