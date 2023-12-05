@@ -24,9 +24,9 @@ import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
 import Cosmostation from './strategies/Cosmostation'
+import LedgerCosmos from './strategies/LedgerCosmos'
 import { Wallet, WalletDeviceType } from '../../types/enums'
-import { isEthWallet } from './utils'
-import { isCosmosWallet } from '../../utils/wallets/cosmos'
+import { isEthWallet, isCosmosWallet } from './utils'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -95,6 +95,8 @@ const createStrategy = ({
       return new Keplr({ ...args })
     case Wallet.Cosmostation:
       return new Cosmostation({ ...args })
+    case Wallet.LedgerCosmos:
+      return new LedgerCosmos({ ...args })
     case Wallet.Leap:
       return new Leap({ ...args })
     case Wallet.Ninji:
@@ -153,8 +155,8 @@ export default class WalletStrategy {
     return this.getStrategy().getWalletDeviceType()
   }
 
-  public getPubKey(): Promise<string> {
-    return this.getStrategy().getPubKey()
+  public getPubKey(address?: string): Promise<string> {
+    return this.getStrategy().getPubKey(address)
   }
 
   public enable(): Promise<boolean> {
@@ -227,6 +229,21 @@ export default class WalletStrategy {
     return this.getStrategy().signEip712TypedData(eip712TypedData, address)
   }
 
+  public async signAminoCosmosTransaction(transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    if (isEthWallet(this.wallet)) {
+      throw new WalletException(
+        new Error(`You can't sign Cosmos Transaction using ${this.wallet}`),
+      )
+    }
+
+    return this.getStrategy().signAminoCosmosTransaction(transaction)
+  }
+
   public async signCosmosTransaction(transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -282,10 +299,8 @@ export default class WalletStrategy {
   }
 
   public disconnect() {
-    const strategy = this.getStrategy()
-
-    if (strategy.disconnect !== undefined) {
-      strategy.disconnect()
+    if (this.getStrategy().disconnect) {
+      this.getStrategy().disconnect!()
     }
   }
 }

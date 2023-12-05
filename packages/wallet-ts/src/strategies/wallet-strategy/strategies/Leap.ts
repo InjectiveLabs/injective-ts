@@ -24,10 +24,7 @@ import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
-export default class Leap
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Leap extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private leapWallet: LeapWallet
 
   constructor(args: {
@@ -125,6 +122,21 @@ export default class Leap
       ...transaction,
       address: injectiveAddress,
     })
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new CosmosWalletException(
+      new Error('This wallet does not support signing using amino'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SendTransaction,
+      },
+    )
   }
 
   async signCosmosTransaction(transaction: {

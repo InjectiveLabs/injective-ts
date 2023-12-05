@@ -21,7 +21,8 @@ export interface LedgerWalletInfo {
   address: string
   baseDerivationPath: string
   derivationPath: string
-  hdKey: HDNode
+  hdKey?: HDNode
+  publicKey?: string
 }
 
 export interface TrezorWalletInfo {

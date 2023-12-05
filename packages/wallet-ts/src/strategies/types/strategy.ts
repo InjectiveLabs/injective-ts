@@ -37,7 +37,7 @@ export interface ConcreteCosmosWalletStrategy {
    * Get the PubKey from the wallet
    * in base64 for Cosmos native wallets
    */
-  getPubKey(): Promise<string>
+  getPubKey(address?: string): Promise<string>
 
   /**
    * Perform validations and checks
@@ -141,6 +141,19 @@ export interface ConcreteWalletStrategy
     chainId: string
     address: string
   }): Promise<DirectSignResponse>
+
+  /**
+   * Sign an amino sign doc using the wallet provider
+   *
+   * @param transaction
+   * @param address - injective address
+   */
+  signAminoCosmosTransaction(transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string>
 
   /**
    * Sign EIP712 TypedData using the wallet provider

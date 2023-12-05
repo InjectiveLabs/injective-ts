@@ -147,6 +147,21 @@ export default class Cosmostation
     return this.signCosmosTransaction({ ...transaction, address })
   }
 
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new CosmosWalletException(
+      new Error('This wallet does not support signing using amino'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SendTransaction,
+      },
+    )
+  }
+
   async signCosmosTransaction(transaction: {
     txRaw: CosmosTxV1Beta1Tx.TxRaw
     chainId: string

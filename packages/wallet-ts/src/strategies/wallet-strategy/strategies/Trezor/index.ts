@@ -61,10 +61,7 @@ const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   return Chain.Mainnet
 }
 
-export default class Trezor
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Trezor extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private trezor: TrezorHW
 
   private ethereumOptions: WalletStrategyEthereumOptions
@@ -236,6 +233,22 @@ export default class Trezor
         contextModule: WalletAction.SignTransaction,
       })
     }
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   // eslint-disable-next-line class-methods-use-this

@@ -17,6 +17,7 @@ import {
   getGasPriceBasedOnMessage,
   recoverTypedSignaturePubKey,
   CreateTransactionWithSignersArgs,
+  getAminoStdSignDoc,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -44,9 +45,10 @@ import {
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
 } from './types'
-import { isCosmosWallet } from '../utils/wallets/cosmos'
+import { isCosmosWallet } from '../strategies/wallet-strategy/utils'
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
+import { isCosmosAminoOnlyWallet } from '../utils'
 
 /**
  * This class is used to broadcast transactions
@@ -330,7 +332,7 @@ export class MsgBroadcaster {
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
-    const pubKey = await walletStrategy.getPubKey()
+    const pubKey = await walletStrategy.getPubKey(tx.injectiveAddress)
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
@@ -346,6 +348,33 @@ export class MsgBroadcaster {
       },
       fee: getStdFee({ ...tx.gas, gas }),
     })
+
+    /** Ledger using Cosmos app only allows signing amino docs */
+    if (isCosmosAminoOnlyWallet(Wallet.LedgerCosmos)) {
+      const aminoSignDoc = getAminoStdSignDoc({
+        ...tx,
+        ...baseAccount,
+        msgs,
+        chainId,
+        gas: gas || tx.gas?.gas?.toString(),
+        timeoutHeight: timeoutHeight.toFixed(),
+      })
+
+      const signature = (await walletStrategy.signAminoCosmosTransaction({
+        signDoc: aminoSignDoc,
+        chainId,
+        address: tx.injectiveAddress,
+        accountNumber: baseAccount.accountNumber,
+      })) as string
+
+      txRaw.signatures = [Buffer.from(signature, 'base64')]
+
+      return walletStrategy.sendTransaction(txRaw, {
+        chainId,
+        endpoints,
+        address: tx.injectiveAddress,
+      })
+    }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
