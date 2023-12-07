@@ -231,7 +231,7 @@ const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
 const amount = {
   denom: 'inj',
-  amount: new BigNumberInBase(1).toWei(),
+  amount: new BigNumberInBase(1).toWei().toFixed(),
 }
 const msg = MsgSend.fromJSON({
   amount,
