@@ -95,10 +95,16 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchBalances(address: string) {
+  async fetchBalances(address: string, pagination?: PaginationOption) {
     const request = CosmosBankV1Beta1Query.QueryAllBalancesRequest.create()
 
     request.address = address
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.pagination = paginationForRequest
+    }
 
     try {
       const response =
