@@ -32,7 +32,7 @@ const chainId = 'injective-1' /* ChainId.Mainnet */
 const restEndpoint =
   'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const amount = {
-  amount: new BigNumberInBase(0.01).toWei().toFixed(),
+  amount: new BigNumberInBase(0.01).toWei().toFixed().toString(),
   denom: 'inj',
 }
 
@@ -162,7 +162,7 @@ import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
 
   /** Prepare the Message */
   const amount = {
-    amount: new BigNumberInBase(0.01).toWei().toFixed(),
+    amount: new BigNumberInBase(0.01).toWei().toFixed().toString(),
     denom: 'inj',
   }
 
@@ -231,7 +231,7 @@ const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
 const amount = {
   denom: 'inj',
-  amount: new BigNumberInBase(1).toWei(),
+  amount: new BigNumberInBase(1).toWei().toString(),
 }
 const msg = MsgSend.fromJSON({
   amount,
