@@ -6,6 +6,7 @@ export const isEthWallet = (wallet: Wallet): boolean =>
     Wallet.Torus,
     Wallet.Ledger,
     Wallet.Metamask,
+    Wallet.Phantom,
     Wallet.LedgerLegacy,
     Wallet.TrustWallet,
     Wallet.CosmostationEth,
