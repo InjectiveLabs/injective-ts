@@ -84,6 +84,9 @@ export default class LedgerBase
   }
 
   public async disconnect() {
+    const instance = await this.ledger.getInstance()
+    instance.transport.close()
+
     this.ledger = new LedgerHW()
   }
 

@@ -137,7 +137,7 @@ export default class Phantom
     try {
       return await ethereum.request({
         method: 'eth_signTypedData_v4',
-        params: [address, eip712json],
+        params: [address.toUpperCase(), eip712json],
       })
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
