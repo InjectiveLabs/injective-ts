@@ -7,6 +7,7 @@ export enum Wallet {
   Torus = 'torus',
   Ledger = 'ledger',
   Trezor = 'trezor',
+  Phantom = 'phantom',
   Metamask = 'metamask',
   TrustWallet = 'trust-wallet',
   Cosmostation = 'cosmostation',

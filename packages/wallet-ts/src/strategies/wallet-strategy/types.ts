@@ -5,12 +5,14 @@ export interface BrowserEip1993Provider extends Eip1993Provider {
   removeAllListeners(): void
   isMetaMask: boolean
   isTrust: boolean
+  isPhantom: boolean
 }
 
 export interface WindowWithEip1193Provider extends Window {
   ethereum: BrowserEip1993Provider
   providers: BrowserEip1993Provider[]
   trustWallet?: BrowserEip1993Provider
+  phantom?: { ethereum?: BrowserEip1993Provider }
 }
 
 export interface WindowWithLedgerSupport extends Window {

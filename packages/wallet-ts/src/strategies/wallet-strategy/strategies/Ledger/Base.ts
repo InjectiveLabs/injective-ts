@@ -84,7 +84,7 @@ export default class LedgerBase
   }
 
   public async disconnect() {
-    ;(await this.ledger.getAccountManager()).reset()
+    this.ledger = new LedgerHW()
   }
 
   public async getAddresses(): Promise<string[]> {

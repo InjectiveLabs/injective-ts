@@ -61,7 +61,10 @@ const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   return Chain.Mainnet
 }
 
-export default class Trezor extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export default class Trezor
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   private trezor: TrezorHW
 
   private ethereumOptions: WalletStrategyEthereumOptions
@@ -83,7 +86,7 @@ export default class Trezor extends BaseConcreteStrategy implements ConcreteWall
   }
 
   public async disconnect() {
-    ;(await this.trezor.getAccountManager()).reset()
+    this.trezor = new TrezorHW()
   }
 
   public async getAddresses(): Promise<string[]> {
