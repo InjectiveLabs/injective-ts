@@ -350,7 +350,7 @@ export class MsgBroadcaster {
     })
 
     /** Ledger using Cosmos app only allows signing amino docs */
-    if (isCosmosAminoOnlyWallet(Wallet.LedgerCosmos)) {
+    if (isCosmosAminoOnlyWallet(walletStrategy.wallet)) {
       const aminoSignDoc = getAminoStdSignDoc({
         ...tx,
         ...baseAccount,
