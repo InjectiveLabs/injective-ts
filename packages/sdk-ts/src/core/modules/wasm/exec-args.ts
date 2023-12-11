@@ -8,6 +8,8 @@ import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgRemoveGridStrategy from './exec-args/ExecArgRemoveGridStrategy'
 import ExecArgCreateSpotGridStrategy from './exec-args/ExecArgCreateSpotGridStrategy'
+import ExecArgCreateRound from './exec-args/ExecArgCreateRound'
+import ExecArgCreateCampaign from './exec-args/ExecArgCreateCampaign'
 
 import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 
@@ -19,14 +21,16 @@ import ExecPrivilegedArgOffChainVaultSubscribe from './exec-priv-args/ExecPrivil
 export type ExecArgs =
   | ExecArgCW20Send
   | ExecArgSubmitVaa
+  | ExecArgCreateRound
   | ExecArgCW20Transfer
   | ExecArgSwapMinOutput
   | ExecArgDepositTokens
-  | ExecArgCreateSpotGridStrategy
-  | ExecArgRemoveGridStrategy
+  | ExecArgCreateCampaign
   | ExecArgSwapExactOutput
   | ExecArgInitiateTransfer
   | ExecArgIncreaseAllowance
+  | ExecArgRemoveGridStrategy
+  | ExecArgCreateSpotGridStrategy
   | ExecArgCW20AdapterRedeemAndTransfer
 
 export type ExecPrivilegedArgs =
