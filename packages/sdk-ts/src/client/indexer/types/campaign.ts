@@ -1,3 +1,4 @@
+import { Coin } from '@injectivelabs/ts-types'
 import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface Campaign {
@@ -18,6 +19,8 @@ export interface CampaignUser {
   contractUpdated: boolean
   blockHeight: string
   blockTime: number
+  purchasedAmount: string
+  galxeUpdated: boolean
 }
 
 export interface Guild {
@@ -48,6 +51,8 @@ export interface GuildMember {
   totalTvl: string
   volumeScorePercentage: number
   tvlScorePercentage: number
+  tvlReward: Coin[]
+  volumeReward: Coin[]
 }
 
 export interface GuildCampaignSummary {

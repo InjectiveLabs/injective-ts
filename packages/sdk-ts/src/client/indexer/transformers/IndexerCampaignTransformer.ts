@@ -1,3 +1,4 @@
+import { Coin } from '@injectivelabs/ts-types'
 import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
 import { grpcPagingToPaging } from '../../..//utils/pagination'
 import {
@@ -7,8 +8,16 @@ import {
   CampaignUser,
   GuildCampaignSummary,
 } from '../types/campaign'
+import { GrpcCoin } from '../../../types'
 
 export class IndexerCampaignTransformer {
+  static GrpcCoinToCoin(coin: GrpcCoin): Coin {
+    return {
+      denom: coin.denom,
+      amount: coin.amount,
+    }
+  }
+
   static GrpcCampaignUserToCampaignUser(
     campaignUser: InjectiveCampaignRpc.CampaignUser,
   ): CampaignUser {
@@ -20,6 +29,8 @@ export class IndexerCampaignTransformer {
       contractUpdated: campaignUser.contractUpdated,
       blockHeight: campaignUser.blockHeight,
       blockTime: parseInt(campaignUser.blockTime, 10),
+      purchasedAmount: campaignUser.purchasedAmount,
+      galxeUpdated: campaignUser.galxeUpdated,
     }
   }
 
@@ -70,6 +81,12 @@ export class IndexerCampaignTransformer {
       totalTvl: member.totalTvl,
       volumeScorePercentage: member.volumeScorePercentage,
       tvlScorePercentage: member.tvlScorePercentage,
+      tvlReward: member.tvlReward.map(
+        IndexerCampaignTransformer.GrpcCoinToCoin,
+      ),
+      volumeReward: member.volumeReward.map(
+        IndexerCampaignTransformer.GrpcCoinToCoin,
+      ),
     }
   }
 
