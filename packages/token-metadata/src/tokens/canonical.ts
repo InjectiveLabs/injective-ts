@@ -7,19 +7,19 @@ export const checkAndGetCanonical = (
 ): { tokenType: TokenType; source: TokenSource } | undefined => {
   const symbol = token.symbol.toUpperCase()
 
-  if (!SYMBOLS_WITH_MULTIPLE_VARIATIONS.includes(symbol)) {
+  if (!SYMBOLS_WITH_MULTIPLE_VARIATIONS.some((s) => s.includes(symbol))) {
     return
   }
 
-  if (symbol === 'USDT') {
+  if (symbol.includes('USDT')) {
     return { tokenType: TokenType.Erc20, source: TokenSource.Ethereum }
   }
 
-  if (symbol === 'INJ') {
+  if (symbol.includes('INJ')) {
     return { tokenType: TokenType.Erc20, source: TokenSource.Ethereum }
   }
 
-  if (symbol === 'USDC') {
+  if (symbol.includes('USDC')) {
     return { tokenType: TokenType.Erc20, source: TokenSource.Ethereum }
   }
 
