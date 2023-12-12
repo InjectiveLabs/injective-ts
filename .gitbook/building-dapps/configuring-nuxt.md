@@ -89,7 +89,7 @@ Then, we need to configure the `tsconfig.json` if you are using TypeScript (reco
 
 ### 6. nuxt.config.ts / packages.json
 
-Before we boot our application, we need to set everything up in the `nuxt.config.ts`, the main configuration point for every Nuxt 3 application. Let's see a reference `nuxt.config.ts` and explain every line using comments so its easier for developers to understand.
+Before we boot our application, we need to set everything up in the `nuxt.config.ts`, the main configuration point for every Nuxt 3 application. Let's see a reference `nuxt.config.ts` and explain every line using comments so it's easier for developers to understand.
 
 ```ts
 // filename - nuxt.config.ts
@@ -125,7 +125,7 @@ export default defineNuxtConfig({
   // as usually is that it takes to much time/memory to generate
   // sitemaps and the build process can fail
   // on Github Actions/Netlify/Vercel/etc so we have to use another
-  // strategy like generating them locally and them pushing them to services like
+  // strategy like generating them locally and pushing them to services like
   // busgnag
   sourcemap: {
     server: false,

@@ -23,7 +23,7 @@ export interface EthereumWalletStrategyArgs {
 
 export interface ConcreteCosmosWalletStrategy {
   /**
-   * The the accounts from the wallet (addresses)
+   * The accounts from the wallet (addresses)
    */
   getAddresses(): Promise<string[]>
 

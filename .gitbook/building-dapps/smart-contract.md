@@ -1,6 +1,6 @@
 # Smart Contract
 
-Within these short series we are going to showcase how easy it is to build a dApp on top of Injective. There is an open-sourced [dApp](https://github.com/InjectiveLabs/injective-simple-sc-counter-ui) which everyone can reference and use to build on top of Injective.There are examples for Next, Nuxt and Vanilla Js. For those who want to start from scratch, this is the right place to start.
+Within these short series we are going to showcase how easy it is to build a dApp on top of Injective. There is an open-sourced [dApp](https://github.com/InjectiveLabs/injective-simple-sc-counter-ui) which everyone can reference and use to build on top of Injective. There are examples for Next, Nuxt and Vanilla Js. For those who want to start from scratch, this is the right place to start.
 
 In this example we will implement the connection and interact with an example Smart Contract deployed on the Injective Chain using the injective-ts module.
 
@@ -10,7 +10,7 @@ The series will include:
 - Connecting to the Chain and the Indexer API,
 - Connect to a user wallet and get their address,
 - Querying the smart contract ( in this case fetching the current count of the smart contract ),
-- Modifying the state of the contract ( in this case incrementing the count by 1, or setting it to a speciffic value),
+- Modifying the state of the contract ( in this case incrementing the count by 1, or setting it to a specific value),
 
 ### Setup
 
@@ -167,7 +167,7 @@ const msg = MsgExecuteContractCompat.fromJSON({
   contractAddress: COUNTER_CONTRACT_ADDRESS,
   sender: injectiveAddress,
   msg: {
-    increment: {}, // we pass an empty object if the method doesnt have parameters
+    increment: {}, // we pass an empty object if the method doesn't have parameters
   },
 })
 
@@ -181,7 +181,7 @@ const response = await msgBroadcastClient.broadcast({
 console.log(response)
 ```
 
-Now, lets see an example of how to se the counter to a specific value. Note that in this Smart Contract the count can be set to specific value only by the creator of the Smart Contract.
+Now, lets see an example of how to set the counter to a specific value. Note that in this Smart Contract the count can be set to specific value only by the creator of the Smart Contract.
 
 ```js
 // Preparing the message
@@ -191,7 +191,7 @@ const msg = MsgExecuteContractCompat.fromJSON({
   sender: injectiveAddress,
   msg: {
     reset: {
-      count: parseInt(number, 10), // we are parseing the number variable here because usualy it comes from an input which always gives a string, and we need to pass a number instead.
+      count: parseInt(number, 10), // we are parsing the number variable here because usually it comes from an input which always gives a string, and we need to pass a number instead.
     },
   },
 })
