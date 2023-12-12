@@ -19,192 +19,21 @@
     }
   },
   {
-    "name": "Stride",
-    "denom": "ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png",
-    "symbol": "STRD",
+    "name": "ERIS Amplified INJ",
+    "denom": "factory/inj1cdwt8g7nxgtg2k4fn8sj363mh9ahkw2qt0vrnc/ampINJ",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/ampinj.png",
+    "symbol": "ampINJ",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25",
+      "hash": "factory/inj1cdwt8g7nxgtg2k4fn8sj363mh9ahkw2qt0vrnc/ampINJ",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "STRD",
-      "baseDenom": "STRD",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stATOM",
-    "denom": "ibc/A8F39212ED30B6A8C2AC736665835720D3D7BE4A1D18D68566525EC25ECF1C9B",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.png",
-    "symbol": "stATOM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "A8F39212ED30B6A8C2AC736665835720D3D7BE4A1D18D68566525EC25ECF1C9B",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "stATOM",
-      "baseDenom": "stATOM",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stSTARS",
-    "denom": "ibc/DD0F92D576A9A60487F17685A987AB6EDB359E661D281ED31F3AE560650ECFCB",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/ststars.png",
-    "symbol": "stSTARS",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "DD0F92D576A9A60487F17685A987AB6EDB359E661D281ED31F3AE560650ECFCB",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "stSTARS",
-      "baseDenom": "stSTARS",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stOSMO",
-    "denom": "ibc/6D821F3CFAE78E9EBD872FAEC61C400C0D9B72E77FA14614CF1B775A528854FD",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stosmo.png",
-    "symbol": "stOSMO",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "6D821F3CFAE78E9EBD872FAEC61C400C0D9B72E77FA14614CF1B775A528854FD",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "stOSMO",
-      "baseDenom": "stOSMO",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stJUNO",
-    "denom": "ibc/580E52A2C2DB126EE2160D1BDBBA33B5839D53B5E59D04D4FF438AE9BB7BFAAB",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stjuno.png",
-    "symbol": "stJUNO",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "580E52A2C2DB126EE2160D1BDBBA33B5839D53B5E59D04D4FF438AE9BB7BFAAB",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "stJUNO",
-      "baseDenom": "stJUNO",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stLUNA",
-    "denom": "ibc/E98796F283A8B56A221011C2EDF7079BB62D1EA3EEF3E7CF4C679E91C6D97D08",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stluna.png",
-    "symbol": "stLUNA",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "E98796F283A8B56A221011C2EDF7079BB62D1EA3EEF3E7CF4C679E91C6D97D08",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "stLUNA",
-      "baseDenom": "stLUNA",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stEVMOS",
-    "denom": "ibc/75F64E20A70C5059F8EA792F1C47260DC7C6CBAC69DBA60E151AD5416E93C34C",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stevmos.png",
-    "symbol": "stEVMOS",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "75F64E20A70C5059F8EA792F1C47260DC7C6CBAC69DBA60E151AD5416E93C34C",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "stEVMOS",
-      "baseDenom": "stEVMOS",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stINJ",
-    "denom": "ibc/AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stinj.png",
-    "symbol": "stINJ",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "stINJ",
-      "baseDenom": "stINJ",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stUMEE",
-    "denom": "ibc/FC8E98DF998AE88129183094E49383F94B3E5F1844C939D380AF18061FEF41EB",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stumee.png",
-    "symbol": "stUMEE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "FC8E98DF998AE88129183094E49383F94B3E5F1844C939D380AF18061FEF41EB",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "stUMEE",
-      "baseDenom": "stUMEE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stCMDX",
-    "denom": "ibc/0CAB2CA45981598C95B6BE18252AEFE1E9E1691D8B4C661997AD7B836FD904D6",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stcmdx.png",
-    "symbol": "stCMDX",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "0CAB2CA45981598C95B6BE18252AEFE1E9E1691D8B4C661997AD7B836FD904D6",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "stCMDX",
-      "baseDenom": "stCMDX",
+      "symbol": "ampINJ",
+      "baseDenom": "ampINJ",
       "isNative": false
     }
   },
@@ -228,7 +57,7 @@
     }
   },
   {
-    "name": "Ion",
+    "name": "Ion DAO",
     "denom": "ibc/1B2D7E4261A7E2130E8E3506058E3081D3154998413F0DB2F82B04035B3FE676",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/ion.png",
     "symbol": "ION",
@@ -247,7 +76,7 @@
     }
   },
   {
-    "name": "IBCX Core <Product of ION DAO>",
+    "name": "IBC Index",
     "denom": "ibc/491C92BEEAFE513BABA355275C7AE3AC47AA7FD57285AC1D910CE874D2DC7CA0",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/ibcx.svg",
     "symbol": "IBCX",
@@ -266,7 +95,7 @@
     }
   },
   {
-    "name": "stIBCX Core <Product of ION DAO>",
+    "name": "Staked IBCX",
     "denom": "ibc/0A6B424A8207047D9FD499F59177BABD8DB08BBC2316B29B702A403BFB414419",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/stibcx.png",
     "symbol": "stIBCX",
@@ -281,6 +110,367 @@
       "decimals": 6,
       "symbol": "stIBCX",
       "baseDenom": "stIBCX",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ERIS Amplified OSMO",
+    "denom": "ibc/012D069D557C4DD59A670AA17E809CB7A790D778E364D0BC0A3248105DA6432D",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/amposmo.png",
+    "symbol": "ampOSMO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "012D069D557C4DD59A670AA17E809CB7A790D778E364D0BC0A3248105DA6432D",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampOSMO",
+      "baseDenom": "ampOSMO",
+      "isNative": false
+    }
+  },
+  {
+    "name": "CDT Stablecoin",
+    "denom": "ibc/25288BA0C7D146D37373657ECA719B9AADD49DA9E514B4172D08F7C88D56C9EF",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/CDT.svg",
+    "symbol": "CDT",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "25288BA0C7D146D37373657ECA719B9AADD49DA9E514B4172D08F7C88D56C9EF",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "CDT",
+      "baseDenom": "CDT",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Membrane",
+    "denom": "ibc/7AF90EDF6F5328C6C33B03DB7E33445708A46FF006932472D00D5076F5504B67",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/MBRN.svg",
+    "symbol": "MBRN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "7AF90EDF6F5328C6C33B03DB7E33445708A46FF006932472D00D5076F5504B67",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "MBRN",
+      "baseDenom": "MBRN",
+      "isNative": false
+    }
+  },
+  {
+    "name": "OSMO Squared",
+    "denom": "ibc/AFCDF4348DBDF92BCF631B1D38628F75683F45A8A0DCE304FC9AAD4F31609916",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqosmo.svg",
+    "symbol": "sqOSMO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "AFCDF4348DBDF92BCF631B1D38628F75683F45A8A0DCE304FC9AAD4F31609916",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "sqOSMO",
+      "baseDenom": "sqOSMO",
+      "isNative": false
+    }
+  },
+  {
+    "name": "BTC Squared",
+    "denom": "ibc/81C212661A115B9799C71173DD131B5077B14A3FBD26A8A9A0C669F76F434E23",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqbtc.svg",
+    "symbol": "sqBTC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "81C212661A115B9799C71173DD131B5077B14A3FBD26A8A9A0C669F76F434E23",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "sqBTC",
+      "baseDenom": "sqBTC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ATOM Squared",
+    "denom": "ibc/C63E6285FA0EE014B89671A7A633E1CE7F62310312843B9AC7248910619143C6",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqatom.svg",
+    "symbol": "sqATOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C63E6285FA0EE014B89671A7A633E1CE7F62310312843B9AC7248910619143C6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "sqATOM",
+      "baseDenom": "sqATOM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Levana",
+    "denom": "ibc/4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/levana.png",
+    "symbol": "LVN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "LVN",
+      "baseDenom": "LVN",
+      "isNative": false
+    }
+  },
+  {
+    "name": "milkTIA",
+    "denom": "ibc/C2A70D6717D595F388B115200E789DC6E7EE409167B918B5F4E73838B8451A71",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/milktia.png",
+    "symbol": "milkTIA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C2A70D6717D595F388B115200E789DC6E7EE409167B918B5F4E73838B8451A71",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "milkTIA",
+      "baseDenom": "milkTIA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride",
+    "denom": "ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png",
+    "symbol": "STRD",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "STRD",
+      "baseDenom": "STRD",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked ATOM",
+    "denom": "ibc/A8F39212ED30B6A8C2AC736665835720D3D7BE4A1D18D68566525EC25ECF1C9B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.png",
+    "symbol": "stATOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A8F39212ED30B6A8C2AC736665835720D3D7BE4A1D18D68566525EC25ECF1C9B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stATOM",
+      "baseDenom": "stATOM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked STARS",
+    "denom": "ibc/DD0F92D576A9A60487F17685A987AB6EDB359E661D281ED31F3AE560650ECFCB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/ststars.png",
+    "symbol": "stSTARS",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "DD0F92D576A9A60487F17685A987AB6EDB359E661D281ED31F3AE560650ECFCB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stSTARS",
+      "baseDenom": "stSTARS",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked OSMO",
+    "denom": "ibc/6D821F3CFAE78E9EBD872FAEC61C400C0D9B72E77FA14614CF1B775A528854FD",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stosmo.png",
+    "symbol": "stOSMO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "6D821F3CFAE78E9EBD872FAEC61C400C0D9B72E77FA14614CF1B775A528854FD",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stOSMO",
+      "baseDenom": "stOSMO",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked JUNO",
+    "denom": "ibc/580E52A2C2DB126EE2160D1BDBBA33B5839D53B5E59D04D4FF438AE9BB7BFAAB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stjuno.png",
+    "symbol": "stJUNO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "580E52A2C2DB126EE2160D1BDBBA33B5839D53B5E59D04D4FF438AE9BB7BFAAB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stJUNO",
+      "baseDenom": "stJUNO",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked LUNA",
+    "denom": "ibc/E98796F283A8B56A221011C2EDF7079BB62D1EA3EEF3E7CF4C679E91C6D97D08",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stluna.png",
+    "symbol": "stLUNA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E98796F283A8B56A221011C2EDF7079BB62D1EA3EEF3E7CF4C679E91C6D97D08",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stLUNA",
+      "baseDenom": "stLUNA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked EVMOS",
+    "denom": "ibc/75F64E20A70C5059F8EA792F1C47260DC7C6CBAC69DBA60E151AD5416E93C34C",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stevmos.png",
+    "symbol": "stEVMOS",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "75F64E20A70C5059F8EA792F1C47260DC7C6CBAC69DBA60E151AD5416E93C34C",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "stEVMOS",
+      "baseDenom": "stEVMOS",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked INJ",
+    "denom": "ibc/AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stinj.png",
+    "symbol": "stINJ",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "stINJ",
+      "baseDenom": "stINJ",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked UMEE",
+    "denom": "ibc/FC8E98DF998AE88129183094E49383F94B3E5F1844C939D380AF18061FEF41EB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stumee.png",
+    "symbol": "stUMEE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "FC8E98DF998AE88129183094E49383F94B3E5F1844C939D380AF18061FEF41EB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stUMEE",
+      "baseDenom": "stUMEE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked CMDX",
+    "denom": "ibc/0CAB2CA45981598C95B6BE18252AEFE1E9E1691D8B4C661997AD7B836FD904D6",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stcmdx.png",
+    "symbol": "stCMDX",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0CAB2CA45981598C95B6BE18252AEFE1E9E1691D8B4C661997AD7B836FD904D6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stCMDX",
+      "baseDenom": "stCMDX",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Stride Staked SOMM",
+    "denom": "ibc/9C234DA49B8DDAFB8F71F21BEB109F6255ECA146A32FD3A36CB9210647CBD037",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stsomm.png",
+    "symbol": "stSOMM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "9C234DA49B8DDAFB8F71F21BEB109F6255ECA146A32FD3A36CB9210647CBD037",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stSOMM",
+      "baseDenom": "stSOMM",
       "isNative": false
     }
   },
@@ -304,7 +494,26 @@
     }
   },
   {
-    "name": "Kuji",
+    "name": "Neokingdom DAO",
+    "denom": "ibc/F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/evmos/images/neok.png",
+    "symbol": "NEOK",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "NEOK",
+      "baseDenom": "NEOK",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Kujira",
     "denom": "ibc/9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/kuji.png",
     "symbol": "KUJI",
@@ -323,40 +532,287 @@
     }
   },
   {
-    "name": "USDC",
-    "denom": "ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png",
-    "symbol": "USDC",
+    "name": "USK",
+    "denom": "ibc/58BC643F2EB5758C08D8B1569C7948A5DA796802576005F676BBFB7526E520EB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/usk.png",
+    "symbol": "USK",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
+      "hash": "58BC643F2EB5758C08D8B1569C7948A5DA796802576005F676BBFB7526E520EB",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "USDC",
-      "baseDenom": "USDC",
+      "symbol": "USK",
+      "baseDenom": "USK",
       "isNative": false
     }
   },
   {
-    "name": "Frienzies",
-    "denom": "ibc/CDD7374B312BEF9723AAEBDE622206490E112CE2B5F49275683CCCD86C7D4BCE",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/noble/images/frnz.png",
-    "symbol": "FRNZ",
+    "name": "ampKUJI",
+    "denom": "ibc/34E48C7C43383203519D996D1D93FE80ED50153E28FB6A9465DE463AEF2EC9EC",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/ampkuji.png",
+    "symbol": "ampKUJI",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "CDD7374B312BEF9723AAEBDE622206490E112CE2B5F49275683CCCD86C7D4BCE",
+      "hash": "34E48C7C43383203519D996D1D93FE80ED50153E28FB6A9465DE463AEF2EC9EC",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "FRNZ",
-      "baseDenom": "FRNZ",
+      "symbol": "ampKUJI",
+      "baseDenom": "ampKUJI",
+      "isNative": false
+    }
+  },
+  {
+    "name": "MantaDAO",
+    "denom": "ibc/A4495880A4A2E3C242F63C710F447BAE072E1A4C2A22F1851E0BB7ABDD26B43D",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/mnta.png",
+    "symbol": "MNTA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A4495880A4A2E3C242F63C710F447BAE072E1A4C2A22F1851E0BB7ABDD26B43D",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "MNTA",
+      "baseDenom": "MNTA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "WINK",
+    "denom": "ibc/325300CEF4149AD1BBFEB540FF07699CDEEFBB653401E872532030CFB31CD767",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/wink.png",
+    "symbol": "WINK",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "325300CEF4149AD1BBFEB540FF07699CDEEFBB653401E872532030CFB31CD767",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WINK",
+      "baseDenom": "WINK",
+      "isNative": false
+    }
+  },
+  {
+    "name": "BLEND",
+    "denom": "ibc/45C0FE8ACE1C9C8BA38D3D6FDEBDE4F7198A434B6C63ADCEFC3D32D12443BB84",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/blend.svg",
+    "symbol": "BLEND",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "45C0FE8ACE1C9C8BA38D3D6FDEBDE4F7198A434B6C63ADCEFC3D32D12443BB84",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BLEND",
+      "baseDenom": "BLEND",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ERIS Amplified MNTA",
+    "denom": "ibc/A87178EAA371050DDFD80F78630AE622B176C7634160EE515C27CE62FCC8A0CC",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/ampmnta.png",
+    "symbol": "ampMNTA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A87178EAA371050DDFD80F78630AE622B176C7634160EE515C27CE62FCC8A0CC",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampMNTA",
+      "baseDenom": "ampMNTA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "qcKUJI",
+    "denom": "ibc/B7C8418ABE8CF56B42A37215F6A715097FDD82AC322FE560CA589833FEE8C50D",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/qckuji.svg",
+    "symbol": "qcKUJI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B7C8418ABE8CF56B42A37215F6A715097FDD82AC322FE560CA589833FEE8C50D",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "qcKUJI",
+      "baseDenom": "qcKUJI",
+      "isNative": false
+    }
+  },
+  {
+    "name": "qcMNTA",
+    "denom": "ibc/F770E830BC7E2992BC0DBECAC789432995B64BD6714C36EA092D877E28AA9493",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/qcmnta.svg",
+    "symbol": "qcMNTA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F770E830BC7E2992BC0DBECAC789432995B64BD6714C36EA092D877E28AA9493",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "qcMNTA",
+      "baseDenom": "qcMNTA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Fuzion",
+    "denom": "ibc/FE87E1E1BB401EC35CD02A57FE5DEF872FA309C018172C4E7DA07F194EAC6F19",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/fuzion.png",
+    "symbol": "FUZN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "FE87E1E1BB401EC35CD02A57FE5DEF872FA309C018172C4E7DA07F194EAC6F19",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FUZN",
+      "baseDenom": "FUZN",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Fuzion Receipt",
+    "denom": "ibc/F5FFC37BBF4B24F94D920BC7DAFCCE5B9403B2DB33DF759B8CED76EA8A6E3E24",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/fuzionr.png",
+    "symbol": "rFUZN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F5FFC37BBF4B24F94D920BC7DAFCCE5B9403B2DB33DF759B8CED76EA8A6E3E24",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "rFUZN",
+      "baseDenom": "rFUZN",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Unstake Fi",
+    "denom": "ibc/35366063B530778DC37A16AAED4DDC14C0DCA161FBF55B5B69F5171FEE19BF93",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/nstk.svg",
+    "symbol": "NSTK",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "35366063B530778DC37A16AAED4DDC14C0DCA161FBF55B5B69F5171FEE19BF93",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "NSTK",
+      "baseDenom": "NSTK",
+      "isNative": false
+    }
+  },
+  {
+    "name": "LOCAL",
+    "denom": "ibc/FECCDCFA89278B117C76A11A946A7991A68E5DD12DED6EB938ADC1B1286AC591",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/local.png",
+    "symbol": "LOCAL",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "FECCDCFA89278B117C76A11A946A7991A68E5DD12DED6EB938ADC1B1286AC591",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "LOCAL",
+      "baseDenom": "LOCAL",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Fuzion Yield",
+    "denom": "ibc/71C297610507CCB7D42E49EA49AF2ECBBE2D4A83D139C4A441EB7A2693C0464A",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/fuziony.svg",
+    "symbol": "yFUZN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "71C297610507CCB7D42E49EA49AF2ECBBE2D4A83D139C4A441EB7A2693C0464A",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "yFUZN",
+      "baseDenom": "yFUZN",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Umee",
+    "denom": "ibc/2FF3DC3A0265B9A220750E75E75E5D44ED2F716B8AC4EDC378A596CC958ABF6B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.png",
+    "symbol": "UMEE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "2FF3DC3A0265B9A220750E75E75E5D44ED2F716B8AC4EDC378A596CC958ABF6B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "UMEE",
+      "baseDenom": "UMEE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Cosmos Hub Atom",
+    "denom": "ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png",
+    "symbol": "ATOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ATOM",
+      "baseDenom": "ATOM",
       "isNative": false
     }
   },
@@ -855,6 +1311,25 @@
     }
   },
   {
+    "name": "Wrapped FIL from Filecoin",
+    "denom": "ibc/9D1889339AEC850B1D719CCF19BD813955C086BE1ED323ED68318A273922E40D",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/filecoin/images/wfil.png",
+    "symbol": "axlFIL",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "9D1889339AEC850B1D719CCF19BD813955C086BE1ED323ED68318A273922E40D",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "axlFIL",
+      "baseDenom": "axlFIL",
+      "isNative": false
+    }
+  },
+  {
     "name": "Arbitrum",
     "denom": "ibc/F28C5C931D2673B7A2F06FC74934F7BDC0D2906D2AF40D582ED27D1E5C48D475",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/arbitrum/images/arb.png",
@@ -876,7 +1351,7 @@
   {
     "name": "Pepe",
     "denom": "ibc/9144D78830C5ABD7B7D9E219EA7600E3A0E0AD5FC50C007668160595E94789AB",
-    "logo": "https://ibc.tfm.com/custom/tokens/pepe-wei.logo.svg",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/pepe.png",
     "symbol": "PEPE",
     "decimals": 18,
     "coinGeckoId": "",
@@ -889,272 +1364,6 @@
       "decimals": 18,
       "symbol": "PEPE",
       "baseDenom": "PEPE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Wrapped FIL from Filecoin",
-    "denom": "ibc/9D1889339AEC850B1D719CCF19BD813955C086BE1ED323ED68318A273922E40D",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/filecoin/images/wfil.png",
-    "symbol": "axlFIL",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "9D1889339AEC850B1D719CCF19BD813955C086BE1ED323ED68318A273922E40D",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "axlFIL",
-      "baseDenom": "axlFIL",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Cosmos Hub Atom",
-    "denom": "ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png",
-    "symbol": "ATOM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ATOM",
-      "baseDenom": "ATOM",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Persistence",
-    "denom": "ibc/B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/xprt.png",
-    "symbol": "XPRT",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "XPRT",
-      "baseDenom": "XPRT",
-      "isNative": false
-    }
-  },
-  {
-    "name": "PSTAKE staked ATOM",
-    "denom": "ibc/B8E30AECB0FB5BA1B02747BE003E55934A9E42488495412C7E9934FBEC06B201",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/stkatom.png",
-    "symbol": "stkATOM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "B8E30AECB0FB5BA1B02747BE003E55934A9E42488495412C7E9934FBEC06B201",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "stkATOM",
-      "baseDenom": "stkATOM",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Whale",
-    "denom": "ibc/D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/white-whale.png",
-    "symbol": "WHALE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "WHALE",
-      "baseDenom": "WHALE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "boneWHALE",
-    "denom": "ibc/ECB0AA28D6001EF985047558C410B65581FC85BD92D4E3CFCCA0D3D964C67CC2",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/bWHALE.png",
-    "symbol": "bWHALE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "ECB0AA28D6001EF985047558C410B65581FC85BD92D4E3CFCCA0D3D964C67CC2",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "bWHALE",
-      "baseDenom": "bWHALE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "ampWHALE",
-    "denom": "ibc/168C3904C45C6FE3539AE85A8892DF87371D00EA7942515AFC50AA43C4BB0A32",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/ampwhale.svg",
-    "symbol": "ampWHALE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "168C3904C45C6FE3539AE85A8892DF87371D00EA7942515AFC50AA43C4BB0A32",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ampWHALE",
-      "baseDenom": "ampWHALE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "FABLE",
-    "denom": "ibc/5FE5E50EA0DF6D68C29EDFB7992EB81CD40B6780C33834A8AB3712FB148E1313",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/fable.svg",
-    "symbol": "FABLE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "5FE5E50EA0DF6D68C29EDFB7992EB81CD40B6780C33834A8AB3712FB148E1313",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "FABLE",
-      "baseDenom": "FABLE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "RAC",
-    "denom": "ibc/0F3A724673F682CF7812D0ED1A0C41D344C09E94C939E79D12712DC7C0676E80",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/rac.png",
-    "symbol": "RAC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "0F3A724673F682CF7812D0ED1A0C41D344C09E94C939E79D12712DC7C0676E80",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "RAC",
-      "baseDenom": "RAC",
-      "isNative": false
-    }
-  },
-  {
-    "name": "ASH",
-    "denom": "ibc/EED40547772504DF629EFEC08892E689CD14498B1C0AD766CD5075BBBEE3D808",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/ash.svg",
-    "symbol": "ASH",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "EED40547772504DF629EFEC08892E689CD14498B1C0AD766CD5075BBBEE3D808",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ASH",
-      "baseDenom": "ASH",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Somm",
-    "denom": "ibc/34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sommelier/images/somm.png",
-    "symbol": "SOMM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "SOMM",
-      "baseDenom": "SOMM",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Crescent",
-    "denom": "ibc/3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/crescent/images/cre.png",
-    "symbol": "CRE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "CRE",
-      "baseDenom": "CRE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Bonded Crescent",
-    "denom": "ibc/D9E839DE6F40C036592B6CEDB73841EE9A18987BC099DD112762A46AFE72159B",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/crescent/images/bcre.png",
-    "symbol": "bCRE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "D9E839DE6F40C036592B6CEDB73841EE9A18987BC099DD112762A46AFE72159B",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "bCRE",
-      "baseDenom": "bCRE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Secret Network",
-    "denom": "ibc/0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/scrt.png",
-    "symbol": "SCRT",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "SCRT",
-      "baseDenom": "SCRT",
       "isNative": false
     }
   },
@@ -1254,21 +1463,553 @@
     }
   },
   {
-    "name": "Celestia",
-    "denom": "ibc/F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png",
-    "symbol": "TIA",
+    "name": "Persistence",
+    "denom": "ibc/B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/xprt.png",
+    "symbol": "XPRT",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4",
+      "hash": "B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "TIA",
-      "baseDenom": "TIA",
+      "symbol": "XPRT",
+      "baseDenom": "XPRT",
+      "isNative": false
+    }
+  },
+  {
+    "name": "PSTAKE staked ATOM",
+    "denom": "ibc/B8E30AECB0FB5BA1B02747BE003E55934A9E42488495412C7E9934FBEC06B201",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/stkatom.png",
+    "symbol": "stkATOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B8E30AECB0FB5BA1B02747BE003E55934A9E42488495412C7E9934FBEC06B201",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stkATOM",
+      "baseDenom": "stkATOM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "PSTAKE staked OSMO",
+    "denom": "ibc/F60E1792296F6264E594B5F87C3B5CDE859A1D9B3421F203E986B7BA3C4E05F1",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/stkosmo.png",
+    "symbol": "stkOSMO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F60E1792296F6264E594B5F87C3B5CDE859A1D9B3421F203E986B7BA3C4E05F1",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stkOSMO",
+      "baseDenom": "stkOSMO",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Kava",
+    "denom": "ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/kava.png",
+    "symbol": "KAVA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "KAVA",
+      "baseDenom": "KAVA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Kava Hard",
+    "denom": "ibc/D6C28E07F7343360AC41E15DDD44D79701DDCA2E0C2C41279739C8D4AE5264BC",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/hard.png",
+    "symbol": "HARD",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D6C28E07F7343360AC41E15DDD44D79701DDCA2E0C2C41279739C8D4AE5264BC",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "HARD",
+      "baseDenom": "HARD",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Kava Swap",
+    "denom": "ibc/70CF1A54E23EA4E480DEDA9E12082D3FD5684C3483CBDCE190C5C807227688C5",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/swp.png",
+    "symbol": "SWP",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "70CF1A54E23EA4E480DEDA9E12082D3FD5684C3483CBDCE190C5C807227688C5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SWP",
+      "baseDenom": "SWP",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Kava USDX",
+    "denom": "ibc/C78F65E1648A3DFE0BAEB6C4CDA69CC2A75437F1793C0E6386DFDA26393790AE",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/usdx.png",
+    "symbol": "USDX",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C78F65E1648A3DFE0BAEB6C4CDA69CC2A75437F1793C0E6386DFDA26393790AE",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDX",
+      "baseDenom": "USDX",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Tether USD",
+    "denom": "ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdt.svg",
+    "symbol": "USDT",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDT",
+      "baseDenom": "USDT",
+      "isNative": false
+    }
+  },
+  {
+    "name": "USDC",
+    "denom": "ibc/DF32F083238097AD2CA5444BFB8F338534C32865EFE0696C5AF89AFB3A0144D6",
+    "logo": "untracked.png",
+    "symbol": "USDC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "DF32F083238097AD2CA5444BFB8F338534C32865EFE0696C5AF89AFB3A0144D6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Multichain USDC",
+    "denom": "ibc/610D4A1B3F3198C35C09E9AF7C8FB81707912463357C9398B02C7F13049678A8",
+    "logo": "untracked.png",
+    "symbol": "USDC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "610D4A1B3F3198C35C09E9AF7C8FB81707912463357C9398B02C7F13049678A8",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "USDT",
+    "denom": "ibc/24E5D0825D3D71BF00C4A01CD8CA8F2D27B1DD32B7446CF633534AEA25379271",
+    "logo": "untracked.png",
+    "symbol": "USDT",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "24E5D0825D3D71BF00C4A01CD8CA8F2D27B1DD32B7446CF633534AEA25379271",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDT",
+      "baseDenom": "USDT",
+      "isNative": false
+    }
+  },
+  {
+    "name": "DAI",
+    "denom": "ibc/433133545CF68587777A01C3EFCF720EFE1B42F14AB2153D349DC4559984F2E8",
+    "logo": "untracked.png",
+    "symbol": "DAI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "433133545CF68587777A01C3EFCF720EFE1B42F14AB2153D349DC4559984F2E8",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "DAI",
+      "baseDenom": "DAI",
+      "isNative": false
+    }
+  },
+  {
+    "name": "WBTC",
+    "denom": "ibc/64431EE79F3216B8F7773A630549ADA852EA8E4B545D22BD35B0BF56FD5D5201",
+    "logo": "untracked.png",
+    "symbol": "WBTC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "64431EE79F3216B8F7773A630549ADA852EA8E4B545D22BD35B0BF56FD5D5201",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WBTC",
+      "baseDenom": "WBTC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "axlWBTC",
+    "denom": "ibc/F57B53E102171E6DC254532ECC184228BB8E23B755AD55FA6FDCBD70464A9A54",
+    "logo": "untracked.png",
+    "symbol": "axlWBTC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F57B53E102171E6DC254532ECC184228BB8E23B755AD55FA6FDCBD70464A9A54",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "axlWBTC",
+      "baseDenom": "axlWBTC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "USDT",
+    "denom": "ibc/7965483148018AFAA12DC569959897E7A5E474F4B41A87FFC5513B552C108DB5",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdt.png",
+    "symbol": "USDT",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "7965483148018AFAA12DC569959897E7A5E474F4B41A87FFC5513B552C108DB5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDT",
+      "baseDenom": "USDT",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ATOM",
+    "denom": "ibc/8D311D92BCD4E87F145DEB9DDA339416DEF7E13571D92A3521CAB0BF62760FBE",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png",
+    "symbol": "ATOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "8D311D92BCD4E87F145DEB9DDA339416DEF7E13571D92A3521CAB0BF62760FBE",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ATOM",
+      "baseDenom": "ATOM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Whale",
+    "denom": "ibc/D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/white-whale.png",
+    "symbol": "WHALE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WHALE",
+      "baseDenom": "WHALE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ampWHALE",
+    "denom": "ibc/168C3904C45C6FE3539AE85A8892DF87371D00EA7942515AFC50AA43C4BB0A32",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/ampwhale.svg",
+    "symbol": "ampWHALE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "168C3904C45C6FE3539AE85A8892DF87371D00EA7942515AFC50AA43C4BB0A32",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampWHALE",
+      "baseDenom": "ampWHALE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "boneWHALE",
+    "denom": "ibc/ECB0AA28D6001EF985047558C410B65581FC85BD92D4E3CFCCA0D3D964C67CC2",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/bWHALE.png",
+    "symbol": "bWHALE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "ECB0AA28D6001EF985047558C410B65581FC85BD92D4E3CFCCA0D3D964C67CC2",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "bWHALE",
+      "baseDenom": "bWHALE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "FABLE",
+    "denom": "ibc/5FE5E50EA0DF6D68C29EDFB7992EB81CD40B6780C33834A8AB3712FB148E1313",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/fable.svg",
+    "symbol": "FABLE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "5FE5E50EA0DF6D68C29EDFB7992EB81CD40B6780C33834A8AB3712FB148E1313",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FABLE",
+      "baseDenom": "FABLE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "RAC",
+    "denom": "ibc/0F3A724673F682CF7812D0ED1A0C41D344C09E94C939E79D12712DC7C0676E80",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/rac.png",
+    "symbol": "RAC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0F3A724673F682CF7812D0ED1A0C41D344C09E94C939E79D12712DC7C0676E80",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "RAC",
+      "baseDenom": "RAC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ASH",
+    "denom": "ibc/EED40547772504DF629EFEC08892E689CD14498B1C0AD766CD5075BBBEE3D808",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/ash.svg",
+    "symbol": "ASH",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "EED40547772504DF629EFEC08892E689CD14498B1C0AD766CD5075BBBEE3D808",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ASH",
+      "baseDenom": "ASH",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Sommelier",
+    "denom": "ibc/34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sommelier/images/somm.png",
+    "symbol": "SOMM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SOMM",
+      "baseDenom": "SOMM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Crescent",
+    "denom": "ibc/3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/crescent/images/cre.png",
+    "symbol": "CRE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "CRE",
+      "baseDenom": "CRE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Bonded Crescent",
+    "denom": "ibc/D9E839DE6F40C036592B6CEDB73841EE9A18987BC099DD112762A46AFE72159B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/crescent/images/bcre.png",
+    "symbol": "bCRE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D9E839DE6F40C036592B6CEDB73841EE9A18987BC099DD112762A46AFE72159B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "bCRE",
+      "baseDenom": "bCRE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Secret Network",
+    "denom": "ibc/0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/scrt.png",
+    "symbol": "SCRT",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SCRT",
+      "baseDenom": "SCRT",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Oraichain",
+    "denom": "ibc/C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/oraichain/images/orai-white.png",
+    "symbol": "ORAI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ORAI",
+      "baseDenom": "ORAI",
+      "isNative": false
+    }
+  },
+  {
+    "name": "USDC",
+    "denom": "ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png",
+    "symbol": "USDC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Frienzies",
+    "denom": "ibc/CDD7374B312BEF9723AAEBDE622206490E112CE2B5F49275683CCCD86C7D4BCE",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/noble/images/frnz.png",
+    "symbol": "FRNZ",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "CDD7374B312BEF9723AAEBDE622206490E112CE2B5F49275683CCCD86C7D4BCE",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FRNZ",
+      "baseDenom": "FRNZ",
       "isNative": false
     }
   },
@@ -1349,591 +2090,40 @@
     }
   },
   {
-    "name": "ERIS Amplified MNTA",
-    "denom": "ibc/A87178EAA371050DDFD80F78630AE622B176C7634160EE515C27CE62FCC8A0CC",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/ampmnta.png",
-    "symbol": "ampMNTA",
+    "name": "Celestia",
+    "denom": "ibc/F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png",
+    "symbol": "TIA",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "A87178EAA371050DDFD80F78630AE622B176C7634160EE515C27CE62FCC8A0CC",
+      "hash": "F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "ampMNTA",
-      "baseDenom": "ampMNTA",
+      "symbol": "TIA",
+      "baseDenom": "TIA",
       "isNative": false
     }
   },
   {
-    "name": "Astroport",
-    "denom": "ibc/EBD5A24C554198EBAF44979C5B4D2C2D312E6EBAB71962C92F735499C7575839",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/astro.png",
-    "symbol": "ASTRO",
+    "name": "Nois",
+    "denom": "ibc/DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/nois/images/nois.png",
+    "symbol": "NOIS",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "EBD5A24C554198EBAF44979C5B4D2C2D312E6EBAB71962C92F735499C7575839",
+      "hash": "DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "ASTRO",
-      "baseDenom": "ASTRO",
-      "isNative": false
-    }
-  },
-  {
-    "name": "ERIS Amplified LUNA",
-    "denom": "ibc/751CCECAF75D686B1DC8708BE62F8C7411B211750E6009C6AC4C93881F0543E8",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/ampluna.svg",
-    "symbol": "ampLUNA",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "751CCECAF75D686B1DC8708BE62F8C7411B211750E6009C6AC4C93881F0543E8",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ampLUNA",
-      "baseDenom": "ampLUNA",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Lion DAO",
-    "denom": "ibc/E6CFB0AC1D339A8CBA3353DF0D7E080B4B14D026D1C90F63F666C223B04D548C",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/roar.png",
-    "symbol": "ROAR",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "E6CFB0AC1D339A8CBA3353DF0D7E080B4B14D026D1C90F63F666C223B04D548C",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ROAR",
-      "baseDenom": "ROAR",
-      "isNative": false
-    }
-  },
-  {
-    "name": "boneLuna",
-    "denom": "ibc/C9D55B62C9D9CA84DD94DC019009B840DDFD861BF2F33F7CF2A8A74933797680",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/boneluna.png",
-    "symbol": "bLUNA",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "C9D55B62C9D9CA84DD94DC019009B840DDFD861BF2F33F7CF2A8A74933797680",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "bLUNA",
-      "baseDenom": "bLUNA",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Lion Cub DAO",
-    "denom": "ibc/5CB35B165F689DD57F836C6C5ED3AB268493AA5A810740446C4F2141664714F4",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/cub.png",
-    "symbol": "CUB",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "5CB35B165F689DD57F836C6C5ED3AB268493AA5A810740446C4F2141664714F4",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "CUB",
-      "baseDenom": "CUB",
-      "isNative": false
-    }
-  },
-  {
-    "name": "sayve",
-    "denom": "ibc/DF2B99CF1FEA6B292E79617BD6F7EF735C0B47CEF09D7104E270956E96C38B12",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/sayve.png",
-    "symbol": "SAYVE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "DF2B99CF1FEA6B292E79617BD6F7EF735C0B47CEF09D7104E270956E96C38B12",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "SAYVE",
-      "baseDenom": "SAYVE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "BLUE CUB DAO",
-    "denom": "ibc/B692197280D4E62F8D9F8E5C0B697DC4C2C680ED6DE8FFF0368E0552C9215607",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/blue.png",
-    "symbol": "BLUE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "B692197280D4E62F8D9F8E5C0B697DC4C2C680ED6DE8FFF0368E0552C9215607",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "BLUE",
-      "baseDenom": "BLUE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Kava",
-    "denom": "ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/kava.png",
-    "symbol": "KAVA",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "KAVA",
-      "baseDenom": "KAVA",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Hard",
-    "denom": "ibc/D6C28E07F7343360AC41E15DDD44D79701DDCA2E0C2C41279739C8D4AE5264BC",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/hard.png",
-    "symbol": "HARD",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "D6C28E07F7343360AC41E15DDD44D79701DDCA2E0C2C41279739C8D4AE5264BC",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "HARD",
-      "baseDenom": "HARD",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Swap",
-    "denom": "ibc/70CF1A54E23EA4E480DEDA9E12082D3FD5684C3483CBDCE190C5C807227688C5",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/swp.png",
-    "symbol": "SWP",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "70CF1A54E23EA4E480DEDA9E12082D3FD5684C3483CBDCE190C5C807227688C5",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "SWP",
-      "baseDenom": "SWP",
-      "isNative": false
-    }
-  },
-  {
-    "name": "USDX",
-    "denom": "ibc/C78F65E1648A3DFE0BAEB6C4CDA69CC2A75437F1793C0E6386DFDA26393790AE",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/usdx.png",
-    "symbol": "USDX",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "C78F65E1648A3DFE0BAEB6C4CDA69CC2A75437F1793C0E6386DFDA26393790AE",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDX",
-      "baseDenom": "USDX",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Umee",
-    "denom": "ibc/76ADAF7500FA7E048261145768030EB72392A488BFDEC353631B21EF15F0EE69",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.png",
-    "symbol": "UMEE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "76ADAF7500FA7E048261145768030EB72392A488BFDEC353631B21EF15F0EE69",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "UMEE",
-      "baseDenom": "UMEE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Tether USD",
-    "denom": "ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdt.png",
-    "symbol": "USDT (Cosmos)",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDT (Cosmos)",
-      "baseDenom": "USDT (Cosmos)",
-      "isNative": false
-    }
-  },
-  {
-    "name": "ampKUJI",
-    "denom": "ibc/34E48C7C43383203519D996D1D93FE80ED50153E28FB6A9465DE463AEF2EC9EC",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/ampkuji.png",
-    "symbol": "ampKUJI",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "34E48C7C43383203519D996D1D93FE80ED50153E28FB6A9465DE463AEF2EC9EC",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ampKUJI",
-      "baseDenom": "ampKUJI",
-      "isNative": false
-    }
-  },
-  {
-    "name": "ERIS Amplified OSMO",
-    "denom": "ibc/012D069D557C4DD59A670AA17E809CB7A790D778E364D0BC0A3248105DA6432D",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/amposmo.png",
-    "symbol": "ampOSMO",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "012D069D557C4DD59A670AA17E809CB7A790D778E364D0BC0A3248105DA6432D",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ampOSMO",
-      "baseDenom": "ampOSMO",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Neokingdom DAO",
-    "denom": "ibc/F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/evmos/images/neok.png",
-    "symbol": "NEOK",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "NEOK",
-      "baseDenom": "NEOK",
-      "isNative": false
-    }
-  },
-  {
-    "name": "stSOMM",
-    "denom": "ibc/9C234DA49B8DDAFB8F71F21BEB109F6255ECA146A32FD3A36CB9210647CBD037",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stsomm.png",
-    "symbol": "stSOMM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "9C234DA49B8DDAFB8F71F21BEB109F6255ECA146A32FD3A36CB9210647CBD037",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "stSOMM",
-      "baseDenom": "stSOMM",
-      "isNative": false
-    }
-  },
-  {
-    "name": "USK",
-    "denom": "ibc/58BC643F2EB5758C08D8B1569C7948A5DA796802576005F676BBFB7526E520EB",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/usk.png",
-    "symbol": "USK",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "58BC643F2EB5758C08D8B1569C7948A5DA796802576005F676BBFB7526E520EB",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USK",
-      "baseDenom": "USK",
-      "isNative": false
-    }
-  },
-  {
-    "name": "MNTA",
-    "denom": "ibc/A4495880A4A2E3C242F63C710F447BAE072E1A4C2A22F1851E0BB7ABDD26B43D",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/mnta.png",
-    "symbol": "MNTA",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "A4495880A4A2E3C242F63C710F447BAE072E1A4C2A22F1851E0BB7ABDD26B43D",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "MNTA",
-      "baseDenom": "MNTA",
-      "isNative": false
-    }
-  },
-  {
-    "name": "WINK",
-    "denom": "ibc/325300CEF4149AD1BBFEB540FF07699CDEEFBB653401E872532030CFB31CD767",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/wink.png",
-    "symbol": "WINK",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "325300CEF4149AD1BBFEB540FF07699CDEEFBB653401E872532030CFB31CD767",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "WINK",
-      "baseDenom": "WINK",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Dot",
-    "denom": "ibc/B0442E32E21ED4228301A2B1B247D3F3355B73BF288470F9643AAD0CA07DD593",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/polkadot/images/dot.png",
-    "symbol": "DOT",
-    "decimals": 10,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "B0442E32E21ED4228301A2B1B247D3F3355B73BF288470F9643AAD0CA07DD593",
-      "path": "",
-      "channelId": "",
-      "decimals": 10,
-      "symbol": "DOT",
-      "baseDenom": "DOT",
-      "isNative": false
-    }
-  },
-  {
-    "name": "axlWBTC",
-    "denom": "ibc/F57B53E102171E6DC254532ECC184228BB8E23B755AD55FA6FDCBD70464A9A54",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/axlwbtc.png",
-    "symbol": "axlWBTC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "F57B53E102171E6DC254532ECC184228BB8E23B755AD55FA6FDCBD70464A9A54",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "axlWBTC",
-      "baseDenom": "axlWBTC",
-      "isNative": false
-    }
-  },
-  {
-    "name": "DAI",
-    "denom": "ibc/433133545CF68587777A01C3EFCF720EFE1B42F14AB2153D349DC4559984F2E8",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/dai.png",
-    "symbol": "DAI",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "433133545CF68587777A01C3EFCF720EFE1B42F14AB2153D349DC4559984F2E8",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "DAI",
-      "baseDenom": "DAI",
-      "isNative": false
-    }
-  },
-  {
-    "name": "USDT",
-    "denom": "ibc/24E5D0825D3D71BF00C4A01CD8CA8F2D27B1DD32B7446CF633534AEA25379271",
-    "logo": "untracked.png",
-    "symbol": "USDT",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "24E5D0825D3D71BF00C4A01CD8CA8F2D27B1DD32B7446CF633534AEA25379271",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDT",
-      "baseDenom": "USDT",
-      "isNative": false
-    }
-  },
-  {
-    "name": "WBTC",
-    "denom": "ibc/64431EE79F3216B8F7773A630549ADA852EA8E4B545D22BD35B0BF56FD5D5201",
-    "logo": "untracked.png",
-    "symbol": "WBTC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "64431EE79F3216B8F7773A630549ADA852EA8E4B545D22BD35B0BF56FD5D5201",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "WBTC",
-      "baseDenom": "WBTC",
-      "isNative": false
-    }
-  },
-  {
-    "name": "BLEND",
-    "denom": "ibc/45C0FE8ACE1C9C8BA38D3D6FDEBDE4F7198A434B6C63ADCEFC3D32D12443BB84",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/blend.svg",
-    "symbol": "BLEND",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "45C0FE8ACE1C9C8BA38D3D6FDEBDE4F7198A434B6C63ADCEFC3D32D12443BB84",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "BLEND",
-      "baseDenom": "BLEND",
-      "isNative": false
-    }
-  },
-  {
-    "name": "USDC",
-    "denom": "ibc/DF32F083238097AD2CA5444BFB8F338534C32865EFE0696C5AF89AFB3A0144D6",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.svg",
-    "symbol": "USDC",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "DF32F083238097AD2CA5444BFB8F338534C32865EFE0696C5AF89AFB3A0144D6",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "USDC",
-      "baseDenom": "USDC",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Multichain USDC",
-    "denom": "ibc/610D4A1B3F3198C35C09E9AF7C8FB81707912463357C9398B02C7F13049678A8",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.svg",
-    "symbol": "USDC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "610D4A1B3F3198C35C09E9AF7C8FB81707912463357C9398B02C7F13049678A8",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDC",
-      "baseDenom": "USDC",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Umee",
-    "denom": "ibc/88F73B623463F9B9CB841F36B6586B5C4BADF8B1CFD1C75C1F385BE01A95AD23",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.png",
-    "symbol": "UMEE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "88F73B623463F9B9CB841F36B6586B5C4BADF8B1CFD1C75C1F385BE01A95AD23",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "UMEE",
-      "baseDenom": "UMEE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Oraichain",
-    "denom": "ibc/C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/oraichain/images/orai-white.png",
-    "symbol": "ORAI",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ORAI",
-      "baseDenom": "ORAI",
+      "symbol": "NOIS",
+      "baseDenom": "NOIS",
       "isNative": false
     }
   },
@@ -1961,7 +2151,7 @@
     "denom": "ibc/C2025C1D34ED74CD6F9DF86CD650D92219AF645E9D0ADFFACF4E2CBECE649536",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png",
     "symbol": "OSMO",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -1969,7 +2159,7 @@
       "hash": "C2025C1D34ED74CD6F9DF86CD650D92219AF645E9D0ADFFACF4E2CBECE649536",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "OSMO",
       "baseDenom": "OSMO",
       "isNative": false
@@ -1980,7 +2170,7 @@
     "denom": "ibc/02683677B1A58ECF74FFF25711E09735C44153FE9490BE5EF9FD21DE82BCB542",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png",
     "symbol": "STRD",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -1988,7 +2178,7 @@
       "hash": "02683677B1A58ECF74FFF25711E09735C44153FE9490BE5EF9FD21DE82BCB542",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "STRD",
       "baseDenom": "STRD",
       "isNative": false
@@ -1999,7 +2189,7 @@
     "denom": "ibc/B7933C59879BFE059942C6F76CAF4B1609D441AD22D54D42DAC00CE7918CAF1F",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/agoric/images/bld.png",
     "symbol": "BLD",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -2007,7 +2197,7 @@
       "hash": "B7933C59879BFE059942C6F76CAF4B1609D441AD22D54D42DAC00CE7918CAF1F",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "BLD",
       "baseDenom": "BLD",
       "isNative": false
@@ -2018,7 +2208,7 @@
     "denom": "ibc/B024EC4AE846F690CB46C1CE886BE7DCE27CBBB6CE1E4EFBA4AA764E07B81A69",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.png",
     "symbol": "stATOM",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -2026,7 +2216,7 @@
       "hash": "B024EC4AE846F690CB46C1CE886BE7DCE27CBBB6CE1E4EFBA4AA764E07B81A69",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "stATOM",
       "baseDenom": "stATOM",
       "isNative": false
@@ -2037,7 +2227,7 @@
     "denom": "ibc/E8E84092B9063AAC97846712D43D6555928073B8A0BFFCC2549E55EE224F1610",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/ntrn.png",
     "symbol": "NTRN",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -2045,7 +2235,7 @@
       "hash": "E8E84092B9063AAC97846712D43D6555928073B8A0BFFCC2549E55EE224F1610",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "NTRN",
       "baseDenom": "NTRN",
       "isNative": false
@@ -2056,7 +2246,7 @@
     "denom": "ibc/221E9E20795E6E250532A6A871E7F6310FCEDFC69B681037BBA6561270360D86",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.png",
     "symbol": "UMEE",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -2064,7 +2254,7 @@
       "hash": "221E9E20795E6E250532A6A871E7F6310FCEDFC69B681037BBA6561270360D86",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "UMEE",
       "baseDenom": "UMEE",
       "isNative": false
@@ -2075,7 +2265,7 @@
     "denom": "ibc/DDE000907D85FB1F358B3FBB1143452BE13F68E0BEA0DFFD8787095B76EEE0A1",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/crescent/images/cre.png",
     "symbol": "CRE",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -2083,7 +2273,7 @@
       "hash": "DDE000907D85FB1F358B3FBB1143452BE13F68E0BEA0DFFD8787095B76EEE0A1",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "CRE",
       "baseDenom": "CRE",
       "isNative": false
@@ -2094,7 +2284,7 @@
     "denom": "ibc/7C4A4847D6898FA8744A8F2A4FC287E98CA5A95E05842B897B3FB301103C8AB6",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/scrt.png",
     "symbol": "SCRT",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -2102,7 +2292,7 @@
       "hash": "7C4A4847D6898FA8744A8F2A4FC287E98CA5A95E05842B897B3FB301103C8AB6",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "SCRT",
       "baseDenom": "SCRT",
       "isNative": false
@@ -2113,7 +2303,7 @@
     "denom": "ibc/4D29F082A3C083C85C886B92A1EB438C3FC0632E5F9E4D875479BEB7B9511BD5",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stargaze/images/stars.png",
     "symbol": "STARS",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -2121,7 +2311,7 @@
       "hash": "4D29F082A3C083C85C886B92A1EB438C3FC0632E5F9E4D875479BEB7B9511BD5",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "STARS",
       "baseDenom": "STARS",
       "isNative": false
@@ -2132,7 +2322,7 @@
     "denom": "ibc/83D54420DD46764F2ED5EE511DAA63EC28012480A245D8E33AA1F7D1FB15D736",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/crescent/images/bcre.png",
     "symbol": "bCRE",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -2140,7 +2330,7 @@
       "hash": "83D54420DD46764F2ED5EE511DAA63EC28012480A245D8E33AA1F7D1FB15D736",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "bCRE",
       "baseDenom": "bCRE",
       "isNative": false
@@ -2151,7 +2341,7 @@
     "denom": "ibc/9D9B59CA222E54842555DBD81B22EEABE61796D4C6EC8AB47A97C388333AC340",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/chihuahua/images/huahua.png",
     "symbol": "HUAHUA",
-    "decimals": 18,
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
@@ -2159,28 +2349,9 @@
       "hash": "9D9B59CA222E54842555DBD81B22EEABE61796D4C6EC8AB47A97C388333AC340",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 6,
       "symbol": "HUAHUA",
       "baseDenom": "HUAHUA",
-      "isNative": false
-    }
-  },
-  {
-    "name": "USDT",
-    "denom": "ibc/7965483148018AFAA12DC569959897E7A5E474F4B41A87FFC5513B552C108DB5",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdt.png",
-    "symbol": "USDT",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "7965483148018AFAA12DC569959897E7A5E474F4B41A87FFC5513B552C108DB5",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDT",
-      "baseDenom": "USDT",
       "isNative": false
     }
   },
@@ -2204,344 +2375,21 @@
     }
   },
   {
-    "name": "OSMO Squared",
-    "denom": "ibc/AFCDF4348DBDF92BCF631B1D38628F75683F45A8A0DCE304FC9AAD4F31609916",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqosmo.svg",
-    "symbol": "sqOSMO",
-    "decimals": 6,
+    "name": "Dot",
+    "denom": "ibc/B0442E32E21ED4228301A2B1B247D3F3355B73BF288470F9643AAD0CA07DD593",
+    "logo": "untracked.png",
+    "symbol": "DOT",
+    "decimals": 10,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "AFCDF4348DBDF92BCF631B1D38628F75683F45A8A0DCE304FC9AAD4F31609916",
+      "hash": "B0442E32E21ED4228301A2B1B247D3F3355B73BF288470F9643AAD0CA07DD593",
       "path": "",
       "channelId": "",
-      "decimals": 6,
-      "symbol": "sqOSMO",
-      "baseDenom": "sqOSMO",
-      "isNative": false
-    }
-  },
-  {
-    "name": "ATOM",
-    "denom": "ibc/8D311D92BCD4E87F145DEB9DDA339416DEF7E13571D92A3521CAB0BF62760FBE",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png",
-    "symbol": "ATOM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "8D311D92BCD4E87F145DEB9DDA339416DEF7E13571D92A3521CAB0BF62760FBE",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ATOM",
-      "baseDenom": "ATOM",
-      "isNative": false
-    }
-  },
-  {
-    "name": "ERIS Amplified INJ",
-    "denom": "factory/inj1cdwt8g7nxgtg2k4fn8sj363mh9ahkw2qt0vrnc/ampINJ",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/ampinj.png",
-    "symbol": "ampINJ",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj1cdwt8g7nxgtg2k4fn8sj363mh9ahkw2qt0vrnc/ampINJ",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ampINJ",
-      "baseDenom": "ampINJ",
-      "isNative": false
-    }
-  },
-  {
-    "name": "CDT",
-    "denom": "ibc/25288BA0C7D146D37373657ECA719B9AADD49DA9E514B4172D08F7C88D56C9EF",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/CDT.svg",
-    "symbol": "CDT",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "25288BA0C7D146D37373657ECA719B9AADD49DA9E514B4172D08F7C88D56C9EF",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "CDT",
-      "baseDenom": "CDT",
-      "isNative": false
-    }
-  },
-  {
-    "name": "MBRN",
-    "denom": "ibc/7AF90EDF6F5328C6C33B03DB7E33445708A46FF006932472D00D5076F5504B67",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/MBRN.svg",
-    "symbol": "MBRN",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "7AF90EDF6F5328C6C33B03DB7E33445708A46FF006932472D00D5076F5504B67",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "MBRN",
-      "baseDenom": "MBRN",
-      "isNative": false
-    }
-  },
-  {
-    "name": "GEM DAO",
-    "denom": "ibc/8AE86084C0D921352F711EF42CCA7BA4C8238C244FE4CC3E4E995D9782FB0E2B",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/gem.png",
-    "symbol": "GEM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "8AE86084C0D921352F711EF42CCA7BA4C8238C244FE4CC3E4E995D9782FB0E2B",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "GEM",
-      "baseDenom": "GEM",
-      "isNative": false
-    }
-  },
-  {
-    "name": "qcKUJI",
-    "denom": "ibc/B7C8418ABE8CF56B42A37215F6A715097FDD82AC322FE560CA589833FEE8C50D",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/qckuji.svg",
-    "symbol": "qcKUJI",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "B7C8418ABE8CF56B42A37215F6A715097FDD82AC322FE560CA589833FEE8C50D",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "qcKUJI",
-      "baseDenom": "qcKUJI",
-      "isNative": false
-    }
-  },
-  {
-    "name": "qcMNTA",
-    "denom": "ibc/F770E830BC7E2992BC0DBECAC789432995B64BD6714C36EA092D877E28AA9493",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/qcmnta.svg",
-    "symbol": "qcMNTA",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "F770E830BC7E2992BC0DBECAC789432995B64BD6714C36EA092D877E28AA9493",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "qcMNTA",
-      "baseDenom": "qcMNTA",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Fuzion",
-    "denom": "ibc/FE87E1E1BB401EC35CD02A57FE5DEF872FA309C018172C4E7DA07F194EAC6F19",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/fuzion.png",
-    "symbol": "FUZN",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "FE87E1E1BB401EC35CD02A57FE5DEF872FA309C018172C4E7DA07F194EAC6F19",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "FUZN",
-      "baseDenom": "FUZN",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Fuzion Receipt",
-    "denom": "ibc/F5FFC37BBF4B24F94D920BC7DAFCCE5B9403B2DB33DF759B8CED76EA8A6E3E24",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/fuzionr.png",
-    "symbol": "rFUZN",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "F5FFC37BBF4B24F94D920BC7DAFCCE5B9403B2DB33DF759B8CED76EA8A6E3E24",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "rFUZN",
-      "baseDenom": "rFUZN",
-      "isNative": false
-    }
-  },
-  {
-    "name": "NSTK",
-    "denom": "ibc/35366063B530778DC37A16AAED4DDC14C0DCA161FBF55B5B69F5171FEE19BF93",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/nstk.svg",
-    "symbol": "NSTK",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "35366063B530778DC37A16AAED4DDC14C0DCA161FBF55B5B69F5171FEE19BF93",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "NSTK",
-      "baseDenom": "NSTK",
-      "isNative": false
-    }
-  },
-  {
-    "name": "BTC Squared",
-    "denom": "ibc/81C212661A115B9799C71173DD131B5077B14A3FBD26A8A9A0C669F76F434E23",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqbtc.svg",
-    "symbol": "sqBTC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "81C212661A115B9799C71173DD131B5077B14A3FBD26A8A9A0C669F76F434E23",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "sqBTC",
-      "baseDenom": "sqBTC",
-      "isNative": false
-    }
-  },
-  {
-    "name": "ATOM Squared",
-    "denom": "ibc/C63E6285FA0EE014B89671A7A633E1CE7F62310312843B9AC7248910619143C6",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqatom.svg",
-    "symbol": "sqATOM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "C63E6285FA0EE014B89671A7A633E1CE7F62310312843B9AC7248910619143C6",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "sqATOM",
-      "baseDenom": "sqATOM",
-      "isNative": false
-    }
-  },
-  {
-    "name": "LOCAL",
-    "denom": "ibc/FECCDCFA89278B117C76A11A946A7991A68E5DD12DED6EB938ADC1B1286AC591",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/local.png",
-    "symbol": "LOCAL",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "FECCDCFA89278B117C76A11A946A7991A68E5DD12DED6EB938ADC1B1286AC591",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "LOCAL",
-      "baseDenom": "LOCAL",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Umee",
-    "denom": "ibc/2FF3DC3A0265B9A220750E75E75E5D44ED2F716B8AC4EDC378A596CC958ABF6B",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.png",
-    "symbol": "UMEE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "2FF3DC3A0265B9A220750E75E75E5D44ED2F716B8AC4EDC378A596CC958ABF6B",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "UMEE",
-      "baseDenom": "UMEE",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Nois",
-    "denom": "ibc/DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/nois/images/nois.png",
-    "symbol": "NOIS",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "NOIS",
-      "baseDenom": "NOIS",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Levana",
-    "denom": "ibc/4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/levana.png",
-    "symbol": "LVN",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "LVN",
-      "baseDenom": "LVN",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Fuzion Yield",
-    "denom": "ibc/71C297610507CCB7D42E49EA49AF2ECBBE2D4A83D139C4A441EB7A2693C0464A",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/fuziony.svg",
-    "symbol": "yFUZN",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "71C297610507CCB7D42E49EA49AF2ECBBE2D4A83D139C4A441EB7A2693C0464A",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "yFUZN",
-      "baseDenom": "yFUZN",
+      "decimals": 10,
+      "symbol": "DOT",
+      "baseDenom": "DOT",
       "isNative": false
     }
   }
