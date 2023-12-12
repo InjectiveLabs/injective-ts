@@ -3,10 +3,10 @@ import {
   Token,
   TokenMeta,
   TokenType,
+  TokenSource,
   IbcTokenMeta,
   Cw20TokenMeta,
   Cw20TokenSingle,
-  Cw20TokenSource,
   TokenVerification,
   Cw20TokenMetaWithSource,
 } from './types'
@@ -152,7 +152,7 @@ export const getTokenAddress = (token: Token) => {
  */
 export const getCw20TokenSingle = (
   token: Token | TokenMeta,
-  source?: Cw20TokenSource,
+  source?: TokenSource,
 ): Cw20TokenSingle | undefined => {
   const { cw20, cw20s } = token
   const denom = (token as Token).denom || ''

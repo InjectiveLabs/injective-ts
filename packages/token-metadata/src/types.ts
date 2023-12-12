@@ -17,7 +17,8 @@ export enum TokenVerification {
   Unverified = 'unverified' /** unverified on any source */,
 }
 
-export enum Cw20TokenSource {
+export enum TokenSource {
+  Aptos = 'aptos',
   Solana = 'solana',
   Cosmos = 'cosmos',
   Ethereum = 'ethereum',
@@ -26,6 +27,7 @@ export enum Cw20TokenSource {
   Klaytn = 'klaytn',
   Arbitrum = 'arbitrum',
   Sui = 'sui',
+  BinanceSmartChain = 'binance-smart-chain',
 }
 
 export interface IbcTokenMeta {
@@ -67,7 +69,7 @@ export interface Cw20TokenMeta {
 
 export interface Cw20TokenMetaWithSource extends Cw20TokenMeta {
   symbol: string
-  source: Cw20TokenSource
+  source: TokenSource
 }
 
 export interface TokenMeta {

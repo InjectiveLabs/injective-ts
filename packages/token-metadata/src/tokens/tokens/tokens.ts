@@ -1,4 +1,4 @@
-import { TokenMeta, Cw20TokenSource, TokenType } from '../../types'
+import { TokenMeta, TokenSource, TokenType } from '../../types'
 
 export default {
   BTC: {
@@ -32,7 +32,7 @@ export default {
       {
         decimals: 18,
         symbol: 'wBTC',
-        source: Cw20TokenSource.Cosmos,
+        source: TokenSource.Cosmos,
         address: 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku',
         tokenType: TokenType.Cw20,
       },
@@ -67,11 +67,22 @@ export default {
       tokenType: TokenType.Erc20,
     },
 
-    cw20: {
-      decimals: 8,
-      address: 'inj1plsk58sxqjw9828aqzeskmc8xy9eu5kppw3jg4',
-      tokenType: TokenType.Cw20,
-    },
+    cw20s: [
+      {
+        symbol: 'wETH',
+        decimals: 8,
+        address: 'inj1plsk58sxqjw9828aqzeskmc8xy9eu5kppw3jg4',
+        tokenType: TokenType.Cw20,
+        source: TokenSource.Arbitrum,
+      },
+      {
+        symbol: 'wETH',
+        decimals: 8,
+        address: 'inj1k9r62py07wydch6sj5sfvun93e4qe0lg7jyatc',
+        tokenType: TokenType.Cw20,
+        source: TokenSource.EthereumWh,
+      },
+    ],
   },
 
   INJ: {
@@ -86,6 +97,23 @@ export default {
       address: '0xe28b3B32B6c345A34Ff64674606124Dd5Aceca30',
       tokenType: TokenType.Erc20,
     },
+
+    cw20s: [
+      {
+        decimals: 8,
+        symbol: 'INJbsc',
+        source: TokenSource.BinanceSmartChain,
+        address: 'inj1xcgprh58szttp0vqtztvcfy34tkpupr563ua40',
+        tokenType: TokenType.Cw20,
+      },
+      {
+        decimals: 8,
+        symbol: 'INJet',
+        source: TokenSource.EthereumWh,
+        address: 'inj1v8gg4wzfauwf9l7895t0eyrrkwe65vh5n7dqmw',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
 
   USDT: {
@@ -111,6 +139,44 @@ export default {
       hash: '4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
       tokenType: TokenType.Ibc,
     },
+
+    cw20s: [
+      {
+        decimals: 6,
+        symbol: 'USDTbsc',
+        source: TokenSource.BinanceSmartChain,
+        address: 'inj1l9eyrnv3ret8da3qh8j5aytp6q4f73crd505lj',
+        tokenType: TokenType.Cw20,
+      },
+      {
+        decimals: 6,
+        symbol: 'USDTso',
+        source: TokenSource.Solana,
+        address: 'inj18zykysxw9pcvtyr9ylhe0p5s7yzf6pzdagune8',
+        tokenType: TokenType.Cw20,
+      },
+      {
+        decimals: 6,
+        symbol: 'USDTso',
+        source: TokenSource.Solana,
+        address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
+        tokenType: TokenType.Cw20,
+      },
+      {
+        decimals: 6,
+        symbol: 'USDTap',
+        source: TokenSource.Aptos,
+        address: 'inj13yrhllhe40sd3nj0lde9azlwfkyrf2t9r78dx5',
+        tokenType: TokenType.Cw20,
+      },
+      {
+        decimals: 6,
+        symbol: 'USDTso',
+        source: TokenSource.Solana,
+        address: 'inj1qjn06jt7zjhdqxgud07nylkpgnaurq6xc5c4fd',
+        tokenType: TokenType.Cw20,
+      },
+    ],
   },
 
   USDC: {
@@ -131,16 +197,29 @@ export default {
       {
         decimals: 6,
         symbol: 'USDCet',
-        source: Cw20TokenSource.EthereumWh,
+        source: TokenSource.EthereumWh,
         address: 'inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk',
         tokenType: TokenType.Cw20,
       },
-
       {
         decimals: 6,
         symbol: 'USDCso',
-        source: Cw20TokenSource.Solana,
+        source: TokenSource.Solana,
         address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
+        tokenType: TokenType.Cw20,
+      },
+      {
+        decimals: 6,
+        symbol: 'USDCarb',
+        source: TokenSource.Arbitrum,
+        address: 'inj1lmcfftadjkt4gt3lcvmz6qn4dhx59dv2m7yv8r',
+        tokenType: TokenType.Cw20,
+      },
+      {
+        decimals: 6,
+        symbol: 'USDCbsc',
+        source: TokenSource.BinanceSmartChain,
+        address: 'inj1dngqzz6wphf07fkdam7dn55t8t3r6qenewy9zu',
         tokenType: TokenType.Cw20,
       },
     ],
@@ -1373,7 +1452,7 @@ export default {
     cw20: {
       decimals: 8,
       address: 'inj1d5vz0uzwlpfvgwrwulxg6syy82axa58y4fuszd',
-      source: Cw20TokenSource.Arbitrum,
+      source: TokenSource.Arbitrum,
       tokenType: TokenType.Cw20,
     },
   },
@@ -1481,7 +1560,7 @@ export default {
     cw20: {
       decimals: 8,
       address: 'inj1dxv423h8ygzgxmxnvrf33ws3k94aedfdevxd8h',
-      source: Cw20TokenSource.Polygon,
+      source: TokenSource.Polygon,
       tokenType: TokenType.Cw20,
     },
   },
@@ -1807,7 +1886,7 @@ export default {
     cw20: {
       decimals: 8,
       address: 'inj1tn457ed2gg5vj2cur5khjjw63w73y3xhyhtaay',
-      source: Cw20TokenSource.Polygon,
+      source: TokenSource.Polygon,
       tokenType: TokenType.Cw20,
     },
   },
@@ -1986,7 +2065,7 @@ export default {
       {
         decimals: 6,
         symbol: 'PYTH',
-        source: Cw20TokenSource.Solana,
+        source: TokenSource.Solana,
         address: 'inj1tjcf9497fwmrnk22jfu5hsdq82qshga54ajvzy',
         tokenType: TokenType.Cw20,
       },
