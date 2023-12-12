@@ -27,6 +27,7 @@ export enum TokenSource {
   Klaytn = 'klaytn',
   Arbitrum = 'arbitrum',
   Sui = 'sui',
+  Ibc = 'ibc',
   BinanceSmartChain = 'binance-smart-chain',
 }
 
