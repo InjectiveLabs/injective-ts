@@ -35,7 +35,7 @@ $ yarn add @bangjelkoski/vite-plugin-node-polyfills
 
 ### 4. Using a state management
 
-React has a lot of different state managers, pick the one you are going to use and install it. You can use the build in `Context API` for state management without the need to install a third-party solution. The preffered third-party state managers are `Redux` and `Zustand`.
+React has a lot of different state managers, pick the one you are going to use and install it. You can use the build in `Context API` for state management without the need to install a third-party solution. The preferred third-party state managers are `Redux` and `Zustand`.
 
 ```bash
 $ yarn add zustand

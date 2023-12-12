@@ -51,7 +51,7 @@ const contract = new PeggyContract({
 })
 ```
 
-* The snippet below instantiates a PeggyContract instance which can easily `estimateGas` and `sendTransaction` using the `web3` we provide to the contract’s constructor. It’s implementation can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/contracts/src/contracts/Peggy.ts). Obviously, this is just an example and you can use the web3 package directly + the ABI of the contract to instantiate the contract, and then handle the logic of signing and broadcasting the transaction using some web3 provider.
+* The snippet below instantiates a PeggyContract instance which can easily `estimateGas` and `sendTransaction` using the `web3` we provide to the contract’s constructor. Its implementation can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/contracts/src/contracts/Peggy.ts). Obviously, this is just an example and you can use the web3 package directly + the ABI of the contract to instantiate the contract, and then handle the logic of signing and broadcasting the transaction using some web3 provider.
 
 ### From Injective to Ethereum
 
