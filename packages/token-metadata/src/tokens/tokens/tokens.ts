@@ -2061,15 +2061,13 @@ export default {
       tokenType: TokenType.Spl,
     },
 
-    cw20s: [
-      {
-        decimals: 6,
-        symbol: 'PYTH',
-        source: TokenSource.Solana,
-        address: 'inj1tjcf9497fwmrnk22jfu5hsdq82qshga54ajvzy',
-        tokenType: TokenType.Cw20,
-      },
-    ],
+    cw20: {
+      decimals: 6,
+      symbol: 'PYTH',
+      source: TokenSource.Solana,
+      address: 'inj1tjcf9497fwmrnk22jfu5hsdq82qshga54ajvzy',
+      tokenType: TokenType.Cw20,
+    },
   },
 
   TIX: {
@@ -2079,5 +2077,20 @@ export default {
     logo: 'tix.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+  },
+
+  NINJ: {
+    name: 'Gryphon Staked Injective',
+    symbol: 'nINJ',
+    decimals: 18,
+    logo: 'ninj.png',
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      symbol: 'nINJ',
+      address: 'inj13xlpypcwl5fuc84uhqzzqumnrcfpptyl6w3vrf',
+      tokenType: TokenType.Cw20,
+    },
   },
 } as Record<string, TokenMeta>
