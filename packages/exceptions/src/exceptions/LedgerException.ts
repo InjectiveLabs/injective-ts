@@ -2,8 +2,6 @@ import { ConcreteException } from '../exception'
 import { ErrorContext, ErrorType } from '../types'
 import { isCommonLockedError } from '../utils/helpers'
 
-
-
 export class LedgerException extends ConcreteException {
   public errorClass: string = 'LedgerException'
 
@@ -13,7 +11,7 @@ export class LedgerException extends ConcreteException {
     this.type = ErrorType.WalletError
   }
 
-  public parseMessage(): void {
+  public parse(): void {
     const { message } = this
 
     if (isCommonLockedError(message)) {

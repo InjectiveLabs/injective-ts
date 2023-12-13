@@ -17,7 +17,7 @@ export class MetamaskException extends ConcreteException {
     this.type = ErrorType.WalletError
   }
 
-  public parseMessage(): void {
+  public parse(): void {
     const { message } = this
 
     this.setMessage(mapMetamaskMessage(removeMetamaskFromErrorString(message)))

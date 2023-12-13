@@ -8,6 +8,7 @@ import {
   CosmosTxV1Beta1Tx,
   createTxRawEIP712,
   createTransaction,
+  getAminoStdSignDoc,
   getEip712TypedData,
   createWeb3Extension,
   ChainGrpcTendermintApi,
@@ -17,7 +18,6 @@ import {
   getGasPriceBasedOnMessage,
   recoverTypedSignaturePubKey,
   CreateTransactionWithSignersArgs,
-  getAminoStdSignDoc,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -32,8 +32,8 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   getNetworkInfo,
-  getNetworkEndpoints,
   NetworkEndpoints,
+  getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import {
@@ -266,7 +266,9 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+    const transactionApi = new IndexerGrpcTransactionApi(
+      endpoints.web3gw || endpoints.indexer,
+    )
     const txResponse = await transactionApi.prepareTxRequest({
       memo: tx.memo,
       message: web3Msgs,
@@ -618,7 +620,9 @@ export class MsgBroadcaster {
       accountNumber: baseAccount.accountNumber,
     })) as DirectSignResponse
 
-    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+    const transactionApi = new IndexerGrpcTransactionApi(
+      endpoints.web3gw || endpoints.indexer,
+    )
     const response = await transactionApi.broadcastCosmosTxRequest({
       address: tx.injectiveAddress,
       txRaw: createTxRawFromSigResponse(directSignResponse),
@@ -646,7 +650,9 @@ export class MsgBroadcaster {
 
     const { endpoints } = this
 
-    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+    const transactionApi = new IndexerGrpcTransactionApi(
+      endpoints.web3gw || endpoints.indexer,
+    )
     const response = await transactionApi.fetchFeePayer()
 
     if (!response.feePayerPubKey) {

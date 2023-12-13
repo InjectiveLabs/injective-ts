@@ -1615,63 +1615,6 @@
     }
   },
   {
-    "name": "USDC",
-    "denom": "ibc/DF32F083238097AD2CA5444BFB8F338534C32865EFE0696C5AF89AFB3A0144D6",
-    "logo": "untracked.png",
-    "symbol": "USDC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "DF32F083238097AD2CA5444BFB8F338534C32865EFE0696C5AF89AFB3A0144D6",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDC",
-      "baseDenom": "USDC",
-      "isNative": false
-    }
-  },
-  {
-    "name": "Multichain USDC",
-    "denom": "ibc/610D4A1B3F3198C35C09E9AF7C8FB81707912463357C9398B02C7F13049678A8",
-    "logo": "untracked.png",
-    "symbol": "USDC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "610D4A1B3F3198C35C09E9AF7C8FB81707912463357C9398B02C7F13049678A8",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDC",
-      "baseDenom": "USDC",
-      "isNative": false
-    }
-  },
-  {
-    "name": "USDT",
-    "denom": "ibc/24E5D0825D3D71BF00C4A01CD8CA8F2D27B1DD32B7446CF633534AEA25379271",
-    "logo": "untracked.png",
-    "symbol": "USDT",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "24E5D0825D3D71BF00C4A01CD8CA8F2D27B1DD32B7446CF633534AEA25379271",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDT",
-      "baseDenom": "USDT",
-      "isNative": false
-    }
-  },
-  {
     "name": "DAI",
     "denom": "ibc/433133545CF68587777A01C3EFCF720EFE1B42F14AB2153D349DC4559984F2E8",
     "logo": "untracked.png",
@@ -1763,6 +1706,25 @@
       "decimals": 6,
       "symbol": "ATOM",
       "baseDenom": "ATOM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "USDT",
+    "denom": "ibc/24E5D0825D3D71BF00C4A01CD8CA8F2D27B1DD32B7446CF633534AEA25379271",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdt.png",
+    "symbol": "USDT",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "24E5D0825D3D71BF00C4A01CD8CA8F2D27B1DD32B7446CF633534AEA25379271",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDT",
+      "baseDenom": "USDT",
       "isNative": false
     }
   },
@@ -2390,6 +2352,44 @@
       "decimals": 10,
       "symbol": "DOT",
       "baseDenom": "DOT",
+      "isNative": false
+    }
+  },
+  {
+    "name": "USDC",
+    "denom": "ibc/DF32F083238097AD2CA5444BFB8F338534C32865EFE0696C5AF89AFB3A0144D6",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png",
+    "symbol": "USDC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "DF32F083238097AD2CA5444BFB8F338534C32865EFE0696C5AF89AFB3A0144D6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Multichain USDC",
+    "denom": "ibc/610D4A1B3F3198C35C09E9AF7C8FB81707912463357C9398B02C7F13049678A8",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png",
+    "symbol": "USDC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "610D4A1B3F3198C35C09E9AF7C8FB81707912463357C9398B02C7F13049678A8",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
       "isNative": false
     }
   }

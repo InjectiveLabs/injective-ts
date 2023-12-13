@@ -20,12 +20,13 @@ export enum Network {
 
 export type NetworkEndpoints = {
   indexer: string // Indexer API
-  chronos: string
-  explorer: string
   grpc: string // Sentry gRPC
   rest: string // LCD
   rpc?: string // Tendermint
   cache?: string // Cache Service
+  chronos?: string // Chronos Service
+  web3gw?: string // Web3Gateway Service
+  explorer?: string // Explorer Service
 }
 
 export type UrlEndpoints = NetworkEndpoints /** Deprecated */
