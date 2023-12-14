@@ -1,6 +1,6 @@
 # Wasm
 
-The `wasm` module is heart of interacting with the wasm smart contracts deployed on the injective chain, here you can find a list of [smart contracts](https://explorer.injective.network/contracts/) that are deployed on the Injective chain.
+The `wasm` module is the heart of interacting with the wasm smart contracts deployed on the injective chain, here you can find a list of [smart contracts](https://explorer.injective.network/contracts/) that are deployed on the Injective chain.
 
 ### MsgExecuteContract (Transfer)
 

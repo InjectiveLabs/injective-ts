@@ -4,7 +4,7 @@ On this page, we are going to have a look at the implementation for Injective wh
 
 As explained before, Injective uses a different derivation curve from the rest of the Cosmos chains which means that the users have to use the Ethereum app (for now) to interact with Injective.&#x20;
 
-The easiest way all of the edge cases covered and a full out-of-the-box solution for all of the supported wallets on Injective I suggest you have a look at the [MsgBroadcaster + WalletStrategy ](../msgbroadcaster.md#msgbroadcaster-+-wallet-strategy)abstraction. If you want to do your own implementation, let's go through the code example togeter.&#x20;
+The easiest way all of the edge cases covered and a full out-of-the-box solution for all of the supported wallets on Injective I suggest you have a look at the [MsgBroadcaster + WalletStrategy ](../msgbroadcaster.md#msgbroadcaster-+-wallet-strategy)abstraction. If you want to do your own implementation, let's go through the code example together.&#x20;
 
 ### Overview
 

@@ -122,7 +122,7 @@ export default defineNuxtConfig({
 
   // We generate only sitemaps for the client side as we don't need a server
   // Note: there is a problem with sitemaps for Vite + Nuxt3
-  // as usually is that it takes to much time/memory to generate
+  // as usual is that it takes too much time/memory to generate
   // sitemaps and the build process can fail
   // on Github Actions/Netlify/Vercel/etc so we have to use another
   // strategy like generating them locally and pushing them to services like
