@@ -100,7 +100,7 @@ console.log(injectiveAddress)
 
 ### Reverse Resolution
 
-* Get primary name for injective address.
+* Get the primary name for injective address.
 
 ```ts
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
