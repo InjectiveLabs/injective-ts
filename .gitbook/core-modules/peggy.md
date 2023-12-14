@@ -1,6 +1,6 @@
 # Peggy
 
-The `peggy` module is heart of the injective <> ethereum bridge, where deposited funds will be locked on the ethereum [peggy contract](https://etherscan.io/address/0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3#code) and minted on the Injective chain. Similarly withdrawal funds will be burned on the injective chain and unlocked on the ethereum peggy contract.
+The `peggy` module is the heart of the injective <> ethereum bridge, where deposited funds will be locked on the ethereum [peggy contract](https://etherscan.io/address/0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3#code) and minted on the Injective chain. Similarly withdrawal funds will be burned on the injective chain and unlocked on the ethereum peggy contract.
 
 ### MsgSendToEth
 
