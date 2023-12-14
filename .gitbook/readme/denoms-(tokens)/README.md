@@ -17,7 +17,7 @@ Token is simply a denom on the Injective chain with some meta information. The m
 
 # Token Metadata
 
-Assets on Injective are represented as denoms. Denoms (and the amounts) are not human readable and this is why we need to have a way to "attach" token metadata information for a particular denom. This is achievable using the `@injectivelabs/token-metadata` package.
+Assets on Injective are represented as denoms. Denoms (and the amounts) are not humanly readable and this is why we need to have a way to "attach" token metadata information for a particular denom. This is achievable using the `@injectivelabs/token-metadata` package.
 
 Let's recap the types of denoms we have in the Getting Started section:
 
