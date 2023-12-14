@@ -61,7 +61,7 @@ If you are not familiar with how Transactions (and Messages) work on Cosmos you 
 
 When `MsgSendToEth` is called on the chain, some of the validators will pick up the transaction, batch multiple `MsgSendToEth` requests into one and: burn the assets being withdrawn on Injective, unlock these funds on the Peggy Smart Contract on Ethereum and send them to the respective address.
 
-There is a bridgeFee included in these transactions to incentivise Validators to pick up and process your withdrawal requests faster. The bridgeFee is in the asset the user wants to withdraw to Ethereum (if you withdraw INJ you have to pay the bridgeFee in INJ as well).
+There is a bridgeFee included in these transactions to incentivize Validators to pick up and process your withdrawal requests faster. The bridgeFee is in the asset the user wants to withdraw to Ethereum (if you withdraw INJ you have to pay the bridgeFee in INJ as well).
 
 Here is an example implementation that prepares the transaction, uses a privateKey to sign it and finally, broadcasts it to Injective:
 
