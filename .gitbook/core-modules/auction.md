@@ -1,6 +1,6 @@
 # Auction
 
-The `auction` module is heart of the `buy-back-and-burn` on chain mechanism, where 60% of the weekly trading fees are colleted and auctioned off to the highest INJ bidder where the submitted INJ of the highest bidder are burned in the process.
+The `auction` module is heart of the `buy-back-and-burn` on chain mechanism, where 60% of the weekly trading fees are collected and auctioned off to the highest INJ bidder where the submitted INJ of the highest bidder are burned in the process.
 
 ### MsgBid
 
