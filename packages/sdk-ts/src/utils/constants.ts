@@ -51,6 +51,24 @@ export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
 }
 
+export const INCENTIVES_CONTRACT_BY_NETWORK = {
+  [Network.Mainnet]: '',
+  [Network.MainnetLB]: '',
+  [Network.MainnetK8s]: '',
+  [Network.MainnetSentry]: '',
+  [Network.Public]: '',
+  [Network.Staging]: '',
+  [Network.Internal]: '',
+  [Network.Testnet]: 'inj1gc7hu92ct7gd4nc6mv39m3anf0cnzml220epze',
+  [Network.TestnetK8s]: 'inj1gc7hu92ct7gd4nc6mv39m3anf0cnzml220epze',
+  [Network.TestnetSentry]: 'inj1gc7hu92ct7gd4nc6mv39m3anf0cnzml220epze',
+  [Network.TestnetOld]: 'inj1gc7hu92ct7gd4nc6mv39m3anf0cnzml220epze',
+  [Network.Devnet]: '',
+  [Network.Devnet1]: '',
+  [Network.Devnet2]: '',
+  [Network.Local]: '',
+}
+
 export const INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
   [Network.MainnetLB]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
