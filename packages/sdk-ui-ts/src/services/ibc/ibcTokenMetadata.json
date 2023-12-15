@@ -2337,25 +2337,6 @@
     }
   },
   {
-    "name": "Dot",
-    "denom": "ibc/B0442E32E21ED4228301A2B1B247D3F3355B73BF288470F9643AAD0CA07DD593",
-    "logo": "untracked.png",
-    "symbol": "DOT",
-    "decimals": 10,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "B0442E32E21ED4228301A2B1B247D3F3355B73BF288470F9643AAD0CA07DD593",
-      "path": "",
-      "channelId": "",
-      "decimals": 10,
-      "symbol": "DOT",
-      "baseDenom": "DOT",
-      "isNative": false
-    }
-  },
-  {
     "name": "USDC",
     "denom": "ibc/DF32F083238097AD2CA5444BFB8F338534C32865EFE0696C5AF89AFB3A0144D6",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png",
@@ -2390,6 +2371,25 @@
       "decimals": 6,
       "symbol": "USDC",
       "baseDenom": "USDC",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Dot",
+    "denom": "ibc/B0442E32E21ED4228301A2B1B247D3F3355B73BF288470F9643AAD0CA07DD593",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/polkadot/images/dot.png",
+    "symbol": "DOT",
+    "decimals": 10,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B0442E32E21ED4228301A2B1B247D3F3355B73BF288470F9643AAD0CA07DD593",
+      "path": "",
+      "channelId": "",
+      "decimals": 10,
+      "symbol": "DOT",
+      "baseDenom": "DOT",
       "isNative": false
     }
   }
