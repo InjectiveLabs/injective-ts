@@ -2093,4 +2093,13 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+
+  BINJ: {
+    name: 'Bird INJ',
+    symbol: 'BINJ',
+    decimals: 6,
+    logo: 'bird.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
