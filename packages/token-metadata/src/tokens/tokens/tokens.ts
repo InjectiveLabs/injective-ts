@@ -2093,4 +2093,12 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
+  NINJA: {
+    name: 'Dog wif nunchucks',
+    symbol: 'NINJA',
+    decimals: 6,
+    logo: 'ninja.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
