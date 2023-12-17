@@ -2101,7 +2101,7 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  
+
   BINJ: {
     name: 'Bird INJ',
     symbol: 'BINJ',
@@ -2116,6 +2116,15 @@ export default {
     symbol: 'NINJA',
     decimals: 6,
     logo: 'ninja.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  KATANA: {
+    name: 'Dog Wif Katana',
+    symbol: 'KATANA',
+    decimals: 6,
+    logo: 'katana.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
