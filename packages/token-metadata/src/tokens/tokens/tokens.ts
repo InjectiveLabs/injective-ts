@@ -2120,6 +2120,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  YUKI: {
+    name: 'Yuki Dog',
+    symbol: 'YUKI',
+    decimals: 6,
+    logo: 'yuki.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   KATANA: {
     name: 'Dog Wif Katana',
     symbol: 'KATANA',
