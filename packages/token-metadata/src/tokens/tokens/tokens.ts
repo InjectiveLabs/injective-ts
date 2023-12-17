@@ -2102,21 +2102,14 @@ export default {
     },
   },
   
-  BINJ: {
-    name: 'Bird INJ',
-    symbol: 'BINJ',
+  SHURIKEN: {
+    name: 'SHURIKEN',
+    symbol: 'SHURI',
     decimals: 6,
-    logo: 'bird.png',
+    logo: '.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
 
-  NINJA: {
-    name: 'Dog Wif Nunchucks',
-    symbol: 'NINJA',
-    decimals: 6,
-    logo: 'ninja.png',
-    coinGeckoId: '',
-    tokenType: TokenType.TokenFactory,
-  },
+
 } as Record<string, TokenMeta>
