@@ -2093,12 +2093,21 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-
+  
   BINJ: {
     name: 'Bird INJ',
     symbol: 'BINJ',
     decimals: 6,
     logo: 'bird.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  NINJA: {
+    name: 'Dog Wif Nunchucks',
+    symbol: 'NINJA',
+    decimals: 6,
+    logo: 'ninja.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
