@@ -2011,7 +2011,7 @@ export default {
     name: 'GALAXY',
     symbol: 'GALAXY',
     decimals: 6,
-    logo: 'galaxy.jpg',
+    logo: 'galaxy.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
