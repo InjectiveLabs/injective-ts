@@ -1999,6 +1999,14 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  KIRA: {
+    name: 'KIRA',
+    symbol: 'KIRA',
+    decimals: 6,
+    logo: 'kira.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 
   USDY: {
     name: 'Ondo US Dollar Yield',
