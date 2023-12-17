@@ -2015,6 +2015,14 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  AOI: {
+    name: 'AOI',
+    symbol: 'AOI',
+    decimals: 6,
+    logo: 'aoi.webp',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 
   USDY: {
     name: 'Ondo US Dollar Yield',
