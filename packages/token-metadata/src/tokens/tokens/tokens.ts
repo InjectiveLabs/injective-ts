@@ -2007,6 +2007,14 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  GALAXY: {
+    name: 'GALAXY',
+    symbol: 'GALAXY',
+    decimals: 6,
+    logo: 'galaxy.jpg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 
   USDY: {
     name: 'Ondo US Dollar Yield',
@@ -2101,7 +2109,7 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  
+
   BINJ: {
     name: 'Bird INJ',
     symbol: 'BINJ',
