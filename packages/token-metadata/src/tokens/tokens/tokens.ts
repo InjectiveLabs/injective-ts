@@ -2016,8 +2016,8 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
   AOI: {
-    name: 'AOI',
-    symbol: 'AOI',
+    name: 'Alien Token',
+    symbol: '$AOI',
     decimals: 6,
     logo: 'aoi.webp',
     coinGeckoId: '',
