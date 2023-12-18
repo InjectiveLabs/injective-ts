@@ -2119,12 +2119,19 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
-
   KATANA: {
     name: 'Dog Wif Katana',
     symbol: 'KATANA',
     decimals: 6,
     logo: 'katana.webp',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+  WAGMI: {
+    name: 'Wagmi Coin',
+    symbol: 'WAGMI',
+    decimals: 9,
+    logo: 'WAGMI.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
