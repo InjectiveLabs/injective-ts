@@ -945,6 +945,24 @@ export default {
     },
   },
 
+  NOIS: {
+    name: 'Nois',
+    symbol: 'NOIS',
+    decimals: 6,
+    coinGeckoId: 'none',
+    logo: 'nois.png',
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'unois',
+      path: 'transfer/channel-138',
+      channelId: 'channel-138',
+      hash: 'DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
   AXL: {
     name: 'Axelar',
     logo: 'axelar.png',
