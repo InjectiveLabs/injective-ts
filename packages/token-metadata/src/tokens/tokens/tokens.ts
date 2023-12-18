@@ -2128,4 +2128,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  BAMBOO: {
+    name: 'Injective Panda',
+    symbol: 'BAMBOO',
+    decimals: 6,
+    logo: 'panda.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
