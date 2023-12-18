@@ -2008,6 +2008,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  SAMURAI: {
+    name: 'SAMURAI',
+    symbol: 'SAMURAI',
+    decimals: 6,
+    logo: 'samurai.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   USDY: {
     name: 'Ondo US Dollar Yield',
     symbol: 'USDY',
