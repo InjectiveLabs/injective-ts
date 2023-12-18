@@ -2017,6 +2017,14 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+    GINGER: {
+    name: 'GINGER',
+    symbol: 'GINGER',
+    decimals: 6,
+    logo: 'ginger.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
   KIRA: {
     name: 'KIRA',
     symbol: 'KIRA',
