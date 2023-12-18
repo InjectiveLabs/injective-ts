@@ -2128,4 +2128,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  SAKURA: {
+    name: 'SAKURA',
+    symbol: 'SAKURA',
+    decimals: 6,
+    logo: 'sakura.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
