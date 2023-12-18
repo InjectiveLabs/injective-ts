@@ -1,5 +1,6 @@
 import { TokenFactory } from './TokenFactory'
 import { TokenMetaUtils } from './TokenMetaUtils'
+import { ExtendedTokenMetaUtils } from './ExtendedTokenMetaUtils'
 import { TokenMetaUtilsFactory } from './TokenMetaUtilsFactory'
 import { TokenInfo } from './TokenInfo'
 
@@ -11,4 +12,10 @@ export * from './tokens/canonical'
 export const tokenMetaUtils = TokenMetaUtilsFactory.make()
 export const tokenFactory = TokenFactory.make()
 
-export { TokenMetaUtils, TokenInfo, TokenFactory, TokenMetaUtilsFactory }
+export {
+  TokenMetaUtils,
+  ExtendedTokenMetaUtils,
+  TokenInfo,
+  TokenFactory,
+  TokenMetaUtilsFactory,
+}

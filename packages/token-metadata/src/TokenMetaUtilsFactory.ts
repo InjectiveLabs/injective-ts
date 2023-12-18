@@ -1,5 +1,5 @@
 import { Network, isTestnet } from '@injectivelabs/networks'
-import { TokenMetaUtils } from './TokenMetaUtils'
+import { ExtendedTokenMetaUtils } from './ExtendedTokenMetaUtils'
 import {
   getTokensBySymbolForDevnet,
   getTokensBySymbolForDevnet1,
@@ -9,23 +9,23 @@ import {
 import tokensBySymbol from './tokens/tokens'
 
 export class TokenMetaUtilsFactory {
-  static make(network: Network = Network.Mainnet): TokenMetaUtils {
+  static make(network: Network = Network.Mainnet): ExtendedTokenMetaUtils {
     if (isTestnet(network)) {
-      return new TokenMetaUtils(getTokensBySymbolForTestnet())
+      return new ExtendedTokenMetaUtils(getTokensBySymbolForTestnet())
     }
 
     if (network === Network.Devnet) {
-      return new TokenMetaUtils(getTokensBySymbolForDevnet())
+      return new ExtendedTokenMetaUtils(getTokensBySymbolForDevnet())
     }
 
     if (network === Network.Devnet1) {
-      return new TokenMetaUtils(getTokensBySymbolForDevnet1())
+      return new ExtendedTokenMetaUtils(getTokensBySymbolForDevnet1())
     }
 
     if (network === Network.Devnet2) {
-      return new TokenMetaUtils(getTokensBySymbolForDevnet2())
+      return new ExtendedTokenMetaUtils(getTokensBySymbolForDevnet2())
     }
 
-    return new TokenMetaUtils(tokensBySymbol)
+    return new ExtendedTokenMetaUtils(tokensBySymbol)
   }
 }
