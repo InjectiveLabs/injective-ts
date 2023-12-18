@@ -2128,4 +2128,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  SHURIKEN: {
+    name: 'Shuriken Token',
+    symbol: 'SHURIKEN',
+    decimals: 6,
+    logo: 'shuriken.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
