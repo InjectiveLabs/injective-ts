@@ -2128,4 +2128,90 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  GALAXY: {
+    name: 'GALAXY',
+    symbol: 'GALAXY',
+    decimals: 6,
+    logo: 'galaxy.webp',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  AOI: {
+    name: 'Alien Token',
+    symbol: '$AOI',
+    decimals: 6,
+    logo: 'aoi.webp',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  NOBI: {
+    name: 'Shinobi',
+    symbol: 'NOBI',
+    decimals: 6,
+    logo: 'nobi.jpg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  YUKI: {
+    name: 'Yuki Dog',
+    symbol: 'YUKI',
+    decimals: 6,
+    logo: 'yuki.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  WAGMI: {
+    name: 'Wagmi Coin',
+    symbol: 'WAGMI',
+    decimals: 9,
+    logo: 'wagmi.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  BAMBOO: {
+    name: 'Injective Panda',
+    symbol: 'BAMBOO',
+    decimals: 6,
+    logo: 'panda.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  SHURIKEN: {
+    name: 'Shuriken Token',
+    symbol: 'SHURIKEN',
+    decimals: 6,
+    logo: 'shuriken.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  BRETT: {
+    name: 'BluePepe',
+    symbol: 'BRETT',
+    decimals: 6,
+    logo: 'brett.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  ZIG: {
+    name: 'ZigCoin',
+    symbol: 'ZIG',
+    decimals: 18,
+    logo: 'zigg.jpeg',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 18,
+      address: '0xb2617246d0c6c0087f18703d576831899ca94f01',
+      tokenType: TokenType.Erc20,
+    },
+  },
 } as Record<string, TokenMeta>
