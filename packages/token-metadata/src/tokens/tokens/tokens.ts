@@ -2232,4 +2232,13 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  INJINU: {
+    name: 'INJINU',
+    symbol: 'INJINU',
+    decimals: 6,
+    logo: 'injinu.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
