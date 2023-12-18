@@ -2008,6 +2008,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  SHRK: {
+    name: 'SHRK',
+    symbol: 'SHRK',
+    decimals: 6,
+    logo: 'shrk.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   USDY: {
     name: 'Ondo US Dollar Yield',
     symbol: 'USDY',
