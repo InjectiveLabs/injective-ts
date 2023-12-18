@@ -2008,6 +2008,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  BONSAI: {
+    name: 'BONSAI',
+    symbol: 'BONSAI',
+    decimals: 6,
+    logo: 'bonsai.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   USDY: {
     name: 'Ondo US Dollar Yield',
     symbol: 'USDY',
