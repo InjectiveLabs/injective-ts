@@ -2365,4 +2365,13 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  BABYNINJA: {
+    name: 'Baby Ninja',
+    symbol: 'BABYNINJA',
+    decimals: 6,
+    logo: 'BABYNINJA.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
