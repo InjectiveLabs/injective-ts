@@ -20,24 +20,37 @@ export class TokenFactory {
     this.tokenMetaUtils = tokenMetaUtils
   }
 
-  static make(network: Network = Network.Mainnet): TokenFactory {
+  static make(
+    network: Network = Network.Mainnet,
+    registry: Record<string, TokenMeta> = {},
+  ): TokenFactory {
     if (isTestnet(network)) {
-      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForTestnet()))
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForTestnet(), ...registry }),
+      )
     }
 
     if (network === Network.Devnet) {
-      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForDevnet()))
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForDevnet(), ...registry }),
+      )
     }
 
     if (network === Network.Devnet1) {
-      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForDevnet1()))
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForDevnet1(), ...registry }),
+      )
     }
 
     if (network === Network.Devnet2) {
-      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForDevnet2()))
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForDevnet2(), ...registry }),
+      )
     }
 
-    return new TokenFactory(new TokenMetaUtils(tokensBySymbol))
+    return new TokenFactory(
+      new TokenMetaUtils({ ...tokensBySymbol, ...registry }),
+    )
   }
 
   toToken(denom: string): Token | undefined {
@@ -143,7 +156,7 @@ export class TokenFactory {
   }
 
   getFactoryDenomTokenMeta(denom: string): TokenMeta | undefined {
-    const [address, ownerAddress] = denom.split('/').reverse()
+    const [address] = denom.split('/').reverse()
 
     if (!address) {
       throw new GeneralException(
@@ -155,7 +168,7 @@ export class TokenFactory {
       this.tokenMetaUtils.getMetaBySymbol(address) ||
       this.tokenMetaUtils.getMetaByName(address)
 
-    if (isCw20ContractAddress(ownerAddress)) {
+    if (isCw20ContractAddress(address)) {
       tokenMeta = this.tokenMetaUtils.getMetaByAddress(address) || tokenMeta
 
       return tokenMeta
