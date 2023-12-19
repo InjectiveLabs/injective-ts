@@ -8,6 +8,7 @@ import {
   SubaccountDepositV2,
   GrpcPositionsWithUPNL,
   GrpcSubaccountDepositV2,
+  AccountPortfolioBalances,
   PortfolioSubaccountBalanceV2,
   GrpcPortfolioSubaccountBalanceV2,
 } from '../types/account-portfolio'
@@ -42,6 +43,33 @@ export class IndexerGrpcAccountPortfolioTransformer {
       ),
       positionsWithUpnlList: positionsWithUpnlList.map(
         IndexerGrpcAccountPortfolioTransformer.grpcPositionWithUPNLToPositionWithUPNL,
+      ),
+    }
+  }
+
+  static accountPortfolioBalancesResponseToAccountPortfolioBalances(
+    response: InjectivePortfolioRpc.AccountPortfolioBalancesResponse,
+    address: string,
+  ): AccountPortfolioBalances {
+    const portfolio = response.portfolio!
+    const bankBalancesList = portfolio?.bankBalances || []
+    const subaccountList = portfolio?.subaccounts || []
+
+    if (!portfolio) {
+      return {
+        accountAddress: address || '',
+        bankBalancesList: [],
+        subaccountsList: [],
+      }
+    }
+
+    return {
+      accountAddress: portfolio.accountAddress,
+      bankBalancesList: bankBalancesList.map(
+        IndexerGrpcAccountPortfolioTransformer.grpcCoinToCoin,
+      ),
+      subaccountsList: subaccountList.map(
+        IndexerGrpcAccountPortfolioTransformer.grpcSubaccountBalanceToSubaccountBalance,
       ),
     }
   }

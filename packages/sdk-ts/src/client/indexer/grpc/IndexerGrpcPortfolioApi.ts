@@ -63,4 +63,45 @@ export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchAccountPortfolioBalances(address: string) {
+    const request =
+      InjectivePortfolioRpc.AccountPortfolioBalancesRequest.create()
+
+    request.accountAddress = address
+
+    try {
+      const response =
+        await this.retry<InjectivePortfolioRpc.AccountPortfolioBalancesResponse>(
+          () => this.client.AccountPortfolioBalances(request),
+        )
+
+      return IndexerGrpcAccountPortfolioTransformer.accountPortfolioBalancesResponseToAccountPortfolioBalances(
+        response,
+        address,
+      )
+    } catch (e: unknown) {
+      if ((e as any)?.message === 'account address not found') {
+        return {
+          accountAddress: address || '',
+          bankBalancesList: [],
+          subaccountsList: [],
+        }
+      }
+
+      if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'AccountPortfolio',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AccountPortfolio',
+        contextModule: this.module,
+      })
+    }
+  }
 }
