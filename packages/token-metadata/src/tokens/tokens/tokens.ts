@@ -2324,7 +2324,7 @@ export default {
     symbol: 'ZIG',
     decimals: 18,
     logo: 'zigg.jpeg',
-    coinGeckoId: '',
+    coinGeckoId: 'zignaly',
     tokenType: TokenType.Erc20,
 
     erc20: {
