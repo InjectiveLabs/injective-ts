@@ -2342,4 +2342,12 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  DOJ: {
+    name: 'DOJcoin',
+    symbol: 'DOJ',
+    decimals: 6,
+    logo: 'doj.png',
+    coinGeckoId: ''
+    tokenType: TokenType.TokenFactory,
+  }
 } as Record<string, TokenMeta>
