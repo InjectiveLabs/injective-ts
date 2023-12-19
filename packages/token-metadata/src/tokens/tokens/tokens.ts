@@ -2324,7 +2324,7 @@ export default {
     symbol: 'ZIG',
     decimals: 18,
     logo: 'zigg.jpeg',
-    coinGeckoId: '',
+    coinGeckoId: 'zignaly',
     tokenType: TokenType.Erc20,
 
     erc20: {
@@ -2341,5 +2341,28 @@ export default {
     logo: 'injinu.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+  },
+
+  DOJ: {
+    name: 'DOJcoin',
+    symbol: 'DOJ',
+    decimals: 6,
+    logo: 'doj.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  SKIPBIDIDOBDOBDOBYESYESYESYES: {
+    name: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
+    symbol: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
+    decimals: 9,
+    logo: 'skibidi.jpg',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 9,
+      address: '0x5085202d0A4D8E4724Aa98C42856441c3b97Bc6d',
+      tokenType: TokenType.Erc20,
+    },
   },
 } as Record<string, TokenMeta>
