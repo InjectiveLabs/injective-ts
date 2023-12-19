@@ -2232,4 +2232,18 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+   SKIPBIDIDOBDOBDOBYESYESYESYES: {
+    name: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
+    symbol: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
+    decimals: 9,
+    logo: 'skibidi.jpg',
+    coinGeckoId: '',
+
+    erc20: {
+      decimals: 9,
+      address: '0x5085202d0A4D8E4724Aa98C42856441c3b97Bc6d',
+      tokenType: TokenType.Erc20,
+    },
+  },
 } as Record<string, TokenMeta>
