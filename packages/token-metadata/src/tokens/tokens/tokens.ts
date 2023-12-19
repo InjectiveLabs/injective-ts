@@ -2223,7 +2223,7 @@ export default {
     name: 'TheJanitor',
     symbol: 'ERIC',
     decimals: 6,
-    logo: 'eric_logo.png',
+    logo: 'eric.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
