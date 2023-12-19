@@ -2351,8 +2351,7 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
-
-  SKIPBIDIDOBDOBDOBYESYESYESYES: {
+    SKIPBIDIDOBDOBDOBYESYESYESYES: {
     name: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
     symbol: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
     decimals: 9,
