@@ -2219,6 +2219,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+   ERIC: {
+    name: 'TheJanitor',
+    symbol: 'ERIC',
+    decimals: 6,
+    logo: 'eric_logo.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   ZIG: {
     name: 'ZigCoin',
     symbol: 'ZIG',
