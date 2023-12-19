@@ -157,6 +157,22 @@ export class TokenFactory {
 
     if (isCw20ContractAddress(ownerAddress)) {
       tokenMeta = this.tokenMetaUtils.getMetaByAddress(address) || tokenMeta
+
+      return tokenMeta
+        ? {
+            ...tokenMeta,
+            tokenType: TokenType.TokenFactory,
+          }
+        : undefined
+    }
+
+    /**
+     * We have to prevent factory token denoms to be identified as
+     * normal tokens by using only the symbol, i.e
+     * factory/inj..../sol !== SOL token
+     */
+    if (tokenMeta?.tokenType !== TokenType.TokenFactory) {
+      return undefined
     }
 
     return tokenMeta
