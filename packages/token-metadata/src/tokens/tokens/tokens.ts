@@ -2120,6 +2120,14 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  LIOR: {
+    name: 'LIOR',
+    symbol: 'LIOR',
+    decimals: 6,
+    logo: 'lior.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 
   USDY: {
     name: 'Ondo US Dollar Yield',
