@@ -2392,4 +2392,15 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  INJINEER: {
+    name: 'INJINEER',
+    symbol: 'INJER',
+    decimals: 6,
+    logo: 'INJINEER.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  
 } as Record<string, TokenMeta>
