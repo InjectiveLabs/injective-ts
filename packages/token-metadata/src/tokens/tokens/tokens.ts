@@ -2391,5 +2391,14 @@ export default {
     logo: 'injinu.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+  },,
+
+  Babykira: {
+    name: 'Babykira',
+    symbol: '$Babykira',
+    decimals: 6,
+    logo: 'babykira.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
   },
 } as Record<string, TokenMeta>
