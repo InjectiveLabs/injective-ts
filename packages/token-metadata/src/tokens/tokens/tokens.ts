@@ -2365,4 +2365,13 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  INJINU: {
+    name: 'Kinja',
+    symbol: 'Kinja',
+    decimals: 6,
+    logo: 'kinja.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
