@@ -15,10 +15,10 @@ export class GrpcUnaryRequestException extends ConcreteException {
 
     if (message.toLowerCase().includes('response closed without headers')) {
       this.setMessage(
-        "Hang tight, we're under heavy load, refresh the page in a few seconds.",
+        'Product is under heavy load, refresh the page in a few seconds.',
       )
       this.setOriginalMessage(
-        `Hang tight, we're experiencing higher than usual demand, and are doing everything we can to improve performance. In the meantime, try refreshing the page until our code monkeys at our headquarters fix this.`,
+        `The product is experiencing higher than usual demand. Hang tight, engineers are doing their best to improve the performance and efficiency.`,
       )
     }
   }

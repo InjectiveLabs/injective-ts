@@ -2383,4 +2383,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  INJINU: {
+    name: 'INJINU',
+    symbol: 'INJINU',
+    decimals: 6,
+    logo: 'injinu.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
