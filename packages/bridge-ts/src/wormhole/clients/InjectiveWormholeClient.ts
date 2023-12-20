@@ -109,7 +109,7 @@ export class InjectiveWormholeClient
       destination?: WormholeSource
     },
   ) {
-    const { network, wormholeRpcUrl, provider } = this
+    const { network, wormholeRpcUrl, wormholeRestUrl, provider } = this
     const {
       amount,
       signer,
@@ -125,8 +125,10 @@ export class InjectiveWormholeClient
       throw new GeneralException(new Error(`Please provide tokenAddress`))
     }
 
-    if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    if (!wormholeRpcUrl && !wormholeRestUrl) {
+      throw new GeneralException(
+        new Error(`Please provide wormholeRpcUrl | wormholeRestUrl`),
+      )
     }
 
     if (!recipient) {

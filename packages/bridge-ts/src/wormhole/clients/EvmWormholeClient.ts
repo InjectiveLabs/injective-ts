@@ -373,11 +373,13 @@ export class EvmWormholeClient
   }
 
   private async transferToken(args: TransferMsgArgs) {
-    const { network, wormholeRpcUrl, wormholeSource } = this
+    const { network, wormholeRpcUrl, wormholeRestUrl, wormholeSource } = this
     const { amount, recipient, tokenAddress } = args
 
-    if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    if (!wormholeRpcUrl && !wormholeRestUrl) {
+      throw new GeneralException(
+        new Error(`Please provide wormholeRpcUrl | wormholeRestUrl`),
+      )
     }
 
     if (!tokenAddress) {
@@ -434,11 +436,13 @@ export class EvmWormholeClient
   }
 
   private async transferNative(args: TransferMsgArgs) {
-    const { network, wormholeRpcUrl, wormholeSource } = this
+    const { network, wormholeRpcUrl, wormholeRestUrl, wormholeSource } = this
     const { amount, recipient } = args
 
-    if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    if (!wormholeRpcUrl && !wormholeRestUrl) {
+      throw new GeneralException(
+        new Error(`Please provide wormholeRpcUrl | wormholeRestUrl`),
+      )
     }
 
     if (!recipient) {

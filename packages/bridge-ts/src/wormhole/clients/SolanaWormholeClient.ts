@@ -127,9 +127,10 @@ export class SolanaWormholeClient
     const { network, wormholeRpcUrl } = this
 
     if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+      throw new GeneralException(
+        new Error(`Please provide wormholeRpcUrl`),
+      )
     }
-
     const { associatedChainContractAddresses } = getContractAddresses(network)
 
     const sequence = parseSequenceFromLogSolana(
@@ -165,9 +166,10 @@ export class SolanaWormholeClient
     const { network, wormholeRpcUrl } = this
 
     if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+      throw new GeneralException(
+        new Error(`Please provide wormholeRpcUrl`),
+      )
     }
-
     const { associatedChainContractAddresses } = getContractAddresses(network)
 
     const sequence = parseSequenceFromLogSolana(
@@ -468,7 +470,7 @@ export class SolanaWormholeClient
   }
 
   private async transferToken(args: TransferMsgArgs) {
-    const { network, solanaHostUrl, wormholeRpcUrl } = this
+    const { network, solanaHostUrl, wormholeRestUrl, wormholeRpcUrl } = this
     const { amount, recipient, signer } = args
     const endpoints = getNetworkEndpoints(network)
 
@@ -479,10 +481,11 @@ export class SolanaWormholeClient
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    if (!wormholeRpcUrl && !wormholeRestUrl) {
+      throw new GeneralException(
+        new Error(`Please provide wormholeRpcUrl | wormholeRestUrl`),
+      )
     }
-
     if (!args.tokenAddress) {
       throw new GeneralException(new Error(`Please provide tokenAddress`))
     }
@@ -550,7 +553,7 @@ export class SolanaWormholeClient
   }
 
   private async transferNative(args: TransferMsgArgs) {
-    const { network, solanaHostUrl, wormholeRpcUrl } = this
+    const { network, solanaHostUrl, wormholeRestUrl, wormholeRpcUrl } = this
     const { amount, recipient, signer } = args
 
     const provider = await this.getProvider()
@@ -564,10 +567,11 @@ export class SolanaWormholeClient
       throw new GeneralException(new Error(`Please provide signerPubKey`))
     }
 
-    if (!wormholeRpcUrl) {
-      throw new GeneralException(new Error(`Please provide wormholeRpcUrl`))
+    if (!wormholeRpcUrl && !wormholeRestUrl) {
+      throw new GeneralException(
+        new Error(`Please provide wormholeRpcUrl | wormholeRestUrl`),
+      )
     }
-
     const { associatedChainContractAddresses } = getContractAddresses(network)
 
     const connection = new Connection(solanaHostUrl, 'confirmed')
