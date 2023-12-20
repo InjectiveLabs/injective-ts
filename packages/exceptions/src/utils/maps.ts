@@ -149,5 +149,5 @@ export const mapMetamaskMessage = (message: string): string => {
     return 'Your Metamask selected network is incorrect'
   }
 
-  return parsedMessage
+  return message
 }
