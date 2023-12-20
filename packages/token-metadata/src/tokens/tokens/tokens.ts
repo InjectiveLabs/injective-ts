@@ -2335,11 +2335,11 @@ export default {
   },
 
   INJINU: {
-    name: 'Kinja',
-    symbol: 'Kinja',
+    name: 'INJINU',
+    symbol: 'INJINU',
     decimals: 6,
-    logo: 'kinja.png',
-    coinGeckoId: '',
+    logo: 'injinu.png',
+    coinGeckoId: 'inj-inu',
     tokenType: TokenType.TokenFactory,
   },
 
