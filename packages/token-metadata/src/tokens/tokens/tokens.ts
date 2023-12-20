@@ -2392,4 +2392,14 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  SHIBA: {
+    name: 'Shiba',
+    symbol: 'shibainj',
+    decimals: 6,
+    logo: 'shiba.webp',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+    address: 'factory/inj1v0yk4msqsff7e9zf8ktxykfhz2hen6t2u4ue4r/shiba'
+  },
 } as Record<string, TokenMeta>
