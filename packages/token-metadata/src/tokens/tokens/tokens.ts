@@ -2334,15 +2334,6 @@ export default {
     },
   },
 
-  INJINU: {
-    name: 'Kinja',
-    symbol: 'Kinja',
-    decimals: 6,
-    logo: 'kinja.png',
-    coinGeckoId: '',
-    tokenType: TokenType.TokenFactory,
-  },
-
   DOJ: {
     name: 'DOJcoin',
     symbol: 'DOJ',
