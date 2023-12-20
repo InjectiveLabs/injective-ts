@@ -2335,10 +2335,10 @@ export default {
   },
 
   INJINU: {
-    name: 'INJINU',
-    symbol: 'INJINU',
+    name: 'Kinja',
+    symbol: 'Kinja',
     decimals: 6,
-    logo: 'injinu.png',
+    logo: 'kinja.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
@@ -2364,5 +2364,32 @@ export default {
       address: '0x5085202d0A4D8E4724Aa98C42856441c3b97Bc6d',
       tokenType: TokenType.Erc20,
     },
+  },
+
+  GINGER: {
+    name: 'GINGER',
+    symbol: 'GINGER',
+    decimals: 6,
+    logo: 'ginger.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  ERIC: {
+    name: 'TheJanitor',
+    symbol: 'ERIC',
+    decimals: 6,
+    logo: 'eric.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  BABYNINJA: {
+    name: 'Baby Ninja',
+    symbol: 'BABYNINJA',
+    decimals: 6,
+    logo: 'babyninja.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
   },
 } as Record<string, TokenMeta>
