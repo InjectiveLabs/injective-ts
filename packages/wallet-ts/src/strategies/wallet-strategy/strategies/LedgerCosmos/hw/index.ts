@@ -28,7 +28,7 @@ export default class LedgerTransport {
 
   async getInstance(): Promise<CosmosApp> {
     if (!this.ledger) {
-      this.ledger = new CosmosApp(await LedgerTransport.getTransport() as any)
+      this.ledger = new CosmosApp((await LedgerTransport.getTransport()) as any)
     }
 
     return this.ledger
@@ -40,5 +40,15 @@ export default class LedgerTransport {
     }
 
     return this.accountManager
+  }
+
+  async refresh() {
+    if (!this.ledger) {
+      return new LedgerTransport()
+    }
+
+    this.ledger.transport.close()
+
+    return new LedgerTransport()
   }
 }

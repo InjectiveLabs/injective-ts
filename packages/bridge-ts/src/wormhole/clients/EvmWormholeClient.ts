@@ -52,15 +52,17 @@ export class EvmWormholeClient
   constructor({
     network,
     wormholeRpcUrl,
+    wormholeRestUrl,
     wormholeSource,
     provider,
   }: {
     network: Network
     wormholeSource: WormholeSource
     wormholeRpcUrl?: string
+    wormholeRestUrl?: string
     provider: Provider
   }) {
-    super({ network, wormholeRpcUrl })
+    super({ network, wormholeRpcUrl, wormholeRestUrl })
     this.wormholeSource = wormholeSource
     this.provider = provider
   }

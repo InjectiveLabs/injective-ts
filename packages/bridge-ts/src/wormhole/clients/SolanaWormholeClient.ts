@@ -59,13 +59,15 @@ export class SolanaWormholeClient
     provider,
     solanaHostUrl,
     wormholeRpcUrl,
+    wormholeRestUrl,
   }: {
     network: Network
     provider: PhantomWalletAdapter
     solanaHostUrl: string
     wormholeRpcUrl?: string
+    wormholeRestUrl?: string
   }) {
-    super({ network, wormholeRpcUrl })
+    super({ network, wormholeRestUrl, wormholeRpcUrl })
     this.solanaHostUrl = solanaHostUrl
     this.provider = provider
   }

@@ -57,13 +57,15 @@ export class InjectiveWormholeClient
   constructor({
     network,
     wormholeRpcUrl,
+    wormholeRestUrl,
     provider,
   }: {
     network: Network
     provider: Provider
     wormholeRpcUrl?: string
+    wormholeRestUrl?: string
   }) {
-    super({ network, wormholeRpcUrl })
+    super({ network, wormholeRpcUrl, wormholeRestUrl })
     this.provider = provider
   }
 
