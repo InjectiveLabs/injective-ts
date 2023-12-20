@@ -21,6 +21,7 @@ export class EvmWormholeClientStrategy
   constructor(args: {
     network: Network
     wormholeRpcUrl?: string
+    wormholeRestUrl?: string
     provider: Provider
     wormholeSource?: WormholeSource
   }) {
@@ -81,6 +82,14 @@ export class EvmWormholeClientStrategy
 
   async getSignedVAANoRetry(txResponse: ethers.ContractReceipt) {
     return this.strategy.getSignedVAANoRetry(txResponse)
+  }
+
+  async getSignedVAARest(txHash: string) {
+    return this.strategy.getSignedVAARest(txHash)
+  }
+
+  async getSignedVAANoRetryRest(txHash: string) {
+    return this.strategy.getSignedVAARestNoRetry(txHash)
   }
 
   async getIsTransferCompleted(signedVAA: string /* in base 64 */) {
