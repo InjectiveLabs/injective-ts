@@ -1,4 +1,4 @@
-import { TokenMeta, TokenSource, TokenType } from '../../types'
+import {TokenMeta, TokenSource, TokenType} from '../../types'
 
 export default {
   BTC: {
@@ -924,6 +924,25 @@ export default {
       hash: '92E0120F15D037353CFB73C14651FC8930ADC05B93100FD7754D3A689E53B333',
       tokenType: TokenType.Ibc,
     },
+  },
+
+  LVN: {
+    name: 'Levana',
+    symbol: 'LVN',
+    decimals: 6,
+    coinGeckoId: 'levana',
+    logo: 'lvn.png',
+    tokenType: TokenType.Ibc,
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'ulvn',
+      path: 'transfer/channel-8',
+      channelId: 'channel-8',
+      hash: '4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8',
+      tokenType: TokenType.Ibc,
+    }
   },
 
   TAB: {
