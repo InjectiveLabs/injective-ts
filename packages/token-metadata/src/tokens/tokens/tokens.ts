@@ -2392,4 +2392,12 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+    LAMA: {
+    name: 'LAMA',
+    symbol: 'LAMA',
+    decimals: 6,
+    logo: 'lama_logo.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
