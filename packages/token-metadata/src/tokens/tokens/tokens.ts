@@ -2269,7 +2269,7 @@ export default {
     name: 'Shinobi',
     symbol: 'NOBI',
     decimals: 6,
-    logo: 'nobi.jpeg',
+    logo: 'nobi.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
