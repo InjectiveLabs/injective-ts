@@ -2392,4 +2392,12 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  SNOWY: {
+    name: 'Injective Snowy',
+    symbol: 'SNOWY',
+    decimals: 6,
+    logo: 'snowy.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
