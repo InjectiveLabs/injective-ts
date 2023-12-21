@@ -2352,6 +2352,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+    GROK: {
+    name: 'GROK',
+    symbol: 'GROK',
+    decimals: 6,
+    logo: 'GROK.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   SKIPBIDIDOBDOBDOBYESYESYESYES: {
     name: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
     symbol: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
