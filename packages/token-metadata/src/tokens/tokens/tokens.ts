@@ -2392,4 +2392,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  
+  BULLS: {
+    name: 'BULLS',
+    symbol: 'BULLS',
+    decimals: 6,
+    logo: 'bulls.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
