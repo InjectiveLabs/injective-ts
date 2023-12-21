@@ -2392,5 +2392,24 @@
       "baseDenom": "DOT",
       "isNative": false
     }
+  },
+  {
+    "name": "Plankton",
+    "denom": "ibc/020098CDEC3D7555210CBC1593A175A6B24253823B0B711D072EC95F76FA4D42",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/PLNK_drk.png",
+    "symbol": "PLNK",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "020098CDEC3D7555210CBC1593A175A6B24253823B0B711D072EC95F76FA4D42",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "PLNK",
+      "baseDenom": "PLNK",
+      "isNative": false
+    }
   }
 ]
