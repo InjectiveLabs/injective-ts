@@ -2269,7 +2269,7 @@ export default {
     name: 'Shinobi',
     symbol: 'NOBI',
     decimals: 6,
-    logo: 'nobi.jpeg',
+    logo: 'nobi.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
@@ -2389,6 +2389,106 @@ export default {
     symbol: 'INJINU',
     decimals: 6,
     logo: 'injinu.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  Babykira: {
+    name: 'Babykira',
+    symbol: '$Babykira',
+    decimals: 6,
+    logo: 'babykira.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  LIOR: {
+    name: 'LIOR',
+    symbol: 'LIOR',
+    decimals: 6,
+    logo: 'lior.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  INJINEER: {
+    name: 'INJINEER',
+    symbol: 'INJER',
+    decimals: 6,
+    logo: 'INJINEER.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  SHIBA: {
+    name: 'Shiba',
+    symbol: 'shibainj',
+    decimals: 6,
+    logo: 'shiba.webp',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  GROK: {
+    name: 'GROK',
+    symbol: 'GROK',
+    decimals: 6,
+    logo: 'grok.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  SNOWY: {
+    name: 'Injective Snowy',
+    symbol: 'SNOWY',
+    decimals: 6,
+    logo: 'snowy.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  BULLS: {
+    name: 'BULLS',
+    symbol: 'BULLS',
+    decimals: 6,
+    logo: 'bulls.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  LVN: {
+    name: 'Levana',
+    symbol: 'LVN',
+    decimals: 6,
+    coinGeckoId: 'levana',
+    logo: 'lvn.png',
+    tokenType: TokenType.Ibc,
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'ulvn',
+      path: 'transfer/channel-8',
+      channelId: 'channel-8',
+      hash: '4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8',
+      tokenType: TokenType.Ibc,
+    },
+  },
+
+  KINJA: {
+    name: 'Kinja',
+    symbol: 'KINJA',
+    decimals: 6,
+    logo: 'kinja.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  LAMA: {
+    name: 'LAMA',
+    symbol: 'LAMA',
+    decimals: 6,
+    logo: 'lama.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
