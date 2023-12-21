@@ -2356,7 +2356,7 @@ export default {
     name: 'GROK',
     symbol: 'GROK',
     decimals: 6,
-    logo: 'GROK.png',
+    logo: 'GROK.PNG',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
