@@ -2392,4 +2392,22 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  BABY_NINJA: {
+    name: 'Baby Ninja',
+    symbol: 'BABY NINJA',
+    decimals: 6,
+    logo: 'bninja.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },  
+
+  KINJA: {
+    name: 'Kinja',
+    symbol: 'KINJA',
+    decimals: 6,
+    logo: 'kinja.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },  
 } as Record<string, TokenMeta>
