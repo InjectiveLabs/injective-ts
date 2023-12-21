@@ -2411,5 +2411,347 @@
       "baseDenom": "PLNK",
       "isNative": false
     }
+  },
+  {
+    "name": "Lion DAO",
+    "denom": "ibc/E6CFB0AC1D339A8CBA3353DF0D7E080B4B14D026D1C90F63F666C223B04D548C",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/roar.png",
+    "symbol": "ROAR",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E6CFB0AC1D339A8CBA3353DF0D7E080B4B14D026D1C90F63F666C223B04D548C",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ROAR",
+      "baseDenom": "ROAR",
+      "isNative": false
+    }
+  },
+  {
+    "name": "TheOnlyOne",
+    "denom": "ibc/C0B67C5C6E3D8ED32B5FEC0E5A4F4E5D0257C62B4FDE5E569AF425B6A0059CC4",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/xxx3.png",
+    "symbol": "xxx",
+    "decimals": 10,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C0B67C5C6E3D8ED32B5FEC0E5A4F4E5D0257C62B4FDE5E569AF425B6A0059CC4",
+      "path": "",
+      "channelId": "",
+      "decimals": 10,
+      "symbol": "xxx",
+      "baseDenom": "xxx",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Lion Cub DAO",
+    "denom": "ibc/5CB35B165F689DD57F836C6C5ED3AB268493AA5A810740446C4F2141664714F4",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/cub.png",
+    "symbol": "CUB",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "5CB35B165F689DD57F836C6C5ED3AB268493AA5A810740446C4F2141664714F4",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "CUB",
+      "baseDenom": "CUB",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Astroport",
+    "denom": "ibc/EBD5A24C554198EBAF44979C5B4D2C2D312E6EBAB71962C92F735499C7575839",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/astro.png",
+    "symbol": "ASTRO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "EBD5A24C554198EBAF44979C5B4D2C2D312E6EBAB71962C92F735499C7575839",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ASTRO",
+      "baseDenom": "ASTRO",
+      "isNative": false
+    }
+  },
+  {
+    "name": "sayve",
+    "denom": "ibc/DF2B99CF1FEA6B292E79617BD6F7EF735C0B47CEF09D7104E270956E96C38B12",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/sayve.png",
+    "symbol": "SAYVE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "DF2B99CF1FEA6B292E79617BD6F7EF735C0B47CEF09D7104E270956E96C38B12",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SAYVE",
+      "baseDenom": "SAYVE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ERIS Amplified LUNA",
+    "denom": "ibc/751CCECAF75D686B1DC8708BE62F8C7411B211750E6009C6AC4C93881F0543E8",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/ampluna.svg",
+    "symbol": "ampLUNA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "751CCECAF75D686B1DC8708BE62F8C7411B211750E6009C6AC4C93881F0543E8",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ampLUNA",
+      "baseDenom": "ampLUNA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "boneLuna",
+    "denom": "ibc/C9D55B62C9D9CA84DD94DC019009B840DDFD861BF2F33F7CF2A8A74933797680",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/boneluna.png",
+    "symbol": "bLUNA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C9D55B62C9D9CA84DD94DC019009B840DDFD861BF2F33F7CF2A8A74933797680",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "bLUNA",
+      "baseDenom": "bLUNA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "BLUE CUB DAO",
+    "denom": "ibc/B692197280D4E62F8D9F8E5C0B697DC4C2C680ED6DE8FFF0368E0552C9215607",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/blue.png",
+    "symbol": "BLUE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "B692197280D4E62F8D9F8E5C0B697DC4C2C680ED6DE8FFF0368E0552C9215607",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BLUE",
+      "baseDenom": "BLUE",
+      "isNative": false
+    }
+  },
+  {
+    "name": "dinheiro",
+    "denom": "ibc/306269448B7ED8EC0DB6DC30BAEA279A9190E1D583572681749B9C0D44915DAB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/Dinheiros.png",
+    "symbol": "DINHEIROS",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "306269448B7ED8EC0DB6DC30BAEA279A9190E1D583572681749B9C0D44915DAB",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "DINHEIROS",
+      "baseDenom": "DINHEIROS",
+      "isNative": false
+    }
+  },
+  {
+    "name": "real",
+    "denom": "ibc/444BCB7AC154587F5D4ABE36EF6D7D65369224509DCBCA2E27AD539519DD66BB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/Reis.png",
+    "symbol": "REIS",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "444BCB7AC154587F5D4ABE36EF6D7D65369224509DCBCA2E27AD539519DD66BB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "REIS",
+      "baseDenom": "REIS",
+      "isNative": false
+    }
+  },
+  {
+    "name": "escudo",
+    "denom": "ibc/D1546953F51A43131EDB1E80447C823FD0B562C928496808801A57F374357CE5",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/Escudos.png",
+    "symbol": "ESCUDOS",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D1546953F51A43131EDB1E80447C823FD0B562C928496808801A57F374357CE5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ESCUDOS",
+      "baseDenom": "ESCUDOS",
+      "isNative": false
+    }
+  },
+  {
+    "name": "alentejo.money",
+    "denom": "ibc/FE5CF6EA14A5A5EF61AFBD8294E7B245DF4523F6F3B38DE8CC65A916BCEA00B4",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/Alem.png",
+    "symbol": "ALEM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "FE5CF6EA14A5A5EF61AFBD8294E7B245DF4523F6F3B38DE8CC65A916BCEA00B4",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ALEM",
+      "baseDenom": "ALEM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "GEM DAO",
+    "denom": "ibc/8AE86084C0D921352F711EF42CCA7BA4C8238C244FE4CC3E4E995D9782FB0E2B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/gem.png",
+    "symbol": "GEM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "8AE86084C0D921352F711EF42CCA7BA4C8238C244FE4CC3E4E995D9782FB0E2B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "GEM",
+      "baseDenom": "GEM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "nico",
+    "denom": "ibc/EED3F204DCABACBEB858B0A56017070283098A81DEB49F1F9D6702309AA7F7DE",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/nicodao.png",
+    "symbol": "NICO",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "EED3F204DCABACBEB858B0A56017070283098A81DEB49F1F9D6702309AA7F7DE",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "NICO",
+      "baseDenom": "NICO",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Sailing The SeaS DAO",
+    "denom": "ibc/FF5AC3E28E50C2C52063C18D0E2F742B3967BE5ACC6D7C8713118E54E1DEE4F6",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/SEAS.png",
+    "symbol": "SEAS",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "FF5AC3E28E50C2C52063C18D0E2F742B3967BE5ACC6D7C8713118E54E1DEE4F6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SEAS",
+      "baseDenom": "SEAS",
+      "isNative": false
+    }
+  },
+  {
+    "name": "BitzDAO",
+    "denom": "ibc/01A69EE21F6A76CAA8D0DB900AF2789BF665B5B67D89A7D69E7ECF7F513CD0CA",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/BITZ.png",
+    "symbol": "BITZ",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "01A69EE21F6A76CAA8D0DB900AF2789BF665B5B67D89A7D69E7ECF7F513CD0CA",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BITZ",
+      "baseDenom": "BITZ",
+      "isNative": false
+    }
+  },
+  {
+    "name": "seul",
+    "denom": "ibc/1C17C28AEA3C5E03F1A586575C6BE426A18B03B48C11859B82242EF32D372FDA",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/seul.png",
+    "symbol": "SEUL",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "1C17C28AEA3C5E03F1A586575C6BE426A18B03B48C11859B82242EF32D372FDA",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SEUL",
+      "baseDenom": "SEUL",
+      "isNative": false
+    }
+  },
+  {
+    "name": "xseul",
+    "denom": "ibc/CC381CB977B79239696AC471777FEC12816B9EF7F601EE2DAF17C00F51C25F6F",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/xseul.png",
+    "symbol": "xSEUL",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "CC381CB977B79239696AC471777FEC12816B9EF7F601EE2DAF17C00F51C25F6F",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "xSEUL",
+      "baseDenom": "xSEUL",
+      "isNative": false
+    }
   }
 ]
