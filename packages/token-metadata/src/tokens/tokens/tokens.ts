@@ -1,4 +1,4 @@
-import {TokenMeta, TokenSource, TokenType} from '../../types'
+import { TokenMeta, TokenSource, TokenType } from '../../types'
 
 export default {
   BTC: {
