@@ -2492,4 +2492,12 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  INJEX: {
+    name: 'INTERNET EXPLORER',
+    symbol: 'INJEX',
+    decimals: 6,
+    logo: 'INJEX.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory
+  }
 } as Record<string, TokenMeta>
