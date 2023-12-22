@@ -87,7 +87,7 @@ export class IndexerGrpcAccountPortfolioTransformer {
 
     return {
       position: grpcPosition
-        ? IndexerGrpcDerivativeTransformer.grpcPositionV2ToPositionV2(
+        ? IndexerGrpcDerivativeTransformer.grpcPositionToPosition(
             grpcPosition,
           )
         : undefined,

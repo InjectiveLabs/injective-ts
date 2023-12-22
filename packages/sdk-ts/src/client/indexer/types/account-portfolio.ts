@@ -1,6 +1,6 @@
 import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
-import { PositionV2 } from './derivatives'
+import { Position } from './derivatives'
 
 export interface SubaccountDepositV2 {
   totalBalance: string
@@ -14,7 +14,7 @@ export interface PortfolioSubaccountBalanceV2 {
 }
 
 export interface PositionsWithUPNL {
-  position?: PositionV2
+  position?: Position
   unrealizedPnl: string
 }
 
