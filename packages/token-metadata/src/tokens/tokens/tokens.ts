@@ -2492,4 +2492,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  NINJB: {
+    name: 'NINJB',
+    symbol: 'NINJB',
+    decimals: 6,
+    logo: 'ninjb.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
