@@ -2081,10 +2081,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/indexer-proto-ts@1.11.29":
-  version "1.11.29"
-  resolved "https://registry.npmjs.org/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.29.tgz#84ebbf2b01870532dafceac932c3a07aaaa6456a"
-  integrity sha512-iBywUi4vWwtujxPg7fPg2qAYzAKBY1oOXnJDmKMZAYpldV8lW+zhAwHdXuOLduj0c0NNUQdGJ/XaitlZrhnIIQ==
+"@injectivelabs/indexer-proto-ts@1.11.30":
+  version "1.11.30"
+  resolved "https://registry.npmjs.org/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.30.tgz#be642eb65bf01cffe2440cd68c01e50772b3c2e7"
+  integrity sha512-i3jk8/v/ITBtOYDR9gFnZNtF4dmV4EgIIhU8WQwsRfFBQRuyI8ccG8copuwQJc3lOq5LPmLEjfWt+x0rcbCJ5g==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"

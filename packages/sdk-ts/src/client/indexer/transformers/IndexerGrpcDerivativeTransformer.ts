@@ -545,6 +545,7 @@ export class IndexerGrpcDerivativeTransformer {
       quantity: position.quantity,
       entryPrice: position.entryPrice,
       margin: position.margin,
+      denom: position.denom,
       liquidationPrice: position.liquidationPrice,
       markPrice: position.markPrice,
       ticker: position.ticker,

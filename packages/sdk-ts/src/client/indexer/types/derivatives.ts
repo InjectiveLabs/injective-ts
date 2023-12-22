@@ -31,7 +31,9 @@ export interface Position {
 }
 
 export interface PositionV2
-  extends Omit<Position, 'aggregateReduceOnlyQuantity'> {}
+  extends Omit<Position, 'aggregateReduceOnlyQuantity'> {
+  denom: string
+}
 
 export interface PerpetualMarketInfo {
   hourlyFundingRateCap: string
