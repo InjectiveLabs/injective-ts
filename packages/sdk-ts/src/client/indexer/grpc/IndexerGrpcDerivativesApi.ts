@@ -456,19 +456,30 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
   }
 
   async fetchPositionsV2(params?: {
+    address?: string,
     marketId?: string
     marketIds?: string[]
     subaccountId?: string
     direction?: TradeDirection
     pagination?: PaginationOption
   }) {
-    const { marketId, marketIds, subaccountId, direction, pagination } =
-      params || {}
+    const {
+      marketId,
+      marketIds,
+      subaccountId,
+      direction,
+      pagination,
+      address,
+    } = params || {}
 
     const request = InjectiveDerivativeExchangeRpc.PositionsV2Request.create()
 
     if (marketId) {
       request.marketId = marketId
+    }
+
+    if (address) {
+      request.accountAddress = address
     }
 
     if (marketIds) {

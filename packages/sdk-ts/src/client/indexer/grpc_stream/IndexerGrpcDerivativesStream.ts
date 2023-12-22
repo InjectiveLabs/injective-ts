@@ -284,10 +284,12 @@ export class IndexerGrpcDerivativesStream {
     marketId,
     subaccountId,
     callback,
+    address,
     onEndCallback,
     onStatusCallback,
   }: {
     marketId?: string
+    address?: string
     subaccountId?: string
     callback: PositionsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
@@ -298,6 +300,10 @@ export class IndexerGrpcDerivativesStream {
 
     if (marketId) {
       request.marketId = marketId
+    }
+
+    if (address) {
+      request.accountAddress = address
     }
 
     if (subaccountId) {
