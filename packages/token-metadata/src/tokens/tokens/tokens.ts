@@ -2492,4 +2492,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  NPEPE: {
+    name: 'NinjaPepe',
+    symbol: 'NPEPE',
+    decimals: 6,
+    logo: 'NPEPE.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
