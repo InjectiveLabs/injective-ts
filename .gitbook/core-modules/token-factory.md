@@ -14,6 +14,8 @@ Let's explore (and provide examples) the Messages that the TokenFactory module e
 
 Creates a denom of `factory/{creator address}/{subdenom}` given the denom creator address and the subdenom. Subdenoms can contain \[a-zA-Z0-9./]. Keep in mind that there is a `creation fee` which you need to cover when creating a new token.
 
+Keep in mind that that the `admin` of the token can change the supply (mint or burn new tokens). Its recommended that the `admin` is unset using the `MsgChangeAdmin`, as explained below.
+
 ```ts
 import {
   MsgCreateDenom,
@@ -170,6 +172,36 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash);
 ```
 
+#### MsgChangeAdmin
+
+The admin of the denom can mint new supply or burn existing one. It's recommended to change the admin to an empty string as to not allow changing the token's supply.
+
+```ts
+import { MsgChangeAdmin } from '@injectivelabs/sdk-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { Network } from '@injectivelabs/networks'
+
+const injectiveAddress = 'inj1...'
+const privateKey = '0x...'
+const subdenom = 'inj-test'
+const denom = `factory/${injectiveAddress}/${subdenom}`
+
+const msg = MsgChangeAdmin.fromJSON({
+  denom,
+  sender: injectiveAddress,
+  newAdmin: '' /** SET TO BLANK STRING */,
+})
+
+const txHash = await new MsgBroadcasterWithPk({
+  privateKey,
+  network: Network.Testnet,
+}).broadcast({
+  msgs: msg,
+})
+
+console.log(txHash)
+```
+
 #### Full Example
 
 Here is a full example on how to create a new token, mint new tokens and set token metadata on Injective.
@@ -197,6 +229,11 @@ const msgMint = MsgMint.fromJSON({
     denom: `factory/${injectiveAddress}/${subdenom}`,
     amount: amount
   }
+});
+const msgMint = MsgChangeAdmin.fromJSON({
+  denom: `factory/${injectiveAddress}/${subdenom}`,
+  sender: injectiveAddress,
+  newAdmin: '' /** SET TO BLANK STRING */,
 });
 const msgSetDenomMetadata = MsgSetDenomMetadata.fromJSON({
   sender: injectiveAddress,
