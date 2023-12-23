@@ -2492,4 +2492,12 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  KARATE: {
+    name: 'Doge Wif Karate',
+    symbol: 'KARATE',
+    decimals: 6,
+    logo: 'karate.jpg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
