@@ -230,7 +230,7 @@ const msgMint = MsgMint.fromJSON({
     amount: amount
   }
 });
-const msgMint = MsgChangeAdmin.fromJSON({
+const msgChangeAdmin = MsgChangeAdmin.fromJSON({
   denom: `factory/${injectiveAddress}/${subdenom}`,
   sender: injectiveAddress,
   newAdmin: '' /** SET TO BLANK STRING */,
@@ -263,7 +263,7 @@ const txHash = await new MsgBroadcasterWithPk({
   privateKey,
   network: Network.Testnet
 }).broadcast({
-  msgs: [msgCreateDenom, msgMint, msgSetDenomMetadata]
+  msgs: [msgCreateDenom, msgMint, msgSetDenomMetadata, msgChangeAdmin]
 });
 
 console.log(txHash);
