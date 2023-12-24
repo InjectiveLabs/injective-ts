@@ -50,6 +50,7 @@
     * [Tendermint](querying/querying-chain/querying-chain-tendermint.md)
     * [Wasm](querying/querying-chain/querying-chain-wasm.md)
     * [WasmX](querying/querying-chain/querying-chain-wasmx.md)
+    * [Token Factory](querying/querying-chain/token-factory.md)
   * [Ethereum (GraphQL)](querying/querying-ethereum.md)
 * [Transactions](transactions/README.md)
   * [Cosmos](transactions/transactions-cosmos/README.md)

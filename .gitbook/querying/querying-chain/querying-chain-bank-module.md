@@ -1,14 +1,13 @@
-# Querying Chain: Bank Module
+# Bank
 
 Example code snippets to query the chain for bank module related data.
 
 ### Using gRPC
 
-- Get bank module params
+* Get bank module params
 
-```ts
-import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+<pre class="language-ts"><code class="lang-ts"><strong>import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
+</strong>import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
 const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcBankApi = new ChainGrpcBankApi(endpoints.grpc)
@@ -16,9 +15,9 @@ const chainGrpcBankApi = new ChainGrpcBankApi(endpoints.grpc)
 const moduleParams = await chainGrpcBankApi.fetchModuleParams()
 
 console.log(moduleParams)
-```
+</code></pre>
 
-- Fetching injective address's balances
+* Fetching injective address's balances
 
 ```ts
 import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
@@ -34,7 +33,7 @@ const balances = await chainGrpcBankApi.fetchBalances(injectiveAddress)
 console.log(balances)
 ```
 
-- Fetching cosmos address' balances per base denom
+* Fetching cosmos address' balances per base denom
 
 ```ts
 import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
@@ -54,7 +53,7 @@ const balance = await chainGrpcBankApi.fetchBalance({
 console.log(balance)
 ```
 
-- Fetching total supply on chain
+* Fetching total supply on chain
 
 ```ts
 import { PaginationOption, ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
@@ -74,7 +73,7 @@ console.log(totalSupply)
 
 ### Using HTTP REST
 
-- Fetching address's balances
+* Fetching address's balances
 
 ```ts
 import { ChainRestBankApi } from '@injectivelabs/sdk-ts'
@@ -90,7 +89,7 @@ const balances = await chainGrpcBankApi.fetchBalances(injectiveAddress)
 console.log(balances)
 ```
 
-- Fetching cosmos address' balances per base denom
+* Fetching cosmos address' balances per base denom
 
 ```ts
 import { ChainRestBankApi } from '@injectivelabs/sdk-ts'

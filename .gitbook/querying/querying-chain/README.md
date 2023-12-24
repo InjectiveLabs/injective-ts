@@ -21,4 +21,6 @@
 | [Wasm](querying-chain-wasm.md)                      | Query data from the wasm module                |
 | [WasmX](querying-chain-wasmx.md)                    | Query data from the wasmX module               |
 | [Tendermint](querying-chain-tendermint.md)          | Query data related to the tendermint api       |
+| [Token Factory](token-factory.md)                   | Query data from the token factory module       |
 
+***
