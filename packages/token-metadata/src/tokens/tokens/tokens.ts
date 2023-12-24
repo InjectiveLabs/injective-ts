@@ -2492,4 +2492,14 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  
+  MILK: {
+    name: 'MILK',
+    symbol: 'MILK',
+    decimals: 6,
+    logo: 'milk.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
