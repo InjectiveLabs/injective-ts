@@ -2492,4 +2492,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  PIKACHU: {
+    name: 'Pikachu',
+    symbol: 'PIKA',
+    decimals: 6,
+    logo: 'pikachu.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
