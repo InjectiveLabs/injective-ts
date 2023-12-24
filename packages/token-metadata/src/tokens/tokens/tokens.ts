@@ -2492,4 +2492,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  INCEL: {
+    name: 'InjectiveCelestiaNoFapLadyBoy420Inu',
+    symbol: 'INCEL',
+    decimals: 6,
+    logo: 'incel.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
