@@ -2492,4 +2492,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  WGMI: {
+    name: 'WGMI',
+    symbol: 'WGMI',
+    decimals: 6,
+    logo: 'wgmi.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
