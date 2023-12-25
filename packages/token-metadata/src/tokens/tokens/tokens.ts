@@ -2565,6 +2565,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  ShibInuINJ: {
+    name: 'ShibInuINJ',
+    symbol: 'SHIBINJ',
+    decimals: 6,
+    logo: 'SHIBINJ.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   WIZZ: {
     name: 'WIZZ',
     symbol: 'WIZZ',
