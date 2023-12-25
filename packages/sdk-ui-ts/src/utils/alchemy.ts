@@ -21,7 +21,7 @@ export const getTokenFromAlchemyTokenMetaResponse = (
     name: response.name || 'Unknown',
     symbol: response.symbol || response.name || 'Unknown',
     decimals: response.decimals || 18,
-    logo: response.logo || 'untracked.png',
+    logo: response.logo || 'unknown.png',
     coinGeckoId: '',
     tokenType: TokenType.Erc20,
     tokenVerification: TokenVerification.External,
