@@ -2492,4 +2492,12 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  WIZZ: {
+    name: 'WIZZ',
+    symbol: 'WIZZ',
+    decimals: 6,
+    logo: 'wizz.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
