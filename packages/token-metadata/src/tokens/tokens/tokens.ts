@@ -2492,4 +2492,85 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  INJEX: {
+    name: 'Internet Explorer',
+    symbol: 'INJEX',
+    decimals: 6,
+    logo: 'injex.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  NINJB: {
+    name: 'NINJB',
+    symbol: 'NINJB',
+    decimals: 6,
+    logo: 'ninjb.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  KARATE: {
+    name: 'Doge Wif Karate',
+    symbol: 'KARATE',
+    decimals: 6,
+    logo: 'karate.jpg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  NPEPE: {
+    name: 'NinjaPepe',
+    symbol: 'NPEPE',
+    decimals: 6,
+    logo: 'NPEPE.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  MILK: {
+    name: 'MILK',
+    symbol: 'MILK',
+    decimals: 6,
+    logo: 'milk.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  INCEL: {
+    name: 'InjectiveCelestiaNoFapLadyBoy420Inu',
+    symbol: 'INCEL',
+    decimals: 6,
+    logo: 'incel.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  PIKACHU: {
+    name: 'Pikachu',
+    symbol: 'PIKA',
+    decimals: 6,
+    logo: 'pikachu.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  WGMI: {
+    name: 'WGMI',
+    symbol: 'WGMI',
+    decimals: 6,
+    logo: 'wgmi.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  WIZZ: {
+    name: 'WIZZ',
+    symbol: 'WIZZ',
+    decimals: 6,
+    logo: 'wizz.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
