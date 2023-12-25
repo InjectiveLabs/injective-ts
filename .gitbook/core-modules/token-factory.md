@@ -189,7 +189,7 @@ const denom = `factory/${injectiveAddress}/${subdenom}`
 const msg = MsgChangeAdmin.fromJSON({
   denom,
   sender: injectiveAddress,
-  newAdmin: '' /** SET TO BLANK STRING */,
+  newAdmin: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49' /** SET TO ZERO ADDRESS */,
 })
 
 const txHash = await new MsgBroadcasterWithPk({
@@ -233,7 +233,7 @@ const msgMint = MsgMint.fromJSON({
 const msgChangeAdmin = MsgChangeAdmin.fromJSON({
   denom: `factory/${injectiveAddress}/${subdenom}`,
   sender: injectiveAddress,
-  newAdmin: '' /** SET TO BLANK STRING */,
+  newAdmin: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49' /** SET TO ZERO ADDRESS */
 });
 const msgSetDenomMetadata = MsgSetDenomMetadata.fromJSON({
   sender: injectiveAddress,
