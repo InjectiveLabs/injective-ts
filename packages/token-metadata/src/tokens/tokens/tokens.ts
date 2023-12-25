@@ -2555,6 +2555,15 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+ 
+  DUDE: {
+    name: 'DUDE',
+    symbol: 'DUDE',
+    decimals: 6,
+    logo: 'https://salmon-continental-tarsier-420.mypinata.cloud/ipfs/Qmb2mHe3skNiKM1M4KYuXjqPQor5HT71X3SohajT56gM96',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 
   WGMI: {
     name: 'WGMI',
