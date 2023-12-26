@@ -2247,6 +2247,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  NOBITCHES: {
+    name: 'Extra Virgin Olive Inu',
+    symbol: 'NOBITCHES',
+    decimals: 6,
+    logo: 'extravirginoliveinu.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+  
   GALAXY: {
     name: 'GALAXY',
     symbol: 'GALAXY',
