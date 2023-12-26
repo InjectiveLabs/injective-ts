@@ -2717,4 +2717,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+    MILA: {
+    name: 'MILA',
+    symbol: 'MILA',
+    decimals: 6,
+    logo: 'Mila.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
