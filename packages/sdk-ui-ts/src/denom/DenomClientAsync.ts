@@ -316,7 +316,7 @@ export class DenomClientAsync {
   }
 
   private async fetchAndCacheDenomTraces() {
-    const denomTraces = await this.chainIbcApi.fetchDenomsTrace()
+    const denomTraces = await this.chainIbcApi.fetchDenomsTrace({ limit: 500 })
     const denomHashes = denomTraces.map((trace) => {
       return {
         trace: trace,
