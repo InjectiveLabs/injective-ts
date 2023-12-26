@@ -2460,7 +2460,7 @@ export default {
     name: 'Levana',
     symbol: 'LVN',
     decimals: 6,
-    coinGeckoId: 'levana',
+    coinGeckoId: 'levana-protocol',
     logo: 'lvn.png',
     tokenType: TokenType.Ibc,
 
@@ -2570,6 +2570,150 @@ export default {
     symbol: 'WIZZ',
     decimals: 6,
     logo: 'wizz.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  MEMEME: {
+    name: 'Mememe',
+    symbol: 'MEMEME',
+    decimals: 18,
+    logo: 'meme.png',
+    coinGeckoId: 'mememe',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 18,
+      address: '0x1A963Df363D01EEBB2816b366d61C917F20e1EbE',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  MAGA: {
+    name: 'Trump',
+    symbol: 'MAGA',
+    decimals: 9,
+    logo: 'maga.png',
+    coinGeckoId: 'maga',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 9,
+      address: '0x576e2BeD8F7b46D34016198911Cdf9886f78bea7',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  SDEX: {
+    name: 'SmarDex',
+    symbol: 'SDEX',
+    decimals: 18,
+    logo: 'maga.png',
+    coinGeckoId: 'smardex',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 18,
+      address: '0x5DE8ab7E27f6E7A1fFf3E5B337584Aa43961BEeF',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  OX: {
+    name: 'Open Exchange Token',
+    symbol: 'OX',
+    decimals: 18,
+    logo: 'ox.png',
+    coinGeckoId: 'open-exchange-token',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 18,
+      address: '0x78a0A62Fba6Fb21A83FE8a3433d44C73a4017A6f',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  FUSDT: {
+    name: 'Flux USDT',
+    symbol: 'fUSDT',
+    decimals: 8,
+    logo: 'flux.png',
+    coinGeckoId: 'flux-usdt',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 8,
+      address: '0x81994b9607e06ab3d5cF3AffF9a67374f05F27d7',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  PVP: {
+    name: 'PVP',
+    symbol: 'PVP',
+    decimals: 8,
+    logo: 'unknown.png',
+    coinGeckoId: '',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 8,
+      address: '0x9B44793a0177C84DD01AD81137db696531902871',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  POOR: {
+    name: 'Proof Of Officially Rugged',
+    symbol: 'POOR',
+    decimals: 8,
+    logo: 'unknown.png',
+    coinGeckoId: '',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 8,
+      address: '0x9D433Fa992C5933D6843f8669019Da6D512fd5e9',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  VRD: {
+    name: 'Viridis Network',
+    symbol: 'VRD',
+    decimals: 18,
+    logo: 'vrd.png',
+    coinGeckoId: 'viridis-network',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 18,
+      address: '0xf25304e75026E6a35FEDcA3B0889aE5c4D3C55D8',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  NONE: {
+    name: 'None Trading',
+    symbol: 'NONE',
+    decimals: 18,
+    logo: 'none.webp',
+    coinGeckoId: 'none-trading',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 18,
+      address: '0x903ff0ba636E32De1767A4B5eEb55c155763D8B7',
+      tokenType: TokenType.Erc20,
+    },
+  },
+
+  DUDE: {
+    name: 'DUDE',
+    symbol: 'DUDE',
+    decimals: 6,
+    logo: 'dude.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
