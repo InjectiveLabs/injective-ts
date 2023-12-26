@@ -245,6 +245,14 @@ export interface Contract {
   admin?: string
   initMessage?: CW20Message
   currentMigrateMessage?: CW20Message
+  cw20_metadata?: {
+    token_info?: {
+      name: string
+      symbol: string
+      decimals: number
+      total_supply: string
+    }
+  }
 }
 
 export interface ContractTransaction {
