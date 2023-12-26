@@ -33,14 +33,14 @@ export class TokenPrice {
 
   private cache: Record<string, number> = {} // coinGeckoId -> priceInUsd
 
-  constructor(coinGeckoOptions?: {
-    baseUrl: string
-    apiKey: string
-    network: Network
-  }) {
-    this.restClient = new HttpRestClient(
-      getAssetMicroserviceEndpoint(coinGeckoOptions?.network),
-    )
+  constructor(
+    network?: Network,
+    coinGeckoOptions?: {
+      baseUrl: string
+      apiKey: string
+    },
+  ) {
+    this.restClient = new HttpRestClient(getAssetMicroserviceEndpoint(network))
     this.coinGeckoApi = coinGeckoOptions
       ? new CoinGeckoApi(coinGeckoOptions)
       : undefined
@@ -82,9 +82,9 @@ export class TokenPrice {
 
     prices = { ...prices, ...pricesFromInjectiveService }
 
-    const coinIdsNotInCacheAndInjectiveService = coinIds.filter(
-      (coinId) => !Object.keys(prices).includes(coinId),
-    )
+    const coinIdsNotInCacheAndInjectiveService = coinIds
+      .filter((coinId) => !Object.keys(prices).includes(coinId))
+      .filter((coinIds) => !coinIds.startsWith('factory/'))
 
     if (coinIdsNotInCacheAndInjectiveService.length === 0) {
       return prices
