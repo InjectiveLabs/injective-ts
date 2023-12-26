@@ -84,7 +84,13 @@ export class TokenPrice {
 
     const coinIdsNotInCacheAndInjectiveService = coinIds
       .filter((coinId) => !Object.keys(prices).includes(coinId))
-      .filter((coinIds) => !coinIds.startsWith('factory/'))
+      .filter(
+        (coinId) =>
+          !coinId.startsWith('factory/') &&
+          !coinId.startsWith('ibc') &&
+          !coinId.startsWith('share') &&
+          !coinId.startsWith('peggy'),
+      )
 
     if (coinIdsNotInCacheAndInjectiveService.length === 0) {
       return prices
@@ -113,6 +119,56 @@ export class TokenPrice {
     )
 
     return { ...prices, ...coinIdsWithoutPrice }
+  }
+
+  async fetchUsdDenomsPrice(denoms: string[]) {
+    if (denoms.length === 0) {
+      return {}
+    }
+
+    let prices: Record<string, number> = {}
+
+    const pricesFromCache = denoms.reduce((prices, coinId) => {
+      try {
+        const priceFromCache = this.cache[coinId]
+
+        if (priceFromCache) {
+          return { ...prices, [coinId]: priceFromCache }
+        }
+
+        return prices
+      } catch (e) {
+        return prices
+      }
+    }, {} as Record<string, number>)
+
+    prices = { ...prices, ...pricesFromCache }
+
+    const denomsNotInCache = denoms.filter(
+      (denom) => !Object.keys(prices).includes(denom),
+    )
+
+    if (denomsNotInCache.length === 0) {
+      return prices
+    }
+
+    const pricesFromInjectiveService =
+      await this.fetchUsdPricesFromInjectiveService()
+
+    prices = { ...prices, ...pricesFromInjectiveService }
+
+    const denomsNotInCacheAndInjectiveService = denoms.filter(
+      (denom) => !Object.keys(prices).includes(denom),
+    )
+
+    const denomsWithoutPrice = Object.keys(
+      denomsNotInCacheAndInjectiveService,
+    ).reduce(
+      (prices, key) => ({ ...prices, [key]: 0 }),
+      {} as Record<string, number>,
+    )
+
+    return { ...prices, ...denomsWithoutPrice }
   }
 
   async fetchUsdTokenPrice(coinId: string) {
