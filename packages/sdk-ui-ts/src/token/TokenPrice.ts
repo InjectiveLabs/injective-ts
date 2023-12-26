@@ -1,10 +1,5 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
-import {
-  Network,
-  isDevnet,
-  isMainnet,
-  isTestnet,
-} from '@injectivelabs/networks'
+import { Network, isDevnet, isTestnet } from '@injectivelabs/networks'
 import {
   sleep,
   splitArrayToChunks,
@@ -19,6 +14,18 @@ import {
 } from '../constants'
 import { CoinPriceFromInjectiveService } from '../types/token'
 
+const getAssetMicroserviceEndpoint = (network: Network = Network.Mainnet) => {
+  if (isTestnet(network)) {
+    return TESTNET_ASSET_PRICE_SERVICE_URL
+  }
+
+  if (isDevnet(network)) {
+    return DEVNET_ASSET_PRICE_SERVICE_URL
+  }
+
+  return ASSET_PRICE_SERVICE_URL
+}
+
 export class TokenPrice {
   private coinGeckoApi: CoinGeckoApi | undefined
 
@@ -31,25 +38,9 @@ export class TokenPrice {
     apiKey: string
     network: Network
   }) {
-    let endpoint
-
-    if (isTestnet(coinGeckoOptions?.network || Network.Mainnet)) {
-      endpoint = TESTNET_ASSET_PRICE_SERVICE_URL
-      console.log('Testnet Case:', coinGeckoOptions?.network)
-    }
-
-    if (isDevnet(coinGeckoOptions?.network || Network.Mainnet)) {
-      endpoint = DEVNET_ASSET_PRICE_SERVICE_URL
-      console.log('Devnet Case:', coinGeckoOptions?.network)
-    }
-
-    if (isMainnet(coinGeckoOptions?.network || Network.Mainnet)) {
-      endpoint = ASSET_PRICE_SERVICE_URL
-      console.log('Mainnet Case:', coinGeckoOptions?.network)
-    }
-
-    this.restClient = new HttpRestClient(endpoint || ASSET_PRICE_SERVICE_URL)
-
+    this.restClient = new HttpRestClient(
+      getAssetMicroserviceEndpoint(coinGeckoOptions?.network),
+    )
     this.coinGeckoApi = coinGeckoOptions
       ? new CoinGeckoApi(coinGeckoOptions)
       : undefined
