@@ -233,11 +233,15 @@ export const convertIBCTransferTxToUiBridgeTransaction = async ({
   const denom = transaction.denom.includes('transfer/channel')
     ? (transaction.denom.split('/').slice(2).join('/') as string)
     : transaction.denom
-  const bridgingNetwork = getNetworkFromAddress(transaction.receiver)
+  const destinationBridgingNetwork = getNetworkFromAddress(transaction.receiver)
+  const originBridgingNetwork = getNetworkFromAddress(transaction.sender)
 
   return {
     denom,
-    type: getBridgeTransactionType(BridgingNetwork.Injective, bridgingNetwork),
+    type: getBridgeTransactionType(
+      originBridgingNetwork,
+      destinationBridgingNetwork,
+    ),
     amount: transaction.amount,
     receiver: transaction.receiver,
     sender: transaction.sender,
