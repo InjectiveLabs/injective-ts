@@ -2726,4 +2726,13 @@ export default {
     coinGeckoId: 'autism',
     tokenType: TokenType.TokenFactory,
   },
+
+  DOJO: {
+    name: 'Dojo Bot',
+    symbol: 'DOJO',
+    decimals: 6,
+    logo: 'dojo.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
