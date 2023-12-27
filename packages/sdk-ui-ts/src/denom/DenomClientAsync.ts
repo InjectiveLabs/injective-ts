@@ -2,11 +2,12 @@ import {
   Network,
   NetworkEndpoints,
   getNetworkEndpoints,
-  CW20_CODE_ID_BY_NETWORK,
+  CW20_CODE_IDS_BY_NETWORK,
 } from '@injectivelabs/networks'
 import {
   sha256,
   Metadata,
+  Contract,
   fromUtf8,
   DenomClient,
   InsuranceFund,
@@ -15,7 +16,6 @@ import {
   ChainGrpcWasmApi,
   isCw20ContractAddress,
   ChainGrpcInsuranceFundApi,
-  Contract,
   IndexerRestExplorerApi,
 } from '@injectivelabs/sdk-ts'
 import { Web3Client } from '../services/web3/Web3Client'
@@ -377,13 +377,32 @@ export class DenomClientAsync {
   }
 
   private async fetchAndCacheCw20Contracts() {
-    const { contracts: contractsFromResponse } =
-      await this.indexerExplorerApi.fetchContracts({
-        codeId: CW20_CODE_ID_BY_NETWORK(this.network),
-        limit: 1000,
-      })
+    const codeIds = CW20_CODE_IDS_BY_NETWORK(this.network)
+    const allContracts: Contract[] = []
 
-    const contracts = contractsFromResponse.reduce((contracts, contract) => {
+    for (const codeId of codeIds) {
+      let { paging, contracts: contractsFromResponse } =
+        await this.indexerExplorerApi.fetchContracts({
+          codeId: codeId,
+          limit: 100,
+        })
+
+      while (paging.total > contractsFromResponse.length) {
+        const { paging: nextPaging, contracts: nextContractsFromResponse } =
+          await this.indexerExplorerApi.fetchContracts({
+            codeId: codeId,
+            limit: 100,
+            skip: contractsFromResponse.length,
+          })
+
+        paging = nextPaging
+        contractsFromResponse.push(...nextContractsFromResponse)
+      }
+
+      allContracts.push(...contractsFromResponse)
+    }
+
+    const contracts = allContracts.reduce((contracts, contract) => {
       return {
         ...contracts,
         [contract.address]: contract,

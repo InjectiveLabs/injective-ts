@@ -401,7 +401,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   async fetchContracts(params?: {
     assetsOnly?: boolean
     fromNumber?: number
-    codeId?: number
+    codeId?: string | number
     limit?: number
     skip?: number
     label?: string
@@ -423,7 +423,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           skip,
           limit,
           label,
-          code_id: codeId,
+          code_id: codeId?.toString(),
           assets_only: assetsOnly,
           from_number: fromNumber,
         }),
