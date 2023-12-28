@@ -2726,4 +2726,13 @@ export default {
     coinGeckoId: 'autism',
     tokenType: TokenType.TokenFactory,
   },
+
+  IPDAI: {
+    name: 'Injective Panda AI',
+    symbol: 'IPDAI',
+    decimals: 6,
+    logo: 'ipdai.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
