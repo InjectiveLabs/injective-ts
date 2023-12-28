@@ -2727,9 +2727,9 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
-  IPDAI: {
+  ipdai: {
     name: 'Injective Panda AI',
-    symbol: 'IPDAI',
+    symbol: 'ipdai',
     decimals: 6,
     logo: 'ipdai.png',
     coinGeckoId: '',
