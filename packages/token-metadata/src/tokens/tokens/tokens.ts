@@ -2108,7 +2108,7 @@ export default {
     symbol: 'TALIS',
     decimals: 6,
     logo: 'talis.webp',
-    coinGeckoId: '',
+    coinGeckoId: 'talis-protocol',
     tokenType: TokenType.TokenFactory,
   },
 
