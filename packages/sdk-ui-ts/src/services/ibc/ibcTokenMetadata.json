@@ -2886,5 +2886,62 @@
       "baseDenom": "WBTC",
       "isNative": false
     }
+  },
+  {
+    "name": "OPHIR",
+    "denom": "ibc/19DEC3C890D19A782A3CD0C62EA8F2F8CC09D0C9AAA8045263F40526088FEEDB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/ophir.png",
+    "symbol": "OPHIR",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "19DEC3C890D19A782A3CD0C62EA8F2F8CC09D0C9AAA8045263F40526088FEEDB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "OPHIR",
+      "baseDenom": "OPHIR",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ito",
+    "denom": "ibc/E7140919F6B70594F89401B574DC198D206D923964184A9F79B39074301EB04F",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/I.png",
+    "symbol": "ITO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E7140919F6B70594F89401B574DC198D206D923964184A9F79B39074301EB04F",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ITO",
+      "baseDenom": "ITO",
+      "isNative": false
+    }
+  },
+  {
+    "name": "ARMANI",
+    "denom": "ibc/0C04597A68991F93CE8C9EF88EA795179CD020695041D00911E5CFF023D415CC",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/armani.png",
+    "symbol": "ARMANI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0C04597A68991F93CE8C9EF88EA795179CD020695041D00911E5CFF023D415CC",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ARMANI",
+      "baseDenom": "ARMANI",
+      "isNative": false
+    }
   }
 ]
