@@ -1,17 +1,5 @@
-import { Network } from '@injectivelabs/networks'
-import { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM } from '@injectivelabs/utils'
+import { Network } from './types'
 
-export const BECH32_PUBKEY_ACC_PREFIX = 'injpub'
-export const BECH32_PUBKEY_VAL_PREFIX = 'injvaloperpub'
-export const BECH32_PUBKEY_CONS_PREFIX = 'injvalconspub'
-
-export const BECH32_ADDR_ACC_PREFIX = 'inj'
-export const BECH32_ADDR_VAL_PREFIX = 'injvaloper'
-export const BECH32_ADDR_CONS_PREFIX = 'injvalcons'
-
-export const DEFAULT_DERIVATION_PATH = "m/44'/60'/0'/0/0"
-
-/** @deprecated - use the one in @injectivelabs/networks */
 export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.MainnetLB]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
@@ -30,7 +18,6 @@ export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
 }
 
-/** @deprecated - use the one in @injectivelabs/networks */
 export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.MainnetLB]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
@@ -49,7 +36,6 @@ export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
 }
 
-/** @deprecated - use the one in @injectivelabs/networks */
 export const INCENTIVES_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: '',
   [Network.MainnetLB]: '',
@@ -68,7 +54,6 @@ export const INCENTIVES_CONTRACT_BY_NETWORK = {
   [Network.Local]: '',
 }
 
-/** @deprecated - use the one in @injectivelabs/networks */
 export const INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
   [Network.MainnetLB]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
@@ -87,7 +72,6 @@ export const INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
 }
 
-/** @deprecated - use the one in @injectivelabs/networks */
 export const INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
   [Network.MainnetLB]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
@@ -106,4 +90,64 @@ export const INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
 }
 
-export { DEFAULT_STD_FEE, DEFAULT_STD_FEE_BY_DENOM }
+export const PEGGY_GRAPH_URL_BY_NETWORK = {
+  [Network.Mainnet]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
+  [Network.MainnetLB]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
+  [Network.MainnetK8s]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
+  [Network.MainnetSentry]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
+  [Network.Public]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
+  [Network.Staging]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
+  [Network.Internal]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
+  [Network.Testnet]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-goerli',
+  [Network.TestnetK8s]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-goerli',
+  [Network.TestnetSentry]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-goerli',
+  [Network.TestnetOld]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-goerli',
+  [Network.Devnet]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet',
+  [Network.Devnet1]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet',
+  [Network.Devnet2]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet',
+  [Network.Local]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet',
+}
+
+export const ASSET_PRICE_URL_BY_NETWORK = {
+  [Network.Mainnet]:
+    'https://k8s.mainnet.asset.injective.network/asset-price/v1',
+  [Network.MainnetLB]:
+    'https://k8s.mainnet.asset.injective.network/asset-price/v1',
+  [Network.MainnetK8s]:
+    'https://k8s.mainnet.asset.injective.network/asset-price/v1',
+  [Network.MainnetSentry]:
+    'https://k8s.mainnet.asset.injective.network/asset-price/v1',
+  [Network.Public]:
+    'https://k8s.mainnet.asset.injective.network/asset-price/v1',
+  [Network.Staging]:
+    'https://k8s.mainnet.asset.injective.network/asset-price/v1',
+  [Network.Internal]:
+    'https://k8s.mainnet.asset.injective.network/asset-price/v1',
+  [Network.Testnet]:
+    'https://k8s.testnet.asset.injective.network/asset-price/v1',
+  [Network.TestnetK8s]:
+    'https://k8s.testnet.asset.injective.network/asset-price/v1',
+  [Network.TestnetSentry]:
+    'https://k8s.testnet.asset.injective.network/asset-price/v1',
+  [Network.TestnetOld]:
+    'https://k8s.testnet.asset.injective.network/asset-price/v1',
+  [Network.Devnet]: 'https://devnet.api.injective.dev/asset-price/v1',
+  [Network.Devnet1]: 'https://devnet.api.injective.dev/asset-price/v1',
+  [Network.Devnet2]: 'https://devnet.api.injective.dev/asset-price/v1',
+  [Network.Local]: 'https://devnet.api.injective.dev/asset-price/v1',
+}
