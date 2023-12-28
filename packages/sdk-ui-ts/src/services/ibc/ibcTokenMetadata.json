@@ -1634,25 +1634,6 @@
     }
   },
   {
-    "name": "WBTC",
-    "denom": "ibc/64431EE79F3216B8F7773A630549ADA852EA8E4B545D22BD35B0BF56FD5D5201",
-    "logo": "unknown.png",
-    "symbol": "WBTC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "64431EE79F3216B8F7773A630549ADA852EA8E4B545D22BD35B0BF56FD5D5201",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "WBTC",
-      "baseDenom": "WBTC",
-      "isNative": false
-    }
-  },
-  {
     "name": "axlWBTC",
     "denom": "ibc/F57B53E102171E6DC254532ECC184228BB8E23B755AD55FA6FDCBD70464A9A54",
     "logo": "unknown.png",
@@ -2884,6 +2865,25 @@
       "decimals": 6,
       "symbol": "CORGI",
       "baseDenom": "CORGI",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Wrapped Bitcoin",
+    "denom": "ibc/64431EE79F3216B8F7773A630549ADA852EA8E4B545D22BD35B0BF56FD5D5201",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/wbtc.png",
+    "symbol": "WBTC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "64431EE79F3216B8F7773A630549ADA852EA8E4B545D22BD35B0BF56FD5D5201",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WBTC",
+      "baseDenom": "WBTC",
       "isNative": false
     }
   }
