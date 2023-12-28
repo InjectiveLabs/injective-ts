@@ -2717,4 +2717,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  
+  IPDAI: {
+    name: 'IPDAI',
+    symbol: 'IPDAI',
+    decimals: 6,
+    logo: 'IPANDAI.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  }
 } as Record<string, TokenMeta>
