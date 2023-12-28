@@ -342,7 +342,7 @@ export const getIbcDenomFromSymbolOrName = (
     return
   }
 
-  return `ibc${(metaFromSymbol || metaFromName)?.ibc?.hash}`
+  return `ibc/${(metaFromSymbol || metaFromName)?.ibc?.hash}`
 }
 
 export const getCw20FromSymbolOrName = (
