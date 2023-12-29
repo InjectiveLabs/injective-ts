@@ -2726,4 +2726,13 @@ export default {
     coinGeckoId: 'autism',
     tokenType: TokenType.TokenFactory,
   },
+  
+  COCK: {
+    name: 'ROOSTER NINJA',
+    symbol: 'COCK',
+    decimals: 6,
+    logo: 'cock.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  }
 } as Record<string, TokenMeta>
