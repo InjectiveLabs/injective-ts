@@ -2718,6 +2718,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  MOONIFY: {
+    name: 'MOONIFY',
+    symbol: 'MOONIFY',
+    decimals: 6,
+    logo: 'moonify.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   AUTISM: {
     name: 'AUTISM',
     symbol: 'AUTISM',
