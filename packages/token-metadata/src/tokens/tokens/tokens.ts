@@ -2726,4 +2726,14 @@ export default {
     coinGeckoId: 'autism',
     tokenType: TokenType.TokenFactory,
   },
+  
+  KARMA: {
+    name: 'Karma',
+    symbol: 'KARMA',
+    decimals: 6,
+    logo: karma.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
 } as Record<string, TokenMeta>
