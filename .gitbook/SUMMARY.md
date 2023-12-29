@@ -8,6 +8,7 @@
     * [Denom Client](readme/token-metadata/denom-client.md)
   * [Networks](readme/networks.md)
   * [CosmJs Support](readme/getting-started-cosmjs.md)
+  * [Running examples](readme/running-examples.md)
 * [Wallet](wallet/README.md)
   * [Accounts](wallet/wallet-accounts.md)
   * [Wallet Connections](wallet/wallet-connections.md)
