@@ -654,84 +654,92 @@ export const getPeggoGraphQlEndpoint = (network: Network): string => {
   return ''
 }
 
-export const getNetworkFromAddress = (sender: string): BridgingNetwork => {
-  if (sender.startsWith('juno')) {
+export const getNetworkFromAddress = (address: string): BridgingNetwork => {
+  if (address.startsWith('inj')) {
+    return BridgingNetwork.Injective
+  }
+
+  if (address.startsWith('cosmos')) {
+    return BridgingNetwork.CosmosHub
+  }
+
+  if (address.startsWith('juno')) {
     return BridgingNetwork.Juno
   }
 
-  if (sender.startsWith('terra')) {
+  if (address.startsWith('terra')) {
     return BridgingNetwork.Terra
   }
 
-  if (sender.startsWith('osmo')) {
+  if (address.startsWith('osmo')) {
     return BridgingNetwork.Osmosis
   }
 
-  if (sender.startsWith('chihuahua')) {
+  if (address.startsWith('chihuahua')) {
     return BridgingNetwork.Chihuahua
   }
 
-  if (sender.startsWith('axelar')) {
+  if (address.startsWith('axelar')) {
     return BridgingNetwork.Axelar
   }
 
-  if (sender.startsWith('evmos')) {
+  if (address.startsWith('evmos')) {
     return BridgingNetwork.Evmos
   }
 
-  if (sender.startsWith('persistence')) {
+  if (address.startsWith('persistence')) {
     return BridgingNetwork.Persistence
   }
 
-  if (sender.startsWith('secret')) {
+  if (address.startsWith('secret')) {
     return BridgingNetwork.Secret
   }
 
-  if (sender.startsWith('stride')) {
+  if (address.startsWith('stride')) {
     return BridgingNetwork.Stride
   }
 
-  if (sender.startsWith('cre')) {
+  if (address.startsWith('cre')) {
     return BridgingNetwork.Crescent
   }
 
-  if (sender.startsWith('somm')) {
+  if (address.startsWith('somm')) {
     return BridgingNetwork.Sommelier
   }
 
-  if (sender.startsWith('canto')) {
+  if (address.startsWith('canto')) {
     return BridgingNetwork.Canto
   }
 
-  if (sender.startsWith('kava')) {
+  if (address.startsWith('kava')) {
     return BridgingNetwork.Kava
   }
 
-  if (sender.startsWith('orai')) {
+  if (address.startsWith('orai')) {
     return BridgingNetwork.Oraichain
   }
 
-  if (sender.startsWith('0x')) {
+  if (address.startsWith('0x')) {
     return BridgingNetwork.Ethereum
   }
 
-  if (sender.startsWith('noble')) {
+  if (address.startsWith('noble')) {
     return BridgingNetwork.Noble
   }
 
-  if (sender.startsWith('celestia')) {
+  if (address.startsWith('celestia')) {
     return BridgingNetwork.Celestia
   }
 
-  if (sender.startsWith('migaloo')) {
+  if (address.startsWith('migaloo')) {
     return BridgingNetwork.Migaloo
   }
 
-  if (sender.startsWith('kujira')) {
+  if (address.startsWith('kujira')) {
     return BridgingNetwork.Kujira
   }
 
-  return BridgingNetwork.CosmosHub
+  return BridgingNetwork.Injective
 }
 
 export const getBridgeTransactionType = (

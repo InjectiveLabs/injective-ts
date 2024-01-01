@@ -179,6 +179,14 @@ export interface ContractExplorerApiResponse {
   code_id: number
   admin?: string
   current_migrate_message: string
+  cw20_metadata?: {
+    token_info?: {
+      name: string
+      symbol: string
+      decimals: number
+      total_supply: string
+    }
+  }
 }
 
 export interface ContractTransactionExplorerApiResponse {

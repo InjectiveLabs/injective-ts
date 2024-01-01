@@ -401,6 +401,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   async fetchContracts(params?: {
     assetsOnly?: boolean
     fromNumber?: number
+    codeId?: string | number
     limit?: number
     skip?: number
     label?: string
@@ -411,7 +412,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `/wasm/contracts`
 
     try {
-      const { assetsOnly, fromNumber, limit, skip, label } = params || {
+      const { assetsOnly, fromNumber, limit, skip, label, codeId } = params || {
         limit: 12,
       }
 
@@ -422,6 +423,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           skip,
           limit,
           label,
+          code_id: codeId?.toString(),
           assets_only: assetsOnly,
           from_number: fromNumber,
         }),

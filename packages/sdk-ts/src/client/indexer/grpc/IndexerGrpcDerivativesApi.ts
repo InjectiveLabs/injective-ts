@@ -455,6 +455,89 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     }
   }
 
+  async fetchPositionsV2(params?: {
+    address?: string,
+    marketId?: string
+    marketIds?: string[]
+    subaccountId?: string
+    direction?: TradeDirection
+    pagination?: PaginationOption
+  }) {
+    const {
+      marketId,
+      marketIds,
+      subaccountId,
+      direction,
+      pagination,
+      address,
+    } = params || {}
+
+    const request = InjectiveDerivativeExchangeRpc.PositionsV2Request.create()
+
+    if (marketId) {
+      request.marketId = marketId
+    }
+
+    if (address) {
+      request.accountAddress = address
+    }
+
+    if (marketIds) {
+      request.marketIds = marketIds
+    }
+
+    if (direction) {
+      request.direction = direction
+    }
+
+    if (subaccountId) {
+      request.subaccountId = subaccountId
+    }
+
+    if (pagination) {
+      if (pagination.skip !== undefined) {
+        request.skip = pagination.skip.toString()
+      }
+
+      if (pagination.limit !== undefined) {
+        request.limit = pagination.limit
+      }
+
+      if (pagination.endTime !== undefined) {
+        request.endTime = pagination.endTime.toString()
+      }
+
+      if (pagination.startTime !== undefined) {
+        request.startTime = pagination.startTime.toString()
+      }
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveDerivativeExchangeRpc.PositionsV2Response>(
+          () => this.client.PositionsV2(request),
+        )
+
+      return IndexerGrpcDerivativeTransformer.positionsV2ResponseToPositionsV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Positions',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Positions',
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchTrades(params?: {
     endTime?: number
     tradeId?: string

@@ -7,7 +7,7 @@ export const endpointsMainnetSentry: NetworkEndpoints = {
   rest: 'https://sentry.lcd.injective.network',
   chronos: 'https://sentry.exchange.grpc-web.injective.network',
   explorer: 'https://sentry.exchange.grpc-web.injective.network',
-  cache: 'https://sentry.exchange.grpc-web.injective.network',
+  cache: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://sentry.exchange.grpc-web.injective.network',
 }
 
@@ -66,7 +66,7 @@ export const endpointsInternal: NetworkEndpoints = {
   rest: 'https://products.lcd.injective.network',
   chronos: 'https://products.chronos.grpc-web.injective.network',
   explorer: 'https://products.explorer.grpc-web.injective.network',
-  cache: 'https://products.exchange.grpc-web.injective.network',
+  cache: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://products.web3-gateway.injective.network',
 }
 

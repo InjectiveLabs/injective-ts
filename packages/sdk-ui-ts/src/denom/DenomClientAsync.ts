@@ -2,10 +2,12 @@ import {
   Network,
   NetworkEndpoints,
   getNetworkEndpoints,
+  CW20_CODE_IDS_BY_NETWORK,
 } from '@injectivelabs/networks'
 import {
   sha256,
   Metadata,
+  Contract,
   fromUtf8,
   DenomClient,
   InsuranceFund,
@@ -14,6 +16,7 @@ import {
   ChainGrpcWasmApi,
   isCw20ContractAddress,
   ChainGrpcInsuranceFundApi,
+  IndexerRestExplorerApi,
 } from '@injectivelabs/sdk-ts'
 import { Web3Client } from '../services/web3/Web3Client'
 import type { Token } from '@injectivelabs/token-metadata'
@@ -24,7 +27,10 @@ import {
   getIbcTokenMetaFromDenomTrace,
 } from '@injectivelabs/token-metadata'
 import { getTokenFromAlchemyTokenMetaResponse } from '../utils/alchemy'
-import { getTokenFromContractStateResponse } from '../utils/cw20'
+import {
+  getTokenFromCw20ContractInfo,
+  getTokenFromContractStateResponse,
+} from '../utils/cw20'
 import { getTokenFromDenomsMetadata } from '../utils/factory'
 import { getTokenFromInsuranceFund } from '../utils'
 import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
@@ -38,6 +44,8 @@ const IGNORED_DENOMS = ['peggy0xB855dBC314C39BFa2583567E02a40CBB246CF82B']
 export class DenomClientAsync {
   private denomClient: DenomClient
 
+  private network: Network
+
   private web3Client: Web3Client | undefined
 
   private endpoints: NetworkEndpoints
@@ -45,6 +53,8 @@ export class DenomClientAsync {
   private chainWasmApi: ChainGrpcWasmApi
 
   private chainBankApi: ChainGrpcBankApi
+
+  private indexerExplorerApi: IndexerRestExplorerApi
 
   private chainInsuranceApi: ChainGrpcInsuranceFundApi
 
@@ -59,18 +69,24 @@ export class DenomClientAsync {
     IbcApplicationsTransferV1Transfer.DenomTrace
   > = {}
 
+  private cachedSmartContractInfos: Record<string, Contract> = {}
+
   private cachedIbcTokens: Token[] = []
 
   constructor(
     network: Network = Network.Mainnet,
     options: { endpoints?: NetworkEndpoints; alchemyRpcUrl?: string },
   ) {
+    this.network = network
     this.endpoints = options.endpoints || getNetworkEndpoints(network)
     this.denomClient = new DenomClient(network)
     this.chainIbcApi = new ChainGrpcIbcApi(this.endpoints.grpc)
     this.chainWasmApi = new ChainGrpcWasmApi(this.endpoints.grpc)
     this.chainBankApi = new ChainGrpcBankApi(this.endpoints.grpc)
     this.chainInsuranceApi = new ChainGrpcInsuranceFundApi(this.endpoints.grpc)
+    this.indexerExplorerApi = new IndexerRestExplorerApi(
+      this.endpoints.explorer || this.endpoints.indexer,
+    )
     this.web3Client = options.alchemyRpcUrl
       ? new Web3Client({ network, rpc: options.alchemyRpcUrl })
       : undefined
@@ -141,14 +157,7 @@ export class DenomClientAsync {
 
       // CW20 contract (ex: from Wormhole)
       if (isCw20ContractAddress(tokenFactoryAddress)) {
-        const response = await this.chainWasmApi.fetchContractState({
-          contractAddress: tokenFactoryAddress,
-          pagination: {
-            reverse: true,
-          },
-        })
-
-        return getTokenFromContractStateResponse(denom, response)
+        return await this.getCw20DenomToken(denom, tokenFactoryAddress)
       }
 
       // Custom Token Factory Denom
@@ -315,8 +324,39 @@ export class DenomClientAsync {
     }
   }
 
+  /**
+   * Find token based on the hash and the base denom
+   * from the denom trace of the particular hash
+   */
+  private async getCw20DenomToken(
+    denom: string,
+    cw20Contract: string,
+  ): Promise<Token | undefined> {
+    if (Object.keys(this.cachedSmartContractInfos).length === 0) {
+      await this.fetchAndCacheCw20Contracts()
+    }
+
+    const cachedContractInfo = this.cachedSmartContractInfos[cw20Contract]
+
+    if (cachedContractInfo && cachedContractInfo.cw20_metadata) {
+      return getTokenFromCw20ContractInfo(
+        denom,
+        cachedContractInfo as Contract & { cw20_metadata: { token_info: any } },
+      )
+    }
+
+    const response = await this.chainWasmApi.fetchContractState({
+      contractAddress: cw20Contract,
+      pagination: {
+        reverse: true,
+      },
+    })
+
+    return getTokenFromContractStateResponse(denom, response)
+  }
+
   private async fetchAndCacheDenomTraces() {
-    const denomTraces = await this.chainIbcApi.fetchDenomsTrace()
+    const denomTraces = await this.chainIbcApi.fetchDenomsTrace({ limit: 500 })
     const denomHashes = denomTraces.map((trace) => {
       return {
         trace: trace,
@@ -336,6 +376,44 @@ export class DenomClientAsync {
     )
   }
 
+  private async fetchAndCacheCw20Contracts() {
+    const codeIds = CW20_CODE_IDS_BY_NETWORK(this.network)
+    const allContracts: Contract[] = []
+
+    for (const codeId of codeIds) {
+      let { paging, contracts: contractsFromResponse } =
+        await this.indexerExplorerApi.fetchContracts({
+          codeId: codeId,
+          limit: 100,
+        })
+
+      while (paging.total > contractsFromResponse.length) {
+        const { paging: nextPaging, contracts: nextContractsFromResponse } =
+          await this.indexerExplorerApi.fetchContracts({
+            codeId: codeId,
+            limit: 100,
+            skip: contractsFromResponse.length,
+          })
+
+        paging = nextPaging
+        contractsFromResponse.push(...nextContractsFromResponse)
+      }
+
+      allContracts.push(...contractsFromResponse)
+    }
+
+    const contracts = allContracts.reduce((contracts, contract) => {
+      return {
+        ...contracts,
+        [contract.address]: contract,
+      }
+    }, {})
+
+    this.cachedSmartContractInfos = {
+      ...contracts,
+    }
+  }
+
   private async fetchAndCacheIbcTokens() {
     if (ibcTokenMetadata?.length === 0) {
       return
@@ -348,6 +426,8 @@ export class DenomClientAsync {
     await this.getFactoryDenomMetadata('')
     await this.getInsuranceFund('')
     await this.fetchAndCacheDenomTraces()
+    await this.fetchAndCacheDenomTraces()
     await this.fetchAndCacheIbcTokens()
+    await this.fetchAndCacheCw20Contracts()
   }
 }
