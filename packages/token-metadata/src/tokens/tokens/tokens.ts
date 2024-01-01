@@ -2726,4 +2726,13 @@ export default {
     coinGeckoId: 'autism',
     tokenType: TokenType.TokenFactory,
   },
+
+  DREAM: {
+    name: 'DREAM',
+    symbol: 'DREAM',
+    decimals: 6,
+    logo: 'DREAM.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
