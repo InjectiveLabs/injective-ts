@@ -1002,7 +1002,7 @@ export default {
     name: 'Nois',
     symbol: 'NOIS',
     decimals: 6,
-    coinGeckoId: 'none',
+    coinGeckoId: 'nois',
     logo: 'nois.png',
 
     ibc: {
