@@ -1002,7 +1002,7 @@ export default {
     name: 'Nois',
     symbol: 'NOIS',
     decimals: 6,
-    coinGeckoId: 'none',
+    coinGeckoId: 'nois',
     logo: 'nois.png',
 
     ibc: {
@@ -2375,15 +2375,6 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
-  BABYNINJA: {
-    name: 'Baby Ninja',
-    symbol: 'BABYNINJA',
-    decimals: 6,
-    logo: 'babyninja.png',
-    coinGeckoId: '',
-    tokenType: TokenType.TokenFactory,
-  },
-
   INJINU: {
     name: 'INJINU',
     symbol: 'INJINU',
@@ -2724,6 +2715,87 @@ export default {
     decimals: 6,
     logo: 'autism.png',
     coinGeckoId: 'autism',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  NOBITCHES: {
+    name: 'Extra Virgin Olive Inu',
+    symbol: 'NOBITCHES',
+    decimals: 6,
+    logo: 'extravirginoliveinu.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  MILA: {
+    name: 'MILA',
+    symbol: 'MILA',
+    decimals: 6,
+    logo: 'mila.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  DOJO: {
+    name: 'Dojo Bot',
+    symbol: 'DOJO',
+    decimals: 6,
+    logo: 'dojo.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  IPANDAAI: {
+    name: 'Injective Panda AI',
+    symbol: 'IPandaAI',
+    decimals: 6,
+    logo: 'ipdai.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  COCK: {
+    name: 'ROOSTER NINJA',
+    symbol: 'COCK',
+    decimals: 6,
+    logo: 'cock.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  MOONIFY: {
+    name: 'MOONIFY',
+    symbol: 'MOONIFY',
+    decimals: 6,
+    logo: 'moonify.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  KARMA: {
+    name: 'Karma',
+    symbol: 'KARMA',
+    decimals: 6,
+    logo: 'karma.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  DREAM: {
+    name: 'DREAM',
+    symbol: 'DREAM',
+    decimals: 6,
+    logo: 'DREAM.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  DGNZ: {
+    name: 'Injective Degens',
+    symbol: 'DGNZ',
+    decimals: 6,
+    logo: 'DGNZ.png',
+    coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
 } as Record<string, TokenMeta>
