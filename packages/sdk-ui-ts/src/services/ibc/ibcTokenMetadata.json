@@ -2943,5 +2943,62 @@
       "baseDenom": "ARMANI",
       "isNative": false
     }
+  },
+  {
+    "name": "Dog wif nunchucks",
+    "denom": "factory/inj1xtel2knkt8hmc9dnzpjz6kdmacgcfmlv5f308w/ninja",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/ninja.png",
+    "symbol": "NINJA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1xtel2knkt8hmc9dnzpjz6kdmacgcfmlv5f308w/ninja",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "NINJA",
+      "baseDenom": "NINJA",
+      "isNative": false
+    }
+  },
+  {
+    "name": "WGMI",
+    "denom": "factory/inj1rmjzj9fn47kdmfk4f3z39qr6czexxe0yjyc546/WGMI",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/wgmi.png",
+    "symbol": "WGMI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1rmjzj9fn47kdmfk4f3z39qr6czexxe0yjyc546/WGMI",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WGMI",
+      "baseDenom": "WGMI",
+      "isNative": false
+    }
+  },
+  {
+    "name": "DROGO",
+    "denom": "ibc/565FE65B82C091F8BAD1379FA1B4560C036C07913355ED4BD8D156DA63F43712",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/drogo.png",
+    "symbol": "DROGO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "565FE65B82C091F8BAD1379FA1B4560C036C07913355ED4BD8D156DA63F43712",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "DROGO",
+      "baseDenom": "DROGO",
+      "isNative": false
+    }
   }
 ]
