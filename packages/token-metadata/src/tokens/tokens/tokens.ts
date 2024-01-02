@@ -2726,4 +2726,13 @@ export default {
     coinGeckoId: 'autism',
     tokenType: TokenType.TokenFactory,
   },
+
+  DGNZ: {
+    name: 'Injective Degens',
+    symbol: 'DGNZ',
+    decimals: 6,
+    logo: 'DGNZ.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
