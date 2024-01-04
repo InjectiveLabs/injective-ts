@@ -2799,7 +2799,7 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
   
-  INJECTOOLS: {
+  INJECT: {
     name: 'Injectools',
     symbol: 'INJECT',
     decimals: 6,
