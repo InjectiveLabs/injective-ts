@@ -150,47 +150,56 @@ import {
   ChainRestAuthApi,
   ChainRestTendermintApi,
   BaseAccount,
-  DEFAULT_STD_FEE,
   getEip712TypedData,
-} from '@injectivelabs/sdk-ts'
+  getEthereumAddress,
+  recoverTypedSignaturePubKey,
+  hexToBase64,
+  createTransaction,
+  SIGN_AMINO,
+  createWeb3Extension,
+  createTxRawEIP712,
+  TxRestClient,
+} from "@injectivelabs/sdk-ts";
 import {
+  BigNumberInBase,
   DEFAULT_STD_FEE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-} from '@injectivelabs/utils'
-import { ChainId } from '@injectivelabs/ts-types'
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+} from "@injectivelabs/utils";
+import { ChainId } from "@injectivelabs/ts-types";
+import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
 
-const injectiveAddress = 'inj1'
-const chainId = 'injective-1' /* ChainId.Mainnet */
-const restEndpoint =
-  'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
+const injectiveAddress = "inj1";
+const ethereumAddress = getEthereumAddress(injectiveAddress)
+const chainId = "injective-1"; /* ChainId.Mainnet */
+const ethereumChainId = 1; /* ChainId.EthereumMainnet */
+const restEndpoint = getNetworkEndpoints(Network.MainnetSentry).rest;
 const amount = {
   amount: new BigNumberInBase(0.01).toWei().toFixed(),
-  denom: 'inj',
-}
+  denom: "inj",
+};
 
 /** Account Details **/
-const chainRestAuthApi = new ChainRestAuthApi(restEndpoint)
+const chainRestAuthApi = new ChainRestAuthApi(restEndpoint);
 const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-  injectiveAddress,
-)
-const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
-const accountDetails = baseAccount.toAccountDetails()
+  injectiveAddress
+);
+const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse);
+const accountDetails = baseAccount.toAccountDetails();
 
 /** Block Details */
-const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint)
-const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
-const latestHeight = latestBlock.header.height
+const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint);
+const latestBlock = await chainRestTendermintApi.fetchLatestBlock();
+const latestHeight = latestBlock.header.height;
 const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-)
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT
+);
 
 /** Preparing the transaction */
 const msg = MsgSend.fromJSON({
   amount,
   srcInjectiveAddress: injectiveAddress,
   dstInjectiveAddress: injectiveAddress,
-})
+});
 
 /** EIP712 for signing on Ethereum wallets */
 const eip712TypedData = getEip712TypedData({
@@ -202,21 +211,22 @@ const eip712TypedData = getEip712TypedData({
     chainId: chainId,
   },
   ethereumChainId: ethereumChainId,
-})
+});
 
 /** Use your preferred approach to sign EIP712 TypedData, example with Metamask */
 const signature = await window.ethereum.request({
-  method: 'eth_signTypedData_v4',
+  method: "eth_signTypedData_v4",
   params: [ethereumAddress, JSON.stringify(eip712TypedData)],
-})
+});
 
 /** Get Public Key of the signer */
-const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature)
-const publicKeyBase64 = hexToBase64(publicKeyHex)
+const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature);
+const publicKeyBase64 = hexToBase64(publicKeyHex);
+const signatureBuff = Buffer.from(signature.replace('0x', ''), "hex");
 
 const { txRaw } = createTransaction({
-  message: msgs,
-  memo: memo,
+  message: [msg],
+  memo: '',
   signMode: SIGN_AMINO,
   fee: DEFAULT_STD_FEE,
   pubKey: publicKeyBase64,
@@ -224,20 +234,20 @@ const { txRaw } = createTransaction({
   timeoutHeight: timeoutHeight.toNumber(),
   accountNumber: baseAccount.accountNumber,
   chainId: chainId,
-})
+});
 const web3Extension = createWeb3Extension({
   ethereumChainId,
-})
-const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
+});
+const txRawEip712 = createTxRawEIP712(txRaw, web3Extension);
 
 /** Append Signatures */
-txRawEip712.signatures = [signatureBuff]
+txRawEip712.signatures = [signatureBuff];
 
 /** Broadcast the Transaction */
-const txRestClient = new TxRestClient(restEndpoint)
+const txRestClient = new TxRestClient(restEndpoint);
 
-const txHash = await txRestClient.broadcast(txRawEip712)
-const response = await txRestClient.fetchTxPoll(txHash)
+const txResponse = await txRestClient.broadcast(txRawEip712);
+const response = await txRestClient.fetchTxPoll(txResponse.txHash);
 ```
 
 ### Example with WalletStrategy (Prepare + Sign + Broadcast)
