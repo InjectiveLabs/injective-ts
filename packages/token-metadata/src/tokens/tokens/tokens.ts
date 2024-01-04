@@ -2798,4 +2798,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  
+  INJECTOOLS: {
+    name: 'Injectools',
+    symbol: 'INJECT',
+    decimals: 6,
+    logo: 'INJECT.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
