@@ -80,6 +80,46 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     }
   }
 
+  async fetchRound({
+    roundId,
+    accountAddress,
+  }: {
+    roundId?: string
+    accountAddress?: string
+  }) {
+    const request = InjectiveCampaignRpc.CampaignsRequest.create()
+
+    if (roundId) {
+      request.roundId = roundId
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
+    }
+
+    try {
+      const response = await this.retry<InjectiveCampaignRpc.CampaignsResponse>(
+        () => this.client.Campaigns(request),
+      )
+
+      return response
+    } catch (e: unknown) {
+      if (e instanceof InjectiveCampaignRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Campaigns',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Campaigns',
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchGuilds({
     skip,
     limit,
