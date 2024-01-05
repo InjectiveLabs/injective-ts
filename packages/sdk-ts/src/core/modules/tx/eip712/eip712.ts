@@ -3,8 +3,9 @@ import { Msgs } from '../../msgs'
 import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types'
 import {
   getEip712Fee,
-  getEip712Domain,
   getEipTxDetails,
+  getEip712Domain,
+  getEip712DomainV2,
   getDefaultEip712Types,
   getTypesIncludingFeePayer,
   getDefaultEip712TypesV2,
@@ -69,7 +70,7 @@ export const getEip712TypedDataV2 = ({
   return {
     primaryType: 'Tx',
     ...types,
-    ...getEip712Domain(ethereumChainId),
+    ...getEip712DomainV2(ethereumChainId),
     message: {
       context: JSON.stringify(getEipTxContext({ ...tx, fee })),
       msgs: JSON.stringify(eip712Msgs),

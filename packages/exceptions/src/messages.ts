@@ -282,6 +282,8 @@ const exchangeErrorMap = {
     'Subaccount nonce is invalid',
   [ChainExchangeModuleErrorCode.ErrInsufficientFunds]: 'Insufficient funds',
   [ChainExchangeModuleErrorCode.ErrPostOnlyMode]:
+    'Only post-only actions available for approximately 30 minutes after a chain upgrade.',
+  [ChainExchangeModuleErrorCode.ErrClientOrderIdAlreadyExists]:
     'Client order id already exists',
   [ChainExchangeModuleErrorCode.ErrInvalidCid]:
     'Client order id is invalid. Max length is 36 chars',

@@ -18,6 +18,18 @@ export const getEip712Domain = (ethereumChainId: EthereumChainId) => {
   }
 }
 
+export const getEip712DomainV2 = (ethereumChainId: EthereumChainId) => {
+  return {
+    domain: {
+      name: 'Injective Web3',
+      version: '1.0.0',
+      chainId: '0x' + new BigNumberInBase(ethereumChainId).toString(16),
+      salt: '0',
+      verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+    },
+  }
+}
+
 export const getDefaultEip712Types = () => {
   return {
     types: {
@@ -60,7 +72,7 @@ export const getDefaultEip712TypesV2 = () => {
         { name: 'name', type: 'string' },
         { name: 'version', type: 'string' },
         { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'string' },
+        { name: 'verifyingContract', type: 'address' },
         { name: 'salt', type: 'string' },
       ],
       Tx: [
@@ -112,7 +124,15 @@ export const getEip712FeeV2 = (
 } => {
   if (!params) {
     return {
-      fee: { ...DEFAULT_STD_FEE, gas: Number(DEFAULT_STD_FEE.gas) },
+      fee: {
+        amount: [
+          {
+            denom: DEFAULT_STD_FEE.amount[0].denom,
+            amount: DEFAULT_STD_FEE.amount[0].amount,
+          },
+        ],
+        gas: Number(DEFAULT_STD_FEE.gas),
+      },
     }
   }
 

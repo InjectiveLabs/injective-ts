@@ -3,7 +3,7 @@ import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Proposal,
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
@@ -13,7 +13,7 @@ const createProposalExpiryFuturesMarketLaunch = (
   params: MsgSubmitProposalExpiryFuturesMarketLaunch.Params,
 ) => {
   const content =
-    InjectiveExchangeV1Beta1Tx.ExpiryFuturesMarketLaunchProposal.create()
+    InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.create()
   content.title = params.market.title
   content.description = params.market.description
   content.quoteDenom = params.market.quoteDenom
@@ -30,7 +30,7 @@ const createProposalExpiryFuturesMarketLaunch = (
   content.minPriceTickSize = params.market.minPriceTickSize
   content.minQuantityTickSize = params.market.minQuantityTickSize
 
-  return InjectiveExchangeV1Beta1Tx.ExpiryFuturesMarketLaunchProposal.fromPartial(
+  return InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.fromPartial(
     content,
   )
 }
@@ -116,7 +116,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
 
     const contentAny = GoogleProtobufAny.Any.create()
     contentAny.value =
-      InjectiveExchangeV1Beta1Tx.ExpiryFuturesMarketLaunchProposal.encode(
+      InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.encode(
         content,
       ).finish()
     contentAny.typeUrl =
