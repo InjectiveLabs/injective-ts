@@ -90,7 +90,7 @@ export const getChecksumAddress = (ethAddress: string) => {
 
   let checksumAddress = '0x'
 
-  for (var i = 0; i < lowercasedAddress.length; i++) {
+  for (let i = 0; i < lowercasedAddress.length; i++) {
     if (parseInt(addressHash[i], 16) > 7) {
       checksumAddress += lowercasedAddress[i].toUpperCase()
     } else {
@@ -100,3 +100,6 @@ export const getChecksumAddress = (ethAddress: string) => {
 
   return checksumAddress
 }
+
+export const isCw20ContractAddress = (address: string) =>
+  address.length === 42 && address.startsWith('inj')

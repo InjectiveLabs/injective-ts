@@ -7,6 +7,8 @@ import {
   grpcContractInfo,
   CodeInfoResponse,
   GrpcCodeInfoResponse,
+  TokenInfo,
+  ContractStateWithPagination,
 } from '../types/wasm'
 import { fromUtf8 } from '../../../utils'
 import { grpcPaginationToPagination } from './../../../utils/pagination'
@@ -26,17 +28,74 @@ export class ChainGrpcWasmTransformer {
             .toString('utf-8')
             .split('balance')
             .pop(),
-          balance: Buffer.from(model.key)
+          balance: Buffer.from(model.value)
             .toString('utf-8')
             .replace(/['"]+/g, ''),
         }
       })
-      .filter(({ account }) => {
-        return account && account.startsWith('inj')
+      .filter(({ account, balance }) => {
+        return account && account.startsWith('inj') && balance
       }) as ContractAccountBalance[]
+
+    const contractInfoModel = response.models.find((model) => {
+      return Buffer.from(model.key).toString('utf-8') === 'contract_info'
+    })
+    const contractInfoValue = Buffer.from(
+      contractInfoModel?.value || new Uint8Array(),
+    ).toString('utf-8')
+
+    const tokenInfoModel = response.models.find((model) => {
+      return Buffer.from(model.key).toString('utf-8') === 'token_info'
+    })
+    const tokenInfoValue = Buffer.from(
+      tokenInfoModel?.value || new Uint8Array(),
+    ).toString('utf-8')
 
     return {
       contractAccountsBalance,
+      tokenInfo: JSON.parse(tokenInfoValue || '{}') as TokenInfo,
+      contractInfo: JSON.parse(contractInfoValue || '{}') as ContractInfo,
+      pagination: grpcPaginationToPagination(response.pagination),
+    }
+  }
+
+  static allContractStateResponseToContractState(
+    response: CosmwasmWasmV1Query.QueryAllContractStateResponse,
+  ): ContractStateWithPagination {
+    const contractAccountsBalance = response.models
+      .map((model) => {
+        return {
+          account: Buffer.from(model.key)
+            .toString('utf-8')
+            .split('balance')
+            .pop(),
+          balance: Buffer.from(model.value)
+            .toString('utf-8')
+            .replace(/['"]+/g, ''),
+        }
+      })
+      .filter(({ account, balance }) => {
+        return account && account.startsWith('inj') && balance
+      }) as ContractAccountBalance[]
+
+    const contractInfoModel = response.models.find((model) => {
+      return Buffer.from(model.key).toString('utf-8') === 'contract_info'
+    })
+    const contractInfoValue = Buffer.from(
+      contractInfoModel?.value || new Uint8Array(),
+    ).toString('utf-8')
+
+    const tokenInfoModel = response.models.find((model) => {
+      return Buffer.from(model.key).toString('utf-8') === 'token_info'
+    })
+    const tokenInfoValue = Buffer.from(
+      tokenInfoModel?.value || new Uint8Array(),
+    ).toString('utf-8')
+
+    return {
+      contractAccountsBalance,
+      tokenInfo: JSON.parse(tokenInfoValue || '{}') as TokenInfo,
+      contractInfo: JSON.parse(contractInfoValue || '{}') as ContractInfo,
       pagination: grpcPaginationToPagination(response.pagination),
     }
   }

@@ -4,10 +4,13 @@ export enum Network {
   MainnetK8s = 'mainnetK8s',
   MainnetLB = 'mainnetLB',
   Mainnet = 'mainnet',
+  MainnetSentry = 'mainnetSentry',
   Staging = 'staging',
   Public = 'public',
+  Internal = 'internal', // @deprecated
   TestnetK8s = 'testnetK8s',
   TestnetOld = 'testnetOld',
+  TestnetSentry = 'testnetSentry',
   Testnet = 'testnet',
   Devnet1 = 'devnet1',
   Devnet2 = 'devnet2',
@@ -15,22 +18,15 @@ export enum Network {
   Local = 'local',
 }
 
-export type OldNetworkEndpoints = {
-  indexerApi: string
-  sentryGrpcApi: string
-  sentryHttpApi: string
-  tendermintApi?: string
-  chronosApi?: string
-  exchangeWeb3GatewayApi?: string
-}
-
 export type NetworkEndpoints = {
   indexer: string // Indexer API
-  chronos: string
-  explorer: string
   grpc: string // Sentry gRPC
   rest: string // LCD
   rpc?: string // Tendermint
+  cache?: string // Cache Service
+  chronos?: string // Chronos Service
+  web3gw?: string // Web3Gateway Service
+  explorer?: string // Explorer Service
 }
 
 export type UrlEndpoints = NetworkEndpoints /** Deprecated */

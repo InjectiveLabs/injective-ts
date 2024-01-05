@@ -1,10 +1,10 @@
 import { TokenMeta, TokenType } from '../../types'
 
 export default {
-  vARI: {
-    name: 'Aries',
-    logo: 'aries.svg',
-    symbol: 'vARI',
+  'INJ-MASTER': {
+    name: 'INJ Master',
+    logo: 'mito-inj-master-lp.png',
+    symbol: 'INJ-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -14,10 +14,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vTAU: {
-    name: 'Taurus',
-    logo: 'taurus.svg',
-    symbol: 'vTAU',
+  'INJ-BOOST': {
+    name: 'INJ Boost',
+    logo: 'mito-inj-boost-lp.png',
+    symbol: 'INJ-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -27,10 +27,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vGEM: {
-    name: 'Gemini',
-    logo: 'gemini.svg',
-    symbol: 'vGEM',
+  'XAU-BOOST': {
+    name: 'XAU Boost',
+    logo: 'mito-xau-boost-lp.png',
+    symbol: 'XAU-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -40,10 +40,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vCAN: {
-    name: 'Cancer',
-    logo: 'cancer.svg',
-    symbol: 'vCAN',
+  'WETH-MASTER': {
+    name: 'WETH Master',
+    logo: 'mito-weth-master-lp.png',
+    symbol: 'WETH-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -53,10 +53,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vLEO: {
-    name: 'Leo',
-    logo: 'leo.svg',
-    symbol: 'vLEO',
+  'ETH-BOOST': {
+    name: 'ETH Boost',
+    logo: 'mito-eth-boost-lp.png',
+    symbol: 'ETH-boost-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -66,10 +66,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vVIR: {
-    name: 'Virgo',
-    logo: 'virgo.svg',
-    symbol: 'vVIR',
+  'ATOM-MASTER': {
+    name: 'ATOM Master',
+    logo: 'mito-atom-master-lp.png',
+    symbol: 'ATOM-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -79,10 +79,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vLIB: {
-    name: 'Libra',
-    logo: 'libra.svg',
-    symbol: 'vLIB',
+  'ATOM-BOOST': {
+    name: 'ATOM Boost',
+    logo: 'mito-atom-boost-lp.png',
+    symbol: 'ATOM-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -92,10 +92,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vSCOR: {
-    name: 'Scorpio',
-    logo: 'scorpio.svg',
-    symbol: 'vSCOR',
+  'USDC-MASTER': {
+    name: 'USDC Master',
+    logo: 'mito-usdc-master-lp.png',
+    symbol: 'USDC-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -105,10 +105,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vSAG: {
-    name: 'Sagittarius',
-    logo: 'sagittarius.svg',
-    symbol: 'vSAG',
+  'PROJ-MASTER': {
+    name: 'PROJ Master',
+    logo: 'mito-proj-master-lp.png',
+    symbol: 'PROJ-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -118,10 +118,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vCAP: {
-    name: 'Capricorn',
-    logo: 'capricorn.svg',
-    symbol: 'vCAP',
+  'GBP-MASTER': {
+    name: 'GBP Master',
+    logo: 'mito-gbp-master-lp.png',
+    symbol: 'GBP-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -131,10 +131,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vAQUA: {
-    name: 'Aquarius',
-    logo: 'aquarius.svg',
-    symbol: 'vAQUA',
+  'EUR-MASTER': {
+    name: 'EUR Master',
+    logo: 'mito-eur-master-lp.png',
+    symbol: 'EUR-MASTER-LP',
     decimals: 18,
     coinGeckoId: '',
 
@@ -144,10 +144,10 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  vPIS: {
-    name: 'Pisces',
-    logo: 'pisces.svg',
-    symbol: 'vPIS',
+  'STINJ-BOOST': {
+    name: 'stINJ Boost',
+    logo: 'mito-stInj-boost-lp.png',
+    symbol: 'stINJ-BOOST-LP',
     decimals: 18,
     coinGeckoId: '',
 

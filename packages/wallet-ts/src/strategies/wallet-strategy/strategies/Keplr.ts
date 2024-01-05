@@ -30,10 +30,13 @@ export default class Keplr
 {
   private keplrWallet: KeplrWallet
 
-  constructor(args: { chainId: ChainId }) {
+  constructor(args: {
+    chainId: ChainId
+    endpoints?: { rest: string; rpc: string }
+  }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.keplrWallet = new KeplrWallet(args.chainId)
+    this.keplrWallet = new KeplrWallet(args.chainId, args.endpoints)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -45,14 +48,16 @@ export default class Keplr
       : Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<boolean> {
+    const keplrWallet = this.getKeplrWallet()
+
+    return await keplrWallet.checkChainIdSupport()
+  }
+
   async getAddresses(): Promise<string[]> {
     const keplrWallet = this.getKeplrWallet()
 
     try {
-      if (!(await keplrWallet.checkChainIdSupport())) {
-        await keplrWallet.experimentalSuggestChain()
-      }
-
       const accounts = await keplrWallet.getAccounts()
 
       return accounts.map((account) => account.address)
@@ -90,7 +95,11 @@ export default class Keplr
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    _options: { address: AccountAddress; chainId: ChainId },
+    options: {
+      address: AccountAddress
+      chainId: ChainId
+      endpoints?: { grpc: string }
+    },
   ): Promise<TxResponse> {
     const { keplrWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
@@ -98,6 +107,7 @@ export default class Keplr
     try {
       return await keplrWallet.waitTxBroadcasted(
         await keplrWallet.broadcastTx(txRaw),
+        options.endpoints?.grpc,
       )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
@@ -120,6 +130,21 @@ export default class Keplr
       ...transaction,
       address: injectiveAddress,
     })
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new CosmosWalletException(
+      new Error('This wallet does not support signing using amino'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SendTransaction,
+      },
+    )
   }
 
   async signCosmosTransaction(transaction: {
@@ -156,6 +181,25 @@ export default class Keplr
         context: WalletAction.SendTransaction,
       },
     )
+  }
+
+  async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    const keplrWallet = this.getKeplrWallet()
+    const keplr = await keplrWallet.getKeplrWallet()
+
+    try {
+      const signature = await keplr.signArbitrary(this.chainId, signer, data)
+
+      return signature.signature
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SignArbitrary,
+      })
+    }
   }
 
   async getEthereumChainId(): Promise<string> {

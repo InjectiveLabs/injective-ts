@@ -19,7 +19,7 @@ import {
   WalletException,
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxGrpcApi, TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
 import { TIP_IN_GWEI } from '../../../../utils/constants'
 import {
   ConcreteWalletStrategy,
@@ -81,6 +81,14 @@ export default class Trezor
     return Promise.resolve(WalletDeviceType.Hardware)
   }
 
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
+  }
+
+  public async disconnect() {
+    this.trezor = new TrezorHW()
+  }
+
   public async getAddresses(): Promise<string[]> {
     try {
       await this.trezor.connect()
@@ -135,20 +143,24 @@ export default class Trezor
     options: {
       address: AccountAddress
       chainId: ChainId
-      sentryEndpoint: string
+      endpoints?: {
+        grpc: string
+        rest: string
+        tm?: string
+      }
     },
   ): Promise<TxResponse> {
-    const { sentryEndpoint } = options
+    const { endpoints } = options
 
-    if (!sentryEndpoint) {
+    if (!endpoints) {
       throw new WalletException(
         new Error(
-          'You have to pass sentryEndpoint within the options for using Ethereum native wallets',
+          'You have to pass endpoints.grpc within the options for using Ethereum native wallets',
         ),
       )
     }
 
-    const txApi = new TxGrpcApi(sentryEndpoint)
+    const txApi = new TxGrpcApi(endpoints.grpc)
     const response = await txApi.broadcast(transaction)
 
     if (response.code !== 0) {
@@ -226,6 +238,22 @@ export default class Trezor
     }
   }
 
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
+  }
+
   // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
@@ -241,6 +269,35 @@ export default class Trezor
         contextModule: WalletAction.SendTransaction,
       },
     )
+  }
+
+  async signArbitrary(
+    signer: AccountAddress,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    try {
+      await this.trezor.connect()
+      const { derivationPath } = await this.getWalletForAddress(signer)
+
+      const response = await TrezorConnect.ethereumSignMessage({
+        path: derivationPath,
+        message: toUtf8(data),
+      })
+
+      if (!response.success) {
+        throw new Error(
+          (response.payload && response.payload.error) || 'Unknown error',
+        )
+      }
+
+      return response.payload.signature
+    } catch (e: unknown) {
+      throw new TrezorException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
+    }
   }
 
   async getEthereumChainId(): Promise<string> {

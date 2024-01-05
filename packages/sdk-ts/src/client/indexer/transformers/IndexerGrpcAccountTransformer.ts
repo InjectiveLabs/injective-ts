@@ -1,6 +1,6 @@
 import { Coin } from '@injectivelabs/ts-types'
 import { grpcPagingToPaging } from '../../..//utils/pagination'
-import { GrpcCoin } from '../../../types/index'
+import { GrpcCoin } from '../../../types'
 import {
   TransferType,
   TradingReward,

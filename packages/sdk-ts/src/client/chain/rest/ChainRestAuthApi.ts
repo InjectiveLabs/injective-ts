@@ -2,7 +2,7 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../BaseRestConsumer'
+import BaseRestConsumer from '../../base/BaseRestConsumer'
 import { ChainModule, RestApiResponse } from '../types'
 import {
   AccountResponse,
@@ -19,11 +19,16 @@ export class ChainRestAuthApi extends BaseRestConsumer {
    *
    * @param address address of account to look up
    */
-  public async fetchAccount(address: string): Promise<AccountResponse> {
+  public async fetchAccount(
+    address: string,
+    params: Record<string, any> = {},
+  ): Promise<AccountResponse> {
+    const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
+
     try {
-      const response = (await this.get(
-        `cosmos/auth/v1beta1/accounts/${address}`,
-      )) as RestApiResponse<AccountResponse>
+      const response = await this.retry<RestApiResponse<AccountResponse>>(() =>
+        this.get(endpoint, params),
+      )
 
       return response.data
     } catch (e: unknown) {
@@ -33,6 +38,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Auth,
       })
     }
@@ -45,13 +51,17 @@ export class ChainRestAuthApi extends BaseRestConsumer {
    */
   public async fetchCosmosAccount(
     address: string,
+    params: Record<string, any> = {},
   ): Promise<BaseAccountRestResponse> {
+    const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
+
     try {
       const isInjectiveAddress =
         address.startsWith('inj') || address.startsWith('evmos')
-      const response = (await this.get(
-        `cosmos/auth/v1beta1/accounts/${address}`,
-      )) as RestApiResponse<AccountResponse | CosmosAccountRestResponse>
+
+      const response = await this.retry<
+        RestApiResponse<AccountResponse | CosmosAccountRestResponse>
+      >(() => this.get(endpoint, params))
 
       const baseAccount = isInjectiveAddress
         ? (response.data as AccountResponse).account.base_account
@@ -65,6 +75,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Auth,
       })
     }

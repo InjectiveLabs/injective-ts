@@ -1,7 +1,8 @@
 import {
   BigNumberInBase,
-  DEFAULT_EXCHANGE_LIMIT,
   DEFAULT_GAS_LIMIT,
+  DEFAULT_IBC_GAS_LIMIT,
+  DEFAULT_EXCHANGE_LIMIT,
 } from '@injectivelabs/utils'
 import { Msgs } from '../core/modules/msgs'
 
@@ -49,6 +50,12 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
       .times(15)
       .times(messages.length)
       .decimalPlaces(0)
+      .toNumber()
+  }
+
+  if (messageType.includes('MsgTransfer')) {
+    return new BigNumberInBase(DEFAULT_IBC_GAS_LIMIT)
+      .times(messages.length)
       .toNumber()
   }
 

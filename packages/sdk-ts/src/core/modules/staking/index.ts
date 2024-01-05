@@ -1,4 +1,15 @@
-export { default as MsgBeginRedelegate } from './msgs/MsgBeginRedelegate'
-export { default as MsgDelegate } from './msgs/MsgDelegate'
-export { default as MsgUndelegate } from './msgs/MsgUndelegate'
-export { default as MsgEditValidator } from './msgs/MsgEditValidator'
+import MsgDelegate from './msgs/MsgDelegate'
+import MsgUndelegate from './msgs/MsgUndelegate'
+import MsgEditValidator from './msgs/MsgEditValidator'
+import MsgCreateValidator from './msgs/MsgCreateValidator'
+import MsgBeginRedelegate from './msgs/MsgBeginRedelegate'
+import MsgCancelUnbondingDelegation from './msgs/MsgCancelUnbondingDelegation'
+
+export {
+  MsgDelegate,
+  MsgUndelegate,
+  MsgEditValidator,
+  MsgCreateValidator,
+  MsgBeginRedelegate,
+  MsgCancelUnbondingDelegation,
+}

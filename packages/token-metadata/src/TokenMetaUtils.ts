@@ -5,7 +5,7 @@ import {
 import { getMappedTokensByName } from './tokens/mappings/mapByName'
 import { getMappedTokensByHash } from './tokens/mappings/mapByHash'
 import { getMappedTokensBySymbol } from './tokens/mappings/mapBySymbol'
-import { TokenMeta, TokenType } from './types'
+import { TokenMeta, TokenVerification, TokenType } from './types'
 
 export class TokenMetaUtils {
   protected tokens: Record<string, TokenMeta>
@@ -40,7 +40,12 @@ export class TokenMetaUtils {
       return
     }
 
-    return tokensBySymbol[tokenSymbol] || tokensBySymbol[symbol]
+    const tokenMeta = tokensBySymbol[tokenSymbol] || tokensBySymbol[symbol]
+
+    return {
+      ...tokenMeta,
+      tokenVerification: TokenVerification.Verified,
+    }
   }
 
   getMetaByAddress(address: string): TokenMeta | undefined {
@@ -68,6 +73,7 @@ export class TokenMetaUtils {
       ? {
           ...tokenMeta,
           tokenType: TokenType.Cw20,
+          tokenVerification: TokenVerification.Verified,
         }
       : undefined
   }
@@ -88,9 +94,12 @@ export class TokenMetaUtils {
       )
 
       if (checksumAddress) {
+        const tokenMeta = tokensByErc20Address[checksumAddress]
+
         return {
-          ...tokensByErc20Address[checksumAddress],
-          tokenType: TokenType.Erc20,
+          ...tokenMeta,
+          tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
+          tokenVerification: TokenVerification.Verified,
         }
       }
 
@@ -103,7 +112,8 @@ export class TokenMetaUtils {
     return tokenMeta
       ? {
           ...tokenMeta,
-          tokenType: TokenType.Erc20,
+          tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
+          tokenVerification: TokenVerification.Verified,
         }
       : undefined
   }
@@ -124,6 +134,7 @@ export class TokenMetaUtils {
       ? {
           ...tokenMeta,
           tokenType: TokenType.Ibc,
+          tokenVerification: TokenVerification.Verified,
         }
       : undefined
   }
@@ -136,7 +147,12 @@ export class TokenMetaUtils {
       return
     }
 
-    return tokensByName[tokenName] || tokensByName[name]
+    const tokenMeta = tokensByName[tokenName] || tokensByName[name]
+
+    return {
+      ...tokenMeta,
+      tokenVerification: TokenVerification.Verified,
+    }
   }
 
   getCoinGeckoIdFromSymbol(symbol: string): string {

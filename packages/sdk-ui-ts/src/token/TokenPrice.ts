@@ -1,33 +1,49 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
+import { Network, isDevnet, isTestnet } from '@injectivelabs/networks'
 import {
-  awaitAll,
+  sleep,
   splitArrayToChunks,
   BigNumberInBase,
   HttpRestClient,
-  sleep,
 } from '@injectivelabs/utils'
 import { HttpRequestException } from '@injectivelabs/exceptions'
-import { ASSET_PRICE_SERVICE_URL } from '../constants'
+import {
+  ASSET_PRICE_SERVICE_URL,
+  DEVNET_ASSET_PRICE_SERVICE_URL,
+  TESTNET_ASSET_PRICE_SERVICE_URL,
+} from '../constants'
 import { CoinPriceFromInjectiveService } from '../types/token'
 
-const commonlyUsedCoinGeckoIds = [
-  'bitcoin',
-  'ethereum',
-  'injective-protocol',
-  'tether',
-  'terrausd',
-]
+const getAssetMicroserviceEndpoint = (network: Network = Network.Mainnet) => {
+  if (isTestnet(network)) {
+    return TESTNET_ASSET_PRICE_SERVICE_URL
+  }
+
+  if (isDevnet(network)) {
+    return DEVNET_ASSET_PRICE_SERVICE_URL
+  }
+
+  return ASSET_PRICE_SERVICE_URL
+}
 
 export class TokenPrice {
-  private coinGeckoApi: CoinGeckoApi
+  private coinGeckoApi: CoinGeckoApi | undefined
 
   private restClient: HttpRestClient
 
   private cache: Record<string, number> = {} // coinGeckoId -> priceInUsd
 
-  constructor(coinGeckoOptions: { baseUrl: string; apiKey: string }) {
-    this.restClient = new HttpRestClient(ASSET_PRICE_SERVICE_URL)
-    this.coinGeckoApi = new CoinGeckoApi(coinGeckoOptions)
+  constructor(
+    network?: Network,
+    coinGeckoOptions?: {
+      baseUrl: string
+      apiKey: string
+    },
+  ) {
+    this.restClient = new HttpRestClient(getAssetMicroserviceEndpoint(network))
+    this.coinGeckoApi = coinGeckoOptions
+      ? new CoinGeckoApi(coinGeckoOptions)
+      : undefined
   }
 
   async fetchUsdTokensPrice(coinIds: string[]) {
@@ -62,15 +78,19 @@ export class TokenPrice {
     }
 
     const pricesFromInjectiveService =
-      await this.fetchUsdTokenPriceFromInjectiveServiceInChunks(
-        coinIdsNotInCache,
-      )
+      await this.fetchUsdPricesFromInjectiveService()
 
     prices = { ...prices, ...pricesFromInjectiveService }
 
-    const coinIdsNotInCacheAndInjectiveService = coinIds.filter(
-      (coinId) => !Object.keys(prices).includes(coinId),
-    )
+    const coinIdsNotInCacheAndInjectiveService = coinIds
+      .filter((coinId) => !Object.keys(prices).includes(coinId))
+      .filter(
+        (coinId) =>
+          !coinId.startsWith('factory/') &&
+          !coinId.startsWith('ibc') &&
+          !coinId.startsWith('share') &&
+          !coinId.startsWith('peggy'),
+      )
 
     if (coinIdsNotInCacheAndInjectiveService.length === 0) {
       return prices
@@ -99,6 +119,56 @@ export class TokenPrice {
     )
 
     return { ...prices, ...coinIdsWithoutPrice }
+  }
+
+  async fetchUsdDenomsPrice(denoms: string[]) {
+    if (denoms.length === 0) {
+      return {}
+    }
+
+    let prices: Record<string, number> = {}
+
+    const pricesFromCache = denoms.reduce((prices, coinId) => {
+      try {
+        const priceFromCache = this.cache[coinId]
+
+        if (priceFromCache) {
+          return { ...prices, [coinId]: priceFromCache }
+        }
+
+        return prices
+      } catch (e) {
+        return prices
+      }
+    }, {} as Record<string, number>)
+
+    prices = { ...prices, ...pricesFromCache }
+
+    const denomsNotInCache = denoms.filter(
+      (denom) => !Object.keys(prices).includes(denom),
+    )
+
+    if (denomsNotInCache.length === 0) {
+      return prices
+    }
+
+    const pricesFromInjectiveService =
+      await this.fetchUsdPricesFromInjectiveService()
+
+    prices = { ...prices, ...pricesFromInjectiveService }
+
+    const denomsNotInCacheAndInjectiveService = denoms.filter(
+      (denom) => !Object.keys(prices).includes(denom),
+    )
+
+    const denomsWithoutPrice = Object.keys(
+      denomsNotInCacheAndInjectiveService,
+    ).reduce(
+      (prices, key) => ({ ...prices, [key]: 0 }),
+      {} as Record<string, number>,
+    )
+
+    return { ...prices, ...denomsWithoutPrice }
   }
 
   async fetchUsdTokenPrice(coinId: string) {
@@ -195,6 +265,10 @@ export class TokenPrice {
       return 0
     }
 
+    if (!this.coinGeckoApi) {
+      return 0
+    }
+
     try {
       const currentPrice = await this.coinGeckoApi.fetchUsdPrice(coinId)
 
@@ -218,6 +292,10 @@ export class TokenPrice {
 
   async fetchUsdTokenPriceFromCoinGeckoNoThrow(coinId: string) {
     if (!coinId) {
+      return 0
+    }
+
+    if (!this.coinGeckoApi) {
       return 0
     }
 
@@ -252,50 +330,32 @@ export class TokenPrice {
     return undefined
   }
 
-  private fetchUsdTokenPriceFromInjectiveServiceInChunks = async (
-    coinIds: string[],
-  ) => {
-    const CHUNK_SIZE = 50
-    const chunks = splitArrayToChunks({
-      array: coinIds,
-      chunkSize: CHUNK_SIZE,
-      filter: (c) => !!c,
-    })
-
-    const response = await awaitAll(chunks, async (chunk) => {
-      try {
-        const pricesResponse = (await this.restClient.get('coin/price', {
-          coinIds: chunk.join(','),
-          currency: 'usd',
-        })) as {
-          data: {
-            data: CoinPriceFromInjectiveService[]
-          }
+  private fetchUsdPricesFromInjectiveService = async () => {
+    try {
+      const pricesResponse = (await this.restClient.get('coin/prices')) as {
+        data: {
+          data: CoinPriceFromInjectiveService[]
         }
+      }
 
-        if (pricesResponse.data.data.length === 0) {
-          return {}
-        }
-
-        return pricesResponse.data.data.reduce(
-          (cache, coin) => ({
-            ...cache,
-            [coin.id]: new BigNumberInBase(coin.current_price).toNumber(),
-          }),
-          {} as Record<string, number>,
-        )
-      } catch (e) {
+      if (pricesResponse.data.data.length === 0) {
         return {}
       }
-    })
 
-    const prices = response.reduce((prices, chunkResponse) => {
-      return { ...prices, ...chunkResponse }
-    }, {})
+      const prices = pricesResponse.data.data.reduce(
+        (cache, coin) => ({
+          ...cache,
+          [coin.id]: new BigNumberInBase(coin.current_price).toNumber(),
+        }),
+        {} as Record<string, number>,
+      )
 
-    this.cache = { ...this.cache, ...prices }
+      this.cache = { ...this.cache, ...prices }
 
-    return prices
+      return prices
+    } catch (e) {
+      return {}
+    }
   }
 
   private fetchUsdTokenPriceFromCoinGeckoInChunks = async (
@@ -316,19 +376,21 @@ export class TokenPrice {
      */
     const response = await Promise.all(
       chunks.map(async (chunk, index) => {
+        let prices = {} as Record<string, number>
+
         for (let i = 0; i < chunk.length; i += 1) {
           const price = await this.fetchUsdTokenPriceFromCoinGeckoNoThrow(
             chunk[i],
           )
 
-          return { [chunk[i]]: price } as Record<string, number>
+          prices[chunk[i]] = price
         }
 
         if (index < chunks.length - 1) {
           await sleep(500)
         }
 
-        return {}
+        return prices
       }),
     )
 
@@ -343,10 +405,7 @@ export class TokenPrice {
 
   private async initCache(): Promise<void> {
     try {
-      const pricesResponse = (await this.restClient.get('coin/price', {
-        coinIds: commonlyUsedCoinGeckoIds.join(','),
-        currency: 'usd',
-      })) as {
+      const pricesResponse = (await this.restClient.get('coin/prices')) as {
         data: {
           data: CoinPriceFromInjectiveService[]
         }

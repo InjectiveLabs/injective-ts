@@ -18,9 +18,11 @@ export enum ChainId {
 export enum MsgType {
   MsgExec = 'cosmos.authz.v1beta1.MsgExec',
   MsgGrant = 'cosmos.authz.v1beta1.MsgGrant',
+  MsgRevoke = 'cosmos.authz.v1beta1.MsgRevoke',
   MsgSend = 'cosmos.bank.v1beta1.MsgSend',
   MsgWithdrawDelegatorReward = 'cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
   MsgGrantAllowance = 'cosmos.feegrant.v1beta1.MsgGrantAllowance',
+  MsgRevokeAllowance = 'cosmos.feegrant.v1beta1.MsgRevokeAllowance',
   MsgDepositCosmos = 'cosmos.gov.v1beta1.MsgDeposit',
   MsgSubmitProposal = 'cosmos.gov.v1beta1.MsgSubmitProposal',
   MsgVote = 'cosmos.gov.v1beta1.MsgVote',
@@ -30,6 +32,7 @@ export enum MsgType {
   MsgDelegate = 'cosmos.staking.v1beta1.MsgDelegate',
   MsgEditValidator = 'cosmos.staking.v1beta1.MsgEditValidator',
   MsgUndelegate = 'cosmos.staking.v1beta1.MsgUndelegate',
+  MsgCancelUnbondingDelegation = 'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation',
   MsgExecuteContract = 'cosmwasm.wasm.v1.MsgExecuteContract',
   MsgInstantiateContract = 'cosmwasm.wasm.v1.MsgInstantiateContract',
   MsgInstantiateContract2 = 'cosmwasm.wasm.v1.MsgInstantiateContract2',
@@ -89,8 +92,8 @@ export enum MsgType {
   MsgValsetUpdatedClaim = 'injective.peggy.v1.MsgValsetUpdatedClaim',
   MsgWithdrawClaim = 'injective.peggy.v1.MsgWithdrawClaim',
   MsgBurn = 'injective.tokenfactory.v1beta1.MsgBurn',
-  MsgCreateDenom = 'injective.tokenfactory.v1beta1.MsgCreateDenom',
   MsgMint = 'injective.tokenfactory.v1beta1.MsgMint',
+  MsgCreateDenom = 'injective.tokenfactory.v1beta1.MsgCreateDenom',
   MsgExecuteContractCompat = 'injective.wasmx.v1.MsgExecuteContractCompat',
 }
 

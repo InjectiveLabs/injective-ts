@@ -67,4 +67,14 @@ export default class LedgerTransport {
 
     return this.accountManager
   }
+
+  async refresh() {
+    if (!this.ledger) {
+      return new LedgerTransport()
+    }
+
+    this.ledger.transport.close()
+
+    return new LedgerTransport()
+  }
 }

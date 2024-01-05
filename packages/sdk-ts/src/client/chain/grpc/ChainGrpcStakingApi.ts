@@ -1,25 +1,27 @@
-import { getGrpcWebImpl } from '../../BaseGrpcWebConsumer'
-import { PaginationOption } from '../../../types/pagination'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
-import { ChainGrpcStakingTransformer } from '../transformers'
-import { ChainModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
+import { ChainModule } from '../types'
+import { PaginationOption } from '../../../types/pagination'
+import { ChainGrpcStakingTransformer } from '../transformers'
+import { paginationRequestFromPagination } from '../../../utils/pagination'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcStakingApi {
+export class ChainGrpcStakingApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Staking
 
   protected client: CosmosStakingV1Beta1Query.QueryClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new CosmosStakingV1Beta1Query.QueryClientImpl(
-      getGrpcWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -27,7 +29,10 @@ export class ChainGrpcStakingApi {
     const request = CosmosStakingV1Beta1Query.QueryParamsRequest.create()
 
     try {
-      const response = await this.client.Params(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryParamsResponse>(() =>
+          this.client.Params(request),
+        )
 
       return ChainGrpcStakingTransformer.moduleParamsResponseToModuleParams(
         response,
@@ -36,12 +41,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Params',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Params',
         contextModule: this.module,
       })
     }
@@ -51,19 +58,24 @@ export class ChainGrpcStakingApi {
     const request = CosmosStakingV1Beta1Query.QueryPoolRequest.create()
 
     try {
-      const response = await this.client.Pool(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryPoolResponse>(() =>
+          this.client.Pool(request),
+        )
 
       return ChainGrpcStakingTransformer.poolResponseToPool(response)
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Pool',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Pool',
         contextModule: this.module,
       })
     }
@@ -79,7 +91,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.Validators(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryValidatorsResponse>(
+          () => this.client.Validators(request),
+        )
 
       return ChainGrpcStakingTransformer.validatorsResponseToValidators(
         response,
@@ -88,12 +103,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Validators',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Validators',
         contextModule: this.module,
       })
     }
@@ -105,19 +122,24 @@ export class ChainGrpcStakingApi {
     request.validatorAddr = address
 
     try {
-      const response = await this.client.Validator(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryValidatorResponse>(() =>
+          this.client.Validator(request),
+        )
 
       return ChainGrpcStakingTransformer.validatorResponseToValidator(response)
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Validator',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Validator',
         contextModule: this.module,
       })
     }
@@ -142,7 +164,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.ValidatorDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryValidatorDelegationsResponse>(
+          () => this.client.ValidatorDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -151,12 +176,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorDelegations',
         contextModule: this.module,
       })
     }
@@ -181,7 +208,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.ValidatorDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryValidatorDelegationsResponse>(
+          () => this.client.ValidatorDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -194,12 +224,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorDelegations',
         contextModule: this.module,
       })
     }
@@ -224,7 +256,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.ValidatorUnbondingDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryValidatorUnbondingDelegationsResponse>(
+          () => this.client.ValidatorUnbondingDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -233,12 +268,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorUnbondingDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorUnbondingDelegations',
         contextModule: this.module,
       })
     }
@@ -263,7 +300,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.ValidatorUnbondingDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryValidatorUnbondingDelegationsResponse>(
+          () => this.client.ValidatorUnbondingDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -276,12 +316,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorUnbondingDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorUnbondingDelegations',
         contextModule: this.module,
       })
     }
@@ -300,7 +342,10 @@ export class ChainGrpcStakingApi {
     request.validatorAddr = validatorAddress
 
     try {
-      const response = await this.client.Delegation(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryDelegationResponse>(
+          () => this.client.Delegation(request),
+        )
 
       return ChainGrpcStakingTransformer.delegationResponseToDelegation(
         response,
@@ -309,12 +354,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Delegation',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Delegation',
         contextModule: this.module,
       })
     }
@@ -339,7 +386,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.DelegatorDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryDelegatorDelegationsResponse>(
+          () => this.client.DelegatorDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -348,12 +398,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Delegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Delegations',
         contextModule: this.module,
       })
     }
@@ -378,7 +430,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.DelegatorDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryDelegatorDelegationsResponse>(
+          () => this.client.DelegatorDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -391,12 +446,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Delegation',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Delegation',
         contextModule: this.module,
       })
     }
@@ -421,7 +478,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.ValidatorDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryValidatorDelegationsResponse>(
+          () => this.client.ValidatorDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -430,12 +490,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorDelegations',
         contextModule: this.module,
       })
     }
@@ -460,7 +522,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.ValidatorDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryValidatorDelegationsResponse>(
+          () => this.client.ValidatorDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -473,12 +538,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'ValidatorDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'ValidatorDelegations',
         contextModule: this.module,
       })
     }
@@ -503,7 +570,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.DelegatorUnbondingDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsResponse>(
+          () => this.client.DelegatorUnbondingDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -512,12 +582,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegatorUnbondingDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'DelegatorUnbondingDelegations',
         contextModule: this.module,
       })
     }
@@ -542,7 +614,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.DelegatorUnbondingDelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsResponse>(
+          () => this.client.DelegatorUnbondingDelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -555,12 +630,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'DelegatorUnbondingDelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'DelegatorUnbondingDelegations',
         contextModule: this.module,
       })
     }
@@ -584,7 +661,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.Redelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryRedelegationsResponse>(
+          () => this.client.Redelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
         response,
@@ -593,12 +673,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Redelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Redelegations',
         contextModule: this.module,
       })
     }
@@ -622,7 +704,10 @@ export class ChainGrpcStakingApi {
     }
 
     try {
-      const response = await this.client.Redelegations(request)
+      const response =
+        await this.retry<CosmosStakingV1Beta1Query.QueryRedelegationsResponse>(
+          () => this.client.Redelegations(request),
+        )
 
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
         response,
@@ -635,12 +720,14 @@ export class ChainGrpcStakingApi {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Redelegations',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Redelegations',
         contextModule: this.module,
       })
     }

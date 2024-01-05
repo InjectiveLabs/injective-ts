@@ -1,5 +1,7 @@
 # 🌟 Injective Protocol - Testing Utils
 
+Utilities and mock data for testing purposes.
+
 ---
 
 ## 📚 Installation
@@ -7,16 +9,6 @@
 ```bash
 yarn add @injectivelabs/test-utils
 ```
-
----
-
-## 📖 Documentation
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
-
-This documentation is currently under work in progress.
-
-🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
 ---
 

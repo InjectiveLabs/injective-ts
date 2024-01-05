@@ -31,8 +31,12 @@ import {
   getNetworkFromAddress,
   getEthereumExplorerUrl,
   getArbitrumExplorerUrl,
-  txNotPartOfPeggoDeposit,
   getBridgeTransactionType,
+  getPolygonExplorerUrl,
+  CosmosNetworks,
+} from './../../utils/bridge'
+import {
+  txNotPartOfPeggoDeposit,
   getCachedIBCTransactionState,
   txNotPartOfInjectivePeggyTxs,
   ibcTxNotPartOfInjectiveIbcTxs,
@@ -40,9 +44,8 @@ import {
   findEthereumTransactionByTxHash,
   findEthereumTransactionByTxHashes,
   findIBCTransactionByTimeoutTimestamp,
-} from './../../utils/bridge'
+} from './../utils/bridge'
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
-import { UiBridgeTransactionWithToken } from '../../types'
 
 export const convertCosmosWalletToUiBridgeTransaction = async ({
   transaction,
@@ -171,8 +174,8 @@ export const convertPeggoToUiBridgeTransaction = async ({
   return {
     txHash,
     type: getBridgeTransactionType(
-      BridgingNetwork.Injective,
       BridgingNetwork.Ethereum,
+      BridgingNetwork.Injective,
     ),
     amount: transaction.amount,
     blockHeight: transaction.blockHeight,
@@ -228,13 +231,17 @@ export const convertIBCTransferTxToUiBridgeTransaction = async ({
 }): Promise<UiBridgeTransaction> => {
   const txHash = transaction.txHashesList[0]
   const denom = transaction.denom.includes('transfer/channel')
-    ? (transaction.denom.split('/').pop() as string)
+    ? (transaction.denom.split('/').slice(2).join('/') as string)
     : transaction.denom
-  const bridgingNetwork = getNetworkFromAddress(transaction.receiver)
+  const destinationBridgingNetwork = getNetworkFromAddress(transaction.receiver)
+  const originBridgingNetwork = getNetworkFromAddress(transaction.sender)
 
   return {
     denom,
-    type: getBridgeTransactionType(BridgingNetwork.Injective, bridgingNetwork),
+    type: getBridgeTransactionType(
+      originBridgingNetwork,
+      destinationBridgingNetwork,
+    ),
     amount: transaction.amount,
     receiver: transaction.receiver,
     sender: transaction.sender,
@@ -364,9 +371,13 @@ export const convertWormholeToUiBridgeTransaction = async ({
   const isSolanaTransfer =
     transaction.source === BridgingNetwork.Solana ||
     transaction.destination === BridgingNetwork.Solana
+  const isPolygonTransfer =
+    transaction.source === BridgingNetwork.Polygon ||
+    transaction.destination === BridgingNetwork.Polygon
   const isEthereumDeposit = transaction.source === BridgingNetwork.EthereumWh
   const isSolanaDeposit = transaction.source === BridgingNetwork.Solana
   const isArbitrumDeposit = transaction.source === BridgingNetwork.Arbitrum
+  const isPolygonDeposit = transaction.source === BridgingNetwork.Polygon
 
   const solanaWhExplorerLink = isSolanaDeposit
     ? `${getSolanaExplorerUrl(network)}/tx/${transaction.txHash}`
@@ -380,16 +391,31 @@ export const convertWormholeToUiBridgeTransaction = async ({
     ? `${getArbitrumExplorerUrl(network)}/tx/${transaction.txHash}`
     : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
 
-  const whExplorerLink = isSolanaTransfer
-    ? solanaWhExplorerLink
-    : isArbitrumTransfer
-    ? arbitrumExplorerLink
-    : ethereumWhExplorerLink
+  const polygonExplorerLink = isPolygonDeposit
+    ? `${getPolygonExplorerUrl(network)}/tx/${transaction.txHash}`
+    : `${getExplorerUrl(network)}/transaction/${transaction.txHash}/`
 
-  const explorerLink =
-    isEthereumWhTransfer || isSolanaTransfer || isArbitrumTransfer
-      ? whExplorerLink
-      : transaction.explorerLink || ''
+  const getWhExplorerLink = () => {
+    if (isSolanaTransfer) {
+      return solanaWhExplorerLink
+    }
+
+    if (isArbitrumTransfer) {
+      return arbitrumExplorerLink
+    }
+
+    if (isPolygonTransfer) {
+      return polygonExplorerLink
+    }
+
+    if (isEthereumWhTransfer) {
+      return ethereumWhExplorerLink
+    }
+
+    return transaction.explorerLink || ''
+  }
+
+  const explorerLink = getWhExplorerLink()
 
   return {
     type: getBridgeTransactionType(transaction.source, transaction.destination),
@@ -408,6 +434,9 @@ export const convertWormholeToUiBridgeTransaction = async ({
   }
 }
 
+/**
+ * @deprecated - way to abstract for usage
+ */
 export const computeLatestTransactions = ({
   latestTransactions = [],
   peggoUserDeposits = [],
@@ -423,11 +452,14 @@ export const computeLatestTransactions = ({
 }): UiBridgeTransaction[] =>
   latestTransactions
     .map((transaction: UiBridgeTransaction) => {
-      const isEthereumTx =
-        transaction.sender.startsWith('0x') ||
-        transaction.receiver.startsWith('0x')
+      const [origin, destination] = transaction.type.split('-') as [
+        BridgingNetwork,
+        BridgingNetwork,
+      ]
+      const isIBCTransaction =
+        CosmosNetworks.includes(origin) || CosmosNetworks.includes(destination)
 
-      if (isEthereumTx) {
+      if (!isIBCTransaction) {
         return transaction
       }
 
@@ -445,123 +477,6 @@ export const computeLatestTransactions = ({
       ]),
     )
 
-export const mergeAllTransactions = ({
-  latestTransactions = [],
-  peggoUserDeposits = [],
-  ibcTransferBridgeTransactions = [],
-  peggyDepositBridgeTransactions = [],
-  peggyWithdrawalBridgeTransactions = [],
-}: {
-  latestTransactions?: UiBridgeTransaction[]
-  peggoUserDeposits?: UiBridgeTransaction[]
-  ibcTransferBridgeTransactions?: UiBridgeTransaction[]
-  peggyDepositBridgeTransactions?: UiBridgeTransaction[]
-  peggyWithdrawalBridgeTransactions?: UiBridgeTransaction[]
-}): UiBridgeTransaction[] => {
-  const filteredPeggoUserDeposits = peggoUserDeposits.filter(
-    txNotPartOfInjectivePeggyTxs(peggyDepositBridgeTransactions),
-  )
-
-  return [
-    ...latestTransactions,
-    ...filteredPeggoUserDeposits,
-    ...ibcTransferBridgeTransactions,
-    ...peggyDepositBridgeTransactions,
-    ...peggyWithdrawalBridgeTransactions,
-  ]
-}
-
-export const getLatestSelectedTransaction = ({
-  selectedTransaction,
-  peggoUserDeposits,
-  transactions,
-}: {
-  selectedTransaction: UiBridgeTransaction
-  peggoUserDeposits: UiBridgeTransaction[]
-  transactions: UiBridgeTransaction[]
-}): UiBridgeTransaction => {
-  if (!selectedTransaction.receiver || !selectedTransaction.sender) {
-    return selectedTransaction
-  }
-
-  const newSelectedTransaction =
-    peggoUserDeposits.find((peggoTransaction) =>
-      findEthereumTransactionByTxHash(peggoTransaction, selectedTransaction),
-    ) || selectedTransaction
-
-  const selectedTransactionExistInTransactions = transactions.find(
-    (transaction: UiBridgeTransaction) =>
-      findEthereumTransactionByNonce(transaction, newSelectedTransaction) ||
-      findEthereumTransactionByTxHashes(transaction, newSelectedTransaction) ||
-      findIBCTransactionByTimeoutTimestamp(transaction, newSelectedTransaction),
-  )
-
-  return selectedTransactionExistInTransactions || newSelectedTransaction
-}
-
-/**
- * BE returns 2 in progress transaction
- **/
-export const removeDuplicatedTransactionByTxHash = (
-  ibcTransferBridgeTransactions: UiBridgeTransactionWithToken[],
-) => {
-  const filteredList = ibcTransferBridgeTransactions.reduce(
-    (
-      list: Record<string, UiBridgeTransactionWithToken>,
-      transaction: UiBridgeTransactionWithToken,
-    ) => {
-      if (!transaction.txHashes || transaction.txHashes.length === 0) {
-        return list
-      }
-
-      const initialTxHash = transaction.txHashes[0]
-
-      if (!list[initialTxHash]) {
-        list[initialTxHash] = transaction
-      } else if (
-        [
-          BridgeTransactionState.Completed,
-          BridgeTransactionState.Failed,
-        ].includes(transaction.state)
-      ) {
-        list[initialTxHash] = transaction
-      }
-
-      return Object.assign({}, list)
-    },
-    {} as Record<string, UiBridgeTransactionWithToken>,
-  )
-
-  return Object.values(filteredList)
-}
-
-/**
- * remove stuck in progress transactions
- **/
-export const removeDuplicatedInProgressIbxTransfers = (
-  ibcTransferBridgeTransactions: UiBridgeTransactionWithToken[],
-): UiBridgeTransactionWithToken[] => {
-  const transactions = removeDuplicatedTransactionByTxHash(
-    ibcTransferBridgeTransactions,
-  )
-
-  return transactions.filter(({ txHashes, state }) => {
-    if (state !== BridgeTransactionState.Submitted) {
-      return true
-    }
-
-    const [txHash] = txHashes as string[]
-
-    return (
-      transactions.find(
-        (transaction) =>
-          transaction.state !== BridgeTransactionState.Submitted &&
-          transaction.txHashes?.includes(txHash),
-      ) === undefined
-    )
-  })
-}
-
 export class UiBridgeTransformer {
   private network: Network
 
@@ -571,17 +486,134 @@ export class UiBridgeTransformer {
 
   static getNetworkFromAddress = getNetworkFromAddress
 
-  static computeLatestTransactions = computeLatestTransactions
+  static mergeAllTransactions = ({
+    latestTransactions = [],
+    peggoUserDeposits = [],
+    ibcTransferBridgeTransactions = [],
+    peggyDepositBridgeTransactions = [],
+    peggyWithdrawalBridgeTransactions = [],
+  }: {
+    latestTransactions?: UiBridgeTransaction[]
+    peggoUserDeposits?: UiBridgeTransaction[]
+    ibcTransferBridgeTransactions?: UiBridgeTransaction[]
+    peggyDepositBridgeTransactions?: UiBridgeTransaction[]
+    peggyWithdrawalBridgeTransactions?: UiBridgeTransaction[]
+  }): UiBridgeTransaction[] => {
+    const filteredPeggoUserDeposits = peggoUserDeposits.filter(
+      txNotPartOfInjectivePeggyTxs(peggyDepositBridgeTransactions),
+    )
 
-  static mergeAllTransactions = mergeAllTransactions
+    return [
+      ...latestTransactions,
+      ...filteredPeggoUserDeposits,
+      ...ibcTransferBridgeTransactions,
+      ...peggyDepositBridgeTransactions,
+      ...peggyWithdrawalBridgeTransactions,
+    ]
+  }
 
-  static getLatestSelectedTransaction = getLatestSelectedTransaction
+  /**
+   * We use this method to update the
+   * current transaction state based on
+   * the transactions fetched from the API
+   */
+  static getLatestSelectedTransaction = ({
+    selectedTransaction,
+    peggoUserDeposits,
+    transactions,
+  }: {
+    selectedTransaction: UiBridgeTransaction
+    peggoUserDeposits: UiBridgeTransaction[]
+    transactions: UiBridgeTransaction[]
+  }): UiBridgeTransaction => {
+    if (!selectedTransaction.receiver || !selectedTransaction.sender) {
+      return selectedTransaction
+    }
 
-  static removeDuplicatedTransactionByTxHash =
-    removeDuplicatedTransactionByTxHash
+    const newSelectedTransaction =
+      peggoUserDeposits.find((peggoTransaction) =>
+        findEthereumTransactionByTxHash(peggoTransaction, selectedTransaction),
+      ) || selectedTransaction
 
-  static removeDuplicatedInProgressIbxTransfers =
-    removeDuplicatedInProgressIbxTransfers
+    const selectedTransactionExistInTransactions = transactions.find(
+      (transaction: UiBridgeTransaction) =>
+        findEthereumTransactionByNonce(transaction, newSelectedTransaction) ||
+        findEthereumTransactionByTxHashes(
+          transaction,
+          newSelectedTransaction,
+        ) ||
+        findIBCTransactionByTimeoutTimestamp(
+          transaction,
+          newSelectedTransaction,
+        ),
+    )
+
+    return selectedTransactionExistInTransactions || newSelectedTransaction
+  }
+
+  /**
+   * BE returns 2 in progress transaction
+   **/
+  static removeDuplicatedTransactionByTxHash = (
+    ibcTransferBridgeTransactions: UiBridgeTransaction[],
+  ) => {
+    const filteredList = ibcTransferBridgeTransactions.reduce(
+      (
+        list: Record<string, UiBridgeTransaction>,
+        transaction: UiBridgeTransaction,
+      ) => {
+        if (!transaction.txHashes || transaction.txHashes.length === 0) {
+          return list
+        }
+
+        const initialTxHash = transaction.txHashes[0]
+
+        if (!list[initialTxHash]) {
+          list[initialTxHash] = transaction
+        } else if (
+          [
+            BridgeTransactionState.Completed,
+            BridgeTransactionState.Failed,
+          ].includes(transaction.state)
+        ) {
+          list[initialTxHash] = transaction
+        }
+
+        return Object.assign({}, list)
+      },
+      {} as Record<string, UiBridgeTransaction>,
+    )
+
+    return Object.values(filteredList)
+  }
+
+  /**
+   * remove stuck in progress transactions
+   **/
+  static removeDuplicatedInProgressIbxTransfers = (
+    ibcTransferBridgeTransactions: UiBridgeTransaction[],
+  ): UiBridgeTransaction[] => {
+    const transactions =
+      UiBridgeTransformer.removeDuplicatedTransactionByTxHash(
+        ibcTransferBridgeTransactions,
+      )
+
+    return transactions.filter(({ txHashes, state }) => {
+      if (state !== BridgeTransactionState.Submitted) {
+        return true
+      }
+
+      const [txHash] = txHashes as string[]
+
+      return (
+        transactions.find(
+          (transaction) =>
+            transaction.state !== BridgeTransactionState.Submitted &&
+            transaction.txHashes?.includes(txHash),
+        ) === undefined
+      )
+    })
+  }
 
   async convertCosmosWalletToUiBridgeTransaction(
     transaction: KeplrWalletResponse,

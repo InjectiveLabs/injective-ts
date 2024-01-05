@@ -5,7 +5,7 @@ import { ChainGrpcBankTransformer } from '../transformers'
 import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcBankApi = new ChainGrpcBankApi(endpoints.grpc)
 
 describe('ChainGrpcBankApi', () => {
@@ -64,6 +64,40 @@ describe('ChainGrpcBankApi', () => {
   test('fetchTotalSupply', async () => {
     try {
       const response = await chainGrpcBankApi.fetchTotalSupply({ limit: 1 })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcBankApi.fetchTotalSupply => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchSupplyOf', async () => {
+    try {
+      const response = await chainGrpcBankApi.fetchSupplyOf('inj')
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<typeof ChainGrpcBankTransformer.grpcCoinToCoin>
+        >(response),
+      )
+    } catch (e) {
+      console.error('ChainGrpcBankApi.fetchSupplyOf => ' + (e as any).message)
+    }
+  })
+
+  test('fetchAllTotalSupply', async () => {
+    try {
+      const response = await chainGrpcBankApi.fetchAllTotalSupply()
 
       expect(response).toBeDefined()
       expect(response).toEqual(

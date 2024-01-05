@@ -68,7 +68,7 @@ export abstract class ConcreteException extends Error implements Exception {
   /**
    * The original message of the error
    */
-  public errorMessage: string = ''
+  public originalMessage: string = ''
 
   constructor(error: Error, context?: ErrorContext) {
     super(error.message)
@@ -85,7 +85,7 @@ export abstract class ConcreteException extends Error implements Exception {
     this.setName(this.errorClass || this.constructor.name)
     this.setStack(error.stack || '')
     this.setMessage(error.message)
-    this.errorMessage = error.message
+    this.originalMessage = error.message
   }
 
   public parseContext(errorContext?: ErrorContext) {
@@ -114,6 +114,10 @@ export abstract class ConcreteException extends Error implements Exception {
     this.context = context
   }
 
+  public setOriginalMessage(message: string) {
+    this.originalMessage = message
+  }
+
   public setStack(stack: string) {
     super.stack = stack
     this.stack = stack
@@ -139,7 +143,7 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public toOriginalError(): Error {
-    const error = new Error(this.errorMessage)
+    const error = new Error(this.originalMessage)
     error.stack = this.stack
     error.name = this.name || ''
 
@@ -159,6 +163,7 @@ export abstract class ConcreteException extends Error implements Exception {
 
     const error = new Error(
       `${this.message} | ${JSON.stringify({
+        originalMessage: this.originalMessage,
         message: this.message,
         errorClass: name,
         code: this.code,
@@ -166,6 +171,7 @@ export abstract class ConcreteException extends Error implements Exception {
         context: this.context,
         contextModule: this.contextModule,
         contextCode: this.contextCode,
+        stack: (this.stack || '').split('\n').map((line) => line.trim()),
       })}`,
     )
     error.stack = this.stack
@@ -183,12 +189,14 @@ export abstract class ConcreteException extends Error implements Exception {
 
     return {
       message: this.message,
+      originalMessage: this.originalMessage,
       errorClass: name,
       code: this.code,
       type: this.type,
       context: this.context,
       contextModule: this.contextModule,
       contextCode: this.contextCode,
+      stack: (this.stack || '').split('\n').map((line) => line.trim()),
     }
   }
 

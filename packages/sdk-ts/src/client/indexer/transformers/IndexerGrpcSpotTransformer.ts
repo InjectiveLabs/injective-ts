@@ -7,6 +7,7 @@ import {
 } from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
 import {
+  AtomicSwap,
   SpotTrade,
   SpotMarket,
   GrpcSpotTrade,
@@ -15,6 +16,7 @@ import {
   GrpcSpotMarketInfo,
   GrpcSpotLimitOrder,
   GrpcSpotOrderHistory,
+  GrpcAtomicSwap,
 } from '../types/spot'
 import {
   Orderbook,
@@ -298,5 +300,36 @@ export class IndexerGrpcSpotTransformer {
     return trades.map((trade) =>
       IndexerGrpcSpotTransformer.grpcTradeToTrade(trade),
     )
+  }
+
+  static grpcAtomicSwapHistoryListToAtomicSwapHistoryList(
+    response: InjectiveSpotExchangeRpc.AtomicSwapHistoryResponse,
+  ) {
+    const swapHistory = response.data
+    const pagination = response.paging
+
+    return {
+      swapHistory: swapHistory.map(
+        IndexerGrpcSpotTransformer.grpcAtomicSwapHistoryToAtomicSwapHistory,
+      ),
+      pagination: grpcPagingToPaging(pagination),
+    }
+  }
+
+  static grpcAtomicSwapHistoryToAtomicSwapHistory(
+    swapHistory: GrpcAtomicSwap,
+  ): AtomicSwap {
+    return {
+      sender: swapHistory.sender,
+      route: swapHistory.route,
+      sourceCoin: swapHistory.sourceCoin,
+      destinationCoin: swapHistory.destCoin,
+      fees: swapHistory.fees,
+      contractAddress: swapHistory.contractAddress,
+      indexBySender: swapHistory.indexBySender,
+      indexBySenderContract: swapHistory.indexBySenderContract,
+      txHash: swapHistory.txHash,
+      executedAt: parseInt(swapHistory.executedAt, 10),
+    }
   }
 }

@@ -15,6 +15,7 @@ import {
   ChainBankErrorCodes,
   ChainDistributionErrorCodes,
   ChainWasmErrorCodes,
+  ChainAuthZErrorCodes,
 } from './types'
 
 const auctionErrorMap = {
@@ -22,6 +23,29 @@ const auctionErrorMap = {
     'The gas limit provided in the transaction is not valid',
   [ChainAuctionErrorCodes.ErrBidRound]:
     'The gas limit provided in the transaction is not valid',
+}
+
+const authZErrorMap = {
+  // ErrNoAuthorizationFound error if there is no authorization found given a grant key
+  [ChainAuthZErrorCodes.ErrNoAuthorizationFound]: 'Authorization not found',
+  // ErrInvalidExpirationTime error if the set expiration time is in the past
+  [ChainAuthZErrorCodes.ErrInvalidExpirationTime]:
+    'Expiration time of authorization should be more than current time',
+  // ErrUnknownAuthorizationType error for unknown authorization type
+  [ChainAuthZErrorCodes.ErrUnknownAuthorizationType]:
+    'Unknown authorization type',
+  // ErrNoGrantKeyFound error if the requested grant key does not exist
+  [ChainAuthZErrorCodes.ErrNoGrantKeyFound]: 'Grant key not found',
+  // ErrAuthorizationExpired error if the authorization has expired
+  [ChainAuthZErrorCodes.ErrAuthorizationExpired]: 'Authorization expired',
+  // ErrGranteeIsGranter error if the grantee and the granter are the same
+  [ChainAuthZErrorCodes.ErrGranteeIsGranter]:
+    'Grantee and granter should be different',
+  // ErrAuthorizationNumOfSigners error if an authorization message does not have only one signer
+  [ChainAuthZErrorCodes.ErrAuthorizationNumOfSigners]:
+    'Authorization can be given to msg with only one signer',
+  // ErrNegativeMaxTokens error if the max tokens is negative
+  [ChainAuthZErrorCodes.ErrNegativeMaxTokens]: 'Max tokens should be positive',
 }
 
 const cosmosErrorMap = {
@@ -254,6 +278,13 @@ const exchangeErrorMap = {
     'The current feature has been disabled',
   [ChainExchangeModuleErrorCode.ErrTooMuchOrderMargin]:
     'Order has too much margin',
+  [ChainExchangeModuleErrorCode.ErrBadSubaccountNonce]:
+    'Subaccount nonce is invalid',
+  [ChainExchangeModuleErrorCode.ErrInsufficientFunds]: 'Insufficient funds',
+  [ChainExchangeModuleErrorCode.ErrPostOnlyMode]:
+    'Client order id already exists',
+  [ChainExchangeModuleErrorCode.ErrInvalidCid]:
+    'Client order id is invalid. Max length is 36 chars',
 }
 
 const insuranceErrorMap = {
@@ -548,7 +579,7 @@ const wasmErrorMap = {
   [ChainWasmErrorCodes.ErrAccountExists]: 'contract account already exists',
   [ChainWasmErrorCodes.ErrInstantiateFailed]:
     'instantiate wasm contract failed',
-  [ChainWasmErrorCodes.ErrExecuteFailed]: 'execute wasm contract failed',
+  [ChainWasmErrorCodes.ErrExecuteFailed]: 'Contract execution failed',
   [ChainWasmErrorCodes.ErrGasLimit]: 'insufficient gas',
   [ChainWasmErrorCodes.ErrInvalidGenesis]: 'invalid genesis',
   [ChainWasmErrorCodes.ErrNotFound]: 'not found',
@@ -572,6 +603,7 @@ export const chainModuleCodeErrorMessagesMap: Record<
   string,
   Record<number, string>
 > = {
+  [TransactionChainErrorModule.AuthZ]: authZErrorMap,
   [TransactionChainErrorModule.Auction]: auctionErrorMap,
   [TransactionChainErrorModule.CosmosSdk]: cosmosErrorMap,
   [TransactionChainErrorModule.Exchange]: exchangeErrorMap,
@@ -640,6 +672,13 @@ export const chainErrorMessagesMap: Record<
   'invalid address': {
     message: 'The address is not valid',
     code: ChainCosmosErrorCode.ErrInvalidAddress,
+    module: TransactionChainErrorModule.CosmosSdk,
+  },
+
+  'cosmos account not exists': {
+    message:
+      'You need to create your address on Injective by transferring funds',
+    code: ChainCosmosErrorCode.ErrInsufficientFee,
     module: TransactionChainErrorModule.CosmosSdk,
   },
 
@@ -807,12 +846,6 @@ export const chainErrorMessagesMap: Record<
   'feature not supported': {
     message: 'The feature is not supported',
     code: ChainCosmosErrorCode.ErrNotSupported,
-    module: TransactionChainErrorModule.CosmosSdk,
-  },
-
-  'not found': {
-    message: 'not found',
-    code: ChainCosmosErrorCode.ErrNotFound,
     module: TransactionChainErrorModule.CosmosSdk,
   },
 
@@ -1915,7 +1948,7 @@ export const chainErrorMessagesMap: Record<
   },
   'execute wasm contract failed': {
     code: ChainWasmErrorCodes.ErrExecuteFailed,
-    message: 'execute wasm contract failed',
+    message: 'Contract execution failed',
     module: TransactionChainErrorModule.Wasm,
   },
   'insufficient gas': {
@@ -1988,9 +2021,28 @@ export const chainErrorMessagesMap: Record<
     message: 'unknown message from the contract',
     module: TransactionChainErrorModule.Wasm,
   },
+
   'invalid event': {
     code: ChainWasmErrorCodes.ErrInvalidEvent,
     message: 'invalid event',
     module: TransactionChainErrorModule.Wasm,
+  },
+
+  'authorization not found': {
+    code: ChainAuthZErrorCodes.ErrNoAuthorizationFound,
+    message: 'Authorization not found',
+    module: TransactionChainErrorModule.Wasm,
+  },
+
+  'expiration time of authorization': {
+    code: ChainAuthZErrorCodes.ErrAuthorizationExpired,
+    message: 'Authorization expired',
+    module: TransactionChainErrorModule.Wasm,
+  },
+
+  'not found': {
+    message: 'not found',
+    code: ChainCosmosErrorCode.ErrNotFound,
+    module: TransactionChainErrorModule.CosmosSdk,
   },
 }

@@ -8,6 +8,7 @@ export interface MitoHolders {
   updatedAt: number
   lpAmountPercentage: number
   redemptionLockTime: string
+  stakedAmount: string
 }
 
 export interface MitoPriceSnapshot {
@@ -43,14 +44,17 @@ export interface MitoVault {
   marketId: string
   currentTvl: number
   profits?: MitoChanges
-  tvlChanges?: MitoChanges
   updatedAt: number
   vaultType: string
   lpTokenPrice: number
   subaccountInfo?: MitoSubaccountBalance
   masterContractAddress: string
   totalLpAmount: string
+  slug: string
+  createdAt: number
   notionalValueCap: string
+  tvlChanges?: MitoChanges
+  apy: number
 }
 
 export interface MitoSubscription {
@@ -69,6 +73,7 @@ export interface MitoPortfolio {
   pnl: number
   totalValueChartList: MitoPriceSnapshot[]
   pnlChartList: MitoPriceSnapshot[]
+  updatedAt: number
 }
 
 export interface MitoLeaderboardEntry {
@@ -103,13 +108,168 @@ export interface MitoTransfer {
   tidByAccount: number
 }
 
+export interface MitoGauge {
+  id: string
+  owner: string
+  startTimestamp: number
+  endTimestamp: number
+  rewardTokens: Coin[]
+  lastDistribution: number
+}
+
+export interface MitoStakingPool {
+  vaultName: string
+  vaultAddress: string
+  stakeDenom: string
+  gauges: MitoGauge[]
+  apr: number
+  totalLiquidity: number
+  stakingAddress: string
+  aprBreakdown: Record<string, number>
+}
+
+export interface MitoStakingReward {
+  vaultName: string
+  vaultAddress: string
+  stakedAmount: Coin | undefined
+  apr: number
+  claimableRewards: Coin[]
+  lockTimestamp: number
+  lockedAmount: Coin | undefined
+}
+
+export interface MitoStakingActivity {
+  stakeAmount: Coin | undefined
+  vaultAddress: string
+  action: string
+  txHash: string
+  rewardedTokens: Coin[]
+  timestamp: number
+  staker: string
+  numberByAccount: number
+}
+
+export interface MitoMission {
+  id: string
+  points: string
+  completed: boolean
+  accruedPoints: string
+  updatedAt: number
+  progress: number
+  expected: number
+}
+
+export interface MitoMissionLeaderboardEntry {
+  address: string
+  accruedPoints: string
+}
+
+export interface MitoMissionLeaderboard {
+  entries: MitoMissionLeaderboardEntry[]
+  updatedAt: number
+  rank?: string
+}
+
+export interface MitoTokenInfo {
+  denom: string
+  supply: string
+  symbol: string
+  decimal: number
+  logoUrl: string
+}
+
+export interface MitoIDOProgress {
+  status: string
+  timestamp: number
+}
+
+export interface MitoStakeToSubscription {
+  stakedAmount: string
+  subscribableAmount: string
+}
+
+export interface MitoIDO {
+  startTime: number
+  endTime: number
+  owner: string
+  status: string
+  tokenInfo?: MitoTokenInfo
+  capPerAddress: string
+  contractAddress: string
+  subscribedAmount: string
+  projectTokenAmount: string
+  targetAmountInQuoteDenom: string
+  secondBeforeStartToSetQuotePrice: number
+  targetAmountInUsd: string
+  tokenPrice: number
+  isAccountWhiteListed: boolean
+  name: string
+  progress: MitoIDOProgress[]
+  quoteDenom: string
+  stakeToSubscription: MitoStakeToSubscription[]
+  useWhitelist: boolean
+  marketId: string
+  vaultAddress: string
+}
+
+export interface MitoIDOSubscriber {
+  address: string
+  subscribedCoin?: Coin
+  lastSubscribeTime: number
+  estimateTokenReceived?: Coin
+  estimateLpAmount?: Coin | undefined
+  estimateRefundAmount?: Coin | undefined
+  createdAt: number
+}
+
+export interface MitoIDOSubscriptionActivity {
+  address: string
+  subscribedCoin?: Coin
+  usdValue: number
+  timestamp: number
+  txHash: string
+}
+
+export interface MitoIDOSubscription {
+  maxSubscriptionCoin?: Coin
+  committedAmount: string
+  price: number
+  claimableCoins: Coin[]
+  rewardClaimed: boolean
+  tokenInfo?: MitoTokenInfo
+  quoteDenom: string
+  updatedAt: number
+  stakedAmount: string
+  claimTxHash?: string
+  ownerClaimableCoins: Coin[]
+  marketId: string
+}
+
+export interface MitoWhitelistAccount {
+  accountAddress: string
+  updatedAt: number
+}
+
+export type GrpcMitoIDO = MitoApi.IDO
 export type GrpcMitoVault = MitoApi.Vault
+export type GrpcMitoMission = MitoApi.Mission
 export type GrpcMitoChanges = MitoApi.Changes
 export type GrpcMitoHolders = MitoApi.Holders
+export type GrpcMitoStakingGauge = MitoApi.Gauge
+export type GrpcMitoTokenInfo = MitoApi.TokenInfo
 export type GrpcMitoPagination = MitoApi.Pagination
+export type GrpcMitoIDOProgress = MitoApi.IDOProgress
+export type GrpcMitoStakingPool = MitoApi.StakingPool
 export type GrpcMitoDenomBalance = MitoApi.DenomBalance
 export type GrpcMitoSubscription = MitoApi.Subscription
 export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
+export type GrpcMitoIDOSubscriber = MitoApi.IDOSubscriber
+export type GrpcMitoIDOSubscription = MitoApi.IDOSubscription
 export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
 export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch
+export type GrpcMitoStakingStakingReward = MitoApi.StakingReward
 export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance
+export type GrpcMitoWhitelistAccount = MitoApi.WhitelistAccount
+export type GrpcMitoStakingStakingActivity = MitoApi.StakingActivity
+export type GrpcMitoMissionLeaderboardEntry = MitoApi.MissionLeaderboardEntry
+export type GrpcMitoIDOSubscriptionActivity = MitoApi.IDOSubscriptionActivity

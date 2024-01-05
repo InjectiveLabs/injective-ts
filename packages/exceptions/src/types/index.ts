@@ -85,7 +85,7 @@ export interface Exception {
   /**
    * The original message of the error
    */
-  errorMessage: string
+  originalMessage: string
 
   parse?(): void
 

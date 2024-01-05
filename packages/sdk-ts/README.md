@@ -6,18 +6,18 @@
 
 _Accessing decentralized finance through TypeScript (for Web, Node and React Native environment)_
 
-`@injectivelabs/sdk-ts` is a TypeScript SDK for writing applications on top of the Injective chain in both a Node.js,  browser and react native environment.
+`@injectivelabs/sdk-ts` is a TypeScript SDK for writing applications on top of the Injective chain in both a Node.js, browser and react native environment.
 
 <p align="center">
-  <a href="https://github.com/InjectiveLabs/injective-ts/wiki" target="_blank"><strong>Documentation</strong></a>
+  <a href="https://docs.ts.injective.network" target="_blank"><strong>Documentation</strong></a>
   ·
-  <a href="https://github.com/InjectiveLabs/injective-sdk-ts-example" target="_blank">Examples</a>
+  <a href="https://github.com/InjectiveLabs/injective-ts-examples" target="_blank">Examples</a>
   ·
   <a href="https://injectivelabs.github.io/injective-ts/modules/_injectivelabs_sdk_ts.html" target="_blank">API Reference</a>
   ·
   <a href="https://www.npmjs.com/package/@injectivelabs/sdk-ts" target="_blank">NPM Package</a>
   ·
-  <a href="https://github.com/InjectiveLabs/injective-ts/wiki" target="_blank">GitHub</a>
+  <a href="https://github.com/InjectiveLabs/injective-ts" target="_blank">GitHub</a>
 </p>
 
 ### ✨ Features
@@ -30,7 +30,6 @@ _Accessing decentralized finance through TypeScript (for Web, Node and React Nat
 
 We highly suggest using the `@injectivelabs/sdk-ts` with TypeScript, or JavaScript in a code editor that has support for type declarations, so you can take advantage of the helpful type hints that are included with the package.
 
-
 ### 📚 Installation
 
 ```bash
@@ -41,21 +40,8 @@ yarn add @injectivelabs/sdk-ts
 
 ## 📖 Documentation
 
-There are two pieces of the `sdk-ts` - **querying a data source** and **making transactions**.
-
-### Querying a data source
-
-Read more and find example usages on our [Querying Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/02Querying)
-
-### Making Transactions
-
-Read more and find example usages on our [Transactions Wiki](https://github.com/InjectiveLabs/injective-ts/wiki/03Transactions)
-
----
-
-## 📜 Contribution
-
-**Contribution guides and practices will be available once there is a stable foundation of the whole package set within the `injective-ts` repo.**
+- Read more and find example usages on our [Querying Docs](https://docs.ts.injective.network/querying)
+- Read more and find example usages on our [Transactions Docs](https://docs.ts.injective.network/transactions)
 
 ---
 
@@ -80,7 +66,6 @@ Originally released by Injective Labs Inc. under: <br />
 Apache License <br />
 Version 2.0, January 2004 <br />
 http://www.apache.org/licenses/
-
 
 <p>&nbsp;</p>
 <div align="center">

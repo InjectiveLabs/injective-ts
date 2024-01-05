@@ -24,7 +24,7 @@ import { getErrorMessage } from '../../../../utils/helpers'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**
- * It is recommended to use TxRestClient instead of TxRestApi
+ * It is recommended to use TxGrpcClient instead of TxRestApi
  */
 export class TxRestApi implements TxConcreteApi {
   public httpClient: HttpClient
@@ -260,6 +260,7 @@ export class TxRestApi implements TxConcreteApi {
         if (error.code === 'ECONNABORTED') {
           throw new HttpRequestException(new Error(error.message), {
             code: StatusCodes.REQUEST_TOO_LONG,
+            context: endpoint,
             method: HttpRequestMethod.Get,
           })
         }
@@ -276,6 +277,7 @@ export class TxRestApi implements TxConcreteApi {
       }
 
       throw new HttpRequestException(new Error((error as any).message), {
+        context: endpoint,
         code: UnspecifiedErrorCode,
         contextModule: HttpRequestMethod.Get,
       })
@@ -307,6 +309,7 @@ export class TxRestApi implements TxConcreteApi {
 
       throw new HttpRequestException(new Error((error as any).message), {
         code: UnspecifiedErrorCode,
+        context: endpoint,
         contextModule: HttpRequestMethod.Post,
       })
     }

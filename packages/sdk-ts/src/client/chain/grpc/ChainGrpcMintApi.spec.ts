@@ -2,7 +2,7 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcMintApi } from './ChainGrpcMintApi'
 import { ChainGrpcMintTransformer } from '../transformers'
 
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcMintApi = new ChainGrpcMintApi(endpoints.grpc)
 
 describe('ChainGrpcMintApi', () => {

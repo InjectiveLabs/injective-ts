@@ -2,9 +2,9 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcGovApi } from './ChainGrpcGovApi'
 // import { mockFactory } from '@injectivelabs/test-utils'
 import { ChainGrpcGovTransformer } from '../transformers'
-import { CosmosGovV1Beta1Gov } from '@injectivelabs/core-proto-ts'
+import { CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
 
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcGovApi = new ChainGrpcGovApi(endpoints.grpc)
 const proposalId = 1
 
@@ -31,7 +31,7 @@ describe('ChainGrpcGovApi', () => {
   test('fetchProposals', async () => {
     try {
       const response = await chainGrpcGovApi.fetchProposals({
-        status: CosmosGovV1Beta1Gov.ProposalStatus.PROPOSAL_STATUS_PASSED,
+        status: CosmosGovV1Gov.ProposalStatus.PROPOSAL_STATUS_PASSED,
       })
 
       if (response.proposals.length === 0) {

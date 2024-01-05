@@ -2,6 +2,7 @@ import { Token } from '@injectivelabs/token-metadata'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import type { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import { Coin } from '@injectivelabs/ts-types'
 
 export interface IBCTransferTx {
   sender: string
@@ -204,6 +205,7 @@ export interface ExplorerValidator {
   timestamp: string
   uptimesList: ValidatorUptime[]
   slashingEventsList: ValidatorSlashingEvent[]
+  imageUrl: string
 }
 
 export interface CW20Message {
@@ -243,6 +245,14 @@ export interface Contract {
   admin?: string
   initMessage?: CW20Message
   currentMigrateMessage?: CW20Message
+  cw20_metadata?: {
+    token_info?: {
+      name: string
+      symbol: string
+      decimals: number
+      total_supply: string
+    }
+  }
 }
 
 export interface ContractTransaction {
@@ -253,6 +263,22 @@ export interface ContractTransaction {
   fee: BigNumberInBase
   height: number
   time: number
+  data: string
+  memo: string
+  tx_number: number
+  error_log: string
+}
+
+export interface ContractTransactionWithMessages extends ContractTransaction {
+  messages: Array<{
+    type: string
+    value: {
+      sender: string
+      contract: string
+      msg: Record<string, any>
+      funds: string
+    }
+  }>
 }
 
 export interface WasmCode {
@@ -266,6 +292,22 @@ export interface WasmCode {
   checksum?: CosmWasmChecksum
   permission?: CosmWasmPermission
   proposalId?: number
+}
+
+export interface BankTransferFromExplorerApiResponse {
+  sender: string
+  recipient: string
+  amounts: Coin[]
+  block_number: number
+  block_timestamp: string
+}
+
+export interface BankTransfer {
+  sender: string
+  recipient: string
+  amounts: Coin[]
+  blockNumber: number
+  blockTimestamp: number
 }
 
 export type GrpcIBCTransferTx = InjectiveExplorerRpc.IBCTransferTx

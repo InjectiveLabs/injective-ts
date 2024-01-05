@@ -6,7 +6,7 @@ import { SpotMarket } from '../types'
 import { IndexerGrpcSpotApi } from './IndexerGrpcSpotApi'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetK8s)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcSpotApi = new IndexerGrpcSpotApi(endpoints.indexer)
 
 describe('IndexerGrpcSpotApi', () => {
@@ -234,4 +234,38 @@ describe('IndexerGrpcSpotApi', () => {
       )
     }
   })
+
+  /**
+   * Resurrect this test once fetchAtomicSwapHistory hits mainnet
+   * Since this test suite is pointed at mainnet
+   */
+  // test('fetchAtomicSwapHistory', async () => {
+  //   try {
+  //     const response = await indexerGrpcSpotApi.fetchAtomicSwapHistory({
+  //       address: injectiveAddress,
+  //       contractAddress: swapContractAddress,
+  //       pagination: {
+  //         fromNumber: 1,
+  //         toNumber: 11,
+  //       },
+  //     })
+  //     console.log({ response })
+  //     if (response.swapHistory.length === 0) {
+  //       console.warn('fetchAtomicSwapHistory.swapHistoryIsEmptyArray')
+  //     }
+
+  //     expect(response).toBeDefined()
+  //     expect(response).toEqual(
+  //       expect.objectContaining<
+  //         ReturnType<
+  //           typeof IndexerGrpcSpotTransformer.grpcAtomicSwapHistoryListToAtomicSwapHistoryList
+  //         >
+  //       >(response),
+  //     )
+  //   } catch (e) {
+  //     console.error(
+  //       'IndexerGrpcSpotApi.fetchAtomicSwapHistory => ' + (e as any).message,
+  //     )
+  //   }
+  // })
 })

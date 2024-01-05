@@ -14,15 +14,15 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxRestApi, TxResponse } from '@injectivelabs/sdk-ts'
+import { TxRestApi, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   CosmosWalletException,
   TransactionException,
   UnspecifiedErrorCode,
   WalletErrorActionModule,
+  GeneralException,
 } from '@injectivelabs/exceptions'
-import { getExperimentalChainConfigBasedOnChainId } from './utils'
 import { getEndpointsFromChainId } from '../cosmos/endpoints'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
@@ -31,23 +31,18 @@ const $window = (typeof window !== 'undefined' ? window : {}) as KeplrWindow
 export class KeplrWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
+  private endpoints: { rest: string; rpc?: string }
+
+  constructor(
+    chainId: CosmosChainId | TestnetCosmosChainId | ChainId,
+    endpoints?: { rest: string; rpc?: string },
+  ) {
     this.chainId = chainId
+    this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
-  public static async experimentalSuggestChainWithChainData(chainData: any) {
-    if (!$window || ($window && !$window.keplr)) {
-      throw new CosmosWalletException(
-        new Error('Please install Keplr extension'),
-        { code: UnspecifiedErrorCode, type: ErrorType.WalletNotInstalledError },
-      )
-    }
-
-    try {
-      await $window.keplr!.experimentalSuggestChain(chainData)
-    } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message))
-    }
+  static async isChainIdSupported(chainId: CosmosChainId): Promise<boolean> {
+    return new KeplrWallet(chainId).checkChainIdSupport()
   }
 
   public async getKeplrWallet() {
@@ -63,25 +58,17 @@ export class KeplrWallet {
     }
   }
 
-  public async experimentalSuggestChain() {
+  public async chainNotSupported() {
     const { chainId } = this
-    const keplr = this.getKeplr()
+    const chainName = chainId.split('-')
 
-    const chainData = getExperimentalChainConfigBasedOnChainId(chainId)
-
-    if (!chainData) {
-      throw new CosmosWalletException(
-        new Error(
-          `Keplr doesn't support ${chainId} chainId. Please use another wallet`,
-        ),
-      )
-    }
-
-    try {
-      await keplr.experimentalSuggestChain(chainData)
-    } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message))
-    }
+    throw new CosmosWalletException(
+      new Error(
+        `Keplr doesn't support ${
+          chainName[0] || chainId
+        } network. Please use another Cosmos wallet`,
+      ),
+    )
   }
 
   public async getAccounts() {
@@ -223,19 +210,25 @@ export class KeplrWallet {
     }
   }
 
-  public async waitTxBroadcasted(txHash: string): Promise<TxResponse> {
-    const endpoints = await this.getChainEndpoints()
-
-    return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
+  public async waitTxBroadcasted(
+    txHash: string,
+    endpoint?: string,
+  ): Promise<TxResponse> {
+    return endpoint
+      ? new TxGrpcApi(endpoint).fetchTxPoll(txHash)
+      : new TxRestApi(this.endpoints.rest).fetchTxPoll(txHash)
   }
 
   public async signAndBroadcastAminoUsingCosmjs(
     messages: EncodeObject[],
     stdFee: StdFee,
   ) {
-    const { chainId } = this
+    const { chainId, endpoints } = this
     const keplr = await this.getKeplrWallet()
-    const endpoints = await this.getChainEndpoints()
+
+    if (!endpoints.rpc) {
+      throw new GeneralException(new Error(`Please provide rpc endpoint`))
+    }
 
     const offlineSigner = keplr.getOfflineSignerOnlyAmino(chainId)
     const [account] = await offlineSigner.getAccounts()
@@ -279,30 +272,21 @@ export class KeplrWallet {
     }
   }
 
-  public async getChainEndpoints(): Promise<{ rpc: string; rest: string }> {
-    const { chainId } = this
-
-    try {
-      return getEndpointsFromChainId(chainId)
-    } catch (e: unknown) {
-      throw new CosmosWalletException(new Error((e as any).message), {
-        context: 'Keplr',
-        contextModule: 'get-chain-endpoints',
-      })
-    }
-  }
-
   public async checkChainIdSupport() {
     const { chainId } = this
     const keplr = this.getKeplr()
+    const chainName = chainId.split('-')
 
     try {
-      await keplr.getKey(chainId)
-
-      // Chain exists already on Keplr
-      return true
+      return !!(await keplr.getKey(chainId))
     } catch (e) {
-      return false
+      throw new CosmosWalletException(
+        new Error(
+          `Keplr doesn't support ${
+            chainName[0] || chainId
+          } network. Please use another Cosmos wallet`,
+        ),
+      )
     }
   }
 
@@ -330,5 +314,31 @@ export class KeplrWallet {
     }
 
     return $window.keplr!
+  }
+
+  public disableGasCheck() {
+    const keplr = this.getKeplr()
+
+    // Temporary disable tx gas check for fee delegation purposes
+    keplr.defaultOptions = {
+      ...keplr.defaultOptions,
+      sign: {
+        ...keplr.defaultOptions.sign,
+        disableBalanceCheck: true,
+      },
+    }
+  }
+
+  public enableGasCheck() {
+    const keplr = this.getKeplr()
+
+    // Temporary disable tx gas check for fee delegation purposes
+    keplr.defaultOptions = {
+      ...keplr.defaultOptions,
+      sign: {
+        ...keplr.defaultOptions.sign,
+        disableBalanceCheck: false,
+      },
+    }
   }
 }

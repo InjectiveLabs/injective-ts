@@ -9,6 +9,23 @@ import {
   UnspecifiedErrorCode,
 } from '../types'
 
+export const parseErrorMessage = (message: string): string => {
+  const firstParse = message.split('message index: 0:')
+
+  if (firstParse.length === 1) {
+    const [firstParseString] = firstParse
+    const secondParse = firstParseString.split(': invalid request')
+    const [secondParseString] = secondParse
+
+    return secondParseString.trim().trimEnd()
+  }
+
+  const [, firstParseString] = firstParse
+  const [actualMessage] = firstParseString.split(': invalid request')
+
+  return actualMessage.trim().trimEnd()
+}
+
 export const mapFailedTransactionMessageFromString = (
   message: string,
 ): {
@@ -16,24 +33,7 @@ export const mapFailedTransactionMessageFromString = (
   code: ErrorContextCode
   module?: TransactionChainErrorModule
 } => {
-  const parseMessage = (message: string) => {
-    const firstParse = message.split('message index: 0:')
-
-    if (firstParse.length === 1) {
-      const [firstParseString] = firstParse
-      const secondParse = firstParseString.split(': invalid request')
-      const [secondParseString] = secondParse
-
-      return secondParseString.trim().trimEnd()
-    }
-
-    const [, firstParseString] = firstParse
-    const [actualMessage] = firstParseString.split(': invalid request')
-
-    return actualMessage.trim().trimEnd()
-  }
-
-  const parsedMessage = parseMessage(message)
+  const parsedMessage = parseErrorMessage(message)
   const messageInMapKey = (
     Object.keys(chainErrorMessagesMap) as Array<
       keyof typeof chainErrorMessagesMap
@@ -80,15 +80,28 @@ export const mapFailedTransactionMessage = (
   }
 
   const getReason = (message: string): string | undefined => {
-    const reason = /\[reason:"(.*?)"/g
+    const ReasonPattern = /\[reason:"(.*?)"/g
 
-    const codespace = reason.exec(message)
+    const codespace = ReasonPattern.exec(message)
 
     if (!codespace || codespace.length < 2) {
       return
     }
 
-    return codespace[1]
+    const reason = codespace[1]
+
+    if (reason === 'execute wasm contract failed') {
+      const SubReasonPattern = /(.*?)Generic error:(.*?): execute wasm/g
+      const subReason = SubReasonPattern.exec(message)
+
+      if (!subReason) {
+        return reason
+      }
+
+      return subReason[2] || reason
+    }
+
+    return reason
   }
 
   const ABCICode = context && context.code ? context.code : getABCICode(message)
@@ -128,5 +141,13 @@ export const mapMetamaskMessage = (message: string): string => {
     return 'The request has been rejected'
   }
 
-  return parsedMessage
+  if (parsedMessage.toLowerCase().includes('user denied'.toLowerCase())) {
+    return 'The request has been rejected'
+  }
+
+  if (parsedMessage.toLowerCase().includes('provided chain'.toLowerCase())) {
+    return 'Your Metamask selected network is incorrect'
+  }
+
+  return message
 }

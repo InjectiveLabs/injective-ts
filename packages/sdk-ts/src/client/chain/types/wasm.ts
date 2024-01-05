@@ -19,11 +19,6 @@ export interface ContractAccountBalance {
   balance: string
 }
 
-export interface ContractAccountsBalanceWithPagination {
-  contractAccountsBalance: ContractAccountBalance[]
-  pagination?: Pagination
-}
-
 export interface ContractInfo {
   codeId: number
   creator: string
@@ -32,6 +27,28 @@ export interface ContractInfo {
   created?: AbsoluteTxPosition
   ibcPortId: string
   extension?: GoogleProtoBufAny
+}
+
+export interface TokenInfo {
+  name: string
+  symbol: string
+  decimals: number
+  total_supply: string
+  mint: string
+}
+
+export interface ContractAccountsBalanceWithPagination {
+  tokenInfo: TokenInfo
+  contractInfo: ContractInfo
+  contractAccountsBalance: ContractAccountBalance[]
+  pagination?: Pagination
+}
+
+export interface ContractStateWithPagination {
+  tokenInfo: TokenInfo
+  contractInfo: ContractInfo
+  contractAccountsBalance: ContractAccountBalance[]
+  pagination?: Pagination
 }
 
 export interface AbsoluteTxPosition {

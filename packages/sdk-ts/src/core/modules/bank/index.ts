@@ -1,2 +1,4 @@
-export { default as MsgSend } from './msgs/MsgSend'
-export { default as MsgMultiSend } from './msgs/MsgMultiSend'
+import MsgSend from './msgs/MsgSend'
+import MsgMultiSend from './msgs/MsgMultiSend'
+
+export { MsgSend, MsgMultiSend }

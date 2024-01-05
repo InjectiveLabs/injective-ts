@@ -4,18 +4,22 @@ import {
   ExecDataRepresentation,
 } from '../ExecPrivilegedArgBase'
 
+// ult_subaccount_id`:
+
 export declare namespace ExecPrivilegedArgVaultSubscribe {
   export interface Params {
     origin: string
-    slippage?: Record<string, any>
     vaultSubaccountId: string
-    subscriberSubaccountId: string
+    traderSubaccountId: string
+    args: Record<string, any>
   }
 
   export interface Data {
-    slippage?: Record<string, any>
     vault_subaccount_id: string
-    subscriber_subaccount_id: string
+    trader_subaccount_id: string
+    msg: {
+      subscribe: Record<string, any>
+    }
   }
 }
 
@@ -36,9 +40,11 @@ export default class ExecPrivilegedArgVaultSubscribe extends ExecPrivilegedArgBa
     const { params } = this
 
     return {
-      slippage: params.slippage,
       vault_subaccount_id: params.vaultSubaccountId,
-      subscriber_subaccount_id: params.subscriberSubaccountId,
+      trader_subaccount_id: params.traderSubaccountId,
+      msg: {
+        subscribe: params.args,
+      },
     }
   }
 
@@ -48,7 +54,6 @@ export default class ExecPrivilegedArgVaultSubscribe extends ExecPrivilegedArgBa
     return dataToExecData(this.toData(), {
       origin: params.origin,
       name: 'VaultSubscribe',
-      action: 'Subscribe',
     })
   }
 }

@@ -1,6 +1,6 @@
 import { StreamStatusResponse } from '../types'
 import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
 import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 

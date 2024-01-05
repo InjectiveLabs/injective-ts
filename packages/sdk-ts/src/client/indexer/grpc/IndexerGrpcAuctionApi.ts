@@ -1,23 +1,25 @@
-import { IndexerGrpcAuctionTransformer } from '../transformers'
-import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
+import { IndexerModule } from '../types'
+import { IndexerGrpcAuctionTransformer } from '../transformers'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAuctionApi {
+export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Account
 
   protected client: InjectiveAuctionRpc.InjectiveAuctionRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectiveAuctionRpc.InjectiveAuctionRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -33,19 +35,24 @@ export class IndexerGrpcAuctionApi {
     }
 
     try {
-      const response = await this.client.AuctionEndpoint(request)
+      const response =
+        await this.retry<InjectiveAuctionRpc.AuctionEndpointResponse>(() =>
+          this.client.AuctionEndpoint(request),
+        )
 
       return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AuctionEndpoint',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AuctionEndpoint',
         contextModule: this.module,
       })
     }
@@ -55,19 +62,23 @@ export class IndexerGrpcAuctionApi {
     const request = InjectiveAuctionRpc.AuctionsRequest.create()
 
     try {
-      const response = await this.client.Auctions(request)
+      const response = await this.retry<InjectiveAuctionRpc.AuctionsResponse>(
+        () => this.client.Auctions(request),
+      )
 
       return IndexerGrpcAuctionTransformer.auctionsResponseToAuctions(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Auctions',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Auctions',
         contextModule: this.module,
       })
     }

@@ -6,19 +6,20 @@ import {
 } from '@injectivelabs/ts-types'
 import { GeneralException } from '@injectivelabs/exceptions'
 
+/** @deprecated - pass endpoints directly to the methods */
 export const getEndpointsFromChainId = (
   chainId: TestnetCosmosChainId | CosmosChainId | ChainId | DevnetCosmosChainId,
 ): { rpc: string; rest: string } => {
   switch (chainId) {
     case CosmosChainId.Injective:
       return {
-        rpc: 'https://k8s.mainnet.tm.injective.network',
-        rest: 'https://k8s.mainnet.lcd.injective.network',
+        rpc: 'https://tm.injective.network',
+        rest: 'https://lcd.injective.network',
       }
     case TestnetCosmosChainId.Injective:
       return {
-        rpc: 'https://k8s.testnet.tm.injective.network',
-        rest: 'https://k8s.testnet.lcd.injective.network',
+        rpc: 'https://testnet.tm.injective.network',
+        rest: 'https://testnet.lcd.injective.network',
       }
     case DevnetCosmosChainId.Injective:
       return {
@@ -95,10 +96,40 @@ export const getEndpointsFromChainId = (
         rpc: 'https://rpc.cosmos.directory/canto',
         rest: 'https://rest.cosmos.directory/canto',
       }
+    case CosmosChainId.Kava:
+      return {
+        rpc: 'https://rpc.cosmos.directory/kava',
+        rest: 'https://rest.cosmos.directory/kava',
+      }
+    case CosmosChainId.Oraichain:
+      return {
+        rpc: 'https://rpc.cosmos.directory/oraichain',
+        rest: 'https://rest.cosmos.directory/oraichain',
+      }
     case TestnetCosmosChainId.Cosmoshub:
       return {
-        rpc: 'https://testnet.tm.cosmos.injective.dev',
-        rest: 'https://testnet.lcd.cosmos.injective.dev',
+        rpc: 'https://rpc.sentry-01.theta-testnet.polypore.xyz',
+        rest: 'https://rest.sentry-01.theta-testnet.polypore.xyz',
+      }
+    case CosmosChainId.Noble:
+      return {
+        rpc: 'https://rpc.cosmos.directory/noble',
+        rest: 'https://rest.cosmos.directory/noble',
+      }
+    case CosmosChainId.Celestia:
+      return {
+        rpc: 'https://rpc.cosmos.directory/celestia',
+        rest: 'https://rest.cosmos.directory/celestia',
+      }
+    case CosmosChainId.Migaloo:
+      return {
+        rpc: 'https://rpc.cosmos.directory/migaloo',
+        rest: 'https://rest.cosmos.directory/migaloo',
+      }
+    case CosmosChainId.Kujira:
+      return {
+        rpc: 'https://rpc.cosmos.directory/kujira',
+        rest: 'https://rest.cosmos.directory/kujira',
       }
     default:
       throw new GeneralException(

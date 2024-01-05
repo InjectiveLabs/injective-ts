@@ -15,14 +15,16 @@ import {
   TxResponse,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
+  toUtf8,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
-import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
+import { InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
+import { CosmostationWallet } from './../../../utils/wallets/cosmostation'
 
 const INJECTIVE_CHAIN_NAME = 'injective'
 
@@ -30,7 +32,7 @@ export default class Cosmostation
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  private provider?: Cosmos
+  private cosmostationWallet?: Cosmos
 
   constructor(args: { chainId: ChainId }) {
     super(args)
@@ -41,11 +43,17 @@ export default class Cosmostation
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
+  }
+
   async getAddresses(): Promise<string[]> {
-    const provider = await this.getProvider()
+    const cosmostationWallet = await this.getCosmostationWallet()
 
     try {
-      const accounts = await provider.requestAccount(INJECTIVE_CHAIN_NAME)
+      const accounts = await cosmostationWallet.requestAccount(
+        INJECTIVE_CHAIN_NAME,
+      )
 
       return [accounts.address]
     } catch (e: unknown) {
@@ -94,14 +102,14 @@ export default class Cosmostation
     transaction: DirectSignResponse | CosmosTxV1Beta1Tx.TxRaw,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<TxResponse> {
-    const provider = await this.getProvider()
+    const cosmostationWallet = await this.getCosmostationWallet()
     const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
-      const response = await provider.sendTransaction(
+      const response = await cosmostationWallet.sendTransaction(
         INJECTIVE_CHAIN_NAME,
         CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-        SEND_TRANSACTION_MODE.ASYNC,
+        SEND_TRANSACTION_MODE.SYNC,
       )
 
       return {
@@ -139,6 +147,21 @@ export default class Cosmostation
     return this.signCosmosTransaction({ ...transaction, address })
   }
 
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new CosmosWalletException(
+      new Error('This wallet does not support signing using amino'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SendTransaction,
+      },
+    )
+  }
+
   async signCosmosTransaction(transaction: {
     txRaw: CosmosTxV1Beta1Tx.TxRaw
     chainId: string
@@ -146,12 +169,12 @@ export default class Cosmostation
     accountNumber: number
   }) {
     const { chainId } = this
-    const provider = await this.getProvider()
+    const cosmostationWallet = await this.getCosmostationWallet()
     const signDoc = createSignDocFromTransaction(transaction)
 
     try {
       /* Sign the transaction */
-      const signDirectResponse = await provider.signDirect(
+      const signDirectResponse = await cosmostationWallet.signDirect(
         INJECTIVE_CHAIN_NAME,
         {
           chain_id: chainId,
@@ -182,10 +205,12 @@ export default class Cosmostation
   }
 
   async getPubKey(): Promise<string> {
-    const provider = await this.getProvider()
+    const cosmostationWallet = await this.getCosmostationWallet()
 
     try {
-      const account = await provider.requestAccount(INJECTIVE_CHAIN_NAME)
+      const account = await cosmostationWallet.requestAccount(
+        INJECTIVE_CHAIN_NAME,
+      )
 
       return Buffer.from(account.publicKey).toString('base64')
     } catch (e: unknown) {
@@ -219,6 +244,28 @@ export default class Cosmostation
     )
   }
 
+  async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    try {
+      const cosmostationWallet = await this.getCosmostationWallet()
+
+      const signature = await cosmostationWallet.signMessage(
+        INJECTIVE_CHAIN_NAME,
+        signer,
+        toUtf8(data),
+      )
+
+      return signature.signature
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SignArbitrary,
+      })
+    }
+  }
+
   async getEthereumChainId(): Promise<string> {
     throw new CosmosWalletException(
       new Error('getEthereumChainId is not supported on Cosmostation'),
@@ -242,15 +289,17 @@ export default class Cosmostation
     )
   }
 
-  private async getProvider(): Promise<Cosmos> {
-    if (this.provider) {
-      return this.provider
+  private async getCosmostationWallet(): Promise<Cosmos> {
+    if (this.cosmostationWallet) {
+      return this.cosmostationWallet
     }
 
-    try {
-      const provider = await cosmos()
+    const cosmostationWallet = new CosmostationWallet(this.chainId)
 
-      this.provider = provider
+    try {
+      const provider = await cosmostationWallet.getCosmostationWallet()
+
+      this.cosmostationWallet = provider
 
       return provider
     } catch (e) {
@@ -266,7 +315,6 @@ export default class Cosmostation
 
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
       })
     }
   }

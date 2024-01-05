@@ -1,2 +1,4 @@
-export { default as MsgWithdrawDelegatorReward } from './msgs/MsgWithdrawDelegatorReward'
-export { default as MsgWithdrawValidatorCommission } from './msgs/MsgWithdrawValidatorCommission'
+import MsgWithdrawDelegatorReward from './msgs/MsgWithdrawDelegatorReward'
+import MsgWithdrawValidatorCommission from './msgs/MsgWithdrawValidatorCommission'
+
+export { MsgWithdrawDelegatorReward, MsgWithdrawValidatorCommission }

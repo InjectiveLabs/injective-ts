@@ -1,1 +1,3 @@
-export { default as CosmosWalletStrategy } from './CosmosWalletStrategy'
+import CosmosWalletStrategy from './CosmosWalletStrategy'
+
+export { CosmosWalletStrategy }

@@ -14,7 +14,7 @@ import {
 } from '@injectivelabs/exceptions'
 import TorusWallet from '@toruslabs/torus-embed'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxGrpcApi, TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
@@ -42,10 +42,7 @@ export const getNetworkFromChainId = (
   }
 }
 
-export default class Torus
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Torus extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private torus: TorusWallet
 
   private connected = false
@@ -57,6 +54,10 @@ export default class Torus
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
+  }
+
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
   }
 
   async connect(): Promise<void> {
@@ -140,20 +141,24 @@ export default class Torus
     options: {
       address: AccountAddress
       chainId: ChainId
-      sentryEndpoint: string
+      endpoints?: {
+        rest: string
+        grpc: string
+        tm?: string
+      }
     },
   ): Promise<TxResponse> {
-    const { sentryEndpoint } = options
+    const { endpoints } = options
 
-    if (!sentryEndpoint) {
+    if (!endpoints) {
       throw new WalletException(
         new Error(
-          'You have to pass sentryEndpoint within the options for using Ethereum native wallets',
+          'You have to pass endpoints.grpc within the options for using Ethereum native wallets',
         ),
       )
     }
 
-    const txApi = new TxGrpcApi(sentryEndpoint)
+    const txApi = new TxGrpcApi(endpoints.grpc)
     const response = await txApi.broadcast(transaction)
 
     if (response.code !== 0) {
@@ -195,6 +200,48 @@ export default class Torus
         contextModule: WalletAction.SignTransaction,
       })
     }
+  }
+
+  async signArbitrary(
+    signer: AccountAddress,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    await this.connect()
+
+    try {
+      const signature = await this.torus.ethereum.request<string>({
+        method: 'personal_sign',
+        params: [toUtf8(data), signer],
+      })
+
+      if (!signature) {
+        throw new WalletException(new Error('No signature returned'))
+      }
+
+      return signature
+    } catch (e: unknown) {
+      throw new WalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignArbitrary,
+      })
+    }
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   // eslint-disable-next-line class-methods-use-this

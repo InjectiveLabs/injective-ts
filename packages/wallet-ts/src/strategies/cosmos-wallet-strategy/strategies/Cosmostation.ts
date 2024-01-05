@@ -12,10 +12,11 @@ import {
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
-import { cosmos, InstallError, Cosmos } from '@cosmostation/extension-client'
+import { InstallError, Cosmos } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
+import { CosmostationWallet } from './../../../utils/wallets/cosmostation'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
@@ -40,7 +41,7 @@ const getChainNameFromChainId = (chainId: CosmosChainId) => {
 export default class Cosmostation implements ConcreteCosmosWalletStrategy {
   public chainName: string
 
-  public provider?: Cosmos
+  public cosmostationWallet?: Cosmos
 
   public chainId: CosmosChainId
 
@@ -53,23 +54,16 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  async isChainIdSupported(chainId?: CosmosChainId): Promise<boolean> {
-    const actualChainId = chainId || this.chainId
-    const provider = await this.getProvider()
-
-    const supportedChainIds = await provider.getSupportedChainIds()
-
-    return !!supportedChainIds.official.find(
-      (chainId) => chainId === actualChainId,
-    )
+  async enable() {
+    return await CosmostationWallet.isChainIdSupported(this.chainId)
   }
 
   async getAddresses(): Promise<string[]> {
     const { chainName } = this
-    const provider = await this.getProvider()
+    const cosmostationWallet = await this.getCosmostationWallet()
 
     try {
-      const accounts = await provider.requestAccount(chainName)
+      const accounts = await cosmostationWallet.requestAccount(chainName)
 
       return [accounts.address]
     } catch (e: unknown) {
@@ -83,6 +77,10 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
         )
       }
 
+      if (e instanceof CosmosWalletException) {
+        throw e
+      }
+
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetAccounts,
@@ -94,11 +92,11 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     transaction: DirectSignResponse | CosmosTxV1Beta1Tx.TxRaw,
   ): Promise<TxResponse> {
     const { chainName } = this
-    const provider = await this.getProvider()
+    const cosmostationWallet = await this.getCosmostationWallet()
     const txRaw = createTxRawFromSigResponse(transaction)
 
     try {
-      const response = await provider.sendTransaction(
+      const response = await cosmostationWallet.sendTransaction(
         chainName,
         CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
         SEND_TRANSACTION_MODE.ASYNC,
@@ -133,12 +131,12 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     chainId: string
   }) {
     const { chainName, chainId } = this
-    const provider = await this.getProvider()
+    const cosmostationWallet = await this.getCosmostationWallet()
     const signDoc = createSignDocFromTransaction(transaction)
 
     try {
       /* Sign the transaction */
-      const signDirectResponse = await provider.signDirect(
+      const signDirectResponse = await cosmostationWallet.signDirect(
         chainName,
         {
           chain_id: chainId,
@@ -179,10 +177,10 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
 
   async getPubKey(): Promise<string> {
     const { chainName } = this
-    const provider = await this.getProvider()
+    const cosmostationWallet = await this.getCosmostationWallet()
 
     try {
-      const account = await provider.requestAccount(chainName)
+      const account = await cosmostationWallet.requestAccount(chainName)
 
       return Buffer.from(account.publicKey).toString('base64')
     } catch (e: unknown) {
@@ -203,15 +201,17 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
     }
   }
 
-  private async getProvider(): Promise<Cosmos> {
-    if (this.provider) {
-      return this.provider
+  private async getCosmostationWallet(): Promise<Cosmos> {
+    if (this.cosmostationWallet) {
+      return this.cosmostationWallet
     }
 
-    try {
-      const provider = await cosmos()
+    const cosmostationWallet = new CosmostationWallet(this.chainId)
 
-      this.provider = provider
+    try {
+      const provider = await cosmostationWallet.getCosmostationWallet()
+
+      this.cosmostationWallet = provider
 
       return provider
     } catch (e) {

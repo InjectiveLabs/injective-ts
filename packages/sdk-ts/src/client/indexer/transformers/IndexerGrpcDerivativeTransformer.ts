@@ -31,6 +31,8 @@ import {
   BinaryOptionsMarket,
   GrpcDerivativeOrderHistory,
   DerivativeOrderHistory,
+  GrpcDerivativePositionV2,
+  PositionV2,
 } from '../types/derivatives'
 import {
   Orderbook,
@@ -172,6 +174,21 @@ export class IndexerGrpcDerivativeTransformer {
     return {
       positions:
         IndexerGrpcDerivativeTransformer.grpcPositionsToPositions(positions),
+      pagination: grpcPagingToPaging(pagination),
+    }
+  }
+
+  static positionsV2ResponseToPositionsV2(
+    response: InjectiveDerivativeExchangeRpc.PositionsV2Response,
+  ) {
+    const positions = response.positions
+    const pagination = response.paging
+
+    return {
+      positions:
+        IndexerGrpcDerivativeTransformer.grpcPositionsV2ToPositionsV2(
+          positions,
+        ),
       pagination: grpcPagingToPaging(pagination),
     }
   }
@@ -510,7 +527,25 @@ export class IndexerGrpcDerivativeTransformer {
       quantity: position.quantity,
       entryPrice: position.entryPrice,
       margin: position.margin,
+      liquidationPrice: position.liquidationPrice,
       aggregateReduceOnlyQuantity: position.aggregateReduceOnlyQuantity,
+      markPrice: position.markPrice,
+      ticker: position.ticker,
+      updatedAt: parseInt(position.updatedAt, 10),
+    }
+  }
+
+  static grpcPositionV2ToPositionV2(
+    position: GrpcDerivativePositionV2,
+  ): PositionV2 {
+    return {
+      marketId: position.marketId,
+      subaccountId: position.subaccountId,
+      direction: position.direction as TradeDirection,
+      quantity: position.quantity,
+      entryPrice: position.entryPrice,
+      margin: position.margin,
+      denom: position.denom,
       liquidationPrice: position.liquidationPrice,
       markPrice: position.markPrice,
       ticker: position.ticker,
@@ -523,6 +558,14 @@ export class IndexerGrpcDerivativeTransformer {
   ): Position[] {
     return positions.map((position) =>
       IndexerGrpcDerivativeTransformer.grpcPositionToPosition(position),
+    )
+  }
+
+  static grpcPositionsV2ToPositionsV2(
+    positions: GrpcDerivativePositionV2[],
+  ): PositionV2[] {
+    return positions.map((position) =>
+      IndexerGrpcDerivativeTransformer.grpcPositionV2ToPositionV2(position),
     )
   }
 

@@ -10,6 +10,14 @@ export interface StreamStatusResponse {
   metadata: any
 }
 
+export enum StreamOperation {
+  Insert = 'insert',
+  Delete = 'delete',
+  Replace = 'replace',
+  Update = 'update',
+  Invalidate = 'invalidate',
+}
+
 export interface PaginationOption {
   key: string
   offset?: number

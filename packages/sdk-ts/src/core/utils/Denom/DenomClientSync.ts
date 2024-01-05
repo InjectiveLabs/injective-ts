@@ -13,6 +13,8 @@ import { Network } from '@injectivelabs/networks'
  * denoms in a fully sync way (without API calls)
  *
  * @category Utility Classes
+ *
+ * @deprecated use DenomClient instead (they are the same)
  */
 export class DenomClientSync {
   protected tokenFactory: TokenFactory
@@ -30,6 +32,14 @@ export class DenomClientSync {
 
   getDenomToken(denom: string): Token | undefined {
     return this.tokenFactory.toToken(denom)
+  }
+
+  getDenomsToken(denoms: string[]): Array<Token | undefined> {
+    return denoms.map((denom) => this.getDenomToken(denom))
+  }
+
+  getDenomsTokenInfo(denoms: string[]): Array<TokenInfo | undefined> {
+    return denoms.map((denom) => this.getDenomTokenInfo(denom))
   }
 
   getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {

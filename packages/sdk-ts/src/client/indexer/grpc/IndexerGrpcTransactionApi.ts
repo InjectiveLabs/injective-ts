@@ -12,7 +12,7 @@ import {
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
 import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   CosmosBaseV1Beta1Coin,
@@ -93,12 +93,16 @@ export class IndexerGrpcTransactionApi {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
+          context: 'PrepareTx',
+          contextModule: 'Web3Gateway',
           type: e.type,
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'PrepareTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
@@ -162,11 +166,15 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
+          context: 'CosmosPrepareTx',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'CosmosPrepareTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
@@ -238,15 +246,25 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
+          context: 'PrepareTx',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'PrepareTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
 
+  /**
+   * Keep in mind that the transaction is just added
+   * to the mempool, we need to query the transaction hash
+   * if we want to ensure that the transaction is included
+   * in the block
+   */
   async broadcastTxRequest({
     signature,
     chainId,
@@ -269,7 +287,7 @@ export class IndexerGrpcTransactionApi {
     parsedTypedData.message.msgs = null
 
     const broadcastTxRequest = InjectiveExchangeRpc.BroadcastTxRequest.create()
-    broadcastTxRequest.mode = 'block'
+    broadcastTxRequest.mode = 'sync'
     broadcastTxRequest.chainId = chainId.toString()
     broadcastTxRequest.pubKey = cosmosPubKey
     broadcastTxRequest.signature = signature
@@ -298,15 +316,25 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
+          context: 'BroadcastTx',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'BroadcastTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
 
+  /**
+   * Keep in mind that the transaction is just added
+   * to the mempool, we need to query the transaction hash
+   * if we want to ensure that the transaction is included
+   * in the block
+   */
   async broadcastCosmosTxRequest({
     address,
     signature,
@@ -345,11 +373,15 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
+          context: 'BroadcastTx',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'BroadcastTx',
+        contextModule: 'Web3Gateway',
       })
     }
   }
@@ -366,11 +398,15 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
           type: e.type,
+          context: 'FeePayer',
+          contextModule: 'Web3Gateway',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'FeePayer',
+        contextModule: 'Web3Gateway',
       })
     }
   }

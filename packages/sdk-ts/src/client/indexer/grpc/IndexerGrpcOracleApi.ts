@@ -1,23 +1,25 @@
-import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer'
-import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
+import { IndexerModule } from '../types'
+import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcOracleApi {
+export class IndexerGrpcOracleApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Oracle
 
   protected client: InjectiveOracleRpc.InjectiveOracleRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectiveOracleRpc.InjectiveOracleRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -25,19 +27,23 @@ export class IndexerGrpcOracleApi {
     const request = InjectiveOracleRpc.OracleListRequest.create()
 
     try {
-      const response = await this.client.OracleList(request)
+      const response = await this.retry<InjectiveOracleRpc.OracleListResponse>(
+        () => this.client.OracleList(request),
+      )
 
       return IndexerGrpcOracleTransformer.oraclesResponseToOracles(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'OracleList',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'OracleList',
         contextModule: this.module,
       })
     }
@@ -65,19 +71,23 @@ export class IndexerGrpcOracleApi {
     }
 
     try {
-      const response = await this.client.Price(request)
+      const response = await this.retry<InjectiveOracleRpc.PriceResponse>(() =>
+        this.client.Price(request),
+      )
 
       return response
     } catch (e: unknown) {
       if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Price',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Price',
         contextModule: this.module,
       })
     }
@@ -105,7 +115,9 @@ export class IndexerGrpcOracleApi {
     }
 
     try {
-      const response = await this.client.Price(request)
+      const response = await this.retry<InjectiveOracleRpc.PriceResponse>(() =>
+        this.client.Price(request),
+      )
 
       return response
     } catch (e: unknown) {
@@ -118,12 +130,14 @@ export class IndexerGrpcOracleApi {
       if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Price',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Price',
         contextModule: this.module,
       })
     }

@@ -1,23 +1,25 @@
-import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
-import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
+import { IndexerModule } from '../types'
+import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountPortfolioApi {
+export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Portfolio
 
   protected client: InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -27,7 +29,10 @@ export class IndexerGrpcAccountPortfolioApi {
     request.accountAddress = address
 
     try {
-      const response = await this.client.AccountPortfolio(request)
+      const response =
+        await this.retry<InjectivePortfolioRpc.AccountPortfolioResponse>(() =>
+          this.client.AccountPortfolio(request),
+        )
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio(
         response,
@@ -46,12 +51,55 @@ export class IndexerGrpcAccountPortfolioApi {
       if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'AccountPortfolio',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'AccountPortfolio',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchAccountPortfolioBalances(address: string) {
+    const request =
+      InjectivePortfolioRpc.AccountPortfolioBalancesRequest.create()
+
+    request.accountAddress = address
+
+    try {
+      const response =
+        await this.retry<InjectivePortfolioRpc.AccountPortfolioBalancesResponse>(
+          () => this.client.AccountPortfolioBalances(request),
+        )
+
+      return IndexerGrpcAccountPortfolioTransformer.accountPortfolioBalancesResponseToAccountPortfolioBalances(
+        response,
+        address,
+      )
+    } catch (e: unknown) {
+      if ((e as any)?.message === 'account address not found') {
+        return {
+          accountAddress: address || '',
+          bankBalancesList: [],
+          subaccountsList: [],
+        }
+      }
+
+      if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'AccountPortfolio',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AccountPortfolio',
         contextModule: this.module,
       })
     }

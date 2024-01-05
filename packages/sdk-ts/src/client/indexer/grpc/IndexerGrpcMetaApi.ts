@@ -1,22 +1,24 @@
-import { IndexerModule } from '../types'
 import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
+import { IndexerModule } from '../types'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcMetaApi {
+export class IndexerGrpcMetaApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Meta
 
   protected client: InjectiveMetaRpc.InjectiveMetaRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectiveMetaRpc.InjectiveMetaRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -24,19 +26,23 @@ export class IndexerGrpcMetaApi {
     const request = InjectiveMetaRpc.PingRequest.create()
 
     try {
-      const response = await this.client.Ping(request)
+      const response = await this.retry<InjectiveMetaRpc.PingResponse>(() =>
+        this.client.Ping(request),
+      )
 
       return response
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Ping',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Ping',
         contextModule: this.module,
       })
     }
@@ -46,19 +52,23 @@ export class IndexerGrpcMetaApi {
     const request = InjectiveMetaRpc.VersionRequest.create()
 
     try {
-      const response = await this.client.Version(request)
+      const response = await this.retry<InjectiveMetaRpc.VersionResponse>(() =>
+        this.client.Version(request),
+      )
 
       return response
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Version',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Version',
         contextModule: this.module,
       })
     }
@@ -70,19 +80,23 @@ export class IndexerGrpcMetaApi {
     request.timestamp = Date.now().toString()
 
     try {
-      const response = await this.client.Info(request)
+      const response = await this.retry<InjectiveMetaRpc.InfoResponse>(() =>
+        this.client.Info(request),
+      )
 
       return response
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
+          context: 'Info',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
+        context: 'Info',
         contextModule: this.module,
       })
     }

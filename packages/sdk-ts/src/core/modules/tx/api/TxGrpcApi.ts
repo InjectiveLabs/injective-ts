@@ -6,13 +6,14 @@ import {
 import {
   TransactionException,
   GrpcUnaryRequestException,
+  GeneralException,
 } from '@injectivelabs/exceptions'
 import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
 import { TxResponse } from '../types/tx'
-import { getGrpcWebImpl } from '../../../../client/BaseGrpcWebConsumer'
+import BaseGrpcWebConsumer from '../../../../client/base/BaseGrpcWebConsumer'
 import {
   CosmosTxV1Beta1Service,
   CosmosTxV1Beta1Tx,
@@ -26,7 +27,7 @@ export class TxGrpcApi implements TxConcreteApi {
   constructor(endpoint: string) {
     this.endpoint = endpoint
     this.txService = new CosmosTxV1Beta1Service.ServiceClientImpl(
-      getGrpcWebImpl(endpoint),
+      BaseGrpcWebConsumer.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -219,7 +220,9 @@ export class TxGrpcApi implements TxConcreteApi {
       const txResponse = response.txResponse
 
       if (!txResponse) {
-        throw new Error('There was an issue broadcasting the transaction')
+        throw new GeneralException(
+          new Error('There was an issue broadcasting the transaction'),
+        )
       }
 
       const result: TxClientBroadcastResponse = {

@@ -1,5 +1,5 @@
 import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
-import { GrpcCoin } from '../../../types/index'
+import { GrpcCoin } from '../../../types'
 import {
   GrpcIndexerBid,
   GrpcAuction,

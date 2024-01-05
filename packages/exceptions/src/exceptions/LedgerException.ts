@@ -1,24 +1,6 @@
 import { ConcreteException } from '../exception'
 import { ErrorContext, ErrorType } from '../types'
-
-const isCommonLockedError = (error: string) => {
-  const commonMessages = [
-    'Ledger device: Incorrect length',
-    'Ledger device: INS_NOT_SUPPORTED',
-    'Ledger device: CLA_NOT_SUPPORTED',
-    'Failed to open the device',
-    'Failed to open the device',
-    'Ledger Device is busy',
-    'UNKNOWN_ERROR',
-  ]
-
-  return (
-    commonMessages.some((m) => m.includes(error)) ||
-    commonMessages
-      .map((m) => m.toLowerCase())
-      .some((m) => m.includes(error.toLowerCase()))
-  )
-}
+import { isCommonLockedError } from '../utils/helpers'
 
 export class LedgerException extends ConcreteException {
   public errorClass: string = 'LedgerException'
@@ -29,7 +11,7 @@ export class LedgerException extends ConcreteException {
     this.type = ErrorType.WalletError
   }
 
-  public parseMessage(): void {
+  public parse(): void {
     const { message } = this
 
     if (isCommonLockedError(message)) {
@@ -52,6 +34,12 @@ export class LedgerException extends ConcreteException {
 
     if (message.includes('Cannot read properties of undefined')) {
       this.setMessage('Please make sure your Ledger device is connected')
+    }
+
+    if (message.toLowerCase().includes('locked')) {
+      this.setMessage(
+        'Please make sure your Ledger device is connected, unlocked and your Ethereum app is open',
+      )
     }
 
     if (

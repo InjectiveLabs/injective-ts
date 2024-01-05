@@ -1,1 +1,3 @@
-export { default as MsgBid } from './msgs/MsgBid'
+import MsgBid from './msgs/MsgBid'
+
+export { MsgBid }

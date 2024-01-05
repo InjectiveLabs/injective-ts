@@ -1,1 +1,3 @@
-export { default as MsgSendToEth } from './msgs/MsgSendToEth'
+import MsgSendToEth from './msgs/MsgSendToEth'
+
+export { MsgSendToEth }

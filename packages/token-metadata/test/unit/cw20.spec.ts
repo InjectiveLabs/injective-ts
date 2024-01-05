@@ -39,6 +39,36 @@ describe('TokenMetadata', () => {
     })
   })
 
+  describe('SOL Token', () => {
+    test('fetches undefined for fake factory denom', () => {
+      const tokenMeta = tokenFactory.toToken('factory/inj1/sol')
+
+      expect(tokenMeta).toBe(undefined)
+    })
+
+    test('fetches token meta for symbol', () => {
+      const tokenMeta = tokenFactory.toToken('SOL')
+
+      expect(tokenMeta).toBeDefined()
+    })
+
+    test('fetches token meta for factory denom with cw20 address', () => {
+      const tokenMeta = tokenFactory.toToken(
+        'factory/inj1/inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
+      )
+
+      expect(tokenMeta).toBeDefined()
+    })
+
+    test('fetches token meta for cw20 address', () => {
+      const tokenMeta = tokenFactory.toToken(
+        'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
+      )
+
+      expect(tokenMeta).toBeDefined()
+    })
+  })
+
   describe('USDC token', () => {
     const USDCetFactoryDenom =
       'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk'

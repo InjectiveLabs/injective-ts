@@ -112,6 +112,7 @@ export class IndexerGrpcExplorerTransformer {
       signed: parseInt(data.signed, 10),
       missed: parseInt(data.missed, 10),
       uptimePercentage: data.uptimePercentage,
+      imageUrl: data.imageUrl,
       timestamp: data.timestamp,
       uptimesList: data.uptimes.map(
         IndexerGrpcExplorerTransformer.grpcValidatorUptimeToValidatorUptime,

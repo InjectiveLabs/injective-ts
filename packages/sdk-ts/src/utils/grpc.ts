@@ -3,7 +3,7 @@ import { NodeHttpTransport } from '@injectivelabs/grpc-web-node-http-transport'
 import { ReactNativeTransport } from '@injectivelabs/grpc-web-react-native-transport'
 import { isNode, isReactNative } from './helpers'
 
-export const getGrpcTransport = (): grpc.TransportFactory | undefined => {
+export const getGrpcTransport = (): grpc.TransportFactory => {
   if (isReactNative()) {
     return ReactNativeTransport({ withCredentials: true })
   }
@@ -12,5 +12,5 @@ export const getGrpcTransport = (): grpc.TransportFactory | undefined => {
     return NodeHttpTransport()
   }
 
-  return undefined
+  return grpc.CrossBrowserHttpTransport({ withCredentials: false })
 }

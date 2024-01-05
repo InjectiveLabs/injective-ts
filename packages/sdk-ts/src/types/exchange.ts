@@ -1,4 +1,5 @@
 import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
+
 export enum TradeExecutionType {
   Market = 'market',
   LimitFill = 'limitFill',

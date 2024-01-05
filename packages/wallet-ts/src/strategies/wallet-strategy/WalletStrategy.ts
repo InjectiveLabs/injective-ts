@@ -7,6 +7,7 @@ import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import Metamask from './strategies/Metamask'
+import TrustWallet from './strategies/TrustWallet'
 import {
   ConcreteWalletStrategy,
   onAccountChangeCallback,
@@ -17,15 +18,17 @@ import {
 } from '../types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
+import Ninji from './strategies/Ninji'
 import Trezor from './strategies/Trezor'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
+import Phantom from './strategies/Phantom'
 import Cosmostation from './strategies/Cosmostation'
 import Welldone from './strategies/Welldone'
+import LedgerCosmos from './strategies/LedgerCosmos'
 import { Wallet, WalletDeviceType } from '../../types/enums'
-import { isEthWallet } from './utils'
-import { isCosmosWallet } from '../../utils/wallets/cosmos'
+import { isEthWallet, isCosmosWallet } from './utils'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -42,13 +45,9 @@ const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
     return true
   }
 
-  const { rpcUrl, ethereumChainId } = ethereumOptions
+  const { ethereumChainId } = ethereumOptions
 
   if (!ethereumChainId) {
-    return true
-  }
-
-  if (!rpcUrl) {
     return true
   }
 
@@ -84,6 +83,8 @@ const createStrategy = ({
   switch (wallet) {
     case Wallet.Metamask:
       return new Metamask(ethWalletArgs)
+    case Wallet.TrustWallet:
+      return new TrustWallet(ethWalletArgs)
     case Wallet.Ledger:
       return new LedgerLive(ethWalletArgs)
     case Wallet.LedgerLegacy:
@@ -92,14 +93,20 @@ const createStrategy = ({
       return new Trezor(ethWalletArgs)
     case Wallet.Torus:
       return new Torus(ethWalletArgs)
+    case Wallet.Phantom:
+      return new Phantom(ethWalletArgs)
     case Wallet.Keplr:
       return new Keplr({ ...args })
     case Wallet.Cosmostation:
       return new Cosmostation({ ...args })
+    case Wallet.LedgerCosmos:
+      return new LedgerCosmos({ ...args })
     case Wallet.Leap:
       return new Leap({ ...args })
     case Wallet.Welldone:
       return new Welldone({ ...args })
+    case Wallet.Ninji:
+      return new Ninji({ ...args })
     default:
       return undefined
   }
@@ -132,6 +139,7 @@ export default class WalletStrategy {
   }
 
   public setWallet(wallet: Wallet) {
+    this.disconnect()
     this.wallet = wallet
   }
 
@@ -153,8 +161,18 @@ export default class WalletStrategy {
     return this.getStrategy().getWalletDeviceType()
   }
 
-  public getPubKey(): Promise<string> {
-    return this.getStrategy().getPubKey()
+  public getPubKey(address?: string): Promise<string> {
+    return this.getStrategy().getPubKey(address)
+  }
+
+  public enable(): Promise<boolean> {
+    return this.getStrategy().enable()
+  }
+
+  public async enableAndGetAddresses(): Promise<AccountAddress[]> {
+    await this.getStrategy().enable()
+
+    return this.getStrategy().getAddresses()
   }
 
   public getEthereumChainId(): Promise<string> {
@@ -169,22 +187,16 @@ export default class WalletStrategy {
     return this.getStrategy().confirm(address)
   }
 
-  public async disconnectWallet() {
-    const strategy = this.getStrategy()
-
-    if (strategy.disconnect !== undefined) {
-      await strategy.disconnect()
-    }
-
-    this.wallet = Wallet.Metamask
-  }
-
   public async sendTransaction(
     tx: DirectSignResponse | TxRaw,
     options: {
       address: AccountAddress
       chainId: ChainId
-      sentryEndpoint?: string
+      endpoints?: {
+        rest: string
+        grpc: string
+        tm?: string
+      }
     },
   ): Promise<TxResponse> {
     return this.getStrategy().sendTransaction(tx, options)
@@ -223,6 +235,21 @@ export default class WalletStrategy {
     return this.getStrategy().signEip712TypedData(eip712TypedData, address)
   }
 
+  public async signAminoCosmosTransaction(transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    if (isEthWallet(this.wallet)) {
+      throw new WalletException(
+        new Error(`You can't sign Cosmos Transaction using ${this.wallet}`),
+      )
+    }
+
+    return this.getStrategy().signAminoCosmosTransaction(transaction)
+  }
+
   public async signCosmosTransaction(transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -236,6 +263,15 @@ export default class WalletStrategy {
     }
 
     return this.getStrategy().signCosmosTransaction(transaction)
+  }
+
+  public async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string | void> {
+    if (this.getStrategy().signArbitrary) {
+      return this.getStrategy().signArbitrary!(signer, data)
+    }
   }
 
   public onAccountChange(callback: onAccountChangeCallback): void {
@@ -265,6 +301,12 @@ export default class WalletStrategy {
   public cancelOnAccountChange(): void {
     if (this.getStrategy().cancelOnAccountChange) {
       return this.getStrategy().cancelOnAccountChange!()
+    }
+  }
+
+  public disconnect() {
+    if (this.getStrategy().disconnect) {
+      this.getStrategy().disconnect!()
     }
   }
 }

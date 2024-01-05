@@ -5,7 +5,7 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../BaseRestConsumer'
+import BaseRestConsumer from '../../base/BaseRestConsumer'
 import { ChainModule, RestApiResponse } from '../types'
 import { BalancesResponse, DenomBalance } from './../types/bank-rest'
 
@@ -18,11 +18,16 @@ export class ChainRestBankApi extends BaseRestConsumer {
    *
    * @param address address of account to look up
    */
-  public async fetchBalances(address: string): Promise<BalancesResponse> {
+  public async fetchBalances(
+    address: string,
+    params: Record<string, any> = {},
+  ): Promise<BalancesResponse> {
+    const endpoint = `cosmos/bank/v1beta1/balances/${address}`
+
     try {
-      const response = (await this.get(
-        `cosmos/bank/v1beta1/balances/${address}`,
-      )) as RestApiResponse<BalancesResponse>
+      const response = await this.retry<RestApiResponse<BalancesResponse>>(() =>
+        this.get(endpoint, params),
+      )
 
       return response.data
     } catch (e) {
@@ -32,6 +37,7 @@ export class ChainRestBankApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Bank,
       })
     }
@@ -45,11 +51,14 @@ export class ChainRestBankApi extends BaseRestConsumer {
   public async fetchBalance(
     address: string,
     denom: string,
+    params: Record<string, any> = {},
   ): Promise<DenomBalance> {
+    const endpoint = `cosmos/bank/v1beta1/balances/${address}`
+
     try {
-      const response = (await this.get(
-        `cosmos/bank/v1beta1/balances/${address}`,
-      )) as RestApiResponse<BalancesResponse>
+      const response = await this.retry<RestApiResponse<BalancesResponse>>(() =>
+        this.get(endpoint, params),
+      )
 
       const balance = response.data.balances.find(
         (balance) => balance.denom === denom,
@@ -77,6 +86,7 @@ export class ChainRestBankApi extends BaseRestConsumer {
 
       throw new HttpRequestException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Bank,
       })
     }

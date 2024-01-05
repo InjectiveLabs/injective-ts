@@ -23,7 +23,7 @@ export const createEip712StdSignDoc = ({
   timeout_height: timeoutHeight || '',
   account_number: accountNumber.toString(),
   sequence: sequence.toString(),
-  fee: getStdFee(gas),
+  fee: getStdFee({ gas }),
   msgs: msgs.map((m) => m.toEip712()),
   memo: memo || '',
 })

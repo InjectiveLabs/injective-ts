@@ -1,4 +1,4 @@
-import { Network } from '@injectivelabs/networks'
+import { Network, isTestnet } from '@injectivelabs/networks'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { INJ_DENOM } from '@injectivelabs/utils'
 import { TokenInfo } from './TokenInfo'
@@ -11,7 +11,7 @@ import {
 } from './tokens/network'
 import { Token, TokenMeta, TokenType } from './types'
 import tokensBySymbol from './tokens/tokens'
-import { getTokenFromMeta } from './utils'
+import { getTokenFromMeta, isCw20ContractAddress } from './utils'
 
 export class TokenFactory {
   public tokenMetaUtils: TokenMetaUtils
@@ -20,35 +20,37 @@ export class TokenFactory {
     this.tokenMetaUtils = tokenMetaUtils
   }
 
-  static make(network: Network = Network.Mainnet): TokenFactory {
-    switch (network) {
-      case Network.Staging:
-      case Network.Mainnet:
-      case Network.MainnetK8s:
-      case Network.MainnetLB:
-      case Network.Local:
-        return new TokenFactory(new TokenMetaUtils(tokensBySymbol))
-      case Network.Devnet:
-        return new TokenFactory(
-          new TokenMetaUtils(getTokensBySymbolForDevnet()),
-        )
-      case Network.Devnet1:
-        return new TokenFactory(
-          new TokenMetaUtils(getTokensBySymbolForDevnet1()),
-        )
-      case Network.Devnet2:
-        return new TokenFactory(
-          new TokenMetaUtils(getTokensBySymbolForDevnet2()),
-        )
-      case Network.Testnet:
-      case Network.TestnetOld:
-      case Network.TestnetK8s:
-        return new TokenFactory(
-          new TokenMetaUtils(getTokensBySymbolForTestnet()),
-        )
-      default:
-        return new TokenFactory(new TokenMetaUtils(tokensBySymbol))
+  static make(
+    network: Network = Network.Mainnet,
+    registry: Record<string, TokenMeta> = {},
+  ): TokenFactory {
+    if (isTestnet(network)) {
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForTestnet(), ...registry }),
+      )
     }
+
+    if (network === Network.Devnet) {
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForDevnet(), ...registry }),
+      )
+    }
+
+    if (network === Network.Devnet1) {
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForDevnet1(), ...registry }),
+      )
+    }
+
+    if (network === Network.Devnet2) {
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForDevnet2(), ...registry }),
+      )
+    }
+
+    return new TokenFactory(
+      new TokenMetaUtils({ ...tokensBySymbol, ...registry }),
+    )
   }
 
   toToken(denom: string): Token | undefined {
@@ -140,7 +142,7 @@ export class TokenFactory {
   }
 
   getCw20DenomTokenMeta(address: string): TokenMeta | undefined {
-    if (!address.startsWith('inj')) {
+    if (!isCw20ContractAddress(address)) {
       throw new GeneralException(
         new Error(`The address ${address} is not a valid CW20 address`),
       )
@@ -162,7 +164,29 @@ export class TokenFactory {
       )
     }
 
-    const tokenMeta = this.tokenMetaUtils.getMetaByAddress(address)
+    let tokenMeta =
+      this.tokenMetaUtils.getMetaBySymbol(address) ||
+      this.tokenMetaUtils.getMetaByName(address)
+
+    if (isCw20ContractAddress(address)) {
+      tokenMeta = this.tokenMetaUtils.getMetaByAddress(address) || tokenMeta
+
+      return tokenMeta
+        ? {
+            ...tokenMeta,
+            tokenType: TokenType.TokenFactory,
+          }
+        : undefined
+    }
+
+    /**
+     * We have to prevent factory token denoms to be identified as
+     * normal tokens by using only the symbol, i.e
+     * factory/inj..../sol !== SOL token
+     */
+    if (tokenMeta?.tokenType !== TokenType.TokenFactory) {
+      return undefined
+    }
 
     return tokenMeta
       ? {

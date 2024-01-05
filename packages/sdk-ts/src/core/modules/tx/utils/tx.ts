@@ -1,5 +1,5 @@
 import { createAny, createAnyMessage } from './helpers'
-import { EthereumChainId } from '@injectivelabs/ts-types'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { Msgs } from '../../msgs'
 import {
   GoogleProtobufAny,
@@ -10,6 +10,7 @@ import {
   CosmosTxSigningV1Beta1Signing,
 } from '@injectivelabs/core-proto-ts'
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
+import { getStdFee } from '@injectivelabs/utils';
 
 export const getPublicKey = ({
   chainId,
@@ -77,10 +78,12 @@ export const createBody = ({
 export const createFee = ({
   fee,
   payer,
+  granter,
   gasLimit,
 }: {
   fee: { amount: string; denom: string }
   payer?: string
+  granter?: string
   gasLimit: number
 }) => {
   const feeAmount = CosmosBaseV1Beta1Coin.Coin.create()
@@ -93,6 +96,10 @@ export const createFee = ({
 
   if (payer) {
     feeProto.payer = payer
+  }
+
+  if (granter) {
+    feeProto.granter = granter
   }
 
   return feeProto
@@ -259,3 +266,29 @@ export const getTransactionPartsFromTxRaw = (
     signatures: txRaw.signatures,
   }
 }
+
+export const getAminoStdSignDoc = ({
+  memo,
+  chainId,
+  accountNumber,
+  timeoutHeight,
+  sequence,
+  gas,
+  msgs,
+}: {
+  memo?: string
+  chainId: ChainId
+  timeoutHeight?: string
+  accountNumber: number
+  sequence: number
+  gas?: string
+  msgs: Msgs[]
+}) => ({
+  chain_id: chainId,
+  timeout_height: timeoutHeight || '',
+  account_number: accountNumber.toString(),
+  sequence: sequence.toString(),
+  fee: getStdFee({ gas }),
+  msgs: msgs.map((m) => m.toAmino()),
+  memo: memo || '',
+})

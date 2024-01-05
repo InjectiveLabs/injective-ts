@@ -1,4 +1,4 @@
-import { AccountAddress, CosmosChainId } from '@injectivelabs/ts-types'
+import { AccountAddress } from '@injectivelabs/ts-types'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { TxResponse, TxRaw } from '@injectivelabs/sdk-ts'
@@ -7,13 +7,20 @@ import { Wallet, WalletDeviceType } from '../../types/enums'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
 import Cosmostation from './strategies/Cosmostation'
+import Ninji from './strategies/Ninji'
 import {
   ConcreteCosmosWalletStrategy,
   CosmosWalletStrategyArguments,
 } from '../types/strategy'
-import { isCosmosWallet } from '../../utils/wallets/cosmos/utils'
+import {} from '../../utils/utils'
+import { isCosmosWallet } from '../wallet-strategy/utils'
 
-export const cosmosWallets = [Wallet.Keplr, Wallet.Leap, Wallet.Cosmostation]
+export const cosmosWallets = [
+  Wallet.Keplr,
+  Wallet.Leap,
+  Wallet.Cosmostation,
+  Wallet.Ninji,
+]
 
 const createWallet = ({
   wallet,
@@ -29,6 +36,8 @@ const createWallet = ({
       return new Leap({ ...args })
     case Wallet.Cosmostation:
       return new Cosmostation({ ...args })
+    case Wallet.Ninji:
+      return new Ninji({ ...args })
     default:
       throw new GeneralException(
         new Error(`The ${wallet} concrete wallet strategy is not supported`),
@@ -83,12 +92,18 @@ export default class CosmosWalletStrategy {
     return this.getStrategy().getPubKey()
   }
 
+  public enable(): Promise<boolean> {
+    return this.getStrategy().enable()
+  }
+
   public getAddresses(): Promise<AccountAddress[]> {
     return this.getStrategy().getAddresses()
   }
 
-  public isChainIdSupported(chainId?: CosmosChainId): Promise<boolean> {
-    return this.getStrategy().isChainIdSupported(chainId)
+  public async enableAndGetAddresses(): Promise<AccountAddress[]> {
+    await this.getStrategy().enable()
+
+    return await this.getStrategy().getAddresses()
   }
 
   public async sendTransaction(

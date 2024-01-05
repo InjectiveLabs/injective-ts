@@ -24,34 +24,32 @@ import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
-export default class Leap
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Leap extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private leapWallet: LeapWallet
 
-  constructor(args: { chainId: ChainId }) {
+  constructor(args: {
+    chainId: ChainId
+    endpoints?: { rest: string; rpc: string }
+  }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.leapWallet = new LeapWallet(args.chainId)
+    this.leapWallet = new LeapWallet(args.chainId, args.endpoints)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<boolean> {
+    const leapWallet = this.getLeapWallet()
+
+    return await leapWallet.checkChainIdSupport()
+  }
+
   async getAddresses(): Promise<string[]> {
-    const { chainId } = this
     const leapWallet = this.getLeapWallet()
 
     try {
-      if (!(await leapWallet.checkChainIdSupport())) {
-        throw new CosmosWalletException(
-          new Error(`The ${chainId} is not supported on Leap.`),
-          { type: ErrorType.WalletError },
-        )
-      }
-
       const accounts = await leapWallet.getAccounts()
 
       return accounts.map((account) => account.address)
@@ -89,7 +87,11 @@ export default class Leap
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    _options: { address: AccountAddress; chainId: ChainId },
+    options: {
+      address: AccountAddress
+      chainId: ChainId
+      endpoints?: { grpc: string }
+    },
   ): Promise<TxResponse> {
     const { leapWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
@@ -97,6 +99,7 @@ export default class Leap
     try {
       return await leapWallet.waitTxBroadcasted(
         await leapWallet.broadcastTx(txRaw),
+        options.endpoints?.grpc,
       )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
@@ -121,6 +124,21 @@ export default class Leap
     })
   }
 
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new CosmosWalletException(
+      new Error('This wallet does not support signing using amino'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SendTransaction,
+      },
+    )
+  }
+
   async signCosmosTransaction(transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -140,6 +158,25 @@ export default class Leap
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,
+      })
+    }
+  }
+
+  async signArbitrary(
+    signer: string,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    const leapWallet = this.getLeapWallet()
+    const leap = await leapWallet.getLeapWallet()
+
+    try {
+      const signature = await leap.signArbitrary(this.chainId, signer, data)
+
+      return signature.signature
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SignArbitrary,
       })
     }
   }

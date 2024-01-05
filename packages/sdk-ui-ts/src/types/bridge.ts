@@ -26,6 +26,15 @@ export enum BridgingNetwork {
   Solana = 'solana',
   Sommelier = 'sommelier',
   Arbitrum = 'arbitrum',
+  Polygon = 'polygon',
+  Klaytn = 'klaytn',
+  Sui = 'sui',
+  Kava = 'kava',
+  Oraichain = 'oraichain',
+  Noble = 'noble',
+  Celestia = 'celestia',
+  Migaloo = 'migaloo',
+  Kujira = 'kujira',
 }
 
 export const MintScanExplorerUrl = {
@@ -39,7 +48,10 @@ export const MintScanExplorerUrl = {
   [BridgingNetwork.Stride]: 'stride',
   [BridgingNetwork.Crescent]: 'crescent',
   [BridgingNetwork.Sommelier]: 'sommelier',
-  [BridgingNetwork.Canto]: '',
+  [BridgingNetwork.Canto]: 'canto',
+  [BridgingNetwork.Kava]: 'kava',
+  [BridgingNetwork.Noble]: 'noble',
+  [BridgingNetwork.Celestia]: 'celestia',
 } as Record<BridgingNetwork, string>
 
 export enum BridgeTransactionState {

@@ -1,3 +1,4 @@
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -6,7 +7,27 @@ import {
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+
+const createSpotMarketParamUpdate = (
+  params: MsgSubmitProposalSpotMarketParamUpdate.Params,
+) => {
+  const content =
+    InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.create()
+  content.title = params.market.title
+  content.description = params.market.description
+  content.makerFeeRate = params.market.makerFeeRate
+  content.takerFeeRate = params.market.takerFeeRate
+  content.relayerFeeShareRate = params.market.relayerFeeShareRate
+  content.marketId = params.market.marketId
+  content.status = params.market.status
+  content.minPriceTickSize = params.market.minPriceTickSize
+  content.minQuantityTickSize = params.market.minQuantityTickSize
+
+  return InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.fromPartial(
+    content,
+  )
+}
 
 export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
   export interface Params {
@@ -59,16 +80,32 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
-    const content = this.getContent()
-    const proposalType =
-      '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
+    const content = createSpotMarketParamUpdate({
+      ...params,
+      market: {
+        ...params.market,
+        relayerFeeShareRate: amountToCosmosSdkDecAmount(
+          params.market.relayerFeeShareRate,
+        ).toFixed(),
+        makerFeeRate: amountToCosmosSdkDecAmount(
+          params.market.makerFeeRate,
+        ).toFixed(),
+        takerFeeRate: amountToCosmosSdkDecAmount(
+          params.market.takerFeeRate,
+        ).toFixed(),
+        minQuantityTickSize: amountToCosmosSdkDecAmount(
+          params.market.minQuantityTickSize,
+        ).toFixed(),
+      },
+    })
 
     const contentAny = GoogleProtobufAny.Any.create()
     contentAny.value =
       InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.encode(
         content,
       ).finish()
-    contentAny.typeUrl = proposalType
+    contentAny.typeUrl =
+      '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
 
     const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
     message.content = contentAny
@@ -89,19 +126,18 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const content = this.getContent()
-    const proposalType = 'exchange/SpotMarketParamUpdateProposal'
-
-    const message = {
-      content,
-      proposer: params.proposer,
-    }
 
     const messageWithProposalType = snakecaseKeys({
-      ...message,
+      proposer: params.proposer,
+      initialDeposit: [
+        {
+          denom: params.deposit.denom,
+          amount: params.deposit.amount,
+        },
+      ],
       content: {
-        value: message.content,
-        type_url: proposalType,
+        type_url: 'exchange/SpotMarketParamUpdateProposal',
+        value: this.getContent(),
       },
     })
 
@@ -114,20 +150,18 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
   public toWeb3() {
     const { params } = this
-    const content = this.getContent()
-    const proposalType =
-      '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
-
-    const message = {
-      content,
-      proposer: params.proposer,
-    }
 
     const messageWithProposalType = {
-      ...message,
+      proposer: params.proposer,
+      initialDeposit: [
+        {
+          denom: params.deposit.denom,
+          amount: params.deposit.amount,
+        },
+      ],
       content: {
-        ...message.content,
-        '@type': proposalType,
+        '@type': '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
+        ...this.getContent(),
       },
     }
 
@@ -153,20 +187,6 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   private getContent() {
     const { params } = this
 
-    const content =
-      InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.create()
-    content.title = params.market.title
-    content.description = params.market.description
-    content.makerFeeRate = params.market.makerFeeRate
-    content.takerFeeRate = params.market.takerFeeRate
-    content.relayerFeeShareRate = params.market.relayerFeeShareRate
-    content.marketId = params.market.marketId
-    content.status = params.market.status
-    content.minPriceTickSize = params.market.minPriceTickSize
-    content.minQuantityTickSize = params.market.minQuantityTickSize
-
-    return InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.fromPartial(
-      content,
-    )
+    return createSpotMarketParamUpdate(params)
   }
 }
