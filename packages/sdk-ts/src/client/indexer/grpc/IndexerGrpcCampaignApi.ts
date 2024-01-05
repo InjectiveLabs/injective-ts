@@ -98,7 +98,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     }
 
     try {
-      const response = await this.retry<InjectiveCampaignRpc.CampaignsRequest>(
+      const response = await this.retry<InjectiveCampaignRpc.CampaignsResponse>(
         () => this.client.Campaigns(request),
       )
 
