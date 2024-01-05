@@ -32,6 +32,9 @@ export const DEFAULT_MAINNET_GAS_PRICE = new BigNumber(30).times(GWEI_IN_WEI)
 export const TIP_IN_GWEI: BigNumberInBase = new BigNumberInBase(2).times(
   GWEI_IN_WEI,
 )
+export const TIP_IN_GWEI_TESTNET: BigNumberInBase = new BigNumberInBase(
+  1.5,
+).times(GWEI_IN_WEI)
 
 export const BIG_NUMBER_ROUND_DOWN_MODE = BigNumberInBase.ROUND_DOWN
 export const BIG_NUMBER_ROUND_UP_MODE = BigNumberInBase.ROUND_UP
