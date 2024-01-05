@@ -2780,6 +2780,7 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  
   WAIFU: {
     name: 'Waifu',
     symbol: 'WAIFU',
