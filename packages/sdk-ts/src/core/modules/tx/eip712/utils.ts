@@ -24,8 +24,8 @@ export const getEip712DomainV2 = (ethereumChainId: EthereumChainId) => {
       name: 'Injective Web3',
       version: '1.0.0',
       chainId: '0x' + new BigNumberInBase(ethereumChainId).toString(16),
-      salt: '0',
       verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+      salt: '0',
     },
   }
 }
