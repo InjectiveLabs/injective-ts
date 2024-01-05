@@ -2785,7 +2785,7 @@ export default {
     name: 'Waifu',
     symbol: 'WAIFU',
     decimals: 6,
-    logo: 'waifu-logo.jpeg',
+    logo: 'waifu-logo.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
