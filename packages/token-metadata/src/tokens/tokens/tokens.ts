@@ -2814,4 +2814,13 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  WAIFU: {
+    name: 'Waifu',
+    symbol: 'WAIFU',
+    decimals: 6,
+    logo: 'waifu-logo.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
