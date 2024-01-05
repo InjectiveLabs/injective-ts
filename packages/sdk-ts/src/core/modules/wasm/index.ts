@@ -26,6 +26,7 @@ import ExecPrivilegedArgVaultSubscribe from './exec-priv-args/ExecPrivilegedArgV
 import ExecPrivilegedArgOffChainVaultRedeem from './exec-priv-args/ExecPrivilegedArgOffChainVaultRedeem'
 import ExecPrivilegedArgOffChainVaultSubscribe from './exec-priv-args/ExecPrivilegedArgOffChainVaultSubscribe'
 
+export * from './types'
 export * from './exec-args'
 
 export {
