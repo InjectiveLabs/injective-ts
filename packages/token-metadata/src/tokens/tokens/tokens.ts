@@ -2771,7 +2771,7 @@ export default {
   },
 
   MOONIFY: {
-    name: 'MOONIFY',
+    name: 'Moonify',
     symbol: 'MOONIFY',
     decimals: 6,
     logo: 'moonify.png',
