@@ -40,8 +40,8 @@ export const getEip712TypedData = ({
   })
 
   return {
-    primaryType: 'Tx',
     ...typesWithFeePayer,
+    primaryType: 'Tx',
     ...getEip712Domain(ethereumChainId),
     message: {
       ...getEipTxDetails(tx),
@@ -68,8 +68,8 @@ export const getEip712TypedDataV2 = ({
   const types = getDefaultEip712TypesV2()
 
   return {
-    primaryType: 'Tx',
     ...types,
+    primaryType: 'Tx',
     ...getEip712DomainV2(ethereumChainId),
     message: {
       context: JSON.stringify(getEipTxContext({ ...tx, fee })),
