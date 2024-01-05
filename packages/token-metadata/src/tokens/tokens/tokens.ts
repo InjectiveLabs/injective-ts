@@ -2780,6 +2780,14 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  WAIFU: {
+    name: 'Waifu',
+    symbol: 'WAIFU',
+    decimals: 6,
+    logo: 'waifu-logo.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 
   DREAM: {
     name: 'DREAM',
