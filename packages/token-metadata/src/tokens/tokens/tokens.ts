@@ -2824,3 +2824,12 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 } as Record<string, TokenMeta>
+
+BITS: {
+  name: 'bits',
+  symbol: 'BITS',
+  decimals: 6,
+  logo: 'https://bafkreibctiznqniuyv3jp7c7n3yo5wjxvszeiiiofhrg3blbljhnxabewu.ipfs.w3s.link',
+  coinGeckoId: 'orBitsINJ',
+  tokenType: TokenType.TokenFactory,
+},
