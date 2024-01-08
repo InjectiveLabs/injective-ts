@@ -35,6 +35,24 @@ export default class Welldone
     this.chainId = args.chainId || CosmosChainId.Injective
     this.welldoneWallet = new WelldoneWallet(args.chainId)
   }
+  signAminoCosmosTransaction(_transaction: { signDoc: any; accountNumber: number; chainId: string; address: string }): Promise<string> {
+    throw new CosmosWalletException(
+      new Error('This wallet does not support signing using amino'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SendTransaction,
+      },
+    )
+  }
+
+  async signArbitrary(_signer: string, _data: string | Uint8Array): Promise<string> {
+    throw new Error('Method not implemented.')
+  }
+
+  async enable(): Promise<boolean> {
+    const welldoneWallet = this.getWelldoneWallet();
+    return welldoneWallet.enable();
+  }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)

@@ -29,6 +29,11 @@ export default class Welldone implements ConcreteCosmosWalletStrategy {
     this.welldoneWallet = new WelldoneWallet(args.chainId)
   }
 
+  enable(): Promise<boolean> {
+    const welldoneWallet = this.getWelldoneWallet();
+    return welldoneWallet.enable();
+  }
+
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
   }

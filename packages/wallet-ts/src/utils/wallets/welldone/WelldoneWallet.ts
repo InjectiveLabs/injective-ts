@@ -34,6 +34,11 @@ export class WelldoneWallet {
     this.chainName = chainId.split('-')[0]
   }
 
+  async enable(): Promise<boolean> {
+    const accounts = await this.getAccounts();
+    return accounts && !!accounts.address;
+  }
+
   async getAccounts(): Promise<{ address: string; pubKey: string }> {
     const welldone = await this.getWelldoneWallet()
 
