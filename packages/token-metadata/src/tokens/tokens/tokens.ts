@@ -229,6 +229,13 @@ export default {
         address: 'inj1dngqzz6wphf07fkdam7dn55t8t3r6qenewy9zu',
         tokenType: TokenType.Cw20,
       },
+      {
+        decimals: 6,
+        symbol: 'USDCpoly',
+        source: TokenSource.Polygon,
+        address: 'inj19s2r64ghfqq3py7f5dr0ynk8yj0nmngca3yvy3',
+        tokenType: TokenType.Cw20,
+      },
     ],
 
     ibc: {
@@ -2764,7 +2771,7 @@ export default {
   },
 
   MOONIFY: {
-    name: 'MOONIFY',
+    name: 'Moonify',
     symbol: 'MOONIFY',
     decimals: 6,
     logo: 'moonify.png',
@@ -2798,12 +2805,21 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
-  
+
   INJECT: {
     name: 'Injectools',
     symbol: 'INJECT',
     decimals: 6,
     logo: 'INJECT.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
+  WAIFU: {
+    name: 'Waifu',
+    symbol: 'WAIFU',
+    decimals: 6,
+    logo: 'waifu-logo.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },

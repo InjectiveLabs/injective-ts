@@ -2052,6 +2052,25 @@
     }
   },
   {
+    "name": "qcFUZN",
+    "denom": "ibc/5E44326A289ED1CA0536517BC958881B611D21CBB33EBE068F1E04A502A9F548",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/qcfuzn.svg",
+    "symbol": "qcFUZN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "5E44326A289ED1CA0536517BC958881B611D21CBB33EBE068F1E04A502A9F548",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "qcFUZN",
+      "baseDenom": "qcFUZN",
+      "isNative": false
+    }
+  },
+  {
     "name": "Nois",
     "denom": "ibc/DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/nois/images/nois.png",
@@ -2314,6 +2333,25 @@
       "decimals": 6,
       "symbol": "ATOM",
       "baseDenom": "ATOM",
+      "isNative": false
+    }
+  },
+  {
+    "name": "AtomEconomicZone69JaeKwonInu",
+    "denom": "ibc/AEE5A4EF1B28693C4FF12F046C17197E509030B18F70FE3D74F6C3542BB008AD",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/circus.png",
+    "symbol": "CIRCUS",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "AEE5A4EF1B28693C4FF12F046C17197E509030B18F70FE3D74F6C3542BB008AD",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "CIRCUS",
+      "baseDenom": "CIRCUS",
       "isNative": false
     }
   },
