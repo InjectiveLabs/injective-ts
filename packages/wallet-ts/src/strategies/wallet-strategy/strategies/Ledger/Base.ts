@@ -358,28 +358,39 @@ export default class LedgerBase
   private async getWalletForAddress(
     address: string,
   ): Promise<LedgerWalletInfo> {
-    const { baseDerivationPath, derivationPathType } = this
-    const accountManager = await this.ledger.getAccountManager()
+    try {
+      const { baseDerivationPath, derivationPathType } = this
+      const accountManager = await this.ledger.getAccountManager()
 
-    if (!accountManager.hasWalletForAddress(address)) {
-      for (
-        let i = 0;
-        i < DEFAULT_ADDRESS_SEARCH_LIMIT / DEFAULT_NUM_ADDRESSES_TO_FETCH;
-        i += 1
-      ) {
-        await accountManager.getWallets(baseDerivationPath, derivationPathType)
+      if (!accountManager.hasWalletForAddress(address)) {
+        for (
+          let i = 0;
+          i < DEFAULT_ADDRESS_SEARCH_LIMIT / DEFAULT_NUM_ADDRESSES_TO_FETCH;
+          i += 1
+        ) {
+          await accountManager.getWallets(
+            baseDerivationPath,
+            derivationPathType,
+          )
 
-        if (accountManager.hasWalletForAddress(address)) {
-          return (await accountManager.getWalletForAddress(
-            address,
-          )) as LedgerWalletInfo
+          if (accountManager.hasWalletForAddress(address)) {
+            return (await accountManager.getWalletForAddress(
+              address,
+            )) as LedgerWalletInfo
+          }
         }
       }
-    }
 
-    return (await accountManager.getWalletForAddress(
-      address,
-    )) as LedgerWalletInfo
+      return (await accountManager.getWalletForAddress(
+        address,
+      )) as LedgerWalletInfo
+    } catch (e) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
   }
 
   private async getAlchemy() {

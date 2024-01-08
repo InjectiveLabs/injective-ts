@@ -3,6 +3,7 @@ import {
   hexToBuff,
   PublicKey,
   SIGN_AMINO,
+  SIGN_DIRECT,
   hexToBase64,
   ChainGrpcAuthApi,
   CosmosTxV1Beta1Tx,
@@ -334,12 +335,16 @@ export class MsgBroadcaster {
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
+    const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
+      ? SIGN_AMINO
+      : SIGN_DIRECT
     const pubKey = await walletStrategy.getPubKey(tx.injectiveAddress)
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
     const { txRaw } = await this.getTxWithSignersAndStdFee({
       chainId,
+      signMode,
       memo: tx.memo,
       message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
@@ -368,6 +373,8 @@ export class MsgBroadcaster {
         address: tx.injectiveAddress,
         accountNumber: baseAccount.accountNumber,
       })) as string
+
+      console.log({ signature, signMode, aminoSignDoc })
 
       txRaw.signatures = [Buffer.from(signature, 'base64')]
 

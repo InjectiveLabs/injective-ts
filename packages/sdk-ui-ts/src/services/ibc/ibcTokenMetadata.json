@@ -3323,5 +3323,62 @@
       "baseDenom": "POPEYE",
       "isNative": false
     }
+  },
+  {
+    "name": "jimmy",
+    "denom": "ibc/BE0CC03465ABE696C3AE57F6FE166721DF79405DFC4F4E3DC09B50FACABB8888",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/jimmy.png",
+    "symbol": "JIMMY",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "BE0CC03465ABE696C3AE57F6FE166721DF79405DFC4F4E3DC09B50FACABB8888",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "JIMMY",
+      "baseDenom": "JIMMY",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Sensei Dog",
+    "denom": "ibc/12612A3EBAD01200A7FBD893D4B0D71F3AD65C41B2AEE5B42EE190672EBE57E9",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/SenseiDog.png",
+    "symbol": "SENSEI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "12612A3EBAD01200A7FBD893D4B0D71F3AD65C41B2AEE5B42EE190672EBE57E9",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SENSEI",
+      "baseDenom": "SENSEI",
+      "isNative": false
+    }
+  },
+  {
+    "name": "Dora Vota",
+    "denom": "ibc/BC3AD52E42C6E1D13D2BDCEB497CF5AB9FEE24D804F5563B9E7DCFB825246947",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/doravota/images/dora.svg",
+    "symbol": "DORA",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "BC3AD52E42C6E1D13D2BDCEB497CF5AB9FEE24D804F5563B9E7DCFB825246947",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "DORA",
+      "baseDenom": "DORA",
+      "isNative": false
+    }
   }
 ]
