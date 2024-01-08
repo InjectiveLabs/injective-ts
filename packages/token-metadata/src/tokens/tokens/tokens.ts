@@ -2823,4 +2823,19 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+
+  APP: {
+    name: 'Moon App',
+    symbol: 'APP',
+    decimals: 18,
+    logo: 'app.jpeg',
+    coinGeckoId: '',
+    tokenType: TokenType.Erc20,
+
+    erc20: {
+      decimals: 18,
+      address: '0xC5d27F27F08D1FD1E3EbBAa50b3442e6c0D50439',
+      tokenType: TokenType.Erc20,
+    },
+  },
 } as Record<string, TokenMeta>
