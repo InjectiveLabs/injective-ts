@@ -94,7 +94,7 @@ export class WelldoneWallet {
 
     authInfo.signerInfos.forEach((signerInfo) => {
       if (signerInfo.publicKey) {
-        signerInfo.publicKey.typeUrl = '/cosmos.crypto.secp256k1.PubKey'
+        signerInfo.publicKey.typeUrl = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
       }
     })
 
