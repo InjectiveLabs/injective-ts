@@ -1519,7 +1519,7 @@ export default {
     name: 'Arbitrum',
     symbol: 'ARB',
     decimals: 18,
-    logo: 'arb.png',
+    logo: 'arb-circle.png',
     coinGeckoId: 'arbitrum',
     tokenType: TokenType.Cw20,
 
