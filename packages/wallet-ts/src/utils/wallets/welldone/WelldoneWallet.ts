@@ -89,26 +89,11 @@ export class WelldoneWallet {
     return new TxRestApi(endpoints.rest).fetchTxPoll(txHash)
   }
 
-  private changePubKeyType(authInfoBytes: Uint8Array) {
-    const authInfo = CosmosTxV1Beta1Tx.AuthInfo.decode(authInfoBytes)
-
-    authInfo.signerInfos.forEach((signerInfo) => {
-      if (signerInfo.publicKey) {
-        signerInfo.publicKey.typeUrl = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
-      }
-    })
-
-    return CosmosTxV1Beta1Tx.AuthInfo.encode(authInfo).finish()
-  }
-
   public async signTransaction(
     signDoc: Omit<CosmosTxV1Beta1Tx.SignDoc, 'accountNumber'> & {
       accountNumber: Long
     },
   ): Promise<DirectSignResponse> {
-    const authInfoBytes = this.changePubKeyType(signDoc.authInfoBytes)
-    signDoc.authInfoBytes = authInfoBytes
-
     const welldone = await this.getWelldoneWallet()
 
     try {
