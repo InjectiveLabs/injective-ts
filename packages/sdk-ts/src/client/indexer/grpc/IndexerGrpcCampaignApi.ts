@@ -85,9 +85,19 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     accountAddress,
   }: {
     roundId?: string
+    toRoundId?: string
     accountAddress?: string
+    contractAddress?: string
   }) {
     const request = InjectiveCampaignRpc.CampaignsRequest.create()
+
+    if (roundId) {
+      request.roundId = roundId
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
+    }
 
     if (roundId) {
       request.roundId = roundId
