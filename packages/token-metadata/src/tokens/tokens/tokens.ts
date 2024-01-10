@@ -1252,6 +1252,15 @@ export default {
     },
   },
 
+  PUNK: {
+    name: 'Punk DAO Token',
+    logo: 'PUNK.png',
+    symbol: 'PUNK',
+    decimals: '6',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+  
   PROJX: {
     name: 'PROJX',
     logo: 'projx.png',
