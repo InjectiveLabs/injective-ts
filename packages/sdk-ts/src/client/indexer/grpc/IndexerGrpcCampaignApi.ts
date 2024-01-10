@@ -82,10 +82,12 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
 
   async fetchRound({
     roundId,
+    toRoundId,
     accountAddress,
+    contractAddress,
   }: {
     roundId?: string
-    toRoundId?: string
+    toRoundId?: number
     accountAddress?: string
     contractAddress?: string
   }) {
@@ -99,12 +101,12 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
       request.accountAddress = accountAddress
     }
 
-    if (roundId) {
-      request.roundId = roundId
+    if (toRoundId) {
+      request.toRoundId = toRoundId
     }
 
-    if (accountAddress) {
-      request.accountAddress = accountAddress
+    if (contractAddress) {
+      request.contractAddress = contractAddress
     }
 
     try {
