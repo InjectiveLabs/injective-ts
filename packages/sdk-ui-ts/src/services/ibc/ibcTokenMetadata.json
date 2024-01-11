@@ -3380,5 +3380,24 @@
       "baseDenom": "DORA",
       "isNative": false
     }
+  },
+  {
+    "name": "Canto",
+    "denom": "ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/canto/images/canto.png",
+    "symbol": "CANTO",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "CANTO",
+      "baseDenom": "CANTO",
+      "isNative": false
+    }
   }
 ]

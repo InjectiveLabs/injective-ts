@@ -28,6 +28,7 @@ import {
 } from '../types/exchange'
 import { grpcPagingToPaging } from '../../../utils/pagination'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import { TokenType } from '@injectivelabs/token-metadata'
 
 const zeroPriceLevel = () => ({
   price: '0',
@@ -54,6 +55,7 @@ export class IndexerGrpcSpotTransformer {
       decimals: tokenMeta.decimals,
       updatedAt: tokenMeta.updatedAt,
       coinGeckoId: '',
+      tokenType: TokenType.Unknown,
     }
   }
 

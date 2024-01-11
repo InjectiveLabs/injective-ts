@@ -44,6 +44,7 @@ import {
 } from '../types/exchange'
 import { grpcPagingToPaging } from '../../../utils/pagination'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import { TokenType } from '@injectivelabs/token-metadata'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -71,6 +72,7 @@ export class IndexerGrpcDerivativeTransformer {
       decimals: tokenMeta.decimals,
       updatedAt: tokenMeta.updatedAt,
       coinGeckoId: '',
+      tokenType: TokenType.Unknown,
     }
   }
 
