@@ -7,6 +7,7 @@ const params: MsgCancelSpotOrder['params'] = {
   marketId: mockFactory.injUsdtSpotMarket.marketId,
   orderHash: mockFactory.orderHash,
   subaccountId: mockFactory.subaccountId,
+  cid: '',
 }
 
 const protoType = '/injective.exchange.v1beta1.MsgCancelSpotOrder'
@@ -16,6 +17,7 @@ const protoParams = {
   marketId: params.marketId,
   orderHash: params.orderHash,
   subaccountId: params.subaccountId,
+  cid: params.cid,
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
 

@@ -17,6 +17,7 @@ export declare namespace MsgCreateDerivativeMarketOrder {
     price: string
     margin: string
     quantity: string
+    cid?: string
   }
 
   export type Proto = InjectiveExchangeV1Beta1Tx.MsgCreateDerivativeMarketOrder
@@ -28,6 +29,7 @@ const createMarketOrder = (params: MsgCreateDerivativeMarketOrder.Params) => {
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
   orderInfo.quantity = params.quantity
+  orderInfo.cid = params.cid || ''
 
   const derivativeOrder =
     InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()

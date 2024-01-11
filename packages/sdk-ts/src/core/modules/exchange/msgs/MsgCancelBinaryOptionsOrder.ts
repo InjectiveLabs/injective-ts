@@ -12,6 +12,7 @@ export declare namespace MsgCancelBinaryOptionsOrder {
     injectiveAddress: string
     orderHash: string
     orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
+    cid?: string
   }
 
   export type Proto = InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder
@@ -39,6 +40,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     message.marketId = params.marketId
     message.orderHash = params.orderHash
     message.subaccountId = params.subaccountId
+    message.cid = params.cid || ''
 
     // TODO: Send order.orderMask instead when chain handles order mask properly.
     message.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY

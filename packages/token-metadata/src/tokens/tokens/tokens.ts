@@ -2354,7 +2354,7 @@ export default {
     name: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
     symbol: 'SKIPBIDIDOBDOBDOBYESYESYESYES',
     decimals: 9,
-    logo: 'skibidi.jpg',
+    logo: 'skibidi.jpeg',
     coinGeckoId: '',
 
     erc20: {
@@ -2486,7 +2486,7 @@ export default {
     name: 'LAMA',
     symbol: 'LAMA',
     decimals: 6,
-    logo: 'lama.png',
+    logo: 'lama.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
