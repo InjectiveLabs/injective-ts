@@ -634,7 +634,10 @@ export class MsgBroadcaster {
       address: tx.injectiveAddress,
       txRaw: createTxRawFromSigResponse(directSignResponse),
       signature: directSignResponse.signature.signature,
-      pubKey: directSignResponse.signature.pub_key,
+      pubKey: directSignResponse.signature.pub_key || {
+        value: pubKey,
+        type: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
+      },
     })
 
     // Re-enable tx gas check removed above
