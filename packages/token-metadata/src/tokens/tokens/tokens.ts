@@ -1223,59 +1223,7 @@ export default {
     },
   },
 
-  ZEN: {
-    name: 'ZEN',
-    logo: 'zen.svg',
-    symbol: 'ZEN',
-    decimals: 18,
-    coinGeckoId: '',
-    tokenType: TokenType.TokenFactory,
 
-    cw20: {
-      decimals: 18,
-      address: 'uzen',
-      tokenType: TokenType.Cw20,
-    },
-  },
-
-  PROJ: {
-    name: 'PROJ',
-    logo: 'proj.png',
-    symbol: 'PROJ',
-    decimals: 18,
-    coinGeckoId: '',
-    tokenType: TokenType.TokenFactory,
-
-    cw20: {
-      decimals: 18,
-      address: 'proj',
-      tokenType: TokenType.Cw20,
-    },
-  },
-
-  PUNK: {
-    name: 'Punk DAO Token',
-    logo: 'PUNK.png',
-    symbol: 'PUNK',
-    decimals: 6,
-    coinGeckoId: '',
-    tokenType: TokenType.TokenFactory,
-  },
-
-  PROJX: {
-    name: 'PROJX',
-    logo: 'projx.png',
-    symbol: 'PROJX',
-    decimals: 18,
-    coinGeckoId: '',
-    tokenType: TokenType.TokenFactory,
-
-    cw20: {
-      decimals: 18,
-      address: 'projx',
-      tokenType: TokenType.Cw20,
-    },
-  },
 
   ASTRO: {
     name: 'ASTRO',
@@ -1542,7 +1490,7 @@ export default {
     evm: {
       decimals: 18,
       address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
-      tokenType: TokenType.Erc20,
+      tokenType: TokenType.Evm,
     },
 
     erc20: {
@@ -1799,15 +1747,6 @@ export default {
     },
   },
 
-  DEMO: {
-    name: 'Demo Coin',
-    symbol: 'DEMO',
-    decimals: 6,
-    logo: 'injective-v3.png',
-    coinGeckoId: '',
-    tokenType: TokenType.TokenFactory,
-  },
-
   RAI: {
     name: 'Rai Reflex Index',
     symbol: 'RAI',
@@ -1965,6 +1904,13 @@ export default {
     logo: 'point.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1zaem9jqplp08hkkd5vcl6vmvala9qury79vfj4',
+      symbol: 'NINJA',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   KAVA: {
@@ -2025,6 +1971,13 @@ export default {
     logo: 'nebula.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1d0zfq42409a5mhdagjutl8u6u9rgcm4h8zfmfq',
+      symbol: 'NINJA',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   WKLAY: {
@@ -2133,6 +2086,13 @@ export default {
     logo: 'talis.webp',
     coinGeckoId: 'talis-protocol',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1maeyvxfamtn8lfyxpjca8kuvauuf2qeu6gtxm3',
+      symbol: 'TALIS',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   KIRA: {
@@ -2142,6 +2102,13 @@ export default {
     logo: 'kira.jpeg',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1xy3kvlr4q4wdd6lrelsrw2fk2ged0any44hhwq',
+      symbol: 'KIRA',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   USDY: {
@@ -2225,6 +2192,13 @@ export default {
     logo: 'tix.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1rw3qvamxgmvyexuz2uhyfa4hukvtvteznxjvke' /** testnet */,
+      symbol: 'TIX',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   NINJ: {
@@ -2250,6 +2224,21 @@ export default {
     logo: 'bird.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactories: [
+      {
+        creator: 'inj125hcdvz9dnhdqal2u8ctr7l0hd8xy9wdgzt8ld',
+        symbol: 'BINJ',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj1lhr06p7k3rdgk0knw5hfsde3fj87g2aq4e9a52',
+        symbol: 'BINJ',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+    ],
   },
 
   NINJA: {
@@ -2259,6 +2248,13 @@ export default {
     logo: 'ninja.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1xtel2knkt8hmc9dnzpjz6kdmacgcfmlv5f308w',
+      symbol: 'NINJA',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   KATANA: {
@@ -2268,6 +2264,13 @@ export default {
     logo: 'katana.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1vwn4x08hlactxj3y3kuqddafs2hhqzapruwt87',
+      symbol: 'KATANA',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   GALAXY: {
@@ -2277,6 +2280,13 @@ export default {
     logo: 'galaxy.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj10zdjt8ylfln5xr3a2ruf9nwn6d5q2d2r3v6mh8',
+      symbol: 'GALAXY',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   AOI: {
@@ -2286,6 +2296,13 @@ export default {
     logo: 'aoi.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj169ed97mcnf8ay6rgvskn95n6tyt46uwvy5qgs0',
+      symbol: '$AOI',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   NOBI: {
@@ -2295,6 +2312,27 @@ export default {
     logo: 'nobi.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactories: [
+      {
+        creator: 'inj1pjp9q2ycs7eaav8d5ny5956k5m6t0alpl33xd6',
+        symbol: 'NOBI',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj1t02au5gsk40ev9jaq0ggcyry9deuvvza6s4wav',
+        symbol: 'NOBI',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj1xawhm3d8lf9n0rqdljpal033yackja3dt0kvp0',
+        symbol: 'NOBI',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+    ],
   },
 
   YUKI: {
@@ -2304,6 +2342,13 @@ export default {
     logo: 'yuki.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1spdy83ds5ezq9rvtg0ndy8480ad5rlczcpvtu2',
+      symbol: 'YUKI',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   WAGMI: {
@@ -2313,6 +2358,13 @@ export default {
     logo: 'wagmi.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj188veuqed0dygkcmq5d24u3807n6csv4wdv28gh',
+      symbol: 'WAGMI',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   BAMBOO: {
@@ -2322,6 +2374,21 @@ export default {
     logo: 'panda.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactories: [
+      {
+        creator: 'inj144nw6ny28mlwuvhfnh7sv4fcmuxnpjx4pksr0j',
+        symbol: 'BAMBOO',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj183lz632dna57ayuf6unqph5d0v2u655h2jzzyy',
+        symbol: 'BAMBOO',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+    ],
   },
 
   SHURIKEN: {
@@ -2331,6 +2398,27 @@ export default {
     logo: 'shuriken.jpeg',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactories: [
+      {
+        creator: 'inj1z426atp9k68uv49kaam7m0vnehw5fulxkyvde0',
+        symbol: 'SHURIKEN',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj1kt6ujkzdfv9we6t3ca344d3wquynrq6dg77qju',
+        symbol: 'SHURIKEN',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj1gflhshg8yrk8rrr3sgswhmsnygw9ghzdsn05a0',
+        symbol: 'SHURIKEN',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+    ],
   },
 
   BRETT: {
@@ -2340,6 +2428,13 @@ export default {
     logo: 'brett.jpeg',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj13jjdsa953w03dvecsr43dj5r6a2vzt7n0spncv',
+      symbol: 'BRETT',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   ZIG: {
@@ -2364,6 +2459,13 @@ export default {
     logo: 'doj.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj172ccd0gddgz203e4pf86ype7zjx573tn8g0df9',
+      symbol: 'GINGER',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   SKIPBIDIDOBDOBDOBYESYESYESYES: {
@@ -2388,6 +2490,13 @@ export default {
     logo: 'ginger.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj172ccd0gddgz203e4pf86ype7zjx573tn8g0df9',
+      symbol: 'GINGER',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   ERIC: {
@@ -2397,6 +2506,13 @@ export default {
     logo: 'eric.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1w7cw5tltax6dx7znehul98gel6yutwuvh44j77',
+      symbol: 'ERIC',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   INJINU: {
@@ -2406,6 +2522,13 @@ export default {
     logo: 'injinu.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1vjppa6h9lf75pt0v6qnxtej4xcl0qevnxzcrvm',
+      symbol: 'INJINU',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   Babykira: {
@@ -2415,6 +2538,21 @@ export default {
     logo: 'babykira.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactories: [
+      {
+        creator: 'inj13vau2mgx6mg7ams9nngjhyng58tl9zyw0n8s93',
+        symbol: 'Babykira',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj15jeczm4mqwtc9lk4c0cyynndud32mqd4m9xnmu',
+        symbol: 'Babykira',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+    ],
   },
 
   LIOR: {
@@ -2424,24 +2562,59 @@ export default {
     logo: 'lior.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactories: [
+      {
+        creator: 'inj1cjus5ragdkvpmt627fw7wkj2ydsra9s0vap4zx',
+        symbol: 'LIOR',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj1sg3yjgjlwhtrepeuusj4jwv209rh6cmk882cw3',
+        symbol: 'LIOR',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj1tgphgjqsz8fupkfjx6cy275e3s0l8xfu6rd6jh',
+        symbol: 'LIOR',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+    ],
   },
 
-  INJINEER: {
+  INJER: {
     name: 'INJINEER',
     symbol: 'INJER',
     decimals: 6,
     logo: 'INJINEER.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1sjmplasxl9zgj6yh45j3ndskgdhcfcss9djkdn',
+      symbol: 'INJER',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   SHIBA: {
     name: 'Shiba',
-    symbol: 'shibainj',
+    symbol: 'Shiba INJ',
     decimals: 6,
     logo: 'shiba.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1v0yk4msqsff7e9zf8ktxykfhz2hen6t2u4ue4r',
+      symbol: 'Shiba INJ',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   GROK: {
@@ -2451,6 +2624,13 @@ export default {
     logo: 'grok.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1vgrf5mcvvg9p5c6jajqefn840nq74wjzgkt30z',
+      symbol: 'GROK',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   SNOWY: {
@@ -2460,6 +2640,13 @@ export default {
     logo: 'snowy.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1ml33x7lkxk6x2x95d3alw4h84evlcdz2gnehmk',
+      symbol: 'SNOWY',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   BULLS: {
@@ -2469,6 +2656,13 @@ export default {
     logo: 'bulls.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1zq37mfquqgud2uqemqdkyv36gdstkxl27pj5e3',
+      symbol: 'BULLS',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   LVN: {
@@ -2497,6 +2691,13 @@ export default {
     logo: 'kinja.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1h33jkaqqalcy3wf8um6ewk4hxmfwf8uern470k',
+      symbol: 'KINJA',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   LAMA: {
@@ -2506,6 +2707,13 @@ export default {
     logo: 'lama.webp',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj18lh8zx4hx0pyksyu74srktv4vgxskkkafknggl',
+      symbol: 'LAMA',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   INJEX: {
@@ -2515,6 +2723,13 @@ export default {
     logo: 'injex.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1zhevrrwywg3az9ulxd9u233eyy4m2mmr6vegsg',
+      symbol: 'NINJB',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   NINJB: {
@@ -2524,6 +2739,13 @@ export default {
     logo: 'ninjb.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1ezzzfm2exjz57hxuc65sl8s3d5y6ee0kxvu67n',
+      symbol: 'NINJB',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   KARATE: {
@@ -2533,15 +2755,29 @@ export default {
     logo: 'karate.jpg',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1898t0vtmul3tcn3t0v8qe3pat47ca937jkpezv',
+      symbol: 'KARATE',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   NPEPE: {
     name: 'NinjaPepe',
     symbol: 'NPEPE',
     decimals: 6,
-    logo: 'NPEPE.png',
+    logo: 'npepe.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1ga982yy0wumrlt4nnj79wcgmw7mzvw6jcyecl0',
+      symbol: 'NPEPE',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   MILK: {
@@ -2551,6 +2787,21 @@ export default {
     logo: 'milk.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactories: [
+      {
+        creator: 'inj1fpl63h7at2epr55yn5svmqkq4fkye32vmxq8ry',
+        symbol: 'MILK',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj1yg24mn8enl5e6v4jl2j6cce47mx4vyd6e8dpck',
+        symbol: 'MILK',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+    ],
   },
 
   INCEL: {
@@ -2560,6 +2811,13 @@ export default {
     logo: 'incel.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj17g4j3geupy762u0wrewqwprvtzar7k5et2zqsh',
+      symbol: 'INCEL',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   PIKACHU: {
@@ -2569,6 +2827,21 @@ export default {
     logo: 'pikachu.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactories: [
+      {
+        creator: 'inj1h9zu2u6yqf3t5uym75z94zsqfhazzkyg39957u',
+        symbol: 'PIKA',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+      {
+        creator: 'inj1h4usvhhva6dgmun9rk4haeh8lynln7yhk6ym00',
+        symbol: 'PIKA',
+        decimals: 6,
+        tokenType: TokenType.TokenFactory,
+      },
+    ],
   },
 
   WGMI: {
@@ -2578,6 +2851,13 @@ export default {
     logo: 'wgmi.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1rmjzj9fn47kdmfk4f3z39qr6czexxe0yjyc546',
+      symbol: 'WGMI',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   WIZZ: {
@@ -2587,6 +2867,13 @@ export default {
     logo: 'wizz.jpeg',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1uvfpvnmuqhx8jwg4786y59tkagmph827h38mst',
+      symbol: 'WIZZ',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   MEMEME: {
@@ -2756,7 +3043,7 @@ export default {
     },
   },
 
-  NOBITCHES: {
+  EXTRAVIRGINOLIVEINU: {
     name: 'Extra Virgin Olive Inu',
     symbol: 'NOBITCHES',
     decimals: 6,
@@ -2948,10 +3235,26 @@ export default {
     },
 
     tokenFactory: {
-      creator: 'inj1any4rpwq7r850u6feajg5payvhwpunu9cxqevc',
-      name: 'Dojo Bot',
+      decimals: 6,
       symbol: 'DOJO',
+      name: 'Dojo Bot',
       logo: 'dojo.png',
+      creator: 'inj1any4rpwq7r850u6feajg5payvhwpunu9cxqevc',
+      tokenType: TokenType.TokenFactory,
+    },
+  },
+
+  PUNK: {
+    name: 'Punk DAO Token',
+    logo: 'PUNK.png',
+    symbol: 'PUNK',
+    decimals: 6,
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1esz96ru3guug4ctmn5chjmkymt979sfvufq0hs',
+      symbol: 'PUNK',
       decimals: 6,
       tokenType: TokenType.TokenFactory,
     },

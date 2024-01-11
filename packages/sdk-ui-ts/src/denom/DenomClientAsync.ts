@@ -21,7 +21,6 @@ import {
 import { Web3Client } from '../services/web3/Web3Client'
 import type { Token } from '@injectivelabs/token-metadata'
 import {
-  TokenInfo,
   TokenMeta,
   getUnknownTokenWithSymbol,
   getIbcTokenMetaFromDenomTrace,
@@ -201,10 +200,6 @@ export class DenomClientAsync {
 
   async getDenomsToken(denoms: string[]): Promise<Array<Token | undefined>> {
     return awaitForAll(denoms, (denom) => this.getDenomToken(denom))
-  }
-
-  getDenomTokenInfo(denom: string): TokenInfo | undefined {
-    return this.denomClient.getDenomTokenInfo(denom)
   }
 
   getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {

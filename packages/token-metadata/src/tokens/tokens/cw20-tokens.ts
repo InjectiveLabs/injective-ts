@@ -1,5 +1,6 @@
 import { TokenMeta, TokenType } from '../../types'
 
+/** for testnet purposes only */
 export default {
   'INJ-MASTER': {
     name: 'INJ Master',
@@ -16,7 +17,7 @@ export default {
       tokenType: TokenType.Cw20,
     },
   },
-  
+
   'INJ-BOOST': {
     name: 'INJ Boost',
     logo: 'mito-inj-boost-lp.png',
@@ -189,6 +190,66 @@ export default {
       decimals: 18,
       address: '',
       symbol: 'stINJ-BOOST-LP',
+      tokenType: TokenType.Cw20,
+    },
+  },
+
+  ZEN: {
+    name: 'ZEN',
+    logo: 'zen.svg',
+    symbol: 'ZEN',
+    decimals: 18,
+    coinGeckoId: '',
+    tokenType: TokenType.Cw20,
+
+    cw20: {
+      decimals: 18,
+      address: 'uzen',
+      tokenType: TokenType.Cw20,
+    },
+  },
+
+  PROJ: {
+    name: 'PROJ',
+    logo: 'proj.png',
+    symbol: 'PROJ',
+    decimals: 18,
+    coinGeckoId: '',
+    tokenType: TokenType.Cw20,
+
+    cw20: {
+      decimals: 18,
+      address: 'proj',
+      tokenType: TokenType.Cw20,
+    },
+  },
+
+  PROJX: {
+    name: 'PROJX',
+    logo: 'projx.png',
+    symbol: 'PROJX',
+    decimals: 18,
+    coinGeckoId: '',
+    tokenType: TokenType.Cw20,
+
+    cw20: {
+      decimals: 18,
+      address: 'projx',
+      tokenType: TokenType.Cw20,
+    },
+  },
+
+  DEMO: {
+    name: 'Demo Coin',
+    symbol: 'DEMO',
+    decimals: 6,
+    logo: 'injective-v3.png',
+    coinGeckoId: '',
+    tokenType: TokenType.Cw20,
+
+    cw20: {
+      decimals: 18,
+      address: 'demo',
       tokenType: TokenType.Cw20,
     },
   },

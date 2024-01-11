@@ -12,6 +12,7 @@ export enum TokenType {
 
 export enum TokenVerification {
   Verified = 'verified' /** verified on token-metadata package */,
+  Submitted = 'submitted' /** submitted on token-metadata package but not verified */,
   Internal = 'internal' /** verified from on-chain data */,
   External = 'external' /** verified on external source */,
   Unverified = 'unverified' /** unverified on any source */,
@@ -31,12 +32,14 @@ export enum TokenSource {
   BinanceSmartChain = 'binance-smart-chain',
 }
 
-export interface TokenFactoryMeta {
+/** natively created denoms - not derived from a CW20 */
+export interface NativeTokenFactoryMeta {
   creator: string
   symbol: string
   name?: string
   logo?: string
   description?: string
+  tokenType: TokenType.TokenFactory
   decimals: number
 }
 
@@ -47,6 +50,7 @@ export interface IbcTokenMeta {
   logo?: string
   channelId: string
   decimals: number
+  tokenType: TokenType.Ibc
   symbol?: string
   isNative: boolean
   baseDenom: string
@@ -55,6 +59,7 @@ export interface IbcTokenMeta {
 export interface SplTokenMeta {
   address: string
   decimals: number
+  tokenType: TokenType.Spl
   symbol?: string
   name?: string
   logo?: string
@@ -64,6 +69,7 @@ export interface SplTokenMeta {
 export interface Erc20TokenMeta {
   address: string
   decimals: number
+  tokenType: TokenType.Erc20
   symbol?: string
   name?: string
   logo?: string
@@ -73,6 +79,7 @@ export interface Erc20TokenMeta {
 export interface EvmTokenMeta {
   address: string
   decimals: number
+  tokenType: TokenType.Evm
   symbol?: string
   name?: string
   logo?: string
@@ -82,6 +89,7 @@ export interface EvmTokenMeta {
 export interface Cw20TokenMeta {
   address: string
   decimals: number
+  symbol?: string
   name?: string
   logo?: string
   tokenType: TokenType.Cw20
@@ -97,7 +105,7 @@ export interface TokenMeta {
   logo: string
   symbol: string
   decimals: number
-  tokenType: TokenType
+  tokenType: TokenType // primary token type
   tokenVerification?: TokenVerification
   coinGeckoId: string
 
@@ -107,7 +115,8 @@ export interface TokenMeta {
   cw20s?: Cw20TokenMetaWithSource[] // When there are multiple variations of the same CW20 token
   erc20?: Erc20TokenMeta
   evm?: EvmTokenMeta
-  tokenFactory?: TokenFactoryMeta
+  tokenFactory?: NativeTokenFactoryMeta
+  tokenFactories?: NativeTokenFactoryMeta[]
 }
 
 export type BaseToken = TokenMeta & {
@@ -155,7 +164,8 @@ export interface FactoryToken extends BaseToken {
 }
 
 export interface TokenFactoryToken extends BaseToken {
-  tokenFactory: TokenFactoryMeta
+  tokenFactory: NativeTokenFactoryMeta
+  tokenFactories: NativeTokenFactoryMeta[]
 }
 
 export type Token =

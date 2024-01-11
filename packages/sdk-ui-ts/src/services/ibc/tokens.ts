@@ -42,6 +42,7 @@ function ibcTokenMetadataToToken(
         symbol: token.symbol || 'Unknown',
         baseDenom: token.symbol || 'Unknown',
         isNative: false,
+        tokenType: TokenType.Ibc,
       },
     }
   })

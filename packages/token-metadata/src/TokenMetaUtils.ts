@@ -48,6 +48,40 @@ export class TokenMetaUtils {
     }
   }
 
+  getMetaByFactory(denom: string): TokenMeta | undefined {
+    const [symbolOrName, creatorAddress] = denom.split('/').reverse()
+    const tokenMeta =
+      this.getMetaByName(symbolOrName) || this.getMetaBySymbol(symbolOrName)
+
+    if (!tokenMeta) {
+      return
+    }
+
+    if (tokenMeta.tokenFactories) {
+      const tokenFactory = tokenMeta.tokenFactories.find(
+        (tokenFactory) => tokenFactory.creator === creatorAddress,
+      )
+
+      if (tokenFactory) {
+        return {
+          ...tokenMeta,
+          tokenType: TokenType.TokenFactory,
+          tokenVerification: TokenVerification.Verified,
+        }
+      }
+    }
+
+    if (tokenMeta.tokenFactory?.creator !== creatorAddress) {
+      return
+    }
+
+    return {
+      ...tokenMeta,
+      tokenType: TokenType.TokenFactory,
+      tokenVerification: TokenVerification.Verified,
+    }
+  }
+
   getMetaByAddress(address: string): TokenMeta | undefined {
     return address.startsWith('0x')
       ? this.getMetaByErc20Address(address)
@@ -73,8 +107,6 @@ export class TokenMetaUtils {
       ? {
           ...tokenMeta,
           tokenType: TokenType.Cw20,
-          name: tokenMeta.cw20?.name || tokenMeta.name,
-          logo: tokenMeta.cw20?.logo || tokenMeta.logo,
           tokenVerification: TokenVerification.Verified,
         }
       : undefined
@@ -98,11 +130,17 @@ export class TokenMetaUtils {
       if (checksumAddress) {
         const tokenMeta = tokensByErc20Address[checksumAddress]
 
+        if (tokenMeta.erc20) {
+          return {
+            ...tokenMeta,
+            tokenType: TokenType.Erc20,
+            tokenVerification: TokenVerification.Verified,
+          }
+        }
+
         return {
           ...tokenMeta,
-          name: tokenMeta.erc20?.name || tokenMeta.name,
-          logo: tokenMeta.erc20?.logo || tokenMeta.logo,
-          tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
+          tokenType: TokenType.Evm,
           tokenVerification: TokenVerification.Verified,
         }
       }
@@ -113,15 +151,23 @@ export class TokenMetaUtils {
     const tokenMeta =
       tokensByErc20Address[contractAddress] || tokensByErc20Address[address]
 
-    return tokenMeta
-      ? {
-          ...tokenMeta,
-          name: tokenMeta.erc20?.name || tokenMeta.name,
-          logo: tokenMeta.erc20?.logo || tokenMeta.logo,
-          tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
-          tokenVerification: TokenVerification.Verified,
-        }
-      : undefined
+    if (!tokenMeta) {
+      return undefined
+    }
+
+    if (tokenMeta.erc20) {
+      return {
+        ...tokenMeta,
+        tokenType: TokenType.Erc20,
+        tokenVerification: TokenVerification.Verified,
+      }
+    }
+
+    return {
+      ...tokenMeta,
+      tokenType: TokenType.Evm,
+      tokenVerification: TokenVerification.Verified,
+    }
   }
 
   getMetaByHash(hash: string): TokenMeta | undefined {
@@ -139,8 +185,6 @@ export class TokenMetaUtils {
     return tokenMeta
       ? {
           ...tokenMeta,
-          name: tokenMeta.ibc?.name || tokenMeta.name,
-          logo: tokenMeta.ibc?.logo || tokenMeta.logo,
           tokenType: TokenType.Ibc,
           tokenVerification: TokenVerification.Verified,
         }

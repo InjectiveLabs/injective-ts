@@ -1,6 +1,5 @@
 import {
   Token,
-  TokenInfo,
   TokenMeta,
   TokenFactory,
   TokenMetaUtils,
@@ -28,20 +27,12 @@ export class DenomClient {
     this.tokenMetaUtils = TokenMetaUtilsFactory.make(network)
   }
 
-  getDenomTokenInfo(denom: string): TokenInfo | undefined {
-    return this.tokenFactory.toTokenInfo(denom)
-  }
-
   getDenomToken(denom: string): Token | undefined {
     return this.tokenFactory.toToken(denom)
   }
 
   getDenomsToken(denoms: string[]): Array<Token | undefined> {
     return denoms.map((denom) => this.getDenomToken(denom))
-  }
-
-  getDenomsTokenInfo(denoms: string[]): Array<TokenInfo | undefined> {
-    return denoms.map((denom) => this.getDenomTokenInfo(denom))
   }
 
   getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {

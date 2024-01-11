@@ -74,5 +74,12 @@ export const formatNonCanonicalIbcTokenName = (token: IbcToken): string => {
     ? foundChannelFromInjective.chainB
     : 'Unknown'
 
+  if (
+    token.ibc.baseDenom.startsWith('cw20:') ||
+    token.ibc.baseDenom.startsWith('factory')
+  ) {
+    return `${token.symbol.toUpperCase()}-${lastChain.toLowerCase()}-${channelToLastChain}`
+  }
+
   return `${token.ibc.baseDenom.toUpperCase()}-${lastChain.toLowerCase()}-${channelToLastChain}`
 }
