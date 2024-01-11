@@ -1425,7 +1425,13 @@ export default {
     decimals: 5,
     logo: 'bonk.jpeg',
     coinGeckoId: 'bonk',
-    tokenType: TokenType.TokenFactory,
+    tokenType: TokenType.Cw20,
+
+    cw20: {
+      decimals: 8,
+      address: 'inj14rry9q6dym3dgcwzq79yay0e9azdz55jr465ch',
+      tokenType: TokenType.Cw20,
+    },
   },
 
   CHZ: {
@@ -2929,7 +2935,7 @@ export default {
     name: 'Dojo Token',
     symbol: 'DOJO',
     decimals: 18,
-    logo: 'dojo.png',
+    logo: 'dojo-token.png',
     coinGeckoId: '',
     tokenType: TokenType.Cw20,
 
@@ -2945,6 +2951,7 @@ export default {
       creator: 'inj1any4rpwq7r850u6feajg5payvhwpunu9cxqevc',
       name: 'Dojo Bot',
       symbol: 'DOJO',
+      logo: 'dojo.png',
       decimals: 6,
       tokenType: TokenType.TokenFactory,
     },

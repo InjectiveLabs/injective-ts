@@ -156,7 +156,7 @@ export class TokenFactory {
   }
 
   getFactoryDenomTokenMeta(denom: string): TokenMeta | undefined {
-    const [address] = denom.split('/').reverse()
+    const [address, creatorAddress] = denom.split('/').reverse()
 
     if (!address) {
       throw new GeneralException(
@@ -187,7 +187,10 @@ export class TokenFactory {
      * normal tokens by using only the symbol, i.e
      * factory/inj..../sol !== SOL token
      */
-    if (tokenMeta?.tokenType !== TokenType.TokenFactory) {
+    if (
+      tokenMeta?.tokenType !== TokenType.TokenFactory &&
+      tokenMeta?.tokenFactory?.creator !== creatorAddress
+    ) {
       return undefined
     }
 
@@ -200,7 +203,9 @@ export class TokenFactory {
     return tokenMeta
       ? {
           ...tokenMeta,
-          name: tokenMeta.tokenFactory?.name || tokenMeta.symbol,
+          name: tokenMeta.tokenFactory?.name || tokenMeta.name,
+          logo: tokenMeta.tokenFactory?.logo || tokenMeta.logo,
+          decimals: tokenMeta.tokenFactory?.decimals || tokenMeta.decimals,
           tokenType: TokenType.TokenFactory,
         }
       : undefined

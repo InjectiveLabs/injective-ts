@@ -35,6 +35,7 @@ export interface TokenFactoryMeta {
   creator: string
   symbol: string
   name?: string
+  logo?: string
   description?: string
   decimals: number
 }
@@ -43,6 +44,7 @@ export interface IbcTokenMeta {
   hash: string
   path: string
   name?: string
+  logo?: string
   channelId: string
   decimals: number
   symbol?: string
@@ -55,6 +57,7 @@ export interface SplTokenMeta {
   decimals: number
   symbol?: string
   name?: string
+  logo?: string
   isNative?: boolean
 }
 
@@ -63,6 +66,7 @@ export interface Erc20TokenMeta {
   decimals: number
   symbol?: string
   name?: string
+  logo?: string
   isNative?: boolean
 }
 
@@ -71,6 +75,7 @@ export interface EvmTokenMeta {
   decimals: number
   symbol?: string
   name?: string
+  logo?: string
   isNative?: boolean
 }
 
@@ -78,6 +83,7 @@ export interface Cw20TokenMeta {
   address: string
   decimals: number
   name?: string
+  logo?: string
   tokenType: TokenType.Cw20
 }
 
