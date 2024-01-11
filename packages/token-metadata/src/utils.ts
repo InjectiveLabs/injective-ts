@@ -3,15 +3,20 @@ import {
   Token,
   TokenMeta,
   TokenType,
+  TokenSource,
   IbcTokenMeta,
   Cw20TokenMeta,
   Cw20TokenSingle,
-  Cw20TokenSource,
   TokenVerification,
   Cw20TokenMetaWithSource,
 } from './types'
 import { ibcBaseDenoms } from './tokens/tokens'
 import { getChannelIdFromPath } from './ibc'
+import {
+  Network,
+  getCw20AdapterContractForNetwork,
+} from '@injectivelabs/networks'
+import { TokenMetaUtilsFactory } from './TokenMetaUtilsFactory'
 
 const getCw20Meta = (
   token: Token,
@@ -152,7 +157,7 @@ export const getTokenAddress = (token: Token) => {
  */
 export const getCw20TokenSingle = (
   token: Token | TokenMeta,
-  source?: Cw20TokenSource,
+  source?: TokenSource,
 ): Cw20TokenSingle | undefined => {
   const { cw20, cw20s } = token
   const denom = (token as Token).denom || ''
@@ -171,12 +176,8 @@ export const getCw20TokenSingle = (
   }
 
   if (cw20s) {
-    if (denom) {
-      const [cw20Address] = denom.startsWith('inj')
-        ? [denom]
-        : denom.split('/').reverse()
-
-      const cw20 = cw20s.find((cw20) => cw20.address === cw20Address)
+    if (source) {
+      const cw20 = cw20s.find((cw20) => cw20.source === source)
 
       return cw20
         ? {
@@ -189,8 +190,12 @@ export const getCw20TokenSingle = (
         : undefined
     }
 
-    if (source) {
-      const cw20 = cw20s.find((cw20) => cw20.source === source)
+    if (denom) {
+      const [cw20Address] = denom.startsWith('inj')
+        ? [denom]
+        : denom.split('/').reverse()
+
+      const cw20 = cw20s.find((cw20) => cw20.address === cw20Address)
 
       return cw20
         ? {
@@ -269,7 +274,7 @@ export const getUnknownToken = (denom: string): Token => {
     name: denom,
     symbol: denom,
     decimals: 18,
-    logo: 'untracked.svg',
+    logo: 'unknown.png',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
     tokenVerification: TokenVerification.Unverified,
@@ -280,9 +285,9 @@ export const getUnknownTokenWithSymbol = (denom: string): Token => {
   return {
     denom,
     name: denom,
-    symbol: 'UNTRACKED',
+    symbol: 'UNKNOWN',
     decimals: 0,
-    logo: 'untracked.svg',
+    logo: 'unknown.png',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
     tokenVerification: TokenVerification.Unverified,
@@ -291,3 +296,92 @@ export const getUnknownTokenWithSymbol = (denom: string): Token => {
 
 export const isCw20ContractAddress = (address: string) =>
   address.length === 42 && address.startsWith('inj')
+
+/**
+ * Token factory denoms created by the adapter contract
+ */
+export const getTokenFactoryDenomByAdapter = (
+  cw20address: string,
+  network: Network = Network.Mainnet,
+) => {
+  return `factory/${getCw20AdapterContractForNetwork(network)}/${cw20address}`
+}
+
+export const getPeggyDenomFromSymbolOrName = (
+  symbolOrName: string,
+  network: Network = Network.Mainnet,
+) => {
+  const tokenMetaUtils = TokenMetaUtilsFactory.make(network)
+  const metaFromSymbol = tokenMetaUtils.getMetaBySymbol(symbolOrName)
+  const metaFromName = tokenMetaUtils.getMetaByName(symbolOrName)
+
+  if (!metaFromSymbol && !metaFromName) {
+    return
+  }
+
+  if (!metaFromSymbol?.erc20 && !metaFromName?.erc20) {
+    return
+  }
+
+  return `peggy${(metaFromSymbol || metaFromName)?.erc20?.address}`
+}
+
+export const getIbcDenomFromSymbolOrName = (
+  symbolOrName: string,
+  network: Network = Network.Mainnet,
+) => {
+  const tokenMetaUtils = TokenMetaUtilsFactory.make(network)
+  const metaFromName = tokenMetaUtils.getMetaBySymbol(symbolOrName)
+  const metaFromSymbol = tokenMetaUtils.getMetaByName(symbolOrName)
+
+  if (!metaFromSymbol && !metaFromName) {
+    return
+  }
+
+  if (!metaFromSymbol?.ibc && !metaFromName?.ibc) {
+    return
+  }
+
+  return `ibc/${(metaFromSymbol || metaFromName)?.ibc?.hash}`
+}
+
+export const getCw20FromSymbolOrName = (
+  symbolOrName: string,
+  network: Network = Network.Mainnet,
+  source?: TokenSource,
+) => {
+  const tokenMetaUtils = TokenMetaUtilsFactory.make(network)
+  const metaFromName = tokenMetaUtils.getMetaBySymbol(symbolOrName)
+  const metaFromSymbol = tokenMetaUtils.getMetaByName(symbolOrName)
+
+  if (!metaFromSymbol && !metaFromName) {
+    return
+  }
+
+  if (
+    !metaFromSymbol?.cw20 &&
+    !metaFromName?.cw20 &&
+    !metaFromSymbol?.cw20s &&
+    !metaFromName?.cw20s
+  ) {
+    return
+  }
+
+  const meta = (metaFromName || metaFromSymbol)!
+
+  if (meta.cw20) {
+    return getTokenFactoryDenomByAdapter(meta.cw20.address, network)
+  }
+
+  if (source) {
+    const cw20 = meta?.cw20s?.find((cw20) => cw20.source === source)
+
+    return cw20
+      ? getTokenFactoryDenomByAdapter(cw20.address, network)
+      : undefined
+  }
+
+  const [cw20] = meta.cw20s || []
+
+  return getTokenFactoryDenomByAdapter(cw20.address, network)
+}

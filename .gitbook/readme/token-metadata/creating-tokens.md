@@ -7,7 +7,7 @@ A single account can create multiple denoms, by providing a unique subdenom for 
 * Mint their denom to any account
 * Burn their denom from any account
 * Create a transfer of their denom between any two accounts
-* Change the admin. In the future, more admin capabilities may be added. Admins can choose to share admin privileges with other accounts using the authz module. The ChangeAdmin functionality allows changing the master admin account, or even setting it to "", meaning no account has admin privileges over the asset.
+* Change the admin. In the future, more admin capabilities may be added. Admins can choose to share admin privileges with other accounts using the authz module. The ChangeAdmin functionality allows changing the master admin account, or even setting it to the zero address `inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49`, meaning no account has admin privileges over the asset.
 * Set their token metadata on chain
 
 To start creating your denoms, head to our [TokenFactory Core Module page ](../../core-modules/token-factory.md)to see examples.

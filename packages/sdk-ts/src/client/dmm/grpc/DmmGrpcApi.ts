@@ -4,11 +4,12 @@ import {
   IndexerErrorModule,
 } from '@injectivelabs/exceptions'
 import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 import { DmmGrpcTransformer } from './transformers'
 
 export class DmmGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.Dmm
+
   protected client: InjectiveDmmRpc.InjectiveDmmV2RPCClientImpl
 
   constructor(endpoint: string) {
@@ -284,53 +285,6 @@ export class DmmGrpcApi extends BaseGrpcConsumer {
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'GetTotalScoresHistory',
-        contextModule: this.module,
-      })
-    }
-  }
-
-  async fetchLiquiditySnapshots({
-    epochId,
-    marketId,
-    accountAddress,
-    page,
-  }: {
-    epochId: string
-    marketId: string
-    accountAddress: string
-    page?: InjectiveDmmRpc.Pagination
-  }) {
-    const request = InjectiveDmmRpc.GetLiquiditySnapshotsRequest.create()
-
-    request.epochId = epochId
-    request.marketId = marketId
-    request.accountAddress = accountAddress
-
-    if (page) {
-      request.page = page
-    }
-
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetLiquiditySnapshotsResponse>(() =>
-          this.client.GetLiquiditySnapshots(request),
-        )
-
-      return DmmGrpcTransformer.liquiditySnapshotsResponseToLiquiditySnapshots(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'GetLiquiditySnapshots',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetLiquiditySnapshots',
         contextModule: this.module,
       })
     }

@@ -25,19 +25,27 @@ export const makeTimeoutTimestampInNs = (
   timeoutInMs: number = DEFAULT_TIMESTAMP_TIMEOUT_MS,
 ) => makeTimeoutTimestamp(timeoutInMs) * 1e6
 
-export const isCosmosWallet = (wallet: Wallet): boolean =>
-  [Wallet.Cosmostation, Wallet.Leap, Wallet.Keplr].includes(wallet)
+export const isCosmosBrowserWallet = (wallet: Wallet): boolean =>
+  [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.Cosmostation].includes(
+    wallet,
+  )
+
+export const isCosmosAminoOnlyWallet = (wallet: Wallet): boolean =>
+  [Wallet.LedgerCosmos].includes(wallet)
 
 export const isCosmosWalletInstalled = (wallet: Wallet) => {
   const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
     leap?: Keplr
     keplr?: Keplr
+    ninji?: Keplr
     cosmostation?: Cosmos
   }
 
   switch (wallet) {
     case Wallet.Keplr:
       return $window.keplr !== undefined
+    case Wallet.Ninji:
+      return $window.ninji !== undefined
     case Wallet.Cosmostation:
       return $window.cosmostation !== undefined
     case Wallet.Leap:

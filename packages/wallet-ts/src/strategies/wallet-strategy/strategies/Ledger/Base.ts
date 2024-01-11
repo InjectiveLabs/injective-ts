@@ -79,6 +79,14 @@ export default class LedgerBase
     return Promise.resolve(WalletDeviceType.Hardware)
   }
 
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
+  }
+
+  public async disconnect() {
+    this.ledger = await this.ledger.refresh()
+  }
+
   public async getAddresses(): Promise<string[]> {
     const { baseDerivationPath, derivationPathType } = this
 
@@ -203,6 +211,22 @@ export default class LedgerBase
         contextModule: WalletAction.SignTransaction,
       })
     }
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -334,28 +358,39 @@ export default class LedgerBase
   private async getWalletForAddress(
     address: string,
   ): Promise<LedgerWalletInfo> {
-    const { baseDerivationPath, derivationPathType } = this
-    const accountManager = await this.ledger.getAccountManager()
+    try {
+      const { baseDerivationPath, derivationPathType } = this
+      const accountManager = await this.ledger.getAccountManager()
 
-    if (!accountManager.hasWalletForAddress(address)) {
-      for (
-        let i = 0;
-        i < DEFAULT_ADDRESS_SEARCH_LIMIT / DEFAULT_NUM_ADDRESSES_TO_FETCH;
-        i += 1
-      ) {
-        await accountManager.getWallets(baseDerivationPath, derivationPathType)
+      if (!accountManager.hasWalletForAddress(address)) {
+        for (
+          let i = 0;
+          i < DEFAULT_ADDRESS_SEARCH_LIMIT / DEFAULT_NUM_ADDRESSES_TO_FETCH;
+          i += 1
+        ) {
+          await accountManager.getWallets(
+            baseDerivationPath,
+            derivationPathType,
+          )
 
-        if (accountManager.hasWalletForAddress(address)) {
-          return (await accountManager.getWalletForAddress(
-            address,
-          )) as LedgerWalletInfo
+          if (accountManager.hasWalletForAddress(address)) {
+            return (await accountManager.getWalletForAddress(
+              address,
+            )) as LedgerWalletInfo
+          }
         }
       }
-    }
 
-    return (await accountManager.getWalletForAddress(
-      address,
-    )) as LedgerWalletInfo
+      return (await accountManager.getWalletForAddress(
+        address,
+      )) as LedgerWalletInfo
+    } catch (e) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
   }
 
   private async getAlchemy() {

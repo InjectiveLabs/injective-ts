@@ -51,7 +51,7 @@ const contract = new PeggyContract({
 })
 ```
 
-* The snippet below instantiates a PeggyContract instance which can easily `estimateGas` and `sendTransaction` using the `web3` we provide to the contract’s constructor. It’s implementation can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/contracts/src/contracts/Peggy.ts). Obviously, this is just an example and you can use the web3 package directly + the ABI of the contract to instantiate the contract, and then handle the logic of signing and broadcasting the transaction using some web3 provider.
+* The snippet below instantiates a PeggyContract instance which can easily `estimateGas` and `sendTransaction` using the `web3` we provide to the contract’s constructor. Its implementation can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/contracts/src/contracts/Peggy.ts). Obviously, this is just an example and you can use the web3 package directly + the ABI of the contract to instantiate the contract, and then handle the logic of signing and broadcasting the transaction using some web3 provider.
 
 ### From Injective to Ethereum
 
@@ -61,7 +61,7 @@ If you are not familiar with how Transactions (and Messages) work on Cosmos you 
 
 When `MsgSendToEth` is called on the chain, some of the validators will pick up the transaction, batch multiple `MsgSendToEth` requests into one and: burn the assets being withdrawn on Injective, unlock these funds on the Peggy Smart Contract on Ethereum and send them to the respective address.
 
-There is a bridgeFee included in these transactions to incentivise Validators to pick up and process your withdrawal requests faster. The bridgeFee is in the asset the user wants to withdraw to Ethereum (if you withdraw INJ you have to pay the bridgeFee in INJ as well).
+There is a bridgeFee included in these transactions to incentivize Validators to pick up and process your withdrawal requests faster. The bridgeFee is in the asset the user wants to withdraw to Ethereum (if you withdraw INJ you have to pay the bridgeFee in INJ as well).
 
 Here is an example implementation that prepares the transaction, uses a privateKey to sign it and finally, broadcasts it to Injective:
 

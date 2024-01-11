@@ -18,6 +18,18 @@ export const getEip712Domain = (ethereumChainId: EthereumChainId) => {
   }
 }
 
+export const getEip712DomainV2 = (ethereumChainId: EthereumChainId) => {
+  return {
+    domain: {
+      name: 'Injective Web3',
+      version: '1.0.0',
+      chainId: '0x' + new BigNumberInBase(ethereumChainId).toString(16),
+      verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+      salt: '0',
+    },
+  }
+}
+
 export const getDefaultEip712Types = () => {
   return {
     types: {
@@ -53,6 +65,24 @@ export const getDefaultEip712Types = () => {
   }
 }
 
+export const getDefaultEip712TypesV2 = () => {
+  return {
+    types: {
+      EIP712Domain: [
+        { name: 'name', type: 'string' },
+        { name: 'version', type: 'string' },
+        { name: 'chainId', type: 'uint256' },
+        { name: 'verifyingContract', type: 'address' },
+        { name: 'salt', type: 'string' },
+      ],
+      Tx: [
+        { name: 'context', type: 'string' },
+        { name: 'msgs', type: 'string' },
+      ],
+    },
+  }
+}
+
 export const getEip712Fee = (
   params?: Eip712ConvertFeeArgs,
 ): {
@@ -79,6 +109,50 @@ export const getEip712Fee = (
       feePayer: feePayer,
       gas,
       amount,
+    },
+  }
+}
+
+export const getEip712FeeV2 = (
+  params?: Eip712ConvertFeeArgs,
+): {
+  fee: {
+    amount: { denom: string; amount: string }[]
+    gas: number
+    payer?: string
+  }
+} => {
+  if (!params) {
+    return {
+      fee: {
+        amount: [
+          {
+            denom: DEFAULT_STD_FEE.amount[0].denom,
+            amount: DEFAULT_STD_FEE.amount[0].amount,
+          },
+        ],
+        gas: Number(DEFAULT_STD_FEE.gas),
+      },
+    }
+  }
+
+  const amountFromParams = (params.amount || DEFAULT_STD_FEE.amount)[0]
+  const { amount, gas, payer } = {
+    amount: [
+      {
+        denom: amountFromParams.denom,
+        amount: amountFromParams.amount,
+      },
+    ],
+    gas: Number(params.gas || DEFAULT_GAS_LIMIT.toFixed()),
+    payer: params.feePayer,
+  }
+
+  return {
+    fee: {
+      amount,
+      gas,
+      payer: payer,
     },
   }
 }
@@ -122,5 +196,30 @@ export const getEipTxDetails = ({
     timeout_height: timeoutHeight,
     memo: memo || '',
     sequence,
+  }
+}
+
+export const getEipTxContext = ({
+  accountNumber,
+  sequence,
+  fee,
+  timeoutHeight,
+  chainId,
+  memo,
+}: Eip712ConvertTxArgs & { fee?: Eip712ConvertFeeArgs }): {
+  account_number: number
+  chain_id: string
+  sequence: number
+  fee: Record<string, any>
+  timeout_height: number
+  memo: string
+} => {
+  return {
+    account_number: Number(accountNumber),
+    chain_id: chainId,
+    ...getEip712FeeV2(fee),
+    memo: memo || '',
+    sequence: Number(sequence),
+    timeout_height: Number(timeoutHeight),
   }
 }

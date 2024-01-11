@@ -3,7 +3,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
 import { IndexerModule } from '../types'
 import { IndexerGrpcExplorerTransformer } from '../transformers'
 
@@ -59,6 +59,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     type?: string
   }) {
     const request = InjectiveExplorerRpc.GetAccountTxsRequest.create()
+
     request.address = address
 
     if (limit) {

@@ -112,6 +112,7 @@ export class IndexerRestExplorerTransformer {
         })),
       logs: transaction.logs,
       errorLog: transaction.error_log,
+      claimIds: transaction.claim_id || []
     }
   }
 
@@ -205,6 +206,7 @@ export class IndexerRestExplorerTransformer {
       funds: contract.funds,
       codeId: contract.code_id,
       admin: contract.admin,
+      cw20_metadata: contract.cw20_metadata,
       initMessage: parseCW20Message(contract.init_message),
       currentMigrateMessage: parseCW20Message(contract.current_migrate_message),
     }

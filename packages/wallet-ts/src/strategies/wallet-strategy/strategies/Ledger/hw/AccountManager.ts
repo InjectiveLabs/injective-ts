@@ -132,4 +132,8 @@ export default class AccountManager {
       (wallet) => wallet.address.toLowerCase() === address.toLowerCase(),
     )
   }
+
+  reset() {
+    this.wallets = []
+  }
 }

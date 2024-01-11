@@ -1,4 +1,5 @@
 import { BigNumber } from '@injectivelabs/utils'
+import { Token } from '@injectivelabs/token-metadata'
 import { MarketType, Change } from '../types/common'
 import {
   getDerivativeMarketTensMultiplier,
@@ -35,12 +36,12 @@ export class UiDerivativeTransformer {
       ...getDerivativeMarketDecimals({
         minQuantityTickSize: market.minQuantityTickSize,
         minPriceTickSize: market.minPriceTickSize,
-        quoteDecimals: market.quoteToken.decimals,
+        quoteDecimals: (market.quoteToken as Token).decimals,
       }),
       ...getDerivativeMarketTensMultiplier({
         minPriceTickSize: market.minPriceTickSize,
         minQuantityTickSize: market.minQuantityTickSize,
-        quoteDecimals: market.quoteToken.decimals,
+        quoteDecimals: (market.quoteToken as Token).decimals,
       }),
     } as unknown as R
   }

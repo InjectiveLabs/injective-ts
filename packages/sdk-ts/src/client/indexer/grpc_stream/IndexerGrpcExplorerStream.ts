@@ -1,6 +1,6 @@
 import { StreamStatusResponse } from '../types'
 import { ExplorerStreamTransformer } from '../transformers'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 

@@ -4,7 +4,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
 import { IndexerModule } from '../types'
 import { IndexerGrpcMitoTransformer } from '../transformers'
 
@@ -762,13 +762,15 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
   }
 
   async fetchIDOSubscribers({
-    contractAddress,
-    limit,
     skip,
+    limit,
+    sortBy,
+    contractAddress,
   }: {
-    contractAddress: string
-    limit?: number
     skip?: number
+    limit?: number
+    sortBy?: string
+    contractAddress: string
   }) {
     const request = MitoApi.GetIDOSubscribersRequest.create()
 
@@ -780,6 +782,10 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     if (skip) {
       request.skip = skip
+    }
+
+    if (sortBy) {
+      request.sortBy = sortBy
     }
 
     try {

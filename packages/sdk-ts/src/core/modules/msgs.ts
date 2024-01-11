@@ -37,6 +37,7 @@ import MsgUndelegate from './staking/msgs/MsgUndelegate'
 import MsgEditValidator from './staking/msgs/MsgEditValidator'
 import MsgCreateValidator from './staking/msgs/MsgCreateValidator'
 import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate'
+import MsgCancelUnbondingDelegation from './staking/msgs/MsgCancelUnbondingDelegation'
 import MsgExecuteContract from './wasm/msgs/MsgExecuteContract'
 import MsgExecuteContractCompat from './wasm/msgs/MsgExecuteContractCompat'
 import MsgMigrateContract from './wasm/msgs/MsgMigrateContract'
@@ -89,6 +90,7 @@ export type Msgs =
   | MsgDelegate
   | MsgUndelegate
   | MsgBeginRedelegate
+  | MsgCancelUnbondingDelegation
   | MsgExecuteContract
   | MsgExecuteContractCompat
   | MsgMigrateContract

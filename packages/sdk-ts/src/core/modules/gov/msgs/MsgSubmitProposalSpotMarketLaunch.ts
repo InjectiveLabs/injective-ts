@@ -3,7 +3,7 @@ import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Proposal,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
 import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
@@ -41,7 +41,7 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
 const createSpotMarketLaunchContent = (
   params: MsgSubmitProposalSpotMarketLaunch.Params,
 ) => {
-  const content = InjectiveExchangeV1Beta1Tx.SpotMarketLaunchProposal.create()
+  const content = InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.create()
 
   content.title = params.market.title
   content.description = params.market.description
@@ -53,7 +53,7 @@ const createSpotMarketLaunchContent = (
   content.makerFeeRate = params.market.makerFeeRate
   content.takerFeeRate = params.market.makerFeeRate
 
-  return InjectiveExchangeV1Beta1Tx.SpotMarketLaunchProposal.fromPartial(
+  return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.fromPartial(
     content,
   )
 }
@@ -101,7 +101,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
 
     const contentAny = GoogleProtobufAny.Any.create()
     contentAny.value =
-      InjectiveExchangeV1Beta1Tx.SpotMarketLaunchProposal.encode(
+      InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.encode(
         content,
       ).finish()
     contentAny.typeUrl = proposalType

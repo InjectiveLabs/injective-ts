@@ -3,7 +3,7 @@ import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Proposal,
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
@@ -48,7 +48,7 @@ const createPerpetualMarketLaunch = (
   params: MsgSubmitProposalPerpetualMarketLaunch.Params,
 ) => {
   const content =
-    InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.create()
+    InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.create()
 
   content.title = params.market.title
   content.description = params.market.description
@@ -65,7 +65,7 @@ const createPerpetualMarketLaunch = (
   content.minPriceTickSize = params.market.minPriceTickSize
   content.minQuantityTickSize = params.market.minQuantityTickSize
 
-  return InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.fromPartial(
+  return InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.fromPartial(
     content,
   )
 }
@@ -115,7 +115,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
 
     const contentAny = GoogleProtobufAny.Any.create()
     contentAny.value =
-      InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.encode(
+      InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.encode(
         content,
       ).finish()
     contentAny.typeUrl =

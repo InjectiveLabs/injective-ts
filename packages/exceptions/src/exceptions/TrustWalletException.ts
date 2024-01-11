@@ -19,7 +19,7 @@ export class TrustWalletException extends ConcreteException {
     this.type = ErrorType.WalletError
   }
 
-  public parseMessage(): void {
+  public parse(): void {
     const { message } = this
 
     this.setMessage(

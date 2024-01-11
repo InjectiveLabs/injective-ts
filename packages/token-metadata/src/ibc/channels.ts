@@ -12,10 +12,12 @@ export enum CanonicalChannelToDestinationChannel {
   Crescent = 'channel-90',
   Sommelier = 'channel-93',
   Migaloo = 'channel-102',
+  Nois = 'channel-138',
   Kava = 'channel-143',
   Oraichain = 'channel-147',
   Noble = 'channel-148',
   Celestia = 'channel-152',
+  Kujira = 'channel-98',
 }
 
 /**
@@ -88,6 +90,7 @@ export const canonicalChannelsToChainList = [
   { channelId: 'channel-146', chainA: 'Oraichain', chainB: 'Injective' },
   { channelId: 'channel-31', chainA: 'Noble', chainB: 'Injective' },
   { channelId: 'channel-7', chainA: 'Celestia', chainB: 'Injective' },
+  { channelId: 'channel-54', chainA: 'Kujira', chainB: 'Injective' },
   { channelId: 'channel-1', chainA: 'Injective', chainB: 'CosmosHub' },
   { channelId: 'channel-83', chainA: 'Injective', chainB: 'Evmos' },
   { channelId: 'channel-8', chainA: 'Injective', chainB: 'Osmosis' },
@@ -101,14 +104,18 @@ export const canonicalChannelsToChainList = [
   { channelId: 'channel-23', chainA: 'Injective', chainB: 'Crescent' },
   { channelId: 'channel-13', chainA: 'Injective', chainB: '' },
   { channelId: 'channel-93', chainA: 'Injective', chainB: 'Sommelier' },
+  { channelId: 'channel-98', chainA: 'Injective', chainB: 'Kujira' },
   { channelId: 'channel-99', chainA: 'Injective', chainB: 'Canto' },
   { channelId: 'channel-102', chainA: 'Injective', chainB: 'Migaloo' },
   { channelId: 'channel-104', chainA: 'Injective', chainB: 'Terra2' },
   { channelId: 'channel-105', chainA: 'Injective', chainB: 'Terra2' },
+  { channelId: 'channel-138', chainA: 'Injective', chainB: 'Nois' },
+  { channelId: 'channel-140', chainA: 'Injective', chainB: 'Nois' },
   { channelId: 'channel-143', chainA: 'Injective', chainB: 'Kava' },
   { channelId: 'channel-147', chainA: 'Injective', chainB: 'Oraichain' },
   { channelId: 'channel-148', chainA: 'Injective', chainB: 'Noble' },
   { channelId: 'channel-152', chainA: 'Injective', chainB: 'Celestia' },
+  
 ]
 
 export default legacyCanonicalChannels
@@ -134,10 +141,13 @@ export const canonicalChannelIds = [
   'channel-102',
   'channel-104',
   'channel-105',
+  'channel-138',
+  'channel-140',
   'channel-143',
   'channel-147',
   'channel-148',
   'channel-152',
+  'channel-98',
 ]
 
 export const channelIbcDenomToBaseDenomMap = {

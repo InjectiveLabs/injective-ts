@@ -2,7 +2,7 @@ import tokens from './tokens'
 import {
   TokenMeta,
   TokenType,
-  Cw20TokenSource,
+  TokenSource,
   Cw20TokenMetaWithSource,
 } from '../../types'
 
@@ -37,7 +37,7 @@ export const testnetTokens = () =>
           {
             decimals: 8,
             symbol: 'wBTC',
-            source: Cw20TokenSource.Cosmos,
+            source: TokenSource.Cosmos,
             address: 'wbtc',
             tokenType: TokenType.Cw20,
           },
@@ -53,7 +53,7 @@ export const testnetTokens = () =>
         {
           decimals: 8,
           symbol: 'ATOM',
-          source: Cw20TokenSource.Cosmos,
+          source: TokenSource.Cosmos,
           address: 'atom',
           tokenType: TokenType.Cw20,
         },
@@ -95,7 +95,7 @@ export const testnetTokens = () =>
         {
           decimals: 8,
           symbol: 'wETH',
-          source: Cw20TokenSource.EthereumWh,
+          source: TokenSource.EthereumWh,
           address: 'weth',
           tokenType: TokenType.Cw20,
         },
@@ -132,7 +132,7 @@ export const testnetTokens = () =>
           {
             decimals: 6,
             symbol: 'USDCet',
-            source: Cw20TokenSource.EthereumWh,
+            source: TokenSource.EthereumWh,
             address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
             tokenType: TokenType.Cw20,
           },
@@ -141,7 +141,7 @@ export const testnetTokens = () =>
         {
           decimals: 6,
           symbol: 'USDC',
-          source: Cw20TokenSource.Cosmos,
+          source: TokenSource.Cosmos,
           address: 'usdc',
           tokenType: TokenType.Cw20,
         },
@@ -162,7 +162,7 @@ export const testnetTokens = () =>
         {
           decimals: 18,
           symbol: 'MT1',
-          source: Cw20TokenSource.EthereumWh,
+          source: TokenSource.EthereumWh,
           address: 'mitotest1',
           tokenType: TokenType.Cw20,
         },

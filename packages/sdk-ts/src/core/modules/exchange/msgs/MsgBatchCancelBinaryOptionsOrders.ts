@@ -13,6 +13,7 @@ export declare namespace MsgBatchCancelBinaryOptionsOrders {
       subaccountId: string
       orderHash: string
       orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
+      cid?: string
     }[]
   }
 
@@ -41,6 +42,7 @@ export default class MsgBatchCancelBinaryOptionsOrders extends MsgBase<
       orderData.marketId = order.marketId
       orderData.orderHash = order.orderHash
       orderData.subaccountId = order.subaccountId
+      orderData.cid = order.cid || ''
 
       // TODO: Send order.orderMask instead when chain handles order mask properly.
       orderData.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY

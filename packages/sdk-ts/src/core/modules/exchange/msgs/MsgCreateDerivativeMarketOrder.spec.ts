@@ -11,6 +11,7 @@ const params: MsgCreateDerivativeMarketOrder['params'] = {
   price: '1765000',
   quantity: '100',
   subaccountId: mockFactory.subaccountId,
+  cid: '',
   triggerPrice: '0',
 }
 
@@ -25,6 +26,7 @@ const protoParams = {
       price: params.price,
       quantity: params.quantity,
       subaccountId: params.subaccountId,
+      cid: params.cid,
     },
     orderType: params.orderType,
     margin: params.margin,

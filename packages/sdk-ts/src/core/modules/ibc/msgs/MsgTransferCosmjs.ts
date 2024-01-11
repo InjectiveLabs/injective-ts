@@ -23,6 +23,8 @@ export declare namespace MsgTransferCosmjs {
 
 /**
  * @category Messages
+ *
+ * @deprected use MsgTransfer with SIGN_DIRECT and a Cosmos wallet
  */
 export default class MsgTransferCosmjs {
   params: MsgTransferCosmjs.Params

@@ -147,13 +147,13 @@ export class IndexerGrpcMitoTransformer {
     return {
       pnl: portfolio.pnl,
       totalValue: portfolio.totalValue,
+      updatedAt: parseInt(portfolio.pnlUpdatedAt, 10),
       totalValueChartList: portfolio.totalValueChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
       ),
       pnlChartList: portfolio.pnlChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
       ),
-      updatedAt: parseInt(portfolio.pnlUpdatedAt, 10),
     }
   }
 
@@ -337,9 +337,11 @@ export class IndexerGrpcMitoTransformer {
       name: IDO.name,
       owner: IDO.owner,
       status: IDO.status,
+      marketId: IDO.marketId,
       tokenPrice: IDO.tokenPrice,
       quoteDenom: IDO.quoteDenom,
       useWhitelist: IDO.useWhitelist,
+      vaultAddress: IDO.vaultAddress,
       capPerAddress: IDO.capPerAddress,
       contractAddress: IDO.contractAddress,
       subscribedAmount: IDO.subscribedAmount,
@@ -391,6 +393,7 @@ export class IndexerGrpcMitoTransformer {
             IDOSubscriber.estimateTokenReceived,
           )
         : undefined,
+      createdAt: parseInt(IDOSubscriber.createdAt, 10),
     }
   }
 
@@ -399,12 +402,16 @@ export class IndexerGrpcMitoTransformer {
   ): MitoIDOSubscription {
     return {
       price: subscription.price,
+      marketId: subscription.marketId,
       quoteDenom: subscription.quoteDenom,
       stakedAmount: subscription.stakedAmount,
       rewardClaimed: subscription.rewardClaimed,
       committedAmount: subscription.committedAmount,
       updatedAt: parseInt(subscription.updatedAt, 10),
       claimableCoins: subscription.claimableCoins.map(
+        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+      ),
+      ownerClaimableCoins: subscription.ownerClaimableCoins.map(
         IndexerGrpcMitoTransformer.grpcCoinToCoin,
       ),
       claimTxHash: subscription.claimTxHash,
@@ -598,6 +605,8 @@ export class IndexerGrpcMitoTransformer {
     response: MitoApi.GetIDOSubscribersResponse,
   ) {
     return {
+      marketId: response.marketId,
+      quoteDenom: response.quoteDenom,
       subscribers: response.subscribers.map(
         IndexerGrpcMitoTransformer.mitoIDOSubscriberToIDOSubscriber,
       ),
@@ -609,7 +618,6 @@ export class IndexerGrpcMitoTransformer {
             response.tokenInfo,
           )
         : undefined,
-      quoteDenom: response.quoteDenom,
     }
   }
 

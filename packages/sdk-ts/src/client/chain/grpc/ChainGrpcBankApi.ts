@@ -3,7 +3,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 import { ChainModule } from '../types'
 import { ChainGrpcBankTransformer } from '../transformers'
 import { PaginationOption } from '../../../types/pagination'
@@ -95,10 +95,16 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchBalances(address: string) {
+  async fetchBalances(address: string, pagination?: PaginationOption) {
     const request = CosmosBankV1Beta1Query.QueryAllBalancesRequest.create()
 
     request.address = address
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.pagination = paginationForRequest
+    }
 
     try {
       const response =

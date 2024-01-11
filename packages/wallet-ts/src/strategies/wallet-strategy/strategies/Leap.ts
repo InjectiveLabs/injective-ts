@@ -24,10 +24,7 @@ import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 
-export default class Leap
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Leap extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private leapWallet: LeapWallet
 
   constructor(args: {
@@ -43,18 +40,16 @@ export default class Leap
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<boolean> {
+    const leapWallet = this.getLeapWallet()
+
+    return await leapWallet.checkChainIdSupport()
+  }
+
   async getAddresses(): Promise<string[]> {
-    const { chainId } = this
     const leapWallet = this.getLeapWallet()
 
     try {
-      if (!(await leapWallet.checkChainIdSupport())) {
-        throw new CosmosWalletException(
-          new Error(`The ${chainId} is not supported on Leap.`),
-          { type: ErrorType.WalletError },
-        )
-      }
-
       const accounts = await leapWallet.getAccounts()
 
       return accounts.map((account) => account.address)
@@ -95,7 +90,7 @@ export default class Leap
     options: {
       address: AccountAddress
       chainId: ChainId
-      endpoints?: { rest: string }
+      endpoints?: { grpc: string }
     },
   ): Promise<TxResponse> {
     const { leapWallet } = this
@@ -104,7 +99,7 @@ export default class Leap
     try {
       return await leapWallet.waitTxBroadcasted(
         await leapWallet.broadcastTx(txRaw),
-        options.endpoints?.rest,
+        options.endpoints?.grpc,
       )
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
@@ -127,6 +122,21 @@ export default class Leap
       ...transaction,
       address: injectiveAddress,
     })
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new CosmosWalletException(
+      new Error('This wallet does not support signing using amino'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.SendTransaction,
+      },
+    )
   }
 
   async signCosmosTransaction(transaction: {

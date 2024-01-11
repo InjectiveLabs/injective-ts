@@ -16,8 +16,8 @@ export class TransactionException extends ConcreteException {
 
     const {
       code,
-      contextModule: parsedContextModule,
       message: parsedMessage,
+      contextModule: parsedContextModule,
     } = mapFailedTransactionMessage(message, { contextCode, contextModule })
 
     this.setMessage(parsedMessage)

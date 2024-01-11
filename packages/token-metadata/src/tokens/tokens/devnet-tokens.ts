@@ -2,7 +2,7 @@ import tokens from './tokens'
 import {
   TokenMeta,
   TokenType,
-  Cw20TokenSource,
+  TokenSource,
   Cw20TokenMetaWithSource,
 } from '../../types'
 
@@ -47,7 +47,7 @@ export const devnetTokens = () =>
         {
           decimals: 6,
           symbol: 'USDCet',
-          source: Cw20TokenSource.EthereumWh,
+          source: TokenSource.EthereumWh,
           address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
           tokenType: TokenType.Cw20,
         },

@@ -3,15 +3,16 @@ import {
   hexToBuff,
   PublicKey,
   SIGN_AMINO,
+  SIGN_DIRECT,
   hexToBase64,
-  BaseAccount,
-  ChainRestAuthApi,
+  ChainGrpcAuthApi,
   CosmosTxV1Beta1Tx,
   createTxRawEIP712,
   createTransaction,
+  getAminoStdSignDoc,
   getEip712TypedData,
   createWeb3Extension,
-  ChainRestTendermintApi,
+  ChainGrpcTendermintApi,
   createTransactionWithSigners,
   createTxRawFromSigResponse,
   IndexerGrpcTransactionApi,
@@ -32,8 +33,8 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   getNetworkInfo,
-  getNetworkEndpoints,
   NetworkEndpoints,
+  getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import {
@@ -45,9 +46,10 @@ import {
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
 } from './types'
-import { isCosmosWallet } from '../utils/wallets/cosmos'
+import { isCosmosWallet } from '../strategies/wallet-strategy/utils'
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
+import { isCosmosAminoOnlyWallet } from '../utils'
 
 /**
  * This class is used to broadcast transactions
@@ -173,17 +175,16 @@ export class MsgBroadcaster {
     }
 
     /** Account Details * */
-    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
-    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      tx.injectiveAddress,
-    )
-    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
-    const accountDetails = baseAccount.toAccountDetails()
+    const accountDetails = await new ChainGrpcAuthApi(
+      endpoints.grpc,
+    ).fetchAccount(tx.injectiveAddress)
+    const { baseAccount } = accountDetails
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
-    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
-    const latestHeight = latestBlock.header.height
+    const latestBlock = await new ChainGrpcTendermintApi(
+      endpoints.grpc,
+    ).fetchLatestBlock()
+    const latestHeight = latestBlock!.header!.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
@@ -196,8 +197,8 @@ export class MsgBroadcaster {
       fee: getStdFee({ ...tx.gas, gas }),
       tx: {
         memo: tx.memo,
-        accountNumber: accountDetails.accountNumber.toString(),
-        sequence: accountDetails.sequence.toString(),
+        accountNumber: baseAccount.accountNumber.toString(),
+        sequence: baseAccount.sequence.toString(),
         timeoutHeight: timeoutHeight.toFixed(),
         chainId,
       },
@@ -266,7 +267,9 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+    const transactionApi = new IndexerGrpcTransactionApi(
+      endpoints.web3gw || endpoints.indexer,
+    )
     const txResponse = await transactionApi.prepareTxRequest({
       memo: tx.memo,
       message: web3Msgs,
@@ -318,43 +321,75 @@ export class MsgBroadcaster {
     }
 
     /** Account Details * */
-    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
-    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      tx.injectiveAddress,
-    )
-    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
-    const accountDetails = baseAccount.toAccountDetails()
+    const accountDetails = await new ChainGrpcAuthApi(
+      endpoints.grpc,
+    ).fetchAccount(tx.injectiveAddress)
+    const { baseAccount } = accountDetails
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
-    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
-    const latestHeight = latestBlock.header.height
+    const latestBlock = await new ChainGrpcTendermintApi(
+      endpoints.grpc,
+    ).fetchLatestBlock()
+    const latestHeight = latestBlock!.header!.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
-    const pubKey = await walletStrategy.getPubKey()
+    const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
+      ? SIGN_AMINO
+      : SIGN_DIRECT
+    const pubKey = await walletStrategy.getPubKey(tx.injectiveAddress)
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
     const { txRaw } = await this.getTxWithSignersAndStdFee({
       chainId,
+      signMode,
       memo: tx.memo,
       message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
       signers: {
         pubKey,
-        accountNumber: accountDetails.accountNumber,
-        sequence: accountDetails.sequence,
+        accountNumber: baseAccount.accountNumber,
+        sequence: baseAccount.sequence,
       },
       fee: getStdFee({ ...tx.gas, gas }),
     })
+
+    /** Ledger using Cosmos app only allows signing amino docs */
+    if (isCosmosAminoOnlyWallet(walletStrategy.wallet)) {
+      const aminoSignDoc = getAminoStdSignDoc({
+        ...tx,
+        ...baseAccount,
+        msgs,
+        chainId,
+        gas: gas || tx.gas?.gas?.toString(),
+        timeoutHeight: timeoutHeight.toFixed(),
+      })
+
+      const signature = (await walletStrategy.signAminoCosmosTransaction({
+        signDoc: aminoSignDoc,
+        chainId,
+        address: tx.injectiveAddress,
+        accountNumber: baseAccount.accountNumber,
+      })) as string
+
+      console.log({ signature, signMode, aminoSignDoc })
+
+      txRaw.signatures = [Buffer.from(signature, 'base64')]
+
+      return walletStrategy.sendTransaction(txRaw, {
+        chainId,
+        endpoints,
+        address: tx.injectiveAddress,
+      })
+    }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
       chainId,
       address: tx.injectiveAddress,
-      accountNumber: accountDetails.accountNumber,
+      accountNumber: baseAccount.accountNumber,
     })) as DirectSignResponse
 
     return walletStrategy.sendTransaction(directSignResponse, {
@@ -403,18 +438,18 @@ export class MsgBroadcaster {
       rest: endpoints.rest,
       rpc: endpoints.rpc,
     })
+
     /** Account Details * */
-    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
-    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      tx.injectiveAddress,
-    )
-    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
-    const accountDetails = baseAccount.toAccountDetails()
+    const accountDetails = await new ChainGrpcAuthApi(
+      endpoints.grpc,
+    ).fetchAccount(tx.injectiveAddress)
+    const { baseAccount } = accountDetails
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
-    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
-    const latestHeight = latestBlock.header.height
+    const latestBlock = await new ChainGrpcTendermintApi(
+      endpoints.grpc,
+    ).fetchLatestBlock()
+    const latestHeight = latestBlock!.header!.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
@@ -428,8 +463,8 @@ export class MsgBroadcaster {
       fee: getStdFee({ ...tx.gas, gas }),
       tx: {
         memo: tx.memo,
-        accountNumber: accountDetails.accountNumber.toString(),
-        sequence: accountDetails.sequence.toString(),
+        accountNumber: baseAccount.accountNumber.toString(),
+        sequence: baseAccount.sequence.toString(),
         timeoutHeight: timeoutHeight.toFixed(),
         chainId,
       },
@@ -538,26 +573,20 @@ export class MsgBroadcaster {
     const feePayer = feePayerPublicKey.toAddress().address
 
     /** Account Details * */
-    const chainRestAuthApi = new ChainRestAuthApi(endpoints.rest)
-    const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
+    const chainGrpcAuthApi = new ChainGrpcAuthApi(endpoints.grpc)
+    const accountDetails = await chainGrpcAuthApi.fetchAccount(
       tx.injectiveAddress,
     )
-    const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
-    const accountDetails = baseAccount.toAccountDetails()
+    const feePayerAccountDetails = await chainGrpcAuthApi.fetchAccount(feePayer)
 
-    /** Fee Payer Account Details */
-    const feePayerAccountDetailsResponse = await chainRestAuthApi.fetchAccount(
-      feePayer,
-    )
-    const feePayerBaseAccount = BaseAccount.fromRestApi(
-      feePayerAccountDetailsResponse,
-    )
-    const feePayerAccountDetails = feePayerBaseAccount.toAccountDetails()
+    const { baseAccount } = accountDetails
+    const { baseAccount: feePayerBaseAccount } = feePayerAccountDetails
 
     /** Block Details */
-    const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
-    const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
-    const latestHeight = latestBlock.header.height
+    const latestBlock = await new ChainGrpcTendermintApi(
+      endpoints.grpc,
+    ).fetchLatestBlock()
+    const latestHeight = latestBlock!.header!.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
@@ -574,13 +603,13 @@ export class MsgBroadcaster {
       signers: [
         {
           pubKey,
-          accountNumber: accountDetails.accountNumber,
-          sequence: accountDetails.sequence,
+          accountNumber: baseAccount.accountNumber,
+          sequence: baseAccount.sequence,
         },
         {
           pubKey: feePayerPublicKey.toBase64(),
-          accountNumber: feePayerAccountDetails.accountNumber,
-          sequence: feePayerAccountDetails.sequence,
+          accountNumber: feePayerBaseAccount.accountNumber,
+          sequence: feePayerBaseAccount.sequence,
         },
       ],
       fee: getStdFee({ ...tx.gas, gas, payer: feePayer }),
@@ -595,10 +624,12 @@ export class MsgBroadcaster {
       txRaw,
       chainId,
       address: tx.injectiveAddress,
-      accountNumber: accountDetails.accountNumber,
+      accountNumber: baseAccount.accountNumber,
     })) as DirectSignResponse
 
-    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+    const transactionApi = new IndexerGrpcTransactionApi(
+      endpoints.web3gw || endpoints.indexer,
+    )
     const response = await transactionApi.broadcastCosmosTxRequest({
       address: tx.injectiveAddress,
       txRaw: createTxRawFromSigResponse(directSignResponse),
@@ -626,7 +657,9 @@ export class MsgBroadcaster {
 
     const { endpoints } = this
 
-    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+    const transactionApi = new IndexerGrpcTransactionApi(
+      endpoints.web3gw || endpoints.indexer,
+    )
     const response = await transactionApi.fetchFeePayer()
 
     if (!response.feePayerPubKey) {

@@ -39,7 +39,7 @@ console.log(txHash);
 
 ### MsgWithdrawValidatorCommission
 
-This message is used to by the validator to withdraw the commission earned.
+This message is used by the validator to withdraw the commission earned.
 
 ```ts
 import {

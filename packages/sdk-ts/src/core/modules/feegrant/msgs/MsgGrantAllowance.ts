@@ -60,10 +60,6 @@ export default class MsgGrantAllowance extends MsgBase<
     message.grantee = params.grantee
     message.granter = params.granter
     message.allowance = allowance
-    console.log({
-      message,
-      fromJSON: CosmosFeegrantV1Beta1Tx.MsgGrantAllowance.fromJSON(message),
-    })
 
     return CosmosFeegrantV1Beta1Tx.MsgGrantAllowance.fromJSON(message)
   }

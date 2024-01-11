@@ -108,8 +108,8 @@ export const getEndpointsFromChainId = (
       }
     case TestnetCosmosChainId.Cosmoshub:
       return {
-        rpc: 'https://testnet.tm.cosmos.injective.dev',
-        rest: 'https://testnet.lcd.cosmos.injective.dev',
+        rpc: 'https://rpc.sentry-01.theta-testnet.polypore.xyz',
+        rest: 'https://rest.sentry-01.theta-testnet.polypore.xyz',
       }
     case CosmosChainId.Noble:
       return {
@@ -120,6 +120,16 @@ export const getEndpointsFromChainId = (
       return {
         rpc: 'https://rpc.cosmos.directory/celestia',
         rest: 'https://rest.cosmos.directory/celestia',
+      }
+    case CosmosChainId.Migaloo:
+      return {
+        rpc: 'https://rpc.cosmos.directory/migaloo',
+        rest: 'https://rest.cosmos.directory/migaloo',
+      }
+    case CosmosChainId.Kujira:
+      return {
+        rpc: 'https://rpc.cosmos.directory/kujira',
+        rest: 'https://rest.cosmos.directory/kujira',
       }
     default:
       throw new GeneralException(

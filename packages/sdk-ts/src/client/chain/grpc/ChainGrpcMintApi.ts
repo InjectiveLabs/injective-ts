@@ -8,7 +8,7 @@ import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer'
 import { ChainModule } from '../types'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 
 /**
  * @category Chain Grpc API

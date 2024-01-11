@@ -6,10 +6,10 @@ export interface TokenFactoryModuleParams {
 
 export interface TokenFactoryModuleState {
   denomCreationFee: Coin[]
-  factoryDenoms: Denom[]
+  factoryDenoms: FactoryDenomWithMetadata[]
 }
 
-interface Denom {
+export interface FactoryDenomWithMetadata {
   denom: string
   authorityMetadata: AuthorityMetadata
 }

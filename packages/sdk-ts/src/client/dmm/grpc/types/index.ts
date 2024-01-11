@@ -11,11 +11,6 @@ export interface EpochsV2 {
   epochs: EpochV2[]
 }
 
-export interface LiquiditySnapshots {
-  snapshots: LiquidityScoreSnapshot[]
-  next?: DmmPagination
-}
-
 export interface TotalScores {
   scores: TotalScore[]
   next?: DmmPagination
@@ -96,20 +91,6 @@ export interface EpochConfigV2 {
   qualifyingVolumeThreshold: string
 }
 
-export interface LiquidityScoreSnapshot {
-  epochId: string
-  marketId: string
-  accountAddress: string
-  height: string
-  blockTime?: Date
-  bid: string
-  ask: string
-  depth: string
-  liquidityScore: string
-  uptimeScore: string
-  createdAt?: Date
-  updatedAt?: Date
-}
 export interface TotalScore {
   epochId: string
   marketId: string
@@ -218,6 +199,7 @@ export interface AccountVolume {
   dailyVolumePercentage: string
   dailyMakerVolumePercentage: string
   dailyTakerVolumePercentage: string
+  dailyQualified: boolean
   createdAt?: Date
   updatedAt?: Date
 }
@@ -250,11 +232,6 @@ export type GrpcTotalScore = InjectiveDmmRpc.TotalScore
 
 export type GrpcTotalScoresHistory =
   InjectiveDmmRpc.GetTotalScoresHistoryResponse
-
-export type GrpcLiquiditySnapshots =
-  InjectiveDmmRpc.GetLiquiditySnapshotsResponse
-
-export type GrpcLiquidityScoreSnapshot = InjectiveDmmRpc.LiquidityScoreSnapshot
 
 export type GrpcRewardsDistribution =
   InjectiveDmmRpc.GetRewardsDistributionResponse

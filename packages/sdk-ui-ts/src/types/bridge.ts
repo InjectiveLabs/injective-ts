@@ -33,6 +33,8 @@ export enum BridgingNetwork {
   Oraichain = 'oraichain',
   Noble = 'noble',
   Celestia = 'celestia',
+  Migaloo = 'migaloo',
+  Kujira = 'kujira',
 }
 
 export const MintScanExplorerUrl = {

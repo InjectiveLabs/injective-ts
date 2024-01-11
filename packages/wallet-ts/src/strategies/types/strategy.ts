@@ -23,7 +23,7 @@ export interface EthereumWalletStrategyArgs {
 
 export interface ConcreteCosmosWalletStrategy {
   /**
-   * The the accounts from the wallet (addresses)
+   * The accounts from the wallet (addresses)
    */
   getAddresses(): Promise<string[]>
 
@@ -37,7 +37,13 @@ export interface ConcreteCosmosWalletStrategy {
    * Get the PubKey from the wallet
    * in base64 for Cosmos native wallets
    */
-  getPubKey(): Promise<string>
+  getPubKey(address?: string): Promise<string>
+
+  /**
+   * Perform validations and checks
+   * for the wallet (if the chain is supported, etc)
+   */
+  enable(): Promise<boolean>
 
   /**
    * Sends Cosmos transaction. Returns a transaction hash
@@ -45,8 +51,6 @@ export interface ConcreteCosmosWalletStrategy {
    * @param options
    */
   sendTransaction(transaction: DirectSignResponse | TxRaw): Promise<TxResponse>
-
-  isChainIdSupported(chainId?: CosmosChainId): Promise<boolean>
 
   signTransaction(transaction: {
     txRaw: TxRaw
@@ -139,6 +143,19 @@ export interface ConcreteWalletStrategy
   }): Promise<DirectSignResponse>
 
   /**
+   * Sign an amino sign doc using the wallet provider
+   *
+   * @param transaction
+   * @param address - injective address
+   */
+  signAminoCosmosTransaction(transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string>
+
+  /**
    * Sign EIP712 TypedData using the wallet provider
    * @param eip712TypedData
    * @param address - ethereum address
@@ -161,5 +178,5 @@ export interface ConcreteWalletStrategy
 
   cancelAllEvents?(): void
 
-  disconnect?(): Promise<void>
+  disconnect?(): Promise<void> | void
 }

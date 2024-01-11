@@ -78,34 +78,36 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash);
 ```
 
-### MsgDelegate
+### MsgCancelUnbondingDelegation
 
-This Message is used to Delegate INJ to a validator.
+This message is used to cancel unbonding from a validator, reset the bonding period, and delegate back to the previous validator.
 
 ```ts
-import { MsgUndelegate, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
+import { MsgCancelUnbondingDelegation, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
 
-const injectiveAddress = "inj1...";
+const delegatorAddress = "inj1...";
 const privateKey = "0x...";
 const amount = new BigNumberInBase(5);
 const validatorAddress = "inj1...";
+const creationHeight = "123456"; // the height at which the unbonding was initiated
 
-const msg = MsgUndelegate.fromJSON({
-  injectiveAddress,
+const msg = MsgCancelUnbondingDelegation.fromJSON({
+  delegatorAddress,
   validatorAddress,
   amount: {
     denom: INJ_DENOM,
     amount: amount.toWei().toFixed(),
   },
+  creationHeight,
 });
 
 const txHash = await new MsgBroadcasterWithPk({
-  privateKey,
-  network: Network.Testnet
+privateKey,
+network: Network.Testnet
 }).broadcast({
-  msgs: msg
+msgs: msg
 });
 
 console.log(txHash);

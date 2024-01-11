@@ -7,7 +7,7 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxRestApi, TxResponse } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi, TxRestApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   CosmosWalletException,
@@ -33,6 +33,10 @@ export class LeapWallet {
   ) {
     this.chainId = chainId
     this.endpoints = endpoints || getEndpointsFromChainId(chainId)
+  }
+
+  static async isChainIdSupported(chainId: CosmosChainId): Promise<boolean> {
+    return new LeapWallet(chainId).checkChainIdSupport()
   }
 
   async getLeapWallet() {
@@ -173,20 +177,26 @@ export class LeapWallet {
     txHash: string,
     endpoint?: string,
   ): Promise<TxResponse> {
-    return new TxRestApi(endpoint || this.endpoints.rest).fetchTxPoll(txHash)
+    return endpoint
+      ? new TxGrpcApi(endpoint).fetchTxPoll(txHash)
+      : new TxRestApi(this.endpoints.rest).fetchTxPoll(txHash)
   }
 
-  public checkChainIdSupport = async () => {
+  public async checkChainIdSupport() {
     const { chainId } = this
     const leap = this.getLeap()
+    const chainName = chainId.split('-')
 
     try {
-      await leap.getKey(chainId)
-
-      // Chain exists already on Leap
-      return true
+      return !!(await leap.getKey(chainId))
     } catch (e) {
-      return false
+      throw new CosmosWalletException(
+        new Error(
+          `Leap doesn't support ${
+            chainName[0] || chainId
+          } network. Please use another Cosmos wallet`,
+        ),
+      )
     }
   }
 

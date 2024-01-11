@@ -81,6 +81,7 @@ export interface TransactionFromExplorerApiResponse {
   logs: EventLog[]
   messages: Array<{ value: any; type: string }>
   error_log?: string
+  claim_id?: number[]
 }
 
 export interface BlockFromExplorerApiResponse {
@@ -117,6 +118,7 @@ export interface ExplorerTransaction extends Omit<BaseTransaction, 'messages'> {
   parsedMessages?: Message[]
   errorLog?: string
   logs?: EventLog[]
+  claimIds?: number[]
 }
 
 export interface ExplorerBlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
@@ -177,6 +179,14 @@ export interface ContractExplorerApiResponse {
   code_id: number
   admin?: string
   current_migrate_message: string
+  cw20_metadata?: {
+    token_info?: {
+      name: string
+      symbol: string
+      decimals: number
+      total_supply: string
+    }
+  }
 }
 
 export interface ContractTransactionExplorerApiResponse {

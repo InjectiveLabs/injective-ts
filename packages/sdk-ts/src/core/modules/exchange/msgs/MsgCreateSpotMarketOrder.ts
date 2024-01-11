@@ -16,6 +16,7 @@ export declare namespace MsgCreateSpotMarketOrder {
     feeRecipient: string
     price: string
     quantity: string
+    cid?: string
   }
 
   export type Proto = InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder
@@ -27,6 +28,7 @@ const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
   orderInfo.quantity = params.quantity
+  orderInfo.cid = params.cid || ''
 
   const spotOrder = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
   spotOrder.marketId = params.marketId

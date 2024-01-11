@@ -11,10 +11,7 @@ export const BECH32_ADDR_CONS_PREFIX = 'injvalcons'
 
 export const DEFAULT_DERIVATION_PATH = "m/44'/60'/0'/0/0"
 
-export const DUST_AMOUNT = 0.0001
-export const PAGINATION_TOTAL_PAGE_LIMIT: number = 10000
-export const DEFAULT_PAGINATION_TOTAL_COUNT: number = 1000000
-
+/** @deprecated - use the one in @injectivelabs/networks */
 export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.MainnetLB]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
@@ -33,6 +30,7 @@ export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
 }
 
+/** @deprecated - use the one in @injectivelabs/networks */
 export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.MainnetLB]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
@@ -51,6 +49,26 @@ export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
 }
 
+/** @deprecated - use the one in @injectivelabs/networks */
+export const INCENTIVES_CONTRACT_BY_NETWORK = {
+  [Network.Mainnet]: '',
+  [Network.MainnetLB]: '',
+  [Network.MainnetK8s]: '',
+  [Network.MainnetSentry]: '',
+  [Network.Public]: '',
+  [Network.Staging]: '',
+  [Network.Internal]: '',
+  [Network.Testnet]: 'inj16twru668nsl7tqzahxd9q033swhr6a5xuslpkt',
+  [Network.TestnetK8s]: 'inj16twru668nsl7tqzahxd9q033swhr6a5xuslpkt',
+  [Network.TestnetSentry]: 'inj16twru668nsl7tqzahxd9q033swhr6a5xuslpkt',
+  [Network.TestnetOld]: 'inj16twru668nsl7tqzahxd9q033swhr6a5xuslpkt',
+  [Network.Devnet]: '',
+  [Network.Devnet1]: '',
+  [Network.Devnet2]: '',
+  [Network.Local]: '',
+}
+
+/** @deprecated - use the one in @injectivelabs/networks */
 export const INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
   [Network.MainnetLB]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
@@ -69,6 +87,7 @@ export const INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK = {
   [Network.Local]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
 }
 
+/** @deprecated - use the one in @injectivelabs/networks */
 export const INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
   [Network.MainnetLB]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',

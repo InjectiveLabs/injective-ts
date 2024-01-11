@@ -20,24 +20,37 @@ export class TokenFactory {
     this.tokenMetaUtils = tokenMetaUtils
   }
 
-  static make(network: Network = Network.Mainnet): TokenFactory {
+  static make(
+    network: Network = Network.Mainnet,
+    registry: Record<string, TokenMeta> = {},
+  ): TokenFactory {
     if (isTestnet(network)) {
-      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForTestnet()))
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForTestnet(), ...registry }),
+      )
     }
 
     if (network === Network.Devnet) {
-      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForDevnet()))
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForDevnet(), ...registry }),
+      )
     }
 
     if (network === Network.Devnet1) {
-      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForDevnet1()))
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForDevnet1(), ...registry }),
+      )
     }
 
     if (network === Network.Devnet2) {
-      return new TokenFactory(new TokenMetaUtils(getTokensBySymbolForDevnet2()))
+      return new TokenFactory(
+        new TokenMetaUtils({ ...getTokensBySymbolForDevnet2(), ...registry }),
+      )
     }
 
-    return new TokenFactory(new TokenMetaUtils(tokensBySymbol))
+    return new TokenFactory(
+      new TokenMetaUtils({ ...tokensBySymbol, ...registry }),
+    )
   }
 
   toToken(denom: string): Token | undefined {
@@ -151,8 +164,12 @@ export class TokenFactory {
       )
     }
 
+    let tokenMeta =
+      this.tokenMetaUtils.getMetaBySymbol(address) ||
+      this.tokenMetaUtils.getMetaByName(address)
+
     if (isCw20ContractAddress(address)) {
-      const tokenMeta = this.tokenMetaUtils.getMetaByAddress(address)
+      tokenMeta = this.tokenMetaUtils.getMetaByAddress(address) || tokenMeta
 
       return tokenMeta
         ? {
@@ -162,9 +179,14 @@ export class TokenFactory {
         : undefined
     }
 
-    const tokenMeta =
-      this.tokenMetaUtils.getMetaBySymbol(address) ||
-      this.tokenMetaUtils.getMetaByName(address)
+    /**
+     * We have to prevent factory token denoms to be identified as
+     * normal tokens by using only the symbol, i.e
+     * factory/inj..../sol !== SOL token
+     */
+    if (tokenMeta?.tokenType !== TokenType.TokenFactory) {
+      return undefined
+    }
 
     return tokenMeta
       ? {

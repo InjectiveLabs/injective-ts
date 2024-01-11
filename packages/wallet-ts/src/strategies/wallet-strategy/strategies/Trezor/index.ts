@@ -81,6 +81,14 @@ export default class Trezor
     return Promise.resolve(WalletDeviceType.Hardware)
   }
 
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
+  }
+
+  public async disconnect() {
+    this.trezor = new TrezorHW()
+  }
+
   public async getAddresses(): Promise<string[]> {
     try {
       await this.trezor.connect()
@@ -228,6 +236,22 @@ export default class Trezor
         contextModule: WalletAction.SignTransaction,
       })
     }
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   // eslint-disable-next-line class-methods-use-this

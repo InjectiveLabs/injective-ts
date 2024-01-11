@@ -1,4 +1,5 @@
 import { CoinGeckoApi } from '@injectivelabs/token-utils'
+import { Network, isDevnet, isTestnet } from '@injectivelabs/networks'
 import {
   sleep,
   splitArrayToChunks,
@@ -6,8 +7,24 @@ import {
   HttpRestClient,
 } from '@injectivelabs/utils'
 import { HttpRequestException } from '@injectivelabs/exceptions'
-import { ASSET_PRICE_SERVICE_URL } from '../constants'
+import {
+  ASSET_PRICE_SERVICE_URL,
+  DEVNET_ASSET_PRICE_SERVICE_URL,
+  TESTNET_ASSET_PRICE_SERVICE_URL,
+} from '../constants'
 import { CoinPriceFromInjectiveService } from '../types/token'
+
+const getAssetMicroserviceEndpoint = (network: Network = Network.Mainnet) => {
+  if (isTestnet(network)) {
+    return TESTNET_ASSET_PRICE_SERVICE_URL
+  }
+
+  if (isDevnet(network)) {
+    return DEVNET_ASSET_PRICE_SERVICE_URL
+  }
+
+  return ASSET_PRICE_SERVICE_URL
+}
 
 export class TokenPrice {
   private coinGeckoApi: CoinGeckoApi | undefined
@@ -16,8 +33,14 @@ export class TokenPrice {
 
   private cache: Record<string, number> = {} // coinGeckoId -> priceInUsd
 
-  constructor(coinGeckoOptions?: { baseUrl: string; apiKey: string }) {
-    this.restClient = new HttpRestClient(ASSET_PRICE_SERVICE_URL)
+  constructor(
+    network?: Network,
+    coinGeckoOptions?: {
+      baseUrl: string
+      apiKey: string
+    },
+  ) {
+    this.restClient = new HttpRestClient(getAssetMicroserviceEndpoint(network))
     this.coinGeckoApi = coinGeckoOptions
       ? new CoinGeckoApi(coinGeckoOptions)
       : undefined
@@ -59,9 +82,15 @@ export class TokenPrice {
 
     prices = { ...prices, ...pricesFromInjectiveService }
 
-    const coinIdsNotInCacheAndInjectiveService = coinIds.filter(
-      (coinId) => !Object.keys(prices).includes(coinId),
-    )
+    const coinIdsNotInCacheAndInjectiveService = coinIds
+      .filter((coinId) => !Object.keys(prices).includes(coinId))
+      .filter(
+        (coinId) =>
+          !coinId.startsWith('factory/') &&
+          !coinId.startsWith('ibc') &&
+          !coinId.startsWith('share') &&
+          !coinId.startsWith('peggy'),
+      )
 
     if (coinIdsNotInCacheAndInjectiveService.length === 0) {
       return prices
@@ -90,6 +119,56 @@ export class TokenPrice {
     )
 
     return { ...prices, ...coinIdsWithoutPrice }
+  }
+
+  async fetchUsdDenomsPrice(denoms: string[]) {
+    if (denoms.length === 0) {
+      return {}
+    }
+
+    let prices: Record<string, number> = {}
+
+    const pricesFromCache = denoms.reduce((prices, coinId) => {
+      try {
+        const priceFromCache = this.cache[coinId]
+
+        if (priceFromCache) {
+          return { ...prices, [coinId]: priceFromCache }
+        }
+
+        return prices
+      } catch (e) {
+        return prices
+      }
+    }, {} as Record<string, number>)
+
+    prices = { ...prices, ...pricesFromCache }
+
+    const denomsNotInCache = denoms.filter(
+      (denom) => !Object.keys(prices).includes(denom),
+    )
+
+    if (denomsNotInCache.length === 0) {
+      return prices
+    }
+
+    const pricesFromInjectiveService =
+      await this.fetchUsdPricesFromInjectiveService()
+
+    prices = { ...prices, ...pricesFromInjectiveService }
+
+    const denomsNotInCacheAndInjectiveService = denoms.filter(
+      (denom) => !Object.keys(prices).includes(denom),
+    )
+
+    const denomsWithoutPrice = Object.keys(
+      denomsNotInCacheAndInjectiveService,
+    ).reduce(
+      (prices, key) => ({ ...prices, [key]: 0 }),
+      {} as Record<string, number>,
+    )
+
+    return { ...prices, ...denomsWithoutPrice }
   }
 
   async fetchUsdTokenPrice(coinId: string) {

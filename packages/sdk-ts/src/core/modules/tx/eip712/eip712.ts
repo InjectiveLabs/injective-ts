@@ -2,12 +2,15 @@ import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Msgs } from '../../msgs'
 import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types'
 import {
-  getDefaultEip712Types,
-  getEip712Domain,
-  getEipTxDetails,
   getEip712Fee,
+  getEipTxDetails,
+  getEip712Domain,
+  getEip712DomainV2,
+  getDefaultEip712Types,
   getTypesIncludingFeePayer,
+  getDefaultEip712TypesV2,
 } from './utils'
+import { getEipTxContext } from './utils'
 
 export const getEip712TypedData = ({
   msgs,
@@ -37,13 +40,40 @@ export const getEip712TypedData = ({
   })
 
   return {
-    primaryType: 'Tx',
     ...typesWithFeePayer,
+    primaryType: 'Tx',
     ...getEip712Domain(ethereumChainId),
     message: {
       ...getEipTxDetails(tx),
       ...getEip712Fee(fee),
       msgs: eip712Msgs,
+    },
+  }
+}
+
+export const getEip712TypedDataV2 = ({
+  msgs,
+  tx,
+  fee,
+  ethereumChainId,
+}: {
+  msgs: Msgs | Msgs[]
+  tx: Eip712ConvertTxArgs
+  fee?: Eip712ConvertFeeArgs
+  ethereumChainId: EthereumChainId
+}) => {
+  const messages = Array.isArray(msgs) ? msgs : [msgs]
+  const eip712Msgs = messages.map((m) => m.toWeb3())
+
+  const types = getDefaultEip712TypesV2()
+
+  return {
+    ...types,
+    primaryType: 'Tx',
+    ...getEip712DomainV2(ethereumChainId),
+    message: {
+      context: JSON.stringify(getEipTxContext({ ...tx, fee })),
+      msgs: JSON.stringify(eip712Msgs),
     },
   }
 }

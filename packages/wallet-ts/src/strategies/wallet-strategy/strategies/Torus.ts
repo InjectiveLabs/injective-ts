@@ -42,10 +42,7 @@ export const getNetworkFromChainId = (
   }
 }
 
-export default class Torus
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Torus extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private torus: TorusWallet
 
   private connected = false
@@ -57,6 +54,10 @@ export default class Torus
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
+  }
+
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
   }
 
   async connect(): Promise<void> {
@@ -225,6 +226,22 @@ export default class Torus
         contextModule: WalletAction.SignArbitrary,
       })
     }
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   // eslint-disable-next-line class-methods-use-this

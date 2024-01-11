@@ -3,8 +3,10 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { IbcApplicationsTransferV1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../BaseGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 import { ChainModule } from '../types'
+import { PaginationOption } from '../../../types/pagination'
+import { paginationRequestFromPagination } from '../../../utils/pagination'
 
 /**
  * @category Chain Grpc API
@@ -52,9 +54,15 @@ export class ChainGrpcIbcApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchDenomsTrace() {
+  async fetchDenomsTrace(pagination?: PaginationOption) {
     const request =
       IbcApplicationsTransferV1Query.QueryDenomTracesRequest.create()
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.pagination = paginationForRequest
+    }
 
     try {
       const response =

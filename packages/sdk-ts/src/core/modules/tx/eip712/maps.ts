@@ -28,6 +28,7 @@ export const objectKeysToEip712Types = ({
     'expiry',
     'option',
     'proposal_id',
+    'creation_height',
   ]
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
@@ -160,6 +161,8 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
     case 'oracle_scale_factor':
       return 'uint64'
     case 'expiry':
+      return 'int64'
+    case 'creation_height':
       return 'int64'
     case 'option':
       return 'int32'

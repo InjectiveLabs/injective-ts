@@ -35,6 +35,10 @@ export default class TrustWallet
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
+  }
+
   async getAddresses(): Promise<string[]> {
     const ethereum = await this.getEthereum()
 
@@ -142,6 +146,22 @@ export default class TrustWallet
         contextModule: WalletAction.SignTransaction,
       })
     }
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   // eslint-disable-next-line class-methods-use-this

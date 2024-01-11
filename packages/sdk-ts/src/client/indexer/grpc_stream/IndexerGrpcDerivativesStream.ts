@@ -7,7 +7,7 @@ import { StreamStatusResponse } from '../types'
 import { PaginationOption } from '../../../types/pagination'
 import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { IndexerDerivativeStreamTransformer } from '../transformers'
-import { getGrpcIndexerWebImpl } from '../../BaseIndexerGrpcWebConsumer'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
 import { Subscription } from 'rxjs'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
@@ -284,10 +284,12 @@ export class IndexerGrpcDerivativesStream {
     marketId,
     subaccountId,
     callback,
+    address,
     onEndCallback,
     onStatusCallback,
   }: {
     marketId?: string
+    address?: string
     subaccountId?: string
     callback: PositionsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
@@ -298,6 +300,10 @@ export class IndexerGrpcDerivativesStream {
 
     if (marketId) {
       request.marketId = marketId
+    }
+
+    if (address) {
+      request.accountAddress = address
     }
 
     if (subaccountId) {

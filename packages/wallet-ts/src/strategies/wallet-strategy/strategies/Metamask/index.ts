@@ -23,16 +23,17 @@ import BaseConcreteStrategy from '../Base'
 import { WalletAction, WalletDeviceType } from '../../../../types/enums'
 import { getMetamaskProvider } from './utils'
 
-export default class Metamask
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Metamask extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
+  }
+
+  async enable(): Promise<boolean> {
+    return Promise.resolve(true)
   }
 
   async getAddresses(): Promise<string[]> {
@@ -142,6 +143,22 @@ export default class Metamask
         contextModule: WalletAction.SignTransaction,
       })
     }
+  }
+
+  async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
+    address: string
+  }): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support signing Cosmos transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendTransaction,
+      },
+    )
   }
 
   // eslint-disable-next-line class-methods-use-this

@@ -3,7 +3,7 @@ import {
   CosmosGovV1Beta1Gov,
   CosmosParamsV1Beta1Params,
   CosmosUpgradeV1Beta1Upgrade,
-  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Proposal,
   InjectiveOracleV1Beta1Proposal,
 } from '@injectivelabs/core-proto-ts'
 
@@ -45,49 +45,49 @@ export class ProposalDecomposer {
   }
 
   static spotMarketLaunch(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Tx.SpotMarketLaunchProposal.decode(content)
+    return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.decode(content)
   }
 
   static exchangeEnableProposal(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Tx.ExchangeEnableProposal.decode(content)
+    return InjectiveExchangeV1Beta1Proposal.ExchangeEnableProposal.decode(content)
   }
 
   static spotMarketUpdate(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.decode(
+    return InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.decode(
       content,
     )
   }
 
   static perpetualMarketLaunch(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Tx.PerpetualMarketLaunchProposal.decode(
+    return InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.decode(
       content,
     )
   }
 
   static expiryFuturesMarketLaunch(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Tx.ExpiryFuturesMarketLaunchProposal.decode(
+    return InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.decode(
       content,
     )
   }
 
   static derivativeMarketUpdate(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Tx.DerivativeMarketParamUpdateProposal.decode(
+    return InjectiveExchangeV1Beta1Proposal.DerivativeMarketParamUpdateProposal.decode(
       content,
     )
   }
 
   static FeeDiscount(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Tx.FeeDiscountProposal.decode(content)
+    return InjectiveExchangeV1Beta1Proposal.FeeDiscountProposal.decode(content)
   }
 
   static TradingRewardCampaignLaunch(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Tx.TradingRewardCampaignLaunchProposal.decode(
+    return InjectiveExchangeV1Beta1Proposal.TradingRewardCampaignLaunchProposal.decode(
       content,
     )
   }
 
   static TradingRewardCampaignUpdate(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Tx.TradingRewardCampaignUpdateProposal.decode(
+    return InjectiveExchangeV1Beta1Proposal.TradingRewardCampaignUpdateProposal.decode(
       content,
     )
   }

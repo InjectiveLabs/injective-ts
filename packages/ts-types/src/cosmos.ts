@@ -23,11 +23,13 @@ export enum CosmosChainId {
   Oraichain = 'Oraichain',
   Noble = 'noble-1',
   Celestia = 'celestia',
+  Migaloo = 'migaloo-1',
+  Kujira = 'kaiyo-1',
 }
 
 export enum TestnetCosmosChainId {
   Injective = 'injective-888',
-  Cosmoshub = 'cosmoshub-testnet',
+  Cosmoshub = 'theta-testnet-001',
 }
 
 export enum DevnetCosmosChainId {

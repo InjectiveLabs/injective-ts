@@ -30,6 +30,11 @@ export interface Position {
   updatedAt: number
 }
 
+export interface PositionV2
+  extends Omit<Position, 'aggregateReduceOnlyQuantity'> {
+  denom: string
+}
+
 export interface PerpetualMarketInfo {
   hourlyFundingRateCap: string
   hourlyInterestRate: string
@@ -206,6 +211,8 @@ export type GrpcFundingPayment = InjectiveDerivativeExchangeRpc.FundingPayment
 export type GrpcDerivativeTrade = InjectiveDerivativeExchangeRpc.DerivativeTrade
 export type GrpcDerivativePosition =
   InjectiveDerivativeExchangeRpc.DerivativePosition
+export type GrpcDerivativePositionV2 =
+  InjectiveDerivativeExchangeRpc.DerivativePositionV2
 export type GrpcPerpetualMarketInfo =
   InjectiveDerivativeExchangeRpc.PerpetualMarketInfo
 export type GrpcDerivativeMarketInfo =

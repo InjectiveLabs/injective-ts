@@ -1,17 +1,17 @@
 import { Coin } from '@injectivelabs/ts-types'
 import { GrpcCoin } from '../../../types'
 import {
-  PositionV2,
-  GrpcPositionV2,
   PositionsWithUPNL,
   AccountPortfolioV2,
   SubaccountDepositV2,
   GrpcPositionsWithUPNL,
   GrpcSubaccountDepositV2,
+  AccountPortfolioBalances,
   PortfolioSubaccountBalanceV2,
   GrpcPortfolioSubaccountBalanceV2,
 } from '../types/account-portfolio'
 import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
+import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer'
 
 export class IndexerGrpcAccountPortfolioTransformer {
   static accountPortfolioResponseToAccountPortfolio(
@@ -46,6 +46,33 @@ export class IndexerGrpcAccountPortfolioTransformer {
     }
   }
 
+  static accountPortfolioBalancesResponseToAccountPortfolioBalances(
+    response: InjectivePortfolioRpc.AccountPortfolioBalancesResponse,
+    address: string,
+  ): AccountPortfolioBalances {
+    const portfolio = response.portfolio!
+    const bankBalancesList = portfolio?.bankBalances || []
+    const subaccountList = portfolio?.subaccounts || []
+
+    if (!portfolio) {
+      return {
+        accountAddress: address || '',
+        bankBalancesList: [],
+        subaccountsList: [],
+      }
+    }
+
+    return {
+      accountAddress: portfolio.accountAddress,
+      bankBalancesList: bankBalancesList.map(
+        IndexerGrpcAccountPortfolioTransformer.grpcCoinToCoin,
+      ),
+      subaccountsList: subaccountList.map(
+        IndexerGrpcAccountPortfolioTransformer.grpcSubaccountBalanceToSubaccountBalance,
+      ),
+    }
+  }
+
   static grpcCoinToCoin(coin: GrpcCoin): Coin {
     return {
       amount: coin.amount,
@@ -60,28 +87,11 @@ export class IndexerGrpcAccountPortfolioTransformer {
 
     return {
       position: grpcPosition
-        ? IndexerGrpcAccountPortfolioTransformer.grpcPositionToGrpcPosition(
+        ? IndexerGrpcDerivativeTransformer.grpcPositionToPosition(
             grpcPosition,
           )
         : undefined,
       unrealizedPnl: positionsWithUPNL.unrealizedPnl,
-    }
-  }
-
-  static grpcPositionToGrpcPosition(position: GrpcPositionV2): PositionV2 {
-    return {
-      ticker: position.ticker,
-      marketId: position.marketId,
-      subaccountId: position.subaccountId,
-      direction: position.direction,
-      quantity: position.quantity,
-      entryPrice: position.entryPrice,
-      margin: position.margin,
-      liquidationPrice: position.liquidationPrice,
-      markPrice: position.markPrice,
-      aggregateReduceOnlyQuantity: position.aggregateReduceOnlyQuantity,
-      updatedAt: parseInt(position.updatedAt, 10),
-      createdAt: parseInt(position.createdAt, 10),
     }
   }
 

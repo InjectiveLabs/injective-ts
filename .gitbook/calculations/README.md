@@ -1,10 +1,10 @@
 # Calculations
 
-Here are some formula formatting values between the chain and UI human-readable.
+In this page we are going to look through some calculations and formatting to understand better about how numbers are represented on the chain vs how we are showing them on the UI.
 
-### Bridges Supported
+### Tick Sizes
 
-| Topic                                                   | Description                             |
-| ------------------------------------------------------- | --------------------------------------- |
-| [Market min price tick size](minPriceTickSize.md)       | Minimum market order price tick size    |
-| [Market min quantity tick size](minQuantityTickSzie.md) | Minimum market order quantity tick size |
+| Topic                                                      | Description                             |
+| ---------------------------------------------------------- | --------------------------------------- |
+| [Market min price tick size](min-price-tick-size.md)       | Minimum market order price tick size    |
+| [Market min quantity tick size](min-quantity-tick-size.md) | Minimum market order quantity tick size |

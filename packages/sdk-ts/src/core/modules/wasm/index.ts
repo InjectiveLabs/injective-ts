@@ -1,8 +1,11 @@
 import ExecArgCW20Send from './exec-args/ExecArgCW20Send'
 import ExecArgSubmitVaa from './exec-args/ExecArgSubmitVaa'
+import ExecArgCreateRound from './exec-args/ExecArgCreateRound'
+import ExecArgFundCampaign from './exec-args/ExecArgFundCampaign'
 import ExecArgCW20Transfer from './exec-args/ExecArgCW20Transfer'
 import ExecArgSwapMinOutput from './exec-args/ExecArgSwapMinOutput'
 import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens'
+import ExecArgCreateCampaign from './exec-args/ExecArgCreateCampaign'
 import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
@@ -28,9 +31,12 @@ export * from './exec-args'
 export {
   ExecArgCW20Send,
   ExecArgSubmitVaa,
+  ExecArgCreateRound,
   ExecArgCW20Transfer,
+  ExecArgFundCampaign,
   ExecArgSwapMinOutput,
   ExecArgDepositTokens,
+  ExecArgCreateCampaign,
   ExecArgSwapExactOutput,
   ExecArgInitiateTransfer,
   ExecArgIncreaseAllowance,

@@ -1,8 +1,10 @@
-# Getting Started - Cosmjs
+# CosmJs Support
 
 Injective is not natively supported on the `@cosmjs` packages. It's highly recommended to use our `@injectivelabs` packages to interact with Injective.
 
-If you are familiar with the `@cosmjs` packages we are exporting similar interfaces/classes that work exactly the same as the classes on `@cosmjs` but have support for Injective as well.
+If you are familiar with the `@cosmjs` packages we are exporting similar interfaces/classes that work the same as the classes on `@cosmjs` but have support for Injective as well.
+
+Again, keep in mind that the recommended approach is to use the Injective's standard approach, which you can learn more about [here](../transactions/transactions-cosmos/).&#x20;
 
 ### Usage using Keplr
 
@@ -66,7 +68,9 @@ import { assertIsBroadcastTxSuccess } from '@cosmjs/stargate'
 
 ### Usage in a CLI/Node environment
 
-Here is an example on how to use the `@injectivelabs` alternatives from the `@cosmjs` packages in a node or CLI environment:
+Here is an example on how to use the `@injectivelabs` alternatives from the `@cosmjs` packages in a node or CLI environment.
+
+Again, keep in mind that the recommended approach is to use the [MsgBroadcasterWithPk](../transactions/private-key.md#example-with-msgbroadcasterwithpk) abstraction to follow the Injective's standard approach.&#x20;
 
 ```ts
 import {
