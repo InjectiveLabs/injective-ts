@@ -73,6 +73,7 @@ export class TokenMetaUtils {
       ? {
           ...tokenMeta,
           tokenType: TokenType.Cw20,
+          name: tokenMeta.cw20?.name || tokenMeta.name,
           tokenVerification: TokenVerification.Verified,
         }
       : undefined
@@ -98,6 +99,7 @@ export class TokenMetaUtils {
 
         return {
           ...tokenMeta,
+          name: tokenMeta.erc20?.name || tokenMeta.name,
           tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
           tokenVerification: TokenVerification.Verified,
         }
@@ -112,6 +114,7 @@ export class TokenMetaUtils {
     return tokenMeta
       ? {
           ...tokenMeta,
+          name: tokenMeta.erc20?.name || tokenMeta.name,
           tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
           tokenVerification: TokenVerification.Verified,
         }
@@ -133,6 +136,7 @@ export class TokenMetaUtils {
     return tokenMeta
       ? {
           ...tokenMeta,
+          name: tokenMeta.ibc?.name || tokenMeta.name,
           tokenType: TokenType.Ibc,
           tokenVerification: TokenVerification.Verified,
         }

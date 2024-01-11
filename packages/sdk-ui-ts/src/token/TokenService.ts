@@ -179,15 +179,19 @@ export class TokenService {
   async toSpotMarketWithToken(
     market: UiBaseSpotMarket,
   ): Promise<UiBaseSpotMarketWithToken> {
+    // TODO: remove on next chain upgrade when we fix the ticker on chain
+    const ticker = market.ticker === 'APP/INJ' ? 'APP/USDT' : market.ticker
+
     const baseToken = await this.denomClient.getDenomToken(market.baseDenom)
     const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
     const slug =
       baseToken && quoteToken
         ? `${baseToken.symbol.toLowerCase()}-${quoteToken.symbol.toLowerCase()}`
-        : market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
+        : ticker.replace('/', '-').replace(' ', '-').toLowerCase()
 
     return {
       ...market,
+      ticker,
       slug,
       baseToken,
       quoteToken,

@@ -31,9 +31,18 @@ export enum TokenSource {
   BinanceSmartChain = 'binance-smart-chain',
 }
 
+export interface TokenFactoryMeta {
+  creator: string
+  symbol: string
+  name?: string
+  description?: string
+  decimals: number
+}
+
 export interface IbcTokenMeta {
   hash: string
   path: string
+  name?: string
   channelId: string
   decimals: number
   symbol?: string
@@ -45,6 +54,7 @@ export interface SplTokenMeta {
   address: string
   decimals: number
   symbol?: string
+  name?: string
   isNative?: boolean
 }
 
@@ -52,6 +62,7 @@ export interface Erc20TokenMeta {
   address: string
   decimals: number
   symbol?: string
+  name?: string
   isNative?: boolean
 }
 
@@ -59,12 +70,14 @@ export interface EvmTokenMeta {
   address: string
   decimals: number
   symbol?: string
+  name?: string
   isNative?: boolean
 }
 
 export interface Cw20TokenMeta {
   address: string
   decimals: number
+  name?: string
   tokenType: TokenType.Cw20
 }
 
@@ -78,7 +91,7 @@ export interface TokenMeta {
   logo: string
   symbol: string
   decimals: number
-  tokenType?: TokenType
+  tokenType: TokenType
   tokenVerification?: TokenVerification
   coinGeckoId: string
 
@@ -88,6 +101,7 @@ export interface TokenMeta {
   cw20s?: Cw20TokenMetaWithSource[] // When there are multiple variations of the same CW20 token
   erc20?: Erc20TokenMeta
   evm?: EvmTokenMeta
+  tokenFactory?: TokenFactoryMeta
 }
 
 export type BaseToken = TokenMeta & {
@@ -97,49 +111,45 @@ export type BaseToken = TokenMeta & {
 // Insurance fund tokens, token factory tokens, etc
 export interface NativeToken extends TokenMeta {
   denom: string
-  tokenType: TokenType
 }
 
 export interface Erc20Token extends BaseToken {
   erc20: Erc20TokenMeta
-  tokenType: TokenType
 }
 
 export interface EvmToken extends BaseToken {
   evm: EvmTokenMeta
-  tokenType: TokenType
 }
 
 export interface IbcToken extends BaseToken {
   ibc: IbcTokenMeta
-  tokenType: TokenType
 }
 
 export interface Cw20TokenSingle extends BaseToken {
   cw20: Cw20TokenMeta
-  tokenType: TokenType
 }
 
 export interface Cw20TokenMultiple extends BaseToken {
   cw20s: Cw20TokenMetaWithSource[]
-  tokenType: TokenType
 }
 
 export interface Cw20Token extends BaseToken {
   cw20: Cw20TokenMeta
   cw20s: Cw20TokenMetaWithSource[]
-  tokenType: TokenType
 }
 
 export interface SplToken extends BaseToken {
   spl: SplTokenMeta
-  tokenType: TokenType
 }
 
+/** @deprecated - use  TokenFactoryToken */
 export interface FactoryToken extends BaseToken {
   display: string
   description: string
-  tokenType: TokenType
+}
+
+export interface TokenFactoryToken extends BaseToken {
+  tokenFactory: TokenFactoryMeta
 }
 
 export type Token =
@@ -152,6 +162,7 @@ export type Token =
   | NativeToken
   | SplToken
   | FactoryToken
+  | TokenFactoryToken
 
 export type TokenWithPrice = Token & { usdPrice: number }
 

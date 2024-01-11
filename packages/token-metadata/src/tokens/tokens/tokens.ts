@@ -1011,6 +1011,7 @@ export default {
     decimals: 6,
     coinGeckoId: 'nois',
     logo: 'nois.png',
+    tokenType: TokenType.Ibc,
 
     ibc: {
       decimals: 6,
@@ -1424,7 +1425,7 @@ export default {
     decimals: 5,
     logo: 'bonk.jpeg',
     coinGeckoId: 'bonk',
-    type: TokenType.TokenFactory,
+    tokenType: TokenType.TokenFactory,
   },
 
   CHZ: {
@@ -2365,6 +2366,7 @@ export default {
     decimals: 9,
     logo: 'skibidi.jpeg',
     coinGeckoId: '',
+    tokenType: TokenType.Erc20,
 
     erc20: {
       decimals: 9,
@@ -2723,6 +2725,13 @@ export default {
     logo: 'dude.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1sn34edy635nv4yhts3khgpy5qxw8uey6wvzq53',
+      symbol: 'DUDE',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   AUTISM: {
@@ -2732,6 +2741,13 @@ export default {
     logo: 'autism.png',
     coinGeckoId: 'autism',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj14lf8xm6fcvlggpa7guxzjqwjmtr24gnvf56hvz',
+      symbol: 'AUTISM',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   NOBITCHES: {
@@ -2741,6 +2757,13 @@ export default {
     logo: 'extravirginoliveinu.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj14n8f39qdg6t68s5z00t4vczvkcvzlgm6ea5vk5',
+      symbol: 'NOBITCHES',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   MILA: {
@@ -2750,24 +2773,29 @@ export default {
     logo: 'mila.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1z08usf75ecfp3cqtwey6gx7nr79s3agal3k8xf',
+      symbol: 'MILA',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
-  DOJO: {
-    name: 'Dojo Bot',
-    symbol: 'DOJO',
-    decimals: 6,
-    logo: 'dojo.png',
-    coinGeckoId: '',
-    tokenType: TokenType.TokenFactory,
-  },
-
-  IPANDAAI: {
+  IPDAI: {
     name: 'Injective Panda AI',
     symbol: 'IPandaAI',
     decimals: 6,
     logo: 'ipdai.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1y3g4wpgnc4s28gd9ure3vwm9cmvmdphml6mtul',
+      symbol: 'IPandaAI',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   COCK: {
@@ -2777,6 +2805,13 @@ export default {
     logo: 'cock.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1eucxlpy6c387g5wrn4ee7ppshdzg3rh4t50ahf',
+      symbol: 'COCK',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   MOONIFY: {
@@ -2786,15 +2821,29 @@ export default {
     logo: 'moonify.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1ktq0gf7altpsf0l2qzql4sfs0vc0ru75cnj3a6',
+      symbol: 'MOONIFY',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
-  KARMA: {
+  KARMAINJ: {
     name: 'Karma',
     symbol: 'KARMA',
     decimals: 6,
     logo: 'karma.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1d4ld9w7mf8wjyv5y7fnhpate07fguv3s3tmngm',
+      symbol: 'KARMA',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   DREAM: {
@@ -2804,6 +2853,13 @@ export default {
     logo: 'DREAM.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1l2kcs4yxsxe0c87qy4ejmvkgegvjf0hkyhqk59',
+      symbol: 'DREAM',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   DGNZ: {
@@ -2813,6 +2869,13 @@ export default {
     logo: 'DGNZ.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1l2kcs4yxsxe0c87qy4ejmvkgegvjf0hkyhqk59',
+      symbol: 'DGNZ',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   INJECT: {
@@ -2822,6 +2885,13 @@ export default {
     logo: 'INJECT.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj1j7zt6g03vpmg9p7g7qngvylfxqeuds73utsjnk',
+      symbol: 'INJECT',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   WAIFU: {
@@ -2831,6 +2901,13 @@ export default {
     logo: 'waifu-logo.png',
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
+
+    tokenFactory: {
+      creator: 'inj12dvzf9tx2ndc9498aqpkrxgugr3suysqwlmn49',
+      symbol: 'WAIFU',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
+    },
   },
 
   APP: {
@@ -2845,6 +2922,31 @@ export default {
       decimals: 18,
       address: '0xC5d27F27F08D1FD1E3EbBAa50b3442e6c0D50439',
       tokenType: TokenType.Erc20,
+    },
+  },
+
+  DOJO: {
+    name: 'Dojo Token',
+    symbol: 'DOJO',
+    decimals: 18,
+    logo: 'dojo.png',
+    coinGeckoId: '',
+    tokenType: TokenType.Cw20,
+
+    cw20: {
+      symbol: 'DOJO',
+      name: 'Dojo Token',
+      decimals: 18,
+      address: 'inj1zdj9kqnknztl2xclm5ssv25yre09f8908d4923',
+      tokenType: TokenType.Cw20,
+    },
+
+    tokenFactory: {
+      creator: 'inj1any4rpwq7r850u6feajg5payvhwpunu9cxqevc',
+      name: 'Dojo Bot',
+      symbol: 'DOJO',
+      decimals: 6,
+      tokenType: TokenType.TokenFactory,
     },
   },
 } as Record<string, TokenMeta>

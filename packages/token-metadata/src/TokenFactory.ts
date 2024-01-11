@@ -164,12 +164,11 @@ export class TokenFactory {
       )
     }
 
-    let tokenMeta =
-      this.tokenMetaUtils.getMetaBySymbol(address) ||
-      this.tokenMetaUtils.getMetaByName(address)
-
     if (isCw20ContractAddress(address)) {
-      tokenMeta = this.tokenMetaUtils.getMetaByAddress(address) || tokenMeta
+      const tokenMeta =
+        this.tokenMetaUtils.getMetaByAddress(address) ||
+        this.tokenMetaUtils.getMetaBySymbol(address) ||
+        this.tokenMetaUtils.getMetaByName(address)
 
       return tokenMeta
         ? {
@@ -178,6 +177,10 @@ export class TokenFactory {
           }
         : undefined
     }
+
+    const tokenMeta =
+      this.tokenMetaUtils.getMetaBySymbol(address) ||
+      this.tokenMetaUtils.getMetaByName(address)
 
     /**
      * We have to prevent factory token denoms to be identified as
@@ -188,9 +191,16 @@ export class TokenFactory {
       return undefined
     }
 
+    /**
+     * Todo: introduce creator address matching once we
+     * fill in the details for every token factory token
+     * in the `tokens.ts` file
+     */
+
     return tokenMeta
       ? {
           ...tokenMeta,
+          name: tokenMeta.tokenFactory?.name || tokenMeta.symbol,
           tokenType: TokenType.TokenFactory,
         }
       : undefined
