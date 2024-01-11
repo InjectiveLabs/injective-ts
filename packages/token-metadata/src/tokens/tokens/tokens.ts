@@ -1252,6 +1252,15 @@ export default {
     },
   },
 
+  PUNK: {
+    name: 'Punk DAO Token',
+    logo: 'PUNK.png',
+    symbol: 'PUNK',
+    decimals: '6',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+  
   PROJX: {
     name: 'PROJX',
     logo: 'projx.png',
@@ -1519,7 +1528,7 @@ export default {
     name: 'Arbitrum',
     symbol: 'ARB',
     decimals: 18,
-    logo: 'arb.png',
+    logo: 'arb-circle.png',
     coinGeckoId: 'arbitrum',
     tokenType: TokenType.Cw20,
 
