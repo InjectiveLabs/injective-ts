@@ -30,7 +30,6 @@ export const getTokenFromAlchemyTokenMetaResponse = (
       decimals: response.decimals || 18,
       address: denom.replace('peggy', ''),
       symbol: response.symbol || response.name || 'Unknown',
-      tokenType: TokenType.Erc20,
     },
   } as Token
 }

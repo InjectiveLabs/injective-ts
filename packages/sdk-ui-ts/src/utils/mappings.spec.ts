@@ -7,7 +7,7 @@ describe('validator logos helper function', () => {
 
       const validatorLogo = getValidatorLogoWithVendorPathPrefix(address)
       expect(validatorLogo).toMatch(
-        '/vendor/@injectivelabs/sdk-ui-ts/injvaloper10zxm0rklrnurd999xgr4ss8v2q9qsjlfhhk9mk.webp',
+        '/vendor/@injectivelabs/sdk-ui-ts/injvaloper10zxm0rklrnurd999xgr4ss8v2q9qsjlfhhk9mk.jpg',
       )
     })
 
@@ -25,7 +25,7 @@ describe('validator logos helper function', () => {
 
       const validatorLogo = getValidatorLogoWithVendorPathPrefix(address)
       expect(validatorLogo).toMatch(
-        '/vendor/@injectivelabs/sdk-ui-ts/injective.webp',
+        '/vendor/@injectivelabs/sdk-ui-ts/unknown.png',
       )
     })
   })

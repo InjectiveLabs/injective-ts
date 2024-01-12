@@ -112,7 +112,7 @@ export class IndexerRestExplorerTransformer {
         })),
       logs: transaction.logs,
       errorLog: transaction.error_log,
-      claimIds: transaction.claim_id || []
+      claimIds: transaction.claim_id || [],
     }
   }
 
@@ -291,8 +291,8 @@ export class IndexerRestExplorerTransformer {
         logo: marketing_info ? marketing_info.logo || '' : '',
         cw20: {
           decimals,
+          symbol,
           address: balance.contract_address,
-          tokenType: TokenType.Cw20,
         },
         coinGeckoId: name,
         tokenType: TokenType.Cw20,

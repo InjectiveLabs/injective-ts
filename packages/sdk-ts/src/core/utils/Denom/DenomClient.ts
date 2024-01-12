@@ -1,7 +1,7 @@
 import {
   Token,
-  TokenMeta,
   TokenFactory,
+  TokenMetaBase,
   TokenMetaUtils,
   TokenMetaUtilsFactory,
 } from '@injectivelabs/token-metadata'
@@ -35,15 +35,15 @@ export class DenomClient {
     return denoms.map((denom) => this.getDenomToken(denom))
   }
 
-  getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
+  getTokenMetaDataBySymbol(symbol: string): TokenMetaBase | undefined {
     return this.tokenMetaUtils.getMetaBySymbol(symbol)
   }
 
-  getTokenMetaDataByAddress(address: string): TokenMeta | undefined {
+  getTokenMetaDataByAddress(address: string): TokenMetaBase | undefined {
     return this.tokenMetaUtils.getMetaByAddress(address)
   }
 
-  getTokenMetaDataByName(name: string): TokenMeta | undefined {
+  getTokenMetaDataByName(name: string): TokenMetaBase | undefined {
     return this.tokenMetaUtils.getMetaByName(name)
   }
 

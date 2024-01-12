@@ -162,7 +162,6 @@ export interface Cw20TokenMultiple extends BaseToken {
 
 export interface Cw20Token extends BaseToken {
   cw20: Cw20TokenMeta
-  cw20s: Cw20TokenMetaWithSource[]
 }
 
 export interface SplToken extends BaseToken {
@@ -177,7 +176,6 @@ export interface FactoryToken extends BaseToken {
 
 export interface TokenFactoryToken extends BaseToken {
   tokenFactory: NativeTokenFactoryMeta
-  tokenFactories: NativeTokenFactoryMeta[]
 }
 
 export type Token =

@@ -2,13 +2,13 @@ import { Metadata } from '@injectivelabs/sdk-ts'
 import {
   TokenType,
   TokenVerification,
-  type FactoryToken,
+  type TokenFactoryToken,
 } from '@injectivelabs/token-metadata'
 
 export const getTokenFromDenomsMetadata = (
   denom: string,
   response: Metadata,
-): FactoryToken => {
+): TokenFactoryToken => {
   const [denomUnit] = [...response.denomUnits].sort(
     (u1, u2) => u2.exponent - u1.exponent,
   )
@@ -24,5 +24,11 @@ export const getTokenFromDenomsMetadata = (
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
     tokenVerification: TokenVerification.Internal,
-  } as FactoryToken
+
+    tokenFactory: {
+      creator: '',
+      decimals: denomUnit.exponent || 0,
+      symbol: response.symbol || response.name || 'Unknown',
+    }
+  } as TokenFactoryToken
 }
