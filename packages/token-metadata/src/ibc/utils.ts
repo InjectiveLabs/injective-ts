@@ -74,6 +74,7 @@ export const formatNonCanonicalIbcTokenName = (token: IbcToken): string => {
     ? foundChannelFromInjective.chainB
     : 'Unknown'
 
+  // Fix for very long base denoms
   if (
     token.ibc.baseDenom.startsWith('cw20:') ||
     token.ibc.baseDenom.startsWith('factory')

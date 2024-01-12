@@ -70,7 +70,7 @@ const getTokenInfo = (token: Token) => {
         name: meta?.name || token.name,
         logo: meta?.logo || token.logo,
         decimals: meta?.decimals || token.decimals,
-        tokenType
+        tokenType,
       }
     }
 
@@ -81,7 +81,7 @@ const getTokenInfo = (token: Token) => {
       name: meta?.name || token.name,
       logo: meta?.logo || token.logo,
       decimals: meta?.decimals || token.decimals,
-      tokenType
+      tokenType,
     }
   }
 
@@ -375,7 +375,11 @@ export const getCw20TokenSingle = (
   return undefined
 }
 
-export const getTokenFromMetaIncludingIbcBaseDenoms = (meta: TokenMeta, denom?: string): Token => {
+/** We only need to perform the base denom check when we are getting token metadata from symbol */
+export const getTokenFromMetaIncludingIbcBaseDenoms = (
+  meta: TokenMeta,
+  denom?: string,
+): Token => {
   const isBaseIbcDenom =
     ibcBaseDenoms.includes(denom || '') || meta.ibc?.baseDenom === denom
 
@@ -399,7 +403,8 @@ export const getTokenFromMeta = (meta: TokenMeta, denom?: string): Token => {
 
   if (
     ![TokenType.TokenFactory, TokenType.Cw20].includes(
-      tokenWithDecimalsAndSymbol.tokenType)
+      tokenWithDecimalsAndSymbol.tokenType,
+    )
   ) {
     return tokenWithDecimalsAndSymbol
   }
