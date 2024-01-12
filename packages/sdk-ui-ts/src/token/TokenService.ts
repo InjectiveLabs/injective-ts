@@ -195,6 +195,7 @@ export class TokenService {
       return {
         ...market,
         slug: 'app-usdt',
+        ticker: 'APP/USDT',
         baseToken,
         quoteToken,
       } as UiBaseSpotMarketWithToken
