@@ -5,20 +5,20 @@ import {
 import { getMappedTokensByName } from './tokens/mappings/mapByName'
 import { getMappedTokensByHash } from './tokens/mappings/mapByHash'
 import { getMappedTokensBySymbol } from './tokens/mappings/mapBySymbol'
-import { TokenMeta, TokenVerification, TokenType } from './types'
+import { TokenMetaBase, TokenVerification, TokenType } from './types'
 
 export class TokenMetaUtils {
-  protected tokens: Record<string, TokenMeta>
+  protected tokens: Record<string, TokenMetaBase>
 
-  protected tokensByErc20Address: Record<string, TokenMeta>
+  protected tokensByErc20Address: Record<string, TokenMetaBase>
 
-  protected tokensByCw20Address: Record<string, TokenMeta>
+  protected tokensByCw20Address: Record<string, TokenMetaBase>
 
-  protected tokensByHash: Record<string, TokenMeta>
+  protected tokensByHash: Record<string, TokenMetaBase>
 
-  protected tokensByName: Record<string, TokenMeta>
+  protected tokensByName: Record<string, TokenMetaBase>
 
-  constructor(tokens: Record<string, TokenMeta>) {
+  constructor(tokens: Record<string, TokenMetaBase>) {
     this.tokens = getMappedTokensBySymbol(tokens)
     this.tokensByErc20Address = getMappedTokensByErc20Address(this.tokens)
     this.tokensByCw20Address = getMappedTokensByCw20Address(this.tokens)
@@ -32,7 +32,7 @@ export class TokenMetaUtils {
    * - BaseDenom based on the ibc hash
    * - Variation of a symbol for multiple versions of the same token (ex: USDC, USDCet, USDCso)
    */
-  getMetaBySymbol(symbol: string): TokenMeta | undefined {
+  getMetaBySymbol(symbol: string): TokenMetaBase | undefined {
     const { tokens: tokensBySymbol } = this
     const tokenSymbol = symbol.toUpperCase() as keyof typeof tokensBySymbol
 
@@ -48,13 +48,41 @@ export class TokenMetaUtils {
     }
   }
 
-  getMetaByAddress(address: string): TokenMeta | undefined {
+  getMetaByFactory(denom: string): TokenMetaBase | undefined {
+    const [symbolOrName, creatorAddress] = denom.split('/').reverse()
+    const tokenMeta =
+      this.getMetaByName(symbolOrName) || this.getMetaBySymbol(symbolOrName)
+
+    if (!tokenMeta) {
+      return
+    }
+
+    if (!tokenMeta.tokenFactories) {
+      return
+    }
+
+    const tokenFactory = tokenMeta.tokenFactories.find(
+      (tokenFactory) => tokenFactory.creator === creatorAddress,
+    )
+
+    if (!tokenFactory) {
+      return
+    }
+
+    return {
+      ...tokenMeta,
+      tokenType: TokenType.TokenFactory,
+      tokenVerification: TokenVerification.Verified,
+    }
+  }
+
+  getMetaByAddress(address: string): TokenMetaBase | undefined {
     return address.startsWith('0x')
       ? this.getMetaByErc20Address(address)
       : this.getMetaByCw20Address(address)
   }
 
-  getMetaByCw20Address(address: string): TokenMeta | undefined {
+  getMetaByCw20Address(address: string): TokenMetaBase | undefined {
     const { tokensByCw20Address } = this
     const contractAddress =
       address.toLowerCase() as keyof typeof tokensByCw20Address
@@ -73,14 +101,12 @@ export class TokenMetaUtils {
       ? {
           ...tokenMeta,
           tokenType: TokenType.Cw20,
-          name: tokenMeta.cw20?.name || tokenMeta.name,
-          logo: tokenMeta.cw20?.logo || tokenMeta.logo,
           tokenVerification: TokenVerification.Verified,
         }
       : undefined
   }
 
-  getMetaByErc20Address(address: string): TokenMeta | undefined {
+  getMetaByErc20Address(address: string): TokenMetaBase | undefined {
     const { tokensByErc20Address } = this
     const contractAddress =
       address.toLowerCase() as keyof typeof tokensByErc20Address
@@ -98,11 +124,17 @@ export class TokenMetaUtils {
       if (checksumAddress) {
         const tokenMeta = tokensByErc20Address[checksumAddress]
 
+        if (tokenMeta.erc20) {
+          return {
+            ...tokenMeta,
+            tokenType: TokenType.Erc20,
+            tokenVerification: TokenVerification.Verified,
+          }
+        }
+
         return {
           ...tokenMeta,
-          name: tokenMeta.erc20?.name || tokenMeta.name,
-          logo: tokenMeta.erc20?.logo || tokenMeta.logo,
-          tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
+          tokenType: TokenType.Evm,
           tokenVerification: TokenVerification.Verified,
         }
       }
@@ -113,18 +145,26 @@ export class TokenMetaUtils {
     const tokenMeta =
       tokensByErc20Address[contractAddress] || tokensByErc20Address[address]
 
-    return tokenMeta
-      ? {
-          ...tokenMeta,
-          name: tokenMeta.erc20?.name || tokenMeta.name,
-          logo: tokenMeta.erc20?.logo || tokenMeta.logo,
-          tokenType: tokenMeta.erc20 ? TokenType.Erc20 : TokenType.Evm,
-          tokenVerification: TokenVerification.Verified,
-        }
-      : undefined
+    if (!tokenMeta) {
+      return undefined
+    }
+
+    if (tokenMeta.erc20) {
+      return {
+        ...tokenMeta,
+        tokenType: TokenType.Erc20,
+        tokenVerification: TokenVerification.Verified,
+      }
+    }
+
+    return {
+      ...tokenMeta,
+      tokenType: TokenType.Evm,
+      tokenVerification: TokenVerification.Verified,
+    }
   }
 
-  getMetaByHash(hash: string): TokenMeta | undefined {
+  getMetaByHash(hash: string): TokenMetaBase | undefined {
     const { tokensByHash } = this
     const ibcHash = hash
       .toUpperCase()
@@ -139,15 +179,13 @@ export class TokenMetaUtils {
     return tokenMeta
       ? {
           ...tokenMeta,
-          name: tokenMeta.ibc?.name || tokenMeta.name,
-          logo: tokenMeta.ibc?.logo || tokenMeta.logo,
           tokenType: TokenType.Ibc,
           tokenVerification: TokenVerification.Verified,
         }
       : undefined
   }
 
-  getMetaByName(name: string): TokenMeta | undefined {
+  getMetaByName(name: string): TokenMetaBase | undefined {
     const { tokensByName } = this
     const tokenName = name.toLowerCase() as keyof typeof tokensByName
 

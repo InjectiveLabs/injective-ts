@@ -1,7 +1,6 @@
 import { Network, isTestnet } from '@injectivelabs/networks'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { INJ_DENOM } from '@injectivelabs/utils'
-import { TokenInfo } from './TokenInfo'
 import { TokenMetaUtils } from './TokenMetaUtils'
 import {
   getTokensBySymbolForDevnet,
@@ -9,9 +8,13 @@ import {
   getTokensBySymbolForDevnet2,
   getTokensBySymbolForTestnet,
 } from './tokens/network'
-import { Token, TokenMeta, TokenType } from './types'
+import { Token, TokenMetaBase } from './types'
 import tokensBySymbol from './tokens/tokens'
-import { getTokenFromMeta, isCw20ContractAddress } from './utils'
+import {
+  getTokenFromMeta,
+  isCw20ContractAddress,
+  getTokenFromMetaIncludingIbcBaseDenoms,
+} from './utils'
 
 export class TokenFactory {
   public tokenMetaUtils: TokenMetaUtils
@@ -22,7 +25,7 @@ export class TokenFactory {
 
   static make(
     network: Network = Network.Mainnet,
-    registry: Record<string, TokenMeta> = {},
+    registry: Record<string, TokenMetaBase> = {},
   ): TokenFactory {
     if (isTestnet(network)) {
       return new TokenFactory(
@@ -71,7 +74,7 @@ export class TokenFactory {
         const bySymbol = this.tokenMetaUtils.getMetaBySymbol(denom)
 
         if (bySymbol) {
-          return getTokenFromMeta(bySymbol, denom)
+          return getTokenFromMetaIncludingIbcBaseDenoms(bySymbol, denom)
         }
 
         const byAddress = this.tokenMetaUtils.getMetaByAddress(denom)
@@ -115,13 +118,7 @@ export class TokenFactory {
     }
   }
 
-  toTokenInfo(denom: string): TokenInfo | undefined {
-    const token = this.toToken(denom)
-
-    return token ? TokenInfo.fromToken(token) : undefined
-  }
-
-  getPeggyDenomTokenMeta(denom: string): TokenMeta | undefined {
+  getPeggyDenomTokenMeta(denom: string): TokenMetaBase | undefined {
     const address = denom.startsWith('peggy')
       ? denom.replace('peggy', '')
       : denom
@@ -141,7 +138,7 @@ export class TokenFactory {
     return this.tokenMetaUtils.getMetaByAddress(address)
   }
 
-  getCw20DenomTokenMeta(address: string): TokenMeta | undefined {
+  getCw20DenomTokenMeta(address: string): TokenMetaBase | undefined {
     if (!isCw20ContractAddress(address)) {
       throw new GeneralException(
         new Error(`The address ${address} is not a valid CW20 address`),
@@ -151,12 +148,12 @@ export class TokenFactory {
     return this.tokenMetaUtils.getMetaByAddress(address)
   }
 
-  getIbcDenomTokenMeta(hash: string): TokenMeta | undefined {
+  getIbcDenomTokenMeta(hash: string): TokenMetaBase | undefined {
     return this.tokenMetaUtils.getMetaByHash(hash)
   }
 
-  getFactoryDenomTokenMeta(denom: string): TokenMeta | undefined {
-    const [address, creatorAddress] = denom.split('/').reverse()
+  getFactoryDenomTokenMeta(denom: string): TokenMetaBase | undefined {
+    const [address] = denom.split('/').reverse()
 
     if (!address) {
       throw new GeneralException(
@@ -164,50 +161,8 @@ export class TokenFactory {
       )
     }
 
-    if (isCw20ContractAddress(address)) {
-      const tokenMeta =
-        this.tokenMetaUtils.getMetaByAddress(address) ||
-        this.tokenMetaUtils.getMetaBySymbol(address) ||
-        this.tokenMetaUtils.getMetaByName(address)
-
-      return tokenMeta
-        ? {
-            ...tokenMeta,
-            tokenType: TokenType.TokenFactory,
-          }
-        : undefined
-    }
-
-    const tokenMeta =
-      this.tokenMetaUtils.getMetaBySymbol(address) ||
-      this.tokenMetaUtils.getMetaByName(address)
-
-    /**
-     * We have to prevent factory token denoms to be identified as
-     * normal tokens by using only the symbol, i.e
-     * factory/inj..../sol !== SOL token
-     */
-    if (
-      tokenMeta?.tokenType !== TokenType.TokenFactory &&
-      tokenMeta?.tokenFactory?.creator !== creatorAddress
-    ) {
-      return undefined
-    }
-
-    /**
-     * Todo: introduce creator address matching once we
-     * fill in the details for every token factory token
-     * in the `tokens.ts` file
-     */
-
-    return tokenMeta
-      ? {
-          ...tokenMeta,
-          name: tokenMeta.tokenFactory?.name || tokenMeta.name,
-          logo: tokenMeta.tokenFactory?.logo || tokenMeta.logo,
-          decimals: tokenMeta.tokenFactory?.decimals || tokenMeta.decimals,
-          tokenType: TokenType.TokenFactory,
-        }
-      : undefined
+    return isCw20ContractAddress(address)
+      ? this.tokenMetaUtils.getMetaByAddress(address)
+      : this.tokenMetaUtils.getMetaByFactory(denom)
   }
 }
