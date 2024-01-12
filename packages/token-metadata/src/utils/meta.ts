@@ -1,10 +1,17 @@
 import { INJ_DENOM } from '@injectivelabs/utils'
-import { Cw20TokenMetaWithSource, Token, TokenBase, TokenType } from '../types'
+import {
+  Cw20TokenMetaWithSource,
+  IbcToken,
+  Token,
+  TokenBase,
+  TokenType,
+} from '../types'
 import {
   getCw20Meta,
   getNativeTokenFactoryMeta,
   isCw20ContractAddress,
 } from './helpers'
+import { getChannelIdFromPath } from '../ibc'
 
 /** @deprecated - use getTokenInfo */
 export const getTokenTypeFromDenom = (denom: string) => {
@@ -230,7 +237,7 @@ export const getTokenInfo = (token: TokenBase) => {
     }
   }
 
-  if (token.denom.startsWith('peggy')) {
+  if (token.denom.startsWith('peggy') || token.denom === INJ_DENOM) {
     return {
       symbol: token.erc20?.symbol || token.symbol || '',
       name: token.erc20?.name || token.name || '',
@@ -257,4 +264,34 @@ export const getTokenInfo = (token: TokenBase) => {
     decimals: token.decimals || 0,
     tokenType,
   }
+}
+
+export const getIbcTokenFromDenomTrace = ({
+  denomTrace,
+  token,
+}: {
+  token: Token
+  denomTrace: {
+    path: string
+    baseDenom: string
+  }
+}): IbcToken => {
+  return {
+    ...token,
+    symbol: token.ibc?.symbol || token.symbol || '',
+    name: token.ibc?.name || token.name || '',
+    logo: token.ibc?.logo || token.logo || '',
+    decimals: token.ibc?.decimals || token.decimals || 0,
+    tokenType: TokenType.Ibc,
+
+    ibc: {
+      hash: token.denom.replace('ibc/', ''),
+      symbol: denomTrace.baseDenom,
+      path: denomTrace.path,
+      baseDenom: denomTrace.baseDenom,
+      decimals: token.decimals,
+      channelId: getChannelIdFromPath(denomTrace.path),
+      isNative: !denomTrace.baseDenom.startsWith('ibc'),
+    },
+  } as IbcToken
 }

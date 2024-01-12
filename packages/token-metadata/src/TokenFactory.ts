@@ -12,9 +12,9 @@ import { Token, TokenMetaBase } from './types'
 import tokensBySymbol from './tokens/tokens'
 import {
   getTokenFromMeta,
-  isCw20ContractAddress,
   getTokenFromMetaIncludingIbcBaseDenoms,
-} from './utils'
+} from './utils/token'
+import { isCw20ContractAddress } from './utils/helpers'
 
 export class TokenFactory {
   public tokenMetaUtils: TokenMetaUtils

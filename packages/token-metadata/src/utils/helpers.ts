@@ -143,6 +143,7 @@ export const getUnknownTokenWithSymbol = (denom: string): Token => {
   } as Token
 }
 
+/** @deprecated - use getIbcTokenFromDenomTrace */
 export const getIbcTokenMetaFromDenomTrace = ({
   hash,
   path,

@@ -63,14 +63,12 @@ export default {
         symbol: 'wETH',
         decimals: 8,
         address: 'inj1plsk58sxqjw9828aqzeskmc8xy9eu5kppw3jg4',
-
         source: TokenSource.Arbitrum,
       },
       {
         symbol: 'wETH',
         decimals: 8,
         address: 'inj1k9r62py07wydch6sj5sfvun93e4qe0lg7jyatc',
-
         source: TokenSource.EthereumWh,
       },
     ],
@@ -133,15 +131,9 @@ export default {
       },
       {
         decimals: 6,
-        symbol: 'USDTso',
-        source: TokenSource.Solana,
+        symbol: 'USDTet',
+        source: TokenSource.EthereumWh,
         address: 'inj18zykysxw9pcvtyr9ylhe0p5s7yzf6pzdagune8',
-      },
-      {
-        decimals: 6,
-        symbol: 'USDTso',
-        source: TokenSource.Solana,
-        address: 'inj12pwnhtv7yat2s30xuf4gdk9qm85v4j3e60dgvu',
       },
       {
         decimals: 6,
@@ -974,18 +966,6 @@ export default {
     ],
   },
 
-  'DOT-PLANCK': {
-    name: 'Polkadot',
-    logo: 'dot.jpeg',
-    coinGeckoId: 'polkadot',
-
-    erc20: {
-      symbol: 'DOT',
-      decimals: 10,
-      address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
-    },
-  },
-
   STRD: {
     name: 'Stride',
     logo: 'stride.png',
@@ -1617,7 +1597,7 @@ export default {
     logo: 'point.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         symbol: 'POINT',
         creator: 'inj1zaem9jqplp08hkkd5vcl6vmvala9qury79vfj4',
@@ -1678,7 +1658,7 @@ export default {
     logo: 'nebula.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         symbol: 'NBLA',
         creator: 'inj1d0zfq42409a5mhdagjutl8u6u9rgcm4h8zfmfq',
@@ -1772,7 +1752,7 @@ export default {
     logo: 'talis.webp',
     coinGeckoId: 'talis-protocol',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1maeyvxfamtn8lfyxpjca8kuvauuf2qeu6gtxm3',
         symbol: 'TALIS',
@@ -1786,7 +1766,7 @@ export default {
     logo: 'kira.jpeg',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1xy3kvlr4q4wdd6lrelsrw2fk2ged0any44hhwq',
         symbol: 'KIRA',
@@ -1862,7 +1842,7 @@ export default {
     logo: 'tix.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1rw3qvamxgmvyexuz2uhyfa4hukvtvteznxjvke' /** testnet */,
         symbol: 'TIX',
@@ -1909,7 +1889,7 @@ export default {
     logo: 'ninja.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1xtel2knkt8hmc9dnzpjz6kdmacgcfmlv5f308w',
         symbol: 'NINJA',
@@ -1923,7 +1903,7 @@ export default {
     logo: 'katana.webp',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1vwn4x08hlactxj3y3kuqddafs2hhqzapruwt87',
         symbol: 'KATANA',
@@ -1937,7 +1917,7 @@ export default {
     logo: 'galaxy.webp',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj10zdjt8ylfln5xr3a2ruf9nwn6d5q2d2r3v6mh8',
         symbol: 'GALAXY',
@@ -1951,7 +1931,7 @@ export default {
     logo: 'aoi.webp',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj169ed97mcnf8ay6rgvskn95n6tyt46uwvy5qgs0',
         symbol: '$AOI',
@@ -1989,7 +1969,7 @@ export default {
     logo: 'yuki.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1spdy83ds5ezq9rvtg0ndy8480ad5rlczcpvtu2',
         symbol: 'YUKI',
@@ -2003,7 +1983,7 @@ export default {
     logo: 'wagmi.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj188veuqed0dygkcmq5d24u3807n6csv4wdv28gh',
         symbol: 'WAGMI',
@@ -2060,7 +2040,7 @@ export default {
     logo: 'brett.jpeg',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj13jjdsa953w03dvecsr43dj5r6a2vzt7n0spncv',
         symbol: 'BRETT',
@@ -2086,7 +2066,7 @@ export default {
     logo: 'doj.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj172ccd0gddgz203e4pf86ype7zjx573tn8g0df9',
         symbol: 'DOJ',
@@ -2112,7 +2092,7 @@ export default {
     logo: 'ginger.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj172ccd0gddgz203e4pf86ype7zjx573tn8g0df9',
         symbol: 'GINGER',
@@ -2126,7 +2106,7 @@ export default {
     logo: 'eric.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1w7cw5tltax6dx7znehul98gel6yutwuvh44j77',
         symbol: 'ERIC',
@@ -2140,7 +2120,7 @@ export default {
     logo: 'injinu.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1vjppa6h9lf75pt0v6qnxtej4xcl0qevnxzcrvm',
         symbol: 'INJINU',
@@ -2197,7 +2177,7 @@ export default {
     logo: 'INJINEER.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1sjmplasxl9zgj6yh45j3ndskgdhcfcss9djkdn',
         symbol: 'INJER',
@@ -2211,7 +2191,7 @@ export default {
     logo: 'shiba.webp',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1v0yk4msqsff7e9zf8ktxykfhz2hen6t2u4ue4r',
         symbol: 'Shiba INJ',
@@ -2225,7 +2205,7 @@ export default {
     logo: 'grok.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1vgrf5mcvvg9p5c6jajqefn840nq74wjzgkt30z',
         symbol: 'GROK',
@@ -2239,7 +2219,7 @@ export default {
     logo: 'snowy.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1ml33x7lkxk6x2x95d3alw4h84evlcdz2gnehmk',
         symbol: 'SNOWY',
@@ -2253,7 +2233,7 @@ export default {
     logo: 'bulls.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1zq37mfquqgud2uqemqdkyv36gdstkxl27pj5e3',
         symbol: 'BULLS',
@@ -2283,7 +2263,7 @@ export default {
     logo: 'kinja.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1h33jkaqqalcy3wf8um6ewk4hxmfwf8uern470k',
         symbol: 'KINJA',
@@ -2297,7 +2277,7 @@ export default {
     logo: 'lama.webp',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj18lh8zx4hx0pyksyu74srktv4vgxskkkafknggl',
         symbol: 'LAMA',
@@ -2311,7 +2291,7 @@ export default {
     logo: 'injex.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1zhevrrwywg3az9ulxd9u233eyy4m2mmr6vegsg',
         symbol: 'NINJB',
@@ -2325,7 +2305,7 @@ export default {
     logo: 'ninjb.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1ezzzfm2exjz57hxuc65sl8s3d5y6ee0kxvu67n',
         symbol: 'NINJB',
@@ -2339,7 +2319,7 @@ export default {
     logo: 'karate.jpg',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1898t0vtmul3tcn3t0v8qe3pat47ca937jkpezv',
         symbol: 'KARATE',
@@ -2353,7 +2333,7 @@ export default {
     logo: 'npepe.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1ga982yy0wumrlt4nnj79wcgmw7mzvw6jcyecl0',
         symbol: 'NPEPE',
@@ -2386,7 +2366,7 @@ export default {
     logo: 'incel.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj17g4j3geupy762u0wrewqwprvtzar7k5et2zqsh',
         symbol: 'INCEL',
@@ -2419,7 +2399,7 @@ export default {
     logo: 'wgmi.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1rmjzj9fn47kdmfk4f3z39qr6czexxe0yjyc546',
         symbol: 'WGMI',
@@ -2433,7 +2413,7 @@ export default {
     logo: 'wizz.jpeg',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1uvfpvnmuqhx8jwg4786y59tkagmph827h38mst',
         symbol: 'WIZZ',
@@ -2555,7 +2535,7 @@ export default {
     logo: 'dude.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1sn34edy635nv4yhts3khgpy5qxw8uey6wvzq53',
         symbol: 'DUDE',
@@ -2569,7 +2549,7 @@ export default {
     logo: 'autism.png',
     coinGeckoId: 'autism',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj14lf8xm6fcvlggpa7guxzjqwjmtr24gnvf56hvz',
         symbol: 'AUTISM',
@@ -2583,7 +2563,7 @@ export default {
     logo: 'extravirginoliveinu.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj14n8f39qdg6t68s5z00t4vczvkcvzlgm6ea5vk5',
         symbol: 'NOBITCHES',
@@ -2597,7 +2577,7 @@ export default {
     logo: 'mila.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1z08usf75ecfp3cqtwey6gx7nr79s3agal3k8xf',
         symbol: 'MILA',
@@ -2611,7 +2591,7 @@ export default {
     logo: 'ipdai.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1y3g4wpgnc4s28gd9ure3vwm9cmvmdphml6mtul',
         symbol: 'IPandaAI',
@@ -2625,7 +2605,7 @@ export default {
     logo: 'cock.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1eucxlpy6c387g5wrn4ee7ppshdzg3rh4t50ahf',
         symbol: 'COCK',
@@ -2639,7 +2619,7 @@ export default {
     logo: 'moonify.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1ktq0gf7altpsf0l2qzql4sfs0vc0ru75cnj3a6',
         symbol: 'MOONIFY',
@@ -2653,7 +2633,7 @@ export default {
     logo: 'karma.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1d4ld9w7mf8wjyv5y7fnhpate07fguv3s3tmngm',
         symbol: 'KARMA',
@@ -2667,7 +2647,7 @@ export default {
     logo: 'DREAM.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1l2kcs4yxsxe0c87qy4ejmvkgegvjf0hkyhqk59',
         symbol: 'DREAM',
@@ -2681,7 +2661,7 @@ export default {
     logo: 'DGNZ.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1l2kcs4yxsxe0c87qy4ejmvkgegvjf0hkyhqk59',
         symbol: 'DGNZ',
@@ -2695,7 +2675,7 @@ export default {
     logo: 'INJECT.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1j7zt6g03vpmg9p7g7qngvylfxqeuds73utsjnk',
         symbol: 'INJECT',
@@ -2709,7 +2689,7 @@ export default {
     logo: 'waifu-logo.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj12dvzf9tx2ndc9498aqpkrxgugr3suysqwlmn49',
         symbol: 'WAIFU',
@@ -2744,7 +2724,7 @@ export default {
       },
     ],
 
-    tokenFactory: [
+    tokenFactories: [
       {
         decimals: 6,
         symbol: 'DOJO',
@@ -2760,7 +2740,7 @@ export default {
     logo: 'PUNK.png',
     coinGeckoId: '',
 
-    tokenFactory: [
+    tokenFactories: [
       {
         creator: 'inj1esz96ru3guug4ctmn5chjmkymt979sfvufq0hs',
         symbol: 'PUNK',

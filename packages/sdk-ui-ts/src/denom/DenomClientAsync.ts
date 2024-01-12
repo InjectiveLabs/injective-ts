@@ -23,7 +23,7 @@ import type { Token } from '@injectivelabs/token-metadata'
 import {
   TokenMetaBase,
   getUnknownTokenWithSymbol,
-  getIbcTokenMetaFromDenomTrace,
+  getIbcTokenFromDenomTrace,
 } from '@injectivelabs/token-metadata'
 import { getTokenFromAlchemyTokenMetaResponse } from '../utils/alchemy'
 import {
@@ -38,7 +38,10 @@ import { awaitForAll } from '@injectivelabs/utils'
 // @ts-ignore
 import ibcTokenMetadata from '../services/ibc/ibcTokenMetadata.json'
 
-const IGNORED_DENOMS = ['peggy0xB855dBC314C39BFa2583567E02a40CBB246CF82B']
+const IGNORED_DENOMS = [
+  'peggy0xB855dBC314C39BFa2583567E02a40CBB246CF82B',
+  'peggy0x7C7aB80590708cD1B7cf15fE602301FE52BB1d18',
+]
 
 export class DenomClientAsync {
   private denomClient: DenomClient
@@ -280,11 +283,9 @@ export class DenomClientAsync {
       }
 
       return {
-        ...token,
-        ibc: getIbcTokenMetaFromDenomTrace({
-          ...cachedDenomTrace,
-          decimals: token.decimals,
-          hash,
+        ...getIbcTokenFromDenomTrace({
+          token,
+          denomTrace: cachedDenomTrace,
         }),
         denom,
       }
@@ -301,12 +302,7 @@ export class DenomClientAsync {
       }
 
       return {
-        ...token,
-        ibc: getIbcTokenMetaFromDenomTrace({
-          ...denomTrace,
-          decimals: token.decimals,
-          hash,
-        }),
+        ...getIbcTokenFromDenomTrace({ token, denomTrace }),
         denom,
       }
     } catch (e) {
