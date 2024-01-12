@@ -1,7 +1,7 @@
-import { TokenMeta } from '../../types'
+import { TokenMetaBase } from '../../types'
 
 export const getMappedTokensByErc20Address = (
-  tokens: Record<string, TokenMeta>,
+  tokens: Record<string, TokenMetaBase>,
 ) =>
   (Object.keys(tokens) as Array<keyof typeof tokens>)
     .filter((token) => !!(tokens[token].erc20 || tokens[token].evm))
@@ -25,26 +25,19 @@ export const getMappedTokensByErc20Address = (
       }
 
       return result
-    }, {}) as Record<string, TokenMeta>
+    }, {}) as Record<string, TokenMetaBase>
 
 export const getMappedTokensByCw20Address = (
-  tokens: Record<string, TokenMeta>,
+  tokens: Record<string, TokenMetaBase>,
 ) =>
   (Object.keys(tokens) as Array<keyof typeof tokens>)
-    .filter((token) => tokens[token].cw20 || tokens[token].cw20s)
+    .filter((token) => tokens[token].cw20s)
     .reduce((result, token) => {
-      if (!tokens[token].cw20 && !tokens[token].cw20s) {
+      if (!tokens[token].cw20s) {
         return result
       }
 
       const tokenMeta = tokens[token]
-
-      if (tokenMeta.cw20) {
-        return {
-          ...result,
-          [tokenMeta.cw20.address]: tokens[token],
-        }
-      }
 
       if (tokenMeta.cw20s) {
         const cw20Maps = tokenMeta.cw20s.reduce(
@@ -52,7 +45,7 @@ export const getMappedTokensByCw20Address = (
             ...result,
             [cw20.address]: tokens[token],
           }),
-          {} as Record<string, TokenMeta>,
+          {} as Record<string, TokenMetaBase>,
         )
 
         return {
@@ -62,4 +55,4 @@ export const getMappedTokensByCw20Address = (
       }
 
       return result
-    }, {}) as Record<string, TokenMeta>
+    }, {}) as Record<string, TokenMetaBase>

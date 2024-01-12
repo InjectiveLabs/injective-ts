@@ -1,10 +1,5 @@
 import tokens from './tokens'
-import {
-  TokenMeta,
-  TokenType,
-  TokenSource,
-  Cw20TokenMetaWithSource,
-} from '../../types'
+import { TokenMeta, TokenSource, Cw20TokenMetaWithSource } from '../../types'
 
 export const overrideCw20s = (
   source: Cw20TokenMetaWithSource,
@@ -49,7 +44,6 @@ export const devnetTokens = () =>
           symbol: 'USDCet',
           source: TokenSource.EthereumWh,
           address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
-          tokenType: TokenType.Cw20,
         },
         tokens.USDC.cw20s,
       ),

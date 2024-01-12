@@ -8,7 +8,7 @@ import {
   getTokensBySymbolForDevnet2,
   getTokensBySymbolForTestnet,
 } from './tokens/network'
-import { Token, TokenMeta } from './types'
+import { Token, TokenMetaBase } from './types'
 import tokensBySymbol from './tokens/tokens'
 import {
   getTokenFromMeta,
@@ -25,7 +25,7 @@ export class TokenFactory {
 
   static make(
     network: Network = Network.Mainnet,
-    registry: Record<string, TokenMeta> = {},
+    registry: Record<string, TokenMetaBase> = {},
   ): TokenFactory {
     if (isTestnet(network)) {
       return new TokenFactory(
@@ -118,7 +118,7 @@ export class TokenFactory {
     }
   }
 
-  getPeggyDenomTokenMeta(denom: string): TokenMeta | undefined {
+  getPeggyDenomTokenMeta(denom: string): TokenMetaBase | undefined {
     const address = denom.startsWith('peggy')
       ? denom.replace('peggy', '')
       : denom
@@ -138,7 +138,7 @@ export class TokenFactory {
     return this.tokenMetaUtils.getMetaByAddress(address)
   }
 
-  getCw20DenomTokenMeta(address: string): TokenMeta | undefined {
+  getCw20DenomTokenMeta(address: string): TokenMetaBase | undefined {
     if (!isCw20ContractAddress(address)) {
       throw new GeneralException(
         new Error(`The address ${address} is not a valid CW20 address`),
@@ -148,11 +148,11 @@ export class TokenFactory {
     return this.tokenMetaUtils.getMetaByAddress(address)
   }
 
-  getIbcDenomTokenMeta(hash: string): TokenMeta | undefined {
+  getIbcDenomTokenMeta(hash: string): TokenMetaBase | undefined {
     return this.tokenMetaUtils.getMetaByHash(hash)
   }
 
-  getFactoryDenomTokenMeta(denom: string): TokenMeta | undefined {
+  getFactoryDenomTokenMeta(denom: string): TokenMetaBase | undefined {
     const [address] = denom.split('/').reverse()
 
     if (!address) {

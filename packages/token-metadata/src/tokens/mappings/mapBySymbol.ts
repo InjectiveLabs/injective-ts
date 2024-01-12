@@ -1,11 +1,13 @@
-import { TokenMeta } from '../../types'
+import { TokenMetaBase } from '../../types'
 
-export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
+export const getMappedTokensBySymbol = (
+  tokens: Record<string, TokenMetaBase>,
+) =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, token) => {
       const tokenMeta = tokens[token]
       const symbolKey = token.toUpperCase()
-      const symbol = tokenMeta.symbol.toUpperCase()
+      const symbol = tokenMeta.symbol?.toUpperCase()
       const symbolDiffs = symbol !== symbolKey
 
       let ibcResults = {}
@@ -30,12 +32,11 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
             ...result,
             [cw20.symbol.toUpperCase()]: tokenMeta,
           }),
-          {} as Record<string, TokenMeta>,
+          {} as Record<string, TokenMetaBase>,
         )
 
         cw20sResults = {
           ...cw20Maps,
-          [symbol.toUpperCase()]: tokenMeta,
         }
       }
 
@@ -59,11 +60,13 @@ export const getMappedTokensBySymbol = (tokens: Record<string, TokenMeta>) =>
         ...cw20Results,
         ...cw20sResults,
         ...erc20Results,
-        [symbol.toUpperCase()]: tokenMeta,
+        ...(symbol && {
+          [symbol.toUpperCase()]: tokenMeta,
+        }),
         ...(symbolDiffs && {
           [symbolKey.toUpperCase()]: tokenMeta,
         }),
       }
     },
     {},
-  ) as Record<string, TokenMeta>
+  ) as Record<string, TokenMetaBase>

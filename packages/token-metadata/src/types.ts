@@ -39,7 +39,6 @@ export interface NativeTokenFactoryMeta {
   name?: string
   logo?: string
   description?: string
-  tokenType: TokenType.TokenFactory
   decimals: number
 }
 
@@ -50,8 +49,7 @@ export interface IbcTokenMeta {
   logo?: string
   channelId: string
   decimals: number
-  tokenType: TokenType.Ibc
-  symbol?: string
+  symbol: string
   isNative: boolean
   baseDenom: string
 }
@@ -59,8 +57,7 @@ export interface IbcTokenMeta {
 export interface SplTokenMeta {
   address: string
   decimals: number
-  tokenType: TokenType.Spl
-  symbol?: string
+  symbol: string
   name?: string
   logo?: string
   isNative?: boolean
@@ -69,8 +66,7 @@ export interface SplTokenMeta {
 export interface Erc20TokenMeta {
   address: string
   decimals: number
-  tokenType: TokenType.Erc20
-  symbol?: string
+  symbol: string
   name?: string
   logo?: string
   isNative?: boolean
@@ -79,8 +75,7 @@ export interface Erc20TokenMeta {
 export interface EvmTokenMeta {
   address: string
   decimals: number
-  tokenType: TokenType.Evm
-  symbol?: string
+  symbol: string
   name?: string
   logo?: string
   isNative?: boolean
@@ -89,15 +84,30 @@ export interface EvmTokenMeta {
 export interface Cw20TokenMeta {
   address: string
   decimals: number
-  symbol?: string
+  symbol: string
   name?: string
   logo?: string
-  tokenType: TokenType.Cw20
 }
 
 export interface Cw20TokenMetaWithSource extends Cw20TokenMeta {
-  symbol: string
-  source: TokenSource
+  source?: TokenSource
+}
+
+export interface TokenMetaBase {
+  name?: string
+  logo?: string
+  symbol?: string
+  decimals?: number
+  tokenType?: TokenType // primary token type
+  tokenVerification?: TokenVerification
+  coinGeckoId?: string
+
+  ibc?: Omit<IbcTokenMeta, 'tokenType'>
+  spl?: Omit<SplTokenMeta, 'tokenType'>
+  cw20s?: Array<Omit<Cw20TokenMetaWithSource, 'tokenType'>>
+  erc20?: Omit<Erc20TokenMeta, 'tokenType'>
+  evm?: Omit<EvmTokenMeta, 'tokenType'>
+  tokenFactories?: Array<Omit<NativeTokenFactoryMeta, 'tokenType'>>
 }
 
 export interface TokenMeta {
@@ -105,18 +115,20 @@ export interface TokenMeta {
   logo: string
   symbol: string
   decimals: number
-  tokenType: TokenType // primary token type
+  tokenType: TokenType
   tokenVerification?: TokenVerification
   coinGeckoId: string
 
   ibc?: IbcTokenMeta
   spl?: SplTokenMeta
   cw20?: Cw20TokenMeta
-  cw20s?: Cw20TokenMetaWithSource[] // When there are multiple variations of the same CW20 token
   erc20?: Erc20TokenMeta
   evm?: EvmTokenMeta
   tokenFactory?: NativeTokenFactoryMeta
-  tokenFactories?: NativeTokenFactoryMeta[]
+}
+
+export type TokenBase = TokenMetaBase & {
+  denom: string
 }
 
 export type BaseToken = TokenMeta & {
