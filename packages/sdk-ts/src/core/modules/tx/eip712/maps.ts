@@ -30,6 +30,7 @@ export const objectKeysToEip712Types = ({
     'proposal_id',
     'creation_height',
   ]
+  const stringFieldsToOmitIfEmpty = ['cid']
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
 
@@ -54,6 +55,10 @@ export const objectKeysToEip712Types = ({
         type: numberTypeToReflectionNumberType(property),
       })
     } else if (type === 'string') {
+      if (stringFieldsToOmitIfEmpty.includes(property) && !propertyValue) {
+        continue
+      }
+
       types.push({ name: property, type: 'string' })
     } else if (type === 'object') {
       if (Array.isArray(propertyValue) && propertyValue.length === 0) {

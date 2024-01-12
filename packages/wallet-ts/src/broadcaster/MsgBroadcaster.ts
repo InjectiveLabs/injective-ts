@@ -374,8 +374,6 @@ export class MsgBroadcaster {
         accountNumber: baseAccount.accountNumber,
       })) as string
 
-      console.log({ signature, signMode, aminoSignDoc })
-
       txRaw.signatures = [Buffer.from(signature, 'base64')]
 
       return walletStrategy.sendTransaction(txRaw, {
