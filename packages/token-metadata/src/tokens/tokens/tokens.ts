@@ -2957,3 +2957,12 @@ export default {
     },
   },
 } as Record<string, TokenMeta>
+
+BITS: {
+  name: 'bits',
+  symbol: 'BITS',
+  decimals: 6,
+  logo: 'bits.png',
+  coinGeckoId: 'orBitsINJ',
+  tokenType: TokenType.TokenFactory,
+},
