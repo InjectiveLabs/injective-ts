@@ -40,7 +40,10 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     message.marketId = params.marketId
     message.orderHash = params.orderHash
     message.subaccountId = params.subaccountId
-    message.cid = params.cid || ''
+
+    if (params.cid) {
+      message.cid = params.cid
+    }
 
     // TODO: Send order.orderMask instead when chain handles order mask properly.
     message.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY

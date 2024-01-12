@@ -30,7 +30,10 @@ const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
   orderInfo.quantity = params.quantity
-  orderInfo.cid = params.cid || ''
+
+  if (params.cid) {
+    orderInfo.cid = params.cid
+  }
 
   const derivativeOrder =
     InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()

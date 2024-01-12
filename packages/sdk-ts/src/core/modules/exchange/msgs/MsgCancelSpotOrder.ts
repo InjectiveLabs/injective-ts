@@ -33,7 +33,10 @@ export default class MsgCancelSpotOrder extends MsgBase<
     message.marketId = params.marketId
     message.orderHash = params.orderHash
     message.subaccountId = params.subaccountId
-    message.cid = params.cid || ''
+
+    if (params.cid) {
+      message.cid = params.cid
+    }
 
     // TODO: message.setOrderMask does not exist yet, enable this once it does.
 
