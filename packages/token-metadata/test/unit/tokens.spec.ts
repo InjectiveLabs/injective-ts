@@ -26,16 +26,20 @@ describe('TokenMetadata', () => {
       'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1q6kpxy6ar5lkxqudjvryarrrttmakwsvzkvcyh'
     const CHZPeggyDenom = 'peggy0x3506424F91fD33084466F402d5D97f05F8e3b4AF'
 
-    test('fetches correct decimal value for cw20 format', () => {
+    test('fetches correct info for cw20 format', () => {
       const tokenMeta = tokenFactory.toToken(CHZFactoryDenom) as Token
 
       expect(tokenMeta.decimals).toBe(8)
+      expect(tokenMeta.name).toBe('Chiliz')
+      expect(tokenMeta.symbol).toBe('CHZ')
     })
 
-    test('fetches correct decimal value for peggy format', () => {
+    test('fetches correct info for peggy format', () => {
       const tokenMeta = tokenFactory.toToken(CHZPeggyDenom) as Token
 
       expect(tokenMeta.decimals).toBe(18)
+      expect(tokenMeta.name).toBe('Chiliz')
+      expect(tokenMeta.symbol).toBe('CHZ')
     })
   })
 
