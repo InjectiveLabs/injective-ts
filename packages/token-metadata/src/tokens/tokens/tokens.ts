@@ -2697,6 +2697,20 @@ export default {
       },
     ],
   },
+  
+  RAMEN: {
+    name: 'Ramen',
+    logo: 'ramen.jpeg',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1z5utcc5u90n8a5m8gv30char6j4hdzxz6t3pke',
+        symbol: 'RAMEN',
+        decimals: 6,
+      },
+    ],
+  },
 
   APP: {
     name: 'Moon App',
