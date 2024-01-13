@@ -2748,4 +2748,24 @@ export default {
       },
     ],
   },
+
+  ORNE: {
+    name: 'ORNE',
+    symbol: 'ORNE',
+    decimals: 6,
+    logo: 'orne.png',
+    coinGeckoId: 'orne',
+    tokenType: TokenType.Ibc,
+
+    ibc: {
+      decimals: 6,
+      isNative: true,
+      baseDenom:
+        'cw20:terra19p20mfnvwh9yvyr7aus3a6z6g6uk28fv4jhx9kmnc2m7krg27q2qkfenjw',
+      path: 'transfer/channel-116',
+      channelId: 'channel-116',
+      hash: '3D99439444ACDEE71DBC4A774E49DB74B58846CCE31B9A868A7A61E4C14D321E',
+      tokenType: TokenType.Ibc,
+    },
+  },
 } as Record<string, TokenMetaBase>
