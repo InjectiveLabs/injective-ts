@@ -30,6 +30,11 @@ export const objectKeysToEip712Types = ({
     'proposal_id',
     'creation_height',
   ]
+  const stringFieldsWithNumberValue = [
+    'timeout_timestamp',
+    'revision_height',
+    'revision_number',
+  ]
   const stringFieldsToOmitIfEmpty = ['cid']
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
@@ -56,6 +61,15 @@ export const objectKeysToEip712Types = ({
       })
     } else if (type === 'string') {
       if (stringFieldsToOmitIfEmpty.includes(property) && !propertyValue) {
+        continue
+      }
+
+      if (stringFieldsWithNumberValue.includes(property)) {
+        types.push({
+          name: property,
+          type: stringTypeToReflectionStringType(property),
+        })
+
         continue
       }
 
@@ -155,6 +169,12 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
   switch (property) {
     case 'order_mask':
       return 'int32'
+    case 'timeout_timestamp':
+      return 'timeout_timestamp'
+    case 'revision_number':
+      return 'uint64'
+    case 'revision_height':
+      return 'uint64'
     case 'order_type':
       return 'int32'
     case 'oracle_type':
@@ -172,6 +192,24 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
     case 'option':
       return 'int32'
     case 'proposal_id':
+      return 'uint64'
+    default:
+      return 'uint64'
+  }
+}
+/**
+ * JavaScript doesn't know the exact string types that
+ * we represent these fields on chain so we have to map
+ * them in their chain representation from the string value
+ * that is available in JavaScript
+ */
+export const stringTypeToReflectionStringType = (property?: string) => {
+  switch (property) {
+    case 'timeout_timestamp':
+      return 'uint64'
+    case 'revision_number':
+      return 'uint64'
+    case 'revision_height':
       return 'uint64'
     default:
       return 'uint64'

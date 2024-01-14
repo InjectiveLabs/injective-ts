@@ -179,7 +179,7 @@ export const convertPeggoToUiBridgeTransaction = async ({
     ),
     amount: transaction.amount,
     blockHeight: transaction.blockHeight,
-    denom: transaction.tokenContract,
+    denom: `peggy${transaction.tokenContract}`,
     nonce: transaction.eventNonce,
     explorerLink: `${getEthereumExplorerUrl(network)}/tx/${txHash}`,
     receiver: getInjectiveAddress(receiver),

@@ -230,6 +230,7 @@ export class IndexerGrpcSpotTransformer {
       orderHash: order.orderHash,
       orderSide: order.orderSide as OrderSide,
       marketId: order.marketId,
+      cid: order.cid,
       subaccountId: order.subaccountId,
       price: order.price,
       state: order.state as OrderState,
@@ -254,6 +255,7 @@ export class IndexerGrpcSpotTransformer {
     return {
       orderHash: orderHistory.orderHash,
       marketId: orderHistory.marketId,
+      cid: orderHistory.cid,
       active: orderHistory.isActive,
       subaccountId: orderHistory.subaccountId,
       executionType: orderHistory.executionType,

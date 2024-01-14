@@ -3578,5 +3578,85 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "Wrapped Bitcoin",
+    "denom": "ibc/A07BB73539F556DA5238F1B7E9471B34DD19897B1EE7050B959989F13EFE73B3",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/wbtc.png",
+    "symbol": "WBTC",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A07BB73539F556DA5238F1B7E9471B34DD19897B1EE7050B959989F13EFE73B3",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "WBTC",
+      "baseDenom": "WBTC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Badcoin",
+    "denom": "ibc/C04478BE3CAA4A14EAF4A47967945E92ED2C39E02146E1577991FC5243E974BB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/bad.png",
+    "symbol": "BAD",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C04478BE3CAA4A14EAF4A47967945E92ED2C39E02146E1577991FC5243E974BB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BAD",
+      "baseDenom": "BAD",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Bitcosmos",
+    "denom": "ibc/E440667C70A0C9A5AD5A8D709731289AFB92301D64D70D0B33D18EF4FDD797FE",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/bitcosmos.png",
+    "symbol": "BTC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E440667C70A0C9A5AD5A8D709731289AFB92301D64D70D0B33D18EF4FDD797FE",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BTC",
+      "baseDenom": "BTC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "ADO",
+    "denom": "ibc/CF0C070562EC0816B09DDD9518328DCCFBE6C4388907EFF883FD4BE4E510005E",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/ADO.png",
+    "symbol": "ADO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "CF0C070562EC0816B09DDD9518328DCCFBE6C4388907EFF883FD4BE4E510005E",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ADO",
+      "baseDenom": "ADO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]

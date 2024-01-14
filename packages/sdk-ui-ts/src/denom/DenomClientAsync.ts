@@ -113,7 +113,8 @@ export class DenomClientAsync {
   }
 
   /**
-   * Used to get all tokens even if they are not tracked on the token-metadata package
+   * Used to get all tokens even if they are not
+   * tracked on the token-metadata package
    * ERC20, CW20, IBC, etc
    */
   async getDenomToken(denom: string): Promise<Token | undefined> {

@@ -247,20 +247,31 @@ export const getTokenInfo = (token: TokenBase) => {
     }
   }
 
-  if (token.denom.startsWith('ibc')) {
+  if (token.denom.startsWith('0x') && token.denom.length === 42) {
+    return {
+      symbol: token.erc20?.symbol || token.evm?.symbol || token.symbol || '',
+      name: token.erc20?.name || token.evm?.symbol || token.name || '',
+      logo: token.erc20?.logo || token.evm?.symbol || token.logo || '',
+      decimals:
+        token.erc20?.decimals || token.evm?.symbol || token.decimals || 0,
+      tokenType,
+    }
+  }
+
+  if (token.denom.startsWith('ibc') || token.ibc) {
     return {
       symbol: token.ibc?.symbol || token.symbol || '',
       name: token.ibc?.name || token.name || '',
       logo: token.ibc?.logo || token.logo || '',
-      decimals: token.ibc?.decimals || token.decimals || 0,
+      decimals: token.ibc?.decimals || token.decimals || 6,
       tokenType,
     }
   }
 
   return {
-    symbol: token.symbol || '',
-    name: token.name || '',
-    logo: token.logo || '',
+    symbol: token.symbol,
+    name: token.name,
+    logo: token.logo,
     decimals: token.decimals || 0,
     tokenType,
   }

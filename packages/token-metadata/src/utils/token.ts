@@ -2,7 +2,6 @@ import { ibcBaseDenoms } from '../tokens/tokens'
 import { Token, TokenMetaBase, TokenType } from '../types'
 import { getTokenInfo } from './meta'
 
-
 /** We only need to perform the base denom check when we are getting token metadata from symbol */
 export const getTokenFromMetaIncludingIbcBaseDenoms = (
   meta: TokenMetaBase,
@@ -13,11 +12,17 @@ export const getTokenFromMetaIncludingIbcBaseDenoms = (
 
   const tokenMeta = getTokenFromMeta(meta, denom)
 
-  return {
-    ...tokenMeta,
-    tokenType: isBaseIbcDenom ? TokenType.Ibc : tokenMeta.tokenType,
+  const token = {
+    ...meta,
     denom: denom || '',
   }
+
+  return {
+    ...token,
+    ...getTokenInfo(token),
+    tokenType: isBaseIbcDenom ? TokenType.Ibc : tokenMeta.tokenType,
+    denom: denom || '',
+  } as Token
 }
 
 export const getTokenFromMeta = (
