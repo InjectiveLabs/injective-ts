@@ -82,10 +82,14 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
 
   async fetchRound({
     roundId,
+    toRoundId,
     accountAddress,
+    contractAddress,
   }: {
     roundId?: string
+    toRoundId?: number
     accountAddress?: string
+    contractAddress?: string
   }) {
     const request = InjectiveCampaignRpc.CampaignsRequest.create()
 
@@ -95,6 +99,14 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
 
     if (accountAddress) {
       request.accountAddress = accountAddress
+    }
+
+    if (toRoundId) {
+      request.toRoundId = toRoundId
+    }
+
+    if (contractAddress) {
+      request.contractAddress = contractAddress
     }
 
     try {
