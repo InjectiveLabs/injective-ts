@@ -205,7 +205,7 @@ export const createCosmosSignDocFromSignDoc = (
   return SignDoc.fromPartial({
     bodyBytes: signDoc.bodyBytes,
     authInfoBytes: signDoc.authInfoBytes,
-    accountNumber: signDoc.accountNumber,
+    accountNumber: BigInt(signDoc.accountNumber),
     chainId: signDoc.chainId,
   })
 }
