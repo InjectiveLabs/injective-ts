@@ -2701,7 +2701,7 @@ export default {
   APP: {
     name: 'Moon App',
     logo: 'app.jpeg',
-    coinGeckoId: '',
+    coinGeckoId: 'moon-app',
 
     erc20: {
       symbol: 'APP',
@@ -2744,6 +2744,37 @@ export default {
       {
         creator: 'inj1esz96ru3guug4ctmn5chjmkymt979sfvufq0hs',
         symbol: 'PUNK',
+        decimals: 6,
+      },
+    ],
+  },
+
+  ORNE: {
+    name: 'ORNE',
+    logo: 'orne.png',
+    coinGeckoId: 'orne',
+
+    ibc: {
+      symbol: 'ORNE',
+      decimals: 6,
+      isNative: true,
+      baseDenom:
+        'cw20:terra19p20mfnvwh9yvyr7aus3a6z6g6uk28fv4jhx9kmnc2m7krg27q2qkfenjw',
+      path: 'transfer/channel-116',
+      channelId: 'channel-116',
+      hash: '3D99439444ACDEE71DBC4A774E49DB74B58846CCE31B9A868A7A61E4C14D321E',
+    },
+  },
+
+  RAMEN: {
+    name: 'Ramen',
+    logo: 'ramen.jpeg',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1z5utcc5u90n8a5m8gv30char6j4hdzxz6t3pke',
+        symbol: 'RAMEN',
         decimals: 6,
       },
     ],
