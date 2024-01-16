@@ -2766,6 +2766,21 @@ export default {
     },
   },
 
+  DROGO: {
+    name: 'DROGO',
+    logo: 'drogo.png',
+
+    ibc: {
+      symbol: 'DROGO',
+      decimals: 6,
+      isNative: true,
+      baseDenom:'cw20:terra1cl273523kmr2uwjhhznq54je69mted2u3ljffm8kp2ap4z3drdksftwqun',
+      path: 'transfer/channel-118',
+      channelId: 'channel-118',
+      hash: 'ibc/565FE65B82C091F8BAD1379FA1B4560C036C07913355ED4BD8D156DA63F43712',
+    },
+  },
+
   RAMEN: {
     name: 'Ramen',
     logo: 'ramen.jpeg',
