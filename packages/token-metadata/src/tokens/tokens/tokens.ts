@@ -1764,7 +1764,7 @@ export default {
   KIRA: {
     name: 'KIRA',
     logo: 'kira.jpeg',
-    coinGeckoId: '',
+    coinGeckoId: 'kira-the-injective-cat',
 
     tokenFactories: [
       {
@@ -1887,7 +1887,7 @@ export default {
   NINJA: {
     name: 'Dog Wif Nunchucks',
     logo: 'ninja.png',
-    coinGeckoId: '',
+    coinGeckoId: 'dog-wif-nuchucks',
 
     tokenFactories: [
       {
@@ -1901,7 +1901,7 @@ export default {
   KATANA: {
     name: 'Dog Wif Katana',
     logo: 'katana.webp',
-    coinGeckoId: '',
+    coinGeckoId: 'dogwifkatana',
 
     tokenFactories: [
       {
@@ -2090,7 +2090,7 @@ export default {
   GINGER: {
     name: 'GINGER',
     logo: 'ginger.png',
-    coinGeckoId: '',
+    coinGeckoId: 'ginger',
 
     tokenFactories: [
       {
