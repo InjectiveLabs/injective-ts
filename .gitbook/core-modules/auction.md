@@ -71,8 +71,8 @@ How to find the subaccountId that you will be transferring from:
 
 How to use funds that are currently associated with your Injective Address in bank module:
 
-* If you have existing non-default subaccounts, you'll want to do a [MsgDeposit](broken-reference) to one of your existing non-default subaccountIds and use that subaccountId as the `srcSubaccountId` below.
-* If you don't have existing non-default subaccounts, you can do a [MsgDeposit](broken-reference) to a new default subaccountId, which would be done via importing `getSubaccountId` from `sdk-ts` and setting the `subaccountId` field in [MsgDeposit](broken-reference) to `getSubaccountId(injectiveAddress, 1)`.
+* If you have existing non-default subaccounts, you'll want to do a [MsgDeposit](https://github.com/InjectiveLabs/injective-ts/blob/dev/.gitbook/core-modules/exchange.md#MsgDeposit) to one of your existing non-default subaccountIds and use that subaccountId as the `srcSubaccountId` below.
+* If you don't have existing non-default subaccounts, you can do a [MsgDeposit](https://github.com/InjectiveLabs/injective-ts/blob/dev/.gitbook/core-modules/exchange.md#MsgDeposit) to a new default subaccountId, which would be done via importing `getSubaccountId` from `sdk-ts` and setting the `subaccountId` field in [MsgDeposit](https://github.com/InjectiveLabs/injective-ts/blob/dev/.gitbook/core-modules/exchange.md#MsgDeposit) to `getSubaccountId(injectiveAddress, 1)`.
 
 For more info, check out the [burn auction pool docs](https://docs.injective.network/develop/tech-concepts/auction\_pool/).
 
