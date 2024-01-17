@@ -1,15 +1,15 @@
 import { INJ_DENOM } from '@injectivelabs/utils'
 import {
-  Cw20TokenMetaWithSource,
-  IbcToken,
   Token,
+  IbcToken,
   TokenBase,
   TokenType,
+  Cw20TokenMetaWithSource,
 } from '../types'
 import {
   getCw20Meta,
-  getNativeTokenFactoryMeta,
   isCw20ContractAddress,
+  getNativeTokenFactoryMeta,
 } from './helpers'
 import { getChannelIdFromPath } from '../ibc'
 
@@ -258,12 +258,44 @@ export const getTokenInfo = (token: TokenBase) => {
     }
   }
 
+  // Including tokens that can be searched by baseDenom symbol
   if (token.denom.startsWith('ibc') || token.ibc) {
     return {
       symbol: token.ibc?.symbol || token.symbol || '',
       name: token.ibc?.name || token.name || '',
       logo: token.ibc?.logo || token.logo || '',
       decimals: token.ibc?.decimals || token.decimals || 6,
+      tokenType,
+    }
+  }
+
+  // Including tokens that can be searched by symbol
+  if (token.erc20 || token.evm || token.spl) {
+    return {
+      symbol:
+        token.erc20?.symbol ||
+        token.evm?.symbol ||
+        token.spl?.symbol ||
+        token.symbol ||
+        '',
+      name:
+        token.erc20?.name ||
+        token.evm?.name ||
+        token.spl?.name ||
+        token.name ||
+        '',
+      logo:
+        token.erc20?.logo ||
+        token.evm?.logo ||
+        token.spl?.logo ||
+        token.logo ||
+        '',
+      decimals:
+        token.erc20?.decimals ||
+        token.evm?.decimals ||
+        token.spl?.decimals ||
+        token.decimals ||
+        6,
       tokenType,
     }
   }

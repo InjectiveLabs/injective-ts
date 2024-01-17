@@ -3,14 +3,10 @@ import { TokenMetaBase, TokenSource, TokenType } from '../../types'
 export default {
   BTC: {
     name: 'Bitcoin',
+    symbol: 'BTC',
     logo: 'bitcoin.png',
     coinGeckoId: 'bitcoin',
-
-    erc20: {
-      symbol: 'BTC',
-      decimals: 8,
-      address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-    },
+    tokenType: TokenType.Unknown,
   },
 
   wBTC: {
@@ -2778,5 +2774,17 @@ export default {
         decimals: 6,
       },
     ],
+  },
+
+  GYEN: {
+    name: 'GMO JPY',
+    logo: 'gyen.jpeg',
+    coinGeckoId: 'gyen',
+
+    erc20: {
+      symbol: 'GYEN',
+      decimals: 6,
+      address: '0xC08512927D12348F6620a698105e1BAac6EcD911',
+    },
   },
 } as Record<string, TokenMetaBase>

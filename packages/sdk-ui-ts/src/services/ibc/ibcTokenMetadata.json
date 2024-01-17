@@ -3658,5 +3658,25 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "wtf",
+    "denom": "ibc/3C788BF2FC1269D66CA3E339634E14856A90336C5562E183EFC9B743C343BC31",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/WTF.png",
+    "symbol": "WTF",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3C788BF2FC1269D66CA3E339634E14856A90336C5562E183EFC9B743C343BC31",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WTF",
+      "baseDenom": "WTF",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]

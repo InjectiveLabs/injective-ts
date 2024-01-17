@@ -4,15 +4,15 @@ import {
 } from '@injectivelabs/networks'
 import { TokenMetaUtilsFactory } from '../TokenMetaUtilsFactory'
 import {
-  Cw20TokenMeta,
-  Cw20TokenMetaWithSource,
-  IbcTokenMeta,
-  NativeTokenFactoryMeta,
   Token,
+  TokenType,
   TokenBase,
   TokenSource,
-  TokenType,
+  IbcTokenMeta,
+  Cw20TokenMeta,
   TokenVerification,
+  Cw20TokenMetaWithSource,
+  NativeTokenFactoryMeta,
 } from '../types'
 import { getChannelIdFromPath } from '../ibc'
 
