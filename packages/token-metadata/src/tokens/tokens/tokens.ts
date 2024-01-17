@@ -1760,7 +1760,7 @@ export default {
   KIRA: {
     name: 'KIRA',
     logo: 'kira.jpeg',
-    coinGeckoId: '',
+    coinGeckoId: 'kira-the-injective-cat',
 
     tokenFactories: [
       {
@@ -1883,7 +1883,7 @@ export default {
   NINJA: {
     name: 'Dog Wif Nunchucks',
     logo: 'ninja.png',
-    coinGeckoId: '',
+    coinGeckoId: 'dog-wif-nuchucks',
 
     tokenFactories: [
       {
@@ -1897,7 +1897,7 @@ export default {
   KATANA: {
     name: 'Dog Wif Katana',
     logo: 'katana.webp',
-    coinGeckoId: '',
+    coinGeckoId: 'dogwifkatana',
 
     tokenFactories: [
       {
@@ -2086,7 +2086,7 @@ export default {
   GINGER: {
     name: 'GINGER',
     logo: 'ginger.png',
-    coinGeckoId: '',
+    coinGeckoId: 'ginger',
 
     tokenFactories: [
       {
@@ -2759,6 +2759,21 @@ export default {
       path: 'transfer/channel-116',
       channelId: 'channel-116',
       hash: '3D99439444ACDEE71DBC4A774E49DB74B58846CCE31B9A868A7A61E4C14D321E',
+    },
+  },
+
+  DROGO: {
+    name: 'DROGO',
+    logo: 'drogo.png',
+
+    ibc: {
+      symbol: 'DROGO',
+      decimals: 6,
+      isNative: true,
+      baseDenom:'cw20:terra1cl273523kmr2uwjhhznq54je69mted2u3ljffm8kp2ap4z3drdksftwqun',
+      path: 'transfer/channel-118',
+      channelId: 'channel-118',
+      hash: 'ibc/565FE65B82C091F8BAD1379FA1B4560C036C07913355ED4BD8D156DA63F43712',
     },
   },
 
