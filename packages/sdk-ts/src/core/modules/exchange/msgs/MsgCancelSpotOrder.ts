@@ -8,6 +8,7 @@ export declare namespace MsgCancelSpotOrder {
     subaccountId: string
     injectiveAddress: string
     orderHash: string
+    cid?: string
   }
 
   export type Proto = InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder
@@ -32,6 +33,10 @@ export default class MsgCancelSpotOrder extends MsgBase<
     message.marketId = params.marketId
     message.orderHash = params.orderHash
     message.subaccountId = params.subaccountId
+
+    if (params.cid) {
+      message.cid = params.cid
+    }
 
     // TODO: message.setOrderMask does not exist yet, enable this once it does.
 

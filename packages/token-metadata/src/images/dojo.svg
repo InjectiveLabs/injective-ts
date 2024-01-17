@@ -1,0 +1,26 @@
+<svg width="350px" height="350px" viewBox="0 0 350 350" version="1.1" xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-bxlpvjccah-1">
+			<stop stop-color="#FFFFFF" offset="0%"></stop>
+			<stop stop-color="#000000" offset="100%"></stop>
+		</linearGradient>
+		<linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-bxlpvjccah-2">
+			<stop stop-color="#0055FF" offset="0%"></stop>
+			<stop stop-color="#000000" offset="100%"></stop>
+		</linearGradient>
+	</defs>
+	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		<g>
+			<circle id="Oval" stroke="url(#linearGradient-bxlpvjccah-1)" stroke-width="10" fill="#FFFFFF" cx="175" cy="175"
+				r="170"></circle>
+			<g transform="translate(75, 75)" fill="url(#linearGradient-bxlpvjccah-2)" fill-rule="nonzero">
+				<g>
+					<path
+						d="M30.3,0 C64.8177969,0 92.8,27.9822031 92.8,62.5 L92.8,92.8 L0,92.8 L0,0 L30.3,0 Z M30.3,20 L20,20 L20,72.8 L72.8,72.8 L72.8,62.5 C72.8,39.2626192 54.150757,20.3810024 31.0028152,20.0056938 L30.3,20 Z M107.2,92.8 L107.2,46.4 C107.2,20.7739876 127.973988,0 153.6,0 C179.226012,0 200,20.7739876 200,46.4 C200,72.0260124 179.226012,92.8 153.6,92.8 L107.2,92.8 Z M127.2,72.8 L153.6,72.8 C168.180317,72.8 180,60.9803174 180,46.4 C180,31.8196826 168.180317,20 153.6,20 C139.019683,20 127.2,31.8196826 127.2,46.4 L127.2,72.8 Z M93,107 L93,148.5 C93,176.942665 69.9426646,200 41.5,200 L0,200 L0,180 L41.5,180 C58.8969696,180 73,165.89697 73,148.5 L73,107 L93,107 Z M153.6,200 C127.973988,200 107.2,179.226012 107.2,153.6 L107.2,107.2 L153.6,107.2 C179.226012,107.2 200,127.973988 200,153.6 C200,179.226012 179.226012,200 153.6,200 Z M153.6,180 C168.180317,180 180,168.180317 180,153.6 C180,139.019683 168.180317,127.2 153.6,127.2 L127.2,127.2 L127.2,153.6 C127.2,168.034514 138.784471,179.76333 153.163428,179.996463 L153.6,180 Z">
+					</path>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

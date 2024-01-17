@@ -3,6 +3,7 @@ import {
   hexToBuff,
   PublicKey,
   SIGN_AMINO,
+  SIGN_DIRECT,
   hexToBase64,
   ChainGrpcAuthApi,
   CosmosTxV1Beta1Tx,
@@ -334,12 +335,16 @@ export class MsgBroadcaster {
       DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
+    const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
+      ? SIGN_AMINO
+      : SIGN_DIRECT
     const pubKey = await walletStrategy.getPubKey(tx.injectiveAddress)
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
     const { txRaw } = await this.getTxWithSignersAndStdFee({
       chainId,
+      signMode,
       memo: tx.memo,
       message: msgs,
       timeoutHeight: timeoutHeight.toNumber(),
@@ -627,7 +632,10 @@ export class MsgBroadcaster {
       address: tx.injectiveAddress,
       txRaw: createTxRawFromSigResponse(directSignResponse),
       signature: directSignResponse.signature.signature,
-      pubKey: directSignResponse.signature.pub_key,
+      pubKey: directSignResponse.signature.pub_key || {
+        value: pubKey,
+        type: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
+      },
     })
 
     // Re-enable tx gas check removed above

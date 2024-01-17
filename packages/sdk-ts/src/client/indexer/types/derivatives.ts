@@ -117,6 +117,7 @@ export interface DerivativeLimitOrder {
   orderHash: string
   orderSide: OrderSide
   marketId: string
+  cid: string
   subaccountId: string
   isReduceOnly: boolean
   margin: string
@@ -139,6 +140,7 @@ export interface DerivativeLimitOrder {
 export interface DerivativeOrderHistory {
   orderHash: string
   marketId: string
+  cid: string
   isActive: boolean
   subaccountId: string
   executionType: string

@@ -1,4 +1,4 @@
-# Token Metadata
+# Assets (Token Metadata)
 
 ## Denom
 
@@ -51,3 +51,13 @@ export interface Token {
 ```
 
 There are other ways to define a token metadata for a denom on Injective and we'll explain more in the next page.
+
+### Token Verification
+
+Verifying your token's metadata can be done in a couple of ways. Here are the verification levels and what they mean:&#x20;
+
+* **Verified** -> Your asset metadata has been **submitted and verified** to the `@injectivelabs/token-metadata` package. You can find a tutorial on how to add your token's metadata to the package [here](../../../packages/token-metadata/CONTRIBUTING.md).
+* **Submitted** -> Your asset metadata has been **submitted** to the `@injectivelabs/token-metadata` package. You can find a tutorial on how to add your token's metadata to the package [here](../../../packages/token-metadata/CONTRIBUTING.md).
+* **Internal** -> Your asset's metadata has been verified on-chain using the `MsgSetDenomMetadata` message, as explained [here](https://docs.ts.injective.network/core-modules/token-factory#msgsetdenommetadata).
+* **External** -> Your asset's metadata has been verified on some external source like from Ethereum's contract details, etc.
+* **Unverified** -> Your asset's metadata has not been provided anywhere.

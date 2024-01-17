@@ -2,7 +2,7 @@ import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import CosmosApp from '@ledgerhq/hw-app-cosmos'
 import type Transport from '@ledgerhq/hw-transport'
-import { LedgerException } from '@injectivelabs/exceptions'
+import { LedgerCosmosException } from '@injectivelabs/exceptions'
 import AccountManager from './AccountManager'
 
 export default class LedgerTransport {
@@ -20,7 +20,7 @@ export default class LedgerTransport {
         return await TransportWebHID.create()
       }
     } catch (e: unknown) {
-      throw new LedgerException(new Error((e as any).message))
+      throw new LedgerCosmosException(new Error((e as any).message))
     }
 
     return await TransportWebHID.create()

@@ -6,10 +6,16 @@ import {
   PeggyContract,
   getContractAddressesForNetworkOrThrow,
 } from '@injectivelabs/contracts'
-import { GAS_LIMIT_MULTIPLIER, INJ_DENOM, TIP_IN_GWEI } from '../../constants'
+import {
+  INJ_DENOM,
+  TIP_IN_GWEI,
+  TIP_IN_GWEI_TESTNET,
+  GAS_LIMIT_MULTIPLIER,
+} from '../../constants'
 import { getTransactionOptions, peggyDenomToContractAddress } from './utils'
 import { getKeyFromRpcUrl } from '../../utils/alchemy'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import { isTestnet } from '@injectivelabs/networks'
 
 /**
  * Preparing and broadcasting
@@ -73,6 +79,9 @@ export class Web3Composer {
     const gas = new BigNumberInWei(
       await setAllowanceOfContractFunction.estimateGasAsync(),
     )
+    const maxPriorityFeePerGas = (
+      isTestnet(network) ? TIP_IN_GWEI_TESTNET : TIP_IN_GWEI
+    ).toString(16)
 
     return {
       from: address,
@@ -85,7 +94,7 @@ export class Web3Composer {
         .decimalPlaces(0)
         .toNumber()
         .toString(16),
-      maxPriorityFeePerGas: TIP_IN_GWEI.toString(16),
+      maxPriorityFeePerGas,
       data,
     }
   }
@@ -139,6 +148,10 @@ export class Web3Composer {
       await depositForContractFunction.estimateGasAsync(),
     )
 
+    const maxPriorityFeePerGas = (
+      isTestnet(network) ? TIP_IN_GWEI_TESTNET : TIP_IN_GWEI
+    ).toString(16)
+
     return {
       from: address,
       to: peggyContractAddress,
@@ -150,7 +163,7 @@ export class Web3Composer {
         .decimalPlaces(0)
         .toNumber()
         .toString(16),
-      maxPriorityFeePerGas: TIP_IN_GWEI.toString(16),
+      maxPriorityFeePerGas,
       data: abiEncodedData,
     }
   }

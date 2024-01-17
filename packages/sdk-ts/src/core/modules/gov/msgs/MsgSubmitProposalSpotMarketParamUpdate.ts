@@ -3,7 +3,7 @@ import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Proposal,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase'
@@ -13,7 +13,7 @@ const createSpotMarketParamUpdate = (
   params: MsgSubmitProposalSpotMarketParamUpdate.Params,
 ) => {
   const content =
-    InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.create()
+    InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.create()
   content.title = params.market.title
   content.description = params.market.description
   content.makerFeeRate = params.market.makerFeeRate
@@ -24,7 +24,7 @@ const createSpotMarketParamUpdate = (
   content.minPriceTickSize = params.market.minPriceTickSize
   content.minQuantityTickSize = params.market.minQuantityTickSize
 
-  return InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.fromPartial(
+  return InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.fromPartial(
     content,
   )
 }
@@ -101,7 +101,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
     const contentAny = GoogleProtobufAny.Any.create()
     contentAny.value =
-      InjectiveExchangeV1Beta1Tx.SpotMarketParamUpdateProposal.encode(
+      InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.encode(
         content,
       ).finish()
     contentAny.typeUrl =

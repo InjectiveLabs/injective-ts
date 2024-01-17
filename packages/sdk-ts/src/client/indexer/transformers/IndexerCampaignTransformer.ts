@@ -45,6 +45,11 @@ export class IndexerCampaignTransformer {
       startDate: parseInt(campaign.startDate, 10),
       endDate: parseInt(campaign.endDate, 10),
       isClaimable: campaign.isClaimable,
+      rewards: campaign.rewards,
+      roundId: campaign.roundId,
+      userClaimed: campaign.userClaimed,
+      userScore: campaign.userScore,
+      contract: campaign.contract,
     }
   }
 
