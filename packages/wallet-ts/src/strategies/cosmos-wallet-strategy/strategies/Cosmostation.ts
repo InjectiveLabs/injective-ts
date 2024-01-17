@@ -156,6 +156,7 @@ export default class Cosmostation implements ConcreteCosmosWalletStrategy {
         ),
         signature: {
           signature: signDirectResponse.signature,
+          pub_key: signDirectResponse.pub_key,
         },
       } as DirectSignResponse
     } catch (e: unknown) {

@@ -39,7 +39,6 @@ export const testnetTokens = () =>
             symbol: 'wBTC',
             source: TokenSource.Cosmos,
             address: 'wbtc',
-            tokenType: TokenType.Cw20,
           },
           tokens.wBTC.cw20s,
         ),
@@ -115,10 +114,12 @@ export const testnetTokens = () =>
 
     SOL: {
       ...tokens.SOL,
-      cw20: {
-        ...tokens.SOL.cw20,
-        address: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
-      },
+      cw20s: [
+        {
+          ...(tokens.SOL.cw20s ? tokens.SOL.cw20s[0] : {}),
+          address: 'inj12ngevx045zpvacus9s6anr258gkwpmthnz80e9',
+        },
+      ],
     },
 
     USDC: {
@@ -134,7 +135,6 @@ export const testnetTokens = () =>
             symbol: 'USDCet',
             source: TokenSource.EthereumWh,
             address: 'inj12sqy9uzzl3h3vqxam7sz9f0yvmhampcgesh3qw',
-            tokenType: TokenType.Cw20,
           },
           tokens.USDC.cw20s,
         ),

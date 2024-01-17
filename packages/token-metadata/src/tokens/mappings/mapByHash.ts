@@ -1,6 +1,6 @@
-import { TokenMeta } from '../../types'
+import { TokenMetaBase } from '../../types'
 
-export const getMappedTokensByHash = (tokens: Record<string, TokenMeta>) =>
+export const getMappedTokensByHash = (tokens: Record<string, TokenMetaBase>) =>
   (Object.keys(tokens) as Array<keyof typeof tokens>).reduce(
     (result, token) => {
       if (!tokens[token].ibc) {
@@ -13,4 +13,4 @@ export const getMappedTokensByHash = (tokens: Record<string, TokenMeta>) =>
       }
     },
     {},
-  ) as Record<string, TokenMeta>
+  ) as Record<string, TokenMetaBase>

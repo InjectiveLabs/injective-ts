@@ -15,7 +15,8 @@
       "decimals": 18,
       "symbol": "INJ",
       "baseDenom": "INJ",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -34,7 +35,8 @@
       "decimals": 6,
       "symbol": "ampINJ",
       "baseDenom": "ampINJ",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -53,7 +55,8 @@
       "decimals": 6,
       "symbol": "OSMO",
       "baseDenom": "OSMO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -72,7 +75,8 @@
       "decimals": 6,
       "symbol": "ION",
       "baseDenom": "ION",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -91,7 +95,8 @@
       "decimals": 6,
       "symbol": "IBCX",
       "baseDenom": "IBCX",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -110,7 +115,8 @@
       "decimals": 6,
       "symbol": "stIBCX",
       "baseDenom": "stIBCX",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -129,7 +135,8 @@
       "decimals": 6,
       "symbol": "ampOSMO",
       "baseDenom": "ampOSMO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -148,7 +155,8 @@
       "decimals": 6,
       "symbol": "CDT",
       "baseDenom": "CDT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -167,7 +175,8 @@
       "decimals": 6,
       "symbol": "MBRN",
       "baseDenom": "MBRN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -186,7 +195,8 @@
       "decimals": 6,
       "symbol": "sqOSMO",
       "baseDenom": "sqOSMO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -205,7 +215,8 @@
       "decimals": 6,
       "symbol": "sqBTC",
       "baseDenom": "sqBTC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -224,7 +235,8 @@
       "decimals": 6,
       "symbol": "sqATOM",
       "baseDenom": "sqATOM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -243,7 +255,8 @@
       "decimals": 6,
       "symbol": "LVN",
       "baseDenom": "LVN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -262,7 +275,8 @@
       "decimals": 6,
       "symbol": "milkTIA",
       "baseDenom": "milkTIA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -281,7 +295,8 @@
       "decimals": 6,
       "symbol": "STRD",
       "baseDenom": "STRD",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -300,7 +315,8 @@
       "decimals": 6,
       "symbol": "stATOM",
       "baseDenom": "stATOM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -319,7 +335,8 @@
       "decimals": 6,
       "symbol": "stSTARS",
       "baseDenom": "stSTARS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -338,7 +355,8 @@
       "decimals": 6,
       "symbol": "stOSMO",
       "baseDenom": "stOSMO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -357,7 +375,8 @@
       "decimals": 6,
       "symbol": "stJUNO",
       "baseDenom": "stJUNO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -376,7 +395,8 @@
       "decimals": 6,
       "symbol": "stLUNA",
       "baseDenom": "stLUNA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -395,7 +415,8 @@
       "decimals": 18,
       "symbol": "stEVMOS",
       "baseDenom": "stEVMOS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -414,7 +435,8 @@
       "decimals": 18,
       "symbol": "stINJ",
       "baseDenom": "stINJ",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -433,7 +455,8 @@
       "decimals": 6,
       "symbol": "stUMEE",
       "baseDenom": "stUMEE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -452,7 +475,8 @@
       "decimals": 6,
       "symbol": "stCMDX",
       "baseDenom": "stCMDX",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -471,7 +495,8 @@
       "decimals": 6,
       "symbol": "stSOMM",
       "baseDenom": "stSOMM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -490,7 +515,8 @@
       "decimals": 18,
       "symbol": "EVMOS",
       "baseDenom": "EVMOS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -509,7 +535,8 @@
       "decimals": 18,
       "symbol": "NEOK",
       "baseDenom": "NEOK",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -528,7 +555,8 @@
       "decimals": 6,
       "symbol": "KUJI",
       "baseDenom": "KUJI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -547,7 +575,8 @@
       "decimals": 6,
       "symbol": "USK",
       "baseDenom": "USK",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -566,7 +595,8 @@
       "decimals": 6,
       "symbol": "ampKUJI",
       "baseDenom": "ampKUJI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -585,7 +615,8 @@
       "decimals": 6,
       "symbol": "MNTA",
       "baseDenom": "MNTA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -604,7 +635,8 @@
       "decimals": 6,
       "symbol": "WINK",
       "baseDenom": "WINK",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -623,7 +655,8 @@
       "decimals": 6,
       "symbol": "BLEND",
       "baseDenom": "BLEND",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -642,7 +675,8 @@
       "decimals": 6,
       "symbol": "ampMNTA",
       "baseDenom": "ampMNTA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -661,7 +695,8 @@
       "decimals": 6,
       "symbol": "qcKUJI",
       "baseDenom": "qcKUJI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -680,7 +715,8 @@
       "decimals": 6,
       "symbol": "qcMNTA",
       "baseDenom": "qcMNTA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -699,7 +735,8 @@
       "decimals": 6,
       "symbol": "FUZN",
       "baseDenom": "FUZN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -718,7 +755,8 @@
       "decimals": 6,
       "symbol": "rFUZN",
       "baseDenom": "rFUZN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -737,7 +775,8 @@
       "decimals": 6,
       "symbol": "NSTK",
       "baseDenom": "NSTK",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -756,7 +795,8 @@
       "decimals": 6,
       "symbol": "LOCAL",
       "baseDenom": "LOCAL",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -775,7 +815,8 @@
       "decimals": 6,
       "symbol": "yFUZN",
       "baseDenom": "yFUZN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -794,7 +835,8 @@
       "decimals": 6,
       "symbol": "UMEE",
       "baseDenom": "UMEE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -813,7 +855,8 @@
       "decimals": 6,
       "symbol": "ATOM",
       "baseDenom": "ATOM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -832,7 +875,8 @@
       "decimals": 6,
       "symbol": "AXL",
       "baseDenom": "AXL",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -851,7 +895,8 @@
       "decimals": 6,
       "symbol": "USDC",
       "baseDenom": "USDC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -870,7 +915,8 @@
       "decimals": 18,
       "symbol": "FRAX",
       "baseDenom": "FRAX",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -889,7 +935,8 @@
       "decimals": 18,
       "symbol": "DAI",
       "baseDenom": "DAI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -908,7 +955,8 @@
       "decimals": 6,
       "symbol": "USDT",
       "baseDenom": "USDT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -927,7 +975,8 @@
       "decimals": 18,
       "symbol": "WETH",
       "baseDenom": "WETH",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -946,7 +995,8 @@
       "decimals": 8,
       "symbol": "WBTC",
       "baseDenom": "WBTC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -965,7 +1015,8 @@
       "decimals": 18,
       "symbol": "AAVE",
       "baseDenom": "AAVE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -984,7 +1035,8 @@
       "decimals": 18,
       "symbol": "APE",
       "baseDenom": "APE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1003,7 +1055,8 @@
       "decimals": 18,
       "symbol": "AXS",
       "baseDenom": "AXS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1022,7 +1075,8 @@
       "decimals": 18,
       "symbol": "LINK",
       "baseDenom": "LINK",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1041,7 +1095,8 @@
       "decimals": 18,
       "symbol": "MKR",
       "baseDenom": "MKR",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1060,7 +1115,8 @@
       "decimals": 18,
       "symbol": "RAI",
       "baseDenom": "RAI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1079,7 +1135,8 @@
       "decimals": 18,
       "symbol": "SHIB",
       "baseDenom": "SHIB",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1098,7 +1155,8 @@
       "decimals": 18,
       "symbol": "stETH",
       "baseDenom": "stETH",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1117,7 +1175,8 @@
       "decimals": 18,
       "symbol": "UNI",
       "baseDenom": "UNI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1136,7 +1195,8 @@
       "decimals": 18,
       "symbol": "XCN",
       "baseDenom": "XCN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1155,7 +1215,8 @@
       "decimals": 10,
       "symbol": "DOT",
       "baseDenom": "DOT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1174,7 +1235,8 @@
       "decimals": 18,
       "symbol": "WGLMR",
       "baseDenom": "WGLMR",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1193,7 +1255,8 @@
       "decimals": 18,
       "symbol": "WMATIC",
       "baseDenom": "WMATIC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1212,7 +1275,8 @@
       "decimals": 18,
       "symbol": "WBNB",
       "baseDenom": "WBNB",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1231,7 +1295,8 @@
       "decimals": 18,
       "symbol": "BUSD",
       "baseDenom": "BUSD",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1250,7 +1315,8 @@
       "decimals": 18,
       "symbol": "WAVAX",
       "baseDenom": "WAVAX",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1269,7 +1335,8 @@
       "decimals": 18,
       "symbol": "WFTM",
       "baseDenom": "WFTM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1288,7 +1355,8 @@
       "decimals": 6,
       "symbol": "USDC",
       "baseDenom": "USDC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1307,7 +1375,8 @@
       "decimals": 6,
       "symbol": "USDC",
       "baseDenom": "USDC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1326,7 +1395,8 @@
       "decimals": 18,
       "symbol": "axlFIL",
       "baseDenom": "axlFIL",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1345,7 +1415,8 @@
       "decimals": 18,
       "symbol": "ARB",
       "baseDenom": "ARB",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1364,7 +1435,8 @@
       "decimals": 18,
       "symbol": "PEPE",
       "baseDenom": "PEPE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1383,7 +1455,8 @@
       "decimals": 18,
       "symbol": "cbETH",
       "baseDenom": "cbETH",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1402,7 +1475,8 @@
       "decimals": 18,
       "symbol": "rETH",
       "baseDenom": "rETH",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1421,7 +1495,8 @@
       "decimals": 18,
       "symbol": "sfrxETH",
       "baseDenom": "sfrxETH",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1440,7 +1515,8 @@
       "decimals": 18,
       "symbol": "wstETH",
       "baseDenom": "wstETH",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1459,7 +1535,8 @@
       "decimals": 18,
       "symbol": "YieldETH",
       "baseDenom": "YieldETH",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1478,7 +1555,8 @@
       "decimals": 6,
       "symbol": "XPRT",
       "baseDenom": "XPRT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1497,7 +1575,8 @@
       "decimals": 6,
       "symbol": "stkATOM",
       "baseDenom": "stkATOM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1516,7 +1595,8 @@
       "decimals": 6,
       "symbol": "stkOSMO",
       "baseDenom": "stkOSMO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1535,7 +1615,8 @@
       "decimals": 6,
       "symbol": "KAVA",
       "baseDenom": "KAVA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1554,7 +1635,8 @@
       "decimals": 6,
       "symbol": "HARD",
       "baseDenom": "HARD",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1573,7 +1655,8 @@
       "decimals": 6,
       "symbol": "SWP",
       "baseDenom": "SWP",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1592,7 +1675,8 @@
       "decimals": 6,
       "symbol": "USDX",
       "baseDenom": "USDX",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1611,7 +1695,8 @@
       "decimals": 6,
       "symbol": "USDT",
       "baseDenom": "USDT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1630,7 +1715,8 @@
       "decimals": 6,
       "symbol": "DAI",
       "baseDenom": "DAI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1649,7 +1735,8 @@
       "decimals": 6,
       "symbol": "axlWBTC",
       "baseDenom": "axlWBTC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1668,7 +1755,8 @@
       "decimals": 6,
       "symbol": "USDT",
       "baseDenom": "USDT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1687,7 +1775,8 @@
       "decimals": 6,
       "symbol": "ATOM",
       "baseDenom": "ATOM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1706,7 +1795,8 @@
       "decimals": 6,
       "symbol": "USDT",
       "baseDenom": "USDT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1725,7 +1815,8 @@
       "decimals": 6,
       "symbol": "WHALE",
       "baseDenom": "WHALE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1744,7 +1835,8 @@
       "decimals": 6,
       "symbol": "ampWHALE",
       "baseDenom": "ampWHALE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1763,7 +1855,8 @@
       "decimals": 6,
       "symbol": "bWHALE",
       "baseDenom": "bWHALE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1782,7 +1875,8 @@
       "decimals": 6,
       "symbol": "FABLE",
       "baseDenom": "FABLE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1801,7 +1895,8 @@
       "decimals": 6,
       "symbol": "RAC",
       "baseDenom": "RAC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1820,7 +1915,8 @@
       "decimals": 6,
       "symbol": "ASH",
       "baseDenom": "ASH",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1839,7 +1935,8 @@
       "decimals": 6,
       "symbol": "SOMM",
       "baseDenom": "SOMM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1858,7 +1955,8 @@
       "decimals": 6,
       "symbol": "CRE",
       "baseDenom": "CRE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1877,7 +1975,8 @@
       "decimals": 6,
       "symbol": "bCRE",
       "baseDenom": "bCRE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1896,7 +1995,8 @@
       "decimals": 6,
       "symbol": "SCRT",
       "baseDenom": "SCRT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1915,7 +2015,8 @@
       "decimals": 6,
       "symbol": "ORAI",
       "baseDenom": "ORAI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1934,7 +2035,8 @@
       "decimals": 6,
       "symbol": "USDC",
       "baseDenom": "USDC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1953,7 +2055,8 @@
       "decimals": 6,
       "symbol": "FRNZ",
       "baseDenom": "FRNZ",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1972,7 +2075,8 @@
       "decimals": 6,
       "symbol": "LUNA",
       "baseDenom": "LUNA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -1991,7 +2095,8 @@
       "decimals": 6,
       "symbol": "ampWHALEt",
       "baseDenom": "ampWHALEt",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2010,7 +2115,8 @@
       "decimals": 6,
       "symbol": "boneWHALEt",
       "baseDenom": "boneWHALEt",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2029,7 +2135,8 @@
       "decimals": 6,
       "symbol": "ampROAR",
       "baseDenom": "ampROAR",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2048,7 +2155,8 @@
       "decimals": 6,
       "symbol": "TIA",
       "baseDenom": "TIA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2067,7 +2175,8 @@
       "decimals": 6,
       "symbol": "qcFUZN",
       "baseDenom": "qcFUZN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2086,7 +2195,8 @@
       "decimals": 6,
       "symbol": "NOIS",
       "baseDenom": "NOIS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2105,7 +2215,8 @@
       "decimals": 12,
       "symbol": "PICA",
       "baseDenom": "PICA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2124,7 +2235,8 @@
       "decimals": 6,
       "symbol": "OSMO",
       "baseDenom": "OSMO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2143,7 +2255,8 @@
       "decimals": 6,
       "symbol": "STRD",
       "baseDenom": "STRD",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2162,7 +2275,8 @@
       "decimals": 6,
       "symbol": "BLD",
       "baseDenom": "BLD",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2181,7 +2295,8 @@
       "decimals": 6,
       "symbol": "stATOM",
       "baseDenom": "stATOM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2200,7 +2315,8 @@
       "decimals": 6,
       "symbol": "NTRN",
       "baseDenom": "NTRN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2219,7 +2335,8 @@
       "decimals": 6,
       "symbol": "UMEE",
       "baseDenom": "UMEE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2238,7 +2355,8 @@
       "decimals": 6,
       "symbol": "CRE",
       "baseDenom": "CRE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2257,7 +2375,8 @@
       "decimals": 6,
       "symbol": "SCRT",
       "baseDenom": "SCRT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2276,7 +2395,8 @@
       "decimals": 6,
       "symbol": "STARS",
       "baseDenom": "STARS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2295,7 +2415,8 @@
       "decimals": 6,
       "symbol": "bCRE",
       "baseDenom": "bCRE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2314,7 +2435,8 @@
       "decimals": 6,
       "symbol": "HUAHUA",
       "baseDenom": "HUAHUA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2333,7 +2455,8 @@
       "decimals": 6,
       "symbol": "ATOM",
       "baseDenom": "ATOM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2352,7 +2475,8 @@
       "decimals": 6,
       "symbol": "CIRCUS",
       "baseDenom": "CIRCUS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2371,7 +2495,8 @@
       "decimals": 6,
       "symbol": "USDC",
       "baseDenom": "USDC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2390,7 +2515,8 @@
       "decimals": 6,
       "symbol": "USDC",
       "baseDenom": "USDC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2409,7 +2535,8 @@
       "decimals": 10,
       "symbol": "DOT",
       "baseDenom": "DOT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2428,7 +2555,8 @@
       "decimals": 6,
       "symbol": "PLNK",
       "baseDenom": "PLNK",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2447,7 +2575,8 @@
       "decimals": 6,
       "symbol": "ROAR",
       "baseDenom": "ROAR",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2466,7 +2595,8 @@
       "decimals": 10,
       "symbol": "xxx",
       "baseDenom": "xxx",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2485,7 +2615,8 @@
       "decimals": 6,
       "symbol": "CUB",
       "baseDenom": "CUB",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2504,7 +2635,8 @@
       "decimals": 6,
       "symbol": "ASTRO",
       "baseDenom": "ASTRO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2523,7 +2655,8 @@
       "decimals": 6,
       "symbol": "SAYVE",
       "baseDenom": "SAYVE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2542,7 +2675,8 @@
       "decimals": 6,
       "symbol": "ampLUNA",
       "baseDenom": "ampLUNA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2561,7 +2695,8 @@
       "decimals": 6,
       "symbol": "bLUNA",
       "baseDenom": "bLUNA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2580,7 +2715,8 @@
       "decimals": 6,
       "symbol": "BLUE",
       "baseDenom": "BLUE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2599,7 +2735,8 @@
       "decimals": 18,
       "symbol": "DINHEIROS",
       "baseDenom": "DINHEIROS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2618,7 +2755,8 @@
       "decimals": 6,
       "symbol": "REIS",
       "baseDenom": "REIS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2637,7 +2775,8 @@
       "decimals": 6,
       "symbol": "ESCUDOS",
       "baseDenom": "ESCUDOS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2656,7 +2795,8 @@
       "decimals": 6,
       "symbol": "ALEM",
       "baseDenom": "ALEM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2675,7 +2815,8 @@
       "decimals": 6,
       "symbol": "GEM",
       "baseDenom": "GEM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2694,7 +2835,8 @@
       "decimals": 18,
       "symbol": "NICO",
       "baseDenom": "NICO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2713,7 +2855,8 @@
       "decimals": 6,
       "symbol": "SEAS",
       "baseDenom": "SEAS",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2732,7 +2875,8 @@
       "decimals": 6,
       "symbol": "BITZ",
       "baseDenom": "BITZ",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2751,7 +2895,8 @@
       "decimals": 6,
       "symbol": "SEUL",
       "baseDenom": "SEUL",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2770,7 +2915,8 @@
       "decimals": 6,
       "symbol": "xSEUL",
       "baseDenom": "xSEUL",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2789,7 +2935,8 @@
       "decimals": 6,
       "symbol": "AUTISM",
       "baseDenom": "AUTISM",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2808,7 +2955,8 @@
       "decimals": 6,
       "symbol": "GUPPY",
       "baseDenom": "GUPPY",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2827,7 +2975,8 @@
       "decimals": 6,
       "symbol": "NTRN",
       "baseDenom": "NTRN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2846,7 +2995,8 @@
       "decimals": 18,
       "symbol": "wstETH",
       "baseDenom": "wstETH",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2865,7 +3015,8 @@
       "decimals": 6,
       "symbol": "ASTROPEPE",
       "baseDenom": "ASTROPEPE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2884,7 +3035,8 @@
       "decimals": 6,
       "symbol": "NEWT",
       "baseDenom": "NEWT",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2903,7 +3055,8 @@
       "decimals": 6,
       "symbol": "CORGI",
       "baseDenom": "CORGI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2922,7 +3075,8 @@
       "decimals": 6,
       "symbol": "WBTC",
       "baseDenom": "WBTC",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2941,7 +3095,8 @@
       "decimals": 6,
       "symbol": "OPHIR",
       "baseDenom": "OPHIR",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2960,7 +3115,8 @@
       "decimals": 6,
       "symbol": "ITO",
       "baseDenom": "ITO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2979,7 +3135,8 @@
       "decimals": 6,
       "symbol": "ARMANI",
       "baseDenom": "ARMANI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -2998,7 +3155,8 @@
       "decimals": 6,
       "symbol": "NINJA",
       "baseDenom": "NINJA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3017,7 +3175,8 @@
       "decimals": 6,
       "symbol": "WGMI",
       "baseDenom": "WGMI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3036,7 +3195,8 @@
       "decimals": 6,
       "symbol": "DROGO",
       "baseDenom": "DROGO",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3055,7 +3215,8 @@
       "decimals": 6,
       "symbol": "SEI",
       "baseDenom": "SEI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3074,7 +3235,8 @@
       "decimals": 6,
       "symbol": "OIN",
       "baseDenom": "OIN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3093,7 +3255,8 @@
       "decimals": 6,
       "symbol": "OIN",
       "baseDenom": "OIN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3112,7 +3275,8 @@
       "decimals": 6,
       "symbol": "ampSEI",
       "baseDenom": "ampSEI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3131,7 +3295,8 @@
       "decimals": 6,
       "symbol": "POPEYE",
       "baseDenom": "POPEYE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3150,7 +3315,8 @@
       "decimals": 6,
       "symbol": "SEI",
       "baseDenom": "SEI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3169,7 +3335,8 @@
       "decimals": 6,
       "symbol": "OIN",
       "baseDenom": "OIN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3188,7 +3355,8 @@
       "decimals": 6,
       "symbol": "OIN",
       "baseDenom": "OIN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3207,7 +3375,8 @@
       "decimals": 6,
       "symbol": "ampSEI",
       "baseDenom": "ampSEI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3226,7 +3395,8 @@
       "decimals": 6,
       "symbol": "POPEYE",
       "baseDenom": "POPEYE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3245,7 +3415,8 @@
       "decimals": 6,
       "symbol": "SEI",
       "baseDenom": "SEI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3264,7 +3435,8 @@
       "decimals": 6,
       "symbol": "OIN",
       "baseDenom": "OIN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3283,7 +3455,8 @@
       "decimals": 6,
       "symbol": "OIN",
       "baseDenom": "OIN",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3302,7 +3475,8 @@
       "decimals": 6,
       "symbol": "ampSEI",
       "baseDenom": "ampSEI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3321,7 +3495,8 @@
       "decimals": 6,
       "symbol": "POPEYE",
       "baseDenom": "POPEYE",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3340,7 +3515,8 @@
       "decimals": 6,
       "symbol": "JIMMY",
       "baseDenom": "JIMMY",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3359,7 +3535,8 @@
       "decimals": 6,
       "symbol": "SENSEI",
       "baseDenom": "SENSEI",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {
@@ -3378,7 +3555,128 @@
       "decimals": 18,
       "symbol": "DORA",
       "baseDenom": "DORA",
-      "isNative": false
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Canto",
+    "denom": "ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/canto/images/canto.png",
+    "symbol": "CANTO",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "CANTO",
+      "baseDenom": "CANTO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Wrapped Bitcoin",
+    "denom": "ibc/A07BB73539F556DA5238F1B7E9471B34DD19897B1EE7050B959989F13EFE73B3",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/wbtc.png",
+    "symbol": "WBTC",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A07BB73539F556DA5238F1B7E9471B34DD19897B1EE7050B959989F13EFE73B3",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "WBTC",
+      "baseDenom": "WBTC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Badcoin",
+    "denom": "ibc/C04478BE3CAA4A14EAF4A47967945E92ED2C39E02146E1577991FC5243E974BB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/bad.png",
+    "symbol": "BAD",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C04478BE3CAA4A14EAF4A47967945E92ED2C39E02146E1577991FC5243E974BB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BAD",
+      "baseDenom": "BAD",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Bitcosmos",
+    "denom": "ibc/E440667C70A0C9A5AD5A8D709731289AFB92301D64D70D0B33D18EF4FDD797FE",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/bitcosmos.png",
+    "symbol": "BTC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "E440667C70A0C9A5AD5A8D709731289AFB92301D64D70D0B33D18EF4FDD797FE",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BTC",
+      "baseDenom": "BTC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "ADO",
+    "denom": "ibc/CF0C070562EC0816B09DDD9518328DCCFBE6C4388907EFF883FD4BE4E510005E",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/ADO.png",
+    "symbol": "ADO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "CF0C070562EC0816B09DDD9518328DCCFBE6C4388907EFF883FD4BE4E510005E",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ADO",
+      "baseDenom": "ADO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "wtf",
+    "denom": "ibc/3C788BF2FC1269D66CA3E339634E14856A90336C5562E183EFC9B743C343BC31",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/WTF.png",
+    "symbol": "WTF",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3C788BF2FC1269D66CA3E339634E14856A90336C5562E183EFC9B743C343BC31",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WTF",
+      "baseDenom": "WTF",
+      "isNative": false,
+      "tokenType": "ibc"
     }
   },
   {

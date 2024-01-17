@@ -28,7 +28,6 @@ export const getTokenFromContractStateResponse = (
       decimals: tokenInfo.decimals || 18,
       address: contractAddress,
       symbol: tokenInfo.symbol || tokenInfo.name || 'Unknown',
-      tokenType: TokenType.Cw20,
     },
   } as Token
 }
@@ -61,7 +60,6 @@ export const getTokenFromCw20ContractInfo = (
         response.cw20_metadata.token_info.symbol ||
         response.cw20_metadata.token_info.name ||
         'Unknown',
-      tokenType: TokenType.Cw20,
     },
   } as Token
 }

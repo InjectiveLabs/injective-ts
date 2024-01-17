@@ -12,6 +12,7 @@ const params: MsgCreateBinaryOptionsLimitOrder['params'] = {
   quantity: '100',
   subaccountId: mockFactory.subaccountId,
   triggerPrice: '0',
+  cid: '',
 }
 
 const protoType = '/injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder'
@@ -25,6 +26,7 @@ const protoParams = {
       price: params.price,
       quantity: params.quantity,
       subaccountId: params.subaccountId,
+      cid: params.cid,
     },
     orderType: params.orderType,
     margin: params.margin,

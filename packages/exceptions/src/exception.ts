@@ -119,8 +119,11 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public setStack(stack: string) {
-    super.stack = stack
-    this.stack = stack
+    try {
+      this.stack = stack
+    } catch (e) {
+      // throw nothing here
+    }
   }
 
   public setName(name: string) {

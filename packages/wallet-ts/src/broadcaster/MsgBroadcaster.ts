@@ -374,8 +374,6 @@ export class MsgBroadcaster {
         accountNumber: baseAccount.accountNumber,
       })) as string
 
-      console.log({ signature, signMode, aminoSignDoc })
-
       txRaw.signatures = [Buffer.from(signature, 'base64')]
 
       return walletStrategy.sendTransaction(txRaw, {
@@ -634,7 +632,10 @@ export class MsgBroadcaster {
       address: tx.injectiveAddress,
       txRaw: createTxRawFromSigResponse(directSignResponse),
       signature: directSignResponse.signature.signature,
-      pubKey: directSignResponse.signature.pub_key,
+      pubKey: directSignResponse.signature.pub_key || {
+        value: pubKey,
+        type: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
+      },
     })
 
     // Re-enable tx gas check removed above
