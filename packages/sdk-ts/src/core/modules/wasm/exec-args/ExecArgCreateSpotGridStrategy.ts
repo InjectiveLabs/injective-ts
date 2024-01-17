@@ -4,6 +4,7 @@ import {
   ExecDataRepresentation,
 } from '../ExecArgBase'
 
+import { ExitType, ExitConfig } from '../types'
 export declare namespace ExecArgCreateSpotGridStrategy {
   export interface Params {
     subaccountId: string
@@ -11,9 +12,9 @@ export declare namespace ExecArgCreateSpotGridStrategy {
     upperBound: string
     levels: number
     slippage?: string
-    stopLoss?: string
-    takeProfit?: string
-    shouldExitWithQuoteOnly?: boolean
+    stopLoss?: ExitConfig
+    takeProfit?: ExitConfig
+    exitType?: ExitType
   }
 
   export interface Data {
@@ -21,8 +22,15 @@ export declare namespace ExecArgCreateSpotGridStrategy {
     bounds: [string, string]
     levels: number
     slippage?: string
-    stop_loss?: string
-    take_profit?: string
+    stop_loss?: {
+      exit_type: ExitType
+      exit_price: string
+    }
+    take_profit?: {
+      exit_type: ExitType
+      exit_price: string
+    }
+    exit_type?: ExitType
     should_exit_with_quote_only: boolean
   }
 }
@@ -48,9 +56,20 @@ export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
       levels: params.levels,
       bounds: [params.lowerBound, params.upperBound],
       slippage: params.slippage,
-      stop_loss: params.stopLoss,
-      take_profit: params.takeProfit,
-      should_exit_with_quote_only: !!params.shouldExitWithQuoteOnly,
+      exit_type: params.exitType,
+      stop_loss: params.stopLoss
+        ? {
+            exit_type: params.stopLoss.exitType,
+            exit_price: params.stopLoss.exitPrice,
+          }
+        : undefined,
+      take_profit: params.takeProfit
+        ? {
+            exit_type: params.takeProfit.exitType,
+            exit_price: params.takeProfit.exitPrice,
+          }
+        : undefined,
+      should_exit_with_quote_only: false, // dummy value for backwards compatibility
     }
   }
 

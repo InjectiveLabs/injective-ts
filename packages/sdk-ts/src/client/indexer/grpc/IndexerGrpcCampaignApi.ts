@@ -30,17 +30,18 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     marketId,
     campaignId,
     accountAddress,
+    contractAddress,
   }: {
     skip?: string
     limit?: number
     marketId?: string
     campaignId: string
     accountAddress?: string
+    contractAddress?: string
   }) {
     const request = InjectiveCampaignRpc.RankingRequest.create()
 
     request.campaignId = campaignId
-
     if (skip) {
       request.skip = skip
     }
@@ -55,6 +56,10 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
 
     if (accountAddress) {
       request.accountAddress = accountAddress
+    }
+
+    if (contractAddress) {
+      request.contractAddress = contractAddress
     }
 
     try {

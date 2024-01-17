@@ -9,6 +9,11 @@ export interface Campaign {
   startDate: number
   endDate: number
   isClaimable: boolean
+  rewards: Coin[]
+  roundId: number
+  userClaimed: boolean
+  userScore: string
+  contract: string
 }
 
 export interface CampaignUser {
