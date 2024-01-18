@@ -168,4 +168,17 @@ export const testnetTokens = () =>
         },
       ],
     },
+    
+    RICE: {
+      name: 'RICE',
+      logo: 'RICE.jepg',
+  
+      tokenFactories: [
+        {
+          creator: 'inj1mt876zny9j6xae25h7hl7zuqf7gkx8q63k0426',
+          symbol: 'RICE',
+          decimals: 12,
+        },
+      ],
+    },
   } as Record<string, TokenMeta>)
