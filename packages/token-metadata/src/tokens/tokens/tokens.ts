@@ -2802,4 +2802,17 @@ export default {
       address: '0xC08512927D12348F6620a698105e1BAac6EcD911',
     },
   },
+
+  ALIEN: {
+    name: 'ALIEN',
+    logo: 'alien.png',
+    coinGeckoId: '',
+    tokenFactories: [
+      {
+        creator: 'inj1mly2ykhf6f9tdj58pvndjf4q8dzdl4myjqm9t6',
+        symbol: '$ALIEN',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
