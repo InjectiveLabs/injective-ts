@@ -3,10 +3,11 @@ import {
   TxResponse,
   getGrpcTransport,
   ChainGrpcWasmApi,
-  MsgExecuteContractCompat,
   ChainGrpcBankApi,
-  IndexerRestExplorerApi,
   getInjectiveAddress,
+  MsgExecuteContractCompat,
+  IndexerRestExplorerApi,
+  toUtf8,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -14,7 +15,7 @@ import {
   getSignedVAA,
   getSignedVAAWithRetry,
   tryNativeToUint8Array,
-} from '@injectivelabs/wormhole-sdk'
+} from '@certusone/wormhole-sdk'
 import {
   transferFromInjective,
   getEmitterAddressInjective,
@@ -23,7 +24,10 @@ import {
   getForeignAssetInjective,
 } from '../injective'
 import { INJ_DENOM, sleep } from '@injectivelabs/utils'
-import { WORMHOLE_CHAINS } from '../constants'
+import {
+  WORMHOLE_CHAINS,
+  WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK,
+} from '../constants'
 import { TransferMsgArgs, WormholeClient, WormholeSource } from '../types'
 import {
   getAssociatedChain,
@@ -40,7 +44,6 @@ interface WalletStrategy {
 
 interface MsgBroadcaster {
   broadcast: (params: any) => Promise<TxResponse>
-  broadcastOld: (params: any) => Promise<TxResponse>
 }
 
 interface Provider {
@@ -161,7 +164,7 @@ export class InjectiveWormholeClient
       tryNativeToUint8Array(recipient, associatedChain),
     )
 
-    const txResponse = (await provider.msgBroadcaster.broadcastOld({
+    const txResponse = (await provider.msgBroadcaster.broadcast({
       msgs: [...additionalMsgs, ...messages],
       injectiveAddress: signer,
     })) as TxResponse
@@ -400,5 +403,90 @@ export class InjectiveWormholeClient
     throw new GeneralException(
       new Error(`Could not get the balance from the token bridge contract`),
     )
+  }
+
+  /**
+   * Used to migrate existing
+   * tokens from Injective to
+   * Wormhole Gateway thought IBC
+   */
+  async migrate(
+    args: TransferMsgArgs & {
+      /**
+       * Additional messages that we run before the bridge, an example
+       * could be redeeming from the token factory to CW20
+       */
+      additionalMsgs?: MsgExecuteContractCompat[]
+      /**
+       * The destination chain where we transfer to
+       */
+      destination?: WormholeSource
+    },
+  ) {
+    const { network, wormholeRpcUrl, wormholeRestUrl, provider } = this
+    const {
+      amount,
+      signer,
+      additionalMsgs = [],
+      destination = WormholeSource.Wormchain,
+    } = args
+
+    if (!args.tokenAddress) {
+      throw new GeneralException(new Error(`Please provide tokenAddress`))
+    }
+
+    if (!wormholeRpcUrl && !wormholeRestUrl) {
+      throw new GeneralException(
+        new Error(`Please provide wormholeRpcUrl | wormholeRestUrl`),
+      )
+    }
+
+    if (!provider) {
+      throw new GeneralException(
+        new Error(`Please provide Injective wallet provider`),
+      )
+    }
+
+    if (!signer) {
+      throw new GeneralException(new Error(`Please provide signer`))
+    }
+
+    const transferDetails = {
+      gateway_transfer: {
+        chain: WORMHOLE_CHAINS.injective,
+        recipient: Buffer.from(toUtf8(signer)).toString('base64'),
+        fee: 0,
+      },
+    }
+
+    const { injectiveContractAddresses } = getContractAddresses(
+      network,
+      destination,
+    )
+
+    const messages = await transferFromInjective(
+      signer,
+      injectiveContractAddresses.token_bridge,
+      args.tokenAddress,
+      amount,
+      WORMHOLE_CHAINS.wormchain,
+      tryNativeToUint8Array(
+        WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
+        WORMHOLE_CHAINS.wormchain,
+      ),
+      '0',
+      new Uint8Array(Buffer.from(JSON.stringify(transferDetails))),
+    )
+
+    const txResponse = (await provider.msgBroadcaster.broadcast({
+      msgs: [...additionalMsgs, ...messages],
+      injectiveAddress: signer,
+    })) as TxResponse
+
+    if (!txResponse) {
+      throw new GeneralException(new Error('Transaction can not be found!'))
+    }
+
+    return txResponse
   }
 }

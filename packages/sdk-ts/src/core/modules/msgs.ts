@@ -53,6 +53,7 @@ import MsgCreateDenom from './tokenfactory/msgs/MsgCreateDenom'
 import MsgMint from './tokenfactory/msgs/MsgMint'
 import MsgSetDenomMetadata from './tokenfactory/msgs/MsgSetDenomMetadata'
 import MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer'
+import MsgLiquidatePosition from './exchange/msgs/MsgLiquidatePosition'
 import { MsgSubmitProposal } from './gov'
 
 /**
@@ -115,6 +116,7 @@ export type Msgs =
   | MsgSetDenomMetadata
   | MsgGrantAllowance
   | MsgRevokeAllowance
+  | MsgLiquidatePosition
 
 /**
  * @category Messages
@@ -142,3 +144,4 @@ export type ExchangeMsgs =
   | MsgExternalTransfer
   | MsgStoreCode
   | MsgRewardsOptOut
+  | MsgLiquidatePosition

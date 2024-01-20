@@ -3678,5 +3678,25 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "WOSMO",
+    "denom": "ibc/DD648F5D3CDA56D0D8D8820CF703D246B9FC4007725D8B38D23A21FF1A1477E3",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/WOSMO.png",
+    "symbol": "WOSMO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "DD648F5D3CDA56D0D8D8820CF703D246B9FC4007725D8B38D23A21FF1A1477E3",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WOSMO",
+      "baseDenom": "WOSMO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]

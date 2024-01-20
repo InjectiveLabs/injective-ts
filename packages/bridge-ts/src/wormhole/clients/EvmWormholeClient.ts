@@ -20,7 +20,7 @@ import {
   CHAIN_ID_POLYGON,
   getForeignAssetEth,
   tryNativeToUint8Array,
-} from '@injectivelabs/wormhole-sdk'
+} from '@certusone/wormhole-sdk'
 import { BigNumber, sleep } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
 import { zeroPad } from 'ethers/lib/utils'
@@ -372,7 +372,7 @@ export class EvmWormholeClient
     ).toString()
   }
 
-  private async transferToken(args: TransferMsgArgs) {
+  protected async transferToken(args: TransferMsgArgs) {
     const { network, wormholeRpcUrl, wormholeRestUrl, wormholeSource } = this
     const { amount, recipient, tokenAddress } = args
 
@@ -435,7 +435,7 @@ export class EvmWormholeClient
     }
   }
 
-  private async transferNative(args: TransferMsgArgs) {
+  protected async transferNative(args: TransferMsgArgs) {
     const { network, wormholeRpcUrl, wormholeRestUrl, wormholeSource } = this
     const { amount, recipient } = args
 
@@ -480,7 +480,7 @@ export class EvmWormholeClient
     }
   }
 
-  private async getProvider() {
+  protected async getProvider() {
     const { provider } = this
 
     if (this.singletonProvider) {
@@ -493,7 +493,7 @@ export class EvmWormholeClient
     return this.singletonProvider
   }
 
-  private async getProviderAndChainIdCheck() {
+  protected async getProviderAndChainIdCheck() {
     const provider = await this.getProvider()
     const signer = provider.getSigner()
     const chainId = await signer.getChainId()

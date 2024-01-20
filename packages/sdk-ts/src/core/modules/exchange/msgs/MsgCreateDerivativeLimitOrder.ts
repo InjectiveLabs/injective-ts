@@ -30,9 +30,9 @@ const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
   orderInfo.price = params.price
   orderInfo.quantity = params.quantity
 
-    if (params.cid) {
-      orderInfo.cid = params.cid
-    }
+  if (params.cid) {
+    orderInfo.cid = params.cid
+  }
 
   const derivativeOrder =
     InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()

@@ -1,4 +1,4 @@
-import { CONTRACTS, ChainId } from '@injectivelabs/wormhole-sdk'
+import { CONTRACTS, ChainId } from '@certusone/wormhole-sdk'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { ethers } from 'ethers'
 import { TxResponse, MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'
@@ -14,6 +14,7 @@ export interface TransferMsgArgs {
 }
 
 export type WormholeContractAddresses = typeof CONTRACTS.MAINNET.injective
+export type WormholeWormchainContractAddresses = typeof CONTRACTS.MAINNET.wormchain
 export type WormholeSolanaContractAddresses = typeof CONTRACTS.MAINNET.solana
 export type WormholeArbitrumContractAddresses =
   typeof CONTRACTS.MAINNET.arbitrum
@@ -32,6 +33,7 @@ export enum WormholeSource {
   Sui = 'sui',
   Klaytn = 'klaytn',
   Aptos = 'aptos',
+  Wormchain = 'wormchain'
 }
 
 export interface WormholeClient<

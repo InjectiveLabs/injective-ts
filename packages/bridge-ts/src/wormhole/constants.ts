@@ -1,5 +1,5 @@
 import { Network, isDevnet, isTestnet } from '@injectivelabs/networks'
-import { CHAINS, CONTRACTS } from '@injectivelabs/wormhole-sdk'
+import { CHAINS, CONTRACTS } from '@certusone/wormhole-sdk'
 import { WormholeSource } from './types'
 
 export const WORMHOLE_CONTRACT_BY_NETWORK = (network: Network) => {
@@ -64,6 +64,24 @@ export const WORMHOLE_APTOS_CONTRACT_BY_NETWORK = (network: Network) => {
   }
 
   return CONTRACTS.MAINNET.aptos
+}
+
+export const WORMHOLE_WORMCHAIN_CONTRACT_BY_NETWORK = (network: Network) => {
+  if (isTestnet(network) || isDevnet(network)) {
+    return CONTRACTS.TESTNET.wormchain
+  }
+
+  return CONTRACTS.MAINNET.wormchain
+}
+
+export const WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK = (
+  network: Network,
+) => {
+  if (isTestnet(network) || isDevnet(network)) {
+    return 'wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx'
+  }
+
+  return 'wormhole1ctnjk7an90lz5wjfvr3cf6x984a8cjnv8dpmztmlpcq4xteaa2xs9pwmzk'
 }
 
 export const WORMHOLE_CHAINS = CHAINS

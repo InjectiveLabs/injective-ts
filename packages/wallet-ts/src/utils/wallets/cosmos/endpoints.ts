@@ -131,6 +131,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://rpc.cosmos.directory/kujira',
         rest: 'https://rest.cosmos.directory/kujira',
       }
+    case CosmosChainId.Wormchain:
+      return {
+        rpc: 'https://rpc.cosmos.directory/gateway',
+        rest: 'https://rest.cosmos.directory/gateway',
+      }
     default:
       throw new GeneralException(
         new Error(`Endpoints for ${chainId} not found`),

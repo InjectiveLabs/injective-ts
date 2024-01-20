@@ -1,6 +1,8 @@
 import {
   ChainGrpcWasmApi,
   MsgExecuteContractCompat,
+  MsgTransfer,
+  makeTimeoutTimestampInNs,
 } from '@injectivelabs/sdk-ts'
 import { parseSmartContractStateResponse } from './utils'
 import {
@@ -8,8 +10,10 @@ import {
   ChainName,
   coalesceChainId,
   isNativeDenomInjective,
-} from '@injectivelabs/wormhole-sdk'
+} from '@certusone/wormhole-sdk'
 import { fromUint8Array } from 'js-base64'
+import { ChainId as InjectiveChainId } from '@injectivelabs/ts-types'
+import { BigNumberInBase } from '@injectivelabs/utils'
 
 /**
  * Return if the VAA has been redeemed or not
@@ -106,7 +110,7 @@ export async function transferFromInjective(
           recipient: Buffer.from(recipientAddress).toString('base64'),
           fee: relayerFee,
           nonce,
-          payload,
+          payload: Buffer.from(payload).toString('base64'),
         }
       : {
           asset: {
@@ -167,4 +171,47 @@ export async function transferFromInjective(
           },
         }),
       ]
+}
+
+export async function transferFromInjectiveUsingIbc(
+  chainId: InjectiveChainId,
+  channelId: string,
+  walletAddress: string,
+  ibcTranslatorAddress: string,
+  denom: string,
+  amount: string,
+  recipientAddress: string /* in base 64 */,
+  destinationLatestBlock: any,
+) {
+  const memo = JSON.stringify({
+    gateway_ibc_token_bridge_payload: {
+      gateway_transfer: {
+        chain: chainId,
+        recipient: recipientAddress,
+        fee: 0,
+      },
+    },
+  })
+  const timeoutTimestamp = makeTimeoutTimestampInNs()
+
+  return MsgTransfer.fromJSON({
+    port: 'transfer',
+    memo: memo,
+    sender: walletAddress,
+    receiver: ibcTranslatorAddress,
+    channelId: channelId,
+    timeout: timeoutTimestamp,
+    height: {
+      revisionHeight: new BigNumberInBase(destinationLatestBlock.header.height)
+        .plus(100)
+        .toNumber(),
+      revisionNumber: new BigNumberInBase(
+        destinationLatestBlock.header.version.block,
+      ).toNumber(),
+    },
+    amount: {
+      denom: amount,
+      amount: denom,
+    },
+  })
 }
