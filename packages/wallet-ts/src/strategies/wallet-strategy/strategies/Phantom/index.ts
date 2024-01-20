@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { sleep } from '@injectivelabs/utils'
 import {
-  ChainId,
   AccountAddress,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
@@ -18,15 +17,12 @@ import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
 } from '../../../types'
-import { BrowserEip1993Provider } from '../../types'
+import { BrowserEip1993Provider, SendTransactionOptions } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import { WalletAction, WalletDeviceType } from '../../../../types/enums'
 import { getPhantomProvider } from './utils'
 
-export default class Phantom
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Phantom extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
   }
@@ -86,17 +82,9 @@ export default class Phantom
 
   async sendTransaction(
     transaction: TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints } = options
+    const { endpoints, txTimeout } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -107,7 +95,7 @@ export default class Phantom
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction)
+    const response = await txApi.broadcast(transaction, { txTimeout })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {

@@ -9,6 +9,7 @@ import {
 import {
   TxRaw,
   TxResponse,
+  waitTxBroadcasted,
   createTxRawFromSigResponse,
   createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
@@ -19,6 +20,7 @@ import { AminoSignResponse } from '@cosmjs/launchpad'
 import { NinjiWallet } from '../../../utils/wallets/ninji'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
+import { SendTransactionOptions } from '../../wallet-strategy'
 
 export default class Ninji implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -59,14 +61,23 @@ export default class Ninji implements ConcreteCosmosWalletStrategy {
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     const { ninjiWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
 
-    try {
-      return await ninjiWallet.waitTxBroadcasted(
-        await ninjiWallet.broadcastTx(txRaw),
+    if (!options.endpoints) {
+      throw new CosmosWalletException(
+        new Error(
+          'You have to pass endpoints within the options to broadcast transaction',
+        ),
       )
+    }
+
+    try {
+      const txHash = await ninjiWallet.broadcastTx(txRaw)
+
+      return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

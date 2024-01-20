@@ -8,6 +8,7 @@ import {
 import {
   TxRaw,
   TxResponse,
+  waitTxBroadcasted,
   createTxRawFromSigResponse,
   createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
@@ -23,6 +24,7 @@ import { KeplrWallet } from '../../../utils/wallets/keplr'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import { SendTransactionOptions } from '../types'
 
 export default class Keplr
   extends BaseConcreteStrategy
@@ -30,13 +32,10 @@ export default class Keplr
 {
   private keplrWallet: KeplrWallet
 
-  constructor(args: {
-    chainId: ChainId
-    endpoints?: { rest: string; rpc: string }
-  }) {
+  constructor(args: { chainId: ChainId }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.keplrWallet = new KeplrWallet(args.chainId, args.endpoints)
+    this.keplrWallet = new KeplrWallet(args.chainId)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -95,20 +94,23 @@ export default class Keplr
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: { grpc: string }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     const { keplrWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
 
-    try {
-      return await keplrWallet.waitTxBroadcasted(
-        await keplrWallet.broadcastTx(txRaw),
-        options.endpoints?.grpc,
+    if (!options.endpoints) {
+      throw new CosmosWalletException(
+        new Error(
+          'You have to pass endpoints within the options to broadcast transaction',
+        ),
       )
+    }
+
+    try {
+      const txHash = await keplrWallet.broadcastTx(txRaw)
+
+      return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
         throw e

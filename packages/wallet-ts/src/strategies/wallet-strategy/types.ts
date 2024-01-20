@@ -1,5 +1,6 @@
 import Eip1993Provider from 'eip1193-provider'
-import HDNode from 'hdkey'
+import type HDNode from 'hdkey'
+import { ChainId } from '@injectivelabs/ts-types'
 
 export interface BrowserEip1993Provider extends Eip1993Provider {
   removeAllListeners(): void
@@ -36,4 +37,15 @@ export interface TrezorWalletInfo {
 export enum LedgerDerivationPathType {
   LedgerLive = 'ledger-live',
   LedgerMew = 'ledger-mew',
+}
+
+export interface SendTransactionOptions {
+  address: string
+  chainId: ChainId
+  txTimeout?: number
+  endpoints: {
+    rest: string
+    grpc: string
+    tm?: string
+  }
 }

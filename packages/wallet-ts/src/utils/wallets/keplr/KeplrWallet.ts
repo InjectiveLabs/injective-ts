@@ -14,7 +14,6 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxRestApi, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   CosmosWalletException,
@@ -23,7 +22,6 @@ import {
   WalletErrorActionModule,
   GeneralException,
 } from '@injectivelabs/exceptions'
-import { getEndpointsFromChainId } from '../cosmos/endpoints'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as KeplrWindow
@@ -31,14 +29,8 @@ const $window = (typeof window !== 'undefined' ? window : {}) as KeplrWindow
 export class KeplrWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  private endpoints: { rest: string; rpc?: string }
-
-  constructor(
-    chainId: CosmosChainId | TestnetCosmosChainId | ChainId,
-    endpoints?: { rest: string; rpc?: string },
-  ) {
+  constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
     this.chainId = chainId
-    this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
   static async isChainIdSupported(chainId: CosmosChainId): Promise<boolean> {
@@ -210,20 +202,12 @@ export class KeplrWallet {
     }
   }
 
-  public async waitTxBroadcasted(
-    txHash: string,
-    endpoint?: string,
-  ): Promise<TxResponse> {
-    return endpoint
-      ? new TxGrpcApi(endpoint).fetchTxPoll(txHash)
-      : new TxRestApi(this.endpoints.rest).fetchTxPoll(txHash)
-  }
-
   public async signAndBroadcastAminoUsingCosmjs(
     messages: EncodeObject[],
     stdFee: StdFee,
+    endpoints: { rest: string; rpc: string },
   ) {
-    const { chainId, endpoints } = this
+    const { chainId } = this
     const keplr = await this.getKeplrWallet()
 
     if (!endpoints.rpc) {

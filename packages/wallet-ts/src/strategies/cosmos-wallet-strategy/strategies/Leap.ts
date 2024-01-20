@@ -9,6 +9,7 @@ import {
 import {
   TxRaw,
   TxResponse,
+  waitTxBroadcasted,
   createTxRawFromSigResponse,
   createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
@@ -19,6 +20,7 @@ import { AminoSignResponse } from '@cosmjs/launchpad'
 import { LeapWallet } from '../../../utils/wallets/leap'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
+import { SendTransactionOptions } from '../../wallet-strategy'
 
 export default class Leap implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -59,14 +61,23 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     const { leapWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
 
-    try {
-      return await leapWallet.waitTxBroadcasted(
-        await leapWallet.broadcastTx(txRaw),
+    if (!options.endpoints) {
+      throw new CosmosWalletException(
+        new Error(
+          'You have to pass endpoints within the options to broadcast transaction',
+        ),
       )
+    }
+
+    try {
+      const txHash = await leapWallet.broadcastTx(txRaw)
+
+      return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
       throw new TransactionException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

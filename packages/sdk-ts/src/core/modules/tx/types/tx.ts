@@ -8,8 +8,9 @@ import {
 } from '@injectivelabs/core-proto-ts'
 
 export interface TxClientBroadcastOptions {
-  mode: CosmosTxV1Beta1Service.BroadcastMode
-  timeout: number
+  mode?: CosmosTxV1Beta1Service.BroadcastMode
+  timeout?: number // timeout in ms
+  txTimeout?: number // blocks to wait for tx to be included in a block
 }
 
 export interface TxClientBroadcastResponse {

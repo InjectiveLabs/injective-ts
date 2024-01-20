@@ -14,6 +14,7 @@ import {
 import {
   TxRaw,
   TxResponse,
+  waitTxBroadcasted,
   createTxRawFromSigResponse,
   createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
@@ -23,8 +24,12 @@ import { NinjiWallet } from '../../../utils/wallets/ninji'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import { SendTransactionOptions } from '../types'
 
-export default class Ninji extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export default class Ninji
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   private ninjiWallet: NinjiWallet
 
   constructor(args: {
@@ -33,7 +38,7 @@ export default class Ninji extends BaseConcreteStrategy implements ConcreteWalle
   }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.ninjiWallet = new NinjiWallet(args.chainId, args.endpoints)
+    this.ninjiWallet = new NinjiWallet(args.chainId)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -87,20 +92,23 @@ export default class Ninji extends BaseConcreteStrategy implements ConcreteWalle
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: { grpc: string }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     const { ninjiWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
 
-    try {
-      return await ninjiWallet.waitTxBroadcasted(
-        await ninjiWallet.broadcastTx(txRaw),
-        options.endpoints?.grpc,
+    if (!options.endpoints) {
+      throw new CosmosWalletException(
+        new Error(
+          'You have to pass endpoints within the options to broadcast transaction',
+        ),
       )
+    }
+
+    try {
+      const txHash = await ninjiWallet.broadcastTx(txRaw)
+
+      return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
         throw e

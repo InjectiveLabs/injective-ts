@@ -3698,5 +3698,45 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "TIA Squared",
+    "denom": "ibc/D2098712E1B9398AD8D05966A5766D4C32137D9A06CF839376221176CFD9AF0B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sqtia.svg",
+    "symbol": "sqTIA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D2098712E1B9398AD8D05966A5766D4C32137D9A06CF839376221176CFD9AF0B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "sqTIA",
+      "baseDenom": "sqTIA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Goddard",
+    "denom": "ibc/CABB197E23D81F1D1A4CE56A304488C35830F81AC9647F817313AE657221420D",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/goddardntrn.png",
+    "symbol": "GODDARD",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "CABB197E23D81F1D1A4CE56A304488C35830F81AC9647F817313AE657221420D",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "GODDARD",
+      "baseDenom": "GODDARD",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]

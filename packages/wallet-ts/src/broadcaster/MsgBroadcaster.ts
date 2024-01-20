@@ -65,6 +65,8 @@ export class MsgBroadcaster {
 
   public chainId: ChainId
 
+  public txTimeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT
+
   public ethereumChainId?: EthereumChainId
 
   constructor(options: MsgBroadcasterOptions) {
@@ -73,6 +75,7 @@ export class MsgBroadcaster {
       options.networkEndpoints || getNetworkEndpoints(options.network)
 
     this.options = options
+    this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
     this.chainId = networkInfo.chainId
     this.ethereumChainId = networkInfo.ethereumChainId
     this.endpoints = endpoints
@@ -166,7 +169,7 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastWeb3(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { options, endpoints, chainId, ethereumChainId } = this
+    const { options, txTimeout, endpoints, chainId, ethereumChainId } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -185,9 +188,7 @@ export class MsgBroadcaster {
       endpoints.grpc,
     ).fetchLatestBlock()
     const latestHeight = latestBlock!.header!.height
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-    )
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
@@ -244,6 +245,7 @@ export class MsgBroadcaster {
     return walletStrategy.sendTransaction(txRawEip712, {
       chainId,
       endpoints,
+      txTimeout,
       address: tx.injectiveAddress,
     })
   }
@@ -302,7 +304,7 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastCosmos(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { options, endpoints, chainId } = this
+    const { options, txTimeout, endpoints, chainId } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -331,9 +333,7 @@ export class MsgBroadcaster {
       endpoints.grpc,
     ).fetchLatestBlock()
     const latestHeight = latestBlock!.header!.height
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-    )
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
       ? SIGN_AMINO
@@ -379,6 +379,7 @@ export class MsgBroadcaster {
       return walletStrategy.sendTransaction(txRaw, {
         chainId,
         endpoints,
+        txTimeout,
         address: tx.injectiveAddress,
       })
     }
@@ -393,6 +394,7 @@ export class MsgBroadcaster {
     return walletStrategy.sendTransaction(directSignResponse, {
       chainId,
       endpoints,
+      txTimeout,
       address: tx.injectiveAddress,
     })
   }
@@ -406,7 +408,7 @@ export class MsgBroadcaster {
   private async experimentalBroadcastKeplrWithLedger(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, endpoints, chainId, ethereumChainId } = this
+    const { options, endpoints, txTimeout, chainId, ethereumChainId } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -432,10 +434,7 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    const keplrWallet = new KeplrWallet(chainId, {
-      rest: endpoints.rest,
-      rpc: endpoints.rpc,
-    })
+    const keplrWallet = new KeplrWallet(chainId)
 
     /** Account Details * */
     const accountDetails = await new ChainGrpcAuthApi(
@@ -448,9 +447,7 @@ export class MsgBroadcaster {
       endpoints.grpc,
     ).fetchLatestBlock()
     const latestHeight = latestBlock!.header!.height
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-    )
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const pubKey = await walletStrategy.getPubKey()
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
@@ -519,7 +516,10 @@ export class MsgBroadcaster {
     txRawEip712.signatures = [signatureBuff]
 
     /** Broadcast the transaction */
-    const response = await new TxGrpcApi(endpoints.grpc).broadcast(txRawEip712)
+    const response = await new TxGrpcApi(endpoints.grpc).broadcast(
+      txRawEip712,
+      { txTimeout },
+    )
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
