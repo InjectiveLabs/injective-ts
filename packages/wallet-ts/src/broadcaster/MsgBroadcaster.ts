@@ -86,11 +86,9 @@ export class MsgBroadcaster {
     this.endpoints = options.endpoints || getNetworkEndpoints(options.network)
   }
 
-  setOptions(options: MsgBroadcasterOptions) {
-    this.simulateTx = options.simulateTx || this.options.simulateTx || true
+  setOptions(options: Partial<MsgBroadcasterOptions>) {
+    this.simulateTx = options.simulateTx || this.simulateTx
     this.txTimeout = options.txTimeout || this.txTimeout
-
-    return this
   }
 
   /**
