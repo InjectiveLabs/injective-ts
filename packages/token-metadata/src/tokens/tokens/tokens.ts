@@ -2770,7 +2770,8 @@ export default {
       symbol: 'DROGO',
       decimals: 6,
       isNative: true,
-      baseDenom:'cw20:terra1cl273523kmr2uwjhhznq54je69mted2u3ljffm8kp2ap4z3drdksftwqun',
+      baseDenom:
+        'cw20:terra1cl273523kmr2uwjhhznq54je69mted2u3ljffm8kp2ap4z3drdksftwqun',
       path: 'transfer/channel-118',
       channelId: 'channel-118',
       hash: 'ibc/565FE65B82C091F8BAD1379FA1B4560C036C07913355ED4BD8D156DA63F43712',
@@ -2801,5 +2802,14 @@ export default {
       decimals: 6,
       address: '0xC08512927D12348F6620a698105e1BAac6EcD911',
     },
+  },
+
+  ZRO: {
+    name: 'LayerZero',
+    logo: 'zro.jpeg',
+    decimals: 18,
+    symbol: 'ZRO',
+    coinGeckoId: '0x',
+    tokenType: TokenType.Unknown,
   },
 } as Record<string, TokenMetaBase>
