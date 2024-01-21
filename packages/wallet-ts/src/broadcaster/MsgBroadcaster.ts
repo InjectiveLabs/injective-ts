@@ -19,6 +19,7 @@ import {
   getGasPriceBasedOnMessage,
   recoverTypedSignaturePubKey,
   CreateTransactionWithSignersArgs,
+  getEip712TypedDataV2,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -46,7 +47,10 @@ import {
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
 } from './types'
-import { isCosmosWallet } from '../strategies/wallet-strategy/utils'
+import {
+  isCosmosWallet,
+  isEip712V2OnlyWallet,
+} from '../strategies/wallet-strategy/utils'
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
 import { isCosmosAminoOnlyWallet } from '../utils'
@@ -67,18 +71,26 @@ export class MsgBroadcaster {
 
   public txTimeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT
 
+  public simulateTx: boolean = true
+
   public ethereumChainId?: EthereumChainId
 
   constructor(options: MsgBroadcasterOptions) {
     const networkInfo = getNetworkInfo(options.network)
-    const endpoints =
-      options.networkEndpoints || getNetworkEndpoints(options.network)
 
     this.options = options
+    this.simulateTx = options.simulateTx || true
     this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
     this.chainId = networkInfo.chainId
     this.ethereumChainId = networkInfo.ethereumChainId
-    this.endpoints = endpoints
+    this.endpoints = options.endpoints || getNetworkEndpoints(options.network)
+  }
+
+  setOptions(options: MsgBroadcasterOptions) {
+    this.simulateTx = options.simulateTx || this.options.simulateTx || true
+    this.txTimeout = options.txTimeout || this.txTimeout
+
+    return this
   }
 
   /**
@@ -103,7 +115,34 @@ export class MsgBroadcaster {
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
+      : isEip712V2OnlyWallet(walletStrategy.wallet)
+      ? this.broadcastWeb3V2(txWithAddresses)
       : this.broadcastWeb3(txWithAddresses)
+  }
+
+  /**
+   * Broadcasting the transaction using the client
+   * side approach for both cosmos and ethereum native wallets
+   *
+   * @param tx
+   * @returns {string} transaction hash
+   */
+  async broadcastV2(tx: MsgBroadcasterTxOptions) {
+    const { options } = this
+    const { walletStrategy } = options
+    const txWithAddresses = {
+      ...tx,
+      ethereumAddress: getEthereumSignerAddress(
+        tx.injectiveAddress || tx.address,
+      ),
+      injectiveAddress: getInjectiveSignerAddress(
+        tx.injectiveAddress || tx.address,
+      ),
+    } as MsgBroadcasterTxOptionsWithAddresses
+
+    return isCosmosWallet(walletStrategy.wallet)
+      ? this.broadcastCosmos(txWithAddresses)
+      : this.broadcastWeb3V2(txWithAddresses)
   }
 
   /**
@@ -169,7 +208,14 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastWeb3(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { options, txTimeout, endpoints, chainId, ethereumChainId } = this
+    const {
+      options,
+      chainId,
+      txTimeout,
+      endpoints,
+      simulateTx,
+      ethereumChainId,
+    } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -235,7 +281,105 @@ export class MsgBroadcaster {
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
-    if (options.simulateTx) {
+    if (simulateTx) {
+      await this.simulateTxRaw(txRawEip712)
+    }
+
+    /** Append Signatures */
+    txRawEip712.signatures = [signatureBuff]
+
+    return walletStrategy.sendTransaction(txRawEip712, {
+      chainId,
+      endpoints,
+      txTimeout,
+      address: tx.injectiveAddress,
+    })
+  }
+
+  /**
+   * Prepare/sign/broadcast transaction using
+   * Ethereum native wallets on the client side.
+   *
+   * Note: Gas estimation not available
+   *
+   * @param tx The transaction that needs to be broadcasted
+   * @returns transaction hash
+   */
+  private async broadcastWeb3V2(tx: MsgBroadcasterTxOptionsWithAddresses) {
+    const {
+      options,
+      chainId,
+      txTimeout,
+      endpoints,
+      simulateTx,
+      ethereumChainId,
+    } = this
+    const { walletStrategy } = options
+    const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
+
+    if (!ethereumChainId) {
+      throw new GeneralException(new Error('Please provide ethereumChainId'))
+    }
+
+    /** Account Details * */
+    const accountDetails = await new ChainGrpcAuthApi(
+      endpoints.grpc,
+    ).fetchAccount(tx.injectiveAddress)
+    const { baseAccount } = accountDetails
+
+    /** Block Details */
+    const latestBlock = await new ChainGrpcTendermintApi(
+      endpoints.grpc,
+    ).fetchLatestBlock()
+    const latestHeight = latestBlock!.header!.height
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+
+    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
+
+    /** EIP712 for signing on Ethereum wallets */
+    const eip712TypedData = getEip712TypedDataV2({
+      msgs,
+      fee: getStdFee({ ...tx.gas, gas }),
+      tx: {
+        memo: tx.memo,
+        accountNumber: baseAccount.accountNumber.toString(),
+        sequence: baseAccount.sequence.toString(),
+        timeoutHeight: timeoutHeight.toFixed(),
+        chainId,
+      },
+      ethereumChainId,
+    })
+
+    /** Signing on Ethereum */
+    const signature = (await walletStrategy.signEip712TypedData(
+      JSON.stringify(eip712TypedData),
+      tx.ethereumAddress,
+    )) as string
+    const signatureBuff = hexToBuff(signature)
+
+    /** Get Public Key of the signer */
+    const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature)
+    const publicKeyBase64 = hexToBase64(publicKeyHex)
+
+    /** Preparing the transaction for client broadcasting */
+    const { txRaw } = createTransaction({
+      message: msgs,
+      memo: tx.memo,
+      signMode: SIGN_AMINO,
+      fee: getStdFee({ ...tx.gas, gas }),
+      pubKey: publicKeyBase64,
+      sequence: baseAccount.sequence,
+      timeoutHeight: timeoutHeight.toNumber(),
+      accountNumber: baseAccount.accountNumber,
+      chainId,
+    })
+
+    const web3Extension = createWeb3Extension({
+      ethereumChainId,
+    })
+    const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
+
+    if (simulateTx) {
       await this.simulateTxRaw(txRawEip712)
     }
 
@@ -260,7 +404,7 @@ export class MsgBroadcaster {
   private async broadcastWeb3WithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, ethereumChainId, endpoints } = this
+    const { options, simulateTx, ethereumChainId, endpoints } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
@@ -272,13 +416,14 @@ export class MsgBroadcaster {
     const transactionApi = new IndexerGrpcTransactionApi(
       endpoints.web3gw || endpoints.indexer,
     )
+
     const txResponse = await transactionApi.prepareTxRequest({
       memo: tx.memo,
       message: web3Msgs,
       address: tx.ethereumAddress,
       chainId: ethereumChainId,
       gasLimit: getGasPriceBasedOnMessage(msgs),
-      estimateGas: options.simulateTx || false,
+      estimateGas: simulateTx,
     })
 
     const signature = await walletStrategy.signEip712TypedData(
@@ -408,7 +553,14 @@ export class MsgBroadcaster {
   private async experimentalBroadcastKeplrWithLedger(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, endpoints, txTimeout, chainId, ethereumChainId } = this
+    const {
+      options,
+      chainId,
+      txTimeout,
+      endpoints,
+      simulateTx,
+      ethereumChainId,
+    } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -504,7 +656,7 @@ export class MsgBroadcaster {
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
-    if (options.simulateTx) {
+    if (simulateTx) {
       await this.simulateTxRaw(txRawEip712)
     }
 
@@ -688,8 +840,7 @@ export class MsgBroadcaster {
   private async getTxWithSignersAndStdFee(
     args: CreateTransactionWithSignersArgs,
   ) {
-    const { options } = this
-    const { simulateTx } = options
+    const { simulateTx } = this
 
     if (!simulateTx) {
       return {

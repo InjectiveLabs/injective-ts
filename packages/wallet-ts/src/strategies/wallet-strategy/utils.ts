@@ -13,3 +13,5 @@ export const isEthWallet = (wallet: Wallet): boolean =>
   ].includes(wallet)
 
 export const isCosmosWallet = (wallet: Wallet): boolean => !isEthWallet(wallet)
+
+export const isEip712V2OnlyWallet = (wallet: Wallet): boolean => [Wallet.Phantom].includes(wallet)

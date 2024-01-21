@@ -2454,6 +2454,14 @@
     lodash.values "^4.3.0"
     shx "^0.3.2"
 
+"@injectivelabs/ts-types@^1.10.12", "@injectivelabs/ts-types@^1.14.5":
+  version "1.14.5"
+  resolved "https://registry.npmjs.org/@injectivelabs/ts-types/-/ts-types-1.14.5.tgz#e7ed5fa87052b0763908bd77b132775aa37a097c"
+  integrity sha512-dwmEJE90vMr1zkQhz5lX2280sBMe2GvAj98vOHoL2RLTo0OQkJZrirUHwsTkexJf7sFZIT2PlmLCfix9Ulcp5A==
+  dependencies:
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+
 "@injectivelabs/utils@1.10.12":
   version "1.10.12"
   resolved "https://registry.npmjs.org/@injectivelabs/utils/-/utils-1.10.12.tgz#063835b25c11182945881e82a2cbad50f6ca10b3"
