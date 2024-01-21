@@ -1,9 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { sleep } from '@injectivelabs/utils'
-import {
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   ErrorType,
   WalletException,
@@ -22,7 +19,10 @@ import BaseConcreteStrategy from '../Base'
 import { WalletAction, WalletDeviceType } from '../../../../types/enums'
 import { getPhantomProvider } from './utils'
 
-export default class Phantom extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export default class Phantom
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
   }
@@ -122,10 +122,13 @@ export default class Phantom extends BaseConcreteStrategy implements ConcreteWal
   ): Promise<string> {
     const ethereum = await this.getEthereum()
 
+    // Phantom needs to enable access to accounts before signing
+    await this.getAddresses()
+
     try {
       return await ethereum.request({
         method: 'eth_signTypedData_v4',
-        params: [address.toUpperCase(), eip712json],
+        params: [address, eip712json],
       })
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {

@@ -2,7 +2,6 @@ import {
   TxGrpcApi,
   hexToBuff,
   PublicKey,
-  SIGN_AMINO,
   SIGN_DIRECT,
   hexToBase64,
   ChainGrpcAuthApi,
@@ -20,6 +19,8 @@ import {
   recoverTypedSignaturePubKey,
   CreateTransactionWithSignersArgs,
   getEip712TypedDataV2,
+  SIGN_EIP712_V2,
+  SIGN_EIP712,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -265,7 +266,7 @@ export class MsgBroadcaster {
     const { txRaw } = createTransaction({
       message: msgs,
       memo: tx.memo,
-      signMode: SIGN_AMINO,
+      signMode: SIGN_EIP712,
       fee: getStdFee({ ...tx.gas, gas }),
       pubKey: publicKeyBase64,
       sequence: baseAccount.sequence,
@@ -363,7 +364,7 @@ export class MsgBroadcaster {
     const { txRaw } = createTransaction({
       message: msgs,
       memo: tx.memo,
-      signMode: SIGN_AMINO,
+      signMode: SIGN_EIP712_V2,
       fee: getStdFee({ ...tx.gas, gas }),
       pubKey: publicKeyBase64,
       sequence: baseAccount.sequence,
@@ -479,7 +480,7 @@ export class MsgBroadcaster {
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
-      ? SIGN_AMINO
+      ? SIGN_EIP712
       : SIGN_DIRECT
     const pubKey = await walletStrategy.getPubKey(tx.injectiveAddress)
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
@@ -637,7 +638,7 @@ export class MsgBroadcaster {
       pubKey,
       message: msgs,
       memo: aminoSignResponse.signed.memo,
-      signMode: SIGN_AMINO,
+      signMode: SIGN_EIP712,
       fee: aminoSignResponse.signed.fee,
       sequence: parseInt(aminoSignResponse.signed.sequence, 10),
       timeoutHeight: parseInt(
