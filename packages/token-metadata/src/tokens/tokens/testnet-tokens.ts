@@ -31,30 +31,22 @@ export const testnetTokens = () =>
   ({
     wBTC: {
       ...tokens.wBTC,
-      cw20s: [
-        ...(tokens.wBTC.cw20s || []),
-        ...overrideCw20s(
-          {
-            decimals: 8,
-            symbol: 'wBTC',
-            source: TokenSource.Cosmos,
-            address: 'wbtc',
-          },
-          tokens.wBTC.cw20s,
-        ),
+      tokenFactories: [
+        {
+          symbol: 'wBTC',
+          creator: 'inj17vytdwqczqz72j65saukplrktd4gyfme5agf6c',
+          decimals: 8,
+        },
       ],
     },
 
     ATOM: {
       ...tokens.ATOM,
-      cw20s: [
-        ...(tokens.ATOM.cw20s || []),
+      tokenFactories: [
         {
-          decimals: 8,
           symbol: 'ATOM',
-          source: TokenSource.Cosmos,
-          address: 'atom',
-          tokenType: TokenType.Cw20,
+          creator: 'inj17vytdwqczqz72j65saukplrktd4gyfme5agf6c',
+          decimals: 8,
         },
       ],
     },
@@ -89,14 +81,11 @@ export const testnetTokens = () =>
         ...tokens.wETH.erc20,
         address: '0xdB309Bb079EB419C18fe7D568c61cD2FdB65D9aF',
       },
-      cw20s: [
-        ...(tokens.wETH.cw20s || []),
+      tokenFactories: [
         {
-          decimals: 8,
           symbol: 'wETH',
-          source: TokenSource.EthereumWh,
-          address: 'weth',
-          tokenType: TokenType.Cw20,
+          creator: 'inj17vytdwqczqz72j65saukplrktd4gyfme5agf6c',
+          decimals: 8,
         },
       ],
     },
@@ -128,6 +117,13 @@ export const testnetTokens = () =>
         ...tokens.USDC.erc20,
         address: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
       },
+      tokenFactories: [
+        {
+          symbol: 'USDC',
+          creator: 'inj17vytdwqczqz72j65saukplrktd4gyfme5agf6c',
+          decimals: 6,
+        },
+      ],
       cw20s: [
         ...overrideCw20s(
           {
@@ -138,13 +134,6 @@ export const testnetTokens = () =>
           },
           tokens.USDC.cw20s,
         ),
-        {
-          decimals: 6,
-          symbol: 'USDC',
-          source: TokenSource.Cosmos,
-          address: 'usdc',
-          tokenType: TokenType.Cw20,
-        },
       ],
     },
 
@@ -154,6 +143,25 @@ export const testnetTokens = () =>
         ...tokens.MATIC.evm,
         address: '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
       },
+      tokenFactories: [
+        {
+          symbol: 'MATIC',
+          creator: 'inj17vytdwqczqz72j65saukplrktd4gyfme5agf6c',
+          decimals: '18',
+        },
+      ],
+    },
+
+    STINJ: {
+      ...tokens.STINJ,
+
+      tokenFactories: [
+        {
+          symbol: 'STINJ',
+          creator: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+          decimals: '18',
+        },
+      ],
     },
 
     MITOTEST1: {
