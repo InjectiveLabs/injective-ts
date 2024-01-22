@@ -24,6 +24,7 @@ import {
   MitoStakeToSubscription,
   MitoIDOSubscriptionActivity,
   MitoMissionLeaderboardEntry,
+  MitoClaimReference,
 } from '../types/mito'
 import { GrpcCoin } from '../../../types'
 
@@ -453,6 +454,19 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
+  static mitoClaimReferenceToClaimReference(
+    claimReference: MitoApi.ClaimReference,
+  ): MitoClaimReference {
+    return {
+      accountAddress: claimReference.accountAddress,
+      cwContractAddress: claimReference.cwContractAddress,
+      idoContractAddress: claimReference.idoContractAddress,
+      startVestingTime: claimReference.startVestingTime,
+      vestingDurationSeconds: claimReference.vestingDurationSeconds,
+      updatedAt: parseInt(claimReference.updatedAt, 10),
+    }
+  }
+
   static vaultResponseToVault(response: MitoApi.GetVaultResponse): MitoVault {
     const [vault] = response.vault
 
@@ -653,6 +667,22 @@ export class IndexerGrpcMitoTransformer {
       idoAddress: response.idoAddress,
       accounts: response.accounts.map(
         IndexerGrpcMitoTransformer.mitoWhitelistAccountToWhitelistAccount,
+      ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
+  }
+
+  static claimReferencesResponseToClaimReferences(
+    response: MitoApi.GetClaimReferencesResponse,
+  ): {
+    claimReferences: MitoClaimReference[]
+    pagination?: MitoPagination
+  } {
+    return {
+      claimReferences: response.claimReferences.map(
+        IndexerGrpcMitoTransformer.mitoClaimReferenceToClaimReference,
       ),
       pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
         response.pagination,

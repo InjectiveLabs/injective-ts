@@ -36,20 +36,24 @@ jobs:
           yarn build
 
       - name: 'Setup npm'
-        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: 'Commit ibcTokenMetadata.json if changed'
-        run: |
-          git diff --exit-code -- packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json || (git add packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json && git commit -m "Automatically update ibcTokenMetadata.json")
+      # - name: 'Commit ibcTokenMetadata.json if changed'
+      #   run: |
+      #     git diff --exit-code -- packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json || (git add packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json && git commit -m "Automatically update ibcTokenMetadata.json")
 
       - name: Version and publish
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           lerna version prerelease --preid beta --force-git-tag --no-changelog --yes
           lerna publish from-git --force-git-tag --dist-tag next --yes --summary-file
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: 'Broadcast published versions on Slack'
         run: node etc/slack --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE

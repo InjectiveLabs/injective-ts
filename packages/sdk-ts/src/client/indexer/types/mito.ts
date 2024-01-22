@@ -250,6 +250,15 @@ export interface MitoWhitelistAccount {
   updatedAt: number
 }
 
+export interface MitoClaimReference {
+  accountAddress: string
+  cwContractAddress: string
+  idoContractAddress: string
+  startVestingTime: string
+  vestingDurationSeconds: string
+  updatedAt: number
+}
+
 export type GrpcMitoIDO = MitoApi.IDO
 export type GrpcMitoVault = MitoApi.Vault
 export type GrpcMitoMission = MitoApi.Mission
@@ -264,6 +273,7 @@ export type GrpcMitoDenomBalance = MitoApi.DenomBalance
 export type GrpcMitoSubscription = MitoApi.Subscription
 export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
 export type GrpcMitoIDOSubscriber = MitoApi.IDOSubscriber
+export type GrpcMitoClaimReference = MitoApi.ClaimReference
 export type GrpcMitoIDOSubscription = MitoApi.IDOSubscription
 export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
 export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch
