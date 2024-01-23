@@ -2807,9 +2807,18 @@ export default {
   ZRO: {
     name: 'LayerZero',
     logo: 'zro.jpeg',
-    decimals: 18,
+    decimals: 6,
     symbol: 'ZRO',
-    coinGeckoId: '0x',
+    coinGeckoId: 'layerzero',
+    tokenType: TokenType.Unknown,
+  },
+
+  JUP: {
+    name: 'Jupiter',
+    logo: 'jup.jpeg',
+    decimals: 6,
+    symbol: 'JUP',
+    coinGeckoId: 'jupiter-exchange-solana',
     tokenType: TokenType.Unknown,
   },
 } as Record<string, TokenMetaBase>
