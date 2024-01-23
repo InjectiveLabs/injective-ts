@@ -10,6 +10,13 @@ jobs:
     if: true
     runs-on: ubuntu-latest
 
+    permissions:
+      deployments: write
+      contents: write
+      statuses: write
+      actions: write
+      checks: read
+
     steps:
       - name: Checkout # Download code from the repository
         uses: actions/checkout@v2 # Public action
