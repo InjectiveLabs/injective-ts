@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 'Checkout' # Download code from the repository
+      - name: Checkout # Download code from the repository
         uses: actions/checkout@v2 # Public action
         with:
           fetch-depth: 0 # Checkout all branches and tags
@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '16.18.1'
 
-      - name: 'Setup lerna@6.6.1'
+      - name: Setup lerna@6.6.1
         run: yarn global add lerna@6.6.1 --ignore-engines
 
       - name: Set up Git user
@@ -35,16 +35,22 @@ jobs:
           yarn install --ignore-engines
           yarn build
 
-      - name: 'Setup npm'
+      - name: Setup npm
         run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # - name: 'Commit ibcTokenMetadata.json if changed'
-      #   run: |
-      #     git diff --exit-code -- packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json || (git add packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json && git commit -m "Automatically update ibcTokenMetadata.json")
+      - name: Final checks
+        run: |
+          git status
+          lerna clean
+          lerna exec -- ls -al
+
+      - name: 'Commit ibcTokenMetadata.json if changed'
+        run: |
+          git diff --exit-code -- packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json || (git add packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json && git commit -m "Automatically update ibcTokenMetadata.json")
 
       - name: Version and publish
         run: |
@@ -55,7 +61,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: 'Broadcast published versions on Slack'
+      - name: Broadcast published versions on Slack
         run: node etc/slack --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
         env:
           GIT_ACTOR: ${{ github.actor }}
