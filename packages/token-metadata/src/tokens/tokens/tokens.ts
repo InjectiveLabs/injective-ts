@@ -2821,4 +2821,20 @@ export default {
     coinGeckoId: 'jupiter-exchange-solana',
     tokenType: TokenType.Unknown,
   },
+
+  WOSMO: {
+    name: 'Wosmo',
+    logo: 'WOSMO.png',
+    coinGeckoId: '',
+
+    ibc: {
+      symbol: 'WOSMO',
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'factory/osmo1pfyxruwvtwk00y8z06dh2lqjdj82ldvy74wzm3/WOSMO',
+      path: 'transfer/channel-8',
+      channelId: 'channel-8',
+      hash: 'DD648F5D3CDA56D0D8D8820CF703D246B9FC4007725D8B38D23A21FF1A1477E3',
+    },
+  }
 } as Record<string, TokenMetaBase>
