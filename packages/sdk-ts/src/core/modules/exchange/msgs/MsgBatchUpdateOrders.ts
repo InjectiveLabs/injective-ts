@@ -15,19 +15,19 @@ export declare namespace MsgBatchUpdateOrders {
     spotOrdersToCancel?: {
       marketId: string
       subaccountId: string
-      orderHash: string
+      orderHash?: string
       cid?: string
     }[]
     derivativeOrdersToCancel?: {
       marketId: string
       subaccountId: string
-      orderHash: string
+      orderHash?: string
       cid?: string
     }[]
     binaryOptionsOrdersToCancel?: {
       marketId: string
       subaccountId: string
-      orderHash: string
+      orderHash?: string
       cid?: string
     }[]
     spotOrdersToCreate?: {
@@ -114,7 +114,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
-          orderData.orderHash = orderHash
+
+          if (orderHash) {
+            orderData.orderHash = orderHash
+          }
 
           if (cid) {
             orderData.cid = cid
@@ -136,7 +139,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
-          orderData.orderHash = orderHash
+
+          if (orderHash) {
+            orderData.orderHash = orderHash
+          }
 
           if (cid) {
             orderData.cid = cid
@@ -157,7 +163,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
-          orderData.orderHash = orderHash
+
+          if (orderHash) {
+            orderData.orderHash = orderHash
+          }
 
           if (cid) {
             orderData.cid = cid

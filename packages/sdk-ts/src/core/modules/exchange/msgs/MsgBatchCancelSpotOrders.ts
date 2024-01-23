@@ -11,7 +11,7 @@ export declare namespace MsgBatchCancelSpotOrders {
     orders: {
       marketId: string
       subaccountId: string
-      orderHash: string
+      orderHash?: string
       orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
       cid?: string
     }[]
@@ -39,8 +39,11 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
     const orderDataList = params.orders.map((order) => {
       const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
       orderData.marketId = order.marketId
-      orderData.orderHash = order.orderHash
       orderData.subaccountId = order.subaccountId
+
+      if (order.orderHash) {
+        orderData.orderHash = order.orderHash
+      }
 
       if (order.cid) {
         orderData.cid = order.cid
