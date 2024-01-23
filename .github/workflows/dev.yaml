@@ -31,6 +31,7 @@ jobs:
 
       - name: Build dependencies
         run: |
+          lerna clean --yes
           node etc/bootstrapEnv
           yarn install --ignore-engines
           yarn build
@@ -41,12 +42,6 @@ jobs:
           npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Final checks
-        run: |
-          git status
-          lerna clean
-          lerna exec -- ls -al
 
       - name: 'Commit ibcTokenMetadata.json if changed'
         run: |
