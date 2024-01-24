@@ -243,7 +243,7 @@ export const tokenDenomsPerNetwork = [
       'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
       'ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
     ],
-    symbols: ['kava', 'usdtkv'],
+    symbols: ['kava', 'usdt-cosmos'],
   },
   {
     network: BridgingNetwork.Oraichain,
@@ -453,7 +453,7 @@ export const cosmosChainTokenMetaMap = {
         'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
     },
     {
-      ...tokenMetaUtils.getMetaBySymbol('USDTkv'),
+      ...tokenMetaUtils.getMetaBySymbol('USDT-Cosmos'),
       tokenType: TokenType.Ibc,
       denom:
         'ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',

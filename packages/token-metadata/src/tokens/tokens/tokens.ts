@@ -110,7 +110,7 @@ export default {
 
     ibc: {
       decimals: 6,
-      symbol: 'USDTkv',
+      symbol: 'USDT-Cosmos',
       isNative: true,
       baseDenom: 'erc20/tether/usdt',
       path: 'transfer/channel-143',
