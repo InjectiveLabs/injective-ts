@@ -2821,4 +2821,18 @@ export default {
     coinGeckoId: 'jupiter-exchange-solana',
     tokenType: TokenType.Unknown,
   },
+
+  IKINGS: {
+    name: 'Injective Kings',
+    logo: 'IKINGS.jpeg',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1mt876zny9j6xae25h7hl7zuqf7gkx8q63k0426',
+        symbol: 'IKINGS',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
