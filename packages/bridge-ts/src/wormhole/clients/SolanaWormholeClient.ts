@@ -1,5 +1,5 @@
-import { Network } from '@injectivelabs/networks'
-import { getGrpcTransport } from '@injectivelabs/sdk-ts'
+import { Network, NetworkEndpoints, getNetworkEndpoints } from '@injectivelabs/networks'
+import { ChainGrpcWasmApi, getGrpcTransport } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
   cosmos,
@@ -18,7 +18,6 @@ import {
   getEmitterAddressSolana,
   parseSequenceFromLogSolana,
   getIsTransferCompletedSolana,
-  nativeToHexString,
 } from '@certusone/wormhole-sdk'
 import {
   getAssociatedTokenAddress,
@@ -39,6 +38,7 @@ import { TransferMsgArgs, WormholeClient, WormholeSource } from '../types'
 import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { BaseWormholeClient } from '../WormholeClient'
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
+import { getOriginalAssetInjective } from '../injective'
 
 const TIMEOUT_BETWEEN_RETRIES = 5000
 
@@ -329,29 +329,24 @@ export class SolanaWormholeClient
     )
   }
 
-  async createAssociatedTokenAddress(tokenAddress: string) {
+  async createAssociatedTokenAddress(tokenAddress: string, networkEndpoints?: NetworkEndpoints) {
     const { solanaHostUrl, network } = this
 
     if (!solanaHostUrl) {
       throw new GeneralException(new Error(`Please provide solanaHostUrl`))
     }
 
-    const { associatedChainContractAddresses } = getContractAddresses(network)
-
+    const endpoints = networkEndpoints || getNetworkEndpoints(network)
     const provider = await this.getProvider()
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
     const solanaPublicKey = new PublicKey(provider.publicKey || '')
-    const solanaMintKey = new PublicKey(
-      (await getForeignAssetSolana(
-        connection,
-        associatedChainContractAddresses.token_bridge,
-        WORMHOLE_CHAINS.injective,
-        hexToUint8Array(
-          nativeToHexString(tokenAddress, WORMHOLE_CHAINS.injective) || '',
-        ),
-      )) || '',
+    const originalAsset = await getOriginalAssetInjective(
+      tokenAddress,
+      new ChainGrpcWasmApi(endpoints.grpc),
     )
+
+    const solanaMintKey = new PublicKey(originalAsset.assetAddress)
     const recipient = await getAssociatedTokenAddress(
       solanaMintKey,
       solanaPublicKey,

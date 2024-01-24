@@ -104,6 +104,7 @@ export async function getOriginalAssetInjective(
       ).toString('base64'),
     )
     const parsed = parseSmartContractStateResponse(response)
+
     return {
       isWrapped: true,
       chainId: parsed.asset_chain,
