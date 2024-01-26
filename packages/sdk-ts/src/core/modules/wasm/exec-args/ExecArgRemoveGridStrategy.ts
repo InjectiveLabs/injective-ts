@@ -5,9 +5,13 @@ import {
 } from '../ExecArgBase'
 
 export declare namespace ExecArgRemoveGridStrategy {
-  export interface Params {}
+  export interface Params {
+    subaccountId?: string
+  }
 
-  export interface Data {}
+  export interface Data {
+    subaccount_id?: string
+  }
 }
 
 /**
@@ -24,9 +28,11 @@ export default class ExecArgRemoveGridStrategy extends ExecArgBase<
   }
 
   toData(): ExecArgRemoveGridStrategy.Data {
-    // const { params } = this
+    const { params } = this
 
-    return {}
+    return {
+      subaccount_id: params.subaccountId,
+    }
   }
 
   toExecData(): ExecDataRepresentation<ExecArgRemoveGridStrategy.Data> {
