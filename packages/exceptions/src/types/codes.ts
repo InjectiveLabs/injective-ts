@@ -648,7 +648,7 @@ export enum ChainGovErrorCodes {
   ErrInvalidGenesis = 8,
   //  "no handler exists for proosal type")
   ErrNoProposalHandlerExists = 9,
-  //  "proposal message not recogized by router")
+  //  "proposal message not recognized by router")
   ErrUnroutableProposalMsg = 10,
   //  "no messages proposed"
   ErrNoProposalMsgs = 11,
