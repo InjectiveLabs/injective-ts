@@ -400,6 +400,18 @@ export default {
     },
   },
 
+  BEAST: {
+    name: 'Gelotto BEAST',
+    logo: 'BEAST-LOGO-PURPLE.png',
+    coinGeckoId: '',
+
+    erc20: {
+      symbol: 'BEAST',
+      decimals: 6,
+      address: '0xA4426666addBE8c4985377d36683D17FB40c31Be',
+    },
+  },
+
   CEL: {
     name: 'Celsius',
     logo: 'cel.png',
@@ -469,6 +481,18 @@ export default {
       symbol: 'FTM',
       decimals: 18,
       address: '0x4E15361FD6b4BB609Fa63C81A2be19d873717870',
+    },
+  },
+
+  GLTO: {
+    name: 'Gelotto',
+    logo: 'GLTO.png',
+    coinGeckoId: '',
+
+    erc20: {
+      symbol: 'GLTO',
+      decimals: 6,
+      address: '0xd73175f9eb15eee81745d367ae59309Ca2ceb5e2',
     },
   },
 
