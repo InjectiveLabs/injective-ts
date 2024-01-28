@@ -464,7 +464,6 @@ export const getEvmNativeAddress = (
   )
 }
 
-
 export const getEvmChainName = (chainId: number) => {
   switch (chainId) {
     case 1:

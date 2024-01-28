@@ -1,4 +1,8 @@
-import { Network, NetworkEndpoints, getNetworkEndpoints } from '@injectivelabs/networks'
+import {
+  Network,
+  NetworkEndpoints,
+  getNetworkEndpoints,
+} from '@injectivelabs/networks'
 import { ChainGrpcWasmApi, getGrpcTransport } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -28,6 +32,8 @@ import {
   Connection,
   Transaction,
   TransactionResponse,
+  TransactionExpiredTimeoutError,
+  TransactionExpiredBlockheightExceededError,
 } from '@solana/web3.js'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { TransactionSignatureAndResponse } from '@certusone/wormhole-sdk/lib/cjs/solana'
@@ -329,7 +335,10 @@ export class SolanaWormholeClient
     )
   }
 
-  async createAssociatedTokenAddress(tokenAddress: string, networkEndpoints?: NetworkEndpoints) {
+  async createAssociatedTokenAddress(
+    tokenAddress: string,
+    networkEndpoints?: NetworkEndpoints,
+  ) {
     const { solanaHostUrl, network } = this
 
     if (!solanaHostUrl) {
@@ -388,34 +397,6 @@ export class SolanaWormholeClient
     }
 
     return recipient.toString()
-  }
-
-  async signSendAndConfirmTransaction(transaction: Transaction) {
-    const { solanaHostUrl } = this
-
-    if (!solanaHostUrl) {
-      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
-    }
-
-    const provider = await this.getProvider()
-    const connection = new Connection(solanaHostUrl, 'confirmed')
-
-    const signed = await provider.signTransaction(transaction)
-    const transactionId = await connection.sendRawTransaction(
-      signed.serialize(),
-    )
-
-    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
-
-    if (!txResponse) {
-      throw new GeneralException(
-        new Error('An error occurred while fetching the transaction info'),
-      )
-    }
-
-    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
-      txHash: string
-    }
   }
 
   protected async getNativeTokenBalance(address: string | PublicKey) {
@@ -506,20 +487,9 @@ export class SolanaWormholeClient
       WORMHOLE_CHAINS.injective,
     )
 
-    const signed = await provider.signTransaction(transaction)
-    const transactionId = await connection.sendRawTransaction(
-      signed.serialize(),
-    )
+    const txResponse = await this.signSendAndConfirmTransaction(transaction)
 
-    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
-
-    if (!txResponse) {
-      throw new GeneralException(
-        new Error('An error occurred while fetching the transaction info'),
-      )
-    }
-
-    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+    return txResponse as TransactionResponse & {
       txHash: string
     }
   }
@@ -559,20 +529,9 @@ export class SolanaWormholeClient
       WORMHOLE_CHAINS.injective,
     )
 
-    const signed = await provider.signTransaction(transaction)
-    const transactionId = await connection.sendRawTransaction(
-      signed.serialize(),
-    )
+    const txResponse = await this.signSendAndConfirmTransaction(transaction)
 
-    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
-
-    if (!txResponse) {
-      throw new GeneralException(
-        new Error('An error occurred while fetching the transaction info'),
-      )
-    }
-
-    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+    return txResponse as TransactionResponse & {
       txHash: string
     }
   }
@@ -594,6 +553,66 @@ export class SolanaWormholeClient
       })
     } catch (e) {
       throw new GeneralException(new Error(e as any))
+    }
+  }
+
+  async signSendAndConfirmTransaction(transaction: Transaction) {
+    const { solanaHostUrl } = this
+
+    if (!solanaHostUrl) {
+      throw new GeneralException(new Error(`Please provide solanaHostUrl`))
+    }
+
+    const provider = await this.getProvider()
+    const connection = new Connection(solanaHostUrl, 'confirmed')
+
+    const transactionId = await provider.sendTransaction(
+      transaction,
+      connection,
+      { skipPreflight: true },
+    )
+
+    try {
+      const result = await connection.confirmTransaction(transactionId)
+
+      if (result.value.err) {
+        throw new TransactionExpiredBlockheightExceededError(
+          result.value.err.toString(),
+        )
+      }
+
+      const txResponse = await getSolanaTransactionInfo(
+        transactionId,
+        connection,
+      )
+
+      if (!txResponse) {
+        throw new GeneralException(
+          new Error('An error occurred while fetching the transaction info'),
+        )
+      }
+
+      return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+        txHash: string
+      }
+    } catch (e) {
+      if (e instanceof TransactionExpiredBlockheightExceededError) {
+        throw new GeneralException(
+          new Error(
+            'Transaction was not included in a block before expiration. Please retry.',
+          ),
+        )
+      }
+
+      if (e instanceof TransactionExpiredTimeoutError) {
+        throw new GeneralException(
+          new Error(
+            'Transaction was not included in a block before expiration. Please retry.',
+          ),
+        )
+      }
+
+      throw e
     }
   }
 }

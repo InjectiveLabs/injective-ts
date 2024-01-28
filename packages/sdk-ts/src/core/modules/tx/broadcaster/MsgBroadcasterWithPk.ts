@@ -53,6 +53,7 @@ interface MsgBroadcasterWithPkOptions {
   ethereumChainId?: EthereumChainId
   simulateTx?: boolean
   loggingEnabled?: boolean
+  txTimeout?: number // blocks to wait for tx to be included in a block
   gasBufferCoefficient?: number
 }
 
@@ -77,6 +78,8 @@ export class MsgBroadcasterWithPk {
 
   public gasBufferCoefficient: number = 1.1
 
+  public txTimeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT
+
   constructor(options: MsgBroadcasterWithPkOptions) {
     const networkInfo = getNetworkInfo(options.network)
     const endpoints = getNetworkEndpoints(options.network)
@@ -84,6 +87,7 @@ export class MsgBroadcasterWithPk {
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.1
     this.simulateTx = options.simulateTx || false
     this.chainId = networkInfo.chainId
+    this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
     this.ethereumChainId =
       options.ethereumChainId || networkInfo.ethereumChainId
     this.endpoints = { ...endpoints, ...(options.endpoints || {}) }
@@ -257,7 +261,7 @@ export class MsgBroadcasterWithPk {
     transaction: MsgBroadcasterTxOptions,
     accountDetails?: AccountDetails,
   ) {
-    const { chainId, privateKey, endpoints } = this
+    const { chainId, privateKey, endpoints, txTimeout } = this
     const msgs = Array.isArray(transaction.msgs)
       ? transaction.msgs
       : [transaction.msgs]
@@ -276,9 +280,7 @@ export class MsgBroadcasterWithPk {
       endpoints.grpc,
     ).fetchLatestBlock()
     const latestHeight = latestBlock!.header!.height
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-    )
+    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const gas = (
       transaction.gas?.gas || getGasPriceBasedOnMessage(msgs)
@@ -319,8 +321,10 @@ export class MsgBroadcasterWithPk {
   }
 
   private async broadcastTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
-    const { endpoints } = this
-    const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw)
+    const { endpoints, txTimeout } = this
+    const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw, {
+      txTimeout,
+    })
 
     if (txResponse.code !== 0) {
       throw new GeneralException(
