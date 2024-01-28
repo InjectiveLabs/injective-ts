@@ -3818,5 +3818,25 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "Goddard",
+    "denom": "ibc/3E89FBB226585CF08EB2E3C2625D1D2B0156CCC2233CAB56165125CACCBE731A",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/goddard.svg",
+    "symbol": "GODDARD",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3E89FBB226585CF08EB2E3C2625D1D2B0156CCC2233CAB56165125CACCBE731A",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "GODDARD",
+      "baseDenom": "GODDARD",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]
