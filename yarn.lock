@@ -2343,10 +2343,10 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/indexer-proto-ts@1.11.35":
-  version "1.11.35"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.35.tgz#c54f9e298cb2834a2363e2334417c4664b2833b2"
-  integrity sha512-q5fLfQPdaTE0W3y/G3T/fO2v7OwhYrTrtwbby4yhaBPZH4zp3mntaL9Ica5b2ul2hgRzQYKMV0X4D7sM0EcEFw==
+"@injectivelabs/indexer-proto-ts@1.11.36":
+  version "1.11.36"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.36.tgz#4a1476e52a5003a077b30a22679272eb9dd18d7a"
+  integrity sha512-s7E3Y28JrkylDwRVfF/AvcPy/zPgz52W+XbQ0FOcsqPof78xp8FvnM3ubVZi0Dad39LgDB5eeiMFPmeuLp8Uew==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
