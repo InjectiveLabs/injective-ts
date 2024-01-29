@@ -66,7 +66,6 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
       const response = await this.retry<InjectiveCampaignRpc.RankingResponse>(
         () => this.client.Ranking(request),
       )
-      console.log({ response })
 
       return IndexerCampaignTransformer.CampaignResponseToCampaign(response)
     } catch (e: unknown) {
