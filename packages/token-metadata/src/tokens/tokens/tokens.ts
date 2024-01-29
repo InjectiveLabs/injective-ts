@@ -2930,4 +2930,19 @@ export default {
       address: '0xd73175f9eb15eee81745d367ae59309Ca2ceb5e2',
     },
   },
+
+  BITS: {
+    name: 'bits',
+    logo: 'bits.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj10gcvfpnn4932kzk56h5kp77mrfdqas8z63qr7n',
+        symbol: 'BITS',
+        decimals: 6,
+      },
+    ],
+    },
+
 } as Record<string, TokenMetaBase>
