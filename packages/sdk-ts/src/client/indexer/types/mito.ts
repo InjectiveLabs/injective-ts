@@ -203,6 +203,8 @@ export interface MitoIDO {
   targetAmountInUsd: string
   tokenPrice: number
   isAccountWhiteListed: boolean
+  isLaunchWithVault: boolean
+  isVestingScheduleEnabled: boolean
   name: string
   progress: MitoIDOProgress[]
   quoteDenom: string
@@ -251,12 +253,15 @@ export interface MitoWhitelistAccount {
 }
 
 export interface MitoClaimReference {
+  denom: string
+  updatedAt: number
+  claimedAmount: string
+  claimableAmount: string
   accountAddress: string
   cwContractAddress: string
   idoContractAddress: string
-  startVestingTime: string
-  vestingDurationSeconds: string
-  updatedAt: number
+  startVestingTime: number
+  vestingDurationSeconds: number
 }
 
 export type GrpcMitoIDO = MitoApi.IDO

@@ -16,6 +16,7 @@ import {
   MitoSubscription,
   MitoIDOSubscriber,
   MitoPriceSnapshot,
+  MitoClaimReference,
   MitoIDOSubscription,
   MitoWhitelistAccount,
   MitoLeaderboardEpoch,
@@ -24,7 +25,6 @@ import {
   MitoStakeToSubscription,
   MitoIDOSubscriptionActivity,
   MitoMissionLeaderboardEntry,
-  MitoClaimReference,
 } from '../types/mito'
 import { GrpcCoin } from '../../../types'
 
@@ -346,9 +346,11 @@ export class IndexerGrpcMitoTransformer {
       capPerAddress: IDO.capPerAddress,
       contractAddress: IDO.contractAddress,
       subscribedAmount: IDO.subscribedAmount,
+      isLaunchWithVault: IDO.isLaunchWithVault,
       targetAmountInUsd: IDO.targetAmountInUsd,
       projectTokenAmount: IDO.projectTokenAmount,
       isAccountWhiteListed: IDO.isAccountWhiteListed,
+      isVestingScheduleEnabled: IDO.isVestingScheduleEnabled,
       targetAmountInQuoteDenom: IDO.targetAmountInQuoteDenom,
       endTime: parseInt(IDO.endTime, 10),
       startTime: parseInt(IDO.startTime, 10),
@@ -458,12 +460,18 @@ export class IndexerGrpcMitoTransformer {
     claimReference: MitoApi.ClaimReference,
   ): MitoClaimReference {
     return {
+      denom: claimReference.denom,
+      claimedAmount: claimReference.claimedAmount,
       accountAddress: claimReference.accountAddress,
+      claimableAmount: claimReference.claimableAmount,
       cwContractAddress: claimReference.cwContractAddress,
       idoContractAddress: claimReference.idoContractAddress,
-      startVestingTime: claimReference.startVestingTime,
-      vestingDurationSeconds: claimReference.vestingDurationSeconds,
+      vestingDurationSeconds: parseInt(
+        claimReference.vestingDurationSeconds,
+        10,
+      ),
       updatedAt: parseInt(claimReference.updatedAt, 10),
+      startVestingTime: parseInt(claimReference.startVestingTime, 10),
     }
   }
 
@@ -681,9 +689,11 @@ export class IndexerGrpcMitoTransformer {
     pagination?: MitoPagination
   } {
     return {
-      claimReferences: response.claimReferences.map(
-        IndexerGrpcMitoTransformer.mitoClaimReferenceToClaimReference,
-      ),
+      claimReferences: response.claimReferences
+        ? response.claimReferences.map(
+            IndexerGrpcMitoTransformer.mitoClaimReferenceToClaimReference,
+          )
+        : [],
       pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
         response.pagination,
       ),
