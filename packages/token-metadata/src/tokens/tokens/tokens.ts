@@ -2930,4 +2930,13 @@ export default {
       address: '0xd73175f9eb15eee81745d367ae59309Ca2ceb5e2',
     },
   },
+
+  SUI: {
+    name: 'Sui',
+    logo: 'sui.webp',
+    decimals: 9,
+    symbol: 'SUI',
+    coinGeckoId: 'sui',
+    tokenType: TokenType.Unknown,
+  },
 } as Record<string, TokenMetaBase>
