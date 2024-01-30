@@ -119,7 +119,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
         () => this.client.Campaigns(request),
       )
 
-      return response
+      return IndexerCampaignTransformer.RoundsResponseToRounds(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveCampaignRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {

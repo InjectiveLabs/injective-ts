@@ -18,6 +18,7 @@ export enum CanonicalChannelToDestinationChannel {
   Noble = 'channel-148',
   Celestia = 'channel-152',
   Kujira = 'channel-98',
+  Gateway = 'channel-183',
 }
 
 /**
@@ -45,6 +46,7 @@ const legacyCanonicalChannels = {
   'channel-23': { chainA: 'Secret Network', chainB: 'Injective' },
   'channel-59': { chainA: 'Juno', chainB: 'Injective' },
   'channel-6': { chainA: 'Stride', chainB: 'Injective' },
+  'channel-183': { chainA: 'Gateway', chainB: 'Injective' },
 }
 
 /**
@@ -62,13 +64,13 @@ export const canonicalChannelsToChainMapFromInjective = {
   'channel-78': { chainA: 'Injective', chainB: 'Juno' },
   'channel-89': { chainA: 'Injective', chainB: 'Stride' },
   'channel-23': { chainA: 'Injective', chainB: 'Crescent' },
-  'channel-13': { chainA: 'Injective', chainB: '' },
   'channel-93': { chainA: 'Injective', chainB: 'Sommelier' },
   'channel-99': { chainA: 'Injective', chainB: 'Canto' },
   'channel-102': { chainA: 'Injective', chainB: 'Migaloo' },
   'channel-104': { chainA: 'Injective', chainB: 'Terra2' },
   'channel-105': { chainA: 'Injective', chainB: 'Terra2' },
   'channel-143': { chainA: 'Injective', chainB: 'Kava' },
+  'channel-13': { chainA: 'Injective', chainB: 'Gateway' },
 }
 
 export const canonicalChannelsToChainList = [
@@ -115,7 +117,8 @@ export const canonicalChannelsToChainList = [
   { channelId: 'channel-147', chainA: 'Injective', chainB: 'Oraichain' },
   { channelId: 'channel-148', chainA: 'Injective', chainB: 'Noble' },
   { channelId: 'channel-152', chainA: 'Injective', chainB: 'Celestia' },
-  
+  { channelId: 'channel-183', chainA: 'Injective', chainB: 'Gateway' },
+
 ]
 
 export default legacyCanonicalChannels
@@ -137,6 +140,7 @@ export const canonicalChannelIds = [
   'channel-89',
   'channel-90',
   'channel-93',
+  'channel-98',
   'channel-99',
   'channel-102',
   'channel-104',
@@ -147,7 +151,7 @@ export const canonicalChannelIds = [
   'channel-147',
   'channel-148',
   'channel-152',
-  'channel-98',
+  'channel-183',
 ]
 
 export const channelIbcDenomToBaseDenomMap = {

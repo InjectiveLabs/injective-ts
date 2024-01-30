@@ -8,8 +8,6 @@ import {
   redeemOnEth,
   getSignedVAA,
   transferFromEth,
-  hexToUint8Array,
-  uint8ArrayToHex,
   redeemOnEthNative,
   getEmitterAddressEth,
   getSignedVAAWithRetry,
@@ -416,9 +414,7 @@ export class EvmWormholeClient
       tokenAddress,
       amount,
       WORMHOLE_CHAINS.injective,
-      hexToUint8Array(
-        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
-      ),
+      zeroPad(cosmos.canonicalAddress(recipient), 32),
     )
 
     if (!transferReceipt) {
@@ -461,9 +457,7 @@ export class EvmWormholeClient
       signer,
       amount,
       WORMHOLE_CHAINS.injective,
-      hexToUint8Array(
-        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
-      ),
+      zeroPad(cosmos.canonicalAddress(recipient), 32),
     )
 
     if (!transferReceipt) {

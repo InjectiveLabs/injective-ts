@@ -1,9 +1,6 @@
-import { toUtf8 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
   cosmos,
-  hexToUint8Array,
-  uint8ArrayToHex,
   transferNativeSol,
   transferFromSolana,
 } from '@certusone/wormhole-sdk'
@@ -20,8 +17,9 @@ import {
   WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK,
 } from '../constants'
 import { TransferMsgArgs, WormholeClient } from '../types'
-import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
+import { getContractAddresses } from '../utils'
 import { SolanaWormholeClient } from '../clients/SolanaWormholeClient'
+import { getTransferDetailsUint8Array } from '../injective'
 
 export class SolanaWormholeGatewayClient
   extends SolanaWormholeClient
@@ -59,14 +57,6 @@ export class SolanaWormholeGatewayClient
 
     const { associatedChainContractAddresses } = getContractAddresses(network)
 
-    const transferDetails = {
-      gateway_transfer: {
-        chain: WORMHOLE_CHAINS.injective,
-        recipient: Buffer.from(toUtf8(recipient)).toString('base64'),
-        fee: 0,
-      },
-    }
-
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const fromAddress = (
       await getAssociatedTokenAddress(new PublicKey(args.tokenAddress), pubKey)
@@ -80,38 +70,23 @@ export class SolanaWormholeGatewayClient
       fromAddress,
       args.tokenAddress,
       BigInt(amount),
-      hexToUint8Array(
-        uint8ArrayToHex(
-          zeroPad(
-            cosmos.canonicalAddress(
-              WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
-            ),
-            32,
-          ),
+      zeroPad(
+        cosmos.canonicalAddress(
+          WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
         ),
+        32,
       ),
       WORMHOLE_CHAINS.wormchain,
       undefined,
       undefined,
       undefined,
       undefined,
-      new Uint8Array(Buffer.from(JSON.stringify(transferDetails))),
+      getTransferDetailsUint8Array(recipient),
     )
 
-    const signed = await provider.signTransaction(transaction)
-    const transactionId = await connection.sendRawTransaction(
-      signed.serialize(),
-    )
+    const txResponse = await this.signSendAndConfirmTransaction(transaction)
 
-    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
-
-    if (!txResponse) {
-      throw new GeneralException(
-        new Error('An error occurred while fetching the transaction info'),
-      )
-    }
-
-    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+    return txResponse as TransactionResponse & {
       txHash: string
     }
   }
@@ -138,14 +113,6 @@ export class SolanaWormholeGatewayClient
     }
     const { associatedChainContractAddresses } = getContractAddresses(network)
 
-    const transferDetails = {
-      gateway_transfer: {
-        chain: WORMHOLE_CHAINS.injective,
-        recipient: Buffer.from(toUtf8(recipient)).toString('base64'),
-        fee: 0,
-      },
-    }
-
     const connection = new Connection(solanaHostUrl, 'confirmed')
     const transaction = await transferNativeSol(
       connection,
@@ -153,35 +120,20 @@ export class SolanaWormholeGatewayClient
       associatedChainContractAddresses.token_bridge,
       pubKey,
       BigInt(amount),
-      hexToUint8Array(
-        uint8ArrayToHex(
-          zeroPad(
-            cosmos.canonicalAddress(
-              WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
-            ),
-            32,
-          ),
+      zeroPad(
+        cosmos.canonicalAddress(
+          WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
         ),
+        32,
       ),
       WORMHOLE_CHAINS.wormchain,
       undefined,
-      new Uint8Array(Buffer.from(JSON.stringify(transferDetails))),
+      getTransferDetailsUint8Array(recipient),
     )
 
-    const signed = await provider.signTransaction(transaction)
-    const transactionId = await connection.sendRawTransaction(
-      signed.serialize(),
-    )
+    const txResponse = await this.signSendAndConfirmTransaction(transaction)
 
-    const txResponse = await getSolanaTransactionInfo(transactionId, connection)
-
-    if (!txResponse) {
-      throw new GeneralException(
-        new Error('An error occurred while fetching the transaction info'),
-      )
-    }
-
-    return { txHash: transactionId, ...txResponse } as TransactionResponse & {
+    return txResponse as TransactionResponse & {
       txHash: string
     }
   }

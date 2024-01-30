@@ -3738,5 +3738,105 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "Sail",
+    "denom": "ibc/2718A31D59C81CD1F972C829F097BDBE32D7B84025F909FFB6163AAD314961B3",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/sail.png",
+    "symbol": "SAIL",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "2718A31D59C81CD1F972C829F097BDBE32D7B84025F909FFB6163AAD314961B3",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SAIL",
+      "baseDenom": "SAIL",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Apollo DAO",
+    "denom": "ibc/1D10FF873E3C5EC7263A7658CB116F9535EC0794185A8153F2DD662E0FA08CE5",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/apollo.svg",
+    "symbol": "APOLLO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "1D10FF873E3C5EC7263A7658CB116F9535EC0794185A8153F2DD662E0FA08CE5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "APOLLO",
+      "baseDenom": "APOLLO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Newtroll",
+    "denom": "ibc/4D228A037CE6EDD54034D9656AE5850BDE871EF71D6DD290E8EC81603AD40899",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/newtroll.svg",
+    "symbol": "NTRL",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "4D228A037CE6EDD54034D9656AE5850BDE871EF71D6DD290E8EC81603AD40899",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "NTRL",
+      "baseDenom": "NTRL",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Retro",
+    "denom": "ibc/ACDEFBA440F37D89E2933AB2B42AA0855C30852588B7DF8CD5FBCEB0EB1471EB",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/retro.svg",
+    "symbol": "RETRO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "ACDEFBA440F37D89E2933AB2B42AA0855C30852588B7DF8CD5FBCEB0EB1471EB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "RETRO",
+      "baseDenom": "RETRO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Goddard",
+    "denom": "ibc/3E89FBB226585CF08EB2E3C2625D1D2B0156CCC2233CAB56165125CACCBE731A",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/goddard.svg",
+    "symbol": "GODDARD",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3E89FBB226585CF08EB2E3C2625D1D2B0156CCC2233CAB56165125CACCBE731A",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "GODDARD",
+      "baseDenom": "GODDARD",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]

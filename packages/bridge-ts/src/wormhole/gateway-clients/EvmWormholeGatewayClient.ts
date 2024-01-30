@@ -3,8 +3,6 @@ import {
   cosmos,
   approveEth,
   transferFromEth,
-  hexToUint8Array,
-  uint8ArrayToHex,
   transferFromEthNative,
 } from '@certusone/wormhole-sdk'
 import { BigNumber } from '@injectivelabs/utils'
@@ -20,7 +18,7 @@ import {
   EvmWormholeClient,
   isNativeTokenAddress,
 } from '../clients/EvmWormholeClient'
-import { toUtf8 } from '@injectivelabs/sdk-ts'
+import { getTransferDetailsUint8Array } from '../injective'
 
 export class EvmWormholeGatewayClient
   extends EvmWormholeClient
@@ -74,33 +72,21 @@ export class EvmWormholeGatewayClient
       )
     }
 
-    const transferDetails = {
-      gateway_transfer: {
-        chain: WORMHOLE_CHAINS.injective,
-        recipient: Buffer.from(toUtf8(recipient)).toString('base64'),
-        fee: 0,
-      },
-    }
-
     const transferReceipt = await transferFromEth(
       associatedChainContractAddresses.token_bridge,
       signer,
       tokenAddress,
       amount,
       WORMHOLE_CHAINS.wormchain,
-      hexToUint8Array(
-        uint8ArrayToHex(
-          zeroPad(
-            cosmos.canonicalAddress(
-              WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
-            ),
-            32,
-          ),
+      zeroPad(
+        cosmos.canonicalAddress(
+          WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
         ),
+        32,
       ),
       undefined,
       undefined,
-      new Uint8Array(Buffer.from(JSON.stringify(transferDetails))),
+      getTransferDetailsUint8Array(recipient),
     )
 
     if (!transferReceipt) {
@@ -138,32 +124,20 @@ export class EvmWormholeGatewayClient
       wormholeSource,
     )
 
-    const transferDetails = {
-      gateway_transfer: {
-        chain: WORMHOLE_CHAINS.injective,
-        recipient: Buffer.from(toUtf8(recipient)).toString('base64'),
-        fee: 0,
-      },
-    }
-
     const transferReceipt = await transferFromEthNative(
       associatedChainContractAddresses.token_bridge,
       signer,
       amount,
       WORMHOLE_CHAINS.wormchain,
-      hexToUint8Array(
-        uint8ArrayToHex(
-          zeroPad(
-            cosmos.canonicalAddress(
-              WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
-            ),
-            32,
-          ),
+      zeroPad(
+        cosmos.canonicalAddress(
+          WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
         ),
+        32,
       ),
       undefined,
       undefined,
-      new Uint8Array(Buffer.from(JSON.stringify(transferDetails))),
+      getTransferDetailsUint8Array(recipient),
     )
 
     if (!transferReceipt) {

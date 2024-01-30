@@ -13,7 +13,8 @@ export interface Campaign {
   roundId: number
   userClaimed: boolean
   userScore: string
-  contract: string
+  rewardContract: string
+  version: string
 }
 
 export interface CampaignUser {

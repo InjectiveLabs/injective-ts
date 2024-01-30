@@ -104,7 +104,7 @@ export const getCw20Meta = (
     denomToLowerCase.includes(meta.address.toLowerCase()),
   )
 
-  return cw20MetaFromCw20s || undefined
+  return cw20MetaFromCw20s || token.cw20s?.[0] || undefined
 }
 
 export const getNativeTokenFactoryMeta = (

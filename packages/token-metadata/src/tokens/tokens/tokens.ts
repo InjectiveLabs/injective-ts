@@ -110,7 +110,7 @@ export default {
 
     ibc: {
       decimals: 6,
-      symbol: 'USDT-Cosmos',
+      symbol: 'USDTkv',
       isNative: true,
       baseDenom: 'erc20/tether/usdt',
       path: 'transfer/channel-143',
@@ -1026,10 +1026,23 @@ export default {
     cw20s: [
       {
         symbol: 'SOL',
+        // symbol: 'SOLlegacy',
         decimals: 8,
         address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
       },
     ],
+
+    ibc: {
+      symbol: 'SOLgw',
+      // symbol: 'SOL',
+      decimals: 8,
+      isNative: false,
+      baseDenom:
+        'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/8sYgCzLRJC3J7qPn2bNbx6PiGcarhyx8rBhVaNnfvHCA',
+      path: 'transfer/channel-183',
+      channelId: 'channel-183',
+      hash: 'A8B0B746B5AB736C2D8577259B510D56B8AF598008F68041E3D634BCDE72BE97',
+    },
   },
 
   SOMM: {
@@ -2820,5 +2833,101 @@ export default {
     symbol: 'JUP',
     coinGeckoId: 'jupiter-exchange-solana',
     tokenType: TokenType.Unknown,
+  },
+
+  ALIEN: {
+    name: 'ALIEN',
+    logo: 'alien.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1mly2ykhf6f9tdj58pvndjf4q8dzdl4myjqm9t6',
+        symbol: '$ALIEN',
+        decimals: 6,
+      },
+    ],
+  },
+
+  RICE: {
+    name: 'RICE',
+    logo: 'RICE.jpeg',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1mt876zny9j6xae25h7hl7zuqf7gkx8q63k0426',
+        symbol: 'RICE',
+        decimals: 12,
+      },
+    ],
+  },
+
+  BITS: {
+    name: 'bits',
+    logo: 'bits.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj10gcvfpnn4932kzk56h5kp77mrfdqas8z63qr7n',
+        symbol: 'BITS',
+        decimals: 6,
+      },
+    ],
+  },
+
+  WOSMO: {
+    name: 'Wosmo',
+    logo: 'WOSMO.png',
+    coinGeckoId: '',
+
+    ibc: {
+      symbol: 'WOSMO',
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'factory/osmo1pfyxruwvtwk00y8z06dh2lqjdj82ldvy74wzm3/WOSMO',
+      path: 'transfer/channel-8',
+      channelId: 'channel-8',
+      hash: 'DD648F5D3CDA56D0D8D8820CF703D246B9FC4007725D8B38D23A21FF1A1477E3',
+    },
+  },
+
+  IKINGS: {
+    name: 'Injective Kings',
+    logo: 'IKINGS.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1mt876zny9j6xae25h7hl7zuqf7gkx8q63k0426',
+        symbol: 'IKINGS',
+        decimals: 6,
+      },
+    ],
+  },
+
+  BEAST: {
+    name: 'Gelotto BEAST',
+    logo: 'beast.png',
+    coinGeckoId: '',
+
+    erc20: {
+      symbol: 'BEAST',
+      decimals: 6,
+      address: '0xA4426666addBE8c4985377d36683D17FB40c31Be',
+    },
+  },
+
+  GLTO: {
+    name: 'Gelotto',
+    logo: 'GLTO.png',
+    coinGeckoId: '',
+
+    erc20: {
+      symbol: 'GLTO',
+      decimals: 6,
+      address: '0xd73175f9eb15eee81745d367ae59309Ca2ceb5e2',
+    },
   },
 } as Record<string, TokenMetaBase>

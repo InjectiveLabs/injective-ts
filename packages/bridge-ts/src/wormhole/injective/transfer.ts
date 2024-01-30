@@ -4,7 +4,7 @@ import {
   MsgTransfer,
   makeTimeoutTimestampInNs,
 } from '@injectivelabs/sdk-ts'
-import { parseSmartContractStateResponse } from './utils'
+import { getIbcTransferDetails, parseSmartContractStateResponse } from './utils'
 import {
   ChainId,
   ChainName,
@@ -12,7 +12,6 @@ import {
   isNativeDenomInjective,
 } from '@certusone/wormhole-sdk'
 import { fromUint8Array } from 'js-base64'
-import { ChainId as InjectiveChainId } from '@injectivelabs/ts-types'
 import { BigNumberInBase } from '@injectivelabs/utils'
 
 /**
@@ -174,8 +173,8 @@ export async function transferFromInjective(
 }
 
 export async function transferFromInjectiveUsingIbc(
-  chainId: InjectiveChainId,
   channelId: string,
+  associatedChain: ChainId,
   walletAddress: string,
   ibcTranslatorAddress: string,
   denom: string,
@@ -184,13 +183,10 @@ export async function transferFromInjectiveUsingIbc(
   destinationLatestBlock: any,
 ) {
   const memo = JSON.stringify({
-    gateway_ibc_token_bridge_payload: {
-      gateway_transfer: {
-        chain: chainId,
-        recipient: recipientAddress,
-        fee: 0,
-      },
-    },
+    gateway_ibc_token_bridge_payload: getIbcTransferDetails(
+      recipientAddress,
+      associatedChain,
+    ),
   })
   const timeoutTimestamp = makeTimeoutTimestampInNs()
 
@@ -210,8 +206,8 @@ export async function transferFromInjectiveUsingIbc(
       ).toNumber(),
     },
     amount: {
-      denom: amount,
-      amount: denom,
+      denom,
+      amount,
     },
   })
 }
