@@ -196,7 +196,7 @@ export const getTokenAddress = (token: Token) => {
 export const getTokenInfo = (token: TokenBase) => {
   const tokenType = getTokenTypeFromDenom(token.denom)
 
-  if (isCw20ContractAddress(token.denom)) {
+  if (isCw20ContractAddress(token.denom) || tokenType === TokenType.Cw20) {
     const meta = getCw20Meta(token) as Cw20TokenMetaWithSource
 
     return {
