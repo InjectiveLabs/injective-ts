@@ -1,6 +1,6 @@
 import { TxResponse, MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { cosmos, tryNativeToUint8Array } from '@certusone/wormhole-sdk'
+import { cosmos } from '@certusone/wormhole-sdk'
 import {
   getTransferDetailsUint8Array,
   transferFromInjective,
@@ -9,7 +9,7 @@ import {
 import { TransferMsgArgs, WormholeClient, WormholeSource } from '../types'
 import {
   getAssociatedChain,
-  getAssociatedChainRecipient,
+  getAssociatedChainRecipientIbc,
   getContractAddresses,
 } from '../utils'
 import { InjectiveWormholeClient } from '../clients/InjectiveWormholeClient'
@@ -40,7 +40,7 @@ export class InjectiveWormholeGatewayClient
     } = args
 
     const associatedChain = getAssociatedChain(destination)
-    const recipient = getAssociatedChainRecipient(recipientArg, destination)
+    const recipient = getAssociatedChainRecipientIbc(recipientArg, destination)
 
     if (!args.tokenAddress) {
       throw new GeneralException(new Error(`Please provide tokenAddress`))
@@ -68,7 +68,7 @@ export class InjectiveWormholeGatewayClient
       throw new GeneralException(new Error(`Please provide signer`))
     }
 
-    const destinationLatestBlock = {
+    const associatedChainBlock = {
       header: {
         height: 9_999_999_999_999,
         version: {
@@ -77,17 +77,16 @@ export class InjectiveWormholeGatewayClient
       },
     }
 
-    // TODO: add testnet support
+
     const messages = await transferFromInjectiveUsingIbc(
       args.channelId || 'channel-183',
+      associatedChain,
       signer,
       WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
       args.tokenAddress,
       amount,
-      Buffer.from(tryNativeToUint8Array(recipient, associatedChain)).toString(
-        'base64',
-      ),
-      destinationLatestBlock,
+      Buffer.from(recipient).toString('base64'),
+      associatedChainBlock,
     )
 
     const txResponse = (await provider.msgBroadcaster.broadcast({

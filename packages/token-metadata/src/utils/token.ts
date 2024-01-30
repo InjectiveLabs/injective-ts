@@ -1,5 +1,6 @@
 import { ibcBaseDenoms } from '../tokens/tokens'
 import { Token, TokenMetaBase, TokenType } from '../types'
+import { getCw20Meta } from './helpers'
 import { getTokenInfo } from './meta'
 
 /**
@@ -26,6 +27,7 @@ export const getTokenFromMetaIncludingIbcBaseDenoms = (
     ...getTokenInfo(token),
     tokenType: isBaseIbcDenom ? TokenType.Ibc : tokenMeta.tokenType,
     denom: denom || '',
+    ...(token.cw20s && { cw20: getCw20Meta(token) }),
   } as Token
 }
 
@@ -37,9 +39,11 @@ export const getTokenFromMeta = (
     ...meta,
     denom: denom || '',
   }
+  const tokenInfo = getTokenInfo(token)
 
   return {
     ...token,
-    ...getTokenInfo(token),
+    ...tokenInfo,
+    ...(token.cw20s && { cw20: getCw20Meta(token) }),
   } as Token
 }

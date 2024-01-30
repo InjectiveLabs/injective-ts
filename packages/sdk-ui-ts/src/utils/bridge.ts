@@ -261,7 +261,9 @@ export const tokenDenomsPerNetwork = [
   },
   {
     network: BridgingNetwork.Solana,
-    denoms: [],
+    denoms: [
+      'ibc/A8B0B746B5AB736C2D8577259B510D56B8AF598008F68041E3D634BCDE72BE97',
+    ],
     symbols: ['SOL', 'PYTH'],
   },
   {

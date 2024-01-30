@@ -4,7 +4,7 @@ import {
   MsgTransfer,
   makeTimeoutTimestampInNs,
 } from '@injectivelabs/sdk-ts'
-import { getTransferDetails, parseSmartContractStateResponse } from './utils'
+import { getIbcTransferDetails, parseSmartContractStateResponse } from './utils'
 import {
   ChainId,
   ChainName,
@@ -174,6 +174,7 @@ export async function transferFromInjective(
 
 export async function transferFromInjectiveUsingIbc(
   channelId: string,
+  associatedChain: ChainId,
   walletAddress: string,
   ibcTranslatorAddress: string,
   denom: string,
@@ -182,7 +183,10 @@ export async function transferFromInjectiveUsingIbc(
   destinationLatestBlock: any,
 ) {
   const memo = JSON.stringify({
-    gateway_ibc_token_bridge_payload: getTransferDetails(recipientAddress),
+    gateway_ibc_token_bridge_payload: getIbcTransferDetails(
+      recipientAddress,
+      associatedChain,
+    ),
   })
   const timeoutTimestamp = makeTimeoutTimestampInNs()
 
@@ -202,8 +206,8 @@ export async function transferFromInjectiveUsingIbc(
       ).toNumber(),
     },
     amount: {
-      denom: amount,
-      amount: denom,
+      denom,
+      amount,
     },
   })
 }

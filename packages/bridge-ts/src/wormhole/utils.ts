@@ -26,6 +26,7 @@ import {
   WORMHOLE_WORMCHAIN_CONTRACT_BY_NETWORK,
   WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
 } from './constants'
+import { arrayify, zeroPad } from 'ethers/lib/utils'
 
 export const getSolanaTransactionInfo = async (
   transactionId: string,
@@ -430,6 +431,38 @@ export const getAssociatedChainRecipient = (
       return Buffer.from(recipient).toString('base64')
     default:
       return new SolanaPublicKey(recipient).toString()
+  }
+}
+
+export const getAssociatedChainRecipientIbc = (
+  recipient: string,
+  source: WormholeSource = WormholeSource.Solana,
+) => {
+  switch (source) {
+    case WormholeSource.Solana:
+      const addr =
+        typeof recipient === 'string' && recipient.startsWith('0x')
+          ? arrayify(recipient)
+          : recipient
+
+      return arrayify(zeroPad(new SolanaPublicKey(addr).toBytes(), 32))
+
+    case WormholeSource.Ethereum:
+      return arrayify(Buffer.from(zeroPad(recipient, 32)))
+    case WormholeSource.Arbitrum:
+      return arrayify(Buffer.from(zeroPad(recipient, 32)))
+    case WormholeSource.Polygon:
+      return arrayify(Buffer.from(zeroPad(recipient, 32)))
+    case WormholeSource.Klaytn:
+      return arrayify(Buffer.from(zeroPad(recipient, 32)))
+    case WormholeSource.Aptos:
+      throw Error('Aptos not yet implemented')
+    case WormholeSource.Sui:
+      throw Error('Sui not yet implemented')
+    case WormholeSource.Wormchain:
+      return arrayify(Buffer.from(recipient))
+    default:
+      throw Error('Default Not yet implemented')
   }
 }
 

@@ -60,6 +60,22 @@ export const getTransferDetails = (
   }
 }
 
+export const getIbcTransferDetails = (
+  recipient: string,
+  chainId: ChainId = WORMHOLE_CHAINS.injective,
+) => {
+  const nonce = Math.round(Math.random() * 10000)
+
+  return {
+    gateway_transfer: {
+      chain: chainId,
+      nonce: nonce,
+      recipient: recipient /** already encoded to base64 */,
+      fee: '0',
+    },
+  }
+}
+
 export const getTransferDetailsUint8Array = (
   recipient: string,
   chainId: ChainId = WORMHOLE_CHAINS.injective,

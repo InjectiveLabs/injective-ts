@@ -10,8 +10,6 @@ import {
   ChainId,
   getSignedVAA,
   redeemOnSolana,
-  hexToUint8Array,
-  uint8ArrayToHex,
   transferNativeSol,
   transferFromSolana,
   getSignedVAAWithRetry,
@@ -481,9 +479,7 @@ export class SolanaWormholeClient
       fromAddress,
       args.tokenAddress,
       BigInt(amount),
-      hexToUint8Array(
-        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
-      ),
+      zeroPad(cosmos.canonicalAddress(recipient), 32),
       WORMHOLE_CHAINS.injective,
     )
 
@@ -523,9 +519,7 @@ export class SolanaWormholeClient
       associatedChainContractAddresses.token_bridge,
       pubKey,
       BigInt(amount),
-      hexToUint8Array(
-        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
-      ),
+      zeroPad(cosmos.canonicalAddress(recipient), 32),
       WORMHOLE_CHAINS.injective,
     )
 
@@ -566,10 +560,9 @@ export class SolanaWormholeClient
     const provider = await this.getProvider()
     const connection = new Connection(solanaHostUrl, 'confirmed')
 
-    const transactionId = await provider.sendTransaction(
-      transaction,
-      connection,
-      { skipPreflight: true },
+    const signed = await provider.signTransaction(transaction)
+    const transactionId = await connection.sendRawTransaction(
+      signed.serialize(),
     )
 
     try {
