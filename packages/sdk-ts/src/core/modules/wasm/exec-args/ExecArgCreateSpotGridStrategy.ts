@@ -4,7 +4,7 @@ import {
   ExecDataRepresentation,
 } from '../ExecArgBase'
 
-import { ExitType, ExitConfig } from '../types'
+import { ExitType, ExitConfig, StrategyType } from '../types'
 export declare namespace ExecArgCreateSpotGridStrategy {
   export interface Params {
     subaccountId: string
@@ -15,6 +15,7 @@ export declare namespace ExecArgCreateSpotGridStrategy {
     stopLoss?: ExitConfig
     takeProfit?: ExitConfig
     exitType?: ExitType
+    strategyType?: StrategyType
   }
 
   export interface Data {
@@ -31,7 +32,7 @@ export declare namespace ExecArgCreateSpotGridStrategy {
       exit_price: string
     }
     exit_type?: ExitType
-    should_exit_with_quote_only: boolean
+    strategy_type?: StrategyType
   }
 }
 
@@ -69,7 +70,7 @@ export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
             exit_price: params.takeProfit.exitPrice,
           }
         : undefined,
-      should_exit_with_quote_only: false, // dummy value for backwards compatibility
+      strategy_type: params.strategyType,
     }
   }
 
