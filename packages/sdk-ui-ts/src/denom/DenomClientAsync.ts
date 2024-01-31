@@ -21,6 +21,7 @@ import {
 import { Web3Client } from '../services/web3/Web3Client'
 import type { Token } from '@injectivelabs/token-metadata'
 import {
+  TokenType,
   TokenMetaBase,
   getUnknownTokenWithSymbol,
   getIbcTokenFromDenomTrace,
@@ -220,6 +221,23 @@ export class DenomClientAsync {
 
   getCoinGeckoId(denom: string): string {
     return this.denomClient.getCoinGeckoId(denom)
+  }
+
+  /**
+   * Find derivative market's base token metadata based on the symbol
+   */
+  getDerivativeBaseToken(symbol: string) {
+    const tokenMeta = this.denomClient.getTokenMetaDataBySymbol(symbol)
+
+    return {
+      denom: symbol,
+      tokenType: TokenType.Unknown,
+      decimals: tokenMeta?.decimals || 0,
+      logo: tokenMeta?.logo || 'unknown.png',
+      coinGeckoId: tokenMeta?.coinGeckoId || '',
+      name: tokenMeta?.name || symbol.toUpperCase(),
+      symbol: tokenMeta?.symbol || symbol.toUpperCase(),
+    }
   }
 
   private async getFactoryDenomMetadata(
