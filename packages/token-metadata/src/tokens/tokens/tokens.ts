@@ -1120,6 +1120,7 @@ export default {
   AVAX: {
     name: 'AVAX',
     logo: 'avax.webp',
+    symbol: 'AVAX',
     coinGeckoId: 'avalanche-2',
 
     cw20s: [
@@ -2937,6 +2938,15 @@ export default {
     decimals: 9,
     symbol: 'SUI',
     coinGeckoId: 'sui',
+    tokenType: TokenType.Unknown,
+  },
+
+  WIF: {
+    name: 'dogwifhat',
+    logo: 'wif.webp',
+    decimals: 6,
+    symbol: 'WIF',
+    coinGeckoId: 'dogwifcoin',
     tokenType: TokenType.Unknown,
   },
 } as Record<string, TokenMetaBase>
