@@ -2808,7 +2808,7 @@ export default {
 
   GYEN: {
     name: 'GMO JPY',
-    logo: 'gyen.jpeg',
+    logo: 'gyen.webp',
     coinGeckoId: 'gyen',
 
     erc20: {
@@ -2947,6 +2947,15 @@ export default {
     decimals: 6,
     symbol: 'WIF',
     coinGeckoId: 'dogwifcoin',
+    tokenType: TokenType.Unknown,
+  },
+
+  OP: {
+    name: 'Optimism',
+    logo: 'optimism.webp',
+    decimals: 18,
+    symbol: 'OP',
+    coinGeckoId: 'optimism',
     tokenType: TokenType.Unknown,
   },
 } as Record<string, TokenMetaBase>
