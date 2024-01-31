@@ -3838,5 +3838,85 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "Archway",
+    "denom": "ibc/9C6E75FE14DF8959B7CC6E77398DF825B9815C753BB49D2860E303EA2FD803DD",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/archway/images/archway.png",
+    "symbol": "ARCH",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "9C6E75FE14DF8959B7CC6E77398DF825B9815C753BB49D2860E303EA2FD803DD",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "ARCH",
+      "baseDenom": "ARCH",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "RAPTR",
+    "denom": "ibc/592FDF11D4D958105B1E4620FAECAA6708655AB815F01A01C1540968893CDEBF",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/RAPTR.png",
+    "symbol": "RAPTR",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "592FDF11D4D958105B1E4620FAECAA6708655AB815F01A01C1540968893CDEBF",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "RAPTR",
+      "baseDenom": "RAPTR",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Stride Staked DYDX",
+    "denom": "ibc/9B324282388BEBD0E028749E9E10627BA2BA13ADBE7FF04274F2CFBDD271BA4B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stdydx.png",
+    "symbol": "stDYDX",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "9B324282388BEBD0E028749E9E10627BA2BA13ADBE7FF04274F2CFBDD271BA4B",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "stDYDX",
+      "baseDenom": "stDYDX",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Stride Staked TIA",
+    "denom": "ibc/32F6EDA3E2B2A7F9C4A62F11935CF5D25948372A5A85281D7ABB9A2D0F0B7182",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/sttia.png",
+    "symbol": "stTIA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "32F6EDA3E2B2A7F9C4A62F11935CF5D25948372A5A85281D7ABB9A2D0F0B7182",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "stTIA",
+      "baseDenom": "stTIA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]
