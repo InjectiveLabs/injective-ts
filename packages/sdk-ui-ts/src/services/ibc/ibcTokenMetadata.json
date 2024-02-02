@@ -3918,5 +3918,25 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "Gelotto",
+    "denom": "peggy0xd73175f9eb15eee81745d367ae59309Ca2ceb5e2",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/glto.png",
+    "symbol": "GLTO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "peggy0xd73175f9eb15eee81745d367ae59309Ca2ceb5e2",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "GLTO",
+      "baseDenom": "GLTO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]

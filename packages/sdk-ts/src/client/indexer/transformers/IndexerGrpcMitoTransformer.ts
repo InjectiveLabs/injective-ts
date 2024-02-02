@@ -451,6 +451,7 @@ export class IndexerGrpcMitoTransformer {
     account: MitoApi.WhitelistAccount,
   ): MitoWhitelistAccount {
     return {
+      weight: account.weight,
       accountAddress: account.accountAddress,
       updatedAt: parseInt(account.updatedAt, 10),
     }

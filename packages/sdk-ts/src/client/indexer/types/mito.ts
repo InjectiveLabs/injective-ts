@@ -250,6 +250,7 @@ export interface MitoIDOSubscription {
 export interface MitoWhitelistAccount {
   accountAddress: string
   updatedAt: number
+  weight: string
 }
 
 export interface MitoClaimReference {
