@@ -3938,5 +3938,25 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "DNA",
+    "denom": "ibc/AE8E20F37C6A72187633E418169758A6974DD18AB460ABFC74820AAC364D2A13",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/DNA.png",
+    "symbol": "DNA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "AE8E20F37C6A72187633E418169758A6974DD18AB460ABFC74820AAC364D2A13",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "DNA",
+      "baseDenom": "DNA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]
