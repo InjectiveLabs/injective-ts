@@ -2958,4 +2958,13 @@ export default {
     coinGeckoId: 'optimism',
     tokenType: TokenType.Unknown,
   },
+
+  DOGE: {
+    name: 'Dogecoin',
+    logo: 'dogecoin.webp',
+    decimals: 8,
+    symbol: 'DOGE',
+    coinGeckoId: 'dogecoin',
+    tokenType: TokenType.Unknown,
+  },
 } as Record<string, TokenMetaBase>
