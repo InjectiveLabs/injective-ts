@@ -48,4 +48,16 @@ export const devnetTokens = () =>
         tokens.USDC.cw20s,
       ),
     },
+
+    KIRA: {
+      ...tokens.KIRA,
+      tokenFactories: [
+        ...(tokens.KIRA.tokenFactories || []),
+        {
+          creator: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
+          symbol: 'KIRA',
+          decimals: 6,
+        },
+      ],
+    },
   } as Record<string, TokenMeta>)

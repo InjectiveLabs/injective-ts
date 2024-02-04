@@ -3958,5 +3958,25 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "Open Exchange Token",
+    "denom": "ibc/3DC896EFF521814E914264A691D9D462A7108E96E53DE135FC4D91A370F4CD77",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/ox.svg",
+    "symbol": "OX",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3DC896EFF521814E914264A691D9D462A7108E96E53DE135FC4D91A370F4CD77",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "OX",
+      "baseDenom": "OX",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]
