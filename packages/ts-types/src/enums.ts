@@ -67,6 +67,7 @@ export enum MsgType {
   MsgCreateBinaryOptionsMarketOrder = 'injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
   MsgCreateDerivativeLimitOrder = 'injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder',
   MsgCreateDerivativeMarketOrder = 'injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder',
+  MsgLiquidatePosition = 'injective.exchange.v1beta1.MsgLiquidatePosition',
   MsgCreateSpotLimitOrder = 'injective.exchange.v1beta1.MsgCreateSpotLimitOrder',
   MsgCreateSpotMarketOrder = 'injective.exchange.v1beta1.MsgCreateSpotMarketOrder',
   MsgDeposit = 'injective.exchange.v1beta1.MsgDeposit',
