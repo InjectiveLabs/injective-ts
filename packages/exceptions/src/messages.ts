@@ -522,7 +522,7 @@ const govErrorMap = {
   [ChainGovErrorCodes.ErrNoProposalHandlerExists]:
     'no handler exists for proposal type',
   [ChainGovErrorCodes.ErrUnroutableProposalMsg]:
-    'proposal message not recogized by router',
+    'proposal message not recognized by router',
   [ChainGovErrorCodes.ErrNoProposalMsgs]: 'no messages proposed',
   [ChainGovErrorCodes.ErrInvalidProposalMsg]: 'invalid proposal message',
   [ChainGovErrorCodes.ErrInvalidSigner]:
@@ -1813,8 +1813,8 @@ export const chainErrorMessagesMap: Record<
     module: TransactionChainErrorModule.Gov,
   },
 
-  'proposal message not recogized by router': {
-    message: 'proposal message not recogized by router',
+  'proposal message not recognized by router': {
+    message: 'proposal message not recognized by router',
     code: ChainGovErrorCodes.ErrUnroutableProposalMsg,
     module: TransactionChainErrorModule.Gov,
   },

@@ -23,7 +23,7 @@ export declare namespace ExecArgCW20Send {
     contractAddress: string
     amount: string
     /**
-     * This object represents the underyling method
+     * This object represents the underlying method
      * that we want to execute on the CW20 smart contract
      */
     msg?: object
