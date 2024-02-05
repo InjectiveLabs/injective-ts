@@ -26,6 +26,7 @@ export enum CosmosChainId {
   Migaloo = 'migaloo-1',
   Kujira = 'kaiyo-1',
   Wormchain = 'wormchain',
+  Andromeda = 'andromeda-1',
 }
 
 export enum TestnetCosmosChainId {

@@ -2967,4 +2967,20 @@ export default {
     coinGeckoId: 'dogecoin',
     tokenType: TokenType.Unknown,
   },
+
+  ANDR: {
+    name: 'Andromeda',
+    logo: 'andromeda.webp',
+    coinGeckoId: 'andromeda-2',
+
+    ibc: {
+      symbol: 'ANDR',
+      decimals: 6,
+      isNative: true,
+      baseDenom: 'uandr',
+      path: 'transfer/channel-213',
+      channelId: 'channel-213',
+      hash: '61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
+    },
+  },
 } as Record<string, TokenMetaBase>

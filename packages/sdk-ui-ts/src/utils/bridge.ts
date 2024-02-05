@@ -53,6 +53,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Celestia,
   BridgingNetwork.Migaloo,
   BridgingNetwork.Kujira,
+  BridgingNetwork.Andromeda,
 ]
 
 export const LeapNetworks = [
@@ -109,6 +110,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Celestia,
   BridgingNetwork.Migaloo,
   BridgingNetwork.Kujira,
+  BridgingNetwork.Andromeda,
 ]
 
 export const EvmWormholeNetworks = [
@@ -311,6 +313,13 @@ export const tokenDenomsPerNetwork = [
     ],
     symbols: ['ukuji'],
   },
+  {
+    network: BridgingNetwork.Andromeda,
+    denoms: [
+      'ibc/61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
+    ],
+    symbols: ['uandr'],
+  },
 ] as NetworkConfig[]
 
 export const cosmosChainTokenMetaMap = {
@@ -506,6 +515,12 @@ export const cosmosChainTokenMetaMap = {
     tokenType: TokenType.Ibc,
     denom:
       'ibc/9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204',
+  },
+  [CosmosChainId.Andromeda]: {
+    ...tokenMetaUtils.getMetaBySymbol('ANDR'),
+    tokenType: TokenType.Ibc,
+    denom:
+      'ibc/61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
   },
 } as Record<string, Token | Token[]>
 
@@ -739,6 +754,10 @@ export const getNetworkFromAddress = (address: string): BridgingNetwork => {
 
   if (address.startsWith('kujira')) {
     return BridgingNetwork.Kujira
+  }
+
+  if (address.startsWith('andr')) {
+    return BridgingNetwork.Andromeda
   }
 
   return BridgingNetwork.Injective

@@ -56,10 +56,11 @@ export class KeplrWallet {
 
     throw new CosmosWalletException(
       new Error(
-        `Keplr doesn't support ${
+        `Keplr may not support ${
           chainName[0] || chainId
-        } network. Please use another Cosmos wallet`,
+        } network. Please check if the chain can be added.`,
       ),
+      { context: 'https://chains.keplr.app/' },
     )
   }
 
@@ -266,10 +267,11 @@ export class KeplrWallet {
     } catch (e) {
       throw new CosmosWalletException(
         new Error(
-          `Keplr doesn't support ${
+          `Keplr may not support ${
             chainName[0] || chainId
-          } network. Please use another Cosmos wallet`,
+          } network. Please check if the chain can be added.`,
         ),
+        { context: 'https://chains.keplr.app/' },
       )
     }
   }
