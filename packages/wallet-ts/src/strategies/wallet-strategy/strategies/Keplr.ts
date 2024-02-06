@@ -23,7 +23,11 @@ import {
 import { KeplrWallet } from '../../../utils/wallets/keplr'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import {
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+} from '../../../types/enums'
 import { SendTransactionOptions } from '../types'
 
 export default class Keplr
@@ -51,6 +55,17 @@ export default class Keplr
     const keplrWallet = this.getKeplrWallet()
 
     return await keplrWallet.checkChainIdSupport()
+  }
+
+  public async disconnect() {
+    if (this.listeners[WalletEventListener.AccountChange]) {
+      window.removeEventListener(
+        'keplr_keystorechange',
+        this.listeners[WalletEventListener.AccountChange],
+      )
+    }
+
+    this.listeners = {}
   }
 
   async getAddresses(): Promise<string[]> {
@@ -229,6 +244,22 @@ export default class Keplr
     const key = await keplrWallet.getKey()
 
     return Buffer.from(key.pubKey).toString('base64')
+  }
+
+  async onAccountChange(
+    callback: (account: AccountAddress) => void,
+  ): Promise<void> {
+    const listener = async () => {
+      const [account] = await this.getAddresses()
+
+      callback(account)
+    }
+
+    this.listeners = {
+      [WalletEventListener.AccountChange]: listener,
+    }
+
+    window.addEventListener('keplr_keystorechange', listener)
   }
 
   private getKeplrWallet(): KeplrWallet {

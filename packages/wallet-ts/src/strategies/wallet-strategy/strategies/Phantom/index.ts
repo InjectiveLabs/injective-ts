@@ -16,7 +16,11 @@ import {
 } from '../../../types'
 import { BrowserEip1993Provider, SendTransactionOptions } from '../../types'
 import BaseConcreteStrategy from '../Base'
-import { WalletAction, WalletDeviceType } from '../../../../types/enums'
+import {
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+} from '../../../../types/enums'
 import { getPhantomProvider } from './utils'
 
 export default class Phantom
@@ -32,7 +36,31 @@ export default class Phantom
   }
 
   async enable(): Promise<boolean> {
+    await this.getAddresses()
+
     return Promise.resolve(true)
+  }
+
+  public async disconnect() {
+    if (this.listeners[WalletEventListener.AccountChange]) {
+      const ethereum = await this.getEthereum()
+
+      ethereum.removeListener(
+        'accountsChanged',
+        this.listeners[WalletEventListener.AccountChange],
+      )
+    }
+
+    if (this.listeners[WalletEventListener.ChainIdChange]) {
+      const ethereum = await this.getEthereum()
+
+      ethereum.removeListener(
+        'chainChanged',
+        this.listeners[WalletEventListener.ChainIdChange],
+      )
+    }
+
+    this.listeners = {}
   }
 
   async getAddresses(): Promise<string[]> {
@@ -121,9 +149,6 @@ export default class Phantom
     address: AccountAddress,
   ): Promise<string> {
     const ethereum = await this.getEthereum()
-
-    // Phantom needs to enable access to accounts before signing
-    await this.getAddresses()
 
     try {
       return await ethereum.request({
@@ -244,24 +269,40 @@ export default class Phantom
     )
   }
 
-  onChainIdChanged(_callback: () => void): void {
-    //
+  async onChainIdChanged(callback: (chain: string) => void): Promise<void> {
+    const ethereum = await this.getEthereum()
+
+    this.listeners = {
+      [WalletEventListener.ChainIdChange]: callback,
+    }
+
+    ethereum.on('chainChanged', callback)
   }
 
-  onAccountChange(_callback: (account: AccountAddress) => void): void {
-    //
-  }
+  async onAccountChange(
+    callback: (account: AccountAddress) => void,
+  ): Promise<void> {
+    const ethereum = await this.getEthereum()
 
-  cancelOnChainIdChange(): void {
-    //
-  }
+    const listener = (accounts: string[]) => {
+      if (accounts && accounts.length > 0) {
+        callback(accounts[0])
+      } else {
+        this.getAddresses()
+          .then((accounts) => {
+            callback(accounts[0])
+          })
+          .catch((_error: any) => {
+            //
+          })
+      }
+    }
 
-  cancelOnAccountChange(): void {
-    //
-  }
+    this.listeners = {
+      [WalletEventListener.AccountChange]: listener,
+    }
 
-  cancelAllEvents(): void {
-    //
+    ethereum.on('accountsChanged', listener)
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {

@@ -172,15 +172,9 @@ export interface ConcreteWalletStrategy
 
   getEthereumTransactionReceipt(txHash: string): void
 
-  onAccountChange?(callback: onAccountChangeCallback): void
+  onAccountChange?(callback: onAccountChangeCallback): Promise<void> | void
 
-  onChainIdChange?(callback: onChainIdChangeCallback): void
-
-  cancelOnChainIdChange?(): void
-
-  cancelOnAccountChange?(): void
-
-  cancelAllEvents?(): void
+  onChainIdChange?(callback: onChainIdChangeCallback): Promise<void> | void
 
   disconnect?(): Promise<void> | void
 }

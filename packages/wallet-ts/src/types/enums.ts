@@ -23,4 +23,9 @@ export enum WalletDeviceType {
   Hardware = 'hardware',
 }
 
+export enum WalletEventListener {
+  AccountChange = 'account-change',
+  ChainIdChange = 'chain-id-change',
+}
+
 export const WalletAction = { ...WalletErrorActionModule }

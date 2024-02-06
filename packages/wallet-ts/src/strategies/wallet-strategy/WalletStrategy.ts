@@ -260,39 +260,25 @@ export default class WalletStrategy {
     }
   }
 
-  public onAccountChange(callback: onAccountChangeCallback): void {
+  public async onAccountChange(
+    callback: onAccountChangeCallback,
+  ): Promise<void> {
     if (this.getStrategy().onAccountChange) {
       return this.getStrategy().onAccountChange!(callback)
     }
   }
 
-  public onChainIdChange(callback: onChainIdChangeCallback): void {
+  public async onChainIdChange(
+    callback: onChainIdChangeCallback,
+  ): Promise<void> {
     if (this.getStrategy().onChainIdChange) {
       return this.getStrategy().onChainIdChange!(callback)
     }
   }
 
-  public cancelOnChainIdChange(): void {
-    if (this.getStrategy().cancelOnChainIdChange) {
-      return this.getStrategy().cancelOnChainIdChange!()
-    }
-  }
-
-  public cancelAllEvents(): void {
-    if (this.getStrategy().cancelAllEvents) {
-      return this.getStrategy().cancelAllEvents!()
-    }
-  }
-
-  public cancelOnAccountChange(): void {
-    if (this.getStrategy().cancelOnAccountChange) {
-      return this.getStrategy().cancelOnAccountChange!()
-    }
-  }
-
-  public disconnect() {
+  public async disconnect() {
     if (this.getStrategy().disconnect) {
-      this.getStrategy().disconnect!()
+      await this.getStrategy().disconnect!()
     }
   }
 }
