@@ -23,7 +23,8 @@ export type NetworkEndpoints = {
   grpc: string // Sentry gRPC
   rest: string // LCD
   rpc?: string // Tendermint
-  cache?: string // Cache Service
+  cacheGrpc?: string // Cache gRPC service
+  cacheRest?: string // Cache LCD service
   chronos?: string // Chronos Service
   web3gw?: string // Web3Gateway Service
   explorer?: string // Explorer Service
