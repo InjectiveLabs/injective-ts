@@ -53,7 +53,6 @@ export const MintScanExplorerUrl = {
   [BridgingNetwork.Kava]: 'kava',
   [BridgingNetwork.Noble]: 'noble',
   [BridgingNetwork.Celestia]: 'celestia',
-  [BridgingNetwork.Andromeda]: 'andromeda',
 } as Record<BridgingNetwork, string>
 
 export enum BridgeTransactionState {

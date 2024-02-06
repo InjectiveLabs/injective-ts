@@ -567,11 +567,15 @@ export const getCosmosExplorerUrl = (
   network: Network,
 ): string => {
   if (bridgingNetwork === BridgingNetwork.Oraichain) {
-    return 'https://scan.orai.io/'
+    return 'https://scan.orai.io'
   }
 
   if (bridgingNetwork === BridgingNetwork.Migaloo) {
-    return 'https://migaloo.explorers.guru/'
+    return 'https://migaloo.explorers.guru'
+  }
+
+  if (bridgingNetwork === BridgingNetwork.Andromeda) {
+    return 'https://ping.wildsage.io/andromeda'
   }
 
   const mintScanNetworkUrl = MintScanExplorerUrl[bridgingNetwork]
