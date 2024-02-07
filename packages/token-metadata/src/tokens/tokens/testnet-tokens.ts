@@ -1,8 +1,7 @@
 import tokens from './tokens'
 import {
-  TokenMeta,
-  TokenType,
   TokenSource,
+  TokenMetaBase,
   Cw20TokenMetaWithSource,
 } from '../../types'
 
@@ -139,15 +138,15 @@ export const testnetTokens = () =>
 
     MATIC: {
       ...tokens.MATIC,
-      evm: {
-        ...tokens.MATIC.evm,
+      erc20: {
+        ...tokens.MATIC.erc20,
         address: '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
       },
       tokenFactories: [
         {
           symbol: 'MATIC',
           creator: 'inj17vytdwqczqz72j65saukplrktd4gyfme5agf6c',
-          decimals: '18',
+          decimals: 18,
         },
       ],
     },
@@ -159,21 +158,8 @@ export const testnetTokens = () =>
         {
           symbol: 'STINJ',
           creator: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
-          decimals: '18',
-        },
-      ],
-    },
-
-    MITOTEST1: {
-      ...tokens.MITOTEST1,
-      cw20s: [
-        {
           decimals: 18,
-          symbol: 'MT1',
-          source: TokenSource.EthereumWh,
-          address: 'mitotest1',
-          tokenType: TokenType.Cw20,
         },
       ],
     },
-  } as Record<string, TokenMeta>)
+  } as Record<string, TokenMetaBase>)

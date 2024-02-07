@@ -23,7 +23,7 @@ export default {
 
     tokenFactories: [
       {
-        symbol: 'uzen',
+        symbol: 'ZEN',
         creator: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
         decimals: 18,
       },
@@ -70,6 +70,20 @@ export default {
         symbol: 'DEMO',
         creator: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
         decimals: 18,
+      },
+    ],
+  },
+
+  MITOTEST2: {
+    name: 'Mito test token',
+    logo: 'mito-test.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        decimals: 6,
+        symbol: 'MT',
+        creator: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
       },
     ],
   },
