@@ -295,7 +295,7 @@ export default class Phantom
           .catch((_error: any) => {
             //
           })
-      }
+    }
     }
 
     this.listeners = {

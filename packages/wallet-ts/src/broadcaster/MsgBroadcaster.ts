@@ -56,6 +56,22 @@ import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
 import { isCosmosAminoOnlyWallet } from '../utils'
 
+const getEthereumWalletPubKey = <T>({
+  pubKey,
+  eip712TypedData,
+  signature,
+}: {
+  pubKey?: string
+  eip712TypedData: T
+  signature: string
+}) => {
+  if (pubKey) {
+    return pubKey
+  }
+
+  return hexToBase64(recoverTypedSignaturePubKey(eip712TypedData, signature))
+}
+
 /**
  * This class is used to broadcast transactions
  * using the WalletStrategy as a handler
@@ -236,11 +252,35 @@ export class MsgBroadcaster {
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
+    let stdFee = getStdFee({ ...tx.gas, gas })
+
+    /**
+     * Account has been created on chain
+     * and we can simulate the transaction
+     * to estimate the gas
+     **/
+    if (baseAccount.pubKey) {
+      const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee({
+        chainId,
+        signMode: SIGN_EIP712_V2,
+        memo: tx.memo,
+        message: msgs,
+        timeoutHeight: timeoutHeight.toNumber(),
+        signers: {
+          pubKey: baseAccount.pubKey.key,
+          accountNumber: baseAccount.accountNumber,
+          sequence: baseAccount.sequence,
+        },
+        fee: getStdFee({ ...tx.gas, gas }),
+      })
+
+      stdFee = simulatedStdFee
+    }
 
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: getStdFee({ ...tx.gas, gas }),
+      fee: stdFee,
       tx: {
         memo: tx.memo,
         accountNumber: baseAccount.accountNumber.toString(),
@@ -252,23 +292,23 @@ export class MsgBroadcaster {
     })
 
     /** Signing on Ethereum */
-    const signature = (await walletStrategy.signEip712TypedData(
+    const signature = await walletStrategy.signEip712TypedData(
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
-    )) as string
-    const signatureBuff = hexToBuff(signature)
-
-    /** Get Public Key of the signer */
-    const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature)
-    const publicKeyBase64 = hexToBase64(publicKeyHex)
+    )
+    const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
+      pubKey: baseAccount.pubKey?.key,
+      eip712TypedData,
+      signature,
+    })
 
     /** Preparing the transaction for client broadcasting */
     const { txRaw } = createTransaction({
       message: msgs,
       memo: tx.memo,
       signMode: SIGN_EIP712,
-      fee: getStdFee({ ...tx.gas, gas }),
-      pubKey: publicKeyBase64,
+      fee: stdFee,
+      pubKey: pubKeyOrSignatureDerivedPubKey,
       sequence: baseAccount.sequence,
       timeoutHeight: timeoutHeight.toNumber(),
       accountNumber: baseAccount.accountNumber,
@@ -285,7 +325,7 @@ export class MsgBroadcaster {
     }
 
     /** Append Signatures */
-    txRawEip712.signatures = [signatureBuff]
+    txRawEip712.signatures = [hexToBuff(signature)]
 
     return walletStrategy.sendTransaction(txRawEip712, {
       chainId,
@@ -334,11 +374,35 @@ export class MsgBroadcaster {
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
+    let stdFee = getStdFee({ ...tx.gas, gas })
+
+    /**
+     * Account has been created on chain
+     * and we can simulate the transaction
+     * to estimate the gas
+     **/
+    if (baseAccount.pubKey) {
+      const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee({
+        chainId,
+        signMode: SIGN_EIP712_V2,
+        memo: tx.memo,
+        message: msgs,
+        timeoutHeight: timeoutHeight.toNumber(),
+        signers: {
+          pubKey: baseAccount.pubKey.key,
+          accountNumber: baseAccount.accountNumber,
+          sequence: baseAccount.sequence,
+        },
+        fee: getStdFee({ ...tx.gas, gas }),
+      })
+
+      stdFee = simulatedStdFee
+    }
 
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedDataV2({
       msgs,
-      fee: getStdFee({ ...tx.gas, gas }),
+      fee: stdFee,
       tx: {
         memo: tx.memo,
         accountNumber: baseAccount.accountNumber.toString(),
@@ -350,23 +414,23 @@ export class MsgBroadcaster {
     })
 
     /** Signing on Ethereum */
-    const signature = (await walletStrategy.signEip712TypedData(
+    const signature = await walletStrategy.signEip712TypedData(
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
-    )) as string
-    const signatureBuff = hexToBuff(signature)
-
-    /** Get Public Key of the signer */
-    const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature)
-    const publicKeyBase64 = hexToBase64(publicKeyHex)
+    )
+    const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
+      pubKey: baseAccount.pubKey?.key,
+      eip712TypedData,
+      signature,
+    })
 
     /** Preparing the transaction for client broadcasting */
     const { txRaw } = createTransaction({
       message: msgs,
       memo: tx.memo,
       signMode: SIGN_EIP712_V2,
-      fee: getStdFee({ ...tx.gas, gas }),
-      pubKey: publicKeyBase64,
+      fee: stdFee,
+      pubKey: pubKeyOrSignatureDerivedPubKey,
       sequence: baseAccount.sequence,
       timeoutHeight: timeoutHeight.toNumber(),
       accountNumber: baseAccount.accountNumber,
@@ -383,7 +447,7 @@ export class MsgBroadcaster {
     }
 
     /** Append Signatures */
-    txRawEip712.signatures = [signatureBuff]
+    txRawEip712.signatures = [hexToBuff(signature)]
 
     return walletStrategy.sendTransaction(txRawEip712, {
       chainId,
