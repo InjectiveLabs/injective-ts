@@ -223,14 +223,7 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastWeb3(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const {
-      options,
-      chainId,
-      txTimeout,
-      endpoints,
-      simulateTx,
-      ethereumChainId,
-    } = this
+    const { options, chainId, txTimeout, endpoints, ethereumChainId } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -271,7 +264,7 @@ export class MsgBroadcaster {
           accountNumber: baseAccount.accountNumber,
           sequence: baseAccount.sequence,
         },
-        fee: getStdFee({ ...tx.gas, gas }),
+        fee: stdFee,
       })
 
       stdFee = simulatedStdFee
@@ -320,10 +313,6 @@ export class MsgBroadcaster {
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
-    if (simulateTx) {
-      await this.simulateTxRaw(txRawEip712)
-    }
-
     /** Append Signatures */
     txRawEip712.signatures = [hexToBuff(signature)]
 
@@ -345,14 +334,7 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastWeb3V2(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const {
-      options,
-      chainId,
-      txTimeout,
-      endpoints,
-      simulateTx,
-      ethereumChainId,
-    } = this
+    const { options, chainId, txTimeout, endpoints, ethereumChainId } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -393,7 +375,7 @@ export class MsgBroadcaster {
           accountNumber: baseAccount.accountNumber,
           sequence: baseAccount.sequence,
         },
-        fee: getStdFee({ ...tx.gas, gas }),
+        fee: stdFee,
       })
 
       stdFee = simulatedStdFee
@@ -441,10 +423,6 @@ export class MsgBroadcaster {
       ethereumChainId,
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
-
-    if (simulateTx) {
-      await this.simulateTxRaw(txRawEip712)
-    }
 
     /** Append Signatures */
     txRawEip712.signatures = [hexToBuff(signature)]
@@ -908,7 +886,7 @@ export class MsgBroadcaster {
     if (!simulateTx) {
       return {
         ...createTransactionWithSigners(args),
-        stdFee: getStdFee({ ...args.fee }),
+        stdFee: getStdFee(args.fee),
       }
     }
 
@@ -917,13 +895,13 @@ export class MsgBroadcaster {
     if (!result.gasInfo?.gasUsed) {
       return {
         ...createTransactionWithSigners(args),
-        stdFee: getStdFee({ ...args.fee }),
+        stdFee: getStdFee(args.fee),
       }
     }
 
     const stdGasFee = {
       ...getStdFee({
-        ...args.fee,
+        ...getStdFee(args.fee),
         gas: new BigNumberInBase(result.gasInfo.gasUsed).times(1.2).toFixed(),
       }),
     }

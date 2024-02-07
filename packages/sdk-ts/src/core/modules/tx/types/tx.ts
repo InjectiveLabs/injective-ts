@@ -71,7 +71,7 @@ export interface SignerDetails {
 
 /** @type {CreateTransactionWithSignersArgs} */
 export interface CreateTransactionWithSignersArgs {
-  fee?: StdFee // the fee to include in the transaction
+  fee?: StdFee | string // the fee to include in the transaction
   memo?: string // the memo to include in the transaction
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
   message: Msgs | Msgs[] // the message that should be packed into the transaction
