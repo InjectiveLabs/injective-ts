@@ -27,17 +27,17 @@ const shouldUpdateAllImages = flag && flag.includes('--update:all')
 
 /* Create validator to identity map */
 const fetchValidators = async () => {
-  const { validators } = await chainGrpcStakingApi.fetchValidators()
+  const { validators } = await chainGrpcStakingApi.fetchValidators({ limit: 1000 })
 
   /* Filter out existing downloaded validator images */
   const filteredValidators = !shouldUpdateAllImages
-    ? validators.filter(
-        ({ operatorAddress: validatorAddress }) =>
-          !Object.keys(existingValidatorToAddressMapFromKeybase).includes(
-            validatorAddress,
-          ),
-      )
-    : validators
+  ? validators.filter(
+      ({ operatorAddress: validatorAddress }) =>
+        !Object.keys(existingValidatorToAddressMapFromKeybase).includes(
+          validatorAddress,
+        ),
+    )
+  : validators
 
   if (filteredValidators.length === 0) {
     return
