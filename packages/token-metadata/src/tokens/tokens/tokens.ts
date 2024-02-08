@@ -2983,4 +2983,27 @@ export default {
       hash: '61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
     },
   },
+
+  hINJ: {
+    name: 'Hydro Wrapped INJ',
+    logo: 'hinj.svg',
+    symbol: 'hINJ',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'hINJ',
+        decimals: 18,
+        address: 'inj18luqttqyckgpddndh8hvaq25d5nfwjc78m56lc',
+      },
+    ],
+  },
+
+  W: {
+    name: 'W',
+    logo: 'wormhole.png',
+    symbol: 'W',
+    coinGeckoId: '',
+    tokenType: TokenType.Unknown,
+  },
 } as Record<string, TokenMetaBase>
