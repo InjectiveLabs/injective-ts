@@ -186,7 +186,7 @@ export class TokenService {
         ? `${baseToken.symbol.toLowerCase()}-${quoteToken.symbol.toLowerCase()}`
         : market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
 
-    // We have wrong ticker on chain for APP/USDT market
+    // We have wrong ticker on chain for APP/USDT and ANDR/USDT market
     if (
       baseToken?.symbol === 'APP' &&
       quoteToken?.symbol === 'USDT' &&
@@ -196,6 +196,20 @@ export class TokenService {
         ...market,
         slug: 'app-usdt',
         ticker: 'APP/USDT',
+        baseToken,
+        quoteToken,
+      } as UiBaseSpotMarketWithToken
+    }
+
+    if (
+      baseToken?.symbol === 'ANDR' &&
+      quoteToken?.symbol === 'USDT' &&
+      market.ticker === 'ANDR/INJ'
+    ) {
+      return {
+        ...market,
+        slug: 'andr-usdt',
+        ticker: 'ANDR/USDT',
         baseToken,
         quoteToken,
       } as UiBaseSpotMarketWithToken
