@@ -31,6 +31,8 @@ const subdenom = "inj-test";
 
 const msg = MsgCreateDenom.fromJSON({
   subdenom,
+  symbol: 'InjTest',
+  name: 'Inj Testing',
   sender: injectiveAddress,
 });
 
