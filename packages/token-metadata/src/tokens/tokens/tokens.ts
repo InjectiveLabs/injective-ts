@@ -2723,7 +2723,7 @@ export default {
   DOJO: {
     name: 'Dojo Token',
     logo: 'dojo-token.png',
-    coinGeckoId: '',
+    coinGeckoId: 'dojo-token',
 
     cw20s: [
       {
