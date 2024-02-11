@@ -5,7 +5,7 @@ import { ChainId } from '@injectivelabs/ts-types'
 export interface BrowserEip1993Provider extends Eip1993Provider {
   removeAllListeners(): void
   isMetaMask: boolean
-  isTrust: boolean
+  isTrustWallet: boolean
   isOkxWallet: boolean
   isPhantom: boolean
 }
