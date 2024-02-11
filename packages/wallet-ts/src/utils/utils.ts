@@ -84,7 +84,7 @@ export const checkCorrectWalletProvider = (
 
       return
     }
-    case Wallet.Okx: {
+    case Wallet.OkxWallet: {
       if (
         !provider.isOkxWallet ||
         provider.isMetaMask ||

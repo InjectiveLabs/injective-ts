@@ -92,7 +92,7 @@ const createStrategy = ({
       return new Torus(ethWalletArgs)
     case Wallet.Phantom:
       return new Phantom(ethWalletArgs)
-    case Wallet.Okx:
+    case Wallet.OkxWallet:
       return new Okx(ethWalletArgs)
     case Wallet.Keplr:
       return new Keplr({ ...args })
