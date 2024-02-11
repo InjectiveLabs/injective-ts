@@ -4018,5 +4018,25 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "boy",
+    "denom": "ibc/84DA08CF29CD08373ABB0E36F4E6E8DC2908EA9A8E529349EBDC08520527EFC2",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/boy.png",
+    "symbol": "BOY",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "84DA08CF29CD08373ABB0E36F4E6E8DC2908EA9A8E529349EBDC08520527EFC2",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BOY",
+      "baseDenom": "BOY",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]

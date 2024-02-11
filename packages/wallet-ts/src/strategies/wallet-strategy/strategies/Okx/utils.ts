@@ -5,56 +5,61 @@ const $window = (isServerSide()
   ? {}
   : window) as unknown as WindowWithEip1193Provider
 
-export async function getPhantomProvider({ timeout } = { timeout: 3000 }) {
-  const provider = getPhantomFromWindow()
+export async function getOkxWalletProvider({ timeout } = { timeout: 3000 }) {
+  const provider = getOkxWalletFromWindow()
 
   if (provider) {
     return provider
   }
 
-  return listenForPhantomInitialized({
+  return listenForOkxWalletInitialized({
     timeout,
   }) as Promise<BrowserEip1993Provider>
 }
 
-async function listenForPhantomInitialized({ timeout } = { timeout: 3000 }) {
+async function listenForOkxWalletInitialized(
+  { timeout } = { timeout: 3000 },
+) {
   return new Promise((resolve) => {
     const handleInitialization = () => {
-      resolve(getPhantomFromWindow())
+      resolve(getOkxWalletFromWindow())
     }
 
-    $window.addEventListener('phantom#initialized', handleInitialization, {
+    $window.addEventListener('okxwallet#initialized', handleInitialization, {
       once: true,
     })
 
     setTimeout(() => {
-      $window.removeEventListener('phantom#initialized', handleInitialization)
+      $window.removeEventListener(
+        'okxwallet#initialized',
+        handleInitialization,
+      )
       resolve(null)
     }, timeout)
   })
 }
 
-function getPhantomFromWindow() {
+function getOkxWalletFromWindow() {
   const injectedProviderExist =
     typeof window !== 'undefined' &&
     (typeof $window.ethereum !== 'undefined' ||
-      typeof $window.phantom !== 'undefined')
+      typeof $window.okxwallet !== 'undefined')
 
   // No injected providers exist.
   if (!injectedProviderExist) {
     return
   }
 
-  if ($window.phantom) {
-    return $window.phantom.ethereum
+  if ($window.okxwallet) {
+    return $window.okxwallet
   }
 
-  if ($window.ethereum.isPhantom) {
+  if ($window.ethereum.isOkxWallet) {
     return $window.ethereum
   }
 
   if ($window.providers) {
-    return $window.providers.find((p) => p.isPhantom)
+    return $window.providers.find((p) => p.isOkxWallet)
   }
 
   return

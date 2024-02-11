@@ -6,6 +6,7 @@ import { LedgerException } from './LedgerException'
 import { LedgerCosmosException } from './LedgerCosmosException'
 import { MetamaskException } from './MetamaskException'
 import { TrustWalletException } from './TrustWalletException'
+import { OkxWalletException } from './OkxWalletException'
 import { TrezorException } from './TrezorException'
 import { CosmosWalletException } from './CosmosWalletException'
 import { TransactionException } from './TransactionException'
@@ -21,6 +22,7 @@ export type ThrownException =
   | LedgerException
   | MetamaskException
   | TrustWalletException
+  | OkxWalletException
   | TrezorException
   | CosmosWalletException
   | TransactionException
@@ -46,6 +48,7 @@ export const isThrownException = (exception: Error | Exception): boolean => {
       'TransactionException',
       'WalletException',
       'TrustWalletException',
+      'OkxWalletException',
     ].includes(exception.constructor.name)
   ) {
     return true
@@ -63,6 +66,7 @@ export {
   MetamaskException,
   TransactionException,
   TrustWalletException,
+  OkxWalletException,
   HttpRequestException,
   LedgerCosmosException,
   CosmosWalletException,
