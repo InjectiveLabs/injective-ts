@@ -3998,5 +3998,25 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "SHARK",
+    "denom": "ibc/08B66006A5DC289F8CB3D7695F16D211D8DDCA68E4701A1EB90BF641D8637ACE",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/shark.png",
+    "symbol": "SHARK",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "08B66006A5DC289F8CB3D7695F16D211D8DDCA68E4701A1EB90BF641D8637ACE",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SHARK",
+      "baseDenom": "SHARK",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]
