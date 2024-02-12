@@ -71,9 +71,9 @@ export const getIbcDenomFromSymbolOrName = (
     return `ibc/${ibcHash}`
   }
 
-
+  const defaultIbcHash = meta.ibcs?.find((ibc) => ibc.source === TokenSource.Cosmos)?.hash
   const [ibc] = meta.ibcs || []
-  const ibcHash = ibc?.hash
+  const ibcHash = defaultIbcHash || ibc?.hash
 
   return `ibc/${ibcHash}`
 }
@@ -128,8 +128,9 @@ export const getIbcMeta = (
   const ibcMetaFromIbcs = token.ibcs?.find((meta) =>
     denomToLowerCase.includes(meta.hash.toLowerCase()),
   )
+  const defaultIbcMeta = token.ibcs?.find((meta) => meta.source === TokenSource.Cosmos)
 
-  return ibcMetaFromIbcs || token.ibcs?.[0] || undefined
+  return ibcMetaFromIbcs || defaultIbcMeta ||  token.ibcs?.[0] || undefined
 }
 
 export const getNativeTokenFactoryMeta = (

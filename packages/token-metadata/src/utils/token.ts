@@ -28,6 +28,7 @@ export const getTokenFromMetaIncludingIbcBaseDenoms = (
     tokenType: isBaseIbcDenom ? TokenType.Ibc : tokenMeta.tokenType,
     denom: denom || '',
     ...(token.cw20s && { cw20: getCw20Meta(token) }),
+    ...(token.ibcs && { ibc: getIbcMeta(token) }),
   } as Token
 }
 
