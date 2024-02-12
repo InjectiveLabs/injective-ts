@@ -4038,5 +4038,325 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "Test",
+    "denom": "ibc/A83851234A83F3FE51CDB44FF1A4435472A197C096EF9E7312B69E67C16B7FB7",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A83851234A83F3FE51CDB44FF1A4435472A197C096EF9E7312B69E67C16B7FB7",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Worm",
+    "denom": "ibc/13C9967E4F065F5E4946302C1F94EA5F21261F3F90DAC0212C4037FA3E058297",
+    "logo": "unknown.png",
+    "symbol": "WORM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "13C9967E4F065F5E4946302C1F94EA5F21261F3F90DAC0212C4037FA3E058297",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WORM",
+      "baseDenom": "WORM",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Sui (Wormhole)",
+    "denom": "ibc/F96C68219E987465D9EB253DACD385855827C5705164DAFDB0161429F8B95780",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/sui/images/sui.svg",
+    "symbol": "SUI",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F96C68219E987465D9EB253DACD385855827C5705164DAFDB0161429F8B95780",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "SUI",
+      "baseDenom": "SUI",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Wrapped Ether (Wormhole)",
+    "denom": "ibc/4AC4A819B0BFCB25497E83B92A7D124F24C4E8B32B0E4B45704CC4D224A085A0",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/eth-white.png",
+    "symbol": "WETH",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "4AC4A819B0BFCB25497E83B92A7D124F24C4E8B32B0E4B45704CC4D224A085A0",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "WETH",
+      "baseDenom": "WETH",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Wrapped liquid staked Ether 2.0 (Wormhole)",
+    "denom": "ibc/AF173F64492152DA94107B8AD53906589CA7B844B650EFC2FEFED371A3FA235E",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/wsteth.svg",
+    "symbol": "wstETH",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "AF173F64492152DA94107B8AD53906589CA7B844B650EFC2FEFED371A3FA235E",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "wstETH",
+      "baseDenom": "wstETH",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Aptos Coin (Wormhole)",
+    "denom": "ibc/D807D81AB6C2983C9DCC2E1268051C4195405A030E1999549C562BCB7E1251A5",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/aptos/images/aptos.svg",
+    "symbol": "APT",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "D807D81AB6C2983C9DCC2E1268051C4195405A030E1999549C562BCB7E1251A5",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "APT",
+      "baseDenom": "APT",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Tether USD (Wormhole)",
+    "denom": "ibc/3384DCE14A72BBD0A47107C19A30EDD5FD1AC50909C632CB807680DBC798BB30",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdt.svg",
+    "symbol": "USDT",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "3384DCE14A72BBD0A47107C19A30EDD5FD1AC50909C632CB807680DBC798BB30",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDT",
+      "baseDenom": "USDT",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Wrapped SOL (Wormhole)",
+    "denom": "ibc/A8B0B746B5AB736C2D8577259B510D56B8AF598008F68041E3D634BCDE72BE97",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/solana/images/sol.svg",
+    "symbol": "SOL",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A8B0B746B5AB736C2D8577259B510D56B8AF598008F68041E3D634BCDE72BE97",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "SOL",
+      "baseDenom": "SOL",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Bonk (Wormhole)",
+    "denom": "ibc/C951FBB321708183F5A14811A3D099B3D73457D12E193E2B8429BDDCC6810D5A",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/solana/images/bonk.png",
+    "symbol": "Bonk",
+    "decimals": 5,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "C951FBB321708183F5A14811A3D099B3D73457D12E193E2B8429BDDCC6810D5A",
+      "path": "",
+      "channelId": "",
+      "decimals": 5,
+      "symbol": "Bonk",
+      "baseDenom": "Bonk",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Wrapped BTC (Wormhole)",
+    "denom": "ibc/48E69ED9995415D94BEA06BE70E4A6C2BEA0F5E83996D1E17AF95126770E06B2",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/wbtc.png",
+    "symbol": "WBTC",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "48E69ED9995415D94BEA06BE70E4A6C2BEA0F5E83996D1E17AF95126770E06B2",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "WBTC",
+      "baseDenom": "WBTC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "tBTC v2 (Wormhole)",
+    "denom": "ibc/CDF0747148A7E6FCF27143312A8A5B7F9AEF0EF8BD4FA4381815A5EDBFC9B87E",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/tbtc.svg",
+    "symbol": "tBTC",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "CDF0747148A7E6FCF27143312A8A5B7F9AEF0EF8BD4FA4381815A5EDBFC9B87E",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "tBTC",
+      "baseDenom": "tBTC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Dai Stablecoin (Wormhole)",
+    "denom": "ibc/293F6074F0D8FF3D8A686F11BCA3DD459C54695B8F205C8867E4917A630634C2",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/dai.svg",
+    "symbol": "DAI",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "293F6074F0D8FF3D8A686F11BCA3DD459C54695B8F205C8867E4917A630634C2",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "DAI",
+      "baseDenom": "DAI",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "USD Coin (Wormhole)",
+    "denom": "ibc/7BE71BB68C781453F6BB10114F8E2DF8DC37BA791C502F5389EA10E7BEA68323",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.svg",
+    "symbol": "USDC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "7BE71BB68C781453F6BB10114F8E2DF8DC37BA791C502F5389EA10E7BEA68323",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Pyth Network",
+    "denom": "ibc/F3330C1B8BD1886FE9509B94C7B5398B892EA41420D2BC0B7C6A53CB8ED761D6",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/solana/images/pyth.svg",
+    "symbol": "PYTH",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F3330C1B8BD1886FE9509B94C7B5398B892EA41420D2BC0B7C6A53CB8ED761D6",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "PYTH",
+      "baseDenom": "PYTH",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Avalanche USD Coin (Wormhole)",
+    "denom": "ibc/348633370BE07A623D7FC9CD229150936ADCD3A4E842DAD246BBA817D21FF6C7",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.svg",
+    "symbol": "avalanche.USDC.wh",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "348633370BE07A623D7FC9CD229150936ADCD3A4E842DAD246BBA817D21FF6C7",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "avalanche.USDC.wh",
+      "baseDenom": "avalanche.USDC.wh",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "BADKID",
+    "denom": "ibc/A0C5AD197FECAF6636F589071338DC7ECD6B0809CD3A5AB131EAAA5395E7E5E8",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/badkid.png",
+    "symbol": "BADKID",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "A0C5AD197FECAF6636F589071338DC7ECD6B0809CD3A5AB131EAAA5395E7E5E8",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BADKID",
+      "baseDenom": "BADKID",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]
