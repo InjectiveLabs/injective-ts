@@ -1135,6 +1135,7 @@ export default {
   BONK: {
     name: 'BONK',
     logo: 'bonk.jpeg',
+    symbol: 'BONK',
     coinGeckoId: 'bonk',
 
     cw20s: [
