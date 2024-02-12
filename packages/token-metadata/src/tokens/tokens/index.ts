@@ -8,8 +8,8 @@ import tokens from './tokens'
 const allTokens = { ...tokens, ...cw20Tokens }
 
 export const ibcBaseDenoms = Object.keys(allTokens)
-  .filter((token) => allTokens[token].ibc)
-  .map((token) => allTokens[token].ibc!.baseDenom)
+  .filter((token) => allTokens[token].ibcs)
+  .flatMap((token) => allTokens[token].ibcs!.map(({baseDenom}) => baseDenom))
 
 export default allTokens as Record<string, TokenMeta>
 

@@ -93,6 +93,10 @@ export interface Cw20TokenMetaWithSource extends Cw20TokenMeta {
   source?: TokenSource
 }
 
+export interface IbcTokenMetaWithSource extends IbcTokenMeta {
+  source?: TokenSource
+}
+
 export interface TokenMetaBase {
   name?: string
   logo?: string
@@ -102,7 +106,7 @@ export interface TokenMetaBase {
   tokenVerification?: TokenVerification
   coinGeckoId?: string
 
-  ibc?: Omit<IbcTokenMeta, 'tokenType'>
+  ibcs?: Array<Omit<IbcTokenMetaWithSource, 'tokenType'>>
   spl?: Omit<SplTokenMeta, 'tokenType'>
   cw20s?: Array<Omit<Cw20TokenMetaWithSource, 'tokenType'>>
   erc20?: Omit<Erc20TokenMeta, 'tokenType'>
@@ -158,6 +162,10 @@ export interface Cw20TokenSingle extends BaseToken {
 
 export interface Cw20TokenMultiple extends BaseToken {
   cw20s: Cw20TokenMetaWithSource[]
+}
+
+export interface IbcTokenMultiple extends BaseToken {
+  ibcs: IbcTokenMetaWithSource[]
 }
 
 export interface Cw20Token extends BaseToken {
