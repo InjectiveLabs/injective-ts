@@ -4358,5 +4358,105 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "ODIN",
+    "denom": "ibc/6ED95AEFA5D9A6F9EF9CDD05FED7D7C9D7F42D9892E7236EB9B251CE9E999701",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/odin/images/odin.png",
+    "symbol": "ODIN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "6ED95AEFA5D9A6F9EF9CDD05FED7D7C9D7F42D9892E7236EB9B251CE9E999701",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ODIN",
+      "baseDenom": "ODIN",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "GEO",
+    "denom": "ibc/8E4953E506CF135A3ACDF6D6556ED1DB4F6A749F3910D2B4A77E2E851C4B2638",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/odin/images/geo.png",
+    "symbol": "GEO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "8E4953E506CF135A3ACDF6D6556ED1DB4F6A749F3910D2B4A77E2E851C4B2638",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "GEO",
+      "baseDenom": "GEO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "O9W",
+    "denom": "ibc/AA206C13A2AD46401BD1E8E65F96EC9BF86051A8156A92DD08BEF70381D39CE2",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/odin/images/o9w.png",
+    "symbol": "O9W",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "AA206C13A2AD46401BD1E8E65F96EC9BF86051A8156A92DD08BEF70381D39CE2",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "O9W",
+      "baseDenom": "O9W",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "DOKI",
+    "denom": "ibc/EA7CE127E1CFD7822AD169019CAFDD63D0F5A278DCE974F438099BF16C99FB8B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/odin/images/doki_Logo.png",
+    "symbol": "DOKI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "EA7CE127E1CFD7822AD169019CAFDD63D0F5A278DCE974F438099BF16C99FB8B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "DOKI",
+      "baseDenom": "DOKI",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "MYRK",
+    "denom": "ibc/48D1DA9AA68C949E27BAB39B409681292035ABF63EAB663017C7BEF98A3D118E",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/odin/images/MYRK_Logo.png",
+    "symbol": "MYRK",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "48D1DA9AA68C949E27BAB39B409681292035ABF63EAB663017C7BEF98A3D118E",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "MYRK",
+      "baseDenom": "MYRK",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]
