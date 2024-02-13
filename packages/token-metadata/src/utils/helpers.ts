@@ -11,6 +11,7 @@ import {
   IbcTokenMeta,
   Cw20TokenMeta,
   TokenVerification,
+  IbcTokenMetaWithSource,
   Cw20TokenMetaWithSource,
   NativeTokenFactoryMeta,
 } from '../types'
@@ -48,6 +49,7 @@ export const getPeggyDenomFromSymbolOrName = (
 export const getIbcDenomFromSymbolOrName = (
   symbolOrName: string,
   network: Network = Network.Mainnet,
+  source?: TokenSource,
 ) => {
   const tokenMetaUtils = TokenMetaUtilsFactory.make(network)
   const metaFromName = tokenMetaUtils.getMetaBySymbol(symbolOrName)
@@ -57,11 +59,23 @@ export const getIbcDenomFromSymbolOrName = (
     return
   }
 
-  if (!metaFromSymbol?.ibc && !metaFromName?.ibc) {
+  if (!metaFromSymbol?.ibcs && !metaFromName?.ibcs) {
     return
   }
 
-  return `ibc/${(metaFromSymbol || metaFromName)?.ibc?.hash}`
+  const meta = (metaFromSymbol || metaFromName)!
+
+    if (source) {
+    const ibcHash = meta?.ibcs?.find((ibc) => ibc.source === source)?.hash
+
+    return `ibc/${ibcHash}`
+  }
+
+  const defaultIbcHash = meta.ibcs?.find((ibc) => ibc.source === TokenSource.Cosmos)?.hash
+  const [ibc] = meta.ibcs || []
+  const ibcHash = defaultIbcHash || ibc?.hash
+
+  return `ibc/${ibcHash}`
 }
 
 export const getCw20FromSymbolOrName = (
@@ -105,6 +119,18 @@ export const getCw20Meta = (
   )
 
   return cw20MetaFromCw20s || token.cw20s?.[0] || undefined
+}
+
+export const getIbcMeta = (
+  token: TokenBase,
+): IbcTokenMetaWithSource | IbcTokenMeta | undefined => {
+  const denomToLowerCase = token.denom.toLowerCase()
+  const ibcMetaFromIbcs = token.ibcs?.find((meta) =>
+    denomToLowerCase.includes(meta.hash.toLowerCase()),
+  )
+  const defaultIbcMeta = token.ibcs?.find((meta) => meta.source === TokenSource.Cosmos)
+
+  return ibcMetaFromIbcs || defaultIbcMeta ||  token.ibcs?.[0] || undefined
 }
 
 export const getNativeTokenFactoryMeta = (

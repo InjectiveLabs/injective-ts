@@ -11,25 +11,22 @@ export const getMappedTokensBySymbol = (
       const symbolDiffs = symbol !== symbolKey
       const existingKeys = Object.keys(result)
 
-      let ibcResults = {}
-      let cw20Results = {}
-      let splResults = {}
-      let evmResults = {}
-      let erc20Results = {}
-      let cw20sResults = {}
+      let ibcResults = {} as Record<string, TokenMetaBase>
+      let cw20Results = {} as Record<string, TokenMetaBase>
+      let splResults = {} as Record<string, TokenMetaBase>
+      let evmResults = {} as Record<string, TokenMetaBase>
+      let erc20Results = {} as Record<string, TokenMetaBase>
+      let cw20sResults = {} as Record<string, TokenMetaBase>
 
-      if (
-        tokenMeta.ibc &&
-        tokenMeta.ibc.baseDenom &&
-        !existingKeys.includes(tokenMeta.ibc.baseDenom.toUpperCase()) &&
-        !existingKeys.includes(tokenMeta.ibc.symbol.toUpperCase())
-      ) {
-        ibcResults = {
-          [tokenMeta.ibc.baseDenom.toUpperCase()]: tokenMeta,
-          ...(tokenMeta.ibc.symbol && {
-            [tokenMeta.ibc.symbol.toUpperCase()]: tokenMeta,
-          }),
-        }
+      if (tokenMeta.ibcs) {
+        tokenMeta.ibcs.forEach(ibc => {
+          if (ibc.baseDenom && !existingKeys.includes(ibc.baseDenom.toUpperCase())) {
+            ibcResults[ibc.baseDenom.toUpperCase()] = tokenMeta;
+          }
+          if (ibc.symbol && !existingKeys.includes(ibc.symbol.toUpperCase())) {
+            ibcResults[ibc.symbol.toUpperCase()] = tokenMeta;
+          }
+        });
       }
 
       if (tokenMeta.cw20s) {

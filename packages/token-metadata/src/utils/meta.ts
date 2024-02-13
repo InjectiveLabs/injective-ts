@@ -5,8 +5,10 @@ import {
   TokenBase,
   TokenType,
   Cw20TokenMetaWithSource,
+  IbcTokenMetaWithSource,
 } from '../types'
 import {
+  getIbcMeta,
   getCw20Meta,
   isCw20ContractAddress,
   getNativeTokenFactoryMeta,
@@ -152,7 +154,9 @@ export const getTokenDecimals = (token: Token) => {
   }
 
   if (token.denom.startsWith('ibc')) {
-    return token.ibc?.decimals || token.decimals
+    const meta = getIbcMeta(token)
+
+    return meta?.decimals || token.decimals
   }
 
   if (token.denom.startsWith('peggy')) {
@@ -259,12 +263,15 @@ export const getTokenInfo = (token: TokenBase) => {
   }
 
   // Including tokens that can be searched by baseDenom symbol
-  if (token.denom.startsWith('ibc') || token.ibc) {
+  if (token.denom.startsWith('ibc') || token.ibcs) {
+    const meta = getIbcMeta(token) as IbcTokenMetaWithSource
+
+
     return {
-      symbol: token.ibc?.symbol || token.symbol || '',
-      name: token.ibc?.name || token.name || '',
-      logo: token.ibc?.logo || token.logo || '',
-      decimals: token.ibc?.decimals || token.decimals || 6,
+      symbol: meta?.symbol || token.symbol || '',
+      name: meta?.name || token.name || '',
+      logo: meta?.logo || token.logo || '',
+      decimals: meta?.decimals || token.decimals || 6,
       tokenType,
     }
   }
