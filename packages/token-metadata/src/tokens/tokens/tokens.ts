@@ -2824,12 +2824,22 @@ export default {
   },
 
   PUNK: {
-    name: 'Punk DAO Token',
-    logo: 'PUNK.png',
     coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'PUNK',
+        name: 'Punk Token',
+        decimals: 18,
+        logo: 'punk-token.webp',
+        address: 'inj1wmrzttj7ms7glplek348vedx4v2ls467n539xt',
+      },
+    ],
 
     tokenFactories: [
       {
+        name: 'Punk DAO Token',
+        logo: 'PUNK.png',
         creator: 'inj1esz96ru3guug4ctmn5chjmkymt979sfvufq0hs',
         symbol: 'PUNK',
         decimals: 6,

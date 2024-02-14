@@ -152,6 +152,14 @@ export const mapMetamaskMessage = (message: string): string => {
   if (
     parsedMessage
       .toLowerCase()
+      .includes('missing or invalid parameters'.toLowerCase())
+  ) {
+    return 'Please make sure you are using Metamask'
+  }
+
+  if (
+    parsedMessage
+      .toLowerCase()
       .includes('Keyring Controller signTypedMessage'.toLowerCase())
   ) {
     return 'Please ensure your Ledger is connected, unlocked and your Ethereum app is open.'

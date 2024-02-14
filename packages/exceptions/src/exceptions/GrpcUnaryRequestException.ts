@@ -1,5 +1,5 @@
 import { ConcreteException } from '../exception'
-import { ErrorContext, ErrorType } from '../types'
+import { ErrorContext, ErrorType, GRPC_REQUEST_FAILED } from '../types'
 
 export class GrpcUnaryRequestException extends ConcreteException {
   public errorClass: string = 'GrpcUnaryRequestException'
@@ -15,11 +15,9 @@ export class GrpcUnaryRequestException extends ConcreteException {
 
     if (message.toLowerCase().includes('response closed without headers')) {
       this.setMessage(
-        'Product is under heavy load, refresh the page in a few seconds.',
+        'The request has failed. The server has closed the connection without sending any headers.',
       )
-      this.setOriginalMessage(
-        `The product is experiencing higher than usual demand. Hang tight, engineers are doing their best to improve the performance and efficiency.`,
-      )
+      this.setContextCode(GRPC_REQUEST_FAILED)
     }
   }
 }
