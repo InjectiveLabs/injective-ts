@@ -2,7 +2,6 @@ import {
   getMappedTokensByErc20Address,
   getMappedTokensByCw20Address,
 } from './tokens/mappings/mapByAddress'
-import { getMappedTokensByName } from './tokens/mappings/mapByName'
 import { getMappedTokensByHash } from './tokens/mappings/mapByHash'
 import { getMappedTokensBySymbol } from './tokens/mappings/mapBySymbol'
 import { TokenMetaBase, TokenVerification, TokenType } from './types'
@@ -16,14 +15,11 @@ export class TokenMetaUtils {
 
   protected tokensByHash: Record<string, TokenMetaBase>
 
-  protected tokensByName: Record<string, TokenMetaBase>
-
   constructor(tokens: Record<string, TokenMetaBase>) {
     this.tokens = getMappedTokensBySymbol(tokens)
     this.tokensByErc20Address = getMappedTokensByErc20Address(this.tokens)
     this.tokensByCw20Address = getMappedTokensByCw20Address(this.tokens)
     this.tokensByHash = getMappedTokensByHash(this.tokens)
-    this.tokensByName = getMappedTokensByName(this.tokens)
   }
 
   /**
@@ -49,9 +45,8 @@ export class TokenMetaUtils {
   }
 
   getMetaByFactory(denom: string): TokenMetaBase | undefined {
-    const [symbolOrName, creatorAddress] = denom.split('/').reverse()
-    const tokenMeta =
-      this.getMetaByName(symbolOrName) || this.getMetaBySymbol(symbolOrName)
+    const [symbol, creatorAddress] = denom.split('/').reverse()
+    const tokenMeta = this.getMetaBySymbol(symbol)
 
     if (!tokenMeta) {
       return
@@ -183,22 +178,6 @@ export class TokenMetaUtils {
           tokenVerification: TokenVerification.Verified,
         }
       : undefined
-  }
-
-  getMetaByName(name: string): TokenMetaBase | undefined {
-    const { tokensByName } = this
-    const tokenName = name.toLowerCase() as keyof typeof tokensByName
-
-    if (!tokensByName[tokenName] && !tokensByName[name]) {
-      return
-    }
-
-    const tokenMeta = tokensByName[tokenName] || tokensByName[name]
-
-    return {
-      ...tokenMeta,
-      tokenVerification: TokenVerification.Verified,
-    }
   }
 
   getCoinGeckoIdFromSymbol(symbol: string): string {

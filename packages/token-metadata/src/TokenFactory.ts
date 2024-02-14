@@ -83,12 +83,6 @@ export class TokenFactory {
           return getTokenFromMeta(byAddress, denom)
         }
 
-        const byName = this.tokenMetaUtils.getMetaByName(denom)
-
-        if (byName) {
-          return getTokenFromMeta(byName, denom)
-        }
-
         return
       }
 

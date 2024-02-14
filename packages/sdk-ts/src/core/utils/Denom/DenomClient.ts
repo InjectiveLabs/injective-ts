@@ -43,10 +43,6 @@ export class DenomClient {
     return this.tokenMetaUtils.getMetaByAddress(address)
   }
 
-  getTokenMetaDataByName(name: string): TokenMetaBase | undefined {
-    return this.tokenMetaUtils.getMetaByName(name)
-  }
-
   getCoinGeckoId(denom: string): string {
     return this.tokenMetaUtils.getCoinGeckoIdFromSymbol(denom)
   }

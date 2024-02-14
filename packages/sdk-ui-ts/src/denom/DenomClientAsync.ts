@@ -215,10 +215,6 @@ export class DenomClientAsync {
     return this.denomClient.getTokenMetaDataByAddress(address)
   }
 
-  getTokenMetaDataByName(name: string): TokenMetaBase | undefined {
-    return this.denomClient.getTokenMetaDataByName(name)
-  }
-
   getCoinGeckoId(denom: string): string {
     return this.denomClient.getCoinGeckoId(denom)
   }

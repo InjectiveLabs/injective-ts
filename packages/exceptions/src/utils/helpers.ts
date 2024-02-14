@@ -9,6 +9,7 @@ export const isCommonLockedError = (error: string) => {
     'Failed to open the device',
     'Failed to open the device',
     'Ledger Device is busy',
+    'Ledger device',
     'UNKNOWN_ERROR',
   ]
 

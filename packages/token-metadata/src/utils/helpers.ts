@@ -33,17 +33,16 @@ export const getPeggyDenomFromSymbolOrName = (
 ) => {
   const tokenMetaUtils = TokenMetaUtilsFactory.make(network)
   const metaFromSymbol = tokenMetaUtils.getMetaBySymbol(symbolOrName)
-  const metaFromName = tokenMetaUtils.getMetaByName(symbolOrName)
 
-  if (!metaFromSymbol && !metaFromName) {
+  if (!metaFromSymbol) {
     return
   }
 
-  if (!metaFromSymbol?.erc20 && !metaFromName?.erc20) {
+  if (!metaFromSymbol?.erc20) {
     return
   }
 
-  return `peggy${(metaFromSymbol || metaFromName)?.erc20?.address}`
+  return `peggy${metaFromSymbol?.erc20?.address}`
 }
 
 export const getIbcDenomFromSymbolOrName = (
@@ -52,26 +51,27 @@ export const getIbcDenomFromSymbolOrName = (
   source?: TokenSource,
 ) => {
   const tokenMetaUtils = TokenMetaUtilsFactory.make(network)
-  const metaFromName = tokenMetaUtils.getMetaBySymbol(symbolOrName)
-  const metaFromSymbol = tokenMetaUtils.getMetaByName(symbolOrName)
+  const metaFromSymbol = tokenMetaUtils.getMetaBySymbol(symbolOrName)
 
-  if (!metaFromSymbol && !metaFromName) {
+  if (!metaFromSymbol) {
     return
   }
 
-  if (!metaFromSymbol?.ibcs && !metaFromName?.ibcs) {
+  if (!metaFromSymbol?.ibcs) {
     return
   }
 
-  const meta = (metaFromSymbol || metaFromName)!
+  const meta = metaFromSymbol
 
-    if (source) {
+  if (source) {
     const ibcHash = meta?.ibcs?.find((ibc) => ibc.source === source)?.hash
 
     return `ibc/${ibcHash}`
   }
 
-  const defaultIbcHash = meta.ibcs?.find((ibc) => ibc.source === TokenSource.Cosmos)?.hash
+  const defaultIbcHash = meta.ibcs?.find(
+    (ibc) => ibc.source === TokenSource.Cosmos,
+  )?.hash
   const [ibc] = meta.ibcs || []
   const ibcHash = defaultIbcHash || ibc?.hash
 
@@ -84,18 +84,17 @@ export const getCw20FromSymbolOrName = (
   source?: TokenSource,
 ) => {
   const tokenMetaUtils = TokenMetaUtilsFactory.make(network)
-  const metaFromName = tokenMetaUtils.getMetaBySymbol(symbolOrName)
-  const metaFromSymbol = tokenMetaUtils.getMetaByName(symbolOrName)
+  const metaFromSymbol = tokenMetaUtils.getMetaBySymbol(symbolOrName)
 
-  if (!metaFromSymbol && !metaFromName) {
+  if (!metaFromSymbol) {
     return
   }
 
-  if (!metaFromSymbol?.cw20s && !metaFromName?.cw20s) {
+  if (!metaFromSymbol?.cw20s) {
     return
   }
 
-  const meta = (metaFromName || metaFromSymbol)!
+  const meta = metaFromSymbol
 
   if (source) {
     const cw20 = meta?.cw20s?.find((cw20) => cw20.source === source)
@@ -128,9 +127,11 @@ export const getIbcMeta = (
   const ibcMetaFromIbcs = token.ibcs?.find((meta) =>
     denomToLowerCase.includes(meta.hash.toLowerCase()),
   )
-  const defaultIbcMeta = token.ibcs?.find((meta) => meta.source === TokenSource.Cosmos)
+  const defaultIbcMeta = token.ibcs?.find(
+    (meta) => meta.source === TokenSource.Cosmos,
+  )
 
-  return ibcMetaFromIbcs || defaultIbcMeta ||  token.ibcs?.[0] || undefined
+  return ibcMetaFromIbcs || defaultIbcMeta || token.ibcs?.[0] || undefined
 }
 
 export const getNativeTokenFactoryMeta = (
