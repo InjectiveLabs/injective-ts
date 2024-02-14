@@ -191,16 +191,28 @@ export default {
       },
     ],
 
-    ibcs: [{
-      decimals: 6,
-      symbol: 'USDCnb',
-      baseDenom: 'uusdc',
-      isNative: true,
-      channelId: 'channel-148',
-      path: 'transfer/channel-148',
-      hash: '2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        decimals: 6,
+        symbol: 'USDCnb',
+        baseDenom: 'uusdc',
+        isNative: true,
+        channelId: 'channel-148',
+        path: 'transfer/channel-148',
+        hash: '2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
+        source: TokenSource.Cosmos
+      },
+      {
+        decimals: 6,
+        symbol: 'USDCgw',
+        baseDenom: 'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/GGh9Ufn1SeDGrhzEkMyRKt5568VbbxZK2yvWNsd6PbXt',
+        isNative: false,
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: '7BE71BB68C781453F6BB10114F8E2DF8DC37BA791C502F5389EA10E7BEA68323',
+        source: TokenSource.EthereumWh
+      }
+    ],
 
     spl: {
       decimals: 6,
@@ -1141,7 +1153,6 @@ export default {
   AVAX: {
     name: 'AVAX',
     logo: 'avax.webp',
-    symbol: 'AVAX',
     coinGeckoId: 'avalanche-2',
 
     cw20s: [
@@ -1156,7 +1167,6 @@ export default {
   BONK: {
     name: 'BONK',
     logo: 'bonk.jpeg',
-    symbol: 'BONK',
     coinGeckoId: 'bonk',
 
     cw20s: [
@@ -1282,6 +1292,19 @@ export default {
         source: TokenSource.Arbitrum,
       },
     ],
+
+    ibcs: [
+      {
+        decimals: 8,
+        symbol: 'ARBgw',
+        baseDenom: 'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4jq5m8FR6W6nJygDj8NMMbB48mqX4LQHc3j5uEb9syDe',
+        isNative: false,
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: '8CF0E4184CA3105798EDB18CAA3981ADB16A9951FE9B05C6D830C746202747E1',
+        source: TokenSource.Arbitrum
+      }
+    ]
   },
 
   EUR: {
@@ -1403,6 +1426,19 @@ export default {
         source: TokenSource.Polygon,
       },
     ],
+
+    ibcs: [
+      {
+        decimals: 8,
+        symbol: 'WMATICgw',
+        baseDenom: 'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4gn1J9pchUGh63ez1VwiuTmU4nfJ8Rr8o5HgBC5TMdMk',
+        isNative: false,
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: '4DEFEB42BAAB2788723759D95B7550BCE460855563ED977036248F5B94C842FC',
+        source: TokenSource.Polygon
+      }
+    ]
   },
 
   '1MPEPE': {
@@ -1875,7 +1911,7 @@ export default {
       },
     ],
 
-      ibcs: [{
+    ibcs: [{
       symbol: 'Pyth',
       decimals: 6,
       isNative: false,

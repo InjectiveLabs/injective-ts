@@ -245,7 +245,7 @@ export class TokenService {
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
-    const baseToken = await this.denomClient.getDerivativeBaseToken(
+    const baseToken = await this.denomClient.getTokenBySymbol(
       baseTokenSymbol,
     )
 

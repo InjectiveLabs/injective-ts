@@ -224,9 +224,9 @@ export class DenomClientAsync {
   }
 
   /**
-   * Find derivative market's base token metadata based on the symbol
+   * TODO: refactor
    */
-  getDerivativeBaseToken(symbol: string) {
+  getTokenBySymbol(symbol: string): Token {
     const tokenMeta = this.denomClient.getTokenMetaDataBySymbol(symbol)
 
     return {
