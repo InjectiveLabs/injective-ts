@@ -6,9 +6,8 @@ import {
 } from '@injectivelabs/networks'
 import {
   toBase64,
-  fromBase64,
-  ChainGrpcWasmApi,
   binaryToBase64,
+  ChainGrpcWasmApi,
 } from '@injectivelabs/sdk-ts'
 import { getBonfidaContractAddress } from './utils'
 
@@ -18,7 +17,7 @@ export class InjBonfidaNameService {
   private contractAddress: string
 
   constructor(
-    network: Network = Network.Testnet,
+    network: Network = Network.MainnetSentry,
     endpoints?: NetworkEndpoints,
   ) {
     const networkEndpoints = endpoints || getNetworkEndpoints(network)
@@ -30,7 +29,7 @@ export class InjBonfidaNameService {
   async fetchInjAddress(name: string) {
     const query = {
       resolve: {
-        domain_name: name,
+        domain_name: name.replace('.sol', ''),
       },
     }
     const response = await this.client.fetchSmartContractState(
@@ -38,7 +37,9 @@ export class InjBonfidaNameService {
       toBase64(query),
     )
 
-    return fromBase64(binaryToBase64(response.data))
+    return Buffer.from(binaryToBase64(response.data), 'base64')
+      .toString()
+      .replace(/["]/g, '')
   }
 
   async fetchInjName(_address: string) {

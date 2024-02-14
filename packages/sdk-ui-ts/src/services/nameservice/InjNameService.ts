@@ -24,7 +24,7 @@ export class InjNameService {
   private reverseResolverAddress: string
 
   constructor(
-    network: Network = Network.Testnet,
+    network: Network = Network.MainnetSentry,
     endpoints?: NetworkEndpoints,
   ) {
     const networkEndpoints = endpoints || getNetworkEndpoints(network)
