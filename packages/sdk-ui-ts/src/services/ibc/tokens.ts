@@ -17,7 +17,9 @@ type IbcTokenMetadata = {
   isTrading: boolean
 }
 
-const ibcTokenMetadataApi = new HttpRestClient('https://api.tfm.com/api/v1/')
+const ibcTokenMetadataApi = new HttpRestClient('https://api.tfm.com/api/v1/', {
+  timeout: 2000,
+})
 
 const TOKEN_METADATA_PATH = 'ibc/chain/injective-1/tokens'
 
