@@ -49,9 +49,24 @@ function ibcTokenMetadataToToken(
   })
 }
 
+function timeout(ms: number) {
+  return new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('Request timed out')), ms),
+  )
+}
+
 ;(async () => {
   try {
-    const response = (await ibcTokenMetadataApi.get(TOKEN_METADATA_PATH)) as {
+    const ibcTokenMetadataResponse = ibcTokenMetadataApi.get(
+      TOKEN_METADATA_PATH,
+    ) as Promise<{
+      data: IbcTokenMetadata[]
+    }>
+
+    const response = (await Promise.race([
+      ibcTokenMetadataResponse,
+      timeout(2000),
+    ])) as {
       data: IbcTokenMetadata[]
     }
 
