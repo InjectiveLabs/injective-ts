@@ -2444,6 +2444,18 @@
     shx "^0.3.2"
     snakecase-keys "^5.4.1"
 
+"@injectivelabs/test-utils@^1.10.12", "@injectivelabs/test-utils@^1.14.3":
+  version "1.14.3"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/test-utils/-/test-utils-1.14.3.tgz#3c78b5f34669917f484aa8ac4a88df7bbc376f88"
+  integrity sha512-dVe262sACa7YkRr7mfXx58yI/ieuQqm3IMGq7EMweFKI6Kh2gh8FAM2bsDgm1cGewEIhJ9tWh6OM5uNheeVamg==
+  dependencies:
+    axios "^0.21.1"
+    bignumber.js "^9.0.1"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+    snakecase-keys "^5.1.2"
+    store2 "^2.12.0"
+
 "@injectivelabs/token-metadata@^1.10.42":
   version "1.14.5"
   resolved "https://registry.npmjs.org/@injectivelabs/token-metadata/-/token-metadata-1.14.5.tgz#73552e3e78e5d15f5317a05a5812d0be3647e38d"
