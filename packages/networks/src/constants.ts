@@ -24,7 +24,7 @@ export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.MainnetK8s]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.MainnetSentry]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.Public]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
-  [Network.Staging]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.Staging]: 'inj12yj3mtjarujkhcp6lg3klxjjfrx2v7v8yswgp9',
   [Network.Internal]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.Testnet]: 'inj14d7h5j6ddq6pqppl65z24w7xrtmpcrqjxj8d43',
   [Network.TestnetK8s]: 'inj14d7h5j6ddq6pqppl65z24w7xrtmpcrqjxj8d43',
