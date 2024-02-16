@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ts",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
-  "version": "1.14.6-beta.47",
+  "version": "1.14.6-beta.48",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
@@ -46,9 +46,9 @@
     "@injectivelabs/grpc-web-react-native-transport": "^0.0.2",
     "@injectivelabs/indexer-proto-ts": "1.11.36",
     "@injectivelabs/mito-proto-ts": "1.0.59",
-    "@injectivelabs/networks": "^1.14.6-beta.11",
+    "@injectivelabs/networks": "^1.14.6-beta.12",
     "@injectivelabs/test-utils": "^1.14.3",
-    "@injectivelabs/token-metadata": "^1.14.6-beta.39",
+    "@injectivelabs/token-metadata": "^1.14.6-beta.40",
     "@injectivelabs/ts-types": "^1.14.6-beta.5",
     "@injectivelabs/utils": "^1.14.6-beta.10",
     "@metamask/eth-sig-util": "^4.0.0",
