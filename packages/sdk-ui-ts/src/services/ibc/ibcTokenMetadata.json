@@ -4458,5 +4458,25 @@
       "isNative": false,
       "tokenType": "ibc"
     }
+  },
+  {
+    "name": "Hava Coin",
+    "denom": "factory/inj1h0ypsdtjfcjynqu3m75z2zwwz5mmrj8rtk2g52/uhava",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/hava.png",
+    "symbol": "HAVA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1h0ypsdtjfcjynqu3m75z2zwwz5mmrj8rtk2g52/uhava",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "HAVA",
+      "baseDenom": "HAVA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
   }
 ]
