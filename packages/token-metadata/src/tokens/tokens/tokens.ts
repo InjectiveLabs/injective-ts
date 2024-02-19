@@ -3098,4 +3098,18 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
   },
+
+  PHUC: {
+    name: 'Phuc',
+    logo: 'qunt.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1995xnrrtnmtdgjmx0g937vf28dwefhkhy6gy5e',
+        symbol: 'PHUC',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
