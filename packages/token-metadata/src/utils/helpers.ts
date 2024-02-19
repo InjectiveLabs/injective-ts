@@ -45,11 +45,15 @@ export const getPeggyDenomFromSymbolOrName = (
   return `peggy${metaFromSymbol?.erc20?.address}`
 }
 
-export const getIbcDenomFromSymbolOrName = (
-  symbolOrName: string,
-  network: Network = Network.Mainnet,
-  source?: TokenSource,
-) => {
+export const getIbcDenomFromSymbolOrName = ({
+  symbolOrName,
+  network = Network.Mainnet,
+  source,
+}: {
+  symbolOrName: string
+  network?: Network
+  source?: TokenSource
+}) => {
   const tokenMetaUtils = TokenMetaUtilsFactory.make(network)
   const metaFromSymbol = tokenMetaUtils.getMetaBySymbol(symbolOrName)
 

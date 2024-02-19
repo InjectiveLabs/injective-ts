@@ -54,7 +54,10 @@ export class PublicKey {
   }
 
   public toBech32(): string {
-    return bech32.encode(BECH32_PUBKEY_ACC_PREFIX, this.key)
+    return bech32.encode(
+      BECH32_PUBKEY_ACC_PREFIX,
+      bech32.toWords(Buffer.from(this.toHex(), 'hex')),
+    )
   }
 
   public toAddress(): Address {
