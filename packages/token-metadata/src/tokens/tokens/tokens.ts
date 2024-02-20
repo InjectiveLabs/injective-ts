@@ -108,16 +108,18 @@ export default {
       address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
     },
 
-    ibcs: [{
-      decimals: 6,
-      symbol: 'USDTkv',
-      isNative: true,
-      baseDenom: 'erc20/tether/usdt',
-      path: 'transfer/channel-143',
-      channelId: 'channel-143',
-      hash: '4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        decimals: 6,
+        symbol: 'USDTkv',
+        isNative: true,
+        baseDenom: 'erc20/tether/usdt',
+        path: 'transfer/channel-143',
+        channelId: 'channel-143',
+        hash: '4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
+        source: TokenSource.Cosmos,
+      },
+    ],
 
     cw20s: [
       {
@@ -200,18 +202,19 @@ export default {
         channelId: 'channel-148',
         path: 'transfer/channel-148',
         hash: '2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
-        source: TokenSource.Cosmos
+        source: TokenSource.Cosmos,
       },
       {
         decimals: 6,
         symbol: 'USDCgw',
-        baseDenom: 'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/GGh9Ufn1SeDGrhzEkMyRKt5568VbbxZK2yvWNsd6PbXt',
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/GGh9Ufn1SeDGrhzEkMyRKt5568VbbxZK2yvWNsd6PbXt',
         isNative: false,
         path: 'transfer/channel-183',
         channelId: 'channel-183',
         hash: '7BE71BB68C781453F6BB10114F8E2DF8DC37BA791C502F5389EA10E7BEA68323',
-        source: TokenSource.EthereumWh
-      }
+        source: TokenSource.EthereumWh,
+      },
     ],
 
     spl: {
@@ -653,16 +656,18 @@ export default {
       address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
     },
 
-    ibcs: [{
-      symbol: 'ATOM',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uatom',
-      path: 'transfer/channel-1',
-      channelId: 'channel-1',
-      hash: 'C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'ATOM',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uatom',
+        path: 'transfer/channel-1',
+        channelId: 'channel-1',
+        hash: 'C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   UPHOTON: {
@@ -676,16 +681,18 @@ export default {
       address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
     },
 
-    ibcs: [{
-      symbol: 'UPHOTON',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uphoton',
-      path: 'transfer/channel-2',
-      channelId: 'channel-2',
-      hash: '48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'UPHOTON',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uphoton',
+        path: 'transfer/channel-2',
+        channelId: 'channel-2',
+        hash: '48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   LUNA: {
@@ -699,16 +706,18 @@ export default {
       address: '0xd2877702675e6cEb975b4A1dFf9fb7BAF4C91ea9',
     },
 
-    ibcs: [{
-      symbol: 'LUNA',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uluna',
-      path: 'transfer/channel-4',
-      channelId: 'channel-4',
-      hash: 'B8AF5D92165F35AB31F3FC7C7B444B9D240760FA5D406C49D24862BD0284E395',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'LUNA',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uluna',
+        path: 'transfer/channel-4',
+        channelId: 'channel-4',
+        hash: 'B8AF5D92165F35AB31F3FC7C7B444B9D240760FA5D406C49D24862BD0284E395',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   UST: {
@@ -722,16 +731,18 @@ export default {
       address: '0xa47c8bf37f92aBed4A126BDA807A7b7498661acD',
     },
 
-    ibcs: [{
-      symbol: 'UST',
-      decimals: 18,
-      isNative: true,
-      baseDenom: 'uusd',
-      path: 'transfer/channel-4',
-      channelId: 'channel-4',
-      hash: 'B448C0CA358B958301D328CCDC5D5AD642FC30A6D3AE106FF721DB315F3DDE5C',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'UST',
+        decimals: 18,
+        isNative: true,
+        baseDenom: 'uusd',
+        path: 'transfer/channel-4',
+        channelId: 'channel-4',
+        hash: 'B448C0CA358B958301D328CCDC5D5AD642FC30A6D3AE106FF721DB315F3DDE5C',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   GF: {
@@ -763,16 +774,18 @@ export default {
     coinGeckoId: 'osmosis',
     logo: 'osmo.png',
 
-    ibcs: [{
-      symbol: 'OSMO',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uosmo',
-      path: 'transfer/channel-8',
-      channelId: 'channel-8',
-      hash: '92E0120F15D037353CFB73C14651FC8930ADC05B93100FD7754D3A689E53B333',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'OSMO',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uosmo',
+        path: 'transfer/channel-8',
+        channelId: 'channel-8',
+        hash: '92E0120F15D037353CFB73C14651FC8930ADC05B93100FD7754D3A689E53B333',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   TAB: {
@@ -792,16 +805,18 @@ export default {
     logo: 'chihuahua.jpeg',
     coinGeckoId: 'chihuahua-token',
 
-    ibcs: [{
-      symbol: 'HUAHUA',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uhuahua',
-      path: 'transfer/channel-76',
-      channelId: 'channel-76',
-      hash: 'E7807A46C0B7B44B350DA58F51F278881B863EC4DCA94635DAB39E52C30766CB',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'HUAHUA',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uhuahua',
+        path: 'transfer/channel-76',
+        channelId: 'channel-76',
+        hash: 'E7807A46C0B7B44B350DA58F51F278881B863EC4DCA94635DAB39E52C30766CB',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   JUNO: {
@@ -809,16 +824,18 @@ export default {
     logo: 'juno.jpeg',
     coinGeckoId: 'juno-network',
 
-    ibcs: [{
-      symbol: 'JUNO',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'ujuno',
-      path: 'transfer/channel-78',
-      channelId: 'channel-78',
-      hash: 'D50E26996253EBAA8C684B9CD653FE2F7665D7BDDCA3D48D5E1378CF6334F211',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'JUNO',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'ujuno',
+        path: 'transfer/channel-78',
+        channelId: 'channel-78',
+        hash: 'D50E26996253EBAA8C684B9CD653FE2F7665D7BDDCA3D48D5E1378CF6334F211',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   WHALE: {
@@ -826,16 +843,18 @@ export default {
     logo: 'whale.png',
     coinGeckoId: 'white-whale',
 
-    ibcs: [{
-      symbol: 'WHALE',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uwhale',
-      path: 'transfer/channel-102',
-      channelId: 'channel-102',
-      hash: 'D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'WHALE',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uwhale',
+        path: 'transfer/channel-102',
+        channelId: 'channel-102',
+        hash: 'D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   NOIS: {
@@ -843,16 +862,18 @@ export default {
     coinGeckoId: 'nois',
     logo: 'nois.png',
 
-    ibcs: [{
-      symbol: 'NOIS',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'unois',
-      path: 'transfer/channel-138',
-      channelId: 'channel-138',
-      hash: 'DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'NOIS',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'unois',
+        path: 'transfer/channel-138',
+        channelId: 'channel-138',
+        hash: 'DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   AXL: {
@@ -866,16 +887,18 @@ export default {
       address: '0x3eacbDC6C382ea22b78aCc158581A55aaF4ef3Cc',
     },
 
-    ibcs: [{
-      symbol: 'AXL',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uaxl',
-      path: 'transfer/channel-84',
-      channelId: 'channel-84',
-      hash: 'B68C1D2682A8B69E20BB921E34C6A3A2B6D1E13E3E8C0092E373826F546DEE65',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'AXL',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uaxl',
+        path: 'transfer/channel-84',
+        channelId: 'channel-84',
+        hash: 'B68C1D2682A8B69E20BB921E34C6A3A2B6D1E13E3E8C0092E373826F546DEE65',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   BAYC: {
@@ -904,16 +927,18 @@ export default {
     logo: 'scrt.png',
     coinGeckoId: 'secret',
 
-    ibcs: [{
-      symbol: 'SCRT',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uscrt',
-      path: 'transfer/channel-88',
-      channelId: 'channel-88',
-      hash: '0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'SCRT',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uscrt',
+        path: 'transfer/channel-88',
+        channelId: 'channel-88',
+        hash: '0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   XPRT: {
@@ -921,16 +946,18 @@ export default {
     logo: 'xprt.png',
     coinGeckoId: 'persistence',
 
-    ibcs: [{
-      symbol: 'XPRT',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uxprt',
-      path: 'transfer/channel-82',
-      channelId: 'channel-82',
-      hash: 'B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'XPRT',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uxprt',
+        path: 'transfer/channel-82',
+        channelId: 'channel-82',
+        hash: 'B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   EVMOS: {
@@ -938,16 +965,18 @@ export default {
     logo: 'evmos.png',
     coinGeckoId: 'evmos',
 
-    ibcs: [{
-      symbol: 'EVMOS',
-      decimals: 18,
-      isNative: true,
-      baseDenom: 'aevmos',
-      path: 'transfer/channel-83',
-      channelId: 'channel-83',
-      hash: '16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'EVMOS',
+        decimals: 18,
+        isNative: true,
+        baseDenom: 'aevmos',
+        path: 'transfer/channel-83',
+        channelId: 'channel-83',
+        hash: '16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   STX: {
@@ -970,16 +999,18 @@ export default {
       address: '0xFfFFfFff1FcaCBd218EDc0EbA20Fc2308C778080',
     },
 
-    ibcs: [{
-      symbol: 'DOT',
-      decimals: 10,
-      isNative: false,
-      baseDenom: 'dot-planck',
-      path: 'transfer/channel-84',
-      channelId: 'channel-84',
-      hash: '624BA9DD171915A2B9EA70F69638B2CEA179959850C1A586F6C485498F29EDD4',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'DOT',
+        decimals: 10,
+        isNative: false,
+        baseDenom: 'dot-planck',
+        path: 'transfer/channel-84',
+        channelId: 'channel-84',
+        hash: '624BA9DD171915A2B9EA70F69638B2CEA179959850C1A586F6C485498F29EDD4',
+        source: TokenSource.Cosmos,
+      },
+    ],
 
     cw20s: [
       {
@@ -995,16 +1026,18 @@ export default {
     logo: 'stride.png',
     coinGeckoId: 'stride',
 
-    ibcs: [{
-      symbol: 'STRD',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'ustrd',
-      path: 'transfer/channel-89',
-      channelId: 'channel-89',
-      hash: '3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'STRD',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'ustrd',
+        path: 'transfer/channel-89',
+        channelId: 'channel-89',
+        hash: '3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   CRE: {
@@ -1012,16 +1045,18 @@ export default {
     logo: 'crescent.jpeg',
     coinGeckoId: 'crescent-network',
 
-    ibcs: [{
-      symbol: 'CRE',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'ucre',
-      path: 'transfer/channel-90',
-      channelId: 'channel-90',
-      hash: '3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'CRE',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'ucre',
+        path: 'transfer/channel-90',
+        channelId: 'channel-90',
+        hash: '3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   ASTRO: {
@@ -1029,17 +1064,19 @@ export default {
     logo: 'astroport.png',
     coinGeckoId: 'astroport-fi',
 
-    ibcs: [{
-      symbol: 'ASTRO',
-      decimals: 6,
-      isNative: true,
-      baseDenom:
-        'cw20:terra1nsuqsk6kh58ulczatwev87ttq2z6r3pusulg9r24mfj2fvtzd4uq3exn26',
-      path: 'transfer/channel-104',
-      channelId: 'channel-104',
-      hash: 'EBD5A24C554198EBAF44979C5B4D2C2D312E6EBAB71962C92F735499C7575839',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'ASTRO',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'cw20:terra1nsuqsk6kh58ulczatwev87ttq2z6r3pusulg9r24mfj2fvtzd4uq3exn26',
+        path: 'transfer/channel-104',
+        channelId: 'channel-104',
+        hash: 'EBD5A24C554198EBAF44979C5B4D2C2D312E6EBAB71962C92F735499C7575839',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   SOL: {
@@ -1063,18 +1100,20 @@ export default {
       },
     ],
 
-    ibcs: [{
-      symbol: 'SOLgw',
-      // symbol: 'SOL',
-      decimals: 8,
-      isNative: false,
-      baseDenom:
-        'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/8sYgCzLRJC3J7qPn2bNbx6PiGcarhyx8rBhVaNnfvHCA',
-      path: 'transfer/channel-183',
-      channelId: 'channel-183',
-      hash: 'A8B0B746B5AB736C2D8577259B510D56B8AF598008F68041E3D634BCDE72BE97',
-      source: TokenSource.Solana
-    }],
+    ibcs: [
+      {
+        symbol: 'SOLgw',
+        // symbol: 'SOL',
+        decimals: 8,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/8sYgCzLRJC3J7qPn2bNbx6PiGcarhyx8rBhVaNnfvHCA',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: 'A8B0B746B5AB736C2D8577259B510D56B8AF598008F68041E3D634BCDE72BE97',
+        source: TokenSource.Solana,
+      },
+    ],
   },
 
   SOMM: {
@@ -1088,16 +1127,18 @@ export default {
       address: '0xa670d7237398238DE01267472C6f13e5B8010FD1',
     },
 
-    ibcs: [{
-      symbol: 'SOMM',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'usomm',
-      path: 'transfer/channel-93',
-      channelId: 'channel-93',
-      hash: '34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'SOMM',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'usomm',
+        path: 'transfer/channel-93',
+        channelId: 'channel-93',
+        hash: '34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   ETHBTCTREND: {
@@ -1203,16 +1244,18 @@ export default {
     logo: 'canto.webp',
     coinGeckoId: 'canto',
 
-    ibcs: [{
-      symbol: 'CANTO',
-      decimals: 18,
-      isNative: true,
-      baseDenom: 'acanto',
-      path: 'transfer/channel-99',
-      channelId: 'channel-99',
-      hash: 'D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'CANTO',
+        decimals: 18,
+        isNative: true,
+        baseDenom: 'acanto',
+        path: 'transfer/channel-99',
+        channelId: 'channel-99',
+        hash: 'D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   QAT: {
@@ -1297,14 +1340,15 @@ export default {
       {
         decimals: 8,
         symbol: 'ARBgw',
-        baseDenom: 'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4jq5m8FR6W6nJygDj8NMMbB48mqX4LQHc3j5uEb9syDe',
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4jq5m8FR6W6nJygDj8NMMbB48mqX4LQHc3j5uEb9syDe',
         isNative: false,
         path: 'transfer/channel-183',
         channelId: 'channel-183',
         hash: '8CF0E4184CA3105798EDB18CAA3981ADB16A9951FE9B05C6D830C746202747E1',
-        source: TokenSource.Arbitrum
-      }
-    ]
+        source: TokenSource.Arbitrum,
+      },
+    ],
   },
 
   EUR: {
@@ -1431,14 +1475,15 @@ export default {
       {
         decimals: 8,
         symbol: 'WMATICgw',
-        baseDenom: 'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4gn1J9pchUGh63ez1VwiuTmU4nfJ8Rr8o5HgBC5TMdMk',
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4gn1J9pchUGh63ez1VwiuTmU4nfJ8Rr8o5HgBC5TMdMk',
         isNative: false,
         path: 'transfer/channel-183',
         channelId: 'channel-183',
         hash: '4DEFEB42BAAB2788723759D95B7550BCE460855563ED977036248F5B94C842FC',
-        source: TokenSource.Polygon
-      }
-    ]
+        source: TokenSource.Polygon,
+      },
+    ],
   },
 
   '1MPEPE': {
@@ -1518,16 +1563,18 @@ export default {
     logo: 'stinj.png',
     coinGeckoId: 'stride-staked-injective',
 
-    ibcs: [{
-      symbol: 'STINJ',
-      decimals: 18,
-      isNative: true,
-      baseDenom: 'stinj',
-      path: 'transfer/channel-89',
-      channelId: 'channel-89',
-      hash: 'AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'STINJ',
+        decimals: 18,
+        isNative: true,
+        baseDenom: 'stinj',
+        path: 'transfer/channel-89',
+        channelId: 'channel-89',
+        hash: 'AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   XRP: {
@@ -1681,16 +1728,18 @@ export default {
     logo: 'kava.webp',
     coinGeckoId: 'kava',
 
-    ibcs: [{
-      symbol: 'KAVA',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'ukava',
-      path: 'transfer/channel-143',
-      channelId: 'channel-143',
-      hash: '57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'KAVA',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'ukava',
+        path: 'transfer/channel-143',
+        channelId: 'channel-143',
+        hash: '57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   SEI: {
@@ -1757,16 +1806,18 @@ export default {
     logo: 'neok.png',
     coinGeckoId: '',
 
-    ibcs: [{
-      symbol: 'NEOK',
-      decimals: 18,
-      isNative: true,
-      baseDenom: 'erc20/0x655ecB57432CC1370f65e5dc2309588b71b473A9',
-      path: 'transfer/channel-83',
-      channelId: 'channel-83',
-      hash: 'F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'NEOK',
+        decimals: 18,
+        isNative: true,
+        baseDenom: 'erc20/0x655ecB57432CC1370f65e5dc2309588b71b473A9',
+        path: 'transfer/channel-83',
+        channelId: 'channel-83',
+        hash: 'F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   ORAI: {
@@ -1774,16 +1825,18 @@ export default {
     logo: 'orai.png',
     coinGeckoId: 'oraichain-token',
 
-    ibcs: [{
-      symbol: 'ORAI',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'orai',
-      path: 'transfer/channel-147',
-      channelId: 'channel-147',
-      hash: 'C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'ORAI',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'orai',
+        path: 'transfer/channel-147',
+        channelId: 'channel-147',
+        hash: 'C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   EVINDEX: {
@@ -1809,16 +1862,18 @@ export default {
     logo: 'tia.webp',
     coinGeckoId: 'celestia',
 
-    ibcs: [{
-      symbol: 'TIA',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'utia',
-      path: 'transfer/channel-152',
-      channelId: 'channel-152',
-      hash: 'F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'TIA',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'utia',
+        path: 'transfer/channel-152',
+        channelId: 'channel-152',
+        hash: 'F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   TALIS: {
@@ -1866,16 +1921,18 @@ export default {
     logo: 'kuji.webp',
     coinGeckoId: 'kujira',
 
-    ibcs: [{
-      symbol: 'KUJI',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'ukuji',
-      path: 'transfer/channel-98',
-      channelId: 'channel-98',
-      hash: '9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'KUJI',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'ukuji',
+        path: 'transfer/channel-98',
+        channelId: 'channel-98',
+        hash: '9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   'USDC-MPL': {
@@ -1911,17 +1968,19 @@ export default {
       },
     ],
 
-    ibcs: [{
-      symbol: 'Pyth',
-      decimals: 6,
-      isNative: false,
-      baseDenom:
-        'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/B8ohBnfisop27exk2gtNABJyYjLwQA7ogrp5uNzvZCoy',
-      path: 'transfer/channel-183',
-      channelId: 'channel-183',
-      hash: 'F3330C1B8BD1886FE9509B94C7B5398B892EA41420D2BC0B7C6A53CB8ED761D6',
-      source: TokenSource.Solana
-    }],
+    ibcs: [
+      {
+        symbol: 'Pyth',
+        decimals: 6,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/B8ohBnfisop27exk2gtNABJyYjLwQA7ogrp5uNzvZCoy',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: 'F3330C1B8BD1886FE9509B94C7B5398B892EA41420D2BC0B7C6A53CB8ED761D6',
+        source: TokenSource.Solana,
+      },
+    ],
   },
 
   TIX: {
@@ -2334,16 +2393,18 @@ export default {
     coinGeckoId: 'levana-protocol',
     logo: 'lvn.png',
 
-    ibcs: [{
-      symbol: 'LVN',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'ulvn',
-      path: 'transfer/channel-8',
-      channelId: 'channel-8',
-      hash: '4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'LVN',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'ulvn',
+        path: 'transfer/channel-8',
+        channelId: 'channel-8',
+        hash: '4971C5E4786D5995EC7EF894FCFA9CF2E127E95D5D53A982F6A062F3F410EDB8',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   KINJA: {
@@ -2852,34 +2913,38 @@ export default {
     logo: 'orne.png',
     coinGeckoId: 'orne',
 
-    ibcs: [{
-      symbol: 'ORNE',
-      decimals: 6,
-      isNative: true,
-      baseDenom:
-        'cw20:terra19p20mfnvwh9yvyr7aus3a6z6g6uk28fv4jhx9kmnc2m7krg27q2qkfenjw',
-      path: 'transfer/channel-116',
-      channelId: 'channel-116',
-      hash: '3D99439444ACDEE71DBC4A774E49DB74B58846CCE31B9A868A7A61E4C14D321E',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'ORNE',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'cw20:terra19p20mfnvwh9yvyr7aus3a6z6g6uk28fv4jhx9kmnc2m7krg27q2qkfenjw',
+        path: 'transfer/channel-116',
+        channelId: 'channel-116',
+        hash: '3D99439444ACDEE71DBC4A774E49DB74B58846CCE31B9A868A7A61E4C14D321E',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   DROGO: {
     name: 'DROGO',
     logo: 'drogo.png',
 
-    ibcs: [{
-      symbol: 'DROGO',
-      decimals: 6,
-      isNative: true,
-      baseDenom:
-        'cw20:terra1cl273523kmr2uwjhhznq54je69mted2u3ljffm8kp2ap4z3drdksftwqun',
-      path: 'transfer/channel-118',
-      channelId: 'channel-118',
-      hash: 'ibc/565FE65B82C091F8BAD1379FA1B4560C036C07913355ED4BD8D156DA63F43712',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'DROGO',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'cw20:terra1cl273523kmr2uwjhhznq54je69mted2u3ljffm8kp2ap4z3drdksftwqun',
+        path: 'transfer/channel-118',
+        channelId: 'channel-118',
+        hash: 'ibc/565FE65B82C091F8BAD1379FA1B4560C036C07913355ED4BD8D156DA63F43712',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   RAMEN: {
@@ -2973,16 +3038,18 @@ export default {
     logo: 'WOSMO.png',
     coinGeckoId: '',
 
-    ibcs: [{
-      symbol: 'WOSMO',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'factory/osmo1pfyxruwvtwk00y8z06dh2lqjdj82ldvy74wzm3/WOSMO',
-      path: 'transfer/channel-8',
-      channelId: 'channel-8',
-      hash: 'DD648F5D3CDA56D0D8D8820CF703D246B9FC4007725D8B38D23A21FF1A1477E3',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'WOSMO',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'factory/osmo1pfyxruwvtwk00y8z06dh2lqjdj82ldvy74wzm3/WOSMO',
+        path: 'transfer/channel-8',
+        channelId: 'channel-8',
+        hash: 'DD648F5D3CDA56D0D8D8820CF703D246B9FC4007725D8B38D23A21FF1A1477E3',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   IKINGS: {
@@ -3064,16 +3131,18 @@ export default {
     logo: 'andromeda.webp',
     coinGeckoId: 'andromeda-2',
 
-    ibcs: [{
-      symbol: 'ANDR',
-      decimals: 6,
-      isNative: true,
-      baseDenom: 'uandr',
-      path: 'transfer/channel-213',
-      channelId: 'channel-213',
-      hash: '61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
-      source: TokenSource.Cosmos
-    }],
+    ibcs: [
+      {
+        symbol: 'ANDR',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'uandr',
+        path: 'transfer/channel-213',
+        channelId: 'channel-213',
+        hash: '61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 
   hINJ: {
@@ -3099,15 +3168,15 @@ export default {
     tokenType: TokenType.Unknown,
   },
 
-  PHUC: {
-    name: 'Phuc',
+  QUNT: {
+    name: 'QUNT',
     logo: 'qunt.png',
     coinGeckoId: '',
 
     tokenFactories: [
       {
-        creator: 'inj1995xnrrtnmtdgjmx0g937vf28dwefhkhy6gy5e',
-        symbol: 'PHUC',
+        creator: 'inj127l5a2wmkyvucxdlupqyac3y0v6wqfhq03ka64',
+        symbol: 'QUNT',
         decimals: 6,
       },
     ],

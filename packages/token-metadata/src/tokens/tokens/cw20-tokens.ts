@@ -87,4 +87,18 @@ export default {
       },
     ],
   },
+
+  PHUC: {
+    name: 'Phuc',
+    logo: 'mito-test.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1995xnrrtnmtdgjmx0g937vf28dwefhkhy6gy5e',
+        symbol: 'PHUC',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
