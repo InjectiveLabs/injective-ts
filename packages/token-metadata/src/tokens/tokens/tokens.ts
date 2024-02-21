@@ -3181,4 +3181,18 @@ export default {
       },
     ],
   },
+
+  HDRO: {
+    name: 'HDRO',
+    logo: 'hydro.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1pk7jhvjj2lufcghmvr7gl49dzwkk3xj0uqkwfk',
+        symbol: 'hdro',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>

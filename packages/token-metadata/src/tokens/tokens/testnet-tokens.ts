@@ -91,13 +91,15 @@ export const testnetTokens = () =>
 
     ASTRO: {
       ...tokens.ASTRO,
-      ibcs: [{
-        ...(tokens.ASTRO.ibcs ? tokens.ASTRO.ibcs[0] : {}),
-        hash: 'E8AC6B792CDE60AB208CA060CA010A3881F682A7307F624347AB71B6A0B0BF89',
-        path: 'transfer/channel-13',
-        channelId: 'channel-13',
-        baseDenom: 'ASTRO',
-      }],
+      ibcs: [
+        {
+          ...(tokens.ASTRO.ibcs ? tokens.ASTRO.ibcs[0] : {}),
+          hash: 'E8AC6B792CDE60AB208CA060CA010A3881F682A7307F624347AB71B6A0B0BF89',
+          path: 'transfer/channel-13',
+          channelId: 'channel-13',
+          baseDenom: 'ASTRO',
+        },
+      ],
     },
 
     SOL: {
@@ -159,6 +161,32 @@ export const testnetTokens = () =>
           symbol: 'STINJ',
           creator: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
           decimals: 18,
+        },
+      ],
+    },
+
+    hINJ: {
+      ...tokens.hINJ,
+
+      cw20s: [
+        ...(tokens.hINJ.cw20s || []),
+        {
+          symbol: 'hINJ',
+          decimals: 18,
+          address: 'inj1mz7mfhgx8tuvjqut03qdujrkzwlx9xhcj6yldc',
+        },
+      ],
+    },
+
+    HDRO: {
+      ...tokens.HDRO,
+
+      tokenFactories: [
+        ...(tokens.HDRO.tokenFactories || []),
+        {
+          creator: 'inj1pk7jhvjj2lufcghmvr7gl49dzwkk3xj0uqkwfk',
+          symbol: 'hdro',
+          decimals: 6,
         },
       ],
     },
