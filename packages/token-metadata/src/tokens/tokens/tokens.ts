@@ -3160,6 +3160,21 @@ export default {
     ],
   },
 
+  SUSHI_FIGHTER: {
+    name: 'SUSHI FIGHTER',
+    logo: 'sushi-inj.png',
+    symbol: 'SUSHI',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'SUSHI',
+        decimals: 18,
+        address: 'inj1n73yuus64z0yrda9hvn77twkspc4uste9j9ydd',
+      },
+    ],
+  },
+
   W: {
     name: 'W',
     logo: 'wormhole.png',
