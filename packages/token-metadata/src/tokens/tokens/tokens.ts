@@ -358,15 +358,24 @@ export default {
   },
 
   SUSHI: {
-    name: 'SushiSwap',
-    logo: 'sushi.png',
-    coinGeckoId: 'sushi',
-
     erc20: {
+      coinGeckoId: 'sushi',
+      name: 'SushiSwap',
+      logo: 'sushi.png',
       symbol: 'SUSHI',
       decimals: 18,
       address: '0x6B3595068778DD592e39A122f4f5a5cF09C90fE2',
     },
+
+    cw20s: [
+      {
+        name: 'SUSHI FIGHTER',
+        logo: 'sushi-inj.png',
+        symbol: 'SUSHI',
+        decimals: 18,
+        address: 'inj1n73yuus64z0yrda9hvn77twkspc4uste9j9ydd',
+      },
+    ],
   },
 
   AXS: {

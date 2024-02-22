@@ -40,6 +40,7 @@ export interface NativeTokenFactoryMeta {
   logo?: string
   description?: string
   decimals: number
+  coinGeckoId?: string
 }
 
 export interface IbcTokenMeta {
@@ -52,6 +53,7 @@ export interface IbcTokenMeta {
   symbol: string
   isNative: boolean
   baseDenom: string
+  coinGeckoId?: string
 }
 
 export interface SplTokenMeta {
@@ -61,6 +63,7 @@ export interface SplTokenMeta {
   name?: string
   logo?: string
   isNative?: boolean
+  coinGeckoId?: string
 }
 
 export interface Erc20TokenMeta {
@@ -70,6 +73,7 @@ export interface Erc20TokenMeta {
   name?: string
   logo?: string
   isNative?: boolean
+  coinGeckoId?: string
 }
 
 export interface EvmTokenMeta {
@@ -79,6 +83,7 @@ export interface EvmTokenMeta {
   name?: string
   logo?: string
   isNative?: boolean
+  coinGeckoId?: string
 }
 
 export interface Cw20TokenMeta {
@@ -87,6 +92,7 @@ export interface Cw20TokenMeta {
   symbol: string
   name?: string
   logo?: string
+  coinGeckoId?: string
 }
 
 export interface Cw20TokenMetaWithSource extends Cw20TokenMeta {

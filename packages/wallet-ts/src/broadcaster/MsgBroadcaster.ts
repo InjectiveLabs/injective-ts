@@ -4,6 +4,8 @@ import {
   PublicKey,
   SIGN_DIRECT,
   hexToBase64,
+  SIGN_EIP712_V2,
+  SIGN_EIP712,
   ChainGrpcAuthApi,
   CosmosTxV1Beta1Tx,
   createTxRawEIP712,
@@ -11,6 +13,7 @@ import {
   getAminoStdSignDoc,
   getEip712TypedData,
   createWeb3Extension,
+  getEip712TypedDataV2,
   ChainGrpcTendermintApi,
   createTransactionWithSigners,
   createTxRawFromSigResponse,
@@ -18,9 +21,6 @@ import {
   getGasPriceBasedOnMessage,
   recoverTypedSignaturePubKey,
   CreateTransactionWithSignersArgs,
-  getEip712TypedDataV2,
-  SIGN_EIP712_V2,
-  SIGN_EIP712,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
@@ -138,6 +138,7 @@ export class MsgBroadcaster {
   /**
    * Broadcasting the transaction using the client
    * side approach for both cosmos and ethereum native wallets
+   * Note: using EIP712_V2 for Ethereum wallets
    *
    * @param tx
    * @returns {string} transaction hash

@@ -208,6 +208,7 @@ export const getTokenInfo = (token: TokenBase) => {
       name: meta?.name || token.name,
       logo: meta?.logo || token.logo,
       decimals: meta?.decimals || token.decimals,
+      coinGeckoId: meta?.coinGeckoId || token.coinGeckoId,
       cw20: meta,
       tokenType,
     }
@@ -224,6 +225,7 @@ export const getTokenInfo = (token: TokenBase) => {
         name: meta?.name || token.name || '',
         logo: meta?.logo || token.logo,
         decimals: meta?.decimals || token.decimals || 0,
+        coinGeckoId: meta?.coinGeckoId || token.coinGeckoId,
         cw20: meta,
         tokenType,
       }
@@ -236,6 +238,7 @@ export const getTokenInfo = (token: TokenBase) => {
       name: meta?.name || token.name || '',
       logo: meta?.logo || token.logo || '',
       decimals: meta?.decimals || token.decimals || 0,
+      coinGeckoId: meta?.coinGeckoId || token.coinGeckoId,
       tokenFactory: meta,
       tokenType,
     }
@@ -247,6 +250,7 @@ export const getTokenInfo = (token: TokenBase) => {
       name: token.erc20?.name || token.name || '',
       logo: token.erc20?.logo || token.logo || '',
       decimals: token.erc20?.decimals || token.decimals || 0,
+      coinGeckoId: token.erc20?.coinGeckoId || token.coinGeckoId,
       tokenType,
     }
   }
@@ -258,6 +262,8 @@ export const getTokenInfo = (token: TokenBase) => {
       logo: token.erc20?.logo || token.evm?.symbol || token.logo || '',
       decimals:
         token.erc20?.decimals || token.evm?.symbol || token.decimals || 0,
+      coinGeckoId:
+        token.erc20?.coinGeckoId || token.evm?.coinGeckoId || token.coinGeckoId,
       tokenType,
     }
   }
@@ -266,12 +272,12 @@ export const getTokenInfo = (token: TokenBase) => {
   if (token.denom.startsWith('ibc') || token.ibcs) {
     const meta = getIbcMeta(token) as IbcTokenMetaWithSource
 
-
     return {
       symbol: meta?.symbol || token.symbol || '',
       name: meta?.name || token.name || '',
       logo: meta?.logo || token.logo || '',
       decimals: meta?.decimals || token.decimals || 6,
+      coinGeckoId: meta?.coinGeckoId || token.coinGeckoId,
       tokenType,
     }
   }
@@ -303,6 +309,12 @@ export const getTokenInfo = (token: TokenBase) => {
         token.spl?.decimals ||
         token.decimals ||
         6,
+      coinGeckoId:
+        token.erc20?.coinGeckoId ||
+        token.evm?.coinGeckoId ||
+        token.spl?.coinGeckoId ||
+        token.coinGeckoId ||
+        6,
       tokenType,
     }
   }
@@ -312,6 +324,7 @@ export const getTokenInfo = (token: TokenBase) => {
     name: token.name,
     logo: token.logo,
     decimals: token.decimals || 0,
+    coinGeckoId: token.coinGeckoId || 0,
     tokenType,
   }
 }
