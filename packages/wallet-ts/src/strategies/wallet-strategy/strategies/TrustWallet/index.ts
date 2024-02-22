@@ -128,7 +128,7 @@ export default class TrustWallet
     try {
       return await ethereum.request({
         method: 'eth_signTypedData_v4',
-        params: [address, eip712json],
+        params: [eip712json, address],
       })
     } catch (e: unknown) {
       throw new TrustWalletException(new Error((e as any).message), {
