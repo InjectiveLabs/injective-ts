@@ -1899,6 +1899,20 @@ export default {
     ],
   },
 
+  XTALIS: {
+    name: 'xTalis',
+    logo: 'xtalis.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1maeyvxfamtn8lfyxpjca8kuvauuf2qeu6gtxm3',
+        symbol: 'XTALIS',
+        decimals: 6,
+      },
+    ],
+  },
+
   KIRA: {
     name: 'KIRA',
     logo: 'kira.jpeg',
