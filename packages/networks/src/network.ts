@@ -84,6 +84,7 @@ export const isMainnet = (network: Network) =>
   [
     Network.Staging,
     Network.Mainnet,
+    Network.MainnetOld,
     Network.MainnetK8s,
     Network.MainnetSentry,
     Network.Internal,

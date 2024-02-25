@@ -3,9 +3,9 @@ import { Network } from './types'
 export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.MainnetLB]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
+  [Network.MainnetOld]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.MainnetK8s]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.MainnetSentry]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
-  [Network.MainnetOld]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Staging]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Internal]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Testnet]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
@@ -21,9 +21,9 @@ export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
 export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.MainnetLB]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.MainnetOld]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.MainnetK8s]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.MainnetSentry]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
-  [Network.MainnetOld]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.Staging]: 'inj12yj3mtjarujkhcp6lg3klxjjfrx2v7v8yswgp9',
   [Network.Internal]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.Testnet]: 'inj14d7h5j6ddq6pqppl65z24w7xrtmpcrqjxj8d43',
@@ -39,6 +39,7 @@ export const CW20_SWAP_CONTRACT_BY_NETWORK = {
 export const INCENTIVES_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: '',
   [Network.MainnetLB]: '',
+  [Network.MainnetOld]: '',
   [Network.MainnetK8s]: '',
   [Network.MainnetSentry]: '',
   [Network.Staging]: '',

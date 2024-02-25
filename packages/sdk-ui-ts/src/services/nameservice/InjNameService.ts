@@ -3,17 +3,17 @@ import {
   Network,
   NetworkEndpoints,
   getNetworkEndpoints,
+  getInjNameRegistryContractForNetwork,
+  getInjNameReverseResolverContractForNetwork,
 } from '@injectivelabs/networks'
 import {
   nameToNode,
-  normalizeName,
   QueryInjName,
+  normalizeName,
   ChainGrpcWasmApi,
   QueryResolverAddress,
   QueryInjectiveAddress,
   InjNameServiceQueryTransformer,
-  INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK,
-  INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK,
 } from '@injectivelabs/sdk-ts'
 
 export class InjNameService {
@@ -30,9 +30,9 @@ export class InjNameService {
     const networkEndpoints = endpoints || getNetworkEndpoints(network)
 
     this.client = new ChainGrpcWasmApi(networkEndpoints.grpc)
-    this.registryAddress = INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK[network]
+    this.registryAddress = getInjNameRegistryContractForNetwork(network)
     this.reverseResolverAddress =
-      INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK[network]
+      getInjNameReverseResolverContractForNetwork(network)
   }
 
   private async fetchResolverAddress(node: number[]) {
