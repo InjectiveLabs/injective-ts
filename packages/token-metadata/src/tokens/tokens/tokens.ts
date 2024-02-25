@@ -2885,10 +2885,10 @@ export default {
   DOJO: {
     name: 'Dojo Token',
     logo: 'dojo-token.png',
-    coinGeckoId: 'dojo-token',
 
     cw20s: [
       {
+        coinGeckoId: 'dojo-token',
         symbol: 'DOJO',
         name: 'Dojo Token',
         decimals: 18,
