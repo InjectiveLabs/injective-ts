@@ -120,6 +120,8 @@ export class IndexerGrpcMitoTransformer {
       updatedAt: parseInt(vault.updatedAt, 10),
       createdAt: parseInt(vault.createdAt, 10),
       apy: vault.apy,
+      apy7D: vault.apy7D,
+      apy7DFq: vault.apy7DFq,
       profits: IndexerGrpcMitoTransformer.changesResponseToChanges(
         vault.profits,
       ),

@@ -55,6 +55,8 @@ export interface MitoVault {
   notionalValueCap: string
   tvlChanges?: MitoChanges
   apy: number
+  apy7D: number
+  apy7DFq: number
 }
 
 export interface MitoSubscription {
