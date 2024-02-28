@@ -57,6 +57,7 @@ export interface MitoVault {
   apy: number
   apy7D: number
   apy7DFq: number
+  apyue: number
 }
 
 export interface MitoSubscription {
