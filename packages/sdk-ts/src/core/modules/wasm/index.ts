@@ -11,6 +11,7 @@ import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgRemoveGridStrategy from './exec-args/ExecArgRemoveGridStrategy'
 import ExecArgCreateSpotGridStrategy from './exec-args/ExecArgCreateSpotGridStrategy'
+import ExecArgCreatePerpGridStrategy from './exec-args/ExecArgCreatePerpGridStrategy'
 import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 
 import MsgStoreCode from './msgs/MsgStoreCode'
@@ -43,6 +44,7 @@ export {
   ExecArgIncreaseAllowance,
   ExecArgRemoveGridStrategy,
   ExecArgCreateSpotGridStrategy,
+  ExecArgCreatePerpGridStrategy,
   ExecArgCW20AdapterRedeemAndTransfer,
   //
   MsgStoreCode,
