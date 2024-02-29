@@ -22,7 +22,6 @@ import {
   MitoLeaderboardEpoch,
   MitoSubaccountBalance,
   MitoMissionLeaderboard,
-  MitoStakeToSubscription,
   MitoIDOSubscriptionActivity,
   MitoMissionLeaderboardEntry,
 } from '../types/mito'
@@ -328,12 +327,9 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoStakedToSubscriptionToStakedToSubscription(
-    data: MitoApi.ArrayOfString,
-  ): MitoStakeToSubscription {
-    return {
-      stakedAmount: data.field[0],
-      subscribableAmount: data.field[1],
-    }
+    data: MitoApi.ArrayOfString[],
+  ): Array<string[]> {
+    return data.reduce((list, { field }) => [...list, field], [] as string[][])
   }
 
   static mitoIDOToIDO(IDO: MitoApi.IDO): MitoIDO {
@@ -367,9 +363,10 @@ export class IndexerGrpcMitoTransformer {
       tokenInfo: IDO.tokenInfo
         ? IndexerGrpcMitoTransformer.grpcTokenInfoToTokenInfo(IDO.tokenInfo)
         : undefined,
-      stakeToSubscription: IDO.stakeToSubscription.map(
-        IndexerGrpcMitoTransformer.mitoStakedToSubscriptionToStakedToSubscription,
-      ),
+      stakeToSubscription:
+        IndexerGrpcMitoTransformer.mitoStakedToSubscriptionToStakedToSubscription(
+          IDO.stakeToSubscription,
+        ),
     }
   }
 

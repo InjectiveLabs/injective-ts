@@ -211,7 +211,7 @@ export interface MitoIDO {
   name: string
   progress: MitoIDOProgress[]
   quoteDenom: string
-  stakeToSubscription: MitoStakeToSubscription[]
+  stakeToSubscription: Array<string[]>
   useWhitelist: boolean
   marketId: string
   vaultAddress: string
