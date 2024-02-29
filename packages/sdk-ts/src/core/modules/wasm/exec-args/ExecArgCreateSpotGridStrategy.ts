@@ -4,7 +4,12 @@ import {
   ExecDataRepresentation,
 } from '../ExecArgBase'
 
-import { ExitType, ExitConfig, StrategyType } from '../types'
+import {
+  ExitType,
+  ExitConfig,
+  StrategyType,
+  TrailingArithmetic,
+} from '../types'
 export declare namespace ExecArgCreateSpotGridStrategy {
   export interface Params {
     subaccountId: string
@@ -16,6 +21,7 @@ export declare namespace ExecArgCreateSpotGridStrategy {
     takeProfit?: ExitConfig
     exitType?: ExitType
     strategyType?: StrategyType
+    trailingArithmetic?: TrailingArithmetic
   }
 
   export interface Data {
@@ -32,7 +38,7 @@ export declare namespace ExecArgCreateSpotGridStrategy {
       exit_price: string
     }
     exit_type?: ExitType
-    strategy_type?: StrategyType
+    strategy_type?: StrategyType | TrailingArithmetic
   }
 }
 
@@ -70,7 +76,7 @@ export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
             exit_price: params.takeProfit.exitPrice,
           }
         : undefined,
-      strategy_type: params.strategyType,
+      strategy_type: params.trailingArithmetic ?? params.strategyType,
     }
   }
 
