@@ -3233,4 +3233,19 @@ export default {
       },
     ],
   },
+  
+   XNJ: {
+    name: 'xNinja.Tech Token',
+    logo: 'xnj.png',
+    symbol: 'XNJ',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'XNJ',
+        decimals: 18,
+        address: 'inj17pgmlk6fpfmqyffs205l98pmnmp688mt0948ar',
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
