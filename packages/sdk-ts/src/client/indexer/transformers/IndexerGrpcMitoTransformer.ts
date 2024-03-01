@@ -19,9 +19,12 @@ import {
   MitoClaimReference,
   MitoIDOSubscription,
   MitoWhitelistAccount,
+  MitoVestingConfig,
+  MitoVestingConfigMap,
   MitoLeaderboardEpoch,
   MitoSubaccountBalance,
   MitoMissionLeaderboard,
+  MitoStakeToSubscription,
   MitoIDOSubscriptionActivity,
   MitoMissionLeaderboardEntry,
 } from '../types/mito'
@@ -327,9 +330,12 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoStakedToSubscriptionToStakedToSubscription(
-    data: MitoApi.ArrayOfString[],
-  ): Array<string[]> {
-    return data.reduce((list, { field }) => [...list, field], [] as string[][])
+    data: MitoApi.ArrayOfString,
+  ): MitoStakeToSubscription {
+    return {
+      stakedAmount: data.field[0],
+      subscribableAmount: data.field[1],
+    }
   }
 
   static mitoIDOToIDO(IDO: MitoApi.IDO): MitoIDO {
@@ -363,9 +369,12 @@ export class IndexerGrpcMitoTransformer {
       tokenInfo: IDO.tokenInfo
         ? IndexerGrpcMitoTransformer.grpcTokenInfoToTokenInfo(IDO.tokenInfo)
         : undefined,
-      stakeToSubscription:
-        IndexerGrpcMitoTransformer.mitoStakedToSubscriptionToStakedToSubscription(
-          IDO.stakeToSubscription,
+      stakeToSubscription: IDO.stakeToSubscription.map(
+        IndexerGrpcMitoTransformer.mitoStakedToSubscriptionToStakedToSubscription,
+      ),
+      vestingConfig:
+        IndexerGrpcMitoTransformer.mitoIDOInitParamsToIDOVestingConfig(
+          IDO.initParams,
         ),
     }
   }
@@ -473,6 +482,41 @@ export class IndexerGrpcMitoTransformer {
       ),
       updatedAt: parseInt(claimReference.updatedAt, 10),
       startVestingTime: parseInt(claimReference.startVestingTime, 10),
+    }
+  }
+
+  static mitoVestingCOonfigToVestingConfig(
+    config?: MitoApi.VestingConfig,
+  ): MitoVestingConfig {
+    return {
+      schedule: config?.schedule || '',
+      vestingDurationSeconds: parseInt(
+        config?.vestingDurationSeconds || '0',
+        10,
+      ),
+      vestingStartDelaySeconds: parseInt(
+        config?.vestingDurationSeconds || '0',
+        10,
+      ),
+    }
+  }
+
+  static mitoIDOInitParamsToIDOVestingConfig(
+    initParams?: MitoApi.InitParams,
+  ): MitoVestingConfigMap | undefined {
+    if (!initParams || !initParams.vestingConfig) {
+      return
+    }
+
+    return {
+      projectOwnerQuote:
+        IndexerGrpcMitoTransformer.mitoVestingCOonfigToVestingConfig(
+          initParams.vestingConfig.projectOwnerQuote,
+        ),
+      usersProjectToken:
+        IndexerGrpcMitoTransformer.mitoVestingCOonfigToVestingConfig(
+          initParams.vestingConfig.usersProjectToken,
+        ),
     }
   }
 

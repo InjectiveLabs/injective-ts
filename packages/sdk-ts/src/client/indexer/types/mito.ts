@@ -191,6 +191,22 @@ export interface MitoStakeToSubscription {
   subscribableAmount: string
 }
 
+export interface MitoVestingConfig {
+  vestingDurationSeconds?: number
+  vestingStartDelaySeconds?: number
+  schedule?: string
+}
+
+export interface MitoVestingConfigMap {
+  projectOwnerQuote?: MitoVestingConfig
+  projectOwnerLpTokens?: MitoVestingConfig
+  usersProjectToken?: MitoVestingConfig
+}
+
+export interface MitoIDOInitParams {
+  vestingConfig?: MitoVestingConfigMap
+}
+
 export interface MitoIDO {
   startTime: number
   endTime: number
@@ -211,10 +227,11 @@ export interface MitoIDO {
   name: string
   progress: MitoIDOProgress[]
   quoteDenom: string
-  stakeToSubscription: Array<string[]>
+  stakeToSubscription: MitoStakeToSubscription[]
   useWhitelist: boolean
   marketId: string
   vaultAddress: string
+  vestingConfig?: MitoVestingConfigMap
 }
 
 export interface MitoIDOSubscriber {
