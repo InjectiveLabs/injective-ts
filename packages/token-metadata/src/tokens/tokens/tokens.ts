@@ -3268,4 +3268,16 @@ export default {
       },
     ],
   },
+
+  USDE: {
+    name: 'Ethena USDe',
+    logo: 'usde.png',
+    coinGeckoId: 'ethena-usde',
+
+    erc20: {
+      symbol: 'USDe',
+      decimals: 18,
+      address: '0x4c9EDD5852cd905f086C759E8383e09bff1E68B3',
+    },
+  },
 } as Record<string, TokenMetaBase>

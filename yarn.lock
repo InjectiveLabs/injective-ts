@@ -2312,17 +2312,6 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/exceptions@^1.10.12", "@injectivelabs/exceptions@^1.14.5":
-  version "1.14.5"
-  resolved "https://registry.npmjs.org/@injectivelabs/exceptions/-/exceptions-1.14.5.tgz#3ee2cb89f591c83bd325487511b3b553b19602d8"
-  integrity sha512-WQ+hxpKz4g4+ZXNTXLFKpf9D9uosleZLqC++2+wK81IQ/lcwi5GrTLYdasOhJeu3c+LKWxHQRHJfSsvt8TQWbA==
-  dependencies:
-    "@injectivelabs/grpc-web" "^0.0.1"
-    "@injectivelabs/ts-types" "^1.14.5"
-    http-status-codes "^2.2.0"
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-
 "@injectivelabs/grpc-web-node-http-transport@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.0.2.tgz#87c9bbd4db1f70cf18d6a55b54b2cf17d3cf30c0"
@@ -2391,17 +2380,6 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
-"@injectivelabs/networks@^1.10.12", "@injectivelabs/networks@^1.14.5":
-  version "1.14.5"
-  resolved "https://registry.npmjs.org/@injectivelabs/networks/-/networks-1.14.5.tgz#4d7536fede8edcc24ecbd2bceeca11affa7d24e9"
-  integrity sha512-9GINd/pPBX6Jyc26pmlLC54s7nLlXsBLZ/1fo8a0nvHkrrODRDE4IldP6KsA9OLVomMPk5TyBUgYLGgM3ST9GA==
-  dependencies:
-    "@injectivelabs/exceptions" "^1.14.5"
-    "@injectivelabs/ts-types" "^1.14.5"
-    "@injectivelabs/utils" "^1.14.5"
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-
 "@injectivelabs/sdk-ts@1.10.72":
   version "1.10.72"
   resolved "https://registry.npmjs.org/@injectivelabs/sdk-ts/-/sdk-ts-1.10.72.tgz#07920960ef74aa9db96978a85d86042037836a51"
@@ -2444,43 +2422,6 @@
     shx "^0.3.2"
     snakecase-keys "^5.4.1"
 
-"@injectivelabs/test-utils@^1.10.12", "@injectivelabs/test-utils@^1.14.3":
-  version "1.14.3"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/test-utils/-/test-utils-1.14.3.tgz#3c78b5f34669917f484aa8ac4a88df7bbc376f88"
-  integrity sha512-dVe262sACa7YkRr7mfXx58yI/ieuQqm3IMGq7EMweFKI6Kh2gh8FAM2bsDgm1cGewEIhJ9tWh6OM5uNheeVamg==
-  dependencies:
-    axios "^0.21.1"
-    bignumber.js "^9.0.1"
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-    snakecase-keys "^5.1.2"
-    store2 "^2.12.0"
-
-"@injectivelabs/token-metadata@^1.10.42":
-  version "1.14.5"
-  resolved "https://registry.npmjs.org/@injectivelabs/token-metadata/-/token-metadata-1.14.5.tgz#73552e3e78e5d15f5317a05a5812d0be3647e38d"
-  integrity sha512-GiIiNDixfvbfEjzZG7ixtGYmJllFIcA2Xl1LnsK5yawT8Q+/SoSIJig4tE+0CC/AaGHS1GxDKySrIdMse7PZ0w==
-  dependencies:
-    "@injectivelabs/exceptions" "^1.14.5"
-    "@injectivelabs/networks" "^1.14.5"
-    "@injectivelabs/ts-types" "^1.14.5"
-    "@injectivelabs/utils" "^1.14.5"
-    "@types/lodash.values" "^4.3.6"
-    copyfiles "^2.4.1"
-    jsonschema "^1.4.0"
-    link-module-alias "^1.2.0"
-    lodash "^4.17.21"
-    lodash.values "^4.3.0"
-    shx "^0.3.2"
-
-"@injectivelabs/ts-types@^1.10.12", "@injectivelabs/ts-types@^1.14.5":
-  version "1.14.5"
-  resolved "https://registry.npmjs.org/@injectivelabs/ts-types/-/ts-types-1.14.5.tgz#e7ed5fa87052b0763908bd77b132775aa37a097c"
-  integrity sha512-dwmEJE90vMr1zkQhz5lX2280sBMe2GvAj98vOHoL2RLTo0OQkJZrirUHwsTkexJf7sFZIT2PlmLCfix9Ulcp5A==
-  dependencies:
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-
 "@injectivelabs/utils@1.10.12":
   version "1.10.12"
   resolved "https://registry.npmjs.org/@injectivelabs/utils/-/utils-1.10.12.tgz#063835b25c11182945881e82a2cbad50f6ca10b3"
@@ -2488,21 +2429,6 @@
   dependencies:
     "@injectivelabs/exceptions" "^1.10.12"
     "@injectivelabs/ts-types" "^1.10.12"
-    axios "^0.21.1"
-    bignumber.js "^9.0.1"
-    http-status-codes "^2.2.0"
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-    snakecase-keys "^5.1.2"
-    store2 "^2.12.0"
-
-"@injectivelabs/utils@^1.10.12", "@injectivelabs/utils@^1.14.5":
-  version "1.14.5"
-  resolved "https://registry.npmjs.org/@injectivelabs/utils/-/utils-1.14.5.tgz#4fe9055c2c36f6f09faed9a95e2d77ae8daaf71f"
-  integrity sha512-L2ul/7rgop8RLJBhlXjt6Q/A6fXeRZ3hhCZFXGXmA63vz9RSqOFHILiRp6hAFsuZbiITjmVx0eubFPaQU0MymA==
-  dependencies:
-    "@injectivelabs/exceptions" "^1.14.5"
-    "@injectivelabs/ts-types" "^1.14.5"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     http-status-codes "^2.2.0"
