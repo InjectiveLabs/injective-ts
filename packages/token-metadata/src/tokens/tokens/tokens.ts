@@ -3217,5 +3217,23 @@ export default {
         decimals: 6,
       },
     ],
+  }, BMOS: {
+    name: 'BMOS',
+    logo: 'bitmos.png',
+    coinGeckoId: '',
+
+    ibcs: [
+      {
+        symbol: 'BMOS',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'cw20:terra1sxe8u2hjczlekwfkcq0rs28egt38pg3wqzfx4zcrese4fnvzzupsk9gjkq',
+        path: 'transfer/channel-104',
+        channelId: 'channel-104',
+        hash: 'D9353C3B1407A7F7FE0A5CCB7D06249B57337888C95C6648AEAF2C83F4F3074E',
+        source: TokenSource.Cosmos,
+      },
+    ],
   },
 } as Record<string, TokenMetaBase>
