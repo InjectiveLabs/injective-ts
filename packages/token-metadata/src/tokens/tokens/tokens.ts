@@ -3218,4 +3218,19 @@ export default {
       },
     ],
   },
+
+  DINJ: {
+    name: 'Dojo Staked INJ',
+    logo: 'dinj.svg',
+    symbol: 'dINJ',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'dINJ',
+        decimals: 18,
+        address: 'inj134wfjutywny9qnyux2xgdmm0hfj7mwpl39r3r9',
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
