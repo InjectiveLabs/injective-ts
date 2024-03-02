@@ -88,6 +88,48 @@ export default {
     ],
   },
 
+  TEST1: {
+    name: 'Test 1',
+    logo: 'mito-test.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        decimals: 6,
+        symbol: 'TEST1',
+        creator: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+      },
+    ],
+  },
+
+  TEST2: {
+    name: 'Test 2',
+    logo: 'mito-test.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        decimals: 6,
+        symbol: 'TEST2',
+        creator: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+      },
+    ],
+  },
+
+  TEST3: {
+    name: 'Test 3',
+    logo: 'mito-test.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        decimals: 6,
+        symbol: 'TEST3',
+        creator: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+      },
+    ],
+  },
+
   PHUC: {
     name: 'Phuc',
     logo: 'mito-test.png',

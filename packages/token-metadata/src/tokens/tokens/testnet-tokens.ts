@@ -185,7 +185,7 @@ export const testnetTokens = () =>
         ...(tokens.HDRO.tokenFactories || []),
         {
           creator: 'inj1pk7jhvjj2lufcghmvr7gl49dzwkk3xj0uqkwfk',
-          symbol: 'hdro',
+          symbol: 'HDRO',
           decimals: 6,
         },
       ],
