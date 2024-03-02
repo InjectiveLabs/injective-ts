@@ -50,6 +50,11 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Setup GitHub npm registry
+        run: |
+          npm set @injectivelabs:registry=https://npm.pkg.github.com/injectivelabs
+          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
+
       - name: Get IBC Tokens
         run: yarn --cwd packages/sdk-ui-ts get-ibc-tokens || true
 
@@ -60,7 +65,8 @@ jobs:
       - name: Version and publish
         run: |
           lerna version prerelease --preid beta --force-git-tag --no-changelog --yes
-          lerna publish from-git --force-git-tag --dist-tag next --yes --summary-file
+          lerna publish from-git --force-git-tag --dist-tag next --yes --summary-file --no-verify-access
+
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
