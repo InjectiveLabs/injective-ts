@@ -45,11 +45,6 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Setup GitHub npm registry
-        run: |
-          npm set @injectivelabs:registry=https://npm.pkg.github.com/injectivelabs
-          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
-
       - name: Get IBC Tokens
         run: yarn --cwd packages/sdk-ui-ts get-ibc-tokens || true
 
