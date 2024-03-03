@@ -3285,4 +3285,19 @@ export default {
       address: '0x4c9EDD5852cd905f086C759E8383e09bff1E68B3',
     },
   },
+
+  KAGE: {
+    name: 'Kage',
+    symbol: 'KAGE',
+    decimals: 18,
+    logo: 'kage.png',
+    coinGeckoId: 'kage',
+    tokenType: TokenType.Cw20,
+
+    cw20: {
+      address: 'inj1l49685vnk88zfw2egf6v65se7trw2497wsqk65',
+      decimals: 18,
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMetaBase>
