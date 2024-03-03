@@ -3,7 +3,7 @@ import { zeroPad } from 'ethers/lib/utils'
 import { bech32 } from 'bech32'
 import { toUtf8 } from '@injectivelabs/sdk-ts'
 import { WORMHOLE_CHAINS } from '../constants'
-import { ChainId } from '@certusone/wormhole-sdk'
+import { ChainId } from '@injectivelabs/wormhole-sdk'
 
 export const parseSmartContractStateResponse: any = (
   response: CosmwasmWasmV1Query.QuerySmartContractStateResponse,

@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@axelar-network/axelarjs-sdk": "0.13.6",
-    "@certusone/wormhole-sdk": "0.10.10",
+    "@injectivelabs/wormhole-sdk": "1.14.6",
     "@injectivelabs/exceptions": "^1.14.6",
     "@injectivelabs/networks": "^1.14.6",
     "@injectivelabs/sdk-ts": "^1.14.7-beta.1",

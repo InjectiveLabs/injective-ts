@@ -1,6 +1,6 @@
 import { TxResponse, MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { cosmos } from '@certusone/wormhole-sdk'
+import { cosmos } from '@injectivelabs/wormhole-sdk'
 import {
   getTransferDetailsUint8Array,
   transferFromInjective,

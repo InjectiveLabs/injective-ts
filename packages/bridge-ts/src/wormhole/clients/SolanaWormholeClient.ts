@@ -20,7 +20,7 @@ import {
   getEmitterAddressSolana,
   parseSequenceFromLogSolana,
   getIsTransferCompletedSolana,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import {
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
@@ -29,12 +29,14 @@ import {
   PublicKey,
   Connection,
   Transaction,
+  SignatureResult,
   TransactionResponse,
+  TransactionSignature,
+  RpcResponseAndContext,
   TransactionExpiredTimeoutError,
   TransactionExpiredBlockheightExceededError,
 } from '@solana/web3.js'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
-import { TransactionSignatureAndResponse } from '@certusone/wormhole-sdk/lib/cjs/solana'
 import { zeroPad } from 'ethers/lib/utils'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
@@ -43,6 +45,11 @@ import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
 import { BaseWormholeClient } from '../WormholeClient'
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { getOriginalAssetInjective } from '../injective'
+
+export interface TransactionSignatureAndResponse {
+  signature: TransactionSignature
+  response: RpcResponseAndContext<SignatureResult>
+}
 
 const TIMEOUT_BETWEEN_RETRIES = 5000
 

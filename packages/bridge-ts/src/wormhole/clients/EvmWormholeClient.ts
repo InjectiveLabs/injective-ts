@@ -18,7 +18,7 @@ import {
   CHAIN_ID_POLYGON,
   getForeignAssetEth,
   tryNativeToUint8Array,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import { BigNumber, sleep } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
 import { zeroPad } from 'ethers/lib/utils'

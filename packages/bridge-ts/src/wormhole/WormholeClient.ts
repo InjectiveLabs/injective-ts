@@ -5,7 +5,7 @@ import {
   parseTransferPayload,
   tryHexToNativeString,
   ChainId,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import { getSignedVAAFromRest, getSignedVAAWithRetryFromRest } from './vaa'
 
 export class BaseWormholeClient {

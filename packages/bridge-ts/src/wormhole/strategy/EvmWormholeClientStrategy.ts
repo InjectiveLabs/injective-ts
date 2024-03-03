@@ -4,7 +4,7 @@ import { TransferMsgArgs, WormholeClient, WormholeSource } from '..'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ethers } from 'ethers'
 import { BaseWormholeClient } from '../WormholeClient'
-import { ChainId } from '@certusone/wormhole-sdk'
+import { ChainId } from '@injectivelabs/wormhole-sdk'
 
 export class EvmWormholeClientStrategy
   extends BaseWormholeClient

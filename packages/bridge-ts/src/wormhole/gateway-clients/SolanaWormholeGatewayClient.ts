@@ -3,7 +3,7 @@ import {
   cosmos,
   transferNativeSol,
   transferFromSolana,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import { getAssociatedTokenAddress } from '@solana/spl-token'
 import {
   PublicKey,

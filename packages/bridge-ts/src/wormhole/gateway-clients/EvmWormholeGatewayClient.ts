@@ -4,7 +4,7 @@ import {
   approveEth,
   transferFromEth,
   transferFromEthNative,
-} from '@certusone/wormhole-sdk'
+} from '@injectivelabs/wormhole-sdk'
 import { BigNumber } from '@injectivelabs/utils'
 import { ethers } from 'ethers'
 import { zeroPad } from 'ethers/lib/utils'
