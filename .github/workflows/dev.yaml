@@ -10,12 +10,7 @@ jobs:
     if: true
     runs-on: ubuntu-latest
 
-    permissions:
-      deployments: write
-      contents: write
-      statuses: write
-      actions: write
-      checks: read
+    permissions: write-all
 
     steps:
       - name: Checkout # Download code from the repository
