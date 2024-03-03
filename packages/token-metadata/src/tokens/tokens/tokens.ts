@@ -3216,6 +3216,11 @@ export default {
         symbol: 'HDRO',
         decimals: 6,
       },
+      {
+        creator: 'inj1etz0laas6h7vemg3qtd67jpr6lh8v7xz7gfzqw',
+        symbol: 'HDRO',
+        decimals: 6,
+      },
     ],
   },
 
