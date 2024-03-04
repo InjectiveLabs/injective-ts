@@ -3304,5 +3304,44 @@ export default {
       decimals: 18,
       tokenType: TokenType.Cw20,
     },
+  },
+  ODIN: {
+    name: 'ODIN',
+    logo: 'odin.png',
+    coinGeckoId: 'odin-protocol',
+  
+    ibcs: [
+      {
+        symbol: 'ODIN',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'loki',
+        path: 'transfer/channel-214',
+        channelId: 'channel-214',
+        hash: '6ED95AEFA5D9A6F9EF9CDD05FED7D7C9D7F42D9892E7236EB9B251CE9E999701',
+        source: TokenSource.Cosmos,
+      },
+    ],
+  },
+  
+  DOKI: {
+    name: 'DOKI',
+    logo: 'doki.png',
+    coinGeckoId: '',
+  
+    ibcs: [
+      {
+        symbol: 'DOKI',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'udoki',
+        path: 'transfer/channel-214',
+        channelId: 'channel-214',
+        hash: 'EA7CE127E1CFD7822AD169019CAFDD63D0F5A278DCE974F438099BF16C99FB8B',
+        source: TokenSource.Cosmos,
+      },
+    ],
   }
 } as Record<string, TokenMetaBase>
