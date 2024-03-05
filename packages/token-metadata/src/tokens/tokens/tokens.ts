@@ -3293,16 +3293,15 @@ export default {
 
   KAGE: {
     name: 'Kage',
-    symbol: 'KAGE',
-    decimals: 18,
-    logo: 'kage.png',
     coinGeckoId: 'kage',
-    tokenType: TokenType.Cw20,
 
-    cw20: {
-      address: 'inj1l49685vnk88zfw2egf6v65se7trw2497wsqk65',
-      decimals: 18,
-      tokenType: TokenType.Cw20,
-    },
-  }
+    cw20s: [
+      {
+        symbol: 'KAGE',
+        logo: 'kage.png',
+        address: 'inj1l49685vnk88zfw2egf6v65se7trw2497wsqk65',
+        decimals: 18,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
