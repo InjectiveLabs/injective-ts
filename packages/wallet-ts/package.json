@@ -52,7 +52,7 @@
     "@metamask/eth-sig-util": "^4.0.0",
     "@solana/wallet-adapter-wallets": "0.19.30",
     "@toruslabs/torus-embed": "^1.39.0",
-    "@trezor/connect-web": "9.2.0",
+    "@trezor/connect-web": "9.2.1",
     "alchemy-sdk": "^2.6.3",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
