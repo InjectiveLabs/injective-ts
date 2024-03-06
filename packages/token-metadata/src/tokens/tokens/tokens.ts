@@ -3304,4 +3304,13 @@ export default {
       },
     ],
   },
+
+  INJX: {
+    name: 'Injex Finance',
+    logo: "injx.png",
+    symbol: 'INJX',
+    decimals: 6,
+    tokenType: TokenType.TokenFactory,
+    coinGeckoId: ''
+  }
 } as Record<string, TokenMetaBase>
