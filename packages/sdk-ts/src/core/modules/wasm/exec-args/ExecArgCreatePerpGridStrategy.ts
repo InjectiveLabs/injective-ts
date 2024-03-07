@@ -4,7 +4,7 @@ import {
   ExecDataRepresentation,
 } from '../ExecArgBase'
 
-import { ExitConfig, ExitType } from '../types'
+import { ExitType } from '../types'
 export declare namespace ExecArgCreatePerpGridStrategy {
   export interface Params {
     subaccountId: string
@@ -21,8 +21,14 @@ export declare namespace ExecArgCreatePerpGridStrategy {
     subaccount_id: string
     bounds: [string, string]
     slippage?: string
-    stop_loss?: ExitConfig
-    take_profit?: ExitConfig
+    stop_loss?: {
+      exit_type: ExitType
+      exit_price: string
+    }
+    take_profit?: {
+      exit_type: ExitType
+      exit_price: string
+    }
     levels: number
     strategy_type: {
       perpetual: {
@@ -60,14 +66,14 @@ export default class ExecArgCreatePerpGridStrategy extends ExecArgBase<
       },
       stop_loss: params.stopLoss
         ? {
-            exitType: ExitType.Default,
-            exitPrice: params.stopLoss,
+            exit_type: ExitType.Default,
+            exit_price: params.stopLoss,
           }
         : undefined,
       take_profit: params.takeProfit
         ? {
-            exitType: ExitType.Default,
-            exitPrice: params.takeProfit,
+            exit_type: ExitType.Default,
+            exit_price: params.takeProfit,
           }
         : undefined,
     }
