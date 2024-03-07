@@ -3302,4 +3302,64 @@ export default {
       },
     ],
   },
+
+  nINJ: {
+    name: 'Neptune Receipt INJ',
+    logo: 'ninj.svg',
+    symbol: 'nINJ',
+
+    cw20s: [
+      {
+        symbol: 'nINJ',
+        logo: 'ninj.svg',
+        address: 'inj1rmzufd7h09sqfrre5dtvu5d09ta7c0t4jzkr2f',
+        decimals: 18,
+      },
+    ],
+  },
+
+  nATOM: {
+    name: 'Neptune Receipt ATOM',
+    logo: 'natom.svg',
+    symbol: 'nATOM',
+
+    cw20s: [
+      {
+        symbol: 'nATOM',
+        logo: 'natom.svg',
+        address: 'inj16jf4qkcarp3lan4wl2qkrelf4kduvvujwg0780',
+        decimals: 6,
+      },
+    ],
+  },
+
+  nUSDT: {
+    name: 'Neptune Receipt USDT',
+    logo: 'nusdt.svg',
+    symbol: 'nUSDT',
+
+    cw20s: [
+      {
+        symbol: 'nUSDT',
+        logo: 'nusdt.svg',
+        address: 'inj1cy9hes20vww2yr6crvs75gxy5hpycya2hmjg9s',
+        decimals: 6,
+      },
+    ],
+  },
+
+  nWETH: {
+    name: 'Neptune Receipt WETH',
+    logo: 'nweth.svg',
+    symbol: 'nWETH',
+
+    cw20s: [
+      {
+        symbol: 'nWETH',
+        logo: 'nweth.svg',
+        address: 'inj1kehk5nvreklhylx22p3x0yjydfsz9fv3fvg5xt',
+        decimals: 18,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
