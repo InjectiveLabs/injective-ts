@@ -3305,13 +3305,13 @@ export default {
 
   nINJ: {
     name: 'Neptune Receipt INJ',
-    logo: 'ninj.svg',
+    logo: 'neptinj.png',
     symbol: 'nINJ',
 
     cw20s: [
       {
         symbol: 'nINJ',
-        logo: 'ninj.svg',
+        logo: 'neptinj.png',
         address: 'inj1rmzufd7h09sqfrre5dtvu5d09ta7c0t4jzkr2f',
         decimals: 18,
       },
@@ -3320,13 +3320,13 @@ export default {
 
   nATOM: {
     name: 'Neptune Receipt ATOM',
-    logo: 'natom.svg',
+    logo: 'natom.png',
     symbol: 'nATOM',
 
     cw20s: [
       {
         symbol: 'nATOM',
-        logo: 'natom.svg',
+        logo: 'natom.png',
         address: 'inj16jf4qkcarp3lan4wl2qkrelf4kduvvujwg0780',
         decimals: 6,
       },
@@ -3335,13 +3335,13 @@ export default {
 
   nUSDT: {
     name: 'Neptune Receipt USDT',
-    logo: 'nusdt.svg',
+    logo: 'nusdt.png',
     symbol: 'nUSDT',
 
     cw20s: [
       {
         symbol: 'nUSDT',
-        logo: 'nusdt.svg',
+        logo: 'nusdt.png',
         address: 'inj1cy9hes20vww2yr6crvs75gxy5hpycya2hmjg9s',
         decimals: 6,
       },
@@ -3350,13 +3350,13 @@ export default {
 
   nWETH: {
     name: 'Neptune Receipt WETH',
-    logo: 'nweth.svg',
+    logo: 'nweth.png',
     symbol: 'nWETH',
 
     cw20s: [
       {
         symbol: 'nWETH',
-        logo: 'nweth.svg',
+        logo: 'nweth.png',
         address: 'inj1kehk5nvreklhylx22p3x0yjydfsz9fv3fvg5xt',
         decimals: 18,
       },
