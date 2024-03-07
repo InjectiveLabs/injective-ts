@@ -1103,7 +1103,6 @@ export default {
     cw20s: [
       {
         symbol: 'SOL',
-        // symbol: 'SOLlegacy',
         decimals: 8,
         address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
       },
@@ -1112,7 +1111,6 @@ export default {
     ibcs: [
       {
         symbol: 'SOLgw',
-        // symbol: 'SOL',
         decimals: 8,
         isNative: false,
         baseDenom:
@@ -1985,7 +1983,7 @@ export default {
     cw20s: [
       {
         decimals: 6,
-        symbol: 'PYTHlegacy',
+        symbol: 'PYTH',
         source: TokenSource.Solana,
         address: 'inj1tjcf9497fwmrnk22jfu5hsdq82qshga54ajvzy',
       },
@@ -1993,7 +1991,7 @@ export default {
 
     ibcs: [
       {
-        symbol: 'PYTH',
+        symbol: 'PYTHgw',
         decimals: 6,
         isNative: false,
         baseDenom:
