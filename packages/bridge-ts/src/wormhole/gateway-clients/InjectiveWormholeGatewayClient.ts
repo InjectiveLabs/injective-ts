@@ -77,7 +77,6 @@ export class InjectiveWormholeGatewayClient
       },
     }
 
-
     const messages = await transferFromInjectiveUsingIbc(
       args.channelId || 'channel-183',
       associatedChain,

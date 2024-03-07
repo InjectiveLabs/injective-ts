@@ -24,6 +24,8 @@ import {
 import {
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
+  TOKEN_PROGRAM_ID,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
 } from '@solana/spl-token'
 import {
   PublicKey,
@@ -309,6 +311,18 @@ export class SolanaWormholeClient
     )
 
     return targetAsset || ''
+  }
+
+  async getAssociatedTokenAddress(splAddress: string, solanaPubKey: string) {
+    const address = await getAssociatedTokenAddress(
+      new PublicKey(splAddress),
+      new PublicKey(solanaPubKey),
+      undefined,
+      TOKEN_PROGRAM_ID,
+      ASSOCIATED_TOKEN_PROGRAM_ID,
+    )
+
+    return address.toString()
   }
 
   async postVAAWithRetry({
