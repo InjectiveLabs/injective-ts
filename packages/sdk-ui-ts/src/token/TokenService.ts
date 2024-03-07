@@ -186,6 +186,35 @@ export class TokenService {
         ? `${baseToken.symbol.toLowerCase()}-${quoteToken.symbol.toLowerCase()}`
         : market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
 
+    // We have wrong ticker on chain for APP/USDT and ANDR/USDT market
+    if (
+      baseToken?.symbol === 'APP' &&
+      quoteToken?.symbol === 'USDT' &&
+      market.ticker === 'APP/INJ'
+    ) {
+      return {
+        ...market,
+        slug: 'app-usdt',
+        ticker: 'APP/USDT',
+        baseToken,
+        quoteToken,
+      } as UiBaseSpotMarketWithToken
+    }
+
+    if (
+      baseToken?.symbol === 'ANDR' &&
+      quoteToken?.symbol === 'USDT' &&
+      market.ticker === 'ANDR/INJ'
+    ) {
+      return {
+        ...market,
+        slug: 'andr-usdt',
+        ticker: 'ANDR/USDT',
+        baseToken,
+        quoteToken,
+      } as UiBaseSpotMarketWithToken
+    }
+
     return {
       ...market,
       slug,
@@ -216,7 +245,10 @@ export class TokenService {
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
-    const baseToken = await this.denomClient.getDenomToken(baseTokenSymbol)
+    const baseToken = await this.denomClient.getTokenBySymbol(
+      baseTokenSymbol,
+    )
+
     const quoteToken = await this.denomClient.getDenomToken(market.quoteDenom)
 
     return {

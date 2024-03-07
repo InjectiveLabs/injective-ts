@@ -3,8 +3,10 @@ import { HttpRequestException } from './HttpRequestException'
 import { Web3Exception } from './Web3Exception'
 import { GeneralException } from './GeneralException'
 import { LedgerException } from './LedgerException'
+import { LedgerCosmosException } from './LedgerCosmosException'
 import { MetamaskException } from './MetamaskException'
 import { TrustWalletException } from './TrustWalletException'
+import { OkxWalletException } from './OkxWalletException'
 import { TrezorException } from './TrezorException'
 import { CosmosWalletException } from './CosmosWalletException'
 import { TransactionException } from './TransactionException'
@@ -20,10 +22,12 @@ export type ThrownException =
   | LedgerException
   | MetamaskException
   | TrustWalletException
+  | OkxWalletException
   | TrezorException
   | CosmosWalletException
   | TransactionException
   | WalletException
+  | LedgerCosmosException
 
 export const isThrownException = (exception: Error | Exception): boolean => {
   if (exception instanceof ConcreteException) {
@@ -37,12 +41,14 @@ export const isThrownException = (exception: Error | Exception): boolean => {
       'Web3Exception',
       'GeneralException',
       'LedgerException',
+      'LedgerCosmosException',
       'MetamaskException',
       'TrezorException',
       'CosmosWalletException',
       'TransactionException',
       'WalletException',
       'TrustWalletException',
+      'OkxWalletException',
     ].includes(exception.constructor.name)
   ) {
     return true
@@ -52,15 +58,17 @@ export const isThrownException = (exception: Error | Exception): boolean => {
 }
 
 export {
-  GrpcUnaryRequestException,
-  HttpRequestException,
   Web3Exception,
-  GeneralException,
   LedgerException,
-  MetamaskException,
   TrezorException,
-  TrustWalletException,
-  CosmosWalletException,
-  TransactionException,
   WalletException,
+  GeneralException,
+  MetamaskException,
+  TransactionException,
+  TrustWalletException,
+  OkxWalletException,
+  HttpRequestException,
+  LedgerCosmosException,
+  CosmosWalletException,
+  GrpcUnaryRequestException,
 }

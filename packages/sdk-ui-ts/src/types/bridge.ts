@@ -35,6 +35,7 @@ export enum BridgingNetwork {
   Celestia = 'celestia',
   Migaloo = 'migaloo',
   Kujira = 'kujira',
+  Andromeda = 'andromeda',
 }
 
 export const MintScanExplorerUrl = {

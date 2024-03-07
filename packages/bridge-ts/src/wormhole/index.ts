@@ -1,4 +1,5 @@
 export * from './clients'
+export * from './gateway-clients'
 export * from './injective'
 export * from './strategy'
 export * from './constants'

@@ -21,10 +21,10 @@ import {
 import { Web3Client } from '../services/web3/Web3Client'
 import type { Token } from '@injectivelabs/token-metadata'
 import {
-  TokenInfo,
-  TokenMeta,
+  TokenType,
+  TokenMetaBase,
   getUnknownTokenWithSymbol,
-  getIbcTokenMetaFromDenomTrace,
+  getIbcTokenFromDenomTrace,
 } from '@injectivelabs/token-metadata'
 import { getTokenFromAlchemyTokenMetaResponse } from '../utils/alchemy'
 import {
@@ -39,7 +39,10 @@ import { awaitForAll } from '@injectivelabs/utils'
 // @ts-ignore
 import ibcTokenMetadata from '../services/ibc/ibcTokenMetadata.json'
 
-const IGNORED_DENOMS = ['peggy0xB855dBC314C39BFa2583567E02a40CBB246CF82B']
+const IGNORED_DENOMS = [
+  'peggy0xB855dBC314C39BFa2583567E02a40CBB246CF82B',
+  'peggy0x7C7aB80590708cD1B7cf15fE602301FE52BB1d18',
+]
 
 export class DenomClientAsync {
   private denomClient: DenomClient
@@ -111,7 +114,8 @@ export class DenomClientAsync {
   }
 
   /**
-   * Used to get all tokens even if they are not tracked on the token-metadata package
+   * Used to get all tokens even if they are not
+   * tracked on the token-metadata package
    * ERC20, CW20, IBC, etc
    */
   async getDenomToken(denom: string): Promise<Token | undefined> {
@@ -203,24 +207,33 @@ export class DenomClientAsync {
     return awaitForAll(denoms, (denom) => this.getDenomToken(denom))
   }
 
-  getDenomTokenInfo(denom: string): TokenInfo | undefined {
-    return this.denomClient.getDenomTokenInfo(denom)
-  }
-
-  getTokenMetaDataBySymbol(symbol: string): TokenMeta | undefined {
+  getTokenMetaDataBySymbol(symbol: string): TokenMetaBase | undefined {
     return this.denomClient.getTokenMetaDataBySymbol(symbol)
   }
 
-  getTokenMetaDataByAddress(address: string): TokenMeta | undefined {
+  getTokenMetaDataByAddress(address: string): TokenMetaBase | undefined {
     return this.denomClient.getTokenMetaDataByAddress(address)
-  }
-
-  getTokenMetaDataByName(name: string): TokenMeta | undefined {
-    return this.denomClient.getTokenMetaDataByName(name)
   }
 
   getCoinGeckoId(denom: string): string {
     return this.denomClient.getCoinGeckoId(denom)
+  }
+
+  /**
+   * TODO: refactor
+   */
+  getTokenBySymbol(symbol: string): Token {
+    const tokenMeta = this.denomClient.getTokenMetaDataBySymbol(symbol)
+
+    return {
+      denom: symbol,
+      tokenType: TokenType.Unknown,
+      decimals: tokenMeta?.decimals || 0,
+      logo: tokenMeta?.logo || 'unknown.png',
+      coinGeckoId: tokenMeta?.coinGeckoId || '',
+      name: tokenMeta?.name || symbol.toUpperCase(),
+      symbol: tokenMeta?.symbol || symbol.toUpperCase(),
+    }
   }
 
   private async getFactoryDenomMetadata(
@@ -285,11 +298,9 @@ export class DenomClientAsync {
       }
 
       return {
-        ...token,
-        ibc: getIbcTokenMetaFromDenomTrace({
-          ...cachedDenomTrace,
-          decimals: token.decimals,
-          hash,
+        ...getIbcTokenFromDenomTrace({
+          token,
+          denomTrace: cachedDenomTrace,
         }),
         denom,
       }
@@ -306,12 +317,7 @@ export class DenomClientAsync {
       }
 
       return {
-        ...token,
-        ibc: getIbcTokenMetaFromDenomTrace({
-          ...denomTrace,
-          decimals: token.decimals,
-          hash,
-        }),
+        ...getIbcTokenFromDenomTrace({ token, denomTrace }),
         denom,
       }
     } catch (e) {

@@ -13,6 +13,11 @@ export const getTokenLogoWithVendorPathPrefix = (image: string) => {
     return image
   }
 
+  // not supported yet
+  if (image.includes('ipfs')) {
+    return path.join('/', 'vendor', '@injectivelabs', 'token-metadata', 'unknown.png')
+  }
+
   if (image.includes('bridgingNetworks')) {
     return image
   }

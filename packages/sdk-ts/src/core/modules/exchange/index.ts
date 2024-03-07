@@ -3,6 +3,7 @@ import MsgWithdraw from './msgs/MsgWithdraw'
 import MsgRewardsOptOut from './msgs/MsgRewardsOptOut'
 import MsgCancelSpotOrder from './msgs/MsgCancelSpotOrder'
 import MsgExternalTransfer from './msgs/MsgExternalTransfer'
+import MsgLiquidatePosition from './msgs/MsgLiquidatePosition'
 import MsgBatchUpdateOrders from './msgs/MsgBatchUpdateOrders'
 import MsgReclaimLockedFunds from './msgs/MsgReclaimLockedFunds'
 import MsgCreateSpotLimitOrder from './msgs/MsgCreateSpotLimitOrder'
@@ -26,6 +27,7 @@ export {
   MsgRewardsOptOut,
   MsgCancelSpotOrder,
   MsgExternalTransfer,
+  MsgLiquidatePosition,
   MsgBatchUpdateOrders,
   MsgReclaimLockedFunds,
   MsgCreateSpotLimitOrder,

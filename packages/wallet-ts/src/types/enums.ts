@@ -9,6 +9,7 @@ export enum Wallet {
   Trezor = 'trezor',
   Phantom = 'phantom',
   Metamask = 'metamask',
+  OkxWallet = 'okx-wallet',
   TrustWallet = 'trust-wallet',
   Cosmostation = 'cosmostation',
   LedgerCosmos = 'ledger-cosmos',
@@ -22,6 +23,11 @@ export enum WalletDeviceType {
   Mobile = 'mobile',
   Browser = 'browser',
   Hardware = 'hardware',
+}
+
+export enum WalletEventListener {
+  AccountChange = 'account-change',
+  ChainIdChange = 'chain-id-change',
 }
 
 export const WalletAction = { ...WalletErrorActionModule }

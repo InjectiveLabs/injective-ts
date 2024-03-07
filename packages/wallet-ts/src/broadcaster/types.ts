@@ -25,15 +25,15 @@ export interface MsgBroadcasterTxOptionsWithAddresses
 
 export interface MsgBroadcasterOptions {
   network: Network
-  networkEndpoints?: NetworkEndpoints
+  endpoints?: NetworkEndpoints
 
   /**
    * Only used if we want to override the default
    * endpoints taken from the network param
    *
-   * @deprecated - taken from the network parameter
+   * @deprecated - taken from the network parameter or use the endpoints
    * */
-  endpoints?: {
+  networkEndpoints?: {
     indexerApi: string
     sentryGrpcApi: string
     sentryHttpApi: string
@@ -44,5 +44,6 @@ export interface MsgBroadcasterOptions {
   ethereumChainId?: EthereumChainId
   feePayerPubKey?: string
   simulateTx?: boolean
+  txTimeout?: number // blocks to wait for tx to be included in a block
   walletStrategy: WalletStrategy
 }

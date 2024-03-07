@@ -27,6 +27,7 @@ export interface SpotMarket {
 }
 
 export interface SpotLimitOrder {
+  cid: string
   orderHash: string
   orderSide: OrderSide
   marketId: string
@@ -44,6 +45,7 @@ export interface SpotLimitOrder {
 export interface SpotOrderHistory {
   orderHash: string
   marketId: string
+  cid: string
   active: boolean
   subaccountId: string
   executionType: string

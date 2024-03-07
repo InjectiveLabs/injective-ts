@@ -51,7 +51,8 @@ _Note:_ When we wanna use the `sendTransaction` on Ethereum native wallets along
 ```ts
 import { WalletStrategy } from '@injectivelabs/wallet-ts'
 import { EthereumChainId, ChainId } from '@injectivelabs/ts-types'
-import { CHAIN_ID, ETHEREUM_CHAIN_ID, IS_TESTNET } from '~/app/utils/constants'
+import { TxRaw } from '@injectivelabs/sdk-ts'
+import { Web3Exception } from '@injectivelabs/exceptions'
 
 export const alchemyRpcEndpoint = `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`
 
@@ -68,7 +69,7 @@ export const getAddresses = async (): Promise<string[]> => {
   const addresses = await walletStrategy.getAddresses()
 
   if (addresses.length === 0) {
-    throw new Web3Exception('There are no addresses linked in this wallet.')
+    throw new Web3Exception(new Error('There are no addresses linked in this wallet.'))
   }
 
   return addresses
@@ -77,17 +78,17 @@ export const getAddresses = async (): Promise<string[]> => {
 // Sign an Injective transaction
 export const signTransaction = async (tx: TxRaw): Promise<string[]> => {
   const response = await walletStrategy.signCosmosTransaction(
-    transaction: { txRaw: tx; accountNumber: /* */; chainId: 'injective-1' },
-    address: 'inj1...',
+    /*transaction:*/ { txRaw: tx, accountNumber: /* */, chainId: 'injective-1' },
+    /*address: */ 'inj1...',
   )
 
   return response
 }
 
 // Send an Injective transaction
-export const signTransaction = async (tx: TxRaw): Promise<string[]> => {
+export const sendTransaction = async (tx: TxRaw): Promise<string[]> => {
   const response = await walletStrategy.sendTransaction(
-    txRaw,
+    tx,
     // `sentryEndpoint` needed if Ethereum wallets are used
     {address: 'inj1...', chainId: 'injective-1', sentryEndpoint: 'https://grpc.injective.network' }
   )

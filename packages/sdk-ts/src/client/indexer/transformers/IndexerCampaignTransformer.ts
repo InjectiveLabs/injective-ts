@@ -45,6 +45,12 @@ export class IndexerCampaignTransformer {
       startDate: parseInt(campaign.startDate, 10),
       endDate: parseInt(campaign.endDate, 10),
       isClaimable: campaign.isClaimable,
+      rewards: campaign.rewards,
+      roundId: campaign.roundId,
+      userClaimed: campaign.userClaimed,
+      userScore: campaign.userScore,
+      rewardContract: campaign.rewardContract,
+      version: campaign.version,
     }
   }
 
@@ -118,6 +124,18 @@ export class IndexerCampaignTransformer {
         IndexerCampaignTransformer.GrpcCampaignUserToCampaignUser,
       ),
       paging: grpcPagingToPaging(response.paging),
+    }
+  }
+
+  static RoundsResponseToRounds(
+    response: InjectiveCampaignRpc.CampaignsResponse,
+  ) {
+    return {
+      campaigns: response.campaigns.map((campaign) =>
+        IndexerCampaignTransformer.GrpcCampaignToCampaign(campaign),
+      ),
+      accumulatedRewards: response.accumulatedRewards,
+      rewardCount: response.rewardCount,
     }
   }
 

@@ -44,6 +44,7 @@ import {
 } from '../types/exchange'
 import { grpcPagingToPaging } from '../../../utils/pagination'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import { TokenType } from '@injectivelabs/token-metadata'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -71,6 +72,7 @@ export class IndexerGrpcDerivativeTransformer {
       decimals: tokenMeta.decimals,
       updatedAt: tokenMeta.updatedAt,
       coinGeckoId: '',
+      tokenType: TokenType.Unknown,
     }
   }
 
@@ -455,6 +457,7 @@ export class IndexerGrpcDerivativeTransformer {
       orderHash: order.orderHash,
       orderSide: order.orderSide as OrderSide,
       marketId: order.marketId,
+      cid: order.cid,
       subaccountId: order.subaccountId,
       isReduceOnly: order.isReduceOnly,
       margin: order.margin,
@@ -489,6 +492,7 @@ export class IndexerGrpcDerivativeTransformer {
     return {
       orderHash: orderHistory.orderHash,
       marketId: orderHistory.marketId,
+      cid: orderHistory.cid,
       isActive: orderHistory.isActive,
       subaccountId: orderHistory.subaccountId,
       executionType: orderHistory.executionType,

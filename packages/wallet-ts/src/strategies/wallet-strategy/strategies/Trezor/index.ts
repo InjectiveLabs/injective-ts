@@ -2,7 +2,6 @@
 /* eslint-disable class-methods-use-this */
 import {
   AccountAddress,
-  ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
@@ -26,7 +25,7 @@ import {
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
 } from '../../../types'
-import { TrezorWalletInfo } from '../../types'
+import { SendTransactionOptions, TrezorWalletInfo } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
@@ -140,17 +139,9 @@ export default class Trezor
 
   async sendTransaction(
     transaction: TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        grpc: string
-        rest: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints } = options
+    const { endpoints, txTimeout } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -161,7 +152,7 @@ export default class Trezor
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction)
+    const response = await txApi.broadcast(transaction, { txTimeout })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {

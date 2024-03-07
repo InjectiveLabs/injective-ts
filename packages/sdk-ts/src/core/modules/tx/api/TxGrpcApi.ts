@@ -11,6 +11,8 @@ import {
 import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  BigNumberInBase,
 } from '@injectivelabs/utils'
 import { TxResponse } from '../types/tx'
 import BaseGrpcWebConsumer from '../../../../client/base/BaseGrpcWebConsumer'
@@ -168,10 +170,13 @@ export class TxGrpcApi implements TxConcreteApi {
     options?: TxClientBroadcastOptions,
   ): Promise<TxResponse> {
     const { txService } = this
-    const { mode, timeout } = options || {
-      mode: CosmosTxV1Beta1Service.BroadcastMode.BROADCAST_MODE_SYNC,
-      timeout: DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
-    }
+    const mode =
+      options?.mode || CosmosTxV1Beta1Service.BroadcastMode.BROADCAST_MODE_SYNC
+    const timeout =
+      options?.timeout ||
+      new BigNumberInBase(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
+        .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
+        .toNumber()
 
     const broadcastTxRequest =
       CosmosTxV1Beta1Service.BroadcastTxRequest.create()

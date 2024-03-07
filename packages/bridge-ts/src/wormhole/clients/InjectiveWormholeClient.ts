@@ -3,10 +3,10 @@ import {
   TxResponse,
   getGrpcTransport,
   ChainGrpcWasmApi,
-  MsgExecuteContractCompat,
   ChainGrpcBankApi,
-  IndexerRestExplorerApi,
   getInjectiveAddress,
+  MsgExecuteContractCompat,
+  IndexerRestExplorerApi,
 } from '@injectivelabs/sdk-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -40,7 +40,6 @@ interface WalletStrategy {
 
 interface MsgBroadcaster {
   broadcast: (params: any) => Promise<TxResponse>
-  broadcastOld: (params: any) => Promise<TxResponse>
 }
 
 interface Provider {
@@ -161,7 +160,7 @@ export class InjectiveWormholeClient
       tryNativeToUint8Array(recipient, associatedChain),
     )
 
-    const txResponse = (await provider.msgBroadcaster.broadcastOld({
+    const txResponse = (await provider.msgBroadcaster.broadcast({
       msgs: [...additionalMsgs, ...messages],
       injectiveAddress: signer,
     })) as TxResponse

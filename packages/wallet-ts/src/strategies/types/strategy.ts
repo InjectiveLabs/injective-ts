@@ -7,6 +7,7 @@ import {
 import type { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
 import { Wallet, WalletDeviceType } from '../../types/enums'
+import { SendTransactionOptions } from '../wallet-strategy'
 
 export type onAccountChangeCallback = (account: string) => void
 export type onChainIdChangeCallback = () => void
@@ -50,7 +51,10 @@ export interface ConcreteCosmosWalletStrategy {
    * @param transaction should implement TransactionConfig
    * @param options
    */
-  sendTransaction(transaction: DirectSignResponse | TxRaw): Promise<TxResponse>
+  sendTransaction(
+    transaction: DirectSignResponse | TxRaw,
+    options: SendTransactionOptions,
+  ): Promise<TxResponse>
 
   signTransaction(transaction: {
     txRaw: TxRaw
@@ -67,7 +71,6 @@ export interface ConcreteCosmosWalletStrategy {
 
 export interface CosmosWalletStrategyArguments {
   chainId: CosmosChainId
-  endpoints?: { rpc: string; rest: string }
   wallet?: Wallet
 }
 
@@ -97,6 +100,7 @@ export interface ConcreteWalletStrategy
     options: {
       address: string
       chainId: ChainId
+      txTimeout?: number
       endpoints?: {
         rest: string
         grpc: string
@@ -168,15 +172,9 @@ export interface ConcreteWalletStrategy
 
   getEthereumTransactionReceipt(txHash: string): void
 
-  onAccountChange?(callback: onAccountChangeCallback): void
+  onAccountChange?(callback: onAccountChangeCallback): Promise<void> | void
 
-  onChainIdChange?(callback: onChainIdChangeCallback): void
-
-  cancelOnChainIdChange?(): void
-
-  cancelOnAccountChange?(): void
-
-  cancelAllEvents?(): void
+  onChainIdChange?(callback: onChainIdChangeCallback): Promise<void> | void
 
   disconnect?(): Promise<void> | void
 }

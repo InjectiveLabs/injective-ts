@@ -10,7 +10,7 @@ export interface ValidatorMap {
   [validatorAddress: string]: string | undefined
 }
 
-const endpoints = getNetworkEndpoints(Network.MainnetSentry)
+const endpoints = getNetworkEndpoints(Network.Mainnet)
 const chainGrpcStakingApi = new ChainGrpcStakingApi(endpoints.grpc)
 const keybaseApi = new HttpRestClient('https://keybase.io/_/api/1.0/')
 

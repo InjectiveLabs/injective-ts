@@ -9,11 +9,13 @@ const params: MsgBatchCancelSpotOrders['params'] = {
       marketId: mockFactory.injUsdtSpotMarket.marketId,
       orderHash: mockFactory.orderHash,
       subaccountId: mockFactory.subaccountId,
+      cid: '',
     },
     {
       marketId: mockFactory.injUsdtSpotMarket.marketId,
       orderHash: mockFactory.orderHash2,
       subaccountId: mockFactory.subaccountId,
+      cid: '',
     },
   ],
 }

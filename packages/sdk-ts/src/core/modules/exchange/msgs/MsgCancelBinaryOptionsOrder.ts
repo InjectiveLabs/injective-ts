@@ -10,8 +10,9 @@ export declare namespace MsgCancelBinaryOptionsOrder {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderHash: string
+    orderHash?: string
     orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
+    cid?: string
   }
 
   export type Proto = InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder
@@ -37,8 +38,15 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
       InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder.create()
     message.sender = params.injectiveAddress
     message.marketId = params.marketId
-    message.orderHash = params.orderHash
     message.subaccountId = params.subaccountId
+
+    if (params.orderHash) {
+      message.orderHash = params.orderHash
+    }
+
+    if (params.cid) {
+      message.cid = params.cid
+    }
 
     // TODO: Send order.orderMask instead when chain handles order mask properly.
     message.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY

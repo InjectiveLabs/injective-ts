@@ -8,8 +8,9 @@ import {
 } from '@injectivelabs/core-proto-ts'
 
 export interface TxClientBroadcastOptions {
-  mode: CosmosTxV1Beta1Service.BroadcastMode
-  timeout: number
+  mode?: CosmosTxV1Beta1Service.BroadcastMode
+  timeout?: number // timeout in ms
+  txTimeout?: number // blocks to wait for tx to be included in a block
 }
 
 export interface TxClientBroadcastResponse {
@@ -70,7 +71,7 @@ export interface SignerDetails {
 
 /** @type {CreateTransactionWithSignersArgs} */
 export interface CreateTransactionWithSignersArgs {
-  fee?: StdFee // the fee to include in the transaction
+  fee?: StdFee | string // the fee to include in the transaction
   memo?: string // the memo to include in the transaction
   chainId: string // the chain id of the chain that the transaction is going to be broadcasted to
   message: Msgs | Msgs[] // the message that should be packed into the transaction

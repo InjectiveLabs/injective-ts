@@ -9,13 +9,13 @@ export const isCommonLockedError = (error: string) => {
     'Failed to open the device',
     'Failed to open the device',
     'Ledger Device is busy',
+    'Ledger device',
     'UNKNOWN_ERROR',
   ]
 
   return (
     commonMessages.some((m) => m.includes(error)) ||
-    commonMessages
-      .map((m) => m.toLowerCase())
-      .some((m) => m.includes(error.toLowerCase()))
+    commonMessages.some((m) => error.toLowerCase().includes(m)) ||
+    commonMessages.some((m) => m.toLowerCase().includes(error.toLowerCase()))
   )
 }

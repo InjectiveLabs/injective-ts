@@ -6,7 +6,7 @@ import {
 } from '@injectivelabs/ts-types'
 import {
   ErrorType,
-  LedgerException,
+  LedgerCosmosException,
   TransactionException,
   UnspecifiedErrorCode,
   WalletException,
@@ -17,9 +17,10 @@ import {
   TxGrpcApi,
   TxResponse,
   DirectSignResponse,
+  sortObjectByKeys,
 } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy } from '../../../types'
-import { LedgerWalletInfo } from '../../types'
+import { LedgerWalletInfo, SendTransactionOptions } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_BASE_DERIVATION_PATH,
@@ -66,7 +67,7 @@ export default class LedgerCosmos
 
       return wallets.map((k) => k.address)
     } catch (e: unknown) {
-      throw new LedgerException(new Error((e as any).message), {
+      throw new LedgerCosmosException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,
@@ -102,17 +103,9 @@ export default class LedgerCosmos
 
   async sendTransaction(
     transaction: TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints } = options
+    const { endpoints, txTimeout } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -123,7 +116,7 @@ export default class LedgerCosmos
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction)
+    const response = await txApi.broadcast(transaction, { txTimeout })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
@@ -158,14 +151,15 @@ export default class LedgerCosmos
         transaction.address,
       )
       const ledger = await this.ledger.getInstance()
+
       const result = await ledger.sign(
         derivationPath,
-        JSON.stringify(transaction.signDoc),
+        JSON.stringify(sortObjectByKeys(transaction.signDoc)),
       )
 
       return Buffer.from(result.signature!).toString('base64')
     } catch (e: unknown) {
-      throw new LedgerException(new Error((e as any).message), {
+      throw new LedgerCosmosException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignTransaction,
@@ -213,7 +207,7 @@ export default class LedgerCosmos
 
       return Buffer.from(result.signature!).toString('base64')
     } catch (e: unknown) {
-      throw new LedgerException(new Error((e as any).message), {
+      throw new LedgerCosmosException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignTransaction,
@@ -241,7 +235,6 @@ export default class LedgerCosmos
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getPubKey(address?: string): Promise<string> {
     if (!address) {
       throw new WalletException(
@@ -251,33 +244,43 @@ export default class LedgerCosmos
 
     const ledgerWalletInfo = await this.getWalletForAddress(address)
 
-    return ledgerWalletInfo.publicKey || ''
+    return Buffer.from(ledgerWalletInfo.publicKey || '', 'hex').toString(
+      'base64',
+    )
   }
 
   private async getWalletForAddress(
     address: string,
   ): Promise<LedgerWalletInfo> {
-    const { baseDerivationPath } = this
-    const accountManager = await this.ledger.getAccountManager()
+    try {
+      const { baseDerivationPath } = this
+      const accountManager = await this.ledger.getAccountManager()
 
-    if (!accountManager.hasWalletForAddress(address)) {
-      for (
-        let i = 0;
-        i < DEFAULT_ADDRESS_SEARCH_LIMIT / DEFAULT_NUM_ADDRESSES_TO_FETCH;
-        i += 1
-      ) {
-        await accountManager.getWallets(baseDerivationPath)
+      if (!accountManager.hasWalletForAddress(address)) {
+        for (
+          let i = 0;
+          i < DEFAULT_ADDRESS_SEARCH_LIMIT / DEFAULT_NUM_ADDRESSES_TO_FETCH;
+          i += 1
+        ) {
+          await accountManager.getWallets(baseDerivationPath)
 
-        if (accountManager.hasWalletForAddress(address)) {
-          return (await accountManager.getWalletForAddress(
-            address,
-          )) as LedgerWalletInfo
+          if (accountManager.hasWalletForAddress(address)) {
+            return (await accountManager.getWalletForAddress(
+              address,
+            )) as LedgerWalletInfo
+          }
         }
       }
-    }
 
-    return (await accountManager.getWalletForAddress(
-      address,
-    )) as LedgerWalletInfo
+      return (await accountManager.getWalletForAddress(
+        address,
+      )) as LedgerWalletInfo
+    } catch (e) {
+      throw new LedgerCosmosException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
   }
 }

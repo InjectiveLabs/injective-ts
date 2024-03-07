@@ -23,12 +23,12 @@ async function listenForPhantomInitialized({ timeout } = { timeout: 3000 }) {
       resolve(getPhantomFromWindow())
     }
 
-    $window.addEventListener('ethereum#initialized', handleInitialization, {
+    $window.addEventListener('phantom#initialized', handleInitialization, {
       once: true,
     })
 
     setTimeout(() => {
-      $window.removeEventListener('ethereum#initialized', handleInitialization)
+      $window.removeEventListener('phantom#initialized', handleInitialization)
       resolve(null)
     }, timeout)
   })
@@ -37,14 +37,15 @@ async function listenForPhantomInitialized({ timeout } = { timeout: 3000 }) {
 function getPhantomFromWindow() {
   const injectedProviderExist =
     typeof window !== 'undefined' &&
-    typeof $window.phantom?.ethereum !== 'undefined'
+    (typeof $window.ethereum !== 'undefined' ||
+      typeof $window.phantom !== 'undefined')
 
   // No injected providers exist.
   if (!injectedProviderExist) {
     return
   }
 
-  if ($window.phantom?.ethereum) {
+  if ($window.phantom) {
     return $window.phantom.ethereum
   }
 

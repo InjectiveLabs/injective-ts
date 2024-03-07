@@ -1,8 +1,4 @@
-import {
-  AccountAddress,
-  ChainId,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
@@ -24,11 +20,13 @@ import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
 import Phantom from './strategies/Phantom'
+import Okx from './strategies/Okx'
 import Cosmostation from './strategies/Cosmostation'
 import Welldone from './strategies/Welldone'
 import LedgerCosmos from './strategies/LedgerCosmos'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet, isCosmosWallet } from './utils'
+import { SendTransactionOptions } from './types'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -95,6 +93,8 @@ const createStrategy = ({
       return new Torus(ethWalletArgs)
     case Wallet.Phantom:
       return new Phantom(ethWalletArgs)
+    case Wallet.OkxWallet:
+      return new Okx(ethWalletArgs)
     case Wallet.Keplr:
       return new Keplr({ ...args })
     case Wallet.Cosmostation:
@@ -189,15 +189,7 @@ export default class WalletStrategy {
 
   public async sendTransaction(
     tx: DirectSignResponse | TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     return this.getStrategy().sendTransaction(tx, options)
   }
@@ -274,39 +266,25 @@ export default class WalletStrategy {
     }
   }
 
-  public onAccountChange(callback: onAccountChangeCallback): void {
+  public async onAccountChange(
+    callback: onAccountChangeCallback,
+  ): Promise<void> {
     if (this.getStrategy().onAccountChange) {
       return this.getStrategy().onAccountChange!(callback)
     }
   }
 
-  public onChainIdChange(callback: onChainIdChangeCallback): void {
+  public async onChainIdChange(
+    callback: onChainIdChangeCallback,
+  ): Promise<void> {
     if (this.getStrategy().onChainIdChange) {
       return this.getStrategy().onChainIdChange!(callback)
     }
   }
 
-  public cancelOnChainIdChange(): void {
-    if (this.getStrategy().cancelOnChainIdChange) {
-      return this.getStrategy().cancelOnChainIdChange!()
-    }
-  }
-
-  public cancelAllEvents(): void {
-    if (this.getStrategy().cancelAllEvents) {
-      return this.getStrategy().cancelAllEvents!()
-    }
-  }
-
-  public cancelOnAccountChange(): void {
-    if (this.getStrategy().cancelOnAccountChange) {
-      return this.getStrategy().cancelOnAccountChange!()
-    }
-  }
-
-  public disconnect() {
+  public async disconnect() {
     if (this.getStrategy().disconnect) {
-      this.getStrategy().disconnect!()
+      await this.getStrategy().disconnect!()
     }
   }
 }

@@ -16,8 +16,11 @@ import {
   MitoSubscription,
   MitoIDOSubscriber,
   MitoPriceSnapshot,
+  MitoClaimReference,
   MitoIDOSubscription,
   MitoWhitelistAccount,
+  MitoVestingConfig,
+  MitoVestingConfigMap,
   MitoLeaderboardEpoch,
   MitoSubaccountBalance,
   MitoMissionLeaderboard,
@@ -119,6 +122,9 @@ export class IndexerGrpcMitoTransformer {
       updatedAt: parseInt(vault.updatedAt, 10),
       createdAt: parseInt(vault.createdAt, 10),
       apy: vault.apy,
+      apyue: vault.apyue,
+      apy7D: vault.apy7D,
+      apy7DFq: vault.apy7DFq,
       profits: IndexerGrpcMitoTransformer.changesResponseToChanges(
         vault.profits,
       ),
@@ -345,9 +351,11 @@ export class IndexerGrpcMitoTransformer {
       capPerAddress: IDO.capPerAddress,
       contractAddress: IDO.contractAddress,
       subscribedAmount: IDO.subscribedAmount,
+      isLaunchWithVault: IDO.isLaunchWithVault,
       targetAmountInUsd: IDO.targetAmountInUsd,
       projectTokenAmount: IDO.projectTokenAmount,
       isAccountWhiteListed: IDO.isAccountWhiteListed,
+      isVestingScheduleEnabled: IDO.isVestingScheduleEnabled,
       targetAmountInQuoteDenom: IDO.targetAmountInQuoteDenom,
       endTime: parseInt(IDO.endTime, 10),
       startTime: parseInt(IDO.startTime, 10),
@@ -364,6 +372,10 @@ export class IndexerGrpcMitoTransformer {
       stakeToSubscription: IDO.stakeToSubscription.map(
         IndexerGrpcMitoTransformer.mitoStakedToSubscriptionToStakedToSubscription,
       ),
+      vestingConfig:
+        IndexerGrpcMitoTransformer.mitoIDOInitParamsToIDOVestingConfig(
+          IDO.initParams,
+        ),
     }
   }
 
@@ -448,8 +460,63 @@ export class IndexerGrpcMitoTransformer {
     account: MitoApi.WhitelistAccount,
   ): MitoWhitelistAccount {
     return {
+      weight: account.weight,
       accountAddress: account.accountAddress,
       updatedAt: parseInt(account.updatedAt, 10),
+    }
+  }
+
+  static mitoClaimReferenceToClaimReference(
+    claimReference: MitoApi.ClaimReference,
+  ): MitoClaimReference {
+    return {
+      denom: claimReference.denom,
+      claimedAmount: claimReference.claimedAmount,
+      accountAddress: claimReference.accountAddress,
+      claimableAmount: claimReference.claimableAmount,
+      cwContractAddress: claimReference.cwContractAddress,
+      idoContractAddress: claimReference.idoContractAddress,
+      vestingDurationSeconds: parseInt(
+        claimReference.vestingDurationSeconds,
+        10,
+      ),
+      updatedAt: parseInt(claimReference.updatedAt, 10),
+      startVestingTime: parseInt(claimReference.startVestingTime, 10),
+    }
+  }
+
+  static mitoVestingCOonfigToVestingConfig(
+    config?: MitoApi.VestingConfig,
+  ): MitoVestingConfig {
+    return {
+      schedule: config?.schedule || '',
+      vestingDurationSeconds: parseInt(
+        config?.vestingDurationSeconds || '0',
+        10,
+      ),
+      vestingStartDelaySeconds: parseInt(
+        config?.vestingDurationSeconds || '0',
+        10,
+      ),
+    }
+  }
+
+  static mitoIDOInitParamsToIDOVestingConfig(
+    initParams?: MitoApi.InitParams,
+  ): MitoVestingConfigMap | undefined {
+    if (!initParams || !initParams.vestingConfig) {
+      return
+    }
+
+    return {
+      projectOwnerQuote:
+        IndexerGrpcMitoTransformer.mitoVestingCOonfigToVestingConfig(
+          initParams.vestingConfig.projectOwnerQuote,
+        ),
+      usersProjectToken:
+        IndexerGrpcMitoTransformer.mitoVestingCOonfigToVestingConfig(
+          initParams.vestingConfig.usersProjectToken,
+        ),
     }
   }
 
@@ -654,6 +721,24 @@ export class IndexerGrpcMitoTransformer {
       accounts: response.accounts.map(
         IndexerGrpcMitoTransformer.mitoWhitelistAccountToWhitelistAccount,
       ),
+      pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
+        response.pagination,
+      ),
+    }
+  }
+
+  static claimReferencesResponseToClaimReferences(
+    response: MitoApi.GetClaimReferencesResponse,
+  ): {
+    claimReferences: MitoClaimReference[]
+    pagination?: MitoPagination
+  } {
+    return {
+      claimReferences: response.claimReferences
+        ? response.claimReferences.map(
+            IndexerGrpcMitoTransformer.mitoClaimReferenceToClaimReference,
+          )
+        : [],
       pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
         response.pagination,
       ),

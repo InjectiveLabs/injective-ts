@@ -66,6 +66,24 @@ export const WORMHOLE_APTOS_CONTRACT_BY_NETWORK = (network: Network) => {
   return CONTRACTS.MAINNET.aptos
 }
 
+export const WORMHOLE_WORMCHAIN_CONTRACT_BY_NETWORK = (network: Network) => {
+  if (isTestnet(network) || isDevnet(network)) {
+    return CONTRACTS.TESTNET.wormchain
+  }
+
+  return CONTRACTS.MAINNET.wormchain
+}
+
+export const WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK = (
+  network: Network,
+) => {
+  if (isTestnet(network) || isDevnet(network)) {
+    return 'wormhole1ctnjk7an90lz5wjfvr3cf6x984a8cjnv8dpmztmlpcq4xteaa2xs9pwmzk'
+  }
+
+  return 'wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx'
+}
+
 export const WORMHOLE_CHAINS = CHAINS
 export const WORMHOLE_CONTRACTS = CONTRACTS
 

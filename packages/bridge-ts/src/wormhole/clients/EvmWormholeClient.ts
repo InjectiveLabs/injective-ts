@@ -8,8 +8,6 @@ import {
   redeemOnEth,
   getSignedVAA,
   transferFromEth,
-  hexToUint8Array,
-  uint8ArrayToHex,
   redeemOnEthNative,
   getEmitterAddressEth,
   getSignedVAAWithRetry,
@@ -372,7 +370,7 @@ export class EvmWormholeClient
     ).toString()
   }
 
-  private async transferToken(args: TransferMsgArgs) {
+  protected async transferToken(args: TransferMsgArgs) {
     const { network, wormholeRpcUrl, wormholeRestUrl, wormholeSource } = this
     const { amount, recipient, tokenAddress } = args
 
@@ -416,9 +414,7 @@ export class EvmWormholeClient
       tokenAddress,
       amount,
       WORMHOLE_CHAINS.injective,
-      hexToUint8Array(
-        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
-      ),
+      zeroPad(cosmos.canonicalAddress(recipient), 32),
     )
 
     if (!transferReceipt) {
@@ -435,7 +431,7 @@ export class EvmWormholeClient
     }
   }
 
-  private async transferNative(args: TransferMsgArgs) {
+  protected async transferNative(args: TransferMsgArgs) {
     const { network, wormholeRpcUrl, wormholeRestUrl, wormholeSource } = this
     const { amount, recipient } = args
 
@@ -461,9 +457,7 @@ export class EvmWormholeClient
       signer,
       amount,
       WORMHOLE_CHAINS.injective,
-      hexToUint8Array(
-        uint8ArrayToHex(zeroPad(cosmos.canonicalAddress(recipient), 32)),
-      ),
+      zeroPad(cosmos.canonicalAddress(recipient), 32),
     )
 
     if (!transferReceipt) {
@@ -480,7 +474,7 @@ export class EvmWormholeClient
     }
   }
 
-  private async getProvider() {
+  protected async getProvider() {
     const { provider } = this
 
     if (this.singletonProvider) {
@@ -493,7 +487,7 @@ export class EvmWormholeClient
     return this.singletonProvider
   }
 
-  private async getProviderAndChainIdCheck() {
+  protected async getProviderAndChainIdCheck() {
     const provider = await this.getProvider()
     const signer = provider.getSigner()
     const chainId = await signer.getChainId()

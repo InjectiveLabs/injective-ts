@@ -462,4 +462,30 @@ describe('IndexerGrpcMitoApi', () => {
       )
     }
   })
+
+  test('fetchClaimReferences', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchClaimReferences({
+        idoAddress,
+        accountAddress: injectiveAddress,
+      })
+
+      if (response.claimReferences.length === 0) {
+        console.warn('fetchClaimReferences.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.claimReferencesResponseToClaimReferences
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchClaimReferences => ' + (e as any).message,
+      )
+    }
+  })
 })

@@ -81,6 +81,8 @@ export const convertCosmosWalletToUiBridgeTransaction = async ({
 
   const bridgingNetwork = getNetworkFromAddress(sender)
 
+  const txPath = bridgingNetwork === BridgingNetwork.Andromeda ? 'tx' : 'txs'
+
   return {
     amount,
     denom,
@@ -89,9 +91,10 @@ export const convertCosmosWalletToUiBridgeTransaction = async ({
     type: getBridgeTransactionType(bridgingNetwork, BridgingNetwork.Injective),
     timestamp: Date.now(),
     txHash: transaction.transactionHash,
-    explorerLink: `${getCosmosExplorerUrl(bridgingNetwork, network)}/txs/${
-      transaction.transactionHash
-    }`,
+    explorerLink: `${getCosmosExplorerUrl(
+      bridgingNetwork,
+      network,
+    )}/${txPath}/${transaction.transactionHash}`,
     state: BridgeTransactionState.Submitted,
     timeoutTimestamp: packetTimeoutTimestamp.value,
   }
@@ -179,7 +182,7 @@ export const convertPeggoToUiBridgeTransaction = async ({
     ),
     amount: transaction.amount,
     blockHeight: transaction.blockHeight,
-    denom: transaction.tokenContract,
+    denom: `peggy${transaction.tokenContract}`,
     nonce: transaction.eventNonce,
     explorerLink: `${getEthereumExplorerUrl(network)}/tx/${txHash}`,
     receiver: getInjectiveAddress(receiver),

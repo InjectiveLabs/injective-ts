@@ -18,7 +18,7 @@ import {
   PEGGY_TESTNET_GRAPH_URL,
 } from '../constants'
 import { CosmosChainId, TestnetCosmosChainId } from '@injectivelabs/ts-types'
-import { Token, tokenMetaUtils, TokenType } from '@injectivelabs/token-metadata'
+import { getTokenFromMeta, Token, TokenMetaBase, tokenMetaUtils, TokenType } from '@injectivelabs/token-metadata'
 import { TokenMetadataResponse } from 'alchemy-sdk'
 
 export const InProgressStates = [
@@ -53,6 +53,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Celestia,
   BridgingNetwork.Migaloo,
   BridgingNetwork.Kujira,
+  BridgingNetwork.Andromeda,
 ]
 
 export const LeapNetworks = [
@@ -109,6 +110,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Celestia,
   BridgingNetwork.Migaloo,
   BridgingNetwork.Kujira,
+  BridgingNetwork.Andromeda,
 ]
 
 export const EvmWormholeNetworks = [
@@ -261,7 +263,9 @@ export const tokenDenomsPerNetwork = [
   },
   {
     network: BridgingNetwork.Solana,
-    denoms: [],
+    denoms: [
+      'ibc/A8B0B746B5AB736C2D8577259B510D56B8AF598008F68041E3D634BCDE72BE97',
+    ],
     symbols: ['SOL', 'PYTH'],
   },
   {
@@ -309,201 +313,183 @@ export const tokenDenomsPerNetwork = [
     ],
     symbols: ['ukuji'],
   },
+  {
+    network: BridgingNetwork.Andromeda,
+    denoms: [
+      'ibc/61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
+    ],
+    symbols: ['uandr'],
+  },
 ] as NetworkConfig[]
 
 export const cosmosChainTokenMetaMap = {
   [CosmosChainId.Cosmoshub]: {
-    ...tokenMetaUtils.getMetaBySymbol('ATOM'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('ATOM') as TokenMetaBase),
     denom:
       'ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
   },
   [CosmosChainId.Osmosis]: [
     {
-      ...tokenMetaUtils.getMetaBySymbol('OSMO'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('OSMO') as TokenMetaBase),
       denom:
         'ibc/92E0120F15D037353CFB73C14651FC8930ADC05B93100FD7754D3A689E53B333',
     },
     {
-      ...tokenMetaUtils.getMetaBySymbol('INJ'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('INJ') as TokenMetaBase),
       denom: 'inj',
     },
   ],
   [CosmosChainId.Terra]: [
     {
-      ...tokenMetaUtils.getMetaBySymbol('LUNA'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('LUNA') as TokenMetaBase),
       denom:
         'ibc/B8AF5D92165F35AB31F3FC7C7B444B9D240760FA5D406C49D24862BD0284E395',
     },
     {
-      ...tokenMetaUtils.getMetaBySymbol('UST'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('UST') as TokenMetaBase),
       denom:
         'ibc/B448C0CA358B958301D328CCDC5D5AD642FC30A6D3AE106FF721DB315F3DDE5C',
     },
   ],
   [CosmosChainId.Injective]: {
-    ...tokenMetaUtils.getMetaBySymbol('INJ'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('INJ') as TokenMetaBase),
     denom: 'inj',
   },
   [CosmosChainId.Chihuahua]: {
-    ...tokenMetaUtils.getMetaBySymbol('HUAHUA'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('HUAHUA') as TokenMetaBase),
     denom:
       'ibc/E7807A46C0B7B44B350DA58F51F278881B863EC4DCA94635DAB39E52C30766CB',
   },
   [CosmosChainId.Juno]: {
-    ...tokenMetaUtils.getMetaBySymbol('JUNO'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('JUNO') as TokenMetaBase),
     denom:
       'ibc/D50E26996253EBAA8C684B9CD653FE2F7665D7BDDCA3D48D5E1378CF6334F211',
   },
   [CosmosChainId.Axelar]: [
     {
-      ...tokenMetaUtils.getMetaBySymbol('AXL'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('AXL') as TokenMetaBase),
       denom:
         'ibc/B68C1D2682A8B69E20BB921E34C6A3A2B6D1E13E3E8C0092E373826F546DEE65',
     },
     {
-      ...tokenMetaUtils.getMetaBySymbol('DOT'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('DOT') as TokenMetaBase),
       denom: 'dot-planck',
     },
   ],
   [CosmosChainId.Evmos]: [
     {
-      ...tokenMetaUtils.getMetaBySymbol('EVMOS'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('EVMOS') as TokenMetaBase),
       denom:
         'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
     },
     {
-      ...tokenMetaUtils.getMetaBySymbol('NEOK'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('NEOK') as TokenMetaBase),
       denom:
         'ibc/F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
     },
   ],
   [CosmosChainId.Persistence]: {
-    ...tokenMetaUtils.getMetaBySymbol('XPRT'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('XPRT') as TokenMetaBase),
     denom:
       'ibc/B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB',
   },
   [CosmosChainId.Secret]: {
-    ...tokenMetaUtils.getMetaBySymbol('SCRT'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('SCRT') as TokenMetaBase),
     denom:
       'ibc/0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A',
   },
   [CosmosChainId.Stride]: [
     {
-      ...tokenMetaUtils.getMetaBySymbol('STRD'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('STRD') as TokenMetaBase),
       denom:
         'ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
     },
     {
-      ...tokenMetaUtils.getMetaBySymbol('INJ'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('INJ') as TokenMetaBase),
       denom: 'inj',
     },
     {
-      ...tokenMetaUtils.getMetaBySymbol('STINJ'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('STINJ') as TokenMetaBase),
       denom:
         'ibc/AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
     },
   ],
   [CosmosChainId.Crescent]: [
     {
-      ...tokenMetaUtils.getMetaBySymbol('CRE'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('CRE') as TokenMetaBase),
       denom:
         'ibc/3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6',
     },
     {
-      ...tokenMetaUtils.getMetaBySymbol('INJ'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('INJ') as TokenMetaBase),
       denom: 'inj',
     },
   ],
   [CosmosChainId.Sommelier]: {
-    ...tokenMetaUtils.getMetaBySymbol('SOMM'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('SOMM') as TokenMetaBase),
     denom:
       'ibc/34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B',
   },
   [CosmosChainId.Canto]: {
-    ...tokenMetaUtils.getMetaBySymbol('CANTO'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('CANTO') as TokenMetaBase),
     denom:
       'ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
   },
   [CosmosChainId.Kava]: [
     {
-      ...tokenMetaUtils.getMetaBySymbol('KAVA'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('KAVA') as TokenMetaBase),
       denom:
         'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
     },
     {
-      ...tokenMetaUtils.getMetaBySymbol('USDTkv'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('USDTkv') as TokenMetaBase),
       denom:
         'ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
     },
   ],
   [CosmosChainId.Oraichain]: [
     {
-      ...tokenMetaUtils.getMetaBySymbol('ORAI'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('ORAI') as TokenMetaBase),
       denom:
         'ibc/C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
     },
   ],
   [TestnetCosmosChainId.Cosmoshub]: {
-    ...tokenMetaUtils.getMetaBySymbol('ATOM'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('ATOM') as TokenMetaBase),
     // TODO: change when IBC connection established
     denom:
       'ibc/48BC9C6ACBDFC1EBA034F1859245D53EA4BF74147189D66F27C23BF966335DFB',
   },
   [TestnetCosmosChainId.Injective]: {
-    ...tokenMetaUtils.getMetaBySymbol('INJ'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('INJ') as TokenMetaBase),
     denom: 'inj',
   },
   [CosmosChainId.Noble]: {
-    ...tokenMetaUtils.getMetaBySymbol('USDCnb'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('USDCnb') as TokenMetaBase),
     denom:
       'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
   },
   [CosmosChainId.Celestia]: {
-    ...tokenMetaUtils.getMetaBySymbol('TIA'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('TIA') as TokenMetaBase),
     denom:
       'ibc/F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
   },
   [CosmosChainId.Migaloo]: [
     {
-      ...tokenMetaUtils.getMetaBySymbol('WHALE'),
-      tokenType: TokenType.Ibc,
+      ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('WHALE') as TokenMetaBase),
       denom:
         'ibc/D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445',
     },
   ],
   [CosmosChainId.Kujira]: {
-    ...tokenMetaUtils.getMetaBySymbol('KUJI'),
-    tokenType: TokenType.Ibc,
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('KUJI') as TokenMetaBase),
     denom:
       'ibc/9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204',
+  },
+  [CosmosChainId.Andromeda]: {
+    ...getTokenFromMeta(tokenMetaUtils.getMetaBySymbol('ANDR') as TokenMetaBase),
+    denom:
+      'ibc/61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
   },
 } as Record<string, Token | Token[]>
 
@@ -550,11 +536,15 @@ export const getCosmosExplorerUrl = (
   network: Network,
 ): string => {
   if (bridgingNetwork === BridgingNetwork.Oraichain) {
-    return 'https://scan.orai.io/'
+    return 'https://scan.orai.io'
   }
 
   if (bridgingNetwork === BridgingNetwork.Migaloo) {
-    return 'https://migaloo.explorers.guru/'
+    return 'https://migaloo.explorers.guru'
+  }
+
+  if (bridgingNetwork === BridgingNetwork.Andromeda) {
+    return 'https://ping.wildsage.io/andromeda'
   }
 
   const mintScanNetworkUrl = MintScanExplorerUrl[bridgingNetwork]
@@ -737,6 +727,10 @@ export const getNetworkFromAddress = (address: string): BridgingNetwork => {
 
   if (address.startsWith('kujira')) {
     return BridgingNetwork.Kujira
+  }
+
+  if (address.startsWith('andr')) {
+    return BridgingNetwork.Andromeda
   }
 
   return BridgingNetwork.Injective

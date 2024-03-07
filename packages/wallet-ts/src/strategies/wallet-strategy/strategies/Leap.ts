@@ -14,6 +14,7 @@ import {
 import {
   TxRaw,
   TxResponse,
+  waitTxBroadcasted,
   createTxRawFromSigResponse,
   createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
@@ -22,18 +23,23 @@ import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { LeapWallet } from '../../../utils/wallets/leap'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import {
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+} from '../../../types/enums'
+import { SendTransactionOptions } from '../types'
 
-export default class Leap extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export default class Leap
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   private leapWallet: LeapWallet
 
-  constructor(args: {
-    chainId: ChainId
-    endpoints?: { rest: string; rpc: string }
-  }) {
+  constructor(args: { chainId: ChainId }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.leapWallet = new LeapWallet(args.chainId, args.endpoints)
+    this.leapWallet = new LeapWallet(args.chainId)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -44,6 +50,17 @@ export default class Leap extends BaseConcreteStrategy implements ConcreteWallet
     const leapWallet = this.getLeapWallet()
 
     return await leapWallet.checkChainIdSupport()
+  }
+
+  public async disconnect() {
+    if (this.listeners[WalletEventListener.AccountChange]) {
+      window.removeEventListener(
+        'leap_keystorechange',
+        this.listeners[WalletEventListener.AccountChange],
+      )
+    }
+
+    this.listeners = {}
   }
 
   async getAddresses(): Promise<string[]> {
@@ -87,20 +104,23 @@ export default class Leap extends BaseConcreteStrategy implements ConcreteWallet
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: { grpc: string }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     const { leapWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
 
-    try {
-      return await leapWallet.waitTxBroadcasted(
-        await leapWallet.broadcastTx(txRaw),
-        options.endpoints?.grpc,
+    if (!options.endpoints) {
+      throw new CosmosWalletException(
+        new Error(
+          'You have to pass endpoints within the options to broadcast transaction',
+        ),
       )
+    }
+
+    try {
+      const txHash = await leapWallet.broadcastTx(txRaw)
+
+      return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
         throw e
@@ -219,6 +239,22 @@ export default class Leap extends BaseConcreteStrategy implements ConcreteWallet
     const key = await keplrWallet.getKey()
 
     return Buffer.from(key.pubKey).toString('base64')
+  }
+
+  async onAccountChange(
+    callback: (account: AccountAddress) => void,
+  ): Promise<void> {
+    const listener = async () => {
+      const [account] = await this.getAddresses()
+
+      callback(account)
+    }
+
+    this.listeners = {
+      [WalletEventListener.AccountChange]: listener,
+    }
+
+    window.addEventListener('leap_keystorechange', listener)
   }
 
   private getLeapWallet(): LeapWallet {

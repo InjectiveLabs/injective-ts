@@ -1,10 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { sleep } from '@injectivelabs/utils'
-import {
-  ChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   ErrorType,
   WalletException,
@@ -18,9 +14,13 @@ import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
 } from '../../../types'
-import { BrowserEip1993Provider } from '../../types'
+import { BrowserEip1993Provider, SendTransactionOptions } from '../../types'
 import BaseConcreteStrategy from '../Base'
-import { WalletAction, WalletDeviceType } from '../../../../types/enums'
+import {
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+} from '../../../../types/enums'
 import { getPhantomProvider } from './utils'
 
 export default class Phantom
@@ -36,7 +36,31 @@ export default class Phantom
   }
 
   async enable(): Promise<boolean> {
+    await this.getAddresses()
+
     return Promise.resolve(true)
+  }
+
+  public async disconnect() {
+    if (this.listeners[WalletEventListener.AccountChange]) {
+      const ethereum = await this.getEthereum()
+
+      ethereum.removeListener(
+        'accountsChanged',
+        this.listeners[WalletEventListener.AccountChange],
+      )
+    }
+
+    if (this.listeners[WalletEventListener.ChainIdChange]) {
+      const ethereum = await this.getEthereum()
+
+      ethereum.removeListener(
+        'chainChanged',
+        this.listeners[WalletEventListener.ChainIdChange],
+      )
+    }
+
+    this.listeners = {}
   }
 
   async getAddresses(): Promise<string[]> {
@@ -86,17 +110,9 @@ export default class Phantom
 
   async sendTransaction(
     transaction: TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints } = options
+    const { endpoints, txTimeout } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -107,7 +123,7 @@ export default class Phantom
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction)
+    const response = await txApi.broadcast(transaction, { txTimeout })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
@@ -137,7 +153,7 @@ export default class Phantom
     try {
       return await ethereum.request({
         method: 'eth_signTypedData_v4',
-        params: [address.toUpperCase(), eip712json],
+        params: [address, eip712json],
       })
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
@@ -253,24 +269,40 @@ export default class Phantom
     )
   }
 
-  onChainIdChanged(_callback: () => void): void {
-    //
+  async onChainIdChanged(callback: (chain: string) => void): Promise<void> {
+    const ethereum = await this.getEthereum()
+
+    this.listeners = {
+      [WalletEventListener.ChainIdChange]: callback,
+    }
+
+    ethereum.on('chainChanged', callback)
   }
 
-  onAccountChange(_callback: (account: AccountAddress) => void): void {
-    //
-  }
+  async onAccountChange(
+    callback: (account: AccountAddress) => void,
+  ): Promise<void> {
+    const ethereum = await this.getEthereum()
 
-  cancelOnChainIdChange(): void {
-    //
-  }
+    const listener = (accounts: string[]) => {
+      if (accounts && accounts.length > 0) {
+        callback(accounts[0])
+      } else {
+        this.getAddresses()
+          .then((accounts) => {
+            callback(accounts[0])
+          })
+          .catch((_error: any) => {
+            //
+          })
+    }
+    }
 
-  cancelOnAccountChange(): void {
-    //
-  }
+    this.listeners = {
+      [WalletEventListener.AccountChange]: listener,
+    }
 
-  cancelAllEvents(): void {
-    //
+    ethereum.on('accountsChanged', listener)
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {

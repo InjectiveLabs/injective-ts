@@ -27,11 +27,15 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     subaccountId,
     state,
     marketId,
+    limit,
+    skip,
   }: {
     accountAddress?: string
     subaccountId?: string
     state?: string
     marketId?: string
+    limit?: number
+    skip?: number
   }) {
     const request = InjectiveTradingRpc.ListTradingStrategiesRequest.create()
 
@@ -45,6 +49,14 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
 
     if (state) {
       request.state = state
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    if (skip) {
+      request.skip = skip.toString()
     }
 
     if (marketId) {
