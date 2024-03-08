@@ -3310,7 +3310,7 @@ export default {
 
     tokenFactories: [
       {
-        creator: 'inj127l5a2wmkyvucxdlupqyac3y0v6wqfhq03ka64',
+        creator: 'inj10q36ygr0pkz7ezajcnjd2f0tat5n737yg6g6d5',
         symbol: 'bINJ',
         decimals: 18,
       },
