@@ -3,7 +3,6 @@ import {
   makeSignDoc as makeSignDocAmino,
   StdFee,
 } from '@cosmjs/amino'
-import { fromBase64 } from '@cosmjs/encoding'
 import { Int53, Uint53 } from '@cosmjs/math'
 import {
   EncodeObject,
@@ -408,7 +407,7 @@ export class SigningStargateClient extends StargateClient {
     return TxRaw.fromPartial({
       bodyBytes: signedTxBodyBytes,
       authInfoBytes: signedAuthInfoBytes,
-      signatures: [fromBase64(signature.signature)],
+      signatures: [Buffer.from(signature.signature, 'base64')],
     })
   }
 
@@ -465,7 +464,7 @@ export class SigningStargateClient extends StargateClient {
     return TxRaw.fromPartial({
       bodyBytes: signed.bodyBytes,
       authInfoBytes: signed.authInfoBytes,
-      signatures: [fromBase64(signature.signature)],
+      signatures: [Buffer.from(signature.signature, 'base64')],
     })
   }
 }

@@ -1,5 +1,5 @@
 import { Network } from '@injectivelabs/networks'
-import { Connection, PublicKey as SolanaPublicKey } from '@solana/web3.js'
+import { PublicKey as SolanaPublicKey } from '@solana/web3.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
   WormholeSource,
@@ -27,28 +27,11 @@ import {
   WORMHOLE_ETHEREUM_CONTRACT_BY_NETWORK,
 } from './constants'
 import { arrayify, zeroPad } from 'ethers/lib/utils'
-
-export const getSolanaTransactionInfo = async (
-  transactionId: string,
-  connection: Connection,
-) => {
-  const POLL_INTERVAL = 5000
-  const timeout = 30000
-
-  for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
-    try {
-      const txResponse = await connection.getTransaction(transactionId)
-
-      if (txResponse) {
-        return txResponse
-      }
-    } catch (error: any) {}
-
-    await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
-  }
-
-  return null
-}
+import { Provider } from './clients'
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
+import { Signer } from '@wormhole-foundation/sdk'
+import { evm } from '@wormhole-foundation/sdk/evm'
+import { signSendAndConfirmTransactionUnsigned } from './solana'
 
 export const getEthereumContractAddresses = (network: Network) => {
   const associatedChainContractAddresses =
@@ -408,6 +391,23 @@ export const getAssociatedChain = (
   }
 }
 
+export const getAssociatedChainName = (
+  source: WormholeSource = WormholeSource.Solana,
+) => {
+  switch (source) {
+    case WormholeSource.Solana:
+      return 'Solana'
+    case WormholeSource.Ethereum:
+      return 'Ethereum'
+    case WormholeSource.Arbitrum:
+      return 'Arbitrum'
+    case WormholeSource.Polygon:
+      return 'Polygon'
+    default:
+      return 'Solana'
+  }
+}
+
 export const getAssociatedChainRecipient = (
   recipient: string,
   source: WormholeSource = WormholeSource.Solana,
@@ -508,4 +508,59 @@ export const getEvmChainName = (chainId: number) => {
     default:
       return 'Ethereum'
   }
+}
+
+export const getAssociatedChainSigner = async ({
+  source = WormholeSource.Solana,
+  provider,
+  address,
+  rpc,
+}: {
+  source: WormholeSource
+  provider: Provider | PhantomWalletAdapter
+  address: string
+  rpc: string
+}): Promise<
+  Signer<
+    'Mainnet',
+    'Solana' | 'Ethereum' | 'Polygon' | 'Arbitrum' | 'Injective'
+  >
+> => {
+  if (source === WormholeSource.Solana) {
+    const actualProvider = provider as PhantomWalletAdapter
+
+    return {
+      address: () => {
+        return address
+      },
+      chain: () => {
+        return 'Solana'
+      },
+      signAndSend: async (transactions) => {
+        const txHashes = []
+
+        for (const transaction of transactions) {
+          const response = await signSendAndConfirmTransactionUnsigned({
+            provider: actualProvider,
+            transaction: transaction,
+            solanaHostUrl: rpc,
+          })
+
+          txHashes.push(response.txHash)
+        }
+
+        return txHashes
+      },
+    }
+  }
+
+  const chainName = getAssociatedChainName(source)
+  const actualProvider = await (provider as Provider)()
+  const signer = actualProvider.getSigner() as any
+  const evmSigner = await evm.getEvmSignerForSigner(chainName as any, signer)
+
+  return evmSigner as Signer<
+    'Mainnet',
+    'Solana' | 'Ethereum' | 'Polygon' | 'Arbitrum'
+  >
 }

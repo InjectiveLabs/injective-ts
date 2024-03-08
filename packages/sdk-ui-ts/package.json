@@ -28,11 +28,11 @@
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
     "coverage:show": "live-server coverage",
-    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js",
-    "validators-logo": "ts-node-dev --ignore-watch=validators-logo ./src/validators-logo && yarn copy-files",
-    "validators-logo:update-all": "ts-node-dev --ignore-watch=validators-logo ./src/validators-logo --update:all && yarn copy-files",
-    "get-ibc-tokens": "ts-node-dev ./src/services/ibc/tokens.ts"
+    "validators-logo": "ts-node --ignore-watch=validators-logo ./src/validators-logo && yarn copy-files",
+    "validators-logo:update-all": "ts-node --ignore-watch=validators-logo ./src/validators-logo --update:all && yarn copy-files",
+    "get-ibc-tokens": "ts-node ./src/services/ibc/tokens.ts"
   },
   "dependencies": {
     "@injectivelabs/contracts": "^1.14.10",

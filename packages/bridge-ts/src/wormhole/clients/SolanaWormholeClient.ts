@@ -35,18 +35,20 @@ import {
   TransactionResponse,
   TransactionSignature,
   RpcResponseAndContext,
-  TransactionExpiredTimeoutError,
-  TransactionExpiredBlockheightExceededError,
 } from '@solana/web3.js'
 import { BaseMessageSignerWalletAdapter } from '@solana/wallet-adapter-base'
 import { zeroPad } from 'ethers/lib/utils'
 import { sleep } from '@injectivelabs/utils'
 import { WORMHOLE_CHAINS } from '../constants'
 import { TransferMsgArgs, WormholeClient, WormholeSource } from '../types'
-import { getContractAddresses, getSolanaTransactionInfo } from '../utils'
+import { getContractAddresses } from '../utils'
 import { BaseWormholeClient } from '../WormholeClient'
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { getOriginalAssetInjective } from '../injective'
+import {
+  getSolanaTransactionInfo,
+  signSendAndConfirmTransaction,
+} from '../solana'
 
 export interface TransactionSignatureAndResponse {
   signature: TransactionSignature
@@ -579,54 +581,11 @@ export class SolanaWormholeClient
     }
 
     const provider = await this.getProvider()
-    const connection = new Connection(solanaHostUrl, 'confirmed')
 
-    const signed = await provider.signTransaction(transaction)
-    const transactionId = await connection.sendRawTransaction(
-      signed.serialize(),
-    )
-
-    try {
-      const result = await connection.confirmTransaction(transactionId)
-
-      if (result.value.err) {
-        throw new TransactionExpiredBlockheightExceededError(
-          result.value.err.toString(),
-        )
-      }
-
-      const txResponse = await getSolanaTransactionInfo(
-        transactionId,
-        connection,
-      )
-
-      if (!txResponse) {
-        throw new GeneralException(
-          new Error('An error occurred while fetching the transaction info'),
-        )
-      }
-
-      return { txHash: transactionId, ...txResponse } as TransactionResponse & {
-        txHash: string
-      }
-    } catch (e) {
-      if (e instanceof TransactionExpiredBlockheightExceededError) {
-        throw new GeneralException(
-          new Error(
-            'Transaction was not included in a block before expiration. Please retry.',
-          ),
-        )
-      }
-
-      if (e instanceof TransactionExpiredTimeoutError) {
-        throw new GeneralException(
-          new Error(
-            'Transaction was not included in a block before expiration. Please retry.',
-          ),
-        )
-      }
-
-      throw e
-    }
+    return await signSendAndConfirmTransaction({
+      provider,
+      solanaHostUrl,
+      transaction,
+    })
   }
 }

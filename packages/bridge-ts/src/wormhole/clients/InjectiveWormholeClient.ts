@@ -97,14 +97,7 @@ export class InjectiveWormholeClient
 
   async transfer(
     args: TransferMsgArgs & {
-      /**
-       * Additional messages that we run before the bridge, an example
-       * could be redeeming from the token factory to CW20
-       */
       additionalMsgs?: MsgExecuteContractCompat[]
-      /**
-       * The destination chain where we transfer to
-       */
       destination?: WormholeSource
     },
   ) {

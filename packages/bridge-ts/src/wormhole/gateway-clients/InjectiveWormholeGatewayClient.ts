@@ -9,8 +9,9 @@ import {
 import { TransferMsgArgs, WormholeClient, WormholeSource } from '../types'
 import {
   getAssociatedChain,
-  getAssociatedChainRecipientIbc,
   getContractAddresses,
+  getAssociatedChainSigner,
+  getAssociatedChainRecipientIbc,
 } from '../utils'
 import { InjectiveWormholeClient } from '../clients/InjectiveWormholeClient'
 import {
@@ -18,6 +19,12 @@ import {
   WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK,
 } from '../constants'
 import { zeroPad } from 'ethers/lib/utils'
+import { cosmwasm } from '@wormhole-foundation/sdk/cosmwasm'
+import { evm } from '@wormhole-foundation/sdk/evm'
+import { solana } from '@wormhole-foundation/sdk/solana'
+import { Wormhole, GatewayTransfer } from '@wormhole-foundation/sdk'
+import { Provider } from '../clients'
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
 
 export class InjectiveWormholeGatewayClient
   extends InjectiveWormholeClient
@@ -25,22 +32,75 @@ export class InjectiveWormholeGatewayClient
 {
   async transfer(
     args: TransferMsgArgs & {
-      // The destination chain where we transfer to
       destination?: WormholeSource
-      // The channel id of the IBC connection
       channelId?: string
+      destinationSigner?: string
+      destinationProvider?: Provider | PhantomWalletAdapter
+      destinationRpc?: string
+      wormchainRpc?: string
     },
   ) {
     const { network, wormholeRpcUrl, wormholeRestUrl, provider } = this
     const {
       amount,
       signer,
-      recipient: recipientArg,
+      recipient,
+      wormchainRpc,
+      destinationRpc,
+      destinationSigner,
+      destinationProvider,
       destination = WormholeSource.Solana,
     } = args
 
+    if (!destinationProvider) {
+      throw new GeneralException(
+        new Error(`Please provide destinationProvider`),
+      )
+    }
+
+    if (!wormchainRpc) {
+      throw new GeneralException(new Error(`Please provide wormchainRpc`))
+    }
+
+    if (!destinationRpc) {
+      throw new GeneralException(new Error(`Please provide destinationRpc`))
+    }
+
+    if (!destinationSigner) {
+      throw new GeneralException(new Error(`Please provide destinationSigner`))
+    }
+
+    if (!recipient) {
+      throw new GeneralException(new Error(`Please provide recipient`))
+    }
+
+    const whConfig = {
+      chains: {
+        Wormchain: {
+          rpc: wormchainRpc,
+        },
+        ...(destination === WormholeSource.Solana && {
+          Solana: {
+            rpc: args.destinationRpc,
+          },
+        }),
+      },
+    }
+    const wh = new Wormhole(
+      'Mainnet',
+      [evm.Platform, solana.Platform, cosmwasm.Platform],
+      whConfig,
+    )
+    const injective = wh.getChain('Injective')
+
+    const associatedRecipient = getAssociatedChainRecipientIbc(recipient)
     const associatedChain = getAssociatedChain(destination)
-    const recipient = getAssociatedChainRecipientIbc(recipientArg, destination)
+    const associatedChainSigner = await getAssociatedChainSigner({
+      source: destination,
+      provider: destinationProvider,
+      address: destinationSigner,
+      rpc: destinationRpc,
+    })
 
     if (!args.tokenAddress) {
       throw new GeneralException(new Error(`Please provide tokenAddress`))
@@ -49,12 +109,6 @@ export class InjectiveWormholeGatewayClient
     if (!wormholeRpcUrl && !wormholeRestUrl) {
       throw new GeneralException(
         new Error(`Please provide wormholeRpcUrl | wormholeRestUrl`),
-      )
-    }
-
-    if (!recipient) {
-      throw new GeneralException(
-        new Error(`Please provide the associatedChain provider`),
       )
     }
 
@@ -84,7 +138,7 @@ export class InjectiveWormholeGatewayClient
       WORMHOLE_WORMCHAIN_IBC_TRANSLATOR_BY_NETWORK(network),
       args.tokenAddress,
       amount,
-      Buffer.from(recipient).toString('base64'),
+      Buffer.from(associatedRecipient).toString('base64'),
       associatedChainBlock,
     )
 
@@ -96,6 +150,18 @@ export class InjectiveWormholeGatewayClient
     if (!txResponse) {
       throw new GeneralException(new Error('Transaction can not be found!'))
     }
+
+    const result = await GatewayTransfer.from(
+      wh,
+      {
+        chain: injective.chain,
+        txid: txResponse.txHash,
+      },
+      600_000,
+    )
+
+    await result.fetchAttestation(600_000)
+    await result.completeTransfer(associatedChainSigner)
 
     return txResponse
   }

@@ -14,7 +14,8 @@ export interface TransferMsgArgs {
 }
 
 export type WormholeContractAddresses = typeof CONTRACTS.MAINNET.injective
-export type WormholeWormchainContractAddresses = typeof CONTRACTS.MAINNET.wormchain
+export type WormholeWormchainContractAddresses =
+  typeof CONTRACTS.MAINNET.wormchain
 export type WormholeSolanaContractAddresses = typeof CONTRACTS.MAINNET.solana
 export type WormholeArbitrumContractAddresses =
   typeof CONTRACTS.MAINNET.arbitrum
@@ -33,7 +34,8 @@ export enum WormholeSource {
   Sui = 'sui',
   Klaytn = 'klaytn',
   Aptos = 'aptos',
-  Wormchain = 'wormchain'
+  Wormchain = 'wormchain',
+  Injective = 'injective',
 }
 
 export interface WormholeClient<
