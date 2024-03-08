@@ -3302,4 +3302,19 @@ export default {
       },
     ],
   },
+
+  bINJ: {
+    name: 'bINJ',
+    logo: 'bINJ.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj127l5a2wmkyvucxdlupqyac3y0v6wqfhq03ka64',
+        symbol: 'bINJ',
+        decimals: 18,
+      },
+    ],
+  },
+
 } as Record<string, TokenMetaBase>
