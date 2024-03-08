@@ -2448,10 +2448,10 @@
     lodash.values "^4.3.0"
     shx "^0.3.2"
 
-"@injectivelabs/wormhole-sdk@1.14.6":
-  version "1.14.6"
-  resolved "https://registry.npmjs.org/@injectivelabs/wormhole-sdk/-/wormhole-sdk-1.14.6.tgz#b5f51c391ee3f8b7e9e2a675778f0dba5c152e14"
-  integrity sha512-zqpd18UIxbQDW+lT06x5i0aRyCKAxaZ/zxCEFYOYjyXHYxED2KViBVkDkLabtL2K5N9ab3ngzjc+lRuKFEZoCQ==
+"@injectivelabs/wormhole-sdk@1.14.7":
+  version "1.14.7"
+  resolved "https://registry.npmjs.org/@injectivelabs/wormhole-sdk/-/wormhole-sdk-1.14.7.tgz#70a057dda3704495ee5016ce6580f324d5b6937f"
+  integrity sha512-INNz9SVn6+LBDSCYsBy3RXmrIXi8In5UHfwUSsRpew+SdgBjAcI4lhitbGi8xAozlArQ3FCeYB7zb6XfF3pvwA==
   dependencies:
     "@certusone/wormhole-sdk-proto-web" "0.0.7"
     "@certusone/wormhole-sdk-wasm" "^0.0.1"
