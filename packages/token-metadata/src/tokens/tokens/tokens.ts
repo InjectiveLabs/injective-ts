@@ -3303,7 +3303,7 @@ export default {
     ],
   },
 
-  bINJ: {
+  blackINJ: {
     name: 'blackINJ',
     logo: 'bINJ.png',
     coinGeckoId: '',
