@@ -69,6 +69,21 @@ export const spotMarketTickerMaps = ({
     }
   }
 
+  const usdcEtDenom =
+    'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk'
+
+  if ([market.baseDenom, market.quoteDenom].includes(usdcEtDenom)) {
+    {
+      return {
+        ...market,
+        slug: slug.replace('usdc', 'usdcet'),
+        ticker: market.ticker.replace('USDC', 'USDCet'),
+        baseToken,
+        quoteToken,
+      } as UiBaseSpotMarketWithToken
+    }
+  }
+
   const usdcNobleDenom =
     'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E'
 
