@@ -29,6 +29,7 @@ import {
 } from '@injectivelabs/token-metadata'
 import { awaitForAll } from '@injectivelabs/utils'
 import { DenomClientAsync } from '../denom/DenomClientAsync'
+import { spotMarketTickerMaps } from './maps'
 
 /**
  * With the TokenService class we can convert objects
@@ -186,56 +187,7 @@ export class TokenService {
         ? `${baseToken.symbol.toLowerCase()}-${quoteToken.symbol.toLowerCase()}`
         : market.ticker.replace('/', '-').replace(' ', '-').toLowerCase()
 
-    if (
-      baseToken?.symbol === 'APP' &&
-      quoteToken?.symbol === 'USDT' &&
-      market.ticker === 'APP/INJ'
-    ) {
-      return {
-        ...market,
-        slug: 'app-usdt',
-        ticker: 'APP/USDT',
-        baseToken,
-        quoteToken,
-      } as UiBaseSpotMarketWithToken
-    }
-
-    if (
-      baseToken?.symbol === 'ANDR' &&
-      quoteToken?.symbol === 'USDT' &&
-      market.ticker === 'ANDR/INJ'
-    ) {
-      return {
-        ...market,
-        slug: 'andr-usdt',
-        ticker: 'ANDR/USDT',
-        baseToken,
-        quoteToken,
-      } as UiBaseSpotMarketWithToken
-    }
-
-    if (
-      baseToken?.symbol === 'PYTHlegacy' &&
-      quoteToken?.symbol === 'USDT' &&
-      market.ticker === 'PYTH/INJ'
-    ) {
-      {
-        return {
-          ...market,
-          slug: 'pythlegacy-usdt',
-          ticker: 'PYTHlegacy/USDT',
-          baseToken,
-          quoteToken,
-        } as UiBaseSpotMarketWithToken
-      }
-    }
-
-    return {
-      ...market,
-      slug,
-      baseToken,
-      quoteToken,
-    } as UiBaseSpotMarketWithToken
+    return spotMarketTickerMaps({ market, slug, baseToken, quoteToken })
   }
 
   async toSpotMarketsWithToken(
