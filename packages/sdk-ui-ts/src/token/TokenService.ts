@@ -214,7 +214,11 @@ export class TokenService {
       } as UiBaseSpotMarketWithToken
     }
 
-    if (baseToken.symbol === 'PYTHlegacy') {
+    if (
+      baseToken?.symbol === 'PYTHlegacy' &&
+      quoteToken?.symbol === 'USDT' &&
+      market.ticker === 'PYTH/INJ'
+    ) {
       {
         return {
           ...market,
