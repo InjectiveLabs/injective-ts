@@ -1983,7 +1983,7 @@ export default {
     cw20s: [
       {
         decimals: 6,
-        symbol: 'PYTH',
+        symbol: 'PYTHlegacy',
         source: TokenSource.Solana,
         address: 'inj1tjcf9497fwmrnk22jfu5hsdq82qshga54ajvzy',
       },
@@ -1991,7 +1991,7 @@ export default {
 
     ibcs: [
       {
-        symbol: 'PYTHgw',
+        symbol: 'PYTH',
         decimals: 6,
         isNative: false,
         baseDenom:
