@@ -3318,7 +3318,7 @@ export default {
   },
 
   INJX: {
-    name: 'Injex Finance',
+    name: 'INJX',
     logo: 'injx.png',
     coinGeckoId: '',
 
