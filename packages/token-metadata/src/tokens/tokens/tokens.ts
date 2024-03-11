@@ -3303,9 +3303,9 @@ export default {
     ],
   },
 
-  bINJ: {
-    name: 'bINJ',
-    logo: 'bINJ.png',
+  blackINJ: {
+    name: 'blackINJ',
+    logo: 'blackINJ.png',
     coinGeckoId: '',
 
     tokenFactories: [
