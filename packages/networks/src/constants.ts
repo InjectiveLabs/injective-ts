@@ -146,7 +146,7 @@ export const ASSET_PRICE_URL_BY_NETWORK = {
     'https://k8s.testnet.asset.injective.network/asset-price/v1',
   [Network.TestnetOld]:
     'https://k8s.testnet.asset.injective.network/asset-price/v1',
-  [Network.Devnet]: 'https://devnet.api.injective.dev/asset-price/v1',
+  [Network.Devnet]: 'https://devnet.asset.injective.dev/asset-price/v1',
   [Network.Devnet1]: 'https://devnet.api.injective.dev/asset-price/v1',
   [Network.Devnet2]: 'https://devnet.api.injective.dev/asset-price/v1',
   [Network.Local]: 'https://devnet.api.injective.dev/asset-price/v1',

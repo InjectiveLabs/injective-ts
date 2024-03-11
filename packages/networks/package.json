@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/networks",
   "description": "Endpoints, networks, etc. Can be reused throughout Injective's projects.",
-  "version": "1.14.10",
+  "version": "1.14.11-beta.1",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
@@ -27,13 +27,13 @@
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
     "coverage:show": "live-server coverage",
-    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.14.10",
-    "@injectivelabs/ts-types": "^1.14.10",
-    "@injectivelabs/utils": "^1.14.10",
+    "@injectivelabs/exceptions": "^1.14.11-beta.0",
+    "@injectivelabs/ts-types": "^1.14.11-beta.0",
+    "@injectivelabs/utils": "^1.14.11-beta.0",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },
