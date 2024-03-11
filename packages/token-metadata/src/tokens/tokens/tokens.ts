@@ -3303,9 +3303,9 @@ export default {
     ],
   },
 
-  bINJ: {
-    name: 'bINJ',
-    logo: 'bINJ.png',
+  blackINJ: {
+    name: 'blackINJ',
+    logo: 'blackINJ.png',
     coinGeckoId: '',
 
     tokenFactories: [
@@ -3313,6 +3313,20 @@ export default {
         creator: 'inj10q36ygr0pkz7ezajcnjd2f0tat5n737yg6g6d5',
         symbol: 'bINJ',
         decimals: 18,
+      },
+    ],
+  },
+
+  INJX: {
+    name: 'Injex Finance',
+    logo: 'injx.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj104h3hchl7ws8lp78zpvrunvsjdwfjc02r5d0fp',
+        symbol: 'INJX',
+        decimals: 6,
       },
     ],
   },
