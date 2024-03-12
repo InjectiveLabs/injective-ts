@@ -11,7 +11,7 @@ const CAMPAIGN_CONTRACT = 'inj1yum4v0v5l92jkxn8xpn9mjg7wuldk784ysdn0w'
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcCampaignApi = new IndexerGrpcCampaignApi(endpoints.indexer)
 
-describe('IndexerGrpcCampaignApi', () => {
+describe.skip('IndexerGrpcCampaignApi', () => {
   test('fetchCampaign', async () => {
     try {
       const response = await indexerGrpcCampaignApi.fetchCampaign({

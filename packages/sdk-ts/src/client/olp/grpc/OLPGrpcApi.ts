@@ -7,8 +7,8 @@ import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 import { DmmGrpcTransformer } from './transformers'
 
-export class DmmGrpcApi extends BaseGrpcConsumer {
-  protected module: string = IndexerErrorModule.Dmm
+export class OLPGrpcApi extends BaseGrpcConsumer {
+  protected module: string = IndexerErrorModule.OLP
 
   protected client: InjectiveDmmRpc.InjectiveDmmV2RPCClientImpl
 
