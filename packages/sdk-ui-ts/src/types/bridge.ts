@@ -89,7 +89,6 @@ export interface NetworkMeta {
 export interface NetworkConfig {
   network: BridgingNetwork
   denoms: string[]
-  symbols: string[]
 }
 
 export interface UiBridgeTransaction {

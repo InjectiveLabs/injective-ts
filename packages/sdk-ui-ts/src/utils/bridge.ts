@@ -1,13 +1,13 @@
 import {
   NetworkConfig,
-  BridgeTransactionState,
   BridgingNetwork,
+  BridgeTransactionState,
 } from './../types/bridge'
 import {
-  isTestnet,
-  isMainnet,
   Network,
   isDevnet,
+  isTestnet,
+  isMainnet,
 } from '@injectivelabs/networks'
 import { UiBridgeTransaction, MintScanExplorerUrl } from './../types/bridge'
 import {
@@ -19,11 +19,11 @@ import {
 } from '../constants'
 import { CosmosChainId, TestnetCosmosChainId } from '@injectivelabs/ts-types'
 import {
-  getTokenFromMeta,
   Token,
+  TokenType,
   TokenMetaBase,
   tokenMetaUtils,
-  TokenType,
+  getTokenFromMeta,
 } from '@injectivelabs/token-metadata'
 import { TokenMetadataResponse } from 'alchemy-sdk'
 
@@ -140,13 +140,12 @@ export const tokenSelectorDisabledNetworks = [
   BridgingNetwork.Migaloo,
 ]
 
-export const tokenDenomsPerNetwork = [
+export const tokenDenomsPerNetwork: NetworkConfig[] = [
   {
     network: BridgingNetwork.CosmosHub,
     denoms: [
       'ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
     ],
-    symbols: ['atom'],
   },
   {
     network: BridgingNetwork.Osmosis,
@@ -154,14 +153,12 @@ export const tokenDenomsPerNetwork = [
       'inj',
       'ibc/92E0120F15D037353CFB73C14651FC8930ADC05B93100FD7754D3A689E53B333',
     ],
-    symbols: ['osmo', 'inj'],
   },
   {
     network: BridgingNetwork.Chihuahua,
     denoms: [
       'ibc/E7807A46C0B7B44B350DA58F51F278881B863EC4DCA94635DAB39E52C30766CB',
     ],
-    symbols: ['huahua'],
   },
   {
     network: BridgingNetwork.Axelar,
@@ -169,14 +166,12 @@ export const tokenDenomsPerNetwork = [
       'dot-planck',
       'ibc/B68C1D2682A8B69E20BB921E34C6A3A2B6D1E13E3E8C0092E373826F546DEE65',
     ],
-    symbols: ['axl', 'dot'],
   },
   {
     network: BridgingNetwork.Juno,
     denoms: [
       'ibc/D50E26996253EBAA8C684B9CD653FE2F7665D7BDDCA3D48D5E1378CF6334F211',
     ],
-    symbols: ['juno'],
   },
   {
     network: BridgingNetwork.Terra,
@@ -184,7 +179,6 @@ export const tokenDenomsPerNetwork = [
       'ibc/B8AF5D92165F35AB31F3FC7C7B444B9D240760FA5D406C49D24862BD0284E395',
       'ibc/B448C0CA358B958301D328CCDC5D5AD642FC30A6D3AE106FF721DB315F3DDE5C',
     ],
-    symbols: ['luna', 'ust'],
   },
   {
     network: BridgingNetwork.Evmos,
@@ -192,7 +186,6 @@ export const tokenDenomsPerNetwork = [
       'ibc/16618B7F7AC551F48C057A13F4CA5503693FBFF507719A85BC6876B8BD75F821',
       'ibc/F6CC233E5C0EA36B1F74AB1AF98471A2D6A80E2542856639703E908B4D93E7C4',
     ],
-    symbols: ['evmos', 'neok'],
   },
   {
     network: BridgingNetwork.Persistence,
@@ -200,19 +193,12 @@ export const tokenDenomsPerNetwork = [
       'inj',
       'ibc/B786E7CBBF026F6F15A8DA248E0F18C62A0F7A70CB2DABD9239398C8B5150ABB',
     ],
-    symbols: ['xprt'],
-  },
-  {
-    network: BridgingNetwork.Moonbeam,
-    denoms: ['dot-planck'],
-    symbols: ['dot'],
   },
   {
     network: BridgingNetwork.Secret,
     denoms: [
       'ibc/0954E1C28EB7AF5B72D24F3BC2B47BBB2FDF91BDDFD57B74B99E133AED40972A',
     ],
-    symbols: ['scrt'],
   },
   {
     network: BridgingNetwork.Stride,
@@ -221,7 +207,6 @@ export const tokenDenomsPerNetwork = [
       'ibc/3FDD002A3A4019B05A33D324B2F29748E77AF501BEA5C96D1F28B2D6755F9F25',
       'ibc/AC87717EA002B0123B10A05063E69BCA274BA2C44D842AEEB41558D2856DCE93',
     ],
-    symbols: ['strd', 'inj', 'stinj'],
   },
   {
     network: BridgingNetwork.Crescent,
@@ -229,21 +214,18 @@ export const tokenDenomsPerNetwork = [
       'inj',
       'ibc/3A6DD3358D9F7ADD18CDE79BA10B400511A5DE4AE2C037D7C9639B52ADAF35C6',
     ],
-    symbols: ['cre', 'inj'],
   },
   {
     network: BridgingNetwork.Sommelier,
     denoms: [
       'ibc/34346A60A95EB030D62D6F5BDD4B745BE18E8A693372A8A347D5D53DBBB1328B',
     ],
-    symbols: ['somm'],
   },
   {
     network: BridgingNetwork.Canto,
     denoms: [
       'ibc/D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8',
     ],
-    symbols: ['canto'],
   },
   {
     network: BridgingNetwork.Kava,
@@ -251,44 +233,49 @@ export const tokenDenomsPerNetwork = [
       'ibc/57AA1A70A4BC9769C525EBF6386F7A21536E04A79D62E1981EFCEF9428EBB205',
       'ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',
     ],
-    symbols: ['kava', 'usdtkv'],
   },
   {
     network: BridgingNetwork.Oraichain,
     denoms: [
       'ibc/C20C0A822BD22B2CEF0D067400FCCFB6FAEEE9E91D360B4E0725BD522302D565',
     ],
-    symbols: ['orai'],
   },
   {
     network: BridgingNetwork.CosmosHubTestnet,
     denoms: [
       'ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9',
     ],
-    symbols: ['uphoton'],
   },
   {
     network: BridgingNetwork.Solana,
     denoms: [
-      'ibc/A8B0B746B5AB736C2D8577259B510D56B8AF598008F68041E3D634BCDE72BE97', // SOL
-      'ibc/F3330C1B8BD1886FE9509B94C7B5398B892EA41420D2BC0B7C6A53CB8ED761D6', // PYTH
+      'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
+      'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1tjcf9497fwmrnk22jfu5hsdq82qshga54ajvzy',
+      'ibc/A8B0B746B5AB736C2D8577259B510D56B8AF598008F68041E3D634BCDE72BE97',
+      'ibc/F3330C1B8BD1886FE9509B94C7B5398B892EA41420D2BC0B7C6A53CB8ED761D6',
     ],
-    symbols: ['SOL', 'PYTH'],
   },
   {
     network: BridgingNetwork.EthereumWh,
-    denoms: [],
-    symbols: ['USDCet', 'CHZ', 'LDO', 'BRZ', 'ALPHA'],
+    denoms: [
+      'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk',
+      'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1q6kpxy6ar5lkxqudjvryarrrttmakwsvzkvcyh',
+      'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1me6t602jlndzxgv2d7ekcnkjuqdp7vfh4txpyy',
+      'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj14jesa4q248mfxztfc9zgpswkpa4wx249mya9kk',
+      'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1zwnsemwrpve3wrrg0njj89w6mt5rmj9ydkc46u',
+    ],
   },
   {
     network: BridgingNetwork.Arbitrum,
-    denoms: [],
-    symbols: ['ARB'],
+    denoms: [
+      'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1d5vz0uzwlpfvgwrwulxg6syy82axa58y4fuszd',
+    ],
   },
   {
     network: BridgingNetwork.Polygon,
-    denoms: [],
-    symbols: ['WMATIC'],
+    denoms: [
+      'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1dxv423h8ygzgxmxnvrf33ws3k94aedfdevxd8h',
+    ],
   },
 
   {
@@ -296,14 +283,12 @@ export const tokenDenomsPerNetwork = [
     denoms: [
       'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
     ],
-    symbols: ['usdcnb'],
   },
   {
     network: BridgingNetwork.Celestia,
     denoms: [
       'ibc/F51BB221BAA275F2EBF654F70B005627D7E713AFFD6D86AFD1E43CAA886149F4',
     ],
-    symbols: ['utia'],
   },
   {
     network: BridgingNetwork.Migaloo,
@@ -311,23 +296,20 @@ export const tokenDenomsPerNetwork = [
       'inj',
       'ibc/D6E6A20ABDD600742D22464340A7701558027759CE14D12590F8EA869CCCF445',
     ],
-    symbols: ['inj', 'uwhale'],
   },
   {
     network: BridgingNetwork.Kujira,
     denoms: [
       'ibc/9A115B56E769B92621FFF90567E2D60EFD146E86E867491DB69EEDA9ADC36204',
     ],
-    symbols: ['ukuji'],
   },
   {
     network: BridgingNetwork.Andromeda,
     denoms: [
       'ibc/61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
     ],
-    symbols: ['uandr'],
   },
-] as NetworkConfig[]
+]
 
 export const cosmosChainTokenMetaMap = {
   [CosmosChainId.Cosmoshub]: {
@@ -521,7 +503,7 @@ export const cosmosChainTokenMetaMap = {
   },
   [CosmosChainId.Noble]: {
     ...getTokenFromMeta(
-      tokenMetaUtils.getMetaBySymbol('USDCnb') as TokenMetaBase,
+      tokenMetaUtils.getMetaBySymbol('USDC') as TokenMetaBase,
     ),
     denom:
       'ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E',
