@@ -30,6 +30,7 @@ export enum TokenSource {
   Sui = 'sui',
   Ibc = 'ibc',
   BinanceSmartChain = 'binance-smart-chain',
+  Axelar = 'axelar',
 }
 
 /** natively created denoms - not derived from a CW20 */

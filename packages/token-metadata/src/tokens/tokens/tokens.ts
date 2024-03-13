@@ -196,6 +196,16 @@ export default {
     ibcs: [
       {
         decimals: 6,
+        symbol: 'axlUSDC',
+        baseDenom: 'uusdc',
+        isNative: false,
+        channelId: 'channel-84',
+        path: 'transfer/channel-84',
+        hash: '7E1AF94AD246BE522892751046F0C959B768642E5671CC3742264068D49553C0',
+        source: TokenSource.Axelar,
+      },
+      {
+        decimals: 6,
         symbol: 'USDC',
         baseDenom: 'uusdc',
         isNative: true,
@@ -3330,5 +3340,4 @@ export default {
       },
     ],
   },
-
 } as Record<string, TokenMetaBase>
