@@ -3214,7 +3214,7 @@ export default {
   },
 
   HDRO: {
-    name: 'HDRO',
+    name: 'Hydro',
     logo: 'hydro.png',
     coinGeckoId: '',
 

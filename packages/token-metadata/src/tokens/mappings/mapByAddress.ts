@@ -56,3 +56,39 @@ export const getMappedTokensByCw20Address = (
 
       return result
     }, {}) as Record<string, TokenMetaBase>
+
+export const getMappedTokensByTokenFactoryAddress = (
+  tokens: Record<string, TokenMetaBase>,
+) =>
+  (Object.keys(tokens) as Array<keyof typeof tokens>)
+    .filter((token) => tokens[token].tokenFactories)
+    .reduce((result, token) => {
+      if (!tokens[token].tokenFactories) {
+        return result
+      }
+
+      const tokenMeta = tokens[token]
+
+      if (tokenMeta.tokenFactories) {
+        const tokenFactoryMaps = tokenMeta.tokenFactories.reduce(
+          (result, tokenFactories) => {
+            const denom = `factory/${
+              tokenFactories.creator
+            }/${tokenFactories.symbol.toUpperCase()}`
+
+            return {
+              ...result,
+              [denom]: tokens[token],
+            }
+          },
+          {} as Record<string, TokenMetaBase>,
+        )
+
+        return {
+          ...result,
+          ...tokenFactoryMaps,
+        }
+      }
+
+      return result
+    }, {}) as Record<string, TokenMetaBase>

@@ -1,6 +1,7 @@
 import {
-  getMappedTokensByErc20Address,
   getMappedTokensByCw20Address,
+  getMappedTokensByErc20Address,
+  getMappedTokensByTokenFactoryAddress,
 } from './tokens/mappings/mapByAddress'
 import { getMappedTokensByHash } from './tokens/mappings/mapByHash'
 import { getMappedTokensBySymbol } from './tokens/mappings/mapBySymbol'
@@ -13,13 +14,18 @@ export class TokenMetaUtils {
 
   protected tokensByCw20Address: Record<string, TokenMetaBase>
 
+  protected tokensByTokenFactoryAddress: Record<string, TokenMetaBase>
+
   protected tokensByHash: Record<string, TokenMetaBase>
 
   constructor(tokens: Record<string, TokenMetaBase>) {
     this.tokens = getMappedTokensBySymbol(tokens)
+    this.tokensByHash = getMappedTokensByHash(this.tokens)
     this.tokensByErc20Address = getMappedTokensByErc20Address(this.tokens)
     this.tokensByCw20Address = getMappedTokensByCw20Address(this.tokens)
-    this.tokensByHash = getMappedTokensByHash(this.tokens)
+    this.tokensByTokenFactoryAddress = getMappedTokensByTokenFactoryAddress(
+      this.tokens,
+    )
   }
 
   /**
@@ -45,8 +51,13 @@ export class TokenMetaUtils {
   }
 
   getMetaByFactory(denom: string): TokenMetaBase | undefined {
+    const { tokensByTokenFactoryAddress } = this
+
     const [symbol, creatorAddress] = denom.split('/').reverse()
-    const tokenMeta = this.getMetaBySymbol(symbol)
+    const tokenMeta =
+      tokensByTokenFactoryAddress[
+        `factory/${creatorAddress}/${symbol.toUpperCase()}`
+      ]
 
     if (!tokenMeta) {
       return
