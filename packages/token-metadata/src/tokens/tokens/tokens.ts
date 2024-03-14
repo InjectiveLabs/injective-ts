@@ -2053,14 +2053,6 @@ export default {
         decimals: 18,
       },
       {
-        name: 'Black INJ',
-        logo: 'bird.png',
-        creator: 'inj125hcdvz9dnhdqal2u8ctr7l0hd8xy9wdgzt8ld',
-        symbol: 'BINJ',
-        coinGeckoId: '',
-        decimals: 6,
-      },
-      {
         name: 'Bird INJ',
         logo: 'bird.png',
         creator: 'inj125hcdvz9dnhdqal2u8ctr7l0hd8xy9wdgzt8ld',
