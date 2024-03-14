@@ -2043,19 +2043,29 @@ export default {
   },
 
   BINJ: {
-    name: 'Bird INJ',
-    logo: 'bird.png',
-    coinGeckoId: '',
-
     tokenFactories: [
       {
+        name: 'blackINJ',
+        logo: 'blackINJ.png',
+        coinGeckoId: '',
+        creator: 'inj10q36ygr0pkz7ezajcnjd2f0tat5n737yg6g6d5',
+        symbol: 'bINJ',
+        decimals: 18,
+      },
+      {
+        name: 'Bird INJ',
+        logo: 'bird.png',
         creator: 'inj125hcdvz9dnhdqal2u8ctr7l0hd8xy9wdgzt8ld',
         symbol: 'BINJ',
+        coinGeckoId: '',
         decimals: 6,
       },
       {
+        name: 'Bird INJ',
+        logo: 'bird.png',
         creator: 'inj1lhr06p7k3rdgk0knw5hfsde3fj87g2aq4e9a52',
         symbol: 'BINJ',
+        coinGeckoId: '',
         decimals: 6,
       },
     ],
@@ -3214,7 +3224,7 @@ export default {
   },
 
   HDRO: {
-    name: 'HDRO',
+    name: 'Hydro',
     logo: 'hydro.png',
     coinGeckoId: '',
 
@@ -3308,20 +3318,6 @@ export default {
         symbol: 'KAGE',
         logo: 'kage.png',
         address: 'inj1l49685vnk88zfw2egf6v65se7trw2497wsqk65',
-        decimals: 18,
-      },
-    ],
-  },
-
-  blackINJ: {
-    name: 'blackINJ',
-    logo: 'blackINJ.png',
-    coinGeckoId: '',
-
-    tokenFactories: [
-      {
-        creator: 'inj10q36ygr0pkz7ezajcnjd2f0tat5n737yg6g6d5',
-        symbol: 'bINJ',
         decimals: 18,
       },
     ],
