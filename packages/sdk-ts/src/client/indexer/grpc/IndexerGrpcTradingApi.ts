@@ -39,7 +39,7 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     limit?: number
     skip?: number
     marketType?: MarketType
-    strategyType: GridStrategyType[]
+    strategyType?: GridStrategyType[]
   }) {
     const request = InjectiveTradingRpc.ListTradingStrategiesRequest.create()
 
