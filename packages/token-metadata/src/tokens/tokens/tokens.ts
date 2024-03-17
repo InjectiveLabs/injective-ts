@@ -3336,4 +3336,35 @@ export default {
       },
     ],
   },
+  BSKT: {
+    name: 'Basket',
+    logo: 'bskt.png',
+    symbol: 'BSKT',
+    decimals: 5,
+
+    erc20: {
+      decimals: 5,
+      symbol: 'BSKT',
+      address: '0xbC0899E527007f1B8Ced694508FCb7a2b9a46F53',
+      tokenType: TokenType.Erc20,
+    },
+
+    cw20s: [
+      {
+        symbol: 'BSKT',
+        decimals: 5,
+        source: TokenSource.Solana,
+        address: 'inj193340xxv49hkug7r65xzc0l40tze44pee4fj94',
+        tokenType: TokenType.Cw20,
+      },
+    ],
+    spl: {
+      decimals: 5,
+      symbol: 'BSKT',
+      isNative: false,
+      address: '6gnCPhXtLnUD76HjQuSYPENLSZdG8RvDB1pTLM5aLSJA',
+    },
+
+    coinGeckoId: 'basket',
+  }
 } as Record<string, TokenMetaBase>
