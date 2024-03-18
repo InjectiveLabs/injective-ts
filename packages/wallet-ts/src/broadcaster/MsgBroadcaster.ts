@@ -92,12 +92,15 @@ export class MsgBroadcaster {
 
   public ethereumChainId?: EthereumChainId
 
+  public gasBufferCoefficient: number = 1.2
+
   constructor(options: MsgBroadcasterOptions) {
     const networkInfo = getNetworkInfo(options.network)
 
     this.options = options
     this.simulateTx = options.simulateTx || true
     this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
+    this.gasBufferCoefficient = options.gasBufferCoefficient || 1.2
     this.chainId = networkInfo.chainId
     this.ethereumChainId = networkInfo.ethereumChainId
     this.endpoints = options.endpoints || getNetworkEndpoints(options.network)
@@ -877,7 +880,7 @@ export class MsgBroadcaster {
    *
    * If we want to simulate the transaction we set the
    * gas limit based on the simulation and add a small multiplier
-   * to be safe (factor of 1.2)
+   * to be safe (factor of 1.2 as default)
    */
   private async getTxWithSignersAndStdFee(
     args: CreateTransactionWithSignersArgs,
@@ -903,7 +906,9 @@ export class MsgBroadcaster {
     const stdGasFee = {
       ...getStdFee({
         ...getStdFee(args.fee),
-        gas: new BigNumberInBase(result.gasInfo.gasUsed).times(1.2).toFixed(),
+        gas: new BigNumberInBase(result.gasInfo.gasUsed)
+          .times(this.gasBufferCoefficient)
+          .toFixed(),
       }),
     }
 

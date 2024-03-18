@@ -156,7 +156,7 @@ export default {
 
     erc20: {
       decimals: 6,
-      symbol: 'USDC',
+      symbol: 'USDClegacy',
       address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     },
 
@@ -196,7 +196,17 @@ export default {
     ibcs: [
       {
         decimals: 6,
-        symbol: 'USDCnb',
+        symbol: 'axlUSDC',
+        baseDenom: 'uusdc',
+        isNative: false,
+        channelId: 'channel-84',
+        path: 'transfer/channel-84',
+        hash: '7E1AF94AD246BE522892751046F0C959B768642E5671CC3742264068D49553C0',
+        source: TokenSource.Axelar,
+      },
+      {
+        decimals: 6,
+        symbol: 'USDC',
         baseDenom: 'uusdc',
         isNative: true,
         channelId: 'channel-148',
@@ -206,7 +216,7 @@ export default {
       },
       {
         decimals: 6,
-        symbol: 'USDCgw',
+        symbol: 'USDCgateway',
         baseDenom:
           'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/GGh9Ufn1SeDGrhzEkMyRKt5568VbbxZK2yvWNsd6PbXt',
         isNative: false,
@@ -1832,6 +1842,12 @@ export default {
     logo: 'orai.png',
     coinGeckoId: 'oraichain-token',
 
+    erc20: {
+      symbol: 'ORAI',
+      decimals: 18,
+      address: '0x4c11249814f11b9346808179Cf06e71ac328c1b5',
+    },
+
     ibcs: [
       {
         symbol: 'ORAI',
@@ -1983,7 +1999,7 @@ export default {
     cw20s: [
       {
         decimals: 6,
-        symbol: 'PYTH',
+        symbol: 'PYTHlegacy',
         source: TokenSource.Solana,
         address: 'inj1tjcf9497fwmrnk22jfu5hsdq82qshga54ajvzy',
       },
@@ -1991,7 +2007,7 @@ export default {
 
     ibcs: [
       {
-        symbol: 'PYTHgw',
+        symbol: 'PYTH',
         decimals: 6,
         isNative: false,
         baseDenom:
@@ -2033,19 +2049,29 @@ export default {
   },
 
   BINJ: {
-    name: 'Bird INJ',
-    logo: 'bird.png',
-    coinGeckoId: '',
-
     tokenFactories: [
       {
+        name: 'blackINJ',
+        logo: 'blackINJ.png',
+        coinGeckoId: '',
+        creator: 'inj10q36ygr0pkz7ezajcnjd2f0tat5n737yg6g6d5',
+        symbol: 'bINJ',
+        decimals: 18,
+      },
+      {
+        name: 'Bird INJ',
+        logo: 'bird.png',
         creator: 'inj125hcdvz9dnhdqal2u8ctr7l0hd8xy9wdgzt8ld',
         symbol: 'BINJ',
+        coinGeckoId: '',
         decimals: 6,
       },
       {
+        name: 'Bird INJ',
+        logo: 'bird.png',
         creator: 'inj1lhr06p7k3rdgk0knw5hfsde3fj87g2aq4e9a52',
         symbol: 'BINJ',
+        coinGeckoId: '',
         decimals: 6,
       },
     ],
@@ -2218,7 +2244,7 @@ export default {
 
   ZIG: {
     name: 'ZigCoin',
-    logo: 'zigg.jpeg',
+    logo: 'zigg.png',
     coinGeckoId: 'zignaly',
 
     erc20: {
@@ -3204,7 +3230,7 @@ export default {
   },
 
   HDRO: {
-    name: 'HDRO',
+    name: 'Hydro',
     logo: 'hydro.png',
     coinGeckoId: '',
 
@@ -3302,7 +3328,7 @@ export default {
       },
     ],
   },
-  
+
   blackINJ: {
     name: 'blackINJ',
     logo: 'blackINJ.png',
@@ -3390,5 +3416,16 @@ export default {
       },
     ],
   },
-  
+
+  BAND: {
+    name: 'Band Protocol',
+    logo: 'band.webp',
+    coinGeckoId: 'band-protocol',
+
+    erc20: {
+      symbol: 'BAND',
+      decimals: 18,
+      address: '0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55',
+    },
+  },
 } as Record<string, TokenMetaBase>

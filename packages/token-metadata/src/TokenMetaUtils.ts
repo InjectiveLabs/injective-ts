@@ -1,6 +1,6 @@
 import {
-  getMappedTokensByErc20Address,
   getMappedTokensByCw20Address,
+  getMappedTokensByErc20Address,
 } from './tokens/mappings/mapByAddress'
 import { getMappedTokensByHash } from './tokens/mappings/mapByHash'
 import { getMappedTokensBySymbol } from './tokens/mappings/mapBySymbol'
@@ -17,9 +17,9 @@ export class TokenMetaUtils {
 
   constructor(tokens: Record<string, TokenMetaBase>) {
     this.tokens = getMappedTokensBySymbol(tokens)
+    this.tokensByHash = getMappedTokensByHash(this.tokens)
     this.tokensByErc20Address = getMappedTokensByErc20Address(this.tokens)
     this.tokensByCw20Address = getMappedTokensByCw20Address(this.tokens)
-    this.tokensByHash = getMappedTokensByHash(this.tokens)
   }
 
   /**

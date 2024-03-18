@@ -4,7 +4,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { InjectiveTradingRpc } from '@injectivelabs/indexer-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
+import { IndexerModule, MarketType, GridStrategyType } from '../types'
 
 /**
  * @category Indexer Grpc API
@@ -29,6 +29,8 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     marketId,
     limit,
     skip,
+    marketType,
+    strategyType,
   }: {
     accountAddress?: string
     subaccountId?: string
@@ -36,6 +38,8 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     marketId?: string
     limit?: number
     skip?: number
+    marketType?: MarketType
+    strategyType?: GridStrategyType[]
   }) {
     const request = InjectiveTradingRpc.ListTradingStrategiesRequest.create()
 
@@ -45,6 +49,14 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
 
     if (subaccountId) {
       request.subaccountId = subaccountId
+    }
+
+    if (strategyType) {
+      request.strategyType = strategyType
+    }
+
+    if (marketType) {
+      request.marketType = marketType
     }
 
     if (state) {

@@ -252,6 +252,11 @@ export interface MitoIDOSubscriptionActivity {
   txHash: string
 }
 
+export interface MitoIDOClaimedCoins {
+  claimedCoins: Coin[]
+  updatedAt: number
+}
+
 export interface MitoIDOSubscription {
   maxSubscriptionCoin?: Coin
   committedAmount: string
@@ -265,6 +270,7 @@ export interface MitoIDOSubscription {
   claimTxHash?: string
   ownerClaimableCoins: Coin[]
   marketId: string
+  claimedCoins?: MitoIDOClaimedCoins
 }
 
 export interface MitoWhitelistAccount {
@@ -300,6 +306,7 @@ export type GrpcMitoSubscription = MitoApi.Subscription
 export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
 export type GrpcMitoIDOSubscriber = MitoApi.IDOSubscriber
 export type GrpcMitoClaimReference = MitoApi.ClaimReference
+export type GrpcMitoIDOClaimedCoins = MitoApi.IDOClaimedCoins
 export type GrpcMitoIDOSubscription = MitoApi.IDOSubscription
 export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
 export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch

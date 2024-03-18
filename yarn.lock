@@ -2379,10 +2379,10 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/indexer-proto-ts@1.11.37":
-  version "1.11.37"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.37.tgz#93ebdfd482720fe23c9802c3493bc17aef011258"
-  integrity sha512-jXm1+qR4QkvLS2byN0UM9zHSfdCqAUWol0jiyb9pGyJPf6e2A2tfP5EFqwxGMmX4MQ7PlC9WBiDTBBiPbkgSig==
+"@injectivelabs/indexer-proto-ts@1.11.38":
+  version "1.11.38"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.38.tgz#1983d52a5f92b36124d08f118ee8946f633ef0f0"
+  integrity sha512-wybVI90g4Fh1cZHXv88K9AIWmSIEI7ehl9A13EdMK0eBDSOEXUCP+YCykW6OaFecPvLDDdb7ikh3b/T5606O9Q==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -2393,6 +2393,16 @@
   version "1.0.62"
   resolved "https://registry.yarnpkg.com/@injectivelabs/mito-proto-ts/-/mito-proto-ts-1.0.62.tgz#45fc0746af7d1b283625816caeb9fff9887e050f"
   integrity sha512-WtoO80Y597nZiAuE4H+L208I0i3ByWytR+HqABdCaA26uJ7F1LhXw8YXxh3pP9z0LAeW31T+N7bwtOMlVR4riA==
+  dependencies:
+    "@injectivelabs/grpc-web" "^0.0.1"
+    google-protobuf "^3.14.0"
+    protobufjs "^7.0.0"
+    rxjs "^7.4.0"
+
+"@injectivelabs/mito-proto-ts@1.0.63":
+  version "1.0.63"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/mito-proto-ts/-/mito-proto-ts-1.0.63.tgz#9c6922d0b05eafd4eb52a532f1173b25c0d4e20c"
+  integrity sha512-Ucl78V2/n7IxTH4Lma7RrLXclti702GP2uWtiWWiaKxK3SJT8vqNN69z2MkmIZLMgpY3iX6Mb5xxXG5/mKhTsQ==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"

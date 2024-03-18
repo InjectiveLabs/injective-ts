@@ -12,21 +12,22 @@ import {
   MitoPagination,
   MitoIDOProgress,
   MitoLeaderboard,
+  MitoVestingConfig,
   MitoDenomBalance,
   MitoSubscription,
   MitoIDOSubscriber,
   MitoPriceSnapshot,
   MitoClaimReference,
   MitoIDOSubscription,
-  MitoWhitelistAccount,
-  MitoVestingConfig,
   MitoVestingConfigMap,
+  MitoWhitelistAccount,
   MitoLeaderboardEpoch,
   MitoSubaccountBalance,
   MitoMissionLeaderboard,
   MitoStakeToSubscription,
   MitoIDOSubscriptionActivity,
   MitoMissionLeaderboardEntry,
+  MitoIDOClaimedCoins,
 } from '../types/mito'
 import { GrpcCoin } from '../../../types'
 
@@ -409,6 +410,17 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
+  static mitoIDOClaimedCoinsToIDOClaimedCoins(
+    claimedCoins: MitoApi.IDOClaimedCoins,
+  ): MitoIDOClaimedCoins {
+    return {
+      claimedCoins: claimedCoins.claimedCoins.map(
+        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+      ),
+      updatedAt: parseInt(claimedCoins.updatedAt, 10),
+    }
+  }
+
   static mitoIDOSubscriptionToIDOSubscription(
     subscription: MitoApi.IDOSubscription,
   ): MitoIDOSubscription {
@@ -435,6 +447,11 @@ export class IndexerGrpcMitoTransformer {
       tokenInfo: subscription.tokenInfo
         ? IndexerGrpcMitoTransformer.grpcTokenInfoToTokenInfo(
             subscription.tokenInfo,
+          )
+        : undefined,
+      claimedCoins: subscription.claimedCoins
+        ? IndexerGrpcMitoTransformer.mitoIDOClaimedCoinsToIDOClaimedCoins(
+            subscription.claimedCoins,
           )
         : undefined,
     }

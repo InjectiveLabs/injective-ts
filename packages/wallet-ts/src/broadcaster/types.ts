@@ -46,4 +46,5 @@ export interface MsgBroadcasterOptions {
   simulateTx?: boolean
   txTimeout?: number // blocks to wait for tx to be included in a block
   walletStrategy: WalletStrategy
+  gasBufferCoefficient?: number
 }

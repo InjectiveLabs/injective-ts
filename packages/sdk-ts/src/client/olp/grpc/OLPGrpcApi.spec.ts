@@ -1,13 +1,13 @@
 import { mockFactory } from '@injectivelabs/test-utils'
-import { DmmGrpcApi } from './DmmGrpcApi'
+import { OLPGrpcApi } from './OLPGrpcApi'
 import { DmmGrpcTransformer } from './transformers'
 
 const epochId = 'epoch_230418_230515'
 const accountAddress = mockFactory.injectiveAddress
 const marketId = mockFactory.injUsdtSpotMarket.marketId
-const dmmGrpcApi = new DmmGrpcApi('https://dmm.staging.injective.network')
+const dmmGrpcApi = new OLPGrpcApi('https://glp.injective.network')
 
-describe('DmmGrpcApi', () => {
+describe('OLPGrpcApi', () => {
   test('fetchEpochs', async () => {
     try {
       const response = await dmmGrpcApi.fetchEpochs()
@@ -19,7 +19,7 @@ describe('DmmGrpcApi', () => {
         >(response),
       )
     } catch (e) {
-      console.error('DmmGrpcApi.fetchEpochs => ' + (e as any).message)
+      console.error('OLPGrpcApi.fetchEpochs => ' + (e as any).message)
     }
   })
 
@@ -36,7 +36,7 @@ describe('DmmGrpcApi', () => {
         >(response),
       )
     } catch (e) {
-      console.error('DmmGrpcApi.fetchMarketRewards => ' + (e as any).message)
+      console.error('OLPGrpcApi.fetchMarketRewards => ' + (e as any).message)
     }
   })
 
@@ -54,7 +54,7 @@ describe('DmmGrpcApi', () => {
       )
     } catch (e) {
       console.error(
-        'DmmGrpcApi.fetchEligibleAddresses => ' + (e as any).message,
+        'OLPGrpcApi.fetchEligibleAddresses => ' + (e as any).message,
       )
     }
   })
@@ -70,7 +70,7 @@ describe('DmmGrpcApi', () => {
         >(response),
       )
     } catch (e) {
-      console.error('DmmGrpcApi.fetchEpochScores => ' + (e as any).message)
+      console.error('OLPGrpcApi.fetchEpochScores => ' + (e as any).message)
     }
   })
 
@@ -91,7 +91,7 @@ describe('DmmGrpcApi', () => {
       )
     } catch (e) {
       console.error(
-        'DmmGrpcApi.fetchEpochScoresHistory => ' + (e as any).message,
+        'OLPGrpcApi.fetchEpochScoresHistory => ' + (e as any).message,
       )
     }
   })
@@ -110,7 +110,7 @@ describe('DmmGrpcApi', () => {
         >(response),
       )
     } catch (e) {
-      console.error('DmmGrpcApi.fetchTotalScores => ' + (e as any).message)
+      console.error('OLPGrpcApi.fetchTotalScores => ' + (e as any).message)
     }
   })
 
@@ -132,7 +132,7 @@ describe('DmmGrpcApi', () => {
       )
     } catch (e) {
       console.error(
-        'DmmGrpcApi.fetchTotalScoresHistory => ' + (e as any).message,
+        'OLPGrpcApi.fetchTotalScoresHistory => ' + (e as any).message,
       )
     }
   })
@@ -153,7 +153,7 @@ describe('DmmGrpcApi', () => {
       )
     } catch (e) {
       console.error(
-        'DmmGrpcApi.fetchRewardsDistribution => ' + (e as any).message,
+        'OLPGrpcApi.fetchRewardsDistribution => ' + (e as any).message,
       )
     }
   })
@@ -174,7 +174,7 @@ describe('DmmGrpcApi', () => {
         >(response),
       )
     } catch (e) {
-      console.error('DmmGrpcApi.fetchAccountVolumes => ' + (e as any).message)
+      console.error('OLPGrpcApi.fetchAccountVolumes => ' + (e as any).message)
     }
   })
 
@@ -195,7 +195,7 @@ describe('DmmGrpcApi', () => {
       )
     } catch (e) {
       console.error(
-        'DmmGrpcApi.fetchRewardsEligibility => ' + (e as any).message,
+        'OLPGrpcApi.fetchRewardsEligibility => ' + (e as any).message,
       )
     }
   })
