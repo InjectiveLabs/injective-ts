@@ -2238,7 +2238,7 @@ export default {
 
   ZIG: {
     name: 'ZigCoin',
-    logo: 'zigg.jpeg',
+    logo: 'zigg.png',
     coinGeckoId: 'zignaly',
 
     erc20: {
