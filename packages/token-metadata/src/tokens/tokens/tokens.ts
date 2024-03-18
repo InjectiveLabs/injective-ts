@@ -3329,6 +3329,20 @@ export default {
     ],
   },
 
+  blackINJ: {
+    name: 'blackINJ',
+    logo: 'blackINJ.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj10q36ygr0pkz7ezajcnjd2f0tat5n737yg6g6d5',
+        symbol: 'bINJ',
+        decimals: 18,
+      },
+    ],
+  },
+
   INJX: {
     name: 'Injex Finance',
     logo: 'injx.png',
@@ -3339,6 +3353,66 @@ export default {
         creator: 'inj104h3hchl7ws8lp78zpvrunvsjdwfjc02r5d0fp',
         symbol: 'INJX',
         decimals: 6,
+      },
+    ],
+  },
+
+  nINJ: {
+    name: 'Neptune Receipt INJ',
+    logo: 'neptinj.png',
+    symbol: 'nINJ',
+
+    cw20s: [
+      {
+        symbol: 'nINJ',
+        logo: 'neptinj.png',
+        address: 'inj1rmzufd7h09sqfrre5dtvu5d09ta7c0t4jzkr2f',
+        decimals: 18,
+      },
+    ],
+  },
+
+  nATOM: {
+    name: 'Neptune Receipt ATOM',
+    logo: 'natom.png',
+    symbol: 'nATOM',
+
+    cw20s: [
+      {
+        symbol: 'nATOM',
+        logo: 'natom.png',
+        address: 'inj16jf4qkcarp3lan4wl2qkrelf4kduvvujwg0780',
+        decimals: 6,
+      },
+    ],
+  },
+
+  nUSDT: {
+    name: 'Neptune Receipt USDT',
+    logo: 'nusdt.png',
+    symbol: 'nUSDT',
+
+    cw20s: [
+      {
+        symbol: 'nUSDT',
+        logo: 'nusdt.png',
+        address: 'inj1cy9hes20vww2yr6crvs75gxy5hpycya2hmjg9s',
+        decimals: 6,
+      },
+    ],
+  },
+
+  nWETH: {
+    name: 'Neptune Receipt WETH',
+    logo: 'nweth.png',
+    symbol: 'nWETH',
+
+    cw20s: [
+      {
+        symbol: 'nWETH',
+        logo: 'nweth.png',
+        address: 'inj1kehk5nvreklhylx22p3x0yjydfsz9fv3fvg5xt',
+        decimals: 18,
       },
     ],
   },
