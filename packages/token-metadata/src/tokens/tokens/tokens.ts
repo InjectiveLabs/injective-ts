@@ -3428,4 +3428,18 @@ export default {
       address: '0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55',
     },
   },
+}
+
+INJA: {
+    name: 'Shinja',
+    symbol: 'INJA',
+    logo: 'https://bafybeiakg2hcvde7ohxltue4ljgjlcckggkoyqzbdsqm2kvfm3aysobjey.ipfs.nftstorage.link/',
+    coinGeckoId: 'Shinja',
+
+     cw20: {
+    decimals: 6,
+    address: 'inj13y9m57hw2rnvdmsym8na45z9kvexy82c4n6apc',
+    tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMetaBase>
