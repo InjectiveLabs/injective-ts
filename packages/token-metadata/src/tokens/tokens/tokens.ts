@@ -3429,3 +3429,17 @@ export default {
     },
   },
 } as Record<string, TokenMetaBase>
+
+CHZ: {
+  name: 'Shinja',
+  symbol: 'Inja',
+  decimals: 6,
+  logo: 'https://bafybeiakg2hcvde7ohxltue4ljgjlcckggkoyqzbdsqm2kvfm3aysobjey.ipfs.nftstorage.link/',
+  coinGeckoId: 'Shinja',
+  tokenType: TokenType.TokenFactory,
+
+  EW20: {
+  denom: 'factory/inj13y9m57hw2rnvdmsym8na45z9kvexy82c4n6apc/INJA',
+    },
+  },
+} as Record<string, TokenMetaBase>
