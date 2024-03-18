@@ -3354,4 +3354,16 @@ export default {
       address: '0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55',
     },
   },
+  TRUMP_NINJA:{
+    name: 'Trump Ninja',
+    symbol: 'MAGA',
+    decimals: 18,
+    logo: 'trump-ninja.png',
+    coinGeckoId: "",
+    cw20: {
+        decimals: 18,
+        address: 'inj1dj0u7mqn3z8vxz6muwudhpl95sajmy00w7t6gq',
+        TokenType: TokenType.Cw20,
+      },
+  },
 } as Record<string, TokenMetaBase>
