@@ -1842,6 +1842,12 @@ export default {
     logo: 'orai.png',
     coinGeckoId: 'oraichain-token',
 
+    erc20: {
+      symbol: 'ORAI',
+      decimals: 18,
+      address: '0x4c11249814f11b9346808179Cf06e71ac328c1b5',
+    },
+
     ibcs: [
       {
         symbol: 'ORAI',
@@ -3335,5 +3341,17 @@ export default {
         decimals: 6,
       },
     ],
+  },
+
+  BAND: {
+    name: 'Band Protocol',
+    logo: 'band.webp',
+    coinGeckoId: 'band-protocol',
+
+    erc20: {
+      symbol: 'BAND',
+      decimals: 18,
+      address: '0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55',
+    },
   },
 } as Record<string, TokenMetaBase>
