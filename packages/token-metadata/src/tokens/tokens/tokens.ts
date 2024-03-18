@@ -3363,7 +3363,6 @@ export default {
     cw20: {
         decimals: 18,
         address: 'inj1dj0u7mqn3z8vxz6muwudhpl95sajmy00w7t6gq',
-        TokenType: TokenType.Cw20,
       },
   },
 } as Record<string, TokenMetaBase>
