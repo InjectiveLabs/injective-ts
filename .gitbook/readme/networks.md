@@ -1,16 +1,12 @@
 # Networks
 
 {% hint style="warning" %}
-Up-to-date public Endpoints can be found [here](https://docs.injective.network/develop/public-endpoints/#mainnet). We <mark style="color:red;">**do not recommend**</mark> using them in production for applications which have high usage/traffic. There are thousands of developers using the public infrastructure and we cannot promise 100% uptime and reliability.&#x20;
+Up-to-date public Endpoints can be found [here](https://docs.injective.network/develop/public-endpoints/#mainnet). We <mark style="color:red;">**do not recommend**</mark> using them in production for applications having high usage/traffic. There are thousands of developers using the public infrastructure and we cannot promise 100% uptime and reliability. \
+\
+If you still opt to use the **public** networks, you can use the `Network.{Mainnet|Testnet}Sentry` from the `@injectivelabs/networks` package.&#x20;
 {% endhint %}
 
 Building dApps on Injective requires tapping into different environments and networks where you can easily test your dApp. As part of the `injective-ts` monorepo, we have the `@injectivelabs/networks` package allows developers to easily access pre-defined environments to connect to different pieces of Injective.
-
-{% hint style="success" %}
-Recommended **public** networks to use are `Network.MainnetSentry` and `Network.TestnetSentry` from the `@injectivelabs/networks` package. \
-\
-`Network.Mainnet` and `Network.Testnet` <mark style="color:red;">**are deprecated**</mark> and no longer supported.
-{% endhint %}
 
 There are two key functions exported from this package:
 
