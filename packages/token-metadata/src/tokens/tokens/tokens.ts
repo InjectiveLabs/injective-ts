@@ -162,6 +162,7 @@ export default {
 
     cw20s: [
       {
+        name: 'USD Coin (legacy)',
         decimals: 6,
         symbol: 'USDCet',
         source: TokenSource.EthereumWh,
@@ -1112,7 +1113,8 @@ export default {
 
     cw20s: [
       {
-        symbol: 'SOL',
+        name: 'Solana (legacy)',
+        symbol: 'SOLlegacy',
         decimals: 8,
         address: 'inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3',
       },
@@ -1120,7 +1122,7 @@ export default {
 
     ibcs: [
       {
-        symbol: 'SOLgw',
+        symbol: 'SOL',
         decimals: 8,
         isNative: false,
         baseDenom:
@@ -1249,7 +1251,8 @@ export default {
 
     cw20s: [
       {
-        symbol: 'CHZ',
+        name: 'Chiliz (legacy)',
+        symbol: 'CHZlegacy',
         decimals: 8,
         address: 'inj1q6kpxy6ar5lkxqudjvryarrrttmakwsvzkvcyh',
       },
@@ -1346,7 +1349,8 @@ export default {
 
     cw20s: [
       {
-        symbol: 'ARB',
+        name: 'Arbitrum (legacy)',
+        symbol: 'ARBlegacy',
         decimals: 8,
         address: 'inj1d5vz0uzwlpfvgwrwulxg6syy82axa58y4fuszd',
         source: TokenSource.Arbitrum,
@@ -1356,7 +1360,7 @@ export default {
     ibcs: [
       {
         decimals: 8,
-        symbol: 'ARBgw',
+        symbol: 'ARB',
         baseDenom:
           'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4jq5m8FR6W6nJygDj8NMMbB48mqX4LQHc3j5uEb9syDe',
         isNative: false,
@@ -1481,7 +1485,8 @@ export default {
 
     cw20s: [
       {
-        symbol: 'WMATIC',
+        name: 'Wrapped Matic (legacy)',
+        symbol: 'WMATIClegacy',
         decimals: 8,
         address: 'inj1dxv423h8ygzgxmxnvrf33ws3k94aedfdevxd8h',
         source: TokenSource.Polygon,
@@ -1491,7 +1496,7 @@ export default {
     ibcs: [
       {
         decimals: 8,
-        symbol: 'WMATICgw',
+        symbol: 'WMATIC',
         baseDenom:
           'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4gn1J9pchUGh63ez1VwiuTmU4nfJ8Rr8o5HgBC5TMdMk',
         isNative: false,
@@ -1998,6 +2003,7 @@ export default {
 
     cw20s: [
       {
+        name: 'Pyth Network (legacy)',
         decimals: 6,
         symbol: 'PYTHlegacy',
         source: TokenSource.Solana,
