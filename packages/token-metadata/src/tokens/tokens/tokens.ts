@@ -3428,4 +3428,32 @@ export default {
       address: '0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55',
     },
   },
+
+  BSKT: {
+    name: 'Basket',
+    logo: 'bskt.png',
+    coinGeckoId: 'basket',
+
+    erc20: {
+      decimals: 5,
+      symbol: 'BSKT',
+      address: '0xbC0899E527007f1B8Ced694508FCb7a2b9a46F53',
+    },
+
+    spl: {
+      decimals: 5,
+      symbol: 'BSKT',
+      isNative: false,
+      address: '6gnCPhXtLnUD76HjQuSYPENLSZdG8RvDB1pTLM5aLSJA',
+    },
+
+    cw20s: [
+      {
+        symbol: 'BSKT',
+        decimals: 5,
+        source: TokenSource.Solana,
+        address: 'inj193340xxv49hkug7r65xzc0l40tze44pee4fj94',
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
