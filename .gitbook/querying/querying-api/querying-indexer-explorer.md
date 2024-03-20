@@ -2,9 +2,9 @@
 
 Example code snippets to query the indexer for explorer module related data.
 
-### Using gRPC
+## Using gRPC
 
-- Get a tx by hash
+### Fetch transaction by hash
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -20,7 +20,7 @@ const transaction = await indexerGrpcExplorerApi.fetchTxByHash(txsHash)
 console.log(transaction)
 ```
 
-- Get an account tx by address
+### Fetch an account transaction by address
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -38,7 +38,7 @@ const account = await indexerGrpcExplorerApi.fetchAccountTx({
 console.log(account)
 ```
 
-- Get a validator by address
+### Fetch a validator by address
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -54,7 +54,7 @@ const validator = await indexerGrpcExplorerApi.fetchValidator(validatorAddress)
 console.log(validator)
 ```
 
-- Get a validator's uptime by address
+### Fetch a validator's uptime by address
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -72,7 +72,7 @@ const validatorUptime = await indexerGrpcExplorerApi.fetchValidatorUptime(
 console.log(validatorUptime)
 ```
 
-- Get a validator's uptime by address
+### Fetch a validator's uptime by address
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -90,7 +90,7 @@ const validatorUptime = await indexerGrpcExplorerApi.fetchValidatorUptime(
 console.log(validatorUptime)
 ```
 
-- Get peggy deposit transactions from ethereum
+### Fetch peggy deposit transactions from ethereum
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -114,7 +114,7 @@ const peggyDeposits = await indexerGrpcExplorerApi.fetchPeggyDepositTxs({
 console.log(peggyDeposits)
 ```
 
-- Get peggy withdrawal transactions to ethereum
+### Fetch peggy withdrawal transactions to ethereum
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -138,7 +138,7 @@ const peggyWithdrawals = await indexerGrpcExplorerApi.fetchPeggyWithdrawalTxs({
 console.log(peggyWithdrawals)
 ```
 
-- Get blocks
+### Fetch blocks
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -158,7 +158,7 @@ const blocks = await indexerGrpcExplorerApi.fetchBlocks({
 console.log(blocks)
 ```
 
-- Get block by id
+### Fetch block by id
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -174,7 +174,7 @@ const block = await indexerGrpcExplorerApi.fetchBlock(id)
 console.log(block)
 ```
 
-- Get transactions
+### Fetch transactions
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -194,7 +194,7 @@ const transactions = await indexerGrpcExplorerApi.fetchTxs({
 console.log(transactions)
 ```
 
-- Get ibc transfer transactions
+### Fetch ibc transfer transactions
 
 ```ts
 import { IndexerGrpcExplorerApi } from '@injectivelabs/sdk-ts'
@@ -214,9 +214,9 @@ const ibcTransactions = await indexerGrpcExplorerApi.fetchIBCTransferTxs({
 console.log(ibcTransactions)
 ```
 
-### Using HTTP REST
+## Using HTTP REST
 
-- get a block and details
+### Fetch a block and details
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -234,7 +234,7 @@ const block = await indexerRestExplorerApi.fetchBlock(blockHashHeight)
 console.log(block)
 ```
 
-- get blocks and details
+### Fetch blocks and details
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -256,7 +256,7 @@ const blocks = await indexerRestExplorerApi.fetchBlocks({
 console.log(blocks)
 ```
 
-- get blocks with tx details
+### Fetch blocks with transaction details
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -278,7 +278,7 @@ const blocks = await indexerRestExplorerApi.fetchBlocksWithTx({
 console.log(blocks)
 ```
 
-- get transactions
+### Fetch transactions
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -304,7 +304,7 @@ const transactions = await indexerRestExplorerApi.fetchTransactions({
 console.log(transactions)
 ```
 
-- get transactions for an account
+### Fetch transactions for an account
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -336,7 +336,7 @@ const accountTransactions =
 console.log(accountTransactions)
 ```
 
-- get a tsx by hash
+### Fetch a tsx by hash
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -354,7 +354,7 @@ const transaction = await indexerRestExplorerApi.fetchTransaction(txsHash)
 console.log(transaction)
 ```
 
-- get validators
+### Fetch validators
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -370,7 +370,7 @@ const validators = await indexerRestExplorerApi.fetchValidators()
 console.log(validators)
 ```
 
-- get validator uptime
+### Fetch validator uptime
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -390,7 +390,7 @@ const validatorUptime = await indexerRestExplorerApi.fetchValidatorUptime(
 console.log(validatorUptime)
 ```
 
-- get a contract by contract address
+### Fetch a contract by contract address
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -408,7 +408,7 @@ const contract = await indexerRestExplorerApi.fetchContract(contractAddress)
 console.log(contract)
 ```
 
-- get contracts
+### Fetch contracts
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -430,7 +430,7 @@ const contracts = await indexerRestExplorerApi.fetchContracts({
 console.log(contracts)
 ```
 
-- get contract transactions
+### Fetch contract transactions
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -456,7 +456,7 @@ const transactions = await indexerRestExplorerApi.fetchContractTransactions({
 console.log(transactions)
 ```
 
-- get cosmwasm code details
+### Fetch cosmwasm code details
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -474,7 +474,7 @@ const codeDetails = await indexerRestExplorerApi.fetchWasmCode(codeId)
 console.log(codeDetails)
 ```
 
-- get wasm codes and details
+### Fetch wasm codes and details
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'
@@ -498,7 +498,7 @@ const codes = await indexerRestExplorerApi.fetchWasmCodes({
 console.log(codes)
 ```
 
-- get cw20 balances
+### Fetch cw20 balances
 
 ```ts
 import { IndexerRestExplorerApi } from '@injectivelabs/sdk-ts'

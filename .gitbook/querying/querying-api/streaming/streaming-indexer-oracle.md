@@ -2,9 +2,9 @@
 
 Example code snippets to query the indexer for oracle module related data.
 
-### Using gRPC Stream
+## Using gRPC Stream
 
-- stream oracle prices
+### Stream oracle prices
 
 ```ts
 import { IndexerGrpcOracleStream } from '@injectivelabs/sdk-ts'
@@ -28,7 +28,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-- stream oracle prices by market
+### Stream oracle prices by market
 
 ```ts
 import { IndexerGrpcOracleStream } from '@injectivelabs/sdk-ts'
