@@ -3006,6 +3006,16 @@
     rxjs "^7.8.1"
     semver "^7.3.5"
 
+"@ledgerhq/devices@^8.2.2":
+  version "8.2.2"
+  resolved "https://registry.npmjs.org/@ledgerhq/devices/-/devices-8.2.2.tgz#d6d758182d690ad66e14f88426c448e8c54d259d"
+  integrity sha512-SKahGA4p0mZ3ovypOJ2wa5mUvUkArE3HBrwWKYf+cRs+t/Licp3OJfhj+DHIxP3AfyH2xR6CFFWECYHeKwGsDQ==
+  dependencies:
+    "@ledgerhq/errors" "^6.16.3"
+    "@ledgerhq/logs" "^6.12.0"
+    rxjs "^7.8.1"
+    semver "^7.3.5"
+
 "@ledgerhq/domain-service@^1.1.18":
   version "1.1.18"
   resolved "https://registry.npmjs.org/@ledgerhq/domain-service/-/domain-service-1.1.18.tgz#634d4e82e8b83a26847f7b61eaf425467b1a5366"
@@ -3029,6 +3039,11 @@
   resolved "https://registry.npmjs.org/@ledgerhq/errors/-/errors-6.16.2.tgz#cf3939dc92ed0871aa7fdd45e6d13446a1eaeccd"
   integrity sha512-jFpohaSW+p1Obp3NDT9QSByEtT3gtBZIjVNu8m25gnrH5zdtfPVlPwH6UiuS50s+2dHQyehV8hF+IfreKDWAZA==
 
+"@ledgerhq/errors@^6.16.3":
+  version "6.16.3"
+  resolved "https://registry.npmjs.org/@ledgerhq/errors/-/errors-6.16.3.tgz#646f68cc7e6e8d5126bce1ca06140c5ad963bee8"
+  integrity sha512-3w7/SJVXOPa9mpzyll7VKoKnGwDD3BzWgN1Nom8byR40DiQvOKjHX+kKQausCedTHVNBn9euzPCNsftZ9+mxfw==
+
 "@ledgerhq/evm-tools@^1.0.16":
   version "1.0.16"
   resolved "https://registry.npmjs.org/@ledgerhq/evm-tools/-/evm-tools-1.0.16.tgz#b0a1d59a4871adb728aa65406466f1257e639504"
@@ -3040,13 +3055,13 @@
     crypto-js "4.2.0"
     ethers "5.7.2"
 
-"@ledgerhq/hw-app-cosmos@^6.29.4":
-  version "6.29.4"
-  resolved "https://registry.npmjs.org/@ledgerhq/hw-app-cosmos/-/hw-app-cosmos-6.29.4.tgz#6d5ba45a3433698be50cc117dd4fdd1cd7aeb2c7"
-  integrity sha512-idqreCj1GKwIfmikiLfxd1OnywXa1k7OALOCuqa1ZOw4YNT6k24ATRqaAxxeL4aW4AanwMS+8Dz6hQEe9JUyEg==
+"@ledgerhq/hw-app-cosmos@^6.29.5":
+  version "6.29.5"
+  resolved "https://registry.npmjs.org/@ledgerhq/hw-app-cosmos/-/hw-app-cosmos-6.29.5.tgz#87a76a1a0c969986223b78c84372965efa935e09"
+  integrity sha512-NcfrS5pE3kQt6mBizOm9rK7+3XtWZ7LrWkO4Iz6giHkkJShnDCVFdJHxtxbhQ+6XRCADn7W75YrwnOsX5E0WbQ==
   dependencies:
-    "@ledgerhq/errors" "^6.16.2"
-    "@ledgerhq/hw-transport" "^6.30.4"
+    "@ledgerhq/errors" "^6.16.3"
+    "@ledgerhq/hw-transport" "^6.30.5"
     bip32-path "^0.4.2"
 
 "@ledgerhq/hw-app-eth@6.35.6":
@@ -3132,6 +3147,16 @@
   dependencies:
     "@ledgerhq/devices" "^7.0.6"
     "@ledgerhq/errors" "^6.12.2"
+    events "^3.3.0"
+
+"@ledgerhq/hw-transport@^6.30.5":
+  version "6.30.5"
+  resolved "https://registry.npmjs.org/@ledgerhq/hw-transport/-/hw-transport-6.30.5.tgz#841c9e4bb3849536db110ca2894d693d55bf54fd"
+  integrity sha512-JMl//7BgPBvWxrWyMu82jj6JEYtsQyOyhYtonWNgtxn6KUZWht3gU4gxmLpeIRr+DiS7e50mW7m3GA+EudZmmA==
+  dependencies:
+    "@ledgerhq/devices" "^8.2.2"
+    "@ledgerhq/errors" "^6.16.3"
+    "@ledgerhq/logs" "^6.12.0"
     events "^3.3.0"
 
 "@ledgerhq/live-env@^1.0.1":
