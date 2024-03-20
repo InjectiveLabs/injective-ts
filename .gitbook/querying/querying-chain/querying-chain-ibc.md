@@ -2,9 +2,9 @@
 
 Example code snippets to query the chain for IBC related data.
 
-### Using gRPC
+## Using gRPC
 
-- Get the denom trace from the IBC hash
+### Fetch the denom trace from the IBC hash
 
 ```ts
 import { ChainGrpcIbcApi } from '@injectivelabs/sdk-ts'
@@ -19,7 +19,7 @@ const denomTrace = await chainGrpcIbcApi.fetchDenomTrace(hash)
 console.log(denomTrace)
 ```
 
-- Get a list of denom traces
+### Fetch list of denom traces
 
 ```ts
 import { ChainGrpcIbcApi } from '@injectivelabs/sdk-ts'

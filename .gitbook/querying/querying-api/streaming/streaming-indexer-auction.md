@@ -2,9 +2,9 @@
 
 Example code snippets to stream from the indexer for auction module related data.
 
-### Using gRPC Stream
+## Using gRPC Stream
 
-- stream auction bids
+### Stream auction bids
 
 ```ts
 import { IndexerGrpcAuctionStream } from '@injectivelabs/sdk-ts'

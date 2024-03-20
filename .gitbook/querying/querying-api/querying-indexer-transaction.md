@@ -2,9 +2,9 @@
 
 Example code snippets to query the indexer for transaction module related data.
 
-### Using gRPC
+## Using gRPC
 
-- Get a response for preparing a tx
+### Fetch response for preparing a transaction
 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -29,7 +29,7 @@ const prepareTxResponse = await indexerGrpcTransactionApi.prepareTxRequest({
 console.log(prepareTxResponse)
 ```
 
-- Get a response for preparing a cosmos tx
+### Fetch response for preparing a cosmos transaction
 
 ```ts
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -49,7 +49,7 @@ const prepareCosmosTxResponse = await indexerGrpcTransactionApi.prepareCosmosTxR
 console.log(prepareCosmosTxResponse)
 ```
 
-- get a response for preparing a tsx on Injective exchange module
+### Fetch response for preparing a transactions on Injective exchange module
 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -74,7 +74,7 @@ const prepareTxResponse = await indexerGrpcTransactionApi.prepareExchangeTxReque
 console.log(prepareTxResponse)
 ```
 
-- get a response for broadcasting a tsx from desktop while using an ethereum wallet extension. Use `MsgBroadcasterWithPk` to broadcast a tsx for node app, which can be found in `@injectivelabs/sdk-ts`. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a tsx
+### Fetch response for broadcasting a transactions from desktop while using an ethereum wallet extension. Use `MsgBroadcasterWithPk` to broadcast a transactions for node app, which can be found in `@injectivelabs/sdk-ts`. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a transactions
 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -126,7 +126,7 @@ const broadcastTxResponse = await indexerGrpcTransactionApi.broadcastTxRequest({
 console.log(broadcastTxResponse)
 ```
 
-- get a response for broadcasting a cosmos tsx. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a cosmos tsx
+### Fetch response for broadcasting a cosmos transactions. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a cosmos transactions
 
 ```ts
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -154,7 +154,7 @@ const broadcastCosmosTxResponse = await indexerGrpcTransactionApi.broadcastCosmo
 console.log(broadcastCosmosTxResponse)
 ```
 
-- get the fee payer
+### Fetch fee payer
 
 ```ts
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'

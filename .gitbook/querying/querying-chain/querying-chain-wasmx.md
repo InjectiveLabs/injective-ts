@@ -2,9 +2,9 @@
 
 Example code snippets to query the wasmX module on chain
 
-### Using gRPC
+## Using gRPC
 
-- Get parameters related to the wasmX module
+### Fetch parameters related to the wasmX module
 
 ```ts
 import { ChainGrpcWasmXApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const moduleParams = await chainGrpcWasmXApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-- Get the wasmX module state
+### Fetch the wasmX module state
 
 ```ts
 import { ChainGrpcWasmXApi } from '@injectivelabs/sdk-ts'
