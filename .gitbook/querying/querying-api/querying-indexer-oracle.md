@@ -2,9 +2,9 @@
 
 Example code snippets to query the indexer for oracle module related data.
 
-## Using gRPC
+### Using gRPC
 
-### Fetch list of oracles
+#### Fetch list of oracles
 
 ```ts
 import { IndexerGrpcOracleApi } from '@injectivelabs/sdk-ts'
@@ -18,9 +18,9 @@ const oracleList = await indexerGrpcOracleApi.fetchOracleList()
 console.log(oracleList)
 ```
 
-### Fetch price from the oracle
+#### Fetch price from the oracle
 
-Base and Quote oracle symbols are always fetched from the market itself. They can be in a different representation than plain symbols (i.e hashes for `pyth` oracle).&#x20;
+Base and Quote oracle symbols are always fetched from the market itself. They can be in a different representation than plain symbols (i.e hashes for `pyth` oracle).
 
 ```ts
 import {

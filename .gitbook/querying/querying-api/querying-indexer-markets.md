@@ -2,9 +2,9 @@
 
 Example code snippets to query the indexer for all markets data
 
-## Using HTTP REST
+### Using HTTP REST
 
-### Fetch marketsHistory
+#### Fetch markets History
 
 ```ts
 import { IndexerRestMarketChronosApi } from '@injectivelabs/sdk-ts'

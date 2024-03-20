@@ -1,10 +1,10 @@
-# Querying Chain - Auth Module
+# Auth
 
 Example code snippets to query the auth module on the chain.
 
-## Using gRPC
+### Using gRPC
 
-### Fetch parameters such as max memo characters or tsx signature limit
+#### Fetch parameters such as max memo characters or tsx signature limit
 
 ```ts
 import { ChainGrpcAuthApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const moduleParams = await chainGrpcAuthApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-### Fetch ccount details associated with an injective address such as the account's address, sequence, or pub_key
+#### Fetch ccount details associated with an injective address such as the account's address, sequence, or pub\_key
 
 ```ts
 import { ChainGrpcAuthApi } from '@injectivelabs/sdk-ts'
@@ -35,7 +35,7 @@ const accountDetailsResponse = await chainGrpcAuthApi.fetchAccount(
 console.log(accountDetailsResponse)
 ```
 
-### Fetch list of accounts on chain
+#### Fetch list of accounts on chain
 
 ```ts
 import { PaginationOption, ChainGrpcAuthApi } from '@injectivelabs/sdk-ts'
@@ -51,9 +51,9 @@ const accounts = await chainGrpcAuthApi.fetchAccounts(/* optional pagination par
 console.log(accounts)
 ```
 
-## Using HTTP REST
+### Using HTTP REST
 
-### Fetch ccount details associated with an injective address such as the account's address, sequence, or pub_key
+#### Fetch account details associated with an injective address such as the account's address, sequence, or pub\_key
 
 ```ts
 import { ChainRestAuthApi } from '@injectivelabs/sdk-ts'
@@ -70,7 +70,7 @@ const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
 console.log(accountDetailsResponse)
 ```
 
-### Fetch cosmos address from an injective address
+#### Fetch cosmos address from an injective address
 
 ```ts
 import { ChainRestAuthApi } from '@injectivelabs/sdk-ts'

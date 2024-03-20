@@ -2,9 +2,9 @@
 
 Example code snippets to query the indexer for derivative module related data.
 
-## Using gRPC
+### Using gRPC
 
-### Fetch markets
+#### Fetch markets
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
@@ -20,7 +20,7 @@ const markets = await indexerGrpcDerivativesApi.fetchMarkets()
 console.log(markets)
 ```
 
-### Fetch market based on a market id
+#### Fetch market based on a market id
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
@@ -38,7 +38,7 @@ const market = await indexerGrpcDerivativesApi.fetchMarket(marketId)
 console.log(market)
 ```
 
-### Fetch binary options markets
+#### Fetch binary options markets
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
@@ -55,7 +55,7 @@ const binaryOptionsMarket =
 console.log(binaryOptionsMarket)
 ```
 
-### Fetch binary options market based on market id
+#### Fetch binary options market based on market id
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
@@ -74,7 +74,7 @@ const binaryOptionsMarket =
 console.log(binaryOptionsMarket)
 ```
 
-### Fetch a market's orderbook based on market id
+#### Fetch a market's orderbook based on market id
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
@@ -92,7 +92,7 @@ const orderbook = await indexerGrpcDerivativesApi.fetchOrderbook(marketId)
 console.log(orderbook)
 ```
 
-### Fetch a market's orders
+#### Fetch a market's orders
 
 ```ts
 import { PaginationOption, IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
@@ -117,7 +117,7 @@ const orders = await indexerGrpcDerivativesApi.fetchOrders({
 console.log(orders)
 ```
 
-### Fetch a market's order history
+#### Fetch a market's order history
 
 ```ts
 import {
@@ -151,7 +151,7 @@ const orderHistory = await indexerGrpcDerivativesApi.fetchOrderHistory({
 console.log(orderHistory)
 ```
 
-### Fetch a market's positions
+#### Fetch a market's positions
 
 ```ts
 import {
@@ -179,7 +179,7 @@ const positions = await indexerGrpcDerivativesApi.fetchPositions({
 console.log(positions)
 ```
 
-### Fetch a market's trades
+#### Fetch a market's trades
 
 ```ts
 import {
@@ -210,7 +210,7 @@ const trades = await indexerGrpcDerivativesApi.fetchTrades({
 console.log(trades)
 ```
 
-### Fetch funding payments for a market
+#### Fetch funding payments for a market
 
 ```ts
 import {
@@ -233,7 +233,7 @@ const fundingPayments = await indexerGrpcDerivativesApi.fetchFundingPayments({
 console.log(fundingPayments)
 ```
 
-### Fetch funding rates for a market
+#### Fetch funding rates for a market
 
 ```ts
 import {
@@ -256,7 +256,7 @@ const fundingRates = await indexerGrpcDerivativesApi.fetchFundingRates({
 console.log(fundingRates)
 ```
 
-### Fetch a list of subaccount orders
+#### Fetch subaccount orders
 
 ```ts
 import {
@@ -281,7 +281,7 @@ const subaccountOrders = await indexerGrpcDerivativesApi.fetchSubaccountOrdersLi
 console.log(subaccountOrders)
 ```
 
-### Fetch a list of subaccount trades
+#### Fetch subaccount trades
 
 ```ts
 import {
@@ -312,7 +312,7 @@ const subaccountTrades = await indexerGrpcDerivativesApi.fetchSubaccountTradesLi
 console.log(subaccountTrades)
 ```
 
-### Fetch orderbooks for multiple markets
+#### Fetch orderbooks for multiple markets
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
@@ -330,7 +330,7 @@ const orderbooks = await indexerGrpcDerivativesApi.fetchOrderbooksV2(marketIds)
 console.log(orderbooks)
 ```
 
-### Fetch orderbook for a market
+#### Fetch orderbook for a market
 
 ```ts
 import { IndexerGrpcDerivativesApi } from '@injectivelabs/sdk-ts'
@@ -348,9 +348,9 @@ const orderbook = await indexerGrpcDerivativesApi.fetchOrderbookV2(marketId)
 console.log(orderbook)
 ```
 
-## Using HTTP REST
+### Using HTTP REST
 
-### Fetch market summary, such as a history of prices and 24 hr volume
+#### Fetch market summary, such as a history of prices and 24 hr volume
 
 ```ts
 import { IndexerRestDerivativesChronosApi } from '@injectivelabs/sdk-ts'
@@ -370,7 +370,7 @@ const marketSummary = await indexerRestDerivativesChronosApi.fetchMarketSummary(
 console.log(marketSummary)
 ```
 
-### Fetch all markets' summaries, such as a history of prices and 24 hr volume
+#### Fetch all markets' summaries, such as a history of prices and 24 hr volume
 
 ```ts
 import { IndexerRestDerivativesChronosApi } from '@injectivelabs/sdk-ts'

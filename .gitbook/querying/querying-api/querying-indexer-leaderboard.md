@@ -2,9 +2,9 @@
 
 Example code snippets to query the indexer for leaderboard module related data.
 
-## Using HTTP REST
+### Using HTTP REST
 
-### Fetch leaderboard
+#### Fetch leaderboard
 
 ```ts
 import { IndexerRestLeaderboardChronosApi } from '@injectivelabs/sdk-ts'

@@ -1,10 +1,10 @@
-# Querying Chain: Insurance Funds
+# Insurance Funds
 
 Example code snippets to query data related to the insurance fund on chain.
 
-## Using gRPC
+### Using gRPC
 
-### Fetch the default redemption notice period duration
+#### Fetch default redemption notice period duration
 
 ```ts
 import { ChainGrpcInsuranceFundApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const moduleParams = await chainGrpcInsuranceFundApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-### Fetch the list insurance funds and associated metadata
+#### Fetch insurance funds and associated metadata
 
 ```ts
 import { ChainGrpcInsuranceFundApi } from '@injectivelabs/sdk-ts'
@@ -32,7 +32,7 @@ const insuranceFunds = await chainGrpcInsuranceFundApi.fetchInsuranceFunds()
 console.log(insuranceFunds)
 ```
 
-### Fetch the insurance fund and associated metadata based on the market ID
+#### Fetch insurance fund and associated metadata based on the market ID
 
 ```ts
 import { ChainGrpcInsuranceFundApi } from '@injectivelabs/sdk-ts'
@@ -49,7 +49,7 @@ const insuranceFund = await chainGrpcInsuranceFundApi.fetchInsuranceFund(
 console.log(insuranceFund)
 ```
 
-### Fetch the estimated redemptions for a given injective address for a market
+#### Fetch estimated redemptions for a given injective address for a market
 
 ```ts
 import { ChainGrpcInsuranceFundApi } from '@injectivelabs/sdk-ts'
@@ -70,7 +70,7 @@ const estimatedRedemptions =
 console.log(estimatedRedemptions)
 ```
 
-### Fetch the pending redemptions for a given injective address for a market
+#### Fetch pending redemptions for a given injective address for a market
 
 ```ts
 import { ChainGrpcInsuranceFundApi } from '@injectivelabs/sdk-ts'

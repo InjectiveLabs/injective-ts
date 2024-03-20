@@ -2,9 +2,9 @@
 
 Example code snippets to query the indexer for portfolio module related data.
 
-## Using gRPC
+### Using gRPC
 
-### Fetch portfolio based on injective address, such as bank balances and subaccount balances
+#### Fetch portfolio based on injective address, such as bank balances and subaccount balances
 
 <pre class="language-ts"><code class="lang-ts"><strong>import { IndexerGrpcAccountPortfolioApi } from '@injectivelabs/sdk-ts'
 </strong>import { getNetworkEndpoints, Network } from '@injectivelabs/networks'

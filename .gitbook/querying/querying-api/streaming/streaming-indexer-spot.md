@@ -2,9 +2,9 @@
 
 Example code snippets to stream from the indexer for spot market module related data.
 
-## Using gRPC Stream
+### Using gRPC Stream
 
-### Stream the spot orderbook
+#### Stream the spot orderbook
 
 ```ts
 import { IndexerGrpcSpotStream } from '@injectivelabs/sdk-ts'
@@ -31,7 +31,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-### Stream spot orders
+#### Stream spot orders
 
 ```ts
 import { IndexerGrpcSpotsStream } from '@injectivelabs/sdk-ts'
@@ -63,7 +63,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-### Stream spot order history
+#### Stream spot order history
 
 ```ts
 import {
@@ -103,7 +103,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-### Stream spot trades
+#### Stream spot trades
 
 ```ts
 import {
@@ -139,7 +139,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-### Stream markets
+#### Stream markets
 
 ```ts
 import { IndexerGrpcSpotStream } from '@injectivelabs/sdk-ts'
@@ -166,7 +166,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-### Stream orderbook updates
+#### Stream orderbook updates
 
 ```ts
 import { IndexerGrpcSpotStream } from '@injectivelabs/sdk-ts'

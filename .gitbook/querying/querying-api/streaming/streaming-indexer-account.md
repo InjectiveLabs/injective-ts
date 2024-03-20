@@ -2,9 +2,9 @@
 
 Example code snippets to stream from the indexer for subaccount related data.
 
-## Using gRPC stream
+### Using gRPC stream
 
-### Stream subaccount balance
+#### Stream subaccount balance
 
 ```ts
 import { IndexerGrpcAccountStream } from '@injectivelabs/sdk-ts'

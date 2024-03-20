@@ -1,10 +1,10 @@
-# Querying Chain: Tendermint
+# Tendermint
 
 Example code snippets to query for chain node related data.
 
-## Using HTTP REST
+### Using HTTP REST
 
-### Fetch latest block info
+#### Fetch the latest block info
 
 ```ts
 import { ChainRestTendermintApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 console.log(latestBlock)
 ```
 
-### Fetch chain node info
+#### Fetch chain node info
 
 ```ts
 import { ChainRestTendermintApi } from '@injectivelabs/sdk-ts'
