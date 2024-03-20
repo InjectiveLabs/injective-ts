@@ -101,7 +101,7 @@ const chainRestBankApi = new ChainRestBankApi(endpoints.rest)
 const cosmosAddress = 'cosmos...' /* example is using Cosmos Hub */
 const denom = 'uatom'
 
-const balance = await chainGrpcBankApi.fetchBalance(cosmosAddress, denom)
+const balance = await chainRestBankApi.fetchBalance(cosmosAddress, denom)
 
 console.log(balance)
 ```
