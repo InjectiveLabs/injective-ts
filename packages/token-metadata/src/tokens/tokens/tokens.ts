@@ -3456,4 +3456,18 @@ export default {
       },
     ],
   },
+
+  BLACK: {
+    name: 'BLACK',
+    logo: 'BLACK.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj16eckaf75gcu9uxdglyvmh63k9t0l7chd0qmu85',
+        symbol: 'BLACK',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
