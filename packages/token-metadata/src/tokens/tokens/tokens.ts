@@ -2833,6 +2833,15 @@ export default {
     tokenType: TokenType.TokenFactory,
   },
 
+  KOGA: {
+    name: 'Koga',
+    symbol: 'KOGA',
+    decimals: 6,
+    logo: 'koga.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
+
   APP: {
     name: 'Moon App',
     symbol: 'APP',
