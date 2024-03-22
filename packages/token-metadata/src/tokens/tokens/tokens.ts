@@ -2847,4 +2847,13 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  KOGA: {
+    name: 'Koga',
+    symbol: 'KOGA',
+    decimals: 6,
+    logo: 'koga.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 } as Record<string, TokenMeta>
