@@ -607,11 +607,11 @@ export const getCosmosExplorerUrl = (
 
 export const getEthereumExplorerUrl = (network: Network): string => {
   if (isDevnet(network)) {
-    return 'https://goerli.etherscan.io'
+    return 'https://sepolia.etherscan.io'
   }
 
   if (isTestnet(network)) {
-    return 'https://goerli.etherscan.io'
+    return 'https://sepolia.etherscan.io'
   }
 
   return 'https://etherscan.io'
@@ -619,11 +619,11 @@ export const getEthereumExplorerUrl = (network: Network): string => {
 
 export const getArbitrumExplorerUrl = (network: Network): string => {
   if (isDevnet(network)) {
-    return 'https://goerli.arbiscan.io'
+    return 'https://sepolia.arbiscan.io'
   }
 
   if (isTestnet(network)) {
-    return 'https://goerli.arbiscan.io'
+    return 'https://sepolia.arbiscan.io'
   }
 
   return 'https://arbiscan.io'

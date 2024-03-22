@@ -29,6 +29,13 @@ export const getNetworkFromChainId = (
     }
   }
 
+  if (chainId === EthereumChainId.Sepolia) {
+    return {
+      host: 'sepolia',
+      networkName: 'Sepolia Test Network',
+    }
+  }
+
   if (chainId === EthereumChainId.Kovan) {
     return {
       host: 'kovan',

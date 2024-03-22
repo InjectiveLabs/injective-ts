@@ -1,5 +1,5 @@
 import { ZERO_ADDRESS } from '@injectivelabs/utils'
-import { ChainId } from '@injectivelabs/ts-types'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
@@ -9,35 +9,39 @@ import {
 } from './types'
 
 export const contractAddresses: ContractAddressesForChainId = {
-  '1': {
+  [EthereumChainId.Mainnet]: {
     peggy: '0xF955C57f9EA9Dc8781965FEaE0b6A2acE2BAD6f3',
     injective: '0xe28b3B32B6c345A34Ff64674606124Dd5Aceca30',
   },
-  '3': {
+  [EthereumChainId.Ropsten]: {
     peggy: ZERO_ADDRESS,
     injective: ZERO_ADDRESS,
   },
-  '4': {
+  [EthereumChainId.Rinkeby]: {
     peggy: ZERO_ADDRESS,
     injective: ZERO_ADDRESS,
   },
-  '5': {
+  [EthereumChainId.Goerli]: {
     peggy: '0xd2C6753F6B1783EF0a3857275e16e79D91b539a3',
     injective: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
   },
-  '42': {
+  [EthereumChainId.Kovan]: {
     peggy: ZERO_ADDRESS,
     injective: ZERO_ADDRESS,
   },
-  '888': {
+  [EthereumChainId.Injective]: {
     peggy: ZERO_ADDRESS,
     injective: ZERO_ADDRESS,
   },
-  '1337': {
+  [EthereumChainId.Sepolia]: {
+    peggy: '0x429b9aD854D72abe857287BC6cA05A24077C6f09',
+    injective: '0x5512c04B6FF813f3571bDF64A1d74c98B5257332',
+  },
+  [EthereumChainId.Ganache]: {
     peggy: ZERO_ADDRESS,
     injective: ZERO_ADDRESS,
   },
-  '31337': {
+  [EthereumChainId.HardHat]: {
     peggy: ZERO_ADDRESS,
     injective: ZERO_ADDRESS,
   },

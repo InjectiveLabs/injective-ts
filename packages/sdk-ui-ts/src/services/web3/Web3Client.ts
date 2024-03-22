@@ -104,7 +104,7 @@ export class Web3Client {
       apiKey: getKeyFromRpcUrl(rpc),
       network: !isTestnetOrDevnet(network)
         ? AlchemyNetwork.ETH_MAINNET
-        : AlchemyNetwork.ETH_GOERLI,
+        : AlchemyNetwork.ETH_SEPOLIA,
     })
 
     return this.alchemy

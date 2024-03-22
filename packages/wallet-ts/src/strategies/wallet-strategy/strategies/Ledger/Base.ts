@@ -44,6 +44,10 @@ const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
     return Chain.Goerli
   }
 
+  if (chainId === EthereumChainId.Sepolia) {
+    return Chain.Sepolia
+  }
+
   if (chainId === EthereumChainId.Kovan) {
     return Chain.Goerli
   }

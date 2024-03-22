@@ -39,11 +39,11 @@ export const fetchEstimatorGasPrice = async (
   const isMainnetNetwork = isMainnet(network)
   const settings = {
     apiKey: alchemyRpcUrl,
-    network: isMainnetNetwork ? Network.ETH_MAINNET : Network.ETH_GOERLI,
+    network: isMainnetNetwork ? Network.ETH_MAINNET : Network.ETH_SEPOLIA,
   }
 
   const url = `https://eth-${
-    isMainnetNetwork ? 'mainnet' : 'goerli'
+    isMainnetNetwork ? 'mainnet' : 'sepolia'
   }.alchemyapi.io/v2/`
   const alchemy = new Alchemy(settings)
   const httpClient = new HttpClient(url)

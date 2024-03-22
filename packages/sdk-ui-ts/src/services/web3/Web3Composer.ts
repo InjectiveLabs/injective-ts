@@ -180,7 +180,7 @@ export class Web3Composer {
       network:
         ethereumChainId === EthereumChainId.Mainnet
           ? AlchemyNetwork.ETH_MAINNET
-          : AlchemyNetwork.ETH_GOERLI,
+          : AlchemyNetwork.ETH_SEPOLIA,
     })
 
     return this.alchemy
