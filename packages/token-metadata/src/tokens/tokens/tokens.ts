@@ -3488,11 +3488,11 @@ export default {
     logo: 'nonja.png',
     coinGeckoId: '',
 
-    tokenFactories: [
+    cw20s: [
       {
-        creator: 'inj1alwxgkns9x7d2sprymwwfvzl5t7teetym02lrj',
         symbol: 'NONJA',
-        decimals: 6,
+        decimals: 18,
+        address: 'inj1fu5u29slsg2xtsj7v5la22vl4mr4ywl7wlqeck',
       },
     ],
   },
