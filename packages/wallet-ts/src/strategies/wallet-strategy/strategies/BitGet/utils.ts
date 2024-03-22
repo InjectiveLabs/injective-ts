@@ -45,7 +45,7 @@ function getBitGetFromWindow() {
     return
   }
 
-  if ($window.bitkeep.ethereum) {
+  if ($window.bitkeep && $window.bitkeep.ethereum) {
     return $window.bitkeep.ethereum
   }
 
