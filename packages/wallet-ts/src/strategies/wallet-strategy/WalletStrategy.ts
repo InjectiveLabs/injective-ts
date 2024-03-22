@@ -21,6 +21,7 @@ import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
 import Phantom from './strategies/Phantom'
 import Okx from './strategies/Okx'
+import BitGet from './strategies/BitGet'
 import Cosmostation from './strategies/Cosmostation'
 import LedgerCosmos from './strategies/LedgerCosmos'
 import { Wallet, WalletDeviceType } from '../../types/enums'
@@ -94,6 +95,8 @@ const createStrategy = ({
       return new Phantom(ethWalletArgs)
     case Wallet.OkxWallet:
       return new Okx(ethWalletArgs)
+    case Wallet.BitGet:
+      return new BitGet(ethWalletArgs)
     case Wallet.Keplr:
       return new Keplr({ ...args })
     case Wallet.Cosmostation:
