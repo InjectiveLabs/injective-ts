@@ -2133,6 +2133,20 @@ export default {
     ],
   },
 
+  MONKS: {
+    name: 'Monks',
+    logo: 'MonksLogo.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj148sjw9h9n3n8gjw37reetwdlc7v4hfhl8r7vv3',
+        symbol: '$MONKS',
+        decimals: 6,
+      },
+    ],
+  },
+
   NOBI: {
     name: 'Shinobi',
     logo: 'nobi.webp',
