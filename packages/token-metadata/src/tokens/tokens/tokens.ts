@@ -2846,5 +2846,13 @@ export default {
       address: '0xC5d27F27F08D1FD1E3EbBAa50b3442e6c0D50439',
       tokenType: TokenType.Erc20,
     },
+    KIRA: {
+      name: 'KiraTestToken',
+      symbol: 'KIRA',
+      decimals: 6,
+      logo: 'kira.png',
+      coinGeckoId: '',
+      tokenType: TokenType.TokenFactory,
+    },
   },
 } as Record<string, TokenMeta>
