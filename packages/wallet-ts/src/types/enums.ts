@@ -17,6 +17,7 @@ export enum Wallet {
   LedgerLegacy = 'ledger-legacy',
   WalletConnect = 'wallet-connect',
   CosmostationEth = 'cosmostation-eth',
+  Welldone = 'welldone',
 }
 
 export enum WalletDeviceType {

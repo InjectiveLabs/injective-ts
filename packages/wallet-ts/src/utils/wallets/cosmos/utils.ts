@@ -2,6 +2,7 @@ import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
 import { Cosmos } from '@cosmostation/extension-client'
 import type { Keplr } from '@keplr-wallet/types'
 import { Wallet } from '../../../types/enums'
+import { WalletProvider } from '../welldone/welldone'
 
 /**
  * Returns a timeout timestamp in milliseconds so its compatible
@@ -26,7 +27,7 @@ export const makeTimeoutTimestampInNs = (
 ) => makeTimeoutTimestamp(timeoutInMs) * 1e6
 
 export const isCosmosBrowserWallet = (wallet: Wallet): boolean =>
-  [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.Cosmostation].includes(
+  [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.Cosmostation, Wallet.Welldone].includes(
     wallet,
   )
 
@@ -39,6 +40,7 @@ export const isCosmosWalletInstalled = (wallet: Wallet) => {
     keplr?: Keplr
     ninji?: Keplr
     cosmostation?: Cosmos
+    dapp?: WalletProvider
   }
 
   switch (wallet) {
@@ -50,6 +52,8 @@ export const isCosmosWalletInstalled = (wallet: Wallet) => {
       return $window.cosmostation !== undefined
     case Wallet.Leap:
       return $window.leap !== undefined
+    case Wallet.Welldone:
+      return $window.dapp !== undefined
     default:
       return false
   }
