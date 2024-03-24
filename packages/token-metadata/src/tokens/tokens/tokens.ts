@@ -2141,7 +2141,7 @@ export default {
     tokenFactories: [
       {
         creator: 'inj148sjw9h9n3n8gjw37reetwdlc7v4hfhl8r7vv3',
-        symbol: '$MONKS',
+        symbol: 'MONKS',
         decimals: 6,
       },
     ],
