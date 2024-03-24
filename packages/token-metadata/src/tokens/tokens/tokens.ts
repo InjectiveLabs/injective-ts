@@ -3496,4 +3496,23 @@ export default {
       },
     ],
   },
+
+     },
+	],
+},
+		NBOY: {
+		name: 'NinjaBoy',
+		logo: 'NBlogo.png',
+		coinGeckoId: '',
+		
+
+		tokenFactories: [
+		{
+		creator: 'inj1nmc5namhwszx0yartvjm6evsxrj0ctq2qa30l7',
+		symbol: 'NBOY',
+		decimals: 18,
+		},
+	],
+},
+
 } as Record<string, TokenMetaBase>
