@@ -143,4 +143,17 @@ export default {
       },
     ],
   },
+  KIRA: {
+    name: 'KiraTestToken',
+    logo: 'kira.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        decimals: 6,
+        symbol: 'KIRA',
+        creator: 'inj1jfuyujpvvkxq4566r3z3tv3jdy29pqra5ln0yk',
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
