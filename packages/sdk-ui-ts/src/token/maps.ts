@@ -99,7 +99,8 @@ export const spotMarketTickerMaps = ({
     }
   }
 
-  const nonjaUnverifiedDenom = 'factory/inj1alwxgkns9x7d2sprymwwfvzl5t7teetym02lrj/NONJA'
+  const nonjaUnverifiedDenom =
+    'factory/inj1alwxgkns9x7d2sprymwwfvzl5t7teetym02lrj/NONJA'
 
   if (market.baseDenom === nonjaUnverifiedDenom) {
     {
@@ -107,6 +108,51 @@ export const spotMarketTickerMaps = ({
         ...market,
         slug: slug.replace('nonja', 'nonjaunverified'),
         ticker: market.ticker.replace('NONJA', 'NONJAunverified'),
+        baseToken,
+        quoteToken,
+      } as UiBaseSpotMarketWithToken
+    }
+  }
+
+  const solanaLegacyDenom =
+    'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1sthrn5ep8ls5vzz8f9gp89khhmedahhdkqa8z3'
+
+  if (market.baseDenom === solanaLegacyDenom) {
+    {
+      return {
+        ...market,
+        slug,
+        ticker: market.ticker.replace('SOL', 'SOLlegacy'),
+        baseToken,
+        quoteToken,
+      } as UiBaseSpotMarketWithToken
+    }
+  }
+
+  const arbLegacyDenom =
+    'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1d5vz0uzwlpfvgwrwulxg6syy82axa58y4fuszd'
+
+  if (market.baseDenom === arbLegacyDenom) {
+    {
+      return {
+        ...market,
+        slug,
+        ticker: market.ticker.replace('ARB', 'ARBlegacy'),
+        baseToken,
+        quoteToken,
+      } as UiBaseSpotMarketWithToken
+    }
+  }
+
+  const wmaticLegacyDenom =
+    'factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1dxv423h8ygzgxmxnvrf33ws3k94aedfdevxd8h'
+
+  if (market.baseDenom === wmaticLegacyDenom) {
+    {
+      return {
+        ...market,
+        slug,
+        ticker: market.ticker.replace('WMATIC', 'WMATIClegacy'),
         baseToken,
         quoteToken,
       } as UiBaseSpotMarketWithToken
