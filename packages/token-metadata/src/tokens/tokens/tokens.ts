@@ -2133,20 +2133,6 @@ export default {
     ],
   },
 
-  MONKS: {
-    name: 'Monks',
-    logo: 'MonksLogo.png',
-    coinGeckoId: '',
-
-    tokenFactories: [
-      {
-        creator: 'inj148sjw9h9n3n8gjw37reetwdlc7v4hfhl8r7vv3',
-        symbol: 'MONKS',
-        decimals: 6,
-      },
-    ],
-  },
-
   NOBI: {
     name: 'Shinobi',
     logo: 'nobi.webp',
@@ -3507,6 +3493,20 @@ export default {
         symbol: 'NONJA',
         decimals: 18,
         address: 'inj1fu5u29slsg2xtsj7v5la22vl4mr4ywl7wlqeck',
+      },
+    ],
+  },
+
+  MONKS: {
+    name: 'MONKS',
+    logo: 'monks.png',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'MONKS',
+        decimals: 18,
+        address: 'inj148sjw9h9n3n8gjw37reetwdlc7v4hfhl8r7vv3',
       },
     ],
   },
