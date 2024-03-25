@@ -4,7 +4,9 @@ Example code snippets to query the indexer for subaccount related data.
 
 ### Using gRPC
 
-* Get the user's portfolio details, such as their available balance, unrealized Pnl, or their portfolio value (deprecated -> use [Portfolio](querying-indexer-portfolio.md#using-grpc) instead)
+#### Fetch user's portfolio details&#x20;
+
+This includes available balance, unrealized Pnl, and portfolio value. Note: **deprecated** -> use [Portfolio](querying-indexer-portfolio.md#using-grpc) instead
 
 ```ts
 import { IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'
@@ -20,7 +22,7 @@ const portfolio = await indexerGrpcAccountApi.fetchPortfolio(injectiveAddress)
 console.log(portfolio)
 ```
 
-* Get the user's trading rewards per epoch
+#### Fetch user's trading rewards per epoch
 
 ```ts
 import { IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'
@@ -40,7 +42,7 @@ const tradingRewards = await indexerGrpcAccountApi.fetchRewards({
 console.log(tradingRewards)
 ```
 
-* Get a list of subaccounts associated with an injective address
+#### Fetch subaccounts associated with an injective address
 
 ```ts
 import { IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'
@@ -58,7 +60,7 @@ const subaccountsList = await indexerGrpcAccountApi.fetchSubaccountsList(
 console.log(subaccountsList)
 ```
 
-* Get the balance of a subaccount for a specific denom
+#### Fetch balance of a subaccount for a specific denom
 
 ```ts
 import { IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'
@@ -78,7 +80,7 @@ const subaccountBalance = await indexerGrpcAccountApi.fetchSubaccountBalance(
 console.log(subaccountBalance)
 ```
 
-* Get a list of balances for a subaccount
+#### Fetch of balances for a subaccount
 
 ```ts
 import { IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'
@@ -95,7 +97,7 @@ const subaccountBalanceList =
 console.log(subaccountBalanceList)
 ```
 
-* Get the history of a subaccount
+#### Fetch subacount history
 
 ```ts
 import { PaginationOption, IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'
@@ -117,7 +119,7 @@ const subaccountHistory = await indexerGrpcAccountApi.fetchSubaccountHistory({
 console.log(subaccountHistory)
 ```
 
-* Get a summary of a subaccount's orders
+#### Fetch a summary of a subaccount's orders
 
 ```ts
 import { IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'
@@ -139,7 +141,7 @@ const orderSummary = await indexerGrpcAccountApi.fetchSubaccountOrderSummary({
 console.log(orderSummary)
 ```
 
-* Get states of a list of spot and/or derivatives orders
+#### Fetch states of spot or (and) derivatives orders
 
 ```ts
 import { IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'

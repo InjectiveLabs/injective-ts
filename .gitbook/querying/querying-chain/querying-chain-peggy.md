@@ -1,10 +1,10 @@
-# Querying Chain: Peggy
+# Peggy
 
 Example code snippets to query the chain via the peggy api.
 
 ### Using gRPC
 
-- Get parameters related to peggy
+#### Fetch parameters related to peggy
 
 ```ts
 import { ChainGrpcPeggyApi } from '@injectivelabs/sdk-ts'

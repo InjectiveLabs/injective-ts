@@ -1,10 +1,12 @@
 # MsgBroadcaster
 
-The `MsgBroadcast`er abstraction class is a way to broadcast transactions on Injective with ease. With it, you can just pass a Message that you want to be packed in a transaction and the signer address and the transaction will be prepared, signed and broadcasted.
+The `MsgBroadcast`er abstraction class is a way to broadcast transactions on Injective with ease. With it, you can pass a Message that you want to be packed in a transaction and the signer's address and the transaction will be prepared, signed, and broadcasted.
+
+An example of usage can be found on our [Helix demo repo](https://github.com/InjectiveLabs/injective-helix-demo). As for the messages that you can pass to the `broadcast` methods, you can find examples in the [Core Modules](../core-modules/) section of the docs.
 
 ### MsgBroadcaster + Wallet Strategy
 
-This MsgBroadcaster is used alongside the Wallet Strategy class for building decentralized applications.
+This MsgBroadcaster is used alongside the Wallet Strategy class for building decentralized applications.&#x20;
 
 To instantiate (and use) the `MsgBroadcaster` class, you can use the following code snippet
 
@@ -39,9 +41,55 @@ export const msgBroadcastClient = new MsgBroadcaster({
 })()
 ```
 
+#### Constructor/Broadcast Options
+
+We allow to override some of the options passed to the constructor of `MsgBroadcaster` as well as when broadcasting the transaction. Here is the interface and the meaning of each field
+
+````typescript
+import { Msgs } from '@injectivelabs/sdk-ts'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import { Network, NetworkEndpoints } from '@injectivelabs/networks'
+import type { WalletStrategy } from '../strategies'
+
+export interface MsgBroadcasterOptions {
+  network: Network /** network configuration (chainId, fees, etc) - Network.MainnetSentry for mainnet or  Network.TestnetSentry for testnet */
+  endpoints?: NetworkEndpoints /** optional - overriding the endpoints taken from the `network` param **/
+  feePayerPubKey?: string /** optional - if you are using the fee delegation service, you can set the fee payer so you don't do an extra query to the Web3Gateway */
+  simulateTx?: boolean /** simulate the transaction before broadcasting + get gas fees needed for the transaction */
+  txTimeout?: number /** optional - blocks to wait for tx to be included in a block **/
+  walletStrategy: WalletStrategy
+  gasBufferCoefficient?: number /** optional - as gas buffer to add to the simulated/hardcoded gas to ensure the transaction is included in a block */
+}
+
+
+export interface MsgBroadcasterTxOptions {
+  memo?: string /** MEMO added to the transaction **/
+  injectiveAddress: string /** the signer of the transaction **/
+  msgs: Msgs | Msgs[] /** the messages to pack into a transaction **/
+  
+  /* 
+  *** overriding the hardcoded gas/simulation - 
+  *** depending on the simulateTx parameter in 
+  *** the MsgBroadcaster constructor
+  */
+  gas?: { 
+    gasPrice?: string
+    gas?: number /** gas limit */
+    feePayer?: string
+    granter?: string
+  }
+}
+
+```
+````
+
+{% hint style="info" %}
+To override the `endpoints` and use your infrastructure (which is something we recommend), please read more on the [Networks](../readme/networks.md) page on the endpoints you need to provide and how to set them up.&#x20;
+{% endhint %}
+
 ### MsgBroadcaster with Private Key
 
-This MsgBroadcaster is used by passing a private key (mostly used for CLI environments).
+This MsgBroadcaster is used with a private key (mostly used for CLI environments). Constructor/broadcast options are quite similar as for the `MsgBroadcaster`.
 
 ```ts
 import { MsgBroadcasterWithPk } from '@injectivelabs/wallet-ts'

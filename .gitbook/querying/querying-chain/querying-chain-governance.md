@@ -1,10 +1,10 @@
-# Querying Chain: Governance
+# Governance
 
 Example code snippets to query the governance module on the chain.
 
 ### Using gRPC
 
-- Get parameters such as the voting period, max depositing period, or tallying details
+#### Fetch parameters such as the voting period, max depositing period, or tallying details
 
 ```ts
 import { ChainGrpcGovApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const moduleParams = await chainGrpcGovApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-- Get a list of proposals based on the status
+#### Fetch proposals based on the status
 
 ```ts
 import { PaginationOption, ChainGrpcGovApi } from '@injectivelabs/sdk-ts'
@@ -39,7 +39,7 @@ const proposals = await chainGrpcGovApi.fetchProposals({
 console.log(proposals)
 ```
 
-- Get proposal details based on a proposals' id
+#### Fetch proposal details based on a proposal's id
 
 ```ts
 import { ChainGrpcGovApi } from '@injectivelabs/sdk-ts'
@@ -55,7 +55,7 @@ const proposalDetails = await chainGrpcGovApi.fetchProposal(proposalId)
 console.log(proposalDetails)
 ```
 
-- Get proposal deposits based on a proposals' id.
+#### Fetch proposal deposits based on a proposal's id.
 
 ```ts
 import { PaginationOption, ChainGrpcGovApi } from '@injectivelabs/sdk-ts'
@@ -75,7 +75,7 @@ const proposalDeposits = await chainGrpcGovApi.fetchProposalDeposits({
 console.log(proposalDeposits)
 ```
 
-- Get proposal details based on a proposals' id
+#### Fetch proposal details based on a proposal's id
 
 ```ts
 import { ChainGrpcGovApi } from '@injectivelabs/sdk-ts'
@@ -91,7 +91,7 @@ const proposalDetails = await chainGrpcGovApi.fetchProposal(proposalId)
 console.log(proposalDetails)
 ```
 
-- Get proposal deposits based on a proposals' id
+#### Fetch proposal deposits based on a proposal's id
 
 ```ts
 import { PaginationOption, ChainGrpcGovApi } from '@injectivelabs/sdk-ts'
@@ -111,7 +111,7 @@ const proposalDeposits = await chainGrpcGovApi.fetchProposalDeposits({
 console.log(proposalDeposits)
 ```
 
-- Get proposal votes based on a proposals' id
+#### Fetch proposal votes based on a proposal's id
 
 ```ts
 import { PaginationOption, ChainGrpcGovApi } from '@injectivelabs/sdk-ts'
@@ -130,7 +130,7 @@ const proposalVotes = await chainGrpcGovApi.fetchProposalVotes({
 console.log(proposalVotes)
 ```
 
-- Get proposal tally based on a proposals' id
+#### Fetch proposal tally based on a proposal's id
 
 ```ts
 import { PaginationOption, ChainGrpcGovApi } from '@injectivelabs/sdk-ts'

@@ -13,6 +13,7 @@ import { TransactionException } from './TransactionException'
 import { WalletException } from './WalletException'
 import { Exception } from '../types'
 import { ConcreteException } from '../exception'
+import { BitGetException } from './BitGetException'
 
 export type ThrownException =
   | GrpcUnaryRequestException
@@ -28,6 +29,7 @@ export type ThrownException =
   | TransactionException
   | WalletException
   | LedgerCosmosException
+  | BitGetException
 
 export const isThrownException = (exception: Error | Exception): boolean => {
   if (exception instanceof ConcreteException) {
@@ -49,6 +51,7 @@ export const isThrownException = (exception: Error | Exception): boolean => {
       'WalletException',
       'TrustWalletException',
       'OkxWalletException',
+      'BitGetException',
     ].includes(exception.constructor.name)
   ) {
     return true
@@ -63,6 +66,7 @@ export {
   TrezorException,
   WalletException,
   GeneralException,
+  BitGetException,
   MetamaskException,
   TransactionException,
   TrustWalletException,

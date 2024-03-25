@@ -1,10 +1,14 @@
-# Ninja
+# Mito
 
-Example code snippets to query the indexer for the ninja vault module related data.
+Example code snippets to query the indexer for the Mito vault module related data.
 
-### Using gRPC
+{% hint style="info" %}
+Mito Documentation has been moved here visit[ Mito's Docs](https://docs.mito.fi/).
+{% endhint %}
 
-- Get a vault based off it's contract address, such as the vault's tvl or profits
+### \[Outdated] Using gRPC
+
+#### Fetch a vault based off it's contract address, such as the vault's tvl or profits
 
 ```ts
 import { IndexerGrpcNinjaApi } from '@injectivelabs/sdk-ts'
@@ -24,7 +28,7 @@ const vault = await indexerGrpcNinjaApi.fetchVault({
 console.log(vault)
 ```
 
-- Get vaults and associated details
+#### Fetch vaults and associated details
 
 ```ts
 import { IndexerGrpcNinjaApi } from '@injectivelabs/sdk-ts'
@@ -38,7 +42,7 @@ const vault = await indexerGrpcNinjaApi.fetchVaults()
 console.log(vault)
 ```
 
-- Get the lp token price chart for a vault based on the vault address
+#### Fetch the lp token price chart for a vault based on the vault address
 
 ```ts
 import { IndexerGrpcNinjaApi } from '@injectivelabs/sdk-ts'
@@ -60,7 +64,7 @@ const lpTokenPriceChart = await indexerGrpcNinjaApi.fetchLpTokenPriceChart({
 console.log(lpTokenPriceChart)
 ```
 
-- Get the tvl token chart for a vault based on the vault address
+#### Fetch the tvl token chart for a vault based on the vault address
 
 ```ts
 import { IndexerGrpcNinjaApi } from '@injectivelabs/sdk-ts'
@@ -82,7 +86,7 @@ const tvlChart = await indexerGrpcNinjaApi.fetchTVLChartRequest({
 console.log(tvlChart)
 ```
 
-- Get the vaults associated with a holder of its lp tokens
+#### Fetch the vaults associated with a holder of its lp tokens
 
 ```ts
 import { IndexerGrpcNinjaApi } from '@injectivelabs/sdk-ts'
@@ -100,7 +104,7 @@ const vaults = await indexerGrpcNinjaApi.fetchVaultsByHolderAddress({
 console.log(vaults)
 ```
 
-- Get the lp token holders from the vault address
+#### Fetch the lp token holders from the vault address
 
 ```ts
 import { IndexerGrpcNinjaApi } from '@injectivelabs/sdk-ts'
@@ -118,7 +122,7 @@ const holders = await indexerGrpcNinjaApi.fetchLPHolders({
 console.log(holders)
 ```
 
-- Get the lp holder's portfolio
+#### Fetch the lp holder's portfolio
 
 ```ts
 import { IndexerGrpcNinjaApi } from '@injectivelabs/sdk-ts'
@@ -134,7 +138,7 @@ const portfolio = await indexerGrpcNinjaApi.fetchHolderPortfolio(holderAddress)
 console.log(portfolio)
 ```
 
-- Get the leaderboard to see Pnl rankings
+#### Fetch the leaderboard to see Pnl rankings
 
 ```ts
 import { IndexerGrpcNinjaApi } from '@injectivelabs/sdk-ts'

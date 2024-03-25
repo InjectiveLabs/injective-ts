@@ -6,6 +6,7 @@ export enum Wallet {
   Ninji = 'ninji',
   Torus = 'torus',
   Ledger = 'ledger',
+  BitGet = 'BitGet',
   Trezor = 'trezor',
   Phantom = 'phantom',
   Metamask = 'metamask',

@@ -4,7 +4,7 @@ Example code snippets to query the indexer for spot market module related data.
 
 ### Using gRPC
 
-- Get markets
+#### Fetch markets
 
 ```ts
 import { IndexerGrpcSpotApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const markets = await indexerGrpcSpotApi.fetchMarkets()
 console.log(markets)
 ```
 
-- Get market based on market id
+#### Fetch market based on market id
 
 ```ts
 import { IndexerGrpcSpotApi } from '@injectivelabs/sdk-ts'
@@ -34,7 +34,7 @@ const market = await indexerGrpcSpotApi.fetchMarket(marketId)
 console.log(market)
 ```
 
-- fetch a market's orders
+#### Fetch market's orders
 
 ```ts
 import { PaginationOption, IndexerGrpcSpotApi } from '@injectivelabs/sdk-ts'
@@ -59,7 +59,7 @@ const orders = await indexerGrpcSpotApi.fetchOrders({
 console.log(orders)
 ```
 
-- fetch a market's order history
+#### Fetch market's order history
 
 ```ts
 import {
@@ -93,7 +93,7 @@ const orderHistory = await indexerGrpcSpotApi.fetchOrderHistory({
 console.log(orderHistory)
 ```
 
-- fetch a market's trades
+#### Fetch market's trades
 
 ```ts
 import {
@@ -124,7 +124,7 @@ const trades = await indexerGrpcSpotApi.fetchTrades({
 console.log(trades)
 ```
 
-- get a list of subaccount orders
+#### Fetch list of subaccount orders
 
 ```ts
 import {
@@ -149,7 +149,7 @@ const subaccountOrders = await indexerGrpcSpotApi.fetchSubaccountOrdersList({
 console.log(subaccountOrders)
 ```
 
-- get a list of subaccount trades
+#### Fetch list of subaccount trades
 
 ```ts
 import {
@@ -180,7 +180,7 @@ const subaccountTrades = await indexerGrpcSpotApi.fetchSubaccountTradesList({
 console.log(subaccountTrades)
 ```
 
-- get orderbooks for multiple markets
+#### Fetch orderbooks for multiple markets
 
 ```ts
 import { IndexerGrpcSpotApi } from '@injectivelabs/sdk-ts'
@@ -196,7 +196,7 @@ const orderbooks = await indexerGrpcSpotApi.fetchOrderbooksV2(marketIds)
 console.log(orderbooks)
 ```
 
-- get orderbook for a market
+#### Fetch orderbook for a market
 
 ```ts
 import { IndexerGrpcSpotApi } from '@injectivelabs/sdk-ts'
@@ -214,7 +214,7 @@ console.log(orderbook)
 
 ### Using HTTP REST
 
-- get market summary, such as a history of prices and 24 hr volume
+#### Fetch market summary, such as a history of prices and 24 hr volume
 
 ```ts
 import { IndexerRestSpotChronosApi } from '@injectivelabs/sdk-ts'
@@ -234,7 +234,7 @@ const marketSummary = await indexerRestSpotChronosApi.fetchMarketSummary(
 console.log(marketSummary)
 ```
 
-- get all markets' summaries, such as a history of prices and 24 hr volume
+#### Fetch all markets summaries, such as a history of prices and 24 hr volume
 
 ```ts
 import { IndexerRestSpotChronosApi } from '@injectivelabs/sdk-ts'

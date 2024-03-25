@@ -3456,4 +3456,44 @@ export default {
       },
     ],
   },
+
+  BLACK: {
+    name: 'BLACK',
+    logo: 'BLACK.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj16eckaf75gcu9uxdglyvmh63k9t0l7chd0qmu85',
+        symbol: 'BLACK',
+        decimals: 6,
+      },
+    ],
+  },
+
+  ROOT: {
+    name: 'The Root Network',
+    logo: 'root.png',
+    coinGeckoId: 'the-root-network',
+
+    erc20: {
+      symbol: 'ROOT',
+      decimals: 6,
+      address: '0xa3d4BEe77B05d4a0C943877558Ce21A763C4fa29',
+    },
+  },
+
+  NONJA: {
+    name: 'NONJA',
+    logo: 'nonja.png',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'NONJA',
+        decimals: 18,
+        address: 'inj1fu5u29slsg2xtsj7v5la22vl4mr4ywl7wlqeck',
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>

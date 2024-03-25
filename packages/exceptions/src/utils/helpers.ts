@@ -3,6 +3,8 @@ export const isCommonLockedError = (error: string) => {
     'Ledger device: Incorrect length',
     'Ledger device: INS_NOT_SUPPORTED',
     'Ledger device: CLA_NOT_SUPPORTED',
+    'Unknown',
+    'Ledger device',
     'CLA_NOT_SUPPORTED',
     'CLA',
     'Locked',

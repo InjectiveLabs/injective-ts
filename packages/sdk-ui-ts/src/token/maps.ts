@@ -99,6 +99,20 @@ export const spotMarketTickerMaps = ({
     }
   }
 
+  const nonjaUnverifiedDenom = 'factory/inj1alwxgkns9x7d2sprymwwfvzl5t7teetym02lrj/NONJA'
+
+  if (market.baseDenom === nonjaUnverifiedDenom) {
+    {
+      return {
+        ...market,
+        slug: slug.replace('nonja', 'nonjaunverified'),
+        ticker: market.ticker.replace('NONJA', 'NONJAunverified'),
+        baseToken,
+        quoteToken,
+      } as UiBaseSpotMarketWithToken
+    }
+  }
+
   return {
     ...market,
     slug,

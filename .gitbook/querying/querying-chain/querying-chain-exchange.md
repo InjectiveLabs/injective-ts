@@ -1,10 +1,10 @@
-# Querying Chain: Exchange
+# Exchange
 
 Example code snippets to query the exchange module on the chain.
 
 ### Using gRPC
 
-- Get parameters such as the default spot and derivatives fees/trading rewards
+#### Fetch parameters such as the default spot and derivatives fees/trading rewards
 
 ```ts
 import { ChainGrpcExchangeApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const moduleParams = await chainGrpcExchangeApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-- Get the fee discounts schedule
+#### Fetch the fee discount schedules
 
 ```ts
 import { ChainGrpcExchangeApi } from '@injectivelabs/sdk-ts'
@@ -33,7 +33,7 @@ const feeDiscountSchedule =
 console.log(feeDiscountSchedule)
 ```
 
-- Get the fee discounts associated with an injective address
+#### Fetch the fee discounts associated with an injective address
 
 ```ts
 import { ChainGrpcExchangeApi } from '@injectivelabs/sdk-ts'
@@ -50,7 +50,7 @@ const feeDiscountAccountInfo =
 console.log(feeDiscountAccountInfo)
 ```
 
-- Get the details regarding the trading reward campaign, such as the total rewards points
+#### Fetch the details regarding the trading reward campaign, such as the total reward points
 
 ```ts
 import { ChainGrpcExchangeApi } from '@injectivelabs/sdk-ts'
@@ -65,7 +65,7 @@ const tradingRewardsCampaign =
 console.log(tradingRewardsCampaign)
 ```
 
-- Get the trading rewards points for an injective address
+#### Fetch the trading rewards points for an injective address
 
 ```ts
 import { ChainGrpcExchangeApi } from '@injectivelabs/sdk-ts'
@@ -83,7 +83,7 @@ const tradeRewardsPoints = await chainGrpcExchangeApi.fetchTradeRewardsPoints(
 console.log(tradeRewardsPoints)
 ```
 
-- Get the pending trading rewards points for injective addresses
+#### Fetch the pending trading rewards points for injective addresses
 
 ```ts
 import { ChainGrpcExchangeApi } from '@injectivelabs/sdk-ts'
@@ -100,7 +100,7 @@ const pendingTradeRewardsPoints =
 console.log(pendingTradeRewardsPoints)
 ```
 
-- Get the current positions, such as subaccountId, marketId, and position
+#### Fetch the current positions, such as subaccountId, marketId, and position
 
 ```ts
 import { ChainGrpcExchangeApi } from '@injectivelabs/sdk-ts'
@@ -114,7 +114,7 @@ const positions = await chainGrpcExchangeApi.fetchPositions(injectiveAddresses)
 console.log(positions)
 ```
 
-- Get the subaccount trade nonce
+#### Fetch the subaccount trade nonce
 
 ```ts
 import { ChainGrpcExchangeApi } from '@injectivelabs/sdk-ts'

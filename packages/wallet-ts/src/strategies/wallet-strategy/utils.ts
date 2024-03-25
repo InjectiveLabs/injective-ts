@@ -11,6 +11,7 @@ export const isEthWallet = (wallet: Wallet): boolean =>
     Wallet.TrustWallet,
     Wallet.CosmostationEth,
     Wallet.OkxWallet,
+    Wallet.BitGet,
   ].includes(wallet)
 
 export const isCosmosWallet = (wallet: Wallet): boolean => !isEthWallet(wallet)

@@ -1,12 +1,10 @@
-# Querying: Ethereum
-
-### Querying Ethereum
+# Ethereum (GraphQL)
 
 Example code snippets to query data from Ethereum.
 
 ### Using GraphQL
 
-- Get the user's deposits on ethereum chain
+#### Fetch user's deposits on Ethereum chain
 
 ```ts
 import { ApolloConsumer } from '@injectivelabs/sdk-ts'
@@ -24,7 +22,7 @@ const userDeposits = apolloConsumer.fetchUserDeposits(ethereumAddress)
 console.log(userDeposits)
 ```
 
-- Get the user's deposits on ethereum chain at a specific time
+#### Fetch user's deposits on Ethereum chain at a specific time
 
 ```ts
 import { ApolloConsumer } from '@injectivelabs/sdk-ts'

@@ -52,7 +52,7 @@ const fetchGasPriceFromAlchemy = async (
       apiKey: key,
       network: isMainnet(network)
         ? AlchemyNetwork.ETH_MAINNET
-        : AlchemyNetwork.ETH_GOERLI,
+        : AlchemyNetwork.ETH_SEPOLIA,
     }
     const alchemy = new Alchemy(settings)
     const response = await alchemy.core.getFeeData()

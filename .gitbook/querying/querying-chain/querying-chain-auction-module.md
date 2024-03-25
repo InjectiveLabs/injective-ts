@@ -1,10 +1,10 @@
-# Auction Module
+# Auction
 
 Example code snippets to query the auction module on the chain.
 
 ### Using gRPC
 
-- Fetch module params such as the auction period
+#### Fetch module params such as the auction period
 
 ```ts
 import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const moduleParams = await chainGrpcAuctionApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-- Get the state of the current auction, such as the latest round
+#### Fetch the state of the current auction, such as the latest round
 
 ```ts
 import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
@@ -32,7 +32,7 @@ const latestAuctionModuleState = await auctionApi.fetchModuleState()
 console.log(latestAuctionModuleState)
 ```
 
-- Fetch the current auction basket and get info such as the highest bidder and amount
+#### Fetch the current auction basket and get info such as the highest bidder and amount
 
 ```ts
 import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'

@@ -1,10 +1,10 @@
-# Querying Chain: Distribution
+# Distribution
 
 Example code snippets to query data related to delegating to validators from the chain.
 
 ### Using gRPC
 
-- Get parameters such as the base and bonus proposer reward
+#### Fetch parameters such as the base and bonus proposer reward
 
 ```ts
 import { ChainGrpcDistributionApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const moduleParams = await chainGrpcDistributionApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-- Get the amount and denom of rewards for a delegator delagating to a specific validator
+#### Fetch the amount and denom of rewards for a delegator delagating to a specific validator
 
 ```ts
 import { ChainGrpcDistributionApi } from '@injectivelabs/sdk-ts'
@@ -39,7 +39,7 @@ const delegatorRewardsFromValidator =
 console.log(delegatorRewardsFromValidator)
 ```
 
-- Get the amount and denom of all rewards for a delegator
+#### Fetch the amount and denom of all rewards for a delegator
 
 ```ts
 import { ChainGrpcDistributionApi } from '@injectivelabs/sdk-ts'

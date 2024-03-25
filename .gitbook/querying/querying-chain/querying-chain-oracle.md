@@ -1,10 +1,10 @@
-# Querying Chain: Oracle
+# Oracle
 
 Example code snippets to query the chain via the oracle api.
 
 ### Using gRPC
 
-- Get parameters related to the oracle
+#### Fetch parameters related to the oracle
 
 ```ts
 import { ChainGrpcOracleApi } from '@injectivelabs/sdk-ts'

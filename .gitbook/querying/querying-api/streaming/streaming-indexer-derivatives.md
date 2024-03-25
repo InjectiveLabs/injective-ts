@@ -4,7 +4,7 @@ Example code snippets to query the indexer for derivative module related data.
 
 ### Using gRPC Stream
 
-- stream the derivatives orderbook
+#### Stream derivatives orderbook
 
 ```ts
 import { IndexerGrpcDerivativesStream } from '@injectivelabs/sdk-ts'
@@ -33,7 +33,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-- stream derivative orders
+#### Stream derivative orders
 
 ```ts
 import { IndexerGrpcDerivativesStream } from '@injectivelabs/sdk-ts'
@@ -67,7 +67,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-- stream derivative order history
+#### Stream derivative order history
 
 ```ts
 import {
@@ -109,7 +109,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-- stream derivative trades
+#### Stream derivative trades
 
 ```ts
 import {
@@ -145,7 +145,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-- stream derivative positions
+#### Stream derivative positions
 
 ```ts
 import { IndexerGrpcDerivativesStream } from '@injectivelabs/sdk-ts'
@@ -176,7 +176,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-- stream markets
+#### Stream markets
 
 ```ts
 import { IndexerGrpcDerivativesStream } from '@injectivelabs/sdk-ts'
@@ -205,7 +205,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-- stream orderbook updates
+#### Stream orderbook updates
 
 ```ts
 import { IndexerGrpcDerivativesStream } from '@injectivelabs/sdk-ts'
