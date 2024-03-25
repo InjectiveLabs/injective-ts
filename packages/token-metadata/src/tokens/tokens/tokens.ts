@@ -3499,7 +3499,7 @@ export default {
 
   MONKS: {
     name: 'MONKS',
-    logo: 'monks.png',
+    logo: 'monksimg.png',
     coinGeckoId: '',
 
     cw20s: [
