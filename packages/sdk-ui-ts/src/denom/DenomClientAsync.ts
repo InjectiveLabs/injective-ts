@@ -244,7 +244,7 @@ export class DenomClientAsync {
     }
 
     const { metadatas } = await this.chainBankApi.fetchDenomsMetadata({
-      limit: 1000,
+      limit: 10000,
     })
 
     this.metadatas = metadatas
