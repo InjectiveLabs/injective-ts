@@ -3534,6 +3534,7 @@ export default {
   RAY: {
     name: 'Raymond',
     logo: 'ray.png',
+    symbol: 'RAY',
     coinGeckoId: '',
 
     cw20s: [
