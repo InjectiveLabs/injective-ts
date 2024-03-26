@@ -18,12 +18,9 @@ export class IndexerRestMarketChronosApi extends BaseRestConsumer {
     countback: string | number
   }) {
     const path = `history`
-    const queryMarketIds = marketIds.map((marketId) => ({
-      marketIDs: marketId,
-    }))
 
     const params = [
-      ...queryMarketIds,
+      { marketIDs: marketIds.join(',') },
       { resolution: String(resolution) },
       { countback: String(countback) },
     ] as Record<string, string>[]
