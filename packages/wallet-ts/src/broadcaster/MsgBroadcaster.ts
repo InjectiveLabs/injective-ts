@@ -610,8 +610,8 @@ export class MsgBroadcaster {
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
-     * We can only use this method when Keplr is connected
-     * with ledger
+     * We can NOT use this method
+     * when Ledger is connected through Keplr
      */
     if (walletStrategy.getWallet() === Wallet.Keplr) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
