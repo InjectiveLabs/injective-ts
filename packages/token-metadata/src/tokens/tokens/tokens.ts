@@ -3512,7 +3512,7 @@ export default {
       {
         creator: 'inj1nmc5namhwszx0yartvjm6evsxrj0ctq2qa30l7',
         symbol: 'NBOY',
-        decimals: 18,
+        decimals: 6,
       },
     ],
   },
