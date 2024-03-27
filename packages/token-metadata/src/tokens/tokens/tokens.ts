@@ -3512,7 +3512,7 @@ export default {
       {
         creator: 'inj1nmc5namhwszx0yartvjm6evsxrj0ctq2qa30l7',
         symbol: 'NBOY',
-        decimals: 18,
+        decimals: 6,
       },
     ],
   },
@@ -3527,6 +3527,21 @@ export default {
         symbol: 'MONKS',
         decimals: 18,
         address: 'inj148sjw9h9n3n8gjw37reetwdlc7v4hfhl8r7vv3',
+      },
+    ],
+  },
+
+  RAY: {
+    name: 'Raymond',
+    logo: 'ray.png',
+    symbol: 'RAY',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'RAY',
+        decimals: 6,
+        address: 'inj1ckddr5lfwjvm2lvtzra0ftx7066seqr3navva0',
       },
     ],
   },
