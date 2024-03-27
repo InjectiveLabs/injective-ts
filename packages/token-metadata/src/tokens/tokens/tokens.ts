@@ -3530,4 +3530,19 @@ export default {
       },
     ],
   },
+
+  RAY: {
+    name: 'Raymond',
+    logo: 'ray.png',
+    symbol: 'RAY',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'RAY',
+        decimals: 6,
+        address: 'inj1ckddr5lfwjvm2lvtzra0ftx7066seqr3navva0',
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
