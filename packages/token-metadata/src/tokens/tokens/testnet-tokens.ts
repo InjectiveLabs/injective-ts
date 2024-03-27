@@ -54,7 +54,7 @@ export const testnetTokens = () =>
       ...tokens.INJ,
       erc20: {
         ...tokens.INJ.erc20,
-        address: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
+        address: '0x5512c04B6FF813f3571bDF64A1d74c98B5257332',
       },
     },
 

@@ -141,6 +141,7 @@ export default class WalletStrategy {
   public setWallet(wallet: Wallet) {
     this.disconnect()
     this.wallet = wallet
+    this.enable()
   }
 
   public getStrategy(): ConcreteWalletStrategy {
