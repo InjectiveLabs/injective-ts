@@ -5,6 +5,7 @@ export enum TokenType {
   Erc20 = 'erc20',
   Evm = 'evm',
   Native = 'native',
+  Symbol = 'symbol',
   TokenFactory = 'tokenFactory',
   InsuranceFund = 'insuranceFund',
   Unknown = 'unknown',
@@ -215,4 +216,23 @@ export interface GrpcTokenMeta {
   address: string
   decimals: number
   updatedAt: number
+}
+
+export interface TokenStatic {
+  name: string
+  logo: string
+  symbol: string
+  decimals: number
+  coinGeckoId: string
+  denom: string
+  address: string
+  tokenType: TokenType
+  tokenVerification: TokenVerification
+  isNative?: boolean
+  source?: TokenSource
+  hash?: string
+  path?: string
+  channelId?: string
+  baseDenom?: string
+  externalLogo?: string
 }
