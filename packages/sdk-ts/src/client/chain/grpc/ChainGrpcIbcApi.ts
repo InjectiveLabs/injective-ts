@@ -33,7 +33,7 @@ export class ChainGrpcIbcApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<IbcApplicationsTransferV1Query.QueryDenomTraceResponse>(
-          () => this.client.DenomTrace(request),
+          () => this.client.DenomTrace(request, this.metadata),
         )
 
       return response.denomTrace!
@@ -67,7 +67,7 @@ export class ChainGrpcIbcApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<IbcApplicationsTransferV1Query.QueryDenomTracesResponse>(
-          () => this.client.DenomTraces(request),
+          () => this.client.DenomTraces(request, this.metadata),
         )
 
       return response.denomTraces

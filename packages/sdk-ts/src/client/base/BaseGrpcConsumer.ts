@@ -1,13 +1,24 @@
+import { grpc } from '@injectivelabs/grpc-web'
 import { getGrpcTransport } from '../../utils/grpc'
 import { GrpcWebImpl } from './GrpcWebImpl'
 
 export default class BaseGrpcConsumer extends GrpcWebImpl {
   protected module: string = ''
 
+  protected metadata?: grpc.Metadata
+
   constructor(endpoint: string) {
     super(endpoint, {
       transport: getGrpcTransport(),
     })
+  }
+
+  public setMetadata(metadata: grpc.Metadata) {
+    this.metadata = metadata
+  }
+
+  public clearMetadata() {
+    this.metadata = undefined
   }
 
   public getGrpcWebImpl(endpoint: string) {

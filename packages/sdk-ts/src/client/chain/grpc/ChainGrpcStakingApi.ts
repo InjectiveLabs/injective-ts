@@ -31,7 +31,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request),
+          this.client.Params(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.moduleParamsResponseToModuleParams(
@@ -60,7 +60,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryPoolResponse>(() =>
-          this.client.Pool(request),
+          this.client.Pool(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.poolResponseToPool(response)
@@ -93,7 +93,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryValidatorsResponse>(
-          () => this.client.Validators(request),
+          () => this.client.Validators(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.validatorsResponseToValidators(
@@ -124,7 +124,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryValidatorResponse>(() =>
-          this.client.Validator(request),
+          this.client.Validator(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.validatorResponseToValidator(response)
@@ -166,7 +166,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryValidatorDelegationsResponse>(
-          () => this.client.ValidatorDelegations(request),
+          () => this.client.ValidatorDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
@@ -210,7 +210,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryValidatorDelegationsResponse>(
-          () => this.client.ValidatorDelegations(request),
+          () => this.client.ValidatorDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
@@ -258,7 +258,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryValidatorUnbondingDelegationsResponse>(
-          () => this.client.ValidatorUnbondingDelegations(request),
+          () => this.client.ValidatorUnbondingDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
@@ -302,7 +302,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryValidatorUnbondingDelegationsResponse>(
-          () => this.client.ValidatorUnbondingDelegations(request),
+          () => this.client.ValidatorUnbondingDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
@@ -344,7 +344,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryDelegationResponse>(
-          () => this.client.Delegation(request),
+          () => this.client.Delegation(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.delegationResponseToDelegation(
@@ -388,7 +388,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryDelegatorDelegationsResponse>(
-          () => this.client.DelegatorDelegations(request),
+          () => this.client.DelegatorDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
@@ -432,7 +432,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryDelegatorDelegationsResponse>(
-          () => this.client.DelegatorDelegations(request),
+          () => this.client.DelegatorDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
@@ -480,7 +480,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryValidatorDelegationsResponse>(
-          () => this.client.ValidatorDelegations(request),
+          () => this.client.ValidatorDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
@@ -524,7 +524,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryValidatorDelegationsResponse>(
-          () => this.client.ValidatorDelegations(request),
+          () => this.client.ValidatorDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
@@ -572,7 +572,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsResponse>(
-          () => this.client.DelegatorUnbondingDelegations(request),
+          () => this.client.DelegatorUnbondingDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
@@ -616,7 +616,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsResponse>(
-          () => this.client.DelegatorUnbondingDelegations(request),
+          () => this.client.DelegatorUnbondingDelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
@@ -663,7 +663,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryRedelegationsResponse>(
-          () => this.client.Redelegations(request),
+          () => this.client.Redelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
@@ -706,7 +706,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosStakingV1Beta1Query.QueryRedelegationsResponse>(
-          () => this.client.Redelegations(request),
+          () => this.client.Redelegations(request, this.metadata),
         )
 
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(

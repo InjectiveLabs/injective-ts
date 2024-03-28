@@ -59,7 +59,7 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosAuthzV1Beta1Query.QueryGrantsResponse>(() =>
-          this.client.Grants(request),
+          this.client.Grants(request, this.metadata),
         )
 
       return ChainGrpcAuthZTransformer.grpcGrantsToGrants(response)
@@ -96,7 +96,7 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosAuthzV1Beta1Query.QueryGranterGrantsResponse>(
-          () => this.client.GranterGrants(request),
+          () => this.client.GranterGrants(request, this.metadata),
         )
 
       return ChainGrpcAuthZTransformer.grpcGranterGrantsToGranterGrants(
@@ -135,7 +135,7 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosAuthzV1Beta1Query.QueryGranteeGrantsResponse>(
-          () => this.client.GranteeGrants(request),
+          () => this.client.GranteeGrants(request, this.metadata),
         )
 
       return ChainGrpcAuthZTransformer.grpcGranteeGrantsToGranteeGrants(

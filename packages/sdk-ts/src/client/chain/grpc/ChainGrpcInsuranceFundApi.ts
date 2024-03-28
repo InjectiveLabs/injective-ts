@@ -30,7 +30,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveInsuranceV1Beta1Query.QueryInsuranceParamsResponse>(
-          () => this.client.InsuranceParams(request),
+          () => this.client.InsuranceParams(request, this.metadata),
         )
 
       return ChainGrpcInsuranceFundTransformer.moduleParamsResponseToModuleParams(
@@ -60,7 +60,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveInsuranceV1Beta1Query.QueryInsuranceFundsResponse>(
-          () => this.client.InsuranceFunds(request),
+          () => this.client.InsuranceFunds(request, this.metadata),
         )
 
       return ChainGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
@@ -92,7 +92,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveInsuranceV1Beta1Query.QueryInsuranceFundResponse>(
-          () => this.client.InsuranceFund(request),
+          () => this.client.InsuranceFund(request, this.metadata),
         )
 
       return ChainGrpcInsuranceFundTransformer.insuranceFundResponseToInsuranceFund(
@@ -131,7 +131,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveInsuranceV1Beta1Query.QueryEstimatedRedemptionsResponse>(
-          () => this.client.EstimatedRedemptions(request),
+          () => this.client.EstimatedRedemptions(request, this.metadata),
         )
 
       return ChainGrpcInsuranceFundTransformer.estimatedRedemptionsResponseToEstimatedRedemptions(
@@ -170,7 +170,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveInsuranceV1Beta1Query.QueryPendingRedemptionsResponse>(
-          () => this.client.PendingRedemptions(request),
+          () => this.client.PendingRedemptions(request, this.metadata),
         )
 
       return ChainGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(

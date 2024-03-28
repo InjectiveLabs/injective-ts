@@ -32,7 +32,7 @@ export class ChainGrpcMintApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosMintV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request),
+          this.client.Params(request, this.metadata),
         )
 
       return ChainGrpcMintTransformer.moduleParamsResponseToModuleParams(
@@ -61,7 +61,7 @@ export class ChainGrpcMintApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosMintV1Beta1Query.QueryInflationResponse>(() =>
-          this.client.Inflation(request),
+          this.client.Inflation(request, this.metadata),
         )
 
       return {
@@ -92,7 +92,7 @@ export class ChainGrpcMintApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosMintV1Beta1Query.QueryAnnualProvisionsResponse>(
-          () => this.client.AnnualProvisions(request),
+          () => this.client.AnnualProvisions(request, this.metadata),
         )
 
       return {

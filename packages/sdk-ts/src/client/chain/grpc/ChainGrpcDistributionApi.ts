@@ -30,7 +30,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosDistributionV1Beta1Query.QueryParamsResponse>(
-          () => this.client.Params(request),
+          () => this.client.Params(request, this.metadata),
         )
 
       return ChainGrpcDistributionTransformer.moduleParamsResponseToModuleParams(
@@ -69,7 +69,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosDistributionV1Beta1Query.QueryDelegationRewardsResponse>(
-          () => this.client.DelegationRewards(request),
+          () => this.client.DelegationRewards(request, this.metadata),
         )
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
@@ -108,7 +108,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosDistributionV1Beta1Query.QueryDelegationRewardsResponse>(
-          () => this.client.DelegationRewards(request),
+          () => this.client.DelegationRewards(request, this.metadata),
         )
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
@@ -144,7 +144,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosDistributionV1Beta1Query.QueryDelegationTotalRewardsResponse>(
-          () => this.client.DelegationTotalRewards(request),
+          () => this.client.DelegationTotalRewards(request, this.metadata),
         )
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
@@ -176,7 +176,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosDistributionV1Beta1Query.QueryDelegationTotalRewardsResponse>(
-          () => this.client.DelegationTotalRewards(request),
+          () => this.client.DelegationTotalRewards(request, this.metadata),
         )
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(

@@ -30,7 +30,7 @@ export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAuctionV1Beta1Query.QueryAuctionParamsResponse>(
-          () => this.client.AuctionParams(request),
+          () => this.client.AuctionParams(request, this.metadata),
         )
 
       return ChainGrpcAuctionTransformer.moduleParamsResponseToModuleParams(
@@ -60,7 +60,7 @@ export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAuctionV1Beta1Query.QueryModuleStateResponse>(
-          () => this.client.AuctionModuleState(request),
+          () => this.client.AuctionModuleState(request, this.metadata),
         )
 
       return ChainGrpcAuctionTransformer.auctionModuleStateResponseToAuctionModuleState(
@@ -90,7 +90,7 @@ export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketResponse>(
-          () => this.client.CurrentAuctionBasket(request),
+          () => this.client.CurrentAuctionBasket(request, this.metadata),
         )
 
       return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(

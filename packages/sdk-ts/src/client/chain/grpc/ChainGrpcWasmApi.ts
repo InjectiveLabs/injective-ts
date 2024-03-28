@@ -46,7 +46,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmwasmWasmV1Query.QueryAllContractStateResponse>(
-          () => this.client.AllContractState(request),
+          () => this.client.AllContractState(request, this.metadata),
         )
 
       return ChainGrpcWasmTransformer.allContractStateResponseToContractAccountsBalanceWithPagination(
@@ -89,7 +89,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmwasmWasmV1Query.QueryAllContractStateResponse>(
-          () => this.client.AllContractState(request),
+          () => this.client.AllContractState(request, this.metadata),
         )
 
       return ChainGrpcWasmTransformer.allContractStateResponseToContractState(
@@ -120,7 +120,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmwasmWasmV1Query.QueryContractInfoResponse>(() =>
-          this.client.ContractInfo(request),
+          this.client.ContractInfo(request, this.metadata),
         )
 
       const contractInfo = response.contractInfo
@@ -157,7 +157,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmwasmWasmV1Query.QueryContractHistoryResponse>(() =>
-          this.client.ContractHistory(request),
+          this.client.ContractHistory(request, this.metadata),
         )
 
       return ChainGrpcWasmTransformer.contactHistoryResponseToContractHistory(
@@ -198,7 +198,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmwasmWasmV1Query.QuerySmartContractStateResponse>(
-          () => this.client.SmartContractState(request),
+          () => this.client.SmartContractState(request, this.metadata),
         )
 
       return response
@@ -231,7 +231,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmwasmWasmV1Query.QueryRawContractStateResponse>(
-          () => this.client.RawContractState(request),
+          () => this.client.RawContractState(request, this.metadata),
         )
 
       return response
@@ -263,7 +263,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<CosmwasmWasmV1Query.QueryCodesResponse>(
-        () => this.client.Codes(request),
+        () => this.client.Codes(request, this.metadata),
       )
 
       return ChainGrpcWasmTransformer.contractCodesResponseToContractCodes(
@@ -293,7 +293,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<CosmwasmWasmV1Query.QueryCodeResponse>(
-        () => this.client.Code(request),
+        () => this.client.Code(request, this.metadata),
       )
 
       return ChainGrpcWasmTransformer.contractCodeResponseToContractCode(
@@ -333,7 +333,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmwasmWasmV1Query.QueryContractsByCodeResponse>(() =>
-          this.client.ContractsByCode(request),
+          this.client.ContractsByCode(request, this.metadata),
         )
 
       return ChainGrpcWasmTransformer.contractByCodeResponseToContractByCode(

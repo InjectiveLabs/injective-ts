@@ -31,7 +31,7 @@ export class ChainGrpcAuthApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosAuthV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request),
+          this.client.Params(request, this.metadata),
         )
 
       return ChainGrpcAuthTransformer.moduleParamsResponseToModuleParams(
@@ -62,7 +62,7 @@ export class ChainGrpcAuthApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosAuthV1Beta1Query.QueryAccountResponse>(() =>
-          this.client.Account(request),
+          this.client.Account(request, this.metadata),
         )
 
       return ChainGrpcAuthTransformer.accountResponseToAccount(response)
@@ -94,7 +94,7 @@ export class ChainGrpcAuthApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosAuthV1Beta1Query.QueryAccountsResponse>(() =>
-          this.client.Accounts(request),
+          this.client.Accounts(request, this.metadata),
         )
 
       return ChainGrpcAuthTransformer.accountsResponseToAccounts(response)
