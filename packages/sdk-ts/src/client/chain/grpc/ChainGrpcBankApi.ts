@@ -271,14 +271,16 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
-    
+
     try {
       const response =
         await this.retry<CosmosBankV1Beta1Query.QueryDenomOwnersResponse>(() =>
           this.client.DenomOwners(request, this.metadata),
         )
 
-      return response
+      return ChainGrpcBankTransformer.denomOwnersResponseToDenomOwners(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
