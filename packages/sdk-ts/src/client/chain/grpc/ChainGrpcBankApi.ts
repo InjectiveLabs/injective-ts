@@ -261,15 +261,21 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchDenomOwners(denom: string) {
+  async fetchDenomOwners(denom: string, pagination?: PaginationOption) {
     const request = CosmosBankV1Beta1Query.QueryDenomOwnersRequest.create()
 
     request.denom = denom
 
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.pagination = paginationForRequest
+    }
+    
     try {
       const response =
-        await this.retry<CosmosBankV1Beta1Query.QueryDenomOwnersResponse>(
-          () => this.client.DenomOwners(request, this.metadata),
+        await this.retry<CosmosBankV1Beta1Query.QueryDenomOwnersResponse>(() =>
+          this.client.DenomOwners(request, this.metadata),
         )
 
       return response

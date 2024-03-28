@@ -7,7 +7,11 @@ import {
 } from '@injectivelabs/exceptions'
 import BaseRestConsumer from '../../base/BaseRestConsumer'
 import { ChainModule, RestApiResponse } from '../types'
-import { BalancesResponse, DenomBalance } from './../types/bank-rest'
+import {
+  BalancesResponse,
+  DenomBalance,
+  DenomOwnersResponse,
+} from './../types/bank-rest'
 
 /**
  * @category Chain Rest API
@@ -75,6 +79,35 @@ export class ChainRestBankApi extends BaseRestConsumer {
       }
 
       return balance
+    } catch (e) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      if (e instanceof GeneralException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
+        contextModule: ChainModule.Bank,
+      })
+    }
+  }
+
+  public async fetchDenomOwners(
+    denom: string,
+    params: Record<string, any> = {},
+  ): Promise<DenomOwnersResponse['denom_owners']> {
+    const endpoint = `cosmos/bank/v1beta1/denom_owners/${denom}`
+
+    try {
+      const response = await this.retry<RestApiResponse<DenomOwnersResponse>>(
+        () => this.get(endpoint, params),
+      )
+
+      return response.data.denom_owners
     } catch (e) {
       if (e instanceof HttpRequestException) {
         throw e
