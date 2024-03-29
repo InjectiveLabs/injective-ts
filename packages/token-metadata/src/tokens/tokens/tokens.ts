@@ -2832,6 +2832,14 @@ export default {
     coinGeckoId: '',
     tokenType: TokenType.TokenFactory,
   },
+  BONJO: {
+    name: 'Bonjo',
+    symbol: 'BONJO',
+    decimals: 6,
+    logo: 'bonjo.png',
+    coinGeckoId: '',
+    tokenType: TokenType.TokenFactory,
+  },
 
   APP: {
     name: 'Moon App',
