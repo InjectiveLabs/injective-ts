@@ -1,6 +1,7 @@
 import { Network, NetworkEndpoints } from '@injectivelabs/networks'
 import { ChainId, Coin } from '@injectivelabs/ts-types'
 import {
+  DenomClient,
   ContractAccountBalance,
   ExplorerCW20BalanceWithToken,
 } from '@injectivelabs/sdk-ts'
@@ -27,7 +28,6 @@ import {
   TokenType,
   getUnknownTokenWithSymbol,
 } from '@injectivelabs/token-metadata'
-import { DenomClientAsync } from '../denom/DenomClientAsync'
 import { spotMarketTickerMaps } from './maps'
 
 /**
@@ -39,30 +39,23 @@ export class TokenServiceStatic {
 
   public chainId: ChainId
 
-  public denomClient: DenomClientAsync
+  public denomClient: DenomClient
 
   public shouldReturnUnknown: boolean
 
   constructor({
     chainId,
     network,
-    endpoints,
-    alchemyRpcUrl,
     shouldReturnUnknown = false,
   }: {
     chainId: ChainId
     network: Network
-    endpoints?: NetworkEndpoints
-    alchemyRpcUrl?: string
     shouldReturnUnknown?: boolean
   }) {
     this.shouldReturnUnknown = shouldReturnUnknown
     this.network = network
     this.chainId = chainId
-    this.denomClient = new DenomClientAsync(network, {
-      endpoints,
-      alchemyRpcUrl,
-    })
+    this.denomClient = new DenomClient(network)
   }
 
   toCoinsWithToken(supply: Coin[]): Token[] {
@@ -207,7 +200,7 @@ export class TokenServiceStatic {
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
-    const baseToken = this.denomClient.getTokenBySymbol(baseTokenSymbol)
+    const baseToken = this.denomClient.getDenomToken(baseTokenSymbol)
     const quoteToken = this.getDenom(market.quoteDenom)
 
     return {
@@ -324,8 +317,10 @@ export class TokenServiceStatic {
   }
 
   private getDenom(denom: string) {
-    return this.shouldReturnUnknown
-      ? this.denomClient.getDenomTokenStaticOrUnknown(denom)
-      : this.denomClient.getDenomTokenStatic(denom)
+    const token = this.denomClient.getDenomToken(denom)
+
+    return this.shouldReturnUnknown && !token
+      ? getUnknownTokenWithSymbol(denom)
+      : token
   }
 }

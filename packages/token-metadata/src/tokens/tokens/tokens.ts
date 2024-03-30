@@ -3545,4 +3545,16 @@ export default {
       },
     ],
   },
+
+  SUSDE: {
+    name: 'Staked USDe',
+    logo: 'staked-usde.webp',
+    coinGeckoId: 'ethena-staked-usde',
+
+    erc20: {
+      symbol: 'sUSDE',
+      decimals: 18,
+      address: '0x9D39A5DE30e57443BfF2A8307A4256c8797A3497',
+    },
+  },
 } as Record<string, TokenMetaBase>
