@@ -3557,4 +3557,18 @@ export default {
       address: '0x9D39A5DE30e57443BfF2A8307A4256c8797A3497',
     },
   },
+
+  NLC: {
+    name: 'Ninja Labs Coin',
+    logo: 'nlc.png',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'NLC',
+        decimals: 6,
+        address: 'inj1r9h59ke0a77zkaarr4tuq25r3lt9za4r2mgyf4',
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
