@@ -3585,4 +3585,18 @@ export default {
       },
     ],
   },
+
+  BONJO: {
+    name: 'Bonjo',
+    logo: 'bonjo.png',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'BONJO',
+        decimals: 18,
+        address: 'inj19w5lfwk6k9q2d8kxnwsu4962ljnay85f9sgwn6',
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
