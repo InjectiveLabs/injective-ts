@@ -1,4 +1,4 @@
-import { Network, NetworkEndpoints } from '@injectivelabs/networks'
+import { Network } from '@injectivelabs/networks'
 import { ChainId, Coin } from '@injectivelabs/ts-types'
 import {
   DenomClient,
