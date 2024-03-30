@@ -3571,4 +3571,18 @@ export default {
       },
     ],
   },
+
+  BONJO: {
+    name: 'Bonjo',
+    logo: 'bonjo.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1r35twz3smeeycsn4ugnd3w0l5h2lxe44ptuu4w',
+        symbol: 'BONJO',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
