@@ -3571,4 +3571,38 @@ export default {
       },
     ],
   },
+
+  ENA: {
+    name: 'Ethena',
+    logo: 'ethena.webp',
+    coinGeckoId: 'ethena',
+
+    erc20: {
+      symbol: 'ENA',
+      decimals: 18,
+      address: '0x57e114b691db790c35207b2e685d4a43181e6061',
+    },
+  },
+
+  BONJO: {
+    name: 'Bonjo',
+    logo: 'bonjo.png',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'BONJO',
+        decimals: 18,
+        address: 'inj19w5lfwk6k9q2d8kxnwsu4962ljnay85f9sgwn6',
+      },
+    ],
+
+    tokenFactories: [
+      {
+        creator: 'inj1r35twz3smeeycsn4ugnd3w0l5h2lxe44ptuu4w',
+        symbol: 'BONJO',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
