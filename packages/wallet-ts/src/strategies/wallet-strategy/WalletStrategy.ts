@@ -224,6 +224,11 @@ export default class WalletStrategy {
       )
     }
 
+    /** Phantom wallet needs enabling before signing */
+    if (this.wallet === Wallet.Phantom) {
+      await this.enable()
+    }
+
     return this.getStrategy().signEip712TypedData(eip712TypedData, address)
   }
 
