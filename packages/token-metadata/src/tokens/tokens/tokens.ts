@@ -3625,4 +3625,18 @@ export default {
       },
     ],
   },
+
+  DDL: {
+    name: 'Discordels Token',
+    logo: 'DDLlogo.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1put8lfpkwm47tqcl9fgh8grz987mezvrx4arls',
+        symbol: 'DDL',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
