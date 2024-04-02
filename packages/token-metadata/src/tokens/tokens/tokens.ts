@@ -2450,7 +2450,7 @@ export default {
       {
         symbol: 'LVN',
         decimals: 6,
-        isNative: true,
+        isNative: false,
         baseDenom: 'ulvn',
         path: 'transfer/channel-8',
         channelId: 'channel-8',
@@ -3602,6 +3602,26 @@ export default {
         creator: 'inj1r35twz3smeeycsn4ugnd3w0l5h2lxe44ptuu4w',
         symbol: 'BONJO',
         decimals: 6,
+      },
+    ],
+  },
+
+  BONUS: {
+    name: 'Bonus Block',
+    coinGeckoId: '',
+    logo: 'bonus-block.webp',
+
+    ibcs: [
+      {
+        symbol: 'BONUS',
+        decimals: 8,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/5mejeW9oeeWU7B84t6CSjXskTumVWsapjsbpsivtVZQw',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: 'DCF43489B9438BB7E462F1A1AD38C7898DF7F49649F9CC8FEBFC533A1192F3EF',
+        source: TokenSource.Arbitrum,
       },
     ],
   },
