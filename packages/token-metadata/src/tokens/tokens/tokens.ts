@@ -3213,14 +3213,6 @@ export default {
     ],
   },
 
-  W: {
-    name: 'W',
-    logo: 'wormhole.png',
-    symbol: 'W',
-    coinGeckoId: '',
-    tokenType: TokenType.Unknown,
-  },
-
   QUNT: {
     name: 'QUNT',
     logo: 'qunt.png',
@@ -3622,6 +3614,26 @@ export default {
         channelId: 'channel-183',
         hash: 'DCF43489B9438BB7E462F1A1AD38C7898DF7F49649F9CC8FEBFC533A1192F3EF',
         source: TokenSource.Arbitrum,
+      },
+    ],
+  },
+
+  W: {
+    name: 'Wormhole',
+    coinGeckoId: 'wormhole',
+    logo: 'wormhole.png',
+
+    ibcs: [
+      {
+        symbol: 'W',
+        decimals: 6,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/2Wb6ueMFc9WLc2eyYVha6qnwHKbwzUXdooXsg6XXVvos',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: 'F16F0F685BEF7BC6A145F16CBE78C6EC8C7C3A5F3066A98A9E57DCEA0903E537',
+        source: TokenSource.Solana,
       },
     ],
   },
