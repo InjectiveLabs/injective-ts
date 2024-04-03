@@ -3601,7 +3601,7 @@ export default {
   BONUS: {
     name: 'Bonus Block',
     coinGeckoId: '',
-    logo: 'bonus-block.webp',
+    logo: 'bonus-block.png',
 
     ibcs: [
       {
