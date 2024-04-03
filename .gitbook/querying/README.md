@@ -14,7 +14,7 @@ We also have a GraphQL consumer of the Peggy subgraph on Ethereum (used only for
 
 For the 2 main data sources, there are abstraction classes that developers can use to access specific modules of the Injective Chain **or** specific modules within the Exchange API. The responses of these requests are always mapped into normal JavaScript objects (regardless of the data source type) and served to the end user.
 
-
+***
 
 ### Topics
 
@@ -24,4 +24,3 @@ For the 2 main data sources, there are abstraction classes that developers can u
 | [Querying the Indexer API](querying-api/)                | Querying data from the Indexer API  |
 | [Steaming from the Indexer API](broken-reference/)       | Streaming data from the Indexer API |
 | [Querying Ethereum from the Graph](querying-ethereum.md) | Querying Ethereum via GraphQL       |
-| [CosmWasm Query Payloads](broken-reference/)             | Get payloads for CosmWasm queries   |
