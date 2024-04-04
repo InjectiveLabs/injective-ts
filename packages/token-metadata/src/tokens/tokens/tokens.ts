@@ -3637,4 +3637,18 @@ export default {
       },
     ],
   },
+
+  SAE: {
+    name: 'SA World',
+    logo: 'sae.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj152mdu38fkkk4fl7ycrpdqxpm63w3ztadgtktyr',
+        symbol: 'SAE',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
