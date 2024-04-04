@@ -57,6 +57,31 @@ export default class CoinGeckoApi {
     }
   }
 
+  async fetchErc20TokenCoinId(
+    tokenAddress: string,
+    options: Record<string, any> | undefined = {},
+  ) {
+    try {
+      const actualParams = {
+        x_cg_pro_api_key: this.apiKey,
+        ...options,
+      }
+
+      const { data } = (await this.httpClient.get(
+        `/coins/ethereum/contract/${tokenAddress}`,
+        actualParams,
+      )) as CoinGeckoReturnObject<CoinGeckoCoinResponse>
+
+      return data?.id
+    } catch (e: unknown) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error((e as any).message))
+    }
+  }
+
   async fetchPrice(
     coinId: string,
     options: Record<string, any> | undefined = {},
