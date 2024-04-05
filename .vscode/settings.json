@@ -5,5 +5,8 @@
   "editor.renderFinalNewline": "on",
   "cSpell.words": [
     "chronos"
+  ],
+  "githubPullRequests.ignoredPullRequestBranches": [
+    "dev"
   ]
 }
