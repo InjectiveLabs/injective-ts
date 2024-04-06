@@ -37,9 +37,17 @@ export interface TokenInfo {
   mint: string
 }
 
+export interface MarketingInfo {
+  project: string
+  description: string
+  logo: { url: string }
+  marketing: string
+}
+
 export interface ContractAccountsBalanceWithPagination {
   tokenInfo: TokenInfo
   contractInfo: ContractInfo
+  marketingInfo: MarketingInfo
   contractAccountsBalance: ContractAccountBalance[]
   pagination?: Pagination
 }
