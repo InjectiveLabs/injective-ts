@@ -3651,4 +3651,18 @@ export default {
       },
     ],
   },
+
+  XIII: {
+    name: 'XIII Coin',
+    logo: 'xiii.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj18flmwwaxxqj8m8l5zl8xhjrnah98fcjp3gcy3e',
+        symbol: 'XIII',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
