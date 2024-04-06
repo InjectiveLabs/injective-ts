@@ -101,10 +101,18 @@ export class ChainGrpcWasmTransformer {
       tokenInfoModel?.value || new Uint8Array(),
     ).toString('utf-8')
 
+    const marketingInfoModel = response.models.find((model) => {
+      return Buffer.from(model.key).toString('utf-8') === 'marketing_info'
+    })
+    const marketingInfoValue = Buffer.from(
+      marketingInfoModel?.value || new Uint8Array(),
+    ).toString('utf-8')
+
     return {
       contractAccountsBalance,
       tokenInfo: JSON.parse(tokenInfoValue || '{}') as TokenInfo,
       contractInfo: JSON.parse(contractInfoValue || '{}') as ContractInfo,
+      marketingInfo: JSON.parse(marketingInfoValue || '{}') as MarketingInfo,
       pagination: grpcPaginationToPagination(response.pagination),
     }
   }

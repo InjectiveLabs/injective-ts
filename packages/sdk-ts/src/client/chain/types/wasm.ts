@@ -55,6 +55,7 @@ export interface ContractAccountsBalanceWithPagination {
 export interface ContractStateWithPagination {
   tokenInfo: TokenInfo
   contractInfo: ContractInfo
+  marketingInfo: MarketingInfo
   contractAccountsBalance: ContractAccountBalance[]
   pagination?: Pagination
 }
