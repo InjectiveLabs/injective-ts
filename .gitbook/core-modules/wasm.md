@@ -80,9 +80,9 @@ const txHash = await new MsgBroadcasterWithPk({
 console.log(txHash);
 ```
 
-### MsgExecuteContractCompact
+### MsgExecuteContractCompat
 
-There are some compatibility issues parsing the `funds` array and `msgs` object in the previous example with EIP712. Since `MsgExecuteContract` can't be properly converted to EIP712 and then signed by Ethereum wallets, we introduced `MsgExecuteContractCompact` which is fully compatible with EIP712.&#x20;
+There are some compatibility issues parsing the `funds` array and `msgs` object in the previous example with EIP712. Since `MsgExecuteContract` can't be properly converted to EIP712 and then signed by Ethereum wallets, we introduced `MsgExecuteContractCompat` which is fully compatible with EIP712.
 
 _**Note:**_ _`MsgExecuteContract` and `MsgExecuteContractCompat` underlying messages are the same. `MsgExecuteContractCompat` is just EIP712 compatible._
 
@@ -91,7 +91,7 @@ Below is an example of how we can send the `MsgExecuteContractCompact` using an 
 ```ts
 import {
   MsgBroadcasterWithPk,
-  MsgExecuteContractCompact,
+  MsgExecuteContractCompat,
 } from "@injectivelabs/sdk-ts";
 import { INJ_DENOM } from "@injectivelabs/sdk-ui-ts";
 import { Network } from "@injectivelabs/networks";
@@ -99,7 +99,7 @@ import { Network } from "@injectivelabs/networks";
 const injectiveAddress = "inj1...";
 const contractAddress = "cw...";
 
-const msg = MsgExecuteContractCompact.fromJSON({
+const msg = MsgExecuteContractCompat.fromJSON({
   contractAddress,
   sender: injectiveAddress,
   exec: {
