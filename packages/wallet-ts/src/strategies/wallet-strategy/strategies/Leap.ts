@@ -30,10 +30,7 @@ import {
 } from '../../../types/enums'
 import { SendTransactionOptions } from '../types'
 
-export default class Leap
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Leap extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private leapWallet: LeapWallet
 
   constructor(args: { chainId: ChainId }) {
@@ -43,7 +40,12 @@ export default class Leap
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
-    return Promise.resolve(WalletDeviceType.Browser)
+    const leapWallet = this.getLeapWallet()
+    const key = await leapWallet.getKey()
+
+    return key.isNanoLedger
+      ? Promise.resolve(WalletDeviceType.Hardware)
+      : Promise.resolve(WalletDeviceType.Browser)
   }
 
   async enable(): Promise<boolean> {

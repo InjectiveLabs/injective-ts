@@ -33,7 +33,12 @@ export default class Leap implements ConcreteCosmosWalletStrategy {
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
-    return Promise.resolve(WalletDeviceType.Browser)
+    const leapWallet = this.getLeapWallet()
+    const key = await leapWallet.getKey()
+
+    return key.isNanoLedger
+      ? Promise.resolve(WalletDeviceType.Hardware)
+      : Promise.resolve(WalletDeviceType.Browser)
   }
 
   async enable() {

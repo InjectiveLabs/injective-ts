@@ -55,6 +55,7 @@ import {
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
 import { isCosmosAminoOnlyWallet } from '../utils'
+import { LeapWallet } from '../utils/wallets'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,
@@ -499,16 +500,15 @@ export class MsgBroadcaster {
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
-     * When using Ledger with Keplr we have
-     * to send EIP712 to sign on Keplr
+     * When using Ledger with Keplr/Leap we have
+     * to send EIP712 to sign on Keplr/Leap
      */
-    if (walletStrategy.getWallet() === Wallet.Keplr) {
+    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
-      const isLedgerConnectedOnKeplr =
-        walletDeviceType === WalletDeviceType.Hardware
+      const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
-      if (isLedgerConnectedOnKeplr) {
-        return this.experimentalBroadcastKeplrWithLedger(tx)
+      if (isLedgerConnected) {
+        return this.experimentalBroadcastWalletThroughLedger(tx)
       }
     }
 
@@ -590,12 +590,12 @@ export class MsgBroadcaster {
   }
 
   /**
-   * We use this method only when we want to broadcast a transaction using Ledger on Keplr for Injective
+   * We use this method only when we want to broadcast a transaction using Ledger on Keplr/Leap for Injective
    *
    * Note: Gas estimation not available
    * @param tx the transaction that needs to be broadcasted
    */
-  private async experimentalBroadcastKeplrWithLedger(
+  private async experimentalBroadcastWalletThroughLedger(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
     const {
@@ -613,15 +613,14 @@ export class MsgBroadcaster {
      * We can NOT use this method
      * when Ledger is connected through Keplr
      */
-    if (walletStrategy.getWallet() === Wallet.Keplr) {
+    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
-      const isLedgerConnectedOnKeplr =
-        walletDeviceType === WalletDeviceType.Hardware
+      const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
-      if (!isLedgerConnectedOnKeplr) {
+      if (!isLedgerConnected) {
         throw new GeneralException(
           new Error(
-            'This method can only be used when Keplr is connected with Ledger',
+            `This method can only be used when Ledger is connected through ${walletStrategy.getWallet()}`,
           ),
         )
       }
@@ -631,7 +630,10 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    const keplrWallet = new KeplrWallet(chainId)
+    const wallet =
+      walletStrategy.getWallet() === Wallet.Keplr
+        ? new KeplrWallet(chainId)
+        : new LeapWallet(chainId)
 
     /** Account Details * */
     const accountDetails = await new ChainGrpcAuthApi(
@@ -663,7 +665,7 @@ export class MsgBroadcaster {
       ethereumChainId,
     })
 
-    const aminoSignResponse = await keplrWallet.signEIP712CosmosTx({
+    const aminoSignResponse = await wallet.signEIP712CosmosTx({
       eip712: eip712TypedData,
       signDoc: createEip712StdSignDoc({
         ...tx,
