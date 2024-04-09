@@ -3679,4 +3679,12 @@ export default {
       },
     ],
   },
+
+  OMNI: {
+    name: 'Omni Network',
+    logo: 'omni.png',
+    symbol: 'OMNI',
+    coinGeckoId: 'omni-network',
+    tokenType: TokenType.Unknown,
+  },
 } as Record<string, TokenMetaBase>
