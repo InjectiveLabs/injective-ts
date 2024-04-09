@@ -200,7 +200,7 @@ export class TokenServiceStatic {
       .replaceAll(' ', '-')
       .toLowerCase()
     const [baseTokenSymbol] = slug.split('-')
-    const baseToken = this.denomClient.getDenomToken(baseTokenSymbol)
+    const baseToken = this.denomClient.getTokenBySymbol(baseTokenSymbol)
     const quoteToken = this.getDenom(market.quoteDenom)
 
     return {
