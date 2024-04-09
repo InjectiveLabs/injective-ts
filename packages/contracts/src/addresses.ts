@@ -34,7 +34,7 @@ export const contractAddresses: ContractAddressesForChainId = {
     injective: ZERO_ADDRESS,
   },
   [EthereumChainId.Sepolia]: {
-    peggy: '0x429b9aD854D72abe857287BC6cA05A24077C6f09',
+    peggy: '0x12e1181a741b70BE6A9D81f85af3E92B6ba41897',
     injective: '0x5512c04B6FF813f3571bDF64A1d74c98B5257332',
   },
   [EthereumChainId.Ganache]: {
@@ -77,20 +77,20 @@ export const contractAddressesByNetwork: ContractAddressesForNetwork = {
     injective: '0xe28b3B32B6c345A34Ff64674606124Dd5Aceca30',
   },
   [Network.Testnet]: {
-    peggy: '0xd2C6753F6B1783EF0a3857275e16e79D91b539a3',
-    injective: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
+    peggy: '0x12e1181a741b70BE6A9D81f85af3E92B6ba41897',
+    injective: '0x5512c04B6FF813f3571bDF64A1d74c98B5257332',
   },
   [Network.TestnetK8s]: {
-    peggy: '0xd2C6753F6B1783EF0a3857275e16e79D91b539a3',
-    injective: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
+    peggy: '0x12e1181a741b70BE6A9D81f85af3E92B6ba41897',
+    injective: '0x5512c04B6FF813f3571bDF64A1d74c98B5257332',
   },
   [Network.TestnetSentry]: {
-    peggy: '0xd2C6753F6B1783EF0a3857275e16e79D91b539a3',
-    injective: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
+    peggy: '0x12e1181a741b70BE6A9D81f85af3E92B6ba41897',
+    injective: '0x5512c04B6FF813f3571bDF64A1d74c98B5257332',
   },
   [Network.TestnetOld]: {
-    peggy: '0xd2C6753F6B1783EF0a3857275e16e79D91b539a3',
-    injective: '0xAD1794307245443B3Cb55d88e79EEE4d8a548C03',
+    peggy: '0x12e1181a741b70BE6A9D81f85af3E92B6ba41897',
+    injective: '0x5512c04B6FF813f3571bDF64A1d74c98B5257332',
   },
   [Network.Devnet]: {
     peggy: '0x430544ca09F7914077a0E8F405Da62292428F49D',
