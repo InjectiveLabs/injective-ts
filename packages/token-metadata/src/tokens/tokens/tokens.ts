@@ -3639,7 +3639,7 @@ export default {
   },
 
   SAE: {
-    name: 'SA World',
+    name: 'Summoners Arena Essence',
     logo: 'sae.png',
     coinGeckoId: '',
 
