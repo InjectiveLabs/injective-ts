@@ -1,6 +1,11 @@
 import { Coin } from '@injectivelabs/ts-types'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
 
+export enum MitoGaugeStatus {
+  Active = 'active',
+  Live = 'live',
+}
+
 export interface MitoHolders {
   holderAddress: string
   vaultAddress: string
@@ -118,6 +123,7 @@ export interface MitoGauge {
   endTimestamp: number
   rewardTokens: Coin[]
   lastDistribution: number
+  status: MitoGaugeStatus
 }
 
 export interface MitoStakingPool {

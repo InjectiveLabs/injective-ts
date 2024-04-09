@@ -230,6 +230,7 @@ export class IndexerGrpcMitoTransformer {
     return {
       id: gauge.id,
       owner: gauge.owner,
+      status: gauge.status,
       lastDistribution: gauge.lastDistribution,
       endTimestamp: parseInt(gauge.endTimestamp, 10),
       startTimestamp: parseInt(gauge.startTimestamp, 10),
