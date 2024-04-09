@@ -3650,6 +3650,20 @@ export default {
         decimals: 6,
       },
     ],
+
+    ibcs: [
+      {
+        symbol: 'SAE',
+        decimals: 8,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/2mWv5umZHxJ1X8zMeSw3hFPdGuUZmq5UjbCsmJcDdEW1',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: '0AFCFFE18230E0E703A527F7522223D808EBB0E02FDBC84AAF8A045CD8FE0BBB',
+        source: TokenSource.BinanceSmartChain,
+      },
+    ],
   },
 
   XIII: {
