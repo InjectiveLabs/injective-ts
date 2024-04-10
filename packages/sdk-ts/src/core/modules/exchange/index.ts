@@ -20,6 +20,7 @@ import MsgCreateBinaryOptionsLimitOrder from './msgs/MsgCreateBinaryOptionsLimit
 import MsgCreateBinaryOptionsMarketOrder from './msgs/MsgCreateBinaryOptionsMarketOrder'
 import MsgInstantBinaryOptionsMarketLaunch from './msgs/MsgInstantBinaryOptionsMarketLaunch'
 import MsgBatchCancelBinaryOptionsOrders from './msgs/MsgBatchCancelBinaryOptionsOrders'
+import MsgAdminUpdateBinaryOptionsMarket from './msgs/MsgAdminUpdateBinaryOptionsMarket'
 
 export {
   MsgDeposit,
@@ -41,6 +42,7 @@ export {
   MsgCreateDerivativeMarketOrder,
   MsgBatchCancelDerivativeOrders,
   MsgCreateBinaryOptionsLimitOrder,
+  MsgAdminUpdateBinaryOptionsMarket,
   MsgCreateBinaryOptionsMarketOrder,
   MsgBatchCancelBinaryOptionsOrders,
   MsgInstantBinaryOptionsMarketLaunch,

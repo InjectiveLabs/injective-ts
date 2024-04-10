@@ -21,6 +21,7 @@ import MsgCreateBinaryOptionsMarketOrder from './exchange/msgs/MsgCreateBinaryOp
 import MsgCreateSpotLimitOrder from './exchange/msgs/MsgCreateSpotLimitOrder'
 import MsgCreateSpotMarketOrder from './exchange/msgs/MsgCreateSpotMarketOrder'
 import MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders'
+import MsgAdminUpdateBinaryOptionsMarket from './exchange/msgs/MsgAdminUpdateBinaryOptionsMarket'
 import MsgDeposit from './exchange/msgs/MsgDeposit'
 import MsgIncreasePositionMargin from './exchange/msgs/MsgIncreasePositionMargin'
 import MsgInstantSpotMarketLaunch from './exchange/msgs/MsgInstantSpotMarketLaunch'
@@ -116,6 +117,7 @@ export type Msgs =
   | MsgSetDenomMetadata
   | MsgGrantAllowance
   | MsgRevokeAllowance
+  | MsgAdminUpdateBinaryOptionsMarket
   | MsgLiquidatePosition
 
 /**
@@ -145,3 +147,4 @@ export type ExchangeMsgs =
   | MsgStoreCode
   | MsgRewardsOptOut
   | MsgLiquidatePosition
+  | MsgAdminUpdateBinaryOptionsMarket
