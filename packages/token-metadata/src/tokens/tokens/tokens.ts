@@ -3687,4 +3687,18 @@ export default {
     coinGeckoId: 'omni-network',
     tokenType: TokenType.Unknown,
   },
+
+  DDL: {
+    name: 'Discordels Token',
+    logo: 'ddl.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1put8lfpkwm47tqcl9fgh8grz987mezvrx4arls',
+        symbol: 'DDL',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
