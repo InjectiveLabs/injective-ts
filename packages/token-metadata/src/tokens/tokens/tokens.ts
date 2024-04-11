@@ -1826,7 +1826,7 @@ export default {
   NEOK: {
     name: 'NEOKingdom DAO',
     logo: 'neok.png',
-    coinGeckoId: '',
+    coinGeckoId: 'neokingdom-dao',
 
     ibcs: [
       {
