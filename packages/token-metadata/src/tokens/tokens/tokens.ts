@@ -2097,6 +2097,20 @@ export default {
     ],
   },
 
+  SPUUN: {
+    name: 'SPUUN',
+    logo: 'spuun.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1flkktfvf8nxvk300f2z3vxglpllpw59c563pk7',
+        symbol: 'SPUUN',
+        decimals: 6,
+      },
+    ],
+  },
+
   KATANA: {
     name: 'Dog Wif Katana',
     logo: 'katana.webp',
