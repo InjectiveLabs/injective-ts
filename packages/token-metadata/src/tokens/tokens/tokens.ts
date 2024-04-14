@@ -3000,6 +3000,26 @@ export default {
     ],
   },
 
+  
+  CLON: {
+    name: 'CLON',
+    logo: 'clon1.png',
+
+    ibcs: [
+      {
+        symbol: 'CLON',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'cw20:terra164ssz60yvsxey0ku9mtcaegdeyxwzuwwqyrp238nvflwqve0pvxsra7fa2',
+        path: 'transfer/channel-116',
+        channelId: 'channel-116',
+        hash: 'ibc/695B1D16DE4D0FD293E6B79451640974080B59AA60942974C1CC906568DED795',
+        source: TokenSource.Cosmos,
+      },
+    ],
+  },
+
   RAMEN: {
     name: 'Ramen',
     logo: 'ramen.jpeg',
