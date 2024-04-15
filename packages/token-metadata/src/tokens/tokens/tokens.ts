@@ -3651,6 +3651,12 @@ export default {
       },
     ],
 
+    evm: {
+      symbol: 'SAE',
+      decimals: 18,
+      address: '0x2FD85ED6EF7c26E07619cF32aee535f3D4393a0F',
+    },
+
     ibcs: [
       {
         symbol: 'SAE',
@@ -3697,6 +3703,65 @@ export default {
       {
         creator: 'inj1put8lfpkwm47tqcl9fgh8grz987mezvrx4arls',
         symbol: 'DDL',
+        decimals: 6,
+      },
+    ],
+  },
+
+  ASG: {
+    name: 'Ancient Summoners Gem',
+    logo: 'asg.png',
+    coinGeckoId: '',
+
+    evm: {
+      symbol: 'ASG',
+      decimals: 18,
+      address: '0x2ef776488739722Ad174F8f2ffE76eb67a8467Eb',
+    },
+
+    ibcs: [
+      {
+        symbol: 'ASG',
+        decimals: 8,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/54RgtKyJuM9boEu4G7Dzp2mMrg6w5MuctfU95HoHHeL3',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: '2D40732D27E22D27A2AB79F077F487F27B6F13DB6293040097A71A52FB8AD021',
+        source: TokenSource.BinanceSmartChain,
+      },
+    ],
+  },
+
+  CLON: {
+    name: 'CLON',
+    logo: 'clon1.png',
+
+    ibcs: [
+      {
+        symbol: 'CLON',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'cw20:terra164ssz60yvsxey0ku9mtcaegdeyxwzuwwqyrp238nvflwqve0pvxsra7fa2',
+        path: 'transfer/channel-116',
+        channelId: 'channel-116',
+        hash: 'ibc/695B1D16DE4D0FD293E6B79451640974080B59AA60942974C1CC906568DED795',
+        source: TokenSource.Cosmos,
+      },
+    ],
+  },
+
+  SPUUN: {
+    name: 'SPUUN',
+    logo: 'spuun.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1flkktfvf8nxvk300f2z3vxglpllpw59c563pk7',
+        symbol: 'SPUUN',
         decimals: 6,
       },
     ],

@@ -6,6 +6,7 @@ export interface BrowserEip1993Provider extends Eip1993Provider {
   removeAllListeners(): void
   isMetaMask: boolean
   isTrustWallet: boolean
+  isTrust: boolean
   isOkxWallet: boolean
   isPhantom: boolean
 }

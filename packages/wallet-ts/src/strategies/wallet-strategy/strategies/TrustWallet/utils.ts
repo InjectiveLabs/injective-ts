@@ -54,7 +54,7 @@ function getTrustWalletFromWindow() {
     return $window.trustWallet
   }
 
-  if ($window.ethereum.isTrustWallet) {
+  if ($window.ethereum.isTrustWallet || $window.ethereum.isTrust) {
     return $window.ethereum
   }
 
