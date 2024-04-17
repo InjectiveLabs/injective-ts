@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/token-metadata",
   "description": "ERC20 token metadata. Name, symbol, decimals, etc.",
-  "version": "1.14.11-beta.37",
+  "version": "1.14.11-beta.38",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
