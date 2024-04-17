@@ -1,4 +1,4 @@
-import { TokenType, TokenSource, TokenStatic } from './types'
+import { TokenType, TokenSource, TokenStatic, TokenVerification } from './types'
 
 export class TokenFactoryStatic {
   public registry: TokenStatic[]
@@ -38,14 +38,21 @@ export class TokenFactoryStatic {
       return
     }
 
-    const token = tokensBySymbol.find((Token) => {
-      const isType = !type || Token.tokenType === type
-      const isSource = !source || Token.source === source
+    const token = tokensBySymbol.find((token: TokenStatic) => {
+      const isType = !type || token.tokenType === type
+      const isSource = !source || token.source === source
 
       return isType && isSource
     })
 
-    return token || tokensBySymbol[0]
+    const sortedTokens = tokensBySymbol.sort((t1, t2) => {
+      const t1IsVerified = t1.tokenVerification === TokenVerification.Verified
+      const t2IsVerified = t2.tokenVerification === TokenVerification.Verified
+
+      return t1IsVerified && !t2IsVerified ? -1 : 1
+    })
+
+    return token || sortedTokens[0]
   }
 
   getMetaByDenomOrAddress(denom: string): TokenStatic | undefined {
