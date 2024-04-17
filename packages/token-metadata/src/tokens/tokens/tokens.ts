@@ -1826,7 +1826,7 @@ export default {
   NEOK: {
     name: 'NEOKingdom DAO',
     logo: 'neok.png',
-    coinGeckoId: 'neokingdom-dao',
+    coinGeckoId: '',
 
     ibcs: [
       {
@@ -3686,14 +3686,6 @@ export default {
     ],
   },
 
-  OMNI: {
-    name: 'Omni Network',
-    logo: 'omni.png',
-    symbol: 'OMNI',
-    coinGeckoId: 'omni-network',
-    tokenType: TokenType.Unknown,
-  },
-
   DDL: {
     name: 'Discordels Token',
     logo: 'ddl.png',
@@ -3765,5 +3757,18 @@ export default {
         decimals: 6,
       },
     ],
+  },
+
+  OMNI: {
+    name: 'Omni Network',
+    logo: 'omni.png',
+    symbol: 'OMNI',
+    coinGeckoId: 'omni-network',
+
+    erc20: {
+      symbol: 'OMNI',
+      decimals: 18,
+      address: '0x36e66fbbce51e4cd5bd3c62b637eb411b18949d4',
+    },
   },
 } as Record<string, TokenMetaBase>
