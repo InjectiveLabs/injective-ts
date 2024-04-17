@@ -14,6 +14,8 @@ export class TransactionException extends ConcreteException {
   public parse(): void {
     const { message, contextModule, contextCode } = this
 
+    console.log({ message, contextModule, contextCode })
+
     const {
       code,
       message: parsedMessage,
