@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/token-metadata",
   "description": "ERC20 token metadata. Name, symbol, decimals, etc.",
-  "version": "1.14.11-beta.39",
+  "version": "1.14.11-beta.40",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
@@ -32,10 +32,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.14.11-beta.3",
-    "@injectivelabs/networks": "^1.14.11-beta.5",
+    "@injectivelabs/exceptions": "^1.14.11-beta.4",
+    "@injectivelabs/networks": "^1.14.11-beta.6",
     "@injectivelabs/ts-types": "^1.14.11-beta.1",
-    "@injectivelabs/utils": "^1.14.11-beta.3",
+    "@injectivelabs/utils": "^1.14.11-beta.4",
     "@types/lodash.values": "^4.3.6",
     "copyfiles": "^2.4.1",
     "jsonschema": "^1.4.0",
