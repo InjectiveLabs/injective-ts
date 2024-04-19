@@ -666,7 +666,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
   async fetchCW20BalancesNoThrow(
     address: string,
-  ): Promise<ExplorerCW20BalanceWithToken[]> {
+  ): Promise<CW20BalanceExplorerApiResponse[]> {
     const endpoint = `/wasm/${address}/cw20-balance`
 
     try {
@@ -678,9 +678,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         return []
       }
 
-      return response.data.map(
-        IndexerRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
-      )
+      return response.data
     } catch (e: unknown) {
       const error = e as any
 
