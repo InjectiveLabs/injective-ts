@@ -3497,7 +3497,7 @@ export default {
 
   NBOY: {
     name: 'NinjaBoy',
-    logo: 'NBlogo.png',
+    logo: 'Nblogo.png',
     coinGeckoId: '',
 
     tokenFactories: [
