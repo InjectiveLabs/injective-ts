@@ -2847,4 +2847,24 @@ export default {
       tokenType: TokenType.Erc20,
     },
   },
+
+  ELON: {
+    name: 'ELON',
+    symbol: 'ELON',
+    decimals: 6,
+    logo: 'https://i.ibb.co/bgtD1rS/Elon.png',
+    coinGeckoId: '',
+  
+    erc20: {
+      decimals: 6,
+      address: '0x43123e1d077351267113ada8bE85A058f5D492De',
+      tokenType: TokenType.Erc20,
+    },
+  
+    cw20: {
+      decimals: 6,
+      address: 'inj10pqutl0av9ltrw9jq8d3wjwjayvz76jhfcfza0',
+      tokenType: TokenType.Cw20,
+    },
+  }
 } as Record<string, TokenMeta>
