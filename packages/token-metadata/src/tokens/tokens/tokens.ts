@@ -3776,7 +3776,7 @@ export default {
     name: 'ELON',
     symbol: 'ELON',
     decimals: 6,
-    logo: 'elon.png',
+    logo: 'elon.jpeg',
     coinGeckoId: '',
   
     erc20: {
