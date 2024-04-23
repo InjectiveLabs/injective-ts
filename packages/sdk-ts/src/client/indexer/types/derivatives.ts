@@ -164,6 +164,7 @@ export interface DerivativeTrade extends PositionDelta {
   orderHash: string
   subaccountId: string
   tradeId: string
+  cid: string
   marketId: string
   executedAt: number
   tradeExecutionType: TradeExecutionType

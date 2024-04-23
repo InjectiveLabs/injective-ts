@@ -1,4 +1,4 @@
-import bip39 from 'bip39'
+import { generateMnemonic } from 'bip39'
 import { Wallet } from 'ethers'
 import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
@@ -25,7 +25,7 @@ export class PrivateKey {
    * @returns { privateKey: PrivateKey, mnemonic: string }
    */
   static generate(): { privateKey: PrivateKey; mnemonic: string } {
-    const mnemonic = bip39.generateMnemonic()
+    const mnemonic = generateMnemonic()
     const privateKey = PrivateKey.fromMnemonic(mnemonic)
 
     return {

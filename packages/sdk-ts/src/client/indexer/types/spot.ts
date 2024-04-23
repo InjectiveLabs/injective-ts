@@ -64,6 +64,7 @@ export interface SpotTrade extends PriceLevel {
   orderHash: string
   subaccountId: string
   marketId: string
+  cid: string
   tradeId: string
   executedAt: number
   tradeExecutionType: TradeExecutionType
