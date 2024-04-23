@@ -3415,6 +3415,21 @@ export default {
     ],
   },
 
+  nTIA: {
+    name: 'Neptune Receipt TIA',
+    logo: 'ntia.png',
+    symbol: 'nTIA',
+
+    cw20s: [
+      {
+        symbol: 'nTIA',
+        logo: 'ntia.png',
+        address: 'inj1fzquxxxam59z6fzewy2hvvreeh3m04x83zg4vv',
+        decimals: 6,
+      },
+    ],
+  },
+
   BAND: {
     name: 'Band Protocol',
     logo: 'band.webp',
