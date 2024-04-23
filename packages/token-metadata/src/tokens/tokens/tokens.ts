@@ -3771,4 +3771,24 @@ export default {
       address: '0x36e66fbbce51e4cd5bd3c62b637eb411b18949d4',
     },
   },
+
+  ELON: {
+    name: 'ELON',
+    symbol: 'ELON',
+    decimals: 6,
+    logo: 'elon.png',
+    coinGeckoId: '',
+  
+    erc20: {
+      decimals: 6,
+      address: '0x43123e1d077351267113ada8bE85A058f5D492De',
+      tokenType: TokenType.Erc20,
+    },
+  
+    cw20: {
+      decimals: 6,
+      address: 'inj10pqutl0av9ltrw9jq8d3wjwjayvz76jhfcfza0',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMetaBase>
