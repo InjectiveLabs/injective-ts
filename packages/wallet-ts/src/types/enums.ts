@@ -12,6 +12,7 @@ export enum Wallet {
   Metamask = 'metamask',
   OkxWallet = 'okx-wallet',
   TrustWallet = 'trust-wallet',
+  PrivateKey = 'private-key',
   Cosmostation = 'cosmostation',
   LedgerCosmos = 'ledger-cosmos',
   LedgerLegacy = 'ledger-legacy',
@@ -21,6 +22,7 @@ export enum Wallet {
 
 export enum WalletDeviceType {
   Mobile = 'mobile',
+  Other = 'other',
   Browser = 'browser',
   Hardware = 'hardware',
 }

@@ -7,6 +7,8 @@ import { PublicKey } from './PublicKey'
 import { Address } from './Address'
 import * as BytesUtils from '@ethersproject/bytes'
 import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
+import { hexToNumber, recoverTypedSignaturePubKey } from '../../utils'
+import { secp256k1 as NobleSecp256k1 } from '@noble/curves/secp256k1'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -224,5 +226,69 @@ export class PrivateKey {
     const { signature } = secp256k1.ecdsaSign(eip712Data, privateKey)
 
     return signature
+  }
+
+  /**
+   * Verify signature using EIP712 typed data
+   * and the publicKey
+   * */
+  public static verifySignature({
+    signature,
+    eip712,
+    publicKey,
+  }: {
+    signature: string /* in hex */
+    eip712: any
+    publicKey: string /* in hex */
+  }): boolean {
+    const publicKeyInHex = publicKey.startsWith('0x')
+      ? publicKey
+      : `0x${publicKey}`
+
+    return publicKeyInHex === recoverTypedSignaturePubKey(eip712, signature)
+  }
+
+  /**
+   * Verify signature using EIP712 typed data
+   * and the publicKey
+   **/
+  public static verifyCosmosSignature(_: {
+    signature: string /* in hex */
+    eip712: any
+    publicKey: string /* in hex */
+  }): boolean {
+    throw new Error('Not implemented')
+  }
+
+  public recoverPublicKeyFromBase64({
+    signature,
+    messageHash,
+    isCompressed = false,
+  }: {
+    signature: Uint8Array | string /* in base64 */
+    messageHash: string /* in hex */
+    isCompressed?: boolean
+  }): string {
+    const signatureBuff =
+      signature.constructor === Uint8Array
+        ? Buffer.from(signature)
+        : Buffer.from(signature as string, 'base64')
+    const signatureHex = signatureBuff.toString('hex')
+
+    let v = hexToNumber(`0x${signatureHex.slice(130)}`)
+    if (v === 0 || v === 1) v += 27
+
+    const publicKey = NobleSecp256k1.Signature.fromCompact(
+      signatureHex.startsWith('0x')
+        ? signatureHex.substring(2, 130)
+        : signatureHex,
+    )
+      .addRecoveryBit(v - 27)
+      .recoverPublicKey(
+        messageHash.startsWith('0x') ? messageHash.substring(2) : messageHash,
+      )
+      .toHex(isCompressed)
+
+    return `0x${publicKey}`
   }
 }

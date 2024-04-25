@@ -11,11 +11,13 @@ import {
   WalletStrategyArguments,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
+  WalletStrategyOptions,
 } from '../types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
 import Ninji from './strategies/Ninji'
 import Trezor from './strategies/Trezor'
+import PrivateKey from './strategies/PrivateKey'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
@@ -97,6 +99,11 @@ const createStrategy = ({
       return new Okx(ethWalletArgs)
     case Wallet.BitGet:
       return new BitGet(ethWalletArgs)
+    case Wallet.PrivateKey:
+      return new PrivateKey({
+        ...ethWalletArgs,
+        privateKey: args.options?.privateKey,
+      })
     case Wallet.Keplr:
       return new Keplr({ ...args })
     case Wallet.Cosmostation:
@@ -129,7 +136,10 @@ export default class WalletStrategy {
 
   public wallet: Wallet
 
+  public args: WalletStrategyArguments
+
   constructor(args: WalletStrategyArguments) {
+    this.args = args
     this.strategies = createStrategies(args)
     this.wallet = getInitialWallet(args)
   }
@@ -141,6 +151,21 @@ export default class WalletStrategy {
   public setWallet(wallet: Wallet) {
     this.disconnect()
     this.wallet = wallet
+  }
+
+  /**
+   * Case 1: Private Key is set dynamically
+   * If we have a dynamically set private key,
+   * we are creating a new PrivateKey strategy
+   * with the specified private key
+   */
+  public setOptions(options?: WalletStrategyOptions) {
+    if (options?.privateKey) {
+      this.strategies[Wallet.PrivateKey] = createStrategy({
+        args: this.args,
+        wallet: Wallet.PrivateKey,
+      })
+    }
   }
 
   public getStrategy(): ConcreteWalletStrategy {
