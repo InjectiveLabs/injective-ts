@@ -44,7 +44,7 @@ export interface ConcreteCosmosWalletStrategy {
    * Perform validations and checks
    * for the wallet (if the chain is supported, etc)
    */
-  enable(): Promise<boolean>
+  enable(args?: unknown): Promise<boolean>
 
   /**
    * Sends Cosmos transaction. Returns a transaction hash
@@ -71,6 +71,7 @@ export interface ConcreteCosmosWalletStrategy {
 
 export interface WalletStrategyOptions {
   privateKey?: string
+  metadata?: Record<string, string | Record<string, string>>
 }
 
 export interface CosmosWalletStrategyArguments {
@@ -118,7 +119,7 @@ export interface ConcreteWalletStrategy
    * Confirm the address on the wallet
    * @param address address
    */
-  confirm(address: string): Promise<string>
+  getSessionOrConfirm(address?: string): Promise<string>
 
   /**
    * Sends Ethereum transaction. Returns a transaction hash

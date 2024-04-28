@@ -1,5 +1,4 @@
 /* eslint-disable class-methods-use-this */
-import { sleep } from '@injectivelabs/utils'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   ErrorType,
@@ -10,59 +9,79 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
-import {
-  ConcreteWalletStrategy,
-  EthereumWalletStrategyArgs,
-} from '../../../types'
-import { BrowserEip1993Provider, SendTransactionOptions } from '../../types'
-import BaseConcreteStrategy from '../Base'
+import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
+import { SendTransactionOptions, WalletConnectMetadata } from '../types'
+import BaseConcreteStrategy from './Base'
 import {
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
-} from '../../../../types/enums'
-import { getMetamaskProvider } from './utils'
+} from '../../../types/enums'
+import Provider, {
+  EthereumProvider,
+  EthereumProviderOptions,
+} from '@walletconnect/ethereum-provider'
 
-export default class Metamask extends BaseConcreteStrategy implements ConcreteWalletStrategy {
-  constructor(args: EthereumWalletStrategyArgs) {
+interface WalletConnectArgs extends EthereumWalletStrategyArgs {
+  metadata?: WalletConnectMetadata
+}
+
+export default class WalletConnect
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
+  public provider: Provider | undefined
+
+  public metadata?: WalletConnectMetadata
+
+  constructor(args: WalletConnectArgs) {
     super(args)
+
+    this.metadata = args.metadata
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  async enable(): Promise<boolean> {
+  async enable(args?: { topic: string }): Promise<boolean> {
+    await this.connectWalletConnect(args?.topic)
+
     return Promise.resolve(true)
   }
 
   public async disconnect() {
     if (this.listeners[WalletEventListener.AccountChange]) {
-      const ethereum = await this.getEthereum()
+      const wc = await this.getConnectedWalletConnect()
 
-      ethereum.removeListener(
+      wc.removeListener(
         'accountsChanged',
         this.listeners[WalletEventListener.AccountChange],
       )
     }
 
     if (this.listeners[WalletEventListener.ChainIdChange]) {
-      const ethereum = await this.getEthereum()
+      const wc = await this.getConnectedWalletConnect()
 
-      ethereum.removeListener(
+      wc.removeListener(
         'chainChanged',
         this.listeners[WalletEventListener.ChainIdChange],
       )
     }
 
     this.listeners = {}
+
+    if (this.provider) {
+      await this.provider.disconnect()
+      this.provider = undefined
+    }
   }
 
   async getAddresses(): Promise<string[]> {
-    const ethereum = await this.getEthereum()
+    const wc = await this.getConnectedWalletConnect()
 
     try {
-      return await ethereum.request({
+      return await wc.request({
         method: 'eth_requestAccounts',
       })
     } catch (e: unknown) {
@@ -74,23 +93,20 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
-    return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
-    )
+  async getSessionOrConfirm(_address: AccountAddress): Promise<string> {
+    const wc = await this.getConnectedWalletConnect()
+
+    return wc.session?.topic || ''
   }
 
   async sendEthereumTransaction(
     transaction: unknown,
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
-    const ethereum = await this.getEthereum()
+    const wc = await this.getConnectedWalletConnect()
 
     try {
-      return await ethereum.request({
+      return await wc.request({
         method: 'eth_sendTransaction',
         params: [transaction],
       })
@@ -143,10 +159,10 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const ethereum = await this.getEthereum()
+    const wc = await this.getConnectedWalletConnect()
 
     try {
-      return await ethereum.request({
+      return await wc.request({
         method: 'eth_signTypedData_v4',
         params: [address, eip712json],
       })
@@ -196,10 +212,10 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
     signer: AccountAddress,
     data: string | Uint8Array,
   ): Promise<string> {
-    const ethereum = await this.getEthereum()
+    const wc = await this.getConnectedWalletConnect()
 
     try {
-      const signature = await ethereum.request({
+      const signature = await wc.request<string>({
         method: 'personal_sign',
         params: [toUtf8(data), signer],
       })
@@ -215,10 +231,10 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
   }
 
   async getEthereumChainId(): Promise<string> {
-    const ethereum = await this.getEthereum()
+    const wc = await this.getConnectedWalletConnect()
 
     try {
-      return ethereum.request({ method: 'eth_chainId' })
+      return wc.request({ method: 'eth_chainId' })
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -228,33 +244,15 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
     }
   }
 
-  async getEthereumTransactionReceipt(txHash: string): Promise<string> {
-    const ethereum = await this.getEthereum()
-
-    const interval = 1000
-    const transactionReceiptRetry = async () => {
-      const receipt = await ethereum.request({
-        method: 'eth_getTransactionReceipt',
-        params: [txHash],
-      })
-
-      if (!receipt) {
-        await sleep(interval)
-        await transactionReceiptRetry()
-      }
-
-      return receipt
-    }
-
-    try {
-      return await transactionReceiptRetry()
-    } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+  async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support awaiting Ethereum transactions'),
+      {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetEthereumTransactionReceipt,
-      })
-    }
+      },
+    )
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -265,41 +263,99 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
   }
 
   async onChainIdChanged(callback: (chain: string) => void): Promise<void> {
-    const ethereum = await this.getEthereum()
+    const wc = await this.getConnectedWalletConnect()
 
     this.listeners = {
       [WalletEventListener.ChainIdChange]: callback,
     }
 
-    ethereum.on('chainChanged', callback)
+    wc.on('chainChanged', callback)
   }
 
   async onAccountChange(
     callback: (account: AccountAddress) => void,
   ): Promise<void> {
-    const ethereum = await this.getEthereum()
+    const wc = await this.getConnectedWalletConnect()
 
     this.listeners = {
       [WalletEventListener.AccountChange]: callback,
     }
 
-    ethereum.on('accountsChanged', callback)
+    wc.on('accountsChanged', (accounts) => callback(accounts[0]))
   }
 
-  private async getEthereum(): Promise<BrowserEip1993Provider> {
-    const provider = await getMetamaskProvider()
+  private async getWalletConnect(): Promise<Provider> {
+    if (this.provider) {
+      return this.provider
+    }
 
-    if (!provider) {
-      throw new MetamaskException(
-        new Error('Please install the Metamask wallet extension.'),
+    if (!this.metadata) {
+      throw new WalletException(
+        new Error('Please provide metadata for WalletConnect'),
         {
           code: UnspecifiedErrorCode,
-          type: ErrorType.WalletNotInstalledError,
+          type: ErrorType.WalletError,
           contextModule: WalletAction.GetAccounts,
         },
       )
     }
 
-    return provider
+    if (!this.metadata.projectId) {
+      throw new WalletException(
+        new Error(
+          'Please provide projectId alongside the metadata for WalletConnect',
+        ),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetAccounts,
+        },
+      )
+    }
+
+    try {
+      this.provider = await EthereumProvider.init({
+        projectId: this.metadata.projectId as string,
+        metadata: this.metadata
+          .metadata as unknown as EthereumProviderOptions['metadata'],
+        showQrModal: true,
+        optionalChains: [1, 5, 42, 11155111],
+      })
+
+      return this.provider
+    } catch (e) {
+      throw new WalletException(
+        new Error('WalletConnect not supported for this wallet'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetAccounts,
+        },
+      )
+    }
+  }
+
+  private async getConnectedWalletConnect(): Promise<Provider> {
+    if (!this.provider) {
+      await this.getWalletConnect()
+    }
+
+    if (!this.provider?.connected) {
+      await this.enable()
+    }
+
+    return this.provider as Provider
+  }
+
+  private async connectWalletConnect(topic?: string) {
+    if (this.provider && this.provider.connected) {
+      return
+    }
+
+    const wc = await this.getWalletConnect()
+
+    await wc.connect({
+      ...(topic && { pairingTopic: topic }),
+    })
   }
 }

@@ -30,10 +30,7 @@ import {
 } from '../../../types/enums'
 import { SendTransactionOptions } from '../types'
 
-export default class Ninji
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Ninji extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private ninjiWallet: NinjiWallet
 
   constructor(args: {
@@ -81,7 +78,7 @@ export default class Ninji
     }
   }
 
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,

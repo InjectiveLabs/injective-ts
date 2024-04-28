@@ -80,7 +80,7 @@ export default class Leap extends BaseConcreteStrategy implements ConcreteWallet
     }
   }
 
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,

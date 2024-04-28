@@ -30,10 +30,7 @@ import {
 } from '../../../types/enums'
 import { SendTransactionOptions } from '../types'
 
-export default class Keplr
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Keplr extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private keplrWallet: KeplrWallet
 
   constructor(args: { chainId: ChainId }) {
@@ -83,7 +80,7 @@ export default class Keplr
     }
   }
 
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,

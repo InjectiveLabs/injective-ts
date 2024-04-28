@@ -26,6 +26,7 @@ import Okx from './strategies/Okx'
 import BitGet from './strategies/BitGet'
 import Cosmostation from './strategies/Cosmostation'
 import LedgerCosmos from './strategies/LedgerCosmos'
+import WalletConnect from './strategies/WalletConnect'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet, isCosmosWallet } from './utils'
 import { SendTransactionOptions } from './types'
@@ -99,6 +100,11 @@ const createStrategy = ({
       return new Okx(ethWalletArgs)
     case Wallet.BitGet:
       return new BitGet(ethWalletArgs)
+    case Wallet.WalletConnect:
+      return new WalletConnect({
+        ...ethWalletArgs,
+        metadata: args.options?.metadata,
+      })
     case Wallet.PrivateKey:
       return new PrivateKey({
         ...ethWalletArgs,
@@ -158,12 +164,21 @@ export default class WalletStrategy {
    * If we have a dynamically set private key,
    * we are creating a new PrivateKey strategy
    * with the specified private key
+   *
+   * Case 2: Wallet Connect Metadata set dynamically
    */
   public setOptions(options?: WalletStrategyOptions) {
     if (options?.privateKey) {
       this.strategies[Wallet.PrivateKey] = createStrategy({
         args: this.args,
         wallet: Wallet.PrivateKey,
+      })
+    }
+
+    if (options?.metadata) {
+      this.strategies[Wallet.WalletConnect] = createStrategy({
+        args: this.args,
+        wallet: Wallet.WalletConnect,
       })
     }
   }
@@ -190,12 +205,14 @@ export default class WalletStrategy {
     return this.getStrategy().getPubKey(address)
   }
 
-  public enable(): Promise<boolean> {
-    return this.getStrategy().enable()
+  public enable(args?: unknown): Promise<boolean> {
+    return this.getStrategy().enable(args)
   }
 
-  public async enableAndGetAddresses(): Promise<AccountAddress[]> {
-    await this.getStrategy().enable()
+  public async enableAndGetAddresses(
+    args?: unknown,
+  ): Promise<AccountAddress[]> {
+    await this.getStrategy().enable(args)
 
     return this.getStrategy().getAddresses()
   }
@@ -208,8 +225,8 @@ export default class WalletStrategy {
     return this.getStrategy().getEthereumTransactionReceipt(txHash)
   }
 
-  public async confirm(address: AccountAddress): Promise<string> {
-    return this.getStrategy().confirm(address)
+  public async getSessionOrConfirm(address?: AccountAddress): Promise<string> {
+    return this.getStrategy().getSessionOrConfirm(address)
   }
 
   public async sendTransaction(

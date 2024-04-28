@@ -23,10 +23,7 @@ import {
 } from '../../../../types/enums'
 import { getOkxWalletProvider } from './utils'
 
-export default class OkxWallet
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class OkxWallet extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
   }
@@ -78,7 +75,7 @@ export default class OkxWallet
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,

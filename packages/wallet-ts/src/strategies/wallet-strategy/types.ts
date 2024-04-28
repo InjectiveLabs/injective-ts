@@ -53,3 +53,8 @@ export interface SendTransactionOptions {
     tm?: string
   }
 }
+
+export type WalletConnectMetadata = Record<
+  string,
+  string | Record<string, string> | Record<string, string[]>
+>
