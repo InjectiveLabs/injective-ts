@@ -170,14 +170,14 @@ export default class WalletStrategy {
   public setOptions(options?: WalletStrategyOptions) {
     if (options?.privateKey) {
       this.strategies[Wallet.PrivateKey] = createStrategy({
-        args: this.args,
+        args: { ...this.args, options: { privateKey: options.privateKey } },
         wallet: Wallet.PrivateKey,
       })
     }
 
     if (options?.metadata) {
       this.strategies[Wallet.WalletConnect] = createStrategy({
-        args: this.args,
+        args: { ...this.args, options: { metadata: options.metadata } },
         wallet: Wallet.WalletConnect,
       })
     }
