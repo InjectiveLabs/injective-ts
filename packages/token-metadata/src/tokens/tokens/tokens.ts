@@ -3771,4 +3771,22 @@ export default {
       address: '0x36e66fbbce51e4cd5bd3c62b637eb411b18949d4',
     },
   },
+
+  SAGA: {
+    name: 'Saga',
+    logo: 'saga.svg',
+
+    ibcs: [
+      {
+        symbol: 'SAGA',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'usaga',
+        path: 'transfer/channel-261',
+        channelId: 'channel-261',
+        hash: 'ibc/AF921F0874131B56897A11AA3F33D5B29CD9C147A1D7C37FE8D918CB420956B2',
+        source: TokenSource.Cosmos,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>

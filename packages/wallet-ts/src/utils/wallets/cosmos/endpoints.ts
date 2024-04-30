@@ -141,6 +141,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://rpc.cosmos.directory/andromeda',
         rest: 'https://rest.cosmos.directory/andromeda',
       }
+    case CosmosChainId.Saga:
+      return {
+        rpc: 'https://saga-rpc.publicnode.com',
+        rest: 'https://saga-rest.publicnode.com',
+      }
     default:
       throw new GeneralException(
         new Error(`Endpoints for ${chainId} not found`),
