@@ -3774,7 +3774,7 @@ export default {
 
   SAGA: {
     name: 'Saga',
-    logo: 'saga.svg',
+    logo: 'saga.webp',
 
     ibcs: [
       {
