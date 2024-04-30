@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ui-ts",
   "description": "SDK in TypeScript for building Injective UI applications in a browser environment.",
-  "version": "1.14.11-beta.74",
+  "version": "1.14.11-beta.75",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
@@ -35,14 +35,14 @@
     "get-ibc-tokens": "ts-node ./src/services/ibc/tokens.ts"
   },
   "dependencies": {
-    "@injectivelabs/contracts": "^1.14.11-beta.8",
-    "@injectivelabs/exceptions": "^1.14.11-beta.4",
-    "@injectivelabs/networks": "^1.14.11-beta.7",
-    "@injectivelabs/sdk-ts": "^1.14.11-beta.54",
-    "@injectivelabs/token-metadata": "^1.14.11-beta.41",
-    "@injectivelabs/token-utils": "^1.14.11-beta.6",
-    "@injectivelabs/ts-types": "^1.14.11-beta.1",
-    "@injectivelabs/utils": "^1.14.11-beta.5",
+    "@injectivelabs/contracts": "^1.14.11-beta.9",
+    "@injectivelabs/exceptions": "^1.14.11-beta.5",
+    "@injectivelabs/networks": "^1.14.11-beta.8",
+    "@injectivelabs/sdk-ts": "^1.14.11-beta.55",
+    "@injectivelabs/token-metadata": "^1.14.11-beta.42",
+    "@injectivelabs/token-utils": "^1.14.11-beta.7",
+    "@injectivelabs/ts-types": "^1.14.11-beta.2",
+    "@injectivelabs/utils": "^1.14.11-beta.6",
     "alchemy-sdk": "^2.6.3",
     "copyfiles": "^2.4.1",
     "link-module-alias": "^1.2.0",
