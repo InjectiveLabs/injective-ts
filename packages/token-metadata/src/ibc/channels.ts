@@ -155,6 +155,7 @@ export const canonicalChannelIds = [
   'channel-152',
   'channel-183',
   'channel-213',
+  'channel-261',
 ]
 
 export const channelIbcDenomToBaseDenomMap = {
