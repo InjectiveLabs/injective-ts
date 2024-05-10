@@ -1,4 +1,5 @@
 import MsgDeposit from './msgs/MsgDeposit'
+import MsgSignData from './msgs/MsgSignData'
 import MsgWithdraw from './msgs/MsgWithdraw'
 import MsgRewardsOptOut from './msgs/MsgRewardsOptOut'
 import MsgCancelSpotOrder from './msgs/MsgCancelSpotOrder'
@@ -25,6 +26,7 @@ import MsgAdminUpdateBinaryOptionsMarket from './msgs/MsgAdminUpdateBinaryOption
 export {
   MsgDeposit,
   MsgWithdraw,
+  MsgSignData,
   MsgRewardsOptOut,
   MsgCancelSpotOrder,
   MsgExternalTransfer,

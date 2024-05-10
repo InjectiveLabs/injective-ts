@@ -11,7 +11,10 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import { PrivateKey as PrivateKeySigner } from '@injectivelabs/sdk-ts'
+import {
+  PrivateKey as PrivateKeySigner,
+  getInjectiveSignerAddress,
+} from '@injectivelabs/sdk-ts'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
@@ -128,7 +131,7 @@ export default class PrivateKey
   ): Promise<string> {
     const pk = this.getPrivateKey()
 
-    if (address !== pk.toAddress().toBech32()) {
+    if (getInjectiveSignerAddress(address) !== pk.toAddress().toBech32()) {
       throw new WalletException(
         new Error('Signer address does not match the private key address'),
         {
@@ -191,7 +194,7 @@ export default class PrivateKey
   ): Promise<string> {
     const pk = this.getPrivateKey()
 
-    if (signer !== pk.toAddress().toBech32()) {
+    if (getInjectiveSignerAddress(signer) !== pk.toAddress().toBech32()) {
       throw new WalletException(
         new Error('Signer address does not match the private key address'),
         {

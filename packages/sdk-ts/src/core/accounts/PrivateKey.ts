@@ -7,8 +7,15 @@ import { PublicKey } from './PublicKey'
 import { Address } from './Address'
 import * as BytesUtils from '@ethersproject/bytes'
 import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
-import { hexToNumber, recoverTypedSignaturePubKey } from '../../utils'
-import { secp256k1 as NobleSecp256k1 } from '@noble/curves/secp256k1'
+import { recoverTypedSignaturePubKey } from '../../utils'
+import {
+  CosmosTxV1Beta1Tx,
+  InjectiveTypesV1TxExt,
+} from '@injectivelabs/core-proto-ts'
+import { getTransactionPartsFromTxRaw } from '../modules/tx/utils/tx'
+import { getEip712TypedData, MsgDecoder } from '../modules/tx/eip712'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -231,6 +238,12 @@ export class PrivateKey {
   /**
    * Verify signature using EIP712 typed data
    * and the publicKey
+   *
+   * (params are passed as an object)
+   *
+   * @param {string} signature: the signature to verify in hex
+   * @param {any} eip712: the EIP712 typed data to verify against
+   * @param {string} publicKey: the public key to verify against in hex
    * */
   public static verifySignature({
     signature,
@@ -249,46 +262,100 @@ export class PrivateKey {
   }
 
   /**
-   * Verify signature using EIP712 typed data
-   * and the publicKey
+   * Verify cosmos signature EIP712 typed
+   * data from the TxRaw and verify the signature
+   * that's included in the TxRaw
+   *
+   * (params are passed as an object)
+   *
+   * @param {CosmosTxV1Beta1Tx.TxRaw} txRaw: the signature to verify in hex
+   * @param {object} signer: the public key and the account number to verify against
    **/
-  public static verifyCosmosSignature(_: {
-    signature: string /* in hex */
-    eip712: any
-    publicKey: string /* in hex */
-  }): boolean {
-    throw new Error('Not implemented')
-  }
-
-  public recoverPublicKeyFromBase64({
-    signature,
-    messageHash,
-    isCompressed = false,
+  public static verifyCosmosSignature({
+    txRaw,
+    signer,
   }: {
-    signature: Uint8Array | string /* in base64 */
-    messageHash: string /* in hex */
-    isCompressed?: boolean
-  }): string {
-    const signatureBuff =
-      signature.constructor === Uint8Array
-        ? Buffer.from(signature)
-        : Buffer.from(signature as string, 'base64')
-    const signatureHex = signatureBuff.toString('hex')
+    txRaw: CosmosTxV1Beta1Tx.TxRaw
+    signer: {
+      accountNumber: number | string
+      publicKey: string /* in base64 */
+    }
+  }): boolean {
+    const { body, authInfo, signatures } = getTransactionPartsFromTxRaw(txRaw)
 
-    let v = hexToNumber(`0x${signatureHex.slice(130)}`)
-    if (v === 0 || v === 1) v += 27
-
-    const publicKey = NobleSecp256k1.Signature.fromCompact(
-      signatureHex.startsWith('0x')
-        ? signatureHex.substring(2, 130)
-        : signatureHex,
-    )
-      .addRecoveryBit(v - 27)
-      .recoverPublicKey(
-        messageHash.startsWith('0x') ? messageHash.substring(2) : messageHash,
+    if (authInfo.signerInfos.length > 1 || signatures.length > 1) {
+      throw new GeneralException(
+        new Error('Validation of multiple signers is not supported'),
       )
-      .toHex(isCompressed)
+    }
 
-    return `0x${publicKey}`
+    if (body.messages.length > 1) {
+      throw new GeneralException(
+        new Error('Validation of multiple messages is not supported'),
+      )
+    }
+
+    const getChainIds = () => {
+      if (!body.extensionOptions.length) {
+        return {
+          ethereumChainId: EthereumChainId.Mainnet,
+          chainId: ChainId.Mainnet,
+        }
+      }
+
+      const extension = body.extensionOptions.find((extension) =>
+        extension.typeUrl.includes('ExtensionOptionsWeb3Tx'),
+      )
+
+      if (!extension) {
+        return {
+          ethereumChainId: EthereumChainId.Mainnet,
+          chainId: ChainId.Mainnet,
+        }
+      }
+
+      const decodedExtension =
+        InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx.decode(extension.value)
+
+      const ethereumChainId = Number(
+        decodedExtension.typedDataChainID,
+      ) as EthereumChainId
+
+      return {
+        ethereumChainId: ethereumChainId,
+        chainId: [
+          EthereumChainId.Goerli,
+          EthereumChainId.Kovan,
+          EthereumChainId.Sepolia,
+        ].includes(ethereumChainId)
+          ? ChainId.Testnet
+          : ChainId.Mainnet,
+      }
+    }
+
+    const { ethereumChainId, chainId } = getChainIds()
+    const [signerInfo] = authInfo.signerInfos
+    const [signature] = signatures
+    const [msg] = body.messages
+    const decodedMsg = MsgDecoder.decode(msg)
+
+    const eip712TypedData = getEip712TypedData({
+      msgs: [decodedMsg],
+      fee: authInfo.fee,
+      tx: {
+        memo: body.memo,
+        accountNumber: signer.accountNumber.toString(),
+        sequence: signerInfo.sequence.toString(),
+        timeoutHeight: body.timeoutHeight.toString(),
+        chainId,
+      },
+      ethereumChainId,
+    })
+
+    return this.verifySignature({
+      eip712: eip712TypedData,
+      signature: Buffer.from(signature).toString('hex'),
+      publicKey: Buffer.from(signer.publicKey, 'base64').toString('hex'),
+    })
   }
 }

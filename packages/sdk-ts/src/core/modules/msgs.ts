@@ -52,6 +52,7 @@ import MsgBurn from './tokenfactory/msgs/MsgBurn'
 import MsgChangeAdmin from './tokenfactory/msgs/MsgChangeAdmin'
 import MsgCreateDenom from './tokenfactory/msgs/MsgCreateDenom'
 import MsgMint from './tokenfactory/msgs/MsgMint'
+import MsgSignData from './exchange/msgs/MsgSignData'
 import MsgSetDenomMetadata from './tokenfactory/msgs/MsgSetDenomMetadata'
 import MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer'
 import MsgLiquidatePosition from './exchange/msgs/MsgLiquidatePosition'
@@ -119,6 +120,7 @@ export type Msgs =
   | MsgRevokeAllowance
   | MsgAdminUpdateBinaryOptionsMarket
   | MsgLiquidatePosition
+  | MsgSignData
 
 /**
  * @category Messages
@@ -145,6 +147,7 @@ export type ExchangeMsgs =
   | MsgReclaimLockedFunds
   | MsgExternalTransfer
   | MsgStoreCode
+  | MsgSignData
   | MsgRewardsOptOut
   | MsgLiquidatePosition
   | MsgAdminUpdateBinaryOptionsMarket
