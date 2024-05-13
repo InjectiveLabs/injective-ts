@@ -126,6 +126,8 @@ export class IndexerGrpcMitoTransformer {
       apyue: vault.apyue,
       apy7D: vault.apy7D,
       apy7DFq: vault.apy7DFq,
+      apyV3: vault.apyV3,
+      registrationMode: vault.registrationMode,
       profits: IndexerGrpcMitoTransformer.changesResponseToChanges(
         vault.profits,
       ),

@@ -63,6 +63,8 @@ export interface MitoVault {
   apy7D: number
   apy7DFq: number
   apyue: number
+  apyV3: number
+  registrationMode: string
 }
 
 export interface MitoSubscription {

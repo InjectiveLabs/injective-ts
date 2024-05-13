@@ -3802,4 +3802,19 @@ export default {
       address: '0xbf5495Efe5DB9ce00f80364C8B423567e58d2110',
     },
   },
+
+  GOLDIE: {
+    name: 'Goldicocks',
+    logo: 'goldie.webp',
+    symbol: 'GOLDIE',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj130ayayz6ls8qpmu699axhlg7ygy8u6thjjk9nc',
+        symbol: 'GOLDIE',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
